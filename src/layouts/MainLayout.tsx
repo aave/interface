@@ -1,4 +1,7 @@
 import React from "react";
+import ConnectWalletModal from "../components/ConnectWalletModal";
+import { getSupportedChainIds } from "../helpers/config/markets-and-network-config";
+import { Web3Provider } from "../libs/web3-data-provider";
 import AppHeader from "./AppHeader";
 
 /**
@@ -8,9 +11,14 @@ import AppHeader from "./AppHeader";
  */
 export const MainLayout: React.FC = ({ children }) => {
   return (
-    <>
-      <AppHeader />
-      <main>{children}</main>
-    </>
+    <Web3Provider
+      supportedChainIds={getSupportedChainIds()}
+      connectWalletModal={ConnectWalletModal}
+    >
+      <>
+        <AppHeader />
+        <main>{children}</main>
+      </>
+    </Web3Provider>
   );
 };
