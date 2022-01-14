@@ -1,5 +1,5 @@
 import React, { ReactNode, ReactNodeArray } from 'react';
-import { useIntl } from 'react-intl';
+// import { useIntl } from 'react-intl';
 import classNames from 'classnames';
 
 import { BasicModal, useThemeContext } from '@aave/aave-ui-kit';
@@ -23,7 +23,7 @@ export default function ConnectWalletWrapper({
   isVisible,
   onBackdropPress,
 }: ConnectWalletWrapperProps) {
-  const intl = useIntl();
+  // const intl = useIntl();
   const { currentTheme, isCurrentThemeDark } = useThemeContext();
 
   return (
@@ -36,7 +36,8 @@ export default function ConnectWalletWrapper({
     >
       <div className="ConnectWalletWrapper__inner">
         <div className="ConnectWalletWrapper__caption-inner">
-          <h2>{intl.formatMessage(messages.caption)}</h2>
+          {/* <h2>{intl.formatMessage(messages.caption)}</h2> */}
+          <h2>Connect place holder message</h2>
         </div>
 
         {children}

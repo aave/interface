@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useIntl } from 'react-intl';
+// import { useIntl } from 'react-intl';
 import { AnimationArrow, DropdownWrapper, useThemeContext } from '@aave/aave-ui-kit';
 
 import messages from './messages';
@@ -18,22 +18,23 @@ export default function SelectPreferredNetwork({
   onSelectPreferredNetwork,
   supportedNetworks,
 }: SelectPreferredNetworkProps) {
-  const intl = useIntl();
+  // const intl = useIntl();
   const { currentTheme } = useThemeContext();
 
   const [visible, setVisible] = useState(false);
 
   const getFormattedName = (chainId: ChainId) => {
     const config = getNetworkConfig(chainId);
-    if (config?.isFork) return intl.formatMessage(messages.forkNetwork, { network: config.name });
-    if (config?.isTestnet)
-      return intl.formatMessage(messages.testNetwork, { network: config.name });
-    return intl.formatMessage(messages.mainnet, { network: config.name });
+    // if (config?.isFork) return intl.formatMessage(messages.forkNetwork, { network: config.name });
+    // if (config?.isTestnet)
+    //   return intl.formatMessage(messages.testNetwork, { network: config.name });
+    return 'another place holder text'// intl.formatMessage(messages.mainnet, { network: config.name });
   };
 
   return (
     <div className="SelectPreferredNetwork">
-      <p className="SelectPreferredNetwork__title">{intl.formatMessage(messages.title)}</p>
+      {/* <p className="SelectPreferredNetwork__title">{intl.formatMessage(messages.title)}</p> */}
+      <p className="SelectPreferredNetwork__title">More placeholder text</p>
 
       <DropdownWrapper
         visible={visible}
