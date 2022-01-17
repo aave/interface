@@ -32,6 +32,11 @@ interface UserWalletData {
   showSelectWalletModal: () => void;
   currentProviderName: AvailableWeb3Connectors | undefined;
   handleNetworkChange: (network: ChainId) => void;
+  handleUnlockWallet: (
+    providerName: AvailableWeb3Connectors,
+    chainId: ChainId,
+    availableChainIds: ChainId[],
+  ) => void;
 }
 
 const formattingError = (
@@ -73,7 +78,7 @@ export interface UnlockWalletPreloaderProps {
 
 export interface ConnectWalletModalProps {
   preferredChainId: ChainId;
-  onSelectPreferredChainId: (chainId: ChainId) => void;
+  // onSelectPreferredChainId: (chainId: ChainId) => void;
   supportedChainIds: ChainId[];
   onUnlockExternalWallet: (
     providerName: AvailableWeb3Connectors,
@@ -83,8 +88,8 @@ export interface ConnectWalletModalProps {
     skipLoad?: boolean
   ) => void;
   // connectorConfig: ConnectorOptionalConfig;
-  error?: string;
-  showLedgerBanner?: boolean;
+  // error?: string;
+  // showLedgerBanner?: boolean;
   isVisible: boolean;
   onBackdropPress: () => void;
 }
@@ -177,19 +182,6 @@ export function Web3Provider({
       );
     }
   };
-  const handleUnlockWallet = useCallback(
-    async (
-      connectorName: AvailableWeb3Connectors,
-      chainId: ChainId,
-      availableChainIds: ChainId[],
-    ) => {
-      if (await handleActivation(connectorName, chainId, availableChainIds)) {
-        setSelectWalletModalVisible(false);
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
 
   // const handleAccountsListLoading = async (
   //   provider?: ethers.providers.Web3Provider,
@@ -267,7 +259,21 @@ export function Web3Provider({
   //   });
   // };
 
-
+  const handleUnlockWallet = useCallback(
+    async (
+      connectorName: AvailableWeb3Connectors,
+      chainId: ChainId,
+      availableChainIds: ChainId[],
+      // connectorConfig: ConnectorOptionalConfig
+    ) => {
+      if (await handleActivation(connectorName, chainId, availableChainIds)) {
+        setSelectWalletModalVisible(false);
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+  
   const disconnectWallet = (error?: Error) => {
     disconnectWeb3Connector();
     setAvailableAccounts([]);
@@ -369,6 +375,7 @@ export function Web3Provider({
         showSelectWalletModal: () => setSelectWalletModalVisible(true),
         currentProviderName,
         handleNetworkChange,
+        handleUnlockWallet
 
         // preferredChainId:preferredNetwork,
         // onSelectPreferredChainId: handleNetworkChange,

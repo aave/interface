@@ -31,11 +31,11 @@ export interface Wallet {
 
 export default function ConnectWalletModal({
   preferredChainId,
-  onSelectPreferredChainId,
+  // onSelectPreferredChainId,
   supportedChainIds,
   onUnlockExternalWallet,
-  error,
-  showLedgerBanner,
+  // error,
+  // showLedgerBanner,
   isVisible,
   onBackdropPress,
 }: ConnectWalletModalProps) {
@@ -50,18 +50,18 @@ export default function ConnectWalletModal({
       false
     );
 
-  // @ts-ignore
-  const isImToken = !!window.imToken;
+
+  
 
   const wallets: Wallet[] = [
     {
-      title: `${isImToken ? 'imToken' : 'Browser'} Wallet`, 
+      title: `${'Browser'} Wallet`, 
       // intl.formatMessage(messages.titleBrowserWallet, {
       //   walletName: isImToken ? 'imToken' : 'Browser',
       // }),
       description: '(MetaMask, Trustwallet, Enjin)',
       providerName: 'browser',
-      icon: isImToken ? icons.imToken : icons.browserWallets,
+      icon: icons.browserWallets,
       disabled: !browserWalletProvider,
       errorMessage: 'No browser wallet detected.'//intl.formatMessage(messages.noBrowserBrowserWallet),
     },
@@ -89,13 +89,6 @@ export default function ConnectWalletModal({
       notSupported: preferredChainId === ChainId.avalanche,
     },
     {
-      title: 'imToken',
-      providerName: 'wallet-connect',
-      icon: icons.imToken,
-      notSupported:
-        isImToken || preferredChainId === ChainId.polygon || preferredChainId === ChainId.avalanche,
-    },
-    {
       title: 'frame',
       providerName: 'frame',
       icon: icons.browserWallets,
@@ -107,7 +100,6 @@ export default function ConnectWalletModal({
     <UnlockWalletWrapper
       isVisible={isVisible}
       onBackdropPress={onBackdropPress}
-      className="ConnectWalletModal"
     >
 
       {/* {error && (

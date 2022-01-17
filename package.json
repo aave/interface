@@ -33,7 +33,8 @@
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.1.13",
+    "web3modal": "^1.9.5"
   },
   "devDependencies": {
     "@types/react": "latest",
