@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 // import { useIntl } from 'react-intl';
 
 import {
@@ -48,10 +48,7 @@ export default function ConnectWalletModal({
       preferredChainId,
       supportedChainIds,
       false
-    );
-
-
-  
+    );  
 
   const wallets: Wallet[] = [
     {

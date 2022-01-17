@@ -21,6 +21,14 @@ function getWeb3Library(provider: any): ethers.providers.Web3Provider {
   return new ethers.providers.Web3Provider(provider);
 }
 
+function SafeHydrate({ children }: {children: any}) {
+  return (
+    <div suppressHydrationWarning>
+      {typeof window === 'undefined' ? null : children}
+    </div>
+  )
+}
+
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   return (
@@ -28,14 +36,15 @@ export default function MyApp(props: MyAppProps) {
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-
-      <Web3ReactProvider getLibrary={getWeb3Library}>
-        <Web3Provider supportedChainIds={getSupportedChainIds()}>
-          <MainLayout>
-            <Component {...pageProps} />
-          </MainLayout>
-        </Web3Provider>
-      </Web3ReactProvider>
+      {/* <SafeHydrate> */}
+        <Web3ReactProvider getLibrary={getWeb3Library}>
+          <Web3Provider supportedChainIds={getSupportedChainIds()}>
+            <MainLayout>
+              <Component {...pageProps} />
+            </MainLayout>
+          </Web3Provider>
+        </Web3ReactProvider>
+      {/* </SafeHydrate> */}
     </CacheProvider>
   );
 }
