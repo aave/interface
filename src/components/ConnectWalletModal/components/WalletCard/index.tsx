@@ -18,7 +18,7 @@ export default function WalletCard({
   errorMessage,
 }: WalletCardProps) {
   const { currentTheme, isCurrentThemeDark } = useThemeContext();
-
+  console.log('provider name::::::: ', providerName)
   return (
     <button
       className="WalletCard"

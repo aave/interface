@@ -37,6 +37,7 @@ interface UserWalletData {
     chainId: ChainId,
     availableChainIds: ChainId[],
   ) => void;
+  supportedChainIds: ChainId[];
 }
 
 const formattingError = (
@@ -156,6 +157,7 @@ export function Web3Provider({
     //TODO: maybe next line is useless
     localStorage.setItem('preferredChainId', network as unknown as string);
     try {
+      console.log('activate: ', connectorName);
       await activate(
         getWeb3Connector(connectorName, network, availableNetworks),
         () => {},
@@ -182,82 +184,6 @@ export function Web3Provider({
       );
     }
   };
-
-  // const handleAccountsListLoading = async (
-  //   provider?: ethers.providers.Web3Provider,
-  //   retries = 0
-  // ) => {
-  //   // Implement a retry system to prevent users to infinitely load Aave page during a connection issue.
-  //   if (retries <= 0) {
-  //     const error = new Error(
-  //       '[Aave][Web3Provider] Max account reload reached. Clearing app state. Ask Aave support channels if you encounter this error.'
-  //     );
-  //     // Clear state and disconnect wallet
-  //     setIsAvailableAccountsLoading(false);
-  //     setDisplaySwitchAccountModal(false);
-  //     disconnectWallet(error);
-
-  //     console.error(error);
-  //     return;
-  //   }
-  //   // Lock the `handleAccountsListLoading` function if accounts are loading, to prevent spamming `await provider.listAccounts()`
-  //   // and saturating the Web3 provider connection.
-  //   if (provider && !isAvailableAccountsLoading) {
-  //     setIsAvailableAccountsLoading(true);
-  //     let accounts: string[] = [];
-  //     try {
-  //       accounts = provider ? await provider.listAccounts() : [];
-  //     } catch (error) {
-  //       // Catch any Web3 load error or Ledger connection error when the app tries to connect prior connecting to the USB device
-  //       // Hold the retry until 3 segs if there is an error loading accounts,
-  //       // to prevent spamming the Ledger Web USB channel and block the connection.
-  //       setTimeout(async () => {
-  //         console.log('[Aave][Web3Provider] Retrying Web3 connection.');
-  //         await handleAccountsListLoading(provider, retries - 1);
-  //       }, 3000);
-  //       return;
-  //     }
-  //     const storedAccount = localStorage.getItem('selectedAccount');
-  //     setAvailableAccounts(accounts);
-  //     // TODO: most probably lower case useless, keeping it just in case
-  //     if (
-  //       storedAccount &&
-  //       accounts.map((acc) => acc.toLowerCase()).includes(storedAccount.toLowerCase())
-  //     ) {
-  //       // If loaded account and local storage account matches, set the account
-  //       handleSetCurrentAccount(storedAccount);
-  //     } else {
-  //       if (accounts.length > 1) {
-  //         setDisplaySwitchAccountModal(true);
-  //       } else {
-  //         // If storage does not match loaded accounts and is not a Ledger provider, them use first account from loaded accounts
-  //         handleSetCurrentAccount(accounts.length === 1 ? accounts[0] : '');
-  //       }
-  //     }
-  //     setIsAvailableAccountsLoading(false);
-  //   }
-  // };
-
-  // const handleSetCurrentAccount = (account: string) => {
-  //   setCurrentAccount(account);
-  //   localStorage.setItem('selectedAccount', account);
-  // };
-
-  // const openAccountSelector = (reloadAccounts = false) => {
-  //   setDisplaySwitchAccountModal((currentValue) => {
-  //     if (!currentValue) {
-  //       if (reloadAccounts && currentProviderName) {
-  //         handleActivation(
-  //           currentProviderName,
-  //           preferredNetwork,
-  //           supportedChainIds
-  //         );
-  //       }
-  //       return true;
-  //     }
-  //     return currentValue;
-  //   });
-  // };
 
   const handleUnlockWallet = useCallback(
     async (
@@ -375,11 +301,11 @@ export function Web3Provider({
         showSelectWalletModal: () => setSelectWalletModalVisible(true),
         currentProviderName,
         handleNetworkChange,
-        handleUnlockWallet
+        handleUnlockWallet,
 
         // preferredChainId:preferredNetwork,
         // onSelectPreferredChainId: handleNetworkChange,
-        // supportedChainIds:supportedChainIds
+        supportedChainIds:supportedChainIds
       }}
     >
       {/* <AddressModal

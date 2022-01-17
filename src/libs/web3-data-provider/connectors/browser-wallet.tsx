@@ -13,7 +13,8 @@ const isEthereumObjectOnWindow = (global: WindowWithEthereum) =>
 
 export const getWeb3ProviderFromBrowser = (): ethers.providers.Web3Provider | undefined => {
   
-  if (typeof window !== "undefined") {
+  if (typeof window === "object") {
+    console.log('-----------------------------')
     const global = window as WindowWithEthereum;
     return isEthereumObjectOnWindow(global) ? global.ethereum : global.web3 ? global.web3 : undefined;
   }
