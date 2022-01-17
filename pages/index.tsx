@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import { Link } from "../src/components/Link";
 import ProTip from "../src/ProTip";
 import Copyright from "../src/Copyright";
+import { Trans } from "@lingui/macro";
 
 const Home: NextPage = () => {
   return (
@@ -20,13 +21,11 @@ const Home: NextPage = () => {
         }}
       >
         <Typography variant="h4" component="h1" gutterBottom>
-          MUI v5 + Next.js with TypeScript example
+          <Trans>Welcome to Aave UI</Trans>
         </Typography>
         <Link href="/about" color="secondary">
-          Go to the about page
+          <Trans>Go to About page</Trans>
         </Link>
-        <ProTip />
-        <Copyright />
       </Box>
     </Container>
   );

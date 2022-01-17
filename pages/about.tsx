@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import { Link } from "../src/components/Link";
 import ProTip from "../src/ProTip";
 import Copyright from "../src/Copyright";
+import { Trans } from "@lingui/macro";
 
 const About: NextPage = () => {
   return (
@@ -21,15 +22,13 @@ const About: NextPage = () => {
         }}
       >
         <Typography variant="h4" component="h1" gutterBottom>
-          MUI v5 + Next.js with TypeScript example
+          <Trans>About the app</Trans>
         </Typography>
         <Box maxWidth="sm">
           <Button variant="contained" component={Link} noLinkStyle href="/">
-            Go to the home page
+            <Trans>Go to Home page</Trans>
           </Button>
         </Box>
-        <ProTip />
-        <Copyright />
       </Box>
     </Container>
   );

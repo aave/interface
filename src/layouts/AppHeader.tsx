@@ -2,7 +2,7 @@ import * as React from "react";
 import { styled, alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import AaveLogo from "@mui/icons-material/GolfCourseSharp";
 import { Link } from "../components/Link";
 import MoreMenu from "./MoreMenu";
@@ -32,9 +32,10 @@ export default function AppHeader() {
           component={Link}
           href={"/"}
           aria-label="Go to homepage"
-          sx={{ lineHeight: 0, mr: 2 }}
+          sx={{ lineHeight: 0, mr: 2, display: "flex" }}
         >
           <AaveLogo width={32} />
+          <Typography>Aave</Typography>
         </Box>
         <Box sx={{ ml: "auto" }} />
         <Box sx={{ display: { xs: "none", sm: "initial" }, mr: "12px" }}>

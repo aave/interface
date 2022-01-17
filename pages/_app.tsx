@@ -8,6 +8,7 @@ import theme from "../src/utils/theme";
 import createEmotionCache from "../src/createEmotionCache";
 import "/public/fonts/inter/inter.css";
 import { MainLayout } from "../src/layouts/MainLayout";
+import { LanguageProvider } from "../src/libs/LanguageProvider";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -26,9 +27,11 @@ export default function MyApp(props: MyAppProps) {
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <MainLayout>
-          <Component {...pageProps} />
-        </MainLayout>
+        <LanguageProvider>
+          <MainLayout>
+            <Component {...pageProps} />
+          </MainLayout>
+        </LanguageProvider>
       </ThemeProvider>
     </CacheProvider>
   );

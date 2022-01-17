@@ -1,0 +1,16 @@
+
+{
+  "presets": ["next/babel"],
+  "plugins": [
+    "macros",
+     "@babel/plugin-syntax-dynamic-import",
+    "@babel/plugin-proposal-class-properties"
+  ],
+  "env": {
+    "test": {
+      "plugins": [
+        "dynamic-import-node"
+      ]
+    }
+  }
+}

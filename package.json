@@ -9,23 +9,42 @@
     "export": "next export",
     "start": "next start",
     "lint": "next lint",
-    "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest"
+    "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest",
+    "i18n": "npm run extract && npm run compile",
+    "extract": "NODE_ENV=development lingui extract",
+    "compile": "lingui compile",
+    "pre-commit": "lint-staged && npm run i18n && git add ./src/translations",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@emotion/cache": "latest",
     "@emotion/react": "latest",
     "@emotion/server": "latest",
     "@emotion/styled": "latest",
+    "@lingui/react": "^3.13.0",
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
     "next": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "react-intl": "^5.24.3"
   },
   "devDependencies": {
+    "@babel/core": "^7.16.7",
+    "@babel/plugin-proposal-class-properties": "^7.16.7",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@lingui/cli": "^3.13.0",
+    "@lingui/macro": "^3.13.0",
     "@types/react": "latest",
+    "babel-plugin-dynamic-import-node": "^2.3.3",
+    "babel-plugin-macros": "^3.1.0",
     "eslint": "latest",
     "eslint-config-next": "latest",
+    "husky": ">=6",
+    "lint-staged": ">=10",
     "typescript": "latest"
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix"
   }
 }
