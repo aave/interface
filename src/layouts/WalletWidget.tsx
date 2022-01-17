@@ -1,7 +1,6 @@
 import * as React from "react";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import {
   Button,
   Divider,
@@ -12,14 +11,16 @@ import {
 import {
   GitHub,
   LibraryBooks,
+  Person,
   QuestionMarkOutlined,
 } from "@mui/icons-material";
 import { ColorModeContext } from "./MainLayout";
-import { Box, useTheme } from "@mui/system";
+import { useTheme } from "@mui/system";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
-export default function MoreMenu() {
+export default function WalletWidget() {
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -32,20 +33,21 @@ export default function MoreMenu() {
   };
 
   return (
-    <Box sx={{ ml: 2 }}>
+    <div>
       <Button
         variant="outlined"
         size="small"
         aria-label="more"
-        id="more-button"
+        id="wallet-button"
         aria-controls={open ? "more-menu" : undefined}
         aria-expanded={open ? "true" : undefined}
         aria-haspopup="true"
         onClick={handleClick}
-        sx={{ px: 0.5, width: "36px", minWidth: 0 }}
         color="inherit"
+        startIcon={<Person />}
+        endIcon={<ArrowDropDownIcon />}
       >
-        <MoreHorizIcon />
+        Jouni.eth
       </Button>
       <Menu
         id="more-menu"
@@ -102,6 +104,6 @@ export default function MoreMenu() {
           </MenuItem>
         </MenuList>
       </Menu>
-    </Box>
+    </div>
   );
 }
