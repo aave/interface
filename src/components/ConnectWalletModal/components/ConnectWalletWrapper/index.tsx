@@ -28,7 +28,6 @@ export default function ConnectWalletWrapper({
       onBackdropPress={onBackdropPress}
       isVisible={isVisible}
       withCloseButton={true}
-      className={classNames('ConnectWalletWrapper', className)}
       closeIcon={isCurrentThemeDark ? whiteCloseIcon : closeIcon}
     >
       <div>
