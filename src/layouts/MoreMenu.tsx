@@ -1,10 +1,27 @@
 import * as React from "react";
-import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import { Button } from "@mui/material";
 
-const options = ["None", "Atria", "Callisto", "Dione"];
+const options = [
+  {
+    title: "Dashboard",
+    link: "/dashboard",
+  },
+  {
+    title: "Markets",
+    link: "/markets",
+  },
+  {
+    title: "Stake",
+    link: "/stake",
+  },
+  {
+    title: "Governance",
+    link: "/governance",
+  },
+];
 
 export default function MoreMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -18,16 +35,20 @@ export default function MoreMenu() {
 
   return (
     <div>
-      <IconButton
+      <Button
+        variant="outlined"
+        size="small"
         aria-label="more"
         id="more-button"
         aria-controls={open ? "more-menu" : undefined}
         aria-expanded={open ? "true" : undefined}
         aria-haspopup="true"
         onClick={handleClick}
+        sx={{ px: 0.5, width: "36px", minWidth: 0 }}
+        color="inherit"
       >
         <MoreHorizIcon />
-      </IconButton>
+      </Button>
       <Menu
         id="more-menu"
         MenuListProps={{
@@ -43,8 +64,8 @@ export default function MoreMenu() {
         }}
       >
         {options.map((option) => (
-          <MenuItem key={option} onClick={handleClose}>
-            {option}
+          <MenuItem key={option.title} onClick={handleClose}>
+            {option.title}
           </MenuItem>
         ))}
       </Menu>
