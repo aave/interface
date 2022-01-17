@@ -44,7 +44,7 @@ export const getTheme = (mode: "light" | "dark") =>
   createTheme({
     palette: {
       primary: {
-        main: "#ff0000",
+        main: "#171926",
       },
       primaryDark: blueDark,
       secondary: {
@@ -60,6 +60,15 @@ export const getTheme = (mode: "light" | "dark") =>
     },
     typography: {
       fontFamily: "Inter, Arial",
+    },
+    components: {
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            textTransform: "none",
+          },
+        },
+      },
     },
   });
 

@@ -6,7 +6,7 @@ import { Button } from "@mui/material";
 import { Link } from "../components/Link";
 import MoreMenu from "./MoreMenu";
 import { uiConfig } from "../uiConfig";
-import { ColorModeToggle } from "./ColorModeToggle";
+import WalletWidget from "./WalletWidget";
 
 const Header = styled("header")(({ theme }) => ({
   position: "sticky",
@@ -66,10 +66,8 @@ export default function AppHeader() {
           </Button>
         </Box>
         <Box sx={{ flexGrow: 1 }} />
-        <ColorModeToggle />
-        <Box color="inherit">
-          <MoreMenu />
-        </Box>
+        <WalletWidget />
+        <MoreMenu />
       </Container>
     </Header>
   );
