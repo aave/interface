@@ -21,21 +21,22 @@ interface MyAppProps extends AppProps {
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   return (
-    <Web3Provider
-      supportedChainIds={getSupportedChainIds()}
-    >
       <CacheProvider value={emotionCache}>
         <Head>
           <meta name="viewport" content="initial-scale=1, width=device-width" />
         </Head>
         <ThemeProvider theme={theme}>
+
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
-          <MainLayout>
-            <Component {...pageProps} />
-          </MainLayout>
+          <Web3Provider
+            supportedChainIds={getSupportedChainIds()}
+          >
+            <MainLayout>
+              <Component {...pageProps} />
+            </MainLayout>
+          </Web3Provider>
         </ThemeProvider>
       </CacheProvider>
-    </Web3Provider>
   );
 }

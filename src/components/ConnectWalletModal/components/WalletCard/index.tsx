@@ -4,8 +4,6 @@ import { useThemeContext } from '@aave/aave-ui-kit';
 import { Wallet } from '../../index';
 import { AvailableWeb3Connectors } from '../../../../libs/web3-data-provider';
 
-import staticStyles from './style';
-
 interface WalletCardProps extends Wallet {
   handleUnlockExternalWallet: (providerName: AvailableWeb3Connectors) => void;
 }
@@ -30,44 +28,16 @@ export default function WalletCard({
     >
       {disabled && errorMessage && <strong className="WalletCard__error">{errorMessage}</strong>}
 
-      <div className="WalletCard__inner">
-        <div className="WalletCard__image-inner">
+      <div>
+        <div>
           <img src={icon} alt={title} />
         </div>
 
-        <div className="WalletCard__text-inner">
+        <div>
           <p>{title}</p>
           {!!description && <span>{description}</span>}
         </div>
       </div>
-
-      <style jsx={true}>{staticStyles}</style>
-      <style jsx={true}>{`
-        .WalletCard {
-          &:hover {
-            &:after {
-              background: ${isCurrentThemeDark ? currentTheme.white.hex : currentTheme.primary.hex};
-            }
-          }
-          &:disabled {
-            .WalletCard__inner {
-              border-color: ${currentTheme.red.hex};
-            }
-          }
-
-          &__error {
-            color: ${currentTheme.red.hex};
-          }
-
-          &__inner {
-            background: ${currentTheme.whiteItem.hex};
-          }
-
-          &__text-inner {
-            color: ${currentTheme.textDarkBlue.hex};
-          }
-        }
-      `}</style>
     </button>
   );
 }

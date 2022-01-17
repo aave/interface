@@ -92,7 +92,7 @@ export interface ConnectWalletModalProps {
 interface Web3ProviderProps {
   supportedChainIds: ChainId[];
   // preloader: (props: { currentProviderName?: AvailableWeb3Connectors }) => JSX.Element;
-  connectWalletModal: (props: ConnectWalletModalProps) => JSX.Element;
+  // connectWalletModal: (props: ConnectWalletModalProps) => JSX.Element;
 }
 
 export function Web3Provider({

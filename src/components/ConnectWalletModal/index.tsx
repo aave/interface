@@ -12,12 +12,9 @@ import {
 import UnlockWalletWrapper from './components/ConnectWalletWrapper';
 import WalletCard from './components/WalletCard';
 // import LedgerChecklist from './components/LedgerChecklist';
-import SelectPreferredNetwork from './components/SelectPreferredNetwork';
 
 // import { UnlockWalletExtraText } from '../../ui-config';
 
-import messages from './messages';
-import staticStyles from './style';
 
 import * as icons from './images';
 import { ChainId } from '@aave/contract-helpers';
@@ -58,7 +55,7 @@ export default function ConnectWalletModal({
 
   const wallets: Wallet[] = [
     {
-      title: 'test wallet', 
+      title: `${isImToken ? 'imToken' : 'Browser'} Wallet`, 
       // intl.formatMessage(messages.titleBrowserWallet, {
       //   walletName: isImToken ? 'imToken' : 'Browser',
       // }),
@@ -66,7 +63,7 @@ export default function ConnectWalletModal({
       providerName: 'browser',
       icon: isImToken ? icons.imToken : icons.browserWallets,
       disabled: !browserWalletProvider,
-      errorMessage: 'error message'//intl.formatMessage(messages.noBrowserBrowserWallet),
+      errorMessage: 'No browser wallet detected.'//intl.formatMessage(messages.noBrowserBrowserWallet),
     },
     {
       title: 'MEW wallet',
@@ -112,11 +109,6 @@ export default function ConnectWalletModal({
       onBackdropPress={onBackdropPress}
       className="ConnectWalletModal"
     >
-      <SelectPreferredNetwork
-        preferredNetwork={preferredChainId}
-        onSelectPreferredNetwork={onSelectPreferredChainId}
-        supportedNetworks={supportedChainIds}
-      />
 
       {/* {error && (
         <WarningArea
@@ -131,7 +123,7 @@ export default function ConnectWalletModal({
         <LedgerChecklist className="ConnectWalletModal__LedgerChecklist-mobile" />
       )} */}
 
-      <div className="ConnectWalletModal__content">
+      <div>
         {wallets
           .filter((wallet) => !wallet.notSupported)
           .map((wallet, index) => (
@@ -189,10 +181,6 @@ export default function ConnectWalletModal({
           })}
         </p> */}
       {/* </div> */}
-
-      <style jsx={true} global={true}>
-        {staticStyles}
-      </style>
     </UnlockWalletWrapper>
   );
 }

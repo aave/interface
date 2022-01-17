@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, {useState} from "react";
 import { styled, alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -25,6 +25,9 @@ const Header = styled("header")(({ theme }) => ({
 }));
 
 export default function AppHeader() {
+  const [isConnectModalVisible, setConnectModalVisible] = useState(false)
+
+
   return (
     <Header>
       <Container sx={{ display: "flex", alignItems: "center", minHeight: 64 }}>
@@ -43,6 +46,13 @@ export default function AppHeader() {
         <Box color="inherit">
           <MoreMenu />
         </Box>
+        <Button
+          onClick={setConnectModalVisible(!isConnectModalVisible)}
+        >Connect
+          <ConnectWalletModal 
+            isVisible={isConnectModalVisible}
+          />
+        </Button>
       </Container>
     </Header>
   );
