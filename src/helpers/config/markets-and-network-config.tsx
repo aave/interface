@@ -15,16 +15,31 @@ export type Pool = {
   address: string;
 };
 
-const ENABLE_TESTNET = process.env.REACT_APP_ENABLE_TESTNET === 'true';
+let ENABLE_TESTNET = process.env.REACT_APP_ENABLE_TESTNET === 'true';
 
 // determines if forks should be shown
-const FORK_ENABLED = localStorage.getItem('forkEnabled') === 'true';
+let FORK_ENABLED = false;
 // specifies which network was forked
-const FORK_BASE_CHAIN_ID = Number(localStorage.getItem('forkBaseChainId') || 1);
+let FORK_BASE_CHAIN_ID = 1;
 // specifies on which chainId the fork is running
-const FORK_CHAIN_ID = Number(localStorage.getItem('forkChainId') || 3030);
-const FORK_RPC_URL = localStorage.getItem('forkRPCUrl') || 'http://127.0.0.1:8545';
-const FORK_WS_RPC_URL = localStorage.getItem('forkWsRPCUrl') || 'ws://127.0.0.1:8545';
+let FORK_CHAIN_ID =  3030;
+let FORK_RPC_URL = 'http://127.0.0.1:8545';
+let FORK_WS_RPC_URL = 'ws://127.0.0.1:8545';
+
+
+if (typeof window !== 'undefined') {
+
+  ENABLE_TESTNET = process.env.REACT_APP_ENABLE_TESTNET === 'true';
+
+  // determines if forks should be shown
+  FORK_ENABLED = window.localStorage.getItem('forkEnabled') === 'true';
+  // specifies which network was forked
+  FORK_BASE_CHAIN_ID = Number(localStorage.getItem('forkBaseChainId') || 1);
+  // specifies on which chainId the fork is running
+  FORK_CHAIN_ID = Number(localStorage.getItem('forkChainId') || 3030);
+  FORK_RPC_URL = localStorage.getItem('forkRPCUrl') || 'http://127.0.0.1:8545';
+  FORK_WS_RPC_URL = localStorage.getItem('forkWsRPCUrl') || 'ws://127.0.0.1:8545';
+}
 
 /**
  * Generates network configs based on networkConfigs & fork settings.

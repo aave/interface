@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, useCallback, useContext, useEffect, useState } from 'react';
-import { useWeb3React } from '@web3-react/core';
+import { Web3ReactProvider, useWeb3React } from '@web3-react/core';
 import { ethers } from 'ethers';
 import { SafeAppConnector } from '@gnosis.pm/safe-apps-web3-react';
 
@@ -98,11 +98,16 @@ interface Web3ProviderProps {
 export function Web3Provider({
   children,
   supportedChainIds,
-  connectWalletModal: ConnectWalletModal,
 }: PropsWithChildren<Web3ProviderProps>) {
   // const intl = useIntl();
   const { library, account, activate, error, deactivate } =
     useWeb3React<ethers.providers.Web3Provider>();
+
+  let preferredChainId = 1;
+  useEffect(() => {
+    // Perform localStorage action
+    preferredChainId = Number(localStorage.getItem('preferredChainId')) || 1;
+  }, [])
 
   // TODO: uncomment when hook added
   // const { chainId } = useProtocolDataContext();
@@ -112,7 +117,7 @@ export function Web3Provider({
     AvailableWeb3Connectors | undefined
   >();
   const [_preferredNetwork, setPreferredNetwork] = useState(
-    Number(localStorage.getItem('preferredChainId')) as ChainId
+    preferredChainId as ChainId
   );
   const preferredNetwork = _preferredNetwork || chainId;
   const [activating, setActivation] = useState(true);
@@ -364,6 +369,10 @@ export function Web3Provider({
         showSelectWalletModal: () => setSelectWalletModalVisible(true),
         currentProviderName,
         handleNetworkChange,
+
+        // preferredChainId:preferredNetwork,
+        // onSelectPreferredChainId: handleNetworkChange,
+        // supportedChainIds:supportedChainIds
       }}
     >
       {/* <AddressModal
@@ -384,7 +393,7 @@ export function Web3Provider({
         currentProviderName={currentProviderName}
       /> */}
 
-      {(!account || !library || !currentAccount) && (
+      {/* {(!account || !library || !currentAccount) && (
         <ConnectWalletModal
           preferredChainId={preferredNetwork}
           onSelectPreferredChainId={handleNetworkChange}
@@ -399,7 +408,7 @@ export function Web3Provider({
             setErrorDetected(false);
           }}
         />
-      )}
+      )} */}
 
       {children}
     </UserWalletDataContext.Provider>

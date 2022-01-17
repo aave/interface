@@ -11,14 +11,10 @@ import AppHeader from "./AppHeader";
  */
 export const MainLayout: React.FC = ({ children }) => {
   return (
-    <Web3Provider
-      supportedChainIds={getSupportedChainIds()}
-      connectWalletModal={ConnectWalletModal}
-    >
+    
       <>
         <AppHeader />
         <main>{children}</main>
       </>
-    </Web3Provider>
   );
 };
