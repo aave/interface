@@ -9,7 +9,8 @@ import { getTheme } from '../utils/theme';
 import { useMediaQuery } from '@mui/material';
 
 export const ColorModeContext = React.createContext({
-  toggleColorMode: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  toggleColorMode: () => {},
 });
 
 type Mode = 'light' | 'dark';
