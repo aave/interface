@@ -7,7 +7,9 @@ import { Link } from '../components/Link';
 import MoreMenu from './MoreMenu';
 import { uiConfig } from '../uiConfig';
 import WalletWidget from './WalletWidget';
-import WalletConnectWidget from './WalletConnectWidget';
+// import dynamic from 'next/dynamic';
+import ConnectWalletWidget from './ConnectWalletWidget';
+
 
 const Header = styled('header')(({ theme }) => ({
   position: 'sticky',
@@ -25,9 +27,6 @@ const Header = styled('header')(({ theme }) => ({
 }));
 
 export default function AppHeader() {
-  // const [isConnectModalVisible, setConnectModalVisible] = useState(false)
-
-
   return (
     <Header>
       <Container maxWidth="xl" sx={{ display: 'flex', alignItems: 'center', height: 48 }}>
@@ -67,7 +66,7 @@ export default function AppHeader() {
         <Box sx={{ flexGrow: 1 }} />
         <WalletWidget />
         <MoreMenu />
-        <WalletConnectWidget />
+        <ConnectWalletWidget />
       </Container>
     </Header>
   );
