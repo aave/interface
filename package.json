@@ -34,6 +34,7 @@
     "@walletconnect/web3-provider": "^1.7.1",
     "axios": "^0.24.0",
     "eth-provider": "^0.10.0",
+    "ethereum-blockies-base64": "^1.0.2",
     "ethers": "^5.5.3",
     "next": "latest",
     "react": "latest",
