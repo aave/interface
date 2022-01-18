@@ -5,8 +5,10 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { Link } from '../src/components/Link';
 import { Trans } from '@lingui/macro';
+// import { useProtocolDataContext } from '../src/hooks/useProtocolData';
 
 const Home: NextPage = () => {
+  // const { currentMarket } = useProtocolDataContext();
   return (
     <Container maxWidth="lg">
       <Box
