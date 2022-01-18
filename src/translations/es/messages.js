@@ -1,0 +1,1 @@
+/*eslint-disable*/module.exports={messages:{"About the app":"Sobre la app","English":"Ingles","Go to About page":"Ir a página de Sobre la app","Go to Home page":"Ir a página de Inicio","Spanish":"Español","Welcome to Aave UI":"Bienvenido a Aave UI"}};

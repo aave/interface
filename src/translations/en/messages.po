@@ -1,0 +1,38 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2022-01-17 14:21+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: en\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: pages/about.tsx:25
+msgid "About the app"
+msgstr "About the app"
+
+#: src/components/LanguageSelector/index.tsx:33
+msgid "English"
+msgstr "English"
+
+#: pages/index.tsx:27
+msgid "Go to About page"
+msgstr "Go to the About page"
+
+#: pages/about.tsx:29
+msgid "Go to Home page"
+msgstr "Go to Home page"
+
+#: src/components/LanguageSelector/index.tsx:36
+msgid "Spanish"
+msgstr "Spanish"
+
+#: pages/index.tsx:24
+msgid "Welcome to Aave UI"
+msgstr "Welcome to Aave UI"
