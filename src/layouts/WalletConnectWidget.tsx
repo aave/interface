@@ -21,10 +21,11 @@ import dynamic from "next/dynamic";
 // @ts-ignore
 const MewConnect = dynamic(() => import('@myetherwallet/mewconnect-web-client'), { ssr: false })
 
+
 // @ts-ignore
 // const WalletConnect = dynamic(() => import('@walletconnect/web3-provider'), { ssr: false })
 // @ts-ignore
-const Torus = dynamic(() => import('@toruslabs/torus-embed'), { ssr: false })
+const Torus = dynamic(() => import('@toruslabs/torus-embed').then((module) => module.Torus), { ssr: false })
 // @ts-ignore
 // const WalletLink = dynamic(() => import('walletlink'), { ssr: false })
 
