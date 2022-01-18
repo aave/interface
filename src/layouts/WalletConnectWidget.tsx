@@ -19,12 +19,12 @@ import dynamic from "next/dynamic";
 // @ts-ignore
 // const ethProvider = dynamic(() => import('eth-provider'), { ssr: false })
 // @ts-ignore
-// const MewConnect = dynamic(() => import('@myetherwallet/mewconnect-web-client'), { ssr: false })
+const MewConnect = dynamic(() => import('@myetherwallet/mewconnect-web-client'), { ssr: false })
 
 // @ts-ignore
 // const WalletConnect = dynamic(() => import('@walletconnect/web3-provider'), { ssr: false })
 // @ts-ignore
-// const Torus = dynamic(() => import('@toruslabs/torus-embed'), { ssr: false })
+const Torus = dynamic(() => import('@toruslabs/torus-embed'), { ssr: false })
 // @ts-ignore
 // const WalletLink = dynamic(() => import('walletlink'), { ssr: false })
 
@@ -45,11 +45,11 @@ export default function WalletConnectWidget() {
   const [selectedInstance, setSelectedInstance] = useState(null as any);
 
   const [web3Modal, setWeb3Modal] = useState(null as any);
-  const [ethProvider, setEthProvider] = useState(null as any);
-  const [mewConnect, setMewConnect] = useState(null as any);
-  const [walletConnect, setWalletConnect] = useState(null as any);
-  const [torus, setTorus] = useState(null as any);
-  const [walletLink, setWalletLink] = useState(null as any);
+  // const [ethProvider, setEthProvider] = useState(null as any);
+  // const [mewConnect, setMewConnect] = useState(null as any);
+  // const [walletConnect, setWalletConnect] = useState(null as any);
+  // const [Torus, setTorus] = useState(null as unknown as Torus);
+  // const [walletLink, setWalletLink] = useState(null as any);
 
   useEffect(() => {
     // if (!ethProvider) {
@@ -79,15 +79,15 @@ export default function WalletConnectWidget() {
     //     console.log('Error while creating Web3Modal');
     //   }
     // }
-    if (!torus) {
-      try {
-        import("@toruslabs/torus-embed").then(Torus => {
-          setTorus(Torus)
-        })
-      } catch (e) {
-        console.log('Error while creating Web3Modal');
-      }
-    }
+    // if (!Torus) {
+    //   try {
+    //     import("@toruslabs/torus-embed").then(Torus => {
+    //       setTorus(Torus)
+    //     })
+    //   } catch (e) {
+    //     console.log('Error while creating Web3Modal');
+    //   }
+    // }
 
     // if (!walletLink) {
     //   try {
@@ -134,7 +134,7 @@ export default function WalletConnectWidget() {
     });
   };
 
-
+console.log('torus:: ', Torus)
   const getProviderOptions = () => {
     const chainId: ChainId = 1;
     const networkConfig = getNetworkConfig(chainId);
@@ -153,17 +153,30 @@ export default function WalletConnectWidget() {
           preferredNetworkId: chainId,
         }
       },
+      torus: {
+        package: Torus,
+        // options: {
+        //   chainId,
+        //   initOptions: {
+        //     network: {
+        //       host: chainId === ChainId.polygon ? 'matic' : chainId,
+        //     },
+        //     showTorusButton: false,
+        //     enableLogging: false,
+        //     enabledVerifiers: false,
+        //   }
+        // }
+      },
       // torus: {
-      //   package: torus,
+      //   package: Torus, // required
       //   options: {
-      //     chainId,
-      //     initOptions: {
-      //       network: {
-      //         host: chainId === ChainId.polygon ? 'matic' : chainId,
-      //       },
-      //       showTorusButton: false,
-      //       enableLogging: false,
-      //       enabledVerifiers: false,
+      //     networkParams: {
+      //       host: "https://localhost:8545", // optional
+      //       chainId: 1337, // optional
+      //       networkId: 1337 // optional
+      //     },
+      //     config: {
+      //       buildEnv: "development" // optional
       //     }
       //   }
       // },
@@ -176,19 +189,19 @@ export default function WalletConnectWidget() {
         }
       },
       // mewconnect: {
-      //   package: mewConnect, // required
+      //   package: MewConnect, // required
       //   options: {
       //     url:
       //     networkConfig.privateJsonRPCWSUrl ||
       //     networkConfig.privateJsonRPCUrl ||
       //     networkConfig.publicJsonRPCWSUrl ||
       //     networkConfig.publicJsonRPCUrl[0],
-      //     windowClosedError: true,
+      //     // windowClosedError: true,
       //   }
       // },
       frame: {
         package: ethProvider, // required
-        options: { supportedChainIds }
+        // options: { supportedChainIds }
       }
     };
     return providerOptions;
@@ -220,8 +233,8 @@ export default function WalletConnectWidget() {
       
 
       const provider = new ethers.providers.Web3Provider(instance);
-      setSelectedProvider(provider);
-      setSelectedInstance(instance);
+      // setSelectedProvider(provider);
+      // setSelectedInstance(instance);
     }
   };
 

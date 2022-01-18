@@ -23,6 +23,7 @@
     "@mui/material": "latest",
     "@myetherwallet/mewconnect-connector": "^0.1.8",
     "@myetherwallet/mewconnect-web-client": "^2.2.0-beta.16",
+    "@toruslabs/torus-embed": "^1.19.0",
     "@walletconnect/web3-provider": "^1.7.1",
     "@web3-react/abstract-connector": "^6.0.7",
     "@web3-react/core": "^6.1.9",
@@ -37,6 +38,7 @@
     "react": "latest",
     "react-dom": "latest",
     "reflect-metadata": "^0.1.13",
+    "walletlink": "2.3.0",
     "web3modal": "^1.9.5"
   },
   "devDependencies": {
