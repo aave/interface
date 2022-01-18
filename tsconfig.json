@@ -16,18 +16,16 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "baseUrl": ".",
-    "typeRoots": [
-      "./node_modules/@types"
-    ],
-    "lib": [
-      "dom",
-      "es2017"
-    ],
+    "typeRoots": ["./node_modules/@types"],
+    "lib": ["dom", "es2017"],
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "incremental": true
+    "incremental": true,
+    "rules": {
+      "@typescript-eslint/require-ts-comment-description": "error"
+    }
   },
   "exclude": [
     "dist",
@@ -42,9 +40,5 @@
     "**/*.test.tsx",
     "coverage"
   ],
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }
