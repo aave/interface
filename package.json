@@ -9,7 +9,12 @@
     "export": "next export",
     "start": "next start",
     "lint": "next lint",
-    "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest"
+    "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest",
+    "i18n": "npm run extract && npm run compile",
+    "extract": "NODE_ENV=development lingui extract",
+    "compile": "lingui compile",
+    "pre-commit": "lint-staged && npm run i18n && git add ./src/translations",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@aave/aave-ui-kit": "^0.1.19",
@@ -19,6 +24,7 @@
     "@emotion/server": "latest",
     "@emotion/styled": "latest",
     "@gnosis.pm/safe-apps-web3-react": "^0.6.8",
+    "@lingui/react": "^3.13.0",
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
     "@myetherwallet/mewconnect-connector": "^0.1.8",
@@ -39,12 +45,31 @@
     "react-dom": "latest",
     "reflect-metadata": "^0.1.13",
     "walletlink": "2.3.0",
-    "web3modal": "^1.9.5"
+    "web3modal": "^1.9.5",
+    "react-intl": "^5.24.3"
   },
   "devDependencies": {
+    "@babel/core": "^7.16.7",
+    "@babel/plugin-proposal-class-properties": "^7.16.7",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@lingui/cli": "^3.13.0",
+    "@lingui/macro": "^3.13.0",
     "@types/react": "latest",
+    "@typescript-eslint/eslint-plugin": "^5.10.0",
+    "babel-plugin-dynamic-import-node": "^2.3.3",
+    "babel-plugin-macros": "^3.1.0",
     "eslint": "latest",
     "eslint-config-next": "latest",
+    "eslint-config-prettier": "^8.3.0",
+    "husky": ">=6",
+    "lint-staged": ">=10",
+    "prettier": "^2.5.1",
     "typescript": "latest"
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix",
+    "*.jsx": "eslint --cache --fix",
+    "*.ts": "eslint --cache --fix",
+    "*.tsx": "eslint --cache --fix"
   }
 }

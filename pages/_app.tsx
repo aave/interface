@@ -1,14 +1,15 @@
-import * as React from "react";
-import Head from "next/head";
-import { AppProps } from "next/app";
-import { CacheProvider, EmotionCache } from "@emotion/react";
-import createEmotionCache from "../src/createEmotionCache";
-import "/public/fonts/inter/inter.css";
-import { MainLayout } from "../src/layouts/MainLayout";
-import { Web3Provider } from "../src/libs/web3-data-provider";
-import { getSupportedChainIds } from "../src/helpers/config/markets-and-network-config";
-import { ethers } from "ethers";
-import { Web3ReactProvider } from "@web3-react/core";
+import * as React from 'react';
+import Head from 'next/head';
+import { AppProps } from 'next/app';
+import { CacheProvider, EmotionCache } from '@emotion/react';
+import createEmotionCache from '../src/createEmotionCache';
+import '/public/fonts/inter/inter.css';
+import { MainLayout } from '../src/layouts/MainLayout';
+import { LanguageProvider } from '../src/libs/LanguageProvider';
+import { getSupportedChainIds } from 'src/helpers/config/markets-and-network-config';
+import { Web3ReactProvider } from '@web3-react/core';
+import { Web3Provider } from 'src/libs/web3-data-provider';
+import { ethers } from 'ethers';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -36,14 +37,17 @@ export default function MyApp(props: MyAppProps) {
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
+
       {/* <SafeHydrate> */}
-        <Web3ReactProvider getLibrary={getWeb3Library}>
-          <Web3Provider supportedChainIds={getSupportedChainIds()}>
+      <Web3ReactProvider getLibrary={getWeb3Library}>
+        <Web3Provider supportedChainIds={getSupportedChainIds()}>
+          <LanguageProvider>
             <MainLayout>
               <Component {...pageProps} />
             </MainLayout>
-          </Web3Provider>
-        </Web3ReactProvider>
+          </LanguageProvider>
+        </Web3Provider>
+      </Web3ReactProvider>
       {/* </SafeHydrate> */}
     </CacheProvider>
   );
