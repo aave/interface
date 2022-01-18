@@ -36,15 +36,21 @@
     "@lingui/cli": "^3.13.0",
     "@lingui/macro": "^3.13.0",
     "@types/react": "latest",
+    "@typescript-eslint/eslint-plugin": "^5.10.0",
     "babel-plugin-dynamic-import-node": "^2.3.3",
     "babel-plugin-macros": "^3.1.0",
     "eslint": "latest",
     "eslint-config-next": "latest",
+    "eslint-config-prettier": "^8.3.0",
     "husky": ">=6",
     "lint-staged": ">=10",
+    "prettier": "^2.5.1",
     "typescript": "latest"
   },
   "lint-staged": {
-    "*.js": "eslint --cache --fix"
+    "*.js": "eslint --cache --fix",
+    "*.jsx": "eslint --cache --fix",
+    "*.ts": "eslint --cache --fix",
+    "*.tsx": "eslint --cache --fix"
   }
 }

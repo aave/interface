@@ -1,17 +1,18 @@
-import React from "react";
+import React from 'react';
 import {
   FormControl,
   InputLabel,
   Select,
   MenuItem,
   SelectChangeEvent,
-} from "@mui/material";
-import LanguageIcon from "@mui/icons-material/Language";
-import { dynamicActivateLanguage } from "../../libs/LanguageProvider";
-import { Trans } from "@lingui/macro";
-import { useLingui } from "@lingui/react";
+  FormControlProps,
+} from '@mui/material';
+import LanguageIcon from '@mui/icons-material/Language';
+import { dynamicActivateLanguage } from '../../libs/LanguageProvider';
+import { Trans } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 
-export const LanguageSelector = (props) => {
+export const LanguageSelector = (props: FormControlProps) => {
   const { i18n } = useLingui();
 
   const onLangChange = (event: SelectChangeEvent<string>) => {
@@ -19,7 +20,7 @@ export const LanguageSelector = (props) => {
     if (locale) {
       dynamicActivateLanguage(locale);
     } else {
-      console.error("[LanguageSelector] Missing locale");
+      console.error('[LanguageSelector] Missing locale');
     }
   };
 
