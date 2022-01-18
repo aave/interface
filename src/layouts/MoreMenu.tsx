@@ -1,23 +1,14 @@
-import * as React from "react";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import {
-  Button,
-  Divider,
-  ListItemIcon,
-  ListItemText,
-  MenuList,
-} from "@mui/material";
-import {
-  GitHub,
-  LibraryBooks,
-  QuestionMarkOutlined,
-} from "@mui/icons-material";
-import { ColorModeContext } from "./MainLayout";
-import { Box, useTheme } from "@mui/system";
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
+import { GitHub, LibraryBooks, QuestionMarkOutlined } from '@mui/icons-material';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import { Button, Divider, ListItemIcon, ListItemText, MenuList } from '@mui/material';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import { Box, useTheme } from '@mui/system';
+import * as React from 'react';
+
+import { ColorModeContext } from './MainLayout';
 
 export default function MoreMenu() {
   const theme = useTheme();
@@ -38,11 +29,11 @@ export default function MoreMenu() {
         size="small"
         aria-label="more"
         id="more-button"
-        aria-controls={open ? "more-menu" : undefined}
-        aria-expanded={open ? "true" : undefined}
+        aria-controls={open ? 'more-menu' : undefined}
+        aria-expanded={open ? 'true' : undefined}
         aria-haspopup="true"
         onClick={handleClick}
-        sx={{ px: 0.5, width: "36px", minWidth: 0 }}
+        sx={{ px: 0.5, width: '36px', minWidth: 0 }}
         color="inherit"
       >
         <MoreHorizIcon />
@@ -50,7 +41,7 @@ export default function MoreMenu() {
       <Menu
         id="more-menu"
         MenuListProps={{
-          "aria-labelledby": "more-button",
+          'aria-labelledby': 'more-button',
         }}
         anchorEl={anchorEl}
         open={open}
@@ -90,14 +81,10 @@ export default function MoreMenu() {
           <Divider />
           <MenuItem onClick={colorMode.toggleColorMode}>
             <ListItemIcon>
-              {theme.palette.mode === "dark" ? (
-                <Brightness7Icon />
-              ) : (
-                <Brightness4Icon />
-              )}
+              {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
             </ListItemIcon>
             <ListItemText>
-              Switch to {theme.palette.mode === "dark" ? "light" : "dark"} mode
+              Switch to {theme.palette.mode === 'dark' ? 'light' : 'dark'} mode
             </ListItemText>
           </MenuItem>
         </MenuList>

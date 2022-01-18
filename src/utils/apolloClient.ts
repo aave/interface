@@ -1,23 +1,24 @@
 import {
   ApolloClient,
   ApolloLink,
+  FetchResult,
   HttpLink,
   InMemoryCache,
-  split,
-  Operation,
-  FetchResult,
   Observable,
+  Operation,
+  split,
   useQuery,
 } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
-import { getMainDefinition } from '@apollo/client/utilities';
 import { WebSocketLink as WebSocketLinkLegacy } from '@apollo/client/link/ws';
+import { getMainDefinition } from '@apollo/client/utilities';
+import { print } from 'graphql';
 import gql from 'graphql-tag';
-import { networkConfigs } from './marketsAndNetworksConfig';
+import { Client, ClientOptions, createClient } from 'graphql-ws';
+
 import { governanceConfig } from '../ui-config/governanceConfig';
 import { stakeConfig } from '../ui-config/stakeConfig';
-import { createClient, ClientOptions, Client } from 'graphql-ws';
-import { print } from 'graphql';
+import { networkConfigs } from './marketsAndNetworksConfig';
 
 /**
  *

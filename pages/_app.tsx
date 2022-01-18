@@ -1,14 +1,16 @@
-import * as React from 'react';
-import Head from 'next/head';
-import { AppProps } from 'next/app';
-import { CacheProvider, EmotionCache } from '@emotion/react';
-import createEmotionCache from '../src/createEmotionCache';
 import '/public/fonts/inter/inter.css';
+
+import { ApolloProvider } from '@apollo/client';
+import { CacheProvider, EmotionCache } from '@emotion/react';
+import { AppProps } from 'next/app';
+import Head from 'next/head';
+import * as React from 'react';
+import { apolloClient } from 'src/utils/apolloClient';
+
+import createEmotionCache from '../src/createEmotionCache';
+import { ProtocolDataProvider } from '../src/hooks/useProtocolData';
 import { MainLayout } from '../src/layouts/MainLayout';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
-import { ProtocolDataProvider } from '../src/hooks/useProtocolData';
-import { ApolloProvider } from '@apollo/client';
-import { apolloClient } from 'src/utils/apolloClient';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();

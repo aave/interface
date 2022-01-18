@@ -1,10 +1,11 @@
-import * as React from 'react';
-import type { NextPage } from 'next';
+import { Trans } from '@lingui/macro';
+import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import type { NextPage } from 'next';
+import * as React from 'react';
+
 import { Link } from '../src/components/Link';
-import { Trans } from '@lingui/macro';
 // import { useProtocolDataContext } from '../src/hooks/useProtocolData';
 
 const Home: NextPage = () => {
