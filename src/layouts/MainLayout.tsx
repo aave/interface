@@ -1,15 +1,19 @@
-import React from "react";
-import { ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import AppHeader from "./AppHeader";
-import { getTheme } from "../utils/theme";
-import { useMediaQuery } from "@mui/material";
+import { Box } from '@mui/material';
+import React from 'react';
+import LanguageSelector from '../components/LanguageSelector';
+import Copyright from '../Copyright';
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import AppHeader from './AppHeader';
+import { getTheme } from '../utils/theme';
+import { useMediaQuery } from '@mui/material';
 
 export const ColorModeContext = React.createContext({
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   toggleColorMode: () => {},
 });
 
-type Mode = "light" | "dark";
+type Mode = 'light' | 'dark';
 
 /**
  * Main Layout component which wrapps around the whole app
@@ -17,16 +21,14 @@ type Mode = "light" | "dark";
  * @returns
  */
 export const MainLayout: React.FC = ({ children }) => {
-  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
-  const [mode, setMode] = React.useState<Mode>(
-    prefersDarkMode ? "dark" : "light"
-  );
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const [mode, setMode] = React.useState<Mode>(prefersDarkMode ? 'dark' : 'light');
   const colorMode = React.useMemo(
     () => ({
       toggleColorMode: () => {
         setMode((prevMode) => {
-          const newMode = prevMode === "light" ? "dark" : "light";
-          localStorage.setItem("colorMode", newMode);
+          const newMode = prevMode === 'light' ? 'dark' : 'light';
+          localStorage.setItem('colorMode', newMode);
           return newMode;
         });
       },
@@ -35,11 +37,11 @@ export const MainLayout: React.FC = ({ children }) => {
   );
 
   React.useEffect(() => {
-    const initialMode = localStorage?.getItem("colorMode") as Mode;
+    const initialMode = localStorage?.getItem('colorMode') as Mode;
     if (initialMode) {
       setMode(initialMode);
     } else if (prefersDarkMode) {
-      setMode("dark");
+      setMode('dark');
     }
   }, []);
 
@@ -51,6 +53,12 @@ export const MainLayout: React.FC = ({ children }) => {
         <CssBaseline />
         <AppHeader />
         <main>{children}</main>
+
+        <Box sx={{ width: 150, margin: '0 auto' }}>
+          <LanguageSelector />
+        </Box>
+
+        <Copyright sx={{ mt: 4 }} />
       </ThemeProvider>
     </ColorModeContext.Provider>
   );
