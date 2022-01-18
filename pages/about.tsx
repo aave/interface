@@ -6,8 +6,12 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { Link } from '../src/components/Link';
 import { Trans } from '@lingui/macro';
+import { useAaveModal } from 'src/components/AaveModal/useAaveModal';
+import { AaveModal } from 'src/components/AaveModal/AaveModal';
 
 const About: NextPage = () => {
+  const [open, setOpen] = useAaveModal(true);
+
   return (
     <Container maxWidth="lg">
       <Box
@@ -27,6 +31,14 @@ const About: NextPage = () => {
             <Trans>Go to Home page</Trans>
           </Button>
         </Box>
+        <Box maxWidth="sm" sx={{ mt: 5 }}>
+          <Button variant="contained" onClick={() => setOpen(true)}>
+            <Trans>Open Modal</Trans>
+          </Button>
+        </Box>
+        <AaveModal title="Sobre nosotros" open={open} onClose={() => setOpen(false)}>
+          Contenido
+        </AaveModal>
       </Box>
     </Container>
   );
