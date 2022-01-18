@@ -38,3 +38,4 @@ yarn-error.log*
 # ignore package lock due the mandatory usage of yarn
 package-lock.json
 .eslintcache
+.idea
