@@ -7,7 +7,6 @@ import { Link } from '../components/Link';
 import MoreMenu from './MoreMenu';
 import { uiConfig } from '../uiConfig';
 import WalletWidget from './WalletWidget';
-// import dynamic from 'next/dynamic';
 import ConnectWalletWidget from './ConnectWalletWidget';
 
 

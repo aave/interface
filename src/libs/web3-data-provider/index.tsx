@@ -30,9 +30,9 @@ const getProviderOptions = (networkId: number) => {
         pollingInterval: POLLING_INTERVAL,
       }
     },
-    torus: {
-      package: Torus,
-    },
+    // torus: {
+    //   package: Torus,
+    // },
     walletlink: {
       package: WalletLink,
       options: {
@@ -57,30 +57,35 @@ const addWalletsToWeb3Modal = (networkId: number): Web3Modal => {
   return web3Modal;
 }
 
-export type Web3ContextData = {
+export type Web3Data = {
   connectWallet: () => Promise<Web3Provider | undefined>;
   disconnectWallet: () => void;
   // hasCachedProvider: () => boolean;
-  connectedAddress: string;
+  currentAccount: string;
   connected: boolean;
   provider: JsonRpcProvider | undefined;
   web3Modal: Web3Modal;
   networkId: number;
   networkName: string;
+}
+
+export type Web3ContextData = {
+  web3ProviderData: Web3Data;
 };
 
 const Web3Context = React.createContext({} as Web3ContextData);
 
 export const useWeb3Context = () => {
   const web3Context = useContext(Web3Context);
-  if (!web3Context) {
+  if (Object.keys(web3Context).length === 0) {
     throw new Error(
       "useWeb3Context() can only be used inside of <Web3ContextProvider />, " + "please declare it at a higher level.",
     );
   }
   
-  return useMemo<Web3ContextData>(() => {
-    return web3Context;
+  const { web3ProviderData } = web3Context;
+  return useMemo<Web3Data>(() => {
+    return { ...web3ProviderData };
   }, [web3Context]);
 };
 
@@ -91,7 +96,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [connected, setConnected] = useState(false);
   const [networkId, setNetworkId] = useState(1);
   const [networkName, setNetworkName] = useState('');
-  const [connectedAddress, setConnectedAddress] = useState('');
+  const [currentAccount, setCurrentAccount] = useState('');
 
   const [web3Modal, setWeb3Modal] = useState<Web3Modal>(addWalletsToWeb3Modal(networkId));
 
@@ -103,7 +108,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     providerInstance.on("accountsChanged", (accounts: string[]) => {
       // TODO: should we refresh page on account change?
       setTimeout(() => window.location.reload(), 1);
-      setConnectedAddress(accounts[0]);
+      setCurrentAccount(accounts[0]);
     });
 
     providerInstance.on("networkChanged", async (networkId: number) => {
@@ -133,7 +138,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     setProvider(ethProvider);
     setNetworkId(networkInfo.chainId);
     setNetworkName(networkInfo.name); // TODO: maybe have to clean it up
-    setConnectedAddress(connectedAddress);
+    setCurrentAccount(connectedAddress);
     
     setConnected(true);
     
@@ -149,40 +154,32 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     }, 1);
   }, [provider, web3Modal, connected]);
 
-  // const web3ProviderData = useMemo(
-  //   () => ({
-  //     connect,
-  //     disconnect,
-  //     // hasCachedProvider,
-  //     provider,
-  //     connected,
-  //     address,
-  //     web3Modal,
-  //     networkId,
-  //     networkName,
-  //   }),
-  //   [
-  //     connect,
-  //     disconnect,
-  //     // hasCachedProvider,
-  //     provider,
-  //     connected,
-  //     address,
-  //     web3Modal,
-  //     networkId,
-  //     networkName,
-  //   ],
-  // );
+  const web3ProviderData = useMemo(
+    () => ({
+      connectWallet,
+      disconnectWallet,
+      // hasCachedProvider,
+      provider,
+      connected,
+      currentAccount,
+      web3Modal,
+      networkId,
+      networkName,
+    }),
+    [
+      connectWallet,
+      disconnectWallet,
+      // hasCachedProvider,
+      provider,
+      connected,
+      currentAccount,
+      web3Modal,
+      networkId,
+      networkName,
+    ],
+  );
 
   return <Web3Context.Provider value={{ 
-    connectWallet,
-    disconnectWallet,
-    // hasCachedProvider: () => boolean;
-    connectedAddress,
-    connected,
-    provider,
-    web3Modal,
-    networkId,
-    networkName,
+    web3ProviderData
    }}>{children}</Web3Context.Provider>;
 }

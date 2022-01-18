@@ -22,10 +22,7 @@
     "noEmit": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "incremental": true,
-    "rules": {
-      "@typescript-eslint/require-ts-comment-description": "error"
-    }
+    "incremental": true
   },
   "exclude": [
     "dist",
