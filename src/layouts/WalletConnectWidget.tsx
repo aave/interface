@@ -167,19 +167,6 @@ console.log('torus:: ', Torus)
         //   }
         // }
       },
-      // torus: {
-      //   package: Torus, // required
-      //   options: {
-      //     networkParams: {
-      //       host: "https://localhost:8545", // optional
-      //       chainId: 1337, // optional
-      //       networkId: 1337 // optional
-      //     },
-      //     config: {
-      //       buildEnv: "development" // optional
-      //     }
-      //   }
-      // },
       walletlink: {
         package: WalletLink,
         options: {
@@ -188,17 +175,17 @@ console.log('torus:: ', Torus)
           url: networkConfig.privateJsonRPCUrl || networkConfig.publicJsonRPCUrl[0]
         }
       },
-      // mewconnect: {
-      //   package: MewConnect, // required
-      //   options: {
-      //     url:
-      //     networkConfig.privateJsonRPCWSUrl ||
-      //     networkConfig.privateJsonRPCUrl ||
-      //     networkConfig.publicJsonRPCWSUrl ||
-      //     networkConfig.publicJsonRPCUrl[0],
-      //     // windowClosedError: true,
-      //   }
-      // },
+      mewconnect: {
+        package: MewConnect, // required
+        options: {
+          url:
+          // networkConfig.privateJsonRPCWSUrl ||
+          // networkConfig.privateJsonRPCUrl ||
+          // networkConfig.publicJsonRPCWSUrl ||
+          networkConfig.publicJsonRPCUrl[0],
+          // windowClosedError: true,
+        }
+      },
       frame: {
         package: ethProvider, // required
         // options: { supportedChainIds }
