@@ -8,16 +8,16 @@ import {
   FetchResult,
   Observable,
   useQuery,
-} from "@apollo/client";
-import { onError } from "@apollo/client/link/error";
-import { getMainDefinition } from "@apollo/client/utilities";
-import { WebSocketLink as WebSocketLinkLegacy } from "@apollo/client/link/ws";
-import gql from "graphql-tag";
-import { networkConfigs } from "./marketsAndNetworksConfig";
-import { governanceConfig } from "../ui-config/governanceConfig";
-import { stakeConfig } from "../ui-config/stakeConfig";
-import { createClient, ClientOptions, Client } from "graphql-ws";
-import { print } from "graphql";
+} from '@apollo/client';
+import { onError } from '@apollo/client/link/error';
+import { getMainDefinition } from '@apollo/client/utilities';
+import { WebSocketLink as WebSocketLinkLegacy } from '@apollo/client/link/ws';
+import gql from 'graphql-tag';
+import { networkConfigs } from './marketsAndNetworksConfig';
+import { governanceConfig } from '../ui-config/governanceConfig';
+import { stakeConfig } from '../ui-config/stakeConfig';
+import { createClient, ClientOptions, Client } from 'graphql-ws';
+import { print } from 'graphql';
 
 /**
  *
@@ -51,14 +51,12 @@ class WebSocketLink extends ApolloLink {
           error: (err) => {
             if (Array.isArray(err))
               // GraphQLError[]
-              return sink.error(
-                new Error(err.map(({ message }) => message).join(", "))
-              );
+              return sink.error(new Error(err.map(({ message }) => message).join(', ')));
 
             if (err instanceof CloseEvent)
               return sink.error(
                 new Error(
-                  `Socket closed with event ${err.code} ${err.reason || ""}` // reason will be available on clean closes only
+                  `Socket closed with event ${err.code} ${err.reason || ''}` // reason will be available on clean closes only
                 )
               );
 
@@ -92,8 +90,6 @@ function createWsLinkLegacy(uri: string): WebSocketLinkLegacy {
       lazy: true,
     },
   });
-  // @ts-ignore
-  wsLink.subscriptionClient.maxConnectTimeGenerator.setMin(15000);
   return wsLink;
 }
 
@@ -101,17 +97,14 @@ function createWsLinkLegacy(uri: string): WebSocketLinkLegacy {
  * used for tracking errors per graph
  */
 export const APOLLO_QUERY_TARGET = {
-  STAKE: "STAKE",
-  GOVERNANCE: "GOVERNANCE",
+  STAKE: 'STAKE',
+  GOVERNANCE: 'GOVERNANCE',
   CHAIN: (num: number) => `CHAIN_${num}`,
 };
 
 const isSubscription = ({ query }: Operation) => {
   const definition = getMainDefinition(query);
-  return (
-    definition.kind === "OperationDefinition" &&
-    definition.operation === "subscription"
-  );
+  return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
 };
 
 const getGovernanceLink = (link?: ApolloLink) => {
@@ -147,33 +140,29 @@ const getStakeLink = (link?: ApolloLink) => {
 export const getApolloClient = () => {
   const link = getStakeLink(getGovernanceLink());
 
-  const combinedLink = Object.entries(networkConfigs).reduce(
-    (acc, [key, cfg]) => {
-      if (cfg.cachingServerUrl && cfg.cachingWSServerUrl && process.browser) {
-        const condition = (operation: Operation) =>
-          operation.getContext().target ===
-          APOLLO_QUERY_TARGET.CHAIN(key as unknown as number);
-        const http = new HttpLink({ uri: cfg.cachingServerUrl });
-        const ws = createWsLink(cfg.cachingWSServerUrl);
-        return split(
-          (operation) => condition(operation) && isSubscription(operation),
-          ws,
-          split((operation) => condition(operation), http, acc)
-        );
-      }
-      return acc;
-    },
-    link
-  );
+  const combinedLink = Object.entries(networkConfigs).reduce((acc, [key, cfg]) => {
+    if (cfg.cachingServerUrl && cfg.cachingWSServerUrl && process.browser) {
+      const condition = (operation: Operation) =>
+        operation.getContext().target === APOLLO_QUERY_TARGET.CHAIN(key as unknown as number);
+      const http = new HttpLink({ uri: cfg.cachingServerUrl });
+      const ws = createWsLink(cfg.cachingWSServerUrl);
+      return split(
+        (operation) => condition(operation) && isSubscription(operation),
+        ws,
+        split((operation) => condition(operation), http, acc)
+      );
+    }
+    return acc;
+  }, link);
 
   const cache = new InMemoryCache({});
 
   return new ApolloClient({
     cache,
     link: ApolloLink.from([
-      onError(({ graphQLErrors, networkError, operation, response }) => {
+      onError(({ graphQLErrors, networkError, operation }) => {
         const context = operation.getContext();
-        console.log("graphQLErrors", graphQLErrors);
+        console.log('graphQLErrors', graphQLErrors);
         cache.writeQuery({
           query: gql`
                 query MainnetConnectionStatus {

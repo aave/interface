@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "build:static": "next build && next export && cp -r out public",
+    "build:static": "next build && next export && cp -r public out",
     "serve:static": "npx serve out",
     "export": "next export",
     "start": "next start",
