@@ -6,6 +6,9 @@ import createEmotionCache from '../src/createEmotionCache';
 import '/public/fonts/inter/inter.css';
 import { MainLayout } from '../src/layouts/MainLayout';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
+import { ProtocolDataProvider } from '../src/hooks/useProtocolData';
+import { ApolloProvider } from '@apollo/client';
+import { apolloClient } from 'src/utils/apolloClient';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -21,11 +24,15 @@ export default function MyApp(props: MyAppProps) {
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-      <LanguageProvider>
-        <MainLayout>
-          <Component {...pageProps} />
-        </MainLayout>
-      </LanguageProvider>
+      <ApolloProvider client={apolloClient}>
+        <LanguageProvider>
+          <ProtocolDataProvider>
+            <MainLayout>
+              <Component {...pageProps} />
+            </MainLayout>
+          </ProtocolDataProvider>
+        </LanguageProvider>
+      </ApolloProvider>
     </CacheProvider>
   );
 }
