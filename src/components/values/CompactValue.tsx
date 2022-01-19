@@ -1,4 +1,4 @@
-import { valueToBigNumber } from '@aave/math-utils';
+import { normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import { useLingui } from '@lingui/react';
 
 interface CompactValueProps {
@@ -20,7 +20,7 @@ export function CompactValue({ value, maximumDecimals = 2, minimumDecimals }: Co
     POSTFIXES.length - 1
   );
   const postfix = POSTFIXES[significantDigitsGroup];
-  const formattedValue = bnValue.dividedBy(10 ** (3 * significantDigitsGroup)).toNumber();
+  const formattedValue = normalizeBN(bnValue, 3 * significantDigitsGroup).toNumber();
 
   return (
     <>
