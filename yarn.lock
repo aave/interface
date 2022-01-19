@@ -7411,10 +7411,10 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-walletlink@2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/walletlink/-/walletlink-2.3.0.tgz#1b7ac5da78e5fa17f35dc880674cf7f6c493d2a5"
-  integrity sha512-CXPYFnWFN/2Xgf62LBhApAiqQIazH7MeRw+Y/TB6oKpdBLQSLzL6k4sqZ6VBKb7wU5HDk+ErXY0QZ9OIFB+Ifw==
+walletlink@^2.4.0:
+  version "2.4.4"
+  resolved "https://registry.yarnpkg.com/walletlink/-/walletlink-2.4.4.tgz#dc2a71d1d235335ef844cfb83da7eb9c264521d0"
+  integrity sha512-BzEfSXhykuVYv0Ltv0nQtxkCzBGQk7tJ1D46wF7N/P23USiJap48i8YXa1o+5WmcxonWwA3//HWVkguJ6vHwMg==
   dependencies:
     "@metamask/safe-event-emitter" "2.0.0"
     bind-decorator "^1.0.11"

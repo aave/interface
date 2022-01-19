@@ -38,7 +38,7 @@
     "eth-provider": "^0.10.0",
     "ethereum-blockies-base64": "^1.0.2",
     "react-intl": "^5.24.3",
-    "walletlink": "2.3.0",
+    "walletlink": "^2.4.0",
     "web3modal": "^1.9.5",
     "ethers": "^5.5.3",
     "graphql": "^16.2.0",
