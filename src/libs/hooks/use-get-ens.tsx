@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { ChainId } from '@aave/contract-helpers';
 import makeBlockie from 'ethereum-blockies-base64';
 import { utils } from 'ethers';
+import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
-import { getProvider } from '../../helpers/config/markets-and-network-config';
 
 const mainnetProvider = getProvider(ChainId.mainnet);
 
