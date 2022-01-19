@@ -27,7 +27,8 @@ const Home: NextPage = () => {
         <Link href="/about" color="secondary">
           <Trans>Go to About page</Trans>
         </Link>
-        <TokenIcon tokenSymbol="aave" />
+        <TokenIcon symbol="aave" />
+        <TokenIcon symbol="aave" aToken />
       </Box>
     </Container>
   );
