@@ -1,13 +1,16 @@
-import * as React from 'react';
-import type { NextPage } from 'next';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
+import { Trans } from '@lingui/macro';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import type { NextPage } from 'next';
+import * as React from 'react';
+
 import { Link } from '../src/components/Link';
 import { Trans } from '@lingui/macro';
 import { useAaveModal } from 'src/components/AaveModal/useAaveModal';
 import { AaveModal } from 'src/components/AaveModal/AaveModal';
+
 
 const About: NextPage = () => {
   const [open, setOpen] = useAaveModal(true);

@@ -1,11 +1,12 @@
-import * as React from 'react';
-import { styled, alpha } from '@mui/material/styles';
+import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import { Button } from '@mui/material';
+import { alpha, styled } from '@mui/material/styles';
+import * as React from 'react';
+
 import { Link } from '../components/Link';
-import MoreMenu from './MoreMenu';
 import { uiConfig } from '../uiConfig';
+import MoreMenu from './MoreMenu';
 import WalletWidget from './WalletWidget';
 
 const Header = styled('header')(({ theme }) => ({
@@ -41,12 +42,12 @@ export default function AppHeader() {
             mr: '12px',
           }}
         >
-          <Button size="small" color="inherit">
+          <Button size="small" color="inherit" component={Link} href="/about">
             Markets
           </Button>
         </Box>
         <Box sx={{ display: { xs: 'none', sm: 'initial' }, mr: '12px' }}>
-          <Button size="small" color="inherit">
+          <Button size="small" color="inherit" component={Link} href="/">
             Dashboard
           </Button>
         </Box>

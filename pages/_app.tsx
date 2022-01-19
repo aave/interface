@@ -1,9 +1,14 @@
-import * as React from 'react';
-import Head from 'next/head';
-import { AppProps } from 'next/app';
-import { CacheProvider, EmotionCache } from '@emotion/react';
-import createEmotionCache from '../src/createEmotionCache';
 import '/public/fonts/inter/inter.css';
+
+import { ApolloProvider } from '@apollo/client';
+import { CacheProvider, EmotionCache } from '@emotion/react';
+import { AppProps } from 'next/app';
+import Head from 'next/head';
+import * as React from 'react';
+import { apolloClient } from 'src/utils/apolloClient';
+
+import createEmotionCache from '../src/createEmotionCache';
+import { ProtocolDataProvider } from '../src/hooks/useProtocolData';
 import { MainLayout } from '../src/layouts/MainLayout';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
 
@@ -21,11 +26,15 @@ export default function MyApp(props: MyAppProps) {
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-      <LanguageProvider>
-        <MainLayout>
-          <Component {...pageProps} />
-        </MainLayout>
-      </LanguageProvider>
+      <ApolloProvider client={apolloClient}>
+        <LanguageProvider>
+          <ProtocolDataProvider>
+            <MainLayout>
+              <Component {...pageProps} />
+            </MainLayout>
+          </ProtocolDataProvider>
+        </LanguageProvider>
+      </ApolloProvider>
     </CacheProvider>
   );
 }

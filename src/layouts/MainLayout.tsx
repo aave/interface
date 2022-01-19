@@ -1,12 +1,12 @@
-import { Box } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
 import React from 'react';
+
 import LanguageSelector from '../components/LanguageSelector';
 import Copyright from '../Copyright';
-import { ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import AppHeader from './AppHeader';
 import { getTheme } from '../utils/theme';
-import { useMediaQuery } from '@mui/material';
+import AppHeader from './AppHeader';
 
 export const ColorModeContext = React.createContext({
   // eslint-disable-next-line @typescript-eslint/no-empty-function
