@@ -1,18 +1,19 @@
-import React from 'react';
-import {
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  SelectChangeEvent,
-  FormControlProps,
-} from '@mui/material';
-import LanguageIcon from '@mui/icons-material/Language';
-import { dynamicActivateLanguage } from '../../libs/LanguageProvider';
 import { Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import LanguageIcon from '@mui/icons-material/Language';
+import {
+  FormControl,
+  FormControlProps,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from '@mui/material';
+import React from 'react';
 
-export const LanguageSelector = (props: FormControlProps) => {
+import { dynamicActivateLanguage } from '../../libs/LanguageProvider';
+
+export default function LanguageSelector({ ...props }: FormControlProps) {
   const { i18n } = useLingui();
 
   const onLangChange = (event: SelectChangeEvent<string>) => {
@@ -42,6 +43,4 @@ export const LanguageSelector = (props: FormControlProps) => {
       </Select>
     </FormControl>
   );
-};
-
-export default LanguageSelector;
+}
