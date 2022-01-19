@@ -2,15 +2,6 @@ import { JsonRpcProvider, Network, Web3Provider } from '@ethersproject/providers
 import { providers } from 'ethers';
 import React, { ReactElement, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import Web3Modal from 'web3modal';
-// import dynamic from "next/dynamic";
-
-// const Torus = dynamic(
-//   // @ts-expect-error this is to dynamically load the web3 provider so it has the windows object
-//   () => import('@toruslabs/torus-embed'),
-//   {
-//     ssr: false,
-//   }
-// );
 
 export type Web3Data = {
   connectWallet: () => Promise<Web3Provider | undefined>;
@@ -21,7 +12,6 @@ export type Web3Data = {
   provider: JsonRpcProvider | undefined;
   web3Modal: Web3Modal;
   networkId: number;
-  networkName: string;
 };
 
 export type Web3ContextData = {
@@ -46,11 +36,9 @@ export const useWeb3Context = () => {
 };
 
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
-  // TODO: do we need to put default mainnet provider?
   const [provider, setProvider] = useState<JsonRpcProvider>();
   const [connected, setConnected] = useState(false);
   const [networkId, setNetworkId] = useState(1);
-  const [networkName, setNetworkName] = useState('');
   const [currentAccount, setCurrentAccount] = useState('');
 
   const [web3Modal, setWeb3Modal] = useState<Web3Modal>(undefined as unknown as Web3Modal);
@@ -70,8 +58,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         return;
       }
       providerInstance.on('accountsChanged', (accounts: string[]) => {
-        // TODO: should we refresh page on account change?
-        setTimeout(() => window.location.reload(), 1);
         setCurrentAccount(accounts[0]);
       });
 
@@ -81,8 +67,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           setTimeout(() => window.location.reload(), 1);
         } else {
           setNetworkId(networkId);
-          // TODO: do we need this:
-          // localStorage.setItem('preferredChainId', networkId as unknown as string);
         }
       });
     },
@@ -103,7 +87,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
     setProvider(ethProvider);
     setNetworkId(networkInfo.chainId);
-    setNetworkName(networkInfo.name); // TODO: maybe have to clean it up
     setCurrentAccount(connectedAddress);
 
     setConnected(true);
@@ -136,7 +119,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       currentAccount,
       web3Modal,
       networkId,
-      networkName,
     }),
     [
       connectWallet,
@@ -147,7 +129,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       currentAccount,
       web3Modal,
       networkId,
-      networkName,
     ]
   );
 

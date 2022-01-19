@@ -39,12 +39,6 @@ export default function WalletWidget() {
   const [useBlockie, setUseBlockie] = useState(false);
 
   useEffect(() => {
-    if (hasCachedProvider()) {
-      connectWallet();
-    }
-  }, []);
-
-  useEffect(() => {
     if (ensAvatar) {
       setUseBlockie(false);
     }
@@ -84,7 +78,7 @@ export default function WalletWidget() {
     window.open(explorerLink, '_blank');
     setAnchorEl(null);
   };
-  console.log('-------------', window.ethereum.request);
+
   return (
     <div>
       <Button
