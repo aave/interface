@@ -72,7 +72,7 @@ export default function WalletWidget() {
     window.open(explorerLink, '_blank');
     setAnchorEl(null);
   };
-  console.log('connected: ', connected, ' account: ', currentAccount);
+
   return (
     <div>
       <Button
