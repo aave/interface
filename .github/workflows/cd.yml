@@ -1,0 +1,44 @@
+name: CI
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: restore
+        continue-on-error: true
+        id: restore
+        uses: actions/download-artifact@v2
+        with:
+          path: out
+          name: out_${{github.sha}}
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'yarn'
+
+      - name: install
+        run: yarn --frozen-lockfile
+
+      - name: build
+        if: steps.restore.outcome != 'success'
+        run: yarn build:static
+
+      - name: pinata
+        id: pinata
+        uses: aave/pinata-action@v1.1
+        with:
+          PINATA_API_KEY: ${{ secrets.PINATA_API_KEY }}
+          PINATA_SECRET_KEY: ${{ secrets.PINATA_SECRET_KEY }}
+          PIN_ALIAS: "${{ format('pull_request_{0}', github.head_ref) }}"
+          BUILD_LOCATION: './out'
+          CID_VERSION: 1
