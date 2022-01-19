@@ -1,15 +1,13 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import {
+  Box,
   Button,
   Divider,
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
-import {
-  Person,
-} from "@mui/icons-material";
 import { ColorModeContext } from "./MainLayout";
 import { useTheme } from "@mui/system";
 import { useWeb3Context } from "src/libs/web3-data-provider";
@@ -19,15 +17,41 @@ import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
 import RemoveCircleOutlineRoundedIcon from '@mui/icons-material/RemoveCircleOutlineRounded';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { getNetworkConfig } from "src/utils/marketsAndNetworksConfig";
+import makeBlockie from 'ethereum-blockies-base64';
+import { textCenterEllipsis } from "@aave/aave-ui-kit";
+import { Person } from "@mui/icons-material";
 
 export default function WalletWidget() {
-  const {connectWallet, disconnectWallet, currentAccount, connected, networkName, networkId} = useWeb3Context();
+  const {connectWallet, disconnectWallet, currentAccount, connected, hasCachedProvider, networkId} = useWeb3Context();
+  
   const { name: ensName, avatar: ensAvatar } = useGetEns(currentAccount);
+  const ensNameAbbreviated = ensName
+  ? ensName.length > 18
+    ? textCenterEllipsis(ensName, 12, 3)
+    : ensName
+  : undefined;
 
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [useBlockie, setUseBlockie] = useState(false);
+
+  useEffect(() => {
+    if (hasCachedProvider()) {
+      connectWallet();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (ensAvatar) {
+      setUseBlockie(false);
+    }
+  }, [ensAvatar]);
+
   const open = Boolean(anchorEl);
+
+  const networkConfig = getNetworkConfig(networkId);
 
   const handleClick = (event: { currentTarget: React.SetStateAction<null>; }) => {
     if (!connected) {
@@ -54,7 +78,6 @@ export default function WalletWidget() {
   };
 
   const handleEtherscanLink = () => {
-    const networkConfig = getNetworkConfig(networkId);
     const explorerLink = `${networkConfig.explorerLink}/address/${currentAccount}`;
     console.log('explorer link: ', explorerLink)
     window.open(explorerLink, "_blank");
@@ -73,10 +96,24 @@ export default function WalletWidget() {
         aria-haspopup="true"
         onClick={handleClick}
         color="inherit"
-        startIcon={<Person />}
+        startIcon={
+            connected ? (<img 
+              style={{width: "15px", height: "15px"}}
+              src={useBlockie ? makeBlockie(currentAccount) : ensAvatar}
+              alt=""
+              onError={() => setUseBlockie(true)}
+            />)
+            : <Person />
+        }
         endIcon={<ArrowDropDownIcon />}
       >
-        {currentAccount? (<div>ensAvatar {ensName? ensName : currentAccount}</div>) : 'Connect Wallet'}
+        {currentAccount? 
+          (<div>{
+            ensNameAbbreviated
+            ? ensNameAbbreviated
+            : textCenterEllipsis(currentAccount, 4, 4)}
+          </div>) 
+          : 'Connect Wallet'}
       </Button>
       <Menu
         id="more-menu"
@@ -93,8 +130,7 @@ export default function WalletWidget() {
         }}
       >
         <MenuItem>
-          <p>Network </p>
-          {networkName}
+          {networkConfig.name}
         </MenuItem>
         <Divider />
         <MenuItem onClick={handleCopy}>
