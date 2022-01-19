@@ -1,10 +1,9 @@
-import { textCenterEllipsis } from '@aave/aave-ui-kit';
 import { Person } from '@mui/icons-material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
 import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
 import RemoveCircleOutlineRoundedIcon from '@mui/icons-material/RemoveCircleOutlineRounded';
-import { Box, Button, Divider, ListItemIcon, ListItemText } from '@mui/material';
+import { Button, Divider, ListItemIcon, ListItemText } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useTheme } from '@mui/system';
@@ -29,7 +28,7 @@ export default function WalletWidget() {
   const { name: ensName, avatar: ensAvatar } = useGetEns(currentAccount);
   const ensNameAbbreviated = ensName
     ? ensName.length > 18
-      ? textCenterEllipsis(ensName, 12, 3)
+      ? ensName // textCenterEllipsis(ensName, 12, 3) from ui kit (for reference)
       : ensName
     : undefined;
 
@@ -114,7 +113,11 @@ export default function WalletWidget() {
       >
         {currentAccount ? (
           <div>
-            {ensNameAbbreviated ? ensNameAbbreviated : textCenterEllipsis(currentAccount, 4, 4)}
+            {
+              ensNameAbbreviated
+                ? ensNameAbbreviated
+                : currentAccount /*textCenterEllipsis(currentAccount, 4, 4) left for reference*/
+            }
           </div>
         ) : (
           'Connect Wallet'
