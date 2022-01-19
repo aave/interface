@@ -13,6 +13,7 @@ import { onError } from '@apollo/client/link/error';
 import { WebSocketLink as WebSocketLinkLegacy } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { print } from 'graphql';
+// eslint-disable-next-line import/no-named-as-default
 import gql from 'graphql-tag';
 import { Client, ClientOptions, createClient } from 'graphql-ws';
 

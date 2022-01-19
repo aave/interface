@@ -15,6 +15,7 @@ export default function MoreMenu() {
   const colorMode = React.useContext(ColorModeContext);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
