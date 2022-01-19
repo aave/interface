@@ -3,7 +3,6 @@ import '/public/fonts/inter/inter.css';
 import { ApolloProvider } from '@apollo/client';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { AppProps } from 'next/app';
-import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import * as React from 'react';
 import { apolloClient } from 'src/utils/apolloClient';
@@ -12,14 +11,7 @@ import createEmotionCache from '../src/createEmotionCache';
 import { ProtocolDataProvider } from '../src/hooks/useProtocolData';
 import { MainLayout } from '../src/layouts/MainLayout';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
-
-const Web3ContextProvider = dynamic(
-  // @ts-expect-error this is to dynamically load the web3 provider so it has the windows object
-  () => import('../src/libs/web3-data-provider').then((mod) => mod.Web3ContextProvider),
-  {
-    ssr: false,
-  }
-);
+import { Web3ContextProvider } from '../src/libs/web3-data-provider';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -37,13 +29,13 @@ export default function MyApp(props: MyAppProps) {
       </Head>
       <ApolloProvider client={apolloClient}>
         <LanguageProvider>
-          <Web3ContextProvider>
-            <ProtocolDataProvider>
+          <ProtocolDataProvider>
+            <Web3ContextProvider>
               <MainLayout>
                 <Component {...pageProps} />
               </MainLayout>
-            </ProtocolDataProvider>
-          </Web3ContextProvider>
+            </Web3ContextProvider>
+          </ProtocolDataProvider>
         </LanguageProvider>
       </ApolloProvider>
     </CacheProvider>
