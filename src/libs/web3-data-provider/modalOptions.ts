@@ -4,6 +4,7 @@ import ethProvider from 'eth-provider';
 import { getNetworkConfig, getSupportedChainIds } from 'src/utils/marketsAndNetworksConfig';
 import WalletLink from 'walletlink';
 import Web3Modal from 'web3modal';
+import MewConnect from '@myetherwallet/mewconnect-web-client';
 
 const POLLING_INTERVAL = 12000;
 const APP_NAME = 'Aave';
@@ -36,11 +37,25 @@ export const getWeb3Modal = (networkId: number) => {
         options: {
           appName: APP_NAME,
           appLogoUrl: APP_LOGO_URL,
-          url: networkConfig.privateJsonRPCUrl || networkConfig.publicJsonRPCUrl[0],
+          rpc: supportedChainIds.reduce((acc, network) => {
+            const config = getNetworkConfig(network);
+            acc[network] = config.privateJsonRPCUrl || config.publicJsonRPCUrl[0];
+            return acc;
+          }, {} as { [networkId: number]: string }),
         },
       },
       frame: {
         package: ethProvider, // required
+      },
+      mewconnect: {
+        package: MewConnect, // required
+        options: {
+          rpc: supportedChainIds.reduce((acc, network) => {
+            const config = getNetworkConfig(network);
+            acc[network] = config.privateJsonRPCUrl || config.publicJsonRPCUrl[0];
+            return acc;
+          }, {} as { [networkId: number]: string }),
+        },
       },
     },
   });
