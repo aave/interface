@@ -1,5 +1,4 @@
 import { Badge, Icon, IconProps } from '@mui/material';
-import { Box } from '@mui/system';
 
 interface ATokenIconProps {
   symbol: string;

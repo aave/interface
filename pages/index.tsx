@@ -6,7 +6,7 @@ import type { NextPage } from 'next';
 import * as React from 'react';
 
 import { Link } from '../src/components/Link';
-import { MultiTokenIcon, TokenIcon } from '../src/components/TokenIcon';
+import { MultiTokenIcon } from '../src/components/TokenIcon';
 // import { useProtocolDataContext } from '../src/hooks/useProtocolData';
 
 const Home: NextPage = () => {
