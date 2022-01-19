@@ -1,6 +1,7 @@
 import { JsonRpcProvider, Network, Web3Provider } from '@ethersproject/providers';
 import { providers } from 'ethers';
 import React, { ReactElement, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import Web3Modal from 'web3modal';
 
 export type Web3Data = {
@@ -11,6 +12,7 @@ export type Web3Data = {
   provider: JsonRpcProvider | undefined;
   web3Modal: Web3Modal;
   chainId: number;
+  switchNetwork: (chainId: number) => Promise<void>;
 };
 
 export type Web3ContextData = {
@@ -99,6 +101,36 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     setCurrentAccount('');
   }, [provider, web3Modal, connected]);
 
+  const switchNetwork = async (newChainId: number) => {
+    if (provider) {
+      try {
+        await provider.send('wallet_switchEthereumChain', [
+          { chainId: `0x${newChainId.toString(16)}` },
+        ]);
+      } catch (switchError) {
+        console.log(switchError);
+        const networkInfo = getNetworkConfig(newChainId);
+        // @ts-expect-error to correctly type we should add a conditional here to check instanceof Error
+        if (switchError.code === 4902) {
+          try {
+            await provider.send('wallet_addEthereumChain', [
+              {
+                chainId: `0x${newChainId.toString(16)}`,
+                chainName: networkInfo.name,
+                nativeCurrency: networkInfo.baseAssetSymbol,
+                rpcUrls: [...networkInfo.publicJsonRPCUrl, networkInfo.publicJsonRPCWSUrl],
+                blockExplorerUrls: networkInfo.explorerLink,
+              },
+            ]);
+          } catch (addError) {
+            console.log(addError);
+            // TODO: handle error somehow
+          }
+        }
+      }
+    }
+  };
+
   const web3ProviderData = useMemo(
     () => ({
       connectWallet,
@@ -108,6 +140,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       currentAccount,
       web3Modal,
       chainId,
+      switchNetwork,
     }),
     [connectWallet, disconnectWallet, provider, connected, currentAccount, web3Modal, chainId]
   );

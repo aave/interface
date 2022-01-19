@@ -16,7 +16,8 @@ import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { ColorModeContext } from './MainLayout';
 
 export default function WalletWidget() {
-  const { connectWallet, disconnectWallet, currentAccount, connected, chainId } = useWeb3Context();
+  const { connectWallet, disconnectWallet, currentAccount, connected, chainId, switchNetwork } =
+    useWeb3Context();
 
   const { name: ensName, avatar: ensAvatar } = useGetEns(currentAccount);
   const ensNameAbbreviated = ensName
@@ -69,6 +70,11 @@ export default function WalletWidget() {
     const explorerLink = `${networkConfig.explorerLink}/address/${currentAccount}`;
     console.log('explorer link: ', explorerLink);
     window.open(explorerLink, '_blank');
+    setAnchorEl(null);
+  };
+
+  const handleSwitchNetwork = () => {
+    switchNetwork(137);
     setAnchorEl(null);
   };
 
@@ -143,6 +149,13 @@ export default function WalletWidget() {
             <RemoveCircleOutlineRoundedIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText>Disconnect Wallet</ListItemText>
+        </MenuItem>
+        <Divider />
+        <MenuItem onClick={handleSwitchNetwork}>
+          <ListItemIcon>
+            <RemoveCircleOutlineRoundedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>SwitchNetwork</ListItemText>
         </MenuItem>
       </Menu>
     </div>
