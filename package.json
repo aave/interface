@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "build:static": "next build && next export && cp -r out public",
+    "build:static": "next build && next export",
+    "serve:static": "npx serve out",
     "export": "next export",
     "start": "next start",
     "lint": "next lint",
@@ -18,7 +19,9 @@
   },
   "dependencies": {
     "@aave/aave-ui-kit": "^0.1.19",
-    "@aave/contract-helpers": "0.27.4-eafa4d3e19e467635fc6d43b41d849db7423d43a.0+eafa4d3",
+    "@aave/contract-helpers": "0.27.4-44a383732f03f7feebe772c93f15befced5f2e55.0+44a3837",
+    "@aave/math-utils": "0.27.4-44a383732f03f7feebe772c93f15befced5f2e55.0+44a3837",
+    "@apollo/client": "^3.5.7",
     "@emotion/cache": "latest",
     "@emotion/react": "latest",
     "@emotion/server": "latest",
@@ -35,14 +38,17 @@
     "axios": "^0.24.0",
     "eth-provider": "^0.10.0",
     "ethereum-blockies-base64": "^1.0.2",
+    "react-intl": "^5.24.3",
+    "walletlink": "2.3.0",
+    "web3modal": "^1.9.5",
     "ethers": "^5.5.3",
+    "graphql": "^16.2.0",
+    "graphql-ws": "^5.5.5",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "react-intl": "^5.24.3",
     "reflect-metadata": "^0.1.13",
-    "walletlink": "2.3.0",
-    "web3modal": "^1.9.5"
+    "subscriptions-transport-ws": "^0.11.0"
   },
   "devDependencies": {
     "@babel/core": "^7.16.7",

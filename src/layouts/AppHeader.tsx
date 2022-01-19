@@ -43,12 +43,12 @@ export default function AppHeader() {
             mr: '12px',
           }}
         >
-          <Button size="small" color="inherit">
+          <Button size="small" color="inherit" component={Link} href="/about">
             Markets
           </Button>
         </Box>
         <Box sx={{ display: { xs: 'none', sm: 'initial' }, mr: '12px' }}>
-          <Button size="small" color="inherit">
+          <Button size="small" color="inherit" component={Link} href="/">
             Dashboard
           </Button>
         </Box>
