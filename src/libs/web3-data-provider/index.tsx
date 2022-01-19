@@ -1,5 +1,4 @@
 import React, { ReactElement, useCallback, useContext, useMemo, useState } from "react";
-import { getNetworkConfig, getSupportedChainIds } from "../../helpers/config/markets-and-network-config";
 import Web3Modal from 'web3modal';
 import { providers } from "ethers";
 import WalletConnect from "@walletconnect/web3-provider";
@@ -7,6 +6,7 @@ import Torus from "@toruslabs/torus-embed";
 import WalletLink from "walletlink";
 import ethProvider from "eth-provider";
 import { JsonRpcProvider, Network, Web3Provider } from "@ethersproject/providers";
+import { getNetworkConfig, getSupportedChainIds } from "src/utils/marketsAndNetworksConfig";
 
 const POLLING_INTERVAL = 12000;
 const APP_NAME = 'Aave';
