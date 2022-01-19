@@ -13,7 +13,7 @@ import React from 'react';
 
 import { dynamicActivateLanguage } from '../../libs/LanguageProvider';
 
-export const LanguageSelector = (props: FormControlProps) => {
+export default function LanguageSelector({ ...props }: FormControlProps) {
   const { i18n } = useLingui();
 
   const onLangChange = (event: SelectChangeEvent<string>) => {
@@ -43,6 +43,4 @@ export const LanguageSelector = (props: FormControlProps) => {
       </Select>
     </FormControl>
   );
-};
-
-export default LanguageSelector;
+}

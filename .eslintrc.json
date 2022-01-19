@@ -3,16 +3,16 @@
   "plugins": ["prettier", "import", "simple-import-sort", "@typescript-eslint"],
   "rules": {
     "@typescript-eslint/no-empty-interface": "off",
-    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-explicit-any": "warn",
     "prettier/prettier": "warn",
-    "react-hooks/rules-of-hooks": "off",
-    "react-hooks/exhaustive-deps": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "warn",
     "import/first": "error",
     "import/newline-after-import": "error",
     "import/no-duplicates": "error",
-    "import/no-named-as-default": "off",
-    "import/no-unresolved": "off"
+    "import/no-named-as-default": "warn",
+    "import/no-unresolved": "warn"
   }
 }
