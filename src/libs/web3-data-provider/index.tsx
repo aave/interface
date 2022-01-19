@@ -1,11 +1,6 @@
 import { JsonRpcProvider, Network, Web3Provider } from '@ethersproject/providers';
-import Torus from '@toruslabs/torus-embed';
-import WalletConnect from '@walletconnect/web3-provider';
-import ethProvider from 'eth-provider';
 import { providers } from 'ethers';
-import React, { ReactElement, useCallback, useContext, useMemo, useState } from 'react';
-import { getNetworkConfig, getSupportedChainIds } from 'src/utils/marketsAndNetworksConfig';
-import WalletLink from 'walletlink';
+import React, { ReactElement, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import Web3Modal from 'web3modal';
 // import dynamic from "next/dynamic";
 
@@ -16,54 +11,6 @@ import Web3Modal from 'web3modal';
 //     ssr: false,
 //   }
 // );
-
-const POLLING_INTERVAL = 12000;
-const APP_NAME = 'Aave';
-const APP_LOGO_URL = 'https://aave.com/favicon.ico';
-
-const getProviderOptions = (networkId: number) => {
-  const supportedChainIds = getSupportedChainIds();
-  const networkConfig = getNetworkConfig(networkId);
-  const providerOptions = {
-    walletconnect: {
-      package: WalletConnect,
-      options: {
-        rpc: supportedChainIds.reduce((acc, network) => {
-          const config = getNetworkConfig(network);
-          acc[network] = config.privateJsonRPCUrl || config.publicJsonRPCUrl[0];
-          return acc;
-        }, {} as { [networkId: number]: string }),
-        bridge: 'https://aave.bridge.walletconnect.org',
-        qrcode: true,
-        pollingInterval: POLLING_INTERVAL,
-      },
-    },
-    torus: {
-      package: Torus,
-    },
-    walletlink: {
-      package: WalletLink,
-      options: {
-        appName: APP_NAME,
-        appLogoUrl: APP_LOGO_URL,
-        url: networkConfig.privateJsonRPCUrl || networkConfig.publicJsonRPCUrl[0],
-      },
-    },
-    frame: {
-      package: ethProvider, // required
-    },
-  };
-  return providerOptions;
-};
-
-const addWalletsToWeb3Modal = (networkId: number): Web3Modal => {
-  const web3Modal: Web3Modal = new Web3Modal({
-    cacheProvider: true,
-    providerOptions: getProviderOptions(networkId),
-  });
-
-  return web3Modal;
-};
 
 export type Web3Data = {
   connectWallet: () => Promise<Web3Provider | undefined>;
@@ -106,7 +53,11 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [networkName, setNetworkName] = useState('');
   const [currentAccount, setCurrentAccount] = useState('');
 
-  const [web3Modal, setWeb3Modal] = useState<Web3Modal>(addWalletsToWeb3Modal(networkId));
+  const [web3Modal, setWeb3Modal] = useState<Web3Modal>(undefined as unknown as Web3Modal);
+
+  useEffect(() => {
+    import('./modalOptions').then((m) => setWeb3Modal(m.getWeb3Modal(networkId)));
+  }, [networkId]);
 
   // provider events subscriptions
   const initSubscriptions = useCallback(

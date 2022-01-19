@@ -2,12 +2,16 @@ import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { alpha, styled } from '@mui/material/styles';
+import dynamic from 'next/dynamic';
 import * as React from 'react';
 
 import { Link } from '../components/Link';
 import { uiConfig } from '../uiConfig';
 import MoreMenu from './MoreMenu';
-import WalletWidget from './WalletWidget';
+
+const WalletWidget = dynamic(() => import('./WalletWidget'), {
+  ssr: false,
+});
 
 const Header = styled('header')(({ theme }) => ({
   position: 'sticky',
