@@ -11,7 +11,7 @@ import createEmotionCache from '../src/createEmotionCache';
 import { ProtocolDataProvider } from '../src/hooks/useProtocolData';
 import { MainLayout } from '../src/layouts/MainLayout';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
-import { Web3ContextProvider } from '../src/libs/web3-data-provider';
+import { Web3ContextProvider } from '../src/libs/web3-data-provider/Web3ContextProvider';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
