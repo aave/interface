@@ -1,4 +1,4 @@
-import { ChainId, Stake } from "@aave/contract-helpers";
+import { ChainId, Stake } from '@aave/contract-helpers';
 
 export interface StakeConfig {
   chainId: ChainId;
@@ -16,18 +16,18 @@ export interface StakeConfig {
 
 export const stakeConfig: StakeConfig | undefined = {
   chainId: ChainId.mainnet,
-  stakeDataProvider: "0xa82247B44750ae23076D6746A9B5B8dc0eCBB646",
+  stakeDataProvider: '0xa82247B44750ae23076D6746A9B5B8dc0eCBB646',
   tokens: {
     [Stake.aave]: {
-      TOKEN_STAKING: "0x4da27a545c0c5b758a6ba100e3a049001de870f5",
-      STAKING_REWARD_TOKEN: "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9",
-      STAKING_HELPER: "0xce0424653fb2fd48ed1b621bdbd60db16b2e388a",
+      TOKEN_STAKING: '0x4da27a545c0c5b758a6ba100e3a049001de870f5',
+      STAKING_REWARD_TOKEN: '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9',
+      STAKING_HELPER: '0xce0424653fb2fd48ed1b621bdbd60db16b2e388a',
     },
     [Stake.bpt]: {
-      TOKEN_STAKING: "0xa1116930326D21fB917d5A27F1E9943A9595fb47",
-      STAKING_REWARD_TOKEN: "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9",
+      TOKEN_STAKING: '0xa1116930326D21fB917d5A27F1E9943A9595fb47',
+      STAKING_REWARD_TOKEN: '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9',
     },
   },
-  queryStakeDataUrl: "https://cache-api-1.aave.com/graphql",
-  wsStakeDataUrl: "wss://cache-api-1.aave.com/graphql",
+  queryStakeDataUrl: 'https://cache-api-1.aave.com/graphql',
+  wsStakeDataUrl: 'wss://cache-api-1.aave.com/graphql',
 };
