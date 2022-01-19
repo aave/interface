@@ -16,8 +16,7 @@ import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { ColorModeContext } from './MainLayout';
 
 export default function WalletWidget() {
-  const { connectWallet, disconnectWallet, currentAccount, connected, networkId } =
-    useWeb3Context();
+  const { connectWallet, disconnectWallet, currentAccount, connected, chainId } = useWeb3Context();
 
   const { name: ensName, avatar: ensAvatar } = useGetEns(currentAccount);
   const ensNameAbbreviated = ensName
@@ -40,7 +39,7 @@ export default function WalletWidget() {
 
   const open = Boolean(anchorEl);
 
-  const networkConfig = getNetworkConfig(networkId);
+  const networkConfig = getNetworkConfig(chainId);
 
   const handleClick = (event: { currentTarget: React.SetStateAction<null> }) => {
     if (!connected) {
