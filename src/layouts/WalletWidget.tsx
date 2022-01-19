@@ -1,25 +1,74 @@
-import { GitHub, LibraryBooks, Person, QuestionMarkOutlined } from '@mui/icons-material';
+import { Person } from '@mui/icons-material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
-import { Button, Divider, ListItemIcon, ListItemText, MenuList } from '@mui/material';
+import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
+import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
+import RemoveCircleOutlineRoundedIcon from '@mui/icons-material/RemoveCircleOutlineRounded';
+import { Button, Divider, ListItemIcon, ListItemText } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useTheme } from '@mui/system';
-import * as React from 'react';
+import makeBlockie from 'ethereum-blockies-base64';
+import React, { useEffect, useState } from 'react';
+import useGetEns from 'src/libs/hooks/use-get-ens';
+import { useWeb3Context } from 'src/libs/web3-data-provider/Web3ContextProvider';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { ColorModeContext } from './MainLayout';
 
 export default function WalletWidget() {
+  const { connectWallet, disconnectWallet, currentAccount, connected, chainId } = useWeb3Context();
+
+  const { name: ensName, avatar: ensAvatar } = useGetEns(currentAccount);
+  const ensNameAbbreviated = ensName
+    ? ensName.length > 18
+      ? ensName // textCenterEllipsis(ensName, 12, 3) from ui kit (for reference)
+      : ensName
+    : undefined;
+
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [useBlockie, setUseBlockie] = useState(false);
+
+  useEffect(() => {
+    if (ensAvatar) {
+      setUseBlockie(false);
+    }
+  }, [ensAvatar]);
+
   const open = Boolean(anchorEl);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleClick = (event: any) => {
-    setAnchorEl(event.currentTarget);
+
+  const networkConfig = getNetworkConfig(chainId);
+
+  const handleClick = (event: { currentTarget: React.SetStateAction<null> }) => {
+    if (!connected) {
+      connectWallet();
+    } else {
+      setAnchorEl(event.currentTarget);
+    }
   };
+
+  const handleDisconnect = () => {
+    if (connected) {
+      disconnectWallet();
+      setAnchorEl(null);
+    }
+  };
+
+  const handleCopy = async () => {
+    navigator.clipboard.writeText(currentAccount);
+    setAnchorEl(null);
+  };
+
   const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleEtherscanLink = () => {
+    const explorerLink = `${networkConfig.explorerLink}/address/${currentAccount}`;
+    console.log('explorer link: ', explorerLink);
+    window.open(explorerLink, '_blank');
     setAnchorEl(null);
   };
 
@@ -35,10 +84,31 @@ export default function WalletWidget() {
         aria-haspopup="true"
         onClick={handleClick}
         color="inherit"
-        startIcon={<Person />}
+        startIcon={
+          connected ? (
+            <img
+              style={{ width: '15px', height: '15px' }}
+              src={useBlockie ? makeBlockie(currentAccount) : ensAvatar}
+              alt=""
+              onError={() => setUseBlockie(true)}
+            />
+          ) : (
+            <Person />
+          )
+        }
         endIcon={<ArrowDropDownIcon />}
       >
-        Jouni.eth
+        {currentAccount ? (
+          <div>
+            {
+              ensNameAbbreviated
+                ? ensNameAbbreviated
+                : currentAccount /*textCenterEllipsis(currentAccount, 4, 4) left for reference*/
+            }
+          </div>
+        ) : (
+          'Connect Wallet'
+        )}
       </Button>
       <Menu
         id="more-menu"
@@ -54,42 +124,26 @@ export default function WalletWidget() {
           },
         }}
       >
-        <MenuList>
-          <MenuItem>
-            <ListItemIcon>
-              <QuestionMarkOutlined fontSize="small" />
-            </ListItemIcon>
-            <ListItemText>FAQ</ListItemText>
-          </MenuItem>
-          <MenuItem>
-            <ListItemIcon>
-              <LibraryBooks fontSize="small" />
-            </ListItemIcon>
-            <ListItemText>Developers</ListItemText>
-          </MenuItem>
-          <Divider />
-          <MenuItem>
-            <ListItemIcon>
-              <QuestionMarkOutlined fontSize="small" />
-            </ListItemIcon>
-            <ListItemText>Discord</ListItemText>
-          </MenuItem>
-          <MenuItem>
-            <ListItemIcon>
-              <GitHub fontSize="small" />
-            </ListItemIcon>
-            <ListItemText>Github</ListItemText>
-          </MenuItem>
-          <Divider />
-          <MenuItem onClick={colorMode.toggleColorMode}>
-            <ListItemIcon>
-              {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-            </ListItemIcon>
-            <ListItemText>
-              Switch to {theme.palette.mode === 'dark' ? 'light' : 'dark'} mode
-            </ListItemText>
-          </MenuItem>
-        </MenuList>
+        <MenuItem>{networkConfig.name}</MenuItem>
+        <Divider />
+        <MenuItem onClick={handleCopy}>
+          <ListItemIcon>
+            <ContentCopyRoundedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Copy address</ListItemText>
+        </MenuItem>
+        <MenuItem onClick={handleEtherscanLink}>
+          <ListItemIcon>
+            <OpenInNewRoundedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>View on Etherscan</ListItemText>
+        </MenuItem>
+        <MenuItem onClick={handleDisconnect}>
+          <ListItemIcon>
+            <RemoveCircleOutlineRoundedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Disconnect Wallet</ListItemText>
+        </MenuItem>
       </Menu>
     </div>
   );
