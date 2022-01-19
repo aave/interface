@@ -1,30 +1,21 @@
-import * as React from "react";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import {
-  Button,
-  Divider,
-  ListItemIcon,
-  ListItemText,
-  MenuList,
-} from "@mui/material";
-import {
-  GitHub,
-  LibraryBooks,
-  Person,
-  QuestionMarkOutlined,
-} from "@mui/icons-material";
-import { ColorModeContext } from "./MainLayout";
-import { useTheme } from "@mui/system";
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { GitHub, LibraryBooks, Person, QuestionMarkOutlined } from '@mui/icons-material';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { Button, Divider, ListItemIcon, ListItemText, MenuList } from '@mui/material';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import { useTheme } from '@mui/system';
+import * as React from 'react';
+
+import { ColorModeContext } from './MainLayout';
 
 export default function WalletWidget() {
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
@@ -39,8 +30,8 @@ export default function WalletWidget() {
         size="small"
         aria-label="more"
         id="wallet-button"
-        aria-controls={open ? "more-menu" : undefined}
-        aria-expanded={open ? "true" : undefined}
+        aria-controls={open ? 'more-menu' : undefined}
+        aria-expanded={open ? 'true' : undefined}
         aria-haspopup="true"
         onClick={handleClick}
         color="inherit"
@@ -52,7 +43,7 @@ export default function WalletWidget() {
       <Menu
         id="more-menu"
         MenuListProps={{
-          "aria-labelledby": "more-button",
+          'aria-labelledby': 'more-button',
         }}
         anchorEl={anchorEl}
         open={open}
@@ -92,14 +83,10 @@ export default function WalletWidget() {
           <Divider />
           <MenuItem onClick={colorMode.toggleColorMode}>
             <ListItemIcon>
-              {theme.palette.mode === "dark" ? (
-                <Brightness7Icon />
-              ) : (
-                <Brightness4Icon />
-              )}
+              {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
             </ListItemIcon>
             <ListItemText>
-              Switch to {theme.palette.mode === "dark" ? "light" : "dark"} mode
+              Switch to {theme.palette.mode === 'dark' ? 'light' : 'dark'} mode
             </ListItemText>
           </MenuItem>
         </MenuList>

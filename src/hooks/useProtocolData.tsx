@@ -1,21 +1,17 @@
-import { providers } from "ethers";
-import React, {
-  PropsWithChildren,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { providers } from 'ethers';
+import React, { PropsWithChildren, useContext, useEffect, useState } from 'react';
+
 // import { BaseNetworkConfig } from "../ui-config/networksConfig";
 import {
   availableMarkets,
-  marketsData,
-  getNetworkConfig,
-  networkConfigs as _networkConfigs,
-  getProvider,
   CustomMarket,
+  getNetworkConfig,
+  getProvider,
   MarketDataType,
+  marketsData,
   NetworkConfig,
-} from "../utils/marketsAndNetworksConfig";
+  networkConfigs as _networkConfigs,
+} from '../utils/marketsAndNetworksConfig';
 
 // /**
 //  *
@@ -65,7 +61,7 @@ import {
 //   };
 // }
 
-const LS_KEY = "selectedMarket";
+const LS_KEY = 'selectedMarket';
 
 export interface ProtocolContextData {
   currentMarket: CustomMarket;
@@ -79,12 +75,11 @@ export interface ProtocolContextData {
 
 const PoolDataContext = React.createContext({} as ProtocolContextData);
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export function ProtocolDataProvider({ children }: PropsWithChildren<{}>) {
   // const [markets, setMarkets] = useState(marketsData);
   // const [networkConfigs, setNetworkConfigs] = useState(_networkConfigs);
-  const [currentMarket, setCurrentMarket] = useState<CustomMarket>(
-    availableMarkets[0]
-  );
+  const [currentMarket, setCurrentMarket] = useState<CustomMarket>(availableMarkets[0]);
 
   const currentMarketData = marketsData[currentMarket];
 
@@ -95,9 +90,7 @@ export function ProtocolDataProvider({ children }: PropsWithChildren<{}>) {
 
   // set the last selected market onload
   useEffect(() => {
-    const cachedMarket = localStorage.getItem(LS_KEY) as
-      | CustomMarket
-      | undefined;
+    const cachedMarket = localStorage.getItem(LS_KEY) as CustomMarket | undefined;
     if (cachedMarket && availableMarkets.includes(cachedMarket)) {
       setCurrentMarket(cachedMarket);
     }
