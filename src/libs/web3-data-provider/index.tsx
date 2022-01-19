@@ -56,8 +56,12 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [web3Modal, setWeb3Modal] = useState<Web3Modal>(undefined as unknown as Web3Modal);
 
   useEffect(() => {
+    if (web3Modal?.cachedProvider) connectWallet();
+  }, [web3Modal]);
+
+  useEffect(() => {
     import('./modalOptions').then((m) => setWeb3Modal(m.getWeb3Modal(networkId)));
-  }, [networkId]);
+  }, [networkId, currentAccount]);
 
   // provider events subscriptions
   const initSubscriptions = useCallback(
@@ -97,8 +101,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     // get network info
     const networkInfo: Network = await ethProvider.getNetwork();
 
-    providerInstance.enable();
-
     setProvider(ethProvider);
     setNetworkId(networkInfo.chainId);
     setNetworkName(networkInfo.name); // TODO: maybe have to clean it up
@@ -118,11 +120,11 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     }, 1);
   }, [provider, web3Modal, connected]);
 
-  const hasCachedProvider = useCallback((): boolean => {
+  const hasCachedProvider = (): boolean => {
     if (!web3Modal) return false;
     if (!web3Modal.cachedProvider) return false;
     return true;
-  }, [web3Modal]);
+  };
 
   const web3ProviderData = useMemo(
     () => ({
