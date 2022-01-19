@@ -10,7 +10,7 @@ export type Web3Data = {
   connected: boolean;
   provider: JsonRpcProvider | undefined;
   web3Modal: Web3Modal;
-  networkId: number;
+  chainId: number;
 };
 
 export type Web3ContextData = {
@@ -37,7 +37,7 @@ export const useWeb3Context = () => {
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
   const [provider, setProvider] = useState<JsonRpcProvider>();
   const [connected, setConnected] = useState(false);
-  const [networkId, setNetworkId] = useState(1);
+  const [chainId, setChainId] = useState(1);
   const [currentAccount, setCurrentAccount] = useState('');
 
   const [web3Modal, setWeb3Modal] = useState<Web3Modal>(undefined as unknown as Web3Modal);
@@ -47,8 +47,8 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   }, [web3Modal]);
 
   useEffect(() => {
-    import('./modalOptions').then((m) => setWeb3Modal(m.getWeb3Modal(networkId)));
-  }, [networkId, currentAccount]);
+    import('./modalOptions').then((m) => setWeb3Modal(m.getWeb3Modal(chainId)));
+  }, [chainId, currentAccount]);
 
   // provider events subscriptions
   const initSubscriptions = useCallback(
@@ -60,12 +60,12 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         setCurrentAccount(accounts[0]);
       });
 
-      providerInstance.on('networkChanged', async (networkId: number) => {
+      providerInstance.on('networkChanged', async (chainId: number) => {
         const providerNetwork = await provider?.getNetwork();
-        if (providerNetwork?.chainId !== networkId) {
+        if (providerNetwork?.chainId !== chainId) {
           setTimeout(() => window.location.reload(), 1);
         } else {
-          setNetworkId(networkId);
+          setChainId(chainId);
         }
       });
     },
@@ -85,7 +85,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     const networkInfo: Network = await ethProvider.getNetwork();
 
     setProvider(ethProvider);
-    setNetworkId(networkInfo.chainId);
+    setChainId(networkInfo.chainId);
     setCurrentAccount(connectedAddress);
 
     setConnected(true);
@@ -107,9 +107,9 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       connected,
       currentAccount,
       web3Modal,
-      networkId,
+      chainId,
     }),
-    [connectWallet, disconnectWallet, provider, connected, currentAccount, web3Modal, networkId]
+    [connectWallet, disconnectWallet, provider, connected, currentAccount, web3Modal, chainId]
   );
 
   return (
