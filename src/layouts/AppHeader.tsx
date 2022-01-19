@@ -1,13 +1,13 @@
-import * as React from 'react';
-import { styled, alpha } from '@mui/material/styles';
+import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import { Button } from '@mui/material';
-import { Link } from '../components/Link';
-import MoreMenu from './MoreMenu';
-import { uiConfig } from '../uiConfig';
-import WalletWidget from './WalletWidget';
+import { alpha, styled } from '@mui/material/styles';
+import * as React from 'react';
 
+import { Link } from '../components/Link';
+import { uiConfig } from '../uiConfig';
+import MoreMenu from './MoreMenu';
+import WalletWidget from './WalletWidget';
 
 const Header = styled('header')(({ theme }) => ({
   position: 'sticky',

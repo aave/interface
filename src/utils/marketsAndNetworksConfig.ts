@@ -1,62 +1,53 @@
-import { ChainId, ChainIdToNetwork } from "@aave/contract-helpers";
+import { ChainId, ChainIdToNetwork } from '@aave/contract-helpers';
+import { ethers } from 'ethers';
 
 import {
-  networkConfigs as _networkConfigs,
+  CustomMarket,
+  MarketDataType,
+  marketsData as _marketsData,
+} from '../ui-config/marketsConfig';
+import {
+  BaseNetworkConfig,
   ExplorerLinkBuilderConfig,
   ExplorerLinkBuilderProps,
   NetworkConfig,
-  BaseNetworkConfig,
-} from "../ui-config/networksConfig";
-import {
-  CustomMarket,
-  marketsData as _marketsData,
-  MarketDataType,
-} from "../ui-config/marketsConfig";
-import { ethers } from "ethers";
+  networkConfigs as _networkConfigs,
+} from '../ui-config/networksConfig';
 
 export type Pool = {
   address: string;
 };
 
-const ENABLE_TESTNET = process.env.REACT_APP_ENABLE_TESTNET === "true";
+const ENABLE_TESTNET = process.env.REACT_APP_ENABLE_TESTNET === 'true';
 
 // determines if forks should be shown
-const FORK_ENABLED =
-  global?.window?.localStorage.getItem("forkEnabled") === "true";
+const FORK_ENABLED = global?.window?.localStorage.getItem('forkEnabled') === 'true';
 // specifies which network was forked
-const FORK_BASE_CHAIN_ID = Number(
-  global?.window?.localStorage.getItem("forkBaseChainId") || 1
-);
+const FORK_BASE_CHAIN_ID = Number(global?.window?.localStorage.getItem('forkBaseChainId') || 1);
 // specifies on which chainId the fork is running
-const FORK_CHAIN_ID = Number(
-  global?.window?.localStorage.getItem("forkChainId") || 3030
-);
-const FORK_RPC_URL =
-  global?.window?.localStorage.getItem("forkRPCUrl") || "http://127.0.0.1:8545";
+const FORK_CHAIN_ID = Number(global?.window?.localStorage.getItem('forkChainId') || 3030);
+const FORK_RPC_URL = global?.window?.localStorage.getItem('forkRPCUrl') || 'http://127.0.0.1:8545';
 const FORK_WS_RPC_URL =
-  global?.window?.localStorage.getItem("forkWsRPCUrl") || "ws://127.0.0.1:8545";
+  global?.window?.localStorage.getItem('forkWsRPCUrl') || 'ws://127.0.0.1:8545';
 
 /**
  * Generates network configs based on networkConfigs & fork settings.
  * Forks will have a rpcOnly clone of their underlying base network config.
  */
-export const networkConfigs = Object.keys(_networkConfigs).reduce(
-  (acc, value) => {
-    acc[value] = _networkConfigs[value];
-    if (FORK_ENABLED && Number(value) === FORK_BASE_CHAIN_ID) {
-      acc[FORK_CHAIN_ID] = {
-        ..._networkConfigs[value],
-        rpcOnly: true,
-        isFork: true,
-        privateJsonRPCUrl: FORK_RPC_URL,
-        privateJsonRPCWSUrl: FORK_WS_RPC_URL,
-        underlyingChainId: FORK_BASE_CHAIN_ID,
-      };
-    }
-    return acc;
-  },
-  {} as { [key: string]: BaseNetworkConfig }
-);
+export const networkConfigs = Object.keys(_networkConfigs).reduce((acc, value) => {
+  acc[value] = _networkConfigs[value];
+  if (FORK_ENABLED && Number(value) === FORK_BASE_CHAIN_ID) {
+    acc[FORK_CHAIN_ID] = {
+      ..._networkConfigs[value],
+      rpcOnly: true,
+      isFork: true,
+      privateJsonRPCUrl: FORK_RPC_URL,
+      privateJsonRPCWSUrl: FORK_WS_RPC_URL,
+      underlyingChainId: FORK_BASE_CHAIN_ID,
+    };
+  }
+  return acc;
+}, {} as { [key: string]: BaseNetworkConfig });
 
 /**
  * Generates network configs based on marketsData & fork settings.
@@ -66,8 +57,7 @@ export const marketsData = Object.keys(_marketsData).reduce((acc, value) => {
   acc[value] = _marketsData[value as keyof typeof CustomMarket];
   if (
     FORK_ENABLED &&
-    _marketsData[value as keyof typeof CustomMarket].chainId ===
-      FORK_BASE_CHAIN_ID
+    _marketsData[value as keyof typeof CustomMarket].chainId === FORK_BASE_CHAIN_ID
   ) {
     acc[`fork_${value}`] = {
       ..._marketsData[value as keyof typeof CustomMarket],
@@ -86,8 +76,7 @@ export function getSupportedChainIds(): number[] {
     Object.keys(marketsData).reduce((acc, value) => {
       if (
         ENABLE_TESTNET ||
-        !networkConfigs[marketsData[value as keyof typeof CustomMarket].chainId]
-          .isTestnet
+        !networkConfigs[marketsData[value as keyof typeof CustomMarket].chainId].isTestnet
       )
         acc.add(marketsData[value as keyof typeof CustomMarket].chainId);
       return acc;
@@ -99,17 +88,11 @@ export function getSupportedChainIds(): number[] {
  * selectable markets (markets in a available network + forks when enabled)
  */
 export const availableMarkets = Object.keys(marketsData).filter((key) =>
-  getSupportedChainIds().includes(
-    marketsData[key as keyof typeof CustomMarket].chainId
-  )
+  getSupportedChainIds().includes(marketsData[key as keyof typeof CustomMarket].chainId)
 ) as CustomMarket[];
 
 const linkBuilder =
-  ({
-    baseUrl,
-    addressPrefix = "address",
-    txPrefix = "tx",
-  }: ExplorerLinkBuilderConfig) =>
+  ({ baseUrl, addressPrefix = 'address', txPrefix = 'tx' }: ExplorerLinkBuilderConfig) =>
   ({ tx, address }: ExplorerLinkBuilderProps): string => {
     if (tx) {
       return `${baseUrl}/${txPrefix}/${tx}`;
@@ -127,7 +110,7 @@ export function getNetworkConfig(chainId: ChainId): NetworkConfig {
     const name = ChainIdToNetwork[chainId];
     return {
       name: name || `unknown chainId: ${chainId}`,
-      explorerLinkBuilder: () => {},
+      explorerLinkBuilder: () => console.log('exploreLinkBuilder'), // TODO
     } as unknown as NetworkConfig;
   }
   return {
@@ -141,8 +124,7 @@ export const isFeatureEnabled = {
   governance: (data: MarketDataType) => data.enabledFeatures?.governance,
   staking: (data: MarketDataType) => data.enabledFeatures?.staking,
   liquiditySwap: (data: MarketDataType) => data.enabledFeatures?.liquiditySwap,
-  collateralRepay: (data: MarketDataType) =>
-    data.enabledFeatures?.collateralRepay,
+  collateralRepay: (data: MarketDataType) => data.enabledFeatures?.collateralRepay,
   permissions: (data: MarketDataType) => data.enabledFeatures?.permissions,
 };
 
@@ -161,9 +143,7 @@ export const getProvider = (chainId: ChainId): ethers.providers.Provider => {
     }
     if (config.publicJsonRPCUrl.length) {
       config.publicJsonRPCUrl.map((rpc) =>
-        chainProviders.push(
-          new ethers.providers.StaticJsonRpcProvider(rpc, chainId)
-        )
+        chainProviders.push(new ethers.providers.StaticJsonRpcProvider(rpc, chainId))
       );
     }
     if (!chainProviders.length) {
@@ -172,9 +152,7 @@ export const getProvider = (chainId: ChainId): ethers.providers.Provider => {
     if (chainProviders.length === 1) {
       providers[chainId] = chainProviders[0];
     } else {
-      providers[chainId] = new ethers.providers.FallbackProvider(
-        chainProviders
-      );
+      providers[chainId] = new ethers.providers.FallbackProvider(chainProviders);
     }
   }
   return providers[chainId];
