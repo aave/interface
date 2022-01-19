@@ -10,7 +10,7 @@ import { useTheme } from '@mui/system';
 import makeBlockie from 'ethereum-blockies-base64';
 import React, { useEffect, useState } from 'react';
 import useGetEns from 'src/libs/hooks/use-get-ens';
-import { useWeb3Context } from 'src/libs/web3-data-provider';
+import { useWeb3Context } from 'src/libs/web3-data-provider/Web3ContextProvider';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { ColorModeContext } from './MainLayout';
@@ -84,7 +84,7 @@ export default function WalletWidget() {
     window.open(explorerLink, '_blank');
     setAnchorEl(null);
   };
-
+  console.log('-------------', window.ethereum.request);
   return (
     <div>
       <Button
