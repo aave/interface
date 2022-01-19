@@ -41,6 +41,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [connected, setConnected] = useState(false);
   const [chainId, setChainId] = useState(1);
   const [currentAccount, setCurrentAccount] = useState('');
+  const [web3Provider, setWeb3Provider] = useState(null as any);
 
   const [web3Modal, setWeb3Modal] = useState<Web3Modal>(undefined as unknown as Web3Modal);
 
@@ -77,6 +78,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   // web 3 modal
   const connectWallet = useCallback(async () => {
     const providerInstance = await web3Modal.connect();
+    setWeb3Provider(providerInstance);
     await initSubscriptions(providerInstance);
 
     const ethProvider = new providers.Web3Provider(providerInstance);
@@ -99,6 +101,15 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     web3Modal.clearCachedProvider();
     setConnected(false);
     setCurrentAccount('');
+    if (web3Provider) {
+      if (web3Provider.close) {
+        await web3Provider.close();
+      } else if (web3Provider.disconnect) {
+        web3Provider.disconnect();
+      } else {
+        console.log('provider: ', web3Provider)
+      }
+    }
   }, [provider, web3Modal, connected]);
 
   const switchNetwork = async (newChainId: number) => {
