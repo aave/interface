@@ -1,39 +1,41 @@
-import React, { useEffect, useState } from "react";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import {
-  Box,
-  Button,
-  Divider,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
-import { ColorModeContext } from "./MainLayout";
-import { useTheme } from "@mui/system";
-import { useWeb3Context } from "src/libs/web3-data-provider";
-import useGetEns from "src/libs/hooks/use-get-ens";
+import { textCenterEllipsis } from '@aave/aave-ui-kit';
+import { Person } from '@mui/icons-material';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
 import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
 import RemoveCircleOutlineRoundedIcon from '@mui/icons-material/RemoveCircleOutlineRounded';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { getNetworkConfig } from "src/utils/marketsAndNetworksConfig";
+import { Box, Button, Divider, ListItemIcon, ListItemText } from '@mui/material';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import { useTheme } from '@mui/system';
 import makeBlockie from 'ethereum-blockies-base64';
-import { textCenterEllipsis } from "@aave/aave-ui-kit";
-import { Person } from "@mui/icons-material";
+import React, { useEffect, useState } from 'react';
+import useGetEns from 'src/libs/hooks/use-get-ens';
+import { useWeb3Context } from 'src/libs/web3-data-provider';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+
+import { ColorModeContext } from './MainLayout';
 
 export default function WalletWidget() {
-  const {connectWallet, disconnectWallet, currentAccount, connected, hasCachedProvider, networkId} = useWeb3Context();
-  
+  const {
+    connectWallet,
+    disconnectWallet,
+    currentAccount,
+    connected,
+    hasCachedProvider,
+    networkId,
+  } = useWeb3Context();
+
   const { name: ensName, avatar: ensAvatar } = useGetEns(currentAccount);
   const ensNameAbbreviated = ensName
-  ? ensName.length > 18
-    ? textCenterEllipsis(ensName, 12, 3)
-    : ensName
-  : undefined;
+    ? ensName.length > 18
+      ? textCenterEllipsis(ensName, 12, 3)
+      : ensName
+    : undefined;
 
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
-  
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [useBlockie, setUseBlockie] = useState(false);
 
@@ -53,7 +55,7 @@ export default function WalletWidget() {
 
   const networkConfig = getNetworkConfig(networkId);
 
-  const handleClick = (event: { currentTarget: React.SetStateAction<null>; }) => {
+  const handleClick = (event: { currentTarget: React.SetStateAction<null> }) => {
     if (!connected) {
       connectWallet();
     } else {
@@ -62,14 +64,14 @@ export default function WalletWidget() {
   };
 
   const handleDisconnect = () => {
-    if(connected) {
-      disconnectWallet()
+    if (connected) {
+      disconnectWallet();
       setAnchorEl(null);
     }
   };
 
   const handleCopy = async () => {
-    navigator.clipboard.writeText(currentAccount)
+    navigator.clipboard.writeText(currentAccount);
     setAnchorEl(null);
   };
 
@@ -79,8 +81,8 @@ export default function WalletWidget() {
 
   const handleEtherscanLink = () => {
     const explorerLink = `${networkConfig.explorerLink}/address/${currentAccount}`;
-    console.log('explorer link: ', explorerLink)
-    window.open(explorerLink, "_blank");
+    console.log('explorer link: ', explorerLink);
+    window.open(explorerLink, '_blank');
     setAnchorEl(null);
   };
 
@@ -91,34 +93,37 @@ export default function WalletWidget() {
         size="small"
         aria-label="more"
         id="wallet-button"
-        aria-controls={open ? "more-menu" : undefined}
-        aria-expanded={open ? "true" : undefined}
+        aria-controls={open ? 'more-menu' : undefined}
+        aria-expanded={open ? 'true' : undefined}
         aria-haspopup="true"
         onClick={handleClick}
         color="inherit"
         startIcon={
-            connected ? (<img 
-              style={{width: "15px", height: "15px"}}
+          connected ? (
+            <img
+              style={{ width: '15px', height: '15px' }}
               src={useBlockie ? makeBlockie(currentAccount) : ensAvatar}
               alt=""
               onError={() => setUseBlockie(true)}
-            />)
-            : <Person />
+            />
+          ) : (
+            <Person />
+          )
         }
         endIcon={<ArrowDropDownIcon />}
       >
-        {currentAccount? 
-          (<div>{
-            ensNameAbbreviated
-            ? ensNameAbbreviated
-            : textCenterEllipsis(currentAccount, 4, 4)}
-          </div>) 
-          : 'Connect Wallet'}
+        {currentAccount ? (
+          <div>
+            {ensNameAbbreviated ? ensNameAbbreviated : textCenterEllipsis(currentAccount, 4, 4)}
+          </div>
+        ) : (
+          'Connect Wallet'
+        )}
       </Button>
       <Menu
         id="more-menu"
         MenuListProps={{
-          "aria-labelledby": "more-button",
+          'aria-labelledby': 'more-button',
         }}
         anchorEl={anchorEl}
         open={open}
@@ -129,9 +134,7 @@ export default function WalletWidget() {
           },
         }}
       >
-        <MenuItem>
-          {networkConfig.name}
-        </MenuItem>
+        <MenuItem>{networkConfig.name}</MenuItem>
         <Divider />
         <MenuItem onClick={handleCopy}>
           <ListItemIcon>
