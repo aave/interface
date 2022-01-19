@@ -16,14 +16,8 @@ import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { ColorModeContext } from './MainLayout';
 
 export default function WalletWidget() {
-  const {
-    connectWallet,
-    disconnectWallet,
-    currentAccount,
-    connected,
-    hasCachedProvider,
-    networkId,
-  } = useWeb3Context();
+  const { connectWallet, disconnectWallet, currentAccount, connected, networkId } =
+    useWeb3Context();
 
   const { name: ensName, avatar: ensAvatar } = useGetEns(currentAccount);
   const ensNameAbbreviated = ensName
@@ -78,7 +72,7 @@ export default function WalletWidget() {
     window.open(explorerLink, '_blank');
     setAnchorEl(null);
   };
-
+  console.log('connected: ', connected, ' account: ', currentAccount);
   return (
     <div>
       <Button
