@@ -59,6 +59,7 @@ export const getTheme = (mode: 'light' | 'dark') =>
       },
       mode,
     },
+    spacing: 4,
     typography: {
       fontFamily: 'Inter, Arial',
     },
