@@ -38,7 +38,7 @@ export default function MyApp(props: MyAppProps) {
                 <Component {...pageProps} />
               </MainLayout>
             </ProtocolDataProvider>
-          <Web3ContextProvider>
+          </Web3ContextProvider>
         </LanguageProvider>
       </ApolloProvider>
     </CacheProvider>

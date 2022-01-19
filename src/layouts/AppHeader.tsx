@@ -7,7 +7,6 @@ import { Link } from '../components/Link';
 import MoreMenu from './MoreMenu';
 import { uiConfig } from '../uiConfig';
 import WalletWidget from './WalletWidget';
-import ConnectWalletWidget from './ConnectWalletWidget';
 
 
 const Header = styled('header')(({ theme }) => ({
@@ -65,7 +64,6 @@ export default function AppHeader() {
         <Box sx={{ flexGrow: 1 }} />
         <WalletWidget />
         <MoreMenu />
-        <ConnectWalletWidget />
       </Container>
     </Header>
   );
