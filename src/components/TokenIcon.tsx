@@ -1,4 +1,5 @@
-import { Icon, IconProps } from '@mui/material';
+import { Badge, Icon, IconProps } from '@mui/material';
+import { Box } from '@mui/system';
 
 interface ATokenIconProps {
   symbol: string;
@@ -65,7 +66,7 @@ interface TokenIconProps extends IconProps {
  */
 export function TokenIcon({ symbol, aToken, ...rest }: TokenIconProps) {
   return (
-    <Icon {...rest} sx={{ display: 'flex', position: 'relative' }}>
+    <Icon {...rest} sx={{ display: 'flex', position: 'relative', borderRadius: '50%', ...rest.sx }}>
       {aToken ? (
         <ATokenIcon symbol={symbol} />
       ) : (
@@ -78,5 +79,29 @@ export function TokenIcon({ symbol, aToken, ...rest }: TokenIconProps) {
         />
       )}
     </Icon>
+  );
+}
+
+interface MultiTokenIconProps extends IconProps {
+  symbols: string[];
+  badgeSymbol: string;
+}
+
+export function MultiTokenIcon({ symbols, badgeSymbol, ...rest }: MultiTokenIconProps) {
+  return (
+    <Badge
+      badgeContent={
+        <TokenIcon symbol={badgeSymbol} sx={{ border: '1px solid #fff' }} fontSize="small" />
+      }
+    >
+      {symbols.map((symbol, ix) => (
+        <TokenIcon
+          key={symbol}
+          symbol={symbol}
+          sx={{ ml: ix === symbols.length - 1 ? -2 : 0 }}
+          {...rest}
+        />
+      ))}
+    </Badge>
   );
 }
