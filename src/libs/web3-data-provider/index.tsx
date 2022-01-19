@@ -60,7 +60,7 @@ const addWalletsToWeb3Modal = (networkId: number): Web3Modal => {
 export type Web3Data = {
   connectWallet: () => Promise<Web3Provider | undefined>;
   disconnectWallet: () => void;
-  // hasCachedProvider: () => boolean;
+  hasCachedProvider: () => boolean;
   currentAccount: string;
   connected: boolean;
   provider: JsonRpcProvider | undefined;
@@ -154,11 +154,17 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     }, 1);
   }, [provider, web3Modal, connected]);
 
+  const hasCachedProvider = useCallback((): boolean => {
+    if (!web3Modal) return false;
+    if (!web3Modal.cachedProvider) return false;
+    return true;
+  }, [web3Modal]);
+
   const web3ProviderData = useMemo(
     () => ({
       connectWallet,
       disconnectWallet,
-      // hasCachedProvider,
+      hasCachedProvider,
       provider,
       connected,
       currentAccount,
@@ -169,7 +175,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     [
       connectWallet,
       disconnectWallet,
-      // hasCachedProvider,
+      hasCachedProvider,
       provider,
       connected,
       currentAccount,
