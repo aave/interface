@@ -6,7 +6,7 @@ import type { NextPage } from 'next';
 import * as React from 'react';
 
 import { Link } from '../src/components/Link';
-import { TokenIcon } from '../src/components/TokenIcon';
+import { MultiTokenIcon, TokenIcon } from '../src/components/TokenIcon';
 // import { useProtocolDataContext } from '../src/hooks/useProtocolData';
 
 const Home: NextPage = () => {
@@ -28,8 +28,7 @@ const Home: NextPage = () => {
         <Link href="/about" color="secondary">
           <Trans>Go to About page</Trans>
         </Link>
-        <TokenIcon symbol="aave" />
-        <TokenIcon symbol="aave" aToken />
+        <MultiTokenIcon symbols={['aave', 'usdc']} badgeSymbol="bal" fontSize="large" />
       </Box>
     </Container>
   );
