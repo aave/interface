@@ -3,7 +3,7 @@ import '../../public/fonts/inter/inter.css';
 import { useMediaQuery } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { getTheme } from '../utils/theme';
 
@@ -21,8 +21,8 @@ type Mode = 'light' | 'dark';
  */
 export const AppGlobalStyles: React.FC = ({ children }) => {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const [mode, setMode] = React.useState<Mode>(prefersDarkMode ? 'dark' : 'light');
-  const colorMode = React.useMemo(
+  const [mode, setMode] = useState<Mode>(prefersDarkMode ? 'dark' : 'light');
+  const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
         setMode((prevMode) => {
@@ -35,7 +35,7 @@ export const AppGlobalStyles: React.FC = ({ children }) => {
     []
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     const initialMode = localStorage?.getItem('colorMode') as Mode;
     if (initialMode) {
       setMode(initialMode);
@@ -44,7 +44,7 @@ export const AppGlobalStyles: React.FC = ({ children }) => {
     }
   }, []);
 
-  const theme = React.useMemo(() => getTheme(mode), [mode]);
+  const theme = useMemo(() => getTheme(mode), [mode]);
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
