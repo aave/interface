@@ -1,4 +1,3 @@
-import MewConnect from '@myetherwallet/mewconnect-web-client';
 import Torus from '@toruslabs/torus-embed';
 import WalletConnect from '@walletconnect/web3-provider';
 import ethProvider from 'eth-provider';
@@ -46,16 +45,16 @@ export const getWeb3Modal = () => {
       frame: {
         package: ethProvider, // required
       },
-      mewconnect: {
-        package: MewConnect, // required
-        options: {
-          rpc: supportedChainIds.reduce((acc, network) => {
-            const config = getNetworkConfig(network);
-            acc[network] = config.privateJsonRPCUrl || config.publicJsonRPCUrl[0];
-            return acc;
-          }, {} as { [networkId: number]: string }),
-        },
-      },
+      // mewconnect: {
+      //   package: MewConnect, // required
+      //   options: {
+      //     rpc: supportedChainIds.reduce((acc, network) => {
+      //       const config = getNetworkConfig(network);
+      //       acc[network] = config.privateJsonRPCUrl || config.publicJsonRPCUrl[0];
+      //       return acc;
+      //     }, {} as { [networkId: number]: string }),
+      //   },
+      // },
     },
   });
 };
