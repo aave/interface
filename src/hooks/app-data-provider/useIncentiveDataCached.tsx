@@ -31,18 +31,14 @@ export function useIncentivesDataCached(
   currentAccount?: string,
   skip = false
 ): PoolIncentivesWithCache {
-  const userId = currentAccount?.toLowerCase() || undefined;
-  const {
-    loading: incentivesDataLoading,
-    data: incentivesData,
-    subscribeToMore: subscribeToIncentivesData,
-  } = useC_ReservesIncentivesQuery({
-    variables: {
-      lendingPoolAddressProvider,
-    },
-    skip,
-    context: { target: APOLLO_QUERY_TARGET.CHAIN(chainId) },
-  });
+  const { loading: incentivesDataLoading, subscribeToMore: subscribeToIncentivesData } =
+    useC_ReservesIncentivesQuery({
+      variables: {
+        lendingPoolAddressProvider,
+      },
+      skip,
+      context: { target: APOLLO_QUERY_TARGET.CHAIN(chainId) },
+    });
 
   // Reserve incentives
   useEffect(() => {
@@ -72,21 +68,18 @@ export function useIncentivesDataCached(
   }, [subscribeToIncentivesData, lendingPoolAddressProvider, skip]);
 
   // User incentives
-  const {
-    loading: userIncentivesDataLoading,
-    data: userIncentivesData,
-    subscribeToMore: subscribeToUserIncentivesData,
-  } = useC_UserIncentivesQuery({
-    variables: {
-      lendingPoolAddressProvider,
-      userAddress: userId || '',
-    },
-    skip: !userId || skip,
-    context: { target: APOLLO_QUERY_TARGET.CHAIN(chainId) },
-  });
+  const { loading: userIncentivesDataLoading, subscribeToMore: subscribeToUserIncentivesData } =
+    useC_UserIncentivesQuery({
+      variables: {
+        lendingPoolAddressProvider,
+        userAddress: currentAccount || '',
+      },
+      skip: !currentAccount || skip,
+      context: { target: APOLLO_QUERY_TARGET.CHAIN(chainId) },
+    });
 
   useEffect(() => {
-    if (userId && !skip)
+    if (currentAccount && !skip)
       return subscribeToUserIncentivesData<
         C_UserPoolIncentivesDataUpdateSubscription,
         C_UserPoolIncentivesDataUpdateSubscriptionVariables
@@ -94,7 +87,7 @@ export function useIncentivesDataCached(
         document: C_UserPoolIncentivesDataUpdateDocument,
         variables: {
           lendingPoolAddressProvider,
-          userAddress: userId || '',
+          userAddress: currentAccount || '',
         },
         updateQuery: (previousQueryResult, { subscriptionData }) => {
           const userData = subscriptionData.data?.userPoolIncentivesDataUpdate;
@@ -108,19 +101,12 @@ export function useIncentivesDataCached(
         },
         context: { target: APOLLO_QUERY_TARGET.CHAIN(chainId) },
       });
-  }, [subscribeToUserIncentivesData, lendingPoolAddressProvider, userId, skip]);
+  }, [subscribeToUserIncentivesData, lendingPoolAddressProvider, currentAccount, skip]);
 
   // logic
-  const loading = (userId && userIncentivesDataLoading) || incentivesDataLoading;
-  const reserveIncentiveData: ReserveIncentivesData[] = incentivesData?.reservesIncentives || [];
-  const userIncentiveData: UserIncentivesData[] = userIncentivesData?.userIncentives || [];
+  const loading = (currentAccount && userIncentivesDataLoading) || incentivesDataLoading;
 
   return {
     loading,
-    data: {
-      userId,
-      reserveIncentiveData,
-      userIncentiveData,
-    },
   };
 }

@@ -1,13 +1,15 @@
+import { C_ProtocolDataDocument, C_ProtocolDataQuery, C_UserDataQuery } from './graphql/hooks';
 import {
   ChainId,
   ReservesDataHumanized,
   UiPoolDataProvider,
   UserReserveDataHumanized,
 } from '@aave/contract-helpers';
-import { useEffect, useState } from 'react';
 
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
+import { useApolloClient } from '@apollo/client';
 import { usePolling } from '../usePolling';
+import { useState } from 'react';
 
 // interval in which the rpc data is refreshed
 const POLLING_INTERVAL = 30 * 1000;
@@ -29,17 +31,13 @@ export function usePoolDataRPC(
   chainId: ChainId,
   poolDataProviderAddress: string,
   skip: boolean,
-  userAddress?: string
-): PoolDataResponse {
-  const currentAccount: string | undefined = userAddress ? userAddress.toLowerCase() : undefined;
+  currentAccount?: string
+) {
+  const { cache } = useApolloClient();
   const [loadingReserves, setLoadingReserves] = useState<boolean>(true);
   const [errorReserves, setErrorReserves] = useState<boolean>(false);
   const [loadingUserReserves, setLoadingUserReserves] = useState<boolean>(false);
   const [errorUserReserves, setErrorUserReserves] = useState<boolean>(false);
-  const [reserves, setReserves] = useState<ReservesDataHumanized | undefined>(undefined);
-  const [userReserves, setUserReserves] = useState<
-    { userReserves: UserReserveDataHumanized[]; userEmodeCategoryId: number } | undefined
-  >(undefined);
 
   // Fetch and format reserve incentive data from UiIncentiveDataProvider contract
   const fetchReserves = async () => {
@@ -54,7 +52,24 @@ export function usePoolDataRPC(
       const reservesResponse = await poolDataProviderContract.getReservesHumanized(
         lendingPoolAddressProvider
       );
-      setReserves(reservesResponse);
+      cache.writeQuery<C_ProtocolDataQuery>({
+        query: C_ProtocolDataDocument,
+        data: {
+          __typename: 'Query',
+          protocolData: {
+            __typename: 'ProtocolData',
+            baseCurrencyData: {
+              ...reservesResponse.baseCurrencyData,
+              __typename: 'BaseCurrencyData',
+            },
+            reserves: reservesResponse.reservesData.map((reserve) => ({
+              ...reserve,
+              __typename: 'ReserveData',
+            })),
+          },
+        },
+        variables: { lendingPoolAddressProvider },
+      });
       setErrorReserves(false);
     } catch (e) {
       console.log('e', e);
@@ -78,8 +93,14 @@ export function usePoolDataRPC(
         lendingPoolAddressProvider,
         currentAccount
       );
-
-      setUserReserves(userReservesResponse);
+      cache.writeQuery<C_UserDataQuery>({
+        query: C_ProtocolDataDocument,
+        data: {
+          __typename: 'Query',
+          userData: userReservesResponse,
+        },
+        variables: { lendingPoolAddressProvider, userAddress: currentAccount },
+      });
       setErrorUserReserves(false);
     } catch (e) {
       console.log('e', e);
@@ -96,20 +117,11 @@ export function usePoolDataRPC(
     currentAccount,
   ]);
 
-  useEffect(() => {
-    if (!currentAccount) setUserReserves(undefined);
-  }, [currentAccount]);
-
   const loading = loadingReserves || loadingUserReserves;
   const error = errorReserves || errorUserReserves;
   return {
     loading,
     error,
-    data: {
-      reserves,
-      userReserves: userReserves?.userReserves,
-      userEmodeCategoryId: userReserves?.userEmodeCategoryId,
-    },
     refresh: () => {
       return Promise.all([fetchUserReserves(), fetchReserves()]);
     },

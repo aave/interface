@@ -17,7 +17,7 @@ export interface ConnectionStatusProviderData {
 
 const ConnectionStatusDataContext = React.createContext({} as ConnectionStatusProviderData);
 
-export function ConnectionStatusProvider({ children }: React.PropsWithChildren<never>) {
+export const ConnectionStatusProvider: React.FC = ({ children }) => {
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
   const RPC_ONLY_MODE = !!currentNetworkConfig.rpcOnly;
   const [preferredConnectionMode, setPreferredConnectionMode] = useState<ConnectionMode>(
@@ -53,6 +53,6 @@ export function ConnectionStatusProvider({ children }: React.PropsWithChildren<n
       {children}
     </ConnectionStatusDataContext.Provider>
   );
-}
+};
 
 export const useConnectionStatusContext = () => useContext(ConnectionStatusDataContext);

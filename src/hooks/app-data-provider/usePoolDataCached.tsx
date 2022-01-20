@@ -18,16 +18,12 @@ export function usePoolDataCached(
   currentAccount?: string,
   skip = false
 ) {
-  const userId = currentAccount?.toLowerCase() || undefined;
-  const {
-    loading: poolDataLoading,
-    data: poolData,
-    subscribeToMore: subscribeToProtocolData,
-  } = useC_ProtocolDataQuery({
-    variables: { lendingPoolAddressProvider },
-    skip,
-    context: { target: APOLLO_QUERY_TARGET.CHAIN(chainId) },
-  });
+  const { loading: poolDataLoading, subscribeToMore: subscribeToProtocolData } =
+    useC_ProtocolDataQuery({
+      variables: { lendingPoolAddressProvider },
+      skip,
+      context: { target: APOLLO_QUERY_TARGET.CHAIN(chainId) },
+    });
   useEffect(() => {
     if (!skip) {
       return subscribeToProtocolData<
@@ -52,23 +48,19 @@ export function usePoolDataCached(
     }
   }, [subscribeToProtocolData, lendingPoolAddressProvider, skip]);
 
-  const {
-    loading: userDataLoading,
-    data: userData,
-    subscribeToMore: subscribeToUserData,
-  } = useC_UserDataQuery({
-    variables: { lendingPoolAddressProvider, userAddress: userId || '' },
-    skip: !userId || skip,
+  const { loading: userDataLoading, subscribeToMore: subscribeToUserData } = useC_UserDataQuery({
+    variables: { lendingPoolAddressProvider, userAddress: currentAccount || '' },
+    skip: !currentAccount || skip,
     context: { target: APOLLO_QUERY_TARGET.CHAIN(chainId) },
   });
   useEffect(() => {
-    if (userId && !skip)
+    if (currentAccount && !skip)
       return subscribeToUserData<
         C_UserDataUpdateSubscription,
         C_UserDataUpdateSubscriptionVariables
       >({
         document: C_UserDataUpdateDocument,
-        variables: { lendingPoolAddressProvider, userAddress: userId || '' },
+        variables: { lendingPoolAddressProvider, userAddress: currentAccount || '' },
         updateQuery: (previousQueryResult, { subscriptionData }) => {
           const userData = subscriptionData.data?.userDataUpdate;
           if (!userData) {
@@ -81,52 +73,11 @@ export function usePoolDataCached(
         },
         context: { target: APOLLO_QUERY_TARGET.CHAIN(chainId) },
       });
-  }, [subscribeToUserData, lendingPoolAddressProvider, userId, skip]);
+  }, [subscribeToUserData, lendingPoolAddressProvider, currentAccount, skip]);
 
-  const loading = (userId && userDataLoading) || poolDataLoading;
-
-  const reserves = poolData?.protocolData.reserves || [];
-  const userReserves = userData?.userData || { userReserves: [], userEmodeCategoryId: 0 };
-  const baseCurrencyInfo = poolData?.protocolData.baseCurrencyData;
-
-  // const usdPriceEth = new BigNumber(10)
-  //   .exponentiatedBy(18 + 8)
-  //   .div(poolData?.protocolData.usdPriceEth || '0')
-  //   .toFixed(0, BigNumber.ROUND_DOWN);
-  // if (userData?.userData.length && reserves.length) {
-  //   userData?.userData.reduce((prev, userReserve) => {
-  //     const reserve = reserves.find(
-  //       (res) => res.underlyingAsset === userReserve.underlyingAsset.toLowerCase()
-  //     );
-  //     if (reserve) {
-  //       userReserves.push({
-  //         ...userReserve,
-  //         // reserve: {
-  //         //   id: reserve.id,
-  //         //   underlyingAsset: reserve.underlyingAsset,
-  //         //   name: reserve.name,
-  //         //   symbol: reserve.symbol,
-  //         //   decimals: reserve.decimals,
-  //         //   liquidityRate: reserve.liquidityRate,
-  //         //   reserveLiquidationBonus: reserve.reserveLiquidationBonus,
-  //         //   lastUpdateTimestamp: reserve.lastUpdateTimestamp,
-  //         // },
-  //       });
-  //     }
-  //     return prev;
-  //   }, userReserves);
-  // }
+  const loading = (currentAccount && userDataLoading) || poolDataLoading;
 
   return {
     loading,
-    data: {
-      userId,
-      reserves: {
-        reservesData: reserves,
-        baseCurrencyData: baseCurrencyInfo,
-      },
-      userReserves: userReserves.userReserves,
-      userEmodeCategoryId: userReserves.userEmodeCategoryId,
-    },
   };
 }

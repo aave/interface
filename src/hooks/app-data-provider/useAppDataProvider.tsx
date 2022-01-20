@@ -1,9 +1,5 @@
 import {
   API_ETH_MOCK_ADDRESS,
-  IncentivesController,
-  IncentivesControllerInterface,
-  IncentivesControllerV2,
-  IncentivesControllerV2Interface,
   ReserveDataHumanized,
   WalletBalanceProvider,
 } from '@aave/contract-helpers';
@@ -16,6 +12,12 @@ import {
   normalize,
 } from '@aave/math-utils';
 import React, { useContext, useEffect, useState } from 'react';
+import {
+  useC_ProtocolDataQuery,
+  useC_ReservesIncentivesQuery,
+  useC_UserDataQuery,
+  useC_UserIncentivesQuery,
+} from './graphql/hooks';
 
 import BigNumber from 'bignumber.js';
 import { useCurrentTimestamp } from '../useCurrentTimestamp';
@@ -77,22 +79,19 @@ export type ComputedReserveData = ReturnType<typeof formatReservesAndIncentives>
 
 export interface AppDataContextType {
   reserves: ComputedReserveData[];
-  refreshPoolData?: () => Promise<void[]>;
+  // refreshPoolData?: () => Promise<void[]>;
   walletBalances: { [address: string]: { amount: string; amountUSD: string } };
   hasEmptyWallet: boolean;
   refetchWalletData: () => Promise<void>;
   isUserHasDeposits: boolean;
   user?: FormatUserSummaryAndIncentivesResponse & { earnedAPY: number; debtAPY: number };
   userId: string;
-  refreshIncentives?: () => Promise<void>;
-  loading: boolean;
-  incentivesTxBuilder: IncentivesControllerInterface;
-  incentivesTxBuilderV2: IncentivesControllerV2Interface;
+  // refreshIncentives?: () => Promise<void>;
+  // loading: boolean;
+
   marketReferencePriceInUsd: string;
   marketReferenceCurrencyDecimals: number;
   userEmodeCategoryId: number;
-  ensName?: string;
-  ensAvatar?: string;
   userReserves: UserReserveData[];
 }
 
@@ -105,40 +104,47 @@ const AppDataContext = React.createContext<AppDataContextType>({} as AppDataCont
 export const AppDataProvider: React.FC = ({ children }) => {
   const currentTimestamp = useCurrentTimestamp(1);
   const { currentAccount } = useWeb3Context();
-  const { jsonRpcProvider, currentNetworkConfig } = useProtocolDataContext();
-  const incentivesTxBuilder: IncentivesControllerInterface = new IncentivesController(
-    jsonRpcProvider
-  );
-  const incentivesTxBuilderV2: IncentivesControllerV2Interface = new IncentivesControllerV2(
-    jsonRpcProvider
-  );
-  const {
-    loading: loadingReserves,
-    data: { reserves: rawReservesData, userReserves: rawUserReserves, userEmodeCategoryId = 0 },
-    // error: loadingReservesError,
-    refresh: refreshPoolData,
-  } = usePoolData();
+  const { currentNetworkConfig, currentMarketData } = useProtocolDataContext();
+  // just populates the cache
+  useIncentiveData();
+  usePoolData();
+  const { data: reservesData } = useC_ProtocolDataQuery({
+    variables: {
+      lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
+    },
+    fetchPolicy: 'cache-only',
+  });
 
-  const reserves: ReserveDataHumanized[] = rawReservesData ? rawReservesData.reservesData : [];
-  const baseCurrencyData =
-    rawReservesData && rawReservesData.baseCurrencyData
-      ? rawReservesData.baseCurrencyData
-      : {
-          marketReferenceCurrencyDecimals: 0,
-          marketReferenceCurrencyPriceInUsd: '0',
-          networkBaseTokenPriceInUsd: '0',
-          networkBaseTokenPriceDecimals: 0,
-        };
-  const {
-    data,
-    //error,
-    loading: _loading,
-    refresh: refreshIncentives,
-  } = useIncentiveData();
+  const { data: userReservesData } = useC_UserDataQuery({
+    variables: {
+      lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
+      userAddress: currentAccount,
+    },
+    fetchPolicy: 'cache-only',
+  });
+
+  const reserves: ReserveDataHumanized[] = reservesData?.protocolData.reserves || [];
+  const baseCurrencyData = reservesData?.protocolData.baseCurrencyData || {
+    marketReferenceCurrencyDecimals: 0,
+    marketReferenceCurrencyPriceInUsd: '0',
+    networkBaseTokenPriceInUsd: '0',
+    networkBaseTokenPriceDecimals: 0,
+  };
+  const { data: reservesIncentivesData } = useC_ReservesIncentivesQuery({
+    variables: {
+      lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
+    },
+    fetchPolicy: 'cache-only',
+  });
+  const { data: userReservesIncentivesData } = useC_UserIncentivesQuery({
+    variables: {
+      lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
+      userAddress: currentAccount,
+    },
+    fetchPolicy: 'cache-only',
+  });
   let hasEmptyWallet = true;
   const { walletBalances, refetch: refetchWalletData } = useWalletBalances();
-  const loading =
-    (loadingReserves && !reserves.length) || (_loading && !data?.reserveIncentiveData);
 
   const aggregatedBalance = Object.keys(walletBalances).reduce((acc, reserve) => {
     const poolReserve = reserves.find((poolReserve) => {
@@ -166,17 +172,19 @@ export const AppDataProvider: React.FC = ({ children }) => {
     return acc;
   }, {} as { [address: string]: { amount: string; amountUSD: string } });
 
+  console.log(reservesIncentivesData?.reservesIncentives);
+
   const formattedPoolReserves = formatReservesAndIncentives({
     reserves,
     currentTimestamp,
     marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
     marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
-    reserveIncentives: data?.reserveIncentiveData || [],
+    reserveIncentives: reservesIncentivesData?.reservesIncentives || [],
   });
 
   const userReserves: UserReserveData[] = [];
-  if (rawUserReserves && reserves.length) {
-    rawUserReserves.forEach((rawUserReserve) => {
+  if (userReservesData?.userData && reserves.length) {
+    userReservesData?.userData.userReserves.forEach((rawUserReserve) => {
       const reserve = reserves.find(
         (r) => r.underlyingAsset.toLowerCase() === rawUserReserve.underlyingAsset.toLowerCase()
       );
@@ -189,14 +197,16 @@ export const AppDataProvider: React.FC = ({ children }) => {
     });
   }
 
+  const userEmodeCategoryId = userReservesData?.userData.userEmodeCategoryId || 0;
+
   const user: FormatUserSummaryAndIncentivesResponse = formatUserSummaryAndIncentives({
     currentTimestamp,
     marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
     marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
     userReserves,
-    userEmodeCategoryId,
-    reserveIncentives: data?.reserveIncentiveData || [],
-    userIncentives: data?.userIncentiveData || [],
+    userEmodeCategoryId: userEmodeCategoryId,
+    reserveIncentives: reservesIncentivesData?.reservesIncentives || [],
+    userIncentives: userReservesIncentivesData?.userIncentives || [],
   });
 
   const proportions = user.userReservesData.reduce(
@@ -279,13 +289,8 @@ export const AppDataProvider: React.FC = ({ children }) => {
         userId: currentAccount,
         isUserHasDeposits,
         refetchWalletData,
-        refreshPoolData,
-        refreshIncentives,
-        loading,
         marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
         marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
-        incentivesTxBuilderV2,
-        incentivesTxBuilder,
         userEmodeCategoryId,
       }}
     >

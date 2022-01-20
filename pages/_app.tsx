@@ -8,6 +8,7 @@ import { ApolloProvider } from '@apollo/client';
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { AppProps } from 'next/app';
+import { ConnectionStatusProvider } from 'src/hooks/useConnectionStatusContext';
 import Head from 'next/head';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
 import { MainLayout } from '../src/layouts/MainLayout';
@@ -32,17 +33,19 @@ export default function MyApp(props: MyAppProps) {
       </Head>
       <ApolloProvider client={apolloClient}>
         <LanguageProvider>
-          <ProtocolDataProvider>
-            <Web3ContextProvider>
-              <AppGlobalStyles>
-                <MainLayout>
+          <Web3ContextProvider>
+            <ProtocolDataProvider>
+              <ConnectionStatusProvider>
+                <AppGlobalStyles>
                   <AppDataProvider>
-                    <Component {...pageProps} />
+                    <MainLayout>
+                      <Component {...pageProps} />
+                    </MainLayout>
                   </AppDataProvider>
-                </MainLayout>
-              </AppGlobalStyles>
-            </Web3ContextProvider>
-          </ProtocolDataProvider>
+                </AppGlobalStyles>
+              </ConnectionStatusProvider>
+            </ProtocolDataProvider>
+          </Web3ContextProvider>
         </LanguageProvider>
       </ApolloProvider>
     </CacheProvider>

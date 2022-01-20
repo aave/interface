@@ -1,5 +1,4 @@
 import { ChainId } from '@aave/contract-helpers';
-
 import arbitrumBridgeLogo from './icons/arbitrumLogo.svg';
 import avalancheBridgeLogo from './icons/avalancheLogo.svg';
 import polygonBridgeLogo from './icons/polygonLogo.svg';
@@ -109,6 +108,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     wrappedBaseAssetSymbol: 'WMATIC',
     baseAssetDecimals: 18,
     explorerLink: 'https://polygonscan.com',
+    rpcOnly: true,
     bridge: {
       brandColor: '130, 71, 229',
       name: 'Polygon PoS Bridge',

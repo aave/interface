@@ -30,11 +30,7 @@ export const useIncentiveData = (skip = false) => {
     !currentNetworkConfig.cachingServerUrl ||
     !currentNetworkConfig.cachingWSServerUrl;
 
-  const {
-    loading: cachedDataLoading,
-    data: cachedData,
-    error: cachedDataError,
-  } = useIncentivesDataCached(
+  const { loading: cachedDataLoading, error: cachedDataError } = useIncentivesDataCached(
     currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
     currentChainId,
     currentAccount,
@@ -42,7 +38,6 @@ export const useIncentiveData = (skip = false) => {
   );
 
   const {
-    data: rpcData,
     loading: rpcDataLoading,
     error: rpcDataError,
     refresh,
@@ -57,7 +52,6 @@ export const useIncentiveData = (skip = false) => {
   if (rpcMode) {
     return {
       loading: rpcDataLoading,
-      data: rpcData,
       error: rpcDataError,
       refresh,
     };
@@ -65,7 +59,6 @@ export const useIncentiveData = (skip = false) => {
 
   return {
     loading: cachedDataLoading,
-    data: cachedData,
     error: cachedDataError,
   };
 };

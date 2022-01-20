@@ -1,4 +1,10 @@
 import {
+  C_ReservesIncentivesDocument,
+  C_ReservesIncentivesQuery,
+  C_UserIncentivesDocument,
+  C_UserIncentivesQuery,
+} from './graphql/hooks';
+import {
   ChainId,
   ReservesIncentiveDataHumanized,
   UiIncentiveDataProvider,
@@ -6,6 +12,7 @@ import {
 } from '@aave/contract-helpers';
 
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
+import { useApolloClient } from '@apollo/client';
 import { usePolling } from '../usePolling';
 import { useState } from 'react';
 
@@ -30,19 +37,13 @@ export function useIncentivesDataRPC(
   chainId: ChainId,
   incentiveDataProviderAddress: string | undefined,
   skip: boolean,
-  userAddress?: string
-): IncentiveDataResponse {
-  const currentAccount: string | undefined = userAddress ? userAddress.toLowerCase() : undefined;
+  currentAccount?: string
+) {
+  const { cache } = useApolloClient();
   const [loadingReserveIncentives, setLoadingReserveIncentives] = useState<boolean>(false);
   const [errorReserveIncentives, setErrorReserveIncentives] = useState<boolean>(false);
   const [loadingUserIncentives, setLoadingUserIncentives] = useState<boolean>(false);
   const [errorUserIncentives, setErrorUserIncentives] = useState<boolean>(false);
-  const [reserveIncentiveData, setReserveIncentiveData] = useState<
-    ReservesIncentiveDataHumanized[] | undefined
-  >(undefined);
-  const [userIncentiveData, setUserIncentiveData] = useState<
-    UserReservesIncentivesDataHumanized[] | undefined
-  >(undefined);
 
   // Fetch and format reserve incentive data from UiIncentiveDataProvider contract
   const fetchReserveIncentiveData = async () => {
@@ -58,7 +59,20 @@ export function useIncentivesDataRPC(
         await incentiveDataProviderContract.getReservesIncentivesDataHumanized(
           lendingPoolAddressProvider
         );
-      setReserveIncentiveData(rawReserveIncentiveData);
+      cache.writeQuery<C_ReservesIncentivesQuery>({
+        query: C_ReservesIncentivesDocument,
+        data: {
+          __typename: 'Query',
+          reservesIncentives: rawReserveIncentiveData.map((incentive) => ({
+            ...incentive,
+            aIncentiveData: { ...incentive.aIncentiveData, __typename: 'IncentiveData' },
+            vIncentiveData: { ...incentive.vIncentiveData, __typename: 'IncentiveData' },
+            sIncentiveData: { ...incentive.sIncentiveData, __typename: 'IncentiveData' },
+            __typename: 'ReserveIncentivesData',
+          })),
+        },
+        variables: { lendingPoolAddressProvider },
+      });
       setErrorReserveIncentives(false);
     } catch (e) {
       console.log('e', e);
@@ -82,8 +96,29 @@ export function useIncentivesDataRPC(
           user: currentAccount!,
           lendingPoolAddressProvider,
         });
-
-      setUserIncentiveData(rawUserIncentiveData);
+      cache.writeQuery<C_UserIncentivesQuery>({
+        query: C_UserIncentivesDocument,
+        data: {
+          __typename: 'Query',
+          userIncentives: rawUserIncentiveData.map((userIncentive) => ({
+            ...userIncentive,
+            aTokenIncentivesUserData: {
+              ...userIncentive.aTokenIncentivesUserData,
+              __typename: 'UserIncentiveData',
+            },
+            vTokenIncentivesUserData: {
+              ...userIncentive.vTokenIncentivesUserData,
+              __typename: 'UserIncentiveData',
+            },
+            sTokenIncentivesUserData: {
+              ...userIncentive.sTokenIncentivesUserData,
+              __typename: 'UserIncentiveData',
+            },
+            __typename: 'UserIncentivesData',
+          })),
+        },
+        variables: { lendingPoolAddressProvider, userAddress: currentAccount },
+      });
       setErrorUserIncentives(false);
     } catch (e) {
       console.log('e', e);
@@ -111,7 +146,6 @@ export function useIncentivesDataRPC(
   return {
     loading,
     error,
-    data: { reserveIncentiveData, userIncentiveData },
     refresh: async () => {
       if (incentiveDataProviderAddress) {
         if (currentAccount) await fetchUserIncentiveData();

@@ -14,7 +14,7 @@ export const usePoolData = () => {
     !currentNetworkConfig.cachingWSServerUrl ||
     !currentNetworkConfig.cachingServerUrl;
 
-  const { loading: cachedDataLoading, data: cachedData } = usePoolDataCached(
+  const { loading: cachedDataLoading } = usePoolDataCached(
     currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
     currentChainId,
     currentAccount,
@@ -24,7 +24,6 @@ export const usePoolData = () => {
   const {
     error: rpcDataError,
     loading: rpcDataLoading,
-    data: rpcData,
     refresh,
   } = usePoolDataRPC(
     currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
@@ -37,7 +36,6 @@ export const usePoolData = () => {
   if (rpcMode) {
     return {
       loading: rpcDataLoading,
-      data: rpcData,
       error: rpcDataError,
       refresh,
     };
@@ -45,7 +43,5 @@ export const usePoolData = () => {
 
   return {
     loading: cachedDataLoading,
-    // TODO: fix caching data
-    data: cachedData,
   };
 };
