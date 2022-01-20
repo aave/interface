@@ -1,8 +1,10 @@
 import { JsonRpcProvider, Network, Web3Provider } from '@ethersproject/providers';
-import { providers } from 'ethers';
-import React, { ReactElement, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import React, { ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
+
+import { Web3Context } from '../hooks/useWeb3Context';
 import Web3Modal from 'web3modal';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { providers } from 'ethers';
 
 export type Web3Data = {
   connectWallet: () => Promise<Web3Provider | undefined>;
@@ -13,27 +15,6 @@ export type Web3Data = {
   web3Modal: Web3Modal;
   chainId: number;
   switchNetwork: (chainId: number) => Promise<void>;
-};
-
-export type Web3ContextData = {
-  web3ProviderData: Web3Data;
-};
-
-const Web3Context = React.createContext({} as Web3ContextData);
-
-export const useWeb3Context = () => {
-  const web3Context = useContext(Web3Context);
-  if (Object.keys(web3Context).length === 0) {
-    throw new Error(
-      'useWeb3Context() can only be used inside of <Web3ContextProvider />, ' +
-        'please declare it at a higher level.'
-    );
-  }
-
-  const { web3ProviderData } = web3Context;
-  return useMemo<Web3Data>(() => {
-    return { ...web3ProviderData };
-  }, [web3ProviderData]);
 };
 
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {

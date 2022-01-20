@@ -1,17 +1,17 @@
-import { providers } from 'ethers';
-import React, { PropsWithChildren, useContext, useEffect, useState } from 'react';
-
 // import { BaseNetworkConfig } from "../ui-config/networksConfig";
 import {
-  availableMarkets,
   CustomMarket,
-  getNetworkConfig,
-  getProvider,
   MarketDataType,
-  marketsData,
   NetworkConfig,
   networkConfigs as _networkConfigs,
+  availableMarkets,
+  getNetworkConfig,
+  getProvider,
+  marketsData,
 } from '../utils/marketsAndNetworksConfig';
+import React, { PropsWithChildren, useContext, useEffect, useState } from 'react';
+
+import { providers } from 'ethers';
 
 // /**
 //  *

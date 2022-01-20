@@ -1,18 +1,20 @@
 import '../public/fonts/inter/inter.css';
 
-import { ApolloProvider } from '@apollo/client';
+import * as React from 'react';
+
 import { CacheProvider, EmotionCache } from '@emotion/react';
+
+import { ApolloProvider } from '@apollo/client';
+import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import * as React from 'react';
-import { apolloClient } from 'src/utils/apolloClient';
-
-import createEmotionCache from '../src/createEmotionCache';
-import { ProtocolDataProvider } from '../src/hooks/useProtocolData';
-import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
-import { MainLayout } from '../src/layouts/MainLayout';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
+import { MainLayout } from '../src/layouts/MainLayout';
+import { ProtocolDataProvider } from '../src/hooks/useProtocolDataContext';
 import { Web3ContextProvider } from '../src/libs/web3-data-provider/Web3ContextProvider';
+import { apolloClient } from 'src/utils/apolloClient';
+import createEmotionCache from '../src/createEmotionCache';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -34,7 +36,9 @@ export default function MyApp(props: MyAppProps) {
             <Web3ContextProvider>
               <AppGlobalStyles>
                 <MainLayout>
-                  <Component {...pageProps} />
+                  <AppDataProvider>
+                    <Component {...pageProps} />
+                  </AppDataProvider>
                 </MainLayout>
               </AppGlobalStyles>
             </Web3ContextProvider>

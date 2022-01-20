@@ -18,7 +18,8 @@
     "pre-commit": "lint-staged && npm run i18n && git add ./src/translations",
     "prepare": "husky install",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "gql-gen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
     "@aave/contract-helpers": "0.27.4-44a383732f03f7feebe772c93f15befced5f2e55.0+44a3837",
@@ -29,11 +30,16 @@
     "@emotion/react": "latest",
     "@emotion/server": "latest",
     "@emotion/styled": "latest",
+    "@graphql-codegen/add": "^3.1.1",
+    "@graphql-codegen/cli": "^2.3.1",
+    "@graphql-codegen/typescript-operations": "^2.2.2",
+    "@graphql-codegen/typescript-react-apollo": "^3.2.4",
     "@lingui/react": "^3.13.0",
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
     "@toruslabs/torus-embed": "^1.19.0",
     "@walletconnect/web3-provider": "^1.7.1",
+    "dayjs": "^1.10.7",
     "eth-provider": "^0.10.0",
     "ethereum-blockies-base64": "^1.0.2",
     "ethers": "^5.5.3",
