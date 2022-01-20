@@ -18,10 +18,10 @@ export default function MoreMenu() {
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState<Element | null>(null);
   const open = Boolean(anchorEl);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleClick = (event: any) => {
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {

@@ -6,17 +6,16 @@ import RemoveCircleOutlineRoundedIcon from '@mui/icons-material/RemoveCircleOutl
 import { Button, Divider, ListItemIcon, ListItemText } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { useTheme } from '@mui/system';
 import makeBlockie from 'ethereum-blockies-base64';
 import React, { useEffect, useState } from 'react';
+import { Link } from 'src/components/Link';
 import useGetEns from 'src/libs/hooks/use-get-ens';
 import { useWeb3Context } from 'src/libs/web3-data-provider/Web3ContextProvider';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
-import { ColorModeContext } from './AppGlobalStyles';
-
 export default function WalletWidget() {
-  const { connectWallet, disconnectWallet, currentAccount, connected, chainId } = useWeb3Context();
+  const { connectWallet, disconnectWallet, currentAccount, connected, chainId, switchNetwork } =
+    useWeb3Context();
 
   const { name: ensName, avatar: ensAvatar } = useGetEns(currentAccount);
   const ensNameAbbreviated = ensName
@@ -25,10 +24,7 @@ export default function WalletWidget() {
       : ensName
     : undefined;
 
-  const theme = useTheme();
-  const colorMode = React.useContext(ColorModeContext);
-
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState<Element | null>(null);
   const [useBlockie, setUseBlockie] = useState(false);
 
   useEffect(() => {
@@ -41,7 +37,11 @@ export default function WalletWidget() {
 
   const networkConfig = getNetworkConfig(chainId);
 
-  const handleClick = (event: { currentTarget: React.SetStateAction<null> }) => {
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if (!connected) {
       connectWallet();
     } else {
@@ -52,24 +52,18 @@ export default function WalletWidget() {
   const handleDisconnect = () => {
     if (connected) {
       disconnectWallet();
-      setAnchorEl(null);
+      handleClose();
     }
   };
 
   const handleCopy = async () => {
     navigator.clipboard.writeText(currentAccount);
-    setAnchorEl(null);
+    handleClose();
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleEtherscanLink = () => {
-    const explorerLink = `${networkConfig.explorerLink}/address/${currentAccount}`;
-    console.log('explorer link: ', explorerLink);
-    window.open(explorerLink, '_blank');
-    setAnchorEl(null);
+  const handleSwitchNetwork = () => {
+    switchNetwork(137);
+    handleClose();
   };
 
   return (
@@ -82,7 +76,7 @@ export default function WalletWidget() {
         aria-controls={open ? 'more-menu' : undefined}
         aria-expanded={open ? 'true' : undefined}
         aria-haspopup="true"
-        onClick={handleClick}
+        onClick={(event) => handleClick(event)}
         color="inherit"
         startIcon={
           connected ? (
@@ -98,17 +92,11 @@ export default function WalletWidget() {
         }
         endIcon={<ArrowDropDownIcon />}
       >
-        {currentAccount ? (
-          <div>
-            {
-              ensNameAbbreviated
-                ? ensNameAbbreviated
-                : currentAccount /*textCenterEllipsis(currentAccount, 4, 4) left for reference*/
-            }
-          </div>
-        ) : (
-          'Connect Wallet'
-        )}
+        {currentAccount
+          ? ensNameAbbreviated
+            ? ensNameAbbreviated
+            : currentAccount /*textCenterEllipsis(currentAccount, 4, 4) left for reference*/
+          : 'Connect Wallet'}
       </Button>
       <Menu
         id="more-menu"
@@ -132,7 +120,12 @@ export default function WalletWidget() {
           </ListItemIcon>
           <ListItemText>Copy address</ListItemText>
         </MenuItem>
-        <MenuItem onClick={handleEtherscanLink}>
+        <MenuItem
+          component={Link}
+          href={networkConfig.explorerLinkBuilder({ address: currentAccount })}
+          onClick={handleClose}
+          target="__BLANK"
+        >
           <ListItemIcon>
             <OpenInNewRoundedIcon fontSize="small" />
           </ListItemIcon>
@@ -143,6 +136,13 @@ export default function WalletWidget() {
             <RemoveCircleOutlineRoundedIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText>Disconnect Wallet</ListItemText>
+        </MenuItem>
+        <Divider />
+        <MenuItem onClick={handleSwitchNetwork}>
+          <ListItemIcon>
+            <RemoveCircleOutlineRoundedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>SwitchNetwork</ListItemText>
         </MenuItem>
       </Menu>
     </div>

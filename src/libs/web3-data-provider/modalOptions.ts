@@ -9,9 +9,8 @@ const POLLING_INTERVAL = 12000;
 const APP_NAME = 'Aave';
 const APP_LOGO_URL = 'https://aave.com/favicon.ico';
 
-export const getWeb3Modal = (networkId: number) => {
+export const getWeb3Modal = () => {
   const supportedChainIds = getSupportedChainIds();
-  const networkConfig = getNetworkConfig(networkId);
   return new Web3Modal({
     cacheProvider: true,
     providerOptions: {
@@ -36,12 +35,26 @@ export const getWeb3Modal = (networkId: number) => {
         options: {
           appName: APP_NAME,
           appLogoUrl: APP_LOGO_URL,
-          url: networkConfig.privateJsonRPCUrl || networkConfig.publicJsonRPCUrl[0],
+          rpc: supportedChainIds.reduce((acc, network) => {
+            const config = getNetworkConfig(network);
+            acc[network] = config.privateJsonRPCUrl || config.publicJsonRPCUrl[0];
+            return acc;
+          }, {} as { [networkId: number]: string }),
         },
       },
       frame: {
         package: ethProvider, // required
       },
+      // mewconnect: {
+      //   package: MewConnect, // required
+      //   options: {
+      //     rpc: supportedChainIds.reduce((acc, network) => {
+      //       const config = getNetworkConfig(network);
+      //       acc[network] = config.privateJsonRPCUrl || config.publicJsonRPCUrl[0];
+      //       return acc;
+      //     }, {} as { [networkId: number]: string }),
+      //   },
+      // },
     },
   });
 };
