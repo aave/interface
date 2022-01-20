@@ -100,7 +100,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         } catch (switchError) {
           console.log(switchError);
           const networkInfo = getNetworkConfig(newChainId);
-          // @ts-expect-error to correctly type we should add a conditional here to check instanceof Error
           if (switchError.code === 4902) {
             try {
               await provider.send('wallet_addEthereumChain', [
