@@ -1,5 +1,3 @@
-import '/public/fonts/inter/inter.css';
-
 import { ApolloProvider } from '@apollo/client';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { AppProps } from 'next/app';
@@ -9,6 +7,7 @@ import { apolloClient } from 'src/utils/apolloClient';
 
 import createEmotionCache from '../src/createEmotionCache';
 import { ProtocolDataProvider } from '../src/hooks/useProtocolData';
+import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { MainLayout } from '../src/layouts/MainLayout';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
 
@@ -29,9 +28,11 @@ export default function MyApp(props: MyAppProps) {
       <ApolloProvider client={apolloClient}>
         <LanguageProvider>
           <ProtocolDataProvider>
-            <MainLayout>
-              <Component {...pageProps} />
-            </MainLayout>
+            <AppGlobalStyles>
+              <MainLayout>
+                <Component {...pageProps} />
+              </MainLayout>
+            </AppGlobalStyles>
           </ProtocolDataProvider>
         </LanguageProvider>
       </ApolloProvider>

@@ -8,7 +8,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { useTheme } from '@mui/system';
 import * as React from 'react';
 
-import { ColorModeContext } from './MainLayout';
+import { ColorModeContext } from './AppGlobalStyles';
 
 export default function WalletWidget() {
   const theme = useTheme();
