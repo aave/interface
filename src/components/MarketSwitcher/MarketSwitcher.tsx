@@ -1,4 +1,6 @@
-import { Button, Icon, ListItemText, Menu, MenuItem } from '@mui/material';
+import styled from '@emotion/styled';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { Button, ListItemText, Menu, MenuItem } from '@mui/material';
 import React, { useState } from 'react';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 
@@ -15,21 +17,42 @@ export type Market = {
   marketTitle: string;
   networkName: string;
   networkLogo: string;
+  selected?: boolean;
 };
 
 export type MarketSwitcherProps = {
   markets: Market[];
 };
 
-export const MarketName = ({ networkLogo, networkName, marketTitle }: Market) => {
+const MarketNameContainer = styled('div')(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'left',
+}));
+
+const Text = styled('h1')(({ theme }) => ({
+  fontWeight: '900',
+  fontSize: '32px',
+  lineHeight: '40px',
+  marginLeft: '5px',
+  marginBottom: '0px',
+  alignSelf: 'felx-end',
+}));
+
+const NetworkLogo = styled('img')(({ theme }) => ({
+  width: '32px',
+  height: '32px',
+  alignSelf: 'flex-end',
+}));
+
+export const MarketName = ({ networkLogo, networkName, marketTitle, selected }: Market) => {
   return (
-    <div>
-      <Icon>
-        <img src={networkLogo} width="100%" height="100%" alt={`${networkName} icon`} />
-      </Icon>
-      <div>{networkName}</div>
-      <div>{marketTitle}</div>
-    </div>
+    <MarketNameContainer>
+      <NetworkLogo src={networkLogo} width="100%" height="100%" alt={`${networkName} icon`} />
+      <Text>{networkName}</Text>
+      <Text>{marketTitle}</Text>
+      {selected && <KeyboardArrowDownIcon sx={{ alignSelf: 'flex-end' }} fontSize="large" />}
+    </MarketNameContainer>
   );
 };
 
@@ -56,7 +79,7 @@ export const MarketSwitcher = () => {
   return (
     <div>
       <Button
-        variant="outlined"
+        variant="text"
         size="small"
         aria-label="more"
         id="wallet-button"
@@ -70,6 +93,7 @@ export const MarketSwitcher = () => {
           marketTitle={currentMarketData.marketTitle}
           networkLogo={currentNetworkConfig.networkLogoPath}
           networkName={currentNetworkConfig.name}
+          selected
         />
       </Button>
       <Menu

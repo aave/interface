@@ -63,7 +63,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://kovan.etherscan.io',
     rpcOnly: true,
     isTestnet: true,
-    networkLogoPath: '/icons/networks/ethereum.svg',
+    networkLogoPath: '/icons/networks/polygon.svg',
   },
   [ChainId.rinkeby]: {
     name: 'Rinkeby',
@@ -79,10 +79,10 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://rinkeby.etherscan.io/',
     rpcOnly: true,
     isTestnet: true,
-    networkLogoPath: '/icons/networks/ethereum.svg',
+    networkLogoPath: '/icons/networks/polygon.svg',
   },
   [ChainId.mainnet]: {
-    name: 'Ethereum mainnet',
+    name: 'Ethereum',
     publicJsonRPCUrl: ['https://cloudflare-eth.com', 'https://eth-mainnet.alchemyapi.io/v2/demo'],
     publicJsonRPCWSUrl: 'wss://eth-mainnet.alchemyapi.io/v2/demo',
     cachingServerUrl: 'https://cache-api-1.aave.com/graphql',
@@ -95,7 +95,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://etherscan.io',
     rpcOnly: false,
     ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
-    networkLogoPath: '/icons/network/ethereum.svg',
+    networkLogoPath: '/icons/networks/ethereum.svg',
   },
   [ChainId.polygon]: {
     name: 'Polygon POS',
