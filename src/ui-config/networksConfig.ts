@@ -63,7 +63,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://kovan.etherscan.io',
     rpcOnly: true,
     isTestnet: true,
-    networkLogoPath: '/icons/network/ethereum.svg',
+    networkLogoPath: '/icons/networks/ethereum.svg',
   },
   [ChainId.rinkeby]: {
     name: 'Rinkeby',
@@ -79,7 +79,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://rinkeby.etherscan.io/',
     rpcOnly: true,
     isTestnet: true,
-    networkLogoPath: '/icons/network/ethereum.svg',
+    networkLogoPath: '/icons/networks/ethereum.svg',
   },
   [ChainId.mainnet]: {
     name: 'Ethereum mainnet',
@@ -108,7 +108,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     wrappedBaseAssetSymbol: 'WMATIC',
     baseAssetDecimals: 18,
     explorerLink: 'https://polygonscan.com',
-    networkLogoPath: '/icons/network/polygon.svg',
+    networkLogoPath: '/icons/networks/polygon.svg',
     bridge: {
       brandColor: '130, 71, 229',
       name: 'Polygon PoS Bridge',
@@ -127,7 +127,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://explorer-mumbai.maticvigil.com',
     rpcOnly: true,
     isTestnet: true,
-    networkLogoPath: '/icons/network/polygon.svg',
+    networkLogoPath: '/icons/networks/polygon.svg',
   },
   [ChainId.fuji]: {
     name: 'Fuji',
@@ -142,7 +142,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     rpcOnly: true,
     usdMarket: true,
     isTestnet: true,
-    networkLogoPath: '/icons/network/avalanche.svg',
+    networkLogoPath: '/icons/networks/avalanche.svg',
     bridge: {
       brandColor: '232, 65, 66',
       name: 'Avalanche Bridge',
@@ -163,7 +163,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://cchain.explorer.avax.network',
     rpcOnly: false,
     usdMarket: true,
-    networkLogoPath: '/icons/network/avalanche.svg',
+    networkLogoPath: '/icons/networks/avalanche.svg',
     bridge: {
       brandColor: '232, 65, 66',
       name: 'Avalanche Bridge',
@@ -183,7 +183,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     rpcOnly: true,
     usdMarket: true,
     isTestnet: true,
-    networkLogoPath: '/icons/network/arbitrum.svg',
+    networkLogoPath: '/icons/networks/arbitrum.svg',
     bridge: {
       brandColor: '40, 160, 239',
       name: 'Arbitrum Bridge',
@@ -203,7 +203,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     rpcOnly: true,
     usdMarket: true,
     isTestnet: true,
-    networkLogoPath: '/icons/network/arbitrum.svg',
+    networkLogoPath: '/icons/networks/arbitrum.svg',
     bridge: {
       brandColor: '40, 160, 239',
       name: 'Harmony Bridge',
@@ -223,7 +223,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     rpcOnly: true,
     usdMarket: true,
     isTestnet: true,
-    networkLogoPath: '/icons/network/arbitrum.svg',
+    networkLogoPath: '/icons/networks/arbitrum.svg',
     bridge: {
       brandColor: '40, 160, 239',
       name: 'Harmony Bridge',
@@ -243,7 +243,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     rpcOnly: true,
     usdMarket: true,
     isTestnet: true,
-    networkLogoPath: '/icons/network/arbitrum.svg',
+    networkLogoPath: '/icons/networks/arbitrum.svg',
     bridge: {
       brandColor: '40, 160, 239',
       name: 'Optimism Bridge',
@@ -263,7 +263,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     rpcOnly: true,
     usdMarket: true,
     isTestnet: true,
-    networkLogoPath: '/icons/network/arbitrum.svg',
+    networkLogoPath: '/icons/networks/arbitrum.svg',
     bridge: {
       brandColor: '40, 160, 239',
       name: 'Optimism Bridge',
@@ -283,7 +283,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     rpcOnly: true,
     usdMarket: true,
     isTestnet: true,
-    networkLogoPath: '/icons/network/arbitrum.svg',
+    networkLogoPath: '/icons/networks/arbitrum.svg',
     bridge: {
       brandColor: '40, 160, 239',
       name: 'Fantom Bridge',
@@ -303,7 +303,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     rpcOnly: true,
     usdMarket: true,
     isTestnet: true,
-    networkLogoPath: '/icons/network/arbitrum.svg',
+    networkLogoPath: '/icons/networks/arbitrum.svg',
     bridge: {
       brandColor: '40, 160, 239',
       name: 'Fantom Bridge',
