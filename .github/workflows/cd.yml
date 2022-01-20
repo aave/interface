@@ -43,10 +43,10 @@ jobs:
           BUILD_LOCATION: './out'
           CID_VERSION: 1
 
-      - name: crust
-        uses: crustio/ipfs-crust-action@18f5ab4e8496351cfaca10a55ced7119cb0fe677
-        continue-on-error: true
-        timeout-minutes: 2
-        with:
-          cid: ${{ steps.pinata.outputs.hash }}
-          seeds: ${{ secrets.CRUST_SEEDS }}
+      # - name: crust
+      #   uses: crustio/ipfs-crust-action@18f5ab4e8496351cfaca10a55ced7119cb0fe677
+      #   continue-on-error: true
+      #   timeout-minutes: 2
+      #   with:
+      #     cid: ${{ steps.pinata.outputs.hash }}
+      #     seeds: ${{ secrets.CRUST_SEEDS }}
