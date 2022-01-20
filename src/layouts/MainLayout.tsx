@@ -1,5 +1,6 @@
 import { Box } from '@mui/material';
 import React from 'react';
+import { MarketSwitcher } from 'src/components/MarketSwitcher/MarketSwitcher';
 
 import LanguageSelector from '../components/LanguageSelector';
 import Copyright from '../Copyright';
@@ -19,6 +20,8 @@ export const MainLayout: React.FC = ({ children }) => {
       <Box sx={{ width: 150, margin: '0 auto' }}>
         <LanguageSelector />
       </Box>
+
+      <MarketSwitcher />
 
       <Copyright sx={{ mt: 4 }} />
     </>

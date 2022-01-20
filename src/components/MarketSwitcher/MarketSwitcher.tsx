@@ -1,10 +1,18 @@
-import { ChainId } from '@aave/contract-helpers';
 import { Button, ListItemText, Menu, MenuItem } from '@mui/material';
 import React, { useState } from 'react';
+import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
+
+import { useProtocolDataContext } from '../../hooks/useProtocolData';
+import {
+  availableMarkets,
+  CustomMarket,
+  MarketDataType,
+  marketsData,
+  networkConfigs,
+} from '../../utils/marketsAndNetworksConfig';
 
 export type Market = {
   marketTitle: string;
-  chainId: ChainId;
   networkName: string;
   networkLogo: string;
 };
@@ -13,8 +21,19 @@ export type MarketSwitcherProps = {
   markets: Market[];
 };
 
-export const MarketSwitcher = ({ markets }: MarketSwitcherProps) => {
-  const [selectedMarket, setSelectedMarket] = useState<Market>(markets[0]);
+export const MarketName = ({ networkLogo, networkName, marketTitle }: Market) => {
+  return (
+    <div>
+      <img src={networkLogo} width="100%" height="100%" alt={`${networkName} icon`} />
+      <div>{networkName}</div>
+      <div>{marketTitle}</div>
+    </div>
+  );
+};
+
+export const MarketSwitcher = () => {
+  const { currentMarket, setCurrentMarket, currentMarketData, currentNetworkConfig } =
+    useProtocolDataContext();
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
 
   const open = Boolean(anchorEl);
@@ -27,8 +46,8 @@ export const MarketSwitcher = ({ markets }: MarketSwitcherProps) => {
     setAnchorEl(null);
   };
 
-  const handleSelectMarket = (market: Market) => {
-    setSelectedMarket(market);
+  const handleSelectMarket = (marketId: CustomMarket) => {
+    setCurrentMarket(marketId);
     setAnchorEl(null);
   };
 
@@ -45,14 +64,11 @@ export const MarketSwitcher = ({ markets }: MarketSwitcherProps) => {
         onClick={(event) => handleClick(event)}
         color="inherit"
       >
-        <img
-          src={selectedMarket.networkLogo}
-          width="100%"
-          height="100%"
-          alt={`${selectedMarket.networkName} icon`}
+        <MarketName
+          marketTitle={currentMarketData.marketTitle}
+          networkLogo={currentNetworkConfig.networkLogoPath}
+          networkName={currentNetworkConfig.name}
         />
-        <div>{selectedMarket.networkName}</div>
-        <div>{selectedMarket.marketTitle}</div>
       </Button>
       <Menu
         id="more-menu"
@@ -68,22 +84,26 @@ export const MarketSwitcher = ({ markets }: MarketSwitcherProps) => {
           },
         }}
       >
-        {markets.map((market, index) => (
-          <MenuItem key={index} onClick={() => handleSelectMarket(market)}>
-            <ListItemText>
-              <div>
-                {/* <img
-                  src={market.networkLogo}
-                  width="100%"
-                  height="100%"
-                  alt={`${market.networkName} icon`}
-                /> */}
-                <div>{market.networkName}</div>
-                <div>{market.marketTitle}</div>
-              </div>
-            </ListItemText>
-          </MenuItem>
-        ))}
+        {availableMarkets.map((marketId: CustomMarket) => {
+          // TODO: filter out current market??
+          const market: MarketDataType = marketsData[marketId];
+          const network: BaseNetworkConfig = networkConfigs[market.chainId];
+          console.log('marketId: ', marketId, ' network: ', network, ' market: ', market);
+          return (
+            <MenuItem
+              key={`market-selector-${marketId}`}
+              onClick={() => handleSelectMarket(marketId)}
+            >
+              <ListItemText>
+                <MarketName
+                  marketTitle={market.marketTitle}
+                  networkLogo={network.networkLogoPath}
+                  networkName={network.name}
+                />
+              </ListItemText>
+            </MenuItem>
+          );
+        })}
       </Menu>
     </div>
   );
