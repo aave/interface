@@ -39,7 +39,7 @@ const Home: NextPage = () => {
         <FormattedNumber value={28882.17271916622} symbol="USD" />
         <FormattedNumber value={28882.17271916622} symbol="USDT" compact maximumDecimals={2} />
         <FormattedNumber
-          value={288829192763715.17271916622}
+          value={'288829192763715.17271916622'}
           symbol="DAI"
           sx={{ fontWeight: 500 }}
         />
