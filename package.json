@@ -35,9 +35,6 @@
     "@walletconnect/web3-provider": "^1.7.1",
     "eth-provider": "^0.10.0",
     "ethereum-blockies-base64": "^1.0.2",
-    "react-intl": "^5.24.3",
-    "walletlink": "^2.4.0",
-    "web3modal": "^1.9.5",
     "ethers": "^5.5.3",
     "graphql": "^16.2.0",
     "graphql-ws": "^5.5.5",
@@ -45,7 +42,9 @@
     "react": "latest",
     "react-dom": "latest",
     "reflect-metadata": "^0.1.13",
-    "subscriptions-transport-ws": "^0.11.0"
+    "subscriptions-transport-ws": "^0.11.0",
+    "walletlink": "^2.4.0",
+    "web3modal": "^1.9.5"
   },
   "devDependencies": {
     "@babel/core": "^7.16.7",
