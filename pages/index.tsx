@@ -2,15 +2,16 @@ import { Trans } from '@lingui/macro';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import type { NextPage } from 'next';
 import * as React from 'react';
 
 import FormattedNumber from '../src/components/FormattedNumber';
 import { Link } from '../src/components/Link';
 import { MultiTokenIcon } from '../src/components/TokenIcon';
+import { useHeaderTopLineHeight } from '../src/layouts/MainLayout';
 // import { useProtocolDataContext } from '../src/hooks/useProtocolData';
 
-const Home: NextPage = () => {
+export default function Home() {
+  useHeaderTopLineHeight(248);
   // const { currentMarket } = useProtocolDataContext();
   return (
     <Container maxWidth="lg">
@@ -47,6 +48,4 @@ const Home: NextPage = () => {
       </Box>
     </Container>
   );
-};
-
-export default Home;
+}

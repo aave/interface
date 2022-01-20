@@ -1,18 +1,23 @@
-import { GitHub, LibraryBooks, QuestionMarkOutlined } from '@mui/icons-material';
+import { Trans } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import { Button, Divider, ListItemIcon, ListItemText, MenuList } from '@mui/material';
+import { Button, Divider, ListItemIcon, ListItemText, MenuList, SvgIcon } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { Box, useTheme } from '@mui/system';
-import * as React from 'react';
+import { useTheme } from '@mui/system';
+import React from 'react';
 
+import { Link } from '../components/Link';
+import { moreNavigation } from '../ui-config/menu-items';
 import { ColorModeContext } from './AppGlobalStyles';
 
 export default function MoreMenu() {
+  const { i18n } = useLingui();
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -24,9 +29,8 @@ export default function MoreMenu() {
   };
 
   return (
-    <Box sx={{ ml: 2 }}>
+    <>
       <Button
-        variant="outlined"
         size="small"
         aria-label="more"
         id="more-button"
@@ -34,11 +38,12 @@ export default function MoreMenu() {
         aria-expanded={open ? 'true' : undefined}
         aria-haspopup="true"
         onClick={handleClick}
-        sx={{ px: 0.5, width: '36px', minWidth: 0 }}
-        color="inherit"
+        sx={{ color: 'common.white' }}
       >
-        <MoreHorizIcon />
+        <Trans>More</Trans>
+        <MoreHorizIcon color="inherit" />
       </Button>
+
       <Menu
         id="more-menu"
         MenuListProps={{
@@ -49,37 +54,22 @@ export default function MoreMenu() {
         onClose={handleClose}
         PaperProps={{
           style: {
-            minWidth: 120,
+            minWidth: 240,
           },
         }}
       >
         <MenuList>
-          <MenuItem>
-            <ListItemIcon>
-              <QuestionMarkOutlined fontSize="small" />
-            </ListItemIcon>
-            <ListItemText>FAQ</ListItemText>
-          </MenuItem>
-          <MenuItem>
-            <ListItemIcon>
-              <LibraryBooks fontSize="small" />
-            </ListItemIcon>
-            <ListItemText>Developers</ListItemText>
-          </MenuItem>
+          {moreNavigation.map((item, index) => (
+            <MenuItem component={Link} href={item.link} key={index}>
+              <ListItemIcon>
+                <SvgIcon sx={{}}>{item.icon}</SvgIcon>
+              </ListItemIcon>
+              <ListItemText>{i18n._(item.title)}</ListItemText>
+            </MenuItem>
+          ))}
+
           <Divider />
-          <MenuItem>
-            <ListItemIcon>
-              <QuestionMarkOutlined fontSize="small" />
-            </ListItemIcon>
-            <ListItemText>Discord</ListItemText>
-          </MenuItem>
-          <MenuItem>
-            <ListItemIcon>
-              <GitHub fontSize="small" />
-            </ListItemIcon>
-            <ListItemText>Github</ListItemText>
-          </MenuItem>
-          <Divider />
+
           <MenuItem onClick={colorMode.toggleColorMode}>
             <ListItemIcon>
               {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
@@ -90,6 +80,6 @@ export default function MoreMenu() {
           </MenuItem>
         </MenuList>
       </Menu>
-    </Box>
+    </>
   );
 }

@@ -9,9 +9,11 @@ import { AaveModal } from 'src/components/AaveModal/AaveModal';
 import { useAaveModal } from 'src/components/AaveModal/useAaveModal';
 
 import { Link } from '../src/components/Link';
+import { useHeaderTopLineHeight } from '../src/layouts/MainLayout';
 
 const About: NextPage = () => {
   const [open, setOpen] = useAaveModal(true);
+  useHeaderTopLineHeight(10);
 
   return (
     <Container maxWidth="lg">

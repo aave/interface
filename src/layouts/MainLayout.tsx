@@ -1,26 +1,38 @@
 import { Box } from '@mui/material';
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import LanguageSelector from '../components/LanguageSelector';
-import Copyright from '../Copyright';
 import AppHeader from './AppHeader';
 
-/**
- * Main Layout component which wrapps around the whole app
- * @param param0
- * @returns
- */
-export const MainLayout: React.FC = ({ children }) => {
+export const HeaderTopLineHeightContext = React.createContext({
+  headerTopLineHeight: 248,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/no-unused-vars
+  setHeaderTopLineHeight: (_headerTopLineHeight: number) => {},
+});
+
+export function useHeaderTopLineHeight(headerTopLineHeight: number) {
+  const { setHeaderTopLineHeight } = React.useContext(HeaderTopLineHeightContext);
+  React.useEffect(() => setHeaderTopLineHeight(headerTopLineHeight));
+}
+
+export default function MainLayout({ children }: { children: ReactNode }) {
+  const [headerTopLineHeight, setHeaderTopLineHeight] = React.useState(248);
+
   return (
     <>
-      <AppHeader />
-      <main>{children}</main>
+      <AppHeader topLineHeight={headerTopLineHeight} />
+
+      <main>
+        <HeaderTopLineHeightContext.Provider
+          value={{ headerTopLineHeight, setHeaderTopLineHeight }}
+        >
+          {children}
+        </HeaderTopLineHeightContext.Provider>
+      </main>
 
       <Box sx={{ width: 150, margin: '0 auto' }}>
         <LanguageSelector />
       </Box>
-
-      <Copyright sx={{ mt: 4 }} />
     </>
   );
-};
+}
