@@ -8,6 +8,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useTheme } from '@mui/system';
 import makeBlockie from 'ethereum-blockies-base64';
+import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import useGetEns from 'src/libs/hooks/use-get-ens';
 import { useWeb3Context } from 'src/libs/web3-data-provider/Web3ContextProvider';
@@ -42,7 +43,7 @@ export default function WalletWidget() {
 
   const networkConfig = getNetworkConfig(chainId);
 
-  const handleClick = (event: { currentTarget: React.SetStateAction<null> }) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if (!connected) {
       connectWallet();
     } else {
@@ -88,11 +89,11 @@ export default function WalletWidget() {
         aria-controls={open ? 'more-menu' : undefined}
         aria-expanded={open ? 'true' : undefined}
         aria-haspopup="true"
-        onClick={handleClick}
+        onClick={(event) => handleClick(event)}
         color="inherit"
         startIcon={
           connected ? (
-            <img
+            <Image
               style={{ width: '15px', height: '15px' }}
               src={useBlockie ? makeBlockie(currentAccount) : ensAvatar}
               alt=""
