@@ -8,6 +8,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import makeBlockie from 'ethereum-blockies-base64';
 import React, { useEffect, useState } from 'react';
+import { Link } from 'src/components/Link';
 import useGetEns from 'src/libs/hooks/use-get-ens';
 import { useWeb3Context } from 'src/libs/web3-data-provider/Web3ContextProvider';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
@@ -36,6 +37,10 @@ export default function WalletWidget() {
 
   const networkConfig = getNetworkConfig(chainId);
 
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if (!connected) {
       connectWallet();
@@ -47,29 +52,18 @@ export default function WalletWidget() {
   const handleDisconnect = () => {
     if (connected) {
       disconnectWallet();
-      setAnchorEl(null);
+      handleClose();
     }
   };
 
   const handleCopy = async () => {
     navigator.clipboard.writeText(currentAccount);
-    setAnchorEl(null);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleEtherscanLink = () => {
-    const explorerLink = `${networkConfig.explorerLink}/address/${currentAccount}`;
-    console.log('explorer link: ', explorerLink);
-    window.open(explorerLink, '_blank');
-    setAnchorEl(null);
+    handleClose();
   };
 
   const handleSwitchNetwork = () => {
     switchNetwork(137);
-    setAnchorEl(null);
+    handleClose();
   };
 
   return (
@@ -98,17 +92,11 @@ export default function WalletWidget() {
         }
         endIcon={<ArrowDropDownIcon />}
       >
-        {currentAccount ? (
-          <div>
-            {
-              ensNameAbbreviated
-                ? ensNameAbbreviated
-                : currentAccount /*textCenterEllipsis(currentAccount, 4, 4) left for reference*/
-            }
-          </div>
-        ) : (
-          'Connect Wallet'
-        )}
+        {currentAccount
+          ? ensNameAbbreviated
+            ? ensNameAbbreviated
+            : currentAccount /*textCenterEllipsis(currentAccount, 4, 4) left for reference*/
+          : 'Connect Wallet'}
       </Button>
       <Menu
         id="more-menu"
@@ -132,7 +120,12 @@ export default function WalletWidget() {
           </ListItemIcon>
           <ListItemText>Copy address</ListItemText>
         </MenuItem>
-        <MenuItem onClick={handleEtherscanLink}>
+        <MenuItem
+          component={Link}
+          href={networkConfig.explorerLinkBuilder({ address: currentAccount })}
+          onClick={handleClose}
+          target="__BLANK"
+        >
           <ListItemIcon>
             <OpenInNewRoundedIcon fontSize="small" />
           </ListItemIcon>
