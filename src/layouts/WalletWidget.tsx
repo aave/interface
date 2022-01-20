@@ -30,7 +30,7 @@ export default function WalletWidget() {
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
 
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState<Element | null>(null);
   const [useBlockie, setUseBlockie] = useState(false);
 
   useEffect(() => {
