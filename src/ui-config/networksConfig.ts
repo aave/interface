@@ -1,9 +1,5 @@
 import { ChainId } from '@aave/contract-helpers';
 
-import arbitrumBridgeLogo from './icons/arbitrumLogo.svg';
-import avalancheBridgeLogo from './icons/avalancheLogo.svg';
-import polygonBridgeLogo from './icons/polygonLogo.svg';
-
 export type ExplorerLinkBuilderProps = {
   tx?: string;
   address?: string;
@@ -43,13 +39,13 @@ export type NetworkConfig = {
   isTestnet?: boolean;
   // get's automatically populated on fork networks
   isFork?: boolean;
+  networkLogoPath: string;
   // contains the forked off chainId
   underlyingChainId?: number;
   bridge?: {
     brandColor: string;
     name: string;
     url: string;
-    logo: string;
   };
 };
 
@@ -67,6 +63,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://kovan.etherscan.io',
     rpcOnly: true,
     isTestnet: true,
+    networkLogoPath: '/icons/network/ethereum.svg',
   },
   [ChainId.rinkeby]: {
     name: 'Rinkeby',
@@ -82,6 +79,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://rinkeby.etherscan.io/',
     rpcOnly: true,
     isTestnet: true,
+    networkLogoPath: '/icons/network/ethereum.svg',
   },
   [ChainId.mainnet]: {
     name: 'Ethereum mainnet',
@@ -97,6 +95,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://etherscan.io',
     rpcOnly: false,
     ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
+    networkLogoPath: '/icons/network/ethereum.svg',
   },
   [ChainId.polygon]: {
     name: 'Polygon POS',
@@ -109,11 +108,11 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     wrappedBaseAssetSymbol: 'WMATIC',
     baseAssetDecimals: 18,
     explorerLink: 'https://polygonscan.com',
+    networkLogoPath: '/icons/network/polygon.svg',
     bridge: {
       brandColor: '130, 71, 229',
       name: 'Polygon PoS Bridge',
       url: 'https://wallet.matic.network/bridge/',
-      logo: polygonBridgeLogo,
     },
     ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
@@ -128,6 +127,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://explorer-mumbai.maticvigil.com',
     rpcOnly: true,
     isTestnet: true,
+    networkLogoPath: '/icons/network/polygon.svg',
   },
   [ChainId.fuji]: {
     name: 'Fuji',
@@ -142,11 +142,11 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     rpcOnly: true,
     usdMarket: true,
     isTestnet: true,
+    networkLogoPath: '/icons/network/avalanche.svg',
     bridge: {
       brandColor: '232, 65, 66',
       name: 'Avalanche Bridge',
       url: 'https://bridge.avax.network/',
-      logo: avalancheBridgeLogo,
     },
   },
   [ChainId.avalanche]: {
@@ -163,11 +163,11 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://cchain.explorer.avax.network',
     rpcOnly: false,
     usdMarket: true,
+    networkLogoPath: '/icons/network/avalanche.svg',
     bridge: {
       brandColor: '232, 65, 66',
       name: 'Avalanche Bridge',
       url: 'https://bridge.avax.network/',
-      logo: avalancheBridgeLogo,
     },
     ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
@@ -183,11 +183,131 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     rpcOnly: true,
     usdMarket: true,
     isTestnet: true,
+    networkLogoPath: '/icons/network/arbitrum.svg',
     bridge: {
       brandColor: '40, 160, 239',
       name: 'Arbitrum Bridge',
       url: 'https://bridge.arbitrum.io',
-      logo: arbitrumBridgeLogo,
+    },
+  },
+  [ChainId.harmony]: {
+    name: 'Harmony',
+    publicJsonRPCUrl: ['https://api.s0.t.hmny.io', 'https://api.harmony.one'],
+    publicJsonRPCWSUrl: 'wss://ws.s0.t.hmny.io',
+    protocolDataUrl: '',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'ONE',
+    wrappedBaseAssetSymbol: 'WONE',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://explorer.harmony.one/',
+    rpcOnly: true,
+    usdMarket: true,
+    isTestnet: true,
+    networkLogoPath: '/icons/network/arbitrum.svg',
+    bridge: {
+      brandColor: '40, 160, 239',
+      name: 'Harmony Bridge',
+      url: 'https://bridge.harmony.one',
+    },
+  },
+  [ChainId.harmony_testnet]: {
+    name: 'Harmony Testnet',
+    publicJsonRPCUrl: ['https://api.s0.b.hmny.io', 'https://api.s0.pops.one'],
+    publicJsonRPCWSUrl: 'wss://ws.s0.pops.one',
+    protocolDataUrl: '',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'ONE',
+    wrappedBaseAssetSymbol: 'WONE',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://explorer.pops.one/',
+    rpcOnly: true,
+    usdMarket: true,
+    isTestnet: true,
+    networkLogoPath: '/icons/network/arbitrum.svg',
+    bridge: {
+      brandColor: '40, 160, 239',
+      name: 'Harmony Bridge',
+      url: 'https://bridge.harmony.one',
+    },
+  },
+  [ChainId.optimism]: {
+    name: 'Optimism',
+    publicJsonRPCUrl: ['https://mainnet.optimism.io'],
+    publicJsonRPCWSUrl: 'wss://ws-mainnet.optimism.io',
+    protocolDataUrl: '',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'ETH', // OETH
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://optimistic.etherscan.io/',
+    rpcOnly: true,
+    usdMarket: true,
+    isTestnet: true,
+    networkLogoPath: '/icons/network/arbitrum.svg',
+    bridge: {
+      brandColor: '40, 160, 239',
+      name: 'Optimism Bridge',
+      url: 'https://gateway.optimism.io',
+    },
+  },
+  [ChainId.optimism_kovan]: {
+    name: 'Optimism Testnet',
+    publicJsonRPCUrl: ['https://kovan.optimism.io'],
+    publicJsonRPCWSUrl: 'wss://ws-kovan.optimism.io',
+    protocolDataUrl: '',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'OR', // KOR
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://kovan-optimistic.etherscan.io/',
+    rpcOnly: true,
+    usdMarket: true,
+    isTestnet: true,
+    networkLogoPath: '/icons/network/arbitrum.svg',
+    bridge: {
+      brandColor: '40, 160, 239',
+      name: 'Optimism Bridge',
+      url: 'https://gateway.optimism.io',
+    },
+  },
+  [ChainId.fantom]: {
+    name: 'Fantom',
+    publicJsonRPCUrl: ['https://rpc.ftm.tools'],
+    publicJsonRPCWSUrl: 'wss://wsapi.fantom.network',
+    protocolDataUrl: '',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'FTM',
+    wrappedBaseAssetSymbol: 'WFTM',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://ftmscan.com/',
+    rpcOnly: true,
+    usdMarket: true,
+    isTestnet: true,
+    networkLogoPath: '/icons/network/arbitrum.svg',
+    bridge: {
+      brandColor: '40, 160, 239',
+      name: 'Fantom Bridge',
+      url: 'https://app.multichain.org/#/router',
+    },
+  },
+  [ChainId.fantom_testnet]: {
+    name: 'Fantom Testnet',
+    publicJsonRPCUrl: ['https://rpc.testnet.fantom.network'],
+    publicJsonRPCWSUrl: '',
+    protocolDataUrl: '',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'FTM',
+    wrappedBaseAssetSymbol: 'WFTM',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://testnet.ftmscan.com/',
+    rpcOnly: true,
+    usdMarket: true,
+    isTestnet: true,
+    networkLogoPath: '/icons/network/arbitrum.svg',
+    bridge: {
+      brandColor: '40, 160, 239',
+      name: 'Fantom Bridge',
+      url: 'https://app.multichain.org/#/router',
     },
   },
 } as const;
