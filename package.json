@@ -10,6 +10,7 @@
     "export": "next export",
     "start": "next start",
     "lint": "next lint",
+    "lint:fix": "next lint --fix",
     "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest",
     "i18n": "npm run extract && npm run compile",
     "extract": "NODE_ENV=development lingui extract",
