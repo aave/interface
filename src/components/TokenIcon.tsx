@@ -92,14 +92,10 @@ export function MultiTokenIcon({ symbols, badgeSymbol, ...rest }: MultiTokenIcon
       badgeContent={
         <TokenIcon symbol={badgeSymbol} sx={{ border: '1px solid #fff' }} fontSize="small" />
       }
+      sx={{ '.MuiBadge-anchorOriginTopRight': { top: 9 } }}
     >
       {symbols.map((symbol, ix) => (
-        <TokenIcon
-          key={symbol}
-          symbol={symbol}
-          sx={{ ml: ix === symbols.length - 1 ? -2 : 0 }}
-          {...rest}
-        />
+        <TokenIcon key={symbol} symbol={symbol} sx={{ ml: ix === 0 ? 0 : -4 }} {...rest} />
       ))}
     </Badge>
   );

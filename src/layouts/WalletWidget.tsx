@@ -13,7 +13,8 @@ import { useWeb3Context } from 'src/libs/web3-data-provider/Web3ContextProvider'
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 export default function WalletWidget() {
-  const { connectWallet, disconnectWallet, currentAccount, connected, chainId } = useWeb3Context();
+  const { connectWallet, disconnectWallet, currentAccount, connected, chainId, switchNetwork } =
+    useWeb3Context();
 
   const { name: ensName, avatar: ensAvatar } = useGetEns(currentAccount);
   const ensNameAbbreviated = ensName
@@ -22,7 +23,7 @@ export default function WalletWidget() {
       : ensName
     : undefined;
 
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState<Element | null>(null);
   const [useBlockie, setUseBlockie] = useState(false);
 
   useEffect(() => {
@@ -35,7 +36,7 @@ export default function WalletWidget() {
 
   const networkConfig = getNetworkConfig(chainId);
 
-  const handleClick = (event: { currentTarget: React.SetStateAction<null> }) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if (!connected) {
       connectWallet();
     } else {
@@ -66,6 +67,11 @@ export default function WalletWidget() {
     setAnchorEl(null);
   };
 
+  const handleSwitchNetwork = () => {
+    switchNetwork(137);
+    setAnchorEl(null);
+  };
+
   return (
     <div>
       <Button
@@ -76,7 +82,7 @@ export default function WalletWidget() {
         aria-controls={open ? 'more-menu' : undefined}
         aria-expanded={open ? 'true' : undefined}
         aria-haspopup="true"
-        onClick={handleClick}
+        onClick={(event) => handleClick(event)}
         color="inherit"
         startIcon={
           connected ? (
@@ -137,6 +143,13 @@ export default function WalletWidget() {
             <RemoveCircleOutlineRoundedIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText>Disconnect Wallet</ListItemText>
+        </MenuItem>
+        <Divider />
+        <MenuItem onClick={handleSwitchNetwork}>
+          <ListItemIcon>
+            <RemoveCircleOutlineRoundedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>SwitchNetwork</ListItemText>
         </MenuItem>
       </Menu>
     </div>
