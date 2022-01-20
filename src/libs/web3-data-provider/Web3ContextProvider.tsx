@@ -33,7 +33,7 @@ export const useWeb3Context = () => {
   const { web3ProviderData } = web3Context;
   return useMemo<Web3Data>(() => {
     return { ...web3ProviderData };
-  }, [web3Context]);
+  }, [web3ProviderData]);
 };
 
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
@@ -41,16 +41,13 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [connected, setConnected] = useState(false);
   const [chainId, setChainId] = useState(1);
   const [currentAccount, setCurrentAccount] = useState('');
-  const [web3Provider, setWeb3Provider] = useState(null as any);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [web3Provider, setWeb3Provider] = useState(undefined as any);
 
   const [web3Modal, setWeb3Modal] = useState<Web3Modal>(undefined as unknown as Web3Modal);
 
   useEffect(() => {
-    if (web3Modal?.cachedProvider) connectWallet();
-  }, [web3Modal]);
-
-  useEffect(() => {
-    import('./modalOptions').then((m) => setWeb3Modal(m.getWeb3Modal(chainId)));
+    import('./modalOptions').then((m) => setWeb3Modal(m.getWeb3Modal()));
   }, [chainId, currentAccount]);
 
   // provider events subscriptions
@@ -95,7 +92,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     setConnected(true);
 
     return ethProvider;
-  }, [provider, web3Modal, connected]);
+  }, [web3Modal, initSubscriptions]);
 
   const disconnectWallet = useCallback(async () => {
     web3Modal.clearCachedProvider();
@@ -107,40 +104,47 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       } else if (web3Provider.disconnect) {
         web3Provider.disconnect();
       } else {
-        console.log('provider: ', web3Provider)
+        console.log('provider: ', web3Provider);
       }
     }
-  }, [provider, web3Modal, connected]);
+  }, [web3Modal, web3Provider]);
 
-  const switchNetwork = async (newChainId: number) => {
-    if (provider) {
-      try {
-        await provider.send('wallet_switchEthereumChain', [
-          { chainId: `0x${newChainId.toString(16)}` },
-        ]);
-      } catch (switchError) {
-        console.log(switchError);
-        const networkInfo = getNetworkConfig(newChainId);
-        // @ts-expect-error to correctly type we should add a conditional here to check instanceof Error
-        if (switchError.code === 4902) {
-          try {
-            await provider.send('wallet_addEthereumChain', [
-              {
-                chainId: `0x${newChainId.toString(16)}`,
-                chainName: networkInfo.name,
-                nativeCurrency: networkInfo.baseAssetSymbol,
-                rpcUrls: [...networkInfo.publicJsonRPCUrl, networkInfo.publicJsonRPCWSUrl],
-                blockExplorerUrls: networkInfo.explorerLink,
-              },
-            ]);
-          } catch (addError) {
-            console.log(addError);
-            // TODO: handle error somehow
+  const switchNetwork = useCallback(
+    async (newChainId: number) => {
+      if (provider) {
+        try {
+          await provider.send('wallet_switchEthereumChain', [
+            { chainId: `0x${newChainId.toString(16)}` },
+          ]);
+        } catch (switchError) {
+          console.log(switchError);
+          const networkInfo = getNetworkConfig(newChainId);
+          // @ts-expect-error to correctly type we should add a conditional here to check instanceof Error
+          if (switchError.code === 4902) {
+            try {
+              await provider.send('wallet_addEthereumChain', [
+                {
+                  chainId: `0x${newChainId.toString(16)}`,
+                  chainName: networkInfo.name,
+                  nativeCurrency: networkInfo.baseAssetSymbol,
+                  rpcUrls: [...networkInfo.publicJsonRPCUrl, networkInfo.publicJsonRPCWSUrl],
+                  blockExplorerUrls: networkInfo.explorerLink,
+                },
+              ]);
+            } catch (addError) {
+              console.log(addError);
+              // TODO: handle error somehow
+            }
           }
         }
       }
-    }
-  };
+    },
+    [provider]
+  );
+
+  useEffect(() => {
+    if (web3Modal?.cachedProvider) connectWallet();
+  }, [web3Modal, connectWallet]);
 
   const web3ProviderData = useMemo(
     () => ({
@@ -153,7 +157,16 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       chainId,
       switchNetwork,
     }),
-    [connectWallet, disconnectWallet, provider, connected, currentAccount, web3Modal, chainId]
+    [
+      connectWallet,
+      disconnectWallet,
+      provider,
+      connected,
+      currentAccount,
+      web3Modal,
+      chainId,
+      switchNetwork,
+    ]
   );
 
   return (

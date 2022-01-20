@@ -1,18 +1,17 @@
+import MewConnect from '@myetherwallet/mewconnect-web-client';
 import Torus from '@toruslabs/torus-embed';
 import WalletConnect from '@walletconnect/web3-provider';
 import ethProvider from 'eth-provider';
 import { getNetworkConfig, getSupportedChainIds } from 'src/utils/marketsAndNetworksConfig';
 import WalletLink from 'walletlink';
 import Web3Modal from 'web3modal';
-import MewConnect from '@myetherwallet/mewconnect-web-client';
 
 const POLLING_INTERVAL = 12000;
 const APP_NAME = 'Aave';
 const APP_LOGO_URL = 'https://aave.com/favicon.ico';
 
-export const getWeb3Modal = (networkId: number) => {
+export const getWeb3Modal = () => {
   const supportedChainIds = getSupportedChainIds();
-  const networkConfig = getNetworkConfig(networkId);
   return new Web3Modal({
     cacheProvider: true,
     providerOptions: {
