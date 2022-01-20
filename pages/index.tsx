@@ -5,10 +5,9 @@ import Typography from '@mui/material/Typography';
 import type { NextPage } from 'next';
 import * as React from 'react';
 
+import FormattedNumber from '../src/components/FormattedNumber';
 import { Link } from '../src/components/Link';
-import { MultiTokenIcon, TokenIcon } from '../src/components/TokenIcon';
-import PercentValue from '../src/components/values/PercentValue';
-import Value from '../src/components/values/Value';
+import { MultiTokenIcon } from '../src/components/TokenIcon';
 // import { useProtocolDataContext } from '../src/hooks/useProtocolData';
 
 const Home: NextPage = () => {
@@ -30,17 +29,21 @@ const Home: NextPage = () => {
         <Link href="/about" color="secondary">
           <Trans>Go to About page</Trans>
         </Link>
-        <MultiTokenIcon symbols={['aave', 'usdc']} badgeSymbol="bal" fontSize="large" />
+        <MultiTokenIcon symbols={['aave', 'usdc', 'usdt']} badgeSymbol="bal" fontSize="large" />
       </Box>
 
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <Value value={0.00000000000000000001} symbol="AAVE" />
-        <Value value={0.00000000000000000001} symbol="USD" />
-        <Value value={0.00000000000000000001} symbol="USD" compact />
-        <Value value={28882.17271916622} symbol="USD" />
-        <Value value={28882.17271916622} symbol="USDT" compact maximumDecimals={2} />
-        <Value value={288829192763715.17271916622} symbol="DAI" sx={{ fontWeight: 500 }} />
-        <PercentValue value={1} />
+        <FormattedNumber value={0.00000000000000000001} symbol="AAVE" />
+        <FormattedNumber value={0.00000000000000000001} symbol="USD" />
+        <FormattedNumber value={0.00000000000000000001} symbol="USD" compact />
+        <FormattedNumber value={28882.17271916622} symbol="USD" />
+        <FormattedNumber value={28882.17271916622} symbol="USDT" compact maximumDecimals={2} />
+        <FormattedNumber
+          value={288829192763715.17271916622}
+          symbol="DAI"
+          sx={{ fontWeight: 500 }}
+        />
+        <FormattedNumber value={0.213133212312} percent />
       </Box>
     </Container>
   );
