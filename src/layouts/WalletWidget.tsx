@@ -6,15 +6,11 @@ import RemoveCircleOutlineRoundedIcon from '@mui/icons-material/RemoveCircleOutl
 import { Button, Divider, ListItemIcon, ListItemText } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { useTheme } from '@mui/system';
 import makeBlockie from 'ethereum-blockies-base64';
-import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import useGetEns from 'src/libs/hooks/use-get-ens';
 import { useWeb3Context } from 'src/libs/web3-data-provider/Web3ContextProvider';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
-
-import { ColorModeContext } from './MainLayout';
 
 export default function WalletWidget() {
   const { connectWallet, disconnectWallet, currentAccount, connected, chainId, switchNetwork } =
@@ -26,9 +22,6 @@ export default function WalletWidget() {
       ? ensName // textCenterEllipsis(ensName, 12, 3) from ui kit (for reference)
       : ensName
     : undefined;
-
-  const theme = useTheme();
-  const colorMode = React.useContext(ColorModeContext);
 
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
   const [useBlockie, setUseBlockie] = useState(false);
@@ -93,7 +86,7 @@ export default function WalletWidget() {
         color="inherit"
         startIcon={
           connected ? (
-            <Image
+            <img
               style={{ width: '15px', height: '15px' }}
               src={useBlockie ? makeBlockie(currentAccount) : ensAvatar}
               alt=""
