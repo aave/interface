@@ -1,7 +1,8 @@
-import React from 'react';
+import { Close } from '@mui/icons-material';
 import { Box, Dialog, DialogProps, IconButton, Paper, PaperProps, Typography } from '@mui/material';
 import { styled } from '@mui/system';
-import { Close } from '@mui/icons-material';
+import React from 'react';
+
 export interface AaveModalProps extends DialogProps {
   title: string;
 }
