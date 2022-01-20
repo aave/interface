@@ -15,12 +15,15 @@
     "extract": "NODE_ENV=development lingui extract",
     "compile": "lingui compile",
     "pre-commit": "lint-staged && npm run i18n && git add ./src/translations",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "@aave/contract-helpers": "0.27.4-44a383732f03f7feebe772c93f15befced5f2e55.0+44a3837",
     "@aave/math-utils": "0.27.4-44a383732f03f7feebe772c93f15befced5f2e55.0+44a3837",
     "@apollo/client": "^3.5.7",
+    "@bumped-inc/storybook-addon-lingui-v3": "^0.0.4",
     "@emotion/cache": "latest",
     "@emotion/react": "latest",
     "@emotion/server": "latest",
@@ -50,8 +53,15 @@
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "@lingui/cli": "^3.13.0",
     "@lingui/macro": "^3.13.0",
+    "@storybook/addon-actions": "^6.4.13",
+    "@storybook/addon-essentials": "^6.4.13",
+    "@storybook/addon-links": "^6.4.13",
+    "@storybook/builder-webpack5": "^6.4.13",
+    "@storybook/manager-webpack5": "^6.4.13",
+    "@storybook/react": "^6.4.13",
     "@types/react": "latest",
     "@typescript-eslint/eslint-plugin": "^5.10.0",
+    "babel-loader": "^8.2.3",
     "babel-plugin-dynamic-import-node": "^2.3.3",
     "babel-plugin-macros": "^3.1.0",
     "eslint": "latest",
@@ -63,7 +73,9 @@
     "husky": ">=6",
     "lint-staged": ">=10",
     "prettier": "^2.5.1",
-    "typescript": "latest"
+    "storybook-addon-next-router": "^3.1.1",
+    "typescript": "latest",
+    "webpack": "^5.66.0"
   },
   "lint-staged": {
     "*.js": "eslint --cache --fix",
