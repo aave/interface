@@ -10,6 +10,7 @@ import { ProtocolDataProvider } from '../src/hooks/useProtocolData';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { MainLayout } from '../src/layouts/MainLayout';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
+import { Web3ContextProvider } from '../src/libs/web3-data-provider/Web3ContextProvider';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -28,11 +29,13 @@ export default function MyApp(props: MyAppProps) {
       <ApolloProvider client={apolloClient}>
         <LanguageProvider>
           <ProtocolDataProvider>
-            <AppGlobalStyles>
-              <MainLayout>
-                <Component {...pageProps} />
-              </MainLayout>
-            </AppGlobalStyles>
+            <Web3ContextProvider>
+              <AppGlobalStyles>
+                <MainLayout>
+                  <Component {...pageProps} />
+                </MainLayout>
+              </AppGlobalStyles>
+            </Web3ContextProvider>
           </ProtocolDataProvider>
         </LanguageProvider>
       </ApolloProvider>
