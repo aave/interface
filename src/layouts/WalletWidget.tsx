@@ -13,7 +13,7 @@ import useGetEns from 'src/libs/hooks/use-get-ens';
 import { useWeb3Context } from 'src/libs/web3-data-provider/Web3ContextProvider';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
-import { ColorModeContext } from './MainLayout';
+import { ColorModeContext } from './AppGlobalStyles';
 
 export default function WalletWidget() {
   const { connectWallet, disconnectWallet, currentAccount, connected, chainId } = useWeb3Context();
