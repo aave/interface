@@ -40,7 +40,6 @@
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "react-intl": "^5.24.3",
     "reflect-metadata": "^0.1.13",
     "subscriptions-transport-ws": "^0.11.0",
     "walletlink": "^2.4.0",
