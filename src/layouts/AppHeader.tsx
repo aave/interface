@@ -51,7 +51,7 @@ export default function AppHeader({ topLineHeight }: AppHeaderProps) {
           display: 'flex',
           alignItems: 'center',
           flexDirection: 'space-between',
-          borderBottom: '1px solid rgba(242, 243, 247, 0.16)',
+          borderBottom: '1px solid #FAFBFC1F',
         })}
       >
         <Box
