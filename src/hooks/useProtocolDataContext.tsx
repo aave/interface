@@ -3,7 +3,6 @@ import {
   CustomMarket,
   MarketDataType,
   NetworkConfig,
-  networkConfigs as _networkConfigs,
   availableMarkets,
   getNetworkConfig,
   getProvider,

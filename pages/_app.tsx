@@ -1,6 +1,7 @@
 import '../public/fonts/inter/inter.css';
 
 import * as React from 'react';
+import { TxBuilderProvider } from 'src/providers/TxBuilderProvider';
 
 import { CacheProvider, EmotionCache } from '@emotion/react';
 
@@ -13,10 +14,10 @@ import Head from 'next/head';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
 import { MainLayout } from '../src/layouts/MainLayout';
 import { ProtocolDataProvider } from '../src/hooks/useProtocolDataContext';
-import { Web3ContextProvider } from '../src/libs/web3-data-provider/Web3ContextProvider';
 import { apolloClient } from 'src/utils/apolloClient';
 import createEmotionCache from '../src/createEmotionCache';
 import { BackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
+import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3ContextProvider';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -40,9 +41,11 @@ export default function MyApp(props: MyAppProps) {
                 <AppGlobalStyles>
                   <BackgroundDataProvider>
                     <AppDataProvider>
-                      <MainLayout>
-                        <Component {...pageProps} />
-                      </MainLayout>
+                      <TxBuilderProvider>
+                        <MainLayout>
+                          <Component {...pageProps} />
+                        </MainLayout>
+                      </TxBuilderProvider>
                     </AppDataProvider>
                   </BackgroundDataProvider>
                 </AppGlobalStyles>
