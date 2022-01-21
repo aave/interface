@@ -31,14 +31,21 @@ export default function MoreMenu() {
   return (
     <>
       <Button
-        size="small"
+        size="medium"
         aria-label="more"
         id="more-button"
         aria-controls={open ? 'more-menu' : undefined}
         aria-expanded={open ? 'true' : undefined}
         aria-haspopup="true"
         onClick={handleClick}
-        sx={{ color: 'common.white' }}
+        disableRipple
+        sx={(theme) => ({
+          ...theme.typography.subheader1,
+          color: 'common.white',
+          p: 0,
+          minWidth: 'unset',
+          borderRadius: 0,
+        })}
       >
         <Trans>More</Trans>
         <MoreHorizIcon color="inherit" />
