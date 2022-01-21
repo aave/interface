@@ -108,7 +108,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     wrappedBaseAssetSymbol: 'WMATIC',
     baseAssetDecimals: 18,
     explorerLink: 'https://polygonscan.com',
-    rpcOnly: true,
+    // rpcOnly: true,
     bridge: {
       brandColor: '130, 71, 229',
       name: 'Polygon PoS Bridge',

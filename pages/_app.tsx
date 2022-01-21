@@ -16,6 +16,7 @@ import { ProtocolDataProvider } from '../src/hooks/useProtocolDataContext';
 import { Web3ContextProvider } from '../src/libs/web3-data-provider/Web3ContextProvider';
 import { apolloClient } from 'src/utils/apolloClient';
 import createEmotionCache from '../src/createEmotionCache';
+import { BackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -37,11 +38,13 @@ export default function MyApp(props: MyAppProps) {
             <ProtocolDataProvider>
               <ConnectionStatusProvider>
                 <AppGlobalStyles>
-                  <AppDataProvider>
-                    <MainLayout>
-                      <Component {...pageProps} />
-                    </MainLayout>
-                  </AppDataProvider>
+                  <BackgroundDataProvider>
+                    <AppDataProvider>
+                      <MainLayout>
+                        <Component {...pageProps} />
+                      </MainLayout>
+                    </AppDataProvider>
+                  </BackgroundDataProvider>
                 </AppGlobalStyles>
               </ConnectionStatusProvider>
             </ProtocolDataProvider>

@@ -1,8 +1,4 @@
-import {
-  API_ETH_MOCK_ADDRESS,
-  ReserveDataHumanized,
-  WalletBalanceProvider,
-} from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS, ReserveDataHumanized } from '@aave/contract-helpers';
 import {
   FormatUserSummaryAndIncentivesResponse,
   UserReserveData,
@@ -11,7 +7,7 @@ import {
   nativeToUSD,
   normalize,
 } from '@aave/math-utils';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import {
   useC_ProtocolDataQuery,
   useC_ReservesIncentivesQuery,
@@ -21,11 +17,9 @@ import {
 
 import BigNumber from 'bignumber.js';
 import { useCurrentTimestamp } from '../useCurrentTimestamp';
-import { useIncentiveData } from './useIncentiveData';
-import { usePolling } from '../usePolling';
-import { usePoolData } from './usePoolData';
 import { useProtocolDataContext } from '../useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useWalletBalances } from './useWalletBalances';
 
 /**
  * removes the marketPrefix from a symbol
@@ -36,44 +30,6 @@ export const unPrefixSymbol = (symbol: string, prefix: string) => {
   return symbol.toUpperCase().replace(RegExp(`^(${prefix[0]}?${prefix.slice(1)})`), '');
 };
 
-const useWalletBalances = (skip = false) => {
-  const { currentAccount } = useWeb3Context();
-  const { currentMarketData, jsonRpcProvider } = useProtocolDataContext();
-  const [walletBalances, setWalletBalances] = useState<{
-    [address: Lowercase<string>]: string;
-  }>({});
-
-  const fetchWalletData = async () => {
-    if (!currentAccount) return;
-    const contract = new WalletBalanceProvider({
-      walletBalanceProviderAddress: currentMarketData.addresses.WALLET_BALANCE_PROVIDER,
-      provider: jsonRpcProvider,
-    });
-    const { 0: tokenAddresses, 1: balances } =
-      await contract.getUserWalletBalancesForLendingPoolProvider(
-        currentAccount,
-        currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER
-      );
-    const cleanBalances = tokenAddresses.reduce((acc, reserve, i) => {
-      acc[reserve.toLowerCase()] = balances[i].toString();
-      return acc;
-    }, {} as { [address: Lowercase<string>]: string });
-    setWalletBalances(cleanBalances);
-  };
-
-  usePolling(fetchWalletData, 30000, !currentAccount || skip, [
-    currentAccount,
-    currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-  ]);
-
-  // reset balances on disconnect
-  useEffect(() => {
-    if (!currentAccount) setWalletBalances({});
-  }, [currentAccount]);
-
-  return { walletBalances, refetch: fetchWalletData };
-};
-
 export type ComputedReserveData = ReturnType<typeof formatReservesAndIncentives>[0] &
   ReserveDataHumanized;
 
@@ -82,7 +38,6 @@ export interface AppDataContextType {
   // refreshPoolData?: () => Promise<void[]>;
   walletBalances: { [address: string]: { amount: string; amountUSD: string } };
   hasEmptyWallet: boolean;
-  refetchWalletData: () => Promise<void>;
   isUserHasDeposits: boolean;
   user?: FormatUserSummaryAndIncentivesResponse & { earnedAPY: number; debtAPY: number };
   userId: string;
@@ -104,10 +59,9 @@ const AppDataContext = React.createContext<AppDataContextType>({} as AppDataCont
 export const AppDataProvider: React.FC = ({ children }) => {
   const currentTimestamp = useCurrentTimestamp(1);
   const { currentAccount } = useWeb3Context();
-  const { currentNetworkConfig, currentMarketData } = useProtocolDataContext();
+  const { currentNetworkConfig, currentMarketData, currentChainId } = useProtocolDataContext();
   // just populates the cache
-  useIncentiveData();
-  usePoolData();
+
   const { data: reservesData } = useC_ProtocolDataQuery({
     variables: {
       lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
@@ -144,24 +98,24 @@ export const AppDataProvider: React.FC = ({ children }) => {
     fetchPolicy: 'cache-only',
   });
   let hasEmptyWallet = true;
-  const { walletBalances, refetch: refetchWalletData } = useWalletBalances();
+  const [walletBalances] = useWalletBalances(currentAccount, currentChainId);
 
-  const aggregatedBalance = Object.keys(walletBalances).reduce((acc, reserve) => {
+  const aggregatedBalance = walletBalances.reduce((acc, reserve) => {
     const poolReserve = reserves.find((poolReserve) => {
-      if (reserve.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase()) {
+      if (reserve.id === API_ETH_MOCK_ADDRESS.toLowerCase()) {
         return (
           poolReserve.symbol.toLowerCase() ===
           currentNetworkConfig.wrappedBaseAssetSymbol?.toLowerCase()
         );
       }
-      return poolReserve.underlyingAsset.toLowerCase() === reserve.toLowerCase();
+      return poolReserve.underlyingAsset.toLowerCase() === reserve.id;
     });
-    if (walletBalances[reserve] !== '0') hasEmptyWallet = false;
+    if (reserve.amount !== '0') hasEmptyWallet = false;
     if (poolReserve) {
-      acc[reserve.toLowerCase()] = {
-        amount: normalize(walletBalances[reserve], poolReserve.decimals),
+      acc[reserve.id] = {
+        amount: normalize(reserve.amount, poolReserve.decimals),
         amountUSD: nativeToUSD({
-          amount: new BigNumber(walletBalances[reserve]),
+          amount: new BigNumber(reserve.amount),
           currencyDecimals: poolReserve.decimals,
           priceInMarketReferenceCurrency: poolReserve.priceInMarketReferenceCurrency,
           marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
@@ -171,8 +125,6 @@ export const AppDataProvider: React.FC = ({ children }) => {
     }
     return acc;
   }, {} as { [address: string]: { amount: string; amountUSD: string } });
-
-  console.log(reservesIncentivesData?.reservesIncentives);
 
   const formattedPoolReserves = formatReservesAndIncentives({
     reserves,
@@ -288,7 +240,6 @@ export const AppDataProvider: React.FC = ({ children }) => {
         userReserves,
         userId: currentAccount,
         isUserHasDeposits,
-        refetchWalletData,
         marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
         marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
         userEmodeCategoryId,
