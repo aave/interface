@@ -392,14 +392,16 @@ export function getThemedComponents(theme: Theme) {
           },
         },
       },
-      MuiTooltip: {
-        styleOverrides: {
-          ...theme.typography.tooltip,
-        },
-      },
       MuiLink: {
         defaultProps: {
           variant: 'description',
+        },
+      },
+      MuiListItemText: {
+        styleOverrides: {
+          root: {
+            ...theme.typography.main14,
+          },
         },
       },
       MuiCssBaseline: {
