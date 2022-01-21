@@ -2,6 +2,7 @@ import { Box } from '@mui/material';
 import React, { ReactNode } from 'react';
 
 import LanguageSelector from '../components/LanguageSelector';
+import { MarketSwitcher } from '../components/MarketSwitcher';
 import AppHeader from './AppHeader';
 
 export const HeaderTopLineHeightContext = React.createContext({
@@ -33,6 +34,8 @@ export default function MainLayout({ children }: { children: ReactNode }) {
       <Box sx={{ width: 150, margin: '0 auto' }}>
         <LanguageSelector />
       </Box>
+
+      <MarketSwitcher />
     </>
   );
 }
