@@ -2,6 +2,7 @@ import { Box } from '@mui/material';
 import React from 'react';
 
 import LanguageSelector from '../components/LanguageSelector';
+import { MarketSwitcher } from '../components/MarketSwitcher';
 import Copyright from '../Copyright';
 import AppHeader from './AppHeader';
 
@@ -19,6 +20,8 @@ export const MainLayout: React.FC = ({ children }) => {
       <Box sx={{ width: 150, margin: '0 auto' }}>
         <LanguageSelector />
       </Box>
+
+      <MarketSwitcher />
 
       <Copyright sx={{ mt: 4 }} />
     </>
