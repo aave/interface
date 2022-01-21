@@ -1,8 +1,6 @@
 import { red } from '@mui/material/colors';
 import { createTheme } from '@mui/material/styles';
 
-import { ColorModeContext } from './../layouts/AppGlobalStyles';
-
 declare module '@mui/material/styles/createPalette' {
   interface ColorRange {
     50: string;

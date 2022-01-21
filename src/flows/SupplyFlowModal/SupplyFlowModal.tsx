@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { useState } from 'react';
 
 import { AaveModal } from '../../components/AaveModal/AaveModal';
 import { AssetInput } from '../../components/AssetInput';
