@@ -9,6 +9,7 @@ import { useProtocolDataContext } from '../hooks/useProtocolData';
 import { navigation } from '../ui-config/menu-items';
 import { uiConfig } from '../uiConfig';
 import MoreMenu from './MoreMenu';
+import SettingsMenu from './SettingsMenu';
 
 const WalletWidget = dynamic(() => import('./WalletWidget'), {
   ssr: false,
@@ -90,6 +91,7 @@ export default function AppHeader({ topLineHeight }: AppHeaderProps) {
         <Box sx={{ flexGrow: 1 }} />
 
         <WalletWidget />
+        <SettingsMenu />
       </Box>
     </>
   );
