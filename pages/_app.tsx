@@ -5,6 +5,7 @@ import { CacheProvider, EmotionCache } from '@emotion/react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import * as React from 'react';
+import { TxBuilderProvider } from 'src/providers/TxBuilderProvider';
 import { apolloClient } from 'src/utils/apolloClient';
 
 import createEmotionCache from '../src/createEmotionCache';
@@ -33,9 +34,11 @@ export default function MyApp(props: MyAppProps) {
           <ProtocolDataProvider>
             <Web3ContextProvider>
               <AppGlobalStyles>
-                <MainLayout>
-                  <Component {...pageProps} />
-                </MainLayout>
+                <TxBuilderProvider>
+                  <MainLayout>
+                    <Component {...pageProps} />
+                  </MainLayout>
+                </TxBuilderProvider>
               </AppGlobalStyles>
             </Web3ContextProvider>
           </ProtocolDataProvider>

@@ -1,7 +1,14 @@
-import { JsonRpcProvider, Network, Web3Provider } from '@ethersproject/providers';
-import { providers } from 'ethers';
+import { transactionType } from '@aave/contract-helpers';
+import {
+  JsonRpcProvider,
+  Network,
+  TransactionResponse,
+  Web3Provider,
+} from '@ethersproject/providers';
+import { BigNumber, providers } from 'ethers';
 import React, { ReactElement, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { hexToAscii } from 'src/utils/utils';
 import Web3Modal from 'web3modal';
 
 export type Web3Data = {
@@ -13,6 +20,10 @@ export type Web3Data = {
   web3Modal: Web3Modal;
   chainId: number;
   switchNetwork: (chainId: number) => Promise<void>;
+  getTxError: (txHash: string) => Promise<string>;
+  sendTx: (txData: transactionType) => Promise<TransactionResponse>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  signTxData: (unsignedData: string) => Promise<any>;
 };
 
 export type Web3ContextData = {
@@ -146,6 +157,54 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     if (web3Modal?.cachedProvider) connectWallet();
   }, [web3Modal, connectWallet]);
 
+  // Tx methods
+  const signTxData = useCallback(
+    async (unsignedData: string) => {
+      if (provider && currentAccount) {
+        const signature = await provider.send('eth_signTypedData_v4', [
+          currentAccount,
+          unsignedData,
+        ]);
+
+        return signature;
+      }
+      throw new Error('Error initializing permit signature');
+    },
+    [provider, currentAccount]
+  );
+
+  // TODO: we use from instead of currentAccount because of the mock wallet.
+  // If we used current account then the tx could get executed
+  const sendTx = useCallback(
+    async (txData: transactionType): Promise<TransactionResponse> => {
+      if (provider) {
+        const { from, ...data } = txData;
+        const signer = provider.getSigner(from);
+        const txResponse: TransactionResponse = await signer.sendTransaction({
+          ...data,
+          value: data.value ? BigNumber.from(data.value) : undefined,
+        });
+        return txResponse;
+      }
+      throw new Error('Error sending transaction. Provider not found');
+    },
+    [provider]
+  );
+
+  const getTxError = useCallback(
+    async (txHash: string): Promise<string> => {
+      if (provider) {
+        const tx = await provider.getTransaction(txHash);
+        // @ts-expect-error TODO: need think about "tx" type
+        const code = await provider.call(tx, tx.blockNumber);
+        const error = hexToAscii(code.substr(138));
+        return error;
+      }
+      throw new Error('Error getting transaction. Provider not found');
+    },
+    [provider]
+  );
+
   const web3ProviderData = useMemo(
     () => ({
       connectWallet,
@@ -156,6 +215,9 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       web3Modal,
       chainId,
       switchNetwork,
+      getTxError,
+      sendTx,
+      signTxData,
     }),
     [
       connectWallet,
@@ -166,6 +228,9 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       web3Modal,
       chainId,
       switchNetwork,
+      getTxError,
+      sendTx,
+      signTxData,
     ]
   );
 
