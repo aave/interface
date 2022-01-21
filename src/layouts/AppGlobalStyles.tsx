@@ -20,6 +20,7 @@ type Mode = 'light' | 'dark';
 export const AppGlobalStyles: React.FC = ({ children }) => {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const [mode, setMode] = useState<Mode>(prefersDarkMode ? 'dark' : 'light');
+  console.log('mode', mode);
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {

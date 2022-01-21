@@ -1,6 +1,8 @@
 import { red } from '@mui/material/colors';
 import { createTheme } from '@mui/material/styles';
 
+import { ColorModeContext } from './../layouts/AppGlobalStyles';
+
 declare module '@mui/material/styles/createPalette' {
   interface ColorRange {
     50: string;
@@ -49,7 +51,8 @@ export const getTheme = (mode: 'light' | 'dark') =>
       },
       primaryDark: blueDark,
       secondary: {
-        main: '#19857b',
+        light: 'rgba(242, 243, 247, 0,4)',
+        main: 'rgba(242, 243, 247, 0,4)',
       },
       error: {
         main: red.A400,
@@ -58,16 +61,42 @@ export const getTheme = (mode: 'light' | 'dark') =>
         default: mode === 'dark' ? '#171926' : '#ffffff',
       },
       mode,
+      text: {
+        secondary: 'rgba(23, 25, 38, 0,48)',
+      },
     },
     spacing: 4,
     typography: {
       fontFamily: 'Inter, Arial',
+      fontSize: 14,
     },
     components: {
+      MuiOutlinedInput: {
+        styleOverrides: {
+          root: {
+            '&:hover .MuiOutlinedInput-notchedOutline': {
+              borderColor: '#CBCDD8',
+            },
+            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+              borderColor: '#CBCDD8',
+            },
+          },
+        },
+      },
       MuiButton: {
         styleOverrides: {
           root: {
             textTransform: 'none',
+          },
+          outlinedSecondary: {
+            border: '1px solid #E6E8F0',
+            color: '#171926',
+            '&:hover': {
+              border: '1px solid #CBCDD8',
+            },
+            '&:focus': {
+              border: '1px solid #CBCDD8',
+            },
           },
         },
       },
