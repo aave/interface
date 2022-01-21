@@ -20,7 +20,6 @@ export const BackgroundDataProvider: React.FC = ({ children }) => {
   // useIncentiveData();
   // usePoolData();
   const { refetch: refetchWalletBalances } = useUpdateWalletBalances();
-  console.log('rerender');
   return (
     <BackgroundDataProviderContext.Provider value={{ refetchWalletBalances }}>
       {children}

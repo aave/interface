@@ -1,8 +1,9 @@
 import { JsonRpcProvider, Network, Web3Provider } from '@ethersproject/providers';
 import { providers } from 'ethers';
-import React, { ReactElement, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import Web3Modal from 'web3modal';
+import { Web3Context } from '../hooks/useWeb3Context';
 
 export type Web3Data = {
   connectWallet: () => Promise<Web3Provider | undefined>;
@@ -15,27 +16,6 @@ export type Web3Data = {
   switchNetwork: (chainId: number) => Promise<void>;
 };
 
-export type Web3ContextData = {
-  web3ProviderData: Web3Data;
-};
-
-const Web3Context = React.createContext({} as Web3ContextData);
-
-export const useWeb3Context = () => {
-  const web3Context = useContext(Web3Context);
-  if (Object.keys(web3Context).length === 0) {
-    throw new Error(
-      'useWeb3Context() can only be used inside of <Web3ContextProvider />, ' +
-        'please declare it at a higher level.'
-    );
-  }
-
-  const { web3ProviderData } = web3Context;
-  return useMemo<Web3Data>(() => {
-    return { ...web3ProviderData };
-  }, [web3ProviderData]);
-};
-
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
   const [provider, setProvider] = useState<JsonRpcProvider>();
   const [connected, setConnected] = useState(false);
@@ -43,11 +23,12 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [currentAccount, setCurrentAccount] = useState('');
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [web3Provider, setWeb3Provider] = useState(undefined as any);
-
   const [web3Modal, setWeb3Modal] = useState<Web3Modal>(undefined as unknown as Web3Modal);
 
   useEffect(() => {
-    import('./modalOptions').then((m) => setWeb3Modal(m.getWeb3Modal()));
+    import('./modalOptions').then((m) => {
+      setWeb3Modal(m.getWeb3Modal());
+    });
   }, [chainId, currentAccount]);
 
   // provider events subscriptions
@@ -69,7 +50,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         }
       });
     },
-    [provider]
+    [provider?.connection.url]
   );
 
   // web 3 modal
@@ -92,7 +73,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     setConnected(true);
 
     return ethProvider;
-  }, [web3Modal, initSubscriptions]);
+  }, [initSubscriptions, web3Modal]);
 
   const disconnectWallet = useCallback(async () => {
     web3Modal.clearCachedProvider();
@@ -107,7 +88,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         console.log('provider: ', web3Provider);
       }
     }
-  }, [web3Modal, web3Provider]);
+  }, [web3Provider, web3Modal]);
 
   const switchNetwork = useCallback(
     async (newChainId: number) => {
@@ -119,7 +100,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         } catch (switchError) {
           console.log(switchError);
           const networkInfo = getNetworkConfig(newChainId);
-          // @ts-expect-error to correctly type we should add a conditional here to check instanceof Error
           if (switchError.code === 4902) {
             try {
               await provider.send('wallet_addEthereumChain', [
@@ -144,7 +124,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   useEffect(() => {
     if (web3Modal?.cachedProvider) connectWallet();
-  }, [web3Modal, connectWallet]);
+  }, [connectWallet, web3Modal]);
 
   const web3ProviderData = useMemo(
     () => ({
