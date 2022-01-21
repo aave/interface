@@ -1,8 +1,8 @@
 import { Box } from '@mui/material';
 import React from 'react';
-import { MarketSwitcher } from 'src/components/MarketSwitcher/MarketSwitcher';
 
 import LanguageSelector from '../components/LanguageSelector';
+import { MarketSwitcher } from '../components/MarketSwitcher';
 import Copyright from '../Copyright';
 import AppHeader from './AppHeader';
 
