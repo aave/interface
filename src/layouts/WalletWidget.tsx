@@ -1,9 +1,10 @@
+import { Trans } from '@lingui/macro';
 import { Person } from '@mui/icons-material';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
 import RemoveCircleOutlineRoundedIcon from '@mui/icons-material/RemoveCircleOutlineRounded';
-import { Button, Divider, ListItemIcon, ListItemText } from '@mui/material';
+import { Box, Button, Divider, ListItemIcon, ListItemText } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import makeBlockie from 'ethereum-blockies-base64';
@@ -13,6 +14,8 @@ import useGetEns from 'src/libs/hooks/use-get-ens';
 import { useWeb3Context } from 'src/libs/web3-data-provider/Web3ContextProvider';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
+import { textCenterEllipsis } from '../helpers/text-center-ellipsis';
+
 export default function WalletWidget() {
   const { connectWallet, disconnectWallet, currentAccount, connected, chainId, switchNetwork } =
     useWeb3Context();
@@ -20,7 +23,7 @@ export default function WalletWidget() {
   const { name: ensName, avatar: ensAvatar } = useGetEns(currentAccount);
   const ensNameAbbreviated = ensName
     ? ensName.length > 18
-      ? ensName // textCenterEllipsis(ensName, 12, 3) from ui kit (for reference)
+      ? textCenterEllipsis(ensName, 12, 3)
       : ensName
     : undefined;
 
@@ -66,42 +69,58 @@ export default function WalletWidget() {
     handleClose();
   };
 
+  const buttonContent = currentAccount ? (
+    ensNameAbbreviated ? (
+      ensNameAbbreviated
+    ) : (
+      textCenterEllipsis(currentAccount, 4, 4)
+    )
+  ) : (
+    <Trans>Connect Wallet</Trans>
+  );
+
   return (
-    <div>
+    <>
       <Button
-        variant="outlined"
-        size="small"
-        aria-label="more"
+        variant="surface"
+        size="medium"
+        aria-label="wallet"
         id="wallet-button"
-        aria-controls={open ? 'more-menu' : undefined}
+        aria-controls={open ? 'wallet-button' : undefined}
         aria-expanded={open ? 'true' : undefined}
         aria-haspopup="true"
-        onClick={(event) => handleClick(event)}
-        color="inherit"
+        onClick={handleClick}
+        sx={{ padding: '4px 12px 4px 8px' }}
         startIcon={
           connected ? (
-            <img
-              style={{ width: '15px', height: '15px' }}
-              src={useBlockie ? makeBlockie(currentAccount) : ensAvatar}
-              alt=""
-              onError={() => setUseBlockie(true)}
-            />
+            <Box
+              sx={{
+                width: 24,
+                height: 24,
+                borderRadius: '50%',
+                border: '1px solid #3E4365',
+                img: { width: '100%', height: '100%', borderRadius: '50%' },
+              }}
+            >
+              <img
+                src={useBlockie ? makeBlockie(currentAccount) : ensAvatar}
+                alt=""
+                onError={() => setUseBlockie(true)}
+              />
+            </Box>
           ) : (
             <Person />
           )
         }
-        endIcon={<ArrowDropDownIcon />}
+        endIcon={connected && <KeyboardArrowDownIcon />}
       >
-        {currentAccount
-          ? ensNameAbbreviated
-            ? ensNameAbbreviated
-            : currentAccount /*textCenterEllipsis(currentAccount, 4, 4) left for reference*/
-          : 'Connect Wallet'}
+        {buttonContent}
       </Button>
+
       <Menu
-        id="more-menu"
+        id="wallet-menu"
         MenuListProps={{
-          'aria-labelledby': 'more-button',
+          'aria-labelledby': 'wallet-button',
         }}
         anchorEl={anchorEl}
         open={open}
@@ -145,6 +164,6 @@ export default function WalletWidget() {
           <ListItemText>SwitchNetwork</ListItemText>
         </MenuItem>
       </Menu>
-    </div>
+    </>
   );
 }

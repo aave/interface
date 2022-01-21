@@ -99,6 +99,12 @@ declare module '@mui/material/Typography' {
   }
 }
 
+declare module '@mui/material/Button' {
+  interface ButtonPropsVariantOverrides {
+    surface: true;
+  }
+}
+
 export const getDesignTokens = (mode: 'light' | 'dark') => {
   const getColor = (lightColor: string, darkColor: string) =>
     mode === 'dark' ? darkColor : lightColor;
@@ -343,6 +349,20 @@ export function getThemedComponents(theme: Theme) {
             ...theme.typography.buttonS,
           },
         },
+        variants: [
+          {
+            props: { variant: 'surface' },
+            style: {
+              color: theme.palette.common.white,
+              border: '1px solid',
+              borderColor: '#FAFBFC1F',
+              backgroundColor: '#2c2d3e',
+              '&:hover, &.Mui-focusVisible': {
+                backgroundColor: '#2c2d3e',
+              },
+            },
+          },
+        ],
       },
       MuiTypography: {
         defaultProps: {
