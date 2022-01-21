@@ -26,12 +26,6 @@ declare module '@mui/material/styles/createPalette' {
   }
 }
 
-declare module '@mui/material/Input' {
-  interface InputPropsVariantOverrides {
-    transparent: true;
-  }
-}
-
 export const blueDark = {
   50: '#E2EDF8',
   100: '#CEE0F3',
