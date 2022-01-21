@@ -3,7 +3,7 @@ import { useLingui } from '@lingui/react';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import { Button, Divider, ListItemIcon, ListItemText, MenuList, SvgIcon } from '@mui/material';
+import { Button, Divider, ListItemText, MenuList, SvgIcon } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useTheme } from '@mui/system';
@@ -68,22 +68,18 @@ export default function MoreMenu() {
         <MenuList>
           {moreNavigation.map((item, index) => (
             <MenuItem component={Link} href={item.link} key={index}>
-              <ListItemIcon>
-                <SvgIcon sx={{}}>{item.icon}</SvgIcon>
-              </ListItemIcon>
               <ListItemText>{i18n._(item.title)}</ListItemText>
+              <SvgIcon>{item.icon}</SvgIcon>
             </MenuItem>
           ))}
 
           <Divider />
 
           <MenuItem onClick={colorMode.toggleColorMode}>
-            <ListItemIcon>
-              {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-            </ListItemIcon>
             <ListItemText>
               Switch to {theme.palette.mode === 'dark' ? 'light' : 'dark'} mode
             </ListItemText>
+            {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
           </MenuItem>
         </MenuList>
       </Menu>

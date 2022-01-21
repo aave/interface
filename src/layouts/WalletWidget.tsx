@@ -1,10 +1,8 @@
 import { Trans } from '@lingui/macro';
-import { Person } from '@mui/icons-material';
-import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
+import { ContentCopy, Person } from '@mui/icons-material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
-import RemoveCircleOutlineRoundedIcon from '@mui/icons-material/RemoveCircleOutlineRounded';
-import { Box, Button, Divider, ListItemIcon, ListItemText } from '@mui/material';
+import { Box, Button, Divider, ListItemText, SvgIcon, Typography } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import makeBlockie from 'ethereum-blockies-base64';
@@ -13,6 +11,8 @@ import { Link } from 'src/components/Link';
 import useGetEns from 'src/libs/hooks/use-get-ens';
 import { useWeb3Context } from 'src/libs/web3-data-provider/Web3ContextProvider';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+
+import DisconnectIcon from '/public/icons/disconnect.svg';
 
 import { textCenterEllipsis } from '../helpers/text-center-ellipsis';
 
@@ -39,6 +39,14 @@ export default function WalletWidget() {
   const open = Boolean(anchorEl);
 
   const networkConfig = getNetworkConfig(chainId);
+  let networkColor = '';
+  if (networkConfig?.isFork) {
+    networkColor = '#ff4a8d';
+  } else if (networkConfig?.isTestnet) {
+    networkColor = '#7157ff';
+  } else {
+    networkColor = '#65c970';
+  }
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -127,41 +135,94 @@ export default function WalletWidget() {
         onClose={handleClose}
         PaperProps={{
           style: {
-            minWidth: 120,
+            minWidth: 240,
           },
         }}
       >
-        <MenuItem>{networkConfig.name}</MenuItem>
-        <Divider />
         <MenuItem onClick={handleCopy}>
-          <ListItemIcon>
-            <ContentCopyRoundedIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>Copy address</ListItemText>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box
+              sx={{
+                width: 36,
+                height: 36,
+                borderRadius: '50%',
+                border: '1px solid #3E4365',
+                mr: 3,
+                img: { width: '100%', height: '100%', borderRadius: '50%' },
+              }}
+            >
+              <img
+                src={useBlockie ? makeBlockie(currentAccount) : ensAvatar}
+                alt=""
+                onError={() => setUseBlockie(true)}
+              />
+            </Box>
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+              {ensNameAbbreviated && <Typography variant="main16">{ensNameAbbreviated}</Typography>}
+
+              <Typography
+                variant={ensNameAbbreviated ? 'secondary12' : 'main16'}
+                color={ensNameAbbreviated ? 'primary.light' : 'primary.main'}
+              >
+                {textCenterEllipsis(currentAccount, ensNameAbbreviated ? 12 : 7, 4)}
+              </Typography>
+            </Box>
+
+            <ContentCopy fontSize="small" sx={{ ml: 3 }} />
+          </Box>
         </MenuItem>
+        <Divider />
+
+        <MenuItem onClick={handleSwitchNetwork}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+            <Box
+              sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}
+            >
+              <Typography variant="secondary14" color="primary.light">
+                <Trans>Network</Trans>
+              </Typography>
+              <Typography
+                variant="buttonS"
+                sx={{ borderRadius: '6px', border: '1px solid #E0E5EA', p: '0 6px' }}
+              >
+                <Trans>Switch</Trans>
+              </Typography>
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Box
+                sx={{
+                  bgcolor: networkColor,
+                  width: 7,
+                  height: 7,
+                  mr: 2,
+                  border: '1px solid #E6E8F0',
+                  borderRadius: '50%',
+                }}
+              />
+              <Typography variant="main14">{networkConfig.name}</Typography>
+            </Box>
+          </Box>
+        </MenuItem>
+        <Divider />
+
         <MenuItem
           component={Link}
           href={networkConfig.explorerLinkBuilder({ address: currentAccount })}
           onClick={handleClose}
-          target="__BLANK"
         >
-          <ListItemIcon>
-            <OpenInNewRoundedIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>View on Etherscan</ListItemText>
+          <ListItemText>
+            <Trans>View on Etherscan</Trans>
+          </ListItemText>
+          <OpenInNewRoundedIcon fontSize="small" />
         </MenuItem>
+
         <MenuItem onClick={handleDisconnect}>
-          <ListItemIcon>
-            <RemoveCircleOutlineRoundedIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>Disconnect Wallet</ListItemText>
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={handleSwitchNetwork}>
-          <ListItemIcon>
-            <RemoveCircleOutlineRoundedIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>SwitchNetwork</ListItemText>
+          <ListItemText>
+            <Trans>Disconnect Wallet</Trans>
+          </ListItemText>
+          <SvgIcon fontSize="small">
+            <DisconnectIcon />
+          </SvgIcon>
         </MenuItem>
       </Menu>
     </>
