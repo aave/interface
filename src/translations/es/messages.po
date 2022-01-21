@@ -17,12 +17,20 @@ msgstr ""
 msgid "About the app"
 msgstr "Sobre la app"
 
+#: src/layouts/WalletWidget.tsx:95
+msgid "Connect Wallet"
+msgstr ""
+
 #: src/ui-config/menu-items/index.tsx:23
 msgid "Dashboard"
 msgstr ""
 
 #: src/ui-config/menu-items/index.tsx:54
 msgid "Developers"
+msgstr ""
+
+#: src/layouts/WalletWidget.tsx:237
+msgid "Disconnect Wallet"
 msgstr ""
 
 #: src/ui-config/menu-items/index.tsx:59
@@ -57,8 +65,12 @@ msgstr ""
 msgid "Markets overview"
 msgstr ""
 
-#: src/layouts/MoreMenu.tsx:43
+#: src/layouts/MoreMenu.tsx:46
 msgid "More"
+msgstr ""
+
+#: src/layouts/WalletWidget.tsx:198
+msgid "Network"
 msgstr ""
 
 #: pages/about.tsx:39
@@ -71,6 +83,14 @@ msgstr "Español"
 
 #: src/ui-config/menu-items/index.tsx:32
 msgid "Stake"
+msgstr ""
+
+#: src/layouts/WalletWidget.tsx:204
+msgid "Switch"
+msgstr ""
+
+#: src/layouts/WalletWidget.tsx:230
+msgid "View on Etherscan"
 msgstr ""
 
 #: pages/index.tsx:28
