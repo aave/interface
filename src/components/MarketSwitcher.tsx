@@ -3,14 +3,14 @@ import { MenuItem, TextField } from '@mui/material';
 import React from 'react';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 
-import { useProtocolDataContext } from '../../hooks/useProtocolData';
+import { useProtocolDataContext } from '../hooks/useProtocolData';
 import {
   availableMarkets,
   CustomMarket,
   MarketDataType,
   marketsData,
   networkConfigs,
-} from '../../utils/marketsAndNetworksConfig';
+} from '../utils/marketsAndNetworksConfig';
 
 export type Market = {
   marketTitle: string;
@@ -23,21 +23,21 @@ export type MarketSwitcherProps = {
   markets: Market[];
 };
 
-const MarketNameContainer = styled('div')(({ theme }) => ({
+const MarketNameContainer = styled('div')(({}) => ({
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'left',
   alignItems: 'center',
 }));
 
-const Text = styled('h1')(({ theme }) => ({
+const Text = styled('h1')(({}) => ({
   fontWeight: '900',
   fontSize: '32px',
   marginLeft: '16px',
   marginRight: '16px',
 }));
 
-const NetworkLogo = styled('img')(({ theme }) => ({
+const NetworkLogo = styled('img')(({}) => ({
   width: '32px',
   height: '32px',
 }));
