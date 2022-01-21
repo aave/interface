@@ -19,15 +19,6 @@ export const AavePaperBox = styled(Paper)(({ theme }) => ({
   },
 })) as React.JSXElementConstructor<PaperProps>;
 
-export const ModalTitle = styled(Typography)(({ theme }) => ({
-  fontFamily: 'Inter',
-  fontStyle: 'normal',
-  fontWeight: 'bold',
-  fontSize: '21px',
-  lineHeight: '26px',
-  color: theme.palette.primary,
-}));
-
 export const AaveModal = (props: AaveModalProps) => {
   const onCloseAction = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
     props.onClose && props.onClose(e, 'backdropClick');
@@ -35,9 +26,9 @@ export const AaveModal = (props: AaveModalProps) => {
   return (
     <Dialog PaperComponent={AavePaperBox} aria-labelledby="aave-modal-title" {...props}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: '43px' }}>
-        <ModalTitle id="aave-modal-title" variant="h6">
+        <Typography id="aave-modal-title" variant="main21">
           {props.title}
-        </ModalTitle>
+        </Typography>
         <IconButton aria-label="close" onClick={onCloseAction} sx={{ padding: 0 }}>
           <Close />
         </IconButton>
