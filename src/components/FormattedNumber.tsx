@@ -79,7 +79,6 @@ export default function FormattedNumber({
         flexDirection: 'row',
         alignItems: 'center',
         position: 'relative',
-        fontWeight: 700,
         ...rest.sx,
       }}
       {...rest}

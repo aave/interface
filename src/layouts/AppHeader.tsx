@@ -1,5 +1,5 @@
 import { useLingui } from '@lingui/react';
-import { Button, List, ListItem } from '@mui/material';
+import { List, ListItem } from '@mui/material';
 import Box from '@mui/material/Box';
 import dynamic from 'next/dynamic';
 import * as React from 'react';
@@ -41,6 +41,7 @@ export default function AppHeader({ topLineHeight }: AppHeaderProps) {
       <Box
         component="header"
         sx={(theme) => ({
+          height: headerHeight,
           position: 'sticky',
           top: 0,
           transition: theme.transitions.create('top'),
@@ -75,9 +76,9 @@ export default function AppHeader({ topLineHeight }: AppHeaderProps) {
               disablePadding
               key={index}
             >
-              <Button component={Link} href={item.link} size="small" sx={{ color: 'common.white' }}>
+              <Link href={item.link} variant="subheader1" sx={{ color: 'common.white' }}>
                 {i18n._(item.title)}
-              </Button>
+              </Link>
             </ListItem>
           ))}
 
