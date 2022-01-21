@@ -6,4 +6,7 @@ module.exports = {
     builder: 'webpack5',
   },
   staticDirs: ['../public'],
+  features: {
+    emotionAlias: false,
+  },
 };
