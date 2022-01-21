@@ -60,7 +60,6 @@ export const AppDataProvider: React.FC = ({ children }) => {
   const currentTimestamp = useCurrentTimestamp(1);
   const { currentAccount } = useWeb3Context();
   const { currentNetworkConfig, currentMarketData, currentChainId } = useProtocolDataContext();
-  // just populates the cache
 
   const { data: reservesData } = useC_ProtocolDataQuery({
     variables: {

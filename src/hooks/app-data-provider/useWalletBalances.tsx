@@ -23,6 +23,7 @@ export const useWalletBalances = (currentAccount: string, chainId: number) => {
         currentAccount,
         chainId,
       },
+      fetchPolicy: 'cache-only',
     }
   );
   return [data?.walletBalances || []];

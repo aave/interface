@@ -3,7 +3,7 @@ import { MenuItem, TextField } from '@mui/material';
 import React from 'react';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 
-import { useProtocolDataContext } from '../hooks/useProtocolData';
+import { useProtocolDataContext } from '../hooks/useProtocolDataContext';
 import {
   availableMarkets,
   CustomMarket,
