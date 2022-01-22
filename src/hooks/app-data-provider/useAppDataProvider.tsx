@@ -1,11 +1,9 @@
-import { API_ETH_MOCK_ADDRESS, ReserveDataHumanized } from '@aave/contract-helpers';
+import { ReserveDataHumanized } from '@aave/contract-helpers';
 import {
   FormatUserSummaryAndIncentivesResponse,
   UserReserveData,
   formatReservesAndIncentives,
   formatUserSummaryAndIncentives,
-  nativeToUSD,
-  normalize,
 } from '@aave/math-utils';
 import React, { useContext } from 'react';
 import {
@@ -19,7 +17,6 @@ import BigNumber from 'bignumber.js';
 import { useCurrentTimestamp } from '../useCurrentTimestamp';
 import { useProtocolDataContext } from '../useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { useWalletBalances } from './useWalletBalances';
 
 /**
  * removes the marketPrefix from a symbol
@@ -36,11 +33,8 @@ export type ComputedReserveData = ReturnType<typeof formatReservesAndIncentives>
 export interface AppDataContextType {
   reserves: ComputedReserveData[];
   // refreshPoolData?: () => Promise<void[]>;
-  walletBalances: { [address: string]: { amount: string; amountUSD: string } };
-  hasEmptyWallet: boolean;
   isUserHasDeposits: boolean;
   user?: FormatUserSummaryAndIncentivesResponse & { earnedAPY: number; debtAPY: number };
-  userId: string;
   // refreshIncentives?: () => Promise<void>;
   // loading: boolean;
 
@@ -59,7 +53,7 @@ const AppDataContext = React.createContext<AppDataContextType>({} as AppDataCont
 export const AppDataProvider: React.FC = ({ children }) => {
   const currentTimestamp = useCurrentTimestamp(1);
   const { currentAccount } = useWeb3Context();
-  const { currentNetworkConfig, currentMarketData, currentChainId } = useProtocolDataContext();
+  const { currentMarketData } = useProtocolDataContext();
 
   const { data: reservesData } = useC_ProtocolDataQuery({
     variables: {
@@ -96,34 +90,6 @@ export const AppDataProvider: React.FC = ({ children }) => {
     },
     fetchPolicy: 'cache-only',
   });
-  let hasEmptyWallet = true;
-  const [walletBalances] = useWalletBalances(currentAccount, currentChainId);
-
-  const aggregatedBalance = walletBalances.reduce((acc, reserve) => {
-    const poolReserve = reserves.find((poolReserve) => {
-      if (reserve.id === API_ETH_MOCK_ADDRESS.toLowerCase()) {
-        return (
-          poolReserve.symbol.toLowerCase() ===
-          currentNetworkConfig.wrappedBaseAssetSymbol?.toLowerCase()
-        );
-      }
-      return poolReserve.underlyingAsset.toLowerCase() === reserve.id;
-    });
-    if (reserve.amount !== '0') hasEmptyWallet = false;
-    if (poolReserve) {
-      acc[reserve.id] = {
-        amount: normalize(reserve.amount, poolReserve.decimals),
-        amountUSD: nativeToUSD({
-          amount: new BigNumber(reserve.amount),
-          currencyDecimals: poolReserve.decimals,
-          priceInMarketReferenceCurrency: poolReserve.priceInMarketReferenceCurrency,
-          marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
-          normalizedMarketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
-        }),
-      };
-    }
-    return acc;
-  }, {} as { [address: string]: { amount: string; amountUSD: string } });
 
   const formattedPoolReserves = formatReservesAndIncentives({
     reserves,
@@ -222,8 +188,6 @@ export const AppDataProvider: React.FC = ({ children }) => {
   return (
     <AppDataContext.Provider
       value={{
-        walletBalances: aggregatedBalance,
-        hasEmptyWallet,
         reserves: formattedPoolReserves,
         user: {
           ...user,
@@ -237,7 +201,6 @@ export const AppDataProvider: React.FC = ({ children }) => {
             .toNumber(),
         },
         userReserves,
-        userId: currentAccount,
         isUserHasDeposits,
         marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
         marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
