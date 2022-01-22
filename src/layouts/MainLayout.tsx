@@ -13,7 +13,7 @@ export default function MainLayout({
   headerTopLineHeight?: number;
 }) {
   return (
-    <div>
+    <>
       <AppHeader topLineHeight={headerTopLineHeight} />
 
       <main>{children}</main>
@@ -23,6 +23,6 @@ export default function MainLayout({
       </Box>
 
       <MarketSwitcher />
-    </div>
+    </>
   );
 }
