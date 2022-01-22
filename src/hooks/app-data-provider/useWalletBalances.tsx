@@ -6,7 +6,8 @@ import { useProtocolDataContext } from '../useProtocolDataContext';
 import { gql } from 'graphql-tag';
 import { useCallback } from 'react';
 import { useC_ProtocolDataQuery } from './graphql/hooks';
-import { nativeToUSD, normalize, valueToBigNumber } from '@aave/math-utils';
+import { nativeToUSD, normalize, USD_DECIMALS } from '@aave/math-utils';
+import { BigNumber } from 'bignumber.js';
 
 const WalletBalancesQuery = gql`
   query WalletBalances($currentAccount: String!, $chainId: Int!) {
@@ -64,11 +65,14 @@ export const useWalletBalances = () => {
       acc[reserve.id] = {
         amount: normalize(reserve.amount, poolReserve.decimals),
         amountUSD: nativeToUSD({
-          amount: valueToBigNumber(reserve.amount),
+          amount: new BigNumber(reserve.amount),
           currencyDecimals: poolReserve.decimals,
           priceInMarketReferenceCurrency: poolReserve.priceInMarketReferenceCurrency,
           marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
-          normalizedMarketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
+          normalizedMarketReferencePriceInUsd: normalize(
+            baseCurrencyData.marketReferenceCurrencyPriceInUsd,
+            USD_DECIMALS
+          ),
         }),
       };
     }
