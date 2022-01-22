@@ -106,7 +106,6 @@ export function ProtocolDataProvider({ children }: PropsWithChildren<{}>) {
   //   }
   // }, []);
 
-  console.log('rerender2');
 
   return (
     <PoolDataContext.Provider
