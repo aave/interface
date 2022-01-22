@@ -7,11 +7,10 @@ import * as React from 'react';
 import FormattedNumber from '../src/components/FormattedNumber';
 import { Link } from '../src/components/Link';
 import { MultiTokenIcon } from '../src/components/TokenIcon';
-import { useHeaderTopLineHeight } from '../src/layouts/MainLayout';
+import MainLayout from '../src/layouts/MainLayout';
 // import { useProtocolDataContext } from '../src/hooks/useProtocolData';
 
 export default function Home() {
-  useHeaderTopLineHeight(248);
   // const { currentMarket } = useProtocolDataContext();
   return (
     <Container maxWidth="lg">
@@ -49,3 +48,7 @@ export default function Home() {
     </Container>
   );
 }
+
+Home.getLayout = function getLayout(page: React.ReactElement) {
+  return <MainLayout headerTopLineHeight={200}>{page}</MainLayout>;
+};
