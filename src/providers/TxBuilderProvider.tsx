@@ -1,6 +1,6 @@
 import { FaucetService, LendingPool, Pool, PoolInterface } from '@aave/contract-helpers';
 import React, { ReactElement } from 'react';
-import { useProtocolDataContext } from 'src/hooks/useProtocolData';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { TxBuilderContext } from 'src/hooks/useTxBuilder';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 

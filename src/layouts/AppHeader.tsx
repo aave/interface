@@ -1,13 +1,14 @@
-import { Button } from '@mui/material';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import { alpha, styled } from '@mui/material/styles';
-import dynamic from 'next/dynamic';
 import * as React from 'react';
 
+import { alpha, styled } from '@mui/material/styles';
+
+import Box from '@mui/material/Box';
+import { Button } from '@mui/material';
+import Container from '@mui/material/Container';
 import { Link } from '../components/Link';
-import { uiConfig } from '../uiConfig';
 import MoreMenu from './MoreMenu';
+import dynamic from 'next/dynamic';
+import { uiConfig } from '../uiConfig';
 
 const WalletWidget = dynamic(() => import('./WalletWidget'), {
   ssr: false,
@@ -46,7 +47,7 @@ export default function AppHeader() {
             mr: '12px',
           }}
         >
-          <Button size="small" color="inherit" component={Link} href="/about">
+          <Button size="small" color="inherit" component={Link} href="/markets">
             Markets
           </Button>
         </Box>
@@ -55,7 +56,11 @@ export default function AppHeader() {
             Dashboard
           </Button>
         </Box>
-        <Box sx={{ display: { xs: 'none', sm: 'initial' }, mr: '12px' }}>
+        <Box
+          sx={{ display: { xs: 'none', sm: 'initial' }, mr: '12px' }}
+          component={Link}
+          href="/about"
+        >
           <Button size="small" color="inherit">
             Stake
           </Button>
