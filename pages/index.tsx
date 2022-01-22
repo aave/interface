@@ -4,6 +4,7 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import type { NextPage } from 'next';
 import * as React from 'react';
+import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 
 import FormattedNumber from '../src/components/FormattedNumber';
 import { Link } from '../src/components/Link';
@@ -12,6 +13,7 @@ import { MultiTokenIcon } from '../src/components/TokenIcon';
 
 const Home: NextPage = () => {
   // const { currentMarket } = useProtocolDataContext();
+  const { hasEmptyWallet, walletBalances } = useWalletBalances();
   return (
     <Container maxWidth="lg">
       <Box
@@ -45,6 +47,7 @@ const Home: NextPage = () => {
         />
         <FormattedNumber value={0.213133212312} percent />
       </Box>
+      {JSON.stringify(walletBalances)}
     </Container>
   );
 };

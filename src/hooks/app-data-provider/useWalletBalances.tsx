@@ -1,10 +1,12 @@
-import { WalletBalanceProvider } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS, WalletBalanceProvider } from '@aave/contract-helpers';
 import { useApolloClient, useQuery } from '@apollo/client';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { usePolling } from '../usePolling';
 import { useProtocolDataContext } from '../useProtocolDataContext';
 import { gql } from 'graphql-tag';
 import { useCallback } from 'react';
+import { useC_ProtocolDataQuery } from './graphql/hooks';
+import { nativeToUSD, normalize, valueToBigNumber } from '@aave/math-utils';
 
 const WalletBalancesQuery = gql`
   query WalletBalances($currentAccount: String!, $chainId: Int!) {
@@ -15,18 +17,64 @@ const WalletBalancesQuery = gql`
   }
 `;
 
-export const useWalletBalances = (currentAccount: string, chainId: number) => {
-  const { data } = useQuery<{ walletBalances: { id: string; amount: string }[] }>(
-    WalletBalancesQuery,
-    {
-      variables: {
-        currentAccount,
-        chainId,
-      },
-      fetchPolicy: 'cache-only',
+export const useWalletBalances = () => {
+  const { currentAccount } = useWeb3Context();
+  const { currentMarketData, currentChainId, currentNetworkConfig } = useProtocolDataContext();
+
+  // fetch unformatted reserve data for prices
+  const { data: reservesData } = useC_ProtocolDataQuery({
+    variables: {
+      lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
+    },
+    fetchPolicy: 'cache-only',
+  });
+  // fetch unformatted wallet balances
+  const { data: balances } = useQuery<{
+    walletBalances: { id: string; amount: string }[];
+  }>(WalletBalancesQuery, {
+    variables: {
+      currentAccount,
+      chainId: currentChainId,
+    },
+    fetchPolicy: 'cache-only',
+  });
+
+  // process data
+  const walletBalances = balances?.walletBalances || [];
+  const reserves = reservesData?.protocolData.reserves || [];
+  const baseCurrencyData = reservesData?.protocolData.baseCurrencyData || {
+    marketReferenceCurrencyDecimals: 0,
+    marketReferenceCurrencyPriceInUsd: '0',
+    networkBaseTokenPriceInUsd: '0',
+    networkBaseTokenPriceDecimals: 0,
+  };
+  let hasEmptyWallet = true;
+  const aggregatedBalance = walletBalances.reduce((acc, reserve) => {
+    const poolReserve = reserves.find((poolReserve) => {
+      if (reserve.id === API_ETH_MOCK_ADDRESS.toLowerCase()) {
+        return (
+          poolReserve.symbol.toLowerCase() ===
+          currentNetworkConfig.wrappedBaseAssetSymbol?.toLowerCase()
+        );
+      }
+      return poolReserve.underlyingAsset.toLowerCase() === reserve.id;
+    });
+    if (reserve.amount !== '0') hasEmptyWallet = false;
+    if (poolReserve) {
+      acc[reserve.id] = {
+        amount: normalize(reserve.amount, poolReserve.decimals),
+        amountUSD: nativeToUSD({
+          amount: valueToBigNumber(reserve.amount),
+          currencyDecimals: poolReserve.decimals,
+          priceInMarketReferenceCurrency: poolReserve.priceInMarketReferenceCurrency,
+          marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
+          normalizedMarketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
+        }),
+      };
     }
-  );
-  return [data?.walletBalances || []];
+    return acc;
+  }, {} as { [address: string]: { amount: string; amountUSD: string } });
+  return { walletBalances: aggregatedBalance, hasEmptyWallet };
 };
 
 export const useUpdateWalletBalances = () => {
@@ -61,11 +109,12 @@ export const useUpdateWalletBalances = () => {
         chainId: currentChainId,
       },
     });
-  }, []);
+  }, [currentChainId, currentAccount, currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER]);
 
   usePolling(fetchWalletData, 30000, !currentAccount, [
     currentAccount,
     currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
+    currentChainId,
   ]);
 
   return { refetch: fetchWalletData };
