@@ -1,17 +1,18 @@
-import { Person } from '@mui/icons-material';
+import { Button, Divider, ListItemIcon, ListItemText } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
-import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
-import RemoveCircleOutlineRoundedIcon from '@mui/icons-material/RemoveCircleOutlineRounded';
-import { Button, Divider, ListItemIcon, ListItemText } from '@mui/material';
+import { Link } from 'src/components/Link';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import makeBlockie from 'ethereum-blockies-base64';
-import React, { useEffect, useState } from 'react';
-import { Link } from 'src/components/Link';
-import useGetEns from 'src/libs/hooks/use-get-ens';
-import { useWeb3Context } from 'src/libs/web3-data-provider/Web3ContextProvider';
+import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
+import { Person } from '@mui/icons-material';
+import RemoveCircleOutlineRoundedIcon from '@mui/icons-material/RemoveCircleOutlineRounded';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import makeBlockie from 'ethereum-blockies-base64';
+import useGetEns from 'src/libs/hooks/use-get-ens';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 export default function WalletWidget() {
   const { connectWallet, disconnectWallet, currentAccount, connected, chainId, switchNetwork } =

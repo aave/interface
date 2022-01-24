@@ -1,0 +1,53 @@
+fragment TokenIncentivesUserDataFragment on UserIncentiveData {
+  tokenAddress
+  incentiveControllerAddress
+  userRewardsInformation {
+    rewardTokenSymbol
+    rewardOracleAddress
+    rewardTokenAddress
+    userUnclaimedRewards
+    tokenIncentivesUserIndex
+    rewardPriceFeed
+    priceFeedDecimals
+    rewardTokenDecimals
+  }
+}
+
+query C_UserIncentives($userAddress: String!, $lendingPoolAddressProvider: String!) {
+  userIncentives(
+    userAddress: $userAddress
+    lendingPoolAddressProvider: $lendingPoolAddressProvider
+  ) {
+    underlyingAsset
+    aTokenIncentivesUserData {
+      ...TokenIncentivesUserDataFragment
+    }
+    vTokenIncentivesUserData {
+      ...TokenIncentivesUserDataFragment
+    }
+    sTokenIncentivesUserData {
+      ...TokenIncentivesUserDataFragment
+    }
+  }
+}
+
+subscription C_UserPoolIncentivesDataUpdate(
+  $userAddress: String!
+  $lendingPoolAddressProvider: String!
+) {
+  userPoolIncentivesDataUpdate(
+    userAddress: $userAddress
+    lendingPoolAddressProvider: $lendingPoolAddressProvider
+  ) {
+    underlyingAsset
+    aTokenIncentivesUserData {
+      ...TokenIncentivesUserDataFragment
+    }
+    vTokenIncentivesUserData {
+      ...TokenIncentivesUserDataFragment
+    }
+    sTokenIncentivesUserData {
+      ...TokenIncentivesUserDataFragment
+    }
+  }
+}
