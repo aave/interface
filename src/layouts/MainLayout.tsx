@@ -1,9 +1,9 @@
 import { Box } from '@mui/material';
 import React, { ReactNode } from 'react';
 
-import LanguageSelector from '../components/LanguageSelector';
+import { LanguageSelector } from '../components/LanguageSelector';
 import { MarketSwitcher } from '../components/MarketSwitcher';
-import AppHeader from './AppHeader';
+import { AppHeader } from './AppHeader';
 
 export default function MainLayout({
   children,

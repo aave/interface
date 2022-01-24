@@ -8,7 +8,7 @@ import MenuSettingsIcon from '/public/icons/menuSettings.svg';
 
 import { ColorModeContext } from './AppGlobalStyles';
 
-export default function SettingsMenu() {
+export function SettingsMenu() {
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
 

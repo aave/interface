@@ -44,7 +44,7 @@ interface FormattedNumberProps extends TypographyProps {
   percent?: boolean;
 }
 
-export default function FormattedNumber({
+export function FormattedNumber({
   value,
   symbol,
   maximumDecimals,

@@ -18,7 +18,7 @@ type Mode = 'light' | 'dark';
  * @param param0
  * @returns
  */
-export default function AppGlobalStyles({ children }: { children: ReactNode }) {
+export function AppGlobalStyles({ children }: { children: ReactNode }) {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const [mode, setMode] = useState<Mode>(prefersDarkMode ? 'dark' : 'light');
   const colorMode = useMemo(
