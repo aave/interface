@@ -35,13 +35,17 @@ export enum SupplyState {
   sendTx,
   success,
   error,
+  networkMisMatch,
 }
 
-export const Supply = ({ poolReserve, userReserve, walletBalance, user, supplyApy }: SupplyProps) => {
-  const { lendingPool } = useTxBuilderContext();
+export const Supply = ({
+  poolReserve,
+  userReserve,
+  walletBalance,
+  user,
+  supplyApy,
+}: SupplyProps) => {
   const { marketReferencePriceInUsd } = useAppDataContext();
-  const { networkConfig, currentMarketData } = useProtocolDataContext();
-  const { currentAccount } = useWeb3Context();
 
   const [supplyStep, setSupplyStep] = useState<SupplyState>(SupplyState.amountInput);
   const [amountToSupply, setAmountToSupply] = useState('');
@@ -49,16 +53,6 @@ export const Supply = ({ poolReserve, userReserve, walletBalance, user, supplyAp
 
   const onClose = () => {
     setOpen(false);
-  };
-
-  const handleTransactionData = (userId: string) => async () => {
-    const txData = await lendingPool.deposit({
-      user: userId,
-      reserve: poolReserve.underlyingAsset,
-      amount: amountToSupply.toString(),
-      referralCode: undefined,
-    });
-    setTxData(txData);
   };
 
   // Calculation of future HF
@@ -83,9 +77,8 @@ export const Supply = ({ poolReserve, userReserve, walletBalance, user, supplyAp
     currentLiquidationThreshold: liquidationThresholdAfter,
   });
 
-
   // TODO: what / how to show isolation statuses / warnings??
-
+  // TODO: what to do with network mismatch
   return (
     <div>
       <AaveModal open={open} onClose={onClose} title={'Supply'}>
@@ -102,7 +95,13 @@ export const Supply = ({ poolReserve, userReserve, walletBalance, user, supplyAp
           // supplyRewards={supplyRewards}
           healthFactor={healthFactorAfterDeposit.toString()}
         />
-        <SupplyActions></SupplyActions>
+        <SupplyActions
+          poolReserve={poolReserve}
+          setSupplyStep={setSupplyStep}
+          supplyStep={supplyStep}
+          amountToSupply={amountToSupply}
+          onClose={onClose}
+        ></SupplyActions>
       </AaveModal>
       <Button onClick={() => setOpen(true)}>Supply</Button>
     </div>
