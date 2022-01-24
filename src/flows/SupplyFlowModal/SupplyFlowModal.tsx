@@ -18,7 +18,7 @@ export const SupplyFlowModal: React.FC<SupplyFlowProps> = ({
   open,
   onClose,
   supplyApy,
-  supplyRewards,
+  // supplyRewards,
   healthFactor,
   balance,
   tokenSymbol,
@@ -44,7 +44,7 @@ export const SupplyFlowModal: React.FC<SupplyFlowProps> = ({
       />
       <SupplyDetails
         supplyApy={supplyApy}
-        supplyRewards={supplyRewards}
+        // supplyRewards={supplyRewards}
         healthFactor={healthFactor}
       />
       {children}

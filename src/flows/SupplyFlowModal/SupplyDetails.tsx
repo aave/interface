@@ -6,7 +6,7 @@ import { FormInfo } from '../../components/FormItems/FormInfo';
 import { FormRow } from '../../components/FormItems/FormRow';
 import { FormValue } from '../../components/FormItems/FormValue';
 import { Percentage } from '../../components/Percentage';
-import { TokenIcon } from '../../components/TokenIcon';
+// import { TokenIcon } from '../../components/TokenIcon';
 
 export interface SupplyReward {
   tokenIcon: string;
@@ -15,25 +15,25 @@ export interface SupplyReward {
 }
 export interface SupplyDetailsProps {
   supplyApy: string;
-  supplyRewards: SupplyReward[];
+  // supplyRewards: SupplyReward[];
   healthFactor: string;
 }
 
-export const SupplyRewards: React.FC<{ supplyRewards: SupplyReward[] }> = ({ supplyRewards }) => (
-  <>
-    {supplyRewards.map((x) => (
-      <Box key={x.tokenIcon} sx={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
-        <TokenIcon symbol={x.tokenIcon} sx={{ width: 16, height: 16 }} />
-        <Percentage value={x.apy} />
-        <Typography> {` ${x.tokenName}`}</Typography>
-      </Box>
-    ))}
-  </>
-);
+// export const SupplyRewards: React.FC<{ supplyRewards: SupplyReward[] }> = ({ supplyRewards }) => (
+//   <>
+//     {supplyRewards.map((x) => (
+//       <Box key={x.tokenIcon} sx={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
+//         <TokenIcon symbol={x.tokenIcon} sx={{ width: 16, height: 16 }} />
+//         <Percentage value={x.apy} />
+//         <Typography> {` ${x.tokenName}`}</Typography>
+//       </Box>
+//     ))}
+//   </>
+// );
 
 export const SupplyDetails: React.FC<SupplyDetailsProps> = ({
   supplyApy,
-  supplyRewards,
+  // supplyRewards,
   healthFactor,
 }) => {
   return (
@@ -52,9 +52,9 @@ export const SupplyDetails: React.FC<SupplyDetailsProps> = ({
         <FormInfo>
           <Trans component={Typography}>Supply reward</Trans>
         </FormInfo>
-        <FormValue>
+        {/* <FormValue>
           <SupplyRewards supplyRewards={supplyRewards} />
-        </FormValue>
+        </FormValue> */}
       </FormRow>
       <FormRow>
         <FormInfo>
