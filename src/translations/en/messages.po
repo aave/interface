@@ -13,26 +13,86 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: pages/about.tsx:25
+#: pages/about.tsx:30
 msgid "About the app"
 msgstr "About the app"
 
-#: src/components/LanguageSelector/index.tsx:33
+#: src/layouts/WalletWidget.tsx:95
+msgid "Connect Wallet"
+msgstr ""
+
+#: src/ui-config/menu-items/index.tsx:23
+msgid "Dashboard"
+msgstr ""
+
+#: src/ui-config/menu-items/index.tsx:54
+msgid "Developers"
+msgstr ""
+
+#: src/layouts/WalletWidget.tsx:237
+msgid "Disconnect Wallet"
+msgstr ""
+
+#: src/ui-config/menu-items/index.tsx:59
+msgid "Discord"
+msgstr ""
+
+#: src/components/LanguageSelector/index.tsx:38
 msgid "English"
 msgstr "English"
 
-#: pages/index.tsx:27
+#: src/ui-config/menu-items/index.tsx:49
+msgid "FAQ"
+msgstr ""
+
+#: src/ui-config/menu-items/index.tsx:64
+msgid "Github"
+msgstr ""
+
+#: pages/index.tsx:31
 msgid "Go to About page"
 msgstr "Go to the About page"
 
-#: pages/about.tsx:29
+#: pages/about.tsx:34
 msgid "Go to Home page"
 msgstr "Go to Home page"
 
-#: src/components/LanguageSelector/index.tsx:36
+#: src/ui-config/menu-items/index.tsx:37
+msgid "Governance"
+msgstr ""
+
+#: src/ui-config/menu-items/index.tsx:28
+msgid "Markets overview"
+msgstr ""
+
+#: src/layouts/MoreMenu.tsx:46
+msgid "More"
+msgstr ""
+
+#: src/layouts/WalletWidget.tsx:198
+msgid "Network"
+msgstr ""
+
+#: pages/about.tsx:39
+msgid "Open Modal"
+msgstr ""
+
+#: src/components/LanguageSelector/index.tsx:41
 msgid "Spanish"
 msgstr "Spanish"
 
-#: pages/index.tsx:24
+#: src/ui-config/menu-items/index.tsx:32
+msgid "Stake"
+msgstr ""
+
+#: src/layouts/WalletWidget.tsx:204
+msgid "Switch"
+msgstr ""
+
+#: src/layouts/WalletWidget.tsx:230
+msgid "View on Etherscan"
+msgstr ""
+
+#: pages/index.tsx:28
 msgid "Welcome to Aave UI"
 msgstr "Welcome to Aave UI"

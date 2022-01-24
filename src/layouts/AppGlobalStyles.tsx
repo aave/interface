@@ -1,9 +1,10 @@
 import { useMediaQuery } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
-import { ThemeProvider } from '@mui/material/styles';
-import React, { useEffect, useMemo, useState } from 'react';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { deepmerge } from '@mui/utils';
+import React, { ReactNode, useEffect, useMemo, useState } from 'react';
 
-import { getTheme } from '../utils/theme';
+import { getDesignTokens, getThemedComponents } from '../utils/theme';
 
 export const ColorModeContext = React.createContext({
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -17,7 +18,7 @@ type Mode = 'light' | 'dark';
  * @param param0
  * @returns
  */
-export const AppGlobalStyles: React.FC = ({ children }) => {
+export function AppGlobalStyles({ children }: { children: ReactNode }) {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const [mode, setMode] = useState<Mode>(prefersDarkMode ? 'dark' : 'light');
   const colorMode = useMemo(
@@ -42,16 +43,19 @@ export const AppGlobalStyles: React.FC = ({ children }) => {
     }
   }, []);
 
-  const theme = useMemo(() => getTheme(mode), [mode]);
+  const theme = useMemo(() => {
+    const themeCreate = createTheme(getDesignTokens(mode));
+    return deepmerge(themeCreate, getThemedComponents(themeCreate));
+  }, [mode]);
+
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <main>{children}</main>
+
+        {children}
       </ThemeProvider>
     </ColorModeContext.Provider>
   );
-};
-
-export default AppGlobalStyles;
+}

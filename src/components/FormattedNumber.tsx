@@ -44,7 +44,7 @@ interface FormattedNumberProps extends TypographyProps {
   percent?: boolean;
 }
 
-export default function FormattedNumber({
+export function FormattedNumber({
   value,
   symbol,
   maximumDecimals,
@@ -79,7 +79,6 @@ export default function FormattedNumber({
         flexDirection: 'row',
         alignItems: 'center',
         position: 'relative',
-        fontWeight: 700,
         ...rest.sx,
       }}
       {...rest}
