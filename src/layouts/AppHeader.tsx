@@ -98,7 +98,7 @@ export function AppHeader({ topLineHeight }: AppHeaderProps) {
           zIndex: -1,
           width: '100%',
           height: `${topLineHeight}px`,
-          bgcolor: 'background.header',
+          bgcolor: '#090815',
           transition: 'all 0.2s ease-in-out',
         }}
       />

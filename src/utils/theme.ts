@@ -404,6 +404,13 @@ export function getThemedComponents(theme: Theme) {
           },
         },
       },
+      MuiListItemIcon: {
+        styleOverrides: {
+          root: {
+            color: theme.palette.primary.light,
+          },
+        },
+      },
       MuiCssBaseline: {
         styleOverrides: {
           body: {

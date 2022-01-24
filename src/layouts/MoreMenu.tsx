@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import { Button, ListItemText, MenuList, SvgIcon } from '@mui/material';
+import { Button, ListItemIcon, ListItemText, MenuList, SvgIcon } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import React from 'react';
@@ -59,8 +59,11 @@ export function MoreMenu() {
         <MenuList disablePadding>
           {moreNavigation.map((item, index) => (
             <MenuItem component={Link} href={item.link} key={index}>
+              <ListItemIcon>
+                <SvgIcon>{item.icon}</SvgIcon>
+              </ListItemIcon>
+
               <ListItemText>{i18n._(item.title)}</ListItemText>
-              <SvgIcon>{item.icon}</SvgIcon>
             </MenuItem>
           ))}
         </MenuList>
