@@ -1,8 +1,7 @@
 import { eEthereumTxType, GasResponse, transactionType } from '@aave/contract-helpers';
 import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers';
 import { BigNumber } from 'ethers';
-import React, { Dispatch, SetStateAction } from 'react';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { Dispatch, SetStateAction } from 'react';
 
 export enum TxStatusType {
   submitted = 'submitted',
@@ -34,14 +33,14 @@ export interface EthTransactionData {
   error?: string;
 }
 
-export const useSendEthTx = async (
+export const sendEthTx = async (
   txGetter: () => Promise<transactionType>,
   stateSetter: Dispatch<SetStateAction<EthTransactionData>>,
   customGasPrice: string | null,
+  sendTx: (txData: transactionType) => Promise<TransactionResponse>,
+  getTxError: (txHash: string) => Promise<string>,
   callbacks?: SendEthTransactionCallbacks
 ) => {
-  const { sendTx, getTxError } = useWeb3Context();
-
   stateSetter((state) => ({
     ...state,
     loading: true,

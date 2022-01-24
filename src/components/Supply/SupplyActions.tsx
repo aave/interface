@@ -1,19 +1,13 @@
-import {
-  ChainId,
-  EthereumTransactionTypeExtended,
-  Pool,
-  transactionType,
-} from '@aave/contract-helpers';
+import { ChainId, EthereumTransactionTypeExtended, Pool } from '@aave/contract-helpers';
 import { Button } from '@mui/material';
-import { BigNumber } from 'ethers';
 import { useEffect, useState } from 'react';
-import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
+// import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useConnectionStatusContext } from 'src/hooks/useConnectionStatusContext';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { EthTransactionData, TxStatusType, useSendEthTx } from 'src/hooks/useSendTx';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { EthTransactionData, sendEthTx, TxStatusType } from 'src/utils/sendTxHelper';
 import { SupplyState } from './Supply';
 
 export type SupplyActionProps = {
@@ -33,7 +27,7 @@ export const SupplyActions = ({
   mainTxType,
   onClose,
 }: SupplyActionProps) => {
-  const { signTxData, switchNetwork } = useWeb3Context();
+  const { signTxData, switchNetwork, getTxError, sendTx } = useWeb3Context();
   // const { refechIncentiveData, refetchPoolData, refetchWalletBalances } =
   //   useBackgroundDataProvider();
   const { isRPCActive } = useConnectionStatusContext();
@@ -156,9 +150,7 @@ export const SupplyActions = ({
     } else {
       if (approveTxData && approveTxData.unsignedData) {
         // TODO: how to fix this typo
-        useSendEthTx(approveTxData.unsignedData, setApproveTxData, customGasPrice, {
-          onConfirmation: () => setSupplyStep(SupplyState.sendTx),
-        });
+        sendEthTx(approveTxData.unsignedData, setApproveTxData, customGasPrice, sendTx, getTxError);
       }
     }
   };
@@ -167,7 +159,7 @@ export const SupplyActions = ({
   const handleSendMainTx = async () => {
     await handleGetTransactions();
     if (actionTxData && actionTxData.unsignedData) {
-      useSendEthTx(actionTxData.unsignedData, setActionTxData, customGasPrice);
+      sendEthTx(actionTxData.unsignedData, setActionTxData, customGasPrice, sendTx, getTxError);
     } else {
     }
   };
