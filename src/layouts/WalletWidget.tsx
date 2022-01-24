@@ -21,7 +21,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import DisconnectIcon from '/public/icons/disconnect.svg';
 import LinkIcon from '/public/icons/link.svg';
 
-import { Link } from '../components/Link';
+import { Link } from '../components/primitives/Link';
 import { textCenterEllipsis } from '../helpers/text-center-ellipsis';
 import { getNetworkConfig } from '../utils/marketsAndNetworksConfig';
 
@@ -143,6 +143,7 @@ export default function WalletWidget() {
           style: {
             minWidth: 240,
           },
+          variant: 'outlined',
         }}
       >
         <MenuList disablePadding>
@@ -150,8 +151,8 @@ export default function WalletWidget() {
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Box
                 sx={{
-                  width: 36,
-                  height: 36,
+                  width: 40,
+                  height: 40,
                   borderRadius: '50%',
                   border: '1px solid #FAFBFC1F',
                   mr: 3,

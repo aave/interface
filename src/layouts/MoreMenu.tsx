@@ -6,7 +6,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import React from 'react';
 
-import { Link } from '../components/Link';
+import { Link } from '../components/primitives/Link';
 import { moreNavigation } from '../ui-config/menu-items';
 
 export function MoreMenu() {
@@ -55,6 +55,7 @@ export function MoreMenu() {
           style: {
             minWidth: 240,
           },
+          variant: 'outlined',
         }}
       >
         <MenuList disablePadding>

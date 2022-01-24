@@ -59,7 +59,7 @@ export const marketsData: {
 } = {
   [CustomMarket.proto_kovan_v3]: {
     v3: true,
-    marketTitle: 'V3 market',
+    marketTitle: 'AAVE v3 Kovan',
     chainId: ChainId.kovan,
     aTokenPrefix: 'A',
     enabledFeatures: {
@@ -80,7 +80,7 @@ export const marketsData: {
   },
   [CustomMarket.proto_eth_rinkeby_v3]: {
     v3: true,
-    marketTitle: 'V3 market',
+    marketTitle: 'AAVE v3 Rinkeby',
     chainId: ChainId.rinkeby,
     aTokenPrefix: 'A',
     enabledFeatures: {
@@ -99,7 +99,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_kovan]: {
-    marketTitle: 'market',
+    marketTitle: 'AAVE v2 Kovan',
     chainId: ChainId.kovan,
     aTokenPrefix: 'A',
     enabledFeatures: {
@@ -119,7 +119,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_mainnet]: {
-    marketTitle: 'market',
+    marketTitle: 'AAVE v2',
     chainId: ChainId.mainnet,
     aTokenPrefix: 'A',
     enabledFeatures: {
@@ -141,7 +141,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.amm_kovan]: {
-    marketTitle: 'AMM market',
+    marketTitle: 'AMM Kovan',
     chainId: ChainId.kovan,
     aTokenPrefix: 'AAMM',
     addresses: {
@@ -155,7 +155,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.amm_mainnet]: {
-    marketTitle: 'AMM market',
+    marketTitle: 'AMM',
     chainId: ChainId.mainnet,
     aTokenPrefix: 'AAMM',
     addresses: {
@@ -168,7 +168,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_mumbai]: {
-    marketTitle: 'market',
+    marketTitle: 'AAVE v2 Mumbai',
     chainId: ChainId.mumbai,
     aTokenPrefix: 'AM',
     enabledFeatures: {
@@ -186,7 +186,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_matic]: {
-    marketTitle: 'market',
+    marketTitle: 'Polygon',
     chainId: ChainId.polygon,
     aTokenPrefix: 'AM',
     enabledFeatures: {
@@ -204,7 +204,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_fuji]: {
-    marketTitle: 'market',
+    marketTitle: 'Avalanche Fuji',
     chainId: ChainId.fuji,
     aTokenPrefix: 'AAVA',
     enabledFeatures: {
@@ -222,7 +222,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_avalanche]: {
-    marketTitle: 'market',
+    marketTitle: 'Avalanche',
     chainId: ChainId.avalanche,
     aTokenPrefix: 'AV',
     enabledFeatures: {
@@ -240,7 +240,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_arbitrum_rinkeby]: {
-    marketTitle: 'V3 market',
+    marketTitle: 'Arbitrum v3 Rinkeby',
     v3: true,
     chainId: ChainId.arbitrum_rinkeby,
     aTokenPrefix: 'AA',
@@ -259,7 +259,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_fuji_v3]: {
-    marketTitle: 'V3 market',
+    marketTitle: 'Avalanche v3 Fuji',
     v3: true,
     chainId: ChainId.fuji,
     aTokenPrefix: 'AAVA',
@@ -278,7 +278,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_harmony_testnet]: {
-    marketTitle: 'V3 market',
+    marketTitle: 'Harmony v3 Testnet',
     v3: true,
     chainId: ChainId.harmony_testnet,
     aTokenPrefix: 'AAVA',
@@ -297,7 +297,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_fantom_testnet]: {
-    marketTitle: 'V3 market',
+    marketTitle: 'Fantom v3 Testnet',
     v3: true,
     chainId: ChainId.fantom_testnet,
     aTokenPrefix: 'AAVA',

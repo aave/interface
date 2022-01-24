@@ -6,7 +6,7 @@ import { FormInfo } from '../../components/FormItems/FormInfo';
 import { FormRow } from '../../components/FormItems/FormRow';
 import { FormValue } from '../../components/FormItems/FormValue';
 import { Percentage } from '../../components/Percentage';
-import { TokenIcon } from '../../components/TokenIcon';
+import { TokenIcon } from '../../components/primitives/TokenIcon';
 
 export interface SupplyReward {
   tokenIcon: string;
