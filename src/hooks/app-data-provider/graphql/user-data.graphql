@@ -1,0 +1,29 @@
+fragment UserReserveDataFragment on UserReserveData {
+  underlyingAsset
+  scaledATokenBalance
+  usageAsCollateralEnabledOnUser
+  scaledVariableDebt
+  stableBorrowRate
+  principalStableDebt
+  stableBorrowLastUpdateTimestamp
+}
+
+query C_UserData($userAddress: String!, $lendingPoolAddressProvider: String!) {
+  userData(userAddress: $userAddress, lendingPoolAddressProvider: $lendingPoolAddressProvider) {
+    userReserves {
+      ...UserReserveDataFragment
+    }
+    userEmodeCategoryId
+  }
+}
+subscription C_UserDataUpdate($userAddress: String!, $lendingPoolAddressProvider: String!) {
+  userDataUpdate(
+    userAddress: $userAddress
+    lendingPoolAddressProvider: $lendingPoolAddressProvider
+  ) {
+    userReserves {
+      ...UserReserveDataFragment
+    }
+    userEmodeCategoryId
+  }
+}

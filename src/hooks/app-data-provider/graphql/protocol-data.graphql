@@ -1,0 +1,81 @@
+fragment ReserveDataFragment on ReserveData {
+  id
+  underlyingAsset
+  name
+  symbol
+  decimals
+  isActive
+  isFrozen
+  usageAsCollateralEnabled
+  aTokenAddress
+  stableDebtTokenAddress
+  variableDebtTokenAddress
+  borrowingEnabled
+  stableBorrowRateEnabled
+  reserveFactor
+  interestRateStrategyAddress
+  baseLTVasCollateral
+  stableRateSlope1
+  stableRateSlope2
+  averageStableRate
+  stableDebtLastUpdateTimestamp
+  variableRateSlope1
+  variableRateSlope2
+  liquidityIndex
+  reserveLiquidationThreshold
+  reserveLiquidationBonus
+  variableBorrowIndex
+  variableBorrowRate
+  availableLiquidity
+  stableBorrowRate
+  liquidityRate
+  totalPrincipalStableDebt
+  totalScaledVariableDebt
+  lastUpdateTimestamp
+  priceInMarketReferenceCurrency
+  # v3 only
+  isPaused
+  accruedToTreasury
+  unbacked
+  isolationModeTotalDebt
+  debtCeiling
+  debtCeilingDecimals
+  eModeCategoryId
+  borrowCap
+  supplyCap
+  eModeLtv
+  eModeLiquidationThreshold
+  eModeLiquidationBonus
+  eModePriceSource
+  eModeLabel
+  borrowableInIsolation
+}
+
+fragment BaseCurrencyDataFragment on BaseCurrencyData {
+  marketReferenceCurrencyDecimals
+  marketReferenceCurrencyPriceInUsd
+  networkBaseTokenPriceInUsd
+  networkBaseTokenPriceDecimals
+}
+
+query C_ProtocolData($lendingPoolAddressProvider: String!) {
+  protocolData(lendingPoolAddressProvider: $lendingPoolAddressProvider) {
+    reserves {
+      ...ReserveDataFragment
+    }
+    baseCurrencyData {
+      ...BaseCurrencyDataFragment
+    }
+  }
+}
+
+subscription C_ProtocolDataUpdate($lendingPoolAddressProvider: String!) {
+  protocolDataUpdate(lendingPoolAddressProvider: $lendingPoolAddressProvider) {
+    reserves {
+      ...ReserveDataFragment
+    }
+    baseCurrencyData {
+      ...BaseCurrencyDataFragment
+    }
+  }
+}

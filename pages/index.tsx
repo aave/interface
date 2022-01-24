@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
+import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 
 import { FormattedNumber } from '../src/components/FormattedNumber';
 import { Link } from '../src/components/Link';
@@ -12,6 +13,7 @@ import MainLayout from '../src/layouts/MainLayout';
 
 export default function Home() {
   // const { currentMarket } = useProtocolDataContext();
+  const { walletBalances } = useWalletBalances();
   return (
     <Container maxWidth="lg">
       <Box
@@ -45,6 +47,7 @@ export default function Home() {
         />
         <FormattedNumber value={0.213133212312} percent />
       </Box>
+      {JSON.stringify(walletBalances)}
     </Container>
   );
 }

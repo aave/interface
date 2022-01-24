@@ -1,0 +1,29 @@
+fragment StakeUserUIDataFragment on StakeUserUIData {
+  aave {
+    stakeTokenUserBalance
+    underlyingTokenUserBalance
+    userCooldown
+    userIncentivesToClaim
+    userPermitNonce
+  }
+  bpt {
+    stakeTokenUserBalance
+    underlyingTokenUserBalance
+    userCooldown
+    userIncentivesToClaim
+    userPermitNonce
+  }
+  usdPriceEth
+}
+
+query C_StakeUserUIData($userAddress: String!) {
+  stakeUserUIData(userAddress: $userAddress) {
+    ...StakeUserUIDataFragment
+  }
+}
+
+subscription C_StakeUserUIDataUpdate($userAddress: String!) {
+  stakeUserUIDataUpdate(userAddress: $userAddress) {
+    ...StakeUserUIDataFragment
+  }
+}

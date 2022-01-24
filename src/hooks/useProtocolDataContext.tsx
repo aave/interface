@@ -1,7 +1,7 @@
+// import { BaseNetworkConfig } from "../ui-config/networksConfig";
 import { providers } from 'ethers';
 import React, { PropsWithChildren, useContext, useEffect, useState } from 'react';
 
-// import { BaseNetworkConfig } from "../ui-config/networksConfig";
 import {
   availableMarkets,
   CustomMarket,
@@ -10,7 +10,6 @@ import {
   MarketDataType,
   marketsData,
   NetworkConfig,
-  networkConfigs as _networkConfigs,
 } from '../utils/marketsAndNetworksConfig';
 
 // /**

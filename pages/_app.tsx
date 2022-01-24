@@ -6,13 +6,17 @@ import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import * as React from 'react';
+import { BackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
+import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { ConnectionStatusProvider } from 'src/hooks/useConnectionStatusContext';
+import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3ContextProvider';
+import { TxBuilderProvider } from 'src/providers/TxBuilderProvider';
 import { apolloClient } from 'src/utils/apolloClient';
 
 import createEmotionCache from '../src/createEmotionCache';
-import { ProtocolDataProvider } from '../src/hooks/useProtocolData';
+import { ProtocolDataProvider } from '../src/hooks/useProtocolDataContext';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
-import { Web3ContextProvider } from '../src/libs/web3-data-provider/Web3ContextProvider';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -38,11 +42,21 @@ export default function MyApp(props: MyAppProps) {
 
       <ApolloProvider client={apolloClient}>
         <LanguageProvider>
-          <ProtocolDataProvider>
-            <Web3ContextProvider>
-              <AppGlobalStyles>{getLayout(<Component {...pageProps} />)}</AppGlobalStyles>
-            </Web3ContextProvider>
-          </ProtocolDataProvider>
+          <Web3ContextProvider>
+            <ProtocolDataProvider>
+              <ConnectionStatusProvider>
+                <AppGlobalStyles>
+                  <BackgroundDataProvider>
+                    <AppDataProvider>
+                      <TxBuilderProvider>
+                        <AppGlobalStyles>{getLayout(<Component {...pageProps} />)}</AppGlobalStyles>
+                      </TxBuilderProvider>
+                    </AppDataProvider>
+                  </BackgroundDataProvider>
+                </AppGlobalStyles>
+              </ConnectionStatusProvider>
+            </ProtocolDataProvider>
+          </Web3ContextProvider>
         </LanguageProvider>
       </ApolloProvider>
     </CacheProvider>
