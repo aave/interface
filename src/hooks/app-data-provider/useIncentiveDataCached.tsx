@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+import { APOLLO_QUERY_TARGET } from 'src/utils/apolloClient';
+
 import {
   C_PoolIncentivesDataUpdateDocument,
   C_PoolIncentivesDataUpdateSubscription,
@@ -6,13 +9,10 @@ import {
   C_UserPoolIncentivesDataUpdateSubscription,
   C_UserPoolIncentivesDataUpdateSubscriptionVariables,
   ReserveIncentivesData,
-  UserIncentivesData,
   useC_ReservesIncentivesQuery,
   useC_UserIncentivesQuery,
+  UserIncentivesData,
 } from './graphql/hooks';
-
-import { APOLLO_QUERY_TARGET } from 'src/utils/apolloClient';
-import { useEffect } from 'react';
 
 type IncentivesData = {
   userId?: string;

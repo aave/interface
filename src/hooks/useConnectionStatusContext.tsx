@@ -1,5 +1,5 @@
-import { APOLLO_QUERY_TARGET, useGraphValid } from 'src/utils/apolloClient';
 import React, { useContext, useEffect, useState } from 'react';
+import { APOLLO_QUERY_TARGET, useGraphValid } from 'src/utils/apolloClient';
 
 import { useProtocolDataContext } from './useProtocolDataContext';
 

@@ -3,15 +3,15 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import type { NextPage } from 'next';
 import * as React from 'react';
 
 import { AaveModal } from '../src/components/AaveModal/AaveModal';
 import { useAaveModal } from '../src/components/AaveModal/useAaveModal';
 import { Link } from '../src/components/Link';
 import { SupplyFlowModal } from '../src/flows/SupplyFlowModal/SupplyFlowModal';
+import MainLayout from '../src/layouts/MainLayout';
 
-const About: NextPage = () => {
+export default function About() {
   const [open, setOpen] = useAaveModal(false);
   const [open2, setOpen2] = useAaveModal(false);
   const args = {
@@ -58,6 +58,8 @@ const About: NextPage = () => {
       </Box>
     </Container>
   );
-};
+}
 
-export default About;
+About.getLayout = function getLayout(page: React.ReactElement) {
+  return <MainLayout headerTopLineHeight={10}>{page}</MainLayout>;
+};

@@ -1,20 +1,21 @@
 import { Box } from '@mui/material';
-import React from 'react';
+import React, { ReactNode } from 'react';
 
-import LanguageSelector from '../components/LanguageSelector';
+import { LanguageSelector } from '../components/LanguageSelector';
 import { MarketSwitcher } from '../components/MarketSwitcher';
-import Copyright from '../Copyright';
-import AppHeader from './AppHeader';
+import { AppHeader } from './AppHeader';
 
-/**
- * Main Layout component which wrapps around the whole app
- * @param param0
- * @returns
- */
-export const MainLayout: React.FC = ({ children }) => {
+export default function MainLayout({
+  children,
+  headerTopLineHeight = 248,
+}: {
+  children: ReactNode;
+  headerTopLineHeight?: number;
+}) {
   return (
     <>
-      <AppHeader />
+      <AppHeader topLineHeight={headerTopLineHeight} />
+
       <main>{children}</main>
 
       <Box sx={{ width: 150, margin: '0 auto' }}>
@@ -22,8 +23,6 @@ export const MainLayout: React.FC = ({ children }) => {
       </Box>
 
       <MarketSwitcher />
-
-      <Copyright sx={{ mt: 4 }} />
     </>
   );
-};
+}

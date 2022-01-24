@@ -1,22 +1,22 @@
 import { ReserveDataHumanized } from '@aave/contract-helpers';
 import {
-  FormatUserSummaryAndIncentivesResponse,
-  UserReserveData,
   formatReservesAndIncentives,
   formatUserSummaryAndIncentives,
+  FormatUserSummaryAndIncentivesResponse,
+  UserReserveData,
 } from '@aave/math-utils';
+import BigNumber from 'bignumber.js';
 import React, { useContext } from 'react';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+
+import { useCurrentTimestamp } from '../useCurrentTimestamp';
+import { useProtocolDataContext } from '../useProtocolDataContext';
 import {
   useC_ProtocolDataQuery,
   useC_ReservesIncentivesQuery,
   useC_UserDataQuery,
   useC_UserIncentivesQuery,
 } from './graphql/hooks';
-
-import BigNumber from 'bignumber.js';
-import { useCurrentTimestamp } from '../useCurrentTimestamp';
-import { useProtocolDataContext } from '../useProtocolDataContext';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 /**
  * removes the marketPrefix from a symbol

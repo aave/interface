@@ -1,15 +1,15 @@
-import { C_ProtocolDataDocument, C_ProtocolDataQuery, C_UserDataQuery } from './graphql/hooks';
 import {
   ChainId,
   ReservesDataHumanized,
   UiPoolDataProvider,
   UserReserveDataHumanized,
 } from '@aave/contract-helpers';
-
-import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { useApolloClient } from '@apollo/client';
-import { usePolling } from '../usePolling';
 import { useState } from 'react';
+import { getProvider } from 'src/utils/marketsAndNetworksConfig';
+
+import { usePolling } from '../usePolling';
+import { C_ProtocolDataDocument, C_ProtocolDataQuery, C_UserDataQuery } from './graphql/hooks';
 
 // interval in which the rpc data is refreshed
 const POLLING_INTERVAL = 30 * 1000;

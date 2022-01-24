@@ -1,8 +1,9 @@
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+
 import { useConnectionStatusContext } from '../useConnectionStatusContext';
+import { useProtocolDataContext } from '../useProtocolDataContext';
 import { usePoolDataCached } from './usePoolDataCached';
 import { usePoolDataRPC } from './usePoolDataRPC';
-import { useProtocolDataContext } from '../useProtocolDataContext';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 export const usePoolData = () => {
   const { currentAccount } = useWeb3Context();

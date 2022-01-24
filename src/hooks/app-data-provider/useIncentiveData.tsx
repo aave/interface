@@ -1,9 +1,10 @@
 import BigNumber from 'bignumber.js';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+
 import { useConnectionStatusContext } from '../useConnectionStatusContext';
+import { useProtocolDataContext } from '../useProtocolDataContext';
 import { useIncentivesDataCached } from './useIncentiveDataCached';
 import { useIncentivesDataRPC } from './useIncentiveDataRPC';
-import { useProtocolDataContext } from '../useProtocolDataContext';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 export interface ReserveIncentiveResponse {
   incentiveAPR: string;

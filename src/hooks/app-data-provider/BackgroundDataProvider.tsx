@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+
 import { useIncentiveData } from './useIncentiveData';
 import { usePoolData } from './usePoolData';
 import { useUpdateWalletBalances } from './useWalletBalances';

@@ -3,7 +3,6 @@ import Document, { Head, Html, Main, NextScript } from 'next/document';
 import * as React from 'react';
 
 import createEmotionCache from '../src/createEmotionCache';
-import theme from '../src/utils/theme';
 
 export default class MyDocument extends Document {
   render() {
@@ -11,7 +10,7 @@ export default class MyDocument extends Document {
       <Html lang="en">
         <Head>
           {/* PWA primary color */}
-          <meta name="theme-color" content={theme.palette.primary.main} />
+          <meta name="theme-color" content="#00244D" />
           <link rel="shortcut icon" href="/favicon.ico" />
           <link
             rel="stylesheet"

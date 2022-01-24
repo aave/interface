@@ -1,16 +1,16 @@
 // import { BaseNetworkConfig } from "../ui-config/networksConfig";
-import {
-  CustomMarket,
-  MarketDataType,
-  NetworkConfig,
-  availableMarkets,
-  getNetworkConfig,
-  getProvider,
-  marketsData,
-} from '../utils/marketsAndNetworksConfig';
+import { providers } from 'ethers';
 import React, { PropsWithChildren, useContext, useEffect, useState } from 'react';
 
-import { providers } from 'ethers';
+import {
+  availableMarkets,
+  CustomMarket,
+  getNetworkConfig,
+  getProvider,
+  MarketDataType,
+  marketsData,
+  NetworkConfig,
+} from '../utils/marketsAndNetworksConfig';
 
 // /**
 //  *
@@ -105,7 +105,6 @@ export function ProtocolDataProvider({ children }: PropsWithChildren<{}>) {
   //     setMarkets(markets);
   //   }
   // }, []);
-
 
   return (
     <PoolDataContext.Provider

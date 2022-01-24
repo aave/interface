@@ -1,4 +1,3 @@
-import { BigNumber, providers } from 'ethers';
 import { transactionType } from '@aave/contract-helpers';
 import {
   JsonRpcProvider,
@@ -6,10 +5,12 @@ import {
   TransactionResponse,
   Web3Provider,
 } from '@ethersproject/providers';
+import { BigNumber, providers } from 'ethers';
 import React, { ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { hexToAscii } from 'src/utils/utils';
 import Web3Modal from 'web3modal';
+
 import { Web3Context } from '../hooks/useWeb3Context';
 
 export type Web3Data = {

@@ -65,6 +65,7 @@
     "@storybook/builder-webpack5": "^6.4.13",
     "@storybook/manager-webpack5": "^6.4.13",
     "@storybook/react": "^6.4.13",
+    "@svgr/webpack": "^6.2.0",
     "@types/react": "latest",
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "babel-loader": "^8.2.3",
