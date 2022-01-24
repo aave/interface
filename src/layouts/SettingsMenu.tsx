@@ -136,9 +136,7 @@ export function SettingsMenu() {
         </MenuItem>
         {Object.keys(langMap).map((lang) => (
           <MenuItem disableRipple key={lang} onClick={() => dynamicActivateLanguage(lang)}>
-            <ListItemText>
-              <Trans>{langMap[lang as keyof typeof langMap]}</Trans>
-            </ListItemText>
+            <ListItemText>{i18n._(langMap[lang as keyof typeof langMap])}</ListItemText>
             {lang === i18n.locale && (
               <ListItemIcon>
                 <SvgIcon fontSize="small">
