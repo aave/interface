@@ -215,7 +215,7 @@ export default function WalletWidget() {
 
           <MenuItem onClick={handleCopy}>
             <ListItemIcon>
-              <ContentCopy fontSize="small" />
+              <ContentCopy fontSize="small" /> {/* TODO: need fix icon */}
             </ListItemIcon>
             <ListItemText>
               <Trans>Copy address</Trans>
