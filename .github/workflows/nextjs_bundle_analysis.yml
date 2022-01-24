@@ -1,5 +1,9 @@
 name: 'Next.js Bundle Analysis'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
 on:
   pull_request:
   push:
