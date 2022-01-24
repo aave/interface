@@ -1,57 +1,48 @@
 import { Trans } from '@lingui/macro';
-import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
 import * as React from 'react';
-import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 
-import { FormattedNumber } from '../src/components/FormattedNumber';
-import { Link } from '../src/components/Link';
-import { MultiTokenIcon } from '../src/components/TokenIcon';
-import MainLayout from '../src/layouts/MainLayout';
-// import { useProtocolDataContext } from '../src/hooks/useProtocolData';
+import { ConnectWalletPaper } from '../src/components/ConnectWalletPaper';
+import { FormattedNumber } from '../src/components/primitives/FormattedNumber';
+import { NoData } from '../src/components/primitives/NoData';
+import { TopInfoPanel } from '../src/components/TopInfoPanel/TopInfoPanel';
+import { TopInfoPanelItem } from '../src/components/TopInfoPanel/TopInfoPanelItem';
+import { useAppDataContext } from '../src/hooks/app-data-provider/useAppDataProvider';
+import { MainLayout } from '../src/layouts/MainLayout';
+import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 
 export default function Home() {
-  // const { currentMarket } = useProtocolDataContext();
-  const { walletBalances } = useWalletBalances();
+  const { currentAccount } = useWeb3Context();
+  const { user } = useAppDataContext();
+
   return (
     <Container maxWidth="lg">
-      <Box
-        sx={{
-          my: 4,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Typography variant="h4" component="h1" gutterBottom>
-          <Trans>Welcome to Aave UI</Trans>
-        </Typography>
-        <Link href="/about" color="secondary">
-          <Trans>Go to About page</Trans>
-        </Link>
-        <MultiTokenIcon symbols={['aave', 'usdc', 'usdt']} badgeSymbol="bal" fontSize="large" />
-      </Box>
+      <TopInfoPanel pageTitle={<Trans>Dashboard</Trans>} withMarketSwitcher>
+        <TopInfoPanelItem title={<Trans>Net worth</Trans>}>
+          {currentAccount ? (
+            <FormattedNumber value={Number(user?.netWorthUSD || 0)} symbol="USD" variant="main21" />
+          ) : (
+            <NoData variant="secondary21" color="text.secondary" />
+          )}
+        </TopInfoPanelItem>
+        <TopInfoPanelItem title={<Trans>Net APY</Trans>}>
+          {currentAccount ? (
+            <FormattedNumber
+              value={((user?.earnedAPY || 0) - (user?.debtAPY || 0)) / 100}
+              variant="main21"
+              percent
+            />
+          ) : (
+            <NoData variant="secondary21" color="text.secondary" />
+          )}
+        </TopInfoPanelItem>
+      </TopInfoPanel>
 
-      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <FormattedNumber value={0.00000000000000000001} symbol="AAVE" />
-        <FormattedNumber value={0.00000000000000000001} symbol="USD" />
-        <FormattedNumber value={0.00000000000000000001} symbol="USD" compact />
-        <FormattedNumber value={28882.17271916622} symbol="USD" />
-        <FormattedNumber value={28882.17271916622} symbol="USDT" compact maximumDecimals={2} />
-        <FormattedNumber
-          value={'288829192763715.17271916622'}
-          symbol="DAI"
-          sx={{ fontWeight: 500 }}
-        />
-        <FormattedNumber value={0.213133212312} percent />
-      </Box>
-      {JSON.stringify(walletBalances)}
+      {!currentAccount && <ConnectWalletPaper />}
     </Container>
   );
 }
 
 Home.getLayout = function getLayout(page: React.ReactElement) {
-  return <MainLayout headerTopLineHeight={248}>{page}</MainLayout>;
+  return <MainLayout>{page}</MainLayout>;
 };
