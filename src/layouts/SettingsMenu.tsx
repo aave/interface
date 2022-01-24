@@ -1,12 +1,22 @@
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import { Button, ListItemText, Menu, MenuItem, MenuList, SvgIcon } from '@mui/material';
+import {
+  Button,
+  FormControlLabel,
+  ListItemText,
+  Menu,
+  MenuItem,
+  MenuList,
+  SvgIcon,
+  Switch,
+} from '@mui/material';
 import { useTheme } from '@mui/system';
 import React from 'react';
 
 import MenuSettingsIcon from '/public/icons/menuSettings.svg';
 
 import { ColorModeContext } from './AppGlobalStyles';
+import { LanguageSelector } from 'src/components/LanguageSelector';
 
 export function SettingsMenu() {
   const theme = useTheme();
@@ -27,7 +37,7 @@ export function SettingsMenu() {
         variant="surface"
         aria-label="settings"
         id="settings-button"
-        aria-controls={open ? 'settings-button' : undefined}
+        aria-controls={open ? 'settings-menu' : undefined}
         aria-expanded={open ? 'true' : undefined}
         aria-haspopup="true"
         onClick={handleClick}
@@ -52,14 +62,19 @@ export function SettingsMenu() {
           },
         }}
       >
-        <MenuList disablePadding>
-          <MenuItem onClick={colorMode.toggleColorMode}>
-            <ListItemText>
-              Switch to {theme.palette.mode === 'dark' ? 'light' : 'dark'} mode
-            </ListItemText>
-            {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-          </MenuItem>
-        </MenuList>
+        <MenuItem onClick={colorMode.toggleColorMode} disableRipple>
+          <ListItemText>Dark mode</ListItemText>
+          <FormControlLabel
+            value="darkmode"
+            control={<Switch disableRipple checked={theme.palette.mode === 'dark'} />}
+            label={theme.palette.mode === 'dark' ? 'On' : 'Off'}
+            labelPlacement="start"
+          />
+        </MenuItem>
+        <MenuItem disableRipple>
+          <ListItemText>Language</ListItemText>
+          <LanguageSelector />
+        </MenuItem>
       </Menu>
     </>
   );
