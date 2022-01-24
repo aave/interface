@@ -1,21 +1,19 @@
-import { GitHub, LibraryBooks, QuestionMarkOutlined } from '@mui/icons-material';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { Trans } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import { Button, Divider, ListItemIcon, ListItemText, MenuList } from '@mui/material';
+import { Button, ListItemIcon, ListItemText, MenuList, SvgIcon } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { Box, useTheme } from '@mui/system';
-import * as React from 'react';
+import React from 'react';
 
-import { ColorModeContext } from './AppGlobalStyles';
+import { Link } from '../components/Link';
+import { moreNavigation } from '../ui-config/menu-items';
 
-export default function MoreMenu() {
-  const theme = useTheme();
-  const colorMode = React.useContext(ColorModeContext);
+export function MoreMenu() {
+  const { i18n } = useLingui();
+
   const [anchorEl, setAnchorEl] = React.useState<Element | null>(null);
   const open = Boolean(anchorEl);
-
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -24,21 +22,27 @@ export default function MoreMenu() {
   };
 
   return (
-    <Box sx={{ ml: 2 }}>
+    <>
       <Button
-        variant="outlined"
-        size="small"
         aria-label="more"
         id="more-button"
         aria-controls={open ? 'more-menu' : undefined}
         aria-expanded={open ? 'true' : undefined}
         aria-haspopup="true"
         onClick={handleClick}
-        sx={{ px: 0.5, width: '36px', minWidth: 0 }}
-        color="inherit"
+        sx={{
+          color: 'common.white',
+          minWidth: 'unset',
+          p: '6px 8px',
+          '&:hover': {
+            bgcolor: 'rgba(250, 251, 252, 0.08)',
+          },
+        }}
       >
-        <MoreHorizIcon />
+        <Trans>More</Trans>
+        <MoreHorizIcon color="inherit" />
       </Button>
+
       <Menu
         id="more-menu"
         MenuListProps={{
@@ -49,47 +53,22 @@ export default function MoreMenu() {
         onClose={handleClose}
         PaperProps={{
           style: {
-            minWidth: 120,
+            minWidth: 240,
           },
         }}
       >
-        <MenuList>
-          <MenuItem>
-            <ListItemIcon>
-              <QuestionMarkOutlined fontSize="small" />
-            </ListItemIcon>
-            <ListItemText>FAQ</ListItemText>
-          </MenuItem>
-          <MenuItem>
-            <ListItemIcon>
-              <LibraryBooks fontSize="small" />
-            </ListItemIcon>
-            <ListItemText>Developers</ListItemText>
-          </MenuItem>
-          <Divider />
-          <MenuItem>
-            <ListItemIcon>
-              <QuestionMarkOutlined fontSize="small" />
-            </ListItemIcon>
-            <ListItemText>Discord</ListItemText>
-          </MenuItem>
-          <MenuItem>
-            <ListItemIcon>
-              <GitHub fontSize="small" />
-            </ListItemIcon>
-            <ListItemText>Github</ListItemText>
-          </MenuItem>
-          <Divider />
-          <MenuItem onClick={colorMode.toggleColorMode}>
-            <ListItemIcon>
-              {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-            </ListItemIcon>
-            <ListItemText>
-              Switch to {theme.palette.mode === 'dark' ? 'light' : 'dark'} mode
-            </ListItemText>
-          </MenuItem>
+        <MenuList disablePadding>
+          {moreNavigation.map((item, index) => (
+            <MenuItem component={Link} href={item.link} key={index}>
+              <ListItemIcon>
+                <SvgIcon>{item.icon}</SvgIcon>
+              </ListItemIcon>
+
+              <ListItemText>{i18n._(item.title)}</ListItemText>
+            </MenuItem>
+          ))}
         </MenuList>
       </Menu>
-    </Box>
+    </>
   );
 }

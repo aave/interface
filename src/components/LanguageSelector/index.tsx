@@ -13,7 +13,7 @@ import React from 'react';
 
 import { dynamicActivateLanguage } from '../../libs/LanguageProvider';
 
-export default function LanguageSelector({ ...props }: FormControlProps) {
+export function LanguageSelector({ ...props }: FormControlProps) {
   const { i18n } = useLingui();
 
   const onLangChange = (event: SelectChangeEvent<string>) => {

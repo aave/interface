@@ -2,18 +2,18 @@ import { Trans } from '@lingui/macro';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import type { NextPage } from 'next';
 import * as React from 'react';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 
-import FormattedNumber from '../src/components/FormattedNumber';
+import { FormattedNumber } from '../src/components/FormattedNumber';
 import { Link } from '../src/components/Link';
 import { MultiTokenIcon } from '../src/components/TokenIcon';
+import MainLayout from '../src/layouts/MainLayout';
 // import { useProtocolDataContext } from '../src/hooks/useProtocolData';
 
-const Home: NextPage = () => {
+export default function Home() {
   // const { currentMarket } = useProtocolDataContext();
-  const { hasEmptyWallet, walletBalances } = useWalletBalances();
+  const { walletBalances } = useWalletBalances();
   return (
     <Container maxWidth="lg">
       <Box
@@ -50,6 +50,8 @@ const Home: NextPage = () => {
       {JSON.stringify(walletBalances)}
     </Container>
   );
-};
+}
 
-export default Home;
+Home.getLayout = function getLayout(page: React.ReactElement) {
+  return <MainLayout headerTopLineHeight={248}>{page}</MainLayout>;
+};

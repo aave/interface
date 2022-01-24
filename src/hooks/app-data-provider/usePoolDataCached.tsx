@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+import { APOLLO_QUERY_TARGET } from 'src/utils/apolloClient';
+
 import {
   C_ProtocolDataUpdateDocument,
   C_ProtocolDataUpdateSubscription,
@@ -8,9 +11,6 @@ import {
   useC_ProtocolDataQuery,
   useC_UserDataQuery,
 } from './graphql/hooks';
-
-import { APOLLO_QUERY_TARGET } from 'src/utils/apolloClient';
-import { useEffect } from 'react';
 
 export function usePoolDataCached(
   lendingPoolAddressProvider: string,

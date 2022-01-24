@@ -1,13 +1,14 @@
 import { API_ETH_MOCK_ADDRESS, WalletBalanceProvider } from '@aave/contract-helpers';
+import { nativeToUSD, normalize, USD_DECIMALS } from '@aave/math-utils';
 import { useApolloClient, useQuery } from '@apollo/client';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { usePolling } from '../usePolling';
-import { useProtocolDataContext } from '../useProtocolDataContext';
+import { BigNumber } from 'bignumber.js';
 import { gql } from 'graphql-tag';
 import { useCallback } from 'react';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+
+import { usePolling } from '../usePolling';
+import { useProtocolDataContext } from '../useProtocolDataContext';
 import { useC_ProtocolDataQuery } from './graphql/hooks';
-import { nativeToUSD, normalize, USD_DECIMALS } from '@aave/math-utils';
-import { BigNumber } from 'bignumber.js';
 
 const WalletBalancesQuery = gql`
   query WalletBalances($currentAccount: String!, $chainId: Int!) {
