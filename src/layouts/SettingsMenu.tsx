@@ -31,7 +31,7 @@ export function SettingsMenu() {
         aria-expanded={open ? 'true' : undefined}
         aria-haspopup="true"
         onClick={handleClick}
-        sx={{ p: '6px 8px', minWidth: 'unset', ml: 2 }}
+        sx={{ p: '7px 8px', minWidth: 'unset', ml: 2 }}
       >
         <SvgIcon sx={{ color: 'common.white' }} fontSize="small">
           <MenuSettingsIcon />

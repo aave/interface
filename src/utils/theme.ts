@@ -102,6 +102,7 @@ declare module '@mui/material/Typography' {
 declare module '@mui/material/Button' {
   interface ButtonPropsVariantOverrides {
     surface: true;
+    gradient: true;
   }
 }
 
@@ -339,14 +340,20 @@ export function getThemedComponents(theme: Theme) {
           disableElevation: true,
         },
         styleOverrides: {
+          root: {
+            borderRadius: '6px',
+          },
           sizeLarge: {
             ...theme.typography.buttonL,
+            padding: '10px 24px',
           },
           sizeMedium: {
             ...theme.typography.buttonM,
+            padding: '6px 12px',
           },
           sizeSmall: {
             ...theme.typography.buttonS,
+            padding: '0 6px',
           },
         },
         variants: [
@@ -359,6 +366,18 @@ export function getThemedComponents(theme: Theme) {
               backgroundColor: '#2c2d3e',
               '&:hover, &.Mui-focusVisible': {
                 backgroundColor: theme.palette.background.header,
+              },
+            },
+          },
+          {
+            props: { variant: 'gradient' },
+            style: {
+              color: theme.palette.common.white,
+              background: theme.palette.gradients.aaveGradient,
+              transition: 'all 0.2s ease',
+              '&:hover, &.Mui-focusVisible': {
+                background: theme.palette.gradients.aaveGradient,
+                opacity: '0.9',
               },
             },
           },
@@ -397,6 +416,24 @@ export function getThemedComponents(theme: Theme) {
           variant: 'description',
         },
       },
+      MuiList: {
+        styleOverrides: {
+          root: {
+            padding: 0,
+            '.MuiMenuItem-root+.MuiDivider-root': {
+              marginTop: 0,
+              marginBottom: 0,
+            },
+          },
+        },
+      },
+      MuiMenuItem: {
+        styleOverrides: {
+          root: {
+            padding: '12px 16px',
+          },
+        },
+      },
       MuiListItemText: {
         styleOverrides: {
           root: {
@@ -408,6 +445,24 @@ export function getThemedComponents(theme: Theme) {
         styleOverrides: {
           root: {
             color: theme.palette.primary.light,
+          },
+        },
+      },
+      MuiDivider: {
+        styleOverrides: {
+          root: {
+            marginTop: 0,
+            marginBottom: 0,
+          },
+        },
+      },
+      MuiPaper: {
+        styleOverrides: {
+          root: {
+            border: `1px solid ${theme.palette.divider}`,
+            boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
+            borderRadius: '4px',
+            background: theme.palette.background.surface,
           },
         },
       },

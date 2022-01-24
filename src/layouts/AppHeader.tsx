@@ -46,7 +46,7 @@ export function AppHeader({ topLineHeight }: AppHeaderProps) {
           component={Link}
           href="/"
           aria-label="Go to homepage"
-          sx={{ lineHeight: 0, mr: 8, transition: '0.3s ease all', '&:hover': { opacity: 0.7 } }}
+          sx={{ lineHeight: 0, mr: 7, transition: '0.3s ease all', '&:hover': { opacity: 0.7 } }}
         >
           <img src={uiConfig.appLogo} alt="An SVG of an eye" height={20} />
         </Box>
@@ -58,7 +58,7 @@ export function AppHeader({ topLineHeight }: AppHeaderProps) {
                 display:
                   !!item.isVisible && !item.isVisible(currentMarketData) ? 'none' : 'inline-flex',
                 width: 'unset',
-                mr: 6,
+                mr: 2,
               }}
               data-cy={item.dataCy}
               disablePadding
@@ -69,6 +69,7 @@ export function AppHeader({ topLineHeight }: AppHeaderProps) {
                 href={item.link}
                 sx={{
                   color: 'common.white',
+                  p: '6px 8px',
                   '&:hover': {
                     bgcolor: 'rgba(250, 251, 252, 0.08)',
                   },

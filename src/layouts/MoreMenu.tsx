@@ -33,6 +33,7 @@ export function MoreMenu() {
         sx={{
           color: 'common.white',
           minWidth: 'unset',
+          p: '6px 8px',
           '&:hover': {
             bgcolor: 'rgba(250, 251, 252, 0.08)',
           },
