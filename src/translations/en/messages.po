@@ -13,12 +13,32 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: pages/about.tsx:30
+#: pages/about.tsx:37
 msgid "About the app"
 msgstr "About the app"
 
+#: src/components/AssetInput.tsx:40
+msgid "Amount"
+msgstr ""
+
+#: src/components/AssetInput.tsx:42
+msgid "Balance"
+msgstr ""
+
 #: src/layouts/WalletWidget.tsx:95
-msgid "Connect Wallet"
+#~ msgid "Connect Wallet"
+#~ msgstr ""
+
+#: src/layouts/WalletWidget.tsx:96
+msgid "Connect wallet"
+msgstr ""
+
+#: src/layouts/WalletWidget.tsx:221
+msgid "Copy address"
+msgstr ""
+
+#: src/layouts/SettingsMenu.tsx:95
+msgid "Dark mode"
 msgstr ""
 
 #: src/ui-config/menu-items/index.tsx:23
@@ -29,7 +49,7 @@ msgstr ""
 msgid "Developers"
 msgstr ""
 
-#: src/layouts/WalletWidget.tsx:237
+#: src/layouts/WalletWidget.tsx:247
 msgid "Disconnect Wallet"
 msgstr ""
 
@@ -37,7 +57,11 @@ msgstr ""
 msgid "Discord"
 msgstr ""
 
-#: src/components/LanguageSelector/index.tsx:38
+#: src/layouts/SettingsMenu.tsx:23
+#~ msgid "Englis"
+#~ msgstr ""
+
+#: src/layouts/SettingsMenu.tsx:23
 msgid "English"
 msgstr "English"
 
@@ -49,11 +73,15 @@ msgstr ""
 msgid "Github"
 msgstr ""
 
-#: pages/index.tsx:31
+#: src/layouts/SettingsMenu.tsx:90
+msgid "Global settings"
+msgstr ""
+
+#: pages/index.tsx:32
 msgid "Go to About page"
 msgstr "Go to the About page"
 
-#: pages/about.tsx:34
+#: pages/about.tsx:41
 msgid "Go to Home page"
 msgstr "Go to Home page"
 
@@ -61,23 +89,47 @@ msgstr "Go to Home page"
 msgid "Governance"
 msgstr ""
 
+#: src/flows/SupplyFlowModal/SupplyDetails.tsx:61
+msgid "Health factor"
+msgstr ""
+
+#: src/layouts/SettingsMenu.tsx:106
+msgid "Language"
+msgstr ""
+
+#: src/flows/SupplyFlowModal/SupplyDetails.tsx:68
+msgid "Liquidation at"
+msgstr ""
+
 #: src/ui-config/menu-items/index.tsx:28
 msgid "Markets overview"
 msgstr ""
 
-#: src/layouts/MoreMenu.tsx:46
+#: src/components/AssetInput.tsx:84
+msgid "Max"
+msgstr ""
+
+#: src/layouts/MoreMenu.tsx:42
 msgid "More"
 msgstr ""
 
-#: src/layouts/WalletWidget.tsx:198
+#: src/layouts/WalletWidget.tsx:192
 msgid "Network"
 msgstr ""
 
-#: pages/about.tsx:39
+#: pages/about.tsx:46
 msgid "Open Modal"
 msgstr ""
 
-#: src/components/LanguageSelector/index.tsx:41
+#: pages/about.tsx:51
+msgid "Open Supply Modal"
+msgstr ""
+
+#: src/layouts/SettingsMenu.tsx:133
+msgid "Select language"
+msgstr ""
+
+#: src/layouts/SettingsMenu.tsx:24
 msgid "Spanish"
 msgstr "Spanish"
 
@@ -85,14 +137,26 @@ msgstr "Spanish"
 msgid "Stake"
 msgstr ""
 
-#: src/layouts/WalletWidget.tsx:204
+#: src/flows/SupplyFlowModal/SupplyDetails.tsx:43
+msgid "Supply APY"
+msgstr ""
+
+#: src/flows/SupplyFlowModal/SupplyDetails.tsx:53
+msgid "Supply reward"
+msgstr ""
+
+#: src/layouts/WalletWidget.tsx:196
 msgid "Switch"
 msgstr ""
 
-#: src/layouts/WalletWidget.tsx:230
+#: src/layouts/WalletWidget.tsx:236
 msgid "View on Etherscan"
 msgstr ""
 
-#: pages/index.tsx:28
+#: pages/index.tsx:29
 msgid "Welcome to Aave UI"
 msgstr "Welcome to Aave UI"
+
+#: src/layouts/SettingsMenu.tsx:140
+msgid "{0}"
+msgstr ""
