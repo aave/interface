@@ -14,16 +14,16 @@ import {
   Typography,
 } from '@mui/material';
 import makeBlockie from 'ethereum-blockies-base64';
-import React, { useEffect, useState } from 'react';
-import { Link } from 'src/components/Link';
+import { useEffect, useState } from 'react';
 import useGetEns from 'src/libs/hooks/use-get-ens';
-import { useWeb3Context } from 'src/libs/web3-data-provider/Web3ContextProvider';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 import DisconnectIcon from '/public/icons/disconnect.svg';
 import LinkIcon from '/public/icons/link.svg';
 
+import { Link } from '../components/Link';
 import { textCenterEllipsis } from '../helpers/text-center-ellipsis';
+import { getNetworkConfig } from '../utils/marketsAndNetworksConfig';
 
 export default function WalletWidget() {
   const { connectWallet, disconnectWallet, currentAccount, connected, chainId, switchNetwork } =

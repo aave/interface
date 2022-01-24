@@ -335,6 +335,18 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
 export function getThemedComponents(theme: Theme) {
   return {
     components: {
+      MuiOutlinedInput: {
+        styleOverrides: {
+          root: {
+            '&:hover .MuiOutlinedInput-notchedOutline': {
+              borderColor: '#CBCDD8',
+            },
+            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+              borderColor: '#CBCDD8',
+            },
+          },
+        },
+      },
       MuiButton: {
         defaultProps: {
           disableElevation: true,
