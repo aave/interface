@@ -491,6 +491,7 @@ export function getThemedComponents(theme: Theme) {
               transform: 'translateX(14px)',
               '& + .MuiSwitch-track': {
                 backgroundColor: theme.palette.success.main,
+                opacity: 1,
               },
             },
           },
@@ -501,7 +502,8 @@ export function getThemedComponents(theme: Theme) {
             height: '16px',
           },
           track: {
-            color: '#000',
+            opacity: 1,
+            backgroundColor: theme.palette.primary.light,
             borderRadius: '8px',
           },
         },
