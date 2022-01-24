@@ -88,5 +88,10 @@
     "*.jsx": "eslint --cache --fix",
     "*.ts": "eslint --cache --fix",
     "*.tsx": "eslint --cache --fix"
+  },
+  "nextBundleAnalysis": {
+    "budget": null,
+    "budgetPercentIncreaseRed": 20,
+    "showDetails": true
   }
 }
