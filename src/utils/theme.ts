@@ -119,33 +119,33 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
       mode,
       primary: {
         main: getColor('#00244D', '#FAFBFC'),
-        light: getColor('#47617F', '#FAFBFC'),
-        dark: getColor('#00244D', '#FAFBFCA3'),
+        light: getColor('#47617F', '#FBFCFD'),
+        dark: getColor('#000E1F', '#F2F3F3'),
       },
       secondary: {
         main: getColor('#FF607B', '#F48FB1'),
         light: getColor('#FF607B', '#F6A5C0'),
-        dark: getColor('#FF607B', '#AA647B'),
+        dark: getColor('#B34356', '#AA647B'),
       },
       error: {
         main: getColor('#BC0000B8', '#F44336'),
-        light: getColor('#BC0000B8', '#E57373'),
+        light: getColor('#D26666', '#E57373'),
         dark: getColor('#BC0000', '#D32F2F'),
       },
       warning: {
         main: getColor('#F89F1A', '#FFA726'),
         light: getColor('#FFCE00', '#FFB74D'),
-        dark: getColor('#F89F1A', '#F57C00'),
+        dark: getColor('#C67F15', '#F57C00'),
       },
       info: {
         main: getColor('#0062D2', '#29B6F6'),
         light: getColor('#0062D2', '#4FC3F7'),
-        dark: getColor('#0062D2', '#0288D1'),
+        dark: getColor('#002754', '#0288D1'),
       },
       success: {
         main: getColor('#4CAF50', '#66BB6A'),
-        light: getColor('#46BC4B', '#90FF95'),
-        dark: getColor('#46BC4B', '#388E3C'),
+        light: getColor('#90FF95', '#90FF95'),
+        dark: getColor('#318435', '#388E3C'),
       },
       text: {
         primary: getColor('#00244D', '#FFFFFF'),
@@ -155,8 +155,8 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
       background: {
         default: getColor('#FAFBFC', '#090815'),
         paper: getColor('#FFFFFF', '#272631'),
-        surface: getColor('#FAFBFC', '#2c2d3e'),
-        header: getColor('#020e1f', '#090815'),
+        surface: getColor('#FAFBFC', '#2C2D3F'),
+        header: getColor('#000E1F', '#090815'),
       },
       divider: getColor('#E0E5EA', '#FFFFFF1F'),
       action: {
@@ -164,7 +164,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         hover: getColor('#00244D0A', '#FFFFFF14'),
         selected: getColor('#00244D14', '#FFFFFF29'),
         disabled: getColor('#00244D42', '#FFFFFF4D'),
-        disabledBackground: getColor('#00244D42', '#FFFFFF1F'),
+        disabledBackground: getColor('#00244D1F', '#FFFFFF1F'),
         focus: getColor('#00244D1F', '#FFFFFF1F'),
       },
       gradients: {
