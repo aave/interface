@@ -34,6 +34,7 @@
     "@graphql-codegen/cli": "^2.3.1",
     "@graphql-codegen/typescript-operations": "^2.2.2",
     "@graphql-codegen/typescript-react-apollo": "^3.2.4",
+    "@heroicons/react": "^1.0.5",
     "@lingui/react": "^3.13.1",
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
