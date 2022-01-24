@@ -358,7 +358,7 @@ export function getThemedComponents(theme: Theme) {
               borderColor: '#FAFBFC1F',
               backgroundColor: '#2c2d3e',
               '&:hover, &.Mui-focusVisible': {
-                backgroundColor: '#2c2d3e',
+                backgroundColor: theme.palette.background.header,
               },
             },
           },
@@ -400,7 +400,7 @@ export function getThemedComponents(theme: Theme) {
       MuiListItemText: {
         styleOverrides: {
           root: {
-            ...theme.typography.main14,
+            ...theme.typography.subheader1,
           },
         },
       },

@@ -4,7 +4,7 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
 
-import FormattedNumber from '../src/components/FormattedNumber';
+import { FormattedNumber } from '../src/components/FormattedNumber';
 import { Link } from '../src/components/Link';
 import { MultiTokenIcon } from '../src/components/TokenIcon';
 import MainLayout from '../src/layouts/MainLayout';
@@ -50,5 +50,5 @@ export default function Home() {
 }
 
 Home.getLayout = function getLayout(page: React.ReactElement) {
-  return <MainLayout headerTopLineHeight={200}>{page}</MainLayout>;
+  return <MainLayout headerTopLineHeight={248}>{page}</MainLayout>;
 };

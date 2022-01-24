@@ -10,7 +10,7 @@ import { apolloClient } from 'src/utils/apolloClient';
 
 import createEmotionCache from '../src/createEmotionCache';
 import { ProtocolDataProvider } from '../src/hooks/useProtocolData';
-import AppGlobalStyles from '../src/layouts/AppGlobalStyles';
+import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
 import { Web3ContextProvider } from '../src/libs/web3-data-provider/Web3ContextProvider';
 
@@ -29,6 +29,7 @@ interface MyAppProps extends AppProps {
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const getLayout = Component.getLayout ?? ((page: React.ReactNode) => page);
+
   return (
     <CacheProvider value={emotionCache}>
       <Head>

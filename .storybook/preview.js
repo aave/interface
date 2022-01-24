@@ -1,7 +1,7 @@
 import '/public/fonts/inter/inter.css';
 
 import * as NextImage from 'next/image';
-import AppGlobalStyles  from '../src/layouts/AppGlobalStyles';
+import { AppGlobalStyles }  from '../src/layouts/AppGlobalStyles';
 import { addDecorator } from '@storybook/react';
 import React from 'react';
 import { LanguageProvider } from '../src/libs/LanguageProvider';

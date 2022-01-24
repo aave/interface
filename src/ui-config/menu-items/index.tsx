@@ -28,7 +28,7 @@ export const navigation: Navigation[] = [
     title: t`Markets overview`,
   },
   {
-    link: '/staking',
+    link: '/stake',
     title: t`Stake`,
     isVisible: () => !!stakeConfig,
   },
