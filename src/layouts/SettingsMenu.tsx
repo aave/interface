@@ -1,3 +1,6 @@
+import { CheckIcon, ChevronLeftIcon } from '@heroicons/react/solid';
+import { t, Trans } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 import {
   Button,
   FormControlLabel,
@@ -11,13 +14,11 @@ import {
 } from '@mui/material';
 import { useTheme } from '@mui/system';
 import React, { useState } from 'react';
-import { t, Trans } from '@lingui/macro';
-import { useLingui } from '@lingui/react';
-import { CheckIcon, ChevronLeftIcon } from '@heroicons/react/solid';
+import { dynamicActivateLanguage } from 'src/libs/LanguageProvider';
 
 import MenuSettingsIcon from '/public/icons/menuSettings.svg';
+
 import { ColorModeContext } from './AppGlobalStyles';
-import { dynamicActivateLanguage } from 'src/libs/LanguageProvider';
 
 const langMap = {
   en: t`English`,

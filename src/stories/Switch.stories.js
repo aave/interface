@@ -1,8 +1,7 @@
 // Button.stories.js|jsx
 
-import React from 'react';
-
 import { Switch } from '@mui/material';
+import React from 'react';
 
 export default {
   /* 👇 The title prop is optional.

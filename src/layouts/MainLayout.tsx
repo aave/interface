@@ -1,7 +1,7 @@
+import { Box } from '@mui/material';
 import React, { ReactNode } from 'react';
 
 import { AppHeader } from './AppHeader';
-import { Box } from '@mui/material';
 
 export function MainLayout({
   children,

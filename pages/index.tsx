@@ -22,7 +22,7 @@ export default function Home() {
           {currentAccount ? (
             <FormattedNumber value={Number(user?.netWorthUSD || 0)} symbol="USD" variant="main21" />
           ) : (
-            <NoData variant="secondary21" color="text.secondary" />
+            <NoData variant="secondary21" sx={{ opacity: '0.7' }} />
           )}
         </TopInfoPanelItem>
         <TopInfoPanelItem title={<Trans>Net APY</Trans>}>
@@ -33,7 +33,7 @@ export default function Home() {
               percent
             />
           ) : (
-            <NoData variant="secondary21" color="text.secondary" />
+            <NoData variant="secondary21" sx={{ opacity: '0.7' }} />
           )}
         </TopInfoPanelItem>
       </TopInfoPanel>
