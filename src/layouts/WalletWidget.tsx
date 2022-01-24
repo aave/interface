@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { ContentCopy, Person } from '@mui/icons-material';
+import { ContentCopy } from '@mui/icons-material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
 import {
@@ -99,16 +99,15 @@ export default function WalletWidget() {
     <>
       <Button
         variant="surface"
-        size="medium"
         aria-label="wallet"
         id="wallet-button"
         aria-controls={open ? 'wallet-button' : undefined}
         aria-expanded={open ? 'true' : undefined}
         aria-haspopup="true"
         onClick={handleClick}
-        sx={{ padding: '4px 12px 4px 8px' }}
+        sx={{ padding: '5px 12px 5px 8px' }}
         startIcon={
-          connected ? (
+          connected && (
             <Box
               sx={{
                 width: 24,
@@ -124,8 +123,6 @@ export default function WalletWidget() {
                 onError={() => setUseBlockie(true)}
               />
             </Box>
-          ) : (
-            <Person />
           )
         }
         endIcon={connected && <KeyboardArrowDownIcon />}

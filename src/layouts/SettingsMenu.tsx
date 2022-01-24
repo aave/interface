@@ -25,7 +25,6 @@ export function SettingsMenu() {
     <>
       <Button
         variant="surface"
-        size="medium"
         aria-label="settings"
         id="settings-button"
         aria-controls={open ? 'settings-button' : undefined}
