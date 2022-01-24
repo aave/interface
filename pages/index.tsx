@@ -13,7 +13,7 @@ import { MultiTokenIcon } from '../src/components/TokenIcon';
 
 const Home: NextPage = () => {
   // const { currentMarket } = useProtocolDataContext();
-  const { hasEmptyWallet, walletBalances } = useWalletBalances();
+  const { walletBalances } = useWalletBalances();
   return (
     <Container maxWidth="lg">
       <Box
