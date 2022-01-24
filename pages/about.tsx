@@ -3,17 +3,15 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import type { NextPage } from 'next';
 import * as React from 'react';
 import { AaveModal } from 'src/components/AaveModal/AaveModal';
 import { useAaveModal } from 'src/components/AaveModal/useAaveModal';
 
 import { Link } from '../src/components/Link';
-import { useHeaderTopLineHeight } from '../src/layouts/MainLayout';
+import MainLayout from '../src/layouts/MainLayout';
 
-const About: NextPage = () => {
-  const [open, setOpen] = useAaveModal(true);
-  useHeaderTopLineHeight(10);
+export default function About() {
+  const [open, setOpen] = useAaveModal(false);
 
   return (
     <Container maxWidth="lg">
@@ -45,6 +43,8 @@ const About: NextPage = () => {
       </Box>
     </Container>
   );
-};
+}
 
-export default About;
+About.getLayout = function getLayout(page: React.ReactElement) {
+  return <MainLayout>{page}</MainLayout>;
+};
