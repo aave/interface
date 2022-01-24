@@ -29,16 +29,18 @@ msgstr ""
 #~ msgid "Connect Wallet"
 #~ msgstr ""
 
-#: src/components/ConnectWalletPaper.tsx:27
 #: src/layouts/WalletWidget.tsx:96
 msgid "Connect wallet"
 msgstr ""
 
-#: src/layouts/WalletWidget.tsx:222
+#: src/layouts/WalletWidget.tsx:221
 msgid "Copy address"
 msgstr ""
 
-#: pages/index.tsx:20
+#: src/layouts/SettingsMenu.tsx:95
+msgid "Dark mode"
+msgstr ""
+
 #: src/ui-config/menu-items/index.tsx:23
 msgid "Dashboard"
 msgstr ""
@@ -47,7 +49,7 @@ msgstr ""
 msgid "Developers"
 msgstr ""
 
-#: src/layouts/WalletWidget.tsx:248
+#: src/layouts/WalletWidget.tsx:247
 msgid "Disconnect Wallet"
 msgstr ""
 
@@ -55,7 +57,11 @@ msgstr ""
 msgid "Discord"
 msgstr ""
 
-#: src/components/LanguageSelector/index.tsx:38
+#: src/layouts/SettingsMenu.tsx:23
+#~ msgid "Englis"
+#~ msgstr ""
+
+#: src/layouts/SettingsMenu.tsx:23
 msgid "English"
 msgstr "Ingles"
 
@@ -67,9 +73,13 @@ msgstr ""
 msgid "Github"
 msgstr ""
 
-#: pages/index.tsx:31
-#~ msgid "Go to About page"
-#~ msgstr "Ir a página de Sobre la app"
+#: src/layouts/SettingsMenu.tsx:90
+msgid "Global settings"
+msgstr ""
+
+#: pages/index.tsx:32
+msgid "Go to About page"
+msgstr "Ir a página de Sobre la app"
 
 #: pages/about.tsx:41
 msgid "Go to Home page"
@@ -83,12 +93,12 @@ msgstr ""
 msgid "Health factor"
 msgstr ""
 
-#: src/flows/SupplyFlowModal/SupplyDetails.tsx:68
-msgid "Liquidation at"
+#: src/layouts/SettingsMenu.tsx:106
+msgid "Language"
 msgstr ""
 
-#: src/components/MarketSwitcher.tsx:106
-msgid "Market"
+#: src/flows/SupplyFlowModal/SupplyDetails.tsx:68
+msgid "Liquidation at"
 msgstr ""
 
 #: src/ui-config/menu-items/index.tsx:28
@@ -103,15 +113,7 @@ msgstr ""
 msgid "More"
 msgstr ""
 
-#: pages/index.tsx:28
-msgid "Net APY"
-msgstr ""
-
-#: pages/index.tsx:21
-msgid "Net worth"
-msgstr ""
-
-#: src/layouts/WalletWidget.tsx:193
+#: src/layouts/WalletWidget.tsx:192
 msgid "Network"
 msgstr ""
 
@@ -123,15 +125,11 @@ msgstr ""
 msgid "Open Supply Modal"
 msgstr ""
 
-#: src/components/ConnectWalletPaper.tsx:21
-msgid "Please, connect your wallet"
-msgstr ""
+#: src/layouts/SettingsMenu.tsx:133
+msgid "Select language"
+msgstr "Seleccionar idioma"
 
-#: src/components/MarketSwitcher.tsx:128
-msgid "Select Aave Market"
-msgstr ""
-
-#: src/components/LanguageSelector/index.tsx:41
+#: src/layouts/SettingsMenu.tsx:24
 msgid "Spanish"
 msgstr "Español"
 
@@ -147,18 +145,18 @@ msgstr ""
 msgid "Supply reward"
 msgstr ""
 
-#: src/layouts/WalletWidget.tsx:197
+#: src/layouts/WalletWidget.tsx:196
 msgid "Switch"
 msgstr ""
 
-#: src/components/ConnectWalletPaper.tsx:24
-msgid "To see your supplies and borrowings, connect your wallet."
-msgstr ""
-
-#: src/layouts/WalletWidget.tsx:237
+#: src/layouts/WalletWidget.tsx:236
 msgid "View on Etherscan"
 msgstr ""
 
-#: pages/index.tsx:28
-#~ msgid "Welcome to Aave UI"
-#~ msgstr "Bienvenido a Aave UI"
+#: pages/index.tsx:29
+msgid "Welcome to Aave UI"
+msgstr "Bienvenido a Aave UI"
+
+#: src/layouts/SettingsMenu.tsx:140
+msgid "{0}"
+msgstr ""

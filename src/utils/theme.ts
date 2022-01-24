@@ -501,6 +501,36 @@ export function getThemedComponents(theme: Theme) {
           },
         },
       },
+      MuiSwitch: {
+        styleOverrides: {
+          root: {
+            height: 20 + 6 * 2,
+            width: 34 + 6 * 2,
+            padding: 6,
+          },
+          switchBase: {
+            padding: 8,
+            '&.Mui-checked': {
+              transform: 'translateX(14px)',
+              '& + .MuiSwitch-track': {
+                backgroundColor: theme.palette.success.main,
+                opacity: 1,
+              },
+            },
+          },
+          thumb: {
+            color: '#fff',
+            borderRadius: '6px',
+            width: '16px',
+            height: '16px',
+          },
+          track: {
+            opacity: 1,
+            backgroundColor: theme.palette.primary.light,
+            borderRadius: '8px',
+          },
+        },
+      },
       MuiCssBaseline: {
         styleOverrides: {
           body: {
