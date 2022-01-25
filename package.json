@@ -22,7 +22,7 @@
     "gql-gen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
-    "@aave/contract-helpers": "0.27.4-0c036e791c4debd89e151156a5de4fbc3aca18a5.0+0c036e7",
+    "@aave/contract-helpers": "0.27.4-95e85fb001e9b5cf9b01d02eeb4a37a857060118.0+0c036e7",
     "@aave/math-utils": "0.27.4-0c036e791c4debd89e151156a5de4fbc3aca18a5.0+0c036e7",
     "@apollo/client": "^3.5.7",
     "@bumped-inc/storybook-addon-lingui-v3": "^0.0.4",
