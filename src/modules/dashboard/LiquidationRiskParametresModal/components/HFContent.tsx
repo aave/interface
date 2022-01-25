@@ -2,7 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
 import React from 'react';
 
-import { FormattedNumber } from '../../../../../components/primitives/FormattedNumber';
+import { FormattedNumber } from '../../../../components/primitives/FormattedNumber';
 
 interface HFContentProps {
   healthFactor: string;

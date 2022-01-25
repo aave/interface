@@ -3,14 +3,14 @@ import { Trans } from '@lingui/macro';
 import * as React from 'react';
 import { useState } from 'react';
 
-import { HealthFactorNumber } from '../../../components/HealthFactorNumber';
-import { HFInfoContent } from '../../../components/infoModalContents/HFInfoContent';
-import { FormattedNumber } from '../../../components/primitives/FormattedNumber';
-import { NoData } from '../../../components/primitives/NoData';
-import { TextWithModal } from '../../../components/TextWithModal';
-import { TopInfoPanel } from '../../../components/TopInfoPanel/TopInfoPanel';
-import { TopInfoPanelItem } from '../../../components/TopInfoPanel/TopInfoPanelItem';
-import { AppDataContextType } from '../../../hooks/app-data-provider/useAppDataProvider';
+import { HealthFactorNumber } from '../../components/HealthFactorNumber';
+import { HFInfoContent } from '../../components/infoModalContents/HFInfoContent';
+import { FormattedNumber } from '../../components/primitives/FormattedNumber';
+import { NoData } from '../../components/primitives/NoData';
+import { TextWithModal } from '../../components/TextWithModal';
+import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
+import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
+import { AppDataContextType } from '../../hooks/app-data-provider/useAppDataProvider';
 import { LiquidationRiskParametresInfoModal } from './LiquidationRiskParametresModal/LiquidationRiskParametresModal';
 
 interface DashboardTopPanelProps extends Pick<AppDataContextType, 'user'> {
