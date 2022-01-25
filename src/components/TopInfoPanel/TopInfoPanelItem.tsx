@@ -23,7 +23,9 @@ export const TopInfoPanelItem = ({ icon, title, children }: TopInfoPanelItemProp
         {icon && <SvgIcon fontSize="medium">{icon}</SvgIcon>}
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <Typography sx={{ color: '#FFFFFFB2' }}>{title}</Typography>
+        <Typography sx={{ color: '#FFFFFFB2' }} component="div">
+          {title}
+        </Typography>
         {children}
       </Box>
     </Box>

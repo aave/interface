@@ -3,8 +3,11 @@ import Container from '@mui/material/Container';
 import * as React from 'react';
 
 import { ConnectWalletPaper } from '../src/components/ConnectWalletPaper';
+import { HealthFactorNumber } from '../src/components/HealthFactorNumber';
+import { HFInfoContent } from '../src/components/infoModalContents/HFInfoContent';
 import { FormattedNumber } from '../src/components/primitives/FormattedNumber';
 import { NoData } from '../src/components/primitives/NoData';
+import { TextWithModal } from '../src/components/TextWithModal';
 import { TopInfoPanel } from '../src/components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from '../src/components/TopInfoPanel/TopInfoPanelItem';
 import { useAppDataContext } from '../src/hooks/app-data-provider/useAppDataProvider';
@@ -36,6 +39,23 @@ export default function Home() {
             <NoData variant="secondary21" sx={{ opacity: '0.7' }} />
           )}
         </TopInfoPanelItem>
+
+        {currentAccount && user?.healthFactor !== '-1' && (
+          <TopInfoPanelItem
+            title={
+              <TextWithModal
+                text={<Trans>Health factor</Trans>}
+                iconSize={13}
+                iconColor="#FFFFFF3B"
+                withContentButton
+              >
+                <HFInfoContent />
+              </TextWithModal>
+            }
+          >
+            <HealthFactorNumber value={user?.healthFactor || '-1'} variant="main21" />
+          </TopInfoPanelItem>
+        )}
       </TopInfoPanel>
 
       {!currentAccount && <ConnectWalletPaper />}
