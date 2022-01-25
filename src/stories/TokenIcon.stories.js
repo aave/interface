@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { TokenIcon, MultiTokenIcon } from '../components/TokenIcon';
+import { MultiTokenIcon, TokenIcon } from '../components/primitives/TokenIcon';
 
 export default {
   /* 👇 The title prop is optional.

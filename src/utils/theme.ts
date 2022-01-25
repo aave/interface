@@ -428,6 +428,17 @@ export function getThemedComponents(theme: Theme) {
           variant: 'description',
         },
       },
+      MuiMenu: {
+        defaultProps: {
+          PaperProps: {
+            elevation: 0,
+            variant: 'outlined',
+            style: {
+              minWidth: 240,
+            },
+          },
+        },
+      },
       MuiList: {
         styleOverrides: {
           root: {
@@ -471,10 +482,33 @@ export function getThemedComponents(theme: Theme) {
       MuiPaper: {
         styleOverrides: {
           root: {
-            border: `1px solid ${theme.palette.divider}`,
-            boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
             borderRadius: '4px',
             background: theme.palette.background.surface,
+          },
+        },
+        variants: [
+          {
+            props: { variant: 'outlined' },
+            style: {
+              border: `1px solid ${theme.palette.divider}`,
+              boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
+            },
+          },
+          {
+            props: { variant: 'elevation' },
+            style: {
+              boxShadow: '0px 2px 1px rgba(0, 0, 0, 0.05), 0px 0px 1px rgba(0, 0, 0, 0.25)',
+            },
+          },
+        ],
+      },
+      MuiContainer: {
+        styleOverrides: {
+          root: {
+            display: 'flex',
+            flexDirection: 'column',
+            flex: 1,
+            paddingBottom: '39px',
           },
         },
       },
@@ -514,6 +548,11 @@ export function getThemedComponents(theme: Theme) {
             fontFamily: FONT,
             fontWeight: 400,
             ...getFontSize(14, 14, 14),
+            '> div:first-of-type': {
+              minHeight: '100vh',
+              display: 'flex',
+              flexDirection: 'column',
+            },
           },
         },
       },
