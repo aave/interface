@@ -1,13 +1,9 @@
-import { EthereumTransactionTypeExtended, transactionType } from '@aave/contract-helpers';
 import React, { useState } from 'react';
 import {
   ComputedReserveData,
   useAppDataContext,
 } from '../../hooks/app-data-provider/useAppDataProvider';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useWeb3Context } from '../../libs/hooks/useWeb3Context';
 import { SupplyDetails } from '../../flows/SupplyFlowModal/SupplyDetails';
-import { useTxBuilderContext } from '../../hooks/useTxBuilder';
 import { SupplyActions } from './SupplyActions';
 import { Button } from '@mui/material';
 import { AaveModal } from '../AaveModal/AaveModal';
@@ -19,12 +15,11 @@ import {
   USD_DECIMALS,
   valueToBigNumber,
 } from '@aave/math-utils';
-import BigNumber from 'bignumber.js';
 
 export type SupplyProps = {
   poolReserve: ComputedReserveData;
-  userReserve: ComputedUserReserve;
-  walletBalance: BigNumber;
+  // userReserve: ComputedUserReserve;
+  walletBalance: string;
   user: FormatUserSummaryAndIncentivesResponse;
   supplyApy: string;
 };
@@ -40,7 +35,7 @@ export enum SupplyState {
 
 export const Supply = ({
   poolReserve,
-  userReserve,
+  // userReserve,
   walletBalance,
   user,
   supplyApy,
@@ -86,7 +81,7 @@ export const Supply = ({
           value={amountToSupply}
           onChange={setAmountToSupply}
           usdValue={amountInUsd.toString()}
-          balance={walletBalance.toString()}
+          balance={walletBalance}
           symbol={poolReserve.symbol}
           sx={{ mb: '40px' }}
         />

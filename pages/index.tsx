@@ -3,6 +3,8 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
+import { Supply } from 'src/components/Supply/Supply';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 
 import { FormattedNumber } from '../src/components/FormattedNumber';
@@ -14,6 +16,8 @@ import MainLayout from '../src/layouts/MainLayout';
 export default function Home() {
   // const { currentMarket } = useProtocolDataContext();
   const { walletBalances } = useWalletBalances();
+  const { reserves, user } = useAppDataContext();
+
   return (
     <Container maxWidth="lg">
       <Box
@@ -47,7 +51,23 @@ export default function Home() {
         />
         <FormattedNumber value={0.213133212312} percent />
       </Box>
-      {JSON.stringify(walletBalances)}
+      <Box>
+        {reserves.map((reserve, index) => {
+          return (
+            <div key={index}>
+              {reserve.symbol} {walletBalances[reserve.underlyingAsset]?.amountUSD}
+              {user && (
+                <Supply
+                  poolReserve={reserve}
+                  walletBalance={walletBalances[reserve.underlyingAsset]?.amount}
+                  user={user}
+                  supplyApy={reserve.supplyAPY}
+                ></Supply>
+              )}
+            </div>
+          );
+        })}
+      </Box>
     </Container>
   );
 }

@@ -33,7 +33,7 @@ export const SupplyActions = ({
   const { isRPCActive } = useConnectionStatusContext();
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
-  const { currentAccount } = useWeb3Context();
+  const { currentAccount, chainId: connectedChainId } = useWeb3Context();
 
   // error
   const [txError, setTxError] = useState<undefined | string | Error>();
@@ -212,6 +212,12 @@ export const SupplyActions = ({
   // breadCrums
   // tx gas estimator
   // how to show ehterscan tx link???
+  console.log('state::: ', supplyStep);
+  useEffect(() => {
+    if (chainId !== connectedChainId) {
+      setSupplyStep(SupplyState.networkMisMatch);
+    }
+  }, []);
 
   switch (supplyStep) {
     case SupplyState.amountInput:
@@ -223,7 +229,7 @@ export const SupplyActions = ({
     case SupplyState.success:
       return <Button onClick={onClose}>Close</Button>;
     case SupplyState.error:
-      return <div>posar aki el error o algo</div>;
+      return <div>Add here the error stuff</div>;
     case SupplyState.networkMisMatch:
       return <Button onClick={() => switchNetwork(chainId)}>ChangeNetwork</Button>;
   }
