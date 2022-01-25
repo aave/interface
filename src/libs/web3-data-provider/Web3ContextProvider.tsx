@@ -158,6 +158,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   // If we used current account then the tx could get executed
   const sendTx = useCallback(
     async (txData: transactionType): Promise<TransactionResponse> => {
+      console.log('send tx');
       if (provider) {
         const { from, ...data } = txData;
         const signer = provider.getSigner(from);

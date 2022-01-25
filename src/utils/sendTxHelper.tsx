@@ -59,6 +59,7 @@ export const sendEthTx = async (
     stateSetter((state) => ({
       ...state,
       loading: false,
+      txStatus: TxStatusType.error,
       error: e.message.toString(),
     }));
     return;
@@ -73,6 +74,7 @@ export const sendEthTx = async (
     stateSetter((state) => ({
       ...state,
       loading: false,
+      txStatus: TxStatusType.error,
       error: e.message.toString(),
     }));
     return;

@@ -42,7 +42,6 @@ export const Supply = ({
 }: SupplyProps) => {
   const { marketReferencePriceInUsd } = useAppDataContext();
 
-  const [supplyStep, setSupplyStep] = useState<SupplyState>(SupplyState.amountInput);
   const [amountToSupply, setAmountToSupply] = useState('');
   const [open, setOpen] = useState(false);
 
@@ -73,7 +72,6 @@ export const Supply = ({
   });
 
   // TODO: what / how to show isolation statuses / warnings??
-  // TODO: what to do with network mismatch
   return (
     <div>
       <AaveModal open={open} onClose={onClose} title={'Supply'}>
@@ -92,8 +90,6 @@ export const Supply = ({
         />
         <SupplyActions
           poolReserve={poolReserve}
-          setSupplyStep={setSupplyStep}
-          supplyStep={supplyStep}
           amountToSupply={amountToSupply}
           onClose={onClose}
         ></SupplyActions>

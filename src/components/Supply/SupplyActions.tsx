@@ -1,7 +1,6 @@
 import { ChainId, EthereumTransactionTypeExtended, Pool } from '@aave/contract-helpers';
 import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
-// import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useConnectionStatusContext } from 'src/hooks/useConnectionStatusContext';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -11,8 +10,6 @@ import { EthTransactionData, sendEthTx, TxStatusType } from 'src/utils/sendTxHel
 import { SupplyState } from './Supply';
 
 export type SupplyActionProps = {
-  setSupplyStep: (step: SupplyState) => void;
-  supplyStep: SupplyState;
   amountToSupply: string;
   poolReserve: ComputedReserveData;
   mainTxType?: string;
@@ -20,20 +17,18 @@ export type SupplyActionProps = {
 };
 
 export const SupplyActions = ({
-  setSupplyStep,
-  supplyStep,
   amountToSupply,
   poolReserve,
   mainTxType,
   onClose,
 }: SupplyActionProps) => {
   const { signTxData, switchNetwork, getTxError, sendTx } = useWeb3Context();
-  // const { refechIncentiveData, refetchPoolData, refetchWalletBalances } =
-  //   useBackgroundDataProvider();
   const { isRPCActive } = useConnectionStatusContext();
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
   const { currentAccount, chainId: connectedChainId } = useWeb3Context();
+
+  const [supplyStep, setSupplyStep] = useState<SupplyState>(SupplyState.amountInput);
 
   // error
   const [txError, setTxError] = useState<undefined | string | Error>();
@@ -42,16 +37,18 @@ export const SupplyActions = ({
   const [approveTxData, setApproveTxData] = useState({} as EthTransactionData);
   const [actionTxData, setActionTxData] = useState({} as EthTransactionData);
 
-  // Permit states
-  const [signature, setSignature] = useState();
-  const [permitError, setPermitError] = useState<string | null>(null);
-
   // Custom gas
   const [customGasPrice, setCustomGasPrice] = useState<string | null>(null);
 
-  const [depositWithPermitEnabled, setDepositWithPermitEnable] = useState(
-    currentMarketData.v3 && chainId !== ChainId.harmony && chainId !== ChainId.harmony_testnet
-  );
+  // const [depositWithPermitEnabled, setDepositWithPermitEnable] = useState(
+  //   currentMarketData.v3 && chainId !== ChainId.harmony && chainId !== ChainId.harmony_testnet
+  // );
+
+  const depositWithPermitEnabled =
+    currentMarketData.v3 &&
+    chainId !== ChainId.harmony &&
+    chainId !== ChainId.harmony_testnet &&
+    !txError;
 
   // Get approve and supply transactions without using permit flow
   const handleGetTransactions = async () => {
@@ -91,42 +88,17 @@ export const SupplyActions = ({
           // name: mainTxName,
         });
       }
+      console.log('-------- looooggg');
       // TODO: not supper sure this is needed or
       // if we should conditional here
-      setSupplyStep(SupplyState.approval);
-
-      return true;
+      if (!approvalTx) {
+        setSupplyStep(SupplyState.sendTx);
+      } else if (supplyStep < SupplyState.sendTx) {
+        setSupplyStep(SupplyState.approval);
+      }
     } catch (error) {
       setTxError(error);
       setSupplyStep(SupplyState.error);
-    }
-  };
-
-  // useEffect(() => {
-  //   handleGetTransactions();
-  // }, []);
-
-  // Generate supply transaction with signed permit
-  const handleSupplyWithPermit = async () => {
-    // TO-DO: No need for this cast once a single Pool type is ued in use-tx-builder-context
-    const newPool: Pool = lendingPool as Pool;
-    if (signature) {
-      try {
-        const supplyPermitTx = await newPool.supplyWithPermit({
-          user: currentAccount,
-          reserve: poolReserve.underlyingAsset,
-          amount: amountToSupply,
-          signature,
-        });
-        setActionTxData({
-          txType: supplyPermitTx[0].txType,
-          unsignedData: supplyPermitTx[0].tx,
-          gas: supplyPermitTx[0].gas,
-          // name: mainTxName,
-        });
-      } catch (error) {
-        // Manage / set error
-      }
     }
   };
 
@@ -141,11 +113,26 @@ export const SupplyActions = ({
         });
 
         const signature = await signTxData(unsingedPayload);
-        setSignature(signature);
-        setPermitError(null);
+
+        // should it really be here?
+        const supplyPermitTx = await newPool.supplyWithPermit({
+          user: currentAccount,
+          reserve: poolReserve.underlyingAsset,
+          amount: amountToSupply,
+          signature,
+        });
+        setActionTxData({
+          txType: supplyPermitTx[0].txType,
+          unsignedData: supplyPermitTx[0].tx,
+          gas: supplyPermitTx[0].gas,
+          // name: mainTxName,
+        });
+
         setSupplyStep(SupplyState.sendTx);
+        console.log('approved');
       } catch (error) {
-        setPermitError('Error initializing permit signature');
+        setTxError('Error initializing permit signature');
+        setSupplyStep(SupplyState.error);
       }
     } else {
       if (approveTxData && approveTxData.unsignedData) {
@@ -155,12 +142,9 @@ export const SupplyActions = ({
     }
   };
 
-  // TODO: what to do with callbacks?? should b enough with state
   const handleSendMainTx = async () => {
-    await handleGetTransactions();
     if (actionTxData && actionTxData.unsignedData) {
       sendEthTx(actionTxData.unsignedData, setActionTxData, customGasPrice, sendTx, getTxError);
-    } else {
     }
   };
 
@@ -168,21 +152,20 @@ export const SupplyActions = ({
   useEffect(() => {
     if (supplyStep === SupplyState.approval) {
       if (!depositWithPermitEnabled) {
-        if (actionTxData.txStatus === TxStatusType.submitted) {
+        if (approveTxData.txStatus === TxStatusType.submitted) {
           // approval tx submitted
+        } else if (approveTxData.txStatus === TxStatusType.confirmed && approveTxData.txReceipt) {
           // TODO: set tx link with actionTxData.txHash
-        } else if (actionTxData.txStatus === TxStatusType.confirmed && actionTxData.txReceipt) {
           // supply tx finished with success
           setSupplyStep(SupplyState.sendTx);
-        } else if (actionTxData.txStatus === TxStatusType.error) {
+        } else if (approveTxData.txStatus === TxStatusType.error) {
           setSupplyStep(SupplyState.error);
-          setTxError(actionTxData.error);
+          setTxError(approveTxData.error);
         }
       }
     }
   }, [approveTxData?.txStatus]);
 
-  // Approval state
   useEffect(() => {
     if (supplyStep === SupplyState.sendTx) {
       if (actionTxData.txStatus === TxStatusType.submitted) {
@@ -192,33 +175,36 @@ export const SupplyActions = ({
         // supply tx finished with success
         setSupplyStep(SupplyState.success);
       } else if (actionTxData.txStatus === TxStatusType.error) {
-        setSupplyStep(SupplyState.error);
         setTxError(actionTxData.error);
+        setSupplyStep(SupplyState.error);
         // Maybe check here if error was in permit to give link to try again with approval
       }
     }
   }, [actionTxData?.txStatus]);
 
-  // After tx finishes force refresh
-  // const handleMainTxConfirmed = () => {
-  //   if (isRPCActive) {
-  //     refechIncentiveData && refechIncentiveData();
-  //     refetchPoolData && refetchPoolData();
-  //     refetchWalletBalances();
-  //   }
-  // };
+  console.log('state::: ', supplyStep);
+  console.log('sign enabled: ', depositWithPermitEnabled);
+  console.log('action: ', actionTxData);
+
+  useEffect(() => {
+    if (chainId !== connectedChainId) {
+      setSupplyStep(SupplyState.networkMisMatch);
+    }
+  }, [chainId, connectedChainId]);
+
+  const handleClose = () => {
+    setTxError(undefined);
+    setApproveTxData({} as EthTransactionData);
+    setActionTxData({} as EthTransactionData);
+    // setSignature(undefined);
+    setCustomGasPrice(null);
+    onClose();
+  };
 
   // TODO: provably need to change this to add
   // breadCrums
   // tx gas estimator
   // how to show ehterscan tx link???
-  console.log('state::: ', supplyStep);
-  useEffect(() => {
-    if (chainId !== connectedChainId) {
-      setSupplyStep(SupplyState.networkMisMatch);
-    }
-  }, []);
-
   switch (supplyStep) {
     case SupplyState.amountInput:
       return <Button onClick={handleGetTransactions}>Confirm Amount</Button>;
@@ -227,9 +213,16 @@ export const SupplyActions = ({
     case SupplyState.sendTx:
       return <Button onClick={handleSendMainTx}>Send Tx</Button>;
     case SupplyState.success:
-      return <Button onClick={onClose}>Close</Button>;
+      return <Button onClick={handleClose}>Close</Button>;
     case SupplyState.error:
-      return <div>Add here the error stuff</div>;
+      return (
+        <div>
+          <Button onClick={() => setSupplyStep(SupplyState.amountInput)}>
+            {depositWithPermitEnabled ? 'try with normal approval' : 'try again'}
+          </Button>
+          <div>{txError}</div>
+        </div>
+      );
     case SupplyState.networkMisMatch:
       return <Button onClick={() => switchNetwork(chainId)}>ChangeNetwork</Button>;
   }
