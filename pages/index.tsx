@@ -5,7 +5,7 @@ import { ConnectWalletPaper } from '../src/components/ConnectWalletPaper';
 import { useAppDataContext } from '../src/hooks/app-data-provider/useAppDataProvider';
 import { MainLayout } from '../src/layouts/MainLayout';
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
-import { DashboardTopPanel } from '../src/modules/dashboard/components/DashboardTopPanel';
+import { DashboardTopPanel } from '../src/modules/dashboard/DashboardTopPanel';
 
 export default function Home() {
   const { currentAccount } = useWeb3Context();

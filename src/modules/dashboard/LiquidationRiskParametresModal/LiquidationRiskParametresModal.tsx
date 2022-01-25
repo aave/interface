@@ -2,10 +2,10 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, Typography } from '@mui/material';
 import React, { ReactNode } from 'react';
 
-import { HealthFactorNumber } from '../../../../components/HealthFactorNumber';
-import { BasicModal } from '../../../../components/primitives/BasicModal';
-import { FormattedNumber } from '../../../../components/primitives/FormattedNumber';
-import { Link } from '../../../../components/primitives/Link';
+import { HealthFactorNumber } from '../../../components/HealthFactorNumber';
+import { BasicModal } from '../../../components/primitives/BasicModal';
+import { FormattedNumber } from '../../../components/primitives/FormattedNumber';
+import { Link } from '../../../components/primitives/Link';
 import { HFContent } from './components/HFContent';
 import { InfoWrapper } from './components/InfoWrapper';
 import { LTVContent } from './components/LTVContent';

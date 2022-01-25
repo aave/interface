@@ -3,7 +3,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Typography, useTheme } from '@mui/material';
 import BigNumber from 'bignumber.js';
 
-import { FormattedNumber } from '../../../../../components/primitives/FormattedNumber';
+import { FormattedNumber } from '../../../../components/primitives/FormattedNumber';
 
 interface LTVContentProps {
   loanToValue: string;
@@ -60,7 +60,7 @@ export const LTVContent = ({
               top: '100%',
               borderLeft: '6px solid transparent',
               borderRight: '6px solid transparent',
-              borderBottom: `8px solid ${palette.primary.light}`,
+              borderTop: `8px solid ${palette.primary.light}`,
             },
           }}
         >
