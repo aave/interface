@@ -1,6 +1,6 @@
+import { DuplicateIcon } from '@heroicons/react/outline';
+import { ChevronDownIcon, ExternalLinkIcon, LogoutIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { ContentCopy } from '@mui/icons-material';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import {
   Box,
   Button,
@@ -17,9 +17,6 @@ import makeBlockie from 'ethereum-blockies-base64';
 import { useEffect, useState } from 'react';
 import useGetEns from 'src/libs/hooks/use-get-ens';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-
-import DisconnectIcon from '/public/icons/disconnect.svg';
-import LinkIcon from '/public/icons/link.svg';
 
 import { Link } from '../components/primitives/Link';
 import { textCenterEllipsis } from '../helpers/text-center-ellipsis';
@@ -126,7 +123,13 @@ export default function WalletWidget() {
             </Box>
           )
         }
-        endIcon={connected && <KeyboardArrowDownIcon />}
+        endIcon={
+          connected && (
+            <SvgIcon>
+              <ChevronDownIcon />
+            </SvgIcon>
+          )
+        }
       >
         {buttonContent}
       </Button>
@@ -139,15 +142,9 @@ export default function WalletWidget() {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        PaperProps={{
-          style: {
-            minWidth: 240,
-          },
-          variant: 'outlined',
-        }}
       >
-        <MenuList disablePadding>
-          <MenuItem>
+        <MenuList disablePadding sx={{ '.MuiMenuItem-root.Mui-disabled': { opacity: 1 } }}>
+          <MenuItem disabled>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Box
                 sx={{
@@ -216,7 +213,9 @@ export default function WalletWidget() {
 
           <MenuItem onClick={handleCopy}>
             <ListItemIcon>
-              <ContentCopy fontSize="small" /> {/* TODO: need fix icon */}
+              <SvgIcon fontSize="small">
+                <DuplicateIcon />
+              </SvgIcon>
             </ListItemIcon>
             <ListItemText>
               <Trans>Copy address</Trans>
@@ -230,7 +229,7 @@ export default function WalletWidget() {
           >
             <ListItemIcon>
               <SvgIcon fontSize="small">
-                <LinkIcon />
+                <ExternalLinkIcon />
               </SvgIcon>
             </ListItemIcon>
             <ListItemText>
@@ -241,7 +240,7 @@ export default function WalletWidget() {
           <MenuItem onClick={handleDisconnect}>
             <ListItemIcon>
               <SvgIcon fontSize="small">
-                <DisconnectIcon />
+                <LogoutIcon />
               </SvgIcon>
             </ListItemIcon>
             <ListItemText>

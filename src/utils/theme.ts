@@ -428,6 +428,17 @@ export function getThemedComponents(theme: Theme) {
           variant: 'description',
         },
       },
+      MuiMenu: {
+        defaultProps: {
+          PaperProps: {
+            elevation: 0,
+            variant: 'outlined',
+            style: {
+              minWidth: 240,
+            },
+          },
+        },
+      },
       MuiList: {
         styleOverrides: {
           root: {
