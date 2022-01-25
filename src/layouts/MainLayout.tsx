@@ -1,11 +1,11 @@
+import { Box } from '@mui/material';
 import React, { ReactNode } from 'react';
 
-import { MarketSwitcher } from '../components/MarketSwitcher';
 import { AppHeader } from './AppHeader';
 
-export default function MainLayout({
+export function MainLayout({
   children,
-  headerTopLineHeight = 248,
+  headerTopLineHeight = 296,
 }: {
   children: ReactNode;
   headerTopLineHeight?: number;
@@ -13,10 +13,9 @@ export default function MainLayout({
   return (
     <>
       <AppHeader topLineHeight={headerTopLineHeight} />
-
-      <main>{children}</main>
-
-      <MarketSwitcher />
+      <Box component="main" sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+        {children}
+      </Box>
     </>
   );
 }

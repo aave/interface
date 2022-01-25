@@ -7,9 +7,9 @@ import * as React from 'react';
 
 import { AaveModal } from '../src/components/AaveModal/AaveModal';
 import { useAaveModal } from '../src/components/AaveModal/useAaveModal';
-import { Link } from '../src/components/Link';
+import { Link } from '../src/components/primitives/Link';
 import { SupplyFlowModal } from '../src/flows/SupplyFlowModal/SupplyFlowModal';
-import MainLayout from '../src/layouts/MainLayout';
+import { MainLayout } from '../src/layouts/MainLayout';
 
 export default function About() {
   const [open, setOpen] = useAaveModal(false);

@@ -1,23 +1,24 @@
+import { CheckIcon, ChevronLeftIcon, ChevronRightIcon, CogIcon } from '@heroicons/react/solid';
+import { t, Trans } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 import {
+  Box,
   Button,
   FormControlLabel,
   ListItemIcon,
   ListItemText,
   Menu,
   MenuItem,
+  MenuList,
   SvgIcon,
   Switch,
   Typography,
 } from '@mui/material';
 import { useTheme } from '@mui/system';
 import React, { useState } from 'react';
-import { t, Trans } from '@lingui/macro';
-import { useLingui } from '@lingui/react';
-import { CheckIcon, ChevronLeftIcon } from '@heroicons/react/solid';
-
-import MenuSettingsIcon from '/public/icons/menuSettings.svg';
-import { ColorModeContext } from './AppGlobalStyles';
 import { dynamicActivateLanguage } from 'src/libs/LanguageProvider';
+
+import { ColorModeContext } from './AppGlobalStyles';
 
 const langMap = {
   en: t`English`,
@@ -67,7 +68,7 @@ export function SettingsMenu() {
         sx={{ p: '7px 8px', minWidth: 'unset', ml: 2 }}
       >
         <SvgIcon sx={{ color: 'common.white' }} fontSize="small">
-          <MenuSettingsIcon />
+          <CogIcon />
         </SvgIcon>
       </Button>
 
@@ -79,35 +80,39 @@ export function SettingsMenu() {
         anchorEl={anchorEl}
         open={settingsOpen}
         onClose={handleClose}
-        PaperProps={{
-          style: {
-            minWidth: 240,
-          },
-        }}
       >
-        <MenuItem disabled>
-          <Typography variant="subheader2">
-            <Trans>Global settings</Trans>
-          </Typography>
-        </MenuItem>
-        <MenuItem onClick={colorMode.toggleColorMode} disableRipple>
-          <ListItemText>
-            <Trans>Dark mode</Trans>
-          </ListItemText>
-          <FormControlLabel
-            value="darkmode"
-            control={<Switch disableRipple checked={theme.palette.mode === 'dark'} />}
-            label={theme.palette.mode === 'dark' ? 'On' : 'Off'}
-            labelPlacement="start"
-          />
-        </MenuItem>
-        <MenuItem onClick={handleLanguageClick} disableRipple>
-          <ListItemText>
-            <Trans>Language</Trans>
-          </ListItemText>
-          {langMap[i18n.locale as keyof typeof langMap]}
-        </MenuItem>
+        <MenuList disablePadding sx={{ '.MuiMenuItem-root.Mui-disabled': { opacity: 1 } }}>
+          <MenuItem disabled>
+            <Typography variant="subheader2" color="text.secondary">
+              <Trans>Global settings</Trans>
+            </Typography>
+          </MenuItem>
+
+          <MenuItem onClick={colorMode.toggleColorMode} disableRipple>
+            <ListItemText>
+              <Trans>Dark mode</Trans>
+            </ListItemText>
+            <FormControlLabel
+              value="darkmode"
+              control={<Switch disableRipple checked={theme.palette.mode === 'dark'} />}
+              label={theme.palette.mode === 'dark' ? 'On' : 'Off'}
+              labelPlacement="start"
+            />
+          </MenuItem>
+          <MenuItem onClick={handleLanguageClick} disableRipple>
+            <ListItemText>
+              <Trans>Language</Trans>
+            </ListItemText>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              {langMap[i18n.locale as keyof typeof langMap]}{' '}
+              <SvgIcon fontSize="small" sx={{ color: 'primary.light' }}>
+                <ChevronRightIcon />
+              </SvgIcon>
+            </Box>
+          </MenuItem>
+        </MenuList>
       </Menu>
+
       <Menu
         id="settings-menu"
         MenuListProps={{
@@ -116,11 +121,6 @@ export function SettingsMenu() {
         anchorEl={anchorEl}
         open={languagesOpen}
         onClose={handleClose}
-        PaperProps={{
-          style: {
-            minWidth: 240,
-          },
-        }}
       >
         <MenuItem onClick={handleCloseLanguage}>
           <ListItemIcon>
@@ -134,8 +134,24 @@ export function SettingsMenu() {
             </Typography>
           </ListItemText>
         </MenuItem>
+
         {Object.keys(langMap).map((lang) => (
-          <MenuItem disableRipple key={lang} onClick={() => dynamicActivateLanguage(lang)}>
+          <MenuItem
+            disableRipple
+            key={lang}
+            onClick={() => dynamicActivateLanguage(lang)}
+            sx={{ '.MuiListItemIcon-root': { minWidth: 'unset' } }}
+          >
+            <ListItemIcon
+              sx={{ mr: 2, borderRadius: '2px', overflow: 'hidden', width: 20, height: 14 }}
+            >
+              <img
+                src={`/icons/flags/${lang}.svg`}
+                width="100%"
+                height="100%"
+                alt={`${lang} icon`}
+              />
+            </ListItemIcon>
             <ListItemText>{i18n._(langMap[lang as keyof typeof langMap])}</ListItemText>
             {lang === i18n.locale && (
               <ListItemIcon>
