@@ -49,9 +49,9 @@ export function usePoolDataRPC(
 
     try {
       setLoadingReserves(true);
-      const reservesResponse = await poolDataProviderContract.getReservesHumanized(
-        lendingPoolAddressProvider
-      );
+      const reservesResponse = await poolDataProviderContract.getReservesHumanized({
+        lendingPoolAddressProvider,
+      });
       cache.writeQuery<C_ProtocolDataQuery>({
         query: C_ProtocolDataDocument,
         data: {
@@ -89,10 +89,10 @@ export function usePoolDataRPC(
 
     try {
       setLoadingUserReserves(true);
-      const userReservesResponse = await poolDataProviderContract.getUserReservesHumanized(
+      const userReservesResponse = await poolDataProviderContract.getUserReservesHumanized({
         lendingPoolAddressProvider,
-        currentAccount
-      );
+        user: currentAccount,
+      });
       cache.writeQuery<C_UserDataQuery>({
         query: C_ProtocolDataDocument,
         data: {
