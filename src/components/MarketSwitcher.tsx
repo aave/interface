@@ -123,6 +123,7 @@ export const MarketSwitcher = () => {
               minWidth: 240,
             },
             variant: 'outlined',
+            elevation: 0,
           },
         },
       }}
