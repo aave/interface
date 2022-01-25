@@ -1,12 +1,12 @@
+import { CheckIcon, ChevronDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import CheckIcon from '@mui/icons-material/Check';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import {
   Box,
   Divider,
   ListItemIcon,
   ListItemText,
   MenuItem,
+  SvgIcon,
   TextField,
   Typography,
 } from '@mui/material';
@@ -95,7 +95,11 @@ export const MarketSwitcher = () => {
       }}
       SelectProps={{
         native: false,
-        IconComponent: (props) => <KeyboardArrowDownIcon fontSize="large" {...props} />,
+        IconComponent: (props) => (
+          <SvgIcon fontSize="medium" {...props}>
+            <ChevronDownIcon />
+          </SvgIcon>
+        ),
         renderValue: (marketId) => {
           const { market, network, withAAVELogo } = getMarketInfoById(marketId as CustomMarket);
 
@@ -145,7 +149,9 @@ export const MarketSwitcher = () => {
 
             {currentMarket === marketId && (
               <ListItemIcon>
-                <CheckIcon />
+                <SvgIcon>
+                  <CheckIcon />
+                </SvgIcon>
               </ListItemIcon>
             )}
           </MenuItem>
