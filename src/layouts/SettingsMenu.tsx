@@ -105,7 +105,7 @@ export function SettingsMenu() {
             </ListItemText>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               {langMap[i18n.locale as keyof typeof langMap]}{' '}
-              <SvgIcon fontSize="small" color="primary.light">
+              <SvgIcon fontSize="small" sx={{ color: 'primary.light' }}>
                 <ChevronRightIcon />
               </SvgIcon>
             </Box>
@@ -142,6 +142,16 @@ export function SettingsMenu() {
             onClick={() => dynamicActivateLanguage(lang)}
             sx={{ '.MuiListItemIcon-root': { minWidth: 'unset' } }}
           >
+            <ListItemIcon
+              sx={{ mr: 2, borderRadius: '2px', overflow: 'hidden', width: 20, height: 14 }}
+            >
+              <img
+                src={`/icons/flags/${lang}.svg`}
+                width="100%"
+                height="100%"
+                alt={`${lang} icon`}
+              />
+            </ListItemIcon>
             <ListItemText>{i18n._(langMap[lang as keyof typeof langMap])}</ListItemText>
             {lang === i18n.locale && (
               <ListItemIcon>
