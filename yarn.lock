@@ -9,10 +9,10 @@
   dependencies:
     isomorphic-unfetch "^3.1.0"
 
-"@aave/math-utils@0.27.4-0c036e791c4debd89e151156a5de4fbc3aca18a5.0+0c036e7":
-  version "0.27.4-0c036e791c4debd89e151156a5de4fbc3aca18a5.0"
-  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-0.27.4-0c036e791c4debd89e151156a5de4fbc3aca18a5.0.tgz#6db034eef614a16c42bdd673dd13d9442f53d172"
-  integrity sha512-KeXbzlpNP1EmGt/lXTUO2mpf9RpEPAJdiOFKC/bwGpxL5NqDf6lfkB9SJZsYKrIjYy7xWErrbILlwZt/+QWL+A==
+"@aave/math-utils@0.27.4-95e85fb001e9b5cf9b01d02eeb4a37a857060118.0+0c036e7":
+  version "0.27.4-95e85fb001e9b5cf9b01d02eeb4a37a857060118.0"
+  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-0.27.4-95e85fb001e9b5cf9b01d02eeb4a37a857060118.0.tgz#6f5c6f186962641a17794f6edfae70eb7ea52bf0"
+  integrity sha512-u+zee7AdE1Ky7G5xkY1AyxEN+1Mb90rLgxLOMxTYJ+mb4uV0ByZLuFbS1hAcuSWMvYjfBi6Mp4o8bcbSpjQMlg==
   dependencies:
     bignumber.js "^9.0.1"
     tslib "^2.3.1"
