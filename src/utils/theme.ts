@@ -483,7 +483,6 @@ export function getThemedComponents(theme: Theme) {
         styleOverrides: {
           root: {
             borderRadius: '4px',
-            background: theme.palette.background.surface,
           },
         },
         variants: [
@@ -492,6 +491,7 @@ export function getThemedComponents(theme: Theme) {
             style: {
               border: `1px solid ${theme.palette.divider}`,
               boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
+              background: theme.palette.background.surface,
             },
           },
           {

@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Typography } from '@mui/material';
+import { Box, Divider, Paper, Typography } from '@mui/material';
 import { ReactNode, useState } from 'react';
 
 import { toggleLocalStorageClick } from '../../helpers/toggle-local-storage-click';
@@ -8,10 +8,11 @@ interface DashboardListWrapperProps {
   title: ReactNode;
   localStorageName?: string;
   subTitleComponent?: ReactNode;
+  subChildrenComponent?: ReactNode;
   children: ReactNode;
-  withBottomText?: boolean;
   withTopMargin?: boolean;
   noData?: boolean;
+  withBottomText?: ReactNode;
 }
 
 export const DashboardListWrapper = ({
@@ -19,36 +20,83 @@ export const DashboardListWrapper = ({
   localStorageName,
   title,
   subTitleComponent,
+  subChildrenComponent,
+  withTopMargin,
+  noData,
+  withBottomText,
 }: DashboardListWrapperProps) => {
   const [isCollapse, setIsCollapse] = useState(
     localStorageName ? localStorage.getItem(localStorageName) === 'true' : false
   );
 
   return (
-    <Box>
+    <Paper sx={{ mt: withTopMargin ? 4 : 0 }}>
       <Box
+        sx={{
+          px: 6,
+          py: 4,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          cursor: 'pointer',
+          mb: noData ? 0 : 4,
+        }}
         onClick={() =>
           !!localStorageName
             ? toggleLocalStorageClick(isCollapse, setIsCollapse, localStorageName)
             : undefined
         }
       >
-        <Typography component="div" variant="h3">
-          {title}
-        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', p: '3.6px' }}>
+          <Typography component="div" variant="h3" sx={{ mr: 4 }}>
+            {title}
+          </Typography>
+          {subTitleComponent}
+        </Box>
 
         {!!localStorageName && (
-          <Box>
-            <Typography variant="buttonM">
-              <Trans>{isCollapse ? 'Show' : 'Hide'}</Trans>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              span: {
+                width: '14px',
+                height: '2px',
+                bgcolor: 'text.secondary',
+                position: 'relative',
+                ml: 1,
+                '&:after': {
+                  content: "''",
+                  position: 'absolute',
+                  width: '14px',
+                  height: '2px',
+                  bgcolor: 'text.secondary',
+                  transition: 'all 0.2s ease',
+                  transform: isCollapse ? 'rotate(0)' : 'rotate(90deg)',
+                  opacity: isCollapse ? 0 : 1,
+                },
+              },
+            }}
+          >
+            <Typography variant="buttonM" color="text.secondary">
+              {isCollapse ? <Trans>Show</Trans> : <Trans>Hide</Trans>}
             </Typography>
             <span />
           </Box>
         )}
       </Box>
 
-      <Box>{subTitleComponent}</Box>
-      <Box>{children}</Box>
-    </Box>
+      {subChildrenComponent && (
+        <Box sx={{ display: isCollapse ? 'none' : 'block' }}>{subChildrenComponent}</Box>
+      )}
+      <Box sx={{ display: isCollapse ? 'none' : 'block' }}>{children}</Box>
+
+      {withBottomText && (
+        <Box sx={{ display: 'flex', alignItems: 'center', minHeight: '72px' }}>
+          <Divider />
+          <Box>BottomText</Box>
+        </Box>
+      )}
+    </Paper>
   );
 };

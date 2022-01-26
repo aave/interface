@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 
 import { BorrowAssetsList } from './lists/BorrowAssetsList/BorrowAssetsList';
 import { BorrowedPositionsList } from './lists/BorrowedPositionsList/BorrowedPositionsList';
@@ -20,13 +20,24 @@ export const DashboardContentWrapper = ({
   isBorrow,
   isUserInIsolationMode,
 }: DashboardContentWrapperProps) => {
+  const { breakpoints } = useTheme();
+  const isDesktop = useMediaQuery(breakpoints.up('md'));
+  const paperWidth = isDesktop ? 'calc(50% - 8px)' : '100%';
+
   return (
-    <Box>
-      <Box>
+    <Box
+      sx={{
+        display: isDesktop ? 'flex' : 'block',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+      }}
+    >
+      <Box sx={{ width: paperWidth }}>
         <SuppliedPositionsList listData={suppliedPositions} />
         <SupplyAssetsList />
       </Box>
-      <Box>
+
+      <Box sx={{ width: paperWidth }}>
         {!!borrowedPositions.length && <BorrowedPositionsList listData={borrowedPositions} />}
         <BorrowAssetsList borrowedReserves={borrowedPositions} />
       </Box>

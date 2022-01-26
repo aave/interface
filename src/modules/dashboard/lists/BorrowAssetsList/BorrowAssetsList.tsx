@@ -7,6 +7,7 @@ import { useWalletBalances } from '../../../../hooks/app-data-provider/useWallet
 import { useWeb3Context } from '../../../../libs/hooks/useWeb3Context';
 import { getMaxAmountAvailableToBorrow } from '../../../../utils/getMaxAmountAvailableToBorrow';
 import { getNetworkConfig } from '../../../../utils/marketsAndNetworksConfig';
+import { DashboardContentNoData } from '../../DashboardContentNoData';
 import { DashboardListWrapper } from '../../DashboardListWrapper';
 import { BorrowedPositionsItem } from '../BorrowedPositionsList/types';
 import { BorrowAssetsListItem } from './BorrowAssetsListItem';
@@ -119,7 +120,7 @@ export const BorrowAssetsList = ({ borrowedReserves }: BorrowAssetsListProps) =>
           localStorageName="borrowAssetsDashboardTableCollapse"
           noData={true}
         >
-          <h1>No data</h1>
+          <DashboardContentNoData text={<Trans>Nothing borrowed yet</Trans>} />
         </DashboardListWrapper>
       )}
 
