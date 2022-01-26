@@ -10,7 +10,6 @@ import { AaveModal } from '../AaveModal/AaveModal';
 import { AssetInput } from '../AssetInput';
 import {
   calculateHealthFactorFromBalancesBigUnits,
-  ComputedUserReserve,
   FormatUserSummaryAndIncentivesResponse,
   USD_DECIMALS,
   valueToBigNumber,
