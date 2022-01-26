@@ -26,8 +26,8 @@ export const AaveModal = (props: AaveModalProps) => {
 
   return (
     <Dialog PaperComponent={AavePaperBox} aria-labelledby="aave-modal-title" {...props}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: '43px' }}>
-        <Typography id="aave-modal-title" variant="main21">
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: '26px' }}>
+        <Typography id="aave-modal-title" variant="h2">
           {props.title} {props.tokenSymbol ? props.tokenSymbol : ''}
         </Typography>
         <IconButton aria-label="close" onClick={onCloseAction} sx={{ padding: 0 }}>

@@ -12,6 +12,7 @@ export interface AssetInputProps {
   symbol: string;
   onChange: (value: string) => void;
   sx: SxProps;
+  disabled?: boolean;
 }
 
 export const AssetInput: React.FC<AssetInputProps> = ({
@@ -20,6 +21,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
   balance,
   symbol,
   onChange,
+  disabled,
   sx,
 }) => {
   const usdValueFormat = `${usdValue} USD`;
@@ -37,47 +39,34 @@ export const AssetInput: React.FC<AssetInputProps> = ({
   return (
     <Box sx={{ ...sx }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Trans>Amount</Trans>
-        <Typography>
-          <Trans>Available</Trans> <b>{balance}</b>
+        <Typography variant="description">
+          <Trans>Amount</Trans>
         </Typography>
+        <Box sx={{ display: 'flex' }}>
+          <Typography variant="description" sx={{ marginRight: '2px' }}>
+            <Trans>Available</Trans>
+          </Typography>
+          <Typography variant="secondary14">{balance}</Typography>
+        </Box>
       </Box>
       <TextField
-        id="outlined-basic"
-        variant="outlined"
-        color="primary"
-        helperText={usdValueFormat}
+        // helperText={usdValueFormat}
         onChange={onInputChange}
         value={value}
         autoFocus
         fullWidth
-        sx={{
-          fontSize: '1.5rem',
-        }}
-        FormHelperTextProps={{
-          style: {
-            marginTop: 4,
-            marginBottom: 0,
-            marginLeft: 0,
-            marginRight: 0,
-            fontSize: '0.75rem',
-          },
-        }}
+        disabled={disabled}
         inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
         InputProps={{
-          style: {
-            fontSize: '1.5rem',
-          },
           startAdornment: (
             <InputAdornment position="start">
-              <TokenIcon symbol={symbol} sx={{ width: 28, height: 28 }} />
+              <TokenIcon symbol={symbol} sx={{ width: 32, height: 32 }} />
             </InputAdornment>
           ),
           endAdornment: (
             <InputAdornment position="end">
               <Button
                 variant="outlined"
-                color="secondary"
                 sx={{ width: 53, height: 32, textTransform: 'none', fontWeight: '600' }}
                 onClick={setMaxBalance}
               >

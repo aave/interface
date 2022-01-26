@@ -195,25 +195,35 @@ export const SupplyActions = ({ amountToSupply, poolReserve, onClose }: SupplyAc
   // how to show ehterscan tx link???
   switch (supplyStep) {
     case SupplyState.amountInput:
-      return <Button onClick={handleGetTransactions}>Confirm Amount</Button>;
+      return (
+        <Button variant="outlined" onClick={handleGetTransactions}>
+          Confirm Amount
+        </Button>
+      );
     case SupplyState.approval:
       return (
-        <Button onClick={handleApprovalTx}>
+        <Button variant="outlined" onClick={handleApprovalTx}>
           {approveTxData?.loading ? 'Waiting for Approval tx' : 'Approve'}
         </Button>
       );
     case SupplyState.sendTx:
       return (
-        <Button onClick={handleSendMainTx}>
+        <Button variant="outlined" onClick={handleSendMainTx}>
           {actionTxData?.loading ? 'Waiting for Supply tx' : 'Supply'}
         </Button>
       );
     case SupplyState.success:
-      return <Button onClick={handleClose}>Close</Button>;
+      return (
+        <Button variant="outlined" onClick={handleClose}>
+          Close
+        </Button>
+      );
     case SupplyState.error:
       return (
         <div>
-          <Button onClick={handleError}>try again</Button>
+          <Button variant="outlined" onClick={handleError}>
+            try again
+          </Button>
           {depositWithPermitEnabled && (
             <Button onClick={handlePermitError}>try with normal approval</Button>
           )}
@@ -221,6 +231,10 @@ export const SupplyActions = ({ amountToSupply, poolReserve, onClose }: SupplyAc
         </div>
       );
     case SupplyState.networkMisMatch:
-      return <Button onClick={() => switchNetwork(chainId)}>ChangeNetwork</Button>;
+      return (
+        <Button variant="outlined" onClick={() => switchNetwork(chainId)}>
+          ChangeNetwork
+        </Button>
+      );
   }
 };
