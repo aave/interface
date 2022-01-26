@@ -8,6 +8,7 @@ import {
 import BigNumber from 'bignumber.js';
 import React, { useContext } from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 import { useCurrentTimestamp } from '../useCurrentTimestamp';
 import { useProtocolDataContext } from '../useProtocolDataContext';
@@ -31,7 +32,7 @@ export type ComputedReserveData = ReturnType<typeof formatReservesAndIncentives>
   ReserveDataHumanized;
 
 export interface AppDataContextType {
-  reserves: ComputedReserveData[];
+  reserves: (ComputedReserveData & { iconSymbol: string })[];
   // refreshPoolData?: () => Promise<void[]>;
   isUserHasDeposits: boolean;
   user?: FormatUserSummaryAndIncentivesResponse & { earnedAPY: number; debtAPY: number };
@@ -176,7 +177,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
   return (
     <AppDataContext.Provider
       value={{
-        reserves: formattedPoolReserves,
+        reserves: formattedPoolReserves.map((r) => ({ ...r, ...fetchIconSymbolAndName(r) })),
         user: {
           ...user,
           earnedAPY: proportions.positiveProportion
