@@ -112,3 +112,10 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link
     />
   );
 });
+
+export const ROUTES = {
+  dashboard: '/',
+  markets: '/markets',
+  reserveOverview: (underlyingAddress: string) =>
+    `/reserve-overview/?underlyingAddress=${underlyingAddress}`,
+};
