@@ -12,16 +12,10 @@ import { SupplyState } from './Supply';
 export type SupplyActionProps = {
   amountToSupply: string;
   poolReserve: ComputedReserveData;
-  mainTxType?: string;
   onClose: () => void;
 };
 
-export const SupplyActions = ({
-  amountToSupply,
-  poolReserve,
-  mainTxType,
-  onClose,
-}: SupplyActionProps) => {
+export const SupplyActions = ({ amountToSupply, poolReserve, onClose }: SupplyActionProps) => {
   const { signTxData, switchNetwork, getTxError, sendTx } = useWeb3Context();
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
@@ -127,7 +121,6 @@ export const SupplyActions = ({
       }
     } else {
       if (approveTxData && approveTxData.unsignedData) {
-        // TODO: how to fix this typo
         sendEthTx(approveTxData.unsignedData, setApproveTxData, customGasPrice, sendTx, getTxError);
       }
     }
@@ -208,9 +201,17 @@ export const SupplyActions = ({
     case SupplyState.amountInput:
       return <Button onClick={handleGetTransactions}>Confirm Amount</Button>;
     case SupplyState.approval:
-      return <Button onClick={handleApprovalTx}>Approve</Button>;
+      return (
+        <Button onClick={handleApprovalTx}>
+          {approveTxData?.loading ? 'Waiting for Approval tx' : 'Approve'}
+        </Button>
+      );
     case SupplyState.sendTx:
-      return <Button onClick={handleSendMainTx}>Send Tx</Button>;
+      return (
+        <Button onClick={handleSendMainTx}>
+          {actionTxData?.loading ? 'Waiting for Supply tx' : 'Supply'}
+        </Button>
+      );
     case SupplyState.success:
       return <Button onClick={handleClose}>Close</Button>;
     case SupplyState.error:
