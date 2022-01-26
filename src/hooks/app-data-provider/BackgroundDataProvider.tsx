@@ -21,8 +21,9 @@ const BackgroundDataProviderContext = React.createContext<BackgroundDataProvider
  */
 export const BackgroundDataProvider: React.FC = ({ children }) => {
   const { refresh: refechIncentiveData } = useIncentiveData();
-  const { refresh: refetchPoolData } = usePoolData();
+  const { refresh: refetchPoolData, loading: poolDataLoading } = usePoolData();
   const { refetch: refetchWalletBalances } = useUpdateWalletBalances();
+  console.log(poolDataLoading);
   return (
     <BackgroundDataProviderContext.Provider
       value={{ refetchWalletBalances, refechIncentiveData, refetchPoolData }}

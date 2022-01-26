@@ -2,6 +2,7 @@ import {
   Button,
   Container,
   Paper,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -34,17 +35,17 @@ export default function Markets() {
         }}
       >
         <Typography typography="h2" sx={{ p: 4 }}>
-          {currentMarketData.marketTitle} <Trans>market assets</Trans>
+          {currentMarketData.marketTitle} <Trans>assets</Trans>
         </Typography>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell>Asset</TableCell>
-              <TableCell align="right">Total supplied</TableCell>
-              <TableCell align="right">Supply APY</TableCell>
-              <TableCell align="right">Total borrowed</TableCell>
-              <TableCell align="right">Borrow APY, variable</TableCell>
-              <TableCell align="right">Borrow APY, stable</TableCell>
+              <TableCell align="center">Total supplied</TableCell>
+              <TableCell align="center">Supply APY</TableCell>
+              <TableCell align="center">Total borrowed</TableCell>
+              <TableCell align="center">Borrow APY, variable</TableCell>
+              <TableCell align="center">Borrow APY, stable</TableCell>
               <TableCell align="right"></TableCell>
             </TableRow>
           </TableHead>
@@ -55,52 +56,61 @@ export default function Markets() {
                   <Box sx={{ display: 'flex' }}>
                     <TokenIcon symbol={reserve.iconSymbol} fontSize="large" />
                     <Box sx={{ pl: 2 }}>
-                      <Typography>{reserve.name}</Typography>
-                      <Typography>{reserve.symbol}</Typography>
+                      <Typography variant="h4">{reserve.name}</Typography>
+                      <Typography variant="subheader2" color="text.disabled">
+                        {reserve.symbol}
+                      </Typography>
                     </Box>
                   </Box>
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="center">
                   <FormattedNumber
                     compact
                     value={reserve.totalLiquidityUSD}
                     maximumDecimals={2}
                     minimumDecimals={2}
+                    variant="main16"
+                    symbol="USD"
                   />
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="center">
                   <FormattedNumber
                     compact
                     value={reserve.supplyAPY}
                     maximumDecimals={2}
                     minimumDecimals={2}
                     percent
+                    variant="main16"
                   />
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="center">
                   <FormattedNumber
                     compact
                     value={reserve.totalDebtUSD}
                     maximumDecimals={2}
                     minimumDecimals={2}
+                    variant="main16"
+                    symbol="USD"
                   />
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="center">
                   <FormattedNumber
                     compact
                     value={reserve.variableBorrowAPY}
                     maximumDecimals={2}
                     minimumDecimals={2}
                     percent
+                    variant="main16"
                   />
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="center">
                   <FormattedNumber
                     compact
                     value={reserve.stableBorrowAPY}
                     maximumDecimals={2}
                     minimumDecimals={2}
                     percent
+                    variant="main16"
                   />
                 </TableCell>
                 <TableCell align="right">

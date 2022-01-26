@@ -21,6 +21,7 @@ export const NAME_MAP: { [key: string]: string } = {
   WETH: 'Wrapped ETH',
   UNIDAIWETH: 'UNI DAI/WETH',
   UNIWBTCUSDC: 'UNI WBTC/USDC',
+  YFI: 'yearn.finance',
 };
 
 export function fetchIconSymbolAndName({
