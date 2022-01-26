@@ -17,7 +17,7 @@ export const SuppliedPositionsList = ({ listData }: SuppliedPositionsListProps) 
       noData={!listData.length}
     >
       {listData.length ? (
-        listData.map((item) => <SuppliedPositionsListItem {...item} key={item.reserve.id} />)
+        listData.map((item, index) => <SuppliedPositionsListItem {...item} key={index} />)
       ) : (
         <DashboardContentNoData text={<Trans>Nothing supplied yet</Trans>} />
       )}

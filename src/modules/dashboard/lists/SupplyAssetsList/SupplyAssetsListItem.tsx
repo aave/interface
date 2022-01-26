@@ -1,11 +1,33 @@
-import { FormattedNumber } from '../../../../components/primitives/FormattedNumber';
+import { CapsHint } from '../../../../components/caps/CapsHint';
+import { CapType } from '../../../../components/caps/helper';
 import { ListItemWrapper } from '../ListItemWrapper';
+import { ListValueColumn } from '../ListValueColumn';
 import { SupplyAssetsItem } from './types';
 
-export const SupplyAssetsListItem = ({ symbol, availableToDeposit }: SupplyAssetsItem) => {
+export const SupplyAssetsListItem = ({
+  symbol,
+  walletBalance,
+  walletBalanceUSD,
+  supplyCap,
+  totalLiquidity,
+}: SupplyAssetsItem) => {
   return (
     <ListItemWrapper tokenSymbol={symbol}>
-      <FormattedNumber value={availableToDeposit} />
+      <ListValueColumn
+        symbol={symbol}
+        value={Number(walletBalance)}
+        subValue={walletBalanceUSD}
+        withTooltip
+        disabled={Number(walletBalance) === 0}
+        capsComponent={
+          <CapsHint
+            capType={CapType.supplyCap}
+            capAmount={supplyCap}
+            totalAmount={totalLiquidity}
+            withoutText
+          />
+        }
+      />
     </ListItemWrapper>
   );
 };

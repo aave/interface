@@ -542,6 +542,16 @@ export function getThemedComponents(theme: Theme) {
           },
         },
       },
+      MuiIcon: {
+        variants: [
+          {
+            props: { fontSize: 'large' },
+            style: {
+              fontSize: pxToRem(32),
+            },
+          },
+        ],
+      },
       MuiCssBaseline: {
         styleOverrides: {
           body: {

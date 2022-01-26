@@ -4,7 +4,6 @@ import { ComputedReserveData } from '../../../../hooks/app-data-provider/useAppD
 import { ReserveIncentiveResponse } from '../../../../hooks/app-data-provider/useIncentiveData';
 
 export type SuppliedPositionsItem = {
-  userId?: string;
   // onToggleSwitch: () => void;
   isActive: boolean;
   isFrozen: boolean;

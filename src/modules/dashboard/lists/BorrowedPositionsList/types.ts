@@ -2,7 +2,6 @@ import { ComputedReserveData } from '../../../../hooks/app-data-provider/useAppD
 import { ReserveIncentiveResponse } from '../../../../hooks/app-data-provider/useIncentiveData';
 
 export type BorrowedPositionsItem = {
-  userId?: string;
   // onSwitchToggle: () => void;
   isActive: boolean;
   isFrozen: boolean;

@@ -129,8 +129,8 @@ export const BorrowAssetsList = ({ borrowedReserves }: BorrowAssetsListProps) =>
         localStorageName="borrowAssetsDashboardTableCollapse"
         withTopMargin
       >
-        {borrowReserves.map((item) => (
-          <BorrowAssetsListItem {...item} key={item.id} />
+        {borrowReserves.map((item, index) => (
+          <BorrowAssetsListItem {...item} key={index} />
         ))}
       </DashboardListWrapper>
     </>

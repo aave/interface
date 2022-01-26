@@ -14,8 +14,8 @@ export const BorrowedPositionsList = ({ listData }: BorrowedPositionsListProps) 
       title={<Trans>Your borrows</Trans>}
       localStorageName="borrowedAssetsDashboardTableCollapse"
     >
-      {listData.map((item) => (
-        <BorrowedPositionsListItem {...item} key={item.reserve.id} />
+      {listData.map((item, index) => (
+        <BorrowedPositionsListItem {...item} key={index} />
       ))}
     </DashboardListWrapper>
   );

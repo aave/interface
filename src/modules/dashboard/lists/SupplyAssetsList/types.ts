@@ -12,7 +12,6 @@ export type SupplyAssetsItem = {
   underlyingBalanceInUSD: number | string;
   liquidityRate: number | string;
   aIncentives: ReserveIncentiveResponse[];
-  userId?: string;
   borrowingEnabled: boolean;
   isFreezed?: boolean;
   isIsolated: boolean;

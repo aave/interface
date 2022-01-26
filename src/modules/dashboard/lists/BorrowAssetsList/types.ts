@@ -11,7 +11,6 @@ export type BorrowAssetsItem = {
   availableBorrows: number | string;
   availableBorrowsInUSD: number | string;
   stableBorrowRateEnabled?: boolean;
-  userId?: string;
   isFreezed?: boolean;
   vIncentives: ReserveIncentiveResponse[];
   sIncentives: ReserveIncentiveResponse[];

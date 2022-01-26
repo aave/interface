@@ -15,7 +15,7 @@ import { DashboardListWrapper } from '../../DashboardListWrapper';
 import { SupplyAssetsListItem } from './SupplyAssetsListItem';
 
 export const SupplyAssetsList = () => {
-  const { currentAccount, chainId } = useWeb3Context();
+  const { chainId } = useWeb3Context();
   const { user, reserves, marketReferencePriceInUsd } = useAppDataContext();
   const { walletBalances } = useWalletBalances();
 
@@ -136,8 +136,8 @@ export const SupplyAssetsList = () => {
       withBottomText={isTestnet}
       withTopMargin
     >
-      {supplyReserves.map((item) => (
-        <SupplyAssetsListItem {...item} key={item.id} />
+      {supplyReserves.map((item, index) => (
+        <SupplyAssetsListItem {...item} key={index} />
       ))}
     </DashboardListWrapper>
   );

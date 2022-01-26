@@ -72,8 +72,8 @@ export const DashboardListWrapper = ({
                   height: '2px',
                   bgcolor: 'text.secondary',
                   transition: 'all 0.2s ease',
-                  transform: isCollapse ? 'rotate(0)' : 'rotate(90deg)',
-                  opacity: isCollapse ? 0 : 1,
+                  transform: isCollapse ? 'rotate(90deg)' : 'rotate(0)',
+                  opacity: isCollapse ? 1 : 0,
                 },
               },
             }}
@@ -86,15 +86,15 @@ export const DashboardListWrapper = ({
         )}
       </Box>
 
-      {subChildrenComponent && (
-        <Box sx={{ display: isCollapse ? 'none' : 'block' }}>{subChildrenComponent}</Box>
-      )}
+      {subChildrenComponent && <Box>{subChildrenComponent}</Box>}
       <Box sx={{ display: isCollapse ? 'none' : 'block' }}>{children}</Box>
 
-      {withBottomText && (
-        <Box sx={{ display: 'flex', alignItems: 'center', minHeight: '72px' }}>
+      {withBottomText && !isCollapse && (
+        <Box>
           <Divider />
-          <Box>BottomText</Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', minHeight: '71px', px: 6 }}>
+            BottomText
+          </Box>
         </Box>
       )}
     </Paper>

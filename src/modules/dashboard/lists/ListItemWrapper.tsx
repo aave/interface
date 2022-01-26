@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Divider, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 
 import { TokenIcon } from '../../../components/primitives/TokenIcon';
@@ -12,11 +12,18 @@ interface ListItemWrapperProps {
 export const ListItemWrapper = ({ tokenSymbol, children }: ListItemWrapperProps) => {
   return (
     <Box>
-      <ListColumn>
-        <TokenIcon symbol={tokenSymbol} />
-      </ListColumn>
+      <Divider />
 
-      {children}
+      <Box sx={{ display: 'flex', alignItems: 'center', minHeight: '71px', px: 6 }}>
+        <ListColumn isRow={true} maxWidth={160}>
+          <TokenIcon symbol={tokenSymbol} fontSize="large" />
+          <Typography variant="subheader1" sx={{ ml: 2 }} noWrap>
+            {tokenSymbol}
+          </Typography>
+        </ListColumn>
+
+        {children}
+      </Box>
     </Box>
   );
 };

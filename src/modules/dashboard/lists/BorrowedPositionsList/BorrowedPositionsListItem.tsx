@@ -1,11 +1,20 @@
-import { FormattedNumber } from '../../../../components/primitives/FormattedNumber';
 import { ListItemWrapper } from '../ListItemWrapper';
+import { ListValueColumn } from '../ListValueColumn';
 import { BorrowedPositionsItem } from './types';
 
-export const BorrowedPositionsListItem = ({ reserve, currentBorrows }: BorrowedPositionsItem) => {
+export const BorrowedPositionsListItem = ({
+  reserve,
+  currentBorrows,
+  currentBorrowsUSD,
+}: BorrowedPositionsItem) => {
   return (
     <ListItemWrapper tokenSymbol={reserve.symbol}>
-      <FormattedNumber value={currentBorrows} />
+      <ListValueColumn
+        symbol={reserve.symbol}
+        value={Number(currentBorrows)}
+        subValue={Number(currentBorrowsUSD)}
+        disabled={Number(currentBorrows) === 0}
+      />
     </ListItemWrapper>
   );
 };
