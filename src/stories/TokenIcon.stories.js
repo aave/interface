@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { MultiTokenIcon, TokenIcon } from '../components/primitives/TokenIcon';
+import { TokenIcon } from '../components/primitives/TokenIcon';
 
 export default {
   /* 👇 The title prop is optional.
@@ -14,7 +14,6 @@ export default {
 };
 
 const Template = (args) => <TokenIcon {...args} />;
-const MultiTemplate = (args) => <MultiTokenIcon {...args} />;
 
 export const SingleToken = Template.bind({});
 SingleToken.args = {
@@ -28,9 +27,9 @@ aToken.args = {
   aToken: true,
 };
 
-export const MultiToken = MultiTemplate.bind({});
+export const MultiToken = TokenIcon.bind({});
 MultiToken.args = {
-  symbols: ['weth', 'aave'],
+  symbol: 'weth_aave',
   badgeSymbol: 'uni',
   aToken: false,
 };

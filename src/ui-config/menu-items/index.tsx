@@ -8,6 +8,7 @@ import GithubIcon from '/public/icons/github.svg';
 import { governanceConfig } from '../governanceConfig';
 import { MarketDataType } from '../marketsConfig';
 import { stakeConfig } from '../stakeConfig';
+import { ROUTES } from 'src/components/primitives/Link';
 
 interface Navigation {
   link: string;
@@ -18,21 +19,21 @@ interface Navigation {
 
 export const navigation: Navigation[] = [
   {
-    link: '/dashboard',
+    link: ROUTES.dashboard,
     title: t`Dashboard`,
     dataCy: 'menuDashboard',
   },
   {
-    link: '/markets',
+    link: ROUTES.markets,
     title: t`Markets overview`,
   },
   {
-    link: '/stake',
+    link: ROUTES.staking,
     title: t`Stake`,
     isVisible: () => !!stakeConfig,
   },
   {
-    link: '/governance',
+    link: ROUTES.governance,
     title: t`Governance`,
     isVisible: () => !!governanceConfig,
   },
