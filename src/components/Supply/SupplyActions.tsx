@@ -31,7 +31,7 @@ export const SupplyActions = ({ amountToSupply, poolReserve, onClose }: SupplyAc
   const [approveTxData, setApproveTxData] = useState({} as EthTransactionData);
   const [actionTxData, setActionTxData] = useState({} as EthTransactionData);
   const [breadCrumbs, setBreadCrumbs] = useState({
-    initial: false,
+    amount: false,
     approved: false,
     supplied: false,
   });
@@ -87,6 +87,7 @@ export const SupplyActions = ({ amountToSupply, poolReserve, onClose }: SupplyAc
       } else if (supplyStep < SupplyState.sendTx) {
         setSupplyStep(SupplyState.approval);
       }
+      setBreadCrumbs({ ...breadCrumbs, amount: true });
     } catch (error) {
       setTxError(error);
       setSupplyStep(SupplyState.error);
@@ -251,7 +252,7 @@ export const SupplyActions = ({ amountToSupply, poolReserve, onClose }: SupplyAc
   return (
     <Box sx={{ mt: '16px' }}>
       <Box sx={{ mt: '16px', mb: '12px', display: 'flex' }}>
-        <Typography variant="helperText" color={breadCrumbs.initial ? 'green' : ''}>
+        <Typography variant="helperText" color={breadCrumbs.amount ? 'green' : ''}>
           <Trans>Enter an amount</Trans>
         </Typography>
         <ArrowForwardIcon />
