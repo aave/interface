@@ -99,20 +99,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
     reserveIncentives: reservesIncentivesData?.reservesIncentives || [],
   });
 
-  const userReserves: UserReserveData[] = [];
-  if (userReservesData?.userData && reserves.length) {
-    userReservesData?.userData.userReserves.forEach((rawUserReserve) => {
-      const reserve = reserves.find(
-        (r) => r.underlyingAsset.toLowerCase() === rawUserReserve.underlyingAsset.toLowerCase()
-      );
-      if (reserve) {
-        userReserves.push({
-          ...rawUserReserve,
-          reserve,
-        });
-      }
-    });
-  }
+  const userReserves: UserReserveData[] = userReservesData?.userData.userReserves || [];
 
   const userEmodeCategoryId = userReservesData?.userData.userEmodeCategoryId || 0;
 
@@ -121,6 +108,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
     marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
     marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
     userReserves,
+    formattedReserves: formattedPoolReserves,
     userEmodeCategoryId: userEmodeCategoryId,
     reserveIncentives: reservesIncentivesData?.reservesIncentives || [],
     userIncentives: userReservesIncentivesData?.userIncentives || [],

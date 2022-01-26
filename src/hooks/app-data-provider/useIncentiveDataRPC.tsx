@@ -56,9 +56,9 @@ export function useIncentivesDataRPC(
 
     try {
       const rawReserveIncentiveData =
-        await incentiveDataProviderContract.getReservesIncentivesDataHumanized(
-          lendingPoolAddressProvider
-        );
+        await incentiveDataProviderContract.getReservesIncentivesDataHumanized({
+          lendingPoolAddressProvider,
+        });
       cache.writeQuery<C_ReservesIncentivesQuery>({
         query: C_ReservesIncentivesDocument,
         data: {
