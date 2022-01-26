@@ -1,3 +1,4 @@
+import { ListColumn } from '../ListColumn';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
 import { SuppliedPositionsItem } from './types';
@@ -15,6 +16,12 @@ export const SuppliedPositionsListItem = ({
         subValue={Number(underlyingBalanceUSD)}
         disabled={Number(underlyingBalance) === 0}
       />
+
+      <ListColumn />
+      <ListColumn />
+
+      <ListColumn maxWidth={85} />
+      <ListColumn maxWidth={85} />
     </ListItemWrapper>
   );
 };

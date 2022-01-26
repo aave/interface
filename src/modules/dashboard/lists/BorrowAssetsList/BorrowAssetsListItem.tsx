@@ -1,5 +1,6 @@
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
+import { ListColumn } from '../ListColumn';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
 import { BorrowAssetsItem } from './types';
@@ -28,6 +29,12 @@ export const BorrowAssetsListItem = ({
           />
         }
       />
+
+      <ListColumn />
+      <ListColumn />
+
+      <ListColumn maxWidth={85} />
+      <ListColumn maxWidth={85} />
     </ListItemWrapper>
   );
 };

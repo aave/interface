@@ -2,6 +2,7 @@ import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 
+import { BorrowAvailableInfoContent } from '../../../../components/infoModalContents/BorrowAvailableInfoContent';
 import { useAppDataContext } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from '../../../../hooks/app-data-provider/useWalletBalances';
 import { useWeb3Context } from '../../../../libs/hooks/useWeb3Context';
@@ -10,6 +11,7 @@ import { getNetworkConfig } from '../../../../utils/marketsAndNetworksConfig';
 import { DashboardContentNoData } from '../../DashboardContentNoData';
 import { DashboardListWrapper } from '../../DashboardListWrapper';
 import { BorrowedPositionsItem } from '../BorrowedPositionsList/types';
+import { ListHeader } from '../ListHeader';
 import { BorrowAssetsListItem } from './BorrowAssetsListItem';
 import { BorrowAssetsItem } from './types';
 
@@ -112,6 +114,16 @@ export const BorrowAssetsList = ({ borrowedReserves }: BorrowAssetsListProps) =>
             availableBorrowsInUSD !== '0.00' && totalLiquidityUSD !== '0'
         );
 
+  const head = [
+    <BorrowAvailableInfoContent
+      text={<Trans>Available</Trans>}
+      key="Available"
+      variant="subheader2"
+    />,
+    <Trans key="APY, variable">APY, variable</Trans>,
+    <Trans key="APY, stable">APY, stable</Trans>,
+  ];
+
   return (
     <>
       {!borrowedReserves.length && (
@@ -129,9 +141,12 @@ export const BorrowAssetsList = ({ borrowedReserves }: BorrowAssetsListProps) =>
         localStorageName="borrowAssetsDashboardTableCollapse"
         withTopMargin
       >
-        {borrowReserves.map((item, index) => (
-          <BorrowAssetsListItem {...item} key={index} />
-        ))}
+        <>
+          <ListHeader head={head} />
+          {borrowReserves.map((item, index) => (
+            <BorrowAssetsListItem {...item} key={index} />
+          ))}
+        </>
       </DashboardListWrapper>
     </>
   );

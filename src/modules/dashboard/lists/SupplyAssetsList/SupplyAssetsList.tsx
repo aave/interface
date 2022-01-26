@@ -12,6 +12,7 @@ import { useWalletBalances } from '../../../../hooks/app-data-provider/useWallet
 import { useWeb3Context } from '../../../../libs/hooks/useWeb3Context';
 import { getNetworkConfig } from '../../../../utils/marketsAndNetworksConfig';
 import { DashboardListWrapper } from '../../DashboardListWrapper';
+import { ListHeader } from '../ListHeader';
 import { SupplyAssetsListItem } from './SupplyAssetsListItem';
 
 export const SupplyAssetsList = () => {
@@ -129,6 +130,12 @@ export const SupplyAssetsList = () => {
     ? filteredSupplyReserves
     : sortedSupplyReserves;
 
+  const head = [
+    <Trans key="Wallet balance">Wallet balance</Trans>,
+    <Trans key="APY">APY</Trans>,
+    <Trans key="Can be collateral">Can be collateral</Trans>,
+  ];
+
   return (
     <DashboardListWrapper
       title={<Trans>Assets to supply</Trans>}
@@ -136,9 +143,12 @@ export const SupplyAssetsList = () => {
       withBottomText={isTestnet}
       withTopMargin
     >
-      {supplyReserves.map((item, index) => (
-        <SupplyAssetsListItem {...item} key={index} />
-      ))}
+      <>
+        <ListHeader head={head} />
+        {supplyReserves.map((item, index) => (
+          <SupplyAssetsListItem {...item} key={index} />
+        ))}
+      </>
     </DashboardListWrapper>
   );
 };

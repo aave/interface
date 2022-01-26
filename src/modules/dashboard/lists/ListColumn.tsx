@@ -2,7 +2,7 @@ import { Box } from '@mui/material';
 import { ReactNode } from 'react';
 
 interface ListColumnProps {
-  children: ReactNode;
+  children?: ReactNode;
   maxWidth?: number;
   minWidth?: number;
   isRow?: boolean;

@@ -1,3 +1,4 @@
+import { ListColumn } from '../ListColumn';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
 import { BorrowedPositionsItem } from './types';
@@ -15,6 +16,12 @@ export const BorrowedPositionsListItem = ({
         subValue={Number(currentBorrowsUSD)}
         disabled={Number(currentBorrows) === 0}
       />
+
+      <ListColumn />
+      <ListColumn />
+
+      <ListColumn maxWidth={85} />
+      <ListColumn maxWidth={85} />
     </ListItemWrapper>
   );
 };

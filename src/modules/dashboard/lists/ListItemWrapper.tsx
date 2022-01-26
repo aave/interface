@@ -14,8 +14,8 @@ export const ListItemWrapper = ({ tokenSymbol, children }: ListItemWrapperProps)
     <Box>
       <Divider />
 
-      <Box sx={{ display: 'flex', alignItems: 'center', minHeight: '71px', px: 6 }}>
-        <ListColumn isRow={true} maxWidth={160}>
+      <Box sx={{ display: 'flex', alignItems: 'center', minHeight: '71px', px: 4 }}>
+        <ListColumn maxWidth={160} isRow>
           <TokenIcon symbol={tokenSymbol} fontSize="large" />
           <Typography variant="subheader1" sx={{ ml: 2 }} noWrap>
             {tokenSymbol}
