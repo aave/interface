@@ -39,7 +39,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Trans>Amount</Trans>
         <Typography>
-          <Trans>Balance</Trans> <b>{balance}</b>
+          <Trans>Available</Trans> <b>{balance}</b>
         </Typography>
       </Box>
       <TextField

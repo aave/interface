@@ -2,10 +2,10 @@ import { Trans } from '@lingui/macro';
 import { Box, Grid, Typography } from '@mui/material';
 import React from 'react';
 
-import { FormInfo } from '../../components/FormItems/FormInfo';
-import { FormRow } from '../../components/FormItems/FormRow';
-import { FormValue } from '../../components/FormItems/FormValue';
-import { Percentage } from '../../components/Percentage';
+import { FormInfo } from '../FormItems/FormInfo';
+import { FormRow } from '../FormItems/FormRow';
+import { FormValue } from '../FormItems/FormValue';
+import { Percentage } from '../Percentage';
 // import { TokenIcon } from '../../components/TokenIcon';
 
 export interface SupplyReward {
@@ -40,7 +40,9 @@ export const SupplyDetails: React.FC<SupplyDetailsProps> = ({
     <Grid container direction="row" alignItems="center" rowSpacing={'12px'}>
       <FormRow>
         <FormInfo>
-          <Trans component={Typography}>Supply APY</Trans>
+          <Typography>
+            <Trans>Supply APY</Trans>
+          </Typography>
         </FormInfo>
         <FormValue>
           <Box>
@@ -48,24 +50,26 @@ export const SupplyDetails: React.FC<SupplyDetailsProps> = ({
           </Box>
         </FormValue>
       </FormRow>
-      <FormRow>
+      {/* <FormRow>
         <FormInfo>
           <Trans component={Typography}>Supply reward</Trans>
         </FormInfo>
-        {/* <FormValue>
+        <FormValue>
           <SupplyRewards supplyRewards={supplyRewards} />
-        </FormValue> */}
-      </FormRow>
+        </FormValue> 
+      </FormRow> */}
       <FormRow>
         <FormInfo>
-          <Trans component={Typography}>Health factor</Trans>
+          <Typography>
+            <Trans>Health factor</Trans>
+          </Typography>
         </FormInfo>
         <FormValue>
           <Typography component={Box} sx={{ width: 'max-content' }}>
             {healthFactor}
           </Typography>
           <Typography component={Box}>
-            <Trans component={Typography}>Liquidation at</Trans>
+            <Trans>Liquidation at</Trans>
             {' <1.0'}
           </Typography>
         </FormValue>

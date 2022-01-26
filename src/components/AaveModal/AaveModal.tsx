@@ -5,6 +5,7 @@ import React from 'react';
 
 export interface AaveModalProps extends DialogProps {
   title: string;
+  tokenSymbol?: string;
 }
 
 export const AavePaperBox = styled(Paper)(({ theme }) => ({
@@ -27,7 +28,7 @@ export const AaveModal = (props: AaveModalProps) => {
     <Dialog PaperComponent={AavePaperBox} aria-labelledby="aave-modal-title" {...props}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: '43px' }}>
         <Typography id="aave-modal-title" variant="main21">
-          {props.title}
+          {props.title} {props.tokenSymbol ? props.tokenSymbol : ''}
         </Typography>
         <IconButton aria-label="close" onClick={onCloseAction} sx={{ padding: 0 }}>
           <Close />
