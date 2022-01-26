@@ -1,12 +1,12 @@
+import { DotsHorizontalIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { Button, ListItemIcon, ListItemText, MenuList, SvgIcon } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import React from 'react';
 
-import { Link } from '../components/Link';
+import { Link } from '../components/primitives/Link';
 import { moreNavigation } from '../ui-config/menu-items';
 
 export function MoreMenu() {
@@ -40,7 +40,9 @@ export function MoreMenu() {
         }}
       >
         <Trans>More</Trans>
-        <MoreHorizIcon color="inherit" />
+        <SvgIcon color="inherit" sx={{ ml: 1 }}>
+          <DotsHorizontalIcon />
+        </SvgIcon>
       </Button>
 
       <Menu
@@ -51,11 +53,6 @@ export function MoreMenu() {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        PaperProps={{
-          style: {
-            minWidth: 240,
-          },
-        }}
       >
         <MenuList disablePadding>
           {moreNavigation.map((item, index) => (

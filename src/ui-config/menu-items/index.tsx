@@ -1,10 +1,9 @@
+import { BookOpenIcon, QuestionMarkCircleIcon } from '@heroicons/react/outline';
 import { t } from '@lingui/macro';
 import { ReactNode } from 'react';
 
-import BookIcon from '/public/icons/book.svg';
 import DiscordIcon from '/public/icons/discord.svg';
 import GithubIcon from '/public/icons/github.svg';
-import QuestionIcon from '/public/icons/question.svg';
 
 import { governanceConfig } from '../governanceConfig';
 import { MarketDataType } from '../marketsConfig';
@@ -47,12 +46,12 @@ const moreMenuItems: MoreMenuItem[] = [
   {
     link: 'https://docs.aave.com/faq/',
     title: t`FAQ`,
-    icon: <QuestionIcon />,
+    icon: <QuestionMarkCircleIcon />,
   },
   {
     link: 'https://docs.aave.com/portal/',
     title: t`Developers`,
-    icon: <BookIcon />,
+    icon: <BookOpenIcon />,
   },
   {
     link: 'https://discord.gg/7kHKnkDEUf',

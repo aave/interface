@@ -3,7 +3,7 @@ import { Box, Button, InputAdornment, TextField, Typography } from '@mui/materia
 import { SxProps } from '@mui/system';
 import React from 'react';
 
-import { TokenIcon } from './TokenIcon';
+import { TokenIcon } from './primitives/TokenIcon';
 
 export interface AssetInputProps {
   value: string;

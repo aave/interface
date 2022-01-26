@@ -23,7 +23,6 @@ export const SupplyActions = ({
   onClose,
 }: SupplyActionProps) => {
   const { signTxData, switchNetwork, getTxError, sendTx } = useWeb3Context();
-  const { isRPCActive } = useConnectionStatusContext();
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
   const { currentAccount, chainId: connectedChainId } = useWeb3Context();
@@ -40,15 +39,9 @@ export const SupplyActions = ({
   // Custom gas
   const [customGasPrice, setCustomGasPrice] = useState<string | null>(null);
 
-  // const [depositWithPermitEnabled, setDepositWithPermitEnable] = useState(
-  //   currentMarketData.v3 && chainId !== ChainId.harmony && chainId !== ChainId.harmony_testnet
-  // );
-
-  const depositWithPermitEnabled =
-    currentMarketData.v3 &&
-    chainId !== ChainId.harmony &&
-    chainId !== ChainId.harmony_testnet &&
-    !txError;
+  const [depositWithPermitEnabled, setDepositWithPermitEnable] = useState(
+    currentMarketData.v3 && chainId !== ChainId.harmony && chainId !== ChainId.harmony_testnet
+  );
 
   // Get approve and supply transactions without using permit flow
   const handleGetTransactions = async () => {
@@ -88,9 +81,7 @@ export const SupplyActions = ({
           // name: mainTxName,
         });
       }
-      console.log('-------- looooggg');
-      // TODO: not supper sure this is needed or
-      // if we should conditional here
+
       if (!approvalTx) {
         setSupplyStep(SupplyState.sendTx);
       } else if (supplyStep < SupplyState.sendTx) {
@@ -201,6 +192,14 @@ export const SupplyActions = ({
     onClose();
   };
 
+  const handleError = () => {
+    setSupplyStep(SupplyState.amountInput);
+  };
+  const handlePermitError = () => {
+    setDepositWithPermitEnable(false);
+    setSupplyStep(SupplyState.amountInput);
+  };
+
   // TODO: provably need to change this to add
   // breadCrums
   // tx gas estimator
@@ -217,9 +216,10 @@ export const SupplyActions = ({
     case SupplyState.error:
       return (
         <div>
-          <Button onClick={() => setSupplyStep(SupplyState.amountInput)}>
-            {depositWithPermitEnabled ? 'try with normal approval' : 'try again'}
-          </Button>
+          <Button onClick={handleError}>try again</Button>
+          {depositWithPermitEnabled && (
+            <Button onClick={handlePermitError}>try with normal approval</Button>
+          )}
           <div>{txError}</div>
         </div>
       );

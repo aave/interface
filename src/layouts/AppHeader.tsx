@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import dynamic from 'next/dynamic';
 import * as React from 'react';
 
-import { Link } from '../components/Link';
+import { Link } from '../components/primitives/Link';
 import { useProtocolDataContext } from '../hooks/useProtocolDataContext';
 import { navigation } from '../ui-config/menu-items';
 import { uiConfig } from '../uiConfig';
