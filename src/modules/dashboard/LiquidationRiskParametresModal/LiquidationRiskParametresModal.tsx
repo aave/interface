@@ -45,7 +45,7 @@ export const LiquidationRiskParametresInfoModal = ({
   currentLiquidationThreshold,
 }: LiquidationRiskParametresInfoModalProps) => {
   return (
-    <BasicModal open={open} setOpen={setOpen}>
+    <BasicModal open={open} setOpen={setOpen} contentMaxWidth={500}>
       <Box sx={{ mb: 3, textAlign: 'center' }}>
         <Typography variant="h2" sx={{ mb: 2 }}>
           <Trans>Liquidation risk parametres</Trans>

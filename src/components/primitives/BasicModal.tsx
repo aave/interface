@@ -14,7 +14,7 @@ export const BasicModal = ({
   open,
   setOpen,
   withCloseButton = true,
-  contentMaxWidth = 500,
+  contentMaxWidth = 400,
   children,
 }: BasicModalProps) => {
   const handleClose = () => setOpen(false);
@@ -37,8 +37,7 @@ export const BasicModal = ({
           overflowY: 'auto',
           maxWidth: `${contentMaxWidth}px`,
           maxHeight: 'calc(100vh - 20px)',
-          px: 5,
-          py: 6,
+          p: 6,
         }}
       >
         {children}
