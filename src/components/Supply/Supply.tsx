@@ -5,7 +5,7 @@ import {
 } from '../../hooks/app-data-provider/useAppDataProvider';
 import { SupplyDetails } from './SupplyDetails';
 import { SupplyActions } from './SupplyActions';
-import { Button, Divider } from '@mui/material';
+import { Button, Divider, Typography } from '@mui/material';
 import { AaveModal } from '../AaveModal/AaveModal';
 import { AssetInput } from '../AssetInput';
 import {
@@ -17,6 +17,7 @@ import {
 import BigNumber from 'bignumber.js';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { BasicModal } from '../primitives/BasicModal';
 
 export type SupplyProps = {
   poolReserve: ComputedReserveData;
@@ -106,19 +107,21 @@ export const Supply = ({
     });
   }
 
-  console.log('healthFactorAfterDeposit: ', user);
+  // console.log('healthFactorAfterDeposit: ', user);
 
   // TODO: what / how to show isolation statuses / warnings??
   return (
     <div>
-      <AaveModal open={open} onClose={onClose} title={'Supply'} tokenSymbol={poolReserve.symbol}>
+      <BasicModal open={open} setOpen={onClose}>
+        <Typography variant="h2" sx={{ mb: '26px' }}>
+          Supply {poolReserve.symbol}
+        </Typography>
         <AssetInput
           value={amountToSupply}
           onChange={setAmountToSupply}
           usdValue={amountInUsd.toString()}
           balance={maxAmountToSupply.toString()}
           symbol={poolReserve.symbol}
-          sx={{ mb: '40px' }}
         />
         <SupplyDetails
           supplyApy={supplyApy}
@@ -131,7 +134,7 @@ export const Supply = ({
           amountToSupply={amountToSupply}
           onClose={onClose}
         ></SupplyActions>
-      </AaveModal>
+      </BasicModal>
       <Button onClick={() => setOpen(true)}>Supply</Button>
     </div>
   );

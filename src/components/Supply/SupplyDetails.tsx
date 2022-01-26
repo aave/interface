@@ -37,42 +37,47 @@ export const SupplyDetails: React.FC<SupplyDetailsProps> = ({
   healthFactor,
 }) => {
   return (
-    <Grid container direction="row" alignItems="center" rowSpacing={'12px'}>
+    <Grid container direction="row" alignItems="center" rowSpacing={'12px'} sx={{ mb: '24px' }}>
       <FormRow>
         <FormInfo>
-          <Typography>
+          <Typography variant="description">
             <Trans>Supply APY</Trans>
           </Typography>
         </FormInfo>
         <FormValue>
-          <Box>
+          <Typography variant="description">
             <Percentage value={supplyApy} />
-          </Box>
+          </Typography>
         </FormValue>
       </FormRow>
-      {/* <FormRow>
-        <FormInfo>
-          <Trans component={Typography}>Supply reward</Trans>
-        </FormInfo>
-        <FormValue>
-          <SupplyRewards supplyRewards={supplyRewards} />
-        </FormValue> 
-      </FormRow> */}
       <FormRow>
         <FormInfo>
-          <Typography>
+          <Typography variant="description">
+            <Trans>RewardsAPR</Trans>
+          </Typography>
+        </FormInfo>
+        <FormValue>{/* <SupplyRewards supplyRewards={supplyRewards} /> */}</FormValue>
+      </FormRow>
+      <FormRow>
+        <FormInfo>
+          <Typography variant="description">
             <Trans>Health factor</Trans>
           </Typography>
         </FormInfo>
         <FormValue>
-          <Typography component={Box} sx={{ width: 'max-content' }}>
-            {healthFactor}
-          </Typography>
-          <Typography component={Box}>
+          <Typography variant="secondary14">{healthFactor === -1 ? healthFactor : '-'}</Typography>
+          <Typography variant="helperText">
             <Trans>Liquidation at</Trans>
             {' <1.0'}
           </Typography>
         </FormValue>
+      </FormRow>
+      <FormRow>
+        <FormInfo>
+          <Typography variant="description">
+            <Trans>Estimated Tx cost</Trans>
+          </Typography>
+        </FormInfo>
       </FormRow>
     </Grid>
   );

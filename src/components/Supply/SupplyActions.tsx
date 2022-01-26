@@ -1,13 +1,14 @@
 import { ChainId, EthereumTransactionTypeExtended, Pool } from '@aave/contract-helpers';
-import { Button } from '@mui/material';
+import { Trans } from '@lingui/macro';
+import { Box, Button, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useConnectionStatusContext } from 'src/hooks/useConnectionStatusContext';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { EthTransactionData, sendEthTx, TxStatusType } from 'src/utils/sendTxHelper';
 import { SupplyState } from './Supply';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 export type SupplyActionProps = {
   amountToSupply: string;
@@ -29,6 +30,11 @@ export const SupplyActions = ({ amountToSupply, poolReserve, onClose }: SupplyAc
   // tx obj
   const [approveTxData, setApproveTxData] = useState({} as EthTransactionData);
   const [actionTxData, setActionTxData] = useState({} as EthTransactionData);
+  const [breadCrumbs, setBreadCrumbs] = useState({
+    initial: false,
+    approved: false,
+    supplied: false,
+  });
 
   // Custom gas
   const [customGasPrice, setCustomGasPrice] = useState<string | null>(null);
@@ -141,6 +147,7 @@ export const SupplyActions = ({ amountToSupply, poolReserve, onClose }: SupplyAc
         } else if (approveTxData.txStatus === TxStatusType.confirmed && approveTxData.txReceipt) {
           // TODO: set tx link with actionTxData.txHash
           // supply tx finished with success
+          setBreadCrumbs({ ...breadCrumbs, approved: true });
           setSupplyStep(SupplyState.sendTx);
         } else if (approveTxData.txStatus === TxStatusType.error) {
           setSupplyStep(SupplyState.error);
@@ -157,6 +164,7 @@ export const SupplyActions = ({ amountToSupply, poolReserve, onClose }: SupplyAc
         // TODO: set tx link with actionTxData.txHash
       } else if (actionTxData.txStatus === TxStatusType.confirmed && actionTxData.txReceipt) {
         // supply tx finished with success
+        setBreadCrumbs({ ...breadCrumbs, supplied: true });
         setSupplyStep(SupplyState.success);
       } else if (actionTxData.txStatus === TxStatusType.error) {
         setTxError(actionTxData.error);
@@ -171,6 +179,7 @@ export const SupplyActions = ({ amountToSupply, poolReserve, onClose }: SupplyAc
       setSupplyStep(SupplyState.networkMisMatch);
     }
   }, [chainId, connectedChainId]);
+  console.log('state: ', supplyStep);
 
   const handleClose = () => {
     setTxError(undefined);
@@ -193,33 +202,34 @@ export const SupplyActions = ({ amountToSupply, poolReserve, onClose }: SupplyAc
   // breadCrums
   // tx gas estimator
   // how to show ehterscan tx link???
+  let actionButton;
   switch (supplyStep) {
     case SupplyState.amountInput:
-      return (
+      actionButton = (
         <Button variant="outlined" onClick={handleGetTransactions}>
           Confirm Amount
         </Button>
       );
     case SupplyState.approval:
-      return (
+      actionButton = (
         <Button variant="outlined" onClick={handleApprovalTx}>
           {approveTxData?.loading ? 'Waiting for Approval tx' : 'Approve'}
         </Button>
       );
     case SupplyState.sendTx:
-      return (
+      actionButton = (
         <Button variant="outlined" onClick={handleSendMainTx}>
           {actionTxData?.loading ? 'Waiting for Supply tx' : 'Supply'}
         </Button>
       );
     case SupplyState.success:
-      return (
+      actionButton = (
         <Button variant="outlined" onClick={handleClose}>
           Close
         </Button>
       );
     case SupplyState.error:
-      return (
+      actionButton = (
         <div>
           <Button variant="outlined" onClick={handleError}>
             try again
@@ -231,10 +241,43 @@ export const SupplyActions = ({ amountToSupply, poolReserve, onClose }: SupplyAc
         </div>
       );
     case SupplyState.networkMisMatch:
-      return (
+      actionButton = (
         <Button variant="outlined" onClick={() => switchNetwork(chainId)}>
           ChangeNetwork
         </Button>
       );
   }
+
+  return (
+    <Box sx={{ mt: '16px' }}>
+      <Box sx={{ mt: '16px', mb: '12px', display: 'flex' }}>
+        <Typography variant="helperText" color={breadCrumbs.initial ? 'green' : ''}>
+          <Trans>Enter an amount</Trans>
+        </Typography>
+        <ArrowForwardIcon />
+        <Typography
+          variant="helperText"
+          color={
+            breadCrumbs.approved && !approveTxData.error
+              ? 'green'
+              : approveTxData.error
+              ? 'red'
+              : ''
+          }
+        >
+          <Trans>Approve amount</Trans>
+        </Typography>
+        <ArrowForwardIcon />
+        <Typography
+          variant="helperText"
+          color={
+            breadCrumbs.supplied && !actionTxData.error ? 'green' : actionTxData.error ? 'red' : ''
+          }
+        >
+          <Trans>Supply</Trans> {poolReserve.symbol}
+        </Typography>
+      </Box>
+      {actionButton}
+    </Box>
+  );
 };

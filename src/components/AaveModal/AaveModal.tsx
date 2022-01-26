@@ -11,8 +11,8 @@ export interface AaveModalProps extends DialogProps {
 export const AavePaperBox = styled(Paper)(({ theme }) => ({
   '&': {
     width: '100%',
-    maxWidth: '468px',
-    minHeight: '512px',
+    maxWidth: '400px',
+    minHeight: '480px',
     background: theme.palette.background,
     boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
     borderRadius: '4px',

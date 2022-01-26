@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, InputAdornment, TextField, Typography } from '@mui/material';
-import { SxProps } from '@mui/system';
 import React from 'react';
 
 import { TokenIcon } from './primitives/TokenIcon';
@@ -11,7 +10,6 @@ export interface AssetInputProps {
   balance: string;
   symbol: string;
   onChange: (value: string) => void;
-  sx: SxProps;
   disabled?: boolean;
 }
 
@@ -22,7 +20,6 @@ export const AssetInput: React.FC<AssetInputProps> = ({
   symbol,
   onChange,
   disabled,
-  sx,
 }) => {
   const usdValueFormat = `${usdValue} USD`;
 
@@ -37,7 +34,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
   };
 
   return (
-    <Box sx={{ ...sx }}>
+    <Box sx={{ mb: '30px' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Typography variant="description">
           <Trans>Amount</Trans>
