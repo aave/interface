@@ -29,10 +29,10 @@ export const unPrefixSymbol = (symbol: string, prefix: string) => {
 };
 
 export type ComputedReserveData = ReturnType<typeof formatReservesAndIncentives>[0] &
-  ReserveDataHumanized;
+  ReserveDataHumanized & { iconSymbol: string };
 
 export interface AppDataContextType {
-  reserves: (ComputedReserveData & { iconSymbol: string })[];
+  reserves: ComputedReserveData[];
   // refreshPoolData?: () => Promise<void[]>;
   isUserHasDeposits: boolean;
   user?: FormatUserSummaryAndIncentivesResponse & { earnedAPY: number; debtAPY: number };
@@ -177,7 +177,9 @@ export const AppDataProvider: React.FC = ({ children }) => {
   return (
     <AppDataContext.Provider
       value={{
-        reserves: formattedPoolReserves.map((r) => ({ ...r, ...fetchIconSymbolAndName(r) })),
+        reserves: formattedPoolReserves
+          .map((r) => ({ ...r, ...fetchIconSymbolAndName(r) }))
+          .sort(reserveSortFn),
         user: {
           ...user,
           earnedAPY: proportions.positiveProportion
@@ -202,3 +204,26 @@ export const AppDataProvider: React.FC = ({ children }) => {
 };
 
 export const useAppDataContext = () => useContext(AppDataContext);
+
+const stable = [
+  'DAI',
+  'TUSD',
+  'BUSD',
+  'GUSD',
+  'USDC',
+  'USDT',
+  'EUROS',
+  'FEI',
+  'FRAX',
+  'PAX',
+  'USDP',
+  'SUSD',
+];
+
+const reserveSortFn = (a: ComputedReserveData, b: ComputedReserveData) => {
+  const aIsStable = stable.includes(a.iconSymbol);
+  const bIsStable = stable.includes(b.iconSymbol);
+  if (aIsStable && !bIsStable) return -1;
+  if (!aIsStable && bIsStable) return 1;
+  return a.iconSymbol > b.iconSymbol ? 1 : -1;
+};
