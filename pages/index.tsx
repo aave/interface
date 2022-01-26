@@ -19,24 +19,27 @@ export default function Home() {
   return (
     <Container maxWidth="lg">
       <DashboardTopPanel user={user} currentAccount={currentAccount} />
-      <Box>
-        {reserves.map((reserve, index) => {
-          return (
-            <div key={index}>
-              {reserve.symbol} {walletBalances[reserve.underlyingAsset]?.amountUSD}
-              {user && (
-                <Supply
-                  poolReserve={reserve}
-                  walletBalance={walletBalances[reserve.underlyingAsset]?.amount}
-                  user={user}
-                  supplyApy={reserve.supplyAPY}
-                ></Supply>
-              )}
-            </div>
-          );
-        })}
-      </Box>
-      {!currentAccount && <ConnectWalletPaper />}
+      {currentAccount ? (
+        <Box>
+          {reserves.map((reserve, index) => {
+            return (
+              <div key={index}>
+                {reserve.symbol} {walletBalances[reserve.underlyingAsset]?.amountUSD}
+                {user && (
+                  <Supply
+                    poolReserve={reserve}
+                    walletBalance={walletBalances[reserve.underlyingAsset]?.amount}
+                    user={user}
+                    supplyApy={reserve.supplyAPY}
+                  ></Supply>
+                )}
+              </div>
+            );
+          })}
+        </Box>
+      ) : (
+        <ConnectWalletPaper />
+      )}
     </Container>
   );
 }

@@ -166,10 +166,6 @@ export const SupplyActions = ({ amountToSupply, poolReserve, onClose }: SupplyAc
     }
   }, [actionTxData?.txStatus]);
 
-  console.log('state::: ', supplyStep);
-  console.log('sign enabled: ', depositWithPermitEnabled);
-  console.log('action: ', actionTxData);
-
   useEffect(() => {
     if (chainId !== connectedChainId) {
       setSupplyStep(SupplyState.networkMisMatch);
