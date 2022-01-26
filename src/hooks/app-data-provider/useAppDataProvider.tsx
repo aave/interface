@@ -8,6 +8,7 @@ import {
 import BigNumber from 'bignumber.js';
 import React, { useContext } from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 import { useCurrentTimestamp } from '../useCurrentTimestamp';
 import { useProtocolDataContext } from '../useProtocolDataContext';
@@ -28,7 +29,7 @@ export const unPrefixSymbol = (symbol: string, prefix: string) => {
 };
 
 export type ComputedReserveData = ReturnType<typeof formatReservesAndIncentives>[0] &
-  ReserveDataHumanized;
+  ReserveDataHumanized & { iconSymbol: string };
 
 export interface AppDataContextType {
   reserves: ComputedReserveData[];
@@ -176,7 +177,9 @@ export const AppDataProvider: React.FC = ({ children }) => {
   return (
     <AppDataContext.Provider
       value={{
-        reserves: formattedPoolReserves,
+        reserves: formattedPoolReserves
+          .map((r) => ({ ...r, ...fetchIconSymbolAndName(r) }))
+          .sort(reserveSortFn),
         user: {
           ...user,
           earnedAPY: proportions.positiveProportion
@@ -201,3 +204,26 @@ export const AppDataProvider: React.FC = ({ children }) => {
 };
 
 export const useAppDataContext = () => useContext(AppDataContext);
+
+const stable = [
+  'DAI',
+  'TUSD',
+  'BUSD',
+  'GUSD',
+  'USDC',
+  'USDT',
+  'EUROS',
+  'FEI',
+  'FRAX',
+  'PAX',
+  'USDP',
+  'SUSD',
+];
+
+const reserveSortFn = (a: ComputedReserveData, b: ComputedReserveData) => {
+  const aIsStable = stable.includes(a.iconSymbol);
+  const bIsStable = stable.includes(b.iconSymbol);
+  if (aIsStable && !bIsStable) return -1;
+  if (!aIsStable && bIsStable) return 1;
+  return a.iconSymbol > b.iconSymbol ? 1 : -1;
+};
