@@ -1,9 +1,16 @@
+import { StakeDataProvider, useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
 import { MainLayout } from 'src/layouts/MainLayout';
 
 export default function Staking() {
-  return <div>stake</div>;
+  const data = useStakeData();
+
+  return <div>{JSON.stringify(data)}</div>;
 }
 
 Staking.getLayout = function getLayout(page: React.ReactElement) {
-  return <MainLayout>{page}</MainLayout>;
+  return (
+    <MainLayout>
+      <StakeDataProvider>{page}</StakeDataProvider>
+    </MainLayout>
+  );
 };
