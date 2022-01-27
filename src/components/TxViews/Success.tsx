@@ -1,6 +1,6 @@
 import { CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Link, SvgIcon, Typography } from '@mui/material';
+import { Box, SvgIcon, Typography } from '@mui/material';
 
 export type SuccessTxViewProps = {
   action: string;

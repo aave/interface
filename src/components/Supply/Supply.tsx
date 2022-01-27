@@ -50,6 +50,8 @@ export const Supply = ({
   const { currentChainId } = useProtocolDataContext();
   const { chainId: connectedChainId, switchNetwork } = useWeb3Context();
 
+  const [supplyStep, setSupplyStep] = useState<SupplyState>(SupplyState.amountInput);
+
   const [amountToSupply, setAmountToSupply] = useState('');
   const [open, setOpen] = useState(false);
 
@@ -138,40 +140,52 @@ export const Supply = ({
   return (
     <div>
       <BasicModal open={open} setOpen={onClose}>
-        {/* <Typography variant="h2" sx={{ mb: '26px' }}>
-          Supply {poolReserve.symbol}
-        </Typography> */}
-        {/* {isWrongNetwork && (
-          <Typography sx={{ mb: '24px', backgroundColor: '#FEF5E8', color: 'black' }}>
-            <Trans>Please Switch to {networkConfig.name}.</Trans>
-            <Button variant="text" sx={{ ml: '2px' }} onClick={() => switchNetwork(currentChainId)}>
-              <Typography color="black">Switch Network</Typography>
-            </Button>
-          </Typography>
+        {supplyStep < SupplyState.success && (
+          <>
+            <Typography variant="h2" sx={{ mb: '26px' }}>
+              Supply {poolReserve.symbol}
+            </Typography>
+            {isWrongNetwork && (
+              <Typography sx={{ mb: '24px', backgroundColor: '#FEF5E8', color: 'black' }}>
+                <Trans>Please Switch to {networkConfig.name}.</Trans>
+                <Button
+                  variant="text"
+                  sx={{ ml: '2px' }}
+                  onClick={() => switchNetwork(currentChainId)}
+                >
+                  <Typography color="black">Switch Network</Typography>
+                </Button>
+              </Typography>
+            )}
+            {showIsolationWarning && (
+              <Typography>You are about to enter into isolation. FAQ link</Typography>
+            )}
+            {showSupplyCapWarning && (
+              <Typography>You are about to get supply capped. FAQ link</Typography>
+            )}
+            <AssetInput
+              value={amountToSupply}
+              onChange={setAmountToSupply}
+              usdValue={amountInUsd.toString()}
+              balance={maxAmountToSupply.toString()}
+              symbol={poolReserve.symbol}
+            />
+            <SupplyDetails
+              supplyApy={supplyApy}
+              // supplyRewards={supplyRewards}
+              showHf={showHealthFactor}
+              healthFactor={user.healthFactor}
+              futureHealthFactor={healthFactorAfterDeposit.toString()}
+            />
+          </>
         )}
-        {showIsolationWarning && (
-          <Typography>You are about to enter into isolation. FAQ link</Typography>
+        {supplyStep === SupplyState.error && <TxErrorView errorMessage="test" />}
+        {supplyStep === SupplyState.success && (
+          <TxSuccessView action="Supplied" amount={amountToSupply} symbol={poolReserve.symbol} />
         )}
-        {showSupplyCapWarning && (
-          <Typography>You are about to get supply capped. FAQ link</Typography>
-        )}
-        <AssetInput
-          value={amountToSupply}
-          onChange={setAmountToSupply}
-          usdValue={amountInUsd.toString()}
-          balance={maxAmountToSupply.toString()}
-          symbol={poolReserve.symbol}
-        />
-        <SupplyDetails
-          supplyApy={supplyApy}
-          // supplyRewards={supplyRewards}
-          showHf={showHealthFactor}
-          healthFactor={user.healthFactor}
-          futureHealthFactor={healthFactorAfterDeposit.toString()}
-        /> */}
-        {/* <TxErrorView errorMessage="test" /> */}
-        <TxSuccessView action="Supplied" amount={amountToSupply} symbol={poolReserve.symbol} />
         <SupplyActions
+          supplyStep={supplyStep}
+          setSupplyStep={setSupplyStep}
           poolReserve={poolReserve}
           amount={amountToSupply}
           amountToSupply={amountToSupply}

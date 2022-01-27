@@ -2,7 +2,7 @@ import { ChainId, EthereumTransactionTypeExtended, Pool } from '@aave/contract-h
 import { Trans } from '@lingui/macro';
 import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
@@ -22,6 +22,8 @@ export type SupplyActionProps = {
   onClose: () => void;
   amount: string;
   isWrongNetwork: boolean;
+  supplyStep: SupplyState;
+  setSupplyStep: Dispatch<SetStateAction<SupplyState>>;
 };
 
 export const SupplyActions = ({
@@ -30,6 +32,8 @@ export const SupplyActions = ({
   onClose,
   amount,
   isWrongNetwork,
+  supplyStep,
+  setSupplyStep,
 }: SupplyActionProps) => {
   const { signTxData, getTxError, sendTx } = useWeb3Context();
   const { lendingPool } = useTxBuilderContext();
@@ -37,8 +41,6 @@ export const SupplyActions = ({
   const { currentAccount } = useWeb3Context();
 
   const networkConfig = getNetworkConfig(chainId);
-
-  const [supplyStep, setSupplyStep] = useState<SupplyState>(SupplyState.amountInput);
 
   // error
   const [txError, setTxError] = useState<undefined | string | Error>();
@@ -81,7 +83,6 @@ export const SupplyActions = ({
           txType: approvalTx.txType,
           unsignedData: approvalTx.tx,
           gas: approvalTx.gas,
-          // name: 'Approve', // TODO: put this into translations?
         });
       }
       if (actionTx) {
@@ -89,7 +90,6 @@ export const SupplyActions = ({
           txType: actionTx.txType,
           unsignedData: actionTx.tx,
           gas: actionTx.gas,
-          // name: mainTxName,
         });
       }
 
@@ -113,7 +113,6 @@ export const SupplyActions = ({
         amount: amountToSupply,
       });
 
-      // const signature = await signTxData(unsingedPayload);
       const signature = await signEthTx(unsingedPayload, setApproveTxData, signTxData);
 
       const supplyPermitTx = await newPool.supplyWithPermit({
@@ -127,7 +126,6 @@ export const SupplyActions = ({
         txType: supplyPermitTx[0].txType,
         unsignedData: supplyPermitTx[0].tx,
         gas: supplyPermitTx[0].gas,
-        // name: mainTxName,
       });
 
       setSupplyStep(SupplyState.sendTx);
