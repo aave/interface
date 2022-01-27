@@ -9,7 +9,12 @@ import { useState } from 'react';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 import { usePolling } from '../usePolling';
-import { C_ProtocolDataDocument, C_ProtocolDataQuery, C_UserDataQuery } from './graphql/hooks';
+import {
+  C_ProtocolDataDocument,
+  C_ProtocolDataQuery,
+  C_UserDataDocument,
+  C_UserDataQuery,
+} from './graphql/hooks';
 
 // interval in which the rpc data is refreshed
 const POLLING_INTERVAL = 30 * 1000;
@@ -94,10 +99,17 @@ export function usePoolDataRPC(
         user: currentAccount,
       });
       cache.writeQuery<C_UserDataQuery>({
-        query: C_ProtocolDataDocument,
+        query: C_UserDataDocument,
         data: {
           __typename: 'Query',
-          userData: userReservesResponse,
+          userData: {
+            __typename: 'UserReservesData',
+            userReserves: userReservesResponse.userReserves.map((reserve) => ({
+              ...reserve,
+              __typename: 'UserReserveData',
+            })),
+            userEmodeCategoryId: userReservesResponse.userEmodeCategoryId,
+          },
         },
         variables: { lendingPoolAddressProvider, userAddress: currentAccount },
       });
