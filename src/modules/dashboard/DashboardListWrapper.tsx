@@ -9,6 +9,7 @@ interface DashboardListWrapperProps {
   localStorageName?: string;
   subTitleComponent?: ReactNode;
   subChildrenComponent?: ReactNode;
+  topInfo?: ReactNode;
   children: ReactNode;
   withTopMargin?: boolean;
   noData?: boolean;
@@ -21,6 +22,7 @@ export const DashboardListWrapper = ({
   title,
   subTitleComponent,
   subChildrenComponent,
+  topInfo,
   withTopMargin,
   noData,
   withBottomText,
@@ -86,6 +88,11 @@ export const DashboardListWrapper = ({
         )}
       </Box>
 
+      {topInfo && (
+        <Box sx={{ display: 'flex', alignItems: 'center', px: 6, pb: isCollapse ? 6 : 0 }}>
+          {topInfo}
+        </Box>
+      )}
       {subChildrenComponent && !isCollapse && <Box>{subChildrenComponent}</Box>}
       <Box sx={{ display: isCollapse ? 'none' : 'block' }}>{children}</Box>
 

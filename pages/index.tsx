@@ -104,7 +104,7 @@ export default function Home() {
           suppliedPositions={suppliedPositions}
           borrowedPositions={borrowedPositions}
           isBorrow={isBorrow}
-          isUserInIsolationMode={user?.isInIsolationMode}
+          user={user}
         />
       ) : (
         <ConnectWalletPaper />
