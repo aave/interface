@@ -552,6 +552,13 @@ export function getThemedComponents(theme: Theme) {
           },
         ],
       },
+      MuiTableCell: {
+        styleOverrides: {
+          root: {
+            borderColor: theme.palette.divider,
+          },
+        },
+      },
       MuiCssBaseline: {
         styleOverrides: {
           body: {

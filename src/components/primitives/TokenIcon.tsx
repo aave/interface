@@ -63,7 +63,7 @@ interface TokenIconProps extends IconProps {
  * @param param0
  * @returns
  */
-export function TokenIcon({ symbol, aToken, ...rest }: TokenIconProps) {
+function SingleTokenIcon({ symbol, aToken, ...rest }: TokenIconProps) {
   return (
     <Icon {...rest} sx={{ display: 'flex', position: 'relative', borderRadius: '50%', ...rest.sx }}>
       {aToken ? (
@@ -84,19 +84,29 @@ export function TokenIcon({ symbol, aToken, ...rest }: TokenIconProps) {
 interface MultiTokenIconProps extends IconProps {
   symbols: string[];
   badgeSymbol: string;
+  aToken?: boolean;
 }
 
-export function MultiTokenIcon({ symbols, badgeSymbol, ...rest }: MultiTokenIconProps) {
+function MultiTokenIcon({ symbols, badgeSymbol, ...rest }: MultiTokenIconProps) {
   return (
     <Badge
       badgeContent={
-        <TokenIcon symbol={badgeSymbol} sx={{ border: '1px solid #fff' }} fontSize="small" />
+        <SingleTokenIcon symbol={badgeSymbol} sx={{ border: '1px solid #fff' }} fontSize="small" />
       }
       sx={{ '.MuiBadge-anchorOriginTopRight': { top: 9 } }}
     >
       {symbols.map((symbol, ix) => (
-        <TokenIcon key={symbol} symbol={symbol} sx={{ ml: ix === 0 ? 0 : -4 }} {...rest} />
+        <SingleTokenIcon key={symbol} symbol={symbol} sx={{ ml: ix === 0 ? 0 : -4 }} {...rest} />
       ))}
     </Badge>
   );
+}
+
+export function TokenIcon({ symbol, ...rest }: TokenIconProps) {
+  const symbolChunks = symbol.split('_');
+  if (symbolChunks.length > 1) {
+    const [badge, ...symbols] = symbolChunks;
+    return <MultiTokenIcon {...rest} symbols={symbols} badgeSymbol={'/pools/' + badge} />;
+  }
+  return <SingleTokenIcon symbol={symbol} {...rest} />;
 }
