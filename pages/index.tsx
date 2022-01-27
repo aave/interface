@@ -9,6 +9,7 @@ import { MainLayout } from '../src/layouts/MainLayout';
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 import { DashboardTopPanel } from '../src/modules/dashboard/DashboardTopPanel';
 import { Box } from '@mui/material';
+import { ComputedUserReserve } from '@aave/math-utils';
 
 export default function Home() {
   // const { currentMarket } = useProtocolDataContext();
@@ -22,12 +23,16 @@ export default function Home() {
       {currentAccount ? (
         <Box>
           {reserves.map((reserve, index) => {
+            const userReserves = user?.userReservesData.filter(
+              (userReserve) => reserve.underlyingAsset === userReserve.underlyingAsset
+            );
             return (
               <div key={index}>
                 {reserve.symbol} {walletBalances[reserve.underlyingAsset]?.amountUSD}
                 {user && (
                   <Supply
                     poolReserve={reserve}
+                    userReserve={userReserves ? userReserves[0] : ({} as ComputedUserReserve)}
                     walletBalance={walletBalances[reserve.underlyingAsset]?.amount}
                     user={user}
                     supplyApy={reserve.supplyAPY}

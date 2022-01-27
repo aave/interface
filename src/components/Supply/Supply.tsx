@@ -16,7 +16,7 @@ import {
 } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { getNetworkConfig, isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { BasicModal } from '../primitives/BasicModal';
 
 export type SupplyProps = {
@@ -44,7 +44,7 @@ export const Supply = ({
   supplyApy,
 }: SupplyProps) => {
   const { marketReferencePriceInUsd } = useAppDataContext();
-  const { currentChainId, currentMarketData } = useProtocolDataContext();
+  const { currentChainId } = useProtocolDataContext();
 
   const [amountToSupply, setAmountToSupply] = useState('');
   const [open, setOpen] = useState(false);
@@ -125,20 +125,17 @@ export const Supply = ({
     !hasDifferentCollateral &&
     (userReserve?.underlyingBalance !== '0' ? userReserve?.usageAsCollateralEnabledOnUser : true);
 
-  // token warnings
-  const showAmplWarning = poolReserve.symbol === 'AMPL';
-  // TODO: copy / pass ampl warning from aave-ui
-
-  const showAaveWarning =
-    poolReserve.symbol === 'AAVE' && isFeatureEnabled.staking(currentMarketData);
-  // TODO: create aave staking vs supply message warning
-
-  const showSnxWarning = poolReserve.symbol === 'SNX' && !maxAmountToSupply.eq('0');
-  //  TODO: add snx message
+  const showHealthFactor =
+    user.totalBorrowsMarketReferenceCurrency !== '0' && poolReserve.usageAsCollateralEnabled;
 
   return (
     <div>
-      {/* Put warnings here?? */}
+      {showIsolationWarning && (
+        <Typography>You are about to enter into isolation. FAQ link</Typography>
+      )}
+      {showSupplyCapWarning && (
+        <Typography>You are about to get supply capped. FAQ link</Typography>
+      )}
       <BasicModal open={open} setOpen={onClose}>
         <Typography variant="h2" sx={{ mb: '26px' }}>
           Supply {poolReserve.symbol}
@@ -153,11 +150,14 @@ export const Supply = ({
         <SupplyDetails
           supplyApy={supplyApy}
           // supplyRewards={supplyRewards}
-          healthFactor={healthFactorAfterDeposit.toString()}
+          showHf={showHealthFactor}
+          healthFactor={user.healthFactor}
+          futureHealthFactor={healthFactorAfterDeposit.toString()}
         />
         <Divider />
         <SupplyActions
           poolReserve={poolReserve}
+          amount={amountToSupply}
           amountToSupply={amountToSupply}
           onClose={onClose}
         ></SupplyActions>

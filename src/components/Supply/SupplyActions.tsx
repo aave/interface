@@ -8,15 +8,20 @@ import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { EthTransactionData, sendEthTx, TxStatusType } from 'src/utils/sendTxHelper';
 import { SupplyState } from './Supply';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 export type SupplyActionProps = {
   amountToSupply: string;
   poolReserve: ComputedReserveData;
   onClose: () => void;
+  amount: string;
 };
 
-export const SupplyActions = ({ amountToSupply, poolReserve, onClose }: SupplyActionProps) => {
+export const SupplyActions = ({
+  amountToSupply,
+  poolReserve,
+  onClose,
+  amount,
+}: SupplyActionProps) => {
   const { signTxData, switchNetwork, getTxError, sendTx } = useWeb3Context();
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
@@ -199,87 +204,77 @@ export const SupplyActions = ({ amountToSupply, poolReserve, onClose }: SupplyAc
     setSupplyStep(SupplyState.amountInput);
   };
 
-  // TODO: provably need to change this to add
-  // breadCrums
-  // tx gas estimator
-  // how to show ehterscan tx link???
-  let actionButton;
-  switch (supplyStep) {
-    case SupplyState.amountInput:
-      // TODO: missing conditions to disable
-      actionButton = (
-        <Button variant="outlined" onClick={handleGetTransactions}>
-          Confirm Amount
-        </Button>
-      );
-    case SupplyState.approval:
-      actionButton = (
-        <Button variant="outlined" onClick={handleApprovalTx}>
-          {approveTxData?.loading ? 'Waiting for Approval tx' : 'Approve'}
-        </Button>
-      );
-    case SupplyState.sendTx:
-      actionButton = (
-        <Button variant="outlined" onClick={handleSendMainTx}>
-          {actionTxData?.loading ? 'Waiting for Supply tx' : 'Supply'}
-        </Button>
-      );
-    case SupplyState.success:
-      actionButton = (
-        <Button variant="outlined" onClick={handleClose}>
-          Close
-        </Button>
-      );
-    case SupplyState.error:
-      actionButton = (
-        <div>
-          <Button variant="outlined" onClick={handleError}>
-            try again
-          </Button>
-          {depositWithPermitEnabled && (
-            <Button onClick={handlePermitError}>try with normal approval</Button>
-          )}
-          <div>{txError}</div>
-        </div>
-      );
-    case SupplyState.networkMisMatch:
-      actionButton = (
-        <Button variant="outlined" onClick={() => switchNetwork(chainId)}>
-          ChangeNetwork
-        </Button>
-      );
-  }
+  // Button states
 
+  const getButtonName = (): string => {
+    switch (supplyStep) {
+      case SupplyState.amountInput:
+        return 'ENTER AN AMOUNT';
+      case SupplyState.approval:
+      case SupplyState.sendTx:
+        return 'APPROVE TO CONTINUE';
+      case SupplyState.success:
+        return 'OK, CLOSE';
+      case SupplyState.error:
+        return 'OK, CLOSE';
+      case SupplyState.networkMisMatch:
+        return 'CHANGE NETWORK';
+    }
+  };
+
+  const handleActionButtonClick = () => {
+    switch (supplyStep) {
+      case SupplyState.amountInput:
+        handleGetTransactions();
+      case SupplyState.approval:
+        handleApprovalTx();
+      case SupplyState.sendTx:
+        return;
+      case SupplyState.success:
+        handleClose();
+      case SupplyState.error:
+        handleError();
+      case SupplyState.networkMisMatch:
+        switchNetwork(chainId);
+    }
+  };
+
+  const handleActionButtonDisabled = (): boolean => {
+    switch (supplyStep) {
+      case SupplyState.amountInput:
+        return !(amount !== '' && Number(amount) > 0);
+      case SupplyState.approval:
+        return approveTxData?.loading ? true : false;
+      case SupplyState.success:
+        return false;
+      case SupplyState.error:
+        return false;
+      case SupplyState.networkMisMatch:
+        return false;
+      default:
+        return true;
+    }
+  };
+  console.log('amount: ', amount);
   return (
-    <Box sx={{ mt: '16px' }}>
-      <Box sx={{ mt: '16px', mb: '12px', display: 'flex' }}>
-        <Typography variant="helperText" color={breadCrumbs.amount ? 'green' : ''}>
-          <Trans>Enter an amount</Trans>
-        </Typography>
-        <ArrowForwardIcon />
-        <Typography
-          variant="helperText"
-          color={
-            breadCrumbs.approved && !approveTxData.error
-              ? 'green'
-              : approveTxData.error
-              ? 'red'
-              : ''
-          }
+    <Box sx={{ mt: '16px', display: 'flex', flexDirection: 'column' }}>
+      <Button
+        variant="outlined"
+        onClick={handleActionButtonClick}
+        disabled={handleActionButtonDisabled()}
+      >
+        {getButtonName()}
+      </Button>
+      {(supplyStep === SupplyState.approval || supplyStep === SupplyState.sendTx) && (
+        <Button
+          sx={{ mt: '8px' }}
+          variant="outlined"
+          onClick={handleSendMainTx}
+          disabled={supplyStep === SupplyState.approval || (actionTxData?.loading ? true : false)}
         >
-          <Trans>Approve amount</Trans>
-        </Typography>
-        <ArrowForwardIcon />
-        <Typography
-          variant="helperText"
-          color={
-            breadCrumbs.supplied && !actionTxData.error ? 'green' : actionTxData.error ? 'red' : ''
-          }
-        >
-          <Trans>Supply</Trans> {poolReserve.symbol}
-        </Typography>
-      </Box>
-      {actionButton}
+          SUPLY
+        </Button>
+      )}
     </Box>
   );
 };

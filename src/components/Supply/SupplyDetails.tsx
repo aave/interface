@@ -6,7 +6,7 @@ import { FormInfo } from '../FormItems/FormInfo';
 import { FormRow } from '../FormItems/FormRow';
 import { FormValue } from '../FormItems/FormValue';
 import { Percentage } from '../Percentage';
-// import { TokenIcon } from '../../components/TokenIcon';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 export interface SupplyReward {
   tokenIcon: string;
@@ -16,25 +16,17 @@ export interface SupplyReward {
 export interface SupplyDetailsProps {
   supplyApy: string;
   // supplyRewards: SupplyReward[];
+  showHf: boolean;
   healthFactor: string;
+  futureHealthFactor: string;
 }
-
-// export const SupplyRewards: React.FC<{ supplyRewards: SupplyReward[] }> = ({ supplyRewards }) => (
-//   <>
-//     {supplyRewards.map((x) => (
-//       <Box key={x.tokenIcon} sx={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
-//         <TokenIcon symbol={x.tokenIcon} sx={{ width: 16, height: 16 }} />
-//         <Percentage value={x.apy} />
-//         <Typography> {` ${x.tokenName}`}</Typography>
-//       </Box>
-//     ))}
-//   </>
-// );
 
 export const SupplyDetails: React.FC<SupplyDetailsProps> = ({
   supplyApy,
   // supplyRewards,
+  showHf,
   healthFactor,
+  futureHealthFactor,
 }) => {
   return (
     <Grid container direction="row" alignItems="center" rowSpacing={'12px'} sx={{ mb: '24px' }}>
@@ -58,20 +50,26 @@ export const SupplyDetails: React.FC<SupplyDetailsProps> = ({
         </FormInfo>
         <FormValue>{/* <SupplyRewards supplyRewards={supplyRewards} /> */}</FormValue>
       </FormRow>
-      <FormRow>
-        <FormInfo>
-          <Typography variant="description">
-            <Trans>Health factor</Trans>
-          </Typography>
-        </FormInfo>
-        <FormValue>
-          <Typography variant="secondary14">{healthFactor === -1 ? healthFactor : '-'}</Typography>
-          <Typography variant="helperText">
-            <Trans>Liquidation at</Trans>
-            {' <1.0'}
-          </Typography>
-        </FormValue>
-      </FormRow>
+      {showHf && (
+        <FormRow>
+          <FormInfo>
+            <Typography variant="description">
+              <Trans>Health factor</Trans>
+            </Typography>
+          </FormInfo>
+          <FormValue>
+            <Typography variant="secondary14">
+              {healthFactor}
+              <ArrowForwardIcon />
+              {futureHealthFactor}
+            </Typography>
+            <Typography variant="helperText">
+              <Trans>Liquidation at</Trans>
+              {' <1.0'}
+            </Typography>
+          </FormValue>
+        </FormRow>
+      )}
       <FormRow>
         <FormInfo>
           <Typography variant="description">
