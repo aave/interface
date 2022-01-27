@@ -596,6 +596,14 @@ export function getThemedComponents(theme: Theme) {
                 fontSize: pxToRem(20),
               },
             },
+            a: {
+              ...theme.typography.caption,
+              fontWeight: 500,
+              textDecoration: 'underline',
+              '&:hover': {
+                textDecoration: 'none',
+              },
+            },
           },
         },
         defaultProps: {
@@ -628,6 +636,9 @@ export function getThemedComponents(theme: Theme) {
             style: {
               color: theme.palette.error['100'],
               background: theme.palette.error['200'],
+              a: {
+                color: theme.palette.error['100'],
+              },
             },
           },
           {
@@ -635,6 +646,9 @@ export function getThemedComponents(theme: Theme) {
             style: {
               color: theme.palette.info['100'],
               background: theme.palette.info['200'],
+              a: {
+                color: theme.palette.info['100'],
+              },
             },
           },
           {
@@ -642,6 +656,9 @@ export function getThemedComponents(theme: Theme) {
             style: {
               color: theme.palette.success['100'],
               background: theme.palette.success['200'],
+              a: {
+                color: theme.palette.success['100'],
+              },
             },
           },
           {
@@ -649,6 +666,9 @@ export function getThemedComponents(theme: Theme) {
             style: {
               color: theme.palette.warning['100'],
               background: theme.palette.warning['200'],
+              a: {
+                color: theme.palette.warning['100'],
+              },
             },
           },
         ],

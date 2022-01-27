@@ -158,13 +158,8 @@ export const SupplyAssetsList = () => {
                 <>Your {networkName} wallet is empty. To deposit ...</>
                 {bridge && (
                   <>
-                    Or use{' '}
-                    {
-                      <Link href={bridge.url} variant="caption" sx={{ fontWeight: 500 }}>
-                        {bridge.name}
-                      </Link>
-                    }{' '}
-                    to transfer your ETH assets.
+                    Or use {<Link href={bridge.url}>{bridge.name}</Link>} to transfer your ETH
+                    assets.
                   </>
                 )}
               </Alert>
