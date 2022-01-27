@@ -29,10 +29,10 @@ export const SupplyActions = ({
   amount,
   isWrongNetwork,
 }: SupplyActionProps) => {
-  const { signTxData, switchNetwork, getTxError, sendTx } = useWeb3Context();
+  const { signTxData, getTxError, sendTx } = useWeb3Context();
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
-  const { currentAccount, chainId: connectedChainId } = useWeb3Context();
+  const { currentAccount } = useWeb3Context();
 
   const networkConfig = getNetworkConfig(chainId);
 
@@ -248,7 +248,7 @@ export const SupplyActions = ({
   return (
     <Box sx={{ mt: '16px', display: 'flex', flexDirection: 'column' }}>
       {supplyStep > SupplyState.amountInput && (
-        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
           {approveTxData?.txStatus === TxStatusType.confirmed ? (
             <Typography variant="helperText" color="#318435">
               <Trans>Approve confirmed</Trans>
@@ -262,21 +262,36 @@ export const SupplyActions = ({
             >
               <ApprovalInfoContent />
             </TextWithModal>
-            // <Typography variant="helperText">
-            //   <Trans>Why do I need to approve?</Trans>
-            // </Typography>
           )}
-          {supplyStep === SupplyState.approval && approveTxData?.txHash && (
-            <Typography
-              component={Link}
-              variant="helperText"
-              href={networkConfig.explorerLinkBuilder({ address: currentAccount })}
+          {(supplyStep === SupplyState.approval ||
+            (supplyStep === SupplyState.error && !actionTxData?.txHash)) &&
+            approveTxData?.txHash && (
+              <Typography
+                component={Link}
+                variant="helperText"
+                href={networkConfig.explorerLinkBuilder({ tx: approveTxData?.txHash })}
+              >
+                <>
+                  <Trans>Review approve tx details</Trans>
+                  <SvgIcon sx={{ ml: '2px' }} fontSize="small">
+                    <ExternalLinkIcon />
+                  </SvgIcon>
+                </>
+              </Typography>
+            )}
+          {supplyStep > SupplyState.approval && actionTxData?.txHash && (
+            <Button
+              variant="text"
+              href={networkConfig.explorerLinkBuilder({ tx: actionTxData?.txHash })}
+              target="_blank"
             >
-              Review approve tx details{' '}
-              <SvgIcon fontSize="small">
-                <ExternalLinkIcon />
-              </SvgIcon>
-            </Typography>
+              <div>
+                <Trans>Review supply tx details</Trans>
+                <SvgIcon sx={{ ml: '2px' }} fontSize="small">
+                  <ExternalLinkIcon />
+                </SvgIcon>
+              </div>
+            </Button>
           )}
         </Box>
       )}

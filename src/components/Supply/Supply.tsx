@@ -46,7 +46,7 @@ export const Supply = ({
 }: SupplyProps) => {
   const { marketReferencePriceInUsd } = useAppDataContext();
   const { currentChainId } = useProtocolDataContext();
-  const { chainId: connectedChainId } = useWeb3Context();
+  const { chainId: connectedChainId, switchNetwork } = useWeb3Context();
 
   const [amountToSupply, setAmountToSupply] = useState('');
   const [open, setOpen] = useState(false);
@@ -179,6 +179,3 @@ export const Supply = ({
     </div>
   );
 };
-function switchNetwork(currentChainId: number): void {
-  throw new Error('Function not implemented.');
-}
