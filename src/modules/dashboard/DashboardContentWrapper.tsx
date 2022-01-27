@@ -38,8 +38,8 @@ export const DashboardContentWrapper = ({
       </Box>
 
       <Box sx={{ width: paperWidth }}>
-        {!!borrowedPositions.length && <BorrowedPositionsList listData={borrowedPositions} />}
-        <BorrowAssetsList borrowedReserves={borrowedPositions} />
+        <BorrowedPositionsList listData={borrowedPositions} />
+        <BorrowAssetsList />
       </Box>
     </Box>
   );

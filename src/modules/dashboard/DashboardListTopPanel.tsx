@@ -28,7 +28,7 @@ export const DashboardListTopPanel = ({
         label={<Trans>Show assets with 0 balance</Trans>}
       />
 
-      <BridgeButton bridge={bridge} variant={'outlined'} />
+      <BridgeButton bridge={bridge} variant="outlined" />
     </Box>
   );
 };

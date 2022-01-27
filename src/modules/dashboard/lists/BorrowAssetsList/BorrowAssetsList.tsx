@@ -7,18 +7,12 @@ import { BorrowAvailableInfoContent } from '../../../../components/infoModalCont
 import { useAppDataContext } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import { getMaxAmountAvailableToBorrow } from '../../../../utils/getMaxAmountAvailableToBorrow';
-import { DashboardContentNoData } from '../../DashboardContentNoData';
 import { DashboardListWrapper } from '../../DashboardListWrapper';
-import { BorrowedPositionsItem } from '../BorrowedPositionsList/types';
 import { ListHeader } from '../ListHeader';
 import { BorrowAssetsListItem } from './BorrowAssetsListItem';
 import { BorrowAssetsItem } from './types';
 
-interface BorrowAssetsListProps {
-  borrowedReserves: BorrowedPositionsItem[];
-}
-
-export const BorrowAssetsList = ({ borrowedReserves }: BorrowAssetsListProps) => {
+export const BorrowAssetsList = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
   const { user, reserves, marketReferencePriceInUsd, userEmodeCategoryId } = useAppDataContext();
 
@@ -117,16 +111,6 @@ export const BorrowAssetsList = ({ borrowedReserves }: BorrowAssetsListProps) =>
 
   return (
     <>
-      {!borrowedReserves.length && (
-        <DashboardListWrapper
-          title={<Trans>Your borrows</Trans>}
-          localStorageName="borrowAssetsDashboardTableCollapse"
-          noData={true}
-        >
-          <DashboardContentNoData text={<Trans>Nothing borrowed yet</Trans>} />
-        </DashboardListWrapper>
-      )}
-
       {!!tokensToBorrow.length && (
         <DashboardListWrapper
           title={<Trans>Assets to borrow</Trans>}

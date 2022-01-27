@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 
 import { RewardInfoContent } from '../../../../components/infoModalContents/RewardInfoContent';
+import { DashboardContentNoData } from '../../DashboardContentNoData';
 import { DashboardListWrapper } from '../../DashboardListWrapper';
 import { ListHeader } from '../ListHeader';
 import { BorrowedPositionsListItem } from './BorrowedPositionsListItem';
@@ -21,11 +22,20 @@ export const BorrowedPositionsList = ({ listData }: BorrowedPositionsListProps) 
     <DashboardListWrapper
       title={<Trans>Your borrows</Trans>}
       localStorageName="borrowedAssetsDashboardTableCollapse"
+      // TODO: need to add e-mode flow
+      subTitleComponent={<>E-mode</>}
+      noData={!listData.length}
     >
-      <ListHeader head={head} />
-      {listData.map((item, index) => (
-        <BorrowedPositionsListItem {...item} key={index} />
-      ))}
+      {listData.length ? (
+        <>
+          <ListHeader head={head} />
+          {listData.map((item, index) => (
+            <BorrowedPositionsListItem {...item} key={index} />
+          ))}
+        </>
+      ) : (
+        <DashboardContentNoData text={<Trans>Nothing borrowed yet</Trans>} />
+      )}
     </DashboardListWrapper>
   );
 };

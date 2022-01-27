@@ -4,7 +4,6 @@ import { ComputedReserveData } from '../../../../hooks/app-data-provider/useAppD
 import { ReserveIncentiveResponse } from '../../../../hooks/app-data-provider/useIncentiveData';
 
 export type SuppliedPositionsItem = {
-  // onToggleSwitch: () => void;
   isActive: boolean;
   isFrozen: boolean;
   reserve: Pick<
@@ -17,9 +16,6 @@ export type SuppliedPositionsItem = {
    */
   canBeEnabledAsCollateral: boolean;
   isIsolated: boolean;
-  // swapLink: string;
-  // depositLink: string;
-  // withdrawLink: string;
 } & Pick<
   ComputedUserReserve,
   'usageAsCollateralEnabledOnUser' | 'underlyingBalance' | 'underlyingBalanceUSD'

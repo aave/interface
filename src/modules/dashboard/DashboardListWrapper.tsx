@@ -92,6 +92,7 @@ export const DashboardListWrapper = ({
       {withBottomText && !isCollapse && (
         <Box>
           <Divider />
+          {/* TODO: need to add bottom text component (link to faucet)*/}
           <Box sx={{ display: 'flex', alignItems: 'center', minHeight: '71px', px: 6 }}>
             BottomText
           </Box>

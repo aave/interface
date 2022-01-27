@@ -61,25 +61,6 @@ export default function Home() {
       underlyingBalanceUSD: userReserve.underlyingBalanceUSD,
       isIsolated: poolReserve.isIsolated,
       aIncentives: poolReserve.aIncentivesData ? poolReserve.aIncentivesData : [],
-      // onToggleSwitch: () =>
-      //   toggleUseAsCollateral(
-      //     !userReserve.usageAsCollateralEnabledOnUser,
-      //     poolReserve.underlyingAsset
-      //   ), TODO
-      // swapAction: `/asset-swap?asset=${poolReserve.underlyingAsset}`, TODO
-      /**
-       * for deposit and withdrawal we pass API_ETH_MOCK_ADDRESS instead of the underlying to automatically unwrap
-       */
-      // depositAction: `/supply/${
-      //   poolReserve.symbol.toLowerCase() === networkConfig.wrappedBaseAssetSymbol?.toLowerCase()
-      //     ? API_ETH_MOCK_ADDRESS
-      //     : poolReserve.underlyingAsset
-      // }`, TODO
-      // withdrawAction: `/withdraw/${
-      //   poolReserve.symbol.toLowerCase() === networkConfig.wrappedBaseAssetSymbol?.toLowerCase()
-      //     ? API_ETH_MOCK_ADDRESS
-      //     : poolReserve.underlyingAsset
-      // }`, TODO
     });
 
     if (userReserve.variableBorrows !== '0') {
@@ -93,24 +74,6 @@ export default function Home() {
         borrowRate: poolReserve.variableBorrowAPY,
         vIncentives: poolReserve.vIncentivesData ? poolReserve.vIncentivesData : [],
         sIncentives: poolReserve.sIncentivesData ? poolReserve.sIncentivesData : [],
-        // repayAction: loanActionLinkComposer(
-        //   'repay',
-        //   // this is a hack to repay with mainAsset instead of the wrappedpooltoken
-        //   poolReserve.symbol.toLowerCase() === networkConfig.wrappedBaseAssetSymbol?.toLowerCase()
-        //     ? API_ETH_MOCK_ADDRESS.toLowerCase()
-        //     : poolReserve.underlyingAsset,
-        //   InterestRate.Variable
-        // ), TODO
-        // borrowAction: loanActionLinkComposer(
-        //   'borrow',
-        //   // this is a hack to repay with mainAsset instead of the wrappedpooltoken
-        //   poolReserve.symbol.toLowerCase() === networkConfig.wrappedBaseAssetSymbol?.toLowerCase()
-        //     ? API_ETH_MOCK_ADDRESS.toLowerCase()
-        //     : poolReserve.underlyingAsset,
-        //   InterestRate.Variable
-        // ), TODO
-        // onSwitchToggle: () =>
-        //   toggleBorrowRateMode(InterestRate.Variable, poolReserve.underlyingAsset), TODO
       });
     }
     if (userReserve.stableBorrows !== '0') {
@@ -124,24 +87,6 @@ export default function Home() {
         borrowRate: userReserve.stableBorrowAPY,
         vIncentives: poolReserve.vIncentivesData ? poolReserve.vIncentivesData : [],
         sIncentives: poolReserve.sIncentivesData ? poolReserve.sIncentivesData : [],
-        // repayAction: loanActionLinkComposer(
-        //   'repay',
-        //   // this is a hack to repay with mainAsset instead of the wrappedpooltoken
-        //   poolReserve.symbol.toLowerCase() === networkConfig.wrappedBaseAssetSymbol?.toLowerCase()
-        //     ? API_ETH_MOCK_ADDRESS.toLowerCase()
-        //     : poolReserve.underlyingAsset,
-        //   InterestRate.Stable
-        // ), TODO
-        // borrowAction: loanActionLinkComposer(
-        //   'borrow',
-        //   // this is a hack to repay with mainAsset instead of the wrappedpooltoken
-        //   poolReserve.symbol.toLowerCase() === networkConfig.wrappedBaseAssetSymbol?.toLowerCase()
-        //     ? API_ETH_MOCK_ADDRESS.toLowerCase()
-        //     : poolReserve.underlyingAsset,
-        //   InterestRate.Stable
-        // ), TODO
-        // onSwitchToggle: () =>
-        //   toggleBorrowRateMode(InterestRate.Stable, poolReserve.underlyingAsset), TODO
       });
     }
   });
