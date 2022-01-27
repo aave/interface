@@ -20,6 +20,8 @@ import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { BasicModal } from '../primitives/BasicModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { Trans } from '@lingui/macro';
+import { TxErrorView } from '../TxViews/Error';
+import { TxSuccessView } from '../TxViews/Success';
 
 export type SupplyProps = {
   poolReserve: ComputedReserveData;
@@ -136,10 +138,10 @@ export const Supply = ({
   return (
     <div>
       <BasicModal open={open} setOpen={onClose}>
-        <Typography variant="h2" sx={{ mb: '26px' }}>
+        {/* <Typography variant="h2" sx={{ mb: '26px' }}>
           Supply {poolReserve.symbol}
-        </Typography>
-        {isWrongNetwork && (
+        </Typography> */}
+        {/* {isWrongNetwork && (
           <Typography sx={{ mb: '24px', backgroundColor: '#FEF5E8', color: 'black' }}>
             <Trans>Please Switch to {networkConfig.name}.</Trans>
             <Button variant="text" sx={{ ml: '2px' }} onClick={() => switchNetwork(currentChainId)}>
@@ -166,7 +168,9 @@ export const Supply = ({
           showHf={showHealthFactor}
           healthFactor={user.healthFactor}
           futureHealthFactor={healthFactorAfterDeposit.toString()}
-        />
+        /> */}
+        {/* <TxErrorView errorMessage="test" /> */}
+        <TxSuccessView action="Supplied" amount={amountToSupply} symbol={poolReserve.symbol} />
         <SupplyActions
           poolReserve={poolReserve}
           amount={amountToSupply}

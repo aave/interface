@@ -8,11 +8,13 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
-import { EthTransactionData, sendEthTx, TxStatusType } from 'src/utils/sendTxHelper';
+import { EthTransactionData, sendEthTx, signEthTx, TxStatusType } from 'src/utils/sendTxHelper';
 import { SupplyState } from './Supply';
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { TextWithModal } from '../TextWithModal';
 import { ApprovalInfoContent } from '../infoModalContents/ApprovalInfoContent';
+import DoneIcon from '@mui/icons-material/Done';
+import { RetryWithApprovalInfoContent } from '../infoModalContents/RetryWithApprovalInfoContent';
 
 export type SupplyActionProps = {
   amountToSupply: string;
@@ -105,35 +107,31 @@ export const SupplyActions = ({
   const handleApprovalTx = async () => {
     if (depositWithPermitEnabled) {
       const newPool: Pool = lendingPool as Pool;
-      try {
-        const unsingedPayload = await newPool.signERC20Approval({
-          user: currentAccount,
-          reserve: poolReserve.underlyingAsset,
-          amount: amountToSupply,
-        });
+      const unsingedPayload = await newPool.signERC20Approval({
+        user: currentAccount,
+        reserve: poolReserve.underlyingAsset,
+        amount: amountToSupply,
+      });
 
-        const signature = await signTxData(unsingedPayload);
+      // const signature = await signTxData(unsingedPayload);
+      const signature = await signEthTx(unsingedPayload, setApproveTxData, signTxData);
 
-        // should it really be here?
-        const supplyPermitTx = await newPool.supplyWithPermit({
-          user: currentAccount,
-          reserve: poolReserve.underlyingAsset,
-          amount: amountToSupply,
-          signature,
-        });
-        setActionTxData({
-          txType: supplyPermitTx[0].txType,
-          unsignedData: supplyPermitTx[0].tx,
-          gas: supplyPermitTx[0].gas,
-          // name: mainTxName,
-        });
+      const supplyPermitTx = await newPool.supplyWithPermit({
+        user: currentAccount,
+        reserve: poolReserve.underlyingAsset,
+        amount: amountToSupply,
+        signature,
+      });
 
-        setSupplyStep(SupplyState.sendTx);
-        console.log('approved');
-      } catch (error) {
-        setTxError('Error initializing permit signature');
-        setSupplyStep(SupplyState.error);
-      }
+      setActionTxData({
+        txType: supplyPermitTx[0].txType,
+        unsignedData: supplyPermitTx[0].tx,
+        gas: supplyPermitTx[0].gas,
+        // name: mainTxName,
+      });
+
+      setSupplyStep(SupplyState.sendTx);
+      console.log('approved');
     } else {
       if (approveTxData && approveTxData.unsignedData) {
         sendEthTx(approveTxData.unsignedData, setApproveTxData, customGasPrice, sendTx, getTxError);
@@ -152,10 +150,7 @@ export const SupplyActions = ({
     if (supplyStep === SupplyState.approval) {
       if (!depositWithPermitEnabled) {
         if (approveTxData.txStatus === TxStatusType.submitted) {
-          // approval tx submitted
         } else if (approveTxData.txStatus === TxStatusType.confirmed && approveTxData.txReceipt) {
-          // TODO: set tx link with actionTxData.txHash
-          // supply tx finished with success
           setSupplyStep(SupplyState.sendTx);
         } else if (approveTxData.txStatus === TxStatusType.error) {
           setSupplyStep(SupplyState.error);
@@ -168,10 +163,7 @@ export const SupplyActions = ({
   useEffect(() => {
     if (supplyStep === SupplyState.sendTx) {
       if (actionTxData.txStatus === TxStatusType.submitted) {
-        // supply tx submitted
-        // TODO: set tx link with actionTxData.txHash
       } else if (actionTxData.txStatus === TxStatusType.confirmed && actionTxData.txReceipt) {
-        // supply tx finished with success
         setSupplyStep(SupplyState.success);
       } else if (actionTxData.txStatus === TxStatusType.error) {
         setTxError(actionTxData.error);
@@ -193,20 +185,25 @@ export const SupplyActions = ({
   const handleError = () => {
     setSupplyStep(SupplyState.amountInput);
   };
-  const handlePermitError = () => {
-    setDepositWithPermitEnable(false);
+
+  const handleRetryWithApproval = () => {
     setSupplyStep(SupplyState.amountInput);
+    setDepositWithPermitEnable(false);
   };
 
   // Button states
-
-  const getButtonName = (): string => {
+  const getButtonName = () => {
     if (isWrongNetwork) return 'WRONG NETWORK';
     switch (supplyStep) {
       case SupplyState.amountInput:
         return 'ENTER AN AMOUNT';
       case SupplyState.approval:
       case SupplyState.sendTx:
+        if (approveTxData?.loading) {
+          return `APPROVING ${poolReserve.symbol}...`;
+        } else if (approveTxData?.txStatus === TxStatusType.confirmed) {
+          return 'APPROVE CONFIRMED';
+        }
         return 'APPROVE TO CONTINUE';
       case SupplyState.success:
         return 'OK, CLOSE';
@@ -251,8 +248,19 @@ export const SupplyActions = ({
         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
           {approveTxData?.txStatus === TxStatusType.confirmed ? (
             <Typography variant="helperText" color="#318435">
-              <Trans>Approve confirmed</Trans>
+              <Trans>
+                <DoneIcon fontSize="small" /> Approve confirmed
+              </Trans>
             </Typography>
+          ) : approveTxData?.txStatus === TxStatusType.error ? (
+            <TextWithModal
+              text={<Trans>Retry What?</Trans>}
+              iconSize={13}
+              iconColor="#FFFFFF3B"
+              withContentButton
+            >
+              <RetryWithApprovalInfoContent />
+            </TextWithModal>
           ) : (
             <TextWithModal
               text={<Trans>Why do I need to approve</Trans>}
@@ -263,23 +271,21 @@ export const SupplyActions = ({
               <ApprovalInfoContent />
             </TextWithModal>
           )}
-          {(supplyStep === SupplyState.approval ||
-            (supplyStep === SupplyState.error && !actionTxData?.txHash)) &&
-            approveTxData?.txHash && (
-              <Typography
-                component={Link}
-                variant="helperText"
-                href={networkConfig.explorerLinkBuilder({ tx: approveTxData?.txHash })}
-              >
-                <>
-                  <Trans>Review approve tx details</Trans>
-                  <SvgIcon sx={{ ml: '2px' }} fontSize="small">
-                    <ExternalLinkIcon />
-                  </SvgIcon>
-                </>
-              </Typography>
-            )}
-          {supplyStep > SupplyState.approval && actionTxData?.txHash && (
+          {supplyStep === SupplyState.sendTx && approveTxData?.txHash && (
+            <Typography
+              component={Link}
+              variant="helperText"
+              href={networkConfig.explorerLinkBuilder({ tx: approveTxData?.txHash })}
+            >
+              <>
+                <Trans>Review approve tx details</Trans>
+                <SvgIcon sx={{ ml: '2px' }} fontSize="small">
+                  <ExternalLinkIcon />
+                </SvgIcon>
+              </>
+            </Typography>
+          )}
+          {supplyStep === SupplyState.success && actionTxData?.txHash && (
             <Button
               variant="text"
               href={networkConfig.explorerLinkBuilder({ tx: actionTxData?.txHash })}
@@ -293,7 +299,40 @@ export const SupplyActions = ({
               </div>
             </Button>
           )}
+          {supplyStep === SupplyState.error && actionTxData?.txHash && (
+            <Button
+              variant="text"
+              href={networkConfig.explorerLinkBuilder({ tx: actionTxData?.txHash })}
+              target="_blank"
+            >
+              <div>
+                <Trans>Review supply tx details</Trans>
+                <SvgIcon sx={{ ml: '2px' }} fontSize="small">
+                  <ExternalLinkIcon />
+                </SvgIcon>
+              </div>
+            </Button>
+          )}
+          {supplyStep === SupplyState.error && approveTxData?.txHash && !actionTxData?.txHash && (
+            <Typography
+              component={Link}
+              variant="helperText"
+              href={networkConfig.explorerLinkBuilder({ tx: approveTxData?.txHash })}
+            >
+              <>
+                <Trans>Review approve tx details</Trans>
+                <SvgIcon sx={{ ml: '2px' }} fontSize="small">
+                  <ExternalLinkIcon />
+                </SvgIcon>
+              </>
+            </Typography>
+          )}
         </Box>
+      )}
+      {depositWithPermitEnabled && supplyStep === SupplyState.error && (
+        <Button variant="outlined" onClick={handleRetryWithApproval}>
+          <Trans>RETRY WITH APPROVAL</Trans>
+        </Button>
       )}
       <Button
         variant="outlined"
@@ -309,7 +348,9 @@ export const SupplyActions = ({
           onClick={handleSendMainTx}
           disabled={supplyStep === SupplyState.approval || (actionTxData?.loading ? true : false)}
         >
-          SUPLY
+          {!actionTxData?.loading
+            ? `SUPLY ${poolReserve.symbol}`
+            : `SUPLY ${poolReserve.symbol} PROCESSING...`}
         </Button>
       )}
     </Box>

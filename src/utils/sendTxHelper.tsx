@@ -33,6 +33,39 @@ export interface EthTransactionData {
   error?: string;
 }
 
+export const signEthTx = async (
+  unsingedPayload: string,
+  stateSetter: Dispatch<SetStateAction<EthTransactionData>>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  signTxData: (unsignedData: string) => Promise<any>
+) => {
+  stateSetter((state) => ({
+    ...state,
+    loading: true,
+    txStatus: undefined,
+    txHash: undefined,
+    txReceipt: undefined,
+    error: undefined,
+  }));
+  try {
+    const signature = await signTxData(unsingedPayload);
+    stateSetter((state) => ({
+      ...state,
+      loading: false,
+      txStatus: TxStatusType.confirmed,
+    }));
+    return signature;
+  } catch (error) {
+    stateSetter((state) => ({
+      ...state,
+      loading: false,
+      txStatus: TxStatusType.error,
+      error: error.message.toString(),
+    }));
+    return;
+  }
+};
+
 export const sendEthTx = async (
   txGetter: () => Promise<transactionType>,
   stateSetter: Dispatch<SetStateAction<EthTransactionData>>,

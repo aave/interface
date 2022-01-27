@@ -29,7 +29,6 @@ export const SupplyDetails: React.FC<SupplyDetailsProps> = ({
   healthFactor,
   futureHealthFactor,
 }) => {
-  console.log('future: ', futureHealthFactor);
   return (
     <Grid container direction="row" alignItems="center" rowSpacing={'12px'} sx={{ mb: '24px' }}>
       <FormRow>
