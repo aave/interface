@@ -2,7 +2,6 @@ import { ComputedReserveData } from '../../../../hooks/app-data-provider/useAppD
 import { ReserveIncentiveResponse } from '../../../../hooks/app-data-provider/useIncentiveData';
 
 export type BorrowedPositionsItem = {
-  // onSwitchToggle: () => void;
   isActive: boolean;
   isFrozen: boolean;
   borrowingEnabled: boolean;
@@ -13,8 +12,5 @@ export type BorrowedPositionsItem = {
   borrowRateMode: string;
   currentBorrows: string;
   currentBorrowsUSD: string;
-  // repayLink: string;
-  // borrowLink: string;
-  reserve: Pick<ComputedReserveData, 'symbol' | 'underlyingAsset' | 'id'>;
-  index?: number;
+  reserve: Pick<ComputedReserveData, 'symbol' | 'iconSymbol' | 'underlyingAsset' | 'id'>;
 };

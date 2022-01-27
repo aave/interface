@@ -9,7 +9,7 @@ export const SuppliedPositionsListItem = ({
   underlyingBalanceUSD,
 }: SuppliedPositionsItem) => {
   return (
-    <ListItemWrapper tokenSymbol={reserve.symbol}>
+    <ListItemWrapper symbol={reserve.symbol} iconSymbol={reserve.iconSymbol}>
       <ListValueColumn
         symbol={reserve.symbol}
         value={Number(underlyingBalance)}

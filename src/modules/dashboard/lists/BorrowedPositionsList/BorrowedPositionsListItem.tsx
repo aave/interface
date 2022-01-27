@@ -9,7 +9,7 @@ export const BorrowedPositionsListItem = ({
   currentBorrowsUSD,
 }: BorrowedPositionsItem) => {
   return (
-    <ListItemWrapper tokenSymbol={reserve.symbol}>
+    <ListItemWrapper symbol={reserve.symbol} iconSymbol={reserve.iconSymbol}>
       <ListValueColumn
         symbol={reserve.symbol}
         value={Number(currentBorrows)}

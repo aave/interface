@@ -9,7 +9,7 @@ export type SuppliedPositionsItem = {
   isFrozen: boolean;
   reserve: Pick<
     ComputedReserveData,
-    'id' | 'symbol' | 'name' | 'liquidityRate' | 'underlyingAsset'
+    'id' | 'symbol' | 'name' | 'liquidityRate' | 'underlyingAsset' | 'iconSymbol'
   >;
   aIncentives: ReserveIncentiveResponse[];
   /**

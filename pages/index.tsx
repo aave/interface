@@ -43,6 +43,7 @@ export default function Home() {
           poolReserve.symbol.toLowerCase() === networkConfig.wrappedBaseAssetSymbol?.toLowerCase()
             ? API_ETH_MOCK_ADDRESS
             : poolReserve.underlyingAsset,
+        iconSymbol: poolReserve.iconSymbol,
       },
     };
 

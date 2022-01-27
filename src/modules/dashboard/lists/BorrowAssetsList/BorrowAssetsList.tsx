@@ -4,7 +4,6 @@ import { Trans } from '@lingui/macro';
 
 import { BorrowAvailableInfoContent } from '../../../../components/infoModalContents/BorrowAvailableInfoContent';
 import { useAppDataContext } from '../../../../hooks/app-data-provider/useAppDataProvider';
-import { useWalletBalances } from '../../../../hooks/app-data-provider/useWalletBalances';
 import { useWeb3Context } from '../../../../libs/hooks/useWeb3Context';
 import { getMaxAmountAvailableToBorrow } from '../../../../utils/getMaxAmountAvailableToBorrow';
 import { getNetworkConfig } from '../../../../utils/marketsAndNetworksConfig';
@@ -20,17 +19,10 @@ interface BorrowAssetsListProps {
 }
 
 export const BorrowAssetsList = ({ borrowedReserves }: BorrowAssetsListProps) => {
-  const { currentAccount, chainId } = useWeb3Context();
+  const { chainId } = useWeb3Context();
   const { user, reserves, marketReferencePriceInUsd, userEmodeCategoryId } = useAppDataContext();
-  const { walletBalances } = useWalletBalances();
 
-  const {
-    bridge,
-    name: networkName,
-    isTestnet,
-    wrappedBaseAssetSymbol,
-    baseAssetSymbol,
-  } = getNetworkConfig(chainId);
+  const { wrappedBaseAssetSymbol, baseAssetSymbol } = getNetworkConfig(chainId);
 
   const tokensToBorrow: BorrowAssetsItem[] = reserves.map<BorrowAssetsItem>((reserve) => {
     const availableBorrows = user ? getMaxAmountAvailableToBorrow(reserve, user).toNumber() : 0;
@@ -65,6 +57,7 @@ export const BorrowAssetsList = ({ borrowedReserves }: BorrowAssetsListProps) =>
         reserve.symbol.toLowerCase() === wrappedBaseAssetSymbol?.toLowerCase()
           ? baseAssetSymbol
           : reserve.symbol,
+      iconSymbol: reserve.iconSymbol,
       underlyingAsset:
         reserve.symbol.toLowerCase() === wrappedBaseAssetSymbol?.toLowerCase()
           ? API_ETH_MOCK_ADDRESS.toLowerCase()
@@ -75,12 +68,11 @@ export const BorrowAssetsList = ({ borrowedReserves }: BorrowAssetsListProps) =>
   const isEModeActive = userEmodeCategoryId !== 0;
 
   const filteredBorrowReserves = tokensToBorrow
-    .filter(({ symbol, borrowingEnabled, isActive, borrowableInIsolation, eModeCategoryId }) => {
+    .filter(({ borrowingEnabled, isActive, borrowableInIsolation, eModeCategoryId }) => {
       if (!isEModeActive) {
         return (
           (borrowingEnabled && isActive && !user?.isInIsolationMode) ||
           (user?.isInIsolationMode && borrowableInIsolation)
-          // isAssetStable(symbol) TODO
         );
       } else {
         return (
@@ -91,7 +83,6 @@ export const BorrowAssetsList = ({ borrowedReserves }: BorrowAssetsListProps) =>
           (eModeCategoryId === userEmodeCategoryId &&
             user?.isInIsolationMode &&
             borrowableInIsolation)
-          // isAssetStable(symbol) // TODO
         );
       }
     })

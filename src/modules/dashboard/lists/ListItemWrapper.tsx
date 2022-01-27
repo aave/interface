@@ -5,20 +5,21 @@ import { TokenIcon } from '../../../components/primitives/TokenIcon';
 import { ListColumn } from './ListColumn';
 
 interface ListItemWrapperProps {
-  tokenSymbol: string;
+  symbol: string;
+  iconSymbol: string;
   children: ReactNode;
 }
 
-export const ListItemWrapper = ({ tokenSymbol, children }: ListItemWrapperProps) => {
+export const ListItemWrapper = ({ symbol, iconSymbol, children }: ListItemWrapperProps) => {
   return (
     <Box>
       <Divider />
 
       <Box sx={{ display: 'flex', alignItems: 'center', minHeight: '71px', px: 4 }}>
         <ListColumn maxWidth={160} isRow>
-          <TokenIcon symbol={tokenSymbol} fontSize="large" />
+          <TokenIcon symbol={iconSymbol} fontSize="large" />
           <Typography variant="subheader1" sx={{ ml: 2 }} noWrap>
-            {tokenSymbol}
+            {symbol}
           </Typography>
         </ListColumn>
 

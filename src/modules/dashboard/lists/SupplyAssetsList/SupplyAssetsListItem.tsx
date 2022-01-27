@@ -7,13 +7,14 @@ import { SupplyAssetsItem } from './types';
 
 export const SupplyAssetsListItem = ({
   symbol,
+  iconSymbol,
   walletBalance,
   walletBalanceUSD,
   supplyCap,
   totalLiquidity,
 }: SupplyAssetsItem) => {
   return (
-    <ListItemWrapper tokenSymbol={symbol}>
+    <ListItemWrapper symbol={symbol} iconSymbol={iconSymbol}>
       <ListValueColumn
         symbol={symbol}
         value={Number(walletBalance)}

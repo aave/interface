@@ -7,13 +7,14 @@ import { BorrowAssetsItem } from './types';
 
 export const BorrowAssetsListItem = ({
   symbol,
+  iconSymbol,
   availableBorrows,
   availableBorrowsInUSD,
   borrowCap,
   totalBorrows,
 }: BorrowAssetsItem) => {
   return (
-    <ListItemWrapper tokenSymbol={symbol}>
+    <ListItemWrapper symbol={symbol} iconSymbol={iconSymbol}>
       <ListValueColumn
         symbol={symbol}
         value={Number(availableBorrows)}
