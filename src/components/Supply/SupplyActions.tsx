@@ -11,12 +11,15 @@ import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { EthTransactionData, sendEthTx, TxStatusType } from 'src/utils/sendTxHelper';
 import { SupplyState } from './Supply';
 import { ExternalLinkIcon } from '@heroicons/react/solid';
+import { TextWithModal } from '../TextWithModal';
+import { ApprovalInfoContent } from '../infoModalContents/ApprovalInfoContent';
 
 export type SupplyActionProps = {
   amountToSupply: string;
   poolReserve: ComputedReserveData;
   onClose: () => void;
   amount: string;
+  isWrongNetwork: boolean;
 };
 
 export const SupplyActions = ({
@@ -24,6 +27,7 @@ export const SupplyActions = ({
   poolReserve,
   onClose,
   amount,
+  isWrongNetwork,
 }: SupplyActionProps) => {
   const { signTxData, switchNetwork, getTxError, sendTx } = useWeb3Context();
   const { lendingPool } = useTxBuilderContext();
@@ -177,13 +181,6 @@ export const SupplyActions = ({
     }
   }, [actionTxData?.txStatus]);
 
-  useEffect(() => {
-    if (chainId !== connectedChainId) {
-      setSupplyStep(SupplyState.networkMisMatch);
-    }
-  }, [chainId, connectedChainId]);
-  console.log('state: ', supplyStep);
-
   const handleClose = () => {
     setTxError(undefined);
     setApproveTxData({} as EthTransactionData);
@@ -204,6 +201,7 @@ export const SupplyActions = ({
   // Button states
 
   const getButtonName = (): string => {
+    if (isWrongNetwork) return 'WRONG NETWORK';
     switch (supplyStep) {
       case SupplyState.amountInput:
         return 'ENTER AN AMOUNT';
@@ -214,8 +212,6 @@ export const SupplyActions = ({
         return 'OK, CLOSE';
       case SupplyState.error:
         return 'OK, CLOSE';
-      case SupplyState.networkMisMatch:
-        return 'CHANGE NETWORK';
     }
   };
 
@@ -231,8 +227,6 @@ export const SupplyActions = ({
         handleClose();
       case SupplyState.error:
         handleError();
-      case SupplyState.networkMisMatch:
-        switchNetwork(chainId);
     }
   };
 
@@ -245,8 +239,6 @@ export const SupplyActions = ({
       case SupplyState.success:
         return false;
       case SupplyState.error:
-        return false;
-      case SupplyState.networkMisMatch:
         return false;
       default:
         return true;
@@ -262,9 +254,17 @@ export const SupplyActions = ({
               <Trans>Approve confirmed</Trans>
             </Typography>
           ) : (
-            <Typography variant="helperText">
-              <Trans>Why do I need to approve?</Trans>
-            </Typography>
+            <TextWithModal
+              text={<Trans>Why do I need to approve</Trans>}
+              iconSize={13}
+              iconColor="#FFFFFF3B"
+              withContentButton
+            >
+              <ApprovalInfoContent />
+            </TextWithModal>
+            // <Typography variant="helperText">
+            //   <Trans>Why do I need to approve?</Trans>
+            // </Typography>
           )}
           {supplyStep === SupplyState.approval && approveTxData?.txHash && (
             <Typography

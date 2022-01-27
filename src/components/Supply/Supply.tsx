@@ -18,6 +18,8 @@ import BigNumber from 'bignumber.js';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { BasicModal } from '../primitives/BasicModal';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { Trans } from '@lingui/macro';
 
 export type SupplyProps = {
   poolReserve: ComputedReserveData;
@@ -33,7 +35,6 @@ export enum SupplyState {
   sendTx,
   success,
   error,
-  networkMisMatch,
 }
 
 export const Supply = ({
@@ -45,6 +46,7 @@ export const Supply = ({
 }: SupplyProps) => {
   const { marketReferencePriceInUsd } = useAppDataContext();
   const { currentChainId } = useProtocolDataContext();
+  const { chainId: connectedChainId } = useWeb3Context();
 
   const [amountToSupply, setAmountToSupply] = useState('');
   const [open, setOpen] = useState(false);
@@ -128,18 +130,29 @@ export const Supply = ({
   const showHealthFactor =
     user.totalBorrowsMarketReferenceCurrency !== '0' && poolReserve.usageAsCollateralEnabled;
 
+  // is Network mismatched
+  const isWrongNetwork = currentChainId !== connectedChainId;
+
   return (
     <div>
-      {showIsolationWarning && (
-        <Typography>You are about to enter into isolation. FAQ link</Typography>
-      )}
-      {showSupplyCapWarning && (
-        <Typography>You are about to get supply capped. FAQ link</Typography>
-      )}
       <BasicModal open={open} setOpen={onClose}>
         <Typography variant="h2" sx={{ mb: '26px' }}>
           Supply {poolReserve.symbol}
         </Typography>
+        {isWrongNetwork && (
+          <Typography sx={{ mb: '24px', backgroundColor: '#FEF5E8', color: 'black' }}>
+            <Trans>Please Switch to {networkConfig.name}.</Trans>
+            <Button variant="text" sx={{ ml: '2px' }} onClick={() => switchNetwork(currentChainId)}>
+              <Typography color="black">Switch Network</Typography>
+            </Button>
+          </Typography>
+        )}
+        {showIsolationWarning && (
+          <Typography>You are about to enter into isolation. FAQ link</Typography>
+        )}
+        {showSupplyCapWarning && (
+          <Typography>You are about to get supply capped. FAQ link</Typography>
+        )}
         <AssetInput
           value={amountToSupply}
           onChange={setAmountToSupply}
@@ -159,9 +172,13 @@ export const Supply = ({
           amount={amountToSupply}
           amountToSupply={amountToSupply}
           onClose={onClose}
+          isWrongNetwork={isWrongNetwork}
         ></SupplyActions>
       </BasicModal>
       <Button onClick={() => setOpen(true)}>Supply</Button>
     </div>
   );
 };
+function switchNetwork(currentChainId: number): void {
+  throw new Error('Function not implemented.');
+}

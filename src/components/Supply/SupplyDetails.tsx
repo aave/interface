@@ -7,6 +7,7 @@ import { FormRow } from '../FormItems/FormRow';
 import { FormValue } from '../FormItems/FormValue';
 import { Percentage } from '../Percentage';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { HealthFactorNumber } from '../HealthFactorNumber';
 
 export interface SupplyReward {
   tokenIcon: string;
@@ -28,6 +29,7 @@ export const SupplyDetails: React.FC<SupplyDetailsProps> = ({
   healthFactor,
   futureHealthFactor,
 }) => {
+  console.log('future: ', futureHealthFactor);
   return (
     <Grid container direction="row" alignItems="center" rowSpacing={'12px'} sx={{ mb: '24px' }}>
       <FormRow>
@@ -59,9 +61,13 @@ export const SupplyDetails: React.FC<SupplyDetailsProps> = ({
           </FormInfo>
           <FormValue>
             <Typography variant="secondary14">
-              {healthFactor}
+              {/* {Number(healthFactor).toFixed(2)} */}
+              <HealthFactorNumber value={healthFactor} variant="secondary14" />
               <ArrowForwardIcon />
-              {futureHealthFactor}
+              <HealthFactorNumber
+                value={Number(futureHealthFactor) ? futureHealthFactor : healthFactor}
+                variant="secondary14"
+              />
             </Typography>
             <Typography variant="helperText">
               <Trans>Liquidation at</Trans>
