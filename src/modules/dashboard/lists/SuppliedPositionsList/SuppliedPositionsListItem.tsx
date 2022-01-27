@@ -1,3 +1,4 @@
+import { ListAPRColumn } from '../ListAPRColumn';
 import { ListColumn } from '../ListColumn';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
@@ -7,6 +8,7 @@ export const SuppliedPositionsListItem = ({
   reserve,
   underlyingBalance,
   underlyingBalanceUSD,
+  aIncentives,
 }: SuppliedPositionsItem) => {
   return (
     <ListItemWrapper symbol={reserve.symbol} iconSymbol={reserve.iconSymbol}>
@@ -17,9 +19,13 @@ export const SuppliedPositionsListItem = ({
         disabled={Number(underlyingBalance) === 0}
       />
 
-      <ListColumn />
-      <ListColumn />
+      <ListAPRColumn
+        value={Number(reserve.liquidityRate)}
+        incentives={aIncentives}
+        symbol={reserve.symbol}
+      />
 
+      <ListColumn />
       <ListColumn maxWidth={85} />
       <ListColumn maxWidth={85} />
     </ListItemWrapper>

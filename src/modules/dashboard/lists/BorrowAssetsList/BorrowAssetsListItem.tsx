@@ -1,5 +1,6 @@
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
+import { ListAPRColumn } from '../ListAPRColumn';
 import { ListColumn } from '../ListColumn';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
@@ -12,6 +13,10 @@ export const BorrowAssetsListItem = ({
   availableBorrowsInUSD,
   borrowCap,
   totalBorrows,
+  variableBorrowRate,
+  stableBorrowRate,
+  vIncentives,
+  sIncentives,
 }: BorrowAssetsItem) => {
   return (
     <ListItemWrapper symbol={symbol} iconSymbol={iconSymbol}>
@@ -31,8 +36,8 @@ export const BorrowAssetsListItem = ({
         }
       />
 
-      <ListColumn />
-      <ListColumn />
+      <ListAPRColumn value={Number(variableBorrowRate)} incentives={vIncentives} symbol={symbol} />
+      <ListAPRColumn value={Number(stableBorrowRate)} incentives={sIncentives} symbol={symbol} />
 
       <ListColumn maxWidth={85} />
       <ListColumn maxWidth={85} />

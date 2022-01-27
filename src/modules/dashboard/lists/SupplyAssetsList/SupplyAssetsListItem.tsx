@@ -1,5 +1,6 @@
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
+import { ListAPRColumn } from '../ListAPRColumn';
 import { ListColumn } from '../ListColumn';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
@@ -12,6 +13,8 @@ export const SupplyAssetsListItem = ({
   walletBalanceUSD,
   supplyCap,
   totalLiquidity,
+  liquidityRate,
+  aIncentives,
 }: SupplyAssetsItem) => {
   return (
     <ListItemWrapper symbol={symbol} iconSymbol={iconSymbol}>
@@ -31,9 +34,9 @@ export const SupplyAssetsListItem = ({
         }
       />
 
-      <ListColumn />
-      <ListColumn />
+      <ListAPRColumn value={Number(liquidityRate)} incentives={aIncentives} symbol={symbol} />
 
+      <ListColumn />
       <ListColumn maxWidth={85} />
       <ListColumn maxWidth={85} />
     </ListItemWrapper>
