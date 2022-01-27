@@ -203,7 +203,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     rpcOnly: true,
     usdMarket: true,
     isTestnet: true,
-    networkLogoPath: '/icons/networks/arbitrum.svg',
+    networkLogoPath: '/icons/networks/harmony.svg',
     bridge: {
       icon: '/icons/bridge/avalanche.svg', // TODO: need icon
       name: 'Harmony Bridge',
@@ -223,7 +223,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     rpcOnly: true,
     usdMarket: true,
     isTestnet: true,
-    networkLogoPath: '/icons/networks/arbitrum.svg',
+    networkLogoPath: '/icons/networks/harmony.svg',
     bridge: {
       icon: '/icons/bridge/avalanche.svg', // TODO: need icon
       name: 'Harmony Bridge',
@@ -243,7 +243,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     rpcOnly: true,
     usdMarket: true,
     isTestnet: true,
-    networkLogoPath: '/icons/networks/arbitrum.svg',
+    networkLogoPath: '/icons/networks/optimism.svg',
     bridge: {
       icon: '/icons/bridge/avalanche.svg', // TODO: need icon
       name: 'Optimism Bridge',
@@ -263,7 +263,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     rpcOnly: true,
     usdMarket: true,
     isTestnet: true,
-    networkLogoPath: '/icons/networks/arbitrum.svg',
+    networkLogoPath: '/icons/networks/optimism.svg',
     bridge: {
       icon: '/icons/bridge/avalanche.svg', // TODO: need icon
       name: 'Optimism Bridge',
@@ -283,7 +283,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     rpcOnly: true,
     usdMarket: true,
     isTestnet: true,
-    networkLogoPath: '/icons/networks/arbitrum.svg',
+    networkLogoPath: '/icons/networks/fantom.svg',
     bridge: {
       icon: '/icons/bridge/avalanche.svg', // TODO: need icon
       name: 'Fantom Bridge',
@@ -303,7 +303,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     rpcOnly: true,
     usdMarket: true,
     isTestnet: true,
-    networkLogoPath: '/icons/networks/arbitrum.svg',
+    networkLogoPath: '/icons/networks/fantom.svg',
     bridge: {
       icon: '/icons/bridge/avalanche.svg', // TODO: need icon
       name: 'Fantom Bridge',
