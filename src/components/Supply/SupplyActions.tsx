@@ -206,6 +206,7 @@ export const SupplyActions = ({ amountToSupply, poolReserve, onClose }: SupplyAc
   let actionButton;
   switch (supplyStep) {
     case SupplyState.amountInput:
+      // TODO: missing conditions to disable
       actionButton = (
         <Button variant="outlined" onClick={handleGetTransactions}>
           Confirm Amount

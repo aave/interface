@@ -6,22 +6,22 @@ import {
 import { SupplyDetails } from './SupplyDetails';
 import { SupplyActions } from './SupplyActions';
 import { Button, Divider, Typography } from '@mui/material';
-import { AaveModal } from '../AaveModal/AaveModal';
 import { AssetInput } from '../AssetInput';
 import {
   calculateHealthFactorFromBalancesBigUnits,
+  ComputedUserReserve,
   FormatUserSummaryAndIncentivesResponse,
   USD_DECIMALS,
   valueToBigNumber,
 } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { getNetworkConfig, isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 import { BasicModal } from '../primitives/BasicModal';
 
 export type SupplyProps = {
   poolReserve: ComputedReserveData;
-  // userReserve: ComputedUserReserve;
+  userReserve: ComputedUserReserve;
   walletBalance: string;
   user: FormatUserSummaryAndIncentivesResponse;
   supplyApy: string;
@@ -38,13 +38,13 @@ export enum SupplyState {
 
 export const Supply = ({
   poolReserve,
-  // userReserve,
+  userReserve,
   walletBalance,
   user,
   supplyApy,
 }: SupplyProps) => {
   const { marketReferencePriceInUsd } = useAppDataContext();
-  const { currentChainId } = useProtocolDataContext();
+  const { currentChainId, currentMarketData } = useProtocolDataContext();
 
   const [amountToSupply, setAmountToSupply] = useState('');
   const [open, setOpen] = useState(false);
@@ -107,11 +107,38 @@ export const Supply = ({
     });
   }
 
-  // console.log('healthFactorAfterDeposit: ', user);
+  // ************** Warnings **********
+  // supply cap warning
+  const percentageOfCap = valueToBigNumber(poolReserve.totalLiquidity)
+    .dividedBy(poolReserve.supplyCap)
+    .toNumber();
+  const showSupplyCapWarning: boolean =
+    poolReserve.supplyCap !== '0' && percentageOfCap >= 0.99 && percentageOfCap < 1;
 
-  // TODO: what / how to show isolation statuses / warnings??
+  // isolation warning
+  const hasDifferentCollateral = user?.userReservesData.find(
+    (reserve) => reserve.usageAsCollateralEnabledOnUser && reserve.reserve.id !== poolReserve.id
+  );
+  const showIsolationWarning: boolean =
+    !user?.isInIsolationMode &&
+    poolReserve.isIsolated &&
+    !hasDifferentCollateral &&
+    (userReserve?.underlyingBalance !== '0' ? userReserve?.usageAsCollateralEnabledOnUser : true);
+
+  // token warnings
+  const showAmplWarning = poolReserve.symbol === 'AMPL';
+  // TODO: copy / pass ampl warning from aave-ui
+
+  const showAaveWarning =
+    poolReserve.symbol === 'AAVE' && isFeatureEnabled.staking(currentMarketData);
+  // TODO: create aave staking vs supply message warning
+
+  const showSnxWarning = poolReserve.symbol === 'SNX' && !maxAmountToSupply.eq('0');
+  //  TODO: add snx message
+
   return (
     <div>
+      {/* Put warnings here?? */}
       <BasicModal open={open} setOpen={onClose}>
         <Typography variant="h2" sx={{ mb: '26px' }}>
           Supply {poolReserve.symbol}
