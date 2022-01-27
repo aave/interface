@@ -11,13 +11,16 @@ import { TextWithModal } from '../../components/TextWithModal';
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 import { AppDataContextType } from '../../hooks/app-data-provider/useAppDataProvider';
+import { NetworkConfig } from '../../ui-config/networksConfig';
 import { LiquidationRiskParametresInfoModal } from './LiquidationRiskParametresModal/LiquidationRiskParametresModal';
 
-interface DashboardTopPanelProps extends Pick<AppDataContextType, 'user'> {
+interface DashboardTopPanelProps
+  extends Pick<AppDataContextType, 'user'>,
+    Pick<NetworkConfig, 'bridge'> {
   currentAccount?: string;
 }
 
-export const DashboardTopPanel = ({ currentAccount, user }: DashboardTopPanelProps) => {
+export const DashboardTopPanel = ({ currentAccount, user, bridge }: DashboardTopPanelProps) => {
   const [open, setOpen] = useState(false);
 
   const loanToValue =
@@ -29,7 +32,7 @@ export const DashboardTopPanel = ({ currentAccount, user }: DashboardTopPanelPro
 
   return (
     <>
-      <TopInfoPanel pageTitle={<Trans>Dashboard</Trans>} withMarketSwitcher>
+      <TopInfoPanel pageTitle={<Trans>Dashboard</Trans>} withMarketSwitcher bridge={bridge}>
         <TopInfoPanelItem title={<Trans>Net worth</Trans>}>
           {currentAccount ? (
             <FormattedNumber value={Number(user?.netWorthUSD || 0)} symbol="USD" variant="main21" />

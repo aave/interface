@@ -86,7 +86,7 @@ export const DashboardListWrapper = ({
         )}
       </Box>
 
-      {subChildrenComponent && <Box>{subChildrenComponent}</Box>}
+      {subChildrenComponent && !isCollapse && <Box>{subChildrenComponent}</Box>}
       <Box sx={{ display: isCollapse ? 'none' : 'block' }}>{children}</Box>
 
       {withBottomText && !isCollapse && (

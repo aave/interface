@@ -28,13 +28,13 @@ export const ListValueColumn = ({
           <FormattedNumber
             value={value}
             variant="secondary14"
-            sx={{ mb: !withTooltip && subValue ? '2px' : 0 }}
+            sx={{ mb: !withTooltip && !!subValue ? '2px' : 0 }}
             color={disabled ? 'text.disabled' : 'text.main'}
           />
           {capsComponent}
         </Box>
 
-        {!withTooltip && subValue && !disabled && (
+        {!withTooltip && !!subValue && !disabled && (
           <FormattedNumber
             value={subValue}
             symbol="USD"

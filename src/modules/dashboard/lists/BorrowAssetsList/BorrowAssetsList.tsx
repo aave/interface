@@ -4,9 +4,8 @@ import { Trans } from '@lingui/macro';
 
 import { BorrowAvailableInfoContent } from '../../../../components/infoModalContents/BorrowAvailableInfoContent';
 import { useAppDataContext } from '../../../../hooks/app-data-provider/useAppDataProvider';
-import { useWeb3Context } from '../../../../libs/hooks/useWeb3Context';
+import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import { getMaxAmountAvailableToBorrow } from '../../../../utils/getMaxAmountAvailableToBorrow';
-import { getNetworkConfig } from '../../../../utils/marketsAndNetworksConfig';
 import { DashboardContentNoData } from '../../DashboardContentNoData';
 import { DashboardListWrapper } from '../../DashboardListWrapper';
 import { BorrowedPositionsItem } from '../BorrowedPositionsList/types';
@@ -19,10 +18,10 @@ interface BorrowAssetsListProps {
 }
 
 export const BorrowAssetsList = ({ borrowedReserves }: BorrowAssetsListProps) => {
-  const { chainId } = useWeb3Context();
+  const { currentNetworkConfig } = useProtocolDataContext();
   const { user, reserves, marketReferencePriceInUsd, userEmodeCategoryId } = useAppDataContext();
 
-  const { wrappedBaseAssetSymbol, baseAssetSymbol } = getNetworkConfig(chainId);
+  const { wrappedBaseAssetSymbol, baseAssetSymbol } = currentNetworkConfig;
 
   const tokensToBorrow: BorrowAssetsItem[] = reserves.map<BorrowAssetsItem>((reserve) => {
     const availableBorrows = user ? getMaxAmountAvailableToBorrow(reserve, user).toNumber() : 0;
@@ -127,18 +126,20 @@ export const BorrowAssetsList = ({ borrowedReserves }: BorrowAssetsListProps) =>
         </DashboardListWrapper>
       )}
 
-      <DashboardListWrapper
-        title={<Trans>Assets to borrow</Trans>}
-        localStorageName="borrowAssetsDashboardTableCollapse"
-        withTopMargin
-      >
-        <>
-          <ListHeader head={head} />
-          {borrowReserves.map((item, index) => (
-            <BorrowAssetsListItem {...item} key={index} />
-          ))}
-        </>
-      </DashboardListWrapper>
+      {!!tokensToBorrow.length && (
+        <DashboardListWrapper
+          title={<Trans>Assets to borrow</Trans>}
+          localStorageName="borrowAssetsDashboardTableCollapse"
+          withTopMargin
+        >
+          <>
+            <ListHeader head={head} />
+            {borrowReserves.map((item, index) => (
+              <BorrowAssetsListItem {...item} key={index} />
+            ))}
+          </>
+        </DashboardListWrapper>
+      )}
     </>
   );
 };

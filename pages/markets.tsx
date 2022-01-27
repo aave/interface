@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/macro';
 import {
   Container,
   Paper,
@@ -8,11 +9,10 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { Trans } from '@lingui/macro';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { MainLayout } from 'src/layouts/MainLayout';
-import { MarketsTopPanel } from 'src/modules/markets/MarketsTopPanel';
 import AssetsList from 'src/modules/markets/AssetsList';
+import { MarketsTopPanel } from 'src/modules/markets/MarketsTopPanel';
 
 export default function Markets() {
   const { currentMarketData } = useProtocolDataContext();
@@ -40,7 +40,7 @@ export default function Markets() {
               <TableCell align="center">Total borrowed</TableCell>
               <TableCell align="center">Borrow APY, variable</TableCell>
               <TableCell align="center">Borrow APY, stable</TableCell>
-              <TableCell align="right"></TableCell>
+              <TableCell align="right" />
             </TableRow>
           </TableHead>
           <TableBody>

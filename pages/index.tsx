@@ -4,18 +4,18 @@ import { useState } from 'react';
 
 import { ConnectWalletPaper } from '../src/components/ConnectWalletPaper';
 import { useAppDataContext } from '../src/hooks/app-data-provider/useAppDataProvider';
+import { useProtocolDataContext } from '../src/hooks/useProtocolDataContext';
 import { MainLayout } from '../src/layouts/MainLayout';
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 import { DashboardContentWrapper } from '../src/modules/dashboard/DashboardContentWrapper';
 import { DashboardTopPanel } from '../src/modules/dashboard/DashboardTopPanel';
 import { BorrowedPositionsItem } from '../src/modules/dashboard/lists/BorrowedPositionsList/types';
 import { SuppliedPositionsItem } from '../src/modules/dashboard/lists/SuppliedPositionsList/types';
-import { getNetworkConfig } from '../src/utils/marketsAndNetworksConfig';
 
 export default function Home() {
-  const { currentAccount, chainId } = useWeb3Context();
+  const { currentAccount } = useWeb3Context();
+  const { currentNetworkConfig } = useProtocolDataContext();
   const { user, reserves } = useAppDataContext();
-  const networkConfig = getNetworkConfig(chainId);
 
   const [isBorrow, setIsBorrow] = useState(false);
 
@@ -36,11 +36,13 @@ export default function Home() {
         liquidityRate: poolReserve.supplyAPY,
         // this is a hack to repay with mainAsset instead of the wrappedpooltoken
         symbol:
-          poolReserve.symbol.toLowerCase() === networkConfig.wrappedBaseAssetSymbol?.toLowerCase()
-            ? networkConfig.baseAssetSymbol
+          poolReserve.symbol.toLowerCase() ===
+          currentNetworkConfig.wrappedBaseAssetSymbol?.toLowerCase()
+            ? currentNetworkConfig.baseAssetSymbol
             : poolReserve.symbol,
         underlyingAsset:
-          poolReserve.symbol.toLowerCase() === networkConfig.wrappedBaseAssetSymbol?.toLowerCase()
+          poolReserve.symbol.toLowerCase() ===
+          currentNetworkConfig.wrappedBaseAssetSymbol?.toLowerCase()
             ? API_ETH_MOCK_ADDRESS
             : poolReserve.underlyingAsset,
         iconSymbol: poolReserve.iconSymbol,
@@ -146,7 +148,11 @@ export default function Home() {
 
   return (
     <Container maxWidth="lg">
-      <DashboardTopPanel user={user} currentAccount={currentAccount} />
+      <DashboardTopPanel
+        user={user}
+        currentAccount={currentAccount}
+        bridge={currentNetworkConfig.bridge}
+      />
 
       {currentAccount ? (
         <DashboardContentWrapper

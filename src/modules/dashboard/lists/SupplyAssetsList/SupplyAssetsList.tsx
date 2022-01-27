@@ -9,24 +9,18 @@ import {
   useAppDataContext,
 } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from '../../../../hooks/app-data-provider/useWalletBalances';
-import { useWeb3Context } from '../../../../libs/hooks/useWeb3Context';
-import { getNetworkConfig } from '../../../../utils/marketsAndNetworksConfig';
+import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
+import { DashboardListTopPanel } from '../../DashboardListTopPanel';
 import { DashboardListWrapper } from '../../DashboardListWrapper';
 import { ListHeader } from '../ListHeader';
 import { SupplyAssetsListItem } from './SupplyAssetsListItem';
 
 export const SupplyAssetsList = () => {
-  const { chainId } = useWeb3Context();
+  const { currentNetworkConfig } = useProtocolDataContext();
   const { user, reserves, marketReferencePriceInUsd } = useAppDataContext();
   const { walletBalances } = useWalletBalances();
 
-  const {
-    bridge,
-    name: networkName,
-    isTestnet,
-    wrappedBaseAssetSymbol,
-    baseAssetSymbol,
-  } = getNetworkConfig(chainId);
+  const { bridge, isTestnet, wrappedBaseAssetSymbol, baseAssetSymbol } = currentNetworkConfig;
 
   const localStorageName = 'showSupplyZeroAssets';
   const [isShowZeroAssets, setIsShowZeroAssets] = useState(
@@ -142,6 +136,18 @@ export const SupplyAssetsList = () => {
       localStorageName="supplyAssetsDashboardTableCollapse"
       withBottomText={isTestnet}
       withTopMargin
+      subChildrenComponent={
+        <>
+          {filteredSupplyReserves.length >= 1 && (
+            <DashboardListTopPanel
+              value={isShowZeroAssets}
+              onClick={setIsShowZeroAssets}
+              localStorageName={localStorageName}
+              bridge={bridge}
+            />
+          )}
+        </>
+      }
     >
       <>
         <ListHeader head={head} />

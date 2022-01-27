@@ -43,7 +43,7 @@ export type NetworkConfig = {
   // contains the forked off chainId
   underlyingChainId?: number;
   bridge?: {
-    brandColor: string;
+    icon: string;
     name: string;
     url: string;
   };
@@ -110,7 +110,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://polygonscan.com',
     networkLogoPath: '/icons/networks/polygon.svg',
     bridge: {
-      brandColor: '130, 71, 229',
+      icon: '/icons/bridge/polygon.svg',
       name: 'Polygon PoS Bridge',
       url: 'https://wallet.matic.network/bridge/',
     },
@@ -144,7 +144,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     isTestnet: true,
     networkLogoPath: '/icons/networks/avalanche.svg',
     bridge: {
-      brandColor: '232, 65, 66',
+      icon: '/icons/bridge/avalanche.svg',
       name: 'Avalanche Bridge',
       url: 'https://bridge.avax.network/',
     },
@@ -165,7 +165,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     usdMarket: true,
     networkLogoPath: '/icons/networks/avalanche.svg',
     bridge: {
-      brandColor: '232, 65, 66',
+      icon: '/icons/bridge/avalanche.svg',
       name: 'Avalanche Bridge',
       url: 'https://bridge.avax.network/',
     },
@@ -185,7 +185,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     isTestnet: true,
     networkLogoPath: '/icons/networks/arbitrum.svg',
     bridge: {
-      brandColor: '40, 160, 239',
+      icon: '/icons/bridge/avalanche.svg', // TODO: need icon
       name: 'Arbitrum Bridge',
       url: 'https://bridge.arbitrum.io',
     },
@@ -205,7 +205,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     isTestnet: true,
     networkLogoPath: '/icons/networks/arbitrum.svg',
     bridge: {
-      brandColor: '40, 160, 239',
+      icon: '/icons/bridge/avalanche.svg', // TODO: need icon
       name: 'Harmony Bridge',
       url: 'https://bridge.harmony.one',
     },
@@ -225,7 +225,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     isTestnet: true,
     networkLogoPath: '/icons/networks/arbitrum.svg',
     bridge: {
-      brandColor: '40, 160, 239',
+      icon: '/icons/bridge/avalanche.svg', // TODO: need icon
       name: 'Harmony Bridge',
       url: 'https://bridge.harmony.one',
     },
@@ -245,7 +245,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     isTestnet: true,
     networkLogoPath: '/icons/networks/arbitrum.svg',
     bridge: {
-      brandColor: '40, 160, 239',
+      icon: '/icons/bridge/avalanche.svg', // TODO: need icon
       name: 'Optimism Bridge',
       url: 'https://gateway.optimism.io',
     },
@@ -265,7 +265,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     isTestnet: true,
     networkLogoPath: '/icons/networks/arbitrum.svg',
     bridge: {
-      brandColor: '40, 160, 239',
+      icon: '/icons/bridge/avalanche.svg', // TODO: need icon
       name: 'Optimism Bridge',
       url: 'https://gateway.optimism.io',
     },
@@ -285,7 +285,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     isTestnet: true,
     networkLogoPath: '/icons/networks/arbitrum.svg',
     bridge: {
-      brandColor: '40, 160, 239',
+      icon: '/icons/bridge/avalanche.svg', // TODO: need icon
       name: 'Fantom Bridge',
       url: 'https://app.multichain.org/#/router',
     },
@@ -305,7 +305,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     isTestnet: true,
     networkLogoPath: '/icons/networks/arbitrum.svg',
     bridge: {
-      brandColor: '40, 160, 239',
+      icon: '/icons/bridge/avalanche.svg', // TODO: need icon
       name: 'Fantom Bridge',
       url: 'https://app.multichain.org/#/router',
     },
