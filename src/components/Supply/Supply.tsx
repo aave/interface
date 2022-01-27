@@ -154,7 +154,6 @@ export const Supply = ({
           healthFactor={user.healthFactor}
           futureHealthFactor={healthFactorAfterDeposit.toString()}
         />
-        <Divider />
         <SupplyActions
           poolReserve={poolReserve}
           amount={amountToSupply}

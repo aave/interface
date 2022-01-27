@@ -1,13 +1,16 @@
 import { ChainId, EthereumTransactionTypeExtended, Pool } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, SvgIcon, Typography } from '@mui/material';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { EthTransactionData, sendEthTx, TxStatusType } from 'src/utils/sendTxHelper';
 import { SupplyState } from './Supply';
+import { ExternalLinkIcon } from '@heroicons/react/solid';
 
 export type SupplyActionProps = {
   amountToSupply: string;
@@ -27,6 +30,8 @@ export const SupplyActions = ({
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
   const { currentAccount, chainId: connectedChainId } = useWeb3Context();
 
+  const networkConfig = getNetworkConfig(chainId);
+
   const [supplyStep, setSupplyStep] = useState<SupplyState>(SupplyState.amountInput);
 
   // error
@@ -35,11 +40,6 @@ export const SupplyActions = ({
   // tx obj
   const [approveTxData, setApproveTxData] = useState({} as EthTransactionData);
   const [actionTxData, setActionTxData] = useState({} as EthTransactionData);
-  const [breadCrumbs, setBreadCrumbs] = useState({
-    amount: false,
-    approved: false,
-    supplied: false,
-  });
 
   // Custom gas
   const [customGasPrice, setCustomGasPrice] = useState<string | null>(null);
@@ -92,7 +92,6 @@ export const SupplyActions = ({
       } else if (supplyStep < SupplyState.sendTx) {
         setSupplyStep(SupplyState.approval);
       }
-      setBreadCrumbs({ ...breadCrumbs, amount: true });
     } catch (error) {
       setTxError(error);
       setSupplyStep(SupplyState.error);
@@ -153,7 +152,6 @@ export const SupplyActions = ({
         } else if (approveTxData.txStatus === TxStatusType.confirmed && approveTxData.txReceipt) {
           // TODO: set tx link with actionTxData.txHash
           // supply tx finished with success
-          setBreadCrumbs({ ...breadCrumbs, approved: true });
           setSupplyStep(SupplyState.sendTx);
         } else if (approveTxData.txStatus === TxStatusType.error) {
           setSupplyStep(SupplyState.error);
@@ -170,7 +168,6 @@ export const SupplyActions = ({
         // TODO: set tx link with actionTxData.txHash
       } else if (actionTxData.txStatus === TxStatusType.confirmed && actionTxData.txReceipt) {
         // supply tx finished with success
-        setBreadCrumbs({ ...breadCrumbs, supplied: true });
         setSupplyStep(SupplyState.success);
       } else if (actionTxData.txStatus === TxStatusType.error) {
         setTxError(actionTxData.error);
@@ -255,9 +252,34 @@ export const SupplyActions = ({
         return true;
     }
   };
-  console.log('amount: ', amount);
+
   return (
     <Box sx={{ mt: '16px', display: 'flex', flexDirection: 'column' }}>
+      {supplyStep > SupplyState.amountInput && (
+        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+          {approveTxData?.txStatus === TxStatusType.confirmed ? (
+            <Typography variant="helperText" color="#318435">
+              <Trans>Approve confirmed</Trans>
+            </Typography>
+          ) : (
+            <Typography variant="helperText">
+              <Trans>Why do I need to approve?</Trans>
+            </Typography>
+          )}
+          {supplyStep === SupplyState.approval && approveTxData?.txHash && (
+            <Typography
+              component={Link}
+              variant="helperText"
+              href={networkConfig.explorerLinkBuilder({ address: currentAccount })}
+            >
+              Review approve tx details{' '}
+              <SvgIcon fontSize="small">
+                <ExternalLinkIcon />
+              </SvgIcon>
+            </Typography>
+          )}
+        </Box>
+      )}
       <Button
         variant="outlined"
         onClick={handleActionButtonClick}

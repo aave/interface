@@ -233,7 +233,7 @@ export default function WalletWidget() {
               </SvgIcon>
             </ListItemIcon>
             <ListItemText>
-              <Trans>View on Etherscan</Trans>
+              <Trans>View on Explorer</Trans>
             </ListItemText>
           </MenuItem>
 

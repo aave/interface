@@ -38,7 +38,7 @@ export const SupplyDetails: React.FC<SupplyDetailsProps> = ({
         </FormInfo>
         <FormValue>
           <Typography variant="description">
-            <Percentage value={supplyApy} />
+            <Percentage value={Number(supplyApy).toFixed(2)} />
           </Typography>
         </FormValue>
       </FormRow>
