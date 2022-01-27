@@ -1,9 +1,11 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
+import { Alert, Box } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { useState } from 'react';
 
+import { Link } from '../../../../components/primitives/Link';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -20,7 +22,13 @@ export const SupplyAssetsList = () => {
   const { user, reserves, marketReferencePriceInUsd } = useAppDataContext();
   const { walletBalances } = useWalletBalances();
 
-  const { bridge, isTestnet, wrappedBaseAssetSymbol, baseAssetSymbol } = currentNetworkConfig;
+  const {
+    bridge,
+    isTestnet,
+    wrappedBaseAssetSymbol,
+    baseAssetSymbol,
+    name: networkName,
+  } = currentNetworkConfig;
 
   const localStorageName = 'showSupplyZeroAssets';
   const [isShowZeroAssets, setIsShowZeroAssets] = useState(
@@ -138,6 +146,31 @@ export const SupplyAssetsList = () => {
       withTopMargin
       subChildrenComponent={
         <>
+          <Box sx={{ px: 6 }}>
+            {user?.isInIsolationMode && (
+              <Alert severity="warning">
+                <Trans>Collateral usage is limited because of isolation mode.</Trans>
+              </Alert>
+            )}
+            {filteredSupplyReserves.length === 0 && (
+              <Alert severity="info">
+                {/* TODO: need to add <Trans></Trans> */}
+                <>Your {networkName} wallet is empty. To deposit ...</>
+                {bridge && (
+                  <>
+                    Or use{' '}
+                    {
+                      <Link href={bridge.url} variant="caption" sx={{ fontWeight: 500 }}>
+                        {bridge.name}
+                      </Link>
+                    }{' '}
+                    to transfer your ETH assets.
+                  </>
+                )}
+              </Alert>
+            )}
+          </Box>
+
           {filteredSupplyReserves.length >= 1 && (
             <DashboardListTopPanel
               value={isShowZeroAssets}

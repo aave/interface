@@ -1,5 +1,14 @@
-import { Theme, ThemeOptions } from '@mui/material';
+import {
+  CheckCircleIcon,
+  ExclamationCircleIcon,
+  ExclamationIcon,
+  InformationCircleIcon,
+} from '@heroicons/react/outline';
+import { SvgIcon, Theme, ThemeOptions } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { ColorPartial } from '@mui/material/styles/createPalette';
 import React from 'react';
 
 const theme = createTheme();
@@ -23,6 +32,8 @@ const getFontSize = (mobile: number, normal: number, large: number) => {
 };
 
 declare module '@mui/material/styles/createPalette' {
+  interface PaletteColor extends ColorPartial {}
+
   interface TypeBackground {
     default: string;
     paper: string;
@@ -131,21 +142,29 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         main: getColor('#BC0000B8', '#F44336'),
         light: getColor('#D26666', '#E57373'),
         dark: getColor('#BC0000', '#D32F2F'),
+        '100': getColor('#4F1919', '#FBB4AF'), // for alert text
+        '200': getColor('#F9EBEB', '#2E0C0A'), // for alert background
       },
       warning: {
         main: getColor('#F89F1A', '#FFA726'),
         light: getColor('#FFCE00', '#FFB74D'),
         dark: getColor('#C67F15', '#F57C00'),
+        '100': getColor('#63400A', '#FFDCA8'), // for alert text
+        '200': getColor('#FEF5E8', '#301E04'), // for alert background
       },
       info: {
         main: getColor('#0062D2', '#29B6F6'),
         light: getColor('#0062D2', '#4FC3F7'),
         dark: getColor('#002754', '#0288D1'),
+        '100': getColor('#002754', '#A9E2FB'), // for alert text
+        '200': getColor('#E5EFFB', '#071F2E'), // for alert background
       },
       success: {
         main: getColor('#4CAF50', '#66BB6A'),
         light: getColor('#90FF95', '#90FF95'),
         dark: getColor('#318435', '#388E3C'),
+        '100': getColor('#1C4B1E', '#C2E4C3'), // for alert text
+        '200': getColor('#ECF8ED', '#0A130B'), // for alert background
       },
       text: {
         primary: getColor('#00244D', '#FFFFFF'),
@@ -558,6 +577,81 @@ export function getThemedComponents(theme: Theme) {
             borderColor: theme.palette.divider,
           },
         },
+      },
+      MuiAlert: {
+        styleOverrides: {
+          root: {
+            boxShadow: 'none',
+            borderRadius: '4px',
+            padding: '8px 12px',
+            ...theme.typography.caption,
+            alignItems: 'center',
+            '.MuiAlert-message': {
+              padding: 0,
+            },
+            '.MuiAlert-icon': {
+              padding: 0,
+              opacity: 1,
+              '.MuiSvgIcon-root': {
+                fontSize: pxToRem(20),
+              },
+            },
+          },
+        },
+        defaultProps: {
+          iconMapping: {
+            error: (
+              <SvgIcon color="error">
+                <ExclamationIcon />
+              </SvgIcon>
+            ),
+            info: (
+              <SvgIcon color="info">
+                <InformationCircleIcon />
+              </SvgIcon>
+            ),
+            success: (
+              <SvgIcon color="success">
+                <CheckCircleIcon />
+              </SvgIcon>
+            ),
+            warning: (
+              <SvgIcon color="warning">
+                <ExclamationCircleIcon />
+              </SvgIcon>
+            ),
+          },
+        },
+        variants: [
+          {
+            props: { severity: 'error' },
+            style: {
+              color: theme.palette.error['100'],
+              background: theme.palette.error['200'],
+            },
+          },
+          {
+            props: { severity: 'info' },
+            style: {
+              color: theme.palette.info['100'],
+              background: theme.palette.info['200'],
+            },
+          },
+          {
+            props: { severity: 'success' },
+            style: {
+              color: theme.palette.success['100'],
+              background: theme.palette.success['200'],
+            },
+          },
+          {
+            props: { severity: 'warning' },
+            style: {
+              color: theme.palette.warning['100'],
+              background: theme.palette.warning['200'],
+            },
+          },
+        ],
       },
       MuiCssBaseline: {
         styleOverrides: {

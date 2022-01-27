@@ -1,6 +1,7 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
+import { Alert, Box } from '@mui/material';
 
 import { BorrowAvailableInfoContent } from '../../../../components/infoModalContents/BorrowAvailableInfoContent';
 import { useAppDataContext } from '../../../../hooks/app-data-provider/useAppDataProvider';
@@ -131,6 +132,33 @@ export const BorrowAssetsList = ({ borrowedReserves }: BorrowAssetsListProps) =>
           title={<Trans>Assets to borrow</Trans>}
           localStorageName="borrowAssetsDashboardTableCollapse"
           withTopMargin
+          subChildrenComponent={
+            <Box sx={{ px: 6 }}>
+              {user?.totalCollateralMarketReferenceCurrency === '0' && (
+                <Alert severity="info">
+                  <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>{' '}
+                  {/* TODO: need fix text */}
+                </Alert>
+              )}
+              {user?.isInIsolationMode && (
+                <Alert severity="warning">
+                  <Trans>Borrow power and assets are limited due to Isolation mode.</Trans>{' '}
+                  {/* TODO: need fix text */}
+                </Alert>
+              )}
+              {isEModeActive && (
+                <Alert severity="warning">
+                  <Trans>E-mode message</Trans> {/* TODO: need fix text */}
+                </Alert>
+              )}
+              {+collateralUsagePercent >= 0.98 && (
+                <Alert severity="error">
+                  <Trans>A message (you are very close to liquidation).</Trans>{' '}
+                  {/* TODO: need fix text */}
+                </Alert>
+              )}
+            </Box>
+          }
         >
           <>
             <ListHeader head={head} />
