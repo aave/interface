@@ -1,6 +1,9 @@
 import { InterestRate } from '@aave/contract-helpers';
+import { Trans } from '@lingui/macro';
+import { Button } from '@mui/material';
 
 import { ListAPRColumn } from '../ListAPRColumn';
+import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListColumn } from '../ListColumn';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
@@ -14,6 +17,9 @@ export const BorrowedPositionsListItem = ({
   borrowRateMode,
   vIncentives,
   sIncentives,
+  isActive,
+  borrowingEnabled,
+  isFrozen,
 }: BorrowedPositionsItem) => {
   return (
     <ListItemWrapper symbol={reserve.symbol} iconSymbol={reserve.iconSymbol}>
@@ -31,8 +37,23 @@ export const BorrowedPositionsListItem = ({
       />
 
       <ListColumn />
-      <ListColumn maxWidth={85} />
-      <ListColumn maxWidth={85} />
+
+      <ListButtonsColumn>
+        <Button
+          disabled={!isActive}
+          variant="contained"
+          onClick={() => console.log('TODO: should be repay modal')}
+        >
+          <Trans>Repay</Trans>
+        </Button>
+        <Button
+          disabled={!isActive || !borrowingEnabled || isFrozen}
+          variant="outlined"
+          onClick={() => console.log('TODO: should be borrow modal')}
+        >
+          <Trans>Borrow</Trans>
+        </Button>
+      </ListButtonsColumn>
     </ListItemWrapper>
   );
 };

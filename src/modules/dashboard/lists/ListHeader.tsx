@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 
+import { ListButtonsColumn } from './ListButtonsColumn';
 import { ListColumn } from './ListColumn';
 
 interface ListHeaderProps {
@@ -25,8 +26,7 @@ export const ListHeader = ({ head }: ListHeaderProps) => {
         </ListColumn>
       ))}
 
-      <ListColumn maxWidth={85} />
-      <ListColumn maxWidth={85} />
+      <ListButtonsColumn />
     </Box>
   );
 };

@@ -1,6 +1,11 @@
+import { Trans } from '@lingui/macro';
+import { Button } from '@mui/material';
+
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
+import { Link, ROUTES } from '../../../../components/primitives/Link';
 import { ListAPRColumn } from '../ListAPRColumn';
+import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListColumn } from '../ListColumn';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
@@ -15,6 +20,9 @@ export const SupplyAssetsListItem = ({
   totalLiquidity,
   liquidityRate,
   aIncentives,
+  underlyingAsset,
+  isActive,
+  isFreezed,
 }: SupplyAssetsItem) => {
   return (
     <ListItemWrapper symbol={symbol} iconSymbol={iconSymbol}>
@@ -37,8 +45,19 @@ export const SupplyAssetsListItem = ({
       <ListAPRColumn value={Number(liquidityRate)} incentives={aIncentives} symbol={symbol} />
 
       <ListColumn />
-      <ListColumn maxWidth={85} />
-      <ListColumn maxWidth={85} />
+
+      <ListButtonsColumn>
+        <Button
+          disabled={!isActive || isFreezed || Number(walletBalance) <= 0}
+          variant="contained"
+          onClick={() => console.log('TODO: should be supply modal')}
+        >
+          <Trans>Supply</Trans>
+        </Button>
+        <Button variant="outlined" component={Link} href={ROUTES.reserveOverview(underlyingAsset)}>
+          <Trans>Details</Trans>
+        </Button>
+      </ListButtonsColumn>
     </ListItemWrapper>
   );
 };

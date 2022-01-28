@@ -1,4 +1,10 @@
+import { Trans } from '@lingui/macro';
+import { Button } from '@mui/material';
+
+import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
+import { isFeatureEnabled } from '../../../../utils/marketsAndNetworksConfig';
 import { ListAPRColumn } from '../ListAPRColumn';
+import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListColumn } from '../ListColumn';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
@@ -9,7 +15,12 @@ export const SuppliedPositionsListItem = ({
   underlyingBalance,
   underlyingBalanceUSD,
   aIncentives,
+  isActive,
+  isFrozen,
 }: SuppliedPositionsItem) => {
+  const { currentMarketData } = useProtocolDataContext();
+  const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
+
   return (
     <ListItemWrapper symbol={reserve.symbol} iconSymbol={reserve.iconSymbol}>
       <ListValueColumn
@@ -26,8 +37,34 @@ export const SuppliedPositionsListItem = ({
       />
 
       <ListColumn />
-      <ListColumn maxWidth={85} />
-      <ListColumn maxWidth={85} />
+
+      <ListButtonsColumn>
+        <Button
+          disabled={!isActive}
+          variant="contained"
+          onClick={() => console.log('TODO: should be withdraw modal')}
+        >
+          <Trans>Withdraw</Trans>
+        </Button>
+
+        {isSwapButton ? (
+          <Button
+            disabled={!isActive || isFrozen}
+            variant="outlined"
+            onClick={() => console.log('TODO: should be swap modal')}
+          >
+            <Trans>Swap</Trans>
+          </Button>
+        ) : (
+          <Button
+            disabled={!isActive || isFrozen}
+            variant="outlined"
+            onClick={() => console.log('TODO: should be supply modal')}
+          >
+            <Trans>Supply</Trans>
+          </Button>
+        )}
+      </ListButtonsColumn>
     </ListItemWrapper>
   );
 };
