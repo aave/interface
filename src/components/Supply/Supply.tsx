@@ -80,11 +80,10 @@ export const Supply = ({
   }
 
   // Calculation of future HF
-  const amountIntEth = valueToBigNumber(amountToSupply).multipliedBy(
-    poolReserve.priceInMarketReferenceCurrency
+  const amountIntEth = new BigNumber(amountToSupply).multipliedBy(
+    poolReserve.formattedPriceInMarketReferenceCurrency
   );
   const amountInUsd = amountIntEth.multipliedBy(marketReferencePriceInUsd).shiftedBy(-USD_DECIMALS);
-
   const totalCollateralMarketReferenceCurrencyAfter = valueToBigNumber(
     user.totalCollateralMarketReferenceCurrency
   ).plus(amountIntEth);
