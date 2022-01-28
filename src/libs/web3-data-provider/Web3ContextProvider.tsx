@@ -38,9 +38,10 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [web3Modal, setWeb3Modal] = useState<Web3Modal>(undefined as unknown as Web3Modal);
 
   useEffect(() => {
-    import('./modalOptions').then((m) => {
-      setWeb3Modal(m.getWeb3Modal());
-    });
+    if (!web3Modal)
+      import('./modalOptions').then((m) => {
+        setWeb3Modal(m.getWeb3Modal());
+      });
   }, [chainId, currentAccount]);
 
   // provider events subscriptions
@@ -54,15 +55,10 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       });
 
       providerInstance.on('networkChanged', async (chainId: number) => {
-        const providerNetwork = await provider?.getNetwork();
-        if (providerNetwork?.chainId !== chainId) {
-          setTimeout(() => window.location.reload(), 1);
-        } else {
-          setChainId(chainId);
-        }
+        connectWallet();
       });
     },
-    [provider?.connection.url]
+    [provider?.network.chainId]
   );
 
   // web 3 modal
@@ -131,7 +127,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         }
       }
     },
-    [provider?.connection.url]
+    [provider?.network.chainId]
   );
 
   useEffect(() => {
@@ -151,7 +147,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       }
       throw new Error('Error initializing permit signature');
     },
-    [provider?.connection.url, currentAccount]
+    [provider?.network.chainId, currentAccount]
   );
 
   // TODO: we use from instead of currentAccount because of the mock wallet.
@@ -170,7 +166,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       }
       throw new Error('Error sending transaction. Provider not found');
     },
-    [provider?.connection.url]
+    [provider?.network.chainId]
   );
 
   const getTxError = useCallback(
@@ -184,7 +180,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       }
       throw new Error('Error getting transaction. Provider not found');
     },
-    [provider?.connection.url]
+    [provider?.network.chainId]
   );
 
   const web3ProviderData = useMemo(
@@ -204,7 +200,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     [
       connectWallet,
       disconnectWallet,
-      provider?.connection.url,
+      provider?.network.chainId,
       connected,
       currentAccount,
       web3Modal,
@@ -219,7 +215,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   return (
     <Web3Context.Provider
       value={{
-        web3ProviderData,
+        web3ProviderData: { ...web3ProviderData },
       }}
     >
       {children}

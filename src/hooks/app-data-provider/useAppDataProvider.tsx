@@ -31,11 +31,13 @@ export const unPrefixSymbol = (symbol: string, prefix: string) => {
 export type ComputedReserveData = ReturnType<typeof formatReservesAndIncentives>[0] &
   ReserveDataHumanized & { iconSymbol: string };
 
-export interface AppDataContextType {
+export interface AppDataContextType<LoggedIn extends boolean = false> {
   reserves: ComputedReserveData[];
   // refreshPoolData?: () => Promise<void[]>;
   isUserHasDeposits: boolean;
-  user?: FormatUserSummaryAndIncentivesResponse & { earnedAPY: number; debtAPY: number };
+  user: LoggedIn extends true
+    ? FormatUserSummaryAndIncentivesResponse & { earnedAPY: number; debtAPY: number }
+    : (FormatUserSummaryAndIncentivesResponse & { earnedAPY: number; debtAPY: number }) | undefined;
   // refreshIncentives?: () => Promise<void>;
   // loading: boolean;
 

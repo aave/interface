@@ -10,25 +10,21 @@ import { AssetInput } from '../AssetInput';
 import {
   calculateHealthFactorFromBalancesBigUnits,
   ComputedUserReserve,
-  FormatUserSummaryAndIncentivesResponse,
   USD_DECIMALS,
   valueToBigNumber,
 } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
-import { BasicModal } from '../primitives/BasicModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { Trans } from '@lingui/macro';
 import { TxErrorView } from '../TxViews/Error';
 import { TxSuccessView } from '../TxViews/Success';
+import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 
 export type SupplyProps = {
-  poolReserve: ComputedReserveData;
-  userReserve: ComputedUserReserve;
-  walletBalance: string;
-  user: FormatUserSummaryAndIncentivesResponse;
-  supplyApy: string;
+  underlyingAsset: string;
+  handleClose: () => void;
 };
 
 export type TxState = {
@@ -36,27 +32,25 @@ export type TxState = {
   success: boolean;
 };
 
-export const Supply = ({
-  poolReserve,
-  userReserve,
-  walletBalance,
-  user,
-  supplyApy,
-}: SupplyProps) => {
-  const { marketReferencePriceInUsd } = useAppDataContext();
+export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps) => {
+  const { walletBalances } = useWalletBalances();
+  const { marketReferencePriceInUsd, reserves, user } = useAppDataContext();
+  const poolReserve = reserves.find(
+    (reserve) => reserve.underlyingAsset === underlyingAsset
+  ) as ComputedReserveData;
+  const supplyApy = poolReserve.supplyAPY;
+  const userReserve = user?.userReservesData.find(
+    (userReserve) => underlyingAsset === userReserve.underlyingAsset
+  ) as ComputedUserReserve;
+  const walletBalance = walletBalances[underlyingAsset]?.amount;
   const { currentChainId } = useProtocolDataContext();
   const { chainId: connectedChainId, switchNetwork } = useWeb3Context();
 
   const [txState, setTxState] = useState<TxState>({ success: false, error: undefined });
 
   const [amountToSupply, setAmountToSupply] = useState('');
-  const [open, setOpen] = useState(false);
 
   const networkConfig = getNetworkConfig(currentChainId);
-
-  const onClose = () => {
-    setOpen(false);
-  };
 
   // Calculate max amount to supply
   let maxAmountToSupply = valueToBigNumber(walletBalance);
@@ -134,61 +128,58 @@ export const Supply = ({
   const isWrongNetwork = currentChainId !== connectedChainId;
 
   return (
-    <div>
-      <BasicModal open={open} setOpen={onClose}>
-        {!txState.error && !txState.success && (
-          <>
-            <Typography variant="h2" sx={{ mb: '26px' }}>
-              Supply {poolReserve.symbol}
+    <>
+      {!txState.error && !txState.success && (
+        <>
+          <Typography variant="h2" sx={{ mb: '26px' }}>
+            Supply {poolReserve.symbol}
+          </Typography>
+          {isWrongNetwork && (
+            <Typography sx={{ mb: '24px', backgroundColor: '#FEF5E8', color: 'black' }}>
+              <Trans>Please Switch to {networkConfig.name}.</Trans>
+              <Button
+                variant="text"
+                sx={{ ml: '2px' }}
+                onClick={() => switchNetwork(currentChainId)}
+              >
+                <Typography color="black">Switch Network</Typography>
+              </Button>
             </Typography>
-            {isWrongNetwork && (
-              <Typography sx={{ mb: '24px', backgroundColor: '#FEF5E8', color: 'black' }}>
-                <Trans>Please Switch to {networkConfig.name}.</Trans>
-                <Button
-                  variant="text"
-                  sx={{ ml: '2px' }}
-                  onClick={() => switchNetwork(currentChainId)}
-                >
-                  <Typography color="black">Switch Network</Typography>
-                </Button>
-              </Typography>
-            )}
-            {showIsolationWarning && (
-              <Typography>You are about to enter into isolation. FAQ link</Typography>
-            )}
-            {showSupplyCapWarning && (
-              <Typography>You are about to get supply capped. FAQ link</Typography>
-            )}
-            <AssetInput
-              value={amountToSupply}
-              onChange={setAmountToSupply}
-              usdValue={amountInUsd.toString()}
-              balance={maxAmountToSupply.toString()}
-              symbol={poolReserve.symbol}
-            />
-            <SupplyDetails
-              supplyApy={supplyApy}
-              // supplyRewards={supplyRewards}
-              showHf={showHealthFactor}
-              healthFactor={user.healthFactor}
-              futureHealthFactor={healthFactorAfterDeposit.toString()}
-            />
-          </>
-        )}
-        {txState.error && <TxErrorView errorMessage={txState.error} />}
-        {txState.success && (
-          <TxSuccessView action="Supplied" amount={amountToSupply} symbol={poolReserve.symbol} />
-        )}
-        <SupplyActions
-          setTxState={setTxState}
-          poolReserve={poolReserve}
-          amount={amountToSupply}
-          amountToSupply={amountToSupply}
-          onClose={onClose}
-          isWrongNetwork={isWrongNetwork}
-        />
-      </BasicModal>
-      <Button onClick={() => setOpen(true)}>Supply</Button>
-    </div>
+          )}
+          {showIsolationWarning && (
+            <Typography>You are about to enter into isolation. FAQ link</Typography>
+          )}
+          {showSupplyCapWarning && (
+            <Typography>You are about to get supply capped. FAQ link</Typography>
+          )}
+          <AssetInput
+            value={amountToSupply}
+            onChange={setAmountToSupply}
+            usdValue={amountInUsd.toString()}
+            balance={maxAmountToSupply.toString()}
+            symbol={poolReserve.symbol}
+          />
+          <SupplyDetails
+            supplyApy={supplyApy}
+            // supplyRewards={supplyRewards}
+            showHf={showHealthFactor}
+            healthFactor={user.healthFactor}
+            futureHealthFactor={healthFactorAfterDeposit.toString()}
+          />
+        </>
+      )}
+      {txState.error && <TxErrorView errorMessage={txState.error} />}
+      {txState.success && (
+        <TxSuccessView action="Supplied" amount={amountToSupply} symbol={poolReserve.symbol} />
+      )}
+      <SupplyActions
+        setTxState={setTxState}
+        poolReserve={poolReserve}
+        amount={amountToSupply}
+        amountToSupply={amountToSupply}
+        onClose={handleClose}
+        isWrongNetwork={isWrongNetwork}
+      />
+    </>
   );
 };

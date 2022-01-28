@@ -1,6 +1,6 @@
 import Container from '@mui/material/Container';
 import * as React from 'react';
-import { Supply } from '../src/components/Supply/Supply';
+import { SupplyModal } from '../src/components/Supply/SupplyModal';
 import { useWalletBalances } from '../src/hooks/app-data-provider/useWalletBalances';
 
 import { ConnectWalletPaper } from '../src/components/ConnectWalletPaper';
@@ -9,35 +9,23 @@ import { MainLayout } from '../src/layouts/MainLayout';
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 import { DashboardTopPanel } from '../src/modules/dashboard/DashboardTopPanel';
 import { Box } from '@mui/material';
-import { ComputedUserReserve } from '@aave/math-utils';
 
 export default function Home() {
   // const { currentMarket } = useProtocolDataContext();
   const { walletBalances } = useWalletBalances();
   const { reserves, user } = useAppDataContext();
   const { currentAccount } = useWeb3Context();
+  const [supply, setSupply] = React.useState<string>('');
 
   return (
     <Container maxWidth="lg">
       <DashboardTopPanel user={user} currentAccount={currentAccount} />
       {currentAccount ? (
-        <Box>
+        <Box sx={{ pt: 100 }}>
           {reserves.map((reserve, index) => {
-            const userReserves = user?.userReservesData.filter(
-              (userReserve) => reserve.underlyingAsset === userReserve.underlyingAsset
-            );
             return (
-              <div key={index}>
+              <div key={index} onClick={() => setSupply(reserve.underlyingAsset)}>
                 {reserve.symbol} {walletBalances[reserve.underlyingAsset]?.amountUSD}
-                {user && (
-                  <Supply
-                    poolReserve={reserve}
-                    userReserve={userReserves ? userReserves[0] : ({} as ComputedUserReserve)}
-                    walletBalance={walletBalances[reserve.underlyingAsset]?.amount}
-                    user={user}
-                    supplyApy={reserve.supplyAPY}
-                  />
-                )}
               </div>
             );
           })}
@@ -45,6 +33,7 @@ export default function Home() {
       ) : (
         <ConnectWalletPaper />
       )}
+      <SupplyModal underlyingAsset={supply} handleClose={() => setSupply('')} open={!!supply} />
     </Container>
   );
 }

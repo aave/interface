@@ -9,7 +9,7 @@ import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { EthTransactionData, sendEthTx, signEthTx, TxStatusType } from 'src/utils/sendTxHelper';
-import { TxState } from './Supply';
+import { TxState } from './SupplyModal';
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { TextWithModal } from '../TextWithModal';
 import { ApprovalInfoContent } from '../infoModalContents/ApprovalInfoContent';
