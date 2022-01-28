@@ -4,11 +4,11 @@ import Typography from '@mui/material/Typography';
 import { InfoContentWrapper } from './InfoContentWrapper';
 
 // TODO: need texts
-export const CollateralInfoContent = () => {
+export const BorrowPowerInfoContent = () => {
   return (
-    <InfoContentWrapper caption={<Trans>Collateral</Trans>}>
+    <InfoContentWrapper caption={<Trans>Borrow power</Trans>}>
       <Typography>
-        <Trans>Collateral</Trans>
+        <Trans>Borrow power</Trans>
       </Typography>
     </InfoContentWrapper>
   );

@@ -1,6 +1,7 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 
+import { BorrowPowerInfoContent } from '../../../../components/infoModalContents/BorrowPowerInfoContent';
 import { RewardInfoContent } from '../../../../components/infoModalContents/RewardInfoContent';
 import { AppDataContextType } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { DashboardContentNoData } from '../../DashboardContentNoData';
@@ -47,6 +48,7 @@ export const BorrowedPositionsList = ({ listData, user }: BorrowedPositionsListP
                 title={<Trans>Borrow power used</Trans>}
                 value={collateralUsagePercent || 0}
                 percent
+                modalContent={<BorrowPowerInfoContent />}
               />
             </>
           )}

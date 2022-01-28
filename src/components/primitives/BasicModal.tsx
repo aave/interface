@@ -28,6 +28,9 @@ export const BasicModal = ({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
+        '.MuiPaper-root': {
+          outline: 'none',
+        },
       }}
     >
       <Paper

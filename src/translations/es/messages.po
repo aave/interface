@@ -39,11 +39,11 @@ msgstr ""
 msgid "About the app"
 msgstr "Sobre la app"
 
-#: src/components/infoModalContents/CollateralInfoContent.tsx:11
+#: src/components/infoModalContents/CollateralSwitchInfoContent.tsx:11
 msgid "Adding and removing assets as collateral"
 msgstr ""
 
-#: src/components/infoModalContents/CollateralInfoContent.tsx:13
+#: src/components/infoModalContents/CollateralSwitchInfoContent.tsx:13
 msgid "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
 msgstr ""
 
