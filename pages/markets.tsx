@@ -40,7 +40,7 @@ export default function Markets() {
               <TableCell align="center">Total borrowed</TableCell>
               <TableCell align="center">Borrow APY, variable</TableCell>
               <TableCell align="center">Borrow APY, stable</TableCell>
-              <TableCell align="right"></TableCell>
+              <TableCell align="right" />
             </TableRow>
           </TableHead>
           <TableBody>

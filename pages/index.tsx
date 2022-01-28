@@ -36,7 +36,7 @@ export default function Home() {
                     walletBalance={walletBalances[reserve.underlyingAsset]?.amount}
                     user={user}
                     supplyApy={reserve.supplyAPY}
-                  ></Supply>
+                  />
                 )}
               </div>
             );

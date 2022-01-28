@@ -186,7 +186,7 @@ export const Supply = ({
           amountToSupply={amountToSupply}
           onClose={onClose}
           isWrongNetwork={isWrongNetwork}
-        ></SupplyActions>
+        />
       </BasicModal>
       <Button onClick={() => setOpen(true)}>Supply</Button>
     </div>
