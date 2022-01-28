@@ -5,6 +5,7 @@ import { APYTypeInfoContent } from '../../../../components/infoModalContents/APY
 import { BorrowPowerInfoContent } from '../../../../components/infoModalContents/BorrowPowerInfoContent';
 import { AppDataContextType } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { DashboardContentNoData } from '../../DashboardContentNoData';
+import { DashboardEModeButton } from '../../DashboardEModeButton';
 import { DashboardListWrapper } from '../../DashboardListWrapper';
 import { ListHeader } from '../ListHeader';
 import { ListTopInfoItem } from '../ListTopInfoItem';
@@ -35,8 +36,11 @@ export const BorrowedPositionsList = ({ listData, user }: BorrowedPositionsListP
     <DashboardListWrapper
       title={<Trans>Your borrows</Trans>}
       localStorageName="borrowedAssetsDashboardTableCollapse"
-      // TODO: need to add e-mode flow
-      subTitleComponent={<>E-mode</>}
+      subTitleComponent={
+        <DashboardEModeButton
+          onClick={() => console.log('TODO: should be e-mode category select modal')}
+        />
+      }
       noData={!listData.length}
       topInfo={
         <>

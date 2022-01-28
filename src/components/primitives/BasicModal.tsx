@@ -32,6 +32,10 @@ export const BasicModal = ({
           outline: 'none',
         },
       }}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
     >
       <Paper
         sx={{

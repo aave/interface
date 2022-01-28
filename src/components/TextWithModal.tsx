@@ -42,7 +42,11 @@ export const TextWithModal = ({
             minWidth: 0,
             ml: '5px',
           }}
-          onClick={handleOpen}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleOpen();
+          }}
         >
           <SvgIcon sx={{ fontSize: iconSize, color: iconColor, borderRadius: '50%' }}>
             {icon || <QuestionMarkCircleIcon />}
