@@ -92,7 +92,7 @@ export default function Home() {
   });
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="xl">
       <DashboardTopPanel
         user={user}
         currentAccount={currentAccount}

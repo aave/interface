@@ -124,7 +124,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
   return {
     breakpoints: {
       keys: ['xs', 'sm', 'md', 'lg', 'xl'],
-      values: { xs: 0, sm: 768, md: 1024, lg: 1728, xl: 1920 },
+      values: { xs: 0, sm: 768, md: 1024, lg: 1400, xl: 1728 },
     },
     palette: {
       mode,
@@ -528,6 +528,25 @@ export function getThemedComponents(theme: Theme) {
             flexDirection: 'column',
             flex: 1,
             paddingBottom: '39px',
+            [theme.breakpoints.up('xs')]: {
+              paddingLeft: '10px',
+              paddingRight: '10px',
+            },
+            [theme.breakpoints.up('sm')]: {
+              paddingLeft: '20px',
+              paddingRight: '20px',
+            },
+            [theme.breakpoints.up('md')]: {
+              paddingLeft: '40px',
+              paddingRight: '40px',
+            },
+            [theme.breakpoints.up('lg')]: {
+              paddingLeft: '80px',
+              paddingRight: '80px',
+            },
+            [theme.breakpoints.up('xl')]: {
+              maxWidth: '1888px',
+            },
           },
         },
       },

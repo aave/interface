@@ -18,7 +18,7 @@ export default function Markets() {
   const { currentMarketData } = useProtocolDataContext();
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="xl">
       <MarketsTopPanel />
       <Paper
         sx={{

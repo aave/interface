@@ -1,10 +1,9 @@
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 
 import { ReserveIncentiveResponse } from '../../hooks/app-data-provider/useIncentiveData';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { NoData } from '../primitives/NoData';
-import { TokenIcon } from '../primitives/TokenIcon';
-import { IncentivesButton, IncentivesButtonWrapper } from './IncentivesButton';
+import { IncentivesButton } from './IncentivesButton';
 
 interface IncentivesCardProps {
   symbol: string;
@@ -13,8 +12,6 @@ interface IncentivesCardProps {
 }
 
 export const IncentivesCard = ({ symbol, value, incentives }: IncentivesCardProps) => {
-  const isFeiReward = symbol === 'FEI';
-
   return (
     <Box
       sx={{
@@ -31,26 +28,7 @@ export const IncentivesCard = ({ symbol, value, incentives }: IncentivesCardProp
         <NoData variant="main14" />
       )}
 
-      {isFeiReward ? (
-        <IncentivesButtonWrapper symbol={symbol}>
-          <Box sx={{ mr: 2 }}>
-            <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-              <TokenIcon symbol="TRIBE" sx={{ fontSize: `12px` }} />
-              <Typography
-                variant="main12"
-                color="text.secondary"
-                sx={{ ml: 1, lineHeight: '13px' }}
-              >
-                TRIBE
-              </Typography>
-            </Box>
-          </Box>
-
-          <Box>Fei modal</Box>
-        </IncentivesButtonWrapper>
-      ) : (
-        <IncentivesButton incentives={incentives} symbol={symbol} />
-      )}
+      <IncentivesButton incentives={incentives} symbol={symbol} />
     </Box>
   );
 };

@@ -1,46 +1,12 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
 import { Box, SvgIcon, Typography } from '@mui/material';
-import { ReactNode, useState } from 'react';
+import { useState } from 'react';
 import { ReserveIncentiveResponse } from 'src/hooks/app-data-provider/useIncentiveData';
 
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { TokenIcon } from '../primitives/TokenIcon';
 import { IncentivesInfoModal } from './IncentivesInfoModal';
-
-interface IncentivesButtonWrapperProps {
-  symbol: string;
-  children?: ReactNode;
-  onClick?: () => void;
-}
-
-export const IncentivesButtonWrapper = ({
-  symbol,
-  children,
-  onClick,
-}: IncentivesButtonWrapperProps) => {
-  const isFeiReward = symbol === 'FEI';
-  return (
-    <Box
-      sx={(theme) => ({
-        p: '2px 4px',
-        border: `1px solid ${theme.palette.divider}`,
-        borderRadius: '4px',
-        cursor: isFeiReward ? 'default' : 'pointer',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        transition: 'all 0.2s ease',
-        '&:hover': {
-          opacity: isFeiReward ? 1 : 0.6,
-        },
-      })}
-      onClick={() => !isFeiReward && onClick && onClick()}
-    >
-      {children}
-    </Box>
-  );
-};
 
 interface IncentivesButtonProps {
   symbol: string;
@@ -95,7 +61,22 @@ export const IncentivesButton = ({ incentives, symbol }: IncentivesButtonProps) 
 
   return (
     <>
-      <IncentivesButtonWrapper symbol={symbol} onClick={() => setOpen(true)}>
+      <Box
+        sx={(theme) => ({
+          p: '2px 4px',
+          border: `1px solid ${theme.palette.divider}`,
+          borderRadius: '4px',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          transition: 'opacity 0.2s ease',
+          '&:hover': {
+            opacity: 0.6,
+          },
+        })}
+        onClick={() => setOpen(true)}
+      >
         <Box sx={{ mr: 2 }}>{incentivesButtonValue()}</Box>
 
         <Box sx={{ display: 'inline-flex' }}>
@@ -135,7 +116,7 @@ export const IncentivesButton = ({ incentives, symbol }: IncentivesButtonProps) 
             )}
           </>
         </Box>
-      </IncentivesButtonWrapper>
+      </Box>
 
       {open && (
         <IncentivesInfoModal

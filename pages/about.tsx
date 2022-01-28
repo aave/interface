@@ -23,7 +23,7 @@ export default function About() {
     tokenSymbol: 'dai',
   };
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="xl">
       <Box
         sx={{
           my: 4,
