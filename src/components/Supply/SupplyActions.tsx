@@ -9,7 +9,7 @@ import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { EthTransactionData, sendEthTx, signEthTx, TxStatusType } from 'src/utils/sendTxHelper';
-import { SupplyState } from './Supply';
+import { TxState } from './Supply';
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { TextWithModal } from '../TextWithModal';
 import { ApprovalInfoContent } from '../infoModalContents/ApprovalInfoContent';
@@ -22,9 +22,16 @@ export type SupplyActionProps = {
   onClose: () => void;
   amount: string;
   isWrongNetwork: boolean;
-  supplyStep: SupplyState;
-  setSupplyStep: Dispatch<SetStateAction<SupplyState>>;
+  setTxState: Dispatch<SetStateAction<TxState>>;
 };
+
+export enum SupplyState {
+  amountInput = 0,
+  approval,
+  sendTx,
+  success,
+  error,
+}
 
 export const SupplyActions = ({
   amountToSupply,
@@ -32,8 +39,7 @@ export const SupplyActions = ({
   onClose,
   amount,
   isWrongNetwork,
-  supplyStep,
-  setSupplyStep,
+  setTxState,
 }: SupplyActionProps) => {
   const { signTxData, getTxError, sendTx } = useWeb3Context();
   const { lendingPool } = useTxBuilderContext();
@@ -42,6 +48,7 @@ export const SupplyActions = ({
 
   const networkConfig = getNetworkConfig(chainId);
 
+  const [supplyStep, setSupplyStep] = useState<SupplyState>(SupplyState.amountInput);
   // error
   // const [txError, setTxError] = useState<undefined | string | Error>();
 
@@ -152,6 +159,10 @@ export const SupplyActions = ({
           setSupplyStep(SupplyState.sendTx);
         } else if (approveTxData.txStatus === TxStatusType.error) {
           setSupplyStep(SupplyState.error);
+          setTxState({
+            success: false,
+            error: approveTxData.error,
+          });
           // setTxError(approveTxData.error);
         }
       }
@@ -163,10 +174,17 @@ export const SupplyActions = ({
       if (actionTxData.txStatus === TxStatusType.submitted) {
       } else if (actionTxData.txStatus === TxStatusType.confirmed && actionTxData.txReceipt) {
         setSupplyStep(SupplyState.success);
+        setTxState({
+          success: true,
+          error: undefined,
+        });
       } else if (actionTxData.txStatus === TxStatusType.error) {
         // setTxError(actionTxData.error);
         setSupplyStep(SupplyState.error);
-        // Maybe check here if error was in permit to give link to try again with approval
+        setTxState({
+          success: false,
+          error: actionTxData.error,
+        });
       }
     }
   }, [actionTxData?.txStatus]);
@@ -177,6 +195,10 @@ export const SupplyActions = ({
     setActionTxData({} as EthTransactionData);
     // setSignature(undefined);
     setCustomGasPrice(null);
+    setTxState({
+      success: false,
+      error: undefined,
+    });
     onClose();
   };
 
@@ -187,6 +209,10 @@ export const SupplyActions = ({
   const handleRetryWithApproval = () => {
     setSupplyStep(SupplyState.amountInput);
     setDepositWithPermitEnable(false);
+    setTxState({
+      success: false,
+      error: undefined,
+    });
   };
 
   // Button states

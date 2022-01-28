@@ -31,13 +31,10 @@ export type SupplyProps = {
   supplyApy: string;
 };
 
-export enum SupplyState {
-  amountInput = 0,
-  approval,
-  sendTx,
-  success,
-  error,
-}
+export type TxState = {
+  error: string | undefined;
+  success: boolean;
+};
 
 export const Supply = ({
   poolReserve,
@@ -50,7 +47,7 @@ export const Supply = ({
   const { currentChainId } = useProtocolDataContext();
   const { chainId: connectedChainId, switchNetwork } = useWeb3Context();
 
-  const [supplyStep, setSupplyStep] = useState<SupplyState>(SupplyState.amountInput);
+  const [txState, setTxState] = useState<TxState>({ success: false, error: undefined });
 
   const [amountToSupply, setAmountToSupply] = useState('');
   const [open, setOpen] = useState(false);
@@ -140,7 +137,7 @@ export const Supply = ({
   return (
     <div>
       <BasicModal open={open} setOpen={onClose}>
-        {supplyStep < SupplyState.success && (
+        {!txState.error && !txState.success && (
           <>
             <Typography variant="h2" sx={{ mb: '26px' }}>
               Supply {poolReserve.symbol}
@@ -179,13 +176,12 @@ export const Supply = ({
             />
           </>
         )}
-        {supplyStep === SupplyState.error && <TxErrorView errorMessage="test" />}
-        {supplyStep === SupplyState.success && (
+        {txState.error && <TxErrorView errorMessage={txState.error} />}
+        {txState.success && (
           <TxSuccessView action="Supplied" amount={amountToSupply} symbol={poolReserve.symbol} />
         )}
         <SupplyActions
-          supplyStep={supplyStep}
-          setSupplyStep={setSupplyStep}
+          setTxState={setTxState}
           poolReserve={poolReserve}
           amount={amountToSupply}
           amountToSupply={amountToSupply}
