@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import { TextWithModal, TextWithModalProps } from '../TextWithModal';
 import { InfoContentWrapper } from './InfoContentWrapper';
 
-export const RewardInfoContent = ({ ...rest }: TextWithModalProps) => {
+export const APYTypeInfoContent = ({ ...rest }: TextWithModalProps) => {
   return (
     <TextWithModal icon={<InformationCircleIcon />} iconSize={14} withContentButton {...rest}>
       <InfoContentWrapper caption={<Trans>Stable Interest</Trans>}>

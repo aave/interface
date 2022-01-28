@@ -1,8 +1,8 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 
+import { APYTypeInfoContent } from '../../../../components/infoModalContents/APYTypeInfoContent';
 import { BorrowPowerInfoContent } from '../../../../components/infoModalContents/BorrowPowerInfoContent';
-import { RewardInfoContent } from '../../../../components/infoModalContents/RewardInfoContent';
 import { AppDataContextType } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { DashboardContentNoData } from '../../DashboardContentNoData';
 import { DashboardListWrapper } from '../../DashboardListWrapper';
@@ -28,7 +28,7 @@ export const BorrowedPositionsList = ({ listData, user }: BorrowedPositionsListP
   const head = [
     <Trans key="Debt">Debt</Trans>,
     <Trans key="APY">APY</Trans>,
-    <RewardInfoContent text={<Trans>Reward</Trans>} key="Reward" variant="subheader2" />,
+    <APYTypeInfoContent text={<Trans>APY type</Trans>} key="APY type" variant="subheader2" />,
   ];
 
   return (

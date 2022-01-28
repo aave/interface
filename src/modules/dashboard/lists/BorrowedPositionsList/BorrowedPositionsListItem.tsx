@@ -5,6 +5,7 @@ import { Button } from '@mui/material';
 import { ListAPRColumn } from '../ListAPRColumn';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListColumn } from '../ListColumn';
+import { ListItemAPYButton } from '../ListItemAPYButton';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
 import { BorrowedPositionsItem } from './types';
@@ -20,6 +21,7 @@ export const BorrowedPositionsListItem = ({
   isActive,
   borrowingEnabled,
   isFrozen,
+  stableBorrowRateEnabled,
 }: BorrowedPositionsItem) => {
   return (
     <ListItemWrapper symbol={reserve.symbol} iconSymbol={reserve.iconSymbol}>
@@ -36,7 +38,14 @@ export const BorrowedPositionsListItem = ({
         symbol={reserve.symbol}
       />
 
-      <ListColumn />
+      <ListColumn>
+        <ListItemAPYButton
+          stableBorrowRateEnabled={stableBorrowRateEnabled}
+          borrowRateMode={borrowRateMode}
+          disabled={!stableBorrowRateEnabled || isFrozen || !isActive}
+          onClick={() => console.log('TODO: should be switch APY mode modal')}
+        />
+      </ListColumn>
 
       <ListButtonsColumn>
         <Button
