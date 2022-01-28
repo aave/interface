@@ -19,10 +19,17 @@ export const DashboardListTopPanel = ({
 }: DashboardListTopPanelProps) => {
   return (
     <Box
-      sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: 6, py: 2 }}
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        px: 6,
+        py: 2,
+        pl: '27px',
+      }}
     >
       <FormControlLabel
-        control={<Checkbox />}
+        control={<Checkbox sx={{ p: '6px' }} />}
         checked={value}
         onChange={() => toggleLocalStorageClick(value, onClick, localStorageName)}
         label={<Trans>Show assets with 0 balance</Trans>}

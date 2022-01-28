@@ -117,7 +117,7 @@ export const BorrowAssetsList = () => {
           localStorageName="borrowAssetsDashboardTableCollapse"
           withTopMargin
           subChildrenComponent={
-            <Box sx={{ px: 6 }}>
+            <Box sx={{ px: 6, mb: 4 }}>
               {user?.totalCollateralMarketReferenceCurrency === '0' && (
                 <Alert severity="info">
                   <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>{' '}

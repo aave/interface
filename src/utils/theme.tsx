@@ -412,6 +412,12 @@ export function getThemedComponents(theme: Theme) {
               },
             },
           },
+          {
+            props: { color: 'primary', variant: 'outlined' },
+            style: {
+              borderColor: theme.palette.divider,
+            },
+          },
         ],
       },
       MuiTypography: {
