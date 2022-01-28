@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Grid, Typography } from '@mui/material';
+import { parseUnits } from 'ethers/lib/utils';
 import React from 'react';
 import { GasStation } from 'src/components/GasStation/GasStation';
 
@@ -76,7 +77,7 @@ export const SupplyDetails: React.FC<SupplyDetailsProps> = ({
           <Trans>Estimated Gas Costs</Trans>
         </FormInfo>
         <FormValue>
-          <GasStation />
+          <GasStation gasLimit={parseUnits('220000', 'wei')} />
         </FormValue>
       </FormRow>
     </Grid>
