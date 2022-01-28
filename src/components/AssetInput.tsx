@@ -6,7 +6,7 @@ import { TokenIcon } from './primitives/TokenIcon';
 
 export interface AssetInputProps {
   value: string;
-  usdValue: string;
+  usdValue?: string;
   balance: string;
   symbol: string;
   onChange: (value: string) => void;
@@ -15,13 +15,13 @@ export interface AssetInputProps {
 
 export const AssetInput: React.FC<AssetInputProps> = ({
   value,
-  usdValue,
+  // usdValue,
   balance,
   symbol,
   onChange,
   disabled,
 }) => {
-  const usdValueFormat = `${usdValue} USD`;
+  // const usdValueFormat = `${usdValue} USD`;
 
   const setMaxBalance = () => {
     onChange(balance);

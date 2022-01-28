@@ -5,7 +5,7 @@ import {
 } from '../../hooks/app-data-provider/useAppDataProvider';
 import { SupplyDetails } from './SupplyDetails';
 import { SupplyActions } from './SupplyActions';
-import { Button, Divider, Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { AssetInput } from '../AssetInput';
 import {
   calculateHealthFactorFromBalancesBigUnits,

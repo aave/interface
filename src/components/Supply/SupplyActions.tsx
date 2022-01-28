@@ -43,7 +43,7 @@ export const SupplyActions = ({
   const networkConfig = getNetworkConfig(chainId);
 
   // error
-  const [txError, setTxError] = useState<undefined | string | Error>();
+  // const [txError, setTxError] = useState<undefined | string | Error>();
 
   // tx obj
   const [approveTxData, setApproveTxData] = useState({} as EthTransactionData);
@@ -99,7 +99,7 @@ export const SupplyActions = ({
         setSupplyStep(SupplyState.approval);
       }
     } catch (error) {
-      setTxError(error);
+      // setTxError(error);
       setSupplyStep(SupplyState.error);
     }
   };
@@ -152,7 +152,7 @@ export const SupplyActions = ({
           setSupplyStep(SupplyState.sendTx);
         } else if (approveTxData.txStatus === TxStatusType.error) {
           setSupplyStep(SupplyState.error);
-          setTxError(approveTxData.error);
+          // setTxError(approveTxData.error);
         }
       }
     }
@@ -164,7 +164,7 @@ export const SupplyActions = ({
       } else if (actionTxData.txStatus === TxStatusType.confirmed && actionTxData.txReceipt) {
         setSupplyStep(SupplyState.success);
       } else if (actionTxData.txStatus === TxStatusType.error) {
-        setTxError(actionTxData.error);
+        // setTxError(actionTxData.error);
         setSupplyStep(SupplyState.error);
         // Maybe check here if error was in permit to give link to try again with approval
       }
@@ -172,7 +172,7 @@ export const SupplyActions = ({
   }, [actionTxData?.txStatus]);
 
   const handleClose = () => {
-    setTxError(undefined);
+    // setTxError(undefined);
     setApproveTxData({} as EthTransactionData);
     setActionTxData({} as EthTransactionData);
     // setSignature(undefined);
