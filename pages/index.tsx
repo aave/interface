@@ -1,6 +1,5 @@
 import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import Container from '@mui/material/Container';
-import { useState } from 'react';
 
 import { ConnectWalletPaper } from '../src/components/ConnectWalletPaper';
 import { useAppDataContext } from '../src/hooks/app-data-provider/useAppDataProvider';
@@ -17,7 +16,8 @@ export default function Home() {
   const { currentNetworkConfig } = useProtocolDataContext();
   const { user, reserves } = useAppDataContext();
 
-  const [isBorrow, setIsBorrow] = useState(false);
+  // TODO: need for adaptive
+  // const [isBorrow, setIsBorrow] = useState(false);
 
   const suppliedPositions: SuppliedPositionsItem[] = [];
   const borrowedPositions: BorrowedPositionsItem[] = [];
@@ -103,7 +103,7 @@ export default function Home() {
         <DashboardContentWrapper
           suppliedPositions={suppliedPositions}
           borrowedPositions={borrowedPositions}
-          isBorrow={isBorrow}
+          isBorrow={true}
           user={user}
         />
       ) : (

@@ -7,6 +7,7 @@ import { Link, ROUTES } from '../../../../components/primitives/Link';
 import { ListAPRColumn } from '../ListAPRColumn';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListColumn } from '../ListColumn';
+import { ListItemCanBeCollateral } from '../ListItemCanBeCollateral';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
 import { SupplyAssetsItem } from './types';
@@ -23,6 +24,8 @@ export const SupplyAssetsListItem = ({
   underlyingAsset,
   isActive,
   isFreezed,
+  isIsolated,
+  usageAsCollateralEnabledOnUser,
 }: SupplyAssetsItem) => {
   return (
     <ListItemWrapper symbol={symbol} iconSymbol={iconSymbol}>
@@ -44,7 +47,12 @@ export const SupplyAssetsListItem = ({
 
       <ListAPRColumn value={Number(liquidityRate)} incentives={aIncentives} symbol={symbol} />
 
-      <ListColumn />
+      <ListColumn>
+        <ListItemCanBeCollateral
+          isIsolated={isIsolated}
+          usageAsCollateralEnabled={usageAsCollateralEnabledOnUser}
+        />
+      </ListColumn>
 
       <ListButtonsColumn>
         <Button

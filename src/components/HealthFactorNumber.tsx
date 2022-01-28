@@ -35,7 +35,15 @@ export const HealthFactorNumber = ({ value, onInfoClick, ...rest }: HealthFactor
 
       {onInfoClick && (
         <IconButton
-          sx={{ width: 15, height: 15, borderRadius: '50%', p: 0, minWidth: 0, ml: 1, ml: '5px' }}
+          sx={{
+            width: 15,
+            height: 15,
+            borderRadius: '50%',
+            p: 0,
+            minWidth: 0,
+            ml: 1,
+            marginLeft: '5px',
+          }}
           onClick={onInfoClick}
         >
           <SvgIcon sx={{ fontSize: 15, color: '#FFFFFF3B' }}>

@@ -6,6 +6,7 @@ import { isFeatureEnabled } from '../../../../utils/marketsAndNetworksConfig';
 import { ListAPRColumn } from '../ListAPRColumn';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListColumn } from '../ListColumn';
+import { ListItemUsedAsCollateral } from '../ListItemUsedAsCollateral';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
 import { SuppliedPositionsItem } from './types';
@@ -17,6 +18,9 @@ export const SuppliedPositionsListItem = ({
   aIncentives,
   isActive,
   isFrozen,
+  isIsolated,
+  canBeEnabledAsCollateral,
+  usageAsCollateralEnabledOnUser,
 }: SuppliedPositionsItem) => {
   const { currentMarketData } = useProtocolDataContext();
   const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
@@ -36,7 +40,14 @@ export const SuppliedPositionsListItem = ({
         symbol={reserve.symbol}
       />
 
-      <ListColumn />
+      <ListColumn>
+        <ListItemUsedAsCollateral
+          isIsolated={isIsolated}
+          usageAsCollateralEnabledOnUser={usageAsCollateralEnabledOnUser}
+          canBeEnabledAsCollateral={canBeEnabledAsCollateral}
+          onToggleSwitch={() => console.log('TODO: should be collateral swap modal')}
+        />
+      </ListColumn>
 
       <ListButtonsColumn>
         <Button

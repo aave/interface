@@ -36,9 +36,6 @@ export const SupplyAssetsList = () => {
   );
 
   const tokensToSupply = reserves.map((reserve: ComputedReserveData) => {
-    const userReserve = user?.userReservesData.find(
-      (userRes) => userRes.reserve.symbol === reserve.symbol
-    );
     const walletBalance = walletBalances[reserve.underlyingAsset]?.amount;
     const walletBalanceUSD = walletBalances[reserve.underlyingAsset]?.amountUSD;
 
@@ -73,10 +70,7 @@ export const SupplyAssetsList = () => {
       availableToDeposit: availableToDeposit.toNumber() <= 0 ? '0' : availableToDeposit.toString(),
       availableToDepositUSD:
         Number(availableToDepositUSD) <= 0 ? '0' : availableToDepositUSD.toString(),
-      underlyingBalance: userReserve ? userReserve.underlyingBalance : '0',
-      underlyingBalanceInUSD: userReserve ? userReserve.underlyingBalanceUSD : '0',
       liquidityRate: reserve.supplyAPY,
-      borrowingEnabled: reserve.borrowingEnabled,
       interestHistory: [],
       aIncentives: reserve.aIncentivesData ? reserve.aIncentivesData : [],
       vIncentives: reserve.vIncentivesData ? reserve.vIncentivesData : [],

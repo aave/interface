@@ -1,7 +1,6 @@
 import { ReserveIncentiveResponse } from '../../../../hooks/app-data-provider/useIncentiveData';
 
 export type SupplyAssetsItem = {
-  id: string;
   underlyingAsset: string;
   symbol: string;
   iconSymbol: string;
@@ -9,11 +8,8 @@ export type SupplyAssetsItem = {
   walletBalanceUSD: string;
   availableToDeposit: string;
   availableToDepositUSD: string;
-  underlyingBalance: number | string;
-  underlyingBalanceInUSD: number | string;
   liquidityRate: number | string;
   aIncentives: ReserveIncentiveResponse[];
-  borrowingEnabled: boolean;
   isFreezed?: boolean;
   isIsolated: boolean;
   totalLiquidity: string;

@@ -25,7 +25,7 @@ export const IncentivesCard = ({ symbol, value, incentives }: IncentivesCardProp
       {value.toString() !== '-1' ? (
         <FormattedNumber value={value} percent variant="main14" />
       ) : (
-        <NoData variant="main14" />
+        <NoData variant="main14" color="text.secondary" />
       )}
 
       <IncentivesButton incentives={incentives} symbol={symbol} />

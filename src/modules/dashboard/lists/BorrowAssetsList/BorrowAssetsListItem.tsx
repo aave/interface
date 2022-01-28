@@ -23,8 +23,6 @@ export const BorrowAssetsListItem = ({
   sIncentives,
   underlyingAsset,
   isFreezed,
-  borrowingEnabled,
-  borrowableInIsolation,
 }: BorrowAssetsItem) => {
   const borrowButtonDisable = isFreezed || Number(availableBorrows) <= 0;
 
