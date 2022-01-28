@@ -1,24 +1,24 @@
 import React from 'react';
+import useGetGasPrices, { GetGasPricesHook } from '../../hooks/useGetGasPrices';
 
 export enum GasOption {
   Slow = 'slow',
   Normal = 'normal',
   Fast = 'fast',
   Custom = 'custom',
-  Default = '-',
 }
 
 type Action =
   | { type: 'setGasOption'; value: GasOption }
-  | { type: 'setCustomGasOption'; value: number };
+  | { type: 'setCustomGasOption'; value: string };
 
 type Dispatch = (action: Action) => void;
 
-type State = { gasOption: GasOption; customGas: number };
+type State = { gasOption: GasOption; customGas: string };
 
-const GasStationContext = React.createContext<{ state: State; dispatch: Dispatch } | undefined>(
-  undefined
-);
+const GasStationContext = React.createContext<
+  { state: State; dispatch: Dispatch; gasPriceData: GetGasPricesHook } | undefined
+>(undefined);
 
 function gasStationReducer(state: State, action: Action) {
   switch (action.type) {
@@ -34,15 +34,17 @@ function gasStationReducer(state: State, action: Action) {
 const GasStationProvider: React.FC = ({ children }) => {
   const [state, dispatch] = React.useReducer(gasStationReducer, {
     gasOption: GasOption.Fast,
-    customGas: 100,
+    customGas: '100',
   });
+  const gasPriceData = useGetGasPrices();
 
-  const value = { state, dispatch };
+  const value = { state, dispatch, gasPriceData };
   return <GasStationContext.Provider value={value}>{children}</GasStationContext.Provider>;
 };
 
 function useGasStation() {
   const context = React.useContext(GasStationContext);
+
   if (context === undefined) {
     throw new Error('useGasStation must be used within a GasStationProvider');
   }
