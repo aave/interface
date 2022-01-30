@@ -1,8 +1,9 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, InputAdornment, TextField, Typography } from '@mui/material';
+import { Box, Button, Typography, InputBase } from '@mui/material';
 import React from 'react';
 
 import { TokenIcon } from './primitives/TokenIcon';
+import { FormattedNumber } from './primitives/FormattedNumber';
 
 export interface AssetInputProps {
   value: string;
@@ -21,12 +22,6 @@ export const AssetInput: React.FC<AssetInputProps> = ({
   onChange,
   disabled,
 }) => {
-  // const usdValueFormat = `${usdValue} USD`;
-
-  const setMaxBalance = () => {
-    onChange(balance);
-  };
-
   const onInputChange:
     | React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
     | undefined = (event) => {
@@ -34,45 +29,34 @@ export const AssetInput: React.FC<AssetInputProps> = ({
   };
 
   return (
-    <Box sx={{ mb: '30px' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Typography variant="description">
-          <Trans>Amount</Trans>
-        </Typography>
-        <Box sx={{ display: 'flex' }}>
-          <Typography variant="description" sx={{ marginRight: '2px' }}>
-            <Trans>Available</Trans>
-          </Typography>
-          <Typography variant="secondary14">{balance}</Typography>
-        </Box>
+    <Box sx={{ p: '8px 12px', border: '1px solid black' }}>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <InputBase
+          sx={{ flex: 1 }}
+          placeholder="0.00"
+          onChange={onInputChange}
+          disabled={disabled}
+          value={value}
+          inputProps={{
+            inputMode: 'numeric',
+            pattern: '[0-9]*',
+            'aria-label': 'amount input',
+          }}
+        />
+        <TokenIcon symbol={symbol} sx={{ mx: '4px' }} />
+        <Typography>{symbol}</Typography>
       </Box>
-      <TextField
-        // helperText={usdValueFormat}
-        onChange={onInputChange}
-        value={value}
-        autoFocus
-        fullWidth
-        disabled={disabled}
-        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <TokenIcon symbol={symbol} sx={{ width: 32, height: 32 }} />
-            </InputAdornment>
-          ),
-          endAdornment: (
-            <InputAdornment position="end">
-              <Button
-                variant="outlined"
-                sx={{ width: 53, height: 32, textTransform: 'none', fontWeight: '600' }}
-                onClick={setMaxBalance}
-              >
-                <Trans>Max</Trans>
-              </Button>
-            </InputAdornment>
-          ),
-        }}
-      />
+      <Box sx={{ display: 'flex', alignItems: 'center', pt: '4px' }}>
+        <Typography sx={{ flexGrow: 1 }}>
+          <FormattedNumber value={balance} compact symbol="USD" />
+        </Typography>
+        <Typography>
+          Balance <FormattedNumber value={balance} compact />
+        </Typography>
+        <Button size="small" sx={{ minWidth: 0 }} onClick={() => onChange(balance)}>
+          <Trans>Max</Trans>
+        </Button>
+      </Box>
     </Box>
   );
 };

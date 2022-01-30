@@ -99,7 +99,7 @@ export const useTransactionHandler = ({
   };
 
   const action = async () => {
-    if (usePermit && handleGetPermitTxns) {
+    if (approvalTx && usePermit && handleGetPermitTxns) {
       if (!signature) throw new Error('signature needed');
       const txns = await handleGetPermitTxns(signature);
       const params = await txns[0].tx();
@@ -111,7 +111,7 @@ export const useTransactionHandler = ({
         },
       });
     }
-    if (!usePermit && actionTx) {
+    if ((!usePermit || !approvalTx) && actionTx) {
       const params = await actionTx.tx();
       if (customGasPrice) params.gasPrice = BigNumber.from(customGasPrice);
       return processTx({
