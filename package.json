@@ -22,8 +22,8 @@
     "gql-gen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
-    "@aave/contract-helpers": "0.28.0",
-    "@aave/math-utils": "0.28.0",
+    "@aave/contract-helpers": "0.28.3-498cfb158457bb5837b150964319d768020ccee9.0+498cfb1",
+    "@aave/math-utils": "0.28.3-498cfb158457bb5837b150964319d768020ccee9.0+498cfb1",
     "@apollo/client": "^3.5.7",
     "@bumped-inc/storybook-addon-lingui-v3": "^0.0.4",
     "@emotion/cache": "latest",
@@ -38,7 +38,7 @@
     "@lingui/react": "^3.13.1",
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
-    "@toruslabs/torus-embed": "^1.19.0",
+    "@toruslabs/torus-embed": "^1.20.3",
     "@walletconnect/web3-provider": "^1.7.1",
     "dayjs": "^1.10.7",
     "eth-provider": "^0.10.0",
@@ -46,7 +46,7 @@
     "ethers": "^5.5.3",
     "graphql": "^16.2.0",
     "graphql-ws": "^5.5.5",
-    "next": "latest",
+    "next": "12.0.9",
     "react": "latest",
     "react-dom": "latest",
     "reflect-metadata": "^0.1.13",

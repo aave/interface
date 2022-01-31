@@ -1,6 +1,7 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import * as React from 'react';
+
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';

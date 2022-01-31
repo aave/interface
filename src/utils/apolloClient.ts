@@ -125,7 +125,12 @@ const getGovernanceLink = (link?: ApolloLink) => {
 };
 
 const getStakeLink = (link?: ApolloLink) => {
-  if (stakeConfig && process.browser) {
+  if (
+    stakeConfig &&
+    stakeConfig.wsStakeDataUrl &&
+    stakeConfig.queryStakeDataUrl &&
+    process.browser
+  ) {
     const condition = (operation: Operation) =>
       operation.getContext().target === APOLLO_QUERY_TARGET.STAKE;
     const http = new HttpLink({ uri: stakeConfig.queryStakeDataUrl });

@@ -1,5 +1,6 @@
 import { ReserveDataHumanized } from '@aave/contract-helpers';
 import {
+  ComputedUserReserve,
   formatReservesAndIncentives,
   formatUserSummaryAndIncentives,
   FormatUserSummaryAndIncentivesResponse,
@@ -31,13 +32,16 @@ export const unPrefixSymbol = (symbol: string, prefix: string) => {
 export type ComputedReserveData = ReturnType<typeof formatReservesAndIncentives>[0] &
   ReserveDataHumanized & { iconSymbol: string };
 
-export interface AppDataContextType<LoggedIn extends boolean = false> {
+export type ComputedUserReserveData = ComputedUserReserve<ComputedReserveData>;
+
+export interface AppDataContextType {
   reserves: ComputedReserveData[];
   // refreshPoolData?: () => Promise<void[]>;
   isUserHasDeposits: boolean;
-  user: LoggedIn extends true
-    ? FormatUserSummaryAndIncentivesResponse & { earnedAPY: number; debtAPY: number }
-    : (FormatUserSummaryAndIncentivesResponse & { earnedAPY: number; debtAPY: number }) | undefined;
+  user?: FormatUserSummaryAndIncentivesResponse<ComputedReserveData> & {
+    earnedAPY: number;
+    debtAPY: number;
+  };
   // refreshIncentives?: () => Promise<void>;
   // loading: boolean;
 
@@ -100,13 +104,15 @@ export const AppDataProvider: React.FC = ({ children }) => {
     marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
     marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
     reserveIncentives: reservesIncentivesData?.reservesIncentives || [],
-  });
+  })
+    .map((r) => ({ ...r, ...fetchIconSymbolAndName(r) }))
+    .sort(reserveSortFn);
 
   const userReserves: UserReserveData[] = userReservesData?.userData.userReserves || [];
 
   const userEmodeCategoryId = userReservesData?.userData.userEmodeCategoryId || 0;
 
-  const user: FormatUserSummaryAndIncentivesResponse = formatUserSummaryAndIncentives({
+  const user = formatUserSummaryAndIncentives({
     currentTimestamp,
     marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
     marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
@@ -179,11 +185,12 @@ export const AppDataProvider: React.FC = ({ children }) => {
   return (
     <AppDataContext.Provider
       value={{
-        reserves: formattedPoolReserves
-          .map((r) => ({ ...r, ...fetchIconSymbolAndName(r) }))
-          .sort(reserveSortFn),
+        reserves: formattedPoolReserves,
         user: {
           ...user,
+          userReservesData: user.userReservesData.sort((a, b) =>
+            reserveSortFn(a.reserve, b.reserve)
+          ),
           earnedAPY: proportions.positiveProportion
             .dividedBy(user.netWorthUSD)
             .multipliedBy(100)
@@ -222,7 +229,7 @@ const stable = [
   'SUSD',
 ];
 
-const reserveSortFn = (a: ComputedReserveData, b: ComputedReserveData) => {
+const reserveSortFn = (a: { iconSymbol: string }, b: { iconSymbol: string }) => {
   const aIsStable = stable.includes(a.iconSymbol);
   const bIsStable = stable.includes(b.iconSymbol);
   if (aIsStable && !bIsStable) return -1;

@@ -10,7 +10,7 @@ import { MainLayout } from '../src/layouts/MainLayout';
 
 export default function About() {
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="xl">
       <Box
         sx={{
           my: 4,

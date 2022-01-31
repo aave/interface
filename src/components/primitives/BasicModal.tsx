@@ -14,7 +14,7 @@ export const BasicModal = ({
   open,
   setOpen,
   withCloseButton = true,
-  contentMaxWidth = 500,
+  contentMaxWidth = 400,
   children,
   ...props
 }: BasicModalProps) => {
@@ -29,6 +29,13 @@ export const BasicModal = ({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
+        '.MuiPaper-root': {
+          outline: 'none',
+        },
+      }}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
       }}
       {...props}
     >
@@ -39,8 +46,7 @@ export const BasicModal = ({
           overflowY: 'auto',
           maxWidth: `${contentMaxWidth}px`,
           maxHeight: 'calc(100vh - 20px)',
-          px: 5,
-          py: 6,
+          p: 6,
         }}
       >
         {children}
