@@ -12,13 +12,14 @@ import {
 import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
 import { Settings } from '@mui/icons-material';
 import { Select, Trans } from '@lingui/macro';
-import { GasOption, useGasStation } from './GasStationProvider';
+import { GasOption } from './GasStationProvider';
 import { BigNumber } from 'ethers/lib/ethers';
 import { GasButton } from './GasButton';
 import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvider';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import { ResponseGasPrice } from '../../hooks/useGetGasPrices';
 import { FormattedNumber } from '../primitives/FormattedNumber';
+import { useGasStation } from 'src/hooks/useGasStation';
 
 export interface GasDropdownProps {
   open: boolean;

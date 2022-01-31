@@ -16,7 +16,7 @@ type Dispatch = (action: Action) => void;
 
 type State = { gasOption: GasOption; customGas: string };
 
-const GasStationContext = React.createContext<
+export const GasStationContext = React.createContext<
   { state: State; dispatch: Dispatch; gasPriceData: GetGasPricesHook } | undefined
 >(undefined);
 
@@ -31,7 +31,7 @@ function gasStationReducer(state: State, action: Action) {
   }
 }
 
-const GasStationProvider: React.FC = ({ children }) => {
+export const GasStationProvider: React.FC = ({ children }) => {
   const [state, dispatch] = React.useReducer(gasStationReducer, {
     gasOption: GasOption.Fast,
     customGas: '100',
@@ -41,14 +41,3 @@ const GasStationProvider: React.FC = ({ children }) => {
   const value = { state, dispatch, gasPriceData };
   return <GasStationContext.Provider value={value}>{children}</GasStationContext.Provider>;
 };
-
-function useGasStation() {
-  const context = React.useContext(GasStationContext);
-
-  if (context === undefined) {
-    throw new Error('useGasStation must be used within a GasStationProvider');
-  }
-  return context;
-}
-
-export { GasStationProvider, useGasStation };
