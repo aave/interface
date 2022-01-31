@@ -27,11 +27,7 @@ export default function Faucet() {
       (reserve) =>
         reserve.symbol.toUpperCase() !== currentNetworkConfig.baseAssetSymbol &&
         !reserve.isFrozen &&
-        reserve.symbol.toUpperCase() !== 'WETH' &&
-        reserve.symbol.toUpperCase() !== 'WFTM' &&
-        reserve.symbol.toUpperCase() !== 'WONE' &&
-        reserve.symbol.toUpperCase() !== 'WAVAX' &&
-        reserve.symbol.toUpperCase() !== 'WMATIC'
+        reserve.symbol.toUpperCase() !== currentNetworkConfig.wrappedBaseAssetSymbol
     )
     .map((reserve) => {
       const walletBalanceUSD = valueToBigNumber(
