@@ -74,6 +74,7 @@ export const useTransactionHandler = ({
       successCallback && successCallback(txnResult);
       return txnResult;
     } catch (e) {
+      console.log('error=+++> ', e);
       setLoading(false);
       setError(ErrorType.transaction);
       errorCallback && errorCallback(e);
@@ -129,6 +130,12 @@ export const useTransactionHandler = ({
           setMainTxState({
             txHash: txnResponse.hash,
             error: null,
+          });
+        },
+        errorCallback: (error) => {
+          setMainTxState({
+            txHash: null,
+            error: error.message.toString(),
           });
         },
       });

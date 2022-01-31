@@ -20,7 +20,7 @@ export const LeftHelperText = ({
 }: LeftHelperTextProps) => {
   return (
     <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
-      {approvalHash && !actionHash && (
+      {approvalHash && !actionHash && !error && (
         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start' }}>
           <Box sx={{ width: '8.39px', height: '6px', color: 'green' }}>
             <CheckIcon />

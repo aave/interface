@@ -175,7 +175,7 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
         </>
       )}
       {supplyTxState.error && <TxErrorView errorMessage={supplyTxState.error} />}
-      {supplyTxState.success && (
+      {supplyTxState.success && !supplyTxState.error && (
         <TxSuccessView action="Supplied" amount={amountToSupply} symbol={poolReserve.symbol} />
       )}
       <SupplyActions

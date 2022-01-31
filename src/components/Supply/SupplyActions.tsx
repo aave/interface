@@ -125,7 +125,7 @@ export const SupplyActions = ({
       )}
       {!hasAmount && (
         <Button variant="outlined" disabled>
-          {!loading ? 'enter an amount' : 'loading'}
+          <Trans>ENTER AN AMOUNT</Trans>
         </Button>
       )}
       {hasAmount && requiresApproval && !approved && (
@@ -147,14 +147,14 @@ export const SupplyActions = ({
           disabled={loading || (requiresApproval && !approved)}
         >
           <Trans>
-            {approved && !loading && !mainTxState.txHash && !mainTxState.error
+            {!mainTxState.txHash && !mainTxState.error && (!loading || !approved)
               ? `SUPPLY ${poolReserve.symbol}`
               : ''}
             {approved && loading ? `SUPPLY ${poolReserve.symbol} PENDING...` : ''}
           </Trans>
         </Button>
       )}
-      {mainTxState.txHash && !mainTxState.error && (
+      {(mainTxState.txHash || mainTxState.error || approvalTxState.error) && (
         <Button onClick={handleClose} variant="outlined">
           <Trans>OK, CLOSE</Trans>
         </Button>
