@@ -20,14 +20,6 @@ export type SupplyActionProps = {
   handleClose: () => void;
 };
 
-export enum SupplyState {
-  amountInput = 0,
-  approval,
-  sendTx,
-  success,
-  error,
-}
-
 export const SupplyActions = ({
   amountToSupply,
   poolReserve,
@@ -45,10 +37,10 @@ export const SupplyActions = ({
     action,
     requiresApproval,
     loading,
-    setUsePermit,
     approvalTxState,
     mainTxState,
     usePermit,
+    resetStates,
   } = useTransactionHandler({
     tryPermit:
       currentMarketData.v3 && chainId !== ChainId.harmony && chainId !== ChainId.harmony_testnet,
@@ -102,6 +94,14 @@ export const SupplyActions = ({
     }
   }, [setSupplyTxState, mainTxState.error, approvalTxState.error]);
 
+  const handleRetry = () => {
+    setSupplyTxState({
+      error: null,
+      success: false,
+    });
+    resetStates();
+  };
+
   return (
     <Box sx={{ mt: '16px', display: 'flex', flexDirection: 'column' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -119,7 +119,7 @@ export const SupplyActions = ({
         />
       </Box>
       {(mainTxState.error || approvalTxState.error) && (
-        <Button variant="outlined" onClick={() => setUsePermit(false)}>
+        <Button variant="outlined" onClick={handleRetry}>
           <Trans>RETRY WITH APPROVAL</Trans>
         </Button>
       )}

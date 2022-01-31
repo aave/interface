@@ -74,7 +74,6 @@ export const useTransactionHandler = ({
       successCallback && successCallback(txnResult);
       return txnResult;
     } catch (e) {
-      console.log('error=+++> ', e);
       setLoading(false);
       setError(ErrorType.transaction);
       errorCallback && errorCallback(e);
@@ -155,6 +154,19 @@ export const useTransactionHandler = ({
     }
   };
 
+  const resetStates = () => {
+    setMainTxState({
+      error: null,
+      txHash: null,
+    });
+    setApprovalTxState({
+      error: null,
+      txHash: null,
+    });
+    setUsePermit(false);
+    setApproved(false);
+  };
+
   // populate txns
   useEffect(() => {
     // good enough for now, but might need debounce or similar for swaps
@@ -182,5 +194,6 @@ export const useTransactionHandler = ({
     approvalTxState,
     mainTxState,
     usePermit,
+    resetStates,
   };
 };
