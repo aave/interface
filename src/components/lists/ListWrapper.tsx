@@ -1,8 +1,9 @@
 import { Trans } from '@lingui/macro';
-import { Box, Divider, Paper, Typography } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
 import { ReactNode, useState } from 'react';
 
 import { toggleLocalStorageClick } from '../../helpers/toggle-local-storage-click';
+import { ListItem } from './ListItem';
 
 interface ListWrapperProps {
   title: ReactNode;
@@ -13,8 +14,8 @@ interface ListWrapperProps {
   children: ReactNode;
   withTopMargin?: boolean;
   noData?: boolean;
-  withBottomText?: ReactNode;
   captionSize?: 'h2' | 'h3';
+  bottomComponent?: ReactNode;
 }
 
 export const ListWrapper = ({
@@ -26,8 +27,8 @@ export const ListWrapper = ({
   topInfo,
   withTopMargin,
   noData,
-  withBottomText,
   captionSize = 'h3',
+  bottomComponent,
 }: ListWrapperProps) => {
   const [isCollapse, setIsCollapse] = useState(
     localStorageName ? localStorage.getItem(localStorageName) === 'true' : false
@@ -102,15 +103,7 @@ export const ListWrapper = ({
       {subChildrenComponent && !collapsed && <Box>{subChildrenComponent}</Box>}
       <Box sx={{ display: collapsed ? 'none' : 'block' }}>{children}</Box>
 
-      {withBottomText && !collapsed && (
-        <Box>
-          <Divider />
-          {/* TODO: need to add bottom text component (link to faucet)*/}
-          <Box sx={{ display: 'flex', alignItems: 'center', minHeight: '71px', px: 6 }}>
-            BottomText
-          </Box>
-        </Box>
-      )}
+      {!!bottomComponent && !collapsed && <ListItem>{bottomComponent}</ListItem>}
     </Paper>
   );
 };

@@ -14,6 +14,7 @@ import {
 import { useWalletBalances } from '../../../../hooks/app-data-provider/useWalletBalances';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import { DashboardListTopPanel } from '../../DashboardListTopPanel';
+import { ListBottomText } from '../ListBottomText';
 import { ListHeader } from '../ListHeader';
 import { SupplyAssetsListItem } from './SupplyAssetsListItem';
 
@@ -136,7 +137,7 @@ export const SupplyAssetsList = () => {
     <ListWrapper
       title={<Trans>Assets to supply</Trans>}
       localStorageName="supplyAssetsDashboardTableCollapse"
-      withBottomText={isTestnet}
+      bottomComponent={!isTestnet ? <ListBottomText /> : undefined}
       withTopMargin
       subChildrenComponent={
         <>

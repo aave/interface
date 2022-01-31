@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 import { PageTitle, PageTitleProps } from './PageTitle';
 
 interface TopInfoPanelProps extends PageTitleProps {
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 export const TopInfoPanel = ({
