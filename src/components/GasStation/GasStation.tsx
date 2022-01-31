@@ -117,7 +117,7 @@ export const GasStation: React.FC<GasStationProps> = ({ gasLimit, ...props }) =>
         ) : (
           <Skeleton variant="text" sx={{ width: '40px' }} />
         )}
-        <Typography sx={{ mr: '4px' }}>
+        <Typography sx={{ mx: '4px' }}>
           (
           {state.gasOption === GasOption.Custom ? (
             `${state.customGas} Gwei`

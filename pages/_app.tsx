@@ -17,7 +17,6 @@ import createEmotionCache from '../src/createEmotionCache';
 import { ProtocolDataProvider } from '../src/hooks/useProtocolDataContext';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
-import { GasStationProvider } from 'src/components/GasStation/GasStationProvider';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -43,25 +42,21 @@ export default function MyApp(props: MyAppProps) {
 
       <ApolloProvider client={apolloClient}>
         <LanguageProvider>
-          <GasStationProvider>
-            <Web3ContextProvider>
-              <ProtocolDataProvider>
-                <ConnectionStatusProvider>
-                  <AppGlobalStyles>
-                    <BackgroundDataProvider>
-                      <AppDataProvider>
-                        <TxBuilderProvider>
-                          <AppGlobalStyles>
-                            {getLayout(<Component {...pageProps} />)}
-                          </AppGlobalStyles>
-                        </TxBuilderProvider>
-                      </AppDataProvider>
-                    </BackgroundDataProvider>
-                  </AppGlobalStyles>
-                </ConnectionStatusProvider>
-              </ProtocolDataProvider>
-            </Web3ContextProvider>
-          </GasStationProvider>
+          <Web3ContextProvider>
+            <ProtocolDataProvider>
+              <ConnectionStatusProvider>
+                <AppGlobalStyles>
+                  <BackgroundDataProvider>
+                    <AppDataProvider>
+                      <TxBuilderProvider>
+                        <AppGlobalStyles>{getLayout(<Component {...pageProps} />)}</AppGlobalStyles>
+                      </TxBuilderProvider>
+                    </AppDataProvider>
+                  </BackgroundDataProvider>
+                </AppGlobalStyles>
+              </ConnectionStatusProvider>
+            </ProtocolDataProvider>
+          </Web3ContextProvider>
         </LanguageProvider>
       </ApolloProvider>
     </CacheProvider>
