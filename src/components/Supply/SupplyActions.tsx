@@ -10,6 +10,7 @@ import { TxState } from './SupplyModalContent';
 import { useTransactionHandler } from './useTransactionHandler';
 import { LeftHelperText } from './LeftHelperText';
 import { RightHelperText } from './RightHelperText';
+import { useGasStation } from 'src/hooks/useGasStation';
 
 export type SupplyActionProps = {
   amountToSupply: string;
@@ -24,12 +25,12 @@ export const SupplyActions = ({
   amountToSupply,
   poolReserve,
   setSupplyTxState,
-  customGasPrice,
   handleClose,
 }: SupplyActionProps) => {
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
   const { currentAccount, chainId: connectedChainId } = useWeb3Context();
+  const { state } = useGasStation();
 
   const {
     approval,
@@ -70,7 +71,7 @@ export const SupplyActions = ({
         signature,
       });
     },
-    customGasPrice,
+    customGasPrice: state.customGas,
     skip: !amountToSupply || amountToSupply === '0',
   });
 

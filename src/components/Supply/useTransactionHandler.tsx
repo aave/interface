@@ -13,11 +13,6 @@ interface UseTransactionHandlerProps {
   skip?: boolean;
 }
 
-export enum ErrorType {
-  estimation,
-  transaction,
-}
-
 export type TxStateType = {
   txHash: string | null;
   error: string | null;
@@ -32,7 +27,6 @@ export const useTransactionHandler = ({
 }: UseTransactionHandlerProps) => {
   const { signTxData, sendTx, currentAccount } = useWeb3Context();
   const { lendingPool } = useTxBuilderContext();
-  const [error, setError] = useState<ErrorType | null>(null);
   const [loading, setLoading] = useState(false);
   const [txs, setTxs] = useState<EthereumTransactionTypeExtended[]>([]);
   const [usePermit, setUsePermit] = useState<boolean>(tryPermit);
@@ -67,7 +61,6 @@ export const useTransactionHandler = ({
     successCallback?: (param: T) => void;
   }) => {
     setLoading(true);
-    setError(null);
     try {
       const txnResult = await tx();
       setLoading(false);
@@ -75,7 +68,6 @@ export const useTransactionHandler = ({
       return txnResult;
     } catch (e) {
       setLoading(false);
-      setError(ErrorType.transaction);
       errorCallback && errorCallback(e);
     }
   };
@@ -83,36 +75,62 @@ export const useTransactionHandler = ({
   const approval = async (amount: string, underlyingAsset: string) => {
     if (approvalTx) {
       if (usePermit) {
-        const newPool: Pool = lendingPool as Pool;
-        const unsingedPayload = await newPool.signERC20Approval({
-          user: currentAccount,
-          reserve: underlyingAsset,
-          amount,
-        });
-        await processTx({
-          tx: () => signTxData(unsingedPayload),
-          successCallback: (signature: SignatureLike) => {
-            setSignature(signature);
-            setApproved(true);
-            setApprovalTxState({
-              txHash: 'Signed correctly',
-              error: null,
-            });
-          },
-        });
+        try {
+          const newPool: Pool = lendingPool as Pool;
+          const unsingedPayload = await newPool.signERC20Approval({
+            user: currentAccount,
+            reserve: underlyingAsset,
+            amount,
+          });
+          await processTx({
+            tx: () => signTxData(unsingedPayload),
+            successCallback: (signature: SignatureLike) => {
+              setSignature(signature);
+              setApproved(true);
+              setApprovalTxState({
+                txHash: 'Signed correctly',
+                error: null,
+              });
+            },
+            errorCallback: (error) => {
+              setApprovalTxState({
+                txHash: null,
+                error: error.message.toString(),
+              });
+            },
+          });
+        } catch (error) {
+          setApprovalTxState({
+            txHash: null,
+            error: error.message.toString(),
+          });
+        }
       } else {
-        const params = await approvalTx.tx();
-        if (customGasPrice) params.gasPrice = BigNumber.from(customGasPrice);
-        await processTx({
-          tx: () => sendTx(params),
-          successCallback: (txnResponse) => {
-            setApproved(true);
-            setApprovalTxState({
-              txHash: txnResponse.hash,
-              error: null,
-            });
-          },
-        });
+        try {
+          const params = await approvalTx.tx();
+          if (customGasPrice) params.gasPrice = BigNumber.from(customGasPrice);
+          await processTx({
+            tx: () => sendTx(params),
+            successCallback: (txnResponse) => {
+              setApproved(true);
+              setApprovalTxState({
+                txHash: txnResponse.hash,
+                error: null,
+              });
+            },
+            errorCallback: (error) => {
+              setApprovalTxState({
+                txHash: null,
+                error: error.message.toString(),
+              });
+            },
+          });
+        } catch (error) {
+          setApprovalTxState({
+            txHash: null,
+            error: error.message.toString(),
+          });
+        }
       }
     }
   };
@@ -120,37 +138,57 @@ export const useTransactionHandler = ({
   const action = async () => {
     if (approvalTx && usePermit && handleGetPermitTxns) {
       if (!signature) throw new Error('signature needed');
-      const txns = await handleGetPermitTxns(signature);
-      const params = await txns[0].tx();
-      if (customGasPrice) params.gasPrice = BigNumber.from(customGasPrice);
-      return processTx({
-        tx: () => sendTx(params),
-        successCallback: (txnResponse) => {
-          setMainTxState({
-            txHash: txnResponse.hash,
-            error: null,
-          });
-        },
-        errorCallback: (error) => {
-          setMainTxState({
-            txHash: null,
-            error: error.message.toString(),
-          });
-        },
-      });
+      try {
+        const txns = await handleGetPermitTxns(signature);
+        const params = await txns[0].tx();
+        if (customGasPrice) params.gasPrice = BigNumber.from(customGasPrice);
+        return processTx({
+          tx: () => sendTx(params),
+          successCallback: (txnResponse) => {
+            setMainTxState({
+              txHash: txnResponse.hash,
+              error: null,
+            });
+          },
+          errorCallback: (error) => {
+            setMainTxState({
+              txHash: null,
+              error: error.message.toString(),
+            });
+          },
+        });
+      } catch (error) {
+        setMainTxState({
+          txHash: null,
+          error: error.message.toString(),
+        });
+      }
     }
     if ((!usePermit || !approvalTx) && actionTx) {
-      const params = await actionTx.tx();
-      if (customGasPrice) params.gasPrice = BigNumber.from(customGasPrice);
-      return processTx({
-        tx: () => sendTx(params),
-        successCallback: (txnResponse) => {
-          setMainTxState({
-            txHash: txnResponse.hash,
-            error: null,
-          });
-        },
-      });
+      try {
+        const params = await actionTx.tx();
+        if (customGasPrice) params.gasPrice = BigNumber.from(customGasPrice);
+        return processTx({
+          tx: () => sendTx(params),
+          successCallback: (txnResponse) => {
+            setMainTxState({
+              txHash: txnResponse.hash,
+              error: null,
+            });
+          },
+          errorCallback: (error) => {
+            setMainTxState({
+              txHash: null,
+              error: error.message.toString(),
+            });
+          },
+        });
+      } catch (error) {
+        setMainTxState({
+          txHash: null,
+          error: error.message.toString(),
+        });
+      }
     }
   };
 
@@ -177,8 +215,11 @@ export const useTransactionHandler = ({
           data && setTxs(data);
           setLoading(false);
         })
-        .catch(() => {
-          setError(ErrorType.estimation);
+        .catch((error) => {
+          setMainTxState({
+            txHash: null,
+            error: error.message.toString(),
+          });
         });
     }
   }, [skip]);
@@ -187,7 +228,6 @@ export const useTransactionHandler = ({
     approval,
     action,
     loading,
-    error,
     setUsePermit,
     approved: approved || !!signature,
     requiresApproval: !!approvalTx,
