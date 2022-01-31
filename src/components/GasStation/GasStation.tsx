@@ -71,7 +71,7 @@ export const GasStation: React.FC<GasStationProps> = ({ gasLimit, ...props }) =>
   const {
     state,
     dispatch,
-    gasPriceData: { data },
+    gasPriceData: { data, error },
   } = useGasStation();
   const { marketReferencePriceInUsd, marketReferenceCurrencyDecimals } = useAppDataContext();
   const totalGasCostsUsd = data
@@ -130,7 +130,7 @@ export const GasStation: React.FC<GasStationProps> = ({ gasLimit, ...props }) =>
           fontSize="small"
           color="primary"
           onClick={toggleDropdown}
-          sx={{ cursor: 'pointer' }}
+          sx={{ cursor: 'pointer', display: error ? 'none' : 'inline-block' }}
         />
       </Box>
 
