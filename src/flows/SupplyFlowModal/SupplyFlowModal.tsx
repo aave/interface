@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
+import { ActionModal } from 'src/components/primitives/ActionModal';
 
-import { AaveModal } from '../../components/AaveModal/AaveModal';
 import { AssetInput } from '../../components/AssetInput';
 import { SupplyDetails, SupplyReward } from './SupplyDetails';
 
 export interface SupplyFlowProps {
-  onClose: () => void;
+  setOpen: (value: boolean) => void;
   open: boolean;
   supplyApy: string;
   supplyRewards: SupplyReward[];
@@ -16,7 +16,7 @@ export interface SupplyFlowProps {
 
 export const SupplyFlowModal: React.FC<SupplyFlowProps> = ({
   open,
-  onClose,
+  setOpen,
   supplyApy,
   supplyRewards,
   healthFactor,
@@ -33,7 +33,7 @@ export const SupplyFlowModal: React.FC<SupplyFlowProps> = ({
   // Mockup data until logic is imported
   const usdValue = '0';
   return (
-    <AaveModal open={open} onClose={onClose} title={'Supply'}>
+    <ActionModal open={open} setOpen={setOpen}>
       <AssetInput
         value={inputValue}
         onChange={onInputChange}
@@ -48,7 +48,7 @@ export const SupplyFlowModal: React.FC<SupplyFlowProps> = ({
         healthFactor={healthFactor}
       />
       {children}
-    </AaveModal>
+    </ActionModal>
   );
 };
 
