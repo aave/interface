@@ -124,12 +124,12 @@ export const SupplyActions = ({
           <Trans>RETRY WITH APPROVAL</Trans>
         </Button>
       )}
-      {!hasAmount && (
+      {!hasAmount && !approvalTxState.error && (
         <Button variant="outlined" disabled>
           <Trans>ENTER AN AMOUNT</Trans>
         </Button>
       )}
-      {hasAmount && requiresApproval && !approved && (
+      {hasAmount && requiresApproval && !approved && !approvalTxState.error && (
         <Button
           variant="outlined"
           onClick={() => approval(amountToSupply, poolReserve.underlyingAsset)}
@@ -141,7 +141,7 @@ export const SupplyActions = ({
           </Trans>
         </Button>
       )}
-      {hasAmount && !mainTxState.txHash && !mainTxState.error && (
+      {hasAmount && !mainTxState.txHash && !mainTxState.error && !approvalTxState.error && (
         <Button
           variant="outlined"
           onClick={action}

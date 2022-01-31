@@ -5,6 +5,7 @@ import {
   TransactionResponse,
   Web3Provider,
 } from '@ethersproject/providers';
+import { SignatureLike } from '@ethersproject/bytes';
 import { BigNumber, providers } from 'ethers';
 import React, { ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
@@ -25,7 +26,7 @@ export type Web3Data = {
   getTxError: (txHash: string) => Promise<string>;
   sendTx: (txData: transactionType) => Promise<TransactionResponse>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  signTxData: (unsignedData: string) => Promise<any>;
+  signTxData: (unsignedData: string) => Promise<SignatureLike>;
 };
 
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
@@ -136,9 +137,9 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   // Tx methods
   const signTxData = useCallback(
-    async (unsignedData: string) => {
+    async (unsignedData: string): Promise<SignatureLike> => {
       if (provider && currentAccount) {
-        const signature = await provider.send('eth_signTypedData_v4', [
+        const signature: SignatureLike = await provider.send('eth_signTypedData_v4', [
           currentAccount,
           unsignedData,
         ]);
@@ -154,7 +155,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   // If we used current account then the tx could get executed
   const sendTx = useCallback(
     async (txData: transactionType): Promise<TransactionResponse> => {
-      console.log('send tx');
       if (provider) {
         const { from, ...data } = txData;
         const signer = provider.getSigner(from);
@@ -200,7 +200,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     [
       connectWallet,
       disconnectWallet,
-      provider?.network.chainId,
+      provider,
       connected,
       currentAccount,
       web3Modal,

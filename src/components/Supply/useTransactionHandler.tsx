@@ -1,6 +1,7 @@
 import { EthereumTransactionTypeExtended, Pool } from '@aave/contract-helpers';
 import { BigNumber } from '@ethersproject/bignumber';
 import { SignatureLike } from '@ethersproject/bytes';
+import { TransactionResponse } from '@ethersproject/providers';
 import { useEffect, useState } from 'react';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -25,13 +26,13 @@ export const useTransactionHandler = ({
   customGasPrice,
   skip,
 }: UseTransactionHandlerProps) => {
-  const { signTxData, sendTx, currentAccount } = useWeb3Context();
+  const { signTxData, sendTx, getTxError, currentAccount } = useWeb3Context();
   const { lendingPool } = useTxBuilderContext();
   const [loading, setLoading] = useState(false);
   const [txs, setTxs] = useState<EthereumTransactionTypeExtended[]>([]);
   const [usePermit, setUsePermit] = useState<boolean>(tryPermit);
   const [signature, setSignature] = useState<SignatureLike>();
-  const [approved, setApproved] = useState<boolean>();
+  const [approved, setApproved] = useState<boolean>(false);
   const [approvalTxState, setApprovalTxState] = useState<TxStateType>({
     txHash: null,
     error: null,
@@ -50,22 +51,36 @@ export const useTransactionHandler = ({
    * @returns
    */
   // eslint-disable-next-line
-  const processTx = async <T extends any>({
+  const processTx = async ({
     tx,
     errorCallback,
     successCallback,
   }: {
-    tx: () => Promise<T>;
+    tx: () => Promise<TransactionResponse>;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    errorCallback?: (error: any) => void;
-    successCallback?: (param: T) => void;
+    errorCallback?: (error: any, hash?: string) => void;
+    successCallback?: (param: TransactionResponse) => void;
   }) => {
     setLoading(true);
     try {
       const txnResult = await tx();
+      try {
+        await txnResult.wait(1);
+      } catch (e) {
+        try {
+          setLoading(false);
+          const error = await getTxError(txnResult.hash);
+          errorCallback && errorCallback(error, txnResult.hash);
+          return;
+        } catch (e) {
+          throw new Error('network error has occurred, please check tx status in your wallet');
+        }
+      }
+
+      // wait for confirmation
       setLoading(false);
       successCallback && successCallback(txnResult);
-      return txnResult;
+      return;
     } catch (e) {
       setLoading(false);
       errorCallback && errorCallback(e);
@@ -82,23 +97,24 @@ export const useTransactionHandler = ({
             reserve: underlyingAsset,
             amount,
           });
-          await processTx({
-            tx: () => signTxData(unsingedPayload),
-            successCallback: (signature: SignatureLike) => {
-              setSignature(signature);
-              setApproved(true);
-              setApprovalTxState({
-                txHash: 'Signed correctly',
-                error: null,
-              });
-            },
-            errorCallback: (error) => {
-              setApprovalTxState({
-                txHash: null,
-                error: error.message.toString(),
-              });
-            },
-          });
+          try {
+            setLoading(true);
+            const signature = await signTxData(unsingedPayload);
+            setSignature(signature);
+            setApproved(true);
+            setApprovalTxState({
+              txHash: 'Signed correctly',
+              error: null,
+            });
+
+            setLoading(false);
+          } catch (error) {
+            setApprovalTxState({
+              txHash: null,
+              error: error.message.toString(),
+            });
+            setLoading(false);
+          }
         } catch (error) {
           setApprovalTxState({
             txHash: null,
@@ -111,16 +127,16 @@ export const useTransactionHandler = ({
           if (customGasPrice) params.gasPrice = BigNumber.from(customGasPrice);
           await processTx({
             tx: () => sendTx(params),
-            successCallback: (txnResponse) => {
+            successCallback: (txnResponse: TransactionResponse) => {
               setApproved(true);
               setApprovalTxState({
                 txHash: txnResponse.hash,
                 error: null,
               });
             },
-            errorCallback: (error) => {
+            errorCallback: (error, hash) => {
               setApprovalTxState({
-                txHash: null,
+                txHash: hash || null,
                 error: error.message.toString(),
               });
             },
@@ -144,15 +160,15 @@ export const useTransactionHandler = ({
         if (customGasPrice) params.gasPrice = BigNumber.from(customGasPrice);
         return processTx({
           tx: () => sendTx(params),
-          successCallback: (txnResponse) => {
+          successCallback: (txnResponse: TransactionResponse) => {
             setMainTxState({
               txHash: txnResponse.hash,
               error: null,
             });
           },
-          errorCallback: (error) => {
+          errorCallback: (error, hash) => {
             setMainTxState({
-              txHash: null,
+              txHash: hash || null,
               error: error.message.toString(),
             });
           },
@@ -170,15 +186,15 @@ export const useTransactionHandler = ({
         if (customGasPrice) params.gasPrice = BigNumber.from(customGasPrice);
         return processTx({
           tx: () => sendTx(params),
-          successCallback: (txnResponse) => {
+          successCallback: (txnResponse: TransactionResponse) => {
             setMainTxState({
               txHash: txnResponse.hash,
               error: null,
             });
           },
-          errorCallback: (error) => {
+          errorCallback: (error, hash) => {
             setMainTxState({
-              txHash: null,
+              txHash: hash || null,
               error: error.message.toString(),
             });
           },
@@ -193,6 +209,7 @@ export const useTransactionHandler = ({
   };
 
   const resetStates = () => {
+    setUsePermit(false);
     setMainTxState({
       error: null,
       txHash: null,
@@ -201,7 +218,6 @@ export const useTransactionHandler = ({
       error: null,
       txHash: null,
     });
-    setUsePermit(false);
     setApproved(false);
   };
 
@@ -229,11 +245,12 @@ export const useTransactionHandler = ({
     action,
     loading,
     setUsePermit,
-    approved: approved || !!signature,
+    approved,
     requiresApproval: !!approvalTx,
     approvalTxState,
     mainTxState,
     usePermit,
     resetStates,
+    setApproved,
   };
 };
