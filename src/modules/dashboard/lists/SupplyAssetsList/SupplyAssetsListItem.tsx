@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
+import { useModalContext } from 'src/hooks/useModal';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -27,6 +28,7 @@ export const SupplyAssetsListItem = ({
   isIsolated,
   usageAsCollateralEnabledOnUser,
 }: SupplyAssetsItem) => {
+  const { openSupply } = useModalContext();
   return (
     <ListItemWrapper symbol={symbol} iconSymbol={iconSymbol}>
       <ListValueColumn
@@ -58,7 +60,7 @@ export const SupplyAssetsListItem = ({
         <Button
           disabled={!isActive || isFreezed || Number(walletBalance) <= 0}
           variant="contained"
-          onClick={() => console.log('TODO: should be supply modal')}
+          onClick={() => openSupply(underlyingAsset)}
         >
           <Trans>Supply</Trans>
         </Button>
