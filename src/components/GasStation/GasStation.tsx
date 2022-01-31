@@ -16,7 +16,7 @@ import { GasOption, useGasStation } from './GasStationProvider';
 import { BigNumber } from 'ethers/lib/ethers';
 import { GasButton } from './GasButton';
 import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvider';
-import { formatEther, formatUnits, parseUnits } from 'ethers/lib/utils';
+import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import { ResponseGasPrice } from '../../hooks/useGetGasPrices';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 
