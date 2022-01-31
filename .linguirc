@@ -1,8 +1,16 @@
 {
-   "locales": ["en", "es"],
-   "catalogs": [{
+  "locales": [
+    "en",
+    "es"
+  ],
+  "catalogs": [
+    {
       "path": "src/translations/{locale}/messages",
-      "include": ["src", "pages"]
-   }],
-   "format": "po"
+      "include": [
+        "src",
+        "pages"
+      ]
+    }
+  ],
+  "format": "po"
 }

@@ -1,5 +1,14 @@
-import { Theme, ThemeOptions } from '@mui/material';
+import {
+  CheckCircleIcon,
+  ExclamationCircleIcon,
+  ExclamationIcon,
+  InformationCircleIcon,
+} from '@heroicons/react/outline';
+import { SvgIcon, Theme, ThemeOptions } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { ColorPartial } from '@mui/material/styles/createPalette';
 import React from 'react';
 
 const theme = createTheme();
@@ -23,6 +32,8 @@ const getFontSize = (mobile: number, normal: number, large: number) => {
 };
 
 declare module '@mui/material/styles/createPalette' {
+  interface PaletteColor extends ColorPartial {}
+
   interface TypeBackground {
     default: string;
     paper: string;
@@ -113,7 +124,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
   return {
     breakpoints: {
       keys: ['xs', 'sm', 'md', 'lg', 'xl'],
-      values: { xs: 0, sm: 768, md: 1024, lg: 1728, xl: 1920 },
+      values: { xs: 0, sm: 768, md: 1024, lg: 1400, xl: 1728 },
     },
     palette: {
       mode,
@@ -131,21 +142,29 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         main: getColor('#BC0000B8', '#F44336'),
         light: getColor('#D26666', '#E57373'),
         dark: getColor('#BC0000', '#D32F2F'),
+        '100': getColor('#4F1919', '#FBB4AF'), // for alert text
+        '200': getColor('#F9EBEB', '#2E0C0A'), // for alert background
       },
       warning: {
         main: getColor('#F89F1A', '#FFA726'),
         light: getColor('#FFCE00', '#FFB74D'),
         dark: getColor('#C67F15', '#F57C00'),
+        '100': getColor('#63400A', '#FFDCA8'), // for alert text
+        '200': getColor('#FEF5E8', '#301E04'), // for alert background
       },
       info: {
         main: getColor('#0062D2', '#29B6F6'),
         light: getColor('#0062D2', '#4FC3F7'),
         dark: getColor('#002754', '#0288D1'),
+        '100': getColor('#002754', '#A9E2FB'), // for alert text
+        '200': getColor('#E5EFFB', '#071F2E'), // for alert background
       },
       success: {
         main: getColor('#4CAF50', '#66BB6A'),
         light: getColor('#90FF95', '#90FF95'),
         dark: getColor('#318435', '#388E3C'),
+        '100': getColor('#1C4B1E', '#C2E4C3'), // for alert text
+        '200': getColor('#ECF8ED', '#0A130B'), // for alert background
       },
       text: {
         primary: getColor('#00244D', '#FFFFFF'),
@@ -393,6 +412,12 @@ export function getThemedComponents(theme: Theme) {
               },
             },
           },
+          {
+            props: { color: 'primary', variant: 'outlined' },
+            style: {
+              borderColor: theme.palette.divider,
+            },
+          },
         ],
       },
       MuiTypography: {
@@ -483,7 +508,6 @@ export function getThemedComponents(theme: Theme) {
         styleOverrides: {
           root: {
             borderRadius: '4px',
-            background: theme.palette.background.surface,
           },
         },
         variants: [
@@ -492,6 +516,7 @@ export function getThemedComponents(theme: Theme) {
             style: {
               border: `1px solid ${theme.palette.divider}`,
               boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
+              background: theme.palette.background.surface,
             },
           },
           {
@@ -509,6 +534,25 @@ export function getThemedComponents(theme: Theme) {
             flexDirection: 'column',
             flex: 1,
             paddingBottom: '39px',
+            [theme.breakpoints.up('xs')]: {
+              paddingLeft: '10px',
+              paddingRight: '10px',
+            },
+            [theme.breakpoints.up('sm')]: {
+              paddingLeft: '20px',
+              paddingRight: '20px',
+            },
+            [theme.breakpoints.up('md')]: {
+              paddingLeft: '40px',
+              paddingRight: '40px',
+            },
+            [theme.breakpoints.up('lg')]: {
+              paddingLeft: '80px',
+              paddingRight: '80px',
+            },
+            [theme.breakpoints.up('xl')]: {
+              maxWidth: '1888px',
+            },
           },
         },
       },
@@ -542,12 +586,117 @@ export function getThemedComponents(theme: Theme) {
           },
         },
       },
+      MuiIcon: {
+        variants: [
+          {
+            props: { fontSize: 'large' },
+            style: {
+              fontSize: pxToRem(32),
+            },
+          },
+        ],
+      },
       MuiTableCell: {
         styleOverrides: {
           root: {
             borderColor: theme.palette.divider,
           },
         },
+      },
+      MuiAlert: {
+        styleOverrides: {
+          root: {
+            boxShadow: 'none',
+            borderRadius: '4px',
+            padding: '8px 12px',
+            ...theme.typography.caption,
+            alignItems: 'center',
+            '.MuiAlert-message': {
+              padding: 0,
+            },
+            '.MuiAlert-icon': {
+              padding: 0,
+              opacity: 1,
+              '.MuiSvgIcon-root': {
+                fontSize: pxToRem(20),
+              },
+            },
+            a: {
+              ...theme.typography.caption,
+              fontWeight: 500,
+              textDecoration: 'underline',
+              '&:hover': {
+                textDecoration: 'none',
+              },
+            },
+          },
+        },
+        defaultProps: {
+          iconMapping: {
+            error: (
+              <SvgIcon color="error">
+                <ExclamationIcon />
+              </SvgIcon>
+            ),
+            info: (
+              <SvgIcon color="info">
+                <InformationCircleIcon />
+              </SvgIcon>
+            ),
+            success: (
+              <SvgIcon color="success">
+                <CheckCircleIcon />
+              </SvgIcon>
+            ),
+            warning: (
+              <SvgIcon color="warning">
+                <ExclamationCircleIcon />
+              </SvgIcon>
+            ),
+          },
+        },
+        variants: [
+          {
+            props: { severity: 'error' },
+            style: {
+              color: theme.palette.error['100'],
+              background: theme.palette.error['200'],
+              a: {
+                color: theme.palette.error['100'],
+              },
+            },
+          },
+          {
+            props: { severity: 'info' },
+            style: {
+              color: theme.palette.info['100'],
+              background: theme.palette.info['200'],
+              a: {
+                color: theme.palette.info['100'],
+              },
+            },
+          },
+          {
+            props: { severity: 'success' },
+            style: {
+              color: theme.palette.success['100'],
+              background: theme.palette.success['200'],
+              a: {
+                color: theme.palette.success['100'],
+              },
+            },
+          },
+          {
+            props: { severity: 'warning' },
+            style: {
+              color: theme.palette.warning['100'],
+              background: theme.palette.warning['200'],
+              a: {
+                color: theme.palette.warning['100'],
+              },
+            },
+          },
+        ],
       },
       MuiCssBaseline: {
         styleOverrides: {

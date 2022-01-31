@@ -89,6 +89,7 @@ export const MarketSwitcher = () => {
       value={currentMarket}
       onChange={(e) => setCurrentMarket(e.target.value as unknown as CustomMarket)}
       sx={{
+        mr: 2,
         '& .MuiOutlinedInput-notchedOutline': {
           border: 'none',
         },

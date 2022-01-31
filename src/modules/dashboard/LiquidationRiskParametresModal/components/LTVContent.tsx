@@ -114,7 +114,7 @@ export const LTVContent = ({
               <Trans>Liquidation threshold</Trans>
             </Typography>
             <Box sx={{ display: 'flex' }}>
-              <FormattedNumber value={currentLiquidationThreshold} variant="secondary12" />
+              <FormattedNumber value={currentLiquidationThreshold} variant="secondary12" percent />
               <Typography variant="secondary12">**</Typography>
             </Box>
           </Box>

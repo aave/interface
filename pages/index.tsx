@@ -1,21 +1,22 @@
 import Container from '@mui/material/Container';
-import * as React from 'react';
 
 import { ConnectWalletPaper } from '../src/components/ConnectWalletPaper';
-import { useAppDataContext } from '../src/hooks/app-data-provider/useAppDataProvider';
 import { MainLayout } from '../src/layouts/MainLayout';
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
+import { DashboardContentWrapper } from '../src/modules/dashboard/DashboardContentWrapper';
 import { DashboardTopPanel } from '../src/modules/dashboard/DashboardTopPanel';
 
 export default function Home() {
   const { currentAccount } = useWeb3Context();
-  const { user } = useAppDataContext();
+
+  // TODO: need for adaptive
+  // const [isBorrow, setIsBorrow] = useState(false);
 
   return (
-    <Container maxWidth="lg">
-      <DashboardTopPanel user={user} currentAccount={currentAccount} />
+    <Container maxWidth="xl">
+      <DashboardTopPanel />
 
-      {!currentAccount && <ConnectWalletPaper />}
+      {currentAccount ? <DashboardContentWrapper isBorrow={true} /> : <ConnectWalletPaper />}
     </Container>
   );
 }

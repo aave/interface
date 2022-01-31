@@ -1,17 +1,11 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2022-01-17 14:21+0100\n"
+"POT-Creation-Date: 2022-01-31 18:52+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: es\n"
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: \n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"Plural-Forms: \n"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:79
 msgid "* If the health factor goes below 1, the liquidation of your collateral might be triggered."
@@ -21,21 +15,132 @@ msgstr ""
 msgid "** If your loan to value goes above the liquidation threshold your collateral supplied may be liquidated."
 msgstr ""
 
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx:140
+msgid "A message (you are very close to liquidation)."
+msgstr ""
+
+#: src/components/incentives/IncentivesInfoModal.tsx:37
+#: src/components/incentives/IncentivesInfoModal.tsx:44
+msgid "APR"
+msgstr ""
+
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:42
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:61
+#: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx:19
+#: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx:40
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx:132
+msgid "APY"
+msgstr ""
+
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:43
+msgid "APY type"
+msgstr ""
+
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx:109
+msgid "APY, stable"
+msgstr ""
+
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx:108
+msgid "APY, variable"
+msgstr ""
+
 #: pages/about.tsx:37
 msgid "About the app"
-msgstr "Sobre la app"
+msgstr ""
+
+#: src/components/infoModalContents/CollateralSwitchInfoContent.tsx:11
+msgid "Adding and removing assets as collateral"
+msgstr ""
+
+#: src/components/infoModalContents/CollateralSwitchInfoContent.tsx:13
+msgid "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
+msgstr ""
 
 #: src/components/AssetInput.tsx:40
 msgid "Amount"
 msgstr ""
 
+#: src/modules/dashboard/lists/ListItemWrapper.tsx:28
+msgid "Ampleforth's FAQ"
+msgstr ""
+
+#: pages/faucet.tsx:49
+#: src/modules/markets/AssetsList.tsx:47
+msgid "Asset"
+msgstr ""
+
+#: src/modules/dashboard/lists/ListHeader.tsx:18
+msgid "Assets"
+msgstr ""
+
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx:116
+msgid "Assets to borrow"
+msgstr ""
+
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx:138
+msgid "Assets to supply"
+msgstr ""
+
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx:104
+msgid "Available"
+msgstr ""
+
+#: src/components/caps/CapsHint.tsx:34
+#: src/components/infoModalContents/BorrowAvailableInfoContent.tsx:11
+msgid "Available to borrow"
+msgstr ""
+
+#: src/components/caps/CapsHint.tsx:32
+msgid "Available to supply"
+msgstr ""
+
 #: src/components/AssetInput.tsx:42
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:60
+#: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx:18
+#: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx:37
 msgid "Balance"
 msgstr ""
 
-#: src/layouts/WalletWidget.tsx:95
-#~ msgid "Connect Wallet"
-#~ msgstr ""
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx:56
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx:67
+msgid "Borrow"
+msgstr ""
+
+#: src/modules/markets/AssetsList.tsx:67
+msgid "Borrow APY, stable"
+msgstr ""
+
+#: src/modules/markets/AssetsList.tsx:63
+msgid "Borrow APY, variable"
+msgstr ""
+
+#: src/components/infoModalContents/BorrowPowerInfoContent.tsx:9
+#: src/components/infoModalContents/BorrowPowerInfoContent.tsx:11
+msgid "Borrow power"
+msgstr ""
+
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx:129
+msgid "Borrow power and assets are limited due to Isolation mode."
+msgstr ""
+
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:63
+msgid "Borrow power used"
+msgstr ""
+
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx:133
+msgid "Can be collateral"
+msgstr ""
+
+#: src/components/infoModalContents/CollateralInfoContent.tsx:9
+#: src/components/infoModalContents/CollateralInfoContent.tsx:11
+#: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx:21
+#: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx:42
+msgid "Collateral"
+msgstr ""
+
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx:147
+msgid "Collateral usage is limited because of isolation mode."
+msgstr ""
 
 #: src/components/ConnectWalletPaper.tsx:27
 #: src/layouts/WalletWidget.tsx:93
@@ -46,12 +151,12 @@ msgstr ""
 msgid "Copy address"
 msgstr ""
 
-#: src/modules/dashboard/DashboardTopPanel.tsx:74
+#: src/modules/dashboard/DashboardTopPanel.tsx:79
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:90
 msgid "Current LTV"
 msgstr ""
 
-#: src/components/GasStation/GasStation.tsx:169
+#: src/components/GasStation/GasStation.tsx:168
 msgid "Custom"
 msgstr ""
 
@@ -59,9 +164,19 @@ msgstr ""
 msgid "Dark mode"
 msgstr ""
 
-#: src/modules/dashboard/DashboardTopPanel.tsx:32
+#: src/modules/dashboard/DashboardTopPanel.tsx:34
 #: src/ui-config/menu-items/index.tsx:23
 msgid "Dashboard"
+msgstr ""
+
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:41
+msgid "Debt"
+msgstr ""
+
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx:59
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx:66
+#: src/modules/markets/AssetsList.tsx:160
+msgid "Details"
 msgstr ""
 
 #: src/ui-config/menu-items/index.tsx:54
@@ -76,13 +191,22 @@ msgstr ""
 msgid "Discord"
 msgstr ""
 
-#: src/layouts/SettingsMenu.tsx:23
-#~ msgid "Englis"
-#~ msgstr ""
+#: src/modules/dashboard/DashboardEModeButton.tsx:25
+msgid "E-Mode"
+msgstr ""
+
+#: src/components/infoModalContents/EModeInfoContent.tsx:9
+#: src/components/infoModalContents/EModeInfoContent.tsx:11
+msgid "E-mode"
+msgstr ""
+
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx:135
+msgid "E-mode message"
+msgstr ""
 
 #: src/layouts/SettingsMenu.tsx:24
 msgid "English"
-msgstr "Ingles"
+msgstr ""
 
 #: src/flows/SupplyFlowModal/SupplyDetails.tsx:77
 msgid "Estimated Gas Costs"
@@ -90,6 +214,13 @@ msgstr ""
 
 #: src/ui-config/menu-items/index.tsx:49
 msgid "FAQ"
+msgstr ""
+
+#: pages/faucet.tsx:44
+#: pages/faucet.tsx:45
+#: pages/faucet.tsx:86
+#: src/modules/dashboard/lists/ListBottomText.tsx:13
+msgid "Faucet"
 msgstr ""
 
 #: src/ui-config/menu-items/index.tsx:64
@@ -100,13 +231,9 @@ msgstr ""
 msgid "Global settings"
 msgstr ""
 
-#: pages/index.tsx:32
-#~ msgid "Go to About page"
-#~ msgstr "Ir a página de Sobre la app"
-
 #: pages/about.tsx:41
 msgid "Go to Home page"
-msgstr "Ir a página de Inicio"
+msgstr ""
 
 #: src/ui-config/menu-items/index.tsx:37
 msgid "Governance"
@@ -114,9 +241,29 @@ msgstr ""
 
 #: src/components/infoModalContents/HFInfoContent.tsx:8
 #: src/flows/SupplyFlowModal/SupplyDetails.tsx:63
-#: src/modules/dashboard/DashboardTopPanel.tsx:56
+#: src/modules/dashboard/DashboardTopPanel.tsx:61
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:69
 msgid "Health factor"
+msgstr ""
+
+#: src/components/lists/ListWrapper.tsx:89
+msgid "Hide"
+msgstr ""
+
+#: src/components/isolationMode/IsolatedAssetModal.tsx:30
+msgid "How it works"
+msgstr ""
+
+#: src/components/isolationMode/IsolatedAssetModal.tsx:33
+msgid "In Isolation mode you cannot supply other assets as collateral for borrowing. Assets used as collateral in Isolation mode can only be borrowed to a specific debt ceiling."
+msgstr ""
+
+#: src/components/isolationMode/IsolatedBadge.tsx:26
+msgid "Isolated"
+msgstr ""
+
+#: src/components/isolationMode/IsolatedAssetModal.tsx:18
+msgid "Isolated asset"
 msgstr ""
 
 #: src/layouts/SettingsMenu.tsx:104
@@ -143,11 +290,11 @@ msgstr ""
 msgid "Liquidation value"
 msgstr ""
 
-#: src/components/MarketSwitcher.tsx:110
+#: src/components/MarketSwitcher.tsx:111
 msgid "Market"
 msgstr ""
 
-#: src/modules/markets/MarketsTopPanel.tsx:26
+#: src/modules/markets/MarketsTopPanel.tsx:27
 msgid "Market overview"
 msgstr ""
 
@@ -167,11 +314,15 @@ msgstr ""
 msgid "More"
 msgstr ""
 
-#: src/modules/dashboard/DashboardTopPanel.tsx:40
+#: src/components/incentives/IncentivesInfoModal.tsx:80
+msgid "Net APR"
+msgstr ""
+
+#: src/modules/dashboard/DashboardTopPanel.tsx:45
 msgid "Net APY"
 msgstr ""
 
-#: src/modules/dashboard/DashboardTopPanel.tsx:33
+#: src/modules/dashboard/DashboardTopPanel.tsx:38
 msgid "Net worth"
 msgstr ""
 
@@ -179,7 +330,17 @@ msgstr ""
 msgid "Network"
 msgstr ""
 
-#: src/components/TextWithModal.tsx:49
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:81
+msgid "Nothing borrowed yet"
+msgstr ""
+
+#: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx:59
+msgid "Nothing supplied yet"
+msgstr ""
+
+#: src/components/TextWithModal.tsx:63
+#: src/components/incentives/IncentivesInfoModal.tsx:113
+#: src/components/isolationMode/IsolatedAssetModal.tsx:52
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:111
 msgid "Ok, I got it"
 msgstr ""
@@ -196,6 +357,10 @@ msgstr ""
 msgid "Please, connect your wallet"
 msgstr ""
 
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx:60
+msgid "Repay"
+msgstr ""
+
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/HFContent.tsx:49
 msgid "Riskier"
 msgstr ""
@@ -208,28 +373,58 @@ msgstr ""
 msgid "Safety of your supplied collateral against the borrowed assets and its underlying value."
 msgstr ""
 
-#: src/components/MarketSwitcher.tsx:133
+#: src/components/MarketSwitcher.tsx:134
 msgid "Select Aave Market"
 msgstr ""
 
 #: src/layouts/SettingsMenu.tsx:133
 msgid "Select language"
-msgstr "Seleccionar idioma"
+msgstr ""
+
+#: src/components/lists/ListWrapper.tsx:89
+msgid "Show"
+msgstr ""
+
+#: src/modules/dashboard/DashboardListTopPanel.tsx:35
+msgid "Show assets with 0 balance"
+msgstr ""
+
+#: src/modules/dashboard/lists/ListBottomText.tsx:9
+msgid "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
+msgstr ""
+
+#: src/components/isolationMode/IsolatedAssetModal.tsx:21
+msgid "Some newly listed assets have limited exposure until the Aave governance decides otherwise."
+msgstr ""
 
 #: src/layouts/SettingsMenu.tsx:25
 msgid "Spanish"
-msgstr "Español"
+msgstr ""
+
+#: src/components/infoModalContents/APYTypeInfoContent.tsx:11
+msgid "Stable Interest"
+msgstr ""
 
 #: src/ui-config/menu-items/index.tsx:32
 msgid "Stake"
 msgstr ""
 
+#: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx:71
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx:63
+msgid "Supply"
+msgstr ""
+
 #: src/flows/SupplyFlowModal/SupplyDetails.tsx:45
+#: src/modules/markets/AssetsList.tsx:55
 msgid "Supply APY"
 msgstr ""
 
 #: src/flows/SupplyFlowModal/SupplyDetails.tsx:55
 msgid "Supply reward"
+msgstr ""
+
+#: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx:63
+msgid "Swap"
 msgstr ""
 
 #: src/layouts/WalletWidget.tsx:194
@@ -240,29 +435,78 @@ msgstr ""
 msgid "The health factor represents the safety of your loan derived from the proportion of collateral versus amount borrowed. Keep it above 1 to avoid liquidation."
 msgstr ""
 
+#: src/components/caps/CapsTooltip.tsx:25
+msgid "This asset has almost reached its borrow cap. There is only {messageValue} available to be borrowed from this market."
+msgstr ""
+
+#: src/components/caps/CapsTooltip.tsx:20
+msgid "This asset has almost reached its supply cap. There can only be {messageValue} supplied to this market."
+msgstr ""
+
+#: src/components/caps/CapsTooltip.tsx:38
+msgid "This asset has reached its borrow cap. Nothing is available to be borrowed from this market."
+msgstr ""
+
+#: src/components/caps/CapsTooltip.tsx:33
+msgid "This asset has reached its supply cap. Nothing is available to be supplied from this market."
+msgstr ""
+
+#: src/components/infoModalContents/BorrowAvailableInfoContent.tsx:13
+msgid "This is the total amount available for you to borrow. You can borrow based on your collateral and until the borrow cap is reached."
+msgstr ""
+
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx:123
+msgid "To borrow you need to supply any asset to be used as collateral."
+msgstr ""
+
+#: src/components/isolationMode/IsolatedAssetModal.tsx:39
+msgid "To exit isolation mode, you will need to repay all your borrowed positions and turn off the isolated asset being used as collateral from your dashboard."
+msgstr ""
+
 #: src/components/ConnectWalletPaper.tsx:24
 msgid "To see your supplies and borrowings, connect your wallet."
 msgstr ""
 
-#: src/modules/markets/MarketsTopPanel.tsx:36
+#: src/modules/markets/MarketsTopPanel.tsx:37
 msgid "Total available"
 msgstr ""
 
-#: src/modules/markets/MarketsTopPanel.tsx:45
+#: src/modules/markets/AssetsList.tsx:59
+msgid "Total borrowed"
+msgstr ""
+
+#: src/modules/markets/MarketsTopPanel.tsx:46
 msgid "Total borrows"
 msgstr ""
 
-#: src/modules/markets/MarketsTopPanel.tsx:27
+#: src/modules/markets/MarketsTopPanel.tsx:28
 msgid "Total market size"
+msgstr ""
+
+#: src/modules/markets/AssetsList.tsx:51
+msgid "Total supplied"
+msgstr ""
+
+#: src/components/infoModalContents/APYTypeInfoContent.tsx:19
+msgid "Variable Interest"
 msgstr ""
 
 #: src/layouts/WalletWidget.tsx:236
 msgid "View on Etherscan"
 msgstr ""
 
-#: pages/index.tsx:29
-#~ msgid "Welcome to Aave UI"
-#~ msgstr "Bienvenido a Aave UI"
+#: pages/faucet.tsx:54
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx:131
+msgid "Wallet balance"
+msgstr ""
+
+#: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx:54
+msgid "Withdraw"
+msgstr ""
+
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:48
+msgid "Your borrows"
+msgstr ""
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:94
 msgid "Your current loan to value based on your collateral supplied."
@@ -272,17 +516,33 @@ msgstr ""
 msgid "Your health factor and loan to value determine the assurance of your collateral. To avoid liquidations you can supply more collateral or repay borrow positions."
 msgstr ""
 
-#: pages/markets.tsx:32
+#: src/components/infoModalContents/APYTypeInfoContent.tsx:22
+msgid "Your interest rate will fluctuate based on the market. Recommended for short-term loans."
+msgstr ""
+
+#: src/components/infoModalContents/APYTypeInfoContent.tsx:13
+msgid "Your interest rate will stay the same for the duration of your loan. Recommended for long-term loan periods and for users who prefer predictability."
+msgstr ""
+
+#: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx:29
+msgid "Your supplies"
+msgstr ""
+
+#: src/modules/markets/AssetsList.tsx:76
 msgid "assets"
 msgstr ""
 
-#: src/components/GasStation/GasStation.tsx:126
-msgid "{0, select, slow {Slow} normal {Normal} fast {Fast} other {-}}"
+#: src/modules/dashboard/lists/ListItemWrapper.tsx:24
+msgid "documentation"
 msgstr ""
 
-#: src/layouts/SettingsMenu.tsx:140
-#~ msgid "{0}"
-#~ msgstr ""
+#: src/components/incentives/IncentivesInfoModal.tsx:64
+msgid "rewards"
+msgstr ""
+
+#: src/components/GasStation/GasStation.tsx:125
+msgid "{0, select, slow {Slow} normal {Normal} fast {Fast} other {-}}"
+msgstr ""
 
 #: src/components/GasStation/GasButton.tsx:24
 msgid "{value}"

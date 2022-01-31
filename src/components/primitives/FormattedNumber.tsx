@@ -81,6 +81,7 @@ export function FormattedNumber({
         position: 'relative',
         ...rest.sx,
       }}
+      noWrap
       {...rest}
     >
       {isSmallerThanMin && '< '}

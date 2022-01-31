@@ -6,7 +6,7 @@ import { ReactNode, useState } from 'react';
 
 import { BasicModal } from './primitives/BasicModal';
 
-interface TextWithModalProps extends TypographyProps {
+export interface TextWithModalProps extends TypographyProps {
   text: ReactNode;
   icon?: ReactNode;
   iconSize?: number;
@@ -31,10 +31,24 @@ export const TextWithModal = ({
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <Typography {...rest}>{text}</Typography>
         <IconButton
-          sx={{ width: iconSize, height: iconSize, borderRadius: '50%', p: 0, minWidth: 0 }}
-          onClick={handleOpen}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: iconSize,
+            height: iconSize,
+            borderRadius: '50%',
+            p: 0,
+            minWidth: 0,
+            ml: '5px',
+          }}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleOpen();
+          }}
         >
-          <SvgIcon sx={{ fontSize: iconSize, color: iconColor, ml: '5px' }}>
+          <SvgIcon sx={{ fontSize: iconSize, color: iconColor, borderRadius: '50%' }}>
             {icon || <QuestionMarkCircleIcon />}
           </SvgIcon>
         </IconButton>
