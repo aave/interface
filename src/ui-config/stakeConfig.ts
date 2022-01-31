@@ -10,8 +10,8 @@ export interface StakeConfig {
       STAKING_HELPER?: string;
     };
   };
-  queryStakeDataUrl: string;
-  wsStakeDataUrl: string;
+  queryStakeDataUrl?: string;
+  wsStakeDataUrl?: string;
 }
 
 export const stakeConfig: StakeConfig | undefined = {

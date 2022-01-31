@@ -1,88 +1,65 @@
-// import { useState, useEffect } from 'react';
-// import { BigNumber, ethers } from 'ethers';
+import { useState } from 'react';
 
-// import { ChainId, Stake } from '@aave/contract-helpers';
-// import { usePolling } from '../usePolling';
-// import { useApolloClient } from '@apollo/client';
-// import { getProvider } from 'src/utils/marketsAndNetworksConfig';
-// import { C_StakeGeneralUiDataDocument, C_StakeGeneralUiDataQuery } from './graphql/hooks';
+import { UiStakeDataProvider } from '@aave/contract-helpers';
+import { usePolling } from '../usePolling';
+import { useApolloClient } from '@apollo/client';
+import { getProvider } from 'src/utils/marketsAndNetworksConfig';
+import {
+  C_StakeGeneralUiDataDocument,
+  C_StakeGeneralUiDataQuery,
+  C_StakeUserUiDataDocument,
+  C_StakeUserUiDataQuery,
+} from './graphql/hooks';
+import { stakeConfig } from 'src/ui-config/stakeConfig';
 
-// function formatRawStakeData(
-//   data: StakeGeneralDataT<BigNumber, BigNumber> & StakeUserDataT<BigNumber, BigNumber>
-// ): StakeData {
-//   return {
-//     stakeTokenTotalSupply: data.stakeTokenTotalSupply.toString(),
-//     stakeCooldownSeconds: data.stakeCooldownSeconds.toNumber(),
-//     stakeUnstakeWindow: data.stakeUnstakeWindow.toNumber(),
-//     stakeTokenPriceEth: data.stakeTokenPriceEth.toString(),
-//     rewardTokenPriceEth: data.rewardTokenPriceEth.toString(),
-//     stakeApy: data.stakeApy.toString(),
-//     distributionPerSecond: data.distributionPerSecond.toString(),
-//     distributionEnd: data.distributionEnd.toString(),
-//     stakeTokenUserBalance: data.stakeTokenUserBalance.toString(),
-//     underlyingTokenUserBalance: data.underlyingTokenUserBalance.toString(),
-//     userCooldown: data.userCooldown.toNumber(),
-//     userIncentivesToClaim: data.userIncentivesToClaim.toString(),
-//     userPermitNonce: data.userPermitNonce.toString(),
-//   };
-// }
+export function _useStakeDataRPC(currentAccount?: string, skip = false) {
+  const { cache } = useApolloClient();
+  const [loading, setLoading] = useState(true);
 
-// export function _useStakeDataRPC(chainId: ChainId, userAddress?: string, skip = false) {
-//   const { cache } = useApolloClient();
-//   const [loading, setLoading] = useState(true);
-//   const [usdPriceEth, setUsdPriceEth] = useState<string>('0');
+  const loadStakeData = async () => {
+    if (!stakeConfig) return;
+    const uiStakeDataProvider = new UiStakeDataProvider({
+      provider: getProvider(stakeConfig.chainId),
+      uiStakeDataProvider: stakeConfig.stakeDataProvider,
+    });
+    try {
+      const generalStakeData = await uiStakeDataProvider.getGeneralStakeUIDataHumanized();
+      cache.writeQuery<C_StakeGeneralUiDataQuery>({
+        query: C_StakeGeneralUiDataDocument,
+        data: {
+          __typename: 'Query',
+          stakeGeneralUIData: {
+            __typename: 'StakeGeneralUIData',
+            ...generalStakeData,
+          },
+        },
+      });
+      if (currentAccount) {
+        const userStakeData = await uiStakeDataProvider.getUserStakeUIDataHumanized({
+          user: currentAccount,
+        });
+        cache.writeQuery<C_StakeUserUiDataQuery>({
+          query: C_StakeUserUiDataDocument,
+          data: {
+            __typename: 'Query',
+            stakeUserUIData: {
+              __typename: 'StakeUserUIData',
+              ...userStakeData,
+            },
+          },
+          variables: { userAddress: currentAccount },
+        });
+      }
+    } catch (e) {
+      console.log('Stake data loading error', e);
+    }
+    setLoading(false);
+  };
 
-//   const loadStakeData = async (_userAddress: string | undefined, helperAddress: string) => {
-//     const userAddress = _userAddress ? _userAddress : ethers.constants.AddressZero;
-//     const helperContract = StakeUiHelperIFactory.connect(helperAddress, getProvider(chainId));
-//     try {
-//       const data = await helperContract.getUserUIData(userAddress);
+  usePolling(loadStakeData, 30000, skip, [currentAccount]);
 
-//       setStakeData({
-//         [Stake.aave]: formatRawStakeData(data['0']),
-//         [Stake.bpt]: formatRawStakeData(data['1']),
-//       });
-//       cache.writeQuery<C_StakeGeneralUiDataQuery>({
-//         query: C_StakeGeneralUiDataDocument,
-//         data: {
-//           __typename: 'Query',
-//           stakeGeneralUIData: {
-//             __typename: 'StakeGeneralUIData',
-//             aave: data['0'],
-//             bpt: data['1'],
-//             usdPriceEth: data['2'],
-//           },
-//         },
-//         variables: { userAddress },
-//       });
-//       setUsdPriceEth(data[2].toString());
-//     } catch (e) {
-//       console.log('Stake data loading error', e);
-//     }
-//     setLoading(false);
-//   };
-
-//   useEffect(() => {
-//     setLoading(true);
-
-//     if (!skip) {
-//       loadStakeData(user, stakeDataProvider);
-//       const intervalId = setInterval(
-//         () => loadStakeData(user, stakeDataProvider),
-//         poolingInterval * 1000
-//       );
-//       return () => clearInterval(intervalId);
-//     } else {
-//       setLoading(false);
-//     }
-//     // eslint-disable-next-line react-hooks/exhaustive-deps
-//   }, [user, skip, stakeDataProvider, chainId]);
-//   usePolling(loadStakeData, 30000, skip, [userAddress, helperAddress]);
-
-//   return {
-//     loading,
-//     data: stakeData,
-//     usdPriceEth,
-//     refresh: async () => await loadStakeData(user, stakeDataProvider),
-//   };
-// }
+  return {
+    loading,
+    refresh: loadStakeData,
+  };
+}
