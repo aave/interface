@@ -1,19 +1,12 @@
-import { ChainId, EthereumTransactionTypeExtended, Pool } from '@aave/contract-helpers';
+import { ChainId, Pool } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Box, Button, SvgIcon, Typography } from '@mui/material';
-import Link from 'next/link';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Box, Button } from '@mui/material';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { TxState } from './SupplyModalContent';
-import { ExternalLinkIcon } from '@heroicons/react/solid';
-import { TextWithModal } from '../TextWithModal';
-import { ApprovalInfoContent } from '../infoModalContents/ApprovalInfoContent';
-import DoneIcon from '@mui/icons-material/Done';
-import { RetryWithApprovalInfoContent } from '../infoModalContents/RetryWithApprovalInfoContent';
 import { useTransactionHandler } from './useTransactionHandler';
 import { LeftHelperText } from './LeftHelperText';
 import { RightHelperText } from './RightHelperText';
@@ -24,6 +17,7 @@ export type SupplyActionProps = {
   isWrongNetwork: boolean;
   setSupplyTxState: Dispatch<SetStateAction<TxState>>;
   customGasPrice?: string;
+  handleClose: () => void;
 };
 
 export enum SupplyState {
@@ -39,6 +33,7 @@ export const SupplyActions = ({
   poolReserve,
   setSupplyTxState,
   customGasPrice,
+  handleClose,
 }: SupplyActionProps) => {
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
@@ -145,16 +140,23 @@ export const SupplyActions = ({
           </Trans>
         </Button>
       )}
-      {hasAmount && (
+      {hasAmount && !mainTxState.txHash && !mainTxState.error && (
         <Button
           variant="outlined"
           onClick={action}
           disabled={loading || (requiresApproval && !approved)}
         >
           <Trans>
-            {!approved && !loading && `SUPPLY ${poolReserve.symbol}`}
-            {!approved && loading && `SUPPLY ${poolReserve.symbol} PENDING...`}
+            {approved && !loading && !mainTxState.txHash && !mainTxState.error
+              ? `SUPPLY ${poolReserve.symbol}`
+              : ''}
+            {approved && loading ? `SUPPLY ${poolReserve.symbol} PENDING...` : ''}
           </Trans>
+        </Button>
+      )}
+      {mainTxState.txHash && !mainTxState.error && (
+        <Button onClick={handleClose} variant="outlined">
+          <Trans>OK, CLOSE</Trans>
         </Button>
       )}
     </Box>

@@ -30,7 +30,7 @@ export const useTransactionHandler = ({
   customGasPrice,
   skip,
 }: UseTransactionHandlerProps) => {
-  const { signTxData, getTxError, sendTx, currentAccount } = useWeb3Context();
+  const { signTxData, sendTx, currentAccount } = useWeb3Context();
   const { lendingPool } = useTxBuilderContext();
   const [error, setError] = useState<ErrorType | null>(null);
   const [loading, setLoading] = useState(false);
@@ -158,7 +158,7 @@ export const useTransactionHandler = ({
           data && setTxs(data);
           setLoading(false);
         })
-        .catch((e) => {
+        .catch(() => {
           setError(ErrorType.estimation);
         });
     }

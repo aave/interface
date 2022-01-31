@@ -77,17 +77,20 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
   const amountIntEth = new BigNumber(amountToSupply).multipliedBy(
     poolReserve.formattedPriceInMarketReferenceCurrency
   );
+  // TODO: is it correct to ut to -1 if user doesnt exist?
   const amountInUsd = amountIntEth.multipliedBy(marketReferencePriceInUsd).shiftedBy(-USD_DECIMALS);
-  const totalCollateralMarketReferenceCurrencyAfter = valueToBigNumber(
-    user.totalCollateralMarketReferenceCurrency
-  ).plus(amountIntEth);
+  const totalCollateralMarketReferenceCurrencyAfter = user
+    ? valueToBigNumber(user.totalCollateralMarketReferenceCurrency).plus(amountIntEth)
+    : '-1';
 
-  const liquidationThresholdAfter = valueToBigNumber(user.totalCollateralMarketReferenceCurrency)
-    .multipliedBy(user.currentLiquidationThreshold)
-    .plus(amountIntEth.multipliedBy(poolReserve.formattedReserveLiquidationThreshold))
-    .dividedBy(totalCollateralMarketReferenceCurrencyAfter);
+  const liquidationThresholdAfter = user
+    ? valueToBigNumber(user.totalCollateralMarketReferenceCurrency)
+        .multipliedBy(user.currentLiquidationThreshold)
+        .plus(amountIntEth.multipliedBy(poolReserve.formattedReserveLiquidationThreshold))
+        .dividedBy(totalCollateralMarketReferenceCurrencyAfter)
+    : '-1';
 
-  let healthFactorAfterDeposit = valueToBigNumber(user.healthFactor);
+  let healthFactorAfterDeposit = user ? valueToBigNumber(user.healthFactor) : '-1';
 
   if (
     user &&
@@ -166,7 +169,7 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
             supplyApy={supplyApy}
             // supplyRewards={supplyRewards}
             showHf={showHealthFactor || false}
-            healthFactor={user.healthFactor}
+            healthFactor={user ? user.healthFactor : '-1'}
             futureHealthFactor={healthFactorAfterDeposit.toString()}
           />
         </>
@@ -179,7 +182,7 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
         setSupplyTxState={setSupplyTxState}
         poolReserve={poolReserve}
         amountToSupply={amountToSupply}
-        onClose={handleClose}
+        handleClose={handleClose}
         isWrongNetwork={isWrongNetwork}
       />
     </>

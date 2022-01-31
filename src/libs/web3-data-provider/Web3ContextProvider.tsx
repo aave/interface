@@ -54,7 +54,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         setCurrentAccount(accounts[0]);
       });
 
-      providerInstance.on('networkChanged', async (chainId: number) => {
+      providerInstance.on('networkChanged', async () => {
         connectWallet();
       });
     },
