@@ -61,7 +61,6 @@ export const getGasCosts = (
       ? parseUnits(customGas, 'gwei').toString()
       : gasData[convertGasOption(gasOption)].legacyGasPrice;
 
-  console.log('price', Number(baseCurrencyUsd));
   return (
     Number(formatUnits(gasLimit.mul(gasPrice), baseCurrencyDecimals)) *
     (Number(baseCurrencyUsd) / 10 ** 8)
@@ -86,7 +85,6 @@ export const GasStation: React.FC<GasStationProps> = ({ gasLimit, ...props }) =>
       )
     : undefined;
 
-  console.log('aaa', totalGasCostsUsd);
   const [open, setOpen] = useState(false);
 
   const toggleDropdown = () => setOpen(!open);
