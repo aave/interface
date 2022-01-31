@@ -8,6 +8,8 @@ import { FormValue } from '../FormItems/FormValue';
 import { Percentage } from '../Percentage';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { HealthFactorNumber } from '../HealthFactorNumber';
+import { GasStation } from '../GasStation/GasStation';
+import { parseUnits } from 'ethers/lib/utils';
 
 export interface SupplyReward {
   tokenIcon: string;
@@ -81,6 +83,9 @@ export const SupplyDetails: React.FC<SupplyDetailsProps> = ({
             <Trans>Estimated Tx cost</Trans>
           </Typography>
         </FormInfo>
+        <FormValue>
+          <GasStation gasLimit={parseUnits('220000', 'wei')} />
+        </FormValue>
       </FormRow>
     </Grid>
   );

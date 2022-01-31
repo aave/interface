@@ -21,9 +21,9 @@ import { RightHelperText } from './RightHelperText';
 export type SupplyActionProps = {
   amountToSupply: string;
   poolReserve: ComputedReserveData;
-  onClose: () => void;
   isWrongNetwork: boolean;
   setSupplyTxState: Dispatch<SetStateAction<TxState>>;
+  customGasPrice?: string;
 };
 
 export enum SupplyState {
@@ -38,13 +38,11 @@ export const SupplyActions = ({
   amountToSupply,
   poolReserve,
   setSupplyTxState,
+  customGasPrice,
 }: SupplyActionProps) => {
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
   const { currentAccount, chainId: connectedChainId } = useWeb3Context();
-
-  // Custom gas
-  const [customGasPrice, setCustomGasPrice] = useState<string>();
 
   const {
     approval,
@@ -125,6 +123,11 @@ export const SupplyActions = ({
           usePermit={usePermit}
         />
       </Box>
+      {(mainTxState.error || approvalTxState.error) && (
+        <Button variant="outlined" onClick={() => setUsePermit(false)}>
+          <Trans>RETRY WITH APPROVAL</Trans>
+        </Button>
+      )}
       {!hasAmount && (
         <Button variant="outlined" disabled>
           {!loading ? 'enter an amount' : 'loading'}
@@ -136,9 +139,10 @@ export const SupplyActions = ({
           onClick={() => approval(amountToSupply, poolReserve.underlyingAsset)}
           disabled={approved || loading}
         >
-          {!approved && !loading && 'approve to continue'}
-          {!approved && loading && 'loading'}
-          {approved && 'approval confirmed'}
+          <Trans>
+            {!approved && !loading ? 'APPROVE TO CONTINUE' : ''}
+            {!approved && loading ? `APPROVING ${poolReserve.symbol}...` : ''}
+          </Trans>
         </Button>
       )}
       {hasAmount && (
@@ -147,12 +151,10 @@ export const SupplyActions = ({
           onClick={action}
           disabled={loading || (requiresApproval && !approved)}
         >
-          supply
-        </Button>
-      )}
-      {(mainTxState.error || approvalTxState.error) && (
-        <Button variant="outlined" onClick={() => setUsePermit(false)}>
-          use Approval flow
+          <Trans>
+            {!approved && !loading && `SUPPLY ${poolReserve.symbol}`}
+            {!approved && loading && `SUPPLY ${poolReserve.symbol} PENDING...`}
+          </Trans>
         </Button>
       )}
     </Box>

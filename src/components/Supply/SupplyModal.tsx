@@ -1,5 +1,5 @@
 import React from 'react';
-import { BasicModal } from '../primitives/BasicModal';
+import { ActionModal } from '../primitives/ActionModal';
 import { SupplyModalContent } from './SupplyModalContent';
 
 export type SupplyProps = {
@@ -10,8 +10,8 @@ export type SupplyProps = {
 
 export const SupplyModal = ({ underlyingAsset, open, handleClose }: SupplyProps) => {
   return (
-    <BasicModal open={open} setOpen={handleClose}>
+    <ActionModal open={open} setOpen={handleClose}>
       <SupplyModalContent underlyingAsset={underlyingAsset} handleClose={handleClose} />
-    </BasicModal>
+    </ActionModal>
   );
 };
