@@ -13,6 +13,14 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:79
+msgid "* If the health factor goes below 1, the liquidation of your collateral might be triggered."
+msgstr ""
+
+#: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:96
+msgid "** If your loan to value goes above the liquidation threshold your collateral supplied may be liquidated."
+msgstr ""
+
 #: pages/about.tsx:37
 msgid "About the app"
 msgstr "Sobre la app"
@@ -29,7 +37,8 @@ msgstr ""
 #~ msgid "Connect Wallet"
 #~ msgstr ""
 
-#: src/layouts/WalletWidget.tsx:96
+#: src/components/ConnectWalletPaper.tsx:27
+#: src/layouts/WalletWidget.tsx:93
 msgid "Connect wallet"
 msgstr ""
 
@@ -37,10 +46,20 @@ msgstr ""
 msgid "Copy address"
 msgstr ""
 
-#: src/layouts/SettingsMenu.tsx:95
+#: src/modules/dashboard/DashboardTopPanel.tsx:74
+#: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:90
+msgid "Current LTV"
+msgstr ""
+
+#: src/components/GasStation/GasStation.tsx:169
+msgid "Custom"
+msgstr ""
+
+#: src/layouts/SettingsMenu.tsx:93
 msgid "Dark mode"
 msgstr ""
 
+#: src/modules/dashboard/DashboardTopPanel.tsx:32
 #: src/ui-config/menu-items/index.tsx:23
 msgid "Dashboard"
 msgstr ""
@@ -61,9 +80,13 @@ msgstr ""
 #~ msgid "Englis"
 #~ msgstr ""
 
-#: src/layouts/SettingsMenu.tsx:23
+#: src/layouts/SettingsMenu.tsx:24
 msgid "English"
 msgstr "Ingles"
+
+#: src/flows/SupplyFlowModal/SupplyDetails.tsx:77
+msgid "Estimated Gas Costs"
+msgstr ""
 
 #: src/ui-config/menu-items/index.tsx:49
 msgid "FAQ"
@@ -73,13 +96,13 @@ msgstr ""
 msgid "Github"
 msgstr ""
 
-#: src/layouts/SettingsMenu.tsx:90
+#: src/layouts/SettingsMenu.tsx:87
 msgid "Global settings"
 msgstr ""
 
 #: pages/index.tsx:32
-msgid "Go to About page"
-msgstr "Ir a página de Sobre la app"
+#~ msgid "Go to About page"
+#~ msgstr "Ir a página de Sobre la app"
 
 #: pages/about.tsx:41
 msgid "Go to Home page"
@@ -89,16 +112,43 @@ msgstr "Ir a página de Inicio"
 msgid "Governance"
 msgstr ""
 
-#: src/flows/SupplyFlowModal/SupplyDetails.tsx:61
+#: src/components/infoModalContents/HFInfoContent.tsx:8
+#: src/flows/SupplyFlowModal/SupplyDetails.tsx:63
+#: src/modules/dashboard/DashboardTopPanel.tsx:56
+#: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:69
 msgid "Health factor"
 msgstr ""
 
-#: src/layouts/SettingsMenu.tsx:106
+#: src/layouts/SettingsMenu.tsx:104
 msgid "Language"
 msgstr ""
 
-#: src/flows/SupplyFlowModal/SupplyDetails.tsx:68
+#: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:62
+msgid "Learn more"
+msgstr ""
+
+#: src/flows/SupplyFlowModal/SupplyDetails.tsx:70
 msgid "Liquidation at"
+msgstr ""
+
+#: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:51
+msgid "Liquidation risk parametres"
+msgstr ""
+
+#: src/modules/dashboard/LiquidationRiskParametresModal/components/LTVContent.tsx:114
+msgid "Liquidation threshold"
+msgstr ""
+
+#: src/modules/dashboard/LiquidationRiskParametresModal/components/HFContent.tsx:102
+msgid "Liquidation value"
+msgstr ""
+
+#: src/components/MarketSwitcher.tsx:110
+msgid "Market"
+msgstr ""
+
+#: src/modules/markets/MarketsTopPanel.tsx:26
+msgid "Market overview"
 msgstr ""
 
 #: src/ui-config/menu-items/index.tsx:28
@@ -109,12 +159,29 @@ msgstr ""
 msgid "Max"
 msgstr ""
 
+#: src/modules/dashboard/LiquidationRiskParametresModal/components/LTVContent.tsx:79
+msgid "Max LTV"
+msgstr ""
+
 #: src/layouts/MoreMenu.tsx:42
 msgid "More"
 msgstr ""
 
-#: src/layouts/WalletWidget.tsx:192
+#: src/modules/dashboard/DashboardTopPanel.tsx:40
+msgid "Net APY"
+msgstr ""
+
+#: src/modules/dashboard/DashboardTopPanel.tsx:33
+msgid "Net worth"
+msgstr ""
+
+#: src/layouts/WalletWidget.tsx:190
 msgid "Network"
+msgstr ""
+
+#: src/components/TextWithModal.tsx:49
+#: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:111
+msgid "Ok, I got it"
 msgstr ""
 
 #: pages/about.tsx:46
@@ -125,11 +192,31 @@ msgstr ""
 msgid "Open Supply Modal"
 msgstr ""
 
+#: src/components/ConnectWalletPaper.tsx:21
+msgid "Please, connect your wallet"
+msgstr ""
+
+#: src/modules/dashboard/LiquidationRiskParametresModal/components/HFContent.tsx:49
+msgid "Riskier"
+msgstr ""
+
+#: src/modules/dashboard/LiquidationRiskParametresModal/components/HFContent.tsx:43
+msgid "Safer"
+msgstr ""
+
+#: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:74
+msgid "Safety of your supplied collateral against the borrowed assets and its underlying value."
+msgstr ""
+
+#: src/components/MarketSwitcher.tsx:133
+msgid "Select Aave Market"
+msgstr ""
+
 #: src/layouts/SettingsMenu.tsx:133
 msgid "Select language"
 msgstr "Seleccionar idioma"
 
-#: src/layouts/SettingsMenu.tsx:24
+#: src/layouts/SettingsMenu.tsx:25
 msgid "Spanish"
 msgstr "Español"
 
@@ -137,16 +224,36 @@ msgstr "Español"
 msgid "Stake"
 msgstr ""
 
-#: src/flows/SupplyFlowModal/SupplyDetails.tsx:43
+#: src/flows/SupplyFlowModal/SupplyDetails.tsx:45
 msgid "Supply APY"
 msgstr ""
 
-#: src/flows/SupplyFlowModal/SupplyDetails.tsx:53
+#: src/flows/SupplyFlowModal/SupplyDetails.tsx:55
 msgid "Supply reward"
 msgstr ""
 
-#: src/layouts/WalletWidget.tsx:196
+#: src/layouts/WalletWidget.tsx:194
 msgid "Switch"
+msgstr ""
+
+#: src/components/infoModalContents/HFInfoContent.tsx:10
+msgid "The health factor represents the safety of your loan derived from the proportion of collateral versus amount borrowed. Keep it above 1 to avoid liquidation."
+msgstr ""
+
+#: src/components/ConnectWalletPaper.tsx:24
+msgid "To see your supplies and borrowings, connect your wallet."
+msgstr ""
+
+#: src/modules/markets/MarketsTopPanel.tsx:36
+msgid "Total available"
+msgstr ""
+
+#: src/modules/markets/MarketsTopPanel.tsx:45
+msgid "Total borrows"
+msgstr ""
+
+#: src/modules/markets/MarketsTopPanel.tsx:27
+msgid "Total market size"
 msgstr ""
 
 #: src/layouts/WalletWidget.tsx:236
@@ -154,9 +261,29 @@ msgid "View on Etherscan"
 msgstr ""
 
 #: pages/index.tsx:29
-msgid "Welcome to Aave UI"
-msgstr "Bienvenido a Aave UI"
+#~ msgid "Welcome to Aave UI"
+#~ msgstr "Bienvenido a Aave UI"
+
+#: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:94
+msgid "Your current loan to value based on your collateral supplied."
+msgstr ""
+
+#: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:54
+msgid "Your health factor and loan to value determine the assurance of your collateral. To avoid liquidations you can supply more collateral or repay borrow positions."
+msgstr ""
+
+#: pages/markets.tsx:32
+msgid "assets"
+msgstr ""
+
+#: src/components/GasStation/GasStation.tsx:126
+msgid "{0, select, slow {Slow} normal {Normal} fast {Fast} other {-}}"
+msgstr ""
 
 #: src/layouts/SettingsMenu.tsx:140
-msgid "{0}"
+#~ msgid "{0}"
+#~ msgstr ""
+
+#: src/components/GasStation/GasButton.tsx:24
+msgid "{value}"
 msgstr ""
