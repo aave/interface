@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useStateLoading, LOADING_STATE } from './useStateLoading';
+import { useStateLoading } from './useStateLoading';
 import { usePolling } from './usePolling';
 
 type GasInfo = {
@@ -21,16 +21,16 @@ export interface GetGasPricesHook {
   error: boolean;
 }
 
-const POLLING_INTERVAL = 100000;
+const POLLING_INTERVAL = 15000;
 
-const useGetGasPrices = (skip?: boolean, interval?: number): GetGasPricesHook => {
+const useGetGasPrices = (): GetGasPricesHook => {
   const { loading, setLoading } = useStateLoading();
   const [error, setError] = useState(false);
   const [data, setData] = useState<ResponseGasPrice | null>();
 
   const apiRequest = async () => {
     try {
-      setLoading(LOADING_STATE.LOADING);
+      setLoading(true);
       const data = await fetch('https://apiv5.paraswap.io/prices/gas/1?eip1559=true');
       const dataJson = await data.json();
       setData(dataJson as ResponseGasPrice);
@@ -39,10 +39,10 @@ const useGetGasPrices = (skip?: boolean, interval?: number): GetGasPricesHook =>
       console.error(' Error on get the gas price ', err);
       setError(true);
     }
-    setLoading(LOADING_STATE.FINISHED);
+    setLoading(false);
   };
 
-  usePolling(apiRequest, interval ? interval : POLLING_INTERVAL, !!skip, [skip]);
+  usePolling(apiRequest, POLLING_INTERVAL, false, []);
 
   return { loading, data, error };
 };
