@@ -3,6 +3,7 @@ import { MainLayout } from 'src/layouts/MainLayout';
 
 export default function Staking() {
   const data = useStakeData();
+  console.log(data);
 
   return <div>{JSON.stringify(data)}</div>;
 }

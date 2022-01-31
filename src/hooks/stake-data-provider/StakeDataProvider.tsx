@@ -44,18 +44,17 @@ export const useStakeDataProvider = () => useContext(StakeDataProviderContext);
 export const useStakeData = () => {
   const { currentAccount } = useWeb3Context();
 
-  const { loading: stakeUserUIDataLoading, data: stakeUserResult } = useC_StakeUserUiDataQuery({
+  const { data: stakeUserResult } = useC_StakeUserUiDataQuery({
     variables: { userAddress: currentAccount },
     skip: !currentAccount,
     fetchPolicy: 'cache-only',
   });
 
-  const { loading: stakeGeneralUIDataLoading, data: stakeGeneralResult } =
-    useC_StakeGeneralUiDataQuery({ fetchPolicy: 'cache-only' });
+  const { data: stakeGeneralResult } = useC_StakeGeneralUiDataQuery({ fetchPolicy: 'cache-only' });
 
   return {
     stakeUserResult,
     stakeGeneralResult,
-    loading: stakeGeneralUIDataLoading || stakeUserUIDataLoading,
+    loading: !stakeGeneralResult || (!!currentAccount && !stakeUserResult),
   };
 };

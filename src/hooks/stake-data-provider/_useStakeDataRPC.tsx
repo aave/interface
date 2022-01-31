@@ -37,28 +37,26 @@ export function _useStakeDataRPC(currentAccount?: string, skip = false) {
   };
 
   const loadUserStakeData = async () => {
-    if (!stakeConfig) return;
+    if (!stakeConfig || !currentAccount) return;
     const uiStakeDataProvider = new UiStakeDataProvider({
       provider: getProvider(stakeConfig.chainId),
       uiStakeDataProvider: stakeConfig.stakeDataProvider,
     });
     try {
-      if (currentAccount) {
-        const userStakeData = await uiStakeDataProvider.getUserStakeUIDataHumanized({
-          user: currentAccount,
-        });
-        cache.writeQuery<C_StakeUserUiDataQuery>({
-          query: C_StakeUserUiDataDocument,
-          data: {
-            __typename: 'Query',
-            stakeUserUIData: {
-              __typename: 'StakeUserUIData',
-              ...userStakeData,
-            },
+      const userStakeData = await uiStakeDataProvider.getUserStakeUIDataHumanized({
+        user: currentAccount,
+      });
+      cache.writeQuery<C_StakeUserUiDataQuery>({
+        query: C_StakeUserUiDataDocument,
+        data: {
+          __typename: 'Query',
+          stakeUserUIData: {
+            __typename: 'StakeUserUIData',
+            ...userStakeData,
           },
-          variables: { userAddress: currentAccount },
-        });
-      }
+        },
+        variables: { userAddress: currentAccount },
+      });
     } catch (e) {
       console.log('Stake data loading error', e);
     }
