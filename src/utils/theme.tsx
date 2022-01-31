@@ -712,6 +712,13 @@ export function getThemedComponents(theme: Theme) {
           },
         },
       },
+      MuiSvgIcon: {
+        styleOverrides: {
+          colorPrimary: {
+            color: theme.palette.primary.light,
+          },
+        },
+      },
     },
   } as ThemeOptions;
 }
