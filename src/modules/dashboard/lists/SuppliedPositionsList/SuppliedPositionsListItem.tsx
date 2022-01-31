@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
+import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
@@ -9,19 +10,14 @@ import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListItemUsedAsCollateral } from '../ListItemUsedAsCollateral';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
-import { SuppliedPositionsItem } from './types';
 
 export const SuppliedPositionsListItem = ({
   reserve,
   underlyingBalance,
   underlyingBalanceUSD,
-  aIncentives,
-  isActive,
-  isFrozen,
-  isIsolated,
-  canBeEnabledAsCollateral,
   usageAsCollateralEnabledOnUser,
-}: SuppliedPositionsItem) => {
+}: ComputedUserReserveData) => {
+  const { isIsolated, usageAsCollateralEnabled, aIncentivesData, isFrozen, isActive } = reserve;
   const { currentMarketData } = useProtocolDataContext();
   const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
 
@@ -35,8 +31,8 @@ export const SuppliedPositionsListItem = ({
       />
 
       <ListAPRColumn
-        value={Number(reserve.liquidityRate)}
-        incentives={aIncentives}
+        value={Number(reserve.supplyAPY)}
+        incentives={aIncentivesData}
         symbol={reserve.symbol}
       />
 
@@ -44,7 +40,7 @@ export const SuppliedPositionsListItem = ({
         <ListItemUsedAsCollateral
           isIsolated={isIsolated}
           usageAsCollateralEnabledOnUser={usageAsCollateralEnabledOnUser}
-          canBeEnabledAsCollateral={canBeEnabledAsCollateral}
+          canBeEnabledAsCollateral={usageAsCollateralEnabled}
           onToggleSwitch={() => console.log('TODO: should be collateral swap modal')}
         />
       </ListColumn>

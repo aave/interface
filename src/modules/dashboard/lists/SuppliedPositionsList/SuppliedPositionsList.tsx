@@ -3,18 +3,17 @@ import { Trans } from '@lingui/macro';
 import { CollateralInfoContent } from '../../../../components/infoModalContents/CollateralInfoContent';
 import { CollateralSwitchInfoContent } from '../../../../components/infoModalContents/CollateralSwitchInfoContent';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
-import { AppDataContextType } from '../../../../hooks/app-data-provider/useAppDataProvider';
+import { useAppDataContext } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { DashboardContentNoData } from '../../DashboardContentNoData';
 import { ListHeader } from '../ListHeader';
 import { ListTopInfoItem } from '../ListTopInfoItem';
 import { SuppliedPositionsListItem } from './SuppliedPositionsListItem';
-import { SuppliedPositionsItem } from './types';
 
-interface SuppliedPositionsListProps extends Pick<AppDataContextType, 'user'> {
-  listData: SuppliedPositionsItem[];
-}
+export const SuppliedPositionsList = () => {
+  const { user } = useAppDataContext();
 
-export const SuppliedPositionsList = ({ listData, user }: SuppliedPositionsListProps) => {
+  const suppliedPosition =
+    user?.userReservesData.filter((userReserve) => userReserve.underlyingBalance !== '0') || [];
   const head = [
     <Trans key="Balance">Balance</Trans>,
     <Trans key="APY">APY</Trans>,
@@ -29,10 +28,10 @@ export const SuppliedPositionsList = ({ listData, user }: SuppliedPositionsListP
     <ListWrapper
       title={<Trans>Your supplies</Trans>}
       localStorageName="suppliedAssetsDashboardTableCollapse"
-      noData={!listData.length}
+      noData={!suppliedPosition.length}
       topInfo={
         <>
-          {!!listData.length && (
+          {!!suppliedPosition.length && (
             <>
               <ListTopInfoItem
                 title={<Trans>Balance</Trans>}
@@ -49,11 +48,11 @@ export const SuppliedPositionsList = ({ listData, user }: SuppliedPositionsListP
         </>
       }
     >
-      {listData.length ? (
+      {suppliedPosition.length ? (
         <>
           <ListHeader head={head} />
-          {listData.map((item, index) => (
-            <SuppliedPositionsListItem {...item} key={index} />
+          {suppliedPosition.map((item) => (
+            <SuppliedPositionsListItem {...item} key={item.underlyingAsset} />
           ))}
         </>
       ) : (

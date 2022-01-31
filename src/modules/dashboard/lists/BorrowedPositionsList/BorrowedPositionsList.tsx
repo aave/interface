@@ -1,22 +1,33 @@
+import { InterestRate } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 
 import { APYTypeInfoContent } from '../../../../components/infoModalContents/APYTypeInfoContent';
 import { BorrowPowerInfoContent } from '../../../../components/infoModalContents/BorrowPowerInfoContent';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
-import { AppDataContextType } from '../../../../hooks/app-data-provider/useAppDataProvider';
+import {
+  ComputedUserReserveData,
+  useAppDataContext,
+} from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { DashboardContentNoData } from '../../DashboardContentNoData';
 import { DashboardEModeButton } from '../../DashboardEModeButton';
 import { ListHeader } from '../ListHeader';
 import { ListTopInfoItem } from '../ListTopInfoItem';
 import { BorrowedPositionsListItem } from './BorrowedPositionsListItem';
-import { BorrowedPositionsItem } from './types';
 
-interface BorrowedPositionsListProps extends Pick<AppDataContextType, 'user'> {
-  listData: BorrowedPositionsItem[];
-}
+export const BorrowedPositionsList = () => {
+  const { user } = useAppDataContext();
 
-export const BorrowedPositionsList = ({ listData, user }: BorrowedPositionsListProps) => {
+  const borrowPositions =
+    user?.userReservesData.reduce((acc, userReserve) => {
+      if (userReserve.variableBorrows !== '0') {
+        acc.push({ ...userReserve, borrowRateMode: InterestRate.Variable });
+      }
+      if (userReserve.stableBorrows !== '0') {
+        acc.push({ ...userReserve, borrowRateMode: InterestRate.Stable });
+      }
+      return acc;
+    }, [] as (ComputedUserReserveData & { borrowRateMode: InterestRate })[]) || [];
   const maxBorrowAmount = valueToBigNumber(user?.totalBorrowsMarketReferenceCurrency || '0').plus(
     user?.availableBorrowsMarketReferenceCurrency || '0'
   );
@@ -41,10 +52,10 @@ export const BorrowedPositionsList = ({ listData, user }: BorrowedPositionsListP
           onClick={() => console.log('TODO: should be e-mode category select modal')}
         />
       }
-      noData={!listData.length}
+      noData={!borrowPositions.length}
       topInfo={
         <>
-          {!!listData.length && (
+          {!!borrowPositions.length && (
             <>
               <ListTopInfoItem title={<Trans>Balance</Trans>} value={user?.totalBorrowsUSD || 0} />
               <ListTopInfoItem title={<Trans>APY</Trans>} value={user?.debtAPY || 0} percent />
@@ -59,11 +70,11 @@ export const BorrowedPositionsList = ({ listData, user }: BorrowedPositionsListP
         </>
       }
     >
-      {listData.length ? (
+      {borrowPositions.length ? (
         <>
           <ListHeader head={head} />
-          {listData.map((item, index) => (
-            <BorrowedPositionsListItem {...item} key={index} />
+          {borrowPositions.map((item) => (
+            <BorrowedPositionsListItem {...item} key={item.underlyingAsset + item.borrowRateMode} />
           ))}
         </>
       ) : (

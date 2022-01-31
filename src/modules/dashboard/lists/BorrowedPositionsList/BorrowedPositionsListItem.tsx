@@ -1,40 +1,44 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
-
+import { ComputedUserReserveData } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { ListColumn } from '../../../../components/lists/ListColumn';
 import { ListAPRColumn } from '../ListAPRColumn';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListItemAPYButton } from '../ListItemAPYButton';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
-import { BorrowedPositionsItem } from './types';
 
 export const BorrowedPositionsListItem = ({
   reserve,
-  currentBorrows,
-  currentBorrowsUSD,
-  borrowRate,
+  totalBorrows,
+  totalBorrowsUSD,
   borrowRateMode,
-  vIncentives,
-  sIncentives,
-  isActive,
-  borrowingEnabled,
-  isFrozen,
-  stableBorrowRateEnabled,
-}: BorrowedPositionsItem) => {
+  stableBorrowAPY,
+}: ComputedUserReserveData & { borrowRateMode: InterestRate }) => {
+  const {
+    isActive,
+    isFrozen,
+    borrowingEnabled,
+    stableBorrowRateEnabled,
+    sIncentivesData,
+    vIncentivesData,
+    variableBorrowAPY,
+  } = reserve;
   return (
     <ListItemWrapper symbol={reserve.symbol} iconSymbol={reserve.iconSymbol}>
       <ListValueColumn
         symbol={reserve.symbol}
-        value={Number(currentBorrows)}
-        subValue={Number(currentBorrowsUSD)}
-        disabled={Number(currentBorrows) === 0}
+        value={Number(totalBorrows)}
+        subValue={Number(totalBorrowsUSD)}
+        disabled={Number(totalBorrows) === 0}
       />
 
       <ListAPRColumn
-        value={Number(borrowRate)}
-        incentives={borrowRateMode === InterestRate.Variable ? vIncentives : sIncentives}
+        value={Number(
+          borrowRateMode === InterestRate.Variable ? variableBorrowAPY : stableBorrowAPY
+        )}
+        incentives={borrowRateMode === InterestRate.Variable ? vIncentivesData : sIncentivesData}
         symbol={reserve.symbol}
       />
 

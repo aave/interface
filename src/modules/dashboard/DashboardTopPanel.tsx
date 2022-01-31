@@ -2,6 +2,8 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import * as React from 'react';
 import { useState } from 'react';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 import { HealthFactorNumber } from '../../components/HealthFactorNumber';
 import { HFInfoContent } from '../../components/infoModalContents/HFInfoContent';
@@ -10,17 +12,13 @@ import { NoData } from '../../components/primitives/NoData';
 import { TextWithModal } from '../../components/TextWithModal';
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
-import { AppDataContextType } from '../../hooks/app-data-provider/useAppDataProvider';
-import { NetworkConfig } from '../../ui-config/networksConfig';
+import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvider';
 import { LiquidationRiskParametresInfoModal } from './LiquidationRiskParametresModal/LiquidationRiskParametresModal';
 
-interface DashboardTopPanelProps
-  extends Pick<AppDataContextType, 'user'>,
-    Pick<NetworkConfig, 'bridge'> {
-  currentAccount?: string;
-}
-
-export const DashboardTopPanel = ({ currentAccount, user, bridge }: DashboardTopPanelProps) => {
+export const DashboardTopPanel = () => {
+  const { currentNetworkConfig } = useProtocolDataContext();
+  const { user } = useAppDataContext();
+  const { currentAccount } = useWeb3Context();
   const [open, setOpen] = useState(false);
 
   const loanToValue =
@@ -32,7 +30,11 @@ export const DashboardTopPanel = ({ currentAccount, user, bridge }: DashboardTop
 
   return (
     <>
-      <TopInfoPanel pageTitle={<Trans>Dashboard</Trans>} withMarketSwitcher bridge={bridge}>
+      <TopInfoPanel
+        pageTitle={<Trans>Dashboard</Trans>}
+        withMarketSwitcher
+        bridge={currentNetworkConfig.bridge}
+      >
         <TopInfoPanelItem title={<Trans>Net worth</Trans>}>
           {currentAccount ? (
             <FormattedNumber value={Number(user?.netWorthUSD || 0)} symbol="USD" variant="main21" />

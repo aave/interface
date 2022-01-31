@@ -4,7 +4,7 @@ import { ReserveIncentiveResponse } from '../../../hooks/app-data-provider/useIn
 
 interface ListAPRColumnProps {
   value: number;
-  incentives: ReserveIncentiveResponse[];
+  incentives?: ReserveIncentiveResponse[];
   symbol: string;
 }
 
