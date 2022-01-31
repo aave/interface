@@ -50,3 +50,15 @@ generates:
       - 'typescript'
       - 'typescript-operations'
       - 'typescript-react-apollo'
+
+  src/hooks/stake-data-provider/graphql/hooks.tsx:
+    schema:
+      - https://cache-api-1.aave.com/graphql
+    documents:
+      - ./src/hooks/stake-data-provider/graphql/*.graphql
+    plugins:
+      - add:
+          content: '/* eslint-disable */'
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
