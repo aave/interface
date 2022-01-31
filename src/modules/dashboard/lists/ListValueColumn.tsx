@@ -1,8 +1,8 @@
 import { Box, Tooltip } from '@mui/material';
 import { ReactNode } from 'react';
 
+import { ListColumn } from '../../../components/lists/ListColumn';
 import { FormattedNumber } from '../../../components/primitives/FormattedNumber';
-import { ListColumn } from './ListColumn';
 
 interface ListValueColumnProps {
   symbol?: string;

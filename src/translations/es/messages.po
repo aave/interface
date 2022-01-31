@@ -66,7 +66,7 @@ msgstr ""
 msgid "Amount"
 msgstr ""
 
-#: src/modules/dashboard/lists/ListItemWrapper.tsx:28
+#: src/modules/dashboard/lists/ListItem.tsx:28
 msgid "Ampleforth's FAQ"
 msgstr ""
 
@@ -506,7 +506,7 @@ msgstr ""
 msgid "assets"
 msgstr ""
 
-#: src/modules/dashboard/lists/ListItemWrapper.tsx:24
+#: src/modules/dashboard/lists/ListItem.tsx:24
 msgid "documentation"
 msgstr ""
 

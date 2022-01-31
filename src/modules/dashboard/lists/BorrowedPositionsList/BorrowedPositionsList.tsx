@@ -3,10 +3,10 @@ import { Trans } from '@lingui/macro';
 
 import { APYTypeInfoContent } from '../../../../components/infoModalContents/APYTypeInfoContent';
 import { BorrowPowerInfoContent } from '../../../../components/infoModalContents/BorrowPowerInfoContent';
+import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { AppDataContextType } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { DashboardContentNoData } from '../../DashboardContentNoData';
 import { DashboardEModeButton } from '../../DashboardEModeButton';
-import { DashboardListWrapper } from '../../DashboardListWrapper';
 import { ListHeader } from '../ListHeader';
 import { ListTopInfoItem } from '../ListTopInfoItem';
 import { BorrowedPositionsListItem } from './BorrowedPositionsListItem';
@@ -33,7 +33,7 @@ export const BorrowedPositionsList = ({ listData, user }: BorrowedPositionsListP
   ];
 
   return (
-    <DashboardListWrapper
+    <ListWrapper
       title={<Trans>Your borrows</Trans>}
       localStorageName="borrowedAssetsDashboardTableCollapse"
       subTitleComponent={
@@ -69,6 +69,6 @@ export const BorrowedPositionsList = ({ listData, user }: BorrowedPositionsListP
       ) : (
         <DashboardContentNoData text={<Trans>Nothing borrowed yet</Trans>} />
       )}
-    </DashboardListWrapper>
+    </ListWrapper>
   );
 };

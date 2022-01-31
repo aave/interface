@@ -4,7 +4,7 @@ import { ReactNode, useState } from 'react';
 
 import { toggleLocalStorageClick } from '../../helpers/toggle-local-storage-click';
 
-interface DashboardListWrapperProps {
+interface ListWrapperProps {
   title: ReactNode;
   localStorageName?: string;
   subTitleComponent?: ReactNode;
@@ -14,9 +14,10 @@ interface DashboardListWrapperProps {
   withTopMargin?: boolean;
   noData?: boolean;
   withBottomText?: ReactNode;
+  captionSize?: 'h2' | 'h3';
 }
 
-export const DashboardListWrapper = ({
+export const ListWrapper = ({
   children,
   localStorageName,
   title,
@@ -26,7 +27,8 @@ export const DashboardListWrapper = ({
   withTopMargin,
   noData,
   withBottomText,
-}: DashboardListWrapperProps) => {
+  captionSize = 'h3',
+}: ListWrapperProps) => {
   const [isCollapse, setIsCollapse] = useState(
     localStorageName ? localStorage.getItem(localStorageName) === 'true' : false
   );
@@ -42,7 +44,7 @@ export const DashboardListWrapper = ({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          cursor: !noData ? 'pointer' : 'default',
+          cursor: !noData && !!localStorageName ? 'pointer' : 'default',
           mb: noData ? 0 : 4,
         }}
         onClick={() =>
@@ -52,7 +54,7 @@ export const DashboardListWrapper = ({
         }
       >
         <Box sx={{ display: 'flex', alignItems: 'center', p: '3.6px' }}>
-          <Typography component="div" variant="h3" sx={{ mr: 4 }}>
+          <Typography component="div" variant={captionSize} sx={{ mr: 4 }}>
             {title}
           </Typography>
           {subTitleComponent}

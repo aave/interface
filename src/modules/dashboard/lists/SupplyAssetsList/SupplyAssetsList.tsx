@@ -5,6 +5,7 @@ import { Alert, Box } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { useState } from 'react';
 
+import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { Link } from '../../../../components/primitives/Link';
 import {
   ComputedReserveData,
@@ -13,7 +14,6 @@ import {
 import { useWalletBalances } from '../../../../hooks/app-data-provider/useWalletBalances';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import { DashboardListTopPanel } from '../../DashboardListTopPanel';
-import { DashboardListWrapper } from '../../DashboardListWrapper';
 import { ListHeader } from '../ListHeader';
 import { SupplyAssetsListItem } from './SupplyAssetsListItem';
 
@@ -133,7 +133,7 @@ export const SupplyAssetsList = () => {
   ];
 
   return (
-    <DashboardListWrapper
+    <ListWrapper
       title={<Trans>Assets to supply</Trans>}
       localStorageName="supplyAssetsDashboardTableCollapse"
       withBottomText={isTestnet}
@@ -177,6 +177,6 @@ export const SupplyAssetsList = () => {
           <SupplyAssetsListItem {...item} key={index} />
         ))}
       </>
-    </DashboardListWrapper>
+    </ListWrapper>
   );
 };

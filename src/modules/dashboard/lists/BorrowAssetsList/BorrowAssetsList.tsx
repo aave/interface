@@ -4,10 +4,10 @@ import { Trans } from '@lingui/macro';
 import { Alert, Box } from '@mui/material';
 
 import { BorrowAvailableInfoContent } from '../../../../components/infoModalContents/BorrowAvailableInfoContent';
+import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { useAppDataContext } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import { getMaxAmountAvailableToBorrow } from '../../../../utils/getMaxAmountAvailableToBorrow';
-import { DashboardListWrapper } from '../../DashboardListWrapper';
 import { ListHeader } from '../ListHeader';
 import { BorrowAssetsListItem } from './BorrowAssetsListItem';
 import { BorrowAssetsItem } from './types';
@@ -112,7 +112,7 @@ export const BorrowAssetsList = () => {
   return (
     <>
       {!!tokensToBorrow.length && (
-        <DashboardListWrapper
+        <ListWrapper
           title={<Trans>Assets to borrow</Trans>}
           localStorageName="borrowAssetsDashboardTableCollapse"
           withTopMargin
@@ -150,7 +150,7 @@ export const BorrowAssetsList = () => {
               <BorrowAssetsListItem {...item} key={index} />
             ))}
           </>
-        </DashboardListWrapper>
+        </ListWrapper>
       )}
     </>
   );

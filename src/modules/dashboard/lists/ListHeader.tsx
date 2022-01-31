@@ -1,9 +1,10 @@
 import { Trans } from '@lingui/macro';
-import { Box, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 
+import { ListColumn } from '../../../components/lists/ListColumn';
+import { ListHeaderTitle } from '../../../components/lists/ListHeaderTitle';
+import { ListHeaderWrapper } from '../../../components/lists/ListHeaderWrapper';
 import { ListButtonsColumn } from './ListButtonsColumn';
-import { ListColumn } from './ListColumn';
 
 interface ListHeaderProps {
   head: ReactNode[];
@@ -11,22 +12,20 @@ interface ListHeaderProps {
 
 export const ListHeader = ({ head }: ListHeaderProps) => {
   return (
-    <Box sx={{ display: 'flex', alignItems: 'flex-end', px: 4, pt: 4, pb: '6px' }}>
+    <ListHeaderWrapper>
       <ListColumn maxWidth={160} isRow>
-        <Typography variant="subheader2" color="text.secondary" noWrap>
+        <ListHeaderTitle>
           <Trans>Assets</Trans>
-        </Typography>
+        </ListHeaderTitle>
       </ListColumn>
 
       {head.map((title, i) => (
         <ListColumn key={i}>
-          <Typography component="div" variant="subheader2" color="text.secondary" noWrap>
-            {title}
-          </Typography>
+          <ListHeaderTitle>{title}</ListHeaderTitle>
         </ListColumn>
       ))}
 
       <ListButtonsColumn />
-    </Box>
+    </ListHeaderWrapper>
   );
 };

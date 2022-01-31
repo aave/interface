@@ -9,9 +9,15 @@ interface IncentivesCardProps {
   symbol: string;
   value: string | number;
   incentives?: ReserveIncentiveResponse[];
+  variant?: 'main14' | 'main16';
 }
 
-export const IncentivesCard = ({ symbol, value, incentives }: IncentivesCardProps) => {
+export const IncentivesCard = ({
+  symbol,
+  value,
+  incentives,
+  variant = 'main14',
+}: IncentivesCardProps) => {
   return (
     <Box
       sx={{
@@ -23,9 +29,9 @@ export const IncentivesCard = ({ symbol, value, incentives }: IncentivesCardProp
       }}
     >
       {value.toString() !== '-1' ? (
-        <FormattedNumber value={value} percent variant="main14" />
+        <FormattedNumber value={value} percent variant={variant} />
       ) : (
-        <NoData variant="main14" color="text.secondary" />
+        <NoData variant={variant} color="text.secondary" />
       )}
 
       <IncentivesButton incentives={incentives} symbol={symbol} />

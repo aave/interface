@@ -1,6 +1,6 @@
 import { IncentivesCard } from '../../../components/incentives/IncentivesCard';
+import { ListColumn } from '../../../components/lists/ListColumn';
 import { ReserveIncentiveResponse } from '../../../hooks/app-data-provider/useIncentiveData';
-import { ListColumn } from './ListColumn';
 
 interface ListAPRColumnProps {
   value: number;

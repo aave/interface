@@ -2,9 +2,9 @@ import { Trans } from '@lingui/macro';
 
 import { CollateralInfoContent } from '../../../../components/infoModalContents/CollateralInfoContent';
 import { CollateralSwitchInfoContent } from '../../../../components/infoModalContents/CollateralSwitchInfoContent';
+import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { AppDataContextType } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { DashboardContentNoData } from '../../DashboardContentNoData';
-import { DashboardListWrapper } from '../../DashboardListWrapper';
 import { ListHeader } from '../ListHeader';
 import { ListTopInfoItem } from '../ListTopInfoItem';
 import { SuppliedPositionsListItem } from './SuppliedPositionsListItem';
@@ -26,7 +26,7 @@ export const SuppliedPositionsList = ({ listData, user }: SuppliedPositionsListP
   ];
 
   return (
-    <DashboardListWrapper
+    <ListWrapper
       title={<Trans>Your supplies</Trans>}
       localStorageName="suppliedAssetsDashboardTableCollapse"
       noData={!listData.length}
@@ -59,6 +59,6 @@ export const SuppliedPositionsList = ({ listData, user }: SuppliedPositionsListP
       ) : (
         <DashboardContentNoData text={<Trans>Nothing supplied yet</Trans>} />
       )}
-    </DashboardListWrapper>
+    </ListWrapper>
   );
 };

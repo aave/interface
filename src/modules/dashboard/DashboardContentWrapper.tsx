@@ -20,7 +20,7 @@ export const DashboardContentWrapper = ({
   user,
 }: DashboardContentWrapperProps) => {
   const { breakpoints } = useTheme();
-  const isDesktop = useMediaQuery(breakpoints.up('md'));
+  const isDesktop = useMediaQuery(breakpoints.up('lg'));
   const paperWidth = isDesktop ? 'calc(50% - 8px)' : '100%';
 
   return (
