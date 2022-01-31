@@ -137,7 +137,7 @@ export const SupplyAssetsList = () => {
     <ListWrapper
       title={<Trans>Assets to supply</Trans>}
       localStorageName="supplyAssetsDashboardTableCollapse"
-      bottomComponent={!isTestnet ? <ListBottomText /> : undefined}
+      bottomComponent={isTestnet ? <ListBottomText /> : undefined}
       withTopMargin
       subChildrenComponent={
         <>
