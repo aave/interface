@@ -18,6 +18,11 @@ export enum ErrorType {
   transaction,
 }
 
+export type TxStateType = {
+  txHash: string | null;
+  error: string | null;
+};
+
 export const useTransactionHandler = ({
   handleGetTxns,
   handleGetPermitTxns,
@@ -33,8 +38,14 @@ export const useTransactionHandler = ({
   const [usePermit, setUsePermit] = useState<boolean>(tryPermit);
   const [signature, setSignature] = useState<SignatureLike>();
   const [approved, setApproved] = useState<boolean>();
-  const [approvalTxnHash, setApprovalTxnHash] = useState<string>('');
-  const [mainTxnHash, setMainTxnHash] = useState<string>('');
+  const [approvalTxState, setApprovalTxState] = useState<TxStateType>({
+    txHash: null,
+    error: null,
+  });
+  const [mainTxState, setMainTxState] = useState<TxStateType>({
+    txHash: null,
+    error: null,
+  });
 
   const approvalTx = txs.find((tx) => tx.txType === 'ERC20_APPROVAL');
   const actionTx = txs.find((tx) => ['DLP_ACTION'].includes(tx.txType));
@@ -51,7 +62,8 @@ export const useTransactionHandler = ({
     successCallback,
   }: {
     tx: () => Promise<T>;
-    errorCallback?: () => void;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    errorCallback?: (error: any) => void;
     successCallback?: (param: T) => void;
   }) => {
     setLoading(true);
@@ -64,7 +76,7 @@ export const useTransactionHandler = ({
     } catch (e) {
       setLoading(false);
       setError(ErrorType.transaction);
-      errorCallback && errorCallback();
+      errorCallback && errorCallback(e);
     }
   };
 
@@ -82,6 +94,10 @@ export const useTransactionHandler = ({
           successCallback: (signature: SignatureLike) => {
             setSignature(signature);
             setApproved(true);
+            setApprovalTxState({
+              txHash: 'Signed correctly',
+              error: null,
+            });
           },
         });
       } else {
@@ -91,7 +107,10 @@ export const useTransactionHandler = ({
           tx: () => sendTx(params),
           successCallback: (txnResponse) => {
             setApproved(true);
-            setApprovalTxnHash(txnResponse.hash);
+            setApprovalTxState({
+              txHash: txnResponse.hash,
+              error: null,
+            });
           },
         });
       }
@@ -107,7 +126,10 @@ export const useTransactionHandler = ({
       return processTx({
         tx: () => sendTx(params),
         successCallback: (txnResponse) => {
-          setMainTxnHash(txnResponse.hash);
+          setMainTxState({
+            txHash: txnResponse.hash,
+            error: null,
+          });
         },
       });
     }
@@ -117,7 +139,10 @@ export const useTransactionHandler = ({
       return processTx({
         tx: () => sendTx(params),
         successCallback: (txnResponse) => {
-          setMainTxnHash(txnResponse.hash);
+          setMainTxState({
+            txHash: txnResponse.hash,
+            error: null,
+          });
         },
       });
     }
@@ -147,7 +172,8 @@ export const useTransactionHandler = ({
     setUsePermit,
     approved: approved || !!signature,
     requiresApproval: !!approvalTx,
-    approvalTxnHash,
-    mainTxnHash,
+    approvalTxState,
+    mainTxState,
+    usePermit,
   };
 };

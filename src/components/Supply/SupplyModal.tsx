@@ -8,11 +8,6 @@ export type SupplyProps = {
   handleClose: () => void;
 };
 
-export type TxState = {
-  error: string | undefined;
-  success: boolean;
-};
-
 export const SupplyModal = ({ underlyingAsset, open, handleClose }: SupplyProps) => {
   return (
     <BasicModal open={open} setOpen={handleClose}>

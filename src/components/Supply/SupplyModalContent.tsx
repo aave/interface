@@ -28,7 +28,7 @@ export type SupplyProps = {
 };
 
 export type TxState = {
-  error: string | undefined;
+  error: string | null;
   success: boolean;
 };
 
@@ -46,7 +46,7 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
   const { currentChainId } = useProtocolDataContext();
   const { chainId: connectedChainId, switchNetwork } = useWeb3Context();
 
-  const [txState, setTxState] = useState<TxState>({ success: false, error: undefined });
+  const [supplyTxState, setSupplyTxState] = useState<TxState>({ success: false, error: null });
 
   const [amountToSupply, setAmountToSupply] = useState('');
 
@@ -90,9 +90,10 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
   let healthFactorAfterDeposit = valueToBigNumber(user.healthFactor);
 
   if (
-    (!user.isInIsolationMode && !poolReserve.isIsolated) ||
-    (user.isInIsolationMode &&
-      user.isolatedReserve?.underlyingAsset === poolReserve.underlyingAsset)
+    user &&
+    ((!user.isInIsolationMode && !poolReserve.isIsolated) ||
+      (user.isInIsolationMode &&
+        user.isolatedReserve?.underlyingAsset === poolReserve.underlyingAsset))
   ) {
     healthFactorAfterDeposit = calculateHealthFactorFromBalancesBigUnits({
       collateralBalanceMarketReferenceCurrency: totalCollateralMarketReferenceCurrencyAfter,
@@ -122,14 +123,16 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
     (userReserve?.underlyingBalance !== '0' ? userReserve?.usageAsCollateralEnabledOnUser : true);
 
   const showHealthFactor =
-    user.totalBorrowsMarketReferenceCurrency !== '0' && poolReserve.usageAsCollateralEnabled;
+    user &&
+    user.totalBorrowsMarketReferenceCurrency !== '0' &&
+    poolReserve.usageAsCollateralEnabled;
 
   // is Network mismatched
   const isWrongNetwork = currentChainId !== connectedChainId;
 
   return (
     <>
-      {!txState.error && !txState.success && (
+      {!supplyTxState.error && !supplyTxState.success && (
         <>
           <Typography variant="h2" sx={{ mb: '26px' }}>
             Supply {poolReserve.symbol}
@@ -162,20 +165,19 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
           <SupplyDetails
             supplyApy={supplyApy}
             // supplyRewards={supplyRewards}
-            showHf={showHealthFactor}
+            showHf={showHealthFactor || false}
             healthFactor={user.healthFactor}
             futureHealthFactor={healthFactorAfterDeposit.toString()}
           />
         </>
       )}
-      {txState.error && <TxErrorView errorMessage={txState.error} />}
-      {txState.success && (
+      {supplyTxState.error && <TxErrorView errorMessage={supplyTxState.error} />}
+      {supplyTxState.success && (
         <TxSuccessView action="Supplied" amount={amountToSupply} symbol={poolReserve.symbol} />
       )}
       <SupplyActions
-        setTxState={setTxState}
+        setSupplyTxState={setSupplyTxState}
         poolReserve={poolReserve}
-        amount={amountToSupply}
         amountToSupply={amountToSupply}
         onClose={handleClose}
         isWrongNetwork={isWrongNetwork}

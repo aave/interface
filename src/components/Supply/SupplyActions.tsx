@@ -8,21 +8,22 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
-import { TxState } from './SupplyModal';
+import { TxState } from './SupplyModalContent';
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { TextWithModal } from '../TextWithModal';
 import { ApprovalInfoContent } from '../infoModalContents/ApprovalInfoContent';
 import DoneIcon from '@mui/icons-material/Done';
 import { RetryWithApprovalInfoContent } from '../infoModalContents/RetryWithApprovalInfoContent';
 import { useTransactionHandler } from './useTransactionHandler';
+import { LeftHelperText } from './LeftHelperText';
+import { RightHelperText } from './RightHelperText';
 
 export type SupplyActionProps = {
   amountToSupply: string;
   poolReserve: ComputedReserveData;
   onClose: () => void;
-  amount: string;
   isWrongNetwork: boolean;
-  setTxState: Dispatch<SetStateAction<TxState>>;
+  setSupplyTxState: Dispatch<SetStateAction<TxState>>;
 };
 
 export enum SupplyState {
@@ -33,10 +34,14 @@ export enum SupplyState {
   error,
 }
 
-export const SupplyActions = ({ amountToSupply, poolReserve }: SupplyActionProps) => {
+export const SupplyActions = ({
+  amountToSupply,
+  poolReserve,
+  setSupplyTxState,
+}: SupplyActionProps) => {
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
-  const { currentAccount } = useWeb3Context();
+  const { currentAccount, chainId: connectedChainId } = useWeb3Context();
 
   // Custom gas
   const [customGasPrice, setCustomGasPrice] = useState<string>();
@@ -48,8 +53,9 @@ export const SupplyActions = ({ amountToSupply, poolReserve }: SupplyActionProps
     requiresApproval,
     loading,
     setUsePermit,
-    approvalTxnHash,
-    mainTxnHash,
+    approvalTxState,
+    mainTxState,
+    usePermit,
   } = useTransactionHandler({
     tryPermit:
       currentMarketData.v3 && chainId !== ChainId.harmony && chainId !== ChainId.harmony_testnet,
@@ -85,26 +91,70 @@ export const SupplyActions = ({ amountToSupply, poolReserve }: SupplyActionProps
 
   const hasAmount = amountToSupply && amountToSupply !== '0';
 
+  useEffect(() => {
+    if (mainTxState.txHash) {
+      setSupplyTxState({
+        success: true,
+        error: null,
+      });
+    }
+  }, [setSupplyTxState, mainTxState.txHash]);
+
+  useEffect(() => {
+    if (mainTxState.error || approvalTxState.error) {
+      setSupplyTxState({
+        success: true,
+        error: mainTxState.error || approvalTxState.error,
+      });
+    }
+  }, [setSupplyTxState, mainTxState.error, approvalTxState.error]);
+
   return (
     <Box sx={{ mt: '16px', display: 'flex', flexDirection: 'column' }}>
-      {approvalTxnHash} / {mainTxnHash}
-      {!hasAmount && <button disabled>{!loading ? 'enter an amount' : 'loading'}</button>}
-      {hasAmount && requiresApproval && (
-        <button
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <LeftHelperText
+          amountToSupply={amountToSupply}
+          error={mainTxState.error || approvalTxState.error}
+          approvalHash={approvalTxState.txHash}
+          actionHash={mainTxState.txHash}
+        />
+        <RightHelperText
+          approvalHash={approvalTxState.txHash}
+          actionHash={mainTxState.txHash}
+          chainId={connectedChainId}
+          usePermit={usePermit}
+        />
+      </Box>
+      {!hasAmount && (
+        <Button variant="outlined" disabled>
+          {!loading ? 'enter an amount' : 'loading'}
+        </Button>
+      )}
+      {hasAmount && requiresApproval && !approved && (
+        <Button
+          variant="outlined"
           onClick={() => approval(amountToSupply, poolReserve.underlyingAsset)}
           disabled={approved || loading}
         >
           {!approved && !loading && 'approve to continue'}
           {!approved && loading && 'loading'}
           {approved && 'approval confirmed'}
-        </button>
+        </Button>
       )}
       {hasAmount && (
-        <button onClick={action} disabled={loading || (requiresApproval && !approved)}>
+        <Button
+          variant="outlined"
+          onClick={action}
+          disabled={loading || (requiresApproval && !approved)}
+        >
           supply
-        </button>
+        </Button>
       )}
-      <button onClick={() => setUsePermit(false)}>use Approval flow</button>
+      {(mainTxState.error || approvalTxState.error) && (
+        <Button variant="outlined" onClick={() => setUsePermit(false)}>
+          use Approval flow
+        </Button>
+      )}
     </Box>
   );
 };
