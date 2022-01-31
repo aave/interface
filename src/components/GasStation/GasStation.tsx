@@ -60,7 +60,6 @@ export const getGasCosts = (
       ? parseUnits(customGas, 'gwei').toString()
       : gasData[convertGasOption(gasOption)].legacyGasPrice;
 
-  console.log('price', Number(baseCurrencyUsd));
   return (
     Number(formatUnits(gasLimit.mul(gasPrice), baseCurrencyDecimals)) *
     (Number(baseCurrencyUsd) / 10 ** 8)
