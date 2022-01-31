@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import { UiStakeDataProvider } from '@aave/contract-helpers';
 import { usePolling } from '../usePolling';
 import { useApolloClient } from '@apollo/client';
@@ -14,9 +12,8 @@ import { stakeConfig } from 'src/ui-config/stakeConfig';
 
 export function _useStakeDataRPC(currentAccount?: string, skip = false) {
   const { cache } = useApolloClient();
-  const [loading, setLoading] = useState(true);
 
-  const loadStakeData = async () => {
+  const loadGeneralStakeData = async () => {
     if (!stakeConfig) return;
     const uiStakeDataProvider = new UiStakeDataProvider({
       provider: getProvider(stakeConfig.chainId),
@@ -34,6 +31,18 @@ export function _useStakeDataRPC(currentAccount?: string, skip = false) {
           },
         },
       });
+    } catch (e) {
+      console.log('Stake data loading error', e);
+    }
+  };
+
+  const loadUserStakeData = async () => {
+    if (!stakeConfig) return;
+    const uiStakeDataProvider = new UiStakeDataProvider({
+      provider: getProvider(stakeConfig.chainId),
+      uiStakeDataProvider: stakeConfig.stakeDataProvider,
+    });
+    try {
       if (currentAccount) {
         const userStakeData = await uiStakeDataProvider.getUserStakeUIDataHumanized({
           user: currentAccount,
@@ -53,13 +62,12 @@ export function _useStakeDataRPC(currentAccount?: string, skip = false) {
     } catch (e) {
       console.log('Stake data loading error', e);
     }
-    setLoading(false);
   };
 
-  usePolling(loadStakeData, 30000, skip, [currentAccount]);
+  usePolling(loadGeneralStakeData, 30000, skip, []);
+  usePolling(loadUserStakeData, 30000, skip || !currentAccount, [currentAccount]);
 
   return {
-    loading,
-    refresh: loadStakeData,
+    refresh: () => Promise.all([loadGeneralStakeData(), loadUserStakeData()]),
   };
 }

@@ -24,9 +24,11 @@ export const StakeDataProvider: React.FC = ({ children }) => {
   const rpcMode = isRPCActive || !stakeConfig?.wsStakeDataUrl || !stakeConfig?.queryStakeDataUrl;
 
   _useStakeDataCached(currentAccount, rpcMode);
-  _useStakeDataRPC(currentAccount, !rpcMode);
+  const { refresh } = _useStakeDataRPC(currentAccount, !rpcMode);
   return (
-    <StakeDataProviderContext.Provider value={{}}>{children}</StakeDataProviderContext.Provider>
+    <StakeDataProviderContext.Provider value={{ refresh }}>
+      {children}
+    </StakeDataProviderContext.Provider>
   );
 };
 

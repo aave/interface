@@ -16,7 +16,7 @@ export interface StakeConfig {
 
 export const stakeConfig: StakeConfig | undefined = {
   chainId: ChainId.mainnet,
-  stakeDataProvider: '0xa82247B44750ae23076D6746A9B5B8dc0eCBB646',
+  stakeDataProvider: '0xc57450af527d10Fe182521AB39C1AD23c1e1BaDE',
   tokens: {
     [Stake.aave]: {
       TOKEN_STAKING: '0x4da27a545c0c5b758a6ba100e3a049001de870f5',
@@ -28,6 +28,6 @@ export const stakeConfig: StakeConfig | undefined = {
       STAKING_REWARD_TOKEN: '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9',
     },
   },
-  queryStakeDataUrl: 'https://cache-api-1.aave.com/graphql',
-  wsStakeDataUrl: 'wss://cache-api-1.aave.com/graphql',
+  //queryStakeDataUrl: 'https://cache-api-1.aave.com/graphql',
+  // wsStakeDataUrl: 'wss://cache-api-1.aave.com/graphql',
 };
