@@ -84,7 +84,6 @@ export const GasStation: React.FC<GasStationProps> = ({ gasLimit, ...props }) =>
       )
     : undefined;
 
-  console.log('aaa', totalGasCostsUsd);
   const [open, setOpen] = useState(false);
 
   const toggleDropdown = () => setOpen(!open);
