@@ -54,7 +54,7 @@ export default function About() {
         <AaveModal title="Sobre nosotros" open={open} onClose={() => setOpen(false)}>
           Contenido
         </AaveModal>
-        <SupplyFlowModal open={open2} onClose={() => setOpen2(false)} {...args} />
+        <SupplyFlowModal open={open2} setOpen={(value) => setOpen2(value)} {...args} />
       </Box>
     </Container>
   );

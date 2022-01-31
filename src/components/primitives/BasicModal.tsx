@@ -1,10 +1,10 @@
+import React from 'react';
 import { XIcon } from '@heroicons/react/solid';
 import { Box, IconButton, Modal, Paper, SvgIcon } from '@mui/material';
-import { ReactNode } from 'react';
 
-interface BasicModalProps {
+export interface BasicModalProps {
   open: boolean;
-  children: ReactNode;
+  children: React.ReactNode;
   setOpen: (value: boolean) => void;
   withCloseButton?: boolean;
   contentMaxWidth?: number;
@@ -16,6 +16,7 @@ export const BasicModal = ({
   withCloseButton = true,
   contentMaxWidth = 500,
   children,
+  ...props
 }: BasicModalProps) => {
   const handleClose = () => setOpen(false);
 
@@ -29,6 +30,7 @@ export const BasicModal = ({
         alignItems: 'center',
         justifyContent: 'center',
       }}
+      {...props}
     >
       <Paper
         sx={{
