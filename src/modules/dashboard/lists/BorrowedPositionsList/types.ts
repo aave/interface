@@ -10,7 +10,5 @@ export type BorrowedPositionsItem = {
   vIncentives: ReserveIncentiveResponse[];
   sIncentives: ReserveIncentiveResponse[];
   borrowRateMode: string;
-  currentBorrows: string;
-  currentBorrowsUSD: string;
   reserve: Pick<ComputedReserveData, 'symbol' | 'iconSymbol' | 'underlyingAsset' | 'id'>;
 };

@@ -4,6 +4,7 @@ import { Trans } from '@lingui/macro';
 import { Alert, Box } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { useState } from 'react';
+import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { Link } from '../../../../components/primitives/Link';
@@ -72,7 +73,6 @@ export const SupplyAssetsList = () => {
       availableToDepositUSD:
         Number(availableToDepositUSD) <= 0 ? '0' : availableToDepositUSD.toString(),
       liquidityRate: reserve.supplyAPY,
-      interestHistory: [],
       aIncentives: reserve.aIncentivesData ? reserve.aIncentivesData : [],
       vIncentives: reserve.vIncentivesData ? reserve.vIncentivesData : [],
       sIncentives: reserve.sIncentivesData ? reserve.sIncentivesData : [],
@@ -105,6 +105,10 @@ export const SupplyAssetsList = () => {
       ...wrappedAsset,
       underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
       symbol: baseAssetSymbol,
+      ...fetchIconSymbolAndName({
+        symbol: baseAssetSymbol,
+        underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
+      }),
       walletBalance: walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]?.amount,
       walletBalanceUSD: walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]?.amountUSD,
       availableToDeposit: availableToDeposit.toString(),
