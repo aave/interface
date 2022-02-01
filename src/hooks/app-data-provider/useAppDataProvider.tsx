@@ -41,6 +41,7 @@ export interface AppDataContextType {
   user?: FormatUserSummaryAndIncentivesResponse<ComputedReserveData> & {
     earnedAPY: number;
     debtAPY: number;
+    isInEmode: boolean;
   };
   // refreshIncentives?: () => Promise<void>;
   // loading: boolean;
@@ -188,6 +189,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
         reserves: formattedPoolReserves,
         user: {
           ...user,
+          isInEmode: userEmodeCategoryId !== 0,
           userReservesData: user.userReservesData.sort((a, b) =>
             reserveSortFn(a.reserve, b.reserve)
           ),

@@ -79,7 +79,11 @@ export const useWalletBalances = () => {
     }
     return acc;
   }, {} as { [address: string]: { amount: string; amountUSD: string } });
-  return { walletBalances: aggregatedBalance, hasEmptyWallet };
+  return {
+    walletBalances: aggregatedBalance,
+    hasEmptyWallet,
+    loading: !walletBalances.length || !reserves.length,
+  };
 };
 
 export const useUpdateWalletBalances = () => {
