@@ -1,7 +1,7 @@
-import { ChainId, Pool } from '@aave/contract-helpers';
+import { ChainId, EthereumTransactionTypeExtended, GasType, Pool } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
-import { Dispatch, SetStateAction, useEffect } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
@@ -11,6 +11,7 @@ import { useTransactionHandler } from './useTransactionHandler';
 import { LeftHelperText } from './LeftHelperText';
 import { RightHelperText } from './RightHelperText';
 import { useGasStation } from 'src/hooks/useGasStation';
+import { GasOption } from '../GasStation/GasStationProvider';
 
 export type SupplyActionProps = {
   amountToSupply: string;
@@ -19,6 +20,7 @@ export type SupplyActionProps = {
   setSupplyTxState: Dispatch<SetStateAction<TxState>>;
   customGasPrice?: string;
   handleClose: () => void;
+  setGasLimit: Dispatch<SetStateAction<string | undefined>>;
 };
 
 export const SupplyActions = ({
@@ -26,11 +28,12 @@ export const SupplyActions = ({
   poolReserve,
   setSupplyTxState,
   handleClose,
+  setGasLimit,
 }: SupplyActionProps) => {
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
   const { currentAccount, chainId: connectedChainId } = useWeb3Context();
-  const { state } = useGasStation();
+  const { state, gasPriceData } = useGasStation();
 
   const {
     approval,
@@ -49,29 +52,41 @@ export const SupplyActions = ({
       if (currentMarketData.v3) {
         // TO-DO: No need for this cast once a single Pool type is used in use-tx-builder-context
         const newPool: Pool = lendingPool as Pool;
-        return await newPool.supply({
+        const tx: EthereumTransactionTypeExtended[] = await newPool.supply({
           user: currentAccount,
           reserve: poolReserve.underlyingAsset,
           amount: amountToSupply,
         });
+        const gas: GasType | null = await tx[tx.length - 1].gas();
+        setGasLimit(gas?.gasLimit);
+        return tx;
       } else {
-        return await lendingPool.deposit({
+        const tx = await lendingPool.deposit({
           user: currentAccount,
           reserve: poolReserve.underlyingAsset,
           amount: amountToSupply,
         });
+        const gas: GasType | null = await tx[tx.length - 1].gas();
+        setGasLimit(gas?.gasLimit);
+        return tx;
       }
     },
     handleGetPermitTxns: async (signature) => {
       const newPool: Pool = lendingPool as Pool;
-      return await newPool.supplyWithPermit({
+      const tx = await newPool.supplyWithPermit({
         user: currentAccount,
         reserve: poolReserve.underlyingAsset,
         amount: amountToSupply,
         signature,
       });
+      const gas: GasType | null = await tx[tx.length - 1].gas();
+      setGasLimit(gas?.gasLimit);
+      return tx;
     },
-    customGasPrice: state.customGas,
+    customGasPrice:
+      state.gasOption === GasOption.Custom
+        ? state.customGas
+        : gasPriceData.data?.[state.gasOption].legacyGasPrice,
     skip: !amountToSupply || amountToSupply === '0',
   });
 

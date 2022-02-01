@@ -22,6 +22,7 @@ export interface SupplyDetailsProps {
   showHf: boolean;
   healthFactor: string;
   futureHealthFactor: string;
+  gasLimit?: string;
 }
 
 export const SupplyDetails: React.FC<SupplyDetailsProps> = ({
@@ -30,6 +31,7 @@ export const SupplyDetails: React.FC<SupplyDetailsProps> = ({
   showHf,
   healthFactor,
   futureHealthFactor,
+  gasLimit,
 }) => {
   return (
     <Grid container direction="row" alignItems="center" rowSpacing={'12px'} sx={{ mb: '24px' }}>
@@ -83,9 +85,11 @@ export const SupplyDetails: React.FC<SupplyDetailsProps> = ({
             <Trans>Estimated Tx cost</Trans>
           </Typography>
         </FormInfo>
-        <FormValue>
-          <GasStation gasLimit={parseUnits('220000', 'wei')} />
-        </FormValue>
+        {gasLimit && (
+          <FormValue>
+            <GasStation gasLimit={parseUnits(gasLimit, 'wei')} />
+          </FormValue>
+        )}
       </FormRow>
     </Grid>
   );

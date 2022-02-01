@@ -35,9 +35,12 @@ export type TxState = {
 export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps) => {
   const { walletBalances } = useWalletBalances();
   const { marketReferencePriceInUsd, reserves, user } = useAppDataContext();
+  console.log('underlying asset: ', underlyingAsset);
+  console.log('reserve', reserves);
   const poolReserve = reserves.find(
     (reserve) => reserve.underlyingAsset === underlyingAsset
   ) as ComputedReserveData;
+  console.log('supply apy: ', poolReserve);
   const supplyApy = poolReserve.supplyAPY;
   const userReserve = user?.userReservesData.find(
     (userReserve) => underlyingAsset === userReserve.underlyingAsset
@@ -49,6 +52,7 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
   const [supplyTxState, setSupplyTxState] = useState<TxState>({ success: false, error: null });
 
   const [amountToSupply, setAmountToSupply] = useState('');
+  const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
 
   const networkConfig = getNetworkConfig(currentChainId);
 
@@ -171,6 +175,7 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
             showHf={showHealthFactor || false}
             healthFactor={user ? user.healthFactor : '-1'}
             futureHealthFactor={healthFactorAfterDeposit.toString()}
+            gasLimit={gasLimit}
           />
         </>
       )}
@@ -184,6 +189,7 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
         amountToSupply={amountToSupply}
         handleClose={handleClose}
         isWrongNetwork={isWrongNetwork}
+        setGasLimit={setGasLimit}
       />
     </>
   );
