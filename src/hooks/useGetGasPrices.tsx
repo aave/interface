@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useStateLoading } from './useStateLoading';
 import { usePolling } from './usePolling';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { GasOption } from 'src/components/GasStation/GasStationProvider';
 
 type GasInfo = {
   legacyGasPrice: string;
@@ -17,15 +18,21 @@ export type ResponseGasPrice = {
   fastest: GasInfo;
 };
 
+export type GasPriceData = {
+  [GasOption.Slow]: GasInfo;
+  [GasOption.Normal]: GasInfo;
+  [GasOption.Fast]: GasInfo;
+};
+
 export interface GetGasPricesHook {
   loading: boolean;
-  data: ResponseGasPrice | null | undefined;
+  data: GasPriceData | null | undefined;
   error: boolean;
 }
 
 const POLLING_INTERVAL = 15000;
 
-export const rawToResponseGasPrice = (feeData: FeeData) => {
+export const rawToGasPriceData = (feeData: FeeData): GasPriceData => {
   const gasInfo: GasInfo = {
     legacyGasPrice: feeData.gasPrice?.toString() || '0',
     maxFeePerGas: feeData.maxFeePerGas?.toString() || '0',
@@ -33,17 +40,16 @@ export const rawToResponseGasPrice = (feeData: FeeData) => {
   };
 
   return {
-    safeLow: gasInfo,
-    average: gasInfo,
-    fast: gasInfo,
-    fastest: gasInfo,
+    [GasOption.Slow]: gasInfo,
+    [GasOption.Normal]: gasInfo,
+    [GasOption.Fast]: gasInfo,
   };
 };
 
 const useGetGasPrices = (): GetGasPricesHook => {
   const { loading, setLoading } = useStateLoading(false);
   const [error, setError] = useState(false);
-  const [data, setData] = useState<ResponseGasPrice | null>();
+  const [data, setData] = useState<GasPriceData | null>();
   const { connected, chainId, provider } = useWeb3Context();
 
   const apiRequest = async () => {
@@ -56,8 +62,13 @@ const useGetGasPrices = (): GetGasPricesHook => {
           body: await data.json(),
         };
       }
-      const dataJson = await data.json();
-      setData(dataJson as ResponseGasPrice);
+      const dataJson = (await data.json()) as ResponseGasPrice;
+      const gasPricesData: GasPriceData = {
+        [GasOption.Slow]: dataJson.safeLow,
+        [GasOption.Normal]: dataJson.average,
+        [GasOption.Fast]: dataJson.fastest,
+      };
+      setData(gasPricesData);
       setError(false);
     }
   };
@@ -65,7 +76,7 @@ const useGetGasPrices = (): GetGasPricesHook => {
   const web3Request = async () => {
     if (provider) {
       const feeData = await provider.getFeeData();
-      setData(rawToResponseGasPrice(feeData));
+      setData(rawToGasPriceData(feeData));
       setError(false);
     }
   };

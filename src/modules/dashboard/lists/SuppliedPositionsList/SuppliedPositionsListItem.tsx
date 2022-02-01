@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
 import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useModalContext } from 'src/hooks/useModal';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
@@ -16,9 +17,11 @@ export const SuppliedPositionsListItem = ({
   underlyingBalance,
   underlyingBalanceUSD,
   usageAsCollateralEnabledOnUser,
+  underlyingAsset,
 }: ComputedUserReserveData) => {
   const { isIsolated, usageAsCollateralEnabled, aIncentivesData, isFrozen, isActive } = reserve;
   const { currentMarketData } = useProtocolDataContext();
+  const { openSupply } = useModalContext();
   const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
 
   return (
@@ -66,7 +69,7 @@ export const SuppliedPositionsListItem = ({
           <Button
             disabled={!isActive || isFrozen}
             variant="outlined"
-            onClick={() => console.log('TODO: should be supply modal')}
+            onClick={() => openSupply(underlyingAsset)}
           >
             <Trans>Supply</Trans>
           </Button>

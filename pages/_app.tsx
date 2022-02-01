@@ -17,6 +17,8 @@ import createEmotionCache from '../src/createEmotionCache';
 import { ProtocolDataProvider } from '../src/hooks/useProtocolDataContext';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
+import { ModalContextProvider } from 'src/hooks/useModal';
+import { SupplyModal } from 'src/components/Supply/SupplyModal';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -49,7 +51,12 @@ export default function MyApp(props: MyAppProps) {
                   <BackgroundDataProvider>
                     <AppDataProvider>
                       <TxBuilderProvider>
-                        <AppGlobalStyles>{getLayout(<Component {...pageProps} />)}</AppGlobalStyles>
+                        <AppGlobalStyles>
+                          <ModalContextProvider>
+                            {getLayout(<Component {...pageProps} />)}
+                            <SupplyModal />
+                          </ModalContextProvider>
+                        </AppGlobalStyles>
                       </TxBuilderProvider>
                     </AppDataProvider>
                   </BackgroundDataProvider>
