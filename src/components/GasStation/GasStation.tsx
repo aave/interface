@@ -17,7 +17,7 @@ import { BigNumber } from 'ethers/lib/ethers';
 import { GasButton } from './GasButton';
 import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvider';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
-import { ResponseGasPrice } from '../../hooks/useGetGasPrices';
+import { GasPriceData } from '../../hooks/useGetGasPrices';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { useGasStation } from 'src/hooks/useGasStation';
 
@@ -35,31 +35,18 @@ const GasDropdown = styled('div')<GasDropdownProps>(({ open }) => ({
   marginTop: '8px',
 }));
 
-export const convertGasOption = (gasOption: GasOption) => {
-  switch (gasOption) {
-    case GasOption.Slow:
-      return 'safeLow';
-    case GasOption.Normal:
-      return 'average';
-    case GasOption.Fast:
-      return 'fastest';
-    default:
-      throw 'Unknown gas option';
-  }
-};
-
 export const getGasCosts = (
   gasLimit: BigNumber,
   gasOption: GasOption,
   customGas: string,
-  gasData: ResponseGasPrice,
+  gasData: GasPriceData,
   baseCurrencyUsd: string,
   baseCurrencyDecimals: number
 ) => {
   const gasPrice =
     gasOption === GasOption.Custom
       ? parseUnits(customGas, 'gwei').toString()
-      : gasData[convertGasOption(gasOption)].legacyGasPrice;
+      : gasData[gasOption].legacyGasPrice;
 
   return (
     Number(formatUnits(gasLimit.mul(gasPrice), baseCurrencyDecimals)) *
@@ -147,9 +134,9 @@ export const GasStation: React.FC<GasStationProps> = ({ gasLimit, ...props }) =>
           }}
           color="primary"
         >
-          <GasButton value={GasOption.Slow} gwei={data?.safeLow.legacyGasPrice} />
-          <GasButton value={GasOption.Normal} gwei={data?.average.legacyGasPrice} />
-          <GasButton value={GasOption.Fast} gwei={data?.fastest.legacyGasPrice} />
+          <GasButton value={GasOption.Slow} gwei={data?.[GasOption.Slow].legacyGasPrice} />
+          <GasButton value={GasOption.Normal} gwei={data?.[GasOption.Normal].legacyGasPrice} />
+          <GasButton value={GasOption.Fast} gwei={data?.[GasOption.Fast].legacyGasPrice} />
           <ToggleButton
             value={GasOption.Custom}
             aria-label="Custom"
