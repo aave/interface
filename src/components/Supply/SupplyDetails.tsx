@@ -10,6 +10,8 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { HealthFactorNumber } from '../HealthFactorNumber';
 import { GasStation } from '../GasStation/GasStation';
 import { parseUnits } from 'ethers/lib/utils';
+import { IncentivesButton } from '../incentives/IncentivesButton';
+import { ReserveIncentiveResponse } from 'src/hooks/app-data-provider/useIncentiveData';
 
 export interface SupplyReward {
   tokenIcon: string;
@@ -23,6 +25,8 @@ export interface SupplyDetailsProps {
   healthFactor: string;
   futureHealthFactor: string;
   gasLimit?: string;
+  incentives?: ReserveIncentiveResponse[];
+  symbol: string;
 }
 
 export const SupplyDetails: React.FC<SupplyDetailsProps> = ({
@@ -32,6 +36,8 @@ export const SupplyDetails: React.FC<SupplyDetailsProps> = ({
   healthFactor,
   futureHealthFactor,
   gasLimit,
+  incentives,
+  symbol,
 }) => {
   return (
     <Grid container direction="row" alignItems="center" rowSpacing={'12px'} sx={{ mb: '24px' }}>
@@ -47,14 +53,18 @@ export const SupplyDetails: React.FC<SupplyDetailsProps> = ({
           </Typography>
         </FormValue>
       </FormRow>
-      <FormRow>
-        <FormInfo>
-          <Typography variant="description">
-            <Trans>RewardsAPR</Trans>
-          </Typography>
-        </FormInfo>
-        <FormValue>{/* <SupplyRewards supplyRewards={supplyRewards} /> */}</FormValue>
-      </FormRow>
+      {incentives && (
+        <FormRow>
+          <FormInfo>
+            <Typography variant="description">
+              <Trans>RewardsAPR</Trans>
+            </Typography>
+          </FormInfo>
+          <FormValue>
+            <IncentivesButton incentives={incentives} symbol={symbol} />
+          </FormValue>
+        </FormRow>
+      )}
       {showHf && (
         <FormRow>
           <FormInfo>
@@ -64,7 +74,6 @@ export const SupplyDetails: React.FC<SupplyDetailsProps> = ({
           </FormInfo>
           <FormValue>
             <Typography variant="secondary14">
-              {/* {Number(healthFactor).toFixed(2)} */}
               <HealthFactorNumber value={healthFactor} variant="secondary14" />
               <ArrowForwardIcon />
               <HealthFactorNumber

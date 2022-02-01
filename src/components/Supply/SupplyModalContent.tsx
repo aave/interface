@@ -171,11 +171,12 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
           />
           <SupplyDetails
             supplyApy={supplyApy}
-            // supplyRewards={supplyRewards}
+            incentives={poolReserve.aIncentivesData}
             showHf={showHealthFactor || false}
             healthFactor={user ? user.healthFactor : '-1'}
             futureHealthFactor={healthFactorAfterDeposit.toString()}
             gasLimit={gasLimit}
+            symbol={poolReserve.symbol}
           />
         </>
       )}
