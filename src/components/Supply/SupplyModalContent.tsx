@@ -23,15 +23,11 @@ import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { SupplyCapWarning } from '../Warnings/SupplyCapWarning';
+import { TxState } from 'src/helpers/types';
 
 export type SupplyProps = {
   underlyingAsset: string;
   handleClose: () => void;
-};
-
-export type TxState = {
-  error: string | null;
-  success: boolean;
 };
 
 export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps) => {
@@ -48,7 +44,7 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
   const { currentChainId } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
 
-  const [supplyTxState, setSupplyTxState] = useState<TxState>({ success: false, error: null });
+  const [supplyTxState, setSupplyTxState] = useState<TxState>({ success: false });
 
   const [amountToSupply, setAmountToSupply] = useState('');
   const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);

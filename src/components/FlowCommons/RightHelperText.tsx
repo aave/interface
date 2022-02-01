@@ -5,10 +5,11 @@ import { Box, Link, SvgIcon, Typography } from '@mui/material';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 export type RightHelperTextProps = {
-  approvalHash: string | null;
-  actionHash: string | null;
+  approvalHash?: string;
+  actionHash?: string;
   chainId: ChainId;
-  usePermit: boolean;
+  usePermit?: boolean;
+  action: string;
 };
 
 export const RightHelperText = ({
@@ -16,6 +17,7 @@ export const RightHelperText = ({
   actionHash,
   chainId,
   usePermit,
+  action,
 }: RightHelperTextProps) => {
   const networkConfig = getNetworkConfig(chainId);
   return (
@@ -43,7 +45,7 @@ export const RightHelperText = ({
           target="_blank"
         >
           <div>
-            <Trans>Review supply tx details</Trans>
+            <Trans>Review {action} tx details</Trans>
             <SvgIcon sx={{ ml: '2px' }} fontSize="small">
               <ExternalLinkIcon />
             </SvgIcon>

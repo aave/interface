@@ -6,10 +6,10 @@ import { RetryWithApprovalInfoContent } from '../infoModalContents/RetryWithAppr
 import { TextWithModal } from '../TextWithModal';
 
 export type LeftHelperTextProps = {
-  error: string | null;
-  approvalHash: string | null;
-  actionHash: string | null;
-  amountToSupply: string;
+  error?: string;
+  approvalHash?: string;
+  actionHash?: string;
+  amount: string;
   requiresApproval: boolean;
 };
 
@@ -17,7 +17,7 @@ export const LeftHelperText = ({
   error,
   approvalHash,
   actionHash,
-  amountToSupply,
+  amount,
   requiresApproval,
 }: LeftHelperTextProps) => {
   return (
@@ -42,7 +42,7 @@ export const LeftHelperText = ({
           <RetryWithApprovalInfoContent />
         </TextWithModal>
       )}
-      {!approvalHash && !error && !actionHash && Number(amountToSupply) > 0 && requiresApproval && (
+      {!approvalHash && !error && !actionHash && Number(amount) > 0 && requiresApproval && (
         <TextWithModal
           text={<Trans>Why do I need to approve</Trans>}
           iconSize={13}
