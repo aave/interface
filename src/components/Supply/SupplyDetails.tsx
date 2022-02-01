@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Grid, Typography } from '@mui/material';
+import { Grid, SvgIcon, Typography } from '@mui/material';
 import React from 'react';
 
 import { FormInfo } from '../FormItems/FormInfo';
@@ -12,6 +12,7 @@ import { GasStation } from '../GasStation/GasStation';
 import { parseUnits } from 'ethers/lib/utils';
 import { IncentivesButton } from '../incentives/IncentivesButton';
 import { ReserveIncentiveResponse } from 'src/hooks/app-data-provider/useIncentiveData';
+import { CheckIcon } from '@heroicons/react/outline';
 
 export interface SupplyReward {
   tokenIcon: string;
@@ -27,6 +28,7 @@ export interface SupplyDetailsProps {
   gasLimit?: string;
   incentives?: ReserveIncentiveResponse[];
   symbol: string;
+  usedAsCollateral: boolean;
 }
 
 export const SupplyDetails: React.FC<SupplyDetailsProps> = ({
@@ -38,6 +40,7 @@ export const SupplyDetails: React.FC<SupplyDetailsProps> = ({
   gasLimit,
   incentives,
   symbol,
+  usedAsCollateral,
 }) => {
   return (
     <Grid container direction="row" alignItems="center" rowSpacing={'12px'} sx={{ mb: '24px' }}>
@@ -65,6 +68,21 @@ export const SupplyDetails: React.FC<SupplyDetailsProps> = ({
           </FormValue>
         </FormRow>
       )}
+      <FormRow>
+        <FormInfo>
+          <Typography variant="description">
+            <Trans>Used as collateral</Trans>
+          </Typography>
+        </FormInfo>
+        <FormValue sx={{ display: 'flex', flexDirection: 'row' }}>
+          <SvgIcon sx={{ color: 'green' }}>
+            <CheckIcon />
+          </SvgIcon>
+          <Typography variant="description" color={usedAsCollateral ? '#46BC4B' : '#00244D'}>
+            <Trans>{usedAsCollateral ? 'Yes' : 'No'}</Trans>
+          </Typography>
+        </FormValue>
+      </FormRow>
       {showHf && (
         <FormRow>
           <FormInfo>

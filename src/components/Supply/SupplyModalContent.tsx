@@ -177,6 +177,7 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
             futureHealthFactor={healthFactorAfterDeposit.toString()}
             gasLimit={gasLimit}
             symbol={poolReserve.symbol}
+            usedAsCollateral={userReserve.usageAsCollateralEnabledOnUser}
           />
         </>
       )}
