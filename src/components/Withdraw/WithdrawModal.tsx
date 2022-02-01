@@ -3,10 +3,10 @@ import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { ActionModal } from '../primitives/ActionModal';
 import { WithdrawModalContent } from './WithdrawModalContent';
 
-export const SupplyModal = () => {
+export const WithdrawModal = () => {
   const { type, close, args } = useModalContext();
   return (
-    <ActionModal open={type === ModalType.Supply} setOpen={close}>
+    <ActionModal open={type === ModalType.Withdraw} setOpen={close}>
       {args?.underlyingAsset && (
         <WithdrawModalContent underlyingAsset={args.underlyingAsset} handleClose={close} />
       )}

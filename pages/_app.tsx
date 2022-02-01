@@ -19,6 +19,7 @@ import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
 import { ModalContextProvider } from 'src/hooks/useModal';
 import { SupplyModal } from 'src/components/Supply/SupplyModal';
+import { WithdrawModal } from 'src/components/Withdraw/WithdrawModal';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -55,6 +56,7 @@ export default function MyApp(props: MyAppProps) {
                           <ModalContextProvider>
                             {getLayout(<Component {...pageProps} />)}
                             <SupplyModal />
+                            <WithdrawModal />
                           </ModalContextProvider>
                         </AppGlobalStyles>
                       </TxBuilderProvider>
