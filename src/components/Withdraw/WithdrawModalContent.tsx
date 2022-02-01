@@ -16,6 +16,10 @@ import { TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import BigNumber from 'bignumber.js';
+import { WithdrawActions } from './WithdrawActions';
+import { TxErrorView } from '../TxViews/Error';
+import { TxSuccessView } from '../TxViews/Success';
+import { TxState } from 'src/helpers/types';
 
 export type WithdrawModalContentProps = {
   underlyingAsset: string;
@@ -31,7 +35,8 @@ export const WithdrawModalContent = ({
   const { chainId: connectedChainId, switchNetwork, currentAccount } = useWeb3Context();
 
   const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
-  const [amount, setAmount] = useState('0');
+  const [amount, setAmount] = useState('');
+  const [withdrawTxState, setWithdrawTxState] = useState<TxState>({ success: false });
 
   const networkConfig = getNetworkConfig(currentChainId);
 
@@ -78,8 +83,8 @@ export const WithdrawModalContent = ({
     );
   }
 
-  let amountToWithdraw = valueToBigNumber(amount);
-  let displayAmountToWithdraw = valueToBigNumber(amount);
+  let amountToWithdraw = valueToBigNumber(amount || 0);
+  let displayAmountToWithdraw = amountToWithdraw;
 
   // TODO: !!!!!!!!!!!! how to handle -1 / max button on inupt !!!!!! dont forget!!!!!!!
 
@@ -132,25 +137,49 @@ export const WithdrawModalContent = ({
   // is Network mismatched
   const isWrongNetwork = currentChainId !== connectedChainId;
 
+  // TODO: revisit what amount to use!!!
+  console.log('amount to withdraw', amountToWithdraw);
+  console.log('amount to display', displayAmountToWithdraw);
+
   return (
     <>
-      <TxModalTitle title="Withdraw" symbol={poolReserve.symbol} />
-      {isWrongNetwork && (
-        <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
+      {!withdrawTxState.error && !withdrawTxState.success && (
+        <>
+          <TxModalTitle title="Withdraw" symbol={poolReserve.symbol} />
+          {isWrongNetwork && (
+            <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
+          )}
+
+          <AssetInput
+            value={amountToWithdraw.toString()}
+            onChange={setAmount}
+            // usdValue={amountInUsd.toString()}
+            balance={maxAmountToWithdraw.toString()}
+            symbol={poolReserve.symbol}
+          />
+          <TxModalDetails
+            showHf={showHealthFactor}
+            healthFactor={user.healthFactor}
+            futureHealthFactor={healthFactorAfterWithdraw.toString()}
+            gasLimit={gasLimit}
+          />
+        </>
       )}
 
-      <AssetInput
-        value={amountToWithdraw.toString()}
-        onChange={setAmount}
-        // usdValue={amountInUsd.toString()}
-        balance={maxAmountToWithdraw.toString()}
-        symbol={poolReserve.symbol}
-      />
-      <TxModalDetails
-        showHf={showHealthFactor}
-        healthFactor={user.healthFactor}
-        futureHealthFactor={healthFactorAfterWithdraw.toString()}
-        gasLimit={gasLimit}
+      {withdrawTxState.error && <TxErrorView errorMessage={withdrawTxState.error} />}
+      {withdrawTxState.success && !withdrawTxState.error && (
+        <TxSuccessView
+          action="Withdrawed"
+          amount={amountToWithdraw.toString()}
+          symbol={poolReserve.symbol}
+        />
+      )}
+      <WithdrawActions
+        poolReserve={poolReserve}
+        setGasLimit={setGasLimit}
+        setWithdrawTxState={setWithdrawTxState}
+        amountToWithdraw={amountToWithdraw.toString()}
+        handleClose={handleClose}
       />
     </>
   );

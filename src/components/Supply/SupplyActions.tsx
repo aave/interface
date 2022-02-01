@@ -6,12 +6,12 @@ import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvi
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { TxState } from './SupplyModalContent';
-import { useTransactionHandler } from './useTransactionHandler';
-import { LeftHelperText } from './LeftHelperText';
-import { RightHelperText } from './RightHelperText';
+import { useTransactionHandler } from '../../helpers/useTransactionHandler';
+import { LeftHelperText } from '../FlowCommons/LeftHelperText';
 import { useGasStation } from 'src/hooks/useGasStation';
 import { GasOption } from '../GasStation/GasStationProvider';
+import { RightHelperText } from '../FlowCommons/RightHelperText';
+import { TxState } from 'src/helpers/types';
 
 export type SupplyActionProps = {
   amountToSupply: string;
@@ -122,7 +122,7 @@ export const SupplyActions = ({
     <Box sx={{ mt: '16px', display: 'flex', flexDirection: 'column' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <LeftHelperText
-          amountToSupply={amountToSupply}
+          amount={amountToSupply}
           error={mainTxState.error || approvalTxState.error}
           approvalHash={approvalTxState.txHash}
           actionHash={mainTxState.txHash}
