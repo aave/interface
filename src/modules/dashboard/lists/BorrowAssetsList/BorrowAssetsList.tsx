@@ -14,73 +14,52 @@ import { BorrowAssetsItem } from './types';
 
 export const BorrowAssetsList = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
-  const { user, reserves, marketReferencePriceInUsd, userEmodeCategoryId } = useAppDataContext();
+  const { user, reserves, marketReferencePriceInUsd, userEmodeCategoryId, isInEmode } =
+    useAppDataContext();
 
   const { wrappedBaseAssetSymbol, baseAssetSymbol } = currentNetworkConfig;
 
-  const tokensToBorrow: BorrowAssetsItem[] = reserves.map<BorrowAssetsItem>((reserve) => {
-    const availableBorrows = user ? getMaxAmountAvailableToBorrow(reserve, user).toNumber() : 0;
-
-    const availableBorrowsInUSD = valueToBigNumber(availableBorrows)
-      .multipliedBy(reserve.priceInMarketReferenceCurrency)
-      .multipliedBy(marketReferencePriceInUsd)
-      .shiftedBy(-USD_DECIMALS)
-      .toFixed(2);
-
-    return {
-      ...reserve,
-      currentBorrows:
-        user?.userReservesData.find((userReserve) => userReserve.reserve.id === reserve.id)
-          ?.totalBorrows || '0',
-      currentBorrowsInUSD:
-        user?.userReservesData.find((userReserve) => userReserve.reserve.id === reserve.id)
-          ?.totalBorrowsUSD || '0',
-      totalBorrows: reserve.totalDebt,
-      availableBorrows,
-      availableBorrowsInUSD,
-      stableBorrowRate:
-        reserve.stableBorrowRateEnabled && reserve.borrowingEnabled
-          ? Number(reserve.stableBorrowAPY)
-          : -1,
-      variableBorrowRate: reserve.borrowingEnabled ? Number(reserve.variableBorrowAPY) : -1,
-      interestHistory: [],
-      aIncentives: reserve.aIncentivesData ? reserve.aIncentivesData : [],
-      vIncentives: reserve.vIncentivesData ? reserve.vIncentivesData : [],
-      sIncentives: reserve.sIncentivesData ? reserve.sIncentivesData : [],
-      symbol:
-        reserve.symbol.toLowerCase() === wrappedBaseAssetSymbol?.toLowerCase()
-          ? baseAssetSymbol
-          : reserve.symbol,
-      iconSymbol: reserve.iconSymbol,
-      underlyingAsset:
-        reserve.symbol.toLowerCase() === wrappedBaseAssetSymbol?.toLowerCase()
-          ? API_ETH_MOCK_ADDRESS.toLowerCase()
-          : reserve.underlyingAsset,
-    };
-  });
-
-  const isEModeActive = userEmodeCategoryId !== 0;
-
-  const filteredBorrowReserves = tokensToBorrow
+  const tokensToBorrow: BorrowAssetsItem[] = reserves
     .filter(({ borrowingEnabled, isActive, borrowableInIsolation, eModeCategoryId }) => {
-      if (!isEModeActive) {
-        return (
-          (borrowingEnabled && isActive && !user?.isInIsolationMode) ||
-          (user?.isInIsolationMode && borrowableInIsolation)
-        );
-      } else {
-        return (
-          (eModeCategoryId === userEmodeCategoryId &&
-            borrowingEnabled &&
-            isActive &&
-            !user?.isInIsolationMode) ||
-          (eModeCategoryId === userEmodeCategoryId &&
-            user?.isInIsolationMode &&
-            borrowableInIsolation)
-        );
-      }
+      if (!borrowingEnabled || !isActive) return false;
+      if (isInEmode && eModeCategoryId !== userEmodeCategoryId) return false;
+      if (user?.isInIsolationMode && !borrowableInIsolation) return false;
+      return true;
     })
-    .sort((a, b) => (+a.availableBorrowsInUSD > +b.availableBorrowsInUSD ? -1 : 0));
+    .map<BorrowAssetsItem>((reserve) => {
+      const availableBorrows = user ? getMaxAmountAvailableToBorrow(reserve, user).toNumber() : 0;
+
+      const availableBorrowsInUSD = valueToBigNumber(availableBorrows)
+        .multipliedBy(reserve.priceInMarketReferenceCurrency)
+        .multipliedBy(marketReferencePriceInUsd)
+        .shiftedBy(-USD_DECIMALS)
+        .toFixed(2);
+
+      return {
+        ...reserve,
+        totalBorrows: reserve.totalDebt,
+        availableBorrows,
+        availableBorrowsInUSD,
+        stableBorrowRate:
+          reserve.stableBorrowRateEnabled && reserve.borrowingEnabled
+            ? Number(reserve.stableBorrowAPY)
+            : -1,
+        variableBorrowRate: reserve.borrowingEnabled ? Number(reserve.variableBorrowAPY) : -1,
+        symbol:
+          reserve.symbol.toLowerCase() === wrappedBaseAssetSymbol?.toLowerCase()
+            ? baseAssetSymbol
+            : reserve.symbol,
+        iconSymbol: reserve.iconSymbol,
+        underlyingAsset:
+          reserve.symbol.toLowerCase() === wrappedBaseAssetSymbol?.toLowerCase()
+            ? API_ETH_MOCK_ADDRESS.toLowerCase()
+            : reserve.underlyingAsset,
+      };
+    });
+
+  const filteredBorrowReserves = tokensToBorrow.sort((a, b) =>
+    +a.availableBorrowsInUSD > +b.availableBorrowsInUSD ? -1 : 0
+  );
 
   const maxBorrowAmount = valueToBigNumber(user?.totalBorrowsMarketReferenceCurrency || '0').plus(
     user?.availableBorrowsMarketReferenceCurrency || '0'
@@ -130,7 +109,7 @@ export const BorrowAssetsList = () => {
                   {/* TODO: need fix text */}
                 </Alert>
               )}
-              {isEModeActive && (
+              {isInEmode && (
                 <Alert severity="warning">
                   <Trans>E-mode message</Trans> {/* TODO: need fix text */}
                 </Alert>
