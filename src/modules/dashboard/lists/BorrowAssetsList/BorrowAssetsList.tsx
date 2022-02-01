@@ -14,15 +14,14 @@ import { BorrowAssetsItem } from './types';
 
 export const BorrowAssetsList = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
-  const { user, reserves, marketReferencePriceInUsd, userEmodeCategoryId, isInEmode } =
-    useAppDataContext();
+  const { user, reserves, marketReferencePriceInUsd, userEmodeCategoryId } = useAppDataContext();
 
   const { wrappedBaseAssetSymbol, baseAssetSymbol } = currentNetworkConfig;
 
   const tokensToBorrow: BorrowAssetsItem[] = reserves
     .filter(({ borrowingEnabled, isActive, borrowableInIsolation, eModeCategoryId }) => {
       if (!borrowingEnabled || !isActive) return false;
-      if (isInEmode && eModeCategoryId !== userEmodeCategoryId) return false;
+      if (user?.isInEmode && eModeCategoryId !== userEmodeCategoryId) return false;
       if (user?.isInIsolationMode && !borrowableInIsolation) return false;
       return true;
     })
@@ -109,7 +108,7 @@ export const BorrowAssetsList = () => {
                   {/* TODO: need fix text */}
                 </Alert>
               )}
-              {isInEmode && (
+              {user?.isInEmode && (
                 <Alert severity="warning">
                   <Trans>E-mode message</Trans> {/* TODO: need fix text */}
                 </Alert>
