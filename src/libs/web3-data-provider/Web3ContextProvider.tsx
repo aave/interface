@@ -5,6 +5,7 @@ import {
   TransactionResponse,
   Web3Provider,
 } from '@ethersproject/providers';
+import { SignatureLike } from '@ethersproject/bytes';
 import { BigNumber, providers } from 'ethers';
 import React, { ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
@@ -25,7 +26,7 @@ export type Web3Data = {
   getTxError: (txHash: string) => Promise<string>;
   sendTx: (txData: transactionType) => Promise<TransactionResponse>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  signTxData: (unsignedData: string) => Promise<any>;
+  signTxData: (unsignedData: string) => Promise<SignatureLike>;
 };
 
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
@@ -38,9 +39,10 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [web3Modal, setWeb3Modal] = useState<Web3Modal>(undefined as unknown as Web3Modal);
 
   useEffect(() => {
-    import('./modalOptions').then((m) => {
-      setWeb3Modal(m.getWeb3Modal());
-    });
+    if (!web3Modal)
+      import('./modalOptions').then((m) => {
+        setWeb3Modal(m.getWeb3Modal());
+      });
   }, [chainId, currentAccount]);
 
   // provider events subscriptions
@@ -53,16 +55,11 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         setCurrentAccount(accounts[0]);
       });
 
-      providerInstance.on('networkChanged', async (chainId: number) => {
-        const providerNetwork = await provider?.getNetwork();
-        if (providerNetwork?.chainId !== chainId) {
-          setTimeout(() => window.location.reload(), 1);
-        } else {
-          setChainId(chainId);
-        }
+      providerInstance.on('networkChanged', async () => {
+        connectWallet();
       });
     },
-    [provider?.connection.url]
+    [provider?.network.chainId]
   );
 
   // web 3 modal
@@ -131,7 +128,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         }
       }
     },
-    [provider?.connection.url]
+    [provider?.network.chainId]
   );
 
   useEffect(() => {
@@ -140,9 +137,9 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   // Tx methods
   const signTxData = useCallback(
-    async (unsignedData: string) => {
+    async (unsignedData: string): Promise<SignatureLike> => {
       if (provider && currentAccount) {
-        const signature = await provider.send('eth_signTypedData_v4', [
+        const signature: SignatureLike = await provider.send('eth_signTypedData_v4', [
           currentAccount,
           unsignedData,
         ]);
@@ -151,7 +148,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       }
       throw new Error('Error initializing permit signature');
     },
-    [provider?.connection.url, currentAccount]
+    [provider?.network.chainId, currentAccount]
   );
 
   // TODO: we use from instead of currentAccount because of the mock wallet.
@@ -169,7 +166,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       }
       throw new Error('Error sending transaction. Provider not found');
     },
-    [provider?.connection.url]
+    [provider?.network.chainId]
   );
 
   const getTxError = useCallback(
@@ -183,7 +180,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       }
       throw new Error('Error getting transaction. Provider not found');
     },
-    [provider?.connection.url]
+    [provider?.network.chainId]
   );
 
   const web3ProviderData = useMemo(
@@ -203,7 +200,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     [
       connectWallet,
       disconnectWallet,
-      provider?.connection.url,
+      provider,
       connected,
       currentAccount,
       web3Modal,
@@ -218,7 +215,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   return (
     <Web3Context.Provider
       value={{
-        web3ProviderData,
+        web3ProviderData: { ...web3ProviderData },
       }}
     >
       {children}

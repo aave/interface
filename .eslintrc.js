@@ -22,5 +22,6 @@ module.exports = {
     'import/no-unresolved': 'warn',
     // disabled as with the static export Image does not make to much sense
     '@next/next/no-img-element': 'off',
+    'react/self-closing-comp': 'warn',
   },
 };

@@ -18,7 +18,9 @@ export type Pool = {
   address: string;
 };
 
-const ENABLE_TESTNET = process.env.REACT_APP_ENABLE_TESTNET === 'true';
+const ENABLE_TESTNET =
+  process.env.REACT_APP_ENABLE_TESTNET === 'true' ||
+  global?.window?.localStorage.getItem('testnetsEnabled');
 
 // determines if forks should be shown
 const FORK_ENABLED = global?.window?.localStorage.getItem('forkEnabled') === 'true';
