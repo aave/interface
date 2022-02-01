@@ -29,7 +29,7 @@ export const BorrowAssetsList = () => {
       const availableBorrows = user ? getMaxAmountAvailableToBorrow(reserve, user).toNumber() : 0;
 
       const availableBorrowsInUSD = valueToBigNumber(availableBorrows)
-        .multipliedBy(reserve.priceInMarketReferenceCurrency)
+        .multipliedBy(reserve.formattedPriceInMarketReferenceCurrency)
         .multipliedBy(marketReferencePriceInUsd)
         .shiftedBy(-USD_DECIMALS)
         .toFixed(2);
@@ -56,10 +56,6 @@ export const BorrowAssetsList = () => {
       };
     });
 
-  const filteredBorrowReserves = tokensToBorrow.sort((a, b) =>
-    +a.availableBorrowsInUSD > +b.availableBorrowsInUSD ? -1 : 0
-  );
-
   const maxBorrowAmount = valueToBigNumber(user?.totalBorrowsMarketReferenceCurrency || '0').plus(
     user?.availableBorrowsMarketReferenceCurrency || '0'
   );
@@ -71,8 +67,8 @@ export const BorrowAssetsList = () => {
 
   const borrowReserves =
     user?.totalCollateralMarketReferenceCurrency === '0' || +collateralUsagePercent >= 0.98
-      ? filteredBorrowReserves
-      : filteredBorrowReserves.filter(
+      ? tokensToBorrow
+      : tokensToBorrow.filter(
           ({ availableBorrowsInUSD, totalLiquidityUSD }) =>
             availableBorrowsInUSD !== '0.00' && totalLiquidityUSD !== '0'
         );

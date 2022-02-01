@@ -27,6 +27,7 @@ export const useWalletBalances = () => {
   const { data: reservesData } = useC_ProtocolDataQuery({
     variables: {
       lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
+      chainId: currentChainId,
     },
     fetchPolicy: 'cache-only',
   });
