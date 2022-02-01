@@ -35,12 +35,9 @@ export type TxState = {
 export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps) => {
   const { walletBalances } = useWalletBalances();
   const { marketReferencePriceInUsd, reserves, user } = useAppDataContext();
-  console.log('underlying asset: ', underlyingAsset);
-  console.log('reserve', reserves);
   const poolReserve = reserves.find(
     (reserve) => reserve.underlyingAsset === underlyingAsset
   ) as ComputedReserveData;
-  console.log('supply apy: ', poolReserve);
   const supplyApy = poolReserve.supplyAPY;
   const userReserve = user?.userReservesData.find(
     (userReserve) => underlyingAsset === userReserve.underlyingAsset

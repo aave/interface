@@ -126,6 +126,7 @@ export const SupplyActions = ({
           error={mainTxState.error || approvalTxState.error}
           approvalHash={approvalTxState.txHash}
           actionHash={mainTxState.txHash}
+          requiresApproval={requiresApproval}
         />
         <RightHelperText
           approvalHash={approvalTxState.txHash}

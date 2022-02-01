@@ -10,6 +10,7 @@ export type LeftHelperTextProps = {
   approvalHash: string | null;
   actionHash: string | null;
   amountToSupply: string;
+  requiresApproval: boolean;
 };
 
 export const LeftHelperText = ({
@@ -17,6 +18,7 @@ export const LeftHelperText = ({
   approvalHash,
   actionHash,
   amountToSupply,
+  requiresApproval,
 }: LeftHelperTextProps) => {
   return (
     <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
@@ -40,7 +42,7 @@ export const LeftHelperText = ({
           <RetryWithApprovalInfoContent />
         </TextWithModal>
       )}
-      {!approvalHash && !error && !actionHash && Number(amountToSupply) > 0 && (
+      {!approvalHash && !error && !actionHash && Number(amountToSupply) > 0 && requiresApproval && (
         <TextWithModal
           text={<Trans>Why do I need to approve</Trans>}
           iconSize={13}
