@@ -47,29 +47,6 @@ export const WithdrawModalContent = ({
 
   const [withdrawUnWrapped, setWithdrawUnWrapped] = useState(false);
 
-  // TODO: logic to check if its native / wrapped currency
-  // console.log('symbol:: ', poolReserve.symbol, poolReserve.underlyingAsset);
-
-  // useEffect(() => {
-  //   if (
-  //     poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol ||
-  //     poolReserve.underlyingAsset === API_ETH_MOCK_ADDRESS
-  //   ) {
-  //     setIsNative(true);
-  //   }
-  // }, [poolReserve, networkConfig]);
-
-  // const handleWrapped = () => {
-  //   console.log('isWrapped:: ', isWrapped);
-  //   if (isWrapped) {
-  //     setPoolAddress(API_ETH_MOCK_ADDRESS);
-  //   } else {
-  //     setPoolAddress(poolReserve.underlyingAsset);
-  //   }
-  // };
-
-  // TODO: is this correct or should we return somethign else?
-  // eitherway this should not happen when we enter the modal
   if (!user) {
     return null;
   }
@@ -180,7 +157,7 @@ export const WithdrawModalContent = ({
             onChange={setAmount}
             // usdValue={amountInUsd.toString()}
             balance={maxAmountToWithdraw.toString()}
-            symbol={poolReserve.symbol}
+            symbol={withdrawUnWrapped ? poolReserve.symbol : poolReserve.symbol.substring(1)}
           />
           <TxModalDetails
             showHf={showHealthFactor}

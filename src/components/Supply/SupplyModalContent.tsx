@@ -3,7 +3,6 @@ import {
   ComputedReserveData,
   useAppDataContext,
 } from '../../hooks/app-data-provider/useAppDataProvider';
-import { SupplyDetails } from './SupplyDetails';
 import { SupplyActions } from './SupplyActions';
 import { Typography } from '@mui/material';
 import { AssetInput } from '../AssetInput';
@@ -24,6 +23,8 @@ import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { SupplyCapWarning } from '../Warnings/SupplyCapWarning';
 import { TxState } from 'src/helpers/types';
+import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
+import { TxModalDetails } from '../FlowCommons/TxModalDetails';
 
 export type SupplyProps = {
   underlyingAsset: string;
@@ -33,23 +34,39 @@ export type SupplyProps = {
 export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps) => {
   const { walletBalances } = useWalletBalances();
   const { marketReferencePriceInUsd, reserves, user } = useAppDataContext();
-  const poolReserve = reserves.find(
-    (reserve) => reserve.underlyingAsset === underlyingAsset
-  ) as ComputedReserveData;
-  const supplyApy = poolReserve.supplyAPY;
-  const userReserve = user?.userReservesData.find(
-    (userReserve) => underlyingAsset === userReserve.underlyingAsset
-  ) as ComputedUserReserve;
-  const walletBalance = walletBalances[underlyingAsset]?.amount;
   const { currentChainId } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
 
+  // states
   const [supplyTxState, setSupplyTxState] = useState<TxState>({ success: false });
-
   const [amountToSupply, setAmountToSupply] = useState('');
   const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
 
+  const supplyUnWrapped = underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase();
+
   const networkConfig = getNetworkConfig(currentChainId);
+
+  const poolReserve = reserves.find((reserve) => {
+    if (supplyUnWrapped) {
+      return reserve.symbol === networkConfig.wrappedBaseAssetSymbol;
+    }
+    return reserve.underlyingAsset === underlyingAsset;
+  }) as ComputedReserveData;
+
+  if (!user) {
+    return null;
+  }
+
+  const userReserve = user.userReservesData.find((userReserve) => {
+    if (supplyUnWrapped) {
+      return poolReserve.underlyingAsset === userReserve.underlyingAsset;
+    }
+    return underlyingAsset === userReserve.underlyingAsset;
+  }) as ComputedUserReserve;
+
+  const walletBalance = walletBalances[underlyingAsset]?.amount;
+
+  const supplyApy = poolReserve.supplyAPY;
 
   // Calculate max amount to supply
   let maxAmountToSupply = valueToBigNumber(walletBalance);
@@ -149,10 +166,10 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
             onChange={setAmountToSupply}
             usdValue={amountInUsd.toString()}
             balance={maxAmountToSupply.toString()}
-            symbol={poolReserve.symbol}
+            symbol={supplyUnWrapped ? poolReserve.symbol.substring(1) : poolReserve.symbol}
           />
-          <SupplyDetails
-            supplyApy={supplyApy}
+          <TxModalDetails
+            apy={supplyApy}
             incentives={poolReserve.aIncentivesData}
             showHf={showHealthFactor || false}
             healthFactor={user ? user.healthFactor : '-1'}
@@ -174,6 +191,7 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
         handleClose={handleClose}
         isWrongNetwork={isWrongNetwork}
         setGasLimit={setGasLimit}
+        poolAddress={supplyUnWrapped ? underlyingAsset : poolReserve.underlyingAsset}
       />
     </>
   );

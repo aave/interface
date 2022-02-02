@@ -1,4 +1,9 @@
-import { ChainId, EthereumTransactionTypeExtended, GasType } from '@aave/contract-helpers';
+import {
+  API_ETH_MOCK_ADDRESS,
+  ChainId,
+  EthereumTransactionTypeExtended,
+  GasType,
+} from '@aave/contract-helpers';
 import { Dispatch, SetStateAction, useEffect } from 'react';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -87,7 +92,9 @@ export const WithdrawActions = ({
           <Trans>
             {!loading
               ? `WITHDRAW ${poolReserve.symbol}`
-              : `WITHDRAW ${poolReserve.symbol} PENDING...`}
+              : `WITHDRAW ${
+                  poolAddress !== API_ETH_MOCK_ADDRESS ?? poolReserve.symbol.substring(1)
+                } PENDING...`}
           </Trans>
         </Button>
       )}
