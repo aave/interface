@@ -24,7 +24,7 @@ export interface TxModalDetailsProps {
   incentives?: ReserveIncentiveResponse[];
   symbol?: string;
   usedAsCollateral?: boolean;
-  setWithdrawUnWrapped?: Dispatch<SetStateAction<boolean>>;
+  setActionUnWrapped?: Dispatch<SetStateAction<boolean>>;
 }
 
 export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
@@ -36,19 +36,19 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   incentives,
   symbol,
   usedAsCollateral,
-  setWithdrawUnWrapped,
+  setActionUnWrapped,
 }) => {
   const [checked, setChecked] = React.useState(true);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleChange = (event: any) => {
     setChecked(event.target.checked);
-    setWithdrawUnWrapped && setWithdrawUnWrapped(checked);
+    setActionUnWrapped && setActionUnWrapped(checked);
   };
 
   return (
     <Grid container direction="row" alignItems="center" rowSpacing={'12px'} sx={{ mb: '24px' }}>
-      {setWithdrawUnWrapped && symbol && (
+      {setActionUnWrapped && symbol && (
         <FormRow>
           <FormControlLabel
             value="darkmode"

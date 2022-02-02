@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
+import { useModalContext } from 'src/hooks/useModal';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -24,6 +25,7 @@ export const BorrowAssetsListItem = ({
   underlyingAsset,
   isFreezed,
 }: BorrowAssetsItem) => {
+  const { openBorrow } = useModalContext();
   const borrowButtonDisable = isFreezed || Number(availableBorrows) <= 0;
 
   return (
@@ -51,7 +53,7 @@ export const BorrowAssetsListItem = ({
         <Button
           disabled={borrowButtonDisable}
           variant="contained"
-          onClick={() => console.log('TODO: should be borrow modal')}
+          onClick={() => openBorrow(underlyingAsset)}
         >
           <Trans>Borrow</Trans>
         </Button>
