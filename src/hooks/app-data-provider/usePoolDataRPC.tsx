@@ -50,6 +50,7 @@ export function usePoolDataRPC(
     const poolDataProviderContract = new UiPoolDataProvider({
       uiPoolDataProviderAddress: poolDataProviderAddress,
       provider,
+      chainId,
     });
 
     try {
@@ -73,7 +74,7 @@ export function usePoolDataRPC(
             })),
           },
         },
-        variables: { lendingPoolAddressProvider },
+        variables: { lendingPoolAddressProvider, chainId },
       });
       setErrorReserves(false);
     } catch (e) {
@@ -90,6 +91,7 @@ export function usePoolDataRPC(
     const poolDataProviderContract = new UiPoolDataProvider({
       uiPoolDataProviderAddress: poolDataProviderAddress,
       provider,
+      chainId,
     });
 
     try {
@@ -111,7 +113,7 @@ export function usePoolDataRPC(
             userEmodeCategoryId: userReservesResponse.userEmodeCategoryId,
           },
         },
-        variables: { lendingPoolAddressProvider, userAddress: currentAccount },
+        variables: { lendingPoolAddressProvider, userAddress: currentAccount, chainId },
       });
       setErrorUserReserves(false);
     } catch (e) {
