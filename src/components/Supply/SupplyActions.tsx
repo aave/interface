@@ -157,7 +157,7 @@ export const SupplyActions = ({
       {hasAmount && requiresApproval && !approved && !approvalTxState.error && (
         <Button
           variant="outlined"
-          onClick={() => approval(amountToSupply, poolReserve.underlyingAsset)}
+          onClick={() => approval(amountToSupply, poolAddress)}
           disabled={approved || loading}
         >
           <Trans>

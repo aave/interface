@@ -12,7 +12,6 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { GasOption } from '../GasStation/GasStationProvider';
-import { LeftHelperText } from '../FlowCommons/LeftHelperText';
 import { RightHelperText } from '../FlowCommons/RightHelperText';
 import { Box, Button } from '@mui/material';
 import { Trans } from '@lingui/macro';
