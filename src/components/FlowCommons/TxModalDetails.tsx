@@ -13,6 +13,7 @@ import { parseUnits } from 'ethers/lib/utils';
 import { IncentivesButton } from '../incentives/IncentivesButton';
 import { ReserveIncentiveResponse } from 'src/hooks/app-data-provider/useIncentiveData';
 import { CheckIcon } from '@heroicons/react/outline';
+import { FormattedNumber } from '../primitives/FormattedNumber';
 
 export interface TxModalDetailsProps {
   apy?: string;
@@ -67,9 +68,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
             </Typography>
           </FormInfo>
           <FormValue>
-            <Typography variant="description">
-              <Percentage value={Number(apy).toFixed(2)} />
-            </Typography>
+            <FormattedNumber value={Number(apy)} percent variant="description" />
           </FormValue>
         </FormRow>
       )}
