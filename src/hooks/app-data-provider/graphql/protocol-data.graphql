@@ -58,8 +58,8 @@ fragment BaseCurrencyDataFragment on BaseCurrencyData {
   networkBaseTokenPriceDecimals
 }
 
-query C_ProtocolData($lendingPoolAddressProvider: String!) {
-  protocolData(lendingPoolAddressProvider: $lendingPoolAddressProvider) {
+query C_ProtocolData($lendingPoolAddressProvider: String!, $chainId: Int!) {
+  protocolData(lendingPoolAddressProvider: $lendingPoolAddressProvider, chainId: $chainId) {
     reserves {
       ...ReserveDataFragment
     }
@@ -69,8 +69,8 @@ query C_ProtocolData($lendingPoolAddressProvider: String!) {
   }
 }
 
-subscription C_ProtocolDataUpdate($lendingPoolAddressProvider: String!) {
-  protocolDataUpdate(lendingPoolAddressProvider: $lendingPoolAddressProvider) {
+subscription C_ProtocolDataUpdate($lendingPoolAddressProvider: String!, $chainId: Int!) {
+  protocolDataUpdate(lendingPoolAddressProvider: $lendingPoolAddressProvider, chainId: $chainId) {
     reserves {
       ...ReserveDataFragment
     }
