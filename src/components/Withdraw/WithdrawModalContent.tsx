@@ -166,7 +166,7 @@ export const WithdrawModalContent = ({
             healthFactor={user.healthFactor}
             futureHealthFactor={healthFactorAfterWithdraw.toString()}
             gasLimit={gasLimit}
-            setWithdrawUnWrapped={
+            setActionUnWrapped={
               poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
                 ? setWithdrawUnWrapped
                 : undefined
