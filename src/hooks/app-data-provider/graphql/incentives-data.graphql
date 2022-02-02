@@ -17,8 +17,9 @@ fragment IncentivesDataFragment on IncentiveData {
   }
 }
 
-query C_ReservesIncentives($lendingPoolAddressProvider: String!) {
-  reservesIncentives(lendingPoolAddressProvider: $lendingPoolAddressProvider) {
+query C_ReservesIncentives($lendingPoolAddressProvider: String!, $chainId: Int!) {
+  reservesIncentives(lendingPoolAddressProvider: $lendingPoolAddressProvider, chainId: $chainId) {
+    id
     underlyingAsset
     aIncentiveData {
       ...IncentivesDataFragment
@@ -32,8 +33,12 @@ query C_ReservesIncentives($lendingPoolAddressProvider: String!) {
   }
 }
 
-subscription C_PoolIncentivesDataUpdate($lendingPoolAddressProvider: String!) {
-  poolIncentivesDataUpdate(lendingPoolAddressProvider: $lendingPoolAddressProvider) {
+subscription C_PoolIncentivesDataUpdate($lendingPoolAddressProvider: String!, $chainId: Int!) {
+  poolIncentivesDataUpdate(
+    lendingPoolAddressProvider: $lendingPoolAddressProvider
+    chainId: $chainId
+  ) {
+    id
     underlyingAsset
     aIncentiveData {
       ...IncentivesDataFragment

@@ -13,11 +13,17 @@ fragment TokenIncentivesUserDataFragment on UserIncentiveData {
   }
 }
 
-query C_UserIncentives($userAddress: String!, $lendingPoolAddressProvider: String!) {
+query C_UserIncentives(
+  $userAddress: String!
+  $lendingPoolAddressProvider: String!
+  $chainId: Int!
+) {
   userIncentives(
     userAddress: $userAddress
     lendingPoolAddressProvider: $lendingPoolAddressProvider
+    chainId: $chainId
   ) {
+    id
     underlyingAsset
     aTokenIncentivesUserData {
       ...TokenIncentivesUserDataFragment
@@ -34,11 +40,14 @@ query C_UserIncentives($userAddress: String!, $lendingPoolAddressProvider: Strin
 subscription C_UserPoolIncentivesDataUpdate(
   $userAddress: String!
   $lendingPoolAddressProvider: String!
+  $chainId: Int!
 ) {
   userPoolIncentivesDataUpdate(
     userAddress: $userAddress
     lendingPoolAddressProvider: $lendingPoolAddressProvider
+    chainId: $chainId
   ) {
+    id
     underlyingAsset
     aTokenIncentivesUserData {
       ...TokenIncentivesUserDataFragment
