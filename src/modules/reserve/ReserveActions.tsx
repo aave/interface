@@ -1,8 +1,8 @@
 import { InformationCircleIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Button, Paper, Stack, StackProps, SvgIcon, Typography } from '@mui/material';
+import { Box, Button, Paper, Stack, StackProps, SvgIcon, Typography } from '@mui/material';
 import React from 'react';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { FormattedNumber, FormattedNumberProps } from 'src/components/primitives/FormattedNumber';
 
 const ReserveRow: React.FC<StackProps> = (props) => (
   <Stack
@@ -14,10 +14,27 @@ const ReserveRow: React.FC<StackProps> = (props) => (
   />
 );
 
+interface DoubleFormattedProps extends FormattedNumberProps {
+  usdValue: string;
+}
+
+const DoubleFormatted: React.FC<DoubleFormattedProps> = ({ usdValue, ...props }) => (
+  <Box
+    sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'flex-end',
+    }}
+  >
+    <FormattedNumber {...props} />
+    <FormattedNumber color="text.muted" symbol="USD" variant="helperText" value={usdValue} />
+  </Box>
+);
+
 export const ReserveActions = () => (
   <>
     {/** Supply panel */}
-    <Paper sx={{ minHeight: '237px', py: '16px', px: '24px' }}>
+    <Paper sx={{ py: '16px', px: '24px' }}>
       <Typography variant="h3" sx={{ mb: '40px' }}>
         <Trans>Your supplies</Trans>
       </Typography>
@@ -26,7 +43,7 @@ export const ReserveActions = () => (
         <Typography>
           <Trans>Supply balance</Trans>
         </Typography>
-        <FormattedNumber value="10" />
+        <DoubleFormatted value="10" usdValue="10" />
       </ReserveRow>
 
       <ReserveRow>
@@ -55,19 +72,19 @@ export const ReserveActions = () => (
     </Paper>
 
     {/** Borrow panel */}
-    <Paper sx={{ mt: 4, minHeight: '237px', py: '16px', px: '24px' }}>
+    <Paper sx={{ mt: 4, py: '16px', px: '24px' }}>
       <Typography variant="h3" sx={{ mb: '40px' }}>
         <Trans>Your borrows</Trans>
       </Typography>
 
       <ReserveRow>
         <Trans>Borrow balance</Trans>
-        <FormattedNumber value="10" />
+        <DoubleFormatted value="9" usdValue="9" />
       </ReserveRow>
 
       <ReserveRow>
         <Trans component={Typography}>Available to borrow</Trans>
-        <FormattedNumber value="10" />
+        <FormattedNumber value="1" />
       </ReserveRow>
 
       <Stack direction="row" spacing={2}>

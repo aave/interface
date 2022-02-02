@@ -1,5 +1,6 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
+import { Box } from '@mui/material';
 import * as React from 'react';
 
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
@@ -25,33 +26,35 @@ export const MarketsTopPanel = () => {
 
   return (
     <TopInfoPanel pageTitle={<Trans>Market overview</Trans>} withMarketSwitcher>
-      <TopInfoPanelItem title={<Trans>Total market size</Trans>}>
-        <FormattedNumber
-          value={aggregatedStats.totalLiquidity.toString()}
-          symbol="USD"
-          variant="main21"
-          minimumDecimals={2}
-          maximumDecimals={2}
-        />
-      </TopInfoPanelItem>
-      <TopInfoPanelItem title={<Trans>Total available</Trans>}>
-        <FormattedNumber
-          value={aggregatedStats.totalLiquidity.minus(aggregatedStats.totalDebt).toString()}
-          symbol="USD"
-          variant="main21"
-          minimumDecimals={2}
-          maximumDecimals={2}
-        />
-      </TopInfoPanelItem>
-      <TopInfoPanelItem title={<Trans>Total borrows</Trans>}>
-        <FormattedNumber
-          value={aggregatedStats.totalDebt.toString()}
-          symbol="USD"
-          variant="main21"
-          minimumDecimals={2}
-          maximumDecimals={2}
-        />
-      </TopInfoPanelItem>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: '32px', flexWrap: 'wrap' }}>
+        <TopInfoPanelItem title={<Trans>Total market size</Trans>}>
+          <FormattedNumber
+            value={aggregatedStats.totalLiquidity.toString()}
+            symbol="USD"
+            variant="main21"
+            minimumDecimals={2}
+            maximumDecimals={2}
+          />
+        </TopInfoPanelItem>
+        <TopInfoPanelItem title={<Trans>Total available</Trans>}>
+          <FormattedNumber
+            value={aggregatedStats.totalLiquidity.minus(aggregatedStats.totalDebt).toString()}
+            symbol="USD"
+            variant="main21"
+            minimumDecimals={2}
+            maximumDecimals={2}
+          />
+        </TopInfoPanelItem>
+        <TopInfoPanelItem title={<Trans>Total borrows</Trans>}>
+          <FormattedNumber
+            value={aggregatedStats.totalDebt.toString()}
+            symbol="USD"
+            variant="main21"
+            minimumDecimals={2}
+            maximumDecimals={2}
+          />
+        </TopInfoPanelItem>
+      </Box>
     </TopInfoPanel>
   );
 };
