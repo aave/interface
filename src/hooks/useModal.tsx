@@ -3,11 +3,15 @@ import { createContext, useContext, useState } from 'react';
 export enum ModalType {
   Supply,
   Withdraw,
+  Borrow,
+  Repay,
 }
 
 interface ModalContextType {
   openSupply: (underlyingAsset: string) => void;
   openWithdraw: (underlyingAsset: string) => void;
+  openBorrow: (underlyingAsset: string) => void;
+  openRepay: (underlyingAsset: string) => void;
   close: () => void;
   type?: ModalType;
   args?: { [key: string]: string };
@@ -29,6 +33,14 @@ export const ModalContextProvider: React.FC = ({ children }) => {
         },
         openWithdraw: (underlyingAsset) => {
           setType(ModalType.Withdraw);
+          setArgs({ underlyingAsset });
+        },
+        openBorrow: (underlyingAsset) => {
+          setType(ModalType.Borrow);
+          setArgs({ underlyingAsset });
+        },
+        openRepay: (underlyingAsset) => {
+          setType(ModalType.Repay);
           setArgs({ underlyingAsset });
         },
         close: () => {
