@@ -1,6 +1,6 @@
 import { ChainId, EthereumTransactionTypeExtended, GasType } from '@aave/contract-helpers';
 import { Dispatch, SetStateAction, useEffect } from 'react';
-import { TxState, useTransactionHandler } from 'src/helpers/useTransactionHandler';
+import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useGasStation } from 'src/hooks/useGasStation';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -11,6 +11,7 @@ import { LeftHelperText } from '../FlowCommons/LeftHelperText';
 import { RightHelperText } from '../FlowCommons/RightHelperText';
 import { Box, Button } from '@mui/material';
 import { Trans } from '@lingui/macro';
+import { TxState } from 'src/helpers/types';
 
 export type WithdrawActionsProps = {
   poolReserve: ComputedReserveData;
@@ -18,6 +19,7 @@ export type WithdrawActionsProps = {
   setWithdrawTxState: Dispatch<SetStateAction<TxState>>;
   amountToWithdraw: string;
   handleClose: () => void;
+  poolAddress: string;
 };
 
 export const WithdrawActions = ({
@@ -26,6 +28,7 @@ export const WithdrawActions = ({
   amountToWithdraw,
   setWithdrawTxState,
   handleClose,
+  poolAddress,
 }: WithdrawActionsProps) => {
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
@@ -38,7 +41,7 @@ export const WithdrawActions = ({
     handleGetTxns: async () => {
       const tx: EthereumTransactionTypeExtended[] = await lendingPool.withdraw({
         user: currentAccount,
-        reserve: poolReserve.underlyingAsset,
+        reserve: poolAddress,
         amount: amountToWithdraw.toString(),
         aTokenAddress: poolReserve.aTokenAddress,
       });
@@ -58,7 +61,7 @@ export const WithdrawActions = ({
     if (mainTxState.txHash) {
       setWithdrawTxState({
         success: true,
-        error: null,
+        error: undefined,
       });
     }
   }, [setWithdrawTxState, mainTxState.txHash]);

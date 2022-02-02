@@ -3,7 +3,7 @@ import {
   ComputedUserReserve,
   valueToBigNumber,
 } from '@aave/math-utils';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -20,6 +20,7 @@ import { WithdrawActions } from './WithdrawActions';
 import { TxErrorView } from '../TxViews/Error';
 import { TxSuccessView } from '../TxViews/Success';
 import { TxState } from 'src/helpers/types';
+import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 
 export type WithdrawModalContentProps = {
   underlyingAsset: string;
@@ -40,15 +41,39 @@ export const WithdrawModalContent = ({
 
   const networkConfig = getNetworkConfig(currentChainId);
 
+  const poolReserve = reserves.find(
+    (reserve) => reserve.underlyingAsset === underlyingAsset
+  ) as ComputedReserveData;
+
+  const [withdrawUnWrapped, setWithdrawUnWrapped] = useState(false);
+
+  // TODO: logic to check if its native / wrapped currency
+  // console.log('symbol:: ', poolReserve.symbol, poolReserve.underlyingAsset);
+
+  // useEffect(() => {
+  //   if (
+  //     poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol ||
+  //     poolReserve.underlyingAsset === API_ETH_MOCK_ADDRESS
+  //   ) {
+  //     setIsNative(true);
+  //   }
+  // }, [poolReserve, networkConfig]);
+
+  // const handleWrapped = () => {
+  //   console.log('isWrapped:: ', isWrapped);
+  //   if (isWrapped) {
+  //     setPoolAddress(API_ETH_MOCK_ADDRESS);
+  //   } else {
+  //     setPoolAddress(poolReserve.underlyingAsset);
+  //   }
+  // };
+
   // TODO: is this correct or should we return somethign else?
   // eitherway this should not happen when we enter the modal
   if (!user) {
     return null;
   }
 
-  const poolReserve = reserves.find(
-    (reserve) => reserve.underlyingAsset === underlyingAsset
-  ) as ComputedReserveData;
   const userReserve = user.userReservesData.find(
     (userReserve) => underlyingAsset === userReserve.underlyingAsset
   ) as ComputedUserReserve;
@@ -138,8 +163,8 @@ export const WithdrawModalContent = ({
   const isWrongNetwork = currentChainId !== connectedChainId;
 
   // TODO: revisit what amount to use!!!
-  console.log('amount to withdraw', amountToWithdraw);
-  console.log('amount to display', displayAmountToWithdraw);
+  // console.log('amount to withdraw', amountToWithdraw);
+  // console.log('amount to display', displayAmountToWithdraw);
 
   return (
     <>
@@ -162,6 +187,12 @@ export const WithdrawModalContent = ({
             healthFactor={user.healthFactor}
             futureHealthFactor={healthFactorAfterWithdraw.toString()}
             gasLimit={gasLimit}
+            setWithdrawUnWrapped={
+              poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
+                ? setWithdrawUnWrapped
+                : undefined
+            }
+            symbol={poolReserve.symbol}
           />
         </>
       )}
@@ -180,6 +211,7 @@ export const WithdrawModalContent = ({
         setWithdrawTxState={setWithdrawTxState}
         amountToWithdraw={amountToWithdraw.toString()}
         handleClose={handleClose}
+        poolAddress={withdrawUnWrapped ? poolReserve.underlyingAsset : API_ETH_MOCK_ADDRESS}
       />
     </>
   );
