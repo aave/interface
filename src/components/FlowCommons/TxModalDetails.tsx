@@ -1,11 +1,10 @@
 import { Trans } from '@lingui/macro';
-import { FormControlLabel, Grid, SvgIcon, Switch, Typography, useTheme } from '@mui/material';
+import { FormControlLabel, Grid, SvgIcon, Switch, Typography } from '@mui/material';
 import React, { Dispatch, SetStateAction } from 'react';
 
 import { FormInfo } from '../FormItems/FormInfo';
 import { FormRow } from '../FormItems/FormRow';
 import { FormValue } from '../FormItems/FormValue';
-import { Percentage } from '../Percentage';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { HealthFactorNumber } from '../HealthFactorNumber';
 import { GasStation } from '../GasStation/GasStation';
@@ -41,7 +40,8 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
 }) => {
   const [checked, setChecked] = React.useState(true);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleChange = (event: any) => {
     setChecked(event.target.checked);
     setWithdrawUnWrapped && setWithdrawUnWrapped(checked);
   };

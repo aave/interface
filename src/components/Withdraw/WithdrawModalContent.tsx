@@ -3,7 +3,7 @@ import {
   ComputedUserReserve,
   valueToBigNumber,
 } from '@aave/math-utils';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -31,9 +31,9 @@ export const WithdrawModalContent = ({
   underlyingAsset,
   handleClose,
 }: WithdrawModalContentProps) => {
-  const { marketReferencePriceInUsd, reserves, user, userEmodeCategoryId } = useAppDataContext();
+  const { reserves, user, userEmodeCategoryId } = useAppDataContext();
   const { currentChainId } = useProtocolDataContext();
-  const { chainId: connectedChainId, switchNetwork, currentAccount } = useWeb3Context();
+  const { chainId: connectedChainId } = useWeb3Context();
 
   const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
   const [amount, setAmount] = useState('');
@@ -131,6 +131,8 @@ export const WithdrawModalContent = ({
       blockingError = 'TODO: some message here'; //intl.formatMessage(messages.errorCanNotWithdrawThisAmount);
     }
   }
+
+  console.log('Not forget blockingError: ', blockingError);
 
   // hf
   const showHealthFactor =
