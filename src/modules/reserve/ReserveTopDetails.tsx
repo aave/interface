@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -48,7 +48,7 @@ export const ReserveTopDetails = () => {
             </Typography>
           </Box>
         </Box>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '32px', flexWrap: 'wrap' }}>
           <TopInfoPanelItem
             title={<Trans>Asset</Trans>}
             icon={

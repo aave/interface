@@ -5,12 +5,20 @@ interface TopInfoPanelItemProps {
   icon?: ReactNode;
   title: ReactNode;
   children: ReactNode;
+  hideIcon?: boolean;
+  variant?: 'light' | 'dark' | undefined; // default dark
 }
 
-export const TopInfoPanelItem = ({ icon, title, children }: TopInfoPanelItemProps) => {
+export const TopInfoPanelItem = ({
+  icon,
+  title,
+  children,
+  hideIcon,
+  variant = 'dark',
+}: TopInfoPanelItemProps) => {
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', mr: 8 }}>
-      {!icon && (
+    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      {!hideIcon && !icon && (
         <Box
           sx={{
             border: '1px solid rgba(250, 251, 252, 0.12)',
@@ -23,13 +31,13 @@ export const TopInfoPanelItem = ({ icon, title, children }: TopInfoPanelItemProp
         />
       )}
 
-      {icon && (
+      {!hideIcon && icon && (
         <SvgIcon fontSize="medium" sx={{ width: 42, height: 42, mr: 3 }}>
           {icon}
         </SvgIcon>
       )}
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <Typography sx={{ color: '#FFFFFFB2' }} component="div">
+        <Typography sx={{ color: variant === 'dark' ? '#FFFFFFB2' : '#47617F' }} component="div">
           {title}
         </Typography>
         {children}
