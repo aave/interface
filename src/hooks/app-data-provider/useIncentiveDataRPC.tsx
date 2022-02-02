@@ -52,6 +52,7 @@ export function useIncentivesDataRPC(
     const incentiveDataProviderContract = new UiIncentiveDataProvider({
       provider,
       uiIncentiveDataProviderAddress: incentiveDataProviderAddress!,
+      chainId,
     });
 
     try {
@@ -71,7 +72,7 @@ export function useIncentivesDataRPC(
             __typename: 'ReserveIncentivesData',
           })),
         },
-        variables: { lendingPoolAddressProvider },
+        variables: { lendingPoolAddressProvider, chainId },
       });
       setErrorReserveIncentives(false);
     } catch (e) {
@@ -88,6 +89,7 @@ export function useIncentivesDataRPC(
     const incentiveDataProviderContract = new UiIncentiveDataProvider({
       uiIncentiveDataProviderAddress: incentiveDataProviderAddress!,
       provider,
+      chainId,
     });
 
     try {
@@ -117,7 +119,7 @@ export function useIncentivesDataRPC(
             __typename: 'UserIncentivesData',
           })),
         },
-        variables: { lendingPoolAddressProvider, userAddress: currentAccount },
+        variables: { lendingPoolAddressProvider, userAddress: currentAccount, chainId },
       });
       setErrorUserIncentives(false);
     } catch (e) {
