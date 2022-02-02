@@ -213,11 +213,11 @@ export const useTransactionHandler = ({
   useEffect(() => {
     // good enough for now, but might need debounce or similar for swaps
     if (!skip) {
-      setLoading(true);
+      // setLoading(true);
       handleGetTxns()
         .then((data) => {
           data && setTxs(data);
-          setLoading(false);
+          // setLoading(false);
         })
         .catch((error) => {
           setMainTxState({

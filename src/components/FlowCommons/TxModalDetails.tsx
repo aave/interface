@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro';
-import { Grid, SvgIcon, Typography } from '@mui/material';
-import React from 'react';
+import { FormControlLabel, Grid, SvgIcon, Switch, Typography, useTheme } from '@mui/material';
+import React, { Dispatch, SetStateAction } from 'react';
 
 import { FormInfo } from '../FormItems/FormInfo';
 import { FormRow } from '../FormItems/FormRow';
@@ -24,6 +24,7 @@ export interface TxModalDetailsProps {
   incentives?: ReserveIncentiveResponse[];
   symbol?: string;
   usedAsCollateral?: boolean;
+  setWithdrawUnWrapped?: Dispatch<SetStateAction<boolean>>;
 }
 
 export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
@@ -35,9 +36,29 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   incentives,
   symbol,
   usedAsCollateral,
+  setWithdrawUnWrapped,
 }) => {
+  const [checked, setChecked] = React.useState(true);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChecked(event.target.checked);
+    setWithdrawUnWrapped && setWithdrawUnWrapped(checked);
+  };
+
   return (
     <Grid container direction="row" alignItems="center" rowSpacing={'12px'} sx={{ mb: '24px' }}>
+      {setWithdrawUnWrapped && symbol && (
+        <FormRow>
+          <FormControlLabel
+            value="darkmode"
+            control={<Switch disableRipple checked={checked} onClick={handleChange} />}
+            labelPlacement="end"
+            label={''}
+          />
+          <Typography>{`Unwrap ${symbol} (to withdraw ${symbol.substring(1)})`}</Typography>
+          <FormInfo />
+        </FormRow>
+      )}
       {apy && (
         <FormRow>
           <FormInfo>
@@ -52,7 +73,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
           </FormValue>
         </FormRow>
       )}
-      {incentives && (
+      {incentives && symbol && (
         <FormRow>
           <FormInfo>
             <Typography variant="description">
