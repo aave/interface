@@ -1,4 +1,5 @@
 fragment UserReserveDataFragment on UserReserveData {
+  id
   underlyingAsset
   scaledATokenBalance
   usageAsCollateralEnabledOnUser
@@ -8,18 +9,27 @@ fragment UserReserveDataFragment on UserReserveData {
   stableBorrowLastUpdateTimestamp
 }
 
-query C_UserData($userAddress: String!, $lendingPoolAddressProvider: String!) {
-  userData(userAddress: $userAddress, lendingPoolAddressProvider: $lendingPoolAddressProvider) {
+query C_UserData($userAddress: String!, $lendingPoolAddressProvider: String!, $chainId: Int!) {
+  userData(
+    userAddress: $userAddress
+    lendingPoolAddressProvider: $lendingPoolAddressProvider
+    chainId: $chainId
+  ) {
     userReserves {
       ...UserReserveDataFragment
     }
     userEmodeCategoryId
   }
 }
-subscription C_UserDataUpdate($userAddress: String!, $lendingPoolAddressProvider: String!) {
+subscription C_UserDataUpdate(
+  $userAddress: String!
+  $lendingPoolAddressProvider: String!
+  $chainId: Int!
+) {
   userDataUpdate(
     userAddress: $userAddress
     lendingPoolAddressProvider: $lendingPoolAddressProvider
+    chainId: $chainId
   ) {
     userReserves {
       ...UserReserveDataFragment
