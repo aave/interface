@@ -17,8 +17,8 @@ import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import BigNumber from 'bignumber.js';
 import { WithdrawActions } from './WithdrawActions';
-import { TxErrorView } from '../TxViews/Error';
-import { TxSuccessView } from '../TxViews/Success';
+import { TxErrorView } from '../FlowCommons/Error';
+import { TxSuccessView } from '../FlowCommons/Success';
 import { TxState } from 'src/helpers/types';
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 
