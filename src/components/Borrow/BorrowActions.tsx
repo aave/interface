@@ -99,11 +99,13 @@ export const BorrowActions = ({
             {!loading
               ? `BORROW ${
                   poolAddress !== API_ETH_MOCK_ADDRESS
-                    ? poolReserve.symbol.substring(1)
-                    : poolReserve.symbol
+                    ? poolReserve.symbol
+                    : poolReserve.symbol.substring(1)
                 }`
               : `BORROW ${
-                  poolAddress !== API_ETH_MOCK_ADDRESS ?? poolReserve.symbol.substring(1)
+                  poolAddress !== API_ETH_MOCK_ADDRESS
+                    ? poolReserve.symbol
+                    : poolReserve.symbol.substring(1)
                 } PENDING...`}
           </Trans>
         </Button>
