@@ -10,6 +10,7 @@ export const TxErrorView = ({ errorMessage }: { errorMessage: string }) => {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
+        mb: '92px',
       }}
     >
       <Box
