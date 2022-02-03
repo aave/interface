@@ -100,7 +100,11 @@ export const BorrowActions = ({
         <Button variant="outlined" onClick={action} disabled={loading}>
           <Trans>
             {!loading
-              ? `BORROW ${poolReserve.symbol}`
+              ? `BORROW ${
+                  poolAddress !== API_ETH_MOCK_ADDRESS
+                    ? poolReserve.symbol.substring(1)
+                    : poolReserve.symbol
+                }`
               : `BORROW ${
                   poolAddress !== API_ETH_MOCK_ADDRESS ?? poolReserve.symbol.substring(1)
                 } PENDING...`}

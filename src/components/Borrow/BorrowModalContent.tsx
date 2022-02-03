@@ -41,19 +41,26 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
 
   const networkConfig = getNetworkConfig(currentChainId);
 
-  const poolReserve = reserves.find(
-    (reserve) => reserve.underlyingAsset === underlyingAsset
-  ) as ComputedReserveData;
-
-  const [withdrawUnWrapped, setWithdrawUnWrapped] = useState(false);
+  const poolReserve = reserves.find((reserve) => {
+    if (underlyingAsset === API_ETH_MOCK_ADDRESS.toLowerCase() || borrowUnWrapped) {
+      return reserve.symbol === networkConfig.wrappedBaseAssetSymbol;
+    }
+    return reserve.underlyingAsset === underlyingAsset;
+  }) as ComputedReserveData;
 
   if (!user) {
     return null;
   }
 
-  const userReserve = user.userReservesData.find(
-    (userReserve) => underlyingAsset === userReserve.underlyingAsset
-  ) as ComputedUserReserve;
+  const userReserve = user.userReservesData.find((userReserve) => {
+    if (underlyingAsset === API_ETH_MOCK_ADDRESS.toLowerCase() || borrowUnWrapped) {
+      return poolReserve.underlyingAsset === userReserve.underlyingAsset;
+    }
+    return underlyingAsset === userReserve.underlyingAsset;
+  }) as ComputedUserReserve;
+
+  console.log('underlying asset: ', underlyingAsset);
+  console.log('pool reserve', reserves);
 
   // interest rate mode calcs
   const currentStableBorrowRate =
@@ -129,7 +136,7 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
             onChange={setAmountToBorrow}
             // usdValue={amountInUsd.toString()}
             balance={formattedMaxAmountToBorrow}
-            symbol={borrowUnWrapped ? poolReserve.symbol.substring(1) : poolReserve.symbol}
+            symbol={borrowUnWrapped ? poolReserve.symbol : poolReserve.symbol.substring(1)}
           />
           <TxModalDetails
             showHf={true}
@@ -156,7 +163,7 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
         setBorrowTxState={setBorrowTxState}
         amountToBorrow={amountToBorrow}
         handleClose={handleClose}
-        poolAddress={withdrawUnWrapped ? poolReserve.underlyingAsset : API_ETH_MOCK_ADDRESS}
+        poolAddress={borrowUnWrapped ? API_ETH_MOCK_ADDRESS : poolReserve.underlyingAsset}
         interestRateMode={interestRateMode}
       />
     </>
