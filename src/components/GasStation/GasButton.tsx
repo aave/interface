@@ -2,7 +2,7 @@ import React from 'react';
 import { Skeleton, ToggleButton, ToggleButtonProps } from '@mui/material';
 import { Trans } from '@lingui/macro';
 import { GasOption } from './GasStationProvider';
-import { commify, formatUnits } from 'ethers/lib/utils';
+import { formatUnits } from 'ethers/lib/utils';
 
 export interface GasButtonProps extends ToggleButtonProps {
   value: GasOption;

@@ -64,7 +64,7 @@ export function SettingsMenu() {
     const newState = !testnetsEnabled;
     setTestnetsMode(!testnetsEnabled);
     localStorage.setItem(testnetsEnabledId, newState ? 'true' : 'false');
-    router.reload(window.location.pathname);
+    router.reload();
   };
 
   return (
