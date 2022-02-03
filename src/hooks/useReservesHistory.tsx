@@ -11,7 +11,7 @@ type APIResponse = {
 };
 
 const fetchStats = async (address: string, endpointURL: string) => {
-  const thirtyDaysAgo = dayjs().subtract(45, 'day').unix();
+  const thirtyDaysAgo = dayjs().subtract(30, 'day').unix();
   try {
     const result = await fetch(
       `${endpointURL}?reserveId=${address}&from=${thirtyDaysAgo}&resolutionInHours=6`
@@ -37,7 +37,7 @@ const BROKEN_ASSETS = [
 ];
 
 export function useReserveRatesHistory(
-  reserveAddress = '0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e0xb53c1a33016b2dc2ff3653530bff1848a515c8c5' // TODO: remove fallback
+  reserveAddress = '0x514910771af9ca656af840dff83e8264ecf986ca0xb53c1a33016b2dc2ff3653530bff1848a515c8c5' // TODO: remove fallback
 ) {
   const { currentNetworkConfig } = useProtocolDataContext();
   const [loading, setLoading] = useState(true);
@@ -62,7 +62,7 @@ export function useReserveRatesHistory(
     } else {
       setLoading(false);
     }
-  }, [reserveAddress]);
+  }, [reserveAddress, currentNetworkConfig]);
 
   return {
     loading,
