@@ -28,7 +28,6 @@ export type SupplyActionProps = {
   handleClose: () => void;
   setGasLimit: Dispatch<SetStateAction<string | undefined>>;
   poolAddress: string;
-  isWrongNetwork: boolean;
 };
 
 export const SupplyActions = ({
