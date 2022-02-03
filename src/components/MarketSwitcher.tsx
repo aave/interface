@@ -24,7 +24,7 @@ import {
   networkConfigs,
 } from '../utils/marketsAndNetworksConfig';
 
-const getMarketInfoById = (marketId: CustomMarket) => {
+export const getMarketInfoById = (marketId: CustomMarket) => {
   const market: MarketDataType = marketsData[marketId as CustomMarket];
   const network: BaseNetworkConfig = networkConfigs[market.chainId];
 
@@ -50,7 +50,7 @@ type MarketLogoProps = {
   withAAVELogo?: boolean;
 };
 
-const MarketLogo = ({ size, logo, withAAVELogo }: MarketLogoProps) => {
+export const MarketLogo = ({ size, logo, withAAVELogo }: MarketLogoProps) => {
   return (
     <Box sx={{ mr: 2, width: size, height: size }}>
       {withAAVELogo && (

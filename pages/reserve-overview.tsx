@@ -1,11 +1,27 @@
-import { useRouter } from 'next/router';
+import { Container, Grid } from '@mui/material';
 import { MainLayout } from 'src/layouts/MainLayout';
+import { ReserveConfiguration } from 'src/modules/reserve/ReserveConfiguration';
+import { ReserveActions } from 'src/modules/reserve/ReserveActions';
+import { ReserveTopDetails } from 'src/modules/reserve/ReserveTopDetails';
 
 export default function ReserveOverview() {
-  const router = useRouter();
-  const underlyingAddress = router.query.underlyingAddress;
+  return (
+    <Container maxWidth="xl">
+      <ReserveTopDetails />
 
-  return <div>{underlyingAddress}</div>;
+      <Grid container spacing={4}>
+        {/** Main status and configuration panel*/}
+        <Grid item xs={12} sm={8}>
+          <ReserveConfiguration />
+        </Grid>
+
+        {/** Right panel with actions*/}
+        <Grid item xs={12} sm={4}>
+          <ReserveActions />
+        </Grid>
+      </Grid>
+    </Container>
+  );
 }
 
 ReserveOverview.getLayout = function getLayout(page: React.ReactElement) {

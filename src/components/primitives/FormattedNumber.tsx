@@ -35,7 +35,7 @@ function CompactNumber({ value, maximumDecimals = 2, minimumDecimals }: CompactN
   );
 }
 
-interface FormattedNumberProps extends TypographyProps {
+export interface FormattedNumberProps extends TypographyProps {
   value: string | number;
   symbol?: string;
   maximumDecimals?: number;
