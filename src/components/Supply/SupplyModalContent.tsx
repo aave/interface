@@ -3,9 +3,8 @@ import {
   ComputedReserveData,
   useAppDataContext,
 } from '../../hooks/app-data-provider/useAppDataProvider';
-import { SupplyDetails } from './SupplyDetails';
 import { SupplyActions } from './SupplyActions';
-import { Button, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { AssetInput } from '../AssetInput';
 import {
   calculateHealthFactorFromBalancesBigUnits,
@@ -17,41 +16,57 @@ import BigNumber from 'bignumber.js';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { Trans } from '@lingui/macro';
 import { TxErrorView } from '../TxViews/Error';
 import { TxSuccessView } from '../TxViews/Success';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
+import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
+import { TxModalTitle } from '../FlowCommons/TxModalTitle';
+import { SupplyCapWarning } from '../Warnings/SupplyCapWarning';
+import { TxState } from 'src/helpers/types';
+import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
+import { TxModalDetails } from '../FlowCommons/TxModalDetails';
 
 export type SupplyProps = {
   underlyingAsset: string;
   handleClose: () => void;
 };
 
-export type TxState = {
-  error: string | null;
-  success: boolean;
-};
-
 export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps) => {
   const { walletBalances } = useWalletBalances();
   const { marketReferencePriceInUsd, reserves, user } = useAppDataContext();
-  const poolReserve = reserves.find(
-    (reserve) => reserve.underlyingAsset === underlyingAsset
-  ) as ComputedReserveData;
-  const supplyApy = poolReserve.supplyAPY;
-  const userReserve = user?.userReservesData.find(
-    (userReserve) => underlyingAsset === userReserve.underlyingAsset
-  ) as ComputedUserReserve;
-  const walletBalance = walletBalances[underlyingAsset]?.amount;
   const { currentChainId } = useProtocolDataContext();
-  const { chainId: connectedChainId, switchNetwork } = useWeb3Context();
+  const { chainId: connectedChainId } = useWeb3Context();
 
-  const [supplyTxState, setSupplyTxState] = useState<TxState>({ success: false, error: null });
-
+  // states
+  const [supplyTxState, setSupplyTxState] = useState<TxState>({ success: false });
   const [amountToSupply, setAmountToSupply] = useState('');
   const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
 
+  const supplyUnWrapped = underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase();
+
   const networkConfig = getNetworkConfig(currentChainId);
+
+  const poolReserve = reserves.find((reserve) => {
+    if (supplyUnWrapped) {
+      return reserve.symbol === networkConfig.wrappedBaseAssetSymbol;
+    }
+    return reserve.underlyingAsset === underlyingAsset;
+  }) as ComputedReserveData;
+
+  if (!user) {
+    return null;
+  }
+
+  const userReserve = user.userReservesData.find((userReserve) => {
+    if (supplyUnWrapped) {
+      return poolReserve.underlyingAsset === userReserve.underlyingAsset;
+    }
+    return underlyingAsset === userReserve.underlyingAsset;
+  }) as ComputedUserReserve;
+
+  const walletBalance = walletBalances[underlyingAsset]?.amount;
+
+  const supplyApy = poolReserve.supplyAPY;
 
   // Calculate max amount to supply
   let maxAmountToSupply = valueToBigNumber(walletBalance);
@@ -138,36 +153,23 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
     <>
       {!supplyTxState.error && !supplyTxState.success && (
         <>
-          <Typography variant="h2" sx={{ mb: '26px' }}>
-            Supply {poolReserve.symbol}
-          </Typography>
+          <TxModalTitle title="Supply" symbol={poolReserve.symbol} />
           {isWrongNetwork && (
-            <Typography sx={{ mb: '24px', backgroundColor: '#FEF5E8', color: 'black' }}>
-              <Trans>Please Switch to {networkConfig.name}.</Trans>
-              <Button
-                variant="text"
-                sx={{ ml: '2px' }}
-                onClick={() => switchNetwork(currentChainId)}
-              >
-                <Typography color="black">Switch Network</Typography>
-              </Button>
-            </Typography>
+            <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
           )}
           {showIsolationWarning && (
             <Typography>You are about to enter into isolation. FAQ link</Typography>
           )}
-          {showSupplyCapWarning && (
-            <Typography>You are about to get supply capped. FAQ link</Typography>
-          )}
+          {showSupplyCapWarning && <SupplyCapWarning />}
           <AssetInput
             value={amountToSupply}
             onChange={setAmountToSupply}
             usdValue={amountInUsd.toString()}
             balance={maxAmountToSupply.toString()}
-            symbol={poolReserve.symbol}
+            symbol={supplyUnWrapped ? poolReserve.symbol.substring(1) : poolReserve.symbol}
           />
-          <SupplyDetails
-            supplyApy={supplyApy}
+          <TxModalDetails
+            apy={supplyApy}
             incentives={poolReserve.aIncentivesData}
             showHf={showHealthFactor || false}
             healthFactor={user ? user.healthFactor : '-1'}
@@ -189,6 +191,7 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
         handleClose={handleClose}
         isWrongNetwork={isWrongNetwork}
         setGasLimit={setGasLimit}
+        poolAddress={supplyUnWrapped ? underlyingAsset : poolReserve.underlyingAsset}
       />
     </>
   );

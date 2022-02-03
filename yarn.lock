@@ -2275,10 +2275,10 @@
     jest-validate "^26.5.2"
     lodash.get "^4.4.2"
 
-"@lingui/core@^3.13.1":
-  version "3.13.1"
-  resolved "https://registry.yarnpkg.com/@lingui/core/-/core-3.13.1.tgz#f0b5087089aa83e271fa1d6a134ec0069b4c6103"
-  integrity sha512-spzRJ/fca9Ddpns27Xmz2f9lgiesrvTZjcpOO2wKJq9QozF1qtv7n1bViQ1Erh2uFaO0kaEzUjkAYU3LtlP4PQ==
+"@lingui/core@^3.13.2":
+  version "3.13.2"
+  resolved "https://registry.yarnpkg.com/@lingui/core/-/core-3.13.2.tgz#1c8b264c7eb5d7fa11c59916542bf5fc8e1b9309"
+  integrity sha512-ic1uC+bS7hpfM4oVugHKel8UhlLAwykSv2TYw3oyeEQhvCS232nSzh+PFbP0BXK1hZ0UdHve7mODpgADuwHIQA==
   dependencies:
     "@babel/runtime" "^7.11.2"
     make-plural "^6.2.2"
@@ -2293,13 +2293,13 @@
     "@lingui/conf" "^3.13.1"
     ramda "^0.27.1"
 
-"@lingui/react@^3.13.1":
-  version "3.13.1"
-  resolved "https://registry.yarnpkg.com/@lingui/react/-/react-3.13.1.tgz#bf775c0f65365ceabffd9409d6b9b3a6140d5e66"
-  integrity sha512-gT1uaidhzvUfO0aLKYQyTevy+6LX5NLL3jH3e0yiQym68pNM519kTIg6v63zfG57T/oaPR9m4Sfs+BKnO7YJTQ==
+"@lingui/react@^3.13.2":
+  version "3.13.2"
+  resolved "https://registry.yarnpkg.com/@lingui/react/-/react-3.13.2.tgz#8114af8c1636cbbdaf8583386f455fad8707506a"
+  integrity sha512-JW7irld6Qe5rJUzbmIMXPRAt1J3Ois3sTsfpNb1YR1Mt2B5WdzDMrv4NbJiRr+OyWXzvmhXzytme5OqJQUfc8g==
   dependencies:
     "@babel/runtime" "^7.11.2"
-    "@lingui/core" "^3.13.1"
+    "@lingui/core" "^3.13.2"
 
 "@mdx-js/loader@^1.6.22":
   version "1.6.22"
