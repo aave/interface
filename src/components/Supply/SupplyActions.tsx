@@ -97,7 +97,7 @@ export const SupplyActions = ({
       state.gasOption === GasOption.Custom
         ? state.customGas
         : gasPriceData.data?.[state.gasOption].legacyGasPrice,
-    skip: !amountToSupply || amountToSupply === '0',
+    skip: !amountToSupply || parseFloat(amountToSupply) === 0,
   });
 
   const hasAmount = amountToSupply && amountToSupply !== '0';
@@ -112,6 +112,7 @@ export const SupplyActions = ({
   }, [setSupplyTxState, mainTxState.txHash]);
 
   useEffect(() => {
+    console.log(mainTxState.error, approvalTxState.error);
     if (mainTxState.error || approvalTxState.error) {
       setSupplyTxState({
         success: true,
