@@ -34,14 +34,14 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
 
   const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
   const [borrowTxState, setBorrowTxState] = useState<TxState>({ success: false });
-  const [borrowUnWrapped, setBorrowUnWrapped] = useState(false);
+  const [borrowUnWrapped, setBorrowUnWrapped] = useState(true);
   const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
   const [amountToBorrow, setAmountToBorrow] = useState('');
 
   const networkConfig = getNetworkConfig(currentChainId);
 
   const poolReserve = reserves.find((reserve) => {
-    if (underlyingAsset === API_ETH_MOCK_ADDRESS.toLowerCase() || borrowUnWrapped) {
+    if (underlyingAsset === API_ETH_MOCK_ADDRESS.toLowerCase()) {
       return reserve.symbol === networkConfig.wrappedBaseAssetSymbol;
     }
     return reserve.underlyingAsset === underlyingAsset;
@@ -127,7 +127,11 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
             onChange={setAmountToBorrow}
             // usdValue={amountInUsd.toString()}
             balance={formattedMaxAmountToBorrow}
-            symbol={borrowUnWrapped ? poolReserve.symbol.substring(1) : poolReserve.symbol}
+            symbol={
+              borrowUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
+                ? poolReserve.symbol.substring(1)
+                : poolReserve.symbol
+            }
           />
           <TxModalDetails
             showHf={true}
@@ -141,6 +145,7 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
                 ? setBorrowUnWrapped
                 : undefined
             }
+            actionUnWrapped={borrowUnWrapped}
             symbol={poolReserve.symbol}
             apy={poolReserve.variableBorrowAPY}
             borrowStableRate={
@@ -162,7 +167,11 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
         setBorrowTxState={setBorrowTxState}
         amountToBorrow={amountToBorrow}
         handleClose={handleClose}
-        poolAddress={borrowUnWrapped ? API_ETH_MOCK_ADDRESS : poolReserve.underlyingAsset}
+        poolAddress={
+          borrowUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
+            ? API_ETH_MOCK_ADDRESS
+            : poolReserve.underlyingAsset
+        }
         interestRateMode={interestRateMode}
         isWrongNetwork={isWrongNetwork}
       />
