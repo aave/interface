@@ -36,6 +36,7 @@ const BROKEN_ASSETS = [
   '0xd46ba6d942050d489dbd938a2c909a5d5039a1610xb53c1a33016b2dc2ff3653530bff1848a515c8c5',
 ];
 
+// TODO: api need to be altered to expect chainId underlying asset and poolConfig
 export function useReserveRatesHistory(
   reserveAddress = '0x514910771af9ca656af840dff83e8264ecf986ca0xb53c1a33016b2dc2ff3653530bff1848a515c8c5' // TODO: remove fallback
 ) {

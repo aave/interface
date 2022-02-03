@@ -7,6 +7,9 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import HelpOutlinedIcon from '@mui/icons-material/HelpOutlined';
+import { useReserveRatesHistory } from 'src/hooks/useReservesHistory';
+import { ParentSize } from '@visx/responsive';
+import { ApyChart } from '../reserve-overview/ApyChart';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
   <Box
@@ -28,6 +31,7 @@ export const PanelTitle: React.FC<TypographyProps> = (props) => (
 export const ReserveConfiguration = () => {
   const asCollateral = true;
   const eMode = true;
+  const { data, loading } = useReserveRatesHistory(); // TODO: might make sense to move this to gql as well
   return (
     <>
       <Paper sx={{ minHeight: '1000px', py: '16px', px: '24px' }}>
@@ -80,7 +84,18 @@ export const ReserveConfiguration = () => {
               </TopInfoPanelItem>
             </Box>
 
-            {/** Place Supply Chart here */}
+            <div style={{ height: 300, marginLeft: 0, marginTop: 20 }}>
+              <ParentSize>
+                {(parent) => (
+                  <ApyChart
+                    width={parent.width}
+                    height={parent.height}
+                    data={data}
+                    fields={[{ name: 'liquidityRate', color: '#2EBAC6' }]}
+                  />
+                )}
+              </ParentSize>
+            </div>
 
             <Paper
               sx={{
@@ -157,6 +172,21 @@ export const ReserveConfiguration = () => {
                 <FormattedNumber value={'10000000'} symbol="USD" variant="main16" />
               </TopInfoPanelItem>
             </Box>
+            <div style={{ height: 300, marginLeft: 0, marginTop: 20 }}>
+              <ParentSize>
+                {(parent) => (
+                  <ApyChart
+                    width={parent.width}
+                    height={parent.height}
+                    data={data}
+                    fields={[
+                      { name: 'stableBorrowRate', color: '#0062D2' },
+                      { name: 'variableBorrowRate', color: '#B6509E' },
+                    ]}
+                  />
+                )}
+              </ParentSize>
+            </div>
           </div>
         </PanelRow>
 
