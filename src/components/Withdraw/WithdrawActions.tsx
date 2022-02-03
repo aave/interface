@@ -24,6 +24,7 @@ export type WithdrawActionsProps = {
   amountToWithdraw: string;
   handleClose: () => void;
   poolAddress: string;
+  isWrongNetwork: boolean;
 };
 
 export const WithdrawActions = ({
@@ -33,6 +34,7 @@ export const WithdrawActions = ({
   setWithdrawTxState,
   handleClose,
   poolAddress,
+  isWrongNetwork,
 }: WithdrawActionsProps) => {
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
@@ -87,7 +89,7 @@ export const WithdrawActions = ({
         </Button>
       )}
       {hasAmount && !mainTxState.txHash && !mainTxState.error && (
-        <Button variant="outlined" onClick={action} disabled={loading}>
+        <Button variant="outlined" onClick={action} disabled={loading || isWrongNetwork}>
           <Trans>
             {!loading
               ? `WITHDRAW ${poolReserve.symbol}`

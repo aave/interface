@@ -26,6 +26,7 @@ export type BorrowActionsProps = {
   handleClose: () => void;
   poolAddress: string;
   interestRateMode: InterestRate;
+  isWrongNetwork: boolean;
 };
 
 export const BorrowActions = ({
@@ -36,6 +37,7 @@ export const BorrowActions = ({
   handleClose,
   poolAddress,
   interestRateMode,
+  isWrongNetwork,
 }: BorrowActionsProps) => {
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
@@ -94,7 +96,7 @@ export const BorrowActions = ({
         </Button>
       )}
       {hasAmount && !mainTxState.txHash && !mainTxState.error && (
-        <Button variant="outlined" onClick={action} disabled={loading}>
+        <Button variant="outlined" onClick={action} disabled={loading || isWrongNetwork}>
           <Trans>
             {!loading
               ? `BORROW ${

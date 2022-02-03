@@ -28,6 +28,7 @@ export type SupplyActionProps = {
   handleClose: () => void;
   setGasLimit: Dispatch<SetStateAction<string | undefined>>;
   poolAddress: string;
+  isWrongNetwork: boolean;
 };
 
 export const SupplyActions = ({
@@ -37,6 +38,7 @@ export const SupplyActions = ({
   handleClose,
   setGasLimit,
   poolAddress,
+  isWrongNetwork,
 }: SupplyActionProps) => {
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
@@ -158,7 +160,7 @@ export const SupplyActions = ({
         <Button
           variant="outlined"
           onClick={() => approval(amountToSupply, poolAddress)}
-          disabled={approved || loading}
+          disabled={approved || loading || isWrongNetwork}
         >
           <Trans>
             {!approved && !loading ? 'APPROVE TO CONTINUE' : ''}
@@ -176,7 +178,7 @@ export const SupplyActions = ({
         <Button
           variant="outlined"
           onClick={action}
-          disabled={loading || (requiresApproval && !approved)}
+          disabled={loading || (requiresApproval && !approved) || isWrongNetwork}
         >
           <Trans>
             {!mainTxState.txHash && !mainTxState.error && (!loading || !approved)

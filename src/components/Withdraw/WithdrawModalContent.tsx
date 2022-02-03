@@ -192,6 +192,7 @@ export const WithdrawModalContent = ({
         amountToWithdraw={amountToWithdraw.toString()}
         handleClose={handleClose}
         poolAddress={withdrawUnWrapped ? poolReserve.underlyingAsset : API_ETH_MOCK_ADDRESS}
+        isWrongNetwork={isWrongNetwork}
       />
     </>
   );
