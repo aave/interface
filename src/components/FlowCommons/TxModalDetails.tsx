@@ -30,6 +30,7 @@ export interface TxModalDetailsProps {
   setInterestRateMode?: Dispatch<SetStateAction<InterestRate>>;
   borrowStableRate?: string;
   action?: string;
+  actionUnWrapped?: boolean;
 }
 
 export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
@@ -42,19 +43,13 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   symbol,
   usedAsCollateral,
   setActionUnWrapped,
+  actionUnWrapped,
   borrowStableRate,
   stableRateIncentives,
   setInterestRateMode,
   action,
 }) => {
-  const [checked, setChecked] = React.useState(true);
   const [selectedRate, setSelectedRate] = React.useState(InterestRate.Variable);
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleChange = (event: any) => {
-    setChecked(event.target.checked);
-    setActionUnWrapped && setActionUnWrapped(checked);
-  };
 
   const handleRateChange = (rate: InterestRate) => {
     setSelectedRate(rate);
@@ -111,7 +106,13 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
         <FormRow>
           <FormControlLabel
             value="darkmode"
-            control={<Switch disableRipple checked={checked} onClick={handleChange} />}
+            control={
+              <Switch
+                disableRipple
+                checked={actionUnWrapped}
+                onClick={() => setActionUnWrapped(!actionUnWrapped)}
+              />
+            }
             labelPlacement="end"
             label={''}
           />
