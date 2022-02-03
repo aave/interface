@@ -16,6 +16,7 @@ export const TxSuccessView = ({ action, amount, symbol }: SuccessTxViewProps) =>
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
+        mb: '124px',
       }}
     >
       <Box
