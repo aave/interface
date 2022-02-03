@@ -149,6 +149,8 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
                 : undefined
             }
             symbol={poolReserve.symbol}
+            borrowVariableRate={poolReserve.variableBorrowAPY}
+            borrowStableRate={poolReserve.stableBorrowAPY}
           />
         </>
       )}
