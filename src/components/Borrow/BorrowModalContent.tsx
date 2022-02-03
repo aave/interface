@@ -93,6 +93,9 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
     blockingError = ''; //intl.formatMessage(messages.errorBorrowingNotAvailable);
   }
 
+  // TODO: do somehting with blocking error:
+  console.log('blocking error: ', blockingError);
+
   // health factor calculations
   const amountToBorrowInUsd = valueToBigNumber(amountToBorrow)
     .multipliedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
