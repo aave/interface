@@ -4,7 +4,14 @@ import { Box, Button, Link, SvgIcon, Typography } from '@mui/material';
 
 export const TxErrorView = ({ errorMessage }: { errorMessage: string }) => {
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
       <Box
         sx={{
           width: '48px',
@@ -12,6 +19,10 @@ export const TxErrorView = ({ errorMessage }: { errorMessage: string }) => {
           color: 'red',
           backgroundColor: '#F9EBEB',
           borderRadius: '50%',
+          mt: '48px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
         <SvgIcon sx={{ width: '16px', height: '16px', color: 'red' }} fontSize="small">

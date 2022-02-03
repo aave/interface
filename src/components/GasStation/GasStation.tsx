@@ -40,18 +40,13 @@ export const getGasCosts = (
   gasOption: GasOption,
   customGas: string,
   gasData: GasPriceData,
-  baseCurrencyUsd: string,
-  baseCurrencyDecimals: number
+  baseCurrencyUsd: string
 ) => {
   const gasPrice =
     gasOption === GasOption.Custom
       ? parseUnits(customGas, 'gwei').toString()
       : gasData[gasOption].legacyGasPrice;
-
-  return (
-    Number(formatUnits(gasLimit.mul(gasPrice), baseCurrencyDecimals)) *
-    (Number(baseCurrencyUsd) / 10 ** 8)
-  );
+  return Number(formatUnits(gasLimit.mul(gasPrice), 18)) * (Number(baseCurrencyUsd) / 10 ** 8);
 };
 
 export const GasStation: React.FC<GasStationProps> = ({ gasLimit, ...props }) => {
@@ -60,16 +55,9 @@ export const GasStation: React.FC<GasStationProps> = ({ gasLimit, ...props }) =>
     dispatch,
     gasPriceData: { data, error },
   } = useGasStation();
-  const { marketReferencePriceInUsd, marketReferenceCurrencyDecimals } = useAppDataContext();
+  const { marketReferencePriceInUsd } = useAppDataContext();
   const totalGasCostsUsd = data
-    ? getGasCosts(
-        gasLimit,
-        state.gasOption,
-        state.customGas,
-        data,
-        marketReferencePriceInUsd,
-        marketReferenceCurrencyDecimals
-      )
+    ? getGasCosts(gasLimit, state.gasOption, state.customGas, data, marketReferencePriceInUsd)
     : undefined;
 
   const [open, setOpen] = useState(false);
