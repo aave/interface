@@ -136,8 +136,8 @@ msgstr ""
 msgid "Borrow"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:68
-#: src/components/FlowCommons/TxModalDetails.tsx:100
+#: src/components/FlowCommons/TxModalDetails.tsx:70
+#: src/components/FlowCommons/TxModalDetails.tsx:102
 msgid "Borrow APY rate"
 msgstr ""
 
@@ -271,9 +271,9 @@ msgstr ""
 msgid "E-mode message"
 msgstr ""
 
-#: src/components/Borrow/BorrowActions.tsx:93
-#: src/components/Supply/SupplyActions.tsx:154
-#: src/components/Withdraw/WithdrawActions.tsx:86
+#: src/components/Borrow/BorrowActions.tsx:95
+#: src/components/Supply/SupplyActions.tsx:156
+#: src/components/Withdraw/WithdrawActions.tsx:88
 msgid "ENTER AN AMOUNT"
 msgstr ""
 
@@ -289,7 +289,7 @@ msgstr "English"
 #~ msgid "Estimated Gas Costs"
 #~ msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:208
+#: src/components/FlowCommons/TxModalDetails.tsx:210
 msgid "Estimated Tx cost"
 msgstr ""
 
@@ -328,7 +328,7 @@ msgstr "Go to Home page"
 msgid "Governance"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:186
+#: src/components/FlowCommons/TxModalDetails.tsx:188
 #: src/components/infoModalContents/HFInfoContent.tsx:8
 #: src/modules/dashboard/DashboardTopPanel.tsx:67
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:69
@@ -363,7 +363,7 @@ msgstr ""
 msgid "Learn more"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:199
+#: src/components/FlowCommons/TxModalDetails.tsx:201
 msgid "Liquidation at"
 msgstr ""
 
@@ -438,9 +438,9 @@ msgstr ""
 msgid "Nothing supplied yet"
 msgstr ""
 
-#: src/components/Borrow/BorrowActions.tsx:113
-#: src/components/Supply/SupplyActions.tsx:201
-#: src/components/Withdraw/WithdrawActions.tsx:102
+#: src/components/Borrow/BorrowActions.tsx:117
+#: src/components/Supply/SupplyActions.tsx:203
+#: src/components/Withdraw/WithdrawActions.tsx:104
 msgid "OK, CLOSE"
 msgstr ""
 
@@ -475,7 +475,7 @@ msgstr ""
 msgid "Please, connect your wallet"
 msgstr ""
 
-#: src/components/Supply/SupplyActions.tsx:149
+#: src/components/Supply/SupplyActions.tsx:151
 msgid "RETRY WITH APPROVAL"
 msgstr ""
 
@@ -516,8 +516,8 @@ msgstr ""
 #~ msgid "Reward"
 #~ msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:136
-#: src/components/FlowCommons/TxModalDetails.tsx:153
+#: src/components/FlowCommons/TxModalDetails.tsx:138
+#: src/components/FlowCommons/TxModalDetails.tsx:155
 msgid "Rewards APR"
 msgstr ""
 
@@ -579,7 +579,6 @@ msgstr ""
 msgid "Supply"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:124
 #: src/modules/markets/AssetsList.tsx:55
 msgid "Supply APY"
 msgstr ""
@@ -671,7 +670,7 @@ msgstr ""
 msgid "Transaction failed"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:169
+#: src/components/FlowCommons/TxModalDetails.tsx:171
 msgid "Used as collateral"
 msgstr ""
 
@@ -767,15 +766,19 @@ msgstr ""
 msgid "{0, select, slow {Slow} normal {Normal} fast {Fast} other {-}}"
 msgstr ""
 
-#: src/components/Borrow/BorrowActions.tsx:98
-#: src/components/FlowCommons/TxModalDetails.tsx:177
-#: src/components/Withdraw/WithdrawActions.tsx:91
+#: src/components/Borrow/BorrowActions.tsx:100
+#: src/components/FlowCommons/TxModalDetails.tsx:179
+#: src/components/Withdraw/WithdrawActions.tsx:93
 msgid "{0}"
 msgstr ""
 
-#: src/components/Supply/SupplyActions.tsx:163
-#: src/components/Supply/SupplyActions.tsx:181
+#: src/components/Supply/SupplyActions.tsx:165
+#: src/components/Supply/SupplyActions.tsx:183
 msgid "{0}{1}"
+msgstr ""
+
+#: src/components/FlowCommons/TxModalDetails.tsx:126
+msgid "{action} APY"
 msgstr ""
 
 #: src/components/FlowCommons/TxModalTitle.tsx:12

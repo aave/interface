@@ -29,6 +29,7 @@ export interface TxModalDetailsProps {
   setActionUnWrapped?: Dispatch<SetStateAction<boolean>>;
   setInterestRateMode?: Dispatch<SetStateAction<InterestRate>>;
   borrowStableRate?: string;
+  action?: string;
 }
 
 export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
@@ -44,6 +45,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   borrowStableRate,
   stableRateIncentives,
   setInterestRateMode,
+  action,
 }) => {
   const [checked, setChecked] = React.useState(true);
   const [selectedRate, setSelectedRate] = React.useState(InterestRate.Variable);
@@ -117,11 +119,11 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
           <FormInfo />
         </FormRow>
       )}
-      {apy && (
+      {apy && action && (
         <FormRow>
           <FormInfo>
             <Typography variant="description">
-              <Trans>Supply APY</Trans>
+              <Trans>{action} APY</Trans>
             </Typography>
           </FormInfo>
           <FormValue>

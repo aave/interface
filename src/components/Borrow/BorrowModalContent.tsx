@@ -147,6 +147,7 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
               poolReserve.stableBorrowRateEnabled ? poolReserve.stableBorrowAPY : undefined
             }
             setInterestRateMode={setInterestRateMode}
+            action="Borrow"
           />
         </>
       )}

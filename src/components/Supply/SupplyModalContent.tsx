@@ -177,6 +177,7 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
             gasLimit={gasLimit}
             symbol={poolReserve.symbol}
             usedAsCollateral={userReserve.usageAsCollateralEnabledOnUser}
+            action="Supply"
           />
         </>
       )}
