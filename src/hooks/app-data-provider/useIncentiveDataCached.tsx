@@ -35,6 +35,7 @@ export function useIncentivesDataCached(
     useC_ReservesIncentivesQuery({
       variables: {
         lendingPoolAddressProvider,
+        chainId,
       },
       skip,
       context: { target: APOLLO_QUERY_TARGET.CHAIN(chainId) },
@@ -50,6 +51,7 @@ export function useIncentivesDataCached(
         document: C_PoolIncentivesDataUpdateDocument,
         variables: {
           lendingPoolAddressProvider,
+          chainId,
         },
         updateQuery: (previousQueryResult, { subscriptionData }) => {
           const poolIncentivesDataUpdate = subscriptionData.data?.poolIncentivesDataUpdate;
@@ -73,6 +75,7 @@ export function useIncentivesDataCached(
       variables: {
         lendingPoolAddressProvider,
         userAddress: currentAccount || '',
+        chainId,
       },
       skip: !currentAccount || skip,
       context: { target: APOLLO_QUERY_TARGET.CHAIN(chainId) },
@@ -88,6 +91,7 @@ export function useIncentivesDataCached(
         variables: {
           lendingPoolAddressProvider,
           userAddress: currentAccount || '',
+          chainId,
         },
         updateQuery: (previousQueryResult, { subscriptionData }) => {
           const userData = subscriptionData.data?.userPoolIncentivesDataUpdate;

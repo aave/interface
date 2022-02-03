@@ -27,6 +27,7 @@ export const useWalletBalances = () => {
   const { data: reservesData } = useC_ProtocolDataQuery({
     variables: {
       lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
+      chainId: currentChainId,
     },
     fetchPolicy: 'cache-only',
   });
@@ -79,7 +80,11 @@ export const useWalletBalances = () => {
     }
     return acc;
   }, {} as { [address: string]: { amount: string; amountUSD: string } });
-  return { walletBalances: aggregatedBalance, hasEmptyWallet };
+  return {
+    walletBalances: aggregatedBalance,
+    hasEmptyWallet,
+    loading: !walletBalances.length || !reserves.length,
+  };
 };
 
 export const useUpdateWalletBalances = () => {

@@ -49,29 +49,29 @@ export type Query = {
   userIncentives: Array<UserIncentivesData>;
 };
 
-
 export type QueryProtocolDataArgs = {
+  chainId: Scalars['Int'];
   lendingPoolAddressProvider: Scalars['String'];
 };
-
 
 export type QueryReservesIncentivesArgs = {
+  chainId: Scalars['Int'];
   lendingPoolAddressProvider: Scalars['String'];
 };
-
 
 export type QueryStakeUserUiDataArgs = {
+  chainId: Scalars['Int'];
   userAddress: Scalars['String'];
 };
 
-
 export type QueryUserDataArgs = {
+  chainId: Scalars['Int'];
   lendingPoolAddressProvider: Scalars['String'];
   userAddress: Scalars['String'];
 };
 
-
 export type QueryUserIncentivesArgs = {
+  chainId: Scalars['Int'];
   lendingPoolAddressProvider: Scalars['String'];
   userAddress: Scalars['String'];
 };
@@ -132,6 +132,7 @@ export type ReserveData = {
 export type ReserveIncentivesData = {
   __typename?: 'ReserveIncentivesData';
   aIncentiveData: IncentiveData;
+  id: Scalars['String'];
   sIncentiveData: IncentiveData;
   underlyingAsset: Scalars['String'];
   vIncentiveData: IncentiveData;
@@ -197,29 +198,29 @@ export type Subscription = {
   userPoolIncentivesDataUpdate: Array<UserIncentivesData>;
 };
 
-
 export type SubscriptionPoolIncentivesDataUpdateArgs = {
+  chainId: Scalars['Int'];
   lendingPoolAddressProvider: Scalars['String'];
 };
-
 
 export type SubscriptionProtocolDataUpdateArgs = {
+  chainId: Scalars['Int'];
   lendingPoolAddressProvider: Scalars['String'];
 };
-
 
 export type SubscriptionStakeUserUiDataUpdateArgs = {
+  chainId: Scalars['Int'];
   userAddress: Scalars['String'];
 };
 
-
 export type SubscriptionUserDataUpdateArgs = {
+  chainId: Scalars['Int'];
   lendingPoolAddressProvider: Scalars['String'];
   userAddress: Scalars['String'];
 };
 
-
 export type SubscriptionUserPoolIncentivesDataUpdateArgs = {
+  chainId: Scalars['Int'];
   lendingPoolAddressProvider: Scalars['String'];
   userAddress: Scalars['String'];
 };
@@ -234,6 +235,7 @@ export type UserIncentiveData = {
 export type UserIncentivesData = {
   __typename?: 'UserIncentivesData';
   aTokenIncentivesUserData: UserIncentiveData;
+  id: Scalars['String'];
   sTokenIncentivesUserData: UserIncentiveData;
   underlyingAsset: Scalars['String'];
   vTokenIncentivesUserData: UserIncentiveData;
@@ -241,6 +243,7 @@ export type UserIncentivesData = {
 
 export type UserReserveData = {
   __typename?: 'UserReserveData';
+  id: Scalars['String'];
   principalStableDebt: Scalars['String'];
   scaledATokenBalance: Scalars['String'];
   scaledVariableDebt: Scalars['String'];
@@ -268,199 +271,702 @@ export type UserRewardInfo = {
   userUnclaimedRewards: Scalars['String'];
 };
 
-export type IncentivesDataFragmentFragment = { __typename?: 'IncentiveData', incentiveControllerAddress: string, tokenAddress: string, rewardsTokenInformation: Array<{ __typename?: 'RewardInfo', emissionEndTimestamp: number, emissionPerSecond: string, incentivesLastUpdateTimestamp: number, precision: number, priceFeedDecimals: number, tokenIncentivesIndex: string, rewardPriceFeed: string, rewardTokenAddress: string, rewardTokenDecimals: number, rewardOracleAddress: string, rewardTokenSymbol: string }> };
+export type IncentivesDataFragmentFragment = {
+  __typename?: 'IncentiveData';
+  incentiveControllerAddress: string;
+  tokenAddress: string;
+  rewardsTokenInformation: Array<{
+    __typename?: 'RewardInfo';
+    emissionEndTimestamp: number;
+    emissionPerSecond: string;
+    incentivesLastUpdateTimestamp: number;
+    precision: number;
+    priceFeedDecimals: number;
+    tokenIncentivesIndex: string;
+    rewardPriceFeed: string;
+    rewardTokenAddress: string;
+    rewardTokenDecimals: number;
+    rewardOracleAddress: string;
+    rewardTokenSymbol: string;
+  }>;
+};
 
 export type C_ReservesIncentivesQueryVariables = Exact<{
   lendingPoolAddressProvider: Scalars['String'];
+  chainId: Scalars['Int'];
 }>;
 
-
-export type C_ReservesIncentivesQuery = { __typename?: 'Query', reservesIncentives: Array<{ __typename?: 'ReserveIncentivesData', underlyingAsset: string, aIncentiveData: { __typename?: 'IncentiveData', incentiveControllerAddress: string, tokenAddress: string, rewardsTokenInformation: Array<{ __typename?: 'RewardInfo', emissionEndTimestamp: number, emissionPerSecond: string, incentivesLastUpdateTimestamp: number, precision: number, priceFeedDecimals: number, tokenIncentivesIndex: string, rewardPriceFeed: string, rewardTokenAddress: string, rewardTokenDecimals: number, rewardOracleAddress: string, rewardTokenSymbol: string }> }, vIncentiveData: { __typename?: 'IncentiveData', incentiveControllerAddress: string, tokenAddress: string, rewardsTokenInformation: Array<{ __typename?: 'RewardInfo', emissionEndTimestamp: number, emissionPerSecond: string, incentivesLastUpdateTimestamp: number, precision: number, priceFeedDecimals: number, tokenIncentivesIndex: string, rewardPriceFeed: string, rewardTokenAddress: string, rewardTokenDecimals: number, rewardOracleAddress: string, rewardTokenSymbol: string }> }, sIncentiveData: { __typename?: 'IncentiveData', incentiveControllerAddress: string, tokenAddress: string, rewardsTokenInformation: Array<{ __typename?: 'RewardInfo', emissionEndTimestamp: number, emissionPerSecond: string, incentivesLastUpdateTimestamp: number, precision: number, priceFeedDecimals: number, tokenIncentivesIndex: string, rewardPriceFeed: string, rewardTokenAddress: string, rewardTokenDecimals: number, rewardOracleAddress: string, rewardTokenSymbol: string }> } }> };
+export type C_ReservesIncentivesQuery = {
+  __typename?: 'Query';
+  reservesIncentives: Array<{
+    __typename?: 'ReserveIncentivesData';
+    id: string;
+    underlyingAsset: string;
+    aIncentiveData: {
+      __typename?: 'IncentiveData';
+      incentiveControllerAddress: string;
+      tokenAddress: string;
+      rewardsTokenInformation: Array<{
+        __typename?: 'RewardInfo';
+        emissionEndTimestamp: number;
+        emissionPerSecond: string;
+        incentivesLastUpdateTimestamp: number;
+        precision: number;
+        priceFeedDecimals: number;
+        tokenIncentivesIndex: string;
+        rewardPriceFeed: string;
+        rewardTokenAddress: string;
+        rewardTokenDecimals: number;
+        rewardOracleAddress: string;
+        rewardTokenSymbol: string;
+      }>;
+    };
+    vIncentiveData: {
+      __typename?: 'IncentiveData';
+      incentiveControllerAddress: string;
+      tokenAddress: string;
+      rewardsTokenInformation: Array<{
+        __typename?: 'RewardInfo';
+        emissionEndTimestamp: number;
+        emissionPerSecond: string;
+        incentivesLastUpdateTimestamp: number;
+        precision: number;
+        priceFeedDecimals: number;
+        tokenIncentivesIndex: string;
+        rewardPriceFeed: string;
+        rewardTokenAddress: string;
+        rewardTokenDecimals: number;
+        rewardOracleAddress: string;
+        rewardTokenSymbol: string;
+      }>;
+    };
+    sIncentiveData: {
+      __typename?: 'IncentiveData';
+      incentiveControllerAddress: string;
+      tokenAddress: string;
+      rewardsTokenInformation: Array<{
+        __typename?: 'RewardInfo';
+        emissionEndTimestamp: number;
+        emissionPerSecond: string;
+        incentivesLastUpdateTimestamp: number;
+        precision: number;
+        priceFeedDecimals: number;
+        tokenIncentivesIndex: string;
+        rewardPriceFeed: string;
+        rewardTokenAddress: string;
+        rewardTokenDecimals: number;
+        rewardOracleAddress: string;
+        rewardTokenSymbol: string;
+      }>;
+    };
+  }>;
+};
 
 export type C_PoolIncentivesDataUpdateSubscriptionVariables = Exact<{
   lendingPoolAddressProvider: Scalars['String'];
+  chainId: Scalars['Int'];
 }>;
 
+export type C_PoolIncentivesDataUpdateSubscription = {
+  __typename?: 'Subscription';
+  poolIncentivesDataUpdate: Array<{
+    __typename?: 'ReserveIncentivesData';
+    id: string;
+    underlyingAsset: string;
+    aIncentiveData: {
+      __typename?: 'IncentiveData';
+      incentiveControllerAddress: string;
+      tokenAddress: string;
+      rewardsTokenInformation: Array<{
+        __typename?: 'RewardInfo';
+        emissionEndTimestamp: number;
+        emissionPerSecond: string;
+        incentivesLastUpdateTimestamp: number;
+        precision: number;
+        priceFeedDecimals: number;
+        tokenIncentivesIndex: string;
+        rewardPriceFeed: string;
+        rewardTokenAddress: string;
+        rewardTokenDecimals: number;
+        rewardOracleAddress: string;
+        rewardTokenSymbol: string;
+      }>;
+    };
+    vIncentiveData: {
+      __typename?: 'IncentiveData';
+      incentiveControllerAddress: string;
+      tokenAddress: string;
+      rewardsTokenInformation: Array<{
+        __typename?: 'RewardInfo';
+        emissionEndTimestamp: number;
+        emissionPerSecond: string;
+        incentivesLastUpdateTimestamp: number;
+        precision: number;
+        priceFeedDecimals: number;
+        tokenIncentivesIndex: string;
+        rewardPriceFeed: string;
+        rewardTokenAddress: string;
+        rewardTokenDecimals: number;
+        rewardOracleAddress: string;
+        rewardTokenSymbol: string;
+      }>;
+    };
+    sIncentiveData: {
+      __typename?: 'IncentiveData';
+      incentiveControllerAddress: string;
+      tokenAddress: string;
+      rewardsTokenInformation: Array<{
+        __typename?: 'RewardInfo';
+        emissionEndTimestamp: number;
+        emissionPerSecond: string;
+        incentivesLastUpdateTimestamp: number;
+        precision: number;
+        priceFeedDecimals: number;
+        tokenIncentivesIndex: string;
+        rewardPriceFeed: string;
+        rewardTokenAddress: string;
+        rewardTokenDecimals: number;
+        rewardOracleAddress: string;
+        rewardTokenSymbol: string;
+      }>;
+    };
+  }>;
+};
 
-export type C_PoolIncentivesDataUpdateSubscription = { __typename?: 'Subscription', poolIncentivesDataUpdate: Array<{ __typename?: 'ReserveIncentivesData', underlyingAsset: string, aIncentiveData: { __typename?: 'IncentiveData', incentiveControllerAddress: string, tokenAddress: string, rewardsTokenInformation: Array<{ __typename?: 'RewardInfo', emissionEndTimestamp: number, emissionPerSecond: string, incentivesLastUpdateTimestamp: number, precision: number, priceFeedDecimals: number, tokenIncentivesIndex: string, rewardPriceFeed: string, rewardTokenAddress: string, rewardTokenDecimals: number, rewardOracleAddress: string, rewardTokenSymbol: string }> }, vIncentiveData: { __typename?: 'IncentiveData', incentiveControllerAddress: string, tokenAddress: string, rewardsTokenInformation: Array<{ __typename?: 'RewardInfo', emissionEndTimestamp: number, emissionPerSecond: string, incentivesLastUpdateTimestamp: number, precision: number, priceFeedDecimals: number, tokenIncentivesIndex: string, rewardPriceFeed: string, rewardTokenAddress: string, rewardTokenDecimals: number, rewardOracleAddress: string, rewardTokenSymbol: string }> }, sIncentiveData: { __typename?: 'IncentiveData', incentiveControllerAddress: string, tokenAddress: string, rewardsTokenInformation: Array<{ __typename?: 'RewardInfo', emissionEndTimestamp: number, emissionPerSecond: string, incentivesLastUpdateTimestamp: number, precision: number, priceFeedDecimals: number, tokenIncentivesIndex: string, rewardPriceFeed: string, rewardTokenAddress: string, rewardTokenDecimals: number, rewardOracleAddress: string, rewardTokenSymbol: string }> } }> };
+export type ReserveDataFragmentFragment = {
+  __typename?: 'ReserveData';
+  id: string;
+  underlyingAsset: string;
+  name: string;
+  symbol: string;
+  decimals: number;
+  isActive: boolean;
+  isFrozen: boolean;
+  usageAsCollateralEnabled: boolean;
+  aTokenAddress: string;
+  stableDebtTokenAddress: string;
+  variableDebtTokenAddress: string;
+  borrowingEnabled: boolean;
+  stableBorrowRateEnabled: boolean;
+  reserveFactor: string;
+  interestRateStrategyAddress: string;
+  baseLTVasCollateral: string;
+  stableRateSlope1: string;
+  stableRateSlope2: string;
+  averageStableRate: string;
+  stableDebtLastUpdateTimestamp: number;
+  variableRateSlope1: string;
+  variableRateSlope2: string;
+  liquidityIndex: string;
+  reserveLiquidationThreshold: string;
+  reserveLiquidationBonus: string;
+  variableBorrowIndex: string;
+  variableBorrowRate: string;
+  availableLiquidity: string;
+  stableBorrowRate: string;
+  liquidityRate: string;
+  totalPrincipalStableDebt: string;
+  totalScaledVariableDebt: string;
+  lastUpdateTimestamp: number;
+  priceInMarketReferenceCurrency: string;
+  isPaused: boolean;
+  accruedToTreasury: string;
+  unbacked: string;
+  isolationModeTotalDebt: string;
+  debtCeiling: string;
+  debtCeilingDecimals: number;
+  eModeCategoryId: number;
+  borrowCap: string;
+  supplyCap: string;
+  eModeLtv: number;
+  eModeLiquidationThreshold: number;
+  eModeLiquidationBonus: number;
+  eModePriceSource: string;
+  eModeLabel: string;
+  borrowableInIsolation: boolean;
+};
 
-export type ReserveDataFragmentFragment = { __typename?: 'ReserveData', id: string, underlyingAsset: string, name: string, symbol: string, decimals: number, isActive: boolean, isFrozen: boolean, usageAsCollateralEnabled: boolean, aTokenAddress: string, stableDebtTokenAddress: string, variableDebtTokenAddress: string, borrowingEnabled: boolean, stableBorrowRateEnabled: boolean, reserveFactor: string, interestRateStrategyAddress: string, baseLTVasCollateral: string, stableRateSlope1: string, stableRateSlope2: string, averageStableRate: string, stableDebtLastUpdateTimestamp: number, variableRateSlope1: string, variableRateSlope2: string, liquidityIndex: string, reserveLiquidationThreshold: string, reserveLiquidationBonus: string, variableBorrowIndex: string, variableBorrowRate: string, availableLiquidity: string, stableBorrowRate: string, liquidityRate: string, totalPrincipalStableDebt: string, totalScaledVariableDebt: string, lastUpdateTimestamp: number, priceInMarketReferenceCurrency: string, isPaused: boolean, accruedToTreasury: string, unbacked: string, isolationModeTotalDebt: string, debtCeiling: string, debtCeilingDecimals: number, eModeCategoryId: number, borrowCap: string, supplyCap: string, eModeLtv: number, eModeLiquidationThreshold: number, eModeLiquidationBonus: number, eModePriceSource: string, eModeLabel: string, borrowableInIsolation: boolean };
-
-export type BaseCurrencyDataFragmentFragment = { __typename?: 'BaseCurrencyData', marketReferenceCurrencyDecimals: number, marketReferenceCurrencyPriceInUsd: string, networkBaseTokenPriceInUsd: string, networkBaseTokenPriceDecimals: number };
+export type BaseCurrencyDataFragmentFragment = {
+  __typename?: 'BaseCurrencyData';
+  marketReferenceCurrencyDecimals: number;
+  marketReferenceCurrencyPriceInUsd: string;
+  networkBaseTokenPriceInUsd: string;
+  networkBaseTokenPriceDecimals: number;
+};
 
 export type C_ProtocolDataQueryVariables = Exact<{
   lendingPoolAddressProvider: Scalars['String'];
+  chainId: Scalars['Int'];
 }>;
 
-
-export type C_ProtocolDataQuery = { __typename?: 'Query', protocolData: { __typename?: 'ProtocolData', reserves: Array<{ __typename?: 'ReserveData', id: string, underlyingAsset: string, name: string, symbol: string, decimals: number, isActive: boolean, isFrozen: boolean, usageAsCollateralEnabled: boolean, aTokenAddress: string, stableDebtTokenAddress: string, variableDebtTokenAddress: string, borrowingEnabled: boolean, stableBorrowRateEnabled: boolean, reserveFactor: string, interestRateStrategyAddress: string, baseLTVasCollateral: string, stableRateSlope1: string, stableRateSlope2: string, averageStableRate: string, stableDebtLastUpdateTimestamp: number, variableRateSlope1: string, variableRateSlope2: string, liquidityIndex: string, reserveLiquidationThreshold: string, reserveLiquidationBonus: string, variableBorrowIndex: string, variableBorrowRate: string, availableLiquidity: string, stableBorrowRate: string, liquidityRate: string, totalPrincipalStableDebt: string, totalScaledVariableDebt: string, lastUpdateTimestamp: number, priceInMarketReferenceCurrency: string, isPaused: boolean, accruedToTreasury: string, unbacked: string, isolationModeTotalDebt: string, debtCeiling: string, debtCeilingDecimals: number, eModeCategoryId: number, borrowCap: string, supplyCap: string, eModeLtv: number, eModeLiquidationThreshold: number, eModeLiquidationBonus: number, eModePriceSource: string, eModeLabel: string, borrowableInIsolation: boolean }>, baseCurrencyData: { __typename?: 'BaseCurrencyData', marketReferenceCurrencyDecimals: number, marketReferenceCurrencyPriceInUsd: string, networkBaseTokenPriceInUsd: string, networkBaseTokenPriceDecimals: number } } };
+export type C_ProtocolDataQuery = {
+  __typename?: 'Query';
+  protocolData: {
+    __typename?: 'ProtocolData';
+    reserves: Array<{
+      __typename?: 'ReserveData';
+      id: string;
+      underlyingAsset: string;
+      name: string;
+      symbol: string;
+      decimals: number;
+      isActive: boolean;
+      isFrozen: boolean;
+      usageAsCollateralEnabled: boolean;
+      aTokenAddress: string;
+      stableDebtTokenAddress: string;
+      variableDebtTokenAddress: string;
+      borrowingEnabled: boolean;
+      stableBorrowRateEnabled: boolean;
+      reserveFactor: string;
+      interestRateStrategyAddress: string;
+      baseLTVasCollateral: string;
+      stableRateSlope1: string;
+      stableRateSlope2: string;
+      averageStableRate: string;
+      stableDebtLastUpdateTimestamp: number;
+      variableRateSlope1: string;
+      variableRateSlope2: string;
+      liquidityIndex: string;
+      reserveLiquidationThreshold: string;
+      reserveLiquidationBonus: string;
+      variableBorrowIndex: string;
+      variableBorrowRate: string;
+      availableLiquidity: string;
+      stableBorrowRate: string;
+      liquidityRate: string;
+      totalPrincipalStableDebt: string;
+      totalScaledVariableDebt: string;
+      lastUpdateTimestamp: number;
+      priceInMarketReferenceCurrency: string;
+      isPaused: boolean;
+      accruedToTreasury: string;
+      unbacked: string;
+      isolationModeTotalDebt: string;
+      debtCeiling: string;
+      debtCeilingDecimals: number;
+      eModeCategoryId: number;
+      borrowCap: string;
+      supplyCap: string;
+      eModeLtv: number;
+      eModeLiquidationThreshold: number;
+      eModeLiquidationBonus: number;
+      eModePriceSource: string;
+      eModeLabel: string;
+      borrowableInIsolation: boolean;
+    }>;
+    baseCurrencyData: {
+      __typename?: 'BaseCurrencyData';
+      marketReferenceCurrencyDecimals: number;
+      marketReferenceCurrencyPriceInUsd: string;
+      networkBaseTokenPriceInUsd: string;
+      networkBaseTokenPriceDecimals: number;
+    };
+  };
+};
 
 export type C_ProtocolDataUpdateSubscriptionVariables = Exact<{
   lendingPoolAddressProvider: Scalars['String'];
+  chainId: Scalars['Int'];
 }>;
 
+export type C_ProtocolDataUpdateSubscription = {
+  __typename?: 'Subscription';
+  protocolDataUpdate: {
+    __typename?: 'ProtocolData';
+    reserves: Array<{
+      __typename?: 'ReserveData';
+      id: string;
+      underlyingAsset: string;
+      name: string;
+      symbol: string;
+      decimals: number;
+      isActive: boolean;
+      isFrozen: boolean;
+      usageAsCollateralEnabled: boolean;
+      aTokenAddress: string;
+      stableDebtTokenAddress: string;
+      variableDebtTokenAddress: string;
+      borrowingEnabled: boolean;
+      stableBorrowRateEnabled: boolean;
+      reserveFactor: string;
+      interestRateStrategyAddress: string;
+      baseLTVasCollateral: string;
+      stableRateSlope1: string;
+      stableRateSlope2: string;
+      averageStableRate: string;
+      stableDebtLastUpdateTimestamp: number;
+      variableRateSlope1: string;
+      variableRateSlope2: string;
+      liquidityIndex: string;
+      reserveLiquidationThreshold: string;
+      reserveLiquidationBonus: string;
+      variableBorrowIndex: string;
+      variableBorrowRate: string;
+      availableLiquidity: string;
+      stableBorrowRate: string;
+      liquidityRate: string;
+      totalPrincipalStableDebt: string;
+      totalScaledVariableDebt: string;
+      lastUpdateTimestamp: number;
+      priceInMarketReferenceCurrency: string;
+      isPaused: boolean;
+      accruedToTreasury: string;
+      unbacked: string;
+      isolationModeTotalDebt: string;
+      debtCeiling: string;
+      debtCeilingDecimals: number;
+      eModeCategoryId: number;
+      borrowCap: string;
+      supplyCap: string;
+      eModeLtv: number;
+      eModeLiquidationThreshold: number;
+      eModeLiquidationBonus: number;
+      eModePriceSource: string;
+      eModeLabel: string;
+      borrowableInIsolation: boolean;
+    }>;
+    baseCurrencyData: {
+      __typename?: 'BaseCurrencyData';
+      marketReferenceCurrencyDecimals: number;
+      marketReferenceCurrencyPriceInUsd: string;
+      networkBaseTokenPriceInUsd: string;
+      networkBaseTokenPriceDecimals: number;
+    };
+  };
+};
 
-export type C_ProtocolDataUpdateSubscription = { __typename?: 'Subscription', protocolDataUpdate: { __typename?: 'ProtocolData', reserves: Array<{ __typename?: 'ReserveData', id: string, underlyingAsset: string, name: string, symbol: string, decimals: number, isActive: boolean, isFrozen: boolean, usageAsCollateralEnabled: boolean, aTokenAddress: string, stableDebtTokenAddress: string, variableDebtTokenAddress: string, borrowingEnabled: boolean, stableBorrowRateEnabled: boolean, reserveFactor: string, interestRateStrategyAddress: string, baseLTVasCollateral: string, stableRateSlope1: string, stableRateSlope2: string, averageStableRate: string, stableDebtLastUpdateTimestamp: number, variableRateSlope1: string, variableRateSlope2: string, liquidityIndex: string, reserveLiquidationThreshold: string, reserveLiquidationBonus: string, variableBorrowIndex: string, variableBorrowRate: string, availableLiquidity: string, stableBorrowRate: string, liquidityRate: string, totalPrincipalStableDebt: string, totalScaledVariableDebt: string, lastUpdateTimestamp: number, priceInMarketReferenceCurrency: string, isPaused: boolean, accruedToTreasury: string, unbacked: string, isolationModeTotalDebt: string, debtCeiling: string, debtCeilingDecimals: number, eModeCategoryId: number, borrowCap: string, supplyCap: string, eModeLtv: number, eModeLiquidationThreshold: number, eModeLiquidationBonus: number, eModePriceSource: string, eModeLabel: string, borrowableInIsolation: boolean }>, baseCurrencyData: { __typename?: 'BaseCurrencyData', marketReferenceCurrencyDecimals: number, marketReferenceCurrencyPriceInUsd: string, networkBaseTokenPriceInUsd: string, networkBaseTokenPriceDecimals: number } } };
-
-export type UserReserveDataFragmentFragment = { __typename?: 'UserReserveData', underlyingAsset: string, scaledATokenBalance: string, usageAsCollateralEnabledOnUser: boolean, scaledVariableDebt: string, stableBorrowRate: string, principalStableDebt: string, stableBorrowLastUpdateTimestamp: number };
+export type UserReserveDataFragmentFragment = {
+  __typename?: 'UserReserveData';
+  id: string;
+  underlyingAsset: string;
+  scaledATokenBalance: string;
+  usageAsCollateralEnabledOnUser: boolean;
+  scaledVariableDebt: string;
+  stableBorrowRate: string;
+  principalStableDebt: string;
+  stableBorrowLastUpdateTimestamp: number;
+};
 
 export type C_UserDataQueryVariables = Exact<{
   userAddress: Scalars['String'];
   lendingPoolAddressProvider: Scalars['String'];
+  chainId: Scalars['Int'];
 }>;
 
-
-export type C_UserDataQuery = { __typename?: 'Query', userData: { __typename?: 'UserReservesData', userEmodeCategoryId: number, userReserves: Array<{ __typename?: 'UserReserveData', underlyingAsset: string, scaledATokenBalance: string, usageAsCollateralEnabledOnUser: boolean, scaledVariableDebt: string, stableBorrowRate: string, principalStableDebt: string, stableBorrowLastUpdateTimestamp: number }> } };
+export type C_UserDataQuery = {
+  __typename?: 'Query';
+  userData: {
+    __typename?: 'UserReservesData';
+    userEmodeCategoryId: number;
+    userReserves: Array<{
+      __typename?: 'UserReserveData';
+      id: string;
+      underlyingAsset: string;
+      scaledATokenBalance: string;
+      usageAsCollateralEnabledOnUser: boolean;
+      scaledVariableDebt: string;
+      stableBorrowRate: string;
+      principalStableDebt: string;
+      stableBorrowLastUpdateTimestamp: number;
+    }>;
+  };
+};
 
 export type C_UserDataUpdateSubscriptionVariables = Exact<{
   userAddress: Scalars['String'];
   lendingPoolAddressProvider: Scalars['String'];
+  chainId: Scalars['Int'];
 }>;
 
+export type C_UserDataUpdateSubscription = {
+  __typename?: 'Subscription';
+  userDataUpdate: {
+    __typename?: 'UserReservesData';
+    userEmodeCategoryId: number;
+    userReserves: Array<{
+      __typename?: 'UserReserveData';
+      id: string;
+      underlyingAsset: string;
+      scaledATokenBalance: string;
+      usageAsCollateralEnabledOnUser: boolean;
+      scaledVariableDebt: string;
+      stableBorrowRate: string;
+      principalStableDebt: string;
+      stableBorrowLastUpdateTimestamp: number;
+    }>;
+  };
+};
 
-export type C_UserDataUpdateSubscription = { __typename?: 'Subscription', userDataUpdate: { __typename?: 'UserReservesData', userEmodeCategoryId: number, userReserves: Array<{ __typename?: 'UserReserveData', underlyingAsset: string, scaledATokenBalance: string, usageAsCollateralEnabledOnUser: boolean, scaledVariableDebt: string, stableBorrowRate: string, principalStableDebt: string, stableBorrowLastUpdateTimestamp: number }> } };
-
-export type TokenIncentivesUserDataFragmentFragment = { __typename?: 'UserIncentiveData', tokenAddress: string, incentiveControllerAddress: string, userRewardsInformation: Array<{ __typename?: 'UserRewardInfo', rewardTokenSymbol: string, rewardOracleAddress: string, rewardTokenAddress: string, userUnclaimedRewards: string, tokenIncentivesUserIndex: string, rewardPriceFeed: string, priceFeedDecimals: number, rewardTokenDecimals: number }> };
+export type TokenIncentivesUserDataFragmentFragment = {
+  __typename?: 'UserIncentiveData';
+  tokenAddress: string;
+  incentiveControllerAddress: string;
+  userRewardsInformation: Array<{
+    __typename?: 'UserRewardInfo';
+    rewardTokenSymbol: string;
+    rewardOracleAddress: string;
+    rewardTokenAddress: string;
+    userUnclaimedRewards: string;
+    tokenIncentivesUserIndex: string;
+    rewardPriceFeed: string;
+    priceFeedDecimals: number;
+    rewardTokenDecimals: number;
+  }>;
+};
 
 export type C_UserIncentivesQueryVariables = Exact<{
   userAddress: Scalars['String'];
   lendingPoolAddressProvider: Scalars['String'];
+  chainId: Scalars['Int'];
 }>;
 
-
-export type C_UserIncentivesQuery = { __typename?: 'Query', userIncentives: Array<{ __typename?: 'UserIncentivesData', underlyingAsset: string, aTokenIncentivesUserData: { __typename?: 'UserIncentiveData', tokenAddress: string, incentiveControllerAddress: string, userRewardsInformation: Array<{ __typename?: 'UserRewardInfo', rewardTokenSymbol: string, rewardOracleAddress: string, rewardTokenAddress: string, userUnclaimedRewards: string, tokenIncentivesUserIndex: string, rewardPriceFeed: string, priceFeedDecimals: number, rewardTokenDecimals: number }> }, vTokenIncentivesUserData: { __typename?: 'UserIncentiveData', tokenAddress: string, incentiveControllerAddress: string, userRewardsInformation: Array<{ __typename?: 'UserRewardInfo', rewardTokenSymbol: string, rewardOracleAddress: string, rewardTokenAddress: string, userUnclaimedRewards: string, tokenIncentivesUserIndex: string, rewardPriceFeed: string, priceFeedDecimals: number, rewardTokenDecimals: number }> }, sTokenIncentivesUserData: { __typename?: 'UserIncentiveData', tokenAddress: string, incentiveControllerAddress: string, userRewardsInformation: Array<{ __typename?: 'UserRewardInfo', rewardTokenSymbol: string, rewardOracleAddress: string, rewardTokenAddress: string, userUnclaimedRewards: string, tokenIncentivesUserIndex: string, rewardPriceFeed: string, priceFeedDecimals: number, rewardTokenDecimals: number }> } }> };
+export type C_UserIncentivesQuery = {
+  __typename?: 'Query';
+  userIncentives: Array<{
+    __typename?: 'UserIncentivesData';
+    id: string;
+    underlyingAsset: string;
+    aTokenIncentivesUserData: {
+      __typename?: 'UserIncentiveData';
+      tokenAddress: string;
+      incentiveControllerAddress: string;
+      userRewardsInformation: Array<{
+        __typename?: 'UserRewardInfo';
+        rewardTokenSymbol: string;
+        rewardOracleAddress: string;
+        rewardTokenAddress: string;
+        userUnclaimedRewards: string;
+        tokenIncentivesUserIndex: string;
+        rewardPriceFeed: string;
+        priceFeedDecimals: number;
+        rewardTokenDecimals: number;
+      }>;
+    };
+    vTokenIncentivesUserData: {
+      __typename?: 'UserIncentiveData';
+      tokenAddress: string;
+      incentiveControllerAddress: string;
+      userRewardsInformation: Array<{
+        __typename?: 'UserRewardInfo';
+        rewardTokenSymbol: string;
+        rewardOracleAddress: string;
+        rewardTokenAddress: string;
+        userUnclaimedRewards: string;
+        tokenIncentivesUserIndex: string;
+        rewardPriceFeed: string;
+        priceFeedDecimals: number;
+        rewardTokenDecimals: number;
+      }>;
+    };
+    sTokenIncentivesUserData: {
+      __typename?: 'UserIncentiveData';
+      tokenAddress: string;
+      incentiveControllerAddress: string;
+      userRewardsInformation: Array<{
+        __typename?: 'UserRewardInfo';
+        rewardTokenSymbol: string;
+        rewardOracleAddress: string;
+        rewardTokenAddress: string;
+        userUnclaimedRewards: string;
+        tokenIncentivesUserIndex: string;
+        rewardPriceFeed: string;
+        priceFeedDecimals: number;
+        rewardTokenDecimals: number;
+      }>;
+    };
+  }>;
+};
 
 export type C_UserPoolIncentivesDataUpdateSubscriptionVariables = Exact<{
   userAddress: Scalars['String'];
   lendingPoolAddressProvider: Scalars['String'];
+  chainId: Scalars['Int'];
 }>;
 
-
-export type C_UserPoolIncentivesDataUpdateSubscription = { __typename?: 'Subscription', userPoolIncentivesDataUpdate: Array<{ __typename?: 'UserIncentivesData', underlyingAsset: string, aTokenIncentivesUserData: { __typename?: 'UserIncentiveData', tokenAddress: string, incentiveControllerAddress: string, userRewardsInformation: Array<{ __typename?: 'UserRewardInfo', rewardTokenSymbol: string, rewardOracleAddress: string, rewardTokenAddress: string, userUnclaimedRewards: string, tokenIncentivesUserIndex: string, rewardPriceFeed: string, priceFeedDecimals: number, rewardTokenDecimals: number }> }, vTokenIncentivesUserData: { __typename?: 'UserIncentiveData', tokenAddress: string, incentiveControllerAddress: string, userRewardsInformation: Array<{ __typename?: 'UserRewardInfo', rewardTokenSymbol: string, rewardOracleAddress: string, rewardTokenAddress: string, userUnclaimedRewards: string, tokenIncentivesUserIndex: string, rewardPriceFeed: string, priceFeedDecimals: number, rewardTokenDecimals: number }> }, sTokenIncentivesUserData: { __typename?: 'UserIncentiveData', tokenAddress: string, incentiveControllerAddress: string, userRewardsInformation: Array<{ __typename?: 'UserRewardInfo', rewardTokenSymbol: string, rewardOracleAddress: string, rewardTokenAddress: string, userUnclaimedRewards: string, tokenIncentivesUserIndex: string, rewardPriceFeed: string, priceFeedDecimals: number, rewardTokenDecimals: number }> } }> };
+export type C_UserPoolIncentivesDataUpdateSubscription = {
+  __typename?: 'Subscription';
+  userPoolIncentivesDataUpdate: Array<{
+    __typename?: 'UserIncentivesData';
+    id: string;
+    underlyingAsset: string;
+    aTokenIncentivesUserData: {
+      __typename?: 'UserIncentiveData';
+      tokenAddress: string;
+      incentiveControllerAddress: string;
+      userRewardsInformation: Array<{
+        __typename?: 'UserRewardInfo';
+        rewardTokenSymbol: string;
+        rewardOracleAddress: string;
+        rewardTokenAddress: string;
+        userUnclaimedRewards: string;
+        tokenIncentivesUserIndex: string;
+        rewardPriceFeed: string;
+        priceFeedDecimals: number;
+        rewardTokenDecimals: number;
+      }>;
+    };
+    vTokenIncentivesUserData: {
+      __typename?: 'UserIncentiveData';
+      tokenAddress: string;
+      incentiveControllerAddress: string;
+      userRewardsInformation: Array<{
+        __typename?: 'UserRewardInfo';
+        rewardTokenSymbol: string;
+        rewardOracleAddress: string;
+        rewardTokenAddress: string;
+        userUnclaimedRewards: string;
+        tokenIncentivesUserIndex: string;
+        rewardPriceFeed: string;
+        priceFeedDecimals: number;
+        rewardTokenDecimals: number;
+      }>;
+    };
+    sTokenIncentivesUserData: {
+      __typename?: 'UserIncentiveData';
+      tokenAddress: string;
+      incentiveControllerAddress: string;
+      userRewardsInformation: Array<{
+        __typename?: 'UserRewardInfo';
+        rewardTokenSymbol: string;
+        rewardOracleAddress: string;
+        rewardTokenAddress: string;
+        userUnclaimedRewards: string;
+        tokenIncentivesUserIndex: string;
+        rewardPriceFeed: string;
+        priceFeedDecimals: number;
+        rewardTokenDecimals: number;
+      }>;
+    };
+  }>;
+};
 
 export const IncentivesDataFragmentFragmentDoc = gql`
-    fragment IncentivesDataFragment on IncentiveData {
-  incentiveControllerAddress
-  tokenAddress
-  rewardsTokenInformation {
-    emissionEndTimestamp
-    emissionPerSecond
-    incentivesLastUpdateTimestamp
-    precision
-    priceFeedDecimals
-    tokenIncentivesIndex
-    rewardPriceFeed
-    rewardTokenAddress
-    rewardTokenDecimals
-    rewardOracleAddress
-    rewardTokenSymbol
+  fragment IncentivesDataFragment on IncentiveData {
+    incentiveControllerAddress
+    tokenAddress
+    rewardsTokenInformation {
+      emissionEndTimestamp
+      emissionPerSecond
+      incentivesLastUpdateTimestamp
+      precision
+      priceFeedDecimals
+      tokenIncentivesIndex
+      rewardPriceFeed
+      rewardTokenAddress
+      rewardTokenDecimals
+      rewardOracleAddress
+      rewardTokenSymbol
+    }
   }
-}
-    `;
+`;
 export const ReserveDataFragmentFragmentDoc = gql`
-    fragment ReserveDataFragment on ReserveData {
-  id
-  underlyingAsset
-  name
-  symbol
-  decimals
-  isActive
-  isFrozen
-  usageAsCollateralEnabled
-  aTokenAddress
-  stableDebtTokenAddress
-  variableDebtTokenAddress
-  borrowingEnabled
-  stableBorrowRateEnabled
-  reserveFactor
-  interestRateStrategyAddress
-  baseLTVasCollateral
-  stableRateSlope1
-  stableRateSlope2
-  averageStableRate
-  stableDebtLastUpdateTimestamp
-  variableRateSlope1
-  variableRateSlope2
-  liquidityIndex
-  reserveLiquidationThreshold
-  reserveLiquidationBonus
-  variableBorrowIndex
-  variableBorrowRate
-  availableLiquidity
-  stableBorrowRate
-  liquidityRate
-  totalPrincipalStableDebt
-  totalScaledVariableDebt
-  lastUpdateTimestamp
-  priceInMarketReferenceCurrency
-  isPaused
-  accruedToTreasury
-  unbacked
-  isolationModeTotalDebt
-  debtCeiling
-  debtCeilingDecimals
-  eModeCategoryId
-  borrowCap
-  supplyCap
-  eModeLtv
-  eModeLiquidationThreshold
-  eModeLiquidationBonus
-  eModePriceSource
-  eModeLabel
-  borrowableInIsolation
-}
-    `;
-export const BaseCurrencyDataFragmentFragmentDoc = gql`
-    fragment BaseCurrencyDataFragment on BaseCurrencyData {
-  marketReferenceCurrencyDecimals
-  marketReferenceCurrencyPriceInUsd
-  networkBaseTokenPriceInUsd
-  networkBaseTokenPriceDecimals
-}
-    `;
-export const UserReserveDataFragmentFragmentDoc = gql`
-    fragment UserReserveDataFragment on UserReserveData {
-  underlyingAsset
-  scaledATokenBalance
-  usageAsCollateralEnabledOnUser
-  scaledVariableDebt
-  stableBorrowRate
-  principalStableDebt
-  stableBorrowLastUpdateTimestamp
-}
-    `;
-export const TokenIncentivesUserDataFragmentFragmentDoc = gql`
-    fragment TokenIncentivesUserDataFragment on UserIncentiveData {
-  tokenAddress
-  incentiveControllerAddress
-  userRewardsInformation {
-    rewardTokenSymbol
-    rewardOracleAddress
-    rewardTokenAddress
-    userUnclaimedRewards
-    tokenIncentivesUserIndex
-    rewardPriceFeed
-    priceFeedDecimals
-    rewardTokenDecimals
-  }
-}
-    `;
-export const C_ReservesIncentivesDocument = gql`
-    query C_ReservesIncentives($lendingPoolAddressProvider: String!) {
-  reservesIncentives(lendingPoolAddressProvider: $lendingPoolAddressProvider) {
+  fragment ReserveDataFragment on ReserveData {
+    id
     underlyingAsset
-    aIncentiveData {
-      ...IncentivesDataFragment
-    }
-    vIncentiveData {
-      ...IncentivesDataFragment
-    }
-    sIncentiveData {
-      ...IncentivesDataFragment
+    name
+    symbol
+    decimals
+    isActive
+    isFrozen
+    usageAsCollateralEnabled
+    aTokenAddress
+    stableDebtTokenAddress
+    variableDebtTokenAddress
+    borrowingEnabled
+    stableBorrowRateEnabled
+    reserveFactor
+    interestRateStrategyAddress
+    baseLTVasCollateral
+    stableRateSlope1
+    stableRateSlope2
+    averageStableRate
+    stableDebtLastUpdateTimestamp
+    variableRateSlope1
+    variableRateSlope2
+    liquidityIndex
+    reserveLiquidationThreshold
+    reserveLiquidationBonus
+    variableBorrowIndex
+    variableBorrowRate
+    availableLiquidity
+    stableBorrowRate
+    liquidityRate
+    totalPrincipalStableDebt
+    totalScaledVariableDebt
+    lastUpdateTimestamp
+    priceInMarketReferenceCurrency
+    isPaused
+    accruedToTreasury
+    unbacked
+    isolationModeTotalDebt
+    debtCeiling
+    debtCeilingDecimals
+    eModeCategoryId
+    borrowCap
+    supplyCap
+    eModeLtv
+    eModeLiquidationThreshold
+    eModeLiquidationBonus
+    eModePriceSource
+    eModeLabel
+    borrowableInIsolation
+  }
+`;
+export const BaseCurrencyDataFragmentFragmentDoc = gql`
+  fragment BaseCurrencyDataFragment on BaseCurrencyData {
+    marketReferenceCurrencyDecimals
+    marketReferenceCurrencyPriceInUsd
+    networkBaseTokenPriceInUsd
+    networkBaseTokenPriceDecimals
+  }
+`;
+export const UserReserveDataFragmentFragmentDoc = gql`
+  fragment UserReserveDataFragment on UserReserveData {
+    id
+    underlyingAsset
+    scaledATokenBalance
+    usageAsCollateralEnabledOnUser
+    scaledVariableDebt
+    stableBorrowRate
+    principalStableDebt
+    stableBorrowLastUpdateTimestamp
+  }
+`;
+export const TokenIncentivesUserDataFragmentFragmentDoc = gql`
+  fragment TokenIncentivesUserDataFragment on UserIncentiveData {
+    tokenAddress
+    incentiveControllerAddress
+    userRewardsInformation {
+      rewardTokenSymbol
+      rewardOracleAddress
+      rewardTokenAddress
+      userUnclaimedRewards
+      tokenIncentivesUserIndex
+      rewardPriceFeed
+      priceFeedDecimals
+      rewardTokenDecimals
     }
   }
-}
-    ${IncentivesDataFragmentFragmentDoc}`;
+`;
+export const C_ReservesIncentivesDocument = gql`
+  query C_ReservesIncentives($lendingPoolAddressProvider: String!, $chainId: Int!) {
+    reservesIncentives(lendingPoolAddressProvider: $lendingPoolAddressProvider, chainId: $chainId) {
+      id
+      underlyingAsset
+      aIncentiveData {
+        ...IncentivesDataFragment
+      }
+      vIncentiveData {
+        ...IncentivesDataFragment
+      }
+      sIncentiveData {
+        ...IncentivesDataFragment
+      }
+    }
+  }
+  ${IncentivesDataFragmentFragmentDoc}
+`;
 
 /**
  * __useC_ReservesIncentivesQuery__
@@ -475,38 +981,63 @@ export const C_ReservesIncentivesDocument = gql`
  * const { data, loading, error } = useC_ReservesIncentivesQuery({
  *   variables: {
  *      lendingPoolAddressProvider: // value for 'lendingPoolAddressProvider'
+ *      chainId: // value for 'chainId'
  *   },
  * });
  */
-export function useC_ReservesIncentivesQuery(baseOptions: ApolloReactHooks.QueryHookOptions<C_ReservesIncentivesQuery, C_ReservesIncentivesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useQuery<C_ReservesIncentivesQuery, C_ReservesIncentivesQueryVariables>(C_ReservesIncentivesDocument, options);
-      }
-export function useC_ReservesIncentivesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<C_ReservesIncentivesQuery, C_ReservesIncentivesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useLazyQuery<C_ReservesIncentivesQuery, C_ReservesIncentivesQueryVariables>(C_ReservesIncentivesDocument, options);
-        }
+export function useC_ReservesIncentivesQuery(
+  baseOptions: ApolloReactHooks.QueryHookOptions<
+    C_ReservesIncentivesQuery,
+    C_ReservesIncentivesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return ApolloReactHooks.useQuery<C_ReservesIncentivesQuery, C_ReservesIncentivesQueryVariables>(
+    C_ReservesIncentivesDocument,
+    options
+  );
+}
+export function useC_ReservesIncentivesLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    C_ReservesIncentivesQuery,
+    C_ReservesIncentivesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return ApolloReactHooks.useLazyQuery<
+    C_ReservesIncentivesQuery,
+    C_ReservesIncentivesQueryVariables
+  >(C_ReservesIncentivesDocument, options);
+}
 export type C_ReservesIncentivesQueryHookResult = ReturnType<typeof useC_ReservesIncentivesQuery>;
-export type C_ReservesIncentivesLazyQueryHookResult = ReturnType<typeof useC_ReservesIncentivesLazyQuery>;
-export type C_ReservesIncentivesQueryResult = ApolloReactCommon.QueryResult<C_ReservesIncentivesQuery, C_ReservesIncentivesQueryVariables>;
+export type C_ReservesIncentivesLazyQueryHookResult = ReturnType<
+  typeof useC_ReservesIncentivesLazyQuery
+>;
+export type C_ReservesIncentivesQueryResult = ApolloReactCommon.QueryResult<
+  C_ReservesIncentivesQuery,
+  C_ReservesIncentivesQueryVariables
+>;
 export const C_PoolIncentivesDataUpdateDocument = gql`
-    subscription C_PoolIncentivesDataUpdate($lendingPoolAddressProvider: String!) {
-  poolIncentivesDataUpdate(
-    lendingPoolAddressProvider: $lendingPoolAddressProvider
-  ) {
-    underlyingAsset
-    aIncentiveData {
-      ...IncentivesDataFragment
-    }
-    vIncentiveData {
-      ...IncentivesDataFragment
-    }
-    sIncentiveData {
-      ...IncentivesDataFragment
+  subscription C_PoolIncentivesDataUpdate($lendingPoolAddressProvider: String!, $chainId: Int!) {
+    poolIncentivesDataUpdate(
+      lendingPoolAddressProvider: $lendingPoolAddressProvider
+      chainId: $chainId
+    ) {
+      id
+      underlyingAsset
+      aIncentiveData {
+        ...IncentivesDataFragment
+      }
+      vIncentiveData {
+        ...IncentivesDataFragment
+      }
+      sIncentiveData {
+        ...IncentivesDataFragment
+      }
     }
   }
-}
-    ${IncentivesDataFragmentFragmentDoc}`;
+  ${IncentivesDataFragmentFragmentDoc}
+`;
 
 /**
  * __useC_PoolIncentivesDataUpdateSubscription__
@@ -521,28 +1052,41 @@ export const C_PoolIncentivesDataUpdateDocument = gql`
  * const { data, loading, error } = useC_PoolIncentivesDataUpdateSubscription({
  *   variables: {
  *      lendingPoolAddressProvider: // value for 'lendingPoolAddressProvider'
+ *      chainId: // value for 'chainId'
  *   },
  * });
  */
-export function useC_PoolIncentivesDataUpdateSubscription(baseOptions: ApolloReactHooks.SubscriptionHookOptions<C_PoolIncentivesDataUpdateSubscription, C_PoolIncentivesDataUpdateSubscriptionVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useSubscription<C_PoolIncentivesDataUpdateSubscription, C_PoolIncentivesDataUpdateSubscriptionVariables>(C_PoolIncentivesDataUpdateDocument, options);
-      }
-export type C_PoolIncentivesDataUpdateSubscriptionHookResult = ReturnType<typeof useC_PoolIncentivesDataUpdateSubscription>;
-export type C_PoolIncentivesDataUpdateSubscriptionResult = ApolloReactCommon.SubscriptionResult<C_PoolIncentivesDataUpdateSubscription>;
+export function useC_PoolIncentivesDataUpdateSubscription(
+  baseOptions: ApolloReactHooks.SubscriptionHookOptions<
+    C_PoolIncentivesDataUpdateSubscription,
+    C_PoolIncentivesDataUpdateSubscriptionVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return ApolloReactHooks.useSubscription<
+    C_PoolIncentivesDataUpdateSubscription,
+    C_PoolIncentivesDataUpdateSubscriptionVariables
+  >(C_PoolIncentivesDataUpdateDocument, options);
+}
+export type C_PoolIncentivesDataUpdateSubscriptionHookResult = ReturnType<
+  typeof useC_PoolIncentivesDataUpdateSubscription
+>;
+export type C_PoolIncentivesDataUpdateSubscriptionResult =
+  ApolloReactCommon.SubscriptionResult<C_PoolIncentivesDataUpdateSubscription>;
 export const C_ProtocolDataDocument = gql`
-    query C_ProtocolData($lendingPoolAddressProvider: String!) {
-  protocolData(lendingPoolAddressProvider: $lendingPoolAddressProvider) {
-    reserves {
-      ...ReserveDataFragment
-    }
-    baseCurrencyData {
-      ...BaseCurrencyDataFragment
+  query C_ProtocolData($lendingPoolAddressProvider: String!, $chainId: Int!) {
+    protocolData(lendingPoolAddressProvider: $lendingPoolAddressProvider, chainId: $chainId) {
+      reserves {
+        ...ReserveDataFragment
+      }
+      baseCurrencyData {
+        ...BaseCurrencyDataFragment
+      }
     }
   }
-}
-    ${ReserveDataFragmentFragmentDoc}
-${BaseCurrencyDataFragmentFragmentDoc}`;
+  ${ReserveDataFragmentFragmentDoc}
+  ${BaseCurrencyDataFragmentFragmentDoc}
+`;
 
 /**
  * __useC_ProtocolDataQuery__
@@ -557,33 +1101,51 @@ ${BaseCurrencyDataFragmentFragmentDoc}`;
  * const { data, loading, error } = useC_ProtocolDataQuery({
  *   variables: {
  *      lendingPoolAddressProvider: // value for 'lendingPoolAddressProvider'
+ *      chainId: // value for 'chainId'
  *   },
  * });
  */
-export function useC_ProtocolDataQuery(baseOptions: ApolloReactHooks.QueryHookOptions<C_ProtocolDataQuery, C_ProtocolDataQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useQuery<C_ProtocolDataQuery, C_ProtocolDataQueryVariables>(C_ProtocolDataDocument, options);
-      }
-export function useC_ProtocolDataLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<C_ProtocolDataQuery, C_ProtocolDataQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useLazyQuery<C_ProtocolDataQuery, C_ProtocolDataQueryVariables>(C_ProtocolDataDocument, options);
-        }
+export function useC_ProtocolDataQuery(
+  baseOptions: ApolloReactHooks.QueryHookOptions<C_ProtocolDataQuery, C_ProtocolDataQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return ApolloReactHooks.useQuery<C_ProtocolDataQuery, C_ProtocolDataQueryVariables>(
+    C_ProtocolDataDocument,
+    options
+  );
+}
+export function useC_ProtocolDataLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    C_ProtocolDataQuery,
+    C_ProtocolDataQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return ApolloReactHooks.useLazyQuery<C_ProtocolDataQuery, C_ProtocolDataQueryVariables>(
+    C_ProtocolDataDocument,
+    options
+  );
+}
 export type C_ProtocolDataQueryHookResult = ReturnType<typeof useC_ProtocolDataQuery>;
 export type C_ProtocolDataLazyQueryHookResult = ReturnType<typeof useC_ProtocolDataLazyQuery>;
-export type C_ProtocolDataQueryResult = ApolloReactCommon.QueryResult<C_ProtocolDataQuery, C_ProtocolDataQueryVariables>;
+export type C_ProtocolDataQueryResult = ApolloReactCommon.QueryResult<
+  C_ProtocolDataQuery,
+  C_ProtocolDataQueryVariables
+>;
 export const C_ProtocolDataUpdateDocument = gql`
-    subscription C_ProtocolDataUpdate($lendingPoolAddressProvider: String!) {
-  protocolDataUpdate(lendingPoolAddressProvider: $lendingPoolAddressProvider) {
-    reserves {
-      ...ReserveDataFragment
-    }
-    baseCurrencyData {
-      ...BaseCurrencyDataFragment
+  subscription C_ProtocolDataUpdate($lendingPoolAddressProvider: String!, $chainId: Int!) {
+    protocolDataUpdate(lendingPoolAddressProvider: $lendingPoolAddressProvider, chainId: $chainId) {
+      reserves {
+        ...ReserveDataFragment
+      }
+      baseCurrencyData {
+        ...BaseCurrencyDataFragment
+      }
     }
   }
-}
-    ${ReserveDataFragmentFragmentDoc}
-${BaseCurrencyDataFragmentFragmentDoc}`;
+  ${ReserveDataFragmentFragmentDoc}
+  ${BaseCurrencyDataFragmentFragmentDoc}
+`;
 
 /**
  * __useC_ProtocolDataUpdateSubscription__
@@ -598,28 +1160,42 @@ ${BaseCurrencyDataFragmentFragmentDoc}`;
  * const { data, loading, error } = useC_ProtocolDataUpdateSubscription({
  *   variables: {
  *      lendingPoolAddressProvider: // value for 'lendingPoolAddressProvider'
+ *      chainId: // value for 'chainId'
  *   },
  * });
  */
-export function useC_ProtocolDataUpdateSubscription(baseOptions: ApolloReactHooks.SubscriptionHookOptions<C_ProtocolDataUpdateSubscription, C_ProtocolDataUpdateSubscriptionVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useSubscription<C_ProtocolDataUpdateSubscription, C_ProtocolDataUpdateSubscriptionVariables>(C_ProtocolDataUpdateDocument, options);
-      }
-export type C_ProtocolDataUpdateSubscriptionHookResult = ReturnType<typeof useC_ProtocolDataUpdateSubscription>;
-export type C_ProtocolDataUpdateSubscriptionResult = ApolloReactCommon.SubscriptionResult<C_ProtocolDataUpdateSubscription>;
-export const C_UserDataDocument = gql`
-    query C_UserData($userAddress: String!, $lendingPoolAddressProvider: String!) {
-  userData(
-    userAddress: $userAddress
-    lendingPoolAddressProvider: $lendingPoolAddressProvider
-  ) {
-    userReserves {
-      ...UserReserveDataFragment
-    }
-    userEmodeCategoryId
-  }
+export function useC_ProtocolDataUpdateSubscription(
+  baseOptions: ApolloReactHooks.SubscriptionHookOptions<
+    C_ProtocolDataUpdateSubscription,
+    C_ProtocolDataUpdateSubscriptionVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return ApolloReactHooks.useSubscription<
+    C_ProtocolDataUpdateSubscription,
+    C_ProtocolDataUpdateSubscriptionVariables
+  >(C_ProtocolDataUpdateDocument, options);
 }
-    ${UserReserveDataFragmentFragmentDoc}`;
+export type C_ProtocolDataUpdateSubscriptionHookResult = ReturnType<
+  typeof useC_ProtocolDataUpdateSubscription
+>;
+export type C_ProtocolDataUpdateSubscriptionResult =
+  ApolloReactCommon.SubscriptionResult<C_ProtocolDataUpdateSubscription>;
+export const C_UserDataDocument = gql`
+  query C_UserData($userAddress: String!, $lendingPoolAddressProvider: String!, $chainId: Int!) {
+    userData(
+      userAddress: $userAddress
+      lendingPoolAddressProvider: $lendingPoolAddressProvider
+      chainId: $chainId
+    ) {
+      userReserves {
+        ...UserReserveDataFragment
+      }
+      userEmodeCategoryId
+    }
+  }
+  ${UserReserveDataFragmentFragmentDoc}
+`;
 
 /**
  * __useC_UserDataQuery__
@@ -635,33 +1211,53 @@ export const C_UserDataDocument = gql`
  *   variables: {
  *      userAddress: // value for 'userAddress'
  *      lendingPoolAddressProvider: // value for 'lendingPoolAddressProvider'
+ *      chainId: // value for 'chainId'
  *   },
  * });
  */
-export function useC_UserDataQuery(baseOptions: ApolloReactHooks.QueryHookOptions<C_UserDataQuery, C_UserDataQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useQuery<C_UserDataQuery, C_UserDataQueryVariables>(C_UserDataDocument, options);
-      }
-export function useC_UserDataLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<C_UserDataQuery, C_UserDataQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useLazyQuery<C_UserDataQuery, C_UserDataQueryVariables>(C_UserDataDocument, options);
-        }
+export function useC_UserDataQuery(
+  baseOptions: ApolloReactHooks.QueryHookOptions<C_UserDataQuery, C_UserDataQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return ApolloReactHooks.useQuery<C_UserDataQuery, C_UserDataQueryVariables>(
+    C_UserDataDocument,
+    options
+  );
+}
+export function useC_UserDataLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<C_UserDataQuery, C_UserDataQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return ApolloReactHooks.useLazyQuery<C_UserDataQuery, C_UserDataQueryVariables>(
+    C_UserDataDocument,
+    options
+  );
+}
 export type C_UserDataQueryHookResult = ReturnType<typeof useC_UserDataQuery>;
 export type C_UserDataLazyQueryHookResult = ReturnType<typeof useC_UserDataLazyQuery>;
-export type C_UserDataQueryResult = ApolloReactCommon.QueryResult<C_UserDataQuery, C_UserDataQueryVariables>;
+export type C_UserDataQueryResult = ApolloReactCommon.QueryResult<
+  C_UserDataQuery,
+  C_UserDataQueryVariables
+>;
 export const C_UserDataUpdateDocument = gql`
-    subscription C_UserDataUpdate($userAddress: String!, $lendingPoolAddressProvider: String!) {
-  userDataUpdate(
-    userAddress: $userAddress
-    lendingPoolAddressProvider: $lendingPoolAddressProvider
+  subscription C_UserDataUpdate(
+    $userAddress: String!
+    $lendingPoolAddressProvider: String!
+    $chainId: Int!
   ) {
-    userReserves {
-      ...UserReserveDataFragment
+    userDataUpdate(
+      userAddress: $userAddress
+      lendingPoolAddressProvider: $lendingPoolAddressProvider
+      chainId: $chainId
+    ) {
+      userReserves {
+        ...UserReserveDataFragment
+      }
+      userEmodeCategoryId
     }
-    userEmodeCategoryId
   }
-}
-    ${UserReserveDataFragmentFragmentDoc}`;
+  ${UserReserveDataFragmentFragmentDoc}
+`;
 
 /**
  * __useC_UserDataUpdateSubscription__
@@ -677,34 +1273,53 @@ export const C_UserDataUpdateDocument = gql`
  *   variables: {
  *      userAddress: // value for 'userAddress'
  *      lendingPoolAddressProvider: // value for 'lendingPoolAddressProvider'
+ *      chainId: // value for 'chainId'
  *   },
  * });
  */
-export function useC_UserDataUpdateSubscription(baseOptions: ApolloReactHooks.SubscriptionHookOptions<C_UserDataUpdateSubscription, C_UserDataUpdateSubscriptionVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useSubscription<C_UserDataUpdateSubscription, C_UserDataUpdateSubscriptionVariables>(C_UserDataUpdateDocument, options);
-      }
-export type C_UserDataUpdateSubscriptionHookResult = ReturnType<typeof useC_UserDataUpdateSubscription>;
-export type C_UserDataUpdateSubscriptionResult = ApolloReactCommon.SubscriptionResult<C_UserDataUpdateSubscription>;
+export function useC_UserDataUpdateSubscription(
+  baseOptions: ApolloReactHooks.SubscriptionHookOptions<
+    C_UserDataUpdateSubscription,
+    C_UserDataUpdateSubscriptionVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return ApolloReactHooks.useSubscription<
+    C_UserDataUpdateSubscription,
+    C_UserDataUpdateSubscriptionVariables
+  >(C_UserDataUpdateDocument, options);
+}
+export type C_UserDataUpdateSubscriptionHookResult = ReturnType<
+  typeof useC_UserDataUpdateSubscription
+>;
+export type C_UserDataUpdateSubscriptionResult =
+  ApolloReactCommon.SubscriptionResult<C_UserDataUpdateSubscription>;
 export const C_UserIncentivesDocument = gql`
-    query C_UserIncentives($userAddress: String!, $lendingPoolAddressProvider: String!) {
-  userIncentives(
-    userAddress: $userAddress
-    lendingPoolAddressProvider: $lendingPoolAddressProvider
+  query C_UserIncentives(
+    $userAddress: String!
+    $lendingPoolAddressProvider: String!
+    $chainId: Int!
   ) {
-    underlyingAsset
-    aTokenIncentivesUserData {
-      ...TokenIncentivesUserDataFragment
-    }
-    vTokenIncentivesUserData {
-      ...TokenIncentivesUserDataFragment
-    }
-    sTokenIncentivesUserData {
-      ...TokenIncentivesUserDataFragment
+    userIncentives(
+      userAddress: $userAddress
+      lendingPoolAddressProvider: $lendingPoolAddressProvider
+      chainId: $chainId
+    ) {
+      id
+      underlyingAsset
+      aTokenIncentivesUserData {
+        ...TokenIncentivesUserDataFragment
+      }
+      vTokenIncentivesUserData {
+        ...TokenIncentivesUserDataFragment
+      }
+      sTokenIncentivesUserData {
+        ...TokenIncentivesUserDataFragment
+      }
     }
   }
-}
-    ${TokenIncentivesUserDataFragmentFragmentDoc}`;
+  ${TokenIncentivesUserDataFragmentFragmentDoc}
+`;
 
 /**
  * __useC_UserIncentivesQuery__
@@ -720,39 +1335,66 @@ export const C_UserIncentivesDocument = gql`
  *   variables: {
  *      userAddress: // value for 'userAddress'
  *      lendingPoolAddressProvider: // value for 'lendingPoolAddressProvider'
+ *      chainId: // value for 'chainId'
  *   },
  * });
  */
-export function useC_UserIncentivesQuery(baseOptions: ApolloReactHooks.QueryHookOptions<C_UserIncentivesQuery, C_UserIncentivesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useQuery<C_UserIncentivesQuery, C_UserIncentivesQueryVariables>(C_UserIncentivesDocument, options);
-      }
-export function useC_UserIncentivesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<C_UserIncentivesQuery, C_UserIncentivesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useLazyQuery<C_UserIncentivesQuery, C_UserIncentivesQueryVariables>(C_UserIncentivesDocument, options);
-        }
+export function useC_UserIncentivesQuery(
+  baseOptions: ApolloReactHooks.QueryHookOptions<
+    C_UserIncentivesQuery,
+    C_UserIncentivesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return ApolloReactHooks.useQuery<C_UserIncentivesQuery, C_UserIncentivesQueryVariables>(
+    C_UserIncentivesDocument,
+    options
+  );
+}
+export function useC_UserIncentivesLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    C_UserIncentivesQuery,
+    C_UserIncentivesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return ApolloReactHooks.useLazyQuery<C_UserIncentivesQuery, C_UserIncentivesQueryVariables>(
+    C_UserIncentivesDocument,
+    options
+  );
+}
 export type C_UserIncentivesQueryHookResult = ReturnType<typeof useC_UserIncentivesQuery>;
 export type C_UserIncentivesLazyQueryHookResult = ReturnType<typeof useC_UserIncentivesLazyQuery>;
-export type C_UserIncentivesQueryResult = ApolloReactCommon.QueryResult<C_UserIncentivesQuery, C_UserIncentivesQueryVariables>;
+export type C_UserIncentivesQueryResult = ApolloReactCommon.QueryResult<
+  C_UserIncentivesQuery,
+  C_UserIncentivesQueryVariables
+>;
 export const C_UserPoolIncentivesDataUpdateDocument = gql`
-    subscription C_UserPoolIncentivesDataUpdate($userAddress: String!, $lendingPoolAddressProvider: String!) {
-  userPoolIncentivesDataUpdate(
-    userAddress: $userAddress
-    lendingPoolAddressProvider: $lendingPoolAddressProvider
+  subscription C_UserPoolIncentivesDataUpdate(
+    $userAddress: String!
+    $lendingPoolAddressProvider: String!
+    $chainId: Int!
   ) {
-    underlyingAsset
-    aTokenIncentivesUserData {
-      ...TokenIncentivesUserDataFragment
-    }
-    vTokenIncentivesUserData {
-      ...TokenIncentivesUserDataFragment
-    }
-    sTokenIncentivesUserData {
-      ...TokenIncentivesUserDataFragment
+    userPoolIncentivesDataUpdate(
+      userAddress: $userAddress
+      lendingPoolAddressProvider: $lendingPoolAddressProvider
+      chainId: $chainId
+    ) {
+      id
+      underlyingAsset
+      aTokenIncentivesUserData {
+        ...TokenIncentivesUserDataFragment
+      }
+      vTokenIncentivesUserData {
+        ...TokenIncentivesUserDataFragment
+      }
+      sTokenIncentivesUserData {
+        ...TokenIncentivesUserDataFragment
+      }
     }
   }
-}
-    ${TokenIncentivesUserDataFragmentFragmentDoc}`;
+  ${TokenIncentivesUserDataFragmentFragmentDoc}
+`;
 
 /**
  * __useC_UserPoolIncentivesDataUpdateSubscription__
@@ -768,12 +1410,24 @@ export const C_UserPoolIncentivesDataUpdateDocument = gql`
  *   variables: {
  *      userAddress: // value for 'userAddress'
  *      lendingPoolAddressProvider: // value for 'lendingPoolAddressProvider'
+ *      chainId: // value for 'chainId'
  *   },
  * });
  */
-export function useC_UserPoolIncentivesDataUpdateSubscription(baseOptions: ApolloReactHooks.SubscriptionHookOptions<C_UserPoolIncentivesDataUpdateSubscription, C_UserPoolIncentivesDataUpdateSubscriptionVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useSubscription<C_UserPoolIncentivesDataUpdateSubscription, C_UserPoolIncentivesDataUpdateSubscriptionVariables>(C_UserPoolIncentivesDataUpdateDocument, options);
-      }
-export type C_UserPoolIncentivesDataUpdateSubscriptionHookResult = ReturnType<typeof useC_UserPoolIncentivesDataUpdateSubscription>;
-export type C_UserPoolIncentivesDataUpdateSubscriptionResult = ApolloReactCommon.SubscriptionResult<C_UserPoolIncentivesDataUpdateSubscription>;
+export function useC_UserPoolIncentivesDataUpdateSubscription(
+  baseOptions: ApolloReactHooks.SubscriptionHookOptions<
+    C_UserPoolIncentivesDataUpdateSubscription,
+    C_UserPoolIncentivesDataUpdateSubscriptionVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return ApolloReactHooks.useSubscription<
+    C_UserPoolIncentivesDataUpdateSubscription,
+    C_UserPoolIncentivesDataUpdateSubscriptionVariables
+  >(C_UserPoolIncentivesDataUpdateDocument, options);
+}
+export type C_UserPoolIncentivesDataUpdateSubscriptionHookResult = ReturnType<
+  typeof useC_UserPoolIncentivesDataUpdateSubscription
+>;
+export type C_UserPoolIncentivesDataUpdateSubscriptionResult =
+  ApolloReactCommon.SubscriptionResult<C_UserPoolIncentivesDataUpdateSubscription>;

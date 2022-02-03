@@ -41,6 +41,7 @@ export interface AppDataContextType {
   user?: FormatUserSummaryAndIncentivesResponse<ComputedReserveData> & {
     earnedAPY: number;
     debtAPY: number;
+    isInEmode: boolean;
   };
   // refreshIncentives?: () => Promise<void>;
   // loading: boolean;
@@ -60,11 +61,12 @@ const AppDataContext = React.createContext<AppDataContextType>({} as AppDataCont
 export const AppDataProvider: React.FC = ({ children }) => {
   const currentTimestamp = useCurrentTimestamp(1);
   const { currentAccount } = useWeb3Context();
-  const { currentMarketData } = useProtocolDataContext();
+  const { currentMarketData, currentChainId } = useProtocolDataContext();
 
   const { data: reservesData } = useC_ProtocolDataQuery({
     variables: {
       lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
+      chainId: currentChainId,
     },
     fetchPolicy: 'cache-only',
   });
@@ -73,6 +75,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
     variables: {
       lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
       userAddress: currentAccount,
+      chainId: currentChainId,
     },
     fetchPolicy: 'cache-only',
   });
@@ -87,6 +90,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
   const { data: reservesIncentivesData } = useC_ReservesIncentivesQuery({
     variables: {
       lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
+      chainId: currentChainId,
     },
     fetchPolicy: 'cache-only',
   });
@@ -94,6 +98,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
     variables: {
       lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
       userAddress: currentAccount,
+      chainId: currentChainId,
     },
     fetchPolicy: 'cache-only',
   });
@@ -188,6 +193,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
         reserves: formattedPoolReserves,
         user: {
           ...user,
+          isInEmode: userEmodeCategoryId !== 0,
           userReservesData: user.userReservesData.sort((a, b) =>
             reserveSortFn(a.reserve, b.reserve)
           ),
