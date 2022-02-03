@@ -31,6 +31,7 @@ export interface TxModalDetailsProps {
   borrowStableRate?: string;
   action?: string;
   actionUnWrapped?: boolean;
+  walletBalance?: string;
 }
 
 export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
@@ -48,6 +49,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   stableRateIncentives,
   setInterestRateMode,
   action,
+  walletBalance,
 }) => {
   const [selectedRate, setSelectedRate] = React.useState(InterestRate.Variable);
 
@@ -180,6 +182,16 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
               <Trans>{usedAsCollateral ? 'Yes' : 'No'}</Trans>
             </Typography>
           </FormValue>
+        </FormRow>
+      )}
+      {walletBalance && symbol && (
+        <FormRow>
+          <FormInfo>
+            <Typography>
+              <Trans>Supply balance</Trans>
+            </Typography>
+          </FormInfo>
+          <FormValue>{walletBalance}</FormValue>
         </FormRow>
       )}
       {showHf && healthFactor && futureHealthFactor && (
