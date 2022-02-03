@@ -1,7 +1,7 @@
 import React from 'react';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { ActionModal } from '../primitives/ActionModal';
-import { BorrowModalContent } from './CollateralChangeModalContent';
+import { CollateralChangeModalContent } from './CollateralChangeModalContent';
 
 export const CollateralChangeModal = () => {
   const { type, close, args } = useModalContext();
