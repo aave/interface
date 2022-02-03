@@ -1,4 +1,10 @@
-import { ChainId, EthereumTransactionTypeExtended, GasType, Pool } from '@aave/contract-helpers';
+import {
+  API_ETH_MOCK_ADDRESS,
+  ChainId,
+  EthereumTransactionTypeExtended,
+  GasType,
+  Pool,
+} from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { Dispatch, SetStateAction, useEffect } from 'react';
@@ -6,12 +12,12 @@ import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvi
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { TxState } from './SupplyModalContent';
-import { useTransactionHandler } from './useTransactionHandler';
-import { LeftHelperText } from './LeftHelperText';
-import { RightHelperText } from './RightHelperText';
+import { useTransactionHandler } from '../../helpers/useTransactionHandler';
+import { LeftHelperText } from '../FlowCommons/LeftHelperText';
 import { useGasStation } from 'src/hooks/useGasStation';
 import { GasOption } from '../GasStation/GasStationProvider';
+import { RightHelperText } from '../FlowCommons/RightHelperText';
+import { TxState } from 'src/helpers/types';
 
 export type SupplyActionProps = {
   amountToSupply: string;
@@ -21,6 +27,7 @@ export type SupplyActionProps = {
   customGasPrice?: string;
   handleClose: () => void;
   setGasLimit: Dispatch<SetStateAction<string | undefined>>;
+  poolAddress: string;
 };
 
 export const SupplyActions = ({
@@ -29,6 +36,7 @@ export const SupplyActions = ({
   setSupplyTxState,
   handleClose,
   setGasLimit,
+  poolAddress,
 }: SupplyActionProps) => {
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
@@ -54,7 +62,7 @@ export const SupplyActions = ({
         const newPool: Pool = lendingPool as Pool;
         const tx: EthereumTransactionTypeExtended[] = await newPool.supply({
           user: currentAccount,
-          reserve: poolReserve.underlyingAsset,
+          reserve: poolAddress,
           amount: amountToSupply,
         });
         const gas: GasType | null = await tx[tx.length - 1].gas();
@@ -63,7 +71,7 @@ export const SupplyActions = ({
       } else {
         const tx = await lendingPool.deposit({
           user: currentAccount,
-          reserve: poolReserve.underlyingAsset,
+          reserve: poolAddress,
           amount: amountToSupply,
         });
         const gas: GasType | null = await tx[tx.length - 1].gas();
@@ -75,7 +83,7 @@ export const SupplyActions = ({
       const newPool: Pool = lendingPool as Pool;
       const tx = await newPool.supplyWithPermit({
         user: currentAccount,
-        reserve: poolReserve.underlyingAsset,
+        reserve: poolAddress,
         amount: amountToSupply,
         signature,
       });
@@ -96,7 +104,7 @@ export const SupplyActions = ({
     if (mainTxState.txHash) {
       setSupplyTxState({
         success: true,
-        error: null,
+        error: undefined,
       });
     }
   }, [setSupplyTxState, mainTxState.txHash]);
@@ -112,7 +120,7 @@ export const SupplyActions = ({
 
   const handleRetry = () => {
     setSupplyTxState({
-      error: null,
+      error: undefined,
       success: false,
     });
     resetStates();
@@ -122,7 +130,7 @@ export const SupplyActions = ({
     <Box sx={{ mt: '16px', display: 'flex', flexDirection: 'column' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <LeftHelperText
-          amountToSupply={amountToSupply}
+          amount={amountToSupply}
           error={mainTxState.error || approvalTxState.error}
           approvalHash={approvalTxState.txHash}
           actionHash={mainTxState.txHash}
@@ -133,6 +141,7 @@ export const SupplyActions = ({
           actionHash={mainTxState.txHash}
           chainId={connectedChainId}
           usePermit={usePermit}
+          action="supply"
         />
       </Box>
       {(mainTxState.error || approvalTxState.error) && (
@@ -148,12 +157,18 @@ export const SupplyActions = ({
       {hasAmount && requiresApproval && !approved && !approvalTxState.error && (
         <Button
           variant="outlined"
-          onClick={() => approval(amountToSupply, poolReserve.underlyingAsset)}
+          onClick={() => approval(amountToSupply, poolAddress)}
           disabled={approved || loading}
         >
           <Trans>
             {!approved && !loading ? 'APPROVE TO CONTINUE' : ''}
-            {!approved && loading ? `APPROVING ${poolReserve.symbol}...` : ''}
+            {!approved && loading
+              ? `APPROVING ${
+                  poolAddress !== API_ETH_MOCK_ADDRESS.toLowerCase()
+                    ? poolReserve.symbol
+                    : poolReserve.symbol.substring(1)
+                }...`
+              : ''}
           </Trans>
         </Button>
       )}
@@ -165,9 +180,19 @@ export const SupplyActions = ({
         >
           <Trans>
             {!mainTxState.txHash && !mainTxState.error && (!loading || !approved)
-              ? `SUPPLY ${poolReserve.symbol}`
+              ? `SUPPLY ${
+                  poolAddress !== API_ETH_MOCK_ADDRESS.toLowerCase()
+                    ? poolReserve.symbol
+                    : poolReserve.symbol.substring(1)
+                }`
               : ''}
-            {approved && loading ? `SUPPLY ${poolReserve.symbol} PENDING...` : ''}
+            {approved && loading
+              ? `SUPPLY ${
+                  poolAddress !== API_ETH_MOCK_ADDRESS.toLowerCase()
+                    ? poolReserve.symbol
+                    : poolReserve.symbol.substring(1)
+                } PENDING...`
+              : ''}
           </Trans>
         </Button>
       )}

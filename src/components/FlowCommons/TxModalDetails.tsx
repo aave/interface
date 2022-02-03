@@ -1,11 +1,10 @@
 import { Trans } from '@lingui/macro';
-import { Grid, SvgIcon, Typography } from '@mui/material';
-import React from 'react';
+import { FormControlLabel, Grid, SvgIcon, Switch, Typography } from '@mui/material';
+import React, { Dispatch, SetStateAction } from 'react';
 
 import { FormInfo } from '../FormItems/FormInfo';
 import { FormRow } from '../FormItems/FormRow';
 import { FormValue } from '../FormItems/FormValue';
-import { Percentage } from '../Percentage';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { HealthFactorNumber } from '../HealthFactorNumber';
 import { GasStation } from '../GasStation/GasStation';
@@ -13,27 +12,23 @@ import { parseUnits } from 'ethers/lib/utils';
 import { IncentivesButton } from '../incentives/IncentivesButton';
 import { ReserveIncentiveResponse } from 'src/hooks/app-data-provider/useIncentiveData';
 import { CheckIcon } from '@heroicons/react/outline';
+import { FormattedNumber } from '../primitives/FormattedNumber';
 
-export interface SupplyReward {
-  tokenIcon: string;
-  apy: string;
-  tokenName: string;
-}
-export interface SupplyDetailsProps {
-  supplyApy: string;
+export interface TxModalDetailsProps {
+  apy?: string;
   // supplyRewards: SupplyReward[];
-  showHf: boolean;
-  healthFactor: string;
-  futureHealthFactor: string;
+  showHf?: boolean;
+  healthFactor?: string;
+  futureHealthFactor?: string;
   gasLimit?: string;
   incentives?: ReserveIncentiveResponse[];
-  symbol: string;
-  usedAsCollateral: boolean;
+  symbol?: string;
+  usedAsCollateral?: boolean;
+  setWithdrawUnWrapped?: Dispatch<SetStateAction<boolean>>;
 }
 
-export const SupplyDetails: React.FC<SupplyDetailsProps> = ({
-  supplyApy,
-  // supplyRewards,
+export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
+  apy,
   showHf,
   healthFactor,
   futureHealthFactor,
@@ -41,22 +36,43 @@ export const SupplyDetails: React.FC<SupplyDetailsProps> = ({
   incentives,
   symbol,
   usedAsCollateral,
+  setWithdrawUnWrapped,
 }) => {
+  const [checked, setChecked] = React.useState(true);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleChange = (event: any) => {
+    setChecked(event.target.checked);
+    setWithdrawUnWrapped && setWithdrawUnWrapped(checked);
+  };
+
   return (
     <Grid container direction="row" alignItems="center" rowSpacing={'12px'} sx={{ mb: '24px' }}>
-      <FormRow>
-        <FormInfo>
-          <Typography variant="description">
-            <Trans>Supply APY</Trans>
-          </Typography>
-        </FormInfo>
-        <FormValue>
-          <Typography variant="description">
-            <Percentage value={Number(supplyApy).toFixed(2)} />
-          </Typography>
-        </FormValue>
-      </FormRow>
-      {incentives && (
+      {setWithdrawUnWrapped && symbol && (
+        <FormRow>
+          <FormControlLabel
+            value="darkmode"
+            control={<Switch disableRipple checked={checked} onClick={handleChange} />}
+            labelPlacement="end"
+            label={''}
+          />
+          <Typography>{`Unwrap ${symbol} (to withdraw ${symbol.substring(1)})`}</Typography>
+          <FormInfo />
+        </FormRow>
+      )}
+      {apy && (
+        <FormRow>
+          <FormInfo>
+            <Typography variant="description">
+              <Trans>Supply APY</Trans>
+            </Typography>
+          </FormInfo>
+          <FormValue>
+            <FormattedNumber value={Number(apy)} percent variant="description" />
+          </FormValue>
+        </FormRow>
+      )}
+      {incentives && symbol && (
         <FormRow>
           <FormInfo>
             <Typography variant="description">
@@ -68,22 +84,24 @@ export const SupplyDetails: React.FC<SupplyDetailsProps> = ({
           </FormValue>
         </FormRow>
       )}
-      <FormRow>
-        <FormInfo>
-          <Typography variant="description">
-            <Trans>Used as collateral</Trans>
-          </Typography>
-        </FormInfo>
-        <FormValue sx={{ display: 'flex', flexDirection: 'row' }}>
-          <SvgIcon sx={{ color: 'green' }}>
-            <CheckIcon />
-          </SvgIcon>
-          <Typography variant="description" color={usedAsCollateral ? '#46BC4B' : '#00244D'}>
-            <Trans>{usedAsCollateral ? 'Yes' : 'No'}</Trans>
-          </Typography>
-        </FormValue>
-      </FormRow>
-      {showHf && (
+      {usedAsCollateral && (
+        <FormRow>
+          <FormInfo>
+            <Typography variant="description">
+              <Trans>Used as collateral</Trans>
+            </Typography>
+          </FormInfo>
+          <FormValue sx={{ display: 'flex', flexDirection: 'row' }}>
+            <SvgIcon sx={{ color: 'green' }}>
+              <CheckIcon />
+            </SvgIcon>
+            <Typography variant="description" color={usedAsCollateral ? '#46BC4B' : '#00244D'}>
+              <Trans>{usedAsCollateral ? 'Yes' : 'No'}</Trans>
+            </Typography>
+          </FormValue>
+        </FormRow>
+      )}
+      {showHf && healthFactor && futureHealthFactor && (
         <FormRow>
           <FormInfo>
             <Typography variant="description">

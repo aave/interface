@@ -15,8 +15,8 @@ interface UseTransactionHandlerProps {
 }
 
 export type TxStateType = {
-  txHash: string | null;
-  error: string | null;
+  txHash?: string;
+  error?: string;
 };
 
 export const useTransactionHandler = ({
@@ -33,14 +33,8 @@ export const useTransactionHandler = ({
   const [usePermit, setUsePermit] = useState<boolean>(tryPermit);
   const [signature, setSignature] = useState<SignatureLike>();
   const [approved, setApproved] = useState<boolean>(false);
-  const [approvalTxState, setApprovalTxState] = useState<TxStateType>({
-    txHash: null,
-    error: null,
-  });
-  const [mainTxState, setMainTxState] = useState<TxStateType>({
-    txHash: null,
-    error: null,
-  });
+  const [approvalTxState, setApprovalTxState] = useState<TxStateType>({});
+  const [mainTxState, setMainTxState] = useState<TxStateType>({});
 
   const approvalTx = txs.find((tx) => tx.txType === 'ERC20_APPROVAL');
   const actionTx = txs.find((tx) => ['DLP_ACTION'].includes(tx.txType));
@@ -97,27 +91,29 @@ export const useTransactionHandler = ({
             reserve: underlyingAsset,
             amount,
           });
+          console.log('sign payload: ', unsingedPayload);
           try {
             setLoading(true);
             const signature = await signTxData(unsingedPayload);
+            console.log('signature: ', signature);
             setSignature(signature);
             setApproved(true);
             setApprovalTxState({
               txHash: 'Signed correctly',
-              error: null,
+              error: undefined,
             });
 
             setLoading(false);
           } catch (error) {
             setApprovalTxState({
-              txHash: null,
+              txHash: undefined,
               error: error.message.toString(),
             });
             setLoading(false);
           }
         } catch (error) {
           setApprovalTxState({
-            txHash: null,
+            txHash: undefined,
             error: error.message.toString(),
           });
         }
@@ -131,19 +127,19 @@ export const useTransactionHandler = ({
               setApproved(true);
               setApprovalTxState({
                 txHash: txnResponse.hash,
-                error: null,
+                error: undefined,
               });
             },
             errorCallback: (error, hash) => {
               setApprovalTxState({
-                txHash: hash || null,
+                txHash: hash,
                 error: error.message.toString(),
               });
             },
           });
         } catch (error) {
           setApprovalTxState({
-            txHash: null,
+            txHash: undefined,
             error: error.message.toString(),
           });
         }
@@ -163,19 +159,19 @@ export const useTransactionHandler = ({
           successCallback: (txnResponse: TransactionResponse) => {
             setMainTxState({
               txHash: txnResponse.hash,
-              error: null,
+              error: undefined,
             });
           },
           errorCallback: (error, hash) => {
             setMainTxState({
-              txHash: hash || null,
+              txHash: hash,
               error: error.message.toString(),
             });
           },
         });
       } catch (error) {
         setMainTxState({
-          txHash: null,
+          txHash: undefined,
           error: error.message.toString(),
         });
       }
@@ -189,19 +185,19 @@ export const useTransactionHandler = ({
           successCallback: (txnResponse: TransactionResponse) => {
             setMainTxState({
               txHash: txnResponse.hash,
-              error: null,
+              error: undefined,
             });
           },
           errorCallback: (error, hash) => {
             setMainTxState({
-              txHash: hash || null,
+              txHash: hash,
               error: error.message.toString(),
             });
           },
         });
       } catch (error) {
         setMainTxState({
-          txHash: null,
+          txHash: undefined,
           error: error.message.toString(),
         });
       }
@@ -210,14 +206,8 @@ export const useTransactionHandler = ({
 
   const resetStates = () => {
     setUsePermit(false);
-    setMainTxState({
-      error: null,
-      txHash: null,
-    });
-    setApprovalTxState({
-      error: null,
-      txHash: null,
-    });
+    setMainTxState({});
+    setApprovalTxState({});
     setApproved(false);
   };
 
@@ -225,15 +215,15 @@ export const useTransactionHandler = ({
   useEffect(() => {
     // good enough for now, but might need debounce or similar for swaps
     if (!skip) {
-      setLoading(true);
+      // setLoading(true);
       handleGetTxns()
         .then((data) => {
           data && setTxs(data);
-          setLoading(false);
+          // setLoading(false);
         })
         .catch((error) => {
           setMainTxState({
-            txHash: null,
+            txHash: undefined,
             error: error.message.toString(),
           });
         });
