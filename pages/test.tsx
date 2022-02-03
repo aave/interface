@@ -9,7 +9,7 @@ export default function Page() {
   if (loading || !data?.length) return null;
   return (
     <>
-      <div style={{ height: 300, width: 800, marginLeft: 20, marginTop: 20 }}>
+      <div style={{ height: 300, marginLeft: 20, marginTop: 20 }}>
         <ParentSize>
           {(parent) => (
             <ApyChart
@@ -21,7 +21,7 @@ export default function Page() {
           )}
         </ParentSize>
       </div>
-      <div style={{ height: 400, width: 800, marginLeft: 20, marginTop: 20 }}>
+      <div style={{ height: 300, marginLeft: 20, marginTop: 20 }}>
         <ParentSize>
           {(parent) => (
             <ApyChart

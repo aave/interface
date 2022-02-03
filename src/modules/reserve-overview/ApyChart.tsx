@@ -47,7 +47,7 @@ export const ApyChart = withTooltip<AreaProps, TooltipData>(
   ({
     width,
     height,
-    margin = { top: 10, right: 10, bottom: 20, left: 30 },
+    margin = { top: 10, right: 10, bottom: 20, left: 40 },
     showTooltip,
     hideTooltip,
     tooltipData,
@@ -110,8 +110,8 @@ export const ApyChart = withTooltip<AreaProps, TooltipData>(
               <Fragment key={field.name}>
                 <LinearGradient
                   id={`area-gradient-${field.name}`}
-                  from={lighten(field.color, 0.5)}
-                  to={lighten(field.color, 0.5)}
+                  from={lighten(field.color, 0.4)}
+                  to={lighten(field.color, 0.9)}
                   toOpacity={0}
                 />
                 <AreaClosed<FormattedReserveHistoryItem>
@@ -142,8 +142,9 @@ export const ApyChart = withTooltip<AreaProps, TooltipData>(
               tickLabelProps={() => ({
                 fill: theme.palette.text.secondary,
                 fontSize: 8,
-                dx: -12,
+                dx: -6,
               })}
+              numTicks={innerWidth < 800 ? 5 : 8}
             />
             <AxisLeft
               left={0}
@@ -152,8 +153,10 @@ export const ApyChart = withTooltip<AreaProps, TooltipData>(
               tickLabelProps={() => ({
                 fill: theme.palette.text.secondary,
                 fontSize: 8,
-                dx: -14,
+                dx: -24,
               })}
+              numTicks={5}
+              tickFormat={(value) => `${(value as number).toFixed(2)} %`}
             />
             <Bar
               width={innerWidth}
