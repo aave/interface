@@ -10,6 +10,7 @@ import HelpOutlinedIcon from '@mui/icons-material/HelpOutlined';
 import { useReserveRatesHistory } from 'src/hooks/useReservesHistory';
 import { ParentSize } from '@visx/responsive';
 import { ApyChart } from '../reserve-overview/ApyChart';
+import { InterestRateModelChart } from '../reserve-overview/InterestRateModelChart';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
   <Box
@@ -194,7 +195,13 @@ export const ReserveConfiguration = () => {
 
         <PanelRow>
           <PanelTitle>Interest rate model</PanelTitle>
-          <div />
+          <div style={{ height: 300, marginLeft: 0, marginTop: 20, width: 400 }}>
+            <ParentSize>
+              {(parent) => (
+                <InterestRateModelChart width={parent.width} height={parent.height} data={data} />
+              )}
+            </ParentSize>
+          </div>
         </PanelRow>
       </Paper>
     </>
