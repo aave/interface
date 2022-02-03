@@ -163,6 +163,7 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
         handleClose={handleClose}
         poolAddress={borrowUnWrapped ? API_ETH_MOCK_ADDRESS : poolReserve.underlyingAsset}
         interestRateMode={interestRateMode}
+        isWrongNetwork={isWrongNetwork}
       />
     </>
   );
