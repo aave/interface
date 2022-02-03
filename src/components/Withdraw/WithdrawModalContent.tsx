@@ -99,6 +99,7 @@ export const WithdrawModalContent = ({
     displayAmountToWithdraw = maxAmountToWithdraw;
   }
 
+  // TODO: use blockingError to not permit to continue flow
   let blockingError = '';
   let totalCollateralInETHAfterWithdraw = valueToBigNumber(
     user.totalCollateralMarketReferenceCurrency
