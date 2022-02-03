@@ -2,7 +2,7 @@ import React, { useMemo, useCallback, Fragment } from 'react';
 import { AreaClosed, Line, Bar, LinePath } from '@visx/shape';
 import { curveMonotoneX } from '@visx/curve';
 import { scaleTime, scaleLinear } from '@visx/scale';
-import { withTooltip, Tooltip, TooltipWithBounds, defaultStyles } from '@visx/tooltip';
+import { withTooltip, defaultStyles, TooltipWithBounds } from '@visx/tooltip';
 import { WithTooltipProvidedProps } from '@visx/tooltip/lib/enhancers/withTooltip';
 import { localPoint } from '@visx/event';
 import { LinearGradient } from '@visx/gradient';
@@ -16,10 +16,8 @@ import { useTheme } from '@mui/material';
 
 type TooltipData = FormattedReserveHistoryItem;
 
-export const background = '#3b6978';
-export const background2 = '#204051';
-export const accentColor = lighten('#2EBAC6', 0.7);
-export const accentColorDark = '#75daad';
+const background = '#3b6978';
+const accentColorDark = '#75daad';
 const tooltipStyles = {
   ...defaultStyles,
   background,
@@ -45,7 +43,7 @@ export type AreaProps = {
   fields: { name: Field; color: string }[];
 };
 
-export const LiquidityChart = withTooltip<AreaProps, TooltipData>(
+export const ApyChart = withTooltip<AreaProps, TooltipData>(
   ({
     width,
     height,
@@ -73,7 +71,7 @@ export const LiquidityChart = withTooltip<AreaProps, TooltipData>(
         }),
       [innerWidth, data]
     );
-    const stockValueScale = useMemo(() => {
+    const yValueScale = useMemo(() => {
       const valueMax = Math.max(
         ...fields.map((field) => max(data, (d) => getData(d, field.name)) as number)
       );
@@ -112,15 +110,15 @@ export const LiquidityChart = withTooltip<AreaProps, TooltipData>(
               <Fragment key={field.name}>
                 <LinearGradient
                   id={`area-gradient-${field.name}`}
-                  from={lighten(field.color, 0.4)}
-                  to={lighten(field.color, 0.4)}
+                  from={lighten(field.color, 0.5)}
+                  to={lighten(field.color, 0.5)}
                   toOpacity={0}
                 />
                 <AreaClosed<FormattedReserveHistoryItem>
                   data={data}
                   x={(d) => dateScale(getDate(d)) ?? 0}
-                  y={(d) => stockValueScale(getData(d, field.name)) ?? 0}
-                  yScale={stockValueScale}
+                  y={(d) => yValueScale(getData(d, field.name)) ?? 0}
+                  yScale={yValueScale}
                   strokeWidth={0}
                   fill={`url(#area-gradient-${field.name})`}
                   curve={curveMonotoneX}
@@ -130,7 +128,7 @@ export const LiquidityChart = withTooltip<AreaProps, TooltipData>(
                   strokeWidth={2}
                   data={data}
                   x={(d) => dateScale(getDate(d)) ?? 0}
-                  y={(d) => stockValueScale(getData(d, field.name)) ?? 0}
+                  y={(d) => yValueScale(getData(d, field.name)) ?? 0}
                   curve={curveMonotoneX}
                 />
               </Fragment>
@@ -149,7 +147,7 @@ export const LiquidityChart = withTooltip<AreaProps, TooltipData>(
             />
             <AxisLeft
               left={0}
-              scale={stockValueScale}
+              scale={yValueScale}
               strokeWidth={0}
               tickLabelProps={() => ({
                 fill: theme.palette.text.secondary,
@@ -181,7 +179,7 @@ export const LiquidityChart = withTooltip<AreaProps, TooltipData>(
                     <Fragment key={field.name}>
                       <circle
                         cx={tooltipLeft}
-                        cy={stockValueScale(getData(tooltipData, field.name)) + 1}
+                        cy={yValueScale(getData(tooltipData, field.name)) + 1}
                         r={4}
                         fill="black"
                         fillOpacity={0.1}
@@ -192,7 +190,7 @@ export const LiquidityChart = withTooltip<AreaProps, TooltipData>(
                       />
                       <circle
                         cx={tooltipLeft}
-                        cy={stockValueScale(getData(tooltipData, field.name))}
+                        cy={yValueScale(getData(tooltipData, field.name))}
                         r={4}
                         fill={accentColorDark}
                         stroke="white"
@@ -208,16 +206,13 @@ export const LiquidityChart = withTooltip<AreaProps, TooltipData>(
         </svg>
         {tooltipData && (
           <div>
-            {/*<TooltipWithBounds
-              key={Math.random()}
-              top={tooltipTop - 12}
-              left={tooltipLeft + 12}
-              style={tooltipStyles}
-            >
+            <TooltipWithBounds top={20} left={tooltipLeft + 12} style={tooltipStyles}>
               {formatDate(getDate(tooltipData))}
               <br />
-              {getStockValue(tooltipData).toFixed(2)} %
-            </TooltipWithBounds>*/}
+              {fields.map((field) => (
+                <div key={field.name}>{getData(tooltipData, field.name).toFixed(2)} %</div>
+              ))}
+            </TooltipWithBounds>
           </div>
         )}
       </div>

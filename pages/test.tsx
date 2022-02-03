@@ -1,6 +1,6 @@
 import React from 'react';
 import { ParentSize } from '@visx/responsive';
-import { LiquidityChart } from 'src/modules/reserve-overview/LiquidityChart';
+import { ApyChart } from 'src/modules/reserve-overview/ApyChart';
 import { useReserveRatesHistory } from 'src/hooks/useReservesHistory';
 // import dynamic from 'next/dynamic';
 
@@ -12,7 +12,7 @@ export default function Page() {
       <div style={{ height: 300, width: 800, marginLeft: 20, marginTop: 20 }}>
         <ParentSize>
           {(parent) => (
-            <LiquidityChart
+            <ApyChart
               width={parent.width}
               height={parent.height}
               data={data}
@@ -24,7 +24,7 @@ export default function Page() {
       <div style={{ height: 400, width: 800, marginLeft: 20, marginTop: 20 }}>
         <ParentSize>
           {(parent) => (
-            <LiquidityChart
+            <ApyChart
               width={parent.width}
               height={parent.height}
               data={data}
