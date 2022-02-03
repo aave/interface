@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { FormControlLabel, Grid, SvgIcon, Switch, Typography } from '@mui/material';
+import { FormControlLabel, Grid, GridProps, SvgIcon, Switch, Typography } from '@mui/material';
 import React, { Dispatch, SetStateAction } from 'react';
 
 import { FormInfo } from '../FormItems/FormInfo';
@@ -14,7 +14,7 @@ import { ReserveIncentiveResponse } from 'src/hooks/app-data-provider/useIncenti
 import { CheckIcon } from '@heroicons/react/outline';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 
-export interface TxModalDetailsProps {
+export interface TxModalDetailsProps extends GridProps {
   apy?: string;
   // supplyRewards: SupplyReward[];
   showHf?: boolean;
@@ -37,6 +37,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   symbol,
   usedAsCollateral,
   setWithdrawUnWrapped,
+  ...props
 }) => {
   const [checked, setChecked] = React.useState(true);
 
@@ -47,7 +48,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   };
 
   return (
-    <Grid container direction="row" alignItems="center" rowSpacing={'12px'} sx={{ mb: '24px' }}>
+    <Grid container direction="row" alignItems="center" rowSpacing={'12px'} {...props}>
       {setWithdrawUnWrapped && symbol && (
         <FormRow>
           <FormControlLabel

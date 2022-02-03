@@ -1,5 +1,6 @@
 import { CheckIcon, ChevronLeftIcon, ChevronRightIcon, CogIcon } from '@heroicons/react/solid';
 import { t, Trans } from '@lingui/macro';
+import { useRouter } from 'next/router';
 import { useLingui } from '@lingui/react';
 import {
   Box,
@@ -26,13 +27,17 @@ const langMap = {
 };
 
 export function SettingsMenu() {
+  const router = useRouter();
   const { i18n } = useLingui();
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [languagesOpen, setLanguagesOpen] = useState(false);
-
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
+  const testnetsEnabledId = 'testnetsEnabled';
+  const testnetsEnabledLocalstorage = localStorage.getItem(testnetsEnabledId) === 'true' || false;
+  const [testnetsEnabled, setTestnetsMode] = useState(testnetsEnabledLocalstorage);
+
   const handleSettingsClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setAnchorEl(event.currentTarget);
     setSettingsOpen(true);
@@ -53,6 +58,13 @@ export function SettingsMenu() {
     setAnchorEl(null);
     setSettingsOpen(false);
     setLanguagesOpen(false);
+  };
+
+  const toggleTestnetsEnabled = () => {
+    const newState = !testnetsEnabled;
+    setTestnetsMode(!testnetsEnabled);
+    localStorage.setItem(testnetsEnabledId, newState ? 'true' : 'false');
+    router.reload(window.location.pathname);
   };
 
   return (
@@ -96,6 +108,19 @@ export function SettingsMenu() {
               value="darkmode"
               control={<Switch disableRipple checked={theme.palette.mode === 'dark'} />}
               label={theme.palette.mode === 'dark' ? 'On' : 'Off'}
+              labelPlacement="start"
+            />
+          </MenuItem>
+          <MenuItem disableRipple>
+            <ListItemText>
+              <Trans>Enable Testnet mode</Trans>
+            </ListItemText>
+            <FormControlLabel
+              value="testnetsMode"
+              control={
+                <Switch disableRipple checked={testnetsEnabled} onChange={toggleTestnetsEnabled} />
+              }
+              label={testnetsEnabled ? 'On' : 'Off'}
               labelPlacement="start"
             />
           </MenuItem>
