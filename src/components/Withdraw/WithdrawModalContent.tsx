@@ -45,7 +45,7 @@ export const WithdrawModalContent = ({
     (reserve) => reserve.underlyingAsset === underlyingAsset
   ) as ComputedReserveData;
 
-  const [withdrawUnWrapped, setWithdrawUnWrapped] = useState(false);
+  const [withdrawUnWrapped, setWithdrawUnWrapped] = useState(true);
 
   if (!user) {
     return null;
@@ -160,7 +160,11 @@ export const WithdrawModalContent = ({
             onChange={setAmount}
             // usdValue={amountInUsd.toString()}
             balance={maxAmountToWithdraw.toString()}
-            symbol={withdrawUnWrapped ? poolReserve.symbol : poolReserve.symbol.substring(1)}
+            symbol={
+              withdrawUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
+                ? poolReserve.symbol.substring(1)
+                : poolReserve.symbol
+            }
           />
           <TxModalDetails
             showHf={showHealthFactor}
@@ -172,6 +176,7 @@ export const WithdrawModalContent = ({
                 ? setWithdrawUnWrapped
                 : undefined
             }
+            actionUnWrapped={withdrawUnWrapped}
             symbol={poolReserve.symbol}
           />
         </>
@@ -191,7 +196,11 @@ export const WithdrawModalContent = ({
         setWithdrawTxState={setWithdrawTxState}
         amountToWithdraw={amountToWithdraw.toString()}
         handleClose={handleClose}
-        poolAddress={withdrawUnWrapped ? poolReserve.underlyingAsset : API_ETH_MOCK_ADDRESS}
+        poolAddress={
+          withdrawUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
+            ? API_ETH_MOCK_ADDRESS
+            : poolReserve.underlyingAsset
+        }
         isWrongNetwork={isWrongNetwork}
       />
     </>

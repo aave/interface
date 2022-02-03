@@ -92,9 +92,15 @@ export const WithdrawActions = ({
         <Button variant="outlined" onClick={action} disabled={loading || isWrongNetwork}>
           <Trans>
             {!loading
-              ? `WITHDRAW ${poolReserve.symbol}`
+              ? `WITHDRAW ${
+                  poolAddress !== API_ETH_MOCK_ADDRESS
+                    ? poolReserve.symbol
+                    : poolReserve.symbol.substring(1)
+                }`
               : `WITHDRAW ${
-                  poolAddress !== API_ETH_MOCK_ADDRESS ?? poolReserve.symbol.substring(1)
+                  poolAddress !== API_ETH_MOCK_ADDRESS
+                    ? poolReserve.symbol
+                    : poolReserve.symbol.substring(1)
                 } PENDING...`}
           </Trans>
         </Button>
