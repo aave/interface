@@ -1,7 +1,6 @@
 import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import {
   calculateHealthFactorFromBalancesBigUnits,
-  ComputedUserReserve,
   USD_DECIMALS,
   valueToBigNumber,
 } from '@aave/math-utils';
@@ -52,23 +51,12 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
     return null;
   }
 
-  const userReserve = user.userReservesData.find((userReserve) => {
-    if (underlyingAsset === API_ETH_MOCK_ADDRESS.toLowerCase() || borrowUnWrapped) {
-      return poolReserve.underlyingAsset === userReserve.underlyingAsset;
-    }
-    return underlyingAsset === userReserve.underlyingAsset;
-  }) as ComputedUserReserve;
-
-  console.log('underlying asset: ', underlyingAsset);
-  console.log('pool reserve', reserves);
-
-  // interest rate mode calcs
-  const currentStableBorrowRate =
-    userReserve && userReserve.stableBorrows !== '0' && poolReserve.stableBorrowAPY;
-  const newBorrowRate =
-    interestRateMode === InterestRate.Variable
-      ? poolReserve.variableBorrowAPY
-      : poolReserve.stableBorrowAPY;
+  // const userReserve = user.userReservesData.find((userReserve) => {
+  //   if (underlyingAsset === API_ETH_MOCK_ADDRESS.toLowerCase() || borrowUnWrapped) {
+  //     return poolReserve.underlyingAsset === userReserve.underlyingAsset;
+  //   }
+  //   return underlyingAsset === userReserve.underlyingAsset;
+  // }) as ComputedUserReserve;
 
   // amount calculations
   const maxAmountToBorrow = getMaxAmountAvailalbeToBorrow(poolReserve, user);
@@ -136,21 +124,26 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
             onChange={setAmountToBorrow}
             // usdValue={amountInUsd.toString()}
             balance={formattedMaxAmountToBorrow}
-            symbol={borrowUnWrapped ? poolReserve.symbol : poolReserve.symbol.substring(1)}
+            symbol={borrowUnWrapped ? poolReserve.symbol.substring(1) : poolReserve.symbol}
           />
           <TxModalDetails
             showHf={true}
             healthFactor={user.healthFactor}
             futureHealthFactor={newHealthFactor.toString()}
             gasLimit={gasLimit}
+            incentives={poolReserve.vIncentivesData}
+            stableRateIncentives={poolReserve.sIncentivesData}
             setActionUnWrapped={
               poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
                 ? setBorrowUnWrapped
                 : undefined
             }
             symbol={poolReserve.symbol}
-            borrowVariableRate={poolReserve.variableBorrowAPY}
-            borrowStableRate={poolReserve.stableBorrowAPY}
+            apy={poolReserve.variableBorrowAPY}
+            borrowStableRate={
+              poolReserve.stableBorrowRateEnabled ? poolReserve.stableBorrowAPY : undefined
+            }
+            setInterestRateMode={setInterestRateMode}
           />
         </>
       )}
