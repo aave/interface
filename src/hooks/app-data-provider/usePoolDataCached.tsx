@@ -20,7 +20,7 @@ export function usePoolDataCached(
 ) {
   const { loading: poolDataLoading, subscribeToMore: subscribeToProtocolData } =
     useC_ProtocolDataQuery({
-      variables: { lendingPoolAddressProvider },
+      variables: { lendingPoolAddressProvider, chainId },
       skip,
       context: { target: APOLLO_QUERY_TARGET.CHAIN(chainId) },
     });
@@ -31,7 +31,7 @@ export function usePoolDataCached(
         C_ProtocolDataUpdateSubscriptionVariables
       >({
         document: C_ProtocolDataUpdateDocument,
-        variables: { lendingPoolAddressProvider },
+        variables: { lendingPoolAddressProvider, chainId },
         updateQuery: (previousQueryResult, { subscriptionData }) => {
           const protocolDataUpdate = subscriptionData.data?.protocolDataUpdate;
 
@@ -49,7 +49,7 @@ export function usePoolDataCached(
   }, [subscribeToProtocolData, lendingPoolAddressProvider, skip]);
 
   const { loading: userDataLoading, subscribeToMore: subscribeToUserData } = useC_UserDataQuery({
-    variables: { lendingPoolAddressProvider, userAddress: currentAccount || '' },
+    variables: { lendingPoolAddressProvider, userAddress: currentAccount || '', chainId },
     skip: !currentAccount || skip,
     context: { target: APOLLO_QUERY_TARGET.CHAIN(chainId) },
   });
@@ -60,7 +60,7 @@ export function usePoolDataCached(
         C_UserDataUpdateSubscriptionVariables
       >({
         document: C_UserDataUpdateDocument,
-        variables: { lendingPoolAddressProvider, userAddress: currentAccount || '' },
+        variables: { lendingPoolAddressProvider, userAddress: currentAccount || '', chainId },
         updateQuery: (previousQueryResult, { subscriptionData }) => {
           const userData = subscriptionData.data?.userDataUpdate;
           if (!userData) {

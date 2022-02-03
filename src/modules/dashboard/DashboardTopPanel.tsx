@@ -1,5 +1,6 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
+import { Box } from '@mui/material';
 import * as React from 'react';
 import { useState } from 'react';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -35,51 +36,57 @@ export const DashboardTopPanel = () => {
         withMarketSwitcher
         bridge={currentNetworkConfig.bridge}
       >
-        <TopInfoPanelItem title={<Trans>Net worth</Trans>}>
-          {currentAccount ? (
-            <FormattedNumber value={Number(user?.netWorthUSD || 0)} symbol="USD" variant="main21" />
-          ) : (
-            <NoData variant="secondary21" sx={{ opacity: '0.7' }} />
-          )}
-        </TopInfoPanelItem>
-        <TopInfoPanelItem title={<Trans>Net APY</Trans>}>
-          {currentAccount ? (
-            <FormattedNumber
-              value={((user?.earnedAPY || 0) - (user?.debtAPY || 0)) / 100}
-              variant="main21"
-              percent
-            />
-          ) : (
-            <NoData variant="secondary21" sx={{ opacity: '0.7' }} />
-          )}
-        </TopInfoPanelItem>
-
-        {currentAccount && user?.healthFactor !== '-1' && (
-          <TopInfoPanelItem
-            title={
-              <TextWithModal
-                text={<Trans>Health factor</Trans>}
-                iconSize={13}
-                iconColor="#FFFFFF3B"
-                withContentButton
-              >
-                <HFInfoContent />
-              </TextWithModal>
-            }
-          >
-            <HealthFactorNumber
-              value={user?.healthFactor || '-1'}
-              variant="main21"
-              onInfoClick={() => setOpen(true)}
-            />
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '32px', flexWrap: 'wrap' }}>
+          <TopInfoPanelItem title={<Trans>Net worth</Trans>}>
+            {currentAccount ? (
+              <FormattedNumber
+                value={Number(user?.netWorthUSD || 0)}
+                symbol="USD"
+                variant="main21"
+              />
+            ) : (
+              <NoData variant="secondary21" sx={{ opacity: '0.7' }} />
+            )}
           </TopInfoPanelItem>
-        )}
-
-        {currentAccount && user?.currentLoanToValue !== '0' && (
-          <TopInfoPanelItem title={<Trans>Current LTV</Trans>}>
-            <FormattedNumber value={loanToValue} variant="main21" percent />
+          <TopInfoPanelItem title={<Trans>Net APY</Trans>}>
+            {currentAccount ? (
+              <FormattedNumber
+                value={((user?.earnedAPY || 0) - (user?.debtAPY || 0)) / 100}
+                variant="main21"
+                percent
+              />
+            ) : (
+              <NoData variant="secondary21" sx={{ opacity: '0.7' }} />
+            )}
           </TopInfoPanelItem>
-        )}
+
+          {currentAccount && user?.healthFactor !== '-1' && (
+            <TopInfoPanelItem
+              title={
+                <TextWithModal
+                  text={<Trans>Health factor</Trans>}
+                  iconSize={13}
+                  iconColor="#FFFFFF3B"
+                  withContentButton
+                >
+                  <HFInfoContent />
+                </TextWithModal>
+              }
+            >
+              <HealthFactorNumber
+                value={user?.healthFactor || '-1'}
+                variant="main21"
+                onInfoClick={() => setOpen(true)}
+              />
+            </TopInfoPanelItem>
+          )}
+
+          {currentAccount && user?.currentLoanToValue !== '0' && (
+            <TopInfoPanelItem title={<Trans>Current LTV</Trans>}>
+              <FormattedNumber value={loanToValue} variant="main21" percent />
+            </TopInfoPanelItem>
+          )}
+        </Box>
       </TopInfoPanel>
 
       <LiquidationRiskParametresInfoModal
