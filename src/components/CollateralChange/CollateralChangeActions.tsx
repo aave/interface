@@ -74,16 +74,18 @@ export const CollateralChangeActions = ({
         />
       </Box>
       {!mainTxState.txHash && !mainTxState.error && (
-        <Button variant="outlined" onClick={action} disabled={loading || isWrongNetwork}>
-          <Trans>
-            {!loading
-              ? `${usageAsCollateral ? 'ENABLE' : 'DISABLE'} ${poolReserve.symbol} AS COLLATERAL`
-              : `PENDING...`}
-          </Trans>
+        <Button variant="contained" onClick={action} disabled={loading || isWrongNetwork}>
+          {!loading ? (
+            <Trans>
+              {usageAsCollateral ? 'ENABLE' : 'DISABLE'} ${poolReserve.symbol} AS COLLATERAL
+            </Trans>
+          ) : (
+            <Trans>PENDING...</Trans>
+          )}
         </Button>
       )}
       {(mainTxState.txHash || mainTxState.error) && (
-        <Button onClick={handleClose} variant="outlined">
+        <Button onClick={handleClose} variant="contained">
           <Trans>OK, CLOSE</Trans>
         </Button>
       )}

@@ -1,7 +1,7 @@
 import { ChainId } from '@aave/contract-helpers';
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Link, SvgIcon, Typography } from '@mui/material';
+import { Box, SvgIcon, Link } from '@mui/material';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 export type RightHelperTextProps = {
@@ -11,6 +11,12 @@ export type RightHelperTextProps = {
   usePermit?: boolean;
   action: string;
 };
+
+const ExtLinkIcon = () => (
+  <SvgIcon sx={{ ml: '2px', fontSize: '11px' }}>
+    <ExternalLinkIcon />
+  </SvgIcon>
+);
 
 export const RightHelperText = ({
   approvalHash,
@@ -23,34 +29,29 @@ export const RightHelperText = ({
   return (
     <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
       {approvalHash && !actionHash && !usePermit && (
-        <Typography
-          component={Link}
+        <Link
           variant="helperText"
           href={networkConfig.explorerLinkBuilder({ tx: approvalHash })}
           target="_blank"
+          sx={{ display: 'inline-flex', alignItems: 'center' }}
+          underline={'hover'}
         >
-          <>
-            <Trans>Review approve tx details</Trans>
-            <SvgIcon sx={{ ml: '2px' }} fontSize="small">
-              <ExternalLinkIcon />
-            </SvgIcon>
-          </>
-        </Typography>
+          <Trans>Review approve tx details</Trans>
+          <ExtLinkIcon />
+        </Link>
       )}
       {actionHash && (
-        <Typography
-          component={Link}
+        <Link
           variant="helperText"
           href={networkConfig.explorerLinkBuilder({ tx: actionHash })}
+          sx={{ display: 'inline-flex', alignItems: 'center' }}
+          underline="hover"
+          rel="noopener"
           target="_blank"
         >
-          <div>
-            <Trans>Review {action} tx details</Trans>
-            <SvgIcon sx={{ ml: '2px' }} fontSize="small">
-              <ExternalLinkIcon />
-            </SvgIcon>
-          </div>
-        </Typography>
+          <Trans>Review {action} tx details</Trans>
+          <ExtLinkIcon />
+        </Link>
       )}
     </Box>
   );

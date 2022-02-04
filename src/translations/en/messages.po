@@ -25,6 +25,14 @@ msgstr ""
 msgid "A message (you are very close to liquidation)."
 msgstr ""
 
+#: src/components/Supply/SupplyActions.tsx:168
+msgid "APPROVE TO CONTINUE"
+msgstr ""
+
+#: src/components/Supply/SupplyActions.tsx:172
+msgid "APPROVING {0}...`"
+msgstr ""
+
 #: src/components/incentives/IncentivesInfoModal.tsx:37
 #: src/components/incentives/IncentivesInfoModal.tsx:44
 msgid "APR"
@@ -63,7 +71,7 @@ msgstr "About the app"
 msgid "Adding and removing assets as collateral"
 msgstr ""
 
-#: src/components/FlowCommons/Success.tsx:28
+#: src/components/FlowCommons/Success.tsx:41
 msgid "All done!"
 msgstr ""
 
@@ -124,6 +132,14 @@ msgstr ""
 msgid "Available to supply"
 msgstr ""
 
+#: src/components/Borrow/BorrowActions.tsx:101
+msgid "BORROW {0}"
+msgstr ""
+
+#: src/components/Borrow/BorrowActions.tsx:110
+msgid "BORROW {0} PENDING..."
+msgstr ""
+
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:60
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx:18
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx:37
@@ -136,8 +152,8 @@ msgstr ""
 msgid "Borrow"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:70
-#: src/components/FlowCommons/TxModalDetails.tsx:102
+#: src/components/FlowCommons/TxModalDetails.tsx:75
+#: src/components/FlowCommons/TxModalDetails.tsx:107
 msgid "Borrow APY rate"
 msgstr ""
 
@@ -170,7 +186,11 @@ msgstr ""
 msgid "Borrow power used"
 msgstr ""
 
-#: src/components/FlowCommons/Error.tsx:43
+#: src/components/Supply/SupplyActions.tsx:209
+msgid "CLOSE"
+msgstr ""
+
+#: src/components/FlowCommons/Error.tsx:55
 msgid "COPY ERROR"
 msgstr ""
 
@@ -211,11 +231,11 @@ msgstr ""
 msgid "Current LTV"
 msgstr ""
 
-#: src/components/GasStation/GasStation.tsx:155
+#: src/components/GasStation/GasStation.tsx:143
 msgid "Custom"
 msgstr ""
 
-#: src/layouts/SettingsMenu.tsx:93
+#: src/layouts/SettingsMenu.tsx:105
 msgid "Dark mode"
 msgstr ""
 
@@ -272,16 +292,20 @@ msgid "E-mode message"
 msgstr ""
 
 #: src/components/Borrow/BorrowActions.tsx:95
-#: src/components/Supply/SupplyActions.tsx:156
+#: src/components/Supply/SupplyActions.tsx:159
 #: src/components/Withdraw/WithdrawActions.tsx:88
 msgid "ENTER AN AMOUNT"
+msgstr ""
+
+#: src/layouts/SettingsMenu.tsx:116
+msgid "Enable Testnet mode"
 msgstr ""
 
 #: src/layouts/SettingsMenu.tsx:23
 #~ msgid "Englis"
 #~ msgstr ""
 
-#: src/layouts/SettingsMenu.tsx:24
+#: src/layouts/SettingsMenu.tsx:25
 msgid "English"
 msgstr "English"
 
@@ -289,7 +313,7 @@ msgstr "English"
 #~ msgid "Estimated Gas Costs"
 #~ msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:210
+#: src/components/FlowCommons/TxModalDetails.tsx:221
 msgid "Estimated Tx cost"
 msgstr ""
 
@@ -308,7 +332,7 @@ msgstr ""
 msgid "Github"
 msgstr ""
 
-#: src/layouts/SettingsMenu.tsx:87
+#: src/layouts/SettingsMenu.tsx:99
 msgid "Global settings"
 msgstr ""
 
@@ -328,7 +352,7 @@ msgstr "Go to Home page"
 msgid "Governance"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:188
+#: src/components/FlowCommons/TxModalDetails.tsx:199
 #: src/components/infoModalContents/HFInfoContent.tsx:8
 #: src/modules/dashboard/DashboardTopPanel.tsx:67
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:69
@@ -355,7 +379,7 @@ msgstr ""
 msgid "Isolated asset"
 msgstr ""
 
-#: src/layouts/SettingsMenu.tsx:104
+#: src/layouts/SettingsMenu.tsx:129
 msgid "Language"
 msgstr ""
 
@@ -363,7 +387,7 @@ msgstr ""
 msgid "Learn more"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:201
+#: src/components/FlowCommons/TxModalDetails.tsx:212
 msgid "Liquidation at"
 msgstr ""
 
@@ -397,7 +421,7 @@ msgstr ""
 msgid "Markets overview"
 msgstr ""
 
-#: src/components/AssetInput.tsx:57
+#: src/components/AssetInput.tsx:63
 msgid "Max"
 msgstr ""
 
@@ -438,9 +462,12 @@ msgstr ""
 msgid "Nothing supplied yet"
 msgstr ""
 
-#: src/components/Borrow/BorrowActions.tsx:117
-#: src/components/Supply/SupplyActions.tsx:203
-#: src/components/Withdraw/WithdrawActions.tsx:104
+#: src/components/Supply/SupplyActions.tsx:208
+msgid "OK,"
+msgstr ""
+
+#: src/components/Borrow/BorrowActions.tsx:123
+#: src/components/Withdraw/WithdrawActions.tsx:116
 msgid "OK, CLOSE"
 msgstr ""
 
@@ -463,6 +490,10 @@ msgstr ""
 msgid "Oracle price"
 msgstr ""
 
+#: src/components/Supply/SupplyActions.tsx:201
+msgid "PENDING..."
+msgstr ""
+
 #: src/components/Supply/SupplyModalContent.tsx:146
 #~ msgid "Please Switch to {0}."
 #~ msgstr ""
@@ -475,7 +506,7 @@ msgstr ""
 msgid "Please, connect your wallet"
 msgstr ""
 
-#: src/components/Supply/SupplyActions.tsx:151
+#: src/components/Supply/SupplyActions.tsx:154
 msgid "RETRY WITH APPROVAL"
 msgstr ""
 
@@ -500,7 +531,7 @@ msgstr ""
 msgid "Retry with Approval"
 msgstr ""
 
-#: src/components/FlowCommons/RightHelperText.tsx:33
+#: src/components/FlowCommons/RightHelperText.tsx:39
 msgid "Review approve tx details"
 msgstr ""
 
@@ -508,7 +539,7 @@ msgstr ""
 #~ msgid "Review supply tx details"
 #~ msgstr ""
 
-#: src/components/FlowCommons/RightHelperText.tsx:48
+#: src/components/FlowCommons/RightHelperText.tsx:52
 msgid "Review {action} tx details"
 msgstr ""
 
@@ -516,8 +547,8 @@ msgstr ""
 #~ msgid "Reward"
 #~ msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:138
-#: src/components/FlowCommons/TxModalDetails.tsx:155
+#: src/components/FlowCommons/TxModalDetails.tsx:149
+#: src/components/FlowCommons/TxModalDetails.tsx:166
 msgid "Rewards APR"
 msgstr ""
 
@@ -527,6 +558,10 @@ msgstr ""
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/HFContent.tsx:49
 msgid "Riskier"
+msgstr ""
+
+#: src/components/Supply/SupplyActions.tsx:191
+msgid "SUPPLY {0}"
 msgstr ""
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/HFContent.tsx:43
@@ -541,7 +576,7 @@ msgstr ""
 msgid "Select Aave Market"
 msgstr ""
 
-#: src/layouts/SettingsMenu.tsx:133
+#: src/layouts/SettingsMenu.tsx:158
 msgid "Select language"
 msgstr ""
 
@@ -561,7 +596,7 @@ msgstr ""
 msgid "Some newly listed assets have limited exposure until the Aave governance decides otherwise."
 msgstr ""
 
-#: src/layouts/SettingsMenu.tsx:25
+#: src/layouts/SettingsMenu.tsx:26
 msgid "Spanish"
 msgstr "Spanish"
 
@@ -666,11 +701,11 @@ msgstr ""
 msgid "Total supplied"
 msgstr ""
 
-#: src/components/FlowCommons/Error.tsx:22
+#: src/components/FlowCommons/Error.tsx:34
 msgid "Transaction failed"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:171
+#: src/components/FlowCommons/TxModalDetails.tsx:182
 msgid "Used as collateral"
 msgstr ""
 
@@ -688,6 +723,14 @@ msgstr ""
 
 #: src/layouts/WalletWidget.tsx:236
 msgid "View on Explorer"
+msgstr ""
+
+#: src/components/Withdraw/WithdrawActions.tsx:94
+msgid "WITHDRAW {0}"
+msgstr ""
+
+#: src/components/Withdraw/WithdrawActions.tsx:103
+msgid "WITHDRAW {0} PENDING..."
 msgstr ""
 
 #: pages/faucet.tsx:54
@@ -716,11 +759,11 @@ msgstr ""
 msgid "You are about to get supply capped. FAQ link"
 msgstr ""
 
-#: src/components/FlowCommons/Error.tsx:25
+#: src/components/FlowCommons/Error.tsx:37
 msgid "You can report incident to our <0>Discord</0> or <1>Github</1>."
 msgstr ""
 
-#: src/components/FlowCommons/Success.tsx:31
+#: src/components/FlowCommons/Success.tsx:44
 msgid "You {action} {amount} {symbol}"
 msgstr ""
 
@@ -762,22 +805,20 @@ msgstr ""
 msgid "rewards"
 msgstr ""
 
-#: src/components/GasStation/GasStation.tsx:112
+#: src/components/GasStation/GasStation.tsx:100
 msgid "{0, select, slow {Slow} normal {Normal} fast {Fast} other {-}}"
 msgstr ""
 
-#: src/components/Borrow/BorrowActions.tsx:100
-#: src/components/FlowCommons/TxModalDetails.tsx:179
-#: src/components/Withdraw/WithdrawActions.tsx:93
+#: src/components/FlowCommons/TxModalDetails.tsx:190
 msgid "{0}"
 msgstr ""
 
 #: src/components/Supply/SupplyActions.tsx:165
 #: src/components/Supply/SupplyActions.tsx:183
-msgid "{0}{1}"
-msgstr ""
+#~ msgid "{0}{1}"
+#~ msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:126
+#: src/components/FlowCommons/TxModalDetails.tsx:137
 msgid "{action} APY"
 msgstr ""
 
@@ -785,6 +826,6 @@ msgstr ""
 msgid "{title}"
 msgstr ""
 
-#: src/components/GasStation/GasButton.tsx:24
+#: src/components/GasStation/GasButton.tsx:29
 msgid "{value}"
 msgstr ""
