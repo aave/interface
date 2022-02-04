@@ -1,9 +1,4 @@
-import {
-  API_ETH_MOCK_ADDRESS,
-  ChainId,
-  EthereumTransactionTypeExtended,
-  GasType,
-} from '@aave/contract-helpers';
+import { ChainId, EthereumTransactionTypeExtended, GasType } from '@aave/contract-helpers';
 import { Dispatch, SetStateAction, useEffect } from 'react';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -25,6 +20,7 @@ export type WithdrawActionsProps = {
   handleClose: () => void;
   poolAddress: string;
   isWrongNetwork: boolean;
+  symbol: string;
 };
 
 export const WithdrawActions = ({
@@ -35,6 +31,7 @@ export const WithdrawActions = ({
   handleClose,
   poolAddress,
   isWrongNetwork,
+  symbol,
 }: WithdrawActionsProps) => {
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
@@ -91,22 +88,11 @@ export const WithdrawActions = ({
       {hasAmount && !mainTxState.txHash && !mainTxState.error && (
         <Button variant="contained" onClick={action} disabled={loading || isWrongNetwork}>
           {!loading ? (
-            <Trans>
-              WITHDRAW{' '}
-              {poolAddress !== API_ETH_MOCK_ADDRESS
-                ? poolReserve.symbol
-                : poolReserve.symbol.substring(1)}
-            </Trans>
+            <Trans>WITHDRAW {symbol}</Trans>
           ) : (
             <>
               <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-              <Trans>
-                WITHDRAW{' '}
-                {poolAddress !== API_ETH_MOCK_ADDRESS
-                  ? poolReserve.symbol
-                  : poolReserve.symbol.substring(1)}{' '}
-                PENDING...
-              </Trans>
+              <Trans>WITHDRAW {symbol} PENDING...</Trans>
             </>
           )}
         </Button>

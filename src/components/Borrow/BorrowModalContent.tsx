@@ -12,8 +12,8 @@ import {
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
-import { getMaxAmountAvailalbeToBorrow } from 'src/utils/utils';
 import { AssetInput } from '../AssetInput';
 import { TxErrorView } from '../FlowCommons/Error';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -59,7 +59,7 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
   // }) as ComputedUserReserve;
 
   // amount calculations
-  const maxAmountToBorrow = getMaxAmountAvailalbeToBorrow(poolReserve, user);
+  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user);
   const formattedMaxAmountToBorrow = maxAmountToBorrow.toString(10);
 
   // amount checks
@@ -129,7 +129,7 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
             balance={formattedMaxAmountToBorrow}
             symbol={
               borrowUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
-                ? poolReserve.symbol.substring(1)
+                ? networkConfig.baseAssetSymbol
                 : poolReserve.symbol
             }
           />
@@ -145,6 +145,7 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
                 ? setBorrowUnWrapped
                 : undefined
             }
+            unWrappedSymbol={networkConfig.baseAssetSymbol}
             actionUnWrapped={borrowUnWrapped}
             symbol={poolReserve.symbol}
             apy={poolReserve.variableBorrowAPY}
@@ -174,6 +175,11 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
         }
         interestRateMode={interestRateMode}
         isWrongNetwork={isWrongNetwork}
+        symbol={
+          borrowUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
+            ? networkConfig.baseAssetSymbol
+            : poolReserve.symbol
+        }
       />
     </>
   );
