@@ -5,7 +5,7 @@ import {
   GasType,
   InterestRate,
 } from '@aave/contract-helpers';
-import { Box, Button } from '@mui/material';
+import { Box, Button, CircularProgress } from '@mui/material';
 import { Dispatch, SetStateAction, useEffect } from 'react';
 import { TxState } from 'src/helpers/types';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
@@ -91,29 +91,35 @@ export const BorrowActions = ({
         />
       </Box>
       {!hasAmount && (
-        <Button variant="outlined" disabled>
+        <Button variant="contained" disabled>
           <Trans>ENTER AN AMOUNT</Trans>
         </Button>
       )}
       {hasAmount && !mainTxState.txHash && !mainTxState.error && (
-        <Button variant="outlined" onClick={action} disabled={loading || isWrongNetwork}>
-          <Trans>
-            {!loading
-              ? `BORROW ${
-                  poolAddress !== API_ETH_MOCK_ADDRESS
-                    ? poolReserve.symbol
-                    : poolReserve.symbol.substring(1)
-                }`
-              : `BORROW ${
-                  poolAddress !== API_ETH_MOCK_ADDRESS
-                    ? poolReserve.symbol
-                    : poolReserve.symbol.substring(1)
-                } PENDING...`}
-          </Trans>
+        <Button variant="contained" onClick={action} disabled={loading || isWrongNetwork}>
+          {!loading ? (
+            <Trans>
+              BORROW{' '}
+              {poolAddress !== API_ETH_MOCK_ADDRESS
+                ? poolReserve.symbol
+                : poolReserve.symbol.substring(1)}
+            </Trans>
+          ) : (
+            <>
+              <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
+              <Trans>
+                BORROW{' '}
+                {poolAddress !== API_ETH_MOCK_ADDRESS
+                  ? poolReserve.symbol
+                  : poolReserve.symbol.substring(1)}{' '}
+                PENDING...
+              </Trans>
+            </>
+          )}
         </Button>
       )}
       {(mainTxState.txHash || mainTxState.error) && (
-        <Button onClick={handleClose} variant="outlined">
+        <Button onClick={handleClose} variant="contained">
           <Trans>OK, CLOSE</Trans>
         </Button>
       )}
