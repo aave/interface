@@ -208,8 +208,10 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                     height={parent.height}
                     data={data}
                     fields={[
-                      { name: 'stableBorrowRate', color: '#0062D2' },
                       { name: 'variableBorrowRate', color: '#B6509E' },
+                      ...(reserve.stableBorrowRateEnabled
+                        ? ([{ name: 'stableBorrowRate', color: '#0062D2' }] as const)
+                        : []),
                     ]}
                   />
                 )}

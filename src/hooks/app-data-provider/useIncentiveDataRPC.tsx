@@ -47,15 +47,16 @@ export function useIncentivesDataRPC(
 
   // Fetch and format reserve incentive data from UiIncentiveDataProvider contract
   const fetchReserveIncentiveData = async () => {
+    if (!incentiveDataProviderAddress) return;
     setLoadingReserveIncentives(true);
     const provider = getProvider(chainId);
-    const incentiveDataProviderContract = new UiIncentiveDataProvider({
-      provider,
-      uiIncentiveDataProviderAddress: incentiveDataProviderAddress!,
-      chainId,
-    });
 
     try {
+      const incentiveDataProviderContract = new UiIncentiveDataProvider({
+        provider,
+        uiIncentiveDataProviderAddress: incentiveDataProviderAddress,
+        chainId,
+      });
       const rawReserveIncentiveData =
         await incentiveDataProviderContract.getReservesIncentivesDataHumanized({
           lendingPoolAddressProvider,
@@ -84,18 +85,19 @@ export function useIncentivesDataRPC(
 
   // Fetch and format user incentive data from UiIncentiveDataProvider
   const fetchUserIncentiveData = async () => {
+    if (!incentiveDataProviderAddress || !currentAccount) return;
     setLoadingUserIncentives(true);
     const provider = getProvider(chainId);
-    const incentiveDataProviderContract = new UiIncentiveDataProvider({
-      uiIncentiveDataProviderAddress: incentiveDataProviderAddress!,
-      provider,
-      chainId,
-    });
 
     try {
+      const incentiveDataProviderContract = new UiIncentiveDataProvider({
+        uiIncentiveDataProviderAddress: incentiveDataProviderAddress,
+        provider,
+        chainId,
+      });
       const rawUserIncentiveData: UserReservesIncentivesDataHumanized[] =
         await incentiveDataProviderContract.getUserReservesIncentivesDataHumanized({
-          user: currentAccount!,
+          user: currentAccount,
           lendingPoolAddressProvider,
         });
       cache.writeQuery<C_UserIncentivesQuery>({

@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback, Fragment } from 'react';
 import { Line, Bar, LinePath } from '@visx/shape';
 import { curveMonotoneX } from '@visx/curve';
-import { scaleLinear } from '@visx/scale';
+import { scaleLinear, scaleOrdinal } from '@visx/scale';
 import { withTooltip, defaultStyles, TooltipWithBounds } from '@visx/tooltip';
 import { WithTooltipProvidedProps } from '@visx/tooltip/lib/enhancers/withTooltip';
 import { localPoint } from '@visx/event';
@@ -19,6 +19,16 @@ import {
   valueToZDBigNumber,
 } from '@aave/math-utils';
 import { BigNumber } from 'bignumber.js';
+import {
+  Legend,
+  LegendLinear,
+  LegendQuantile,
+  LegendOrdinal,
+  LegendSize,
+  LegendThreshold,
+  LegendItem,
+  LegendLabel,
+} from '@visx/legend';
 
 type TooltipData = Rate;
 
@@ -58,10 +68,10 @@ const getStableRate = (d: Rate) => d.stableRate * 100;
 const resolution = 100;
 const step = 1 / resolution;
 
-const getAPY = (rate: BigNumber) =>
-  rayPow(valueToZDBigNumber(rate).dividedBy(SECONDS_PER_YEAR).plus(RAY), SECONDS_PER_YEAR).minus(
-    RAY
-  );
+// const getAPY = (rate: BigNumber) =>
+//   rayPow(valueToZDBigNumber(rate).dividedBy(SECONDS_PER_YEAR).plus(RAY), SECONDS_PER_YEAR).minus(
+//     RAY
+//   );
 
 function getRates({
   variableRateSlope1,
@@ -75,7 +85,7 @@ function getRates({
   const rates: Rate[] = [];
   const formattedOptimalUtilisationRate = normalizeBN(optimalUtilisationRate, 27).toNumber();
 
-  for (let i = 0; i < resolution; i++) {
+  for (let i = 0; i <= resolution; i++) {
     const utilization = i * step;
     if (utilization === 0) {
       rates.push({
@@ -85,21 +95,14 @@ function getRates({
       });
     } else if (utilization < formattedOptimalUtilisationRate) {
       const theoreticalStableAPY = normalizeBN(
-        getAPY(
-          new BigNumber(baseStableBorrowRate).plus(
-            rayDiv(rayMul(stableRateSlope1, normalizeBN(utilization, -27)), optimalUtilisationRate)
-          )
+        new BigNumber(baseStableBorrowRate).plus(
+          rayDiv(rayMul(stableRateSlope1, normalizeBN(utilization, -27)), optimalUtilisationRate)
         ),
         27
       ).toNumber();
       const theoreticalVariableAPY = normalizeBN(
-        getAPY(
-          new BigNumber(baseVariableBorrowRate).plus(
-            rayDiv(
-              rayMul(variableRateSlope1, normalizeBN(utilization, -27)),
-              optimalUtilisationRate
-            )
-          )
+        new BigNumber(baseVariableBorrowRate).plus(
+          rayDiv(rayMul(variableRateSlope1, normalizeBN(utilization, -27)), optimalUtilisationRate)
         ),
         27
       ).toNumber();
@@ -114,19 +117,15 @@ function getRates({
         RAY.minus(optimalUtilisationRate)
       );
       const theoreticalStableAPY = normalizeBN(
-        getAPY(
-          new BigNumber(baseStableBorrowRate)
-            .plus(stableRateSlope1)
-            .plus(rayMul(stableRateSlope2, excess))
-        ),
+        new BigNumber(baseStableBorrowRate)
+          .plus(stableRateSlope1)
+          .plus(rayMul(stableRateSlope2, excess)),
         27
       ).toNumber();
       const theoreticalVariableAPY = normalizeBN(
-        getAPY(
-          new BigNumber(baseVariableBorrowRate)
-            .plus(variableRateSlope1)
-            .plus(rayMul(variableRateSlope2, excess))
-        ),
+        new BigNumber(baseVariableBorrowRate)
+          .plus(variableRateSlope1)
+          .plus(rayMul(variableRateSlope2, excess)),
         27
       ).toNumber();
       rates.push({
@@ -156,15 +155,15 @@ export const InterestRateModelChart = withTooltip<AreaProps, TooltipData>(
     tooltipData,
     tooltipLeft = 0,
     reserve = {
-      optimalUtilisationRate: '450000000000000000000000000',
-      stableBorrowRateEnabled: true,
+      optimalUtilisationRate: '650000000000000000000000000',
+      stableBorrowRateEnabled: false,
       stableRateSlope1: '100000000000000000000000000',
       stableRateSlope2: '3000000000000000000000000000',
-      variableRateSlope1: '70000000000000000000000000',
+      variableRateSlope1: '80000000000000000000000000',
       variableRateSlope2: '3000000000000000000000000000',
       utilizationRate: '40000000000000000000000000',
-      baseVariableBorrowRate: '100000000000000000000000000',
-      baseStableBorrowRate: '300000000000000000000000000',
+      baseVariableBorrowRate: '000000000000000000000000000',
+      baseStableBorrowRate: '30000000000000000000000000',
     },
   }: AreaProps & WithTooltipProvidedProps<TooltipData>) => {
     if (width < 10) return null;
@@ -230,12 +229,18 @@ export const InterestRateModelChart = withTooltip<AreaProps, TooltipData>(
       },
     ];
 
+    const ordinalColorScale = scaleOrdinal({
+      domain: ['a', 'b', 'c', 'd'],
+      range: ['#66d981', '#71f5ef', '#4899f1', '#7d81f6'],
+    });
+
     return (
       <div>
         <svg width={width} height={height}>
           <Group left={margin.left} top={margin.top}>
+            <LegendOrdinal scale={ordinalColorScale} />
             <LinePath
-              stroke={'#ff0000'}
+              stroke={'#0062D2'}
               strokeWidth={2}
               data={data}
               x={(d) => dateScale(getDate(d)) ?? 0}
@@ -243,7 +248,7 @@ export const InterestRateModelChart = withTooltip<AreaProps, TooltipData>(
               curve={curveMonotoneX}
             />
             <LinePath
-              stroke={'#ffff00'}
+              stroke={'#B6509E'}
               strokeWidth={2}
               data={data}
               x={(d) => dateScale(getDate(d)) ?? 0}

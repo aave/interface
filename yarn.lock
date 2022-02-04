@@ -4288,6 +4288,17 @@
     classnames "^2.3.1"
     prop-types "^15.6.2"
 
+"@visx/legend@^2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@visx/legend/-/legend-2.2.2.tgz#38d39469c7608e7268a8f716f81f80d3a656dfae"
+  integrity sha512-Pf77v3h12P5W2w5Iw1z+hucJVk19GOg+2R3N+O0SODDeaWg3pyN4eJMcs2LdYSfNWGkcejGu4G9Q/UUgjv7ihw==
+  dependencies:
+    "@types/react" "*"
+    "@visx/group" "2.1.0"
+    "@visx/scale" "2.2.2"
+    classnames "^2.3.1"
+    prop-types "^15.5.10"
+
 "@visx/mock-data@^2.1.2":
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/@visx/mock-data/-/mock-data-2.1.2.tgz#e3e2130d5617694a34e62dcfa7ede3275db72ccd"
