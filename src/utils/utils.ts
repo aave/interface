@@ -1,7 +1,3 @@
-import { FormatUserSummaryAndIncentivesResponse, valueToBigNumber } from '@aave/math-utils';
-import BigNumber from 'bignumber.js';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-
 export function hexToAscii(_hex: string): string {
   const hex = _hex.toString();
   let str = '';
