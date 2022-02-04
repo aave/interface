@@ -8,6 +8,7 @@ import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListItemAPYButton } from '../ListItemAPYButton';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
+import { useModalContext } from 'src/hooks/useModal';
 
 export const BorrowedPositionsListItem = ({
   reserve,
@@ -16,6 +17,7 @@ export const BorrowedPositionsListItem = ({
   borrowRateMode,
   stableBorrowAPY,
 }: ComputedUserReserveData & { borrowRateMode: InterestRate }) => {
+  const { openBorrow } = useModalContext();
   const {
     isActive,
     isFrozen,
@@ -62,7 +64,7 @@ export const BorrowedPositionsListItem = ({
         <Button
           disabled={!isActive || !borrowingEnabled || isFrozen}
           variant="outlined"
-          onClick={() => console.log('TODO: should be borrow modal')}
+          onClick={() => openBorrow(reserve.underlyingAsset)}
         >
           <Trans>Borrow</Trans>
         </Button>

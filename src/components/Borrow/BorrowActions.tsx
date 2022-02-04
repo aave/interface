@@ -1,38 +1,45 @@
-import { ChainId, EthereumTransactionTypeExtended, GasType } from '@aave/contract-helpers';
+import {
+  ChainId,
+  EthereumTransactionTypeExtended,
+  GasType,
+  InterestRate,
+} from '@aave/contract-helpers';
+import { Box, Button, CircularProgress } from '@mui/material';
 import { Dispatch, SetStateAction, useEffect } from 'react';
+import { TxState } from 'src/helpers/types';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useGasStation } from 'src/hooks/useGasStation';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { GasOption } from '../GasStation/GasStationProvider';
 import { RightHelperText } from '../FlowCommons/RightHelperText';
-import { Box, Button, CircularProgress } from '@mui/material';
+import { GasOption } from '../GasStation/GasStationProvider';
 import { Trans } from '@lingui/macro';
-import { TxState } from 'src/helpers/types';
 
-export type WithdrawActionsProps = {
+export type BorrowActionsProps = {
   poolReserve: ComputedReserveData;
   setGasLimit: Dispatch<SetStateAction<string | undefined>>;
-  setWithdrawTxState: Dispatch<SetStateAction<TxState>>;
-  amountToWithdraw: string;
+  setBorrowTxState: Dispatch<SetStateAction<TxState>>;
+  amountToBorrow: string;
   handleClose: () => void;
   poolAddress: string;
+  interestRateMode: InterestRate;
   isWrongNetwork: boolean;
   symbol: string;
 };
 
-export const WithdrawActions = ({
+export const BorrowActions = ({
+  symbol,
   poolReserve,
   setGasLimit,
-  amountToWithdraw,
-  setWithdrawTxState,
+  amountToBorrow,
+  setBorrowTxState,
   handleClose,
   poolAddress,
+  interestRateMode,
   isWrongNetwork,
-  symbol,
-}: WithdrawActionsProps) => {
+}: BorrowActionsProps) => {
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
   const { currentAccount, chainId: connectedChainId } = useWeb3Context();
@@ -42,11 +49,15 @@ export const WithdrawActions = ({
     tryPermit:
       currentMarketData.v3 && chainId !== ChainId.harmony && chainId !== ChainId.harmony_testnet,
     handleGetTxns: async () => {
-      const tx: EthereumTransactionTypeExtended[] = await lendingPool.withdraw({
+      const tx: EthereumTransactionTypeExtended[] = await lendingPool.borrow({
+        interestRateMode,
         user: currentAccount,
+        amount: amountToBorrow,
         reserve: poolAddress,
-        amount: amountToWithdraw.toString(),
-        aTokenAddress: poolReserve.aTokenAddress,
+        debtTokenAddress:
+          interestRateMode === InterestRate.Variable
+            ? poolReserve.variableDebtTokenAddress
+            : poolReserve.stableDebtTokenAddress,
       });
 
       const gas: GasType | null = await tx[tx.length - 1].gas();
@@ -57,27 +68,27 @@ export const WithdrawActions = ({
       state.gasOption === GasOption.Custom
         ? state.customGas
         : gasPriceData.data?.[state.gasOption].legacyGasPrice,
-    skip: !amountToWithdraw || parseFloat(amountToWithdraw) === 0,
+    skip: !amountToBorrow || amountToBorrow === '0',
   });
 
   useEffect(() => {
     if (mainTxState.txHash) {
-      setWithdrawTxState({
+      setBorrowTxState({
         success: true,
         error: undefined,
       });
     }
-  }, [setWithdrawTxState, mainTxState.txHash]);
+  }, [setBorrowTxState, mainTxState.txHash]);
 
-  const hasAmount = amountToWithdraw && amountToWithdraw !== '0';
-  // TODO: hash link not working
+  const hasAmount = amountToBorrow && amountToBorrow !== '0';
+
   return (
     <Box sx={{ mt: '16px', display: 'flex', flexDirection: 'column' }}>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
         <RightHelperText
           actionHash={mainTxState.txHash}
           chainId={connectedChainId}
-          action="withdraw"
+          action="borrow"
         />
       </Box>
       {!hasAmount && (
@@ -88,11 +99,11 @@ export const WithdrawActions = ({
       {hasAmount && !mainTxState.txHash && !mainTxState.error && (
         <Button variant="contained" onClick={action} disabled={loading || isWrongNetwork}>
           {!loading ? (
-            <Trans>WITHDRAW {symbol}</Trans>
+            <Trans>BORROW {symbol}</Trans>
           ) : (
             <>
               <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-              <Trans>WITHDRAW {symbol} PENDING...</Trans>
+              <Trans>BORROW {symbol} PENDING...</Trans>
             </>
           )}
         </Button>

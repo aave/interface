@@ -1,38 +1,34 @@
 import { ChainId, EthereumTransactionTypeExtended, GasType } from '@aave/contract-helpers';
+import { Trans } from '@lingui/macro';
+import { Box, Button } from '@mui/material';
 import { Dispatch, SetStateAction, useEffect } from 'react';
+import { TxState } from 'src/helpers/types';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useGasStation } from 'src/hooks/useGasStation';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { GasOption } from '../GasStation/GasStationProvider';
 import { RightHelperText } from '../FlowCommons/RightHelperText';
-import { Box, Button, CircularProgress } from '@mui/material';
-import { Trans } from '@lingui/macro';
-import { TxState } from 'src/helpers/types';
+import { GasOption } from '../GasStation/GasStationProvider';
 
-export type WithdrawActionsProps = {
+export type CollateralChangeActionsProps = {
   poolReserve: ComputedReserveData;
   setGasLimit: Dispatch<SetStateAction<string | undefined>>;
-  setWithdrawTxState: Dispatch<SetStateAction<TxState>>;
-  amountToWithdraw: string;
+  setCollateralChangeTxState: Dispatch<SetStateAction<TxState>>;
   handleClose: () => void;
-  poolAddress: string;
   isWrongNetwork: boolean;
-  symbol: string;
+  usageAsCollateral: boolean;
 };
 
-export const WithdrawActions = ({
+export const CollateralChangeActions = ({
   poolReserve,
   setGasLimit,
-  amountToWithdraw,
-  setWithdrawTxState,
+  setCollateralChangeTxState,
   handleClose,
-  poolAddress,
   isWrongNetwork,
-  symbol,
-}: WithdrawActionsProps) => {
+  usageAsCollateral,
+}: CollateralChangeActionsProps) => {
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
   const { currentAccount, chainId: connectedChainId } = useWeb3Context();
@@ -42,11 +38,10 @@ export const WithdrawActions = ({
     tryPermit:
       currentMarketData.v3 && chainId !== ChainId.harmony && chainId !== ChainId.harmony_testnet,
     handleGetTxns: async () => {
-      const tx: EthereumTransactionTypeExtended[] = await lendingPool.withdraw({
+      const tx: EthereumTransactionTypeExtended[] = await lendingPool.setUsageAsCollateral({
         user: currentAccount,
-        reserve: poolAddress,
-        amount: amountToWithdraw.toString(),
-        aTokenAddress: poolReserve.aTokenAddress,
+        reserve: poolReserve.underlyingAsset,
+        usageAsCollateral,
       });
 
       const gas: GasType | null = await tx[tx.length - 1].gas();
@@ -57,43 +52,35 @@ export const WithdrawActions = ({
       state.gasOption === GasOption.Custom
         ? state.customGas
         : gasPriceData.data?.[state.gasOption].legacyGasPrice,
-    skip: !amountToWithdraw || parseFloat(amountToWithdraw) === 0,
+    skip: false,
   });
 
   useEffect(() => {
     if (mainTxState.txHash) {
-      setWithdrawTxState({
+      setCollateralChangeTxState({
         success: true,
         error: undefined,
       });
     }
-  }, [setWithdrawTxState, mainTxState.txHash]);
+  }, [setCollateralChangeTxState, mainTxState.txHash]);
 
-  const hasAmount = amountToWithdraw && amountToWithdraw !== '0';
-  // TODO: hash link not working
   return (
     <Box sx={{ mt: '16px', display: 'flex', flexDirection: 'column' }}>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
         <RightHelperText
           actionHash={mainTxState.txHash}
           chainId={connectedChainId}
-          action="withdraw"
+          action="collateral change"
         />
       </Box>
-      {!hasAmount && (
-        <Button variant="contained" disabled>
-          <Trans>ENTER AN AMOUNT</Trans>
-        </Button>
-      )}
-      {hasAmount && !mainTxState.txHash && !mainTxState.error && (
+      {!mainTxState.txHash && !mainTxState.error && (
         <Button variant="contained" onClick={action} disabled={loading || isWrongNetwork}>
           {!loading ? (
-            <Trans>WITHDRAW {symbol}</Trans>
+            <Trans>
+              {usageAsCollateral ? 'ENABLE' : 'DISABLE'} ${poolReserve.symbol} AS COLLATERAL
+            </Trans>
           ) : (
-            <>
-              <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-              <Trans>WITHDRAW {symbol} PENDING...</Trans>
-            </>
+            <Trans>PENDING...</Trans>
           )}
         </Button>
       )}

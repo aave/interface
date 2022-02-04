@@ -16,8 +16,8 @@ import BigNumber from 'bignumber.js';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { TxErrorView } from '../TxViews/Error';
-import { TxSuccessView } from '../TxViews/Success';
+import { TxErrorView } from '../FlowCommons/Error';
+import { TxSuccessView } from '../FlowCommons/Success';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
@@ -166,7 +166,7 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
             onChange={setAmountToSupply}
             usdValue={amountInUsd.toString()}
             balance={maxAmountToSupply.toString()}
-            symbol={supplyUnWrapped ? poolReserve.symbol.substring(1) : poolReserve.symbol}
+            symbol={supplyUnWrapped ? networkConfig.baseAssetSymbol : poolReserve.symbol}
           />
           <TxModalDetails
             sx={{ mt: '30px' }}
@@ -178,6 +178,7 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
             gasLimit={gasLimit}
             symbol={poolReserve.symbol}
             usedAsCollateral={userReserve.usageAsCollateralEnabledOnUser}
+            action="Supply"
           />
         </>
       )}
@@ -194,6 +195,7 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
         isWrongNetwork={isWrongNetwork}
         setGasLimit={setGasLimit}
         poolAddress={supplyUnWrapped ? underlyingAsset : poolReserve.underlyingAsset}
+        symbol={supplyUnWrapped ? networkConfig.baseAssetSymbol : poolReserve.symbol}
       />
     </>
   );

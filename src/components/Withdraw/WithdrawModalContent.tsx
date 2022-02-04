@@ -17,8 +17,8 @@ import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import BigNumber from 'bignumber.js';
 import { WithdrawActions } from './WithdrawActions';
-import { TxErrorView } from '../TxViews/Error';
-import { TxSuccessView } from '../TxViews/Success';
+import { TxErrorView } from '../FlowCommons/Error';
+import { TxSuccessView } from '../FlowCommons/Success';
 import { TxState } from 'src/helpers/types';
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 
@@ -45,7 +45,7 @@ export const WithdrawModalContent = ({
     (reserve) => reserve.underlyingAsset === underlyingAsset
   ) as ComputedReserveData;
 
-  const [withdrawUnWrapped, setWithdrawUnWrapped] = useState(false);
+  const [withdrawUnWrapped, setWithdrawUnWrapped] = useState(true);
 
   if (!user) {
     return null;
@@ -99,6 +99,7 @@ export const WithdrawModalContent = ({
     displayAmountToWithdraw = maxAmountToWithdraw;
   }
 
+  // TODO: use blockingError to not permit to continue flow
   let blockingError = '';
   let totalCollateralInETHAfterWithdraw = valueToBigNumber(
     user.totalCollateralMarketReferenceCurrency
@@ -159,18 +160,24 @@ export const WithdrawModalContent = ({
             onChange={setAmount}
             // usdValue={amountInUsd.toString()}
             balance={maxAmountToWithdraw.toString()}
-            symbol={withdrawUnWrapped ? poolReserve.symbol : poolReserve.symbol.substring(1)}
+            symbol={
+              withdrawUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
+                ? networkConfig.baseAssetSymbol
+                : poolReserve.symbol
+            }
           />
           <TxModalDetails
             showHf={showHealthFactor}
             healthFactor={user.healthFactor}
             futureHealthFactor={healthFactorAfterWithdraw.toString()}
             gasLimit={gasLimit}
-            setWithdrawUnWrapped={
+            setActionUnWrapped={
               poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
                 ? setWithdrawUnWrapped
                 : undefined
             }
+            unWrappedSymbol={networkConfig.baseAssetSymbol}
+            actionUnWrapped={withdrawUnWrapped}
             symbol={poolReserve.symbol}
           />
         </>
@@ -190,7 +197,17 @@ export const WithdrawModalContent = ({
         setWithdrawTxState={setWithdrawTxState}
         amountToWithdraw={amountToWithdraw.toString()}
         handleClose={handleClose}
-        poolAddress={withdrawUnWrapped ? poolReserve.underlyingAsset : API_ETH_MOCK_ADDRESS}
+        poolAddress={
+          withdrawUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
+            ? API_ETH_MOCK_ADDRESS
+            : poolReserve.underlyingAsset
+        }
+        isWrongNetwork={isWrongNetwork}
+        symbol={
+          withdrawUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
+            ? networkConfig.baseAssetSymbol
+            : poolReserve.symbol
+        }
       />
     </>
   );
