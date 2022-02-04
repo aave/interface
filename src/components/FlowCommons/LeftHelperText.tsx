@@ -1,6 +1,6 @@
 import { CheckIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import { ApprovalInfoContent } from '../infoModalContents/ApprovalInfoContent';
 import { RetryWithApprovalInfoContent } from '../infoModalContents/RetryWithApprovalInfoContent';
 import { TextWithModal } from '../TextWithModal';
@@ -20,17 +20,17 @@ export const LeftHelperText = ({
   amount,
   requiresApproval,
 }: LeftHelperTextProps) => {
+  const theme = useTheme();
+
   return (
     <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
       {approvalHash && !actionHash && !error && (
-        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start' }}>
-          <Box sx={{ width: '8.39px', height: '6px', color: 'green' }}>
-            <CheckIcon />
-          </Box>
-          <Typography variant="helperText" color="#318435">
+        <>
+          <CheckIcon style={{ width: '12px', color: theme.palette.success.dark }} />
+          <Typography variant="helperText" color="success.dark">
             <Trans>Approve confirmed</Trans>
           </Typography>
-        </Box>
+        </>
       )}
       {error && (
         <TextWithModal
@@ -46,8 +46,9 @@ export const LeftHelperText = ({
         <TextWithModal
           text={<Trans>Why do I need to approve</Trans>}
           iconSize={13}
-          iconColor="#FFFFFF3B"
+          iconColor={theme.palette.text.secondary}
           withContentButton
+          variant="helperText"
         >
           <ApprovalInfoContent />
         </TextWithModal>

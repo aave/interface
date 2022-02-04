@@ -46,17 +46,22 @@ export const BasicModal = ({
           overflowY: 'auto',
           maxWidth: `${contentMaxWidth}px`,
           maxHeight: 'calc(100vh - 20px)',
+          minWidth: {
+            xs: '0px',
+            sm: '400px',
+          },
+          minHeight: {
+            xs: '0px',
+            sm: '372px',
+          },
           p: 6,
         }}
       >
         {children}
 
         {withCloseButton && (
-          <Box sx={{ position: 'absolute', top: '10px', right: '30px', zIndex: 5 }}>
-            <IconButton
-              sx={{ borderRadius: '50%', p: 0, minWidth: 0, position: 'fixed' }}
-              onClick={handleClose}
-            >
+          <Box sx={{ position: 'absolute', top: '24px', right: '24px', zIndex: 5 }}>
+            <IconButton sx={{ borderRadius: '50%', p: 0, minWidth: 0 }} onClick={handleClose}>
               <SvgIcon>
                 <XIcon />
               </SvgIcon>

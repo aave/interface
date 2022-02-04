@@ -43,14 +43,14 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       import('./modalOptions').then((m) => {
         setWeb3Modal(m.getWeb3Modal());
       });
-  }, [chainId, currentAccount]);
+  }, [web3Modal]);
 
-  // provider events subscriptions
-  const initSubscriptions = useCallback(
-    (providerInstance) => {
-      if (!providerInstance.on) {
-        return;
-      }
+  // web 3 modal
+  const connectWallet = useCallback(async () => {
+    const providerInstance = await web3Modal.connect();
+    setWeb3Provider(providerInstance);
+
+    if (providerInstance.on) {
       providerInstance.on('accountsChanged', (accounts: string[]) => {
         setCurrentAccount(accounts[0]);
       });
@@ -58,15 +58,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       providerInstance.on('networkChanged', async () => {
         connectWallet();
       });
-    },
-    [provider?.network.chainId]
-  );
-
-  // web 3 modal
-  const connectWallet = useCallback(async () => {
-    const providerInstance = await web3Modal.connect();
-    setWeb3Provider(providerInstance);
-    await initSubscriptions(providerInstance);
+    }
 
     const ethProvider = new providers.Web3Provider(providerInstance);
     const connectedSigner = await ethProvider.getSigner();
@@ -82,7 +74,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     setConnected(true);
 
     return ethProvider;
-  }, [initSubscriptions, web3Modal]);
+  }, [web3Modal]);
 
   const disconnectWallet = useCallback(async () => {
     web3Modal.clearCachedProvider();
