@@ -20,6 +20,8 @@ import { LanguageProvider } from '../src/libs/LanguageProvider';
 import { ModalContextProvider } from 'src/hooks/useModal';
 import { SupplyModal } from 'src/components/Supply/SupplyModal';
 import { WithdrawModal } from 'src/components/Withdraw/WithdrawModal';
+import { BorrowModal } from 'src/components/Borrow/BorrowModal';
+import { CollateralChangeModal } from 'src/components/CollateralChange/CollateralChangeModal';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -57,6 +59,8 @@ export default function MyApp(props: MyAppProps) {
                             {getLayout(<Component {...pageProps} />)}
                             <SupplyModal />
                             <WithdrawModal />
+                            <BorrowModal />
+                            <CollateralChangeModal />
                           </ModalContextProvider>
                         </AppGlobalStyles>
                       </TxBuilderProvider>
