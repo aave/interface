@@ -1,5 +1,14 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, FormControlLabel, Grid, SvgIcon, Switch, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  FormControlLabel,
+  Grid,
+  GridProps,
+  SvgIcon,
+  Switch,
+  Typography,
+} from '@mui/material';
 import React, { Dispatch, SetStateAction } from 'react';
 
 import { FormInfo } from '../FormItems/FormInfo';
@@ -15,7 +24,7 @@ import { CheckIcon } from '@heroicons/react/outline';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { InterestRate } from '@aave/contract-helpers';
 
-export interface TxModalDetailsProps {
+export interface TxModalDetailsProps extends GridProps {
   apy?: string;
   // supplyRewards: SupplyReward[];
   showHf?: boolean;
@@ -48,6 +57,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   stableRateIncentives,
   setInterestRateMode,
   action,
+  ...props
 }) => {
   const [selectedRate, setSelectedRate] = React.useState(InterestRate.Variable);
 
@@ -57,7 +67,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   };
 
   return (
-    <Grid container direction="row" alignItems="center" rowSpacing={'12px'} sx={{ mb: '24px' }}>
+    <Grid container direction="row" alignItems="center" rowSpacing={'12px'} {...props}>
       {symbol && setInterestRateMode && borrowStableRate && apy && (
         <FormRow>
           <FormInfo>
