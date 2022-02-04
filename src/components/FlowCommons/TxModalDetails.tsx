@@ -41,6 +41,7 @@ export interface TxModalDetailsProps extends GridProps {
   action?: string;
   actionUnWrapped?: boolean;
   walletBalance?: string;
+  unWrappedSymbol?: string;
 }
 
 export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
@@ -59,6 +60,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   setInterestRateMode,
   action,
   walletBalance,
+  unWrappedSymbol,
   ...props
 }) => {
   const [selectedRate, setSelectedRate] = React.useState(InterestRate.Variable);
@@ -114,7 +116,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
           </FormValue>
         </FormRow>
       )}
-      {setActionUnWrapped && symbol && (
+      {setActionUnWrapped && symbol && unWrappedSymbol && (
         <FormRow>
           <FormControlLabel
             value="darkmode"
@@ -128,7 +130,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
             labelPlacement="end"
             label={''}
           />
-          <Typography>{`Unwrap ${symbol} (to withdraw ${symbol.substring(1)})`}</Typography>
+          <Typography>{`Unwrap ${symbol} (to withdraw ${unWrappedSymbol})`}</Typography>
           <FormInfo />
         </FormRow>
       )}
@@ -234,7 +236,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
           </Typography>
         </FormInfo>
         {gasLimit && (
-          <FormValue>
+          <FormValue xs={4}>
             <GasStation gasLimit={parseUnits(gasLimit, 'wei')} />
           </FormValue>
         )}

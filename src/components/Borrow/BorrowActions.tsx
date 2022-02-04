@@ -1,5 +1,4 @@
 import {
-  API_ETH_MOCK_ADDRESS,
   ChainId,
   EthereumTransactionTypeExtended,
   GasType,
@@ -27,9 +26,11 @@ export type BorrowActionsProps = {
   poolAddress: string;
   interestRateMode: InterestRate;
   isWrongNetwork: boolean;
+  symbol: string;
 };
 
 export const BorrowActions = ({
+  symbol,
   poolReserve,
   setGasLimit,
   amountToBorrow,
@@ -98,22 +99,11 @@ export const BorrowActions = ({
       {hasAmount && !mainTxState.txHash && !mainTxState.error && (
         <Button variant="contained" onClick={action} disabled={loading || isWrongNetwork}>
           {!loading ? (
-            <Trans>
-              BORROW{' '}
-              {poolAddress !== API_ETH_MOCK_ADDRESS
-                ? poolReserve.symbol
-                : poolReserve.symbol.substring(1)}
-            </Trans>
+            <Trans>BORROW {symbol}</Trans>
           ) : (
             <>
               <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-              <Trans>
-                BORROW{' '}
-                {poolAddress !== API_ETH_MOCK_ADDRESS
-                  ? poolReserve.symbol
-                  : poolReserve.symbol.substring(1)}{' '}
-                PENDING...
-              </Trans>
+              <Trans>BORROW {symbol} PENDING...</Trans>
             </>
           )}
         </Button>
