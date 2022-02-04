@@ -1,10 +1,4 @@
-import {
-  API_ETH_MOCK_ADDRESS,
-  ChainId,
-  EthereumTransactionTypeExtended,
-  GasType,
-  Pool,
-} from '@aave/contract-helpers';
+import { ChainId, EthereumTransactionTypeExtended, GasType, Pool } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, BoxProps, Button, CircularProgress } from '@mui/material';
 import { Dispatch, SetStateAction, useEffect } from 'react';
@@ -28,6 +22,7 @@ export interface SupplyActionProps extends BoxProps {
   handleClose: () => void;
   setGasLimit: Dispatch<SetStateAction<string | undefined>>;
   poolAddress: string;
+  symbol: string;
 }
 
 export const SupplyActions = ({
@@ -39,6 +34,7 @@ export const SupplyActions = ({
   poolAddress,
   isWrongNetwork,
   sx,
+  symbol,
   ...props
 }: SupplyActionProps) => {
   const { lendingPool } = useTxBuilderContext();
@@ -169,13 +165,7 @@ export const SupplyActions = ({
           {!approved && loading && (
             <>
               <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-              <Trans>
-                APPROVING{' '}
-                {poolAddress !== API_ETH_MOCK_ADDRESS.toLowerCase()
-                  ? poolReserve.symbol
-                  : poolReserve.symbol.substring(1)}
-                ...`
-              </Trans>
+              <Trans>APPROVING {symbol} ...</Trans>
             </>
           )}
         </Button>
@@ -188,17 +178,12 @@ export const SupplyActions = ({
           sx={{ mt: !approved ? 2 : 0 }}
         >
           {!mainTxState.txHash && !mainTxState.error && (!loading || !approved) && (
-            <Trans>
-              SUPPLY{' '}
-              {poolAddress !== API_ETH_MOCK_ADDRESS.toLowerCase()
-                ? poolReserve.symbol
-                : poolReserve.symbol.substring(1)}
-            </Trans>
+            <Trans>SUPPLY {symbol}</Trans>
           )}
           {approved && loading && (
             <>
               <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-              <Trans>PENDING...</Trans>{' '}
+              <Trans>PENDING...</Trans>
             </>
           )}
         </Button>
