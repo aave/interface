@@ -1,4 +1,4 @@
-import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
+import { InformationCircleIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Button, IconButton, SvgIcon, Typography } from '@mui/material';
 import { TypographyProps } from '@mui/material/Typography';
@@ -49,7 +49,7 @@ export const TextWithModal = ({
           }}
         >
           <SvgIcon sx={{ fontSize: iconSize, color: iconColor, borderRadius: '50%' }}>
-            {icon || <QuestionMarkCircleIcon />}
+            {icon || <InformationCircleIcon />}
           </SvgIcon>
         </IconButton>
       </Box>

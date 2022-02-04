@@ -13,7 +13,7 @@ import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { GasOption } from '../GasStation/GasStationProvider';
 import { RightHelperText } from '../FlowCommons/RightHelperText';
-import { Box, Button } from '@mui/material';
+import { Box, Button, CircularProgress } from '@mui/material';
 import { Trans } from '@lingui/macro';
 import { TxState } from 'src/helpers/types';
 
@@ -58,7 +58,7 @@ export const WithdrawActions = ({
       state.gasOption === GasOption.Custom
         ? state.customGas
         : gasPriceData.data?.[state.gasOption].legacyGasPrice,
-    skip: !amountToWithdraw || amountToWithdraw === '0',
+    skip: !amountToWithdraw || parseFloat(amountToWithdraw) === 0,
   });
 
   useEffect(() => {
@@ -82,23 +82,27 @@ export const WithdrawActions = ({
         />
       </Box>
       {!hasAmount && (
-        <Button variant="outlined" disabled>
+        <Button variant="contained" disabled>
           <Trans>ENTER AN AMOUNT</Trans>
         </Button>
       )}
       {hasAmount && !mainTxState.txHash && !mainTxState.error && (
-        <Button variant="outlined" onClick={action} disabled={loading}>
-          <Trans>
-            {!loading
-              ? `WITHDRAW ${poolReserve.symbol}`
-              : `WITHDRAW ${
-                  poolAddress !== API_ETH_MOCK_ADDRESS ?? poolReserve.symbol.substring(1)
-                } PENDING...`}
-          </Trans>
+        <Button variant="contained" onClick={action} disabled={loading}>
+          {!loading ? (
+            <Trans>WITHDRAW {poolReserve.symbol}</Trans>
+          ) : (
+            <>
+              <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
+              <Trans>
+                WITHDRAW {poolAddress !== API_ETH_MOCK_ADDRESS ?? poolReserve.symbol.substring(1)}{' '}
+                PENDING...
+              </Trans>
+            </>
+          )}
         </Button>
       )}
       {(mainTxState.txHash || mainTxState.error) && (
-        <Button onClick={handleClose} variant="outlined">
+        <Button onClick={handleClose} variant="contained">
           <Trans>OK, CLOSE</Trans>
         </Button>
       )}

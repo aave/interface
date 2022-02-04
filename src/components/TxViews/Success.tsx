@@ -10,7 +10,15 @@ export type SuccessTxViewProps = {
 
 export const TxSuccessView = ({ action, amount, symbol }: SuccessTxViewProps) => {
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        mb: '124px',
+      }}
+    >
       <Box
         sx={{
           width: '48px',
@@ -18,6 +26,11 @@ export const TxSuccessView = ({ action, amount, symbol }: SuccessTxViewProps) =>
           color: 'green',
           backgroundColor: '#ECF8ED',
           borderRadius: '50%',
+          mt: '48px',
+          mx: 'auto',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
         <SvgIcon sx={{ color: 'green' }} fontSize="medium">
