@@ -166,7 +166,7 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
             onChange={setAmountToSupply}
             usdValue={amountInUsd.toString()}
             balance={maxAmountToSupply.toString()}
-            symbol={supplyUnWrapped ? poolReserve.symbol.substring(1) : poolReserve.symbol}
+            symbol={supplyUnWrapped ? networkConfig.baseAssetSymbol : poolReserve.symbol}
           />
           <TxModalDetails
             sx={{ mt: '30px' }}
@@ -195,6 +195,7 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
         isWrongNetwork={isWrongNetwork}
         setGasLimit={setGasLimit}
         poolAddress={supplyUnWrapped ? underlyingAsset : poolReserve.underlyingAsset}
+        symbol={supplyUnWrapped ? networkConfig.baseAssetSymbol : poolReserve.symbol}
       />
     </>
   );
