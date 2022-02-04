@@ -66,7 +66,7 @@ const useGetGasPrices = (): GetGasPricesHook => {
       const gasPricesData: GasPriceData = {
         [GasOption.Slow]: dataJson.safeLow,
         [GasOption.Normal]: dataJson.average,
-        [GasOption.Fast]: dataJson.fastest,
+        [GasOption.Fast]: dataJson.fast,
       };
       setData(gasPricesData);
       setError(false);
@@ -104,7 +104,7 @@ const useGetGasPrices = (): GetGasPricesHook => {
     setLoading(false);
   };
 
-  usePolling(estimateGasPrice, POLLING_INTERVAL, false, [connected]);
+  usePolling(estimateGasPrice, POLLING_INTERVAL, false, [connected, chainId]);
 
   return { loading, data, error };
 };

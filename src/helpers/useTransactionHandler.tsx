@@ -3,6 +3,7 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
 import { useEffect, useState } from 'react';
+import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
@@ -27,6 +28,7 @@ export const useTransactionHandler = ({
   skip,
 }: UseTransactionHandlerProps) => {
   const { signTxData, sendTx, getTxError, currentAccount } = useWeb3Context();
+  const { refetchWalletBalances, refetchPoolData } = useBackgroundDataProvider();
   const { lendingPool } = useTxBuilderContext();
   const [loading, setLoading] = useState(false);
   const [txs, setTxs] = useState<EthereumTransactionTypeExtended[]>([]);
@@ -60,6 +62,7 @@ export const useTransactionHandler = ({
       const txnResult = await tx();
       try {
         await txnResult.wait(1);
+        refetchWalletBalances();
       } catch (e) {
         try {
           setLoading(false);
@@ -161,6 +164,7 @@ export const useTransactionHandler = ({
               txHash: txnResponse.hash,
               error: undefined,
             });
+            refetchPoolData && refetchPoolData();
           },
           errorCallback: (error, hash) => {
             setMainTxState({
@@ -187,6 +191,7 @@ export const useTransactionHandler = ({
               txHash: txnResponse.hash,
               error: undefined,
             });
+            refetchPoolData && refetchPoolData();
           },
           errorCallback: (error, hash) => {
             setMainTxState({
