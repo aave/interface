@@ -251,7 +251,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
           </Typography>
         </FormInfo>
         {gasLimit && (
-          <FormValue>
+          <FormValue xs={4}>
             <GasStation gasLimit={parseUnits(gasLimit, 'wei')} />
           </FormValue>
         )}

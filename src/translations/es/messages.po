@@ -73,7 +73,7 @@ msgstr ""
 
 #: src/components/infoModalContents/CollateralSwitchInfoContent.tsx:11
 msgid "Adding and removing assets as collateral"
-msgstr ""
+msgstr "<<<<<<< HEAD"
 
 #: src/components/FlowCommons/Success.tsx:44
 msgid "All done!"
@@ -162,7 +162,7 @@ msgstr ""
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx:69
 #: src/modules/reserve/ReserveActions.tsx:92
 msgid "Borrow"
-msgstr ""
+msgstr "<<<<<<< HEAD"
 
 #: src/components/FlowCommons/TxModalDetails.tsx:81
 #: src/components/FlowCommons/TxModalDetails.tsx:113
@@ -239,7 +239,7 @@ msgstr ""
 msgid "Current LTV"
 msgstr ""
 
-#: src/components/GasStation/GasStation.tsx:143
+#: src/components/GasStation/GasStation.tsx:153
 msgid "Custom"
 msgstr ""
 
@@ -315,7 +315,7 @@ msgstr ""
 
 #: src/flows/SupplyFlowModal/SupplyDetails.tsx:77
 #~ msgid "Estimated Gas Costs"
-#~ msgstr ""
+#~ msgstr "<<<<<<< HEAD"
 
 #: src/components/FlowCommons/TxModalDetails.tsx:250
 msgid "Estimated Tx cost"
@@ -350,7 +350,7 @@ msgstr ""
 
 #: src/ui-config/menu-items/index.tsx:37
 msgid "Governance"
-msgstr ""
+msgstr "<<<<<<< HEAD"
 
 #: src/components/FlowCommons/TxModalDetails.tsx:228
 #: src/components/infoModalContents/HFInfoContent.tsx:8
@@ -385,7 +385,7 @@ msgstr ""
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:62
 msgid "Learn more"
-msgstr ""
+msgstr "<<<<<<< HEAD"
 
 #: src/components/FlowCommons/TxModalDetails.tsx:241
 msgid "Liquidation at"
@@ -545,7 +545,7 @@ msgstr ""
 
 #: src/components/FlowCommons/RightHelperText.tsx:52
 msgid "Review {action} tx details"
-msgstr ""
+msgstr "<<<<<<< HEAD"
 
 #: src/components/FlowCommons/TxModalDetails.tsx:168
 #: src/components/FlowCommons/TxModalDetails.tsx:185
@@ -566,11 +566,11 @@ msgstr ""
 
 #: src/components/Supply/SupplyActions.tsx:181
 msgid "SUPPLY {symbol}"
-msgstr ""
+msgstr "<<<<<<< HEAD"
 
 #: src/components/RateSwitch/RateSwitchActions.tsx:84
 msgid "SWITCH RATE"
-msgstr ""
+msgstr "=======>>>>>>> 66a3eab13c629da4bf6a7d41dc65809a43053887"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/HFContent.tsx:43
 msgid "Safer"
@@ -624,7 +624,7 @@ msgstr ""
 
 #: src/modules/markets/AssetsList.tsx:55
 msgid "Supply APY"
-msgstr ""
+msgstr "<<<<<<< HEAD"
 
 #: src/components/FlowCommons/TxModalDetails.tsx:218
 #: src/modules/reserve/ReserveActions.tsx:44
@@ -712,7 +712,7 @@ msgstr ""
 
 #: src/components/FlowCommons/Error.tsx:34
 msgid "Transaction failed"
-msgstr ""
+msgstr "<<<<<<< HEAD"
 
 #: src/components/FlowCommons/TxModalDetails.tsx:201
 msgid "Used as collateral"
@@ -740,7 +740,7 @@ msgstr ""
 
 #: src/components/Withdraw/WithdrawActions.tsx:103
 #~ msgid "WITHDRAW {0} PENDING..."
-#~ msgstr ""
+#~ msgstr "<<<<<<< HEAD"
 
 #: src/components/Withdraw/WithdrawActions.tsx:91
 msgid "WITHDRAW {symbol}"
@@ -774,7 +774,7 @@ msgstr ""
 
 #: src/components/FlowCommons/Error.tsx:37
 msgid "You can report incident to our <0>Discord</0> or <1>Github</1>."
-msgstr ""
+msgstr "<<<<<<< HEAD"
 
 #: src/components/FlowCommons/Success.tsx:60
 msgid "You switched to {0} rate"
@@ -820,7 +820,7 @@ msgstr ""
 
 #: src/components/incentives/IncentivesInfoModal.tsx:64
 msgid "rewards"
-msgstr ""
+msgstr "<<<<<<< HEAD"
 
 #: src/components/FlowCommons/TxModalDetails.tsx:156
 msgid "stable"
@@ -828,11 +828,11 @@ msgstr ""
 
 #: src/components/FlowCommons/TxModalDetails.tsx:156
 msgid "variable"
-msgstr ""
+msgstr "=======>>>>>>> 66a3eab13c629da4bf6a7d41dc65809a43053887"
 
-#: src/components/GasStation/GasStation.tsx:100
+#: src/components/GasStation/GasStation.tsx:110
 msgid "{0, select, slow {Slow} normal {Normal} fast {Fast} other {-}}"
-msgstr ""
+msgstr "<<<<<<< HEAD"
 
 #: src/components/FlowCommons/TxModalDetails.tsx:209
 msgid "{0}"
@@ -845,7 +845,7 @@ msgstr ""
 #: src/components/Supply/SupplyActions.tsx:165
 #: src/components/Supply/SupplyActions.tsx:183
 #~ msgid "{0}{1}"
-#~ msgstr ""
+#~ msgstr "<<<<<<< HEAD"
 
 #: src/components/FlowCommons/TxModalDetails.tsx:143
 msgid "{action} APY"
