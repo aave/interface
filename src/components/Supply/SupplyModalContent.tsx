@@ -169,6 +169,7 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
             symbol={supplyUnWrapped ? poolReserve.symbol.substring(1) : poolReserve.symbol}
           />
           <TxModalDetails
+            sx={{ mt: '30px' }}
             apy={supplyApy}
             incentives={poolReserve.aIncentivesData}
             showHf={showHealthFactor || false}
@@ -186,6 +187,7 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
         <TxSuccessView action="Supplied" amount={amountToSupply} symbol={poolReserve.symbol} />
       )}
       <SupplyActions
+        sx={{ mt: '48px' }}
         setSupplyTxState={setSupplyTxState}
         poolReserve={poolReserve}
         amountToSupply={amountToSupply}

@@ -22,14 +22,18 @@ export const AssetInput: React.FC<AssetInputProps> = ({
   onChange,
   disabled,
 }) => {
+  const validNumber = new RegExp(/^\d*\.?\d*$/); // allow only digits with decimals
+
   const onInputChange:
     | React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
     | undefined = (event) => {
-    onChange(event.target.value);
+    if (validNumber.test(event.target.value)) {
+      onChange(event.target.value);
+    }
   };
 
   return (
-    <Box sx={{ p: '8px 12px', border: '1px solid black' }}>
+    <Box sx={{ p: '8px 12px', border: '1px solid #E0E5EA', borderRadius: '6px' }}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <InputBase
           sx={{ flex: 1 }}
@@ -39,8 +43,10 @@ export const AssetInput: React.FC<AssetInputProps> = ({
           value={value}
           inputProps={{
             inputMode: 'numeric',
-            pattern: '[0-9]*',
             'aria-label': 'amount input',
+            style: {
+              fontSize: '21px',
+            },
           }}
         />
         <TokenIcon symbol={symbol} sx={{ mx: '4px' }} />
