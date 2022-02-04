@@ -42,6 +42,7 @@ export interface TxModalDetailsProps extends GridProps {
   actionUnWrapped?: boolean;
   walletBalance?: string;
   unWrappedSymbol?: string;
+  rate?: InterestRate;
 }
 
 export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
@@ -61,6 +62,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   action,
   walletBalance,
   unWrappedSymbol,
+  rate,
   ...props
 }) => {
   const [selectedRate, setSelectedRate] = React.useState(InterestRate.Variable);
@@ -104,7 +106,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
           </FormValue>
         </FormRow>
       )}
-      {!borrowStableRate && apy && (
+      {!borrowStableRate && apy && !rate && (
         <FormRow>
           <FormInfo>
             <Typography variant="description">
@@ -139,6 +141,19 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
           <FormInfo>
             <Typography variant="description">
               <Trans>{action} APY</Trans>
+            </Typography>
+          </FormInfo>
+          <FormValue>
+            <FormattedNumber value={Number(apy)} percent variant="description" />
+          </FormValue>
+        </FormRow>
+      )}
+      {apy && rate && (
+        <FormRow>
+          <FormInfo>
+            <Typography variant="description">
+              APY,{' '}
+              {rate === InterestRate.Variable ? <Trans>variable</Trans> : <Trans>stable</Trans>}
             </Typography>
           </FormInfo>
           <FormValue>
