@@ -3,8 +3,19 @@ import { MainLayout } from 'src/layouts/MainLayout';
 import { ReserveConfiguration } from 'src/modules/reserve/ReserveConfiguration';
 import { ReserveActions } from 'src/modules/reserve/ReserveActions';
 import { ReserveTopDetails } from 'src/modules/reserve/ReserveTopDetails';
+import { useRouter } from 'next/router';
+import {
+  ComputedReserveData,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 
 export default function ReserveOverview() {
+  const router = useRouter();
+  const { reserves } = useAppDataContext();
+  const underlyingAddress = router.query.underlyingAddress;
+  const reserve = reserves.find(
+    (reserve) => reserve.underlyingAsset === underlyingAddress
+  ) as ComputedReserveData;
   return (
     <Container maxWidth="xl">
       <ReserveTopDetails />
@@ -12,7 +23,7 @@ export default function ReserveOverview() {
       <Grid container spacing={4}>
         {/** Main status and configuration panel*/}
         <Grid item xs={12} sm={8}>
-          <ReserveConfiguration />
+          {reserve && <ReserveConfiguration reserve={reserve} />}
         </Grid>
 
         {/** Right panel with actions*/}

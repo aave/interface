@@ -1,16 +1,23 @@
 import React, { useMemo, useCallback, Fragment } from 'react';
 import { Line, Bar, LinePath } from '@visx/shape';
 import { curveMonotoneX } from '@visx/curve';
-import { scaleTime, scaleLinear } from '@visx/scale';
+import { scaleLinear } from '@visx/scale';
 import { withTooltip, defaultStyles, TooltipWithBounds } from '@visx/tooltip';
 import { WithTooltipProvidedProps } from '@visx/tooltip/lib/enhancers/withTooltip';
 import { localPoint } from '@visx/event';
-import { AxisLeft, AxisBottom } from '@visx/axis';
-import { max, extent, bisector } from 'd3-array';
+import { AxisLeft } from '@visx/axis';
+import { max, bisector } from 'd3-array';
 import { Group } from '@visx/group';
-import { FormattedReserveHistoryItem } from 'src/hooks/useReservesHistory';
 import { useTheme } from '@mui/material';
-import { normalizeBN } from '@aave/math-utils';
+import {
+  normalizeBN,
+  RAY,
+  rayDiv,
+  rayMul,
+  rayPow,
+  SECONDS_PER_YEAR,
+  valueToZDBigNumber,
+} from '@aave/math-utils';
 import { BigNumber } from 'bignumber.js';
 
 type TooltipData = Rate;
@@ -31,6 +38,9 @@ type InterestRateModelType = {
   stableRateSlope2: string;
   stableBorrowRateEnabled?: boolean;
   optimalUtilisationRate: string;
+  utilizationRate: string;
+  baseVariableBorrowRate: string;
+  baseStableBorrowRate: string;
 };
 
 type Rate = {
@@ -48,46 +58,77 @@ const getStableRate = (d: Rate) => d.stableRate * 100;
 const resolution = 100;
 const step = 1 / resolution;
 
+const getAPY = (rate: BigNumber) =>
+  rayPow(valueToZDBigNumber(rate).dividedBy(SECONDS_PER_YEAR).plus(RAY), SECONDS_PER_YEAR).minus(
+    RAY
+  );
+
 function getRates({
   variableRateSlope1,
   variableRateSlope2,
   stableRateSlope1,
   stableRateSlope2,
   optimalUtilisationRate,
+  baseVariableBorrowRate,
+  baseStableBorrowRate,
 }: InterestRateModelType): Rate[] {
   const rates: Rate[] = [];
   const formattedOptimalUtilisationRate = normalizeBN(optimalUtilisationRate, 27).toNumber();
-  const formattedVariableRateSlope1 = normalizeBN(variableRateSlope1, 27).toNumber();
-  const formattedVariableRateSlope2 = normalizeBN(variableRateSlope2, 27).toNumber();
-  const formattedStableRateSlope1 = normalizeBN(stableRateSlope1, 27).toNumber();
-  const formattedStableRateSlope2 = normalizeBN(stableRateSlope2, 27).toNumber();
+
   for (let i = 0; i < resolution; i++) {
     const utilization = i * step;
-    if (utilization < formattedOptimalUtilisationRate) {
-      const theoreticalStableAPY = new BigNumber(utilization)
-        .dividedBy(formattedOptimalUtilisationRate)
-        .multipliedBy(formattedStableRateSlope1)
-        .toNumber();
-      const theoreticalVariableAPY = new BigNumber(utilization)
-        .dividedBy(formattedOptimalUtilisationRate)
-        .multipliedBy(formattedVariableRateSlope1)
-        .toNumber();
+    if (utilization === 0) {
+      rates.push({
+        stableRate: 0,
+        variableRate: 0,
+        utilization,
+      });
+    } else if (utilization < formattedOptimalUtilisationRate) {
+      const theoreticalStableAPY = normalizeBN(
+        getAPY(
+          new BigNumber(baseStableBorrowRate).plus(
+            rayDiv(rayMul(stableRateSlope1, normalizeBN(utilization, -27)), optimalUtilisationRate)
+          )
+        ),
+        27
+      ).toNumber();
+      const theoreticalVariableAPY = normalizeBN(
+        getAPY(
+          new BigNumber(baseVariableBorrowRate).plus(
+            rayDiv(
+              rayMul(variableRateSlope1, normalizeBN(utilization, -27)),
+              optimalUtilisationRate
+            )
+          )
+        ),
+        27
+      ).toNumber();
       rates.push({
         stableRate: theoreticalStableAPY,
         variableRate: theoreticalVariableAPY,
         utilization,
       });
     } else {
-      const theoreticalStableAPY = new BigNumber(utilization - formattedOptimalUtilisationRate)
-        .dividedBy(1 - formattedOptimalUtilisationRate)
-        .multipliedBy(formattedStableRateSlope2)
-        .plus(formattedVariableRateSlope1)
-        .toNumber();
-      const theoreticalVariableAPY = new BigNumber(utilization - formattedOptimalUtilisationRate)
-        .dividedBy(1 - formattedOptimalUtilisationRate)
-        .multipliedBy(formattedVariableRateSlope2)
-        .plus(formattedVariableRateSlope1)
-        .toNumber();
+      const excess = rayDiv(
+        normalizeBN(utilization, -27).minus(optimalUtilisationRate),
+        RAY.minus(optimalUtilisationRate)
+      );
+      const theoreticalStableAPY = normalizeBN(
+        getAPY(
+          new BigNumber(baseStableBorrowRate)
+            .plus(stableRateSlope1)
+            .plus(rayMul(stableRateSlope2, excess))
+        ),
+        27
+      ).toNumber();
+      const theoreticalVariableAPY = normalizeBN(
+        getAPY(
+          new BigNumber(baseVariableBorrowRate)
+            .plus(variableRateSlope1)
+            .plus(rayMul(variableRateSlope2, excess))
+        ),
+        27
+      ).toNumber();
       rates.push({
         stableRate: theoreticalStableAPY,
         variableRate: theoreticalVariableAPY,
@@ -109,7 +150,7 @@ export const InterestRateModelChart = withTooltip<AreaProps, TooltipData>(
   ({
     width,
     height,
-    margin = { top: 10, right: 10, bottom: 20, left: 40 },
+    margin = { top: 0, right: 10, bottom: 0, left: 40 },
     showTooltip,
     hideTooltip,
     tooltipData,
@@ -121,12 +162,15 @@ export const InterestRateModelChart = withTooltip<AreaProps, TooltipData>(
       stableRateSlope2: '3000000000000000000000000000',
       variableRateSlope1: '70000000000000000000000000',
       variableRateSlope2: '3000000000000000000000000000',
+      utilizationRate: '40000000000000000000000000',
+      baseVariableBorrowRate: '100000000000000000000000000',
+      baseStableBorrowRate: '300000000000000000000000000',
     },
   }: AreaProps & WithTooltipProvidedProps<TooltipData>) => {
     if (width < 10) return null;
     const theme = useTheme();
 
-    const data = useMemo(() => getRates(reserve), [reserve]);
+    const data = useMemo(() => getRates(reserve), [JSON.stringify(reserve)]);
 
     // bounds
     const innerWidth = width - margin.left - margin.right;
@@ -147,7 +191,7 @@ export const InterestRateModelChart = withTooltip<AreaProps, TooltipData>(
             max(data, (d) => getStableRate(d)) as number,
             max(data, (d) => getVariableRate(d)) as number
           )
-        : max(data, (d) => getVariableRate(d));
+        : (max(data, (d) => getVariableRate(d)) as number);
       return scaleLinear({
         range: [innerHeight, 0],
         domain: [0, (maxY || 0) * 1.1],
@@ -175,6 +219,17 @@ export const InterestRateModelChart = withTooltip<AreaProps, TooltipData>(
       [showTooltip, dateScale, data, margin]
     );
 
+    const ticks = [
+      {
+        value: normalizeBN(reserve.optimalUtilisationRate, 27).multipliedBy(100).toNumber(),
+        label: 'optimal',
+      },
+      {
+        value: normalizeBN(reserve.utilizationRate, 27).multipliedBy(100).toNumber(),
+        label: 'current',
+      },
+    ];
+
     return (
       <div>
         <svg width={width} height={height}>
@@ -194,19 +249,6 @@ export const InterestRateModelChart = withTooltip<AreaProps, TooltipData>(
               x={(d) => dateScale(getDate(d)) ?? 0}
               y={(d) => yValueScale(getVariableRate(d)) ?? 0}
               curve={curveMonotoneX}
-            />
-
-            <AxisBottom
-              top={innerHeight - margin.bottom / 4}
-              scale={dateScale}
-              strokeWidth={0}
-              tickStroke={theme.palette.text.secondary}
-              tickLabelProps={() => ({
-                fill: theme.palette.text.secondary,
-                fontSize: 8,
-                dx: -6,
-              })}
-              numTicks={innerWidth < 800 ? 5 : 8}
             />
             <AxisLeft
               left={0}
@@ -228,6 +270,61 @@ export const InterestRateModelChart = withTooltip<AreaProps, TooltipData>(
               onTouchMove={handleTooltip}
               onMouseMove={handleTooltip}
               onMouseLeave={() => hideTooltip()}
+            />
+            <Line
+              from={{ x: dateScale(0), y: innerHeight / 4 }}
+              to={{ x: dateScale(100), y: innerHeight / 4 }}
+              stroke={'#000'}
+              strokeWidth={2}
+              pointerEvents="none"
+            />
+            <Line
+              from={{ x: dateScale(ticks[1].value), y: innerHeight / 4 }}
+              to={{ x: dateScale(ticks[1].value), y: innerHeight + margin.top }}
+              stroke={accentColorDark}
+              strokeWidth={2}
+              pointerEvents="none"
+              strokeDasharray="5,2"
+            />
+            <circle
+              cx={dateScale(ticks[1].value)}
+              cy={innerHeight / 4 + 1}
+              r={4}
+              fill="black"
+              fillOpacity={0.1}
+              stroke="black"
+              strokeOpacity={0.1}
+              strokeWidth={2}
+              pointerEvents="none"
+            />
+            <circle
+              cx={dateScale(ticks[1].value)}
+              cy={innerHeight / 4}
+              r={4}
+              fill={accentColorDark}
+              stroke="white"
+              strokeWidth={2}
+              pointerEvents="none"
+            />
+            <circle
+              cx={dateScale(ticks[0].value)}
+              cy={innerHeight / 4 + 1}
+              r={4}
+              fill="black"
+              fillOpacity={0.1}
+              stroke="black"
+              strokeOpacity={0.1}
+              strokeWidth={2}
+              pointerEvents="none"
+            />
+            <circle
+              cx={dateScale(ticks[0].value)}
+              cy={innerHeight / 4}
+              r={4}
+              fill={accentColorDark}
+              stroke="white"
+              strokeWidth={2}
+              pointerEvents="none"
             />
             {tooltipData && (
               <g>
