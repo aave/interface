@@ -112,7 +112,6 @@ export const SupplyActions = ({
   }, [setSupplyTxState, mainTxState.txHash]);
 
   useEffect(() => {
-    console.log(mainTxState.error, approvalTxState.error);
     if (mainTxState.error || approvalTxState.error) {
       setSupplyTxState({
         success: true,
