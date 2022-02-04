@@ -75,7 +75,7 @@ msgstr "About the app"
 msgid "Adding and removing assets as collateral"
 msgstr ""
 
-#: src/components/FlowCommons/Success.tsx:42
+#: src/components/FlowCommons/Success.tsx:44
 msgid "All done!"
 msgstr ""
 
@@ -164,8 +164,8 @@ msgstr ""
 msgid "Borrow"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:79
-#: src/components/FlowCommons/TxModalDetails.tsx:111
+#: src/components/FlowCommons/TxModalDetails.tsx:81
+#: src/components/FlowCommons/TxModalDetails.tsx:113
 msgid "Borrow APY rate"
 msgstr ""
 
@@ -305,7 +305,7 @@ msgstr ""
 
 #: src/components/Borrow/BorrowActions.tsx:96
 #: src/components/Supply/SupplyActions.tsx:155
-#: src/components/Withdraw/WithdrawActions.tsx:89
+#: src/components/Withdraw/WithdrawActions.tsx:85
 msgid "ENTER AN AMOUNT"
 msgstr ""
 
@@ -325,7 +325,7 @@ msgstr "English"
 #~ msgid "Estimated Gas Costs"
 #~ msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:235
+#: src/components/FlowCommons/TxModalDetails.tsx:250
 msgid "Estimated Tx cost"
 msgstr ""
 
@@ -364,7 +364,7 @@ msgstr "Go to Home page"
 msgid "Governance"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:213
+#: src/components/FlowCommons/TxModalDetails.tsx:228
 #: src/components/infoModalContents/HFInfoContent.tsx:8
 #: src/modules/dashboard/DashboardTopPanel.tsx:67
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:69
@@ -399,7 +399,7 @@ msgstr ""
 msgid "Learn more"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:226
+#: src/components/FlowCommons/TxModalDetails.tsx:241
 msgid "Liquidation at"
 msgstr ""
 
@@ -480,7 +480,8 @@ msgstr ""
 
 #: src/components/Borrow/BorrowActions.tsx:113
 #: src/components/CollateralChange/CollateralChangeActions.tsx:89
-#: src/components/Withdraw/WithdrawActions.tsx:106
+#: src/components/RateSwitch/RateSwitchActions.tsx:95
+#: src/components/Withdraw/WithdrawActions.tsx:102
 msgid "OK, CLOSE"
 msgstr ""
 
@@ -504,6 +505,7 @@ msgid "Oracle price"
 msgstr ""
 
 #: src/components/CollateralChange/CollateralChangeActions.tsx:83
+#: src/components/RateSwitch/RateSwitchActions.tsx:88
 #: src/components/Supply/SupplyActions.tsx:186
 msgid "PENDING..."
 msgstr ""
@@ -561,8 +563,8 @@ msgstr ""
 #~ msgid "Reward"
 #~ msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:153
-#: src/components/FlowCommons/TxModalDetails.tsx:170
+#: src/components/FlowCommons/TxModalDetails.tsx:168
+#: src/components/FlowCommons/TxModalDetails.tsx:185
 msgid "Rewards APR"
 msgstr ""
 
@@ -580,6 +582,10 @@ msgstr ""
 
 #: src/components/Supply/SupplyActions.tsx:181
 msgid "SUPPLY {symbol}"
+msgstr ""
+
+#: src/components/RateSwitch/RateSwitchActions.tsx:84
+msgid "SWITCH RATE"
 msgstr ""
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/HFContent.tsx:43
@@ -636,7 +642,7 @@ msgstr ""
 msgid "Supply APY"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:203
+#: src/components/FlowCommons/TxModalDetails.tsx:218
 #: src/modules/reserve/ReserveActions.tsx:44
 msgid "Supply balance"
 msgstr ""
@@ -724,7 +730,7 @@ msgstr ""
 msgid "Transaction failed"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:186
+#: src/components/FlowCommons/TxModalDetails.tsx:201
 msgid "Used as collateral"
 msgstr ""
 
@@ -752,11 +758,11 @@ msgstr ""
 #~ msgid "WITHDRAW {0} PENDING..."
 #~ msgstr ""
 
-#: src/components/Withdraw/WithdrawActions.tsx:95
+#: src/components/Withdraw/WithdrawActions.tsx:91
 msgid "WITHDRAW {symbol}"
 msgstr ""
 
-#: src/components/Withdraw/WithdrawActions.tsx:99
+#: src/components/Withdraw/WithdrawActions.tsx:95
 msgid "WITHDRAW {symbol} PENDING..."
 msgstr ""
 
@@ -790,7 +796,11 @@ msgstr ""
 msgid "You can report incident to our <0>Discord</0> or <1>Github</1>."
 msgstr ""
 
-#: src/components/FlowCommons/Success.tsx:46
+#: src/components/FlowCommons/Success.tsx:60
+msgid "You switched to {0} rate"
+msgstr ""
+
+#: src/components/FlowCommons/Success.tsx:48
 msgid "You {action} {amount} {symbol}"
 msgstr ""
 
@@ -832,11 +842,19 @@ msgstr ""
 msgid "rewards"
 msgstr ""
 
+#: src/components/FlowCommons/TxModalDetails.tsx:156
+msgid "stable"
+msgstr ""
+
+#: src/components/FlowCommons/TxModalDetails.tsx:156
+msgid "variable"
+msgstr ""
+
 #: src/components/GasStation/GasStation.tsx:100
 msgid "{0, select, slow {Slow} normal {Normal} fast {Fast} other {-}}"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:194
+#: src/components/FlowCommons/TxModalDetails.tsx:209
 msgid "{0}"
 msgstr ""
 
@@ -849,7 +867,7 @@ msgstr ""
 #~ msgid "{0}{1}"
 #~ msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:141
+#: src/components/FlowCommons/TxModalDetails.tsx:143
 msgid "{action} APY"
 msgstr ""
 
