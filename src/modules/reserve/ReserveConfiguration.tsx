@@ -231,7 +231,17 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
               <InterestRateModelChart
                 width={parent.width}
                 height={parent.height}
-                reserve={reserve}
+                reserve={{
+                  baseStableBorrowRate: reserve.baseStableBorrowRate,
+                  baseVariableBorrowRate: reserve.baseVariableBorrowRate,
+                  optimalUsageRatio: reserve.optimalUsageRatio,
+                  stableRateSlope1: reserve.stableRateSlope1,
+                  stableRateSlope2: reserve.stableRateSlope2,
+                  utilizationRate: reserve.utilizationRate,
+                  variableRateSlope1: reserve.variableRateSlope1,
+                  variableRateSlope2: reserve.variableRateSlope2,
+                  stableBorrowRateEnabled: reserve.stableBorrowRateEnabled,
+                }}
               />
             )}
           </ParentSize>

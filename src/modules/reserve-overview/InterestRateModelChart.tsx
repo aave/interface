@@ -47,7 +47,7 @@ const bisectDate = bisector<Rate, number>((d) => d.utilization * 100).center;
 const getVariableRate = (d: Rate) => d.variableRate * 100;
 const getStableRate = (d: Rate) => d.stableRate * 100;
 
-const resolution = 100;
+const resolution = 200;
 const step = 1 / resolution;
 
 // const getAPY = (rate: BigNumber) =>
@@ -138,7 +138,6 @@ export const InterestRateModelChart = withTooltip<AreaProps, TooltipData>(
     tooltipLeft = 0,
     reserve,
   }: AreaProps & WithTooltipProvidedProps<TooltipData>) => {
-    console.log(reserve);
     if (width < 10) return null;
     const theme = useTheme();
 
@@ -361,6 +360,7 @@ export const InterestRateModelChart = withTooltip<AreaProps, TooltipData>(
         {tooltipData && (
           <div>
             <TooltipWithBounds top={20} left={tooltipLeft + 12} style={tooltipStyles}>
+              <div>Utilization: {tooltipData.utilization * 100}%</div>
               <div>{getStableRate(tooltipData).toFixed(2)} %</div>
               <div>{getVariableRate(tooltipData).toFixed(2)} %</div>
             </TooltipWithBounds>
