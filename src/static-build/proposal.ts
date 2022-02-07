@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 import lodash from 'lodash';
 import { Proposal as ProposalType } from '@aave/contract-helpers';
 import { governanceContract } from 'src/modules/governance/utils/governanceProvider';
+import { isProposalStateImmutable } from 'src/modules/governance/utils/immutableStates';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -29,8 +30,11 @@ export class Proposal {
     const value = db.chain.get('proposals').find({ id }).value();
     if (value) return value;
     const { values, ...rest } = await governanceContract.getProposal({ proposalId: id });
-    db.data.proposals.push(rest);
-    await db.write();
+    // only store data when it can no longer change
+    if (isProposalStateImmutable(rest)) {
+      db.data.proposals.push(rest);
+      await db.write();
+    }
     return rest;
   }
 }

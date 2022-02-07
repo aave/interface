@@ -6,6 +6,7 @@ import { usePolling } from 'src/hooks/usePolling';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { getProposalMetadata } from 'src/modules/governance/utils/getProposalMetadata';
 import { governanceContract } from 'src/modules/governance/utils/governanceProvider';
+import { isProposalStateImmutable } from 'src/modules/governance/utils/immutableStates';
 import { Ipfs } from 'src/static-build/ipfs';
 import { Proposal } from 'src/static-build/proposal';
 
@@ -53,13 +54,8 @@ export default function Governance(props: InferGetStaticPropsType<typeof getStat
   }
 
   async function updatePendingProposals() {
-    const pendingProposals = proposals.filter(({ proposal }) =>
-      [
-        ProposalState.Active,
-        ProposalState.Pending,
-        ProposalState.Queued,
-        ProposalState.Succeeded,
-      ].includes(proposal.state)
+    const pendingProposals = proposals.filter(
+      ({ proposal }) => !isProposalStateImmutable(proposal)
     );
 
     if (pendingProposals.length) {
