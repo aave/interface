@@ -118,6 +118,8 @@ export const ROUTES = {
   markets: '/markets',
   staking: '/staking',
   governance: '/governance',
+  prerenderedProposal: (id: number) => `/governance/proposal/${id}`,
+  dynamicRenderedProposal: (id: number) => `/governance/proposal?id=${id}`,
   reserveOverview: (underlyingAddress: string) =>
     `/reserve-overview/?underlyingAddress=${underlyingAddress}`,
 };
