@@ -63,7 +63,7 @@
     "@storybook/addon-actions": "^6.4.13",
     "@storybook/addon-essentials": "^6.4.13",
     "@storybook/addon-links": "^6.4.13",
-    "@storybook/builder-webpack5": "^6.4.13",
+    "@storybook/builder-webpack5": "^6.4.18",
     "@storybook/manager-webpack5": "^6.4.13",
     "@storybook/react": "^6.4.13",
     "@svgr/webpack": "^6.2.0",
