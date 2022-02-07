@@ -1,4 +1,3 @@
-import { ProposalState } from '@aave/contract-helpers';
 import { InferGetStaticPropsType } from 'next';
 import { useState } from 'react';
 import { Link, ROUTES } from 'src/components/primitives/Link';
