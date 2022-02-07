@@ -5,8 +5,9 @@ import {
   InterestRate,
   Pool,
 } from '@aave/contract-helpers';
-import { BoxProps } from '@mui/material';
-import { Dispatch, SetStateAction } from 'react';
+import { Trans } from '@lingui/macro';
+import { Box, BoxProps, Button, CircularProgress } from '@mui/material';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 import { TxState } from 'src/helpers/types';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -14,6 +15,8 @@ import { useGasStation } from 'src/hooks/useGasStation';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { LeftHelperText } from '../FlowCommons/LeftHelperText';
+import { RightHelperText } from '../FlowCommons/RightHelperText';
 import { GasOption } from '../GasStation/GasStationProvider';
 
 export interface RepayActionProps extends BoxProps {
@@ -119,5 +122,103 @@ export const RepayActions = ({
     skip: !amountToRepay || parseFloat(amountToRepay) === 0,
   });
 
-  return <>hola</>;
+  const hasAmount = amountToRepay && amountToRepay !== '0';
+
+  useEffect(() => {
+    if (mainTxState.txHash) {
+      setRepayTxState({
+        success: true,
+        error: undefined,
+      });
+    }
+  }, [setRepayTxState, mainTxState.txHash]);
+
+  useEffect(() => {
+    if (mainTxState.error || approvalTxState.error) {
+      setRepayTxState({
+        success: true,
+        error: mainTxState.error || approvalTxState.error,
+      });
+    }
+  }, [setRepayTxState, mainTxState.error, approvalTxState.error]);
+
+  const handleRetry = () => {
+    setRepayTxState({
+      error: undefined,
+      success: false,
+    });
+    resetStates();
+  };
+
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', ...sx }} {...props}>
+      <Box
+        sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: '12px' }}
+      >
+        <LeftHelperText
+          amount={amountToRepay}
+          error={mainTxState.error || approvalTxState.error}
+          approvalHash={approvalTxState.txHash}
+          actionHash={mainTxState.txHash}
+          requiresApproval={requiresApproval}
+        />
+        <RightHelperText
+          approvalHash={approvalTxState.txHash}
+          actionHash={mainTxState.txHash}
+          chainId={connectedChainId}
+          usePermit={usePermit}
+          action="supply"
+        />
+      </Box>
+      {(mainTxState.error || approvalTxState.error) && (
+        <Button variant="outlined" onClick={handleRetry} sx={{ mb: 2 }}>
+          <Trans>RETRY WITH APPROVAL</Trans>
+        </Button>
+      )}
+      {!hasAmount && !approvalTxState.error && (
+        <Button variant="outlined" disabled>
+          <Trans>ENTER AN AMOUNT</Trans>
+        </Button>
+      )}
+      {hasAmount && requiresApproval && !approved && !approvalTxState.error && (
+        <Button
+          variant="contained"
+          onClick={() => approval(amountToRepay, poolAddress)}
+          disabled={approved || loading || isWrongNetwork}
+        >
+          {!approved && !loading && <Trans>APPROVE TO CONTINUE</Trans>}
+          {!approved && loading && (
+            <>
+              <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
+              <Trans>APPROVING {symbol} ...</Trans>
+            </>
+          )}
+        </Button>
+      )}
+      {hasAmount && !mainTxState.txHash && !mainTxState.error && !approvalTxState.error && (
+        <Button
+          variant="contained"
+          onClick={action}
+          disabled={loading || (requiresApproval && !approved) || isWrongNetwork}
+          sx={{ mt: !approved ? 2 : 0 }}
+        >
+          {!mainTxState.txHash && !mainTxState.error && (!loading || !approved) && (
+            <Trans>REPAY {symbol}</Trans>
+          )}
+          {approved && loading && (
+            <>
+              <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
+              <Trans>PENDING...</Trans>
+            </>
+          )}
+        </Button>
+      )}
+      {(mainTxState.txHash || mainTxState.error || approvalTxState.error) && (
+        <Button onClick={handleClose} variant="contained">
+          {!mainTxState.error && !approvalTxState.error && <Trans>OK, </Trans>}
+          <Trans>CLOSE</Trans>
+        </Button>
+      )}
+    </Box>
+  );
 };
