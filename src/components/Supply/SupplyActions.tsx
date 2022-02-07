@@ -1,12 +1,6 @@
-import {
-  API_ETH_MOCK_ADDRESS,
-  ChainId,
-  EthereumTransactionTypeExtended,
-  GasType,
-  Pool,
-} from '@aave/contract-helpers';
+import { ChainId, EthereumTransactionTypeExtended, GasType, Pool } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Box, Button } from '@mui/material';
+import { Box, BoxProps, Button, CircularProgress } from '@mui/material';
 import { Dispatch, SetStateAction, useEffect } from 'react';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -19,7 +13,7 @@ import { GasOption } from '../GasStation/GasStationProvider';
 import { RightHelperText } from '../FlowCommons/RightHelperText';
 import { TxState } from 'src/helpers/types';
 
-export type SupplyActionProps = {
+export interface SupplyActionProps extends BoxProps {
   amountToSupply: string;
   poolReserve: ComputedReserveData;
   isWrongNetwork: boolean;
@@ -28,7 +22,8 @@ export type SupplyActionProps = {
   handleClose: () => void;
   setGasLimit: Dispatch<SetStateAction<string | undefined>>;
   poolAddress: string;
-};
+  symbol: string;
+}
 
 export const SupplyActions = ({
   amountToSupply,
@@ -37,6 +32,10 @@ export const SupplyActions = ({
   handleClose,
   setGasLimit,
   poolAddress,
+  isWrongNetwork,
+  sx,
+  symbol,
+  ...props
 }: SupplyActionProps) => {
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
@@ -95,7 +94,7 @@ export const SupplyActions = ({
       state.gasOption === GasOption.Custom
         ? state.customGas
         : gasPriceData.data?.[state.gasOption].legacyGasPrice,
-    skip: !amountToSupply || amountToSupply === '0',
+    skip: !amountToSupply || parseFloat(amountToSupply) === 0,
   });
 
   const hasAmount = amountToSupply && amountToSupply !== '0';
@@ -127,8 +126,10 @@ export const SupplyActions = ({
   };
 
   return (
-    <Box sx={{ mt: '16px', display: 'flex', flexDirection: 'column' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', ...sx }} {...props}>
+      <Box
+        sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: '12px' }}
+      >
         <LeftHelperText
           amount={amountToSupply}
           error={mainTxState.error || approvalTxState.error}
@@ -145,7 +146,7 @@ export const SupplyActions = ({
         />
       </Box>
       {(mainTxState.error || approvalTxState.error) && (
-        <Button variant="outlined" onClick={handleRetry}>
+        <Button variant="outlined" onClick={handleRetry} sx={{ mb: 2 }}>
           <Trans>RETRY WITH APPROVAL</Trans>
         </Button>
       )}
@@ -156,49 +157,41 @@ export const SupplyActions = ({
       )}
       {hasAmount && requiresApproval && !approved && !approvalTxState.error && (
         <Button
-          variant="outlined"
+          variant="contained"
           onClick={() => approval(amountToSupply, poolAddress)}
-          disabled={approved || loading}
+          disabled={approved || loading || isWrongNetwork}
         >
-          <Trans>
-            {!approved && !loading ? 'APPROVE TO CONTINUE' : ''}
-            {!approved && loading
-              ? `APPROVING ${
-                  poolAddress !== API_ETH_MOCK_ADDRESS.toLowerCase()
-                    ? poolReserve.symbol
-                    : poolReserve.symbol.substring(1)
-                }...`
-              : ''}
-          </Trans>
+          {!approved && !loading && <Trans>APPROVE TO CONTINUE</Trans>}
+          {!approved && loading && (
+            <>
+              <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
+              <Trans>APPROVING {symbol} ...</Trans>
+            </>
+          )}
         </Button>
       )}
       {hasAmount && !mainTxState.txHash && !mainTxState.error && !approvalTxState.error && (
         <Button
-          variant="outlined"
+          variant="contained"
           onClick={action}
-          disabled={loading || (requiresApproval && !approved)}
+          disabled={loading || (requiresApproval && !approved) || isWrongNetwork}
+          sx={{ mt: !approved ? 2 : 0 }}
         >
-          <Trans>
-            {!mainTxState.txHash && !mainTxState.error && (!loading || !approved)
-              ? `SUPPLY ${
-                  poolAddress !== API_ETH_MOCK_ADDRESS.toLowerCase()
-                    ? poolReserve.symbol
-                    : poolReserve.symbol.substring(1)
-                }`
-              : ''}
-            {approved && loading
-              ? `SUPPLY ${
-                  poolAddress !== API_ETH_MOCK_ADDRESS.toLowerCase()
-                    ? poolReserve.symbol
-                    : poolReserve.symbol.substring(1)
-                } PENDING...`
-              : ''}
-          </Trans>
+          {!mainTxState.txHash && !mainTxState.error && (!loading || !approved) && (
+            <Trans>SUPPLY {symbol}</Trans>
+          )}
+          {approved && loading && (
+            <>
+              <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
+              <Trans>PENDING...</Trans>
+            </>
+          )}
         </Button>
       )}
       {(mainTxState.txHash || mainTxState.error || approvalTxState.error) && (
-        <Button onClick={handleClose} variant="outlined">
-          <Trans>OK, CLOSE</Trans>
+        <Button onClick={handleClose} variant="contained">
+          {!mainTxState.error && !approvalTxState.error && <Trans>OK, </Trans>}
+          <Trans>CLOSE</Trans>
         </Button>
       )}
     </Box>

@@ -1,5 +1,14 @@
 import { Trans } from '@lingui/macro';
-import { FormControlLabel, Grid, SvgIcon, Switch, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  FormControlLabel,
+  Grid,
+  GridProps,
+  SvgIcon,
+  Switch,
+  Typography,
+} from '@mui/material';
 import React, { Dispatch, SetStateAction } from 'react';
 
 import { FormInfo } from '../FormItems/FormInfo';
@@ -13,8 +22,9 @@ import { IncentivesButton } from '../incentives/IncentivesButton';
 import { ReserveIncentiveResponse } from 'src/hooks/app-data-provider/useIncentiveData';
 import { CheckIcon } from '@heroicons/react/outline';
 import { FormattedNumber } from '../primitives/FormattedNumber';
+import { InterestRate } from '@aave/contract-helpers';
 
-export interface TxModalDetailsProps {
+export interface TxModalDetailsProps extends GridProps {
   apy?: string;
   // supplyRewards: SupplyReward[];
   showHf?: boolean;
@@ -22,9 +32,16 @@ export interface TxModalDetailsProps {
   futureHealthFactor?: string;
   gasLimit?: string;
   incentives?: ReserveIncentiveResponse[];
+  stableRateIncentives?: ReserveIncentiveResponse[];
   symbol?: string;
   usedAsCollateral?: boolean;
-  setWithdrawUnWrapped?: Dispatch<SetStateAction<boolean>>;
+  setActionUnWrapped?: Dispatch<SetStateAction<boolean>>;
+  setInterestRateMode?: Dispatch<SetStateAction<InterestRate>>;
+  borrowStableRate?: string;
+  action?: string;
+  actionUnWrapped?: boolean;
+  walletBalance?: string;
+  unWrappedSymbol?: string;
 }
 
 export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
@@ -36,35 +53,62 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   incentives,
   symbol,
   usedAsCollateral,
-  setWithdrawUnWrapped,
+  setActionUnWrapped,
+  actionUnWrapped,
+  borrowStableRate,
+  stableRateIncentives,
+  setInterestRateMode,
+  action,
+  walletBalance,
+  unWrappedSymbol,
+  ...props
 }) => {
-  const [checked, setChecked] = React.useState(true);
+  const [selectedRate, setSelectedRate] = React.useState(InterestRate.Variable);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleChange = (event: any) => {
-    setChecked(event.target.checked);
-    setWithdrawUnWrapped && setWithdrawUnWrapped(checked);
+  const handleRateChange = (rate: InterestRate) => {
+    setSelectedRate(rate);
+    setInterestRateMode && setInterestRateMode(rate);
   };
 
   return (
-    <Grid container direction="row" alignItems="center" rowSpacing={'12px'} sx={{ mb: '24px' }}>
-      {setWithdrawUnWrapped && symbol && (
-        <FormRow>
-          <FormControlLabel
-            value="darkmode"
-            control={<Switch disableRipple checked={checked} onClick={handleChange} />}
-            labelPlacement="end"
-            label={''}
-          />
-          <Typography>{`Unwrap ${symbol} (to withdraw ${symbol.substring(1)})`}</Typography>
-          <FormInfo />
-        </FormRow>
-      )}
-      {apy && (
+    <Grid container direction="row" alignItems="center" rowSpacing={'12px'} {...props}>
+      {symbol && setInterestRateMode && borrowStableRate && apy && (
         <FormRow>
           <FormInfo>
             <Typography variant="description">
-              <Trans>Supply APY</Trans>
+              <Trans>Borrow APY rate</Trans>
+            </Typography>
+          </FormInfo>
+          <FormValue>
+            <Box>
+              {selectedRate === InterestRate.Variable && (
+                <SvgIcon>
+                  <CheckIcon />
+                </SvgIcon>
+              )}
+              <Button variant="text" onClick={() => handleRateChange(InterestRate.Variable)}>
+                Variable <FormattedNumber value={Number(apy)} percent variant="description" />
+              </Button>
+            </Box>
+            <Box>
+              {selectedRate === InterestRate.Stable && (
+                <SvgIcon>
+                  <CheckIcon />
+                </SvgIcon>
+              )}
+              <Button variant="text" onClick={() => handleRateChange(InterestRate.Stable)}>
+                Stable{' '}
+                <FormattedNumber value={Number(borrowStableRate)} percent variant="description" />
+              </Button>
+            </Box>
+          </FormValue>
+        </FormRow>
+      )}
+      {!borrowStableRate && apy && (
+        <FormRow>
+          <FormInfo>
+            <Typography variant="description">
+              <Trans>Borrow APY rate</Trans>
             </Typography>
           </FormInfo>
           <FormValue>
@@ -72,11 +116,41 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
           </FormValue>
         </FormRow>
       )}
-      {incentives && symbol && (
+      {setActionUnWrapped && symbol && unWrappedSymbol && (
+        <FormRow>
+          <FormControlLabel
+            value="darkmode"
+            control={
+              <Switch
+                disableRipple
+                checked={actionUnWrapped}
+                onClick={() => setActionUnWrapped(!actionUnWrapped)}
+              />
+            }
+            labelPlacement="end"
+            label={''}
+          />
+          <Typography>{`Unwrap ${symbol} (to withdraw ${unWrappedSymbol})`}</Typography>
+          <FormInfo />
+        </FormRow>
+      )}
+      {apy && action && (
         <FormRow>
           <FormInfo>
             <Typography variant="description">
-              <Trans>RewardsAPR</Trans>
+              <Trans>{action} APY</Trans>
+            </Typography>
+          </FormInfo>
+          <FormValue>
+            <FormattedNumber value={Number(apy)} percent variant="description" />
+          </FormValue>
+        </FormRow>
+      )}
+      {incentives && symbol && !stableRateIncentives && (
+        <FormRow>
+          <FormInfo>
+            <Typography variant="description">
+              <Trans>Rewards APR</Trans>
             </Typography>
           </FormInfo>
           <FormValue>
@@ -84,6 +158,27 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
           </FormValue>
         </FormRow>
       )}
+      {incentives &&
+        stableRateIncentives &&
+        symbol &&
+        setInterestRateMode &&
+        borrowStableRate &&
+        apy && (
+          <FormRow>
+            <FormInfo>
+              <Typography variant="description">
+                <Trans>Rewards APR</Trans>
+              </Typography>
+            </FormInfo>
+            <FormValue>
+              {selectedRate === InterestRate.Variable ? (
+                <IncentivesButton incentives={incentives} symbol={symbol} />
+              ) : (
+                <IncentivesButton incentives={stableRateIncentives} symbol={symbol} />
+              )}
+            </FormValue>
+          </FormRow>
+        )}
       {usedAsCollateral && (
         <FormRow>
           <FormInfo>
@@ -99,6 +194,16 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
               <Trans>{usedAsCollateral ? 'Yes' : 'No'}</Trans>
             </Typography>
           </FormValue>
+        </FormRow>
+      )}
+      {walletBalance && symbol && (
+        <FormRow>
+          <FormInfo>
+            <Typography>
+              <Trans>Supply balance</Trans>
+            </Typography>
+          </FormInfo>
+          <FormValue>{walletBalance}</FormValue>
         </FormRow>
       )}
       {showHf && healthFactor && futureHealthFactor && (
@@ -131,7 +236,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
           </Typography>
         </FormInfo>
         {gasLimit && (
-          <FormValue>
+          <FormValue xs={4}>
             <GasStation gasLimit={parseUnits(gasLimit, 'wei')} />
           </FormValue>
         )}

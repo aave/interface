@@ -20,6 +20,7 @@ import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import { GasPriceData } from '../../hooks/useGetGasPrices';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { useGasStation } from 'src/hooks/useGasStation';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 export interface GasDropdownProps {
   open: boolean;
@@ -40,18 +41,13 @@ export const getGasCosts = (
   gasOption: GasOption,
   customGas: string,
   gasData: GasPriceData,
-  baseCurrencyUsd: string,
-  baseCurrencyDecimals: number
+  baseCurrencyUsd: string
 ) => {
   const gasPrice =
     gasOption === GasOption.Custom
       ? parseUnits(customGas, 'gwei').toString()
       : gasData[gasOption].legacyGasPrice;
-
-  return (
-    Number(formatUnits(gasLimit.mul(gasPrice), baseCurrencyDecimals)) *
-    (Number(baseCurrencyUsd) / 10 ** 8)
-  );
+  return Number(formatUnits(gasLimit.mul(gasPrice), 18)) * parseFloat(baseCurrencyUsd);
 };
 
 export const GasStation: React.FC<GasStationProps> = ({ gasLimit, ...props }) => {
@@ -60,17 +56,19 @@ export const GasStation: React.FC<GasStationProps> = ({ gasLimit, ...props }) =>
     dispatch,
     gasPriceData: { data, error },
   } = useGasStation();
-  const { marketReferencePriceInUsd, marketReferenceCurrencyDecimals } = useAppDataContext();
-  const totalGasCostsUsd = data
-    ? getGasCosts(
-        gasLimit,
-        state.gasOption,
-        state.customGas,
-        data,
-        marketReferencePriceInUsd,
-        marketReferenceCurrencyDecimals
-      )
-    : undefined;
+  const { reserves } = useAppDataContext();
+  const {
+    currentNetworkConfig: { wrappedBaseAssetSymbol },
+  } = useProtocolDataContext();
+
+  const wrappedAsset = reserves.find(
+    (token) => token.symbol.toLowerCase() === wrappedBaseAssetSymbol?.toLowerCase()
+  );
+
+  const totalGasCostsUsd =
+    data && wrappedAsset
+      ? getGasCosts(gasLimit, state.gasOption, state.customGas, data, wrappedAsset.priceInUSD)
+      : undefined;
 
   const [open, setOpen] = useState(false);
 
