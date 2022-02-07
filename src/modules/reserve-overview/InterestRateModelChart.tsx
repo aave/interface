@@ -11,6 +11,8 @@ import { Group } from '@visx/group';
 import { useTheme } from '@mui/material';
 import { normalizeBN, RAY, rayDiv, rayMul } from '@aave/math-utils';
 import { BigNumber } from 'bignumber.js';
+import { Text } from '@visx/text';
+import { ChartLegend } from './ChartLegend';
 
 type TooltipData = Rate;
 
@@ -42,13 +44,13 @@ type Rate = {
 };
 
 // accessors
-const getDate = (d: Rate) => d.utilization * 100;
-const bisectDate = bisector<Rate, number>((d) => d.utilization * 100).center;
+const getDate = (d: Rate) => d.utilization;
+const bisectDate = bisector<Rate, number>((d) => d.utilization).center;
 const getVariableRate = (d: Rate) => d.variableRate * 100;
 const getStableRate = (d: Rate) => d.stableRate * 100;
 
 const resolution = 200;
-const step = 1 / resolution;
+const step = 100 / resolution;
 
 // const getAPY = (rate: BigNumber) =>
 //   rayPow(valueToZDBigNumber(rate).dividedBy(SECONDS_PER_YEAR).plus(RAY), SECONDS_PER_YEAR).minus(
@@ -65,7 +67,7 @@ function getRates({
   baseStableBorrowRate,
 }: InterestRateModelType): Rate[] {
   const rates: Rate[] = [];
-  const formattedOptimalUtilisationRate = normalizeBN(optimalUsageRatio, 27).toNumber();
+  const formattedOptimalUtilisationRate = normalizeBN(optimalUsageRatio, 25).toNumber();
 
   for (let i = 0; i <= resolution; i++) {
     const utilization = i * step;
@@ -78,13 +80,13 @@ function getRates({
     } else if (utilization < formattedOptimalUtilisationRate) {
       const theoreticalStableAPY = normalizeBN(
         new BigNumber(baseStableBorrowRate).plus(
-          rayDiv(rayMul(stableRateSlope1, normalizeBN(utilization, -27)), optimalUsageRatio)
+          rayDiv(rayMul(stableRateSlope1, normalizeBN(utilization, -25)), optimalUsageRatio)
         ),
         27
       ).toNumber();
       const theoreticalVariableAPY = normalizeBN(
         new BigNumber(baseVariableBorrowRate).plus(
-          rayDiv(rayMul(variableRateSlope1, normalizeBN(utilization, -27)), optimalUsageRatio)
+          rayDiv(rayMul(variableRateSlope1, normalizeBN(utilization, -25)), optimalUsageRatio)
         ),
         27
       ).toNumber();
@@ -95,7 +97,7 @@ function getRates({
       });
     } else {
       const excess = rayDiv(
-        normalizeBN(utilization, -27).minus(optimalUsageRatio),
+        normalizeBN(utilization, -25).minus(optimalUsageRatio),
         RAY.minus(optimalUsageRatio)
       );
       const theoreticalStableAPY = normalizeBN(
@@ -202,7 +204,16 @@ export const InterestRateModelChart = withTooltip<AreaProps, TooltipData>(
     ];
 
     return (
-      <div>
+      <>
+        <ChartLegend
+          labels={[
+            { text: 'Utilization rate', color: '#000' },
+            { text: 'Borrow APR, variable', color: '#B6509E' },
+            ...(reserve.stableBorrowRateEnabled
+              ? ([{ text: 'Borrow APR, stable', color: '#0062D2' }] as const)
+              : []),
+          ]}
+        />
         <svg width={width} height={height}>
           <Group left={margin.left} top={margin.top}>
             {reserve.stableBorrowRateEnabled && (
@@ -251,14 +262,6 @@ export const InterestRateModelChart = withTooltip<AreaProps, TooltipData>(
               strokeWidth={2}
               pointerEvents="none"
             />
-            <Line
-              from={{ x: dateScale(ticks[1].value), y: innerHeight / 4 }}
-              to={{ x: dateScale(ticks[1].value), y: innerHeight + margin.top }}
-              stroke={accentColorDark}
-              strokeWidth={2}
-              pointerEvents="none"
-              strokeDasharray="5,2"
-            />
             <circle
               cx={dateScale(ticks[1].value)}
               cy={innerHeight / 4 + 1}
@@ -274,11 +277,21 @@ export const InterestRateModelChart = withTooltip<AreaProps, TooltipData>(
               cx={dateScale(ticks[1].value)}
               cy={innerHeight / 4}
               r={4}
-              fill={accentColorDark}
+              fill="black"
               stroke="white"
               strokeWidth={2}
               pointerEvents="none"
             />
+            <Text
+              x={dateScale(ticks[1].value)}
+              y={innerHeight / 4 + 14}
+              width={360}
+              textAnchor="middle"
+              verticalAnchor="middle"
+              fontSize="10px"
+            >
+              Current
+            </Text>
             <circle
               cx={dateScale(ticks[0].value)}
               cy={innerHeight / 4 + 1}
@@ -294,11 +307,21 @@ export const InterestRateModelChart = withTooltip<AreaProps, TooltipData>(
               cx={dateScale(ticks[0].value)}
               cy={innerHeight / 4}
               r={4}
-              fill={accentColorDark}
+              fill="black"
               stroke="white"
               strokeWidth={2}
               pointerEvents="none"
             />
+            <Text
+              x={dateScale(ticks[0].value)}
+              y={innerHeight / 4 + 14}
+              width={360}
+              textAnchor="middle"
+              verticalAnchor="middle"
+              fontSize="10px"
+            >
+              Optimal
+            </Text>
             {tooltipData && (
               <g>
                 <Line
@@ -357,16 +380,17 @@ export const InterestRateModelChart = withTooltip<AreaProps, TooltipData>(
             )}
           </Group>
         </svg>
+
         {tooltipData && (
           <div>
             <TooltipWithBounds top={20} left={tooltipLeft + 12} style={tooltipStyles}>
-              <div>Utilization: {tooltipData.utilization * 100}%</div>
+              <div>Utilization: {tooltipData.utilization}%</div>
               <div>{getStableRate(tooltipData).toFixed(2)} %</div>
               <div>{getVariableRate(tooltipData).toFixed(2)} %</div>
             </TooltipWithBounds>
           </div>
         )}
-      </div>
+      </>
     );
   }
 );

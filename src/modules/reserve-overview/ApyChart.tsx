@@ -13,6 +13,7 @@ import { lighten } from '@mui/system';
 import { Group } from '@visx/group';
 import { FormattedReserveHistoryItem } from 'src/hooks/useReservesHistory';
 import { useTheme } from '@mui/material';
+import { ChartLegend } from './ChartLegend';
 
 type TooltipData = FormattedReserveHistoryItem;
 
@@ -40,7 +41,7 @@ export type AreaProps = {
   height: number;
   margin?: { top: number; right: number; bottom: number; left: number };
   data: FormattedReserveHistoryItem[];
-  fields: { name: Field; color: string }[];
+  fields: { name: Field; color: string; text: string }[];
 };
 
 export const ApyChart = withTooltip<AreaProps, TooltipData>(
@@ -103,7 +104,8 @@ export const ApyChart = withTooltip<AreaProps, TooltipData>(
     );
 
     return (
-      <div>
+      <>
+        <ChartLegend labels={fields} />
         <svg width={width} height={height}>
           <Group left={margin.left} top={margin.top}>
             {fields.map((field) => (
@@ -218,7 +220,7 @@ export const ApyChart = withTooltip<AreaProps, TooltipData>(
             </TooltipWithBounds>
           </div>
         )}
-      </div>
+      </>
     );
   }
 );

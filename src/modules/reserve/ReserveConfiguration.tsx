@@ -99,7 +99,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                     width={parent.width}
                     height={parent.height}
                     data={data}
-                    fields={[{ name: 'liquidityRate', color: '#2EBAC6' }]}
+                    fields={[{ name: 'liquidityRate', color: '#2EBAC6', text: 'Supply APR' }]}
                   />
                 )}
               </ParentSize>
@@ -208,9 +208,19 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                     height={parent.height}
                     data={data}
                     fields={[
-                      { name: 'variableBorrowRate', color: '#B6509E' },
+                      {
+                        name: 'variableBorrowRate',
+                        color: '#B6509E',
+                        text: 'Borrow APR, variable',
+                      },
                       ...(reserve.stableBorrowRateEnabled
-                        ? ([{ name: 'stableBorrowRate', color: '#0062D2' }] as const)
+                        ? ([
+                            {
+                              name: 'stableBorrowRate',
+                              color: '#0062D2',
+                              text: 'Borrow APR, stable',
+                            },
+                          ] as const)
                         : []),
                     ]}
                   />
@@ -225,7 +235,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
 
       <PanelRow>
         <PanelTitle>Interest rate model</PanelTitle>
-        <div style={{ height: 300, marginLeft: 0, marginTop: 20, width: 400 }}>
+        <div style={{ height: 300, marginLeft: 0, marginTop: 20, flexGrow: 1, maxWidth: '100%' }}>
           <ParentSize>
             {(parent) => (
               <InterestRateModelChart
