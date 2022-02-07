@@ -243,7 +243,7 @@ msgstr ""
 msgid "Current LTV"
 msgstr ""
 
-#: src/components/GasStation/GasStation.tsx:143
+#: src/components/GasStation/GasStation.tsx:153
 msgid "Custom"
 msgstr ""
 
@@ -305,7 +305,7 @@ msgstr ""
 
 #: src/components/Borrow/BorrowActions.tsx:96
 #: src/components/Supply/SupplyActions.tsx:155
-#: src/components/Withdraw/WithdrawActions.tsx:89
+#: src/components/Withdraw/WithdrawActions.tsx:85
 msgid "ENTER AN AMOUNT"
 msgstr ""
 
@@ -480,7 +480,7 @@ msgstr ""
 
 #: src/components/Borrow/BorrowActions.tsx:113
 #: src/components/CollateralChange/CollateralChangeActions.tsx:89
-#: src/components/Withdraw/WithdrawActions.tsx:106
+#: src/components/Withdraw/WithdrawActions.tsx:102
 msgid "OK, CLOSE"
 msgstr ""
 
@@ -752,11 +752,11 @@ msgstr ""
 #~ msgid "WITHDRAW {0} PENDING..."
 #~ msgstr ""
 
-#: src/components/Withdraw/WithdrawActions.tsx:95
+#: src/components/Withdraw/WithdrawActions.tsx:91
 msgid "WITHDRAW {symbol}"
 msgstr ""
 
-#: src/components/Withdraw/WithdrawActions.tsx:99
+#: src/components/Withdraw/WithdrawActions.tsx:95
 msgid "WITHDRAW {symbol} PENDING..."
 msgstr ""
 
@@ -832,7 +832,7 @@ msgstr ""
 msgid "rewards"
 msgstr ""
 
-#: src/components/GasStation/GasStation.tsx:100
+#: src/components/GasStation/GasStation.tsx:110
 msgid "{0, select, slow {Slow} normal {Normal} fast {Fast} other {-}}"
 msgstr ""
 
