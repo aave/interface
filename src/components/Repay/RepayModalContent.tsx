@@ -259,7 +259,7 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
         poolAddress={tokenToRepayWith.address}
         isWrongNetwork={isWrongNetwork}
         symbol={tokenToRepayWith.symbol}
-        debtType={}
+        debtType={debtType}
         repayWithATokens={repayWithATokens}
         blocked={blockingError !== '' || warningMessage !== '' || notEnoughFunds}
       />
