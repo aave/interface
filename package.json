@@ -31,7 +31,7 @@
     "@emotion/server": "latest",
     "@emotion/styled": "latest",
     "@graphql-codegen/add": "^3.1.1",
-    "@graphql-codegen/cli": "^2.3.1",
+    "@graphql-codegen/cli": "^2.5.0",
     "@graphql-codegen/typescript-operations": "^2.2.2",
     "@graphql-codegen/typescript-react-apollo": "^3.2.4",
     "@heroicons/react": "^1.0.5",
