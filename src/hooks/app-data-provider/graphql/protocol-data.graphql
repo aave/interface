@@ -49,6 +49,10 @@ fragment ReserveDataFragment on ReserveData {
   eModePriceSource
   eModeLabel
   borrowableInIsolation
+  baseStableBorrowRate
+  baseVariableBorrowRate
+  optimalUsageRatio
+  priceOracle
 }
 
 fragment BaseCurrencyDataFragment on BaseCurrencyData {

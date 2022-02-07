@@ -227,7 +227,13 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
         <PanelTitle>Interest rate model</PanelTitle>
         <div style={{ height: 300, marginLeft: 0, marginTop: 20, width: 400 }}>
           <ParentSize>
-            {(parent) => <InterestRateModelChart width={parent.width} height={parent.height} />}
+            {(parent) => (
+              <InterestRateModelChart
+                width={parent.width}
+                height={parent.height}
+                reserve={reserve}
+              />
+            )}
           </ParentSize>
         </div>
       </PanelRow>
