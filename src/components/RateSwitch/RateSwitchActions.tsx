@@ -67,7 +67,14 @@ export const RateSwitchActions = ({
         error: undefined,
       });
     }
-  }, [setRateSwitchTxState, mainTxState.txHash]);
+
+    if (mainTxState.error) {
+      setRateSwitchTxState({
+        success: false,
+        error: mainTxState.error,
+      });
+    }
+  }, [setRateSwitchTxState, mainTxState.txHash, mainTxState.error]);
 
   return (
     <Box sx={{ mt: '16px', display: 'flex', flexDirection: 'column' }}>
