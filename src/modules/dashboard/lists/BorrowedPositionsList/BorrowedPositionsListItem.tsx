@@ -17,7 +17,7 @@ export const BorrowedPositionsListItem = ({
   borrowRateMode,
   stableBorrowAPY,
 }: ComputedUserReserveData & { borrowRateMode: InterestRate }) => {
-  const { openBorrow } = useModalContext();
+  const { openBorrow, openRepay } = useModalContext();
   const {
     isActive,
     isFrozen,
@@ -57,7 +57,7 @@ export const BorrowedPositionsListItem = ({
         <Button
           disabled={!isActive}
           variant="contained"
-          onClick={() => console.log('TODO: should be repay modal')}
+          onClick={() => openRepay(reserve.underlyingAsset)}
         >
           <Trans>Repay</Trans>
         </Button>
