@@ -106,6 +106,7 @@ export const RateSwitchModalContent = ({
             rate={rateModeAfterSwitch}
             gasLimit={gasLimit}
             symbol={poolReserve.symbol}
+            underlyingAsset={underlyingAsset}
           />
         </>
       )}

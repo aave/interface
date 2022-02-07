@@ -94,11 +94,9 @@ export const useTransactionHandler = ({
             reserve: underlyingAsset,
             amount,
           });
-          console.log('sign payload: ', unsingedPayload);
           try {
             setLoading(true);
             const signature = await signTxData(unsingedPayload);
-            console.log('signature: ', signature);
             setSignature(signature);
             setApproved(true);
             setApprovalTxState({

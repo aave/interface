@@ -5,6 +5,7 @@ import {
   FormControlLabel,
   Grid,
   GridProps,
+  Link,
   SvgIcon,
   Switch,
   Typography,
@@ -20,9 +21,10 @@ import { GasStation } from '../GasStation/GasStation';
 import { parseUnits } from 'ethers/lib/utils';
 import { IncentivesButton } from '../incentives/IncentivesButton';
 import { ReserveIncentiveResponse } from 'src/hooks/app-data-provider/useIncentiveData';
-import { CheckIcon } from '@heroicons/react/outline';
+import { CheckIcon, ExternalLinkIcon } from '@heroicons/react/outline';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { InterestRate } from '@aave/contract-helpers';
+import { ROUTES } from '../primitives/Link';
 
 export interface TxModalDetailsProps extends GridProps {
   apy?: string;
@@ -43,6 +45,7 @@ export interface TxModalDetailsProps extends GridProps {
   walletBalance?: string;
   unWrappedSymbol?: string;
   rate?: InterestRate;
+  underlyingAsset?: string;
 }
 
 export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
@@ -63,6 +66,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   walletBalance,
   unWrappedSymbol,
   rate,
+  underlyingAsset,
   ...props
 }) => {
   const [selectedRate, setSelectedRate] = React.useState(InterestRate.Variable);
@@ -74,6 +78,16 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
 
   return (
     <Grid container direction="row" alignItems="center" rowSpacing={'12px'} {...props}>
+      {underlyingAsset && (
+        <FormRow>
+          <FormInfo>
+            <Button coponent={Link} href={ROUTES.reserveOverview(underlyingAsset)}>
+              <Trans>Market rates</Trans>
+              <ExternalLinkIcon />
+            </Button>
+          </FormInfo>
+        </FormRow>
+      )}
       {symbol && setInterestRateMode && borrowStableRate && apy && (
         <FormRow>
           <FormInfo>
