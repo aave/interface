@@ -47,7 +47,7 @@
     "graphql": "^16.2.0",
     "graphql-ws": "^5.5.5",
     "lowdb": "^3.0.0",
-    "next": "12.0.9",
+    "next": "12.0.10",
     "react": "latest",
     "react-dom": "latest",
     "reflect-metadata": "^0.1.13",
