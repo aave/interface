@@ -24,6 +24,7 @@ export type RateSwitchActionsProps = {
   handleClose: () => void;
   isWrongNetwork: boolean;
   currentRateMode: InterestRate;
+  blocked: boolean;
 };
 
 export const RateSwitchActions = ({
@@ -33,6 +34,7 @@ export const RateSwitchActions = ({
   handleClose,
   isWrongNetwork,
   currentRateMode,
+  blocked,
 }: RateSwitchActionsProps) => {
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
@@ -57,7 +59,7 @@ export const RateSwitchActions = ({
       state.gasOption === GasOption.Custom
         ? state.customGas
         : gasPriceData.data?.[state.gasOption].legacyGasPrice,
-    skip: false,
+    skip: blocked,
   });
 
   useEffect(() => {
@@ -86,7 +88,11 @@ export const RateSwitchActions = ({
         />
       </Box>
       {!mainTxState.txHash && !mainTxState.error && (
-        <Button variant="contained" onClick={action} disabled={loading || isWrongNetwork}>
+        <Button
+          variant="contained"
+          onClick={action}
+          disabled={loading || isWrongNetwork || blocked}
+        >
           {!loading ? (
             <Trans>SWITCH RATE</Trans>
           ) : (

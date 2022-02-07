@@ -81,7 +81,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
       {underlyingAsset && (
         <FormRow>
           <FormInfo>
-            <Button coponent={Link} href={ROUTES.reserveOverview(underlyingAsset)}>
+            <Button component={Link} href={ROUTES.reserveOverview(underlyingAsset)}>
               <Trans>Market rates</Trans>
               <ExternalLinkIcon />
             </Button>

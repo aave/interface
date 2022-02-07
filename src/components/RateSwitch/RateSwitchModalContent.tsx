@@ -68,7 +68,7 @@ export const RateSwitchModalContent = ({
       : userReserve.variableBorrows
   );
   if (currentBorrows.eq(0)) {
-    blockingError = ''; //intl.formatMessage(messages.errorNotBorrowYetUsingThisCurrency);
+    blockingError = 'errorNotBorrowYetUsingThisCurrency'; //intl.formatMessage(messages.errorNotBorrowYetUsingThisCurrency);
   }
   if (
     currentRateMode === InterestRate.Variable &&
@@ -76,11 +76,11 @@ export const RateSwitchModalContent = ({
     poolReserve.usageAsCollateralEnabled &&
     valueToBigNumber(userReserve.totalBorrows).lt(userReserve.underlyingBalance)
   ) {
-    blockingError = ''; // intl.formatMessage(messages.errorYouCantBorrowStableNow);
+    blockingError = 'errorYouCantBorrowStableNow'; // intl.formatMessage(messages.errorYouCantBorrowStableNow);
   }
 
   if (InterestRate.Variable === currentRateMode && !poolReserve.stableBorrowRateEnabled) {
-    blockingError = ''; // intl.formatMessage(messages.errorStableInterestTypeIsDisabled);
+    blockingError = 'errorStableInterestTypeIsDisabled'; // intl.formatMessage(messages.errorStableInterestTypeIsDisabled);
   }
 
   console.log('TODO: do semething with blocking errors: ', blockingError);
@@ -122,6 +122,7 @@ export const RateSwitchModalContent = ({
         handleClose={handleClose}
         isWrongNetwork={isWrongNetwork}
         currentRateMode={currentRateMode}
+        blocked={blockingError !== ''}
       />
     </>
   );
