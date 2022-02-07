@@ -27,6 +27,7 @@ import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { WithdrawActions } from '../Withdraw/WithdrawActions';
 import BigNumber from 'bignumber.js';
+import { RepayActions } from './RepayActions';
 
 export type RepayProps = {
   underlyingAsset: string;
@@ -49,7 +50,7 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
   const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
   const [repayWithCollateral, setRepayWithCollateral] = useState(false);
   const [tokenToRepayWith, setTokenToRepayWith] = useState({
-    underlyingAsset: underlyingAsset,
+    address: underlyingAsset,
     symbol: poolReserve.symbol,
     balance: walletBalances[underlyingAsset]?.amount,
   });
@@ -69,7 +70,7 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
   if (!repayWithCollateral) {
     // push reserve asset
     repayTokens.push({
-      underlyingAsset: underlyingAsset,
+      address: underlyingAsset,
       symbol: poolReserve.symbol,
       balance: walletBalances[underlyingAsset]?.amount,
       balanceUSD: walletBalances[underlyingAsset]?.amountUSD,
@@ -77,7 +78,7 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
     // push reserve atoken
     if (currentMarketData.v3) {
       repayTokens.push({
-        underlyingAsset: poolReserve.aTokenAddress,
+        address: poolReserve.aTokenAddress,
         symbol: `${currentMarketData.aTokenPrefix}${poolReserve.symbol}`,
         balance: walletBalances[poolReserve.aTokenAddress]?.amountUSD,
         balanceUSD: walletBalances[poolReserve.aTokenAddress]?.amountUSD,
@@ -86,7 +87,7 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
     // if wrapped reserve push both wrapped / native
     if (poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol) {
       repayTokens.push({
-        underlyingAsset: underlyingAsset,
+        address: underlyingAsset,
         symbol: networkConfig.baseAssetSymbol,
         balance: walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]?.amount,
         balanceUSD: walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]?.amountUSD,
@@ -100,7 +101,7 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
   const walletBalance = walletBalances[underlyingAsset]?.amount;
   const { underlyingBalance, usageAsCollateralEnabledOnUser, reserve } = userReserve;
 
-  const repayWithATokens = tokenToRepayWith.underlyingAsset === poolReserve.aTokenAddress;
+  const repayWithATokens = tokenToRepayWith.address === poolReserve.aTokenAddress;
 
   const debtType =
     Number(reserve.totalVariableDebtUSD) > Number(reserve.totalStableDebtUSD)
@@ -178,6 +179,37 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
       }).toString()
     : user.healthFactor;
 
+  // TODO: add here repay with collateral calculations and maybe do a conditional with other????
+
+  // Warnings And Blocking Errors
+  const blockingError = (
+    repayWithATokens
+      ? valueToBigNumber(underlyingBalance).eq(0)
+      : valueToBigNumber(walletBalance).eq('0') || repayWithATokens
+      ? valueToBigNumber(underlyingBalance).lt(amount)
+      : valueToBigNumber(walletBalance).lt(amount)
+  )
+    ? 'Some error'
+    : // ? intl.formatMessage(messages.error, {
+      //     userReserveSymbol: assetDetails.formattedSymbol || assetDetails.symbol,
+      //   })
+      '';
+
+  const warningMessage =
+    amount === '-1' &&
+    amountToRepayUI.gte(maxAmountToRepay) &&
+    !amountToRepayUI.gte(safeAmountToRepayAll)
+      ? 'Warning message'
+      : '';
+  // ? intl.formatMessage(messages.warningMessage)
+  // : '';
+
+  const notEnoughFunds =
+    amount === '-1' &&
+    (repayWithATokens
+      ? valueToBigNumber(underlyingBalance).lt(maxAmountToRepay)
+      : valueToBigNumber(walletBalance).lt(maxAmountToRepay));
+
   // is Network mismatched
   const isWrongNetwork = currentChainId !== connectedChainId;
 
@@ -218,24 +250,19 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
           symbol={poolReserve.symbol}
         />
       )}
-      {/* <WithdrawActions
+      <RepayActions
         poolReserve={poolReserve}
         setGasLimit={setGasLimit}
-        setWithdrawTxState={setWithdrawTxState}
-        amountToWithdraw={amountToRepay.toString()}
+        setRepayTxState={setRepayTxState}
+        amountToRepay={amountToRepay.toString()}
         handleClose={handleClose}
-        poolAddress={
-          repayUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
-            ? API_ETH_MOCK_ADDRESS
-            : poolReserve.underlyingAsset
-        }
+        poolAddress={tokenToRepayWith.address}
         isWrongNetwork={isWrongNetwork}
-        symbol={
-          repayUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
-            ? networkConfig.baseAssetSymbol
-            : poolReserve.symbol
-        }
-      /> */}
+        symbol={tokenToRepayWith.symbol}
+        debtType={}
+        repayWithATokens={repayWithATokens}
+        blocked={blockingError !== '' || warningMessage !== '' || notEnoughFunds}
+      />
     </>
   );
 };
