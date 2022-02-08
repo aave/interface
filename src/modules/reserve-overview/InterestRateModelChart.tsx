@@ -168,6 +168,7 @@ export const InterestRateModelChart = withTooltip<AreaProps, TooltipData>(
       return scaleLinear({
         range: [innerHeight, 0],
         domain: [0, (maxY || 0) * 1.1],
+        nice: true,
       });
     }, [innerHeight, data, reserve]);
 

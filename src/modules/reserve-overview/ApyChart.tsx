@@ -78,7 +78,8 @@ export const ApyChart = withTooltip<AreaProps, TooltipData>(
       );
       return scaleLinear({
         range: [innerHeight, 0],
-        domain: [0, valueMax || 0],
+        domain: [0, (valueMax || 0) * 1.1],
+        nice: true,
       });
     }, [innerHeight, data, fields]);
 
