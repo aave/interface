@@ -2366,7 +2366,7 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@mui/base@5.0.0-alpha.67":
+"@mui/base@5.0.0-alpha.67", "@mui/base@^5.0.0-alpha.67":
   version "5.0.0-alpha.67"
   resolved "https://registry.yarnpkg.com/@mui/base/-/base-5.0.0-alpha.67.tgz#da2423b96204f71cf37bcfcf3054667f38361eb8"
   integrity sha512-yK2++NivZUitAVpheMc5QVuwrVCphrTw85L6qjKcvnSpB8wmVYne58CY2vzMCNEuHkuHG2jccq9/JlRZFGAanw==
