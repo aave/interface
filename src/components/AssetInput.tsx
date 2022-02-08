@@ -17,7 +17,7 @@ import { TokenIcon } from './primitives/TokenIcon';
 import { FormattedNumber } from './primitives/FormattedNumber';
 import { ChevronDownIcon } from '@heroicons/react/outline';
 
-interface Asset {
+export interface Asset {
   balance: string;
   symbol: string;
   address?: string;
@@ -25,7 +25,7 @@ interface Asset {
 
 export interface AssetInputProps<T extends Asset = Asset> {
   value: string;
-  usdValue?: string;
+  usdValue: string;
   symbol: string;
   onChange: (value: string) => void;
   disabled?: boolean;
@@ -35,7 +35,7 @@ export interface AssetInputProps<T extends Asset = Asset> {
 
 export const AssetInput: React.FC<AssetInputProps> = ({
   value,
-  // usdValue,
+  usdValue,
   symbol,
   onChange,
   disabled,
@@ -118,7 +118,11 @@ export const AssetInput: React.FC<AssetInputProps> = ({
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', pt: '4px' }}>
         <Typography sx={{ flexGrow: 1 }}>
-          <FormattedNumber value={asset.balance} compact symbol="USD" />
+          <FormattedNumber
+            value={isNaN(Number(usdValue)) ? 0 : Number(usdValue)}
+            compact
+            symbol="USD"
+          />
         </Typography>
         <Typography>
           Balance <FormattedNumber value={asset.balance} compact />
@@ -126,7 +130,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
         <Button
           size="small"
           sx={{ minWidth: 0 }}
-          onClick={() => onChange(asset.balance)}
+          onClick={() => onChange('-1')}
           disabled={disabled}
         >
           <Trans>Max</Trans>

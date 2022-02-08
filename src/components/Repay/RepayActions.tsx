@@ -201,10 +201,8 @@ export const RepayActions = ({
           disabled={loading || (requiresApproval && !approved) || isWrongNetwork}
           sx={{ mt: !approved ? 2 : 0 }}
         >
-          {!mainTxState.txHash && !mainTxState.error && (!loading || !approved) && (
-            <Trans>REPAY {symbol}</Trans>
-          )}
-          {approved && loading && (
+          {(!loading || (requiresApproval && !approved)) && <Trans>REPAY {symbol}</Trans>}
+          {((requiresApproval && approved) || loading) && (
             <>
               <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
               <Trans>PENDING...</Trans>
