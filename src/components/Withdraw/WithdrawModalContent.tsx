@@ -159,12 +159,20 @@ export const WithdrawModalContent = ({
             value={amountToWithdraw.toString()}
             onChange={setAmount}
             // usdValue={amountInUsd.toString()}
-            balance={maxAmountToWithdraw.toString()}
             symbol={
               withdrawUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
                 ? networkConfig.baseAssetSymbol
                 : poolReserve.symbol
             }
+            assets={[
+              {
+                balance: maxAmountToWithdraw.toString(),
+                symbol:
+                  withdrawUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
+                    ? networkConfig.baseAssetSymbol
+                    : poolReserve.symbol,
+              },
+            ]}
           />
           <TxModalDetails
             showHf={showHealthFactor}

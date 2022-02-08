@@ -165,8 +165,13 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
             value={amountToSupply}
             onChange={setAmountToSupply}
             usdValue={amountInUsd.toString()}
-            balance={maxAmountToSupply.toString()}
             symbol={supplyUnWrapped ? networkConfig.baseAssetSymbol : poolReserve.symbol}
+            assets={[
+              {
+                balance: maxAmountToSupply.toString(),
+                symbol: supplyUnWrapped ? networkConfig.baseAssetSymbol : poolReserve.symbol,
+              },
+            ]}
           />
           <TxModalDetails
             sx={{ mt: '30px' }}

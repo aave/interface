@@ -95,6 +95,7 @@ export const SupplyActions = ({
         ? state.customGas
         : gasPriceData.data?.[state.gasOption].legacyGasPrice,
     skip: !amountToSupply || parseFloat(amountToSupply) === 0,
+    deps: [amountToSupply],
   });
 
   const hasAmount = amountToSupply && amountToSupply !== '0';
