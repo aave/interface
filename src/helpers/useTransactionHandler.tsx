@@ -2,7 +2,7 @@ import { EthereumTransactionTypeExtended, Pool } from '@aave/contract-helpers';
 import { BigNumber } from '@ethersproject/bignumber';
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
-import { useEffect, useState } from 'react';
+import { DependencyList, useEffect, useState } from 'react';
 import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -13,6 +13,7 @@ interface UseTransactionHandlerProps {
   tryPermit?: boolean;
   customGasPrice?: string;
   skip?: boolean;
+  deps?: DependencyList;
 }
 
 export type TxStateType = {
@@ -26,6 +27,7 @@ export const useTransactionHandler = ({
   tryPermit = false,
   customGasPrice,
   skip,
+  deps = [],
 }: UseTransactionHandlerProps) => {
   const { signTxData, sendTx, getTxError, currentAccount } = useWeb3Context();
   const { refetchWalletBalances, refetchPoolData } = useBackgroundDataProvider();
@@ -218,22 +220,28 @@ export const useTransactionHandler = ({
 
   // populate txns
   useEffect(() => {
+    setLoading(true);
     // good enough for now, but might need debounce or similar for swaps
     if (!skip) {
       // setLoading(true);
-      handleGetTxns()
-        .then((data) => {
-          data && setTxs(data);
-          // setLoading(false);
-        })
-        .catch((error) => {
-          setMainTxState({
-            txHash: undefined,
-            error: error.message.toString(),
-          });
-        });
+      const timeout = setTimeout(
+        () =>
+          handleGetTxns()
+            .then((data) => {
+              data && setTxs(data);
+              setLoading(false);
+            })
+            .catch((error) => {
+              setMainTxState({
+                txHash: undefined,
+                error: error.message.toString(),
+              });
+            }),
+        1500
+      );
+      return () => clearTimeout(timeout);
     }
-  }, [skip]);
+  }, [skip, ...deps]);
 
   return {
     approval,

@@ -69,6 +69,7 @@ export const BorrowActions = ({
         ? state.customGas
         : gasPriceData.data?.[state.gasOption].legacyGasPrice,
     skip: !amountToBorrow || amountToBorrow === '0',
+    deps: [amountToBorrow],
   });
 
   useEffect(() => {
