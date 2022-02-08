@@ -13,6 +13,7 @@ import { ApyChart } from '../reserve-overview/ApyChart';
 import { InterestRateModelChart } from '../reserve-overview/InterestRateModelChart';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { eModeInfo } from 'src/utils/eMode';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
   <Box
@@ -47,14 +48,13 @@ const ChartContainer: React.FC<BoxProps> = (props) => (
 export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = ({ reserve }) => {
   const { currentNetworkConfig, currentMarketData } = useProtocolDataContext();
   const renderCharts = !!currentNetworkConfig.ratesHistoryApiUrl;
-  const eMode = true;
   const { data } = useReserveRatesHistory(
     reserve
       ? `${reserve.underlyingAsset}${currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER}`
       : ''
   ); // TODO: might make sense to move this to gql as well
   return (
-    <Paper sx={{ minHeight: '1000px', py: '16px', px: '24px' }}>
+    <Paper sx={{ py: '16px', px: '24px' }}>
       <Box
         sx={{
           display: 'flex',
@@ -67,11 +67,11 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
         <Typography variant="h3">
           <Trans>Reserve status &#38; configuration</Trans>
         </Typography>
-        {eMode && (
+        {reserve.isEmodeEnabled && (
           <Typography color="text.secondary" variant="description" sx={{ display: 'inline-flex' }}>
             <Trans>E-Mode category</Trans>
             <Typography variant="subheader1" sx={{ ml: 2 }}>
-              Stablecoin
+              {eModeInfo[reserve.eModeCategoryId].label}
             </Typography>
             <HelpOutlinedIcon fontSize="small" sx={{ color: 'divider', ml: 1 }} />
           </Typography>
@@ -94,13 +94,18 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                 value={reserve.totalLiquidityUSD /** TODO: should this be liquidity or all? */}
                 symbol="USD"
                 variant="main16"
+                compact
               />
             </TopInfoPanelItem>
             <TopInfoPanelItem title={<Trans>APY</Trans>} hideIcon variant="light">
               <FormattedNumber value={reserve.supplyAPY} percent variant="main16" />
             </TopInfoPanelItem>
             <TopInfoPanelItem title={<Trans>Supply cap</Trans>} hideIcon variant="light">
-              <FormattedNumber value={reserve.supplyCapUSD} symbol="USD" variant="main16" />
+              {reserve.supplyCapUSD !== '0' ? (
+                <FormattedNumber value={reserve.supplyCapUSD} symbol="USD" variant="main16" />
+              ) : (
+                <Typography variant="main16">no limit</Typography>
+              )}
             </TopInfoPanelItem>
           </Box>
 
@@ -124,7 +129,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
               mt: 4,
               py: '12px',
               px: '16px',
-              background: 'background.surface',
+              bgcolor: 'background.surface',
             }}
           >
             <div>
@@ -209,7 +214,11 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
               <FormattedNumber value={reserve.stableBorrowAPY} percent variant="main16" />
             </TopInfoPanelItem>
             <TopInfoPanelItem title={<Trans>Borrow cap</Trans>} hideIcon variant="light">
-              <FormattedNumber value={reserve.borrowCapUSD} symbol="USD" variant="main16" />
+              {reserve.borrowCapUSD !== '0' ? (
+                <FormattedNumber value={reserve.borrowCapUSD} symbol="USD" variant="main16" />
+              ) : (
+                <Typography variant="main16">no limit</Typography>
+              )}
             </TopInfoPanelItem>
           </Box>
           {renderCharts && (
