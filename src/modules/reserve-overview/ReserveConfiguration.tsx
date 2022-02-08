@@ -31,6 +31,19 @@ export const PanelTitle: React.FC<TypographyProps> = (props) => (
   <Typography variant="subheader1" sx={{ width: { sm: '170px' } }} {...props} />
 );
 
+const ChartContainer: React.FC<BoxProps> = (props) => (
+  <Box
+    sx={{
+      height: 300,
+      marginLeft: 0,
+      flexGrow: 1,
+      maxWidth: '100%',
+      ...props.sx,
+    }}
+    {...props}
+  />
+);
+
 export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = ({ reserve }) => {
   const { currentNetworkConfig, currentMarketData } = useProtocolDataContext();
   const renderCharts = !!currentNetworkConfig.ratesHistoryApiUrl;
@@ -67,7 +80,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
 
       <PanelRow>
         <PanelTitle>Supply Info</PanelTitle>
-        <div>
+        <Box sx={{ flexGrow: 1, maxWidth: '100%' }}>
           <Box
             sx={{
               display: 'flex',
@@ -92,7 +105,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
           </Box>
 
           {renderCharts && (
-            <div style={{ height: 300, marginLeft: 0, marginTop: 20 }}>
+            <ChartContainer>
               <ParentSize>
                 {(parent) => (
                   <ApyChart
@@ -103,7 +116,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                   />
                 )}
               </ParentSize>
-            </div>
+            </ChartContainer>
           )}
 
           <Paper
@@ -169,14 +182,14 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
               </Typography>
             </Box>
           </Paper>
-        </div>
+        </Box>
       </PanelRow>
 
       <Divider sx={{ my: '40px' }} />
 
       <PanelRow>
         <PanelTitle>Borrow info</PanelTitle>
-        <div>
+        <Box sx={{ flexGrow: 1, maxWidth: '100%' }}>
           <Box
             sx={{
               display: 'flex',
@@ -200,7 +213,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
             </TopInfoPanelItem>
           </Box>
           {renderCharts && (
-            <div style={{ height: 300, marginLeft: 0, marginTop: 20 }}>
+            <ChartContainer>
               <ParentSize>
                 {(parent) => (
                   <ApyChart
@@ -208,11 +221,6 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                     height={parent.height}
                     data={data}
                     fields={[
-                      {
-                        name: 'variableBorrowRate',
-                        color: '#B6509E',
-                        text: 'Borrow APR, variable',
-                      },
                       ...(reserve.stableBorrowRateEnabled
                         ? ([
                             {
@@ -222,20 +230,25 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                             },
                           ] as const)
                         : []),
+                      {
+                        name: 'variableBorrowRate',
+                        color: '#B6509E',
+                        text: 'Borrow APR, variable',
+                      },
                     ]}
                   />
                 )}
               </ParentSize>
-            </div>
+            </ChartContainer>
           )}
-        </div>
+        </Box>
       </PanelRow>
 
       <Divider sx={{ my: '40px' }} />
 
       <PanelRow>
         <PanelTitle>Interest rate model</PanelTitle>
-        <div style={{ height: 300, marginLeft: 0, marginTop: 20, flexGrow: 1, maxWidth: '100%' }}>
+        <ChartContainer>
           <ParentSize>
             {(parent) => (
               <InterestRateModelChart
@@ -255,7 +268,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
               />
             )}
           </ParentSize>
-        </div>
+        </ChartContainer>
       </PanelRow>
     </Paper>
   );

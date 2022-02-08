@@ -48,7 +48,7 @@ export const ApyChart = withTooltip<AreaProps, TooltipData>(
   ({
     width,
     height,
-    margin = { top: 10, right: 10, bottom: 20, left: 40 },
+    margin = { top: 0, right: 10, bottom: 20, left: 40 },
     showTooltip,
     hideTooltip,
     tooltipData,
@@ -78,7 +78,7 @@ export const ApyChart = withTooltip<AreaProps, TooltipData>(
       );
       return scaleLinear({
         range: [innerHeight, 0],
-        domain: [0, (valueMax || 0) * 1.1],
+        domain: [0, valueMax || 0],
       });
     }, [innerHeight, data, fields]);
 
@@ -144,9 +144,9 @@ export const ApyChart = withTooltip<AreaProps, TooltipData>(
               tickLabelProps={() => ({
                 fill: theme.palette.text.secondary,
                 fontSize: 8,
-                dx: -6,
+                dx: -8,
               })}
-              numTicks={innerWidth < 800 ? 5 : 8}
+              numTicks={innerWidth < 800 ? 5 : 10}
             />
             <AxisLeft
               left={0}
@@ -155,7 +155,7 @@ export const ApyChart = withTooltip<AreaProps, TooltipData>(
               tickLabelProps={() => ({
                 fill: theme.palette.text.secondary,
                 fontSize: 8,
-                dx: -24,
+                dx: -margin.left + 8,
               })}
               numTicks={5}
               tickFormat={(value) => `${(value as number).toFixed(2)} %`}

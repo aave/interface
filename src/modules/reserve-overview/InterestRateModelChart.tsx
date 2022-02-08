@@ -397,7 +397,9 @@ export const InterestRateModelChart = withTooltip<AreaProps, TooltipData>(
           <div>
             <TooltipWithBounds top={20} left={tooltipLeft + 12} style={tooltipStyles}>
               <div>Utilization: {tooltipData.utilization}%</div>
-              <div>Stable: {getStableRate(tooltipData).toFixed(2)} %</div>
+              {reserve.stableBorrowRateEnabled && (
+                <div>Stable: {getStableRate(tooltipData).toFixed(2)} %</div>
+              )}
               <div>Variable: {getVariableRate(tooltipData).toFixed(2)} %</div>
             </TooltipWithBounds>
           </div>

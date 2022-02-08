@@ -15,7 +15,7 @@ export function ChartLegend({
     <Box
       sx={{
         position: 'absolute',
-        left: 0,
+        left: 20,
         top: 0,
       }}
     >
