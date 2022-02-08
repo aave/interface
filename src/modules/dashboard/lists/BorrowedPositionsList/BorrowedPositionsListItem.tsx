@@ -17,7 +17,7 @@ export const BorrowedPositionsListItem = ({
   borrowRateMode,
   stableBorrowAPY,
 }: ComputedUserReserveData & { borrowRateMode: InterestRate }) => {
-  const { openBorrow, openRepay } = useModalContext();
+  const { openBorrow, openRepay, openRateSwitch } = useModalContext();
   const {
     isActive,
     isFrozen,
@@ -49,7 +49,10 @@ export const BorrowedPositionsListItem = ({
           stableBorrowRateEnabled={stableBorrowRateEnabled}
           borrowRateMode={borrowRateMode}
           disabled={!stableBorrowRateEnabled || isFrozen || !isActive}
-          onClick={() => console.log('TODO: should be switch APY mode modal')}
+          onClick={() => openRateSwitch(reserve.underlyingAsset)}
+          stableBorrowAPY={stableBorrowAPY}
+          variableBorrowAPY={variableBorrowAPY}
+          underlyingAsset={reserve.underlyingAsset}
         />
       </ListColumn>
 
