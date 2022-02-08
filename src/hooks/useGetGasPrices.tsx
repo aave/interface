@@ -30,7 +30,7 @@ export interface GetGasPricesHook {
   error: boolean;
 }
 
-const POLLING_INTERVAL = 15000;
+const POLLING_INTERVAL = 30000;
 
 export const rawToGasPriceData = (feeData: FeeData): GasPriceData => {
   const gasInfo: GasInfo = {
