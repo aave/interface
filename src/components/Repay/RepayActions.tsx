@@ -101,6 +101,7 @@ export const RepayActions = ({
         setGasLimit(gas?.gasLimit);
         return tx;
       }
+      // TODO: add here the case for repay with collateral
     },
     handleGetPermitTxns: async (signature) => {
       const newPool: Pool = lendingPool as Pool;
@@ -131,16 +132,14 @@ export const RepayActions = ({
         error: undefined,
       });
     }
-  }, [setRepayTxState, mainTxState.txHash]);
 
-  useEffect(() => {
     if (mainTxState.error || approvalTxState.error) {
       setRepayTxState({
         success: true,
         error: mainTxState.error || approvalTxState.error,
       });
     }
-  }, [setRepayTxState, mainTxState.error, approvalTxState.error]);
+  }, [setRepayTxState, mainTxState, approvalTxState.error]);
 
   const handleRetry = () => {
     setRepayTxState({
@@ -184,7 +183,7 @@ export const RepayActions = ({
         <Button
           variant="contained"
           onClick={() => approval(amountToRepay, poolAddress)}
-          disabled={approved || loading || isWrongNetwork}
+          disabled={approved || loading || isWrongNetwork || blocked}
         >
           {!approved && !loading && <Trans>APPROVE TO CONTINUE</Trans>}
           {!approved && loading && (

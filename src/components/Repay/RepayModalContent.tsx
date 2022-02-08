@@ -50,9 +50,9 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
   const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
   const [repayWithCollateral, setRepayWithCollateral] = useState(false);
   const [tokenToRepayWith, setTokenToRepayWith] = useState({
-    address: underlyingAsset,
+    address: poolReserve.underlyingAsset,
     symbol: poolReserve.symbol,
-    balance: walletBalances[underlyingAsset]?.amount,
+    balance: walletBalances[poolReserve.underlyingAsset]?.amount,
   });
 
   if (!user) {
@@ -70,10 +70,10 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
   if (!repayWithCollateral) {
     // push reserve asset
     repayTokens.push({
-      address: underlyingAsset,
+      address: poolReserve.underlyingAsset,
       symbol: poolReserve.symbol,
-      balance: walletBalances[underlyingAsset]?.amount,
-      balanceUSD: walletBalances[underlyingAsset]?.amountUSD,
+      balance: walletBalances[poolReserve.underlyingAsset]?.amount,
+      balanceUSD: walletBalances[poolReserve.underlyingAsset]?.amountUSD,
     });
     // push reserve atoken
     if (currentMarketData.v3) {
@@ -87,7 +87,7 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
     // if wrapped reserve push both wrapped / native
     if (poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol) {
       repayTokens.push({
-        address: underlyingAsset,
+        address: API_ETH_MOCK_ADDRESS.toLowerCase(),
         symbol: networkConfig.baseAssetSymbol,
         balance: walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]?.amount,
         balanceUSD: walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]?.amountUSD,
@@ -104,7 +104,7 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
   const repayWithATokens = tokenToRepayWith.address === poolReserve.aTokenAddress;
 
   const debtType =
-    Number(reserve.totalVariableDebtUSD) > Number(reserve.totalStableDebtUSD)
+    Number(userReserve.variableBorrows) > Number(userReserve.stableBorrows)
       ? InterestRate.Variable
       : InterestRate.Stable;
 
@@ -216,6 +216,8 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
   const showHealthFactor =
     user.totalBorrowsMarketReferenceCurrency !== '0' && poolReserve.usageAsCollateralEnabled;
 
+  const blocked = blockingError !== '' || warningMessage !== '' || notEnoughFunds;
+
   return (
     <>
       {!repayTxState.error && !repayTxState.success && (
@@ -261,7 +263,7 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
         symbol={tokenToRepayWith.symbol}
         debtType={debtType}
         repayWithATokens={repayWithATokens}
-        blocked={blockingError !== '' || warningMessage !== '' || notEnoughFunds}
+        blocked={blocked}
       />
     </>
   );
