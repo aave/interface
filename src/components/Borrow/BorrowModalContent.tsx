@@ -126,7 +126,15 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
             value={amountToBorrow}
             onChange={setAmountToBorrow}
             // usdValue={amountInUsd.toString()}
-            balance={formattedMaxAmountToBorrow}
+            assets={[
+              {
+                balance: formattedMaxAmountToBorrow,
+                symbol:
+                  borrowUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
+                    ? networkConfig.baseAssetSymbol
+                    : poolReserve.symbol,
+              },
+            ]}
             symbol={
               borrowUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
                 ? networkConfig.baseAssetSymbol
