@@ -58,6 +58,7 @@ export const WithdrawActions = ({
         ? state.customGas
         : gasPriceData.data?.[state.gasOption].legacyGasPrice,
     skip: !amountToWithdraw || parseFloat(amountToWithdraw) === 0,
+    deps: [amountToWithdraw],
   });
 
   useEffect(() => {
