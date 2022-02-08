@@ -78,16 +78,6 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
 
   return (
     <Grid container direction="row" alignItems="center" rowSpacing={'12px'} {...props}>
-      {underlyingAsset && (
-        <FormRow>
-          <FormInfo>
-            <Button component={Link} href={ROUTES.reserveOverview(underlyingAsset)}>
-              <Trans>Market rates</Trans>
-              <ExternalLinkIcon />
-            </Button>
-          </FormInfo>
-        </FormRow>
-      )}
       {symbol && setInterestRateMode && borrowStableRate && apy && (
         <FormRow>
           <FormInfo>
@@ -166,12 +156,16 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
         <FormRow>
           <FormInfo>
             <Typography variant="description">
-              APY,{' '}
-              {rate === InterestRate.Variable ? <Trans>variable</Trans> : <Trans>stable</Trans>}
+              <Trans>New APY</Trans>
             </Typography>
           </FormInfo>
           <FormValue>
-            <FormattedNumber value={Number(apy)} percent variant="description" />
+            <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+              <Typography sx={{ mr: '2px' }}>
+                {rate === InterestRate.Variable ? <Trans>Variable</Trans> : <Trans>Stable</Trans>}
+              </Typography>
+              <FormattedNumber value={Number(apy)} percent variant="description" />
+            </Box>
           </FormValue>
         </FormRow>
       )}
