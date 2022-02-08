@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 const axios = require('axios');
 
 const updateOrCreateRecord = async (name, type, _payload) => {

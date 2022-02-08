@@ -83,6 +83,8 @@ export type ReserveData = {
   availableLiquidity: Scalars['String'];
   averageStableRate: Scalars['String'];
   baseLTVasCollateral: Scalars['String'];
+  baseStableBorrowRate: Scalars['String'];
+  baseVariableBorrowRate: Scalars['String'];
   borrowCap: Scalars['String'];
   borrowableInIsolation: Scalars['Boolean'];
   borrowingEnabled: Scalars['Boolean'];
@@ -105,7 +107,9 @@ export type ReserveData = {
   liquidityIndex: Scalars['String'];
   liquidityRate: Scalars['String'];
   name: Scalars['String'];
+  optimalUsageRatio: Scalars['String'];
   priceInMarketReferenceCurrency: Scalars['String'];
+  priceOracle: Scalars['String'];
   reserveFactor: Scalars['String'];
   reserveLiquidationBonus: Scalars['String'];
   reserveLiquidationThreshold: Scalars['String'];
@@ -484,6 +488,10 @@ export type ReserveDataFragmentFragment = {
   eModePriceSource: string;
   eModeLabel: string;
   borrowableInIsolation: boolean;
+  baseStableBorrowRate: string;
+  baseVariableBorrowRate: string;
+  optimalUsageRatio: string;
+  priceOracle: string;
 };
 
 export type BaseCurrencyDataFragmentFragment = {
@@ -554,6 +562,10 @@ export type C_ProtocolDataQuery = {
       eModePriceSource: string;
       eModeLabel: string;
       borrowableInIsolation: boolean;
+      baseStableBorrowRate: string;
+      baseVariableBorrowRate: string;
+      optimalUsageRatio: string;
+      priceOracle: string;
     }>;
     baseCurrencyData: {
       __typename?: 'BaseCurrencyData';
@@ -625,6 +637,10 @@ export type C_ProtocolDataUpdateSubscription = {
       eModePriceSource: string;
       eModeLabel: string;
       borrowableInIsolation: boolean;
+      baseStableBorrowRate: string;
+      baseVariableBorrowRate: string;
+      optimalUsageRatio: string;
+      priceOracle: string;
     }>;
     baseCurrencyData: {
       __typename?: 'BaseCurrencyData';
@@ -911,6 +927,10 @@ export const ReserveDataFragmentFragmentDoc = gql`
     eModePriceSource
     eModeLabel
     borrowableInIsolation
+    baseStableBorrowRate
+    baseVariableBorrowRate
+    optimalUsageRatio
+    priceOracle
   }
 `;
 export const BaseCurrencyDataFragmentFragmentDoc = gql`

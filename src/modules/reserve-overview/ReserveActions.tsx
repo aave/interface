@@ -83,7 +83,7 @@ export const ReserveActions = () => (
       </ReserveRow>
 
       <ReserveRow>
-        <Trans component={Typography}>Available to borrow</Trans>
+        <Trans>Available to borrow</Trans>
         <FormattedNumber value="1" />
       </ReserveRow>
 
