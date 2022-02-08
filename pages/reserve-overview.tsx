@@ -1,8 +1,8 @@
 import { Container, Grid } from '@mui/material';
 import { MainLayout } from 'src/layouts/MainLayout';
-import { ReserveConfiguration } from 'src/modules/reserve/ReserveConfiguration';
-import { ReserveActions } from 'src/modules/reserve/ReserveActions';
-import { ReserveTopDetails } from 'src/modules/reserve/ReserveTopDetails';
+import { ReserveConfiguration } from 'src/modules/reserve-overview/ReserveConfiguration';
+import { ReserveActions } from 'src/modules/reserve-overview/ReserveActions';
+import { ReserveTopDetails } from 'src/modules/reserve-overview/ReserveTopDetails';
 import { useRouter } from 'next/router';
 import {
   ComputedReserveData,

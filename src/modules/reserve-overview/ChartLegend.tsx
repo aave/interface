@@ -12,7 +12,13 @@ export function ChartLegend({
   ],
 }: ChartLegendProps) {
   return (
-    <Box sx={{ position: 'absolute', left: 0, top: 0 }}>
+    <Box
+      sx={{
+        position: 'absolute',
+        left: 0,
+        top: 0,
+      }}
+    >
       {labels.map((label) => (
         <Box key={label.text} sx={{ display: 'inline-flex', alignItems: 'center', ml: '24px' }}>
           <Box

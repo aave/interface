@@ -133,7 +133,7 @@ export const InterestRateModelChart = withTooltip<AreaProps, TooltipData>(
   ({
     width,
     height,
-    margin = { top: 0, right: 10, bottom: 0, left: 40 },
+    margin = { top: 20 /** needed for absolute labels on top */, right: 10, bottom: 0, left: 40 },
     showTooltip,
     hideTooltip,
     tooltipData,
@@ -235,15 +235,13 @@ export const InterestRateModelChart = withTooltip<AreaProps, TooltipData>(
               curve={curveMonotoneX}
             />
             <AxisLeft
-              left={0}
               scale={yValueScale}
               strokeWidth={0}
               tickLabelProps={() => ({
                 fill: theme.palette.text.secondary,
                 fontSize: 8,
-                dx: -24,
+                dx: -margin.left + 8,
               })}
-              numTicks={5}
               tickFormat={(value) => `${(value as number).toFixed(2)} %`}
             />
             <Bar
@@ -282,9 +280,16 @@ export const InterestRateModelChart = withTooltip<AreaProps, TooltipData>(
               strokeWidth={2}
               pointerEvents="none"
             />
+            <Line
+              from={{ x: dateScale(ticks[1].value), y: innerHeight / 4 - 5 }}
+              to={{ x: dateScale(ticks[1].value), y: innerHeight / 4 - 9 }}
+              stroke={'#000'}
+              strokeWidth={2}
+              pointerEvents="none"
+            />
             <Text
               x={dateScale(ticks[1].value)}
-              y={innerHeight / 4 + 14}
+              y={innerHeight / 4 - 14}
               width={360}
               textAnchor="middle"
               verticalAnchor="middle"
@@ -309,6 +314,13 @@ export const InterestRateModelChart = withTooltip<AreaProps, TooltipData>(
               r={4}
               fill="black"
               stroke="white"
+              strokeWidth={2}
+              pointerEvents="none"
+            />
+            <Line
+              from={{ x: dateScale(ticks[0].value), y: innerHeight / 4 + 5 }}
+              to={{ x: dateScale(ticks[0].value), y: innerHeight / 4 + 9 }}
+              stroke={'#000'}
               strokeWidth={2}
               pointerEvents="none"
             />
@@ -385,8 +397,8 @@ export const InterestRateModelChart = withTooltip<AreaProps, TooltipData>(
           <div>
             <TooltipWithBounds top={20} left={tooltipLeft + 12} style={tooltipStyles}>
               <div>Utilization: {tooltipData.utilization}%</div>
-              <div>{getStableRate(tooltipData).toFixed(2)} %</div>
-              <div>{getVariableRate(tooltipData).toFixed(2)} %</div>
+              <div>Stable: {getStableRate(tooltipData).toFixed(2)} %</div>
+              <div>Variable: {getVariableRate(tooltipData).toFixed(2)} %</div>
             </TooltipWithBounds>
           </div>
         )}
