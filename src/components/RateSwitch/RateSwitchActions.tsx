@@ -1,9 +1,4 @@
-import {
-  ChainId,
-  EthereumTransactionTypeExtended,
-  GasType,
-  InterestRate,
-} from '@aave/contract-helpers';
+import { EthereumTransactionTypeExtended, GasType, InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button, CircularProgress } from '@mui/material';
 import { Dispatch, SetStateAction, useEffect } from 'react';
@@ -11,7 +6,6 @@ import { TxState } from 'src/helpers/types';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useGasStation } from 'src/hooks/useGasStation';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { RightHelperText } from '../FlowCommons/RightHelperText';
@@ -37,13 +31,11 @@ export const RateSwitchActions = ({
   blocked,
 }: RateSwitchActionsProps) => {
   const { lendingPool } = useTxBuilderContext();
-  const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
   const { currentAccount, chainId: connectedChainId } = useWeb3Context();
   const { state, gasPriceData } = useGasStation();
 
   const { action, loading, mainTxState } = useTransactionHandler({
-    tryPermit:
-      currentMarketData.v3 && chainId !== ChainId.harmony && chainId !== ChainId.harmony_testnet,
+    tryPermit: false,
     handleGetTxns: async () => {
       const tx: EthereumTransactionTypeExtended[] = await lendingPool.swapBorrowRateMode({
         user: currentAccount,
@@ -93,7 +85,7 @@ export const RateSwitchActions = ({
           onClick={action}
           disabled={loading || isWrongNetwork || blocked}
         >
-          {!loading ? (
+          {!loading || blocked ? (
             <Trans>SWITCH RATE</Trans>
           ) : (
             <>

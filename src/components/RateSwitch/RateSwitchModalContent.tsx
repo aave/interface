@@ -92,7 +92,7 @@ export const RateSwitchModalContent = ({
     <>
       {!rateSwitchTxState.error && !rateSwitchTxState.success && (
         <>
-          <TxModalTitle title="Switch APY rate type for" symbol={poolReserve.symbol} />
+          <TxModalTitle title="Switch APY type" />
           {isWrongNetwork && (
             <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
           )}
