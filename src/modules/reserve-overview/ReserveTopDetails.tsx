@@ -11,15 +11,18 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { getMarketInfoById, MarketLogo } from 'src/components/MarketSwitcher';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackOutlined';
 
-export const ReserveTopDetails = () => {
+interface ReserveTopDetailsProps {
+  underlyingAsset: string;
+}
+
+export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) => {
   const router = useRouter();
-  const underlyingAddress = router.query.underlyingAddress;
   const { reserves } = useAppDataContext();
   const { currentMarket } = useProtocolDataContext();
   const { market, network, withAAVELogo } = getMarketInfoById(currentMarket);
 
   const poolReserve = reserves.find(
-    (reserve) => reserve.underlyingAsset === underlyingAddress
+    (reserve) => reserve.underlyingAsset === underlyingAsset
   ) as ComputedReserveData;
 
   if (!poolReserve) {

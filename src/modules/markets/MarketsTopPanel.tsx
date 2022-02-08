@@ -34,6 +34,7 @@ export const MarketsTopPanel = () => {
             variant="main21"
             minimumDecimals={2}
             maximumDecimals={2}
+            compact
           />
         </TopInfoPanelItem>
         <TopInfoPanelItem title={<Trans>Total available</Trans>}>
@@ -43,6 +44,7 @@ export const MarketsTopPanel = () => {
             variant="main21"
             minimumDecimals={2}
             maximumDecimals={2}
+            compact
           />
         </TopInfoPanelItem>
         <TopInfoPanelItem title={<Trans>Total borrows</Trans>}>
@@ -52,6 +54,7 @@ export const MarketsTopPanel = () => {
             variant="main21"
             minimumDecimals={2}
             maximumDecimals={2}
+            compact
           />
         </TopInfoPanelItem>
       </Box>

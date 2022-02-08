@@ -12,13 +12,13 @@ import {
 export default function ReserveOverview() {
   const router = useRouter();
   const { reserves } = useAppDataContext();
-  const underlyingAddress = router.query.underlyingAddress;
+  const underlyingAsset = router.query.underlyingAsset as string;
   const reserve = reserves.find(
-    (reserve) => reserve.underlyingAsset === underlyingAddress
+    (reserve) => reserve.underlyingAsset === underlyingAsset
   ) as ComputedReserveData;
   return (
     <Container maxWidth="xl">
-      <ReserveTopDetails />
+      <ReserveTopDetails underlyingAsset={underlyingAsset} />
 
       <Grid container spacing={4}>
         {/** Main status and configuration panel*/}
@@ -28,7 +28,7 @@ export default function ReserveOverview() {
 
         {/** Right panel with actions*/}
         <Grid item xs={12} sm={4}>
-          <ReserveActions />
+          <ReserveActions underlyingAsset={underlyingAsset} />
         </Grid>
       </Grid>
     </Container>
