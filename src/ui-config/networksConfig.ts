@@ -83,6 +83,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.mainnet]: {
     name: 'Ethereum',
+    privateJsonRPCUrl: process.env.PRIVATE_MAINNET_RPC,
     publicJsonRPCUrl: ['https://cloudflare-eth.com', 'https://eth-mainnet.alchemyapi.io/v2/demo'],
     publicJsonRPCWSUrl: 'wss://eth-mainnet.alchemyapi.io/v2/demo',
     cachingServerUrl: 'https://cache-api-1.aave.com/graphql',

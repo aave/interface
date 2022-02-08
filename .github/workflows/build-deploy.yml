@@ -10,7 +10,6 @@ on:
     branches:
       - master
 
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -36,6 +35,9 @@ jobs:
       - name: build
         if: steps.restore.outcome != 'success'
         run: yarn build:static
+        env:
+          PRIVATE_MAINNET_RPC: https://cloudflare-eth.com
+          ENABLE_TESTNET: true
 
       - name: pinata
         id: pinata
