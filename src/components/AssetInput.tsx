@@ -96,7 +96,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
                   <ChevronDownIcon />
                 </SvgIcon>
               )}
-              renderValue={(asset) => {
+              renderValue={(symbol) => {
                 return (
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <TokenIcon symbol={symbol} sx={{ mx: '4px' }} />
