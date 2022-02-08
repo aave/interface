@@ -42,6 +42,8 @@ export interface TxModalDetailsProps extends GridProps {
   actionUnWrapped?: boolean;
   walletBalance?: string;
   unWrappedSymbol?: string;
+  rate?: InterestRate;
+  underlyingAsset?: string;
 }
 
 export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
@@ -61,6 +63,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   action,
   walletBalance,
   unWrappedSymbol,
+  rate,
   ...props
 }) => {
   const [selectedRate, setSelectedRate] = React.useState(InterestRate.Variable);
@@ -104,7 +107,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
           </FormValue>
         </FormRow>
       )}
-      {!borrowStableRate && apy && (
+      {!borrowStableRate && apy && !rate && (
         <FormRow>
           <FormInfo>
             <Typography variant="description">
@@ -143,6 +146,23 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
           </FormInfo>
           <FormValue>
             <FormattedNumber value={Number(apy)} percent variant="description" />
+          </FormValue>
+        </FormRow>
+      )}
+      {apy && rate && (
+        <FormRow>
+          <FormInfo>
+            <Typography variant="description">
+              <Trans>New APY</Trans>
+            </Typography>
+          </FormInfo>
+          <FormValue>
+            <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+              <Typography sx={{ mr: '2px' }}>
+                {rate === InterestRate.Variable ? <Trans>Variable</Trans> : <Trans>Stable</Trans>}
+              </Typography>
+              <FormattedNumber value={Number(apy)} percent variant="description" />
+            </Box>
           </FormValue>
         </FormRow>
       )}
