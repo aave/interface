@@ -147,7 +147,6 @@ export const ApyChart = withTooltip<AreaProps, TooltipData>(
                 fontSize: 8,
                 dx: -8,
               })}
-              numTicks={innerWidth < 800 ? 5 : 10}
             />
             <AxisLeft
               left={0}
