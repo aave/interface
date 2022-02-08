@@ -5,7 +5,8 @@ export enum ModalType {
   Withdraw,
   Borrow,
   Repay,
-  CollateralChange
+  CollateralChange,
+  RateSwitch,
 }
 
 interface ModalContextType {
@@ -14,6 +15,7 @@ interface ModalContextType {
   openBorrow: (underlyingAsset: string) => void;
   openRepay: (underlyingAsset: string) => void;
   openCollateralChange: (underlyingAsset: string) => void;
+  openRateSwitch: (underlyingAsset: string) => void;
   close: () => void;
   type?: ModalType;
   args?: { [key: string]: string };
@@ -47,6 +49,10 @@ export const ModalContextProvider: React.FC = ({ children }) => {
         },
         openCollateralChange: (underlyingAsset) => {
           setType(ModalType.CollateralChange);
+          setArgs({ underlyingAsset });
+        },
+        openRateSwitch: (underlyingAsset) => {
+          setType(ModalType.RateSwitch);
           setArgs({ underlyingAsset });
         },
         close: () => {
