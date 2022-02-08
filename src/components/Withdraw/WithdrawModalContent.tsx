@@ -129,11 +129,14 @@ export const WithdrawModalContent = ({
     });
 
     if (healthFactorAfterWithdraw.lt('1') && user.totalBorrowsMarketReferenceCurrency !== '0') {
-      blockingError = 'TODO: some message here'; //intl.formatMessage(messages.errorCanNotWithdrawThisAmount);
+      blockingError = 'errorCanNotWithdrawThisAmount'; //intl.formatMessage(messages.errorCanNotWithdrawThisAmount);
     }
   }
 
+  console.log('amount: ', amount);
   console.log('Not forget blockingError: ', blockingError);
+  const blocked = blockingError !== '';
+  console.log('blocked: ', blocked);
 
   // hf
   const showHealthFactor =
@@ -142,9 +145,8 @@ export const WithdrawModalContent = ({
   // is Network mismatched
   const isWrongNetwork = currentChainId !== connectedChainId;
 
-  // TODO: revisit what amount to use!!!
-  // console.log('amount to withdraw', amountToWithdraw);
-  // console.log('amount to display', displayAmountToWithdraw);
+  // calculating input usd value
+  const usdValue = valueToBigNumber(amount).multipliedBy(userReserve.reserve.priceInUSD);
 
   return (
     <>
@@ -156,7 +158,7 @@ export const WithdrawModalContent = ({
           )}
 
           <AssetInput
-            value={amountToWithdraw.toString()}
+            value={displayAmountToWithdraw.toString()}
             onChange={setAmount}
             // usdValue={amountInUsd.toString()}
             symbol={
@@ -173,6 +175,7 @@ export const WithdrawModalContent = ({
                     : poolReserve.symbol,
               },
             ]}
+            usdValue={usdValue.toString()}
           />
           <TxModalDetails
             showHf={showHealthFactor}
@@ -216,6 +219,7 @@ export const WithdrawModalContent = ({
             ? networkConfig.baseAssetSymbol
             : poolReserve.symbol
         }
+        blocked={blocked}
       />
     </>
   );

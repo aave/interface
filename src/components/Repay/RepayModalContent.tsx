@@ -27,7 +27,7 @@ import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import BigNumber from 'bignumber.js';
 import { RepayActions } from './RepayActions';
-import { Box, Button, Paper, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { Trans } from '@lingui/macro';
 import { CheckIcon } from '@heroicons/react/outline';
 
