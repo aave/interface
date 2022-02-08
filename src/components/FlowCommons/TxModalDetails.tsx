@@ -23,6 +23,7 @@ import { ReserveIncentiveResponse } from 'src/hooks/app-data-provider/useIncenti
 import { CheckIcon } from '@heroicons/react/outline';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { InterestRate } from '@aave/contract-helpers';
+import { TokenIcon } from '../primitives/TokenIcon';
 
 export interface TxModalDetailsProps extends GridProps {
   apy?: string;
@@ -79,7 +80,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
 
   return (
     <Grid container direction="row" alignItems="center" rowSpacing={'12px'} {...props}>
-      {amountAfterRepay && displayAmountAfterRepayInUsd && (
+      {amountAfterRepay && displayAmountAfterRepayInUsd && symbol && (
         <FormRow>
           <FormInfo>
             <Typography>
@@ -87,8 +88,17 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
             </Typography>
           </FormInfo>
           <FormValue>
-            <FormattedNumber value={Number(amountAfterRepay)} variant="description" />
-            <FormattedNumber value={Number(displayAmountAfterRepayInUsd)} variant="helperText" />
+            <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+              <TokenIcon symbol={symbol} sx={{ mx: '4px' }} />
+              <FormattedNumber value={Number(amountAfterRepay)} variant="description" />
+              <Typography>{symbol}</Typography>
+            </Box>
+            <FormattedNumber
+              value={Number(displayAmountAfterRepayInUsd)}
+              variant="helperText"
+              compact
+              symbol="USD"
+            />
           </FormValue>
         </FormRow>
       )}

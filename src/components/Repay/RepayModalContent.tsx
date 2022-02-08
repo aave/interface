@@ -25,9 +25,11 @@ import { TxSuccessView } from '../FlowCommons/Success';
 import { TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
-import { WithdrawActions } from '../Withdraw/WithdrawActions';
 import BigNumber from 'bignumber.js';
 import { RepayActions } from './RepayActions';
+import { Box, Button, Paper, Typography } from '@mui/material';
+import { Trans } from '@lingui/macro';
+import { CheckIcon } from '@heroicons/react/outline';
 
 export type RepayProps = {
   underlyingAsset: string;
@@ -235,7 +237,34 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
           {isWrongNetwork && (
             <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
           )}
-
+          <Box>
+            <Typography>
+              <Trans>Repay with</Trans>
+            </Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+              {/*For now hardcoded to wallet balance setRepayWithCollateral(!repayWithCollateral) */}
+              <Button
+                disabled={repayWithCollateral}
+                variant="contained"
+                onClick={() => setRepayWithCollateral(false)}
+              >
+                {!repayWithCollateral && <CheckIcon />}
+                <Typography>
+                  <Trans>Wallet balance</Trans>
+                </Typography>
+              </Button>
+              <Button
+                disabled={!repayWithCollateral}
+                variant="contained"
+                onClick={() => setRepayWithCollateral(!repayWithCollateral)}
+              >
+                {repayWithCollateral && <CheckIcon />}
+                <Typography>
+                  <Trans>Collateral</Trans>
+                </Typography>
+              </Button>
+            </Box>
+          </Box>
           <AssetInput
             value={amountToRepayUI.toString()}
             onChange={setAmount}
