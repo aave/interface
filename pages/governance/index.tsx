@@ -1,11 +1,10 @@
+import { Container, Grid, Paper } from '@mui/material';
 import { InferGetStaticPropsType } from 'next';
-import { useState } from 'react';
-import { Link, ROUTES } from 'src/components/primitives/Link';
-import { usePolling } from 'src/hooks/usePolling';
 import { MainLayout } from 'src/layouts/MainLayout';
-import { getProposalMetadata } from 'src/modules/governance/utils/getProposalMetadata';
+import { GovernanceTopPanel } from 'src/modules/governance/GovernanceTopPanel';
+import { ProposalsList } from 'src/modules/governance/ProposalsList';
 import { governanceContract } from 'src/modules/governance/utils/governanceProvider';
-import { isProposalStateImmutable } from 'src/modules/governance/utils/immutableStates';
+import { VotingPowerInfoPanel } from 'src/modules/governance/VotingPowerInfoPanel';
 import { Ipfs } from 'src/static-build/ipfs';
 import { Proposal } from 'src/static-build/proposal';
 
@@ -30,63 +29,25 @@ export const getStaticProps = async () => {
   return { props: { proposals } };
 };
 
-export default function Governance(props: InferGetStaticPropsType<typeof getStaticProps>) {
-  const [proposals, setProposals] = useState(props.proposals);
+export type GovernancePageProps = InferGetStaticPropsType<typeof getStaticProps>;
 
-  async function fetchNewProposals() {
-    const count = await governanceContract.getProposalsCount();
-    const nextProposals: InferGetStaticPropsType<typeof getStaticProps>['proposals'] = [];
-    console.log(`fetching ${count - proposals.length} new proposals`);
-    for (let i = proposals.length; i < count; i++) {
-      const proposal = await governanceContract.getProposal({ proposalId: i });
-      nextProposals.push({
-        ipfs: {
-          id: i,
-          originalHash: proposal.ipfsHash,
-          ...(await getProposalMetadata(proposal.ipfsHash, process.env.NEXT_PUBLIC_IPFS_GATEWAY)),
-        },
-        proposal: proposal,
-        prerendered: false,
-      });
-    }
-    setProposals((p) => [...nextProposals.reverse(), ...p]);
-  }
-
-  async function updatePendingProposals() {
-    const pendingProposals = proposals.filter(
-      ({ proposal }) => !isProposalStateImmutable(proposal)
-    );
-
-    if (pendingProposals.length) {
-      const copy = [...proposals];
-      for (const { proposal } of pendingProposals) {
-        copy[proposal.id].proposal = await governanceContract.getProposal({
-          proposalId: proposal.id,
-        });
-      }
-      setProposals(copy);
-    }
-  }
-
-  usePolling(fetchNewProposals, 30000, false, []);
-  usePolling(updatePendingProposals, 10000, false, []);
-
+export default function Governance(props: GovernancePageProps) {
   return (
-    <div>
-      {proposals.map(({ proposal, prerendered, ipfs }) => (
-        <div key={proposal.id}>
-          <Link
-            href={
-              prerendered
-                ? ROUTES.prerenderedProposal(proposal.id)
-                : ROUTES.dynamicRenderedProposal(proposal.id)
-            }
-          >
-            {ipfs.title}
-          </Link>
-        </div>
-      ))}
-    </div>
+    <Container maxWidth="xl">
+      <GovernanceTopPanel />
+      <Grid container spacing={4}>
+        <Grid item xs={12} md={3}>
+          <Paper sx={{ px: 6, py: 4 }}>
+            <VotingPowerInfoPanel />
+          </Paper>
+        </Grid>
+        <Grid item xs={12} md={9}>
+          <Paper sx={{ px: 6, py: 4 }}>
+            <ProposalsList {...props} />
+          </Paper>
+        </Grid>
+      </Grid>
+    </Container>
   );
 }
 
