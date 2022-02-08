@@ -65,39 +65,6 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
 
   const networkConfig = getNetworkConfig(currentChainId);
 
-  // set possible repay tokens
-  const repayTokens = [];
-  if (!repayWithCollateral) {
-    // push reserve asset
-    repayTokens.push({
-      address: poolReserve.underlyingAsset,
-      symbol: poolReserve.symbol,
-      balance: walletBalances[poolReserve.underlyingAsset]?.amount,
-      balanceUSD: walletBalances[poolReserve.underlyingAsset]?.amountUSD,
-    });
-    // push reserve atoken
-    if (currentMarketData.v3) {
-      repayTokens.push({
-        address: poolReserve.aTokenAddress,
-        symbol: `${currentMarketData.aTokenPrefix}${poolReserve.symbol}`,
-        balance: walletBalances[poolReserve.aTokenAddress]?.amountUSD,
-        balanceUSD: walletBalances[poolReserve.aTokenAddress]?.amountUSD,
-      });
-    }
-    // if wrapped reserve push both wrapped / native
-    if (poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol) {
-      repayTokens.push({
-        address: API_ETH_MOCK_ADDRESS.toLowerCase(),
-        symbol: networkConfig.baseAssetSymbol,
-        balance: walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]?.amount,
-        balanceUSD: walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]?.amountUSD,
-      });
-    }
-  } else {
-    // TODO: add collateral tokens
-    // go through all collateral tokens and add them
-  }
-
   const walletBalance = walletBalances[underlyingAsset]?.amount;
   const { underlyingBalance, usageAsCollateralEnabledOnUser, reserve } = userReserve;
 
@@ -179,6 +146,37 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
       }).toString()
     : user.healthFactor;
 
+  // token info
+  // set possible repay tokens
+  const repayTokens = [];
+  if (!repayWithCollateral) {
+    // push reserve asset
+    repayTokens.push({
+      address: poolReserve.underlyingAsset,
+      symbol: poolReserve.symbol,
+      balance: walletBalances[poolReserve.underlyingAsset]?.amount,
+    });
+    // push reserve atoken
+    if (currentMarketData.v3) {
+      repayTokens.push({
+        address: poolReserve.aTokenAddress,
+        symbol: `${currentMarketData.aTokenPrefix}${poolReserve.symbol}`,
+        balance: underlyingBalance,
+      });
+    }
+    // if wrapped reserve push both wrapped / native
+    if (poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol) {
+      repayTokens.push({
+        address: API_ETH_MOCK_ADDRESS.toLowerCase(),
+        symbol: networkConfig.baseAssetSymbol,
+        balance: walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]?.amount,
+      });
+    }
+  } else {
+    // TODO: add collateral tokens
+    // go through all collateral tokens and add them
+  }
+  console.log('repay tokens: ', repayTokens);
   // TODO: add here repay with collateral calculations and maybe do a conditional with other????
 
   // Warnings And Blocking Errors
@@ -231,8 +229,10 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
             value={amount.toString()}
             onChange={setAmount}
             // usdValue={amountInUsd.toString()}
-            balance={maxAmountToRepay.toString()} // TOOD: is it correct amount here????
+            // balance={maxAmountToRepay.toString()} // TOOD: is it correct amount here????
             symbol={tokenToRepayWith.symbol}
+            assets={repayTokens}
+            onSelect={setTokenToRepayWith}
           />
           <TxModalDetails
             showHf={showHealthFactor}

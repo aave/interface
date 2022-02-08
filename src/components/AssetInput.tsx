@@ -20,6 +20,7 @@ import { ChevronDownIcon } from '@heroicons/react/outline';
 interface Asset {
   balance: string;
   symbol: string;
+  address?: string;
 }
 
 export interface AssetInputProps<T extends Asset = Asset> {
@@ -29,7 +30,7 @@ export interface AssetInputProps<T extends Asset = Asset> {
   onChange: (value: string) => void;
   disabled?: boolean;
   onSelect?: (asset: T) => void;
-  assets?: T[];
+  assets: T[];
 }
 
 export const AssetInput: React.FC<AssetInputProps> = ({
@@ -39,10 +40,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
   onChange,
   disabled,
   onSelect,
-  assets = [
-    { balance: '2', symbol: 'WETH' },
-    { balance: '100', symbol: 'DAI' },
-  ],
+  assets,
 }) => {
   const validNumber = new RegExp(/^\d*\.?\d*$/); // allow only digits with decimals
 
@@ -60,7 +58,9 @@ export const AssetInput: React.FC<AssetInputProps> = ({
   };
 
   const asset =
-    assets.length === 1 ? assets[0] : (assets.find((asset) => asset.symbol === symbol) as Asset);
+    assets.length === 1
+      ? assets[0]
+      : assets && (assets.find((asset) => asset.symbol === symbol) as Asset);
 
   return (
     <Box sx={{ p: '8px 12px', border: '1px solid #E0E5EA', borderRadius: '6px' }}>
@@ -108,7 +108,8 @@ export const AssetInput: React.FC<AssetInputProps> = ({
               {assets.map((asset) => (
                 <MenuItem key={asset.symbol} value={asset.symbol}>
                   <TokenIcon symbol={asset.symbol} sx={{ mx: '4px' }} />
-                  <ListItemText>{asset.symbol}</ListItemText>
+                  <ListItemText sx={{ mr: '20px' }}>{asset.symbol}</ListItemText>
+                  <FormattedNumber value={asset.balance} compact />
                 </MenuItem>
               ))}
             </Select>
