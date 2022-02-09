@@ -126,25 +126,18 @@ export const RepayActions = ({
   const hasAmount = amountToRepay && amountToRepay !== '0';
 
   useEffect(() => {
-    if (mainTxState.txHash) {
-      setRepayTxState({
-        success: true,
-        error: undefined,
-      });
-    }
-
-    if (mainTxState.error || approvalTxState.error) {
-      setRepayTxState({
-        success: true,
-        error: mainTxState.error || approvalTxState.error,
-      });
-    }
-  }, [setRepayTxState, mainTxState, approvalTxState.error]);
+    setRepayTxState({
+      success: !!mainTxState.txHash,
+      txError: mainTxState.txError || approvalTxState.txError,
+      gasEstimationError: mainTxState.gasEstimationError || approvalTxState.gasEstimationError,
+    });
+  }, [setRepayTxState, mainTxState, approvalTxState]);
 
   const handleRetry = () => {
     setRepayTxState({
-      error: undefined,
+      txError: undefined,
       success: false,
+      gasEstimationError: undefined,
     });
     resetStates();
   };
@@ -156,7 +149,7 @@ export const RepayActions = ({
       >
         <LeftHelperText
           amount={amountToRepay}
-          error={mainTxState.error || approvalTxState.error}
+          error={mainTxState.txError || approvalTxState.txError}
           approvalHash={approvalTxState.txHash}
           actionHash={mainTxState.txHash}
           requiresApproval={requiresApproval}
@@ -169,17 +162,17 @@ export const RepayActions = ({
           action="supply"
         />
       </Box>
-      {(mainTxState.error || approvalTxState.error) && (
+      {(mainTxState.txError || approvalTxState.txError) && (
         <Button variant="outlined" onClick={handleRetry} sx={{ mb: 2 }}>
           <Trans>RETRY WITH APPROVAL</Trans>
         </Button>
       )}
-      {!hasAmount && !approvalTxState.error && (
+      {!hasAmount && !approvalTxState.txError && (
         <Button variant="outlined" disabled>
           <Trans>ENTER AN AMOUNT</Trans>
         </Button>
       )}
-      {hasAmount && requiresApproval && !approved && !approvalTxState.error && (
+      {hasAmount && requiresApproval && !approved && !approvalTxState.txError && (
         <Button
           variant="contained"
           onClick={() => approval(amountToRepay, poolAddress)}
@@ -194,7 +187,7 @@ export const RepayActions = ({
           )}
         </Button>
       )}
-      {hasAmount && !mainTxState.txHash && !mainTxState.error && !approvalTxState.error && (
+      {hasAmount && !mainTxState.txHash && !mainTxState.txError && !approvalTxState.txError && (
         <Button
           variant="contained"
           onClick={action}
@@ -210,9 +203,9 @@ export const RepayActions = ({
           )}
         </Button>
       )}
-      {(mainTxState.txHash || mainTxState.error || approvalTxState.error) && (
+      {(mainTxState.txHash || mainTxState.txError || approvalTxState.txError) && (
         <Button onClick={handleClose} variant="contained">
-          {!mainTxState.error && !approvalTxState.error && <Trans>OK, </Trans>}
+          {!mainTxState.txError && !approvalTxState.txError && <Trans>OK, </Trans>}
           <Trans>CLOSE</Trans>
         </Button>
       )}

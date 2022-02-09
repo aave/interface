@@ -21,6 +21,7 @@ export type WithdrawActionsProps = {
   poolAddress: string;
   isWrongNetwork: boolean;
   symbol: string;
+  blocked: boolean;
 };
 
 export const WithdrawActions = ({
@@ -32,20 +33,21 @@ export const WithdrawActions = ({
   poolAddress,
   isWrongNetwork,
   symbol,
+  blocked,
 }: WithdrawActionsProps) => {
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
   const { currentAccount, chainId: connectedChainId } = useWeb3Context();
   const { state, gasPriceData } = useGasStation();
-
-  const { action, loading, mainTxState } = useTransactionHandler({
+  console.log('amount to withdraw: ', amountToWithdraw);
+  const { action, loading, mainTxState, actionTx } = useTransactionHandler({
     tryPermit:
       currentMarketData.v3 && chainId !== ChainId.harmony && chainId !== ChainId.harmony_testnet,
     handleGetTxns: async () => {
       const tx: EthereumTransactionTypeExtended[] = await lendingPool.withdraw({
         user: currentAccount,
         reserve: poolAddress,
-        amount: amountToWithdraw.toString(),
+        amount: amountToWithdraw,
         aTokenAddress: poolReserve.aTokenAddress,
       });
 
@@ -57,18 +59,43 @@ export const WithdrawActions = ({
       state.gasOption === GasOption.Custom
         ? state.customGas
         : gasPriceData.data?.[state.gasOption].legacyGasPrice,
-    skip: !amountToWithdraw || parseFloat(amountToWithdraw) === 0,
+    skip: !amountToWithdraw || parseFloat(amountToWithdraw) === 0 || blocked,
     deps: [amountToWithdraw],
   });
 
   useEffect(() => {
-    if (mainTxState.txHash) {
-      setWithdrawTxState({
-        success: true,
-        error: undefined,
-      });
+    setWithdrawTxState({
+      success: !!mainTxState.txHash,
+      txError: mainTxState.txError,
+      gasEstimationError: mainTxState.gasEstimationError,
+    });
+  }, [setWithdrawTxState, mainTxState]);
+
+  const handleButtonStates = () => {
+    console.log(`
+      loading: ${loading}
+      actionTx: ${actionTx}
+    `);
+    if (loading && !actionTx) {
+      return (
+        <>
+          {!blocked && <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />}
+          <Trans>WITHDRAW {symbol}</Trans>
+        </>
+      );
+    } else if (!loading && (actionTx || blocked)) {
+      return <Trans>WITHDRAW {symbol}</Trans>;
+    } else if (loading && actionTx) {
+      return (
+        <>
+          <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
+          <Trans>WITHDRAW {symbol} PENDING...</Trans>
+        </>
+      );
+    } else if (!loading && !actionTx) {
+      return <Trans>WITHDRAW {symbol}</Trans>;
     }
-  }, [setWithdrawTxState, mainTxState.txHash]);
+  };
 
   const hasAmount = amountToWithdraw && amountToWithdraw !== '0';
   // TODO: hash link not working
@@ -86,21 +113,19 @@ export const WithdrawActions = ({
           <Trans>ENTER AN AMOUNT</Trans>
         </Button>
       )}
-      {hasAmount && !mainTxState.txHash && !mainTxState.error && (
-        <Button variant="contained" onClick={action} disabled={loading || isWrongNetwork}>
-          {!loading ? (
-            <Trans>WITHDRAW {symbol}</Trans>
-          ) : (
-            <>
-              <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-              <Trans>WITHDRAW {symbol} PENDING...</Trans>
-            </>
-          )}
+      {hasAmount && !mainTxState.txHash && !mainTxState.txError && (
+        <Button
+          variant="contained"
+          onClick={action}
+          disabled={loading || isWrongNetwork || blocked || !!mainTxState.gasEstimationError}
+        >
+          {handleButtonStates()}
         </Button>
       )}
-      {(mainTxState.txHash || mainTxState.error) && (
+      {(mainTxState.txHash || mainTxState.txError) && (
         <Button onClick={handleClose} variant="contained">
-          <Trans>OK, CLOSE</Trans>
+          {!mainTxState.txError && <Trans>OK, </Trans>}
+          <Trans>CLOSE</Trans>
         </Button>
       )}
     </Box>
