@@ -42,7 +42,7 @@ export default function Governance(props: GovernancePageProps) {
           </Paper>
         </Grid>
         <Grid item xs={12} md={9}>
-          <Paper sx={{ px: 6, py: 4 }}>
+          <Paper>
             <ProposalsList {...props} />
           </Paper>
         </Grid>
