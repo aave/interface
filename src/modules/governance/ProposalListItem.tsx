@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { GovernancePageProps } from 'pages/governance';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { StateBadge } from './StateBadge';
