@@ -121,6 +121,7 @@ export const RepayActions = ({
         ? state.customGas
         : gasPriceData.data?.[state.gasOption].legacyGasPrice,
     skip: !amountToRepay || parseFloat(amountToRepay) === 0,
+    deps: [amountToRepay, poolAddress],
   });
 
   const hasAmount = amountToRepay && amountToRepay !== '0';
@@ -191,7 +192,12 @@ export const RepayActions = ({
         <Button
           variant="contained"
           onClick={action}
-          disabled={loading || (requiresApproval && !approved) || isWrongNetwork}
+          disabled={
+            loading ||
+            (requiresApproval && !approved) ||
+            isWrongNetwork ||
+            !!mainTxState.gasEstimationError
+          }
           sx={{ mt: !approved ? 2 : 0 }}
         >
           {(!loading || (requiresApproval && !approved)) && <Trans>REPAY {symbol}</Trans>}

@@ -39,7 +39,7 @@ export const WithdrawActions = ({
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
   const { currentAccount, chainId: connectedChainId } = useWeb3Context();
   const { state, gasPriceData } = useGasStation();
-  console.log('amount to withdraw: ', amountToWithdraw);
+
   const { action, loading, mainTxState, actionTx } = useTransactionHandler({
     tryPermit:
       currentMarketData.v3 && chainId !== ChainId.harmony && chainId !== ChainId.harmony_testnet,
@@ -72,10 +72,6 @@ export const WithdrawActions = ({
   }, [setWithdrawTxState, mainTxState]);
 
   const handleButtonStates = () => {
-    console.log(`
-      loading: ${loading}
-      actionTx: ${actionTx}
-    `);
     if (loading && !actionTx) {
       return (
         <>

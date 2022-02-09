@@ -30,11 +30,17 @@ import { RepayActions } from './RepayActions';
 import { Box, Button, Typography } from '@mui/material';
 import { Trans } from '@lingui/macro';
 import { CheckIcon } from '@heroicons/react/outline';
+import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 
 export type RepayProps = {
   underlyingAsset: string;
   handleClose: () => void;
 };
+
+export enum ErrorType {
+  NOT_ENOUGH_BALANCE,
+  NOT_ENOUGH_ATOKEN_BALANCE,
+}
 
 export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) => {
   const { walletBalances } = useWalletBalances();
@@ -48,7 +54,7 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
 
   // states
   const [repayTxState, setRepayTxState] = useState<TxState>({ success: false });
-  const [amount, setAmount] = useState('');
+  const [amount, setAmount] = useState('0');
   const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
   const [repayWithCollateral, setRepayWithCollateral] = useState(false);
   const [tokenToRepayWith, setTokenToRepayWith] = useState<Asset>({
@@ -57,6 +63,8 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
     balance: walletBalances[poolReserve.underlyingAsset]?.amount,
   });
   const [assets, setAssets] = useState<Asset[]>([tokenToRepayWith]);
+  const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
+  const [amountToRepay, setAmountToRepay] = useState(amount);
 
   const userReserve = user?.userReservesData.find(
     (userReserve) => underlyingAsset === userReserve.underlyingAsset
@@ -140,21 +148,30 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
     maxAmountToRepay = BigNumber.min(normalizedWalletBalance, debt);
   }
 
-  let amountToRepay = amount !== '' ? amount : '0';
+  // We set this in a useEffect, so it doesnt constantly change when
+  // max amount selected
+  useEffect(() => {
+    // case when user uses max button
+    if (amount === '-1') {
+      if (
+        synthetixProxyByChainId[chainId] &&
+        reserve.underlyingAsset.toLowerCase() === synthetixProxyByChainId[chainId].toLowerCase()
+      ) {
+        setAmountToRepay(BigNumber.min(walletBalance, safeAmountToRepayAll).toString());
+      } else {
+        setAmountToRepay(amount);
+      }
+    } else {
+      setAmountToRepay(amount);
+    }
+  }, [amount, chainId, walletBalance, safeAmountToRepayAll]);
+
   let amountToRepayUI = valueToBigNumber(amountToRepay);
   if (amountToRepay === '-1') {
     amountToRepayUI = BigNumber.min(
       repayWithATokens ? underlyingBalance : walletBalance,
       maxAmountToRepay
     );
-
-    if (
-      (synthetixProxyByChainId[chainId] &&
-        reserve.underlyingAsset.toLowerCase() === synthetixProxyByChainId[chainId].toLowerCase()) ||
-      !repayWithATokens
-    ) {
-      amountToRepay = BigNumber.min(walletBalance, safeAmountToRepayAll).toString();
-    }
   }
 
   // debt remaining after repay
@@ -189,49 +206,62 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
 
   // TODO: add here repay with collateral calculations and maybe do a conditional with other????
 
-  // Warnings And Blocking Errors
-  const blockingError = (
-    repayWithATokens
-      ? valueToBigNumber(underlyingBalance).eq(0)
-      : valueToBigNumber(walletBalance).eq('0') || repayWithATokens
-      ? valueToBigNumber(underlyingBalance).lt(amount)
-      : valueToBigNumber(walletBalance).lt(amount)
-  )
-    ? 'Some error'
-    : // ? intl.formatMessage(messages.error, {
-      //     userReserveSymbol: assetDetails.formattedSymbol || assetDetails.symbol,
-      //   })
-      '';
+  // error handling
+  useEffect(() => {
+    if (repayWithATokens) {
+      if (
+        valueToBigNumber(underlyingBalance).eq(0) ||
+        valueToBigNumber(underlyingBalance).lt(amountToRepayUI) ||
+        (amount === '-1' && valueToBigNumber(underlyingBalance).lt(maxAmountToRepay))
+      ) {
+        setBlockingError(ErrorType.NOT_ENOUGH_ATOKEN_BALANCE);
+      } else {
+        setBlockingError(undefined);
+      }
+    } else {
+      if (
+        valueToBigNumber(walletBalance).eq('0') ||
+        valueToBigNumber(walletBalance).lt(amountToRepayUI) ||
+        (amount === '-1' && valueToBigNumber(walletBalance).lt(maxAmountToRepay))
+      ) {
+        setBlockingError(ErrorType.NOT_ENOUGH_BALANCE);
+      } else {
+        setBlockingError(undefined);
+      }
+    }
+  }, [
+    amount,
+    amountToRepayUI,
+    repayWithATokens,
+    underlyingBalance,
+    walletBalance,
+    maxAmountToRepay,
+    tokenToRepayWith,
+  ]);
 
-  const warningMessage =
-    amount === '-1' &&
-    amountToRepayUI.gte(maxAmountToRepay) &&
-    !amountToRepayUI.gte(safeAmountToRepayAll)
-      ? 'Warning message'
-      : '';
-  // ? intl.formatMessage(messages.warningMessage)
-  // : '';
-
-  const notEnoughFunds =
-    amount === '-1' &&
-    (repayWithATokens
-      ? valueToBigNumber(underlyingBalance).lt(maxAmountToRepay)
-      : valueToBigNumber(walletBalance).lt(maxAmountToRepay));
-
+  // error render handling
+  const handleBlocked = () => {
+    switch (blockingError) {
+      case ErrorType.NOT_ENOUGH_BALANCE:
+        return <Trans>Not enough balance on your wallet</Trans>;
+      case ErrorType.NOT_ENOUGH_ATOKEN_BALANCE:
+        return <Trans>Not enough atoken balance on your wallet</Trans>;
+      default:
+        return null;
+    }
+  };
   // is Network mismatched
   const isWrongNetwork = currentChainId !== connectedChainId;
 
   const showHealthFactor =
     user?.totalBorrowsMarketReferenceCurrency !== '0' && poolReserve.usageAsCollateralEnabled;
 
-  const blocked = blockingError !== '' || warningMessage !== '' || notEnoughFunds;
-
   // calculating input usd value
-  const usdValue = valueToBigNumber(amount).multipliedBy(reserve.priceInUSD);
+  const usdValue = valueToBigNumber(amountToRepayUI).multipliedBy(reserve.priceInUSD);
 
   return (
     <>
-      {!repayTxState.error && !repayTxState.success && (
+      {!repayTxState.txError && !repayTxState.success && (
         <>
           <TxModalTitle title="Repay" symbol={poolReserve.symbol} />
           {isWrongNetwork && (
@@ -273,6 +303,11 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
             assets={assets}
             onSelect={setTokenToRepayWith}
           />
+          {blockingError !== undefined && (
+            <Typography variant="helperText" color="red">
+              {handleBlocked()}
+            </Typography>
+          )}
           <TxModalDetails
             showHf={showHealthFactor}
             healthFactor={user?.healthFactor}
@@ -285,13 +320,16 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
         </>
       )}
 
-      {repayTxState.error && <TxErrorView errorMessage={repayTxState.error} />}
-      {repayTxState.success && !repayTxState.error && (
+      {repayTxState.txError && <TxErrorView errorMessage={repayTxState.txError} />}
+      {repayTxState.success && !repayTxState.txError && (
         <TxSuccessView
           action="repayed"
-          amount={amountToRepay.toString()}
+          amount={amountToRepayUI.toString()}
           symbol={poolReserve.symbol}
         />
+      )}
+      {repayTxState.gasEstimationError && (
+        <GasEstimationError error={repayTxState.gasEstimationError} />
       )}
       <RepayActions
         poolReserve={poolReserve}
@@ -304,7 +342,7 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
         symbol={tokenToRepayWith.symbol}
         debtType={debtType}
         repayWithATokens={repayWithATokens}
-        blocked={blocked}
+        blocked={!!blockingError}
       />
     </>
   );

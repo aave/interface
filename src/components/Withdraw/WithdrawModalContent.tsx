@@ -193,7 +193,7 @@ export const WithdrawModalContent = ({
 
   // calculating input usd value
   const usdValue = valueToBigNumber(amount).multipliedBy(userReserve.reserve.priceInUSD);
-  console.log('display aount =?> ', displayAmountToWithdraw.toString());
+
   return (
     <>
       {!withdrawTxState.txError && !withdrawTxState.success && (
@@ -222,12 +222,12 @@ export const WithdrawModalContent = ({
             ]}
             usdValue={usdValue.toString()}
           />
-          {blockingError && (
+          {blockingError !== undefined && (
             <Typography variant="helperText" color="red">
               {handleBlocked()}
             </Typography>
           )}
-          {!blockingError &&
+          {blockingError === undefined &&
             healthFactorAfterWithdraw.toNumber() < 1.5 &&
             healthFactorAfterWithdraw.toNumber() >= 1 && (
               <Typography

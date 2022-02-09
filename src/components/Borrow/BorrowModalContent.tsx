@@ -186,20 +186,22 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
                 : poolReserve.symbol
             }
           />
-          {blockingError && (
+          {blockingError !== undefined && (
             <Typography variant="helperText" color="red">
               {handleBlocked()}
             </Typography>
           )}
-          {!blockingError && newHealthFactor.toNumber() < 1.5 && newHealthFactor.toNumber() >= 1 && (
-            <Typography
-              variant="helperText"
-              color="#C67F15
+          {blockingError === undefined &&
+            newHealthFactor.toNumber() < 1.5 &&
+            newHealthFactor.toNumber() >= 1 && (
+              <Typography
+                variant="helperText"
+                color="#C67F15
             "
-            >
-              <Trans>Liquidation risk is high. Lower amounts recomended.</Trans>
-            </Typography>
-          )}
+              >
+                <Trans>Liquidation risk is high. Lower amounts recomended.</Trans>
+              </Typography>
+            )}
           <TxModalDetails
             showHf={true}
             healthFactor={user.healthFactor}
