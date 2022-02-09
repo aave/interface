@@ -151,7 +151,7 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
 
   return (
     <>
-      {!supplyTxState.error && !supplyTxState.success && (
+      {!supplyTxState.txError && !supplyTxState.success && (
         <>
           <TxModalTitle title="Supply" symbol={poolReserve.symbol} />
           {isWrongNetwork && (
@@ -187,8 +187,8 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
           />
         </>
       )}
-      {supplyTxState.error && <TxErrorView errorMessage={supplyTxState.error} />}
-      {supplyTxState.success && !supplyTxState.error && (
+      {supplyTxState.txError && <TxErrorView errorMessage={supplyTxState.txError} />}
+      {supplyTxState.success && !supplyTxState.txError && (
         <TxSuccessView action="Supplied" amount={amountToSupply} symbol={poolReserve.symbol} />
       )}
       <SupplyActions
