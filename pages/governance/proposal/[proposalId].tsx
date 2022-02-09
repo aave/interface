@@ -2,6 +2,7 @@ import { Container } from '@mui/material';
 import { useState } from 'react';
 import { Meta } from 'src/components/Meta';
 import { usePolling } from 'src/hooks/usePolling';
+import { MainLayout } from 'src/layouts/MainLayout';
 import { governanceContract } from 'src/modules/governance/utils/governanceProvider';
 import { isProposalStateImmutable } from 'src/modules/governance/utils/immutableStates';
 import { Ipfs, IpfsType } from 'src/static-build/ipfs';
@@ -52,3 +53,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
     </Container>
   );
 }
+
+ProposalPage.getLayout = function getLayout(page: React.ReactElement) {
+  return <MainLayout>{page}</MainLayout>;
+};
