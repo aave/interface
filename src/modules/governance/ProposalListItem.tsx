@@ -4,6 +4,7 @@ import { Link, ROUTES } from 'src/components/primitives/Link';
 import { StateBadge } from './StateBadge';
 import { formatProposal } from './utils/formatProposal';
 import { VoteBar } from './VoteBar';
+import { FormattedProposalTime } from './FormattedProposalTime';
 
 export function ProposalListItem({
   proposal,
@@ -37,9 +38,18 @@ export function ProposalListItem({
           },
         }}
       >
-        <Typography variant="h3">{ipfs.title}</Typography>
-        <Box>
+        <Typography variant="h3" gutterBottom>
+          {ipfs.title}
+        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <StateBadge state={proposal.state} />
+          <FormattedProposalTime
+            state={proposal.state}
+            executionTime={proposal.executionTime}
+            startBlock={proposal.startBlock}
+            endBlock={proposal.endBlock}
+            // proposalCreated={proposal.proposalCreated}
+          />
         </Box>
       </Box>
       <Box sx={{ flexGrow: 1, pl: { sm: 0, md: 2 } }}>
