@@ -33,8 +33,8 @@ FormattedProposalTimeProps) {
       // const { timestamp: creationTimestamp } = await provider.getBlock(proposalCreated);
       setExpirationTimestamp(startTimestamp + (endBlock - startBlock) * averageBlockTime);
     }
-    fetchDate();
-  }, []);
+    if (state !== ProposalState.Executed) fetchDate();
+  }, [state, startBlock, endBlock]);
   if (!expirationTimestamp) return <span>loading</span>;
   return (
     <Typography component="span">

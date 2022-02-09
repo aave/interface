@@ -18,6 +18,7 @@ export function ProposalListItem({
         px: 6,
         py: 8,
         display: 'flex',
+        flexWrap: 'wrap',
         borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
       }}
       component={Link}
@@ -30,15 +31,14 @@ export function ProposalListItem({
       <Box
         sx={{
           width: {
-            sx: '100%',
-            md: '50%',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
+            xs: '100%',
+            sm: '50%',
           },
+          flexDirection: 'column',
+          justifyContent: 'space-between',
         }}
       >
-        <Typography variant="h3" gutterBottom>
+        <Typography variant="h3" gutterBottom sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
           {ipfs.title}
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -52,7 +52,12 @@ export function ProposalListItem({
           />
         </Box>
       </Box>
-      <Box sx={{ flexGrow: 1, pl: { sm: 0, md: 2 } }}>
+      <Box
+        sx={{
+          flexGrow: 1,
+          pl: { xs: 0, sm: 2 },
+        }}
+      >
         <VoteBar yae percent={yaePercent} votes={yaeVotes} sx={{ mb: 4 }} />
         <VoteBar percent={nayPercent} votes={nayVotes} />
       </Box>
