@@ -1,4 +1,6 @@
+import { Container } from '@mui/material';
 import { useState } from 'react';
+import { Meta } from 'src/components/Meta';
 import { usePolling } from 'src/hooks/usePolling';
 import { governanceContract } from 'src/modules/governance/utils/governanceProvider';
 import { isProposalStateImmutable } from 'src/modules/governance/utils/immutableStates';
@@ -43,9 +45,10 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
 
   usePolling(updateProposal, 10000, isProposalStateImmutable(proposal), []);
   return (
-    <div>
+    <Container maxWidth="xl">
+      <Meta title={ipfs.title} description={ipfs.shortDescription} />
       {JSON.stringify(proposal)}
       {JSON.stringify(ipfs)}
-    </div>
+    </Container>
   );
 }
