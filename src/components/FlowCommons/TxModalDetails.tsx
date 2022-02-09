@@ -262,7 +262,9 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
           </FormInfo>
           <FormValue>
             <Typography variant="secondary14">
-              <HealthFactorNumber value={healthFactor} variant="secondary14" />
+              {healthFactor !== '-1' && (
+                <HealthFactorNumber value={healthFactor} variant="secondary14" />
+              )}
               <ArrowForwardIcon />
               <HealthFactorNumber
                 value={Number(futureHealthFactor) ? futureHealthFactor : healthFactor}

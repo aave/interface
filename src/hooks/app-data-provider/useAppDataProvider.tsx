@@ -38,7 +38,7 @@ export interface AppDataContextType {
   reserves: ComputedReserveData[];
   // refreshPoolData?: () => Promise<void[]>;
   isUserHasDeposits: boolean;
-  user?: FormatUserSummaryAndIncentivesResponse<ComputedReserveData> & {
+  user: FormatUserSummaryAndIncentivesResponse<ComputedReserveData> & {
     earnedAPY: number;
     debtAPY: number;
     isInEmode: boolean;

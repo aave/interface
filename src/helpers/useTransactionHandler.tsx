@@ -33,15 +33,18 @@ export const useTransactionHandler = ({
   const { refetchWalletBalances, refetchPoolData } = useBackgroundDataProvider();
   const { lendingPool } = useTxBuilderContext();
   const [loading, setLoading] = useState(false);
-  const [txs, setTxs] = useState<EthereumTransactionTypeExtended[]>([]);
+  // const [txs, setTxs] = useState<EthereumTransactionTypeExtended[]>([]);
   const [usePermit, setUsePermit] = useState<boolean>(tryPermit);
   const [signature, setSignature] = useState<SignatureLike>();
   const [approved, setApproved] = useState<boolean>(false);
   const [approvalTxState, setApprovalTxState] = useState<TxStateType>({});
   const [mainTxState, setMainTxState] = useState<TxStateType>({});
 
-  const approvalTx = txs.find((tx) => tx.txType === 'ERC20_APPROVAL');
-  const actionTx = txs.find((tx) => ['DLP_ACTION'].includes(tx.txType));
+  const [approvalTx, setApprovalTx] = useState<EthereumTransactionTypeExtended | undefined>();
+  const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
+
+  // const approvalTx = txs.find((tx) => tx.txType === 'ERC20_APPROVAL');
+  // const actionTx = txs.find((tx) => ['DLP_ACTION'].includes(tx.txType));
 
   /**
    * Executes the transactions and handles loading & error states.
@@ -226,7 +229,10 @@ export const useTransactionHandler = ({
         () =>
           handleGetTxns()
             .then((data) => {
-              data && setTxs(data);
+              // data && setTxs(data);
+              console.log(data);
+              setApprovalTx(data.find((tx) => tx.txType === 'ERC20_APPROVAL'));
+              setActionTx(data.find((tx) => ['DLP_ACTION'].includes(tx.txType)));
               setLoading(false);
             })
             .catch((error) => {
@@ -234,10 +240,16 @@ export const useTransactionHandler = ({
                 txHash: undefined,
                 error: error.message.toString(),
               });
+              console.log('error: ', error);
+              setLoading(false);
             }),
         1500
       );
       return () => clearTimeout(timeout);
+    } else {
+      setApprovalTx(undefined);
+      setActionTx(undefined);
+      setLoading(false);
     }
   }, [skip, ...deps]);
 
@@ -253,5 +265,7 @@ export const useTransactionHandler = ({
     usePermit,
     resetStates,
     setApproved,
+    actionTx,
+    approvalTx,
   };
 };

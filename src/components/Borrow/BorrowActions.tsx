@@ -27,6 +27,7 @@ export type BorrowActionsProps = {
   interestRateMode: InterestRate;
   isWrongNetwork: boolean;
   symbol: string;
+  blocked: boolean;
 };
 
 export const BorrowActions = ({
@@ -39,13 +40,14 @@ export const BorrowActions = ({
   poolAddress,
   interestRateMode,
   isWrongNetwork,
+  blocked,
 }: BorrowActionsProps) => {
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
   const { currentAccount, chainId: connectedChainId } = useWeb3Context();
   const { state, gasPriceData } = useGasStation();
 
-  const { action, loading, mainTxState } = useTransactionHandler({
+  const { action, loading, mainTxState, actionTx } = useTransactionHandler({
     tryPermit:
       currentMarketData.v3 && chainId !== ChainId.harmony && chainId !== ChainId.harmony_testnet,
     handleGetTxns: async () => {
@@ -68,7 +70,7 @@ export const BorrowActions = ({
       state.gasOption === GasOption.Custom
         ? state.customGas
         : gasPriceData.data?.[state.gasOption].legacyGasPrice,
-    skip: !amountToBorrow || amountToBorrow === '0',
+    skip: !amountToBorrow || amountToBorrow === '0' || blocked,
     deps: [amountToBorrow],
   });
 
@@ -81,8 +83,33 @@ export const BorrowActions = ({
     }
   }, [setBorrowTxState, mainTxState.txHash]);
 
-  const hasAmount = amountToBorrow && amountToBorrow !== '0';
+  const handleButtonStates = () => {
+    console.log(`
+      loading: ${loading}
+      acitonTx: ${actionTx}
+      maintx: ${mainTxState}
+    `);
+    if (loading && !actionTx) {
+      return (
+        <>
+          {!blocked && <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />}
+          <Trans>BORROW {symbol}</Trans>
+        </>
+      );
+    } else if (!loading && (actionTx || blocked)) {
+      return <Trans>BORROW {symbol}</Trans>;
+    } else if (loading && actionTx) {
+      return (
+        <>
+          <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
+          <Trans>BORROW {symbol} PENDING...</Trans>
+        </>
+      );
+    }
+  };
 
+  const hasAmount = amountToBorrow && amountToBorrow !== '0';
+  console.log('blocked:: ', blocked);
   return (
     <Box sx={{ mt: '16px', display: 'flex', flexDirection: 'column' }}>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
@@ -98,15 +125,12 @@ export const BorrowActions = ({
         </Button>
       )}
       {hasAmount && !mainTxState.txHash && !mainTxState.error && (
-        <Button variant="contained" onClick={action} disabled={loading || isWrongNetwork}>
-          {!loading ? (
-            <Trans>BORROW {symbol}</Trans>
-          ) : (
-            <>
-              <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-              <Trans>BORROW {symbol} PENDING...</Trans>
-            </>
-          )}
+        <Button
+          variant="contained"
+          onClick={action}
+          disabled={loading || isWrongNetwork || blocked}
+        >
+          {handleButtonStates()}
         </Button>
       )}
       {(mainTxState.txHash || mainTxState.error) && (
