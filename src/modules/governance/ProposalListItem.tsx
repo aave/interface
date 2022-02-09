@@ -34,6 +34,7 @@ export function ProposalListItem({
             xs: '100%',
             sm: '50%',
           },
+          display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
         }}

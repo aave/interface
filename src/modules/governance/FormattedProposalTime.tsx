@@ -33,22 +33,28 @@ FormattedProposalTimeProps) {
       // const { timestamp: creationTimestamp } = await provider.getBlock(proposalCreated);
       setExpirationTimestamp(startTimestamp + (endBlock - startBlock) * averageBlockTime);
     }
-    if (state !== ProposalState.Executed) fetchDate();
-  }, [state, startBlock, endBlock]);
-  if (!expirationTimestamp) return <span>loading</span>;
+    if (state !== ProposalState.Executed && !expirationTimestamp) fetchDate();
+  }, [state, startBlock, endBlock, expirationTimestamp]);
   return (
-    <Typography component="span">
-      {state}&nbsp;
-      {[ProposalState.Active, ProposalState.Queued, ProposalState.Pending].includes(state) &&
-        `ends ${dayjs.unix(expirationTimestamp).fromNow()}`}
-      {[
-        ProposalState.Canceled,
-        ProposalState.Expired,
-        ProposalState.Failed,
-        ProposalState.Succeeded,
-      ].includes(state) && `on ${dayjs(expirationTimestamp * 1000).format('MMM DD, YYYY')}`}
-      {state === ProposalState.Executed &&
-        `on ${dayjs(+executionTime * 1000).format('MMM DD, YYYY')}`}
-    </Typography>
+    <>
+      <Typography component="span" variant="caption" color="text.secondary">
+        {state}&nbsp;
+      </Typography>
+      <Typography component="span" variant="caption">
+        {expirationTimestamp &&
+          [ProposalState.Active, ProposalState.Queued, ProposalState.Pending].includes(state) &&
+          `ends ${dayjs.unix(expirationTimestamp).fromNow()}`}
+        {expirationTimestamp &&
+          [
+            ProposalState.Canceled,
+            ProposalState.Expired,
+            ProposalState.Failed,
+            ProposalState.Succeeded,
+          ].includes(state) &&
+          `on ${dayjs(expirationTimestamp * 1000).format('MMM DD, YYYY')}`}
+        {state === ProposalState.Executed &&
+          `on ${dayjs(+executionTime * 1000).format('MMM DD, YYYY')}`}
+      </Typography>
+    </>
   );
 }

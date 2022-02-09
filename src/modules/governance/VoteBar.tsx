@@ -13,7 +13,9 @@ const OuterBar = styled('div')(
   })
 );
 
-const InnerBar = styled('span')<{ percent: number; yae?: boolean }>(({ percent, yae }) =>
+const InnerBar = styled('span', {
+  shouldForwardProp: (prop) => prop !== 'yae' && prop !== 'percent',
+})<{ percent: number; yae?: boolean }>(({ percent, yae }) =>
   experimental_sx({
     position: 'absolute',
     top: 0,

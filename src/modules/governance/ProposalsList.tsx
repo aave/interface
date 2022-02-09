@@ -1,5 +1,6 @@
 import { ProposalState } from '@aave/contract-helpers';
 import {
+  Box,
   FormControl,
   InputLabel,
   MenuItem,
@@ -62,26 +63,30 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
   usePolling(updatePendingProposals, 10000, false, []);
   return (
     <div>
-      <Typography>Proposal</Typography>
-      <FormControl fullWidth>
-        <InputLabel id="filter-label">Filter</InputLabel>
-        <Select
-          labelId="filter-label"
-          id="filter"
-          value={proposalFilter}
-          label="Filter"
-          onChange={handleChange}
-        >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          {Object.keys(ProposalState).map((key) => (
-            <MenuItem key={key} value={key}>
-              {key}
+      <Box sx={{ px: 6, py: 8, display: 'flex' }}>
+        <Typography variant="h3" sx={{ flexGrow: 1 }}>
+          Proposals
+        </Typography>
+        <FormControl sx={{ width: 200 }}>
+          <InputLabel id="filter-label">Filter</InputLabel>
+          <Select
+            labelId="filter-label"
+            id="filter"
+            value={proposalFilter}
+            label="Filter"
+            onChange={handleChange}
+          >
+            <MenuItem value="">
+              <em>None</em>
             </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+            {Object.keys(ProposalState).map((key) => (
+              <MenuItem key={key} value={key}>
+                {key}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
       {proposals
         .filter((proposal) => !proposalFilter || proposal.proposal.state === proposalFilter)
         .map(({ proposal, prerendered, ipfs }) => (
