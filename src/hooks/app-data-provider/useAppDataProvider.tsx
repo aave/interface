@@ -30,7 +30,7 @@ export const unPrefixSymbol = (symbol: string, prefix: string) => {
 };
 
 export type ComputedReserveData = ReturnType<typeof formatReservesAndIncentives>[0] &
-  ReserveDataHumanized & { iconSymbol: string };
+  ReserveDataHumanized & { iconSymbol: string; isEmodeEnabled: boolean };
 
 export type ComputedUserReserveData = ComputedUserReserve<ComputedReserveData>;
 
@@ -110,7 +110,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
     marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
     reserveIncentives: reservesIncentivesData?.reservesIncentives || [],
   })
-    .map((r) => ({ ...r, ...fetchIconSymbolAndName(r) }))
+    .map((r) => ({ ...r, ...fetchIconSymbolAndName(r), isEmodeEnabled: r.eModeCategoryId !== 0 }))
     .sort(reserveSortFn);
 
   const userReserves: UserReserveData[] = userReservesData?.userData.userReserves || [];

@@ -62,7 +62,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link
   const router = useRouter();
   const pathname = typeof href === 'string' ? href : href.pathname;
   const className = clsx(classNameProps, {
-    [activeClassName]: router.pathname === pathname && activeClassName,
+    [activeClassName]: router?.pathname === pathname && activeClassName,
   });
 
   const isExternal =
@@ -120,6 +120,6 @@ export const ROUTES = {
   governance: '/governance',
   prerenderedProposal: (proposalId: number) => `/governance/proposal/${proposalId}`,
   dynamicRenderedProposal: (proposalId: number) => `/governance/proposal?proposalId=${proposalId}`,
-  reserveOverview: (underlyingAddress: string) =>
-    `/reserve-overview/?underlyingAddress=${underlyingAddress}`,
+  reserveOverview: (underlyingAsset: string) =>
+    `/reserve-overview/?underlyingAsset=${underlyingAsset}`,
 };

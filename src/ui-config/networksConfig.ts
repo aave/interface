@@ -68,7 +68,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   [ChainId.rinkeby]: {
     name: 'Rinkeby',
     publicJsonRPCUrl: [
-      'https://eth-rinkeby.alchemyapi.io/v2/demo',
+      // 'https://eth-rinkeby.alchemyapi.io/v2/demo',
       'https://rinkeby-light.eth.linkpool.io/',
     ],
     protocolDataUrl: '',
@@ -83,7 +83,12 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.mainnet]: {
     name: 'Ethereum',
-    publicJsonRPCUrl: ['https://cloudflare-eth.com', 'https://eth-mainnet.alchemyapi.io/v2/demo'],
+    privateJsonRPCUrl: process.env.PRIVATE_MAINNET_RPC,
+    publicJsonRPCUrl: [
+      'https://cloudflare-eth.com',
+      'https://rpc.flashbots.net/',
+      // 'https://eth-mainnet.alchemyapi.io/v2/demo',
+    ],
     publicJsonRPCWSUrl: 'wss://eth-mainnet.alchemyapi.io/v2/demo',
     cachingServerUrl: 'https://cache-api-1.aave.com/graphql',
     cachingWSServerUrl: 'wss://cache-api-1.aave.com/graphql',

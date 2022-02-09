@@ -18,8 +18,6 @@ import {
 
 // interval in which the rpc data is refreshed
 const POOLING_INTERVAL = 30 * 1000;
-// decreased interval in case there was a network error for faster recovery
-const RECOVER_INTERVAL = 10 * 1000;
 
 export interface IncentiveDataResponse {
   loading: boolean;
@@ -47,15 +45,16 @@ export function useIncentivesDataRPC(
 
   // Fetch and format reserve incentive data from UiIncentiveDataProvider contract
   const fetchReserveIncentiveData = async () => {
+    if (!incentiveDataProviderAddress) return;
     setLoadingReserveIncentives(true);
     const provider = getProvider(chainId);
-    const incentiveDataProviderContract = new UiIncentiveDataProvider({
-      provider,
-      uiIncentiveDataProviderAddress: incentiveDataProviderAddress!,
-      chainId,
-    });
 
     try {
+      const incentiveDataProviderContract = new UiIncentiveDataProvider({
+        provider,
+        uiIncentiveDataProviderAddress: incentiveDataProviderAddress,
+        chainId,
+      });
       const rawReserveIncentiveData =
         await incentiveDataProviderContract.getReservesIncentivesDataHumanized({
           lendingPoolAddressProvider,
@@ -84,18 +83,19 @@ export function useIncentivesDataRPC(
 
   // Fetch and format user incentive data from UiIncentiveDataProvider
   const fetchUserIncentiveData = async () => {
+    if (!incentiveDataProviderAddress || !currentAccount) return;
     setLoadingUserIncentives(true);
     const provider = getProvider(chainId);
-    const incentiveDataProviderContract = new UiIncentiveDataProvider({
-      uiIncentiveDataProviderAddress: incentiveDataProviderAddress!,
-      provider,
-      chainId,
-    });
 
     try {
+      const incentiveDataProviderContract = new UiIncentiveDataProvider({
+        uiIncentiveDataProviderAddress: incentiveDataProviderAddress,
+        provider,
+        chainId,
+      });
       const rawUserIncentiveData: UserReservesIncentivesDataHumanized[] =
         await incentiveDataProviderContract.getUserReservesIncentivesDataHumanized({
-          user: currentAccount!,
+          user: currentAccount,
           lendingPoolAddressProvider,
         });
       cache.writeQuery<C_UserIncentivesQuery>({
@@ -129,16 +129,14 @@ export function useIncentivesDataRPC(
     setLoadingUserIncentives(false);
   };
 
-  usePolling(
-    fetchReserveIncentiveData,
-    errorReserveIncentives || errorUserIncentives ? RECOVER_INTERVAL : POOLING_INTERVAL,
-    skip || !incentiveDataProviderAddress,
-    [lendingPoolAddressProvider, incentiveDataProviderAddress]
-  );
+  usePolling(fetchReserveIncentiveData, POOLING_INTERVAL, skip || !incentiveDataProviderAddress, [
+    lendingPoolAddressProvider,
+    incentiveDataProviderAddress,
+  ]);
 
   usePolling(
     fetchUserIncentiveData,
-    errorReserveIncentives || errorUserIncentives ? RECOVER_INTERVAL : POOLING_INTERVAL,
+    POOLING_INTERVAL,
     skip || !currentAccount || !incentiveDataProviderAddress,
     [lendingPoolAddressProvider, incentiveDataProviderAddress, currentAccount]
   );

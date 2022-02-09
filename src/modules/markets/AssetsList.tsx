@@ -144,7 +144,7 @@ export default function AssetsList() {
 
           <ListColumn>
             <IncentivesCard
-              value={reserve.stableBorrowAPY}
+              value={reserve.stableBorrowRateEnabled ? reserve.stableBorrowAPY : -1}
               incentives={reserve.sIncentivesData || []}
               symbol={reserve.symbol}
               variant="main16"
