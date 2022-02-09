@@ -21,6 +21,7 @@ import { TxErrorView } from '../FlowCommons/Error';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { TxState } from 'src/helpers/types';
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
+import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 
 export type WithdrawModalContentProps = {
   underlyingAsset: string;
@@ -150,7 +151,7 @@ export const WithdrawModalContent = ({
 
   return (
     <>
-      {!withdrawTxState.error && !withdrawTxState.success && (
+      {!withdrawTxState.txError && !withdrawTxState.success && (
         <>
           <TxModalTitle title="Withdraw" symbol={poolReserve.symbol} />
           {isWrongNetwork && (
@@ -194,13 +195,16 @@ export const WithdrawModalContent = ({
         </>
       )}
 
-      {withdrawTxState.error && <TxErrorView errorMessage={withdrawTxState.error} />}
-      {withdrawTxState.success && !withdrawTxState.error && (
+      {withdrawTxState.txError && <TxErrorView errorMessage={withdrawTxState.txError} />}
+      {withdrawTxState.success && !withdrawTxState.txError && (
         <TxSuccessView
           action="Withdrawed"
           amount={amountToWithdraw.toString()}
           symbol={poolReserve.symbol}
         />
+      )}
+      {withdrawTxState.gasEstimationError && (
+        <GasEstimationError error={withdrawTxState.gasEstimationError} />
       )}
       <WithdrawActions
         poolReserve={poolReserve}

@@ -71,24 +71,18 @@ export const BorrowActions = ({
         ? state.customGas
         : gasPriceData.data?.[state.gasOption].legacyGasPrice,
     skip: !amountToBorrow || amountToBorrow === '0' || blocked,
-    deps: [amountToBorrow],
+    deps: [amountToBorrow, interestRateMode],
   });
 
   useEffect(() => {
-    if (mainTxState.txHash) {
-      setBorrowTxState({
-        success: true,
-        error: undefined,
-      });
-    }
-  }, [setBorrowTxState, mainTxState.txHash]);
+    setBorrowTxState({
+      success: !!mainTxState.txHash,
+      txError: mainTxState.txError,
+      gasEstimationError: mainTxState.gasEstimationError,
+    });
+  }, [setBorrowTxState, mainTxState]);
 
   const handleButtonStates = () => {
-    console.log(`
-      loading: ${loading}
-      acitonTx: ${actionTx}
-      maintx: ${mainTxState}
-    `);
     if (loading && !actionTx) {
       return (
         <>
@@ -109,7 +103,7 @@ export const BorrowActions = ({
   };
 
   const hasAmount = amountToBorrow && amountToBorrow !== '0';
-  console.log('blocked:: ', blocked);
+
   return (
     <Box sx={{ mt: '16px', display: 'flex', flexDirection: 'column' }}>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
@@ -124,16 +118,16 @@ export const BorrowActions = ({
           <Trans>ENTER AN AMOUNT</Trans>
         </Button>
       )}
-      {hasAmount && !mainTxState.txHash && !mainTxState.error && (
+      {hasAmount && !mainTxState.txHash && !mainTxState.txError && (
         <Button
           variant="contained"
           onClick={action}
-          disabled={loading || isWrongNetwork || blocked}
+          disabled={loading || isWrongNetwork || blocked || !!mainTxState.gasEstimationError}
         >
           {handleButtonStates()}
         </Button>
       )}
-      {(mainTxState.txHash || mainTxState.error) && (
+      {(mainTxState.txHash || mainTxState.txError) && (
         <Button onClick={handleClose} variant="contained">
           <Trans>OK, CLOSE</Trans>
         </Button>

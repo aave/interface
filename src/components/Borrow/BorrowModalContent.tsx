@@ -5,7 +5,7 @@ import {
   valueToBigNumber,
 } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { TxState } from 'src/helpers/types';
 import {
@@ -18,6 +18,7 @@ import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableTo
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { AssetInput } from '../AssetInput';
 import { TxErrorView } from '../FlowCommons/Error';
+import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
@@ -159,7 +160,7 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
 
   return (
     <>
-      {!borrowTxState.error && !borrowTxState.success && (
+      {!borrowTxState.txError && !borrowTxState.success && (
         <>
           <TxModalTitle title="Borrow" symbol={poolReserve.symbol} />
           {isWrongNetwork && (
@@ -224,9 +225,12 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
         </>
       )}
 
-      {borrowTxState.error && <TxErrorView errorMessage={borrowTxState.error} />}
-      {borrowTxState.success && !borrowTxState.error && (
+      {borrowTxState.txError && <TxErrorView errorMessage={borrowTxState.txError} />}
+      {borrowTxState.success && !borrowTxState.txError && (
         <TxSuccessView action="Withdrawed" amount={amountToBorrow} symbol={poolReserve.symbol} />
+      )}
+      {borrowTxState.gasEstimationError && (
+        <GasEstimationError error={borrowTxState.gasEstimationError} />
       )}
       <BorrowActions
         poolReserve={poolReserve}
