@@ -21,10 +21,18 @@ export const ConnectionStatusProvider: React.FC = ({ children }) => {
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
   const RPC_ONLY_MODE = !!currentNetworkConfig.rpcOnly;
   const [preferredConnectionMode, setPreferredConnectionMode] = useState<ConnectionMode>(
-    RPC_ONLY_MODE
-      ? ConnectionMode.rpc
-      : (localStorage.getItem('connectionMode') as ConnectionMode) || ConnectionMode.normal
+    RPC_ONLY_MODE ? ConnectionMode.rpc : ConnectionMode.normal
   );
+
+  // restore previous state from local storage
+  useEffect(() => {
+    if (!RPC_ONLY_MODE) {
+      setPreferredConnectionMode(
+        (localStorage.getItem('connectionMode') as ConnectionMode) || ConnectionMode.normal
+      );
+    }
+  }, [RPC_ONLY_MODE]);
+
   const changePreferredConnectionMode = () =>
     !RPC_ONLY_MODE &&
     setPreferredConnectionMode((mode) => {

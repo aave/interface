@@ -79,7 +79,6 @@ export function ProtocolDataProvider({ children }: PropsWithChildren<{}>) {
   // const [markets, setMarkets] = useState(marketsData);
   // const [networkConfigs, setNetworkConfigs] = useState(_networkConfigs);
   const [currentMarket, setCurrentMarket] = useState<CustomMarket>(availableMarkets[0]);
-
   const currentMarketData = marketsData[currentMarket];
 
   const handleSetMarket = (market: CustomMarket) => {

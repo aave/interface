@@ -83,7 +83,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.mainnet]: {
     name: 'Ethereum',
-    privateJsonRPCUrl: process.env.PRIVATE_MAINNET_RPC,
     publicJsonRPCUrl: [
       'https://cloudflare-eth.com',
       'https://rpc.flashbots.net/',
