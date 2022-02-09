@@ -26,9 +26,21 @@ export function ProposalListItem({
           : ROUTES.dynamicRenderedProposal(proposal.id)
       }
     >
-      <Box sx={{ width: { sx: '100%', md: '50%' } }}>
+      <Box
+        sx={{
+          width: {
+            sx: '100%',
+            md: '50%',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+          },
+        }}
+      >
         <Typography variant="h3">{ipfs.title}</Typography>
-        <StateBadge state={proposal.state} />
+        <Box>
+          <StateBadge state={proposal.state} />
+        </Box>
       </Box>
       <Box sx={{ flexGrow: 1, pl: { sm: 0, md: 2 } }}>
         <VoteBar yae percent={yaePercent} votes={yaeVotes} sx={{ mb: 4 }} />
