@@ -7,6 +7,8 @@ import { governanceContract } from 'src/modules/governance/utils/governanceProvi
 import { isProposalStateImmutable } from 'src/modules/governance/utils/immutableStates';
 import { Ipfs, IpfsType } from 'src/static-build/ipfs';
 import { CustomProposalType, Proposal } from 'src/static-build/proposal';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 export async function getStaticPaths() {
   if (!governanceContract) return { paths: [] };
@@ -48,8 +50,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
   return (
     <Container maxWidth="xl">
       <Meta title={ipfs.title} description={ipfs.shortDescription} />
-      {JSON.stringify(proposal)}
-      {JSON.stringify(ipfs)}
+      <ReactMarkdown remarkPlugins={[remarkGfm]}>{ipfs.description}</ReactMarkdown>
     </Container>
   );
 }
