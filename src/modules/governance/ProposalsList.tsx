@@ -9,11 +9,11 @@ import {
 } from '@mui/material';
 import { GovernancePageProps } from 'pages/governance';
 import { useState } from 'react';
-import { Link, ROUTES } from 'src/components/primitives/Link';
 import { usePolling } from 'src/hooks/usePolling';
 import { getProposalMetadata } from 'src/modules/governance/utils/getProposalMetadata';
 import { governanceContract } from 'src/modules/governance/utils/governanceProvider';
 import { isProposalStateImmutable } from 'src/modules/governance/utils/immutableStates';
+import { ProposalListItem } from './ProposalListItem';
 
 export function ProposalsList({ proposals: initialProposals }: GovernancePageProps) {
   const [proposals, setProposals] = useState(initialProposals);
@@ -85,17 +85,12 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
       {proposals
         .filter((proposal) => !proposalFilter || proposal.proposal.state === proposalFilter)
         .map(({ proposal, prerendered, ipfs }) => (
-          <div key={proposal.id}>
-            <Link
-              href={
-                prerendered
-                  ? ROUTES.prerenderedProposal(proposal.id)
-                  : ROUTES.dynamicRenderedProposal(proposal.id)
-              }
-            >
-              {ipfs.title}
-            </Link>
-          </div>
+          <ProposalListItem
+            key={proposal.id}
+            proposal={proposal}
+            ipfs={ipfs}
+            prerendered={prerendered}
+          />
         ))}
     </div>
   );
