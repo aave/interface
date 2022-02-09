@@ -65,6 +65,7 @@
     "next": "12.0.10",
     "react": "latest",
     "react-dom": "latest",
+    "react-markdown": "^8.0.0",
     "reflect-metadata": "^0.1.13",
     "subscriptions-transport-ws": "^0.11.0",
     "walletlink": "^2.4.7",
