@@ -1,0 +1,19 @@
+{
+  "repayType":{
+    "collateral": "collateral",
+    "wallet": "wallet",
+    "default": "default"
+  },
+  "dashboardTypes": {
+    "deposit": "deposit",
+    "borrow": "borrow"
+  },
+  "collateralType": {
+    "isCollateral": "Yes",
+    "isNotCollateral": "No"
+  },
+  "borrowAPYType": {
+    "variable": "Variable",
+    "stable": "Stable"
+  }
+}

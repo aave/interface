@@ -23,7 +23,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "incremental": true,
-    "useUnknownInCatchVariables": false
+    "useUnknownInCatchVariables": false,
+    "types": ["cypress"]
   },
   "exclude": [
     "dist",

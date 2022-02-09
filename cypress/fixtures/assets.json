@@ -1,0 +1,147 @@
+{
+  "avalancheMarket": {
+    "AVAX": {
+      "fullName": "Avalanche",
+      "shortName": "AVAX",
+      "collateral": true
+    },
+    "DAI": {
+      "fullName": "DAI (DAI.e)",
+      "shortName": "DAI.e",
+      "collateral": true
+    },
+    "USDC": {
+      "fullName": "USD Coin (USDC.e)",
+      "shortName": "USDC.e",
+      "collateral": true
+    },
+    "USDT": {
+      "fullName": "USDT Coin (USDT.e)",
+      "shortName": "USDT.e",
+      "collateral": false
+    },
+    "WBTC": {
+      "fullName": "WBTC Coin (WBTC.e)",
+      "shortName": "WBTC.e",
+      "collateral": true
+    },
+    "WETH": {
+      "fullName": "Wrapped ETH (WETH.e)",
+      "shortName": "WETH.e",
+      "collateral": true
+    }
+  },
+  "polygonMarket": {
+    "MATIC": {
+      "fullName": "Matic",
+      "shortName": "MATIC",
+      "collateral": true
+    },
+    "DAI": {
+      "fullName": "DAI",
+      "shortName": "DAI",
+      "collateral": true
+    },
+    "USDC": {
+      "fullName": "USD Coin",
+      "shortName": "USDC",
+      "collateral": true
+    },
+    "USDT": {
+      "fullName": "USDT Coin",
+      "shortName": "USDT",
+      "collateral": false
+    },
+    "WBTC": {
+      "fullName": "WBTC Coin",
+      "shortName": "WBTC",
+      "collateral": true
+    },
+    "WETH": {
+      "fullName": "Wrapped ETH",
+      "shortName": "WETH",
+      "collateral": true
+    }
+  },
+  "ammMarket": {
+    "DAI": {
+      "fullName": "DAI",
+      "shortName": "DAI",
+      "collateral": true
+    },
+    "ETH": {
+      "fullName": "Ethereum",
+      "shortName": "ETH",
+      "collateral": true
+    },
+    "USDT": {
+      "fullName": "USDT Coin",
+      "shortName": "USDT",
+      "collateral": false
+    },
+    "USDC": {
+      "fullName": "USD Coin",
+      "shortName": "USDC",
+      "collateral": true
+    }
+  },
+  "aaveMarket": {
+    "DAI": {
+      "fullName": "DAI",
+      "shortName": "DAI",
+      "collateral": true
+    },
+    "ETH": {
+      "fullName": "Ethereum",
+      "shortName": "ETH",
+      "collateral": true
+    },
+    "USDT": {
+      "fullName": "USDT Coin",
+      "shortName": "USDT",
+      "collateral": false
+    },
+    "USDC": {
+      "fullName": "USD Coin",
+      "shortName": "USDC",
+      "collateral": true
+    },
+    "BAT": {
+      "fullName": "Basic Attention Token",
+      "shortName": "BAT",
+      "collateral": true
+    },
+    "MANA": {
+      "fullName": "Decentraland",
+      "shortName": "MANA",
+      "collateral": true
+    },
+    "MKR": {
+      "fullName": "Maker",
+      "shortName": "MKR",
+      "collateral": true
+    },
+    "REN": {
+      "fullName": "REN",
+      "shortName": "REN",
+      "collateral": true
+    },
+    "TUSD": {
+      "fullName": "TrueUSD",
+      "shortName": "TUSD",
+      "collateral": true
+    }
+  },
+  "staking": {
+    "AAVE": {
+      "fullName": "AAVE",
+      "shortName": "AAVE",
+      "address": "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9"
+    },
+    "ABPT": {
+      "fullName": "AAVE/ETH BPT",
+      "shortName": "ABPT",
+      "address": "0x41A08648C3766F9F9d85598fF102a08f4ef84F84"
+    }
+  }
+}
