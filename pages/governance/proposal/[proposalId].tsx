@@ -74,7 +74,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
       <ProposalTopPanel />
       <Grid container spacing={4}>
         <Grid item xs={12} sm={9}>
-          <Paper sx={{ px: 6, py: 4 }}>
+          <Paper sx={{ px: 6, py: 4, wordBreak: 'break-word' }}>
             <Typography variant="h3">
               <Trans>Proposal overview</Trans>
             </Typography>
