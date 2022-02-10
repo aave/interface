@@ -342,7 +342,7 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
         symbol={tokenToRepayWith.symbol}
         debtType={debtType}
         repayWithATokens={repayWithATokens}
-        blocked={!!blockingError}
+        blocked={blockingError !== undefined}
       />
     </>
   );

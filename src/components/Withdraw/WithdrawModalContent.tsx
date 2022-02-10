@@ -287,7 +287,7 @@ export const WithdrawModalContent = ({
             ? networkConfig.baseAssetSymbol
             : poolReserve.symbol
         }
-        blocked={!!blockingError}
+        blocked={blockingError !== undefined}
       />
     </>
   );

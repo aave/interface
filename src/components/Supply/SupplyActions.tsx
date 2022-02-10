@@ -23,11 +23,11 @@ export interface SupplyActionProps extends BoxProps {
   setGasLimit: Dispatch<SetStateAction<string | undefined>>;
   poolAddress: string;
   symbol: string;
+  blocked: boolean;
 }
 
 export const SupplyActions = ({
   amountToSupply,
-  poolReserve,
   setSupplyTxState,
   handleClose,
   setGasLimit,
@@ -35,6 +35,7 @@ export const SupplyActions = ({
   isWrongNetwork,
   sx,
   symbol,
+  blocked,
   ...props
 }: SupplyActionProps) => {
   const { lendingPool } = useTxBuilderContext();
@@ -151,7 +152,9 @@ export const SupplyActions = ({
         <Button
           variant="contained"
           onClick={() => approval(amountToSupply, poolAddress)}
-          disabled={approved || loading || isWrongNetwork}
+          disabled={
+            approved || loading || isWrongNetwork || blocked || !!approvalTxState.gasEstimationError
+          }
         >
           {!approved && !loading && <Trans>APPROVE TO CONTINUE</Trans>}
           {!approved && loading && (
@@ -166,7 +169,13 @@ export const SupplyActions = ({
         <Button
           variant="contained"
           onClick={action}
-          disabled={loading || (requiresApproval && !approved) || isWrongNetwork}
+          disabled={
+            loading ||
+            (requiresApproval && !approved) ||
+            isWrongNetwork ||
+            blocked ||
+            !!mainTxState.gasEstimationError
+          }
           sx={{ mt: !approved ? 2 : 0 }}
         >
           {!mainTxState.txHash && !mainTxState.txError && (!loading || !approved) && (
