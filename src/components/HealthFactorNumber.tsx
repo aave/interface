@@ -18,7 +18,7 @@ export const HealthFactorNumber = ({ value, onInfoClick, ...rest }: HealthFactor
   let healthFactorColor = '';
   if (formattedHealthFactor >= 1.5) {
     healthFactorColor = palette.success.main;
-  } else if (formattedHealthFactor < 1.1 && formattedHealthFactor > 0) {
+  } else if (formattedHealthFactor < 1.1) {
     healthFactorColor = palette.error.main;
   } else {
     healthFactorColor = palette.warning.main;

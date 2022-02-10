@@ -22,6 +22,7 @@ import { SupplyModal } from 'src/components/Supply/SupplyModal';
 import { WithdrawModal } from 'src/components/Withdraw/WithdrawModal';
 import { BorrowModal } from 'src/components/Borrow/BorrowModal';
 import { CollateralChangeModal } from 'src/components/CollateralChange/CollateralChangeModal';
+import { RepayModal } from 'src/components/Repay/RepayModal';
 import { RateSwitchModal } from 'src/components/RateSwitch/RateSwitchModal';
 
 // Client-side cache, shared for the whole session of the user in the browser.
@@ -60,6 +61,7 @@ export default function MyApp(props: MyAppProps) {
                             <SupplyModal />
                             <WithdrawModal />
                             <BorrowModal />
+                            <RepayModal />
                             <CollateralChangeModal />
                             <RateSwitchModal />
                           </ModalContextProvider>
