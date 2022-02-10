@@ -1,42 +1,16 @@
-import { CheckIcon, ChevronLeftIcon, ChevronRightIcon, CogIcon } from '@heroicons/react/solid';
-import { t, Trans } from '@lingui/macro';
-import { useRouter } from 'next/router';
-import { useLingui } from '@lingui/react';
-import {
-  Box,
-  Button,
-  FormControlLabel,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
-  MenuList,
-  SvgIcon,
-  Switch,
-  Typography,
-} from '@mui/material';
-import { useTheme } from '@mui/system';
+import { CogIcon } from '@heroicons/react/solid';
+import { Trans } from '@lingui/macro';
+import { Button, Menu, MenuItem, MenuList, SvgIcon, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import { dynamicActivateLanguage } from 'src/libs/LanguageProvider';
 
-import { ColorModeContext } from './AppGlobalStyles';
-
-const langMap = {
-  en: t`English`,
-  es: t`Spanish`,
-};
+import { DarkModeSwitcher } from './components/DarkModeSwitcher';
+import { LanguageListItem, LanguagesList } from './components/LanguageSwitcher';
+import { TestNetModeSwitcher } from './components/TestNetModeSwitcher';
 
 export function SettingsMenu() {
-  const router = useRouter();
-  const { i18n } = useLingui();
-  const theme = useTheme();
-  const colorMode = React.useContext(ColorModeContext);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [languagesOpen, setLanguagesOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
-  const testnetsEnabledId = 'testnetsEnabled';
-  const testnetsEnabledLocalstorage = localStorage.getItem(testnetsEnabledId) === 'true' || false;
-  const [testnetsEnabled, setTestnetsMode] = useState(testnetsEnabledLocalstorage);
 
   const handleSettingsClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setAnchorEl(event.currentTarget);
@@ -58,13 +32,6 @@ export function SettingsMenu() {
     setAnchorEl(null);
     setSettingsOpen(false);
     setLanguagesOpen(false);
-  };
-
-  const toggleTestnetsEnabled = () => {
-    const newState = !testnetsEnabled;
-    setTestnetsMode(!testnetsEnabled);
-    localStorage.setItem(testnetsEnabledId, newState ? 'true' : 'false');
-    router.reload();
   };
 
   return (
@@ -100,41 +67,9 @@ export function SettingsMenu() {
             </Typography>
           </MenuItem>
 
-          <MenuItem onClick={colorMode.toggleColorMode} disableRipple>
-            <ListItemText>
-              <Trans>Dark mode</Trans>
-            </ListItemText>
-            <FormControlLabel
-              value="darkmode"
-              control={<Switch disableRipple checked={theme.palette.mode === 'dark'} />}
-              label={theme.palette.mode === 'dark' ? 'On' : 'Off'}
-              labelPlacement="start"
-            />
-          </MenuItem>
-          <MenuItem disableRipple>
-            <ListItemText>
-              <Trans>Enable Testnet mode</Trans>
-            </ListItemText>
-            <FormControlLabel
-              value="testnetsMode"
-              control={
-                <Switch disableRipple checked={testnetsEnabled} onChange={toggleTestnetsEnabled} />
-              }
-              label={testnetsEnabled ? 'On' : 'Off'}
-              labelPlacement="start"
-            />
-          </MenuItem>
-          <MenuItem onClick={handleLanguageClick} disableRipple>
-            <ListItemText>
-              <Trans>Language</Trans>
-            </ListItemText>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              {langMap[i18n.locale as keyof typeof langMap]}{' '}
-              <SvgIcon fontSize="small" sx={{ color: 'primary.light' }}>
-                <ChevronRightIcon />
-              </SvgIcon>
-            </Box>
-          </MenuItem>
+          <DarkModeSwitcher />
+          <TestNetModeSwitcher />
+          <LanguageListItem onClick={handleLanguageClick} />
         </MenuList>
       </Menu>
 
@@ -147,46 +82,7 @@ export function SettingsMenu() {
         open={languagesOpen}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleCloseLanguage}>
-          <ListItemIcon>
-            <SvgIcon fontSize="small">
-              <ChevronLeftIcon />
-            </SvgIcon>
-          </ListItemIcon>
-          <ListItemText disableTypography>
-            <Typography variant="subheader2">
-              <Trans>Select language</Trans>
-            </Typography>
-          </ListItemText>
-        </MenuItem>
-
-        {Object.keys(langMap).map((lang) => (
-          <MenuItem
-            disableRipple
-            key={lang}
-            onClick={() => dynamicActivateLanguage(lang)}
-            sx={{ '.MuiListItemIcon-root': { minWidth: 'unset' } }}
-          >
-            <ListItemIcon
-              sx={{ mr: 2, borderRadius: '2px', overflow: 'hidden', width: 20, height: 14 }}
-            >
-              <img
-                src={`/icons/flags/${lang}.svg`}
-                width="100%"
-                height="100%"
-                alt={`${lang} icon`}
-              />
-            </ListItemIcon>
-            <ListItemText>{i18n._(langMap[lang as keyof typeof langMap])}</ListItemText>
-            {lang === i18n.locale && (
-              <ListItemIcon>
-                <SvgIcon fontSize="small">
-                  <CheckIcon />
-                </SvgIcon>
-              </ListItemIcon>
-            )}
-          </MenuItem>
-        ))}
+        <LanguagesList onClick={handleCloseLanguage} />
       </Menu>
     </>
   );
