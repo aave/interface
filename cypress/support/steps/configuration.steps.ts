@@ -39,7 +39,8 @@ export const configEnvWithTenderly = ({
         win.localStorage.setItem('forkNetworkId', '3030');
         win.localStorage.setItem('forkBaseChainId', chainId.toString());
         win.localStorage.setItem('forkRPCUrl', rpc);
-        win.localStorage.setItem('currentProvider', 'browser');
+        // win.localStorage.setItem('currentProvider', 'browser');
+        win.localStorage.setItem('WEB3_CONNECT_CACHED_PROVIDER', '"injected"');
         win.localStorage.setItem('selectedAccount', DEFAULT_TEST_ACCOUNT.address.toLowerCase());
         win.localStorage.setItem('selectedMarket', market);
       },

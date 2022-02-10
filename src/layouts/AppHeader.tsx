@@ -1,7 +1,6 @@
 import { useLingui } from '@lingui/react';
 import { Button, List, ListItem } from '@mui/material';
 import Box from '@mui/material/Box';
-import dynamic from 'next/dynamic';
 import * as React from 'react';
 
 import { Link } from '../components/primitives/Link';
@@ -10,10 +9,7 @@ import { navigation } from '../ui-config/menu-items';
 import { uiConfig } from '../uiConfig';
 import { MoreMenu } from './MoreMenu';
 import { SettingsMenu } from './SettingsMenu';
-
-const WalletWidget = dynamic(() => import('./WalletWidget'), {
-  ssr: false,
-});
+import WalletWidget from './WalletWidget';
 
 interface AppHeaderProps {
   topLineHeight: number;
