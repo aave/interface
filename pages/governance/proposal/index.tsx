@@ -6,6 +6,7 @@ import { governanceContract } from 'src/modules/governance/utils/governanceProvi
 import { isProposalStateImmutable } from 'src/modules/governance/utils/immutableStates';
 import { IpfsType } from 'src/static-build/ipfs';
 import { CustomProposalType } from 'src/static-build/proposal';
+import { governanceConfig } from 'src/ui-config/governanceConfig';
 
 export default function DynamicProposal() {
   const router = useRouter();
@@ -23,7 +24,7 @@ export default function DynamicProposal() {
     const newIpfs = {
       id,
       originalHash: proposal.ipfsHash,
-      ...(await getProposalMetadata(proposal.ipfsHash, process.env.NEXT_PUBLIC_IPFS_GATEWAY)),
+      ...(await getProposalMetadata(proposal.ipfsHash, governanceConfig?.ipfsGateway)),
     };
     setIpfs(newIpfs);
   }

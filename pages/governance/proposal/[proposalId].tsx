@@ -1,4 +1,4 @@
-import { Box, Container, Grid, Paper, styled, Typography } from '@mui/material';
+import { Box, Button, Container, Grid, Paper, styled, SvgIcon, Typography } from '@mui/material';
 import { useState } from 'react';
 import { Meta } from 'src/components/Meta';
 import { usePolling } from 'src/hooks/usePolling';
@@ -14,9 +14,11 @@ import { Trans } from '@lingui/macro';
 import { StateBadge } from 'src/modules/governance/StateBadge';
 import { VoteBar } from 'src/modules/governance/VoteBar';
 import { formatProposal } from 'src/modules/governance/utils/formatProposal';
+import { DownloadIcon } from '@heroicons/react/solid';
+import { governanceConfig } from 'src/ui-config/governanceConfig';
 
 export async function getStaticPaths() {
-  if (!governanceContract) return { paths: [] };
+  if (!governanceConfig) return { paths: [] };
   const proposals = await governanceContract.getProposalsCount();
   const paths = [...Array(proposals).keys()].map((id) => ({
     params: { proposalId: id.toString() },
@@ -63,6 +65,8 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
 
   usePolling(updateProposal, 10000, isProposalStateImmutable(proposal), []);
 
+  if (!governanceConfig) return <div>Governance not enabled</div>;
+
   const { yaeVotes, yaePercent, nayPercent, nayVotes } = formatProposal(proposal);
   return (
     <Container maxWidth="xl">
@@ -78,7 +82,24 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
               <Typography variant="h2" sx={{ mb: 8 }}>
                 {ipfs.title}
               </Typography>
-              <StateBadge state={proposal.state} />
+              <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Box>
+                  <StateBadge state={proposal.state} />
+                </Box>
+                <Box sx={{ flexGrow: 1 }} />
+                <Button
+                  component="a"
+                  target="__BLANK"
+                  href={`${governanceConfig?.ipfsGateway}/${ipfs.ipfsHash}`}
+                  startIcon={
+                    <SvgIcon>
+                      <DownloadIcon />
+                    </SvgIcon>
+                  }
+                >
+                  Raw-Ipfs
+                </Button>
+              </Box>
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 components={{

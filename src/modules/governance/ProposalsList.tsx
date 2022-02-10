@@ -14,6 +14,7 @@ import { usePolling } from 'src/hooks/usePolling';
 import { getProposalMetadata } from 'src/modules/governance/utils/getProposalMetadata';
 import { governanceContract } from 'src/modules/governance/utils/governanceProvider';
 import { isProposalStateImmutable } from 'src/modules/governance/utils/immutableStates';
+import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { ProposalListItem } from './ProposalListItem';
 
 export function ProposalsList({ proposals: initialProposals }: GovernancePageProps) {
@@ -34,7 +35,7 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
         ipfs: {
           id: i,
           originalHash: proposal.ipfsHash,
-          ...(await getProposalMetadata(proposal.ipfsHash, process.env.NEXT_PUBLIC_IPFS_GATEWAY)),
+          ...(await getProposalMetadata(proposal.ipfsHash, governanceConfig?.ipfsGateway)),
         },
         proposal: proposal,
         prerendered: false,
