@@ -1,11 +1,10 @@
-import { Box, SvgIcon, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { GovernancePageProps } from 'pages/governance';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { StateBadge } from './StateBadge';
 import { formatProposal } from './utils/formatProposal';
 import { VoteBar } from './VoteBar';
 import { FormattedProposalTime } from './FormattedProposalTime';
-import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/solid';
 import { CheckBadge } from 'src/components/primitives/CheckBadge';
 import { Trans } from '@lingui/macro';
 

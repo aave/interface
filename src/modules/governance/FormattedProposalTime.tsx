@@ -1,5 +1,5 @@
 import { ChainId, ProposalState } from '@aave/contract-helpers';
-import { Box, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useEffect, useState } from 'react';
