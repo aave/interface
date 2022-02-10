@@ -1,5 +1,6 @@
 import { ProposalState } from '@aave/contract-helpers';
 import {
+  Box,
   FormControl,
   InputLabel,
   MenuItem,
@@ -9,11 +10,11 @@ import {
 } from '@mui/material';
 import { GovernancePageProps } from 'pages/governance';
 import { useState } from 'react';
-import { Link, ROUTES } from 'src/components/primitives/Link';
 import { usePolling } from 'src/hooks/usePolling';
 import { getProposalMetadata } from 'src/modules/governance/utils/getProposalMetadata';
 import { governanceContract } from 'src/modules/governance/utils/governanceProvider';
 import { isProposalStateImmutable } from 'src/modules/governance/utils/immutableStates';
+import { ProposalListItem } from './ProposalListItem';
 
 export function ProposalsList({ proposals: initialProposals }: GovernancePageProps) {
   const [proposals, setProposals] = useState(initialProposals);
@@ -62,40 +63,39 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
   usePolling(updatePendingProposals, 10000, false, []);
   return (
     <div>
-      <Typography>Proposal</Typography>
-      <FormControl fullWidth>
-        <InputLabel id="filter-label">Filter</InputLabel>
-        <Select
-          labelId="filter-label"
-          id="filter"
-          value={proposalFilter}
-          label="Filter"
-          onChange={handleChange}
-        >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          {Object.keys(ProposalState).map((key) => (
-            <MenuItem key={key} value={key}>
-              {key}
+      <Box sx={{ px: 6, py: 8, display: 'flex' }}>
+        <Typography variant="h3" sx={{ flexGrow: 1 }}>
+          Proposals
+        </Typography>
+        <FormControl sx={{ width: 200 }}>
+          <InputLabel id="filter-label">Filter</InputLabel>
+          <Select
+            labelId="filter-label"
+            id="filter"
+            value={proposalFilter}
+            label="Filter"
+            onChange={handleChange}
+          >
+            <MenuItem value="">
+              <em>None</em>
             </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+            {Object.keys(ProposalState).map((key) => (
+              <MenuItem key={key} value={key}>
+                {key}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
       {proposals
         .filter((proposal) => !proposalFilter || proposal.proposal.state === proposalFilter)
         .map(({ proposal, prerendered, ipfs }) => (
-          <div key={proposal.id}>
-            <Link
-              href={
-                prerendered
-                  ? ROUTES.prerenderedProposal(proposal.id)
-                  : ROUTES.dynamicRenderedProposal(proposal.id)
-              }
-            >
-              {ipfs.title}
-            </Link>
-          </div>
+          <ProposalListItem
+            key={proposal.id}
+            proposal={proposal}
+            ipfs={ipfs}
+            prerendered={prerendered}
+          />
         ))}
     </div>
   );
