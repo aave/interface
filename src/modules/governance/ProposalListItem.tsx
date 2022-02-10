@@ -5,13 +5,16 @@ import { StateBadge } from './StateBadge';
 import { formatProposal } from './utils/formatProposal';
 import { VoteBar } from './VoteBar';
 import { FormattedProposalTime } from './FormattedProposalTime';
+import { CheckBadge } from 'src/components/primitives/CheckBadge';
+import { Trans } from '@lingui/macro';
 
 export function ProposalListItem({
   proposal,
   prerendered,
   ipfs,
 }: GovernancePageProps['proposals'][0]) {
-  const { nayPercent, yaePercent, nayVotes, yaeVotes } = formatProposal(proposal);
+  const { nayPercent, yaePercent, nayVotes, yaeVotes, quorumReached, diffReached } =
+    formatProposal(proposal);
   return (
     <Box
       sx={{
@@ -32,7 +35,7 @@ export function ProposalListItem({
         sx={{
           width: {
             xs: '100%',
-            sm: '50%',
+            sm: '60%',
           },
           display: 'flex',
           flexDirection: 'column',
@@ -42,7 +45,7 @@ export function ProposalListItem({
         <Typography variant="h3" gutterBottom sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
           {ipfs.title}
         </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
           <StateBadge state={proposal.state} />
           <FormattedProposalTime
             state={proposal.state}
@@ -51,12 +54,14 @@ export function ProposalListItem({
             endBlock={proposal.endBlock}
             // proposalCreated={proposal.proposalCreated}
           />
+          <CheckBadge text={<Trans>Quorum</Trans>} checked={quorumReached} />
+          <CheckBadge text={<Trans>Differential</Trans>} checked={diffReached} />
         </Box>
       </Box>
       <Box
         sx={{
           flexGrow: 1,
-          pl: { xs: 0, sm: 2 },
+          pl: { xs: 0, sm: 4 },
         }}
       >
         <VoteBar yae percent={yaePercent} votes={yaeVotes} sx={{ mb: 4 }} />

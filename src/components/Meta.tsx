@@ -12,7 +12,6 @@ export function Meta({ title, description, imageUrl, timestamp }: MetaProps) {
   return (
     <Head>
       <title>{title}</title>
-      <link rel="icon" href="/favicon.ico" />
       <meta name="description" content={description} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
