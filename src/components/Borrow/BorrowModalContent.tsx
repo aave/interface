@@ -5,7 +5,7 @@ import {
   valueToBigNumber,
 } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Button, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { TxState } from 'src/helpers/types';
 import {

@@ -115,7 +115,7 @@ msgstr ""
 msgid "Asset"
 msgstr ""
 
-#: src/components/CollateralChange/CollateralChangeModalContent.tsx:151
+#: src/components/CollateralChange/CollateralChangeModalContent.tsx:150
 msgid "Asset will no longer be used as collateral, can not be seized in liquidation. It really affects your borrowing power and Health Factor."
 msgstr ""
 
@@ -215,6 +215,7 @@ msgstr ""
 
 #: src/components/Borrow/BorrowActions.tsx:133
 #: src/components/CollateralChange/CollateralChangeActions.tsx:98
+#: src/components/RateSwitch/RateSwitchActions.tsx:93
 #: src/components/Repay/RepayActions.tsx:215
 #: src/components/Supply/SupplyActions.tsx:195
 #: src/components/Withdraw/WithdrawActions.tsx:124
@@ -298,7 +299,7 @@ msgstr ""
 msgid "Developers"
 msgstr ""
 
-#: src/components/CollateralChange/CollateralChangeModalContent.tsx:134
+#: src/components/CollateralChange/CollateralChangeModalContent.tsx:133
 msgid "Disable"
 msgstr ""
 
@@ -460,7 +461,7 @@ msgstr ""
 msgid "Max LTV"
 msgstr ""
 
-#: src/components/CollateralChange/CollateralChangeModalContent.tsx:144
+#: src/components/CollateralChange/CollateralChangeModalContent.tsx:143
 msgid "Message. Collateral increases your borrowing power and Health Factor. But at the same time it can be liquidated."
 msgstr ""
 
@@ -515,6 +516,7 @@ msgstr ""
 
 #: src/components/Borrow/BorrowActions.tsx:132
 #: src/components/CollateralChange/CollateralChangeActions.tsx:97
+#: src/components/RateSwitch/RateSwitchActions.tsx:92
 #: src/components/Repay/RepayActions.tsx:214
 #: src/components/Supply/SupplyActions.tsx:194
 #: src/components/Withdraw/WithdrawActions.tsx:123
@@ -522,8 +524,8 @@ msgid "OK,"
 msgstr ""
 
 #: src/components/RateSwitch/RateSwitchActions.tsx:100
-msgid "OK, CLOSE"
-msgstr ""
+#~ msgid "OK, CLOSE"
+#~ msgstr ""
 
 #: src/components/TextWithModal.tsx:63
 #: src/components/incentives/IncentivesInfoModal.tsx:113
@@ -545,7 +547,7 @@ msgid "Oracle price"
 msgstr ""
 
 #: src/components/CollateralChange/CollateralChangeActions.tsx:90
-#: src/components/RateSwitch/RateSwitchActions.tsx:93
+#: src/components/RateSwitch/RateSwitchActions.tsx:85
 #: src/components/Repay/RepayActions.tsx:207
 #: src/components/Supply/SupplyActions.tsx:187
 msgid "PENDING..."
@@ -622,7 +624,7 @@ msgstr ""
 msgid "SUPPLY {symbol}"
 msgstr ""
 
-#: src/components/RateSwitch/RateSwitchActions.tsx:89
+#: src/components/RateSwitch/RateSwitchActions.tsx:81
 msgid "SWITCH RATE"
 msgstr ""
 
@@ -672,6 +674,10 @@ msgstr ""
 
 #: src/components/infoModalContents/APYTypeInfoContent.tsx:11
 msgid "Stable Interest"
+msgstr ""
+
+#: src/components/RateSwitch/RateSwitchModalContent.tsx:107
+msgid "Stable Interest Type is disabled for this currency"
 msgstr ""
 
 #: src/utils/eMode.ts:5
@@ -800,7 +806,7 @@ msgstr ""
 msgid "Transaction failed"
 msgstr ""
 
-#: src/components/CollateralChange/CollateralChangeModalContent.tsx:134
+#: src/components/CollateralChange/CollateralChangeModalContent.tsx:133
 msgid "Use"
 msgstr ""
 
@@ -861,7 +867,7 @@ msgstr ""
 msgid "YAE"
 msgstr ""
 
-#: src/components/CollateralChange/CollateralChangeModalContent.tsx:113
+#: src/components/CollateralChange/CollateralChangeModalContent.tsx:112
 msgid "YYou can not use this currency as collateral"
 msgstr ""
 
@@ -873,7 +879,11 @@ msgstr ""
 msgid "You are about to get supply capped. FAQ link"
 msgstr ""
 
-#: src/components/CollateralChange/CollateralChangeModalContent.tsx:116
+#: src/components/RateSwitch/RateSwitchModalContent.tsx:110
+msgid "You can not change Interest Type to stable as your borrowings are higher than your collateral"
+msgstr ""
+
+#: src/components/CollateralChange/CollateralChangeModalContent.tsx:115
 msgid "You can not switch usage as collateral mode for this currency, because it will cause collateral call"
 msgstr ""
 
@@ -889,8 +899,12 @@ msgstr ""
 msgid "You do not have enough funds to withdraw this amount"
 msgstr ""
 
-#: src/components/CollateralChange/CollateralChangeModalContent.tsx:111
+#: src/components/CollateralChange/CollateralChangeModalContent.tsx:110
 msgid "You do not have supplies in this currency"
+msgstr ""
+
+#: src/components/RateSwitch/RateSwitchModalContent.tsx:105
+msgid "You have not borrow yet using this currency"
 msgstr ""
 
 #: src/components/FlowCommons/Success.tsx:60
@@ -931,7 +945,7 @@ msgstr ""
 msgid "Your supplies"
 msgstr ""
 
-#: src/components/CollateralChange/CollateralChangeModalContent.tsx:136
+#: src/components/CollateralChange/CollateralChangeModalContent.tsx:135
 msgid "as collateral"
 msgstr ""
 

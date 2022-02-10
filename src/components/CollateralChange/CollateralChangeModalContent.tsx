@@ -81,20 +81,19 @@ export const CollateralChangeModalContent = ({
   useEffect(() => {
     if (valueToBigNumber(userReserve.underlyingBalance).eq(0)) {
       setBlockingError(ErrorType.DO_NOT_HAVE_SUPPLIES_IN_THIS_CURRENCY);
-    }
-    if (
+    } else if (
       (!userReserve.usageAsCollateralEnabledOnUser && !poolReserve.usageAsCollateralEnabled) ||
       !poolReserve.usageAsCollateralEnabled
     ) {
       setBlockingError(ErrorType.CAN_NOT_USE_THIS_CURRENCY_AS_COLLATERAL);
-    }
-
-    if (
+    } else if (
       userReserve.usageAsCollateralEnabledOnUser &&
       user.totalBorrowsMarketReferenceCurrency !== '0' &&
       healthFactorAfterSwitch.lte('1')
     ) {
       setBlockingError(ErrorType.CAN_NOT_SWITCH_USAGE_AS_COLLATERAL_MODE);
+    } else {
+      setBlockingError(undefined);
     }
   }, [
     userReserve.underlyingBalance,
