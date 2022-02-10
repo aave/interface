@@ -1,5 +1,5 @@
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/solid';
-import { Box, SvgIcon, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 
 interface CheckBadgeProps {
@@ -8,14 +8,17 @@ interface CheckBadgeProps {
 }
 
 export function CheckBadge({ checked, text }: CheckBadgeProps) {
+  const { palette } = useTheme();
   return (
     <Box sx={{ display: 'flex', alignItems: 'center' }}>
       <Typography variant="subheader2" component="span" sx={{ mr: 1 }}>
         {text}
       </Typography>
-      <SvgIcon color="success" fontSize="small">
-        {checked ? <CheckCircleIcon /> : <XCircleIcon />}
-      </SvgIcon>
+      {checked ? (
+        <CheckCircleIcon height={16} color={palette.success.main} />
+      ) : (
+        <XCircleIcon height={16} color={palette.error.main} />
+      )}
     </Box>
   );
 }
