@@ -147,7 +147,10 @@ export const MarketSwitcher = () => {
             sx={{ '.MuiListItemIcon-root': { minWidth: 'unset' } }}
           >
             <MarketLogo size={32} logo={network.networkLogoPath} withAAVELogo={withAAVELogo} />
-            <ListItemText sx={{ mr: 3 }}>{market.marketTitle}</ListItemText>
+            <ListItemText sx={{ mr: 3 }}>
+              {market.marketTitle}
+              {network.isFork && ' Fork'}
+            </ListItemText>
 
             {currentMarket === marketId && (
               <ListItemIcon>

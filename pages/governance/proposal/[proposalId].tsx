@@ -7,10 +7,13 @@ import { CustomProposalType, Proposal } from 'src/static-build/proposal';
 
 export async function getStaticPaths() {
   if (!governanceContract) return { paths: [] };
-  const proposals = await governanceContract.getProposalsCount();
-  const paths = [...Array(proposals).keys()].map((id) => ({
-    params: { proposalId: id.toString() },
-  }));
+  const count = await governanceContract.getProposalsCount();
+  const paths: { params: { proposalId: string } }[] = [];
+  for (let i = 0; i < count; i++) {
+    paths.push({
+      params: { proposalId: i.toString() },
+    });
+  }
 
   return { paths, fallback: false };
 }

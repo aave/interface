@@ -1,35 +1,38 @@
 import { Container, Grid, Paper } from '@mui/material';
-import { InferGetStaticPropsType } from 'next';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { GovernanceTopPanel } from 'src/modules/governance/GovernanceTopPanel';
 import { ProposalsList } from 'src/modules/governance/ProposalsList';
 import { governanceContract } from 'src/modules/governance/utils/governanceProvider';
 import { VotingPowerInfoPanel } from 'src/modules/governance/VotingPowerInfoPanel';
-import { Ipfs } from 'src/static-build/ipfs';
-import { Proposal } from 'src/static-build/proposal';
+import { Ipfs, IpfsType } from 'src/static-build/ipfs';
+import { CustomProposalType, Proposal } from 'src/static-build/proposal';
 
 export const getStaticProps = async () => {
   const IpfsFetcher = new Ipfs();
   const ProposalFetcher = new Proposal();
   const count = await governanceContract.getProposalsCount();
 
-  const proposals = await Promise.all(
-    [...Array(count).keys()].reverse().map(async (id) => {
-      // TODO: only pass required ipfs data
-      const ipfs = await IpfsFetcher.get(id);
-      const proposal = await ProposalFetcher.get(id);
-      return {
-        ipfs,
-        proposal,
-        prerendered: true,
-      };
-    })
-  );
+  const proposals: FullProposal[] = [];
+  for (let i = 0; i < count; i++) {
+    const ipfs = await IpfsFetcher.get(i);
+    const proposal = await ProposalFetcher.get(i);
+    proposals.push({
+      ipfs,
+      proposal,
+      prerendered: true,
+    });
+  }
 
   return { props: { proposals } };
 };
 
-export type GovernancePageProps = InferGetStaticPropsType<typeof getStaticProps>;
+interface FullProposal {
+  prerendered: boolean;
+  proposal: CustomProposalType;
+  ipfs: IpfsType;
+}
+
+export type GovernancePageProps = { proposals: FullProposal[] };
 
 export default function Governance(props: GovernancePageProps) {
   return (
