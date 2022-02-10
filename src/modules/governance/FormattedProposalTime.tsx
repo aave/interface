@@ -1,5 +1,5 @@
 import { ChainId, ProposalState } from '@aave/contract-helpers';
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useEffect, useState } from 'react';
@@ -36,25 +36,21 @@ FormattedProposalTimeProps) {
     if (state !== ProposalState.Executed && !expirationTimestamp) fetchDate();
   }, [state, startBlock, endBlock, expirationTimestamp]);
   return (
-    <>
-      <Typography component="span" variant="caption" color="text.secondary">
-        {state}&nbsp;
-      </Typography>
-      <Typography component="span" variant="caption">
-        {expirationTimestamp &&
-          [ProposalState.Active, ProposalState.Queued, ProposalState.Pending].includes(state) &&
-          `ends ${dayjs.unix(expirationTimestamp).fromNow()}`}
-        {expirationTimestamp &&
-          [
-            ProposalState.Canceled,
-            ProposalState.Expired,
-            ProposalState.Failed,
-            ProposalState.Succeeded,
-          ].includes(state) &&
-          `on ${dayjs(expirationTimestamp * 1000).format('MMM DD, YYYY')}`}
-        {state === ProposalState.Executed &&
-          `on ${dayjs(+executionTime * 1000).format('MMM DD, YYYY')}`}
-      </Typography>
-    </>
+    <Typography component="span" variant="caption">
+      {state}&nbsp;
+      {expirationTimestamp &&
+        [ProposalState.Active, ProposalState.Queued, ProposalState.Pending].includes(state) &&
+        `ends ${dayjs.unix(expirationTimestamp).fromNow()}`}
+      {expirationTimestamp &&
+        [
+          ProposalState.Canceled,
+          ProposalState.Expired,
+          ProposalState.Failed,
+          ProposalState.Succeeded,
+        ].includes(state) &&
+        `on ${dayjs(expirationTimestamp * 1000).format('MMM DD, YYYY')}`}
+      {state === ProposalState.Executed &&
+        `on ${dayjs(+executionTime * 1000).format('MMM DD, YYYY')}`}
+    </Typography>
   );
 }
