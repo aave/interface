@@ -23,6 +23,7 @@ import { ReserveIncentiveResponse } from 'src/hooks/app-data-provider/useIncenti
 import { CheckIcon } from '@heroicons/react/outline';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { InterestRate } from '@aave/contract-helpers';
+import { TokenIcon } from '../primitives/TokenIcon';
 
 export interface TxModalDetailsProps extends GridProps {
   apy?: string;
@@ -44,6 +45,8 @@ export interface TxModalDetailsProps extends GridProps {
   unWrappedSymbol?: string;
   rate?: InterestRate;
   underlyingAsset?: string;
+  displayAmountAfterRepayInUsd?: string;
+  amountAfterRepay?: string;
 }
 
 export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
@@ -64,6 +67,8 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   walletBalance,
   unWrappedSymbol,
   rate,
+  amountAfterRepay,
+  displayAmountAfterRepayInUsd,
   ...props
 }) => {
   const [selectedRate, setSelectedRate] = React.useState(InterestRate.Variable);
@@ -75,6 +80,28 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
 
   return (
     <Grid container direction="row" alignItems="center" rowSpacing={'12px'} {...props}>
+      {amountAfterRepay && displayAmountAfterRepayInUsd && symbol && (
+        <FormRow>
+          <FormInfo>
+            <Typography>
+              <Trans>Remaining debt</Trans>
+            </Typography>
+          </FormInfo>
+          <FormValue>
+            <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+              <TokenIcon symbol={symbol} sx={{ mx: '4px' }} />
+              <FormattedNumber value={Number(amountAfterRepay)} variant="description" />
+              <Typography>{symbol}</Typography>
+            </Box>
+            <FormattedNumber
+              value={Number(displayAmountAfterRepayInUsd)}
+              variant="helperText"
+              compact
+              symbol="USD"
+            />
+          </FormValue>
+        </FormRow>
+      )}
       {symbol && setInterestRateMode && borrowStableRate && apy && (
         <FormRow>
           <FormInfo>
@@ -235,12 +262,16 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
           </FormInfo>
           <FormValue>
             <Typography variant="secondary14">
-              <HealthFactorNumber value={healthFactor} variant="secondary14" />
+              {healthFactor !== '-1' && (
+                <HealthFactorNumber value={healthFactor} variant="secondary14" />
+              )}
               <ArrowForwardIcon />
-              <HealthFactorNumber
-                value={Number(futureHealthFactor) ? futureHealthFactor : healthFactor}
-                variant="secondary14"
-              />
+              {futureHealthFactor !== '-1' && (
+                <HealthFactorNumber
+                  value={Number(futureHealthFactor) ? futureHealthFactor : healthFactor}
+                  variant="secondary14"
+                />
+              )}
             </Typography>
             <Typography variant="helperText">
               <Trans>Liquidation at</Trans>
