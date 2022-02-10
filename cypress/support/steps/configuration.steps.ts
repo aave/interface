@@ -31,12 +31,13 @@ export const configEnvWithTenderly = ({
     const provider = new JsonRpcProvider(rpc, 3030);
     const signer = new Wallet(DEFAULT_TEST_ACCOUNT.privateKey, provider);
     cy.visit(URL, {
-      onBeforeLoad(win: any) {
-        win.ethereum = new CustomizedBridge(signer, provider);
+      onBeforeLoad(win) {
+        // eslint-disable-next-line
+        (win as any).ethereum = new CustomizedBridge(signer, provider);
         win.localStorage.setItem('forkEnabled', 'true');
         // forks are always expected to run on chainId 3030
         win.localStorage.setItem('forkNetworkId', '3030');
-        win.localStorage.setItem('forkBaseChainId', chainId);
+        win.localStorage.setItem('forkBaseChainId', chainId.toString());
         win.localStorage.setItem('forkRPCUrl', rpc);
         win.localStorage.setItem('currentProvider', 'browser');
         win.localStorage.setItem('selectedAccount', DEFAULT_TEST_ACCOUNT.address.toLowerCase());
@@ -54,7 +55,7 @@ export const configEnvWithTenderlyMainnetFork = ({
   tokens,
 }: {
   market?: string;
-  tokens?: unknown[];
+  tokens?: { address: string }[];
 }) => {
   configEnvWithTenderly({ chainId: ChainId.mainnet, market, tokens });
 };
@@ -64,7 +65,7 @@ export const configEnvWithTenderlyPolygonFork = ({
   tokens,
 }: {
   market?: string;
-  tokens?: unknown[];
+  tokens?: { address: string }[];
 }) => {
   configEnvWithTenderly({ chainId: ChainId.polygon, market, tokens });
 };
@@ -74,7 +75,7 @@ export const configEnvWithTenderlyAvalancheFork = ({
   tokens,
 }: {
   market?: string;
-  tokens?: unknown[];
+  tokens?: { address: string }[];
 }) => {
   configEnvWithTenderly({ chainId: ChainId.avalanche, market, tokens });
 };

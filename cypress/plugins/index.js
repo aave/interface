@@ -1,3 +1,4 @@
+//const webpackPreprocessor = require('@cypress/webpack-preprocessor');
 // ***********************************************************
 // This example plugins/index.js can be used to load plugins
 //
@@ -16,15 +17,15 @@
  */
 // eslint-disable-next-line no-unused-vars
 module.exports = (on, config) => {
-    // `on` is used to hook into various events Cypress emits
-    // `config` is the resolved Cypress config
-    try {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        const configWithDotenv = require('dotenv').config({ path: process.env.DOTENV_CONFIG_PATH });
-        const env = { ...config.env, ...configWithDotenv.parsed };
-        const result = { ...config, env };
-        return result;
-    } catch (e) {
-        return config;
-    }
+  // `on` is used to hook into various events Cypress emits
+  // `config` is the resolved Cypress config
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const configWithDotenv = require('dotenv').config({ path: process.env.DOTENV_CONFIG_PATH });
+    const env = { ...config.env, ...configWithDotenv.parsed };
+    const result = { ...config, env };
+    return result;
+  } catch (e) {
+    return config;
+  }
 };

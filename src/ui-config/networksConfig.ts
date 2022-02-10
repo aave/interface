@@ -63,7 +63,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://kovan.etherscan.io',
     rpcOnly: true,
     isTestnet: true,
-    networkLogoPath: '/icons/networks/polygon.svg',
+    networkLogoPath: '/icons/networks/ethereum.svg',
   },
   [ChainId.rinkeby]: {
     name: 'Rinkeby',
@@ -79,7 +79,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://rinkeby.etherscan.io/',
     rpcOnly: true,
     isTestnet: true,
-    networkLogoPath: '/icons/networks/polygon.svg',
+    networkLogoPath: '/icons/networks/ethereum.svg',
   },
   [ChainId.mainnet]: {
     name: 'Ethereum',

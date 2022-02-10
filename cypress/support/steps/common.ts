@@ -1,7 +1,7 @@
 export const skipState = (initialValue = false) => {
   let _value = initialValue;
   return {
-    set: (value: never) => {
+    set: (value: boolean) => {
       _value = value;
     },
     get: () => {

@@ -36,8 +36,8 @@ export const deposit = (
   skip: SkipType,
   updateSkipStatus = false
 ) => {
-  let _shortName = asset.shortName;
-  let _fullName = asset.fullName;
+  const _shortName = asset.shortName;
+  const _fullName = asset.fullName;
 
   return describe(`Deposit process for ${_shortName}`, () => {
     skipSetup({ skip, updateSkipStatus });
@@ -69,8 +69,8 @@ export const borrow = (
   skip: SkipType,
   updateSkipStatus = false
 ) => {
-  let _shortName = asset.shortName;
-  let _fullName = asset.fullName;
+  const _shortName = asset.shortName;
+  const _fullName = asset.fullName;
 
   return describe(`Borrow process for ${_shortName}`, () => {
     skipSetup({ skip, updateSkipStatus });
@@ -120,8 +120,8 @@ export const repay = (
   skip: SkipType,
   updateSkipStatus = false
 ) => {
-  let _shortName = asset.shortName;
-  let _shortNameAssetForRepay = assetForRepay ? assetForRepay.shortName : undefined;
+  const _shortName = asset.shortName;
+  const _shortNameAssetForRepay = assetForRepay ? assetForRepay.shortName : undefined;
 
   return describe(`Repay by ${repayOption} process for ${_shortName}`, () => {
     skipSetup({ skip, updateSkipStatus });
@@ -176,7 +176,7 @@ export const withdraw = (
   skip: SkipType,
   updateSkipStatus = false
 ) => {
-  let _shortName = asset.shortName;
+  const _shortName = asset.shortName;
   return describe(`Withdraw process for ${_shortName}`, () => {
     skipSetup({ skip, updateSkipStatus });
     it(`Open ${_shortName} repay view`, () => {
@@ -207,7 +207,7 @@ export const changeBorrowType = (
   skip: SkipType,
   updateSkipStatus = false
 ) => {
-  let _shortName = asset.shortName;
+  const _shortName = asset.shortName;
 
   describe('Change APY of borrowing', () => {
     skipSetup({ skip, updateSkipStatus });
@@ -238,8 +238,8 @@ export const swap = (
   skip: SkipType,
   updateSkipStatus = false
 ) => {
-  let _shortNameFrom = fromAsset.shortName;
-  let _shortNameTo = toAsset.shortName;
+  const _shortNameFrom = fromAsset.shortName;
+  const _shortNameTo = toAsset.shortName;
   describe(`Swap ${amount} ${_shortNameFrom} to ${_shortNameTo}`, () => {
     skipSetup({ skip, updateSkipStatus });
     it(`Open swap page`, () => {
@@ -294,7 +294,7 @@ export const changeCollateral = (
   skip: SkipType,
   updateSkipStatus = false
 ) => {
-  let _shortName = asset.shortName;
+  const _shortName = asset.shortName;
   return describe(`Switch collateral type from ${collateralType}`, () => {
     skipSetup({ skip, updateSkipStatus });
     it('Open dashboard', () => {
@@ -337,7 +337,7 @@ export const changeBorrowTypeNegative = (
   skip: SkipType,
   updateSkipStatus = false
 ) => {
-  let _shortName = asset.shortName;
+  const _shortName = asset.shortName;
 
   return describe(`Verify that Switch borrow is unavailable`, () => {
     skipSetup({ skip, updateSkipStatus });
@@ -368,7 +368,7 @@ export const changeCollateralNegative = (
   skip: SkipType,
   updateSkipStatus = false
 ) => {
-  let _shortName = asset.shortName;
+  const _shortName = asset.shortName;
   return describe(`Switch collateral type negative`, () => {
     skipSetup({ skip, updateSkipStatus });
     it('Open dashboard', () => {

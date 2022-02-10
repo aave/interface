@@ -20,8 +20,8 @@ const tenderly = axios.create({
 });
 
 export class TenderlyFork {
-  _forkNetworkID: string;
-  _chainID: number;
+  public _forkNetworkID: string;
+  public _chainID: number;
   private fork_id?: string;
 
   constructor({ forkNetworkID }: { forkNetworkID: number }) {
