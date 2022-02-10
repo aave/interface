@@ -30,12 +30,12 @@ msgid "A message (you are very close to liquidation)."
 msgstr ""
 
 #: src/components/Repay/RepayActions.tsx:182
-#: src/components/Supply/SupplyActions.tsx:156
+#: src/components/Supply/SupplyActions.tsx:159
 msgid "APPROVE TO CONTINUE"
 msgstr ""
 
 #: src/components/Repay/RepayActions.tsx:186
-#: src/components/Supply/SupplyActions.tsx:160
+#: src/components/Supply/SupplyActions.tsx:163
 msgid "APPROVING {symbol} ..."
 msgstr ""
 
@@ -161,6 +161,10 @@ msgstr ""
 msgid "Balance"
 msgstr ""
 
+#: src/components/Warnings/SNXWarning.tsx:9
+msgid "Before supplying"
+msgstr ""
+
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx:66
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx:72
 #: src/modules/reserve-overview/ReserveActions.tsx:104
@@ -206,7 +210,7 @@ msgid "Borrowing is currently unavailable for"
 msgstr ""
 
 #: src/components/Repay/RepayActions.tsx:215
-#: src/components/Supply/SupplyActions.tsx:186
+#: src/components/Supply/SupplyActions.tsx:195
 #: src/components/Withdraw/WithdrawActions.tsx:124
 msgid "CLOSE"
 msgstr ""
@@ -221,6 +225,10 @@ msgstr ""
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx:137
 msgid "Can be used as collateral:"
+msgstr ""
+
+#: src/components/Supply/SupplyModalContent.tsx:183
+msgid "Cap reached. Lower supply amount"
 msgstr ""
 
 #: src/components/Repay/RepayModalContent.tsx:293
@@ -311,7 +319,7 @@ msgstr "<<<<<<< HEAD"
 
 #: src/components/Borrow/BorrowActions.tsx:118
 #: src/components/Repay/RepayActions.tsx:173
-#: src/components/Supply/SupplyActions.tsx:147
+#: src/components/Supply/SupplyActions.tsx:148
 #: src/components/Withdraw/WithdrawActions.tsx:109
 msgid "ENTER AN AMOUNT"
 msgstr ""
@@ -479,6 +487,7 @@ msgid "Not enough atoken balance on your wallet"
 msgstr ""
 
 #: src/components/Repay/RepayModalContent.tsx:246
+#: src/components/Supply/SupplyModalContent.tsx:181
 msgid "Not enough balance on your wallet"
 msgstr ""
 
@@ -491,7 +500,7 @@ msgid "Nothing supplied yet"
 msgstr ""
 
 #: src/components/Repay/RepayActions.tsx:214
-#: src/components/Supply/SupplyActions.tsx:185
+#: src/components/Supply/SupplyActions.tsx:194
 #: src/components/Withdraw/WithdrawActions.tsx:123
 msgid "OK,"
 msgstr ""
@@ -524,7 +533,7 @@ msgstr ""
 #: src/components/CollateralChange/CollateralChangeActions.tsx:83
 #: src/components/RateSwitch/RateSwitchActions.tsx:93
 #: src/components/Repay/RepayActions.tsx:207
-#: src/components/Supply/SupplyActions.tsx:178
+#: src/components/Supply/SupplyActions.tsx:187
 msgid "PENDING..."
 msgstr ""
 
@@ -541,7 +550,7 @@ msgid "REPAY {symbol}"
 msgstr ""
 
 #: src/components/Repay/RepayActions.tsx:168
-#: src/components/Supply/SupplyActions.tsx:142
+#: src/components/Supply/SupplyActions.tsx:143
 msgid "RETRY WITH APPROVAL"
 msgstr ""
 
@@ -595,7 +604,7 @@ msgstr ""
 msgid "SEE CHARTS"
 msgstr ""
 
-#: src/components/Supply/SupplyActions.tsx:173
+#: src/components/Supply/SupplyActions.tsx:182
 msgid "SUPPLY {symbol}"
 msgstr ""
 
@@ -676,6 +685,10 @@ msgstr ""
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx:103
 msgid "Supply cap"
+msgstr ""
+
+#: src/components/Warnings/AAVEWarning.tsx:10
+msgid "Supplying your"
 msgstr ""
 
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx:66
@@ -888,8 +901,21 @@ msgstr ""
 msgid "assets"
 msgstr ""
 
+#: src/components/Warnings/AMPLWarning.tsx:15
 #: src/modules/dashboard/lists/ListItemWrapper.tsx:24
 msgid "documentation"
+msgstr ""
+
+#: src/components/Warnings/AMPLWarning.tsx:9
+msgid "is an asset affected by rebasing. Visit the"
+msgstr ""
+
+#: src/components/Warnings/AMPLWarning.tsx:17
+msgid "or"
+msgstr ""
+
+#: src/components/Warnings/SNXWarning.tsx:10
+msgid "please check that the amount you want to supply is not currently being used for staking. If it is being used for staking, your transaction might fail."
 msgstr ""
 
 #: src/components/Borrow/BorrowModalContent.tsx:151
@@ -903,6 +929,22 @@ msgstr "<<<<<<< HEAD======="
 #: src/components/FlowCommons/TxModalDetails.tsx:156
 #~ msgid "stable"
 #~ msgstr ""
+
+#: src/components/Warnings/AAVEWarning.tsx:14
+msgid "staking view"
+msgstr ""
+
+#: src/components/Warnings/AMPLWarning.tsx:21
+msgid "to learn more."
+msgstr ""
+
+#: src/components/Warnings/AAVEWarning.tsx:11
+msgid "tokens is not the same as staking them. If you wish to stake your"
+msgstr ""
+
+#: src/components/Warnings/AAVEWarning.tsx:12
+msgid "tokens, please go to the"
+msgstr ""
 
 #: src/components/FlowCommons/TxModalDetails.tsx:156
 #~ msgid "variable"

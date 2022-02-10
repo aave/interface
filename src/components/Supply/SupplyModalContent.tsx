@@ -14,7 +14,7 @@ import {
 } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { getNetworkConfig, isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { TxErrorView } from '../FlowCommons/Error';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -27,6 +27,9 @@ import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { Trans } from '@lingui/macro';
+import { AMPLWarning } from '../Warnings/AMPLWarning';
+import { AAVEWarning } from '../Warnings/AAVEWarning';
+import { SNXWarning } from '../Warnings/SNXWarning';
 
 export type SupplyProps = {
   underlyingAsset: string;
@@ -41,7 +44,7 @@ export enum ErrorType {
 export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps) => {
   const { walletBalances } = useWalletBalances();
   const { marketReferencePriceInUsd, reserves, user } = useAppDataContext();
-  const { currentChainId } = useProtocolDataContext();
+  const { currentChainId, currentMarketData } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
 
   // states
@@ -203,29 +206,11 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
             <Typography>You are about to enter into isolation. FAQ link</Typography>
           )}
           {showSupplyCapWarning && <SupplyCapWarning />}
-          {/* {poolReserve.symbol === 'AMPL' && <AMPLWarning withInfoPanel={true} />}
+          {poolReserve.symbol === 'AMPL' && <AMPLWarning />}
           {poolReserve.symbol === 'AAVE' && isFeatureEnabled.staking(currentMarketData) && (
-            <InfoPanel>
-              {intl.formatMessage(messages.aaveWarning, {
-                link: (
-                  <Link
-                    className="italic"
-                    to="/staking"
-                    bold={true}
-                    title={intl.formatMessage(messages.stakingView)}
-                  />
-                ),
-              })}
-            </InfoPanel>
+            <AAVEWarning />
           )}
-
-          {currencySymbol === 'SNX' && !maxAmountToDeposit.eq('0') && (
-            <InfoPanel>
-              {intl.formatMessage(messages.warningText, {
-                symbol: <strong>{currencySymbol}</strong>,
-              })}
-            </InfoPanel>
-          )} */}
+          {poolReserve.symbol === 'SNX' && !maxAmountToSupply.eq('0') && <SNXWarning />}
           <AssetInput
             value={amountToSupply}
             onChange={setAmount}
