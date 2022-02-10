@@ -24,6 +24,7 @@ import { BorrowModal } from 'src/components/Borrow/BorrowModal';
 import { CollateralChangeModal } from 'src/components/CollateralChange/CollateralChangeModal';
 import { RepayModal } from 'src/components/Repay/RepayModal';
 import { RateSwitchModal } from 'src/components/RateSwitch/RateSwitchModal';
+import { ClaimRewardsModal } from 'src/components/ClaimRewards/ClaimRewardsModal';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -64,6 +65,7 @@ export default function MyApp(props: MyAppProps) {
                             <RepayModal />
                             <CollateralChangeModal />
                             <RateSwitchModal />
+                            <ClaimRewardsModal />
                           </ModalContextProvider>
                         </AppGlobalStyles>
                       </TxBuilderProvider>

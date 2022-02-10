@@ -1,6 +1,6 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import * as React from 'react';
 import { useState } from 'react';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -86,6 +86,7 @@ export const DashboardTopPanel = () => {
               <FormattedNumber value={loanToValue} variant="main21" percent />
             </TopInfoPanelItem>
           )}
+          <Button variant="contained">Claim Rewards</Button>
         </Box>
       </TopInfoPanel>
 
