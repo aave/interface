@@ -21,6 +21,7 @@ const InnerBar = styled('span', {
     top: 0,
     left: 0,
     width: `${percent * 100}%`,
+    maxWidth: '100%',
     height: '8px',
     bgcolor: yae ? 'success.main' : 'error.light',
     display: 'block',
