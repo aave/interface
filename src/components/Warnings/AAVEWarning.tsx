@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Warning } from '@mui/icons-material';
+import { Warning } from '../primitives/Warning';
 import { Button, Link, Typography } from '@mui/material';
 import { ROUTES } from '../primitives/Link';
 

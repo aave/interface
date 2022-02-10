@@ -129,7 +129,8 @@ export const BorrowActions = ({
       )}
       {(mainTxState.txHash || mainTxState.txError) && (
         <Button onClick={handleClose} variant="contained">
-          <Trans>OK, CLOSE</Trans>
+          {!mainTxState.txError && <Trans>OK, </Trans>}
+          <Trans>CLOSE</Trans>
         </Button>
       )}
     </Box>

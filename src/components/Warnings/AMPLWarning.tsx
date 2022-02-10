@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Warning } from '@mui/icons-material';
+import { Warning } from '../primitives/Warning';
 import { Typography } from '@mui/material';
 
 export const AMPLWarning = () => {
