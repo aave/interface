@@ -1,4 +1,5 @@
 export type TxState = {
-  error?: string;
+  txError?: string;
   success: boolean;
+  gasEstimationError?: string;
 };

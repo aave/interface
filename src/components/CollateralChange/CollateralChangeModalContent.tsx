@@ -3,7 +3,9 @@ import {
   ComputedUserReserve,
   valueToBigNumber,
 } from '@aave/math-utils';
-import { useState } from 'react';
+import { Trans } from '@lingui/macro';
+import { Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { TxState } from 'src/helpers/types';
 import {
   ComputedReserveData,
@@ -14,16 +16,23 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { TxErrorView } from '../FlowCommons/Error';
+import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { TxModalDetails } from '../FlowCommons/TxModalDetails';
-import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
+import { IsolationModeWarning } from '../Warnings/IsolationModeWarning';
 import { CollateralChangeActions } from './CollateralChangeActions';
 
 export type CollateralChangeModalContentProps = {
   underlyingAsset: string;
   handleClose: () => void;
 };
+
+export enum ErrorType {
+  DO_NOT_HAVE_SUPPLIES_IN_THIS_CURRENCY,
+  CAN_NOT_USE_THIS_CURRENCY_AS_COLLATERAL,
+  CAN_NOT_SWITCH_USAGE_AS_COLLATERAL_MODE,
+}
 
 export const CollateralChangeModalContent = ({
   underlyingAsset,
@@ -40,14 +49,11 @@ export const CollateralChangeModalContent = ({
   const [collateralChangeTxState, setCollateralChangeTxState] = useState<TxState>({
     success: false,
   });
+  const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
 
   const poolReserve = reserves.find(
     (reserve) => reserve.underlyingAsset === underlyingAsset
   ) as ComputedReserveData;
-
-  if (!user) {
-    return null;
-  }
 
   const userReserve = user.userReservesData.find(
     (userReserve) => underlyingAsset === userReserve.underlyingAsset
@@ -71,38 +77,87 @@ export const CollateralChangeModalContent = ({
     currentLiquidationThreshold: user.currentLiquidationThreshold,
   });
 
-  // blocking checks
-  let blockingError = '';
-  if (valueToBigNumber(userReserve.underlyingBalance).eq(0)) {
-    blockingError = ''; //intl.formatMessage(messages.errorDoNotHaveDepositsInThisCurrency);
-  }
-  if (
-    (!userReserve.usageAsCollateralEnabledOnUser && !poolReserve.usageAsCollateralEnabled) ||
-    !poolReserve.usageAsCollateralEnabled
-  ) {
-    blockingError = ''; //intl.formatMessage(messages.errorCanNotUseThisCurrencyAsCollateral);
-  }
+  // error handling
+  useEffect(() => {
+    if (valueToBigNumber(userReserve.underlyingBalance).eq(0)) {
+      setBlockingError(ErrorType.DO_NOT_HAVE_SUPPLIES_IN_THIS_CURRENCY);
+    } else if (
+      (!userReserve.usageAsCollateralEnabledOnUser && !poolReserve.usageAsCollateralEnabled) ||
+      !poolReserve.usageAsCollateralEnabled
+    ) {
+      setBlockingError(ErrorType.CAN_NOT_USE_THIS_CURRENCY_AS_COLLATERAL);
+    } else if (
+      userReserve.usageAsCollateralEnabledOnUser &&
+      user.totalBorrowsMarketReferenceCurrency !== '0' &&
+      healthFactorAfterSwitch.lte('1')
+    ) {
+      setBlockingError(ErrorType.CAN_NOT_SWITCH_USAGE_AS_COLLATERAL_MODE);
+    } else {
+      setBlockingError(undefined);
+    }
+  }, [
+    userReserve.underlyingBalance,
+    userReserve.usageAsCollateralEnabledOnUser,
+    poolReserve.usageAsCollateralEnabled,
+    user.totalBorrowsMarketReferenceCurrency,
+    healthFactorAfterSwitch,
+  ]);
 
-  if (
-    userReserve.usageAsCollateralEnabledOnUser &&
-    user.totalBorrowsMarketReferenceCurrency !== '0' &&
-    healthFactorAfterSwitch.lte('1')
-  ) {
-    blockingError = ''; //intl.formatMessage(messages.errorCanNotSwitchUsageAsCollateralMode);
-  }
-
-  console.log('TODO do something with block error: ', blockingError);
+  // error render handling
+  const handleBlocked = () => {
+    switch (blockingError) {
+      case ErrorType.DO_NOT_HAVE_SUPPLIES_IN_THIS_CURRENCY:
+        return <Trans>You do not have supplies in this currency</Trans>;
+      case ErrorType.CAN_NOT_USE_THIS_CURRENCY_AS_COLLATERAL:
+        return <Trans>YYou can not use this currency as collateral</Trans>;
+      case ErrorType.CAN_NOT_SWITCH_USAGE_AS_COLLATERAL_MODE:
+        return (
+          <Trans>
+            You can not switch usage as collateral mode for this currency, because it will cause
+            collateral call
+          </Trans>
+        );
+      default:
+        return null;
+    }
+  };
 
   // is Network mismatched
   const isWrongNetwork = currentChainId !== connectedChainId;
 
   return (
     <>
-      {!collateralChangeTxState.error && !collateralChangeTxState.success && (
+      {!collateralChangeTxState.txError && !collateralChangeTxState.success && (
         <>
-          <TxModalTitle title="Borrow" symbol={poolReserve.symbol} />
+          <Typography variant="h2" sx={{ mb: '26px' }}>
+            {usageAsCollateralModeAfterSwitch ? <Trans>Use</Trans> : <Trans>Disable</Trans>}
+            {poolReserve.symbol}
+            <Trans> as collateral</Trans>
+          </Typography>
           {isWrongNetwork && (
             <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
+          )}
+          {<IsolationModeWarning />}
+          {usageAsCollateralModeAfterSwitch ? (
+            <Typography>
+              <Trans>
+                Message. Collateral increases your borrowing power and Health Factor. But at the
+                same time it can be liquidated.
+              </Trans>
+            </Typography>
+          ) : (
+            <Typography>
+              <Trans>
+                Asset will no longer be used as collateral, can not be seized in liquidation. It
+                really affects your borrowing power and Health Factor.
+              </Trans>
+            </Typography>
+          )}
+          {poolReserve.isIsolated && usageAsCollateralModeAfterSwitch && (
+            <Typography>You will enter isolation mode</Typography>
+          )}
+          {poolReserve.isIsolated && !usageAsCollateralModeAfterSwitch && (
+            <Typography>You will leave isolation mode</Typography>
           )}
           <TxModalDetails
             showHf={true}
@@ -112,14 +167,22 @@ export const CollateralChangeModalContent = ({
             symbol={poolReserve.symbol}
             walletBalance={walletBalance}
           />
+          {blockingError !== undefined && (
+            <Typography variant="helperText" color="red">
+              {handleBlocked()}
+            </Typography>
+          )}
         </>
       )}
 
-      {collateralChangeTxState.error && (
-        <TxErrorView errorMessage={collateralChangeTxState.error} />
+      {collateralChangeTxState.txError && (
+        <TxErrorView errorMessage={collateralChangeTxState.txError} />
       )}
-      {collateralChangeTxState.success && !collateralChangeTxState.error && (
+      {collateralChangeTxState.success && !collateralChangeTxState.txError && (
         <TxSuccessView collateral={usageAsCollateralModeAfterSwitch} symbol={poolReserve.symbol} />
+      )}
+      {collateralChangeTxState.gasEstimationError && (
+        <GasEstimationError error={collateralChangeTxState.gasEstimationError} />
       )}
       <CollateralChangeActions
         poolReserve={poolReserve}
@@ -128,6 +191,7 @@ export const CollateralChangeModalContent = ({
         handleClose={handleClose}
         usageAsCollateral={usageAsCollateralModeAfterSwitch}
         isWrongNetwork={isWrongNetwork}
+        blocked={blockingError !== undefined}
       />
     </>
   );

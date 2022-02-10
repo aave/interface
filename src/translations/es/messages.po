@@ -21,15 +21,21 @@ msgstr ""
 msgid "** If your loan to value goes above the liquidation threshold your collateral supplied may be liquidated."
 msgstr ""
 
+#: src/components/FlowCommons/GasEstimationError.tsx:9
+msgid ". Please try changing the parameters"
+msgstr ""
+
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx:114
 msgid "A message (you are very close to liquidation)."
 msgstr ""
 
-#: src/components/Supply/SupplyActions.tsx:165
+#: src/components/Repay/RepayActions.tsx:182
+#: src/components/Supply/SupplyActions.tsx:159
 msgid "APPROVE TO CONTINUE"
 msgstr ""
 
-#: src/components/Supply/SupplyActions.tsx:169
+#: src/components/Repay/RepayActions.tsx:186
+#: src/components/Supply/SupplyActions.tsx:163
 msgid "APPROVING {symbol} ..."
 msgstr ""
 
@@ -67,6 +73,14 @@ msgstr ""
 msgid "APY, variable"
 msgstr ""
 
+#: src/modules/governance/GovernanceTopPanel.tsx:9
+msgid "Aave Protocol Governance"
+msgstr ""
+
+#: src/modules/governance/GovernanceTopPanel.tsx:20
+msgid "Aavenomics introduces a formalized path to the decentralisation and autonomy of the Aave Protocol. Covering governance mechanisms and financial incentives, it aims to share a vision of alignment between various stakeholders within the Aave ecosystem, protocol functionality and the AAVE token as a core securing element of the Aave Protocol. You can find all the details here."
+msgstr ""
+
 #: pages/about.tsx:24
 msgid "About the app"
 msgstr ""
@@ -101,6 +115,10 @@ msgstr ""
 msgid "Asset"
 msgstr ""
 
+#: src/components/CollateralChange/CollateralChangeModalContent.tsx:150
+msgid "Asset will no longer be used as collateral, can not be seized in liquidation. It really affects your borrowing power and Health Factor."
+msgstr ""
+
 #: src/modules/dashboard/lists/ListHeader.tsx:18
 msgid "Assets"
 msgstr ""
@@ -132,11 +150,12 @@ msgstr ""
 msgid "Available to supply"
 msgstr ""
 
-#: src/components/Borrow/BorrowActions.tsx:103
+#: src/components/Borrow/BorrowActions.tsx:90
+#: src/components/Borrow/BorrowActions.tsx:94
 msgid "BORROW {symbol}"
 msgstr ""
 
-#: src/components/Borrow/BorrowActions.tsx:107
+#: src/components/Borrow/BorrowActions.tsx:99
 msgid "BORROW {symbol} PENDING..."
 msgstr ""
 
@@ -146,14 +165,18 @@ msgstr ""
 msgid "Balance"
 msgstr ""
 
+#: src/components/Warnings/SNXWarning.tsx:9
+msgid "Before supplying"
+msgstr ""
+
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx:66
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx:72
 #: src/modules/reserve-overview/ReserveActions.tsx:104
 msgid "Borrow"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:82
-#: src/components/FlowCommons/TxModalDetails.tsx:114
+#: src/components/FlowCommons/TxModalDetails.tsx:109
+#: src/components/FlowCommons/TxModalDetails.tsx:141
 msgid "Borrow APY rate"
 msgstr ""
 
@@ -186,7 +209,16 @@ msgstr ""
 msgid "Borrow power used"
 msgstr ""
 
+#: src/components/Borrow/BorrowModalContent.tsx:140
+msgid "Borrowing is currently unavailable for"
+msgstr ""
+
+#: src/components/Borrow/BorrowActions.tsx:133
+#: src/components/CollateralChange/CollateralChangeActions.tsx:98
+#: src/components/RateSwitch/RateSwitchActions.tsx:93
+#: src/components/Repay/RepayActions.tsx:215
 #: src/components/Supply/SupplyActions.tsx:195
+#: src/components/Withdraw/WithdrawActions.tsx:124
 msgid "CLOSE"
 msgstr ""
 
@@ -202,6 +234,11 @@ msgstr ""
 msgid "Can be used as collateral:"
 msgstr ""
 
+#: src/components/Supply/SupplyModalContent.tsx:183
+msgid "Cap reached. Lower supply amount"
+msgstr ""
+
+#: src/components/Repay/RepayModalContent.tsx:293
 #: src/components/infoModalContents/CollateralInfoContent.tsx:9
 #: src/components/infoModalContents/CollateralInfoContent.tsx:11
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx:21
@@ -262,6 +299,10 @@ msgstr ""
 msgid "Developers"
 msgstr ""
 
+#: src/components/CollateralChange/CollateralChangeModalContent.tsx:133
+msgid "Disable"
+msgstr ""
+
 #: src/layouts/WalletWidget.tsx:247
 msgid "Disconnect Wallet"
 msgstr ""
@@ -285,11 +326,12 @@ msgstr ""
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx:109
 msgid "E-mode message"
-msgstr ""
+msgstr "<<<<<<< HEAD"
 
-#: src/components/Borrow/BorrowActions.tsx:97
-#: src/components/Supply/SupplyActions.tsx:156
-#: src/components/Withdraw/WithdrawActions.tsx:86
+#: src/components/Borrow/BorrowActions.tsx:118
+#: src/components/Repay/RepayActions.tsx:173
+#: src/components/Supply/SupplyActions.tsx:148
+#: src/components/Withdraw/WithdrawActions.tsx:109
 msgid "ENTER AN AMOUNT"
 msgstr ""
 
@@ -301,7 +343,7 @@ msgstr ""
 msgid "English"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:255
+#: src/components/FlowCommons/TxModalDetails.tsx:286
 msgid "Estimated Tx cost"
 msgstr ""
 
@@ -336,7 +378,7 @@ msgstr ""
 msgid "Governance"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:233
+#: src/components/FlowCommons/TxModalDetails.tsx:260
 #: src/components/infoModalContents/HFInfoContent.tsx:8
 #: src/modules/dashboard/DashboardTopPanel.tsx:67
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:69
@@ -371,12 +413,17 @@ msgstr ""
 msgid "Learn more"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:246
+#: src/components/FlowCommons/TxModalDetails.tsx:277
 msgid "Liquidation at"
 msgstr ""
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx:180
 msgid "Liquidation penalty"
+msgstr ""
+
+#: src/components/Borrow/BorrowModalContent.tsx:202
+#: src/components/Withdraw/WithdrawModalContent.tsx:238
+msgid "Liquidation risk is high. Lower amounts recomended."
 msgstr ""
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:51
@@ -405,7 +452,7 @@ msgstr ""
 msgid "Markets overview"
 msgstr ""
 
-#: src/components/AssetInput.tsx:131
+#: src/components/AssetInput.tsx:136
 msgid "Max"
 msgstr ""
 
@@ -414,8 +461,16 @@ msgstr ""
 msgid "Max LTV"
 msgstr ""
 
+#: src/components/CollateralChange/CollateralChangeModalContent.tsx:143
+msgid "Message. Collateral increases your borrowing power and Health Factor. But at the same time it can be liquidated."
+msgstr ""
+
 #: src/layouts/MoreMenu.tsx:42
 msgid "More"
+msgstr ""
+
+#: src/modules/governance/VoteBar.tsx:41
+msgid "NEY"
 msgstr ""
 
 #: src/components/incentives/IncentivesInfoModal.tsx:80
@@ -434,12 +489,21 @@ msgstr ""
 msgid "Network"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:156
+#: src/components/FlowCommons/TxModalDetails.tsx:183
 msgid "New APY"
 msgstr ""
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx:146
 msgid "No"
+msgstr ""
+
+#: src/components/Repay/RepayModalContent.tsx:248
+msgid "Not enough atoken balance on your wallet"
+msgstr ""
+
+#: src/components/Repay/RepayModalContent.tsx:246
+#: src/components/Supply/SupplyModalContent.tsx:181
+msgid "Not enough balance on your wallet"
 msgstr ""
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:81
@@ -450,16 +514,18 @@ msgstr ""
 msgid "Nothing supplied yet"
 msgstr ""
 
+#: src/components/Borrow/BorrowActions.tsx:132
+#: src/components/CollateralChange/CollateralChangeActions.tsx:97
+#: src/components/RateSwitch/RateSwitchActions.tsx:92
+#: src/components/Repay/RepayActions.tsx:214
 #: src/components/Supply/SupplyActions.tsx:194
+#: src/components/Withdraw/WithdrawActions.tsx:123
 msgid "OK,"
 msgstr ""
 
-#: src/components/Borrow/BorrowActions.tsx:114
-#: src/components/CollateralChange/CollateralChangeActions.tsx:89
 #: src/components/RateSwitch/RateSwitchActions.tsx:100
-#: src/components/Withdraw/WithdrawActions.tsx:103
-msgid "OK, CLOSE"
-msgstr ""
+#~ msgid "OK, CLOSE"
+#~ msgstr ""
 
 #: src/components/TextWithModal.tsx:63
 #: src/components/incentives/IncentivesInfoModal.tsx:113
@@ -480,8 +546,9 @@ msgstr ""
 msgid "Oracle price"
 msgstr ""
 
-#: src/components/CollateralChange/CollateralChangeActions.tsx:83
-#: src/components/RateSwitch/RateSwitchActions.tsx:93
+#: src/components/CollateralChange/CollateralChangeActions.tsx:90
+#: src/components/RateSwitch/RateSwitchActions.tsx:85
+#: src/components/Repay/RepayActions.tsx:207
 #: src/components/Supply/SupplyActions.tsx:187
 msgid "PENDING..."
 msgstr ""
@@ -494,13 +561,26 @@ msgstr ""
 msgid "Please, connect your wallet"
 msgstr ""
 
-#: src/components/Supply/SupplyActions.tsx:151
+#: src/components/Repay/RepayActions.tsx:203
+msgid "REPAY {symbol}"
+msgstr ""
+
+#: src/components/Repay/RepayActions.tsx:168
+#: src/components/Supply/SupplyActions.tsx:143
 msgid "RETRY WITH APPROVAL"
+msgstr ""
+
+#: src/components/FlowCommons/TxModalDetails.tsx:87
+msgid "Remaining debt"
 msgstr ""
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx:65
 #: src/modules/reserve-overview/ReserveActions.tsx:107
 msgid "Repay"
+msgstr ""
+
+#: src/components/Repay/RepayModalContent.tsx:272
+msgid "Repay with"
 msgstr ""
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx:69
@@ -527,8 +607,8 @@ msgstr ""
 msgid "Review {action} tx details"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:173
-#: src/components/FlowCommons/TxModalDetails.tsx:190
+#: src/components/FlowCommons/TxModalDetails.tsx:200
+#: src/components/FlowCommons/TxModalDetails.tsx:217
 msgid "Rewards APR"
 msgstr ""
 
@@ -544,7 +624,7 @@ msgstr ""
 msgid "SUPPLY {symbol}"
 msgstr ""
 
-#: src/components/RateSwitch/RateSwitchActions.tsx:89
+#: src/components/RateSwitch/RateSwitchActions.tsx:81
 msgid "SWITCH RATE"
 msgstr ""
 
@@ -588,12 +668,16 @@ msgstr ""
 msgid "Spanish"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:162
+#: src/components/FlowCommons/TxModalDetails.tsx:189
 msgid "Stable"
 msgstr ""
 
 #: src/components/infoModalContents/APYTypeInfoContent.tsx:11
 msgid "Stable Interest"
+msgstr ""
+
+#: src/components/RateSwitch/RateSwitchModalContent.tsx:107
+msgid "Stable Interest Type is disabled for this currency"
 msgstr ""
 
 #: src/utils/eMode.ts:5
@@ -614,13 +698,17 @@ msgstr ""
 msgid "Supply APY"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:223
+#: src/components/FlowCommons/TxModalDetails.tsx:250
 #: src/modules/reserve-overview/ReserveActions.tsx:56
 msgid "Supply balance"
 msgstr ""
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx:103
 msgid "Supply cap"
+msgstr ""
+
+#: src/components/Warnings/AAVEWarning.tsx:10
+msgid "Supplying your"
 msgstr ""
 
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx:66
@@ -636,8 +724,28 @@ msgstr ""
 msgid "Switch Network"
 msgstr ""
 
+#: src/components/Borrow/BorrowModalContent.tsx:155
+msgid "The Stable Rate is not enabled for this currency"
+msgstr ""
+
 #: src/components/infoModalContents/HFInfoContent.tsx:10
 msgid "The health factor represents the safety of your loan derived from the proportion of collateral versus amount borrowed. Keep it above 1 to avoid liquidation."
+msgstr ""
+
+#: src/components/Borrow/BorrowModalContent.tsx:149
+msgid "There are not enough funds in the"
+msgstr ""
+
+#: src/components/FlowCommons/GasEstimationError.tsx:7
+msgid "There was some"
+msgstr ""
+
+#: src/components/Withdraw/WithdrawModalContent.tsx:178
+msgid "These funds have been borrowed and are not available for withdrawal at this time."
+msgstr ""
+
+#: src/components/Warnings/IsolationModeWarning.tsx:10
+msgid "This asset can be supplied as collateral in isolation mode only. Learn more in"
 msgstr ""
 
 #: src/components/caps/CapsTooltip.tsx:25
@@ -698,7 +806,11 @@ msgstr ""
 msgid "Transaction failed"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:206
+#: src/components/CollateralChange/CollateralChangeModalContent.tsx:133
+msgid "Use"
+msgstr ""
+
+#: src/components/FlowCommons/TxModalDetails.tsx:233
 msgid "Used as collateral"
 msgstr ""
 
@@ -706,7 +818,7 @@ msgstr ""
 msgid "Utilization Rate"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:162
+#: src/components/FlowCommons/TxModalDetails.tsx:189
 msgid "Variable"
 msgstr ""
 
@@ -716,17 +828,28 @@ msgstr ""
 
 #: src/layouts/WalletWidget.tsx:236
 msgid "View on Explorer"
-msgstr ""
+msgstr "<<<<<<< HEAD"
 
+#: src/components/Withdraw/WithdrawActions.tsx:94
+#~ msgid "WITHDRAW {0}"
+#~ msgstr ""
+
+#: src/components/Withdraw/WithdrawActions.tsx:103
+#~ msgid "WITHDRAW {0} PENDING..."
+#~ msgstr ""
+
+#: src/components/Withdraw/WithdrawActions.tsx:79
+#: src/components/Withdraw/WithdrawActions.tsx:83
 #: src/components/Withdraw/WithdrawActions.tsx:92
 msgid "WITHDRAW {symbol}"
 msgstr ""
 
-#: src/components/Withdraw/WithdrawActions.tsx:96
+#: src/components/Withdraw/WithdrawActions.tsx:88
 msgid "WITHDRAW {symbol} PENDING..."
 msgstr ""
 
 #: pages/faucet.tsx:54
+#: src/components/Repay/RepayModalContent.tsx:283
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx:135
 msgid "Wallet balance"
 msgstr ""
@@ -740,6 +863,14 @@ msgstr ""
 msgid "Withdraw"
 msgstr ""
 
+#: src/modules/governance/VoteBar.tsx:41
+msgid "YAE"
+msgstr ""
+
+#: src/components/CollateralChange/CollateralChangeModalContent.tsx:112
+msgid "YYou can not use this currency as collateral"
+msgstr ""
+
 #: src/modules/reserve-overview/ReserveConfiguration.tsx:141
 msgid "Yes"
 msgstr ""
@@ -748,8 +879,32 @@ msgstr ""
 msgid "You are about to get supply capped. FAQ link"
 msgstr ""
 
+#: src/components/RateSwitch/RateSwitchModalContent.tsx:110
+msgid "You can not change Interest Type to stable as your borrowings are higher than your collateral"
+msgstr ""
+
+#: src/components/CollateralChange/CollateralChangeModalContent.tsx:115
+msgid "You can not switch usage as collateral mode for this currency, because it will cause collateral call"
+msgstr ""
+
+#: src/components/Withdraw/WithdrawModalContent.tsx:172
+msgid "You can not withdraw this amount because it will cause collateral call"
+msgstr ""
+
 #: src/components/FlowCommons/Error.tsx:37
 msgid "You can report incident to our <0>Discord</0> or <1>Github</1>."
+msgstr ""
+
+#: src/components/Withdraw/WithdrawModalContent.tsx:175
+msgid "You do not have enough funds to withdraw this amount"
+msgstr ""
+
+#: src/components/CollateralChange/CollateralChangeModalContent.tsx:110
+msgid "You do not have supplies in this currency"
+msgstr ""
+
+#: src/components/RateSwitch/RateSwitchModalContent.tsx:105
+msgid "You have not borrow yet using this currency"
 msgstr ""
 
 #: src/components/FlowCommons/Success.tsx:60
@@ -763,6 +918,10 @@ msgstr ""
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:48
 #: src/modules/reserve-overview/ReserveActions.tsx:89
 msgid "Your borrows"
+msgstr ""
+
+#: src/components/Borrow/BorrowModalContent.tsx:145
+msgid "Your collateral is not enough to borrow this amount"
 msgstr ""
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:94
@@ -786,39 +945,84 @@ msgstr ""
 msgid "Your supplies"
 msgstr ""
 
+#: src/components/CollateralChange/CollateralChangeModalContent.tsx:135
+msgid "as collateral"
+msgstr ""
+
 #: src/modules/markets/AssetsList.tsx:76
 msgid "assets"
 msgstr ""
 
+#: src/components/Warnings/AMPLWarning.tsx:15
 #: src/modules/dashboard/lists/ListItemWrapper.tsx:24
 msgid "documentation"
 msgstr ""
 
+#: src/components/Warnings/IsolationModeWarning.tsx:14
+msgid "guide."
+msgstr ""
+
+#: src/components/Warnings/AMPLWarning.tsx:9
+msgid "is an asset affected by rebasing. Visit the"
+msgstr ""
+
+#: src/components/Warnings/AMPLWarning.tsx:17
+msgid "or"
+msgstr ""
+
+#: src/components/Warnings/SNXWarning.tsx:10
+msgid "please check that the amount you want to supply is not currently being used for staking. If it is being used for staking, your transaction might fail."
+msgstr ""
+
+#: src/components/Borrow/BorrowModalContent.tsx:151
+msgid "reserve to borrow"
+msgstr ""
+
 #: src/components/incentives/IncentivesInfoModal.tsx:64
 msgid "rewards"
-msgstr ""
+msgstr "<<<<<<< HEAD======="
 
 #: src/components/FlowCommons/TxModalDetails.tsx:156
 #~ msgid "stable"
 #~ msgstr ""
 
+#: src/components/Warnings/AAVEWarning.tsx:14
+msgid "staking view"
+msgstr ""
+
+#: src/components/Warnings/AMPLWarning.tsx:21
+msgid "to learn more."
+msgstr ""
+
+#: src/components/Warnings/AAVEWarning.tsx:11
+msgid "tokens is not the same as staking them. If you wish to stake your"
+msgstr ""
+
+#: src/components/Warnings/AAVEWarning.tsx:12
+msgid "tokens, please go to the"
+msgstr ""
+
 #: src/components/FlowCommons/TxModalDetails.tsx:156
 #~ msgid "variable"
-#~ msgstr ""
+#~ msgstr ">>>>>>> 8ad5295b4f42971a237eefafdfd6eaaa71f22fbd"
 
 #: src/components/GasStation/GasStation.tsx:110
 msgid "{0, select, slow {Slow} normal {Normal} fast {Fast} other {-}}"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:214
+#: src/components/FlowCommons/TxModalDetails.tsx:241
 msgid "{0}"
 msgstr ""
 
 #: src/components/CollateralChange/CollateralChangeActions.tsx:79
-msgid "{0} ${1} AS COLLATERAL"
+#~ msgid "{0} ${1} AS COLLATERAL"
+#~ msgstr ""
+
+#: src/components/CollateralChange/CollateralChangeActions.tsx:84
+msgid "{0} {1} AS COLLATERAL"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:144
+#: src/components/FlowCommons/TxModalDetails.tsx:171
 msgid "{action} APY"
 msgstr ""
 

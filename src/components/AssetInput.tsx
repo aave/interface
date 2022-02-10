@@ -17,32 +17,30 @@ import { TokenIcon } from './primitives/TokenIcon';
 import { FormattedNumber } from './primitives/FormattedNumber';
 import { ChevronDownIcon } from '@heroicons/react/outline';
 
-interface Asset {
+export interface Asset {
   balance: string;
   symbol: string;
+  address?: string;
 }
 
 export interface AssetInputProps<T extends Asset = Asset> {
   value: string;
-  usdValue?: string;
+  usdValue: string;
   symbol: string;
   onChange: (value: string) => void;
   disabled?: boolean;
   onSelect?: (asset: T) => void;
-  assets?: T[];
+  assets: T[];
 }
 
 export const AssetInput: React.FC<AssetInputProps> = ({
   value,
-  // usdValue,
+  usdValue,
   symbol,
   onChange,
   disabled,
   onSelect,
-  assets = [
-    { balance: '2', symbol: 'WETH' },
-    { balance: '100', symbol: 'DAI' },
-  ],
+  assets,
 }) => {
   const validNumber = new RegExp(/^\d*\.?\d*$/); // allow only digits with decimals
 
@@ -60,7 +58,9 @@ export const AssetInput: React.FC<AssetInputProps> = ({
   };
 
   const asset =
-    assets.length === 1 ? assets[0] : (assets.find((asset) => asset.symbol === symbol) as Asset);
+    assets.length === 1
+      ? assets[0]
+      : assets && (assets.find((asset) => asset.symbol === symbol) as Asset);
 
   return (
     <Box sx={{ p: '8px 12px', border: '1px solid #E0E5EA', borderRadius: '6px' }}>
@@ -108,7 +108,8 @@ export const AssetInput: React.FC<AssetInputProps> = ({
               {assets.map((asset) => (
                 <MenuItem key={asset.symbol} value={asset.symbol}>
                   <TokenIcon symbol={asset.symbol} sx={{ mx: '4px' }} />
-                  <ListItemText>{asset.symbol}</ListItemText>
+                  <ListItemText sx={{ mr: '20px' }}>{asset.symbol}</ListItemText>
+                  <FormattedNumber value={asset.balance} compact />
                 </MenuItem>
               ))}
             </Select>
@@ -117,7 +118,11 @@ export const AssetInput: React.FC<AssetInputProps> = ({
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', pt: '4px' }}>
         <Typography sx={{ flexGrow: 1 }}>
-          <FormattedNumber value={asset.balance} compact symbol="USD" />
+          <FormattedNumber
+            value={isNaN(Number(usdValue)) ? 0 : Number(usdValue)}
+            compact
+            symbol="USD"
+          />
         </Typography>
         <Typography>
           Balance <FormattedNumber value={asset.balance} compact />
@@ -125,7 +130,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
         <Button
           size="small"
           sx={{ minWidth: 0 }}
-          onClick={() => onChange(asset.balance)}
+          onClick={() => onChange('-1')}
           disabled={disabled}
         >
           <Trans>Max</Trans>

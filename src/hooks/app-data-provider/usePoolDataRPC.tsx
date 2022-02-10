@@ -47,14 +47,14 @@ export function usePoolDataRPC(
   // Fetch and format reserve incentive data from UiIncentiveDataProvider contract
   const fetchReserves = async () => {
     const provider = getProvider(chainId);
-    const poolDataProviderContract = new UiPoolDataProvider({
-      uiPoolDataProviderAddress: poolDataProviderAddress,
-      provider,
-      chainId,
-    });
 
     try {
       setLoadingReserves(true);
+      const poolDataProviderContract = new UiPoolDataProvider({
+        uiPoolDataProviderAddress: poolDataProviderAddress,
+        provider,
+        chainId,
+      });
       const reservesResponse = await poolDataProviderContract.getReservesHumanized({
         lendingPoolAddressProvider,
       });
@@ -88,13 +88,13 @@ export function usePoolDataRPC(
   const fetchUserReserves = async () => {
     if (!currentAccount) return;
     const provider = getProvider(chainId);
-    const poolDataProviderContract = new UiPoolDataProvider({
-      uiPoolDataProviderAddress: poolDataProviderAddress,
-      provider,
-      chainId,
-    });
 
     try {
+      const poolDataProviderContract = new UiPoolDataProvider({
+        uiPoolDataProviderAddress: poolDataProviderAddress,
+        provider,
+        chainId,
+      });
       setLoadingUserReserves(true);
       const userReservesResponse = await poolDataProviderContract.getUserReservesHumanized({
         lendingPoolAddressProvider,

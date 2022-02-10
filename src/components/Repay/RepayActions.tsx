@@ -1,43 +1,54 @@
-import { ChainId, EthereumTransactionTypeExtended, GasType, Pool } from '@aave/contract-helpers';
+import {
+  ChainId,
+  EthereumTransactionTypeExtended,
+  GasType,
+  InterestRate,
+  Pool,
+} from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, BoxProps, Button, CircularProgress } from '@mui/material';
 import { Dispatch, SetStateAction, useEffect } from 'react';
+import { TxState } from 'src/helpers/types';
+import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useGasStation } from 'src/hooks/useGasStation';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { useTransactionHandler } from '../../helpers/useTransactionHandler';
 import { LeftHelperText } from '../FlowCommons/LeftHelperText';
-import { useGasStation } from 'src/hooks/useGasStation';
-import { GasOption } from '../GasStation/GasStationProvider';
 import { RightHelperText } from '../FlowCommons/RightHelperText';
-import { TxState } from 'src/helpers/types';
+import { GasOption } from '../GasStation/GasStationProvider';
 
-export interface SupplyActionProps extends BoxProps {
-  amountToSupply: string;
+export interface RepayActionProps extends BoxProps {
+  amountToRepay: string;
   poolReserve: ComputedReserveData;
   isWrongNetwork: boolean;
-  setSupplyTxState: Dispatch<SetStateAction<TxState>>;
+  setRepayTxState: Dispatch<SetStateAction<TxState>>;
   customGasPrice?: string;
   handleClose: () => void;
   setGasLimit: Dispatch<SetStateAction<string | undefined>>;
   poolAddress: string;
   symbol: string;
+  debtType: InterestRate;
+  repayWithATokens: boolean;
   blocked: boolean;
 }
 
-export const SupplyActions = ({
-  amountToSupply,
-  setSupplyTxState,
+export const RepayActions = ({
+  amountToRepay,
+  poolReserve,
+  setRepayTxState,
   handleClose,
   setGasLimit,
   poolAddress,
   isWrongNetwork,
   sx,
   symbol,
+  debtType,
+  repayWithATokens,
   blocked,
   ...props
-}: SupplyActionProps) => {
+}: RepayActionProps) => {
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
   const { currentAccount, chainId: connectedChainId } = useWeb3Context();
@@ -60,31 +71,45 @@ export const SupplyActions = ({
       if (currentMarketData.v3) {
         // TO-DO: No need for this cast once a single Pool type is used in use-tx-builder-context
         const newPool: Pool = lendingPool as Pool;
-        const tx: EthereumTransactionTypeExtended[] = await newPool.supply({
-          user: currentAccount,
-          reserve: poolAddress,
-          amount: amountToSupply,
-        });
+        let tx: EthereumTransactionTypeExtended[];
+        if (repayWithATokens) {
+          tx = await newPool.repayWithATokens({
+            user: currentAccount,
+            reserve: poolReserve.underlyingAsset,
+            amount: amountToRepay.toString(),
+            rateMode: debtType as InterestRate,
+          });
+        } else {
+          tx = await newPool.repay({
+            user: currentAccount,
+            reserve: poolReserve.underlyingAsset,
+            amount: amountToRepay.toString(),
+            interestRateMode: debtType,
+          });
+        }
         const gas: GasType | null = await tx[tx.length - 1].gas();
         setGasLimit(gas?.gasLimit);
         return tx;
       } else {
-        const tx = await lendingPool.deposit({
+        const tx = await lendingPool.repay({
           user: currentAccount,
-          reserve: poolAddress,
-          amount: amountToSupply,
+          reserve: poolReserve.underlyingAsset,
+          amount: amountToRepay.toString(),
+          interestRateMode: debtType,
         });
         const gas: GasType | null = await tx[tx.length - 1].gas();
         setGasLimit(gas?.gasLimit);
         return tx;
       }
+      // TODO: add here the case for repay with collateral
     },
     handleGetPermitTxns: async (signature) => {
       const newPool: Pool = lendingPool as Pool;
-      const tx = await newPool.supplyWithPermit({
+      const tx = await newPool.repayWithPermit({
         user: currentAccount,
-        reserve: poolAddress,
-        amount: amountToSupply,
+        reserve: poolReserve.underlyingAsset,
+        amount: amountToRepay, // amountToRepay.toString(),
+        interestRateMode: debtType,
         signature,
       });
       const gas: GasType | null = await tx[tx.length - 1].gas();
@@ -95,22 +120,22 @@ export const SupplyActions = ({
       state.gasOption === GasOption.Custom
         ? state.customGas
         : gasPriceData.data?.[state.gasOption].legacyGasPrice,
-    skip: !amountToSupply || parseFloat(amountToSupply) === 0,
-    deps: [amountToSupply],
+    skip: !amountToRepay || parseFloat(amountToRepay) === 0 || blocked,
+    deps: [amountToRepay, poolAddress],
   });
 
-  const hasAmount = amountToSupply && amountToSupply !== '0';
+  const hasAmount = amountToRepay && amountToRepay !== '0';
 
   useEffect(() => {
-    setSupplyTxState({
+    setRepayTxState({
       success: !!mainTxState.txHash,
       txError: mainTxState.txError || approvalTxState.txError,
       gasEstimationError: mainTxState.gasEstimationError || approvalTxState.gasEstimationError,
     });
-  }, [setSupplyTxState, mainTxState, approvalTxState]);
+  }, [setRepayTxState, mainTxState, approvalTxState]);
 
   const handleRetry = () => {
-    setSupplyTxState({
+    setRepayTxState({
       txError: undefined,
       success: false,
       gasEstimationError: undefined,
@@ -124,7 +149,7 @@ export const SupplyActions = ({
         sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: '12px' }}
       >
         <LeftHelperText
-          amount={amountToSupply}
+          amount={amountToRepay}
           error={mainTxState.txError || approvalTxState.txError}
           approvalHash={approvalTxState.txHash}
           actionHash={mainTxState.txHash}
@@ -151,10 +176,8 @@ export const SupplyActions = ({
       {hasAmount && requiresApproval && !approved && !approvalTxState.txError && (
         <Button
           variant="contained"
-          onClick={() => approval(amountToSupply, poolAddress)}
-          disabled={
-            approved || loading || isWrongNetwork || blocked || !!approvalTxState.gasEstimationError
-          }
+          onClick={() => approval(amountToRepay, poolAddress)}
+          disabled={approved || loading || isWrongNetwork || blocked}
         >
           {!approved && !loading && <Trans>APPROVE TO CONTINUE</Trans>}
           {!approved && loading && (
@@ -173,15 +196,12 @@ export const SupplyActions = ({
             loading ||
             (requiresApproval && !approved) ||
             isWrongNetwork ||
-            blocked ||
             !!mainTxState.gasEstimationError
           }
           sx={{ mt: !approved ? 2 : 0 }}
         >
-          {!mainTxState.txHash && !mainTxState.txError && (!loading || !approved) && (
-            <Trans>SUPPLY {symbol}</Trans>
-          )}
-          {approved && loading && (
+          {(!loading || (requiresApproval && !approved)) && <Trans>REPAY {symbol}</Trans>}
+          {((requiresApproval && approved) || loading) && (
             <>
               <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
               <Trans>PENDING...</Trans>

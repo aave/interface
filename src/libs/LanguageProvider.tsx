@@ -3,11 +3,14 @@ import { i18n } from '@lingui/core';
 import { I18nProvider } from '@lingui/react';
 import { en, es } from 'make-plural/plurals';
 import React, { useEffect } from 'react';
+import { messages } from '../translations/en/messages';
 
 i18n.loadLocaleData({
   en: { plurals: en },
   es: { plurals: es },
 });
+i18n.load('en', messages);
+i18n.activate('en');
 
 export const DEFAULT_LOCALE = 'en';
 
@@ -34,6 +37,5 @@ export const LanguageProvider: React.FunctionComponent = (props) => {
     const savedLocale = localStorage.getItem('LOCALE') || DEFAULT_LOCALE;
     dynamicActivateLanguage(savedLocale);
   }, []);
-
   return <I18nProvider i18n={i18n}>{props.children}</I18nProvider>;
 };

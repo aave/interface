@@ -55,20 +55,12 @@ export const RateSwitchActions = ({
   });
 
   useEffect(() => {
-    if (mainTxState.txHash) {
-      setRateSwitchTxState({
-        success: true,
-        error: undefined,
-      });
-    }
-
-    if (mainTxState.error) {
-      setRateSwitchTxState({
-        success: false,
-        error: mainTxState.error,
-      });
-    }
-  }, [setRateSwitchTxState, mainTxState.txHash, mainTxState.error]);
+    setRateSwitchTxState({
+      success: !!mainTxState.txHash,
+      txError: mainTxState.txError,
+      gasEstimationError: mainTxState.gasEstimationError,
+    });
+  }, [setRateSwitchTxState, mainTxState]);
 
   return (
     <Box sx={{ mt: '16px', display: 'flex', flexDirection: 'column' }}>
@@ -79,11 +71,11 @@ export const RateSwitchActions = ({
           action="collateral change"
         />
       </Box>
-      {!mainTxState.txHash && !mainTxState.error && (
+      {!mainTxState.txHash && !mainTxState.txError && (
         <Button
           variant="contained"
           onClick={action}
-          disabled={loading || isWrongNetwork || blocked}
+          disabled={loading || isWrongNetwork || blocked || !!mainTxState.gasEstimationError}
         >
           {!loading || blocked ? (
             <Trans>SWITCH RATE</Trans>
@@ -95,9 +87,10 @@ export const RateSwitchActions = ({
           )}
         </Button>
       )}
-      {(mainTxState.txHash || mainTxState.error) && (
+      {(mainTxState.txHash || mainTxState.txError) && (
         <Button onClick={handleClose} variant="contained">
-          <Trans>OK, CLOSE</Trans>
+          {!mainTxState.txError && <Trans>OK, </Trans>}
+          <Trans>CLOSE</Trans>
         </Button>
       )}
     </Box>

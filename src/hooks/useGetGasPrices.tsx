@@ -4,6 +4,8 @@ import { useStateLoading } from './useStateLoading';
 import { usePolling } from './usePolling';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { GasOption } from 'src/components/GasStation/GasStationProvider';
+import { useProtocolDataContext } from './useProtocolDataContext';
+import { useModalContext } from './useModal';
 
 type GasInfo = {
   legacyGasPrice: string;
@@ -50,12 +52,16 @@ const useGetGasPrices = (): GetGasPricesHook => {
   const { loading, setLoading } = useStateLoading(false);
   const [error, setError] = useState(false);
   const [data, setData] = useState<GasPriceData | null>();
-  const { connected, chainId, provider } = useWeb3Context();
+  const { type } = useModalContext();
+  const { currentChainId, jsonRpcProvider } = useProtocolDataContext();
+  const { connected } = useWeb3Context();
 
   const apiRequest = async () => {
-    if (connected) {
+    if (connected && type) {
       setLoading(true);
-      const data = await fetch(`https://apiv5.paraswap.io/prices/gas/${chainId}?eip1559=true`);
+      const data = await fetch(
+        `https://apiv5.paraswap.io/prices/gas/${currentChainId}?eip1559=true`
+      );
       if (!data.ok) {
         throw {
           error: data.statusText,
@@ -74,8 +80,8 @@ const useGetGasPrices = (): GetGasPricesHook => {
   };
 
   const web3Request = async () => {
-    if (provider) {
-      const feeData = await provider.getFeeData();
+    if (jsonRpcProvider) {
+      const feeData = await jsonRpcProvider.getFeeData();
       setData(rawToGasPriceData(feeData));
       setError(false);
     }
@@ -104,7 +110,7 @@ const useGetGasPrices = (): GetGasPricesHook => {
     setLoading(false);
   };
 
-  usePolling(estimateGasPrice, POLLING_INTERVAL, false, [connected, chainId]);
+  usePolling(estimateGasPrice, POLLING_INTERVAL, !type, [connected, currentChainId, type]);
 
   return { loading, data, error };
 };
