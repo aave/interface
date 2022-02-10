@@ -27,7 +27,6 @@ const Badge = styled('span')<StateBadgeProps>(({ theme, state }) => {
     borderRadius: 1,
     display: 'inline-flex',
     alignItems: 'center',
-    mr: 3,
     '&:before': {
       content: '""',
       width: '6px',
