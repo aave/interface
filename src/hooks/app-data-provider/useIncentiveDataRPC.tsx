@@ -18,8 +18,6 @@ import {
 
 // interval in which the rpc data is refreshed
 const POOLING_INTERVAL = 30 * 1000;
-// decreased interval in case there was a network error for faster recovery
-const RECOVER_INTERVAL = 10 * 1000;
 
 export interface IncentiveDataResponse {
   loading: boolean;
@@ -131,16 +129,14 @@ export function useIncentivesDataRPC(
     setLoadingUserIncentives(false);
   };
 
-  usePolling(
-    fetchReserveIncentiveData,
-    errorReserveIncentives || errorUserIncentives ? RECOVER_INTERVAL : POOLING_INTERVAL,
-    skip || !incentiveDataProviderAddress,
-    [lendingPoolAddressProvider, incentiveDataProviderAddress]
-  );
+  usePolling(fetchReserveIncentiveData, POOLING_INTERVAL, skip || !incentiveDataProviderAddress, [
+    lendingPoolAddressProvider,
+    incentiveDataProviderAddress,
+  ]);
 
   usePolling(
     fetchUserIncentiveData,
-    errorReserveIncentives || errorUserIncentives ? RECOVER_INTERVAL : POOLING_INTERVAL,
+    POOLING_INTERVAL,
     skip || !currentAccount || !incentiveDataProviderAddress,
     [lendingPoolAddressProvider, incentiveDataProviderAddress, currentAccount]
   );

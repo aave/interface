@@ -16,7 +16,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useTheme } from '@mui/system';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { dynamicActivateLanguage } from 'src/libs/LanguageProvider';
 
 import { ColorModeContext } from './AppGlobalStyles';
@@ -35,8 +35,13 @@ export function SettingsMenu() {
   const [languagesOpen, setLanguagesOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
   const testnetsEnabledId = 'testnetsEnabled';
-  const testnetsEnabledLocalstorage = localStorage.getItem(testnetsEnabledId) === 'true' || false;
-  const [testnetsEnabled, setTestnetsMode] = useState(testnetsEnabledLocalstorage);
+  const [testnetsEnabled, setTestnetsMode] = useState(false);
+
+  // restore previous state from local storage
+  useEffect(() => {
+    const enabled = localStorage.getItem(testnetsEnabledId) === 'true';
+    enabled && setTestnetsMode(enabled);
+  }, []);
 
   const handleSettingsClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setAnchorEl(event.currentTarget);

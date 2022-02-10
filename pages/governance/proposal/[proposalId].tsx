@@ -1,9 +1,14 @@
+import { Container } from '@mui/material';
 import { useState } from 'react';
+import { Meta } from 'src/components/Meta';
 import { usePolling } from 'src/hooks/usePolling';
+import { MainLayout } from 'src/layouts/MainLayout';
 import { governanceContract } from 'src/modules/governance/utils/governanceProvider';
 import { isProposalStateImmutable } from 'src/modules/governance/utils/immutableStates';
 import { Ipfs, IpfsType } from 'src/static-build/ipfs';
 import { CustomProposalType, Proposal } from 'src/static-build/proposal';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 export async function getStaticPaths() {
   if (!governanceContract) return { paths: [] };
@@ -43,9 +48,13 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
 
   usePolling(updateProposal, 10000, isProposalStateImmutable(proposal), []);
   return (
-    <div>
-      {JSON.stringify(proposal)}
-      {JSON.stringify(ipfs)}
-    </div>
+    <Container maxWidth="xl">
+      <Meta title={ipfs.title} description={ipfs.shortDescription} />
+      <ReactMarkdown remarkPlugins={[remarkGfm]}>{ipfs.description}</ReactMarkdown>
+    </Container>
   );
 }
+
+ProposalPage.getLayout = function getLayout(page: React.ReactElement) {
+  return <MainLayout>{page}</MainLayout>;
+};

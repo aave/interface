@@ -1,6 +1,6 @@
 import { ChainId, EthereumTransactionTypeExtended, GasType } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Box, Button } from '@mui/material';
+import { Box, Button, CircularProgress } from '@mui/material';
 import { Dispatch, SetStateAction, useEffect } from 'react';
 import { TxState } from 'src/helpers/types';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
@@ -19,6 +19,7 @@ export type CollateralChangeActionsProps = {
   handleClose: () => void;
   isWrongNetwork: boolean;
   usageAsCollateral: boolean;
+  blocked: boolean;
 };
 
 export const CollateralChangeActions = ({
@@ -28,6 +29,7 @@ export const CollateralChangeActions = ({
   handleClose,
   isWrongNetwork,
   usageAsCollateral,
+  blocked,
 }: CollateralChangeActionsProps) => {
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
@@ -52,17 +54,16 @@ export const CollateralChangeActions = ({
       state.gasOption === GasOption.Custom
         ? state.customGas
         : gasPriceData.data?.[state.gasOption].legacyGasPrice,
-    skip: false,
+    skip: blocked,
   });
 
   useEffect(() => {
-    if (mainTxState.txHash) {
-      setCollateralChangeTxState({
-        success: true,
-        error: undefined,
-      });
-    }
-  }, [setCollateralChangeTxState, mainTxState.txHash]);
+    setCollateralChangeTxState({
+      success: !!mainTxState.txHash,
+      txError: mainTxState.txError,
+      gasEstimationError: mainTxState.gasEstimationError,
+    });
+  }, [setCollateralChangeTxState, mainTxState]);
 
   return (
     <Box sx={{ mt: '16px', display: 'flex', flexDirection: 'column' }}>
@@ -73,20 +74,28 @@ export const CollateralChangeActions = ({
           action="collateral change"
         />
       </Box>
-      {!mainTxState.txHash && !mainTxState.error && (
-        <Button variant="contained" onClick={action} disabled={loading || isWrongNetwork}>
+      {!mainTxState.txHash && !mainTxState.txError && (
+        <Button
+          variant="contained"
+          onClick={action}
+          disabled={loading || isWrongNetwork || blocked || !!mainTxState.gasEstimationError}
+        >
           {!loading ? (
             <Trans>
-              {usageAsCollateral ? 'ENABLE' : 'DISABLE'} ${poolReserve.symbol} AS COLLATERAL
+              {usageAsCollateral ? 'ENABLE' : 'DISABLE'} {poolReserve.symbol} AS COLLATERAL
             </Trans>
           ) : (
-            <Trans>PENDING...</Trans>
+            <>
+              <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
+              <Trans>PENDING...</Trans>
+            </>
           )}
         </Button>
       )}
-      {(mainTxState.txHash || mainTxState.error) && (
+      {(mainTxState.txHash || mainTxState.txError) && (
         <Button onClick={handleClose} variant="contained">
-          <Trans>OK, CLOSE</Trans>
+          {!mainTxState.txError && <Trans>OK, </Trans>}
+          <Trans>CLOSE</Trans>
         </Button>
       )}
     </Box>
