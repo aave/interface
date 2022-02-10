@@ -3,6 +3,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import * as React from 'react';
 import { useState } from 'react';
+import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
@@ -21,6 +22,7 @@ export const DashboardTopPanel = () => {
   const { user } = useAppDataContext();
   const { currentAccount } = useWeb3Context();
   const [open, setOpen] = useState(false);
+  const { openClaimRewards } = useModalContext();
 
   const loanToValue =
     user?.totalCollateralMarketReferenceCurrency === '0'
@@ -86,7 +88,7 @@ export const DashboardTopPanel = () => {
               <FormattedNumber value={loanToValue} variant="main21" percent />
             </TopInfoPanelItem>
           )}
-          <Button variant="contained">Claim Rewards</Button>
+          <Button variant="contained" onClick={() => openClaimRewards()}>Claim Rewards</Button>
         </Box>
       </TopInfoPanel>
 

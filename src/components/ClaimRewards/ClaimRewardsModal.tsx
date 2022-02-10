@@ -4,12 +4,10 @@ import { ActionModal } from '../primitives/ActionModal';
 import { ClaimRewardsModalContent } from './ClaimRewardsModalContent';
 
 export const ClaimRewardsModal = () => {
-  const { type, close, args } = useModalContext();
+  const { type, close } = useModalContext();
   return (
-    <ActionModal open={type === ModalType.Supply} setOpen={close}>
-      {args?.underlyingAsset && (
-        <ClaimRewardsModalContent underlyingAsset={args.underlyingAsset} handleClose={close} />
-      )}
+    <ActionModal open={type === ModalType.ClaimRewards} setOpen={close}>
+      <ClaimRewardsModalContent handleClose={close} />
     </ActionModal>
   );
 };

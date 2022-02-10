@@ -3,3 +3,11 @@ export type TxState = {
   success: boolean;
   gasEstimationError?: string;
 };
+
+export type Reward = {
+  assets: string[];
+  incentiveControllerAddress: string;
+  symbol: string;
+  balance: string;
+  balanceUsd: string;
+};

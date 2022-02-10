@@ -17,7 +17,7 @@ interface ModalContextType {
   openRepay: (underlyingAsset: string) => void;
   openCollateralChange: (underlyingAsset: string) => void;
   openRateSwitch: (underlyingAsset: string) => void;
-  openClaimRewards: (underlyingAsset: string) => void;
+  openClaimRewards: () => void;
   close: () => void;
   type?: ModalType;
   args?: { [key: string]: string };
@@ -57,9 +57,8 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setType(ModalType.RateSwitch);
           setArgs({ underlyingAsset });
         },
-        openClaimRewards: (underlyingAsset) => {
-          setType(ModalType.RateSwitch);
-          setArgs({ underlyingAsset });
+        openClaimRewards: () => {
+          setType(ModalType.ClaimRewards);
         },
         close: () => {
           setType(undefined);
