@@ -3,12 +3,9 @@ import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { MarketLogo } from 'src/components/MarketSwitcher';
-import { useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 
 export const StakingHeader = () => {
-  const data = useStakeData();
-  console.log(data);
   return (
     <>
       <Box sx={{ mt: 12, mb: 24, color: 'common.white' }}>
@@ -51,10 +48,12 @@ export const StakingHeader = () => {
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '32px', flexWrap: 'wrap', mt: 4 }}>
           <TopInfoPanelItem title={<Trans>Funds in the Safety Module</Trans>}>
+            {/** TBD value */}
             <FormattedNumber value={'10000000'} symbol="USD" variant="main21" />
           </TopInfoPanelItem>
 
           <TopInfoPanelItem title={<Trans>Total emission per day</Trans>}>
+            {/** TBD value */}
             <FormattedNumber value={'1100'} symbol="AAVE" variant="main21" />
           </TopInfoPanelItem>
         </Box>

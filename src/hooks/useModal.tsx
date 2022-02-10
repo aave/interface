@@ -7,6 +7,10 @@ export enum ModalType {
   Repay,
   CollateralChange,
   RateSwitch,
+  Stake,
+  Unstake,
+  Cooldown,
+  ClaimStakeRewards,
 }
 
 interface ModalContextType {
@@ -16,6 +20,10 @@ interface ModalContextType {
   openRepay: (underlyingAsset: string) => void;
   openCollateralChange: (underlyingAsset: string) => void;
   openRateSwitch: (underlyingAsset: string) => void;
+  openStake: (stakeAsset: string, stakeAssetName: string, icon: string) => void;
+  openUnstake: (stakeAsset: string, stakeAssetName: string, icon: string) => void;
+  openCooldown: (stakeAsset: string, stakeAssetName: string, icon: string) => void;
+  openClaimStakeRewards: () => void;
   close: () => void;
   type?: ModalType;
   args?: { [key: string]: string };
@@ -54,6 +62,22 @@ export const ModalContextProvider: React.FC = ({ children }) => {
         openRateSwitch: (underlyingAsset) => {
           setType(ModalType.RateSwitch);
           setArgs({ underlyingAsset });
+        },
+        openStake: (stakeAsset, stakeAssetName, icon) => {
+          setType(ModalType.Stake);
+          setArgs({ stakeAsset, stakeAssetName, icon });
+        },
+        openUnstake: (stakeAsset, stakeAssetName, icon) => {
+          setType(ModalType.Unstake);
+          setArgs({ stakeAsset, stakeAssetName, icon });
+        },
+        openCooldown: (stakeAsset, stakeAssetName, icon) => {
+          setType(ModalType.Cooldown);
+          setArgs({ stakeAsset, stakeAssetName, icon });
+        },
+        openClaimStakeRewards: () => {
+          setType(ModalType.ClaimStakeRewards);
+          setArgs({});
         },
         close: () => {
           setType(undefined);
