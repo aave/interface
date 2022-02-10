@@ -1,0 +1,169 @@
+import { ChainId, EthereumTransactionTypeExtended, GasType, Pool } from '@aave/contract-helpers';
+import { Trans } from '@lingui/macro';
+import { Box, BoxProps, Button, CircularProgress } from '@mui/material';
+import { Dispatch, SetStateAction, useEffect } from 'react';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useTransactionHandler } from '../../helpers/useTransactionHandler';
+import { LeftHelperText } from '../FlowCommons/LeftHelperText';
+import { useGasStation } from 'src/hooks/useGasStation';
+import { GasOption } from '../GasStation/GasStationProvider';
+import { RightHelperText } from '../FlowCommons/RightHelperText';
+import { TxState } from 'src/helpers/types';
+
+export interface StakeActionProps extends BoxProps {
+  amountToSupply: string;
+  isWrongNetwork: boolean;
+  setTxState: Dispatch<SetStateAction<TxState>>;
+  customGasPrice?: string;
+  handleClose: () => void;
+  setGasLimit: Dispatch<SetStateAction<string | undefined>>;
+  stakingContract: string;
+  symbol: string;
+  blocked: boolean;
+}
+
+export const StakeActions = ({
+  amountToSupply,
+  setTxState,
+  handleClose,
+  setGasLimit,
+  stakingContract,
+  isWrongNetwork,
+  sx,
+  symbol,
+  blocked,
+  ...props
+}: StakeActionProps) => {
+  const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
+  const { currentAccount, chainId: connectedChainId } = useWeb3Context();
+  const { state, gasPriceData } = useGasStation();
+
+  const {
+    approval,
+    approved,
+    action,
+    requiresApproval,
+    loading,
+    approvalTxState,
+    mainTxState,
+    usePermit,
+    resetStates,
+  } = useTransactionHandler({
+    tryPermit:
+      currentMarketData.v3 && chainId !== ChainId.harmony && chainId !== ChainId.harmony_testnet,
+    handleGetTxns: async () => {
+      // TBD
+      return [];
+    },
+    handleGetPermitTxns: async (_signature) => {
+      // TBD
+      return [];
+    },
+    customGasPrice:
+      state.gasOption === GasOption.Custom
+        ? state.customGas
+        : gasPriceData.data?.[state.gasOption].legacyGasPrice,
+    skip: !amountToSupply || parseFloat(amountToSupply) === 0,
+    deps: [amountToSupply],
+  });
+
+  const hasAmount = amountToSupply && amountToSupply !== '0';
+
+  useEffect(() => {
+    setTxState({
+      success: !!mainTxState.txHash,
+      txError: mainTxState.txError || approvalTxState.txError,
+      gasEstimationError: mainTxState.gasEstimationError || approvalTxState.gasEstimationError,
+    });
+  }, [setTxState, mainTxState, approvalTxState]);
+
+  const handleRetry = () => {
+    setTxState({
+      txError: undefined,
+      success: false,
+      gasEstimationError: undefined,
+    });
+    resetStates();
+  };
+
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', ...sx }} {...props}>
+      <Box
+        sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: '12px' }}
+      >
+        <LeftHelperText
+          amount={amountToSupply}
+          error={mainTxState.txError || approvalTxState.txError}
+          approvalHash={approvalTxState.txHash}
+          actionHash={mainTxState.txHash}
+          requiresApproval={requiresApproval}
+        />
+        <RightHelperText
+          approvalHash={approvalTxState.txHash}
+          actionHash={mainTxState.txHash}
+          chainId={connectedChainId}
+          usePermit={usePermit}
+          action="supply"
+        />
+      </Box>
+      {(mainTxState.txError || approvalTxState.txError) && (
+        <Button variant="outlined" onClick={handleRetry} sx={{ mb: 2 }}>
+          <Trans>RETRY WITH APPROVAL</Trans>
+        </Button>
+      )}
+      {!hasAmount && !approvalTxState.txError && (
+        <Button variant="outlined" disabled>
+          <Trans>ENTER AN AMOUNT</Trans>
+        </Button>
+      )}
+      {hasAmount && requiresApproval && !approved && !approvalTxState.txError && (
+        <Button
+          variant="contained"
+          onClick={() => approval(amountToSupply, stakingContract)}
+          disabled={
+            approved || loading || isWrongNetwork || blocked || !!approvalTxState.gasEstimationError
+          }
+        >
+          {!approved && !loading && <Trans>APPROVE TO CONTINUE</Trans>}
+          {!approved && loading && (
+            <>
+              <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
+              <Trans>APPROVING {symbol} ...</Trans>
+            </>
+          )}
+        </Button>
+      )}
+      {hasAmount && !mainTxState.txHash && !mainTxState.txError && !approvalTxState.txError && (
+        <Button
+          variant="contained"
+          onClick={action}
+          disabled={
+            loading ||
+            (requiresApproval && !approved) ||
+            isWrongNetwork ||
+            blocked ||
+            !!mainTxState.gasEstimationError
+          }
+          sx={{ mt: !approved ? 2 : 0 }}
+        >
+          {!mainTxState.txHash && !mainTxState.txError && (!loading || !approved) && (
+            <Trans>STAKE {symbol}</Trans>
+          )}
+          {approved && loading && (
+            <>
+              <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
+              <Trans>PENDING...</Trans>
+            </>
+          )}
+        </Button>
+      )}
+      {(mainTxState.txHash || mainTxState.txError || approvalTxState.txError) && (
+        <Button onClick={handleClose} variant="contained">
+          {!mainTxState.txError && !approvalTxState.txError && <Trans>OK, </Trans>}
+          <Trans>CLOSE</Trans>
+        </Button>
+      )}
+    </Box>
+  );
+};

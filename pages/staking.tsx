@@ -1,25 +1,29 @@
 import { Container, Grid, Typography } from '@mui/material';
+import { StakeModal } from 'src/components/Stake/StakeModal';
 import { StakeDataProvider, useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
+import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
 
 export default function Staking() {
   const data = useStakeData();
-  console.log(data);
+  const { openStake } = useModalContext();
   return (
     <Container maxWidth="xl">
       <StakingHeader />
 
-      <Grid container spacing={2}>
+      <Grid container spacing={4}>
         <Grid item xs={12} sm={6}>
           <StakingPanel
             sx={{ height: '100%' }}
             stakeTitle="Aave"
             stakedToken="AAVE"
-            apr="0.13"
             maxSlash="0.3"
             icon="aave"
+            stakeData={data.stakeGeneralResult?.stakeGeneralUIData.aave}
+            stakeUserData={data.stakeUserResult?.stakeUserUIData.aave}
+            onStakeAction={() => openStake('0x0000', 'aave', 'aave')}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -27,9 +31,11 @@ export default function Staking() {
             sx={{ height: '100%' }}
             stakeTitle="AAVE/ETH BPT"
             stakedToken="ABPT"
-            apr="0.13"
             maxSlash="0.3"
-            icon="pools/bpt"
+            icon="stkbpt"
+            stakeData={data.stakeGeneralResult?.stakeGeneralUIData.bpt}
+            stakeUserData={data.stakeUserResult?.stakeUserUIData.bpt}
+            onStakeAction={() => openStake('0x0000', 'bpt', 'stkbpt')}
             description={
               <Typography color="text.muted" sx={{ mt: 4 }}>
                 The Balancer Pool Token (BPT) is a liquidity pool token. You can receive BPT by
@@ -41,7 +47,9 @@ export default function Staking() {
           />
         </Grid>
       </Grid>
-
+      {/** Modals */}
+      <StakeModal />
+      {/** End of modals */}
       <code style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(data, null, 2)}</code>
     </Container>
   );
