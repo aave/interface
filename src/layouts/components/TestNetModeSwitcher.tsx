@@ -1,9 +1,13 @@
 import { Trans } from '@lingui/macro';
-import { FormControlLabel, ListItem, ListItemText, Switch } from '@mui/material';
+import { Box, FormControlLabel, ListItem, ListItemText, MenuItem, Switch } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
-export const TestNetModeSwitcher = () => {
+interface TestNetModeSwitcherProps {
+  component?: typeof MenuItem | typeof ListItem;
+}
+
+export const TestNetModeSwitcher = ({ component = ListItem }: TestNetModeSwitcherProps) => {
   const router = useRouter();
 
   const testnetsEnabledId = 'testnetsEnabled';
@@ -18,9 +22,14 @@ export const TestNetModeSwitcher = () => {
   };
 
   return (
-    <ListItem
+    <Box
+      component={component}
       onClick={toggleTestnetsEnabled}
-      sx={{ color: { xxs: 'common.white', md: 'text.primary' }, py: { xxs: 1.5, md: 2 } }}
+      sx={{
+        cursor: 'pointer',
+        color: { xxs: 'common.white', md: 'text.primary' },
+        py: { xxs: 1.5, md: 2 },
+      }}
     >
       <ListItemText>
         <Trans>Enable Testnet mode</Trans>
@@ -38,6 +47,6 @@ export const TestNetModeSwitcher = () => {
         label={testnetsEnabled ? 'On' : 'Off'}
         labelPlacement="start"
       />
-    </ListItem>
+    </Box>
   );
 };

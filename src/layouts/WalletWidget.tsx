@@ -10,6 +10,7 @@ import {
   ListItemIcon,
   ListItemText,
   Menu,
+  MenuItem,
   MenuList,
   SvgIcon,
   Typography,
@@ -102,7 +103,7 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
     <Trans>Connect wallet</Trans>
   );
 
-  const Content = () => (
+  const Content = ({ component = ListItem }: { component?: typeof MenuItem | typeof ListItem }) => (
     <>
       <Typography
         variant="subheader2"
@@ -117,7 +118,7 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
         <Trans>Account</Trans>
       </Typography>
 
-      <ListItem disabled>
+      <Box component={component} disabled>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Box
             sx={{
@@ -154,10 +155,10 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
             </Typography>
           </Box>
         </Box>
-      </ListItem>
+      </Box>
       <Divider sx={{ my: { xxs: 7, md: 0 }, borderColor: { xxs: '#FFFFFF1F', md: 'divider' } }} />
 
-      <ListItem onClick={handleSwitchNetwork}>
+      <Box component={component} onClick={handleSwitchNetwork}>
         <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
           <Box
             sx={{
@@ -198,10 +199,14 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
             </Typography>
           </Box>
         </Box>
-      </ListItem>
+      </Box>
       <Divider sx={{ my: { xxs: 7, md: 0 }, borderColor: { xxs: '#FFFFFF1F', md: 'divider' } }} />
 
-      <ListItem sx={{ color: { xxs: 'common.white', md: 'text.primary' } }} onClick={handleCopy}>
+      <Box
+        component={component}
+        sx={{ color: { xxs: 'common.white', md: 'text.primary' } }}
+        onClick={handleCopy}
+      >
         <ListItemIcon
           sx={{
             color: {
@@ -219,10 +224,14 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
         <ListItemText>
           <Trans>Copy address</Trans>
         </ListItemText>
-      </ListItem>
+      </Box>
 
       <Link href={networkConfig.explorerLinkBuilder({ address: currentAccount })}>
-        <ListItem sx={{ color: { xxs: 'common.white', md: 'text.primary' } }} onClick={handleClose}>
+        <Box
+          component={component}
+          sx={{ color: { xxs: 'common.white', md: 'text.primary' } }}
+          onClick={handleClose}
+        >
           <ListItemIcon
             sx={{
               color: {
@@ -240,10 +249,11 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
           <ListItemText>
             <Trans>View on Explorer</Trans>
           </ListItemText>
-        </ListItem>
+        </Box>
       </Link>
 
-      <ListItem
+      <Box
+        component={component}
         sx={{ color: { xxs: 'common.white', md: 'text.primary' } }}
         onClick={handleDisconnect}
       >
@@ -259,7 +269,7 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
         <ListItemText>
           <Trans>Disconnect Wallet</Trans>
         </ListItemText>
-      </ListItem>
+      </Box>
     </>
   );
 
@@ -324,8 +334,8 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
           open={open}
           onClose={handleClose}
         >
-          <MenuList disablePadding sx={{ '.MuiListItem-root.Mui-disabled': { opacity: 1 } }}>
-            <Content />
+          <MenuList disablePadding sx={{ '.MuiMenuItem-root.Mui-disabled': { opacity: 1 } }}>
+            <Content component={MenuItem} />
           </MenuList>
         </Menu>
       )}

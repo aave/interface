@@ -9,6 +9,8 @@ import {
   SvgIcon,
   TextField,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import React from 'react';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
@@ -80,6 +82,8 @@ export const MarketLogo = ({ size, logo, withAAVELogo }: MarketLogoProps) => {
 
 export const MarketSwitcher = () => {
   const { currentMarket, setCurrentMarket } = useProtocolDataContext();
+  const theme = useTheme();
+  const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
 
   return (
     <TextField
@@ -106,9 +110,16 @@ export const MarketSwitcher = () => {
 
           return (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <MarketLogo size={32} logo={network.networkLogoPath} withAAVELogo={withAAVELogo} />
-              <Typography variant="h1" sx={{ color: 'common.white', mr: 3 }}>
-                {market.marketTitle} <Trans>Market</Trans>
+              <MarketLogo
+                size={upToLG ? 32 : 28}
+                logo={network.networkLogoPath}
+                withAAVELogo={withAAVELogo}
+              />
+              <Typography
+                variant={upToLG ? 'display1' : 'h1'}
+                sx={{ color: 'common.white', mr: 3 }}
+              >
+                {market.marketTitle} {upToLG && <Trans>Market</Trans>}
               </Typography>
             </Box>
           );

@@ -1,7 +1,15 @@
 import { CheckIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, ListItem, ListItemIcon, ListItemText, SvgIcon, Typography } from '@mui/material';
+import {
+  Box,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  MenuItem,
+  SvgIcon,
+  Typography,
+} from '@mui/material';
 import React from 'react';
 
 import { dynamicActivateLanguage } from '../../libs/LanguageProvider';
@@ -12,14 +20,19 @@ const langMap = {
 };
 
 interface LanguageListItemProps {
+  component?: typeof MenuItem | typeof ListItem;
   onClick: () => void;
 }
 
-export const LanguageListItem = ({ onClick }: LanguageListItemProps) => {
+export const LanguageListItem = ({ component = ListItem, onClick }: LanguageListItemProps) => {
   const { i18n } = useLingui();
 
   return (
-    <ListItem onClick={onClick} sx={{ color: { xxs: 'common.white', md: 'text.primary' } }}>
+    <Box
+      component={component}
+      onClick={onClick}
+      sx={{ color: { xxs: 'common.white', md: 'text.primary' } }}
+    >
       <ListItemText>
         <Trans>Language</Trans>
       </ListItemText>
@@ -32,20 +45,20 @@ export const LanguageListItem = ({ onClick }: LanguageListItemProps) => {
           <ChevronRightIcon />
         </SvgIcon>
       </Box>
-    </ListItem>
+    </Box>
   );
 };
 
-interface LanguagesListProps {
-  onClick: () => void;
-}
-
-export const LanguagesList = ({ onClick }: LanguagesListProps) => {
+export const LanguagesList = ({ component = ListItem, onClick }: LanguageListItemProps) => {
   const { i18n } = useLingui();
 
   return (
     <>
-      <ListItem sx={{ color: { xxs: 'common.white', md: 'text.primary' } }} onClick={onClick}>
+      <Box
+        component={component}
+        sx={{ color: { xxs: 'common.white', md: 'text.primary' } }}
+        onClick={onClick}
+      >
         <ListItemIcon
           sx={{
             minWidth: 'unset !important',
@@ -62,15 +75,17 @@ export const LanguagesList = ({ onClick }: LanguagesListProps) => {
             <Trans>Select language</Trans>
           </Typography>
         </ListItemText>
-      </ListItem>
+      </Box>
 
       {Object.keys(langMap).map((lang) => (
-        <ListItem
+        <Box
+          component={component}
           key={lang}
           onClick={() => dynamicActivateLanguage(lang)}
           sx={{
             color: { xxs: 'common.white', md: 'text.primary' },
             '.MuiListItemIcon-root': { minWidth: 'unset' },
+            '.MuiMenuItemIcon-root': { minWidth: 'unset' },
           }}
         >
           <ListItemIcon
@@ -86,7 +101,7 @@ export const LanguagesList = ({ onClick }: LanguagesListProps) => {
               </SvgIcon>
             </ListItemIcon>
           )}
-        </ListItem>
+        </Box>
       ))}
     </>
   );

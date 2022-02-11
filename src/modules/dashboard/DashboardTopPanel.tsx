@@ -1,4 +1,5 @@
 import { valueToBigNumber } from '@aave/math-utils';
+import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box } from '@mui/material';
 import * as React from 'react';
@@ -67,6 +68,7 @@ export const DashboardTopPanel = () => {
                   text={<Trans>Health factor</Trans>}
                   iconSize={13}
                   iconColor="#FFFFFF3B"
+                  icon={<QuestionMarkCircleIcon />}
                   withContentButton
                 >
                   <HFInfoContent />
@@ -78,12 +80,6 @@ export const DashboardTopPanel = () => {
                 variant="main21"
                 onInfoClick={() => setOpen(true)}
               />
-            </TopInfoPanelItem>
-          )}
-
-          {currentAccount && user?.currentLoanToValue !== '0' && (
-            <TopInfoPanelItem title={<Trans>Current LTV</Trans>}>
-              <FormattedNumber value={loanToValue} variant="main21" percent />
             </TopInfoPanelItem>
           )}
         </Box>
