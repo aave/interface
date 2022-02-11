@@ -65,7 +65,7 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setType(ModalType.ClaimRewards);
         },
         openEmode: () => {
-          setType(ModalType.ClaimRewards);
+          setType(ModalType.Emode);
         },
         openFaucet: (underlyingAsset) => {
           setType(ModalType.Faucet);
