@@ -146,6 +146,10 @@ msgstr ""
 msgid "Available liquidity"
 msgstr ""
 
+#: src/modules/dashboard/DashboardTopPanel.tsx:120
+msgid "Available rewards"
+msgstr ""
+
 #: src/components/caps/CapsHint.tsx:34
 #: src/components/infoModalContents/BorrowAvailableInfoContent.tsx:11
 #: src/modules/reserve-overview/ReserveActions.tsx:98
@@ -283,7 +287,7 @@ msgstr ""
 msgid "Copy address"
 msgstr ""
 
-#: src/modules/dashboard/DashboardTopPanel.tsx:87
+#: src/modules/dashboard/DashboardTopPanel.tsx:116
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:90
 msgid "Current LTV"
 msgstr ""
@@ -296,7 +300,7 @@ msgstr ""
 msgid "Dark mode"
 msgstr ""
 
-#: src/modules/dashboard/DashboardTopPanel.tsx:37
+#: src/modules/dashboard/DashboardTopPanel.tsx:66
 #: src/ui-config/menu-items/index.tsx:23
 msgid "Dashboard"
 msgstr ""
@@ -408,7 +412,7 @@ msgstr ""
 
 #: src/components/FlowCommons/TxModalDetails.tsx:268
 #: src/components/infoModalContents/HFInfoContent.tsx:8
-#: src/modules/dashboard/DashboardTopPanel.tsx:69
+#: src/modules/dashboard/DashboardTopPanel.tsx:98
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:69
 msgid "Health factor"
 msgstr ""
@@ -505,11 +509,11 @@ msgstr ""
 msgid "Net APR"
 msgstr ""
 
-#: src/modules/dashboard/DashboardTopPanel.tsx:53
+#: src/modules/dashboard/DashboardTopPanel.tsx:82
 msgid "Net APY"
 msgstr ""
 
-#: src/modules/dashboard/DashboardTopPanel.tsx:42
+#: src/modules/dashboard/DashboardTopPanel.tsx:71
 msgid "Net worth"
 msgstr ""
 
@@ -645,7 +649,7 @@ msgstr ""
 msgid "Review {action} tx details"
 msgstr ""
 
-#: src/components/ClaimRewards/ClaimRewardsModalContent.tsx:127
+#: src/components/ClaimRewards/ClaimRewardsModalContent.tsx:126
 msgid "Reward(s) to claim"
 msgstr ""
 
@@ -994,7 +998,7 @@ msgstr ""
 msgid "Your interest rate will stay the same for the duration of your loan. Recommended for long-term loan periods and for users who prefer predictability."
 msgstr ""
 
-#: src/components/ClaimRewards/ClaimRewardsModalContent.tsx:103
+#: src/components/ClaimRewards/ClaimRewardsModalContent.tsx:102
 msgid "Your reward balance is 0"
 msgstr ""
 

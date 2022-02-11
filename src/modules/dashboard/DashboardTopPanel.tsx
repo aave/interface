@@ -1,8 +1,9 @@
-import { valueToBigNumber } from '@aave/math-utils';
+import { normalize, UserIncentiveData, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import * as React from 'react';
 import { useState } from 'react';
+import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -23,6 +24,34 @@ export const DashboardTopPanel = () => {
   const { currentAccount } = useWeb3Context();
   const [open, setOpen] = useState(false);
   const { openClaimRewards } = useModalContext();
+
+  const [claimableRewardsUsd, setClaimableRewardsUsd] = useState(0);
+  const [rewardSymbol, setRewardSymbol] = useState<string>();
+  // get all rewards
+  React.useEffect(() => {
+    let totalClaimableUsd = claimableRewardsUsd;
+    const rewardSymbols: string[] = [];
+    Object.keys(user.calculatedUserIncentives).forEach((rewardTokenAddress) => {
+      const incentive: UserIncentiveData = user.calculatedUserIncentives[rewardTokenAddress];
+      const rewardBalance = normalize(incentive.claimableRewards, incentive.rewardTokenDecimals);
+      const rewardBalanceUsd = Number(rewardBalance) * Number(incentive.rewardPriceFeed);
+
+      if (rewardSymbols.indexOf(incentive.rewardTokenSymbol) === -1) {
+        rewardSymbols.push(incentive.rewardTokenSymbol);
+      }
+
+      totalClaimableUsd = totalClaimableUsd + Number(rewardBalanceUsd);
+    });
+
+    if (rewardSymbols.length > 1) {
+      // TODO: create here the combined symbol and set it
+      setRewardSymbol(rewardSymbols[0]);
+    } else {
+      setRewardSymbol(rewardSymbols[0]);
+    }
+
+    setClaimableRewardsUsd(totalClaimableUsd);
+  }, [user.calculatedUserIncentives]);
 
   const loanToValue =
     user?.totalCollateralMarketReferenceCurrency === '0'
@@ -88,7 +117,24 @@ export const DashboardTopPanel = () => {
               <FormattedNumber value={loanToValue} variant="main21" percent />
             </TopInfoPanelItem>
           )}
-          <Button variant="contained" onClick={() => openClaimRewards()}>Claim Rewards</Button>
+          <TopInfoPanelItem title={<Trans>Available rewards</Trans>}>
+            {currentAccount && claimableRewardsUsd > 0 ? (
+              <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                {rewardSymbol && <TokenIcon symbol={rewardSymbol} sx={{ mx: '4px' }} />}
+                <FormattedNumber
+                  value={claimableRewardsUsd}
+                  variant="main21"
+                  compact
+                  symbol="USD"
+                />
+                <Button variant="contained" onClick={() => openClaimRewards()}>
+                  Claim
+                </Button>
+              </Box>
+            ) : (
+              <NoData variant="secondary21" sx={{ opacity: '0.7' }} />
+            )}
+          </TopInfoPanelItem>
         </Box>
       </TopInfoPanel>
 

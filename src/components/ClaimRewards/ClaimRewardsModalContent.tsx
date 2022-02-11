@@ -42,10 +42,9 @@ export const ClaimRewardsModalContent = ({ handleClose }: ClaimRewardsModalConte
   // get all rewards
   useEffect(() => {
     const userIncentives: Reward[] = [];
-    let totalClaimableUsd = claimableUsd;
+    let totalClaimableUsd = Number(claimableUsd);
     const allAssets: string[] = [];
     Object.keys(user.calculatedUserIncentives).forEach((rewardTokenAddress) => {
-      console.log('reward token address: ', rewardTokenAddress);
       const incentive: UserIncentiveData = user.calculatedUserIncentives[rewardTokenAddress];
       const rewardBalance = normalize(incentive.claimableRewards, incentive.rewardTokenDecimals);
       const rewardBalanceUsd = Number(rewardBalance) * Number(incentive.rewardPriceFeed);
