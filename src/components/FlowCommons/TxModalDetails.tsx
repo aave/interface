@@ -25,6 +25,7 @@ import { FormattedNumber } from '../primitives/FormattedNumber';
 import { InterestRate } from '@aave/contract-helpers';
 import { TokenIcon } from '../primitives/TokenIcon';
 import { Reward } from 'src/helpers/types';
+import { RewardsSelect } from '../ClaimRewards/RewardsSelect';
 
 export interface TxModalDetailsProps extends GridProps {
   apy?: string;
@@ -287,8 +288,12 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
           </FormValue>
         </FormRow>
       )}
-      {allRewards && allRewards.length > 1 && (
-        
+      {setSelectedReward && selectedReward && allRewards && allRewards.length > 1 && (
+        <RewardsSelect
+          rewards={allRewards}
+          selectedReward={selectedReward}
+          setSelectedReward={setSelectedReward}
+        />
       )}
       {selectedReward && allRewards && (
         <FormRow>
@@ -298,7 +303,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
             </Typography>
           </FormInfo>
           <FormValue>
-            {selectedReward.symbol !== 'Claim all rewards' ? (
+            {selectedReward.symbol !== 'all' ? (
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                   <TokenIcon symbol={selectedReward.symbol} sx={{ mx: '4px' }} />
@@ -314,29 +319,31 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
               </Box>
             ) : (
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                {allRewards.map((reward, index) => {
-                  return (
-                    <Box key={`claim-${index}`} sx={{ display: 'flex', flexDirection: 'column' }}>
-                      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                        <TokenIcon symbol={reward.symbol} sx={{ mx: '4px' }} />
-                        <FormattedNumber value={Number(reward.balance)} variant="description" />
-                        <Typography>{reward.symbol}</Typography>
+                {allRewards
+                  .filter((reward) => reward.symbol !== 'all')
+                  .map((reward, index) => {
+                    return (
+                      <Box key={`claim-${index}`} sx={{ display: 'flex', flexDirection: 'column' }}>
+                        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                          <TokenIcon symbol={reward.symbol} sx={{ mx: '4px' }} />
+                          <FormattedNumber value={Number(reward.balance)} variant="description" />
+                          <Typography>{reward.symbol}</Typography>
+                        </Box>
+                        <FormattedNumber
+                          value={Number(reward.balanceUsd)}
+                          variant="helperText"
+                          compact
+                          symbol="USD"
+                        />
                       </Box>
-                      <FormattedNumber
-                        value={Number(reward.balanceUsd)}
-                        variant="helperText"
-                        compact
-                        symbol="USD"
-                      />
-                    </Box>
-                  );
-                })}
+                    );
+                  })}
               </Box>
             )}
           </FormValue>
         </FormRow>
       )}
-      {selectedReward && selectedReward.symbol === 'Claim all rewards' && (
+      {selectedReward && selectedReward.symbol === 'all' && (
         <FormRow>
           <FormInfo>
             <Typography variant="description">

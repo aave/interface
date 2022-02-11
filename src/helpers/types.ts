@@ -10,4 +10,5 @@ export type Reward = {
   symbol: string;
   balance: string;
   balanceUsd: string;
+  rewardTokenAddress: string;
 };

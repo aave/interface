@@ -13,6 +13,7 @@ import { TxSuccessView } from '../FlowCommons/Success';
 import { TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
+import { ClaimRewardsActions } from './ClaimRewardsActions';
 
 export type ClaimRewardsModalContentProps = {
   handleClose: () => void;
@@ -28,12 +29,12 @@ export const ClaimRewardsModalContent = ({ handleClose }: ClaimRewardsModalConte
   const { chainId: connectedChainId } = useWeb3Context();
 
   const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
-  const [rewardsClaimTxState, setRewardsClaimTxState] = useState<TxState>({ success: false });
+  const [claimRewardsTxState, setClaimRewardsTxState] = useState<TxState>({ success: false });
 
   const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
 
   const [claimableUsd, setClaimableUsd] = useState('0');
-  const [selectedReward, setSelectedReward] = useState<Reward | undefined>();
+  const [selectedReward, setSelectedReward] = useState<Reward>();
   const [allRewards, setAllRewards] = useState<Reward[]>([]);
 
   const networkConfig = getNetworkConfig(currentChainId);
@@ -42,10 +43,18 @@ export const ClaimRewardsModalContent = ({ handleClose }: ClaimRewardsModalConte
   useEffect(() => {
     const userIncentives: Reward[] = [];
     let totalClaimableUsd = claimableUsd;
-    Object.keys(user.calculatedUserIncentives).forEach((incentiveKey) => {
-      const incentive: UserIncentiveData = user.calculatedUserIncentives[incentiveKey];
+    const allAssets: string[] = [];
+    Object.keys(user.calculatedUserIncentives).forEach((rewardTokenAddress) => {
+      console.log('reward token address: ', rewardTokenAddress);
+      const incentive: UserIncentiveData = user.calculatedUserIncentives[rewardTokenAddress];
       const rewardBalance = normalize(incentive.claimableRewards, incentive.rewardTokenDecimals);
       const rewardBalanceUsd = Number(rewardBalance) * Number(incentive.rewardPriceFeed);
+
+      incentive.assets.forEach((asset) => {
+        if (allAssets.indexOf(asset) === -1) {
+          allAssets.push(asset);
+        }
+      });
 
       userIncentives.push({
         assets: incentive.assets,
@@ -53,26 +62,30 @@ export const ClaimRewardsModalContent = ({ handleClose }: ClaimRewardsModalConte
         symbol: incentive.rewardTokenSymbol,
         balance: rewardBalance,
         balanceUsd: rewardBalanceUsd.toString(),
+        rewardTokenAddress,
       });
 
-      totalClaimableUsd = totalClaimableUsd + rewardBalanceUsd;
+      totalClaimableUsd = totalClaimableUsd + Number(rewardBalanceUsd);
     });
 
     if (userIncentives.length === 1) {
       setSelectedReward(userIncentives[0]);
-    } else if (userIncentives.length > 1) {
-      setSelectedReward({
-        assets: [],
+    } else if (userIncentives.length > 1 && !selectedReward) {
+      const allRewards = {
+        assets: allAssets,
         incentiveControllerAddress: userIncentives[0].incentiveControllerAddress,
-        symbol: 'Claim all rewards',
+        symbol: 'all',
         balance: '0',
         balanceUsd: totalClaimableUsd,
-      });
+        rewardTokenAddress: '',
+      };
+      userIncentives.push(allRewards);
+      setSelectedReward(allRewards);
     }
 
     setAllRewards(userIncentives);
     setClaimableUsd(totalClaimableUsd.toString());
-  }, [user.calculatedUserIncentives]);
+  }, []);
 
   // error handling
   useEffect(() => {
@@ -95,11 +108,10 @@ export const ClaimRewardsModalContent = ({ handleClose }: ClaimRewardsModalConte
 
   // is Network mismatched
   const isWrongNetwork = currentChainId !== connectedChainId;
-  console.log('selected reward: ', selectedReward);
-  console.log('all rewards', allRewards);
+
   return (
     <>
-      {!rewardsClaimTxState.txError && !rewardsClaimTxState.success && (
+      {!claimRewardsTxState.txError && !claimRewardsTxState.success && (
         <>
           <TxModalTitle title="Claim rewards" />
           {isWrongNetwork && (
@@ -110,9 +122,11 @@ export const ClaimRewardsModalContent = ({ handleClose }: ClaimRewardsModalConte
               {handleBlocked()}
             </Typography>
           )}
-          <Typography variant="description">
-            <Trans>Reward(s) to claim</Trans>
-          </Typography>
+          {allRewards && allRewards.length > 1 && (
+            <Typography variant="description">
+              <Trans>Reward(s) to claim</Trans>
+            </Typography>
+          )}
           <TxModalDetails
             sx={{ mt: '30px' }}
             gasLimit={gasLimit}
@@ -122,32 +136,21 @@ export const ClaimRewardsModalContent = ({ handleClose }: ClaimRewardsModalConte
           />
         </>
       )}
-      {rewardsClaimTxState.txError && <TxErrorView errorMessage={rewardsClaimTxState.txError} />}
-      {rewardsClaimTxState.success && !rewardsClaimTxState.txError && (
-        <TxSuccessView
-          action="Claimed"
-          amount={
-            selectedReward?.symbol === 'Claim all rewards'
-              ? claimableUsd
-              : selectedReward?.balanceUsd
-          }
-        />
+      {claimRewardsTxState.txError && <TxErrorView errorMessage={claimRewardsTxState.txError} />}
+      {claimRewardsTxState.success && !claimRewardsTxState.txError && (
+        <TxSuccessView action="Claimed" amount={selectedReward?.balanceUsd} />
       )}
-      {rewardsClaimTxState.gasEstimationError && (
-        <GasEstimationError error={rewardsClaimTxState.gasEstimationError} />
+      {claimRewardsTxState.gasEstimationError && (
+        <GasEstimationError error={claimRewardsTxState.gasEstimationError} />
       )}
-      {/* <SupplyActions
-        sx={{ mt: '48px' }}
-        rewardsClaimTxState={rewardsClaimTxState}
-        poolReserve={poolReserve}
-        amountToSupply={amountToSupply}
+      <ClaimRewardsActions
+        setClaimRewardsTxState={setClaimRewardsTxState}
         handleClose={handleClose}
         isWrongNetwork={isWrongNetwork}
         setGasLimit={setGasLimit}
-        poolAddress={supplyUnWrapped ? underlyingAsset : poolReserve.underlyingAsset}
-        symbol={supplyUnWrapped ? networkConfig.baseAssetSymbol : poolReserve.symbol}
+        selectedReward={selectedReward ?? ({} as Reward)}
         blocked={blockingError !== undefined}
-      /> */}
+      />
     </>
   );
 };
