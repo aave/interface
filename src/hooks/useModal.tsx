@@ -9,6 +9,7 @@ export enum ModalType {
   RateSwitch,
   ClaimRewards,
   Emode,
+  Faucet,
 }
 
 interface ModalContextType {
@@ -20,6 +21,7 @@ interface ModalContextType {
   openRateSwitch: (underlyingAsset: string) => void;
   openClaimRewards: () => void;
   openEmode: () => void;
+  openFaucet: (underlyingAsset: string) => void;
   close: () => void;
   type?: ModalType;
   args?: { [key: string]: string };
@@ -64,6 +66,10 @@ export const ModalContextProvider: React.FC = ({ children }) => {
         },
         openEmode: () => {
           setType(ModalType.ClaimRewards);
+        },
+        openFaucet: (underlyingAsset) => {
+          setType(ModalType.Faucet);
+          setArgs({ underlyingAsset });
         },
         close: () => {
           setType(undefined);

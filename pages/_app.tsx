@@ -27,6 +27,7 @@ import { RateSwitchModal } from 'src/components/RateSwitch/RateSwitchModal';
 import { ClaimRewardsModal } from 'src/components/ClaimRewards/ClaimRewardsModal';
 import { GasStationProvider } from 'src/components/GasStation/GasStationProvider';
 import { EmodeModal } from 'src/components/Emode/EmodeModalContent';
+import { FaucetModal } from 'src/components/Faucet/FaucetModal';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -70,6 +71,7 @@ export default function MyApp(props: MyAppProps) {
                               <RateSwitchModal />
                               <ClaimRewardsModal />
                               <EmodeModal />
+                              <FaucetModal />
                             </GasStationProvider>
                           </ModalContextProvider>
                         </AppGlobalStyles>
