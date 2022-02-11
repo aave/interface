@@ -51,6 +51,7 @@ export interface TxModalDetailsProps extends GridProps {
   allRewards?: Reward[];
   setSelectedReward?: Dispatch<SetStateAction<Reward | undefined>>;
   selectedReward?: Reward;
+  faucetAmount?: string;
 }
 
 export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
@@ -76,6 +77,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   allRewards,
   setSelectedReward,
   selectedReward,
+  faucetAmount,
   ...props
 }) => {
   const [selectedRate, setSelectedRate] = React.useState(InterestRate.Variable);
@@ -361,6 +363,22 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
               compact
               symbol="USD"
             />
+          </FormValue>
+        </FormRow>
+      )}
+      {symbol && faucetAmount && (
+        <FormRow>
+          <FormInfo>
+            <Typography variant="description">
+              <Trans>Amount</Trans>
+            </Typography>
+          </FormInfo>
+          <FormValue>
+            <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+              <TokenIcon symbol={symbol} sx={{ mx: '4px' }} />
+              <FormattedNumber value={Number(faucetAmount)} variant="description" />
+              <Typography>{symbol}</Typography>
+            </Box>
           </FormValue>
         </FormRow>
       )}
