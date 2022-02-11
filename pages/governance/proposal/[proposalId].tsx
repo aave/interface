@@ -13,9 +13,13 @@ import { ProposalTopPanel } from 'src/modules/governance/proposal/ProposalTopPan
 import { Trans } from '@lingui/macro';
 import { StateBadge } from 'src/modules/governance/StateBadge';
 import { VoteBar } from 'src/modules/governance/VoteBar';
-import { formatProposal } from 'src/modules/governance/utils/formatProposal';
+import {
+  enhanceProposalWithTimes,
+  formatProposal,
+} from 'src/modules/governance/utils/formatProposal';
 import { DownloadIcon } from '@heroicons/react/solid';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
+import { VoteInfo } from 'src/modules/governance/proposal/VoteInfo';
 
 export async function getStaticPaths() {
   if (!governanceConfig) return { paths: [] };
@@ -59,8 +63,8 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
   const [proposal, setProposal] = useState(initialProposal);
 
   async function updateProposal() {
-    const updatedProposal = await governanceContract.getProposal({ proposalId: proposal.id });
-    setProposal(updatedProposal);
+    const { values, ...rest } = await governanceContract.getProposal({ proposalId: proposal.id });
+    setProposal(await enhanceProposalWithTimes(rest));
   }
 
   usePolling(updateProposal, 10000, isProposalStateImmutable(proposal), []);
@@ -126,9 +130,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
         </Grid>
         <Grid item xs={12} sm={3}>
           <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
-            <Typography variant="h3">
-              <Trans>Your voting info</Trans>
-            </Typography>
+            <VoteInfo id={proposal.id} />
           </Paper>
           <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
             <Typography variant="h3">

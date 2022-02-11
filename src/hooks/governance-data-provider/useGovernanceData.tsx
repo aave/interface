@@ -33,5 +33,7 @@ export const useVotingPower = () => {
     variables: { userAccount: currentAccount },
   });
 
-  return { ...(data?.votingPowers || {}), loading };
+  return { ...(data?.votingPowers || {}), loading } as PowerQueryResponseType['votingPowers'] & {
+    loading: boolean;
+  };
 };
