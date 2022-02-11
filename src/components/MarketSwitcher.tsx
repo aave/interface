@@ -35,6 +35,18 @@ export const getMarketInfoById = (marketId: CustomMarket) => {
   return { market, network, withAAVELogo };
 };
 
+const getMarketHelpData = (marketName: string) => {
+  const testChains = ['Kovan', 'Rinkeby', 'Mumbai', 'Fuji', 'Testnet'];
+  const arrayName = marketName.split(' ');
+  const testChainName = arrayName.filter((el) => testChains.indexOf(el) > -1);
+  const formattedMarketTittle = arrayName.filter((el) => !testChainName.includes(el));
+
+  return {
+    name: formattedMarketTittle.join(' '),
+    testChainSymbol: testChainName.map((el) => el.split('')[0])[0],
+  };
+};
+
 export type Market = {
   marketTitle: string;
   networkName: string;
@@ -50,11 +62,12 @@ type MarketLogoProps = {
   size: number;
   logo: string;
   withAAVELogo?: boolean;
+  testChainSymbol?: string;
 };
 
-export const MarketLogo = ({ size, logo, withAAVELogo }: MarketLogoProps) => {
+export const MarketLogo = ({ size, logo, withAAVELogo, testChainSymbol }: MarketLogoProps) => {
   return (
-    <Box sx={{ mr: 2, width: size, height: size }}>
+    <Box sx={{ mr: 2, width: size, height: size, position: 'relative' }}>
       {withAAVELogo && (
         <Box
           sx={{
@@ -76,6 +89,28 @@ export const MarketLogo = ({ size, logo, withAAVELogo }: MarketLogoProps) => {
         </Box>
       )}
       {!withAAVELogo && <img src={logo} alt="" width="100%" height="100%" />}
+
+      {testChainSymbol && (
+        <Box
+          sx={{
+            bgcolor: '#29B6F6',
+            width: '16px',
+            height: '16px',
+            borderRadius: '50%',
+            color: 'common.white',
+            fontSize: '12px',
+            lineHeight: '16px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'absolute',
+            right: '-2px',
+            bottom: '-2px',
+          }}
+        >
+          {testChainSymbol}
+        </Box>
+      )}
     </Box>
   );
 };
@@ -114,12 +149,13 @@ export const MarketSwitcher = () => {
                 size={upToLG ? 32 : 28}
                 logo={network.networkLogoPath}
                 withAAVELogo={withAAVELogo}
+                testChainSymbol={getMarketHelpData(market.marketTitle).testChainSymbol}
               />
               <Typography
                 variant={upToLG ? 'display1' : 'h1'}
                 sx={{ color: 'common.white', mr: 3 }}
               >
-                {market.marketTitle} {upToLG && <Trans>Market</Trans>}
+                {getMarketHelpData(market.marketTitle).name} {upToLG && <Trans>Market</Trans>}
               </Typography>
             </Box>
           );
@@ -157,8 +193,13 @@ export const MarketSwitcher = () => {
             value={marketId}
             sx={{ '.MuiListItemIcon-root': { minWidth: 'unset' } }}
           >
-            <MarketLogo size={32} logo={network.networkLogoPath} withAAVELogo={withAAVELogo} />
-            <ListItemText sx={{ mr: 3 }}>{market.marketTitle}</ListItemText>
+            <MarketLogo
+              size={32}
+              logo={network.networkLogoPath}
+              withAAVELogo={withAAVELogo}
+              testChainSymbol={getMarketHelpData(market.marketTitle).testChainSymbol}
+            />
+            <ListItemText sx={{ mr: 3 }}>{getMarketHelpData(market.marketTitle).name}</ListItemText>
 
             {currentMarket === marketId && (
               <ListItemIcon>
