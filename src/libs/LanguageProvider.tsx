@@ -35,7 +35,12 @@ export const LanguageProvider: React.FunctionComponent = (props) => {
   useEffect(() => {
     // With this method we dynamically load the catalogs
     const savedLocale = localStorage.getItem('LOCALE') || DEFAULT_LOCALE;
-    dynamicActivateLanguage(savedLocale);
+    if (i18n._locale !== savedLocale) dynamicActivateLanguage(savedLocale);
   }, []);
-  return <I18nProvider i18n={i18n}>{props.children}</I18nProvider>;
+
+  return (
+    <I18nProvider i18n={i18n} forceRenderOnLocaleChange={false}>
+      {props.children}
+    </I18nProvider>
+  );
 };

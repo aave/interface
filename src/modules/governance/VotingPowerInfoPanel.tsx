@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider, Typography } from '@mui/material';
 import { ReactNode } from 'react';
-import { useVotingPower } from 'src/hooks/governance-data-provider/useGovernanceData';
+import { useVotingPower } from 'src/hooks/governance-data-provider/useVotingPower';
 
 const VotingPowerLine = ({ name, value }: { name: ReactNode; value: string }) => {
   return (
@@ -21,7 +21,6 @@ export function VotingPowerInfoPanel() {
   const { votingPower, propositionPower } = useVotingPower();
 
   // TODO: if not logged in & loading, show some placeholder
-
   return (
     <>
       <Box sx={{ px: 6, py: 4 }}>
