@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   FormControlLabel,
-  Grid,
   GridProps,
   SvgIcon,
   Switch,
@@ -14,7 +13,6 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { FormInfo } from '../FormItems/FormInfo';
 import { FormRow } from '../FormItems/FormRow';
 import { FormValue } from '../FormItems/FormValue';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { HealthFactorNumber } from '../HealthFactorNumber';
 import { GasStation } from '../GasStation/GasStation';
 import { parseUnits } from 'ethers/lib/utils';
@@ -24,6 +22,7 @@ import { CheckIcon } from '@heroicons/react/outline';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { InterestRate } from '@aave/contract-helpers';
 import { TokenIcon } from '../primitives/TokenIcon';
+import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 
 export interface TxModalDetailsProps extends GridProps {
   apy?: string;
@@ -79,7 +78,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   };
 
   return (
-    <Grid container direction="row" alignItems="center" rowSpacing={'12px'} {...props}>
+    <Box {...props}>
       {amountAfterRepay && displayAmountAfterRepayInUsd && symbol && (
         <FormRow>
           <FormInfo>
@@ -233,11 +232,14 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
               <Trans>Used as collateral</Trans>
             </Typography>
           </FormInfo>
-          <FormValue sx={{ display: 'flex', flexDirection: 'row' }}>
-            <SvgIcon sx={{ color: 'green' }}>
+          <FormValue>
+            <SvgIcon sx={{ color: 'success.main', fontSize: 18 }}>
               <CheckIcon />
             </SvgIcon>
-            <Typography variant="description" color={usedAsCollateral ? '#46BC4B' : '#00244D'}>
+            <Typography
+              variant="description"
+              color={usedAsCollateral ? 'success.main' : 'error.main'}
+            >
               <Trans>{usedAsCollateral ? 'Yes' : 'No'}</Trans>
             </Typography>
           </FormValue>
@@ -260,38 +262,40 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
               <Trans>Health factor</Trans>
             </Typography>
           </FormInfo>
-          <FormValue>
-            <Typography variant="secondary14">
+          <Box sx={{ textAlign: 'right' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
               {healthFactor !== '-1' && (
                 <HealthFactorNumber value={healthFactor} variant="secondary14" />
               )}
-              <ArrowForwardIcon />
+              <SvgIcon color="primary" sx={{ fontSize: 14, mx: 1 }}>
+                <ArrowNarrowRightIcon />
+              </SvgIcon>
               {futureHealthFactor !== '-1' && (
                 <HealthFactorNumber
                   value={Number(futureHealthFactor) ? futureHealthFactor : healthFactor}
                   variant="secondary14"
                 />
               )}
-            </Typography>
+            </Box>
             <Typography variant="helperText">
               <Trans>Liquidation at</Trans>
               {' <1.0'}
             </Typography>
+          </Box>
+        </FormRow>
+      )}
+      {gasLimit && (
+        <FormRow>
+          <FormInfo>
+            <Typography variant="description">
+              <Trans>Estimated Tx cost</Trans>
+            </Typography>
+          </FormInfo>
+          <FormValue>
+            <GasStation gasLimit={parseUnits(gasLimit, 'wei')} />
           </FormValue>
         </FormRow>
       )}
-      <FormRow>
-        <FormInfo>
-          <Typography variant="description">
-            <Trans>Estimated Tx cost</Trans>
-          </Typography>
-        </FormInfo>
-        {gasLimit && (
-          <FormValue xs={4}>
-            <GasStation gasLimit={parseUnits(gasLimit, 'wei')} />
-          </FormValue>
-        )}
-      </FormRow>
-    </Grid>
+    </Box>
   );
 };
