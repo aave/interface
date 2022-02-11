@@ -75,7 +75,7 @@ export const ClaimRewardsModalContent = ({ handleClose }: ClaimRewardsModalConte
         incentiveControllerAddress: userIncentives[0].incentiveControllerAddress,
         symbol: 'all',
         balance: '0',
-        balanceUsd: totalClaimableUsd,
+        balanceUsd: totalClaimableUsd.toString(),
         rewardTokenAddress: '',
       };
       userIncentives.push(allRewards);

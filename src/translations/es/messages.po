@@ -92,6 +92,10 @@ msgstr ""
 msgid "About the app"
 msgstr ""
 
+#: src/layouts/WalletWidget.tsx:117
+msgid "Account"
+msgstr ""
+
 #: src/components/infoModalContents/CollateralSwitchInfoContent.tsx:11
 msgid "Adding and removing assets as collateral"
 msgstr ""
@@ -170,7 +174,7 @@ msgstr ""
 msgid "BORROW {symbol} PENDING..."
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:302
+#: src/components/FlowCommons/TxModalDetails.tsx:306
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:60
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx:18
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx:37
@@ -187,8 +191,8 @@ msgstr ""
 msgid "Borrow"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:117
-#: src/components/FlowCommons/TxModalDetails.tsx:149
+#: src/components/FlowCommons/TxModalDetails.tsx:116
+#: src/components/FlowCommons/TxModalDetails.tsx:148
 msgid "Borrow APY rate"
 msgstr ""
 
@@ -279,11 +283,11 @@ msgid "Collateral usage is limited because of isolation mode."
 msgstr ""
 
 #: src/components/ConnectWalletPaper.tsx:27
-#: src/layouts/WalletWidget.tsx:93
+#: src/layouts/WalletWidget.tsx:102
 msgid "Connect wallet"
 msgstr ""
 
-#: src/layouts/WalletWidget.tsx:221
+#: src/layouts/WalletWidget.tsx:220
 msgid "Copy address"
 msgstr ""
 
@@ -296,7 +300,7 @@ msgstr ""
 msgid "Custom"
 msgstr ""
 
-#: src/layouts/SettingsMenu.tsx:110
+#: src/layouts/components/DarkModeSwitcher.tsx:18
 msgid "Dark mode"
 msgstr ""
 
@@ -335,7 +339,7 @@ msgstr ""
 msgid "Disable"
 msgstr ""
 
-#: src/layouts/WalletWidget.tsx:247
+#: src/layouts/WalletWidget.tsx:260
 msgid "Disconnect Wallet"
 msgstr ""
 
@@ -367,15 +371,15 @@ msgstr "<<<<<<< HEAD"
 msgid "ENTER AN AMOUNT"
 msgstr ""
 
-#: src/layouts/SettingsMenu.tsx:121
+#: src/layouts/components/TestNetModeSwitcher.tsx:26
 msgid "Enable Testnet mode"
 msgstr ""
 
-#: src/layouts/SettingsMenu.tsx:25
+#: src/layouts/components/LanguageSwitcher.tsx:10
 msgid "English"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:366
+#: src/components/FlowCommons/TxModalDetails.tsx:371
 msgid "Estimated Tx cost"
 msgstr ""
 
@@ -394,7 +398,8 @@ msgstr ""
 msgid "Github"
 msgstr ""
 
-#: src/layouts/SettingsMenu.tsx:104
+#: src/layouts/MobileMenu.tsx:74
+#: src/layouts/SettingsMenu.tsx:66
 msgid "Global settings"
 msgstr ""
 
@@ -410,7 +415,7 @@ msgstr ""
 msgid "Governance"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:268
+#: src/components/FlowCommons/TxModalDetails.tsx:270
 #: src/components/infoModalContents/HFInfoContent.tsx:8
 #: src/modules/dashboard/DashboardTopPanel.tsx:98
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:69
@@ -437,7 +442,7 @@ msgstr ""
 msgid "Isolated asset"
 msgstr ""
 
-#: src/layouts/SettingsMenu.tsx:134
+#: src/layouts/components/LanguageSwitcher.tsx:24
 msgid "Language"
 msgstr ""
 
@@ -445,7 +450,11 @@ msgstr ""
 msgid "Learn more"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:285
+#: src/layouts/MobileMenu.tsx:81
+msgid "Links"
+msgstr ""
+
+#: src/components/FlowCommons/TxModalDetails.tsx:289
 msgid "Liquidation at"
 msgstr ""
 
@@ -493,6 +502,10 @@ msgstr ""
 msgid "Max LTV"
 msgstr ""
 
+#: src/layouts/MobileMenu.tsx:71
+msgid "Menu"
+msgstr ""
+
 #: src/components/CollateralChange/CollateralChangeModalContent.tsx:143
 msgid "Message. Collateral increases your borrowing power and Health Factor. But at the same time it can be liquidated."
 msgstr ""
@@ -501,7 +514,7 @@ msgstr ""
 msgid "More"
 msgstr ""
 
-#: src/modules/governance/VoteBar.tsx:41
+#: src/modules/governance/VoteBar.tsx:42
 msgid "NEY"
 msgstr ""
 
@@ -517,11 +530,11 @@ msgstr ""
 msgid "Net worth"
 msgstr ""
 
-#: src/layouts/WalletWidget.tsx:190
+#: src/layouts/WalletWidget.tsx:171
 msgid "Network"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:191
+#: src/components/FlowCommons/TxModalDetails.tsx:190
 msgid "New APY"
 msgstr ""
 
@@ -595,6 +608,14 @@ msgstr ""
 msgid "Please, connect your wallet"
 msgstr ""
 
+#: pages/governance/proposal/[proposalId].tsx:142
+msgid "Proposal details"
+msgstr ""
+
+#: pages/governance/proposal/[proposalId].tsx:79
+msgid "Proposal overview"
+msgstr ""
+
 #: src/modules/governance/VotingPowerInfoPanel.tsx:14
 msgid "Proposition power"
 msgstr ""
@@ -612,7 +633,7 @@ msgstr ""
 msgid "RETRY WITH APPROVAL"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:95
+#: src/components/FlowCommons/TxModalDetails.tsx:94
 msgid "Remaining debt"
 msgstr ""
 
@@ -653,8 +674,8 @@ msgstr ""
 msgid "Reward(s) to claim"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:208
-#: src/components/FlowCommons/TxModalDetails.tsx:225
+#: src/components/FlowCommons/TxModalDetails.tsx:207
+#: src/components/FlowCommons/TxModalDetails.tsx:224
 msgid "Rewards APR"
 msgstr ""
 
@@ -690,7 +711,7 @@ msgstr ""
 msgid "Select Aave Market"
 msgstr ""
 
-#: src/layouts/SettingsMenu.tsx:163
+#: src/layouts/components/LanguageSwitcher.tsx:62
 msgid "Select language"
 msgstr ""
 
@@ -710,11 +731,11 @@ msgstr ""
 msgid "Some newly listed assets have limited exposure until the Aave governance decides otherwise."
 msgstr ""
 
-#: src/layouts/SettingsMenu.tsx:26
+#: src/layouts/components/LanguageSwitcher.tsx:11
 msgid "Spanish"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:197
+#: src/components/FlowCommons/TxModalDetails.tsx:196
 msgid "Stable"
 msgstr ""
 
@@ -744,7 +765,7 @@ msgstr ""
 msgid "Supply APY"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:258
+#: src/components/FlowCommons/TxModalDetails.tsx:260
 #: src/modules/reserve-overview/ReserveActions.tsx:56
 msgid "Supply balance"
 msgstr ""
@@ -762,7 +783,7 @@ msgstr ""
 msgid "Swap"
 msgstr ""
 
-#: src/layouts/WalletWidget.tsx:194
+#: src/layouts/WalletWidget.tsx:182
 msgid "Switch"
 msgstr ""
 
@@ -848,7 +869,7 @@ msgstr ""
 msgid "Total supplied"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:350
+#: src/components/FlowCommons/TxModalDetails.tsx:354
 msgid "Total worth"
 msgstr ""
 
@@ -860,7 +881,7 @@ msgstr ""
 msgid "Use"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:241
+#: src/components/FlowCommons/TxModalDetails.tsx:240
 msgid "Used as collateral"
 msgstr ""
 
@@ -868,7 +889,7 @@ msgstr ""
 msgid "Utilization Rate"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:197
+#: src/components/FlowCommons/TxModalDetails.tsx:196
 msgid "Variable"
 msgstr ""
 
@@ -876,12 +897,16 @@ msgstr ""
 msgid "Variable Interest"
 msgstr ""
 
-#: src/layouts/WalletWidget.tsx:236
+#: src/layouts/WalletWidget.tsx:241
 msgid "View on Explorer"
 msgstr "<<<<<<< HEAD"
 
 #: src/modules/governance/VotingPowerInfoPanel.tsx:11
 msgid "Voting power"
+msgstr ""
+
+#: pages/governance/proposal/[proposalId].tsx:135
+msgid "Voting results"
 msgstr ""
 
 #: src/components/Withdraw/WithdrawActions.tsx:94
@@ -917,7 +942,7 @@ msgstr ""
 msgid "Withdraw"
 msgstr ""
 
-#: src/modules/governance/VoteBar.tsx:41
+#: src/modules/governance/VoteBar.tsx:42
 msgid "YAE"
 msgstr ""
 
@@ -1007,12 +1032,20 @@ msgstr ""
 msgid "Your supplies"
 msgstr ""
 
+#: pages/governance/proposal/[proposalId].tsx:130
+msgid "Your voting info"
+msgstr ""
+
 #: src/components/CollateralChange/CollateralChangeModalContent.tsx:135
 msgid "as collateral"
 msgstr ""
 
 #: src/modules/markets/AssetsList.tsx:76
 msgid "assets"
+msgstr ""
+
+#: src/modules/governance/proposal/ProposalTopPanel.tsx:23
+msgid "back"
 msgstr ""
 
 #: src/components/Warnings/AMPLWarning.tsx:15
@@ -1072,7 +1105,7 @@ msgstr ""
 msgid "{0, select, slow {Slow} normal {Normal} fast {Fast} other {-}}"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:249
+#: src/components/FlowCommons/TxModalDetails.tsx:251
 msgid "{0}"
 msgstr ""
 
@@ -1084,7 +1117,7 @@ msgstr ""
 msgid "{0} {1} AS COLLATERAL"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:179
+#: src/components/FlowCommons/TxModalDetails.tsx:178
 msgid "{action} APY"
 msgstr ""
 
