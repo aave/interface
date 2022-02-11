@@ -50,9 +50,7 @@ export function ProposalListItem({
           <FormattedProposalTime
             state={proposal.state}
             executionTime={proposal.executionTime}
-            startBlock={proposal.startBlock}
-            endBlock={proposal.endBlock}
-            // proposalCreated={proposal.proposalCreated}
+            expirationTimestamp={proposal.expirationTimestamp}
           />
           <CheckBadge text={<Trans>Quorum</Trans>} checked={quorumReached} />
           <CheckBadge text={<Trans>Differential</Trans>} checked={diffReached} />

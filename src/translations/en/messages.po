@@ -1,17 +1,15 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2022-02-04 18:24+0100\n"
+"POT-Creation-Date: 2022-02-11 23:25+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: en\n"
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: \n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"Plural-Forms: \n"
+
+#: src/modules/governance/VotingPowerInfoPanel.tsx:12
+msgid "(AAVE + stkAAVE)"
+msgstr ""
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:79
 msgid "* If the health factor goes below 1, the liquidation of your collateral might be triggered."
@@ -63,10 +61,6 @@ msgstr ""
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:45
 msgid "APY type"
 msgstr ""
-
-#: src/modules/reserve/ReserveConfiguration.tsx:153
-#~ msgid "APY variable"
-#~ msgstr ""
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx:83
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx:69
@@ -352,7 +346,7 @@ msgstr ""
 msgid "Developers"
 msgstr ""
 
-#: src/modules/governance/ProposalListItem.tsx:58
+#: src/modules/governance/ProposalListItem.tsx:56
 msgid "Differential"
 msgstr ""
 
@@ -387,7 +381,7 @@ msgstr ""
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx:109
 msgid "E-mode message"
-msgstr "<<<<<<< HEAD"
+msgstr ""
 
 #: src/components/Borrow/BorrowActions.tsx:118
 #: src/components/Repay/RepayActions.tsx:173
@@ -426,10 +420,6 @@ msgstr ""
 #: src/modules/dashboard/lists/ListBottomText.tsx:13
 msgid "Faucet"
 msgstr ""
-
-#: src/components/Faucet/FaucetModalContent.tsx:61
-#~ msgid "Get"
-#~ msgstr ""
 
 #: src/ui-config/menu-items/index.tsx:64
 msgid "Github"
@@ -483,7 +473,7 @@ msgstr ""
 msgid "Isolated asset"
 msgstr ""
 
-#: src/layouts/components/LanguageSwitcher.tsx:24
+#: src/layouts/components/LanguageSwitcher.tsx:23
 msgid "Language"
 msgstr ""
 
@@ -612,10 +602,6 @@ msgstr ""
 msgid "OK,"
 msgstr ""
 
-#: src/components/RateSwitch/RateSwitchActions.tsx:100
-#~ msgid "OK, CLOSE"
-#~ msgstr ""
-
 #: src/components/TextWithModal.tsx:63
 #: src/components/incentives/IncentivesInfoModal.tsx:113
 #: src/components/isolationMode/IsolatedAssetModal.tsx:52
@@ -652,19 +638,19 @@ msgstr ""
 msgid "Please, connect your wallet"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx:142
+#: pages/governance/proposal/[proposalId].tsx:144
 msgid "Proposal details"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx:79
+#: pages/governance/proposal/[proposalId].tsx:83
 msgid "Proposal overview"
 msgstr ""
 
-#: src/modules/governance/VotingPowerInfoPanel.tsx:18
+#: src/modules/governance/VotingPowerInfoPanel.tsx:31
 msgid "Proposition power"
 msgstr ""
 
-#: src/modules/governance/ProposalListItem.tsx:57
+#: src/modules/governance/ProposalListItem.tsx:55
 msgid "Quorum"
 msgstr ""
 
@@ -762,7 +748,7 @@ msgstr ""
 msgid "Select Aave Market"
 msgstr ""
 
-#: src/layouts/components/LanguageSwitcher.tsx:62
+#: src/layouts/components/LanguageSwitcher.tsx:61
 msgid "Select language"
 msgstr ""
 
@@ -950,23 +936,15 @@ msgstr ""
 
 #: src/layouts/WalletWidget.tsx:241
 msgid "View on Explorer"
-msgstr "<<<<<<< HEAD"
+msgstr ""
 
-#: src/modules/governance/VotingPowerInfoPanel.tsx:14
+#: src/modules/governance/VotingPowerInfoPanel.tsx:30
 msgid "Voting power"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx:135
+#: pages/governance/proposal/[proposalId].tsx:137
 msgid "Voting results"
 msgstr ""
-
-#: src/components/Withdraw/WithdrawActions.tsx:94
-#~ msgid "WITHDRAW {0}"
-#~ msgstr ""
-
-#: src/components/Withdraw/WithdrawActions.tsx:103
-#~ msgid "WITHDRAW {0} PENDING..."
-#~ msgstr ""
 
 #: src/components/Withdraw/WithdrawActions.tsx:79
 #: src/components/Withdraw/WithdrawActions.tsx:83
@@ -1074,7 +1052,7 @@ msgstr ""
 msgid "Your health factor and loan to value determine the assurance of your collateral. To avoid liquidations you can supply more collateral or repay borrow positions."
 msgstr ""
 
-#: src/modules/governance/VotingPowerInfoPanel.tsx:11
+#: src/modules/governance/VotingPowerInfoPanel.tsx:28
 msgid "Your info"
 msgstr ""
 
@@ -1095,7 +1073,7 @@ msgstr ""
 msgid "Your supplies"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx:130
+#: src/modules/governance/proposal/VoteInfo.tsx:43
 msgid "Your voting info"
 msgstr ""
 
@@ -1129,10 +1107,6 @@ msgstr ""
 msgid "is an asset affected by rebasing. Visit the"
 msgstr ""
 
-#: src/components/Faucet/FaucetModalContent.tsx:63
-#~ msgid "of"
-#~ msgstr ""
-
 #: src/components/Warnings/AMPLWarning.tsx:17
 msgid "or"
 msgstr ""
@@ -1147,11 +1121,7 @@ msgstr ""
 
 #: src/components/incentives/IncentivesInfoModal.tsx:64
 msgid "rewards"
-msgstr "<<<<<<< HEAD======="
-
-#: src/components/FlowCommons/TxModalDetails.tsx:156
-#~ msgid "stable"
-#~ msgstr ""
+msgstr ""
 
 #: src/components/Warnings/AAVEWarning.tsx:14
 msgid "staking view"
@@ -1170,10 +1140,6 @@ msgstr ""
 msgid "tokens, please go to the"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:156
-#~ msgid "variable"
-#~ msgstr ">>>>>>> 8ad5295b4f42971a237eefafdfd6eaaa71f22fbd"
-
 #: src/components/Emode/EmodeModalContent.tsx:140
 msgid "you will need to close your position in your current category. See our"
 msgstr ""
@@ -1185,10 +1151,6 @@ msgstr ""
 #: src/components/FlowCommons/TxModalDetails.tsx:255
 msgid "{0}"
 msgstr ""
-
-#: src/components/CollateralChange/CollateralChangeActions.tsx:79
-#~ msgid "{0} ${1} AS COLLATERAL"
-#~ msgstr ""
 
 #: src/components/CollateralChange/CollateralChangeActions.tsx:84
 msgid "{0} {1} AS COLLATERAL"

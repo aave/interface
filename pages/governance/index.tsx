@@ -38,7 +38,7 @@ export default function Governance(props: GovernancePageProps) {
       <GovernanceTopPanel />
       <Grid container spacing={4}>
         <Grid item xs={12} md={3}>
-          <Paper sx={{ px: 6, py: 4 }}>
+          <Paper>
             <VotingPowerInfoPanel />
           </Paper>
         </Grid>
