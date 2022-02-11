@@ -22,6 +22,8 @@ import { CheckIcon } from '@heroicons/react/outline';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { InterestRate } from '@aave/contract-helpers';
 import { TokenIcon } from '../primitives/TokenIcon';
+import { Reward } from 'src/helpers/types';
+import { RewardsSelect } from '../ClaimRewards/RewardsSelect';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 
 export interface TxModalDetailsProps extends GridProps {
@@ -46,6 +48,9 @@ export interface TxModalDetailsProps extends GridProps {
   underlyingAsset?: string;
   displayAmountAfterRepayInUsd?: string;
   amountAfterRepay?: string;
+  allRewards?: Reward[];
+  setSelectedReward?: Dispatch<SetStateAction<Reward | undefined>>;
+  selectedReward?: Reward;
 }
 
 export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
@@ -68,6 +73,9 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   rate,
   amountAfterRepay,
   displayAmountAfterRepayInUsd,
+  allRewards,
+  setSelectedReward,
+  selectedReward,
   ...props
 }) => {
   const [selectedRate, setSelectedRate] = React.useState(InterestRate.Variable);
@@ -282,6 +290,78 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
               {' <1.0'}
             </Typography>
           </Box>
+        </FormRow>
+      )}
+      {setSelectedReward && selectedReward && allRewards && allRewards.length > 1 && (
+        <RewardsSelect
+          rewards={allRewards}
+          selectedReward={selectedReward}
+          setSelectedReward={setSelectedReward}
+        />
+      )}
+      {selectedReward && allRewards && (
+        <FormRow>
+          <FormInfo>
+            <Typography variant="description">
+              <Trans>Balance</Trans>
+            </Typography>
+          </FormInfo>
+          <FormValue>
+            {selectedReward.symbol !== 'all' ? (
+              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                  <TokenIcon symbol={selectedReward.symbol} sx={{ mx: '4px' }} />
+                  <FormattedNumber value={Number(selectedReward.balance)} variant="description" />
+                  <Typography>{selectedReward.symbol}</Typography>
+                </Box>
+                <FormattedNumber
+                  value={Number(selectedReward.balanceUsd)}
+                  variant="helperText"
+                  compact
+                  symbol="USD"
+                />
+              </Box>
+            ) : (
+              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                {allRewards
+                  .filter((reward) => reward.symbol !== 'all')
+                  .map((reward, index) => {
+                    return (
+                      <Box key={`claim-${index}`} sx={{ display: 'flex', flexDirection: 'column' }}>
+                        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                          <TokenIcon symbol={reward.symbol} sx={{ mx: '4px' }} />
+                          <FormattedNumber value={Number(reward.balance)} variant="description" />
+                          <Typography>{reward.symbol}</Typography>
+                        </Box>
+                        <FormattedNumber
+                          value={Number(reward.balanceUsd)}
+                          variant="helperText"
+                          compact
+                          symbol="USD"
+                        />
+                      </Box>
+                    );
+                  })}
+              </Box>
+            )}
+          </FormValue>
+        </FormRow>
+      )}
+      {selectedReward && selectedReward.symbol === 'all' && (
+        <FormRow>
+          <FormInfo>
+            <Typography variant="description">
+              <Trans>Total worth</Trans>
+            </Typography>
+          </FormInfo>
+          <FormValue>
+            <FormattedNumber
+              value={Number(selectedReward.balanceUsd)}
+              variant="helperText"
+              compact
+              symbol="USD"
+            />
+          </FormValue>
         </FormRow>
       )}
       {gasLimit && (
