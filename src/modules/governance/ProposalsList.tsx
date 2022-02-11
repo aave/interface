@@ -16,6 +16,7 @@ import { governanceContract } from 'src/modules/governance/utils/governanceProvi
 import { isProposalStateImmutable } from 'src/modules/governance/utils/immutableStates';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { ProposalListItem } from './ProposalListItem';
+import { enhanceProposalWithTimes } from './utils/formatProposal';
 
 export function ProposalsList({ proposals: initialProposals }: GovernancePageProps) {
   const [proposals, setProposals] = useState(initialProposals);
@@ -30,7 +31,8 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
     const nextProposals: GovernancePageProps['proposals'] = [];
     console.log(`fetching ${count - proposals.length} new proposals`);
     for (let i = proposals.length; i < count; i++) {
-      const proposal = await governanceContract.getProposal({ proposalId: i });
+      const { values, ...rest } = await governanceContract.getProposal({ proposalId: i });
+      const proposal = await enhanceProposalWithTimes(rest);
       nextProposals.push({
         ipfs: {
           id: i,
@@ -52,9 +54,10 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
     if (pendingProposals.length) {
       const copy = [...proposals];
       for (const { proposal } of pendingProposals) {
-        copy[proposal.id].proposal = await governanceContract.getProposal({
+        const { values, ...rest } = await governanceContract.getProposal({
           proposalId: proposal.id,
         });
+        copy[proposal.id].proposal = await enhanceProposalWithTimes(rest);
       }
       setProposals(copy);
     }
