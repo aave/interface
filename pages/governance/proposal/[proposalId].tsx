@@ -16,6 +16,7 @@ import { VoteBar } from 'src/modules/governance/VoteBar';
 import { formatProposal } from 'src/modules/governance/utils/formatProposal';
 import { DownloadIcon } from '@heroicons/react/solid';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
+import { VoteInfo } from 'src/modules/governance/proposal/VoteInfo';
 
 export async function getStaticPaths() {
   if (!governanceConfig) return { paths: [] };
@@ -126,9 +127,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
         </Grid>
         <Grid item xs={12} sm={3}>
           <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
-            <Typography variant="h3">
-              <Trans>Your voting info</Trans>
-            </Typography>
+            <VoteInfo id={proposal.id} />
           </Paper>
           <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
             <Typography variant="h3">
