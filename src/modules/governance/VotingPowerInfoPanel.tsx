@@ -1,7 +1,10 @@
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
+import { useVotingPower } from 'src/hooks/governance-data-provider/useGovernanceData';
 
 export function VotingPowerInfoPanel() {
+  const { votingPower } = useVotingPower();
+
   return (
     <div>
       <Typography variant="h3" gutterBottom>
@@ -9,6 +12,7 @@ export function VotingPowerInfoPanel() {
       </Typography>
       <Typography>
         <Trans>Voting power</Trans>
+        {votingPower}
       </Typography>
       <Typography>
         <Trans>Proposition power</Trans>
