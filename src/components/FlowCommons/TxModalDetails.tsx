@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   FormControlLabel,
-  Grid,
   GridProps,
   SvgIcon,
   Switch,
@@ -14,7 +13,6 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { FormInfo } from '../FormItems/FormInfo';
 import { FormRow } from '../FormItems/FormRow';
 import { FormValue } from '../FormItems/FormValue';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { HealthFactorNumber } from '../HealthFactorNumber';
 import { GasStation } from '../GasStation/GasStation';
 import { parseUnits } from 'ethers/lib/utils';
