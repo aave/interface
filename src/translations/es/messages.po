@@ -112,6 +112,10 @@ msgstr ""
 msgid "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
 msgstr ""
 
+#: src/components/FlowCommons/TxModalDetails.tsx:373
+msgid "Amount"
+msgstr ""
+
 #: src/modules/dashboard/lists/ListItemWrapper.tsx:28
 msgid "Ampleforth's FAQ"
 msgstr ""
@@ -124,7 +128,7 @@ msgstr ""
 msgid "Approve confirmed"
 msgstr ""
 
-#: pages/faucet.tsx:49
+#: pages/faucet.tsx:51
 #: src/modules/markets/AssetsList.tsx:47
 #: src/modules/reserve-overview/ReserveTopDetails.tsx:56
 msgid "Asset"
@@ -178,7 +182,7 @@ msgstr ""
 msgid "BORROW {symbol} PENDING..."
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:306
+#: src/components/FlowCommons/TxModalDetails.tsx:308
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:60
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx:18
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx:37
@@ -195,8 +199,8 @@ msgstr ""
 msgid "Borrow"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:116
-#: src/components/FlowCommons/TxModalDetails.tsx:148
+#: src/components/FlowCommons/TxModalDetails.tsx:118
+#: src/components/FlowCommons/TxModalDetails.tsx:150
 msgid "Borrow APY rate"
 msgstr ""
 
@@ -246,6 +250,7 @@ msgstr ""
 #: src/components/Borrow/BorrowActions.tsx:133
 #: src/components/ClaimRewards/ClaimRewardsActions.tsx:142
 #: src/components/CollateralChange/CollateralChangeActions.tsx:98
+#: src/components/Faucet/FaucetActions.tsx:94
 #: src/components/RateSwitch/RateSwitchActions.tsx:93
 #: src/components/Repay/RepayActions.tsx:215
 #: src/components/Supply/SupplyActions.tsx:195
@@ -383,7 +388,7 @@ msgstr ""
 msgid "English"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:371
+#: src/components/FlowCommons/TxModalDetails.tsx:389
 msgid "Estimated Tx cost"
 msgstr ""
 
@@ -391,12 +396,20 @@ msgstr ""
 msgid "FAQ"
 msgstr ""
 
-#: pages/faucet.tsx:44
-#: pages/faucet.tsx:45
-#: pages/faucet.tsx:86
+#: src/components/Faucet/FaucetActions.tsx:80
+msgid "FAUCET"
+msgstr ""
+
+#: pages/faucet.tsx:46
+#: pages/faucet.tsx:47
+#: pages/faucet.tsx:85
 #: src/modules/dashboard/lists/ListBottomText.tsx:13
 msgid "Faucet"
 msgstr ""
+
+#: src/components/Faucet/FaucetModalContent.tsx:61
+#~ msgid "Get"
+#~ msgstr ""
 
 #: src/ui-config/menu-items/index.tsx:64
 msgid "Github"
@@ -419,7 +432,7 @@ msgstr ""
 msgid "Governance"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:270
+#: src/components/FlowCommons/TxModalDetails.tsx:272
 #: src/components/infoModalContents/HFInfoContent.tsx:8
 #: src/modules/dashboard/DashboardTopPanel.tsx:98
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:69
@@ -458,7 +471,7 @@ msgstr ""
 msgid "Links"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:289
+#: src/components/FlowCommons/TxModalDetails.tsx:291
 msgid "Liquidation at"
 msgstr ""
 
@@ -538,7 +551,7 @@ msgstr ""
 msgid "Network"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:190
+#: src/components/FlowCommons/TxModalDetails.tsx:192
 msgid "New APY"
 msgstr ""
 
@@ -566,6 +579,7 @@ msgstr ""
 #: src/components/Borrow/BorrowActions.tsx:132
 #: src/components/ClaimRewards/ClaimRewardsActions.tsx:141
 #: src/components/CollateralChange/CollateralChangeActions.tsx:97
+#: src/components/Faucet/FaucetActions.tsx:93
 #: src/components/RateSwitch/RateSwitchActions.tsx:92
 #: src/components/Repay/RepayActions.tsx:214
 #: src/components/Supply/SupplyActions.tsx:194
@@ -598,6 +612,7 @@ msgstr ""
 
 #: src/components/ClaimRewards/ClaimRewardsActions.tsx:115
 #: src/components/CollateralChange/CollateralChangeActions.tsx:90
+#: src/components/Faucet/FaucetActions.tsx:86
 #: src/components/RateSwitch/RateSwitchActions.tsx:85
 #: src/components/Repay/RepayActions.tsx:207
 #: src/components/Supply/SupplyActions.tsx:187
@@ -637,7 +652,7 @@ msgstr ""
 msgid "RETRY WITH APPROVAL"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:94
+#: src/components/FlowCommons/TxModalDetails.tsx:96
 msgid "Remaining debt"
 msgstr ""
 
@@ -678,8 +693,8 @@ msgstr ""
 msgid "Reward(s) to claim"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:207
-#: src/components/FlowCommons/TxModalDetails.tsx:224
+#: src/components/FlowCommons/TxModalDetails.tsx:209
+#: src/components/FlowCommons/TxModalDetails.tsx:226
 msgid "Rewards APR"
 msgstr ""
 
@@ -739,7 +754,7 @@ msgstr ""
 msgid "Spanish"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:196
+#: src/components/FlowCommons/TxModalDetails.tsx:198
 msgid "Stable"
 msgstr ""
 
@@ -769,7 +784,7 @@ msgstr ""
 msgid "Supply APY"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:260
+#: src/components/FlowCommons/TxModalDetails.tsx:262
 #: src/modules/reserve-overview/ReserveActions.tsx:56
 msgid "Supply balance"
 msgstr ""
@@ -873,7 +888,7 @@ msgstr ""
 msgid "Total supplied"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:354
+#: src/components/FlowCommons/TxModalDetails.tsx:356
 msgid "Total worth"
 msgstr ""
 
@@ -885,7 +900,7 @@ msgstr ""
 msgid "Use"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:240
+#: src/components/FlowCommons/TxModalDetails.tsx:242
 msgid "Used as collateral"
 msgstr ""
 
@@ -893,7 +908,7 @@ msgstr ""
 msgid "Utilization Rate"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:196
+#: src/components/FlowCommons/TxModalDetails.tsx:198
 msgid "Variable"
 msgstr ""
 
@@ -931,7 +946,7 @@ msgstr ""
 msgid "WITHDRAW {symbol} PENDING..."
 msgstr ""
 
-#: pages/faucet.tsx:54
+#: pages/faucet.tsx:56
 #: src/components/Repay/RepayModalContent.tsx:283
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx:135
 msgid "Wallet balance"
@@ -1065,6 +1080,10 @@ msgstr ""
 msgid "is an asset affected by rebasing. Visit the"
 msgstr ""
 
+#: src/components/Faucet/FaucetModalContent.tsx:63
+#~ msgid "of"
+#~ msgstr ""
+
 #: src/components/Warnings/AMPLWarning.tsx:17
 msgid "or"
 msgstr ""
@@ -1109,7 +1128,7 @@ msgstr ""
 msgid "{0, select, slow {Slow} normal {Normal} fast {Fast} other {-}}"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:251
+#: src/components/FlowCommons/TxModalDetails.tsx:253
 msgid "{0}"
 msgstr ""
 
@@ -1121,7 +1140,7 @@ msgstr ""
 msgid "{0} {1} AS COLLATERAL"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:178
+#: src/components/FlowCommons/TxModalDetails.tsx:180
 msgid "{action} APY"
 msgstr ""
 
