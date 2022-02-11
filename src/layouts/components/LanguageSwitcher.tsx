@@ -17,14 +17,13 @@ interface LanguageListItemProps {
 
 export const LanguageListItem = ({ onClick }: LanguageListItemProps) => {
   const { i18n } = useLingui();
-
   return (
     <ListItem onClick={onClick} sx={{ color: { xxs: 'common.white', md: 'text.primary' } }}>
       <ListItemText>
         <Trans>Language</Trans>
       </ListItemText>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        {langMap[i18n.locale as keyof typeof langMap]}{' '}
+        {i18n._(langMap[i18n.locale as keyof typeof langMap])}{' '}
         <SvgIcon
           fontSize="small"
           sx={{ color: { xxs: 'common.white', md: 'text.primary' }, ml: 1 }}

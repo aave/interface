@@ -13,6 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/modules/governance/VotingPowerInfoPanel.tsx:12
+msgid "(AAVE + stkAAVE)"
+msgstr ""
+
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:79
 msgid "* If the health factor goes below 1, the liquidation of your collateral might be triggered."
 msgstr ""
@@ -336,7 +340,7 @@ msgstr ""
 msgid "Developers"
 msgstr ""
 
-#: src/modules/governance/ProposalListItem.tsx:58
+#: src/modules/governance/ProposalListItem.tsx:56
 msgid "Differential"
 msgstr ""
 
@@ -455,7 +459,7 @@ msgstr ""
 msgid "Isolated asset"
 msgstr ""
 
-#: src/layouts/components/LanguageSwitcher.tsx:24
+#: src/layouts/components/LanguageSwitcher.tsx:23
 msgid "Language"
 msgstr ""
 
@@ -623,19 +627,19 @@ msgstr ""
 msgid "Please, connect your wallet"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx:142
+#: pages/governance/proposal/[proposalId].tsx:144
 msgid "Proposal details"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx:79
+#: pages/governance/proposal/[proposalId].tsx:83
 msgid "Proposal overview"
 msgstr ""
 
-#: src/modules/governance/VotingPowerInfoPanel.tsx:18
+#: src/modules/governance/VotingPowerInfoPanel.tsx:31
 msgid "Proposition power"
 msgstr ""
 
-#: src/modules/governance/ProposalListItem.tsx:57
+#: src/modules/governance/ProposalListItem.tsx:55
 msgid "Quorum"
 msgstr ""
 
@@ -726,7 +730,7 @@ msgstr ""
 msgid "Select Aave Market"
 msgstr ""
 
-#: src/layouts/components/LanguageSwitcher.tsx:62
+#: src/layouts/components/LanguageSwitcher.tsx:61
 msgid "Select language"
 msgstr ""
 
@@ -916,11 +920,11 @@ msgstr ""
 msgid "View on Explorer"
 msgstr "<<<<<<< HEAD"
 
-#: src/modules/governance/VotingPowerInfoPanel.tsx:14
+#: src/modules/governance/VotingPowerInfoPanel.tsx:30
 msgid "Voting power"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx:135
+#: pages/governance/proposal/[proposalId].tsx:137
 msgid "Voting results"
 msgstr ""
 
@@ -1026,7 +1030,7 @@ msgstr ""
 msgid "Your health factor and loan to value determine the assurance of your collateral. To avoid liquidations you can supply more collateral or repay borrow positions."
 msgstr ""
 
-#: src/modules/governance/VotingPowerInfoPanel.tsx:11
+#: src/modules/governance/VotingPowerInfoPanel.tsx:28
 msgid "Your info"
 msgstr ""
 
@@ -1047,7 +1051,7 @@ msgstr ""
 msgid "Your supplies"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx:130
+#: src/modules/governance/proposal/VoteInfo.tsx:43
 msgid "Your voting info"
 msgstr ""
 
