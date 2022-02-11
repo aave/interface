@@ -232,7 +232,6 @@ export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
         isWrongNetwork={isWrongNetwork}
         blocked={blockingError !== undefined}
         selectedEmode={selectedEmode?.id || 0}
-        currentEmode={userEmodeCategoryId}
       />
     </>
   );

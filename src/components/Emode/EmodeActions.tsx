@@ -18,7 +18,6 @@ export type EmodeActionsProps = {
   isWrongNetwork: boolean;
   blocked: boolean;
   selectedEmode: number;
-  currentEmode: number;
 };
 
 export const EmodeActions = ({
@@ -28,12 +27,11 @@ export const EmodeActions = ({
   isWrongNetwork,
   blocked,
   selectedEmode,
-  currentEmode,
 }: EmodeActionsProps) => {
   const { lendingPool } = useTxBuilderContext();
   const { currentAccount, chainId: connectedChainId } = useWeb3Context();
   const { state, gasPriceData } = useGasStation();
-  console.log('currentEmode === selectedEmode', currentEmode === selectedEmode);
+
   const { action, loading, mainTxState, actionTx } = useTransactionHandler({
     tryPermit: false,
     handleGetTxns: async () => {
