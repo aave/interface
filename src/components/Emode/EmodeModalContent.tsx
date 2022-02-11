@@ -207,6 +207,15 @@ export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
             gasLimit={gasLimit}
             emodeAssets={selectedEmode?.assets}
           />
+          {selectedEmode && selectedEmode.id !== 0 && (
+            <Typography>
+              <Trans>
+                Enabling E-Mode only allows you to borrow assets belonging to the selected category
+                Stablecoins. Please visit out FAQ guide to learn more about how it works and the
+                applied restrictions.
+              </Trans>
+            </Typography>
+          )}
         </>
       )}
 
@@ -215,15 +224,7 @@ export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
       {emodeTxState.gasEstimationError && (
         <GasEstimationError error={emodeTxState.gasEstimationError} />
       )}
-      {selectedEmode && selectedEmode.id !== 0 && (
-        <Typography>
-          <Trans>
-            Enabling E-Mode only allows you to borrow assets belonging to the selected category
-            Stablecoins. Please visit out FAQ guide to learn more about how it works and the applied
-            restrictions.
-          </Trans>
-        </Typography>
-      )}
+
       <EmodeActions
         setGasLimit={setGasLimit}
         setEmodeTxState={setEmodeTxState}

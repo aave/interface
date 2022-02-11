@@ -40,7 +40,7 @@ export const EmodeActions = ({
       const newPool: PoolInterface = lendingPool as PoolInterface;
       const tx: EthereumTransactionTypeExtended[] = newPool.setUserEMode({
         user: currentAccount,
-        categoryId: 0,
+        categoryId: selectedEmode,
       });
 
       const gas: GasType | null = await tx[tx.length - 1].gas();

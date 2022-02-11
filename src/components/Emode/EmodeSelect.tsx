@@ -41,7 +41,6 @@ export const EmodeSelect = ({
           MenuProps={MenuProps}
           native={false}
           renderValue={(emode) => {
-            console.log('emode: ', emode);
             if (emode === 0) {
               return (
                 <Typography>

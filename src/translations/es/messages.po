@@ -51,8 +51,8 @@ msgstr ""
 msgid "APR"
 msgstr ""
 
-#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:42
-#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:61
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:44
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:59
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx:19
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx:40
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx:136
@@ -60,7 +60,7 @@ msgstr ""
 msgid "APY"
 msgstr ""
 
-#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:43
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:45
 msgid "APY type"
 msgstr ""
 
@@ -108,7 +108,7 @@ msgstr ""
 msgid "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:373
+#: src/components/FlowCommons/TxModalDetails.tsx:375
 msgid "Amount"
 msgstr ""
 
@@ -130,6 +130,10 @@ msgstr ""
 msgid "Asset"
 msgstr ""
 
+#: src/components/Emode/EmodeModalContent.tsx:191
+msgid "Asset category"
+msgstr ""
+
 #: src/components/CollateralChange/CollateralChangeModalContent.tsx:150
 msgid "Asset will no longer be used as collateral, can not be seized in liquidation. It really affects your borrowing power and Health Factor."
 msgstr ""
@@ -148,6 +152,10 @@ msgstr ""
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx:78
 msgid "Available"
+msgstr ""
+
+#: src/components/FlowCommons/TxModalDetails.tsx:391
+msgid "Available assets"
 msgstr ""
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx:73
@@ -178,8 +186,8 @@ msgstr ""
 msgid "BORROW {symbol} PENDING..."
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:308
-#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:60
+#: src/components/FlowCommons/TxModalDetails.tsx:310
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:58
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx:18
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx:37
 msgid "Balance"
@@ -195,8 +203,8 @@ msgstr ""
 msgid "Borrow"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:118
-#: src/components/FlowCommons/TxModalDetails.tsx:150
+#: src/components/FlowCommons/TxModalDetails.tsx:120
+#: src/components/FlowCommons/TxModalDetails.tsx:152
 msgid "Borrow APY rate"
 msgstr ""
 
@@ -225,7 +233,7 @@ msgstr ""
 msgid "Borrow power and assets are limited due to Isolation mode."
 msgstr ""
 
-#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:63
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:61
 msgid "Borrow power used"
 msgstr ""
 
@@ -246,6 +254,7 @@ msgstr ""
 #: src/components/Borrow/BorrowActions.tsx:133
 #: src/components/ClaimRewards/ClaimRewardsActions.tsx:142
 #: src/components/CollateralChange/CollateralChangeActions.tsx:98
+#: src/components/Emode/EmodeActions.tsx:141
 #: src/components/Faucet/FaucetActions.tsx:94
 #: src/components/RateSwitch/RateSwitchActions.tsx:93
 #: src/components/Repay/RepayActions.tsx:215
@@ -305,6 +314,13 @@ msgstr ""
 msgid "Custom"
 msgstr ""
 
+#: src/components/Emode/EmodeActions.tsx:76
+#: src/components/Emode/EmodeActions.tsx:88
+#: src/components/Emode/EmodeActions.tsx:100
+#: src/components/Emode/EmodeActions.tsx:113
+msgid "DISABLE E-MODE"
+msgstr ""
+
 #: src/layouts/components/DarkModeSwitcher.tsx:18
 msgid "Dark mode"
 msgstr ""
@@ -314,7 +330,7 @@ msgstr ""
 msgid "Dashboard"
 msgstr ""
 
-#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:41
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:43
 msgid "Debt"
 msgstr ""
 
@@ -360,6 +376,10 @@ msgstr ""
 msgid "E-Mode category"
 msgstr ""
 
+#: src/components/Emode/EmodeModalContent.tsx:180
+msgid "E-Mode increases your borrowing power for a selected category of assets up to 99%. Learn more"
+msgstr ""
+
 #: src/components/infoModalContents/EModeInfoContent.tsx:9
 #: src/components/infoModalContents/EModeInfoContent.tsx:11
 msgid "E-mode"
@@ -380,11 +400,15 @@ msgstr ""
 msgid "Enable Testnet mode"
 msgstr ""
 
+#: src/components/Emode/EmodeModalContent.tsx:212
+msgid "Enabling E-Mode only allows you to borrow assets belonging to the selected category Stablecoins. Please visit out FAQ guide to learn more about how it works and the applied restrictions."
+msgstr ""
+
 #: src/layouts/components/LanguageSwitcher.tsx:10
 msgid "English"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:389
+#: src/components/FlowCommons/TxModalDetails.tsx:403
 msgid "Estimated Tx cost"
 msgstr ""
 
@@ -428,7 +452,7 @@ msgstr ""
 msgid "Governance"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:272
+#: src/components/FlowCommons/TxModalDetails.tsx:274
 #: src/components/infoModalContents/HFInfoContent.tsx:8
 #: src/modules/dashboard/DashboardTopPanel.tsx:98
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:69
@@ -445,6 +469,10 @@ msgstr ""
 
 #: src/components/isolationMode/IsolatedAssetModal.tsx:33
 msgid "In Isolation mode you cannot supply other assets as collateral for borrowing. Assets used as collateral in Isolation mode can only be borrowed to a specific debt ceiling."
+msgstr ""
+
+#: src/components/Emode/EmodeModalContent.tsx:138
+msgid "In order to change E-Mode from asset category"
 msgstr ""
 
 #: src/components/isolationMode/IsolatedBadge.tsx:26
@@ -467,7 +495,7 @@ msgstr ""
 msgid "Links"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:291
+#: src/components/FlowCommons/TxModalDetails.tsx:293
 msgid "Liquidation at"
 msgstr ""
 
@@ -547,7 +575,7 @@ msgstr ""
 msgid "Network"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:192
+#: src/components/FlowCommons/TxModalDetails.tsx:194
 msgid "New APY"
 msgstr ""
 
@@ -564,7 +592,7 @@ msgstr ""
 msgid "Not enough balance on your wallet"
 msgstr ""
 
-#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:81
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:79
 msgid "Nothing borrowed yet"
 msgstr ""
 
@@ -575,6 +603,7 @@ msgstr ""
 #: src/components/Borrow/BorrowActions.tsx:132
 #: src/components/ClaimRewards/ClaimRewardsActions.tsx:141
 #: src/components/CollateralChange/CollateralChangeActions.tsx:97
+#: src/components/Emode/EmodeActions.tsx:140
 #: src/components/Faucet/FaucetActions.tsx:93
 #: src/components/RateSwitch/RateSwitchActions.tsx:92
 #: src/components/Repay/RepayActions.tsx:214
@@ -648,7 +677,7 @@ msgstr ""
 msgid "RETRY WITH APPROVAL"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:96
+#: src/components/FlowCommons/TxModalDetails.tsx:98
 msgid "Remaining debt"
 msgstr ""
 
@@ -689,8 +718,8 @@ msgstr ""
 msgid "Reward(s) to claim"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:209
-#: src/components/FlowCommons/TxModalDetails.tsx:226
+#: src/components/FlowCommons/TxModalDetails.tsx:211
+#: src/components/FlowCommons/TxModalDetails.tsx:228
 msgid "Rewards APR"
 msgstr ""
 
@@ -708,6 +737,13 @@ msgstr ""
 
 #: src/components/RateSwitch/RateSwitchActions.tsx:81
 msgid "SWITCH RATE"
+msgstr ""
+
+#: src/components/Emode/EmodeActions.tsx:73
+#: src/components/Emode/EmodeActions.tsx:85
+#: src/components/Emode/EmodeActions.tsx:97
+#: src/components/Emode/EmodeActions.tsx:110
+msgid "SWITCH TO E-MODE"
 msgstr ""
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/HFContent.tsx:43
@@ -750,7 +786,7 @@ msgstr ""
 msgid "Spanish"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:198
+#: src/components/FlowCommons/TxModalDetails.tsx:200
 msgid "Stable"
 msgstr ""
 
@@ -780,7 +816,7 @@ msgstr ""
 msgid "Supply APY"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:262
+#: src/components/FlowCommons/TxModalDetails.tsx:264
 #: src/modules/reserve-overview/ReserveActions.tsx:56
 msgid "Supply balance"
 msgstr ""
@@ -884,7 +920,7 @@ msgstr ""
 msgid "Total supplied"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:356
+#: src/components/FlowCommons/TxModalDetails.tsx:358
 msgid "Total worth"
 msgstr ""
 
@@ -896,7 +932,7 @@ msgstr ""
 msgid "Use"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:242
+#: src/components/FlowCommons/TxModalDetails.tsx:244
 msgid "Used as collateral"
 msgstr ""
 
@@ -904,7 +940,7 @@ msgstr ""
 msgid "Utilization Rate"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:198
+#: src/components/FlowCommons/TxModalDetails.tsx:200
 msgid "Variable"
 msgstr ""
 
@@ -948,6 +984,10 @@ msgstr ""
 msgid "Wallet balance"
 msgstr ""
 
+#: src/components/Emode/EmodeModalContent.tsx:187
+msgid "Warning here about geting out of emode"
+msgstr ""
+
 #: src/components/FlowCommons/LeftHelperText.tsx:47
 msgid "Why do I need to approve"
 msgstr ""
@@ -977,6 +1017,10 @@ msgstr ""
 msgid "You can not change Interest Type to stable as your borrowings are higher than your collateral"
 msgstr ""
 
+#: src/components/Emode/EmodeModalContent.tsx:154
+msgid "You can not disable E-Mode as your current collateralization level is above 80%, disabling E-Mode can cause liquidation. To exit E-Mode supply or repay borrowed positions."
+msgstr ""
+
 #: src/components/CollateralChange/CollateralChangeModalContent.tsx:115
 msgid "You can not switch usage as collateral mode for this currency, because it will cause collateral call"
 msgstr ""
@@ -1001,6 +1045,10 @@ msgstr ""
 msgid "You have not borrow yet using this currency"
 msgstr ""
 
+#: src/components/Emode/EmodeModalContent.tsx:161
+msgid "You need to change E-Mode to continue."
+msgstr ""
+
 #: src/components/FlowCommons/Success.tsx:60
 msgid "You switched to {0} rate"
 msgstr ""
@@ -1009,7 +1057,7 @@ msgstr ""
 msgid "You {action} {amount} {symbol}"
 msgstr ""
 
-#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:48
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:50
 #: src/modules/reserve-overview/ReserveActions.tsx:89
 msgid "Your borrows"
 msgstr ""
@@ -1063,6 +1111,11 @@ msgstr ""
 msgid "back"
 msgstr ""
 
+#: src/components/Emode/EmodeSelect.tsx:47
+#: src/components/Emode/EmodeSelect.tsx:64
+msgid "disabled"
+msgstr ""
+
 #: src/components/Warnings/AMPLWarning.tsx:15
 #: src/modules/dashboard/lists/ListItemWrapper.tsx:24
 msgid "documentation"
@@ -1104,6 +1157,7 @@ msgstr "<<<<<<< HEAD======="
 msgid "staking view"
 msgstr ""
 
+#: src/components/Emode/EmodeModalContent.tsx:149
 #: src/components/Warnings/AMPLWarning.tsx:21
 msgid "to learn more."
 msgstr ""
@@ -1120,11 +1174,15 @@ msgstr ""
 #~ msgid "variable"
 #~ msgstr ">>>>>>> 8ad5295b4f42971a237eefafdfd6eaaa71f22fbd"
 
+#: src/components/Emode/EmodeModalContent.tsx:140
+msgid "you will need to close your position in your current category. See our"
+msgstr ""
+
 #: src/components/GasStation/GasStation.tsx:110
 msgid "{0, select, slow {Slow} normal {Normal} fast {Fast} other {-}}"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:253
+#: src/components/FlowCommons/TxModalDetails.tsx:255
 msgid "{0}"
 msgstr ""
 
@@ -1136,7 +1194,7 @@ msgstr ""
 msgid "{0} {1} AS COLLATERAL"
 msgstr ""
 
-#: src/components/FlowCommons/TxModalDetails.tsx:180
+#: src/components/FlowCommons/TxModalDetails.tsx:182
 msgid "{action} APY"
 msgstr ""
 
