@@ -44,6 +44,35 @@ export default function MyApp(props: MyAppProps) {
     <CacheProvider value={emotionCache}>
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
+        <meta property="og:title" content="Aave - Open Source Liquidity Protocol" key="title" />
+        <meta
+          property="twitter:title"
+          content="Aave - Open Source Liquidity Protocol"
+          key="twittertitle"
+        />
+        <meta
+          name="description"
+          key="description"
+          content="Aave is an Open Source Protocol to create Non-Custodial Liquidity Markets to earn interest on deposits and borrow assets with a variable or stable interest rate. The protocol is designed for easy integration into your products and services."
+        />
+        <meta
+          property="og:description"
+          key="ogdescription"
+          content="Aave is an Open Source Protocol to create Non-Custodial Liquidity Markets to earn interest on deposits and borrow assets with a variable or stable interest rate. The protocol is designed for easy integration into your products and services."
+        />
+        <meta
+          property="twitter:description"
+          key="twitterdescription"
+          content="Aave is an Open Source Protocol to create Non-Custodial Liquidity Markets to earn interest on deposits and borrow assets with a variable or stable interest rate. The protocol is designed for easy integration into your products and services."
+        />
+        <meta
+          name="keywords"
+          key="keywords"
+          content="Decentralized Finance, DeFi, lending, borrowing, stablecoins, Ethereum, assets, erc-20, smart contracts, open finance, trustless"
+        />
+        <meta name="og:site_name" key="ogsitename" content="Aave app" />
+        <meta property="og:image" key="ogimage" content="https://aave.com/favicon64.png" />
+        <title>Aave - Open Source Liquidity Protocol</title>
       </Head>
 
       <ApolloProvider client={apolloClient}>
