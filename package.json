@@ -79,7 +79,7 @@
     "@lingui/cli": "^3.13.2",
     "@lingui/macro": "^3.13.2",
     "@storybook/addon-actions": "^6.4.13",
-    "@storybook/addon-essentials": "^6.4.13",
+    "@storybook/addon-essentials": "^6.4.19",
     "@storybook/addon-links": "^6.4.13",
     "@storybook/builder-webpack5": "^6.4.13",
     "@storybook/manager-webpack5": "^6.4.13",
