@@ -29,7 +29,7 @@ export const HealthFactorNumber = ({ value, onInfoClick, ...rest }: HealthFactor
       <FormattedNumber
         value={formattedHealthFactor}
         sx={{ color: healthFactorColor, ...rest.sx }}
-        maximumDecimals={2}
+        visibleDecimals={2}
         compact
         {...rest}
       />

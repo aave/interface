@@ -32,8 +32,7 @@ export const MarketsTopPanel = () => {
             value={aggregatedStats.totalLiquidity.toString()}
             symbol="USD"
             variant="main21"
-            minimumDecimals={2}
-            maximumDecimals={2}
+            visibleDecimals={2}
             compact
           />
         </TopInfoPanelItem>
@@ -42,8 +41,7 @@ export const MarketsTopPanel = () => {
             value={aggregatedStats.totalLiquidity.minus(aggregatedStats.totalDebt).toString()}
             symbol="USD"
             variant="main21"
-            minimumDecimals={2}
-            maximumDecimals={2}
+            visibleDecimals={2}
             compact
           />
         </TopInfoPanelItem>
@@ -52,8 +50,7 @@ export const MarketsTopPanel = () => {
             value={aggregatedStats.totalDebt.toString()}
             symbol="USD"
             variant="main21"
-            minimumDecimals={2}
-            maximumDecimals={2}
+            visibleDecimals={2}
             compact
           />
         </TopInfoPanelItem>
