@@ -1,6 +1,8 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { GovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
 import { usePolling } from 'src/hooks/usePolling';
+import { MainLayout } from 'src/layouts/MainLayout';
 import { enhanceProposalWithTimes } from 'src/modules/governance/utils/formatProposal';
 import { getProposalMetadata } from 'src/modules/governance/utils/getProposalMetadata';
 import { governanceContract } from 'src/modules/governance/utils/governanceProvider';
@@ -38,6 +40,7 @@ export default function DynamicProposal() {
     if (!proposal || ipfs) return;
     fetchIpfs();
   }, [proposal, ipfs]);
+  // TODO: ignore for now, can just render [proposalId] later
   return (
     <div>
       {JSON.stringify(proposal)}
@@ -45,3 +48,11 @@ export default function DynamicProposal() {
     </div>
   );
 }
+
+DynamicProposal.getLayout = function getLayout(page: React.ReactElement) {
+  return (
+    <MainLayout headerTopLineHeight={229}>
+      <GovernanceDataProvider>{page}</GovernanceDataProvider>
+    </MainLayout>
+  );
+};
