@@ -124,7 +124,9 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                 <Button
                   component="a"
                   target="__BLANK"
-                  href={`https://twitter.com/intent/tweet?text=${encodeURI(ipfs.title)}&url=${url}`}
+                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                    ipfs.title
+                  )}&url=${url}`}
                   startIcon={<Twitter />}
                 >
                   Share on twitter
