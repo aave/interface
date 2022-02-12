@@ -1,6 +1,7 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
+import { useModalContext } from 'src/hooks/useModal';
 
 import { APYTypeInfoContent } from '../../../../components/infoModalContents/APYTypeInfoContent';
 import { BorrowPowerInfoContent } from '../../../../components/infoModalContents/BorrowPowerInfoContent';
@@ -17,6 +18,7 @@ import { BorrowedPositionsListItem } from './BorrowedPositionsListItem';
 
 export const BorrowedPositionsList = () => {
   const { user } = useAppDataContext();
+  const { openEmode } = useModalContext();
 
   const borrowPositions =
     user?.userReservesData.reduce((acc, userReserve) => {
@@ -47,11 +49,7 @@ export const BorrowedPositionsList = () => {
     <ListWrapper
       title={<Trans>Your borrows</Trans>}
       localStorageName="borrowedAssetsDashboardTableCollapse"
-      subTitleComponent={
-        <DashboardEModeButton
-          onClick={() => console.log('TODO: should be e-mode category select modal')}
-        />
-      }
+      subTitleComponent={<DashboardEModeButton onClick={() => openEmode()} />}
       noData={!borrowPositions.length}
       topInfo={
         <>
