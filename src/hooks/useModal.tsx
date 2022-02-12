@@ -11,6 +11,9 @@ export enum ModalType {
   Unstake,
   Cooldown,
   ClaimStakeRewards,
+  ClaimRewards,
+  Emode,
+  Faucet,
 }
 
 interface ModalContextType {
@@ -24,6 +27,9 @@ interface ModalContextType {
   openUnstake: (stakeAsset: string, stakeAssetName: string, icon: string) => void;
   openCooldown: (stakeAsset: string, stakeAssetName: string, icon: string) => void;
   openClaimStakeRewards: () => void;
+  openClaimRewards: () => void;
+  openEmode: () => void;
+  openFaucet: (underlyingAsset: string) => void;
   close: () => void;
   type?: ModalType;
   args?: { [key: string]: string };
@@ -78,6 +84,16 @@ export const ModalContextProvider: React.FC = ({ children }) => {
         openClaimStakeRewards: () => {
           setType(ModalType.ClaimStakeRewards);
           setArgs({});
+        },
+        openClaimRewards: () => {
+          setType(ModalType.ClaimRewards);
+        },
+        openEmode: () => {
+          setType(ModalType.Emode);
+        },
+        openFaucet: (underlyingAsset) => {
+          setType(ModalType.Faucet);
+          setArgs({ underlyingAsset });
         },
         close: () => {
           setType(undefined);

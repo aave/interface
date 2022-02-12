@@ -21,6 +21,7 @@ const InnerBar = styled('span', {
     top: 0,
     left: 0,
     width: `${percent * 100}%`,
+    maxWidth: '100%',
     height: '8px',
     bgcolor: yae ? 'success.main' : 'error.light',
     display: 'block',
@@ -43,18 +44,10 @@ export function VoteBar({ percent = 30, yae, votes, ...rest }: VoteBarProps) {
         <FormattedNumber
           value={votes}
           sx={{ flexGrow: 1 }}
-          minimumDecimals={2}
-          maximumDecimals={2}
+          visibleDecimals={2}
           variant="secondary14"
         />
-        <FormattedNumber
-          value={percent}
-          percent
-          minimumDecimals={2}
-          maximumDecimals={2}
-          variant="caption"
-          color="text.secondary"
-        />
+        <FormattedNumber value={percent} percent variant="caption" color="text.secondary" />
       </Box>
       <OuterBar>
         <InnerBar percent={percent} yae={yae} />

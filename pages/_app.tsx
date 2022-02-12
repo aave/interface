@@ -24,6 +24,10 @@ import { BorrowModal } from 'src/components/Borrow/BorrowModal';
 import { CollateralChangeModal } from 'src/components/CollateralChange/CollateralChangeModal';
 import { RepayModal } from 'src/components/Repay/RepayModal';
 import { RateSwitchModal } from 'src/components/RateSwitch/RateSwitchModal';
+import { ClaimRewardsModal } from 'src/components/ClaimRewards/ClaimRewardsModal';
+import { GasStationProvider } from 'src/components/GasStation/GasStationProvider';
+import { EmodeModal } from 'src/components/Emode/EmodeModal';
+import { FaucetModal } from 'src/components/Faucet/FaucetModal';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -57,13 +61,18 @@ export default function MyApp(props: MyAppProps) {
                       <TxBuilderProvider>
                         <AppGlobalStyles>
                           <ModalContextProvider>
-                            {getLayout(<Component {...pageProps} />)}
-                            <SupplyModal />
-                            <WithdrawModal />
-                            <BorrowModal />
-                            <RepayModal />
-                            <CollateralChangeModal />
-                            <RateSwitchModal />
+                            <GasStationProvider>
+                              {getLayout(<Component {...pageProps} />)}
+                              <SupplyModal />
+                              <WithdrawModal />
+                              <BorrowModal />
+                              <RepayModal />
+                              <CollateralChangeModal />
+                              <RateSwitchModal />
+                              <ClaimRewardsModal />
+                              <EmodeModal />
+                              <FaucetModal />
+                            </GasStationProvider>
                           </ModalContextProvider>
                         </AppGlobalStyles>
                       </TxBuilderProvider>

@@ -1,14 +1,13 @@
-import { useLingui } from '@lingui/react';
-import { Button, List, ListItem } from '@mui/material';
+import { useMediaQuery, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import dynamic from 'next/dynamic';
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 
 import { Link } from '../components/primitives/Link';
-import { useProtocolDataContext } from '../hooks/useProtocolDataContext';
-import { navigation } from '../ui-config/menu-items';
 import { uiConfig } from '../uiConfig';
-import { MoreMenu } from './MoreMenu';
+import { NavItems } from './components/NavItems';
+import { MobileMenu } from './MobileMenu';
 import { SettingsMenu } from './SettingsMenu';
 
 const WalletWidget = dynamic(() => import('./WalletWidget'), {
@@ -20,14 +19,30 @@ interface AppHeaderProps {
 }
 
 export function AppHeader({ topLineHeight }: AppHeaderProps) {
-  const { i18n } = useLingui();
-  const { currentMarketData } = useProtocolDataContext();
+  const { breakpoints } = useTheme();
+  const md = useMediaQuery(breakpoints.down('md'));
+
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [walletWidgetOpen, setWalletWidgetOpen] = useState(false);
+
+  useEffect(() => {
+    if (mobileMenuOpen && !md) {
+      setMobileMenuOpen(false);
+    }
+    if (walletWidgetOpen) {
+      setWalletWidgetOpen(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [md]);
+
   const headerHeight = 48;
 
   return (
     <>
       <Box
         component="header"
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         sx={(theme) => ({
           height: headerHeight,
           position: 'sticky',
@@ -35,7 +50,10 @@ export function AppHeader({ topLineHeight }: AppHeaderProps) {
           transition: theme.transitions.create('top'),
           zIndex: theme.zIndex.appBar,
           bgcolor: 'background.header',
-          p: '8px 20px',
+          padding: {
+            xxs: mobileMenuOpen || walletWidgetOpen ? '8px 20px' : '8px 8px 8px 20px',
+            xs: '8px 20px',
+          },
           display: 'flex',
           alignItems: 'center',
           flexDirection: 'space-between',
@@ -47,48 +65,39 @@ export function AppHeader({ topLineHeight }: AppHeaderProps) {
           href="/"
           aria-label="Go to homepage"
           sx={{ lineHeight: 0, mr: 7, transition: '0.3s ease all', '&:hover': { opacity: 0.7 } }}
+          onClick={() => setMobileMenuOpen(false)}
         >
           <img src={uiConfig.appLogo} alt="An SVG of an eye" height={20} />
         </Box>
 
-        <List sx={{ display: { xs: 'none', sm: 'flex' }, alignItems: 'center' }} disablePadding>
-          {navigation.map((item, index) => (
-            <ListItem
-              sx={{
-                display:
-                  !!item.isVisible && !item.isVisible(currentMarketData) ? 'none' : 'inline-flex',
-                width: 'unset',
-                mr: 2,
-              }}
-              data-cy={item.dataCy}
-              disablePadding
-              key={index}
-            >
-              <Button
-                component={Link}
-                href={item.link}
-                sx={{
-                  color: 'common.white',
-                  p: '6px 8px',
-                  '&:hover': {
-                    bgcolor: 'rgba(250, 251, 252, 0.08)',
-                  },
-                }}
-              >
-                {i18n._(item.title)}
-              </Button>
-            </ListItem>
-          ))}
-
-          <ListItem sx={{ width: 'unset' }} disablePadding>
-            <MoreMenu />
-          </ListItem>
-        </List>
+        <Box sx={{ display: { xxs: 'none', md: 'block' } }}>
+          <NavItems />
+        </Box>
 
         <Box sx={{ flexGrow: 1 }} />
 
-        <WalletWidget />
-        <SettingsMenu />
+        {!mobileMenuOpen && (
+          <WalletWidget
+            open={walletWidgetOpen}
+            setOpen={setWalletWidgetOpen}
+            headerHeight={headerHeight}
+            md={md}
+          />
+        )}
+
+        <Box sx={{ display: { xxs: 'none', md: 'block' } }}>
+          <SettingsMenu />
+        </Box>
+
+        {!walletWidgetOpen && (
+          <Box sx={{ display: { xxs: 'flex', md: 'none' } }}>
+            <MobileMenu
+              open={mobileMenuOpen}
+              setOpen={setMobileMenuOpen}
+              headerHeight={headerHeight}
+            />
+          </Box>
+        )}
       </Box>
 
       <Box

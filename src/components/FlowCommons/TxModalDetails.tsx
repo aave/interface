@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   FormControlLabel,
-  Grid,
   GridProps,
   SvgIcon,
   Switch,
@@ -14,7 +13,6 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { FormInfo } from '../FormItems/FormInfo';
 import { FormRow } from '../FormItems/FormRow';
 import { FormValue } from '../FormItems/FormValue';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { HealthFactorNumber } from '../HealthFactorNumber';
 import { GasStation } from '../GasStation/GasStation';
 import { parseUnits } from 'ethers/lib/utils';
@@ -24,6 +22,9 @@ import { CheckIcon } from '@heroicons/react/outline';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { InterestRate } from '@aave/contract-helpers';
 import { TokenIcon } from '../primitives/TokenIcon';
+import { Reward } from 'src/helpers/types';
+import { RewardsSelect } from '../ClaimRewards/RewardsSelect';
+import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 
 export interface TxModalDetailsProps extends GridProps {
   apy?: string;
@@ -47,6 +48,11 @@ export interface TxModalDetailsProps extends GridProps {
   underlyingAsset?: string;
   displayAmountAfterRepayInUsd?: string;
   amountAfterRepay?: string;
+  allRewards?: Reward[];
+  setSelectedReward?: Dispatch<SetStateAction<Reward | undefined>>;
+  selectedReward?: Reward;
+  faucetAmount?: string;
+  emodeAssets?: string[];
 }
 
 export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
@@ -69,6 +75,11 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   rate,
   amountAfterRepay,
   displayAmountAfterRepayInUsd,
+  allRewards,
+  setSelectedReward,
+  selectedReward,
+  faucetAmount,
+  emodeAssets,
   ...props
 }) => {
   const [selectedRate, setSelectedRate] = React.useState(InterestRate.Variable);
@@ -79,7 +90,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   };
 
   return (
-    <Grid container direction="row" alignItems="center" rowSpacing={'12px'} {...props}>
+    <Box {...props}>
       {amountAfterRepay && displayAmountAfterRepayInUsd && symbol && (
         <FormRow>
           <FormInfo>
@@ -233,11 +244,14 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
               <Trans>Used as collateral</Trans>
             </Typography>
           </FormInfo>
-          <FormValue sx={{ display: 'flex', flexDirection: 'row' }}>
-            <SvgIcon sx={{ color: 'green' }}>
+          <FormValue>
+            <SvgIcon sx={{ color: 'success.main', fontSize: 18 }}>
               <CheckIcon />
             </SvgIcon>
-            <Typography variant="description" color={usedAsCollateral ? '#46BC4B' : '#00244D'}>
+            <Typography
+              variant="description"
+              color={usedAsCollateral ? 'success.main' : 'error.main'}
+            >
               <Trans>{usedAsCollateral ? 'Yes' : 'No'}</Trans>
             </Typography>
           </FormValue>
@@ -260,38 +274,140 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
               <Trans>Health factor</Trans>
             </Typography>
           </FormInfo>
-          <FormValue>
-            <Typography variant="secondary14">
+          <Box sx={{ textAlign: 'right' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
               {healthFactor !== '-1' && (
                 <HealthFactorNumber value={healthFactor} variant="secondary14" />
               )}
-              <ArrowForwardIcon />
+              <SvgIcon color="primary" sx={{ fontSize: 14, mx: 1 }}>
+                <ArrowNarrowRightIcon />
+              </SvgIcon>
               {futureHealthFactor !== '-1' && (
                 <HealthFactorNumber
                   value={Number(futureHealthFactor) ? futureHealthFactor : healthFactor}
                   variant="secondary14"
                 />
               )}
-            </Typography>
+            </Box>
             <Typography variant="helperText">
               <Trans>Liquidation at</Trans>
               {' <1.0'}
             </Typography>
+          </Box>
+        </FormRow>
+      )}
+      {setSelectedReward && selectedReward && allRewards && allRewards.length > 1 && (
+        <RewardsSelect
+          rewards={allRewards}
+          selectedReward={selectedReward}
+          setSelectedReward={setSelectedReward}
+        />
+      )}
+      {selectedReward && allRewards && (
+        <FormRow>
+          <FormInfo>
+            <Typography variant="description">
+              <Trans>Balance</Trans>
+            </Typography>
+          </FormInfo>
+          <FormValue>
+            {selectedReward.symbol !== 'all' ? (
+              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                  <TokenIcon symbol={selectedReward.symbol} sx={{ mx: '4px' }} />
+                  <FormattedNumber value={Number(selectedReward.balance)} variant="description" />
+                  <Typography>{selectedReward.symbol}</Typography>
+                </Box>
+                <FormattedNumber
+                  value={Number(selectedReward.balanceUsd)}
+                  variant="helperText"
+                  compact
+                  symbol="USD"
+                />
+              </Box>
+            ) : (
+              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                {allRewards
+                  .filter((reward) => reward.symbol !== 'all')
+                  .map((reward, index) => {
+                    return (
+                      <Box key={`claim-${index}`} sx={{ display: 'flex', flexDirection: 'column' }}>
+                        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                          <TokenIcon symbol={reward.symbol} sx={{ mx: '4px' }} />
+                          <FormattedNumber value={Number(reward.balance)} variant="description" />
+                          <Typography>{reward.symbol}</Typography>
+                        </Box>
+                        <FormattedNumber
+                          value={Number(reward.balanceUsd)}
+                          variant="helperText"
+                          compact
+                          symbol="USD"
+                        />
+                      </Box>
+                    );
+                  })}
+              </Box>
+            )}
           </FormValue>
         </FormRow>
       )}
-      <FormRow>
-        <FormInfo>
-          <Typography variant="description">
-            <Trans>Estimated Tx cost</Trans>
-          </Typography>
-        </FormInfo>
-        {gasLimit && (
-          <FormValue xs={4}>
+      {selectedReward && selectedReward.symbol === 'all' && (
+        <FormRow>
+          <FormInfo>
+            <Typography variant="description">
+              <Trans>Total worth</Trans>
+            </Typography>
+          </FormInfo>
+          <FormValue>
+            <FormattedNumber
+              value={Number(selectedReward.balanceUsd)}
+              variant="helperText"
+              compact
+              symbol="USD"
+            />
+          </FormValue>
+        </FormRow>
+      )}
+      {symbol && faucetAmount && (
+        <FormRow>
+          <FormInfo>
+            <Typography variant="description">
+              <Trans>Amount</Trans>
+            </Typography>
+          </FormInfo>
+          <FormValue>
+            <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+              <TokenIcon symbol={symbol} sx={{ mx: '4px' }} />
+              <FormattedNumber value={Number(faucetAmount)} variant="description" />
+              <Typography>{symbol}</Typography>
+            </Box>
+          </FormValue>
+        </FormRow>
+      )}
+      {emodeAssets && (
+        <FormRow>
+          <FormInfo>
+            <Typography variant="description">
+              <Trans>Available assets</Trans>
+            </Typography>
+          </FormInfo>
+          <FormValue>
+            <Typography variant="description">{emodeAssets.join(', ')}</Typography>
+          </FormValue>
+        </FormRow>
+      )}
+      {gasLimit && (
+        <FormRow>
+          <FormInfo>
+            <Typography variant="description">
+              <Trans>Estimated Tx cost</Trans>
+            </Typography>
+          </FormInfo>
+          <FormValue>
             <GasStation gasLimit={parseUnits(gasLimit, 'wei')} />
           </FormValue>
-        )}
-      </FormRow>
-    </Grid>
+        </FormRow>
+      )}
+    </Box>
   );
 };
