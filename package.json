@@ -83,7 +83,7 @@
     "@storybook/addon-links": "^6.4.13",
     "@storybook/builder-webpack5": "^6.4.13",
     "@storybook/manager-webpack5": "^6.4.13",
-    "@storybook/react": "^6.4.13",
+    "@storybook/react": "^6.4.19",
     "@svgr/webpack": "^6.2.1",
     "@types/lodash": "^4.14.178",
     "@types/react": "latest",
