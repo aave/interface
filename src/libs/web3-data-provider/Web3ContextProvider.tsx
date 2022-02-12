@@ -52,7 +52,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
     if (providerInstance.on) {
       providerInstance.on('accountsChanged', (accounts: string[]) => {
-        setCurrentAccount(accounts[0]);
+        setCurrentAccount(accounts[0].toLowerCase());
       });
 
       providerInstance.on('networkChanged', async () => {
@@ -69,7 +69,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
     setProvider(ethProvider);
     setChainId(networkInfo.chainId);
-    setCurrentAccount(connectedAddress);
+    setCurrentAccount(connectedAddress.toLowerCase());
 
     setConnected(true);
 

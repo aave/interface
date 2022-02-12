@@ -35,6 +35,7 @@ export type ComputedReserveData = ReturnType<typeof formatReservesAndIncentives>
 export type ComputedUserReserveData = ComputedUserReserve<ComputedReserveData>;
 
 export interface AppDataContextType {
+  loading: boolean;
   reserves: ComputedReserveData[];
   // refreshPoolData?: () => Promise<void[]>;
   isUserHasDeposits: boolean;
@@ -190,6 +191,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
   return (
     <AppDataContext.Provider
       value={{
+        loading: !!reserves.length || (!!currentAccount && !!userReserves.length),
         reserves: formattedPoolReserves,
         user: {
           ...user,

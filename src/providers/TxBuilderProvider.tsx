@@ -1,4 +1,13 @@
-import { FaucetService, LendingPool, Pool, PoolInterface } from '@aave/contract-helpers';
+import {
+  FaucetService,
+  IncentivesController,
+  IncentivesControllerInterface,
+  IncentivesControllerV2,
+  IncentivesControllerV2Interface,
+  LendingPool,
+  Pool,
+  PoolInterface,
+} from '@aave/contract-helpers';
 import React, { ReactElement } from 'react';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { TxBuilderContext } from 'src/hooks/useTxBuilder';
@@ -6,6 +15,8 @@ import { TxBuilderContext } from 'src/hooks/useTxBuilder';
 export interface TxBuilderContextInterface {
   lendingPool: LendingPool | PoolInterface;
   faucetService: FaucetService;
+  incentivesTxBuilder: IncentivesControllerInterface;
+  incentivesTxBuilderV2: IncentivesControllerV2Interface;
 }
 
 export const TxBuilderProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
@@ -29,8 +40,17 @@ export const TxBuilderProvider: React.FC<{ children: ReactElement }> = ({ childr
   }
   const faucetService = new FaucetService(jsonRpcProvider, currentMarketData.addresses.FAUCET);
 
+  const incentivesTxBuilder: IncentivesControllerInterface = new IncentivesController(
+    jsonRpcProvider
+  );
+  const incentivesTxBuilderV2: IncentivesControllerV2Interface = new IncentivesControllerV2(
+    jsonRpcProvider
+  );
+
   return (
-    <TxBuilderContext.Provider value={{ lendingPool, faucetService }}>
+    <TxBuilderContext.Provider
+      value={{ lendingPool, faucetService, incentivesTxBuilder, incentivesTxBuilderV2 }}
+    >
       {children}
     </TxBuilderContext.Provider>
   );

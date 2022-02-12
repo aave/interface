@@ -57,7 +57,7 @@ const useGetGasPrices = (): GetGasPricesHook => {
   const { connected } = useWeb3Context();
 
   const apiRequest = async () => {
-    if (connected && type) {
+    if (connected && type !== undefined) {
       setLoading(true);
       const data = await fetch(
         `https://apiv5.paraswap.io/prices/gas/${currentChainId}?eip1559=true`
@@ -110,7 +110,11 @@ const useGetGasPrices = (): GetGasPricesHook => {
     setLoading(false);
   };
 
-  usePolling(estimateGasPrice, POLLING_INTERVAL, !type, [connected, currentChainId, type]);
+  usePolling(estimateGasPrice, POLLING_INTERVAL, type === undefined, [
+    connected,
+    currentChainId,
+    type,
+  ]);
 
   return { loading, data, error };
 };
