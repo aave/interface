@@ -3,7 +3,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import * as React from 'react';
 import { useState } from 'react';
-import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { MultiTokenIcon } from 'src/components/primitives/TokenIcon';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -25,33 +25,21 @@ export const DashboardTopPanel = () => {
   const [open, setOpen] = useState(false);
   const { openClaimRewards } = useModalContext();
 
-  const [claimableRewardsUsd, setClaimableRewardsUsd] = useState(0);
-  const [rewardSymbol, setRewardSymbol] = useState<string>();
-  // get all rewards
-  React.useEffect(() => {
-    let totalClaimableUsd = claimableRewardsUsd;
-    const rewardSymbols: string[] = [];
-    Object.keys(user.calculatedUserIncentives).forEach((rewardTokenAddress) => {
+  const { claimableRewardsUsd, assets } = Object.keys(user.calculatedUserIncentives).reduce(
+    (acc, rewardTokenAddress) => {
       const incentive: UserIncentiveData = user.calculatedUserIncentives[rewardTokenAddress];
       const rewardBalance = normalize(incentive.claimableRewards, incentive.rewardTokenDecimals);
       const rewardBalanceUsd = Number(rewardBalance) * Number(incentive.rewardPriceFeed);
 
-      if (rewardSymbols.indexOf(incentive.rewardTokenSymbol) === -1) {
-        rewardSymbols.push(incentive.rewardTokenSymbol);
+      if (acc.assets.indexOf(incentive.rewardTokenSymbol) === -1) {
+        acc.assets.push(incentive.rewardTokenSymbol);
       }
 
-      totalClaimableUsd = totalClaimableUsd + Number(rewardBalanceUsd);
-    });
-
-    if (rewardSymbols.length > 1) {
-      // TODO: create here the combined symbol and set it
-      setRewardSymbol(rewardSymbols[0]);
-    } else {
-      setRewardSymbol(rewardSymbols[0]);
-    }
-
-    setClaimableRewardsUsd(totalClaimableUsd);
-  }, [user.calculatedUserIncentives]);
+      acc.claimableRewardsUsd += Number(rewardBalanceUsd);
+      return acc;
+    },
+    { claimableRewardsUsd: 0, assets: [] } as { claimableRewardsUsd: number; assets: string[] }
+  );
 
   const loanToValue =
     user?.totalCollateralMarketReferenceCurrency === '0'
@@ -120,7 +108,7 @@ export const DashboardTopPanel = () => {
           <TopInfoPanelItem title={<Trans>Available rewards</Trans>}>
             {currentAccount && claimableRewardsUsd > 0 ? (
               <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                {rewardSymbol && <TokenIcon symbol={rewardSymbol} sx={{ mx: '4px' }} />}
+                {assets && <MultiTokenIcon symbols={assets} sx={{ mx: '4px' }} />}
                 <FormattedNumber
                   value={claimableRewardsUsd}
                   variant="main21"
