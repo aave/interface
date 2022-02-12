@@ -74,7 +74,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
   }
 
   usePolling(updateProposal, 10000, isProposalStateImmutable(proposal), []);
-
+  console.log(ipfs.title);
   useEffect(() => {
     setUrl(window.location.href);
   }, []);
@@ -124,9 +124,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                 <Button
                   component="a"
                   target="__BLANK"
-                  href={`https://twitter.com/intent/tweet?text=${decodeURIComponent(
-                    ipfs.title
-                  )}&url=${url}`}
+                  href={`https://twitter.com/intent/tweet?text=${encodeURI(ipfs.title)}&url=${url}`}
                   startIcon={<Twitter />}
                 >
                   Share on twitter
