@@ -1,5 +1,5 @@
 import { Box, Button, Container, Grid, Paper, styled, SvgIcon, Typography } from '@mui/material';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Meta } from 'src/components/Meta';
 import { usePolling } from 'src/hooks/usePolling';
 import { MainLayout } from 'src/layouts/MainLayout';
@@ -24,7 +24,6 @@ import { CheckBadge } from 'src/components/primitives/CheckBadge';
 import { normalize } from '@aave/math-utils';
 import dayjs from 'dayjs';
 import { Twitter } from '@mui/icons-material';
-import { useRouter } from 'next/router';
 import { GovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
 
 export async function getStaticPaths() {
