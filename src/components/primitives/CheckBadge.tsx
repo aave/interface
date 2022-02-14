@@ -1,17 +1,18 @@
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/solid';
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, BoxProps, Typography, useTheme, TypographyProps } from '@mui/material';
 import { ReactNode } from 'react';
 
-interface CheckBadgeProps {
+interface CheckBadgeProps extends BoxProps {
   checked?: boolean;
   text: ReactNode;
+  variant?: TypographyProps['variant'];
 }
 
-export function CheckBadge({ checked, text }: CheckBadgeProps) {
+export function CheckBadge({ checked, text, variant = 'subheader2', ...rest }: CheckBadgeProps) {
   const { palette } = useTheme();
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      <Typography variant="subheader2" component="span" sx={{ mr: 1 }}>
+    <Box {...rest} sx={{ display: 'flex', alignItems: 'center', ...rest.sx }}>
+      <Typography variant={variant} component="span" sx={{ mr: 1 }}>
         {text}
       </Typography>
       {checked ? (

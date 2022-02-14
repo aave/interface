@@ -7,7 +7,7 @@ dayjs.extend(relativeTime);
 
 interface FormattedProposalTimeProps {
   state: ProposalState;
-  executionTime: string;
+  executionTime: number;
   expirationTimestamp: number;
 }
 
@@ -31,7 +31,7 @@ export function FormattedProposalTime({
         ].includes(state) &&
         `on ${dayjs(expirationTimestamp * 1000).format('MMM DD, YYYY')}`}
       {state === ProposalState.Executed &&
-        `on ${dayjs(+executionTime * 1000).format('MMM DD, YYYY')}`}
+        `on ${dayjs(executionTime * 1000).format('MMM DD, YYYY')}`}
     </Typography>
   );
 }
