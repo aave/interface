@@ -22,10 +22,10 @@ export default function Home() {
 
   const { currentAccount } = useWeb3Context();
 
-  const [mode, setMode] = useState('supply');
+  const [mode, setMode] = useState<'supply' | 'borrow' | ''>('');
 
   useEffect(() => {
-    setMode('supply');
+    if (!mode) setMode('supply');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lg]);
 
