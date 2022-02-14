@@ -30,6 +30,7 @@ import { Trans } from '@lingui/macro';
 import { AMPLWarning } from '../Warnings/AMPLWarning';
 import { AAVEWarning } from '../Warnings/AAVEWarning';
 import { SNXWarning } from '../Warnings/SNXWarning';
+import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
 
 export type SupplyProps = {
   underlyingAsset: string;
@@ -77,25 +78,11 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
   const supplyApy = poolReserve.supplyAPY;
 
   // Calculate max amount to supply
-  let maxAmountToSupply = valueToBigNumber(walletBalance);
-  if (
-    maxAmountToSupply.gt(0) &&
-    poolReserve.symbol.toUpperCase() === networkConfig.baseAssetSymbol
-  ) {
-    // keep it for tx gas cost
-    maxAmountToSupply = maxAmountToSupply.minus('0.001');
-  }
-
-  if (poolReserve.supplyCap !== '0') {
-    maxAmountToSupply = BigNumber.min(
-      maxAmountToSupply,
-      new BigNumber(poolReserve.supplyCap).minus(poolReserve.totalLiquidity).multipliedBy('0.995')
-    );
-  }
-
-  if (maxAmountToSupply.lte(0)) {
-    maxAmountToSupply = valueToBigNumber('0');
-  }
+  const maxAmountToSupply = getMaxAmountAvailableToSupply(
+    walletBalance,
+    poolReserve,
+    underlyingAsset
+  );
 
   useEffect(() => {
     if (amount === '-1') {

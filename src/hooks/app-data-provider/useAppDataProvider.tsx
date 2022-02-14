@@ -34,22 +34,24 @@ export type ComputedReserveData = ReturnType<typeof formatReservesAndIncentives>
 
 export type ComputedUserReserveData = ComputedUserReserve<ComputedReserveData>;
 
+export type ExtendedFormattedUser = FormatUserSummaryAndIncentivesResponse<ComputedReserveData> & {
+  earnedAPY: number;
+  debtAPY: number;
+  isInEmode: boolean;
+  userEmodeCategoryId: number;
+};
+
 export interface AppDataContextType {
   loading: boolean;
   reserves: ComputedReserveData[];
   // refreshPoolData?: () => Promise<void[]>;
   isUserHasDeposits: boolean;
-  user: FormatUserSummaryAndIncentivesResponse<ComputedReserveData> & {
-    earnedAPY: number;
-    debtAPY: number;
-    isInEmode: boolean;
-  };
+  user: ExtendedFormattedUser;
   // refreshIncentives?: () => Promise<void>;
   // loading: boolean;
 
   marketReferencePriceInUsd: string;
   marketReferenceCurrencyDecimals: number;
-  userEmodeCategoryId: number;
   userReserves: UserReserveData[];
 }
 
@@ -191,10 +193,11 @@ export const AppDataProvider: React.FC = ({ children }) => {
   return (
     <AppDataContext.Provider
       value={{
-        loading: !!reserves.length || (!!currentAccount && !!userReserves.length),
+        loading: !reserves.length || (!!currentAccount && !userReserves.length),
         reserves: formattedPoolReserves,
         user: {
           ...user,
+          userEmodeCategoryId,
           isInEmode: userEmodeCategoryId !== 0,
           userReservesData: user.userReservesData.sort((a, b) =>
             reserveSortFn(a.reserve, b.reserve)
@@ -212,7 +215,6 @@ export const AppDataProvider: React.FC = ({ children }) => {
         isUserHasDeposits,
         marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
         marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
-        userEmodeCategoryId,
       }}
     >
       {children}

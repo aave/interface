@@ -31,7 +31,6 @@ export enum ErrorType {
 
 export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
   const {
-    userEmodeCategoryId,
     user,
     reserves,
     marketReferenceCurrencyDecimals,
@@ -50,8 +49,6 @@ export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
   const [emodeCategories, setEmodeCategories] = useState<Record<number, EmodeCategory>>({});
 
   const networkConfig = getNetworkConfig(currentChainId);
-
-  const eModeEnabled = userEmodeCategoryId !== 0;
 
   // get all emodes
   useEffect(() => {
@@ -87,7 +84,7 @@ export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
       emodeCategories[category.id] = category;
     });
 
-    setSelectedEmode(emodeCategories[userEmodeCategoryId]);
+    setSelectedEmode(emodeCategories[user.userEmodeCategoryId]);
     setEmodeCategories(emodeCategories);
   }, []);
 
@@ -104,13 +101,13 @@ export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
   // error handling
   useEffect(() => {
     // if user is disabling eMode
-    if (eModeEnabled && selectedEmode?.id === 0) {
+    if (user.isInEmode && selectedEmode?.id === 0) {
       if (Number(newSummary.healthFactor) < 1.01 && newSummary.healthFactor !== '-1') {
         setBlockingError(ErrorType.EMODE_DISABLED_LIQUIDATION); // intl.formatMessage(messages.eModeDisabledLiquidation);
       } else {
         setBlockingError(undefined);
       }
-    } else if (userEmodeCategoryId !== selectedEmode?.id) {
+    } else if (user.userEmodeCategoryId !== selectedEmode?.id) {
       // check if user has open positions different than future emode
       const futureUserReservesOnEmode = user.userReservesData.filter(
         (userReserve) =>
@@ -124,12 +121,12 @@ export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
       } else {
         setBlockingError(undefined);
       }
-    } else if (selectedEmode.id === userEmodeCategoryId) {
+    } else if (selectedEmode.id === user.userEmodeCategoryId) {
       setBlockingError(ErrorType.SAME_EMODE);
     } else {
       setBlockingError(undefined);
     }
-  }, [selectedEmode, eModeEnabled, newSummary, user, userEmodeCategoryId]);
+  }, [selectedEmode, user.isInEmode, newSummary, user, user.userEmodeCategoryId]);
   // render error messages
   const handleBlocked = () => {
     switch (blockingError) {
@@ -137,7 +134,7 @@ export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
         return (
           <>
             <Trans>In order to change E-Mode from asset category </Trans>
-            {getEmodeMessage(userEmodeCategoryId)}
+            {getEmodeMessage(user.userEmodeCategoryId)}
             <Trans> you will need to close your position in your current category. See our </Trans>
             <Button
               variant="text"

@@ -85,8 +85,14 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
             sx={{
               display: 'flex',
               alignItems: 'center',
-              gap: 6,
               flexWrap: 'wrap',
+              '& > :not(:last-child)::after': {
+                content: '""',
+                height: '32px',
+                pr: 3,
+                mr: 3,
+                borderRight: (theme) => `1px solid ${theme.palette.divider}`,
+              },
             }}
           >
             <TopInfoPanelItem title={<Trans>Total supplied</Trans>} hideIcon variant="light">
@@ -100,13 +106,11 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
             <TopInfoPanelItem title={<Trans>APY</Trans>} hideIcon variant="light">
               <FormattedNumber value={reserve.supplyAPY} percent variant="main16" />
             </TopInfoPanelItem>
-            <TopInfoPanelItem title={<Trans>Supply cap</Trans>} hideIcon variant="light">
-              {reserve.supplyCapUSD !== '0' ? (
+            {reserve.supplyCapUSD !== '0' && (
+              <TopInfoPanelItem title={<Trans>Supply cap</Trans>} hideIcon variant="light">
                 <FormattedNumber value={reserve.supplyCapUSD} symbol="USD" variant="main16" />
-              ) : (
-                <Typography variant="main16">no limit</Typography>
-              )}
-            </TopInfoPanelItem>
+              </TopInfoPanelItem>
+            )}
           </Box>
 
           {renderCharts && (
@@ -131,14 +135,15 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
               px: '16px',
               bgcolor: 'background.surface',
             }}
+            variant="outlined"
           >
             <div>
               <Typography sx={{ display: 'inline-flex', alignItems: 'center' }}>
-                <Trans>Can be used as collateral:</Trans>
+                <Trans>Collateral usage:</Trans>
                 {reserve.usageAsCollateralEnabled ? (
                   <>
                     <CheckRoundedIcon fontSize="small" color="success" sx={{ ml: 2 }} />
-                    <Trans>Yes</Trans>
+                    <Trans>Can be collateral</Trans>
                   </>
                 ) : (
                   <>
@@ -153,9 +158,15 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                 display: 'flex',
                 flexDirection: { xs: 'column', sm: 'row' },
                 alignItems: { xs: 'flex-start', sm: 'center' },
-                gap: 6,
                 flexWrap: 'wrap',
                 mt: '16px',
+                '& > :not(:last-child)::after': {
+                  content: '""',
+                  height: '16px',
+                  pr: 2,
+                  mr: 2,
+                  borderRight: (theme) => `1px solid ${theme.palette.divider}`,
+                },
               }}
             >
               <Typography sx={{ display: 'inline-flex' }}>
@@ -165,6 +176,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                   percent
                   variant="secondary14"
                   sx={{ ml: 2 }}
+                  visibleDecimals={0}
                 />
               </Typography>
               <Typography sx={{ display: 'inline-flex' }}>
@@ -174,6 +186,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                   percent
                   variant="secondary14"
                   sx={{ ml: 2 }}
+                  visibleDecimals={0}
                 />
               </Typography>
               <Typography sx={{ display: 'inline-flex' }}>
@@ -183,6 +196,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                   percent
                   variant="secondary14"
                   sx={{ ml: 2 }}
+                  visibleDecimals={0}
                 />
               </Typography>
             </Box>
@@ -199,9 +213,14 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
             sx={{
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: 6,
               flexWrap: 'wrap',
+              '& > :not(:last-child)::after': {
+                content: '""',
+                height: '32px',
+                pr: 3,
+                mr: 3,
+                borderRight: (theme) => `1px solid ${theme.palette.divider}`,
+              },
             }}
           >
             <TopInfoPanelItem title={<Trans>Total borrowed</Trans>} hideIcon variant="light">
@@ -213,13 +232,11 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
             <TopInfoPanelItem title={<Trans>APY, stable</Trans>} hideIcon variant="light">
               <FormattedNumber value={reserve.stableBorrowAPY} percent variant="main16" />
             </TopInfoPanelItem>
-            <TopInfoPanelItem title={<Trans>Borrow cap</Trans>} hideIcon variant="light">
-              {reserve.borrowCapUSD !== '0' ? (
+            {reserve.borrowCapUSD !== '0' && (
+              <TopInfoPanelItem title={<Trans>Borrow cap</Trans>} hideIcon variant="light">
                 <FormattedNumber value={reserve.borrowCapUSD} symbol="USD" variant="main16" />
-              ) : (
-                <Typography variant="main16">no limit</Typography>
-              )}
-            </TopInfoPanelItem>
+              </TopInfoPanelItem>
+            )}
           </Box>
           {renderCharts && (
             <ChartContainer>

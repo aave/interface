@@ -10,14 +10,37 @@ import { usePolling } from '../usePolling';
 import { useProtocolDataContext } from '../useProtocolDataContext';
 import { useC_ProtocolDataQuery } from './graphql/hooks';
 
+export interface WalletBalance {
+  id: string;
+  address: string;
+  amount: string;
+}
+
 const WalletBalancesQuery = gql`
   query WalletBalances($currentAccount: String!, $chainId: Int!) {
     walletBalances(currentAccount: $currentAccount, chainId: $chainId) {
       id @client
+      address @client
       amount @client
     }
   }
 `;
+
+// allow fetching single wallet balance
+// export const useWalletBalance = (chainId: number, address = '') => {
+//   const { cache } = useApolloClient();
+//   const balance = cache.readFragment<WalletBalance>({
+//     id: `WalletBalance:${chainId}_${address.toLowerCase()}`,
+//     fragment: gql`
+//       fragment Balance on WalletBalance {
+//         id @client
+//         address @client
+//         amount @client
+//       }
+//     `,
+//   });
+//   return balance;
+// };
 
 export const useWalletBalances = () => {
   const { currentAccount } = useWeb3Context();
@@ -33,7 +56,7 @@ export const useWalletBalances = () => {
   });
   // fetch unformatted wallet balances
   const { data: balances } = useQuery<{
-    walletBalances: { id: string; amount: string }[];
+    walletBalances: WalletBalance[];
   }>(WalletBalancesQuery, {
     variables: {
       currentAccount,
@@ -54,17 +77,17 @@ export const useWalletBalances = () => {
   let hasEmptyWallet = true;
   const aggregatedBalance = walletBalances.reduce((acc, reserve) => {
     const poolReserve = reserves.find((poolReserve) => {
-      if (reserve.id === API_ETH_MOCK_ADDRESS.toLowerCase()) {
+      if (reserve.address === API_ETH_MOCK_ADDRESS.toLowerCase()) {
         return (
           poolReserve.symbol.toLowerCase() ===
           currentNetworkConfig.wrappedBaseAssetSymbol?.toLowerCase()
         );
       }
-      return poolReserve.underlyingAsset.toLowerCase() === reserve.id;
+      return poolReserve.underlyingAsset.toLowerCase() === reserve.address;
     });
     if (reserve.amount !== '0') hasEmptyWallet = false;
     if (poolReserve) {
-      acc[reserve.id] = {
+      acc[reserve.address] = {
         amount: normalize(reserve.amount, poolReserve.decimals),
         amountUSD: nativeToUSD({
           amount: new BigNumber(reserve.amount),
@@ -109,10 +132,10 @@ export const useUpdateWalletBalances = () => {
         __typename: 'WalletBalances',
         walletBalances: tokenAddresses.map((address, ix) => ({
           __typename: 'WalletBalance',
-          id: address.toLowerCase(),
+          id: `${currentChainId}_${address.toLowerCase()}`,
+          address: address.toLowerCase(),
           amount: balances[ix].toString(),
-          amountUSD: 'test',
-        })),
+        })) as WalletBalance[],
       },
       variables: {
         currentAccount,
