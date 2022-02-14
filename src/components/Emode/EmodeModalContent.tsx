@@ -109,14 +109,14 @@ export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
       }
     } else if (user.userEmodeCategoryId !== selectedEmode?.id) {
       // check if user has open positions different than future emode
-      const futureUserReservesOnEmode = user.userReservesData.filter(
+      const hasIncompatiblePositions = user.userReservesData.some(
         (userReserve) =>
           (Number(userReserve.scaledVariableDebt) > 0 ||
             Number(userReserve.principalStableDebt) > 0) &&
           userReserve.reserve.eModeCategoryId !== selectedEmode?.id
       );
 
-      if (futureUserReservesOnEmode.length > 0) {
+      if (hasIncompatiblePositions) {
         setBlockingError(ErrorType.CLOSE_POSITIONS_BEFORE_SWITCHING);
       } else {
         setBlockingError(undefined);
