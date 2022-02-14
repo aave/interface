@@ -738,6 +738,25 @@ export function getThemedComponents(theme: Theme) {
           },
         },
       },
+      MuiToggleButtonGroup: {
+        styleOverrides: {
+          root: {
+            backgroundColor: theme.palette.background.paper,
+          },
+        },
+      },
+      MuiToggleButton: {
+        styleOverrides: {
+          root: {
+            boxShadow: 'inset -1px 0px 0px rgba(0, 0, 0, 0.12)',
+            backgroundColor: theme.palette.action.selected,
+            flex: 1,
+            '&.Mui-selected, &.Mui-disabled, &.Mui-selected:hover,  &:hover, &:focus': {
+              backgroundColor: theme.palette.background.paper,
+            },
+          },
+        },
+      },
     },
   } as ThemeOptions;
 }
