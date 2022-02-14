@@ -1,11 +1,12 @@
 import { FeeData } from '@ethersproject/abstract-provider';
 import { useState } from 'react';
-import { useStateLoading } from './useStateLoading';
-import { usePolling } from './usePolling';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { GasOption } from 'src/components/GasStation/GasStationProvider';
-import { useProtocolDataContext } from './useProtocolDataContext';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+
 import { useModalContext } from './useModal';
+import { usePolling } from './usePolling';
+import { useProtocolDataContext } from './useProtocolDataContext';
+import { useStateLoading } from './useStateLoading';
 
 type GasInfo = {
   legacyGasPrice: string;
@@ -57,7 +58,7 @@ const useGetGasPrices = (): GetGasPricesHook => {
   const { connected } = useWeb3Context();
 
   const apiRequest = async () => {
-    if (connected && type) {
+    if (connected && type !== undefined) {
       setLoading(true);
       const data = await fetch(
         `https://apiv5.paraswap.io/prices/gas/${currentChainId}?eip1559=true`
@@ -110,7 +111,11 @@ const useGetGasPrices = (): GetGasPricesHook => {
     setLoading(false);
   };
 
-  usePolling(estimateGasPrice, POLLING_INTERVAL, !type, [connected, currentChainId, type]);
+  usePolling(estimateGasPrice, POLLING_INTERVAL, type === undefined, [
+    connected,
+    currentChainId,
+    type,
+  ]);
 
   return { loading, data, error };
 };

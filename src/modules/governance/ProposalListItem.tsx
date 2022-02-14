@@ -1,12 +1,13 @@
+import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
 import { GovernancePageProps } from 'pages/governance';
+import { CheckBadge } from 'src/components/primitives/CheckBadge';
 import { Link, ROUTES } from 'src/components/primitives/Link';
+
+import { FormattedProposalTime } from './FormattedProposalTime';
 import { StateBadge } from './StateBadge';
 import { formatProposal } from './utils/formatProposal';
 import { VoteBar } from './VoteBar';
-import { FormattedProposalTime } from './FormattedProposalTime';
-import { CheckBadge } from 'src/components/primitives/CheckBadge';
-import { Trans } from '@lingui/macro';
 
 export function ProposalListItem({
   proposal,
@@ -50,9 +51,7 @@ export function ProposalListItem({
           <FormattedProposalTime
             state={proposal.state}
             executionTime={proposal.executionTime}
-            startBlock={proposal.startBlock}
-            endBlock={proposal.endBlock}
-            // proposalCreated={proposal.proposalCreated}
+            expirationTimestamp={proposal.expirationTimestamp}
           />
           <CheckBadge text={<Trans>Quorum</Trans>} checked={quorumReached} />
           <CheckBadge text={<Trans>Differential</Trans>} checked={diffReached} />

@@ -26,7 +26,6 @@ interface LanguageListItemProps {
 
 export const LanguageListItem = ({ component = ListItem, onClick }: LanguageListItemProps) => {
   const { i18n } = useLingui();
-
   return (
     <Box
       component={component}
@@ -37,7 +36,7 @@ export const LanguageListItem = ({ component = ListItem, onClick }: LanguageList
         <Trans>Language</Trans>
       </ListItemText>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        {langMap[i18n.locale as keyof typeof langMap]}{' '}
+        {i18n._(langMap[i18n.locale as keyof typeof langMap])}{' '}
         <SvgIcon
           fontSize="small"
           sx={{ color: { xxs: 'common.white', md: 'text.primary' }, ml: 1 }}

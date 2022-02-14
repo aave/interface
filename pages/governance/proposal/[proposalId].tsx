@@ -1,20 +1,24 @@
+import { DownloadIcon } from '@heroicons/react/solid';
+import { Trans } from '@lingui/macro';
 import { Box, Button, Container, Grid, Paper, styled, SvgIcon, Typography } from '@mui/material';
 import { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { Meta } from 'src/components/Meta';
 import { usePolling } from 'src/hooks/usePolling';
 import { MainLayout } from 'src/layouts/MainLayout';
+import { ProposalTopPanel } from 'src/modules/governance/proposal/ProposalTopPanel';
+import { VoteInfo } from 'src/modules/governance/proposal/VoteInfo';
+import { StateBadge } from 'src/modules/governance/StateBadge';
+import {
+  enhanceProposalWithTimes,
+  formatProposal,
+} from 'src/modules/governance/utils/formatProposal';
 import { governanceContract } from 'src/modules/governance/utils/governanceProvider';
 import { isProposalStateImmutable } from 'src/modules/governance/utils/immutableStates';
+import { VoteBar } from 'src/modules/governance/VoteBar';
 import { Ipfs, IpfsType } from 'src/static-build/ipfs';
 import { CustomProposalType, Proposal } from 'src/static-build/proposal';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import { ProposalTopPanel } from 'src/modules/governance/proposal/ProposalTopPanel';
-import { Trans } from '@lingui/macro';
-import { StateBadge } from 'src/modules/governance/StateBadge';
-import { VoteBar } from 'src/modules/governance/VoteBar';
-import { formatProposal } from 'src/modules/governance/utils/formatProposal';
-import { DownloadIcon } from '@heroicons/react/solid';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 
 export async function getStaticPaths() {
@@ -59,8 +63,8 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
   const [proposal, setProposal] = useState(initialProposal);
 
   async function updateProposal() {
-    const updatedProposal = await governanceContract.getProposal({ proposalId: proposal.id });
-    setProposal(updatedProposal);
+    const { values, ...rest } = await governanceContract.getProposal({ proposalId: proposal.id });
+    setProposal(await enhanceProposalWithTimes(rest));
   }
 
   usePolling(updateProposal, 10000, isProposalStateImmutable(proposal), []);
@@ -126,9 +130,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
         </Grid>
         <Grid item xs={12} sm={3}>
           <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
-            <Typography variant="h3">
-              <Trans>Your voting info</Trans>
-            </Typography>
+            <VoteInfo id={proposal.id} />
           </Paper>
           <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
             <Typography variant="h3">

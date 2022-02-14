@@ -3,6 +3,7 @@ import { Trans } from '@lingui/macro';
 import { Button, Container, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import * as React from 'react';
+import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
 
 import { ListColumn } from '../src/components/lists/ListColumn';
@@ -21,6 +22,7 @@ export default function Faucet() {
   const { currentNetworkConfig } = useProtocolDataContext();
   const { reserves } = useAppDataContext();
   const { walletBalances } = useWalletBalances();
+  const { openFaucet } = useModalContext();
 
   const listData = reserves
     .filter(
@@ -79,10 +81,7 @@ export default function Faucet() {
             </ListColumn>
 
             <ListColumn maxWidth={280} align="right">
-              <Button
-                variant="contained"
-                onClick={() => console.log('TODO: should be faucet modal')}
-              >
+              <Button variant="contained" onClick={() => openFaucet(reserve.underlyingAsset)}>
                 <Trans>Faucet</Trans>
               </Button>
             </ListColumn>
