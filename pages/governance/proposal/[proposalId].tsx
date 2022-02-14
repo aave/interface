@@ -1,10 +1,15 @@
+import { normalize } from '@aave/math-utils';
 import { DownloadIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
+import { Twitter } from '@mui/icons-material';
 import { Box, Button, Grid, Paper, styled, SvgIcon, Typography } from '@mui/material';
-import { useState } from 'react';
+import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Meta } from 'src/components/Meta';
+import { CheckBadge } from 'src/components/primitives/CheckBadge';
+import { GovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
 import { usePolling } from 'src/hooks/usePolling';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { ProposalTopPanel } from 'src/modules/governance/proposal/ProposalTopPanel';
@@ -62,6 +67,7 @@ const StyledLink = styled('a')({
 });
 
 export default function ProposalPage({ proposal: initialProposal, ipfs }: ProposalPageProps) {
+  const [url, setUrl] = useState('');
   const [proposal, setProposal] = useState(initialProposal);
 
   async function updateProposal() {
@@ -70,10 +76,22 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
   }
 
   usePolling(updateProposal, 10000, isProposalStateImmutable(proposal), []);
-
+  console.log(ipfs.title);
+  useEffect(() => {
+    setUrl(window.location.href);
+  }, []);
   if (!governanceConfig) return <div>Governance not enabled</div>;
 
-  const { yaeVotes, yaePercent, nayPercent, nayVotes } = formatProposal(proposal);
+  const {
+    yaeVotes,
+    yaePercent,
+    nayPercent,
+    nayVotes,
+    diffReached,
+    quorumReached,
+    requiredDiff,
+    diff,
+  } = formatProposal(proposal);
   return (
     <>
       <Meta title={ipfs.title} description={ipfs.shortDescription} />
@@ -81,7 +99,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
 
       <ContentContainer>
         <Grid container spacing={4}>
-          <Grid item xs={12} sm={9}>
+          <Grid item xs={12} sm={8}>
             <Paper sx={{ px: 6, py: 4, wordBreak: 'break-word' }}>
               <Typography variant="h3">
                 <Trans>Proposal overview</Trans>
@@ -106,6 +124,16 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                     }
                   >
                     Raw-Ipfs
+                  </Button>
+                  <Button
+                    component="a"
+                    target="__BLANK"
+                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                      ipfs.title
+                    )}&url=${url}`}
+                    startIcon={<Twitter />}
+                  >
+                    Share on twitter
                   </Button>
                 </Box>
                 <ReactMarkdown
@@ -132,7 +160,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
               </Box>
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={3}>
+          <Grid item xs={12} sm={4}>
             <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
               <VoteInfo id={proposal.id} />
             </Paper>
@@ -146,6 +174,30 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
             <Paper sx={{ px: 6, py: 4 }}>
               <Typography variant="h3">
                 <Trans>Proposal details</Trans>
+                <StateBadge state={proposal.state} />
+                <CheckBadge
+                  text={<Trans>Quorum</Trans>}
+                  checked={quorumReached}
+                  sx={{ flexGrow: 1, justifyContent: 'space-between' }}
+                  variant="description"
+                />
+                <CheckBadge
+                  text={<Trans>Differential</Trans>}
+                  checked={diffReached}
+                  sx={{ flexGrow: 1, justifyContent: 'space-between' }}
+                  variant="description"
+                />
+                {normalize(proposal.totalVotingSupply, 18)}
+                <br />
+                {requiredDiff}
+                <br />
+                {diff}
+                <br />
+                {dayjs.unix(proposal.creationTimestamp).format()}
+                <br />
+                {dayjs.unix(proposal.startTimestamp).format()}
+                <br />
+                {proposal.executed && dayjs.unix(proposal.executionTime).format()}
               </Typography>
             </Paper>
           </Grid>
@@ -156,5 +208,9 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
 }
 
 ProposalPage.getLayout = function getLayout(page: React.ReactElement) {
-  return <MainLayout>{page}</MainLayout>;
+  return (
+    <MainLayout>
+      <GovernanceDataProvider>{page}</GovernanceDataProvider>
+    </MainLayout>
+  );
 };
