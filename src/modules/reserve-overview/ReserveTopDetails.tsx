@@ -1,15 +1,17 @@
 import { Trans } from '@lingui/macro';
+import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackOutlined';
 import { Box, Button, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
+import { getMarketInfoById, MarketLogo } from 'src/components/MarketSwitcher';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+
+import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
+import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 import {
   ComputedReserveData,
   useAppDataContext,
 } from '../../hooks/app-data-provider/useAppDataProvider';
-import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
-import { useRouter } from 'next/router';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { getMarketInfoById, MarketLogo } from 'src/components/MarketSwitcher';
-import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackOutlined';
 
 interface ReserveTopDetailsProps {
   underlyingAsset: string;
@@ -30,9 +32,9 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
   }
 
   return (
-    <>
-      <Box sx={{ mt: 12, mb: 24, color: 'common.white' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: '18px' }}>
+    <TopInfoPanel>
+      <Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
           <Button
             variant="surface"
             size="medium"
@@ -51,6 +53,7 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
             </Typography>
           </Box>
         </Box>
+
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '32px', flexWrap: 'wrap' }}>
           <TopInfoPanelItem
             title={<Trans>Asset</Trans>}
@@ -87,6 +90,6 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
           </TopInfoPanelItem>
         </Box>
       </Box>
-    </>
+    </TopInfoPanel>
   );
 };

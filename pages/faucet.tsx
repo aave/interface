@@ -1,10 +1,12 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Button, Container, Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import * as React from 'react';
+import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
 
+import { ContentContainer } from '../src/components/ContentContainer';
 import { ListColumn } from '../src/components/lists/ListColumn';
 import { ListHeaderTitle } from '../src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from '../src/components/lists/ListHeaderWrapper';
@@ -21,6 +23,7 @@ export default function Faucet() {
   const { currentNetworkConfig } = useProtocolDataContext();
   const { reserves } = useAppDataContext();
   const { walletBalances } = useWalletBalances();
+  const { openFaucet } = useModalContext();
 
   const listData = reserves
     .filter(
@@ -40,56 +43,56 @@ export default function Faucet() {
     });
 
   return (
-    <Container maxWidth="xl">
+    <>
       <TopInfoPanel pageTitle={<Trans>Faucet</Trans>} />
-      <ListWrapper title={<Trans>Faucet</Trans>} captionSize="h2">
-        <ListHeaderWrapper px={6}>
-          <ListColumn isRow maxWidth={280}>
-            <ListHeaderTitle>
-              <Trans>Asset</Trans>
-            </ListHeaderTitle>
-          </ListColumn>
-          <ListColumn>
-            <ListHeaderTitle>
-              <Trans>Wallet balance</Trans>
-            </ListHeaderTitle>
-          </ListColumn>
-          <ListColumn maxWidth={280} />
-        </ListHeaderWrapper>
 
-        {listData.map((reserve) => (
-          <ListItem px={6} key={reserve.symbol}>
+      <ContentContainer>
+        <ListWrapper title={<Trans>Faucet</Trans>} captionSize="h2">
+          <ListHeaderWrapper px={6}>
             <ListColumn isRow maxWidth={280}>
-              <TokenIcon symbol={reserve.iconSymbol} fontSize="large" />
-              <Box sx={{ pl: 3.5 }}>
-                <Typography variant="h4">{reserve.name}</Typography>
-                <Typography variant="subheader2" color="text.disabled">
-                  {reserve.symbol}
-                </Typography>
-              </Box>
+              <ListHeaderTitle>
+                <Trans>Asset</Trans>
+              </ListHeaderTitle>
             </ListColumn>
-
             <ListColumn>
-              <FormattedNumber
-                compact
-                value={reserve.walletBalanceUSD.toString()}
-                variant="main16"
-                symbol="USD"
-              />
+              <ListHeaderTitle>
+                <Trans>Wallet balance</Trans>
+              </ListHeaderTitle>
             </ListColumn>
+            <ListColumn maxWidth={280} />
+          </ListHeaderWrapper>
 
-            <ListColumn maxWidth={280} align="right">
-              <Button
-                variant="contained"
-                onClick={() => console.log('TODO: should be faucet modal')}
-              >
-                <Trans>Faucet</Trans>
-              </Button>
-            </ListColumn>
-          </ListItem>
-        ))}
-      </ListWrapper>
-    </Container>
+          {listData.map((reserve) => (
+            <ListItem px={6} key={reserve.symbol}>
+              <ListColumn isRow maxWidth={280}>
+                <TokenIcon symbol={reserve.iconSymbol} fontSize="large" />
+                <Box sx={{ pl: 3.5 }}>
+                  <Typography variant="h4">{reserve.name}</Typography>
+                  <Typography variant="subheader2" color="text.disabled">
+                    {reserve.symbol}
+                  </Typography>
+                </Box>
+              </ListColumn>
+
+              <ListColumn>
+                <FormattedNumber
+                  compact
+                  value={reserve.walletBalanceUSD.toString()}
+                  variant="main16"
+                  symbol="USD"
+                />
+              </ListColumn>
+
+              <ListColumn maxWidth={280} align="right">
+                <Button variant="contained" onClick={() => openFaucet(reserve.underlyingAsset)}>
+                  <Trans>Faucet</Trans>
+                </Button>
+              </ListColumn>
+            </ListItem>
+          ))}
+        </ListWrapper>
+      </ContentContainer>
+    </>
   );
 }
 

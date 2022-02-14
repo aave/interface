@@ -31,7 +31,10 @@ export const useVotingPower = () => {
   const { currentAccount } = useWeb3Context();
   const { data, loading } = useQuery<PowerQueryResponseType>(PowerQuery, {
     variables: { userAccount: currentAccount },
+    fetchPolicy: 'cache-only',
   });
 
-  return { ...(data?.votingPowers || {}), loading };
+  return { ...(data?.votingPowers || {}), loading } as PowerQueryResponseType['votingPowers'] & {
+    loading: boolean;
+  };
 };

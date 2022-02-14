@@ -44,18 +44,10 @@ export function VoteBar({ percent = 30, yae, votes, ...rest }: VoteBarProps) {
         <FormattedNumber
           value={votes}
           sx={{ flexGrow: 1 }}
-          minimumDecimals={2}
-          maximumDecimals={2}
+          visibleDecimals={2}
           variant="secondary14"
         />
-        <FormattedNumber
-          value={percent}
-          percent
-          minimumDecimals={2}
-          maximumDecimals={2}
-          variant="caption"
-          color="text.secondary"
-        />
+        <FormattedNumber value={percent} percent variant="caption" color="text.secondary" />
       </Box>
       <OuterBar>
         <InnerBar percent={percent} yae={yae} />

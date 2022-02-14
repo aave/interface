@@ -1,3 +1,6 @@
+import { InterestRate } from '@aave/contract-helpers';
+import { CheckIcon } from '@heroicons/react/outline';
+import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -8,23 +11,20 @@ import {
   Switch,
   Typography,
 } from '@mui/material';
+import { parseUnits } from 'ethers/lib/utils';
 import React, { Dispatch, SetStateAction } from 'react';
+import { Reward } from 'src/helpers/types';
+import { ReserveIncentiveResponse } from 'src/hooks/app-data-provider/useIncentiveData';
 
+import { RewardsSelect } from '../ClaimRewards/RewardsSelect';
 import { FormInfo } from '../FormItems/FormInfo';
 import { FormRow } from '../FormItems/FormRow';
 import { FormValue } from '../FormItems/FormValue';
-import { HealthFactorNumber } from '../HealthFactorNumber';
 import { GasStation } from '../GasStation/GasStation';
-import { parseUnits } from 'ethers/lib/utils';
+import { HealthFactorNumber } from '../HealthFactorNumber';
 import { IncentivesButton } from '../incentives/IncentivesButton';
-import { ReserveIncentiveResponse } from 'src/hooks/app-data-provider/useIncentiveData';
-import { CheckIcon } from '@heroicons/react/outline';
 import { FormattedNumber } from '../primitives/FormattedNumber';
-import { InterestRate } from '@aave/contract-helpers';
 import { TokenIcon } from '../primitives/TokenIcon';
-import { Reward } from 'src/helpers/types';
-import { RewardsSelect } from '../ClaimRewards/RewardsSelect';
-import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 
 export interface TxModalDetailsProps extends GridProps {
   apy?: string;
@@ -51,6 +51,8 @@ export interface TxModalDetailsProps extends GridProps {
   allRewards?: Reward[];
   setSelectedReward?: Dispatch<SetStateAction<Reward | undefined>>;
   selectedReward?: Reward;
+  faucetAmount?: string;
+  emodeAssets?: string[];
 }
 
 export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
@@ -76,6 +78,8 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   allRewards,
   setSelectedReward,
   selectedReward,
+  faucetAmount,
+  emodeAssets,
   ...props
 }) => {
   const [selectedRate, setSelectedRate] = React.useState(InterestRate.Variable);
@@ -364,18 +368,37 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
           </FormValue>
         </FormRow>
       )}
-      {gasLimit && (
+      {symbol && faucetAmount && (
         <FormRow>
           <FormInfo>
             <Typography variant="description">
-              <Trans>Estimated Tx cost</Trans>
+              <Trans>Amount</Trans>
             </Typography>
           </FormInfo>
           <FormValue>
-            <GasStation gasLimit={parseUnits(gasLimit, 'wei')} />
+            <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+              <TokenIcon symbol={symbol} sx={{ mx: '4px' }} />
+              <FormattedNumber value={Number(faucetAmount)} variant="description" />
+              <Typography>{symbol}</Typography>
+            </Box>
           </FormValue>
         </FormRow>
       )}
+      {emodeAssets && (
+        <FormRow>
+          <FormInfo>
+            <Typography variant="description">
+              <Trans>Available assets</Trans>
+            </Typography>
+          </FormInfo>
+          <FormValue>
+            <Typography variant="description">{emodeAssets.join(', ')}</Typography>
+          </FormValue>
+        </FormRow>
+      )}
+      <FormRow>
+        <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} />
+      </FormRow>
     </Box>
   );
 };

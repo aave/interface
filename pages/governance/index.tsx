@@ -1,4 +1,4 @@
-import { Container, Grid, Paper } from '@mui/material';
+import { Grid, Paper } from '@mui/material';
 import { InferGetStaticPropsType } from 'next';
 import { GovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
 import { MainLayout } from 'src/layouts/MainLayout';
@@ -8,6 +8,8 @@ import { governanceContract } from 'src/modules/governance/utils/governanceProvi
 import { VotingPowerInfoPanel } from 'src/modules/governance/VotingPowerInfoPanel';
 import { Ipfs } from 'src/static-build/ipfs';
 import { Proposal } from 'src/static-build/proposal';
+
+import { ContentContainer } from '../../src/components/ContentContainer';
 
 export const getStaticProps = async () => {
   const IpfsFetcher = new Ipfs();
@@ -34,21 +36,24 @@ export type GovernancePageProps = InferGetStaticPropsType<typeof getStaticProps>
 
 export default function Governance(props: GovernancePageProps) {
   return (
-    <Container maxWidth="xl">
+    <>
       <GovernanceTopPanel />
-      <Grid container spacing={4}>
-        <Grid item xs={12} md={3}>
-          <Paper sx={{ px: 6, py: 4 }}>
-            <VotingPowerInfoPanel />
-          </Paper>
+
+      <ContentContainer>
+        <Grid container spacing={4}>
+          <Grid item xs={12} md={3}>
+            <Paper>
+              <VotingPowerInfoPanel />
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={9}>
+            <Paper>
+              <ProposalsList {...props} />
+            </Paper>
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={9}>
-          <Paper>
-            <ProposalsList {...props} />
-          </Paper>
-        </Grid>
-      </Grid>
-    </Container>
+      </ContentContainer>
+    </>
   );
 }
 

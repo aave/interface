@@ -18,6 +18,8 @@ export const IsolatedBadge = () => {
           alignItems: 'center',
           p: '2px',
           mt: '2px',
+          cursor: 'pointer',
+          transition: 'all 0.2s easy',
           '&:hover': { opacity: 0.6 },
         }}
         onClick={() => setOpen(true)}

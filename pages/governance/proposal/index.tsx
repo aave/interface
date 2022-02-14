@@ -1,6 +1,9 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { GovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
 import { usePolling } from 'src/hooks/usePolling';
+import { MainLayout } from 'src/layouts/MainLayout';
+import { enhanceProposalWithTimes } from 'src/modules/governance/utils/formatProposal';
 import { getProposalMetadata } from 'src/modules/governance/utils/getProposalMetadata';
 import { governanceContract } from 'src/modules/governance/utils/governanceProvider';
 import { isProposalStateImmutable } from 'src/modules/governance/utils/immutableStates';
@@ -15,8 +18,8 @@ export default function DynamicProposal() {
   const [ipfs, setIpfs] = useState<IpfsType>();
 
   async function updateProposal() {
-    const { values, ...updatedProposal } = await governanceContract.getProposal({ proposalId: id });
-    setProposal(updatedProposal);
+    const { values, ...rest } = await governanceContract.getProposal({ proposalId: id });
+    setProposal(await enhanceProposalWithTimes(rest));
   }
 
   async function fetchIpfs() {
@@ -37,6 +40,7 @@ export default function DynamicProposal() {
     if (!proposal || ipfs) return;
     fetchIpfs();
   }, [proposal, ipfs]);
+  // TODO: ignore for now, can just render [proposalId] later
   return (
     <div>
       {JSON.stringify(proposal)}
@@ -44,3 +48,11 @@ export default function DynamicProposal() {
     </div>
   );
 }
+
+DynamicProposal.getLayout = function getLayout(page: React.ReactElement) {
+  return (
+    <MainLayout>
+      <GovernanceDataProvider>{page}</GovernanceDataProvider>
+    </MainLayout>
+  );
+};

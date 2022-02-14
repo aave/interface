@@ -8,7 +8,7 @@ interface MobileCloseButtonProps {
 
 export const MobileCloseButton = ({ setOpen }: MobileCloseButtonProps) => {
   return (
-    <IconButton onClick={() => setOpen(false)} sx={{ p: 0, mr: -2 }}>
+    <IconButton onClick={() => setOpen(false)} sx={{ p: 0, mr: 1 }}>
       <SvgIcon sx={{ color: 'common.white', fontSize: '32px' }}>
         <XIcon />
       </SvgIcon>

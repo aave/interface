@@ -4,9 +4,10 @@ import { useApolloClient } from '@apollo/client';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { GovernanceConfig } from 'src/ui-config/governanceConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
+
 import { usePolling } from '../usePolling';
 import { useProtocolDataContext } from '../useProtocolDataContext';
-import { PowerQuery, PowerQueryResponseType } from './useGovernanceData';
+import { PowerQuery, PowerQueryResponseType } from './useVotingPower';
 
 const checkIfDelegateeIsUser = (delegatee: tEthereumAddress, userAddress: tEthereumAddress) =>
   delegatee.toLocaleLowerCase() === userAddress.toLocaleLowerCase() ? '' : delegatee;

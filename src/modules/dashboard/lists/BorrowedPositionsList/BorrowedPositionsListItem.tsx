@@ -28,7 +28,11 @@ export const BorrowedPositionsListItem = ({
     variableBorrowAPY,
   } = reserve;
   return (
-    <ListItemWrapper symbol={reserve.symbol} iconSymbol={reserve.iconSymbol}>
+    <ListItemWrapper
+      symbol={reserve.symbol}
+      iconSymbol={reserve.iconSymbol}
+      data-cy={`dashboardBorrowedListItem_${reserve.symbol.toUpperCase()}_${borrowRateMode}`}
+    >
       <ListValueColumn
         symbol={reserve.symbol}
         value={Number(totalBorrows)}
@@ -50,8 +54,8 @@ export const BorrowedPositionsListItem = ({
           borrowRateMode={borrowRateMode}
           disabled={!stableBorrowRateEnabled || isFrozen || !isActive}
           onClick={() => openRateSwitch(reserve.underlyingAsset)}
-          stableBorrowAPY={stableBorrowAPY}
-          variableBorrowAPY={variableBorrowAPY}
+          stableBorrowAPY={reserve.stableBorrowAPY}
+          variableBorrowAPY={reserve.variableBorrowAPY}
           underlyingAsset={reserve.underlyingAsset}
         />
       </ListColumn>

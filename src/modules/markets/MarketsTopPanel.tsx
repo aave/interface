@@ -1,6 +1,6 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box } from '@mui/material';
+import { useMediaQuery, useTheme } from '@mui/material';
 import * as React from 'react';
 
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
@@ -10,6 +10,9 @@ import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvi
 
 export const MarketsTopPanel = () => {
   const { reserves } = useAppDataContext();
+
+  const theme = useTheme();
+  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const aggregatedStats = reserves.reduce(
     (acc, reserve) => {
@@ -24,40 +27,37 @@ export const MarketsTopPanel = () => {
     }
   );
 
+  const valueTypographyVariant = downToSM ? 'main16' : 'main21';
+
   return (
     <TopInfoPanel pageTitle={<Trans>Market overview</Trans>} withMarketSwitcher>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: '32px', flexWrap: 'wrap' }}>
-        <TopInfoPanelItem title={<Trans>Total market size</Trans>}>
-          <FormattedNumber
-            value={aggregatedStats.totalLiquidity.toString()}
-            symbol="USD"
-            variant="main21"
-            minimumDecimals={2}
-            maximumDecimals={2}
-            compact
-          />
-        </TopInfoPanelItem>
-        <TopInfoPanelItem title={<Trans>Total available</Trans>}>
-          <FormattedNumber
-            value={aggregatedStats.totalLiquidity.minus(aggregatedStats.totalDebt).toString()}
-            symbol="USD"
-            variant="main21"
-            minimumDecimals={2}
-            maximumDecimals={2}
-            compact
-          />
-        </TopInfoPanelItem>
-        <TopInfoPanelItem title={<Trans>Total borrows</Trans>}>
-          <FormattedNumber
-            value={aggregatedStats.totalDebt.toString()}
-            symbol="USD"
-            variant="main21"
-            minimumDecimals={2}
-            maximumDecimals={2}
-            compact
-          />
-        </TopInfoPanelItem>
-      </Box>
+      <TopInfoPanelItem title={<Trans>Total market size</Trans>}>
+        <FormattedNumber
+          value={aggregatedStats.totalLiquidity.toString()}
+          symbol="USD"
+          variant={valueTypographyVariant}
+          visibleDecimals={2}
+          compact
+        />
+      </TopInfoPanelItem>
+      <TopInfoPanelItem title={<Trans>Total available</Trans>}>
+        <FormattedNumber
+          value={aggregatedStats.totalLiquidity.minus(aggregatedStats.totalDebt).toString()}
+          symbol="USD"
+          variant={valueTypographyVariant}
+          visibleDecimals={2}
+          compact
+        />
+      </TopInfoPanelItem>
+      <TopInfoPanelItem title={<Trans>Total borrows</Trans>}>
+        <FormattedNumber
+          value={aggregatedStats.totalDebt.toString()}
+          symbol="USD"
+          variant={valueTypographyVariant}
+          visibleDecimals={2}
+          compact
+        />
+      </TopInfoPanelItem>
     </TopInfoPanel>
   );
 };
