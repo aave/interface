@@ -557,10 +557,6 @@ export function getThemedComponents(theme: Theme) {
               paddingLeft: '20px',
               paddingRight: '20px',
             },
-            '@media screen and (min-width: 1360px)': {
-              paddingLeft: '64px',
-              paddingRight: '64px',
-            },
             [theme.breakpoints.up('xl')]: {
               maxWidth: 'unset',
               paddingLeft: '96px',
@@ -735,6 +731,25 @@ export function getThemedComponents(theme: Theme) {
         styleOverrides: {
           colorPrimary: {
             color: theme.palette.primary.light,
+          },
+        },
+      },
+      MuiToggleButtonGroup: {
+        styleOverrides: {
+          root: {
+            backgroundColor: theme.palette.background.paper,
+          },
+        },
+      },
+      MuiToggleButton: {
+        styleOverrides: {
+          root: {
+            boxShadow: 'inset -1px 0px 0px rgba(0, 0, 0, 0.12)',
+            backgroundColor: theme.palette.action.selected,
+            flex: 1,
+            '&.Mui-selected, &.Mui-disabled, &.Mui-selected:hover,  &:hover, &:focus': {
+              backgroundColor: theme.palette.background.paper,
+            },
           },
         },
       },
