@@ -9,7 +9,7 @@ import { StakeGeneralData, StakeUserData } from 'src/hooks/stake-data-provider/g
 
 export interface StakingPanelProps extends PaperProps {
   onStakeAction?: () => void;
-  onClaimAction?: () => void;
+  onStakeRewardClaimAction?: () => void;
   onCooldownAction?: () => void;
   onUnstakeAction?: () => void;
   stakeData?: StakeGeneralData;
@@ -68,7 +68,7 @@ const ActionDetails: React.FC<BoxProps> = ({ sx, ...props }) => (
 
 export const StakingPanel: React.FC<StakingPanelProps> = ({
   onStakeAction,
-  onClaimAction,
+  onStakeRewardClaimAction,
   onCooldownAction,
   onUnstakeAction,
   stakeTitle,
@@ -151,7 +151,11 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             minimumDecimals={2}
           />
           <FormattedNumber value={'1000'} symbol="USD" minimumDecimals={2} maximumDecimals={2} />
-          <Button variant="contained" sx={{ mt: 6, width: '100%' }} onClick={onClaimAction}>
+          <Button
+            variant="contained"
+            sx={{ mt: 6, width: '100%' }}
+            onClick={onStakeRewardClaimAction}
+          >
             <Trans>Claim AAVE</Trans>
           </Button>
           <ActionDetails>

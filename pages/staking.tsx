@@ -1,6 +1,7 @@
 import { Container, Grid, Typography } from '@mui/material';
 import { StakeModal } from 'src/components/Stake/StakeModal';
 import { StakeCooldownModal } from 'src/components/StakeCooldown/StakeCooldownModal';
+import { StakeRewardClaimModal } from 'src/components/StakeRewardClaim/StakeRewardClaimModal';
 import { UnStakeModal } from 'src/components/UnStake/UnStakeModal';
 import { StakeDataProvider, useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
@@ -10,7 +11,7 @@ import { StakingPanel } from 'src/modules/staking/StakingPanel';
 
 export default function Staking() {
   const data = useStakeData();
-  const { openStake, openStakeCooldown, openUnstake } = useModalContext();
+  const { openStake, openStakeCooldown, openUnstake, openStakeRewardsClaim } = useModalContext();
   return (
     <Container maxWidth="xl">
       <StakingHeader />
@@ -28,6 +29,7 @@ export default function Staking() {
             onStakeAction={() => openStake('aave', 'AAVE')}
             onCooldownAction={() => openStakeCooldown('aave')}
             onUnstakeAction={() => openUnstake('aave', 'AAVE')}
+            onStakeRewardClaimAction={() => openStakeRewardsClaim('aave')}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -42,6 +44,7 @@ export default function Staking() {
             onStakeAction={() => openStake('bpt', 'stkBPT')}
             onCooldownAction={() => openStakeCooldown('bpt')}
             onUnstakeAction={() => openUnstake('bpt', 'stkBPT')}
+            onStakeRewardClaimAction={() => openStakeRewardsClaim('bpt')}
             description={
               <Typography color="text.muted" sx={{ mt: 4 }}>
                 The Balancer Pool Token (BPT) is a liquidity pool token. You can receive BPT by
@@ -57,6 +60,7 @@ export default function Staking() {
       <StakeModal />
       <StakeCooldownModal />
       <UnStakeModal />
+      <StakeRewardClaimModal />
       {/** End of modals */}
       <code style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(data, null, 2)}</code>
     </Container>
