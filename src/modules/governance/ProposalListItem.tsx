@@ -1,12 +1,13 @@
+import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
 import { GovernancePageProps } from 'pages/governance';
+import { CheckBadge } from 'src/components/primitives/CheckBadge';
 import { Link, ROUTES } from 'src/components/primitives/Link';
+
+import { FormattedProposalTime } from './FormattedProposalTime';
 import { StateBadge } from './StateBadge';
 import { formatProposal } from './utils/formatProposal';
 import { VoteBar } from './VoteBar';
-import { FormattedProposalTime } from './FormattedProposalTime';
-import { CheckBadge } from 'src/components/primitives/CheckBadge';
-import { Trans } from '@lingui/macro';
 
 export function ProposalListItem({
   proposal,

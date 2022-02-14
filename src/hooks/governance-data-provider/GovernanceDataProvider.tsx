@@ -1,6 +1,7 @@
 import { AaveGovernanceService } from '@aave/contract-helpers';
 import React, { useContext } from 'react';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
+
 import { _useGovernanceDataRPC } from './_useGovernanceDataRPC';
 
 interface GovernanceDataProviderContextType {

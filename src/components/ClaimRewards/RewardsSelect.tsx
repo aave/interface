@@ -1,13 +1,14 @@
-import * as React from 'react';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import { Reward } from 'src/helpers/types';
+import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
+import FormControl from '@mui/material/FormControl';
+import MenuItem from '@mui/material/MenuItem';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import Select from '@mui/material/Select';
+import * as React from 'react';
+import { Reward } from 'src/helpers/types';
+
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { TokenIcon } from '../primitives/TokenIcon';
-import { Trans } from '@lingui/macro';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;

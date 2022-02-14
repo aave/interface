@@ -1,5 +1,5 @@
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/solid';
-import { Box, BoxProps, Typography, useTheme, TypographyProps } from '@mui/material';
+import { Box, BoxProps, Typography, TypographyProps, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 
 interface CheckBadgeProps extends BoxProps {

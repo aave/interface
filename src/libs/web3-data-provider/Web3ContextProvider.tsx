@@ -1,11 +1,11 @@
 import { transactionType } from '@aave/contract-helpers';
+import { SignatureLike } from '@ethersproject/bytes';
 import {
   JsonRpcProvider,
   Network,
   TransactionResponse,
   Web3Provider,
 } from '@ethersproject/providers';
-import { SignatureLike } from '@ethersproject/bytes';
 import { BigNumber, providers } from 'ethers';
 import React, { ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';

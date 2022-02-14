@@ -1,3 +1,6 @@
+import { InterestRate } from '@aave/contract-helpers';
+import { CheckIcon } from '@heroicons/react/outline';
+import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -8,23 +11,20 @@ import {
   Switch,
   Typography,
 } from '@mui/material';
+import { parseUnits } from 'ethers/lib/utils';
 import React, { Dispatch, SetStateAction } from 'react';
+import { Reward } from 'src/helpers/types';
+import { ReserveIncentiveResponse } from 'src/hooks/app-data-provider/useIncentiveData';
 
+import { RewardsSelect } from '../ClaimRewards/RewardsSelect';
 import { FormInfo } from '../FormItems/FormInfo';
 import { FormRow } from '../FormItems/FormRow';
 import { FormValue } from '../FormItems/FormValue';
-import { HealthFactorNumber } from '../HealthFactorNumber';
 import { GasStation } from '../GasStation/GasStation';
-import { parseUnits } from 'ethers/lib/utils';
+import { HealthFactorNumber } from '../HealthFactorNumber';
 import { IncentivesButton } from '../incentives/IncentivesButton';
-import { ReserveIncentiveResponse } from 'src/hooks/app-data-provider/useIncentiveData';
-import { CheckIcon } from '@heroicons/react/outline';
 import { FormattedNumber } from '../primitives/FormattedNumber';
-import { InterestRate } from '@aave/contract-helpers';
 import { TokenIcon } from '../primitives/TokenIcon';
-import { Reward } from 'src/helpers/types';
-import { RewardsSelect } from '../ClaimRewards/RewardsSelect';
-import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 
 export interface TxModalDetailsProps extends GridProps {
   apy?: string;

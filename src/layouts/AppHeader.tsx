@@ -14,11 +14,7 @@ const WalletWidget = dynamic(() => import('./WalletWidget'), {
   ssr: false,
 });
 
-interface AppHeaderProps {
-  topLineHeight: number;
-}
-
-export function AppHeader({ topLineHeight }: AppHeaderProps) {
+export function AppHeader() {
   const { breakpoints } = useTheme();
   const md = useMediaQuery(breakpoints.down('md'));
 
@@ -38,80 +34,65 @@ export function AppHeader({ topLineHeight }: AppHeaderProps) {
   const headerHeight = 48;
 
   return (
-    <>
+    <Box
+      component="header"
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      sx={(theme) => ({
+        height: headerHeight,
+        position: 'sticky',
+        top: 0,
+        transition: theme.transitions.create('top'),
+        zIndex: theme.zIndex.appBar,
+        bgcolor: 'background.header',
+        padding: {
+          xxs: mobileMenuOpen || walletWidgetOpen ? '8px 20px' : '8px 8px 8px 20px',
+          xs: '8px 20px',
+        },
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'space-between',
+        boxShadow: 'inset 0px -1px 0px rgba(255, 255, 255, 0.12)',
+      })}
+    >
       <Box
-        component="header"
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        sx={(theme) => ({
-          height: headerHeight,
-          position: 'sticky',
-          top: 0,
-          transition: theme.transitions.create('top'),
-          zIndex: theme.zIndex.appBar,
-          bgcolor: 'background.header',
-          padding: {
-            xxs: mobileMenuOpen || walletWidgetOpen ? '8px 20px' : '8px 8px 8px 20px',
-            xs: '8px 20px',
-          },
-          display: 'flex',
-          alignItems: 'center',
-          flexDirection: 'space-between',
-          boxShadow: 'inset 0px -1px 0px rgba(255, 255, 255, 0.12)',
-        })}
+        component={Link}
+        href="/"
+        aria-label="Go to homepage"
+        sx={{ lineHeight: 0, mr: 7, transition: '0.3s ease all', '&:hover': { opacity: 0.7 } }}
+        onClick={() => setMobileMenuOpen(false)}
       >
-        <Box
-          component={Link}
-          href="/"
-          aria-label="Go to homepage"
-          sx={{ lineHeight: 0, mr: 7, transition: '0.3s ease all', '&:hover': { opacity: 0.7 } }}
-          onClick={() => setMobileMenuOpen(false)}
-        >
-          <img src={uiConfig.appLogo} alt="An SVG of an eye" height={20} />
-        </Box>
-
-        <Box sx={{ display: { xxs: 'none', md: 'block' } }}>
-          <NavItems />
-        </Box>
-
-        <Box sx={{ flexGrow: 1 }} />
-
-        {!mobileMenuOpen && (
-          <WalletWidget
-            open={walletWidgetOpen}
-            setOpen={setWalletWidgetOpen}
-            headerHeight={headerHeight}
-            md={md}
-          />
-        )}
-
-        <Box sx={{ display: { xxs: 'none', md: 'block' } }}>
-          <SettingsMenu />
-        </Box>
-
-        {!walletWidgetOpen && (
-          <Box sx={{ display: { xxs: 'flex', md: 'none' } }}>
-            <MobileMenu
-              open={mobileMenuOpen}
-              setOpen={setMobileMenuOpen}
-              headerHeight={headerHeight}
-            />
-          </Box>
-        )}
+        <img src={uiConfig.appLogo} alt="An SVG of an eye" height={20} />
       </Box>
 
-      <Box
-        sx={{
-          position: 'absolute',
-          top: headerHeight,
-          left: 0,
-          zIndex: -1,
-          width: '100%',
-          height: `${topLineHeight}px`,
-          bgcolor: '#090815',
-          transition: 'all 0.2s ease-in-out',
-        }}
-      />
-    </>
+      <Box sx={{ display: { xxs: 'none', md: 'block' } }}>
+        <NavItems />
+      </Box>
+
+      <Box sx={{ flexGrow: 1 }} />
+
+      {!mobileMenuOpen && (
+        <WalletWidget
+          open={walletWidgetOpen}
+          setOpen={setWalletWidgetOpen}
+          headerHeight={headerHeight}
+          md={md}
+        />
+      )}
+
+      <Box sx={{ display: { xxs: 'none', md: 'block' } }}>
+        <SettingsMenu />
+      </Box>
+
+      {!walletWidgetOpen && (
+        <Box sx={{ display: { xxs: 'flex', md: 'none' } }}>
+          <MobileMenu
+            open={mobileMenuOpen}
+            setOpen={setMobileMenuOpen}
+            headerHeight={headerHeight}
+          />
+        </Box>
+      )}
+    </Box>
   );
 }

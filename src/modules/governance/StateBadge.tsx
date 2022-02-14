@@ -1,5 +1,5 @@
 import { ProposalState } from '@aave/contract-helpers';
-import { experimental_sx, alpha, styled } from '@mui/material';
+import { alpha, experimental_sx, styled } from '@mui/material';
 
 interface StateBadgeProps {
   state: ProposalState;

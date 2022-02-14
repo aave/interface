@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Container } from '@mui/material';
 import { ReactNode } from 'react';
 
 import { PageTitle, PageTitleProps } from './PageTitle';
@@ -14,9 +14,34 @@ export const TopInfoPanel = ({
   children,
 }: TopInfoPanelProps) => {
   return (
-    <Box sx={{ mt: 12, mb: 24, color: 'common.white' }}>
-      <PageTitle pageTitle={pageTitle} withMarketSwitcher={withMarketSwitcher} bridge={bridge} />
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>{children}</Box>
+    <Box
+      sx={{
+        bgcolor: '#090815',
+        pt: { xxs: 10, md: 12 },
+        pb: { xxs: 16, xs: 18.5, sm: 20, md: '75px', lg: '110px', xl: '124px', xxl: '144px' },
+        color: 'common.white',
+      }}
+    >
+      <Container sx={{ pb: 0 }}>
+        <Box sx={{ px: 6 }}>
+          <PageTitle
+            pageTitle={pageTitle}
+            withMarketSwitcher={withMarketSwitcher}
+            bridge={bridge}
+          />
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: { xxs: 3, xs: 8 },
+              flexWrap: 'wrap',
+              width: '100%',
+            }}
+          >
+            {children}
+          </Box>
+        </Box>
+      </Container>
     </Box>
   );
 };
