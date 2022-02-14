@@ -11,6 +11,7 @@ export interface StakingPanelProps extends PaperProps {
   onStakeAction?: () => void;
   onClaimAction?: () => void;
   onCooldownAction?: () => void;
+  onUnstakeAction?: () => void;
   stakeData?: StakeGeneralData;
   stakeUserData?: StakeUserData;
   description?: React.ReactNode;
@@ -69,6 +70,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   onStakeAction,
   onClaimAction,
   onCooldownAction,
+  onUnstakeAction,
   stakeTitle,
   stakedToken,
   description,
@@ -119,9 +121,15 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             minimumDecimals={2}
           />
           <FormattedNumber value={'1000'} symbol="USD" minimumDecimals={2} maximumDecimals={2} />
-          <Button variant="surface" sx={{ mt: 6, width: '100%' }} onClick={onCooldownAction}>
-            <Trans>Cooldown to unstake</Trans>
-          </Button>
+          {true ? (
+            <Button variant="surface" sx={{ mt: 6, width: '100%' }} onClick={onUnstakeAction}>
+              <Trans>Unstake now</Trans>
+            </Button>
+          ) : (
+            <Button variant="surface" sx={{ mt: 6, width: '100%' }} onClick={onCooldownAction}>
+              <Trans>Cooldown to unstake</Trans>
+            </Button>
+          )}
           <ActionDetails>
             <Typography color="text.secondary">
               <Trans>Cooldown period</Trans>
