@@ -13,7 +13,12 @@ interface ListItemWrapperProps {
   children: ReactNode;
 }
 
-export const ListItemWrapper = ({ symbol, iconSymbol, children }: ListItemWrapperProps) => {
+export const ListItemWrapper = ({
+  symbol,
+  iconSymbol,
+  children,
+  ...rest
+}: ListItemWrapperProps) => {
   return (
     <ListItem
       warningComponent={
@@ -31,6 +36,7 @@ export const ListItemWrapper = ({ symbol, iconSymbol, children }: ListItemWrappe
           </Alert>
         )
       }
+      {...rest}
     >
       <ListColumn maxWidth={160} isRow>
         <TokenIcon symbol={iconSymbol} fontSize="large" />
