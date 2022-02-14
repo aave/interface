@@ -23,6 +23,7 @@ import { ModalContextProvider } from 'src/hooks/useModal';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3ContextProvider';
 import { TxBuilderProvider } from 'src/providers/TxBuilderProvider';
 import { apolloClient } from 'src/utils/apolloClient';
+import { Meta } from 'src/components/Meta';
 
 import createEmotionCache from '../src/createEmotionCache';
 import { ProtocolDataProvider } from '../src/hooks/useProtocolDataContext';
@@ -48,6 +49,13 @@ export default function MyApp(props: MyAppProps) {
     <CacheProvider value={emotionCache}>
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
+        <Meta
+          title={'Open Source Liquidity Protocol'}
+          description={
+            'Aave is an Open Source Protocol to create Non-Custodial Liquidity Markets to earn interest on supplying and borrowing assets with a variable or stable interest rate. The protocol is designed for easy integration into your products and services.'
+          }
+          imageUrl={'https://aave.com/favicon64.png'} //NOTE: Will update with ghost after release
+        />
       </Head>
 
       <ApolloProvider client={apolloClient}>
