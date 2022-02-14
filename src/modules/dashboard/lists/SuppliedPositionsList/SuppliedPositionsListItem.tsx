@@ -25,7 +25,13 @@ export const SuppliedPositionsListItem = ({
   const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
 
   return (
-    <ListItemWrapper symbol={reserve.symbol} iconSymbol={reserve.iconSymbol}>
+    <ListItemWrapper
+      symbol={reserve.symbol}
+      iconSymbol={reserve.iconSymbol}
+      data-cy={`dashboardSuppliedListItem_${reserve.symbol.toUpperCase()}_${
+        usageAsCollateralEnabledOnUser ? 'Collateral' : 'NoCollateral'
+      }`}
+    >
       <ListValueColumn
         symbol={reserve.symbol}
         value={Number(underlyingBalance)}

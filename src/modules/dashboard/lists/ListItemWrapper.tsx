@@ -12,9 +12,14 @@ interface ListItemWrapperProps {
   children: ReactNode;
 }
 
-export const ListItemWrapper = ({ symbol, iconSymbol, children }: ListItemWrapperProps) => {
+export const ListItemWrapper = ({
+  symbol,
+  iconSymbol,
+  children,
+  ...rest
+}: ListItemWrapperProps) => {
   return (
-    <ListItem warningComponent={symbol === 'AMPL' && <AMPLWarning />}>
+    <ListItem warningComponent={symbol === 'AMPL' && <AMPLWarning />} {...rest}>
       <ListColumn maxWidth={160} isRow>
         <TokenIcon symbol={iconSymbol} fontSize="large" />
         <Tooltip title={symbol} arrow placement="top">
