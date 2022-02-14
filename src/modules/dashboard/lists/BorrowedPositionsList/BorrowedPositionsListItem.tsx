@@ -28,7 +28,11 @@ export const BorrowedPositionsListItem = ({
     variableBorrowAPY,
   } = reserve;
   return (
-    <ListItemWrapper symbol={reserve.symbol} iconSymbol={reserve.iconSymbol}>
+    <ListItemWrapper
+      symbol={reserve.symbol}
+      iconSymbol={reserve.iconSymbol}
+      data-cy={`dashboardBorrowedListItem_${reserve.symbol}`}
+    >
       <ListValueColumn
         symbol={reserve.symbol}
         value={Number(totalBorrows)}

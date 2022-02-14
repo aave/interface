@@ -30,7 +30,11 @@ export const SupplyAssetsListItem = ({
 }: SupplyAssetsItem) => {
   const { openSupply } = useModalContext();
   return (
-    <ListItemWrapper symbol={symbol} iconSymbol={iconSymbol}>
+    <ListItemWrapper
+      symbol={symbol}
+      iconSymbol={iconSymbol}
+      data-cy={`dashboardSupplyListItem_${symbol}`}
+    >
       <ListValueColumn
         symbol={symbol}
         value={Number(walletBalance)}
