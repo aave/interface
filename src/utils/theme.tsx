@@ -557,10 +557,6 @@ export function getThemedComponents(theme: Theme) {
               paddingLeft: '20px',
               paddingRight: '20px',
             },
-            '@media screen and (min-width: 1360px)': {
-              paddingLeft: '64px',
-              paddingRight: '64px',
-            },
             [theme.breakpoints.up('xl')]: {
               maxWidth: 'unset',
               paddingLeft: '96px',
