@@ -396,18 +396,9 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
           </FormValue>
         </FormRow>
       )}
-      {gasLimit && (
-        <FormRow>
-          <FormInfo>
-            <Typography variant="description">
-              <Trans>Estimated Tx cost</Trans>
-            </Typography>
-          </FormInfo>
-          <FormValue>
-            <GasStation gasLimit={parseUnits(gasLimit, 'wei')} />
-          </FormValue>
-        </FormRow>
-      )}
+      <FormRow>
+        <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} />
+      </FormRow>
     </Box>
   );
 };
