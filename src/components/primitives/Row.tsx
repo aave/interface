@@ -3,15 +3,23 @@ import { ReactNode } from 'react';
 
 interface RowProps extends BoxProps {
   caption: ReactNode;
+  captionVariant?: 'secondary16' | 'description';
+  align?: 'center' | 'flex-start';
 }
 
-export const Row = ({ caption, children, ...rest }: RowProps) => {
+export const Row = ({
+  caption,
+  children,
+  captionVariant = 'secondary16',
+  align = 'center',
+  ...rest
+}: RowProps) => {
   return (
     <Box
-      sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', ...rest.sx }}
+      sx={{ display: 'flex', alignItems: align, justifyContent: 'space-between', ...rest.sx }}
       {...rest}
     >
-      <Typography component="div" variant="secondary16">
+      <Typography component="div" variant={captionVariant}>
         {caption}
       </Typography>
       {children}

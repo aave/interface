@@ -37,7 +37,7 @@ export const ListWrapper = ({
   const collapsed = isCollapse && !noData;
 
   return (
-    <Paper sx={{ mt: withTopMargin ? 4 : 0 }}>
+    <Paper sx={{ mt: withTopMargin ? 4 : 0, overflow: 'hidden' }}>
       <Box
         sx={{
           px: 6,
@@ -46,7 +46,7 @@ export const ListWrapper = ({
           alignItems: 'center',
           justifyContent: 'space-between',
           cursor: !noData && !!localStorageName ? 'pointer' : 'default',
-          mb: noData ? 0 : 4,
+          mb: noData || (collapsed && !topInfo) ? 0 : 4,
         }}
         onClick={() =>
           !!localStorageName && !noData
@@ -95,12 +95,20 @@ export const ListWrapper = ({
 
       {topInfo && (
         <Box
-          sx={{ display: 'flex', alignItems: 'center', px: 6, pb: collapsed && !noData ? 6 : 0 }}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            px: 6,
+            pb: { xxs: collapsed && !noData ? 6 : 2, xs: collapsed && !noData ? 6 : 0 },
+            overflowX: 'auto',
+          }}
         >
           {topInfo}
         </Box>
       )}
-      {subChildrenComponent && !collapsed && <Box>{subChildrenComponent}</Box>}
+      {subChildrenComponent && !collapsed && (
+        <Box sx={{ marginBottom: { xxs: 2, xs: 0 } }}>{subChildrenComponent}</Box>
+      )}
       <Box sx={{ display: collapsed ? 'none' : 'block' }}>{children}</Box>
 
       {!!bottomComponent && !collapsed && <ListItem>{bottomComponent}</ListItem>}

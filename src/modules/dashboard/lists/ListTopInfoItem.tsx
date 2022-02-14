@@ -22,7 +22,7 @@ export const ListTopInfoItem = ({ title, value, percent, modalContent }: ListTop
       variant="outlined"
       sx={{ mr: 2, p: '2px 4px', display: 'flex', alignItems: 'center', boxShadow: 'none' }}
     >
-      <Typography color="text.secondary" sx={{ mr: 1 }}>
+      <Typography color="text.secondary" sx={{ mr: 1 }} noWrap>
         {title}
       </Typography>
       <FormattedNumber value={value} percent={percent} variant="main14" symbol="USD" />

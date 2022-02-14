@@ -123,7 +123,12 @@ export const DashboardTopPanel = () => {
                 compact
                 symbol="USD"
               />
-              {assets && <MultiTokenIcon symbols={assets} sx={{ ml: 1 }} />}
+              {assets && (
+                <MultiTokenIcon
+                  symbols={assets}
+                  sx={{ ml: 1, fontSize: { xxs: '16px', xs: '20px' } }}
+                />
+              )}
               <Button
                 variant="surface"
                 size="small"
