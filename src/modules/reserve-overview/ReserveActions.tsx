@@ -3,8 +3,12 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, Paper, Stack, StackProps, SvgIcon, Typography } from '@mui/material';
 import React from 'react';
 import { FormattedNumber, FormattedNumberProps } from 'src/components/primitives/FormattedNumber';
-// import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useWalletBalance, useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useModalContext } from 'src/hooks/useModal';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
+import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
 
 const ReserveRow: React.FC<StackProps> = (props) => (
   <Stack
@@ -39,10 +43,22 @@ interface ReserveActionsProps {
 
 export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   const { openBorrow, openSupply } = useModalContext();
-  // const { user } = useAppDataContext();
-  // const userReserve = user?.userReservesData.find(
-  //   (reserve) => reserve.underlyingAsset === underlyingAsset
-  // );
+  const { user, reserves } = useAppDataContext();
+  const poolReserve = reserves.find((reserve) => reserve.underlyingAsset === underlyingAsset);
+  const { walletBalances } = useWalletBalances();
+  const balance = walletBalances[underlyingAsset];
+  // const balance = useWalletBalance(currentChainId, underlyingAsset);
+  let maxAmountToBorrow = '0';
+  let maxAmountToSupply = '0';
+  if (poolReserve && balance) {
+    maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user).toString();
+    maxAmountToSupply = getMaxAmountAvailableToSupply(
+      balance.amount,
+      poolReserve,
+      underlyingAsset
+    ).toString();
+  }
+
   return (
     <Paper sx={{ py: '16px', px: '24px' }}>
       <Typography variant="h3" sx={{ mb: '40px' }}>
@@ -51,9 +67,9 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
 
       <ReserveRow>
         <Typography>
-          <Trans>Supply balance</Trans>
+          <Trans>Wallet balance</Trans>
         </Typography>
-        <DoubleFormatted value="10" usdValue="10" />
+        <DoubleFormatted value={balance?.amount || 0} usdValue={balance?.amountUSD || '0'} />
       </ReserveRow>
 
       <ReserveRow>
@@ -65,7 +81,18 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
             <InformationCircleIcon />
           </SvgIcon>
         </Stack>
-        <FormattedNumber value="10" />
+        <FormattedNumber value={maxAmountToSupply} />
+      </ReserveRow>
+      <ReserveRow>
+        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1}>
+          <Typography>
+            <Trans>Available to borrow</Trans>
+          </Typography>
+          <SvgIcon sx={{ fontSize: '18px', color: '#E0E5EA' }}>
+            <InformationCircleIcon />
+          </SvgIcon>
+        </Stack>
+        <FormattedNumber value={maxAmountToBorrow} />
       </ReserveRow>
 
       <Stack direction="row" spacing={2}>
