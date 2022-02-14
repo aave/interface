@@ -78,15 +78,6 @@ export const StakeActions = ({
     });
   }, [setTxState, mainTxState, approvalTxState]);
 
-  const handleRetry = () => {
-    setTxState({
-      txError: undefined,
-      success: false,
-      gasEstimationError: undefined,
-    });
-    resetStates();
-  };
-
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', ...sx }} {...props}>
       <Box
