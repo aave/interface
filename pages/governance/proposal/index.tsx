@@ -38,6 +38,7 @@ export default function DynamicProposal() {
     if (!proposal || ipfs) return;
     fetchIpfs();
   }, [proposal, ipfs]);
+
   return (
     <div>
       {JSON.stringify(proposal)}

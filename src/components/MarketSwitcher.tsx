@@ -8,6 +8,7 @@ import {
   MenuItem,
   SvgIcon,
   TextField,
+  Tooltip,
   Typography,
   useMediaQuery,
   useTheme,
@@ -43,7 +44,7 @@ const getMarketHelpData = (marketName: string) => {
 
   return {
     name: formattedMarketTittle.join(' '),
-    testChainSymbol: testChainName.map((el) => el.split('')[0])[0],
+    testChainName: testChainName[0],
   };
 };
 
@@ -62,10 +63,10 @@ type MarketLogoProps = {
   size: number;
   logo: string;
   withAAVELogo?: boolean;
-  testChainSymbol?: string;
+  testChainName?: string;
 };
 
-export const MarketLogo = ({ size, logo, withAAVELogo, testChainSymbol }: MarketLogoProps) => {
+export const MarketLogo = ({ size, logo, withAAVELogo, testChainName }: MarketLogoProps) => {
   return (
     <Box sx={{ mr: 2, width: size, height: size, position: 'relative' }}>
       {withAAVELogo && (
@@ -90,26 +91,28 @@ export const MarketLogo = ({ size, logo, withAAVELogo, testChainSymbol }: Market
       )}
       {!withAAVELogo && <img src={logo} alt="" width="100%" height="100%" />}
 
-      {testChainSymbol && (
-        <Box
-          sx={{
-            bgcolor: '#29B6F6',
-            width: '16px',
-            height: '16px',
-            borderRadius: '50%',
-            color: 'common.white',
-            fontSize: '12px',
-            lineHeight: '16px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'absolute',
-            right: '-2px',
-            bottom: '-2px',
-          }}
-        >
-          {testChainSymbol}
-        </Box>
+      {testChainName && (
+        <Tooltip title={testChainName} arrow>
+          <Box
+            sx={{
+              bgcolor: '#29B6F6',
+              width: '16px',
+              height: '16px',
+              borderRadius: '50%',
+              color: 'common.white',
+              fontSize: '12px',
+              lineHeight: '16px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'absolute',
+              right: '-2px',
+              bottom: '-2px',
+            }}
+          >
+            {testChainName.split('')[0]}
+          </Box>
+        </Tooltip>
       )}
     </Box>
   );
@@ -119,6 +122,7 @@ export const MarketSwitcher = () => {
   const { currentMarket, setCurrentMarket } = useProtocolDataContext();
   const theme = useTheme();
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
+  const downToXS = useMediaQuery(theme.breakpoints.down('xs'));
 
   return (
     <TextField
@@ -149,11 +153,15 @@ export const MarketSwitcher = () => {
                 size={upToLG ? 32 : 28}
                 logo={network.networkLogoPath}
                 withAAVELogo={withAAVELogo}
-                testChainSymbol={getMarketHelpData(market.marketTitle).testChainSymbol}
+                testChainName={getMarketHelpData(market.marketTitle).testChainName}
               />
               <Typography
                 variant={upToLG ? 'display1' : 'h1'}
-                sx={{ color: 'common.white', mr: 3 }}
+                sx={{
+                  fontSize: downToXS ? '1.55rem' : undefined,
+                  color: 'common.white',
+                  mr: { xxs: 1.5, xs: 3 },
+                }}
               >
                 {getMarketHelpData(market.marketTitle).name} {upToLG && <Trans>Market</Trans>}
               </Typography>
@@ -197,7 +205,7 @@ export const MarketSwitcher = () => {
               size={32}
               logo={network.networkLogoPath}
               withAAVELogo={withAAVELogo}
-              testChainSymbol={getMarketHelpData(market.marketTitle).testChainSymbol}
+              testChainName={getMarketHelpData(market.marketTitle).testChainName}
             />
             <ListItemText sx={{ mr: 3 }}>{getMarketHelpData(market.marketTitle).name}</ListItemText>
 

@@ -1,6 +1,6 @@
 import { DownloadIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Container, Grid, Paper, styled, SvgIcon, Typography } from '@mui/material';
+import { Box, Button, Grid, Paper, styled, SvgIcon, Typography } from '@mui/material';
 import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -20,6 +20,8 @@ import { VoteBar } from 'src/modules/governance/VoteBar';
 import { Ipfs, IpfsType } from 'src/static-build/ipfs';
 import { CustomProposalType, Proposal } from 'src/static-build/proposal';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
+
+import { ContentContainer } from '../../../src/components/ContentContainer';
 
 export async function getStaticPaths() {
   if (!governanceConfig) return { paths: [] };
@@ -72,84 +74,88 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
   if (!governanceConfig) return <div>Governance not enabled</div>;
 
   const { yaeVotes, yaePercent, nayPercent, nayVotes } = formatProposal(proposal);
+
   return (
-    <Container maxWidth="xl">
+    <>
       <Meta title={ipfs.title} description={ipfs.shortDescription} />
       <ProposalTopPanel />
-      <Grid container spacing={4}>
-        <Grid item xs={12} sm={9}>
-          <Paper sx={{ px: 6, py: 4, wordBreak: 'break-word' }}>
-            <Typography variant="h3">
-              <Trans>Proposal overview</Trans>
-            </Typography>
-            <Box sx={{ px: { md: 18 }, pt: 8 }}>
-              <Typography variant="h2" sx={{ mb: 8 }}>
-                {ipfs.title}
+
+      <ContentContainer>
+        <Grid container spacing={4}>
+          <Grid item xs={12} sm={9}>
+            <Paper sx={{ px: 6, py: 4, wordBreak: 'break-word' }}>
+              <Typography variant="h3">
+                <Trans>Proposal overview</Trans>
               </Typography>
-              <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <Box>
-                  <StateBadge state={proposal.state} />
+              <Box sx={{ px: { md: 18 }, pt: 8 }}>
+                <Typography variant="h2" sx={{ mb: 8 }}>
+                  {ipfs.title}
+                </Typography>
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                  <Box>
+                    <StateBadge state={proposal.state} />
+                  </Box>
+                  <Box sx={{ flexGrow: 1 }} />
+                  <Button
+                    component="a"
+                    target="__BLANK"
+                    href={`${governanceConfig?.ipfsGateway}/${ipfs.ipfsHash}`}
+                    startIcon={
+                      <SvgIcon>
+                        <DownloadIcon />
+                      </SvgIcon>
+                    }
+                  >
+                    Raw-Ipfs
+                  </Button>
                 </Box>
-                <Box sx={{ flexGrow: 1 }} />
-                <Button
-                  component="a"
-                  target="__BLANK"
-                  href={`${governanceConfig?.ipfsGateway}/${ipfs.ipfsHash}`}
-                  startIcon={
-                    <SvgIcon>
-                      <DownloadIcon />
-                    </SvgIcon>
-                  }
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  components={{
+                    img({ src, alt }) {
+                      return <CenterAlignedImage src={src} alt={alt} />;
+                    },
+                    a({ node, ...rest }) {
+                      return <StyledLink {...rest} />;
+                    },
+                    h2({ node, ...rest }) {
+                      return (
+                        <Typography variant="subheader1" sx={{ mt: 6 }} gutterBottom {...rest} />
+                      );
+                    },
+                    p({ node, ...rest }) {
+                      return <Typography variant="description" {...rest} />;
+                    },
+                  }}
                 >
-                  Raw-Ipfs
-                </Button>
+                  {ipfs.description}
+                </ReactMarkdown>
               </Box>
-              <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
-                components={{
-                  img({ src, alt }) {
-                    return <CenterAlignedImage src={src} alt={alt} />;
-                  },
-                  a({ node, ...rest }) {
-                    return <StyledLink {...rest} />;
-                  },
-                  h2({ node, ...rest }) {
-                    return (
-                      <Typography variant="subheader1" sx={{ mt: 6 }} gutterBottom {...rest} />
-                    );
-                  },
-                  p({ node, ...rest }) {
-                    return <Typography variant="description" {...rest} />;
-                  },
-                }}
-              >
-                {ipfs.description}
-              </ReactMarkdown>
-            </Box>
-          </Paper>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={3}>
+            <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
+              <VoteInfo id={proposal.id} />
+            </Paper>
+            <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
+              <Typography variant="h3">
+                <Trans>Voting results</Trans>
+                <VoteBar yae percent={yaePercent} votes={yaeVotes} />
+                <VoteBar percent={nayPercent} votes={nayVotes} />
+              </Typography>
+            </Paper>
+            <Paper sx={{ px: 6, py: 4 }}>
+              <Typography variant="h3">
+                <Trans>Proposal details</Trans>
+              </Typography>
+            </Paper>
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={3}>
-          <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
-            <VoteInfo id={proposal.id} />
-          </Paper>
-          <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
-            <Typography variant="h3">
-              <Trans>Voting results</Trans>
-              <VoteBar yae percent={yaePercent} votes={yaeVotes} />
-              <VoteBar percent={nayPercent} votes={nayVotes} />
-            </Typography>
-          </Paper>
-          <Paper sx={{ px: 6, py: 4 }}>
-            <Typography variant="h3">
-              <Trans>Proposal details</Trans>
-            </Typography>
-          </Paper>
-        </Grid>
-      </Grid>
-    </Container>
+      </ContentContainer>
+    </>
   );
 }
 
 ProposalPage.getLayout = function getLayout(page: React.ReactElement) {
-  return <MainLayout headerTopLineHeight={229}>{page}</MainLayout>;
+  return <MainLayout>{page}</MainLayout>;
 };

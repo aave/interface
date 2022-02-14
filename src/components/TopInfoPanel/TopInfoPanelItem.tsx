@@ -7,6 +7,7 @@ interface TopInfoPanelItemProps {
   children: ReactNode;
   hideIcon?: boolean;
   variant?: 'light' | 'dark' | undefined; // default dark
+  withLine?: boolean;
 }
 
 export const TopInfoPanelItem = ({
@@ -15,12 +16,31 @@ export const TopInfoPanelItem = ({
   children,
   hideIcon,
   variant = 'dark',
+  withLine,
 }: TopInfoPanelItemProps) => {
   const theme = useTheme();
   const upToSM = useMediaQuery(theme.breakpoints.up('sm'));
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        width: { xxs: 'calc(50% - 12px)', xs: 'unset' },
+      }}
+    >
+      {withLine && (
+        <Box
+          sx={{
+            mr: 8,
+            my: 'auto',
+            width: '1px',
+            bgcolor: '#FFFFFF6B',
+            height: '37px',
+          }}
+        />
+      )}
+
       {!hideIcon && !icon && (
         <Box
           sx={{

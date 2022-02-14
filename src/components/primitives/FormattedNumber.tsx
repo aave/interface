@@ -55,7 +55,7 @@ export function FormattedNumber({
 }: FormattedNumberProps) {
   const { i18n } = useLingui();
 
-  const defaultMaximumDecimals = percent || symbol === 'USD' ? 2 : 7;
+  const defaultMaximumDecimals = percent || symbol === 'USD' || compact ? 2 : 7;
   const number = percent ? Number(value) * 100 : Number(value);
 
   const minValue = 10 ** -(maximumDecimals || defaultMaximumDecimals);

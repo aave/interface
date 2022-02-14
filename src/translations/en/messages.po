@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2022-02-11 09:40+0200\n"
+"POT-Creation-Date: 2022-02-14 10:31+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -27,10 +27,10 @@ msgstr ""
 msgid "A message (you are very close to liquidation)."
 msgstr ""
 
-#: src/components/ClaimRewards/ClaimRewardsActions.tsx:92
-#: src/components/ClaimRewards/ClaimRewardsActions.tsx:99
-#: src/components/ClaimRewards/ClaimRewardsActions.tsx:106
-#: src/components/ClaimRewards/ClaimRewardsActions.tsx:114
+#: src/components/ClaimRewards/ClaimRewardsActions.tsx:93
+#: src/components/ClaimRewards/ClaimRewardsActions.tsx:100
+#: src/components/ClaimRewards/ClaimRewardsActions.tsx:107
+#: src/components/ClaimRewards/ClaimRewardsActions.tsx:115
 msgid "ALL"
 msgstr ""
 
@@ -86,7 +86,7 @@ msgstr ""
 msgid "About the app"
 msgstr ""
 
-#: src/layouts/WalletWidget.tsx:117
+#: src/layouts/WalletWidget.tsx:118
 msgid "Account"
 msgstr ""
 
@@ -120,7 +120,7 @@ msgstr ""
 
 #: pages/faucet.tsx:51
 #: src/modules/markets/AssetsList.tsx:47
-#: src/modules/reserve-overview/ReserveTopDetails.tsx:56
+#: src/modules/reserve-overview/ReserveTopDetails.tsx:57
 msgid "Asset"
 msgstr ""
 
@@ -144,11 +144,11 @@ msgstr ""
 msgid "Available"
 msgstr ""
 
-#: src/modules/reserve-overview/ReserveTopDetails.tsx:73
+#: src/modules/reserve-overview/ReserveTopDetails.tsx:74
 msgid "Available liquidity"
 msgstr ""
 
-#: src/modules/dashboard/DashboardTopPanel.tsx:120
+#: src/modules/dashboard/DashboardTopPanel.tsx:126
 msgid "Available rewards"
 msgstr ""
 
@@ -227,20 +227,24 @@ msgstr ""
 msgid "Borrowing is currently unavailable for"
 msgstr ""
 
-#: src/components/ClaimRewards/ClaimRewardsActions.tsx:91
-#: src/components/ClaimRewards/ClaimRewardsActions.tsx:98
-#: src/components/ClaimRewards/ClaimRewardsActions.tsx:105
+#: src/components/BridgeButton.tsx:28
+msgid "Bridge"
+msgstr ""
+
+#: src/components/ClaimRewards/ClaimRewardsActions.tsx:92
+#: src/components/ClaimRewards/ClaimRewardsActions.tsx:99
+#: src/components/ClaimRewards/ClaimRewardsActions.tsx:106
 msgid "CLAIM"
 msgstr ""
 
-#: src/components/ClaimRewards/ClaimRewardsActions.tsx:113
+#: src/components/ClaimRewards/ClaimRewardsActions.tsx:114
 msgid "CLAIMING"
 msgstr ""
 
 #: src/components/Borrow/BorrowActions.tsx:133
-#: src/components/ClaimRewards/ClaimRewardsActions.tsx:142
+#: src/components/ClaimRewards/ClaimRewardsActions.tsx:143
 #: src/components/CollateralChange/CollateralChangeActions.tsx:98
-#: src/components/Faucet/FaucetActions.tsx:94
+#: src/components/Faucet/FaucetActions.tsx:95
 #: src/components/RateSwitch/RateSwitchActions.tsx:93
 #: src/components/Repay/RepayActions.tsx:215
 #: src/components/Supply/SupplyActions.tsx:195
@@ -264,8 +268,12 @@ msgstr ""
 msgid "Cap reached. Lower supply amount"
 msgstr ""
 
-#: src/components/ClaimRewards/RewardsSelect.tsx:48
-#: src/components/ClaimRewards/RewardsSelect.tsx:68
+#: src/modules/dashboard/DashboardTopPanel.tsx:142
+msgid "Claim"
+msgstr ""
+
+#: src/components/ClaimRewards/RewardsSelect.tsx:49
+#: src/components/ClaimRewards/RewardsSelect.tsx:69
 msgid "Claim all rewards"
 msgstr ""
 
@@ -282,15 +290,14 @@ msgid "Collateral usage is limited because of isolation mode."
 msgstr ""
 
 #: src/components/ConnectWalletPaper.tsx:27
-#: src/layouts/WalletWidget.tsx:102
+#: src/layouts/WalletWidget.tsx:103
 msgid "Connect wallet"
 msgstr ""
 
-#: src/layouts/WalletWidget.tsx:220
+#: src/layouts/WalletWidget.tsx:225
 msgid "Copy address"
 msgstr ""
 
-#: src/modules/dashboard/DashboardTopPanel.tsx:116
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:90
 msgid "Current LTV"
 msgstr ""
@@ -299,11 +306,11 @@ msgstr ""
 msgid "Custom"
 msgstr ""
 
-#: src/layouts/components/DarkModeSwitcher.tsx:18
+#: src/layouts/components/DarkModeSwitcher.tsx:26
 msgid "Dark mode"
 msgstr ""
 
-#: src/modules/dashboard/DashboardTopPanel.tsx:66
+#: src/modules/dashboard/DashboardTopPanel.tsx:73
 #: src/ui-config/menu-items/index.tsx:23
 msgid "Dashboard"
 msgstr ""
@@ -330,7 +337,7 @@ msgstr ""
 msgid "Developers"
 msgstr ""
 
-#: src/modules/governance/ProposalListItem.tsx:56
+#: src/modules/governance/ProposalListItem.tsx:57
 msgid "Differential"
 msgstr ""
 
@@ -338,7 +345,7 @@ msgstr ""
 msgid "Disable"
 msgstr ""
 
-#: src/layouts/WalletWidget.tsx:260
+#: src/layouts/WalletWidget.tsx:270
 msgid "Disconnect Wallet"
 msgstr ""
 
@@ -370,11 +377,11 @@ msgstr ""
 msgid "ENTER AN AMOUNT"
 msgstr ""
 
-#: src/layouts/components/TestNetModeSwitcher.tsx:26
+#: src/layouts/components/TestNetModeSwitcher.tsx:35
 msgid "Enable Testnet mode"
 msgstr ""
 
-#: src/layouts/components/LanguageSwitcher.tsx:10
+#: src/layouts/components/LanguageSwitcher.tsx:18
 msgid "English"
 msgstr ""
 
@@ -386,7 +393,7 @@ msgstr ""
 msgid "FAQ"
 msgstr ""
 
-#: src/components/Faucet/FaucetActions.tsx:80
+#: src/components/Faucet/FaucetActions.tsx:81
 msgid "FAUCET"
 msgstr ""
 
@@ -397,10 +404,6 @@ msgstr ""
 msgid "Faucet"
 msgstr ""
 
-#: src/components/Faucet/FaucetModalContent.tsx:61
-#~ msgid "Get"
-#~ msgstr ""
-
 #: src/ui-config/menu-items/index.tsx:64
 msgid "Github"
 msgstr ""
@@ -410,7 +413,7 @@ msgstr ""
 msgid "Global settings"
 msgstr ""
 
-#: src/modules/reserve-overview/ReserveTopDetails.tsx:44
+#: src/modules/reserve-overview/ReserveTopDetails.tsx:45
 msgid "Go Back"
 msgstr ""
 
@@ -424,7 +427,7 @@ msgstr ""
 
 #: src/components/FlowCommons/TxModalDetails.tsx:272
 #: src/components/infoModalContents/HFInfoContent.tsx:8
-#: src/modules/dashboard/DashboardTopPanel.tsx:98
+#: src/modules/dashboard/DashboardTopPanel.tsx:108
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:69
 msgid "Health factor"
 msgstr ""
@@ -449,7 +452,7 @@ msgstr ""
 msgid "Isolated asset"
 msgstr ""
 
-#: src/layouts/components/LanguageSwitcher.tsx:23
+#: src/layouts/components/LanguageSwitcher.tsx:36
 msgid "Language"
 msgstr ""
 
@@ -487,12 +490,12 @@ msgstr ""
 msgid "Liquidation value"
 msgstr ""
 
-#: src/components/MarketSwitcher.tsx:111
-#: src/modules/reserve-overview/ReserveTopDetails.tsx:50
+#: src/components/MarketSwitcher.tsx:166
+#: src/modules/reserve-overview/ReserveTopDetails.tsx:51
 msgid "Market"
 msgstr ""
 
-#: src/modules/markets/MarketsTopPanel.tsx:28
+#: src/modules/markets/MarketsTopPanel.tsx:33
 msgid "Market overview"
 msgstr ""
 
@@ -529,15 +532,15 @@ msgstr ""
 msgid "Net APR"
 msgstr ""
 
-#: src/modules/dashboard/DashboardTopPanel.tsx:82
+#: src/modules/dashboard/DashboardTopPanel.tsx:91
 msgid "Net APY"
 msgstr ""
 
-#: src/modules/dashboard/DashboardTopPanel.tsx:71
+#: src/modules/dashboard/DashboardTopPanel.tsx:77
 msgid "Net worth"
 msgstr ""
 
-#: src/layouts/WalletWidget.tsx:171
+#: src/layouts/WalletWidget.tsx:172
 msgid "Network"
 msgstr ""
 
@@ -567,9 +570,9 @@ msgid "Nothing supplied yet"
 msgstr ""
 
 #: src/components/Borrow/BorrowActions.tsx:132
-#: src/components/ClaimRewards/ClaimRewardsActions.tsx:141
+#: src/components/ClaimRewards/ClaimRewardsActions.tsx:142
 #: src/components/CollateralChange/CollateralChangeActions.tsx:97
-#: src/components/Faucet/FaucetActions.tsx:93
+#: src/components/Faucet/FaucetActions.tsx:94
 #: src/components/RateSwitch/RateSwitchActions.tsx:92
 #: src/components/Repay/RepayActions.tsx:214
 #: src/components/Supply/SupplyActions.tsx:194
@@ -592,13 +595,13 @@ msgstr ""
 msgid "Open Supply Modal"
 msgstr ""
 
-#: src/modules/reserve-overview/ReserveTopDetails.tsx:85
+#: src/modules/reserve-overview/ReserveTopDetails.tsx:86
 msgid "Oracle price"
 msgstr ""
 
-#: src/components/ClaimRewards/ClaimRewardsActions.tsx:115
+#: src/components/ClaimRewards/ClaimRewardsActions.tsx:116
 #: src/components/CollateralChange/CollateralChangeActions.tsx:90
-#: src/components/Faucet/FaucetActions.tsx:86
+#: src/components/Faucet/FaucetActions.tsx:87
 #: src/components/RateSwitch/RateSwitchActions.tsx:85
 #: src/components/Repay/RepayActions.tsx:207
 #: src/components/Supply/SupplyActions.tsx:187
@@ -625,7 +628,7 @@ msgstr ""
 msgid "Proposition power"
 msgstr ""
 
-#: src/modules/governance/ProposalListItem.tsx:55
+#: src/modules/governance/ProposalListItem.tsx:56
 msgid "Quorum"
 msgstr ""
 
@@ -651,7 +654,7 @@ msgstr ""
 msgid "Repay with"
 msgstr ""
 
-#: src/modules/reserve-overview/ReserveTopDetails.tsx:69
+#: src/modules/reserve-overview/ReserveTopDetails.tsx:70
 msgid "Reserve Size"
 msgstr ""
 
@@ -675,7 +678,7 @@ msgstr ""
 msgid "Review {action} tx details"
 msgstr ""
 
-#: src/components/ClaimRewards/ClaimRewardsModalContent.tsx:126
+#: src/components/ClaimRewards/ClaimRewardsModalContent.tsx:127
 msgid "Reward(s) to claim"
 msgstr ""
 
@@ -712,11 +715,11 @@ msgstr ""
 msgid "Select APY type to switch"
 msgstr ""
 
-#: src/components/MarketSwitcher.tsx:134
+#: src/components/MarketSwitcher.tsx:189
 msgid "Select Aave Market"
 msgstr ""
 
-#: src/layouts/components/LanguageSwitcher.tsx:61
+#: src/layouts/components/LanguageSwitcher.tsx:74
 msgid "Select language"
 msgstr ""
 
@@ -736,7 +739,7 @@ msgstr ""
 msgid "Some newly listed assets have limited exposure until the Aave governance decides otherwise."
 msgstr ""
 
-#: src/layouts/components/LanguageSwitcher.tsx:11
+#: src/layouts/components/LanguageSwitcher.tsx:19
 msgid "Spanish"
 msgstr ""
 
@@ -788,7 +791,7 @@ msgstr ""
 msgid "Swap"
 msgstr ""
 
-#: src/layouts/WalletWidget.tsx:182
+#: src/layouts/WalletWidget.tsx:183
 msgid "Switch"
 msgstr ""
 
@@ -852,7 +855,7 @@ msgstr ""
 msgid "To see your supplies and borrowings, connect your wallet."
 msgstr ""
 
-#: src/modules/markets/MarketsTopPanel.tsx:40
+#: src/modules/markets/MarketsTopPanel.tsx:43
 msgid "Total available"
 msgstr ""
 
@@ -861,11 +864,11 @@ msgstr ""
 msgid "Total borrowed"
 msgstr ""
 
-#: src/modules/markets/MarketsTopPanel.tsx:50
+#: src/modules/markets/MarketsTopPanel.tsx:52
 msgid "Total borrows"
 msgstr ""
 
-#: src/modules/markets/MarketsTopPanel.tsx:30
+#: src/modules/markets/MarketsTopPanel.tsx:34
 msgid "Total market size"
 msgstr ""
 
@@ -890,7 +893,7 @@ msgstr ""
 msgid "Used as collateral"
 msgstr ""
 
-#: src/modules/reserve-overview/ReserveTopDetails.tsx:81
+#: src/modules/reserve-overview/ReserveTopDetails.tsx:82
 msgid "Utilization Rate"
 msgstr ""
 
@@ -902,7 +905,7 @@ msgstr ""
 msgid "Variable Interest"
 msgstr ""
 
-#: src/layouts/WalletWidget.tsx:241
+#: src/layouts/WalletWidget.tsx:250
 msgid "View on Explorer"
 msgstr ""
 
@@ -911,14 +914,6 @@ msgid "Voting power"
 msgstr ""
 
 #: pages/governance/proposal/[proposalId].tsx:137
-msgid "Voting results"
-msgstr ""
-
-#: src/components/Withdraw/WithdrawActions.tsx:94
-#~ msgid "WITHDRAW {0}"
-#~ msgstr ""
-
-#: pages/governance/proposal/[proposalId].tsx:135
 msgid "Voting results"
 msgstr ""
 
@@ -1028,7 +1023,7 @@ msgstr ""
 msgid "Your interest rate will stay the same for the duration of your loan. Recommended for long-term loan periods and for users who prefer predictability."
 msgstr ""
 
-#: src/components/ClaimRewards/ClaimRewardsModalContent.tsx:102
+#: src/components/ClaimRewards/ClaimRewardsModalContent.tsx:103
 msgid "Your reward balance is 0"
 msgstr ""
 
@@ -1065,10 +1060,6 @@ msgstr ""
 #: src/components/Warnings/AMPLWarning.tsx:9
 msgid "is an asset affected by rebasing. Visit the"
 msgstr ""
-
-#: src/components/Faucet/FaucetModalContent.tsx:63
-#~ msgid "of"
-#~ msgstr ""
 
 #: src/components/Warnings/AMPLWarning.tsx:17
 msgid "or"
