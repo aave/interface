@@ -18,7 +18,7 @@ export const HealthFactorNumber = ({ value, onInfoClick, ...rest }: HealthFactor
   let healthFactorColor = '';
   if (formattedHealthFactor >= 1.5) {
     healthFactorColor = palette.success.main;
-  } else if (formattedHealthFactor < 1.1 && formattedHealthFactor > 0) {
+  } else if (formattedHealthFactor < 1.1) {
     healthFactorColor = palette.error.main;
   } else {
     healthFactorColor = palette.warning.main;
@@ -29,7 +29,8 @@ export const HealthFactorNumber = ({ value, onInfoClick, ...rest }: HealthFactor
       <FormattedNumber
         value={formattedHealthFactor}
         sx={{ color: healthFactorColor, ...rest.sx }}
-        maximumDecimals={2}
+        visibleDecimals={2}
+        compact
         {...rest}
       />
 

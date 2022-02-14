@@ -23,11 +23,11 @@ export interface SupplyActionProps extends BoxProps {
   setGasLimit: Dispatch<SetStateAction<string | undefined>>;
   poolAddress: string;
   symbol: string;
+  blocked: boolean;
 }
 
 export const SupplyActions = ({
   amountToSupply,
-  poolReserve,
   setSupplyTxState,
   handleClose,
   setGasLimit,
@@ -35,6 +35,7 @@ export const SupplyActions = ({
   isWrongNetwork,
   sx,
   symbol,
+  blocked,
   ...props
 }: SupplyActionProps) => {
   const { lendingPool } = useTxBuilderContext();
@@ -101,27 +102,18 @@ export const SupplyActions = ({
   const hasAmount = amountToSupply && amountToSupply !== '0';
 
   useEffect(() => {
-    if (mainTxState.txHash) {
-      setSupplyTxState({
-        success: true,
-        error: undefined,
-      });
-    }
-  }, [setSupplyTxState, mainTxState.txHash]);
-
-  useEffect(() => {
-    if (mainTxState.error || approvalTxState.error) {
-      setSupplyTxState({
-        success: true,
-        error: mainTxState.error || approvalTxState.error,
-      });
-    }
-  }, [setSupplyTxState, mainTxState.error, approvalTxState.error]);
+    setSupplyTxState({
+      success: !!mainTxState.txHash,
+      txError: mainTxState.txError || approvalTxState.txError,
+      gasEstimationError: mainTxState.gasEstimationError || approvalTxState.gasEstimationError,
+    });
+  }, [setSupplyTxState, mainTxState, approvalTxState]);
 
   const handleRetry = () => {
     setSupplyTxState({
-      error: undefined,
+      txError: undefined,
       success: false,
+      gasEstimationError: undefined,
     });
     resetStates();
   };
@@ -133,7 +125,7 @@ export const SupplyActions = ({
       >
         <LeftHelperText
           amount={amountToSupply}
-          error={mainTxState.error || approvalTxState.error}
+          error={mainTxState.txError || approvalTxState.txError}
           approvalHash={approvalTxState.txHash}
           actionHash={mainTxState.txHash}
           requiresApproval={requiresApproval}
@@ -146,21 +138,23 @@ export const SupplyActions = ({
           action="supply"
         />
       </Box>
-      {(mainTxState.error || approvalTxState.error) && (
+      {(mainTxState.txError || approvalTxState.txError) && (
         <Button variant="outlined" onClick={handleRetry} sx={{ mb: 2 }}>
           <Trans>RETRY WITH APPROVAL</Trans>
         </Button>
       )}
-      {!hasAmount && !approvalTxState.error && (
+      {!hasAmount && !approvalTxState.txError && (
         <Button variant="outlined" disabled>
           <Trans>ENTER AN AMOUNT</Trans>
         </Button>
       )}
-      {hasAmount && requiresApproval && !approved && !approvalTxState.error && (
+      {hasAmount && requiresApproval && !approved && !approvalTxState.txError && (
         <Button
           variant="contained"
           onClick={() => approval(amountToSupply, poolAddress)}
-          disabled={approved || loading || isWrongNetwork}
+          disabled={
+            approved || loading || isWrongNetwork || blocked || !!approvalTxState.gasEstimationError
+          }
         >
           {!approved && !loading && <Trans>APPROVE TO CONTINUE</Trans>}
           {!approved && loading && (
@@ -171,14 +165,20 @@ export const SupplyActions = ({
           )}
         </Button>
       )}
-      {hasAmount && !mainTxState.txHash && !mainTxState.error && !approvalTxState.error && (
+      {hasAmount && !mainTxState.txHash && !mainTxState.txError && !approvalTxState.txError && (
         <Button
           variant="contained"
           onClick={action}
-          disabled={loading || (requiresApproval && !approved) || isWrongNetwork}
+          disabled={
+            loading ||
+            (requiresApproval && !approved) ||
+            isWrongNetwork ||
+            blocked ||
+            !!mainTxState.gasEstimationError
+          }
           sx={{ mt: !approved ? 2 : 0 }}
         >
-          {!mainTxState.txHash && !mainTxState.error && (!loading || !approved) && (
+          {!mainTxState.txHash && !mainTxState.txError && (!loading || !approved) && (
             <Trans>SUPPLY {symbol}</Trans>
           )}
           {approved && loading && (
@@ -189,9 +189,9 @@ export const SupplyActions = ({
           )}
         </Button>
       )}
-      {(mainTxState.txHash || mainTxState.error || approvalTxState.error) && (
+      {(mainTxState.txHash || mainTxState.txError || approvalTxState.txError) && (
         <Button onClick={handleClose} variant="contained">
-          {!mainTxState.error && !approvalTxState.error && <Trans>OK, </Trans>}
+          {!mainTxState.txError && !approvalTxState.txError && <Trans>OK, </Trans>}
           <Trans>CLOSE</Trans>
         </Button>
       )}

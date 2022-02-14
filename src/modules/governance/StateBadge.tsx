@@ -1,5 +1,5 @@
 import { ProposalState } from '@aave/contract-helpers';
-import { experimental_sx, alpha, styled } from '@mui/material';
+import { alpha, experimental_sx, styled } from '@mui/material';
 
 interface StateBadgeProps {
   state: ProposalState;
@@ -27,7 +27,6 @@ const Badge = styled('span')<StateBadgeProps>(({ theme, state }) => {
     borderRadius: 1,
     display: 'inline-flex',
     alignItems: 'center',
-    mr: 3,
     '&:before': {
       content: '""',
       width: '6px',

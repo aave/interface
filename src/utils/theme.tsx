@@ -13,23 +13,10 @@ import React from 'react';
 
 const theme = createTheme();
 const {
-  breakpoints,
   typography: { pxToRem },
 } = theme;
 
 const FONT = 'Inter, Arial';
-
-const getFontSize = (mobile: number, normal: number, large: number) => {
-  return {
-    fontSize: pxToRem(mobile),
-    [breakpoints.up('sm')]: {
-      fontSize: pxToRem(normal),
-    },
-    [breakpoints.up('lg')]: {
-      fontSize: pxToRem(large),
-    },
-  };
-};
 
 declare module '@mui/material/styles/createPalette' {
   interface PaletteColor extends ColorPartial {}
@@ -55,6 +42,7 @@ declare module '@mui/material/styles/createPalette' {
 }
 
 interface TypographyCustomVariants {
+  display1: React.CSSProperties;
   subheader1: React.CSSProperties;
   subheader2: React.CSSProperties;
   description: React.CSSProperties;
@@ -78,11 +66,17 @@ declare module '@mui/material/styles' {
 
   // allow configuration using `createTheme`
   interface TypographyVariantsOptions extends TypographyCustomVariants {}
+
+  interface BreakpointOverrides {
+    xxs: true;
+    xxl: true;
+  }
 }
 
 // Update the Typography's variant prop options
 declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
+    display1: true;
     subheader1: true;
     subheader2: true;
     description: true;
@@ -123,8 +117,8 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
 
   return {
     breakpoints: {
-      keys: ['xs', 'sm', 'md', 'lg', 'xl'],
-      values: { xs: 0, sm: 768, md: 1024, lg: 1400, xl: 1728 },
+      keys: ['xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl'],
+      values: { xxs: 0, xs: 640, sm: 760, md: 960, lg: 1280, xl: 1440, xxl: 1800 },
     },
     palette: {
       mode,
@@ -202,61 +196,68 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
       body2: undefined,
       button: undefined,
       overline: undefined,
+      display1: {
+        fontFamily: FONT,
+        fontWeight: 800,
+        letterSpacing: pxToRem(0.25),
+        lineHeight: '123.5%',
+        fontSize: pxToRem(32),
+      },
       h1: {
         fontFamily: FONT,
         fontWeight: 800,
         letterSpacing: pxToRem(0.25),
         lineHeight: '123.5%',
-        ...getFontSize(32, 32, 32),
+        fontSize: pxToRem(28),
       },
       h2: {
         fontFamily: FONT,
         fontWeight: 600,
         letterSpacing: 'unset',
         lineHeight: '133.4%',
-        ...getFontSize(21, 21, 21),
+        fontSize: pxToRem(21),
       },
       h3: {
         fontFamily: FONT,
         fontWeight: 500,
         letterSpacing: pxToRem(0.15),
         lineHeight: '160%',
-        ...getFontSize(18, 18, 18),
+        fontSize: pxToRem(18),
       },
       h4: {
         fontFamily: FONT,
         fontWeight: 700,
         letterSpacing: pxToRem(0.15),
         lineHeight: pxToRem(24),
-        ...getFontSize(16, 16, 16),
+        fontSize: pxToRem(16),
       },
       subheader1: {
         fontFamily: FONT,
         fontWeight: 600,
         letterSpacing: pxToRem(0.15),
         lineHeight: pxToRem(20),
-        ...getFontSize(14, 14, 14),
+        fontSize: pxToRem(14),
       },
       subheader2: {
         fontFamily: FONT,
         fontWeight: 500,
         letterSpacing: pxToRem(0.1),
         lineHeight: pxToRem(16),
-        ...getFontSize(12, 12, 12),
+        fontSize: pxToRem(12),
       },
       description: {
         fontFamily: FONT,
         fontWeight: 400,
         letterSpacing: pxToRem(0.15),
         lineHeight: '143%',
-        ...getFontSize(14, 14, 14),
+        fontSize: pxToRem(14),
       },
       caption: {
         fontFamily: FONT,
         fontWeight: 400,
         letterSpacing: pxToRem(0.15),
         lineHeight: pxToRem(16),
-        ...getFontSize(13, 13, 13),
+        fontSize: pxToRem(13),
       },
       buttonL: {
         fontFamily: FONT,
@@ -264,13 +265,13 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         letterSpacing: pxToRem(0.46),
         lineHeight: pxToRem(24),
         textTransform: 'uppercase',
-        ...getFontSize(15, 15, 15),
+        fontSize: pxToRem(15),
       },
       buttonM: {
         fontFamily: FONT,
         fontWeight: 600,
         lineHeight: pxToRem(24),
-        ...getFontSize(14, 14, 14),
+        fontSize: pxToRem(14),
       },
       buttonS: {
         fontFamily: FONT,
@@ -278,75 +279,75 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         letterSpacing: pxToRem(0.46),
         lineHeight: pxToRem(20),
         textTransform: 'uppercase',
-        ...getFontSize(11, 11, 11),
+        fontSize: pxToRem(11),
       },
       helperText: {
         fontFamily: FONT,
         fontWeight: 400,
         letterSpacing: pxToRem(0.4),
         lineHeight: pxToRem(12),
-        ...getFontSize(10, 10, 10),
+        fontSize: pxToRem(10),
       },
       tooltip: {
         fontFamily: FONT,
         fontWeight: 400,
         letterSpacing: pxToRem(0.15),
         lineHeight: pxToRem(16),
-        ...getFontSize(12, 12, 12),
+        fontSize: pxToRem(12),
       },
       main21: {
         fontFamily: FONT,
         fontWeight: 800,
         lineHeight: '133.4%',
-        ...getFontSize(21, 21, 21),
+        fontSize: pxToRem(21),
       },
       secondary21: {
         fontFamily: FONT,
         fontWeight: 500,
         lineHeight: '133.4%',
-        ...getFontSize(21, 21, 21),
+        fontSize: pxToRem(21),
       },
       main16: {
         fontFamily: FONT,
         fontWeight: 600,
         letterSpacing: pxToRem(0.15),
         lineHeight: pxToRem(24),
-        ...getFontSize(16, 16, 16),
+        fontSize: pxToRem(16),
       },
       secondary16: {
         fontFamily: FONT,
         fontWeight: 500,
         letterSpacing: pxToRem(0.15),
         lineHeight: pxToRem(24),
-        ...getFontSize(16, 16, 16),
+        fontSize: pxToRem(16),
       },
       main14: {
         fontFamily: FONT,
         fontWeight: 600,
         letterSpacing: pxToRem(0.15),
         lineHeight: pxToRem(20),
-        ...getFontSize(14, 14, 14),
+        fontSize: pxToRem(14),
       },
       secondary14: {
         fontFamily: FONT,
         fontWeight: 500,
         letterSpacing: pxToRem(0.15),
         lineHeight: pxToRem(20),
-        ...getFontSize(14, 14, 14),
+        fontSize: pxToRem(14),
       },
       main12: {
         fontFamily: FONT,
         fontWeight: 600,
         letterSpacing: pxToRem(0.1),
         lineHeight: pxToRem(16),
-        ...getFontSize(12, 12, 12),
+        fontSize: pxToRem(12),
       },
       secondary12: {
         fontFamily: FONT,
         fontWeight: 500,
         letterSpacing: pxToRem(0.1),
         lineHeight: pxToRem(16),
-        ...getFontSize(12, 12, 12),
+        fontSize: pxToRem(12),
       },
     },
   } as ThemeOptions;
@@ -425,6 +426,7 @@ export function getThemedComponents(theme: Theme) {
         defaultProps: {
           variant: 'description',
           variantMapping: {
+            display1: 'h1',
             h1: 'h1',
             h2: 'h2',
             h3: 'h3',
@@ -535,24 +537,39 @@ export function getThemedComponents(theme: Theme) {
             flexDirection: 'column',
             flex: 1,
             paddingBottom: '39px',
-            [theme.breakpoints.up('xs')]: {
-              paddingLeft: '10px',
-              paddingRight: '10px',
+            [theme.breakpoints.up('xxs')]: {
+              paddingLeft: '8px',
+              paddingRight: '8px',
             },
-            [theme.breakpoints.up('sm')]: {
+            [theme.breakpoints.up('xs')]: {
               paddingLeft: '20px',
               paddingRight: '20px',
             },
+            [theme.breakpoints.up('sm')]: {
+              paddingLeft: '48px',
+              paddingRight: '48px',
+            },
             [theme.breakpoints.up('md')]: {
-              paddingLeft: '40px',
-              paddingRight: '40px',
+              paddingLeft: '96px',
+              paddingRight: '96px',
             },
             [theme.breakpoints.up('lg')]: {
-              paddingLeft: '80px',
-              paddingRight: '80px',
+              paddingLeft: '20px',
+              paddingRight: '20px',
+            },
+            '@media screen and (min-width: 1360px)': {
+              paddingLeft: '64px',
+              paddingRight: '64px',
             },
             [theme.breakpoints.up('xl')]: {
-              maxWidth: '1888px',
+              maxWidth: 'unset',
+              paddingLeft: '96px',
+              paddingRight: '96px',
+            },
+            [theme.breakpoints.up('xxl')]: {
+              paddingLeft: 0,
+              paddingRight: 0,
+              maxWidth: '1440px',
             },
           },
         },
@@ -704,7 +721,8 @@ export function getThemedComponents(theme: Theme) {
           body: {
             fontFamily: FONT,
             fontWeight: 400,
-            ...getFontSize(14, 14, 14),
+            fontSize: pxToRem(14),
+            minWidth: '375px',
             '> div:first-of-type': {
               minHeight: '100vh',
               display: 'flex',

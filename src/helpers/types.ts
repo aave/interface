@@ -1,4 +1,24 @@
 export type TxState = {
-  error?: string;
+  txError?: string;
   success: boolean;
+  gasEstimationError?: string;
+};
+
+export type Reward = {
+  assets: string[];
+  incentiveControllerAddress: string;
+  symbol: string;
+  balance: string;
+  balanceUsd: string;
+  rewardTokenAddress: string;
+};
+
+export type EmodeCategory = {
+  id: number;
+  ltv: number;
+  liquidationThreshold: number;
+  liquidationBonus: number;
+  priceSource: string;
+  label: string;
+  assets: string[];
 };

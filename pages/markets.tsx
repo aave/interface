@@ -1,14 +1,17 @@
-import { Container } from '@mui/material';
 import { MainLayout } from 'src/layouts/MainLayout';
 import AssetsList from 'src/modules/markets/AssetsList';
 import { MarketsTopPanel } from 'src/modules/markets/MarketsTopPanel';
 
+import { ContentContainer } from '../src/components/ContentContainer';
+
 export default function Markets() {
   return (
-    <Container maxWidth="xl">
+    <>
       <MarketsTopPanel />
-      <AssetsList />
-    </Container>
+      <ContentContainer>
+        <AssetsList />
+      </ContentContainer>
+    </>
   );
 }
 

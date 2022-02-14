@@ -5,6 +5,8 @@ import {
   Box,
   Button,
   Divider,
+  List,
+  ListItem,
   ListItemIcon,
   ListItemText,
   Menu,
@@ -14,15 +16,24 @@ import {
   Typography,
 } from '@mui/material';
 import makeBlockie from 'ethereum-blockies-base64';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useGetEns from 'src/libs/hooks/use-get-ens';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 import { Link } from '../components/primitives/Link';
 import { textCenterEllipsis } from '../helpers/text-center-ellipsis';
 import { getNetworkConfig } from '../utils/marketsAndNetworksConfig';
+import { DrawerWrapper } from './components/DrawerWrapper';
+import { MobileCloseButton } from './components/MobileCloseButton';
 
-export default function WalletWidget() {
+interface WalletWidgetProps {
+  open: boolean;
+  setOpen: (value: boolean) => void;
+  headerHeight: number;
+  md: boolean;
+}
+
+export default function WalletWidget({ open, setOpen, headerHeight, md }: WalletWidgetProps) {
   const { connectWallet, disconnectWallet, currentAccount, connected, chainId, switchNetwork } =
     useWeb3Context();
 
@@ -33,16 +44,14 @@ export default function WalletWidget() {
       : ensName
     : undefined;
 
-  const [anchorEl, setAnchorEl] = useState<Element | null>(null);
   const [useBlockie, setUseBlockie] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<Element | null>(null);
 
   useEffect(() => {
     if (ensAvatar) {
       setUseBlockie(false);
     }
   }, [ensAvatar]);
-
-  const open = Boolean(anchorEl);
 
   const networkConfig = getNetworkConfig(chainId);
   let networkColor = '';
@@ -55,13 +64,14 @@ export default function WalletWidget() {
   }
 
   const handleClose = () => {
-    setAnchorEl(null);
+    setOpen(false);
   };
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if (!connected) {
       connectWallet();
     } else {
+      setOpen(true);
       setAnchorEl(event.currentTarget);
     }
   };
@@ -93,66 +103,198 @@ export default function WalletWidget() {
     <Trans>Connect wallet</Trans>
   );
 
-  return (
+  const Content = ({ component = ListItem }: { component?: typeof MenuItem | typeof ListItem }) => (
     <>
-      <Button
-        variant={connected ? 'surface' : 'gradient'}
-        aria-label="wallet"
-        id="wallet-button"
-        aria-controls={open ? 'wallet-button' : undefined}
-        aria-expanded={open ? 'true' : undefined}
-        aria-haspopup="true"
-        onClick={handleClick}
-        sx={{ p: connected ? '5px 8px' : undefined }}
-        startIcon={
-          connected && (
+      <Typography
+        variant="subheader2"
+        sx={{
+          display: { xxs: 'block', md: 'none' },
+          color: 'common.white',
+          opacity: 0.7,
+          px: 4,
+          py: 2,
+        }}
+      >
+        <Trans>Account</Trans>
+      </Typography>
+
+      <Box component={component} disabled>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box
+            sx={{
+              width: 40,
+              height: 40,
+              borderRadius: '50%',
+              border: '1px solid #FAFBFC1F',
+              mr: 3,
+              img: { width: '100%', height: '100%', borderRadius: '50%' },
+            }}
+          >
+            <img
+              src={useBlockie ? makeBlockie(currentAccount) : ensAvatar}
+              alt=""
+              onError={() => setUseBlockie(true)}
+            />
+          </Box>
+          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+            {ensNameAbbreviated && (
+              <Typography variant="h4" color={{ xxs: 'common.white', md: 'text.primary' }}>
+                {ensNameAbbreviated}
+              </Typography>
+            )}
+
+            <Typography
+              variant={ensNameAbbreviated ? 'caption' : 'h4'}
+              color={
+                ensNameAbbreviated
+                  ? { xxs: '#FFFFFFB2', md: 'text.secondary' }
+                  : { xxs: 'common.white', md: 'text.primary' }
+              }
+            >
+              {textCenterEllipsis(currentAccount, ensNameAbbreviated ? 12 : 7, 4)}
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
+      <Divider sx={{ my: { xxs: 7, md: 0 }, borderColor: { xxs: '#FFFFFF1F', md: 'divider' } }} />
+
+      <Box component={component} onClick={handleSwitchNetwork}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              mb: 1,
+            }}
+          >
+            <Typography variant="caption" color={{ xxs: '#FFFFFFB2', md: 'text.secondary' }}>
+              <Trans>Network</Trans>
+            </Typography>
+
+            <Button
+              sx={{
+                borderColor: { xxs: '#FFFFFF1F', md: 'divider' },
+                color: { xxs: 'common.white', md: 'primary.main' },
+              }}
+              size="small"
+              variant="outlined"
+            >
+              <Trans>Switch</Trans>
+            </Button>
+          </Box>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Box
               sx={{
-                width: 22,
-                height: 22,
+                bgcolor: networkColor,
+                width: 6,
+                height: 6,
+                mr: 2,
+                boxShadow: '0px 2px 1px rgba(0, 0, 0, 0.05), 0px 0px 1px rgba(0, 0, 0, 0.25)',
                 borderRadius: '50%',
-                border: '1px solid #FAFBFC1F',
-                img: { width: '100%', height: '100%', borderRadius: '50%' },
               }}
-            >
-              <img
-                src={useBlockie ? makeBlockie(currentAccount) : ensAvatar}
-                alt=""
-                onError={() => setUseBlockie(true)}
-              />
-            </Box>
-          )
-        }
-        endIcon={
-          connected && (
-            <SvgIcon>
-              <ChevronDownIcon />
-            </SvgIcon>
-          )
-        }
-      >
-        {buttonContent}
-      </Button>
+            />
+            <Typography color={{ xxs: 'common.white', md: 'text.primary' }} variant="subheader1">
+              {networkConfig.name}
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
+      <Divider sx={{ my: { xxs: 7, md: 0 }, borderColor: { xxs: '#FFFFFF1F', md: 'divider' } }} />
 
-      <Menu
-        id="wallet-menu"
-        MenuListProps={{
-          'aria-labelledby': 'wallet-button',
-        }}
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
+      <Box
+        component={component}
+        sx={{ color: { xxs: 'common.white', md: 'text.primary' } }}
+        onClick={handleCopy}
       >
-        <MenuList disablePadding sx={{ '.MuiMenuItem-root.Mui-disabled': { opacity: 1 } }}>
-          <MenuItem disabled>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <ListItemIcon
+          sx={{
+            color: {
+              xxs: 'common.white',
+              md: 'primary.light',
+              minWidth: 'unset',
+              marginRight: 12,
+            },
+          }}
+        >
+          <SvgIcon fontSize="small">
+            <DuplicateIcon />
+          </SvgIcon>
+        </ListItemIcon>
+        <ListItemText>
+          <Trans>Copy address</Trans>
+        </ListItemText>
+      </Box>
+
+      <Link href={networkConfig.explorerLinkBuilder({ address: currentAccount })}>
+        <Box
+          component={component}
+          sx={{ color: { xxs: 'common.white', md: 'text.primary' } }}
+          onClick={handleClose}
+        >
+          <ListItemIcon
+            sx={{
+              color: {
+                xxs: 'common.white',
+                md: 'primary.light',
+                minWidth: 'unset',
+                marginRight: 12,
+              },
+            }}
+          >
+            <SvgIcon fontSize="small">
+              <ExternalLinkIcon />
+            </SvgIcon>
+          </ListItemIcon>
+          <ListItemText>
+            <Trans>View on Explorer</Trans>
+          </ListItemText>
+        </Box>
+      </Link>
+
+      <Box
+        component={component}
+        sx={{ color: { xxs: 'common.white', md: 'text.primary' } }}
+        onClick={handleDisconnect}
+      >
+        <ListItemIcon
+          sx={{
+            color: { xxs: 'common.white', md: 'primary.light', minWidth: 'unset', marginRight: 12 },
+          }}
+        >
+          <SvgIcon fontSize="small">
+            <LogoutIcon />
+          </SvgIcon>
+        </ListItemIcon>
+        <ListItemText>
+          <Trans>Disconnect Wallet</Trans>
+        </ListItemText>
+      </Box>
+    </>
+  );
+
+  return (
+    <>
+      {md && connected && open ? (
+        <MobileCloseButton setOpen={setOpen} />
+      ) : (
+        <Button
+          variant={connected ? 'surface' : 'gradient'}
+          aria-label="wallet"
+          id="wallet-button"
+          aria-controls={open ? 'wallet-button' : undefined}
+          aria-expanded={open ? 'true' : undefined}
+          aria-haspopup="true"
+          onClick={handleClick}
+          sx={{ p: connected ? '5px 8px' : undefined }}
+          startIcon={
+            connected && (
               <Box
                 sx={{
-                  width: 40,
-                  height: 40,
+                  width: 22,
+                  height: 22,
                   borderRadius: '50%',
                   border: '1px solid #FAFBFC1F',
-                  mr: 3,
                   img: { width: '100%', height: '100%', borderRadius: '50%' },
                 }}
               >
@@ -162,93 +304,41 @@ export default function WalletWidget() {
                   onError={() => setUseBlockie(true)}
                 />
               </Box>
-              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                {ensNameAbbreviated && <Typography variant="h4">{ensNameAbbreviated}</Typography>}
-
-                <Typography
-                  variant={ensNameAbbreviated ? 'caption' : 'h4'}
-                  color={ensNameAbbreviated ? 'text.secondary' : 'text.primary'}
-                >
-                  {textCenterEllipsis(currentAccount, ensNameAbbreviated ? 12 : 7, 4)}
-                </Typography>
-              </Box>
-            </Box>
-          </MenuItem>
-          <Divider />
-
-          <MenuItem onClick={handleSwitchNetwork}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  mb: 1,
-                }}
-              >
-                <Typography variant="caption" color="text.secondary">
-                  <Trans>Network</Trans>
-                </Typography>
-
-                <Button size="small" variant="outlined">
-                  <Trans>Switch</Trans>
-                </Button>
-              </Box>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Box
-                  sx={{
-                    bgcolor: networkColor,
-                    width: 6,
-                    height: 6,
-                    mr: 2,
-                    boxShadow: '0px 2px 1px rgba(0, 0, 0, 0.05), 0px 0px 1px rgba(0, 0, 0, 0.25)',
-                    borderRadius: '50%',
-                  }}
-                />
-                <Typography variant="subheader1">{networkConfig.name}</Typography>
-              </Box>
-            </Box>
-          </MenuItem>
-          <Divider />
-
-          <MenuItem onClick={handleCopy}>
-            <ListItemIcon>
-              <SvgIcon fontSize="small">
-                <DuplicateIcon />
+            )
+          }
+          endIcon={
+            connected && (
+              <SvgIcon>
+                <ChevronDownIcon />
               </SvgIcon>
-            </ListItemIcon>
-            <ListItemText>
-              <Trans>Copy address</Trans>
-            </ListItemText>
-          </MenuItem>
+            )
+          }
+        >
+          {buttonContent}
+        </Button>
+      )}
 
-          <MenuItem
-            component={Link}
-            href={networkConfig.explorerLinkBuilder({ address: currentAccount })}
-            onClick={handleClose}
-          >
-            <ListItemIcon>
-              <SvgIcon fontSize="small">
-                <ExternalLinkIcon />
-              </SvgIcon>
-            </ListItemIcon>
-            <ListItemText>
-              <Trans>View on Explorer</Trans>
-            </ListItemText>
-          </MenuItem>
-
-          <MenuItem onClick={handleDisconnect}>
-            <ListItemIcon>
-              <SvgIcon fontSize="small">
-                <LogoutIcon />
-              </SvgIcon>
-            </ListItemIcon>
-            <ListItemText>
-              <Trans>Disconnect Wallet</Trans>
-            </ListItemText>
-          </MenuItem>
-        </MenuList>
-      </Menu>
+      {md ? (
+        <DrawerWrapper open={open} setOpen={setOpen} headerHeight={headerHeight}>
+          <List sx={{ px: 2, '.MuiListItem-root.Mui-disabled': { opacity: 1 } }}>
+            <Content />
+          </List>
+        </DrawerWrapper>
+      ) : (
+        <Menu
+          id="wallet-menu"
+          MenuListProps={{
+            'aria-labelledby': 'wallet-button',
+          }}
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+        >
+          <MenuList disablePadding sx={{ '.MuiMenuItem-root.Mui-disabled': { opacity: 1 } }}>
+            <Content component={MenuItem} />
+          </MenuList>
+        </Menu>
+      )}
     </>
   );
 }
