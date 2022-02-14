@@ -24,7 +24,7 @@ interface ModalContextType {
   openCollateralChange: (underlyingAsset: string) => void;
   openRateSwitch: (underlyingAsset: string) => void;
   openStake: (stakeAssetName: string, icon: string) => void;
-  openUnstake: (stakeAsset: string, stakeAssetName: string, icon: string) => void;
+  openUnstake: (stakeAssetName: string, icon: string) => void;
   openStakeCooldown: (stakeAssetName: string) => void;
   openClaimStakeRewards: () => void;
   openClaimRewards: () => void;
@@ -73,9 +73,9 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setType(ModalType.Stake);
           setArgs({ stakeAssetName, icon });
         },
-        openUnstake: (stakeAsset, stakeAssetName, icon) => {
+        openUnstake: (stakeAssetName, icon) => {
           setType(ModalType.Unstake);
-          setArgs({ stakeAsset, stakeAssetName, icon });
+          setArgs({ stakeAssetName, icon });
         },
         openStakeCooldown: (stakeAssetName) => {
           setType(ModalType.StakeCooldown);

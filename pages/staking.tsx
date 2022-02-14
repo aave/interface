@@ -1,6 +1,7 @@
 import { Container, Grid, Typography } from '@mui/material';
 import { StakeModal } from 'src/components/Stake/StakeModal';
 import { StakeCooldownModal } from 'src/components/StakeCooldown/StakeCooldownModal';
+import { UnStakeModal } from 'src/components/UnStake/UnStakeModal';
 import { StakeDataProvider, useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
@@ -9,7 +10,7 @@ import { StakingPanel } from 'src/modules/staking/StakingPanel';
 
 export default function Staking() {
   const data = useStakeData();
-  const { openStake, openStakeCooldown } = useModalContext();
+  const { openStake, openStakeCooldown, openUnstake } = useModalContext();
   return (
     <Container maxWidth="xl">
       <StakingHeader />
@@ -26,6 +27,7 @@ export default function Staking() {
             stakeUserData={data.stakeUserResult?.stakeUserUIData.aave}
             onStakeAction={() => openStake('aave', 'AAVE')}
             onCooldownAction={() => openStakeCooldown('aave')}
+            onUnstakeAction={() => openUnstake('aave', 'AAVE')}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -37,8 +39,9 @@ export default function Staking() {
             icon="stkbpt"
             stakeData={data.stakeGeneralResult?.stakeGeneralUIData.bpt}
             stakeUserData={data.stakeUserResult?.stakeUserUIData.bpt}
-            onStakeAction={() => openStake('bpt', 'stkbpt')}
+            onStakeAction={() => openStake('bpt', 'stkBPT')}
             onCooldownAction={() => openStakeCooldown('bpt')}
+            onUnstakeAction={() => openUnstake('bpt', 'stkBPT')}
             description={
               <Typography color="text.muted" sx={{ mt: 4 }}>
                 The Balancer Pool Token (BPT) is a liquidity pool token. You can receive BPT by
@@ -53,6 +56,7 @@ export default function Staking() {
       {/** Modals */}
       <StakeModal />
       <StakeCooldownModal />
+      <UnStakeModal />
       {/** End of modals */}
       <code style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(data, null, 2)}</code>
     </Container>

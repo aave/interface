@@ -39,34 +39,25 @@ export const StakeActions = ({
   const { state, gasPriceData } = useGasStation();
   const stakingService = useStakeTxBuilderContext(selectedToken);
 
-  const {
-    approval,
-    approved,
-    action,
-    requiresApproval,
-    loading,
-    approvalTxState,
-    mainTxState,
-    usePermit,
-    resetStates,
-  } = useTransactionHandler({
-    tryPermit: false,
-    handleGetTxns: async () => {
-      const tx: EthereumTransactionTypeExtended[] = await stakingService.stake(
-        currentAccount,
-        amountToStake.toString()
-      );
-      const gas: GasType | null = await tx[tx.length - 1].gas();
-      setGasLimit(gas?.gasLimit);
-      return tx;
-    },
-    customGasPrice:
-      state.gasOption === GasOption.Custom
-        ? state.customGas
-        : gasPriceData.data?.[state.gasOption].legacyGasPrice,
-    skip: !amountToStake || parseFloat(amountToStake) === 0 || blocked,
-    deps: [amountToStake],
-  });
+  const { approval, approved, action, requiresApproval, loading, approvalTxState, mainTxState } =
+    useTransactionHandler({
+      tryPermit: false,
+      handleGetTxns: async () => {
+        const tx: EthereumTransactionTypeExtended[] = await stakingService.stake(
+          currentAccount,
+          amountToStake.toString()
+        );
+        const gas: GasType | null = await tx[tx.length - 1].gas();
+        setGasLimit(gas?.gasLimit);
+        return tx;
+      },
+      customGasPrice:
+        state.gasOption === GasOption.Custom
+          ? state.customGas
+          : gasPriceData.data?.[state.gasOption].legacyGasPrice,
+      skip: !amountToStake || parseFloat(amountToStake) === 0 || blocked,
+      deps: [amountToStake],
+    });
 
   const hasAmount = amountToStake && amountToStake !== '0';
 
@@ -94,15 +85,9 @@ export const StakeActions = ({
           approvalHash={approvalTxState.txHash}
           actionHash={mainTxState.txHash}
           chainId={connectedChainId}
-          usePermit={usePermit}
           action="supply"
         />
       </Box>
-      {(mainTxState.txError || approvalTxState.txError) && (
-        <Button variant="outlined" onClick={handleRetry} sx={{ mb: 2 }}>
-          <Trans>RETRY WITH APPROVAL</Trans>
-        </Button>
-      )}
       {!hasAmount && !approvalTxState.txError && (
         <Button variant="outlined" disabled>
           <Trans>ENTER AN AMOUNT</Trans>
