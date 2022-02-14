@@ -1,28 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvider';
 import { StakeActions } from './StakeActions';
 import { Typography } from '@mui/material';
 import { AssetInput } from '../AssetInput';
-import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { getNetworkConfig, isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
+import { normalize, valueToBigNumber } from '@aave/math-utils';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { TxErrorView } from '../FlowCommons/Error';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { TxState } from 'src/helpers/types';
-import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { Trans } from '@lingui/macro';
 import { CooldownWarning } from '../Warnings/CooldownWarning';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { StakeGeneralData } from 'src/hooks/app-data-provider/graphql/hooks';
 import { useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
 
 export type StakeProps = {
-  stakeAsset: string;
   stakeAssetName: string;
   icon: string;
   handleClose: () => void;
@@ -35,17 +30,10 @@ export enum ErrorType {
 
 type StakingType = 'aave' | 'bpt';
 
-export const StakeModalContent = ({
-  stakeAsset,
-  stakeAssetName,
-  icon,
-  handleClose,
-}: StakeProps) => {
+export const StakeModalContent = ({ stakeAssetName, icon, handleClose }: StakeProps) => {
   const { walletBalances } = useWalletBalances();
   const data = useStakeData();
   const stakeData = data.stakeGeneralResult?.stakeGeneralUIData[stakeAssetName as StakingType];
-  const { user } = useAppDataContext();
-  const { currentChainId } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
 
   // states
@@ -55,10 +43,12 @@ export const StakeModalContent = ({
   const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
   const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
 
-  const networkConfig = getNetworkConfig(currentChainId);
-
-  const walletBalance = walletBalances[stakeAsset]?.amount || '0';
-
+  const walletBalance = normalize(
+    // @ts-expect-error dont know why it throws type error here
+    data.stakeUserResult?.stakeUserUIData[stakeAssetName].underlyingTokenUserBalance || '0',
+    18
+  );
+  console.log('wallet balance: ', data);
   useEffect(() => {
     if (amount === '-1') {
       setAmountToSupply(walletBalance);
@@ -67,8 +57,11 @@ export const StakeModalContent = ({
     }
   }, [amount, walletBalance]);
 
-  // tbd
-  const amountInUsd = 1000;
+  // staking token usd value
+  const amountInUsd =
+    Number(amountToSupply) *
+    (Number(normalize(stakeData?.stakeTokenPriceEth || 1, 18)) /
+      Number(normalize(data.stakeGeneralResult?.stakeGeneralUIData.usdPriceEth || 1, 18)));
 
   // error handler
   useEffect(() => {
@@ -89,7 +82,9 @@ export const StakeModalContent = ({
   };
 
   // is Network mismatched
-  const isWrongNetwork = currentChainId !== connectedChainId;
+  const stakingChain = 1;
+  const networkConfig = getNetworkConfig(stakingChain);
+  const isWrongNetwork = connectedChainId !== stakingChain;
 
   return (
     <>
@@ -98,7 +93,7 @@ export const StakeModalContent = ({
           <TxModalTitle title="Stake" symbol={icon} />
           <CooldownWarning />
           {isWrongNetwork && (
-            <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
+            <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
           )}
 
           <AssetInput
@@ -118,6 +113,11 @@ export const StakeModalContent = ({
               {handleBlocked()}
             </Typography>
           )}
+          <TxModalDetails
+            sx={{ mt: '30px' }}
+            stakeAPR={stakeData?.stakeApy || '0'}
+            gasLimit={gasLimit}
+          />
         </>
       )}
       {txState.txError && <TxErrorView errorMessage={txState.txError} />}
@@ -128,13 +128,13 @@ export const StakeModalContent = ({
       <StakeActions
         sx={{ mt: '48px' }}
         setTxState={setTxState}
-        amountToSupply={amountToSupply}
+        amountToStake={amountToSupply}
         handleClose={handleClose}
         isWrongNetwork={isWrongNetwork}
         setGasLimit={setGasLimit}
-        stakingContract={'0x0'}
         symbol={icon}
         blocked={blockingError !== undefined}
+        selectedToken={stakeAssetName}
       />
     </>
   );
