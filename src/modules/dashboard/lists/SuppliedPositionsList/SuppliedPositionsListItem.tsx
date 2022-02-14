@@ -28,7 +28,9 @@ export const SuppliedPositionsListItem = ({
     <ListItemWrapper
       symbol={reserve.symbol}
       iconSymbol={reserve.iconSymbol}
-      data-cy={`dashboardSuppliedListItem_${reserve.symbol}`}
+      data-cy={`dashboardSuppliedListItem_${reserve.symbol.toUpperCase()}_${
+        usageAsCollateralEnabledOnUser ? 'Collateral' : 'NoCollateral'
+      }`}
     >
       <ListValueColumn
         symbol={reserve.symbol}

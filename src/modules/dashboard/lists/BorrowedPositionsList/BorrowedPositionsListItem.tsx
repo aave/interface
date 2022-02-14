@@ -31,7 +31,7 @@ export const BorrowedPositionsListItem = ({
     <ListItemWrapper
       symbol={reserve.symbol}
       iconSymbol={reserve.iconSymbol}
-      data-cy={`dashboardBorrowedListItem_${reserve.symbol}_${borrowRateMode}`}
+      data-cy={`dashboardBorrowedListItem_${reserve.symbol.toUpperCase()}_${borrowRateMode}`}
     >
       <ListValueColumn
         symbol={reserve.symbol}

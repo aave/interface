@@ -32,7 +32,7 @@ export const BorrowAssetsListItem = ({
     <ListItemWrapper
       symbol={symbol}
       iconSymbol={iconSymbol}
-      data-cy={`dashboardBorrowListItem_${symbol}`}
+      data-cy={`dashboardBorrowListItem_${symbol.toUpperCase()}`}
     >
       <ListValueColumn
         symbol={symbol}

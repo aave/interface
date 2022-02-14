@@ -33,7 +33,7 @@ export const SupplyAssetsListItem = ({
     <ListItemWrapper
       symbol={symbol}
       iconSymbol={iconSymbol}
-      data-cy={`dashboardSupplyListItem_${symbol}`}
+      data-cy={`dashboardSupplyListItem_${symbol.toUpperCase()}`}
     >
       <ListValueColumn
         symbol={symbol}
