@@ -1,5 +1,6 @@
 import { Container, Grid, Typography } from '@mui/material';
 import { StakeModal } from 'src/components/Stake/StakeModal';
+import { StakeCooldownModal } from 'src/components/StakeCooldown/StakeCooldownModal';
 import { StakeDataProvider, useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
@@ -8,7 +9,7 @@ import { StakingPanel } from 'src/modules/staking/StakingPanel';
 
 export default function Staking() {
   const data = useStakeData();
-  const { openStake } = useModalContext();
+  const { openStake, openStakeCooldown } = useModalContext();
   return (
     <Container maxWidth="xl">
       <StakingHeader />
@@ -24,6 +25,7 @@ export default function Staking() {
             stakeData={data.stakeGeneralResult?.stakeGeneralUIData.aave}
             stakeUserData={data.stakeUserResult?.stakeUserUIData.aave}
             onStakeAction={() => openStake('aave', 'AAVE')}
+            onCooldownAction={() => openStakeCooldown('aave')}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -36,6 +38,7 @@ export default function Staking() {
             stakeData={data.stakeGeneralResult?.stakeGeneralUIData.bpt}
             stakeUserData={data.stakeUserResult?.stakeUserUIData.bpt}
             onStakeAction={() => openStake('bpt', 'stkbpt')}
+            onCooldownAction={() => openStakeCooldown('bpt')}
             description={
               <Typography color="text.muted" sx={{ mt: 4 }}>
                 The Balancer Pool Token (BPT) is a liquidity pool token. You can receive BPT by
@@ -49,6 +52,7 @@ export default function Staking() {
       </Grid>
       {/** Modals */}
       <StakeModal />
+      <StakeCooldownModal />
       {/** End of modals */}
       <code style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(data, null, 2)}</code>
     </Container>

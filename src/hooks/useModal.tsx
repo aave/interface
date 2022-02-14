@@ -9,7 +9,7 @@ export enum ModalType {
   RateSwitch,
   Stake,
   Unstake,
-  Cooldown,
+  StakeCooldown,
   ClaimStakeRewards,
   ClaimRewards,
   Emode,
@@ -25,7 +25,7 @@ interface ModalContextType {
   openRateSwitch: (underlyingAsset: string) => void;
   openStake: (stakeAssetName: string, icon: string) => void;
   openUnstake: (stakeAsset: string, stakeAssetName: string, icon: string) => void;
-  openCooldown: (stakeAsset: string, stakeAssetName: string, icon: string) => void;
+  openStakeCooldown: (stakeAssetName: string) => void;
   openClaimStakeRewards: () => void;
   openClaimRewards: () => void;
   openEmode: () => void;
@@ -77,9 +77,9 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setType(ModalType.Unstake);
           setArgs({ stakeAsset, stakeAssetName, icon });
         },
-        openCooldown: (stakeAsset, stakeAssetName, icon) => {
-          setType(ModalType.Cooldown);
-          setArgs({ stakeAsset, stakeAssetName, icon });
+        openStakeCooldown: (stakeAssetName) => {
+          setType(ModalType.StakeCooldown);
+          setArgs({ stakeAssetName });
         },
         openClaimStakeRewards: () => {
           setType(ModalType.ClaimStakeRewards);
