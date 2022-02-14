@@ -1,11 +1,12 @@
-import * as React from 'react';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import { EmodeCategory } from 'src/helpers/types';
-import { Typography } from '@mui/material';
 import { Trans } from '@lingui/macro';
+import { Typography } from '@mui/material';
+import FormControl from '@mui/material/FormControl';
+import MenuItem from '@mui/material/MenuItem';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import Select from '@mui/material/Select';
+import * as React from 'react';
+import { EmodeCategory } from 'src/helpers/types';
+
 import { getEmodeMessage } from './EmodeNaming';
 
 const ITEM_HEIGHT = 48;
