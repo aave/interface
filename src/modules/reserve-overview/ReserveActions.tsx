@@ -3,11 +3,16 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, Paper, Stack, StackProps, SvgIcon, Typography } from '@mui/material';
 import React from 'react';
 import { FormattedNumber, FormattedNumberProps } from 'src/components/primitives/FormattedNumber';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useWalletBalance, useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
+import {
+  ComputedReserveData,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
+import {
+  assetCanBeBorrowedByUser,
+  getMaxAmountAvailableToBorrow,
+} from 'src/utils/getMaxAmountAvailableToBorrow';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
 
 const ReserveRow: React.FC<StackProps> = (props) => (
@@ -43,21 +48,21 @@ interface ReserveActionsProps {
 
 export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   const { openBorrow, openSupply } = useModalContext();
-  const { user, reserves } = useAppDataContext();
-  const poolReserve = reserves.find((reserve) => reserve.underlyingAsset === underlyingAsset);
-  const { walletBalances } = useWalletBalances();
-  const balance = walletBalances[underlyingAsset];
+  const { user, reserves, loading: loadingReserves } = useAppDataContext();
+  const { walletBalances, loading: loadingBalance } = useWalletBalances();
   // const balance = useWalletBalance(currentChainId, underlyingAsset);
-  let maxAmountToBorrow = '0';
-  let maxAmountToSupply = '0';
-  if (poolReserve && balance) {
-    maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user).toString();
-    maxAmountToSupply = getMaxAmountAvailableToSupply(
-      balance.amount,
-      poolReserve,
-      underlyingAsset
-    ).toString();
-  }
+  if (loadingReserves || loadingBalance) return null;
+  const poolReserve = reserves.find(
+    (reserve) => reserve.underlyingAsset === underlyingAsset
+  ) as ComputedReserveData;
+  const balance = walletBalances[underlyingAsset];
+  const canBorrow = assetCanBeBorrowedByUser(poolReserve, user);
+  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user).toString();
+  const maxAmountToSupply = getMaxAmountAvailableToSupply(
+    balance.amount,
+    poolReserve,
+    underlyingAsset
+  ).toString();
 
   return (
     <Paper sx={{ py: '16px', px: '24px' }}>
@@ -92,14 +97,18 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
             <InformationCircleIcon />
           </SvgIcon>
         </Stack>
-        <FormattedNumber value={maxAmountToBorrow} />
+        <FormattedNumber value={canBorrow ? maxAmountToBorrow : '0'} />
       </ReserveRow>
 
       <Stack direction="row" spacing={2}>
         <Button variant="contained" onClick={() => openSupply(underlyingAsset)}>
           <Trans>Supply</Trans>
         </Button>
-        <Button variant="contained" onClick={() => openBorrow(underlyingAsset)}>
+        <Button
+          disabled={!canBorrow}
+          variant="contained"
+          onClick={() => openBorrow(underlyingAsset)}
+        >
           <Trans>Borrow</Trans>
         </Button>
       </Stack>
