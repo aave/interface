@@ -1,11 +1,11 @@
-import { join, dirname } from 'path';
-import { Low, JSONFile } from 'lowdb';
-import { fileURLToPath } from 'url';
-import lodash from 'lodash';
 import { Proposal as ProposalType } from '@aave/contract-helpers';
+import lodash from 'lodash';
+import { JSONFile, Low } from 'lowdb';
+import { dirname, join } from 'path';
+import { enhanceProposalWithTimes } from 'src/modules/governance/utils/formatProposal';
 import { governanceContract } from 'src/modules/governance/utils/governanceProvider';
 import { isProposalStateImmutable } from 'src/modules/governance/utils/immutableStates';
-import { enhanceProposalWithTimes } from 'src/modules/governance/utils/formatProposal';
+import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 

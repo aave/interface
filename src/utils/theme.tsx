@@ -42,6 +42,7 @@ declare module '@mui/material/styles/createPalette' {
 }
 
 interface TypographyCustomVariants {
+  display1: React.CSSProperties;
   subheader1: React.CSSProperties;
   subheader2: React.CSSProperties;
   description: React.CSSProperties;
@@ -75,6 +76,7 @@ declare module '@mui/material/styles' {
 // Update the Typography's variant prop options
 declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
+    display1: true;
     subheader1: true;
     subheader2: true;
     description: true;
@@ -194,12 +196,19 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
       body2: undefined,
       button: undefined,
       overline: undefined,
-      h1: {
+      display1: {
         fontFamily: FONT,
         fontWeight: 800,
         letterSpacing: pxToRem(0.25),
         lineHeight: '123.5%',
         fontSize: pxToRem(32),
+      },
+      h1: {
+        fontFamily: FONT,
+        fontWeight: 800,
+        letterSpacing: pxToRem(0.25),
+        lineHeight: '123.5%',
+        fontSize: pxToRem(28),
       },
       h2: {
         fontFamily: FONT,
@@ -417,6 +426,7 @@ export function getThemedComponents(theme: Theme) {
         defaultProps: {
           variant: 'description',
           variantMapping: {
+            display1: 'h1',
             h1: 'h1',
             h2: 'h2',
             h3: 'h3',
@@ -546,10 +556,6 @@ export function getThemedComponents(theme: Theme) {
             [theme.breakpoints.up('lg')]: {
               paddingLeft: '20px',
               paddingRight: '20px',
-            },
-            '@media screen and (min-width: 1360px)': {
-              paddingLeft: '64px',
-              paddingRight: '64px',
             },
             [theme.breakpoints.up('xl')]: {
               maxWidth: 'unset',
@@ -725,6 +731,25 @@ export function getThemedComponents(theme: Theme) {
         styleOverrides: {
           colorPrimary: {
             color: theme.palette.primary.light,
+          },
+        },
+      },
+      MuiToggleButtonGroup: {
+        styleOverrides: {
+          root: {
+            backgroundColor: theme.palette.background.paper,
+          },
+        },
+      },
+      MuiToggleButton: {
+        styleOverrides: {
+          root: {
+            boxShadow: 'inset -1px 0px 0px rgba(0, 0, 0, 0.12)',
+            backgroundColor: theme.palette.action.selected,
+            flex: 1,
+            '&.Mui-selected, &.Mui-disabled, &.Mui-selected:hover,  &:hover, &:focus': {
+              backgroundColor: theme.palette.background.paper,
+            },
           },
         },
       },

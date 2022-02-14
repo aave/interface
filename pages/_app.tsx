@@ -6,28 +6,29 @@ import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import * as React from 'react';
+import { BorrowModal } from 'src/components/Borrow/BorrowModal';
+import { ClaimRewardsModal } from 'src/components/ClaimRewards/ClaimRewardsModal';
+import { CollateralChangeModal } from 'src/components/CollateralChange/CollateralChangeModal';
+import { EmodeModal } from 'src/components/Emode/EmodeModal';
+import { FaucetModal } from 'src/components/Faucet/FaucetModal';
+import { GasStationProvider } from 'src/components/GasStation/GasStationProvider';
+import { RateSwitchModal } from 'src/components/RateSwitch/RateSwitchModal';
+import { RepayModal } from 'src/components/Repay/RepayModal';
+import { SupplyModal } from 'src/components/Supply/SupplyModal';
+import { WithdrawModal } from 'src/components/Withdraw/WithdrawModal';
 import { BackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ConnectionStatusProvider } from 'src/hooks/useConnectionStatusContext';
+import { ModalContextProvider } from 'src/hooks/useModal';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3ContextProvider';
 import { TxBuilderProvider } from 'src/providers/TxBuilderProvider';
 import { apolloClient } from 'src/utils/apolloClient';
+import { Meta } from 'src/components/Meta';
 
 import createEmotionCache from '../src/createEmotionCache';
 import { ProtocolDataProvider } from '../src/hooks/useProtocolDataContext';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
-import { ModalContextProvider } from 'src/hooks/useModal';
-import { SupplyModal } from 'src/components/Supply/SupplyModal';
-import { WithdrawModal } from 'src/components/Withdraw/WithdrawModal';
-import { BorrowModal } from 'src/components/Borrow/BorrowModal';
-import { CollateralChangeModal } from 'src/components/CollateralChange/CollateralChangeModal';
-import { RepayModal } from 'src/components/Repay/RepayModal';
-import { RateSwitchModal } from 'src/components/RateSwitch/RateSwitchModal';
-import { ClaimRewardsModal } from 'src/components/ClaimRewards/ClaimRewardsModal';
-import { GasStationProvider } from 'src/components/GasStation/GasStationProvider';
-import { EmodeModal } from 'src/components/Emode/EmodeModal';
-import { FaucetModal } from 'src/components/Faucet/FaucetModal';
 import { StakeTxBuilderProvider } from 'src/providers/StakeTxBuilderProvider';
 
 // Client-side cache, shared for the whole session of the user in the browser.
@@ -49,6 +50,13 @@ export default function MyApp(props: MyAppProps) {
     <CacheProvider value={emotionCache}>
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
+        <Meta
+          title={'Open Source Liquidity Protocol'}
+          description={
+            'Aave is an Open Source Protocol to create Non-Custodial Liquidity Markets to earn interest on supplying and borrowing assets with a variable or stable interest rate. The protocol is designed for easy integration into your products and services.'
+          }
+          imageUrl={'https://aave.com/favicon64.png'} //NOTE: Will update with ghost after release
+        />
       </Head>
 
       <ApolloProvider client={apolloClient}>
