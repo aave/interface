@@ -6,6 +6,6 @@ export const getEmodeMessage = (categoryId: number): string => {
   } else if (categoryId === 3) {
     return 'BTC';
   } else {
-    return 'Stablecoins';
+    return 'unknown';
   }
 };
