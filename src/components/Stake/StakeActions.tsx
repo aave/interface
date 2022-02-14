@@ -1,8 +1,7 @@
-import { ChainId, EthereumTransactionTypeExtended, GasType, Pool } from '@aave/contract-helpers';
+import { EthereumTransactionTypeExtended, GasType } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, BoxProps, Button, CircularProgress } from '@mui/material';
 import { Dispatch, SetStateAction, useEffect } from 'react';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useTransactionHandler } from '../../helpers/useTransactionHandler';
 import { LeftHelperText } from '../FlowCommons/LeftHelperText';
@@ -10,34 +9,35 @@ import { useGasStation } from 'src/hooks/useGasStation';
 import { GasOption } from '../GasStation/GasStationProvider';
 import { RightHelperText } from '../FlowCommons/RightHelperText';
 import { TxState } from 'src/helpers/types';
+import { useStakeTxBuilderContext } from 'src/hooks/useStakeTxBuilder';
 
 export interface StakeActionProps extends BoxProps {
-  amountToSupply: string;
+  amountToStake: string;
   isWrongNetwork: boolean;
   setTxState: Dispatch<SetStateAction<TxState>>;
   customGasPrice?: string;
   handleClose: () => void;
   setGasLimit: Dispatch<SetStateAction<string | undefined>>;
-  stakingContract: string;
   symbol: string;
   blocked: boolean;
+  selectedToken: string;
 }
 
 export const StakeActions = ({
-  amountToSupply,
+  amountToStake,
   setTxState,
   handleClose,
   setGasLimit,
-  stakingContract,
   isWrongNetwork,
   sx,
   symbol,
   blocked,
+  selectedToken,
   ...props
 }: StakeActionProps) => {
-  const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
   const { currentAccount, chainId: connectedChainId } = useWeb3Context();
   const { state, gasPriceData } = useGasStation();
+  const stakingService = useStakeTxBuilderContext(selectedToken);
 
   const {
     approval,
@@ -50,25 +50,25 @@ export const StakeActions = ({
     usePermit,
     resetStates,
   } = useTransactionHandler({
-    tryPermit:
-      currentMarketData.v3 && chainId !== ChainId.harmony && chainId !== ChainId.harmony_testnet,
+    tryPermit: false,
     handleGetTxns: async () => {
-      // TBD
-      return [];
-    },
-    handleGetPermitTxns: async (_signature) => {
-      // TBD
-      return [];
+      const tx: EthereumTransactionTypeExtended[] = await stakingService.stake(
+        currentAccount,
+        amountToStake.toString()
+      );
+      const gas: GasType | null = await tx[tx.length - 1].gas();
+      setGasLimit(gas?.gasLimit);
+      return tx;
     },
     customGasPrice:
       state.gasOption === GasOption.Custom
         ? state.customGas
         : gasPriceData.data?.[state.gasOption].legacyGasPrice,
-    skip: !amountToSupply || parseFloat(amountToSupply) === 0,
-    deps: [amountToSupply],
+    skip: !amountToStake || parseFloat(amountToStake) === 0 || blocked,
+    deps: [amountToStake],
   });
 
-  const hasAmount = amountToSupply && amountToSupply !== '0';
+  const hasAmount = amountToStake && amountToStake !== '0';
 
   useEffect(() => {
     setTxState({
@@ -93,7 +93,7 @@ export const StakeActions = ({
         sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: '12px' }}
       >
         <LeftHelperText
-          amount={amountToSupply}
+          amount={amountToStake}
           error={mainTxState.txError || approvalTxState.txError}
           approvalHash={approvalTxState.txHash}
           actionHash={mainTxState.txHash}
@@ -120,7 +120,7 @@ export const StakeActions = ({
       {hasAmount && requiresApproval && !approved && !approvalTxState.txError && (
         <Button
           variant="contained"
-          onClick={() => approval(amountToSupply, stakingContract)}
+          onClick={() => approval()}
           disabled={
             approved || loading || isWrongNetwork || blocked || !!approvalTxState.gasEstimationError
           }

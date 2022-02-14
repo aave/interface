@@ -10,7 +10,6 @@ export const StakeModal = () => {
       {args?.icon && (
         <StakeModalContent
           icon={args.icon}
-          stakeAsset={args.stakeAsset}
           stakeAssetName={args.stakeAssetName}
           handleClose={close}
         />

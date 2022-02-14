@@ -53,6 +53,7 @@ export interface TxModalDetailsProps extends GridProps {
   selectedReward?: Reward;
   faucetAmount?: string;
   emodeAssets?: string[];
+  stakeAPR?: string;
 }
 
 export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
@@ -80,6 +81,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   selectedReward,
   faucetAmount,
   emodeAssets,
+  stakeAPR,
   ...props
 }) => {
   const [selectedRate, setSelectedRate] = React.useState(InterestRate.Variable);
@@ -393,6 +395,18 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
           </FormInfo>
           <FormValue>
             <Typography variant="description">{emodeAssets.join(', ')}</Typography>
+          </FormValue>
+        </FormRow>
+      )}
+      {stakeAPR && (
+        <FormRow>
+          <FormInfo>
+            <Typography variant="description">
+              <Trans>Staking</Trans> APR
+            </Typography>
+          </FormInfo>
+          <FormValue>
+            <FormattedNumber value={Number(stakeAPR) / 10000} percent variant="description" />
           </FormValue>
         </FormRow>
       )}

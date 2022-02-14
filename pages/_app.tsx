@@ -28,6 +28,7 @@ import { ClaimRewardsModal } from 'src/components/ClaimRewards/ClaimRewardsModal
 import { GasStationProvider } from 'src/components/GasStation/GasStationProvider';
 import { EmodeModal } from 'src/components/Emode/EmodeModal';
 import { FaucetModal } from 'src/components/Faucet/FaucetModal';
+import { StakeTxBuilderProvider } from 'src/providers/StakeTxBuilderProvider';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -59,22 +60,24 @@ export default function MyApp(props: MyAppProps) {
                   <BackgroundDataProvider>
                     <AppDataProvider>
                       <TxBuilderProvider>
-                        <AppGlobalStyles>
-                          <ModalContextProvider>
-                            <GasStationProvider>
-                              {getLayout(<Component {...pageProps} />)}
-                              <SupplyModal />
-                              <WithdrawModal />
-                              <BorrowModal />
-                              <RepayModal />
-                              <CollateralChangeModal />
-                              <RateSwitchModal />
-                              <ClaimRewardsModal />
-                              <EmodeModal />
-                              <FaucetModal />
-                            </GasStationProvider>
-                          </ModalContextProvider>
-                        </AppGlobalStyles>
+                        <StakeTxBuilderProvider>
+                          <AppGlobalStyles>
+                            <ModalContextProvider>
+                              <GasStationProvider>
+                                {getLayout(<Component {...pageProps} />)}
+                                <SupplyModal />
+                                <WithdrawModal />
+                                <BorrowModal />
+                                <RepayModal />
+                                <CollateralChangeModal />
+                                <RateSwitchModal />
+                                <ClaimRewardsModal />
+                                <EmodeModal />
+                                <FaucetModal />
+                              </GasStationProvider>
+                            </ModalContextProvider>
+                          </AppGlobalStyles>
+                        </StakeTxBuilderProvider>
                       </TxBuilderProvider>
                     </AppDataProvider>
                   </BackgroundDataProvider>

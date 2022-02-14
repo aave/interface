@@ -23,7 +23,7 @@ export default function Staking() {
             icon="aave"
             stakeData={data.stakeGeneralResult?.stakeGeneralUIData.aave}
             stakeUserData={data.stakeUserResult?.stakeUserUIData.aave}
-            onStakeAction={() => openStake('0x0000', 'aave', 'aave')}
+            onStakeAction={() => openStake('aave', 'AAVE')}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -35,7 +35,7 @@ export default function Staking() {
             icon="stkbpt"
             stakeData={data.stakeGeneralResult?.stakeGeneralUIData.bpt}
             stakeUserData={data.stakeUserResult?.stakeUserUIData.bpt}
-            onStakeAction={() => openStake('0x0000', 'bpt', 'stkbpt')}
+            onStakeAction={() => openStake('bpt', 'stkbpt')}
             description={
               <Typography color="text.muted" sx={{ mt: 4 }}>
                 The Balancer Pool Token (BPT) is a liquidity pool token. You can receive BPT by
