@@ -38,76 +38,44 @@ interface ReserveActionsProps {
 }
 
 export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
-  const { openBorrow, openRepay, openWithdraw, openSupply } = useModalContext();
+  const { openBorrow, openSupply } = useModalContext();
   // const { user } = useAppDataContext();
   // const userReserve = user?.userReservesData.find(
   //   (reserve) => reserve.underlyingAsset === underlyingAsset
   // );
   return (
-    <>
-      {/** Supply panel */}
-      <Paper sx={{ py: '16px', px: '24px' }}>
-        <Typography variant="h3" sx={{ mb: '40px' }}>
-          <Trans>Your supplies</Trans>
-        </Typography>
+    <Paper sx={{ py: '16px', px: '24px' }}>
+      <Typography variant="h3" sx={{ mb: '40px' }}>
+        <Trans>Your supplies</Trans>
+      </Typography>
 
-        <ReserveRow>
+      <ReserveRow>
+        <Typography>
+          <Trans>Supply balance</Trans>
+        </Typography>
+        <DoubleFormatted value="10" usdValue="10" />
+      </ReserveRow>
+
+      <ReserveRow>
+        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1}>
           <Typography>
-            <Trans>Supply balance</Trans>
+            <Trans>Available to supply</Trans>
           </Typography>
-          <DoubleFormatted value="10" usdValue="10" />
-        </ReserveRow>
-
-        <ReserveRow>
-          <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1}>
-            <Typography>
-              <Trans>Available to supply</Trans>
-            </Typography>
-            <SvgIcon sx={{ fontSize: '18px', color: '#E0E5EA' }}>
-              <InformationCircleIcon />
-            </SvgIcon>
-          </Stack>
-          <FormattedNumber value="10" />
-        </ReserveRow>
-
-        <Stack direction="row" spacing={2}>
-          <Button variant="contained" onClick={() => openSupply(underlyingAsset)}>
-            <Trans>Supply</Trans>
-          </Button>
-          <Button variant="outlined" onClick={() => openWithdraw(underlyingAsset)}>
-            <Trans>Withdraw</Trans>
-          </Button>
-          <Button variant="outlined">
-            <Trans>Swap</Trans>
-          </Button>
+          <SvgIcon sx={{ fontSize: '18px', color: '#E0E5EA' }}>
+            <InformationCircleIcon />
+          </SvgIcon>
         </Stack>
-      </Paper>
+        <FormattedNumber value="10" />
+      </ReserveRow>
 
-      {/** Borrow panel */}
-      <Paper sx={{ mt: 4, py: '16px', px: '24px' }}>
-        <Typography variant="h3" sx={{ mb: '40px' }}>
-          <Trans>Your borrows</Trans>
-        </Typography>
-
-        <ReserveRow>
-          <Trans>Borrow balance</Trans>
-          <DoubleFormatted value="9" usdValue="9" />
-        </ReserveRow>
-
-        <ReserveRow>
-          <Trans>Available to borrow</Trans>
-          <FormattedNumber value="1" />
-        </ReserveRow>
-
-        <Stack direction="row" spacing={2}>
-          <Button variant="contained" onClick={() => openBorrow(underlyingAsset)}>
-            <Trans>Borrow</Trans>
-          </Button>
-          <Button variant="outlined" onClick={() => openRepay(underlyingAsset)}>
-            <Trans>Repay</Trans>
-          </Button>
-        </Stack>
-      </Paper>
-    </>
+      <Stack direction="row" spacing={2}>
+        <Button variant="contained" onClick={() => openSupply(underlyingAsset)}>
+          <Trans>Supply</Trans>
+        </Button>
+        <Button variant="contained" onClick={() => openBorrow(underlyingAsset)}>
+          <Trans>Borrow</Trans>
+        </Button>
+      </Stack>
+    </Paper>
   );
 };
