@@ -15,7 +15,6 @@ import { Trans } from '@lingui/macro';
 import { CheckIcon, ChevronDownIcon, ExternalLinkIcon } from '@heroicons/react/outline';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
-import { ContentCut } from '@mui/icons-material';
 
 interface ListItemAPYButtonProps {
   stableBorrowRateEnabled: boolean;
