@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   Box,
   BoxProps,
+  ClickAwayListener,
   Skeleton,
   styled,
   TextField,
@@ -106,17 +107,14 @@ export const GasStation: React.FC<GasStationProps> = ({ gasLimit, ...props }) =>
   const onClickCustomGasField = () => {
     dispatch({ type: 'setCustomGasOption', value: state.customGas });
   };
-
   return (
     <Box {...props}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
         <LocalGasStationIcon fontSize="small" color="primary" sx={{ mr: '5px' }} />
-        {totalGasCostsUsd ? (
-          <FormattedNumber value={totalGasCostsUsd} symbol="USD" />
-        ) : (
-          <Skeleton variant="text" sx={{ width: '40px' }} />
-        )}
+        {totalGasCostsUsd ? <FormattedNumber value={totalGasCostsUsd} symbol="USD" /> : '-'}
         <LightTooltip
+          onClose={() => setOpen(false)}
+          disableFocusListener
           title={
             <Box sx={{ py: 4, px: 6 }}>
               <Typography variant="description">Select transaction speed</Typography>
