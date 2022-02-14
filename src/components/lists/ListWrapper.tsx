@@ -99,7 +99,7 @@ export const ListWrapper = ({
             display: 'flex',
             alignItems: 'center',
             px: 6,
-            pb: collapsed && !noData ? 6 : 0,
+            pb: { xxs: collapsed && !noData ? 6 : 2, xs: collapsed && !noData ? 6 : 0 },
             overflowX: 'auto',
           }}
         >

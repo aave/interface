@@ -1,4 +1,5 @@
 import { Trans } from '@lingui/macro';
+import { useMediaQuery, useTheme } from '@mui/material';
 
 import { CollateralInfoContent } from '../../../../components/infoModalContents/CollateralInfoContent';
 import { CollateralSwitchInfoContent } from '../../../../components/infoModalContents/CollateralSwitchInfoContent';
@@ -8,9 +9,12 @@ import { DashboardContentNoData } from '../../DashboardContentNoData';
 import { ListHeader } from '../ListHeader';
 import { ListTopInfoItem } from '../ListTopInfoItem';
 import { SuppliedPositionsListItem } from './SuppliedPositionsListItem';
+import { SuppliedPositionsListMobileItem } from './SuppliedPositionsListMobileItem';
 
 export const SuppliedPositionsList = () => {
   const { user } = useAppDataContext();
+  const theme = useTheme();
+  const downToXS = useMediaQuery(theme.breakpoints.down('xs'));
 
   const suppliedPosition =
     user?.userReservesData.filter((userReserve) => userReserve.underlyingBalance !== '0') || [];
@@ -50,10 +54,14 @@ export const SuppliedPositionsList = () => {
     >
       {suppliedPosition.length ? (
         <>
-          <ListHeader head={head} />
-          {suppliedPosition.map((item) => (
-            <SuppliedPositionsListItem {...item} key={item.underlyingAsset} />
-          ))}
+          {!downToXS && <ListHeader head={head} />}
+          {suppliedPosition.map((item) =>
+            downToXS ? (
+              <SuppliedPositionsListMobileItem {...item} key={item.underlyingAsset} />
+            ) : (
+              <SuppliedPositionsListItem {...item} key={item.underlyingAsset} />
+            )
+          )}
         </>
       ) : (
         <DashboardContentNoData text={<Trans>Nothing supplied yet</Trans>} />
