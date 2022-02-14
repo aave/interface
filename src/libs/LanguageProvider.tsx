@@ -3,6 +3,7 @@ import { i18n } from '@lingui/core';
 import { I18nProvider } from '@lingui/react';
 import { en, es } from 'make-plural/plurals';
 import React, { useEffect } from 'react';
+
 import { messages } from '../translations/en/messages';
 
 i18n.loadLocaleData({

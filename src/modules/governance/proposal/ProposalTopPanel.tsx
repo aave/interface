@@ -1,12 +1,14 @@
+import { ArrowLeftIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, SvgIcon } from '@mui/material';
 import * as React from 'react';
-import { ArrowLeftIcon } from '@heroicons/react/solid';
 import { Link, ROUTES } from 'src/components/primitives/Link';
+
+import { TopInfoPanel } from '../../../components/TopInfoPanel/TopInfoPanel';
 
 export const ProposalTopPanel = () => {
   return (
-    <Box sx={{ mt: 12, mb: 13, color: 'common.white' }}>
+    <TopInfoPanel>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: '18px' }}>
         <Button
           component={Link}
@@ -23,6 +25,6 @@ export const ProposalTopPanel = () => {
           <Trans>back</Trans>
         </Button>
       </Box>
-    </Box>
+    </TopInfoPanel>
   );
 };

@@ -1,14 +1,15 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
-import { ComputedUserReserveData } from '../../../../hooks/app-data-provider/useAppDataProvider';
+import { useModalContext } from 'src/hooks/useModal';
+
 import { ListColumn } from '../../../../components/lists/ListColumn';
+import { ComputedUserReserveData } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { ListAPRColumn } from '../ListAPRColumn';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListItemAPYButton } from '../ListItemAPYButton';
 import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
-import { useModalContext } from 'src/hooks/useModal';
 
 export const BorrowedPositionsListItem = ({
   reserve,
@@ -27,8 +28,13 @@ export const BorrowedPositionsListItem = ({
     vIncentivesData,
     variableBorrowAPY,
   } = reserve;
+
   return (
-    <ListItemWrapper symbol={reserve.symbol} iconSymbol={reserve.iconSymbol}>
+    <ListItemWrapper
+      symbol={reserve.symbol}
+      iconSymbol={reserve.iconSymbol}
+      data-cy={`dashboardBorrowedListItem_${reserve.symbol.toUpperCase()}_${borrowRateMode}`}
+    >
       <ListValueColumn
         symbol={reserve.symbol}
         value={Number(totalBorrows)}
@@ -50,8 +56,8 @@ export const BorrowedPositionsListItem = ({
           borrowRateMode={borrowRateMode}
           disabled={!stableBorrowRateEnabled || isFrozen || !isActive}
           onClick={() => openRateSwitch(reserve.underlyingAsset)}
-          stableBorrowAPY={stableBorrowAPY}
-          variableBorrowAPY={variableBorrowAPY}
+          stableBorrowAPY={reserve.stableBorrowAPY}
+          variableBorrowAPY={reserve.variableBorrowAPY}
           underlyingAsset={reserve.underlyingAsset}
         />
       </ListColumn>

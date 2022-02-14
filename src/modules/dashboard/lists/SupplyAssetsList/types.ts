@@ -4,6 +4,7 @@ export type SupplyAssetsItem = {
   underlyingAsset: string;
   symbol: string;
   iconSymbol: string;
+  name: string;
   walletBalance: string;
   walletBalanceUSD: string;
   availableToDeposit: string;

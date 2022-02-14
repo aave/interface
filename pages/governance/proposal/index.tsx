@@ -51,7 +51,7 @@ export default function DynamicProposal() {
 
 DynamicProposal.getLayout = function getLayout(page: React.ReactElement) {
   return (
-    <MainLayout headerTopLineHeight={229}>
+    <MainLayout>
       <GovernanceDataProvider>{page}</GovernanceDataProvider>
     </MainLayout>
   );

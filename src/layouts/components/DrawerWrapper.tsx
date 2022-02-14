@@ -11,7 +11,7 @@ interface DrawerWrapperProps {
 export const DrawerWrapper = ({ open, setOpen, children, headerHeight }: DrawerWrapperProps) => {
   return (
     <Drawer
-      anchor="right"
+      anchor="top"
       open={open}
       onClose={() => setOpen(false)}
       hideBackdrop
@@ -26,6 +26,7 @@ export const DrawerWrapper = ({ open, setOpen, children, headerHeight }: DrawerW
           top: `${headerHeight}px`,
           pt: 6,
           pb: 15,
+          minHeight: '100vh',
         },
       }}
     >

@@ -29,7 +29,11 @@ export const BorrowAssetsListItem = ({
   const borrowButtonDisable = isFreezed || Number(availableBorrows) <= 0;
 
   return (
-    <ListItemWrapper symbol={symbol} iconSymbol={iconSymbol}>
+    <ListItemWrapper
+      symbol={symbol}
+      iconSymbol={iconSymbol}
+      data-cy={`dashboardBorrowListItem_${symbol.toUpperCase()}`}
+    >
       <ListValueColumn
         symbol={symbol}
         value={Number(availableBorrows)}

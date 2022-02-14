@@ -1,6 +1,7 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
+import { useMediaQuery, useTheme } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
 
 import { APYTypeInfoContent } from '../../../../components/infoModalContents/APYTypeInfoContent';
@@ -15,10 +16,13 @@ import { DashboardEModeButton } from '../../DashboardEModeButton';
 import { ListHeader } from '../ListHeader';
 import { ListTopInfoItem } from '../ListTopInfoItem';
 import { BorrowedPositionsListItem } from './BorrowedPositionsListItem';
+import { BorrowedPositionsListMobileItem } from './BorrowedPositionsListMobileItem';
 
 export const BorrowedPositionsList = () => {
   const { user } = useAppDataContext();
   const { openEmode } = useModalContext();
+  const theme = useTheme();
+  const downToXS = useMediaQuery(theme.breakpoints.down('xs'));
 
   const borrowPositions =
     user?.userReservesData.reduce((acc, userReserve) => {
@@ -70,10 +74,20 @@ export const BorrowedPositionsList = () => {
     >
       {borrowPositions.length ? (
         <>
-          <ListHeader head={head} />
-          {borrowPositions.map((item) => (
-            <BorrowedPositionsListItem {...item} key={item.underlyingAsset + item.borrowRateMode} />
-          ))}
+          {!downToXS && <ListHeader head={head} />}
+          {borrowPositions.map((item) =>
+            downToXS ? (
+              <BorrowedPositionsListMobileItem
+                {...item}
+                key={item.underlyingAsset + item.borrowRateMode}
+              />
+            ) : (
+              <BorrowedPositionsListItem
+                {...item}
+                key={item.underlyingAsset + item.borrowRateMode}
+              />
+            )
+          )}
         </>
       ) : (
         <DashboardContentNoData text={<Trans>Nothing borrowed yet</Trans>} />

@@ -8,9 +8,15 @@ interface ListItemProps {
   px?: 4 | 6;
 }
 
-export const ListItem = ({ warningComponent, children, minHeight = 71, px = 4 }: ListItemProps) => {
+export const ListItem = ({
+  warningComponent,
+  children,
+  minHeight = 71,
+  px = 4,
+  ...rest
+}: ListItemProps) => {
   return (
-    <Box>
+    <Box {...rest}>
       <Divider />
 
       {warningComponent}

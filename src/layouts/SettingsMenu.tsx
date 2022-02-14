@@ -67,9 +67,9 @@ export function SettingsMenu() {
             </Typography>
           </MenuItem>
 
-          <DarkModeSwitcher />
-          <TestNetModeSwitcher />
-          <LanguageListItem onClick={handleLanguageClick} />
+          <DarkModeSwitcher component={MenuItem} />
+          <TestNetModeSwitcher component={MenuItem} />
+          <LanguageListItem onClick={handleLanguageClick} component={MenuItem} />
         </MenuList>
       </Menu>
 
@@ -82,7 +82,7 @@ export function SettingsMenu() {
         open={languagesOpen}
         onClose={handleClose}
       >
-        <LanguagesList onClick={handleCloseLanguage} />
+        <LanguagesList onClick={handleCloseLanguage} component={MenuItem} />
       </Menu>
     </>
   );

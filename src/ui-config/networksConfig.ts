@@ -190,7 +190,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     isTestnet: true,
     networkLogoPath: '/icons/networks/arbitrum.svg',
     bridge: {
-      icon: '/icons/bridge/avalanche.svg', // TODO: need icon
+      icon: '/icons/bridge/arbitrum.svg',
       name: 'Arbitrum Bridge',
       url: 'https://bridge.arbitrum.io',
     },
@@ -210,7 +210,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     isTestnet: true,
     networkLogoPath: '/icons/networks/harmony.svg',
     bridge: {
-      icon: '/icons/bridge/avalanche.svg', // TODO: need icon
+      icon: '/icons/bridge/harmony.svg',
       name: 'Harmony Bridge',
       url: 'https://bridge.harmony.one',
     },
@@ -230,7 +230,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     isTestnet: true,
     networkLogoPath: '/icons/networks/harmony.svg',
     bridge: {
-      icon: '/icons/bridge/avalanche.svg', // TODO: need icon
+      icon: '/icons/bridge/harmony.svg',
       name: 'Harmony Bridge',
       url: 'https://bridge.harmony.one',
     },
@@ -250,7 +250,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     isTestnet: true,
     networkLogoPath: '/icons/networks/optimism.svg',
     bridge: {
-      icon: '/icons/bridge/avalanche.svg', // TODO: need icon
+      icon: '/icons/bridge/optimism.svg',
       name: 'Optimism Bridge',
       url: 'https://gateway.optimism.io',
     },
@@ -270,7 +270,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     isTestnet: true,
     networkLogoPath: '/icons/networks/optimism.svg',
     bridge: {
-      icon: '/icons/bridge/avalanche.svg', // TODO: need icon
+      icon: '/icons/bridge/optimism.svg',
       name: 'Optimism Bridge',
       url: 'https://gateway.optimism.io',
     },
@@ -290,7 +290,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     isTestnet: true,
     networkLogoPath: '/icons/networks/fantom.svg',
     bridge: {
-      icon: '/icons/bridge/avalanche.svg', // TODO: need icon
+      icon: '/icons/bridge/fantom.svg',
       name: 'Fantom Bridge',
       url: 'https://app.multichain.org/#/router',
     },
@@ -310,7 +310,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     isTestnet: true,
     networkLogoPath: '/icons/networks/fantom.svg',
     bridge: {
-      icon: '/icons/bridge/avalanche.svg', // TODO: need icon
+      icon: '/icons/bridge/fantom.svg',
       name: 'Fantom Bridge',
       url: 'https://app.multichain.org/#/router',
     },

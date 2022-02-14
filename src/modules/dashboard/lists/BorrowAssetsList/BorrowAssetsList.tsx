@@ -1,7 +1,7 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Alert, Box } from '@mui/material';
+import { Alert, Box, useMediaQuery, useTheme } from '@mui/material';
 
 import { BorrowAvailableInfoContent } from '../../../../components/infoModalContents/BorrowAvailableInfoContent';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
@@ -10,11 +10,14 @@ import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext
 import { getMaxAmountAvailableToBorrow } from '../../../../utils/getMaxAmountAvailableToBorrow';
 import { ListHeader } from '../ListHeader';
 import { BorrowAssetsListItem } from './BorrowAssetsListItem';
+import { BorrowAssetsListMobileItem } from './BorrowAssetsListMobileItem';
 import { BorrowAssetsItem } from './types';
 
 export const BorrowAssetsList = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
   const { user, reserves, marketReferencePriceInUsd, userEmodeCategoryId } = useAppDataContext();
+  const theme = useTheme();
+  const downToXS = useMediaQuery(theme.breakpoints.down('xs'));
 
   const { wrappedBaseAssetSymbol, baseAssetSymbol } = currentNetworkConfig;
 
@@ -119,10 +122,14 @@ export const BorrowAssetsList = () => {
           }
         >
           <>
-            <ListHeader head={head} />
-            {borrowReserves.map((item, index) => (
-              <BorrowAssetsListItem {...item} key={index} />
-            ))}
+            {!downToXS && <ListHeader head={head} />}
+            {borrowReserves.map((item, index) =>
+              downToXS ? (
+                <BorrowAssetsListMobileItem {...item} key={index} />
+              ) : (
+                <BorrowAssetsListItem {...item} key={index} />
+              )
+            )}
           </>
         </ListWrapper>
       )}

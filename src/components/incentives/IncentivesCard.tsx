@@ -9,7 +9,7 @@ interface IncentivesCardProps {
   symbol: string;
   value: string | number;
   incentives?: ReserveIncentiveResponse[];
-  variant?: 'main14' | 'main16';
+  variant?: 'main14' | 'main16' | 'secondary14';
 }
 
 export const IncentivesCard = ({
@@ -23,7 +23,7 @@ export const IncentivesCard = ({
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
+        alignItems: { xxs: 'flex-end', xs: 'center' },
         justifyContent: 'center',
         textAlign: 'center',
       }}

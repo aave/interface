@@ -3,6 +3,7 @@ import { ReserveIncentiveResponse } from '../../../../hooks/app-data-provider/us
 export type BorrowAssetsItem = {
   id: string;
   symbol: string;
+  name: string;
   iconSymbol: string;
   underlyingAsset: string;
   stableBorrowRate: number | string;
