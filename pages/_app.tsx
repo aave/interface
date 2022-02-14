@@ -50,9 +50,9 @@ export default function MyApp(props: MyAppProps) {
         <Meta
           title={'Aave - Open Source Liquidity Protocol'}
           description={
-            'Aave is an Open Source Protocol to create Non-Custodial Liquidity Markets to earn interest on deposits and borrow assets with a variable or stable interest rate. The protocol is designed for easy integration into your products and services.'
+            'Aave is an Open Source Protocol to create Non-Custodial Liquidity Markets to earn interest on supplying and borrowing assets with a variable or stable interest rate. The protocol is designed for easy integration into your products and services.'
           }
-          // TODO: imageUrl={} Where this hosted?
+          imageUrl={'https://aave.com/favicon64.png'} //NOTE: Will update with ghost after release
           timestamp={Date.now().toString()}
         />
       </Head>
