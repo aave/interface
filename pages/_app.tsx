@@ -9,6 +9,7 @@ import * as React from 'react';
 import { BorrowModal } from 'src/components/Borrow/BorrowModal';
 import { ClaimRewardsModal } from 'src/components/ClaimRewards/ClaimRewardsModal';
 import { CollateralChangeModal } from 'src/components/CollateralChange/CollateralChangeModal';
+import { EmodeModal } from 'src/components/Emode/EmodeModal';
 import { FaucetModal } from 'src/components/Faucet/FaucetModal';
 import { GasStationProvider } from 'src/components/GasStation/GasStationProvider';
 import { RateSwitchModal } from 'src/components/RateSwitch/RateSwitchModal';
@@ -69,6 +70,7 @@ export default function MyApp(props: MyAppProps) {
                               <CollateralChangeModal />
                               <RateSwitchModal />
                               <ClaimRewardsModal />
+                              <EmodeModal />
                               <FaucetModal />
                             </GasStationProvider>
                           </ModalContextProvider>

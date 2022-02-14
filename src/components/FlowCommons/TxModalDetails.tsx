@@ -52,6 +52,7 @@ export interface TxModalDetailsProps extends GridProps {
   setSelectedReward?: Dispatch<SetStateAction<Reward | undefined>>;
   selectedReward?: Reward;
   faucetAmount?: string;
+  emodeAssets?: string[];
 }
 
 export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
@@ -78,6 +79,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   setSelectedReward,
   selectedReward,
   faucetAmount,
+  emodeAssets,
   ...props
 }) => {
   const [selectedRate, setSelectedRate] = React.useState(InterestRate.Variable);
@@ -379,6 +381,18 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
               <FormattedNumber value={Number(faucetAmount)} variant="description" />
               <Typography>{symbol}</Typography>
             </Box>
+          </FormValue>
+        </FormRow>
+      )}
+      {emodeAssets && (
+        <FormRow>
+          <FormInfo>
+            <Typography variant="description">
+              <Trans>Available assets</Trans>
+            </Typography>
+          </FormInfo>
+          <FormValue>
+            <Typography variant="description">{emodeAssets.join(', ')}</Typography>
           </FormValue>
         </FormRow>
       )}

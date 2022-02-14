@@ -5,13 +5,12 @@ import { TypographyProps } from '@mui/material/Typography';
 
 interface CompactNumberProps {
   value: string | number;
-  maximumDecimals?: number;
-  minimumDecimals?: number;
+  visibleDecimals?: number;
 }
 
 const POSTFIXES = ['', 'K', 'M', 'B', 'T', 'P', 'E', 'Z', 'Y'];
 
-function CompactNumber({ value, maximumDecimals = 2, minimumDecimals }: CompactNumberProps) {
+function CompactNumber({ value, visibleDecimals = 2 }: CompactNumberProps) {
   const { i18n } = useLingui();
 
   const bnValue = valueToBigNumber(value);
@@ -27,8 +26,8 @@ function CompactNumber({ value, maximumDecimals = 2, minimumDecimals }: CompactN
   return (
     <>
       {i18n.number(formattedValue, {
-        maximumFractionDigits: maximumDecimals,
-        minimumFractionDigits: minimumDecimals,
+        maximumFractionDigits: visibleDecimals,
+        minimumFractionDigits: visibleDecimals,
       })}
       {postfix}
     </>
@@ -38,8 +37,7 @@ function CompactNumber({ value, maximumDecimals = 2, minimumDecimals }: CompactN
 export interface FormattedNumberProps extends TypographyProps {
   value: string | number;
   symbol?: string;
-  maximumDecimals?: number;
-  minimumDecimals?: number;
+  visibleDecimals?: number;
   compact?: boolean;
   percent?: boolean;
 }
@@ -47,30 +45,31 @@ export interface FormattedNumberProps extends TypographyProps {
 export function FormattedNumber({
   value,
   symbol,
-  maximumDecimals,
-  minimumDecimals,
+  visibleDecimals,
   compact,
   percent,
   ...rest
 }: FormattedNumberProps) {
   const { i18n } = useLingui();
 
-  const defaultMaximumDecimals = percent || symbol === 'USD' || compact ? 2 : 7;
   const number = percent ? Number(value) * 100 : Number(value);
 
-  const minValue = 10 ** -(maximumDecimals || defaultMaximumDecimals);
+  let decimals = visibleDecimals;
+  if (number === 0) {
+    decimals = 0;
+  } else if (visibleDecimals === undefined) {
+    if (number > 1_000 || percent || symbol === 'USD') {
+      decimals = 2;
+    } else {
+      decimals = 7;
+    }
+  }
+
+  const minValue = 10 ** -(decimals as number);
   const isSmallerThanMin = number !== 0 && number < minValue;
-
-  const formattedMaximumDecimals =
-    typeof maximumDecimals === 'undefined'
-      ? value < 10000000000
-        ? defaultMaximumDecimals
-        : 2
-      : maximumDecimals === 0
-      ? 0
-      : maximumDecimals;
-
   const formattedNumber = isSmallerThanMin ? minValue : number;
+
+  const forceCompact = compact || value < 100_000_000;
 
   return (
     <Typography
@@ -88,17 +87,13 @@ export function FormattedNumber({
       {symbol?.toLowerCase() === 'usd' && !percent && '$ '}
 
       <>
-        {!compact && value < 10000000000 ? (
+        {!forceCompact ? (
           i18n.number(formattedNumber, {
-            maximumFractionDigits: formattedMaximumDecimals,
-            minimumFractionDigits: minimumDecimals,
+            maximumFractionDigits: decimals,
+            minimumFractionDigits: decimals,
           })
         ) : (
-          <CompactNumber
-            value={formattedNumber}
-            maximumDecimals={formattedMaximumDecimals}
-            minimumDecimals={minimumDecimals}
-          />
+          <CompactNumber value={formattedNumber} visibleDecimals={decimals} />
         )}
       </>
 

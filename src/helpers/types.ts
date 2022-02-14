@@ -12,3 +12,13 @@ export type Reward = {
   balanceUsd: string;
   rewardTokenAddress: string;
 };
+
+export type EmodeCategory = {
+  id: number;
+  ltv: number;
+  liquidationThreshold: number;
+  liquidationBonus: number;
+  priceSource: string;
+  label: string;
+  assets: string[];
+};
