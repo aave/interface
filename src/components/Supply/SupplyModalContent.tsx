@@ -1,36 +1,38 @@
-import React, { useEffect, useState } from 'react';
-import {
-  ComputedReserveData,
-  useAppDataContext,
-} from '../../hooks/app-data-provider/useAppDataProvider';
-import { SupplyActions } from './SupplyActions';
-import { Typography } from '@mui/material';
-import { AssetInput } from '../AssetInput';
+import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import {
   calculateHealthFactorFromBalancesBigUnits,
   ComputedUserReserve,
   USD_DECIMALS,
   valueToBigNumber,
 } from '@aave/math-utils';
-import BigNumber from 'bignumber.js';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { getNetworkConfig, isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { TxErrorView } from '../FlowCommons/Error';
-import { TxSuccessView } from '../FlowCommons/Success';
-import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
-import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
-import { TxModalTitle } from '../FlowCommons/TxModalTitle';
-import { SupplyCapWarning } from '../Warnings/SupplyCapWarning';
-import { TxState } from 'src/helpers/types';
-import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
-import { TxModalDetails } from '../FlowCommons/TxModalDetails';
-import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { Trans } from '@lingui/macro';
-import { AMPLWarning } from '../Warnings/AMPLWarning';
-import { AAVEWarning } from '../Warnings/AAVEWarning';
-import { SNXWarning } from '../Warnings/SNXWarning';
+import { Typography } from '@mui/material';
+import BigNumber from 'bignumber.js';
+import React, { useEffect, useState } from 'react';
+import { TxState } from 'src/helpers/types';
+import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
+import { getNetworkConfig, isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
+
+import {
+  ComputedReserveData,
+  useAppDataContext,
+} from '../../hooks/app-data-provider/useAppDataProvider';
+import { AssetInput } from '../AssetInput';
+import { TxErrorView } from '../FlowCommons/Error';
+import { GasEstimationError } from '../FlowCommons/GasEstimationError';
+import { TxSuccessView } from '../FlowCommons/Success';
+import { TxModalDetails } from '../FlowCommons/TxModalDetails';
+import { TxModalTitle } from '../FlowCommons/TxModalTitle';
+import { AAVEWarning } from '../Warnings/AAVEWarning';
+import { AMPLWarning } from '../Warnings/AMPLWarning';
+import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
+import { IsolationModeWarning } from '../Warnings/IsolationModeWarning';
+import { SNXWarning } from '../Warnings/SNXWarning';
+import { SupplyCapWarning } from '../Warnings/SupplyCapWarning';
+import { SupplyActions } from './SupplyActions';
 
 export type SupplyProps = {
   underlyingAsset: string;
@@ -186,18 +188,18 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
       {!supplyTxState.txError && !supplyTxState.success && (
         <>
           <TxModalTitle title="Supply" symbol={poolReserve.symbol} />
+
           {isWrongNetwork && (
             <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
           )}
-          {showIsolationWarning && (
-            <Typography>You are about to enter into isolation. FAQ link</Typography>
-          )}
+          {showIsolationWarning && <IsolationModeWarning />}
           {showSupplyCapWarning && <SupplyCapWarning />}
           {poolReserve.symbol === 'AMPL' && <AMPLWarning />}
           {poolReserve.symbol === 'AAVE' && isFeatureEnabled.staking(currentMarketData) && (
             <AAVEWarning />
           )}
           {poolReserve.symbol === 'SNX' && !maxAmountToSupply.eq('0') && <SNXWarning />}
+
           <AssetInput
             value={amountToSupply}
             onChange={setAmount}
@@ -210,11 +212,13 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
               },
             ]}
           />
+
           {blockingError !== undefined && (
             <Typography variant="helperText" color="red">
               {handleBlocked()}
             </Typography>
           )}
+
           <TxModalDetails
             sx={{ mt: '30px' }}
             apy={supplyApy}
@@ -229,13 +233,17 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
           />
         </>
       )}
+
       {supplyTxState.txError && <TxErrorView errorMessage={supplyTxState.txError} />}
+
       {supplyTxState.success && !supplyTxState.txError && (
         <TxSuccessView action="Supplied" amount={amountToSupply} symbol={poolReserve.symbol} />
       )}
+
       {supplyTxState.gasEstimationError && (
         <GasEstimationError error={supplyTxState.gasEstimationError} />
       )}
+
       <SupplyActions
         sx={{ mt: '48px' }}
         setSupplyTxState={setSupplyTxState}

@@ -624,7 +624,7 @@ export function getThemedComponents(theme: Theme) {
             borderRadius: '4px',
             padding: '8px 12px',
             ...theme.typography.caption,
-            alignItems: 'center',
+            alignItems: 'flex-start',
             '.MuiAlert-message': {
               padding: 0,
             },
@@ -641,6 +641,17 @@ export function getThemedComponents(theme: Theme) {
               textDecoration: 'underline',
               '&:hover': {
                 textDecoration: 'none',
+              },
+            },
+            '.MuiButton-text': {
+              ...theme.typography.caption,
+              fontWeight: 500,
+              textDecoration: 'underline',
+              padding: 0,
+              margin: 0,
+              '&:hover': {
+                textDecoration: 'none',
+                background: 'transparent',
               },
             },
           },
@@ -678,6 +689,9 @@ export function getThemedComponents(theme: Theme) {
               a: {
                 color: theme.palette.error['100'],
               },
+              '.MuiButton-text': {
+                color: theme.palette.error['100'],
+              },
             },
           },
           {
@@ -686,6 +700,9 @@ export function getThemedComponents(theme: Theme) {
               color: theme.palette.info['100'],
               background: theme.palette.info['200'],
               a: {
+                color: theme.palette.info['100'],
+              },
+              '.MuiButton-text': {
                 color: theme.palette.info['100'],
               },
             },
@@ -698,6 +715,9 @@ export function getThemedComponents(theme: Theme) {
               a: {
                 color: theme.palette.success['100'],
               },
+              '.MuiButton-text': {
+                color: theme.palette.success['100'],
+              },
             },
           },
           {
@@ -706,6 +726,9 @@ export function getThemedComponents(theme: Theme) {
               color: theme.palette.warning['100'],
               background: theme.palette.warning['200'],
               a: {
+                color: theme.palette.warning['100'],
+              },
+              '.MuiButton-text': {
                 color: theme.palette.warning['100'],
               },
             },

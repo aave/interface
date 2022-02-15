@@ -2,16 +2,17 @@ import { ChainId, EthereumTransactionTypeExtended, GasType, Pool } from '@aave/c
 import { Trans } from '@lingui/macro';
 import { Box, BoxProps, Button, CircularProgress } from '@mui/material';
 import { Dispatch, SetStateAction, useEffect } from 'react';
+import { TxState } from 'src/helpers/types';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useGasStation } from 'src/hooks/useGasStation';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+
 import { useTransactionHandler } from '../../helpers/useTransactionHandler';
 import { LeftHelperText } from '../FlowCommons/LeftHelperText';
-import { useGasStation } from 'src/hooks/useGasStation';
-import { GasOption } from '../GasStation/GasStationProvider';
 import { RightHelperText } from '../FlowCommons/RightHelperText';
-import { TxState } from 'src/helpers/types';
+import { GasOption } from '../GasStation/GasStationProvider';
 
 export interface SupplyActionProps extends BoxProps {
   amountToSupply: string;

@@ -1,7 +1,8 @@
 import { Trans } from '@lingui/macro';
-import { Warning } from '../primitives/Warning';
 import { Button, Link, Typography } from '@mui/material';
+
 import { ROUTES } from '../primitives/Link';
+import { Warning } from '../primitives/Warning';
 
 export const AAVEWarning = () => {
   return (

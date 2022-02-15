@@ -1,4 +1,4 @@
-import { XIcon, DuplicateIcon } from '@heroicons/react/solid';
+import { DuplicateIcon, XIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Link, SvgIcon, Typography } from '@mui/material';
 

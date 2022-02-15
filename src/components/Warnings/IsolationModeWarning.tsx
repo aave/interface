@@ -1,18 +1,23 @@
-import React from 'react';
 import { Trans } from '@lingui/macro';
-import { Warning } from '../primitives/Warning';
 import { Typography } from '@mui/material';
 
+import { Link } from '../primitives/Link';
+import { Warning } from '../primitives/Warning';
+
+// TODO: need text
 export const IsolationModeWarning = () => {
   return (
-    <Warning>
-      <Typography color="black" variant="description">
-        <Trans>
-          This asset can be supplied as collateral in isolation mode only. Learn more in{' '}
-        </Trans>
-        <a target="_blank" rel="noreferrer" href="https://docs.aave.com/faq/">
-          FAQ<Trans>guide.</Trans>
-        </a>
+    <Warning severity="warning">
+      <Typography variant="subheader1" mb={0.5}>
+        <Trans>Isolation mode warning</Trans>
+      </Typography>
+      <Typography>
+        Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia
+        consequat duis enim velit mollit.{' '}
+        <Link href="https://docs.aave.com/faq/">
+          FAQ <Trans>guide</Trans>
+        </Link>
+        .
       </Typography>
     </Warning>
   );
