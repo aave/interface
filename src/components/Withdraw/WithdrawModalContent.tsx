@@ -39,7 +39,7 @@ export const WithdrawModalContent = ({
   underlyingAsset,
   handleClose,
 }: WithdrawModalContentProps) => {
-  const { reserves, user, userEmodeCategoryId } = useAppDataContext();
+  const { reserves, user } = useAppDataContext();
   const { currentChainId, currentMarketData } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
 
@@ -67,7 +67,7 @@ export const WithdrawModalContent = ({
   let maxAmountToWithdraw = BigNumber.min(underlyingBalance, unborrowedLiquidity);
   let maxCollateralToWithdrawInETH = valueToBigNumber('0');
   const reserveLiquidationThreshold =
-    userEmodeCategoryId === poolReserve.eModeCategoryId
+    user.userEmodeCategoryId === poolReserve.eModeCategoryId
       ? poolReserve.formattedEModeLiquidationThreshold
       : poolReserve.formattedReserveLiquidationThreshold;
   if (

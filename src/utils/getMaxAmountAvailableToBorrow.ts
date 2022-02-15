@@ -1,7 +1,10 @@
 import { FormatUserSummaryAndIncentivesResponse, valueToBigNumber } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
 
-import { ComputedReserveData } from '../hooks/app-data-provider/useAppDataProvider';
+import {
+  ComputedReserveData,
+  ExtendedFormattedUser,
+} from '../hooks/app-data-provider/useAppDataProvider';
 
 /**
  * Calculates the maximum amount a user can borrow.
@@ -53,4 +56,14 @@ export function getMaxAmountAvailableToBorrow(
         .lt(user.availableBorrowsUSD));
 
   return shouldAddMargin ? maxUserAmountToBorrow.multipliedBy('0.99') : maxUserAmountToBorrow;
+}
+
+export function assetCanBeBorrowedByUser(
+  { borrowingEnabled, isActive, borrowableInIsolation, eModeCategoryId }: ComputedReserveData,
+  user: ExtendedFormattedUser
+) {
+  if (!borrowingEnabled || !isActive) return false;
+  if (user?.isInEmode && eModeCategoryId !== user.userEmodeCategoryId) return false;
+  if (user?.isInIsolationMode && !borrowableInIsolation) return false;
+  return true;
 }

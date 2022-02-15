@@ -14,7 +14,6 @@ import {
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -39,11 +38,9 @@ export const CollateralChangeModalContent = ({
   handleClose,
 }: CollateralChangeModalContentProps) => {
   const { reserves, user } = useAppDataContext();
-  const { currentChainId } = useProtocolDataContext();
+  const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
   const { walletBalances } = useWalletBalances();
-
-  const networkConfig = getNetworkConfig(currentChainId);
 
   const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
   const [collateralChangeTxState, setCollateralChangeTxState] = useState<TxState>({
@@ -135,7 +132,10 @@ export const CollateralChangeModalContent = ({
             <Trans> as collateral</Trans>
           </Typography>
           {isWrongNetwork && (
-            <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
+            <ChangeNetworkWarning
+              networkName={currentNetworkConfig.name}
+              chainId={currentChainId}
+            />
           )}
           {<IsolationModeWarning />}
           {usageAsCollateralModeAfterSwitch ? (

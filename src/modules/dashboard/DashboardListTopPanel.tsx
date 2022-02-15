@@ -21,16 +21,16 @@ export const DashboardListTopPanel = ({
     <Box
       sx={{
         display: 'flex',
-        alignItems: { xxs: 'flex-start', xs: 'center' },
+        alignItems: { xs: 'flex-start', xsm: 'center' },
         justifyContent: 'space-between',
-        flexDirection: { xxs: 'column-reverse', xs: 'row' },
+        flexDirection: { xs: 'column-reverse', xsm: 'row' },
         px: 6,
         py: 2,
         pl: '27px',
       }}
     >
       <FormControlLabel
-        sx={{ mt: { xxs: bridge ? 2 : 0, xs: 0 } }}
+        sx={{ mt: { xs: bridge ? 2 : 0, xsm: 0 } }}
         control={<Checkbox sx={{ p: '6px' }} />}
         checked={value}
         onChange={() => toggleLocalStorageClick(value, onClick, localStorageName)}
