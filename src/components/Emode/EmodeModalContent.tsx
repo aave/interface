@@ -212,7 +212,7 @@ export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
             <Typography>
               <Trans>
                 Enabling E-Mode only allows you to borrow assets belonging to the selected category
-                Stablecoins. Please visit out FAQ guide to learn more about how it works and the
+                Stablecoins. Please visit our FAQ guide to learn more about how it works and the
                 applied restrictions.
               </Trans>
             </Typography>
