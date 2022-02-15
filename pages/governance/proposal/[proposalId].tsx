@@ -30,7 +30,6 @@ import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { Link } from 'src/components/primitives/Link';
 
 import { ContentContainer } from '../../../src/components/ContentContainer';
-import { height } from '@mui/system';
 
 export async function getStaticPaths() {
   if (!governanceConfig) return { paths: [] };
