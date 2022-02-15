@@ -229,7 +229,7 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
 
       {borrowTxState.txError && <TxErrorView errorMessage={borrowTxState.txError} />}
       {borrowTxState.success && !borrowTxState.txError && (
-        <TxSuccessView action="Withdrawed" amount={amountToBorrow} symbol={poolReserve.symbol} />
+        <TxSuccessView action="Borrowed" amount={amountToBorrow} symbol={poolReserve.symbol} />
       )}
       {borrowTxState.gasEstimationError && (
         <GasEstimationError error={borrowTxState.gasEstimationError} />

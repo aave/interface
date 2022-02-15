@@ -1,6 +1,6 @@
 import { formatUserSummary } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Button, Link, Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { EmodeCategory, TxState } from 'src/helpers/types';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -9,6 +9,7 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
+import { Link } from '../primitives/Link';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -180,7 +181,9 @@ export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
             <Typography>
               <Trans>
                 E-Mode increases your borrowing power for a selected category of assets up to 99%.
-                Learn more
+                <Link href="https://docs.aave.com/faq/" variant="main14" sx={{ ml: 1 }}>
+                  <Trans> Learn more </Trans>
+                </Link>
               </Trans>
             </Typography>
           ) : (

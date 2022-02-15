@@ -109,7 +109,7 @@ export const BorrowAssetsList = () => {
               )}
               {user?.isInEmode && (
                 <Alert severity="warning">
-                  <Trans>E-mode message</Trans> {/* TODO: need fix text */}
+                  <Trans>E-mode message-----</Trans> {/* TODO: need fix text */}
                 </Alert>
               )}
               {+collateralUsagePercent >= 0.98 && (

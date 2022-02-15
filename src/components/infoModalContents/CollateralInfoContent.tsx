@@ -3,12 +3,14 @@ import Typography from '@mui/material/Typography';
 
 import { InfoContentWrapper } from './InfoContentWrapper';
 
-// TODO: need texts
 export const CollateralInfoContent = () => {
   return (
     <InfoContentWrapper caption={<Trans>Collateral</Trans>}>
       <Typography>
-        <Trans>Collateral</Trans>
+        <Trans>
+          The total amount of your assets denominated in USD that can be used as collateral for
+          borrowing assets
+        </Trans>
       </Typography>
     </InfoContentWrapper>
   );
