@@ -14,7 +14,7 @@ import { SuppliedPositionsListMobileItem } from './SuppliedPositionsListMobileIt
 export const SuppliedPositionsList = () => {
   const { user } = useAppDataContext();
   const theme = useTheme();
-  const downToXS = useMediaQuery(theme.breakpoints.down('xs'));
+  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const suppliedPosition =
     user?.userReservesData.filter((userReserve) => userReserve.underlyingBalance !== '0') || [];
@@ -54,9 +54,9 @@ export const SuppliedPositionsList = () => {
     >
       {suppliedPosition.length ? (
         <>
-          {!downToXS && <ListHeader head={head} />}
+          {!downToXSM && <ListHeader head={head} />}
           {suppliedPosition.map((item) =>
-            downToXS ? (
+            downToXSM ? (
               <SuppliedPositionsListMobileItem {...item} key={item.underlyingAsset} />
             ) : (
               <SuppliedPositionsListItem {...item} key={item.underlyingAsset} />

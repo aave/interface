@@ -25,7 +25,7 @@ export const SupplyAssetsList = () => {
   const { user, reserves, marketReferencePriceInUsd } = useAppDataContext();
   const { walletBalances } = useWalletBalances();
   const theme = useTheme();
-  const downToXS = useMediaQuery(theme.breakpoints.down('xs'));
+  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const {
     bridge,
@@ -180,9 +180,9 @@ export const SupplyAssetsList = () => {
       }
     >
       <>
-        {!downToXS && <ListHeader head={head} />}
+        {!downToXSM && <ListHeader head={head} />}
         {supplyReserves.map((item, index) =>
-          downToXS ? (
+          downToXSM ? (
             <SupplyAssetsListMobileItem {...item} key={index} />
           ) : (
             <SupplyAssetsListItem {...item} key={index} />

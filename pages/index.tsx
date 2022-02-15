@@ -36,9 +36,9 @@ export default function Home() {
       <ContentContainer>
         <Box
           sx={{
-            display: { xxs: 'flex', lg: 'none' },
-            justifyContent: { xxs: 'center', xs: 'flex-start' },
-            mb: { xxs: 3, xs: 4 },
+            display: { xs: 'flex', lg: 'none' },
+            justifyContent: { xs: 'center', xsm: 'flex-start' },
+            mb: { xs: 3, xsm: 4 },
           }}
         >
           <ToggleButtonGroup

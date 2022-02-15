@@ -63,7 +63,7 @@ export const IncentivesButton = ({ incentives, symbol }: IncentivesButtonProps) 
     <>
       <Box
         sx={(theme) => ({
-          p: { xxs: '0 4px', xs: '2px 4px' },
+          p: { xs: '0 4px', xsm: '2px 4px' },
           border: `1px solid ${theme.palette.divider}`,
           borderRadius: '4px',
           cursor: 'pointer',

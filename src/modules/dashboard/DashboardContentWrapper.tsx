@@ -22,12 +22,12 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
         alignItems: 'flex-start',
       }}
     >
-      <Box sx={{ display: { xxs: isBorrow ? 'none' : 'block', lg: 'block' }, width: paperWidth }}>
+      <Box sx={{ display: { xs: isBorrow ? 'none' : 'block', lg: 'block' }, width: paperWidth }}>
         <SuppliedPositionsList />
         <SupplyAssetsList />
       </Box>
 
-      <Box sx={{ display: { xxs: !isBorrow ? 'none' : 'block', lg: 'block' }, width: paperWidth }}>
+      <Box sx={{ display: { xs: !isBorrow ? 'none' : 'block', lg: 'block' }, width: paperWidth }}>
         <BorrowedPositionsList />
         <BorrowAssetsList />
       </Box>

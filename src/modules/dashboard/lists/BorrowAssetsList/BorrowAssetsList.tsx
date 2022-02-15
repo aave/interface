@@ -20,7 +20,7 @@ export const BorrowAssetsList = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
   const { user, reserves, marketReferencePriceInUsd } = useAppDataContext();
   const theme = useTheme();
-  const downToXS = useMediaQuery(theme.breakpoints.down('xs'));
+  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const { wrappedBaseAssetSymbol, baseAssetSymbol } = currentNetworkConfig;
 
@@ -120,9 +120,9 @@ export const BorrowAssetsList = () => {
           }
         >
           <>
-            {!downToXS && <ListHeader head={head} />}
+            {!downToXSM && <ListHeader head={head} />}
             {borrowReserves.map((item, index) =>
-              downToXS ? (
+              downToXSM ? (
                 <BorrowAssetsListMobileItem {...item} key={index} />
               ) : (
                 <BorrowAssetsListItem {...item} key={index} />
