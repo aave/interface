@@ -34,13 +34,19 @@ export type MarketDataType = {
     UI_POOL_DATA_PROVIDER: string;
     UI_INCENTIVE_DATA_PROVIDER?: string;
   };
+  /**
+   * https://www.hal.xyz/ has integrated aave for healtfactor warning notification
+   * the integration doesn't follow aave market naming & only supports a subset of markets.
+   * When a halMarketName is specified a link to hal will be displayed on the ui.
+   */
+  halMarketName?: string;
 };
 
 export enum CustomMarket {
   proto_kovan = 'proto_kovan',
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
-  proto_matic = 'proto_matic',
+  proto_polygon = 'proto_polygon',
   proto_mumbai = 'proto_mumbai',
   amm_kovan = 'amm_kovan',
   amm_mainnet = 'amm_mainnet',
@@ -58,27 +64,6 @@ export enum CustomMarket {
 export const marketsData: {
   [key in keyof typeof CustomMarket]: MarketDataType;
 } = {
-  // [CustomMarket.proto_kovan_v3]: {
-  //   v3: true,
-  //   marketTitle: 'AAVE v3 Kovan',
-  //   chainId: ChainId.kovan,
-  //   aTokenPrefix: 'A',
-  //   enabledFeatures: {
-  //     faucet: true,
-  //     governance: true,
-  //     staking: true,
-  //     incentives: true,
-  //   },
-  //   addresses: {
-  //     LENDING_POOL_ADDRESS_PROVIDER: '0xE5fb10674949D25c8df1aD5B064554475D800aBE'.toLowerCase(),
-  //     LENDING_POOL: '0xA95500B7Aaa860429e8Ee123CDD4422A92d253Cb',
-  //     WETH_GATEWAY: '0x3Cc4f2F748E0E74ec99D72913213DAb2Bd52b4e2',
-  //     FAUCET: '0x606c081bcB46fe370Dc3C72ceD2aD5004B58f14B',
-  //     WALLET_BALANCE_PROVIDER: '0x1A7bD4385E2368605bEd6C30d93dEb616Ff2C820',
-  //     UI_POOL_DATA_PROVIDER: '0xc0D742D3a10DFC75911Fd320927297db346EEA1e',
-  //     UI_INCENTIVE_DATA_PROVIDER: '0xceD5e96CD06B2D2839D7171BD46546b22b53AFab',
-  //   },
-  // },
   [CustomMarket.proto_eth_rinkeby_v3]: {
     v3: true,
     marketTitle: 'AAVE v3 Rinkeby',
@@ -141,6 +126,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: '0xff115c660f57dcc19a933dbf5ba3677979adcaec',
       UI_INCENTIVE_DATA_PROVIDER: '0xD01ab9a6577E1D84F142e44D49380e23A340387d',
     },
+    halMarketName: 'aavev2',
   },
   [CustomMarket.amm_kovan]: {
     marketTitle: 'AMM Kovan',
@@ -206,7 +192,7 @@ export const marketsData: {
     },
     v3: true,
   },
-  [CustomMarket.proto_matic]: {
+  [CustomMarket.proto_polygon]: {
     marketTitle: 'Polygon',
     chainId: ChainId.polygon,
     aTokenPrefix: 'AM',
@@ -223,6 +209,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: '0x67acdB3469580185811E5769113509c6e8B6Cba5',
       UI_INCENTIVE_DATA_PROVIDER: '0x645654D59A5226CBab969b1f5431aA47CBf64ab8',
     },
+    halMarketName: 'aavepolygon',
   },
   [CustomMarket.proto_fuji]: {
     marketTitle: 'Avalanche Fuji',
@@ -259,6 +246,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: '0x88be7eC36719fadAbdE4307ec61EAB6fda788CEF',
       UI_INCENTIVE_DATA_PROVIDER: '0x11979886A6dBAE27D7a72c49fCF3F23240D647bF',
     },
+    halMarketName: 'aaveavalanche',
   },
   [CustomMarket.proto_arbitrum_rinkeby_v3]: {
     marketTitle: 'Arbitrum v3 Rinkeby',
