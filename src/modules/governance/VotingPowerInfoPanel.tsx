@@ -1,23 +1,10 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider, Typography } from '@mui/material';
-import { ReactNode } from 'react';
 import { GovDelegationModal } from 'src/components/GovDelegation/GovDelegationModal';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Row } from 'src/components/primitives/Row';
 import { useVotingPower } from 'src/hooks/governance-data-provider/useVotingPower';
 import { useModalContext } from 'src/hooks/useModal';
-
-const VotingPowerLine = ({ name, value }: { name: ReactNode; value: string }) => {
-  return (
-    <Box sx={{ display: 'flex', alignItems: 'center', py: 2 }}>
-      <Box sx={{ flexGrow: 1 }}>
-        <Typography variant="description">{name}</Typography>
-        <Typography variant="caption" color="text.secondary">
-          <Trans>(AAVE + stkAAVE)</Trans>
-        </Typography>
-      </Box>
-      <Typography variant="main16">{value}</Typography>
-    </Box>
-  );
-};
 
 export function VotingPowerInfoPanel() {
   const { votingPower, propositionPower } = useVotingPower();
@@ -29,8 +16,36 @@ export function VotingPowerInfoPanel() {
         <Typography variant="h3" gutterBottom>
           <Trans>Your info</Trans>
         </Typography>
-        <VotingPowerLine name={<Trans>Voting power</Trans>} value={votingPower} />
-        <VotingPowerLine name={<Trans>Proposition power</Trans>} value={propositionPower} />
+        <Row
+          sx={{ py: 2 }}
+          caption={
+            <>
+              <Typography variant="description">
+                <Trans>Voting power</Trans>
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                <Trans>(AAVE + stkAAVE)</Trans>
+              </Typography>
+            </>
+          }
+        >
+          <FormattedNumber value={votingPower} variant="main16" visibleDecimals={2} />
+        </Row>
+        <Row
+          sx={{ py: 2 }}
+          caption={
+            <>
+              <Typography variant="description">
+                <Trans>Proposition power</Trans>
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                <Trans>(AAVE + stkAAVE)</Trans>
+              </Typography>
+            </>
+          }
+        >
+          <FormattedNumber value={propositionPower} variant="main16" visibleDecimals={2} />
+        </Row>
       </Box>
       <Divider />
       <Box sx={{ px: 6, pt: 4, pb: 6, display: 'flex', alignItems: 'center' }}>

@@ -36,7 +36,7 @@ export function ProposalListItem({
         sx={{
           width: {
             xs: '100%',
-            sm: '60%',
+            lg: '70%',
           },
           display: 'flex',
           flexDirection: 'column',
@@ -50,7 +50,7 @@ export function ProposalListItem({
           <StateBadge state={proposal.state} />
           <FormattedProposalTime
             state={proposal.state}
-            executionTime={proposal.executionTime}
+            executionTime={Number(proposal.executionTime)}
             expirationTimestamp={proposal.expirationTimestamp}
           />
           <CheckBadge text={<Trans>Quorum</Trans>} checked={quorumReached} />
@@ -60,7 +60,8 @@ export function ProposalListItem({
       <Box
         sx={{
           flexGrow: 1,
-          pl: { xs: 0, sm: 4 },
+          pl: { xs: 0, lg: 4 },
+          mt: { md: 7, lg: 0 },
         }}
       >
         <VoteBar yae percent={yaePercent} votes={yaeVotes} sx={{ mb: 4 }} />

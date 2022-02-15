@@ -68,7 +68,7 @@ declare module '@mui/material/styles' {
   interface TypographyVariantsOptions extends TypographyCustomVariants {}
 
   interface BreakpointOverrides {
-    xxs: true;
+    xsm: true;
     xxl: true;
   }
 }
@@ -117,8 +117,8 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
 
   return {
     breakpoints: {
-      keys: ['xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl'],
-      values: { xxs: 0, xs: 640, sm: 760, md: 960, lg: 1280, xl: 1440, xxl: 1800 },
+      keys: ['xs', 'xsm', 'sm', 'md', 'lg', 'xl', 'xxl'],
+      values: { xs: 0, xsm: 640, sm: 760, md: 960, lg: 1280, xl: 1440, xxl: 1800 },
     },
     palette: {
       mode,
@@ -359,6 +359,8 @@ export function getThemedComponents(theme: Theme) {
       MuiOutlinedInput: {
         styleOverrides: {
           root: {
+            borderRadius: '6px',
+            borderColor: theme.palette.divider,
             '&:hover .MuiOutlinedInput-notchedOutline': {
               borderColor: '#CBCDD8',
             },
@@ -537,11 +539,11 @@ export function getThemedComponents(theme: Theme) {
             flexDirection: 'column',
             flex: 1,
             paddingBottom: '39px',
-            [theme.breakpoints.up('xxs')]: {
+            [theme.breakpoints.up('xs')]: {
               paddingLeft: '8px',
               paddingRight: '8px',
             },
-            [theme.breakpoints.up('xs')]: {
+            [theme.breakpoints.up('xsm')]: {
               paddingLeft: '20px',
               paddingRight: '20px',
             },
@@ -750,6 +752,16 @@ export function getThemedComponents(theme: Theme) {
             '&.Mui-selected, &.Mui-disabled, &.Mui-selected:hover,  &:hover, &:focus': {
               backgroundColor: theme.palette.background.paper,
             },
+          },
+        },
+      },
+      MuiSelect: {
+        styleOverrides: {
+          outlined: {
+            backgroundColor: theme.palette.background.surface,
+            ...theme.typography.buttonM,
+            padding: '6px 12px',
+            color: theme.palette.primary.light,
           },
         },
       },
