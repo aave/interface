@@ -4,11 +4,12 @@ import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { MarketLogo } from 'src/components/MarketSwitcher';
 import { ExternalLinkIcon } from '@heroicons/react/solid';
+import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 
 export const StakingHeader = () => {
   return (
-    <>
-      <Box sx={{ mt: 12, mb: 24, color: 'common.white' }}>
+    <TopInfoPanel>
+      <Box sx={{ color: 'common.white', bgcolor: '#090815' }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Typography variant="h1" sx={{ opacity: '0.7', mr: 3 }}>
             Staking
@@ -58,6 +59,6 @@ export const StakingHeader = () => {
           </TopInfoPanelItem>
         </Box>
       </Box>
-    </>
+    </TopInfoPanel>
   );
 };
