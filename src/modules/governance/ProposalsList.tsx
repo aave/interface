@@ -1,4 +1,7 @@
 import { ProposalState } from '@aave/contract-helpers';
+import { ChevronDownIcon } from '@heroicons/react/solid';
+import { Trans } from '@lingui/macro';
+import { ArrowBack } from '@mui/icons-material';
 import {
   Box,
   FormControl,
@@ -6,6 +9,7 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  SvgIcon,
   Typography,
 } from '@mui/material';
 import { GovernancePageProps } from 'pages/governance';
@@ -21,7 +25,7 @@ import { enhanceProposalWithTimes } from './utils/formatProposal';
 
 export function ProposalsList({ proposals: initialProposals }: GovernancePageProps) {
   const [proposals, setProposals] = useState(initialProposals);
-  const [proposalFilter, setProposalFilter] = useState<string>('');
+  const [proposalFilter, setProposalFilter] = useState<string>('all');
 
   const handleChange = (event: SelectChangeEvent) => {
     setProposalFilter(event.target.value as string);
@@ -68,32 +72,38 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
   usePolling(updatePendingProposals, 10000, false, []);
   return (
     <div>
-      <Box sx={{ px: 6, py: 8, display: 'flex' }}>
+      <Box sx={{ px: 6, py: 8, display: 'flex', alignItems: 'center' }}>
         <Typography variant="h3" sx={{ flexGrow: 1 }}>
-          Proposals
+          <Trans>Proposals</Trans>
         </Typography>
-        <FormControl sx={{ width: 200 }}>
-          <InputLabel id="filter-label">Filter</InputLabel>
-          <Select
-            labelId="filter-label"
-            id="filter"
-            value={proposalFilter}
-            label="Filter"
-            onChange={handleChange}
-          >
-            <MenuItem value="">
-              <em>None</em>
+        <Typography sx={{ mx: 4 }}>
+          <Trans>Filter</Trans>
+        </Typography>
+        <Select
+          id="filter"
+          value={proposalFilter}
+          sx={{ minWidth: 140 }}
+          onChange={handleChange}
+          IconComponent={(props) => (
+            <SvgIcon {...props}>
+              <ChevronDownIcon />
+            </SvgIcon>
+          )}
+        >
+          <MenuItem value="all">
+            <Trans>All proposals</Trans>
+          </MenuItem>
+          {Object.keys(ProposalState).map((key) => (
+            <MenuItem key={key} value={key}>
+              {key}
             </MenuItem>
-            {Object.keys(ProposalState).map((key) => (
-              <MenuItem key={key} value={key}>
-                {key}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+          ))}
+        </Select>
       </Box>
       {proposals
-        .filter((proposal) => !proposalFilter || proposal.proposal.state === proposalFilter)
+        .filter(
+          (proposal) => proposalFilter === 'all' || proposal.proposal.state === proposalFilter
+        )
         .map(({ proposal, prerendered, ipfs }) => (
           <ProposalListItem
             key={proposal.id}
