@@ -22,7 +22,7 @@ export const BorrowedPositionsList = () => {
   const { user } = useAppDataContext();
   const { openEmode } = useModalContext();
   const theme = useTheme();
-  const downToXS = useMediaQuery(theme.breakpoints.down('xs'));
+  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const borrowPositions =
     user?.userReservesData.reduce((acc, userReserve) => {
@@ -74,9 +74,9 @@ export const BorrowedPositionsList = () => {
     >
       {borrowPositions.length ? (
         <>
-          {!downToXS && <ListHeader head={head} />}
+          {!downToXSM && <ListHeader head={head} />}
           {borrowPositions.map((item) =>
-            downToXS ? (
+            downToXSM ? (
               <BorrowedPositionsListMobileItem
                 {...item}
                 key={item.underlyingAsset + item.borrowRateMode}

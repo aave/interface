@@ -99,7 +99,7 @@ export const ListWrapper = ({
             display: 'flex',
             alignItems: 'center',
             px: 6,
-            pb: { xxs: collapsed && !noData ? 6 : 2, xs: collapsed && !noData ? 6 : 0 },
+            pb: { xs: collapsed && !noData ? 6 : 2, xsm: collapsed && !noData ? 6 : 0 },
             overflowX: 'auto',
           }}
         >
@@ -107,7 +107,7 @@ export const ListWrapper = ({
         </Box>
       )}
       {subChildrenComponent && !collapsed && (
-        <Box sx={{ marginBottom: { xxs: 2, xs: 0 } }}>{subChildrenComponent}</Box>
+        <Box sx={{ marginBottom: { xs: 2, xsm: 0 } }}>{subChildrenComponent}</Box>
       )}
       <Box sx={{ display: collapsed ? 'none' : 'block' }}>{children}</Box>
 
