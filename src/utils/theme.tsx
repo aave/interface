@@ -649,6 +649,7 @@ export function getThemedComponents(theme: Theme) {
               textDecoration: 'underline',
               padding: 0,
               margin: 0,
+              minWidth: 'unset',
               '&:hover': {
                 textDecoration: 'none',
                 background: 'transparent',

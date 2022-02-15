@@ -14,6 +14,8 @@ import {
 } from '@mui/material';
 import React from 'react';
 
+import { CapType } from './caps/helper';
+import { AvailableInfoContent } from './infoModalContents/AvailableInfoContent';
 import { FormattedNumber } from './primitives/FormattedNumber';
 import { TokenIcon } from './primitives/TokenIcon';
 
@@ -31,6 +33,7 @@ export interface AssetInputProps<T extends Asset = Asset> {
   disabled?: boolean;
   onSelect?: (asset: T) => void;
   assets: T[];
+  capType?: CapType;
 }
 
 export const AssetInput: React.FC<AssetInputProps> = ({
@@ -41,6 +44,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
   disabled,
   onSelect,
   assets,
+  capType,
 }) => {
   const validNumber = new RegExp(/^\d*\.?\d*$/); // allow only digits with decimals
 
@@ -64,16 +68,19 @@ export const AssetInput: React.FC<AssetInputProps> = ({
 
   return (
     <Box>
-      <Typography sx={{ mb: 1 }} color="text.secondary">
-        <Trans>Amount</Trans>
-      </Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+        <Typography color="text.secondary">
+          <Trans>Amount</Trans>
+        </Typography>
+        {capType && <AvailableInfoContent capType={capType} />}
+      </Box>
 
       <Box
         sx={(theme) => ({
           p: '8px 12px',
           border: `1px solid ${theme.palette.divider}`,
           borderRadius: '6px',
-          mb: 6,
+          mb: 1,
         })}
       >
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>

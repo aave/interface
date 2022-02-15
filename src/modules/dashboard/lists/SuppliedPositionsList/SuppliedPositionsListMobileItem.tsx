@@ -55,7 +55,12 @@ export const SuppliedPositionsListMobileItem = ({
         />
       </Row>
 
-      <Row caption={<Trans>Used as collateral</Trans>} captionVariant="description" mb={2}>
+      <Row
+        caption={<Trans>Used as collateral</Trans>}
+        align={isIsolated ? 'flex-start' : 'center'}
+        captionVariant="description"
+        mb={2}
+      >
         <ListItemUsedAsCollateral
           isIsolated={isIsolated}
           usageAsCollateralEnabledOnUser={usageAsCollateralEnabledOnUser}
