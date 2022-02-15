@@ -28,7 +28,7 @@ export const DashboardTopPanel = () => {
 
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
-  const downToXS = useMediaQuery(theme.breakpoints.down('xs'));
+  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const { claimableRewardsUsd, assets } = Object.keys(user.calculatedUserIncentives).reduce(
     (acc, rewardTokenAddress) => {
@@ -113,7 +113,7 @@ export const DashboardTopPanel = () => {
           </TopInfoPanelItem>
         )}
 
-        <TopInfoPanelItem title={<Trans>Available rewards</Trans>} hideIcon withLine={!downToXS}>
+        <TopInfoPanelItem title={<Trans>Available rewards</Trans>} hideIcon withLine={!downToXSM}>
           {currentAccount && claimableRewardsUsd > 0 ? (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <FormattedNumber
@@ -126,7 +126,7 @@ export const DashboardTopPanel = () => {
               {assets && (
                 <MultiTokenIcon
                   symbols={assets}
-                  sx={{ ml: 1, fontSize: { xxs: '16px', xs: '20px' } }}
+                  sx={{ ml: 1, fontSize: { xs: '16px', xsm: '20px' } }}
                 />
               )}
               <Button

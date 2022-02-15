@@ -22,8 +22,8 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
     <List
       sx={{
         display: 'flex',
-        alignItems: { xxs: 'flex-start', md: 'center' },
-        flexDirection: { xxs: 'column', md: 'row' },
+        alignItems: { xs: 'flex-start', md: 'center' },
+        flexDirection: { xs: 'column', md: 'row' },
       }}
       disablePadding
     >
@@ -32,8 +32,8 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
           sx={{
             display:
               !!item.isVisible && !item.isVisible(currentMarketData) ? 'none' : 'inline-flex',
-            width: { xxs: '100%', md: 'unset' },
-            mr: { xxs: 0, md: 2 },
+            width: { xs: '100%', md: 'unset' },
+            mr: { xs: 0, md: 2 },
           }}
           data-cy={item.dataCy}
           disablePadding
@@ -68,7 +68,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
         </ListItem>
       ))}
 
-      <ListItem sx={{ display: { xxs: 'none', md: 'flex' }, width: 'unset' }} disablePadding>
+      <ListItem sx={{ display: { xs: 'none', md: 'flex' }, width: 'unset' }} disablePadding>
         <MoreMenu />
       </ListItem>
     </List>
