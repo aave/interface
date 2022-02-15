@@ -60,6 +60,7 @@
     "graphql-ws": "^5.5.5",
     "lowdb": "^3.0.0",
     "next": "12.0.10",
+    "paraswap": "^5.0.1",
     "react": "latest",
     "react-dom": "latest",
     "react-markdown": "^8.0.0",
