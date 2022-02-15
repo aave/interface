@@ -118,6 +118,7 @@ export const WithdrawActions = ({
             variant="contained"
             onClick={action}
             disabled={loading || isWrongNetwork || blocked || !!mainTxState.gasEstimationError}
+            sx={{ minHeight: '44px' }}
           >
             {handleButtonStates()}
           </Button>

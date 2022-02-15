@@ -180,7 +180,7 @@ export const RepayActions = ({
             variant="contained"
             onClick={() => approval(amountToRepay, poolAddress)}
             disabled={approved || loading || isWrongNetwork || blocked}
-            sx={{ minHeight: '38px', mb: 2 }}
+            sx={{ minHeight: '44px', mb: 2 }}
           >
             {!approved && !loading && <Trans>Approve to continue</Trans>}
             {!approved && loading && (
@@ -202,7 +202,7 @@ export const RepayActions = ({
               isWrongNetwork ||
               !!mainTxState.gasEstimationError
             }
-            sx={{ minHeight: '38px' }}
+            sx={{ minHeight: '44px' }}
           >
             {(!loading || (requiresApproval && !approved)) && <Trans>Repay {symbol}</Trans>}
             {((requiresApproval && approved) || loading) && (

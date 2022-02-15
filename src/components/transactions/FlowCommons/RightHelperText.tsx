@@ -27,7 +27,14 @@ export const RightHelperText = ({
 }: RightHelperTextProps) => {
   const networkConfig = getNetworkConfig(chainId);
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', mb: 3 }}>
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        mb: (approvalHash && !actionHash && !usePermit) || actionHash ? 3 : 0,
+      }}
+    >
       {approvalHash && !actionHash && !usePermit && (
         <Link
           variant="helperText"

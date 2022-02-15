@@ -131,6 +131,7 @@ export const RateSwitchModalContent = ({
           {isWrongNetwork && (
             <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
           )}
+
           <TxModalDetails
             incentives={
               rateModeAfterSwitch === InterestRate.Variable
@@ -150,11 +151,13 @@ export const RateSwitchModalContent = ({
       {rateSwitchTxState.success && !rateSwitchTxState.txError && (
         <TxSuccessView rate={rateModeAfterSwitch} />
       )}
+
       {blockingError !== undefined && (
-        <Typography variant="helperText" color="red">
+        <Typography variant="helperText" color="error.main">
           {handleBlocked()}
         </Typography>
       )}
+
       <RateSwitchActions
         poolReserve={poolReserve}
         setGasLimit={setGasLimit}

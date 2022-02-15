@@ -90,31 +90,31 @@ export const ClaimRewardsActions = ({
       return (
         <>
           {!blocked && <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />}
-          <Trans>CLAIM</Trans>{' '}
-          {selectedReward.symbol === 'all' ? <Trans>ALL</Trans> : selectedReward.symbol}
+          <Trans>Claim</Trans>{' '}
+          {selectedReward.symbol === 'all' ? <Trans>all</Trans> : selectedReward.symbol}
         </>
       );
     } else if (!loading && (actionTx || blocked)) {
       return (
         <>
-          <Trans>CLAIM</Trans>{' '}
-          {selectedReward.symbol === 'all' ? <Trans>ALL</Trans> : selectedReward.symbol}
+          <Trans>Claim</Trans>{' '}
+          {selectedReward.symbol === 'all' ? <Trans>all</Trans> : selectedReward.symbol}
         </>
       );
     } else if (!loading && !actionTx) {
       return (
         <>
-          <Trans>CLAIM</Trans>{' '}
-          {selectedReward.symbol === 'all' ? <Trans>ALL</Trans> : selectedReward.symbol}
+          <Trans>Claim</Trans>{' '}
+          {selectedReward.symbol === 'all' ? <Trans>all</Trans> : selectedReward.symbol}
         </>
       );
     } else if (loading && actionTx) {
       return (
         <>
           <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-          <Trans>CLAIMING</Trans>{' '}
-          {selectedReward.symbol === 'all' ? <Trans>ALL</Trans> : selectedReward.symbol}{' '}
-          <Trans>PENDING...</Trans>
+          <Trans>Claiming</Trans>{' '}
+          {selectedReward.symbol === 'all' ? <Trans>all</Trans> : selectedReward.symbol}{' '}
+          <Trans>Pending...</Trans>
         </>
       );
     }
@@ -138,6 +138,7 @@ export const ClaimRewardsActions = ({
             variant="contained"
             onClick={action}
             disabled={loading || isWrongNetwork || blocked || !!mainTxState.gasEstimationError}
+            sx={{ minHeight: '44px' }}
           >
             {handleButtonStates()}
           </Button>

@@ -82,6 +82,7 @@ export const RateSwitchActions = ({
             variant="contained"
             onClick={action}
             disabled={loading || isWrongNetwork || blocked || !!mainTxState.gasEstimationError}
+            sx={{ minHeight: '44px' }}
           >
             {!loading || blocked ? (
               <Trans>Switch rate</Trans>

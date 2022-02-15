@@ -127,7 +127,7 @@ export const CollateralChangeModalContent = ({
     <>
       {!collateralChangeTxState.txError && !collateralChangeTxState.success && (
         <>
-          <Typography variant="h2" sx={{ mb: '26px' }}>
+          <Typography variant="h2" sx={{ mb: '24px' }}>
             {usageAsCollateralModeAfterSwitch ? <Trans>Use</Trans> : <Trans>Disable</Trans>}
             {poolReserve.symbol}
             <Trans> as collateral</Trans>
@@ -160,6 +160,7 @@ export const CollateralChangeModalContent = ({
           {poolReserve.isIsolated && !usageAsCollateralModeAfterSwitch && (
             <Typography>You will leave isolation mode</Typography>
           )}
+
           <TxModalDetails
             showHf={true}
             healthFactor={user.healthFactor}
@@ -168,8 +169,9 @@ export const CollateralChangeModalContent = ({
             symbol={poolReserve.symbol}
             walletBalance={walletBalance}
           />
+
           {blockingError !== undefined && (
-            <Typography variant="helperText" color="red">
+            <Typography variant="helperText" color="error.main">
               {handleBlocked()}
             </Typography>
           )}
@@ -185,6 +187,7 @@ export const CollateralChangeModalContent = ({
       {collateralChangeTxState.gasEstimationError && (
         <GasEstimationError error={collateralChangeTxState.gasEstimationError} />
       )}
+
       <CollateralChangeActions
         poolReserve={poolReserve}
         setGasLimit={setGasLimit}

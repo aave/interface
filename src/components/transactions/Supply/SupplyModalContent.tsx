@@ -189,10 +189,10 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
       {!supplyTxState.txError && !supplyTxState.success && (
         <>
           <TxModalTitle title="Supply" symbol={poolReserve.symbol} />
-
           {isWrongNetwork && (
             <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
           )}
+
           {showIsolationWarning && <IsolationModeWarning />}
           {showSupplyCapWarning && <SupplyCapWarning />}
           {poolReserve.symbol === 'AMPL' && <AMPLWarning />}
@@ -216,13 +216,12 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
           />
 
           {blockingError !== undefined && (
-            <Typography variant="helperText" color="red">
+            <Typography variant="helperText" color="error.main">
               {handleBlocked()}
             </Typography>
           )}
 
           <TxModalDetails
-            sx={{ mt: '30px' }}
             apy={supplyApy}
             incentives={poolReserve.aIncentivesData}
             showHf={showHealthFactor || false}
@@ -237,17 +236,14 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
       )}
 
       {supplyTxState.txError && <TxErrorView errorMessage={supplyTxState.txError} />}
-
       {supplyTxState.success && !supplyTxState.txError && (
         <TxSuccessView action="Supplied" amount={amountToSupply} symbol={poolReserve.symbol} />
       )}
-
       {supplyTxState.gasEstimationError && (
         <GasEstimationError error={supplyTxState.gasEstimationError} />
       )}
 
       <SupplyActions
-        sx={{ mt: '48px' }}
         setSupplyTxState={setSupplyTxState}
         poolReserve={poolReserve}
         amountToSupply={amountToSupply}

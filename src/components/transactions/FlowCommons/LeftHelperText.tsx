@@ -24,7 +24,19 @@ export const LeftHelperText = ({
   const theme = useTheme();
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', mb: 3 }}>
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        mb:
+          (approvalHash && !actionHash && !error) ||
+          error ||
+          (!approvalHash && !error && !actionHash && Number(amount) > 0 && requiresApproval)
+            ? 3
+            : 0,
+      }}
+    >
       {approvalHash && !actionHash && !error && (
         <>
           <CheckIcon

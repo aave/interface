@@ -85,6 +85,7 @@ export const CollateralChangeActions = ({
             variant="contained"
             onClick={action}
             disabled={loading || isWrongNetwork || blocked || !!mainTxState.gasEstimationError}
+            sx={{ minHeight: '44px' }}
           >
             {!loading ? (
               <Trans>

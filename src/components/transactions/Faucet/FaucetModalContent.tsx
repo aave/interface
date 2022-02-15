@@ -54,6 +54,7 @@ export const FaucetModalContent = ({ underlyingAsset, handleClose }: FaucetModal
           {isWrongNetwork && (
             <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
           )}
+
           <TxModalDetails
             gasLimit={gasLimit}
             symbol={poolReserve.symbol}
@@ -69,6 +70,7 @@ export const FaucetModalContent = ({ underlyingAsset, handleClose }: FaucetModal
       {faucetTxState.gasEstimationError && (
         <GasEstimationError error={faucetTxState.gasEstimationError} />
       )}
+
       <FaucetActions
         poolReserve={poolReserve}
         setGasLimit={setGasLimit}

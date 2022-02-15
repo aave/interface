@@ -1,4 +1,4 @@
-import { InformationCircleIcon } from '@heroicons/react/outline';
+import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import Typography from '@mui/material/Typography';
 
@@ -31,7 +31,7 @@ export const AvailableInfoContent = ({ capType, ...rest }: AvailableInfoContentP
     );
 
   return (
-    <TextWithModal icon={<InformationCircleIcon />} iconSize={12} withContentButton {...rest}>
+    <TextWithModal icon={<QuestionMarkCircleIcon />} iconSize={12} withContentButton {...rest}>
       <InfoContentWrapper caption={formattedTitle}>
         <Typography>{description}</Typography>
       </InfoContentWrapper>

@@ -268,6 +268,7 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
           {isWrongNetwork && (
             <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
           )}
+
           <Box>
             <Typography>
               <Trans>Repay with</Trans>
@@ -296,6 +297,7 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
               </Button>
             </Box>
           </Box>
+
           <AssetInput
             value={amountToRepayUI.toString()}
             onChange={setAmount}
@@ -304,11 +306,13 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
             assets={assets}
             onSelect={setTokenToRepayWith}
           />
+
           {blockingError !== undefined && (
-            <Typography variant="helperText" color="red">
+            <Typography variant="helperText" color="error.main">
               {handleBlocked()}
             </Typography>
           )}
+
           <TxModalDetails
             showHf={showHealthFactor}
             healthFactor={user?.healthFactor}
@@ -332,6 +336,7 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
       {repayTxState.gasEstimationError && (
         <GasEstimationError error={repayTxState.gasEstimationError} />
       )}
+
       <RepayActions
         poolReserve={poolReserve}
         setGasLimit={setGasLimit}

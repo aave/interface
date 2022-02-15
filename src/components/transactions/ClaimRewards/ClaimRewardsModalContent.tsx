@@ -117,18 +117,19 @@ export const ClaimRewardsModalContent = ({ handleClose }: ClaimRewardsModalConte
           {isWrongNetwork && (
             <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
           )}
+
           {blockingError !== undefined && (
-            <Typography variant="helperText" color="red">
+            <Typography variant="helperText" color="error.main">
               {handleBlocked()}
             </Typography>
           )}
           {allRewards && allRewards.length > 1 && (
-            <Typography variant="description">
+            <Typography>
               <Trans>Reward(s) to claim</Trans>
             </Typography>
           )}
+
           <TxModalDetails
-            sx={{ mt: '30px' }}
             gasLimit={gasLimit}
             allRewards={allRewards}
             selectedReward={selectedReward}
@@ -136,6 +137,7 @@ export const ClaimRewardsModalContent = ({ handleClose }: ClaimRewardsModalConte
           />
         </>
       )}
+
       {claimRewardsTxState.txError && <TxErrorView errorMessage={claimRewardsTxState.txError} />}
       {claimRewardsTxState.success && !claimRewardsTxState.txError && (
         <TxSuccessView action="Claimed" amount={selectedReward?.balanceUsd} />
@@ -143,6 +145,7 @@ export const ClaimRewardsModalContent = ({ handleClose }: ClaimRewardsModalConte
       {claimRewardsTxState.gasEstimationError && (
         <GasEstimationError error={claimRewardsTxState.gasEstimationError} />
       )}
+
       <ClaimRewardsActions
         setClaimRewardsTxState={setClaimRewardsTxState}
         handleClose={handleClose}

@@ -89,16 +89,16 @@ export const BorrowActions = ({
       return (
         <>
           {!blocked && <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />}
-          <Trans>BORROW {symbol}</Trans>
+          <Trans>Borrow {symbol}</Trans>
         </>
       );
     } else if (!loading && (actionTx || blocked)) {
-      return <Trans>BORROW {symbol}</Trans>;
+      return <Trans>Borrow {symbol}</Trans>;
     } else if (loading && actionTx) {
       return (
         <>
           <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-          <Trans>BORROW {symbol} PENDING...</Trans>
+          <Trans>Pending...</Trans>
         </>
       );
     }
@@ -126,7 +126,7 @@ export const BorrowActions = ({
             variant="contained"
             onClick={action}
             disabled={loading || isWrongNetwork || blocked || !!mainTxState.gasEstimationError}
-            sx={{ minHeight: '38px' }}
+            sx={{ minHeight: '44px' }}
           >
             {handleButtonStates()}
           </Button>

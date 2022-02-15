@@ -135,6 +135,7 @@ export const EmodeActions = ({
             variant="contained"
             onClick={action}
             disabled={loading || isWrongNetwork || blocked || !!mainTxState.gasEstimationError}
+            sx={{ minHeight: '44px' }}
           >
             {getButtonText()}
           </Button>

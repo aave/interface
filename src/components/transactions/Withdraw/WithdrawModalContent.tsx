@@ -223,22 +223,20 @@ export const WithdrawModalContent = ({
             ]}
             usdValue={usdValue.toString()}
           />
+
           {blockingError !== undefined && (
-            <Typography variant="helperText" color="red">
+            <Typography variant="helperText" color="error.main">
               {handleBlocked()}
             </Typography>
           )}
           {blockingError === undefined &&
             healthFactorAfterWithdraw.toNumber() < 1.5 &&
             healthFactorAfterWithdraw.toNumber() >= 1 && (
-              <Typography
-                variant="helperText"
-                color="#C67F15
-            "
-              >
+              <Typography variant="helperText" color="warning.main">
                 <Trans>Liquidation risk is high. Lower amounts recomended.</Trans>
               </Typography>
             )}
+
           <TxModalDetails
             showHf={showHealthFactor}
             healthFactor={user.healthFactor}
@@ -271,6 +269,7 @@ export const WithdrawModalContent = ({
       {withdrawTxState.gasEstimationError && (
         <GasEstimationError error={withdrawTxState.gasEstimationError} />
       )}
+
       <WithdrawActions
         poolReserve={poolReserve}
         setGasLimit={setGasLimit}

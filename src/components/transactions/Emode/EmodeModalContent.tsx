@@ -198,6 +198,7 @@ export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
               {handleBlocked()}
             </Typography>
           )}
+
           <TxModalDetails
             showHf={true}
             healthFactor={user.healthFactor}
@@ -205,6 +206,7 @@ export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
             gasLimit={gasLimit}
             emodeAssets={selectedEmode?.assets}
           />
+
           {selectedEmode && selectedEmode.id !== 0 && (
             <Typography>
               <Trans>

@@ -30,7 +30,7 @@ export const TxActionsWrapper = ({
   const approvalTxError = approvalTxState && approvalTxState.txError;
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', ...sx }} {...rest}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12, ...sx }} {...rest}>
       {!!helperText && (
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           {helperText}
@@ -38,13 +38,13 @@ export const TxActionsWrapper = ({
       )}
 
       {(mainTxState.txError || approvalTxError) && (
-        <Button variant="outlined" onClick={handleRetry} sx={{ mb: 2 }}>
+        <Button variant="contained" onClick={handleRetry} sx={{ mb: 2, minHeight: '44px' }}>
           <Trans>Retry with approval</Trans>
         </Button>
       )}
 
       {withAmount && !hasAmount && !approvalTxError && (
-        <Button variant="outlined" disabled>
+        <Button variant="contained" disabled sx={{ minHeight: '44px' }}>
           <Trans>Enter an amount</Trans>
         </Button>
       )}
@@ -52,7 +52,7 @@ export const TxActionsWrapper = ({
       {children}
 
       {(mainTxState.txHash || mainTxState.txError || approvalTxError) && (
-        <Button onClick={handleClose} variant="contained">
+        <Button onClick={handleClose} variant="contained" sx={{ minHeight: '44px' }}>
           {!mainTxState.txError && !approvalTxError && <Trans>Ok,</Trans>} <Trans>Close</Trans>
         </Button>
       )}

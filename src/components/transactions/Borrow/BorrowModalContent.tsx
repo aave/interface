@@ -18,6 +18,7 @@ import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableTo
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { AssetInput } from '../../AssetInput';
+import { CapType } from '../../caps/helper';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -186,23 +187,22 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
                 ? networkConfig.baseAssetSymbol
                 : poolReserve.symbol
             }
+            capType={CapType.borrowCap}
           />
+
           {blockingError !== undefined && (
-            <Typography variant="helperText" color="red">
+            <Typography variant="helperText" color="error.main">
               {handleBlocked()}
             </Typography>
           )}
           {blockingError === undefined &&
             newHealthFactor.toNumber() < 1.5 &&
             newHealthFactor.toNumber() >= 1 && (
-              <Typography
-                variant="helperText"
-                color="#C67F15
-            "
-              >
+              <Typography variant="helperText" color="warning.main">
                 <Trans>Liquidation risk is high. Lower amounts recomended.</Trans>
               </Typography>
             )}
+
           <TxModalDetails
             showHf={true}
             healthFactor={user.healthFactor}
@@ -235,6 +235,7 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
       {borrowTxState.gasEstimationError && (
         <GasEstimationError error={borrowTxState.gasEstimationError} />
       )}
+
       <BorrowActions
         poolReserve={poolReserve}
         setGasLimit={setGasLimit}
