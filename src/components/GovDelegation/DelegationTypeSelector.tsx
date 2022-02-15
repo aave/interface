@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { FormControl, InputLabel, MenuItem, OutlinedInput, Select } from '@mui/material';
+import { FormControl, MenuItem, OutlinedInput, Select } from '@mui/material';
 import React from 'react';
 import { DelegationType } from 'src/helpers/types';
 

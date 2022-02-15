@@ -1,4 +1,8 @@
-import { AaveGovernanceService, tEthereumAddress } from '@aave/contract-helpers';
+import {
+  AaveGovernanceService,
+  GovernancePowerDelegationTokenService,
+  tEthereumAddress,
+} from '@aave/contract-helpers';
 import { normalize, valueToBigNumber } from '@aave/math-utils';
 import { useApolloClient } from '@apollo/client';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -32,6 +36,8 @@ export function _useGovernanceDataRPC({ governanceConfig }: UseGovernanceDataPro
     GOVERNANCE_HELPER_ADDRESS: governanceConfig.addresses.AAVE_GOVERNANCE_V2_HELPER,
     ipfsGateway: governanceConfig.ipfsGateway,
   });
+
+  const governanceDelegationService = new GovernancePowerDelegationTokenService(rpcProvider);
 
   async function getPowers() {
     try {
@@ -92,5 +98,5 @@ export function _useGovernanceDataRPC({ governanceConfig }: UseGovernanceDataPro
     isGovernanceFork,
   ]);
 
-  return { governanceService };
+  return { governanceService, governanceDelegationService };
 }

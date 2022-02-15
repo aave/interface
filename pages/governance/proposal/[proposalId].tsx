@@ -197,7 +197,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                 <br />
                 {dayjs.unix(proposal.startTimestamp).format()}
                 <br />
-                {proposal.executed && dayjs.unix(proposal.executionTime).format()}
+                {proposal.executed && dayjs.unix(Number(proposal.executionTime)).format()}
               </Typography>
             </Paper>
           </Grid>

@@ -1,22 +1,10 @@
 import { canBeEnsAddress } from '@aave/contract-helpers';
-import { Select, Trans, t } from '@lingui/macro';
-import {
-  Button,
-  FormControl,
-  FormHelperText,
-  Input,
-  InputLabel,
-  Link,
-  MenuItem,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Trans, t } from '@lingui/macro';
+import { FormControl, FormHelperText, Input, Typography } from '@mui/material';
 import { ethers } from 'ethers';
 import { useEffect, useState } from 'react';
 import { DelegationType, TxState } from 'src/helpers/types';
 import { useAaveTokensProviderContext } from 'src/hooks/governance-data-provider/AaveTokensDataProvider';
-import { useVotingPower } from 'src/hooks/governance-data-provider/useVotingPower';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import {
   DelegationToken,
@@ -33,6 +21,7 @@ import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { DelegationTokenSelector } from './DelegationTokenSelector';
 import { DelegationTypeSelector } from './DelegationTypeSelector';
+import { GovDelegationActions } from './GovDelegationActions';
 
 export type GovDelegationModalContentProps = {
   handleClose: () => void;
@@ -51,7 +40,6 @@ export enum ErrorType {
 }
 
 export const GovDelegationModalContent = ({ handleClose }: GovDelegationModalContentProps) => {
-  const { currentChainId } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
   const {
     daveTokens: { aave, stkAave },
@@ -103,8 +91,6 @@ export const GovDelegationModalContent = ({ handleClose }: GovDelegationModalCon
         return null;
     }
   };
-
-  console.log('token blocking:: ', tokenBlockingError);
 
   // is Network mismatched
   const govChain = governanceConfig?.chainId || 1;
@@ -161,14 +147,20 @@ export const GovDelegationModalContent = ({ handleClose }: GovDelegationModalCon
       {txState.success && !txState.txError && <TxSuccessView action="Delegation" />}
       {txState.gasEstimationError && <GasEstimationError error={txState.gasEstimationError} />}
 
-      {/* <GovDelegationActions
+      <GovDelegationActions
         setGasLimit={setGasLimit}
-        setEmodeTxState={setEmodeTxState}
+        delegationType={delegationType}
+        delegationToken={delegationToken}
+        delegate={delegate}
+        setTxState={setTxState}
         handleClose={handleClose}
         isWrongNetwork={isWrongNetwork}
-        blocked={blockingError !== undefined}
-        selectedEmode={selectedEmode?.id || 0}
-      /> */}
+        blocked={
+          tokenBlockingError !== undefined ||
+          delegateAddressBlockingError !== undefined ||
+          delegate === ''
+        }
+      />
     </>
   );
 };
