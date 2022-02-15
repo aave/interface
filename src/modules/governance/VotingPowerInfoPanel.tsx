@@ -1,7 +1,9 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider, Typography } from '@mui/material';
 import { ReactNode } from 'react';
+import { GovDelegationModal } from 'src/components/GovDelegation/GovDelegationModal';
 import { useVotingPower } from 'src/hooks/governance-data-provider/useVotingPower';
+import { useModalContext } from 'src/hooks/useModal';
 
 const VotingPowerLine = ({ name, value }: { name: ReactNode; value: string }) => {
   return (
@@ -19,7 +21,7 @@ const VotingPowerLine = ({ name, value }: { name: ReactNode; value: string }) =>
 
 export function VotingPowerInfoPanel() {
   const { votingPower, propositionPower } = useVotingPower();
-
+  const { openGovDelegation } = useModalContext();
   // TODO: if not logged in & loading, show some placeholder
   return (
     <>
@@ -35,8 +37,11 @@ export function VotingPowerInfoPanel() {
         <Box sx={{ flexGrow: 1 }}>
           <Typography>Delegate your power</Typography>
         </Box>
-        <Button variant="contained">Delegate</Button>
+        <Button variant="contained" onClick={() => openGovDelegation()}>
+          <Trans>Delegate</Trans>
+        </Button>
       </Box>
+      <GovDelegationModal />
     </>
   );
 }

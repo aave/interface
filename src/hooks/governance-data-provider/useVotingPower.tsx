@@ -11,6 +11,8 @@ export type PowerQueryResponseType = {
     aavePropositionDelegatee: string;
     stkAaveVotingDelegatee: string;
     stkAavePropositionDelegatee: string;
+    aaveTokenPower: string;
+    stkAaveTokenPower: string;
   };
 };
 
@@ -23,6 +25,8 @@ export const PowerQuery = gql`
       aavePropositionDelegatee @client
       stkAaveVotingDelegatee @client
       stkAavePropositionDelegatee @client
+      aaveTokenPower @client
+      stkAaveTokenPower @client
     }
   }
 `;

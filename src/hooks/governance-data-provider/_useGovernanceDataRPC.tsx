@@ -46,6 +46,8 @@ export function _useGovernanceDataRPC({ governanceConfig }: UseGovernanceDataPro
             .toString(),
           18
         ),
+        aaveTokenPower,
+        stkAaveTokenPower,
         propositionPower: normalize(
           valueToBigNumber(aaveTokenPower.propositionPower.toString())
             .plus(stkAaveTokenPower.propositionPower.toString())

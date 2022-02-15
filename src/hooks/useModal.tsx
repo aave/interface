@@ -10,6 +10,7 @@ export enum ModalType {
   ClaimRewards,
   Emode,
   Faucet,
+  GovDelegation,
 }
 
 interface ModalContextType {
@@ -22,6 +23,7 @@ interface ModalContextType {
   openClaimRewards: () => void;
   openEmode: () => void;
   openFaucet: (underlyingAsset: string) => void;
+  openGovDelegation: () => void;
   close: () => void;
   type?: ModalType;
   args?: { [key: string]: string };
@@ -70,6 +72,9 @@ export const ModalContextProvider: React.FC = ({ children }) => {
         openFaucet: (underlyingAsset) => {
           setType(ModalType.Faucet);
           setArgs({ underlyingAsset });
+        },
+        openGovDelegation: () => {
+          setType(ModalType.GovDelegation);
         },
         close: () => {
           setType(undefined);
