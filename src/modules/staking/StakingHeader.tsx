@@ -55,12 +55,17 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission }
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '32px', flexWrap: 'wrap', mt: 4 }}>
           <TopInfoPanelItem title={<Trans>Funds in the Safety Module</Trans>}>
             {/** TBD value */}
-            <FormattedNumber value={tvl || 0} symbol="USD" variant="main21" />
+            <FormattedNumber value={tvl || 0} symbol="USD" variant="main21" visibleDecimals={2} />
           </TopInfoPanelItem>
 
           <TopInfoPanelItem title={<Trans>Total emission per day</Trans>}>
             {/** TBD value */}
-            <FormattedNumber value={stkEmission || 0} symbol="AAVE" variant="main21" />
+            <FormattedNumber
+              value={stkEmission || 0}
+              symbol="AAVE"
+              variant="main21"
+              visibleDecimals={2}
+            />
           </TopInfoPanelItem>
         </Box>
       </Box>

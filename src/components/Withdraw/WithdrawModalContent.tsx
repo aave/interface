@@ -165,7 +165,6 @@ export const WithdrawModalContent = ({
 
   // error render handling
   const handleBlocked = () => {
-    console.log('blocking error: ', blockingError);
     switch (blockingError) {
       case ErrorType.CAN_NOT_WITHDRAW_THIS_AMOUNT:
         return (

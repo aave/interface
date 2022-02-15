@@ -67,6 +67,23 @@ const ActionDetails: React.FC<BoxProps> = ({ sx, ...props }) => (
   />
 );
 
+function getTimeRemaining(endtime: number) {
+  if (endtime == 0) {
+    return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+  }
+  const days = Math.floor(endtime / (60 * 60 * 24)),
+    hours = Math.floor((endtime % (60 * 60 * 24)) / (60 * 60)),
+    minutes = Math.floor((endtime % (60 * 60)) / 60),
+    seconds = Math.floor(endtime % 60);
+
+  return {
+    days,
+    hours,
+    minutes,
+    seconds,
+  };
+}
+
 export const StakingPanel: React.FC<StakingPanelProps> = ({
   onStakeAction,
   onStakeRewardClaimAction,
@@ -81,9 +98,24 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   stakeUserData,
   ...props
 }) => {
-  const cooldownDays = stakeData?.stakeCooldownSeconds
-    ? stakeData.stakeCooldownSeconds / 86400
-    : 10;
+  const now = Date.now() / 1000;
+  const stakeCooldownSeconds = stakeData?.stakeCooldownSeconds || 0;
+  const userCooldown = stakeUserData?.userCooldown || 0;
+  const stakeUnstakeWindow = stakeData?.stakeUnstakeWindow || 0;
+
+  const userCooldownDelta = now - userCooldown;
+  const isCooldownActive = userCooldownDelta < stakeCooldownSeconds + stakeUnstakeWindow;
+  const isUnstakeWindowActive =
+    isCooldownActive &&
+    userCooldownDelta > stakeCooldownSeconds &&
+    userCooldownDelta < stakeUnstakeWindow;
+
+  const cooldownDays = stakeCooldownSeconds ? stakeCooldownSeconds / 86400 : 10;
+  const cooldownCountdown =
+    isCooldownActive && !isUnstakeWindowActive
+      ? getTimeRemaining(stakeCooldownSeconds - userCooldownDelta)
+      : getTimeRemaining(0);
+
   return (
     <Paper sx={{ width: '100%', py: 4, px: 6, ...sx }} {...props}>
       <Typography variant="h3">
@@ -125,21 +157,55 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             visibleDecimals={2}
           />
           <FormattedNumber value={'1000'} symbol="USD" visibleDecimals={2} />
-          {true ? (
-            <Button variant="surface" sx={{ mt: 6, width: '100%' }} onClick={onUnstakeAction}>
+          {isUnstakeWindowActive && (
+            <Button variant="outlined" sx={{ mt: 6, width: '100%' }} onClick={onUnstakeAction}>
               <Trans>Unstake now</Trans>
             </Button>
-          ) : (
-            <Button variant="surface" sx={{ mt: 6, width: '100%' }} onClick={onCooldownAction}>
+          )}
+          {isCooldownActive && !isUnstakeWindowActive && (
+            <Button
+              variant="outlined"
+              sx={{ mt: 6, width: '100%', display: 'flex', gap: 1 }}
+              disabled
+            >
+              {!!cooldownCountdown.days && (
+                <Typography>
+                  <Trans>{cooldownCountdown.days} days</Trans>
+                </Typography>
+              )}
+              {!!cooldownCountdown.hours && (
+                <Typography>
+                  <Trans>{cooldownCountdown.hours} hours</Trans>
+                </Typography>
+              )}
+              {!!cooldownCountdown.minutes && (
+                <Typography>
+                  <Trans>{cooldownCountdown.minutes} minutes</Trans>
+                </Typography>
+              )}
+              {!!!cooldownCountdown.hours && !!cooldownCountdown.seconds && (
+                <Typography>
+                  <Trans>{cooldownCountdown.seconds} seconds</Trans>
+                </Typography>
+              )}
+              <Typography>
+                <Trans>left</Trans>
+              </Typography>
+            </Button>
+          )}
+
+          {!isCooldownActive && (
+            <Button variant="outlined" sx={{ mt: 6, width: '100%' }} onClick={onCooldownAction}>
               <Trans>Cooldown to unstake</Trans>
             </Button>
           )}
+
           <ActionDetails>
             <Typography color="text.secondary">
               <Trans>Cooldown period</Trans>
             </Typography>
             <Typography color="text.primary" fontWeight={500}>
-              <Trans>{cooldownDays} days</Trans>
+              <Trans>{cooldownDays > 1 ? cooldownDays : '<1'} days</Trans>
             </Typography>
           </ActionDetails>
         </StakeActionPaper>
