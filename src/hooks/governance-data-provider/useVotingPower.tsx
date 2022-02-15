@@ -1,3 +1,4 @@
+import { Power } from '@aave/contract-helpers';
 import { gql, useQuery } from '@apollo/client';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
@@ -11,8 +12,8 @@ export type PowerQueryResponseType = {
     aavePropositionDelegatee: string;
     stkAaveVotingDelegatee: string;
     stkAavePropositionDelegatee: string;
-    aaveTokenPower: string;
-    stkAaveTokenPower: string;
+    aaveTokenPower: Power;
+    stkAaveTokenPower: Power;
   };
 };
 

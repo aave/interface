@@ -1,10 +1,28 @@
-import { Trans } from '@lingui/macro';
-import { Button, Link, Typography } from '@mui/material';
+import { canBeEnsAddress } from '@aave/contract-helpers';
+import { Select, Trans, t } from '@lingui/macro';
+import {
+  Button,
+  FormControl,
+  FormHelperText,
+  Input,
+  InputLabel,
+  Link,
+  MenuItem,
+  TextField,
+  Typography,
+} from '@mui/material';
+import { ethers } from 'ethers';
 import { useEffect, useState } from 'react';
-import { TxState } from 'src/helpers/types';
+import { DelegationType, TxState } from 'src/helpers/types';
+import { useAaveTokensProviderContext } from 'src/hooks/governance-data-provider/AaveTokensDataProvider';
+import { useVotingPower } from 'src/hooks/governance-data-provider/useVotingPower';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { governanceConfig } from 'src/ui-config/governanceConfig';
+import {
+  DelegationToken,
+  delegationTokens,
+  governanceConfig,
+} from 'src/ui-config/governanceConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { TxErrorView } from '../FlowCommons/Error';
@@ -13,6 +31,8 @@ import { TxSuccessView } from '../FlowCommons/Success';
 import { TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
+import { DelegationTokenSelector } from './DelegationTokenSelector';
+import { DelegationTypeSelector } from './DelegationTypeSelector';
 
 export type GovDelegationModalContentProps = {
   handleClose: () => void;
@@ -25,62 +45,66 @@ export interface Asset {
   address: string;
 }
 
-export const DELEGATED_ASSETS = [
-  {
-    symbol: 'AAVE',
-  },
-  {
-    symbol: 'stkAAVE',
-  },
-];
-
-export enum DELEGATION_PARAM_TYPES {
-  VOTING = '0',
-  PROPOSITION_POWER = '1',
+export enum ErrorType {
+  NOT_ENOUGH_BALANCE,
+  NOT_AN_ADDRESS,
 }
-
-export const delegationTypes = [
-  {
-    value: DELEGATION_PARAM_TYPES.VOTING,
-    label: 'Voting power',
-  },
-  {
-    value: DELEGATION_PARAM_TYPES.PROPOSITION_POWER,
-    label: 'Proposition power',
-  },
-];
-
-export enum ErrorType {}
 
 export const GovDelegationModalContent = ({ handleClose }: GovDelegationModalContentProps) => {
   const { currentChainId } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
+  const {
+    daveTokens: { aave, stkAave },
+  } = useAaveTokensProviderContext();
 
   const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
   const [txState, setTxState] = useState<TxState>({ success: false });
 
   // error states
-  const [tokenBlockingError, setTokenBlockingError] = useState<ErrorType | undefined>();
-  const [delegateeBlockingError, setDelegateeBlockingError] = useState<ErrorType | undefined>();
+  const [tokenBlockingError, setTokenBlockingError] = useState<ErrorType>();
+  const [delegateAddressBlockingError, setDelegateAddressBlockingError] = useState<
+    ErrorType | undefined
+  >();
 
   // selector states
-  const [selectedToken, setSelectedToken] = useState();
+  const [delegationToken, setDelegationToken] = useState<DelegationToken>(delegationTokens['AAVE']);
+  const [delegationType, setDelegationType] = useState(DelegationType.VOTING);
+  const [delegate, setDelegate] = useState('');
 
+  useEffect(() => {
+    if (delegationToken.symbol === 'AAVE' && aave === '0') {
+      setTokenBlockingError(ErrorType.NOT_ENOUGH_BALANCE);
+    } else if (delegationToken.symbol === 'stkAAVE' && stkAave === '0') {
+      setTokenBlockingError(ErrorType.NOT_ENOUGH_BALANCE);
+    } else {
+      setTokenBlockingError(undefined);
+    }
+  }, [delegationToken, aave, stkAave]);
+
+  // handle delegate address errors
+  useEffect(() => {
+    if (delegate !== '' && !ethers.utils.isAddress(delegate) && !canBeEnsAddress(delegate)) {
+      setDelegateAddressBlockingError(ErrorType.NOT_AN_ADDRESS);
+    } else {
+      setDelegateAddressBlockingError(undefined);
+    }
+  }, [delegate]);
   // render error messages
-  const handleTokenBlocked = () => {
-    switch (tokenBlockingError) {
+  const handleDelegateAddressError = () => {
+    switch (delegateAddressBlockingError) {
+      case ErrorType.NOT_AN_ADDRESS:
+        return (
+          // TODO: fix text
+          <Typography>
+            <Trans>Not a valid address</Trans>
+          </Typography>
+        );
       default:
         return null;
     }
   };
 
-  // render error messages
-  const handleDelegateeBlocked = () => {
-    switch (delegateeBlockingError) {
-      default:
-        return null;
-    }
-  };
+  console.log('token blocking:: ', tokenBlockingError);
 
   // is Network mismatched
   const govChain = governanceConfig?.chainId || 1;
@@ -95,14 +119,40 @@ export const GovDelegationModalContent = ({ handleClose }: GovDelegationModalCon
           {isWrongNetwork && (
             <ChangeNetworkWarning networkName={networkConfig.name} chainId={govChain} />
           )}
-          {/* {blockingError !== undefined && (
-            <Typography variant="helperText" color="red">
-              {handleBlocked()}
-            </Typography>
-          )} */}
-          {/* Add token selector */}
-          {/* Add delegation type selector */}
-          {/* Add input address */}
+          <Typography variant="description">
+            <Trans>Asset</Trans>
+          </Typography>
+          <DelegationTokenSelector
+            setDelegationToken={setDelegationToken}
+            delegationToken={delegationToken}
+            delegationTokens={delegationTokens}
+            blockingError={tokenBlockingError}
+          />
+          <Typography variant="description">
+            <Trans>Type</Trans>
+          </Typography>
+          <DelegationTypeSelector
+            delegationType={delegationType}
+            setDelegationType={setDelegationType}
+          />
+          <Typography variant="description">
+            <Trans>Delegation to address</Trans>
+          </Typography>
+          <FormControl error={delegateAddressBlockingError !== undefined} variant="standard">
+            <Input
+              value={delegate}
+              onChange={(e) => setDelegate(e.target.value)}
+              placeholder={t`Enter Eth address`}
+              error={delegateAddressBlockingError !== undefined}
+            />
+            {delegateAddressBlockingError !== undefined && (
+              <FormHelperText>
+                <Typography variant="helperText" sx={{ color: 'red' }}>
+                  {handleDelegateAddressError()}
+                </Typography>
+              </FormHelperText>
+            )}
+          </FormControl>
           <TxModalDetails gasLimit={gasLimit} />
         </>
       )}
