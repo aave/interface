@@ -6,7 +6,12 @@ import { MarketLogo } from 'src/components/MarketSwitcher';
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 
-export const StakingHeader = () => {
+interface StakingHeaderProps {
+  tvl: string;
+  stkEmission: string;
+}
+
+export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission }) => {
   return (
     <TopInfoPanel>
       <Box sx={{ color: 'common.white', bgcolor: '#090815' }}>
@@ -50,12 +55,12 @@ export const StakingHeader = () => {
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '32px', flexWrap: 'wrap', mt: 4 }}>
           <TopInfoPanelItem title={<Trans>Funds in the Safety Module</Trans>}>
             {/** TBD value */}
-            <FormattedNumber value={'10000000'} symbol="USD" variant="main21" />
+            <FormattedNumber value={tvl || 0} symbol="USD" variant="main21" />
           </TopInfoPanelItem>
 
           <TopInfoPanelItem title={<Trans>Total emission per day</Trans>}>
             {/** TBD value */}
-            <FormattedNumber value={'1100'} symbol="AAVE" variant="main21" />
+            <FormattedNumber value={stkEmission || 0} symbol="AAVE" variant="main21" />
           </TopInfoPanelItem>
         </Box>
       </Box>

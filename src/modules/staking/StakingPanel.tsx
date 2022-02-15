@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Paper, Box, Stack, Button, Typography, PaperProps } from '@mui/material';
 import { BoxProps } from '@mui/system';
+import { formatEther } from 'ethers/lib/utils';
 import React from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -80,6 +81,9 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   stakeUserData,
   ...props
 }) => {
+  const cooldownDays = stakeData?.stakeCooldownSeconds
+    ? stakeData.stakeCooldownSeconds / 86400
+    : 10;
   return (
     <Paper sx={{ width: '100%', py: 4, px: 6, ...sx }} {...props}>
       <Typography variant="h3">
@@ -116,11 +120,11 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             <Trans>Staked</Trans> {stakedToken}
           </Typography>
           <FormattedNumber
-            value={stakeUserData?.stakeTokenUserBalance || 0}
+            value={formatEther(stakeUserData?.stakeTokenUserBalance || '0')}
             sx={{ fontSize: '21px !important', fontWeight: 500 }}
-            minimumDecimals={2}
+            visibleDecimals={2}
           />
-          <FormattedNumber value={'1000'} symbol="USD" minimumDecimals={2} maximumDecimals={2} />
+          <FormattedNumber value={'1000'} symbol="USD" visibleDecimals={2} />
           {true ? (
             <Button variant="surface" sx={{ mt: 6, width: '100%' }} onClick={onUnstakeAction}>
               <Trans>Unstake now</Trans>
@@ -135,7 +139,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
               <Trans>Cooldown period</Trans>
             </Typography>
             <Typography color="text.primary" fontWeight={500}>
-              <Trans>10 days</Trans>
+              <Trans>{cooldownDays} days</Trans>
             </Typography>
           </ActionDetails>
         </StakeActionPaper>
@@ -146,11 +150,11 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             <Trans>Claimable AAVE</Trans>
           </Typography>
           <FormattedNumber
-            value={stakeUserData?.userIncentivesToClaim || 0}
+            value={formatEther(stakeUserData?.userIncentivesToClaim || '0')}
             sx={{ fontSize: '21px !important', fontWeight: 500 }}
-            minimumDecimals={2}
+            visibleDecimals={2}
           />
-          <FormattedNumber value={'1000'} symbol="USD" minimumDecimals={2} maximumDecimals={2} />
+          <FormattedNumber value={'1000'} symbol="USD" visibleDecimals={2} />
           <Button
             variant="contained"
             sx={{ mt: 6, width: '100%' }}
@@ -162,7 +166,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             <Typography color="text.secondary">
               <Trans>Aave per month</Trans>
             </Typography>
-            <FormattedNumber value={'100'} sx={{ fontWeight: 500 }} minimumDecimals={2} />
+            <FormattedNumber value={'100'} sx={{ fontWeight: 500 }} visibleDecimals={2} />
           </ActionDetails>
         </StakeActionPaper>
       </Stack>
