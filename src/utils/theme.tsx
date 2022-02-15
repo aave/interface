@@ -359,6 +359,8 @@ export function getThemedComponents(theme: Theme) {
       MuiOutlinedInput: {
         styleOverrides: {
           root: {
+            borderRadius: '6px',
+            borderColor: theme.palette.divider,
             '&:hover .MuiOutlinedInput-notchedOutline': {
               borderColor: '#CBCDD8',
             },
@@ -774,6 +776,16 @@ export function getThemedComponents(theme: Theme) {
             '&.Mui-selected, &.Mui-disabled, &.Mui-selected:hover,  &:hover, &:focus': {
               backgroundColor: theme.palette.background.paper,
             },
+          },
+        },
+      },
+      MuiSelect: {
+        styleOverrides: {
+          outlined: {
+            backgroundColor: theme.palette.background.surface,
+            ...theme.typography.buttonM,
+            padding: '6px 12px',
+            color: theme.palette.primary.light,
           },
         },
       },
