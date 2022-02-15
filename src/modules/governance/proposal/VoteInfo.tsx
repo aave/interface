@@ -1,14 +1,12 @@
+import { ProposalState } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useGovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { CustomProposalType } from 'src/static-build/proposal';
 
-interface VoteInfoProps {
-  id: number;
-}
-
-export function VoteInfo({ id }: VoteInfoProps) {
+export function VoteInfo({ id, state }: CustomProposalType) {
   const [votingPower, setVotingPower] = useState<string>();
   const [support, setSupport] = useState<boolean>();
   const [didVote, setDidVote] = useState<boolean>();
@@ -37,6 +35,8 @@ export function VoteInfo({ id }: VoteInfoProps) {
   useEffect(() => {
     fetchCurrentVote();
   }, []);
+
+  const canVote = state === ProposalState.Active || true; // TODO: remove true condition
   return (
     <>
       <Typography variant="h3">
@@ -44,8 +44,16 @@ export function VoteInfo({ id }: VoteInfoProps) {
       </Typography>
       <Typography>
         Did vote: {didVote ? 'yes' : 'no'}
-        {votingPower}
-        {support}
+        <br />
+        InSupport: {support ? 'yes' : 'no'}
+        <br />
+        With a power of: {votingPower}
+        <br />
+        {canVote && (
+          <Button variant="contained" onClick={() => console.log('TODO: cast vote')}>
+            Vote
+          </Button>
+        )}
       </Typography>
     </>
   );

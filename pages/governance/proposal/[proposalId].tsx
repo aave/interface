@@ -9,6 +9,8 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Meta } from 'src/components/Meta';
 import { CheckBadge } from 'src/components/primitives/CheckBadge';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Row } from 'src/components/primitives/Row';
 import { GovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
 import { usePolling } from 'src/hooks/usePolling';
 import { MainLayout } from 'src/layouts/MainLayout';
@@ -25,8 +27,10 @@ import { VoteBar } from 'src/modules/governance/VoteBar';
 import { Ipfs, IpfsType } from 'src/static-build/ipfs';
 import { CustomProposalType, Proposal } from 'src/static-build/proposal';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
+import { Link } from 'src/components/primitives/Link';
 
 import { ContentContainer } from '../../../src/components/ContentContainer';
+import { height } from '@mui/system';
 
 export async function getStaticPaths() {
   if (!governanceConfig) return { paths: [] };
@@ -76,7 +80,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
   }
 
   usePolling(updateProposal, 10000, isProposalStateImmutable(proposal), []);
-  console.log(ipfs.title);
+
   useEffect(() => {
     setUrl(window.location.href);
   }, []);
@@ -99,16 +103,16 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
 
       <ContentContainer>
         <Grid container spacing={4}>
-          <Grid item xs={12} sm={8}>
+          <Grid item xs={12} md={8}>
             <Paper sx={{ px: 6, py: 4, wordBreak: 'break-word' }}>
               <Typography variant="h3">
                 <Trans>Proposal overview</Trans>
               </Typography>
               <Box sx={{ px: { md: 18 }, pt: 8 }}>
-                <Typography variant="h2" sx={{ mb: 8 }}>
+                <Typography variant="h2" sx={{ mb: 6 }}>
                   {ipfs.title}
                 </Typography>
-                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                   <Box>
                     <StateBadge state={proposal.state} />
                   </Box>
@@ -160,45 +164,143 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
               </Box>
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} md={4}>
             <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
-              <VoteInfo id={proposal.id} />
+              <VoteInfo {...proposal} />
             </Paper>
             <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
               <Typography variant="h3">
                 <Trans>Voting results</Trans>
-                <VoteBar yae percent={yaePercent} votes={yaeVotes} />
-                <VoteBar percent={nayPercent} votes={nayVotes} />
               </Typography>
+              <VoteBar yae percent={yaePercent} votes={yaeVotes} sx={{ mt: 8 }} />
+              <VoteBar percent={nayPercent} votes={nayVotes} sx={{ mt: 3 }} />
             </Paper>
             <Paper sx={{ px: 6, py: 4 }}>
-              <Typography variant="h3">
+              <Typography variant="h3" sx={{ mb: '22px' }}>
                 <Trans>Proposal details</Trans>
-                <StateBadge state={proposal.state} />
-                <CheckBadge
-                  text={<Trans>Quorum</Trans>}
-                  checked={quorumReached}
-                  sx={{ flexGrow: 1, justifyContent: 'space-between' }}
-                  variant="description"
-                />
-                <CheckBadge
-                  text={<Trans>Differential</Trans>}
-                  checked={diffReached}
-                  sx={{ flexGrow: 1, justifyContent: 'space-between' }}
-                  variant="description"
-                />
-                {normalize(proposal.totalVotingSupply, 18)}
-                <br />
-                {requiredDiff}
-                <br />
-                {diff}
-                <br />
-                {dayjs.unix(proposal.creationTimestamp).format()}
-                <br />
-                {dayjs.unix(proposal.startTimestamp).format()}
-                <br />
-                {proposal.executed && dayjs.unix(proposal.executionTime).format()}
               </Typography>
+              <Row caption={<Trans>State</Trans>} sx={{ height: 48 }} captionVariant="description">
+                <StateBadge state={proposal.state} />
+              </Row>
+              <CheckBadge
+                text={<Trans>Quorum</Trans>}
+                checked={quorumReached}
+                sx={{ flexGrow: 1, justifyContent: 'space-between', height: 48 }}
+                variant="description"
+              />
+              <CheckBadge
+                text={<Trans>Differential</Trans>}
+                checked={diffReached}
+                sx={{ flexGrow: 1, justifyContent: 'space-between', height: 48 }}
+                variant="description"
+              />
+              <Row
+                caption={<Trans>Total voting power</Trans>}
+                sx={{ height: 48 }}
+                captionVariant="description"
+              >
+                <FormattedNumber
+                  value={normalize(proposal.totalVotingSupply, 18)}
+                  visibleDecimals={0}
+                  compact={false}
+                />
+              </Row>
+              <Row
+                caption={<Trans>Vote differential needed</Trans>}
+                sx={{ height: 48 }}
+                captionVariant="description"
+              >
+                <FormattedNumber value={requiredDiff} visibleDecimals={2} percent />
+              </Row>
+              <Row
+                caption={<Trans>Current differential</Trans>}
+                sx={{ height: 48 }}
+                captionVariant="description"
+              >
+                <FormattedNumber value={diff} visibleDecimals={2} percent />
+              </Row>
+              <Row
+                caption={
+                  <>
+                    <Trans>Created</Trans>
+                    <Typography variant="caption" color="text.muted">
+                      Block
+                    </Typography>
+                  </>
+                }
+                sx={{ height: 48 }}
+                captionVariant="description"
+              >
+                <Box sx={{ textAlign: 'right' }}>
+                  <Typography>
+                    ~ {dayjs.unix(proposal.creationTimestamp).format('DD MMM YYYY, hh:mm a')}
+                  </Typography>
+                  <Typography variant="caption" color="text.muted">
+                    {proposal.proposalCreated}
+                  </Typography>
+                </Box>
+              </Row>
+              <Row
+                caption={
+                  <>
+                    <Trans>Started</Trans>
+                    <Typography variant="caption" color="text.muted">
+                      Block
+                    </Typography>
+                  </>
+                }
+                sx={{ height: 48 }}
+                captionVariant="description"
+              >
+                <Box sx={{ textAlign: 'right' }}>
+                  <Typography>
+                    ~ {dayjs.unix(proposal.startTimestamp).format('DD MMM YYYY, hh:mm a')}
+                  </Typography>
+                  <Typography variant="caption" color="text.muted">
+                    {proposal.startBlock}
+                  </Typography>
+                </Box>
+              </Row>
+              {proposal.executed && (
+                <Row
+                  caption={<Trans>Executed</Trans>}
+                  sx={{ height: 48 }}
+                  captionVariant="description"
+                >
+                  <Typography>
+                    {dayjs.unix(proposal.executionTime).format('DD MMM YYYY, hh:mm a')}
+                  </Typography>
+                </Row>
+              )}
+              {ipfs.author && (
+                <Row
+                  caption={<Trans>Author</Trans>}
+                  sx={{ height: 48 }}
+                  captionVariant="description"
+                >
+                  <Typography
+                    sx={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}
+                  >
+                    {ipfs.author}
+                  </Typography>
+                </Row>
+              )}
+              {ipfs.discussions && (
+                <Row
+                  caption={<Trans>Discussion</Trans>}
+                  sx={{ height: 48 }}
+                  captionVariant="description"
+                >
+                  <Typography
+                    component={Link}
+                    target="_blank"
+                    href={ipfs.discussions}
+                    sx={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}
+                  >
+                    {ipfs.discussions}
+                  </Typography>
+                </Row>
+              )}
             </Paper>
           </Grid>
         </Grid>
