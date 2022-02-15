@@ -1,17 +1,7 @@
 import { ProposalState } from '@aave/contract-helpers';
 import { ChevronDownIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { ArrowBack } from '@mui/icons-material';
-import {
-  Box,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  SvgIcon,
-  Typography,
-} from '@mui/material';
+import { Box, MenuItem, Select, SelectChangeEvent, SvgIcon, Typography } from '@mui/material';
 import { GovernancePageProps } from 'pages/governance';
 import { useState } from 'react';
 import { usePolling } from 'src/hooks/usePolling';
