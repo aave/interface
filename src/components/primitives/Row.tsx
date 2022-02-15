@@ -16,10 +16,10 @@ export const Row = ({
 }: RowProps) => {
   return (
     <Box
-      sx={{ display: 'flex', alignItems: align, justifyContent: 'space-between', ...rest.sx }}
       {...rest}
+      sx={{ display: 'flex', alignItems: align, justifyContent: 'space-between', ...rest.sx }}
     >
-      <Typography component="div" variant={captionVariant}>
+      <Typography component="div" variant={captionVariant} sx={{ mr: 2 }}>
         {caption}
       </Typography>
       {children}
