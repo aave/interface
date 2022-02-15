@@ -168,7 +168,10 @@ export const MarketSwitcher = () => {
             </Box>
           );
         },
-        sx: { '.MuiSelect-outlined': { p: 0 }, '.MuiSelect-icon': { color: 'common.white' } },
+        sx: {
+          '.MuiSelect-outlined': { p: 0, backgroundColor: 'transparent !important' },
+          '.MuiSelect-icon': { color: 'common.white' },
+        },
         MenuProps: {
           anchorOrigin: {
             vertical: 'bottom',
