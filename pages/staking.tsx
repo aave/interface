@@ -17,8 +17,7 @@ import { StakingPanel } from 'src/modules/staking/StakingPanel';
 export default function Staking() {
   const data = useStakeData();
   const { openStake, openStakeCooldown, openUnstake, openStakeRewardsClaim } = useModalContext();
-
-  // Total funds at Safety Module in USD (stkaave tvl + stkbpt tvl)
+  // Total funds at Safety Module (stkaave tvl + stkbpt tvl)
   const tvl = formatEther(
     BigNumber.from(data.stakeGeneralResult?.stakeGeneralUIData.aave.stakeTokenTotalSupply || '0')
       .mul(data.stakeGeneralResult?.stakeGeneralUIData.aave.stakeTokenPriceEth || '0')

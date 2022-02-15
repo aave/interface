@@ -1,7 +1,7 @@
 import { StakingService } from '@aave/contract-helpers';
 import React, { ReactElement } from 'react';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { stakeConfig } from 'src/ui-config/stakeConfig';
+import { getStakeConfig } from 'src/ui-config/stakeConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 export interface StakeTxBuilderContextInterface {
@@ -10,6 +10,7 @@ export interface StakeTxBuilderContextInterface {
 export const StakeTxBuilderContext = React.createContext({} as StakeTxBuilderContextInterface);
 
 export const StakeTxBuilderProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
+  const stakeConfig = getStakeConfig();
   const { jsonRpcProvider, currentNetworkConfig } = useProtocolDataContext();
 
   const isStakeFork =

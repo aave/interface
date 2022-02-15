@@ -15,7 +15,7 @@ import { Trans } from '@lingui/macro';
 import { CooldownWarning } from '../Warnings/CooldownWarning';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
-import { stakeConfig } from 'src/ui-config/stakeConfig';
+import { getStakeConfig } from 'src/ui-config/stakeConfig';
 
 export type StakeProps = {
   stakeAssetName: string;
@@ -33,6 +33,7 @@ export const StakeModalContent = ({ stakeAssetName, icon, handleClose }: StakePr
   const data = useStakeData();
   const stakeData = data.stakeGeneralResult?.stakeGeneralUIData[stakeAssetName as StakingType];
   const { chainId: connectedChainId } = useWeb3Context();
+  const stakeConfig = getStakeConfig();
 
   // states
   const [txState, setTxState] = useState<TxState>({ success: false });

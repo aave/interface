@@ -18,7 +18,7 @@ import gql from 'graphql-tag';
 import { Client, ClientOptions, createClient } from 'graphql-ws';
 
 import { governanceConfig } from '../ui-config/governanceConfig';
-import { stakeConfig } from '../ui-config/stakeConfig';
+import { getStakeConfig } from '../ui-config/stakeConfig';
 import { networkConfigs } from './marketsAndNetworksConfig';
 
 /**
@@ -125,6 +125,7 @@ const getGovernanceLink = (link?: ApolloLink) => {
 };
 
 const getStakeLink = (link?: ApolloLink) => {
+  const stakeConfig = getStakeConfig();
   if (
     stakeConfig &&
     stakeConfig.wsStakeDataUrl &&

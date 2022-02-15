@@ -11,7 +11,7 @@ import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { Trans } from '@lingui/macro';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
-import { stakeConfig } from 'src/ui-config/stakeConfig';
+import { getStakeConfig } from 'src/ui-config/stakeConfig';
 import { StakeCooldownActions } from './StakeCooldownActions';
 
 export type StakeCooldownProps = {
@@ -29,6 +29,7 @@ type StakingType = 'aave' | 'bpt';
 export const StakeCooldownModalContent = ({ stakeAssetName, handleClose }: StakeCooldownProps) => {
   const data = useStakeData();
   const { chainId: connectedChainId } = useWeb3Context();
+  const stakeConfig = getStakeConfig();
 
   // states
   const [txState, setTxState] = useState<TxState>({ success: false });

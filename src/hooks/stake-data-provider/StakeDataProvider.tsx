@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { stakeConfig } from 'src/ui-config/stakeConfig';
+import { getStakeConfig } from 'src/ui-config/stakeConfig';
 import { useConnectionStatusContext } from '../useConnectionStatusContext';
 import { useC_StakeGeneralUiDataQuery, useC_StakeUserUiDataQuery } from './graphql/hooks';
 import { _useStakeDataCached } from './_useStakeDataCached';
@@ -20,6 +20,7 @@ const StakeDataProviderContext = React.createContext<StakeDataProviderContextTyp
 export const StakeDataProvider: React.FC = ({ children }) => {
   const { currentAccount } = useWeb3Context();
   const { isRPCActive } = useConnectionStatusContext();
+  const stakeConfig = getStakeConfig();
 
   const rpcMode = isRPCActive || !stakeConfig?.wsStakeDataUrl || !stakeConfig?.queryStakeDataUrl;
 
