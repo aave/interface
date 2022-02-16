@@ -1,6 +1,8 @@
+import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Paper, Box, Stack, Button, Typography, PaperProps } from '@mui/material';
 import { BoxProps } from '@mui/system';
+import { BigNumber } from 'ethers';
 import { formatEther } from 'ethers/lib/utils';
 import React from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -16,6 +18,7 @@ export interface StakingPanelProps extends PaperProps {
   stakeData?: StakeGeneralData;
   stakeUserData?: StakeUserData;
   description?: React.ReactNode;
+  ethUsdPrice?: string;
   stakeTitle: string;
   stakedToken: string;
   maxSlash: string;
@@ -96,8 +99,10 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   sx,
   stakeData,
   stakeUserData,
+  ethUsdPrice,
   ...props
 }) => {
+  // Cooldown logic
   const now = Date.now() / 1000;
   const stakeCooldownSeconds = stakeData?.stakeCooldownSeconds || 0;
   const userCooldown = stakeUserData?.userCooldown || 0;
@@ -115,6 +120,25 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
     isCooldownActive && !isUnstakeWindowActive
       ? getTimeRemaining(stakeCooldownSeconds - userCooldownDelta)
       : getTimeRemaining(0);
+  // Others
+  const stakedUSD = formatEther(
+    BigNumber.from(stakeUserData?.stakeTokenUserBalance || '0')
+      .mul(stakeData?.stakeTokenPriceEth || '0')
+      .div(ethUsdPrice || '1')
+  );
+  const claimableUSD = formatEther(
+    BigNumber.from(stakeUserData?.userIncentivesToClaim || '0')
+      .mul(stakeData?.rewardTokenPriceEth || '0')
+      .div(ethUsdPrice || '1')
+  );
+  const aavePerMonth = formatEther(
+    valueToBigNumber(stakeUserData?.stakeTokenUserBalance || '0')
+      .dividedBy(stakeData?.stakeTokenTotalSupply || '1')
+      .multipliedBy(stakeData?.distributionPerSecond || '0')
+      .multipliedBy('2592000')
+      .toFixed(0)
+  );
+  const slashing = '0.3'; // 30%
 
   return (
     <Paper sx={{ width: '100%', py: 4, px: 6, ...sx }} {...props}>
@@ -136,7 +160,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
         </TopInfoPanelItem>
 
         <TopInfoPanelItem title={<Trans>Max slashing</Trans>} hideIcon variant="light">
-          <FormattedNumber value={'0.3'} percent variant="main16" />
+          <FormattedNumber value={slashing} percent variant="main16" />
         </TopInfoPanelItem>
 
         {/**Stake action */}
@@ -156,7 +180,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             sx={{ fontSize: '21px !important', fontWeight: 500 }}
             visibleDecimals={2}
           />
-          <FormattedNumber value={'1000'} symbol="USD" visibleDecimals={2} />
+          <FormattedNumber value={stakedUSD} symbol="USD" visibleDecimals={2} />
           {isUnstakeWindowActive && (
             <Button variant="outlined" sx={{ mt: 6, width: '100%' }} onClick={onUnstakeAction}>
               <Trans>Unstake now</Trans>
@@ -220,7 +244,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             sx={{ fontSize: '21px !important', fontWeight: 500 }}
             visibleDecimals={2}
           />
-          <FormattedNumber value={'1000'} symbol="USD" visibleDecimals={2} />
+          <FormattedNumber value={claimableUSD} symbol="USD" visibleDecimals={2} />
           <Button
             variant="contained"
             sx={{ mt: 6, width: '100%' }}
@@ -232,7 +256,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             <Typography color="text.secondary">
               <Trans>Aave per month</Trans>
             </Typography>
-            <FormattedNumber value={'100'} sx={{ fontWeight: 500 }} visibleDecimals={2} />
+            <FormattedNumber value={aavePerMonth} sx={{ fontWeight: 500 }} visibleDecimals={2} />
           </ActionDetails>
         </StakeActionPaper>
       </Stack>

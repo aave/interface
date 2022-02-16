@@ -50,6 +50,7 @@ export default function Staking() {
               icon="aave"
               stakeData={data.stakeGeneralResult?.stakeGeneralUIData.aave}
               stakeUserData={data.stakeUserResult?.stakeUserUIData.aave}
+              ethUsdPrice={data.stakeGeneralResult?.stakeGeneralUIData.usdPriceEth}
               onStakeAction={() => openStake('aave', 'AAVE')}
               onCooldownAction={() => openStakeCooldown('aave')}
               onUnstakeAction={() => openUnstake('aave', 'AAVE')}
@@ -65,6 +66,7 @@ export default function Staking() {
               icon="stkbpt"
               stakeData={data.stakeGeneralResult?.stakeGeneralUIData.bpt}
               stakeUserData={data.stakeUserResult?.stakeUserUIData.bpt}
+              ethUsdPrice={data.stakeGeneralResult?.stakeGeneralUIData.usdPriceEth}
               onStakeAction={() => openStake('bpt', 'stkBPT')}
               onCooldownAction={() => openStakeCooldown('bpt')}
               onUnstakeAction={() => openUnstake('bpt', 'stkBPT')}
@@ -80,14 +82,14 @@ export default function Staking() {
             />
           </Grid>
         </Grid>
-        {/** Modals */}
-        <StakeModal />
-        <StakeCooldownModal />
-        <UnStakeModal />
-        <StakeRewardClaimModal />
-        {/** End of modals */}
-        <code style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(data, null, 2)}</code>
       </ContentContainer>
+
+      {/** Modals */}
+      <StakeModal />
+      <StakeCooldownModal />
+      <UnStakeModal />
+      <StakeRewardClaimModal />
+      {/** End of modals */}
     </>
   );
 }
