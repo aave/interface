@@ -113,8 +113,8 @@ export const DashboardTopPanel = () => {
           </TopInfoPanelItem>
         )}
 
-        <TopInfoPanelItem title={<Trans>Available rewards</Trans>} hideIcon withLine={!downToXSM}>
-          {currentAccount && claimableRewardsUsd > 0 ? (
+        {currentAccount && claimableRewardsUsd > 0 && (
+          <TopInfoPanelItem title={<Trans>Available rewards</Trans>} hideIcon withLine={!downToXSM}>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <FormattedNumber
                 value={claimableRewardsUsd}
@@ -138,10 +138,8 @@ export const DashboardTopPanel = () => {
                 <Trans>Claim</Trans>
               </Button>
             </Box>
-          ) : (
-            <NoData variant={noDataTypographyVariant} sx={{ opacity: '0.7' }} />
-          )}
-        </TopInfoPanelItem>
+          </TopInfoPanelItem>
+        )}
       </TopInfoPanel>
 
       <LiquidationRiskParametresInfoModal
