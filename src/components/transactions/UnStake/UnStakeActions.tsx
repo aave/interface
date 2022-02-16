@@ -3,7 +3,7 @@ import { Trans } from '@lingui/macro';
 import { Box, BoxProps, Button, CircularProgress } from '@mui/material';
 import { Dispatch, SetStateAction, useEffect } from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { useTransactionHandler } from '../../helpers/useTransactionHandler';
+import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
 import { useGasStation } from 'src/hooks/useGasStation';
 import { GasOption } from '../GasStation/GasStationProvider';
 import { RightHelperText } from '../FlowCommons/RightHelperText';

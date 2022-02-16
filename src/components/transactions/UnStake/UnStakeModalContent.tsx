@@ -110,7 +110,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon, handleClose }: UnSta
             </Typography>
           )}
           TODO: Maybe put here remaining time? not clear in the design
-          <TxModalDetails sx={{ mt: '30px' }} gasLimit={gasLimit} />
+          <TxModalDetails gasLimit={gasLimit} />
         </>
       )}
       {txState.txError && <TxErrorView errorMessage={txState.txError} />}

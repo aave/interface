@@ -6,7 +6,7 @@ import { ContentContainer } from 'src/components/ContentContainer';
 import { StakeModal } from 'src/components/transactions/Stake/StakeModal';
 import { StakeCooldownModal } from 'src/components/transactions/StakeCooldown/StakeCooldownModal';
 import { StakeRewardClaimModal } from 'src/components/transactions/StakeRewardClaim/StakeRewardClaimModal';
-import { UnStakeModal } from 'src/components/UnStake/UnStakeModal';
+import { UnStakeModal } from 'src/components/transactions/UnStake/UnStakeModal';
 import { StakeDataProvider, useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
