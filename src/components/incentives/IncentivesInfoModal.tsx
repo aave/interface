@@ -63,8 +63,10 @@ export const IncentivesInfoModal = ({
           <Typography variant="h2" sx={{ mb: 2 }}>
             {currentMarketData.marketTitle} <Trans>rewards</Trans>
           </Typography>
-          {/* TODO: need to add Trans */}
-          <Typography>Participating in this {symbol} reserve gives annualized rewards.</Typography>
+
+          <Typography>
+            <Trans>Participating in this {symbol} reserve gives annualized rewards.</Trans>
+          </Typography>
         </Box>
 
         <Box
