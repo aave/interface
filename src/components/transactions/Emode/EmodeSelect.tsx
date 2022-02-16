@@ -73,24 +73,26 @@ export const EmodeSelect = ({
           );
         }}
       >
-        {Object.keys(emodeCategories)
-          .filter((categoryKey) => emodeCategories[Number(categoryKey)].id !== selectedEmode)
-          .map((categoryKey) => (
-            <MenuItem
-              key={`emode-${emodeCategories[Number(categoryKey)].id}`}
-              value={emodeCategories[Number(categoryKey)].id}
-            >
-              {emodeCategories[Number(categoryKey)].id === 0 ? (
-                <Typography color="text.primary">
-                  E-Mode <Trans>disabled</Trans>
-                </Typography>
-              ) : (
-                <Typography color="text.primary">
-                  {getEmodeMessage(emodeCategories[Number(categoryKey)].id)}
-                </Typography>
-              )}
-            </MenuItem>
-          ))}
+        {Object.keys(emodeCategories).map((categoryKey) => (
+          <MenuItem
+            key={`emode-${emodeCategories[Number(categoryKey)].id}`}
+            value={emodeCategories[Number(categoryKey)].id}
+            sx={{
+              display:
+                emodeCategories[Number(categoryKey)].id === selectedEmode ? 'none' : undefined,
+            }}
+          >
+            {emodeCategories[Number(categoryKey)].id === 0 ? (
+              <Typography color="text.primary">
+                E-Mode <Trans>disabled</Trans>
+              </Typography>
+            ) : (
+              <Typography color="text.primary">
+                {getEmodeMessage(emodeCategories[Number(categoryKey)].id)}
+              </Typography>
+            )}
+          </MenuItem>
+        ))}
       </Select>
     </FormControl>
   );

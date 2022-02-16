@@ -91,9 +91,9 @@ export const useTransactionHandler = ({
     }
   };
 
-  const approval = async (amount: string, underlyingAsset: string) => {
+  const approval = async (amount?: string, underlyingAsset?: string) => {
     if (approvalTx) {
-      if (usePermit) {
+      if (usePermit && amount && underlyingAsset) {
         try {
           const newPool: Pool = lendingPool as Pool;
           const unsingedPayload = await newPool.signERC20Approval({
@@ -246,7 +246,7 @@ export const useTransactionHandler = ({
               setApprovalTx(data.find((tx) => tx.txType === 'ERC20_APPROVAL'));
               setActionTx(
                 data.find((tx) =>
-                  ['DLP_ACTION', 'REWARD_ACTION', 'FAUCET_MINT'].includes(tx.txType)
+                  ['DLP_ACTION', 'REWARD_ACTION', 'FAUCET_MINT', 'STAKE_ACTION'].includes(tx.txType)
                 )
               );
               setMainTxState({
