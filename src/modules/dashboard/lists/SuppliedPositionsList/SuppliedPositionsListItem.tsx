@@ -1,6 +1,9 @@
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
-import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import {
+  ComputedUserReserveData,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
@@ -21,7 +24,7 @@ export const SuppliedPositionsListItem = ({
 }: ComputedUserReserveData) => {
   const { isIsolated, usageAsCollateralEnabled, aIncentivesData, isFrozen, isActive } = reserve;
   const { currentMarketData } = useProtocolDataContext();
-  const { openSupply, openWithdraw, openCollateralChange } = useModalContext();
+  const { openSupply, openWithdraw, openCollateralChange, openSwap } = useModalContext();
   const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
 
   return (
@@ -67,7 +70,7 @@ export const SuppliedPositionsListItem = ({
           <Button
             disabled={!isActive || isFrozen}
             variant="outlined"
-            onClick={() => console.log('TODO: should be swap modal')}
+            onClick={() => openSwap(underlyingAsset)}
           >
             <Trans>Swap</Trans>
           </Button>

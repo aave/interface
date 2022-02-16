@@ -29,6 +29,7 @@ import createEmotionCache from '../src/createEmotionCache';
 import { ProtocolDataProvider } from '../src/hooks/useProtocolDataContext';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
+import { SwapModal } from 'src/modules/Swap/SwapModal';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -80,6 +81,7 @@ export default function MyApp(props: MyAppProps) {
                               <ClaimRewardsModal />
                               <EmodeModal />
                               <FaucetModal />
+                              <SwapModal />
                             </GasStationProvider>
                           </ModalContextProvider>
                         </AppGlobalStyles>

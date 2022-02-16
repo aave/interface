@@ -18,9 +18,13 @@ import { FormattedNumber } from './primitives/FormattedNumber';
 import { ChevronDownIcon } from '@heroicons/react/outline';
 
 export interface Asset {
-  balance: string;
+  /**
+   * If balance is provided it will be shown in selection & a max button will appear.
+   * For swap & repay with collateral this si not feasible though.
+   */
+  balance?: string;
   symbol: string;
-  address?: string;
+  address: string;
 }
 
 export interface AssetInputProps<T extends Asset = Asset> {
@@ -109,7 +113,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
                 <MenuItem key={asset.symbol} value={asset.symbol}>
                   <TokenIcon symbol={asset.symbol} sx={{ mx: '4px' }} />
                   <ListItemText sx={{ mr: '20px' }}>{asset.symbol}</ListItemText>
-                  <FormattedNumber value={asset.balance} compact />
+                  {asset.balance && <FormattedNumber value={asset.balance} compact />}
                 </MenuItem>
               ))}
             </Select>
@@ -124,17 +128,21 @@ export const AssetInput: React.FC<AssetInputProps> = ({
             symbol="USD"
           />
         </Typography>
-        <Typography>
-          Balance <FormattedNumber value={asset.balance} compact />
-        </Typography>
-        <Button
-          size="small"
-          sx={{ minWidth: 0 }}
-          onClick={() => onChange('-1')}
-          disabled={disabled}
-        >
-          <Trans>Max</Trans>
-        </Button>
+        {asset.balance && (
+          <>
+            <Typography>
+              Balance <FormattedNumber value={asset.balance} compact />
+            </Typography>
+            <Button
+              size="small"
+              sx={{ minWidth: 0 }}
+              onClick={() => onChange('-1')}
+              disabled={disabled}
+            >
+              <Trans>Max</Trans>
+            </Button>
+          </>
+        )}
       </Box>
     </Box>
   );

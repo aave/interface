@@ -3,6 +3,12 @@ import { valueToBigNumber } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 
+export function remainingCap(poolReserve: ComputedReserveData) {
+  return new BigNumber(poolReserve.supplyCap)
+    .minus(poolReserve.totalLiquidity)
+    .multipliedBy('0.995');
+}
+
 export function getMaxAmountAvailableToSupply(
   walletBalance: string,
   poolReserve: ComputedReserveData,
@@ -21,10 +27,7 @@ export function getMaxAmountAvailableToSupply(
 
   // make sure we don't try to supply more then maximum
   if (poolReserve.supplyCap !== '0') {
-    maxAmountToSupply = BigNumber.min(
-      maxAmountToSupply,
-      new BigNumber(poolReserve.supplyCap).minus(poolReserve.totalLiquidity).multipliedBy('0.995')
-    );
+    maxAmountToSupply = BigNumber.min(maxAmountToSupply, remainingCap(poolReserve));
   }
 
   if (maxAmountToSupply.lte(0)) {
