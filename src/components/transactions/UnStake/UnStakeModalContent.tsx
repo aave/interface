@@ -8,13 +8,14 @@ import { TxSuccessView } from '../FlowCommons/Success';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { TxState } from 'src/helpers/types';
-import { TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { Trans } from '@lingui/macro';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
 import { getStakeConfig } from 'src/ui-config/stakeConfig';
 import { UnStakeActions } from './UnStakeActions';
+import { GasStation } from '../GasStation/GasStation';
+import { parseUnits } from 'ethers/lib/utils';
 
 export type UnStakeProps = {
   stakeAssetName: string;
@@ -109,8 +110,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon, handleClose }: UnSta
               {handleBlocked()}
             </Typography>
           )}
-          TODO: Maybe put here remaining time? not clear in the design
-          <TxModalDetails gasLimit={gasLimit} />
+          <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} />
         </>
       )}
       {txState.txError && <TxErrorView errorMessage={txState.txError} />}

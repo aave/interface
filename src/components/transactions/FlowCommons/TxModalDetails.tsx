@@ -456,17 +456,27 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
         )}
         {stakeRewards && stakeRewardsInUsd && symbol && (
           <Row caption={<Trans>Amount</Trans>} captionVariant="description">
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                <TokenIcon symbol={symbol} sx={{ mx: '4px' }} />
-                <FormattedNumber value={Number(stakeRewards)} variant="description" />
-                <Typography>{symbol}</Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-end',
+                mb: 4,
+              }}
+            >
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <TokenIcon symbol={symbol} sx={{ mr: 1, fontSize: '16px' }} />
+                <FormattedNumber value={Number(stakeRewards)} variant="secondary14" />
+                <Typography ml={1} variant="secondary14">
+                  {symbol}
+                </Typography>
               </Box>
               <FormattedNumber
                 value={Number(stakeRewardsInUsd)}
                 variant="helperText"
                 compact
                 symbol="USD"
+                color="text.secondary"
               />
             </Box>
           </Row>

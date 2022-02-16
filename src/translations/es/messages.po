@@ -6,6 +6,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: es\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
 
 #: src/modules/governance/VotingPowerInfoPanel.tsx:25
 #: src/modules/governance/VotingPowerInfoPanel.tsx:40
@@ -77,7 +83,7 @@ msgstr ""
 msgid "Aave Protocol Governance"
 msgstr ""
 
-#: src/modules/staking/StakingPanel.tsx:262
+#: src/modules/staking/StakingPanel.tsx:264
 msgid "Aave per month"
 msgstr ""
 
@@ -105,7 +111,7 @@ msgstr ""
 msgid "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
 msgstr ""
 
-#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx:60
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx:71
 msgid "Already on cooldown"
 msgstr ""
 
@@ -279,10 +285,10 @@ msgstr ""
 msgid "CLAIM"
 msgstr ""
 
-#: src/components/UnStake/UnStakeActions.tsx:105
 #: src/components/transactions/Stake/StakeActions.tsx:140
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx:91
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx:102
+#: src/components/transactions/UnStake/UnStakeActions.tsx:105
 msgid "CLOSE"
 msgstr ""
 
@@ -303,7 +309,7 @@ msgstr ""
 msgid "Claim"
 msgstr ""
 
-#: src/modules/staking/StakingPanel.tsx:258
+#: src/modules/staking/StakingPanel.tsx:260
 msgid "Claim AAVE"
 msgstr ""
 
@@ -312,7 +318,7 @@ msgstr ""
 msgid "Claim all rewards"
 msgstr ""
 
-#: src/modules/staking/StakingPanel.tsx:245
+#: src/modules/staking/StakingPanel.tsx:247
 msgid "Claimable AAVE"
 msgstr ""
 
@@ -344,7 +350,7 @@ msgstr ""
 msgid "Connect wallet"
 msgstr ""
 
-#: src/modules/staking/StakingPanel.tsx:234
+#: src/modules/staking/StakingPanel.tsx:236
 msgid "Cooldown period"
 msgstr ""
 
@@ -352,7 +358,7 @@ msgstr ""
 msgid "Cooldown period warning"
 msgstr ""
 
-#: src/modules/staking/StakingPanel.tsx:228
+#: src/modules/staking/StakingPanel.tsx:230
 msgid "Cooldown to unstake"
 msgstr ""
 
@@ -458,8 +464,8 @@ msgstr ""
 msgid "E-Mode increases your borrowing power for a selected category of assets up to 99%. Enabling E-mode will restrict the assets you can borrow against your collateral to the ones specified in the selected E-mode. Please visit our<0>FAQ guide </0>to learn more about how it works."
 msgstr ""
 
-#: src/components/UnStake/UnStakeActions.tsx:83
 #: src/components/transactions/Stake/StakeActions.tsx:93
+#: src/components/transactions/UnStake/UnStakeActions.tsx:83
 msgid "ENTER AN AMOUNT"
 msgstr ""
 
@@ -541,6 +547,14 @@ msgstr ""
 
 #: src/components/isolationMode/IsolatedAssetModal.tsx:31
 msgid "How it works"
+msgstr ""
+
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx:125
+msgid "I understand how cooldown (10 days) and unstaking (2 days) work"
+msgstr ""
+
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx:111
+msgid "If you DO NOT unstake within 2 days of unstake widow, you will need to activate cooldown process again."
 msgstr ""
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx:108
@@ -627,7 +641,7 @@ msgstr ""
 msgid "Max LTV"
 msgstr ""
 
-#: src/modules/staking/StakingPanel.tsx:162
+#: src/modules/staking/StakingPanel.tsx:164
 msgid "Max slashing"
 msgstr ""
 
@@ -671,7 +685,7 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx:73
+#: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx:71
 msgid "No rewards to claim"
 msgstr ""
 
@@ -685,7 +699,7 @@ msgstr ""
 msgid "Not enough balance on your wallet"
 msgstr ""
 
-#: src/components/UnStake/UnStakeModalContent.tsx:76
+#: src/components/transactions/UnStake/UnStakeModalContent.tsx:77
 msgid "Not enough staked balance"
 msgstr ""
 
@@ -693,7 +707,7 @@ msgstr ""
 msgid "Nothing borrowed yet"
 msgstr ""
 
-#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx:58
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx:69
 msgid "Nothing staked"
 msgstr ""
 
@@ -701,10 +715,10 @@ msgstr ""
 msgid "Nothing supplied yet"
 msgstr ""
 
-#: src/components/UnStake/UnStakeActions.tsx:104
 #: src/components/transactions/Stake/StakeActions.tsx:139
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx:90
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx:101
+#: src/components/transactions/UnStake/UnStakeActions.tsx:104
 msgid "OK,"
 msgstr ""
 
@@ -913,13 +927,13 @@ msgstr ""
 msgid "Stablecoin"
 msgstr ""
 
-#: src/modules/staking/StakingPanel.tsx:146
-#: src/modules/staking/StakingPanel.tsx:168
+#: src/modules/staking/StakingPanel.tsx:148
+#: src/modules/staking/StakingPanel.tsx:170
 #: src/ui-config/menu-items/index.tsx:34
 msgid "Stake"
 msgstr ""
 
-#: src/modules/staking/StakingPanel.tsx:176
+#: src/modules/staking/StakingPanel.tsx:178
 msgid "Staked"
 msgstr ""
 
@@ -927,7 +941,7 @@ msgstr ""
 msgid "Staking"
 msgstr ""
 
-#: src/modules/staking/StakingPanel.tsx:154
+#: src/modules/staking/StakingPanel.tsx:156
 msgid "Staking APR"
 msgstr ""
 
@@ -1005,7 +1019,7 @@ msgstr ""
 msgid "The Stable Rate is not enabled for this currency"
 msgstr ""
 
-#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx:81
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx:92
 msgid "The cooldown period is 10 days. After 10 days of cooldown, you will enter unstake window of 2 days. You will continue receiving rewards during cooldown and unstake window."
 msgstr ""
 
@@ -1054,7 +1068,7 @@ msgstr ""
 msgid "This is the total amount that you are able to supply to in this reserve. You are able to supply your wallet balance up until the supply cap is reached."
 msgstr ""
 
-#: src/modules/staking/StakingPanel.tsx:192
+#: src/modules/staking/StakingPanel.tsx:194
 msgid "Time left to be able to withdraw your staked asset."
 msgstr ""
 
@@ -1108,15 +1122,15 @@ msgstr ""
 msgid "Transaction overview"
 msgstr ""
 
-#: src/components/UnStake/UnStakeActions.tsx:95
+#: src/components/transactions/UnStake/UnStakeActions.tsx:95
 msgid "UNSTAKE"
 msgstr ""
 
-#: src/components/UnStake/UnStakeActions.tsx:98
+#: src/components/transactions/UnStake/UnStakeActions.tsx:98
 msgid "UNSTAKE {symbol}"
 msgstr ""
 
-#: src/modules/staking/StakingPanel.tsx:186
+#: src/modules/staking/StakingPanel.tsx:188
 msgid "Unstake now"
 msgstr ""
 
@@ -1331,7 +1345,7 @@ msgstr ""
 msgid "is an asset affected by rebasing. Visit the"
 msgstr ""
 
-#: src/modules/staking/StakingPanel.tsx:220
+#: src/modules/staking/StakingPanel.tsx:222
 msgid "left"
 msgstr ""
 
@@ -1386,20 +1400,20 @@ msgstr ""
 msgid "{0}"
 msgstr ""
 
-#: src/modules/staking/StakingPanel.tsx:201
-#: src/modules/staking/StakingPanel.tsx:237
+#: src/modules/staking/StakingPanel.tsx:203
+#: src/modules/staking/StakingPanel.tsx:239
 msgid "{0} days"
 msgstr ""
 
-#: src/modules/staking/StakingPanel.tsx:206
+#: src/modules/staking/StakingPanel.tsx:208
 msgid "{0} hours"
 msgstr ""
 
-#: src/modules/staking/StakingPanel.tsx:211
+#: src/modules/staking/StakingPanel.tsx:213
 msgid "{0} minutes"
 msgstr ""
 
-#: src/modules/staking/StakingPanel.tsx:216
+#: src/modules/staking/StakingPanel.tsx:218
 msgid "{0} seconds"
 msgstr ""
 
