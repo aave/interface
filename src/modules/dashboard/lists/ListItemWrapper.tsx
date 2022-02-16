@@ -22,11 +22,9 @@ export const ListItemWrapper = ({
     <ListItem warningComponent={symbol === 'AMPL' && <AMPLWarning />} {...rest}>
       <ListColumn maxWidth={160} isRow>
         <TokenIcon symbol={iconSymbol} fontSize="large" />
-        <Tooltip title={symbol} arrow placement="top">
-          <Typography variant="subheader1" sx={{ ml: 3 }} noWrap>
-            {symbol}
-          </Typography>
-        </Tooltip>
+        <Typography variant="subheader1" sx={{ ml: 3 }} noWrap>
+          {symbol}
+        </Typography>
       </ListColumn>
 
       {children}
