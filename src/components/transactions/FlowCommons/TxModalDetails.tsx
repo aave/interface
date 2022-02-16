@@ -54,6 +54,7 @@ export interface TxModalDetailsProps {
   selectedEmode?: number;
   selectedEmodeLabel?: string;
   emodeAssets?: string[];
+  votingPower?: string;
 }
 
 export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
@@ -83,6 +84,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   selectedEmode,
   selectedEmodeLabel,
   emodeAssets,
+  votingPower,
 }) => {
   const [selectedRate, setSelectedRate] = React.useState(InterestRate.Variable);
 
@@ -115,6 +117,11 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
           },
         })}
       >
+        {votingPower && (
+          <Row caption={<Trans>Voting power</Trans>} captionVariant="description" mb={4}>
+            <FormattedNumber value={Number(votingPower)} variant="secondary14" />
+          </Row>
+        )}
         {amountAfterRepay && displayAmountAfterRepayInUsd && symbol && (
           <Row
             caption={<Trans>Remaining debt</Trans>}

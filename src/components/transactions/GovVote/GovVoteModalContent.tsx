@@ -85,12 +85,12 @@ export const GovVoteModalContent = ({
               {handleBlocked()}
             </Typography>
           )}
-          <TxModalDetails gasLimit={gasLimit} />
+          <TxModalDetails gasLimit={gasLimit} votingPower={votingPower} />
         </>
       )}
 
       {txState.txError && <TxErrorView errorMessage={txState.txError} />}
-      {txState.success && !txState.txError && <TxSuccessView action="Delegation" />}
+      {txState.success && !txState.txError && <TxSuccessView action="Vote" />}
       {txState.gasEstimationError && <GasEstimationError error={txState.gasEstimationError} />}
 
       <GovVoteActions

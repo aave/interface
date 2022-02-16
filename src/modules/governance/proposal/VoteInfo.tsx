@@ -3,10 +3,13 @@ import { Trans } from '@lingui/macro';
 import { Button, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useGovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
+import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { CustomProposalType } from 'src/static-build/proposal';
 
 export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType) {
+  const { openGovVote } = useModalContext();
+
   const [votedPower, setVotedPower] = useState<string>();
   const [support, setSupport] = useState<boolean>();
   const [didVote, setDidVote] = useState<boolean>();
@@ -68,9 +71,14 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
         Power at the time of creation: {power}
         <br />
         {voteOngoing && (
-          <Button variant="contained" onClick={() => console.log('TODO: cast vote')}>
-            Vote
-          </Button>
+          <>
+            <Button variant="contained" onClick={() => openGovVote(id, true)}>
+              Vote YAE
+            </Button>
+            <Button variant="contained" onClick={() => openGovVote(id, false)}>
+              Vote NAY
+            </Button>
+          </>
         )}
       </Typography>
     </>

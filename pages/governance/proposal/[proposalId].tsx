@@ -30,6 +30,7 @@ import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { Link } from 'src/components/primitives/Link';
 
 import { ContentContainer } from '../../../src/components/ContentContainer';
+import { GovVoteModal } from 'src/components/transactions/GovVote/GovVoteModal';
 
 export async function getStaticPaths() {
   if (!governanceConfig) return { paths: [] };
@@ -304,6 +305,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
           </Grid>
         </Grid>
       </ContentContainer>
+      <GovVoteModal />
     </>
   );
 }

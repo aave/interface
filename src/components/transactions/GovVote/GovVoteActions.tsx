@@ -39,7 +39,7 @@ export const GovVoteActions = ({
       const tx: EthereumTransactionTypeExtended[] = await governanceService.submitVote({
         proposalId: Number(proposalId),
         user: currentAccount,
-        support,
+        support: support || false,
       });
 
       const gas: GasType | null = await tx[tx.length - 1].gas();
