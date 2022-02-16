@@ -23,6 +23,8 @@ export type ModalArgsType = {
   proposalId?: number;
   support?: boolean;
   power?: string;
+  icon?: string;
+  stakeAssetName?: string;
 };
 
 interface ModalContextType {
