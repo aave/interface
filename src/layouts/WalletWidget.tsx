@@ -152,7 +152,7 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
       </Box>
       <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
 
-      <Box component={component} disableRipple>
+      <Box component={component}>
         <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
           <Box
             sx={{

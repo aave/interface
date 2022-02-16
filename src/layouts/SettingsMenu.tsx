@@ -60,7 +60,7 @@ export function SettingsMenu() {
         open={settingsOpen}
         onClose={handleClose}
       >
-        <MenuList disablePadding sx={{ '.MuiMenuItem-root.Mui-disabled': { opacity: 1 } }}>
+        <MenuList sx={{ '.MuiMenuItem-root.Mui-disabled': { opacity: 1 } }}>
           <MenuItem disabled>
             <Typography variant="subheader2" color="text.secondary">
               <Trans>Global settings</Trans>

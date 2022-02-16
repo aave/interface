@@ -472,11 +472,14 @@ export function getThemedComponents(theme: Theme) {
       MuiList: {
         styleOverrides: {
           root: {
-            padding: 0,
             '.MuiMenuItem-root+.MuiDivider-root': {
               marginTop: 0,
               marginBottom: 0,
             },
+          },
+          padding: {
+            paddingTop: '4px',
+            paddingBottom: '4px',
           },
         },
       },

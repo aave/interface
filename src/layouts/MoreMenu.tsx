@@ -54,7 +54,7 @@ export function MoreMenu() {
         open={open}
         onClose={handleClose}
       >
-        <MenuList disablePadding>
+        <MenuList>
           {moreNavigation.map((item, index) => (
             <MenuItem component={Link} href={item.link} key={index}>
               <ListItemIcon>
