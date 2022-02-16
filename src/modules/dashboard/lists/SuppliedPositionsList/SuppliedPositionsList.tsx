@@ -18,6 +18,7 @@ export const SuppliedPositionsList = () => {
 
   const suppliedPosition =
     user?.userReservesData.filter((userReserve) => userReserve.underlyingBalance !== '0') || [];
+
   const head = [
     <Trans key="Balance">Balance</Trans>,
     <Trans key="APY">APY</Trans>,
@@ -57,9 +58,9 @@ export const SuppliedPositionsList = () => {
           {!downToXSM && <ListHeader head={head} />}
           {suppliedPosition.map((item) =>
             downToXSM ? (
-              <SuppliedPositionsListMobileItem {...item} key={item.underlyingAsset} />
+              <SuppliedPositionsListMobileItem {...item} user={user} key={item.underlyingAsset} />
             ) : (
-              <SuppliedPositionsListItem {...item} key={item.underlyingAsset} />
+              <SuppliedPositionsListItem {...item} user={user} key={item.underlyingAsset} />
             )
           )}
         </>
