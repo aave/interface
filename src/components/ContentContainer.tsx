@@ -12,7 +12,7 @@ export const ContentContainer = ({ children }: ContentContainerProps) => {
         display: 'flex',
         flexDirection: 'column',
         flex: 1,
-        mt: { xxs: '-32px', lg: '-46px', xl: '-44px', xxl: '-48px' },
+        mt: { xs: '-32px', lg: '-46px', xl: '-44px', xxl: '-48px' },
       }}
     >
       <Container>{children}</Container>

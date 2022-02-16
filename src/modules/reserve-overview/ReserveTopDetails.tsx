@@ -4,6 +4,7 @@ import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { getMarketInfoById, MarketLogo } from 'src/components/MarketSwitcher';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Link } from 'src/components/primitives/Link';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
@@ -20,7 +21,7 @@ interface ReserveTopDetailsProps {
 export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) => {
   const router = useRouter();
   const { reserves } = useAppDataContext();
-  const { currentMarket } = useProtocolDataContext();
+  const { currentMarket, currentNetworkConfig } = useProtocolDataContext();
   const { market, network, withAAVELogo } = getMarketInfoById(currentMarket);
 
   const poolReserve = reserves.find(
@@ -87,6 +88,12 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
 
           <TopInfoPanelItem title={<Trans>Oracle price</Trans>}>
             <FormattedNumber value={poolReserve.priceInUSD} symbol="USD" variant="main21" />
+            <Link
+              href={currentNetworkConfig.explorerLinkBuilder({ address: poolReserve.priceOracle })}
+              target={'_blank'}
+            >
+              {poolReserve.priceOracle}
+            </Link>
           </TopInfoPanelItem>
         </Box>
       </Box>

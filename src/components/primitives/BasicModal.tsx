@@ -1,4 +1,4 @@
-import { XIcon } from '@heroicons/react/solid';
+import { XIcon } from '@heroicons/react/outline';
 import { Box, IconButton, Modal, Paper, SvgIcon } from '@mui/material';
 import React from 'react';
 
@@ -14,7 +14,7 @@ export const BasicModal = ({
   open,
   setOpen,
   withCloseButton = true,
-  contentMaxWidth = 400,
+  contentMaxWidth = 420,
   children,
   ...props
 }: BasicModalProps) => {
@@ -44,7 +44,8 @@ export const BasicModal = ({
           position: 'relative',
           margin: '10px',
           overflowY: 'auto',
-          maxWidth: `${contentMaxWidth}px`,
+          width: '100%',
+          maxWidth: { xs: '359px', xsm: `${contentMaxWidth}px` },
           maxHeight: 'calc(100vh - 20px)',
           p: 6,
         }}
@@ -52,9 +53,18 @@ export const BasicModal = ({
         {children}
 
         {withCloseButton && (
-          <Box sx={{ position: 'absolute', top: '24px', right: '24px', zIndex: 5 }}>
-            <IconButton sx={{ borderRadius: '50%', p: 0, minWidth: 0 }} onClick={handleClose}>
-              <SvgIcon>
+          <Box sx={{ position: 'absolute', top: '24px', right: '50px', zIndex: 5 }}>
+            <IconButton
+              sx={{
+                borderRadius: '50%',
+                p: 0,
+                minWidth: 0,
+                position: 'fixed',
+                bgcolor: 'background.paper',
+              }}
+              onClick={handleClose}
+            >
+              <SvgIcon sx={{ fontSize: '28px', color: 'text.primary' }}>
                 <XIcon />
               </SvgIcon>
             </IconButton>

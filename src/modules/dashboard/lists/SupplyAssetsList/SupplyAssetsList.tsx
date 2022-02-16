@@ -25,7 +25,7 @@ export const SupplyAssetsList = () => {
   const { user, reserves, marketReferencePriceInUsd } = useAppDataContext();
   const { walletBalances } = useWalletBalances();
   const theme = useTheme();
-  const downToXS = useMediaQuery(theme.breakpoints.down('xs'));
+  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const {
     bridge,
@@ -157,10 +157,10 @@ export const SupplyAssetsList = () => {
             {filteredSupplyReserves.length === 0 && (
               <Alert severity="info">
                 {/* TODO: need to add <Trans></Trans> */}
-                <>Your {networkName} wallet is empty. To deposit ...</>
+                <>Your {networkName} wallet is empty. Supply assets </>
                 {bridge && (
                   <>
-                    Or use {<Link href={bridge.url}>{bridge.name}</Link>} to transfer your ETH
+                    or use {<Link href={bridge.url}>{bridge.name}</Link>} to transfer your ETH
                     assets.
                   </>
                 )}
@@ -180,9 +180,9 @@ export const SupplyAssetsList = () => {
       }
     >
       <>
-        {!downToXS && <ListHeader head={head} />}
+        {!downToXSM && <ListHeader head={head} />}
         {supplyReserves.map((item, index) =>
-          downToXS ? (
+          downToXSM ? (
             <SupplyAssetsListMobileItem {...item} key={index} />
           ) : (
             <SupplyAssetsListItem {...item} key={index} />

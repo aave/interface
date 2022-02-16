@@ -26,7 +26,7 @@ export const TopInfoPanelItem = ({
       sx={{
         display: 'flex',
         alignItems: 'center',
-        width: { xxs: 'calc(50% - 12px)', xs: 'unset' },
+        width: { xs: 'calc(50% - 12px)', xsm: 'unset' },
       }}
     >
       {withLine && (
@@ -44,7 +44,7 @@ export const TopInfoPanelItem = ({
       {!hideIcon && !icon && (
         <Box
           sx={{
-            display: { xxs: 'none', md: 'flex' },
+            display: { xs: 'none', md: 'flex' },
             alignItems: 'center',
             justifyContent: 'center',
             border: '1px solid rgba(250, 251, 252, 0.12)',

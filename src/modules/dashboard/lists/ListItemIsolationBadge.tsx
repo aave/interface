@@ -12,7 +12,7 @@ export const ListItemIsolationBadge = ({ children }: ListItemIsolationBadgeProps
     <Box
       sx={{
         display: 'flex',
-        alignItems: { xxs: 'flex-end', xs: 'center' },
+        alignItems: { xs: 'flex-end', xsm: 'center' },
         justifyContent: 'center',
         flexDirection: 'column',
       }}

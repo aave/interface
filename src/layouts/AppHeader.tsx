@@ -46,8 +46,8 @@ export function AppHeader() {
         zIndex: theme.zIndex.appBar,
         bgcolor: 'background.header',
         padding: {
-          xxs: mobileMenuOpen || walletWidgetOpen ? '8px 20px' : '8px 8px 8px 20px',
-          xs: '8px 20px',
+          xs: mobileMenuOpen || walletWidgetOpen ? '8px 20px' : '8px 8px 8px 20px',
+          xsm: '8px 20px',
         },
         display: 'flex',
         alignItems: 'center',
@@ -65,7 +65,7 @@ export function AppHeader() {
         <img src={uiConfig.appLogo} alt="An SVG of an eye" height={20} />
       </Box>
 
-      <Box sx={{ display: { xxs: 'none', md: 'block' } }}>
+      <Box sx={{ display: { xs: 'none', md: 'block' } }}>
         <NavItems />
       </Box>
 
@@ -80,12 +80,12 @@ export function AppHeader() {
         />
       )}
 
-      <Box sx={{ display: { xxs: 'none', md: 'block' } }}>
+      <Box sx={{ display: { xs: 'none', md: 'block' } }}>
         <SettingsMenu />
       </Box>
 
       {!walletWidgetOpen && (
-        <Box sx={{ display: { xxs: 'flex', md: 'none' } }}>
+        <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
           <MobileMenu
             open={mobileMenuOpen}
             setOpen={setMobileMenuOpen}

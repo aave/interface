@@ -1,5 +1,5 @@
 import React from 'react';
-import { GasStationContext } from 'src/components/GasStation/GasStationProvider';
+import { GasStationContext } from 'src/components/transactions/GasStation/GasStationProvider';
 
 export function useGasStation() {
   const context = React.useContext(GasStationContext);
