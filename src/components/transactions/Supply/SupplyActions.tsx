@@ -161,6 +161,7 @@ export const SupplyActions = ({
               blocked ||
               !!approvalTxState.gasEstimationError
             }
+            size="large"
             sx={{ minHeight: '44px', mb: 2 }}
           >
             {!approved && !loading && <Trans>Approve to continue</Trans>}
@@ -184,6 +185,7 @@ export const SupplyActions = ({
               blocked ||
               !!mainTxState.gasEstimationError
             }
+            size="large"
             sx={{ minHeight: '44px' }}
           >
             {!mainTxState.txHash && !mainTxState.txError && (!loading || !approved) && (

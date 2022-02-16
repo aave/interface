@@ -1,26 +1,14 @@
+import { ChevronDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Typography } from '@mui/material';
+import { Box, Divider, FormLabel, SvgIcon, Typography } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
 import * as React from 'react';
 import { Reward } from 'src/helpers/types';
 
 import { FormattedNumber } from '../../primitives/FormattedNumber';
 import { TokenIcon } from '../../primitives/TokenIcon';
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
 
 export type RewardsSelectProps = {
   rewards: Reward[];
@@ -34,58 +22,95 @@ export const RewardsSelect = ({
   setSelectedReward,
 }: RewardsSelectProps) => {
   return (
-    <div>
-      <FormControl sx={{ m: 1, width: 300 }}>
-        <Select
-          value={selectedReward}
-          onChange={(e) => setSelectedReward(e.target.value as unknown as Reward)}
-          input={<OutlinedInput />}
-          MenuProps={MenuProps}
-          native={false}
-          renderValue={(reward) => {
-            if (reward.symbol === 'all') {
-              return (
-                <Typography>
-                  <Trans>Claim all rewards</Trans>
-                </Typography>
-              );
-            }
+    <FormControl sx={{ mb: 6, width: '100%' }}>
+      <FormLabel sx={{ mb: 1, color: 'text.secondary' }}>
+        <Trans>Reward(s) to claim</Trans>
+      </FormLabel>
 
+      <Select
+        value={selectedReward}
+        onChange={(e) => setSelectedReward(e.target.value as unknown as Reward)}
+        sx={{
+          width: '100%',
+          height: '44px',
+          borderRadius: '6px',
+          borderColor: 'divider',
+          outline: 'none !important',
+          color: 'text.primary',
+          '.MuiOutlinedInput-input': {
+            backgroundColor: 'transparent',
+          },
+          '&:hover .MuiOutlinedInput-notchedOutline, .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'divider',
+            outline: 'none !important',
+            borderWidth: '1px',
+          },
+          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'divider',
+            borderWidth: '1px',
+          },
+          '.MuiSelect-icon': { color: 'text.primary' },
+        }}
+        native={false}
+        IconComponent={(props) => (
+          <SvgIcon fontSize="small" {...props}>
+            <ChevronDownIcon />
+          </SvgIcon>
+        )}
+        renderValue={(reward) => {
+          if (reward.symbol === 'all') {
             return (
-              <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                <TokenIcon symbol={reward.symbol} sx={{ mx: '4px' }} />
-                <Typography>{reward.symbol}</Typography>
-              </Box>
+              <Typography color="text.primary">
+                <Trans>Claim all rewards</Trans>
+              </Typography>
             );
-          }}
-        >
-          {rewards
-            .filter((reward) => reward.symbol !== selectedReward.symbol)
-            .map((reward) => (
-              // @ts-expect-error value doesnt expect object but works
-              <MenuItem key={`reward-token-${reward.symbol}`} value={reward}>
+          }
+
+          return (
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <TokenIcon symbol={reward.symbol} sx={{ mr: 2, fontSize: '16px' }} />
+              <Typography color="text.primary">{reward.symbol}</Typography>
+            </Box>
+          );
+        }}
+      >
+        {rewards
+          .filter((reward) => reward.symbol !== selectedReward.symbol)
+          .map((reward) => (
+            <React.Fragment key={`reward-token-${reward.symbol}`}>
+              {/* @ts-expect-error value doesnt expect object but works */}
+              <MenuItem value={reward}>
                 {reward.symbol === 'all' ? (
-                  <Typography>
+                  <Typography variant="subheader1">
                     <Trans>Claim all rewards</Trans>
                   </Typography>
                 ) : (
-                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                      <TokenIcon symbol={reward.symbol} sx={{ mx: '4px' }} />
-                      <Typography>{reward.symbol}</Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <TokenIcon symbol={reward.symbol} sx={{ fontSize: '24px', mr: 3 }} />
+                    <Typography variant="subheader1">{reward.symbol}</Typography>
+                    <Typography
+                      component="div"
+                      sx={{ display: 'inline-flex', alignItems: 'center' }}
+                      variant="caption"
+                      color="text.disabled"
+                    >
+                      ~
                       <FormattedNumber
                         value={Number(reward.balanceUsd)}
-                        variant="helperText"
+                        variant="caption"
                         compact
                         symbol="USD"
+                        color="text.disabled"
                       />
-                    </Box>
+                    </Typography>
                   </Box>
                 )}
               </MenuItem>
-            ))}
-        </Select>
-      </FormControl>
-    </div>
+
+              {reward.symbol === 'all' && <Divider />}
+            </React.Fragment>
+          ))}
+      </Select>
+    </FormControl>
   );
 };

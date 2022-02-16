@@ -78,20 +78,20 @@ export const WithdrawActions = ({
       return (
         <>
           {!blocked && <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />}
-          <Trans>WITHDRAW {symbol}</Trans>
+          <Trans>Withdraw {symbol}</Trans>
         </>
       );
     } else if (!loading && (actionTx || blocked)) {
-      return <Trans>WITHDRAW {symbol}</Trans>;
+      return <Trans>Withdraw {symbol}</Trans>;
     } else if (loading && actionTx) {
       return (
         <>
           <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-          <Trans>WITHDRAW {symbol} PENDING...</Trans>
+          <Trans>Withdraw {symbol} pending...</Trans>
         </>
       );
     } else if (!loading && !actionTx) {
-      return <Trans>WITHDRAW {symbol}</Trans>;
+      return <Trans>Withdraw {symbol}</Trans>;
     }
   };
 
@@ -118,6 +118,7 @@ export const WithdrawActions = ({
             variant="contained"
             onClick={action}
             disabled={loading || isWrongNetwork || blocked || !!mainTxState.gasEstimationError}
+            size="large"
             sx={{ minHeight: '44px' }}
           >
             {handleButtonStates()}

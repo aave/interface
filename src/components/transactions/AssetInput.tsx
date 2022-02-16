@@ -14,10 +14,10 @@ import {
 } from '@mui/material';
 import React from 'react';
 
-import { CapType } from './caps/helper';
-import { AvailableInfoContent } from './infoModalContents/AvailableInfoContent';
-import { FormattedNumber } from './primitives/FormattedNumber';
-import { TokenIcon } from './primitives/TokenIcon';
+import { CapType } from '../caps/helper';
+import { AvailableInfoContent } from '../infoModalContents/AvailableInfoContent';
+import { FormattedNumber } from '../primitives/FormattedNumber';
+import { TokenIcon } from '../primitives/TokenIcon';
 
 export interface Asset {
   balance: string;

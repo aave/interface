@@ -138,6 +138,7 @@ export const ClaimRewardsActions = ({
             variant="contained"
             onClick={action}
             disabled={loading || isWrongNetwork || blocked || !!mainTxState.gasEstimationError}
+            size="large"
             sx={{ minHeight: '44px' }}
           >
             {handleButtonStates()}

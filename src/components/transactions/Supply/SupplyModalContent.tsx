@@ -20,8 +20,8 @@ import {
   ComputedReserveData,
   useAppDataContext,
 } from '../../../hooks/app-data-provider/useAppDataProvider';
-import { AssetInput } from '../../AssetInput';
 import { CapType } from '../../caps/helper';
+import { AssetInput } from '../AssetInput';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';

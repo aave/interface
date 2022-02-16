@@ -264,8 +264,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         fontWeight: 500,
         letterSpacing: pxToRem(0.46),
         lineHeight: pxToRem(24),
-        textTransform: 'uppercase',
-        fontSize: pxToRem(15),
+        fontSize: pxToRem(16),
       },
       buttonM: {
         fontFamily: FONT,
@@ -770,9 +769,12 @@ export function getThemedComponents(theme: Theme) {
       MuiToggleButton: {
         styleOverrides: {
           root: {
-            boxShadow: 'inset -1px 0px 0px rgba(0, 0, 0, 0.12)',
             backgroundColor: theme.palette.action.selected,
             flex: 1,
+            boxShadow: 'inset -1px 0px 0px rgba(0, 0, 0, 0.12)',
+            '&:last-of-type': {
+              boxShadow: 'unset',
+            },
             '&.Mui-selected, &.Mui-disabled, &.Mui-selected:hover,  &:hover, &:focus': {
               backgroundColor: theme.palette.background.paper,
             },

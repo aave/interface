@@ -17,8 +17,8 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
-import { AssetInput } from '../../AssetInput';
 import { CapType } from '../../caps/helper';
+import { AssetInput } from '../AssetInput';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';

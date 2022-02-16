@@ -38,13 +38,18 @@ export const TxActionsWrapper = ({
       )}
 
       {(mainTxState.txError || approvalTxError) && (
-        <Button variant="contained" onClick={handleRetry} sx={{ mb: 2, minHeight: '44px' }}>
+        <Button
+          variant="contained"
+          onClick={handleRetry}
+          size="large"
+          sx={{ mb: 2, minHeight: '44px' }}
+        >
           <Trans>Retry with approval</Trans>
         </Button>
       )}
 
       {withAmount && !hasAmount && !approvalTxError && (
-        <Button variant="contained" disabled sx={{ minHeight: '44px' }}>
+        <Button variant="contained" disabled size="large" sx={{ minHeight: '44px' }}>
           <Trans>Enter an amount</Trans>
         </Button>
       )}
@@ -52,7 +57,7 @@ export const TxActionsWrapper = ({
       {children}
 
       {(mainTxState.txHash || mainTxState.txError || approvalTxError) && (
-        <Button onClick={handleClose} variant="contained" sx={{ minHeight: '44px' }}>
+        <Button onClick={handleClose} variant="contained" size="large" sx={{ minHeight: '44px' }}>
           {!mainTxState.txError && !approvalTxError && <Trans>Ok,</Trans>} <Trans>Close</Trans>
         </Button>
       )}

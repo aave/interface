@@ -3,16 +3,17 @@ import { Settings } from '@mui/icons-material';
 import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
 import {
   Box,
-  BoxProps,
+  ClickAwayListener,
+  Popper,
   styled,
   TextField,
   ToggleButton,
   ToggleButtonGroup,
   Tooltip,
-  tooltipClasses,
-  TooltipProps,
   Typography,
+  useTheme,
 } from '@mui/material';
+import sx from '@mui/system/sx';
 import { BigNumber } from 'ethers/lib/ethers';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import React, { useState } from 'react';
@@ -25,10 +26,24 @@ import { FormattedNumber } from '../../primitives/FormattedNumber';
 import { GasButton } from './GasButton';
 import { GasOption } from './GasStationProvider';
 
-export interface GasDropdownProps {
-  open: boolean;
-}
-export interface GasStationProps extends BoxProps {
+const PopperComponent = styled(Popper)(
+  sx({
+    '.MuiTooltip-tooltip': {
+      backgroundColor: 'background.paper',
+      p: 0,
+      borderRadius: '6px',
+      boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
+    },
+    '.MuiTooltip-arrow': {
+      color: 'background.paper',
+      '&:before': {
+        boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
+      },
+    },
+  })
+);
+
+export interface GasStationProps {
   gasLimit: BigNumber;
 }
 
@@ -46,25 +61,9 @@ export const getGasCosts = (
   return Number(formatUnits(gasLimit.mul(gasPrice), 18)) * parseFloat(baseCurrencyUsd);
 };
 
-const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
-  <Tooltip {...props} classes={{ popper: className }} />
-))(({ theme }) => ({
-  [`& .${tooltipClasses.arrow}`]: {
-    color: theme.palette.common.white,
-    '&:before': {
-      boxShadow:
-        '-1px -1px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)',
-    },
-  },
-  [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: theme.palette.common.white,
-    color: 'rgba(0, 0, 0, 0.87)',
-    boxShadow: theme.shadows[1],
-    fontSize: 11,
-  },
-}));
+export const GasStation: React.FC<GasStationProps> = ({ gasLimit }) => {
+  const theme = useTheme();
 
-export const GasStation: React.FC<GasStationProps> = ({ gasLimit, ...props }) => {
   const {
     state,
     dispatch,
@@ -85,7 +84,6 @@ export const GasStation: React.FC<GasStationProps> = ({ gasLimit, ...props }) =>
       : undefined;
 
   const [open, setOpen] = useState(false);
-
   const toggleDropdown = () => setOpen(!open);
 
   const onSetGasPrice = (
@@ -106,23 +104,64 @@ export const GasStation: React.FC<GasStationProps> = ({ gasLimit, ...props }) =>
   const onClickCustomGasField = () => {
     dispatch({ type: 'setCustomGasOption', value: state.customGas });
   };
+
   return (
-    <Box {...props}>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-        <LocalGasStationIcon fontSize="small" color="primary" sx={{ mr: '5px' }} />
-        {totalGasCostsUsd ? <FormattedNumber value={totalGasCostsUsd} symbol="USD" /> : '-'}
-        <LightTooltip
-          onClose={() => setOpen(false)}
-          disableFocusListener
-          title={
-            <Box sx={{ py: 4, px: 6 }}>
-              <Typography variant="description">Select transaction speed</Typography>
+    <Box sx={{ display: 'flex', alignItems: 'center', mt: 6 }}>
+      <LocalGasStationIcon color="primary" sx={{ fontSize: '16px', mr: 1.5 }} />
+
+      {totalGasCostsUsd ? (
+        <FormattedNumber value={totalGasCostsUsd} symbol="USD" color="text.secondary" />
+      ) : (
+        '-'
+      )}
+
+      <Typography sx={{ mx: 1.5 }} variant="caption" color="divider">
+        |
+      </Typography>
+
+      <Tooltip
+        onClose={() => setOpen(false)}
+        disableFocusListener
+        disableHoverListener
+        placement="top"
+        PopperComponent={PopperComponent}
+        title={
+          <ClickAwayListener onClickAway={() => setOpen(false)}>
+            <Box sx={{ py: 4, px: 6, width: '280px' }}>
+              <Typography variant="description" color="text.secondary" sx={{ mb: 2 }}>
+                <Trans>Select transaction speed</Trans>
+              </Typography>
+
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                <Box
+                  sx={{ display: 'flex', flex: 1, alignItems: 'center', justifyContent: 'center' }}
+                >
+                  <Typography variant="helperText" color="text.muted" textTransform="capitalize">
+                    <Trans>{GasOption.Slow}</Trans>
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{ display: 'flex', flex: 1, alignItems: 'center', justifyContent: 'center' }}
+                >
+                  <Typography variant="helperText" color="text.muted" textTransform="capitalize">
+                    <Trans>{GasOption.Normal}</Trans>
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{ display: 'flex', flex: 1, alignItems: 'center', justifyContent: 'center' }}
+                >
+                  <Typography variant="helperText" color="text.muted" textTransform="capitalize">
+                    <Trans>{GasOption.Fast}</Trans>
+                  </Typography>
+                </Box>
+              </Box>
+
               <ToggleButtonGroup
                 value={state.gasOption}
-                sx={{ mt: '24px' }}
                 exclusive
                 onChange={onSetGasPrice}
                 aria-label="Gas price selector"
+                sx={{ width: '100%' }}
               >
                 <GasButton value={GasOption.Slow} gwei={data?.[GasOption.Slow].legacyGasPrice} />
                 <GasButton
@@ -131,14 +170,24 @@ export const GasStation: React.FC<GasStationProps> = ({ gasLimit, ...props }) =>
                 />
                 <GasButton value={GasOption.Fast} gwei={data?.[GasOption.Fast].legacyGasPrice} />
               </ToggleButtonGroup>
-              <Typography sx={{ mt: '20px', mb: '8px' }}>or enter custom fee value</Typography>
+
+              <Typography sx={{ mt: 3, mb: 2 }} color="text.secondary">
+                <Trans>or enter custom fee value</Trans>
+              </Typography>
+
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 {state.gasOption === GasOption.Custom && (
                   <TextField
                     size="small"
-                    sx={{ width: 75, mr: '8px' }}
+                    sx={{ p: 0, borderRadius: '4px !important' }}
                     inputProps={{
-                      style: { textAlign: 'center' },
+                      style: {
+                        textAlign: 'center',
+                        width: '76.5px',
+                        height: '36px',
+                        padding: '0',
+                        ...theme.typography.subheader1,
+                      },
                     }}
                     onClick={onClickCustomGasField}
                     onChange={onSetCustomGasPrice}
@@ -148,7 +197,6 @@ export const GasStation: React.FC<GasStationProps> = ({ gasLimit, ...props }) =>
                 {state.gasOption !== GasOption.Custom && (
                   <ToggleButtonGroup
                     value={state.gasOption}
-                    sx={{ mr: '8px' }}
                     exclusive
                     onChange={onSetGasPrice}
                     aria-label="Gas price selector"
@@ -156,36 +204,48 @@ export const GasStation: React.FC<GasStationProps> = ({ gasLimit, ...props }) =>
                     <ToggleButton
                       value={GasOption.Custom}
                       aria-label="Custom"
-                      sx={{ fontSize: 'inherit', flexWrap: 'wrap', display: 'flex', width: 75 }}
+                      sx={{
+                        width: '76.5px',
+                        height: '36px',
+                        borderRadius: '4px',
+                      }}
                     >
-                      <Trans>Custom</Trans>
+                      <Typography variant="description">
+                        <Trans>Custom</Trans>
+                      </Typography>
                     </ToggleButton>
                   </ToggleButtonGroup>
                 )}
-                GWEI
+
+                <Typography sx={{ ml: 2 }} variant="caption" color="text.secondary">
+                  GWEI
+                </Typography>
               </Box>
             </Box>
-          }
-          open={open}
-          arrow
-        >
-          <Typography sx={{ mx: '4px' }}>
-            (
-            {state.gasOption === GasOption.Custom ? (
-              `${state.customGas} Gwei`
-            ) : (
-              <Select value={state.gasOption} slow="Slow" normal="Normal" fast="Fast" other="-" />
-            )}
-            )
-          </Typography>
-        </LightTooltip>
-        <Settings
-          fontSize="small"
-          color="primary"
-          onClick={toggleDropdown}
-          sx={{ cursor: 'pointer', display: error ? 'none' : 'inline-block' }}
-        />
-      </Box>
+          </ClickAwayListener>
+        }
+        open={open}
+        arrow
+      >
+        <Typography color="text.secondary">
+          {state.gasOption === GasOption.Custom ? (
+            `${state.customGas} Gwei`
+          ) : (
+            <Select value={state.gasOption} slow="Slow" normal="Normal" fast="Fast" other="-" />
+          )}
+        </Typography>
+      </Tooltip>
+
+      <Settings
+        color="primary"
+        onClick={toggleDropdown}
+        sx={{
+          cursor: 'pointer',
+          display: error ? 'none' : 'inline-block',
+          fontSize: '16px',
+          ml: '2px',
+        }}
+      />
     </Box>
   );
 };
