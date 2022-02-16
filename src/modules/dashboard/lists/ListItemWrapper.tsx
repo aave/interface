@@ -1,4 +1,4 @@
-import { Tooltip, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { ReactNode } from 'react';
 
 import { ListColumn } from '../../../components/lists/ListColumn';

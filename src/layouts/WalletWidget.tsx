@@ -34,8 +34,7 @@ interface WalletWidgetProps {
 }
 
 export default function WalletWidget({ open, setOpen, headerHeight, md }: WalletWidgetProps) {
-  const { connectWallet, disconnectWallet, currentAccount, connected, chainId, switchNetwork } =
-    useWeb3Context();
+  const { connectWallet, disconnectWallet, currentAccount, connected, chainId } = useWeb3Context();
 
   const { name: ensName, avatar: ensAvatar } = useGetEns(currentAccount);
   const ensNameAbbreviated = ensName
@@ -85,11 +84,6 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
 
   const handleCopy = async () => {
     navigator.clipboard.writeText(currentAccount);
-    handleClose();
-  };
-
-  const handleSwitchNetwork = () => {
-    switchNetwork(137);
     handleClose();
   };
 
@@ -158,7 +152,7 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
       </Box>
       <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
 
-      <Box component={component} onClick={handleSwitchNetwork}>
+      <Box component={component} disableRipple>
         <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
           <Box
             sx={{
@@ -171,17 +165,6 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
             <Typography variant="caption" color={{ xs: '#FFFFFFB2', md: 'text.secondary' }}>
               <Trans>Network</Trans>
             </Typography>
-
-            <Button
-              sx={{
-                borderColor: { xs: '#FFFFFF1F', md: 'divider' },
-                color: { xs: 'common.white', md: 'primary.main' },
-              }}
-              size="small"
-              variant="outlined"
-            >
-              <Trans>Switch</Trans>
-            </Button>
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Box
