@@ -37,8 +37,6 @@ export const StakeRewardClaimModalContent = ({
 
   // states
   const [txState, setTxState] = useState<TxState>({ success: false });
-  // const [amount, setAmount] = useState('-1');
-  // const [amountToClaim, setAmountToClaim] = useState(amount);
   const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
   const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
 
@@ -98,6 +96,7 @@ export const StakeRewardClaimModalContent = ({
             gasLimit={gasLimit}
             stakeRewards={maxAmountToClaim}
             stakeRewardsInUsd={amountInUsd.toString()}
+            symbol={rewardsSymbol}
           />
         </>
       )}

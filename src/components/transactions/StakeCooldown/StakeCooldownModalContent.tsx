@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Link, Typography } from '@mui/material';
+import { Alert, Checkbox, FormControlLabel, Link, Typography } from '@mui/material';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { TxErrorView } from '../FlowCommons/Error';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { TxState } from 'src/helpers/types';
-import { TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { Trans } from '@lingui/macro';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
 import { getStakeConfig } from 'src/ui-config/stakeConfig';
 import { StakeCooldownActions } from './StakeCooldownActions';
+import { GasStation } from '../GasStation/GasStation';
+import { parseUnits } from 'ethers/lib/utils';
 
 export type StakeCooldownProps = {
   stakeAssetName: string;
@@ -27,7 +28,7 @@ export enum ErrorType {
 type StakingType = 'aave' | 'bpt';
 
 export const StakeCooldownModalContent = ({ stakeAssetName, handleClose }: StakeCooldownProps) => {
-  const data = useStakeData();
+  const { stakeUserResult, stakeGeneralResult } = useStakeData();
   const { chainId: connectedChainId } = useWeb3Context();
   const stakeConfig = getStakeConfig();
 
@@ -35,22 +36,32 @@ export const StakeCooldownModalContent = ({ stakeAssetName, handleClose }: Stake
   const [txState, setTxState] = useState<TxState>({ success: false });
   const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
   const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
+  const [cooldownCheck, setCooldownCheck] = useState(false);
 
-  const cooldown =
-    data.stakeUserResult?.stakeUserUIData[stakeAssetName as StakingType].userCooldown;
+  const userStakeData = stakeUserResult?.stakeUserUIData[stakeAssetName as StakingType];
+  const stakeData = stakeGeneralResult?.stakeGeneralUIData[stakeAssetName as StakingType];
+
+  // Cooldown logic
+  const now = Date.now() / 1000;
+  const stakeCooldownSeconds = stakeData?.stakeCooldownSeconds || 0;
+  const userCooldown = userStakeData?.userCooldown || 0;
+  const stakeUnstakeWindow = stakeData?.stakeUnstakeWindow || 0;
+  const userCooldownDelta = now - userCooldown;
+  const isCooldownActive = userCooldownDelta < stakeCooldownSeconds + stakeUnstakeWindow;
+
   const stakedAmount =
-    data.stakeUserResult?.stakeUserUIData[stakeAssetName as StakingType].stakeTokenUserBalance;
+    stakeUserResult?.stakeUserUIData[stakeAssetName as StakingType].stakeTokenUserBalance;
 
   // error handler
   useEffect(() => {
     if (stakedAmount === '0') {
       setBlockingError(ErrorType.NOT_ENOUGH_BALANCE);
-    } else if (cooldown !== 0) {
+    } else if (isCooldownActive) {
       setBlockingError(ErrorType.ALREADY_ON_COOLDOWN);
     } else {
       setBlockingError(undefined);
     }
-  }, [cooldown, stakedAmount]);
+  }, [isCooldownActive, stakedAmount]);
 
   const handleBlocked = () => {
     switch (blockingError) {
@@ -94,19 +105,38 @@ export const StakeCooldownModalContent = ({ stakeAssetName, handleClose }: Stake
             </Typography>
           )}
 
-          <TxModalDetails gasLimit={gasLimit} />
+          <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} />
+          <Alert severity="error">
+            <Typography variant="caption">
+              <Trans>
+                If you DO NOT unstake within 2 days of unstake widow, you will need to activate
+                cooldown process again.
+              </Trans>
+            </Typography>
+          </Alert>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={cooldownCheck}
+                onClick={() => setCooldownCheck(!cooldownCheck)}
+                inputProps={{ 'aria-label': 'controlled' }}
+              />
+            }
+            label={<Trans>I understand how cooldown (10 days) and unstaking (2 days) work</Trans>}
+          />
         </>
       )}
       {txState.txError && <TxErrorView errorMessage={txState.txError} />}
       {txState.success && !txState.txError && <TxSuccessView action="Stake coldowwn activated" />}
       {txState.gasEstimationError && <GasEstimationError error={txState.gasEstimationError} />}
+
       <StakeCooldownActions
         sx={{ mt: '48px' }}
         setTxState={setTxState}
         handleClose={handleClose}
         isWrongNetwork={isWrongNetwork}
         setGasLimit={setGasLimit}
-        blocked={blockingError !== undefined}
+        blocked={blockingError !== undefined || !cooldownCheck}
         selectedToken={stakeAssetName}
       />
     </>
