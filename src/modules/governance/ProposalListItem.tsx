@@ -50,7 +50,7 @@ export function ProposalListItem({
           <StateBadge state={proposal.state} />
           <FormattedProposalTime
             state={proposal.state}
-            executionTime={Number(proposal.executionTime)}
+            executionTime={proposal.executionTime}
             expirationTimestamp={proposal.expirationTimestamp}
           />
           <CheckBadge text={<Trans>Quorum</Trans>} checked={quorumReached} />

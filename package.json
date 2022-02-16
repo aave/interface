@@ -20,8 +20,8 @@
     "gql-gen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
-    "@aave/contract-helpers": "0.30.1-e4710de313933849cd695443b2a663259d7d6fc2.0+e4710de",
-    "@aave/math-utils": "0.30.1-e4710de313933849cd695443b2a663259d7d6fc2.0+e4710de",
+    "@aave/contract-helpers": "0.30.1-8f5f4f7ce43a56df787288d25801c3a383b168b6.0+8f5f4f7",
+    "@aave/math-utils": "0.30.1-8f5f4f7ce43a56df787288d25801c3a383b168b6.0+8f5f4f7",
     "@apollo/client": "^3.5.9",
     "@emotion/cache": "latest",
     "@emotion/react": "latest",

@@ -268,7 +268,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                   captionVariant="description"
                 >
                   <Typography>
-                    {dayjs.unix(Number(proposal.executionTime)).format('DD MMM YYYY, hh:mm a')}
+                    {dayjs.unix(proposal.executionTime).format('DD MMM YYYY, hh:mm a')}
                   </Typography>
                 </Row>
               )}
