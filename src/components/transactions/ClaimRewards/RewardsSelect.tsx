@@ -22,7 +22,7 @@ export const RewardsSelect = ({
   setSelectedReward,
 }: RewardsSelectProps) => {
   return (
-    <FormControl sx={{ mb: 6, width: '100%' }}>
+    <FormControl sx={{ mb: 1, width: '100%' }}>
       <FormLabel sx={{ mb: 1, color: 'text.secondary' }}>
         <Trans>Reward(s) to claim</Trans>
       </FormLabel>

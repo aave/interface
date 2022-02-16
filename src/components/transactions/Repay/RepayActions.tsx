@@ -206,8 +206,10 @@ export const RepayActions = ({
             size="large"
             sx={{ minHeight: '44px' }}
           >
-            {(!loading || (requiresApproval && !approved)) && <Trans>Repay {symbol}</Trans>}
-            {((requiresApproval && approved) || loading) && (
+            {!mainTxState.txHash && !mainTxState.txError && (!loading || !approved) && (
+              <Trans>Repay {symbol}</Trans>
+            )}
+            {approved && loading && (
               <>
                 <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
                 <Trans>Pending...</Trans>

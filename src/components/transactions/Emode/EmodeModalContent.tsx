@@ -1,6 +1,6 @@
 import { formatUserSummary } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Button, Link, Typography } from '@mui/material';
+import { Alert, Button, Link, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { EmodeCategory, TxState } from 'src/helpers/types';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -29,6 +29,7 @@ export enum ErrorType {
   SAME_EMODE,
 }
 
+// TODO: need add Current Loan to Value
 export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
   const {
     user,
@@ -173,21 +174,31 @@ export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
           {isWrongNetwork && (
             <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
           )}
+
           {selectedEmode && selectedEmode.id !== 0 ? (
-            <Typography>
+            <Alert severity="info" sx={{ mb: 6 }}>
               <Trans>
                 E-Mode increases your borrowing power for a selected category of assets up to 99%.
                 Learn more
               </Trans>
-            </Typography>
+            </Alert>
           ) : (
-            <Typography>
+            <Alert severity="info" sx={{ mb: 6 }}>
               <Trans>Warning here about geting out of emode</Trans>
-            </Typography>
+            </Alert>
           )}
-          <Typography variant="description">
-            <Trans>Asset category</Trans>
-          </Typography>
+
+          {selectedEmode && selectedEmode.id !== 0 && (
+            <Alert severity="info" sx={{ mb: 6 }}>
+              <Trans>
+                Enabling E-Mode only allows you to borrow assets belonging to the selected category
+                Stablecoins. Please visit out{' '}
+                <Link href="https://docs.aave.com/faq/">FAQ guide</Link> to learn more about how it
+                works and the applied restrictions.
+              </Trans>
+            </Alert>
+          )}
+
           <EmodeSelect
             emodeCategories={emodeCategories}
             selectedEmode={selectedEmode?.id || 0}
@@ -205,17 +216,9 @@ export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
             futureHealthFactor={newSummary.healthFactor}
             gasLimit={gasLimit}
             emodeAssets={selectedEmode?.assets}
+            selectedEmode={selectedEmode?.id || 0}
+            selectedEmodeLabel={selectedEmode?.label}
           />
-
-          {selectedEmode && selectedEmode.id !== 0 && (
-            <Typography>
-              <Trans>
-                Enabling E-Mode only allows you to borrow assets belonging to the selected category
-                Stablecoins. Please visit out FAQ guide to learn more about how it works and the
-                applied restrictions.
-              </Trans>
-            </Typography>
-          )}
         </>
       )}
 

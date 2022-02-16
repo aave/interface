@@ -3,7 +3,7 @@ import { Alert, Button, Typography } from '@mui/material';
 
 export const GasEstimationError = ({ error }: { error: string }) => {
   return (
-    <Alert severity="error">
+    <Alert severity="error" sx={{ mt: 4 }}>
       <Typography>
         <Trans>There was some</Trans>{' '}
         <Button variant="text" onClick={() => navigator.clipboard.writeText(error)}>

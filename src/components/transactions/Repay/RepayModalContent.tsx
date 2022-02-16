@@ -11,9 +11,9 @@ import {
 } from '@aave/math-utils';
 import { CheckIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, SvgIcon, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TxState } from 'src/helpers/types';
 import {
   ComputedReserveData,
@@ -269,33 +269,40 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
             <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
           )}
 
-          <Box>
-            <Typography>
+          <Box sx={{ mb: 6 }}>
+            <Typography mb={1} color="text.secondary">
               <Trans>Repay with</Trans>
             </Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-              {/*For now hardcoded to wallet balance setRepayWithCollateral(!repayWithCollateral) */}
-              <Button
-                disabled={repayWithCollateral}
-                variant="contained"
-                onClick={() => setRepayWithCollateral(false)}
-              >
-                {!repayWithCollateral && <CheckIcon />}
-                <Typography>
+
+            <ToggleButtonGroup
+              color="primary"
+              value={repayWithCollateral}
+              exclusive
+              onChange={(_, value) => setRepayWithCollateral(value)}
+              sx={{ width: '100%' }}
+            >
+              <ToggleButton value={repayWithCollateral} disabled={repayWithCollateral}>
+                {!repayWithCollateral && (
+                  <SvgIcon sx={{ fontSize: '20px', mr: '2.5px' }}>
+                    <CheckIcon />
+                  </SvgIcon>
+                )}
+                <Typography variant="subheader1" sx={{ mr: 1 }}>
                   <Trans>Wallet balance</Trans>
                 </Typography>
-              </Button>
-              <Button
-                disabled={!repayWithCollateral}
-                variant="contained"
-                onClick={() => setRepayWithCollateral(!repayWithCollateral)}
-              >
-                {repayWithCollateral && <CheckIcon />}
-                <Typography>
+              </ToggleButton>
+
+              <ToggleButton value={!repayWithCollateral} disabled={!repayWithCollateral}>
+                {repayWithCollateral && (
+                  <SvgIcon sx={{ fontSize: '20px', mr: '2.5px' }}>
+                    <CheckIcon />
+                  </SvgIcon>
+                )}
+                <Typography variant="subheader1" sx={{ mr: 1 }}>
                   <Trans>Collateral</Trans>
                 </Typography>
-              </Button>
-            </Box>
+              </ToggleButton>
+            </ToggleButtonGroup>
           </Box>
 
           <AssetInput

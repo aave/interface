@@ -1,6 +1,6 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { CheckIcon } from '@heroicons/react/outline';
-import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
+import { ArrowNarrowRightIcon, LightningBoltIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -19,6 +19,7 @@ import { ReserveIncentiveResponse } from 'src/hooks/app-data-provider/useIncenti
 import { HealthFactorNumber } from '../../HealthFactorNumber';
 import { IncentivesButton } from '../../incentives/IncentivesButton';
 import { FormattedNumber } from '../../primitives/FormattedNumber';
+import { NoData } from '../../primitives/NoData';
 import { Row } from '../../primitives/Row';
 import { TokenIcon } from '../../primitives/TokenIcon';
 import { RewardsSelect } from '../ClaimRewards/RewardsSelect';
@@ -50,6 +51,8 @@ export interface TxModalDetailsProps {
   setSelectedReward?: Dispatch<SetStateAction<Reward | undefined>>;
   selectedReward?: Reward;
   faucetAmount?: string;
+  selectedEmode?: number;
+  selectedEmodeLabel?: string;
   emodeAssets?: string[];
 }
 
@@ -77,6 +80,8 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   setSelectedReward,
   selectedReward,
   faucetAmount,
+  selectedEmode,
+  selectedEmodeLabel,
   emodeAssets,
 }) => {
   const [selectedRate, setSelectedRate] = React.useState(InterestRate.Variable);
@@ -111,20 +116,28 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
         })}
       >
         {amountAfterRepay && displayAmountAfterRepayInUsd && symbol && (
-          <Row caption={<Trans>Remaining debt</Trans>} captionVariant="description" mb={4}>
-            <>
+          <Row
+            caption={<Trans>Remaining debt</Trans>}
+            captionVariant="description"
+            mb={4}
+            align="flex-start"
+          >
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <TokenIcon symbol={symbol} sx={{ mx: '4px' }} />
+                <TokenIcon symbol={symbol} sx={{ mr: 1, fontSize: '16px' }} />
                 <FormattedNumber value={Number(amountAfterRepay)} variant="secondary14" />
-                <Typography>{symbol}</Typography>
+                <Typography ml={1} variant="secondary14">
+                  {symbol}
+                </Typography>
               </Box>
+
               <FormattedNumber
                 value={Number(displayAmountAfterRepayInUsd)}
                 variant="helperText"
                 compact
                 symbol="USD"
               />
-            </>
+            </Box>
           </Row>
         )}
 
@@ -176,7 +189,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
         )}
 
         {!borrowStableRate && apy && !rate && action !== 'Supply' && (
-          <Row caption={<Trans>Borrow APY rate</Trans>} captionVariant="description" mb={4}>
+          <Row caption={<Trans>Borrow APY, variable</Trans>} captionVariant="description" mb={4}>
             <FormattedNumber value={Number(apy)} percent variant="secondary14" />
           </Row>
         )}
@@ -199,7 +212,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
           </Row>
         )}
 
-        {apy && action && (
+        {apy && action && action !== 'Borrow' && (
           <Row caption={<Trans>{action} APY</Trans>} captionVariant="description" mb={4}>
             <FormattedNumber value={Number(apy)} percent variant="secondary14" />
           </Row>
@@ -216,7 +229,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
           </Row>
         )}
 
-        {incentives && symbol && !stableRateIncentives && (
+        {!!incentives?.length && symbol && !stableRateIncentives && (
           <Row
             caption={<Trans>Rewards APR</Trans>}
             captionVariant="description"
@@ -227,7 +240,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
           </Row>
         )}
 
-        {incentives &&
+        {!!incentives?.length &&
           stableRateIncentives &&
           symbol &&
           setInterestRateMode &&
@@ -270,7 +283,32 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
 
         {walletBalance && symbol && (
           <Row caption={<Trans>Supply balance</Trans>} captionVariant="description" mb={4}>
-            <FormattedNumber value={walletBalance} variant="secondary14" />
+            <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+              <TokenIcon symbol={symbol} sx={{ mr: 1, fontSize: '16px' }} />
+              <FormattedNumber value={walletBalance} variant="secondary14" />
+            </Box>
+          </Row>
+        )}
+
+        {!!selectedEmode && selectedEmodeLabel && (
+          <Row caption={<Trans>Asset category</Trans>} captionVariant="description" mb={4}>
+            <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+              {/* TODO: need to do gradient for icon */}
+              <SvgIcon sx={{ fontSize: '12px', mr: 0.5 }}>
+                <LightningBoltIcon />
+              </SvgIcon>
+              <Typography variant="subheader1">{selectedEmodeLabel}</Typography>
+            </Box>
+          </Row>
+        )}
+
+        {emodeAssets && (
+          <Row caption={<Trans>Available assets</Trans>} captionVariant="description" mb={4}>
+            {!!selectedEmode ? (
+              <Typography>{emodeAssets.join(', ')}</Typography>
+            ) : (
+              <NoData variant="description" />
+            )}
           </Row>
         )}
 
@@ -396,12 +434,6 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
                 {symbol}
               </Typography>
             </Box>
-          </Row>
-        )}
-
-        {emodeAssets && (
-          <Row caption={<Trans>Available assets</Trans>} captionVariant="description" mb={4}>
-            <Typography variant="description">{emodeAssets.join(', ')}</Typography>
           </Row>
         )}
       </Box>

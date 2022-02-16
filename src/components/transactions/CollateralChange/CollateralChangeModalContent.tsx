@@ -4,7 +4,7 @@ import {
   valueToBigNumber,
 } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
+import { Alert, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { TxState } from 'src/helpers/types';
 import {
@@ -128,37 +128,44 @@ export const CollateralChangeModalContent = ({
       {!collateralChangeTxState.txError && !collateralChangeTxState.success && (
         <>
           <Typography variant="h2" sx={{ mb: '24px' }}>
-            {usageAsCollateralModeAfterSwitch ? <Trans>Use</Trans> : <Trans>Disable</Trans>}
-            {poolReserve.symbol}
-            <Trans> as collateral</Trans>
+            {usageAsCollateralModeAfterSwitch ? <Trans>Use</Trans> : <Trans>Disable</Trans>}{' '}
+            {poolReserve.symbol} <Trans> as collateral</Trans>
           </Typography>
+
           {isWrongNetwork && (
             <ChangeNetworkWarning
               networkName={currentNetworkConfig.name}
               chainId={currentChainId}
             />
           )}
-          {<IsolationModeWarning />}
+
+          {poolReserve.isIsolated && usageAsCollateralModeAfterSwitch && <IsolationModeWarning />}
+
           {usageAsCollateralModeAfterSwitch ? (
-            <Typography>
+            <Alert severity="info" icon={false} sx={{ mb: 3 }}>
               <Trans>
                 Message. Collateral increases your borrowing power and Health Factor. But at the
                 same time it can be liquidated.
               </Trans>
-            </Typography>
+            </Alert>
           ) : (
-            <Typography>
+            <Alert severity="warning" icon={false} sx={{ mb: 3 }}>
               <Trans>
                 Asset will no longer be used as collateral, can not be seized in liquidation. It
                 really affects your borrowing power and Health Factor.
               </Trans>
-            </Typography>
+            </Alert>
           )}
+
           {poolReserve.isIsolated && usageAsCollateralModeAfterSwitch && (
-            <Typography>You will enter isolation mode</Typography>
+            <Alert severity="info" icon={false}>
+              <Trans>You will enter isolation mode</Trans>
+            </Alert>
           )}
           {poolReserve.isIsolated && !usageAsCollateralModeAfterSwitch && (
-            <Typography>You will leave isolation mode</Typography>
+            <Alert severity="info" icon={false}>
+              <Trans>You will leave isolation mode</Trans>
+            </Alert>
           )}
 
           <TxModalDetails

@@ -36,6 +36,7 @@ export interface AssetInputProps<T extends Asset = Asset> {
   capType?: CapType;
 }
 
+// TODO: need fix aToken icon in select
 export const AssetInput: React.FC<AssetInputProps> = ({
   value,
   usdValue,
@@ -104,36 +105,51 @@ export const AssetInput: React.FC<AssetInputProps> = ({
 
           {!onSelect ? (
             <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-              <TokenIcon symbol={symbol} sx={{ mr: 2 }} />
+              <TokenIcon symbol={symbol} sx={{ mx: 2 }} />
               <Typography variant="h3" sx={{ lineHeight: '28px' }}>
                 {symbol}
               </Typography>
             </Box>
           ) : (
-            <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+            <FormControl>
               <Select
                 disabled={disabled}
                 value={asset.symbol}
                 onChange={handleSelect}
                 variant="outlined"
+                className="AssetInput__select"
+                sx={{
+                  p: 0,
+                  '&.AssetInput__select .MuiOutlinedInput-input': {
+                    p: 0,
+                    backgroundColor: 'transparent',
+                    pr: '16px !important',
+                  },
+                  '&.AssetInput__select .MuiOutlinedInput-notchedOutline': { display: 'none' },
+                  '&.AssetInput__select .MuiSelect-icon': {
+                    color: 'text.primary',
+                  },
+                }}
                 IconComponent={(props) => (
-                  <SvgIcon fontSize="medium" {...props}>
+                  <SvgIcon sx={{ fontSize: '16px', right: '-3px !important' }} {...props}>
                     <ChevronDownIcon />
                   </SvgIcon>
                 )}
                 renderValue={(symbol) => {
                   return (
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <TokenIcon symbol={symbol} sx={{ mx: '4px' }} />
-                      <Typography>{symbol}</Typography>
+                      <TokenIcon symbol={symbol} sx={{ mx: 2 }} />
+                      <Typography variant="main16" color="text.primary">
+                        {symbol}
+                      </Typography>
                     </Box>
                   );
                 }}
               >
                 {assets.map((asset) => (
                   <MenuItem key={asset.symbol} value={asset.symbol}>
-                    <TokenIcon symbol={asset.symbol} sx={{ mx: '4px' }} />
-                    <ListItemText sx={{ mr: '20px' }}>{asset.symbol}</ListItemText>
+                    <TokenIcon symbol={asset.symbol} sx={{ fontSize: '22px', mr: 1 }} />
+                    <ListItemText sx={{ mr: 6 }}>{asset.symbol}</ListItemText>
                     <FormattedNumber value={asset.balance} compact />
                   </MenuItem>
                 ))}
