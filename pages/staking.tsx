@@ -1,4 +1,4 @@
-import { USD_DECIMALS } from '@aave/math-utils';
+import { Trans } from '@lingui/macro';
 import { Grid, Typography } from '@mui/material';
 import { BigNumber } from 'ethers/lib/ethers';
 import { formatEther } from 'ethers/lib/utils';
@@ -7,7 +7,6 @@ import { StakeModal } from 'src/components/Stake/StakeModal';
 import { StakeCooldownModal } from 'src/components/StakeCooldown/StakeCooldownModal';
 import { StakeRewardClaimModal } from 'src/components/StakeRewardClaim/StakeRewardClaimModal';
 import { UnStakeModal } from 'src/components/UnStake/UnStakeModal';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { StakeDataProvider, useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
@@ -73,10 +72,12 @@ export default function Staking() {
               onStakeRewardClaimAction={() => openStakeRewardsClaim('bpt')}
               description={
                 <Typography color="text.muted" sx={{ mt: 4 }}>
-                  The Balancer Pool Token (BPT) is a liquidity pool token. You can receive BPT by
-                  depositing a combination of AAVE + ETH in the Balancer liquidity pool. You can
-                  then stake your BPT in the Safety Module to secure the protocol and earn Safety
-                  Incentives.
+                  <Trans>
+                    The Balancer Pool Token (BPT) is a liquidity pool token. You can receive BPT by
+                    depositing a combination of AAVE + ETH in the Balancer liquidity pool. You can
+                    then stake your BPT in the Safety Module to secure the protocol and earn Safety
+                    Incentives.
+                  </Trans>
                 </Typography>
               }
             />
