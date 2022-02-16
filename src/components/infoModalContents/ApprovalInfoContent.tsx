@@ -8,11 +8,13 @@ export const ApprovalInfoContent = () => {
   return (
     <InfoContentWrapper caption={<Trans>Approval</Trans>}>
       <Typography>
-        <Trans
-          id="Before initiating a transaction within Aave you must sign and approve it. It doesnt cost
-          anything to sign. You can learn more in our <0>FAQ</0> "
-          components={[<Link key={0} fontWeight={500} href={'https://docs.aave.com/faq/'} />]}
-        />
+        <Trans>
+          Before initiating a transaction within Aave you must sign and approve it. It doesnt cost
+          anything to sign. You can learn more in our
+          <Link fontWeight={500} href={'https://docs.aave.com/faq/'}>
+            FAQ
+          </Link>
+        </Trans>
       </Typography>
     </InfoContentWrapper>
   );
