@@ -1,20 +1,14 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2022-02-16 16:47+0100\n"
+"POT-Creation-Date: 2022-02-16 18:11+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: es\n"
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: \n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"Plural-Forms: \n"
 
-#: src/modules/governance/VotingPowerInfoPanel.tsx:25
-#: src/modules/governance/VotingPowerInfoPanel.tsx:40
+#: src/modules/governance/VotingPowerInfoPanel.tsx:27
+#: src/modules/governance/VotingPowerInfoPanel.tsx:42
 msgid "(AAVE + stkAAVE)"
 msgstr ""
 
@@ -120,8 +114,8 @@ msgid "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.
 msgstr ""
 
 #: src/components/transactions/AssetInput.tsx:74
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:435
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:458
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:442
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:465
 msgid "Amount"
 msgstr ""
 
@@ -152,13 +146,14 @@ msgid "Approving {symbol} ..."
 msgstr ""
 
 #: pages/faucet.tsx:54
+#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx:109
 #: src/modules/markets/AssetsList.tsx:47
 #: src/modules/reserve-overview/ReserveTopDetails.tsx:60
 msgid "Asset"
 msgstr ""
 
 #: src/components/transactions/Emode/EmodeSelect.tsx:26
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:300
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:307
 msgid "Asset category"
 msgstr ""
 
@@ -178,7 +173,7 @@ msgstr ""
 msgid "Assets to supply"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx:276
+#: pages/governance/proposal/[proposalId].tsx:277
 msgid "Author"
 msgstr ""
 
@@ -186,7 +181,7 @@ msgstr ""
 msgid "Available"
 msgstr ""
 
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:312
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:319
 msgid "Available assets"
 msgstr ""
 
@@ -212,7 +207,7 @@ msgstr ""
 msgid "Available to supply"
 msgstr ""
 
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:360
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:367
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:66
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx:23
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx:42
@@ -236,7 +231,7 @@ msgstr ""
 msgid "Borrow"
 msgstr ""
 
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:152
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:159
 msgid "Borrow APY rate"
 msgstr ""
 
@@ -245,7 +240,7 @@ msgstr ""
 msgid "Borrow APY, stable"
 msgstr ""
 
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:198
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:205
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx:49
 #: src/modules/markets/AssetsList.tsx:63
 msgid "Borrow APY, variable"
@@ -285,6 +280,8 @@ msgstr ""
 msgid "CLAIM"
 msgstr ""
 
+#: src/components/transactions/GovDelegation/GovDelegationActions.tsx:114
+#: src/components/transactions/GovVote/GovVoteActions.tsx:95
 #: src/components/transactions/Stake/StakeActions.tsx:140
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx:91
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx:102
@@ -370,7 +367,7 @@ msgstr ""
 msgid "Copy error text"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx:224
+#: pages/governance/proposal/[proposalId].tsx:225
 msgid "Created"
 msgstr ""
 
@@ -378,12 +375,22 @@ msgstr ""
 msgid "Current LTV"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx:215
+#: pages/governance/proposal/[proposalId].tsx:216
 msgid "Current differential"
 msgstr ""
 
 #: src/components/transactions/GasStation/GasStation.tsx:214
 msgid "Custom"
+msgstr ""
+
+#: src/components/transactions/GovDelegation/GovDelegationActions.tsx:75
+#: src/components/transactions/GovDelegation/GovDelegationActions.tsx:79
+#: src/components/transactions/GovDelegation/GovDelegationActions.tsx:88
+msgid "DELEGATE"
+msgstr ""
+
+#: src/components/transactions/GovDelegation/GovDelegationActions.tsx:84
+msgid "DELEGATE PENDING..."
 msgstr ""
 
 #: src/components/transactions/Emode/EmodeActions.tsx:76
@@ -415,6 +422,14 @@ msgstr ""
 msgid "Define Retry with Approval text"
 msgstr ""
 
+#: src/modules/governance/VotingPowerInfoPanel.tsx:56
+msgid "Delegate"
+msgstr ""
+
+#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx:125
+msgid "Delegation to address"
+msgstr ""
+
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx:73
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx:92
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx:72
@@ -427,7 +442,7 @@ msgstr ""
 msgid "Developers"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx:191
+#: pages/governance/proposal/[proposalId].tsx:192
 #: src/modules/governance/ProposalListItem.tsx:57
 msgid "Differential"
 msgstr ""
@@ -444,7 +459,7 @@ msgstr ""
 msgid "Discord"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx:289
+#: pages/governance/proposal/[proposalId].tsx:290
 msgid "Discussion"
 msgstr ""
 
@@ -489,11 +504,15 @@ msgstr ""
 msgid "English"
 msgstr ""
 
+#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx:131
+msgid "Enter Eth address"
+msgstr ""
+
 #: src/components/transactions/TxActionsWrapper.tsx:53
 msgid "Enter an amount"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx:265
+#: pages/governance/proposal/[proposalId].tsx:266
 msgid "Executed"
 msgstr ""
 
@@ -535,7 +554,7 @@ msgid "Governance"
 msgstr ""
 
 #: src/components/infoModalContents/HFInfoContent.tsx:8
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:323
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:330
 #: src/modules/dashboard/DashboardTopPanel.tsx:98
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:69
 msgid "Health factor"
@@ -593,7 +612,7 @@ msgstr ""
 msgid "Links"
 msgstr ""
 
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:347
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:354
 msgid "Liquidation at"
 msgstr ""
 
@@ -677,7 +696,7 @@ msgstr ""
 msgid "Network"
 msgstr ""
 
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:228
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:235
 msgid "New APY"
 msgstr ""
 
@@ -689,6 +708,14 @@ msgstr ""
 msgid "No rewards to claim"
 msgstr ""
 
+#: src/components/transactions/GovVote/GovVoteModalContent.tsx:62
+msgid "No voting power"
+msgstr ""
+
+#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx:87
+msgid "Not a valid address"
+msgstr ""
+
 #: src/components/transactions/Repay/RepayModalContent.tsx:249
 msgid "Not enough atoken balance on your wallet"
 msgstr ""
@@ -697,6 +724,10 @@ msgstr ""
 #: src/components/transactions/Stake/StakeModalContent.tsx:77
 #: src/components/transactions/Supply/SupplyModalContent.tsx:171
 msgid "Not enough balance on your wallet"
+msgstr ""
+
+#: src/components/transactions/GovDelegation/DelegationTokenSelector.tsx:44
+msgid "Not enough balance. Try to delegate another token"
 msgstr ""
 
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx:77
@@ -715,6 +746,8 @@ msgstr ""
 msgid "Nothing supplied yet"
 msgstr ""
 
+#: src/components/transactions/GovDelegation/GovDelegationActions.tsx:113
+#: src/components/transactions/GovVote/GovVoteActions.tsx:94
 #: src/components/transactions/Stake/StakeActions.tsx:139
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx:90
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx:101
@@ -767,11 +800,11 @@ msgstr ""
 msgid "Please, connect your wallet"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx:179
+#: pages/governance/proposal/[proposalId].tsx:180
 msgid "Proposal details"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx:108
+#: pages/governance/proposal/[proposalId].tsx:109
 msgid "Proposal overview"
 msgstr ""
 
@@ -779,16 +812,17 @@ msgstr ""
 msgid "Proposals"
 msgstr ""
 
-#: src/modules/governance/VotingPowerInfoPanel.tsx:37
+#: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx:41
+#: src/modules/governance/VotingPowerInfoPanel.tsx:39
 msgid "Proposition power"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx:185
+#: pages/governance/proposal/[proposalId].tsx:186
 #: src/modules/governance/ProposalListItem.tsx:56
 msgid "Quorum"
 msgstr ""
 
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:126
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:133
 msgid "Remaining debt"
 msgstr ""
 
@@ -838,12 +872,12 @@ msgstr ""
 msgid "Reward(s) to claim"
 msgstr ""
 
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:240
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:256
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:247
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:263
 msgid "Rewards APR"
 msgstr ""
 
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:358
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:365
 msgid "Rewards balance"
 msgstr ""
 
@@ -910,8 +944,8 @@ msgstr ""
 msgid "Spanish"
 msgstr ""
 
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:189
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:231
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:196
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:238
 msgid "Stable"
 msgstr ""
 
@@ -937,7 +971,7 @@ msgstr ""
 msgid "Staked"
 msgstr ""
 
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:449
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:456
 msgid "Staking"
 msgstr ""
 
@@ -945,11 +979,11 @@ msgstr ""
 msgid "Staking APR"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx:245
+#: pages/governance/proposal/[proposalId].tsx:246
 msgid "Started"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx:181
+#: pages/governance/proposal/[proposalId].tsx:182
 msgid "State"
 msgstr ""
 
@@ -972,7 +1006,7 @@ msgstr ""
 msgid "Supply amount is limited due to Supply Cap"
 msgstr ""
 
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:291
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:298
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx:40
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx:36
 msgid "Supply balance"
@@ -1106,11 +1140,11 @@ msgstr ""
 msgid "Total supplied"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx:197
+#: pages/governance/proposal/[proposalId].tsx:198
 msgid "Total voting power"
 msgstr ""
 
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:424
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:431
 msgid "Total worth"
 msgstr ""
 
@@ -1118,8 +1152,12 @@ msgstr ""
 msgid "Transaction failed"
 msgstr ""
 
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:111
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:113
 msgid "Transaction overview"
+msgstr ""
+
+#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx:118
+msgid "Type"
 msgstr ""
 
 #: src/components/transactions/UnStake/UnStakeActions.tsx:95
@@ -1138,7 +1176,7 @@ msgstr ""
 msgid "Use"
 msgstr ""
 
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:272
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:279
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx:60
 msgid "Used as collateral"
 msgstr ""
@@ -1147,8 +1185,13 @@ msgstr ""
 msgid "Utilization Rate"
 msgstr ""
 
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:175
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:231
+#: src/components/transactions/GovVote/GovVoteActions.tsx:83
+#: src/components/transactions/GovVote/GovVoteActions.tsx:87
+msgid "VOTE"
+msgstr ""
+
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:182
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:238
 msgid "Variable"
 msgstr ""
 
@@ -1160,15 +1203,17 @@ msgstr ""
 msgid "View on Explorer"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx:208
+#: pages/governance/proposal/[proposalId].tsx:209
 msgid "Vote differential needed"
 msgstr ""
 
-#: src/modules/governance/VotingPowerInfoPanel.tsx:22
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:127
+#: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx:38
+#: src/modules/governance/VotingPowerInfoPanel.tsx:24
 msgid "Voting power"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx:172
+#: pages/governance/proposal/[proposalId].tsx:173
 msgid "Voting results"
 msgstr ""
 
@@ -1278,7 +1323,7 @@ msgstr ""
 msgid "Your health factor and loan to value determine the assurance of your collateral. To avoid liquidations you can supply more collateral or repay borrow positions."
 msgstr ""
 
-#: src/modules/governance/VotingPowerInfoPanel.tsx:15
+#: src/modules/governance/VotingPowerInfoPanel.tsx:17
 msgid "Your info"
 msgstr ""
 
@@ -1299,7 +1344,7 @@ msgstr ""
 msgid "Your supplies"
 msgstr ""
 
-#: src/modules/governance/proposal/VoteInfo.tsx:59
+#: src/modules/governance/proposal/VoteInfo.tsx:68
 msgid "Your voting info"
 msgstr ""
 
@@ -1393,7 +1438,7 @@ msgstr ""
 msgid "{0, select, slow {Slow} normal {Normal} fast {Fast} other {-}}"
 msgstr ""
 
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:284
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:291
 #: src/components/transactions/GasStation/GasStation.tsx:140
 #: src/components/transactions/GasStation/GasStation.tsx:147
 #: src/components/transactions/GasStation/GasStation.tsx:154
@@ -1421,7 +1466,7 @@ msgstr ""
 msgid "{0} {1} as collateral"
 msgstr ""
 
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:222
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:229
 msgid "{action} APY"
 msgstr ""
 

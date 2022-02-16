@@ -22,3 +22,8 @@ export type EmodeCategory = {
   label: string;
   assets: string[];
 };
+
+export enum DelegationType {
+  VOTING = '0',
+  PROPOSITION_POWER = '1',
+}

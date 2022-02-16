@@ -7,7 +7,7 @@ export const UnStakeModal = () => {
   const { type, close, args } = useModalContext();
   return (
     <BasicModal open={type === ModalType.Unstake} setOpen={close}>
-      {args?.icon && (
+      {args?.icon && args?.stakeAssetName && (
         <UnStakeModalContent
           icon={args.icon}
           stakeAssetName={args.stakeAssetName}
