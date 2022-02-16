@@ -127,6 +127,11 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     if (web3Modal?.cachedProvider) connectWallet();
   }, [connectWallet, web3Modal]);
 
+  useEffect(() => {
+    const address = localStorage.getItem('mockWalletAddress');
+    if (address) setCurrentAccount(address);
+  }, [currentAccount]);
+
   // Tx methods
   const signTxData = useCallback(
     async (unsignedData: string): Promise<SignatureLike> => {
@@ -181,7 +186,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       disconnectWallet,
       provider,
       connected,
-      currentAccount,
       web3Modal,
       chainId,
       switchNetwork,
@@ -194,7 +198,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       disconnectWallet,
       provider,
       connected,
-      currentAccount,
       web3Modal,
       chainId,
       switchNetwork,
@@ -207,7 +210,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   return (
     <Web3Context.Provider
       value={{
-        web3ProviderData: { ...web3ProviderData },
+        web3ProviderData: { ...web3ProviderData, currentAccount },
       }}
     >
       {children}
