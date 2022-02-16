@@ -38,6 +38,7 @@ export const TxBuilderProvider: React.FC<{ children: ReactElement }> = ({ childr
       WETH_GATEWAY: currentMarketData.addresses.WETH_GATEWAY,
     });
   }
+
   const faucetService = new FaucetService(jsonRpcProvider, currentMarketData.addresses.FAUCET);
 
   const incentivesTxBuilder: IncentivesControllerInterface = new IncentivesController(

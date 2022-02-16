@@ -54,6 +54,9 @@ export interface TxModalDetailsProps {
   selectedEmode?: number;
   selectedEmodeLabel?: string;
   emodeAssets?: string[];
+  stakeAPR?: string;
+  stakeRewards?: string;
+  stakeRewardsInUsd?: string;
 }
 
 export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
@@ -83,6 +86,9 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   selectedEmode,
   selectedEmodeLabel,
   emodeAssets,
+  stakeAPR,
+  stakeRewardsInUsd,
+  stakeRewards,
 }) => {
   const [selectedRate, setSelectedRate] = React.useState(InterestRate.Variable);
 
@@ -433,6 +439,35 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
               <Typography ml={1} variant="secondary14">
                 {symbol}
               </Typography>
+            </Box>
+          </Row>
+        )}
+        {stakeAPR && (
+          <Row
+            caption={
+              <>
+                <Trans>Staking</Trans> APR
+              </>
+            }
+            captionVariant="description"
+          >
+            <FormattedNumber value={Number(stakeAPR) / 10000} percent variant="description" />
+          </Row>
+        )}
+        {stakeRewards && stakeRewardsInUsd && symbol && (
+          <Row caption={<Trans>Amount</Trans>} captionVariant="description">
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+              <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                <TokenIcon symbol={symbol} sx={{ mx: '4px' }} />
+                <FormattedNumber value={Number(stakeRewards)} variant="description" />
+                <Typography>{symbol}</Typography>
+              </Box>
+              <FormattedNumber
+                value={Number(stakeRewardsInUsd)}
+                variant="helperText"
+                compact
+                symbol="USD"
+              />
             </Box>
           </Row>
         )}
