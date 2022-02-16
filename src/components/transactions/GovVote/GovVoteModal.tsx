@@ -1,7 +1,7 @@
 import React from 'react';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 
-import { BasicModal } from '../primitives/BasicModal';
+import { BasicModal } from '../../primitives/BasicModal';
 import { GovVoteModalContent } from './GovVoteModalContent';
 
 export const GovDelegationModal = () => {

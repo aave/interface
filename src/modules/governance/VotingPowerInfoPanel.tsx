@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider, Typography } from '@mui/material';
-import { GovDelegationModal } from 'src/components/GovDelegation/GovDelegationModal';
+import { GovDelegationModal } from 'src/components/transactions/GovDelegation/GovDelegationModal';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { useVotingPower } from 'src/hooks/governance-data-provider/useVotingPower';

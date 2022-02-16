@@ -6,7 +6,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
 import * as React from 'react';
 import { DelegationToken } from 'src/ui-config/governanceConfig';
-import { TokenIcon } from '../primitives/TokenIcon';
+import { TokenIcon } from '../../primitives/TokenIcon';
 import { ErrorType } from './GovDelegationModalContent';
 
 const ITEM_HEIGHT = 48;
