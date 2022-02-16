@@ -140,6 +140,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
       .toFixed(0)
   );
 
+
   return (
     <Paper sx={{ width: '100%', py: 4, px: 6, ...sx }} {...props}>
       <Typography variant="h3">
