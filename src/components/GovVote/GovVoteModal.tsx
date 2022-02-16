@@ -5,10 +5,16 @@ import { BasicModal } from '../primitives/BasicModal';
 import { GovVoteModalContent } from './GovVoteModalContent';
 
 export const GovDelegationModal = () => {
-  const { type, close } = useModalContext();
+  const { type, close, args } = useModalContext();
   return (
     <BasicModal open={type === ModalType.GovVote} setOpen={close}>
-      <GovVoteModalContent handleClose={close} />
+      {args?.proposalId && args?.support && (
+        <GovVoteModalContent
+          proposalId={args.proposalId}
+          support={args.support}
+          handleClose={close}
+        />
+      )}
     </BasicModal>
   );
 };

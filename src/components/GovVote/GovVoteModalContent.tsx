@@ -14,7 +14,7 @@ import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { GovVoteActions } from './GovVoteActions';
 
-export type GovDelegationModalContentProps = {
+export type GovVoteModalContentProps = {
   handleClose: () => void;
   proposalId: number;
   support: boolean;
@@ -31,11 +31,11 @@ export enum ErrorType {
   NOT_ENOUGH_VOTING_POWER,
 }
 
-export const GovDelegationModalContent = ({
+export const GovVoteModalContent = ({
   proposalId,
   support,
   handleClose,
-}: GovDelegationModalContentProps) => {
+}: GovVoteModalContentProps) => {
   const { chainId: connectedChainId } = useWeb3Context();
   const { votingPower } = useVotingPower();
   const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);

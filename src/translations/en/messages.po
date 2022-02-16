@@ -275,6 +275,7 @@ msgstr ""
 #: src/components/Emode/EmodeActions.tsx:140
 #: src/components/Faucet/FaucetActions.tsx:95
 #: src/components/GovDelegation/GovDelegationActions.tsx:114
+#: src/components/GovVote/GovVoteActions.tsx:95
 #: src/components/RateSwitch/RateSwitchActions.tsx:93
 #: src/components/Repay/RepayActions.tsx:215
 #: src/components/Supply/SupplyActions.tsx:195
@@ -649,6 +650,10 @@ msgstr ""
 msgid "No"
 msgstr ""
 
+#: src/components/GovVote/GovVoteModalContent.tsx:62
+msgid "No voting power"
+msgstr ""
+
 #: src/components/GovDelegation/GovDelegationModalContent.tsx:87
 msgid "Not a valid address"
 msgstr ""
@@ -680,6 +685,7 @@ msgstr ""
 #: src/components/Emode/EmodeActions.tsx:139
 #: src/components/Faucet/FaucetActions.tsx:94
 #: src/components/GovDelegation/GovDelegationActions.tsx:113
+#: src/components/GovVote/GovVoteActions.tsx:94
 #: src/components/RateSwitch/RateSwitchActions.tsx:92
 #: src/components/Repay/RepayActions.tsx:214
 #: src/components/Supply/SupplyActions.tsx:194
@@ -1030,6 +1036,11 @@ msgstr ""
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx:84
 msgid "Utilization Rate"
+msgstr ""
+
+#: src/components/GovVote/GovVoteActions.tsx:83
+#: src/components/GovVote/GovVoteActions.tsx:87
+msgid "VOTE"
 msgstr ""
 
 #: src/components/FlowCommons/TxModalDetails.tsx:200
