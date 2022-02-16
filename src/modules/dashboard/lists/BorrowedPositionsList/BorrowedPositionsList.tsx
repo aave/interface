@@ -3,6 +3,7 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 import { APYTypeInfoContent } from '../../../../components/infoModalContents/APYTypeInfoContent';
 import { BorrowPowerInfoContent } from '../../../../components/infoModalContents/BorrowPowerInfoContent';
@@ -20,6 +21,7 @@ import { BorrowedPositionsListMobileItem } from './BorrowedPositionsListMobileIt
 
 export const BorrowedPositionsList = () => {
   const { user } = useAppDataContext();
+  const { currentMarketData } = useProtocolDataContext();
   const { openEmode } = useModalContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
@@ -53,7 +55,9 @@ export const BorrowedPositionsList = () => {
     <ListWrapper
       title={<Trans>Your borrows</Trans>}
       localStorageName="borrowedAssetsDashboardTableCollapse"
-      subTitleComponent={<DashboardEModeButton onClick={() => openEmode()} />}
+      subTitleComponent={
+        currentMarketData.v3 && <DashboardEModeButton onClick={() => openEmode()} />
+      }
       noData={!borrowPositions.length}
       topInfo={
         <>
