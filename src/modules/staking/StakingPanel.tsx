@@ -1,6 +1,6 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Paper, Box, Stack, Button, Typography, PaperProps } from '@mui/material';
+import { Paper, Box, Stack, Button, Typography, PaperProps, Tooltip } from '@mui/material';
 import { BoxProps } from '@mui/system';
 import { BigNumber } from 'ethers';
 import { formatEther } from 'ethers/lib/utils';
@@ -100,6 +100,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   stakeData,
   stakeUserData,
   ethUsdPrice,
+  maxSlash,
   ...props
 }) => {
   // Cooldown logic
@@ -138,7 +139,6 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
       .multipliedBy('2592000')
       .toFixed(0)
   );
-  const slashing = '0.3'; // 30%
 
   return (
     <Paper sx={{ width: '100%', py: 4, px: 6, ...sx }} {...props}>
@@ -160,7 +160,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
         </TopInfoPanelItem>
 
         <TopInfoPanelItem title={<Trans>Max slashing</Trans>} hideIcon variant="light">
-          <FormattedNumber value={slashing} percent variant="main16" />
+          <FormattedNumber value={maxSlash} percent variant="main16" />
         </TopInfoPanelItem>
 
         {/**Stake action */}
@@ -187,35 +187,40 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             </Button>
           )}
           {isCooldownActive && !isUnstakeWindowActive && (
-            <Button
-              variant="outlined"
-              sx={{ mt: 6, width: '100%', display: 'flex', gap: 1 }}
-              disabled
+            // eslint-disable-next-line react/jsx-no-undef
+            <Tooltip
+              title={() => <Trans>Time left to be able to withdraw your staked asset.</Trans>}
             >
-              {!!cooldownCountdown.days && (
+              <Button
+                variant="outlined"
+                sx={{ mt: 6, width: '100%', display: 'flex', gap: 1 }}
+                disabled
+              >
+                {!!cooldownCountdown.days && (
+                  <Typography>
+                    <Trans>{cooldownCountdown.days} days</Trans>
+                  </Typography>
+                )}
+                {!!cooldownCountdown.hours && (
+                  <Typography>
+                    <Trans>{cooldownCountdown.hours} hours</Trans>
+                  </Typography>
+                )}
+                {!!cooldownCountdown.minutes && (
+                  <Typography>
+                    <Trans>{cooldownCountdown.minutes} minutes</Trans>
+                  </Typography>
+                )}
+                {!!!cooldownCountdown.hours && !!cooldownCountdown.seconds && (
+                  <Typography>
+                    <Trans>{cooldownCountdown.seconds} seconds</Trans>
+                  </Typography>
+                )}
                 <Typography>
-                  <Trans>{cooldownCountdown.days} days</Trans>
+                  <Trans>left</Trans>
                 </Typography>
-              )}
-              {!!cooldownCountdown.hours && (
-                <Typography>
-                  <Trans>{cooldownCountdown.hours} hours</Trans>
-                </Typography>
-              )}
-              {!!cooldownCountdown.minutes && (
-                <Typography>
-                  <Trans>{cooldownCountdown.minutes} minutes</Trans>
-                </Typography>
-              )}
-              {!!!cooldownCountdown.hours && !!cooldownCountdown.seconds && (
-                <Typography>
-                  <Trans>{cooldownCountdown.seconds} seconds</Trans>
-                </Typography>
-              )}
-              <Typography>
-                <Trans>left</Trans>
-              </Typography>
-            </Button>
+              </Button>
+            </Tooltip>
           )}
 
           {!isCooldownActive && (
