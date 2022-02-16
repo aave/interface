@@ -11,6 +11,7 @@ export enum ModalType {
   Emode,
   Faucet,
   GovDelegation,
+  GovVote,
 }
 
 interface ModalContextType {
@@ -24,9 +25,10 @@ interface ModalContextType {
   openEmode: () => void;
   openFaucet: (underlyingAsset: string) => void;
   openGovDelegation: () => void;
+  openGovVote: (proposalId: number, support: boolean) => void;
   close: () => void;
   type?: ModalType;
-  args?: { [key: string]: string };
+  args?: { [key: string]: string | number | boolean };
 }
 
 export const ModalContext = createContext<ModalContextType>({} as ModalContextType);
@@ -35,7 +37,7 @@ export const ModalContextProvider: React.FC = ({ children }) => {
   // contains the current modal open state if any
   const [type, setType] = useState<ModalType>();
   // contains arbitrary key-value pairs as a modal context
-  const [args, setArgs] = useState<{ [key: string]: string }>({});
+  const [args, setArgs] = useState<{ [key: string]: string | number | boolean }>({});
   return (
     <ModalContext.Provider
       value={{
@@ -75,6 +77,10 @@ export const ModalContextProvider: React.FC = ({ children }) => {
         },
         openGovDelegation: () => {
           setType(ModalType.GovDelegation);
+        },
+        openGovVote: (proposalId, support) => {
+          setType(ModalType.GovVote);
+          setArgs({ proposalId, support });
         },
         close: () => {
           setType(undefined);
