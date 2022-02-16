@@ -52,7 +52,7 @@ export const LanguagesList = ({ component = ListItem, onClick }: LanguageListIte
     <>
       <Box
         component={component}
-        sx={{ color: { xs: 'common.white', md: 'text.primary' } }}
+        sx={{ color: { xs: 'common.white', md: 'text.primary' }, mb: '4px' }}
         onClick={onClick}
       >
         <ListItemIcon

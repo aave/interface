@@ -61,7 +61,7 @@ export function SettingsMenu() {
         onClose={handleClose}
       >
         <MenuList sx={{ '.MuiMenuItem-root.Mui-disabled': { opacity: 1 } }}>
-          <MenuItem disabled>
+          <MenuItem disabled sx={{ mb: '4px' }}>
             <Typography variant="subheader2" color="text.secondary">
               <Trans>Global settings</Trans>
             </Typography>
