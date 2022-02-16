@@ -8,10 +8,11 @@ export const GovVoteModal = () => {
   const { type, close, args } = useModalContext();
   return (
     <BasicModal open={type === ModalType.GovVote} setOpen={close}>
-      {args?.proposalId && args?.support !== undefined && (
+      {args?.power && args?.proposalId && args?.support !== undefined && (
         <GovVoteModalContent
           proposalId={args.proposalId}
           support={args.support}
+          power={args.power}
           handleClose={close}
         />
       )}

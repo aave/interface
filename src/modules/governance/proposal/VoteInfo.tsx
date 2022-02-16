@@ -13,11 +13,11 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
   const [votedPower, setVotedPower] = useState<string>();
   const [support, setSupport] = useState<boolean>();
   const [didVote, setDidVote] = useState<boolean>();
-  const [power, setPower] = useState<string>();
+  const [power, setPower] = useState<string>('0');
 
   const { governanceService } = useGovernanceDataProvider();
   const { currentAccount } = useWeb3Context();
-  const voteOngoing = state === ProposalState.Active || true; // TODO: remove true condition
+  const voteOngoing = state === ProposalState.Active;
 
   const fetchCurrentVote = async () => {
     try {
@@ -52,9 +52,15 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
   };
 
   useEffect(() => {
+    if (!currentAccount) {
+      setSupport(undefined);
+      setDidVote(undefined);
+      setVotedPower(undefined);
+      setPower('0');
+    }
     fetchCurrentVote();
     if (voteOngoing) fetchVotingPower();
-  }, [voteOngoing]);
+  }, [voteOngoing, currentAccount]);
 
   return (
     <>
@@ -72,10 +78,20 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
         <br />
         {voteOngoing && (
           <>
-            <Button variant="contained" onClick={() => openGovVote(id, true)}>
+            <Button
+              color="success"
+              variant="contained"
+              onClick={() => openGovVote(id, true, power)}
+              disabled={support === true}
+            >
               Vote YAE
             </Button>
-            <Button variant="contained" onClick={() => openGovVote(id, false)}>
+            <Button
+              color="error"
+              variant="contained"
+              onClick={() => openGovVote(id, false, power)}
+              disabled={support === false}
+            >
               Vote NAY
             </Button>
           </>

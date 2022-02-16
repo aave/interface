@@ -2,7 +2,6 @@ import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { TxState } from 'src/helpers/types';
-import { useVotingPower } from 'src/hooks/governance-data-provider/useVotingPower';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
@@ -18,6 +17,7 @@ export type GovVoteModalContentProps = {
   handleClose: () => void;
   proposalId: number;
   support: boolean;
+  power: string;
 };
 
 export interface Asset {
@@ -34,10 +34,10 @@ export enum ErrorType {
 export const GovVoteModalContent = ({
   proposalId,
   support,
+  power: votingPower,
   handleClose,
 }: GovVoteModalContentProps) => {
   const { chainId: connectedChainId } = useWeb3Context();
-  const { votingPower } = useVotingPower();
   const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
   const [txState, setTxState] = useState<TxState>({ success: false });
 

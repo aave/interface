@@ -18,6 +18,7 @@ export type ModalArgsType = {
   underlyingAsset?: string;
   proposalId?: number;
   support?: boolean;
+  power?: string;
 };
 
 interface ModalContextType {
@@ -31,7 +32,7 @@ interface ModalContextType {
   openEmode: () => void;
   openFaucet: (underlyingAsset: string) => void;
   openGovDelegation: () => void;
-  openGovVote: (proposalId: number, support: boolean) => void;
+  openGovVote: (proposalId: number, support: boolean, power: string) => void;
   close: () => void;
   type?: ModalType;
   args?: ModalArgsType;
@@ -84,9 +85,9 @@ export const ModalContextProvider: React.FC = ({ children }) => {
         openGovDelegation: () => {
           setType(ModalType.GovDelegation);
         },
-        openGovVote: (proposalId, support) => {
+        openGovVote: (proposalId, support, power) => {
           setType(ModalType.GovVote);
-          setArgs({ proposalId, support });
+          setArgs({ proposalId, support, power });
         },
         close: () => {
           setType(undefined);

@@ -1,10 +1,11 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { WalletBalanceProvider } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { useProtocolDataContext } from '../useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { usePolling } from '../usePolling';
 
 type WalletBalanceProviderContext = {
   daveTokens: { aave: string; aAave: string; stkAave: string };
@@ -15,8 +16,11 @@ const Context = React.createContext<WalletBalanceProviderContext>(
   {} as WalletBalanceProviderContext
 );
 
+/**
+ * This is required for token delegation, as we need to know the users balance.
+ */
 export const AaveTokensBalanceProvider: React.FC = ({ children }) => {
-  const { currentNetworkConfig, jsonRpcProvider } = useProtocolDataContext();
+  const { currentNetworkConfig, jsonRpcProvider, currentChainId } = useProtocolDataContext();
   const { currentAccount: walletAddress } = useWeb3Context();
   const [aaveTokens, setAaveTokens] = React.useState({
     aave: '0',
@@ -30,38 +34,36 @@ export const AaveTokensBalanceProvider: React.FC = ({ children }) => {
     currentNetworkConfig.underlyingChainId === governanceConfig.chainId;
   const rpcProvider = isGovernanceFork ? jsonRpcProvider : getProvider(governanceConfig.chainId);
 
-  useEffect(() => {
-    if (!walletAddress) return;
-    const contract = new WalletBalanceProvider({
-      walletBalanceProviderAddress: governanceConfig.walletBalanceProvider,
-      provider: rpcProvider,
-    });
-    const fetchAaveTokenBalances = async () => {
-      setAaveTokensLoading(true);
-      try {
-        const balances = await contract.batchBalanceOf(
-          [walletAddress],
-          [
-            governanceConfig.aaveTokenAddress,
-            governanceConfig.aAaveTokenAddress,
-            governanceConfig.stkAaveTokenAddress,
-          ]
-        );
-        setAaveTokens({
-          aave: normalize(balances[0].toString(), 18),
-          aAave: normalize(balances[1].toString(), 18),
-          stkAave: normalize(balances[2].toString(), 18),
-        });
-      } catch (e) {
-        console.log(e);
-      }
-      setAaveTokensLoading(false);
-    };
-    fetchAaveTokenBalances();
-    const interval = setInterval(fetchAaveTokenBalances, 60000);
-    return () => clearInterval(interval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [walletAddress, isGovernanceFork]);
+  const fetchAaveTokenBalances = async () => {
+    setAaveTokensLoading(true);
+    try {
+      const contract = new WalletBalanceProvider({
+        walletBalanceProviderAddress: governanceConfig.walletBalanceProvider,
+        provider: rpcProvider,
+      });
+      const balances = await contract.batchBalanceOf(
+        [walletAddress],
+        [
+          governanceConfig.aaveTokenAddress,
+          governanceConfig.aAaveTokenAddress,
+          governanceConfig.stkAaveTokenAddress,
+        ]
+      );
+      setAaveTokens({
+        aave: normalize(balances[0].toString(), 18),
+        aAave: normalize(balances[1].toString(), 18),
+        stkAave: normalize(balances[2].toString(), 18),
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    setAaveTokensLoading(false);
+  };
+
+  usePolling(fetchAaveTokenBalances, 60000, !walletAddress || !governanceConfig, [
+    walletAddress,
+    currentChainId,
+  ]);
 
   return (
     <Context.Provider
