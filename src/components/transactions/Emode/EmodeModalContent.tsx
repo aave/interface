@@ -132,22 +132,20 @@ export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
     switch (blockingError) {
       case ErrorType.CLOSE_POSITIONS_BEFORE_SWITCHING:
         return (
-          <>
-            <Trans>
-              In order to change E-Mode from asset category
-              {getEmodeMessage(user.userEmodeCategoryId)}
-              you will need to close your position in your current category. See our{' '}
-              <Button
-                variant="text"
-                component={Link}
-                href="https://docs.aave.com/faq/"
-                target="_blank"
-              >
-                FAQ
-              </Button>{' '}
-              to learn more.
-            </Trans>
-          </>
+          <Trans>
+            In order to change E-Mode from asset category
+            {getEmodeMessage(user.userEmodeCategoryId)}
+            you will need to close your position in your current category. See our{' '}
+            <Button
+              variant="text"
+              component={Link}
+              href="https://docs.aave.com/faq/"
+              target="_blank"
+            >
+              FAQ
+            </Button>{' '}
+            to learn more.
+          </Trans>
         );
       case ErrorType.EMODE_DISABLED_LIQUIDATION:
         return (
@@ -179,14 +177,14 @@ export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
           {selectedEmode && selectedEmode.id !== 0 ? (
             <Alert severity="info" sx={{ mb: 6 }}>
               <Trans>
-                E-Mode increases your borrowing power for a selected category of assets up to 99%.
+                E-Mode increases your borrowing power for a selected category of assets up to 99%.{' '}
                 <Link
                   href="https://docs.aave.com/faq/"
                   target="_blank"
                   variant="main14"
                   sx={{ ml: 1 }}
                 >
-                  <Trans> Learn more </Trans>
+                  <Trans>Learn more</Trans>
                 </Link>
               </Trans>
             </Alert>
