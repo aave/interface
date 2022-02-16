@@ -112,11 +112,7 @@ export const StakeModalContent = ({ stakeAssetName, icon, handleClose }: StakePr
               {handleBlocked()}
             </Typography>
           )}
-          <TxModalDetails
-            sx={{ mt: '30px' }}
-            stakeAPR={stakeData?.stakeApy || '0'}
-            gasLimit={gasLimit}
-          />
+          <TxModalDetails stakeAPR={stakeData?.stakeApy || '0'} gasLimit={gasLimit} />
         </>
       )}
       {txState.txError && <TxErrorView errorMessage={txState.txError} />}

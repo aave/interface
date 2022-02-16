@@ -94,7 +94,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName, handleClose }: Stake
             </Typography>
           )}
 
-          <TxModalDetails sx={{ mt: '30px' }} gasLimit={gasLimit} />
+          <TxModalDetails gasLimit={gasLimit} />
         </>
       )}
       {txState.txError && <TxErrorView errorMessage={txState.txError} />}

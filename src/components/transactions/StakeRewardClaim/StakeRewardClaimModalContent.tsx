@@ -95,7 +95,6 @@ export const StakeRewardClaimModalContent = ({
             </Typography>
           )}
           <TxModalDetails
-            sx={{ mt: '30px' }}
             gasLimit={gasLimit}
             stakeRewards={maxAmountToClaim}
             stakeRewardsInUsd={amountInUsd.toString()}
