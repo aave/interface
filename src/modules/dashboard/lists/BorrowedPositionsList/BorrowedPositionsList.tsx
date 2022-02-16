@@ -3,6 +3,7 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 import { APYTypeInfoContent } from '../../../../components/infoModalContents/APYTypeInfoContent';
 import { BorrowPowerInfoContent } from '../../../../components/infoModalContents/BorrowPowerInfoContent';
@@ -20,9 +21,10 @@ import { BorrowedPositionsListMobileItem } from './BorrowedPositionsListMobileIt
 
 export const BorrowedPositionsList = () => {
   const { user } = useAppDataContext();
+  const { currentMarketData } = useProtocolDataContext();
   const { openEmode } = useModalContext();
   const theme = useTheme();
-  const downToXS = useMediaQuery(theme.breakpoints.down('xs'));
+  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const borrowPositions =
     user?.userReservesData.reduce((acc, userReserve) => {
@@ -53,7 +55,9 @@ export const BorrowedPositionsList = () => {
     <ListWrapper
       title={<Trans>Your borrows</Trans>}
       localStorageName="borrowedAssetsDashboardTableCollapse"
-      subTitleComponent={<DashboardEModeButton onClick={() => openEmode()} />}
+      subTitleComponent={
+        currentMarketData.v3 ? <DashboardEModeButton onClick={() => openEmode()} /> : undefined
+      }
       noData={!borrowPositions.length}
       topInfo={
         <>
@@ -74,9 +78,9 @@ export const BorrowedPositionsList = () => {
     >
       {borrowPositions.length ? (
         <>
-          {!downToXS && <ListHeader head={head} />}
+          {!downToXSM && <ListHeader head={head} />}
           {borrowPositions.map((item) =>
-            downToXS ? (
+            downToXSM ? (
               <BorrowedPositionsListMobileItem
                 {...item}
                 key={item.underlyingAsset + item.borrowRateMode}

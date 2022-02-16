@@ -3,8 +3,17 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, Paper, Stack, StackProps, SvgIcon, Typography } from '@mui/material';
 import React from 'react';
 import { FormattedNumber, FormattedNumberProps } from 'src/components/primitives/FormattedNumber';
-// import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import {
+  ComputedReserveData,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useModalContext } from 'src/hooks/useModal';
+import {
+  assetCanBeBorrowedByUser,
+  getMaxAmountAvailableToBorrow,
+} from 'src/utils/getMaxAmountAvailableToBorrow';
+import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
 
 const ReserveRow: React.FC<StackProps> = (props) => (
   <Stack
@@ -38,76 +47,71 @@ interface ReserveActionsProps {
 }
 
 export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
-  const { openBorrow, openRepay, openWithdraw, openSupply } = useModalContext();
-  // const { user } = useAppDataContext();
-  // const userReserve = user?.userReservesData.find(
-  //   (reserve) => reserve.underlyingAsset === underlyingAsset
-  // );
+  const { openBorrow, openSupply } = useModalContext();
+  const { user, reserves, loading: loadingReserves } = useAppDataContext();
+  const { walletBalances, loading: loadingBalance } = useWalletBalances();
+  // const balance = useWalletBalance(currentChainId, underlyingAsset);
+  if (loadingReserves || loadingBalance) return null;
+  const poolReserve = reserves.find(
+    (reserve) => reserve.underlyingAsset === underlyingAsset
+  ) as ComputedReserveData;
+  const balance = walletBalances[underlyingAsset];
+  const canBorrow = assetCanBeBorrowedByUser(poolReserve, user);
+  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user).toString();
+  const maxAmountToSupply = getMaxAmountAvailableToSupply(
+    balance.amount,
+    poolReserve,
+    underlyingAsset
+  ).toString();
+
   return (
-    <>
-      {/** Supply panel */}
-      <Paper sx={{ py: '16px', px: '24px' }}>
-        <Typography variant="h3" sx={{ mb: '40px' }}>
-          <Trans>Your supplies</Trans>
-        </Typography>
+    <Paper sx={{ py: '16px', px: '24px' }}>
+      <Typography variant="h3" sx={{ mb: '40px' }}>
+        <Trans>Your supplies</Trans>
+      </Typography>
 
-        <ReserveRow>
+      <ReserveRow>
+        <Typography>
+          <Trans>Wallet balance</Trans>
+        </Typography>
+        <DoubleFormatted value={balance?.amount || 0} usdValue={balance?.amountUSD || '0'} />
+      </ReserveRow>
+
+      <ReserveRow>
+        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1}>
           <Typography>
-            <Trans>Supply balance</Trans>
+            <Trans>Available to supply</Trans>
           </Typography>
-          <DoubleFormatted value="10" usdValue="10" />
-        </ReserveRow>
-
-        <ReserveRow>
-          <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1}>
-            <Typography>
-              <Trans>Available to supply</Trans>
-            </Typography>
-            <SvgIcon sx={{ fontSize: '18px', color: '#E0E5EA' }}>
-              <InformationCircleIcon />
-            </SvgIcon>
-          </Stack>
-          <FormattedNumber value="10" />
-        </ReserveRow>
-
-        <Stack direction="row" spacing={2}>
-          <Button variant="contained" onClick={() => openSupply(underlyingAsset)}>
-            <Trans>Supply</Trans>
-          </Button>
-          <Button variant="outlined" onClick={() => openWithdraw(underlyingAsset)}>
-            <Trans>Withdraw</Trans>
-          </Button>
-          <Button variant="outlined">
-            <Trans>Swap</Trans>
-          </Button>
+          <SvgIcon sx={{ fontSize: '18px', color: '#E0E5EA' }}>
+            <InformationCircleIcon />
+          </SvgIcon>
         </Stack>
-      </Paper>
-
-      {/** Borrow panel */}
-      <Paper sx={{ mt: 4, py: '16px', px: '24px' }}>
-        <Typography variant="h3" sx={{ mb: '40px' }}>
-          <Trans>Your borrows</Trans>
-        </Typography>
-
-        <ReserveRow>
-          <Trans>Borrow balance</Trans>
-          <DoubleFormatted value="9" usdValue="9" />
-        </ReserveRow>
-
-        <ReserveRow>
-          <Trans>Available to borrow</Trans>
-          <FormattedNumber value="1" />
-        </ReserveRow>
-
-        <Stack direction="row" spacing={2}>
-          <Button variant="contained" onClick={() => openBorrow(underlyingAsset)}>
-            <Trans>Borrow</Trans>
-          </Button>
-          <Button variant="outlined" onClick={() => openRepay(underlyingAsset)}>
-            <Trans>Repay</Trans>
-          </Button>
+        <FormattedNumber value={maxAmountToSupply} />
+      </ReserveRow>
+      <ReserveRow>
+        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1}>
+          <Typography>
+            <Trans>Available to borrow</Trans>
+          </Typography>
+          <SvgIcon sx={{ fontSize: '18px', color: '#E0E5EA' }}>
+            <InformationCircleIcon />
+          </SvgIcon>
         </Stack>
-      </Paper>
-    </>
+        <FormattedNumber value={canBorrow ? maxAmountToBorrow : '0'} />
+      </ReserveRow>
+
+      <Stack direction="row" spacing={2}>
+        <Button variant="contained" onClick={() => openSupply(underlyingAsset)}>
+          <Trans>Supply</Trans>
+        </Button>
+        <Button
+          disabled={!canBorrow}
+          variant="contained"
+          onClick={() => openBorrow(underlyingAsset)}
+        >
+          <Trans>Borrow</Trans>
+        </Button>
+      </Stack>
+    </Paper>
   );
 };

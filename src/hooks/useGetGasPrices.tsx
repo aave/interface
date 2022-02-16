@@ -1,6 +1,6 @@
 import { FeeData } from '@ethersproject/abstract-provider';
 import { useState } from 'react';
-import { GasOption } from 'src/components/GasStation/GasStationProvider';
+import { GasOption } from 'src/components/transactions/GasStation/GasStationProvider';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 import { useModalContext } from './useModal';

@@ -20,14 +20,9 @@ export function formatProposal(proposal: Omit<Proposal, 'values'>) {
   const diff = new BigNumber(proposal.forVotes)
     .minus(proposal.againstVotes)
     .dividedBy(proposal.totalVotingSupply)
-    .multipliedBy(100)
-    .multipliedBy(4)
-    .toNumber();
-  const requiredDiff = new BigNumber(proposal.minimumDiff)
-    .dividedBy(100)
-    .multipliedBy(4)
-    .toNumber();
-  const diffReached = diff > requiredDiff;
+    .multipliedBy(100);
+  const requiredDiff = new BigNumber(proposal.minimumDiff).dividedBy(100);
+  const diffReached = requiredDiff.lte(diff);
 
   return {
     yaePercent,
@@ -37,8 +32,8 @@ export function formatProposal(proposal: Omit<Proposal, 'values'>) {
     minQuorumNeeded,
     quorumPercent,
     quorumReached,
-    diff,
-    requiredDiff,
+    diff: diff.toNumber(),
+    requiredDiff: requiredDiff.toNumber(),
     diffReached,
   };
 }

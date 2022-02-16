@@ -2,7 +2,7 @@ import { Box, BoxProps, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 
 interface RowProps extends BoxProps {
-  caption: ReactNode;
+  caption?: ReactNode;
   captionVariant?: 'secondary16' | 'description';
   align?: 'center' | 'flex-start';
 }
@@ -16,12 +16,15 @@ export const Row = ({
 }: RowProps) => {
   return (
     <Box
-      sx={{ display: 'flex', alignItems: align, justifyContent: 'space-between', ...rest.sx }}
       {...rest}
+      sx={{ display: 'flex', alignItems: align, justifyContent: 'space-between', ...rest.sx }}
     >
-      <Typography component="div" variant={captionVariant}>
-        {caption}
-      </Typography>
+      {caption && (
+        <Typography component="div" variant={captionVariant} sx={{ mr: 2 }}>
+          {caption}
+        </Typography>
+      )}
+
       {children}
     </Box>
   );
