@@ -95,25 +95,28 @@ export const BorrowAssetsList = () => {
             <Box sx={{ px: 6, mb: 4 }}>
               {user?.totalCollateralMarketReferenceCurrency === '0' && (
                 <Alert severity="info">
-                  <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>{' '}
-                  {/* TODO: need fix text */}
+                  <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
                 </Alert>
               )}
               {user?.isInIsolationMode && (
                 <Alert severity="warning">
-                  <Trans>Borrow power and assets are limited due to Isolation mode.</Trans>{' '}
-                  {/* TODO: need fix text */}
+                  <Trans>Borrowing power and assets are limited due to Isolation mode.</Trans>
                 </Alert>
               )}
               {user?.isInEmode && (
                 <Alert severity="warning">
-                  <Trans>E-mode message</Trans> {/* TODO: need fix text */}
+                  <Trans>
+                    In E-Mode some assets are not borrowable. Exit E-Mode to get access to all
+                    assets
+                  </Trans>
                 </Alert>
               )}
               {+collateralUsagePercent >= 0.98 && (
                 <Alert severity="error">
-                  <Trans>A message (you are very close to liquidation).</Trans>{' '}
-                  {/* TODO: need fix text */}
+                  <Trans>
+                    Be careful - You are very close to liqudation. Consider depositing more
+                    collateral or paying down some of your borrowed positions
+                  </Trans>
                 </Alert>
               )}
             </Box>

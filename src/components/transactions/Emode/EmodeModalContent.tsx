@@ -8,7 +8,6 @@ import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
-
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -133,10 +132,10 @@ export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
     switch (blockingError) {
       case ErrorType.CLOSE_POSITIONS_BEFORE_SWITCHING:
         return (
-          <>
-            <Trans>In order to change E-Mode from asset category </Trans>
+          <Trans>
+            In order to change E-Mode from asset category
             {getEmodeMessage(user.userEmodeCategoryId)}
-            <Trans> you will need to close your position in your current category. See our </Trans>
+            you will need to close your position in your current category. See our{' '}
             <Button
               variant="text"
               component={Link}
@@ -144,9 +143,9 @@ export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
               target="_blank"
             >
               FAQ
-            </Button>
-            <Trans> to learn more.</Trans>
-          </>
+            </Button>{' '}
+            to learn more.
+          </Trans>
         );
       case ErrorType.EMODE_DISABLED_LIQUIDATION:
         return (
@@ -178,8 +177,15 @@ export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
           {selectedEmode && selectedEmode.id !== 0 ? (
             <Alert severity="info" sx={{ mb: 6 }}>
               <Trans>
-                E-Mode increases your borrowing power for a selected category of assets up to 99%.
-                Learn more
+                E-Mode increases your borrowing power for a selected category of assets up to 99%.{' '}
+                <Link
+                  href="https://docs.aave.com/faq/"
+                  target="_blank"
+                  variant="main14"
+                  sx={{ ml: 1 }}
+                >
+                  <Trans>Learn more</Trans>
+                </Link>
               </Trans>
             </Alert>
           ) : (
@@ -193,8 +199,10 @@ export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
               <Trans>
                 Enabling E-Mode only allows you to borrow assets belonging to the selected category
                 Stablecoins. Please visit out{' '}
-                <Link href="https://docs.aave.com/faq/">FAQ guide</Link> to learn more about how it
-                works and the applied restrictions.
+                <Link href="https://docs.aave.com/faq/" target="_blank">
+                  FAQ guide
+                </Link>{' '}
+                to learn more about how it works and the applied restrictions.
               </Trans>
             </Alert>
           )}
@@ -219,6 +227,15 @@ export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
             selectedEmode={selectedEmode?.id || 0}
             selectedEmodeLabel={selectedEmode?.label}
           />
+          {selectedEmode && selectedEmode.id !== 0 && (
+            <Typography>
+              <Trans>
+                Enabling E-Mode only allows you to borrow assets belonging to the selected category
+                Stablecoins. Please visit our FAQ guide to learn more about how it works and the
+                applied restrictions.
+              </Trans>
+            </Typography>
+          )}
         </>
       )}
 
