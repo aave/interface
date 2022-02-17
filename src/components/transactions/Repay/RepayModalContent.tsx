@@ -162,6 +162,8 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
       } else {
         setAmountToRepay(amount);
       }
+    } else if (Number(amount) > safeAmountToRepayAll.toNumber()) {
+      setAmount('-1');
     } else {
       setAmountToRepay(amount);
     }
@@ -260,7 +262,7 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
 
   // calculating input usd value
   const usdValue = valueToBigNumber(amountToRepayUI).multipliedBy(reserve.priceInUSD);
-
+  console.log('amount to repay ::: ', amountToRepayUI.toString());
   return (
     <>
       {!repayTxState.txError && !repayTxState.success && (
