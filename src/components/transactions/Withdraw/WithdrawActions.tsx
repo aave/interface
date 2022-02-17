@@ -103,6 +103,7 @@ export const WithdrawActions = ({
       mainTxState={mainTxState}
       handleClose={handleClose}
       hasAmount={hasAmount}
+      isWrongNetwork={isWrongNetwork}
       withAmount
       helperText={
         <RightHelperText
@@ -113,7 +114,7 @@ export const WithdrawActions = ({
       }
     >
       <>
-        {hasAmount && !mainTxState.txHash && !mainTxState.txError && (
+        {hasAmount && !mainTxState.txHash && !mainTxState.txError && !isWrongNetwork && (
           <Button
             variant="contained"
             onClick={action}
