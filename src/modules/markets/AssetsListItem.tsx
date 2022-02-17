@@ -20,6 +20,7 @@ export const AssetsListItem = ({ ...reserve }: ComputedReserveData) => {
       minHeight={76}
       onClick={() => router.push(ROUTES.reserveOverview(reserve.underlyingAsset))}
       sx={{ cursor: 'pointer' }}
+      button
     >
       <ListColumn isRow maxWidth={280}>
         <TokenIcon symbol={reserve.iconSymbol} fontSize="large" />
