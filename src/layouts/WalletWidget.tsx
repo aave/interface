@@ -34,8 +34,7 @@ interface WalletWidgetProps {
 }
 
 export default function WalletWidget({ open, setOpen, headerHeight, md }: WalletWidgetProps) {
-  const { connectWallet, disconnectWallet, currentAccount, connected, chainId, switchNetwork } =
-    useWeb3Context();
+  const { connectWallet, disconnectWallet, currentAccount, connected, chainId } = useWeb3Context();
 
   const { name: ensName, avatar: ensAvatar } = useGetEns(currentAccount);
   const ensNameAbbreviated = ensName
@@ -80,16 +79,12 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
     if (connected) {
       disconnectWallet();
       handleClose();
+      localStorage.removeItem('mockWalletAddress');
     }
   };
 
   const handleCopy = async () => {
     navigator.clipboard.writeText(currentAccount);
-    handleClose();
-  };
-
-  const handleSwitchNetwork = () => {
-    switchNetwork(137);
     handleClose();
   };
 
@@ -108,7 +103,7 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
       <Typography
         variant="subheader2"
         sx={{
-          display: { xxs: 'block', md: 'none' },
+          display: { xs: 'block', md: 'none' },
           color: 'common.white',
           opacity: 0.7,
           px: 4,
@@ -138,7 +133,7 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             {ensNameAbbreviated && (
-              <Typography variant="h4" color={{ xxs: 'common.white', md: 'text.primary' }}>
+              <Typography variant="h4" color={{ xs: 'common.white', md: 'text.primary' }}>
                 {ensNameAbbreviated}
               </Typography>
             )}
@@ -147,8 +142,8 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
               variant={ensNameAbbreviated ? 'caption' : 'h4'}
               color={
                 ensNameAbbreviated
-                  ? { xxs: '#FFFFFFB2', md: 'text.secondary' }
-                  : { xxs: 'common.white', md: 'text.primary' }
+                  ? { xs: '#FFFFFFB2', md: 'text.secondary' }
+                  : { xs: 'common.white', md: 'text.primary' }
               }
             >
               {textCenterEllipsis(currentAccount, ensNameAbbreviated ? 12 : 7, 4)}
@@ -156,9 +151,9 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
           </Box>
         </Box>
       </Box>
-      <Divider sx={{ my: { xxs: 7, md: 0 }, borderColor: { xxs: '#FFFFFF1F', md: 'divider' } }} />
+      <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
 
-      <Box component={component} onClick={handleSwitchNetwork}>
+      <Box component={component} disabled>
         <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
           <Box
             sx={{
@@ -168,20 +163,9 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
               mb: 1,
             }}
           >
-            <Typography variant="caption" color={{ xxs: '#FFFFFFB2', md: 'text.secondary' }}>
+            <Typography variant="caption" color={{ xs: '#FFFFFFB2', md: 'text.secondary' }}>
               <Trans>Network</Trans>
             </Typography>
-
-            <Button
-              sx={{
-                borderColor: { xxs: '#FFFFFF1F', md: 'divider' },
-                color: { xxs: 'common.white', md: 'primary.main' },
-              }}
-              size="small"
-              variant="outlined"
-            >
-              <Trans>Switch</Trans>
-            </Button>
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Box
@@ -194,23 +178,23 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
                 borderRadius: '50%',
               }}
             />
-            <Typography color={{ xxs: 'common.white', md: 'text.primary' }} variant="subheader1">
+            <Typography color={{ xs: 'common.white', md: 'text.primary' }} variant="subheader1">
               {networkConfig.name}
             </Typography>
           </Box>
         </Box>
       </Box>
-      <Divider sx={{ my: { xxs: 7, md: 0 }, borderColor: { xxs: '#FFFFFF1F', md: 'divider' } }} />
+      <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
 
       <Box
         component={component}
-        sx={{ color: { xxs: 'common.white', md: 'text.primary' } }}
+        sx={{ color: { xs: 'common.white', md: 'text.primary' } }}
         onClick={handleCopy}
       >
         <ListItemIcon
           sx={{
             color: {
-              xxs: 'common.white',
+              xs: 'common.white',
               md: 'primary.light',
               minWidth: 'unset',
               marginRight: 12,
@@ -229,13 +213,13 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
       <Link href={networkConfig.explorerLinkBuilder({ address: currentAccount })}>
         <Box
           component={component}
-          sx={{ color: { xxs: 'common.white', md: 'text.primary' } }}
+          sx={{ color: { xs: 'common.white', md: 'text.primary' } }}
           onClick={handleClose}
         >
           <ListItemIcon
             sx={{
               color: {
-                xxs: 'common.white',
+                xs: 'common.white',
                 md: 'primary.light',
                 minWidth: 'unset',
                 marginRight: 12,
@@ -254,12 +238,12 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
 
       <Box
         component={component}
-        sx={{ color: { xxs: 'common.white', md: 'text.primary' } }}
+        sx={{ color: { xs: 'common.white', md: 'text.primary' } }}
         onClick={handleDisconnect}
       >
         <ListItemIcon
           sx={{
-            color: { xxs: 'common.white', md: 'primary.light', minWidth: 'unset', marginRight: 12 },
+            color: { xs: 'common.white', md: 'primary.light', minWidth: 'unset', marginRight: 12 },
           }}
         >
           <SvgIcon fontSize="small">
@@ -308,7 +292,12 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
           }
           endIcon={
             connected && (
-              <SvgIcon>
+              <SvgIcon
+                sx={{
+                  display: { xs: 'none', md: 'block' },
+                  transform: open ? 'rotate(180deg)' : 'rotate(0)',
+                }}
+              >
                 <ChevronDownIcon />
               </SvgIcon>
             )

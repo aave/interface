@@ -9,7 +9,7 @@ interface DashboardContentWrapperProps {
   isBorrow: boolean;
 }
 
-export const DashboardContentWrapper = ({}: DashboardContentWrapperProps) => {
+export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperProps) => {
   const { breakpoints } = useTheme();
   const isDesktop = useMediaQuery(breakpoints.up('lg'));
   const paperWidth = isDesktop ? 'calc(50% - 8px)' : '100%';
@@ -22,12 +22,12 @@ export const DashboardContentWrapper = ({}: DashboardContentWrapperProps) => {
         alignItems: 'flex-start',
       }}
     >
-      <Box sx={{ width: paperWidth }}>
+      <Box sx={{ display: { xs: isBorrow ? 'none' : 'block', lg: 'block' }, width: paperWidth }}>
         <SuppliedPositionsList />
         <SupplyAssetsList />
       </Box>
 
-      <Box sx={{ width: paperWidth }}>
+      <Box sx={{ display: { xs: !isBorrow ? 'none' : 'block', lg: 'block' }, width: paperWidth }}>
         <BorrowedPositionsList />
         <BorrowAssetsList />
       </Box>

@@ -122,7 +122,7 @@ export const MarketSwitcher = () => {
   const { currentMarket, setCurrentMarket } = useProtocolDataContext();
   const theme = useTheme();
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
-  const downToXS = useMediaQuery(theme.breakpoints.down('xs'));
+  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   return (
     <TextField
@@ -139,6 +139,7 @@ export const MarketSwitcher = () => {
       }}
       SelectProps={{
         native: false,
+        className: 'MarketSwitcher__select',
         IconComponent: (props) => (
           <SvgIcon fontSize="medium" {...props}>
             <ChevronDownIcon />
@@ -158,9 +159,9 @@ export const MarketSwitcher = () => {
               <Typography
                 variant={upToLG ? 'display1' : 'h1'}
                 sx={{
-                  fontSize: downToXS ? '1.55rem' : undefined,
+                  fontSize: downToXSM ? '1.55rem' : undefined,
                   color: 'common.white',
-                  mr: { xxs: 1.5, xs: 3 },
+                  mr: { xs: 1.5, xsm: 3 },
                 }}
               >
                 {getMarketHelpData(market.marketTitle).name} {upToLG && <Trans>Market</Trans>}
@@ -168,7 +169,13 @@ export const MarketSwitcher = () => {
             </Box>
           );
         },
-        sx: { '.MuiSelect-outlined': { p: 0 }, '.MuiSelect-icon': { color: 'common.white' } },
+        sx: {
+          '&.MarketSwitcher__select .MuiSelect-outlined': {
+            p: 0,
+            backgroundColor: 'transparent !important',
+          },
+          '.MuiSelect-icon': { color: 'common.white' },
+        },
         MenuProps: {
           anchorOrigin: {
             vertical: 'bottom',

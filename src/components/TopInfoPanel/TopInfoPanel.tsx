@@ -17,13 +17,13 @@ export const TopInfoPanel = ({
     <Box
       sx={{
         bgcolor: '#090815',
-        pt: { xxs: 10, md: 12 },
-        pb: { xxs: 16, xs: 18.5, sm: 20, md: '75px', lg: '110px', xl: '124px', xxl: '144px' },
+        pt: { xs: 10, md: 12 },
+        pb: { xs: 16, xsm: 18.5, sm: 20, md: '75px', lg: '110px', xl: '124px', xxl: '144px' },
         color: 'common.white',
       }}
     >
       <Container sx={{ pb: 0 }}>
-        <Box sx={{ px: 6 }}>
+        <Box sx={{ px: { xs: 4, xsm: 6 } }}>
           <PageTitle
             pageTitle={pageTitle}
             withMarketSwitcher={withMarketSwitcher}
@@ -33,7 +33,7 @@ export const TopInfoPanel = ({
             sx={{
               display: 'flex',
               alignItems: 'center',
-              gap: { xxs: 3, xs: 8 },
+              gap: { xs: 3, xsm: 8 },
               flexWrap: 'wrap',
               width: '100%',
             }}

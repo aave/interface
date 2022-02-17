@@ -1,10 +1,20 @@
-import * as React from 'react';
 import { InterestRate } from '@aave/contract-helpers';
-import { Box, Button, Divider, Link, Menu, MenuItem, SvgIcon, Typography } from '@mui/material';
-import { Trans } from '@lingui/macro';
 import { CheckIcon, ChevronDownIcon, ExternalLinkIcon } from '@heroicons/react/outline';
+import { Trans } from '@lingui/macro';
+import {
+  Box,
+  Button,
+  Divider,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+  SvgIcon,
+  Typography,
+} from '@mui/material';
+import * as React from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { ROUTES } from 'src/components/primitives/Link';
+import { Link, ROUTES } from 'src/components/primitives/Link';
 
 interface ListItemAPYButtonProps {
   stableBorrowRateEnabled: boolean;
@@ -60,43 +70,47 @@ export const ListItemAPYButton = ({
           'aria-labelledby': 'basic-button',
         }}
       >
-        <Typography variant="description">
+        <Typography variant="subheader2" sx={{ px: 4, py: 3 }}>
           <Trans>Select APY type to switch</Trans>
         </Typography>
-        <MenuItem value={InterestRate.Stable} onClick={onClick}>
-          <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-            <Typography variant="description" sx={{ display: 'flex', flexDirection: 'row' }}>
-              {borrowRateMode === InterestRate.Stable && <CheckIcon />}
-              <Trans>
-                APY, <Trans>stable</Trans>
-              </Trans>
-            </Typography>
-            <FormattedNumber value={Number(stableBorrowAPY)} percent variant="description" />
-          </Box>
-        </MenuItem>
+
         <MenuItem value={InterestRate.Variable} onClick={onClick}>
-          <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-            <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-              {borrowRateMode === InterestRate.Variable && <CheckIcon />}
-              <Typography variant="description">
-                <Trans>
-                  APY, <Trans>variable</Trans>
-                </Trans>
-              </Typography>
-            </Box>
-            <FormattedNumber value={Number(variableBorrowAPY)} percent variant="description" />
-          </Box>
+          <ListItemIcon>
+            <SvgIcon>{borrowRateMode === InterestRate.Variable && <CheckIcon />}</SvgIcon>
+          </ListItemIcon>
+          <ListItemText primaryTypographyProps={{ variant: 'description' }}>
+            <Trans>APY, variable</Trans>
+          </ListItemText>
+          <FormattedNumber value={Number(variableBorrowAPY)} percent variant="description" />
         </MenuItem>
+
+        <MenuItem value={InterestRate.Stable} onClick={onClick}>
+          <ListItemIcon>
+            <SvgIcon>{borrowRateMode === InterestRate.Stable && <CheckIcon />}</SvgIcon>
+          </ListItemIcon>
+          <ListItemText primaryTypographyProps={{ variant: 'description' }}>
+            <Trans>APY, stable</Trans>
+          </ListItemText>
+          <FormattedNumber value={Number(stableBorrowAPY)} percent variant="description" />
+        </MenuItem>
+
         <Divider />
+
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-          <Typography
+          <Button
+            sx={{ my: 2, ml: 4 }}
+            size="small"
             component={Link}
+            target="_blank"
             href={ROUTES.reserveOverview(underlyingAsset)}
-            variant="buttonS"
+            endIcon={
+              <SvgIcon>
+                <ExternalLinkIcon />
+              </SvgIcon>
+            }
           >
             <Trans>SEE CHARTS</Trans>
-          </Typography>
-          <ExternalLinkIcon />
+          </Button>
         </Box>
       </Menu>
     </>

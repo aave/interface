@@ -13,6 +13,7 @@ export const ConnectWalletPaper = () => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
+        textAlign: 'center',
         p: 4,
         flex: 1,
       }}
@@ -21,7 +22,9 @@ export const ConnectWalletPaper = () => {
         <Trans>Please, connect your wallet</Trans>
       </Typography>
       <Typography sx={{ mb: 6 }}>
-        <Trans>To see your supplies and borrowings, connect your wallet.</Trans>
+        <Trans>
+          Please connect your wallet to see your supplies, borrowings, and open positions.
+        </Trans>
       </Typography>
       <Button variant="gradient" onClick={connectWallet}>
         <Trans>Connect wallet</Trans>

@@ -16,13 +16,13 @@ export const ListItemCanBeCollateral = ({
   const CollateralStates = () => {
     if (usageAsCollateralEnabled && !isIsolated) {
       return (
-        <SvgIcon sx={{ color: 'success.main' }}>
+        <SvgIcon sx={{ color: 'success.main', fontSize: { xs: '20px', xsm: '24px' } }}>
           <CheckIcon />
         </SvgIcon>
       );
     } else if (usageAsCollateralEnabled && isIsolated) {
       return (
-        <SvgIcon sx={{ color: 'warning.main' }}>
+        <SvgIcon sx={{ color: 'warning.main', fontSize: { xs: '20px', xsm: '24px' } }}>
           <ExclamationCircleIcon />
         </SvgIcon>
       );
@@ -32,7 +32,13 @@ export const ListItemCanBeCollateral = ({
   };
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
       {!isIsolated ? (
         <CollateralStates />
       ) : (

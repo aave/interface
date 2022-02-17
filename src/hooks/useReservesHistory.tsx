@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 type APIResponse = {
@@ -70,5 +70,6 @@ export function useReserveRatesHistory(reserveAddress: string) {
   return {
     loading,
     data,
+    error: BROKEN_ASSETS.includes(reserveAddress) || (!loading && data.length === 0),
   };
 }

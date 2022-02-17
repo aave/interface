@@ -37,24 +37,18 @@ export const ListWrapper = ({
   const collapsed = isCollapse && !noData;
 
   return (
-    <Paper sx={{ mt: withTopMargin ? 4 : 0 }}>
+    <Paper sx={{ mt: withTopMargin ? 4 : 0, overflow: 'hidden' }}>
       <Box
         sx={{
-          px: 6,
-          py: 4,
+          px: { xs: 4, xsm: 6 },
+          py: { xs: 3.5, xsm: 4 },
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          cursor: !noData && !!localStorageName ? 'pointer' : 'default',
-          mb: noData ? 0 : 4,
+          mb: noData || (collapsed && !topInfo) ? 0 : 4,
         }}
-        onClick={() =>
-          !!localStorageName && !noData
-            ? toggleLocalStorageClick(isCollapse, setIsCollapse, localStorageName)
-            : undefined
-        }
       >
-        <Box sx={{ display: 'flex', alignItems: 'center', p: '3.6px' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', py: '3.6px' }}>
           <Typography component="div" variant={captionSize} sx={{ mr: 4 }}>
             {title}
           </Typography>
@@ -66,6 +60,9 @@ export const ListWrapper = ({
             sx={{
               display: 'flex',
               alignItems: 'center',
+              cursor: 'pointer',
+              minHeight: '28px',
+              pl: 3,
               span: {
                 width: '14px',
                 height: '2px',
@@ -84,6 +81,11 @@ export const ListWrapper = ({
                 },
               },
             }}
+            onClick={() =>
+              !!localStorageName && !noData
+                ? toggleLocalStorageClick(isCollapse, setIsCollapse, localStorageName)
+                : undefined
+            }
           >
             <Typography variant="buttonM" color="text.secondary">
               {collapsed ? <Trans>Show</Trans> : <Trans>Hide</Trans>}
@@ -95,12 +97,20 @@ export const ListWrapper = ({
 
       {topInfo && (
         <Box
-          sx={{ display: 'flex', alignItems: 'center', px: 6, pb: collapsed && !noData ? 6 : 0 }}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            px: { xs: 4, xsm: 6 },
+            pb: { xs: collapsed && !noData ? 6 : 2, xsm: collapsed && !noData ? 6 : 0 },
+            overflowX: 'auto',
+          }}
         >
           {topInfo}
         </Box>
       )}
-      {subChildrenComponent && !collapsed && <Box>{subChildrenComponent}</Box>}
+      {subChildrenComponent && !collapsed && (
+        <Box sx={{ marginBottom: { xs: 2, xsm: 0 } }}>{subChildrenComponent}</Box>
+      )}
       <Box sx={{ display: collapsed ? 'none' : 'block' }}>{children}</Box>
 
       {!!bottomComponent && !collapsed && <ListItem>{bottomComponent}</ListItem>}

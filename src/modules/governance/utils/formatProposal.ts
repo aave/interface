@@ -5,9 +5,13 @@ import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 export function formatProposal(proposal: Omit<Proposal, 'values'>) {
   const allVotes = new BigNumber(proposal.forVotes).plus(proposal.againstVotes);
-  const yaePercent = new BigNumber(proposal.forVotes).dividedBy(allVotes).toNumber();
+  const yaePercent = allVotes.gt(0)
+    ? new BigNumber(proposal.forVotes).dividedBy(allVotes).toNumber()
+    : 0;
   const yaeVotes = normalizeBN(proposal.forVotes, 18).toNumber();
-  const nayPercent = new BigNumber(proposal.againstVotes).dividedBy(allVotes).toNumber();
+  const nayPercent = allVotes.gt(0)
+    ? new BigNumber(proposal.againstVotes).dividedBy(allVotes).toNumber()
+    : 0;
   const nayVotes = normalizeBN(proposal.againstVotes, 18).toNumber();
   const minQuorumNeeded = new BigNumber(proposal.totalVotingSupply)
     .multipliedBy(proposal.minimumQuorum)
@@ -20,14 +24,9 @@ export function formatProposal(proposal: Omit<Proposal, 'values'>) {
   const diff = new BigNumber(proposal.forVotes)
     .minus(proposal.againstVotes)
     .dividedBy(proposal.totalVotingSupply)
-    .multipliedBy(100)
-    .multipliedBy(4)
-    .toNumber();
-  const requiredDiff = new BigNumber(proposal.minimumDiff)
-    .dividedBy(100)
-    .multipliedBy(4)
-    .toNumber();
-  const diffReached = diff > requiredDiff;
+    .multipliedBy(100);
+  const requiredDiff = new BigNumber(proposal.minimumDiff).dividedBy(100);
+  const diffReached = requiredDiff.lte(diff);
 
   return {
     yaePercent,
@@ -37,8 +36,8 @@ export function formatProposal(proposal: Omit<Proposal, 'values'>) {
     minQuorumNeeded,
     quorumPercent,
     quorumReached,
-    diff,
-    requiredDiff,
+    diff: diff.toNumber(),
+    requiredDiff: requiredDiff.toNumber(),
     diffReached,
   };
 }

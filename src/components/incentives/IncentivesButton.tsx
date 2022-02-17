@@ -4,9 +4,10 @@ import { Box, SvgIcon, Typography } from '@mui/material';
 import { useState } from 'react';
 import { ReserveIncentiveResponse } from 'src/hooks/app-data-provider/useIncentiveData';
 
+import { ContentWithTooltip } from '../ContentWithTooltip';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { TokenIcon } from '../primitives/TokenIcon';
-import { IncentivesInfoModal } from './IncentivesInfoModal';
+import { IncentivesTooltipContent } from './IncentivesTooltipContent';
 
 interface IncentivesButtonProps {
   symbol: string;
@@ -36,7 +37,12 @@ export const IncentivesButton = ({ incentives, symbol }: IncentivesButtonProps) 
   const incentivesButtonValue = () => {
     if (incentivesNetAPR !== 'Infinity' && incentivesNetAPR < 10000) {
       return (
-        <FormattedNumber value={incentivesNetAPR} percent variant="main12" color="text.secondary" />
+        <FormattedNumber
+          value={incentivesNetAPR}
+          percent
+          variant="secondary12"
+          color="text.secondary"
+        />
       );
     } else if (incentivesNetAPR !== 'Infinity' && incentivesNetAPR > 9999) {
       return (
@@ -44,7 +50,7 @@ export const IncentivesButton = ({ incentives, symbol }: IncentivesButtonProps) 
           value={incentivesNetAPR}
           percent
           compact
-          variant="main12"
+          variant="secondary12"
           color="text.secondary"
         />
       );
@@ -60,22 +66,35 @@ export const IncentivesButton = ({ incentives, symbol }: IncentivesButtonProps) 
   const iconSize = 12;
 
   return (
-    <>
+    <ContentWithTooltip
+      tooltipContent={
+        <IncentivesTooltipContent
+          incentives={incentives}
+          incentivesNetAPR={incentivesNetAPR}
+          symbol={symbol}
+        />
+      }
+      withoutHover
+      setOpen={setOpen}
+      open={open}
+    >
       <Box
         sx={(theme) => ({
-          p: '2px 4px',
-          border: `1px solid ${theme.palette.divider}`,
+          p: { xs: '0 4px', xsm: '2px 4px' },
+          border: `1px solid ${open ? theme.palette.action.disabled : theme.palette.divider}`,
           borderRadius: '4px',
           cursor: 'pointer',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           transition: 'opacity 0.2s ease',
+          bgcolor: open ? 'action.hover' : 'transparent',
           '&:hover': {
-            opacity: 0.6,
+            bgcolor: 'action.hover',
+            borderColor: 'action.disabled',
           },
         })}
-        onClick={() => setOpen(true)}
+        onClick={() => setOpen(!open)}
       >
         <Box sx={{ mr: 2 }}>{incentivesButtonValue()}</Box>
 
@@ -117,16 +136,6 @@ export const IncentivesButton = ({ incentives, symbol }: IncentivesButtonProps) 
           </>
         </Box>
       </Box>
-
-      {open && (
-        <IncentivesInfoModal
-          open={open}
-          setOpen={setOpen}
-          incentives={incentives}
-          incentivesNetAPR={incentivesNetAPR}
-          symbol={symbol}
-        />
-      )}
-    </>
+    </ContentWithTooltip>
   );
 };

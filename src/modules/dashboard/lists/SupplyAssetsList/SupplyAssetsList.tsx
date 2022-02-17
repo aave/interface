@@ -1,7 +1,7 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Alert, Box } from '@mui/material';
+import { Alert, Box, useMediaQuery, useTheme } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { useState } from 'react';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
@@ -18,11 +18,14 @@ import { DashboardListTopPanel } from '../../DashboardListTopPanel';
 import { ListBottomText } from '../ListBottomText';
 import { ListHeader } from '../ListHeader';
 import { SupplyAssetsListItem } from './SupplyAssetsListItem';
+import { SupplyAssetsListMobileItem } from './SupplyAssetsListMobileItem';
 
 export const SupplyAssetsList = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
   const { user, reserves, marketReferencePriceInUsd } = useAppDataContext();
   const { walletBalances } = useWalletBalances();
+  const theme = useTheme();
+  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const {
     bridge,
@@ -154,10 +157,10 @@ export const SupplyAssetsList = () => {
             {filteredSupplyReserves.length === 0 && (
               <Alert severity="info">
                 {/* TODO: need to add <Trans></Trans> */}
-                <>Your {networkName} wallet is empty. To deposit ...</>
+                <>Your {networkName} wallet is empty. Supply assets </>
                 {bridge && (
                   <>
-                    Or use {<Link href={bridge.url}>{bridge.name}</Link>} to transfer your ETH
+                    or use {<Link href={bridge.url}>{bridge.name}</Link>} to transfer your ETH
                     assets.
                   </>
                 )}
@@ -177,10 +180,14 @@ export const SupplyAssetsList = () => {
       }
     >
       <>
-        <ListHeader head={head} />
-        {supplyReserves.map((item, index) => (
-          <SupplyAssetsListItem {...item} key={index} />
-        ))}
+        {!downToXSM && <ListHeader head={head} />}
+        {supplyReserves.map((item, index) =>
+          downToXSM ? (
+            <SupplyAssetsListMobileItem {...item} key={index} />
+          ) : (
+            <SupplyAssetsListItem {...item} key={index} />
+          )
+        )}
       </>
     </ListWrapper>
   );
