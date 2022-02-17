@@ -3,7 +3,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
-import { APYTypeInfoContent } from '../../../../components/infoModalContents/APYTypeInfoContent';
+import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
 import { Row } from '../../../../components/primitives/Row';
 import { ComputedUserReserveData } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from '../../../../hooks/useModal';
@@ -60,7 +60,7 @@ export const BorrowedPositionsListMobileItem = ({
 
       <Row
         caption={
-          <APYTypeInfoContent text={<Trans>APY type</Trans>} key="APY type" variant="description" />
+          <APYTypeTooltip text={<Trans>APY type</Trans>} key="APY type" variant="description" />
         }
         captionVariant="description"
         mb={2}

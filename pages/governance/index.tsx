@@ -1,5 +1,4 @@
 import { Grid, Paper } from '@mui/material';
-import { InferGetStaticPropsType } from 'next';
 import { AaveTokensBalanceProvider } from 'src/hooks/governance-data-provider/AaveTokensDataProvider';
 import { GovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
 import { MainLayout } from 'src/layouts/MainLayout';
@@ -7,8 +6,8 @@ import { GovernanceTopPanel } from 'src/modules/governance/GovernanceTopPanel';
 import { ProposalsList } from 'src/modules/governance/ProposalsList';
 import { governanceContract } from 'src/modules/governance/utils/governanceProvider';
 import { VotingPowerInfoPanel } from 'src/modules/governance/VotingPowerInfoPanel';
-import { Ipfs } from 'src/static-build/ipfs';
-import { Proposal } from 'src/static-build/proposal';
+import { Ipfs, IpfsType } from 'src/static-build/ipfs';
+import { CustomProposalType, Proposal } from 'src/static-build/proposal';
 
 import { ContentContainer } from '../../src/components/ContentContainer';
 
@@ -33,7 +32,9 @@ export const getStaticProps = async () => {
   return { props: { proposals } };
 };
 
-export type GovernancePageProps = InferGetStaticPropsType<typeof getStaticProps>;
+export type GovernancePageProps = {
+  proposals: { ipfs: IpfsType; proposal: CustomProposalType; prerendered: boolean }[];
+};
 
 export default function Governance(props: GovernancePageProps) {
   return (

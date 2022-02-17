@@ -5,9 +5,13 @@ import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 export function formatProposal(proposal: Omit<Proposal, 'values'>) {
   const allVotes = new BigNumber(proposal.forVotes).plus(proposal.againstVotes);
-  const yaePercent = new BigNumber(proposal.forVotes).dividedBy(allVotes).toNumber();
+  const yaePercent = allVotes.gt(0)
+    ? new BigNumber(proposal.forVotes).dividedBy(allVotes).toNumber()
+    : 0;
   const yaeVotes = normalizeBN(proposal.forVotes, 18).toNumber();
-  const nayPercent = new BigNumber(proposal.againstVotes).dividedBy(allVotes).toNumber();
+  const nayPercent = allVotes.gt(0)
+    ? new BigNumber(proposal.againstVotes).dividedBy(allVotes).toNumber()
+    : 0;
   const nayVotes = normalizeBN(proposal.againstVotes, 18).toNumber();
   const minQuorumNeeded = new BigNumber(proposal.totalVotingSupply)
     .multipliedBy(proposal.minimumQuorum)

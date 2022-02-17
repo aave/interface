@@ -70,5 +70,6 @@ export function useReserveRatesHistory(reserveAddress: string) {
   return {
     loading,
     data,
+    error: BROKEN_ASSETS.includes(reserveAddress) || (!loading && data.length === 0),
   };
 }

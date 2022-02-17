@@ -19,7 +19,7 @@ export default function AssetsList() {
   const { reserves } = useAppDataContext();
   const { currentMarketData } = useProtocolDataContext();
 
-  const filteredData = reserves.filter((res) => res.isActive);
+  const filteredData = reserves.filter((res) => res.isActive && !res.isFrozen);
 
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
