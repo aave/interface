@@ -14,6 +14,7 @@ import { Group } from '@visx/group';
 import { FormattedReserveHistoryItem } from 'src/hooks/useReservesHistory';
 import { useTheme } from '@mui/material';
 import { ChartLegend } from './ChartLegend';
+import { GridRows } from '@visx/grid';
 
 type TooltipData = FormattedReserveHistoryItem;
 
@@ -109,6 +110,14 @@ export const ApyChart = withTooltip<AreaProps, TooltipData>(
         <ChartLegend labels={fields} />
         <svg width={width} height={height}>
           <Group left={margin.left} top={margin.top}>
+            <GridRows
+              scale={yValueScale}
+              width={innerWidth}
+              strokeDasharray="3,3"
+              stroke={theme.palette.divider}
+              pointerEvents="none"
+              numTicks={5}
+            />
             {fields.map((field) => (
               <Fragment key={field.name}>
                 <LinearGradient
@@ -169,6 +178,7 @@ export const ApyChart = withTooltip<AreaProps, TooltipData>(
               onMouseMove={handleTooltip}
               onMouseLeave={() => hideTooltip()}
             />
+
             {tooltipData && (
               <g>
                 <Line

@@ -48,7 +48,7 @@ const ChartContainer: React.FC<BoxProps> = (props) => (
 export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = ({ reserve }) => {
   const { currentNetworkConfig, currentMarketData } = useProtocolDataContext();
   const renderCharts = !!currentNetworkConfig.ratesHistoryApiUrl;
-  const { data } = useReserveRatesHistory(
+  const { data, error } = useReserveRatesHistory(
     reserve
       ? `${reserve.underlyingAsset}${currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER}`
       : ''
@@ -113,7 +113,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
             )}
           </Box>
 
-          {renderCharts && (
+          {renderCharts && !error && (
             <ChartContainer>
               <ParentSize>
                 {(parent) => (
@@ -238,7 +238,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
               </TopInfoPanelItem>
             )}
           </Box>
-          {renderCharts && (
+          {renderCharts && !error && (
             <ChartContainer>
               <ParentSize>
                 {(parent) => (
