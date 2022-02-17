@@ -54,7 +54,7 @@ export const ClaimRewardsModalContent = ({ handleClose }: ClaimRewardsModalConte
       if (!currentMarketData.v3 && Number(rewardBalance) > 0) {
         reserves.forEach((reserve) => {
           if (reserve.symbol === currentNetworkConfig.wrappedBaseAssetSymbol) {
-            tokenPrice = Number(reserve.formattedPriceInMarketReferenceCurrency);
+            tokenPrice = Number(reserve.priceInUSD);
           }
         });
       } else {

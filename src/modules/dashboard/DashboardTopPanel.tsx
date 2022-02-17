@@ -40,7 +40,7 @@ export const DashboardTopPanel = () => {
       if (!currentMarketData.v3 && Number(rewardBalance) > 0) {
         reserves.forEach((reserve) => {
           if (reserve.symbol === currentNetworkConfig.wrappedBaseAssetSymbol) {
-            tokenPrice = Number(reserve.formattedPriceInMarketReferenceCurrency);
+            tokenPrice = Number(reserve.priceInUSD);
           }
         });
       } else {
@@ -126,8 +126,8 @@ export const DashboardTopPanel = () => {
           </TopInfoPanelItem>
         )}
 
-        {currentAccount && claimableRewardsUsd > 0 && (
-          <TopInfoPanelItem title={<Trans>Available rewards</Trans>} hideIcon withLine={!downToXSM}>
+        <TopInfoPanelItem title={<Trans>Available rewards</Trans>} hideIcon withLine={!downToXSM}>
+          {currentAccount && claimableRewardsUsd > 0 ? (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <FormattedNumber
                 value={claimableRewardsUsd}
@@ -151,8 +151,10 @@ export const DashboardTopPanel = () => {
                 <Trans>Claim</Trans>
               </Button>
             </Box>
-          </TopInfoPanelItem>
-        )}
+          ) : (
+            <NoData variant={noDataTypographyVariant} sx={{ opacity: '0.7' }} />
+          )}
+        </TopInfoPanelItem>
       </TopInfoPanel>
 
       <LiquidationRiskParametresInfoModal
