@@ -14,6 +14,7 @@ import { BorrowAssetsItem } from './types';
 export const BorrowAssetsListItem = ({
   symbol,
   iconSymbol,
+  name,
   availableBorrows,
   availableBorrowsInUSD,
   borrowCap,
@@ -32,6 +33,8 @@ export const BorrowAssetsListItem = ({
     <ListItemWrapper
       symbol={symbol}
       iconSymbol={iconSymbol}
+      name={name}
+      underlyingAsset={underlyingAsset}
       data-cy={`dashboardBorrowListItem_${symbol.toUpperCase()}`}
     >
       <ListValueColumn

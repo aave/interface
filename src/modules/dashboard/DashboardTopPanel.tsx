@@ -84,6 +84,8 @@ export const DashboardTopPanel = () => {
               variant={valueTypographyVariant}
               visibleDecimals={2}
               compact
+              symbolsColor="#FFFFFFB2"
+              symbolsVariant={noDataTypographyVariant}
             />
           ) : (
             <NoData variant={noDataTypographyVariant} sx={{ opacity: '0.7' }} />
@@ -97,6 +99,8 @@ export const DashboardTopPanel = () => {
               variant={valueTypographyVariant}
               visibleDecimals={2}
               percent
+              symbolsColor="#FFFFFFB2"
+              symbolsVariant={noDataTypographyVariant}
             />
           ) : (
             <NoData variant={noDataTypographyVariant} sx={{ opacity: '0.7' }} />
@@ -126,8 +130,8 @@ export const DashboardTopPanel = () => {
           </TopInfoPanelItem>
         )}
 
-        <TopInfoPanelItem title={<Trans>Available rewards</Trans>} hideIcon withLine={!downToXSM}>
-          {currentAccount && claimableRewardsUsd > 0 ? (
+        {currentAccount && claimableRewardsUsd > 0 && (
+          <TopInfoPanelItem title={<Trans>Available rewards</Trans>} hideIcon withLine={!downToXSM}>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <FormattedNumber
                 value={claimableRewardsUsd}
@@ -135,6 +139,8 @@ export const DashboardTopPanel = () => {
                 visibleDecimals={2}
                 compact
                 symbol="USD"
+                symbolsColor="#FFFFFFB2"
+                symbolsVariant={noDataTypographyVariant}
               />
               {assets && (
                 <MultiTokenIcon
@@ -151,10 +157,8 @@ export const DashboardTopPanel = () => {
                 <Trans>Claim</Trans>
               </Button>
             </Box>
-          ) : (
-            <NoData variant={noDataTypographyVariant} sx={{ opacity: '0.7' }} />
-          )}
-        </TopInfoPanelItem>
+          </TopInfoPanelItem>
+        )}
       </TopInfoPanel>
 
       <LiquidationRiskParametresInfoModal

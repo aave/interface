@@ -9,21 +9,37 @@ interface ListValueRowProps {
   capsComponent?: ReactNode;
   value: string | number;
   subValue: string | number;
+  disabled?: boolean;
 }
 
-export const ListValueRow = ({ title, capsComponent, value, subValue }: ListValueRowProps) => {
+export const ListValueRow = ({
+  title,
+  capsComponent,
+  value,
+  subValue,
+  disabled,
+}: ListValueRowProps) => {
   return (
     <Row caption={title} captionVariant="description" align="flex-start" mb={2}>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-        <FormattedNumber value={value} variant="secondary14" mb={0.5} />
-        <FormattedNumber
-          value={subValue}
-          variant="secondary12"
-          color="text.secondary"
-          symbol="USD"
-          mb={0.5}
-        />
-        {capsComponent}
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
+          <FormattedNumber
+            value={value}
+            variant="secondary14"
+            color={disabled ? 'text.disabled' : 'text.primary'}
+          />
+          {capsComponent}
+        </Box>
+
+        {!disabled && (
+          <FormattedNumber
+            value={subValue}
+            variant="secondary12"
+            color="text.secondary"
+            symbol="USD"
+            mb={0.5}
+          />
+        )}
       </Box>
     </Row>
   );

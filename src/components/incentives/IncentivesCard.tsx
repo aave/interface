@@ -16,7 +16,7 @@ export const IncentivesCard = ({
   symbol,
   value,
   incentives,
-  variant = 'main14',
+  variant = 'secondary14',
 }: IncentivesCardProps) => {
   return (
     <Box

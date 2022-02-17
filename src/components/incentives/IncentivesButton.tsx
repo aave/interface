@@ -36,7 +36,12 @@ export const IncentivesButton = ({ incentives, symbol }: IncentivesButtonProps) 
   const incentivesButtonValue = () => {
     if (incentivesNetAPR !== 'Infinity' && incentivesNetAPR < 10000) {
       return (
-        <FormattedNumber value={incentivesNetAPR} percent variant="main12" color="text.secondary" />
+        <FormattedNumber
+          value={incentivesNetAPR}
+          percent
+          variant="secondary12"
+          color="text.secondary"
+        />
       );
     } else if (incentivesNetAPR !== 'Infinity' && incentivesNetAPR > 9999) {
       return (
@@ -44,7 +49,7 @@ export const IncentivesButton = ({ incentives, symbol }: IncentivesButtonProps) 
           value={incentivesNetAPR}
           percent
           compact
-          variant="main12"
+          variant="secondary12"
           color="text.secondary"
         />
       );

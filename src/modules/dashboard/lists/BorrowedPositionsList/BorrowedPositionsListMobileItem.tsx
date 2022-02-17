@@ -34,11 +34,17 @@ export const BorrowedPositionsListMobileItem = ({
   } = reserve;
 
   return (
-    <ListMobileItemWrapper symbol={symbol} iconSymbol={iconSymbol} name={name}>
+    <ListMobileItemWrapper
+      symbol={symbol}
+      iconSymbol={iconSymbol}
+      name={name}
+      underlyingAsset={reserve.underlyingAsset}
+    >
       <ListValueRow
         title={<Trans>Debt</Trans>}
         value={Number(totalBorrows)}
         subValue={Number(totalBorrowsUSD)}
+        disabled={Number(totalBorrows) === 0}
       />
 
       <Row caption={<Trans>APY</Trans>} align="flex-start" captionVariant="description" mb={2}>
