@@ -54,6 +54,10 @@ export interface TxModalDetailsProps {
   selectedEmode?: number;
   selectedEmodeLabel?: string;
   emodeAssets?: string[];
+  votingPower?: string;
+  stakeAPR?: string;
+  stakeRewards?: string;
+  stakeRewardsInUsd?: string;
 }
 
 export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
@@ -83,6 +87,10 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   selectedEmode,
   selectedEmodeLabel,
   emodeAssets,
+  votingPower,
+  stakeAPR,
+  stakeRewardsInUsd,
+  stakeRewards,
 }) => {
   const [selectedRate, setSelectedRate] = React.useState(InterestRate.Variable);
 
@@ -115,6 +123,11 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
           },
         })}
       >
+        {votingPower && (
+          <Row caption={<Trans>Voting power</Trans>} captionVariant="description" mb={4}>
+            <FormattedNumber value={Number(votingPower)} variant="secondary14" />
+          </Row>
+        )}
         {amountAfterRepay && displayAmountAfterRepayInUsd && symbol && (
           <Row
             caption={<Trans>Remaining debt</Trans>}
@@ -433,6 +446,45 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
               <Typography ml={1} variant="secondary14">
                 {symbol}
               </Typography>
+            </Box>
+          </Row>
+        )}
+        {stakeAPR && (
+          <Row
+            caption={
+              <>
+                <Trans>Staking</Trans> APR
+              </>
+            }
+            captionVariant="description"
+          >
+            <FormattedNumber value={Number(stakeAPR) / 10000} percent variant="description" />
+          </Row>
+        )}
+        {stakeRewards && stakeRewardsInUsd && symbol && (
+          <Row caption={<Trans>Amount</Trans>} captionVariant="description">
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-end',
+                mb: 4,
+              }}
+            >
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <TokenIcon symbol={symbol} sx={{ mr: 1, fontSize: '16px' }} />
+                <FormattedNumber value={Number(stakeRewards)} variant="secondary14" />
+                <Typography ml={1} variant="secondary14">
+                  {symbol}
+                </Typography>
+              </Box>
+              <FormattedNumber
+                value={Number(stakeRewardsInUsd)}
+                variant="helperText"
+                compact
+                symbol="USD"
+                color="text.secondary"
+              />
             </Box>
           </Row>
         )}

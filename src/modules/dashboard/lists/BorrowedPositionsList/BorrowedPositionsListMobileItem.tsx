@@ -3,7 +3,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
-import { APYTypeInfoContent } from '../../../../components/infoModalContents/APYTypeInfoContent';
+import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
 import { Row } from '../../../../components/primitives/Row';
 import { ComputedUserReserveData } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from '../../../../hooks/useModal';
@@ -34,11 +34,17 @@ export const BorrowedPositionsListMobileItem = ({
   } = reserve;
 
   return (
-    <ListMobileItemWrapper symbol={symbol} iconSymbol={iconSymbol} name={name}>
+    <ListMobileItemWrapper
+      symbol={symbol}
+      iconSymbol={iconSymbol}
+      name={name}
+      underlyingAsset={reserve.underlyingAsset}
+    >
       <ListValueRow
         title={<Trans>Debt</Trans>}
         value={Number(totalBorrows)}
         subValue={Number(totalBorrowsUSD)}
+        disabled={Number(totalBorrows) === 0}
       />
 
       <Row caption={<Trans>APY</Trans>} align="flex-start" captionVariant="description" mb={2}>
@@ -54,7 +60,7 @@ export const BorrowedPositionsListMobileItem = ({
 
       <Row
         caption={
-          <APYTypeInfoContent text={<Trans>APY type</Trans>} key="APY type" variant="description" />
+          <APYTypeTooltip text={<Trans>APY type</Trans>} key="APY type" variant="description" />
         }
         captionVariant="description"
         mb={2}

@@ -29,6 +29,7 @@ import createEmotionCache from '../src/createEmotionCache';
 import { ProtocolDataProvider } from '../src/hooks/useProtocolDataContext';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
+import { StakeTxBuilderProvider } from 'src/providers/StakeTxBuilderProvider';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -49,14 +50,14 @@ export default function MyApp(props: MyAppProps) {
     <CacheProvider value={emotionCache}>
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
-        <Meta
-          title={'Open Source Liquidity Protocol'}
-          description={
-            'Aave is an Open Source Protocol to create Non-Custodial Liquidity Markets to earn interest on supplying and borrowing assets with a variable or stable interest rate. The protocol is designed for easy integration into your products and services.'
-          }
-          imageUrl={'https://aave.com/favicon64.png'} //NOTE: Will update with ghost after release
-        />
       </Head>
+      <Meta
+        title={'Open Source Liquidity Protocol'}
+        description={
+          'Aave is an Open Source Protocol to create Non-Custodial Liquidity Markets to earn interest on supplying and borrowing assets with a variable or stable interest rate. The protocol is designed for easy integration into your products and services.'
+        }
+        imageUrl={'https://aave.com/favicon64.png'} //NOTE: Will update with ghost after release
+      />
 
       <ApolloProvider client={apolloClient}>
         <LanguageProvider>
@@ -67,22 +68,24 @@ export default function MyApp(props: MyAppProps) {
                   <BackgroundDataProvider>
                     <AppDataProvider>
                       <TxBuilderProvider>
-                        <AppGlobalStyles>
-                          <ModalContextProvider>
-                            <GasStationProvider>
-                              {getLayout(<Component {...pageProps} />)}
-                              <SupplyModal />
-                              <WithdrawModal />
-                              <BorrowModal />
-                              <RepayModal />
-                              <CollateralChangeModal />
-                              <RateSwitchModal />
-                              <ClaimRewardsModal />
-                              <EmodeModal />
-                              <FaucetModal />
-                            </GasStationProvider>
-                          </ModalContextProvider>
-                        </AppGlobalStyles>
+                        <StakeTxBuilderProvider>
+                          <AppGlobalStyles>
+                            <ModalContextProvider>
+                              <GasStationProvider>
+                                {getLayout(<Component {...pageProps} />)}
+                                <SupplyModal />
+                                <WithdrawModal />
+                                <BorrowModal />
+                                <RepayModal />
+                                <CollateralChangeModal />
+                                <RateSwitchModal />
+                                <ClaimRewardsModal />
+                                <EmodeModal />
+                                <FaucetModal />
+                              </GasStationProvider>
+                            </ModalContextProvider>
+                          </AppGlobalStyles>
+                        </StakeTxBuilderProvider>
                       </TxBuilderProvider>
                     </AppDataProvider>
                   </BackgroundDataProvider>

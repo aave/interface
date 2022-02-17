@@ -15,7 +15,7 @@ import {
 import React from 'react';
 
 import { CapType } from '../caps/helper';
-import { AvailableInfoContent } from '../infoModalContents/AvailableInfoContent';
+import { AvailableTooltip } from '../infoTooltips/AvailableTooltip';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { TokenIcon } from '../primitives/TokenIcon';
 
@@ -73,7 +73,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
         <Typography color="text.secondary">
           <Trans>Amount</Trans>
         </Typography>
-        {capType && <AvailableInfoContent capType={capType} />}
+        {capType && <AvailableTooltip capType={capType} />}
       </Box>
 
       <Box
@@ -165,6 +165,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
             symbol="USD"
             variant="secondary12"
             color="text.disabled"
+            symbolsColor="text.disabled"
             flexGrow={1}
           />
 
@@ -175,6 +176,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
               compact
               variant="secondary12"
               color="text.secondary"
+              symbolsColor="text.disabled"
             />
           </Typography>
 

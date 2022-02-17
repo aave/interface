@@ -34,7 +34,7 @@ interface VoteBarProps extends BoxProps {
   percent: number;
   yae?: boolean;
 }
-export function VoteBar({ percent = 30, yae, votes, ...rest }: VoteBarProps) {
+export function VoteBar({ percent, yae, votes, ...rest }: VoteBarProps) {
   return (
     <Box {...rest}>
       <Box sx={{ display: 'flex' }}>
