@@ -9,6 +9,7 @@ import { CustomProposalType } from 'src/static-build/proposal';
 
 export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType) {
   const { openGovVote } = useModalContext();
+  const { currentAccount } = useWeb3Context();
 
   const [votedPower, setVotedPower] = useState<string>();
   const [support, setSupport] = useState<boolean>();
@@ -16,7 +17,6 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
   const [power, setPower] = useState<string>('0');
 
   const { governanceService } = useGovernanceDataProvider();
-  const { currentAccount } = useWeb3Context();
   const voteOngoing = state === ProposalState.Active;
 
   const fetchCurrentVote = async () => {
@@ -76,7 +76,7 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
         <br />
         Power at the time of creation: {power}
         <br />
-        {voteOngoing && (
+        {currentAccount && voteOngoing && (
           <>
             <Button
               color="success"
@@ -84,7 +84,7 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
               onClick={() => openGovVote(id, true, power)}
               disabled={support === true}
             >
-              Vote YAE
+              <Trans>Vote YAE</Trans>
             </Button>
             <Button
               color="error"
@@ -92,9 +92,18 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
               onClick={() => openGovVote(id, false, power)}
               disabled={support === false}
             >
-              Vote NAY
+              <Trans>Vote NAY</Trans>
             </Button>
           </>
+        )}
+        {!currentAccount && (
+          <Button
+            variant="contained"
+            onClick={() => alert('TODO: connect dummy')}
+            disabled={support === false}
+          >
+            Connect
+          </Button>
         )}
       </Typography>
     </>

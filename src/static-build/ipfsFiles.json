@@ -855,6 +855,21 @@
       "ipfsHash": "QmQyj7Drrk2NESFCSUs5EPjVaDRkfv7KAK5RkeH3gWzbvR",
       "originalHash": "0x2736d655ab1f623c524505a0a0f12d37355987d6a13b9a154988e5a42b433b7a",
       "id": 10
+    },
+    {
+      "aip": 58,
+      "title": "Risk Parameter Updates 2022-02-10",
+      "status": "Proposed",
+      "author": "Paul Lei, Jonathan Reem, Nick Cannon, Watson Fu, Yorke Rhodes",
+      "shortDescription": "Risk parameter updates",
+      "discussions": "https://governance.aave.com/t/arc-risk-parameter-updates-2022-02-10/7286/4",
+      "created": "2022-02-15T00:00:00.000Z",
+      "preview": "## Simple Summary\n\nA proposal to adjust eleven (11) total risk parameters across …",
+      "basename": "AIP-58",
+      "description": "## Simple Summary\n\nA proposal to adjust eleven (11) total risk parameters across seven (7) Aave V2 assets including LTV, Liquidation Threshold, and Liquidation Bonus.\n\n\n## Abstract\nThis proposal is a batch update of risk parameters to align with the the [Moderate risk level](https://snapshot.org/#/aave.eth/proposal/QmT9T4Rfnh1Z2HYmMPXvtFotMK2vSxiXK8dKStg2b6n4gi) chosen by the Aave community. These parameter updates are a continuation of Gauntlet's regular parameter recommendations.\n\n\n## Motivation\n\n\nThis set of parameter updates seeks to maintain the overall risk tolerance of the protocol while making risk trade-offs between specific assets.\n\nOur parameter recommendations are driven by an optimization function that balances 3 core metrics: insolvencies, liquidations, and borrow usage. Our parameter recommendations seek to optimize for this objective function. Gauntlet's agent-based simulations use a wide array of varied input data that changes on a daily basis (including but not limited to, asset volatility, asset correlation, asset collateral usage, DEX / CEX liquidity, trading volume, expected market impact of trades, and liquidator behavior). Our simulations tease out complex relationships between these inputs that cannot be simply expressed as heuristics. The individual collateral pages on the [dashboard](https://gov.gauntlet.network/aave) cover other key statistics and outputs from our simulations that can help with understanding other interesting inputs and outputs related to our simulations. For more information, please refer to our [Aave market risk assessment](https://gauntlet.network/reports/aave) where we provide a tactical understanding of our model architecture. \n\n\n## Specification\n\nThese past two weeks saw slight decreases in volatility and increases in liquidity and trading volume, which our simulations picked up on. In addition, our recent [market downturn report](https://governance.aave.com/t/market-downturn-gauntlet-risk-review-jan-2022/7190) showed that many collaterals are resilient to insolvencies, as our simulation models have predicted. We will continue to adjust risk parameters to drive increases in capital efficiency while maintaining protocol risk at safe levels.\n\n![](https://i.imgur.com/6oowyEt.png)\n\n\n\n\n\n\n\n## Risk Dashboard\n\n\n\nThe community should use Gauntlet's [Risk Dashboard](https://gov.gauntlet.network/aave) to better understand the updated parameter suggestions and general market risk in Aave V2. \n\n\n\n![](https://i.imgur.com/dHn0K4s.png)\n\n![](https://i.imgur.com/VH422UW.png)\n\n\n## Implementation\n\nThe proposal sets the liquidation bonus, LTV and liquidation threshold ratios by calling `configureReserveAsCollateral` on the `LendingPoolConfigurator` contract at `0x311Bb771e4F8952E6Da169b425E7e92d6Ac45756`, using the address and parameters specific to each token.\n\nThe full list of parameter updates can be found in the [forum](https://governance.aave.com/t/arc-risk-parameter-updates-2022-02-10/7286/4).\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "QmfHS62ThwJFnuN62FHjnCRpChCPRvcFUvXKFoiZFBGtg9",
+      "originalHash": "0xfbc3a9da6fe4ef6730a5fe00128bb93cc3225738278eb72c52b29a0d394d1942",
+      "id": 58
     }
   ]
 }
