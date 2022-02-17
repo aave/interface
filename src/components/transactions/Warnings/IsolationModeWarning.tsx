@@ -9,15 +9,14 @@ export const IsolationModeWarning = () => {
   return (
     <Warning severity="warning">
       <Typography variant="subheader1" mb={0.5}>
-        <Trans>Isolation mode warning</Trans>
+        <Trans>You are entering Isolation mode</Trans>
       </Typography>
       <Typography>
-        Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia
-        consequat duis enim velit mollit.{' '}
-        <Link href="https://docs.aave.com/faq/">
-          FAQ <Trans>guide</Trans>
-        </Link>
-        .
+        <Trans>
+          In Isolation mode you cannot supply other assets as collateral for borrowing. You can only
+          borrow up to a specific debt ceiling. Read more in our
+          <Link href="https://docs.aave.com/faq/">FAQ</Link>
+        </Trans>
       </Typography>
     </Warning>
   );
