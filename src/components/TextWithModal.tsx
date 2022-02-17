@@ -41,7 +41,7 @@ export const TextWithModal = ({
             borderRadius: '50%',
             p: 0,
             minWidth: 0,
-            ml: '5px',
+            ml: 0.5,
           }}
           onClick={(e) => {
             e.preventDefault();

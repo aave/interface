@@ -1,5 +1,6 @@
-import * as React from 'react';
 import { InterestRate } from '@aave/contract-helpers';
+import { CheckIcon, ChevronDownIcon, ExternalLinkIcon } from '@heroicons/react/outline';
+import { Trans } from '@lingui/macro';
 import {
   Box,
   Button,
@@ -11,8 +12,7 @@ import {
   SvgIcon,
   Typography,
 } from '@mui/material';
-import { Trans } from '@lingui/macro';
-import { CheckIcon, ChevronDownIcon, ExternalLinkIcon } from '@heroicons/react/outline';
+import * as React from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 
@@ -72,15 +72,7 @@ export const ListItemAPYButton = ({
         <Typography variant="subheader2" sx={{ px: 4, py: 3 }}>
           <Trans>Select APY type to switch</Trans>
         </Typography>
-        <MenuItem value={InterestRate.Stable} onClick={onClick}>
-          <ListItemIcon>
-            <SvgIcon>{borrowRateMode === InterestRate.Stable && <CheckIcon />}</SvgIcon>
-          </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ variant: 'description' }}>
-            <Trans>APY, stable</Trans>
-          </ListItemText>
-          <FormattedNumber value={Number(stableBorrowAPY)} percent variant="description" />
-        </MenuItem>
+
         <MenuItem value={InterestRate.Variable} onClick={onClick}>
           <ListItemIcon>
             <SvgIcon>{borrowRateMode === InterestRate.Variable && <CheckIcon />}</SvgIcon>
@@ -90,7 +82,19 @@ export const ListItemAPYButton = ({
           </ListItemText>
           <FormattedNumber value={Number(variableBorrowAPY)} percent variant="description" />
         </MenuItem>
+
+        <MenuItem value={InterestRate.Stable} onClick={onClick}>
+          <ListItemIcon>
+            <SvgIcon>{borrowRateMode === InterestRate.Stable && <CheckIcon />}</SvgIcon>
+          </ListItemIcon>
+          <ListItemText primaryTypographyProps={{ variant: 'description' }}>
+            <Trans>APY, stable</Trans>
+          </ListItemText>
+          <FormattedNumber value={Number(stableBorrowAPY)} percent variant="description" />
+        </MenuItem>
+
         <Divider />
+
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
           <Button
             sx={{ my: 2, ml: 4 }}
