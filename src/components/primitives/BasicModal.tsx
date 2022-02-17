@@ -38,6 +38,7 @@ export const BasicModal = ({
         e.stopPropagation();
       }}
       {...props}
+      data-cy={"Modal"}
     >
       <Paper
         sx={{
@@ -55,7 +56,7 @@ export const BasicModal = ({
           <Box sx={{ position: 'absolute', top: '24px', right: '24px', zIndex: 5 }}>
             <IconButton sx={{ borderRadius: '50%', p: 0, minWidth: 0 }} onClick={handleClose}>
               <SvgIcon>
-                <XIcon />
+                <XIcon data-cy={"CloseModalIcon"}/>
               </SvgIcon>
             </IconButton>
           </Box>

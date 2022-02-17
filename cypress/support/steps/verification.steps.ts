@@ -22,7 +22,9 @@ const amountVerification = (estimatedAmount: number) => {
 export const dashboardAssetValuesVerification = (
   estimatedCases: {
     apyType?: string;
-    asset: string;
+    assetName: string;
+    wrapped: boolean;
+    isCollateral?: boolean;
     type: string;
     amount?: number;
     collateralType?: string;
@@ -32,39 +34,41 @@ export const dashboardAssetValuesVerification = (
   return describe(`Verification dashboard values`, () => {
     skipSetup(skip);
     it(`Open dashboard page`, () => {
-      cy.get('.Menu strong').contains('dashboard').click();
+      cy.get('[data-cy=menuDashboard]').find('a:contains("Dashboard")').wait(3000).click();
     });
     estimatedCases.forEach((estimatedCase) => {
-      describe(`Verification ${estimatedCase.asset} ${estimatedCase.type}, have right values`, () => {
+      describe(`Verification ${estimatedCase.assetName} ${estimatedCase.type}, have right values`, () => {
         switch (estimatedCase.type) {
-          case constants.dashboardTypes.borrow:
-            it(`Check that asset name is ${estimatedCase.asset},
-            with apy type ${estimatedCase.apyType}
-             ${estimatedCase.amount ? ' and amount ' + estimatedCase.amount : ''}`, () => {
-              getDashBoardBorrowRow({
-                assetName: estimatedCase.asset,
-                apyType: estimatedCase.apyType,
-              }).within(($row) => {
-                expect($row.find('.TokenIcon__name')).to.contain(estimatedCase.asset);
-                expect($row.find('.Switcher__label')).to.contain(estimatedCase.apyType);
+          case constants.dashboardTypes.deposit:
+            it(`Check that asset name is ${estimatedCase.assetName},
+            with collateral type ${estimatedCase.collateralType}
+            ${estimatedCase.amount ? ' and amount ' + estimatedCase.amount : ''}`, () => {
+              cy.get(`[data-cy=dashboardSuppliedListItem_${estimatedCase.wrapped?'W':''}${estimatedCase.assetName}_${estimatedCase.isCollateral?"Collateral":"NoCollateral"}]`)
+                .within(($row) =>{
+                expect($row.find(`[data-cy="assetName"]`)).to.contain(estimatedCase.assetName);
+                if(estimatedCase.isCollateral){
+                  expect($row.find('.MuiSwitch-input')).to.have.attr("checked");
+                }else{
+                  expect($row.find('.MuiSwitch-input')).to.not.have.attr("checked");
+                }
                 if (estimatedCase.amount) {
-                  amountVerification(estimatedCase.amount);
+                  const _text = $row.find('[data-cy=nativeAmount]').text() as string;
+                  expect(_text).to.include(estimatedCase.amount.toString());
                 }
               });
             });
             break;
-          case constants.dashboardTypes.deposit:
-            it(`Check that asset name is ${estimatedCase.asset},
-            with collateral type ${estimatedCase.collateralType}
+          case constants.dashboardTypes.borrow:
+            it(`Check that asset name is ${estimatedCase.assetName},
+            with apy type ${estimatedCase.apyType}
             ${estimatedCase.amount ? ' and amount ' + estimatedCase.amount : ''}`, () => {
-              getDashBoardDepositRow({
-                assetName: estimatedCase.asset,
-                collateralType: estimatedCase.collateralType,
-              }).within(($row) => {
-                expect($row.find('.TokenIcon__name')).to.contain(estimatedCase.asset);
-                expect($row.find('.Switcher__label')).to.contain(estimatedCase.collateralType);
+              cy.get(`[data-cy=dashboardBorrowedListItem_${estimatedCase.wrapped?'W':''}${estimatedCase.assetName}_${estimatedCase.apyType}]`)
+                .within(($row) =>{
+                expect($row.find(`[data-cy="assetName"]`)).to.contain(estimatedCase.assetName);
+                expect($row.find(`[data-cy="apyButton"]`)).to.contain(estimatedCase.apyType);
                 if (estimatedCase.amount) {
-                  amountVerification(estimatedCase.amount);
+                  const _text = $row.find('[data-cy=nativeAmount]').text() as string;
+                  expect(_text).to.include(estimatedCase.amount.toString());
                 }
               });
             });
@@ -78,16 +82,13 @@ export const dashboardAssetValuesVerification = (
 };
 
 export const borrowsUnavailable = (skip: SkipType) => {
-  return describe('Check that borrows unavailable', () => {
+  return describe('Check that borrowing unavailable', () => {
     skipSetup(skip);
-    it('Open borrow page', () => {
-      cy.get('.Menu strong').contains('Borrow').click();
-      cy.get('.TableItem').first().click();
+    it('Open Dashboard', () => {
+      cy.get('[data-cy=menuDashboard]').find('a:contains("Dashboard")').wait(3000).click();
     });
     it('Check blocked message', () => {
-      cy.get('.Caption__description').contains(
-        'Deposit more collateral or repay part of your borrowings to increase your health factor and be able to borrow.'
-      );
+      cy.get('button').contains("Borrow").should("be.disabled");
     });
   });
 };

@@ -5,6 +5,7 @@
   "defaultCommandTimeout": 40000,
   "pageLoadTimeout": 120000,
   "video": false,
+  "watchForFileChanges": false,
   "retries": {
     "runMode": 1,
     "openMode": 0

@@ -51,6 +51,7 @@ export const SuppliedPositionsListItem = ({
           usageAsCollateralEnabledOnUser={usageAsCollateralEnabledOnUser}
           canBeEnabledAsCollateral={usageAsCollateralEnabled}
           onToggleSwitch={() => openCollateralChange(underlyingAsset)}
+          data-cy={`collateralStatus`}
         />
       </ListColumn>
 

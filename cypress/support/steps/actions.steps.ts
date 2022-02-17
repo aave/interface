@@ -1,43 +1,50 @@
 type SetAmount = {
   amount: number;
+  actionName: string;
+  assetName: string;
+  hasApproval: boolean;
   max?: boolean;
 };
 
-export const setAmount = ({ amount, max }: SetAmount) => {
+export const setAmount = ({ amount, actionName, assetName, hasApproval, max }: SetAmount) => {
+  cy.get("[data-cy=Modal]")
+    .find('button:contains("ENTER AN AMOUNT")')
+    .should('be.disabled')
   if (max) {
-    cy.get(`[data-cy=amountInput-maxBtn]`);
+    cy.get('[data-cy=Modal]').find('button:contains("Max")').click();
   } else {
-    cy.get(`[data-cy=amountInput]`).type(amount.toString(), { delay: 0 });
+    cy.get('[data-cy=Modal] input').first().type(amount.toString());
   }
-  cy.get('.BasicForm').find('.Button').click();
+  if(hasApproval){
+    cy.get(`[data-cy=Modal] button:contains("${actionName} ${assetName}")`).as('button');
+    cy.get('@button').should('not.be.disabled');
+  }else{
+    cy.get(`[data-cy=Modal] button:contains("APPROVE TO CONTINUE")`).as('button');
+    cy.get('@button').should('not.be.disabled');
+  }
 };
 
 type ConfirmAction = {
   hasApproval: boolean;
   actionName?: string;
+  assetName: string;
 };
 
-export const doConfirm = ({ hasApproval, actionName }: ConfirmAction) => {
-  const clickActionButton = (name?: string) => {
-    if (name) {
-      cy.get('.TxConfirmationView').get('.Button').contains(name).click();
-    } else {
-      cy.get('.TxConfirmationView').get('.Button').click();
-    }
-  };
-  if (hasApproval) {
-    clickActionButton(actionName);
-    cy.get('.TextStatus > p:contains("2/2 Success!")').scrollIntoView().should('be.visible');
-  } else {
-    cy.get('.TxTopInfo__title:contains("1/3 Approve")').scrollIntoView().should('be.visible');
-    cy.get('.TxConfirmationView').find('.Button').contains('Approve').click();
-    if (actionName != null)
-      cy.get(`.TxTopInfo__title:contains("2/3 ${actionName}")`)
-        .scrollIntoView()
-        .should('be.visible');
-    clickActionButton(actionName);
-    cy.get('.TextStatus > p:contains("3/3 Success!")').scrollIntoView().should('be.visible');
-  }
+export const doConfirm = ({ hasApproval, actionName, assetName }: ConfirmAction) => {
+  cy.log(`${hasApproval?"One step process":"Two step process"}`)
+if(!hasApproval){
+  cy.get(`[data-cy=Modal] button:contains("APPROVE TO CONTINUE")`).click()
+}
+  cy.get(`[data-cy=Modal] button:contains("${actionName} ${assetName}")`).as('button');
+  cy.get('@button').should('not.be.disabled').click();
+  cy.get("[data-cy=Modal] h2:contains('All done!')").should('be.visible');
+};
+
+export const doCloseModal = () =>{
+  return it(`Close modal popup`, () => {
+    cy.get('[data-cy=Modal] [data-cy=CloseModalIcon]').click();
+    cy.get('[data-cy=Modal]').should("not.exist");
+  });
 };
 
 function doChooseSwapToOption(assetName: string) {
@@ -79,17 +86,15 @@ export const getDashBoardBorrowRow = ({ assetName, apyType }: GetDashBoardBorrow
 
 type GetDashBoardDepositRow = {
   assetName: string;
-  collateralType?: string;
+  isCollateralType?: boolean;
 };
 
-export const getDashBoardDepositRow = ({ assetName, collateralType }: GetDashBoardDepositRow) => {
-  if (!collateralType) {
-    return cy.get(`[data-cy="dashboardDespositListItem${assetName}"]`).first();
+export const getDashBoardDepositRow = ({ assetName, isCollateralType }: GetDashBoardDepositRow) => {
+  if (isCollateralType) {
+    return cy.get(`[data-cy="dashboardSuppliedListItem_${assetName}_Collateral"],
+    [data-cy="dashboardSuppliedListItem_W${assetName}_Collateral"]`).first();
   } else {
-    return cy
-      .get(
-        `[data-cy="dashboardDespositListItem${assetName}"] .Switcher__label:contains('${collateralType}')`
-      )
-      .parents(`[data-cy="dashboardDespositListItem${assetName}"]`);
+    return cy.get(`[data-cy="dashboardSuppliedListItem_${assetName}_NoCollateral"],
+    [data-cy="dashboardSuppliedListItem_W${assetName}_NoCollateral"]`);
   }
 };

@@ -48,6 +48,7 @@ export const ListItemAPYButton = ({
           )
         }
         disabled={disabled}
+        data-cy={"apyButton"}
       >
         {borrowRateMode}
       </Button>

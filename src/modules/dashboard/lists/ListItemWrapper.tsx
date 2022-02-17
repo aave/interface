@@ -41,7 +41,7 @@ export const ListItemWrapper = ({
       <ListColumn maxWidth={160} isRow>
         <TokenIcon symbol={iconSymbol} fontSize="large" />
         <Tooltip title={symbol} arrow placement="top">
-          <Typography variant="subheader1" sx={{ ml: 3 }} noWrap>
+          <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
             {symbol}
           </Typography>
         </Tooltip>
