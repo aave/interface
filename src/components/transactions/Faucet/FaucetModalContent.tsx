@@ -65,7 +65,7 @@ export const FaucetModalContent = ({ underlyingAsset, handleClose }: FaucetModal
 
       {faucetTxState.txError && <TxErrorView errorMessage={faucetTxState.txError} />}
       {faucetTxState.success && !faucetTxState.txError && (
-        <TxSuccessView action="got" symbol={poolReserve.symbol} amount={normalizedAmount} />
+        <TxSuccessView action="received" symbol={poolReserve.symbol} amount={normalizedAmount} />
       )}
       {faucetTxState.gasEstimationError && (
         <GasEstimationError error={faucetTxState.gasEstimationError} />
