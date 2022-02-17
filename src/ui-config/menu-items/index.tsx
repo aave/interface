@@ -7,8 +7,10 @@ import GithubIcon from '/public/icons/github.svg';
 
 import { governanceConfig } from '../governanceConfig';
 import { MarketDataType } from '../marketsConfig';
-import { stakeConfig } from '../stakeConfig';
+import { getStakeConfig } from '../stakeConfig';
 import { ROUTES } from 'src/components/primitives/Link';
+
+const stakeConfig = getStakeConfig();
 
 interface Navigation {
   link: string;

@@ -1,7 +1,10 @@
 import { normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import { useLingui } from '@lingui/react';
 import { Typography } from '@mui/material';
+import { Variant } from '@mui/material/styles/createTypography';
 import { TypographyProps } from '@mui/material/Typography';
+import { TypographyPropsVariantOverrides } from '@mui/material/Typography/Typography';
+import { OverridableStringUnion } from '@mui/types';
 
 interface CompactNumberProps {
   value: string | number;
@@ -40,6 +43,8 @@ export interface FormattedNumberProps extends TypographyProps {
   visibleDecimals?: number;
   compact?: boolean;
   percent?: boolean;
+  symbolsColor?: string;
+  symbolsVariant?: OverridableStringUnion<Variant | 'inherit', TypographyPropsVariantOverrides>;
 }
 
 export function FormattedNumber({
@@ -48,6 +53,8 @@ export function FormattedNumber({
   visibleDecimals,
   compact,
   percent,
+  symbolsVariant,
+  symbolsColor,
   ...rest
 }: FormattedNumberProps) {
   const { i18n } = useLingui();
@@ -83,8 +90,26 @@ export function FormattedNumber({
       noWrap
       {...rest}
     >
-      {isSmallerThanMin && '< '}
-      {symbol?.toLowerCase() === 'usd' && !percent && '$ '}
+      {isSmallerThanMin && (
+        <Typography
+          component="span"
+          sx={{ mr: 0.5 }}
+          variant={symbolsVariant || rest.variant}
+          color={symbolsColor || 'text.secondary'}
+        >
+          {'<'}
+        </Typography>
+      )}
+      {symbol?.toLowerCase() === 'usd' && !percent && (
+        <Typography
+          component="span"
+          sx={{ mr: 0.5 }}
+          variant={symbolsVariant || rest.variant}
+          color={symbolsColor || 'text.secondary'}
+        >
+          $
+        </Typography>
+      )}
 
       <>
         {!forceCompact ? (
@@ -97,8 +122,26 @@ export function FormattedNumber({
         )}
       </>
 
-      {percent && ' %'}
-      {symbol?.toLowerCase() !== 'usd' && typeof symbol !== 'undefined' && ` ${symbol}`}
+      {percent && (
+        <Typography
+          component="span"
+          sx={{ ml: 0.5 }}
+          variant={symbolsVariant || rest.variant}
+          color={symbolsColor || 'text.secondary'}
+        >
+          %
+        </Typography>
+      )}
+      {symbol?.toLowerCase() !== 'usd' && typeof symbol !== 'undefined' && (
+        <Typography
+          component="span"
+          sx={{ ml: 0.5 }}
+          variant={symbolsVariant || rest.variant}
+          color={symbolsColor || 'text.secondary'}
+        >
+          {symbol}
+        </Typography>
+      )}
     </Typography>
   );
 }

@@ -3,18 +3,21 @@ import { Trans } from '@lingui/macro';
 import { Button, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useGovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
+import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { CustomProposalType } from 'src/static-build/proposal';
 
 export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType) {
+  const { openGovVote } = useModalContext();
+  const { currentAccount } = useWeb3Context();
+
   const [votedPower, setVotedPower] = useState<string>();
   const [support, setSupport] = useState<boolean>();
   const [didVote, setDidVote] = useState<boolean>();
-  const [power, setPower] = useState<string>();
+  const [power, setPower] = useState<string>('0');
 
   const { governanceService } = useGovernanceDataProvider();
-  const { currentAccount } = useWeb3Context();
-  const voteOngoing = state === ProposalState.Active || true; // TODO: remove true condition
+  const voteOngoing = state === ProposalState.Active;
 
   const fetchCurrentVote = async () => {
     try {
@@ -49,9 +52,15 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
   };
 
   useEffect(() => {
+    if (!currentAccount) {
+      setSupport(undefined);
+      setDidVote(undefined);
+      setVotedPower(undefined);
+      setPower('0');
+    }
     fetchCurrentVote();
     if (voteOngoing) fetchVotingPower();
-  }, [voteOngoing]);
+  }, [voteOngoing, currentAccount]);
 
   return (
     <>
@@ -67,9 +76,33 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
         <br />
         Power at the time of creation: {power}
         <br />
-        {voteOngoing && (
-          <Button variant="contained" onClick={() => console.log('TODO: cast vote')}>
-            Vote
+        {currentAccount && voteOngoing && (
+          <>
+            <Button
+              color="success"
+              variant="contained"
+              onClick={() => openGovVote(id, true, power)}
+              disabled={support === true}
+            >
+              <Trans>Vote YAE</Trans>
+            </Button>
+            <Button
+              color="error"
+              variant="contained"
+              onClick={() => openGovVote(id, false, power)}
+              disabled={support === false}
+            >
+              <Trans>Vote NAY</Trans>
+            </Button>
+          </>
+        )}
+        {!currentAccount && (
+          <Button
+            variant="contained"
+            onClick={() => alert('TODO: connect dummy')}
+            disabled={support === false}
+          >
+            Connect
           </Button>
         )}
       </Typography>

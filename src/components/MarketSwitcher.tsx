@@ -139,6 +139,7 @@ export const MarketSwitcher = () => {
       }}
       SelectProps={{
         native: false,
+        className: 'MarketSwitcher__select',
         IconComponent: (props) => (
           <SvgIcon fontSize="medium" {...props}>
             <ChevronDownIcon />
@@ -169,7 +170,10 @@ export const MarketSwitcher = () => {
           );
         },
         sx: {
-          '.MuiSelect-outlined': { p: 0, backgroundColor: 'transparent !important' },
+          '&.MarketSwitcher__select .MuiSelect-outlined': {
+            p: 0,
+            backgroundColor: 'transparent !important',
+          },
           '.MuiSelect-icon': { color: 'common.white' },
         },
         MenuProps: {

@@ -16,6 +16,7 @@ import { SupplyAssetsItem } from './types';
 export const SupplyAssetsListItem = ({
   symbol,
   iconSymbol,
+  name,
   walletBalance,
   walletBalanceUSD,
   supplyCap,
@@ -33,6 +34,8 @@ export const SupplyAssetsListItem = ({
     <ListItemWrapper
       symbol={symbol}
       iconSymbol={iconSymbol}
+      name={name}
+      underlyingAsset={underlyingAsset}
       data-cy={`dashboardSupplyListItem_${symbol.toUpperCase()}`}
     >
       <ListValueColumn

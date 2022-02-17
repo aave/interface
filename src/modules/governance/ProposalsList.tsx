@@ -14,6 +14,8 @@ import { ProposalListItem } from './ProposalListItem';
 import { enhanceProposalWithTimes } from './utils/formatProposal';
 
 export function ProposalsList({ proposals: initialProposals }: GovernancePageProps) {
+  // will only initially be set to true, till the client is hydrated with new proposals
+  const [loadingNewProposals, setLoadingNewProposals] = useState(true);
   const [proposals, setProposals] = useState(initialProposals);
   const [proposalFilter, setProposalFilter] = useState<string>('all');
 
@@ -22,23 +24,28 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
   };
 
   async function fetchNewProposals() {
-    const count = await governanceContract.getProposalsCount();
-    const nextProposals: GovernancePageProps['proposals'] = [];
-    console.log(`fetching ${count - proposals.length} new proposals`);
-    for (let i = proposals.length; i < count; i++) {
-      const { values, ...rest } = await governanceContract.getProposal({ proposalId: i });
-      const proposal = await enhanceProposalWithTimes(rest);
-      nextProposals.push({
-        ipfs: {
-          id: i,
-          originalHash: proposal.ipfsHash,
-          ...(await getProposalMetadata(proposal.ipfsHash, governanceConfig?.ipfsGateway)),
-        },
-        proposal: proposal,
-        prerendered: false,
-      });
+    try {
+      const count = await governanceContract.getProposalsCount();
+      const nextProposals: GovernancePageProps['proposals'] = [];
+      console.log(`fetching ${count - proposals.length} new proposals`);
+      for (let i = proposals.length; i < count; i++) {
+        const { values, ...rest } = await governanceContract.getProposal({ proposalId: i });
+        const proposal = await enhanceProposalWithTimes(rest);
+        nextProposals.push({
+          ipfs: {
+            id: i,
+            originalHash: proposal.ipfsHash,
+            ...(await getProposalMetadata(proposal.ipfsHash, governanceConfig?.ipfsGateway)),
+          },
+          proposal: proposal,
+          prerendered: false,
+        });
+      }
+      setProposals((p) => [...nextProposals.reverse(), ...p]);
+      setLoadingNewProposals(false);
+    } catch (e) {
+      console.log('error fetching new proposals', e);
     }
-    setProposals((p) => [...nextProposals.reverse(), ...p]);
   }
 
   async function updatePendingProposals() {
@@ -46,20 +53,24 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
       ({ proposal }) => !isProposalStateImmutable(proposal)
     );
 
-    if (pendingProposals.length) {
-      const copy = [...proposals];
-      for (const { proposal } of pendingProposals) {
-        const { values, ...rest } = await governanceContract.getProposal({
-          proposalId: proposal.id,
-        });
-        copy[proposal.id].proposal = await enhanceProposalWithTimes(rest);
+    try {
+      if (pendingProposals.length) {
+        const copy = [...proposals];
+        for (const { proposal } of pendingProposals) {
+          const { values, ...rest } = await governanceContract.getProposal({
+            proposalId: proposal.id,
+          });
+          copy[proposal.id].proposal = await enhanceProposalWithTimes(rest);
+        }
+        setProposals(copy);
       }
-      setProposals(copy);
+    } catch (e) {
+      console.log('error updating proposals', e);
     }
   }
 
-  usePolling(fetchNewProposals, 30000, false, []);
-  usePolling(updatePendingProposals, 10000, false, []);
+  usePolling(fetchNewProposals, 30000, false, [proposals.length]);
+  usePolling(updatePendingProposals, 10000, false, [proposals.length]);
   return (
     <div>
       <Box sx={{ px: 6, py: 8, display: 'flex', alignItems: 'center' }}>
@@ -90,6 +101,7 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
           ))}
         </Select>
       </Box>
+      {loadingNewProposals && <div>loading TODO: replace with sth nicer</div>}
       {proposals
         .filter(
           (proposal) => proposalFilter === 'all' || proposal.proposal.state === proposalFilter

@@ -18,7 +18,7 @@ export type Pool = {
   address: string;
 };
 
-const ENABLE_TESTNET =
+export const ENABLE_TESTNET =
   process.env.ENABLE_TESTNET === 'true' ||
   global?.window?.localStorage.getItem('testnetsEnabled') === 'true';
 

@@ -1,4 +1,4 @@
-import { AaveGovernanceService } from '@aave/contract-helpers';
+import { AaveGovernanceService, GovernancePowerDelegationToken } from '@aave/contract-helpers';
 import React, { useContext } from 'react';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 
@@ -6,6 +6,7 @@ import { _useGovernanceDataRPC } from './_useGovernanceDataRPC';
 
 interface GovernanceDataProviderContextType {
   governanceService: AaveGovernanceService;
+  governanceDelegationService: GovernancePowerDelegationToken;
 }
 
 const GovernanceDataProviderContext = React.createContext<GovernanceDataProviderContextType>(
@@ -20,9 +21,13 @@ const GovernanceDataProviderContext = React.createContext<GovernanceDataProvider
 export const GovernanceDataProvider: React.FC = ({ children }) => {
   if (!governanceConfig) return <>{children}</>;
 
-  const { governanceService } = _useGovernanceDataRPC({ governanceConfig });
+  const { governanceService, governanceDelegationService } = _useGovernanceDataRPC({
+    governanceConfig,
+  });
   return (
-    <GovernanceDataProviderContext.Provider value={{ governanceService }}>
+    <GovernanceDataProviderContext.Provider
+      value={{ governanceService, governanceDelegationService }}
+    >
       {children}
     </GovernanceDataProviderContext.Provider>
   );
