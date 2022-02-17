@@ -7,6 +7,7 @@ import {
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
+import { parseUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { TxState } from 'src/helpers/types';
 import {
@@ -23,6 +24,7 @@ import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
+import { GasStation } from '../GasStation/GasStation';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { WithdrawActions } from './WithdrawActions';
 
@@ -194,7 +196,8 @@ export const WithdrawModalContent = ({
 
   // calculating input usd value
   const usdValue = valueToBigNumber(amount).multipliedBy(userReserve.reserve.priceInUSD);
-
+  console.log('hf:: ', user.healthFactor);
+  console.log('future hf:: ', healthFactorAfterWithdraw.toString());
   return (
     <>
       {!withdrawTxState.txError && !withdrawTxState.success && (
@@ -237,20 +240,24 @@ export const WithdrawModalContent = ({
               </Typography>
             )}
 
-          <TxModalDetails
-            showHf={showHealthFactor}
-            healthFactor={user.healthFactor}
-            futureHealthFactor={healthFactorAfterWithdraw.toString()}
-            gasLimit={gasLimit}
-            setActionUnWrapped={
-              poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
-                ? setWithdrawUnWrapped
-                : undefined
-            }
-            unWrappedSymbol={networkConfig.baseAssetSymbol}
-            actionUnWrapped={withdrawUnWrapped}
-            symbol={poolReserve.symbol}
-          />
+          {healthFactorAfterWithdraw.toString() === '-1' ? (
+            <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} />
+          ) : (
+            <TxModalDetails
+              showHf={showHealthFactor}
+              healthFactor={user.healthFactor}
+              futureHealthFactor={healthFactorAfterWithdraw.toString()}
+              gasLimit={gasLimit}
+              setActionUnWrapped={
+                poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
+                  ? setWithdrawUnWrapped
+                  : undefined
+              }
+              unWrappedSymbol={networkConfig.baseAssetSymbol}
+              actionUnWrapped={withdrawUnWrapped}
+              symbol={poolReserve.symbol}
+            />
+          )}
         </>
       )}
 
