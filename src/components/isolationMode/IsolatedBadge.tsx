@@ -1,17 +1,15 @@
 import { InformationCircleIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, SvgIcon, Typography } from '@mui/material';
-import { useState } from 'react';
 
-import { IsolatedAssetModal } from './IsolatedAssetModal';
+import { ContentWithTooltip } from '../ContentWithTooltip';
+import { IsolatedTooltip } from './IsolatedTooltip';
 
 export const IsolatedBadge = () => {
-  const [open, setOpen] = useState(false);
-
   const iconSize = 14;
 
   return (
-    <>
+    <ContentWithTooltip tooltipContent={<IsolatedTooltip />} withoutHover>
       <Box
         sx={{
           display: 'inline-flex',
@@ -22,7 +20,6 @@ export const IsolatedBadge = () => {
           transition: 'all 0.2s easy',
           '&:hover': { opacity: 0.6 },
         }}
-        onClick={() => setOpen(true)}
       >
         <Typography variant="secondary12" color="text.secondary">
           <Trans>Isolated</Trans>
@@ -31,8 +28,6 @@ export const IsolatedBadge = () => {
           <InformationCircleIcon />
         </SvgIcon>
       </Box>
-
-      {open && <IsolatedAssetModal open={open} setOpen={setOpen} />}
-    </>
+    </ContentWithTooltip>
   );
 };
