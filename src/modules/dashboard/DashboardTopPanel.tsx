@@ -20,7 +20,7 @@ import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvi
 import { LiquidationRiskParametresInfoModal } from './LiquidationRiskParametresModal/LiquidationRiskParametresModal';
 
 export const DashboardTopPanel = () => {
-  const { currentNetworkConfig, currentMarketData } = useProtocolDataContext();
+  const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
   const { user, reserves } = useAppDataContext();
   const { currentAccount } = useWeb3Context();
   const [open, setOpen] = useState(false);
@@ -38,11 +38,16 @@ export const DashboardTopPanel = () => {
       let tokenPrice = 0;
       // getting price from reserves for the native rewards for v2 markets
       if (!currentMarketData.v3 && Number(rewardBalance) > 0) {
-        reserves.forEach((reserve) => {
-          if (reserve.symbol === currentNetworkConfig.wrappedBaseAssetSymbol) {
-            tokenPrice = Number(reserve.priceInUSD);
-          }
-        });
+        if (currentMarket === 'proto_mainnet') {
+          const aave = reserves.find((reserve) => reserve.symbol === 'AAVE');
+          tokenPrice = aave ? Number(aave.priceInUSD) : 0;
+        } else {
+          reserves.forEach((reserve) => {
+            if (reserve.symbol === currentNetworkConfig.wrappedBaseAssetSymbol) {
+              tokenPrice = Number(reserve.priceInUSD);
+            }
+          });
+        }
       } else {
         tokenPrice = Number(incentive.rewardPriceFeed);
       }
