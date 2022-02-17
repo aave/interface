@@ -1,7 +1,10 @@
 import { InterestRate } from '@aave/contract-helpers';
+import { PlusSmIcon } from '@heroicons/react/outline';
 import { CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, SvgIcon, Typography } from '@mui/material';
+import { Box, Button, SvgIcon, Typography } from '@mui/material';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3ContextProvider';
 
 export type SuccessTxViewProps = {
   action?: string;
@@ -9,9 +12,19 @@ export type SuccessTxViewProps = {
   symbol?: string;
   collateral?: boolean;
   rate?: InterestRate;
+  addToken?: ERC20TokenType;
 };
 
-export const TxSuccessView = ({ action, amount, symbol, collateral, rate }: SuccessTxViewProps) => {
+export const TxSuccessView = ({
+  action,
+  amount,
+  symbol,
+  collateral,
+  rate,
+  addToken,
+}: SuccessTxViewProps) => {
+  const { addERC20Token } = useWeb3Context();
+
   return (
     <Box
       sx={{
@@ -65,6 +78,16 @@ export const TxSuccessView = ({ action, amount, symbol, collateral, rate }: Succ
               You switched to {rate === InterestRate.Variable ? 'variable' : 'stable'} rate
             </Trans>
           </Typography>
+        )}
+        {addToken && (
+          <Button variant="outlined" onClick={() => addERC20Token(addToken)}>
+            <Typography variant="buttonS">
+              <SvgIcon>
+                <PlusSmIcon />
+              </SvgIcon>
+              <Trans>ADD {addToken.symbol} TO THE WALLET</Trans>
+            </Typography>
+          </Button>
         )}
       </Box>
     </Box>
