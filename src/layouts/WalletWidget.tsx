@@ -79,6 +79,7 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
     if (connected) {
       disconnectWallet();
       handleClose();
+      localStorage.removeItem('mockWalletAddress');
     }
   };
 
