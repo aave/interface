@@ -70,7 +70,7 @@ export const FaucetActions = ({
         <RightHelperText
           actionHash={mainTxState.txHash}
           chainId={connectedChainId}
-          action="collateral change"
+          action="faucet"
         />
       }
     >
