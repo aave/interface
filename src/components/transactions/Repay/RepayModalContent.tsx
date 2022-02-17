@@ -55,7 +55,8 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
 
   // states
   const [repayTxState, setRepayTxState] = useState<TxState>({ success: false });
-  const [amount, setAmount] = useState('0');
+  const [amount, setAmount] = useState('');
+  const [amountToRepay, setAmountToRepay] = useState(amount);
   const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
   const [repayWithCollateral, setRepayWithCollateral] = useState(false);
   const [tokenToRepayWith, setTokenToRepayWith] = useState<Asset>({
@@ -65,7 +66,6 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
   });
   const [assets, setAssets] = useState<Asset[]>([tokenToRepayWith]);
   const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
-  const [amountToRepay, setAmountToRepay] = useState(amount);
 
   const userReserve = user?.userReservesData.find(
     (userReserve) => underlyingAsset === userReserve.underlyingAsset
@@ -167,7 +167,8 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
     }
   }, [amount, chainId, walletBalance, safeAmountToRepayAll]);
 
-  let amountToRepayUI = valueToBigNumber(amountToRepay);
+  let amountToRepayUI =
+    amountToRepay === '' ? valueToBigNumber(0) : valueToBigNumber(amountToRepay);
   if (amountToRepay === '-1') {
     amountToRepayUI = BigNumber.min(
       repayWithATokens ? underlyingBalance : walletBalance,
@@ -306,7 +307,7 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
           </Box>
 
           <AssetInput
-            value={amountToRepayUI.toString()}
+            value={amountToRepay === '' ? amountToRepay : amountToRepayUI.toString()}
             onChange={setAmount}
             usdValue={usdValue.toString()}
             symbol={tokenToRepayWith.symbol}

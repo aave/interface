@@ -45,7 +45,7 @@ export const WithdrawModalContent = ({
   const { chainId: connectedChainId } = useWeb3Context();
 
   const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
-  const [amount, setAmount] = useState('0');
+  const [amount, setAmount] = useState('');
   const [withdrawTxState, setWithdrawTxState] = useState<TxState>({ success: false });
   const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
   const [amountToWithdraw, setAmountToWithdraw] = useState(amount);
@@ -105,7 +105,8 @@ export const WithdrawModalContent = ({
     }
   }, [amount, currentMarketData.v3]);
 
-  let displayAmountToWithdraw = valueToBigNumber(amountToWithdraw);
+  let displayAmountToWithdraw =
+    amountToWithdraw === '' ? valueToBigNumber(0) : valueToBigNumber(amountToWithdraw);
   if (amountToWithdraw === '-1') {
     displayAmountToWithdraw = maxAmountToWithdraw;
   }
@@ -204,7 +205,7 @@ export const WithdrawModalContent = ({
           )}
 
           <AssetInput
-            value={displayAmountToWithdraw.toString()}
+            value={amountToWithdraw === '' ? amountToWithdraw : displayAmountToWithdraw.toString()}
             onChange={setAmount}
             symbol={
               withdrawUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
