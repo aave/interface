@@ -3,12 +3,14 @@ import Typography from '@mui/material/Typography';
 
 import { InfoContentWrapper } from './InfoContentWrapper';
 
-// TODO: need texts
 export const BorrowPowerInfoContent = () => {
   return (
-    <InfoContentWrapper caption={<Trans>Borrow power</Trans>}>
+    <InfoContentWrapper caption={<Trans>Borrowing Power</Trans>}>
       <Typography>
-        <Trans>Borrow power</Trans>
+        <Trans>
+          The % of your total bowering power used. This is based on the amount of your collateral
+          supplied and the total amount that you can borrow.
+        </Trans>
       </Typography>
     </InfoContentWrapper>
   );

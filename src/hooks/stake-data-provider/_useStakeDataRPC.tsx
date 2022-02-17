@@ -8,10 +8,11 @@ import {
   C_StakeUserUiDataDocument,
   C_StakeUserUiDataQuery,
 } from './graphql/hooks';
-import { stakeConfig } from 'src/ui-config/stakeConfig';
+import { getStakeConfig } from 'src/ui-config/stakeConfig';
 
 export function _useStakeDataRPC(currentAccount?: string, skip = false) {
   const { cache } = useApolloClient();
+  const stakeConfig = getStakeConfig();
 
   const loadGeneralStakeData = async () => {
     if (!stakeConfig) return;
@@ -32,11 +33,12 @@ export function _useStakeDataRPC(currentAccount?: string, skip = false) {
         },
       });
     } catch (e) {
-      console.log('Stake data loading error', e);
+      console.log('Stake general data loading error', e);
     }
   };
 
   const loadUserStakeData = async () => {
+    const stakeConfig = getStakeConfig();
     if (!stakeConfig || !currentAccount) return;
     const uiStakeDataProvider = new UiStakeDataProvider({
       provider: getProvider(stakeConfig.chainId),
@@ -58,7 +60,7 @@ export function _useStakeDataRPC(currentAccount?: string, skip = false) {
         variables: { userAddress: currentAccount },
       });
     } catch (e) {
-      console.log('Stake data loading error', e);
+      console.log('Stake user data user loading error', e);
     }
   };
 
