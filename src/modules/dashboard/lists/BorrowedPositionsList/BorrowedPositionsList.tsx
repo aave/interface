@@ -5,8 +5,8 @@ import { useMediaQuery, useTheme } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
-import { APYTypeInfoContent } from '../../../../components/infoModalContents/APYTypeInfoContent';
-import { BorrowPowerInfoContent } from '../../../../components/infoModalContents/BorrowPowerInfoContent';
+import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
+import { BorrowPowerTooltip } from '../../../../components/infoTooltips/BorrowPowerTooltip';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import {
   ComputedUserReserveData,
@@ -48,7 +48,7 @@ export const BorrowedPositionsList = () => {
   const head = [
     <Trans key="Debt">Debt</Trans>,
     <Trans key="APY">APY</Trans>,
-    <APYTypeInfoContent text={<Trans>APY type</Trans>} key="APY type" variant="subheader2" />,
+    <APYTypeTooltip text={<Trans>APY type</Trans>} key="APY type" variant="subheader2" />,
   ];
 
   return (
@@ -69,7 +69,7 @@ export const BorrowedPositionsList = () => {
                 title={<Trans>Borrow power used</Trans>}
                 value={collateralUsagePercent || 0}
                 percent
-                modalContent={<BorrowPowerInfoContent />}
+                tooltip={<BorrowPowerTooltip />}
               />
             </>
           )}
