@@ -66,6 +66,8 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
   });
   const [assets, setAssets] = useState<Asset[]>([tokenToRepayWith]);
   const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
+  const [isMax, setIsMax] = useState(false);
+  const [maxAmount, setMaxAmount] = useState('0');
 
   const userReserve = user?.userReservesData.find(
     (userReserve) => underlyingAsset === userReserve.underlyingAsset
@@ -162,10 +164,12 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
       } else {
         setAmountToRepay(amount);
       }
+      setIsMax(true);
     } else if (Number(amount) > safeAmountToRepayAll.toNumber()) {
       setAmount('-1');
     } else {
       setAmountToRepay(amount);
+      isMax && setIsMax(false);
     }
   }, [amount, chainId, walletBalance, safeAmountToRepayAll]);
 
@@ -177,6 +181,12 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
       maxAmountToRepay
     );
   }
+
+  useEffect(() => {
+    if (isMax) {
+      setMaxAmount(BigNumber.min(walletBalance, safeAmountToRepayAll).toString());
+    }
+  }, [isMax]);
 
   // debt remaining after repay
   const amountAfterRepay = maxAmountToRepay.minus(amountToRepayUI).toString();
@@ -262,7 +272,7 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
 
   // calculating input usd value
   const usdValue = valueToBigNumber(amountToRepayUI).multipliedBy(reserve.priceInUSD);
-  console.log('amount to repay ::: ', amountToRepayUI.toString());
+  console.log('amount to repay ::: ', maxAmount.toString());
   return (
     <>
       {!repayTxState.txError && !repayTxState.success && (
@@ -339,7 +349,7 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
       {repayTxState.success && !repayTxState.txError && (
         <TxSuccessView
           action="repayed"
-          amount={amountToRepayUI.toString()}
+          amount={isMax ? maxAmount : amountToRepayUI.toString()}
           symbol={poolReserve.symbol}
         />
       )}
