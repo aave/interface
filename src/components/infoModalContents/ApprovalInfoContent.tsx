@@ -9,7 +9,7 @@ export const ApprovalInfoContent = () => {
     <InfoContentWrapper caption={<Trans>Approval</Trans>}>
       <Typography>
         <Trans>
-          Before initiating a transaction within Aave you must sign and approve it. It doesnt cost
+          Before initiating a transaction within Aave you must sign or approve it. It doesnt cost
           anything to sign. You can learn more in our
           <Link fontWeight={500} href={'https://docs.aave.com/faq/'}>
             FAQ
