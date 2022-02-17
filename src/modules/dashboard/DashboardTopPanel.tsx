@@ -1,5 +1,4 @@
 import { normalize, UserIncentiveData, valueToBigNumber } from '@aave/math-utils';
-import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
 import * as React from 'react';
@@ -10,10 +9,8 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 import { HealthFactorNumber } from '../../components/HealthFactorNumber';
-import { HFInfoContent } from '../../components/infoModalContents/HFInfoContent';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { NoData } from '../../components/primitives/NoData';
-import { TextWithModal } from '../../components/TextWithModal';
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvider';
@@ -113,20 +110,7 @@ export const DashboardTopPanel = () => {
         </TopInfoPanelItem>
 
         {currentAccount && user?.healthFactor !== '-1' && (
-          <TopInfoPanelItem
-            title={
-              <TextWithModal
-                variant={!downToSM ? 'description' : 'caption'}
-                text={<Trans>Health factor</Trans>}
-                iconSize={13}
-                iconColor="#FFFFFF3B"
-                icon={<QuestionMarkCircleIcon />}
-                withContentButton
-              >
-                <HFInfoContent />
-              </TextWithModal>
-            }
-          >
+          <TopInfoPanelItem title={<Trans>Health factor</Trans>}>
             <HealthFactorNumber
               value={user?.healthFactor || '-1'}
               variant={valueTypographyVariant}
