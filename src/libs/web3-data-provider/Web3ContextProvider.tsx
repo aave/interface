@@ -203,6 +203,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
                 address,
                 symbol,
                 decimals,
+                image,
               },
             },
           });
