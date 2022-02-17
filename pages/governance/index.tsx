@@ -1,5 +1,4 @@
 import { Grid, Paper } from '@mui/material';
-import { InferGetStaticPropsType } from 'next';
 import { AaveTokensBalanceProvider } from 'src/hooks/governance-data-provider/AaveTokensDataProvider';
 import { GovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
 import { MainLayout } from 'src/layouts/MainLayout';

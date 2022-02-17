@@ -1,8 +1,8 @@
 import { Trans } from '@lingui/macro';
 import { useMediaQuery, useTheme } from '@mui/material';
 
-import { CollateralInfoContent } from '../../../../components/infoModalContents/CollateralInfoContent';
-import { CollateralSwitchInfoContent } from '../../../../components/infoModalContents/CollateralSwitchInfoContent';
+import { CollateralSwitchTooltip } from '../../../../components/infoTooltips/CollateralSwitchTooltip';
+import { CollateralTooltip } from '../../../../components/infoTooltips/CollateralTooltip';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { useAppDataContext } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { DashboardContentNoData } from '../../DashboardContentNoData';
@@ -22,7 +22,7 @@ export const SuppliedPositionsList = () => {
   const head = [
     <Trans key="Balance">Balance</Trans>,
     <Trans key="APY">APY</Trans>,
-    <CollateralSwitchInfoContent
+    <CollateralSwitchTooltip
       text={<Trans>Collateral</Trans>}
       key="Collateral"
       variant="subheader2"
@@ -46,7 +46,7 @@ export const SuppliedPositionsList = () => {
               <ListTopInfoItem
                 title={<Trans>Collateral</Trans>}
                 value={user?.totalCollateralUSD || 0}
-                modalContent={<CollateralInfoContent />}
+                tooltip={<CollateralTooltip />}
               />
             </>
           )}

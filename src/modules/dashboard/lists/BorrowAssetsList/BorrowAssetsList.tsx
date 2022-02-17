@@ -3,7 +3,8 @@ import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Alert, Box, useMediaQuery, useTheme } from '@mui/material';
 
-import { BorrowAvailableInfoContent } from '../../../../components/infoModalContents/BorrowAvailableInfoContent';
+import { CapType } from '../../../../components/caps/helper';
+import { AvailableTooltip } from '../../../../components/infoTooltips/AvailableTooltip';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { useAppDataContext } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
@@ -75,7 +76,8 @@ export const BorrowAssetsList = () => {
         );
 
   const head = [
-    <BorrowAvailableInfoContent
+    <AvailableTooltip
+      capType={CapType.borrowCap}
       text={<Trans>Available</Trans>}
       key="Available"
       variant="subheader2"

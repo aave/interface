@@ -8,6 +8,8 @@ interface ContentWithTooltipProps {
   tooltipContent: ReactElement<any, string | JSXElementConstructor<any>>;
   placement?: 'top' | 'bottom';
   withoutHover?: boolean;
+  open?: boolean;
+  setOpen?: (value: boolean) => void;
 }
 
 const PopperComponent = styled(Popper)(
@@ -18,6 +20,7 @@ const PopperComponent = styled(Popper)(
       p: 0,
       borderRadius: '6px',
       boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
+      maxWidth: '280px',
     },
     '.MuiTooltip-arrow': {
       color: 'background.paper',
@@ -33,20 +36,28 @@ export const ContentWithTooltip = ({
   tooltipContent,
   placement = 'top',
   withoutHover,
+  open,
+  setOpen,
 }: ContentWithTooltipProps) => {
-  const [open, setOpen] = useState(false);
+  const [openTooltip, setOpenTooltip] = useState(false);
+
+  const formattedOpen = typeof open !== 'undefined' ? open : openTooltip;
+  const toggleOpen = () =>
+    typeof setOpen !== 'undefined' ? setOpen(!formattedOpen) : setOpenTooltip(!formattedOpen);
+  const handleClose = () =>
+    typeof setOpen !== 'undefined' ? setOpen(false) : setOpenTooltip(false);
 
   return (
     <Tooltip
-      open={open}
-      onClose={() => setOpen(false)}
+      open={formattedOpen}
+      onClose={handleClose}
       disableFocusListener
       disableHoverListener
       disableTouchListener
       placement={placement}
       PopperComponent={PopperComponent}
       title={
-        <ClickAwayListener onClickAway={() => setOpen(false)}>
+        <ClickAwayListener onClickAway={handleClose}>
           <Box
             sx={{
               py: 4,
@@ -72,9 +83,13 @@ export const ContentWithTooltip = ({
           display: 'inline-flex',
           cursor: 'pointer',
           transition: 'all 0.2s ease',
-          '&:hover': { opacity: withoutHover ? 1 : open ? 1 : 0.5 },
+          '&:hover': { opacity: withoutHover ? 1 : formattedOpen ? 1 : 0.5 },
         }}
-        onClick={() => setOpen(true)}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          toggleOpen();
+        }}
       >
         {children}
       </Box>
