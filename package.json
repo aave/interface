@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:analyze": "ANALYZE=true yarn build",
     "build:static": "next build && next export",
     "serve:static": "npx serve out",
     "export": "next export",
@@ -35,6 +36,7 @@
     "@lingui/react": "^3.13.2",
     "@mui/icons-material": "^5.4.2",
     "@mui/material": "^5.4.2",
+    "@next/bundle-analyzer": "^12.0.10",
     "@toruslabs/torus-embed": "^1.20.4",
     "@types/d3-array": "^3.0.2",
     "@types/d3-time-format": "^4.0.0",
