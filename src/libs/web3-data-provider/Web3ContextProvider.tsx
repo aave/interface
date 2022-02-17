@@ -1,4 +1,4 @@
-import { transactionType } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS, transactionType } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import {
   JsonRpcProvider,
@@ -13,6 +13,13 @@ import { hexToAscii } from 'src/utils/utils';
 import Web3Modal from 'web3modal';
 
 import { Web3Context } from '../hooks/useWeb3Context';
+
+export type ERC20TokenType = {
+  address: string;
+  symbol: string;
+  decimals: number;
+  image?: string;
+};
 
 export type Web3Data = {
   connectWallet: () => Promise<Web3Provider | undefined>;
@@ -179,6 +186,26 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     },
     [provider?.network.chainId]
   );
+
+  const addERC20Token = useCallback(
+    async ({address, symbol, decimals, image}: ERC20TokenType): Promise<boolean> => {
+      if (address.toLowerCase() !== API_ETH_MOCK_ADDRESS.toLowerCase()) {
+        return provider.send({
+          method: 'wallet_watchAsset',
+          params: {
+            type: 'ERC20',
+            options: {
+              address,
+              symbol,
+              decimals,
+              image,
+            },
+          },
+        });
+      }
+      return false;
+    }, []
+  )
 
   const web3ProviderData = useMemo(
     () => ({
