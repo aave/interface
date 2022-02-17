@@ -471,11 +471,14 @@ export function getThemedComponents(theme: Theme) {
       MuiList: {
         styleOverrides: {
           root: {
-            padding: 0,
             '.MuiMenuItem-root+.MuiDivider-root': {
-              marginTop: 0,
-              marginBottom: 0,
+              marginTop: '4px',
+              marginBottom: '4px',
             },
+          },
+          padding: {
+            paddingTop: '4px',
+            paddingBottom: '4px',
           },
         },
       },
@@ -497,6 +500,8 @@ export function getThemedComponents(theme: Theme) {
         styleOverrides: {
           root: {
             color: theme.palette.primary.light,
+            minWidth: 'unset !important',
+            marginRight: '12px',
           },
         },
       },

@@ -35,11 +35,17 @@ export const SuppliedPositionsListMobileItem = ({
       (reserve.isIsolated && user.totalCollateralMarketReferenceCurrency === '0'));
 
   return (
-    <ListMobileItemWrapper symbol={symbol} iconSymbol={iconSymbol} name={name}>
+    <ListMobileItemWrapper
+      symbol={symbol}
+      iconSymbol={iconSymbol}
+      name={name}
+      underlyingAsset={underlyingAsset}
+    >
       <ListValueRow
         title={<Trans>Supply balance</Trans>}
         value={Number(underlyingBalance)}
         subValue={Number(underlyingBalanceUSD)}
+        disabled={Number(underlyingBalance) === 0}
       />
 
       <Row

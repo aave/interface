@@ -165,6 +165,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
             symbol="USD"
             variant="secondary12"
             color="text.disabled"
+            symbolsColor="text.disabled"
             flexGrow={1}
           />
 
@@ -175,6 +176,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
               compact
               variant="secondary12"
               color="text.secondary"
+              symbolsColor="text.disabled"
             />
           </Typography>
 
