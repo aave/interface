@@ -25,8 +25,8 @@ export enum ErrorType {
 }
 
 export const ClaimRewardsModalContent = ({ handleClose }: ClaimRewardsModalContentProps) => {
-  const { user } = useAppDataContext();
-  const { currentChainId } = useProtocolDataContext();
+  const { user, reserves } = useAppDataContext();
+  const { currentChainId, currentNetworkConfig, currentMarketData } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
 
   const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
@@ -48,7 +48,20 @@ export const ClaimRewardsModalContent = ({ handleClose }: ClaimRewardsModalConte
     Object.keys(user.calculatedUserIncentives).forEach((rewardTokenAddress) => {
       const incentive: UserIncentiveData = user.calculatedUserIncentives[rewardTokenAddress];
       const rewardBalance = normalize(incentive.claimableRewards, incentive.rewardTokenDecimals);
-      const rewardBalanceUsd = Number(rewardBalance) * Number(incentive.rewardPriceFeed);
+
+      let tokenPrice = 0;
+      // getting price from reserves for the native rewards for v2 markets
+      if (!currentMarketData.v3 && Number(rewardBalance) > 0) {
+        reserves.forEach((reserve) => {
+          if (reserve.symbol === currentNetworkConfig.wrappedBaseAssetSymbol) {
+            tokenPrice = Number(reserve.priceInUSD);
+          }
+        });
+      } else {
+        tokenPrice = Number(incentive.rewardPriceFeed);
+      }
+
+      const rewardBalanceUsd = Number(rewardBalance) * tokenPrice;
 
       incentive.assets.forEach((asset) => {
         if (allAssets.indexOf(asset) === -1) {
