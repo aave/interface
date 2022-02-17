@@ -30,11 +30,17 @@ export const BorrowAssetsListMobileItem = ({
   const borrowButtonDisable = isFreezed || Number(availableBorrows) <= 0;
 
   return (
-    <ListMobileItemWrapper symbol={symbol} iconSymbol={iconSymbol} name={name}>
+    <ListMobileItemWrapper
+      symbol={symbol}
+      iconSymbol={iconSymbol}
+      name={name}
+      underlyingAsset={underlyingAsset}
+    >
       <ListValueRow
         title={<Trans>Available to borrow</Trans>}
         value={Number(availableBorrows)}
         subValue={Number(availableBorrowsInUSD)}
+        disabled={Number(availableBorrows) === 0}
         capsComponent={
           <CapsHint
             capType={CapType.borrowCap}

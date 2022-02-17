@@ -31,11 +31,17 @@ export const SupplyAssetsListMobileItem = ({
   const { openSupply } = useModalContext();
 
   return (
-    <ListMobileItemWrapper symbol={symbol} iconSymbol={iconSymbol} name={name}>
+    <ListMobileItemWrapper
+      symbol={symbol}
+      iconSymbol={iconSymbol}
+      name={name}
+      underlyingAsset={underlyingAsset}
+    >
       <ListValueRow
         title={<Trans>Supply balance</Trans>}
         value={Number(walletBalance)}
         subValue={walletBalanceUSD}
+        disabled={Number(walletBalance) === 0}
         capsComponent={
           <CapsHint
             capType={CapType.supplyCap}

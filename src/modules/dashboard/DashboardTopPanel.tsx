@@ -71,6 +71,8 @@ export const DashboardTopPanel = () => {
               variant={valueTypographyVariant}
               visibleDecimals={2}
               compact
+              symbolsColor="#FFFFFFB2"
+              symbolsVariant={noDataTypographyVariant}
             />
           ) : (
             <NoData variant={noDataTypographyVariant} sx={{ opacity: '0.7' }} />
@@ -84,6 +86,8 @@ export const DashboardTopPanel = () => {
               variant={valueTypographyVariant}
               visibleDecimals={2}
               percent
+              symbolsColor="#FFFFFFB2"
+              symbolsVariant={noDataTypographyVariant}
             />
           ) : (
             <NoData variant={noDataTypographyVariant} sx={{ opacity: '0.7' }} />
@@ -122,6 +126,8 @@ export const DashboardTopPanel = () => {
                 visibleDecimals={2}
                 compact
                 symbol="USD"
+                symbolsColor="#FFFFFFB2"
+                symbolsVariant={noDataTypographyVariant}
               />
               {assets && (
                 <MultiTokenIcon

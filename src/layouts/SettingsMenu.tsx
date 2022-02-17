@@ -1,6 +1,6 @@
 import { CogIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Button, Menu, MenuItem, MenuList, SvgIcon, Typography } from '@mui/material';
+import { Button, Menu, MenuItem, SvgIcon, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
 import { DarkModeSwitcher } from './components/DarkModeSwitcher';
@@ -59,18 +59,17 @@ export function SettingsMenu() {
         anchorEl={anchorEl}
         open={settingsOpen}
         onClose={handleClose}
+        sx={{ '.MuiMenuItem-root.Mui-disabled': { opacity: 1 } }}
       >
-        <MenuList sx={{ '.MuiMenuItem-root.Mui-disabled': { opacity: 1 } }}>
-          <MenuItem disabled sx={{ mb: '4px' }}>
-            <Typography variant="subheader2" color="text.secondary">
-              <Trans>Global settings</Trans>
-            </Typography>
-          </MenuItem>
+        <MenuItem disabled sx={{ mb: '4px' }}>
+          <Typography variant="subheader2" color="text.secondary">
+            <Trans>Global settings</Trans>
+          </Typography>
+        </MenuItem>
 
-          <DarkModeSwitcher component={MenuItem} />
-          <TestNetModeSwitcher component={MenuItem} />
-          <LanguageListItem onClick={handleLanguageClick} component={MenuItem} />
-        </MenuList>
+        <DarkModeSwitcher component={MenuItem} />
+        <TestNetModeSwitcher component={MenuItem} />
+        <LanguageListItem onClick={handleLanguageClick} component={MenuItem} />
       </Menu>
 
       <Menu

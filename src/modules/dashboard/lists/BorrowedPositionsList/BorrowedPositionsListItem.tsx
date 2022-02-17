@@ -33,6 +33,8 @@ export const BorrowedPositionsListItem = ({
     <ListItemWrapper
       symbol={reserve.symbol}
       iconSymbol={reserve.iconSymbol}
+      name={reserve.name}
+      underlyingAsset={reserve.underlyingAsset}
       data-cy={`dashboardBorrowedListItem_${reserve.symbol.toUpperCase()}_${borrowRateMode}`}
     >
       <ListValueColumn

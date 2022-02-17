@@ -38,6 +38,8 @@ export const SuppliedPositionsListItem = ({
     <ListItemWrapper
       symbol={reserve.symbol}
       iconSymbol={reserve.iconSymbol}
+      name={reserve.name}
+      underlyingAsset={underlyingAsset}
       data-cy={`dashboardSuppliedListItem_${reserve.symbol.toUpperCase()}_${
         usageAsCollateralEnabledOnUser ? 'Collateral' : 'NoCollateral'
       }`}

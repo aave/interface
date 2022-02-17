@@ -152,7 +152,7 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
       </Box>
       <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
 
-      <Box component={component}>
+      <Box component={component} disabled>
         <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
           <Box
             sx={{
@@ -291,7 +291,12 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
           }
           endIcon={
             connected && (
-              <SvgIcon>
+              <SvgIcon
+                sx={{
+                  display: { xs: 'none', md: 'block' },
+                  transform: open ? 'rotate(180deg)' : 'rotate(0)',
+                }}
+              >
                 <ChevronDownIcon />
               </SvgIcon>
             )

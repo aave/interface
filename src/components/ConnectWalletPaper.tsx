@@ -13,6 +13,7 @@ export const ConnectWalletPaper = () => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
+        textAlign: 'center',
         p: 4,
         flex: 1,
       }}

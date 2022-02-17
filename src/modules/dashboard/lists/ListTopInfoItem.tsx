@@ -25,7 +25,7 @@ export const ListTopInfoItem = ({ title, value, percent, modalContent }: ListTop
       <Typography color="text.secondary" sx={{ mr: 1 }} noWrap>
         {title}
       </Typography>
-      <FormattedNumber value={value} percent={percent} variant="main14" symbol="USD" />
+      <FormattedNumber value={value} percent={percent} variant="secondary14" symbol="USD" />
 
       {modalContent && (
         <IconButton

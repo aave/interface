@@ -1,7 +1,8 @@
 import { ExclamationIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, SvgIcon, Tooltip } from '@mui/material';
+import { SvgIcon } from '@mui/material';
 
+import { ContentWithTooltip } from '../ContentWithTooltip';
 import { CapType } from './helper';
 
 interface CapsTooltipProps {
@@ -43,10 +44,10 @@ export const CapsTooltip = ({ availableValue, isUSD, capType }: CapsTooltipProps
   }
 
   return (
-    <Tooltip title={<Box sx={{ textAlign: 'center' }}>{message || ''}</Box>} arrow>
+    <ContentWithTooltip tooltipContent={<>{message || ''}</>}>
       <SvgIcon sx={{ fontSize: '14px', color: 'error.main' }}>
         <ExclamationIcon />
       </SvgIcon>
-    </Tooltip>
+    </ContentWithTooltip>
   );
 };
