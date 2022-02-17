@@ -20,8 +20,8 @@ import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvi
 import { LiquidationRiskParametresInfoModal } from './LiquidationRiskParametresModal/LiquidationRiskParametresModal';
 
 export const DashboardTopPanel = () => {
-  const { currentNetworkConfig } = useProtocolDataContext();
-  const { user } = useAppDataContext();
+  const { currentNetworkConfig, currentMarketData } = useProtocolDataContext();
+  const { user, reserves } = useAppDataContext();
   const { currentAccount } = useWeb3Context();
   const [open, setOpen] = useState(false);
   const { openClaimRewards } = useModalContext();
@@ -34,7 +34,20 @@ export const DashboardTopPanel = () => {
     (acc, rewardTokenAddress) => {
       const incentive: UserIncentiveData = user.calculatedUserIncentives[rewardTokenAddress];
       const rewardBalance = normalize(incentive.claimableRewards, incentive.rewardTokenDecimals);
-      const rewardBalanceUsd = Number(rewardBalance) * Number(incentive.rewardPriceFeed);
+
+      let tokenPrice = 0;
+      // getting price from reserves for the native rewards for v2 markets
+      if (!currentMarketData.v3 && Number(rewardBalance) > 0) {
+        reserves.forEach((reserve) => {
+          if (reserve.symbol === currentNetworkConfig.wrappedBaseAssetSymbol) {
+            tokenPrice = Number(reserve.formattedPriceInMarketReferenceCurrency);
+          }
+        });
+      } else {
+        tokenPrice = Number(incentive.rewardPriceFeed);
+      }
+
+      const rewardBalanceUsd = Number(rewardBalance) * tokenPrice;
 
       if (acc.assets.indexOf(incentive.rewardTokenSymbol) === -1) {
         acc.assets.push(incentive.rewardTokenSymbol);
@@ -113,8 +126,8 @@ export const DashboardTopPanel = () => {
           </TopInfoPanelItem>
         )}
 
-        <TopInfoPanelItem title={<Trans>Available rewards</Trans>} hideIcon withLine={!downToXSM}>
-          {currentAccount && claimableRewardsUsd > 0 ? (
+        {currentAccount && claimableRewardsUsd > 0 && (
+          <TopInfoPanelItem title={<Trans>Available rewards</Trans>} hideIcon withLine={!downToXSM}>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <FormattedNumber
                 value={claimableRewardsUsd}
@@ -138,10 +151,8 @@ export const DashboardTopPanel = () => {
                 <Trans>Claim</Trans>
               </Button>
             </Box>
-          ) : (
-            <NoData variant={noDataTypographyVariant} sx={{ opacity: '0.7' }} />
-          )}
-        </TopInfoPanelItem>
+          </TopInfoPanelItem>
+        )}
       </TopInfoPanel>
 
       <LiquidationRiskParametresInfoModal
