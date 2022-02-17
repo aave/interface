@@ -870,7 +870,6 @@
       "ipfsHash": "QmfHS62ThwJFnuN62FHjnCRpChCPRvcFUvXKFoiZFBGtg9",
       "originalHash": "0xfbc3a9da6fe4ef6730a5fe00128bb93cc3225738278eb72c52b29a0d394d1942",
       "id": 58
-<<<<<<< HEAD
     },
     {
       "title": "Add SEBA Bank as a whitelister on Aave Arc",
@@ -900,8 +899,6 @@
       "ipfsHash": "QmXBgxpgMCfHngBgsmd3HX3rvpu9E3kR4FSxZbQkoVM2un",
       "originalHash": "0x836d80dbca91c3e025f142564311119f762ef94957c94814af7625f084b6f8f9",
       "id": 60
-=======
->>>>>>> master
     }
   ]
 }
