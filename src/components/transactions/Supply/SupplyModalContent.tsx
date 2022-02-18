@@ -9,7 +9,7 @@ import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import React, { useEffect, useState } from 'react';
-import { TxState } from 'src/helpers/types';
+import { CollateralType, TxState } from 'src/helpers/types';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -193,6 +193,45 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
     aToken: true,
   };
 
+  // collateralization state
+  let willBeUsedAsCollateral: CollateralType = poolReserve.usageAsCollateralEnabled
+    ? CollateralType.ENABLED
+    : CollateralType.DISABLED;
+  const userHasSuppliedReserve = userReserve?.scaledATokenBalance !== '0';
+  const userHasCollateral = user.totalCollateralUSD !== '0';
+
+  if (poolReserve.isIsolated) {
+    if (user.isInIsolationMode) {
+      if (userHasSuppliedReserve) {
+        willBeUsedAsCollateral = userReserve.usageAsCollateralEnabledOnUser
+          ? CollateralType.ISOLATED_ENABLED
+          : CollateralType.ISOLATED_DISABLED;
+      } else {
+        if (userHasCollateral) {
+          willBeUsedAsCollateral = CollateralType.ISOLATED_DISABLED;
+        }
+      }
+    } else {
+      if (userHasCollateral) {
+        willBeUsedAsCollateral = CollateralType.ISOLATED_DISABLED;
+      } else {
+        willBeUsedAsCollateral = CollateralType.ISOLATED_ENABLED;
+      }
+    }
+  } else {
+    if (user.isInIsolationMode) {
+      willBeUsedAsCollateral = CollateralType.DISABLED;
+    } else {
+      if (userHasSuppliedReserve) {
+        willBeUsedAsCollateral = userReserve.usageAsCollateralEnabledOnUser
+          ? CollateralType.ENABLED
+          : CollateralType.DISABLED;
+      } else {
+        willBeUsedAsCollateral = CollateralType.ENABLED;
+      }
+    }
+  }
+
   return (
     <>
       {!supplyTxState.txError && !supplyTxState.success && (
@@ -239,7 +278,7 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
             gasLimit={gasLimit}
             symbol={poolReserve.symbol}
             // TODO: need take a look usedAsCollateral
-            usedAsCollateral={userReserve?.usageAsCollateralEnabledOnUser}
+            usedAsCollateral={willBeUsedAsCollateral}
             action="Supply"
           />
         </>
