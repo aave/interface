@@ -9,18 +9,18 @@ export const IsolatedTooltip = () => {
   return (
     <Box>
       <Box sx={{ mb: 4 }}>
-        <Typography variant="h2" sx={{ mb: 2 }}>
+        {/* <Typography variant="h2" sx={{ mb: 2 }}>
           <Trans>Isolated asset</Trans>
-        </Typography>
+        </Typography> */}
         <Typography>
           <Trans>
-            Some newly listed assets have limited exposure until the Aave governance decides
-            otherwise.
+            Isolated assets have limited borrowing power and other assets cannot be used as
+            collateral.
           </Trans>
         </Typography>
       </Box>
 
-      <Box component="aside" sx={{ mb: 4 }}>
+      {/* <Box component="aside" sx={{ mb: 4 }}>
         <Typography variant="subheader1" sx={{ mb: 1 }}>
           <Trans>How it works</Trans>
         </Typography>
@@ -36,10 +36,10 @@ export const IsolatedTooltip = () => {
             the isolated asset being used as collateral from your dashboard.
           </Trans>
         </Typography>
-      </Box>
+      </Box> */}
 
       <Typography variant="subheader2" color="text.secondary">
-        <Trans>Learn more in our</Trans>{' '}
+        <Trans>Learn more in our</Trans>
         <Link href="https://docs.aave.com/faq/" fontWeight={500}>
           <Trans>FAQ guide</Trans>
         </Link>
