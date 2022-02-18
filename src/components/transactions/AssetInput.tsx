@@ -169,7 +169,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
             flexGrow={1}
           />
 
-          <Typography variant="secondary12" color="text.secondary">
+          <Typography component="div" variant="secondary12" color="text.secondary">
             Balance{' '}
             <FormattedNumber
               value={asset.balance}
