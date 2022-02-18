@@ -8,7 +8,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 export function VotingPowerInfoPanel() {
-  const { currentAccount } = useWeb3Context();
+  const { currentAccount, connectWallet } = useWeb3Context();
   const { votingPower, propositionPower } = useVotingPower();
   const { openGovDelegation } = useModalContext();
   // TODO: if not logged in & loading, show some placeholder
@@ -63,8 +63,8 @@ export function VotingPowerInfoPanel() {
             <Trans>Delegate</Trans>
           </Button>
         ) : (
-          <Button variant="contained" onClick={() => alert('TODO: this is a dummy')}>
-            <Trans>Connect</Trans>
+          <Button variant="gradient" onClick={connectWallet}>
+            <Trans>Connect wallet</Trans>
           </Button>
         )}
       </Box>
