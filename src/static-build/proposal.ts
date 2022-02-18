@@ -26,20 +26,34 @@ const db = new LowWithLodash(adapter);
 await db.read();
 
 export class Proposal {
-  async get(id: number) {
+  count() {
+    return db.data?.proposals?.length || 0;
+  }
+
+  get(id: number) {
+    const value = db.chain.get('proposals').find({ id }).value();
+    if (!value) throw new Error('trying to fetch proposal cache, but failed');
+    return value;
+  }
+
+  async populate(id: number) {
     // seed
     // fallback to empty array
     db.data ||= { proposals: [] };
 
     const value = db.chain.get('proposals').find({ id }).value();
-    if (value) return value;
+    if (value && isProposalStateImmutable(value)) return value;
     const { values, ...rest } = await governanceContract.getProposal({ proposalId: id });
     const proposal = await enhanceProposalWithTimes(rest);
     // only store data when it can no longer change
-    if (isProposalStateImmutable(proposal)) {
+    if (value) {
+      // update
+      const index = db.data.proposals.findIndex((p) => p.id === id);
+      db.data.proposals[index] = proposal;
+    } else {
       db.data.proposals.push(proposal);
-      await db.write();
     }
+    await db.write();
     return proposal;
   }
 }

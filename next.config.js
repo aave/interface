@@ -15,7 +15,6 @@ module.exports = withBundleAnalyzer({
 
     return config;
   },
-
   reactStrictMode: true,
   // assetPrefix: "./",
   trailingSlash: true,

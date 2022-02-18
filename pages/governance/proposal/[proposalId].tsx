@@ -35,8 +35,8 @@ import { GovVoteModal } from 'src/components/transactions/GovVote/GovVoteModal';
 
 export async function getStaticPaths() {
   if (!governanceConfig) return { paths: [] };
-  const proposals = await governanceContract.getProposalsCount();
-  const paths = [...Array(proposals).keys()].map((id) => ({
+  const ProposalFetcher = new Proposal();
+  const paths = [...Array(ProposalFetcher.count()).keys()].map((id) => ({
     params: { proposalId: id.toString() },
   }));
 
@@ -48,11 +48,11 @@ export async function getStaticProps({ params }: { params: { proposalId: string 
   const ProposalFetcher = new Proposal();
   // const VoteFetcher = new Vote();
 
-  const proposal = await ProposalFetcher.get(Number(params.proposalId));
+  const proposal = ProposalFetcher.get(Number(params.proposalId));
   return {
     props: {
       proposal,
-      ipfs: await IpfsFetcher.get(Number(params.proposalId)),
+      ipfs: IpfsFetcher.get(Number(params.proposalId)),
       // votes: await VoteFetcher.get(
       //   Number(params.proposalId),
       //   proposal.startBlock,
