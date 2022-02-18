@@ -8,6 +8,7 @@ import {
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3ContextProvider';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { TxErrorView } from '../FlowCommons/Error';
@@ -43,8 +44,16 @@ export const FaucetModalContent = ({ underlyingAsset, handleClose }: FaucetModal
 
   const mintAmount = mintAmountsPerToken[poolReserve.symbol.toUpperCase()];
   const normalizedAmount = normalize(mintAmount, poolReserve.decimals);
+
   // is Network mismatched
   const isWrongNetwork = currentChainId !== connectedChainId;
+
+  // token info to add to wallet
+  const addToken: ERC20TokenType = {
+    address: underlyingAsset,
+    symbol: poolReserve.symbol,
+    decimals: poolReserve.decimals,
+  };
 
   return (
     <>
@@ -65,7 +74,12 @@ export const FaucetModalContent = ({ underlyingAsset, handleClose }: FaucetModal
 
       {faucetTxState.txError && <TxErrorView errorMessage={faucetTxState.txError} />}
       {faucetTxState.success && !faucetTxState.txError && (
-        <TxSuccessView action="received" symbol={poolReserve.symbol} amount={normalizedAmount} />
+        <TxSuccessView
+          action="received"
+          symbol={poolReserve.symbol}
+          amount={normalizedAmount}
+          addToken={addToken}
+        />
       )}
       {faucetTxState.gasEstimationError && (
         <GasEstimationError error={faucetTxState.gasEstimationError} />
