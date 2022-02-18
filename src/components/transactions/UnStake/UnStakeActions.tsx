@@ -1,6 +1,6 @@
 import { EthereumTransactionTypeExtended, GasType } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Box, BoxProps, Button, CircularProgress } from '@mui/material';
+import { BoxProps, Button, CircularProgress } from '@mui/material';
 import { Dispatch, SetStateAction, useEffect } from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
@@ -9,6 +9,7 @@ import { GasOption } from '../GasStation/GasStationProvider';
 import { RightHelperText } from '../FlowCommons/RightHelperText';
 import { TxState } from 'src/helpers/types';
 import { useStakeTxBuilderContext } from 'src/hooks/useStakeTxBuilder';
+import { TxActionsWrapper } from '../TxActionsWrapper';
 
 export interface UnStakeActionProps extends BoxProps {
   amountToUnStake: string;
@@ -68,43 +69,38 @@ export const UnStakeActions = ({
   }, [setTxState, mainTxState]);
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', ...sx }} {...props}>
-      <Box
-        sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: '12px' }}
-      >
+    <TxActionsWrapper
+      mainTxState={mainTxState}
+      handleClose={handleClose}
+      isWrongNetwork={isWrongNetwork}
+      helperText={
         <RightHelperText
           actionHash={mainTxState.txHash}
           chainId={connectedChainId}
           action="unstake"
         />
-      </Box>
-      {!hasAmount && (
-        <Button variant="outlined" disabled>
-          <Trans>ENTER AN AMOUNT</Trans>
-        </Button>
-      )}
-      {hasAmount && !mainTxState.txHash && !mainTxState.txError && (
-        <Button
-          variant="contained"
-          onClick={action}
-          disabled={loading || isWrongNetwork || blocked || !!mainTxState.gasEstimationError}
-        >
-          {loading ? (
-            <>
-              <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-              <Trans>UNSTAKE</Trans>
-            </>
-          ) : (
-            <Trans>UNSTAKE {symbol}</Trans>
-          )}
-        </Button>
-      )}
-      {(mainTxState.txHash || mainTxState.txError) && (
-        <Button onClick={handleClose} variant="contained">
-          {!mainTxState.txError && <Trans>OK, </Trans>}
-          <Trans>CLOSE</Trans>
-        </Button>
-      )}
-    </Box>
+      }
+      sx={sx}
+      {...props}
+    >
+      <>
+        {hasAmount && !mainTxState.txHash && !mainTxState.txError && !isWrongNetwork && (
+          <Button
+            variant="contained"
+            onClick={action}
+            disabled={loading || isWrongNetwork || blocked || !!mainTxState.gasEstimationError}
+          >
+            {loading ? (
+              <>
+                <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
+                <Trans>UNSTAKE</Trans>
+              </>
+            ) : (
+              <Trans>UNSTAKE {symbol}</Trans>
+            )}
+          </Button>
+        )}
+      </>
+    </TxActionsWrapper>
   );
 };

@@ -71,6 +71,7 @@ export const CollateralChangeActions = ({
     <TxActionsWrapper
       mainTxState={mainTxState}
       handleClose={handleClose}
+      isWrongNetwork={isWrongNetwork}
       helperText={
         <RightHelperText
           actionHash={mainTxState.txHash}
@@ -80,7 +81,7 @@ export const CollateralChangeActions = ({
       }
     >
       <>
-        {!mainTxState.txHash && !mainTxState.txError && (
+        {!mainTxState.txHash && !mainTxState.txError && !isWrongNetwork && (
           <Button
             variant="contained"
             onClick={action}

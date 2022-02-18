@@ -111,6 +111,7 @@ export const BorrowActions = ({
       mainTxState={mainTxState}
       handleClose={handleClose}
       hasAmount={hasAmount}
+      isWrongNetwork={isWrongNetwork}
       withAmount
       helperText={
         <RightHelperText
@@ -121,7 +122,7 @@ export const BorrowActions = ({
       }
     >
       <>
-        {hasAmount && !mainTxState.txHash && !mainTxState.txError && (
+        {hasAmount && !mainTxState.txHash && !mainTxState.txError && !isWrongNetwork && (
           <Button
             variant="contained"
             onClick={action}

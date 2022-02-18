@@ -126,6 +126,7 @@ export const SupplyActions = ({
       handleClose={handleClose}
       handleRetry={handleRetry}
       approvalTxState={approvalTxState}
+      isWrongNetwork={isWrongNetwork}
       hasAmount={hasAmount}
       withAmount
       helperText={
@@ -150,7 +151,7 @@ export const SupplyActions = ({
       {...props}
     >
       <>
-        {hasAmount && requiresApproval && !approved && !approvalTxState.txError && (
+        {hasAmount && requiresApproval && !approved && !approvalTxState.txError && !isWrongNetwork && (
           <Button
             variant="contained"
             onClick={() => approval(amountToSupply, poolAddress)}
@@ -174,31 +175,35 @@ export const SupplyActions = ({
           </Button>
         )}
 
-        {hasAmount && !mainTxState.txHash && !mainTxState.txError && !approvalTxState.txError && (
-          <Button
-            variant="contained"
-            onClick={action}
-            disabled={
-              loading ||
-              (requiresApproval && !approved) ||
-              isWrongNetwork ||
-              blocked ||
-              !!mainTxState.gasEstimationError
-            }
-            size="large"
-            sx={{ minHeight: '44px' }}
-          >
-            {!mainTxState.txHash && !mainTxState.txError && (!loading || !approved) && (
-              <Trans>Supply {symbol}</Trans>
-            )}
-            {approved && loading && (
-              <>
-                <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-                <Trans>Pending...</Trans>
-              </>
-            )}
-          </Button>
-        )}
+        {hasAmount &&
+          !mainTxState.txHash &&
+          !mainTxState.txError &&
+          !approvalTxState.txError &&
+          !isWrongNetwork && (
+            <Button
+              variant="contained"
+              onClick={action}
+              disabled={
+                loading ||
+                (requiresApproval && !approved) ||
+                isWrongNetwork ||
+                blocked ||
+                !!mainTxState.gasEstimationError
+              }
+              size="large"
+              sx={{ minHeight: '44px' }}
+            >
+              {!mainTxState.txHash && !mainTxState.txError && (!loading || !approved) && (
+                <Trans>Supply {symbol}</Trans>
+              )}
+              {approved && loading && (
+                <>
+                  <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
+                  <Trans>Pending...</Trans>
+                </>
+              )}
+            </Button>
+          )}
       </>
     </TxActionsWrapper>
   );

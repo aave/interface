@@ -5,11 +5,12 @@ import { useGasStation } from 'src/hooks/useGasStation';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { GasOption } from '../GasStation/GasStationProvider';
 import { RightHelperText } from '../FlowCommons/RightHelperText';
-import { Box, Button, CircularProgress } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 import { Trans } from '@lingui/macro';
 import { DelegationType, TxState } from 'src/helpers/types';
 import { DelegationToken } from 'src/ui-config/governanceConfig';
 import { useGovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
+import { TxActionsWrapper } from '../TxActionsWrapper';
 
 export type GovDelegationActionsProps = {
   setGasLimit: Dispatch<SetStateAction<string | undefined>>;
@@ -91,29 +92,29 @@ export const GovDelegationActions = ({
 
   // TODO: hash link not working
   return (
-    <Box sx={{ mt: '16px', display: 'flex', flexDirection: 'column' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+    <TxActionsWrapper
+      mainTxState={mainTxState}
+      handleClose={handleClose}
+      isWrongNetwork={isWrongNetwork}
+      helperText={
         <RightHelperText
           actionHash={mainTxState.txHash}
           chainId={connectedChainId}
-          action="withdraw"
+          action="delegation"
         />
-      </Box>
-      {!mainTxState.txHash && !mainTxState.txError && (
-        <Button
-          variant="contained"
-          onClick={action}
-          disabled={loading || isWrongNetwork || blocked || !!mainTxState.gasEstimationError}
-        >
-          {handleButtonStates()}
-        </Button>
-      )}
-      {(mainTxState.txHash || mainTxState.txError) && (
-        <Button onClick={handleClose} variant="contained">
-          {!mainTxState.txError && <Trans>OK, </Trans>}
-          <Trans>CLOSE</Trans>
-        </Button>
-      )}
-    </Box>
+      }
+    >
+      <>
+        {!mainTxState.txHash && !mainTxState.txError && !isWrongNetwork && (
+          <Button
+            variant="contained"
+            onClick={action}
+            disabled={loading || isWrongNetwork || blocked || !!mainTxState.gasEstimationError}
+          >
+            {handleButtonStates()}
+          </Button>
+        )}
+      </>
+    </TxActionsWrapper>
   );
 };
