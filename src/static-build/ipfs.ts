@@ -27,11 +27,11 @@ class LowWithLodash<T> extends Low<T> {
 const file = join(__dirname, 'ipfsFiles.json');
 const adapter = new JSONFile<{ ipfs: IpfsType[] }>(file);
 const db = new LowWithLodash(adapter);
+await db.read();
 
 export class Ipfs {
   async get(id: number) {
     // seed
-    await db.read();
 
     // fallback to empty array
     db.data ||= { ipfs: [] };

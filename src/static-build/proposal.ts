@@ -23,12 +23,11 @@ export type CustomProposalType = Omit<ProposalType, 'values'> & {
 const file = join(__dirname, 'proposals.json');
 const adapter = new JSONFile<{ proposals: CustomProposalType[] }>(file);
 const db = new LowWithLodash(adapter);
+await db.read();
 
 export class Proposal {
   async get(id: number) {
     // seed
-    await db.read();
-
     // fallback to empty array
     db.data ||= { proposals: [] };
 

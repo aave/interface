@@ -31,6 +31,7 @@ import { Link } from 'src/components/primitives/Link';
 
 import { ContentContainer } from '../../../src/components/ContentContainer';
 import { GovVoteModal } from 'src/components/transactions/GovVote/GovVoteModal';
+// import { Vote } from 'src/static-build/vote';
 
 export async function getStaticPaths() {
   if (!governanceConfig) return { paths: [] };
@@ -45,12 +46,18 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }: { params: { proposalId: string } }) {
   const IpfsFetcher = new Ipfs();
   const ProposalFetcher = new Proposal();
+  // const VoteFetcher = new Vote();
 
   const proposal = await ProposalFetcher.get(Number(params.proposalId));
   return {
     props: {
       proposal,
       ipfs: await IpfsFetcher.get(Number(params.proposalId)),
+      // votes: await VoteFetcher.get(
+      //   Number(params.proposalId),
+      //   proposal.startBlock,
+      //   proposal.endBlock
+      // ),
     },
   };
 }
