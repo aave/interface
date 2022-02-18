@@ -58,23 +58,47 @@ export const HFContent = ({ healthFactor }: HFContentProps) => {
       <Box
         sx={{
           position: 'absolute',
-          bottom: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          flexDirection: 'column',
-          left: `${dotPosition}%`,
+          bottom: 'calc(100% + 6px)',
+          left: `${dotPosition > 100 ? 100 : dotPosition}%`,
+          zIndex: 3,
         }}
       >
-        <FormattedNumber value={formattedHealthFactor} variant="main12" visibleDecimals={2} />
         <Box
           sx={(theme) => ({
-            width: 0,
-            height: 0,
-            borderStyle: 'solid',
-            borderWidth: '6px 4px 0 4px',
-            borderColor: `${theme.palette.primary.main} transparent transparent transparent`,
+            position: 'relative',
+            whiteSpace: 'nowrap',
+            '&:after': {
+              width: 0,
+              height: 0,
+              borderStyle: 'solid',
+              borderWidth: '6px 4px 0 4px',
+              borderColor: `${theme.palette.primary.main} transparent transparent transparent`,
+              content: "''",
+              position: 'absolute',
+              left: dotPosition > 75 ? 'auto' : '50%',
+              right: dotPosition > 75 ? 0 : 'auto',
+              transform: dotPosition > 75 ? 'translateX(0)' : 'translateX(-50%)',
+            },
           })}
-        />
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              position: 'absolute',
+              left: dotPosition > 75 ? 'auto' : dotPosition < 15 ? '0' : '50%',
+              transform:
+                dotPosition > 75 || dotPosition < 15 ? 'translateX(0)' : 'translateX(-50%)',
+              right: dotPosition > 75 ? 0 : 'auto',
+              flexDirection: 'column',
+              alignItems:
+                dotPosition > 75 ? 'flex-end' : dotPosition < 15 ? 'flex-start' : 'center',
+              textAlign: dotPosition > 75 ? 'right' : dotPosition < 15 ? 'left' : 'center',
+              bottom: 'calc(100% + 2px)',
+            }}
+          >
+            <FormattedNumber value={formattedHealthFactor} variant="main12" visibleDecimals={2} />
+          </Box>
+        </Box>
       </Box>
 
       <Box

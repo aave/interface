@@ -141,12 +141,14 @@ export const LTVContent = ({
             sx={{
               display: 'flex',
               position: 'absolute',
-              left: LTVLineWidth > 75 ? 'auto' : '50%',
-              transform: LTVLineWidth > 75 ? 'translateX(0)' : 'translateX(-50%)',
+              left: LTVLineWidth > 75 ? 'auto' : LTVLineWidth < 15 ? '0' : '50%',
+              transform:
+                LTVLineWidth > 75 || LTVLineWidth < 15 ? 'translateX(0)' : 'translateX(-50%)',
               right: LTVLineWidth > 75 ? 0 : 'auto',
               flexDirection: 'column',
-              alignItems: LTVLineWidth > 75 ? 'flex-end' : 'center',
-              textAlign: LTVLineWidth > 75 ? 'right' : 'center',
+              alignItems:
+                LTVLineWidth > 75 ? 'flex-end' : LTVLineWidth < 15 ? 'flex-start' : 'center',
+              textAlign: LTVLineWidth > 75 ? 'right' : LTVLineWidth < 15 ? 'left' : 'center',
               bottom: 'calc(100% + 2px)',
             }}
           >

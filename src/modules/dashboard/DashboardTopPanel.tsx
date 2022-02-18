@@ -13,6 +13,7 @@ import HfFull from '/public/icons/healthFactor/hfFull.svg';
 import HfLow from '/public/icons/healthFactor/hfLow.svg';
 import HfMiddle from '/public/icons/healthFactor/hfMiddle.svg';
 
+import HALTooltip from '../../components/HALTooltip';
 import { HealthFactorNumber } from '../../components/HealthFactorNumber';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { NoData } from '../../components/primitives/NoData';
@@ -116,7 +117,12 @@ export const DashboardTopPanel = () => {
 
         {currentAccount && user?.healthFactor !== '-1' && (
           <TopInfoPanelItem
-            title={<Trans>Health factor</Trans>}
+            title={
+              <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                <Trans>Health factor</Trans>
+                <HALTooltip />
+              </Box>
+            }
             icon={
               <SvgIcon sx={{ fontSize: '24px' }}>
                 {+user.healthFactor >= 10 && <HfFull />}
