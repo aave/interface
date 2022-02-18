@@ -49,7 +49,7 @@ interface ReserveActionsProps {
 
 export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   const { openBorrow, openSupply } = useModalContext();
-  const { currentAccount } = useWeb3Context();
+  const { currentAccount, connectWallet } = useWeb3Context();
   const { user, reserves, loading: loadingReserves } = useAppDataContext();
   const { walletBalances, loading: loadingBalance } = useWalletBalances();
   // const balance = useWalletBalance(currentChainId, underlyingAsset);
@@ -117,8 +117,8 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
         </Stack>
       )}
       {!currentAccount && (
-        <Button variant="contained" onClick={() => alert('TODO: connect dummy')}>
-          <Trans>Connect</Trans>
+        <Button variant="gradient" onClick={connectWallet}>
+          <Trans>Connect wallet</Trans>
         </Button>
       )}
     </Paper>
