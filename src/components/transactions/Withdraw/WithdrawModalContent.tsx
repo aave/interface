@@ -196,8 +196,7 @@ export const WithdrawModalContent = ({
 
   // calculating input usd value
   const usdValue = valueToBigNumber(amount).multipliedBy(userReserve.reserve.priceInUSD);
-  console.log('hf:: ', user.healthFactor);
-  console.log('future hf:: ', healthFactorAfterWithdraw.toString());
+
   return (
     <>
       {!withdrawTxState.txError && !withdrawTxState.success && (
