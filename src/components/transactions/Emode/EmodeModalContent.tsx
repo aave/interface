@@ -8,6 +8,7 @@ import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -84,7 +85,14 @@ export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
       emodeCategories[category.id] = category;
     });
 
-    setSelectedEmode(emodeCategories[user.userEmodeCategoryId]);
+    const selectedEmode =
+      Object.keys(emodeCategories).length > 2 && user.userEmodeCategoryId !== 0
+        ? emodeCategories[user.userEmodeCategoryId]
+        : user.userEmodeCategoryId === 0
+        ? emodeCategories[1]
+        : emodeCategories[0];
+
+    setSelectedEmode(selectedEmode);
     setEmodeCategories(emodeCategories);
   }, []);
 
@@ -198,7 +206,7 @@ export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
             <Alert severity="info" sx={{ mb: 6 }}>
               <Trans>
                 Enabling E-Mode only allows you to borrow assets belonging to the selected category
-                Stablecoins. Please visit out{' '}
+                Stablecoins. Please visit our{' '}
                 <Link href="https://docs.aave.com/faq/" target="_blank">
                   FAQ guide
                 </Link>{' '}
@@ -207,11 +215,14 @@ export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
             </Alert>
           )}
 
-          <EmodeSelect
-            emodeCategories={emodeCategories}
-            selectedEmode={selectedEmode?.id || 0}
-            setSelectedEmode={setSelectedEmode}
-          />
+          {Object.keys(emodeCategories).length > 2 && user.userEmodeCategoryId === 0 && (
+            <EmodeSelect
+              emodeCategories={emodeCategories}
+              selectedEmode={selectedEmode?.id || 0}
+              setSelectedEmode={setSelectedEmode}
+            />
+          )}
+
           {blockingError !== undefined && (
             <Typography variant="helperText" color="red">
               {handleBlocked()}
@@ -225,17 +236,7 @@ export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
             gasLimit={gasLimit}
             emodeAssets={selectedEmode?.assets}
             selectedEmode={selectedEmode?.id || 0}
-            selectedEmodeLabel={selectedEmode?.label}
           />
-          {selectedEmode && selectedEmode.id !== 0 && (
-            <Typography>
-              <Trans>
-                Enabling E-Mode only allows you to borrow assets belonging to the selected category
-                Stablecoins. Please visit our FAQ guide to learn more about how it works and the
-                applied restrictions.
-              </Trans>
-            </Typography>
-          )}
         </>
       )}
 

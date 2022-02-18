@@ -164,7 +164,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         primary: getColor('#00244D', '#FFFFFF'),
         secondary: getColor('#47617F', '#FFFFFFB2'),
         disabled: getColor('#00244D61', '#FFFFFF80'),
-        muted: '#00244D80',
+        muted: getColor('#00244D80', '#FFFFFF80'),
       },
       background: {
         default: getColor('#FAFBFC', '#090815'),

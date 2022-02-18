@@ -1,6 +1,6 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { CheckIcon } from '@heroicons/react/outline';
-import { ArrowNarrowRightIcon, LightningBoltIcon } from '@heroicons/react/solid';
+import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -16,13 +16,15 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { Reward } from 'src/helpers/types';
 import { ReserveIncentiveResponse } from 'src/hooks/app-data-provider/useIncentiveData';
 
+import LightningBoltGradient from '/public/lightningBoltGradient.svg';
+
 import { HealthFactorNumber } from '../../HealthFactorNumber';
 import { IncentivesButton } from '../../incentives/IncentivesButton';
 import { FormattedNumber } from '../../primitives/FormattedNumber';
-import { NoData } from '../../primitives/NoData';
 import { Row } from '../../primitives/Row';
 import { TokenIcon } from '../../primitives/TokenIcon';
 import { RewardsSelect } from '../ClaimRewards/RewardsSelect';
+import { getEmodeMessage } from '../Emode/EmodeNaming';
 import { GasStation } from '../GasStation/GasStation';
 
 export interface TxModalDetailsProps {
@@ -52,7 +54,6 @@ export interface TxModalDetailsProps {
   selectedReward?: Reward;
   faucetAmount?: string;
   selectedEmode?: number;
-  selectedEmodeLabel?: string;
   emodeAssets?: string[];
   votingPower?: string;
   stakeAPR?: string;
@@ -85,7 +86,6 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   selectedReward,
   faucetAmount,
   selectedEmode,
-  selectedEmodeLabel,
   emodeAssets,
   votingPower,
   stakeAPR,
@@ -303,14 +303,13 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
           </Row>
         )}
 
-        {!!selectedEmode && selectedEmodeLabel && (
+        {!!selectedEmode && (
           <Row caption={<Trans>Asset category</Trans>} captionVariant="description" mb={4}>
             <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-              {/* TODO: need to do gradient for icon */}
               <SvgIcon sx={{ fontSize: '12px', mr: 0.5 }}>
-                <LightningBoltIcon />
+                <LightningBoltGradient />
               </SvgIcon>
-              <Typography variant="subheader1">{selectedEmodeLabel}</Typography>
+              <Typography variant="subheader1">{getEmodeMessage(selectedEmode)}</Typography>
             </Box>
           </Row>
         )}
@@ -320,7 +319,9 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
             {!!selectedEmode ? (
               <Typography>{emodeAssets.join(', ')}</Typography>
             ) : (
-              <NoData variant="description" />
+              <Typography>
+                <Trans>All</Trans>
+              </Typography>
             )}
           </Row>
         )}
