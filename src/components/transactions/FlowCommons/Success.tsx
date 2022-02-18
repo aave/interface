@@ -3,6 +3,8 @@ import { PlusSmIcon } from '@heroicons/react/outline';
 import { CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, SvgIcon, Typography } from '@mui/material';
+import { useState } from 'react';
+import { Base64Token } from 'src/components/primitives/TokenIcon';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3ContextProvider';
 
@@ -24,6 +26,7 @@ export const TxSuccessView = ({
   addToken,
 }: SuccessTxViewProps) => {
   const { addERC20Token } = useWeb3Context();
+  const [base64, setBase64] = useState('');
 
   return (
     <Box
@@ -80,7 +83,21 @@ export const TxSuccessView = ({
           </Typography>
         )}
         {addToken && (
-          <Button variant="outlined" onClick={() => addERC20Token(addToken)}>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              console.log(addToken);
+              addERC20Token({
+                address: addToken.address,
+                decimals: 18,
+                symbol: addToken.aToken ? `a${addToken.symbol}` : addToken.symbol,
+                image: `data:image/svg+xml;base64,${base64}`,
+              });
+            }}
+          >
+            {symbol && (
+              <Base64Token symbol={symbol} onImageGenerated={setBase64} aToken={addToken.aToken} />
+            )}
             <Typography variant="buttonS">
               <SvgIcon>
                 <PlusSmIcon />

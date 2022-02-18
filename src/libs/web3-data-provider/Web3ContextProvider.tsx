@@ -19,6 +19,7 @@ export type ERC20TokenType = {
   symbol: string;
   decimals: number;
   image?: string;
+  aToken?: boolean;
 };
 
 export type Web3Data = {
@@ -188,33 +189,35 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     [provider?.network.chainId]
   );
 
-  const addERC20Token = useCallback(
-    async ({ address, symbol, decimals, image }: ERC20TokenType): Promise<boolean> => {
-      // using window.ethereum as looks like its only supported for metamask
-      // and didn't manage to make the call with ethersjs
-      if (provider && currentAccount && window && window.ethereum) {
-        if (address.toLowerCase() !== API_ETH_MOCK_ADDRESS.toLowerCase()) {
-          await window?.ethereum?.request({
-            method: 'wallet_watchAsset',
-            params: {
-              // @ts-expect-error needed
-              type: 'ERC20',
-              options: {
-                address,
-                symbol,
-                decimals,
-                image,
-              },
+  const addERC20Token = async ({
+    address,
+    symbol,
+    decimals,
+    image,
+  }: ERC20TokenType): Promise<boolean> => {
+    // using window.ethereum as looks like its only supported for metamask
+    // and didn't manage to make the call with ethersjs
+    if (provider && currentAccount && window && window.ethereum) {
+      if (address.toLowerCase() !== API_ETH_MOCK_ADDRESS.toLowerCase()) {
+        await window?.ethereum?.request({
+          method: 'wallet_watchAsset',
+          params: {
+            // @ts-expect-error needed
+            type: 'ERC20',
+            options: {
+              address,
+              symbol,
+              decimals,
+              image,
             },
-          });
+          },
+        });
 
-          return true;
-        }
+        return true;
       }
-      return false;
-    },
-    [provider?.network.chainId]
-  );
+    }
+    return false;
+  };
 
   const web3ProviderData = useMemo(
     () => ({
@@ -228,7 +231,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       getTxError,
       sendTx,
       signTxData,
-      addERC20Token,
     }),
     [
       connectWallet,
@@ -241,14 +243,13 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       getTxError,
       sendTx,
       signTxData,
-      addERC20Token,
     ]
   );
 
   return (
     <Web3Context.Provider
       value={{
-        web3ProviderData: { ...web3ProviderData, currentAccount },
+        web3ProviderData: { ...web3ProviderData, currentAccount, addERC20Token },
       }}
     >
       {children}
