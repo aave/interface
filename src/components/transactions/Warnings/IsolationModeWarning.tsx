@@ -13,8 +13,8 @@ export const IsolationModeWarning = () => {
       </Typography>
       <Typography>
         <Trans>
-          In Isolation mode you cannot supply other assets as collateral for borrowing. You can only
-          borrow up to a specific debt ceiling. Read more in our
+          In Isolation mode, you cannot supply other assets as collateral. A global debt ceiling
+          limits the borrowing power of the isolated asset. Read more in our
           <Link href="https://docs.aave.com/faq/">FAQ</Link>
         </Trans>
       </Typography>
