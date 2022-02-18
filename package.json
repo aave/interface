@@ -102,7 +102,9 @@
     "David Racero <david.k@aave.com>",
     "Andrew Schmidt <andrew@aave.com>",  
     "Mark Hinschberger <mark@aave.com>",
-    "Nikita Bokarev <nikita@aave.com>"
+    "Nikita Bokarev <nikita@aave.com>",
+    "Anastasia Khovaeva <anastasia@aave.com>",
+    "Diego Prudencio diego@aave.com"
   ],
   "lint-staged": {
     "*.js": "eslint --cache --fix",
