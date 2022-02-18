@@ -61,7 +61,7 @@ msgid "APR"
 msgstr ""
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:50
-#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:67
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:72
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx:50
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx:24
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx:45
@@ -111,6 +111,10 @@ msgstr ""
 #~ msgid "Adding and removing assets as collateral"
 #~ msgstr ""
 
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:341
+msgid "All"
+msgstr ""
+
 #: src/components/transactions/FlowCommons/Success.tsx:60
 msgid "All done!"
 msgstr ""
@@ -136,8 +140,8 @@ msgid "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.
 msgstr ""
 
 #: src/components/transactions/AssetInput.tsx:74
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:442
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:465
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:461
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:484
 msgid "Amount"
 msgstr ""
 
@@ -175,7 +179,8 @@ msgid "Asset"
 msgstr ""
 
 #: src/components/transactions/Emode/EmodeSelect.tsx:26
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:307
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:325
+#: src/modules/dashboard/DashboardEModeButton.tsx:132
 msgid "Asset category"
 msgstr ""
 
@@ -203,7 +208,7 @@ msgstr ""
 msgid "Available"
 msgstr ""
 
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:319
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:336
 msgid "Available assets"
 msgstr ""
 
@@ -226,14 +231,14 @@ msgstr ""
 msgid "Available to supply"
 msgstr ""
 
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:367
-#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:66
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:386
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:71
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx:23
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx:42
 msgid "Balance"
 msgstr ""
 
-#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx:118
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx:100
 msgid "Be careful - You are very close to liqudation. Consider depositing more collateral or paying down some of your borrowed positions"
 msgstr ""
 
@@ -275,7 +280,7 @@ msgstr ""
 msgid "Borrow cap"
 msgstr ""
 
-#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:69
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:74
 msgid "Borrow power used"
 msgstr ""
 
@@ -292,7 +297,7 @@ msgstr ""
 msgid "Borrowing is currently unavailable for"
 msgstr ""
 
-#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx:105
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx:108
 msgid "Borrowing power and assets are limited due to Isolation mode."
 msgstr ""
 
@@ -364,6 +369,10 @@ msgstr ""
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx:142
 msgid "Collateral usage:"
+msgstr ""
+
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:279
+msgid "Collateralization"
 msgstr ""
 
 #: src/modules/governance/VotingPowerInfoPanel.tsx:67
@@ -480,6 +489,15 @@ msgstr ""
 msgid "Disable"
 msgstr ""
 
+#: src/modules/dashboard/DashboardEModeButton.tsx:196
+msgid "Disable E-Mode"
+msgstr ""
+
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:303
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:308
+msgid "Disabled"
+msgstr ""
+
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx:151
 msgid "Disabling this asset as collateral affects your borrowing power and Health Factor."
 msgstr ""
@@ -496,7 +514,7 @@ msgstr ""
 msgid "Discussion"
 msgstr ""
 
-#: src/modules/dashboard/DashboardEModeButton.tsx:25
+#: src/modules/dashboard/DashboardEModeButton.tsx:48
 msgid "E-Mode"
 msgstr ""
 
@@ -504,13 +522,14 @@ msgstr ""
 msgid "E-Mode category"
 msgstr ""
 
-#: src/components/transactions/Emode/EmodeModalContent.tsx:179
+#: src/components/transactions/Emode/EmodeModalContent.tsx:187
+#: src/modules/dashboard/DashboardEModeButton.tsx:182
 msgid "E-Mode increases your borrowing power for a selected category of assets up to 99%. <0>Learn more</0>"
 msgstr ""
 
 #: src/components/infoModalContents/EModeInfoContent.tsx:11
-msgid "E-Mode increases your borrowing power for a selected category of assets up to 99%. Enabling E-mode will restrict the assets you can borrow against your collateral to the ones specified in the selected E-mode. Please visit our<0>FAQ guide </0>to learn more about how it works."
-msgstr ""
+#~ msgid "E-Mode increases your borrowing power for a selected category of assets up to 99%. Enabling E-mode will restrict the assets you can borrow against your collateral to the ones specified in the selected E-mode. Please visit our<0>FAQ guide </0>to learn more about how it works."
+#~ msgstr ""
 
 #: src/components/transactions/Stake/StakeActions.tsx:93
 #: src/components/transactions/UnStake/UnStakeActions.tsx:83
@@ -518,20 +537,41 @@ msgstr ""
 #~ msgstr ""
 
 #: src/components/infoModalContents/EModeInfoContent.tsx:9
-msgid "Efficiency Mode(E-Mode)"
+#~ msgid "Efficiency Mode(E-Mode)"
+#~ msgstr ""
+
+#: src/modules/dashboard/DashboardEModeButton.tsx:126
+msgid "Efficiency mode (E-Mode)"
+msgstr ""
+
+#: src/modules/dashboard/DashboardEModeButton.tsx:196
+msgid "Enable E-Mode"
 msgstr ""
 
 #: src/layouts/components/TestNetModeSwitcher.tsx:35
 msgid "Enable Testnet mode"
 msgstr ""
 
-#: src/components/transactions/Emode/EmodeModalContent.tsx:232
-msgid "Enabling E-Mode only allows you to borrow assets belonging to the selected category Stablecoins. Please visit our FAQ guide to learn more about how it works and the applied restrictions."
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:287
+#: src/modules/dashboard/DashboardEModeButton.tsx:173
+msgid "Enabled"
 msgstr ""
 
-#: src/components/transactions/Emode/EmodeModalContent.tsx:199
-msgid "Enabling E-Mode only allows you to borrow assets belonging to the selected category Stablecoins. Please visit out <0>FAQ guide</0> to learn more about how it works and the applied restrictions."
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:297
+msgid "Enabled in isolation"
 msgstr ""
+
+#: src/components/transactions/Emode/EmodeModalContent.tsx:207
+msgid "Enabling E-Mode only allows you to borrow assets belonging to the selected category Stablecoins. Please visit our <0>FAQ guide</0> to learn more about how it works and the applied restrictions."
+msgstr ""
+
+#: src/components/transactions/Emode/EmodeModalContent.tsx:232
+#~ msgid "Enabling E-Mode only allows you to borrow assets belonging to the selected category Stablecoins. Please visit our FAQ guide to learn more about how it works and the applied restrictions."
+#~ msgstr ""
+
+#: src/components/transactions/Emode/EmodeModalContent.tsx:199
+#~ msgid "Enabling E-Mode only allows you to borrow assets belonging to the selected category Stablecoins. Please visit out <0>FAQ guide</0> to learn more about how it works and the applied restrictions."
+#~ msgstr ""
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx:144
 msgid "Enabling this asset as collateral increases your borrowing power and Health Factor. However, it can get liquidated if your health factor drops below 1."
@@ -594,7 +634,7 @@ msgstr ""
 msgid "Governance"
 msgstr ""
 
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:330
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:349
 #: src/modules/dashboard/DashboardTopPanel.tsx:113
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx:69
 msgid "Health factor"
@@ -616,7 +656,7 @@ msgstr ""
 msgid "If you DO NOT unstake within 2 days of unstake widow, you will need to activate cooldown process again."
 msgstr ""
 
-#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx:110
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx:113
 msgid "In E-Mode some assets are not borrowable. Exit E-Mode to get access to all assets"
 msgstr ""
 
@@ -628,7 +668,7 @@ msgstr ""
 msgid "In Isolation mode, you cannot supply other assets as collateral. A global debt ceiling limits the borrowing power of the isolated asset. Read more in our <0>FAQ</0>"
 msgstr ""
 
-#: src/components/transactions/Emode/EmodeModalContent.tsx:135
+#: src/components/transactions/Emode/EmodeModalContent.tsx:143
 msgid "In order to change E-Mode from asset category{0}you will need to close your position in your current category. See our <0>FAQ</0> to learn more."
 msgstr ""
 
@@ -660,7 +700,7 @@ msgstr ""
 msgid "Links"
 msgstr ""
 
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:354
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:373
 msgid "Liquidation at"
 msgstr ""
 
@@ -669,7 +709,7 @@ msgid "Liquidation penalty"
 msgstr ""
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx:210
-#: src/components/transactions/Withdraw/WithdrawModalContent.tsx:239
+#: src/components/transactions/Withdraw/WithdrawModalContent.tsx:238
 msgid "Liquidation risk is high. Lower amounts recomended."
 msgstr ""
 
@@ -782,7 +822,7 @@ msgstr ""
 msgid "Not enough staked balance"
 msgstr ""
 
-#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:97
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx:102
 msgid "Nothing borrowed yet"
 msgstr ""
 
@@ -923,7 +963,7 @@ msgstr ""
 msgid "Rewards APR"
 msgstr ""
 
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:365
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:384
 msgid "Rewards balance"
 msgstr ""
 
@@ -1017,7 +1057,7 @@ msgstr ""
 msgid "Staked"
 msgstr ""
 
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:456
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:475
 msgid "Staking"
 msgstr ""
 
@@ -1053,7 +1093,7 @@ msgstr ""
 msgid "Supply amount is limited due to Supply Cap"
 msgstr ""
 
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:298
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:316
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx:45
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx:41
 msgid "Supply balance"
@@ -1157,7 +1197,7 @@ msgstr ""
 msgid "Time left to be able to withdraw your staked asset."
 msgstr ""
 
-#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx:100
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx:121
 msgid "To borrow you need to supply any asset to be used as collateral."
 msgstr ""
 
@@ -1197,7 +1237,7 @@ msgstr ""
 msgid "Total voting power"
 msgstr ""
 
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:431
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx:450
 msgid "Total worth"
 msgstr ""
 
@@ -1229,7 +1269,6 @@ msgstr ""
 msgid "Use"
 msgstr ""
 
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:279
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx:66
 msgid "Used as collateral"
 msgstr ""
@@ -1289,7 +1328,7 @@ msgstr ""
 msgid "Wallet balance"
 msgstr ""
 
-#: src/components/transactions/Emode/EmodeModalContent.tsx:193
+#: src/components/transactions/Emode/EmodeModalContent.tsx:201
 msgid "Warning here about geting out of emode"
 msgstr ""
 
@@ -1328,7 +1367,7 @@ msgstr ""
 msgid "You can not change Interest Type to stable as your borrowings are higher than your collateral"
 msgstr ""
 
-#: src/components/transactions/Emode/EmodeModalContent.tsx:152
+#: src/components/transactions/Emode/EmodeModalContent.tsx:160
 msgid "You can not disable E-Mode as your current collateralization level is above 80%, disabling E-Mode can cause liquidation. To exit E-Mode supply or repay borrowed positions."
 msgstr ""
 
@@ -1356,7 +1395,7 @@ msgstr ""
 msgid "You have not borrow yet using this currency"
 msgstr ""
 
-#: src/components/transactions/Emode/EmodeModalContent.tsx:159
+#: src/components/transactions/Emode/EmodeModalContent.tsx:167
 msgid "You need to change E-Mode to continue."
 msgstr ""
 
@@ -1509,10 +1548,10 @@ msgstr ""
 msgid "{0, select, slow {Slow} normal {Normal} fast {Fast} other {-}}"
 msgstr ""
 
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx:291
 #: src/components/transactions/GasStation/GasStation.tsx:140
 #: src/components/transactions/GasStation/GasStation.tsx:147
 #: src/components/transactions/GasStation/GasStation.tsx:154
+#: src/modules/dashboard/DashboardEModeButton.tsx:37
 msgid "{0}"
 msgstr ""
 
