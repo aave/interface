@@ -124,6 +124,7 @@ export const ClaimRewardsActions = ({
     <TxActionsWrapper
       mainTxState={mainTxState}
       handleClose={handleClose}
+      isWrongNetwork={isWrongNetwork}
       helperText={
         <RightHelperText
           actionHash={mainTxState.txHash}
@@ -133,7 +134,7 @@ export const ClaimRewardsActions = ({
       }
     >
       <>
-        {!mainTxState.txHash && !mainTxState.txError && (
+        {!mainTxState.txHash && !mainTxState.txError && !isWrongNetwork && (
           <Button
             variant="contained"
             onClick={action}

@@ -152,6 +152,7 @@ export const RepayActions = ({
       approvalTxState={approvalTxState}
       handleRetry={handleRetry}
       hasAmount={hasAmount}
+      isWrongNetwork={isWrongNetwork}
       withAmount
       helperText={
         <>
@@ -175,7 +176,7 @@ export const RepayActions = ({
       {...props}
     >
       <>
-        {hasAmount && requiresApproval && !approved && !approvalTxState.txError && (
+        {hasAmount && requiresApproval && !approved && !approvalTxState.txError && !isWrongNetwork && (
           <Button
             variant="contained"
             onClick={() => approval(amountToRepay, poolAddress)}
@@ -192,29 +193,32 @@ export const RepayActions = ({
             )}
           </Button>
         )}
-
-        {hasAmount && !mainTxState.txHash && !mainTxState.txError && !approvalTxState.txError && (
-          <Button
-            variant="contained"
-            onClick={action}
-            disabled={
-              loading ||
-              (requiresApproval && !approved) ||
-              isWrongNetwork ||
-              !!mainTxState.gasEstimationError
-            }
-            size="large"
-            sx={{ minHeight: '44px' }}
-          >
-            {!loading && !approved && <Trans>Repay {symbol}</Trans>}
-            {(approved || !requiresApproval) && loading && (
-              <>
-                <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-                <Trans>Pending...</Trans>
-              </>
-            )}
-          </Button>
-        )}
+        {hasAmount &&
+          !mainTxState.txHash &&
+          !mainTxState.txError &&
+          !approvalTxState.txError &&
+          !isWrongNetwork && (
+            <Button
+              variant="contained"
+              onClick={action}
+              disabled={
+                loading ||
+                (requiresApproval && !approved) ||
+                isWrongNetwork ||
+                !!mainTxState.gasEstimationError
+              }
+              size="large"
+              sx={{ minHeight: '44px' }}
+            >
+              {!loading && !approved && <Trans>Repay {symbol}</Trans>}
+              {(approved || !requiresApproval) && loading && (
+                <>
+                  <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
+                  <Trans>Pending...</Trans>
+                </>
+              )}
+            </Button>
+          )}
       </>
     </TxActionsWrapper>
   );
