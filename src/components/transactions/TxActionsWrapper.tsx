@@ -13,6 +13,7 @@ interface TxActionsWrapperProps extends BoxProps {
   handleRetry?: () => void;
   handleClose: () => void;
   children: ReactNode;
+  isWrongNetwork: boolean;
 }
 
 export const TxActionsWrapper = ({
@@ -24,6 +25,7 @@ export const TxActionsWrapper = ({
   sx,
   handleRetry,
   handleClose,
+  isWrongNetwork,
   children,
   ...rest
 }: TxActionsWrapperProps) => {
@@ -47,8 +49,12 @@ export const TxActionsWrapper = ({
           <Trans>Retry with approval</Trans>
         </Button>
       )}
-
-      {withAmount && !hasAmount && !approvalTxError && (
+      {isWrongNetwork && (
+        <Button variant="contained" disabled size="large" sx={{ minHeight: '44px' }}>
+          <Trans>Switch Network</Trans>
+        </Button>
+      )}
+      {withAmount && !hasAmount && !approvalTxError && !isWrongNetwork && (
         <Button variant="contained" disabled size="large" sx={{ minHeight: '44px' }}>
           <Trans>Enter an amount</Trans>
         </Button>

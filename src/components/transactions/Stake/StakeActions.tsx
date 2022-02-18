@@ -1,6 +1,6 @@
 import { EthereumTransactionTypeExtended, GasType } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Box, BoxProps, Button, CircularProgress } from '@mui/material';
+import { BoxProps, Button, CircularProgress } from '@mui/material';
 import { Dispatch, SetStateAction, useEffect } from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
@@ -10,6 +10,7 @@ import { GasOption } from '../GasStation/GasStationProvider';
 import { RightHelperText } from '../FlowCommons/RightHelperText';
 import { TxState } from 'src/helpers/types';
 import { useStakeTxBuilderContext } from 'src/hooks/useStakeTxBuilder';
+import { TxActionsWrapper } from '../TxActionsWrapper';
 
 export interface StakeActionProps extends BoxProps {
   amountToStake: string;
@@ -70,76 +71,84 @@ export const StakeActions = ({
   }, [setTxState, mainTxState, approvalTxState]);
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', ...sx }} {...props}>
-      <Box
-        sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: '12px' }}
-      >
-        <LeftHelperText
-          amount={amountToStake}
-          error={mainTxState.txError || approvalTxState.txError}
-          approvalHash={approvalTxState.txHash}
-          actionHash={mainTxState.txHash}
-          requiresApproval={requiresApproval}
-        />
-        <RightHelperText
-          approvalHash={approvalTxState.txHash}
-          actionHash={mainTxState.txHash}
-          chainId={connectedChainId}
-          action="supply"
-        />
-      </Box>
-      {!hasAmount && !approvalTxState.txError && (
-        <Button variant="outlined" disabled>
-          <Trans>ENTER AN AMOUNT</Trans>
-        </Button>
-      )}
-      {hasAmount && requiresApproval && !approved && !approvalTxState.txError && (
-        <Button
-          variant="contained"
-          onClick={() => approval()}
-          disabled={
-            approved || loading || isWrongNetwork || blocked || !!approvalTxState.gasEstimationError
-          }
-        >
-          {!approved && !loading && <Trans>APPROVE TO CONTINUE</Trans>}
-          {!approved && loading && (
-            <>
-              <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-              <Trans>APPROVING {symbol} ...</Trans>
-            </>
+    <TxActionsWrapper
+      mainTxState={mainTxState}
+      handleClose={handleClose}
+      approvalTxState={approvalTxState}
+      isWrongNetwork={isWrongNetwork}
+      hasAmount={hasAmount}
+      withAmount
+      helperText={
+        <>
+          <LeftHelperText
+            amount={amountToStake}
+            error={mainTxState.txError || approvalTxState.txError}
+            approvalHash={approvalTxState.txHash}
+            actionHash={mainTxState.txHash}
+            requiresApproval={requiresApproval}
+          />
+          <RightHelperText
+            approvalHash={approvalTxState.txHash}
+            actionHash={mainTxState.txHash}
+            chainId={connectedChainId}
+            action="stake"
+          />
+        </>
+      }
+      sx={sx}
+      {...props}
+    >
+      <>
+        {hasAmount && requiresApproval && !approved && !approvalTxState.txError && !isWrongNetwork && (
+          <Button
+            variant="contained"
+            onClick={() => approval()}
+            disabled={
+              approved ||
+              loading ||
+              isWrongNetwork ||
+              blocked ||
+              !!approvalTxState.gasEstimationError
+            }
+          >
+            {!approved && !loading && <Trans>APPROVE TO CONTINUE</Trans>}
+            {!approved && loading && (
+              <>
+                <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
+                <Trans>APPROVING {symbol} ...</Trans>
+              </>
+            )}
+          </Button>
+        )}
+        {hasAmount &&
+          !mainTxState.txHash &&
+          !mainTxState.txError &&
+          !approvalTxState.txError &&
+          !isWrongNetwork && (
+            <Button
+              variant="contained"
+              onClick={action}
+              disabled={
+                loading ||
+                (requiresApproval && !approved) ||
+                isWrongNetwork ||
+                blocked ||
+                !!mainTxState.gasEstimationError
+              }
+              sx={{ mt: !approved ? 2 : 0 }}
+            >
+              {!mainTxState.txHash && !mainTxState.txError && (!loading || !approved) && (
+                <Trans>STAKE {symbol}</Trans>
+              )}
+              {approved && loading && (
+                <>
+                  <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
+                  <Trans>PENDING...</Trans>
+                </>
+              )}
+            </Button>
           )}
-        </Button>
-      )}
-      {hasAmount && !mainTxState.txHash && !mainTxState.txError && !approvalTxState.txError && (
-        <Button
-          variant="contained"
-          onClick={action}
-          disabled={
-            loading ||
-            (requiresApproval && !approved) ||
-            isWrongNetwork ||
-            blocked ||
-            !!mainTxState.gasEstimationError
-          }
-          sx={{ mt: !approved ? 2 : 0 }}
-        >
-          {!mainTxState.txHash && !mainTxState.txError && (!loading || !approved) && (
-            <Trans>STAKE {symbol}</Trans>
-          )}
-          {approved && loading && (
-            <>
-              <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-              <Trans>PENDING...</Trans>
-            </>
-          )}
-        </Button>
-      )}
-      {(mainTxState.txHash || mainTxState.txError || approvalTxState.txError) && (
-        <Button onClick={handleClose} variant="contained">
-          {!mainTxState.txError && !approvalTxState.txError && <Trans>OK, </Trans>}
-          <Trans>CLOSE</Trans>
-        </Button>
-      )}
-    </Box>
+      </>
+    </TxActionsWrapper>
   );
 };

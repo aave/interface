@@ -14,6 +14,7 @@ import {
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3ContextProvider';
 import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
@@ -160,6 +161,13 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
     }
   };
 
+  // token info to add to wallet
+  const addToken: ERC20TokenType = {
+    address: underlyingAsset,
+    symbol: poolReserve.symbol,
+    decimals: poolReserve.decimals,
+  };
+
   return (
     <>
       {!borrowTxState.txError && !borrowTxState.success && (
@@ -230,7 +238,12 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
 
       {borrowTxState.txError && <TxErrorView errorMessage={borrowTxState.txError} />}
       {borrowTxState.success && !borrowTxState.txError && (
-        <TxSuccessView action="Borrowed" amount={amountToBorrow} symbol={poolReserve.symbol} />
+        <TxSuccessView
+          action="Borrowed"
+          amount={amountToBorrow}
+          symbol={poolReserve.symbol}
+          addToken={addToken}
+        />
       )}
       {borrowTxState.gasEstimationError && (
         <GasEstimationError error={borrowTxState.gasEstimationError} />
