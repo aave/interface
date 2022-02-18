@@ -13,6 +13,7 @@ import { TxState } from 'src/helpers/types';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3ContextProvider';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
 import { getNetworkConfig, isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 
@@ -184,6 +185,14 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
   // is Network mismatched
   const isWrongNetwork = currentChainId !== connectedChainId;
 
+  // token info to add to wallet
+  const addToken: ERC20TokenType = {
+    address: poolReserve.aTokenAddress,
+    symbol: poolReserve.symbol,
+    decimals: poolReserve.decimals,
+    aToken: true,
+  };
+
   return (
     <>
       {!supplyTxState.txError && !supplyTxState.success && (
@@ -238,7 +247,12 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
 
       {supplyTxState.txError && <TxErrorView errorMessage={supplyTxState.txError} />}
       {supplyTxState.success && !supplyTxState.txError && (
-        <TxSuccessView action="Supplied" amount={amountToSupply} symbol={poolReserve.symbol} />
+        <TxSuccessView
+          action="Supplied"
+          amount={amountToSupply}
+          symbol={poolReserve.symbol}
+          addToken={addToken}
+        />
       )}
       {supplyTxState.gasEstimationError && (
         <GasEstimationError error={supplyTxState.gasEstimationError} />
