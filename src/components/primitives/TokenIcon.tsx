@@ -5,6 +5,21 @@ interface ATokenIconProps {
   symbol?: string;
 }
 
+/**
+ * To save some bundle size we stopped base64 encoding & inlining svgs as base encoding increases size by up to 30%
+ * and most users will never need all token icons.
+ * The aToken icons have previously been separate icons also adding to bundle size. Now they are composed on the fly.
+ * When adding a token to metamask, you can either supply a url or a base64 encoded string.
+ * Supplying a url seems not very rational, but supplying a base64 for an external svg image that is composed with a react component is non trivial.
+ * Therefore the solution we came up with is:
+ * 1. rendering the svg component as an object
+ * 2. rendering the aToken ring as a react component
+ * 3. using js to manipulate the dome to have the object without the subdocument inside the react component
+ * 4. base64 encode the composed dom svg
+ *
+ * This component is probably hugely over engineered & unnecessary.
+ * I'm looking forward for the pr which evicts it.
+ */
 export function Base64Token({
   symbol,
   onImageGenerated,
@@ -23,10 +38,13 @@ export function Base64Token({
       if (aToken) {
         // eslint-disable-next-line
         const inner = ref.current?.contentDocument?.childNodes?.[0] as any;
+        const oldWidth = inner.getAttribute('width');
+        const oldHeight = inner.getAttribute('height');
         inner.setAttribute('x', 25);
         inner.setAttribute('width', 206);
         inner.setAttribute('y', 25);
         inner.setAttribute('height', 206);
+        inner.setAttribute('viewBox', `0 0 ${oldWidth} ${oldHeight}`);
 
         aRef.current?.appendChild(inner);
         const s = new XMLSerializer().serializeToString(aRef.current as unknown as Node);
@@ -34,6 +52,7 @@ export function Base64Token({
         onImageGenerated(window.btoa(s));
       } else {
         const s = new XMLSerializer().serializeToString(ref.current?.contentDocument);
+        onImageGenerated(window.btoa(s));
       }
     }
   }, [loading, aToken]);
