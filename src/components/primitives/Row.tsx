@@ -16,8 +16,8 @@ export const Row = ({
 }: RowProps) => {
   return (
     <Box
-      {...rest}
       sx={{ display: 'flex', alignItems: align, justifyContent: 'space-between', ...rest.sx }}
+      {...rest}
     >
       {caption && (
         <Typography component="div" variant={captionVariant} sx={{ mr: 2 }}>
