@@ -95,6 +95,17 @@
     "prettier": "^2.5.1",
     "typescript": "^4.5.5"
   },
+  "contributors": [
+    "Pol Sendra <pol@aave.com>",
+    "Lukas Strassel <lukas@aave.com>",
+    "Oleksandr Tkach <oleksandr@aave.com>",
+    "David Racero <david.k@aave.com>",
+    "Andrew Schmidt <andrew@aave.com>",  
+    "Mark Hinschberger <mark@aave.com>",
+    "Nikita Bokarev <nikita@aave.com>",
+    "Anastasia Khovaeva <anastasia@aave.com>",
+    "Diego Prudencio diego@aave.com"
+  ],
   "lint-staged": {
     "*.js": "eslint --cache --fix",
     "*.jsx": "eslint --cache --fix",
