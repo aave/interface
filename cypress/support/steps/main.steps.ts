@@ -5,7 +5,7 @@ import {
   doSwapForRepay,
   getDashBoardBorrowRow,
   getDashBoardDepositRow,
-  doCloseModal
+  doCloseModal,
 } from './actions.steps';
 import constants from '../../fixtures/constans.json';
 
@@ -175,13 +175,10 @@ export const repay = (
           cy.get('[data-cy=Modal] button')
             .contains('Wallet balance')
             .click()
-            .should("not.be.disabled");
+            .should('not.be.disabled');
           break;
         case constants.repayType.wallet:
-          cy.get('[data-cy=Modal] button')
-            .contains('Collateral')
-            .click()
-            .should("not.be.disabled");
+          cy.get('[data-cy=Modal] button').contains('Collateral').click().should('not.be.disabled');
           break;
         case constants.repayType.default:
           break;
@@ -189,7 +186,7 @@ export const repay = (
           cy.get('[data-cy=Modal] button')
             .contains('Wallet balance')
             .click()
-            .should("not.be.disabled");
+            .should('not.be.disabled');
           break;
       }
     });
@@ -232,7 +229,11 @@ export const withdraw = (
     skipSetup({ skip, updateSkipStatus });
     it(`Open ${_shortName} Withdraw popup view`, () => {
       cy.get('[data-cy=menuDashboard]').find('a:contains("Dashboard")').wait(3000).click();
-      cy.get(`[data-cy=dashboardSuppliedListItem_${_shortName}_${isCollateral?"Collateral":"NoCollateral"}]`)
+      cy.get(
+        `[data-cy=dashboardSuppliedListItem_${_shortName}_${
+          isCollateral ? 'Collateral' : 'NoCollateral'
+        }]`
+      )
         .find(`button:contains("Withdraw")`)
         .click();
       cy.get(

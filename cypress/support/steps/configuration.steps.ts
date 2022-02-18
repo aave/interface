@@ -62,7 +62,7 @@ export const configEnvWithTenderlyMainnetFork = ({
 };
 
 export const configEnvWithTenderlyPolygonFork = ({
-  market = `fork_proto_matic`,
+  market = `fork_proto_polygon`,
   tokens,
 }: {
   market?: string;
