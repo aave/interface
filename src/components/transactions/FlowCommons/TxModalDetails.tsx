@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { Dispatch, SetStateAction } from 'react';
-import { Reward } from 'src/helpers/types';
+import { CollateralType, Reward } from 'src/helpers/types';
 import { ReserveIncentiveResponse } from 'src/hooks/app-data-provider/useIncentiveData';
 
 import LightningBoltGradient from '/public/lightningBoltGradient.svg';
@@ -37,7 +37,7 @@ export interface TxModalDetailsProps {
   incentives?: ReserveIncentiveResponse[];
   stableRateIncentives?: ReserveIncentiveResponse[];
   symbol?: string;
-  usedAsCollateral?: boolean;
+  usedAsCollateral?: CollateralType;
   setActionUnWrapped?: Dispatch<SetStateAction<boolean>>;
   setInterestRateMode?: Dispatch<SetStateAction<InterestRate>>;
   borrowStableRate?: string;
@@ -276,20 +276,38 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
           )}
 
         {typeof usedAsCollateral !== 'undefined' && (
-          <Row caption={<Trans>Used as collateral</Trans>} captionVariant="description" mb={4}>
+          <Row caption={<Trans>Collateralization</Trans>} captionVariant="description" mb={4}>
             <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-              {usedAsCollateral && (
-                <SvgIcon sx={{ color: 'success.main', fontSize: 16, mr: '2px' }}>
-                  <CheckIcon />
-                </SvgIcon>
+              {usedAsCollateral === CollateralType.ENABLED && (
+                <>
+                  <SvgIcon sx={{ color: 'success.main', fontSize: 16, mr: '2px' }}>
+                    <CheckIcon />
+                  </SvgIcon>
+                  <Typography variant="description" color="success.main">
+                    <Trans>Enabled</Trans>
+                  </Typography>
+                </>
               )}
-
-              <Typography
-                variant="description"
-                color={usedAsCollateral ? 'success.main' : 'error.main'}
-              >
-                <Trans>{usedAsCollateral ? 'Yes' : 'No'}</Trans>
-              </Typography>
+              {usedAsCollateral === CollateralType.ISOLATED_ENABLED && (
+                <>
+                  <SvgIcon sx={{ color: 'warning.main', fontSize: 16, mr: '2px' }}>
+                    <CheckIcon />
+                  </SvgIcon>
+                  <Typography variant="description" color="warning.main">
+                    <Trans>Enabled in isolation</Trans>
+                  </Typography>
+                </>
+              )}
+              {usedAsCollateral === CollateralType.DISABLED && (
+                <Typography variant="description" color="grey">
+                  <Trans>Disabled</Trans>
+                </Typography>
+              )}
+              {usedAsCollateral === CollateralType.ISOLATED_DISABLED && (
+                <Typography variant="description" color="grey">
+                  <Trans>Disabled</Trans>
+                </Typography>
+              )}
             </Box>
           </Row>
         )}
