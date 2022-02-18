@@ -13,7 +13,7 @@ export type ChangeNetworkWarningProps = {
 export const ChangeNetworkWarning = ({ networkName, chainId }: ChangeNetworkWarningProps) => {
   const { switchNetwork } = useWeb3Context();
   return (
-    <Warning severity="warning" icon={false}>
+    <Warning severity="error" icon={false}>
       <Typography>
         <Trans>Please switch to {networkName}.</Trans>{' '}
         <Button

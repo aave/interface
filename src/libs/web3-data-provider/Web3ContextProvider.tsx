@@ -1,4 +1,4 @@
-import { transactionType } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS, transactionType } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import {
   JsonRpcProvider,
@@ -15,6 +15,14 @@ import Web3Modal from 'web3modal';
 import { Web3Context } from '../hooks/useWeb3Context';
 // import { getWeb3Modal} from './modalOptions'
 
+export type ERC20TokenType = {
+  address: string;
+  symbol: string;
+  decimals: number;
+  image?: string;
+  aToken?: boolean;
+};
+
 export type Web3Data = {
   connectWallet: () => Promise<Web3Provider | undefined>;
   disconnectWallet: () => void;
@@ -26,6 +34,7 @@ export type Web3Data = {
   switchNetwork: (chainId: number) => Promise<void>;
   getTxError: (txHash: string) => Promise<string>;
   sendTx: (txData: transactionType) => Promise<TransactionResponse>;
+  addERC20Token: (args: ERC20TokenType) => Promise<boolean>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   signTxData: (unsignedData: string) => Promise<SignatureLike>;
 };
@@ -181,6 +190,36 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     [provider?.network.chainId]
   );
 
+  const addERC20Token = async ({
+    address,
+    symbol,
+    decimals,
+    image,
+  }: ERC20TokenType): Promise<boolean> => {
+    // using window.ethereum as looks like its only supported for metamask
+    // and didn't manage to make the call with ethersjs
+    if (provider && currentAccount && window && window.ethereum) {
+      if (address.toLowerCase() !== API_ETH_MOCK_ADDRESS.toLowerCase()) {
+        await window?.ethereum?.request({
+          method: 'wallet_watchAsset',
+          params: {
+            // @ts-expect-error needed
+            type: 'ERC20',
+            options: {
+              address,
+              symbol,
+              decimals,
+              image,
+            },
+          },
+        });
+
+        return true;
+      }
+    }
+    return false;
+  };
+
   const web3ProviderData = useMemo(
     () => ({
       connectWallet,
@@ -211,7 +250,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   return (
     <Web3Context.Provider
       value={{
-        web3ProviderData: { ...web3ProviderData, currentAccount },
+        web3ProviderData: { ...web3ProviderData, currentAccount, addERC20Token },
       }}
     >
       {children}
