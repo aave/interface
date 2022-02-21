@@ -1,11 +1,8 @@
-import { join, dirname } from 'path';
-import { Low, JSONFile } from 'lowdb';
-import { fileURLToPath } from 'url';
+import { join } from 'path';
+import { LowSync, JSONFileSync } from 'lowdb';
 import lodash from 'lodash';
 import { getProposalMetadata } from '@aave/contract-helpers';
 import { CustomProposalType } from './proposal';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export interface IpfsType {
   id: number;
@@ -19,20 +16,20 @@ export interface IpfsType {
   title: string;
 }
 
-class LowWithLodash<T> extends Low<T> {
+class LowWithLodash<T> extends LowSync<T> {
   chain: lodash.ExpChain<this['data']> = lodash.chain(this).get('data');
 }
 
 // Use JSON file for storage
-const file = join(__dirname, 'ipfsFiles.json');
-const adapter = new JSONFile<{ ipfs: IpfsType[] }>(file);
+const file = join(process.cwd(), 'src/static-build', 'ipfsFiles.json');
+const adapter = new JSONFileSync<{ ipfs: IpfsType[] }>(file);
 const db = new LowWithLodash(adapter);
-await db.read();
+db.read();
 
 export class Ipfs {
   get(id: number) {
     const value = db.chain.get('ipfs').find({ id }).value();
-    if (!value) throw new Error('trying to fetch ipfs cache, but failed');
+    if (!value) throw new Error(`trying to fetch ipfs cache, but failed ${id}`);
     return value;
   }
 
@@ -46,6 +43,6 @@ export class Ipfs {
     const ipfs = await getProposalMetadata(proposal.ipfsHash);
     const newIpfs = { ...ipfs, originalHash: proposal.ipfsHash, id };
     db.data.ipfs.push(newIpfs);
-    return await db.write();
+    return db.write();
   }
 }

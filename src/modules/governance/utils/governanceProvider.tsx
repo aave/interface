@@ -1,6 +1,6 @@
 import { AaveGovernanceService } from '@aave/contract-helpers';
-import { governanceConfig } from 'src/ui-config/governanceConfig';
-import { getProvider } from 'src/utils/marketsAndNetworksConfig';
+import { governanceConfig } from '../../../ui-config/governanceConfig';
+import { getProvider } from '../../../utils/marketsAndNetworksConfig';
 
 let governanceContract: AaveGovernanceService;
 

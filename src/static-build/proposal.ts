@@ -1,15 +1,12 @@
 import { Proposal as ProposalType } from '@aave/contract-helpers';
 import lodash from 'lodash';
-import { JSONFile, Low } from 'lowdb';
-import { dirname, join } from 'path';
-import { enhanceProposalWithTimes } from 'src/modules/governance/utils/formatProposal';
-import { governanceContract } from 'src/modules/governance/utils/governanceProvider';
-import { isProposalStateImmutable } from 'src/modules/governance/utils/immutableStates';
-import { fileURLToPath } from 'url';
+import { JSONFileSync, LowSync } from 'lowdb';
+import { join } from 'path';
+import { enhanceProposalWithTimes } from '../modules/governance/utils/formatProposal';
+import { governanceContract } from '../modules/governance/utils/governanceProvider';
+import { isProposalStateImmutable } from '../modules/governance/utils/immutableStates';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
-class LowWithLodash<T> extends Low<T> {
+class LowWithLodash<T> extends LowSync<T> {
   chain: lodash.ExpChain<this['data']> = lodash.chain(this).get('data');
 }
 
@@ -20,10 +17,10 @@ export type CustomProposalType = Omit<ProposalType, 'values'> & {
 };
 
 // Use JSON file for storage
-const file = join(__dirname, 'proposals.json');
-const adapter = new JSONFile<{ proposals: CustomProposalType[] }>(file);
+const file = join(process.cwd(), 'src/static-build', 'proposals.json');
+const adapter = new JSONFileSync<{ proposals: CustomProposalType[] }>(file);
 const db = new LowWithLodash(adapter);
-await db.read();
+db.read();
 
 export class Proposal {
   count() {
@@ -53,7 +50,7 @@ export class Proposal {
     } else {
       db.data.proposals.push(proposal);
     }
-    await db.write();
+    db.write();
     return proposal;
   }
 }

@@ -1,5 +1,7 @@
 declare module '*/messages';
 
 namespace NodeJS {
-  interface ProcessEnv {}
+  interface ProcessEnv {
+    CACHE_PATH: string;
+  }
 }
