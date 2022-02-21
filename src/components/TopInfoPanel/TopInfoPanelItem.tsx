@@ -1,4 +1,4 @@
-import { Box, Skeleton, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Skeleton, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 
 interface TopInfoPanelItemProps {
