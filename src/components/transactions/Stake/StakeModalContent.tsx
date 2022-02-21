@@ -41,6 +41,8 @@ export const StakeModalContent = ({ stakeAssetName, icon, handleClose }: StakePr
   const [amountToSupply, setAmountToSupply] = useState(amount);
   const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
   const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
+  const [isMax, setIsMax] = useState(false);
+  const [maxAmount, setMaxAmount] = useState('0');
 
   const walletBalance = normalize(
     data.stakeUserResult?.stakeUserUIData[stakeAssetName as StakingType]
@@ -51,25 +53,38 @@ export const StakeModalContent = ({ stakeAssetName, icon, handleClose }: StakePr
   useEffect(() => {
     if (amount === '-1') {
       setAmountToSupply(walletBalance);
+      setIsMax(true);
     } else {
       setAmountToSupply(amount);
+      setIsMax(false);
     }
   }, [amount, walletBalance]);
 
+  useEffect(() => {
+    if (isMax) {
+      setMaxAmount(walletBalance);
+    }
+  }, [isMax]);
+
+  // This amount will stay the same after tx is submited even if we have an interval
+  // between tx success and tx success confirmation. This way all calcs are static
+  // and don't get recalculated in this interval state
+  const staticAmount = isMax ? maxAmount : amountToSupply;
+
   // staking token usd value
   const amountInUsd =
-    Number(amountToSupply) *
+    Number(staticAmount) *
     (Number(normalize(stakeData?.stakeTokenPriceEth || 1, 18)) /
       Number(normalize(data.stakeGeneralResult?.stakeGeneralUIData.usdPriceEth || 1, 18)));
 
   // error handler
   useEffect(() => {
-    if (valueToBigNumber(amountToSupply).gt(walletBalance)) {
+    if (valueToBigNumber(staticAmount).gt(walletBalance)) {
       setBlockingError(ErrorType.NOT_ENOUGH_BALANCE);
     } else {
       setBlockingError(undefined);
     }
-  }, [walletBalance, amountToSupply]);
+  }, [walletBalance, staticAmount]);
 
   const handleBlocked = () => {
     switch (blockingError) {
@@ -96,7 +111,7 @@ export const StakeModalContent = ({ stakeAssetName, icon, handleClose }: StakePr
           )}
 
           <AssetInput
-            value={amountToSupply}
+            value={staticAmount}
             onChange={setAmount}
             usdValue={amountInUsd.toString()}
             symbol={icon}
@@ -117,7 +132,7 @@ export const StakeModalContent = ({ stakeAssetName, icon, handleClose }: StakePr
       )}
       {txState.txError && <TxErrorView errorMessage={txState.txError} />}
       {txState.success && !txState.txError && (
-        <TxSuccessView action="Staked" amount={amountToSupply} symbol={icon} />
+        <TxSuccessView action="Staked" amount={staticAmount} symbol={icon} />
       )}
       {txState.gasEstimationError && <GasEstimationError error={txState.gasEstimationError} />}
       <StakeActions
