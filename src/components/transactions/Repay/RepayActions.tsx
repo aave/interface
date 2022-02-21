@@ -131,6 +131,7 @@ export const RepayActions = ({
   const hasAmount = amountToRepay && amountToRepay !== '0';
 
   useEffect(() => {
+    setApproving(false);
     setRepayTxState({
       success: !!mainTxState.txHash,
       txError: mainTxState.txError || approvalTxState.txError,
@@ -139,6 +140,7 @@ export const RepayActions = ({
   }, [setRepayTxState, mainTxState, approvalTxState]);
 
   const handleRetry = () => {
+    setApproving(false);
     setRepayTxState({
       txError: undefined,
       success: false,
