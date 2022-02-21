@@ -4,6 +4,7 @@ import { Box } from '@mui/system';
 import { useRouter } from 'next/router';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
+import { AMPLWarning } from '../../components/infoTooltips/AMPLWarning';
 import { ListColumn } from '../../components/lists/ListColumn';
 import { ListItem } from '../../components/lists/ListItem';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
@@ -32,6 +33,8 @@ export const AssetsListItem = ({ ...reserve }: ComputedReserveData) => {
             {reserve.symbol}
           </Typography>
         </Box>
+
+        {reserve.symbol === 'AMPL' && <AMPLWarning />}
       </ListColumn>
 
       <ListColumn>

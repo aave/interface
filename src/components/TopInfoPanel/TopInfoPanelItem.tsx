@@ -1,4 +1,4 @@
-import { Box, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Skeleton, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 
 interface TopInfoPanelItemProps {
@@ -8,6 +8,7 @@ interface TopInfoPanelItemProps {
   hideIcon?: boolean;
   variant?: 'light' | 'dark' | undefined; // default dark
   withLine?: boolean;
+  loading?: boolean;
 }
 
 export const TopInfoPanelItem = ({
@@ -17,6 +18,7 @@ export const TopInfoPanelItem = ({
   hideIcon,
   variant = 'dark',
   withLine,
+  loading,
 }: TopInfoPanelItemProps) => {
   const theme = useTheme();
   const upToSM = useMediaQuery(theme.breakpoints.up('sm'));
@@ -70,7 +72,8 @@ export const TopInfoPanelItem = ({
         >
           {title}
         </Typography>
-        {children}
+
+        {loading ? <Skeleton height={upToSM ? 28 : 24} sx={{ background: '#2C2D3F' }} /> : children}
       </Box>
     </Box>
   );

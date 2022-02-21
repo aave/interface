@@ -355,6 +355,13 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
 export function getThemedComponents(theme: Theme) {
   return {
     components: {
+      MuiSkeleton: {
+        styleOverrides: {
+          root: {
+            transform: 'unset',
+          },
+        },
+      },
       MuiOutlinedInput: {
         styleOverrides: {
           root: {
