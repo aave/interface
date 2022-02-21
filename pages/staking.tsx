@@ -12,6 +12,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
+import { StakeTxBuilderProvider } from 'src/providers/StakeTxBuilderProvider';
 
 export default function Staking() {
   const data = useStakeData();
@@ -84,13 +85,6 @@ export default function Staking() {
           </Grid>
         </Grid>
       </ContentContainer>
-
-      {/** Modals */}
-      <StakeModal />
-      <StakeCooldownModal />
-      <UnStakeModal />
-      <StakeRewardClaimModal />
-      {/** End of modals */}
     </>
   );
 }
@@ -98,7 +92,17 @@ export default function Staking() {
 Staking.getLayout = function getLayout(page: React.ReactElement) {
   return (
     <MainLayout>
-      <StakeDataProvider>{page}</StakeDataProvider>
+      <StakeTxBuilderProvider>
+        <StakeDataProvider>
+          {page}
+          {/** Modals */}
+          <StakeModal />
+          <StakeCooldownModal />
+          <UnStakeModal />
+          <StakeRewardClaimModal />
+          {/** End of modals */}
+        </StakeDataProvider>
+      </StakeTxBuilderProvider>
     </MainLayout>
   );
 };

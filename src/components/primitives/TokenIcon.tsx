@@ -40,19 +40,26 @@ export function Base64Token({
         const inner = ref.current?.contentDocument?.childNodes?.[0] as any;
         const oldWidth = inner.getAttribute('width');
         const oldHeight = inner.getAttribute('height');
+        const vb = inner.getAttribute('viewBox');
         inner.setAttribute('x', 25);
         inner.setAttribute('width', 206);
         inner.setAttribute('y', 25);
         inner.setAttribute('height', 206);
-        inner.setAttribute('viewBox', `0 0 ${oldWidth} ${oldHeight}`);
+        if (!vb) {
+          inner.setAttribute('viewBox', `0 0 ${oldWidth} ${oldHeight}`);
+        }
 
         aRef.current?.appendChild(inner);
         const s = new XMLSerializer().serializeToString(aRef.current as unknown as Node);
 
-        onImageGenerated(window.btoa(s));
+        onImageGenerated(
+          `data:image/svg+xml;base64,${window.btoa(unescape(encodeURIComponent(s)))}`
+        );
       } else {
         const s = new XMLSerializer().serializeToString(ref.current?.contentDocument);
-        onImageGenerated(window.btoa(s));
+        onImageGenerated(
+          `data:image/svg+xml;base64,${window.btoa(unescape(encodeURIComponent(s)))}`
+        );
       }
     }
   }, [loading, aToken]);
@@ -85,7 +92,6 @@ export const ATokenIcon = forwardRef<SVGSVGElement, ATokenIconProps>(({ symbol }
         left: 0,
         width: '100%',
         height: '100%',
-        zIndex: -1,
       }}
       ref={ref}
       id="Group_30952"
