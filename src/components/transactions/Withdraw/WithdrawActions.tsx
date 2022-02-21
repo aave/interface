@@ -1,8 +1,5 @@
-import { ChainId, EthereumTransactionTypeExtended, GasType } from '@aave/contract-helpers';
+import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Button, CircularProgress } from '@mui/material';
-import { Dispatch, SetStateAction, useEffect } from 'react';
-import { TxState } from 'src/helpers/types';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useGasStation } from 'src/hooks/useGasStation';

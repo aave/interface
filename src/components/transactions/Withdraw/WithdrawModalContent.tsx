@@ -9,7 +9,6 @@ import { Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { parseUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
-import { TxState } from 'src/helpers/types';
 import {
   ComputedReserveData,
   useAppDataContext,

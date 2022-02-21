@@ -1,6 +1,5 @@
 import { ChainId, InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Button, CircularProgress } from '@mui/material';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useGasStation } from 'src/hooks/useGasStation';

@@ -1,8 +1,6 @@
-import { ChainId, EthereumTransactionTypeExtended, GasType, Pool } from '@aave/contract-helpers';
+import { ChainId, Pool } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { BoxProps, Button, CircularProgress } from '@mui/material';
-import { Dispatch, SetStateAction, useEffect } from 'react';
-import { TxState } from 'src/helpers/types';
+import { BoxProps } from '@mui/material';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useGasStation } from 'src/hooks/useGasStation';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -19,10 +17,7 @@ export interface SupplyActionProps extends BoxProps {
   amountToSupply: string;
   poolReserve: ComputedReserveData;
   isWrongNetwork: boolean;
-  setSupplyTxState: Dispatch<SetStateAction<TxState>>;
   customGasPrice?: string;
-  handleClose: () => void;
-  setGasLimit: Dispatch<SetStateAction<string | undefined>>;
   poolAddress: string;
   symbol: string;
   blocked: boolean;
@@ -30,9 +25,6 @@ export interface SupplyActionProps extends BoxProps {
 
 export const SupplyActions = ({
   amountToSupply,
-  setSupplyTxState,
-  handleClose,
-  setGasLimit,
   poolAddress,
   isWrongNetwork,
   sx,
@@ -47,10 +39,9 @@ export const SupplyActions = ({
 
   const {
     approval,
-    approved,
     action,
     requiresApproval,
-    loading,
+    loadingTxns,
     approvalTxState,
     mainTxState,
     usePermit,
@@ -62,36 +53,27 @@ export const SupplyActions = ({
       if (currentMarketData.v3) {
         // TO-DO: No need for this cast once a single Pool type is used in use-tx-builder-context
         const newPool: Pool = lendingPool as Pool;
-        const tx: EthereumTransactionTypeExtended[] = await newPool.supply({
+        return newPool.supply({
           user: currentAccount,
           reserve: poolAddress,
           amount: amountToSupply,
         });
-        const gas: GasType | null = await tx[tx.length - 1].gas();
-        setGasLimit(gas?.gasLimit);
-        return tx;
       } else {
-        const tx = await lendingPool.deposit({
+        return lendingPool.deposit({
           user: currentAccount,
           reserve: poolAddress,
           amount: amountToSupply,
         });
-        const gas: GasType | null = await tx[tx.length - 1].gas();
-        setGasLimit(gas?.gasLimit);
-        return tx;
       }
     },
     handleGetPermitTxns: async (signature) => {
       const newPool: Pool = lendingPool as Pool;
-      const tx = await newPool.supplyWithPermit({
+      return newPool.supplyWithPermit({
         user: currentAccount,
         reserve: poolAddress,
         amount: amountToSupply,
         signature,
       });
-      const gas: GasType | null = await tx[tx.length - 1].gas();
-      setGasLimit(gas?.gasLimit);
-      return tx;
     },
     customGasPrice:
       state.gasOption === GasOption.Custom
@@ -101,35 +83,20 @@ export const SupplyActions = ({
     deps: [amountToSupply],
   });
 
-  const hasAmount = amountToSupply && amountToSupply !== '0';
-
-  useEffect(() => {
-    setSupplyTxState({
-      success: !!mainTxState.txHash,
-      txError: mainTxState.txError || approvalTxState.txError,
-      gasEstimationError: mainTxState.gasEstimationError || approvalTxState.gasEstimationError,
-    });
-  }, [setSupplyTxState, mainTxState, approvalTxState]);
-
-  const handleRetry = () => {
-    setSupplyTxState({
-      txError: undefined,
-      success: false,
-      gasEstimationError: undefined,
-    });
-    resetStates();
-  };
-
   return (
     <TxActionsWrapper
       mainTxState={mainTxState}
-      handleClose={handleClose}
-      handleRetry={handleRetry}
+      handleRetry={resetStates}
       approvalTxState={approvalTxState}
       isWrongNetwork={isWrongNetwork}
-      hasAmount={hasAmount}
+      requiresAmount
+      amount={amountToSupply}
+      preparingTransactions={loadingTxns}
+      actionText={<Trans>Supply {symbol}</Trans>}
+      actionInProgressText={<Trans>Supplying {symbol}</Trans>}
+      handleApproval={() => approval(amountToSupply, poolAddress)}
+      handleAction={action}
       requiresApproval={requiresApproval}
-      withAmount
       helperText={
         <>
           <LeftHelperText
@@ -150,66 +117,6 @@ export const SupplyActions = ({
       }
       sx={sx}
       {...props}
-    >
-      <>
-        {hasAmount && requiresApproval && !approved && !approvalTxState.txError && !isWrongNetwork && (
-          <Button
-            variant="contained"
-            onClick={() => approval(amountToSupply, poolAddress)}
-            disabled={
-              approved ||
-              loading ||
-              isWrongNetwork ||
-              blocked ||
-              !!approvalTxState.gasEstimationError
-            }
-            size="large"
-            sx={{ minHeight: '44px', mb: 2 }}
-          >
-            {!loading && <Trans>Approve to continue</Trans>}
-            {loading && (
-              <>
-                <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-                {approvalTxState.loading ? (
-                  <Trans>Approving {symbol}...</Trans>
-                ) : (
-                  <Trans>Approve to continue</Trans>
-                )}
-              </>
-            )}
-          </Button>
-        )}
-
-        {hasAmount &&
-          !mainTxState.txHash &&
-          !mainTxState.txError &&
-          !approvalTxState.txError &&
-          !isWrongNetwork && (
-            <Button
-              variant="contained"
-              onClick={action}
-              disabled={
-                loading ||
-                (requiresApproval && !approved) ||
-                isWrongNetwork ||
-                blocked ||
-                !!mainTxState.gasEstimationError
-              }
-              size="large"
-              sx={{ minHeight: '44px' }}
-            >
-              {!loading && <Trans>Supply {symbol}</Trans>}
-              {loading && (
-                <>
-                  {((approved && requiresApproval) || !requiresApproval) && (
-                    <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-                  )}
-                  <Trans>Supply {symbol}</Trans>
-                </>
-              )}
-            </Button>
-          )}
-      </>
-    </TxActionsWrapper>
+    />
   );
 };

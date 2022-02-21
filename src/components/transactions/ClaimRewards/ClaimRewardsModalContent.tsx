@@ -2,7 +2,7 @@ import { normalize, UserIncentiveData } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { Reward, TxState } from 'src/helpers/types';
+import { Reward } from 'src/helpers/types';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';

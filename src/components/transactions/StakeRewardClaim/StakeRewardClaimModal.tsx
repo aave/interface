@@ -8,7 +8,7 @@ export const StakeRewardClaimModal = () => {
   return (
     <BasicModal open={type === ModalType.StakeRewardClaim} setOpen={close}>
       {args?.stakeAssetName && (
-        <StakeRewardClaimModalContent stakeAssetName={args.stakeAssetName} handleClose={close} />
+        <StakeRewardClaimModalContent stakeAssetName={args.stakeAssetName} />
       )}
     </BasicModal>
   );

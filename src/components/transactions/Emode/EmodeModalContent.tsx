@@ -2,7 +2,7 @@ import { formatUserSummary } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Alert, Button, Link, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { EmodeCategory, TxState } from 'src/helpers/types';
+import { EmodeCategory } from 'src/helpers/types';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';

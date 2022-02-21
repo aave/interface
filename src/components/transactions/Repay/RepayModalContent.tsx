@@ -14,7 +14,6 @@ import { Trans } from '@lingui/macro';
 import { Box, SvgIcon, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import React, { useEffect, useState } from 'react';
-import { TxState } from 'src/helpers/types';
 import {
   ComputedReserveData,
   useAppDataContext,

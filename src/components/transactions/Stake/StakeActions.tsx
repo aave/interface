@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { BoxProps, Button, CircularProgress } from '@mui/material';
+import { BoxProps } from '@mui/material';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
 import { LeftHelperText } from '../FlowCommons/LeftHelperText';
@@ -31,7 +31,7 @@ export const StakeActions = ({
   const { state, gasPriceData } = useGasStation();
   const stakingService = useStakeTxBuilderContext(selectedToken);
 
-  const { action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
+  const { action, approval, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({
       tryPermit: false,
       handleGetTxns: async () => {
@@ -53,6 +53,8 @@ export const StakeActions = ({
       isWrongNetwork={isWrongNetwork}
       amount={amountToStake}
       handleAction={action}
+      handleApproval={approval}
+      symbol={symbol}
       requiresAmount
       actionText={<Trans>Stake</Trans>}
       actionInProgressText={<Trans>Staking</Trans>}

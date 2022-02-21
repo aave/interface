@@ -26,7 +26,7 @@ export const ClaimRewardsActions = ({
   const { currentAccount, chainId: connectedChainId } = useWeb3Context();
   const { state, gasPriceData } = useGasStation();
 
-  const { action, loadingTxns, mainTxState, actionTx } = useTransactionHandler({
+  const { action, loadingTxns, mainTxState } = useTransactionHandler({
     tryPermit: false,
     handleGetTxns: async () => {
       if (currentMarketData.v3) {
