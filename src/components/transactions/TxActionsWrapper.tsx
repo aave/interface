@@ -10,7 +10,6 @@ interface TxActionsWrapperProps extends BoxProps {
   withAmount?: boolean;
   hasAmount?: boolean | string;
   handleRetry?: () => void;
-  handleClose: () => void;
   children: ReactNode;
   isWrongNetwork: boolean;
   requiresApproval?: boolean;
@@ -24,7 +23,6 @@ export const TxActionsWrapper = ({
   helperText,
   sx,
   handleRetry,
-  handleClose,
   isWrongNetwork,
   requiresApproval,
   children,
@@ -67,12 +65,6 @@ export const TxActionsWrapper = ({
         )}
 
       {children}
-
-      {(mainTxState.txHash || mainTxState.txError || approvalTxError) && (
-        <Button onClick={handleClose} variant="contained" size="large" sx={{ minHeight: '44px' }}>
-          {!mainTxState.txError && !approvalTxError && <Trans>Ok,</Trans>} <Trans>Close</Trans>
-        </Button>
-      )}
     </Box>
   );
 };

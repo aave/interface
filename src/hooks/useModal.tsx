@@ -60,6 +60,7 @@ interface ModalContextType {
   setMainTxState: (data: TxStateType) => void;
   gasLimit: string;
   setGasLimit: (limit: string) => void;
+  resetTx: () => void;
 }
 
 export const ModalContext = createContext<ModalContextType>({} as ModalContextType);
@@ -136,6 +137,11 @@ export const ModalContextProvider: React.FC = ({ children }) => {
         close: () => {
           setType(undefined);
           setArgs({});
+          setMainTxState({});
+          setApprovalTxState({});
+          setGasLimit('');
+        },
+        resetTx: () => {
           setMainTxState({});
           setApprovalTxState({});
           setGasLimit('');
