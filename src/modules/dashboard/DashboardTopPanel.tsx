@@ -1,6 +1,6 @@
 import { normalize, UserIncentiveData, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Button, SvgIcon, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
 import * as React from 'react';
 import { useState } from 'react';
 import { MultiTokenIcon } from 'src/components/primitives/TokenIcon';
@@ -8,11 +8,11 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
-import HfEmpty from '/public/icons/healthFactor/hfEmpty.svg';
-import HfFull from '/public/icons/healthFactor/hfFull.svg';
-import HfLow from '/public/icons/healthFactor/hfLow.svg';
-import HfMiddle from '/public/icons/healthFactor/hfMiddle.svg';
-
+// TODO: need change icon
+// import HfEmpty from '/public/icons/healthFactor/hfEmpty.svg';
+// import HfFull from '/public/icons/healthFactor/hfFull.svg';
+// import HfLow from '/public/icons/healthFactor/hfLow.svg';
+// import HfMiddle from '/public/icons/healthFactor/hfMiddle.svg';
 import HALTooltip from '../../components/HALTooltip';
 import { HealthFactorNumber } from '../../components/HealthFactorNumber';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
@@ -123,14 +123,15 @@ export const DashboardTopPanel = () => {
                 <HALTooltip />
               </Box>
             }
-            icon={
-              <SvgIcon sx={{ fontSize: '24px' }}>
-                {+user.healthFactor >= 10 && <HfFull />}
-                {+user.healthFactor < 10 && +user.healthFactor >= 3 && <HfMiddle />}
-                {+user.healthFactor < 3 && +user.healthFactor >= 1 && <HfLow />}
-                {+user.healthFactor < 1 && <HfEmpty />}
-              </SvgIcon>
-            }
+            // TODO: need change icon
+            // icon={
+            //   <SvgIcon sx={{ fontSize: '24px' }}>
+            //     {+user.healthFactor >= 10 && <HfFull />}
+            //     {+user.healthFactor < 10 && +user.healthFactor >= 3 && <HfMiddle />}
+            //     {+user.healthFactor < 3 && +user.healthFactor >= 1 && <HfLow />}
+            //     {+user.healthFactor < 1 && <HfEmpty />}
+            //   </SvgIcon>
+            // }
           >
             <HealthFactorNumber
               value={user?.healthFactor || '-1'}
