@@ -25,7 +25,7 @@ export const useTransactionHandler = ({
   skip,
   deps = [],
 }: UseTransactionHandlerProps) => {
-  const { approvalTxState, setApprovalTxState, mainTxState, setMainTxState, setGasLimit } =
+  const { approvalTxState, setApprovalTxState, mainTxState, setMainTxState, setGasLimit, resetTx } =
     useModalContext();
   const { signTxData, sendTx, getTxError, currentAccount } = useWeb3Context();
   const { refetchWalletBalances, refetchPoolData } = useBackgroundDataProvider();
@@ -34,7 +34,6 @@ export const useTransactionHandler = ({
   // const [txs, setTxs] = useState<EthereumTransactionTypeExtended[]>([]);
   const [usePermit, setUsePermit] = useState<boolean>(tryPermit);
   const [signature, setSignature] = useState<SignatureLike>();
-  const [approved, setApproved] = useState<boolean>(false);
 
   const [approvalTx, setApprovalTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
@@ -96,7 +95,6 @@ export const useTransactionHandler = ({
           try {
             const signature = await signTxData(unsingedPayload);
             setSignature(signature);
-            setApproved(true);
             setApprovalTxState({
               txHash: 'Signed correctly',
               txError: undefined,
@@ -128,7 +126,6 @@ export const useTransactionHandler = ({
           await processTx({
             tx: () => sendTx(params),
             successCallback: (txnResponse: TransactionResponse) => {
-              setApproved(true);
               setApprovalTxState({
                 txHash: txnResponse.hash,
                 txError: undefined,
@@ -235,9 +232,7 @@ export const useTransactionHandler = ({
 
   const resetStates = () => {
     setUsePermit(false);
-    setMainTxState({});
-    setApprovalTxState({});
-    setApproved(false);
+    resetTx();
   };
 
   // populate txns
@@ -288,7 +283,6 @@ export const useTransactionHandler = ({
     action,
     loadingTxns,
     setUsePermit,
-    approved,
     requiresApproval: !!approvalTx,
     approvalTxState,
     mainTxState,

@@ -15,7 +15,6 @@ import { TxActionsWrapper } from '../TxActionsWrapper';
 export type BorrowActionsProps = {
   poolReserve: ComputedReserveData;
   amountToBorrow: string;
-  handleClose: () => void;
   poolAddress: string;
   interestRateMode: InterestRate;
   isWrongNetwork: boolean;
@@ -27,7 +26,6 @@ export const BorrowActions = ({
   symbol,
   poolReserve,
   amountToBorrow,
-  handleClose,
   poolAddress,
   interestRateMode,
   isWrongNetwork,
@@ -38,7 +36,7 @@ export const BorrowActions = ({
   const { currentAccount, chainId: connectedChainId } = useWeb3Context();
   const { state, gasPriceData } = useGasStation();
 
-  const { action, loadingTxns, mainTxState, actionTx } = useTransactionHandler({
+  const { action, loadingTxns, mainTxState } = useTransactionHandler({
     tryPermit:
       currentMarketData.v3 && chainId !== ChainId.harmony && chainId !== ChainId.harmony_testnet,
     handleGetTxns: async () => {
@@ -61,35 +59,15 @@ export const BorrowActions = ({
     deps: [amountToBorrow, interestRateMode],
   });
 
-  const handleButtonStates = () => {
-    if (loadingTxns && !actionTx) {
-      return (
-        <>
-          {!blocked && <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />}
-          <Trans>Borrow {symbol}</Trans>
-        </>
-      );
-    } else if (!mainTxState.loading && (actionTx || blocked)) {
-      return <Trans>Borrow {symbol}</Trans>;
-    } else if (mainTxState.loading) {
-      return (
-        <>
-          <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-          <Trans>Borrowing {symbol}</Trans>
-        </>
-      );
-    }
-  };
-
-  const hasAmount = amountToBorrow && amountToBorrow !== '0';
-
   return (
     <TxActionsWrapper
       mainTxState={mainTxState}
-      handleClose={handleClose}
-      hasAmount={hasAmount}
+      requiresAmount={true}
+      amount={amountToBorrow}
       isWrongNetwork={isWrongNetwork}
-      withAmount
+      handleAction={action}
+      actionText={<Trans>Borrow {symbol}</Trans>}
+      actionInProgressText={<Trans>Borrowing {symbol}</Trans>}
       helperText={
         <RightHelperText
           actionHash={mainTxState.txHash}
@@ -97,26 +75,7 @@ export const BorrowActions = ({
           action="borrow"
         />
       }
-    >
-      <>
-        {hasAmount && !mainTxState.txHash && !mainTxState.txError && !isWrongNetwork && (
-          <Button
-            variant="contained"
-            onClick={action}
-            disabled={
-              loadingTxns ||
-              mainTxState.loading ||
-              isWrongNetwork ||
-              blocked ||
-              !!mainTxState.gasEstimationError
-            }
-            size="large"
-            sx={{ minHeight: '44px' }}
-          >
-            {handleButtonStates()}
-          </Button>
-        )}
-      </>
-    </TxActionsWrapper>
+      preparingTransactions={loadingTxns}
+    />
   );
 };
