@@ -91,7 +91,7 @@ export const LanguagesList = ({ component = ListItem, onClick }: LanguageListIte
           </ListItemIcon>
           <ListItemText>{i18n._(langMap[lang as keyof typeof langMap])}</ListItemText>
           {lang === i18n.locale && (
-            <ListItemIcon>
+            <ListItemIcon sx={{ m: 0 }}>
               <SvgIcon fontSize="small" sx={{ color: { xs: 'common.white', md: 'text.primary' } }}>
                 <CheckIcon />
               </SvgIcon>

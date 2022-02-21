@@ -31,6 +31,7 @@ export const getVotes = async (
   );
 
   const formattedVotes: VoteType[] = await Promise.all(
+    // eslint-disable-next-line
     votes.map(async (vote: any) => {
       return {
         proposalId: vote.args.id.toNumber(),
