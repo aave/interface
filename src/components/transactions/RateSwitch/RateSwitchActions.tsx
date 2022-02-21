@@ -1,7 +1,5 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Dispatch, SetStateAction, useEffect } from 'react';
-import { TxState } from 'src/helpers/types';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useGasStation } from 'src/hooks/useGasStation';
@@ -14,7 +12,6 @@ import { TxActionsWrapper } from '../TxActionsWrapper';
 
 export type RateSwitchActionsProps = {
   poolReserve: ComputedReserveData;
-  setRateSwitchTxState: Dispatch<SetStateAction<TxState>>;
   isWrongNetwork: boolean;
   currentRateMode: InterestRate;
   blocked: boolean;
@@ -22,7 +19,6 @@ export type RateSwitchActionsProps = {
 
 export const RateSwitchActions = ({
   poolReserve,
-  setRateSwitchTxState,
   isWrongNetwork,
   currentRateMode,
   blocked,
@@ -46,14 +42,6 @@ export const RateSwitchActions = ({
         : gasPriceData.data?.[state.gasOption].legacyGasPrice,
     skip: blocked,
   });
-
-  useEffect(() => {
-    setRateSwitchTxState({
-      success: !!mainTxState.txHash,
-      txError: mainTxState.txError,
-      gasEstimationError: mainTxState.gasEstimationError,
-    });
-  }, [setRateSwitchTxState, mainTxState]);
 
   return (
     <TxActionsWrapper

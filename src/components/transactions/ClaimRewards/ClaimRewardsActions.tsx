@@ -1,8 +1,5 @@
-import { EthereumTransactionTypeExtended, GasType } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Button, CircularProgress } from '@mui/material';
-import { Dispatch, SetStateAction, useEffect } from 'react';
-import { Reward, TxState } from 'src/helpers/types';
+import { Reward } from 'src/helpers/types';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { useGasStation } from 'src/hooks/useGasStation';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -14,18 +11,12 @@ import { GasOption } from '../GasStation/GasStationProvider';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
 export type ClaimRewardsActionsProps = {
-  setGasLimit: Dispatch<SetStateAction<string | undefined>>;
-  setClaimRewardsTxState: Dispatch<SetStateAction<TxState>>;
-  handleClose: () => void;
   isWrongNetwork: boolean;
   blocked: boolean;
   selectedReward: Reward;
 };
 
 export const ClaimRewardsActions = ({
-  setGasLimit,
-  setClaimRewardsTxState,
-  handleClose,
   isWrongNetwork,
   blocked,
   selectedReward,
@@ -38,17 +29,16 @@ export const ClaimRewardsActions = ({
   const { action, loadingTxns, mainTxState, actionTx } = useTransactionHandler({
     tryPermit: false,
     handleGetTxns: async () => {
-      let tx: EthereumTransactionTypeExtended[];
       if (currentMarketData.v3) {
         if (selectedReward.symbol === 'all') {
-          tx = incentivesTxBuilderV2.claimAllRewards({
+          return incentivesTxBuilderV2.claimAllRewards({
             user: currentAccount,
             assets: selectedReward.assets,
             to: currentAccount,
             incentivesControllerAddress: selectedReward.incentiveControllerAddress,
           });
         } else {
-          tx = incentivesTxBuilderV2.claimRewards({
+          return incentivesTxBuilderV2.claimRewards({
             user: currentAccount,
             assets: selectedReward.assets,
             to: currentAccount,
@@ -57,17 +47,13 @@ export const ClaimRewardsActions = ({
           });
         }
       } else {
-        tx = incentivesTxBuilder.claimRewards({
+        return incentivesTxBuilder.claimRewards({
           user: currentAccount,
           assets: selectedReward.assets,
           to: currentAccount,
           incentivesControllerAddress: selectedReward.incentiveControllerAddress,
         });
       }
-
-      const gas: GasType | null = await tx[tx.length - 1].gas();
-      setGasLimit(gas?.gasLimit);
-      return tx;
     },
     customGasPrice:
       state.gasOption === GasOption.Custom
@@ -77,53 +63,19 @@ export const ClaimRewardsActions = ({
     deps: [selectedReward],
   });
 
-  useEffect(() => {
-    setClaimRewardsTxState({
-      success: !!mainTxState.txHash,
-      txError: mainTxState.txError,
-      gasEstimationError: mainTxState.gasEstimationError,
-    });
-  }, [setClaimRewardsTxState, mainTxState]);
-
-  const handleButtonStates = () => {
-    if (loadingTxns && !actionTx) {
-      return (
-        <>
-          {!blocked && <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />}
-          <Trans>Claim</Trans>{' '}
-          {selectedReward.symbol === 'all' ? <Trans>all</Trans> : selectedReward.symbol}
-        </>
-      );
-    } else if (!loadingTxns && (actionTx || blocked)) {
-      return (
-        <>
-          <Trans>Claim</Trans>{' '}
-          {selectedReward.symbol === 'all' ? <Trans>all</Trans> : selectedReward.symbol}
-        </>
-      );
-    } else if (!loadingTxns && !actionTx) {
-      return (
-        <>
-          <Trans>Claim</Trans>{' '}
-          {selectedReward.symbol === 'all' ? <Trans>all</Trans> : selectedReward.symbol}
-        </>
-      );
-    } else if (loadingTxns && actionTx) {
-      return (
-        <>
-          <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-          <Trans>Claiming</Trans>{' '}
-          {selectedReward.symbol === 'all' ? <Trans>all</Trans> : selectedReward.symbol}{' '}
-          <Trans>Pending...</Trans>
-        </>
-      );
-    }
-  };
-
   return (
     <TxActionsWrapper
+      preparingTransactions={loadingTxns}
       mainTxState={mainTxState}
-      handleClose={handleClose}
+      handleAction={action}
+      actionText={
+        selectedReward.symbol === 'all' ? (
+          <Trans>Claim all</Trans>
+        ) : (
+          <Trans>Claim {selectedReward.symbol}</Trans>
+        )
+      }
+      actionInProgressText={<Trans>Claiming</Trans>}
       isWrongNetwork={isWrongNetwork}
       helperText={
         <RightHelperText
@@ -132,20 +84,6 @@ export const ClaimRewardsActions = ({
           action="borrow"
         />
       }
-    >
-      <>
-        {!mainTxState.txHash && !mainTxState.txError && !isWrongNetwork && (
-          <Button
-            variant="contained"
-            onClick={action}
-            disabled={loading || isWrongNetwork || blocked || !!mainTxState.gasEstimationError}
-            size="large"
-            sx={{ minHeight: '44px' }}
-          >
-            {handleButtonStates()}
-          </Button>
-        )}
-      </>
-    </TxActionsWrapper>
+    />
   );
 };

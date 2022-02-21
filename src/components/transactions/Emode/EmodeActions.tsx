@@ -1,8 +1,5 @@
-import { EthereumTransactionTypeExtended, GasType, PoolInterface } from '@aave/contract-helpers';
+import { PoolInterface } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Button, CircularProgress } from '@mui/material';
-import { Dispatch, SetStateAction, useEffect } from 'react';
-import { TxState } from 'src/helpers/types';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { useGasStation } from 'src/hooks/useGasStation';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
@@ -14,38 +11,24 @@ import { TxActionsWrapper } from '../TxActionsWrapper';
 import { getEmodeMessage } from './EmodeNaming';
 
 export type EmodeActionsProps = {
-  setGasLimit: Dispatch<SetStateAction<string | undefined>>;
-  setEmodeTxState: Dispatch<SetStateAction<TxState>>;
-  handleClose: () => void;
   isWrongNetwork: boolean;
   blocked: boolean;
   selectedEmode: number;
 };
 
-export const EmodeActions = ({
-  setGasLimit,
-  setEmodeTxState,
-  handleClose,
-  isWrongNetwork,
-  blocked,
-  selectedEmode,
-}: EmodeActionsProps) => {
+export const EmodeActions = ({ isWrongNetwork, blocked, selectedEmode }: EmodeActionsProps) => {
   const { lendingPool } = useTxBuilderContext();
   const { currentAccount, chainId: connectedChainId } = useWeb3Context();
   const { state, gasPriceData } = useGasStation();
 
-  const { action, loading, mainTxState, actionTx } = useTransactionHandler({
+  const { action, loadingTxns, mainTxState } = useTransactionHandler({
     tryPermit: false,
     handleGetTxns: async () => {
       const newPool: PoolInterface = lendingPool as PoolInterface;
-      const tx: EthereumTransactionTypeExtended[] = newPool.setUserEMode({
+      return newPool.setUserEMode({
         user: currentAccount,
         categoryId: selectedEmode,
       });
-
-      const gas: GasType | null = await tx[tx.length - 1].gas();
-      setGasLimit(gas?.gasLimit);
-      return tx;
     },
     customGasPrice:
       state.gasOption === GasOption.Custom
@@ -55,72 +38,25 @@ export const EmodeActions = ({
     deps: [selectedEmode],
   });
 
-  useEffect(() => {
-    setEmodeTxState({
-      success: !!mainTxState.txHash,
-      txError: mainTxState.txError,
-      gasEstimationError: mainTxState.gasEstimationError,
-    });
-  }, [setEmodeTxState, mainTxState]);
-
-  const getButtonText = () => {
-    if (loading && !actionTx) {
-      return (
-        <>
-          {!blocked && <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />}
-          {selectedEmode !== 0 ? (
-            <>
-              <Trans>SWITCH TO E-MODE</Trans> {getEmodeMessage(selectedEmode)}
-            </>
-          ) : (
-            <Trans>DISABLE E-MODE</Trans>
-          )}
-        </>
-      );
-    } else if (!loading && (actionTx || blocked)) {
-      return (
-        <>
-          {selectedEmode !== 0 ? (
-            <>
-              <Trans>SWITCH TO E-MODE</Trans> {getEmodeMessage(selectedEmode)}
-            </>
-          ) : (
-            <Trans>DISABLE E-MODE</Trans>
-          )}
-        </>
-      );
-    } else if (!loading && !actionTx) {
-      return (
-        <>
-          {selectedEmode !== 0 ? (
-            <>
-              <Trans>SWITCH TO E-MODE</Trans> {getEmodeMessage(selectedEmode)}
-            </>
-          ) : (
-            <Trans>DISABLE E-MODE</Trans>
-          )}
-        </>
-      );
-    } else if (loading && actionTx) {
-      return (
-        <>
-          <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-          {selectedEmode !== 0 ? (
-            <>
-              <Trans>SWITCH TO E-MODE</Trans> {getEmodeMessage(selectedEmode)}
-            </>
-          ) : (
-            <Trans>DISABLE E-MODE</Trans>
-          )}
-        </>
-      );
-    }
-  };
-
   return (
     <TxActionsWrapper
       mainTxState={mainTxState}
-      handleClose={handleClose}
+      preparingTransactions={loadingTxns}
+      handleAction={action}
+      actionText={
+        selectedEmode !== 0 ? (
+          <Trans>SWITCH TO E-MODE {getEmodeMessage(selectedEmode)}</Trans>
+        ) : (
+          <Trans>DISABLE E-MODE</Trans>
+        )
+      }
+      actionInProgressText={
+        selectedEmode !== 0 ? (
+          <Trans>SWITCHING TO E-MODE {getEmodeMessage(selectedEmode)}</Trans>
+        ) : (
+          <Trans>DISABLING E-MODE</Trans>
+        )
+      }
       isWrongNetwork={isWrongNetwork}
       helperText={
         <RightHelperText
@@ -129,20 +65,6 @@ export const EmodeActions = ({
           action="E-Mode switch"
         />
       }
-    >
-      <>
-        {!mainTxState.txHash && !mainTxState.txError && !isWrongNetwork && (
-          <Button
-            variant="contained"
-            onClick={action}
-            disabled={loading || isWrongNetwork || blocked || !!mainTxState.gasEstimationError}
-            size="large"
-            sx={{ minHeight: '44px' }}
-          >
-            {getButtonText()}
-          </Button>
-        )}
-      </>
-    </TxActionsWrapper>
+    />
   );
 };

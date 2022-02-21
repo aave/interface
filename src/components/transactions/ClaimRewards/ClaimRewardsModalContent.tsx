@@ -4,6 +4,7 @@ import { Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Reward, TxState } from 'src/helpers/types';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
@@ -16,22 +17,16 @@ import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { ClaimRewardsActions } from './ClaimRewardsActions';
 
-export type ClaimRewardsModalContentProps = {
-  handleClose: () => void;
-};
-
 export enum ErrorType {
   NOT_ENOUGH_BALANCE,
 }
 
-export const ClaimRewardsModalContent = ({ handleClose }: ClaimRewardsModalContentProps) => {
+export const ClaimRewardsModalContent = () => {
+  const { gasLimit, mainTxState: claimRewardsTxState } = useModalContext();
   const { user, reserves } = useAppDataContext();
   const { currentChainId, currentNetworkConfig, currentMarketData, currentMarket } =
     useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
-
-  const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
-  const [claimRewardsTxState, setClaimRewardsTxState] = useState<TxState>({ success: false });
 
   const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
 
@@ -128,48 +123,42 @@ export const ClaimRewardsModalContent = ({ handleClose }: ClaimRewardsModalConte
   // is Network mismatched
   const isWrongNetwork = currentChainId !== connectedChainId;
 
+  if (claimRewardsTxState.txError)
+    return <TxErrorView errorMessage={claimRewardsTxState.txError} />;
+  if (claimRewardsTxState.success)
+    return <TxSuccessView action="Claimed" amount={selectedReward?.balanceUsd} />;
+
   return (
     <>
-      {!claimRewardsTxState.txError && !claimRewardsTxState.success && (
-        <>
-          <TxModalTitle title="Claim rewards" />
-          {isWrongNetwork && (
-            <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
-          )}
-
-          {blockingError !== undefined && (
-            <Typography variant="helperText" color="error.main">
-              {handleBlocked()}
-            </Typography>
-          )}
-          {allRewards && allRewards.length > 1 && (
-            <Typography>
-              <Trans>Reward(s) to claim</Trans>
-            </Typography>
-          )}
-
-          <TxModalDetails
-            gasLimit={gasLimit}
-            allRewards={allRewards}
-            selectedReward={selectedReward}
-            setSelectedReward={setSelectedReward}
-          />
-        </>
+      <TxModalTitle title="Claim rewards" />
+      {isWrongNetwork && (
+        <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
       )}
 
-      {claimRewardsTxState.txError && <TxErrorView errorMessage={claimRewardsTxState.txError} />}
-      {claimRewardsTxState.success && !claimRewardsTxState.txError && (
-        <TxSuccessView action="Claimed" amount={selectedReward?.balanceUsd} />
+      {blockingError !== undefined && (
+        <Typography variant="helperText" color="error.main">
+          {handleBlocked()}
+        </Typography>
       )}
+      {allRewards && allRewards.length > 1 && (
+        <Typography>
+          <Trans>Reward(s) to claim</Trans>
+        </Typography>
+      )}
+
+      <TxModalDetails
+        gasLimit={gasLimit}
+        allRewards={allRewards}
+        selectedReward={selectedReward}
+        setSelectedReward={setSelectedReward}
+      />
+
       {claimRewardsTxState.gasEstimationError && (
         <GasEstimationError error={claimRewardsTxState.gasEstimationError} />
       )}
 
       <ClaimRewardsActions
-        setClaimRewardsTxState={setClaimRewardsTxState}
-        handleClose={handleClose}
         isWrongNetwork={isWrongNetwork}
-        setGasLimit={setGasLimit}
         selectedReward={selectedReward ?? ({} as Reward)}
         blocked={blockingError !== undefined}
       />

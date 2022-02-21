@@ -116,34 +116,27 @@ export const RateSwitchModalContent = ({ underlyingAsset }: RateSwitchModalConte
   // is Network mismatched
   const isWrongNetwork = currentChainId !== connectedChainId;
 
+  if (rateSwitchTxState.txError) return <TxErrorView errorMessage={rateSwitchTxState.txError} />;
+  if (rateSwitchTxState.success) return <TxSuccessView rate={rateModeAfterSwitch} />;
   return (
     <>
-      {!rateSwitchTxState.txError && !rateSwitchTxState.success && (
-        <>
-          <TxModalTitle title="Switch APY type" />
-          {isWrongNetwork && (
-            <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
-          )}
-
-          <TxModalDetails
-            incentives={
-              rateModeAfterSwitch === InterestRate.Variable
-                ? poolReserve.vIncentivesData
-                : poolReserve.sIncentivesData
-            }
-            apy={apyAfterSwitch}
-            rate={rateModeAfterSwitch}
-            gasLimit={gasLimit}
-            symbol={poolReserve.symbol}
-            underlyingAsset={underlyingAsset}
-          />
-        </>
+      <TxModalTitle title="Switch APY type" />
+      {isWrongNetwork && (
+        <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
       )}
 
-      {rateSwitchTxState.txError && <TxErrorView errorMessage={rateSwitchTxState.txError} />}
-      {rateSwitchTxState.success && !rateSwitchTxState.txError && (
-        <TxSuccessView rate={rateModeAfterSwitch} />
-      )}
+      <TxModalDetails
+        incentives={
+          rateModeAfterSwitch === InterestRate.Variable
+            ? poolReserve.vIncentivesData
+            : poolReserve.sIncentivesData
+        }
+        apy={apyAfterSwitch}
+        rate={rateModeAfterSwitch}
+        gasLimit={gasLimit}
+        symbol={poolReserve.symbol}
+        underlyingAsset={underlyingAsset}
+      />
 
       {blockingError !== undefined && (
         <Typography variant="helperText" color="error.main">
