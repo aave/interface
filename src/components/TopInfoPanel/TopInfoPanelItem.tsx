@@ -1,4 +1,4 @@
-import { Box, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 
 interface TopInfoPanelItemProps {
@@ -41,7 +41,7 @@ export const TopInfoPanelItem = ({
         />
       )}
 
-      {!hideIcon && !icon && (
+      {!hideIcon && (
         <Box
           sx={{
             display: { xs: 'none', md: 'flex' },
@@ -54,14 +54,11 @@ export const TopInfoPanelItem = ({
             height: 42,
             mr: 3,
           }}
-        />
+        >
+          {icon && icon}
+        </Box>
       )}
 
-      {!hideIcon && icon && (
-        <SvgIcon fontSize="medium" sx={{ width: 42, height: 42, mr: 3 }}>
-          {icon}
-        </SvgIcon>
-      )}
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <Typography
           sx={{ color: variant === 'dark' ? '#FFFFFFB2' : '#47617F' }}

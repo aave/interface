@@ -2,33 +2,64 @@ import { Box, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 
 interface InfoWrapperProps {
-  topContent: ReactNode;
-  topText: ReactNode;
+  topValue: ReactNode;
+  topTitle: ReactNode;
+  topDescription: ReactNode;
   children: ReactNode;
   bottomText: ReactNode;
+  isWarning?: boolean;
+  isError?: boolean;
 }
 
-export const InfoWrapper = ({ topContent, topText, children, bottomText }: InfoWrapperProps) => {
+export const InfoWrapper = ({
+  topValue,
+  topTitle,
+  topDescription,
+  children,
+  bottomText,
+  isWarning,
+  isError,
+}: InfoWrapperProps) => {
   return (
     <Box
       sx={(theme) => ({
-        border: `1px solid ${theme.palette.primary.main}`,
-        mb: 5,
-        borderRadius: '4px',
-        p: 5,
+        border: `1px solid ${theme.palette.divider}`,
+        mb: 6,
+        borderRadius: '6px',
+        px: 4,
+        pt: 4,
+        pb: 6,
+        '&:last-of-type': {
+          mb: 0,
+        },
       })}
     >
-      {topContent}
+      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Box sx={{ width: 'calc(100% - 72px)' }}>
+          <Typography variant="subheader1" mb={1}>
+            {topTitle}
+          </Typography>
+          <Typography variant="caption" color="text.secondary">
+            {topDescription}
+          </Typography>
+        </Box>
 
-      <Typography
-        variant="secondary12"
-        color="text.secondary"
-        sx={{ maxWidth: '85%', textAlign: 'left' }}
-      >
-        {topText}
-      </Typography>
+        <Box
+          sx={{
+            width: '56px',
+            height: '56px',
+            borderRadius: '50%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            bgcolor: isError ? 'error.main' : isWarning ? 'warning.main' : 'success.main',
+          }}
+        >
+          {topValue}
+        </Box>
+      </Box>
 
-      <Box sx={{ my: 5 }}>{children}</Box>
+      <Box>{children}</Box>
 
       <Typography variant="secondary12" color="text.secondary" textAlign="left">
         {bottomText}
