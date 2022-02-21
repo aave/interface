@@ -103,6 +103,7 @@ export const RepayActions = ({
 
   return (
     <TxActionsWrapper
+      blocked={blocked}
       preparingTransactions={loadingTxns}
       symbol={poolReserve.symbol}
       mainTxState={mainTxState}

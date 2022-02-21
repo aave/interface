@@ -43,6 +43,7 @@ export const GovVoteActions = ({
 
   return (
     <TxActionsWrapper
+      blocked={blocked}
       mainTxState={mainTxState}
       preparingTransactions={loadingTxns}
       handleAction={action}

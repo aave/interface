@@ -49,6 +49,7 @@ export const GovDelegationActions = ({
   // TODO: hash link not working
   return (
     <TxActionsWrapper
+      blocked={blocked}
       preparingTransactions={loadingTxns}
       mainTxState={mainTxState}
       isWrongNetwork={isWrongNetwork}

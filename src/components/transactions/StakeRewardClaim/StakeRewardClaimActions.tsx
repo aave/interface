@@ -45,6 +45,7 @@ export const StakeRewardClaimActions = ({
 
   return (
     <TxActionsWrapper
+      blocked={blocked}
       preparingTransactions={loadingTxns}
       handleAction={action}
       actionText={<Trans>CLAIM {symbol}</Trans>}

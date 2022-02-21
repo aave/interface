@@ -38,6 +38,7 @@ export const FaucetActions = ({ poolReserve, isWrongNetwork, blocked }: FaucetAc
 
   return (
     <TxActionsWrapper
+      blocked={blocked}
       preparingTransactions={loadingTxns}
       handleAction={action}
       actionText={<Trans>Faucet {poolReserve.symbol}</Trans>}

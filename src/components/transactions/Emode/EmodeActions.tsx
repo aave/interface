@@ -40,6 +40,7 @@ export const EmodeActions = ({ isWrongNetwork, blocked, selectedEmode }: EmodeAc
 
   return (
     <TxActionsWrapper
+      blocked={blocked}
       mainTxState={mainTxState}
       preparingTransactions={loadingTxns}
       handleAction={action}

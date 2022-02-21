@@ -45,6 +45,7 @@ export const UnStakeActions = ({
 
   return (
     <TxActionsWrapper
+      blocked={blocked}
       preparingTransactions={loadingTxns}
       handleAction={action}
       requiresAmount

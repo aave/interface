@@ -45,6 +45,7 @@ export const RateSwitchActions = ({
 
   return (
     <TxActionsWrapper
+      blocked={blocked}
       preparingTransactions={loadingTxns}
       mainTxState={mainTxState}
       isWrongNetwork={isWrongNetwork}

@@ -60,6 +60,7 @@ export const BorrowActions = ({
 
   return (
     <TxActionsWrapper
+      blocked={blocked}
       mainTxState={mainTxState}
       requiresAmount={true}
       amount={amountToBorrow}

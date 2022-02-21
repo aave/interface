@@ -65,6 +65,7 @@ export const ClaimRewardsActions = ({
 
   return (
     <TxActionsWrapper
+      blocked={blocked}
       preparingTransactions={loadingTxns}
       mainTxState={mainTxState}
       handleAction={action}

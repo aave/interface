@@ -85,6 +85,7 @@ export const SupplyActions = ({
 
   return (
     <TxActionsWrapper
+      blocked={blocked}
       mainTxState={mainTxState}
       handleRetry={resetStates}
       approvalTxState={approvalTxState}

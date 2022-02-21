@@ -18,6 +18,7 @@ interface TxActionsWrapperProps extends BoxProps {
   requiresAmount?: boolean;
   requiresApproval?: boolean;
   symbol?: string;
+  blocked?: boolean;
 }
 
 export const TxActionsWrapper = ({
@@ -36,6 +37,7 @@ export const TxActionsWrapper = ({
   requiresApproval,
   sx,
   symbol,
+  blocked,
   ...rest
 }: TxActionsWrapperProps) => {
   const hasApprovalError = requiresApproval && (approvalTxState?.txError || mainTxState?.txError);
@@ -83,7 +85,7 @@ export const TxActionsWrapper = ({
       {approvalParams && (
         <Button
           variant="contained"
-          disabled={approvalParams.disabled}
+          disabled={approvalParams.disabled || blocked}
           onClick={approvalParams.handleClick}
           size="large"
           sx={{ minHeight: '44px' }}
@@ -97,7 +99,7 @@ export const TxActionsWrapper = ({
 
       <Button
         variant="contained"
-        disabled={disabled}
+        disabled={disabled || blocked}
         onClick={handleClick}
         size="large"
         sx={{ minHeight: '44px', ...(approvalParams ? { mt: 2 } : {}) }}

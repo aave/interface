@@ -41,6 +41,7 @@ export const StakeCooldownActions = ({
 
   return (
     <TxActionsWrapper
+      blocked={blocked}
       preparingTransactions={loadingTxns}
       handleAction={action}
       actionText={<Trans>ACTIVATE COOLDOWN</Trans>}

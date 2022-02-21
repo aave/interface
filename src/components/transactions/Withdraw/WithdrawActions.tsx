@@ -56,6 +56,7 @@ export const WithdrawActions = ({
 
   return (
     <TxActionsWrapper
+      blocked={blocked}
       preparingTransactions={loadingTxns}
       mainTxState={mainTxState}
       amount={amountToWithdraw}
