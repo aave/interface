@@ -222,26 +222,30 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
 
   // error handling
   useEffect(() => {
-    if (repayWithATokens) {
-      if (
-        valueToBigNumber(underlyingBalance).eq(0) ||
-        valueToBigNumber(underlyingBalance).lt(amountToRepayUI) ||
-        (amount === '-1' && valueToBigNumber(underlyingBalance).lt(maxAmountToRepay))
-      ) {
-        setBlockingError(ErrorType.NOT_ENOUGH_ATOKEN_BALANCE);
+    if (!repayTxState.success) {
+      if (repayWithATokens) {
+        if (
+          valueToBigNumber(underlyingBalance).eq(0) ||
+          valueToBigNumber(underlyingBalance).lt(amountToRepayUI) ||
+          (amount === '-1' && valueToBigNumber(underlyingBalance).lt(maxAmountToRepay))
+        ) {
+          setBlockingError(ErrorType.NOT_ENOUGH_ATOKEN_BALANCE);
+        } else {
+          setBlockingError(undefined);
+        }
       } else {
-        setBlockingError(undefined);
+        if (
+          valueToBigNumber(walletBalance).eq('0') ||
+          valueToBigNumber(walletBalance).lt(amountToRepayUI) ||
+          (amount === '-1' && valueToBigNumber(walletBalance).lt(maxAmountToRepay))
+        ) {
+          setBlockingError(ErrorType.NOT_ENOUGH_BALANCE);
+        } else {
+          setBlockingError(undefined);
+        }
       }
     } else {
-      if (
-        valueToBigNumber(walletBalance).eq('0') ||
-        valueToBigNumber(walletBalance).lt(amountToRepayUI) ||
-        (amount === '-1' && valueToBigNumber(walletBalance).lt(maxAmountToRepay))
-      ) {
-        setBlockingError(ErrorType.NOT_ENOUGH_BALANCE);
-      } else {
-        setBlockingError(undefined);
-      }
+      setBlockingError(undefined);
     }
   }, [
     amount,
@@ -251,6 +255,7 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
     walletBalance,
     maxAmountToRepay,
     tokenToRepayWith,
+    repayTxState,
   ]);
 
   // error render handling
@@ -271,7 +276,9 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
     user?.totalBorrowsMarketReferenceCurrency !== '0' && poolReserve.usageAsCollateralEnabled;
 
   // calculating input usd value
-  const usdValue = valueToBigNumber(amountToRepayUI).multipliedBy(reserve.priceInUSD);
+  const usdValue = valueToBigNumber(
+    amountToRepay === '' ? amountToRepay : isMax ? maxAmount : amountToRepayUI.toString()
+  ).multipliedBy(reserve.priceInUSD);
 
   return (
     <>
@@ -319,7 +326,9 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
           </Box>
 
           <AssetInput
-            value={amountToRepay === '' ? amountToRepay : amountToRepayUI.toString()}
+            value={
+              amountToRepay === '' ? amountToRepay : isMax ? maxAmount : amountToRepayUI.toString()
+            }
             onChange={setAmount}
             usdValue={usdValue.toString()}
             symbol={tokenToRepayWith.symbol}
