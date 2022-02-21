@@ -7,11 +7,11 @@ import {
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { TxState } from 'src/helpers/types';
 import {
   ComputedReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3ContextProvider';
@@ -41,12 +41,11 @@ export enum ErrorType {
 }
 
 export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModalContentProps) => {
+  const { mainTxState: borrowTxState, gasLimit } = useModalContext();
   const { reserves, user, marketReferencePriceInUsd } = useAppDataContext();
   const { currentChainId } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
 
-  const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
-  const [borrowTxState, setBorrowTxState] = useState<TxState>({ success: false });
   const [borrowUnWrapped, setBorrowUnWrapped] = useState(true);
   const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
   const [amount, setAmount] = useState('');
@@ -236,8 +235,6 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
 
       <BorrowActions
         poolReserve={poolReserve}
-        setGasLimit={setGasLimit}
-        setBorrowTxState={setBorrowTxState}
         amountToBorrow={amountToBorrow}
         handleClose={handleClose}
         poolAddress={

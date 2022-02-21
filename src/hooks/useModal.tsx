@@ -27,6 +27,14 @@ export type ModalArgsType = {
   stakeAssetName?: string;
 };
 
+export type TxStateType = {
+  txHash?: string;
+  txError?: string;
+  gasEstimationError?: string;
+  loading?: boolean;
+  success?: boolean;
+};
+
 interface ModalContextType {
   openSupply: (underlyingAsset: string) => void;
   openWithdraw: (underlyingAsset: string) => void;
@@ -46,6 +54,12 @@ interface ModalContextType {
   close: () => void;
   type?: ModalType;
   args?: ModalArgsType;
+  mainTxState: TxStateType;
+  approvalTxState: TxStateType;
+  setApprovalTxState: (data: TxStateType) => void;
+  setMainTxState: (data: TxStateType) => void;
+  gasLimit: string;
+  setGasLimit: (limit: string) => void;
 }
 
 export const ModalContext = createContext<ModalContextType>({} as ModalContextType);
@@ -55,6 +69,10 @@ export const ModalContextProvider: React.FC = ({ children }) => {
   const [type, setType] = useState<ModalType>();
   // contains arbitrary key-value pairs as a modal context
   const [args, setArgs] = useState<ModalArgsType>({});
+  const [approvalTxState, setApprovalTxState] = useState<TxStateType>({});
+  const [mainTxState, setMainTxState] = useState<TxStateType>({});
+  const [gasLimit, setGasLimit] = useState<string>('');
+
   return (
     <ModalContext.Provider
       value={{
@@ -118,9 +136,18 @@ export const ModalContextProvider: React.FC = ({ children }) => {
         close: () => {
           setType(undefined);
           setArgs({});
+          setMainTxState({});
+          setApprovalTxState({});
+          setGasLimit('');
         },
         type,
         args,
+        approvalTxState,
+        mainTxState,
+        setApprovalTxState,
+        setMainTxState,
+        gasLimit,
+        setGasLimit,
       }}
     >
       {children}

@@ -21,8 +21,6 @@ import { TxActionsWrapper } from '../TxActionsWrapper';
 
 export type BorrowActionsProps = {
   poolReserve: ComputedReserveData;
-  setGasLimit: Dispatch<SetStateAction<string | undefined>>;
-  setBorrowTxState: Dispatch<SetStateAction<TxState>>;
   amountToBorrow: string;
   handleClose: () => void;
   poolAddress: string;
@@ -35,9 +33,7 @@ export type BorrowActionsProps = {
 export const BorrowActions = ({
   symbol,
   poolReserve,
-  setGasLimit,
   amountToBorrow,
-  setBorrowTxState,
   handleClose,
   poolAddress,
   interestRateMode,
@@ -49,11 +45,11 @@ export const BorrowActions = ({
   const { currentAccount, chainId: connectedChainId } = useWeb3Context();
   const { state, gasPriceData } = useGasStation();
 
-  const { action, loading, mainTxState, actionTx } = useTransactionHandler({
+  const { action, loadingTxns, mainTxState, actionTx } = useTransactionHandler({
     tryPermit:
       currentMarketData.v3 && chainId !== ChainId.harmony && chainId !== ChainId.harmony_testnet,
     handleGetTxns: async () => {
-      const tx: EthereumTransactionTypeExtended[] = await lendingPool.borrow({
+      return await lendingPool.borrow({
         interestRateMode,
         user: currentAccount,
         amount: amountToBorrow,
@@ -63,10 +59,6 @@ export const BorrowActions = ({
             ? poolReserve.variableDebtTokenAddress
             : poolReserve.stableDebtTokenAddress,
       });
-
-      const gas: GasType | null = await tx[tx.length - 1].gas();
-      setGasLimit(gas?.gasLimit);
-      return tx;
     },
     customGasPrice:
       state.gasOption === GasOption.Custom
@@ -76,29 +68,21 @@ export const BorrowActions = ({
     deps: [amountToBorrow, interestRateMode],
   });
 
-  useEffect(() => {
-    setBorrowTxState({
-      success: !!mainTxState.txHash,
-      txError: mainTxState.txError,
-      gasEstimationError: mainTxState.gasEstimationError,
-    });
-  }, [setBorrowTxState, mainTxState]);
-
   const handleButtonStates = () => {
-    if (loading && !actionTx) {
+    if (loadingTxns && !actionTx) {
       return (
         <>
           {!blocked && <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />}
           <Trans>Borrow {symbol}</Trans>
         </>
       );
-    } else if (!loading && (actionTx || blocked)) {
+    } else if (!mainTxState.loading && (actionTx || blocked)) {
       return <Trans>Borrow {symbol}</Trans>;
-    } else if (loading && actionTx) {
+    } else if (mainTxState.loading) {
       return (
         <>
           <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-          <Trans>Borrow {symbol}</Trans>
+          <Trans>Borrowing {symbol}</Trans>
         </>
       );
     }
@@ -126,7 +110,13 @@ export const BorrowActions = ({
           <Button
             variant="contained"
             onClick={action}
-            disabled={loading || isWrongNetwork || blocked || !!mainTxState.gasEstimationError}
+            disabled={
+              loadingTxns ||
+              mainTxState.loading ||
+              isWrongNetwork ||
+              blocked ||
+              !!mainTxState.gasEstimationError
+            }
             size="large"
             sx={{ minHeight: '44px' }}
           >
