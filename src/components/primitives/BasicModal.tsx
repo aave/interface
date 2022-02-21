@@ -34,7 +34,6 @@ export const BasicModal = ({
         },
       }}
       onClick={(e) => {
-        e.preventDefault();
         e.stopPropagation();
       }}
       {...props}

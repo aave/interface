@@ -1,6 +1,6 @@
 import { valueToBigNumber } from '@aave/math-utils';
-import { InformationCircleIcon } from '@heroicons/react/outline';
-import { Box, IconButton, SvgIcon, useTheme } from '@mui/material';
+import { Trans } from '@lingui/macro';
+import { Box, Button, useTheme } from '@mui/material';
 import { TypographyProps } from '@mui/material/Typography';
 import BigNumber from 'bignumber.js';
 
@@ -16,7 +16,7 @@ export const HealthFactorNumber = ({ value, onInfoClick, ...rest }: HealthFactor
 
   const formattedHealthFactor = Number(valueToBigNumber(value).toFixed(2, BigNumber.ROUND_DOWN));
   let healthFactorColor = '';
-  if (formattedHealthFactor >= 1.5) {
+  if (formattedHealthFactor >= 3) {
     healthFactorColor = palette.success.main;
   } else if (formattedHealthFactor < 1.1) {
     healthFactorColor = palette.error.main;
@@ -25,7 +25,13 @@ export const HealthFactorNumber = ({ value, onInfoClick, ...rest }: HealthFactor
   }
 
   return (
-    <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+    <Box
+      sx={{
+        display: 'inline-flex',
+        alignItems: { xs: 'flex-start', xsm: 'center' },
+        flexDirection: { xs: 'column', xsm: 'row' },
+      }}
+    >
       <FormattedNumber
         value={formattedHealthFactor}
         sx={{ color: healthFactorColor, ...rest.sx }}
@@ -35,22 +41,14 @@ export const HealthFactorNumber = ({ value, onInfoClick, ...rest }: HealthFactor
       />
 
       {onInfoClick && (
-        <IconButton
-          sx={{
-            width: 15,
-            height: 15,
-            borderRadius: '50%',
-            p: 0,
-            minWidth: 0,
-            ml: 1,
-            marginLeft: '5px',
-          }}
+        <Button
           onClick={onInfoClick}
+          variant="surface"
+          size="small"
+          sx={{ minWidth: 'unset', ml: { xs: 0, xsm: 2 } }}
         >
-          <SvgIcon sx={{ fontSize: 15, color: '#FFFFFF3B' }}>
-            <InformationCircleIcon />
-          </SvgIcon>
-        </IconButton>
+          <Trans>Risk details</Trans>
+        </Button>
       )}
     </Box>
   );

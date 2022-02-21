@@ -164,10 +164,10 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         primary: getColor('#00244D', '#FFFFFF'),
         secondary: getColor('#47617F', '#FFFFFFB2'),
         disabled: getColor('#00244D61', '#FFFFFF80'),
-        muted: '#00244D80',
+        muted: getColor('#00244D80', '#FFFFFF80'),
       },
       background: {
-        default: getColor('#FAFBFC', '#090815'),
+        default: getColor('#F2F2F7', '#090815'),
         paper: getColor('#FFFFFF', '#272631'),
         surface: getColor('#FAFBFC', '#2C2D3F'),
         header: getColor('#000E1F', '#090815'),
@@ -355,6 +355,13 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
 export function getThemedComponents(theme: Theme) {
   return {
     components: {
+      MuiSkeleton: {
+        styleOverrides: {
+          root: {
+            transform: 'unset',
+          },
+        },
+      },
       MuiOutlinedInput: {
         styleOverrides: {
           root: {
@@ -418,6 +425,7 @@ export function getThemedComponents(theme: Theme) {
           {
             props: { color: 'primary', variant: 'outlined' },
             style: {
+              background: theme.palette.background.surface,
               borderColor: theme.palette.divider,
             },
           },
@@ -464,6 +472,7 @@ export function getThemedComponents(theme: Theme) {
             variant: 'outlined',
             style: {
               minWidth: 240,
+              marginTop: '4px',
             },
           },
         },
@@ -471,7 +480,7 @@ export function getThemedComponents(theme: Theme) {
       MuiList: {
         styleOverrides: {
           root: {
-            '.MuiMenuItem-root+.MuiDivider-root': {
+            '.MuiMenuItem-root+.MuiDivider-root, .MuiDivider-root': {
               marginTop: '4px',
               marginBottom: '4px',
             },
@@ -525,7 +534,10 @@ export function getThemedComponents(theme: Theme) {
             style: {
               border: `1px solid ${theme.palette.divider}`,
               boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
-              background: theme.palette.background.surface,
+              background:
+                theme.palette.mode === 'light'
+                  ? theme.palette.background.paper
+                  : theme.palette.background.surface,
             },
           },
           {
@@ -633,6 +645,8 @@ export function getThemedComponents(theme: Theme) {
             alignItems: 'flex-start',
             '.MuiAlert-message': {
               padding: 0,
+              paddingTop: '2px',
+              paddingBottom: '2px',
             },
             '.MuiAlert-icon': {
               padding: 0,

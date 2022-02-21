@@ -7,17 +7,16 @@ import { Warning } from '../../primitives/Warning';
 // TODO: need text
 export const IsolationModeWarning = () => {
   return (
-    <Warning severity="warning">
+    <Warning severity="info">
       <Typography variant="subheader1" mb={0.5}>
-        <Trans>Isolation mode warning</Trans>
+        <Trans>You are entering Isolation mode</Trans>
       </Typography>
       <Typography>
-        Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia
-        consequat duis enim velit mollit.{' '}
-        <Link href="https://docs.aave.com/faq/">
-          FAQ <Trans>guide</Trans>
-        </Link>
-        .
+        <Trans>
+          In Isolation mode, you cannot supply other assets as collateral. A global debt ceiling
+          limits the borrowing power of the isolated asset. Read more in our{' '}
+          <Link href="https://docs.aave.com/faq/">FAQ</Link>
+        </Trans>
       </Typography>
     </Warning>
   );

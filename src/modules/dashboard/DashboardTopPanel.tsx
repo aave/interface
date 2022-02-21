@@ -8,6 +8,12 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
+// TODO: need change icon
+// import HfEmpty from '/public/icons/healthFactor/hfEmpty.svg';
+// import HfFull from '/public/icons/healthFactor/hfFull.svg';
+// import HfLow from '/public/icons/healthFactor/hfLow.svg';
+// import HfMiddle from '/public/icons/healthFactor/hfMiddle.svg';
+import HALTooltip from '../../components/HALTooltip';
 import { HealthFactorNumber } from '../../components/HealthFactorNumber';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { NoData } from '../../components/primitives/NoData';
@@ -18,7 +24,7 @@ import { LiquidationRiskParametresInfoModal } from './LiquidationRiskParametresM
 
 export const DashboardTopPanel = () => {
   const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
-  const { user, reserves } = useAppDataContext();
+  const { user, reserves, loading } = useAppDataContext();
   const { currentAccount } = useWeb3Context();
   const [open, setOpen] = useState(false);
   const { openClaimRewards } = useModalContext();
@@ -78,7 +84,7 @@ export const DashboardTopPanel = () => {
         withMarketSwitcher
         bridge={currentNetworkConfig.bridge}
       >
-        <TopInfoPanelItem title={<Trans>Net worth</Trans>}>
+        <TopInfoPanelItem title={<Trans>Net worth</Trans>} loading={loading}>
           {currentAccount ? (
             <FormattedNumber
               value={Number(user?.netWorthUSD || 0)}
@@ -94,7 +100,7 @@ export const DashboardTopPanel = () => {
           )}
         </TopInfoPanelItem>
 
-        <TopInfoPanelItem title={<Trans>Net APY</Trans>}>
+        <TopInfoPanelItem title={<Trans>Net APY</Trans>} loading={loading}>
           {currentAccount ? (
             <FormattedNumber
               value={((user?.earnedAPY || 0) - (user?.debtAPY || 0)) / 100}
@@ -110,7 +116,24 @@ export const DashboardTopPanel = () => {
         </TopInfoPanelItem>
 
         {currentAccount && user?.healthFactor !== '-1' && (
-          <TopInfoPanelItem title={<Trans>Health factor</Trans>}>
+          <TopInfoPanelItem
+            title={
+              <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                <Trans>Health factor</Trans>
+                <HALTooltip />
+              </Box>
+            }
+            // TODO: need change icon
+            // icon={
+            //   <SvgIcon sx={{ fontSize: '24px' }}>
+            //     {+user.healthFactor >= 10 && <HfFull />}
+            //     {+user.healthFactor < 10 && +user.healthFactor >= 3 && <HfMiddle />}
+            //     {+user.healthFactor < 3 && +user.healthFactor >= 1 && <HfLow />}
+            //     {+user.healthFactor < 1 && <HfEmpty />}
+            //   </SvgIcon>
+            // }
+            loading={loading}
+          >
             <HealthFactorNumber
               value={user?.healthFactor || '-1'}
               variant={valueTypographyVariant}
@@ -120,28 +143,42 @@ export const DashboardTopPanel = () => {
         )}
 
         {currentAccount && claimableRewardsUsd > 0 && (
-          <TopInfoPanelItem title={<Trans>Available rewards</Trans>} hideIcon withLine={!downToXSM}>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <FormattedNumber
-                value={claimableRewardsUsd}
-                variant={valueTypographyVariant}
-                visibleDecimals={2}
-                compact
-                symbol="USD"
-                symbolsColor="#FFFFFFB2"
-                symbolsVariant={noDataTypographyVariant}
-              />
-              {assets && (
-                <MultiTokenIcon
-                  symbols={assets}
-                  sx={{ ml: 1, fontSize: { xs: '16px', xsm: '20px' } }}
+          <TopInfoPanelItem
+            title={<Trans>Available rewards</Trans>}
+            hideIcon
+            withLine={!downToXSM}
+            loading={loading}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: { xs: 'flex-start', xsm: 'center' },
+                flexDirection: { xs: 'column', xsm: 'row' },
+              }}
+            >
+              <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                <FormattedNumber
+                  value={claimableRewardsUsd}
+                  variant={valueTypographyVariant}
+                  visibleDecimals={2}
+                  compact
+                  symbol="USD"
+                  symbolsColor="#FFFFFFB2"
+                  symbolsVariant={noDataTypographyVariant}
                 />
-              )}
+                {assets && (
+                  <MultiTokenIcon
+                    symbols={assets}
+                    sx={{ ml: 1, fontSize: { xs: '16px', xsm: '20px' } }}
+                  />
+                )}
+              </Box>
+
               <Button
                 variant="surface"
                 size="small"
                 onClick={() => openClaimRewards()}
-                sx={{ minWidth: 'unset', ml: 2 }}
+                sx={{ minWidth: 'unset', ml: { xs: 0, xsm: 2 } }}
               >
                 <Trans>Claim</Trans>
               </Button>

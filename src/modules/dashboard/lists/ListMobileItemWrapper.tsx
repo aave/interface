@@ -4,11 +4,12 @@ import { AMPLWarning } from '../../../components/infoTooltips/AMPLWarning';
 import { ListMobileItem } from '../../../components/lists/ListMobileItem';
 
 interface ListMobileItemWrapperProps {
-  symbol: string;
-  iconSymbol: string;
-  name: string;
-  underlyingAsset: string;
+  symbol?: string;
+  iconSymbol?: string;
+  name?: string;
+  underlyingAsset?: string;
   children: ReactNode;
+  loading?: boolean;
 }
 
 export const ListMobileItemWrapper = ({
@@ -17,6 +18,7 @@ export const ListMobileItemWrapper = ({
   name,
   children,
   underlyingAsset,
+  loading,
 }: ListMobileItemWrapperProps) => {
   return (
     <ListMobileItem
@@ -25,6 +27,7 @@ export const ListMobileItemWrapper = ({
       name={name}
       underlyingAsset={underlyingAsset}
       warningComponent={symbol === 'AMPL' && <AMPLWarning />}
+      loading={loading}
     >
       {children}
     </ListMobileItem>

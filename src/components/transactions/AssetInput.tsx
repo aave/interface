@@ -23,6 +23,7 @@ export interface Asset {
   balance: string;
   symbol: string;
   address?: string;
+  aToken?: boolean;
 }
 
 export interface AssetInputProps<T extends Asset = Asset> {
@@ -105,7 +106,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
 
           {!onSelect ? (
             <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-              <TokenIcon symbol={symbol} sx={{ mx: 2 }} />
+              <TokenIcon symbol={symbol} sx={{ mr: 2, ml: 4 }} />
               <Typography variant="h3" sx={{ lineHeight: '28px' }}>
                 {symbol}
               </Typography>
@@ -138,7 +139,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
                 renderValue={(symbol) => {
                   return (
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <TokenIcon symbol={symbol} sx={{ mx: 2 }} />
+                      <TokenIcon symbol={symbol} sx={{ mr: 2, ml: 4 }} />
                       <Typography variant="main16" color="text.primary">
                         {symbol}
                       </Typography>
@@ -169,7 +170,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
             flexGrow={1}
           />
 
-          <Typography variant="secondary12" color="text.secondary">
+          <Typography component="div" variant="secondary12" color="text.secondary">
             Balance{' '}
             <FormattedNumber
               value={asset.balance}

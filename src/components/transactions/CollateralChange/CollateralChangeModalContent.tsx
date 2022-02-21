@@ -139,32 +139,27 @@ export const CollateralChangeModalContent = ({
             />
           )}
 
-          {poolReserve.isIsolated && usageAsCollateralModeAfterSwitch && <IsolationModeWarning />}
-
           {usageAsCollateralModeAfterSwitch ? (
-            <Alert severity="info" icon={false} sx={{ mb: 3 }}>
+            <Alert severity="warning" icon={false} sx={{ mb: 3 }}>
               <Trans>
-                Message. Collateral increases your borrowing power and Health Factor. But at the
-                same time it can be liquidated.
+                Enabling this asset as collateral increases your borrowing power and Health Factor.
+                However, it can get liquidated if your health factor drops below 1.
               </Trans>
             </Alert>
           ) : (
             <Alert severity="warning" icon={false} sx={{ mb: 3 }}>
               <Trans>
-                Asset will no longer be used as collateral, can not be seized in liquidation. It
-                really affects your borrowing power and Health Factor.
+                Disabling this asset as collateral affects your borrowing power and Health Factor.
               </Trans>
             </Alert>
           )}
 
-          {poolReserve.isIsolated && usageAsCollateralModeAfterSwitch && (
-            <Alert severity="info" icon={false}>
-              <Trans>You will enter isolation mode</Trans>
-            </Alert>
-          )}
+          {poolReserve.isIsolated && usageAsCollateralModeAfterSwitch && <IsolationModeWarning />}
           {poolReserve.isIsolated && !usageAsCollateralModeAfterSwitch && (
             <Alert severity="info" icon={false}>
-              <Trans>You will leave isolation mode</Trans>
+              <Trans>
+                You will exit isolation mode and other tokens can now be used as collateral
+              </Trans>
             </Alert>
           )}
 

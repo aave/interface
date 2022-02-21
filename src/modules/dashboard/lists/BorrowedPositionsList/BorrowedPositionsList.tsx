@@ -15,12 +15,13 @@ import {
 import { DashboardContentNoData } from '../../DashboardContentNoData';
 import { DashboardEModeButton } from '../../DashboardEModeButton';
 import { ListHeader } from '../ListHeader';
+import { ListLoader } from '../ListLoader';
 import { ListTopInfoItem } from '../ListTopInfoItem';
 import { BorrowedPositionsListItem } from './BorrowedPositionsListItem';
 import { BorrowedPositionsListMobileItem } from './BorrowedPositionsListMobileItem';
 
 export const BorrowedPositionsList = () => {
-  const { user } = useAppDataContext();
+  const { user, loading } = useAppDataContext();
   const { currentMarketData } = useProtocolDataContext();
   const { openEmode } = useModalContext();
   const theme = useTheme();
@@ -51,12 +52,19 @@ export const BorrowedPositionsList = () => {
     <APYTypeTooltip text={<Trans>APY type</Trans>} key="APY type" variant="subheader2" />,
   ];
 
+  if (loading) return <ListLoader title={<Trans>Your borrows</Trans>} head={head} />;
+
   return (
     <ListWrapper
       title={<Trans>Your borrows</Trans>}
       localStorageName="borrowedAssetsDashboardTableCollapse"
       subTitleComponent={
-        currentMarketData.v3 ? <DashboardEModeButton onClick={() => openEmode()} /> : undefined
+        currentMarketData.v3 ? (
+          <DashboardEModeButton
+            userEmodeCategoryId={user.userEmodeCategoryId}
+            onClick={() => openEmode()}
+          />
+        ) : undefined
       }
       noData={!borrowPositions.length}
       topInfo={

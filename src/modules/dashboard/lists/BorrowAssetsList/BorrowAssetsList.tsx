@@ -13,13 +13,14 @@ import {
   getMaxAmountAvailableToBorrow,
 } from '../../../../utils/getMaxAmountAvailableToBorrow';
 import { ListHeader } from '../ListHeader';
+import { ListLoader } from '../ListLoader';
 import { BorrowAssetsListItem } from './BorrowAssetsListItem';
 import { BorrowAssetsListMobileItem } from './BorrowAssetsListMobileItem';
 import { BorrowAssetsItem } from './types';
 
 export const BorrowAssetsList = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
-  const { user, reserves, marketReferencePriceInUsd } = useAppDataContext();
+  const { user, reserves, marketReferencePriceInUsd, loading } = useAppDataContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
@@ -86,6 +87,9 @@ export const BorrowAssetsList = () => {
     <Trans key="APY, stable">APY, stable</Trans>,
   ];
 
+  if (loading)
+    return <ListLoader title={<Trans>Assets to borrow</Trans>} head={head} withTopMargin />;
+
   return (
     <>
       {!!tokensToBorrow.length && (
@@ -95,30 +99,30 @@ export const BorrowAssetsList = () => {
           withTopMargin
           subChildrenComponent={
             <Box sx={{ px: 6, mb: 4 }}>
-              {user?.totalCollateralMarketReferenceCurrency === '0' && (
-                <Alert severity="info">
-                  <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
+              {+collateralUsagePercent >= 0.98 && (
+                <Alert sx={{ mb: '12px' }} severity="error">
+                  <Trans>
+                    Be careful - You are very close to liqudation. Consider depositing more
+                    collateral or paying down some of your borrowed positions
+                  </Trans>
                 </Alert>
               )}
               {user?.isInIsolationMode && (
-                <Alert severity="warning">
+                <Alert sx={{ mb: '12px' }} severity="warning">
                   <Trans>Borrowing power and assets are limited due to Isolation mode.</Trans>
                 </Alert>
               )}
               {user?.isInEmode && (
-                <Alert severity="warning">
+                <Alert sx={{ mb: '12px' }} severity="warning">
                   <Trans>
                     In E-Mode some assets are not borrowable. Exit E-Mode to get access to all
                     assets
                   </Trans>
                 </Alert>
               )}
-              {+collateralUsagePercent >= 0.98 && (
-                <Alert severity="error">
-                  <Trans>
-                    Be careful - You are very close to liqudation. Consider depositing more
-                    collateral or paying down some of your borrowed positions
-                  </Trans>
+              {user?.totalCollateralMarketReferenceCurrency === '0' && (
+                <Alert severity="info">
+                  <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
                 </Alert>
               )}
             </Box>
