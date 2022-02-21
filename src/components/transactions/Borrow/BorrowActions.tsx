@@ -98,7 +98,7 @@ export const BorrowActions = ({
       return (
         <>
           <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-          <Trans>Pending...</Trans>
+          <Trans>Borrow {symbol}</Trans>
         </>
       );
     }
