@@ -473,7 +473,7 @@ export function getThemedComponents(theme: Theme) {
       MuiList: {
         styleOverrides: {
           root: {
-            '.MuiMenuItem-root+.MuiDivider-root': {
+            '.MuiMenuItem-root+.MuiDivider-root, .MuiDivider-root': {
               marginTop: '4px',
               marginBottom: '4px',
             },
