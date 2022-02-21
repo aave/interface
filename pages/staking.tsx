@@ -85,13 +85,6 @@ export default function Staking() {
           </Grid>
         </Grid>
       </ContentContainer>
-
-      {/** Modals */}
-      <StakeModal />
-      <StakeCooldownModal />
-      <UnStakeModal />
-      <StakeRewardClaimModal />
-      {/** End of modals */}
     </>
   );
 }
@@ -100,7 +93,15 @@ Staking.getLayout = function getLayout(page: React.ReactElement) {
   return (
     <MainLayout>
       <StakeTxBuilderProvider>
-        <StakeDataProvider>{page}</StakeDataProvider>
+        <StakeDataProvider>
+          {page}
+          {/** Modals */}
+          <StakeModal />
+          <StakeCooldownModal />
+          <UnStakeModal />
+          <StakeRewardClaimModal />
+          {/** End of modals */}
+        </StakeDataProvider>
       </StakeTxBuilderProvider>
     </MainLayout>
   );
