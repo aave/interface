@@ -20,7 +20,7 @@ export default function Home() {
   const { breakpoints } = useTheme();
   const lg = useMediaQuery(breakpoints.up('lg'));
 
-  const { currentAccount } = useWeb3Context();
+  const { currentAccount, loading: web3Loading } = useWeb3Context();
 
   const [mode, setMode] = useState<'supply' | 'borrow' | ''>('');
 
@@ -66,7 +66,7 @@ export default function Home() {
         {currentAccount ? (
           <DashboardContentWrapper isBorrow={mode === 'borrow'} />
         ) : (
-          <ConnectWalletPaper />
+          <ConnectWalletPaper loading={web3Loading} />
         )}
       </ContentContainer>
     </>

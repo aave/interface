@@ -1,5 +1,10 @@
 import { InterestRate } from '@aave/contract-helpers';
-import { CheckIcon, ChevronDownIcon, ExternalLinkIcon } from '@heroicons/react/outline';
+import {
+  CheckIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  ExternalLinkIcon,
+} from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -53,7 +58,7 @@ export const ListItemAPYButton = ({
         endIcon={
           stableBorrowRateEnabled && (
             <SvgIcon sx={{ fontSize: '14px !important' }}>
-              <ChevronDownIcon />
+              {open ? <ChevronUpIcon /> : <ChevronDownIcon />}
             </SvgIcon>
           )
         }
@@ -61,6 +66,7 @@ export const ListItemAPYButton = ({
       >
         {borrowRateMode}
       </Button>
+
       <Menu
         anchorEl={anchorEl}
         open={open}

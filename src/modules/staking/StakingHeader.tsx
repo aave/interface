@@ -1,10 +1,11 @@
+import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, SvgIcon, Typography } from '@mui/material';
-import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { MarketLogo } from 'src/components/MarketSwitcher';
-import { ExternalLinkIcon } from '@heroicons/react/solid';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
+
+import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 
 interface StakingHeaderProps {
   tvl: string;
@@ -19,7 +20,7 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission }
           <Typography variant="h1" sx={{ opacity: '0.7', mr: 3 }}>
             Staking
           </Typography>
-          <MarketLogo size={32} logo={'/icons/networks/ethereum.svg'} withAAVELogo />
+          <MarketLogo size={32} logo={'/icons/networks/ethereum.svg'} />
           <Typography variant="h1" color="dark.primary.main" sx={{ position: 'relative' }}>
             Aave V3
             <Button

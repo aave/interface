@@ -7,12 +7,13 @@ import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { useAppDataContext } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { DashboardContentNoData } from '../../DashboardContentNoData';
 import { ListHeader } from '../ListHeader';
+import { ListLoader } from '../ListLoader';
 import { ListTopInfoItem } from '../ListTopInfoItem';
 import { SuppliedPositionsListItem } from './SuppliedPositionsListItem';
 import { SuppliedPositionsListMobileItem } from './SuppliedPositionsListMobileItem';
 
 export const SuppliedPositionsList = () => {
-  const { user } = useAppDataContext();
+  const { user, loading } = useAppDataContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
@@ -28,6 +29,8 @@ export const SuppliedPositionsList = () => {
       variant="subheader2"
     />,
   ];
+
+  if (loading) return <ListLoader title={<Trans>Your supplies</Trans>} head={head} />;
 
   return (
     <ListWrapper

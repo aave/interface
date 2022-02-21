@@ -24,7 +24,7 @@ import { LiquidationRiskParametresInfoModal } from './LiquidationRiskParametresM
 
 export const DashboardTopPanel = () => {
   const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
-  const { user, reserves } = useAppDataContext();
+  const { user, reserves, loading } = useAppDataContext();
   const { currentAccount } = useWeb3Context();
   const [open, setOpen] = useState(false);
   const { openClaimRewards } = useModalContext();
@@ -84,7 +84,7 @@ export const DashboardTopPanel = () => {
         withMarketSwitcher
         bridge={currentNetworkConfig.bridge}
       >
-        <TopInfoPanelItem title={<Trans>Net worth</Trans>}>
+        <TopInfoPanelItem title={<Trans>Net worth</Trans>} loading={loading}>
           {currentAccount ? (
             <FormattedNumber
               value={Number(user?.netWorthUSD || 0)}
@@ -100,7 +100,7 @@ export const DashboardTopPanel = () => {
           )}
         </TopInfoPanelItem>
 
-        <TopInfoPanelItem title={<Trans>Net APY</Trans>}>
+        <TopInfoPanelItem title={<Trans>Net APY</Trans>} loading={loading}>
           {currentAccount ? (
             <FormattedNumber
               value={((user?.earnedAPY || 0) - (user?.debtAPY || 0)) / 100}
@@ -132,6 +132,7 @@ export const DashboardTopPanel = () => {
             //     {+user.healthFactor < 1 && <HfEmpty />}
             //   </SvgIcon>
             // }
+            loading={loading}
           >
             <HealthFactorNumber
               value={user?.healthFactor || '-1'}
@@ -142,7 +143,12 @@ export const DashboardTopPanel = () => {
         )}
 
         {currentAccount && claimableRewardsUsd > 0 && (
-          <TopInfoPanelItem title={<Trans>Available rewards</Trans>} hideIcon withLine={!downToXSM}>
+          <TopInfoPanelItem
+            title={<Trans>Available rewards</Trans>}
+            hideIcon
+            withLine={!downToXSM}
+            loading={loading}
+          >
             <Box
               sx={{
                 display: 'flex',

@@ -202,7 +202,7 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
   // token info to add to wallet
   const addToken: ERC20TokenType = {
     address: poolReserve.aTokenAddress,
-    symbol: poolReserve.symbol,
+    symbol: poolReserve.iconSymbol,
     decimals: poolReserve.decimals,
     aToken: true,
   };

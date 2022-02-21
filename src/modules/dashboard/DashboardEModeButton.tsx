@@ -1,4 +1,4 @@
-import { ChevronDownIcon } from '@heroicons/react/outline';
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/outline';
 import { LightningBoltIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, SvgIcon, Typography } from '@mui/material';
@@ -105,10 +105,9 @@ export const DashboardEModeButton = ({
               fontSize: iconButtonSize,
               ml: 1,
               color: open ? 'primary.main' : 'text.muted',
-              transform: open ? 'rotate(180deg)' : 'rotate(0)',
             }}
           >
-            <ChevronDownIcon />
+            {open ? <ChevronUpIcon /> : <ChevronDownIcon />}
           </SvgIcon>
         </Box>
       </Button>
@@ -116,7 +115,7 @@ export const DashboardEModeButton = ({
       <Menu
         open={open}
         anchorEl={anchorEl}
-        PaperProps={{ sx: { maxWidth: '280px' } }}
+        sx={{ '.MuiMenu-paper': { maxWidth: '280px' } }}
         onClose={handleClose}
       >
         <Box sx={{ px: 4, pt: 2, pb: 3 }}>
