@@ -80,8 +80,6 @@
     "@lingui/macro": "^3.13.2",
     "@next/bundle-analyzer": "^12.1.0",
     "@svgr/webpack": "^6.2.1",
-    "@swc/cli": "^0.1.55",
-    "@swc/core": "^1.2.143",
     "@types/lodash": "^4.14.178",
     "@types/react": "latest",
     "@typescript-eslint/eslint-plugin": "^5.11.0",
