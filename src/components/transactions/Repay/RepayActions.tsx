@@ -7,7 +7,7 @@ import {
 } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps, Button, CircularProgress } from '@mui/material';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 import { TxState } from 'src/helpers/types';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -55,8 +55,6 @@ export const RepayActions = ({
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
   const { currentAccount, chainId: connectedChainId } = useWeb3Context();
   const { state, gasPriceData } = useGasStation();
-
-  const [approving, setApproving] = useState(false);
 
   const {
     approval,
@@ -131,7 +129,6 @@ export const RepayActions = ({
   const hasAmount = amountToRepay && amountToRepay !== '0';
 
   useEffect(() => {
-    setApproving(false);
     setRepayTxState({
       success: !!mainTxState.txHash,
       txError: mainTxState.txError || approvalTxState.txError,
@@ -140,18 +137,12 @@ export const RepayActions = ({
   }, [setRepayTxState, mainTxState, approvalTxState]);
 
   const handleRetry = () => {
-    setApproving(false);
     setRepayTxState({
       txError: undefined,
       success: false,
       gasEstimationError: undefined,
     });
     resetStates();
-  };
-
-  const handleApprove = () => {
-    approval(amountToRepay, poolAddress);
-    setApproving(true);
   };
 
   return (
@@ -189,7 +180,7 @@ export const RepayActions = ({
         {hasAmount && requiresApproval && !approved && !approvalTxState.txError && !isWrongNetwork && (
           <Button
             variant="contained"
-            onClick={handleApprove}
+            onClick={() => approval(amountToRepay, poolAddress)}
             disabled={approved || loading || isWrongNetwork || blocked}
             size="large"
             sx={{ minHeight: '44px', mb: 2 }}
