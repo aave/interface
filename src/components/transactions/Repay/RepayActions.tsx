@@ -189,7 +189,7 @@ export const RepayActions = ({
             {loading && (
               <>
                 <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-                {approving ? (
+                {approvalTxState.loading ? (
                   <Trans>Approving {symbol}...</Trans>
                 ) : (
                   <Trans>Approve to continue</Trans>
