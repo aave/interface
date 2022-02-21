@@ -1,11 +1,6 @@
-import {
-  configEnvWithTenderlyPolygonFork,
-} from '../../../support/steps/configuration.steps';
+import { configEnvWithTenderlyPolygonFork } from '../../../support/steps/configuration.steps';
 import { supply, borrow, repay, withdraw } from '../../../support/steps/main.steps';
-import {
-  changeBorrowTypeBlocked,
-  dashboardAssetValuesVerification,
-} from "../../../support/steps/verification.steps";
+import { dashboardAssetValuesVerification } from '../../../support/steps/verification.steps';
 import { skipState } from '../../../support/steps/common';
 import assets from '../../../fixtures/assets.json';
 import constants from '../../../fixtures/constans.json';
@@ -13,61 +8,57 @@ import constants from '../../../fixtures/constans.json';
 const testData = {
   depositBaseAmount: {
     asset: assets.polygonMarket.MATIC,
-    amount: 800,
+    amount: 5000,
     hasApproval: true,
   },
   testCases: {
     borrow: {
-      asset: assets.polygonMarket.USDT,
-      amount: 25,
+      asset: assets.polygonMarket.WBTC,
+      amount: 0.01,
       apyType: constants.borrowAPYType.variable,
       hasApproval: true,
     },
     deposit: {
-      asset: assets.polygonMarket.USDT,
-      amount: 10,
+      asset: assets.polygonMarket.WBTC,
+      amount: 0.006,
       hasApproval: false,
     },
     repay: {
-      asset: assets.polygonMarket.USDT,
+      asset: assets.polygonMarket.WBTC,
       apyType: constants.apyType.variable,
-      amount: 2,
+      amount: 0.001,
       hasApproval: true,
       repayOption: constants.repayType.default,
     },
     withdraw: {
-      asset: assets.polygonMarket.USDT,
+      asset: assets.polygonMarket.WBTC,
       isCollateral: true,
-      amount: 1,
+      amount: 0.001,
       hasApproval: true,
-    },
-    checkDisabledCollateral: {
-      asset: assets.polygonMarket.USDT,
-      isCollateralType: false,
     },
   },
   verifications: {
     finalDashboard: [
       {
         type: constants.dashboardTypes.deposit,
-        assetName: assets.polygonMarket.USDT.shortName,
-        wrapped: assets.polygonMarket.USDT.wrapped,
-        amount: 9.0,
-        collateralType: constants.collateralType.isNotCollateral,
-        isCollateral: false,
+        assetName: assets.polygonMarket.WBTC.shortName,
+        wrapped: assets.polygonMarket.WBTC.wrapped,
+        amount: 0.005,
+        collateralType: constants.collateralType.isCollateral,
+        isCollateral: true,
       },
       {
         type: constants.dashboardTypes.borrow,
-        assetName: assets.polygonMarket.USDT.shortName,
-        wrapped: assets.polygonMarket.USDT.wrapped,
-        amount: 23.0,
+        assetName: assets.polygonMarket.WBTC.shortName,
+        wrapped: assets.polygonMarket.WBTC.wrapped,
+        amount: 0.009,
         apyType: constants.borrowAPYType.variable,
       },
     ],
   },
 };
 
-describe('USDT INTEGRATION SPEC, POLYGON MARKET', () => {
+describe('WBTC INTEGRATION SPEC, POLYGON V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({});
 
@@ -76,6 +67,5 @@ describe('USDT INTEGRATION SPEC, POLYGON MARKET', () => {
   supply(testData.testCases.deposit, skipTestState, true);
   repay(testData.testCases.repay, skipTestState, false);
   withdraw(testData.testCases.withdraw, skipTestState, false);
-  changeBorrowTypeBlocked(testData.testCases.checkDisabledCollateral, skipTestState);
   dashboardAssetValuesVerification(testData.verifications.finalDashboard, skipTestState);
 });
