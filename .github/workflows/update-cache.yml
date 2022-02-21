@@ -1,0 +1,40 @@
+name: Update build cache
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: 0 0 * * *
+
+jobs:
+  cache-refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'yarn'
+
+      - name: install
+        run: yarn --frozen-lockfile
+
+      - name: update-cache
+        run: yarn cache:update
+
+      - name: check diff
+        run: |
+          if [[ -z $(git status -s) ]]
+          then
+            echo "tree is clean"
+          else
+            git config --global user.name 'Cache update'
+            git config --global user.email 'cache-bot@aave.com'
+            git commit -am "Automated cache update"
+            git push
+          exit
+          fi

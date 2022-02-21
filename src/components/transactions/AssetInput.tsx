@@ -23,6 +23,7 @@ export interface Asset {
   balance: string;
   symbol: string;
   address?: string;
+  aToken?: boolean;
 }
 
 export interface AssetInputProps<T extends Asset = Asset> {
