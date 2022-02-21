@@ -215,11 +215,7 @@ export const EmodeModalContent = () => {
         />
       )}
 
-      {blockingError !== undefined && (
-        <Typography variant="helperText" color="red">
-          {handleBlocked()}
-        </Typography>
-      )}
+      {blockingError !== undefined && <Alert severity="error">{handleBlocked()}</Alert>}
 
       <TxModalDetails
         showHf={true}
