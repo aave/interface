@@ -60,6 +60,7 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
   const [tokenToRepayWith, setTokenToRepayWith] = useState<Asset>({
     address: poolReserve.underlyingAsset,
     symbol: poolReserve.symbol,
+    iconSymbol: poolReserve.iconSymbol,
     balance: walletBalances[poolReserve.underlyingAsset]?.amount,
   });
   const [assets, setAssets] = useState<Asset[]>([tokenToRepayWith]);
@@ -108,7 +109,9 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
         );
         repayTokens.push({
           address: poolReserve.aTokenAddress,
-          symbol: `${currentMarketData.aTokenPrefix}${poolReserve.symbol}`,
+          symbol: `${currentMarketData.aTokenPrefix.toLowerCase()}${poolReserve.symbol}`,
+          iconSymbol: poolReserve.iconSymbol,
+          aToken: true,
           balance: maxBalance.toString(),
         });
       }
@@ -353,7 +356,7 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
         healthFactor={user?.healthFactor}
         futureHealthFactor={newHF?.toString()}
         gasLimit={gasLimit}
-        symbol={tokenToRepayWith.symbol}
+        symbol={poolReserve.iconSymbol}
         amountAfterRepay={amountAfterRepay}
         displayAmountAfterRepayInUsd={displayAmountAfterRepayInUsd.toString()}
       />
@@ -373,7 +376,7 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
         }
         poolAddress={tokenToRepayWith.address ?? ''}
         isWrongNetwork={isWrongNetwork}
-        symbol={tokenToRepayWith.symbol}
+        symbol={poolReserve.symbol}
         debtType={debtType}
         repayWithATokens={repayWithATokens}
         blocked={blockingError !== undefined}
