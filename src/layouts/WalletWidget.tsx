@@ -1,5 +1,10 @@
 import { DuplicateIcon } from '@heroicons/react/outline';
-import { ChevronDownIcon, ExternalLinkIcon, LogoutIcon } from '@heroicons/react/solid';
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  ExternalLinkIcon,
+  LogoutIcon,
+} from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -295,10 +300,9 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
               <SvgIcon
                 sx={{
                   display: { xs: 'none', md: 'block' },
-                  transform: open ? 'rotate(180deg)' : 'rotate(0)',
                 }}
               >
-                <ChevronDownIcon />
+                {open ? <ChevronUpIcon /> : <ChevronDownIcon />}
               </SvgIcon>
             )
           }

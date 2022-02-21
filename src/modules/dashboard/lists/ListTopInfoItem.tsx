@@ -14,7 +14,14 @@ export const ListTopInfoItem = ({ title, value, percent, tooltip }: ListTopInfoI
   return (
     <Paper
       variant="outlined"
-      sx={{ mr: 2, p: '2px 4px', display: 'flex', alignItems: 'center', boxShadow: 'none' }}
+      sx={{
+        mr: 2,
+        p: '2px 4px',
+        display: 'flex',
+        alignItems: 'center',
+        boxShadow: 'none',
+        bgcolor: 'transparent',
+      }}
     >
       <Typography color="text.secondary" sx={{ mr: 1 }} noWrap>
         {title}
