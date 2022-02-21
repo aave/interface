@@ -127,7 +127,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName, handleClose }: Stake
         </>
       )}
       {txState.txError && <TxErrorView errorMessage={txState.txError} />}
-      {txState.success && !txState.txError && <TxSuccessView action="Stake coldowwn activated" />}
+      {txState.success && !txState.txError && <TxSuccessView action="Stake cooldown activated" />}
       {txState.gasEstimationError && <GasEstimationError error={txState.gasEstimationError} />}
 
       <StakeCooldownActions

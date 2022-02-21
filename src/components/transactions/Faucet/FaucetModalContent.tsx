@@ -51,7 +51,7 @@ export const FaucetModalContent = ({ underlyingAsset, handleClose }: FaucetModal
   // token info to add to wallet
   const addToken: ERC20TokenType = {
     address: underlyingAsset,
-    symbol: poolReserve.symbol,
+    symbol: poolReserve.iconSymbol,
     decimals: poolReserve.decimals,
   };
 

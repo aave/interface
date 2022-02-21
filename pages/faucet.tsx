@@ -3,6 +3,7 @@ import { Trans } from '@lingui/macro';
 import { Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Box } from '@mui/system';
 import * as React from 'react';
+import { FaucetModal } from 'src/components/transactions/Faucet/FaucetModal';
 import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
 
@@ -108,5 +109,10 @@ export default function Faucet() {
 }
 
 Faucet.getLayout = function getLayout(page: React.ReactElement) {
-  return <MainLayout>{page}</MainLayout>;
+  return (
+    <MainLayout>
+      {page}
+      <FaucetModal />
+    </MainLayout>
+  );
 };

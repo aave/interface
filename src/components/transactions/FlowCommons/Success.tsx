@@ -100,14 +100,18 @@ export const TxSuccessView = ({
                 address: addToken.address,
                 decimals: 18,
                 symbol: addToken.aToken ? `a${addToken.symbol}` : addToken.symbol,
-                image: `data:image/svg+xml;base64,${base64}`,
+                image: !/_/.test(addToken.symbol) ? base64 : undefined,
               });
             }}
             size="small"
             sx={{ mt: 6 }}
           >
-            {symbol && (
-              <Base64Token symbol={symbol} onImageGenerated={setBase64} aToken={addToken.aToken} />
+            {addToken.symbol && !/_/.test(addToken.symbol) && (
+              <Base64Token
+                symbol={addToken.symbol}
+                onImageGenerated={setBase64}
+                aToken={addToken.aToken}
+              />
             )}
             <Typography sx={{ display: 'inline-flex', alignItems: 'center' }} variant="buttonS">
               <SvgIcon sx={{ fontSize: '12px', mx: '2px' }}>
