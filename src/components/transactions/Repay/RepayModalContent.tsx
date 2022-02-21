@@ -272,7 +272,7 @@ export const RepayModalContent = ({ underlyingAsset, handleClose }: RepayProps) 
 
   // calculating input usd value
   const usdValue = valueToBigNumber(amountToRepayUI).multipliedBy(reserve.priceInUSD);
-  console.log('amount to repay ::: ', maxAmount.toString());
+
   return (
     <>
       {!repayTxState.txError && !repayTxState.success && (

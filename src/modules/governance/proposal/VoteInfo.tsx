@@ -9,7 +9,7 @@ import { CustomProposalType } from 'src/static-build/proposal';
 
 export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType) {
   const { openGovVote } = useModalContext();
-  const { currentAccount } = useWeb3Context();
+  const { currentAccount, connectWallet } = useWeb3Context();
 
   const [votedPower, setVotedPower] = useState<string>();
   const [support, setSupport] = useState<boolean>();
@@ -97,12 +97,8 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
           </>
         )}
         {!currentAccount && (
-          <Button
-            variant="contained"
-            onClick={() => alert('TODO: connect dummy')}
-            disabled={support === false}
-          >
-            Connect
+          <Button variant="gradient" onClick={connectWallet}>
+            <Trans>Connect wallet</Trans>
           </Button>
         )}
       </Typography>
