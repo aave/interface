@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@aave/contract-helpers": "0.30.1-8f5f4f7ce43a56df787288d25801c3a383b168b6.0+8f5f4f7",
-    "@aave/math-utils": "0.30.1-8f5f4f7ce43a56df787288d25801c3a383b168b6.0+8f5f4f7",
+    "@aave/math-utils": "0.30.1-923789b95b2f39338bd14bd9a1c22acd075fdb5a.0+8f5f4f7",
     "@apollo/client": "^3.5.9",
     "@emotion/cache": "latest",
     "@emotion/react": "latest",
