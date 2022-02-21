@@ -66,27 +66,12 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
   const maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user);
   const formattedMaxAmountToBorrow = maxAmountToBorrow.toString(10);
 
-  // amount checks
-  let userAvailableAmountToBorrow = valueToBigNumber(
-    user.availableBorrowsMarketReferenceCurrency
-  ).div(poolReserve.formattedPriceInMarketReferenceCurrency);
-
-  if (
-    userAvailableAmountToBorrow.gt(0) &&
-    user.totalBorrowsMarketReferenceCurrency !== '0' &&
-    userAvailableAmountToBorrow.lt(
-      valueToBigNumber(poolReserve.formattedAvailableLiquidity).multipliedBy('1.01')
-    )
-  ) {
-    userAvailableAmountToBorrow = userAvailableAmountToBorrow.multipliedBy('0.995');
-  }
-
   // We set this in a useEffect, so it doesnt constantly change when
   // max amount selected
   useEffect(() => {
     // case when user uses max button
     if (amount === '-1') {
-      setAmountToBorrow(userAvailableAmountToBorrow.toString());
+      setAmountToBorrow(formattedMaxAmountToBorrow);
     } else {
       setAmountToBorrow(amount);
     }
@@ -118,7 +103,7 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
       setBlockingError(ErrorType.STABLE_RATE_NOT_ENABLED);
     } else if (valueToBigNumber(amountToBorrow).gt(poolReserve.formattedAvailableLiquidity)) {
       setBlockingError(ErrorType.NOT_ENOUGH_LIQUIDITY);
-    } else if (userAvailableAmountToBorrow.lt(amountToBorrow)) {
+    } else if (maxAmountToBorrow.lt(amountToBorrow)) {
       setBlockingError(ErrorType.NOT_ENOUGH_COLLATERAL);
     } else if (!poolReserve.borrowingEnabled) {
       setBlockingError(ErrorType.BORROWING_NOT_AVAILABLE);
@@ -130,7 +115,7 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
     poolReserve.stableBorrowRateEnabled,
     poolReserve.formattedAvailableLiquidity,
     amountToBorrow,
-    userAvailableAmountToBorrow,
+    maxAmountToBorrow,
     poolReserve.borrowingEnabled,
   ]);
 
