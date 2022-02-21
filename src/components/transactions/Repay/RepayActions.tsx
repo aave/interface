@@ -7,7 +7,7 @@ import {
 } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps, Button, CircularProgress } from '@mui/material';
-import { Dispatch, SetStateAction, useEffect } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { TxState } from 'src/helpers/types';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -55,6 +55,8 @@ export const RepayActions = ({
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
   const { currentAccount, chainId: connectedChainId } = useWeb3Context();
   const { state, gasPriceData } = useGasStation();
+
+  const [approving, setApproving] = useState(false);
 
   const {
     approval,
@@ -145,6 +147,11 @@ export const RepayActions = ({
     resetStates();
   };
 
+  const handleApprove = () => {
+    approval(amountToRepay, poolAddress);
+    setApproving(true);
+  };
+
   return (
     <TxActionsWrapper
       mainTxState={mainTxState}
@@ -180,16 +187,20 @@ export const RepayActions = ({
         {hasAmount && requiresApproval && !approved && !approvalTxState.txError && !isWrongNetwork && (
           <Button
             variant="contained"
-            onClick={() => approval(amountToRepay, poolAddress)}
+            onClick={handleApprove}
             disabled={approved || loading || isWrongNetwork || blocked}
             size="large"
             sx={{ minHeight: '44px', mb: 2 }}
           >
-            {!approved && !loading && <Trans>Approve to continue</Trans>}
-            {!approved && loading && (
+            {!loading && <Trans>Approve to continue</Trans>}
+            {loading && (
               <>
                 <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-                <Trans>Approving {symbol} ...</Trans>
+                {approving ? (
+                  <Trans>Approving {symbol}...</Trans>
+                ) : (
+                  <Trans>Approve to continue</Trans>
+                )}
               </>
             )}
           </Button>
@@ -211,10 +222,12 @@ export const RepayActions = ({
               size="large"
               sx={{ minHeight: '44px' }}
             >
-              {!loading && !approved && <Trans>Repay {symbol}</Trans>}
-              {(approved || !requiresApproval) && loading && (
+              {!loading && <Trans>Repay {symbol}</Trans>}
+              {loading && (
                 <>
-                  <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
+                  {((approved && requiresApproval) || !requiresApproval) && (
+                    <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
+                  )}
                   <Trans>Repay {symbol}</Trans>
                 </>
               )}
