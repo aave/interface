@@ -20,7 +20,7 @@ import { FormattedNumber } from '../primitives/FormattedNumber';
 import { TokenIcon } from '../primitives/TokenIcon';
 
 export interface Asset {
-  balance: string;
+  balance?: string;
   symbol: string;
   address?: string;
   aToken?: boolean;
@@ -151,7 +151,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
                   <MenuItem key={asset.symbol} value={asset.symbol}>
                     <TokenIcon symbol={asset.symbol} sx={{ fontSize: '22px', mr: 1 }} />
                     <ListItemText sx={{ mr: 6 }}>{asset.symbol}</ListItemText>
-                    <FormattedNumber value={asset.balance} compact />
+                    {asset.balance && <FormattedNumber value={asset.balance} compact />}
                   </MenuItem>
                 ))}
               </Select>
@@ -170,25 +170,28 @@ export const AssetInput: React.FC<AssetInputProps> = ({
             flexGrow={1}
           />
 
-          <Typography component="div" variant="secondary12" color="text.secondary">
-            Balance{' '}
-            <FormattedNumber
-              value={asset.balance}
-              compact
-              variant="secondary12"
-              color="text.secondary"
-              symbolsColor="text.disabled"
-            />
-          </Typography>
-
-          <Button
-            size="small"
-            sx={{ minWidth: 0, ml: '7px', p: 0 }}
-            onClick={() => onChange('-1')}
-            disabled={disabled}
-          >
-            <Trans>Max</Trans>
-          </Button>
+          {asset.balance && (
+            <>
+              <Typography component="div" variant="secondary12" color="text.secondary">
+                Balance{' '}
+                <FormattedNumber
+                  value={asset.balance}
+                  compact
+                  variant="secondary12"
+                  color="text.secondary"
+                  symbolsColor="text.disabled"
+                />
+              </Typography>
+              <Button
+                size="small"
+                sx={{ minWidth: 0, ml: '7px', p: 0 }}
+                onClick={() => onChange('-1')}
+                disabled={disabled}
+              >
+                <Trans>Max</Trans>
+              </Button>
+            </>
+          )}
         </Box>
       </Box>
     </Box>

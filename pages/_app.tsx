@@ -28,7 +28,7 @@ import createEmotionCache from '../src/createEmotionCache';
 import { ProtocolDataProvider } from '../src/hooks/useProtocolDataContext';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
-import { SwapModal } from 'src/modules/Swap/SwapModal';
+import { SwapModal } from 'src/components/transactions/Swap/SwapModal';
 import { FaucetModal } from 'src/components/transactions/Faucet/FaucetModal';
 
 // Client-side cache, shared for the whole session of the user in the browser.

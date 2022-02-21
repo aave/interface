@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   ComputedReserveData,
   useAppDataContext,
-} from '../../hooks/app-data-provider/useAppDataProvider';
+} from '../../../hooks/app-data-provider/useAppDataProvider';
 import { SwapActions } from './SwapActions';
 import { Typography } from '@mui/material';
 import {
@@ -23,14 +23,13 @@ import {
   getMaxAmountAvailableToSupply,
   remainingCap,
 } from 'src/utils/getMaxAmountAvailableToSupply';
-import { Asset, AssetInput } from 'src/components/AssetInput';
-import { ChangeNetworkWarning } from 'src/components/Warnings/ChangeNetworkWarning';
-import { TxModalTitle } from 'src/components/FlowCommons/TxModalTitle';
-import { TxModalDetails } from 'src/components/FlowCommons/TxModalDetails';
-import { TxErrorView } from 'src/components/FlowCommons/Error';
-import { TxSuccessView } from 'src/components/FlowCommons/Success';
-import { GasEstimationError } from 'src/components/FlowCommons/GasEstimationError';
 import { useSwap } from 'src/hooks/useSwap';
+import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
+import { TxModalTitle } from 'src/components/transactions/FlowCommons/TxModalTitle';
+import { ChangeNetworkWarning } from 'src/components/transactions/Warnings/ChangeNetworkWarning';
+import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
+import { TxErrorView } from 'src/components/transactions/FlowCommons/Error';
+import { GasEstimationError } from 'src/components/transactions/FlowCommons/GasEstimationError';
 
 export type SupplyProps = {
   underlyingAsset: string;
@@ -98,7 +97,7 @@ export const SwapModalContent = ({ underlyingAsset, handleClose }: SupplyProps) 
     userId: currentAccount,
     variant: 'exactIn',
     swapIn: { address: poolReserve.underlyingAsset, amount },
-    swapOut: { address: targetReserve.address, amount: '0' },
+    swapOut: { address: targetReserve.address as string, amount: '0' },
     max: isMaxSelected,
   });
 
@@ -245,7 +244,6 @@ export const SwapModalContent = ({ underlyingAsset, handleClose }: SupplyProps) 
             </Typography>
           )}
           <TxModalDetails
-            sx={{ mt: '30px' }}
             apy={supplyApy}
             incentives={poolReserve.aIncentivesData}
             showHf={showHealthFactor || false}
@@ -253,8 +251,7 @@ export const SwapModalContent = ({ underlyingAsset, handleClose }: SupplyProps) 
             // futureHealthFactor={healthFactorAfterDeposit.toString()}
             gasLimit={gasLimit}
             symbol={poolReserve.symbol}
-            usedAsCollateral={userReserve.usageAsCollateralEnabledOnUser}
-            action="Supply"
+            action="Swap"
           />
         </>
       )}
@@ -265,18 +262,18 @@ export const SwapModalContent = ({ underlyingAsset, handleClose }: SupplyProps) 
       {supplyTxState.gasEstimationError && (
         <GasEstimationError error={supplyTxState.gasEstimationError} />
       )}
-      {/* <SwapActions
+      <SwapActions
         sx={{ mt: '48px' }}
         setSupplyTxState={setSupplyTxState}
         poolReserve={poolReserve}
-        amountToSupply={amountToSupply}
+        amountToSupply={amount}
         handleClose={handleClose}
         isWrongNetwork={isWrongNetwork}
         setGasLimit={setGasLimit}
         targetReserve={targetReserve}
-        symbol={supplyUnWrapped ? networkConfig.baseAssetSymbol : poolReserve.symbol}
+        symbol={poolReserve.symbol}
         blocked={blockingError !== undefined}
-      /> */}
+      />
     </>
   );
 };
