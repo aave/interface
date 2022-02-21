@@ -1,8 +1,5 @@
-import { ChainId, EthereumTransactionTypeExtended, GasType } from '@aave/contract-helpers';
+import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Button, CircularProgress } from '@mui/material';
-import { Dispatch, SetStateAction, useEffect } from 'react';
-import { TxState } from 'src/helpers/types';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useGasStation } from 'src/hooks/useGasStation';
@@ -16,9 +13,6 @@ import { TxActionsWrapper } from '../TxActionsWrapper';
 
 export type CollateralChangeActionsProps = {
   poolReserve: ComputedReserveData;
-  setGasLimit: Dispatch<SetStateAction<string | undefined>>;
-  setCollateralChangeTxState: Dispatch<SetStateAction<TxState>>;
-  handleClose: () => void;
   isWrongNetwork: boolean;
   usageAsCollateral: boolean;
   blocked: boolean;
@@ -26,9 +20,6 @@ export type CollateralChangeActionsProps = {
 
 export const CollateralChangeActions = ({
   poolReserve,
-  setGasLimit,
-  setCollateralChangeTxState,
-  handleClose,
   isWrongNetwork,
   usageAsCollateral,
   blocked,
@@ -38,19 +29,15 @@ export const CollateralChangeActions = ({
   const { currentAccount, chainId: connectedChainId } = useWeb3Context();
   const { state, gasPriceData } = useGasStation();
 
-  const { action, loading, mainTxState } = useTransactionHandler({
+  const { action, loadingTxns, mainTxState } = useTransactionHandler({
     tryPermit:
       currentMarketData.v3 && chainId !== ChainId.harmony && chainId !== ChainId.harmony_testnet,
     handleGetTxns: async () => {
-      const tx: EthereumTransactionTypeExtended[] = await lendingPool.setUsageAsCollateral({
+      return await lendingPool.setUsageAsCollateral({
         user: currentAccount,
         reserve: poolReserve.underlyingAsset,
         usageAsCollateral,
       });
-
-      const gas: GasType | null = await tx[tx.length - 1].gas();
-      setGasLimit(gas?.gasLimit);
-      return tx;
     },
     customGasPrice:
       state.gasOption === GasOption.Custom
@@ -59,19 +46,20 @@ export const CollateralChangeActions = ({
     skip: blocked,
   });
 
-  useEffect(() => {
-    setCollateralChangeTxState({
-      success: !!mainTxState.txHash,
-      txError: mainTxState.txError,
-      gasEstimationError: mainTxState.gasEstimationError,
-    });
-  }, [setCollateralChangeTxState, mainTxState]);
-
   return (
     <TxActionsWrapper
+      preparingTransactions={loadingTxns}
       mainTxState={mainTxState}
-      handleClose={handleClose}
       isWrongNetwork={isWrongNetwork}
+      actionText={
+        usageAsCollateral ? (
+          <Trans>Enable {poolReserve.symbol} as collateral</Trans>
+        ) : (
+          <Trans>Disable {poolReserve.symbol} as collateral</Trans>
+        )
+      }
+      actionInProgressText={<Trans>Pending...</Trans>}
+      handleAction={action}
       helperText={
         <RightHelperText
           actionHash={mainTxState.txHash}
@@ -79,29 +67,6 @@ export const CollateralChangeActions = ({
           action="collateral change"
         />
       }
-    >
-      <>
-        {!mainTxState.txHash && !mainTxState.txError && !isWrongNetwork && (
-          <Button
-            variant="contained"
-            onClick={action}
-            disabled={loading || isWrongNetwork || blocked || !!mainTxState.gasEstimationError}
-            size="large"
-            sx={{ minHeight: '44px' }}
-          >
-            {!loading ? (
-              <Trans>
-                {usageAsCollateral ? 'Enable' : 'Disable'} {poolReserve.symbol} as collateral
-              </Trans>
-            ) : (
-              <>
-                <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-                <Trans>Pending...</Trans>
-              </>
-            )}
-          </Button>
-        )}
-      </>
-    </TxActionsWrapper>
+    />
   );
 };

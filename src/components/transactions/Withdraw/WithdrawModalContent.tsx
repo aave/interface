@@ -14,6 +14,7 @@ import {
   ComputedReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
@@ -30,7 +31,6 @@ import { WithdrawActions } from './WithdrawActions';
 
 export type WithdrawModalContentProps = {
   underlyingAsset: string;
-  handleClose: () => void;
 };
 export enum ErrorType {
   CAN_NOT_WITHDRAW_THIS_AMOUNT,
@@ -38,17 +38,13 @@ export enum ErrorType {
   POOL_DOES_NOT_HAVE_ENOUGH_LIQUIDITY,
 }
 
-export const WithdrawModalContent = ({
-  underlyingAsset,
-  handleClose,
-}: WithdrawModalContentProps) => {
+export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentProps) => {
+  const { gasLimit, mainTxState: withdrawTxState } = useModalContext();
   const { reserves, user } = useAppDataContext();
   const { currentChainId, currentMarketData } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
 
-  const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
   const [amount, setAmount] = useState('');
-  const [withdrawTxState, setWithdrawTxState] = useState<TxState>({ success: false });
   const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
   const [amountToWithdraw, setAmountToWithdraw] = useState(amount);
   const [isMax, setIsMax] = useState(false);
@@ -306,10 +302,7 @@ export const WithdrawModalContent = ({
 
       <WithdrawActions
         poolReserve={poolReserve}
-        setGasLimit={setGasLimit}
-        setWithdrawTxState={setWithdrawTxState}
         amountToWithdraw={amountToWithdraw.toString()}
-        handleClose={handleClose}
         poolAddress={
           withdrawUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
             ? API_ETH_MOCK_ADDRESS
