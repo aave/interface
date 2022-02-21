@@ -40,7 +40,6 @@ export const DashboardEModeButton = ({
     <Box
       sx={{ display: 'inline-flex', alignItems: 'center' }}
       onClick={(e) => {
-        e.preventDefault();
         e.stopPropagation();
       }}
     >
@@ -50,7 +49,6 @@ export const DashboardEModeButton = ({
 
       <Button
         onClick={(e) => {
-          e.preventDefault();
           e.stopPropagation();
           handleClick(e);
         }}
