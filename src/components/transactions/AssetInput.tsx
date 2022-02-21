@@ -93,7 +93,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
             disabled={disabled}
             value={value}
             inputProps={{
-              inputMode: 'numeric',
+              inputMode: 'decimal',
               'aria-label': 'amount input',
               style: {
                 fontSize: '21px',
