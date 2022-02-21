@@ -17,10 +17,10 @@
     "stable": "Stable"
   },
   "actionTypes": {
-    "supply": "SUPPLY",
-    "borrow": "BORROW",
-    "repay": "REPAY",
-    "withdraw": "WITHDRAW"
+    "supply": "Supply",
+    "borrow": "Borrow",
+    "repay": "Repay",
+    "withdraw": "Withdraw"
   },
   "apyType": {
     "stable": "Stable",

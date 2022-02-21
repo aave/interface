@@ -1,8 +1,6 @@
+import { configEnvWithTenderlyPolygonFork } from '../../../support/steps/configuration.steps';
 import {
-  configEnvWithTenderlyPolygonFork,
-} from '../../../support/steps/configuration.steps';
-import {
-  deposit,
+  supply,
   borrow,
   repay,
   withdraw,
@@ -80,12 +78,12 @@ describe('MATIC INTEGRATION SPEC, POLYGON MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({});
 
-  deposit(testData.testCases.deposit, skipTestState, true);
-  // describe('Check Collateral switching', () => {
-  //   changeCollateral(testData.testCases.collateral.switchOff, skipTestState, false);
-  //   borrowsUnavailable(skipTestState);
-  //   changeCollateral(testData.testCases.collateral.switchOn, skipTestState, false);
-  // });
+  supply(testData.testCases.deposit, skipTestState, true);
+  describe('Check Collateral switching', () => {
+    changeCollateral(testData.testCases.collateral.switchOff, skipTestState, false);
+    borrowsUnavailable(skipTestState);
+    changeCollateral(testData.testCases.collateral.switchOn, skipTestState, false);
+  });
   borrow(testData.testCases.borrow, skipTestState, true);
   changeCollateralNegative(testData.testCases.collateral.switchNegative, skipTestState, false);
   repay(testData.testCases.repay, skipTestState, false);

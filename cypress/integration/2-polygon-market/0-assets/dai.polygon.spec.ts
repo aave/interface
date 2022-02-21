@@ -1,10 +1,5 @@
 import { configEnvWithTenderlyPolygonFork } from '../../../support/steps/configuration.steps';
-import {
-  deposit,
-  borrow,
-  repay,
-  withdraw,
-} from '../../../support/steps/main.steps';
+import { supply, borrow, repay, withdraw } from '../../../support/steps/main.steps';
 import { dashboardAssetValuesVerification } from '../../../support/steps/verification.steps';
 import { skipState } from '../../../support/steps/common';
 import assets from '../../../fixtures/assets.json';
@@ -67,9 +62,9 @@ describe('DAI INTEGRATION SPEC, POLYGON MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({});
 
-  deposit(testData.depositBaseAmount, skipTestState, true);
+  supply(testData.depositBaseAmount, skipTestState, true);
   borrow(testData.testCases.borrow, skipTestState, true);
-  deposit(testData.testCases.deposit, skipTestState, true);
+  supply(testData.testCases.deposit, skipTestState, true);
   repay(testData.testCases.repay, skipTestState, false);
   withdraw(testData.testCases.withdraw, skipTestState, false);
   dashboardAssetValuesVerification(testData.verifications.finalDashboard, skipTestState);

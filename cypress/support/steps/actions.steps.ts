@@ -7,19 +7,17 @@ type SetAmount = {
 };
 
 export const setAmount = ({ amount, actionName, assetName, hasApproval, max }: SetAmount) => {
-  cy.get("[data-cy=Modal]")
-    .find('button:contains("ENTER AN AMOUNT")')
-    .should('be.disabled')
+  cy.get('[data-cy=Modal]').find('button:contains("Enter an amount")').should('be.disabled');
   if (max) {
     cy.get('[data-cy=Modal]').find('button:contains("Max")').click();
   } else {
     cy.get('[data-cy=Modal] input').first().type(amount.toString());
   }
-  if(hasApproval){
+  if (hasApproval) {
     cy.get(`[data-cy=Modal] button:contains("${actionName} ${assetName}")`).as('button');
     cy.get('@button').should('not.be.disabled');
-  }else{
-    cy.get(`[data-cy=Modal] button:contains("APPROVE TO CONTINUE")`).as('button');
+  } else {
+    cy.get(`[data-cy=Modal] button:contains("Approve to continue")`).as('button');
     cy.get('@button').should('not.be.disabled');
   }
 };
@@ -31,19 +29,19 @@ type ConfirmAction = {
 };
 
 export const doConfirm = ({ hasApproval, actionName, assetName }: ConfirmAction) => {
-  cy.log(`${hasApproval?"One step process":"Two step process"}`)
-if(!hasApproval){
-  cy.get(`[data-cy=Modal] button:contains("APPROVE TO CONTINUE")`).click()
-}
+  cy.log(`${hasApproval ? 'One step process' : 'Two step process'}`);
+  if (!hasApproval) {
+    cy.get(`[data-cy=Modal] button:contains("Approve to continue")`).click();
+  }
   cy.get(`[data-cy=Modal] button:contains("${actionName} ${assetName}")`).as('button');
   cy.get('@button').should('not.be.disabled').click();
   cy.get("[data-cy=Modal] h2:contains('All done!')").should('be.visible');
 };
 
-export const doCloseModal = () =>{
+export const doCloseModal = () => {
   return it(`Close modal popup`, () => {
     cy.get('[data-cy=Modal] [data-cy=CloseModalIcon]').click();
-    cy.get('[data-cy=Modal]').should("not.exist");
+    cy.get('[data-cy=Modal]').should('not.exist');
   });
 };
 
@@ -79,7 +77,9 @@ export const getDashBoardBorrowRow = ({ assetName, apyType }: GetDashBoardBorrow
     return cy.get(`[data-cy="dashboardBorrowListItem_${assetName}"]`).first();
   } else {
     return cy
-      .get(`[data-cy="dashboardBorrowListItem_${assetName}"] .Switcher__label:contains('${apyType}')`)
+      .get(
+        `[data-cy="dashboardBorrowListItem_${assetName}"] .Switcher__label:contains('${apyType}')`
+      )
       .parents(`[data-cy="dashboardBorrowListItem_${assetName}"]`);
   }
 };
@@ -91,10 +91,36 @@ type GetDashBoardDepositRow = {
 
 export const getDashBoardDepositRow = ({ assetName, isCollateralType }: GetDashBoardDepositRow) => {
   if (isCollateralType) {
-    return cy.get(`[data-cy="dashboardSuppliedListItem_${assetName}_Collateral"],
-    [data-cy="dashboardSuppliedListItem_W${assetName}_Collateral"]`).first();
+    return cy
+      .get(
+        `[data-cy="dashboardSuppliedListItem_${assetName}_Collateral"],
+    [data-cy="dashboardSuppliedListItem_W${assetName}_Collateral"]`
+      )
+      .first();
   } else {
     return cy.get(`[data-cy="dashboardSuppliedListItem_${assetName}_NoCollateral"],
     [data-cy="dashboardSuppliedListItem_W${assetName}_NoCollateral"]`);
   }
+};
+
+export const doSwitchToDashboardBorrowView = () => {
+  cy.get('[role=group]')
+    .contains('Borrow')
+    .then(($btn) => {
+      if (!$btn.is('disabled')) {
+        $btn.click();
+      }
+    });
+  cy.get(`*:contains("Your borrows")`).should('be.visible');
+};
+
+export const doSwitchToDashboardSupplyView = () => {
+  cy.get('[role=group]')
+    .contains('Supply')
+    .then(($btn) => {
+      if (!$btn.is('disabled')) {
+        $btn.click();
+      }
+    });
+  cy.get(`*:contains("Your supplies")`).should('be.visible');
 };
