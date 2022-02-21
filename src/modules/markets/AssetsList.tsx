@@ -9,10 +9,12 @@ import { ListHeaderWrapper } from '../../components/lists/ListHeaderWrapper';
 import { ListWrapper } from '../../components/lists/ListWrapper';
 import { useProtocolDataContext } from '../../hooks/useProtocolDataContext';
 import { AssetsListItem } from './AssetsListItem';
+import { AssetsListItemLoader } from './AssetsListItemLoader';
 import { AssetsListMobileItem } from './AssetsListMobileItem';
+import { AssetsListMobileItemLoader } from './AssetsListMobileItemLoader';
 
 export default function AssetsList() {
-  const { reserves } = useAppDataContext();
+  const { reserves, loading } = useAppDataContext();
   const { currentMarketData } = useProtocolDataContext();
 
   const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
@@ -99,11 +101,29 @@ export default function AssetsList() {
         </ListHeaderWrapper>
       )}
 
-      {filteredData.map((reserve) =>
+      {loading ? (
         isTableChangedToCards ? (
-          <AssetsListMobileItem {...reserve} key={reserve.id} />
+          <>
+            <AssetsListMobileItemLoader />
+            <AssetsListMobileItemLoader />
+            <AssetsListMobileItemLoader />
+          </>
         ) : (
-          <AssetsListItem {...reserve} key={reserve.id} />
+          <>
+            <AssetsListItemLoader />
+            <AssetsListItemLoader />
+            <AssetsListItemLoader />
+            <AssetsListItemLoader />
+            <AssetsListItemLoader />
+          </>
+        )
+      ) : (
+        filteredData.map((reserve) =>
+          isTableChangedToCards ? (
+            <AssetsListMobileItem {...reserve} key={reserve.id} />
+          ) : (
+            <AssetsListItem {...reserve} key={reserve.id} />
+          )
         )
       )}
     </ListWrapper>

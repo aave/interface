@@ -1,5 +1,10 @@
 import { DuplicateIcon } from '@heroicons/react/outline';
-import { ChevronDownIcon, ExternalLinkIcon, LogoutIcon } from '@heroicons/react/solid';
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  ExternalLinkIcon,
+  LogoutIcon,
+} from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -12,6 +17,7 @@ import {
   Menu,
   MenuItem,
   MenuList,
+  Skeleton,
   SvgIcon,
   Typography,
 } from '@mui/material';
@@ -34,7 +40,8 @@ interface WalletWidgetProps {
 }
 
 export default function WalletWidget({ open, setOpen, headerHeight, md }: WalletWidgetProps) {
-  const { connectWallet, disconnectWallet, currentAccount, connected, chainId } = useWeb3Context();
+  const { connectWallet, disconnectWallet, currentAccount, connected, chainId, loading } =
+    useWeb3Context();
 
   const { name: ensName, avatar: ensAvatar } = useGetEns(currentAccount);
   const ensNameAbbreviated = ensName
@@ -261,6 +268,8 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
     <>
       {md && connected && open ? (
         <MobileCloseButton setOpen={setOpen} />
+      ) : loading ? (
+        <Skeleton height={36} width={126} sx={{ background: '#2C2D3F' }} />
       ) : (
         <Button
           variant={connected ? 'surface' : 'gradient'}
@@ -295,10 +304,9 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
               <SvgIcon
                 sx={{
                   display: { xs: 'none', md: 'block' },
-                  transform: open ? 'rotate(180deg)' : 'rotate(0)',
                 }}
               >
-                <ChevronDownIcon />
+                {open ? <ChevronUpIcon /> : <ChevronDownIcon />}
               </SvgIcon>
             )
           }
