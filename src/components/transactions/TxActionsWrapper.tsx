@@ -1,8 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Box, BoxProps, Button } from '@mui/material';
 import { ReactNode } from 'react';
-
-import { TxStateType } from '../../helpers/useTransactionHandler';
+import { TxStateType } from 'src/hooks/useModal';
 
 interface TxActionsWrapperProps extends BoxProps {
   mainTxState: TxStateType;

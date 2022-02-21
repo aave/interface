@@ -35,7 +35,7 @@ export const ClaimRewardsActions = ({
   const { currentAccount, chainId: connectedChainId } = useWeb3Context();
   const { state, gasPriceData } = useGasStation();
 
-  const { action, loading, mainTxState, actionTx } = useTransactionHandler({
+  const { action, loadingTxns, mainTxState, actionTx } = useTransactionHandler({
     tryPermit: false,
     handleGetTxns: async () => {
       let tx: EthereumTransactionTypeExtended[];
@@ -86,7 +86,7 @@ export const ClaimRewardsActions = ({
   }, [setClaimRewardsTxState, mainTxState]);
 
   const handleButtonStates = () => {
-    if (loading && !actionTx) {
+    if (loadingTxns && !actionTx) {
       return (
         <>
           {!blocked && <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />}
@@ -94,21 +94,21 @@ export const ClaimRewardsActions = ({
           {selectedReward.symbol === 'all' ? <Trans>all</Trans> : selectedReward.symbol}
         </>
       );
-    } else if (!loading && (actionTx || blocked)) {
+    } else if (!loadingTxns && (actionTx || blocked)) {
       return (
         <>
           <Trans>Claim</Trans>{' '}
           {selectedReward.symbol === 'all' ? <Trans>all</Trans> : selectedReward.symbol}
         </>
       );
-    } else if (!loading && !actionTx) {
+    } else if (!loadingTxns && !actionTx) {
       return (
         <>
           <Trans>Claim</Trans>{' '}
           {selectedReward.symbol === 'all' ? <Trans>all</Trans> : selectedReward.symbol}
         </>
       );
-    } else if (loading && actionTx) {
+    } else if (loadingTxns && actionTx) {
       return (
         <>
           <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />

@@ -101,7 +101,10 @@ export const TxSuccessView = ({
               addERC20Token({
                 address: addToken.address,
                 decimals: 18,
-                symbol: addToken.aToken ? `a${addToken.symbol}` : addToken.symbol,
+                symbol:
+                  addToken.aToken && addToken.aTokenPrefix
+                    ? `${addToken.aTokenPrefix}${addToken.symbol}`
+                    : addToken.symbol,
                 image: !/_/.test(addToken.symbol) ? base64 : undefined,
               });
             }}
@@ -119,7 +122,10 @@ export const TxSuccessView = ({
               <SvgIcon sx={{ fontSize: '12px', mx: '2px' }}>
                 <PlusSmIcon />
               </SvgIcon>
-              <Trans>Add {addToken.symbol} to the wallet</Trans>
+              <Trans>
+                Add {addToken.aTokenPrefix}
+                {addToken.symbol} to the wallet
+              </Trans>
             </Typography>
           </Button>
         )}
