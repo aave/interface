@@ -1,5 +1,10 @@
 /// <reference types="cypress" />
-import { getDashBoardBorrowRow, getDashBoardDepositRow } from './actions.steps';
+import {
+  doSwitchToDashboardBorrowView,
+  doSwitchToDashboardSupplyView,
+  getDashBoardBorrowRow,
+  getDashBoardDepositRow
+} from "./actions.steps";
 import constants from '../../fixtures/constans.json';
 
 type SkipType = {
@@ -85,10 +90,14 @@ export const borrowsUnavailable = (skip: SkipType) => {
   return describe('Check that borrowing unavailable', () => {
     skipSetup(skip);
     it('Open Dashboard', () => {
-      cy.get('[data-cy=menuDashboard]').find('a:contains("Dashboard")').wait(3000).click();
+      cy.get('[data-cy=menuDashboard]').find('a:contains("Dashboard")').click();
+      doSwitchToDashboardBorrowView();
     });
     it('Check blocked message', () => {
-      cy.get('button').contains("Borrow").should("be.disabled");
+      cy.get('[data-cy^="dashboardBorrowListItem_"]')
+        .first()
+        .contains("Borrow")
+        .should("be.disabled");
     });
   });
 };
@@ -146,6 +155,32 @@ export const switchApyBlocked = (
         assetName: _shortName,
       })
         .find('.Switcher__swiper input')
+        .should('be.disabled');
+    });
+  });
+};
+
+export const changeBorrowTypeBlocked = (
+  {
+    asset,
+    isCollateralType,
+  }: {
+    asset: { shortName: string; fullName: string };
+    isCollateralType: boolean;
+  },
+  skip: SkipType,
+) => {
+  const _shortName = asset.shortName;
+
+  return describe(`Verify that Switch borrow is unavailable`, () => {
+    skipSetup(skip);
+    it('Open dashboard page', () => {
+      cy.get('[data-cy=menuDashboard]').find('a:contains("Dashboard")').click();
+      doSwitchToDashboardSupplyView();
+    });
+    it('Try to change apy type', () => {
+      getDashBoardDepositRow({ assetName: _shortName, isCollateralType })
+        .find('.MuiSwitch-input ')
         .should('be.disabled');
     });
   });

@@ -42,7 +42,7 @@ const testData = {
       asset: assets.polygonMarket.MATIC,
       amount: 0.04,
       apyType: constants.borrowAPYType.variable,
-      hasApproval: false,
+      hasApproval: true,
     },
     repay: {
       asset: assets.polygonMarket.MATIC,
@@ -74,7 +74,7 @@ const testData = {
   },
 };
 
-describe('MATIC INTEGRATION SPEC, POLYGON MARKET', () => {
+describe('MATIC INTEGRATION SPEC, POLYGON V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({});
 

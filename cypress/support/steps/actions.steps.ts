@@ -14,9 +14,11 @@ export const setAmount = ({ amount, actionName, assetName, hasApproval, max }: S
     cy.get('[data-cy=Modal] input').first().type(amount.toString());
   }
   if (hasApproval) {
+    cy.log("1111")
     cy.get(`[data-cy=Modal] button:contains("${actionName} ${assetName}")`).as('button');
     cy.get('@button').should('not.be.disabled');
   } else {
+    cy.log("2222")
     cy.get(`[data-cy=Modal] button:contains("Approve to continue")`).as('button');
     cy.get('@button').should('not.be.disabled');
   }

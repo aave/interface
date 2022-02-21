@@ -370,6 +370,7 @@ export const changeCollateral = (
     skipSetup({ skip, updateSkipStatus });
     it('Open dashboard', () => {
       cy.get('[data-cy=menuDashboard]').find('a:contains("Dashboard")').click();
+      doSwitchToDashboardSupplyView();
     });
     it('Open Switch type Modal', () => {
       getDashBoardDepositRow({ assetName: _shortName, isCollateralType })
@@ -392,11 +393,11 @@ export const changeCollateral = (
     });
     it('Confirm switching', () => {
       if (isCollateralType) {
-        cy.get('[data-cy=Modal]')
+        cy.get('[data-cy=Modal] button')
           .contains(`Disable ${asset.wrapped ? 'W' : ''}${_shortName} as collateral`)
           .click();
       } else {
-        cy.get('[data-cy=Modal]')
+        cy.get('[data-cy=Modal] button')
           .contains(`Enable ${asset.wrapped ? 'W' : ''}${_shortName} as collateral`)
           .click();
       }
@@ -417,37 +418,6 @@ export const claimReward = (skip: SkipType, updateSkipStatus = false) => {
     });
     it('Confirm claim', () => {
       doConfirm({ hasApproval: true });
-    });
-  });
-};
-
-export const changeBorrowTypeNegative = (
-  {
-    asset,
-    apyType,
-  }: {
-    asset: { shortName: string; fullName: string };
-    apyType: string;
-  },
-  skip: SkipType,
-  updateSkipStatus = false
-) => {
-  const _shortName = asset.shortName;
-
-  return describe(`Verify that Switch borrow is unavailable`, () => {
-    skipSetup({ skip, updateSkipStatus });
-    it('Open dashboard page', () => {
-      cy.get('.Menu strong').contains('dashboard').click();
-    });
-    it('Try to change apy type', () => {
-      getDashBoardBorrowRow({ assetName: _shortName, apyType }).find('.Switcher__swiper').click();
-    });
-    it('Check rejected message', () => {
-      cy.get('.TxConfirmationView')
-        .find('span')
-        .contains(
-          "You can't change Interest Type to stable as your borrowings are higher than your collateral"
-        );
     });
   });
 };

@@ -1,6 +1,11 @@
-import { configEnvWithTenderlyPolygonFork } from '../../../support/steps/configuration.steps';
+import {
+  configEnvWithTenderlyPolygonFork,
+} from '../../../support/steps/configuration.steps';
 import { supply, borrow, repay, withdraw } from '../../../support/steps/main.steps';
-import { dashboardAssetValuesVerification } from '../../../support/steps/verification.steps';
+import {
+  changeBorrowTypeBlocked,
+  dashboardAssetValuesVerification,
+} from "../../../support/steps/verification.steps";
 import { skipState } from '../../../support/steps/common';
 import assets from '../../../fixtures/assets.json';
 import constants from '../../../fixtures/constans.json';
@@ -13,44 +18,48 @@ const testData = {
   },
   testCases: {
     borrow: {
-      asset: assets.polygonMarket.DAI,
+      asset: assets.polygonMarket.USDT,
       amount: 25,
       apyType: constants.borrowAPYType.variable,
       hasApproval: true,
     },
     deposit: {
-      asset: assets.polygonMarket.DAI,
+      asset: assets.polygonMarket.USDT,
       amount: 10,
       hasApproval: false,
     },
     repay: {
-      asset: assets.polygonMarket.DAI,
+      asset: assets.polygonMarket.USDT,
       apyType: constants.apyType.variable,
       amount: 2,
       hasApproval: true,
       repayOption: constants.repayType.default,
     },
     withdraw: {
-      asset: assets.polygonMarket.DAI,
+      asset: assets.polygonMarket.USDT,
       isCollateral: true,
       amount: 1,
       hasApproval: true,
+    },
+    checkDisabledCollateral: {
+      asset: assets.polygonMarket.USDT,
+      isCollateralType: true,
     },
   },
   verifications: {
     finalDashboard: [
       {
         type: constants.dashboardTypes.deposit,
-        assetName: assets.polygonMarket.DAI.shortName,
-        wrapped: assets.polygonMarket.DAI.wrapped,
+        assetName: assets.polygonMarket.USDT.shortName,
+        wrapped: assets.polygonMarket.USDT.wrapped,
         amount: 9.0,
-        collateralType: constants.collateralType.isCollateral,
-        isCollateral: true,
+        collateralType: constants.collateralType.isNotCollateral,
+        isCollateral: false,
       },
       {
         type: constants.dashboardTypes.borrow,
-        assetName: assets.polygonMarket.DAI.shortName,
-        wrapped: assets.polygonMarket.DAI.wrapped,
+        assetName: assets.polygonMarket.USDT.shortName,
+        wrapped: assets.polygonMarket.USDT.wrapped,
         amount: 23.0,
         apyType: constants.borrowAPYType.variable,
       },
@@ -58,7 +67,7 @@ const testData = {
   },
 };
 
-describe('DAI INTEGRATION SPEC, POLYGON MARKET', () => {
+describe('USDT INTEGRATION SPEC, POLYGON MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({});
 
@@ -67,5 +76,6 @@ describe('DAI INTEGRATION SPEC, POLYGON MARKET', () => {
   supply(testData.testCases.deposit, skipTestState, true);
   repay(testData.testCases.repay, skipTestState, false);
   withdraw(testData.testCases.withdraw, skipTestState, false);
+  changeBorrowTypeBlocked(testData.testCases.checkDisabledCollateral, skipTestState);
   dashboardAssetValuesVerification(testData.verifications.finalDashboard, skipTestState);
 });
