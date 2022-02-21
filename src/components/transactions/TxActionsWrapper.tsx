@@ -56,11 +56,16 @@ export const TxActionsWrapper = ({
           <Trans>Switch Network</Trans>
         </Button>
       )}
-      {withAmount && !hasAmount && !approvalTxError && !isWrongNetwork && (
-        <Button variant="contained" disabled size="large" sx={{ minHeight: '44px' }}>
-          <Trans>Enter an amount</Trans>
-        </Button>
-      )}
+      {withAmount &&
+        !hasAmount &&
+        !approvalTxError &&
+        !isWrongNetwork &&
+        !approvalTxState?.txHash &&
+        !mainTxState.txHash && (
+          <Button variant="contained" disabled size="large" sx={{ minHeight: '44px' }}>
+            <Trans>Enter an amount</Trans>
+          </Button>
+        )}
 
       {children}
 
