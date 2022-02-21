@@ -152,6 +152,7 @@ export const RepayActions = ({
       approvalTxState={approvalTxState}
       handleRetry={handleRetry}
       hasAmount={hasAmount}
+      requiresApproval={requiresApproval}
       isWrongNetwork={isWrongNetwork}
       withAmount
       helperText={
@@ -214,7 +215,7 @@ export const RepayActions = ({
               {(approved || !requiresApproval) && loading && (
                 <>
                   <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-                  <Trans>Pending...</Trans>
+                  <Trans>Repay {symbol}</Trans>
                 </>
               )}
             </Button>
