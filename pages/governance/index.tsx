@@ -14,12 +14,12 @@ export const getStaticProps = async () => {
   const IpfsFetcher = new Ipfs();
   const ProposalFetcher = new Proposal();
 
-  const proposals = [...Array(ProposalFetcher.count).keys()].reverse().map((id) => {
+  const proposals = [...Array(ProposalFetcher.count()).keys()].map((id) => {
     // TODO: only pass required ipfs data
     const ipfs = IpfsFetcher.get(id);
     const proposal = ProposalFetcher.get(id);
     return {
-      ipfs,
+      ipfs: { title: ipfs.title, id: ipfs.id, originalHash: ipfs.originalHash },
       proposal,
       prerendered: true,
     };
@@ -29,7 +29,11 @@ export const getStaticProps = async () => {
 };
 
 export type GovernancePageProps = {
-  proposals: { ipfs: IpfsType; proposal: CustomProposalType; prerendered: boolean }[];
+  proposals: {
+    ipfs: Pick<IpfsType, 'title' | 'id' | 'originalHash'>;
+    proposal: CustomProposalType;
+    prerendered: boolean;
+  }[];
 };
 
 export default function Governance(props: GovernancePageProps) {
