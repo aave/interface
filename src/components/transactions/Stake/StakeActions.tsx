@@ -111,11 +111,15 @@ export const StakeActions = ({
               !!approvalTxState.gasEstimationError
             }
           >
-            {!approved && !loading && <Trans>APPROVE TO CONTINUE</Trans>}
-            {!approved && loading && (
+            {!loading && <Trans>APPROVE TO CONTINUE</Trans>}
+            {loading && (
               <>
                 <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-                <Trans>APPROVING {symbol} ...</Trans>
+                {approvalTxState.loading ? (
+                  <Trans>Approving {symbol}...</Trans>
+                ) : (
+                  <Trans>Approve to continue</Trans>
+                )}
               </>
             )}
           </Button>
@@ -137,13 +141,13 @@ export const StakeActions = ({
               }
               sx={{ mt: !approved ? 2 : 0 }}
             >
-              {!mainTxState.txHash && !mainTxState.txError && (!loading || !approved) && (
-                <Trans>STAKE {symbol}</Trans>
-              )}
-              {approved && loading && (
+              {!loading && <Trans>Stake</Trans>}
+              {loading && (
                 <>
-                  <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-                  <Trans>PENDING...</Trans>
+                  {((approved && requiresApproval) || !requiresApproval) && (
+                    <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
+                  )}
+                  <Trans>Stake</Trans>
                 </>
               )}
             </Button>

@@ -41,6 +41,8 @@ export const UnStakeModalContent = ({ stakeAssetName, icon, handleClose }: UnSta
   const [amountToUnStake, setAmountToUnStake] = useState(amount);
   const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
   const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
+  const [isMax, setIsMax] = useState(false);
+  const [maxAmount, setMaxAmount] = useState('0');
 
   const walletBalance = normalize(
     data.stakeUserResult?.stakeUserUIData[stakeAssetName as StakingType].stakeTokenUserBalance ||
@@ -51,25 +53,38 @@ export const UnStakeModalContent = ({ stakeAssetName, icon, handleClose }: UnSta
   useEffect(() => {
     if (amount === '-1') {
       setAmountToUnStake(walletBalance);
+      setIsMax(true);
     } else {
       setAmountToUnStake(amount);
+      setIsMax(false);
     }
   }, [amount, walletBalance]);
 
+  useEffect(() => {
+    if (isMax) {
+      setMaxAmount(walletBalance);
+    }
+  }, [isMax]);
+
+  // This amount will stay the same after tx is submited even if we have an interval
+  // between tx success and tx success confirmation. This way all calcs are static
+  // and don't get recalculated in this interval state
+  const staticAmount = isMax ? maxAmount : amountToUnStake;
+
   // staking token usd value
   const amountInUsd =
-    Number(amountToUnStake) *
+    Number(staticAmount) *
     (Number(normalize(stakeData?.stakeTokenPriceEth || 1, 18)) /
       Number(normalize(data.stakeGeneralResult?.stakeGeneralUIData.usdPriceEth || 1, 18)));
 
   // error handler
   useEffect(() => {
-    if (valueToBigNumber(amountToUnStake).gt(walletBalance)) {
+    if (valueToBigNumber(staticAmount).gt(walletBalance)) {
       setBlockingError(ErrorType.NOT_ENOUGH_BALANCE);
     } else {
       setBlockingError(undefined);
     }
-  }, [walletBalance, amountToUnStake]);
+  }, [walletBalance, staticAmount]);
 
   const handleBlocked = () => {
     switch (blockingError) {
@@ -94,7 +109,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon, handleClose }: UnSta
             <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
           )}
           <AssetInput
-            value={amountToUnStake}
+            value={staticAmount}
             onChange={setAmount}
             usdValue={amountInUsd.toString()}
             symbol={icon}
@@ -115,7 +130,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon, handleClose }: UnSta
       )}
       {txState.txError && <TxErrorView errorMessage={txState.txError} />}
       {txState.success && !txState.txError && (
-        <TxSuccessView action="Staked" amount={amountToUnStake} symbol={icon} />
+        <TxSuccessView action="Staked" amount={staticAmount} symbol={icon} />
       )}
       {txState.gasEstimationError && <GasEstimationError error={txState.gasEstimationError} />}
       <UnStakeActions

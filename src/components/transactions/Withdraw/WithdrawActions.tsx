@@ -87,7 +87,7 @@ export const WithdrawActions = ({
       return (
         <>
           <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-          <Trans>Withdraw {symbol} pending...</Trans>
+          <Trans>Withdraw {symbol}</Trans>
         </>
       );
     } else if (!loading && !actionTx) {
