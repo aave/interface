@@ -30,10 +30,10 @@ export interface SwapActionProps extends BoxProps {
   customGasPrice?: string;
   handleClose: () => void;
   setGasLimit: Dispatch<SetStateAction<string | undefined>>;
-  poolAddress: string;
   symbol: string;
   blocked: boolean;
   priceRoute: OptimalRate | null;
+  maxSlippage?: number;
 }
 
 export const SwapActions = ({
@@ -42,7 +42,6 @@ export const SwapActions = ({
   setSupplyTxState,
   handleClose,
   setGasLimit,
-  poolAddress,
   isWrongNetwork,
   sx,
   symbol,
@@ -158,7 +157,7 @@ export const SwapActions = ({
         {hasAmount && requiresApproval && !approved && !approvalTxState.txError && !isWrongNetwork && (
           <Button
             variant="contained"
-            onClick={() => approval(amountToSwap, poolAddress)}
+            onClick={() => approval(amountToSwap, poolReserve.underlyingAsset)}
             disabled={
               approved ||
               loading ||
