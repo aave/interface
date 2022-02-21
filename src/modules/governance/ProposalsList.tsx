@@ -28,20 +28,22 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
       const count = await governanceContract.getProposalsCount();
       const nextProposals: GovernancePageProps['proposals'] = [];
       console.log(`fetching ${count - proposals.length} new proposals`);
-      for (let i = proposals.length; i < count; i++) {
-        const { values, ...rest } = await governanceContract.getProposal({ proposalId: i });
-        const proposal = await enhanceProposalWithTimes(rest);
-        nextProposals.push({
-          ipfs: {
-            id: i,
-            originalHash: proposal.ipfsHash,
-            ...(await getProposalMetadata(proposal.ipfsHash, governanceConfig?.ipfsGateway)),
-          },
-          proposal: proposal,
-          prerendered: false,
-        });
+      if (count - proposals.length) {
+        for (let i = proposals.length; i < count; i++) {
+          const { values, ...rest } = await governanceContract.getProposal({ proposalId: i });
+          const proposal = await enhanceProposalWithTimes(rest);
+          nextProposals.push({
+            ipfs: {
+              id: i,
+              originalHash: proposal.ipfsHash,
+              ...(await getProposalMetadata(proposal.ipfsHash, governanceConfig?.ipfsGateway)),
+            },
+            proposal: proposal,
+            prerendered: false,
+          });
+        }
+        setProposals((p) => [...p, ...nextProposals]);
       }
-      setProposals((p) => [...nextProposals.reverse(), ...p]);
       setLoadingNewProposals(false);
     } catch (e) {
       console.log('error fetching new proposals', e);
@@ -52,6 +54,7 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
     const pendingProposals = proposals.filter(
       ({ proposal }) => !isProposalStateImmutable(proposal)
     );
+    console.log('update pending proposals', pendingProposals.length);
 
     try {
       if (pendingProposals.length) {
@@ -103,6 +106,8 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
       </Box>
       {loadingNewProposals && <div>loading TODO: replace with sth nicer</div>}
       {proposals
+        .slice()
+        .reverse()
         .filter(
           (proposal) => proposalFilter === 'all' || proposal.proposal.state === proposalFilter
         )
