@@ -149,7 +149,7 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
   // token info to add to wallet
   const addToken: ERC20TokenType = {
     address: underlyingAsset,
-    symbol: poolReserve.symbol,
+    symbol: poolReserve.iconSymbol,
     decimals: poolReserve.decimals,
   };
 

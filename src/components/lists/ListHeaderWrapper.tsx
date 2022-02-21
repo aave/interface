@@ -7,7 +7,5 @@ interface ListHeaderWrapperProps {
 }
 
 export const ListHeaderWrapper = ({ px = 4, children }: ListHeaderWrapperProps) => {
-  return (
-    <Box sx={{ display: 'flex', alignItems: 'flex-end', px, pt: 4, pb: '6px' }}>{children}</Box>
-  );
+  return <Box sx={{ display: 'flex', alignItems: 'flex-end', px, pt: 4, pb: 1 }}>{children}</Box>;
 };

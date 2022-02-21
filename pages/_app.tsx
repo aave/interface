@@ -11,7 +11,6 @@ import { BorrowModal } from 'src/components/transactions/Borrow/BorrowModal';
 import { ClaimRewardsModal } from 'src/components/transactions/ClaimRewards/ClaimRewardsModal';
 import { CollateralChangeModal } from 'src/components/transactions/CollateralChange/CollateralChangeModal';
 import { EmodeModal } from 'src/components/transactions/Emode/EmodeModal';
-import { FaucetModal } from 'src/components/transactions/Faucet/FaucetModal';
 import { GasStationProvider } from 'src/components/transactions/GasStation/GasStationProvider';
 import { RateSwitchModal } from 'src/components/transactions/RateSwitch/RateSwitchModal';
 import { RepayModal } from 'src/components/transactions/Repay/RepayModal';
@@ -29,7 +28,6 @@ import createEmotionCache from '../src/createEmotionCache';
 import { ProtocolDataProvider } from '../src/hooks/useProtocolDataContext';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
-import { StakeTxBuilderProvider } from 'src/providers/StakeTxBuilderProvider';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -68,24 +66,21 @@ export default function MyApp(props: MyAppProps) {
                   <BackgroundDataProvider>
                     <AppDataProvider>
                       <TxBuilderProvider>
-                        <StakeTxBuilderProvider>
-                          <AppGlobalStyles>
-                            <ModalContextProvider>
-                              <GasStationProvider>
-                                {getLayout(<Component {...pageProps} />)}
-                                <SupplyModal />
-                                <WithdrawModal />
-                                <BorrowModal />
-                                <RepayModal />
-                                <CollateralChangeModal />
-                                <RateSwitchModal />
-                                <ClaimRewardsModal />
-                                <EmodeModal />
-                                <FaucetModal />
-                              </GasStationProvider>
-                            </ModalContextProvider>
-                          </AppGlobalStyles>
-                        </StakeTxBuilderProvider>
+                        <AppGlobalStyles>
+                          <ModalContextProvider>
+                            <GasStationProvider>
+                              {getLayout(<Component {...pageProps} />)}
+                              <SupplyModal />
+                              <WithdrawModal />
+                              <BorrowModal />
+                              <RepayModal />
+                              <CollateralChangeModal />
+                              <RateSwitchModal />
+                              <ClaimRewardsModal />
+                              <EmodeModal />
+                            </GasStationProvider>
+                          </ModalContextProvider>
+                        </AppGlobalStyles>
                       </TxBuilderProvider>
                     </AppDataProvider>
                   </BackgroundDataProvider>

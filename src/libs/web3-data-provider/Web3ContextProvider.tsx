@@ -27,6 +27,7 @@ export type Web3Data = {
   disconnectWallet: () => void;
   currentAccount: string;
   connected: boolean;
+  loading: boolean;
   provider: JsonRpcProvider | undefined;
   web3Modal: Web3Modal;
   chainId: number;
@@ -41,6 +42,7 @@ export type Web3Data = {
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
   const [provider, setProvider] = useState<JsonRpcProvider>();
   const [connected, setConnected] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [chainId, setChainId] = useState(1);
   const [currentAccount, setCurrentAccount] = useState('');
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -51,11 +53,14 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     if (!web3Modal)
       import('./modalOptions').then((m) => {
         setWeb3Modal(m.getWeb3Modal());
+        setLoading(false);
       });
   }, [web3Modal]);
 
   // web 3 modal
   const connectWallet = useCallback(async () => {
+    setLoading(true);
+
     const providerInstance = await web3Modal.connect();
     setWeb3Provider(providerInstance);
 
@@ -81,6 +86,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     setCurrentAccount(connectedAddress.toLowerCase());
 
     setConnected(true);
+    setLoading(false);
 
     return ethProvider;
   }, [web3Modal]);
@@ -88,6 +94,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const disconnectWallet = useCallback(async () => {
     web3Modal.clearCachedProvider();
     setConnected(false);
+    setLoading(false);
     setCurrentAccount('');
     if (web3Provider) {
       if (web3Provider.close) {
@@ -225,6 +232,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       disconnectWallet,
       provider,
       connected,
+      loading,
       web3Modal,
       chainId,
       switchNetwork,
@@ -237,6 +245,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       disconnectWallet,
       provider,
       connected,
+      loading,
       web3Modal,
       chainId,
       switchNetwork,

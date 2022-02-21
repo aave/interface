@@ -7,6 +7,7 @@
     "build": "next build",
     "build:analyze": "ANALYZE=true yarn build",
     "build:static": "next build && next export",
+    "build:optimize-svgs": "find public -type f -name '*.svg' -print0 | xargs -0 -n 1 -P 6 npx svgo",
     "build:populate-cache": "npx esbuild src/static-build/populateCache.ts --tsconfig=./tsconfig.json --bundle --outfile=scripts/populate-cache.js --platform=node --target=es6",
     "cache:update": "yarn build:populate-cache && CACHE_PATH=../src/static-build node scripts/populate-cache.js",
     "serve:static": "npx serve out",
