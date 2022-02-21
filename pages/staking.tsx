@@ -14,7 +14,12 @@ import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
 import { StakeTxBuilderProvider } from 'src/providers/StakeTxBuilderProvider';
 
+import { ConnectWalletPaper } from '../src/components/ConnectWalletPaper';
+import { Link } from '../src/components/primitives/Link';
+import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
+
 export default function Staking() {
+  const { currentAccount, loading } = useWeb3Context();
   const data = useStakeData();
   const { openStake, openStakeCooldown, openUnstake, openStakeRewardsClaim } = useModalContext();
   // Total funds at Safety Module (stkaave tvl + stkbpt tvl)
@@ -38,52 +43,66 @@ export default function Staking() {
 
   return (
     <>
-      <StakingHeader tvl={tvl} stkEmission={stkEmission} />
+      <StakingHeader tvl={tvl} stkEmission={stkEmission} loading={data.loading} />
+
       <ContentContainer>
-        <Grid container spacing={4}>
-          <Grid item xs={12} sm={6}>
-            <StakingPanel
-              sx={{ height: '100%' }}
-              stakeTitle="Aave"
-              stakedToken="AAVE"
-              maxSlash="0.3"
-              icon="aave"
-              stakeData={data.stakeGeneralResult?.stakeGeneralUIData.aave}
-              stakeUserData={data.stakeUserResult?.stakeUserUIData.aave}
-              ethUsdPrice={data.stakeGeneralResult?.stakeGeneralUIData.usdPriceEth}
-              onStakeAction={() => openStake('aave', 'AAVE')}
-              onCooldownAction={() => openStakeCooldown('aave')}
-              onUnstakeAction={() => openUnstake('aave', 'AAVE')}
-              onStakeRewardClaimAction={() => openStakeRewardsClaim('aave')}
-            />
+        {currentAccount ? (
+          <Grid container spacing={4}>
+            <Grid item xs={12} sm={6}>
+              <StakingPanel
+                stakeTitle="Aave"
+                stakedToken="AAVE"
+                maxSlash="0.3"
+                icon="aave"
+                stakeData={data.stakeGeneralResult?.stakeGeneralUIData.aave}
+                stakeUserData={data.stakeUserResult?.stakeUserUIData.aave}
+                ethUsdPrice={data.stakeGeneralResult?.stakeGeneralUIData.usdPriceEth}
+                onStakeAction={() => openStake('aave', 'AAVE')}
+                onCooldownAction={() => openStakeCooldown('aave')}
+                onUnstakeAction={() => openUnstake('aave', 'AAVE')}
+                onStakeRewardClaimAction={() => openStakeRewardsClaim('aave')}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <StakingPanel
+                stakeTitle="AAVE/ETH BPT"
+                stakedToken="ABPT"
+                maxSlash="0.3"
+                icon="stkbpt"
+                stakeData={data.stakeGeneralResult?.stakeGeneralUIData.bpt}
+                stakeUserData={data.stakeUserResult?.stakeUserUIData.bpt}
+                ethUsdPrice={data.stakeGeneralResult?.stakeGeneralUIData.usdPriceEth}
+                onStakeAction={() => openStake('bpt', 'stkBPT')}
+                onCooldownAction={() => openStakeCooldown('bpt')}
+                onUnstakeAction={() => openUnstake('bpt', 'stkBPT')}
+                onStakeRewardClaimAction={() => openStakeRewardsClaim('bpt')}
+                description={
+                  <Typography color="text.muted" sx={{ mt: 4 }} variant="caption">
+                    <Trans>
+                      The Balancer Pool Token (BPT) is a liquidity pool token. You can receive BPT
+                      by depositing a combination of AAVE + ETH in the{' '}
+                      <Link
+                        href="https://pools.balancer.exchange/#/pool/0xc697051d1c6296c24ae3bcef39aca743861d9a81/about"
+                        variant="caption"
+                        color="text.muted"
+                        sx={{ textDecoration: 'underline' }}
+                      >
+                        Balancer liquidity pool
+                      </Link>
+                      . You can then stake your BPT in the Safety Module to secure the protocol and
+                      earn Safety Incentives.
+                    </Trans>
+                  </Typography>
+                }
+              />
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <StakingPanel
-              sx={{ height: '100%' }}
-              stakeTitle="AAVE/ETH BPT"
-              stakedToken="ABPT"
-              maxSlash="0.3"
-              icon="stkbpt"
-              stakeData={data.stakeGeneralResult?.stakeGeneralUIData.bpt}
-              stakeUserData={data.stakeUserResult?.stakeUserUIData.bpt}
-              ethUsdPrice={data.stakeGeneralResult?.stakeGeneralUIData.usdPriceEth}
-              onStakeAction={() => openStake('bpt', 'stkBPT')}
-              onCooldownAction={() => openStakeCooldown('bpt')}
-              onUnstakeAction={() => openUnstake('bpt', 'stkBPT')}
-              onStakeRewardClaimAction={() => openStakeRewardsClaim('bpt')}
-              description={
-                <Typography color="text.muted" sx={{ mt: 4 }}>
-                  <Trans>
-                    The Balancer Pool Token (BPT) is a liquidity pool token. You can receive BPT by
-                    depositing a combination of AAVE + ETH in the Balancer liquidity pool. You can
-                    then stake your BPT in the Safety Module to secure the protocol and earn Safety
-                    Incentives.
-                  </Trans>
-                </Typography>
-              }
-            />
-          </Grid>
-        </Grid>
+        ) : (
+          <ConnectWalletPaper
+            description={<Trans>We couldn’t detect a wallet. Connect a wallet to stake.</Trans>}
+            loading={loading}
+          />
+        )}
       </ContentContainer>
     </>
   );

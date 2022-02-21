@@ -1,16 +1,17 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Paper, Box, Stack, Button, Typography, PaperProps, Tooltip } from '@mui/material';
-import { BoxProps } from '@mui/system';
+import { Box, Button, Paper, Stack, Tooltip, Typography } from '@mui/material';
 import { BigNumber } from 'ethers';
 import { formatEther } from 'ethers/lib/utils';
 import React from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { TopInfoPanelItem } from 'src/components/TopInfoPanel/TopInfoPanelItem';
 import { StakeGeneralData, StakeUserData } from 'src/hooks/stake-data-provider/graphql/hooks';
 
-export interface StakingPanelProps extends PaperProps {
+import { TextWithTooltip } from '../../components/TextWithTooltip';
+import { StakeActionBox } from './StakeActionBox';
+
+export interface StakingPanelProps {
   onStakeAction?: () => void;
   onStakeRewardClaimAction?: () => void;
   onCooldownAction?: () => void;
@@ -24,51 +25,6 @@ export interface StakingPanelProps extends PaperProps {
   maxSlash: string;
   icon: string;
 }
-
-const StakeActionPaper: React.FC<PaperProps> = ({ sx, ...props }) => (
-  <Paper
-    sx={{
-      display: 'flex',
-      flexDirection: 'column',
-      width: '100%',
-      justifyContent: 'center',
-      alignItems: 'center',
-      p: 4,
-      ...sx,
-    }}
-    {...props}
-  />
-);
-
-const StakeDetails: React.FC<PaperProps> = ({ sx, ...props }) => (
-  <Paper
-    sx={{
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      gap: 2,
-      py: 5,
-      px: 4,
-      mt: 8,
-      ...sx,
-    }}
-    {...props}
-  />
-);
-
-const ActionDetails: React.FC<BoxProps> = ({ sx, ...props }) => (
-  <Box
-    sx={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      width: '100%',
-      mt: 3,
-      ...sx,
-    }}
-    {...props}
-  />
-);
 
 function getTimeRemaining(endtime: number) {
   if (endtime == 0) {
@@ -96,12 +52,10 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   stakedToken,
   description,
   icon,
-  sx,
   stakeData,
   stakeUserData,
   ethUsdPrice,
   maxSlash,
-  ...props
 }) => {
   // Cooldown logic
   const now = Date.now() / 1000;
@@ -121,17 +75,20 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
     isCooldownActive && !isUnstakeWindowActive
       ? getTimeRemaining(stakeCooldownSeconds - userCooldownDelta)
       : getTimeRemaining(0);
+
   // Others
   const stakedUSD = formatEther(
     BigNumber.from(stakeUserData?.stakeTokenUserBalance || '0')
       .mul(stakeData?.stakeTokenPriceEth || '0')
       .div(ethUsdPrice || '1')
   );
+
   const claimableUSD = formatEther(
     BigNumber.from(stakeUserData?.userIncentivesToClaim || '0')
       .mul(stakeData?.rewardTokenPriceEth || '0')
       .div(ethUsdPrice || '1')
   );
+
   const aavePerMonth = formatEther(
     valueToBigNumber(stakeUserData?.stakeTokenUserBalance || '0')
       .dividedBy(stakeData?.stakeTokenTotalSupply || '1')
@@ -140,63 +97,100 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
       .toFixed(0)
   );
 
-
   return (
-    <Paper sx={{ width: '100%', py: 4, px: 6, ...sx }} {...props}>
-      <Typography variant="h3">
+    <Paper sx={{ p: 6, pt: 4, height: '100%' }}>
+      <Typography variant="h3" mb={8}>
         <Trans>Stake</Trans> {stakeTitle}
       </Typography>
 
-      <StakeDetails>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <TokenIcon symbol={icon} fontSize="large" />
-          {stakedToken}
+      <Box
+        sx={(theme) => ({
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          gap: 2,
+          borderRadius: '6px',
+          border: `1px solid ${theme.palette.divider}`,
+          p: 4,
+          background:
+            theme.palette.mode === 'light'
+              ? theme.palette.background.paper
+              : theme.palette.background.surface,
+        })}
+      >
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <TokenIcon symbol={icon} sx={{ fontSize: '32px' }} />
+          <Typography variant="subheader1" ml={2}>
+            {stakedToken}
+          </Typography>
         </Box>
-        <TopInfoPanelItem title={<Trans>Staking APR</Trans>} hideIcon variant="light">
+
+        <Box>
+          <Typography variant="subheader2" color="text.secondary">
+            <Trans>Staking APR</Trans>
+          </Typography>
           <FormattedNumber
             value={parseFloat(stakeData?.stakeApy || '0') / 10000}
             percent
-            variant="main16"
+            variant="secondary14"
           />
-        </TopInfoPanelItem>
+        </Box>
 
-        <TopInfoPanelItem title={<Trans>Max slashing</Trans>} hideIcon variant="light">
-          <FormattedNumber value={maxSlash} percent variant="main16" />
-        </TopInfoPanelItem>
+        <Box>
+          <Typography variant="subheader2" color="text.secondary">
+            <Trans>Max slashing</Trans>
+          </Typography>
+          <FormattedNumber value={maxSlash} percent variant="secondary14" />
+        </Box>
 
         {/**Stake action */}
-        <Button variant="contained" size="medium" sx={{ width: '96px' }} onClick={onStakeAction}>
+        <Button
+          variant="contained"
+          sx={{ minWidth: '96px' }}
+          onClick={onStakeAction}
+          disabled={stakeUserData?.stakeTokenUserBalance === '0'}
+        >
           <Trans>Stake</Trans>
         </Button>
-      </StakeDetails>
+      </Box>
 
       <Stack spacing={4} direction="row" sx={{ mt: 4 }}>
         {/** Cooldown action */}
-        <StakeActionPaper>
-          <Typography variant="description" color="text.secondary">
-            <Trans>Staked</Trans> {stakedToken}
-          </Typography>
-          <FormattedNumber
-            value={formatEther(stakeUserData?.stakeTokenUserBalance || '0')}
-            sx={{ fontSize: '21px !important', fontWeight: 500 }}
-            visibleDecimals={2}
-          />
-          <FormattedNumber value={stakedUSD} symbol="USD" visibleDecimals={2} />
+        <StakeActionBox
+          title={
+            <>
+              <Trans>Staked</Trans> {stakedToken}
+            </>
+          }
+          value={formatEther(stakeUserData?.stakeTokenUserBalance || '0')}
+          valueUSD={stakedUSD}
+          // TODO: need fix text
+          bottomLineTitle={
+            <TextWithTooltip text="Cooldown period">
+              <Trans>
+                You can only withdraw your assets from the Security Module after the cooldown period
+                ends and the unstake window is active.
+              </Trans>
+            </TextWithTooltip>
+          }
+          bottomLineComponent={
+            <Typography variant="secondary14">
+              <Trans>{cooldownDays > 1 ? cooldownDays : '<1'} days</Trans>
+            </Typography>
+          }
+        >
           {isUnstakeWindowActive && (
-            <Button variant="outlined" sx={{ mt: 6, width: '100%' }} onClick={onUnstakeAction}>
+            <Button variant="outlined" fullWidth onClick={onUnstakeAction}>
               <Trans>Unstake now</Trans>
             </Button>
           )}
+
           {isCooldownActive && !isUnstakeWindowActive && (
             // eslint-disable-next-line react/jsx-no-undef
             <Tooltip
               title={() => <Trans>Time left to be able to withdraw your staked asset.</Trans>}
             >
-              <Button
-                variant="outlined"
-                sx={{ mt: 6, width: '100%', display: 'flex', gap: 1 }}
-                disabled
-              >
+              <Button variant="outlined" sx={{ gap: 1 }} fullWidth disabled>
                 {!!cooldownCountdown.days && (
                   <Typography>
                     <Trans>{cooldownCountdown.days} days</Trans>
@@ -225,47 +219,42 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           )}
 
           {!isCooldownActive && (
-            <Button variant="outlined" sx={{ mt: 6, width: '100%' }} onClick={onCooldownAction}>
+            <Button
+              variant="outlined"
+              fullWidth
+              onClick={onCooldownAction}
+              disabled={stakeUserData?.stakeTokenUserBalance === '0'}
+            >
               <Trans>Cooldown to unstake</Trans>
             </Button>
           )}
+        </StakeActionBox>
 
-          <ActionDetails>
-            <Typography color="text.secondary">
-              <Trans>Cooldown period</Trans>
-            </Typography>
-            <Typography color="text.primary" fontWeight={500}>
-              <Trans>{cooldownDays > 1 ? cooldownDays : '<1'} days</Trans>
-            </Typography>
-          </ActionDetails>
-        </StakeActionPaper>
-
-        {/** Stake action */}
-        <StakeActionPaper>
-          <Typography variant="description" color="text.secondary">
-            <Trans>Claimable AAVE</Trans>
-          </Typography>
-          <FormattedNumber
-            value={formatEther(stakeUserData?.userIncentivesToClaim || '0')}
-            sx={{ fontSize: '21px !important', fontWeight: 500 }}
-            visibleDecimals={2}
-          />
-          <FormattedNumber value={claimableUSD} symbol="USD" visibleDecimals={2} />
+        <StakeActionBox
+          title={<Trans>Claimable AAVE</Trans>}
+          value={formatEther(stakeUserData?.userIncentivesToClaim || '0')}
+          valueUSD={claimableUSD}
+          bottomLineTitle={<Trans>Aave per month</Trans>}
+          bottomLineComponent={
+            <FormattedNumber
+              value={aavePerMonth}
+              visibleDecimals={2}
+              variant="secondary14"
+              color={+aavePerMonth === 0 ? 'text.disabled' : 'text.primary'}
+            />
+          }
+        >
           <Button
             variant="contained"
-            sx={{ mt: 6, width: '100%' }}
             onClick={onStakeRewardClaimAction}
+            fullWidth
+            disabled={stakeUserData?.userIncentivesToClaim === '0'}
           >
             <Trans>Claim AAVE</Trans>
           </Button>
-          <ActionDetails>
-            <Typography color="text.secondary">
-              <Trans>Aave per month</Trans>
-            </Typography>
-            <FormattedNumber value={aavePerMonth} sx={{ fontWeight: 500 }} visibleDecimals={2} />
-          </ActionDetails>
-        </StakeActionPaper>
+        </StakeActionBox>
       </Stack>
+
       {!!description && description}
     </Paper>
   );
