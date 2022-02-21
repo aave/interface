@@ -11,10 +11,10 @@ module.exports = withBundleAnalyzer({
       issuer: /\.[jt]sx?$/,
       use: ['@svgr/webpack'],
     });
+    config.experiments = { topLevelAwait: true };
 
     return config;
   },
-
   reactStrictMode: true,
   // assetPrefix: "./",
   trailingSlash: true,

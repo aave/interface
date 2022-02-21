@@ -4,7 +4,6 @@ import { GovernanceDataProvider } from 'src/hooks/governance-data-provider/Gover
 import { MainLayout } from 'src/layouts/MainLayout';
 import { GovernanceTopPanel } from 'src/modules/governance/GovernanceTopPanel';
 import { ProposalsList } from 'src/modules/governance/ProposalsList';
-import { governanceContract } from 'src/modules/governance/utils/governanceProvider';
 import { VotingPowerInfoPanel } from 'src/modules/governance/VotingPowerInfoPanel';
 import { Ipfs, IpfsType } from 'src/static-build/ipfs';
 import { CustomProposalType, Proposal } from 'src/static-build/proposal';
@@ -14,20 +13,17 @@ import { ContentContainer } from '../../src/components/ContentContainer';
 export const getStaticProps = async () => {
   const IpfsFetcher = new Ipfs();
   const ProposalFetcher = new Proposal();
-  const count = await governanceContract.getProposalsCount();
 
-  const proposals = await Promise.all(
-    [...Array(count).keys()].reverse().map(async (id) => {
-      // TODO: only pass required ipfs data
-      const ipfs = await IpfsFetcher.get(id);
-      const proposal = await ProposalFetcher.get(id);
-      return {
-        ipfs,
-        proposal,
-        prerendered: true,
-      };
-    })
-  );
+  const proposals = [...Array(ProposalFetcher.count).keys()].reverse().map((id) => {
+    // TODO: only pass required ipfs data
+    const ipfs = IpfsFetcher.get(id);
+    const proposal = ProposalFetcher.get(id);
+    return {
+      ipfs,
+      proposal,
+      prerendered: true,
+    };
+  });
 
   return { props: { proposals } };
 };
