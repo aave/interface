@@ -60,7 +60,16 @@ export const TxSuccessView = ({
         <Trans>All done!</Trans>
       </Typography>
 
-      <Box sx={{ mt: '8px' }}>
+      <Box
+        sx={{
+          mt: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          textAlign: 'center',
+        }}
+      >
         {action && amount && symbol && (
           <Typography>
             <Trans>
@@ -82,11 +91,11 @@ export const TxSuccessView = ({
             </Trans>
           </Typography>
         )}
+
         {addToken && (
           <Button
             variant="outlined"
             onClick={() => {
-              console.log(addToken);
               addERC20Token({
                 address: addToken.address,
                 decimals: 18,
@@ -94,15 +103,17 @@ export const TxSuccessView = ({
                 image: `data:image/svg+xml;base64,${base64}`,
               });
             }}
+            size="small"
+            sx={{ mt: 6 }}
           >
             {symbol && (
               <Base64Token symbol={symbol} onImageGenerated={setBase64} aToken={addToken.aToken} />
             )}
-            <Typography variant="buttonS">
-              <SvgIcon>
+            <Typography sx={{ display: 'inline-flex', alignItems: 'center' }} variant="buttonS">
+              <SvgIcon sx={{ fontSize: '12px', mx: '2px' }}>
                 <PlusSmIcon />
               </SvgIcon>
-              <Trans>ADD {addToken.symbol} TO THE WALLET</Trans>
+              <Trans>Add {addToken.symbol} to the wallet</Trans>
             </Typography>
           </Button>
         )}
