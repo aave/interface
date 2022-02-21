@@ -73,7 +73,6 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
 
   const networkConfig = getNetworkConfig(currentChainId);
 
-  const walletBalance = walletBalances[underlyingAsset]?.amount;
   const { underlyingBalance, usageAsCollateralEnabledOnUser, reserve } = userReserve;
 
   const repayWithATokens = tokenToRepayWith.address === poolReserve.aTokenAddress;
@@ -92,6 +91,7 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
     // set possible repay tokens
     if (!repayWithCollateral) {
       // push reserve asset
+      const walletBalance = walletBalances[underlyingAsset]?.amount;
       const minReserveTokenRepay = BigNumber.min(valueToBigNumber(walletBalance), debt);
       const maxReserveTokenForRepay = BigNumber.max(minReserveTokenRepay, walletBalance);
       repayTokens.push({
@@ -143,7 +143,7 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
   if (repayWithATokens) {
     maxAmountToRepay = BigNumber.min(new BigNumber(underlyingBalance), debt);
   } else {
-    const normalizedWalletBalance = valueToBigNumber(walletBalance).minus(
+    const normalizedWalletBalance = valueToBigNumber(tokenToRepayWith.balance).minus(
       userReserve.reserve.symbol.toUpperCase() === networkConfig.baseAssetSymbol ? '0.004' : '0'
     );
     maxAmountToRepay = BigNumber.min(normalizedWalletBalance, debt);
@@ -158,36 +158,39 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
         synthetixProxyByChainId[chainId] &&
         reserve.underlyingAsset.toLowerCase() === synthetixProxyByChainId[chainId].toLowerCase()
       ) {
-        setAmountToRepay(BigNumber.min(walletBalance, safeAmountToRepayAll).toString());
+        setAmountToRepay(BigNumber.min(tokenToRepayWith.balance, safeAmountToRepayAll).toString());
       } else {
         setAmountToRepay(amount);
       }
       setIsMax(true);
-    } else if (Number(amount) > safeAmountToRepayAll.toNumber()) {
+    } else if (Number(amount) > Number(tokenToRepayWith.balance)) {
       setAmount('-1');
     } else {
       setAmountToRepay(amount);
       isMax && setIsMax(false);
     }
-  }, [amount, chainId, walletBalance, safeAmountToRepayAll]);
+  }, [amount, chainId, safeAmountToRepayAll, tokenToRepayWith]);
 
-  let amountToRepayUI =
-    amountToRepay === '' ? valueToBigNumber(0) : valueToBigNumber(amountToRepay);
+  let amountToRepayUI = amountToRepay === '' ? '0' : amountToRepay;
   if (amountToRepay === '-1') {
     amountToRepayUI = BigNumber.min(
-      repayWithATokens ? underlyingBalance : walletBalance,
+      repayWithATokens ? underlyingBalance : tokenToRepayWith.balance,
       maxAmountToRepay
-    );
+    ).toString();
   }
 
   useEffect(() => {
     if (isMax) {
-      setMaxAmount(BigNumber.min(walletBalance, safeAmountToRepayAll).toString());
+      if (currentMarketData.v3) {
+        setMaxAmount(BigNumber.min(tokenToRepayWith.balance, safeAmountToRepayAll).toString());
+      } else {
+        setMaxAmount(maxAmountToRepay.toString());
+      }
     }
   }, [isMax]);
 
   // debt remaining after repay
-  const amountAfterRepay = maxAmountToRepay.minus(amountToRepayUI).toString();
+  const amountAfterRepay = valueToBigNumber(debt).minus(amountToRepayUI).toString();
   const displayAmountAfterRepay = BigNumber.min(amountAfterRepay, maxAmountToRepay);
   const displayAmountAfterRepayInUsd = displayAmountAfterRepay
     .multipliedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
@@ -233,9 +236,9 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
         }
       } else {
         if (
-          valueToBigNumber(walletBalance).eq('0') ||
-          valueToBigNumber(walletBalance).lt(amountToRepayUI) ||
-          (amount === '-1' && valueToBigNumber(walletBalance).lt(maxAmountToRepay))
+          valueToBigNumber(tokenToRepayWith.balance).eq('0') ||
+          valueToBigNumber(tokenToRepayWith.balance).lt(amountToRepayUI) ||
+          (amount === '-1' && valueToBigNumber(tokenToRepayWith.balance).lt(maxAmountToRepay))
         ) {
           setBlockingError(ErrorType.NOT_ENOUGH_BALANCE);
         } else {
@@ -250,7 +253,6 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
     amountToRepayUI,
     repayWithATokens,
     underlyingBalance,
-    walletBalance,
     maxAmountToRepay,
     tokenToRepayWith,
     repayTxState,
@@ -332,9 +334,7 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
       </Box>
 
       <AssetInput
-        value={
-          amountToRepay === '' ? amountToRepay : isMax ? maxAmount : amountToRepayUI.toString()
-        }
+        value={amountToRepay === '' ? amountToRepay : amountToRepayUI.toString()}
         onChange={setAmount}
         usdValue={usdValue.toString()}
         symbol={tokenToRepayWith.symbol}
@@ -364,7 +364,13 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
 
       <RepayActions
         poolReserve={poolReserve}
-        amountToRepay={amountToRepay.toString()}
+        amountToRepay={
+          currentMarketData.v3
+            ? amountToRepay.toString()
+            : isMax
+            ? maxAmount
+            : amountToRepayUI.toString()
+        }
         poolAddress={tokenToRepayWith.address ?? ''}
         isWrongNetwork={isWrongNetwork}
         symbol={tokenToRepayWith.symbol}
