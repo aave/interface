@@ -128,6 +128,7 @@ export const SupplyActions = ({
       approvalTxState={approvalTxState}
       isWrongNetwork={isWrongNetwork}
       hasAmount={hasAmount}
+      requiresApproval={requiresApproval}
       withAmount
       helperText={
         <>
@@ -165,11 +166,15 @@ export const SupplyActions = ({
             size="large"
             sx={{ minHeight: '44px', mb: 2 }}
           >
-            {!approved && !loading && <Trans>Approve to continue</Trans>}
-            {!approved && loading && (
+            {!loading && <Trans>Approve to continue</Trans>}
+            {loading && (
               <>
                 <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-                <Trans>Approving {symbol} ...</Trans>
+                {approvalTxState.loading ? (
+                  <Trans>Approving {symbol}...</Trans>
+                ) : (
+                  <Trans>Approve to continue</Trans>
+                )}
               </>
             )}
           </Button>
@@ -193,13 +198,13 @@ export const SupplyActions = ({
               size="large"
               sx={{ minHeight: '44px' }}
             >
-              {!mainTxState.txHash && !mainTxState.txError && (!loading || !approved) && (
-                <Trans>Supply {symbol}</Trans>
-              )}
-              {approved && loading && (
+              {!loading && <Trans>Supply {symbol}</Trans>}
+              {loading && (
                 <>
-                  <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-                  <Trans>Pending...</Trans>
+                  {((approved && requiresApproval) || !requiresApproval) && (
+                    <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
+                  )}
+                  <Trans>Supply {symbol}</Trans>
                 </>
               )}
             </Button>

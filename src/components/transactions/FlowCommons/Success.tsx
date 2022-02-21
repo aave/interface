@@ -4,6 +4,7 @@ import { CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import { useState } from 'react';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Base64Token } from 'src/components/primitives/TokenIcon';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3ContextProvider';
@@ -73,7 +74,8 @@ export const TxSuccessView = ({
         {action && amount && symbol && (
           <Typography>
             <Trans>
-              You {action} {amount} {symbol}
+              You {action} <FormattedNumber value={Number(amount)} compact variant="secondary14" />{' '}
+              {symbol}
             </Trans>
           </Typography>
         )}

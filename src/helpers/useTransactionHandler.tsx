@@ -20,6 +20,7 @@ export type TxStateType = {
   txHash?: string;
   txError?: string;
   gasEstimationError?: string;
+  loading?: boolean;
 };
 
 export const useTransactionHandler = ({
@@ -64,7 +65,7 @@ export const useTransactionHandler = ({
     try {
       const txnResult = await tx();
       try {
-        await txnResult.wait(1);
+        await txnResult.wait();
         refetchWalletBalances();
       } catch (e) {
         try {
@@ -94,6 +95,7 @@ export const useTransactionHandler = ({
   const approval = async (amount?: string, underlyingAsset?: string) => {
     if (approvalTx) {
       if (usePermit && amount && underlyingAsset) {
+        setApprovalTxState({ ...approvalTxState, loading: true });
         try {
           const newPool: Pool = lendingPool as Pool;
           const unsingedPayload = await newPool.signERC20Approval({
@@ -110,6 +112,7 @@ export const useTransactionHandler = ({
               txHash: 'Signed correctly',
               txError: undefined,
               gasEstimationError: undefined,
+              loading: false,
             });
 
             setLoading(false);
@@ -118,6 +121,7 @@ export const useTransactionHandler = ({
               txHash: undefined,
               txError: error.message.toString(),
               gasEstimationError: undefined,
+              loading: false,
             });
             setLoading(false);
           }
@@ -126,10 +130,12 @@ export const useTransactionHandler = ({
             txHash: undefined,
             txError: undefined,
             gasEstimationError: error.message.toString(),
+            loading: false,
           });
         }
       } else {
         try {
+          setApprovalTxState({ ...approvalTxState, loading: true });
           const params = await approvalTx.tx();
           if (customGasPrice) params.gasPrice = BigNumber.from(customGasPrice);
           await processTx({
@@ -140,6 +146,7 @@ export const useTransactionHandler = ({
                 txHash: txnResponse.hash,
                 txError: undefined,
                 gasEstimationError: undefined,
+                loading: false,
               });
             },
             errorCallback: (error, hash) => {
@@ -147,6 +154,7 @@ export const useTransactionHandler = ({
                 txHash: hash,
                 txError: error.message.toString(),
                 gasEstimationError: undefined,
+                loading: false,
               });
             },
           });
@@ -155,6 +163,7 @@ export const useTransactionHandler = ({
             txHash: undefined,
             txError: undefined,
             gasEstimationError: error.message.toString(),
+            loading: false,
           });
         }
       }
@@ -165,6 +174,7 @@ export const useTransactionHandler = ({
     if (approvalTx && usePermit && handleGetPermitTxns) {
       if (!signature) throw new Error('signature needed');
       try {
+        setMainTxState({ ...mainTxState, loading: true });
         const txns = await handleGetPermitTxns(signature);
         const params = await txns[0].tx();
         if (customGasPrice) params.gasPrice = BigNumber.from(customGasPrice);
@@ -175,6 +185,7 @@ export const useTransactionHandler = ({
               txHash: txnResponse.hash,
               txError: undefined,
               gasEstimationError: undefined,
+              loading: false,
             });
             refetchPoolData && refetchPoolData();
           },
@@ -183,6 +194,7 @@ export const useTransactionHandler = ({
               txHash: hash,
               txError: error.message.toString(),
               gasEstimationError: undefined,
+              loading: false,
             });
           },
         });
@@ -191,11 +203,13 @@ export const useTransactionHandler = ({
           txHash: undefined,
           txError: undefined,
           gasEstimationError: error.message.toString(),
+          loading: false,
         });
       }
     }
     if ((!usePermit || !approvalTx) && actionTx) {
       try {
+        setMainTxState({ ...mainTxState, loading: true });
         const params = await actionTx.tx();
         if (customGasPrice) params.gasPrice = BigNumber.from(customGasPrice);
         return processTx({
@@ -205,6 +219,7 @@ export const useTransactionHandler = ({
               txHash: txnResponse.hash,
               txError: undefined,
               gasEstimationError: undefined,
+              loading: false,
             });
             refetchPoolData && refetchPoolData();
           },
@@ -213,6 +228,7 @@ export const useTransactionHandler = ({
               txHash: hash,
               txError: error.message.toString(),
               gasEstimationError: undefined,
+              loading: false,
             });
           },
         });
@@ -221,6 +237,7 @@ export const useTransactionHandler = ({
           txHash: undefined,
           txError: undefined,
           gasEstimationError: error.message.toString(),
+          loading: false,
         });
       }
     }
