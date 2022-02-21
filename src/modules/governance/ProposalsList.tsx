@@ -52,6 +52,7 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
     const pendingProposals = proposals.filter(
       ({ proposal }) => !isProposalStateImmutable(proposal)
     );
+    console.log('update pending proposals', pendingProposals.length);
 
     try {
       if (pendingProposals.length) {
