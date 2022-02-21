@@ -1,5 +1,10 @@
 import { DuplicateIcon } from '@heroicons/react/outline';
-import { ChevronDownIcon, ExternalLinkIcon, LogoutIcon } from '@heroicons/react/solid';
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  ExternalLinkIcon,
+  LogoutIcon,
+} from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -12,6 +17,7 @@ import {
   Menu,
   MenuItem,
   MenuList,
+  Skeleton,
   SvgIcon,
   Typography,
 } from '@mui/material';
@@ -34,7 +40,7 @@ interface WalletWidgetProps {
 }
 
 export default function WalletWidget({ open, setOpen, headerHeight, md }: WalletWidgetProps) {
-  const { connectWallet, disconnectWallet, currentAccount, connected, chainId, switchNetwork } =
+  const { connectWallet, disconnectWallet, currentAccount, connected, chainId, loading } =
     useWeb3Context();
 
   const { name: ensName, avatar: ensAvatar } = useGetEns(currentAccount);
@@ -80,16 +86,12 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
     if (connected) {
       disconnectWallet();
       handleClose();
+      localStorage.removeItem('mockWalletAddress');
     }
   };
 
   const handleCopy = async () => {
     navigator.clipboard.writeText(currentAccount);
-    handleClose();
-  };
-
-  const handleSwitchNetwork = () => {
-    switchNetwork(137);
     handleClose();
   };
 
@@ -158,7 +160,7 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
       </Box>
       <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
 
-      <Box component={component} onClick={handleSwitchNetwork}>
+      <Box component={component} disabled>
         <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
           <Box
             sx={{
@@ -171,17 +173,6 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
             <Typography variant="caption" color={{ xs: '#FFFFFFB2', md: 'text.secondary' }}>
               <Trans>Network</Trans>
             </Typography>
-
-            <Button
-              sx={{
-                borderColor: { xs: '#FFFFFF1F', md: 'divider' },
-                color: { xs: 'common.white', md: 'primary.main' },
-              }}
-              size="small"
-              variant="outlined"
-            >
-              <Trans>Switch</Trans>
-            </Button>
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Box
@@ -277,6 +268,8 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
     <>
       {md && connected && open ? (
         <MobileCloseButton setOpen={setOpen} />
+      ) : loading ? (
+        <Skeleton height={36} width={126} sx={{ background: '#2C2D3F' }} />
       ) : (
         <Button
           variant={connected ? 'surface' : 'gradient'}
@@ -308,8 +301,12 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
           }
           endIcon={
             connected && (
-              <SvgIcon>
-                <ChevronDownIcon />
+              <SvgIcon
+                sx={{
+                  display: { xs: 'none', md: 'block' },
+                }}
+              >
+                {open ? <ChevronUpIcon /> : <ChevronDownIcon />}
               </SvgIcon>
             )
           }

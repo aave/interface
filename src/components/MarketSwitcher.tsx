@@ -16,8 +16,6 @@ import {
 import React from 'react';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 
-import AaveNetworkLogo from '/public/icons/networks/aave.svg';
-
 import { useProtocolDataContext } from '../hooks/useProtocolDataContext';
 import {
   availableMarkets,
@@ -31,9 +29,7 @@ export const getMarketInfoById = (marketId: CustomMarket) => {
   const market: MarketDataType = marketsData[marketId as CustomMarket];
   const network: BaseNetworkConfig = networkConfigs[market.chainId];
 
-  const withAAVELogo = market.marketTitle.split(' ').some((item) => item === 'AAVE');
-
-  return { market, network, withAAVELogo };
+  return { market, network };
 };
 
 const getMarketHelpData = (marketName: string) => {
@@ -55,41 +51,16 @@ export type Market = {
   selected?: boolean;
 };
 
-export type MarketSwitcherProps = {
-  markets: Market[];
-};
-
 type MarketLogoProps = {
   size: number;
   logo: string;
-  withAAVELogo?: boolean;
   testChainName?: string;
 };
 
-export const MarketLogo = ({ size, logo, withAAVELogo, testChainName }: MarketLogoProps) => {
+export const MarketLogo = ({ size, logo, testChainName }: MarketLogoProps) => {
   return (
     <Box sx={{ mr: 2, width: size, height: size, position: 'relative' }}>
-      {withAAVELogo && (
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'flex-end',
-            width: '100%',
-            height: '100%',
-            position: 'relative',
-          }}
-        >
-          <AaveNetworkLogo width={size} height={size} />
-          <img
-            src={logo}
-            alt=""
-            width="50%"
-            height="50%"
-            style={{ position: 'absolute', right: '-2px', bottom: '-2px' }}
-          />
-        </Box>
-      )}
-      {!withAAVELogo && <img src={logo} alt="" width="100%" height="100%" />}
+      <img src={logo} alt="" width="100%" height="100%" />
 
       {testChainName && (
         <Tooltip title={testChainName} arrow>
@@ -124,6 +95,14 @@ export const MarketSwitcher = () => {
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
+  const isV3MarketsAvailable = availableMarkets
+    .map((marketId: CustomMarket) => {
+      const { market } = getMarketInfoById(marketId);
+
+      return market.v3;
+    })
+    .some((item) => !!item);
+
   return (
     <TextField
       select
@@ -139,37 +118,47 @@ export const MarketSwitcher = () => {
       }}
       SelectProps={{
         native: false,
+        className: 'MarketSwitcher__select',
         IconComponent: (props) => (
           <SvgIcon fontSize="medium" {...props}>
             <ChevronDownIcon />
           </SvgIcon>
         ),
         renderValue: (marketId) => {
-          const { market, network, withAAVELogo } = getMarketInfoById(marketId as CustomMarket);
+          const { market, network } = getMarketInfoById(marketId as CustomMarket);
 
           return (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <MarketLogo
                 size={upToLG ? 32 : 28}
                 logo={network.networkLogoPath}
-                withAAVELogo={withAAVELogo}
                 testChainName={getMarketHelpData(market.marketTitle).testChainName}
               />
-              <Typography
-                variant={upToLG ? 'display1' : 'h1'}
-                sx={{
-                  fontSize: downToXSM ? '1.55rem' : undefined,
-                  color: 'common.white',
-                  mr: { xs: 1.5, xsm: 3 },
-                }}
-              >
-                {getMarketHelpData(market.marketTitle).name} {upToLG && <Trans>Market</Trans>}
-              </Typography>
+              <Box sx={{ mr: 1, display: 'inline-flex', alignItems: 'flex-start' }}>
+                <Typography
+                  variant={upToLG ? 'display1' : 'h1'}
+                  sx={{
+                    fontSize: downToXSM ? '1.55rem' : undefined,
+                    color: 'common.white',
+                    mr: 1,
+                  }}
+                >
+                  {getMarketHelpData(market.marketTitle).name}
+                </Typography>
+                <Box
+                  sx={{ color: '#FFFFFFB2', px: 2, borderRadius: '12px', background: '#2C2D3F' }}
+                >
+                  <Typography variant="subheader2">{market.v3 ? 'v3' : 'v2'}</Typography>
+                </Box>
+              </Box>
             </Box>
           );
         },
         sx: {
-          '.MuiSelect-outlined': { p: 0, backgroundColor: 'transparent !important' },
+          '&.MarketSwitcher__select .MuiSelect-outlined': {
+            p: 0,
+            backgroundColor: 'transparent !important',
+          },
           '.MuiSelect-icon': { color: 'common.white' },
         },
         MenuProps: {
@@ -188,38 +177,85 @@ export const MarketSwitcher = () => {
       }}
     >
       <Box>
-        <Typography variant="subheader2" color="text.secondary" sx={{ padding: '12px 16px 8px' }}>
+        <Typography variant="subheader2" color="text.secondary" sx={{ px: 4, py: 2 }}>
           <Trans>Select Aave Market</Trans>
         </Typography>
         <Divider />
       </Box>
 
+      {isV3MarketsAvailable && (
+        <Typography variant="subheader2" color="text.secondary" sx={{ px: 4, py: 2 }}>
+          <Trans>v2 markets</Trans>
+        </Typography>
+      )}
       {availableMarkets.map((marketId: CustomMarket) => {
-        const { market, network, withAAVELogo } = getMarketInfoById(marketId);
+        const { market, network } = getMarketInfoById(marketId);
 
         return (
-          <MenuItem
-            key={marketId}
-            cy-data={`market-selector-${marketId}`}
-            value={marketId}
-            sx={{ '.MuiListItemIcon-root': { minWidth: 'unset' } }}
-          >
-            <MarketLogo
-              size={32}
-              logo={network.networkLogoPath}
-              withAAVELogo={withAAVELogo}
-              testChainName={getMarketHelpData(market.marketTitle).testChainName}
-            />
-            <ListItemText sx={{ mr: 3 }}>{getMarketHelpData(market.marketTitle).name}</ListItemText>
+          !market.v3 && (
+            <MenuItem
+              key={marketId}
+              cy-data={`market-selector-${marketId}`}
+              value={marketId}
+              sx={{ '.MuiListItemIcon-root': { minWidth: 'unset' } }}
+            >
+              <MarketLogo
+                size={32}
+                logo={network.networkLogoPath}
+                testChainName={getMarketHelpData(market.marketTitle).testChainName}
+              />
+              <ListItemText sx={{ mr: 3 }}>
+                {getMarketHelpData(market.marketTitle).name}
+              </ListItemText>
 
-            {currentMarket === marketId && (
-              <ListItemIcon>
-                <SvgIcon>
-                  <CheckIcon />
-                </SvgIcon>
-              </ListItemIcon>
-            )}
-          </MenuItem>
+              {currentMarket === marketId && (
+                <ListItemIcon sx={{ m: 0 }}>
+                  <SvgIcon>
+                    <CheckIcon />
+                  </SvgIcon>
+                </ListItemIcon>
+              )}
+            </MenuItem>
+          )
+        );
+      })}
+
+      {isV3MarketsAvailable && <Divider />}
+
+      {isV3MarketsAvailable && (
+        <Typography variant="subheader2" color="text.secondary" sx={{ px: 4, py: 2 }}>
+          <Trans>v3 markets</Trans>
+        </Typography>
+      )}
+      {availableMarkets.map((marketId: CustomMarket) => {
+        const { market, network } = getMarketInfoById(marketId);
+
+        return (
+          market.v3 && (
+            <MenuItem
+              key={marketId}
+              cy-data={`market-selector-${marketId}`}
+              value={marketId}
+              sx={{ '.MuiListItemIcon-root': { minWidth: 'unset' } }}
+            >
+              <MarketLogo
+                size={32}
+                logo={network.networkLogoPath}
+                testChainName={getMarketHelpData(market.marketTitle).testChainName}
+              />
+              <ListItemText sx={{ mr: 3 }}>
+                {getMarketHelpData(market.marketTitle).name}
+              </ListItemText>
+
+              {currentMarket === marketId && (
+                <ListItemIcon sx={{ m: 0 }}>
+                  <SvgIcon>
+                    <CheckIcon />
+                  </SvgIcon>
+                </ListItemIcon>
+              )}
+            </MenuItem>
+          )
         );
       })}
     </TextField>

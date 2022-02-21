@@ -3,7 +3,10 @@ import { Box, Button } from '@mui/material';
 
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
 import { Row } from '../../../../components/primitives/Row';
-import { ComputedUserReserveData } from '../../../../hooks/app-data-provider/useAppDataProvider';
+import {
+  ComputedUserReserveData,
+  ExtendedFormattedUser,
+} from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from '../../../../hooks/useModal';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import { isFeatureEnabled } from '../../../../utils/marketsAndNetworksConfig';
@@ -17,28 +20,32 @@ export const SuppliedPositionsListMobileItem = ({
   underlyingBalanceUSD,
   usageAsCollateralEnabledOnUser,
   underlyingAsset,
-}: ComputedUserReserveData) => {
-  const {
-    symbol,
-    iconSymbol,
-    name,
-    supplyAPY,
-    isIsolated,
-    usageAsCollateralEnabled,
-    aIncentivesData,
-    isFrozen,
-    isActive,
-  } = reserve;
+  user,
+}: ComputedUserReserveData & { user: ExtendedFormattedUser }) => {
+  const { symbol, iconSymbol, name, supplyAPY, isIsolated, aIncentivesData, isFrozen, isActive } =
+    reserve;
   const { currentMarketData } = useProtocolDataContext();
   const { openSupply, openWithdraw, openCollateralChange } = useModalContext();
   const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
 
+  const canBeEnabledAsCollateral =
+    reserve.usageAsCollateralEnabled &&
+    ((!reserve.isIsolated && !user.isInIsolationMode) ||
+      user.isolatedReserve?.underlyingAsset === reserve.underlyingAsset ||
+      (reserve.isIsolated && user.totalCollateralMarketReferenceCurrency === '0'));
+
   return (
-    <ListMobileItemWrapper symbol={symbol} iconSymbol={iconSymbol} name={name}>
+    <ListMobileItemWrapper
+      symbol={symbol}
+      iconSymbol={iconSymbol}
+      name={name}
+      underlyingAsset={underlyingAsset}
+    >
       <ListValueRow
         title={<Trans>Supply balance</Trans>}
         value={Number(underlyingBalance)}
         subValue={Number(underlyingBalanceUSD)}
+        disabled={Number(underlyingBalance) === 0}
       />
 
       <Row
@@ -55,11 +62,16 @@ export const SuppliedPositionsListMobileItem = ({
         />
       </Row>
 
-      <Row caption={<Trans>Used as collateral</Trans>} captionVariant="description" mb={2}>
+      <Row
+        caption={<Trans>Used as collateral</Trans>}
+        align={isIsolated ? 'flex-start' : 'center'}
+        captionVariant="description"
+        mb={2}
+      >
         <ListItemUsedAsCollateral
           isIsolated={isIsolated}
           usageAsCollateralEnabledOnUser={usageAsCollateralEnabledOnUser}
-          canBeEnabledAsCollateral={usageAsCollateralEnabled}
+          canBeEnabledAsCollateral={canBeEnabledAsCollateral}
           onToggleSwitch={() => openCollateralChange(underlyingAsset)}
         />
       </Row>

@@ -3,9 +3,10 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
-import { APYTypeInfoContent } from '../../../../components/infoModalContents/APYTypeInfoContent';
-import { BorrowPowerInfoContent } from '../../../../components/infoModalContents/BorrowPowerInfoContent';
+import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
+import { BorrowPowerTooltip } from '../../../../components/infoTooltips/BorrowPowerTooltip';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import {
   ComputedUserReserveData,
@@ -14,12 +15,14 @@ import {
 import { DashboardContentNoData } from '../../DashboardContentNoData';
 import { DashboardEModeButton } from '../../DashboardEModeButton';
 import { ListHeader } from '../ListHeader';
+import { ListLoader } from '../ListLoader';
 import { ListTopInfoItem } from '../ListTopInfoItem';
 import { BorrowedPositionsListItem } from './BorrowedPositionsListItem';
 import { BorrowedPositionsListMobileItem } from './BorrowedPositionsListMobileItem';
 
 export const BorrowedPositionsList = () => {
-  const { user } = useAppDataContext();
+  const { user, loading } = useAppDataContext();
+  const { currentMarketData } = useProtocolDataContext();
   const { openEmode } = useModalContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
@@ -46,14 +49,23 @@ export const BorrowedPositionsList = () => {
   const head = [
     <Trans key="Debt">Debt</Trans>,
     <Trans key="APY">APY</Trans>,
-    <APYTypeInfoContent text={<Trans>APY type</Trans>} key="APY type" variant="subheader2" />,
+    <APYTypeTooltip text={<Trans>APY type</Trans>} key="APY type" variant="subheader2" />,
   ];
+
+  if (loading) return <ListLoader title={<Trans>Your borrows</Trans>} head={head} />;
 
   return (
     <ListWrapper
       title={<Trans>Your borrows</Trans>}
       localStorageName="borrowedAssetsDashboardTableCollapse"
-      subTitleComponent={<DashboardEModeButton onClick={() => openEmode()} />}
+      subTitleComponent={
+        currentMarketData.v3 ? (
+          <DashboardEModeButton
+            userEmodeCategoryId={user.userEmodeCategoryId}
+            onClick={() => openEmode()}
+          />
+        ) : undefined
+      }
       noData={!borrowPositions.length}
       topInfo={
         <>
@@ -65,7 +77,7 @@ export const BorrowedPositionsList = () => {
                 title={<Trans>Borrow power used</Trans>}
                 value={collateralUsagePercent || 0}
                 percent
-                modalContent={<BorrowPowerInfoContent />}
+                tooltip={<BorrowPowerTooltip />}
               />
             </>
           )}

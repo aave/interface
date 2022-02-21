@@ -1,10 +1,9 @@
-import { Box } from '@mui/material';
+import { Alert, AlertProps } from '@mui/material';
 
-export type WarningProps = {
-  children: React.ReactNode;
-};
-
-export const Warning = ({ children }: WarningProps) => {
-  // TODO: change color depending on type
-  return <Box sx={{ mb: '24px', backgroundColor: '#FEF5E8', color: 'black' }}>{children}</Box>;
+export const Warning = ({ children, ...rest }: AlertProps) => {
+  return (
+    <Alert sx={{ mb: 6 }} {...rest}>
+      {children}
+    </Alert>
+  );
 };

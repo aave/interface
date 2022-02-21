@@ -1,4 +1,4 @@
-import { transactionType } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS, transactionType } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import {
   JsonRpcProvider,
@@ -14,17 +14,27 @@ import Web3Modal from 'web3modal';
 
 import { Web3Context } from '../hooks/useWeb3Context';
 
+export type ERC20TokenType = {
+  address: string;
+  symbol: string;
+  decimals: number;
+  image?: string;
+  aToken?: boolean;
+};
+
 export type Web3Data = {
   connectWallet: () => Promise<Web3Provider | undefined>;
   disconnectWallet: () => void;
   currentAccount: string;
   connected: boolean;
+  loading: boolean;
   provider: JsonRpcProvider | undefined;
   web3Modal: Web3Modal;
   chainId: number;
   switchNetwork: (chainId: number) => Promise<void>;
   getTxError: (txHash: string) => Promise<string>;
   sendTx: (txData: transactionType) => Promise<TransactionResponse>;
+  addERC20Token: (args: ERC20TokenType) => Promise<boolean>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   signTxData: (unsignedData: string) => Promise<SignatureLike>;
 };
@@ -32,6 +42,7 @@ export type Web3Data = {
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
   const [provider, setProvider] = useState<JsonRpcProvider>();
   const [connected, setConnected] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [chainId, setChainId] = useState(1);
   const [currentAccount, setCurrentAccount] = useState('');
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -42,11 +53,14 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     if (!web3Modal)
       import('./modalOptions').then((m) => {
         setWeb3Modal(m.getWeb3Modal());
+        setLoading(false);
       });
   }, [web3Modal]);
 
   // web 3 modal
   const connectWallet = useCallback(async () => {
+    setLoading(true);
+
     const providerInstance = await web3Modal.connect();
     setWeb3Provider(providerInstance);
 
@@ -72,6 +86,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     setCurrentAccount(connectedAddress.toLowerCase());
 
     setConnected(true);
+    setLoading(false);
 
     return ethProvider;
   }, [web3Modal]);
@@ -79,6 +94,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const disconnectWallet = useCallback(async () => {
     web3Modal.clearCachedProvider();
     setConnected(false);
+    setLoading(false);
     setCurrentAccount('');
     if (web3Provider) {
       if (web3Provider.close) {
@@ -126,6 +142,11 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   useEffect(() => {
     if (web3Modal?.cachedProvider) connectWallet();
   }, [connectWallet, web3Modal]);
+
+  useEffect(() => {
+    const address = localStorage.getItem('mockWalletAddress');
+    if (address) setCurrentAccount(address);
+  }, [currentAccount]);
 
   // Tx methods
   const signTxData = useCallback(
@@ -175,13 +196,43 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     [provider?.network.chainId]
   );
 
+  const addERC20Token = async ({
+    address,
+    symbol,
+    decimals,
+    image,
+  }: ERC20TokenType): Promise<boolean> => {
+    // using window.ethereum as looks like its only supported for metamask
+    // and didn't manage to make the call with ethersjs
+    if (provider && currentAccount && window && window.ethereum) {
+      if (address.toLowerCase() !== API_ETH_MOCK_ADDRESS.toLowerCase()) {
+        await window?.ethereum?.request({
+          method: 'wallet_watchAsset',
+          params: {
+            // @ts-expect-error needed
+            type: 'ERC20',
+            options: {
+              address,
+              symbol,
+              decimals,
+              image,
+            },
+          },
+        });
+
+        return true;
+      }
+    }
+    return false;
+  };
+
   const web3ProviderData = useMemo(
     () => ({
       connectWallet,
       disconnectWallet,
       provider,
       connected,
-      currentAccount,
+      loading,
       web3Modal,
       chainId,
       switchNetwork,
@@ -194,7 +245,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       disconnectWallet,
       provider,
       connected,
-      currentAccount,
+      loading,
       web3Modal,
       chainId,
       switchNetwork,
@@ -207,7 +258,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   return (
     <Web3Context.Provider
       value={{
-        web3ProviderData: { ...web3ProviderData },
+        web3ProviderData: { ...web3ProviderData, currentAccount, addERC20Token },
       }}
     >
       {children}

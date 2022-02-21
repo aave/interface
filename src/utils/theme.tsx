@@ -164,10 +164,10 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         primary: getColor('#00244D', '#FFFFFF'),
         secondary: getColor('#47617F', '#FFFFFFB2'),
         disabled: getColor('#00244D61', '#FFFFFF80'),
-        muted: '#00244D80',
+        muted: getColor('#00244D80', '#FFFFFF80'),
       },
       background: {
-        default: getColor('#FAFBFC', '#090815'),
+        default: getColor('#F2F2F7', '#090815'),
         paper: getColor('#FFFFFF', '#272631'),
         surface: getColor('#FAFBFC', '#2C2D3F'),
         header: getColor('#000E1F', '#090815'),
@@ -264,8 +264,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         fontWeight: 500,
         letterSpacing: pxToRem(0.46),
         lineHeight: pxToRem(24),
-        textTransform: 'uppercase',
-        fontSize: pxToRem(15),
+        fontSize: pxToRem(16),
       },
       buttonM: {
         fontFamily: FONT,
@@ -356,6 +355,13 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
 export function getThemedComponents(theme: Theme) {
   return {
     components: {
+      MuiSkeleton: {
+        styleOverrides: {
+          root: {
+            transform: 'unset',
+          },
+        },
+      },
       MuiOutlinedInput: {
         styleOverrides: {
           root: {
@@ -419,6 +425,7 @@ export function getThemedComponents(theme: Theme) {
           {
             props: { color: 'primary', variant: 'outlined' },
             style: {
+              background: theme.palette.background.surface,
               borderColor: theme.palette.divider,
             },
           },
@@ -465,6 +472,7 @@ export function getThemedComponents(theme: Theme) {
             variant: 'outlined',
             style: {
               minWidth: 240,
+              marginTop: '4px',
             },
           },
         },
@@ -472,11 +480,14 @@ export function getThemedComponents(theme: Theme) {
       MuiList: {
         styleOverrides: {
           root: {
-            padding: 0,
-            '.MuiMenuItem-root+.MuiDivider-root': {
-              marginTop: 0,
-              marginBottom: 0,
+            '.MuiMenuItem-root+.MuiDivider-root, .MuiDivider-root': {
+              marginTop: '4px',
+              marginBottom: '4px',
             },
+          },
+          padding: {
+            paddingTop: '4px',
+            paddingBottom: '4px',
           },
         },
       },
@@ -498,6 +509,8 @@ export function getThemedComponents(theme: Theme) {
         styleOverrides: {
           root: {
             color: theme.palette.primary.light,
+            minWidth: 'unset !important',
+            marginRight: '12px',
           },
         },
       },
@@ -521,7 +534,10 @@ export function getThemedComponents(theme: Theme) {
             style: {
               border: `1px solid ${theme.palette.divider}`,
               boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
-              background: theme.palette.background.surface,
+              background:
+                theme.palette.mode === 'light'
+                  ? theme.palette.background.paper
+                  : theme.palette.background.surface,
             },
           },
           {
@@ -626,9 +642,11 @@ export function getThemedComponents(theme: Theme) {
             borderRadius: '4px',
             padding: '8px 12px',
             ...theme.typography.caption,
-            alignItems: 'center',
+            alignItems: 'flex-start',
             '.MuiAlert-message': {
               padding: 0,
+              paddingTop: '2px',
+              paddingBottom: '2px',
             },
             '.MuiAlert-icon': {
               padding: 0,
@@ -643,6 +661,18 @@ export function getThemedComponents(theme: Theme) {
               textDecoration: 'underline',
               '&:hover': {
                 textDecoration: 'none',
+              },
+            },
+            '.MuiButton-text': {
+              ...theme.typography.caption,
+              fontWeight: 500,
+              textDecoration: 'underline',
+              padding: 0,
+              margin: 0,
+              minWidth: 'unset',
+              '&:hover': {
+                textDecoration: 'none',
+                background: 'transparent',
               },
             },
           },
@@ -680,6 +710,9 @@ export function getThemedComponents(theme: Theme) {
               a: {
                 color: theme.palette.error['100'],
               },
+              '.MuiButton-text': {
+                color: theme.palette.error['100'],
+              },
             },
           },
           {
@@ -688,6 +721,9 @@ export function getThemedComponents(theme: Theme) {
               color: theme.palette.info['100'],
               background: theme.palette.info['200'],
               a: {
+                color: theme.palette.info['100'],
+              },
+              '.MuiButton-text': {
                 color: theme.palette.info['100'],
               },
             },
@@ -700,6 +736,9 @@ export function getThemedComponents(theme: Theme) {
               a: {
                 color: theme.palette.success['100'],
               },
+              '.MuiButton-text': {
+                color: theme.palette.success['100'],
+              },
             },
           },
           {
@@ -708,6 +747,9 @@ export function getThemedComponents(theme: Theme) {
               color: theme.palette.warning['100'],
               background: theme.palette.warning['200'],
               a: {
+                color: theme.palette.warning['100'],
+              },
+              '.MuiButton-text': {
                 color: theme.palette.warning['100'],
               },
             },
@@ -746,9 +788,12 @@ export function getThemedComponents(theme: Theme) {
       MuiToggleButton: {
         styleOverrides: {
           root: {
-            boxShadow: 'inset -1px 0px 0px rgba(0, 0, 0, 0.12)',
             backgroundColor: theme.palette.action.selected,
             flex: 1,
+            boxShadow: 'inset -1px 0px 0px rgba(0, 0, 0, 0.12)',
+            '&:last-of-type': {
+              boxShadow: 'unset',
+            },
             '&.Mui-selected, &.Mui-disabled, &.Mui-selected:hover,  &:hover, &:focus': {
               backgroundColor: theme.palette.background.paper,
             },

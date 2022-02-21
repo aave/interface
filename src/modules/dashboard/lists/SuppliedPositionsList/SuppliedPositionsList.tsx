@@ -1,32 +1,36 @@
 import { Trans } from '@lingui/macro';
 import { useMediaQuery, useTheme } from '@mui/material';
 
-import { CollateralInfoContent } from '../../../../components/infoModalContents/CollateralInfoContent';
-import { CollateralSwitchInfoContent } from '../../../../components/infoModalContents/CollateralSwitchInfoContent';
+import { CollateralSwitchTooltip } from '../../../../components/infoTooltips/CollateralSwitchTooltip';
+import { CollateralTooltip } from '../../../../components/infoTooltips/CollateralTooltip';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { useAppDataContext } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { DashboardContentNoData } from '../../DashboardContentNoData';
 import { ListHeader } from '../ListHeader';
+import { ListLoader } from '../ListLoader';
 import { ListTopInfoItem } from '../ListTopInfoItem';
 import { SuppliedPositionsListItem } from './SuppliedPositionsListItem';
 import { SuppliedPositionsListMobileItem } from './SuppliedPositionsListMobileItem';
 
 export const SuppliedPositionsList = () => {
-  const { user } = useAppDataContext();
+  const { user, loading } = useAppDataContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const suppliedPosition =
     user?.userReservesData.filter((userReserve) => userReserve.underlyingBalance !== '0') || [];
+
   const head = [
     <Trans key="Balance">Balance</Trans>,
     <Trans key="APY">APY</Trans>,
-    <CollateralSwitchInfoContent
+    <CollateralSwitchTooltip
       text={<Trans>Collateral</Trans>}
       key="Collateral"
       variant="subheader2"
     />,
   ];
+
+  if (loading) return <ListLoader title={<Trans>Your supplies</Trans>} head={head} />;
 
   return (
     <ListWrapper
@@ -45,7 +49,7 @@ export const SuppliedPositionsList = () => {
               <ListTopInfoItem
                 title={<Trans>Collateral</Trans>}
                 value={user?.totalCollateralUSD || 0}
-                modalContent={<CollateralInfoContent />}
+                tooltip={<CollateralTooltip />}
               />
             </>
           )}
@@ -57,9 +61,9 @@ export const SuppliedPositionsList = () => {
           {!downToXSM && <ListHeader head={head} />}
           {suppliedPosition.map((item) =>
             downToXSM ? (
-              <SuppliedPositionsListMobileItem {...item} key={item.underlyingAsset} />
+              <SuppliedPositionsListMobileItem {...item} user={user} key={item.underlyingAsset} />
             ) : (
-              <SuppliedPositionsListItem {...item} key={item.underlyingAsset} />
+              <SuppliedPositionsListItem {...item} user={user} key={item.underlyingAsset} />
             )
           )}
         </>

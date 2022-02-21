@@ -13,6 +13,37 @@ interface ListValueColumnProps {
   disabled?: boolean;
 }
 
+const Content = ({
+  value,
+  withTooltip,
+  subValue,
+  disabled,
+  capsComponent,
+}: ListValueColumnProps) => {
+  return (
+    <>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <FormattedNumber
+          value={value}
+          variant="secondary14"
+          sx={{ mb: !withTooltip && !!subValue ? '2px' : 0 }}
+          color={disabled ? 'text.disabled' : 'text.main'}
+        />
+        {capsComponent}
+      </Box>
+
+      {!withTooltip && !!subValue && !disabled && (
+        <FormattedNumber
+          value={subValue}
+          symbol="USD"
+          variant="secondary12"
+          color="text.secondary"
+        />
+      )}
+    </>
+  );
+};
+
 export const ListValueColumn = ({
   symbol,
   value,
@@ -21,31 +52,6 @@ export const ListValueColumn = ({
   capsComponent,
   disabled,
 }: ListValueColumnProps) => {
-  const Content = () => {
-    return (
-      <>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <FormattedNumber
-            value={value}
-            variant="secondary14"
-            sx={{ mb: !withTooltip && !!subValue ? '2px' : 0 }}
-            color={disabled ? 'text.disabled' : 'text.main'}
-          />
-          {capsComponent}
-        </Box>
-
-        {!withTooltip && !!subValue && !disabled && (
-          <FormattedNumber
-            value={subValue}
-            symbol="USD"
-            variant="secondary12"
-            color="text.secondary"
-          />
-        )}
-      </>
-    );
-  };
-
   return (
     <ListColumn>
       {withTooltip ? (
@@ -64,8 +70,14 @@ export const ListValueColumn = ({
                 symbol="USD"
                 variant="secondary14"
                 sx={{ mb: '2px' }}
+                symbolsColor="common.white"
               />
-              <FormattedNumber value={value} variant="secondary12" symbol={symbol} />
+              <FormattedNumber
+                value={value}
+                variant="secondary12"
+                symbol={symbol}
+                symbolsColor="common.white"
+              />
             </Box>
           }
           arrow
@@ -79,11 +91,25 @@ export const ListValueColumn = ({
               justifyContent: 'center',
             }}
           >
-            <Content />
+            <Content
+              symbol={symbol}
+              value={value}
+              subValue={subValue}
+              capsComponent={capsComponent}
+              disabled={disabled}
+              withTooltip={withTooltip}
+            />
           </Box>
         </Tooltip>
       ) : (
-        <Content />
+        <Content
+          symbol={symbol}
+          value={value}
+          subValue={subValue}
+          capsComponent={capsComponent}
+          disabled={disabled}
+          withTooltip={withTooltip}
+        />
       )}
     </ListColumn>
   );

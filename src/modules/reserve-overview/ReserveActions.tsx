@@ -9,6 +9,7 @@ import {
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useModalContext } from 'src/hooks/useModal';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import {
   assetCanBeBorrowedByUser,
   getMaxAmountAvailableToBorrow,
@@ -48,6 +49,7 @@ interface ReserveActionsProps {
 
 export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   const { openBorrow, openSupply } = useModalContext();
+  const { currentAccount, connectWallet } = useWeb3Context();
   const { user, reserves, loading: loadingReserves } = useAppDataContext();
   const { walletBalances, loading: loadingBalance } = useWalletBalances();
   // const balance = useWalletBalance(currentChainId, underlyingAsset);
@@ -100,18 +102,25 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
         <FormattedNumber value={canBorrow ? maxAmountToBorrow : '0'} />
       </ReserveRow>
 
-      <Stack direction="row" spacing={2}>
-        <Button variant="contained" onClick={() => openSupply(underlyingAsset)}>
-          <Trans>Supply</Trans>
+      {currentAccount && (
+        <Stack direction="row" spacing={2}>
+          <Button variant="contained" onClick={() => openSupply(underlyingAsset)}>
+            <Trans>Supply</Trans>
+          </Button>
+          <Button
+            disabled={!canBorrow}
+            variant="contained"
+            onClick={() => openBorrow(underlyingAsset)}
+          >
+            <Trans>Borrow</Trans>
+          </Button>
+        </Stack>
+      )}
+      {!currentAccount && (
+        <Button variant="gradient" onClick={connectWallet}>
+          <Trans>Connect wallet</Trans>
         </Button>
-        <Button
-          disabled={!canBorrow}
-          variant="contained"
-          onClick={() => openBorrow(underlyingAsset)}
-        >
-          <Trans>Borrow</Trans>
-        </Button>
-      </Stack>
+      )}
     </Paper>
   );
 };

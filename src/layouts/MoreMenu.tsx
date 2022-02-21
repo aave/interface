@@ -1,7 +1,7 @@
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Button, ListItemIcon, ListItemText, MenuList, SvgIcon } from '@mui/material';
+import { Button, ListItemIcon, ListItemText, SvgIcon } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import React from 'react';
@@ -54,17 +54,15 @@ export function MoreMenu() {
         open={open}
         onClose={handleClose}
       >
-        <MenuList disablePadding>
-          {moreNavigation.map((item, index) => (
-            <MenuItem component={Link} href={item.link} key={index}>
-              <ListItemIcon>
-                <SvgIcon>{item.icon}</SvgIcon>
-              </ListItemIcon>
+        {moreNavigation.map((item, index) => (
+          <MenuItem component={Link} href={item.link} key={index}>
+            <ListItemIcon>
+              <SvgIcon sx={{ fontSize: '20px' }}>{item.icon}</SvgIcon>
+            </ListItemIcon>
 
-              <ListItemText>{i18n._(item.title)}</ListItemText>
-            </MenuItem>
-          ))}
-        </MenuList>
+            <ListItemText>{i18n._(item.title)}</ListItemText>
+          </MenuItem>
+        ))}
       </Menu>
     </>
   );

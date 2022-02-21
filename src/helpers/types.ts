@@ -22,3 +22,15 @@ export type EmodeCategory = {
   label: string;
   assets: string[];
 };
+
+export enum DelegationType {
+  VOTING = '0',
+  PROPOSITION_POWER = '1',
+}
+
+export enum CollateralType {
+  ENABLED,
+  ISOLATED_ENABLED,
+  DISABLED,
+  ISOLATED_DISABLED,
+}

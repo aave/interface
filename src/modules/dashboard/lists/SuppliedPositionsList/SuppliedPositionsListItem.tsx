@@ -2,7 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
 import {
   ComputedUserReserveData,
-  useAppDataContext,
+  ExtendedFormattedUser,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 
@@ -21,16 +21,25 @@ export const SuppliedPositionsListItem = ({
   underlyingBalanceUSD,
   usageAsCollateralEnabledOnUser,
   underlyingAsset,
-}: ComputedUserReserveData) => {
-  const { isIsolated, usageAsCollateralEnabled, aIncentivesData, isFrozen, isActive } = reserve;
+  user,
+}: ComputedUserReserveData & { user: ExtendedFormattedUser }) => {
+  const { isIsolated, aIncentivesData, isFrozen, isActive } = reserve;
   const { currentMarketData } = useProtocolDataContext();
   const { openSupply, openWithdraw, openCollateralChange, openSwap } = useModalContext();
   const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
+
+  const canBeEnabledAsCollateral =
+    reserve.usageAsCollateralEnabled &&
+    ((!reserve.isIsolated && !user.isInIsolationMode) ||
+      user.isolatedReserve?.underlyingAsset === reserve.underlyingAsset ||
+      (reserve.isIsolated && user.totalCollateralMarketReferenceCurrency === '0'));
 
   return (
     <ListItemWrapper
       symbol={reserve.symbol}
       iconSymbol={reserve.iconSymbol}
+      name={reserve.name}
+      underlyingAsset={underlyingAsset}
       data-cy={`dashboardSuppliedListItem_${reserve.symbol.toUpperCase()}_${
         usageAsCollateralEnabledOnUser ? 'Collateral' : 'NoCollateral'
       }`}
@@ -52,7 +61,7 @@ export const SuppliedPositionsListItem = ({
         <ListItemUsedAsCollateral
           isIsolated={isIsolated}
           usageAsCollateralEnabledOnUser={usageAsCollateralEnabledOnUser}
-          canBeEnabledAsCollateral={usageAsCollateralEnabled}
+          canBeEnabledAsCollateral={canBeEnabledAsCollateral}
           onToggleSwitch={() => openCollateralChange(underlyingAsset)}
         />
       </ListColumn>

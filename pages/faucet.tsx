@@ -1,8 +1,9 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Button, Typography } from '@mui/material';
+import { Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Box } from '@mui/system';
 import * as React from 'react';
+import { FaucetModal } from 'src/components/transactions/Faucet/FaucetModal';
 import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
 
@@ -24,6 +25,9 @@ export default function Faucet() {
   const { reserves } = useAppDataContext();
   const { walletBalances } = useWalletBalances();
   const { openFaucet } = useModalContext();
+
+  const theme = useTheme();
+  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const listData = reserves
     .filter(
@@ -48,40 +52,48 @@ export default function Faucet() {
 
       <ContentContainer>
         <ListWrapper title={<Trans>Faucet</Trans>} captionSize="h2">
-          <ListHeaderWrapper px={6}>
+          <ListHeaderWrapper px={downToXSM ? 4 : 6}>
             <ListColumn isRow maxWidth={280}>
               <ListHeaderTitle>
                 <Trans>Asset</Trans>
               </ListHeaderTitle>
             </ListColumn>
-            <ListColumn>
-              <ListHeaderTitle>
-                <Trans>Wallet balance</Trans>
-              </ListHeaderTitle>
-            </ListColumn>
+
+            {!downToXSM && (
+              <ListColumn>
+                <ListHeaderTitle>
+                  <Trans>Wallet balance</Trans>
+                </ListHeaderTitle>
+              </ListColumn>
+            )}
+
             <ListColumn maxWidth={280} />
           </ListHeaderWrapper>
 
           {listData.map((reserve) => (
-            <ListItem px={6} key={reserve.symbol}>
+            <ListItem px={downToXSM ? 4 : 6} key={reserve.symbol}>
               <ListColumn isRow maxWidth={280}>
                 <TokenIcon symbol={reserve.iconSymbol} fontSize="large" />
-                <Box sx={{ pl: 3.5 }}>
-                  <Typography variant="h4">{reserve.name}</Typography>
-                  <Typography variant="subheader2" color="text.disabled">
+                <Box sx={{ pl: 3.5, overflow: 'hidden' }}>
+                  <Typography variant="h4" noWrap>
+                    {reserve.name}
+                  </Typography>
+                  <Typography variant="subheader2" color="text.disabled" noWrap>
                     {reserve.symbol}
                   </Typography>
                 </Box>
               </ListColumn>
 
-              <ListColumn>
-                <FormattedNumber
-                  compact
-                  value={reserve.walletBalanceUSD.toString()}
-                  variant="main16"
-                  symbol="USD"
-                />
-              </ListColumn>
+              {!downToXSM && (
+                <ListColumn>
+                  <FormattedNumber
+                    compact
+                    value={reserve.walletBalanceUSD.toString()}
+                    variant="main16"
+                    symbol="USD"
+                  />
+                </ListColumn>
+              )}
 
               <ListColumn maxWidth={280} align="right">
                 <Button variant="contained" onClick={() => openFaucet(reserve.underlyingAsset)}>
@@ -97,5 +109,10 @@ export default function Faucet() {
 }
 
 Faucet.getLayout = function getLayout(page: React.ReactElement) {
-  return <MainLayout>{page}</MainLayout>;
+  return (
+    <MainLayout>
+      {page}
+      <FaucetModal />
+    </MainLayout>
+  );
 };

@@ -2,6 +2,7 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Typography, useTheme } from '@mui/material';
 import BigNumber from 'bignumber.js';
+import React from 'react';
 
 import { FormattedNumber } from '../../../../components/primitives/FormattedNumber';
 
@@ -19,21 +20,27 @@ export const LTVContent = ({
   const { palette } = useTheme();
 
   const LTVLineWidth = valueToBigNumber(loanToValue)
-    .div(currentLiquidationThreshold)
     .multipliedBy(100)
     .precision(20, BigNumber.ROUND_UP)
     .toNumber();
 
-  const MaxLTVLineLeftPosition = valueToBigNumber(currentLoanToValue)
-    .div(currentLiquidationThreshold)
+  const CurrentLTVLineWidth = valueToBigNumber(currentLoanToValue)
     .multipliedBy(100)
     .precision(20, BigNumber.ROUND_UP)
     .toNumber();
 
-  let LTVLineColor = palette.primary.main;
-  if (loanToValue >= currentLoanToValue) {
+  const currentLiquidationThresholdLeftPosition = valueToBigNumber(currentLiquidationThreshold)
+    .multipliedBy(100)
+    .precision(20, BigNumber.ROUND_UP)
+    .toNumber();
+
+  let LTVLineColor = palette.success.main;
+  if (
+    +loanToValue * 100 < +currentLoanToValue * 100 &&
+    +loanToValue * 100 > +currentLoanToValue * 100 - (+currentLoanToValue * 100) / 2
+  ) {
     LTVLineColor = palette.warning.main;
-  } else if ((+currentLiquidationThreshold - +loanToValue) * 100 <= 3) {
+  } else if (+loanToValue * 100 > +currentLiquidationThreshold * 100) {
     LTVLineColor = palette.error.main;
   }
 
@@ -42,8 +49,13 @@ export const LTVContent = ({
       <Box
         sx={{
           position: 'absolute',
-          bottom: 'calc(100% + 12px)',
-          left: `${MaxLTVLineLeftPosition}%`,
+          top: 'calc(100% + 6px)',
+          left: `${
+            currentLiquidationThresholdLeftPosition > 100
+              ? 100
+              : currentLiquidationThresholdLeftPosition
+          }%`,
+          zIndex: 2,
         }}
       >
         <Box
@@ -53,14 +65,14 @@ export const LTVContent = ({
             '&:after': {
               content: "''",
               position: 'absolute',
-              width: 0,
-              height: 0,
-              left: '50%',
-              transform: 'translateX(-50%)',
-              top: '100%',
-              borderLeft: '6px solid transparent',
-              borderRight: '6px solid transparent',
-              borderTop: `8px solid ${palette.primary.light}`,
+              left: +currentLiquidationThreshold * 100 > 75 ? 'auto' : '50%',
+              transform:
+                +currentLiquidationThreshold * 100 > 75 ? 'translateX(0)' : 'translateX(-50%)',
+              right: +currentLiquidationThreshold * 100 > 75 ? 0 : 'auto',
+              bottom: '100%',
+              height: '10px',
+              width: '2px',
+              bgcolor: 'error.main',
             },
           }}
         >
@@ -68,54 +80,91 @@ export const LTVContent = ({
             sx={{
               display: 'flex',
               position: 'absolute',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              bottom: '1px',
-              flexDirection: +currentLoanToValue * 100 > 75 ? 'column' : 'row',
-              alignItems: +currentLoanToValue * 100 > 75 ? 'center' : 'flex-start',
+              left: +currentLiquidationThreshold * 100 > 75 ? 'auto' : '50%',
+              transform:
+                +currentLiquidationThreshold * 100 > 75 ? 'translateX(0)' : 'translateX(-50%)',
+              right: +currentLiquidationThreshold * 100 > 75 ? 0 : 'auto',
+              flexDirection: 'column',
+              alignItems: +currentLiquidationThreshold * 100 > 75 ? 'flex-end' : 'center',
+              textAlign: +currentLiquidationThreshold * 100 > 75 ? 'right' : 'center',
             }}
           >
-            <Typography variant="secondary12" sx={{ mr: 1 }}>
-              <Trans>Max LTV</Trans>
+            <FormattedNumber
+              value={currentLiquidationThreshold}
+              visibleDecimals={2}
+              color="error.main"
+              variant="subheader2"
+              percent
+              symbolsColor="error.main"
+            />
+            <Typography
+              sx={{ display: 'flex' }}
+              variant="helperText"
+              lineHeight="12px"
+              color="error.main"
+            >
+              <Trans>
+                Liquidation <br /> threshold
+              </Trans>
             </Typography>
-            <FormattedNumber value={currentLoanToValue} percent variant="secondary12" />
           </Box>
         </Box>
       </Box>
 
-      <Box sx={{ position: 'absolute', top: 'calc(100% + 12px)', right: '-5px' }}>
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: 'calc(100% + 6px)',
+          left: `${LTVLineWidth > 100 ? 100 : LTVLineWidth}%`,
+          zIndex: 3,
+        }}
+      >
         <Box
-          sx={{
+          sx={(theme) => ({
             position: 'relative',
             whiteSpace: 'nowrap',
             '&:after': {
-              content: "''",
-              position: 'absolute',
               width: 0,
               height: 0,
-              right: 0,
-              bottom: 'calc(100% + 2px)',
-              borderLeft: '6px solid transparent',
-              borderRight: '6px solid transparent',
-              borderBottom: `8px solid ${palette.error.main}`,
+              borderStyle: 'solid',
+              borderWidth: '6px 4px 0 4px',
+              borderColor: `${theme.palette.primary.main} transparent transparent transparent`,
+              content: "''",
+              position: 'absolute',
+              left: LTVLineWidth > 75 ? 'auto' : '50%',
+              right: LTVLineWidth > 75 ? 0 : 'auto',
+              transform: LTVLineWidth > 75 ? 'translateX(0)' : 'translateX(-50%)',
             },
-          }}
+          })}
         >
           <Box
             sx={{
               display: 'flex',
               position: 'absolute',
+              left: LTVLineWidth > 75 ? 'auto' : LTVLineWidth < 15 ? '0' : '50%',
+              transform:
+                LTVLineWidth > 75 || LTVLineWidth < 15 ? 'translateX(0)' : 'translateX(-50%)',
+              right: LTVLineWidth > 75 ? 0 : 'auto',
               flexDirection: 'column',
-              alignItems: 'flex-end',
-              right: 0,
+              alignItems:
+                LTVLineWidth > 75 ? 'flex-end' : LTVLineWidth < 15 ? 'flex-start' : 'center',
+              textAlign: LTVLineWidth > 75 ? 'right' : LTVLineWidth < 15 ? 'left' : 'center',
+              bottom: 'calc(100% + 2px)',
             }}
           >
-            <Typography variant="secondary12">
-              <Trans>Liquidation threshold</Trans>
-            </Typography>
-            <Box sx={{ display: 'flex' }}>
-              <FormattedNumber value={currentLiquidationThreshold} variant="secondary12" percent />
-              <Typography variant="secondary12">**</Typography>
+            <FormattedNumber value={loanToValue} percent visibleDecimals={2} variant="main12" />
+            <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+              <Typography variant="helperText" color="text.disabled" mr={0.5}>
+                <Trans>MAX</Trans>
+              </Typography>
+              <FormattedNumber
+                value={currentLoanToValue}
+                percent
+                visibleDecimals={2}
+                variant="helperText"
+                color="text.disabled"
+                symbolsColor="text.disabled"
+              />
             </Box>
           </Box>
         </Box>
@@ -123,9 +172,9 @@ export const LTVContent = ({
 
       <Box
         sx={{
-          height: '3px',
+          height: '4px',
           width: '100%',
-          borderRadius: '8px',
+          borderRadius: '1px',
           position: 'relative',
           bgcolor: 'divider',
         }}
@@ -134,12 +183,24 @@ export const LTVContent = ({
           sx={{
             position: 'absolute',
             left: 0,
-            height: '5px',
-            bottom: '-1px',
-            borderRadius: '8px',
-            width: `${LTVLineWidth}%`,
+            height: '4px',
+            borderRadius: '1px',
+            width: `${LTVLineWidth > 100 ? 100 : LTVLineWidth}%`,
             maxWidth: '100%',
             background: LTVLineColor,
+            zIndex: 2,
+          }}
+        />
+
+        <Box
+          sx={{
+            position: 'absolute',
+            left: 0,
+            height: '4px',
+            borderRadius: '1px',
+            width: `${CurrentLTVLineWidth > 100 ? 100 : CurrentLTVLineWidth}%`,
+            maxWidth: '100%',
+            background: `repeating-linear-gradient(-45deg, ${palette.divider}, ${palette.divider} 4px, ${LTVLineColor} 4px, ${LTVLineColor} 7px)`,
           }}
         />
       </Box>

@@ -1,38 +1,41 @@
 import { Grid, Paper } from '@mui/material';
-import { InferGetStaticPropsType } from 'next';
+import { GovDelegationModal } from 'src/components/transactions/GovDelegation/GovDelegationModal';
+import { AaveTokensBalanceProvider } from 'src/hooks/governance-data-provider/AaveTokensDataProvider';
 import { GovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { GovernanceTopPanel } from 'src/modules/governance/GovernanceTopPanel';
 import { ProposalsList } from 'src/modules/governance/ProposalsList';
-import { governanceContract } from 'src/modules/governance/utils/governanceProvider';
 import { VotingPowerInfoPanel } from 'src/modules/governance/VotingPowerInfoPanel';
-import { Ipfs } from 'src/static-build/ipfs';
-import { Proposal } from 'src/static-build/proposal';
+import { Ipfs, IpfsType } from 'src/static-build/ipfs';
+import { CustomProposalType, Proposal } from 'src/static-build/proposal';
 
 import { ContentContainer } from '../../src/components/ContentContainer';
 
 export const getStaticProps = async () => {
   const IpfsFetcher = new Ipfs();
   const ProposalFetcher = new Proposal();
-  const count = await governanceContract.getProposalsCount();
 
-  const proposals = await Promise.all(
-    [...Array(count).keys()].reverse().map(async (id) => {
-      // TODO: only pass required ipfs data
-      const ipfs = await IpfsFetcher.get(id);
-      const proposal = await ProposalFetcher.get(id);
-      return {
-        ipfs,
-        proposal,
-        prerendered: true,
-      };
-    })
-  );
+  const proposals = [...Array(ProposalFetcher.count()).keys()].map((id) => {
+    // TODO: only pass required ipfs data
+    const ipfs = IpfsFetcher.get(id);
+    const proposal = ProposalFetcher.get(id);
+    return {
+      ipfs: { title: ipfs.title, id: ipfs.id, originalHash: ipfs.originalHash },
+      proposal,
+      prerendered: true,
+    };
+  });
 
   return { props: { proposals } };
 };
 
-export type GovernancePageProps = InferGetStaticPropsType<typeof getStaticProps>;
+export type GovernancePageProps = {
+  proposals: {
+    ipfs: Pick<IpfsType, 'title' | 'id' | 'originalHash'>;
+    proposal: CustomProposalType;
+    prerendered: boolean;
+  }[];
+};
 
 export default function Governance(props: GovernancePageProps) {
   return (
@@ -60,7 +63,12 @@ export default function Governance(props: GovernancePageProps) {
 Governance.getLayout = function getLayout(page: React.ReactElement) {
   return (
     <MainLayout>
-      <GovernanceDataProvider>{page}</GovernanceDataProvider>
+      <GovernanceDataProvider>
+        <AaveTokensBalanceProvider>
+          {page}
+          <GovDelegationModal />
+        </AaveTokensBalanceProvider>
+      </GovernanceDataProvider>
     </MainLayout>
   );
 };

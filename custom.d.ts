@@ -1,5 +1,9 @@
 declare module '*/messages';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace NodeJS {
-  interface ProcessEnv {}
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  interface ProcessEnv {
+    CACHE_PATH: string;
+  }
 }

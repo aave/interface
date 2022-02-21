@@ -9,7 +9,7 @@ import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem
 import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvider';
 
 export const MarketsTopPanel = () => {
-  const { reserves } = useAppDataContext();
+  const { reserves, loading } = useAppDataContext();
 
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -28,34 +28,41 @@ export const MarketsTopPanel = () => {
   );
 
   const valueTypographyVariant = downToSM ? 'main16' : 'main21';
+  const symbolsVariant = downToSM ? 'secondary16' : 'secondary21';
 
   return (
     <TopInfoPanel pageTitle={<Trans>Market overview</Trans>} withMarketSwitcher>
-      <TopInfoPanelItem title={<Trans>Total market size</Trans>}>
+      <TopInfoPanelItem title={<Trans>Total market size</Trans>} loading={loading}>
         <FormattedNumber
           value={aggregatedStats.totalLiquidity.toString()}
           symbol="USD"
           variant={valueTypographyVariant}
           visibleDecimals={2}
           compact
+          symbolsColor="#FFFFFFB2"
+          symbolsVariant={symbolsVariant}
         />
       </TopInfoPanelItem>
-      <TopInfoPanelItem title={<Trans>Total available</Trans>}>
+      <TopInfoPanelItem title={<Trans>Total available</Trans>} loading={loading}>
         <FormattedNumber
           value={aggregatedStats.totalLiquidity.minus(aggregatedStats.totalDebt).toString()}
           symbol="USD"
           variant={valueTypographyVariant}
           visibleDecimals={2}
           compact
+          symbolsColor="#FFFFFFB2"
+          symbolsVariant={symbolsVariant}
         />
       </TopInfoPanelItem>
-      <TopInfoPanelItem title={<Trans>Total borrows</Trans>}>
+      <TopInfoPanelItem title={<Trans>Total borrows</Trans>} loading={loading}>
         <FormattedNumber
           value={aggregatedStats.totalDebt.toString()}
           symbol="USD"
           variant={valueTypographyVariant}
           visibleDecimals={2}
           compact
+          symbolsColor="#FFFFFFB2"
+          symbolsVariant={symbolsVariant}
         />
       </TopInfoPanelItem>
     </TopInfoPanel>

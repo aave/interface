@@ -7,7 +7,7 @@ import { ReactNode, useState } from 'react';
 import { BasicModal } from './primitives/BasicModal';
 
 export interface TextWithModalProps extends TypographyProps {
-  text: ReactNode;
+  text?: ReactNode;
   icon?: ReactNode;
   iconSize?: number;
   iconColor?: string;
@@ -29,7 +29,8 @@ export const TextWithModal = ({
   return (
     <>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Typography {...rest}>{text}</Typography>
+        {text && <Typography {...rest}>{text}</Typography>}
+
         <IconButton
           sx={{
             display: 'flex',
@@ -40,7 +41,7 @@ export const TextWithModal = ({
             borderRadius: '50%',
             p: 0,
             minWidth: 0,
-            ml: '5px',
+            ml: 0.5,
           }}
           onClick={(e) => {
             e.preventDefault();

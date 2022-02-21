@@ -20,7 +20,7 @@ export default function Home() {
   const { breakpoints } = useTheme();
   const lg = useMediaQuery(breakpoints.up('lg'));
 
-  const { currentAccount } = useWeb3Context();
+  const { currentAccount, loading: web3Loading } = useWeb3Context();
 
   const [mode, setMode] = useState<'supply' | 'borrow' | ''>('');
 
@@ -34,37 +34,39 @@ export default function Home() {
       <DashboardTopPanel />
 
       <ContentContainer>
-        <Box
-          sx={{
-            display: { xs: 'flex', lg: 'none' },
-            justifyContent: { xs: 'center', xsm: 'flex-start' },
-            mb: { xs: 3, xsm: 4 },
-          }}
-        >
-          <ToggleButtonGroup
-            color="primary"
-            value={mode}
-            exclusive
-            onChange={(_, value) => setMode(value)}
-            sx={{ width: '359px' }}
+        {currentAccount && (
+          <Box
+            sx={{
+              display: { xs: 'flex', lg: 'none' },
+              justifyContent: { xs: 'center', xsm: 'flex-start' },
+              mb: { xs: 3, xsm: 4 },
+            }}
           >
-            <ToggleButton value="supply" disabled={mode === 'supply'}>
-              <Typography variant="subheader1">
-                <Trans>Supply</Trans>
-              </Typography>
-            </ToggleButton>
-            <ToggleButton value="borrow" disabled={mode === 'borrow'}>
-              <Typography variant="subheader1">
-                <Trans>Borrow</Trans>
-              </Typography>
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </Box>
+            <ToggleButtonGroup
+              color="primary"
+              value={mode}
+              exclusive
+              onChange={(_, value) => setMode(value)}
+              sx={{ width: { xs: '100%', xsm: '359px' } }}
+            >
+              <ToggleButton value="supply" disabled={mode === 'supply'}>
+                <Typography variant="subheader1">
+                  <Trans>Supply</Trans>
+                </Typography>
+              </ToggleButton>
+              <ToggleButton value="borrow" disabled={mode === 'borrow'}>
+                <Typography variant="subheader1">
+                  <Trans>Borrow</Trans>
+                </Typography>
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Box>
+        )}
 
         {currentAccount ? (
           <DashboardContentWrapper isBorrow={mode === 'borrow'} />
         ) : (
-          <ConnectWalletPaper />
+          <ConnectWalletPaper loading={web3Loading} />
         )}
       </ContentContainer>
     </>
