@@ -95,6 +95,14 @@ export const MarketSwitcher = () => {
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
+  const isV3MarketsAvailable = availableMarkets
+    .map((marketId: CustomMarket) => {
+      const { market } = getMarketInfoById(marketId);
+
+      return market.v3;
+    })
+    .some((item) => !!item);
+
   return (
     <TextField
       select
@@ -175,11 +183,11 @@ export const MarketSwitcher = () => {
         <Divider />
       </Box>
 
-      <Box>
+      {isV3MarketsAvailable && (
         <Typography variant="subheader2" color="text.secondary" sx={{ px: 4, py: 2 }}>
           <Trans>v2 markets</Trans>
         </Typography>
-      </Box>
+      )}
       {availableMarkets.map((marketId: CustomMarket) => {
         const { market, network } = getMarketInfoById(marketId);
 
@@ -211,13 +219,14 @@ export const MarketSwitcher = () => {
           )
         );
       })}
-      <Divider />
 
-      <Box>
+      {isV3MarketsAvailable && <Divider />}
+
+      {isV3MarketsAvailable && (
         <Typography variant="subheader2" color="text.secondary" sx={{ px: 4, py: 2 }}>
           <Trans>v3 markets</Trans>
         </Typography>
-      </Box>
+      )}
       {availableMarkets.map((marketId: CustomMarket) => {
         const { market, network } = getMarketInfoById(marketId);
 

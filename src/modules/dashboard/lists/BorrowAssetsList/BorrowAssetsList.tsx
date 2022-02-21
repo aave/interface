@@ -13,13 +13,14 @@ import {
   getMaxAmountAvailableToBorrow,
 } from '../../../../utils/getMaxAmountAvailableToBorrow';
 import { ListHeader } from '../ListHeader';
+import { ListLoader } from '../ListLoader';
 import { BorrowAssetsListItem } from './BorrowAssetsListItem';
 import { BorrowAssetsListMobileItem } from './BorrowAssetsListMobileItem';
 import { BorrowAssetsItem } from './types';
 
 export const BorrowAssetsList = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
-  const { user, reserves, marketReferencePriceInUsd } = useAppDataContext();
+  const { user, reserves, marketReferencePriceInUsd, loading } = useAppDataContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
@@ -85,6 +86,9 @@ export const BorrowAssetsList = () => {
     <Trans key="APY, variable">APY, variable</Trans>,
     <Trans key="APY, stable">APY, stable</Trans>,
   ];
+
+  if (loading)
+    return <ListLoader title={<Trans>Assets to borrow</Trans>} head={head} withTopMargin />;
 
   return (
     <>

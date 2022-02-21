@@ -17,12 +17,13 @@ import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext
 import { DashboardListTopPanel } from '../../DashboardListTopPanel';
 import { ListBottomText } from '../ListBottomText';
 import { ListHeader } from '../ListHeader';
+import { ListLoader } from '../ListLoader';
 import { SupplyAssetsListItem } from './SupplyAssetsListItem';
 import { SupplyAssetsListMobileItem } from './SupplyAssetsListMobileItem';
 
 export const SupplyAssetsList = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
-  const { user, reserves, marketReferencePriceInUsd } = useAppDataContext();
+  const { user, reserves, marketReferencePriceInUsd, loading } = useAppDataContext();
   const { walletBalances } = useWalletBalances();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
@@ -126,8 +127,6 @@ export const SupplyAssetsList = () => {
     (reserve) => reserve.availableToDepositUSD !== '0'
   );
 
-  if (!sortedSupplyReserves.length) return null;
-
   const supplyReserves = isShowZeroAssets
     ? sortedSupplyReserves
     : filteredSupplyReserves.length >= 1
@@ -139,6 +138,9 @@ export const SupplyAssetsList = () => {
     <Trans key="APY">APY</Trans>,
     <Trans key="Can be collateral">Can be collateral</Trans>,
   ];
+
+  if (!sortedSupplyReserves.length || loading)
+    return <ListLoader title={<Trans>Assets to supply</Trans>} head={head} withTopMargin />;
 
   return (
     <ListWrapper

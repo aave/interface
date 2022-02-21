@@ -1,5 +1,4 @@
-import { Trans } from '@lingui/macro';
-import { Box, Button, Skeleton } from '@mui/material';
+import { Box, Skeleton } from '@mui/material';
 
 import { ListColumn } from '../../components/lists/ListColumn';
 import { ListItem } from '../../components/lists/ListItem';
@@ -35,9 +34,7 @@ export const AssetsListItemLoader = () => {
       </ListColumn>
 
       <ListColumn maxWidth={95} minWidth={95} align="right">
-        <Button variant="outlined">
-          <Trans>Details</Trans>
-        </Button>
+        <Skeleton width={74} height={38} />
       </ListColumn>
     </ListItem>
   );

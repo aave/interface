@@ -28,7 +28,6 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 import { Link } from '../components/primitives/Link';
 import { textCenterEllipsis } from '../helpers/text-center-ellipsis';
-import { useAppDataContext } from '../hooks/app-data-provider/useAppDataProvider';
 import { getNetworkConfig } from '../utils/marketsAndNetworksConfig';
 import { DrawerWrapper } from './components/DrawerWrapper';
 import { MobileCloseButton } from './components/MobileCloseButton';
@@ -41,8 +40,8 @@ interface WalletWidgetProps {
 }
 
 export default function WalletWidget({ open, setOpen, headerHeight, md }: WalletWidgetProps) {
-  const { connectWallet, disconnectWallet, currentAccount, connected, chainId } = useWeb3Context();
-  const { loading } = useAppDataContext();
+  const { connectWallet, disconnectWallet, currentAccount, connected, chainId, loading } =
+    useWeb3Context();
 
   const { name: ensName, avatar: ensAvatar } = useGetEns(currentAccount);
   const ensNameAbbreviated = ensName
