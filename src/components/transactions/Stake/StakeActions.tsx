@@ -1,7 +1,7 @@
 import { EthereumTransactionTypeExtended, GasType } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps, Button, CircularProgress } from '@mui/material';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
 import { LeftHelperText } from '../FlowCommons/LeftHelperText';
@@ -40,8 +40,6 @@ export const StakeActions = ({
   const { state, gasPriceData } = useGasStation();
   const stakingService = useStakeTxBuilderContext(selectedToken);
 
-  const [approving, setApproving] = useState(false);
-
   const { approval, approved, action, requiresApproval, loading, approvalTxState, mainTxState } =
     useTransactionHandler({
       tryPermit: false,
@@ -65,18 +63,12 @@ export const StakeActions = ({
   const hasAmount = amountToStake && amountToStake !== '0';
 
   useEffect(() => {
-    setApproving(false);
     setTxState({
       success: !!mainTxState.txHash,
       txError: mainTxState.txError || approvalTxState.txError,
       gasEstimationError: mainTxState.gasEstimationError || approvalTxState.gasEstimationError,
     });
   }, [setTxState, mainTxState, approvalTxState]);
-
-  const handleApprove = () => {
-    approval();
-    setApproving(true);
-  };
 
   return (
     <TxActionsWrapper
@@ -110,7 +102,7 @@ export const StakeActions = ({
         {hasAmount && requiresApproval && !approved && !approvalTxState.txError && !isWrongNetwork && (
           <Button
             variant="contained"
-            onClick={handleApprove}
+            onClick={() => approval()}
             disabled={
               approved ||
               loading ||
@@ -123,7 +115,7 @@ export const StakeActions = ({
             {loading && (
               <>
                 <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-                {approving ? (
+                {approvalTxState.loading ? (
                   <Trans>Approving {symbol}...</Trans>
                 ) : (
                   <Trans>Approve to continue</Trans>
