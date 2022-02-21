@@ -1,7 +1,7 @@
 import { ChainId, EthereumTransactionTypeExtended, GasType, Pool } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps, Button, CircularProgress } from '@mui/material';
-import { Dispatch, SetStateAction, useEffect } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { TxState } from 'src/helpers/types';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useGasStation } from 'src/hooks/useGasStation';
@@ -44,6 +44,8 @@ export const SupplyActions = ({
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
   const { currentAccount, chainId: connectedChainId } = useWeb3Context();
   const { state, gasPriceData } = useGasStation();
+
+  const [approving, setApproving] = useState(false);
 
   const {
     approval,
@@ -104,6 +106,7 @@ export const SupplyActions = ({
   const hasAmount = amountToSupply && amountToSupply !== '0';
 
   useEffect(() => {
+    setApproving(false);
     setSupplyTxState({
       success: !!mainTxState.txHash,
       txError: mainTxState.txError || approvalTxState.txError,
@@ -112,12 +115,18 @@ export const SupplyActions = ({
   }, [setSupplyTxState, mainTxState, approvalTxState]);
 
   const handleRetry = () => {
+    setApproving(false);
     setSupplyTxState({
       txError: undefined,
       success: false,
       gasEstimationError: undefined,
     });
     resetStates();
+  };
+
+  const handleApprove = () => {
+    approval(amountToSupply, poolAddress);
+    setApproving(true);
   };
 
   return (
@@ -155,7 +164,7 @@ export const SupplyActions = ({
         {hasAmount && requiresApproval && !approved && !approvalTxState.txError && !isWrongNetwork && (
           <Button
             variant="contained"
-            onClick={() => approval(amountToSupply, poolAddress)}
+            onClick={handleApprove}
             disabled={
               approved ||
               loading ||
@@ -166,11 +175,15 @@ export const SupplyActions = ({
             size="large"
             sx={{ minHeight: '44px', mb: 2 }}
           >
-            {!approved && !loading && <Trans>Approve to continue</Trans>}
-            {!approved && loading && (
+            {!loading && <Trans>Approve to continue</Trans>}
+            {loading && (
               <>
                 <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-                <Trans>Approving {symbol} ...</Trans>
+                {approving ? (
+                  <Trans>Approving {symbol}...</Trans>
+                ) : (
+                  <Trans>Approve to continue</Trans>
+                )}
               </>
             )}
           </Button>
@@ -194,10 +207,12 @@ export const SupplyActions = ({
               size="large"
               sx={{ minHeight: '44px' }}
             >
-              {!loading && !approved && <Trans>Supply {symbol}</Trans>}
-              {(approved || !requiresApproval) && loading && (
+              {!loading && <Trans>Supply {symbol}</Trans>}
+              {loading && (
                 <>
-                  <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
+                  {((approved && requiresApproval) || !requiresApproval) && (
+                    <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
+                  )}
                   <Trans>Supply {symbol}</Trans>
                 </>
               )}
