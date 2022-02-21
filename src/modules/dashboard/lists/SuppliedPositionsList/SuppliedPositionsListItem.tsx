@@ -41,7 +41,7 @@ export const SuppliedPositionsListItem = ({
       name={reserve.name}
       underlyingAsset={underlyingAsset}
       data-cy={`dashboardSuppliedListItem_${reserve.symbol.toUpperCase()}_${
-        usageAsCollateralEnabledOnUser ? 'Collateral' : 'NoCollateral'
+        canBeEnabledAsCollateral && usageAsCollateralEnabledOnUser ? 'Collateral' : 'NoCollateral'
       }`}
     >
       <ListValueColumn
