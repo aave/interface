@@ -18,9 +18,11 @@ import { LeftHelperText } from '../FlowCommons/LeftHelperText';
 import { RightHelperText } from '../FlowCommons/RightHelperText';
 import { GasOption } from '../GasStation/GasStationProvider';
 import { TxActionsWrapper } from '../TxActionsWrapper';
+import { OptimalRate } from 'paraswap-core';
 
 export interface SwapActionProps extends BoxProps {
   amountToSwap: string;
+  amountToReceive: string;
   poolReserve: ComputedReserveData;
   targetReserve: ComputedReserveData;
   isWrongNetwork: boolean;
@@ -31,10 +33,12 @@ export interface SwapActionProps extends BoxProps {
   poolAddress: string;
   symbol: string;
   blocked: boolean;
+  priceRoute: OptimalRate | null;
 }
 
 export const SwapActions = ({
   amountToSwap,
+  amountToReceive,
   setSupplyTxState,
   handleClose,
   setGasLimit,
@@ -45,6 +49,7 @@ export const SwapActions = ({
   blocked,
   poolReserve,
   targetReserve,
+  priceRoute,
   ...props
 }: SwapActionProps) => {
   const { user } = useAppDataContext();
@@ -73,7 +78,7 @@ export const SwapActions = ({
         destToken: targetReserve.underlyingAsset,
         destDecimals: targetReserve.decimals,
         user: currentAccount,
-        route: priceRoute,
+        route: priceRoute as OptimalRate,
         chainId: chainId,
       });
       const tx = await lendingPool.swapCollateral({
@@ -81,8 +86,8 @@ export const SwapActions = ({
         toAsset: targetReserve.underlyingAsset,
         swapAll: amountToSwap === '-1',
         fromAToken: poolReserve.aTokenAddress,
-        fromAmount: inputAmount.toString(),
-        minToAmount: toAmountQuery.toString(),
+        fromAmount: amountToSwap,
+        minToAmount: amountToReceive,
         user: currentAccount,
         flash: user.healthFactor !== '-1',
         augustus,
@@ -96,11 +101,11 @@ export const SwapActions = ({
       state.gasOption === GasOption.Custom
         ? state.customGas
         : gasPriceData.data?.[state.gasOption].legacyGasPrice,
-    skip: !amountToSupply || parseFloat(amountToSupply) === 0,
-    deps: [amountToSupply],
+    skip: !priceRoute || !amountToSwap || parseFloat(amountToSwap) === 0,
+    deps: [amountToSwap, priceRoute],
   });
 
-  const hasAmount = amountToSupply && amountToSupply !== '0';
+  const hasAmount = amountToSwap && amountToSwap !== '0';
 
   useEffect(() => {
     setSupplyTxState({
@@ -131,7 +136,7 @@ export const SwapActions = ({
       helperText={
         <>
           <LeftHelperText
-            amount={amountToSupply}
+            amount={amountToSwap}
             error={mainTxState.txError || approvalTxState.txError}
             approvalHash={approvalTxState.txHash}
             actionHash={mainTxState.txHash}
@@ -153,7 +158,7 @@ export const SwapActions = ({
         {hasAmount && requiresApproval && !approved && !approvalTxState.txError && !isWrongNetwork && (
           <Button
             variant="contained"
-            onClick={() => approval(amountToSupply, poolAddress)}
+            onClick={() => approval(amountToSwap, poolAddress)}
             disabled={
               approved ||
               loading ||

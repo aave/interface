@@ -266,13 +266,15 @@ export const SwapModalContent = ({ underlyingAsset, handleClose }: SupplyProps) 
         sx={{ mt: '48px' }}
         setSupplyTxState={setSupplyTxState}
         poolReserve={poolReserve}
-        amountToSupply={amount}
+        amountToSwap={amount}
+        amountToReceive={outputAmount}
         handleClose={handleClose}
         isWrongNetwork={isWrongNetwork}
         setGasLimit={setGasLimit}
-        targetReserve={targetReserve}
+        targetReserve={swapTarget}
         symbol={poolReserve.symbol}
         blocked={blockingError !== undefined}
+        priceRoute={priceRoute}
       />
     </>
   );
