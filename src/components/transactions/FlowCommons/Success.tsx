@@ -74,7 +74,8 @@ export const TxSuccessView = ({
         {action && amount && symbol && (
           <Typography>
             <Trans>
-              You {action} <FormattedNumber value={Number(amount)} variant="secondary14" /> {symbol}
+              You {action} <FormattedNumber value={Number(amount)} compact variant="secondary14" />{' '}
+              {symbol}
             </Trans>
           </Typography>
         )}
