@@ -7,11 +7,11 @@ import {
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { TxState } from 'src/helpers/types';
 import {
   ComputedReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3ContextProvider';
@@ -30,7 +30,6 @@ import { BorrowActions } from './BorrowActions';
 
 export type BorrowModalContentProps = {
   underlyingAsset: string;
-  handleClose: () => void;
 };
 
 export enum ErrorType {
@@ -40,13 +39,12 @@ export enum ErrorType {
   BORROWING_NOT_AVAILABLE,
 }
 
-export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModalContentProps) => {
+export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps) => {
+  const { mainTxState: borrowTxState, gasLimit } = useModalContext();
   const { reserves, user, marketReferencePriceInUsd } = useAppDataContext();
   const { currentChainId } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
 
-  const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
-  const [borrowTxState, setBorrowTxState] = useState<TxState>({ success: false });
   const [borrowUnWrapped, setBorrowUnWrapped] = useState(true);
   const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
   const [amount, setAmount] = useState('');
@@ -153,93 +151,87 @@ export const BorrowModalContent = ({ underlyingAsset, handleClose }: BorrowModal
     decimals: poolReserve.decimals,
   };
 
+  if (borrowTxState.txError) return <TxErrorView errorMessage={borrowTxState.txError} />;
+  if (borrowTxState.success)
+    return (
+      <TxSuccessView
+        action="Borrowed"
+        amount={amountToBorrow}
+        symbol={poolReserve.symbol}
+        addToken={addToken}
+      />
+    );
   return (
     <>
-      {!borrowTxState.txError && !borrowTxState.success && (
-        <>
-          <TxModalTitle title="Borrow" symbol={poolReserve.symbol} />
-          {isWrongNetwork && (
-            <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
-          )}
+      <TxModalTitle title="Borrow" symbol={poolReserve.symbol} />
+      {isWrongNetwork && (
+        <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
+      )}
 
-          <AssetInput
-            value={amountToBorrow}
-            onChange={setAmount}
-            usdValue={usdValue.toString()}
-            assets={[
-              {
-                balance: formattedMaxAmountToBorrow,
-                symbol:
-                  borrowUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
-                    ? networkConfig.baseAssetSymbol
-                    : poolReserve.symbol,
-              },
-            ]}
-            symbol={
+      <AssetInput
+        value={amountToBorrow}
+        onChange={setAmount}
+        usdValue={usdValue.toString()}
+        assets={[
+          {
+            balance: formattedMaxAmountToBorrow,
+            symbol:
               borrowUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
                 ? networkConfig.baseAssetSymbol
-                : poolReserve.symbol
-            }
-            capType={CapType.borrowCap}
-          />
+                : poolReserve.symbol,
+          },
+        ]}
+        symbol={
+          borrowUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
+            ? networkConfig.baseAssetSymbol
+            : poolReserve.symbol
+        }
+        capType={CapType.borrowCap}
+      />
 
-          {blockingError !== undefined && (
-            <Typography variant="helperText" color="error.main">
-              {handleBlocked()}
-            </Typography>
-          )}
-          {blockingError === undefined &&
-            newHealthFactor.toNumber() < 1.5 &&
-            newHealthFactor.toNumber() >= 1 && (
-              <Typography variant="helperText" color="warning.main">
-                <Trans>Liquidation risk is high. Lower amounts recomended.</Trans>
-              </Typography>
-            )}
-
-          <TxModalDetails
-            showHf={true}
-            healthFactor={user.healthFactor}
-            futureHealthFactor={newHealthFactor.toString()}
-            gasLimit={gasLimit}
-            incentives={poolReserve.vIncentivesData}
-            stableRateIncentives={poolReserve.sIncentivesData}
-            setActionUnWrapped={
-              poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
-                ? setBorrowUnWrapped
-                : undefined
-            }
-            unWrappedSymbol={networkConfig.baseAssetSymbol}
-            actionUnWrapped={borrowUnWrapped}
-            symbol={poolReserve.symbol}
-            apy={poolReserve.variableBorrowAPY}
-            borrowStableRate={
-              poolReserve.stableBorrowRateEnabled ? poolReserve.stableBorrowAPY : undefined
-            }
-            setInterestRateMode={setInterestRateMode}
-            action="Borrow"
-          />
-        </>
+      {blockingError !== undefined && (
+        <Typography variant="helperText" color="error.main">
+          {handleBlocked()}
+        </Typography>
       )}
+      {blockingError === undefined &&
+        newHealthFactor.toNumber() < 1.5 &&
+        newHealthFactor.toNumber() >= 1 && (
+          <Typography variant="helperText" color="warning.main">
+            <Trans>Liquidation risk is high. Lower amounts recomended.</Trans>
+          </Typography>
+        )}
 
-      {borrowTxState.txError && <TxErrorView errorMessage={borrowTxState.txError} />}
-      {borrowTxState.success && !borrowTxState.txError && (
-        <TxSuccessView
-          action="Borrowed"
-          amount={amountToBorrow}
-          symbol={poolReserve.symbol}
-          addToken={addToken}
-        />
-      )}
+      <TxModalDetails
+        showHf={true}
+        healthFactor={user.healthFactor}
+        futureHealthFactor={newHealthFactor.toString()}
+        gasLimit={gasLimit}
+        incentives={poolReserve.vIncentivesData}
+        stableRateIncentives={poolReserve.sIncentivesData}
+        setActionUnWrapped={
+          poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
+            ? setBorrowUnWrapped
+            : undefined
+        }
+        unWrappedSymbol={networkConfig.baseAssetSymbol}
+        actionUnWrapped={borrowUnWrapped}
+        symbol={poolReserve.symbol}
+        apy={poolReserve.variableBorrowAPY}
+        borrowStableRate={
+          poolReserve.stableBorrowRateEnabled ? poolReserve.stableBorrowAPY : undefined
+        }
+        setInterestRateMode={setInterestRateMode}
+        action="Borrow"
+      />
+
       {borrowTxState.gasEstimationError && (
         <GasEstimationError error={borrowTxState.gasEstimationError} />
       )}
 
       <BorrowActions
         poolReserve={poolReserve}
-        setGasLimit={setGasLimit}
-        setBorrowTxState={setBorrowTxState}
         amountToBorrow={amountToBorrow}
-        handleClose={handleClose}
         poolAddress={
           borrowUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
             ? API_ETH_MOCK_ADDRESS

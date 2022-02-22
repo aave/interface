@@ -9,9 +9,7 @@ export const SupplyModal = () => {
 
   return (
     <BasicModal open={type === ModalType.Supply} setOpen={close}>
-      {args?.underlyingAsset && (
-        <SupplyModalContent underlyingAsset={args.underlyingAsset} handleClose={close} />
-      )}
+      {args?.underlyingAsset && <SupplyModalContent underlyingAsset={args.underlyingAsset} />}
     </BasicModal>
   );
 };

@@ -8,7 +8,7 @@ export const GovDelegationModal = () => {
   const { type, close } = useModalContext();
   return (
     <BasicModal open={type === ModalType.GovDelegation} setOpen={close}>
-      <GovDelegationModalContent handleClose={close} />
+      <GovDelegationModalContent />
     </BasicModal>
   );
 };

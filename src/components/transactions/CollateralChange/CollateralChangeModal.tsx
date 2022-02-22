@@ -9,7 +9,7 @@ export const CollateralChangeModal = () => {
   return (
     <BasicModal open={type === ModalType.CollateralChange} setOpen={close}>
       {args?.underlyingAsset && (
-        <CollateralChangeModalContent underlyingAsset={args.underlyingAsset} handleClose={close} />
+        <CollateralChangeModalContent underlyingAsset={args.underlyingAsset} />
       )}
     </BasicModal>
   );

@@ -6,7 +6,6 @@ import { TxErrorView } from '../FlowCommons/Error';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
-import { TxState } from 'src/helpers/types';
 import { TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { Trans } from '@lingui/macro';
@@ -14,10 +13,10 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
 import { getStakeConfig } from 'src/ui-config/stakeConfig';
 import { StakeRewardClaimActions } from './StakeRewardClaimActions';
+import { useModalContext } from 'src/hooks/useModal';
 
 export type StakeRewardClaimProps = {
   stakeAssetName: string;
-  handleClose: () => void;
 };
 
 export enum ErrorType {
@@ -26,18 +25,14 @@ export enum ErrorType {
 
 type StakingType = 'aave' | 'bpt';
 
-export const StakeRewardClaimModalContent = ({
-  stakeAssetName,
-  handleClose,
-}: StakeRewardClaimProps) => {
+export const StakeRewardClaimModalContent = ({ stakeAssetName }: StakeRewardClaimProps) => {
   const data = useStakeData();
   const stakeData = data.stakeGeneralResult?.stakeGeneralUIData[stakeAssetName as StakingType];
   const { chainId: connectedChainId } = useWeb3Context();
   const stakeConfig = getStakeConfig();
+  const { gasLimit, mainTxState: txState } = useModalContext();
 
   // states
-  const [txState, setTxState] = useState<TxState>({ success: false });
-  const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
   const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
 
   // hardcoded as all rewards will be in aave token
@@ -79,39 +74,33 @@ export const StakeRewardClaimModalContent = ({
   const networkConfig = getNetworkConfig(stakingChain);
   const isWrongNetwork = connectedChainId !== stakingChain;
 
+  if (txState.txError) return <TxErrorView errorMessage={txState.txError} />;
+  if (txState.success)
+    return <TxSuccessView action="Claimed" amount={maxAmountToClaim} symbol={rewardsSymbol} />;
+
   return (
     <>
-      {!txState.txError && !txState.success && (
-        <>
-          <TxModalTitle title="Claim" symbol={rewardsSymbol} />
-          {isWrongNetwork && (
-            <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
-          )}
-          {blockingError !== undefined && (
-            <Typography variant="helperText" color="red">
-              {handleBlocked()}
-            </Typography>
-          )}
-          <TxModalDetails
-            gasLimit={gasLimit}
-            stakeRewards={maxAmountToClaim}
-            stakeRewardsInUsd={amountInUsd.toString()}
-            symbol={rewardsSymbol}
-          />
-        </>
+      <TxModalTitle title="Claim" symbol={rewardsSymbol} />
+      {isWrongNetwork && (
+        <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
       )}
-      {txState.txError && <TxErrorView errorMessage={txState.txError} />}
-      {txState.success && !txState.txError && (
-        <TxSuccessView action="Claimed" amount={maxAmountToClaim} symbol={rewardsSymbol} />
+      {blockingError !== undefined && (
+        <Typography variant="helperText" color="red">
+          {handleBlocked()}
+        </Typography>
       )}
+      <TxModalDetails
+        gasLimit={gasLimit}
+        stakeRewards={maxAmountToClaim}
+        stakeRewardsInUsd={amountInUsd.toString()}
+        symbol={rewardsSymbol}
+      />
+
       {txState.gasEstimationError && <GasEstimationError error={txState.gasEstimationError} />}
       <StakeRewardClaimActions
         sx={{ mt: '48px' }}
-        setTxState={setTxState}
         amountToClaim={amount}
-        handleClose={handleClose}
         isWrongNetwork={isWrongNetwork}
-        setGasLimit={setGasLimit}
         symbol={rewardsSymbol}
         blocked={blockingError !== undefined}
         selectedToken={stakeAssetName}

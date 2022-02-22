@@ -8,9 +8,7 @@ export const WithdrawModal = () => {
   const { type, close, args } = useModalContext();
   return (
     <BasicModal open={type === ModalType.Withdraw} setOpen={close}>
-      {args?.underlyingAsset && (
-        <WithdrawModalContent underlyingAsset={args.underlyingAsset} handleClose={close} />
-      )}
+      {args?.underlyingAsset && <WithdrawModalContent underlyingAsset={args.underlyingAsset} />}
     </BasicModal>
   );
 };
