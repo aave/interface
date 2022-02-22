@@ -13,11 +13,42 @@ import {
   Typography,
 } from '@mui/material';
 import React from 'react';
+import NumberFormat, { NumberFormatProps } from 'react-number-format';
 
 import { CapType } from '../caps/helper';
 import { AvailableTooltip } from '../infoTooltips/AvailableTooltip';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { TokenIcon } from '../primitives/TokenIcon';
+
+interface CustomProps {
+  onChange: (event: { target: { name: string; value: string } }) => void;
+  name: string;
+}
+
+const NumberFormatCustom = React.forwardRef<NumberFormatProps, CustomProps>(
+  function NumberFormatCustom(props, ref) {
+    const { onChange, ...other } = props;
+
+    return (
+      <NumberFormat
+        {...other}
+        getInputRef={ref}
+        onValueChange={(values) => {
+          if (values.value !== props.value)
+            onChange({
+              target: {
+                name: props.name,
+                value: values.value || '',
+              },
+            });
+        }}
+        thousandSeparator
+        isNumericString
+        allowNegative={false}
+      />
+    );
+  }
+);
 
 export interface Asset {
   balance: string;
@@ -38,7 +69,6 @@ export interface AssetInputProps<T extends Asset = Asset> {
   capType?: CapType;
 }
 
-// TODO: need fix aToken icon in select
 export const AssetInput: React.FC<AssetInputProps> = ({
   value,
   usdValue,
@@ -49,16 +79,6 @@ export const AssetInput: React.FC<AssetInputProps> = ({
   assets,
   capType,
 }) => {
-  const validNumber = new RegExp(/^\d*\.?\d*$/); // allow only digits with decimals
-
-  const onInputChange:
-    | React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
-    | undefined = (event) => {
-    if (validNumber.test(event.target.value)) {
-      onChange(event.target.value);
-    }
-  };
-
   const handleSelect = (event: SelectChangeEvent) => {
     const newAsset = assets.find((asset) => asset.symbol === event.target.value) as Asset;
     onSelect && onSelect(newAsset);
@@ -90,11 +110,18 @@ export const AssetInput: React.FC<AssetInputProps> = ({
           <InputBase
             sx={{ flex: 1 }}
             placeholder="0.00"
-            onChange={onInputChange}
             disabled={disabled}
             value={value}
+            autoFocus
+            max={asset.balance}
+            onChange={(e) => {
+              if (Number(e.target.value) > Number(asset.balance)) {
+                onChange('-1');
+              } else {
+                onChange(e.target.value);
+              }
+            }}
             inputProps={{
-              inputMode: 'decimal',
               'aria-label': 'amount input',
               style: {
                 fontSize: '21px',
@@ -103,6 +130,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
                 height: '28px',
               },
             }}
+            inputComponent={NumberFormatCustom}
           />
 
           {!onSelect ? (
