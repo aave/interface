@@ -84,6 +84,12 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
     : getTimeRemaining(0);
 
   // Others
+  const availableToStake = formatEther(
+    BigNumber.from(stakeUserData?.underlyingTokenUserBalance || '0')
+      .mul(stakeData?.stakeTokenPriceEth || '0')
+      .div(ethUsdPrice || '1')
+  );
+
   const stakedUSD = formatEther(
     BigNumber.from(stakeUserData?.stakeTokenUserBalance || '0')
       .mul(stakeData?.stakeTokenPriceEth || '0')
@@ -191,7 +197,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           variant="contained"
           sx={{ minWidth: '96px', mb: { xs: 6, xsm: 0 } }}
           onClick={onStakeAction}
-          disabled={stakeUserData?.stakeTokenUserBalance === '0'}
+          disabled={+availableToStake === 0}
           fullWidth={!xsm}
         >
           <Trans>Stake</Trans>
