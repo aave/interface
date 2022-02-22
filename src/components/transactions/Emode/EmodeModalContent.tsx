@@ -1,6 +1,6 @@
 import { formatUserSummary } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Alert, Button, Link, Typography } from '@mui/material';
+import { Alert, Button, Link } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { EmodeCategory } from 'src/helpers/types';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
