@@ -16,6 +16,9 @@ import {
 } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
 
+import { ListTopInfoItem } from '../../modules/dashboard/lists/ListTopInfoItem';
+import { AvailableTooltip } from '../../components/infoTooltips/AvailableTooltip';
+
 const ReserveRow: React.FC<StackProps> = (props) => (
   <Stack
     direction="row"
@@ -84,9 +87,10 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
           <Typography>
             <Trans>Available to supply</Trans>
           </Typography>
-          <SvgIcon sx={{ fontSize: '18px', color: '#E0E5EA' }}>
-            <InformationCircleIcon />
-          </SvgIcon>
+
+          <Box>
+            <AvailableTooltip capType="supplyCap" />
+          </Box>
         </Stack>
         <FormattedNumber value={maxAmountToSupply} />
       </ReserveRow>
@@ -95,9 +99,9 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
           <Typography>
             <Trans>Available to borrow</Trans>
           </Typography>
-          <SvgIcon sx={{ fontSize: '18px', color: '#E0E5EA' }}>
-            <InformationCircleIcon />
-          </SvgIcon>
+          <Box>
+            <AvailableTooltip capType="borrowCap" />
+          </Box>
         </Stack>
         <FormattedNumber value={canBorrow ? maxAmountToBorrow : '0'} />
       </ReserveRow>

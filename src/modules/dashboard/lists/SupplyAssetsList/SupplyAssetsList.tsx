@@ -153,7 +153,12 @@ export const SupplyAssetsList = () => {
           <Box sx={{ px: 6 }}>
             {user?.isInIsolationMode && (
               <Alert severity="warning">
-                <Trans>Collateral usage is limited because of isolation mode.</Trans>
+                <Trans>
+                  Collateral usage is limited because of isolation mode.{' '}
+                  <Link href="https://docs.aave.com/faq/" target="_blank">
+                    Learn More
+                  </Link>{' '}
+                </Trans>
               </Alert>
             )}
             {filteredSupplyReserves.length === 0 && (
