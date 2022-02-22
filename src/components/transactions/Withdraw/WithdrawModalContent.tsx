@@ -8,7 +8,7 @@ import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { parseUnits } from 'ethers/lib/utils';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -43,11 +43,9 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
   const { currentChainId, currentMarketData } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
 
-  const [amount, setAmount] = useState('');
+  const [_amount, setAmount] = useState('');
+  const amountRef = useRef<string>();
   const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
-  const [amountToWithdraw, setAmountToWithdraw] = useState(amount);
-  const [isMax, setIsMax] = useState(false);
-  const [maxAmount, setMaxAmount] = useState('0');
 
   const networkConfig = getNetworkConfig(currentChainId);
 
@@ -91,38 +89,14 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
     );
   }
 
-  // Handle max amount. V3 we can pass -1, but for v2 we need
-  // to pass maxAmountToWithdraw as contracts dont accept max uint
-  useEffect(() => {
-    setAmountToWithdraw(amount);
-    if (amount === '-1') {
-      if (!userReserve.usageAsCollateralEnabledOnUser) {
-        setAmountToWithdraw(amount);
-        setIsMax(true);
-      } else if (user.totalBorrowsMarketReferenceCurrency !== '0') {
-        setAmountToWithdraw(maxAmountToWithdraw.toString());
-      } else if (!currentMarketData.v3) {
-        setAmountToWithdraw(maxAmountToWithdraw.toString());
-      } else {
-        setAmountToWithdraw(amount);
-        setIsMax(true);
-      }
-    } else {
-      setIsMax(false);
-    }
-  }, [amount, currentMarketData.v3]);
+  const isMaxSelected = _amount === '-1';
+  const amount = isMaxSelected ? maxAmountToWithdraw.toString() : _amount;
+  const withdrawAmount = isMaxSelected && currentMarketData.v3 ? '-1' : amount;
 
-  useEffect(() => {
-    if (isMax) {
-      setMaxAmount(maxAmountToWithdraw.toString());
-    }
-  }, [isMax]);
-
-  let displayAmountToWithdraw =
-    amountToWithdraw === '' ? valueToBigNumber(0) : valueToBigNumber(amountToWithdraw);
-  if (amountToWithdraw === '-1') {
-    displayAmountToWithdraw = maxAmountToWithdraw;
-  }
+  const handleChange = (value: string) => {
+    amountRef.current = value === '-1' ? maxAmountToWithdraw.toString() : value;
+    setAmount(value);
+  };
 
   // health factor calculations
   let totalCollateralInETHAfterWithdraw = valueToBigNumber(
@@ -132,7 +106,7 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
   let healthFactorAfterWithdraw = valueToBigNumber(user.healthFactor);
 
   if (userReserve.usageAsCollateralEnabledOnUser && poolReserve.usageAsCollateralEnabled) {
-    const amountToWithdrawInEth = displayAmountToWithdraw.multipliedBy(
+    const amountToWithdrawInEth = valueToBigNumber(amount).multipliedBy(
       poolReserve.formattedPriceInMarketReferenceCurrency
     );
     totalCollateralInETHAfterWithdraw =
@@ -157,14 +131,12 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
     if (!withdrawTxState.success && !withdrawTxState.txHash) {
       if (healthFactorAfterWithdraw.lt('1') && user.totalBorrowsMarketReferenceCurrency !== '0') {
         setBlockingError(ErrorType.CAN_NOT_WITHDRAW_THIS_AMOUNT);
-      } else if (
-        !blockingError &&
-        (underlyingBalance.eq('0') || underlyingBalance.lt(displayAmountToWithdraw))
-      ) {
+      } else if (!blockingError && (underlyingBalance.eq('0') || underlyingBalance.lt(amount))) {
         setBlockingError(ErrorType.NOT_ENOUGH_FUNDS_TO_WITHDRAW_AMOUNT);
       } else if (
         !blockingError &&
-        (unborrowedLiquidity.eq('0') || displayAmountToWithdraw.gt(poolReserve.unborrowedLiquidity))
+        (unborrowedLiquidity.eq('0') ||
+          valueToBigNumber(amount).gt(poolReserve.unborrowedLiquidity))
       ) {
         setBlockingError(ErrorType.POOL_DOES_NOT_HAVE_ENOUGH_LIQUIDITY);
       } else {
@@ -177,7 +149,6 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
     healthFactorAfterWithdraw,
     user.totalBorrowsMarketReferenceCurrency,
     underlyingBalance,
-    displayAmountToWithdraw,
     unborrowedLiquidity,
     amount,
     withdrawTxState,
@@ -211,20 +182,14 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
   const isWrongNetwork = currentChainId !== connectedChainId;
 
   // calculating input usd value
-  const usdValue = valueToBigNumber(
-    amountToWithdraw === ''
-      ? amountToWithdraw
-      : isMax
-      ? maxAmount
-      : displayAmountToWithdraw.toString()
-  ).multipliedBy(userReserve.reserve.priceInUSD);
+  const usdValue = valueToBigNumber(amount).multipliedBy(userReserve.reserve.priceInUSD);
 
   if (withdrawTxState.txError) return <TxErrorView errorMessage={withdrawTxState.txError} />;
   if (withdrawTxState.success)
     return (
       <TxSuccessView
         action="Withdrawed"
-        amount={isMax ? maxAmount : displayAmountToWithdraw.toString()}
+        amount={amount}
         symbol={
           withdrawUnWrapped && poolReserve.isWrappedBaseAsset
             ? networkConfig.baseAssetSymbol
@@ -241,14 +206,8 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
       )}
 
       <AssetInput
-        value={
-          amountToWithdraw === ''
-            ? amountToWithdraw
-            : isMax
-            ? maxAmount
-            : displayAmountToWithdraw.toString()
-        }
-        onChange={setAmount}
+        value={amount}
+        onChange={handleChange}
         symbol={
           withdrawUnWrapped && poolReserve.isWrappedBaseAsset
             ? networkConfig.baseAssetSymbol
@@ -264,6 +223,8 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
           },
         ]}
         usdValue={usdValue.toString()}
+        isMaxSelected={isMaxSelected}
+        disabled={withdrawTxState.loading}
       />
 
       {blockingError !== undefined && (
@@ -300,7 +261,7 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
 
       <WithdrawActions
         poolReserve={poolReserve}
-        amountToWithdraw={amountToWithdraw.toString()}
+        amountToWithdraw={withdrawAmount}
         poolAddress={
           withdrawUnWrapped && poolReserve.isWrappedBaseAsset
             ? API_ETH_MOCK_ADDRESS

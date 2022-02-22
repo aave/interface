@@ -8,7 +8,7 @@ import {
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { CollateralType } from 'src/helpers/types';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useModalContext } from 'src/hooks/useModal';
@@ -56,6 +56,7 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
   // states
   const [_amount, setAmount] = useState('');
   const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
+  const amountRef = useRef<string>();
 
   const supplyUnWrapped = underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase();
 
@@ -86,6 +87,11 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
 
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToSupply.toString() : _amount;
+
+  const handleChange = (value: string) => {
+    amountRef.current = value === '-1' ? maxAmountToSupply.toString() : value;
+    setAmount(value);
+  };
 
   // Calculation of future HF
   const amountIntEth = new BigNumber(amount).multipliedBy(
@@ -233,7 +239,7 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
     return (
       <TxSuccessView
         action="Supplied"
-        amount={amount}
+        amount={amountRef.current}
         symbol={supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol}
         addToken={addToken}
       />
@@ -256,7 +262,7 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
 
       <AssetInput
         value={amount}
-        onChange={setAmount}
+        onChange={handleChange}
         usdValue={amountInUsd.toString()}
         symbol={supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol}
         assets={[
@@ -267,6 +273,7 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
         ]}
         capType={CapType.supplyCap}
         isMaxSelected={isMaxSelected}
+        disabled={supplyTxState.loading}
       />
 
       {blockingError !== undefined && (
