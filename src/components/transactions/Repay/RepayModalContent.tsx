@@ -187,7 +187,7 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
       if (currentMarketData.v3) {
         setMaxAmount(BigNumber.min(tokenToRepayWith.balance, safeAmountToRepayAll).toString());
       } else {
-        setMaxAmount(maxAmountToRepay.toString());
+        setMaxAmount(safeAmountToRepayAll.toString());
       }
     }
   }, [isMax]);
@@ -201,22 +201,17 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
     .shiftedBy(-USD_DECIMALS);
 
   // health factor calculations
+  // we use usd values instead of MarketreferenceCurrency so it has same precision
   const newHF = amountToRepayUI
     ? calculateHealthFactorFromBalancesBigUnits({
         collateralBalanceMarketReferenceCurrency:
           repayWithATokens && usageAsCollateralEnabledOnUser
-            ? valueToBigNumber(user?.totalCollateralMarketReferenceCurrency || '0').minus(
-                valueToBigNumber(reserve.formattedPriceInMarketReferenceCurrency).multipliedBy(
-                  amountToRepayUI
-                )
+            ? valueToBigNumber(user?.totalCollateralUSD || '0').minus(
+                valueToBigNumber(reserve.priceInUSD).multipliedBy(amountToRepayUI)
               )
-            : user?.totalCollateralMarketReferenceCurrency || '0',
-        borrowBalanceMarketReferenceCurrency: valueToBigNumber(
-          user?.totalBorrowsMarketReferenceCurrency || '0'
-        ).minus(
-          valueToBigNumber(reserve.formattedPriceInMarketReferenceCurrency).multipliedBy(
-            amountToRepayUI
-          )
+            : user?.totalCollateralUSD || '0',
+        borrowBalanceMarketReferenceCurrency: valueToBigNumber(user?.totalBorrowsUSD || '0').minus(
+          valueToBigNumber(reserve.priceInUSD).multipliedBy(amountToRepayUI)
         ),
         currentLiquidationThreshold: user?.currentLiquidationThreshold || '0',
       }).toString()
@@ -289,7 +284,7 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
       <TxSuccessView
         action="repayed"
         amount={isMax ? maxAmount : amountToRepayUI.toString()}
-        symbol={poolReserve.symbol}
+        symbol={tokenToRepayWith.symbol}
       />
     );
 
