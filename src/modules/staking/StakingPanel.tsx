@@ -217,6 +217,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           // TODO: need fix text
           bottomLineTitle={
             <TextWithTooltip
+              variant="caption"
               text={
                 isCooldownActive && !isUnstakeWindowActive ? (
                   <Trans>Cooldown time left</Trans>
