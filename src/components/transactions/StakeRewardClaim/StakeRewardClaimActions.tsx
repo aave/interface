@@ -1,23 +1,17 @@
-import { EthereumTransactionTypeExtended, GasType } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { BoxProps, Button, CircularProgress } from '@mui/material';
-import { Dispatch, SetStateAction, useEffect } from 'react';
+import { BoxProps } from '@mui/material';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
 import { useGasStation } from 'src/hooks/useGasStation';
 import { GasOption } from '../GasStation/GasStationProvider';
 import { RightHelperText } from '../FlowCommons/RightHelperText';
-import { TxState } from 'src/helpers/types';
 import { useStakeTxBuilderContext } from 'src/hooks/useStakeTxBuilder';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
 export interface StakeRewardClaimActionProps extends BoxProps {
   amountToClaim: string;
   isWrongNetwork: boolean;
-  setTxState: Dispatch<SetStateAction<TxState>>;
   customGasPrice?: string;
-  handleClose: () => void;
-  setGasLimit: Dispatch<SetStateAction<string | undefined>>;
   symbol: string;
   blocked: boolean;
   selectedToken: string;
@@ -25,9 +19,6 @@ export interface StakeRewardClaimActionProps extends BoxProps {
 
 export const StakeRewardClaimActions = ({
   amountToClaim,
-  setTxState,
-  handleClose,
-  setGasLimit,
   isWrongNetwork,
   sx,
   symbol,
@@ -39,16 +30,10 @@ export const StakeRewardClaimActions = ({
   const { state, gasPriceData } = useGasStation();
   const stakingService = useStakeTxBuilderContext(selectedToken);
 
-  const { action, loading, mainTxState } = useTransactionHandler({
+  const { action, loadingTxns, mainTxState } = useTransactionHandler({
     tryPermit: false,
     handleGetTxns: async () => {
-      const tx: EthereumTransactionTypeExtended[] = await stakingService.claimRewards(
-        currentAccount,
-        amountToClaim
-      );
-      const gas: GasType | null = await tx[tx.length - 1].gas();
-      setGasLimit(gas?.gasLimit);
-      return tx;
+      return stakingService.claimRewards(currentAccount, amountToClaim);
     },
     customGasPrice:
       state.gasOption === GasOption.Custom
@@ -58,18 +43,14 @@ export const StakeRewardClaimActions = ({
     deps: [],
   });
 
-  useEffect(() => {
-    setTxState({
-      success: !!mainTxState.txHash,
-      txError: mainTxState.txError,
-      gasEstimationError: mainTxState.gasEstimationError,
-    });
-  }, [setTxState, mainTxState]);
-
   return (
     <TxActionsWrapper
+      blocked={blocked}
+      preparingTransactions={loadingTxns}
+      handleAction={action}
+      actionText={<Trans>CLAIM {symbol}</Trans>}
+      actionInProgressText={<Trans>CLAIMING {symbol}</Trans>}
       mainTxState={mainTxState}
-      handleClose={handleClose}
       isWrongNetwork={isWrongNetwork}
       helperText={
         <RightHelperText
@@ -80,29 +61,6 @@ export const StakeRewardClaimActions = ({
       }
       sx={sx}
       {...props}
-    >
-      <>
-        {!mainTxState.txHash && !mainTxState.txError && !isWrongNetwork && (
-          <Button
-            variant="contained"
-            onClick={action}
-            disabled={loading || isWrongNetwork || blocked || !!mainTxState.gasEstimationError}
-          >
-            {loading ? (
-              <>
-                <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-                <>
-                  <Trans>CLAIM</Trans> {symbol}
-                </>
-              </>
-            ) : (
-              <>
-                <Trans>CLAIM</Trans> {symbol}
-              </>
-            )}
-          </Button>
-        )}
-      </>
-    </TxActionsWrapper>
+    />
   );
 };

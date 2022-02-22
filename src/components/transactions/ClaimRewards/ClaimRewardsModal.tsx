@@ -8,7 +8,7 @@ export const ClaimRewardsModal = () => {
   const { type, close } = useModalContext();
   return (
     <BasicModal open={type === ModalType.ClaimRewards} setOpen={close}>
-      <ClaimRewardsModalContent handleClose={close} />
+      <ClaimRewardsModalContent />
     </BasicModal>
   );
 };

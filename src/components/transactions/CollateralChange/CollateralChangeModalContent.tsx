@@ -6,12 +6,12 @@ import {
 import { Trans } from '@lingui/macro';
 import { Alert, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { TxState } from 'src/helpers/types';
 import {
   ComputedReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
+import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
@@ -25,7 +25,6 @@ import { CollateralChangeActions } from './CollateralChangeActions';
 
 export type CollateralChangeModalContentProps = {
   underlyingAsset: string;
-  handleClose: () => void;
 };
 
 export enum ErrorType {
@@ -36,17 +35,13 @@ export enum ErrorType {
 
 export const CollateralChangeModalContent = ({
   underlyingAsset,
-  handleClose,
 }: CollateralChangeModalContentProps) => {
+  const { gasLimit, mainTxState: collateralChangeTxState } = useModalContext();
   const { reserves, user } = useAppDataContext();
   const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
   const { walletBalances } = useWalletBalances();
 
-  const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
-  const [collateralChangeTxState, setCollateralChangeTxState] = useState<TxState>({
-    success: false,
-  });
   const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
 
   const poolReserve = reserves.find(
@@ -123,78 +118,67 @@ export const CollateralChangeModalContent = ({
   // is Network mismatched
   const isWrongNetwork = currentChainId !== connectedChainId;
 
+  if (collateralChangeTxState.txError)
+    return <TxErrorView errorMessage={collateralChangeTxState.txError} />;
+  if (collateralChangeTxState.success)
+    return (
+      <TxSuccessView collateral={usageAsCollateralModeAfterSwitch} symbol={poolReserve.symbol} />
+    );
+
   return (
     <>
-      {!collateralChangeTxState.txError && !collateralChangeTxState.success && (
-        <>
-          <Typography variant="h2" sx={{ mb: '24px' }}>
-            {usageAsCollateralModeAfterSwitch ? <Trans>Use</Trans> : <Trans>Disable</Trans>}{' '}
-            {poolReserve.symbol} <Trans> as collateral</Trans>
-          </Typography>
+      <Typography variant="h2" sx={{ mb: '24px' }}>
+        {usageAsCollateralModeAfterSwitch ? <Trans>Use</Trans> : <Trans>Disable</Trans>}{' '}
+        {poolReserve.symbol} <Trans> as collateral</Trans>
+      </Typography>
 
-          {isWrongNetwork && (
-            <ChangeNetworkWarning
-              networkName={currentNetworkConfig.name}
-              chainId={currentChainId}
-            />
-          )}
-
-          {usageAsCollateralModeAfterSwitch ? (
-            <Alert severity="warning" icon={false} sx={{ mb: 3 }}>
-              <Trans>
-                Enabling this asset as collateral increases your borrowing power and Health Factor.
-                However, it can get liquidated if your health factor drops below 1.
-              </Trans>
-            </Alert>
-          ) : (
-            <Alert severity="warning" icon={false} sx={{ mb: 3 }}>
-              <Trans>
-                Disabling this asset as collateral affects your borrowing power and Health Factor.
-              </Trans>
-            </Alert>
-          )}
-
-          {poolReserve.isIsolated && usageAsCollateralModeAfterSwitch && <IsolationModeWarning />}
-          {poolReserve.isIsolated && !usageAsCollateralModeAfterSwitch && (
-            <Alert severity="info" icon={false}>
-              <Trans>
-                You will exit isolation mode and other tokens can now be used as collateral
-              </Trans>
-            </Alert>
-          )}
-
-          <TxModalDetails
-            showHf={true}
-            healthFactor={user.healthFactor}
-            futureHealthFactor={healthFactorAfterSwitch.toString()}
-            gasLimit={gasLimit}
-            symbol={poolReserve.symbol}
-            walletBalance={walletBalance}
-          />
-
-          {blockingError !== undefined && (
-            <Typography variant="helperText" color="error.main">
-              {handleBlocked()}
-            </Typography>
-          )}
-        </>
+      {isWrongNetwork && (
+        <ChangeNetworkWarning networkName={currentNetworkConfig.name} chainId={currentChainId} />
       )}
 
-      {collateralChangeTxState.txError && (
-        <TxErrorView errorMessage={collateralChangeTxState.txError} />
+      {usageAsCollateralModeAfterSwitch ? (
+        <Alert severity="warning" icon={false} sx={{ mb: 3 }}>
+          <Trans>
+            Enabling this asset as collateral increases your borrowing power and Health Factor.
+            However, it can get liquidated if your health factor drops below 1.
+          </Trans>
+        </Alert>
+      ) : (
+        <Alert severity="warning" icon={false} sx={{ mb: 3 }}>
+          <Trans>
+            Disabling this asset as collateral affects your borrowing power and Health Factor.
+          </Trans>
+        </Alert>
       )}
-      {collateralChangeTxState.success && !collateralChangeTxState.txError && (
-        <TxSuccessView collateral={usageAsCollateralModeAfterSwitch} symbol={poolReserve.symbol} />
+
+      {poolReserve.isIsolated && usageAsCollateralModeAfterSwitch && <IsolationModeWarning />}
+      {poolReserve.isIsolated && !usageAsCollateralModeAfterSwitch && (
+        <Alert severity="info" icon={false}>
+          <Trans>You will exit isolation mode and other tokens can now be used as collateral</Trans>
+        </Alert>
       )}
+
+      <TxModalDetails
+        showHf={true}
+        healthFactor={user.healthFactor}
+        futureHealthFactor={healthFactorAfterSwitch.toString()}
+        gasLimit={gasLimit}
+        symbol={poolReserve.symbol}
+        walletBalance={walletBalance}
+      />
+
+      {blockingError !== undefined && (
+        <Typography variant="helperText" color="error.main">
+          {handleBlocked()}
+        </Typography>
+      )}
+
       {collateralChangeTxState.gasEstimationError && (
         <GasEstimationError error={collateralChangeTxState.gasEstimationError} />
       )}
 
       <CollateralChangeActions
         poolReserve={poolReserve}
-        setGasLimit={setGasLimit}
-        setCollateralChangeTxState={setCollateralChangeTxState}
-        handleClose={handleClose}
         usageAsCollateral={usageAsCollateralModeAfterSwitch}
         isWrongNetwork={isWrongNetwork}
         blocked={blockingError !== undefined}
