@@ -162,17 +162,19 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
         reserve.underlyingAsset.toLowerCase() === synthetixProxyByChainId[chainId].toLowerCase()
       ) {
         setAmountToRepay(BigNumber.min(tokenToRepayWith.balance, safeAmountToRepayAll).toString());
+      } else if (Number(tokenToRepayWith.balance) < Number(debt)) {
+        setAmountToRepay(maxAmountToRepay.toString());
       } else {
         setAmountToRepay(amount);
+        setIsMax(true);
       }
-      setIsMax(true);
     } else if (Number(amount) > Number(tokenToRepayWith.balance)) {
       setAmount('-1');
     } else {
       setAmountToRepay(amount);
       isMax && setIsMax(false);
     }
-  }, [amount, chainId, safeAmountToRepayAll, tokenToRepayWith]);
+  }, [amount, chainId, safeAmountToRepayAll, tokenToRepayWith, maxAmountToRepay]);
 
   let amountToRepayUI = amountToRepay === '' ? '0' : amountToRepay;
   if (amountToRepay === '-1') {
