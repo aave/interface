@@ -151,7 +151,7 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
     );
     maxAmountToRepay = BigNumber.min(normalizedWalletBalance, debt);
   }
-  console.log('repayWithATokens:: ', repayWithATokens);
+
   // We set this in a useEffect, so it doesnt constantly change when
   // max amount selected
   useEffect(() => {
@@ -288,6 +288,25 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
       />
     );
 
+  let finalAmountToRepay;
+  if (currentMarketData.v3) {
+    if (poolReserve.isWrappedBaseAsset) {
+      if (isMax) {
+        finalAmountToRepay = maxAmount;
+      } else {
+        finalAmountToRepay = amountToRepay.toString();
+      }
+    } else {
+      finalAmountToRepay = amountToRepay.toString();
+    }
+  } else {
+    if (isMax) {
+      finalAmountToRepay = maxAmount;
+    } else {
+      finalAmountToRepay = amountToRepayUI.toString();
+    }
+  }
+
   return (
     <>
       <TxModalTitle title="Repay" symbol={poolReserve.symbol} />
@@ -362,13 +381,7 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
 
       <RepayActions
         poolReserve={poolReserve}
-        amountToRepay={
-          currentMarketData.v3
-            ? amountToRepay.toString()
-            : isMax
-            ? maxAmount
-            : amountToRepayUI.toString()
-        }
+        amountToRepay={finalAmountToRepay}
         poolAddress={
           repayWithATokens ? poolReserve.underlyingAsset : tokenToRepayWith.address ?? ''
         }
