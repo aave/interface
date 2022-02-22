@@ -16,6 +16,7 @@ import {
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
 
 import { AvailableTooltip } from '../../components/infoTooltips/AvailableTooltip';
+import { CapType } from '../../components/caps/helper';
 
 const ReserveRow: React.FC<StackProps> = (props) => (
   <Stack
@@ -87,7 +88,7 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
           </Typography>
 
           <Box>
-            <AvailableTooltip capType="supplyCap" />
+            <AvailableTooltip capType={CapType.supplCap} />
           </Box>
         </Stack>
         <FormattedNumber value={maxAmountToSupply} />
@@ -98,7 +99,7 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
             <Trans>Available to borrow</Trans>
           </Typography>
           <Box>
-            <AvailableTooltip capType="borrowCap" />
+            <AvailableTooltip capType={CapType.borrowCap} />
           </Box>
         </Stack>
         <FormattedNumber value={canBorrow ? maxAmountToBorrow : '0'} />
