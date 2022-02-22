@@ -481,13 +481,17 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
           </Row>
         )}
         {stakeRewards && stakeRewardsInUsd && symbol && (
-          <Row caption={<Trans>Amount</Trans>} captionVariant="description">
+          <Row
+            caption={<Trans>Amount</Trans>}
+            captionVariant="description"
+            align="flex-start"
+            mb={4}
+          >
             <Box
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'flex-end',
-                mb: 4,
               }}
             >
               <Box sx={{ display: 'flex', alignItems: 'center' }}>

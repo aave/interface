@@ -1,21 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { StakeActions } from './StakeActions';
-import { Typography } from '@mui/material';
-import { AssetInput } from '../AssetInput';
 import { normalize, valueToBigNumber } from '@aave/math-utils';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
-import { TxErrorView } from '../FlowCommons/Error';
-import { TxSuccessView } from '../FlowCommons/Success';
-import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
-import { TxModalTitle } from '../FlowCommons/TxModalTitle';
-import { TxModalDetails } from '../FlowCommons/TxModalDetails';
-import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { Trans } from '@lingui/macro';
-import { CooldownWarning } from '../../Warnings/CooldownWarning';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import { useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
-import { getStakeConfig } from 'src/ui-config/stakeConfig';
 import { useModalContext } from 'src/hooks/useModal';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { getStakeConfig } from 'src/ui-config/stakeConfig';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+
+import { CooldownWarning } from '../../Warnings/CooldownWarning';
+import { AssetInput } from '../AssetInput';
+import { TxErrorView } from '../FlowCommons/Error';
+import { GasEstimationError } from '../FlowCommons/GasEstimationError';
+import { TxSuccessView } from '../FlowCommons/Success';
+import { TxModalDetails } from '../FlowCommons/TxModalDetails';
+import { TxModalTitle } from '../FlowCommons/TxModalTitle';
+import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
+import { StakeActions } from './StakeActions';
 
 export type StakeProps = {
   stakeAssetName: string;
@@ -104,10 +105,11 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
   return (
     <>
       <TxModalTitle title="Stake" symbol={icon} />
-      <CooldownWarning />
       {isWrongNetwork && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
       )}
+
+      <CooldownWarning />
 
       <AssetInput
         value={staticAmount}

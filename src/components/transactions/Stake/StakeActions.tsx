@@ -1,12 +1,13 @@
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
+import { useGasStation } from 'src/hooks/useGasStation';
+import { useStakeTxBuilderContext } from 'src/hooks/useStakeTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
 import { LeftHelperText } from '../FlowCommons/LeftHelperText';
-import { useGasStation } from 'src/hooks/useGasStation';
-import { GasOption } from '../GasStation/GasStationProvider';
 import { RightHelperText } from '../FlowCommons/RightHelperText';
-import { useStakeTxBuilderContext } from 'src/hooks/useStakeTxBuilder';
+import { GasOption } from '../GasStation/GasStationProvider';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
 export interface StakeActionProps extends BoxProps {
