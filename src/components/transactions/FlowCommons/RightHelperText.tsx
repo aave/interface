@@ -41,6 +41,8 @@ export const RightHelperText = ({
           href={networkConfig.explorerLinkBuilder({ tx: approvalHash })}
           sx={{ display: 'inline-flex', alignItems: 'center' }}
           underline="hover"
+          target="_blank"
+          rel="noreferrer"
         >
           <Trans>Review approve tx details</Trans>
           <ExtLinkIcon />
@@ -53,6 +55,8 @@ export const RightHelperText = ({
           href={networkConfig.explorerLinkBuilder({ tx: actionHash })}
           sx={{ display: 'inline-flex', alignItems: 'center' }}
           underline="hover"
+          target="_blank"
+          rel="noreferrer"
         >
           <Trans>Review {action} tx details</Trans>
           <ExtLinkIcon />
