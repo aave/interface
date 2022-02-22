@@ -1,6 +1,6 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Paper, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, Button, Paper, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { BigNumber } from 'ethers';
 import { formatEther } from 'ethers/lib/utils';
 import React from 'react';
@@ -57,6 +57,9 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   ethUsdPrice,
   maxSlash,
 }) => {
+  const { breakpoints } = useTheme();
+  const xsm = useMediaQuery(breakpoints.up('xsm'));
+
   // Cooldown logic
   const now = Date.now() / 1000;
   const stakeCooldownSeconds = stakeData?.stakeCooldownSeconds || 0;
@@ -75,6 +78,10 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
     isCooldownActive && !isUnstakeWindowActive
       ? getTimeRemaining(stakeCooldownSeconds - userCooldownDelta)
       : getTimeRemaining(0);
+
+  const stakeUnstakeWindowCountdown = isUnstakeWindowActive
+    ? getTimeRemaining(stakeUnstakeWindow - userCooldownDelta)
+    : getTimeRemaining(0);
 
   // Others
   const stakedUSD = formatEther(
@@ -98,8 +105,8 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   );
 
   return (
-    <Paper sx={{ p: 6, pt: 4, height: '100%' }}>
-      <Typography variant="h3" mb={8}>
+    <Paper sx={{ p: { xs: 4, xsm: 6 }, pt: 4, height: '100%' }}>
+      <Typography variant="h3" mb={8} sx={{ display: { xs: 'none', xsm: 'block' } }}>
         <Trans>Stake</Trans> {stakeTitle}
       </Typography>
 
@@ -107,26 +114,51 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
         sx={(theme) => ({
           display: 'flex',
           justifyContent: 'space-between',
-          alignItems: 'center',
-          gap: 2,
-          borderRadius: '6px',
-          border: `1px solid ${theme.palette.divider}`,
-          p: 4,
-          background:
-            theme.palette.mode === 'light'
-              ? theme.palette.background.paper
-              : theme.palette.background.surface,
+          alignItems: { xs: 'flex-start', xsm: 'center' },
+          flexDirection: { xs: 'column', xsm: 'row' },
+          gap: { xs: 0, xsm: 2 },
+          borderRadius: { xs: 0, xsm: '6px' },
+          border: { xs: 'unset', xsm: `1px solid ${theme.palette.divider}` },
+          p: { xs: 0, xsm: 4 },
+          background: {
+            xs: 'unset',
+            xsm:
+              theme.palette.mode === 'light'
+                ? theme.palette.background.paper
+                : theme.palette.background.surface,
+          },
+          position: 'relative',
+          '&:after': {
+            content: "''",
+            position: 'absolute',
+            bottom: 0,
+            left: '-16px',
+            width: 'calc(100% + 32px)',
+            height: '1px',
+            bgcolor: { xs: 'divider', xsm: 'transparent' },
+          },
         })}
       >
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <TokenIcon symbol={icon} sx={{ fontSize: '32px' }} />
-          <Typography variant="subheader1" ml={2}>
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: { xs: 4, xsm: 0 } }}>
+          <TokenIcon symbol={icon} sx={{ fontSize: { xs: '40px', xsm: '32px' } }} />
+          <Typography variant={xsm ? 'subheader1' : 'h4'} ml={2}>
             {stakedToken}
           </Typography>
         </Box>
 
-        <Box>
-          <Typography variant="subheader2" color="text.secondary">
+        <Box
+          sx={{
+            display: { xs: 'flex', xsm: 'block' },
+            width: { xs: '100%', xsm: 'unset' },
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            mb: { xs: 4, xsm: 0 },
+          }}
+        >
+          <Typography
+            variant={xsm ? 'subheader2' : 'description'}
+            color={xsm ? 'text.secondary' : 'text.primary'}
+          >
             <Trans>Staking APR</Trans>
           </Typography>
           <FormattedNumber
@@ -136,8 +168,19 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           />
         </Box>
 
-        <Box>
-          <Typography variant="subheader2" color="text.secondary">
+        <Box
+          sx={{
+            display: { xs: 'flex', xsm: 'block' },
+            width: { xs: '100%', xsm: 'unset' },
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            mb: { xs: 4, xsm: 0 },
+          }}
+        >
+          <Typography
+            variant={xsm ? 'subheader2' : 'description'}
+            color={xsm ? 'text.secondary' : 'text.primary'}
+          >
             <Trans>Max slashing</Trans>
           </Typography>
           <FormattedNumber value={maxSlash} percent variant="secondary14" />
@@ -146,15 +189,16 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
         {/**Stake action */}
         <Button
           variant="contained"
-          sx={{ minWidth: '96px' }}
+          sx={{ minWidth: '96px', mb: { xs: 6, xsm: 0 } }}
           onClick={onStakeAction}
           disabled={stakeUserData?.stakeTokenUserBalance === '0'}
+          fullWidth={!xsm}
         >
           <Trans>Stake</Trans>
         </Button>
       </Box>
 
-      <Stack spacing={4} direction="row" sx={{ mt: 4 }}>
+      <Stack spacing={4} direction={{ xs: 'column', xsm: 'row' }} sx={{ mt: 4 }}>
         {/** Cooldown action */}
         <StakeActionBox
           title={
@@ -166,56 +210,78 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           valueUSD={stakedUSD}
           // TODO: need fix text
           bottomLineTitle={
-            <TextWithTooltip text="Cooldown period">
-              <Trans>
-                You can only withdraw your assets from the Security Module after the cooldown period
-                ends and the unstake window is active.
-              </Trans>
+            <TextWithTooltip
+              text={
+                isCooldownActive && !isUnstakeWindowActive ? (
+                  <Trans>Cooldown time left</Trans>
+                ) : isUnstakeWindowActive ? (
+                  <Trans>Time left to unstake</Trans>
+                ) : (
+                  <Trans>Cooldown period</Trans>
+                )
+              }
+            >
+              <>
+                {isCooldownActive && !isUnstakeWindowActive ? (
+                  <Trans>Time left to be able to withdraw your staked asset.</Trans>
+                ) : isUnstakeWindowActive ? (
+                  <Trans>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis, quia?
+                  </Trans>
+                ) : (
+                  <Trans>
+                    You can only withdraw your assets from the Security Module after the cooldown
+                    period ends and the unstake window is active.
+                  </Trans>
+                )}
+              </>
             </TextWithTooltip>
           }
           bottomLineComponent={
-            <Typography variant="secondary14">
-              <Trans>{cooldownDays > 1 ? cooldownDays : '<1'} days</Trans>
-            </Typography>
+            <>
+              {isCooldownActive && !isUnstakeWindowActive ? (
+                <Typography variant="secondary14" sx={{ display: 'inline-flex', gap: 1 }}>
+                  {!!cooldownCountdown.days && <span>{cooldownCountdown.days}d</span>}
+                  {!!cooldownCountdown.hours && <span>{cooldownCountdown.hours}h</span>}
+                  {!!cooldownCountdown.minutes && <span>{cooldownCountdown.minutes}m</span>}
+                  {!cooldownCountdown.hours && !!cooldownCountdown.seconds && (
+                    <span>{cooldownCountdown.seconds}s</span>
+                  )}
+                </Typography>
+              ) : isUnstakeWindowActive ? (
+                <Typography variant="secondary14" sx={{ display: 'inline-flex', gap: 1 }}>
+                  {!!stakeUnstakeWindowCountdown.days && (
+                    <span>{stakeUnstakeWindowCountdown.days}d</span>
+                  )}
+                  {!!stakeUnstakeWindowCountdown.hours && (
+                    <span>{stakeUnstakeWindowCountdown.hours}h</span>
+                  )}
+                  {!!stakeUnstakeWindowCountdown.minutes && (
+                    <span>{stakeUnstakeWindowCountdown.minutes}m</span>
+                  )}
+                  {!stakeUnstakeWindowCountdown.hours && !!stakeUnstakeWindowCountdown.seconds && (
+                    <span>{stakeUnstakeWindowCountdown.seconds}s</span>
+                  )}
+                </Typography>
+              ) : (
+                <Typography variant="secondary14">
+                  <Trans>{cooldownDays > 1 ? cooldownDays : '<1'} days</Trans>
+                </Typography>
+              )}
+            </>
           }
+          gradientBorder={isUnstakeWindowActive}
         >
           {isUnstakeWindowActive && (
-            <Button variant="outlined" fullWidth onClick={onUnstakeAction}>
+            <Button variant="gradient" fullWidth onClick={onUnstakeAction}>
               <Trans>Unstake now</Trans>
             </Button>
           )}
 
           {isCooldownActive && !isUnstakeWindowActive && (
-            // eslint-disable-next-line react/jsx-no-undef
-            <Tooltip
-              title={() => <Trans>Time left to be able to withdraw your staked asset.</Trans>}
-            >
-              <Button variant="outlined" sx={{ gap: 1 }} fullWidth disabled>
-                {!!cooldownCountdown.days && (
-                  <Typography>
-                    <Trans>{cooldownCountdown.days} days</Trans>
-                  </Typography>
-                )}
-                {!!cooldownCountdown.hours && (
-                  <Typography>
-                    <Trans>{cooldownCountdown.hours} hours</Trans>
-                  </Typography>
-                )}
-                {!!cooldownCountdown.minutes && (
-                  <Typography>
-                    <Trans>{cooldownCountdown.minutes} minutes</Trans>
-                  </Typography>
-                )}
-                {!!!cooldownCountdown.hours && !!cooldownCountdown.seconds && (
-                  <Typography>
-                    <Trans>{cooldownCountdown.seconds} seconds</Trans>
-                  </Typography>
-                )}
-                <Typography>
-                  <Trans>left</Trans>
-                </Typography>
-              </Button>
-            </Tooltip>
+            <Button variant="outlined" fullWidth disabled>
+              <Trans>Cooling down...</Trans>
+            </Button>
           )}
 
           {!isCooldownActive && (
