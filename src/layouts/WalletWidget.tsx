@@ -1,10 +1,5 @@
-import { DuplicateIcon } from '@heroicons/react/outline';
-import {
-  ChevronDownIcon,
-  ChevronUpIcon,
-  ExternalLinkIcon,
-  LogoutIcon,
-} from '@heroicons/react/solid';
+import { DuplicateIcon, LogoutIcon } from '@heroicons/react/outline';
+import { ChevronDownIcon, ChevronUpIcon, ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
   Box,
