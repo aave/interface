@@ -76,7 +76,7 @@ export function FormattedNumber({
   const isSmallerThanMin = number !== 0 && number < minValue;
   const formattedNumber = isSmallerThanMin ? minValue : number;
 
-  const forceCompact = compact !== false && (compact || value < 100_000_000);
+  const forceCompact = compact !== false && (compact || number > 99_999_999);
 
   return (
     <Typography
