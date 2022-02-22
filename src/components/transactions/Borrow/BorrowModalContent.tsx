@@ -37,6 +37,7 @@ export enum ErrorType {
   NOT_ENOUGH_LIQUIDITY,
   NOT_ENOUGH_COLLATERAL,
   BORROWING_NOT_AVAILABLE,
+  NOT_ENOUGH_BORROWED,
 }
 
 export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps) => {
@@ -57,8 +58,12 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
     return reserve.underlyingAsset === underlyingAsset;
   }) as ComputedReserveData;
 
+  const userReserve = user?.userReservesData.find((reserve) => {
+    return reserve.underlyingAsset === underlyingAsset;
+  });
+
   // amount calculations
-  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user);
+  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user, interestRateMode);
   const formattedMaxAmountToBorrow = maxAmountToBorrow.toString(10);
 
   // We set this in a useEffect, so it doesnt constantly change when
@@ -96,6 +101,12 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
   useEffect(() => {
     if (interestRateMode === InterestRate.Stable && !poolReserve.stableBorrowRateEnabled) {
       setBlockingError(ErrorType.STABLE_RATE_NOT_ENABLED);
+    } else if (
+      interestRateMode === InterestRate.Stable &&
+      userReserve?.usageAsCollateralEnabledOnUser &&
+      valueToBigNumber(amountToBorrow).lt(userReserve?.underlyingBalance || 0)
+    ) {
+      setBlockingError(ErrorType.NOT_ENOUGH_BORROWED);
     } else if (valueToBigNumber(amountToBorrow).gt(poolReserve.formattedAvailableLiquidity)) {
       setBlockingError(ErrorType.NOT_ENOUGH_LIQUIDITY);
     } else if (maxAmountToBorrow.lt(amountToBorrow)) {
@@ -123,6 +134,13 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
             <Trans>Borrowing is currently unavailable for </Trans>
             {poolReserve.symbol}.
           </>
+        );
+      case ErrorType.NOT_ENOUGH_BORROWED:
+        return (
+          <Trans>
+            To prevent gaming the stable rate you can only borrow, when you borrow more then your
+            current collateral in the same asset.
+          </Trans>
         );
       case ErrorType.NOT_ENOUGH_COLLATERAL:
         return <Trans>Your collateral is not enough to borrow this amount</Trans>;
