@@ -96,12 +96,17 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
   useEffect(() => {
     setAmountToWithdraw(amount);
     if (amount === '-1') {
-      if (user.totalBorrowsMarketReferenceCurrency !== '0') {
+      if (!userReserve.usageAsCollateralEnabledOnUser) {
+        setAmountToWithdraw(amount);
+        setIsMax(true);
+      } else if (user.totalBorrowsMarketReferenceCurrency !== '0') {
         setAmountToWithdraw(maxAmountToWithdraw.toString());
       } else if (!currentMarketData.v3) {
         setAmountToWithdraw(maxAmountToWithdraw.toString());
+      } else {
+        setAmountToWithdraw(amount);
+        setIsMax(true);
       }
-      setIsMax(true);
     } else {
       setIsMax(false);
     }
@@ -149,7 +154,7 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
   }
 
   useEffect(() => {
-    if (!withdrawTxState.success) {
+    if (!withdrawTxState.success && !withdrawTxState.txHash) {
       if (healthFactorAfterWithdraw.lt('1') && user.totalBorrowsMarketReferenceCurrency !== '0') {
         setBlockingError(ErrorType.CAN_NOT_WITHDRAW_THIS_AMOUNT);
       } else if (
@@ -214,87 +219,81 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
       : displayAmountToWithdraw.toString()
   ).multipliedBy(userReserve.reserve.priceInUSD);
 
+  if (withdrawTxState.txError) return <TxErrorView errorMessage={withdrawTxState.txError} />;
+  if (withdrawTxState.success)
+    return (
+      <TxSuccessView
+        action="Withdrawed"
+        amount={isMax ? maxAmount : displayAmountToWithdraw.toString()}
+        symbol={
+          withdrawUnWrapped && poolReserve.isWrappedBaseAsset
+            ? networkConfig.baseAssetSymbol
+            : poolReserve.symbol
+        }
+      />
+    );
+
   return (
     <>
-      {!withdrawTxState.txError && !withdrawTxState.success && (
-        <>
-          <TxModalTitle title="Withdraw" symbol={poolReserve.symbol} />
-          {isWrongNetwork && (
-            <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
-          )}
-
-          <AssetInput
-            value={
-              amountToWithdraw === ''
-                ? amountToWithdraw
-                : isMax
-                ? maxAmount
-                : displayAmountToWithdraw.toString()
-            }
-            onChange={setAmount}
-            symbol={
-              withdrawUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
-                ? networkConfig.baseAssetSymbol
-                : poolReserve.symbol
-            }
-            assets={[
-              {
-                balance: maxAmountToWithdraw.toString(),
-                symbol:
-                  withdrawUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
-                    ? networkConfig.baseAssetSymbol
-                    : poolReserve.symbol,
-              },
-            ]}
-            usdValue={usdValue.toString()}
-          />
-
-          {blockingError !== undefined && (
-            <Typography variant="helperText" color="error.main">
-              {handleBlocked()}
-            </Typography>
-          )}
-          {blockingError === undefined &&
-            healthFactorAfterWithdraw.toNumber() < 1.5 &&
-            healthFactorAfterWithdraw.toNumber() >= 1 && (
-              <Typography variant="helperText" color="warning.main">
-                <Trans>Liquidation risk is high. Lower amounts recomended.</Trans>
-              </Typography>
-            )}
-
-          {healthFactorAfterWithdraw.toString() === '-1' ? (
-            <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} />
-          ) : (
-            <TxModalDetails
-              showHf={showHealthFactor}
-              healthFactor={user.healthFactor}
-              futureHealthFactor={healthFactorAfterWithdraw.toString()}
-              gasLimit={gasLimit}
-              setActionUnWrapped={
-                poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
-                  ? setWithdrawUnWrapped
-                  : undefined
-              }
-              unWrappedSymbol={networkConfig.baseAssetSymbol}
-              actionUnWrapped={withdrawUnWrapped}
-              symbol={poolReserve.symbol}
-            />
-          )}
-        </>
+      <TxModalTitle title="Withdraw" symbol={poolReserve.symbol} />
+      {isWrongNetwork && (
+        <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
       )}
 
-      {withdrawTxState.txError && <TxErrorView errorMessage={withdrawTxState.txError} />}
-      {withdrawTxState.success && !withdrawTxState.txError && (
-        <TxSuccessView
-          action="Withdrawed"
-          amount={isMax ? maxAmount : displayAmountToWithdraw.toString()}
-          symbol={
-            withdrawUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
-              ? networkConfig.baseAssetSymbol
-              : poolReserve.symbol
-          }
+      <AssetInput
+        value={
+          amountToWithdraw === ''
+            ? amountToWithdraw
+            : isMax
+            ? maxAmount
+            : displayAmountToWithdraw.toString()
+        }
+        onChange={setAmount}
+        symbol={
+          withdrawUnWrapped && poolReserve.isWrappedBaseAsset
+            ? networkConfig.baseAssetSymbol
+            : poolReserve.symbol
+        }
+        assets={[
+          {
+            balance: maxAmountToWithdraw.toString(),
+            symbol:
+              withdrawUnWrapped && poolReserve.isWrappedBaseAsset
+                ? networkConfig.baseAssetSymbol
+                : poolReserve.symbol,
+          },
+        ]}
+        usdValue={usdValue.toString()}
+      />
+
+      {blockingError !== undefined && (
+        <Typography variant="helperText" color="error.main">
+          {handleBlocked()}
+        </Typography>
+      )}
+      {blockingError === undefined &&
+        healthFactorAfterWithdraw.toNumber() < 1.5 &&
+        healthFactorAfterWithdraw.toNumber() >= 1 && (
+          <Typography variant="helperText" color="warning.main">
+            <Trans>Liquidation risk is high. Lower amounts recomended.</Trans>
+          </Typography>
+        )}
+
+      {healthFactorAfterWithdraw.toString() === '-1' ? (
+        <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} />
+      ) : (
+        <TxModalDetails
+          showHf={showHealthFactor}
+          healthFactor={user.healthFactor}
+          futureHealthFactor={healthFactorAfterWithdraw.toString()}
+          gasLimit={gasLimit}
+          setActionUnWrapped={poolReserve.isWrappedBaseAsset ? setWithdrawUnWrapped : undefined}
+          unWrappedSymbol={networkConfig.baseAssetSymbol}
+          actionUnWrapped={withdrawUnWrapped}
+          symbol={poolReserve.symbol}
         />
       )}
+
       {withdrawTxState.gasEstimationError && (
         <GasEstimationError error={withdrawTxState.gasEstimationError} />
       )}
@@ -303,13 +302,13 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
         poolReserve={poolReserve}
         amountToWithdraw={amountToWithdraw.toString()}
         poolAddress={
-          withdrawUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
+          withdrawUnWrapped && poolReserve.isWrappedBaseAsset
             ? API_ETH_MOCK_ADDRESS
             : poolReserve.underlyingAsset
         }
         isWrongNetwork={isWrongNetwork}
         symbol={
-          withdrawUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
+          withdrawUnWrapped && poolReserve.isWrappedBaseAsset
             ? networkConfig.baseAssetSymbol
             : poolReserve.symbol
         }

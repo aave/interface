@@ -9,12 +9,13 @@ export type SupplyAssetsItem = {
   walletBalanceUSD: string;
   availableToDeposit: string;
   availableToDepositUSD: string;
-  liquidityRate: number | string;
-  aIncentives: ReserveIncentiveResponse[];
+  supplyAPY: number | string;
+  aIncentivesData?: ReserveIncentiveResponse[];
   isFreezed?: boolean;
   isIsolated: boolean;
   totalLiquidity: string;
   supplyCap: string;
   isActive?: boolean;
   usageAsCollateralEnabledOnUser: boolean;
+  detailsAddress: string;
 };
