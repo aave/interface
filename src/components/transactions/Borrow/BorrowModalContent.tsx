@@ -54,9 +54,6 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
   const networkConfig = getNetworkConfig(currentChainId);
 
   const poolReserve = reserves.find((reserve) => {
-    if (underlyingAsset === API_ETH_MOCK_ADDRESS.toLowerCase()) {
-      return reserve.symbol === networkConfig.wrappedBaseAssetSymbol;
-    }
     return reserve.underlyingAsset === underlyingAsset;
   }) as ComputedReserveData;
 
@@ -176,15 +173,15 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
           {
             balance: formattedMaxAmountToBorrow,
             symbol:
-              borrowUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
+              borrowUnWrapped && poolReserve.isWrappedBaseAsset
                 ? networkConfig.baseAssetSymbol
                 : poolReserve.symbol,
           },
         ]}
         symbol={
-          borrowUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
+          borrowUnWrapped && poolReserve.isWrappedBaseAsset
             ? networkConfig.baseAssetSymbol
-            : poolReserve.symbol
+            : poolReserve.iconSymbol
         }
         capType={CapType.borrowCap}
       />
@@ -209,11 +206,7 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
         gasLimit={gasLimit}
         incentives={poolReserve.vIncentivesData}
         stableRateIncentives={poolReserve.sIncentivesData}
-        setActionUnWrapped={
-          poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
-            ? setBorrowUnWrapped
-            : undefined
-        }
+        setActionUnWrapped={poolReserve.isWrappedBaseAsset ? setBorrowUnWrapped : undefined}
         unWrappedSymbol={networkConfig.baseAssetSymbol}
         actionUnWrapped={borrowUnWrapped}
         symbol={poolReserve.symbol}
@@ -233,14 +226,14 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
         poolReserve={poolReserve}
         amountToBorrow={amountToBorrow}
         poolAddress={
-          borrowUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
+          borrowUnWrapped && poolReserve.isWrappedBaseAsset
             ? API_ETH_MOCK_ADDRESS
             : poolReserve.underlyingAsset
         }
         interestRateMode={interestRateMode}
         isWrongNetwork={isWrongNetwork}
         symbol={
-          borrowUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
+          borrowUnWrapped && poolReserve.isWrappedBaseAsset
             ? networkConfig.baseAssetSymbol
             : poolReserve.symbol
         }

@@ -65,7 +65,7 @@ export function FormattedNumber({
   if (number === 0) {
     decimals = 0;
   } else if (visibleDecimals === undefined) {
-    if (number > 1_000 || percent || symbol === 'USD') {
+    if (number > 1 || percent || symbol === 'USD') {
       decimals = 2;
     } else {
       decimals = 7;
@@ -76,7 +76,7 @@ export function FormattedNumber({
   const isSmallerThanMin = number !== 0 && number < minValue;
   const formattedNumber = isSmallerThanMin ? minValue : number;
 
-  const forceCompact = compact !== false && (compact || value < 100_000_000);
+  const forceCompact = compact !== false && (compact || number > 99_999);
 
   return (
     <Typography

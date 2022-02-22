@@ -30,7 +30,11 @@ export const unPrefixSymbol = (symbol: string, prefix: string) => {
 };
 
 export type ComputedReserveData = ReturnType<typeof formatReservesAndIncentives>[0] &
-  ReserveDataHumanized & { iconSymbol: string; isEmodeEnabled: boolean };
+  ReserveDataHumanized & {
+    iconSymbol: string;
+    isEmodeEnabled: boolean;
+    isWrappedBaseAsset: boolean;
+  };
 
 export type ComputedUserReserveData = ComputedUserReserve<ComputedReserveData>;
 
@@ -64,7 +68,7 @@ const AppDataContext = React.createContext<AppDataContextType>({} as AppDataCont
 export const AppDataProvider: React.FC = ({ children }) => {
   const currentTimestamp = useCurrentTimestamp(1);
   const { currentAccount } = useWeb3Context();
-  const { currentMarketData, currentChainId } = useProtocolDataContext();
+  const { currentMarketData, currentChainId, currentNetworkConfig } = useProtocolDataContext();
 
   const { data: reservesData } = useC_ProtocolDataQuery({
     variables: {
@@ -113,7 +117,13 @@ export const AppDataProvider: React.FC = ({ children }) => {
     marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
     reserveIncentives: reservesIncentivesData?.reservesIncentives || [],
   })
-    .map((r) => ({ ...r, ...fetchIconSymbolAndName(r), isEmodeEnabled: r.eModeCategoryId !== 0 }))
+    .map((r) => ({
+      ...r,
+      ...fetchIconSymbolAndName(r),
+      isEmodeEnabled: r.eModeCategoryId !== 0,
+      isWrappedBaseAsset:
+        r.symbol.toLowerCase() === currentNetworkConfig.wrappedBaseAssetSymbol?.toLowerCase(),
+    }))
     .sort(reserveSortFn);
 
   const userReserves: UserReserveData[] = userReservesData?.userData.userReserves || [];

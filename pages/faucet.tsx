@@ -18,10 +18,8 @@ import { TokenIcon } from '../src/components/primitives/TokenIcon';
 import { TopInfoPanel } from '../src/components/TopInfoPanel/TopInfoPanel';
 import { useAppDataContext } from '../src/hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from '../src/hooks/app-data-provider/useWalletBalances';
-import { useProtocolDataContext } from '../src/hooks/useProtocolDataContext';
 
 export default function Faucet() {
-  const { currentNetworkConfig } = useProtocolDataContext();
   const { reserves } = useAppDataContext();
   const { walletBalances } = useWalletBalances();
   const { openFaucet } = useModalContext();
@@ -30,12 +28,7 @@ export default function Faucet() {
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const listData = reserves
-    .filter(
-      (reserve) =>
-        reserve.symbol.toUpperCase() !== currentNetworkConfig.baseAssetSymbol &&
-        !reserve.isFrozen &&
-        reserve.symbol.toUpperCase() !== currentNetworkConfig.wrappedBaseAssetSymbol
-    )
+    .filter((reserve) => !reserve.isWrappedBaseAsset && !reserve.isFrozen)
     .map((reserve) => {
       const walletBalanceUSD = valueToBigNumber(
         walletBalances[reserve.underlyingAsset]?.amountUSD || '0'

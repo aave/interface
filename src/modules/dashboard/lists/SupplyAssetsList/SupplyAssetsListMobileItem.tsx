@@ -20,13 +20,14 @@ export const SupplyAssetsListMobileItem = ({
   walletBalanceUSD,
   supplyCap,
   totalLiquidity,
-  liquidityRate,
-  aIncentives,
+  supplyAPY,
+  aIncentivesData,
   isIsolated,
   usageAsCollateralEnabledOnUser,
   isActive,
   isFreezed,
   underlyingAsset,
+  detailsAddress,
 }: SupplyAssetsItem) => {
   const { openSupply } = useModalContext();
 
@@ -59,8 +60,8 @@ export const SupplyAssetsListMobileItem = ({
         mb={2}
       >
         <IncentivesCard
-          value={Number(liquidityRate)}
-          incentives={aIncentives}
+          value={Number(supplyAPY)}
+          incentives={aIncentivesData}
           symbol={symbol}
           variant="secondary14"
         />
@@ -91,7 +92,7 @@ export const SupplyAssetsListMobileItem = ({
         <Button
           variant="outlined"
           component={Link}
-          href={ROUTES.reserveOverview(underlyingAsset)}
+          href={ROUTES.reserveOverview(detailsAddress)}
           fullWidth
         >
           <Trans>Details</Trans>

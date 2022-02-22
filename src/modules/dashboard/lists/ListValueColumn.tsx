@@ -71,12 +71,14 @@ export const ListValueColumn = ({
                 variant="secondary14"
                 sx={{ mb: '2px' }}
                 symbolsColor="common.white"
+                compact={false}
               />
               <FormattedNumber
                 value={value}
                 variant="secondary12"
                 symbol={symbol}
                 symbolsColor="common.white"
+                compact={false}
               />
             </Box>
           }

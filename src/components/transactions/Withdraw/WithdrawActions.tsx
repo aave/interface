@@ -37,7 +37,7 @@ export const WithdrawActions = ({
     tryPermit:
       currentMarketData.v3 && chainId !== ChainId.harmony && chainId !== ChainId.harmony_testnet,
     handleGetTxns: async () => {
-      return await lendingPool.withdraw({
+      return lendingPool.withdraw({
         user: currentAccount,
         reserve: poolAddress,
         amount: amountToWithdraw,
@@ -51,8 +51,6 @@ export const WithdrawActions = ({
     skip: !amountToWithdraw || parseFloat(amountToWithdraw) === 0 || blocked,
     deps: [amountToWithdraw],
   });
-
-  // TODO: hash link not working
 
   return (
     <TxActionsWrapper
