@@ -61,14 +61,14 @@ export const RepayActions = ({
         if (repayWithATokens) {
           return await newPool.repayWithATokens({
             user: currentAccount,
-            reserve: poolReserve.underlyingAsset,
+            reserve: poolAddress,
             amount: amountToRepay.toString(),
             rateMode: debtType as InterestRate,
           });
         } else {
           return await newPool.repay({
             user: currentAccount,
-            reserve: poolReserve.underlyingAsset,
+            reserve: poolAddress,
             amount: amountToRepay.toString(),
             interestRateMode: debtType,
           });
@@ -76,7 +76,7 @@ export const RepayActions = ({
       } else {
         return await lendingPool.repay({
           user: currentAccount,
-          reserve: poolReserve.underlyingAsset,
+          reserve: poolAddress,
           amount: amountToRepay.toString(),
           interestRateMode: debtType,
         });
@@ -87,7 +87,7 @@ export const RepayActions = ({
       const newPool: Pool = lendingPool as Pool;
       return await newPool.repayWithPermit({
         user: currentAccount,
-        reserve: poolReserve.underlyingAsset,
+        reserve: poolAddress,
         amount: amountToRepay, // amountToRepay.toString(),
         interestRateMode: debtType,
         signature,
