@@ -88,7 +88,7 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
           </Typography>
 
           <Box>
-            <AvailableTooltip capType={CapType.supplCap} />
+            <AvailableTooltip capType={CapType.supplyCap} />
           </Box>
         </Stack>
         <FormattedNumber value={maxAmountToSupply} />
