@@ -28,6 +28,7 @@ export const SupplyAssetsListItem = ({
   isFreezed,
   isIsolated,
   usageAsCollateralEnabledOnUser,
+  detailsAddress,
 }: SupplyAssetsItem) => {
   const { openSupply } = useModalContext();
   return (
@@ -71,7 +72,7 @@ export const SupplyAssetsListItem = ({
         >
           <Trans>Supply</Trans>
         </Button>
-        <Button variant="outlined" component={Link} href={ROUTES.reserveOverview(underlyingAsset)}>
+        <Button variant="outlined" component={Link} href={ROUTES.reserveOverview(detailsAddress)}>
           <Trans>Details</Trans>
         </Button>
       </ListButtonsColumn>

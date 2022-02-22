@@ -82,6 +82,7 @@ export const SupplyAssetsList = () => {
       sIncentives: reserve.sIncentivesData ? reserve.sIncentivesData : [],
       usageAsCollateralEnabledOnUser,
       priceInMarketReferenceCurrency: reserve.priceInMarketReferenceCurrency,
+      detailsAddress: reserve.underlyingAsset,
     };
   });
 
@@ -117,6 +118,7 @@ export const SupplyAssetsList = () => {
       walletBalanceUSD: walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]?.amountUSD,
       availableToDeposit: availableToDeposit.toString(),
       availableToDepositUSD,
+      detailsAddress: wrappedAsset.underlyingAsset,
     });
   }
 

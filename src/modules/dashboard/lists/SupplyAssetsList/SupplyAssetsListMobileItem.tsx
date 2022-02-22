@@ -27,6 +27,7 @@ export const SupplyAssetsListMobileItem = ({
   isActive,
   isFreezed,
   underlyingAsset,
+  detailsAddress,
 }: SupplyAssetsItem) => {
   const { openSupply } = useModalContext();
 
@@ -91,7 +92,7 @@ export const SupplyAssetsListMobileItem = ({
         <Button
           variant="outlined"
           component={Link}
-          href={ROUTES.reserveOverview(underlyingAsset)}
+          href={ROUTES.reserveOverview(detailsAddress)}
           fullWidth
         >
           <Trans>Details</Trans>
