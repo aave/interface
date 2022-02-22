@@ -59,25 +59,25 @@ export const RepayActions = ({
         // TO-DO: No need for this cast once a single Pool type is used in use-tx-builder-context
         const newPool: Pool = lendingPool as Pool;
         if (repayWithATokens) {
-          return await newPool.repayWithATokens({
+          return newPool.repayWithATokens({
             user: currentAccount,
             reserve: poolAddress,
-            amount: amountToRepay.toString(),
+            amount: amountToRepay,
             rateMode: debtType as InterestRate,
           });
         } else {
-          return await newPool.repay({
+          return newPool.repay({
             user: currentAccount,
             reserve: poolAddress,
-            amount: amountToRepay.toString(),
+            amount: amountToRepay,
             interestRateMode: debtType,
           });
         }
       } else {
-        return await lendingPool.repay({
+        return lendingPool.repay({
           user: currentAccount,
           reserve: poolAddress,
-          amount: amountToRepay.toString(),
+          amount: amountToRepay,
           interestRateMode: debtType,
         });
       }
@@ -85,7 +85,7 @@ export const RepayActions = ({
     },
     handleGetPermitTxns: async (signature) => {
       const newPool: Pool = lendingPool as Pool;
-      return await newPool.repayWithPermit({
+      return newPool.repayWithPermit({
         user: currentAccount,
         reserve: poolAddress,
         amount: amountToRepay, // amountToRepay.toString(),

@@ -13,8 +13,10 @@ import { ListValueColumn } from '../ListValueColumn';
 
 export const BorrowedPositionsListItem = ({
   reserve,
-  totalBorrows,
-  totalBorrowsUSD,
+  variableBorrows,
+  variableBorrowsUSD,
+  stableBorrows,
+  stableBorrowsUSD,
   borrowRateMode,
   stableBorrowAPY,
 }: ComputedUserReserveData & { borrowRateMode: InterestRate }) => {
@@ -39,9 +41,10 @@ export const BorrowedPositionsListItem = ({
     >
       <ListValueColumn
         symbol={reserve.symbol}
-        value={Number(totalBorrows)}
-        subValue={Number(totalBorrowsUSD)}
-        disabled={Number(totalBorrows) === 0}
+        value={Number(borrowRateMode === InterestRate.Variable ? variableBorrows : stableBorrows)}
+        subValue={Number(
+          borrowRateMode === InterestRate.Variable ? variableBorrowsUSD : stableBorrowsUSD
+        )}
       />
 
       <ListAPRColumn

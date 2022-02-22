@@ -24,8 +24,7 @@ export enum ErrorType {
 export const ClaimRewardsModalContent = () => {
   const { gasLimit, mainTxState: claimRewardsTxState } = useModalContext();
   const { user, reserves } = useAppDataContext();
-  const { currentChainId, currentNetworkConfig, currentMarketData, currentMarket } =
-    useProtocolDataContext();
+  const { currentChainId, currentMarketData, currentMarket } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
 
   const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
@@ -53,7 +52,7 @@ export const ClaimRewardsModalContent = () => {
           tokenPrice = aave ? Number(aave.priceInUSD) : 0;
         } else {
           reserves.forEach((reserve) => {
-            if (reserve.symbol === currentNetworkConfig.wrappedBaseAssetSymbol) {
+            if (reserve.isWrappedBaseAsset) {
               tokenPrice = Number(reserve.priceInUSD);
             }
           });

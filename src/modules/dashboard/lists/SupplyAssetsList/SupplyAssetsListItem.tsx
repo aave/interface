@@ -21,13 +21,14 @@ export const SupplyAssetsListItem = ({
   walletBalanceUSD,
   supplyCap,
   totalLiquidity,
-  liquidityRate,
-  aIncentives,
+  supplyAPY,
+  aIncentivesData,
   underlyingAsset,
   isActive,
   isFreezed,
   isIsolated,
   usageAsCollateralEnabledOnUser,
+  detailsAddress,
 }: SupplyAssetsItem) => {
   const { openSupply } = useModalContext();
   return (
@@ -54,7 +55,7 @@ export const SupplyAssetsListItem = ({
         }
       />
 
-      <ListAPRColumn value={Number(liquidityRate)} incentives={aIncentives} symbol={symbol} />
+      <ListAPRColumn value={Number(supplyAPY)} incentives={aIncentivesData} symbol={symbol} />
 
       <ListColumn>
         <ListItemCanBeCollateral
@@ -71,7 +72,7 @@ export const SupplyAssetsListItem = ({
         >
           <Trans>Supply</Trans>
         </Button>
-        <Button variant="outlined" component={Link} href={ROUTES.reserveOverview(underlyingAsset)}>
+        <Button variant="outlined" component={Link} href={ROUTES.reserveOverview(detailsAddress)}>
           <Trans>Details</Trans>
         </Button>
       </ListButtonsColumn>

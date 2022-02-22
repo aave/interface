@@ -1,9 +1,10 @@
-import { InterestRate } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
 import { BorrowPowerTooltip } from '../../../../components/infoTooltips/BorrowPowerTooltip';
@@ -22,7 +23,7 @@ import { BorrowedPositionsListMobileItem } from './BorrowedPositionsListMobileIt
 
 export const BorrowedPositionsList = () => {
   const { user, loading } = useAppDataContext();
-  const { currentMarketData } = useProtocolDataContext();
+  const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
   const { openEmode } = useModalContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
@@ -30,10 +31,34 @@ export const BorrowedPositionsList = () => {
   const borrowPositions =
     user?.userReservesData.reduce((acc, userReserve) => {
       if (userReserve.variableBorrows !== '0') {
-        acc.push({ ...userReserve, borrowRateMode: InterestRate.Variable });
+        acc.push({
+          ...userReserve,
+          borrowRateMode: InterestRate.Variable,
+          reserve: {
+            ...userReserve.reserve,
+            ...(userReserve.reserve.isWrappedBaseAsset
+              ? fetchIconSymbolAndName({
+                  symbol: currentNetworkConfig.baseAssetSymbol,
+                  underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
+                })
+              : {}),
+          },
+        });
       }
       if (userReserve.stableBorrows !== '0') {
-        acc.push({ ...userReserve, borrowRateMode: InterestRate.Stable });
+        acc.push({
+          ...userReserve,
+          borrowRateMode: InterestRate.Stable,
+          reserve: {
+            ...userReserve.reserve,
+            ...(userReserve.reserve.isWrappedBaseAsset
+              ? fetchIconSymbolAndName({
+                  symbol: currentNetworkConfig.baseAssetSymbol,
+                  underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
+                })
+              : {}),
+          },
+        });
       }
       return acc;
     }, [] as (ComputedUserReserveData & { borrowRateMode: InterestRate })[]) || [];
