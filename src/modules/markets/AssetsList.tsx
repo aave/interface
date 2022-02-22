@@ -1,7 +1,9 @@
+import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { useMediaQuery } from '@mui/material';
 import { useState } from 'react';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 import { ListColumn } from '../../components/lists/ListColumn';
 import { ListHeaderTitle } from '../../components/lists/ListHeaderTitle';
@@ -15,11 +17,21 @@ import { AssetsListMobileItemLoader } from './AssetsListMobileItemLoader';
 
 export default function AssetsList() {
   const { reserves, loading } = useAppDataContext();
-  const { currentMarketData } = useProtocolDataContext();
+  const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
 
   const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
 
-  const filteredData = reserves.filter((res) => res.isActive && !res.isFrozen);
+  const filteredData = reserves
+    .filter((res) => res.isActive && !res.isFrozen)
+    .map((reserve) => ({
+      ...reserve,
+      ...(reserve.isWrappedBaseAsset
+        ? fetchIconSymbolAndName({
+            symbol: currentNetworkConfig.baseAssetSymbol,
+            underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
+          })
+        : {}),
+    }));
 
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);

@@ -30,7 +30,7 @@ export const AssetsListItem = ({ ...reserve }: ComputedReserveData) => {
             {reserve.name}
           </Typography>
           <Typography variant="subheader2" color="text.disabled" noWrap>
-            {reserve.symbol}
+            {reserve.iconSymbol}
           </Typography>
         </Box>
 
