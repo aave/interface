@@ -303,7 +303,7 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
         <TxSuccessView
           action="Supplied"
           amount={isMax ? maxAmount : amountToSupply}
-          symbol={poolReserve.symbol}
+          symbol={supplyUnWrapped ? networkConfig.baseAssetSymbol : poolReserve.symbol}
           addToken={addToken}
         />
       )}
