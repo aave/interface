@@ -1,4 +1,3 @@
-import { InformationCircleIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Paper, Stack, StackProps, SvgIcon, Typography } from '@mui/material';
 import React from 'react';
@@ -16,7 +15,6 @@ import {
 } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
 
-import { ListTopInfoItem } from '../../modules/dashboard/lists/ListTopInfoItem';
 import { AvailableTooltip } from '../../components/infoTooltips/AvailableTooltip';
 
 const ReserveRow: React.FC<StackProps> = (props) => (
