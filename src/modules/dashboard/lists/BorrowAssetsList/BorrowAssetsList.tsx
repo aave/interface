@@ -2,6 +2,7 @@ import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Alert, Box, useMediaQuery, useTheme } from '@mui/material';
+import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 import { CapType } from '../../../../components/caps/helper';
 import { AvailableTooltip } from '../../../../components/infoTooltips/AvailableTooltip';
@@ -24,7 +25,7 @@ export const BorrowAssetsList = () => {
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
-  const { wrappedBaseAssetSymbol, baseAssetSymbol } = currentNetworkConfig;
+  const { baseAssetSymbol } = currentNetworkConfig;
 
   const tokensToBorrow: BorrowAssetsItem[] = reserves
     .filter((reserve) => assetCanBeBorrowedByUser(reserve, user))
@@ -47,15 +48,13 @@ export const BorrowAssetsList = () => {
             ? Number(reserve.stableBorrowAPY)
             : -1,
         variableBorrowRate: reserve.borrowingEnabled ? Number(reserve.variableBorrowAPY) : -1,
-        symbol:
-          reserve.symbol.toLowerCase() === wrappedBaseAssetSymbol?.toLowerCase()
-            ? baseAssetSymbol
-            : reserve.symbol,
         iconSymbol: reserve.iconSymbol,
-        underlyingAsset:
-          reserve.symbol.toLowerCase() === wrappedBaseAssetSymbol?.toLowerCase()
-            ? API_ETH_MOCK_ADDRESS.toLowerCase()
-            : reserve.underlyingAsset,
+        ...(reserve.isWrappedBaseAsset
+          ? fetchIconSymbolAndName({
+              symbol: baseAssetSymbol,
+              underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
+            })
+          : {}),
       };
     });
 

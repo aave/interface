@@ -21,8 +21,8 @@ export const SupplyAssetsListItem = ({
   walletBalanceUSD,
   supplyCap,
   totalLiquidity,
-  liquidityRate,
-  aIncentives,
+  supplyAPY,
+  aIncentivesData,
   underlyingAsset,
   isActive,
   isFreezed,
@@ -55,7 +55,7 @@ export const SupplyAssetsListItem = ({
         }
       />
 
-      <ListAPRColumn value={Number(liquidityRate)} incentives={aIncentives} symbol={symbol} />
+      <ListAPRColumn value={Number(supplyAPY)} incentives={aIncentivesData} symbol={symbol} />
 
       <ListColumn>
         <ListItemCanBeCollateral

@@ -20,8 +20,8 @@ export const SupplyAssetsListMobileItem = ({
   walletBalanceUSD,
   supplyCap,
   totalLiquidity,
-  liquidityRate,
-  aIncentives,
+  supplyAPY,
+  aIncentivesData,
   isIsolated,
   usageAsCollateralEnabledOnUser,
   isActive,
@@ -60,8 +60,8 @@ export const SupplyAssetsListMobileItem = ({
         mb={2}
       >
         <IncentivesCard
-          value={Number(liquidityRate)}
-          incentives={aIncentives}
+          value={Number(supplyAPY)}
+          incentives={aIncentivesData}
           symbol={symbol}
           variant="secondary14"
         />
