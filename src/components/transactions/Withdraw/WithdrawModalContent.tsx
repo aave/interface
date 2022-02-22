@@ -96,12 +96,17 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
   useEffect(() => {
     setAmountToWithdraw(amount);
     if (amount === '-1') {
-      if (user.totalBorrowsMarketReferenceCurrency !== '0') {
+      if (!userReserve.usageAsCollateralEnabledOnUser) {
+        setAmountToWithdraw(amount);
+        setIsMax(true);
+      } else if (user.totalBorrowsMarketReferenceCurrency !== '0') {
         setAmountToWithdraw(maxAmountToWithdraw.toString());
       } else if (!currentMarketData.v3) {
         setAmountToWithdraw(maxAmountToWithdraw.toString());
+      } else {
+        setAmountToWithdraw(amount);
+        setIsMax(true);
       }
-      setIsMax(true);
     } else {
       setIsMax(false);
     }
@@ -149,7 +154,7 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
   }
 
   useEffect(() => {
-    if (!withdrawTxState.success) {
+    if (!withdrawTxState.success && !withdrawTxState.txHash) {
       if (healthFactorAfterWithdraw.lt('1') && user.totalBorrowsMarketReferenceCurrency !== '0') {
         setBlockingError(ErrorType.CAN_NOT_WITHDRAW_THIS_AMOUNT);
       } else if (
