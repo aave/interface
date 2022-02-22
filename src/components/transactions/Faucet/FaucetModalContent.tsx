@@ -48,32 +48,27 @@ export const FaucetModalContent = ({ underlyingAsset }: FaucetModalContentProps)
 
   if (faucetTxState.txError) return <TxErrorView errorMessage={faucetTxState.txError} />;
   if (faucetTxState.success)
-    <TxSuccessView
-      action="received"
-      symbol={poolReserve.symbol}
-      amount={normalizedAmount}
-      addToken={addToken}
-    />;
+    return (
+      <TxSuccessView
+        action="received"
+        symbol={poolReserve.symbol}
+        amount={normalizedAmount}
+        addToken={addToken}
+      />
+    );
 
   return (
     <>
-      {!faucetTxState.txError && !faucetTxState.success && (
-        <>
-          <TxModalTitle title="Faucet" symbol={poolReserve.symbol} />
-          {isWrongNetwork && (
-            <ChangeNetworkWarning
-              networkName={currentNetworkConfig.name}
-              chainId={currentChainId}
-            />
-          )}
-
-          <TxModalDetails
-            gasLimit={gasLimit}
-            symbol={poolReserve.symbol}
-            faucetAmount={normalizedAmount}
-          />
-        </>
+      <TxModalTitle title="Faucet" symbol={poolReserve.symbol} />
+      {isWrongNetwork && (
+        <ChangeNetworkWarning networkName={currentNetworkConfig.name} chainId={currentChainId} />
       )}
+
+      <TxModalDetails
+        gasLimit={gasLimit}
+        symbol={poolReserve.symbol}
+        faucetAmount={normalizedAmount}
+      />
 
       {faucetTxState.gasEstimationError && (
         <GasEstimationError error={faucetTxState.gasEstimationError} />
