@@ -1,12 +1,13 @@
 import { InterestRate } from '@aave/contract-helpers';
-import { PlusSmIcon } from '@heroicons/react/outline';
+import { PlusSmIcon, ExternalLinkIcon } from '@heroicons/react/outline';
 import { CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Button, SvgIcon, Typography } from '@mui/material';
+import { Box, Button, Link, SvgIcon, Typography } from '@mui/material';
 import { useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Base64Token } from 'src/components/primitives/TokenIcon';
 import { useModalContext } from 'src/hooks/useModal';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3ContextProvider';
 
@@ -19,6 +20,12 @@ export type SuccessTxViewProps = {
   addToken?: ERC20TokenType;
 };
 
+const ExtLinkIcon = () => (
+  <SvgIcon sx={{ ml: '2px', fontSize: '11px' }}>
+    <ExternalLinkIcon />
+  </SvgIcon>
+);
+
 export const TxSuccessView = ({
   action,
   amount,
@@ -27,8 +34,9 @@ export const TxSuccessView = ({
   rate,
   addToken,
 }: SuccessTxViewProps) => {
-  const { close } = useModalContext();
+  const { close, mainTxState } = useModalContext();
   const { addERC20Token } = useWeb3Context();
+  const { currentNetworkConfig } = useProtocolDataContext();
   const [base64, setBase64] = useState('');
 
   return (
@@ -134,7 +142,19 @@ export const TxSuccessView = ({
           )}
         </Box>
       </Box>
+
       <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12 }}>
+        <Link
+          variant="helperText"
+          href={currentNetworkConfig.explorerLinkBuilder({ tx: mainTxState.txHash })}
+          sx={{ display: 'inline-flex', alignItems: 'center' }}
+          underline="hover"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <Trans>Review {action} tx details</Trans>
+          <ExtLinkIcon />
+        </Link>
         <Button onClick={close} variant="contained" size="large" sx={{ minHeight: '44px' }}>
           <Trans>Ok, Close</Trans>
         </Button>
