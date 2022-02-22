@@ -48,7 +48,6 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
   const [borrowUnWrapped, setBorrowUnWrapped] = useState(true);
   const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
   const [amount, setAmount] = useState('');
-  const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
   const [amountToBorrow, setAmountToBorrow] = useState(amount);
 
   const networkConfig = getNetworkConfig(currentChainId);
@@ -93,26 +92,16 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
   const usdValue = valueToBigNumber(amountToBorrow).multipliedBy(poolReserve.priceInUSD);
 
   // error types handling
-  useEffect(() => {
-    if (interestRateMode === InterestRate.Stable && !poolReserve.stableBorrowRateEnabled) {
-      setBlockingError(ErrorType.STABLE_RATE_NOT_ENABLED);
-    } else if (valueToBigNumber(amountToBorrow).gt(poolReserve.formattedAvailableLiquidity)) {
-      setBlockingError(ErrorType.NOT_ENOUGH_LIQUIDITY);
-    } else if (maxAmountToBorrow.lt(amountToBorrow)) {
-      setBlockingError(ErrorType.NOT_ENOUGH_COLLATERAL);
-    } else if (!poolReserve.borrowingEnabled) {
-      setBlockingError(ErrorType.BORROWING_NOT_AVAILABLE);
-    } else {
-      setBlockingError(undefined);
-    }
-  }, [
-    interestRateMode,
-    poolReserve.stableBorrowRateEnabled,
-    poolReserve.formattedAvailableLiquidity,
-    amountToBorrow,
-    maxAmountToBorrow,
-    poolReserve.borrowingEnabled,
-  ]);
+  let blockingError: ErrorType | undefined = undefined;
+  if (interestRateMode === InterestRate.Stable && !poolReserve.stableBorrowRateEnabled) {
+    blockingError = ErrorType.STABLE_RATE_NOT_ENABLED;
+  } else if (valueToBigNumber(amountToBorrow).gt(poolReserve.formattedAvailableLiquidity)) {
+    blockingError = ErrorType.NOT_ENOUGH_LIQUIDITY;
+  } else if (maxAmountToBorrow.lt(amountToBorrow)) {
+    blockingError = ErrorType.NOT_ENOUGH_COLLATERAL;
+  } else if (!poolReserve.borrowingEnabled) {
+    blockingError = ErrorType.BORROWING_NOT_AVAILABLE;
+  }
 
   // error render handling
   const handleBlocked = () => {
