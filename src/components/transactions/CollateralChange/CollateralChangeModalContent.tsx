@@ -10,7 +10,6 @@ import {
   ComputedReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -122,11 +121,18 @@ export const CollateralChangeModalContent = ({
       <TxSuccessView collateral={usageAsCollateralModeAfterSwitch} symbol={poolReserve.symbol} />
     );
 
+  const symbol = poolReserve.isWrappedBaseAsset
+    ? currentNetworkConfig.baseAssetSymbol
+    : poolReserve.symbol;
+
   return (
     <>
       <Typography variant="h2" sx={{ mb: '24px' }}>
-        {usageAsCollateralModeAfterSwitch ? <Trans>Use</Trans> : <Trans>Disable</Trans>}{' '}
-        {poolReserve.symbol} <Trans> as collateral</Trans>
+        {usageAsCollateralModeAfterSwitch ? (
+          <Trans>Use {symbol} as collateral</Trans>
+        ) : (
+          <Trans>Disable {symbol} as collateral</Trans>
+        )}
       </Typography>
 
       {isWrongNetwork && (
@@ -160,7 +166,7 @@ export const CollateralChangeModalContent = ({
         healthFactor={user.healthFactor}
         futureHealthFactor={healthFactorAfterSwitch.toString()}
         gasLimit={gasLimit}
-        symbol={poolReserve.symbol}
+        symbol={symbol}
         walletBalance={userReserve.underlyingBalance}
       />
 
