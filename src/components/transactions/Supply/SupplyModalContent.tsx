@@ -64,7 +64,7 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
 
   const poolReserve = reserves.find((reserve) => {
     if (supplyUnWrapped) {
-      return reserve.symbol === currentNetworkConfig.wrappedBaseAssetSymbol;
+      return reserve.isWrappedBaseAsset;
     }
     return reserve.underlyingAsset === underlyingAsset;
   }) as ComputedReserveData;

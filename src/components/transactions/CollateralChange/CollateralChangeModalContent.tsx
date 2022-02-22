@@ -40,7 +40,6 @@ export const CollateralChangeModalContent = ({
   const { reserves, user } = useAppDataContext();
   const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
-  const { walletBalances } = useWalletBalances();
 
   const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
 
@@ -51,8 +50,6 @@ export const CollateralChangeModalContent = ({
   const userReserve = user.userReservesData.find(
     (userReserve) => underlyingAsset === userReserve.underlyingAsset
   ) as ComputedUserReserve;
-
-  const walletBalance = walletBalances[underlyingAsset]?.amount;
 
   // health factor Calcs
   const usageAsCollateralModeAfterSwitch = !userReserve.usageAsCollateralEnabledOnUser;
@@ -164,7 +161,7 @@ export const CollateralChangeModalContent = ({
         futureHealthFactor={healthFactorAfterSwitch.toString()}
         gasLimit={gasLimit}
         symbol={poolReserve.symbol}
-        walletBalance={walletBalance}
+        walletBalance={userReserve.underlyingBalance}
       />
 
       {blockingError !== undefined && (
