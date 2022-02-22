@@ -36,7 +36,7 @@ export const SuppliedPositionsListItem = ({
 
   return (
     <ListItemWrapper
-      symbol={reserve.symbol}
+      symbol={reserve.iconSymbol}
       iconSymbol={reserve.iconSymbol}
       name={reserve.name}
       underlyingAsset={underlyingAsset}
@@ -45,7 +45,7 @@ export const SuppliedPositionsListItem = ({
       }`}
     >
       <ListValueColumn
-        symbol={reserve.symbol}
+        symbol={reserve.iconSymbol}
         value={Number(underlyingBalance)}
         subValue={Number(underlyingBalanceUSD)}
         disabled={Number(underlyingBalance) === 0}

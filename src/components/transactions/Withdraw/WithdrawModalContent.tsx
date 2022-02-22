@@ -233,7 +233,7 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
             }
             onChange={setAmount}
             symbol={
-              withdrawUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
+              withdrawUnWrapped && poolReserve.isWrappedBaseAsset
                 ? networkConfig.baseAssetSymbol
                 : poolReserve.symbol
             }
@@ -241,7 +241,7 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
               {
                 balance: maxAmountToWithdraw.toString(),
                 symbol:
-                  withdrawUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
+                  withdrawUnWrapped && poolReserve.isWrappedBaseAsset
                     ? networkConfig.baseAssetSymbol
                     : poolReserve.symbol,
               },
@@ -270,11 +270,7 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
               healthFactor={user.healthFactor}
               futureHealthFactor={healthFactorAfterWithdraw.toString()}
               gasLimit={gasLimit}
-              setActionUnWrapped={
-                poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
-                  ? setWithdrawUnWrapped
-                  : undefined
-              }
+              setActionUnWrapped={poolReserve.isWrappedBaseAsset ? setWithdrawUnWrapped : undefined}
               unWrappedSymbol={networkConfig.baseAssetSymbol}
               actionUnWrapped={withdrawUnWrapped}
               symbol={poolReserve.symbol}
@@ -289,7 +285,7 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
           action="Withdrawed"
           amount={isMax ? maxAmount : displayAmountToWithdraw.toString()}
           symbol={
-            withdrawUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
+            withdrawUnWrapped && poolReserve.isWrappedBaseAsset
               ? networkConfig.baseAssetSymbol
               : poolReserve.symbol
           }
@@ -303,13 +299,13 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
         poolReserve={poolReserve}
         amountToWithdraw={amountToWithdraw.toString()}
         poolAddress={
-          withdrawUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
+          withdrawUnWrapped && poolReserve.isWrappedBaseAsset
             ? API_ETH_MOCK_ADDRESS
             : poolReserve.underlyingAsset
         }
         isWrongNetwork={isWrongNetwork}
         symbol={
-          withdrawUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
+          withdrawUnWrapped && poolReserve.isWrappedBaseAsset
             ? networkConfig.baseAssetSymbol
             : poolReserve.symbol
         }
