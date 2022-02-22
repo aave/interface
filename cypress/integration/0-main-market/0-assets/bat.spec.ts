@@ -1,11 +1,11 @@
 import { configEnvWithTenderlyMainnetFork } from '../../../support/steps/configuration.steps';
 import {
-  deposit,
   borrow,
   repay,
   withdraw,
   changeBorrowType,
-} from '../../../support/steps/main.steps';
+  supply,
+} from "../../../support/steps/main.steps";
 import { dashboardAssetValuesVerification } from '../../../support/steps/verification.steps';
 import { skipState } from '../../../support/steps/common';
 import assets from '../../../fixtures/assets.json';
@@ -93,14 +93,14 @@ const testData = {
 describe('BAT INTEGRATION SPEC', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyMainnetFork({});
-  deposit(testData.depositETH, skipTestState, true);
+  supply(testData.depositETH, skipTestState, true);
   testData.testCases.borrow.forEach((borrowCase) => {
     borrow(borrowCase, skipTestState, true);
   });
   testData.testCases.changeBorrowType.forEach((changeAPRCase) => {
     changeBorrowType(changeAPRCase, skipTestState, true);
   });
-  deposit(testData.testCases.deposit, skipTestState, true);
+  supply(testData.testCases.deposit, skipTestState, true);
   testData.testCases.repay.forEach((repayCase) => {
     repay(repayCase, skipTestState, false);
   });

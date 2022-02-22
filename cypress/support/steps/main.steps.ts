@@ -106,6 +106,18 @@ export const borrow = (
         `[data-cy=Modal] h2:contains("Borrow ${asset.wrapped ? 'W' : ''}${_shortName}")`
       ).should('be.visible');
     });
+    it(`Choose ${apyType} borrow option`, ()=>{
+        switch (apyType) {
+          case constants.borrowAPYType.variable:
+            cy.get('[data-cy=Modal] [role=group] button p').contains('Variable').click();
+            break;
+          case constants.borrowAPYType.stable:
+            cy.get('[data-cy=Modal] [role=group] button p').contains('Stable').click();
+            break;
+          default:
+            break;
+        }
+    });
     it(`Borrow ${amount} amount for ${_shortName}`, () => {
       setAmount({
         amount,
