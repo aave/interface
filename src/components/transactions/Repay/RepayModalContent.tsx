@@ -193,7 +193,7 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
       }
     }
   }, [isMax]);
-  console.log('debt: ', debt);
+
   // debt remaining after repay
   const amountAfterRepay = valueToBigNumber(debt).minus(amountToRepayUI).toString();
   const displayAmountAfterRepay = BigNumber.min(amountAfterRepay, maxAmountToRepay);
