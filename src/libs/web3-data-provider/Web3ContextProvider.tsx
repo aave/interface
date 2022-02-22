@@ -7,7 +7,7 @@ import {
   Web3Provider,
 } from '@ethersproject/providers';
 import { BigNumber, providers } from 'ethers';
-import React, { ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { hexToAscii } from 'src/utils/utils';
 import Web3Modal from 'web3modal';
