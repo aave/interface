@@ -312,7 +312,6 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
           </Grid>
         </Grid>
       </ContentContainer>
-      <GovVoteModal />
     </>
   );
 }
@@ -320,7 +319,10 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
 ProposalPage.getLayout = function getLayout(page: React.ReactElement) {
   return (
     <MainLayout>
-      <GovernanceDataProvider>{page}</GovernanceDataProvider>
+      <GovernanceDataProvider>
+        {page}
+        <GovVoteModal />
+      </GovernanceDataProvider>
     </MainLayout>
   );
 };

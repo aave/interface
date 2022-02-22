@@ -9,11 +9,11 @@ import { Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { parseUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
-import { TxState } from 'src/helpers/types';
 import {
   ComputedReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
@@ -30,7 +30,6 @@ import { WithdrawActions } from './WithdrawActions';
 
 export type WithdrawModalContentProps = {
   underlyingAsset: string;
-  handleClose: () => void;
 };
 export enum ErrorType {
   CAN_NOT_WITHDRAW_THIS_AMOUNT,
@@ -38,19 +37,17 @@ export enum ErrorType {
   POOL_DOES_NOT_HAVE_ENOUGH_LIQUIDITY,
 }
 
-export const WithdrawModalContent = ({
-  underlyingAsset,
-  handleClose,
-}: WithdrawModalContentProps) => {
+export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentProps) => {
+  const { gasLimit, mainTxState: withdrawTxState } = useModalContext();
   const { reserves, user } = useAppDataContext();
   const { currentChainId, currentMarketData } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
 
-  const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
   const [amount, setAmount] = useState('');
-  const [withdrawTxState, setWithdrawTxState] = useState<TxState>({ success: false });
   const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
   const [amountToWithdraw, setAmountToWithdraw] = useState(amount);
+  const [isMax, setIsMax] = useState(false);
+  const [maxAmount, setMaxAmount] = useState('0');
 
   const networkConfig = getNetworkConfig(currentChainId);
 
@@ -104,8 +101,17 @@ export const WithdrawModalContent = ({
       } else if (!currentMarketData.v3) {
         setAmountToWithdraw(maxAmountToWithdraw.toString());
       }
+      setIsMax(true);
+    } else {
+      setIsMax(false);
     }
   }, [amount, currentMarketData.v3]);
+
+  useEffect(() => {
+    if (isMax) {
+      setMaxAmount(maxAmountToWithdraw.toString());
+    }
+  }, [isMax]);
 
   let displayAmountToWithdraw =
     amountToWithdraw === '' ? valueToBigNumber(0) : valueToBigNumber(amountToWithdraw);
@@ -143,20 +149,24 @@ export const WithdrawModalContent = ({
   }
 
   useEffect(() => {
-    if (healthFactorAfterWithdraw.lt('1') && user.totalBorrowsMarketReferenceCurrency !== '0') {
-      setBlockingError(ErrorType.CAN_NOT_WITHDRAW_THIS_AMOUNT);
-    }
-    if (
-      !blockingError &&
-      (underlyingBalance.eq('0') || underlyingBalance.lt(displayAmountToWithdraw))
-    ) {
-      setBlockingError(ErrorType.NOT_ENOUGH_FUNDS_TO_WITHDRAW_AMOUNT);
-    }
-    if (
-      !blockingError &&
-      (unborrowedLiquidity.eq('0') || displayAmountToWithdraw.gt(poolReserve.unborrowedLiquidity))
-    ) {
-      setBlockingError(ErrorType.POOL_DOES_NOT_HAVE_ENOUGH_LIQUIDITY);
+    if (!withdrawTxState.success) {
+      if (healthFactorAfterWithdraw.lt('1') && user.totalBorrowsMarketReferenceCurrency !== '0') {
+        setBlockingError(ErrorType.CAN_NOT_WITHDRAW_THIS_AMOUNT);
+      } else if (
+        !blockingError &&
+        (underlyingBalance.eq('0') || underlyingBalance.lt(displayAmountToWithdraw))
+      ) {
+        setBlockingError(ErrorType.NOT_ENOUGH_FUNDS_TO_WITHDRAW_AMOUNT);
+      } else if (
+        !blockingError &&
+        (unborrowedLiquidity.eq('0') || displayAmountToWithdraw.gt(poolReserve.unborrowedLiquidity))
+      ) {
+        setBlockingError(ErrorType.POOL_DOES_NOT_HAVE_ENOUGH_LIQUIDITY);
+      } else {
+        setBlockingError(undefined);
+      }
+    } else {
+      setBlockingError(undefined);
     }
   }, [
     healthFactorAfterWithdraw,
@@ -165,6 +175,7 @@ export const WithdrawModalContent = ({
     displayAmountToWithdraw,
     unborrowedLiquidity,
     amount,
+    withdrawTxState,
   ]);
 
   // error render handling
@@ -195,7 +206,13 @@ export const WithdrawModalContent = ({
   const isWrongNetwork = currentChainId !== connectedChainId;
 
   // calculating input usd value
-  const usdValue = valueToBigNumber(amount).multipliedBy(userReserve.reserve.priceInUSD);
+  const usdValue = valueToBigNumber(
+    amountToWithdraw === ''
+      ? amountToWithdraw
+      : isMax
+      ? maxAmount
+      : displayAmountToWithdraw.toString()
+  ).multipliedBy(userReserve.reserve.priceInUSD);
 
   return (
     <>
@@ -207,7 +224,13 @@ export const WithdrawModalContent = ({
           )}
 
           <AssetInput
-            value={amountToWithdraw === '' ? amountToWithdraw : displayAmountToWithdraw.toString()}
+            value={
+              amountToWithdraw === ''
+                ? amountToWithdraw
+                : isMax
+                ? maxAmount
+                : displayAmountToWithdraw.toString()
+            }
             onChange={setAmount}
             symbol={
               withdrawUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
@@ -264,7 +287,7 @@ export const WithdrawModalContent = ({
       {withdrawTxState.success && !withdrawTxState.txError && (
         <TxSuccessView
           action="Withdrawed"
-          amount={displayAmountToWithdraw.toString()}
+          amount={isMax ? maxAmount : displayAmountToWithdraw.toString()}
           symbol={
             withdrawUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
               ? networkConfig.baseAssetSymbol
@@ -278,10 +301,7 @@ export const WithdrawModalContent = ({
 
       <WithdrawActions
         poolReserve={poolReserve}
-        setGasLimit={setGasLimit}
-        setWithdrawTxState={setWithdrawTxState}
         amountToWithdraw={amountToWithdraw.toString()}
-        handleClose={handleClose}
         poolAddress={
           withdrawUnWrapped && poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
             ? API_ETH_MOCK_ADDRESS

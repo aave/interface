@@ -3,8 +3,9 @@ import { Trans, t } from '@lingui/macro';
 import { FormControl, FormHelperText, Input, Typography } from '@mui/material';
 import { ethers } from 'ethers';
 import { useEffect, useState } from 'react';
-import { DelegationType, TxState } from 'src/helpers/types';
+import { DelegationType } from 'src/helpers/types';
 import { useAaveTokensProviderContext } from 'src/hooks/governance-data-provider/AaveTokensDataProvider';
+import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import {
   DelegationToken,
@@ -23,10 +24,6 @@ import { DelegationTokenSelector } from './DelegationTokenSelector';
 import { DelegationTypeSelector } from './DelegationTypeSelector';
 import { GovDelegationActions } from './GovDelegationActions';
 
-export type GovDelegationModalContentProps = {
-  handleClose: () => void;
-};
-
 export interface Asset {
   symbol: string;
   icon: string;
@@ -39,14 +36,12 @@ export enum ErrorType {
   NOT_AN_ADDRESS,
 }
 
-export const GovDelegationModalContent = ({ handleClose }: GovDelegationModalContentProps) => {
+export const GovDelegationModalContent = () => {
   const { chainId: connectedChainId } = useWeb3Context();
   const {
     daveTokens: { aave, stkAave },
   } = useAaveTokensProviderContext();
-
-  const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
-  const [txState, setTxState] = useState<TxState>({ success: false });
+  const { gasLimit, mainTxState: txState } = useModalContext();
 
   // error states
   const [tokenBlockingError, setTokenBlockingError] = useState<ErrorType>();
@@ -97,63 +92,56 @@ export const GovDelegationModalContent = ({ handleClose }: GovDelegationModalCon
   const networkConfig = getNetworkConfig(govChain);
   const isWrongNetwork = connectedChainId !== govChain;
 
+  if (txState.txError) return <TxErrorView errorMessage={txState.txError} />;
+  if (txState.success) return <TxSuccessView action="Delegation" />;
   return (
     <>
-      {!txState.txError && !txState.success && (
-        <>
-          <TxModalTitle title="Governance delegation" />
-          {isWrongNetwork && (
-            <ChangeNetworkWarning networkName={networkConfig.name} chainId={govChain} />
-          )}
-          <Typography variant="description">
-            <Trans>Asset</Trans>
-          </Typography>
-          <DelegationTokenSelector
-            setDelegationToken={setDelegationToken}
-            delegationToken={delegationToken}
-            delegationTokens={delegationTokens}
-            blockingError={tokenBlockingError}
-          />
-          <Typography variant="description">
-            <Trans>Type</Trans>
-          </Typography>
-          <DelegationTypeSelector
-            delegationType={delegationType}
-            setDelegationType={setDelegationType}
-          />
-          <Typography variant="description">
-            <Trans>Delegation to address</Trans>
-          </Typography>
-          <FormControl error={delegateAddressBlockingError !== undefined} variant="standard">
-            <Input
-              value={delegate}
-              onChange={(e) => setDelegate(e.target.value)}
-              placeholder={t`Enter Eth address`}
-              error={delegateAddressBlockingError !== undefined}
-            />
-            {delegateAddressBlockingError !== undefined && (
-              <FormHelperText>
-                <Typography variant="helperText" sx={{ color: 'red' }}>
-                  {handleDelegateAddressError()}
-                </Typography>
-              </FormHelperText>
-            )}
-          </FormControl>
-          <TxModalDetails gasLimit={gasLimit} />
-        </>
+      <TxModalTitle title="Delegate your power" />
+      {isWrongNetwork && (
+        <ChangeNetworkWarning networkName={networkConfig.name} chainId={govChain} />
       )}
+      <Typography variant="description">
+        <Trans>Asset to delegate</Trans>
+      </Typography>
+      <DelegationTokenSelector
+        setDelegationToken={setDelegationToken}
+        delegationToken={delegationToken}
+        delegationTokens={delegationTokens}
+        blockingError={tokenBlockingError}
+      />
+      <Typography variant="description">
+        <Trans>Type of delegation</Trans>
+      </Typography>
+      <DelegationTypeSelector
+        delegationType={delegationType}
+        setDelegationType={setDelegationType}
+      />
+      <Typography variant="description">
+        <Trans>Recipient address</Trans>
+      </Typography>
+      <FormControl error={delegateAddressBlockingError !== undefined} variant="standard">
+        <Input
+          value={delegate}
+          onChange={(e) => setDelegate(e.target.value)}
+          placeholder={t`Enter Eth address`}
+          error={delegateAddressBlockingError !== undefined}
+        />
+        {delegateAddressBlockingError !== undefined && (
+          <FormHelperText>
+            <Typography variant="helperText" sx={{ color: 'red' }}>
+              {handleDelegateAddressError()}
+            </Typography>
+          </FormHelperText>
+        )}
+      </FormControl>
+      <TxModalDetails gasLimit={gasLimit} />
 
-      {txState.txError && <TxErrorView errorMessage={txState.txError} />}
-      {txState.success && !txState.txError && <TxSuccessView action="Delegation" />}
       {txState.gasEstimationError && <GasEstimationError error={txState.gasEstimationError} />}
 
       <GovDelegationActions
-        setGasLimit={setGasLimit}
         delegationType={delegationType}
         delegationToken={delegationToken}
         delegate={delegate}
-        setTxState={setTxState}
-        handleClose={handleClose}
         isWrongNetwork={isWrongNetwork}
         blocked={
           tokenBlockingError !== undefined ||

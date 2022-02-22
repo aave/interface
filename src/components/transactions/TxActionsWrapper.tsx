@@ -1,35 +1,78 @@
 import { Trans } from '@lingui/macro';
-import { Box, BoxProps, Button } from '@mui/material';
+import { Box, BoxProps, Button, CircularProgress } from '@mui/material';
 import { ReactNode } from 'react';
-
-import { TxStateType } from '../../helpers/useTransactionHandler';
+import { TxStateType } from 'src/hooks/useModal';
 
 interface TxActionsWrapperProps extends BoxProps {
-  mainTxState: TxStateType;
+  actionInProgressText: ReactNode;
+  actionText: ReactNode;
+  amount?: string;
   approvalTxState?: TxStateType;
-  helperText?: ReactNode;
-  withAmount?: boolean;
-  hasAmount?: boolean | string;
+  handleApproval?: () => Promise<void>;
+  handleAction: () => Promise<void>;
   handleRetry?: () => void;
-  handleClose: () => void;
-  children: ReactNode;
+  helperText?: ReactNode;
   isWrongNetwork: boolean;
+  mainTxState: TxStateType;
+  preparingTransactions: boolean;
+  requiresAmount?: boolean;
+  requiresApproval?: boolean;
+  symbol?: string;
+  blocked?: boolean;
 }
 
 export const TxActionsWrapper = ({
-  mainTxState,
+  actionInProgressText,
+  actionText,
+  amount,
   approvalTxState,
-  withAmount,
-  hasAmount,
-  helperText,
-  sx,
+  handleApproval,
+  handleAction,
   handleRetry,
-  handleClose,
+  helperText,
   isWrongNetwork,
-  children,
+  mainTxState,
+  preparingTransactions,
+  requiresAmount,
+  requiresApproval,
+  sx,
+  symbol,
+  blocked,
   ...rest
 }: TxActionsWrapperProps) => {
-  const approvalTxError = approvalTxState && approvalTxState.txError;
+  const hasApprovalError = requiresApproval && (approvalTxState?.txError || mainTxState?.txError);
+  const isAmountMissing = requiresAmount && requiresAmount && Number(amount) === 0;
+
+  function getMainParams() {
+    if (isWrongNetwork) return { disabled: true, content: <Trans>Switch Network</Trans> };
+    if (isAmountMissing) return { disabled: true, content: <Trans>Enter an amount</Trans> };
+    if (preparingTransactions) return { disabled: true, loading: true };
+    if (hasApprovalError && handleRetry)
+      return { content: <Trans>Retry with approval</Trans>, handleClick: handleRetry };
+    if (mainTxState?.loading)
+      return { loading: true, disabled: true, content: actionInProgressText };
+    if (requiresApproval && !approvalTxState?.success)
+      return { disabled: true, content: actionText };
+    return { content: actionText, handleClick: handleAction };
+  }
+
+  function getApprovalParams() {
+    if (
+      !requiresApproval ||
+      isWrongNetwork ||
+      isAmountMissing ||
+      preparingTransactions ||
+      hasApprovalError
+    )
+      return null;
+    if (approvalTxState?.loading)
+      return { loading: true, disabled: true, content: <Trans>Approving {symbol}...</Trans> };
+    if (approvalTxState?.success) return { disabled: true, content: <Trans>Approved</Trans> };
+    return { content: <Trans>Approve to continue</Trans>, handleClick: handleApproval };
+  }
+
+  const { content, disabled, loading, handleClick } = getMainParams();
+  const approvalParams = getApprovalParams();
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12, ...sx }} {...rest}>
@@ -39,34 +82,31 @@ export const TxActionsWrapper = ({
         </Box>
       )}
 
-      {(mainTxState.txError || approvalTxError) && (
+      {approvalParams && (
         <Button
           variant="contained"
-          onClick={handleRetry}
+          disabled={approvalParams.disabled || blocked}
+          onClick={approvalParams.handleClick}
           size="large"
-          sx={{ mb: 2, minHeight: '44px' }}
+          sx={{ minHeight: '44px' }}
         >
-          <Trans>Retry with approval</Trans>
-        </Button>
-      )}
-      {isWrongNetwork && (
-        <Button variant="contained" disabled size="large" sx={{ minHeight: '44px' }}>
-          <Trans>Switch Network</Trans>
-        </Button>
-      )}
-      {withAmount && !hasAmount && !approvalTxError && !isWrongNetwork && (
-        <Button variant="contained" disabled size="large" sx={{ minHeight: '44px' }}>
-          <Trans>Enter an amount</Trans>
+          {approvalParams.loading && (
+            <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
+          )}
+          {approvalParams.content}
         </Button>
       )}
 
-      {children}
-
-      {(mainTxState.txHash || mainTxState.txError || approvalTxError) && (
-        <Button onClick={handleClose} variant="contained" size="large" sx={{ minHeight: '44px' }}>
-          {!mainTxState.txError && !approvalTxError && <Trans>Ok,</Trans>} <Trans>Close</Trans>
-        </Button>
-      )}
+      <Button
+        variant="contained"
+        disabled={disabled || blocked}
+        onClick={handleClick}
+        size="large"
+        sx={{ minHeight: '44px', ...(approvalParams ? { mt: 2 } : {}) }}
+      >
+        {loading && <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />}
+        {content}
+      </Button>
     </Box>
   );
 };

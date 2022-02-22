@@ -8,9 +8,7 @@ export const FaucetModal = () => {
   const { type, close, args } = useModalContext();
   return (
     <BasicModal open={type === ModalType.Faucet} setOpen={close}>
-      {args?.underlyingAsset && (
-        <FaucetModalContent underlyingAsset={args.underlyingAsset} handleClose={close} />
-      )}
+      {args?.underlyingAsset && <FaucetModalContent underlyingAsset={args.underlyingAsset} />}
     </BasicModal>
   );
 };

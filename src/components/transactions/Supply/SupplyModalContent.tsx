@@ -9,13 +9,14 @@ import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import React, { useEffect, useState } from 'react';
-import { CollateralType, TxState } from 'src/helpers/types';
+import { CollateralType } from 'src/helpers/types';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
+import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3ContextProvider';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
-import { getNetworkConfig, isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
+import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 
 import {
   ComputedReserveData,
@@ -38,7 +39,6 @@ import { SupplyActions } from './SupplyActions';
 
 export type SupplyProps = {
   underlyingAsset: string;
-  handleClose: () => void;
 };
 
 export enum ErrorType {
@@ -46,26 +46,25 @@ export enum ErrorType {
   CAP_REACHED,
 }
 
-export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps) => {
+export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
   const { walletBalances } = useWalletBalances();
   const { marketReferencePriceInUsd, reserves, user } = useAppDataContext();
-  const { currentChainId, currentMarketData } = useProtocolDataContext();
+  const { currentChainId, currentMarketData, currentNetworkConfig } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
+  const { mainTxState: supplyTxState, gasLimit } = useModalContext();
 
   // states
-  const [supplyTxState, setSupplyTxState] = useState<TxState>({ success: false });
   const [amount, setAmount] = useState('');
   const [amountToSupply, setAmountToSupply] = useState(amount);
-  const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
   const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
+  const [maxAmount, setMaxAmount] = useState('0');
+  const [isMax, setIsMax] = useState(false);
 
   const supplyUnWrapped = underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase();
 
-  const networkConfig = getNetworkConfig(currentChainId);
-
   const poolReserve = reserves.find((reserve) => {
     if (supplyUnWrapped) {
-      return reserve.symbol === networkConfig.wrappedBaseAssetSymbol;
+      return reserve.symbol === currentNetworkConfig.wrappedBaseAssetSymbol;
     }
     return reserve.underlyingAsset === underlyingAsset;
   }) as ComputedReserveData;
@@ -91,10 +90,18 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
   useEffect(() => {
     if (amount === '-1') {
       setAmountToSupply(maxAmountToSupply.toString());
+      setIsMax(true);
     } else {
       setAmountToSupply(amount);
+      setIsMax(false);
     }
   }, [amount, maxAmountToSupply]);
+
+  useEffect(() => {
+    if (isMax) {
+      setMaxAmount(maxAmountToSupply.toString());
+    }
+  }, [isMax]);
 
   // Calculation of future HF
   const amountIntEth = new BigNumber(amountToSupply).multipliedBy(
@@ -157,14 +164,18 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
 
   // error handler
   useEffect(() => {
-    if (valueToBigNumber(amountToSupply).gt(walletBalance)) {
-      setBlockingError(ErrorType.NOT_ENOUGH_BALANCE);
-    } else if (capReached) {
-      setBlockingError(ErrorType.CAP_REACHED);
+    if (!supplyTxState.success) {
+      if (valueToBigNumber(amountToSupply).gt(walletBalance)) {
+        setBlockingError(ErrorType.NOT_ENOUGH_BALANCE);
+      } else if (capReached) {
+        setBlockingError(ErrorType.CAP_REACHED);
+      } else {
+        setBlockingError(undefined);
+      }
     } else {
       setBlockingError(undefined);
     }
-  }, [walletBalance, amountToSupply, capReached]);
+  }, [walletBalance, amountToSupply, capReached, supplyTxState]);
 
   const handleBlocked = () => {
     switch (blockingError) {
@@ -188,9 +199,10 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
   // token info to add to wallet
   const addToken: ERC20TokenType = {
     address: poolReserve.aTokenAddress,
-    symbol: poolReserve.symbol,
+    symbol: poolReserve.iconSymbol,
     decimals: poolReserve.decimals,
     aToken: true,
+    aTokenPrefix: currentMarketData.aTokenPrefix,
   };
 
   // collateralization state
@@ -232,80 +244,75 @@ export const SupplyModalContent = ({ underlyingAsset, handleClose }: SupplyProps
     }
   }
 
+  if (supplyTxState.txError) return <TxErrorView errorMessage={supplyTxState.txError} />;
+  if (supplyTxState.success)
+    return (
+      <TxSuccessView
+        action="Supplied"
+        amount={isMax ? maxAmount : amountToSupply}
+        symbol={supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol}
+        addToken={addToken}
+      />
+    );
+
   return (
     <>
-      {!supplyTxState.txError && !supplyTxState.success && (
-        <>
-          <TxModalTitle title="Supply" symbol={poolReserve.symbol} />
-          {isWrongNetwork && (
-            <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
-          )}
-
-          {showIsolationWarning && <IsolationModeWarning />}
-          {showSupplyCapWarning && <SupplyCapWarning />}
-          {poolReserve.symbol === 'AMPL' && <AMPLWarning />}
-          {poolReserve.symbol === 'AAVE' && isFeatureEnabled.staking(currentMarketData) && (
-            <AAVEWarning />
-          )}
-          {poolReserve.symbol === 'SNX' && !maxAmountToSupply.eq('0') && <SNXWarning />}
-
-          <AssetInput
-            value={amountToSupply}
-            onChange={setAmount}
-            usdValue={amountInUsd.toString()}
-            symbol={supplyUnWrapped ? networkConfig.baseAssetSymbol : poolReserve.symbol}
-            assets={[
-              {
-                balance: maxAmountToSupply.toString(),
-                symbol: supplyUnWrapped ? networkConfig.baseAssetSymbol : poolReserve.symbol,
-              },
-            ]}
-            capType={CapType.supplyCap}
-          />
-
-          {blockingError !== undefined && (
-            <Typography variant="helperText" color="error.main">
-              {handleBlocked()}
-            </Typography>
-          )}
-
-          <TxModalDetails
-            apy={supplyApy}
-            incentives={poolReserve.aIncentivesData}
-            showHf={showHealthFactor || false}
-            healthFactor={user ? user.healthFactor : '-1'}
-            futureHealthFactor={healthFactorAfterDeposit.toString()}
-            gasLimit={gasLimit}
-            symbol={poolReserve.symbol}
-            // TODO: need take a look usedAsCollateral
-            usedAsCollateral={willBeUsedAsCollateral}
-            action="Supply"
-          />
-        </>
+      <TxModalTitle title="Supply" symbol={poolReserve.symbol} />
+      {isWrongNetwork && (
+        <ChangeNetworkWarning networkName={currentNetworkConfig.name} chainId={currentChainId} />
       )}
 
-      {supplyTxState.txError && <TxErrorView errorMessage={supplyTxState.txError} />}
-      {supplyTxState.success && !supplyTxState.txError && (
-        <TxSuccessView
-          action="Supplied"
-          amount={amountToSupply}
-          symbol={poolReserve.symbol}
-          addToken={addToken}
-        />
+      {showIsolationWarning && <IsolationModeWarning />}
+      {showSupplyCapWarning && <SupplyCapWarning />}
+      {poolReserve.symbol === 'AMPL' && <AMPLWarning />}
+      {poolReserve.symbol === 'AAVE' && isFeatureEnabled.staking(currentMarketData) && (
+        <AAVEWarning />
       )}
+      {poolReserve.symbol === 'SNX' && !maxAmountToSupply.eq('0') && <SNXWarning />}
+
+      <AssetInput
+        value={isMax ? maxAmount : amountToSupply}
+        onChange={setAmount}
+        usdValue={amountInUsd.toString()}
+        symbol={supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol}
+        assets={[
+          {
+            balance: maxAmountToSupply.toString(),
+            symbol: supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol,
+          },
+        ]}
+        capType={CapType.supplyCap}
+      />
+
+      {blockingError !== undefined && (
+        <Typography variant="helperText" color="error.main">
+          {handleBlocked()}
+        </Typography>
+      )}
+
+      <TxModalDetails
+        apy={supplyApy}
+        incentives={poolReserve.aIncentivesData}
+        showHf={showHealthFactor || false}
+        healthFactor={user ? user.healthFactor : '-1'}
+        futureHealthFactor={healthFactorAfterDeposit.toString()}
+        gasLimit={gasLimit}
+        symbol={poolReserve.symbol}
+        // TODO: need take a look usedAsCollateral
+        usedAsCollateral={willBeUsedAsCollateral}
+        action="Supply"
+      />
+
       {supplyTxState.gasEstimationError && (
         <GasEstimationError error={supplyTxState.gasEstimationError} />
       )}
 
       <SupplyActions
-        setSupplyTxState={setSupplyTxState}
         poolReserve={poolReserve}
         amountToSupply={amountToSupply}
-        handleClose={handleClose}
         isWrongNetwork={isWrongNetwork}
-        setGasLimit={setGasLimit}
         poolAddress={supplyUnWrapped ? underlyingAsset : poolReserve.underlyingAsset}
-        symbol={supplyUnWrapped ? networkConfig.baseAssetSymbol : poolReserve.symbol}
+        symbol={supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol}
         blocked={blockingError !== undefined}
       />
     </>

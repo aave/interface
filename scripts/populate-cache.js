@@ -56031,7 +56031,7 @@ var import_contract_helpers2 = __toESM(require_cjs());
 var marketsData = {
   ["proto_eth_rinkeby_v3" /* proto_eth_rinkeby_v3 */]: {
     v3: true,
-    marketTitle: "AAVE v3 Rinkeby",
+    marketTitle: "Ethereum Rinkeby",
     chainId: import_contract_helpers2.ChainId.rinkeby,
     aTokenPrefix: "A",
     enabledFeatures: {
@@ -56051,7 +56051,7 @@ var marketsData = {
     }
   },
   ["proto_kovan" /* proto_kovan */]: {
-    marketTitle: "AAVE v2 Kovan",
+    marketTitle: "Ethereum Kovan",
     chainId: import_contract_helpers2.ChainId.kovan,
     aTokenPrefix: "A",
     enabledFeatures: {
@@ -56071,7 +56071,7 @@ var marketsData = {
     }
   },
   ["proto_mainnet" /* proto_mainnet */]: {
-    marketTitle: "AAVE v2",
+    marketTitle: "Ethereum",
     chainId: import_contract_helpers2.ChainId.mainnet,
     aTokenPrefix: "A",
     enabledFeatures: {
@@ -56094,7 +56094,7 @@ var marketsData = {
     halMarketName: "aavev2"
   },
   ["amm_kovan" /* amm_kovan */]: {
-    marketTitle: "AMM Kovan",
+    marketTitle: "Ethereum AMM Kovan",
     chainId: import_contract_helpers2.ChainId.kovan,
     aTokenPrefix: "AAMM",
     addresses: {
@@ -56108,7 +56108,7 @@ var marketsData = {
     }
   },
   ["amm_mainnet" /* amm_mainnet */]: {
-    marketTitle: "AMM",
+    marketTitle: "Ethereum AMM",
     chainId: import_contract_helpers2.ChainId.mainnet,
     aTokenPrefix: "AAMM",
     addresses: {
@@ -56121,7 +56121,7 @@ var marketsData = {
     }
   },
   ["proto_mumbai" /* proto_mumbai */]: {
-    marketTitle: "AAVE v2 Mumbai",
+    marketTitle: "Polygon Mumbai",
     chainId: import_contract_helpers2.ChainId.mumbai,
     aTokenPrefix: "AM",
     enabledFeatures: {
@@ -56139,7 +56139,7 @@ var marketsData = {
     }
   },
   ["proto_mumbai_v3" /* proto_mumbai_v3 */]: {
-    marketTitle: "AAVE v3 Mumbai",
+    marketTitle: "Polygon Mumbai",
     chainId: import_contract_helpers2.ChainId.mumbai,
     aTokenPrefix: "AM",
     enabledFeatures: {
@@ -56214,7 +56214,7 @@ var marketsData = {
     halMarketName: "aaveavalanche"
   },
   ["proto_arbitrum_rinkeby_v3" /* proto_arbitrum_rinkeby_v3 */]: {
-    marketTitle: "Arbitrum v3 Rinkeby",
+    marketTitle: "Arbitrum Rinkeby",
     v3: true,
     chainId: import_contract_helpers2.ChainId.arbitrum_rinkeby,
     aTokenPrefix: "AA",
@@ -56233,7 +56233,7 @@ var marketsData = {
     }
   },
   ["proto_fuji_v3" /* proto_fuji_v3 */]: {
-    marketTitle: "Avalanche v3 Fuji",
+    marketTitle: "Avalanche Fuji",
     v3: true,
     chainId: import_contract_helpers2.ChainId.fuji,
     aTokenPrefix: "AAVA",
@@ -56252,7 +56252,7 @@ var marketsData = {
     }
   },
   ["proto_harmony_testnet_v3" /* proto_harmony_testnet_v3 */]: {
-    marketTitle: "Harmony v3 Testnet",
+    marketTitle: "Harmony Testnet",
     v3: true,
     chainId: import_contract_helpers2.ChainId.harmony_testnet,
     aTokenPrefix: "AAVA",
@@ -56271,7 +56271,7 @@ var marketsData = {
     }
   },
   ["proto_fantom_testnet_v3" /* proto_fantom_testnet_v3 */]: {
-    marketTitle: "Fantom v3 Testnet",
+    marketTitle: "Fantom Testnet",
     v3: true,
     chainId: import_contract_helpers2.ChainId.fantom_testnet,
     aTokenPrefix: "AAVA",
@@ -56290,7 +56290,7 @@ var marketsData = {
     }
   },
   ["proto_optimism_kovan_v3" /* proto_optimism_kovan_v3 */]: {
-    marketTitle: "Optimism v3 Kovan",
+    marketTitle: "Optimism Kovan",
     v3: true,
     chainId: import_contract_helpers2.ChainId.optimism_kovan,
     aTokenPrefix: "AAVA",
@@ -56324,7 +56324,7 @@ var networkConfigs = {
     explorerLink: "https://kovan.etherscan.io",
     rpcOnly: true,
     isTestnet: true,
-    networkLogoPath: "/icons/networks/polygon.svg"
+    networkLogoPath: "/icons/networks/ethereum.svg"
   },
   [import_contract_helpers3.ChainId.rinkeby]: {
     name: "Rinkeby",
@@ -56339,7 +56339,7 @@ var networkConfigs = {
     explorerLink: "https://rinkeby.etherscan.io/",
     rpcOnly: true,
     isTestnet: true,
-    networkLogoPath: "/icons/networks/polygon.svg"
+    networkLogoPath: "/icons/networks/ethereum.svg"
   },
   [import_contract_helpers3.ChainId.mainnet]: {
     name: "Ethereum",

@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getStakeConfig } from 'src/ui-config/stakeConfig';
+
 import { useConnectionStatusContext } from '../useConnectionStatusContext';
-import { useC_StakeGeneralUiDataQuery, useC_StakeUserUiDataQuery } from './graphql/hooks';
 import { _useStakeDataCached } from './_useStakeDataCached';
 import { _useStakeDataRPC } from './_useStakeDataRPC';
+import { useC_StakeGeneralUiDataQuery, useC_StakeUserUiDataQuery } from './graphql/hooks';
 
 interface StakeDataProviderContextType {}
 

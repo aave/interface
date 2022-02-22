@@ -1,9 +1,10 @@
-import { EthereumTransactionTypeExtended, Pool } from '@aave/contract-helpers';
+import { EthereumTransactionTypeExtended, GasType, Pool } from '@aave/contract-helpers';
 import { BigNumber } from '@ethersproject/bignumber';
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
 import { DependencyList, useEffect, useState } from 'react';
 import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
+import { useModalContext } from 'src/hooks/useModal';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
@@ -16,12 +17,6 @@ interface UseTransactionHandlerProps {
   deps?: DependencyList;
 }
 
-export type TxStateType = {
-  txHash?: string;
-  txError?: string;
-  gasEstimationError?: string;
-};
-
 export const useTransactionHandler = ({
   handleGetTxns,
   handleGetPermitTxns,
@@ -30,16 +25,15 @@ export const useTransactionHandler = ({
   skip,
   deps = [],
 }: UseTransactionHandlerProps) => {
+  const { approvalTxState, setApprovalTxState, mainTxState, setMainTxState, setGasLimit, resetTx } =
+    useModalContext();
   const { signTxData, sendTx, getTxError, currentAccount } = useWeb3Context();
   const { refetchWalletBalances, refetchPoolData } = useBackgroundDataProvider();
   const { lendingPool } = useTxBuilderContext();
-  const [loading, setLoading] = useState(false);
+  const [loadingTxns, setLoadingTxns] = useState(false);
   // const [txs, setTxs] = useState<EthereumTransactionTypeExtended[]>([]);
   const [usePermit, setUsePermit] = useState<boolean>(tryPermit);
   const [signature, setSignature] = useState<SignatureLike>();
-  const [approved, setApproved] = useState<boolean>(false);
-  const [approvalTxState, setApprovalTxState] = useState<TxStateType>({});
-  const [mainTxState, setMainTxState] = useState<TxStateType>({});
 
   const [approvalTx, setApprovalTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
@@ -60,15 +54,13 @@ export const useTransactionHandler = ({
     errorCallback?: (error: any, hash?: string) => void;
     successCallback?: (param: TransactionResponse) => void;
   }) => {
-    setLoading(true);
     try {
       const txnResult = await tx();
       try {
-        await txnResult.wait(1);
+        await txnResult.wait();
         refetchWalletBalances();
       } catch (e) {
         try {
-          setLoading(false);
           const error = await getTxError(txnResult.hash);
           errorCallback && errorCallback(error, txnResult.hash);
           return;
@@ -82,11 +74,9 @@ export const useTransactionHandler = ({
       }
 
       // wait for confirmation
-      setLoading(false);
       successCallback && successCallback(txnResult);
       return;
     } catch (e) {
-      setLoading(false);
       errorCallback && errorCallback(e);
     }
   };
@@ -94,6 +84,7 @@ export const useTransactionHandler = ({
   const approval = async (amount?: string, underlyingAsset?: string) => {
     if (approvalTx) {
       if (usePermit && amount && underlyingAsset) {
+        setApprovalTxState({ ...approvalTxState, loading: true });
         try {
           const newPool: Pool = lendingPool as Pool;
           const unsingedPayload = await newPool.signERC20Approval({
@@ -102,44 +93,45 @@ export const useTransactionHandler = ({
             amount,
           });
           try {
-            setLoading(true);
             const signature = await signTxData(unsingedPayload);
             setSignature(signature);
-            setApproved(true);
             setApprovalTxState({
               txHash: 'Signed correctly',
               txError: undefined,
               gasEstimationError: undefined,
+              loading: false,
+              success: true,
             });
-
-            setLoading(false);
           } catch (error) {
             setApprovalTxState({
               txHash: undefined,
               txError: error.message.toString(),
               gasEstimationError: undefined,
+              loading: false,
             });
-            setLoading(false);
           }
         } catch (error) {
           setApprovalTxState({
             txHash: undefined,
             txError: undefined,
             gasEstimationError: error.message.toString(),
+            loading: false,
           });
         }
       } else {
         try {
+          setApprovalTxState({ ...approvalTxState, loading: true });
           const params = await approvalTx.tx();
           if (customGasPrice) params.gasPrice = BigNumber.from(customGasPrice);
           await processTx({
             tx: () => sendTx(params),
             successCallback: (txnResponse: TransactionResponse) => {
-              setApproved(true);
               setApprovalTxState({
                 txHash: txnResponse.hash,
                 txError: undefined,
                 gasEstimationError: undefined,
+                loading: false,
+                success: true,
               });
             },
             errorCallback: (error, hash) => {
@@ -147,6 +139,7 @@ export const useTransactionHandler = ({
                 txHash: hash,
                 txError: error.message.toString(),
                 gasEstimationError: undefined,
+                loading: false,
               });
             },
           });
@@ -155,6 +148,7 @@ export const useTransactionHandler = ({
             txHash: undefined,
             txError: undefined,
             gasEstimationError: error.message.toString(),
+            loading: false,
           });
         }
       }
@@ -165,6 +159,7 @@ export const useTransactionHandler = ({
     if (approvalTx && usePermit && handleGetPermitTxns) {
       if (!signature) throw new Error('signature needed');
       try {
+        setMainTxState({ ...mainTxState, loading: true });
         const txns = await handleGetPermitTxns(signature);
         const params = await txns[0].tx();
         if (customGasPrice) params.gasPrice = BigNumber.from(customGasPrice);
@@ -175,6 +170,7 @@ export const useTransactionHandler = ({
               txHash: txnResponse.hash,
               txError: undefined,
               gasEstimationError: undefined,
+              loading: false,
             });
             refetchPoolData && refetchPoolData();
           },
@@ -183,6 +179,8 @@ export const useTransactionHandler = ({
               txHash: hash,
               txError: error.message.toString(),
               gasEstimationError: undefined,
+              loading: false,
+              success: true,
             });
           },
         });
@@ -191,11 +189,13 @@ export const useTransactionHandler = ({
           txHash: undefined,
           txError: undefined,
           gasEstimationError: error.message.toString(),
+          loading: false,
         });
       }
     }
     if ((!usePermit || !approvalTx) && actionTx) {
       try {
+        setMainTxState({ ...mainTxState, loading: true });
         const params = await actionTx.tx();
         if (customGasPrice) params.gasPrice = BigNumber.from(customGasPrice);
         return processTx({
@@ -205,6 +205,8 @@ export const useTransactionHandler = ({
               txHash: txnResponse.hash,
               txError: undefined,
               gasEstimationError: undefined,
+              loading: false,
+              success: true,
             });
             refetchPoolData && refetchPoolData();
           },
@@ -213,6 +215,7 @@ export const useTransactionHandler = ({
               txHash: hash,
               txError: error.message.toString(),
               gasEstimationError: undefined,
+              loading: false,
             });
           },
         });
@@ -221,6 +224,7 @@ export const useTransactionHandler = ({
           txHash: undefined,
           txError: undefined,
           gasEstimationError: error.message.toString(),
+          loading: false,
         });
       }
     }
@@ -228,21 +232,19 @@ export const useTransactionHandler = ({
 
   const resetStates = () => {
     setUsePermit(false);
-    setMainTxState({});
-    setApprovalTxState({});
-    setApproved(false);
+    resetTx();
   };
 
   // populate txns
   useEffect(() => {
-    setLoading(true);
+    setLoadingTxns(true);
     // good enough for now, but might need debounce or similar for swaps
     if (!skip) {
       // setLoading(true);
       const timeout = setTimeout(
         () =>
           handleGetTxns()
-            .then((data) => {
+            .then(async (data) => {
               setApprovalTx(data.find((tx) => tx.txType === 'ERC20_APPROVAL'));
               setActionTx(
                 data.find((tx) =>
@@ -254,7 +256,9 @@ export const useTransactionHandler = ({
                 txError: undefined,
                 gasEstimationError: undefined,
               });
-              setLoading(false);
+              setLoadingTxns(false);
+              const gas: GasType | null = await data[data.length - 1].gas();
+              setGasLimit(gas?.gasLimit || '');
             })
             .catch((error) => {
               setMainTxState({
@@ -262,7 +266,7 @@ export const useTransactionHandler = ({
                 txError: undefined,
                 gasEstimationError: error.message.toString(),
               });
-              setLoading(false);
+              setLoadingTxns(false);
             }),
         1500
       );
@@ -270,22 +274,20 @@ export const useTransactionHandler = ({
     } else {
       setApprovalTx(undefined);
       setActionTx(undefined);
-      setLoading(false);
+      setLoadingTxns(false);
     }
   }, [skip, ...deps]);
 
   return {
     approval,
     action,
-    loading,
+    loadingTxns,
     setUsePermit,
-    approved,
     requiresApproval: !!approvalTx,
     approvalTxState,
     mainTxState,
     usePermit,
     resetStates,
-    setApproved,
     actionTx,
     approvalTx,
   };
