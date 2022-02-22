@@ -67,6 +67,7 @@ export interface AssetInputProps<T extends Asset = Asset> {
   onSelect?: (asset: T) => void;
   assets: T[];
   capType?: CapType;
+  isMaxSelected: boolean;
 }
 
 export const AssetInput: React.FC<AssetInputProps> = ({
@@ -78,6 +79,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
   onSelect,
   assets,
   capType,
+  isMaxSelected,
 }) => {
   const handleSelect = (event: SelectChangeEvent) => {
     const newAsset = assets.find((asset) => asset.symbol === event.target.value) as Asset;
@@ -230,7 +232,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
             size="small"
             sx={{ minWidth: 0, ml: '7px', p: 0 }}
             onClick={() => onChange('-1')}
-            disabled={disabled}
+            disabled={disabled || isMaxSelected}
           >
             <Trans>Max</Trans>
           </Button>
