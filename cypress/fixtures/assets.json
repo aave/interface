@@ -72,6 +72,42 @@
       "shortName": "WETH",
       "collateral": true,
       "wrapped": false
+    },
+    "BAL": {
+      "fullName": "Balancer",
+      "shortName": "BAL",
+      "collateral": true,
+      "wrapped": false
+    },
+    "DPI": {
+      "fullName": "DeFi Pulse Index",
+      "shortName": "BAL",
+      "collateral": true,
+      "wrapped": false
+    },
+    "CRV": {
+      "fullName": "Curve DAO Token",
+      "shortName": "CRV",
+      "collateral": true,
+      "wrapped": false
+    },
+    "GHST": {
+      "fullName": "Aavegotchi GHST",
+      "shortName": "GHST",
+      "collateral": true,
+      "wrapped": false
+    },
+    "LINK": {
+      "fullName": "ChainLink",
+      "shortName": "LINK",
+      "collateral": true,
+      "wrapped": false
+    },
+    "SUSHI": {
+      "fullName": "SUSHI",
+      "shortName": "SUSHI",
+      "collateral": true,
+      "wrapped": false
     }
   },
   "ammMarket": {
