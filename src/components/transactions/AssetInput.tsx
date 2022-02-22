@@ -22,6 +22,7 @@ import { TokenIcon } from '../primitives/TokenIcon';
 export interface Asset {
   balance: string;
   symbol: string;
+  iconSymbol?: string;
   address?: string;
   aToken?: boolean;
 }
@@ -93,7 +94,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
             disabled={disabled}
             value={value}
             inputProps={{
-              inputMode: 'numeric',
+              inputMode: 'decimal',
               'aria-label': 'amount input',
               style: {
                 fontSize: '21px',
@@ -106,7 +107,11 @@ export const AssetInput: React.FC<AssetInputProps> = ({
 
           {!onSelect ? (
             <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-              <TokenIcon symbol={symbol} sx={{ mr: 2, ml: 4 }} />
+              <TokenIcon
+                aToken={asset.aToken}
+                symbol={asset.iconSymbol || asset.symbol}
+                sx={{ mr: 2, ml: 4 }}
+              />
               <Typography variant="h3" sx={{ lineHeight: '28px' }}>
                 {symbol}
               </Typography>
@@ -137,9 +142,17 @@ export const AssetInput: React.FC<AssetInputProps> = ({
                   </SvgIcon>
                 )}
                 renderValue={(symbol) => {
+                  const asset =
+                    assets.length === 1
+                      ? assets[0]
+                      : assets && (assets.find((asset) => asset.symbol === symbol) as Asset);
                   return (
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <TokenIcon symbol={symbol} sx={{ mr: 2, ml: 4 }} />
+                      <TokenIcon
+                        symbol={asset.iconSymbol || asset.symbol}
+                        aToken={asset.aToken}
+                        sx={{ mr: 2, ml: 4 }}
+                      />
                       <Typography variant="main16" color="text.primary">
                         {symbol}
                       </Typography>
@@ -149,7 +162,11 @@ export const AssetInput: React.FC<AssetInputProps> = ({
               >
                 {assets.map((asset) => (
                   <MenuItem key={asset.symbol} value={asset.symbol}>
-                    <TokenIcon symbol={asset.symbol} sx={{ fontSize: '22px', mr: 1 }} />
+                    <TokenIcon
+                      aToken={asset.aToken}
+                      symbol={asset.iconSymbol || asset.symbol}
+                      sx={{ fontSize: '22px', mr: 1 }}
+                    />
                     <ListItemText sx={{ mr: 6 }}>{asset.symbol}</ListItemText>
                     <FormattedNumber value={asset.balance} compact />
                   </MenuItem>
