@@ -8,7 +8,8 @@ import { useAppDataContext } from '../../../../hooks/app-data-provider/useAppDat
 import { DashboardContentNoData } from '../../DashboardContentNoData';
 import { ListHeader } from '../ListHeader';
 import { ListLoader } from '../ListLoader';
-import { ListTopInfoItem } from '../ListTopInfoItem';
+
+import { ListTopInfoItem } from '../../../dashboard/lists/ListTopInfoItem';
 import { SuppliedPositionsListItem } from './SuppliedPositionsListItem';
 import { SuppliedPositionsListMobileItem } from './SuppliedPositionsListMobileItem';
 
