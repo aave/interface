@@ -1,14 +1,6 @@
-import {
-  ChainId,
-  EthereumTransactionTypeExtended,
-  GasType,
-  InterestRate,
-  Pool,
-} from '@aave/contract-helpers';
+import { ChainId, InterestRate, Pool } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { BoxProps, Button, CircularProgress } from '@mui/material';
-import { Dispatch, SetStateAction, useEffect } from 'react';
-import { TxState } from 'src/helpers/types';
+import { BoxProps } from '@mui/material';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useGasStation } from 'src/hooks/useGasStation';
@@ -25,10 +17,7 @@ export interface RepayActionProps extends BoxProps {
   amountToRepay: string;
   poolReserve: ComputedReserveData;
   isWrongNetwork: boolean;
-  setRepayTxState: Dispatch<SetStateAction<TxState>>;
   customGasPrice?: string;
-  handleClose: () => void;
-  setGasLimit: Dispatch<SetStateAction<string | undefined>>;
   poolAddress: string;
   symbol: string;
   debtType: InterestRate;
@@ -39,9 +28,6 @@ export interface RepayActionProps extends BoxProps {
 export const RepayActions = ({
   amountToRepay,
   poolReserve,
-  setRepayTxState,
-  handleClose,
-  setGasLimit,
   poolAddress,
   isWrongNetwork,
   sx,
@@ -58,10 +44,9 @@ export const RepayActions = ({
 
   const {
     approval,
-    approved,
     action,
     requiresApproval,
-    loading,
+    loadingTxns,
     approvalTxState,
     mainTxState,
     usePermit,
@@ -73,50 +58,40 @@ export const RepayActions = ({
       if (currentMarketData.v3) {
         // TO-DO: No need for this cast once a single Pool type is used in use-tx-builder-context
         const newPool: Pool = lendingPool as Pool;
-        let tx: EthereumTransactionTypeExtended[];
         if (repayWithATokens) {
-          tx = await newPool.repayWithATokens({
+          return await newPool.repayWithATokens({
             user: currentAccount,
             reserve: poolAddress,
             amount: amountToRepay.toString(),
             rateMode: debtType as InterestRate,
           });
         } else {
-          tx = await newPool.repay({
+          return await newPool.repay({
             user: currentAccount,
             reserve: poolAddress,
             amount: amountToRepay.toString(),
             interestRateMode: debtType,
           });
         }
-        const gas: GasType | null = await tx[tx.length - 1].gas();
-        setGasLimit(gas?.gasLimit);
-        return tx;
       } else {
-        const tx = await lendingPool.repay({
+        return await lendingPool.repay({
           user: currentAccount,
           reserve: poolAddress,
           amount: amountToRepay.toString(),
           interestRateMode: debtType,
         });
-        const gas: GasType | null = await tx[tx.length - 1].gas();
-        setGasLimit(gas?.gasLimit);
-        return tx;
       }
       // TODO: add here the case for repay with collateral
     },
     handleGetPermitTxns: async (signature) => {
       const newPool: Pool = lendingPool as Pool;
-      const tx = await newPool.repayWithPermit({
+      return await newPool.repayWithPermit({
         user: currentAccount,
         reserve: poolAddress,
         amount: amountToRepay, // amountToRepay.toString(),
         interestRateMode: debtType,
         signature,
       });
-      const gas: GasType | null = await tx[tx.length - 1].gas();
-      setGasLimit(gas?.gasLimit);
-      return tx;
     },
     customGasPrice:
       state.gasOption === GasOption.Custom
@@ -126,35 +101,18 @@ export const RepayActions = ({
     deps: [amountToRepay, poolAddress],
   });
 
-  const hasAmount = amountToRepay && amountToRepay !== '0';
-
-  useEffect(() => {
-    setRepayTxState({
-      success: !!mainTxState.txHash,
-      txError: mainTxState.txError || approvalTxState.txError,
-      gasEstimationError: mainTxState.gasEstimationError || approvalTxState.gasEstimationError,
-    });
-  }, [setRepayTxState, mainTxState, approvalTxState]);
-
-  const handleRetry = () => {
-    setRepayTxState({
-      txError: undefined,
-      success: false,
-      gasEstimationError: undefined,
-    });
-    resetStates();
-  };
-
   return (
     <TxActionsWrapper
+      blocked={blocked}
+      preparingTransactions={loadingTxns}
+      symbol={poolReserve.symbol}
       mainTxState={mainTxState}
-      handleClose={handleClose}
       approvalTxState={approvalTxState}
-      handleRetry={handleRetry}
-      hasAmount={hasAmount}
+      handleRetry={resetStates}
+      requiresAmount
+      amount={amountToRepay}
       requiresApproval={requiresApproval}
       isWrongNetwork={isWrongNetwork}
-      withAmount
       helperText={
         <>
           <LeftHelperText
@@ -175,58 +133,10 @@ export const RepayActions = ({
       }
       sx={sx}
       {...props}
-    >
-      <>
-        {hasAmount && requiresApproval && !approved && !approvalTxState.txError && !isWrongNetwork && (
-          <Button
-            variant="contained"
-            onClick={() => approval(amountToRepay, poolAddress)}
-            disabled={approved || loading || isWrongNetwork || blocked}
-            size="large"
-            sx={{ minHeight: '44px', mb: 2 }}
-          >
-            {!loading && <Trans>Approve to continue</Trans>}
-            {loading && (
-              <>
-                <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-                {approvalTxState.loading ? (
-                  <Trans>Approving {symbol}...</Trans>
-                ) : (
-                  <Trans>Approve to continue</Trans>
-                )}
-              </>
-            )}
-          </Button>
-        )}
-        {hasAmount &&
-          !mainTxState.txHash &&
-          !mainTxState.txError &&
-          !approvalTxState.txError &&
-          !isWrongNetwork && (
-            <Button
-              variant="contained"
-              onClick={action}
-              disabled={
-                loading ||
-                (requiresApproval && !approved) ||
-                isWrongNetwork ||
-                !!mainTxState.gasEstimationError
-              }
-              size="large"
-              sx={{ minHeight: '44px' }}
-            >
-              {!loading && <Trans>Repay {symbol}</Trans>}
-              {loading && (
-                <>
-                  {((approved && requiresApproval) || !requiresApproval) && (
-                    <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-                  )}
-                  <Trans>Repay {symbol}</Trans>
-                </>
-              )}
-            </Button>
-          )}
-      </>
-    </TxActionsWrapper>
+      handleAction={action}
+      handleApproval={() => approval(amountToRepay, poolAddress)}
+      actionText={<Trans>Repay {symbol}</Trans>}
+      actionInProgressText={<Trans>Repaying {symbol}</Trans>}
+    />
   );
 };

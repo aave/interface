@@ -8,7 +8,6 @@ import { TxErrorView } from '../FlowCommons/Error';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
-import { TxState } from 'src/helpers/types';
 import { TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { Trans } from '@lingui/macro';
@@ -16,11 +15,11 @@ import { CooldownWarning } from '../../Warnings/CooldownWarning';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
 import { getStakeConfig } from 'src/ui-config/stakeConfig';
+import { useModalContext } from 'src/hooks/useModal';
 
 export type StakeProps = {
   stakeAssetName: string;
   icon: string;
-  handleClose: () => void;
 };
 
 export enum ErrorType {
@@ -29,17 +28,16 @@ export enum ErrorType {
 
 type StakingType = 'aave' | 'bpt';
 
-export const StakeModalContent = ({ stakeAssetName, icon, handleClose }: StakeProps) => {
+export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
   const data = useStakeData();
   const stakeData = data.stakeGeneralResult?.stakeGeneralUIData[stakeAssetName as StakingType];
   const { chainId: connectedChainId } = useWeb3Context();
   const stakeConfig = getStakeConfig();
+  const { gasLimit, mainTxState: txState } = useModalContext();
 
   // states
-  const [txState, setTxState] = useState<TxState>({ success: false });
   const [amount, setAmount] = useState('');
   const [amountToSupply, setAmountToSupply] = useState(amount);
-  const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
   const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
   const [isMax, setIsMax] = useState(false);
   const [maxAmount, setMaxAmount] = useState('0');
@@ -100,48 +98,40 @@ export const StakeModalContent = ({ stakeAssetName, icon, handleClose }: StakePr
   const networkConfig = getNetworkConfig(stakingChain);
   const isWrongNetwork = connectedChainId !== stakingChain;
 
+  if (txState.txError) return <TxErrorView errorMessage={txState.txError} />;
+  if (txState.success) return <TxSuccessView action="Staked" amount={staticAmount} symbol={icon} />;
+
   return (
     <>
-      {!txState.txError && !txState.success && (
-        <>
-          <TxModalTitle title="Stake" symbol={icon} />
-          <CooldownWarning />
-          {isWrongNetwork && (
-            <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
-          )}
+      <TxModalTitle title="Stake" symbol={icon} />
+      <CooldownWarning />
+      {isWrongNetwork && (
+        <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
+      )}
 
-          <AssetInput
-            value={staticAmount}
-            onChange={setAmount}
-            usdValue={amountInUsd.toString()}
-            symbol={icon}
-            assets={[
-              {
-                balance: walletBalance.toString(),
-                symbol: icon,
-              },
-            ]}
-          />
-          {blockingError !== undefined && (
-            <Typography variant="helperText" color="red">
-              {handleBlocked()}
-            </Typography>
-          )}
-          <TxModalDetails stakeAPR={stakeData?.stakeApy || '0'} gasLimit={gasLimit} />
-        </>
+      <AssetInput
+        value={staticAmount}
+        onChange={setAmount}
+        usdValue={amountInUsd.toString()}
+        symbol={icon}
+        assets={[
+          {
+            balance: walletBalance.toString(),
+            symbol: icon,
+          },
+        ]}
+      />
+      {blockingError !== undefined && (
+        <Typography variant="helperText" color="red">
+          {handleBlocked()}
+        </Typography>
       )}
-      {txState.txError && <TxErrorView errorMessage={txState.txError} />}
-      {txState.success && !txState.txError && (
-        <TxSuccessView action="Staked" amount={staticAmount} symbol={icon} />
-      )}
+      <TxModalDetails stakeAPR={stakeData?.stakeApy || '0'} gasLimit={gasLimit} />
       {txState.gasEstimationError && <GasEstimationError error={txState.gasEstimationError} />}
       <StakeActions
         sx={{ mt: '48px' }}
-        setTxState={setTxState}
         amountToStake={amountToSupply}
-        handleClose={handleClose}
         isWrongNetwork={isWrongNetwork}
-        setGasLimit={setGasLimit}
         symbol={icon}
         blocked={blockingError !== undefined}
         selectedToken={stakeAssetName}

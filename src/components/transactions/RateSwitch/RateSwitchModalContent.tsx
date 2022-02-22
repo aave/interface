@@ -3,11 +3,11 @@ import { ComputedUserReserve, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { TxState } from 'src/helpers/types';
 import {
   ComputedReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
@@ -21,7 +21,6 @@ import { RateSwitchActions } from './RateSwitchActions';
 
 export type RateSwitchModalContentProps = {
   underlyingAsset: string;
-  handleClose: () => void;
 };
 
 export enum ErrorType {
@@ -30,20 +29,14 @@ export enum ErrorType {
   STABLE_INTEREST_TYPE_IS_DISABLED,
 }
 
-export const RateSwitchModalContent = ({
-  underlyingAsset,
-  handleClose,
-}: RateSwitchModalContentProps) => {
+export const RateSwitchModalContent = ({ underlyingAsset }: RateSwitchModalContentProps) => {
+  const { mainTxState: rateSwitchTxState, gasLimit } = useModalContext();
   const { reserves, user } = useAppDataContext();
   const { currentChainId } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
 
   const networkConfig = getNetworkConfig(currentChainId);
 
-  const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
-  const [rateSwitchTxState, setRateSwitchTxState] = useState<TxState>({
-    success: false,
-  });
   const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
 
   const poolReserve = reserves.find(
@@ -123,34 +116,27 @@ export const RateSwitchModalContent = ({
   // is Network mismatched
   const isWrongNetwork = currentChainId !== connectedChainId;
 
+  if (rateSwitchTxState.txError) return <TxErrorView errorMessage={rateSwitchTxState.txError} />;
+  if (rateSwitchTxState.success) return <TxSuccessView rate={rateModeAfterSwitch} />;
   return (
     <>
-      {!rateSwitchTxState.txError && !rateSwitchTxState.success && (
-        <>
-          <TxModalTitle title="Switch APY type" />
-          {isWrongNetwork && (
-            <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
-          )}
-
-          <TxModalDetails
-            incentives={
-              rateModeAfterSwitch === InterestRate.Variable
-                ? poolReserve.vIncentivesData
-                : poolReserve.sIncentivesData
-            }
-            apy={apyAfterSwitch}
-            rate={rateModeAfterSwitch}
-            gasLimit={gasLimit}
-            symbol={poolReserve.symbol}
-            underlyingAsset={underlyingAsset}
-          />
-        </>
+      <TxModalTitle title="Switch APY type" />
+      {isWrongNetwork && (
+        <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
       )}
 
-      {rateSwitchTxState.txError && <TxErrorView errorMessage={rateSwitchTxState.txError} />}
-      {rateSwitchTxState.success && !rateSwitchTxState.txError && (
-        <TxSuccessView rate={rateModeAfterSwitch} />
-      )}
+      <TxModalDetails
+        incentives={
+          rateModeAfterSwitch === InterestRate.Variable
+            ? poolReserve.vIncentivesData
+            : poolReserve.sIncentivesData
+        }
+        apy={apyAfterSwitch}
+        rate={rateModeAfterSwitch}
+        gasLimit={gasLimit}
+        symbol={poolReserve.symbol}
+        underlyingAsset={underlyingAsset}
+      />
 
       {blockingError !== undefined && (
         <Typography variant="helperText" color="error.main">
@@ -160,9 +146,6 @@ export const RateSwitchModalContent = ({
 
       <RateSwitchActions
         poolReserve={poolReserve}
-        setGasLimit={setGasLimit}
-        setRateSwitchTxState={setRateSwitchTxState}
-        handleClose={handleClose}
         isWrongNetwork={isWrongNetwork}
         currentRateMode={currentRateMode}
         blocked={blockingError !== undefined}

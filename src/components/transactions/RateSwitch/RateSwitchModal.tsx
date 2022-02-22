@@ -9,9 +9,7 @@ export const RateSwitchModal = () => {
 
   return (
     <BasicModal open={type === ModalType.RateSwitch} setOpen={close}>
-      {args?.underlyingAsset && (
-        <RateSwitchModalContent underlyingAsset={args.underlyingAsset} handleClose={close} />
-      )}
+      {args?.underlyingAsset && <RateSwitchModalContent underlyingAsset={args.underlyingAsset} />}
     </BasicModal>
   );
 };
