@@ -94,6 +94,7 @@ export const SupplyAssetsList = () => {
             availableToDepositUSD: baseAvailableToDepositUSD,
             usageAsCollateralEnabledOnUser,
             detailsAddress: reserve.underlyingAsset,
+            id: reserve.id + 'base',
           },
           {
             ...reserve,
