@@ -54,8 +54,8 @@ export const GovDelegationActions = ({
       mainTxState={mainTxState}
       isWrongNetwork={isWrongNetwork}
       handleAction={action}
-      actionText={<Trans>DELEGATE</Trans>}
-      actionInProgressText={<Trans>DELEGATING</Trans>}
+      actionText={<Trans>Delegate</Trans>}
+      actionInProgressText={<Trans>Delegating</Trans>}
       helperText={
         <RightHelperText
           actionHash={mainTxState.txHash}

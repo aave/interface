@@ -58,7 +58,11 @@ export function VotingPowerInfoPanel() {
           <Typography>Delegate your power</Typography>
         </Box>
         {currentAccount ? (
-          <Button variant="contained" onClick={() => openGovDelegation()}>
+          <Button
+            variant="contained"
+            disabled={votingPower === '0' && propositionPower === '0'}
+            onClick={() => openGovDelegation()}
+          >
             <Trans>Delegate</Trans>
           </Button>
         ) : (
