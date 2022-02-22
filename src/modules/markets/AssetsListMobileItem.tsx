@@ -11,7 +11,7 @@ import { ListMobileItemWrapper } from '../dashboard/lists/ListMobileItemWrapper'
 export const AssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
   return (
     <ListMobileItemWrapper
-      symbol={reserve.iconSymbol}
+      symbol={reserve.symbol}
       iconSymbol={reserve.iconSymbol}
       name={reserve.name}
       underlyingAsset={reserve.underlyingAsset}

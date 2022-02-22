@@ -36,7 +36,7 @@ export const SuppliedPositionsListItem = ({
 
   return (
     <ListItemWrapper
-      symbol={reserve.iconSymbol}
+      symbol={reserve.symbol}
       iconSymbol={reserve.iconSymbol}
       name={reserve.name}
       underlyingAsset={underlyingAsset}

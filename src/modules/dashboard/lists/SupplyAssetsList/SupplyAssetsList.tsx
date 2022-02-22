@@ -84,7 +84,6 @@ export const SupplyAssetsList = () => {
           {
             ...reserve,
             underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
-            symbol: baseAssetSymbol,
             ...fetchIconSymbolAndName({
               symbol: baseAssetSymbol,
               underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
