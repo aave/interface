@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, Paper, Stack, StackProps, SvgIcon, Typography } from '@mui/material';
+import { Box, Button, Paper, Stack, StackProps, Typography } from '@mui/material';
 import React from 'react';
 import { FormattedNumber, FormattedNumberProps } from 'src/components/primitives/FormattedNumber';
 import {
