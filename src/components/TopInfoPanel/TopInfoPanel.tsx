@@ -26,11 +26,13 @@ export const TopInfoPanel = ({
     >
       <Container sx={{ pb: 0 }}>
         <Box sx={{ px: { xs: 4, xsm: 6 } }}>
-          <PageTitle
-            pageTitle={pageTitle}
-            withMarketSwitcher={withMarketSwitcher}
-            bridge={bridge}
-          />
+          {!titleComponent && (
+            <PageTitle
+              pageTitle={pageTitle}
+              withMarketSwitcher={withMarketSwitcher}
+              bridge={bridge}
+            />
+          )}
 
           {titleComponent && titleComponent}
 
