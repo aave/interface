@@ -2,7 +2,7 @@ import { EthereumTransactionTypeExtended, GasType, Pool } from '@aave/contract-h
 import { BigNumber } from '@ethersproject/bignumber';
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
-import { DependencyList, useEffect, useState } from 'react';
+import { DependencyList, useEffect, useRef, useState } from 'react';
 import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
@@ -37,7 +37,14 @@ export const useTransactionHandler = ({
 
   const [approvalTx, setApprovalTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
+  const mounted = useRef(false);
 
+  useEffect(() => {
+    mounted.current = true; // Will set it to true on mount ...
+    return () => {
+      mounted.current = false;
+    }; // ... and to false on unmount
+  }, []);
   /**
    * Executes the transactions and handles loading & error states.
    * @param fn
@@ -59,22 +66,23 @@ export const useTransactionHandler = ({
       try {
         await txnResult.wait();
         refetchWalletBalances();
+        refetchPoolData && refetchPoolData();
       } catch (e) {
         try {
           const error = await getTxError(txnResult.hash);
-          errorCallback && errorCallback(error, txnResult.hash);
+          mounted.current && errorCallback && errorCallback(error, txnResult.hash);
           return;
         } catch (e) {
           const error = new Error(
             'network error has occurred, please check tx status in your wallet'
           );
-          errorCallback && errorCallback(error, txnResult.hash);
+          mounted.current && errorCallback && errorCallback(error, txnResult.hash);
           return;
         }
       }
 
       // wait for confirmation
-      successCallback && successCallback(txnResult);
+      mounted.current && successCallback && successCallback(txnResult);
       return;
     } catch (e) {
       errorCallback && errorCallback(e);
@@ -94,6 +102,7 @@ export const useTransactionHandler = ({
           });
           try {
             const signature = await signTxData(unsingedPayload);
+            if (!mounted.current) return;
             setSignature(signature);
             setApprovalTxState({
               txHash: 'Signed correctly',
@@ -103,6 +112,7 @@ export const useTransactionHandler = ({
               success: true,
             });
           } catch (error) {
+            if (!mounted.current) return;
             setApprovalTxState({
               txHash: undefined,
               txError: error.message.toString(),
@@ -111,6 +121,7 @@ export const useTransactionHandler = ({
             });
           }
         } catch (error) {
+          if (!mounted.current) return;
           setApprovalTxState({
             txHash: undefined,
             txError: undefined,
@@ -144,6 +155,7 @@ export const useTransactionHandler = ({
             },
           });
         } catch (error) {
+          if (!mounted.current) return;
           setApprovalTxState({
             txHash: undefined,
             txError: undefined,
@@ -173,7 +185,6 @@ export const useTransactionHandler = ({
               loading: false,
               success: true,
             });
-            refetchPoolData && refetchPoolData();
           },
           errorCallback: (error, hash) => {
             setMainTxState({
@@ -237,39 +248,38 @@ export const useTransactionHandler = ({
 
   // populate txns
   useEffect(() => {
-    setLoadingTxns(true);
     // good enough for now, but might need debounce or similar for swaps
     if (!skip) {
-      // setLoading(true);
-      const timeout = setTimeout(
-        () =>
-          handleGetTxns()
-            .then(async (data) => {
-              setApprovalTx(data.find((tx) => tx.txType === 'ERC20_APPROVAL'));
-              setActionTx(
-                data.find((tx) =>
-                  ['DLP_ACTION', 'REWARD_ACTION', 'FAUCET_MINT', 'STAKE_ACTION'].includes(tx.txType)
-                )
-              );
-              setMainTxState({
-                txHash: undefined,
-                txError: undefined,
-                gasEstimationError: undefined,
-              });
-              setLoadingTxns(false);
-              const gas: GasType | null = await data[data.length - 1].gas();
-              setGasLimit(gas?.gasLimit || '');
-            })
-            .catch((error) => {
-              setMainTxState({
-                txHash: undefined,
-                txError: undefined,
-                gasEstimationError: error.message.toString(),
-              });
-              setLoadingTxns(false);
-            }),
-        1500
-      );
+      setLoadingTxns(true);
+      const timeout = setTimeout(() => {
+        return handleGetTxns()
+          .then(async (data) => {
+            if (!mounted.current) return;
+            setApprovalTx(data.find((tx) => tx.txType === 'ERC20_APPROVAL'));
+            setActionTx(
+              data.find((tx) =>
+                ['DLP_ACTION', 'REWARD_ACTION', 'FAUCET_MINT', 'STAKE_ACTION'].includes(tx.txType)
+              )
+            );
+            setMainTxState({
+              txHash: undefined,
+              txError: undefined,
+              gasEstimationError: undefined,
+            });
+            setLoadingTxns(false);
+            const gas: GasType | null = await data[data.length - 1].gas();
+            setGasLimit(gas?.gasLimit || '');
+          })
+          .catch((error) => {
+            if (!mounted.current) return;
+            setMainTxState({
+              txHash: undefined,
+              txError: undefined,
+              gasEstimationError: error.message.toString(),
+            });
+            setLoadingTxns(false);
+          });
+      }, 1500);
       return () => clearTimeout(timeout);
     } else {
       setApprovalTx(undefined);
