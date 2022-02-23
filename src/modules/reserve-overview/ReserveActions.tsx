@@ -1,6 +1,5 @@
-import { InformationCircleIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Paper, Stack, StackProps, SvgIcon, Typography } from '@mui/material';
+import { Box, Button, Paper, Stack, StackProps, Typography } from '@mui/material';
 import React from 'react';
 import { FormattedNumber, FormattedNumberProps } from 'src/components/primitives/FormattedNumber';
 import {
@@ -15,6 +14,9 @@ import {
   getMaxAmountAvailableToBorrow,
 } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
+
+import { AvailableTooltip } from '../../components/infoTooltips/AvailableTooltip';
+import { CapType } from '../../components/caps/helper';
 
 const ReserveRow: React.FC<StackProps> = (props) => (
   <Stack
@@ -84,9 +86,10 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
           <Typography>
             <Trans>Available to supply</Trans>
           </Typography>
-          <SvgIcon sx={{ fontSize: '18px', color: '#E0E5EA' }}>
-            <InformationCircleIcon />
-          </SvgIcon>
+
+          <Box>
+            <AvailableTooltip capType={CapType.supplyCap} />
+          </Box>
         </Stack>
         <FormattedNumber value={maxAmountToSupply} />
       </ReserveRow>
@@ -95,9 +98,9 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
           <Typography>
             <Trans>Available to borrow</Trans>
           </Typography>
-          <SvgIcon sx={{ fontSize: '18px', color: '#E0E5EA' }}>
-            <InformationCircleIcon />
-          </SvgIcon>
+          <Box>
+            <AvailableTooltip capType={CapType.borrowCap} />
+          </Box>
         </Stack>
         <FormattedNumber value={canBorrow ? maxAmountToBorrow : '0'} />
       </ReserveRow>
