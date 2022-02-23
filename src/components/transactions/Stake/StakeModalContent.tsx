@@ -1,7 +1,7 @@
 import { normalize, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -37,10 +37,8 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
   const { gasLimit, mainTxState: txState } = useModalContext();
 
   // states
-  const [amount, setAmount] = useState('');
-  const [amountToSupply, setAmountToSupply] = useState(amount);
-  const [isMax, setIsMax] = useState(false);
-  const [maxAmount, setMaxAmount] = useState('0');
+  const [_amount, setAmount] = useState('');
+  const amountRef = useRef<string>();
 
   const walletBalance = normalize(
     data.stakeUserResult?.stakeUserUIData[stakeAssetName as StakingType]
@@ -48,36 +46,24 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
     18
   );
 
-  useEffect(() => {
-    if (amount === '-1') {
-      setAmountToSupply(walletBalance);
-      setIsMax(true);
-    } else {
-      setAmountToSupply(amount);
-      setIsMax(false);
-    }
-  }, [amount, walletBalance]);
+  const isMaxSelected = _amount === '-1';
+  const amount = isMaxSelected ? walletBalance : _amount;
 
-  useEffect(() => {
-    if (isMax) {
-      setMaxAmount(walletBalance);
-    }
-  }, [isMax]);
-
-  // This amount will stay the same after tx is submited even if we have an interval
-  // between tx success and tx success confirmation. This way all calcs are static
-  // and don't get recalculated in this interval state
-  const staticAmount = isMax ? maxAmount : amountToSupply;
+  const handleChange = (value: string) => {
+    const maxSelected = value === '-1';
+    amountRef.current = maxSelected ? walletBalance : value;
+    setAmount(value);
+  };
 
   // staking token usd value
   const amountInUsd =
-    Number(staticAmount) *
+    Number(amount) *
     (Number(normalize(stakeData?.stakeTokenPriceEth || 1, 18)) /
       Number(normalize(data.stakeGeneralResult?.stakeGeneralUIData.usdPriceEth || 1, 18)));
 
   // error handler
   let blockingError: ErrorType | undefined = undefined;
-  if (valueToBigNumber(staticAmount).gt(walletBalance)) {
+  if (valueToBigNumber(amount).gt(walletBalance)) {
     blockingError = ErrorType.NOT_ENOUGH_BALANCE;
   }
 
@@ -96,7 +82,8 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
   const isWrongNetwork = connectedChainId !== stakingChain;
 
   if (txState.txError) return <TxErrorView errorMessage={txState.txError} />;
-  if (txState.success) return <TxSuccessView action="Staked" amount={staticAmount} symbol={icon} />;
+  if (txState.success)
+    return <TxSuccessView action="Staked" amount={amountRef.current} symbol={icon} />;
 
   return (
     <>
@@ -108,8 +95,8 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
       <CooldownWarning />
 
       <AssetInput
-        value={staticAmount}
-        onChange={setAmount}
+        value={amount}
+        onChange={handleChange}
         usdValue={amountInUsd.toString()}
         symbol={icon}
         assets={[
@@ -118,6 +105,8 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
             symbol: icon,
           },
         ]}
+        isMaxSelected={isMaxSelected}
+        maxValue={walletBalance.toString()}
       />
       {blockingError !== undefined && (
         <Typography variant="helperText" color="red">
@@ -128,7 +117,7 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
       {txState.gasEstimationError && <GasEstimationError error={txState.gasEstimationError} />}
       <StakeActions
         sx={{ mt: '48px' }}
-        amountToStake={amountToSupply}
+        amountToStake={amount}
         isWrongNetwork={isWrongNetwork}
         symbol={icon}
         blocked={blockingError !== undefined}

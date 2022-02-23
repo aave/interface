@@ -1,7 +1,7 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { ComputedUserReserve, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
+import { Alert } from '@mui/material';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -111,6 +111,7 @@ export const RateSwitchModalContent = ({ underlyingAsset }: RateSwitchModalConte
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
       )}
 
+      {blockingError !== undefined && <Alert severity="error">{handleBlocked()}</Alert>}
       <TxModalDetails
         incentives={
           rateModeAfterSwitch === InterestRate.Variable
@@ -123,12 +124,6 @@ export const RateSwitchModalContent = ({ underlyingAsset }: RateSwitchModalConte
         symbol={poolReserve.symbol}
         underlyingAsset={underlyingAsset}
       />
-
-      {blockingError !== undefined && (
-        <Typography variant="helperText" color="error.main">
-          {handleBlocked()}
-        </Typography>
-      )}
 
       <RateSwitchActions
         poolReserve={poolReserve}
