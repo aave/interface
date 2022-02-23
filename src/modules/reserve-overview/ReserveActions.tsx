@@ -84,7 +84,7 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
           <Typography>
             <Trans>Available to supply</Trans>
           </Typography>
-          <SvgIcon sx={{ fontSize: '18px', color: '#E0E5EA' }}>
+          <SvgIcon sx={{ fontSize: '18px', color: '#EAEBEF' }}>
             <InformationCircleIcon />
           </SvgIcon>
         </Stack>
@@ -95,7 +95,7 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
           <Typography>
             <Trans>Available to borrow</Trans>
           </Typography>
-          <SvgIcon sx={{ fontSize: '18px', color: '#E0E5EA' }}>
+          <SvgIcon sx={{ fontSize: '18px', color: '#EAEBEF' }}>
             <InformationCircleIcon />
           </SvgIcon>
         </Stack>

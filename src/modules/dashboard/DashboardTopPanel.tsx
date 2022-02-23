@@ -92,7 +92,7 @@ export const DashboardTopPanel = () => {
               variant={valueTypographyVariant}
               visibleDecimals={2}
               compact
-              symbolsColor="#FFFFFFB2"
+              symbolsColor="#A5A8B6"
               symbolsVariant={noDataTypographyVariant}
             />
           ) : (
@@ -107,7 +107,7 @@ export const DashboardTopPanel = () => {
               variant={valueTypographyVariant}
               visibleDecimals={2}
               percent
-              symbolsColor="#FFFFFFB2"
+              symbolsColor="#A5A8B6"
               symbolsVariant={noDataTypographyVariant}
             />
           ) : (
@@ -163,7 +163,7 @@ export const DashboardTopPanel = () => {
                   visibleDecimals={2}
                   compact
                   symbol="USD"
-                  symbolsColor="#FFFFFFB2"
+                  symbolsColor="#A5A8B6"
                   symbolsVariant={noDataTypographyVariant}
                 />
                 {assets && (
