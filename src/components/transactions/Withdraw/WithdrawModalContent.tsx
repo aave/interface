@@ -33,14 +33,13 @@ export type WithdrawModalContentProps = {
 };
 export enum ErrorType {
   CAN_NOT_WITHDRAW_THIS_AMOUNT,
-  NOT_ENOUGH_FUNDS_TO_WITHDRAW_AMOUNT,
   POOL_DOES_NOT_HAVE_ENOUGH_LIQUIDITY,
 }
 
 export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentProps) => {
   const { gasLimit, mainTxState: withdrawTxState } = useModalContext();
   const { reserves, user } = useAppDataContext();
-  const { currentChainId, currentMarketData } = useProtocolDataContext();
+  const { currentChainId } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
 
   const [_amount, setAmount] = useState('');
@@ -90,7 +89,6 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
 
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToWithdraw.toString() : _amount;
-  const withdrawAmount = isMaxSelected && currentMarketData.v3 ? '-1' : amount;
 
   const handleChange = (value: string) => {
     amountRef.current = value === '-1' ? maxAmountToWithdraw.toString() : value;
@@ -130,11 +128,9 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
   if (!withdrawTxState.success && !withdrawTxState.txHash) {
     if (healthFactorAfterWithdraw.lt('1') && user.totalBorrowsMarketReferenceCurrency !== '0') {
       blockingError = ErrorType.CAN_NOT_WITHDRAW_THIS_AMOUNT;
-    } else if (!blockingError && (underlyingBalance.eq('0') || underlyingBalance.lt(amount))) {
-      blockingError = ErrorType.NOT_ENOUGH_FUNDS_TO_WITHDRAW_AMOUNT;
     } else if (
       !blockingError &&
-      (unborrowedLiquidity.eq('0') || amount.gt(poolReserve.unborrowedLiquidity))
+      (unborrowedLiquidity.eq('0') || valueToBigNumber(amount).gt(poolReserve.unborrowedLiquidity))
     ) {
       blockingError = ErrorType.POOL_DOES_NOT_HAVE_ENOUGH_LIQUIDITY;
     }
@@ -147,8 +143,6 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
         return (
           <Trans>You can not withdraw this amount because it will cause collateral call</Trans>
         );
-      case ErrorType.NOT_ENOUGH_FUNDS_TO_WITHDRAW_AMOUNT:
-        return <Trans>You do not have enough funds to withdraw this amount</Trans>;
       case ErrorType.POOL_DOES_NOT_HAVE_ENOUGH_LIQUIDITY:
         return (
           <Trans>
@@ -247,7 +241,7 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
 
       <WithdrawActions
         poolReserve={poolReserve}
-        amountToWithdraw={withdrawAmount}
+        amountToWithdraw={isMaxSelected ? '-1' : amount}
         poolAddress={
           withdrawUnWrapped && poolReserve.isWrappedBaseAsset
             ? API_ETH_MOCK_ADDRESS
