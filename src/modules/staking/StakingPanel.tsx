@@ -128,10 +128,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           p: { xs: 0, xsm: 4 },
           background: {
             xs: 'unset',
-            xsm:
-              theme.palette.mode === 'light'
-                ? theme.palette.background.paper
-                : theme.palette.background.surface,
+            xsm: theme.palette.background.paper,
           },
           position: 'relative',
           '&:after': {

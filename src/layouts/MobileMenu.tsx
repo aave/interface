@@ -32,14 +32,14 @@ interface MobileMenuProps {
 const MenuItemsWrapper = ({ children, title }: { children: ReactNode; title: ReactNode }) => (
   <Box sx={{ mb: 6, '&:last-of-type': { mb: 0, '.MuiDivider-root': { display: 'none' } } }}>
     <Box sx={{ px: 2 }}>
-      <Typography variant="subheader2" sx={{ color: 'common.white', opacity: 0.7, px: 4, py: 2 }}>
+      <Typography variant="subheader2" sx={{ color: '#A5A8B6', px: 4, py: 2 }}>
         {title}
       </Typography>
 
       {children}
     </Box>
 
-    <Divider sx={{ borderColor: 'common.white', opacity: 0.12, mt: 6 }} />
+    <Divider sx={{ borderColor: '#F2F3F729', mt: 6 }} />
   </Box>
 );
 
@@ -59,7 +59,7 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
           sx={{ p: '7px 8px', minWidth: 'unset', ml: 2 }}
           onClick={() => setOpen(true)}
         >
-          <SvgIcon sx={{ color: 'common.white' }} fontSize="small">
+          <SvgIcon sx={{ color: '#F1F1F3' }} fontSize="small">
             <MenuIcon />
           </SvgIcon>
         </Button>
@@ -81,16 +81,9 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
             <MenuItemsWrapper title={<Trans>Links</Trans>}>
               <List>
                 {moreNavigation.map((item, index) => (
-                  <ListItem
-                    component={Link}
-                    href={item.link}
-                    sx={{ color: 'common.white' }}
-                    key={index}
-                  >
+                  <ListItem component={Link} href={item.link} sx={{ color: '#F1F1F3' }} key={index}>
                     <ListItemIcon sx={{ minWidth: 'unset', mr: 3 }}>
-                      <SvgIcon sx={{ fontSize: '20px', color: 'common.white' }}>
-                        {item.icon}
-                      </SvgIcon>
+                      <SvgIcon sx={{ fontSize: '20px', color: '#F1F1F3' }}>{item.icon}</SvgIcon>
                     </ListItemIcon>
 
                     <ListItemText>{i18n._(item.title)}</ListItemText>

@@ -1,9 +1,17 @@
 import { InterestRate } from '@aave/contract-helpers';
-import { InformationCircleIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Paper, Stack, StackProps, SvgIcon, Typography } from '@mui/material';
-import React from 'react';
-import { FormattedNumber, FormattedNumberProps } from 'src/components/primitives/FormattedNumber';
+import {
+  Box,
+  Button,
+  Paper,
+  Skeleton,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
+import React, { ReactNode } from 'react';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -17,47 +25,79 @@ import {
 } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
 
-const ReserveRow: React.FC<StackProps> = (props) => (
-  <Stack
-    direction="row"
-    justifyContent="space-between"
-    alignItems="center"
-    sx={{ mb: '24px' }}
-    {...props}
-  />
-);
+import { CapType } from '../../components/caps/helper';
+import { ConnectWalletPaper } from '../../components/ConnectWalletPaper';
+import { AvailableTooltip } from '../../components/infoTooltips/AvailableTooltip';
+import { Row } from '../../components/primitives/Row';
 
-interface DoubleFormattedProps extends FormattedNumberProps {
-  usdValue: string;
-}
+const PaperWrapper = ({ children }: { children: ReactNode }) => {
+  return (
+    <Paper sx={{ pt: 4, pb: { xs: 4, xsm: 6 }, px: { xs: 4, xsm: 6 } }}>
+      <Typography variant="h3" sx={{ mb: { xs: 6, xsm: 10 } }}>
+        <Trans>Your info</Trans>
+      </Typography>
 
-const DoubleFormatted: React.FC<DoubleFormattedProps> = ({ usdValue, ...props }) => (
-  <Box
-    sx={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'flex-end',
-    }}
-  >
-    <FormattedNumber {...props} />
-    <FormattedNumber color="text.muted" symbol="USD" variant="helperText" value={usdValue} />
-  </Box>
-);
+      {children}
+    </Paper>
+  );
+};
 
 interface ReserveActionsProps {
   underlyingAsset: string;
 }
 
 export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
+  const theme = useTheme();
+  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
+
   const { openBorrow, openSupply } = useModalContext();
-  const { currentAccount, connectWallet } = useWeb3Context();
+
+  const { currentAccount, loading: web3Loading } = useWeb3Context();
   const { user, reserves, loading: loadingReserves } = useAppDataContext();
   const { walletBalances, loading: loadingBalance } = useWalletBalances();
-  // const balance = useWalletBalance(currentChainId, underlyingAsset);
-  if (loadingReserves || loadingBalance) return null;
+
+  if (!currentAccount)
+    return (
+      <ConnectWalletPaper
+        description={
+          <Trans>To see your supplies and borrowings options, connect your wallet.</Trans>
+        }
+        loading={web3Loading}
+        sx={{ minHeight: 301 }}
+      />
+    );
+
+  if (loadingReserves || loadingBalance)
+    return (
+      <PaperWrapper>
+        <Row
+          caption={<Skeleton width={100} height={20} />}
+          align="flex-start"
+          mb={6}
+          captionVariant="description"
+        >
+          <Skeleton width={70} height={20} />
+        </Row>
+
+        <Row caption={<Skeleton width={100} height={20} />} mb={3}>
+          <Skeleton width={70} height={20} />
+        </Row>
+
+        <Row caption={<Skeleton width={100} height={20} />} mb={10}>
+          <Skeleton width={70} height={20} />
+        </Row>
+
+        <Stack direction="row" spacing={2}>
+          <Skeleton width={downToXSM ? '100%' : 70} height={36} />
+          <Skeleton width={downToXSM ? '100%' : 70} height={36} />
+        </Stack>
+      </PaperWrapper>
+    );
+
   const poolReserve = reserves.find(
     (reserve) => reserve.underlyingAsset === underlyingAsset
   ) as ComputedReserveData;
+
   const balance = walletBalances[underlyingAsset];
   const canBorrow = assetCanBeBorrowedByUser(poolReserve, user);
   const maxAmountToBorrow = getMaxAmountAvailableToBorrow(
@@ -72,60 +112,80 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   ).toString();
 
   return (
-    <Paper sx={{ py: '16px', px: '24px' }}>
-      <Typography variant="h3" sx={{ mb: '40px' }}>
-        <Trans>Your supplies</Trans>
-      </Typography>
+    <PaperWrapper>
+      <Row
+        caption={<Trans>Wallet balance</Trans>}
+        align="flex-start"
+        mb={6}
+        captionVariant="description"
+      >
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+          <FormattedNumber
+            value={balance?.amount || 0}
+            variant="secondary14"
+            symbol={poolReserve.symbol}
+          />
+          <FormattedNumber
+            value={balance?.amountUSD || '0'}
+            variant="helperText"
+            color="text.muted"
+            symbolsColor="text.muted"
+            symbol="USD"
+          />
+        </Box>
+      </Row>
 
-      <ReserveRow>
-        <Typography>
-          <Trans>Wallet balance</Trans>
-        </Typography>
-        <DoubleFormatted value={balance?.amount || 0} usdValue={balance?.amountUSD || '0'} />
-      </ReserveRow>
+      <Row
+        caption={
+          <AvailableTooltip
+            variant="description"
+            text={<Trans>Available to supply</Trans>}
+            capType={CapType.supplyCap}
+          />
+        }
+        mb={3}
+      >
+        <FormattedNumber
+          value={maxAmountToSupply}
+          variant="secondary14"
+          symbol={poolReserve.symbol}
+        />
+      </Row>
 
-      <ReserveRow>
-        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1}>
-          <Typography>
-            <Trans>Available to supply</Trans>
-          </Typography>
-          <SvgIcon sx={{ fontSize: '18px', color: '#E0E5EA' }}>
-            <InformationCircleIcon />
-          </SvgIcon>
-        </Stack>
-        <FormattedNumber value={maxAmountToSupply} />
-      </ReserveRow>
-      <ReserveRow>
-        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1}>
-          <Typography>
-            <Trans>Available to borrow</Trans>
-          </Typography>
-          <SvgIcon sx={{ fontSize: '18px', color: '#E0E5EA' }}>
-            <InformationCircleIcon />
-          </SvgIcon>
-        </Stack>
-        <FormattedNumber value={canBorrow ? maxAmountToBorrow : '0'} />
-      </ReserveRow>
+      <Row
+        caption={
+          <AvailableTooltip
+            variant="description"
+            text={<Trans>Available to borrow</Trans>}
+            capType={CapType.borrowCap}
+          />
+        }
+        mb={10}
+      >
+        <FormattedNumber
+          value={canBorrow ? maxAmountToBorrow : '0'}
+          variant="secondary14"
+          symbol={poolReserve.symbol}
+        />
+      </Row>
 
-      {currentAccount && (
-        <Stack direction="row" spacing={2}>
-          <Button variant="contained" onClick={() => openSupply(underlyingAsset)}>
-            <Trans>Supply</Trans>
-          </Button>
-          <Button
-            disabled={!canBorrow}
-            variant="contained"
-            onClick={() => openBorrow(underlyingAsset)}
-          >
-            <Trans>Borrow</Trans>
-          </Button>
-        </Stack>
-      )}
-      {!currentAccount && (
-        <Button variant="gradient" onClick={connectWallet}>
-          <Trans>Connect wallet</Trans>
+      <Stack direction="row" spacing={2}>
+        <Button
+          variant="contained"
+          onClick={() => openSupply(underlyingAsset)}
+          fullWidth={downToXSM}
+        >
+          <Trans>Supply</Trans> {downToXSM && poolReserve.symbol}
         </Button>
-      )}
-    </Paper>
+        <Button
+          disabled={!canBorrow}
+          variant="contained"
+          onClick={() => openBorrow(underlyingAsset)}
+          fullWidth={downToXSM}
+        >
+          <Trans>Borrow</Trans> {downToXSM && poolReserve.symbol}
+        </Button>
+      </Stack>
+    </PaperWrapper>
   );
 };

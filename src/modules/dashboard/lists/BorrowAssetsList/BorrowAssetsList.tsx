@@ -18,6 +18,7 @@ import { ListLoader } from '../ListLoader';
 import { BorrowAssetsListItem } from './BorrowAssetsListItem';
 import { BorrowAssetsListMobileItem } from './BorrowAssetsListMobileItem';
 import { BorrowAssetsItem } from './types';
+import { Link } from '../../../../components/primitives/Link';
 
 export const BorrowAssetsList = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
@@ -110,7 +111,10 @@ export const BorrowAssetsList = () => {
               )}
               {user?.isInIsolationMode && (
                 <Alert sx={{ mb: '12px' }} severity="warning">
-                  <Trans>Borrowing power and assets are limited due to Isolation mode.</Trans>
+                  <Trans>Borrowing power and assets are limited due to Isolation mode. </Trans>
+                  <Link href="https://docs.aave.com/faq/" target="_blank">
+                    Learn More
+                  </Link>
                 </Alert>
               )}
               {user?.isInEmode && (
