@@ -13,7 +13,7 @@ import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { TxModalDetails } from '../FlowCommons/TxModalDetails';
+import { DetailsHFLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { EmodeActions } from './EmodeActions';
@@ -210,13 +210,15 @@ export const EmodeModalContent = () => {
       {blockingError !== undefined && <Alert severity="error">{handleBlocked()}</Alert>}
 
       <TxModalDetails
-        showHf={true}
-        healthFactor={user.healthFactor}
-        futureHealthFactor={newSummary.healthFactor}
         gasLimit={gasLimit}
         emodeAssets={selectedEmode?.assets}
         selectedEmode={selectedEmode?.id || 0}
-      />
+      >
+        <DetailsHFLine
+          healthFactor={user.healthFactor}
+          futureHealthFactor={newSummary.healthFactor}
+        />
+      </TxModalDetails>
 
       {emodeTxState.gasEstimationError && (
         <GasEstimationError error={emodeTxState.gasEstimationError} />

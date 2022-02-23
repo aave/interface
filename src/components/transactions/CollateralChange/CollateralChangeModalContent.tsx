@@ -16,7 +16,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { TxModalDetails } from '../FlowCommons/TxModalDetails';
+import { DetailsHFLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { IsolationModeWarning } from '../Warnings/IsolationModeWarning';
 import { CollateralChangeActions } from './CollateralChangeActions';
@@ -150,13 +150,15 @@ export const CollateralChangeModalContent = ({
       )}
 
       <TxModalDetails
-        showHf={true}
-        healthFactor={user.healthFactor}
-        futureHealthFactor={healthFactorAfterSwitch.toString()}
         gasLimit={gasLimit}
         symbol={symbol}
         walletBalance={userReserve.underlyingBalance}
-      />
+      >
+        <DetailsHFLine
+          healthFactor={user.healthFactor}
+          futureHealthFactor={healthFactorAfterSwitch.toString()}
+        />
+      </TxModalDetails>
 
       {blockingError !== undefined && (
         <Typography variant="helperText" color="error.main">

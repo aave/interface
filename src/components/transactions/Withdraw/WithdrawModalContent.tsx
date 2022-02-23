@@ -7,7 +7,6 @@ import {
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
-import { parseUnits } from 'ethers/lib/utils';
 import { useRef, useState } from 'react';
 import {
   ComputedReserveData,
@@ -22,9 +21,8 @@ import { AssetInput } from '../AssetInput';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { TxModalDetails } from '../FlowCommons/TxModalDetails';
+import { DetailsHFLine, DetailsUnwrapSwitch, TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
-import { GasStation } from '../GasStation/GasStation';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { WithdrawActions } from './WithdrawActions';
 
@@ -155,10 +153,6 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
     }
   };
 
-  // hf
-  const showHealthFactor =
-    user.totalBorrowsMarketReferenceCurrency !== '0' && poolReserve.usageAsCollateralEnabled;
-
   // is Network mismatched
   const isWrongNetwork = currentChainId !== connectedChainId;
 
@@ -222,20 +216,20 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
           </Typography>
         )}
 
-      {healthFactorAfterWithdraw.toString() === '-1' ? (
-        <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} />
-      ) : (
-        <TxModalDetails
-          showHf={showHealthFactor}
-          healthFactor={user.healthFactor}
+      <TxModalDetails gasLimit={gasLimit} symbol={poolReserve.symbol}>
+        {poolReserve.isWrappedBaseAsset && (
+          <DetailsUnwrapSwitch
+            unwrapped={withdrawUnWrapped}
+            setUnWrapped={setWithdrawUnWrapped}
+            symbol={networkConfig.baseAssetSymbol}
+            unwrappedSymbol={networkConfig.baseAssetSymbol}
+          />
+        )}
+        <DetailsHFLine
+          healthFactor={user ? user.healthFactor : '-1'}
           futureHealthFactor={healthFactorAfterWithdraw.toString()}
-          gasLimit={gasLimit}
-          setActionUnWrapped={poolReserve.isWrappedBaseAsset ? setWithdrawUnWrapped : undefined}
-          unWrappedSymbol={networkConfig.baseAssetSymbol}
-          actionUnWrapped={withdrawUnWrapped}
-          symbol={poolReserve.symbol}
         />
-      )}
+      </TxModalDetails>
 
       {withdrawTxState.gasEstimationError && (
         <GasEstimationError error={withdrawTxState.gasEstimationError} />

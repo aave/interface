@@ -23,7 +23,12 @@ import { AssetInput } from '../AssetInput';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { TxModalDetails } from '../FlowCommons/TxModalDetails';
+import {
+  DetailsHFLine,
+  DetailsIncentivesLine,
+  DetailsUnwrapSwitch,
+  TxModalDetails,
+} from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { BorrowActions } from './BorrowActions';
@@ -158,6 +163,11 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
         addToken={addToken}
       />
     );
+
+  const incentive =
+    interestRateMode === InterestRate.Stable
+      ? poolReserve.sIncentivesData
+      : poolReserve.vIncentivesData;
   return (
     <>
       <TxModalTitle title="Borrow" symbol={poolReserve.symbol} />
@@ -202,15 +212,9 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
         )}
 
       <TxModalDetails
-        showHf={true}
-        healthFactor={user.healthFactor}
-        futureHealthFactor={newHealthFactor.toString()}
         gasLimit={gasLimit}
         incentives={poolReserve.vIncentivesData}
         stableRateIncentives={poolReserve.sIncentivesData}
-        setActionUnWrapped={poolReserve.isWrappedBaseAsset ? setBorrowUnWrapped : undefined}
-        unWrappedSymbol={networkConfig.baseAssetSymbol}
-        actionUnWrapped={borrowUnWrapped}
         symbol={poolReserve.symbol}
         apy={poolReserve.variableBorrowAPY}
         borrowStableRate={
@@ -218,7 +222,23 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
         }
         setInterestRateMode={setInterestRateMode}
         action="Borrow"
-      />
+      >
+        {poolReserve.isWrappedBaseAsset && (
+          <DetailsUnwrapSwitch
+            unwrapped={borrowUnWrapped}
+            setUnWrapped={setBorrowUnWrapped}
+            symbol={poolReserve.symbol}
+            unwrappedSymbol={networkConfig.baseAssetSymbol}
+          />
+        )}
+        {incentive && incentive.filter((i) => i.incentiveAPR !== '0').length > 0 && (
+          <DetailsIncentivesLine incentives={incentive} symbol={poolReserve.symbol} />
+        )}
+        <DetailsHFLine
+          healthFactor={user.healthFactor}
+          futureHealthFactor={newHealthFactor.toString()}
+        />
+      </TxModalDetails>
 
       {borrowTxState.gasEstimationError && (
         <GasEstimationError error={borrowTxState.gasEstimationError} />
