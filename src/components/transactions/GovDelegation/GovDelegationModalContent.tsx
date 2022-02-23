@@ -2,7 +2,7 @@ import { canBeEnsAddress } from '@aave/contract-helpers';
 import { Trans, t } from '@lingui/macro';
 import { FormControl, FormHelperText, Input, Typography } from '@mui/material';
 import { ethers } from 'ethers';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { DelegationType } from 'src/helpers/types';
 import { useAaveTokensProviderContext } from 'src/hooks/governance-data-provider/AaveTokensDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
@@ -44,34 +44,25 @@ export const GovDelegationModalContent = () => {
   const { gasLimit, mainTxState: txState } = useModalContext();
 
   // error states
-  const [tokenBlockingError, setTokenBlockingError] = useState<ErrorType>();
-  const [delegateAddressBlockingError, setDelegateAddressBlockingError] = useState<
-    ErrorType | undefined
-  >();
 
   // selector states
   const [delegationToken, setDelegationToken] = useState<DelegationToken>(delegationTokens['AAVE']);
   const [delegationType, setDelegationType] = useState(DelegationType.VOTING);
   const [delegate, setDelegate] = useState('');
 
-  useEffect(() => {
-    if (delegationToken.symbol === 'AAVE' && aave === '0') {
-      setTokenBlockingError(ErrorType.NOT_ENOUGH_BALANCE);
-    } else if (delegationToken.symbol === 'stkAAVE' && stkAave === '0') {
-      setTokenBlockingError(ErrorType.NOT_ENOUGH_BALANCE);
-    } else {
-      setTokenBlockingError(undefined);
-    }
-  }, [delegationToken, aave, stkAave]);
+  let tokenBlockingError: ErrorType | undefined = undefined;
+  if (delegationToken.symbol === 'AAVE' && aave === '0') {
+    tokenBlockingError = ErrorType.NOT_ENOUGH_BALANCE;
+  } else if (delegationToken.symbol === 'stkAAVE' && stkAave === '0') {
+    tokenBlockingError = ErrorType.NOT_ENOUGH_BALANCE;
+  }
 
   // handle delegate address errors
-  useEffect(() => {
-    if (delegate !== '' && !ethers.utils.isAddress(delegate) && !canBeEnsAddress(delegate)) {
-      setDelegateAddressBlockingError(ErrorType.NOT_AN_ADDRESS);
-    } else {
-      setDelegateAddressBlockingError(undefined);
-    }
-  }, [delegate]);
+  let delegateAddressBlockingError: ErrorType | undefined = undefined;
+  if (delegate !== '' && !ethers.utils.isAddress(delegate) && !canBeEnsAddress(delegate)) {
+    delegateAddressBlockingError = ErrorType.NOT_AN_ADDRESS;
+  }
+
   // render error messages
   const handleDelegateAddressError = () => {
     switch (delegateAddressBlockingError) {
@@ -80,6 +71,19 @@ export const GovDelegationModalContent = () => {
           // TODO: fix text
           <Typography>
             <Trans>Not a valid address</Trans>
+          </Typography>
+        );
+      default:
+        return null;
+    }
+  };
+  const handleTokenBlockingError = () => {
+    switch (tokenBlockingError) {
+      case ErrorType.NOT_ENOUGH_BALANCE:
+        return (
+          // TODO: fix text
+          <Typography>
+            <Trans>Not enough balance</Trans>
           </Typography>
         );
       default:
@@ -130,6 +134,13 @@ export const GovDelegationModalContent = () => {
           <FormHelperText>
             <Typography variant="helperText" sx={{ color: 'red' }}>
               {handleDelegateAddressError()}
+            </Typography>
+          </FormHelperText>
+        )}
+        {tokenBlockingError !== undefined && (
+          <FormHelperText>
+            <Typography variant="helperText" sx={{ color: 'red' }}>
+              {handleTokenBlockingError()}
             </Typography>
           </FormHelperText>
         )}
