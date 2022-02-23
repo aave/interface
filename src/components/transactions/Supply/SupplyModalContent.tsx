@@ -87,8 +87,10 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
   const amount = isMaxSelected ? maxAmountToSupply.toString() : _amount;
 
   const handleChange = (value: string) => {
-    amountRef.current = value === '-1' ? maxAmountToSupply.toString() : value;
-    setAmount(value);
+    const surpassesMax = maxAmountToSupply.lt(value);
+    const maxSelected = value === '-1';
+    amountRef.current = maxSelected || surpassesMax ? maxAmountToSupply.toString() : value;
+    setAmount(surpassesMax ? '-1' : value);
   };
 
   // Calculation of future HF

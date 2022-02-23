@@ -6,7 +6,7 @@ import {
 } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -70,7 +70,9 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
   // We set this in a useEffect, so it doesnt constantly change when
   // max amount selected
   const handleChange = (_value: string) => {
-    const value = _value === '-1' ? maxAmountToBorrow.toString() : _value;
+    const surpassesMax = maxAmountToBorrow.lt(_value);
+    const maxSelected = _value === '-1';
+    const value = surpassesMax || maxSelected ? maxAmountToBorrow.toString() : _value;
     amountRef.current = value;
     setAmount(value);
   };

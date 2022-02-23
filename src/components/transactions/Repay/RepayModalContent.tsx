@@ -94,11 +94,11 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToRepay.toString() : _amount;
 
-  const handleChange = (_value: string) => {
-    const maxSelected = _value === '-1';
-    const value = maxSelected || maxAmountToRepay.lt(_value) ? maxAmountToRepay.toString() : _value;
-    amountRef.current = value;
-    setAmount(value);
+  const handleChange = (value: string) => {
+    const surpassesMax = maxAmountToRepay.lt(value);
+    const maxSelected = value === '-1';
+    amountRef.current = maxSelected || surpassesMax ? maxAmountToRepay.toString() : value;
+    setAmount(surpassesMax ? '-1' : value);
     if (currentMarketData.v3 && maxSelected && (repayWithATokens || maxAmountToRepay.eq(debt))) {
       setRepayMax('-1');
     } else {

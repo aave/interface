@@ -91,8 +91,10 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
   const amount = isMaxSelected ? maxAmountToWithdraw.toString() : _amount;
 
   const handleChange = (value: string) => {
-    amountRef.current = value === '-1' ? maxAmountToWithdraw.toString() : value;
-    setAmount(value);
+    const surpassesMax = maxAmountToWithdraw.lt(value);
+    const maxSelected = value === '-1';
+    amountRef.current = surpassesMax || maxSelected ? maxAmountToWithdraw.toString() : value;
+    setAmount(surpassesMax ? '-1' : value);
   };
 
   // health factor calculations
