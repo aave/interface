@@ -56,7 +56,6 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
   // states
   const [amount, setAmount] = useState('');
   const [amountToSupply, setAmountToSupply] = useState(amount);
-  const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
   const [maxAmount, setMaxAmount] = useState('0');
   const [isMax, setIsMax] = useState(false);
 
@@ -163,19 +162,14 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
     );
 
   // error handler
-  useEffect(() => {
-    if (!supplyTxState.success) {
-      if (valueToBigNumber(amountToSupply).gt(walletBalance)) {
-        setBlockingError(ErrorType.NOT_ENOUGH_BALANCE);
-      } else if (capReached) {
-        setBlockingError(ErrorType.CAP_REACHED);
-      } else {
-        setBlockingError(undefined);
-      }
-    } else {
-      setBlockingError(undefined);
+  let blockingError: ErrorType | undefined = undefined;
+  if (!supplyTxState.success) {
+    if (valueToBigNumber(amountToSupply).gt(walletBalance)) {
+      blockingError = ErrorType.NOT_ENOUGH_BALANCE;
+    } else if (capReached) {
+      blockingError = ErrorType.CAP_REACHED;
     }
-  }, [walletBalance, amountToSupply, capReached, supplyTxState]);
+  }
 
   const handleBlocked = () => {
     switch (blockingError) {
