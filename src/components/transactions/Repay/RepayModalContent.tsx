@@ -253,12 +253,7 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
         maxValue={maxAmountToRepay.toString()}
       />
 
-      <TxModalDetails
-        gasLimit={gasLimit}
-        symbol={poolReserve.iconSymbol}
-        amountAfterRepay={amountAfterRepay}
-        displayAmountAfterRepayInUsd={displayAmountAfterRepayInUsd.toString()}
-      >
+      <TxModalDetails gasLimit={gasLimit} symbol={poolReserve.iconSymbol}>
         <DetailsNumberLineWithSub
           description={<Trans>Remaining debt</Trans>}
           amount={amountAfterRepay}

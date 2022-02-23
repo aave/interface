@@ -42,15 +42,12 @@ export interface TxModalDetailsProps {
   walletBalance?: string;
   rate?: InterestRate;
   underlyingAsset?: string;
-  displayAmountAfterRepayInUsd?: string;
-  amountAfterRepay?: string;
   allRewards?: Reward[];
   setSelectedReward?: Dispatch<SetStateAction<Reward | undefined>>;
   selectedReward?: Reward;
   faucetAmount?: string;
   selectedEmode?: number;
   emodeAssets?: string[];
-  votingPower?: string;
   stakeAPR?: string;
   stakeRewards?: string;
   stakeRewardsInUsd?: string;
@@ -68,15 +65,12 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   action,
   walletBalance,
   rate,
-  amountAfterRepay,
-  displayAmountAfterRepayInUsd,
   allRewards,
   setSelectedReward,
   selectedReward,
   faucetAmount,
   selectedEmode,
   emodeAssets,
-  votingPower,
   stakeAPR,
   stakeRewardsInUsd,
   stakeRewards,
@@ -170,37 +164,6 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
             },
           })}
         >
-          {votingPower && (
-            <Row caption={<Trans>Voting power</Trans>} captionVariant="description" mb={4}>
-              <FormattedNumber value={Number(votingPower)} variant="secondary14" />
-            </Row>
-          )}
-          {amountAfterRepay && displayAmountAfterRepayInUsd && symbol && (
-            <Row
-              caption={<Trans>Remaining debt</Trans>}
-              captionVariant="description"
-              mb={4}
-              align="flex-start"
-            >
-              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <TokenIcon symbol={symbol} sx={{ mr: 1, fontSize: '16px' }} />
-                  <FormattedNumber value={Number(amountAfterRepay)} variant="secondary14" />
-                  <Typography ml={1} variant="secondary14">
-                    {symbol}
-                  </Typography>
-                </Box>
-
-                <FormattedNumber
-                  value={Number(displayAmountAfterRepayInUsd)}
-                  variant="helperText"
-                  compact
-                  symbol="USD"
-                />
-              </Box>
-            </Row>
-          )}
-
           {!borrowStableRate && apy && !rate && action !== 'Supply' && (
             <DetailsNumberLine
               description={<Trans>Borrow APY, variable</Trans>}
