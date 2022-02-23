@@ -157,7 +157,7 @@ export const SupplyAssetsList = () => {
                   Collateral usage is limited because of isolation mode.{' '}
                   <Link href="https://docs.aave.com/faq/" target="_blank">
                     Learn More
-                  </Link>{' '}
+                  </Link>
                 </Trans>
               </Alert>
             )}
