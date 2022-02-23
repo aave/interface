@@ -17528,5 +17528,28 @@
       }
     ],
     "finished": true
+  },
+  {
+    "votes": [
+      {
+        "proposalId": 61,
+        "voter": "0xF569914d4E46cBD6A91fDE6c8850a079604A271b",
+        "support": true,
+        "votingPower": 1210.2047246533593,
+        "transactionHash": "0xd34f6ba4a71b48d9a7a9e1f2ee0f91f839fd6386c3643a3b3e603c7042ec4ade",
+        "timestamp": 1645565665,
+        "blockNumber": 14258298
+      },
+      {
+        "proposalId": 61,
+        "voter": "0xA0efD27acC781549D5b78e89E561AA0903932d56",
+        "support": true,
+        "votingPower": 8.002657782527367,
+        "transactionHash": "0x9c48fe7c66cbec75b7d18b2b6e88ce73fce13a522ab153a4d93a9ae37668b207",
+        "timestamp": 1645565899,
+        "blockNumber": 14258319
+      }
+    ],
+    "finished": false
   }
 ]

@@ -899,6 +899,21 @@
       "ipfsHash": "QmXBgxpgMCfHngBgsmd3HX3rvpu9E3kR4FSxZbQkoVM2un",
       "originalHash": "0x836d80dbca91c3e025f142564311119f762ef94957c94814af7625f084b6f8f9",
       "id": 60
+    },
+    {
+      "title": "Aave <> Starknet - Phase I",
+      "status": "Proposed",
+      "author": "Ernesto Boado (@eboadom)",
+      "shortDescription": "Kick-start of Phase I of Aave <> Starknet",
+      "discussions": "https://governance.aave.com/t/request-for-approval-aave-starkware-phase-i/7145",
+      "created": "2022-02-21T00:00:00.000Z",
+      "updated (*optional)": "2022-02-21T00:00:00.000Z",
+      "preview": "## Abstract\n\nThis proposal serves as kick-start of the Phase I of …",
+      "basename": "1B0F30D959FD-AIP-AAVE_STARKNET_PHASE_I",
+      "description": "\n\n\n## Abstract\n\nThis proposal serves as kick-start of the Phase I of the Aave <> Starknet project, releasing the initial section of the budget, accounting for 100'000 USD in USDC and WETH.\nIn addition, this proposal includes some technical updates to enable release of any kind of tokens from the protocol treasury.\n\n## Specification\n\nThe proposal implementation's specification can be found [here](https://github.com/eboadom/aip-aave-starknet-phasei/blob/master/README.md#aip-aave--starknet-phase-i).\nIn summary, the proposal's executable code (payload) does the following:\n- Deploys a new ControllerOfCollector contract. Rationale explained on the previous link.\n- Upgrades the AaveCollector implementation to the same as the AAVE treasury implementation.\n- Withdraws 90'000 USDC to the project's facilitator address.\n- Withdraws 3 WETH to the project's facilitator address.\n\n## Test Cases\n\nBoth the proposal lifecycle and it's correctness have been tested and simulation on a mainnet fork, with the specific tests being [here](https://github.com/eboadom/aip-aave-starknet-phasei/blob/master/src/test/ValidateAIPStarknetPhaseI.sol).\n\n## Implementation\n\nThe proposal's payload has been deployed on [https://etherscan.io/address/0x4e76e1d71806aae6ccaac0fc67c3aa74cb245277](https://etherscan.io/address/0x4e76e1d71806aae6ccaac0fc67c3aa74cb245277)\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).",
+      "ipfsHash": "QmSszWnxSTrud1Ne7yfpbxNL2mjwx1RArWTrDAbfmbXQvZ",
+      "originalHash": "0x4376257429a3c556225d6ebbefa674b6c2732913ac7cbaecd6459950549b962e",
+      "id": 61
     }
   ]
 }
