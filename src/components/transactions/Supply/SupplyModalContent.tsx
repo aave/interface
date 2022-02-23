@@ -8,7 +8,7 @@ import {
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { CollateralType } from 'src/helpers/types';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useModalContext } from 'src/hooks/useModal';
@@ -55,9 +55,7 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
 
   // states
   const [_amount, setAmount] = useState('');
-  const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
   const amountRef = useRef<string>();
-
   const supplyUnWrapped = underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase();
 
   const poolReserve = reserves.find((reserve) => {
@@ -153,19 +151,14 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
     );
 
   // error handler
-  useEffect(() => {
-    if (!supplyTxState.success) {
-      if (valueToBigNumber(amount).gt(walletBalance)) {
-        setBlockingError(ErrorType.NOT_ENOUGH_BALANCE);
-      } else if (capReached) {
-        setBlockingError(ErrorType.CAP_REACHED);
-      } else {
-        setBlockingError(undefined);
-      }
-    } else {
-      setBlockingError(undefined);
+  let blockingError: ErrorType | undefined = undefined;
+  if (!supplyTxState.success) {
+    if (valueToBigNumber(amount).gt(walletBalance)) {
+      blockingError = ErrorType.NOT_ENOUGH_BALANCE;
+    } else if (capReached) {
+      blockingError = ErrorType.CAP_REACHED;
     }
-  }, [walletBalance, amount, capReached, supplyTxState]);
+  }
 
   const handleBlocked = () => {
     switch (blockingError) {

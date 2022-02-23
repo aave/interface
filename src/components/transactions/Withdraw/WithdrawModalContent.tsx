@@ -45,7 +45,6 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
 
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>();
-  const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
 
   const networkConfig = getNetworkConfig(currentChainId);
 
@@ -127,32 +126,19 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
     });
   }
 
-  useEffect(() => {
-    if (!withdrawTxState.success && !withdrawTxState.txHash) {
-      if (healthFactorAfterWithdraw.lt('1') && user.totalBorrowsMarketReferenceCurrency !== '0') {
-        setBlockingError(ErrorType.CAN_NOT_WITHDRAW_THIS_AMOUNT);
-      } else if (!blockingError && (underlyingBalance.eq('0') || underlyingBalance.lt(amount))) {
-        setBlockingError(ErrorType.NOT_ENOUGH_FUNDS_TO_WITHDRAW_AMOUNT);
-      } else if (
-        !blockingError &&
-        (unborrowedLiquidity.eq('0') ||
-          valueToBigNumber(amount).gt(poolReserve.unborrowedLiquidity))
-      ) {
-        setBlockingError(ErrorType.POOL_DOES_NOT_HAVE_ENOUGH_LIQUIDITY);
-      } else {
-        setBlockingError(undefined);
-      }
-    } else {
-      setBlockingError(undefined);
+  let blockingError: ErrorType | undefined = undefined;
+  if (!withdrawTxState.success && !withdrawTxState.txHash) {
+    if (healthFactorAfterWithdraw.lt('1') && user.totalBorrowsMarketReferenceCurrency !== '0') {
+      blockingError = ErrorType.CAN_NOT_WITHDRAW_THIS_AMOUNT;
+    } else if (!blockingError && (underlyingBalance.eq('0') || underlyingBalance.lt(amount))) {
+      blockingError = ErrorType.NOT_ENOUGH_FUNDS_TO_WITHDRAW_AMOUNT;
+    } else if (
+      !blockingError &&
+      (unborrowedLiquidity.eq('0') || amount.gt(poolReserve.unborrowedLiquidity))
+    ) {
+      blockingError = ErrorType.POOL_DOES_NOT_HAVE_ENOUGH_LIQUIDITY;
     }
-  }, [
-    healthFactorAfterWithdraw,
-    user.totalBorrowsMarketReferenceCurrency,
-    underlyingBalance,
-    unborrowedLiquidity,
-    amount,
-    withdrawTxState,
-  ]);
+  }
 
   // error render handling
   const handleBlocked = () => {
