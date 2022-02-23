@@ -1,3 +1,4 @@
+import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -99,7 +100,11 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
 
   const balance = walletBalances[underlyingAsset];
   const canBorrow = assetCanBeBorrowedByUser(poolReserve, user);
-  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user).toString();
+  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(
+    poolReserve,
+    user,
+    InterestRate.Variable
+  ).toString();
   const maxAmountToSupply = getMaxAmountAvailableToSupply(
     balance.amount,
     poolReserve,

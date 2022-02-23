@@ -6,7 +6,7 @@ import {
 } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useRef, useState } from 'react';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -35,8 +35,8 @@ export type BorrowModalContentProps = {
 export enum ErrorType {
   STABLE_RATE_NOT_ENABLED,
   NOT_ENOUGH_LIQUIDITY,
-  NOT_ENOUGH_COLLATERAL,
   BORROWING_NOT_AVAILABLE,
+  NOT_ENOUGH_BORROWED,
 }
 
 export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps) => {
@@ -47,8 +47,8 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
 
   const [borrowUnWrapped, setBorrowUnWrapped] = useState(true);
   const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
-  const [amount, setAmount] = useState('');
-  const [amountToBorrow, setAmountToBorrow] = useState(amount);
+  const [_amount, setAmount] = useState('');
+  const amountRef = useRef<string>();
 
   const networkConfig = getNetworkConfig(currentChainId);
 
@@ -56,23 +56,28 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
     return reserve.underlyingAsset === underlyingAsset;
   }) as ComputedReserveData;
 
+  const userReserve = user?.userReservesData.find((reserve) => {
+    return reserve.underlyingAsset === underlyingAsset;
+  });
+
   // amount calculations
-  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user);
+  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user, interestRateMode);
   const formattedMaxAmountToBorrow = maxAmountToBorrow.toString(10);
+
+  const isMaxSelected = _amount === '-1';
+  const amount = isMaxSelected ? maxAmountToBorrow.toString() : _amount;
 
   // We set this in a useEffect, so it doesnt constantly change when
   // max amount selected
-  useEffect(() => {
-    // case when user uses max button
-    if (amount === '-1') {
-      setAmountToBorrow(formattedMaxAmountToBorrow);
-    } else {
-      setAmountToBorrow(amount);
-    }
-  }, [amount]);
+  const handleChange = (_value: string) => {
+    const maxSelected = _value === '-1';
+    const value = maxSelected ? maxAmountToBorrow.toString() : _value;
+    amountRef.current = value;
+    setAmount(value);
+  };
 
   // health factor calculations
-  const amountToBorrowInUsd = valueToBigNumber(amountToBorrow)
+  const amountToBorrowInUsd = valueToBigNumber(amount)
     .multipliedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
     .multipliedBy(marketReferencePriceInUsd)
     .shiftedBy(-USD_DECIMALS);
@@ -89,16 +94,20 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
   const isWrongNetwork = currentChainId !== connectedChainId;
 
   // calculating input usd value
-  const usdValue = valueToBigNumber(amountToBorrow).multipliedBy(poolReserve.priceInUSD);
+  const usdValue = valueToBigNumber(amount).multipliedBy(poolReserve.priceInUSD);
 
   // error types handling
   let blockingError: ErrorType | undefined = undefined;
   if (interestRateMode === InterestRate.Stable && !poolReserve.stableBorrowRateEnabled) {
     blockingError = ErrorType.STABLE_RATE_NOT_ENABLED;
-  } else if (valueToBigNumber(amountToBorrow).gt(poolReserve.formattedAvailableLiquidity)) {
+  } else if (
+    interestRateMode === InterestRate.Stable &&
+    userReserve?.usageAsCollateralEnabledOnUser &&
+    valueToBigNumber(amount).lt(userReserve?.underlyingBalance || 0)
+  ) {
+    blockingError = ErrorType.NOT_ENOUGH_BORROWED;
+  } else if (valueToBigNumber(amount).gt(poolReserve.formattedAvailableLiquidity)) {
     blockingError = ErrorType.NOT_ENOUGH_LIQUIDITY;
-  } else if (maxAmountToBorrow.lt(amountToBorrow)) {
-    blockingError = ErrorType.NOT_ENOUGH_COLLATERAL;
   } else if (!poolReserve.borrowingEnabled) {
     blockingError = ErrorType.BORROWING_NOT_AVAILABLE;
   }
@@ -107,20 +116,22 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
   const handleBlocked = () => {
     switch (blockingError) {
       case ErrorType.BORROWING_NOT_AVAILABLE:
+        return <Trans>Borrowing is currently unavailable for {poolReserve.symbol}.</Trans>;
+      case ErrorType.NOT_ENOUGH_BORROWED:
         return (
-          <>
-            <Trans>Borrowing is currently unavailable for </Trans>
-            {poolReserve.symbol}.
-          </>
+          <Trans>
+            To prevent gaming the stable rate you can only borrow, when you borrow more then your
+            current collateral in the same asset.
+          </Trans>
         );
-      case ErrorType.NOT_ENOUGH_COLLATERAL:
-        return <Trans>Your collateral is not enough to borrow this amount</Trans>;
       case ErrorType.NOT_ENOUGH_LIQUIDITY:
         return (
           <>
-            <Trans>There are not enough funds in the</Trans>
-            {poolReserve.symbol}
-            <Trans>reserve to borrow</Trans>
+            <Trans>
+              There are not enough funds in the
+              {poolReserve.symbol}
+              reserve to borrow
+            </Trans>
           </>
         );
       case ErrorType.STABLE_RATE_NOT_ENABLED:
@@ -142,7 +153,7 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
     return (
       <TxSuccessView
         action="Borrowed"
-        amount={amountToBorrow}
+        amount={amountRef.current}
         symbol={poolReserve.symbol}
         addToken={addToken}
       />
@@ -155,8 +166,8 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
       )}
 
       <AssetInput
-        value={amountToBorrow}
-        onChange={setAmount}
+        value={amount}
+        onChange={handleChange}
         usdValue={usdValue.toString()}
         assets={[
           {
@@ -173,6 +184,8 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
             : poolReserve.iconSymbol
         }
         capType={CapType.borrowCap}
+        isMaxSelected={isMaxSelected}
+        maxValue={maxAmountToBorrow.toString()}
       />
 
       {blockingError !== undefined && (
@@ -213,7 +226,7 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
 
       <BorrowActions
         poolReserve={poolReserve}
-        amountToBorrow={amountToBorrow}
+        amountToBorrow={amount}
         poolAddress={
           borrowUnWrapped && poolReserve.isWrappedBaseAsset
             ? API_ETH_MOCK_ADDRESS

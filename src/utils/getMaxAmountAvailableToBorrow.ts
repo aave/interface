@@ -1,3 +1,4 @@
+import { InterestRate } from '@aave/contract-helpers';
 import { FormatUserSummaryAndIncentivesResponse, valueToBigNumber } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
 
@@ -14,17 +15,26 @@ import {
  */
 export function getMaxAmountAvailableToBorrow(
   poolReserve: ComputedReserveData,
-  user: FormatUserSummaryAndIncentivesResponse
+  user: FormatUserSummaryAndIncentivesResponse,
+  rateMode: InterestRate
 ) {
   const availableInPoolUSD = poolReserve.availableLiquidityUSD;
   const availableForUserUSD = BigNumber.min(user.availableBorrowsUSD, availableInPoolUSD);
 
-  const maxUserAmountToBorrow = BigNumber.min(
+  let maxUserAmountToBorrow = BigNumber.min(
     valueToBigNumber(user?.availableBorrowsMarketReferenceCurrency || 0).div(
       poolReserve.formattedPriceInMarketReferenceCurrency
     ),
     poolReserve.formattedAvailableLiquidity
   );
+
+  if (rateMode === InterestRate.Stable) {
+    maxUserAmountToBorrow = BigNumber.min(
+      maxUserAmountToBorrow,
+      // TODO: put MAX_STABLE_RATE_BORROW_SIZE_PERCENT on uipooldataprovider instead of using the static value here
+      valueToBigNumber(poolReserve.formattedAvailableLiquidity).multipliedBy(0.25)
+    );
+  }
 
   const shouldAddMargin =
     /**
