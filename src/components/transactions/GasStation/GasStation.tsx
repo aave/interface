@@ -3,7 +3,6 @@ import { Settings } from '@mui/icons-material';
 import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
 import {
   Box,
-  ClickAwayListener,
   Popper,
   styled,
   TextField,
@@ -13,6 +12,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
+import ClickAwayListener from '@mui/base/ClickAwayListener';
 import sx from '@mui/system/sx';
 import { BigNumber } from 'ethers/lib/ethers';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
@@ -118,12 +118,18 @@ export const GasStation: React.FC<GasStationProps> = ({ gasLimit }) => {
       <Typography sx={{ mx: 1.5 }} variant="caption" color="divider">
         |
       </Typography>
-
+      <Typography color="text.secondary">
+        {state.gasOption === GasOption.Custom ? (
+          `${state.customGas} Gwei`
+        ) : (
+          <Select value={state.gasOption} slow="Slow" normal="Normal" fast="Fast" other="-" />
+        )}
+      </Typography>
       <Tooltip
         onClose={() => setOpen(false)}
         disableFocusListener
         disableHoverListener
-        placement="top"
+        placement="top-end"
         PopperComponent={PopperComponent}
         title={
           <ClickAwayListener onClickAway={() => setOpen(false)}>
@@ -227,25 +233,17 @@ export const GasStation: React.FC<GasStationProps> = ({ gasLimit }) => {
         open={open}
         arrow
       >
-        <Typography color="text.secondary">
-          {state.gasOption === GasOption.Custom ? (
-            `${state.customGas} Gwei`
-          ) : (
-            <Select value={state.gasOption} slow="Slow" normal="Normal" fast="Fast" other="-" />
-          )}
-        </Typography>
+        <Settings
+          color="primary"
+          onClick={toggleDropdown}
+          sx={{
+            cursor: 'pointer',
+            display: error ? 'none' : 'inline-block',
+            fontSize: '16px',
+            ml: '2px',
+          }}
+        />
       </Tooltip>
-
-      <Settings
-        color="primary"
-        onClick={toggleDropdown}
-        sx={{
-          cursor: 'pointer',
-          display: error ? 'none' : 'inline-block',
-          fontSize: '16px',
-          ml: '2px',
-        }}
-      />
     </Box>
   );
 };
