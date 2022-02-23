@@ -64,7 +64,6 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
     balance: walletBalances[poolReserve.underlyingAsset]?.amount,
   });
   const [assets, setAssets] = useState<Asset[]>([tokenToRepayWith]);
-  const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
   const [isMax, setIsMax] = useState(false);
   const [maxAmount, setMaxAmount] = useState('0');
 
@@ -222,41 +221,23 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
   // TODO: add here repay with collateral calculations and maybe do a conditional with other????
 
   // error handling
-  useEffect(() => {
-    if (!repayTxState.success) {
-      if (repayWithATokens) {
-        if (
-          valueToBigNumber(underlyingBalance).eq(0) ||
-          valueToBigNumber(underlyingBalance).lt(amountToRepayUI) ||
-          (amount === '-1' && valueToBigNumber(underlyingBalance).lt(maxAmountToRepay))
-        ) {
-          setBlockingError(ErrorType.NOT_ENOUGH_ATOKEN_BALANCE);
-        } else {
-          setBlockingError(undefined);
-        }
-      } else {
-        if (
-          valueToBigNumber(tokenToRepayWith.balance).eq('0') ||
-          valueToBigNumber(tokenToRepayWith.balance).lt(amountToRepayUI) ||
-          (amount === '-1' && valueToBigNumber(tokenToRepayWith.balance).lt(maxAmountToRepay))
-        ) {
-          setBlockingError(ErrorType.NOT_ENOUGH_BALANCE);
-        } else {
-          setBlockingError(undefined);
-        }
-      }
-    } else {
-      setBlockingError(undefined);
+  let blockingError: ErrorType | undefined = undefined;
+  if (!repayTxState.success) {
+    if (
+      repayWithATokens &&
+      (valueToBigNumber(underlyingBalance).eq(0) ||
+        valueToBigNumber(underlyingBalance).lt(amountToRepayUI) ||
+        (amount === '-1' && valueToBigNumber(underlyingBalance).lt(maxAmountToRepay)))
+    ) {
+      blockingError = ErrorType.NOT_ENOUGH_ATOKEN_BALANCE;
+    } else if (
+      valueToBigNumber(tokenToRepayWith.balance).eq('0') ||
+      valueToBigNumber(tokenToRepayWith.balance).lt(amountToRepayUI) ||
+      (amount === '-1' && valueToBigNumber(tokenToRepayWith.balance).lt(maxAmountToRepay))
+    ) {
+      blockingError = ErrorType.NOT_ENOUGH_BALANCE;
     }
-  }, [
-    amount,
-    amountToRepayUI,
-    repayWithATokens,
-    underlyingBalance,
-    maxAmountToRepay,
-    tokenToRepayWith,
-    repayTxState,
-  ]);
+  }
 
   // error render handling
   const handleBlocked = () => {
