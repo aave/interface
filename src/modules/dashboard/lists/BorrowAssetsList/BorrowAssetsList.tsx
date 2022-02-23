@@ -1,4 +1,4 @@
-import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Alert, Box, useMediaQuery, useTheme } from '@mui/material';
@@ -30,7 +30,9 @@ export const BorrowAssetsList = () => {
   const tokensToBorrow: BorrowAssetsItem[] = reserves
     .filter((reserve) => assetCanBeBorrowedByUser(reserve, user))
     .map<BorrowAssetsItem>((reserve) => {
-      const availableBorrows = user ? getMaxAmountAvailableToBorrow(reserve, user).toNumber() : 0;
+      const availableBorrows = user
+        ? getMaxAmountAvailableToBorrow(reserve, user, InterestRate.Variable).toNumber()
+        : 0;
 
       const availableBorrowsInUSD = valueToBigNumber(availableBorrows)
         .multipliedBy(reserve.formattedPriceInMarketReferenceCurrency)

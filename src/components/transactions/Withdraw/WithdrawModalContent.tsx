@@ -8,7 +8,7 @@ import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { parseUnits } from 'ethers/lib/utils';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -91,10 +91,9 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
   const amount = isMaxSelected ? maxAmountToWithdraw.toString() : _amount;
 
   const handleChange = (value: string) => {
-    const surpassesMax = maxAmountToWithdraw.lt(value);
     const maxSelected = value === '-1';
-    amountRef.current = surpassesMax || maxSelected ? maxAmountToWithdraw.toString() : value;
-    setAmount(surpassesMax ? '-1' : value);
+    amountRef.current = maxSelected ? maxAmountToWithdraw.toString() : value;
+    setAmount(value);
   };
 
   // health factor calculations
@@ -207,6 +206,7 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
         usdValue={usdValue.toString()}
         isMaxSelected={isMaxSelected}
         disabled={withdrawTxState.loading}
+        maxValue={maxAmountToWithdraw.toString()}
       />
 
       {blockingError !== undefined && (

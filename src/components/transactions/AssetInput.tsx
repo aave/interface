@@ -23,6 +23,7 @@ import { TokenIcon } from '../primitives/TokenIcon';
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
   name: string;
+  value: string;
 }
 
 const NumberFormatCustom = React.forwardRef<NumberFormatProps, CustomProps>(
@@ -67,6 +68,7 @@ export interface AssetInputProps<T extends Asset = Asset> {
   onSelect?: (asset: T) => void;
   assets: T[];
   capType?: CapType;
+  maxValue: string;
   isMaxSelected: boolean;
 }
 
@@ -79,6 +81,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
   onSelect,
   assets,
   capType,
+  maxValue,
   isMaxSelected,
 }) => {
   const handleSelect = (event: SelectChangeEvent) => {
@@ -115,9 +118,8 @@ export const AssetInput: React.FC<AssetInputProps> = ({
             disabled={disabled}
             value={value}
             autoFocus
-            max={asset.balance}
             onChange={(e) => {
-              if (Number(e.target.value) > Number(asset.balance)) {
+              if (Number(e.target.value) > Number(maxValue)) {
                 onChange('-1');
               } else {
                 onChange(e.target.value);
@@ -132,7 +134,8 @@ export const AssetInput: React.FC<AssetInputProps> = ({
                 height: '28px',
               },
             }}
-            inputComponent={NumberFormatCustom}
+            // eslint-disable-next-line
+            inputComponent={NumberFormatCustom as any}
           />
 
           {!onSelect ? (

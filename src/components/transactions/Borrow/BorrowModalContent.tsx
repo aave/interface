@@ -70,9 +70,8 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
   // We set this in a useEffect, so it doesnt constantly change when
   // max amount selected
   const handleChange = (_value: string) => {
-    const surpassesMax = maxAmountToBorrow.lt(_value);
     const maxSelected = _value === '-1';
-    const value = surpassesMax || maxSelected ? maxAmountToBorrow.toString() : _value;
+    const value = maxSelected ? maxAmountToBorrow.toString() : _value;
     amountRef.current = value;
     setAmount(value);
   };
@@ -186,6 +185,7 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
         }
         capType={CapType.borrowCap}
         isMaxSelected={isMaxSelected}
+        maxValue={maxAmountToBorrow.toString()}
       />
 
       {blockingError !== undefined && (

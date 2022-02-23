@@ -87,10 +87,9 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
   const amount = isMaxSelected ? maxAmountToSupply.toString() : _amount;
 
   const handleChange = (value: string) => {
-    const surpassesMax = maxAmountToSupply.lt(value);
     const maxSelected = value === '-1';
-    amountRef.current = maxSelected || surpassesMax ? maxAmountToSupply.toString() : value;
-    setAmount(surpassesMax ? '-1' : value);
+    amountRef.current = maxSelected ? maxAmountToSupply.toString() : value;
+    setAmount(value);
   };
 
   // Calculation of future HF
@@ -269,6 +268,7 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
         capType={CapType.supplyCap}
         isMaxSelected={isMaxSelected}
         disabled={supplyTxState.loading}
+        maxValue={maxAmountToSupply.toString()}
       />
 
       {blockingError !== undefined && (

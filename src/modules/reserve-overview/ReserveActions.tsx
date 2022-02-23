@@ -1,3 +1,4 @@
+import { InterestRate } from '@aave/contract-helpers';
 import { InformationCircleIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Paper, Stack, StackProps, SvgIcon, Typography } from '@mui/material';
@@ -59,7 +60,11 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   ) as ComputedReserveData;
   const balance = walletBalances[underlyingAsset];
   const canBorrow = assetCanBeBorrowedByUser(poolReserve, user);
-  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user).toString();
+  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(
+    poolReserve,
+    user,
+    InterestRate.Variable
+  ).toString();
   const maxAmountToSupply = getMaxAmountAvailableToSupply(
     balance.amount,
     poolReserve,
