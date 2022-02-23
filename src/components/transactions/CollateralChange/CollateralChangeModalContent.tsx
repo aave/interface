@@ -169,6 +169,7 @@ export const CollateralChangeModalContent = ({
       )}
 
       <CollateralChangeActions
+        symbol={symbol}
         poolReserve={poolReserve}
         usageAsCollateral={usageAsCollateralModeAfterSwitch}
         isWrongNetwork={isWrongNetwork}
