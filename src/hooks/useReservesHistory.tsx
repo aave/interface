@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { makeCancelable } from 'src/utils/utils';
 
 type APIResponse = {
   liquidityRate_avg: number;
@@ -48,20 +49,22 @@ export function useReserveRatesHistory(reserveAddress: string) {
       currentNetworkConfig.ratesHistoryApiUrl &&
       !BROKEN_ASSETS.includes(reserveAddress)
     ) {
-      fetchStats(reserveAddress, currentNetworkConfig.ratesHistoryApiUrl).then(
-        (data: APIResponse[]) => {
-          setData(
-            data.map((d) => ({
-              date: new Date(d.x.year, d.x.month, d.x.date, d.x.hours).getTime(),
-              liquidityRate: d.liquidityRate_avg,
-              variableBorrowRate: d.variableBorrowRate_avg,
-              utilizationRate: d.utilizationRate_avg,
-              stableBorrowRate: d.stableBorrowRate_avg,
-            }))
-          );
-          setLoading(false);
-        }
+      const cancelable = makeCancelable(
+        fetchStats(reserveAddress, currentNetworkConfig.ratesHistoryApiUrl)
       );
+      cancelable.promise.then((data: APIResponse[]) => {
+        setData(
+          data.map((d) => ({
+            date: new Date(d.x.year, d.x.month, d.x.date, d.x.hours).getTime(),
+            liquidityRate: d.liquidityRate_avg,
+            variableBorrowRate: d.variableBorrowRate_avg,
+            utilizationRate: d.utilizationRate_avg,
+            stableBorrowRate: d.stableBorrowRate_avg,
+          }))
+        );
+        setLoading(false);
+      });
+      return cancelable.cancel;
     } else {
       setLoading(false);
     }
