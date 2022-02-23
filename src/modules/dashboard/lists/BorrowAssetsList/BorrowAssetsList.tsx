@@ -113,7 +113,7 @@ export const BorrowAssetsList = () => {
                   <Trans>Borrowing power and assets are limited due to Isolation mode. </Trans>
                   <Link href="https://docs.aave.com/faq/" target="_blank">
                     Learn More
-                  </Link>{' '}
+                  </Link>
                 </Alert>
               )}
               {user?.isInEmode && (
