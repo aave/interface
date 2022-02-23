@@ -37,7 +37,7 @@ export const TopInfoPanelItem = ({
             mr: 8,
             my: 'auto',
             width: '1px',
-            bgcolor: '#FFFFFF6B',
+            bgcolor: '#F2F3F729',
             height: '37px',
           }}
         />
@@ -49,9 +49,10 @@ export const TopInfoPanelItem = ({
             display: { xs: 'none', md: 'flex' },
             alignItems: 'center',
             justifyContent: 'center',
-            border: '1px solid rgba(250, 251, 252, 0.12)',
+            border: '1px solid #EBEBED1F',
             borderRadius: '12px',
-            bgcolor: '#2C2D3F',
+            bgcolor: '#383D51',
+            boxShadow: '0px 2px 1px rgba(0, 0, 0, 0.05), 0px 0px 1px rgba(0, 0, 0, 0.25)',
             width: 42,
             height: 42,
             mr: 3,
@@ -63,14 +64,14 @@ export const TopInfoPanelItem = ({
 
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <Typography
-          sx={{ color: variant === 'dark' ? '#FFFFFFB2' : '#47617F' }}
+          sx={{ color: variant === 'dark' ? '#A5A8B6' : '#62677B' }}
           variant={upToSM ? 'description' : 'caption'}
           component="div"
         >
           {title}
         </Typography>
 
-        {loading ? <Skeleton height={upToSM ? 28 : 24} sx={{ background: '#2C2D3F' }} /> : children}
+        {loading ? <Skeleton height={upToSM ? 28 : 24} sx={{ background: '#383D51' }} /> : children}
       </Box>
     </Box>
   );
