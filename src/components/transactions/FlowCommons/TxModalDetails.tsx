@@ -26,6 +26,7 @@ import { TokenIcon } from '../../primitives/TokenIcon';
 import { RewardsSelect } from '../ClaimRewards/RewardsSelect';
 import { getEmodeMessage } from '../Emode/EmodeNaming';
 import { GasStation } from '../GasStation/GasStation';
+import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
 
 export interface TxModalDetailsProps {
   apy?: string;
@@ -109,6 +110,60 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
         />
       )}
 
+      {symbol && setInterestRateMode && borrowStableRate && apy && (
+        <Row
+          caption={
+            <APYTypeTooltip
+              text={<Trans>Borrow APY rate</Trans>}
+              key="APY type_modal"
+              variant="description"
+            />
+          }
+          captionVariant="description"
+          mb={6}
+          flexDirection="column"
+          align="flex-start"
+          captionColor="text.secondary"
+        >
+          <ToggleButtonGroup
+            color="primary"
+            value={selectedRate}
+            exclusive
+            onChange={(_, value) => handleRateChange(value)}
+            sx={{ width: '100%', mt: 0.5 }}
+          >
+            <ToggleButton
+              value={InterestRate.Variable}
+              disabled={selectedRate === InterestRate.Variable}
+            >
+              {selectedRate === InterestRate.Variable && (
+                <SvgIcon sx={{ fontSize: '20px', mr: '2.5px' }}>
+                  <CheckIcon />
+                </SvgIcon>
+              )}
+              <Typography variant="subheader1" sx={{ mr: 1 }}>
+                <Trans>Variable</Trans>
+              </Typography>
+              <FormattedNumber value={Number(apy)} percent variant="secondary14" />
+            </ToggleButton>
+            <ToggleButton
+              value={InterestRate.Stable}
+              disabled={selectedRate === InterestRate.Stable}
+            >
+              {selectedRate === InterestRate.Stable && (
+                <SvgIcon sx={{ fontSize: '20px', mr: '2.5px' }}>
+                  <CheckIcon />
+                </SvgIcon>
+              )}
+              <Typography variant="subheader1" sx={{ mr: 1 }}>
+                <Trans>Stable</Trans>
+              </Typography>
+              <FormattedNumber value={Number(borrowStableRate)} percent variant="secondary14" />
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Row>
+      )}
+
       <Typography sx={{ mb: 1 }} color="text.secondary">
         <Trans>Transaction overview</Trans>
       </Typography>
@@ -151,53 +206,6 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
                 symbol="USD"
               />
             </Box>
-          </Row>
-        )}
-
-        {symbol && setInterestRateMode && borrowStableRate && apy && (
-          <Row
-            caption={<Trans>Borrow APY rate</Trans>}
-            captionVariant="description"
-            mb={6}
-            flexDirection="column"
-            align="flex-start"
-          >
-            <ToggleButtonGroup
-              color="primary"
-              value={selectedRate}
-              exclusive
-              onChange={(_, value) => handleRateChange(value)}
-              sx={{ width: '100%', mt: 0.5 }}
-            >
-              <ToggleButton
-                value={InterestRate.Variable}
-                disabled={selectedRate === InterestRate.Variable}
-              >
-                {selectedRate === InterestRate.Variable && (
-                  <SvgIcon sx={{ fontSize: '20px', mr: '2.5px' }}>
-                    <CheckIcon />
-                  </SvgIcon>
-                )}
-                <Typography variant="subheader1" sx={{ mr: 1 }}>
-                  <Trans>Variable</Trans>
-                </Typography>
-                <FormattedNumber value={Number(apy)} percent variant="secondary14" />
-              </ToggleButton>
-              <ToggleButton
-                value={InterestRate.Stable}
-                disabled={selectedRate === InterestRate.Stable}
-              >
-                {selectedRate === InterestRate.Stable && (
-                  <SvgIcon sx={{ fontSize: '20px', mr: '2.5px' }}>
-                    <CheckIcon />
-                  </SvgIcon>
-                )}
-                <Typography variant="subheader1" sx={{ mr: 1 }}>
-                  <Trans>Stable</Trans>
-                </Typography>
-                <FormattedNumber value={Number(borrowStableRate)} percent variant="secondary14" />
-              </ToggleButton>
-            </ToggleButtonGroup>
           </Row>
         )}
 

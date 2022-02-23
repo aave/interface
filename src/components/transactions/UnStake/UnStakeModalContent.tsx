@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Typography } from '@mui/material';
 import { AssetInput } from '../AssetInput';
 import { normalize, valueToBigNumber } from '@aave/math-utils';
@@ -36,11 +36,8 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   const { gasLimit, mainTxState: txState } = useModalContext();
 
   // states
-  const [amount, setAmount] = useState('');
-  const [amountToUnStake, setAmountToUnStake] = useState(amount);
-  const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
-  const [isMax, setIsMax] = useState(false);
-  const [maxAmount, setMaxAmount] = useState('0');
+  const [_amount, setAmount] = useState('');
+  const amountRef = useRef<string>();
 
   const walletBalance = normalize(
     data.stakeUserResult?.stakeUserUIData[stakeAssetName as StakingType].stakeTokenUserBalance ||
@@ -48,41 +45,26 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
     18
   );
 
-  useEffect(() => {
-    if (amount === '-1') {
-      setAmountToUnStake(walletBalance);
-      setIsMax(true);
-    } else {
-      setAmountToUnStake(amount);
-      setIsMax(false);
-    }
-  }, [amount, walletBalance]);
+  const isMaxSelected = _amount === '-1';
+  const amount = isMaxSelected ? walletBalance : _amount;
 
-  useEffect(() => {
-    if (isMax) {
-      setMaxAmount(walletBalance);
-    }
-  }, [isMax]);
-
-  // This amount will stay the same after tx is submited even if we have an interval
-  // between tx success and tx success confirmation. This way all calcs are static
-  // and don't get recalculated in this interval state
-  const staticAmount = isMax ? maxAmount : amountToUnStake;
+  const handleChange = (value: string) => {
+    const maxSelected = value === '-1';
+    amountRef.current = maxSelected ? walletBalance.toString() : value;
+    setAmount(value);
+  };
 
   // staking token usd value
   const amountInUsd =
-    Number(staticAmount) *
+    Number(amount) *
     (Number(normalize(stakeData?.stakeTokenPriceEth || 1, 18)) /
       Number(normalize(data.stakeGeneralResult?.stakeGeneralUIData.usdPriceEth || 1, 18)));
 
   // error handler
-  useEffect(() => {
-    if (valueToBigNumber(staticAmount).gt(walletBalance)) {
-      setBlockingError(ErrorType.NOT_ENOUGH_BALANCE);
-    } else {
-      setBlockingError(undefined);
-    }
-  }, [walletBalance, staticAmount]);
+  let blockingError: ErrorType | undefined = undefined;
+  if (valueToBigNumber(amount).gt(walletBalance)) {
+    blockingError = ErrorType.NOT_ENOUGH_BALANCE;
+  }
 
   const handleBlocked = () => {
     switch (blockingError) {
@@ -99,7 +81,8 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   const isWrongNetwork = connectedChainId !== stakingChain;
 
   if (txState.txError) return <TxErrorView errorMessage={txState.txError} />;
-  if (txState.success) return <TxSuccessView action="Staked" amount={staticAmount} symbol={icon} />;
+  if (txState.success)
+    return <TxSuccessView action="Staked" amount={amountRef.current} symbol={icon} />;
 
   return (
     <>
@@ -108,8 +91,8 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
       )}
       <AssetInput
-        value={staticAmount}
-        onChange={setAmount}
+        value={amount}
+        onChange={handleChange}
         usdValue={amountInUsd.toString()}
         symbol={icon}
         assets={[
@@ -118,6 +101,8 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
             symbol: icon,
           },
         ]}
+        isMaxSelected={isMaxSelected}
+        maxValue={walletBalance}
       />
       {blockingError !== undefined && (
         <Typography variant="helperText" color="red">

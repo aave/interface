@@ -18,19 +18,21 @@ export const TopInfoPanel = ({
   return (
     <Box
       sx={{
-        bgcolor: '#090815',
+        bgcolor: 'background.header',
         pt: { xs: 10, md: 12 },
         pb: { xs: 18, md: 20, lg: '94px', xl: '92px', xxl: '96px' },
-        color: 'common.white',
+        color: '#F1F1F3',
       }}
     >
       <Container sx={{ pb: 0 }}>
         <Box sx={{ px: { xs: 4, xsm: 6 } }}>
-          <PageTitle
-            pageTitle={pageTitle}
-            withMarketSwitcher={withMarketSwitcher}
-            bridge={bridge}
-          />
+          {!titleComponent && (
+            <PageTitle
+              pageTitle={pageTitle}
+              withMarketSwitcher={withMarketSwitcher}
+              bridge={bridge}
+            />
+          )}
 
           {titleComponent && titleComponent}
 

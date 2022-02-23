@@ -31,12 +31,14 @@ declare module '@mui/material/styles/createPalette' {
   interface Palette {
     gradients: {
       aaveGradient: string;
+      newGradient: string;
     };
   }
 
   interface PaletteOptions {
     gradients: {
       aaveGradient: string;
+      newGradient: string;
     };
   }
 }
@@ -123,9 +125,9 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
     palette: {
       mode,
       primary: {
-        main: getColor('#00244D', '#FAFBFC'),
-        light: getColor('#47617F', '#FBFCFD'),
-        dark: getColor('#000E1F', '#F2F3F3'),
+        main: getColor('#383D51', '#EAEBEF'),
+        light: getColor('#62677B', '#F1F1F3'),
+        dark: getColor('#292E41', '#D2D4DC'),
       },
       secondary: {
         main: getColor('#FF607B', '#F48FB1'),
@@ -161,28 +163,29 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         '200': getColor('#ECF8ED', '#0A130B'), // for alert background
       },
       text: {
-        primary: getColor('#00244D', '#FFFFFF'),
-        secondary: getColor('#47617F', '#FFFFFFB2'),
-        disabled: getColor('#00244D61', '#FFFFFF80'),
-        muted: getColor('#00244D80', '#FFFFFF80'),
+        primary: getColor('#303549', '#F1F1F3'),
+        secondary: getColor('#62677B', '#A5A8B6'),
+        disabled: getColor('#D2D4DC', '#62677B'),
+        muted: getColor('#A5A8B6', '#8E92A3'),
       },
       background: {
-        default: getColor('#F2F2F7', '#090815'),
-        paper: getColor('#FFFFFF', '#272631'),
-        surface: getColor('#FAFBFC', '#2C2D3F'),
-        header: getColor('#000E1F', '#090815'),
+        default: getColor('#F1F1F3', '#1B2030'),
+        paper: getColor('#FFFFFF', '#292E41'),
+        surface: getColor('#F7F7F9', '#383D51'),
+        header: getColor('#2B2D3C', '#151927'),
       },
-      divider: getColor('#E0E5EA', '#FFFFFF1F'),
+      divider: getColor('#EAEBEF', '#EBEBEF14'),
       action: {
-        active: getColor('#00244D8A', '#FFFFFF8F'),
-        hover: getColor('#00244D0A', '#FFFFFF14'),
-        selected: getColor('#00244D14', '#FFFFFF29'),
-        disabled: getColor('#00244D42', '#FFFFFF4D'),
-        disabledBackground: getColor('#00244D1F', '#FFFFFF1F'),
-        focus: getColor('#00244D1F', '#FFFFFF1F'),
+        active: getColor('#8E92A3', '#EBEBEF8F'),
+        hover: getColor('#F1F1F3', '#EBEBEF14'),
+        selected: getColor('#EAEBEF', '#EBEBEF29'),
+        disabled: getColor('#BBBECA', '#EBEBEF4D'),
+        disabledBackground: getColor('#EAEBEF', '#EBEBEF1F'),
+        focus: getColor('#F1F1F3', '#EBEBEF1F'),
       },
       gradients: {
-        aaveGradient: 'linear-gradient(248.86deg, #B6509E 10.51%, #2EBAC6 93.41%);',
+        aaveGradient: 'linear-gradient(248.86deg, #B6509E 10.51%, #2EBAC6 93.41%)',
+        newGradient: 'linear-gradient(79.67deg, #8C3EBC 0%, #007782 95.82%)',
       },
     },
     spacing: 4,
@@ -198,14 +201,14 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
       overline: undefined,
       display1: {
         fontFamily: FONT,
-        fontWeight: 800,
+        fontWeight: 700,
         letterSpacing: pxToRem(0.25),
         lineHeight: '123.5%',
         fontSize: pxToRem(32),
       },
       h1: {
         fontFamily: FONT,
-        fontWeight: 800,
+        fontWeight: 700,
         letterSpacing: pxToRem(0.25),
         lineHeight: '123.5%',
         fontSize: pxToRem(28),
@@ -219,14 +222,14 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
       },
       h3: {
         fontFamily: FONT,
-        fontWeight: 500,
+        fontWeight: 600,
         letterSpacing: pxToRem(0.15),
         lineHeight: '160%',
         fontSize: pxToRem(18),
       },
       h4: {
         fontFamily: FONT,
-        fontWeight: 700,
+        fontWeight: 600,
         letterSpacing: pxToRem(0.15),
         lineHeight: pxToRem(24),
         fontSize: pxToRem(16),
@@ -257,7 +260,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         fontWeight: 400,
         letterSpacing: pxToRem(0.15),
         lineHeight: pxToRem(16),
-        fontSize: pxToRem(13),
+        fontSize: pxToRem(12),
       },
       buttonL: {
         fontFamily: FONT,
@@ -268,7 +271,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
       },
       buttonM: {
         fontFamily: FONT,
-        fontWeight: 600,
+        fontWeight: 500,
         lineHeight: pxToRem(24),
         fontSize: pxToRem(14),
       },
@@ -278,7 +281,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         letterSpacing: pxToRem(0.46),
         lineHeight: pxToRem(20),
         textTransform: 'uppercase',
-        fontSize: pxToRem(11),
+        fontSize: pxToRem(10),
       },
       helperText: {
         fontFamily: FONT,
@@ -382,7 +385,7 @@ export function getThemedComponents(theme: Theme) {
         },
         styleOverrides: {
           root: {
-            borderRadius: '6px',
+            borderRadius: '4px',
           },
           sizeLarge: {
             ...theme.typography.buttonL,
@@ -403,8 +406,8 @@ export function getThemedComponents(theme: Theme) {
             style: {
               color: theme.palette.common.white,
               border: '1px solid',
-              borderColor: '#FAFBFC1F',
-              backgroundColor: '#2c2d3e',
+              borderColor: '#EBEBED1F',
+              backgroundColor: '#383D51',
               '&:hover, &.Mui-focusVisible': {
                 backgroundColor: theme.palette.background.header,
               },
@@ -606,10 +609,11 @@ export function getThemedComponents(theme: Theme) {
             },
           },
           thumb: {
-            color: '#fff',
+            color: theme.palette.common.white,
             borderRadius: '6px',
             width: '16px',
             height: '16px',
+            boxShadow: '0px 1px 1px rgba(0, 0, 0, 0.12)',
           },
           track: {
             opacity: 1,

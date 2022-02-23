@@ -8,7 +8,7 @@ import {
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
-import React, { useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { CollateralType } from 'src/helpers/types';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useModalContext } from 'src/hooks/useModal';
@@ -54,12 +54,8 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
   const { mainTxState: supplyTxState, gasLimit } = useModalContext();
 
   // states
-  const [amount, setAmount] = useState('');
-  const [amountToSupply, setAmountToSupply] = useState(amount);
-  const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
-  const [maxAmount, setMaxAmount] = useState('0');
-  const [isMax, setIsMax] = useState(false);
-
+  const [_amount, setAmount] = useState('');
+  const amountRef = useRef<string>();
   const supplyUnWrapped = underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase();
 
   const poolReserve = reserves.find((reserve) => {
@@ -87,24 +83,17 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
     underlyingAsset
   );
 
-  useEffect(() => {
-    if (amount === '-1') {
-      setAmountToSupply(maxAmountToSupply.toString());
-      setIsMax(true);
-    } else {
-      setAmountToSupply(amount);
-      setIsMax(false);
-    }
-  }, [amount, maxAmountToSupply]);
+  const isMaxSelected = _amount === '-1';
+  const amount = isMaxSelected ? maxAmountToSupply.toString() : _amount;
 
-  useEffect(() => {
-    if (isMax) {
-      setMaxAmount(maxAmountToSupply.toString());
-    }
-  }, [isMax]);
+  const handleChange = (value: string) => {
+    const maxSelected = value === '-1';
+    amountRef.current = maxSelected ? maxAmountToSupply.toString() : value;
+    setAmount(value);
+  };
 
   // Calculation of future HF
-  const amountIntEth = new BigNumber(amountToSupply).multipliedBy(
+  const amountIntEth = new BigNumber(amount).multipliedBy(
     poolReserve.formattedPriceInMarketReferenceCurrency
   );
   // TODO: is it correct to ut to -1 if user doesnt exist?
@@ -158,24 +147,19 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
   // TODO: check if calc is correct to see if cap reached
   const capReached =
     poolReserve.supplyCap !== '0' &&
-    valueToBigNumber(amountToSupply).gt(
+    valueToBigNumber(amount).gt(
       new BigNumber(poolReserve.supplyCap).minus(poolReserve.totalLiquidity)
     );
 
   // error handler
-  useEffect(() => {
-    if (!supplyTxState.success) {
-      if (valueToBigNumber(amountToSupply).gt(walletBalance)) {
-        setBlockingError(ErrorType.NOT_ENOUGH_BALANCE);
-      } else if (capReached) {
-        setBlockingError(ErrorType.CAP_REACHED);
-      } else {
-        setBlockingError(undefined);
-      }
-    } else {
-      setBlockingError(undefined);
+  let blockingError: ErrorType | undefined = undefined;
+  if (!supplyTxState.success) {
+    if (valueToBigNumber(amount).gt(walletBalance)) {
+      blockingError = ErrorType.NOT_ENOUGH_BALANCE;
+    } else if (capReached) {
+      blockingError = ErrorType.CAP_REACHED;
     }
-  }, [walletBalance, amountToSupply, capReached, supplyTxState]);
+  }
 
   const handleBlocked = () => {
     switch (blockingError) {
@@ -249,7 +233,7 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
     return (
       <TxSuccessView
         action="Supplied"
-        amount={isMax ? maxAmount : amountToSupply}
+        amount={amountRef.current}
         symbol={supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol}
         addToken={addToken}
       />
@@ -271,8 +255,8 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
       {poolReserve.symbol === 'SNX' && !maxAmountToSupply.eq('0') && <SNXWarning />}
 
       <AssetInput
-        value={isMax ? maxAmount : amountToSupply}
-        onChange={setAmount}
+        value={amount}
+        onChange={handleChange}
         usdValue={amountInUsd.toString()}
         symbol={supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol}
         assets={[
@@ -282,6 +266,9 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
           },
         ]}
         capType={CapType.supplyCap}
+        isMaxSelected={isMaxSelected}
+        disabled={supplyTxState.loading}
+        maxValue={maxAmountToSupply.toString()}
       />
 
       {blockingError !== undefined && (
@@ -309,7 +296,7 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
 
       <SupplyActions
         poolReserve={poolReserve}
-        amountToSupply={amountToSupply}
+        amountToSupply={amount}
         isWrongNetwork={isWrongNetwork}
         poolAddress={supplyUnWrapped ? underlyingAsset : poolReserve.underlyingAsset}
         symbol={supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol}

@@ -171,6 +171,7 @@ export const useTransactionHandler = ({
               txError: undefined,
               gasEstimationError: undefined,
               loading: false,
+              success: true,
             });
             refetchPoolData && refetchPoolData();
           },
@@ -180,7 +181,6 @@ export const useTransactionHandler = ({
               txError: error.message.toString(),
               gasEstimationError: undefined,
               loading: false,
-              success: true,
             });
           },
         });

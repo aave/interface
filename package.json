@@ -68,6 +68,7 @@
     "react": "latest",
     "react-dom": "latest",
     "react-markdown": "^8.0.0",
+    "react-number-format": "^4.9.1",
     "reflect-metadata": "^0.1.13",
     "remark-gfm": "^3.0.1",
     "subscriptions-transport-ws": "^0.11.0",

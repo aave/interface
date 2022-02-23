@@ -51,10 +51,7 @@ export const StakeActionBox = ({
           alignItems: 'center',
           flexDirection: 'column',
           borderRadius: '6px',
-          background:
-            theme.palette.mode === 'light'
-              ? theme.palette.background.paper
-              : theme.palette.background.surface,
+          background: theme.palette.background.paper,
           position: 'relative',
           zIndex: 2,
         })}
@@ -68,15 +65,15 @@ export const StakeActionBox = ({
             value={value}
             visibleDecimals={2}
             variant="secondary21"
-            color={+value === 0 ? 'text.disabled' : 'text.primary'}
+            color={+value === 0 ? 'text.muted' : 'text.primary'}
           />
           <FormattedNumber
             value={valueUSD}
             symbol="USD"
             visibleDecimals={2}
             variant="secondary12"
-            color={+valueUSD === 0 ? 'text.disabled' : 'text.secondary'}
-            symbolsColor={+valueUSD === 0 ? 'text.disabled' : 'text.secondary'}
+            color={+valueUSD === 0 ? 'text.muted' : 'text.secondary'}
+            symbolsColor={+valueUSD === 0 ? 'text.muted' : 'text.secondary'}
           />
         </Box>
 

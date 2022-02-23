@@ -1,8 +1,7 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { ComputedUserReserve, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Alert } from '@mui/material';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -37,8 +36,6 @@ export const RateSwitchModalContent = ({ underlyingAsset }: RateSwitchModalConte
 
   const networkConfig = getNetworkConfig(currentChainId);
 
-  const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
-
   const poolReserve = reserves.find(
     (reserve) => reserve.underlyingAsset === underlyingAsset
   ) as ComputedReserveData;
@@ -67,30 +64,19 @@ export const RateSwitchModalContent = ({ underlyingAsset }: RateSwitchModalConte
   );
 
   // error handling
-  useEffect(() => {
-    if (currentBorrows.eq(0)) {
-      setBlockingError(ErrorType.NO_BORROWS_YET_USING_THIS_CURRENCY);
-    } else if (
-      currentRateMode === InterestRate.Variable &&
-      userReserve.usageAsCollateralEnabledOnUser &&
-      poolReserve.usageAsCollateralEnabled &&
-      valueToBigNumber(userReserve.totalBorrows).lt(userReserve.underlyingBalance)
-    ) {
-      setBlockingError(ErrorType.YOU_CANT_BORROW_STABLE_NOW);
-    } else if (InterestRate.Variable === currentRateMode && !poolReserve.stableBorrowRateEnabled) {
-      setBlockingError(ErrorType.STABLE_INTEREST_TYPE_IS_DISABLED);
-    } else {
-      setBlockingError(undefined);
-    }
-  }, [
-    currentBorrows,
-    currentRateMode,
-    userReserve.usageAsCollateralEnabledOnUser,
-    poolReserve.usageAsCollateralEnabled,
-    userReserve.totalBorrows,
-    userReserve.underlyingBalance,
-    poolReserve.stableBorrowRateEnabled,
-  ]);
+  let blockingError: ErrorType | undefined = undefined;
+  if (currentBorrows.eq(0)) {
+    blockingError = ErrorType.NO_BORROWS_YET_USING_THIS_CURRENCY;
+  } else if (
+    currentRateMode === InterestRate.Variable &&
+    userReserve.usageAsCollateralEnabledOnUser &&
+    poolReserve.usageAsCollateralEnabled &&
+    valueToBigNumber(userReserve.totalBorrows).lt(userReserve.underlyingBalance)
+  ) {
+    blockingError = ErrorType.YOU_CANT_BORROW_STABLE_NOW;
+  } else if (InterestRate.Variable === currentRateMode && !poolReserve.stableBorrowRateEnabled) {
+    blockingError = ErrorType.STABLE_INTEREST_TYPE_IS_DISABLED;
+  }
 
   // error render handling
   const handleBlocked = () => {
@@ -125,6 +111,7 @@ export const RateSwitchModalContent = ({ underlyingAsset }: RateSwitchModalConte
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
       )}
 
+      {blockingError !== undefined && <Alert severity="error">{handleBlocked()}</Alert>}
       <TxModalDetails
         incentives={
           rateModeAfterSwitch === InterestRate.Variable
@@ -137,12 +124,6 @@ export const RateSwitchModalContent = ({ underlyingAsset }: RateSwitchModalConte
         symbol={poolReserve.symbol}
         underlyingAsset={underlyingAsset}
       />
-
-      {blockingError !== undefined && (
-        <Typography variant="helperText" color="error.main">
-          {handleBlocked()}
-        </Typography>
-      )}
 
       <RateSwitchActions
         poolReserve={poolReserve}

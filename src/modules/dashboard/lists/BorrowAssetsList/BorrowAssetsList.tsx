@@ -1,4 +1,4 @@
-import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Alert, Box, useMediaQuery, useTheme } from '@mui/material';
@@ -18,6 +18,9 @@ import { ListLoader } from '../ListLoader';
 import { BorrowAssetsListItem } from './BorrowAssetsListItem';
 import { BorrowAssetsListMobileItem } from './BorrowAssetsListMobileItem';
 import { BorrowAssetsItem } from './types';
+import { Link } from '../../../../components/primitives/Link';
+import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
+import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 
 export const BorrowAssetsList = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
@@ -30,7 +33,9 @@ export const BorrowAssetsList = () => {
   const tokensToBorrow: BorrowAssetsItem[] = reserves
     .filter((reserve) => assetCanBeBorrowedByUser(reserve, user))
     .map<BorrowAssetsItem>((reserve) => {
-      const availableBorrows = user ? getMaxAmountAvailableToBorrow(reserve, user).toNumber() : 0;
+      const availableBorrows = user
+        ? getMaxAmountAvailableToBorrow(reserve, user, InterestRate.Variable).toNumber()
+        : 0;
 
       const availableBorrowsInUSD = valueToBigNumber(availableBorrows)
         .multipliedBy(reserve.formattedPriceInMarketReferenceCurrency)
@@ -82,8 +87,16 @@ export const BorrowAssetsList = () => {
       key="Available"
       variant="subheader2"
     />,
-    <Trans key="APY, variable">APY, variable</Trans>,
-    <Trans key="APY, stable">APY, stable</Trans>,
+    <VariableAPYTooltip
+      text={<Trans>APY, variable</Trans>}
+      key="APY_dash_variable_ type"
+      variant="description"
+    />,
+    <StableAPYTooltip
+      text={<Trans>APY, stable</Trans>}
+      key="APY_dash_stable_ type"
+      variant="description"
+    />,
   ];
 
   if (loading)
@@ -108,7 +121,10 @@ export const BorrowAssetsList = () => {
               )}
               {user?.isInIsolationMode && (
                 <Alert sx={{ mb: '12px' }} severity="warning">
-                  <Trans>Borrowing power and assets are limited due to Isolation mode.</Trans>
+                  <Trans>Borrowing power and assets are limited due to Isolation mode. </Trans>
+                  <Link href="https://docs.aave.com/faq/" target="_blank">
+                    Learn More
+                  </Link>
                 </Alert>
               )}
               {user?.isInEmode && (

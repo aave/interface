@@ -22,7 +22,7 @@ export interface RepayActionProps extends BoxProps {
   symbol: string;
   debtType: InterestRate;
   repayWithATokens: boolean;
-  blocked: boolean;
+  blocked?: boolean;
 }
 
 export const RepayActions = ({

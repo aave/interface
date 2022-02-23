@@ -3,7 +3,7 @@ import { ArrowDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Alert, Box, Checkbox, FormControlLabel, SvgIcon, Typography } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -38,7 +38,6 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
   const { gasLimit, mainTxState: txState } = useModalContext();
 
   // states
-  const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
   const [cooldownCheck, setCooldownCheck] = useState(false);
 
   const userStakeData = stakeUserResult?.stakeUserUIData[stakeAssetName as StakingType];
@@ -69,15 +68,12 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
     stakeUserResult?.stakeUserUIData[stakeAssetName as StakingType].stakeTokenUserBalance;
 
   // error handler
-  useEffect(() => {
-    if (stakedAmount === '0') {
-      setBlockingError(ErrorType.NOT_ENOUGH_BALANCE);
-    } else if (isCooldownActive) {
-      setBlockingError(ErrorType.ALREADY_ON_COOLDOWN);
-    } else {
-      setBlockingError(undefined);
-    }
-  }, [isCooldownActive, stakedAmount]);
+  let blockingError: ErrorType | undefined = undefined;
+  if (stakedAmount === '0') {
+    blockingError = ErrorType.NOT_ENOUGH_BALANCE;
+  } else if (isCooldownActive) {
+    blockingError = ErrorType.ALREADY_ON_COOLDOWN;
+  }
 
   const handleBlocked = () => {
     switch (blockingError) {
