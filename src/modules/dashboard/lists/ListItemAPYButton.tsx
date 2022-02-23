@@ -79,7 +79,11 @@ export const ListItemAPYButton = ({
           <Trans>Select APY type to switch</Trans>
         </Typography>
 
-        <MenuItem value={InterestRate.Variable} onClick={onClick}>
+        <MenuItem
+          value={InterestRate.Variable}
+          onClick={onClick}
+          disabled={borrowRateMode === InterestRate.Variable}
+        >
           <ListItemIcon>
             <SvgIcon>{borrowRateMode === InterestRate.Variable && <CheckIcon />}</SvgIcon>
           </ListItemIcon>
@@ -89,7 +93,11 @@ export const ListItemAPYButton = ({
           <FormattedNumber value={Number(variableBorrowAPY)} percent variant="description" />
         </MenuItem>
 
-        <MenuItem value={InterestRate.Stable} onClick={onClick}>
+        <MenuItem
+          value={InterestRate.Stable}
+          onClick={onClick}
+          disabled={borrowRateMode === InterestRate.Stable}
+        >
           <ListItemIcon>
             <SvgIcon>{borrowRateMode === InterestRate.Stable && <CheckIcon />}</SvgIcon>
           </ListItemIcon>
