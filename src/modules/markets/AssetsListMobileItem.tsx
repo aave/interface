@@ -1,5 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Button, Divider } from '@mui/material';
+import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
+import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
@@ -45,7 +47,13 @@ export const AssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
         <FormattedNumber compact value={reserve.totalDebtUSD} variant="secondary14" symbol="USD" />
       </Row>
       <Row
-        caption={<Trans>Borrow APY, variable</Trans>}
+        caption={
+          <VariableAPYTooltip
+            text={<Trans>Borrow APY, variable</Trans>}
+            key="APY_list_mob_variable_type"
+            variant="description"
+          />
+        }
         captionVariant="description"
         mb={3}
         align="flex-start"
@@ -59,7 +67,13 @@ export const AssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
         />
       </Row>
       <Row
-        caption={<Trans>Borrow APY, stable</Trans>}
+        caption={
+          <StableAPYTooltip
+            text={<Trans>Borrow APY, stable</Trans>}
+            key="APY_list_mob_stable_type"
+            variant="description"
+          />
+        }
         captionVariant="description"
         mb={4}
         align="flex-start"

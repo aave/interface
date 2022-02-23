@@ -19,6 +19,8 @@ import { BorrowAssetsListItem } from './BorrowAssetsListItem';
 import { BorrowAssetsListMobileItem } from './BorrowAssetsListMobileItem';
 import { BorrowAssetsItem } from './types';
 import { Link } from '../../../../components/primitives/Link';
+import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
+import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 
 export const BorrowAssetsList = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
@@ -85,8 +87,16 @@ export const BorrowAssetsList = () => {
       key="Available"
       variant="subheader2"
     />,
-    <Trans key="APY, variable">APY, variable</Trans>,
-    <Trans key="APY, stable">APY, stable</Trans>,
+    <VariableAPYTooltip
+      text={<Trans>APY, variable</Trans>}
+      key="APY_dash_variable_ type"
+      variant="description"
+    />,
+    <StableAPYTooltip
+      text={<Trans>APY, stable</Trans>}
+      key="APY_dash_stable_ type"
+      variant="description"
+    />,
   ];
 
   if (loading)

@@ -57,7 +57,11 @@ export const ContentWithTooltip = ({
       placement={placement}
       PopperComponent={PopperComponent}
       title={
-        <ClickAwayListener onClickAway={handleClose}>
+        <ClickAwayListener
+          mouseEvent="onMouseDown"
+          touchEvent="onTouchStart"
+          onClickAway={handleClose}
+        >
           <Box
             sx={{
               py: 4,

@@ -2,6 +2,8 @@ import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { useMediaQuery } from '@mui/material';
 import { useState } from 'react';
+import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
+import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
@@ -72,11 +74,23 @@ export default function AssetsList() {
       sortKey: 'totalDebtUSD',
     },
     {
-      title: <Trans>Borrow APY, variable</Trans>,
+      title: (
+        <VariableAPYTooltip
+          text={<Trans>Borrow APY, variable</Trans>}
+          key="APY_list_variable_type"
+          variant="description"
+        />
+      ),
       sortKey: 'variableBorrowAPY',
     },
     {
-      title: <Trans>Borrow APY, stable</Trans>,
+      title: (
+        <StableAPYTooltip
+          text={<Trans>Borrow APY, stable</Trans>}
+          key="APY_list_stable_type"
+          variant="description"
+        />
+      ),
       sortKey: 'stableBorrowAPY',
     },
   ];

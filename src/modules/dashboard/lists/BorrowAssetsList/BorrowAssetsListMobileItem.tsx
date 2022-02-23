@@ -1,5 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
+import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
+import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -52,7 +54,13 @@ export const BorrowAssetsListMobileItem = ({
       />
 
       <Row
-        caption={<Trans>Borrow APY, variable</Trans>}
+        caption={
+          <VariableAPYTooltip
+            text={<Trans>APY, variable</Trans>}
+            key="APY_dash_mob_variable_ type"
+            variant="description"
+          />
+        }
         align="flex-start"
         captionVariant="description"
         mb={2}
@@ -66,7 +74,13 @@ export const BorrowAssetsListMobileItem = ({
       </Row>
 
       <Row
-        caption={<Trans>Borrow APY, stable</Trans>}
+        caption={
+          <StableAPYTooltip
+            text={<Trans>APY, stable</Trans>}
+            key="APY_dash_mob_stable_ type"
+            variant="description"
+          />
+        }
         align="flex-start"
         captionVariant="description"
         mb={2}

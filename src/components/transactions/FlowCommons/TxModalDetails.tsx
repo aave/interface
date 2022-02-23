@@ -26,6 +26,7 @@ import { TokenIcon } from '../../primitives/TokenIcon';
 import { RewardsSelect } from '../ClaimRewards/RewardsSelect';
 import { getEmodeMessage } from '../Emode/EmodeNaming';
 import { GasStation } from '../GasStation/GasStation';
+import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
 
 export interface TxModalDetailsProps {
   apy?: string;
@@ -111,7 +112,13 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
 
       {symbol && setInterestRateMode && borrowStableRate && apy && (
         <Row
-          caption={<Trans>Borrow APY rate</Trans>}
+          caption={
+            <APYTypeTooltip
+              text={<Trans>Borrow APY rate</Trans>}
+              key="APY type_modal"
+              variant="description"
+            />
+          }
           captionVariant="description"
           mb={6}
           flexDirection="column"
