@@ -40,8 +40,6 @@ export const EmodeModalContent = () => {
   const currentTimestamp = useCurrentTimestamp(1);
   const { gasLimit, mainTxState: emodeTxState } = useModalContext();
 
-  const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
-
   const [selectedEmode, setSelectedEmode] = useState<EmodeCategory>();
   const [emodeCategories, setEmodeCategories] = useState<Record<number, EmodeCategory>>({});
 
@@ -103,34 +101,28 @@ export const EmodeModalContent = () => {
   });
 
   // error handling
-  useEffect(() => {
-    // if user is disabling eMode
-    if (user.isInEmode && selectedEmode?.id === 0) {
-      if (Number(newSummary.healthFactor) < 1.01 && newSummary.healthFactor !== '-1') {
-        setBlockingError(ErrorType.EMODE_DISABLED_LIQUIDATION); // intl.formatMessage(messages.eModeDisabledLiquidation);
-      } else {
-        setBlockingError(undefined);
-      }
-    } else if (user.userEmodeCategoryId !== selectedEmode?.id) {
-      // check if user has open positions different than future emode
-      const hasIncompatiblePositions = user.userReservesData.some(
-        (userReserve) =>
-          (Number(userReserve.scaledVariableDebt) > 0 ||
-            Number(userReserve.principalStableDebt) > 0) &&
-          userReserve.reserve.eModeCategoryId !== selectedEmode?.id
-      );
-
-      if (hasIncompatiblePositions) {
-        setBlockingError(ErrorType.CLOSE_POSITIONS_BEFORE_SWITCHING);
-      } else {
-        setBlockingError(undefined);
-      }
-    } else if (selectedEmode.id === user.userEmodeCategoryId) {
-      setBlockingError(ErrorType.SAME_EMODE);
-    } else {
-      setBlockingError(undefined);
+  let blockingError: ErrorType | undefined = undefined;
+  // if user is disabling eMode
+  if (user.isInEmode && selectedEmode?.id === 0) {
+    if (Number(newSummary.healthFactor) < 1.01 && newSummary.healthFactor !== '-1') {
+      blockingError = ErrorType.EMODE_DISABLED_LIQUIDATION; // intl.formatMessage(messages.eModeDisabledLiquidation);
     }
-  }, [selectedEmode, user.isInEmode, newSummary, user, user.userEmodeCategoryId]);
+  } else if (user.userEmodeCategoryId !== selectedEmode?.id) {
+    // check if user has open positions different than future emode
+    const hasIncompatiblePositions = user.userReservesData.some(
+      (userReserve) =>
+        (Number(userReserve.scaledVariableDebt) > 0 ||
+          Number(userReserve.principalStableDebt) > 0) &&
+        userReserve.reserve.eModeCategoryId !== selectedEmode?.id
+    );
+
+    if (hasIncompatiblePositions) {
+      blockingError = ErrorType.CLOSE_POSITIONS_BEFORE_SWITCHING;
+    }
+  } else if (selectedEmode.id === user.userEmodeCategoryId) {
+    blockingError = ErrorType.SAME_EMODE;
+  }
+
   // render error messages
   const handleBlocked = () => {
     switch (blockingError) {

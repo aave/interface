@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
@@ -38,17 +37,11 @@ export const GovVoteModalContent = ({
   const { chainId: connectedChainId } = useWeb3Context();
   const { gasLimit, mainTxState: txState } = useModalContext();
 
-  // error states
-  const [blockingError, setBlockingError] = useState<ErrorType>();
-
   // handle delegate address errors
-  useEffect(() => {
-    if (votingPower === '0') {
-      setBlockingError(ErrorType.NOT_ENOUGH_VOTING_POWER);
-    } else {
-      setBlockingError(undefined);
-    }
-  }, [votingPower]);
+  let blockingError: ErrorType | undefined = undefined;
+  if (votingPower === '0') {
+    blockingError = ErrorType.NOT_ENOUGH_VOTING_POWER;
+  }
   // render error messages
   const handleBlocked = () => {
     switch (blockingError) {

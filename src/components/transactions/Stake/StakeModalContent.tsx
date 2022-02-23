@@ -39,7 +39,6 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
   // states
   const [amount, setAmount] = useState('');
   const [amountToSupply, setAmountToSupply] = useState(amount);
-  const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
   const [isMax, setIsMax] = useState(false);
   const [maxAmount, setMaxAmount] = useState('0');
 
@@ -77,13 +76,10 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
       Number(normalize(data.stakeGeneralResult?.stakeGeneralUIData.usdPriceEth || 1, 18)));
 
   // error handler
-  useEffect(() => {
-    if (valueToBigNumber(staticAmount).gt(walletBalance)) {
-      setBlockingError(ErrorType.NOT_ENOUGH_BALANCE);
-    } else {
-      setBlockingError(undefined);
-    }
-  }, [walletBalance, staticAmount]);
+  let blockingError: ErrorType | undefined = undefined;
+  if (valueToBigNumber(staticAmount).gt(walletBalance)) {
+    blockingError = ErrorType.NOT_ENOUGH_BALANCE;
+  }
 
   const handleBlocked = () => {
     switch (blockingError) {

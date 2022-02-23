@@ -44,7 +44,6 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
   const { chainId: connectedChainId } = useWeb3Context();
 
   const [amount, setAmount] = useState('');
-  const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
   const [amountToWithdraw, setAmountToWithdraw] = useState(amount);
   const [isMax, setIsMax] = useState(false);
   const [maxAmount, setMaxAmount] = useState('0');
@@ -153,35 +152,22 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
     });
   }
 
-  useEffect(() => {
-    if (!withdrawTxState.success && !withdrawTxState.txHash) {
-      if (healthFactorAfterWithdraw.lt('1') && user.totalBorrowsMarketReferenceCurrency !== '0') {
-        setBlockingError(ErrorType.CAN_NOT_WITHDRAW_THIS_AMOUNT);
-      } else if (
-        !blockingError &&
-        (underlyingBalance.eq('0') || underlyingBalance.lt(displayAmountToWithdraw))
-      ) {
-        setBlockingError(ErrorType.NOT_ENOUGH_FUNDS_TO_WITHDRAW_AMOUNT);
-      } else if (
-        !blockingError &&
-        (unborrowedLiquidity.eq('0') || displayAmountToWithdraw.gt(poolReserve.unborrowedLiquidity))
-      ) {
-        setBlockingError(ErrorType.POOL_DOES_NOT_HAVE_ENOUGH_LIQUIDITY);
-      } else {
-        setBlockingError(undefined);
-      }
-    } else {
-      setBlockingError(undefined);
+  let blockingError: ErrorType | undefined = undefined;
+  if (!withdrawTxState.success && !withdrawTxState.txHash) {
+    if (healthFactorAfterWithdraw.lt('1') && user.totalBorrowsMarketReferenceCurrency !== '0') {
+      blockingError = ErrorType.CAN_NOT_WITHDRAW_THIS_AMOUNT;
+    } else if (
+      !blockingError &&
+      (underlyingBalance.eq('0') || underlyingBalance.lt(displayAmountToWithdraw))
+    ) {
+      blockingError = ErrorType.NOT_ENOUGH_FUNDS_TO_WITHDRAW_AMOUNT;
+    } else if (
+      !blockingError &&
+      (unborrowedLiquidity.eq('0') || displayAmountToWithdraw.gt(poolReserve.unborrowedLiquidity))
+    ) {
+      blockingError = ErrorType.POOL_DOES_NOT_HAVE_ENOUGH_LIQUIDITY;
     }
-  }, [
-    healthFactorAfterWithdraw,
-    user.totalBorrowsMarketReferenceCurrency,
-    underlyingBalance,
-    displayAmountToWithdraw,
-    unborrowedLiquidity,
-    amount,
-    withdrawTxState,
-  ]);
+  }
 
   // error render handling
   const handleBlocked = () => {

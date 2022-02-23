@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Typography } from '@mui/material';
 import { normalize } from '@aave/math-utils';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
@@ -32,9 +32,6 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName }: StakeRewardClai
   const stakeConfig = getStakeConfig();
   const { gasLimit, mainTxState: txState } = useModalContext();
 
-  // states
-  const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
-
   // hardcoded as all rewards will be in aave token
   const rewardsSymbol = 'AAVE';
 
@@ -52,13 +49,10 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName }: StakeRewardClai
       Number(normalize(data.stakeGeneralResult?.stakeGeneralUIData.usdPriceEth || 1, 18)));
 
   // error handler
-  useEffect(() => {
-    if (maxAmountToClaim === '0') {
-      setBlockingError(ErrorType.NOT_ENOUGH_BALANCE);
-    } else {
-      setBlockingError(undefined);
-    }
-  }, [maxAmountToClaim]);
+  let blockingError: ErrorType | undefined = undefined;
+  if (maxAmountToClaim === '0') {
+    blockingError = ErrorType.NOT_ENOUGH_BALANCE;
+  }
 
   const handleBlocked = () => {
     switch (blockingError) {

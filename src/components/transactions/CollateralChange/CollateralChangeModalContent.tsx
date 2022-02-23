@@ -5,7 +5,6 @@ import {
 } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Alert, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -40,8 +39,6 @@ export const CollateralChangeModalContent = ({
   const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
 
-  const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
-
   const poolReserve = reserves.find(
     (reserve) => reserve.underlyingAsset === underlyingAsset
   ) as ComputedReserveData;
@@ -67,30 +64,21 @@ export const CollateralChangeModalContent = ({
   });
 
   // error handling
-  useEffect(() => {
-    if (valueToBigNumber(userReserve.underlyingBalance).eq(0)) {
-      setBlockingError(ErrorType.DO_NOT_HAVE_SUPPLIES_IN_THIS_CURRENCY);
-    } else if (
-      (!userReserve.usageAsCollateralEnabledOnUser && !poolReserve.usageAsCollateralEnabled) ||
-      !poolReserve.usageAsCollateralEnabled
-    ) {
-      setBlockingError(ErrorType.CAN_NOT_USE_THIS_CURRENCY_AS_COLLATERAL);
-    } else if (
-      userReserve.usageAsCollateralEnabledOnUser &&
-      user.totalBorrowsMarketReferenceCurrency !== '0' &&
-      healthFactorAfterSwitch.lte('1')
-    ) {
-      setBlockingError(ErrorType.CAN_NOT_SWITCH_USAGE_AS_COLLATERAL_MODE);
-    } else {
-      setBlockingError(undefined);
-    }
-  }, [
-    userReserve.underlyingBalance,
-    userReserve.usageAsCollateralEnabledOnUser,
-    poolReserve.usageAsCollateralEnabled,
-    user.totalBorrowsMarketReferenceCurrency,
-    healthFactorAfterSwitch,
-  ]);
+  let blockingError: ErrorType | undefined = undefined;
+  if (valueToBigNumber(userReserve.underlyingBalance).eq(0)) {
+    blockingError = ErrorType.DO_NOT_HAVE_SUPPLIES_IN_THIS_CURRENCY;
+  } else if (
+    (!userReserve.usageAsCollateralEnabledOnUser && !poolReserve.usageAsCollateralEnabled) ||
+    !poolReserve.usageAsCollateralEnabled
+  ) {
+    blockingError = ErrorType.CAN_NOT_USE_THIS_CURRENCY_AS_COLLATERAL;
+  } else if (
+    userReserve.usageAsCollateralEnabledOnUser &&
+    user.totalBorrowsMarketReferenceCurrency !== '0' &&
+    healthFactorAfterSwitch.lte('1')
+  ) {
+    blockingError = ErrorType.CAN_NOT_SWITCH_USAGE_AS_COLLATERAL_MODE;
+  }
 
   // error render handling
   const handleBlocked = () => {

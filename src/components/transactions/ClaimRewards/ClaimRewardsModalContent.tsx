@@ -26,9 +26,6 @@ export const ClaimRewardsModalContent = () => {
   const { user, reserves } = useAppDataContext();
   const { currentChainId, currentMarketData, currentMarket } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
-
-  const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
-
   const [claimableUsd, setClaimableUsd] = useState('0');
   const [selectedReward, setSelectedReward] = useState<Reward>();
   const [allRewards, setAllRewards] = useState<Reward[]>([]);
@@ -101,13 +98,10 @@ export const ClaimRewardsModalContent = () => {
   }, []);
 
   // error handling
-  useEffect(() => {
-    if (claimableUsd === '0') {
-      setBlockingError(ErrorType.NOT_ENOUGH_BALANCE);
-    } else {
-      setBlockingError(undefined);
-    }
-  }, [claimableUsd]);
+  let blockingError: ErrorType | undefined = undefined;
+  if (claimableUsd === '0') {
+    blockingError = ErrorType.NOT_ENOUGH_BALANCE;
+  }
 
   // error handling render
   const handleBlocked = () => {
