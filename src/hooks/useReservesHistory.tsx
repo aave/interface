@@ -52,18 +52,20 @@ export function useReserveRatesHistory(reserveAddress: string) {
       const cancelable = makeCancelable(
         fetchStats(reserveAddress, currentNetworkConfig.ratesHistoryApiUrl)
       );
-      cancelable.promise.then((data: APIResponse[]) => {
-        setData(
-          data.map((d) => ({
-            date: new Date(d.x.year, d.x.month, d.x.date, d.x.hours).getTime(),
-            liquidityRate: d.liquidityRate_avg,
-            variableBorrowRate: d.variableBorrowRate_avg,
-            utilizationRate: d.utilizationRate_avg,
-            stableBorrowRate: d.stableBorrowRate_avg,
-          }))
-        );
-        setLoading(false);
-      });
+      cancelable.promise
+        .then((data: APIResponse[]) => {
+          setData(
+            data.map((d) => ({
+              date: new Date(d.x.year, d.x.month, d.x.date, d.x.hours).getTime(),
+              liquidityRate: d.liquidityRate_avg,
+              variableBorrowRate: d.variableBorrowRate_avg,
+              utilizationRate: d.utilizationRate_avg,
+              stableBorrowRate: d.stableBorrowRate_avg,
+            }))
+          );
+          setLoading(false);
+        })
+        .catch((e) => console.log('error fetching result', e));
       return cancelable.cancel;
     } else {
       setLoading(false);
