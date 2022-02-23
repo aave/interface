@@ -15,7 +15,6 @@ const testData = {
     borrow: {
       asset: assets.polygonMarket.WBTC,
       amount: 0.01,
-      apyType: constants.borrowAPYType.variable,
       hasApproval: true,
     },
     deposit: {

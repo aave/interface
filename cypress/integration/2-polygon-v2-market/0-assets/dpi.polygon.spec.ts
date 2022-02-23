@@ -15,7 +15,6 @@ const testData = {
     borrow: {
       asset: assets.polygonMarket.DPI,
       amount: 25,
-      apyType: constants.borrowAPYType.variable,
       hasApproval: true,
     },
     deposit: {

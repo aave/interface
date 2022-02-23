@@ -14,13 +14,15 @@
   },
   "borrowAPYType": {
     "variable": "Variable",
-    "stable": "Stable"
+    "stable": "Stable",
+    "default": "Default"
   },
   "actionTypes": {
     "supply": "Supply",
     "borrow": "Borrow",
     "repay": "Repay",
-    "withdraw": "Withdraw"
+    "withdraw": "Withdraw",
+    "switchApy": "Switch rate"
   },
   "apyType": {
     "stable": "Stable",

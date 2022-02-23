@@ -14,11 +14,9 @@ export const setAmount = ({ amount, actionName, assetName, hasApproval, max }: S
     cy.get('[data-cy=Modal] input').first().type(amount.toString());
   }
   if (hasApproval) {
-    cy.log("1111")
     cy.get(`[data-cy=Modal] button:contains("${actionName} ${assetName}")`).as('button');
     cy.get('@button').should('not.be.disabled');
   } else {
-    cy.log("2222")
     cy.get(`[data-cy=Modal] button:contains("Approve to continue")`).as('button');
     cy.get('@button').should('not.be.disabled');
   }
@@ -31,11 +29,12 @@ type ConfirmAction = {
 };
 
 export const doConfirm = ({ hasApproval, actionName, assetName }: ConfirmAction) => {
+  assetName = " " + assetName
   cy.log(`${hasApproval ? 'One step process' : 'Two step process'}`);
   if (!hasApproval) {
     cy.get(`[data-cy=Modal] button:contains("Approve to continue")`).click();
   }
-  cy.get(`[data-cy=Modal] button:contains("${actionName} ${assetName}")`).as('button');
+  cy.get(`[data-cy=Modal] button:contains("${actionName}${assetName.replace(/\s*$/,"")}")`).as('button');
   cy.get('@button').should('not.be.disabled').click();
   cy.get("[data-cy=Modal] h2:contains('All done!')").should('be.visible');
 };
@@ -71,19 +70,11 @@ export const doSwapForRepay = ({ amount, assetName }: SwapForRepayAction) => {
 
 type GetDashBoardBorrowRow = {
   assetName: string;
-  apyType?: string;
+  apyType: string;
 };
 
 export const getDashBoardBorrowRow = ({ assetName, apyType }: GetDashBoardBorrowRow) => {
-  if (apyType == null) {
-    return cy.get(`[data-cy="dashboardBorrowListItem_${assetName}"]`).first();
-  } else {
-    return cy
-      .get(
-        `[data-cy="dashboardBorrowListItem_${assetName}"] .Switcher__label:contains('${apyType}')`
-      )
-      .parents(`[data-cy="dashboardBorrowListItem_${assetName}"]`);
-  }
+  return cy.get(`[data-cy="dashboardBorrowedListItem_${assetName}_${apyType}"]`).first();
 };
 
 type GetDashBoardDepositRow = {

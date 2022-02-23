@@ -20,7 +20,6 @@ const testData = {
     borrow: {
       asset: assets.polygonMarket.USDT,
       amount: 25,
-      apyType: constants.borrowAPYType.variable,
       hasApproval: true,
     },
     deposit: {
