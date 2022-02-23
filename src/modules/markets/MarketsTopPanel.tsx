@@ -31,7 +31,7 @@ export const MarketsTopPanel = () => {
   const symbolsVariant = downToSM ? 'secondary16' : 'secondary21';
 
   return (
-    <TopInfoPanel pageTitle={<Trans>Market overview</Trans>} withMarketSwitcher>
+    <TopInfoPanel pageTitle={<Trans>Markets</Trans>} withMarketSwitcher>
       <TopInfoPanelItem title={<Trans>Total market size</Trans>} loading={loading}>
         <FormattedNumber
           value={aggregatedStats.totalLiquidity.toString()}
@@ -39,7 +39,7 @@ export const MarketsTopPanel = () => {
           variant={valueTypographyVariant}
           visibleDecimals={2}
           compact
-          symbolsColor="#FFFFFFB2"
+          symbolsColor="#A5A8B6"
           symbolsVariant={symbolsVariant}
         />
       </TopInfoPanelItem>
@@ -50,7 +50,7 @@ export const MarketsTopPanel = () => {
           variant={valueTypographyVariant}
           visibleDecimals={2}
           compact
-          symbolsColor="#FFFFFFB2"
+          symbolsColor="#A5A8B6"
           symbolsVariant={symbolsVariant}
         />
       </TopInfoPanelItem>
@@ -61,7 +61,7 @@ export const MarketsTopPanel = () => {
           variant={valueTypographyVariant}
           visibleDecimals={2}
           compact
-          symbolsColor="#FFFFFFB2"
+          symbolsColor="#A5A8B6"
           symbolsVariant={symbolsVariant}
         />
       </TopInfoPanelItem>

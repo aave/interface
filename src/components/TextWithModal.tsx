@@ -19,7 +19,7 @@ export const TextWithModal = ({
   children,
   icon,
   iconSize = 12,
-  iconColor = '#E0E5EA',
+  iconColor = '#EAEBEF',
   withContentButton,
   ...rest
 }: TextWithModalProps) => {

@@ -18,7 +18,7 @@ export const DarkModeSwitcher = ({ component = ListItem }: DarkModeSwitcherProps
       component={component}
       onClick={colorMode.toggleColorMode}
       sx={{
-        color: { xs: 'common.white', md: 'text.primary' },
+        color: { xs: '#F1F1F3', md: 'text.primary' },
         py: { xs: 1.5, md: 2 },
       }}
     >

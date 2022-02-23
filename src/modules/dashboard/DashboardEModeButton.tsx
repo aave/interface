@@ -77,7 +77,7 @@ export const DashboardEModeButton = ({
             alignItems: 'center',
             position: 'relative',
             zIndex: 1,
-            bgcolor: 'background.surface',
+            bgcolor: 'background.paper',
             px: 1.5,
             borderRadius: '4px',
           }}

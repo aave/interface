@@ -1,6 +1,7 @@
 import { BookOpenIcon, QuestionMarkCircleIcon } from '@heroicons/react/outline';
 import { t } from '@lingui/macro';
 import { ReactNode } from 'react';
+import { ROUTES } from 'src/components/primitives/Link';
 
 import DiscordIcon from '/public/icons/discord.svg';
 import GithubIcon from '/public/icons/github.svg';
@@ -8,7 +9,6 @@ import GithubIcon from '/public/icons/github.svg';
 import { governanceConfig } from '../governanceConfig';
 import { MarketDataType } from '../marketsConfig';
 import { getStakeConfig } from '../stakeConfig';
-import { ROUTES } from 'src/components/primitives/Link';
 
 const stakeConfig = getStakeConfig();
 
@@ -27,7 +27,7 @@ export const navigation: Navigation[] = [
   },
   {
     link: ROUTES.markets,
-    title: t`Markets overview`,
+    title: t`Markets`,
   },
   {
     link: ROUTES.staking,

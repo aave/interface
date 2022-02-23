@@ -145,9 +145,7 @@ export const MarketSwitcher = () => {
                 >
                   {getMarketHelpData(market.marketTitle).name}
                 </Typography>
-                <Box
-                  sx={{ color: '#FFFFFFB2', px: 2, borderRadius: '12px', background: '#2C2D3F' }}
-                >
+                <Box sx={{ color: '#A5A8B6', px: 2, borderRadius: '12px', background: '#383D51' }}>
                   <Typography variant="subheader2">{market.v3 ? 'v3' : 'v2'}</Typography>
                 </Box>
               </Box>
@@ -159,7 +157,7 @@ export const MarketSwitcher = () => {
             p: 0,
             backgroundColor: 'transparent !important',
           },
-          '.MuiSelect-icon': { color: 'common.white' },
+          '.MuiSelect-icon': { color: '#F1F1F3' },
         },
         MenuProps: {
           anchorOrigin: {

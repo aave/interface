@@ -37,7 +37,13 @@ export const ListWrapper = ({
   const collapsed = isCollapse && !noData;
 
   return (
-    <Paper sx={{ mt: withTopMargin ? 4 : 0, overflow: 'hidden' }}>
+    <Paper
+      sx={(theme) => ({
+        mt: withTopMargin ? 4 : 0,
+        overflow: 'hidden',
+        border: `1px solid ${theme.palette.divider}`,
+      })}
+    >
       <Box
         sx={{
           px: { xs: 4, xsm: 6 },

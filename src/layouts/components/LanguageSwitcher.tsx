@@ -30,14 +30,14 @@ export const LanguageListItem = ({ component = ListItem, onClick }: LanguageList
     <Box
       component={component}
       onClick={onClick}
-      sx={{ color: { xs: 'common.white', md: 'text.primary' } }}
+      sx={{ color: { xs: '#F1F1F3', md: 'text.primary' } }}
     >
       <ListItemText>
         <Trans>Language</Trans>
       </ListItemText>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         {i18n._(langMap[i18n.locale as keyof typeof langMap])}{' '}
-        <SvgIcon fontSize="small" sx={{ color: { xs: 'common.white', md: 'text.primary' }, ml: 1 }}>
+        <SvgIcon fontSize="small" sx={{ color: { xs: '#F1F1F3', md: 'text.primary' }, ml: 1 }}>
           <ChevronRightIcon />
         </SvgIcon>
       </Box>
@@ -52,14 +52,14 @@ export const LanguagesList = ({ component = ListItem, onClick }: LanguageListIte
     <>
       <Box
         component={component}
-        sx={{ color: { xs: 'common.white', md: 'text.primary' }, mb: '4px' }}
+        sx={{ color: { xs: '#F1F1F3', md: 'text.primary' }, mb: '4px' }}
         onClick={onClick}
       >
         <ListItemIcon
           sx={{
             minWidth: 'unset !important',
             mr: 2,
-            color: { xs: 'common.white', md: 'primary.light' },
+            color: { xs: '#F1F1F3', md: 'primary.light' },
           }}
         >
           <SvgIcon fontSize="small">
@@ -79,7 +79,7 @@ export const LanguagesList = ({ component = ListItem, onClick }: LanguageListIte
           key={lang}
           onClick={() => dynamicActivateLanguage(lang)}
           sx={{
-            color: { xs: 'common.white', md: 'text.primary' },
+            color: { xs: '#F1F1F3', md: 'text.primary' },
             '.MuiListItemIcon-root': { minWidth: 'unset' },
             '.MuiMenuItemIcon-root': { minWidth: 'unset' },
           }}
@@ -92,7 +92,7 @@ export const LanguagesList = ({ component = ListItem, onClick }: LanguageListIte
           <ListItemText>{i18n._(langMap[lang as keyof typeof langMap])}</ListItemText>
           {lang === i18n.locale && (
             <ListItemIcon sx={{ m: 0 }}>
-              <SvgIcon fontSize="small" sx={{ color: { xs: 'common.white', md: 'text.primary' } }}>
+              <SvgIcon fontSize="small" sx={{ color: { xs: '#F1F1F3', md: 'text.primary' } }}>
                 <CheckIcon />
               </SvgIcon>
             </ListItemIcon>

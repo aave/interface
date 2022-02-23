@@ -52,7 +52,7 @@ export function AppHeader() {
         display: 'flex',
         alignItems: 'center',
         flexDirection: 'space-between',
-        boxShadow: 'inset 0px -1px 0px rgba(255, 255, 255, 0.12)',
+        boxShadow: 'inset 0px -1px 0px rgba(242, 243, 247, 0.16)',
       })}
     >
       <Box

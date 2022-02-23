@@ -27,7 +27,7 @@ export const TestNetModeSwitcher = ({ component = ListItem }: TestNetModeSwitche
       onClick={toggleTestnetsEnabled}
       sx={{
         cursor: 'pointer',
-        color: { xs: 'common.white', md: 'text.primary' },
+        color: { xs: '#F1F1F3', md: 'text.primary' },
         py: { xs: 1.5, md: 2 },
       }}
     >
