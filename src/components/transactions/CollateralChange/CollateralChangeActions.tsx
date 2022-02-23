@@ -16,6 +16,7 @@ export type CollateralChangeActionsProps = {
   isWrongNetwork: boolean;
   usageAsCollateral: boolean;
   blocked: boolean;
+  symbol: string;
 };
 
 export const CollateralChangeActions = ({
@@ -23,6 +24,7 @@ export const CollateralChangeActions = ({
   isWrongNetwork,
   usageAsCollateral,
   blocked,
+  symbol,
 }: CollateralChangeActionsProps) => {
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
@@ -54,9 +56,9 @@ export const CollateralChangeActions = ({
       isWrongNetwork={isWrongNetwork}
       actionText={
         usageAsCollateral ? (
-          <Trans>Enable {poolReserve.symbol} as collateral</Trans>
+          <Trans>Enable {symbol} as collateral</Trans>
         ) : (
-          <Trans>Disable {poolReserve.symbol} as collateral</Trans>
+          <Trans>Disable {symbol} as collateral</Trans>
         )
       }
       actionInProgressText={<Trans>Pending...</Trans>}
