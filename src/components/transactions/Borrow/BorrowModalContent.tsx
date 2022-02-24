@@ -4,9 +4,13 @@ import {
   USD_DECIMALS,
   valueToBigNumber,
 } from '@aave/math-utils';
+import { CheckIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
+import { SvgIcon, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import { useRef, useState } from 'react';
+import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Row } from 'src/components/primitives/Row';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -43,6 +47,75 @@ export enum ErrorType {
   BORROWING_NOT_AVAILABLE,
   NOT_ENOUGH_BORROWED,
 }
+
+interface BorrowModeSwitchProps {
+  interestRateMode: InterestRate;
+  setInterestRateMode: (value: InterestRate) => void;
+  variableRate: string;
+  stableRate: string;
+}
+
+const BorrowModeSwitch = ({
+  setInterestRateMode,
+  interestRateMode,
+  variableRate,
+  stableRate,
+}: BorrowModeSwitchProps) => {
+  return (
+    <Row
+      caption={
+        <APYTypeTooltip
+          text={<Trans>Borrow APY rate</Trans>}
+          key="APY type_modal"
+          variant="description"
+        />
+      }
+      captionVariant="description"
+      mb={1}
+      pt={5}
+      flexDirection="column"
+      align="flex-start"
+      captionColor="text.secondary"
+    >
+      <ToggleButtonGroup
+        color="primary"
+        value={interestRateMode}
+        exclusive
+        onChange={(_, value) => setInterestRateMode(value)}
+        sx={{ width: '100%', mt: 0.5 }}
+      >
+        <ToggleButton
+          value={InterestRate.Variable}
+          disabled={interestRateMode === InterestRate.Variable}
+        >
+          {interestRateMode === InterestRate.Variable && (
+            <SvgIcon sx={{ fontSize: '20px', mr: '2.5px' }}>
+              <CheckIcon />
+            </SvgIcon>
+          )}
+          <Typography variant="subheader1" sx={{ mr: 1 }}>
+            <Trans>Variable</Trans>
+          </Typography>
+          <FormattedNumber value={variableRate} percent variant="secondary14" />
+        </ToggleButton>
+        <ToggleButton
+          value={InterestRate.Stable}
+          disabled={interestRateMode === InterestRate.Stable}
+        >
+          {interestRateMode === InterestRate.Stable && (
+            <SvgIcon sx={{ fontSize: '20px', mr: '2.5px' }}>
+              <CheckIcon />
+            </SvgIcon>
+          )}
+          <Typography variant="subheader1" sx={{ mr: 1 }}>
+            <Trans>Stable</Trans>
+          </Typography>
+          <FormattedNumber value={stableRate} percent variant="secondary14" />
+        </ToggleButton>
+      </ToggleButtonGroup>
+    </Row>
+  );
+};
 
 export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps) => {
   const { mainTxState: borrowTxState, gasLimit } = useModalContext();
@@ -211,15 +284,14 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
           </Typography>
         )}
 
-      <TxModalDetails
-        gasLimit={gasLimit}
-        symbol={poolReserve.symbol}
-        apy={poolReserve.variableBorrowAPY}
-        borrowStableRate={
-          poolReserve.stableBorrowRateEnabled ? poolReserve.stableBorrowAPY : undefined
-        }
+      <BorrowModeSwitch
+        interestRateMode={interestRateMode}
         setInterestRateMode={setInterestRateMode}
-      >
+        variableRate={poolReserve.variableBorrowAPY}
+        stableRate={poolReserve.stableBorrowAPY}
+      />
+
+      <TxModalDetails gasLimit={gasLimit}>
         {poolReserve.isWrappedBaseAsset && (
           <DetailsUnwrapSwitch
             unwrapped={borrowUnWrapped}

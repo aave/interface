@@ -1,18 +1,9 @@
-import { InterestRate } from '@aave/contract-helpers';
 import { CheckIcon } from '@heroicons/react/outline';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import {
-  Box,
-  FormControlLabel,
-  SvgIcon,
-  Switch,
-  ToggleButton,
-  ToggleButtonGroup,
-  Typography,
-} from '@mui/material';
+import { Box, FormControlLabel, SvgIcon, Switch, Typography } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
-import React, { Dispatch, ReactNode, SetStateAction } from 'react';
+import React, { ReactNode } from 'react';
 import { CollateralType } from 'src/helpers/types';
 import { ReserveIncentiveResponse } from 'src/hooks/app-data-provider/useIncentiveData';
 
@@ -22,88 +13,14 @@ import { FormattedNumber, FormattedNumberProps } from '../../primitives/Formatte
 import { Row } from '../../primitives/Row';
 import { TokenIcon } from '../../primitives/TokenIcon';
 import { GasStation } from '../GasStation/GasStation';
-import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
 
 export interface TxModalDetailsProps {
-  apy?: string;
-  // supplyRewards: SupplyReward[];
   gasLimit?: string;
-  symbol?: string;
-  setInterestRateMode?: Dispatch<SetStateAction<InterestRate>>;
-  borrowStableRate?: string;
 }
 
-export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
-  apy,
-  gasLimit,
-  symbol,
-  borrowStableRate,
-  setInterestRateMode,
-  children,
-}) => {
-  const [selectedRate, setSelectedRate] = React.useState(InterestRate.Variable);
-
-  const handleRateChange = (rate: InterestRate) => {
-    setSelectedRate(rate);
-    setInterestRateMode && setInterestRateMode(rate);
-  };
-
+export const TxModalDetails: React.FC<TxModalDetailsProps> = ({ gasLimit, children }) => {
   return (
-    <Box sx={{ pt: children ? 5 : 0 }}>
-      {symbol && setInterestRateMode && borrowStableRate && apy && (
-        <Row
-          caption={
-            <APYTypeTooltip
-              text={<Trans>Borrow APY rate</Trans>}
-              key="APY type_modal"
-              variant="description"
-            />
-          }
-          captionVariant="description"
-          mb={6}
-          flexDirection="column"
-          align="flex-start"
-          captionColor="text.secondary"
-        >
-          <ToggleButtonGroup
-            color="primary"
-            value={selectedRate}
-            exclusive
-            onChange={(_, value) => handleRateChange(value)}
-            sx={{ width: '100%', mt: 0.5 }}
-          >
-            <ToggleButton
-              value={InterestRate.Variable}
-              disabled={selectedRate === InterestRate.Variable}
-            >
-              {selectedRate === InterestRate.Variable && (
-                <SvgIcon sx={{ fontSize: '20px', mr: '2.5px' }}>
-                  <CheckIcon />
-                </SvgIcon>
-              )}
-              <Typography variant="subheader1" sx={{ mr: 1 }}>
-                <Trans>Variable</Trans>
-              </Typography>
-              <FormattedNumber value={Number(apy)} percent variant="secondary14" />
-            </ToggleButton>
-            <ToggleButton
-              value={InterestRate.Stable}
-              disabled={selectedRate === InterestRate.Stable}
-            >
-              {selectedRate === InterestRate.Stable && (
-                <SvgIcon sx={{ fontSize: '20px', mr: '2.5px' }}>
-                  <CheckIcon />
-                </SvgIcon>
-              )}
-              <Typography variant="subheader1" sx={{ mr: 1 }}>
-                <Trans>Stable</Trans>
-              </Typography>
-              <FormattedNumber value={Number(borrowStableRate)} percent variant="secondary14" />
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </Row>
-      )}
-
+    <Box sx={{ pt: 5 }}>
       <Typography sx={{ mb: 1 }} color="text.secondary">
         <Trans>Transaction overview</Trans>
       </Typography>
