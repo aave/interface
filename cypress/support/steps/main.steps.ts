@@ -106,17 +106,15 @@ export const borrow = (
         `[data-cy=Modal] h2:contains("Borrow ${asset.wrapped ? 'W' : ''}${_shortName}")`
       ).should('be.visible');
     });
-    it(`Choose ${apyType} borrow option`, ()=>{
+    it(`Choose ${apyType} borrow option`, () => {
       switch (apyType) {
         case constants.borrowAPYType.variable:
           cy.get('[data-cy=Modal] [role=group] button p')
             .contains('Variable')
-            .click({force: true});
+            .click({ force: true });
           break;
         case constants.borrowAPYType.stable:
-          cy.get('[data-cy=Modal] [role=group] button p')
-            .contains('Stable')
-            .click({force: true});
+          cy.get('[data-cy=Modal] [role=group] button p').contains('Stable').click({ force: true });
           break;
         default:
           break;
@@ -183,7 +181,7 @@ export const repay = (
     it(`Open ${_shortName} repay popup view`, () => {
       cy.get('[data-cy=menuDashboard]').find('a:contains("Dashboard")').click();
       doSwitchToDashboardBorrowView();
-      getDashBoardBorrowRow({assetName: _shortName, apyType})
+      getDashBoardBorrowRow({ assetName: _shortName, apyType })
         .find(`button:contains("Repay")`)
         .click();
       cy.get(
@@ -193,10 +191,7 @@ export const repay = (
     it(`Choose ${repayOption} repay option`, () => {
       switch (repayOption) {
         case constants.repayType.collateral:
-          cy.get('[data-cy=Modal] button')
-            .contains('Collateral')
-            .click()
-            .should('not.be.disabled');
+          cy.get('[data-cy=Modal] button').contains('Collateral').click().should('not.be.disabled');
           break;
         case constants.repayType.wallet:
           cy.get('[data-cy=Modal] button')
@@ -302,7 +297,7 @@ export const changeBorrowType = (
 
   describe('Change APY of borrowing', () => {
     skipSetup({ skip, updateSkipStatus });
-    it(`Open change apy popup`, () =>{
+    it(`Open change apy popup`, () => {
       cy.get('[data-cy=menuDashboard]').find('a:contains("Dashboard")').click();
       doSwitchToDashboardBorrowView();
       getDashBoardBorrowRow({ assetName: _shortName, apyType })
@@ -311,15 +306,13 @@ export const changeBorrowType = (
         .wait(2000);
     });
     it(`Change the ${_shortName} borrowing apr type from ${apyType} to ${newAPY}`, () => {
-      cy.get(`.MuiPaper-root > .MuiList-root`)
-        .contains(`APY, ${newAPY.toLowerCase()}`)
-        .click();
+      cy.get(`.MuiPaper-root > .MuiList-root`).contains(`APY, ${newAPY.toLowerCase()}`).click();
     });
     it(`Make approve for ${_shortName}, on confirmation page`, () => {
       doConfirm({
         hasApproval,
         actionName: _actionName,
-        assetName: "",
+        assetName: '',
       });
     });
     doCloseModal();
@@ -412,28 +405,20 @@ export const changeCollateral = (
         .click();
       cy.get('[data-cy=Modal]').should('be.visible').wait(1000);
       if (isCollateralType) {
-        cy.get(
-          `[data-cy=Modal] h2:contains('Disable ${
-            asset.wrapped ? '' : ''
-          }${_shortName} as collateral')`
-        ).should('be.visible');
+        cy.get(`[data-cy=Modal] h2:contains('Disable ${_shortName} as collateral')`).should(
+          'be.visible'
+        );
       } else {
-        cy.get(
-          `[data-cy=Modal] h2:contains('Use ${
-            asset.wrapped ? '' : ''
-          }${_shortName} as collateral')`
-        ).should('be.visible');
+        cy.get(`[data-cy=Modal] h2:contains('Use ${_shortName} as collateral')`).should(
+          'be.visible'
+        );
       }
     });
     it('Confirm switching', () => {
       if (isCollateralType) {
-        cy.get('[data-cy=Modal] button')
-          .contains(`Disable ${asset.wrapped ? 'W' : ''}${_shortName} as collateral`)
-          .click();
+        cy.get('[data-cy=Modal] button').contains(`Disable ${_shortName} as collateral`).click();
       } else {
-        cy.get('[data-cy=Modal] button')
-          .contains(`Enable ${asset.wrapped ? 'W' : ''}${_shortName} as collateral`)
-          .click();
+        cy.get('[data-cy=Modal] button').contains(`Enable ${_shortName} as collateral`).click();
       }
       cy.get("[data-cy=Modal] h2:contains('All done!')").should('be.visible');
       cy.get('[data-cy=Modal] [data-cy=CloseModalIcon]').click();
