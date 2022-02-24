@@ -49,7 +49,6 @@ export const supply = (
   return describe(`Supply process for ${_shortName}`, () => {
     skipSetup({ skip, updateSkipStatus });
     it(`Open ${_shortName} supply popup view`, () => {
-      cy.get('[data-cy=menuDashboard]').find('a:contains("Dashboard")').click();
       doSwitchToDashboardSupplyView();
       cy.get(`[data-cy=dashboardSupplyListItem_${_shortName}]`)
         .find('button:contains("Supply")')
@@ -97,7 +96,6 @@ export const borrow = (
   return describe(`Borrow process for ${_shortName}`, () => {
     skipSetup({ skip, updateSkipStatus });
     it(`Open ${_shortName} borrow popup view`, () => {
-      cy.get('[data-cy=menuDashboard]').find('a:contains("Dashboard")').click();
       doSwitchToDashboardBorrowView();
       cy.get(`[data-cy=dashboardBorrowListItem_${_shortName}]`)
         .find('button:contains("Borrow")')
@@ -179,7 +177,6 @@ export const repay = (
   return describe(`Repay by ${repayOption} process for ${_shortName}`, () => {
     skipSetup({ skip, updateSkipStatus });
     it(`Open ${_shortName} repay popup view`, () => {
-      cy.get('[data-cy=menuDashboard]').find('a:contains("Dashboard")').click();
       doSwitchToDashboardBorrowView();
       getDashBoardBorrowRow({ assetName: _shortName, apyType })
         .find(`button:contains("Repay")`)
@@ -247,7 +244,6 @@ export const withdraw = (
   return describe(`Withdraw process for ${_shortName}`, () => {
     skipSetup({ skip, updateSkipStatus });
     it(`Open ${_shortName} Withdraw popup view`, () => {
-      cy.get('[data-cy=menuDashboard]').find('a:contains("Dashboard")').click();
       doSwitchToDashboardSupplyView();
       cy.get(
         `[data-cy=dashboardSuppliedListItem_${_shortName}_${
@@ -298,12 +294,10 @@ export const changeBorrowType = (
   describe('Change APY of borrowing', () => {
     skipSetup({ skip, updateSkipStatus });
     it(`Open change apy popup`, () => {
-      cy.get('[data-cy=menuDashboard]').find('a:contains("Dashboard")').click();
       doSwitchToDashboardBorrowView();
       getDashBoardBorrowRow({ assetName: _shortName, apyType })
         .find('[data-cy="apyButton"]')
-        .click()
-        .wait(2000);
+        .click();
     });
     it(`Change the ${_shortName} borrowing apr type from ${apyType} to ${newAPY}`, () => {
       cy.get(`.MuiPaper-root > .MuiList-root`).contains(`APY, ${newAPY.toLowerCase()}`).click();
@@ -396,14 +390,13 @@ export const changeCollateral = (
   return describe(`Switch collateral type from ${isCollateralType}`, () => {
     skipSetup({ skip, updateSkipStatus });
     it('Open dashboard', () => {
-      cy.get('[data-cy=menuDashboard]').find('a:contains("Dashboard")').click();
       doSwitchToDashboardSupplyView();
     });
     it('Open Switch type Modal', () => {
       getDashBoardDepositRow({ assetName: _shortName, isCollateralType })
         .find('.MuiSwitch-input ')
         .click();
-      cy.get('[data-cy=Modal]').should('be.visible').wait(1000);
+      cy.get('[data-cy=Modal]').should('be.visible');
       if (isCollateralType) {
         cy.get(`[data-cy=Modal] h2:contains('Disable ${_shortName} as collateral')`).should(
           'be.visible'
@@ -416,9 +409,13 @@ export const changeCollateral = (
     });
     it('Confirm switching', () => {
       if (isCollateralType) {
-        cy.get('[data-cy=Modal] button').contains(`Disable ${_shortName} as collateral`).click();
+        cy.get('[data-cy=actionButton] button')
+          .contains(`Disable ${_shortName} as collateral`)
+          .click();
       } else {
-        cy.get('[data-cy=Modal] button').contains(`Enable ${_shortName} as collateral`).click();
+        cy.get('[data-cy=actionButton] button')
+          .contains(`Enable ${_shortName} as collateral`)
+          .click();
       }
       cy.get("[data-cy=Modal] h2:contains('All done!')").should('be.visible');
       cy.get('[data-cy=Modal] [data-cy=CloseModalIcon]').click();
@@ -429,9 +426,6 @@ export const changeCollateral = (
 export const claimReward = (skip: SkipType, updateSkipStatus = false) => {
   return describe(`Claim reward`, () => {
     skipSetup({ skip, updateSkipStatus });
-    it('Open dashboard page', () => {
-      cy.get('.Menu strong').contains('dashboard').click();
-    });
     it('Open claim confirmation page', () => {
       cy.get('.IncentiveWrapper .Link').contains('Claim').click();
     });
@@ -455,9 +449,6 @@ export const changeCollateralNegative = (
   const _shortName = asset.shortName;
   return describe(`Switch collateral type negative`, () => {
     skipSetup({ skip, updateSkipStatus });
-    it('Open dashboard', () => {
-      cy.get('.Menu strong').contains('dashboard').click();
-    });
     it('Switch type', () => {
       getDashBoardDepositRow({ assetName: _shortName, collateralType })
         .find('.Switcher__swiper')

@@ -29,12 +29,12 @@ type ConfirmAction = {
 };
 
 export const doConfirm = ({ hasApproval, actionName, assetName }: ConfirmAction) => {
-  assetName = " " + assetName
+  assetName = ' ' + assetName;
   cy.log(`${hasApproval ? 'One step process' : 'Two step process'}`);
   if (!hasApproval) {
-    cy.get(`[data-cy=Modal] button:contains("Approve to continue")`).click();
+    cy.get(`[data-cy=approvalButton]`).click();
   }
-  cy.get(`[data-cy=Modal] button:contains("${actionName}${assetName.replace(/\s*$/,"")}")`).as('button');
+  cy.get(`[data-cy=actionButton]`).as('button');
   cy.get('@button').should('not.be.disabled').click();
   cy.get("[data-cy=Modal] h2:contains('All done!')").should('be.visible');
 };
