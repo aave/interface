@@ -110,6 +110,22 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
     const repayTokens: Asset[] = [];
     // set possible repay tokens
     if (!repayWithCollateral) {
+      // if wrapped reserve push both wrapped / native
+      if (poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol) {
+        // we substract a bit so user can still pay for the tx
+        const nativeTokenWalletBalance = valueToBigNumber(
+          walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]?.amount
+        ).minus('0.004');
+        const maxNativeToken = BigNumber.max(
+          nativeTokenWalletBalance,
+          BigNumber.min(nativeTokenWalletBalance, debt)
+        );
+        repayTokens.push({
+          address: API_ETH_MOCK_ADDRESS.toLowerCase(),
+          symbol: networkConfig.baseAssetSymbol,
+          balance: maxNativeToken.toString(),
+        });
+      }
       // push reserve asset
       const walletBalance = walletBalances[underlyingAsset]?.amount;
       const minReserveTokenRepay = BigNumber.min(valueToBigNumber(walletBalance), debt);
@@ -132,22 +148,6 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
           iconSymbol: poolReserve.iconSymbol,
           aToken: true,
           balance: maxBalance.toString(),
-        });
-      }
-      // if wrapped reserve push both wrapped / native
-      if (poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol) {
-        // we substract a bit so user can still pay for the tx
-        const nativeTokenWalletBalance = valueToBigNumber(
-          walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]?.amount
-        ).minus('0.004');
-        const maxNativeToken = BigNumber.max(
-          nativeTokenWalletBalance,
-          BigNumber.min(nativeTokenWalletBalance, debt)
-        );
-        repayTokens.push({
-          address: API_ETH_MOCK_ADDRESS.toLowerCase(),
-          symbol: networkConfig.baseAssetSymbol,
-          balance: maxNativeToken.toString(),
         });
       }
     } else {

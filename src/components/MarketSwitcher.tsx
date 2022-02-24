@@ -107,7 +107,7 @@ export const MarketSwitcher = () => {
     <TextField
       select
       aria-label="select market"
-      cy-data="market-selector"
+      data-cy="marketSelector"
       value={currentMarket}
       onChange={(e) => setCurrentMarket(e.target.value as unknown as CustomMarket)}
       sx={{
@@ -193,7 +193,7 @@ export const MarketSwitcher = () => {
           !market.v3 && (
             <MenuItem
               key={marketId}
-              cy-data={`market-selector-${marketId}`}
+              data-cy={`marketSelector_${marketId}`}
               value={marketId}
               sx={{ '.MuiListItemIcon-root': { minWidth: 'unset' } }}
             >
@@ -232,7 +232,7 @@ export const MarketSwitcher = () => {
           market.v3 && (
             <MenuItem
               key={marketId}
-              cy-data={`market-selector-${marketId}`}
+              data-cy={`marketSelector_${marketId}`}
               value={marketId}
               sx={{ '.MuiListItemIcon-root': { minWidth: 'unset' } }}
             >
