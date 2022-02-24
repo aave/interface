@@ -279,7 +279,7 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
       )}
 
       <TxModalDetails gasLimit={gasLimit}>
-        <DetailsNumberLine description={<Trans>Supply APY</Trans>} value={supplyApy} />
+        <DetailsNumberLine description={<Trans>Supply APY</Trans>} value={supplyApy} percent />
         <DetailsIncentivesLine
           incentives={poolReserve.aIncentivesData}
           symbol={poolReserve.symbol}

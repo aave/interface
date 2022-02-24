@@ -16,15 +16,12 @@ import React, { Dispatch, ReactNode, SetStateAction } from 'react';
 import { CollateralType, Reward } from 'src/helpers/types';
 import { ReserveIncentiveResponse } from 'src/hooks/app-data-provider/useIncentiveData';
 
-import LightningBoltGradient from '/public/lightningBoltGradient.svg';
-
 import { HealthFactorNumber } from '../../HealthFactorNumber';
 import { IncentivesButton } from '../../incentives/IncentivesButton';
 import { FormattedNumber, FormattedNumberProps } from '../../primitives/FormattedNumber';
 import { Row } from '../../primitives/Row';
 import { TokenIcon } from '../../primitives/TokenIcon';
 import { RewardsSelect } from '../ClaimRewards/RewardsSelect';
-import { getEmodeMessage } from '../Emode/EmodeNaming';
 import { GasStation } from '../GasStation/GasStation';
 import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
 
@@ -40,12 +37,7 @@ export interface TxModalDetailsProps {
   allRewards?: Reward[];
   setSelectedReward?: Dispatch<SetStateAction<Reward | undefined>>;
   selectedReward?: Reward;
-  faucetAmount?: string;
-  selectedEmode?: number;
-  emodeAssets?: string[];
   stakeAPR?: string;
-  stakeRewards?: string;
-  stakeRewardsInUsd?: string;
 }
 
 export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
@@ -59,12 +51,6 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   allRewards,
   setSelectedReward,
   selectedReward,
-  faucetAmount,
-  selectedEmode,
-  emodeAssets,
-  stakeAPR,
-  stakeRewardsInUsd,
-  stakeRewards,
   children,
 }) => {
   const [selectedRate, setSelectedRate] = React.useState(InterestRate.Variable);
@@ -76,14 +62,6 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
 
   return (
     <Box sx={{ pt: children ? 5 : 0 }}>
-      {setSelectedReward && selectedReward && allRewards && allRewards.length > 1 && (
-        <RewardsSelect
-          rewards={allRewards}
-          selectedReward={selectedReward}
-          setSelectedReward={setSelectedReward}
-        />
-      )}
-
       {symbol && setInterestRateMode && borrowStableRate && apy && (
         <Row
           caption={
@@ -144,7 +122,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
         </Typography>
       )}
 
-      {true && (
+      {children && (
         <Box
           sx={(theme) => ({
             p: 3,
@@ -155,177 +133,6 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
             },
           })}
         >
-          {!borrowStableRate && apy && !rate && action !== 'Supply' && (
-            <DetailsNumberLine
-              description={<Trans>Borrow APY, variable</Trans>}
-              percent
-              value={apy}
-            />
-          )}
-
-          {!!selectedEmode && (
-            <Row caption={<Trans>Asset category</Trans>} captionVariant="description" mb={4}>
-              <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-                <SvgIcon sx={{ fontSize: '12px', mr: 0.5 }}>
-                  <LightningBoltGradient />
-                </SvgIcon>
-                <Typography variant="subheader1">{getEmodeMessage(selectedEmode)}</Typography>
-              </Box>
-            </Row>
-          )}
-
-          {emodeAssets && (
-            <Row caption={<Trans>Available assets</Trans>} captionVariant="description" mb={4}>
-              {!!selectedEmode ? (
-                <Typography>{emodeAssets.join(', ')}</Typography>
-              ) : (
-                <Typography>
-                  <Trans>All</Trans>
-                </Typography>
-              )}
-            </Row>
-          )}
-
-          {selectedReward && allRewards && (
-            <Row
-              caption={
-                selectedReward.symbol !== 'all' ? (
-                  <Trans>Rewards balance</Trans>
-                ) : (
-                  <Trans>Balance</Trans>
-                )
-              }
-              captionVariant="description"
-              align="flex-start"
-              mb={selectedReward.symbol !== 'all' ? 0 : 4}
-            >
-              <>
-                {selectedReward.symbol !== 'all' ? (
-                  <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <TokenIcon symbol={selectedReward.symbol} sx={{ mr: 1, fontSize: '16px' }} />
-                      <FormattedNumber
-                        value={Number(selectedReward.balance)}
-                        variant="secondary14"
-                      />
-                      <Typography ml={1} variant="secondary14">
-                        {selectedReward.symbol}
-                      </Typography>
-                    </Box>
-                    <FormattedNumber
-                      value={Number(selectedReward.balanceUsd)}
-                      variant="helperText"
-                      compact
-                      symbol="USD"
-                      color="text.secondary"
-                    />
-                  </Box>
-                ) : (
-                  <>
-                    {allRewards
-                      .filter((reward) => reward.symbol !== 'all')
-                      .map((reward, index) => {
-                        return (
-                          <Box
-                            key={`claim-${index}`}
-                            sx={{
-                              display: 'flex',
-                              flexDirection: 'column',
-                              alignItems: 'flex-end',
-                              mb: 4,
-                            }}
-                          >
-                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                              <TokenIcon symbol={reward.symbol} sx={{ mr: 1, fontSize: '16px' }} />
-                              <FormattedNumber
-                                value={Number(reward.balance)}
-                                variant="secondary14"
-                              />
-                              <Typography ml={1} variant="secondary14">
-                                {reward.symbol}
-                              </Typography>
-                            </Box>
-                            <FormattedNumber
-                              value={Number(reward.balanceUsd)}
-                              variant="helperText"
-                              compact
-                              symbol="USD"
-                              color="text.secondary"
-                            />
-                          </Box>
-                        );
-                      })}
-                  </>
-                )}
-              </>
-            </Row>
-          )}
-
-          {selectedReward && selectedReward.symbol === 'all' && (
-            <Row caption={<Trans>Total worth</Trans>} captionVariant="description">
-              <FormattedNumber
-                value={Number(selectedReward.balanceUsd)}
-                variant="secondary14"
-                compact
-                symbol="USD"
-              />
-            </Row>
-          )}
-
-          {symbol && faucetAmount && (
-            <Row caption={<Trans>Amount</Trans>} captionVariant="description">
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <TokenIcon symbol={symbol} sx={{ mr: 1, fontSize: '16px' }} />
-                <FormattedNumber value={Number(faucetAmount)} variant="secondary14" />
-                <Typography ml={1} variant="secondary14">
-                  {symbol}
-                </Typography>
-              </Box>
-            </Row>
-          )}
-          {stakeAPR && (
-            <Row
-              caption={
-                <>
-                  <Trans>Staking</Trans> APR
-                </>
-              }
-              captionVariant="description"
-            >
-              <FormattedNumber value={Number(stakeAPR) / 10000} percent variant="description" />
-            </Row>
-          )}
-          {stakeRewards && stakeRewardsInUsd && symbol && (
-            <Row
-              caption={<Trans>Amount</Trans>}
-              captionVariant="description"
-              align="flex-start"
-              mb={4}
-            >
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'flex-end',
-                }}
-              >
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <TokenIcon symbol={symbol} sx={{ mr: 1, fontSize: '16px' }} />
-                  <FormattedNumber value={Number(stakeRewards)} variant="secondary14" />
-                  <Typography ml={1} variant="secondary14">
-                    {symbol}
-                  </Typography>
-                </Box>
-                <FormattedNumber
-                  value={Number(stakeRewardsInUsd)}
-                  variant="helperText"
-                  compact
-                  symbol="USD"
-                  color="text.secondary"
-                />
-              </Box>
-            </Row>
-          )}
           {children}
         </Box>
       )}
@@ -354,7 +161,7 @@ export const DetailsNumberLine = ({
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         {iconSymbol && <TokenIcon symbol={iconSymbol} sx={{ mr: 1, fontSize: '16px' }} />}
         {numberPrefix && <Typography sx={{ mr: 1 }}>{numberPrefix}</Typography>}
-        <FormattedNumber value={value} percent variant="secondary14" {...rest} />
+        <FormattedNumber value={value} variant="secondary14" {...rest} />
       </Box>
     </Row>
   );
@@ -365,6 +172,7 @@ interface DetailsNumberLineWithSubProps {
   symbol: string;
   amount: string;
   amountUSD: string;
+  hideSymbolSuffix?: boolean;
 }
 
 export const DetailsNumberLineWithSub = ({
@@ -372,6 +180,7 @@ export const DetailsNumberLineWithSub = ({
   symbol,
   amount,
   amountUSD,
+  hideSymbolSuffix,
 }: DetailsNumberLineWithSubProps) => {
   return (
     <Row caption={description} captionVariant="description" mb={4} align="flex-start">
@@ -379,9 +188,11 @@ export const DetailsNumberLineWithSub = ({
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <TokenIcon symbol={symbol} sx={{ mr: 1, fontSize: '16px' }} />
           <FormattedNumber value={amount} variant="secondary14" />
-          <Typography ml={1} variant="secondary14">
-            {symbol}
-          </Typography>
+          {!hideSymbolSuffix && (
+            <Typography ml={1} variant="secondary14">
+              {symbol}
+            </Typography>
+          )}
         </Box>
 
         <FormattedNumber value={amountUSD} variant="helperText" compact symbol="USD" />

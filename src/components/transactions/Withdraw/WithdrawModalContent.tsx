@@ -216,7 +216,7 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
           </Typography>
         )}
 
-      <TxModalDetails gasLimit={gasLimit} symbol={poolReserve.symbol}>
+      <TxModalDetails gasLimit={gasLimit}>
         {poolReserve.isWrappedBaseAsset && (
           <DetailsUnwrapSwitch
             unwrapped={withdrawUnWrapped}

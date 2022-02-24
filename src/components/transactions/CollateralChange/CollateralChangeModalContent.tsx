@@ -152,6 +152,7 @@ export const CollateralChangeModalContent = ({
       <TxModalDetails gasLimit={gasLimit}>
         <DetailsNumberLine
           symbol={symbol}
+          iconSymbol={symbol}
           description={<Trans>Supply balance</Trans>}
           value={userReserve.underlyingBalance}
         />

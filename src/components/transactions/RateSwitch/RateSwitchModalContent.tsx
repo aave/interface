@@ -127,6 +127,7 @@ export const RateSwitchModalContent = ({ underlyingAsset }: RateSwitchModalConte
               <Trans>Variable</Trans>
             )
           }
+          percent
         />
         <DetailsIncentivesLine
           incentives={
