@@ -32,14 +32,10 @@ export interface TxModalDetailsProps {
   apy?: string;
   // supplyRewards: SupplyReward[];
   gasLimit?: string;
-  incentives?: ReserveIncentiveResponse[];
-  stableRateIncentives?: ReserveIncentiveResponse[];
   symbol?: string;
-  usedAsCollateral?: CollateralType;
   setInterestRateMode?: Dispatch<SetStateAction<InterestRate>>;
   borrowStableRate?: string;
   action?: string;
-  walletBalance?: string;
   rate?: InterestRate;
   allRewards?: Reward[];
   setSelectedReward?: Dispatch<SetStateAction<Reward | undefined>>;
@@ -55,14 +51,10 @@ export interface TxModalDetailsProps {
 export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   apy,
   gasLimit,
-  incentives,
   symbol,
-  usedAsCollateral,
   borrowStableRate,
-  stableRateIncentives,
   setInterestRateMode,
   action,
-  walletBalance,
   rate,
   allRewards,
   setSelectedReward,
@@ -169,85 +161,6 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
               percent
               value={apy}
             />
-          )}
-
-          {!!incentives?.length && symbol && !stableRateIncentives && (
-            <Row
-              caption={<Trans>Rewards APR</Trans>}
-              captionVariant="description"
-              mb={4}
-              minHeight={24}
-            >
-              <IncentivesButton incentives={incentives} symbol={symbol} />
-            </Row>
-          )}
-
-          {!!incentives?.length &&
-            stableRateIncentives &&
-            symbol &&
-            setInterestRateMode &&
-            borrowStableRate &&
-            apy && (
-              <Row
-                caption={<Trans>Rewards APR</Trans>}
-                captionVariant="description"
-                mb={4}
-                minHeight={24}
-              >
-                <>
-                  {selectedRate === InterestRate.Variable ? (
-                    <IncentivesButton incentives={incentives} symbol={symbol} />
-                  ) : (
-                    <IncentivesButton incentives={stableRateIncentives} symbol={symbol} />
-                  )}
-                </>
-              </Row>
-            )}
-
-          {typeof usedAsCollateral !== 'undefined' && (
-            <Row caption={<Trans>Collateralization</Trans>} captionVariant="description" mb={4}>
-              <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-                {usedAsCollateral === CollateralType.ENABLED && (
-                  <>
-                    <SvgIcon sx={{ color: 'success.main', fontSize: 16, mr: '2px' }}>
-                      <CheckIcon />
-                    </SvgIcon>
-                    <Typography variant="description" color="success.main">
-                      <Trans>Enabled</Trans>
-                    </Typography>
-                  </>
-                )}
-                {usedAsCollateral === CollateralType.ISOLATED_ENABLED && (
-                  <>
-                    <SvgIcon sx={{ color: 'warning.main', fontSize: 16, mr: '2px' }}>
-                      <CheckIcon />
-                    </SvgIcon>
-                    <Typography variant="description" color="warning.main">
-                      <Trans>Enabled in isolation</Trans>
-                    </Typography>
-                  </>
-                )}
-                {usedAsCollateral === CollateralType.DISABLED && (
-                  <Typography variant="description" color="grey">
-                    <Trans>Disabled</Trans>
-                  </Typography>
-                )}
-                {usedAsCollateral === CollateralType.ISOLATED_DISABLED && (
-                  <Typography variant="description" color="grey">
-                    <Trans>Disabled</Trans>
-                  </Typography>
-                )}
-              </Box>
-            </Row>
-          )}
-
-          {walletBalance && symbol && (
-            <Row caption={<Trans>Supply balance</Trans>} captionVariant="description" mb={4}>
-              <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-                <TokenIcon symbol={symbol} sx={{ mr: 1, fontSize: '16px' }} />
-                <FormattedNumber value={walletBalance} variant="secondary14" />
-              </Box>
-            </Row>
           )}
 
           {!!selectedEmode && (
@@ -426,17 +339,20 @@ interface DetailsNumberLineProps extends FormattedNumberProps {
   description: ReactNode;
   value: FormattedNumberProps['value'];
   numberPrefix?: ReactNode;
+  iconSymbol?: string;
 }
 
 export const DetailsNumberLine = ({
   description,
   value,
   numberPrefix,
+  iconSymbol,
   ...rest
 }: DetailsNumberLineProps) => {
   return (
     <Row caption={description} captionVariant="description" mb={4}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        {iconSymbol && <TokenIcon symbol={iconSymbol} sx={{ mr: 1, fontSize: '16px' }} />}
         {numberPrefix && <Typography sx={{ mr: 1 }}>{numberPrefix}</Typography>}
         <FormattedNumber value={value} percent variant="secondary14" {...rest} />
       </Box>

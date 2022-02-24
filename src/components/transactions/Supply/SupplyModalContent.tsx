@@ -278,15 +278,7 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
         </Typography>
       )}
 
-      <TxModalDetails
-        apy={supplyApy}
-        incentives={poolReserve.aIncentivesData}
-        gasLimit={gasLimit}
-        symbol={poolReserve.symbol}
-        // TODO: need take a look usedAsCollateral
-        usedAsCollateral={willBeUsedAsCollateral}
-        action="Supply"
-      >
+      <TxModalDetails gasLimit={gasLimit}>
         <DetailsNumberLine description={<Trans>Supply APY</Trans>} value={supplyApy} />
         <DetailsIncentivesLine
           incentives={poolReserve.aIncentivesData}
