@@ -55,32 +55,27 @@ export const IncentivesTooltipContent = ({
       </Typography>
 
       <Box sx={{ width: '100%' }}>
-        <>
-          {incentives.map((incentive) => (
-            <Row
-              height={32}
-              caption={
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    mb: incentives.length > 1 ? 2 : 0,
-                  }}
-                >
-                  <TokenIcon
-                    symbol={incentive.rewardTokenSymbol}
-                    sx={{ fontSize: '20px', mr: 1 }}
-                  />
-                  <Typography variant={typographyVariant}>{incentive.rewardTokenSymbol}</Typography>
-                </Box>
-              }
-              key={incentive.rewardTokenAddress}
-              width="100%"
-            >
-              <Number incentiveAPR={incentive.incentiveAPR} />
-            </Row>
-          ))}
-        </>
+        {incentives.map((incentive) => (
+          <Row
+            height={32}
+            caption={
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  mb: incentives.length > 1 ? 2 : 0,
+                }}
+              >
+                <TokenIcon symbol={incentive.rewardTokenSymbol} sx={{ fontSize: '20px', mr: 1 }} />
+                <Typography variant={typographyVariant}>{incentive.rewardTokenSymbol}</Typography>
+              </Box>
+            }
+            key={incentive.rewardTokenAddress}
+            width="100%"
+          >
+            <Number incentiveAPR={incentive.incentiveAPR} />
+          </Row>
+        ))}
 
         {incentives.length > 1 && (
           <Box sx={(theme) => ({ pt: 1, mt: 1, border: `1px solid ${theme.palette.divider}` })}>
