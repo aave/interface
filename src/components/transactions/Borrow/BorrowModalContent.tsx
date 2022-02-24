@@ -207,7 +207,7 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
         newHealthFactor.toNumber() < 1.5 &&
         newHealthFactor.toNumber() >= 1 && (
           <Typography variant="helperText" color="warning.main">
-            <Trans>Liquidation risk is high. Lower amounts recomended.</Trans>
+            <Trans>Liquidation risk is high. Lower amounts recommended.</Trans>
           </Typography>
         )}
 
@@ -219,7 +219,6 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
           poolReserve.stableBorrowRateEnabled ? poolReserve.stableBorrowAPY : undefined
         }
         setInterestRateMode={setInterestRateMode}
-        action="Borrow"
       >
         {poolReserve.isWrappedBaseAsset && (
           <DetailsUnwrapSwitch

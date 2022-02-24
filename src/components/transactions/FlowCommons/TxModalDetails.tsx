@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { Dispatch, ReactNode, SetStateAction } from 'react';
-import { CollateralType, Reward } from 'src/helpers/types';
+import { CollateralType } from 'src/helpers/types';
 import { ReserveIncentiveResponse } from 'src/hooks/app-data-provider/useIncentiveData';
 
 import { HealthFactorNumber } from '../../HealthFactorNumber';
@@ -21,7 +21,6 @@ import { IncentivesButton } from '../../incentives/IncentivesButton';
 import { FormattedNumber, FormattedNumberProps } from '../../primitives/FormattedNumber';
 import { Row } from '../../primitives/Row';
 import { TokenIcon } from '../../primitives/TokenIcon';
-import { RewardsSelect } from '../ClaimRewards/RewardsSelect';
 import { GasStation } from '../GasStation/GasStation';
 import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
 
@@ -32,12 +31,6 @@ export interface TxModalDetailsProps {
   symbol?: string;
   setInterestRateMode?: Dispatch<SetStateAction<InterestRate>>;
   borrowStableRate?: string;
-  action?: string;
-  rate?: InterestRate;
-  allRewards?: Reward[];
-  setSelectedReward?: Dispatch<SetStateAction<Reward | undefined>>;
-  selectedReward?: Reward;
-  stakeAPR?: string;
 }
 
 export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
@@ -46,11 +39,6 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   symbol,
   borrowStableRate,
   setInterestRateMode,
-  action,
-  rate,
-  allRewards,
-  setSelectedReward,
-  selectedReward,
   children,
 }) => {
   const [selectedRate, setSelectedRate] = React.useState(InterestRate.Variable);
