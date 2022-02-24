@@ -104,26 +104,22 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
         </Row>
       )}
 
-      {true && (
-        <Typography sx={{ mb: 1 }} color="text.secondary">
-          <Trans>Transaction overview</Trans>
-        </Typography>
-      )}
+      <Typography sx={{ mb: 1 }} color="text.secondary">
+        <Trans>Transaction overview</Trans>
+      </Typography>
 
-      {true && (
-        <Box
-          sx={(theme) => ({
-            p: 3,
-            border: `1px solid ${theme.palette.divider}`,
-            borderRadius: '4px',
-            '.MuiBox-root:last-of-type': {
-              mb: 0,
-            },
-          })}
-        >
-          {children}
-        </Box>
-      )}
+      <Box
+        sx={(theme) => ({
+          p: 3,
+          border: `1px solid ${theme.palette.divider}`,
+          borderRadius: '4px',
+          '.MuiBox-root:last-of-type': {
+            mb: 0,
+          },
+        })}
+      >
+        {children}
+      </Box>
 
       <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} />
     </Box>
