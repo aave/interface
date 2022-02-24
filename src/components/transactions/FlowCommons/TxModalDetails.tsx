@@ -12,7 +12,7 @@ import {
   Typography,
 } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
-import React, { Dispatch, ReactNode, SetStateAction } from 'react';
+import React, { Dispatch, ReactChild, ReactElement, ReactNode, SetStateAction } from 'react';
 import { CollateralType } from 'src/helpers/types';
 import { ReserveIncentiveResponse } from 'src/hooks/app-data-provider/useIncentiveData';
 
@@ -104,13 +104,13 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
         </Row>
       )}
 
-      {children && (
+      {true && (
         <Typography sx={{ mb: 1 }} color="text.secondary">
           <Trans>Transaction overview</Trans>
         </Typography>
       )}
 
-      {children && (
+      {true && (
         <Box
           sx={(theme) => ({
             p: 3,
@@ -253,6 +253,7 @@ export interface DetailsHFLineProps {
 }
 
 export const DetailsHFLine = ({ healthFactor, futureHealthFactor }: DetailsHFLineProps) => {
+  if (healthFactor === '-1' && futureHealthFactor === '-1') return null;
   return (
     <Row
       caption={<Trans>Health factor</Trans>}
@@ -262,20 +263,16 @@ export const DetailsHFLine = ({ healthFactor, futureHealthFactor }: DetailsHFLin
     >
       <Box sx={{ textAlign: 'right' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-          {healthFactor !== '-1' && (
-            <HealthFactorNumber value={healthFactor} variant="secondary14" />
-          )}
+          <HealthFactorNumber value={healthFactor} variant="secondary14" />
 
           <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
             <ArrowNarrowRightIcon />
           </SvgIcon>
 
-          {futureHealthFactor !== '-1' && (
-            <HealthFactorNumber
-              value={Number(futureHealthFactor) ? futureHealthFactor : healthFactor}
-              variant="secondary14"
-            />
-          )}
+          <HealthFactorNumber
+            value={Number(futureHealthFactor) ? futureHealthFactor : healthFactor}
+            variant="secondary14"
+          />
         </Box>
 
         <Typography variant="helperText" color="text.secondary">

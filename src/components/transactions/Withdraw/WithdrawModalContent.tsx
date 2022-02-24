@@ -21,7 +21,12 @@ import { AssetInput } from '../AssetInput';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { DetailsHFLine, DetailsUnwrapSwitch, TxModalDetails } from '../FlowCommons/TxModalDetails';
+import {
+  DetailsHFLine,
+  DetailsNumberLine,
+  DetailsUnwrapSwitch,
+  TxModalDetails,
+} from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { WithdrawActions } from './WithdrawActions';
@@ -173,6 +178,11 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
       />
     );
 
+  const symbol =
+    withdrawUnWrapped && poolReserve.isWrappedBaseAsset
+      ? networkConfig.baseAssetSymbol
+      : poolReserve.symbol;
+
   return (
     <>
       <TxModalTitle title="Withdraw" symbol={poolReserve.symbol} />
@@ -225,6 +235,11 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
             unwrappedSymbol={networkConfig.baseAssetSymbol}
           />
         )}
+        <DetailsNumberLine
+          description={<Trans>Remaining supply</Trans>}
+          value={underlyingBalance.minus(amount || '0').toString()}
+          symbol={symbol}
+        />
         <DetailsHFLine
           healthFactor={user ? user.healthFactor : '-1'}
           futureHealthFactor={healthFactorAfterWithdraw.toString()}
@@ -244,11 +259,7 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
             : poolReserve.underlyingAsset
         }
         isWrongNetwork={isWrongNetwork}
-        symbol={
-          withdrawUnWrapped && poolReserve.isWrappedBaseAsset
-            ? networkConfig.baseAssetSymbol
-            : poolReserve.symbol
-        }
+        symbol={symbol}
         blocked={blockingError !== undefined}
       />
     </>
