@@ -7,7 +7,7 @@ import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { TxModalDetails } from '../FlowCommons/TxModalDetails';
+import { DetailsNumberLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { GovVoteActions } from './GovVoteActions';
@@ -76,7 +76,9 @@ export const GovVoteModalContent = ({
           {handleBlocked()}
         </Typography>
       )}
-      <TxModalDetails gasLimit={gasLimit} votingPower={votingPower} />
+      <TxModalDetails gasLimit={gasLimit}>
+        <DetailsNumberLine description={<Trans>Voting power</Trans>} value={votingPower} />
+      </TxModalDetails>
 
       {txState.gasEstimationError && <GasEstimationError error={txState.gasEstimationError} />}
 
