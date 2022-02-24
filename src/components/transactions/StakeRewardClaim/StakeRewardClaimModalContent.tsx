@@ -6,7 +6,7 @@ import { TxErrorView } from '../FlowCommons/Error';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
-import { TxModalDetails } from '../FlowCommons/TxModalDetails';
+import { DetailsNumberLineWithSub, TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { Trans } from '@lingui/macro';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -83,12 +83,14 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName }: StakeRewardClai
           {handleBlocked()}
         </Typography>
       )}
-      <TxModalDetails
-        gasLimit={gasLimit}
-        stakeRewards={maxAmountToClaim}
-        stakeRewardsInUsd={amountInUsd.toString()}
-        symbol={rewardsSymbol}
-      />
+      <TxModalDetails gasLimit={gasLimit}>
+        <DetailsNumberLineWithSub
+          description={<Trans>Amount</Trans>}
+          amount={maxAmountToClaim}
+          symbol={rewardsSymbol}
+          amountUSD={amountInUsd.toString()}
+        />
+      </TxModalDetails>
 
       {txState.gasEstimationError && <GasEstimationError error={txState.gasEstimationError} />}
       <StakeRewardClaimActions

@@ -1,7 +1,10 @@
 import { normalize, UserIncentiveData } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Row } from 'src/components/primitives/Row';
+import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Reward } from 'src/helpers/types';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
@@ -12,10 +15,15 @@ import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { TxModalDetails } from '../FlowCommons/TxModalDetails';
+import {
+  DetailsNumberLine,
+  DetailsNumberLineWithSub,
+  TxModalDetails,
+} from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { ClaimRewardsActions } from './ClaimRewardsActions';
+import { RewardsSelect } from './RewardsSelect';
 
 export enum ErrorType {
   NOT_ENOUGH_BALANCE,
@@ -27,8 +35,9 @@ export const ClaimRewardsModalContent = () => {
   const { currentChainId, currentMarketData, currentMarket } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
   const [claimableUsd, setClaimableUsd] = useState('0');
-  const [selectedReward, setSelectedReward] = useState<Reward>();
-  const [allRewards, setAllRewards] = useState<Reward[]>([]);
+  const [selectedRewardSymbol, setSelectedRewardSymbol] = useState<string>('all');
+  const [rewards, setRewards] = useState<Reward[]>([]);
+  const [allReward, setAllReward] = useState<Reward>();
 
   const networkConfig = getNetworkConfig(currentChainId);
 
@@ -79,7 +88,7 @@ export const ClaimRewardsModalContent = () => {
     });
 
     if (userIncentives.length === 1) {
-      setSelectedReward(userIncentives[0]);
+      setSelectedRewardSymbol(userIncentives[0].symbol);
     } else if (userIncentives.length > 1 && !selectedReward) {
       const allRewards = {
         assets: allAssets,
@@ -89,11 +98,11 @@ export const ClaimRewardsModalContent = () => {
         balanceUsd: totalClaimableUsd.toString(),
         rewardTokenAddress: '',
       };
-      userIncentives.push(allRewards);
-      setSelectedReward(allRewards);
+      setSelectedRewardSymbol('all');
+      setAllReward(allRewards);
     }
 
-    setAllRewards(userIncentives);
+    setRewards(userIncentives);
     setClaimableUsd(totalClaimableUsd.toString());
   }, []);
 
@@ -115,6 +124,10 @@ export const ClaimRewardsModalContent = () => {
 
   // is Network mismatched
   const isWrongNetwork = currentChainId !== connectedChainId;
+  const selectedReward =
+    selectedRewardSymbol === 'all'
+      ? allReward
+      : rewards.find((r) => r.symbol === selectedRewardSymbol);
 
   if (claimRewardsTxState.txError)
     return <TxErrorView errorMessage={claimRewardsTxState.txError} />;
@@ -133,18 +146,68 @@ export const ClaimRewardsModalContent = () => {
           {handleBlocked()}
         </Typography>
       )}
-      {allRewards && allRewards.length > 1 && (
-        <Typography>
-          <Trans>Reward(s) to claim</Trans>
-        </Typography>
+
+      {rewards.length > 1 && (
+        <RewardsSelect
+          rewards={rewards}
+          selectedReward={selectedRewardSymbol}
+          setSelectedReward={setSelectedRewardSymbol}
+        />
       )}
 
-      <TxModalDetails
-        gasLimit={gasLimit}
-        allRewards={allRewards}
-        selectedReward={selectedReward}
-        setSelectedReward={setSelectedReward}
-      />
+      {selectedReward && (
+        <TxModalDetails gasLimit={gasLimit}>
+          {selectedRewardSymbol === 'all' && (
+            <>
+              <Row
+                caption={<Trans>Balance</Trans>}
+                captionVariant="description"
+                align="flex-start"
+                mb={selectedReward.symbol !== 'all' ? 0 : 4}
+              >
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                  {rewards.map((reward) => (
+                    <Box
+                      key={`claim-${reward.symbol}`}
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'flex-end',
+                        mb: 4,
+                      }}
+                    >
+                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <TokenIcon symbol={reward.symbol} sx={{ mr: 1, fontSize: '16px' }} />
+                        <FormattedNumber value={Number(reward.balance)} variant="secondary14" />
+                        <Typography ml={1} variant="secondary14">
+                          {reward.symbol}
+                        </Typography>
+                      </Box>
+                      <FormattedNumber
+                        value={Number(reward.balanceUsd)}
+                        variant="helperText"
+                        compact
+                        symbol="USD"
+                        color="text.secondary"
+                      />
+                    </Box>
+                  ))}
+                </Box>
+              </Row>
+              <DetailsNumberLine description={<Trans>Total worth</Trans>} value={claimableUsd} />
+            </>
+          )}
+          {selectedRewardSymbol !== 'all' && (
+            <DetailsNumberLineWithSub
+              hideSymbolSuffix
+              symbol={selectedReward.symbol}
+              amount={selectedReward.balance}
+              amountUSD={selectedReward.balanceUsd}
+              description={<Trans>{selectedReward.symbol} Balance</Trans>}
+            />
+          )}
+        </TxModalDetails>
+      )}
 
       {claimRewardsTxState.gasEstimationError && (
         <GasEstimationError error={claimRewardsTxState.gasEstimationError} />

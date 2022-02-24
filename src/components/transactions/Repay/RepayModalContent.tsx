@@ -24,7 +24,11 @@ import { Asset, AssetInput } from '../AssetInput';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { TxModalDetails } from '../FlowCommons/TxModalDetails';
+import {
+  DetailsHFLine,
+  DetailsNumberLineWithSub,
+  TxModalDetails,
+} from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { RepayActions } from './RepayActions';
@@ -186,9 +190,6 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
   // is Network mismatched
   const isWrongNetwork = currentChainId !== connectedChainId;
 
-  const showHealthFactor =
-    user?.totalBorrowsMarketReferenceCurrency !== '0' && poolReserve.usageAsCollateralEnabled;
-
   // calculating input usd value
   const usdValue = valueToBigNumber(amount).multipliedBy(reserve.priceInUSD);
 
@@ -252,15 +253,15 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
         maxValue={maxAmountToRepay.toString()}
       />
 
-      <TxModalDetails
-        showHf={showHealthFactor}
-        healthFactor={user?.healthFactor}
-        futureHealthFactor={newHF?.toString()}
-        gasLimit={gasLimit}
-        symbol={poolReserve.iconSymbol}
-        amountAfterRepay={amountAfterRepay}
-        displayAmountAfterRepayInUsd={displayAmountAfterRepayInUsd.toString()}
-      />
+      <TxModalDetails gasLimit={gasLimit}>
+        <DetailsNumberLineWithSub
+          description={<Trans>Remaining debt</Trans>}
+          amount={amountAfterRepay}
+          amountUSD={displayAmountAfterRepayInUsd.toString()}
+          symbol={poolReserve.iconSymbol}
+        />
+        <DetailsHFLine healthFactor={user?.healthFactor} futureHealthFactor={newHF?.toString()} />
+      </TxModalDetails>
 
       {repayTxState.gasEstimationError && (
         <GasEstimationError error={repayTxState.gasEstimationError} />

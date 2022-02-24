@@ -1,6 +1,6 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Button, useTheme } from '@mui/material';
+import { Typography, Box, Button, useTheme } from '@mui/material';
 import { TypographyProps } from '@mui/material/Typography';
 import BigNumber from 'bignumber.js';
 
@@ -32,13 +32,19 @@ export const HealthFactorNumber = ({ value, onInfoClick, ...rest }: HealthFactor
         flexDirection: { xs: 'column', xsm: 'row' },
       }}
     >
-      <FormattedNumber
-        value={formattedHealthFactor}
-        sx={{ color: healthFactorColor, ...rest.sx }}
-        visibleDecimals={2}
-        compact
-        {...rest}
-      />
+      {value === '-1' ? (
+        <Typography variant="secondary14" color={palette.success.main}>
+          ∞
+        </Typography>
+      ) : (
+        <FormattedNumber
+          value={formattedHealthFactor}
+          sx={{ color: healthFactorColor, ...rest.sx }}
+          visibleDecimals={2}
+          compact
+          {...rest}
+        />
+      )}
 
       {onInfoClick && (
         <Button

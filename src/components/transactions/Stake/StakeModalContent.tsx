@@ -13,7 +13,7 @@ import { AssetInput } from '../AssetInput';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { TxModalDetails } from '../FlowCommons/TxModalDetails';
+import { DetailsNumberLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { StakeActions } from './StakeActions';
@@ -113,7 +113,13 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
           {handleBlocked()}
         </Typography>
       )}
-      <TxModalDetails stakeAPR={stakeData?.stakeApy || '0'} gasLimit={gasLimit} />
+      <TxModalDetails gasLimit={gasLimit}>
+        <DetailsNumberLine
+          description={<Trans>Staking APR</Trans>}
+          value={Number(stakeData?.stakeApy || '0') / 10000}
+          percent
+        />
+      </TxModalDetails>
       {txState.gasEstimationError && <GasEstimationError error={txState.gasEstimationError} />}
       <StakeActions
         sx={{ mt: '48px' }}
