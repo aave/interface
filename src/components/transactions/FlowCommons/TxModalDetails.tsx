@@ -12,7 +12,7 @@ import {
   Typography,
 } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
-import React, { Dispatch, ReactChild, ReactElement, ReactNode, SetStateAction } from 'react';
+import React, { Dispatch, ReactNode, SetStateAction } from 'react';
 import { CollateralType } from 'src/helpers/types';
 import { ReserveIncentiveResponse } from 'src/hooks/app-data-provider/useIncentiveData';
 
