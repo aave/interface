@@ -288,13 +288,10 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
         action="Supply"
       >
         <DetailsNumberLine description={<Trans>Supply APY</Trans>} value={supplyApy} />
-        {poolReserve.aIncentivesData &&
-          poolReserve.aIncentivesData.filter((r) => r.incentiveAPR !== '0').length > 0 && (
-            <DetailsIncentivesLine
-              incentives={poolReserve.aIncentivesData}
-              symbol={poolReserve.symbol}
-            />
-          )}
+        <DetailsIncentivesLine
+          incentives={poolReserve.aIncentivesData}
+          symbol={poolReserve.symbol}
+        />
         <DetailsCollateralLine collateralType={willBeUsedAsCollateral} />
         <DetailsHFLine
           healthFactor={user ? user.healthFactor : '-1'}

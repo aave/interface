@@ -13,7 +13,11 @@ import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { TxErrorView } from '../FlowCommons/Error';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { TxModalDetails } from '../FlowCommons/TxModalDetails';
+import {
+  DetailsIncentivesLine,
+  DetailsNumberLine,
+  TxModalDetails,
+} from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { RateSwitchActions } from './RateSwitchActions';
@@ -112,19 +116,27 @@ export const RateSwitchModalContent = ({ underlyingAsset }: RateSwitchModalConte
       )}
 
       {blockingError !== undefined && <Alert severity="error">{handleBlocked()}</Alert>}
-      <TxModalDetails
-        incentives={
-          rateModeAfterSwitch === InterestRate.Variable
-            ? poolReserve.vIncentivesData
-            : poolReserve.sIncentivesData
-        }
-        apy={apyAfterSwitch}
-        rate={rateModeAfterSwitch}
-        gasLimit={gasLimit}
-        symbol={poolReserve.symbol}
-        underlyingAsset={underlyingAsset}
-      />
-
+      <TxModalDetails gasLimit={gasLimit}>
+        <DetailsNumberLine
+          description={<Trans>New APY</Trans>}
+          value={apyAfterSwitch}
+          numberPrefix={
+            rateModeAfterSwitch === InterestRate.Stable ? (
+              <Trans>Stable</Trans>
+            ) : (
+              <Trans>Variable</Trans>
+            )
+          }
+        />
+        <DetailsIncentivesLine
+          incentives={
+            rateModeAfterSwitch === InterestRate.Variable
+              ? poolReserve.vIncentivesData
+              : poolReserve.sIncentivesData
+          }
+          symbol={poolReserve.symbol}
+        />
+      </TxModalDetails>
       <RateSwitchActions
         poolReserve={poolReserve}
         isWrongNetwork={isWrongNetwork}

@@ -41,7 +41,6 @@ export interface TxModalDetailsProps {
   action?: string;
   walletBalance?: string;
   rate?: InterestRate;
-  underlyingAsset?: string;
   allRewards?: Reward[];
   setSelectedReward?: Dispatch<SetStateAction<Reward | undefined>>;
   selectedReward?: Reward;
@@ -170,21 +169,6 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
               percent
               value={apy}
             />
-          )}
-
-          {apy && action && action !== 'Borrow' && (
-            <DetailsNumberLine description={<Trans>{action} APY</Trans>} value={apy} percent />
-          )}
-
-          {apy && rate && (
-            <Row caption={<Trans>New APY</Trans>} captionVariant="description" mb={4}>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Typography sx={{ mr: 1 }}>
-                  {rate === InterestRate.Variable ? <Trans>Variable</Trans> : <Trans>Stable</Trans>}
-                </Typography>
-                <FormattedNumber value={Number(apy)} percent variant="secondary14" />
-              </Box>
-            </Row>
           )}
 
           {!!incentives?.length && symbol && !stableRateIncentives && (
@@ -441,12 +425,21 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
 interface DetailsNumberLineProps extends FormattedNumberProps {
   description: ReactNode;
   value: FormattedNumberProps['value'];
+  numberPrefix?: ReactNode;
 }
 
-export const DetailsNumberLine = ({ description, value, ...rest }: DetailsNumberLineProps) => {
+export const DetailsNumberLine = ({
+  description,
+  value,
+  numberPrefix,
+  ...rest
+}: DetailsNumberLineProps) => {
   return (
     <Row caption={description} captionVariant="description" mb={4}>
-      <FormattedNumber value={value} percent variant="secondary14" {...rest} />
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        {numberPrefix && <Typography sx={{ mr: 1 }}>{numberPrefix}</Typography>}
+        <FormattedNumber value={value} percent variant="secondary14" {...rest} />
+      </Box>
     </Row>
   );
 };
@@ -525,12 +518,13 @@ export const DetailsCollateralLine = ({ collateralType }: DetailsCollateralLine)
 };
 
 interface DetailsIncentivesLineProps {
-  incentives: ReserveIncentiveResponse[];
+  incentives?: ReserveIncentiveResponse[];
   // the token yielding the incentive, not the incentive itself
   symbol: string;
 }
 
 export const DetailsIncentivesLine = ({ incentives, symbol }: DetailsIncentivesLineProps) => {
+  if (!incentives || incentives.filter((i) => i.incentiveAPR !== '0').length === 0) return null;
   return (
     <Row caption={<Trans>Rewards APR</Trans>} captionVariant="description" mb={4} minHeight={24}>
       <IncentivesButton incentives={incentives} symbol={symbol} />

@@ -213,8 +213,6 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
 
       <TxModalDetails
         gasLimit={gasLimit}
-        incentives={poolReserve.vIncentivesData}
-        stableRateIncentives={poolReserve.sIncentivesData}
         symbol={poolReserve.symbol}
         apy={poolReserve.variableBorrowAPY}
         borrowStableRate={
@@ -231,9 +229,7 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
             unwrappedSymbol={networkConfig.baseAssetSymbol}
           />
         )}
-        {incentive && incentive.filter((i) => i.incentiveAPR !== '0').length > 0 && (
-          <DetailsIncentivesLine incentives={incentive} symbol={poolReserve.symbol} />
-        )}
+        <DetailsIncentivesLine incentives={incentive} symbol={poolReserve.symbol} />
         <DetailsHFLine
           healthFactor={user.healthFactor}
           futureHealthFactor={newHealthFactor.toString()}
