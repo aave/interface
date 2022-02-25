@@ -23,6 +23,7 @@
     "prepare": "husky install",
     "gql-gen": "graphql-codegen --config codegen.yml",
     "test:open": "DOTENV_CONFIG_PATH='.env.local' cypress open",
+    "test:headless": "DOTENV_CONFIG_PATH='.env.local' cypress run --config watchForFileChanges=false numTestsKeptInMemory=0",
     "test:main": "npx cypress-repeat run -n 2 --rerun-failed-only --spec \"cypress/integration/0-main-market/**/*.spec.ts\"",
     "test:amm": "npx cypress-repeat run -n 2 --rerun-failed-only --spec \"cypress/integration/1-amm-market/**/*.spec.ts\"",
     "test:polygon": "npx cypress-repeat run -n 2 --rerun-failed-only --spec \"cypress/integration/2-polygon-market/**/*.spec.ts\"",
