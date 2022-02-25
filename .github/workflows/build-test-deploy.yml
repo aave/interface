@@ -92,6 +92,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
+    steps:
       - name: pinata
         id: pinata
         uses: aave/pinata-action@v1.1
