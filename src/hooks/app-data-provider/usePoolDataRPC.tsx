@@ -58,7 +58,6 @@ export function usePoolDataRPC(
       const reservesResponse = await poolDataProviderContract.getReservesHumanized({
         lendingPoolAddressProvider,
       });
-      console.log('debug 1', reservesResponse);
       cache.writeQuery<C_ProtocolDataQuery>({
         query: C_ProtocolDataDocument,
         data: {
@@ -77,7 +76,6 @@ export function usePoolDataRPC(
         },
         variables: { lendingPoolAddressProvider, chainId },
       });
-      console.log('debug 2 not reached');
       setErrorReserves(false);
     } catch (e) {
       console.log('e', e);
@@ -98,10 +96,12 @@ export function usePoolDataRPC(
         chainId,
       });
       setLoadingUserReserves(true);
+      console.log('PRIOR', chainId);
       const userReservesResponse = await poolDataProviderContract.getUserReservesHumanized({
         lendingPoolAddressProvider,
         user: currentAccount,
       });
+      console.log('DEBUG USER RESERVES', userReservesResponse);
       cache.writeQuery<C_UserDataQuery>({
         query: C_UserDataDocument,
         data: {
@@ -117,6 +117,7 @@ export function usePoolDataRPC(
         },
         variables: { lendingPoolAddressProvider, userAddress: currentAccount, chainId },
       });
+      console.log('wrriten to cache');
       setErrorUserReserves(false);
     } catch (e) {
       console.log('e', e);
