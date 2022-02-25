@@ -89,6 +89,13 @@ jobs:
           name: cypress-fail-screenshots-${{matrix.market}}
           path: cypress/screenshots
 
+      - name: upload videos
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-fail-videos
+          path: cypress/videos
+
   deploy:
     runs-on: ubuntu-latest
     needs: build
