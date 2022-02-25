@@ -41,7 +41,7 @@ export const doConfirm = ({ hasApproval, actionName, assetName }: ConfirmAction)
 
 export const doCloseModal = () => {
   return it(`Close modal popup`, () => {
-    cy.get('[data-cy=Modal] [data-cy=CloseModalIcon]').click();
+    cy.get('[data-cy=closeButton]').click();
     cy.get('[data-cy=Modal]').should('not.exist');
   });
 };
