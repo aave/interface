@@ -142,7 +142,9 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
     !user.isInIsolationMode &&
     poolReserve.isIsolated &&
     !hasDifferentCollateral &&
-    (userReserve?.underlyingBalance !== '0' ? userReserve?.usageAsCollateralEnabledOnUser : true);
+    (userReserve && userReserve.underlyingBalance !== '0'
+      ? userReserve.usageAsCollateralEnabledOnUser
+      : true);
 
   // TODO: check if calc is correct to see if cap reached
   const capReached =
@@ -193,7 +195,7 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
   let willBeUsedAsCollateral: CollateralType = poolReserve.usageAsCollateralEnabled
     ? CollateralType.ENABLED
     : CollateralType.DISABLED;
-  const userHasSuppliedReserve = userReserve?.scaledATokenBalance !== '0';
+  const userHasSuppliedReserve = userReserve && userReserve.scaledATokenBalance !== '0';
   const userHasCollateral = user.totalCollateralUSD !== '0';
 
   if (poolReserve.isIsolated) {

@@ -14,7 +14,6 @@ export const ConnectWalletPaper = ({
   sx,
   ...rest
 }: ConnectWalletPaperProps) => {
-  console.log('loading:: ', loading)
   return (
     <Paper
       {...rest}

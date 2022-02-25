@@ -12,12 +12,11 @@ import {
   TransactionResponse,
   // Web3Provider,
 } from '@ethersproject/providers';
-import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
+import { useWeb3React } from '@web3-react/core';
 import { BigNumber, ethers } from 'ethers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { API_ETH_MOCK_ADDRESS, transactionType } from '@aave/contract-helpers';
 import { ERC20TokenType } from './Web3ContextProvider';
-import { UserRejectedRequestError } from '@web3-react/injected-connector';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { TorusConnector } from '@web3-react/torus-connector';
@@ -36,7 +35,7 @@ export type Web3Data = {
   addERC20Token: (args: ERC20TokenType) => Promise<boolean>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   signTxData: (unsignedData: string) => Promise<SignatureLike>;
-  error: boolean;
+  error: Error | undefined;
 };
 
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
@@ -47,33 +46,18 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     active,
     error,
     deactivate,
+    setError,
   } = useWeb3React<ethers.providers.Web3Provider>();
 
   // const [provider, setProvider] = useState<JsonRpcProvider>();
   const [connector, setConnector] = useState<AbstractConnector>();
-  const [walletType, setWalletType] = useState<WalletType>();
   const [chainId, setChainId] = useState(1);
-  const [connected, setConnected] = useState(false);
   const [loading, setLoading] = useState(false);
   const [currentAccount, setCurrentAccount] = useState('');
+  const [tried, setTried] = useState(false);
+  const [deactivated, setDeactivated] = useState(false);
 
-  useEffect(() => {
-    const address = localStorage.getItem('mockWalletAddress');
-    if (address) {
-      setCurrentAccount(address);
-    } else {
-      setCurrentAccount(account?.toLowerCase() || '');
-    }
-  }, [account]);
-
-  useEffect(() => {
-    if (provider) {
-      provider.getNetwork().then((networkInfo: Network) => {
-        setChainId(networkInfo.chainId);
-      });
-    }
-  }, [provider]);
-
+  // Wallet connection and disconnection
   // clean local storage
   const cleanConnectorStorage = useCallback((): void => {
     if (connector instanceof WalletConnectConnector) {
@@ -91,17 +75,16 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   }, [connector]);
 
   const disconnectWallet = useCallback(async () => {
-    if (connector) {
-      connector.deactivate();
+    deactivate();
+    // @ts-expect-error close can be returned by wallet
+    if (connector && connector.close) {
       // @ts-expect-error close can be returned by wallet
-      if (connector.close) {
-        // @ts-expect-error close can be returned by wallet
-        // close will remove wallet from DOM if provided by wallet
-        await connector.close();
-      }
+      // close will remove wallet from DOM if provided by wallet
+      await connector.close();
     }
-    setConnected(false);
+
     setLoading(false);
+    setDeactivated(true);
     setCurrentAccount('');
     cleanConnectorStorage();
   }, [provider, connector]);
@@ -109,34 +92,106 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   // connect to the wallet specified by wallet type
   const connectWallet = useCallback(
     async (wallet: WalletType) => {
-      setWalletType(wallet);
       setLoading(true);
-      const connector: AbstractConnector = getWallet(wallet, chainId);
-      setConnector(connector);
-      console.log('connector: ', connector);
-      console.log('is active: ', active);
       try {
+        const connector: AbstractConnector = getWallet(wallet, chainId);
+
+        if (connector instanceof WalletConnectConnector) {
+          connector.walletConnectProvider = undefined;
+        }
+
         await activate(connector, undefined, true);
+        setConnector(connector);
         const address = await connector.getAccount();
         setCurrentAccount(address?.toLowerCase() || '');
         const connectorChainId = await connector.getChainId();
         setChainId(Number(connectorChainId));
         // TODO: add listeners to account changed and chain changed
-
-        setConnected(true);
+        setDeactivated(false);
         setLoading(false);
       } catch (e) {
-        if (error instanceof UnsupportedChainIdError) {
-          console.log('unsupported chain id error: ', error);
-        } else {
-          console.log('error on activation', e);
-        }
-        disconnectWallet();
-        // setLoading(false);
+        console.log('error on activation', e);
+        setError(e);
+        // disconnectWallet();
+        setLoading(false);
       }
     },
     [disconnectWallet]
   );
+
+  // handle logic to eagerly connect to the injected ethereum provider,
+  // if it exists and has granted access already
+  useEffect(() => {
+    if (!active && !deactivated) {
+      const injected = getWallet(WalletType.INJECTED);
+      // @ts-expect-error isAuthorized not in AbstractConnector type. But method is there for
+      // injected provider
+      injected.isAuthorized().then((isAuthorized: boolean) => {
+        if (isAuthorized) {
+          connectWallet(WalletType.INJECTED).catch(() => {
+            setTried(true);
+          });
+        } else {
+          setTried(true);
+        }
+      });
+    }
+  }, [activate, setTried, active, connectWallet, deactivated]);
+
+  // if the connection worked, wait until we get confirmation of that to flip the flag
+  useEffect(() => {
+    if (!tried && active) {
+      setTried(true);
+    }
+  }, [tried, active]);
+
+  // handle logic to connect in reaction to certain events on
+  // the injected ethereum provider, if it exists
+  useEffect(() => {
+    const { ethereum } = window;
+    if (ethereum && ethereum.on && !active && !error && (!tried || !!loading)) {
+      const handleChainChanged = (chainId: number) => {
+        console.log('chainChanged', chainId);
+        connectWallet(WalletType.INJECTED);
+      };
+
+      const handleAccountsChanged = (accounts: string[]) => {
+        console.log('accountsChanged', accounts);
+        if (accounts.length > 0) {
+          connectWallet(WalletType.INJECTED);
+        }
+      };
+
+      ethereum.on('chainChanged', handleChainChanged);
+      ethereum.on('accountsChanged', handleAccountsChanged);
+
+      return () => {
+        if (ethereum.removeListener) {
+          ethereum.removeListener('chainChanged', handleChainChanged);
+          ethereum.removeListener('accountsChanged', handleAccountsChanged);
+        }
+      };
+    }
+
+    return undefined;
+  }, [active, error, activate, connectWallet, loading, tried]);
+
+  useEffect(() => {
+    const address = localStorage.getItem('mockWalletAddress');
+    if (address) {
+      setCurrentAccount(address);
+    } else {
+      setCurrentAccount(account?.toLowerCase() || '');
+    }
+  }, [account]);
+
+  useEffect(() => {
+    if (provider) {
+      provider.getNetwork().then((networkInfo: Network) => {
+        setChainId(networkInfo.chainId);
+      });
+    }
+  }, [provider]);
 
   // Tx methods
 
@@ -244,7 +299,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           connectWallet,
           disconnectWallet,
           provider,
-          connected,
+          connected: active,
           loading,
           chainId,
           switchNetwork,
@@ -253,7 +308,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           signTxData,
           currentAccount,
           addERC20Token,
-          error: !!error,
+          error,
         },
       }}
     >

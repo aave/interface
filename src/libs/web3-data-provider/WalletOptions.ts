@@ -6,15 +6,13 @@ import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { TorusConnector } from '@web3-react/torus-connector';
 import { FrameConnector } from '@web3-react/frame-connector';
 import { getNetworkConfig, getSupportedChainIds } from 'src/utils/marketsAndNetworksConfig';
+import { UnsupportedChainIdError } from '@web3-react/core';
 
 export enum WalletType {
   INJECTED,
-  METAMASK,
   WALLET_CONNECT,
   WALLET_LINK,
-  MEW_WALLET,
   TORUS,
-  GNOSIS_SAFE,
   FRAME,
 }
 
@@ -22,16 +20,15 @@ const POLLING_INTERVAL = 12000;
 const APP_NAME = 'Aave';
 const APP_LOGO_URL = 'https://aave.com/favicon.ico';
 
-const supportedChainIds = getSupportedChainIds();
-
-export const injected = new InjectedConnector({ supportedChainIds });
-
-export const getWallet = (wallet: WalletType, chainId: ChainId): AbstractConnector => {
+export const getWallet = (
+  wallet: WalletType,
+  chainId: ChainId = ChainId.mainnet
+): AbstractConnector => {
   const supportedChainIds = getSupportedChainIds();
 
   switch (wallet) {
     case WalletType.INJECTED:
-      return new InjectedConnector({ supportedChainIds });
+      return new InjectedConnector({});
     case WalletType.WALLET_LINK:
       const networkConfig = getNetworkConfig(chainId);
       return new WalletLinkConnector({
@@ -76,10 +73,10 @@ export const getWallet = (wallet: WalletType, chainId: ChainId): AbstractConnect
     //   return new SafeAppConnector();
     // }
     case WalletType.FRAME: {
-      if (chainId !== ChainId.mainnet) {
-        throw new Error('Frame cant connect to this network');
-      }
-      return new FrameConnector({ supportedChainIds });
+      // if (chainId !== ChainId.mainnet) {
+      //   throw new UnsupportedChainIdError(chainId, [1]);
+      // }
+      return new FrameConnector({ supportedChainIds: [1] });
     }
     default: {
       throw new Error(`unsupported wallet`);

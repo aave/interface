@@ -41,7 +41,9 @@ type NextPageWithLayout = NextPage & {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getWeb3Library(provider: any): ethers.providers.Web3Provider {
-  return new ethers.providers.Web3Provider(provider);
+  const library = new ethers.providers.Web3Provider(provider);
+  library.pollingInterval = 12000;
+  return library;
 }
 
 interface MyAppProps extends AppProps {

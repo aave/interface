@@ -9,6 +9,8 @@ import WalletConnectIcon from '/public/icons/wallets/WalletConnect.svg';
 import CoinbaseIcon from '/public/icons/wallets/Coinbase.svg';
 
 import { Trans } from '@lingui/macro';
+import { UnsupportedChainIdError } from '@web3-react/core';
+import { UserRejectedRequestError } from '@web3-react/walletconnect-connector';
 
 export type WalletRowProps = {
   walletName: string;
@@ -19,7 +21,6 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
   const { connectWallet } = useWeb3Context();
 
   const getWalletIcon = (walletType: WalletType) => {
-    console.log('wallet: ', walletType)
     switch (walletType) {
       case WalletType.INJECTED:
         return <BrowserWalletIcon />;
@@ -52,15 +53,44 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
   );
 };
 
+export enum ErrorType {
+  UNSUPORTED_CHAIN,
+  USER_REJECTED_REQUEST,
+}
+
 export const WalletSelector = () => {
   const { error } = useWeb3Context();
+
+  let blockingError: ErrorType | undefined = undefined;
+  if (error) {
+    if (error instanceof UnsupportedChainIdError) {
+      blockingError = ErrorType.UNSUPORTED_CHAIN;
+    } else if (error instanceof UserRejectedRequestError) {
+      blockingError = ErrorType.USER_REJECTED_REQUEST;
+    }
+    // TODO: add other errors
+  }
+
+  const handleBlocking = () => {
+    switch (blockingError) {
+      case ErrorType.UNSUPORTED_CHAIN:
+        return <Trans>Network not supported for this wallet</Trans>;
+      case ErrorType.USER_REJECTED_REQUEST:
+        return <Trans>Rejected connection request</Trans>;
+      default:
+        console.log('Uncatched error: ', error);
+        return <Trans>Error connecting. Try refreshing the page.</Trans>;
+    }
+  };
+
+  console.log('wallet selector error::: ', error);
 
   return (
     <Box>
       <TxModalTitle title="Connect a wallet" />
       {error && (
         <Alert severity="error" sx={{ mb: '24px' }}>
-          <Trans>Unknown error occured.</Trans>
+          {handleBlocking()}
         </Alert>
       )}
       <WalletRow walletName="Browser wallet" walletType={WalletType.INJECTED} />

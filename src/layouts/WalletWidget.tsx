@@ -37,7 +37,7 @@ interface WalletWidgetProps {
 }
 
 export default function WalletWidget({ open, setOpen, headerHeight, md }: WalletWidgetProps) {
-  const { disconnectWallet, currentAccount, connected, chainId, loading } = useWeb3Context();
+  const { disconnectWallet, currentAccount, connected, chainId, loading, error } = useWeb3Context();
 
   const [isWalletModalOpen, setWalletModalOpen] = useState(false);
 
@@ -293,7 +293,11 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
                 }}
               >
                 <img
-                  src={useBlockie ? makeBlockie(currentAccount) : ensAvatar}
+                  src={
+                    useBlockie
+                      ? makeBlockie(currentAccount !== '' ? currentAccount : 'default')
+                      : ensAvatar
+                  }
                   alt=""
                   onError={() => setUseBlockie(true)}
                 />
