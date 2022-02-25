@@ -63,6 +63,7 @@ export const ListItemAPYButton = ({
           )
         }
         disabled={disabled}
+        data-cy={`apyButton_${borrowRateMode}`}
       >
         {borrowRateMode}
       </Button>
@@ -74,6 +75,8 @@ export const ListItemAPYButton = ({
         MenuListProps={{
           'aria-labelledby': 'basic-button',
         }}
+        keepMounted={true}
+        data-cy={`apyMenu_${borrowRateMode}`}
       >
         <Typography variant="subheader2" sx={{ px: 4, py: 3 }}>
           <Trans>Select APY type to switch</Trans>
@@ -81,7 +84,10 @@ export const ListItemAPYButton = ({
 
         <MenuItem
           value={InterestRate.Variable}
-          onClick={onClick}
+          onClick={() => {
+            onClick();
+            handleClose();
+          }}
           disabled={borrowRateMode === InterestRate.Variable}
         >
           <ListItemIcon>
@@ -95,7 +101,10 @@ export const ListItemAPYButton = ({
 
         <MenuItem
           value={InterestRate.Stable}
-          onClick={onClick}
+          onClick={() => {
+            onClick();
+            handleClose();
+          }}
           disabled={borrowRateMode === InterestRate.Stable}
         >
           <ListItemIcon>
