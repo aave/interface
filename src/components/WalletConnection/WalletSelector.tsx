@@ -3,10 +3,11 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { WalletType } from 'src/libs/web3-data-provider/WalletOptions';
 import { TxModalTitle } from '../transactions/FlowCommons/TxModalTitle';
 
-import BrowserWalletIcon from '/public/icons/wallets/BrowserWallet.svg';
-import TorusIcon from '/public/icons/wallets/Torus.svg';
-import WalletConnectIcon from '/public/icons/wallets/WalletConnect.svg';
-import CoinbaseIcon from '/public/icons/wallets/Coinbase.svg';
+import BrowserWalletIcon from '/public/icons/wallets/browserWallet.svg';
+import TorusIcon from '/public/icons/wallets/torus.svg';
+import WalletConnectIcon from '/public/icons/wallets/walletConnect.svg';
+import CoinbaseIcon from '/public/icons/wallets/coinbase.svg';
+import FrameIcon from '/public/icons/wallets/frame.svg';
 
 import { Trans } from '@lingui/macro';
 import { UnsupportedChainIdError } from '@web3-react/core';
@@ -30,6 +31,8 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
         return <CoinbaseIcon />;
       case WalletType.TORUS:
         return <TorusIcon />;
+      case WalletType.FRAME:
+        return <FrameIcon />;
       default:
         return null;
     }

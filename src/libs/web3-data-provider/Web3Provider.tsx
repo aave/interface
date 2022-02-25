@@ -56,6 +56,28 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [currentAccount, setCurrentAccount] = useState('');
   const [tried, setTried] = useState(false);
   const [deactivated, setDeactivated] = useState(false);
+  const [selectedWallet, setSelectedWallet] = useState<WalletType>();
+
+  // listener handlers
+  const handleAccountsChanged = (accounts: string[]) => {
+    console.log('accountsChanged', accounts);
+    if (accounts.length > 0 && selectedWallet) {
+      connectWallet(selectedWallet);
+    }
+  };
+  const handleChainChanged = (chainId: number) => {
+    console.log('chainChanged', chainId);
+    if (selectedWallet) {
+      connectWallet(selectedWallet);
+    }
+  };
+
+  const handleNetworkChanged = (networkId: string) => {
+    console.log('Network changed: ', networkId);
+    if (selectedWallet) {
+      connectWallet(selectedWallet);
+    }
+  };
 
   // Wallet connection and disconnection
   // clean local storage
@@ -83,6 +105,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       await connector.close();
     }
 
+    setSelectedWallet(undefined);
     setLoading(false);
     setDeactivated(true);
     setCurrentAccount('');
@@ -102,6 +125,14 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
         await activate(connector, undefined, true);
         setConnector(connector);
+        setSelectedWallet(wallet);
+
+        // connector.on('chainChanged', handleChainChanged);
+        connector.on('accountsChanged', handleAccountsChanged);
+
+        // TODO: take a look why this doesnt work fro frame
+        connector.on('networkChanged', handleNetworkChanged);
+
         const address = await connector.getAccount();
         setCurrentAccount(address?.toLowerCase() || '');
         const connectorChainId = await connector.getChainId();
@@ -147,34 +178,34 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   // handle logic to connect in reaction to certain events on
   // the injected ethereum provider, if it exists
-  useEffect(() => {
-    const { ethereum } = window;
-    if (ethereum && ethereum.on && !active && !error && (!tried || !!loading)) {
-      const handleChainChanged = (chainId: number) => {
-        console.log('chainChanged', chainId);
-        connectWallet(WalletType.INJECTED);
-      };
+  // useEffect(() => {
+  //   const { ethereum } = window;
+  //   if (ethereum && ethereum.on && !active && !error && (!tried || !!loading)) {
+  //     // const handleChainChanged = (chainId: number) => {
+  //     //   console.log('chainChanged', chainId);
+  //     //   connectWallet(WalletType.INJECTED);
+  //     // };
 
-      const handleAccountsChanged = (accounts: string[]) => {
-        console.log('accountsChanged', accounts);
-        if (accounts.length > 0) {
-          connectWallet(WalletType.INJECTED);
-        }
-      };
+  //     // const handleAccountsChanged = (accounts: string[]) => {
+  //     //   console.log('accountsChanged', accounts);
+  //     //   if (accounts.length > 0) {
+  //     //     connectWallet(WalletType.INJECTED);
+  //     //   }
+  //     // };
 
-      ethereum.on('chainChanged', handleChainChanged);
-      ethereum.on('accountsChanged', handleAccountsChanged);
+  //     ethereum.on('chainChanged', handleChainChanged);
+  //     ethereum.on('accountsChanged', handleAccountsChanged);
 
-      return () => {
-        if (ethereum.removeListener) {
-          ethereum.removeListener('chainChanged', handleChainChanged);
-          ethereum.removeListener('accountsChanged', handleAccountsChanged);
-        }
-      };
-    }
+  //     return () => {
+  //       if (ethereum.removeListener) {
+  //         ethereum.removeListener('chainChanged', handleChainChanged);
+  //         ethereum.removeListener('accountsChanged', handleAccountsChanged);
+  //       }
+  //     };
+  //   }
 
-    return undefined;
-  }, [active, error, activate, connectWallet, loading, tried]);
+  //   return undefined;
+  // }, [active, error, activate, connectWallet, loading, tried]);
 
   useEffect(() => {
     const address = localStorage.getItem('mockWalletAddress');
