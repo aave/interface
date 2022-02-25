@@ -300,7 +300,7 @@ export const changeBorrowType = (
         .click();
     });
     it(`Change the ${_shortName} borrowing apr type from ${apyType} to ${newAPY}`, () => {
-      cy.get(`.MuiPaper-root > .MuiList-root`).contains(`APY, ${newAPY.toLowerCase()}`).click();
+      cy.get(`[data-cy="apyMenu_${apyType}"]`).contains(`APY, ${newAPY.toLowerCase()}`).click();
     });
     it(`Make approve for ${_shortName}, on confirmation page`, () => {
       doConfirm({

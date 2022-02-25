@@ -76,6 +76,7 @@ export const ListItemAPYButton = ({
           'aria-labelledby': 'basic-button',
         }}
         keepMounted={true}
+        data-cy={`apyMenu_${borrowRateMode}`}
       >
         <Typography variant="subheader2" sx={{ px: 4, py: 3 }}>
           <Trans>Select APY type to switch</Trans>
