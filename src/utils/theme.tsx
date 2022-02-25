@@ -617,7 +617,7 @@ export function getThemedComponents(theme: Theme) {
           },
           track: {
             opacity: 1,
-            backgroundColor: theme.palette.primary.light,
+            backgroundColor: theme.palette.action.active,
             borderRadius: '8px',
           },
         },
