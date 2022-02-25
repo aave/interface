@@ -58,6 +58,7 @@ export function usePoolDataRPC(
       const reservesResponse = await poolDataProviderContract.getReservesHumanized({
         lendingPoolAddressProvider,
       });
+      console.log('debug 1', reservesResponse);
       cache.writeQuery<C_ProtocolDataQuery>({
         query: C_ProtocolDataDocument,
         data: {
@@ -76,6 +77,7 @@ export function usePoolDataRPC(
         },
         variables: { lendingPoolAddressProvider, chainId },
       });
+      console.log('debug 2 not reached');
       setErrorReserves(false);
     } catch (e) {
       console.log('e', e);
