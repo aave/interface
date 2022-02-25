@@ -21,7 +21,7 @@ export const TxErrorView = ({ errorMessage }: { errorMessage: string }) => {
           sx={{
             width: '48px',
             height: '48px',
-            backgroundColor: '#F9EBEB',
+            backgroundColor: 'error.200',
             borderRadius: '50%',
             mt: 14,
             display: 'flex',

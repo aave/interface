@@ -279,7 +279,7 @@ export const useTransactionHandler = ({
             });
             setLoadingTxns(false);
           });
-      }, 1500);
+      }, 1000);
       return () => clearTimeout(timeout);
     } else {
       setApprovalTx(undefined);

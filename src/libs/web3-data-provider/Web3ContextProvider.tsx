@@ -13,6 +13,7 @@ import { hexToAscii } from 'src/utils/utils';
 import Web3Modal from 'web3modal';
 
 import { Web3Context } from '../hooks/useWeb3Context';
+// import { getWeb3Modal} from './modalOptions'
 
 export type ERC20TokenType = {
   address: string;

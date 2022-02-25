@@ -11,7 +11,7 @@ interface ListAPRColumnProps {
 export const ListAPRColumn = ({ value, incentives, symbol }: ListAPRColumnProps) => {
   return (
     <ListColumn>
-      <IncentivesCard value={value} incentives={incentives} symbol={symbol} />
+      <IncentivesCard value={value} incentives={incentives} symbol={symbol} data-cy={`apyType`} />
     </ListColumn>
   );
 };

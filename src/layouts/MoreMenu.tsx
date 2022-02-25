@@ -53,6 +53,7 @@ export function MoreMenu() {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
+        keepMounted={true}
       >
         {moreNavigation.map((item, index) => (
           <MenuItem component={Link} href={item.link} key={index}>

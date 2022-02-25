@@ -69,6 +69,7 @@ export function Base64Token({
         visibility: 'hidden',
         height: 0,
         width: 0,
+        overflow: 'hidden',
       }}
     >
       <object

@@ -54,7 +54,7 @@ export const TxSuccessView = ({
           sx={{
             width: '48px',
             height: '48px',
-            backgroundColor: '#ECF8ED99',
+            bgcolor: 'success.200',
             borderRadius: '50%',
             mt: 14,
             mx: 'auto',
@@ -155,7 +155,13 @@ export const TxSuccessView = ({
           <Trans>Review {action} tx details</Trans>
           <ExtLinkIcon />
         </Link>
-        <Button onClick={close} variant="contained" size="large" sx={{ minHeight: '44px' }}>
+        <Button
+          onClick={close}
+          variant="contained"
+          size="large"
+          sx={{ minHeight: '44px' }}
+          data-cy="closeButton"
+        >
           <Trans>Ok, Close</Trans>
         </Button>
       </Box>

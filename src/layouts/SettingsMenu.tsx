@@ -60,6 +60,7 @@ export function SettingsMenu() {
         open={settingsOpen}
         onClose={handleClose}
         sx={{ '.MuiMenuItem-root.Mui-disabled': { opacity: 1 } }}
+        keepMounted={true}
       >
         <MenuItem disabled sx={{ mb: '4px' }}>
           <Typography variant="subheader2" color="text.secondary">
@@ -80,6 +81,7 @@ export function SettingsMenu() {
         anchorEl={anchorEl}
         open={languagesOpen}
         onClose={handleClose}
+        keepMounted={true}
       >
         <LanguagesList onClick={handleCloseLanguage} component={MenuItem} />
       </Menu>

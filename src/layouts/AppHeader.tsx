@@ -1,6 +1,5 @@
 import { useMediaQuery, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
-import dynamic from 'next/dynamic';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 
@@ -9,10 +8,7 @@ import { uiConfig } from '../uiConfig';
 import { NavItems } from './components/NavItems';
 import { MobileMenu } from './MobileMenu';
 import { SettingsMenu } from './SettingsMenu';
-
-const WalletWidget = dynamic(() => import('./WalletWidget'), {
-  ssr: false,
-});
+import WalletWidget from './WalletWidget';
 
 export function AppHeader() {
   const { breakpoints } = useTheme();
