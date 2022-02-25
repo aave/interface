@@ -1,7 +1,8 @@
 import { formatUserSummary } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Alert, Button, Link } from '@mui/material';
+import { Alert, Box, Button, Link, SvgIcon, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { Row } from 'src/components/primitives/Row';
 import { EmodeCategory } from 'src/helpers/types';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
@@ -13,12 +14,13 @@ import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { TxModalDetails } from '../FlowCommons/TxModalDetails';
+import { DetailsHFLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { EmodeActions } from './EmodeActions';
 import { getEmodeMessage } from './EmodeNaming';
 import { EmodeSelect } from './EmodeSelect';
+import LightningBoltGradient from '/public/lightningBoltGradient.svg';
 
 export enum ErrorType {
   EMODE_DISABLED_LIQUIDATION,
@@ -209,14 +211,33 @@ export const EmodeModalContent = () => {
 
       {blockingError !== undefined && <Alert severity="error">{handleBlocked()}</Alert>}
 
-      <TxModalDetails
-        showHf={true}
-        healthFactor={user.healthFactor}
-        futureHealthFactor={newSummary.healthFactor}
-        gasLimit={gasLimit}
-        emodeAssets={selectedEmode?.assets}
-        selectedEmode={selectedEmode?.id || 0}
-      />
+      <TxModalDetails gasLimit={gasLimit}>
+        {selectedEmode && selectedEmode.id !== 0 && (
+          <>
+            <Row caption={<Trans>Asset category</Trans>} captionVariant="description" mb={4}>
+              <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                <SvgIcon sx={{ fontSize: '12px', mr: 0.5 }}>
+                  <LightningBoltGradient />
+                </SvgIcon>
+                <Typography variant="subheader1">{getEmodeMessage(selectedEmode.id)}</Typography>
+              </Box>
+            </Row>
+            <Row caption={<Trans>Available assets</Trans>} captionVariant="description" mb={4}>
+              {!!selectedEmode ? (
+                <Typography>{selectedEmode.assets.join(', ')}</Typography>
+              ) : (
+                <Typography>
+                  <Trans>All</Trans>
+                </Typography>
+              )}
+            </Row>
+          </>
+        )}
+        <DetailsHFLine
+          healthFactor={user.healthFactor}
+          futureHealthFactor={newSummary.healthFactor}
+        />
+      </TxModalDetails>
 
       {emodeTxState.gasEstimationError && (
         <GasEstimationError error={emodeTxState.gasEstimationError} />

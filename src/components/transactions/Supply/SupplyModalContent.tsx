@@ -27,7 +27,13 @@ import { AssetInput } from '../AssetInput';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { TxModalDetails } from '../FlowCommons/TxModalDetails';
+import {
+  DetailsCollateralLine,
+  DetailsHFLine,
+  DetailsIncentivesLine,
+  DetailsNumberLine,
+  TxModalDetails,
+} from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { AAVEWarning } from '../Warnings/AAVEWarning';
 import { AMPLWarning } from '../Warnings/AMPLWarning';
@@ -172,11 +178,6 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
     }
   };
 
-  const showHealthFactor =
-    user &&
-    user.totalBorrowsMarketReferenceCurrency !== '0' &&
-    poolReserve.usageAsCollateralEnabled;
-
   // is Network mismatched
   const isWrongNetwork = currentChainId !== connectedChainId;
 
@@ -277,18 +278,18 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
         </Typography>
       )}
 
-      <TxModalDetails
-        apy={supplyApy}
-        incentives={poolReserve.aIncentivesData}
-        showHf={showHealthFactor || false}
-        healthFactor={user ? user.healthFactor : '-1'}
-        futureHealthFactor={healthFactorAfterDeposit.toString()}
-        gasLimit={gasLimit}
-        symbol={poolReserve.symbol}
-        // TODO: need take a look usedAsCollateral
-        usedAsCollateral={willBeUsedAsCollateral}
-        action="Supply"
-      />
+      <TxModalDetails gasLimit={gasLimit}>
+        <DetailsNumberLine description={<Trans>Supply APY</Trans>} value={supplyApy} percent />
+        <DetailsIncentivesLine
+          incentives={poolReserve.aIncentivesData}
+          symbol={poolReserve.symbol}
+        />
+        <DetailsCollateralLine collateralType={willBeUsedAsCollateral} />
+        <DetailsHFLine
+          healthFactor={user ? user.healthFactor : '-1'}
+          futureHealthFactor={healthFactorAfterDeposit.toString()}
+        />
+      </TxModalDetails>
 
       {supplyTxState.gasEstimationError && (
         <GasEstimationError error={supplyTxState.gasEstimationError} />
