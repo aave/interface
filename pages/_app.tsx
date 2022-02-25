@@ -20,7 +20,7 @@ import { BackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDa
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ConnectionStatusProvider } from 'src/hooks/useConnectionStatusContext';
 import { ModalContextProvider } from 'src/hooks/useModal';
-import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3ContextProvider';
+// import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3ContextProvider';
 import { TxBuilderProvider } from 'src/providers/TxBuilderProvider';
 import { apolloClient } from 'src/utils/apolloClient';
 
@@ -28,6 +28,9 @@ import createEmotionCache from '../src/createEmotionCache';
 import { ProtocolDataProvider } from '../src/hooks/useProtocolDataContext';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
+import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
+import { Web3ReactProvider } from '@web3-react/core';
+import { ethers } from 'ethers';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -35,6 +38,11 @@ const clientSideEmotionCache = createEmotionCache();
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: React.ReactElement) => React.ReactNode;
 };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function getWeb3Library(provider: any): ethers.providers.Web3Provider {
+  return new ethers.providers.Web3Provider(provider);
+}
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
@@ -59,35 +67,37 @@ export default function MyApp(props: MyAppProps) {
 
       <ApolloProvider client={apolloClient}>
         <LanguageProvider>
-          <Web3ContextProvider>
-            <ProtocolDataProvider>
-              <ConnectionStatusProvider>
-                <AppGlobalStyles>
-                  <BackgroundDataProvider>
-                    <AppDataProvider>
-                      <TxBuilderProvider>
-                        <AppGlobalStyles>
-                          <ModalContextProvider>
-                            <GasStationProvider>
-                              {getLayout(<Component {...pageProps} />)}
-                              <SupplyModal />
-                              <WithdrawModal />
-                              <BorrowModal />
-                              <RepayModal />
-                              <CollateralChangeModal />
-                              <RateSwitchModal />
-                              <ClaimRewardsModal />
-                              <EmodeModal />
-                            </GasStationProvider>
-                          </ModalContextProvider>
-                        </AppGlobalStyles>
-                      </TxBuilderProvider>
-                    </AppDataProvider>
-                  </BackgroundDataProvider>
-                </AppGlobalStyles>
-              </ConnectionStatusProvider>
-            </ProtocolDataProvider>
-          </Web3ContextProvider>
+          <Web3ReactProvider getLibrary={getWeb3Library}>
+            <Web3ContextProvider>
+              <ProtocolDataProvider>
+                <ConnectionStatusProvider>
+                  <AppGlobalStyles>
+                    <BackgroundDataProvider>
+                      <AppDataProvider>
+                        <TxBuilderProvider>
+                          <AppGlobalStyles>
+                            <ModalContextProvider>
+                              <GasStationProvider>
+                                {getLayout(<Component {...pageProps} />)}
+                                <SupplyModal />
+                                <WithdrawModal />
+                                <BorrowModal />
+                                <RepayModal />
+                                <CollateralChangeModal />
+                                <RateSwitchModal />
+                                <ClaimRewardsModal />
+                                <EmodeModal />
+                              </GasStationProvider>
+                            </ModalContextProvider>
+                          </AppGlobalStyles>
+                        </TxBuilderProvider>
+                      </AppDataProvider>
+                    </BackgroundDataProvider>
+                  </AppGlobalStyles>
+                </ConnectionStatusProvider>
+              </ProtocolDataProvider>
+            </Web3ContextProvider>
+          </Web3ReactProvider>
         </LanguageProvider>
       </ApolloProvider>
     </CacheProvider>

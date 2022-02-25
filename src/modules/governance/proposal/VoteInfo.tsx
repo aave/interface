@@ -2,6 +2,7 @@ import { ProposalState } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { useGovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -9,7 +10,7 @@ import { CustomProposalType } from 'src/static-build/proposal';
 
 export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType) {
   const { openGovVote } = useModalContext();
-  const { currentAccount, connectWallet } = useWeb3Context();
+  const { currentAccount } = useWeb3Context();
 
   const [votedPower, setVotedPower] = useState<string>();
   const [support, setSupport] = useState<boolean>();
@@ -96,11 +97,7 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
             </Button>
           </>
         )}
-        {!currentAccount && (
-          <Button variant="gradient" onClick={connectWallet}>
-            <Trans>Connect wallet</Trans>
-          </Button>
-        )}
+        {!currentAccount && <ConnectWalletButton />}
       </Typography>
     </>
   );

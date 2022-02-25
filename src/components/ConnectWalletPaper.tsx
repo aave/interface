@@ -1,8 +1,7 @@
 import { Trans } from '@lingui/macro';
-import { Button, CircularProgress, Paper, PaperProps, Typography } from '@mui/material';
+import { CircularProgress, Paper, PaperProps, Typography } from '@mui/material';
 import { ReactNode } from 'react';
-
-import { useWeb3Context } from '../libs/hooks/useWeb3Context';
+import { ConnectWalletButton } from './WalletConnection/ConnectWalletButton';
 
 interface ConnectWalletPaperProps extends PaperProps {
   loading?: boolean;
@@ -15,8 +14,7 @@ export const ConnectWalletPaper = ({
   sx,
   ...rest
 }: ConnectWalletPaperProps) => {
-  const { connectWallet } = useWeb3Context();
-
+  console.log('loading:: ', loading)
   return (
     <Paper
       {...rest}
@@ -46,9 +44,7 @@ export const ConnectWalletPaper = ({
                 </Trans>
               )}
             </Typography>
-            <Button variant="gradient" onClick={connectWallet}>
-              <Trans>Connect wallet</Trans>
-            </Button>
+            <ConnectWalletButton />
           </>
         )}
       </>

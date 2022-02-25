@@ -231,7 +231,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           provider,
           connected,
           loading,
-          web3Modal,
+          // web3Modal,
           chainId,
           switchNetwork,
           getTxError,
