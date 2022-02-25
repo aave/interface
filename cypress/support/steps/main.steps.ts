@@ -307,8 +307,7 @@ export const changeBorrowType = (
       doSwitchToDashboardBorrowView();
       getDashBoardBorrowRow({ assetName: _shortName, apyType })
         .find('[data-cy="apyButton"]')
-        .click()
-        .wait(2000);
+        .click();
     });
     it(`Change the ${_shortName} borrowing apr type from ${apyType} to ${newAPY}`, () => {
       cy.get(`.MuiPaper-root > .MuiList-root`)
@@ -410,7 +409,7 @@ export const changeCollateral = (
       getDashBoardDepositRow({ assetName: _shortName, isCollateralType })
         .find('.MuiSwitch-input ')
         .click();
-      cy.get('[data-cy=Modal]').should('be.visible').wait(1000);
+      cy.get('[data-cy=Modal]').should('be.visible');
       if (isCollateralType) {
         cy.get(
           `[data-cy=Modal] h2:contains('Disable ${

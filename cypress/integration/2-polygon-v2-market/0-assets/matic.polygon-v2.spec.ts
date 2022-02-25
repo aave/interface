@@ -19,7 +19,7 @@ const testData = {
   testCases: {
     deposit: {
       asset: assets.polygonMarket.MATIC,
-      amount: 0.09,
+      amount: 1.09,
       hasApproval: true,
     },
     collateral: {
