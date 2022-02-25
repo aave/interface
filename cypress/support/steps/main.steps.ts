@@ -296,7 +296,7 @@ export const changeBorrowType = (
     it(`Open change apy popup`, () => {
       doSwitchToDashboardBorrowView();
       getDashBoardBorrowRow({ assetName: _shortName, apyType })
-        .find('[data-cy="apyButton"]')
+        .find(`[data-cy="apyButton_${apyType}"]`)
         .click();
     });
     it(`Change the ${_shortName} borrowing apr type from ${apyType} to ${newAPY}`, () => {

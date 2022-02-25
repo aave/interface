@@ -1,7 +1,7 @@
 {
   "supportFile": "cypress/support/index.ts",
   "viewportWidth": 1200,
-  "viewportHeight": 800,
+  "viewportHeight": 1280,
   "defaultCommandTimeout": 40000,
   "pageLoadTimeout": 120000,
   "video": true,
