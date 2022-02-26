@@ -206,41 +206,43 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
       )}
 
-      <Box sx={{ mb: 6 }}>
-        <Typography mb={1} color="text.secondary">
-          <Trans>Repay with</Trans>
-        </Typography>
+      {currentMarketData.enabledFeatures?.collateralRepay && (
+        <Box sx={{ mb: 6 }}>
+          <Typography mb={1} color="text.secondary">
+            <Trans>Repay with</Trans>
+          </Typography>
 
-        <ToggleButtonGroup
-          color="primary"
-          value={repayWithCollateral}
-          exclusive
-          onChange={(_, value) => setRepayWithCollateral(value)}
-          sx={{ width: '100%' }}
-        >
-          <ToggleButton value={repayWithCollateral} disabled={repayWithCollateral}>
-            {!repayWithCollateral && (
-              <SvgIcon sx={{ fontSize: '20px', mr: '2.5px' }}>
-                <CheckIcon />
-              </SvgIcon>
-            )}
-            <Typography variant="subheader1" sx={{ mr: 1 }}>
-              <Trans>Wallet balance</Trans>
-            </Typography>
-          </ToggleButton>
+          <ToggleButtonGroup
+            color="primary"
+            value={repayWithCollateral}
+            exclusive
+            onChange={(_, value) => setRepayWithCollateral(value)}
+            sx={{ width: '100%' }}
+          >
+            <ToggleButton value={repayWithCollateral} disabled={repayWithCollateral}>
+              {!repayWithCollateral && (
+                <SvgIcon sx={{ fontSize: '20px', mr: '2.5px' }}>
+                  <CheckIcon />
+                </SvgIcon>
+              )}
+              <Typography variant="subheader1" sx={{ mr: 1 }}>
+                <Trans>Wallet balance</Trans>
+              </Typography>
+            </ToggleButton>
 
-          <ToggleButton value={!repayWithCollateral} disabled={!repayWithCollateral}>
-            {repayWithCollateral && (
-              <SvgIcon sx={{ fontSize: '20px', mr: '2.5px' }}>
-                <CheckIcon />
-              </SvgIcon>
-            )}
-            <Typography variant="subheader1" sx={{ mr: 1 }}>
-              <Trans>Collateral</Trans>
-            </Typography>
-          </ToggleButton>
-        </ToggleButtonGroup>
-      </Box>
+            <ToggleButton value={!repayWithCollateral} disabled={!repayWithCollateral}>
+              {repayWithCollateral && (
+                <SvgIcon sx={{ fontSize: '20px', mr: '2.5px' }}>
+                  <CheckIcon />
+                </SvgIcon>
+              )}
+              <Typography variant="subheader1" sx={{ mr: 1 }}>
+                <Trans>Collateral</Trans>
+              </Typography>
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Box>
+      )}
 
       <AssetInput
         value={amount}

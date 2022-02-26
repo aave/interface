@@ -75,11 +75,11 @@ export function fetchIconSymbolAndName({
     return { iconSymbol: 'GUNI_USDC_USDT', name: 'G-UNI USDC/USDT', symbol };
   }
   // avalanche symbols have .e extensions
-  if (/\.e/.test(symbol)) {
+  if (/\.e$/.test(symbol)) {
     const rawSymbol = symbol.replace('.e', '');
     return {
       iconSymbol: rawSymbol || symbol,
-      name: `${NAME_MAP[rawSymbol] || rawSymbol} (${symbol})`,
+      name: NAME_MAP[rawSymbol] || rawSymbol,
       symbol,
     };
   }

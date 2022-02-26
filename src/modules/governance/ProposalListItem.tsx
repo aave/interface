@@ -61,7 +61,7 @@ export function ProposalListItem({
         sx={{
           flexGrow: 1,
           pl: { xs: 0, lg: 4 },
-          mt: { md: 7, lg: 0 },
+          mt: { xs: 7, lg: 0 },
         }}
       >
         <VoteBar yae percent={yaePercent} votes={yaeVotes} sx={{ mb: 4 }} />
