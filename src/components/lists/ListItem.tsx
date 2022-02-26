@@ -1,4 +1,4 @@
-import { Box, BoxProps, Divider } from '@mui/material';
+import { Box, BoxProps } from '@mui/material';
 import { ReactNode } from 'react';
 
 interface ListItemProps extends BoxProps {

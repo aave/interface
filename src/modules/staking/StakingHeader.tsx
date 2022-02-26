@@ -1,6 +1,5 @@
-import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 
