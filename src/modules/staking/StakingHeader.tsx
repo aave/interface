@@ -26,17 +26,14 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
     <TopInfoPanel
       titleComponent={
         <Box mb={4}>
-          <Box sx={{ display: 'flex', alignItems: 'flex-start', mb: 4 }}>
-            <Typography variant={downToXSM ? 'h2' : upToLG ? 'display1' : 'h1'} sx={{ mr: 3 }}>
-              <Trans>Stake</Trans>
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
+            <img src={`/aave.svg`} width="32px" height="32px" alt="" />
+            <Typography
+              variant={downToXSM ? 'h2' : upToLG ? 'display1' : 'h1'}
+              sx={{ ml: 2, mr: 3 }}
+            >
+              <Trans>Staking</Trans>
             </Typography>
-
-            <Button variant="surface" size="small" sx={{ minWidth: 'unset' }}>
-              FAQ
-              <SvgIcon sx={{ fontSize: '12px', ml: 0.5 }}>
-                <ExternalLinkIcon />
-              </SvgIcon>
-            </Button>
           </Box>
 
           <Typography sx={{ color: '#8E92A3', maxWidth: '824px' }}>
