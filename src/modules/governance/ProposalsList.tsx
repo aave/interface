@@ -76,7 +76,16 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
   usePolling(updatePendingProposals, 10000, false, [proposals.length]);
   return (
     <div>
-      <Box sx={{ px: 6, py: 8, display: 'flex', alignItems: 'center' }}>
+      <Box
+        sx={{
+          px: 6,
+          py: 8,
+          display: 'flex',
+          alignItems: 'center',
+          borderBottom: '1px solid',
+          borderColor: 'divider',
+        }}
+      >
         <Typography variant="h3" sx={{ flexGrow: 1 }}>
           <Trans>Proposals</Trans>
         </Typography>
