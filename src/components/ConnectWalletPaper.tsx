@@ -4,6 +4,8 @@ import { ReactNode } from 'react';
 
 import { useWeb3Context } from '../libs/hooks/useWeb3Context';
 
+import LoveGhost from '/public/loveGhost.svg';
+
 interface ConnectWalletPaperProps extends PaperProps {
   loading?: boolean;
   description?: ReactNode;
@@ -31,6 +33,7 @@ export const ConnectWalletPaper = ({
         ...sx,
       }}
     >
+      <LoveGhost />
       <>
         {loading ? (
           <CircularProgress />
