@@ -284,12 +284,14 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
           </Typography>
         )}
 
-      <BorrowModeSwitch
-        interestRateMode={interestRateMode}
-        setInterestRateMode={setInterestRateMode}
-        variableRate={poolReserve.variableBorrowAPY}
-        stableRate={poolReserve.stableBorrowAPY}
-      />
+      {poolReserve.stableBorrowRateEnabled && (
+        <BorrowModeSwitch
+          interestRateMode={interestRateMode}
+          setInterestRateMode={setInterestRateMode}
+          variableRate={poolReserve.variableBorrowAPY}
+          stableRate={poolReserve.stableBorrowAPY}
+        />
+      )}
 
       <TxModalDetails gasLimit={gasLimit}>
         {poolReserve.isWrappedBaseAsset && (

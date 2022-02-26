@@ -78,7 +78,7 @@ export default function AssetsList() {
         <VariableAPYTooltip
           text={<Trans>Borrow APY, variable</Trans>}
           key="APY_list_variable_type"
-          variant="description"
+          variant="subheader2"
         />
       ),
       sortKey: 'variableBorrowAPY',
@@ -88,7 +88,7 @@ export default function AssetsList() {
         <StableAPYTooltip
           text={<Trans>Borrow APY, stable</Trans>}
           key="APY_list_stable_type"
-          variant="description"
+          variant="subheader2"
         />
       ),
       sortKey: 'stableBorrowAPY',

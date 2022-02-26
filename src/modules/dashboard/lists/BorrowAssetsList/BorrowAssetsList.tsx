@@ -90,12 +90,12 @@ export const BorrowAssetsList = () => {
     <VariableAPYTooltip
       text={<Trans>APY, variable</Trans>}
       key="APY_dash_variable_ type"
-      variant="description"
+      variant="subheader2"
     />,
     <StableAPYTooltip
       text={<Trans>APY, stable</Trans>}
       key="APY_dash_stable_ type"
-      variant="description"
+      variant="subheader2"
     />,
   ];
 
