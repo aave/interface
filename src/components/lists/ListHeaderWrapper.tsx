@@ -8,7 +8,23 @@ interface ListHeaderWrapperProps extends BoxProps {
 
 export const ListHeaderWrapper = ({ px = 4, children, ...rest }: ListHeaderWrapperProps) => {
   return (
-    <Box {...rest} sx={{ display: 'flex', alignItems: 'flex-end', px, pt: 4, pb: 1, ...rest.sx }}>
+    <Box
+      {...rest}
+      sx={{
+        display: 'flex',
+        alignItems: 'flex-end',
+        px,
+        pt: 4,
+        pb: 1,
+        position: 'sticky',
+        top: 0,
+        zIndex: 100,
+        bgcolor: 'background.paper',
+        borderBottom: '1px solid',
+        borderColor: 'divider',
+        ...rest.sx,
+      }}
+    >
       {children}
     </Box>
   );

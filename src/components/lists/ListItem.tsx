@@ -10,20 +10,22 @@ interface ListItemProps extends BoxProps {
 
 export const ListItem = ({ children, minHeight = 71, px = 4, button, ...rest }: ListItemProps) => {
   return (
-    <Box {...rest}>
-      <Divider />
-
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          minHeight,
-          px,
-          ...(button ? { '&:hover': { bgcolor: 'action.hover' } } : {}),
-        }}
-      >
-        {children}
-      </Box>
+    <Box
+      {...rest}
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        minHeight,
+        px,
+        ...(button ? { '&:hover': { bgcolor: 'action.hover' } } : {}),
+        '&:not(:last-child)': {
+          borderBottom: '1px solid',
+          borderColor: 'divider',
+        },
+        ...rest.sx,
+      }}
+    >
+      {children}
     </Box>
   );
 };

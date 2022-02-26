@@ -12,13 +12,7 @@ interface ListHeaderProps {
 
 export const ListHeader = ({ head }: ListHeaderProps) => {
   return (
-    <ListHeaderWrapper
-      sx={{
-        position: 'sticky',
-        top: 0,
-        zIndex: 100,
-      }}
-    >
+    <ListHeaderWrapper>
       <ListColumn maxWidth={160} isRow>
         <ListHeaderTitle>
           <Trans>Assets</Trans>
