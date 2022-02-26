@@ -17800,9 +17800,45 @@
         "transactionHash": "0xd47ab2b7a39b20ec1939239245e247fbcea6bdb553ace07c7779660c29fb8491",
         "timestamp": 1645740905,
         "blockNumber": 14271467
+      },
+      {
+        "proposalId": 61,
+        "voter": "0x073F57D81ff5c18e933161Ce157b1A027E8061c6",
+        "support": true,
+        "votingPower": 66.8596289898326,
+        "transactionHash": "0x5ca0e8c51b44afeb99270d400d7e0f5006ab28ea881b5932190f6b44e0414c3b",
+        "timestamp": 1645749092,
+        "blockNumber": 14272105
+      },
+      {
+        "proposalId": 61,
+        "voter": "0x71F12a5b0E60d2Ff8A87FD34E7dcff3c10c914b0",
+        "support": true,
+        "votingPower": 433.4481209513788,
+        "transactionHash": "0x4758a464e0d78c1654da22ffa299a5f3da0acc905390ebba24a3ef6420a1552e",
+        "timestamp": 1645753474,
+        "blockNumber": 14272392
+      },
+      {
+        "proposalId": 61,
+        "voter": "0xdf67361193D52EE42CB759eb98Ce2c7978DD440E",
+        "support": true,
+        "votingPower": 52.16280286005206,
+        "transactionHash": "0x592d619ac975911068091c5aa709922d95138514213f2e6208dbe700a2cd23ca",
+        "timestamp": 1645771280,
+        "blockNumber": 14273731
+      },
+      {
+        "proposalId": 61,
+        "voter": "0xdD709cAE362972cb3B92DCeaD77127f7b8D58202",
+        "support": true,
+        "votingPower": 135384.57247022813,
+        "transactionHash": "0x518ccc80fb8861b8eee45471a037fc306cbcbc6e36880401d114f46285adfdaa",
+        "timestamp": 1645785555,
+        "blockNumber": 14274749
       }
     ],
-    "finished": false
+    "finished": true
   },
   {
     "votes": [
@@ -17904,6 +17940,78 @@
         "transactionHash": "0xfc8f101a31cfddd59ff96232ac108c1218be3c40848c1e5f543069474ee355cd",
         "timestamp": 1645726418,
         "blockNumber": 14270356
+      },
+      {
+        "proposalId": 62,
+        "voter": "0xdf67361193D52EE42CB759eb98Ce2c7978DD440E",
+        "support": true,
+        "votingPower": 52.16280286005206,
+        "transactionHash": "0xff0217f5c82527fe19ab582a4697d6180386dea64c2cd53998e2d842f13fb7a0",
+        "timestamp": 1645771401,
+        "blockNumber": 14273737
+      },
+      {
+        "proposalId": 62,
+        "voter": "0x5a756d9C7cAA740E0342f755fa8Ad32e6F83726b",
+        "support": true,
+        "votingPower": 0.5313874114436111,
+        "transactionHash": "0xcf05c4b9fd47b2415ac8eae9e418f2d7b9e828920e6489b8087e6d6c707ed07a",
+        "timestamp": 1645775545,
+        "blockNumber": 14274043
+      },
+      {
+        "proposalId": 62,
+        "voter": "0xdD709cAE362972cb3B92DCeaD77127f7b8D58202",
+        "support": true,
+        "votingPower": 135384.57247022813,
+        "transactionHash": "0xcb15ec84350aa164fa1f00903fb94b75266b150c12d7afb4df9a961f71fb7c42",
+        "timestamp": 1645784563,
+        "blockNumber": 14274679
+      },
+      {
+        "proposalId": 62,
+        "voter": "0x7302C7e150aE4D035cf9e71F09580d59CE61fa54",
+        "support": true,
+        "votingPower": 1,
+        "transactionHash": "0x151d5316416a9bb092f166fe087600dd95634713cd790def623fa31da8bff12b",
+        "timestamp": 1645787413,
+        "blockNumber": 14274879
+      },
+      {
+        "proposalId": 62,
+        "voter": "0x8b4a8C1F32761D820D12015b293d24A2Ec1B47e9",
+        "support": true,
+        "votingPower": 115.35643259676218,
+        "transactionHash": "0xb86ba9d44bd10401beb1c8c231e604c312e8be3573581c307e24a690302f64d5",
+        "timestamp": 1645796816,
+        "blockNumber": 14275592
+      },
+      {
+        "proposalId": 62,
+        "voter": "0x5DE64238dA2d7A5F1949C1bb1958273C22c5EE01",
+        "support": true,
+        "votingPower": 12.858826205944593,
+        "transactionHash": "0x04b088a0b0a45a562dc03f85a68d400a138aa6a4a45bd4a712e50be82e892f0d",
+        "timestamp": 1645800339,
+        "blockNumber": 14275882
+      },
+      {
+        "proposalId": 62,
+        "voter": "0xA519a7cE7B24333055781133B13532AEabfAC81b",
+        "support": true,
+        "votingPower": 16.730843355897935,
+        "transactionHash": "0xf2699fb1e0c747afde67804b6337688818a905d91313e40cb110f27b57eb40bd",
+        "timestamp": 1645814978,
+        "blockNumber": 14276972
+      },
+      {
+        "proposalId": 62,
+        "voter": "0x62a43123FE71f9764f26554b3F5017627996816a",
+        "support": true,
+        "votingPower": 30.669202,
+        "transactionHash": "0xcf605fb7810e47c08c33665b7b2e54e62d21d5a6c6fb5b89ccd62c3276b0e5bf",
+        "timestamp": 1645818542,
+        "blockNumber": 14277242
       }
     ],
     "finished": false

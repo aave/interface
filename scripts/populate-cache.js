@@ -58,10 +58,6 @@ var __toCommonJS = /* @__PURE__ */ ((cache) => {
     return cache && cache.get(module2) || (temp = __reExport(__markAsModule({}), module2, 1), cache && cache.set(module2, temp), temp);
   };
 })(typeof WeakMap !== "undefined" ? /* @__PURE__ */ new WeakMap() : 0);
-var __publicField = (obj, key, value) => {
-  __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
-  return value;
-};
 var __async = (__this, __arguments, generator) => {
   return new Promise((resolve, reject) => {
     var fulfilled = (value) => {
@@ -56888,7 +56884,7 @@ var import_contract_helpers6 = __toESM(require_cjs());
 var LowWithLodash = class extends LowSync {
   constructor() {
     super(...arguments);
-    __publicField(this, "chain", import_lodash.default.chain(this).get("data"));
+    this.chain = import_lodash.default.chain(this).get("data");
   }
 };
 var file = (0, import_path2.join)(process.cwd(), "src/static-build", "ipfsFiles.json");
@@ -56949,7 +56945,7 @@ var isProposalStateImmutable = (proposal) => ![
 var LowWithLodash2 = class extends LowSync {
   constructor() {
     super(...arguments);
-    __publicField(this, "chain", import_lodash2.default.chain(this).get("data"));
+    this.chain = import_lodash2.default.chain(this).get("data");
   }
 };
 var file2 = (0, import_path3.join)(process.cwd(), "src/static-build", "proposals.json");
@@ -57015,7 +57011,7 @@ var getVotes = (startBlock, endBlock, currentBlock) => __async(void 0, null, fun
 var LowWithLodash3 = class extends LowSync {
   constructor() {
     super(...arguments);
-    __publicField(this, "chain", import_lodash3.default.chain(this).get("data"));
+    this.chain = import_lodash3.default.chain(this).get("data");
   }
 };
 var file3 = (0, import_path4.join)(process.cwd(), "src/static-build", "votes.json");
