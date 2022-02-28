@@ -8,6 +8,10 @@ import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvider';
 
+import TotalBorrowIcon from '../../../public/icons/markets/total-borrow-indicator.svg';
+import TotalSupplyIcon from '../../../public/icons/markets/total-supply-indicator.svg';
+import PieIcon from '../../../public/icons/markets/pie-icon.svg';
+
 export const MarketsTopPanel = () => {
   const { reserves, loading } = useAppDataContext();
 
@@ -32,7 +36,11 @@ export const MarketsTopPanel = () => {
 
   return (
     <TopInfoPanel pageTitle={<Trans>Markets</Trans>} withMarketSwitcher>
-      <TopInfoPanelItem title={<Trans>Total market size</Trans>} loading={loading}>
+      <TopInfoPanelItem
+        icon={<PieIcon />}
+        title={<Trans>Total market size</Trans>}
+        loading={loading}
+      >
         <FormattedNumber
           value={aggregatedStats.totalLiquidity.toString()}
           symbol="USD"
@@ -43,7 +51,11 @@ export const MarketsTopPanel = () => {
           symbolsVariant={symbolsVariant}
         />
       </TopInfoPanelItem>
-      <TopInfoPanelItem title={<Trans>Total available</Trans>} loading={loading}>
+      <TopInfoPanelItem
+        icon={<TotalSupplyIcon />}
+        title={<Trans>Total available</Trans>}
+        loading={loading}
+      >
         <FormattedNumber
           value={aggregatedStats.totalLiquidity.minus(aggregatedStats.totalDebt).toString()}
           symbol="USD"
@@ -54,7 +66,11 @@ export const MarketsTopPanel = () => {
           symbolsVariant={symbolsVariant}
         />
       </TopInfoPanelItem>
-      <TopInfoPanelItem title={<Trans>Total borrows</Trans>} loading={loading}>
+      <TopInfoPanelItem
+        icon={<TotalBorrowIcon />}
+        title={<Trans>Total borrows</Trans>}
+        loading={loading}
+      >
         <FormattedNumber
           value={aggregatedStats.totalDebt.toString()}
           symbol="USD"

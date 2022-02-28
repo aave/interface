@@ -15,6 +15,11 @@ import {
   useAppDataContext,
 } from '../../hooks/app-data-provider/useAppDataProvider';
 
+import CubeIcon from '../../../public/icons/markets/cube-icon.svg';
+import PieIcon from '../../../public/icons/markets/pie-icon.svg';
+import UptrendIcon from '../../../public/icons/markets/uptrend-icon.svg';
+import DollarIcon from '../../../public/icons/markets/dollar-icon.svg';
+
 interface ReserveTopDetailsProps {
   underlyingAsset: string;
 }
@@ -116,7 +121,7 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
         </TopInfoPanelItem>
       )}
 
-      <TopInfoPanelItem title={<Trans>Reserve Size</Trans>} loading={loading}>
+      <TopInfoPanelItem icon={<CubeIcon />} title={<Trans>Reserve Size</Trans>} loading={loading}>
         <FormattedNumber
           value={poolReserve?.totalLiquidityUSD}
           symbol="USD"
@@ -126,7 +131,11 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
         />
       </TopInfoPanelItem>
 
-      <TopInfoPanelItem title={<Trans>Available liquidity</Trans>} loading={loading}>
+      <TopInfoPanelItem
+        icon={<PieIcon />}
+        title={<Trans>Available liquidity</Trans>}
+        loading={loading}
+      >
         <FormattedNumber
           value={poolReserve?.availableLiquidityUSD}
           symbol="USD"
@@ -136,7 +145,11 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
         />
       </TopInfoPanelItem>
 
-      <TopInfoPanelItem title={<Trans>Utilization Rate</Trans>} loading={loading}>
+      <TopInfoPanelItem
+        icon={<UptrendIcon />}
+        title={<Trans>Utilization Rate</Trans>}
+        loading={loading}
+      >
         <FormattedNumber
           value={poolReserve?.utilizationRate}
           percent
@@ -147,6 +160,7 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
       </TopInfoPanelItem>
 
       <TopInfoPanelItem
+        icon={<DollarIcon />}
         title={<Trans>Oracle price</Trans>}
         titleIcon={
           loading ? (
