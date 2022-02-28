@@ -44,7 +44,6 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
 
   const fetchVotingPower = async () => {
     try {
-      console.log(startBlock, currentAccount, strategy);
       const power = await governanceService.getVotingPowerAt({
         user: currentAccount,
         block: startBlock,
