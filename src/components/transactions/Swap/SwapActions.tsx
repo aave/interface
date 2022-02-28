@@ -72,7 +72,7 @@ export const SwapActions = ({
       return lendingPool.swapCollateral({
         fromAsset: poolReserve.underlyingAsset,
         toAsset: targetReserve.underlyingAsset,
-        swapAll: amountToSwap === '-1',
+        swapAll: true, //amountToSwap === '-1',
         fromAToken: poolReserve.aTokenAddress,
         fromAmount: amountToSwap,
         minToAmount: amountToReceive,
@@ -100,7 +100,7 @@ export const SwapActions = ({
       handleAction={action}
       requiresAmount
       amount={amountToSwap}
-      handleApproval={() => approval(amountToSwap, poolReserve.underlyingAsset)}
+      handleApproval={() => approval(amountToSwap, poolReserve.aTokenAddress)}
       requiresApproval={true}
       actionText={<Trans>Swap</Trans>}
       actionInProgressText={<Trans>Swapping</Trans>}

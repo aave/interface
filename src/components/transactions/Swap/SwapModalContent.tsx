@@ -280,7 +280,11 @@ export const SwapModalContent = ({ underlyingAsset, handleClose }: SupplyProps) 
         sx={{ mt: '48px' }}
         poolReserve={poolReserve}
         amountToSwap={amount}
-        amountToReceive={outputAmount}
+        amountToReceive={
+          new BigNumber(outputAmount)
+            .multipliedBy(0.99)
+            .toString() /** multiply by actual slippage */
+        }
         isWrongNetwork={isWrongNetwork}
         targetReserve={swapTarget}
         symbol={poolReserve.symbol}
