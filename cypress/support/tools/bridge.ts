@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
@@ -47,7 +49,7 @@ export class CustomizedBridge extends Eip1193Bridge {
       const address = await this.signer.getAddress();
       if (address !== ethers.utils.getAddress(params[1])) {
         throw new Error(
-            `personal_sign account mismatch or account not found: ${params[1] as string}`,
+          `personal_sign account mismatch or account not found: ${params[1] as string}`
         );
       }
       return this.signer.signMessage(utils.arrayify(params[0]));
@@ -68,9 +70,9 @@ export class CustomizedBridge extends Eip1193Bridge {
       delete parsed.types.EIP712Domain;
       // not sure why _signTypedData exist
       const tx = await (this.signer as any)._signTypedData(
-          parsed.domain,
-          parsed.types,
-          parsed.message,
+        parsed.domain,
+        parsed.types,
+        parsed.message
       );
       return tx;
     }
