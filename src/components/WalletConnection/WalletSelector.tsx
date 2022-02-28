@@ -66,8 +66,6 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
     }
   };
 
-  console.log(getWalletIcon(walletType));
-
   return (
     <Button
       variant="outlined"
