@@ -129,7 +129,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                     target="__BLANK"
                     href={`${governanceConfig?.ipfsGateway}/${ipfs.ipfsHash}`}
                     startIcon={
-                      <SvgIcon>
+                      <SvgIcon sx={{ '& path': { strokeWidth: '1' } }}>
                         <DownloadIcon />
                       </SvgIcon>
                     }

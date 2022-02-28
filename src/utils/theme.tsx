@@ -3,8 +3,10 @@ import {
   ExclamationCircleIcon,
   ExclamationIcon,
   InformationCircleIcon,
+  ChevronDownIcon,
 } from '@heroicons/react/outline';
 import { SvgIcon, Theme, ThemeOptions } from '@mui/material';
+
 import { createTheme } from '@mui/material/styles';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -806,6 +808,13 @@ export function getThemedComponents(theme: Theme) {
         },
       },
       MuiSelect: {
+        defaultProps: {
+          IconComponent: (props) => (
+            <SvgIcon sx={{ fontSize: '16px' }} {...props}>
+              <ChevronDownIcon />
+            </SvgIcon>
+          ),
+        },
         styleOverrides: {
           outlined: {
             backgroundColor: theme.palette.background.surface,

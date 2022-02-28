@@ -5,9 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
 import * as React from 'react';
-import { DelegationToken } from 'src/ui-config/governanceConfig';
 import { TokenIcon } from '../../primitives/TokenIcon';
-import { ErrorType } from './GovDelegationModalContent';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -21,76 +19,71 @@ const MenuProps = {
   },
 };
 
+export type DelegationToken = { address: string; name: string; amount: string; symbol: string };
+
 export type DelegationTokenSelectorProps = {
-  delegationTokens: Record<string, DelegationToken>;
-  setDelegationToken: React.Dispatch<React.SetStateAction<DelegationToken>>;
-  delegationToken: DelegationToken;
-  blockingError: ErrorType | undefined;
+  delegationTokens: DelegationToken[];
+  setDelegationToken: (token: string) => void;
+  delegationTokenAddress: string;
 };
 
 export const DelegationTokenSelector = ({
   delegationTokens,
   setDelegationToken,
-  delegationToken,
-  blockingError,
+  delegationTokenAddress,
 }: DelegationTokenSelectorProps) => {
-  // render error messages
-  const handleError = () => {
-    switch (blockingError) {
-      case ErrorType.NOT_ENOUGH_BALANCE:
-        return (
-          // TODO: fix text
-          <Typography>
-            <Trans>Not enough balance. Try to delegate another token</Trans>
-          </Typography>
-        );
-      default:
-        return null;
-    }
-  };
   return (
-    <div>
-      <FormControl sx={{ m: 1, width: 300 }}>
-        <Select
-          value={delegationToken.symbol}
-          onChange={(e) => setDelegationToken(delegationTokens[e.target.value])}
-          input={<OutlinedInput />}
-          MenuProps={MenuProps}
-          native={false}
-          error={blockingError !== undefined}
-          renderValue={(selectedToken) => {
+    <FormControl variant="standard" fullWidth sx={{ mb: 6 }}>
+      <Select
+        fullWidth
+        value={delegationTokenAddress}
+        onChange={(e) => setDelegationToken(e.target.value)}
+        input={<OutlinedInput />}
+        MenuProps={MenuProps}
+        native={false}
+        displayEmpty
+        sx={{
+          '& .MuiSvgIcon-root': {
+            right: '12px',
+          },
+        }}
+        renderValue={(selectedToken) => {
+          if (!selectedToken)
             return (
-              <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                <TokenIcon symbol={selectedToken} sx={{ mx: '4px' }} />
-                <Typography>{selectedToken}</Typography>
+              <Box sx={{ display: 'flex', flexDirection: 'row', pr: '12px' }}>
+                <Typography variant="buttonM">Select ...</Typography>
               </Box>
             );
-          }}
-        >
-          {Object.keys(delegationTokens)
-            // .filter((tokenKey) => delegationTokens[tokenKey].symbol !== delegationToken?.symbol)
-            .map((tokenKey) => (
-              <MenuItem
-                key={`delegation-token-${delegationTokens[tokenKey].symbol}`}
-                value={delegationTokens[tokenKey].symbol}
-              >
-                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                  <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                    <TokenIcon symbol={delegationTokens[tokenKey].symbol} sx={{ mx: '4px' }} />
-                    <Typography>{delegationTokens[tokenKey].symbol}</Typography>
-                  </Box>
-                </Box>
-              </MenuItem>
-            ))}
-        </Select>
-        {blockingError !== undefined && (
-          <FormHelperText>
-            <Typography variant="helperText" sx={{ color: 'red' }}>
-              {handleError()}
-            </Typography>
-          </FormHelperText>
-        )}
-      </FormControl>
-    </div>
+          const token = delegationTokens.find(
+            (token) => token.address === delegationTokenAddress
+          ) as DelegationToken;
+          return (
+            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', pr: '12px' }}>
+              <TokenIcon symbol={token.symbol} />
+              <Typography variant="buttonM" sx={{ ml: 2, flexGrow: 1 }}>
+                {token.name}
+              </Typography>
+              <Typography variant="buttonM">{token.amount}</Typography>
+            </Box>
+          );
+        }}
+      >
+        {delegationTokens.map((token) => (
+          <MenuItem
+            key={`delegation-token-${token.address}`}
+            value={token.address}
+            disabled={token.amount === '0'}
+          >
+            <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+              <TokenIcon symbol={token.symbol} sx={{ mx: '4px' }} />
+              <Typography variant="buttonM" sx={{ ml: 2, flexGrow: 1 }}>
+                {token.name}
+              </Typography>
+              <Typography variant="buttonM">{token.amount}</Typography>
+            </Box>
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 };

@@ -52,11 +52,6 @@ export const EmodeSelect = ({
           '&.EmodeSelect .MuiSelect-icon': { color: 'text.primary' },
         }}
         native={false}
-        IconComponent={(props) => (
-          <SvgIcon fontSize="small" {...props}>
-            <ChevronDownIcon />
-          </SvgIcon>
-        )}
         renderValue={(emode) => {
           if (emode === 0) {
             return (

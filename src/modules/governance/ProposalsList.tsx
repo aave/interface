@@ -101,17 +101,7 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
         <Typography sx={{ mx: 4 }}>
           <Trans>Filter</Trans>
         </Typography>
-        <Select
-          id="filter"
-          value={proposalFilter}
-          sx={{ minWidth: 140 }}
-          onChange={handleChange}
-          IconComponent={(props) => (
-            <SvgIcon {...props}>
-              <ChevronDownIcon />
-            </SvgIcon>
-          )}
-        >
+        <Select id="filter" value={proposalFilter} sx={{ minWidth: 140 }} onChange={handleChange}>
           <MenuItem value="all">
             <Trans>All proposals</Trans>
           </MenuItem>
