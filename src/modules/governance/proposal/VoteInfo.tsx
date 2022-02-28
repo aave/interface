@@ -116,6 +116,7 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
           <Button
             color="success"
             variant="contained"
+            fullWidth
             onClick={() => openGovVote(id, true, power)}
             disabled={support === true}
           >
@@ -124,8 +125,10 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
           <Button
             color="error"
             variant="contained"
+            fullWidth
             onClick={() => openGovVote(id, false, power)}
             disabled={support === false}
+            sx={{ mt: 2 }}
           >
             <Trans>Vote NAY</Trans>
           </Button>
