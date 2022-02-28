@@ -38,7 +38,7 @@ interface WalletWidgetProps {
 }
 
 export default function WalletWidget({ open, setOpen, headerHeight, md }: WalletWidgetProps) {
-  const { disconnectWallet, currentAccount, connected, chainId, loading, error } = useWeb3Context();
+  const { disconnectWallet, currentAccount, connected, chainId, loading } = useWeb3Context();
 
   const { setWalletModalOpen } = useWalletModalContext();
 

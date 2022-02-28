@@ -16,10 +16,18 @@ import { useWeb3React } from '@web3-react/core';
 import { BigNumber, ethers } from 'ethers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { API_ETH_MOCK_ADDRESS, transactionType } from '@aave/contract-helpers';
-import { ERC20TokenType } from './Web3ContextProvider';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { TorusConnector } from '@web3-react/torus-connector';
+
+export type ERC20TokenType = {
+  address: string;
+  symbol: string;
+  decimals: number;
+  image?: string;
+  aToken?: boolean;
+  aTokenPrefix?: string;
+};
 
 export type Web3Data = {
   connectWallet: (wallet: WalletType) => Promise<void>;
@@ -60,20 +68,20 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   // listener handlers
   const handleAccountsChanged = (accounts: string[]) => {
-    console.log('accountsChanged', accounts);
     if (accounts.length > 0 && selectedWallet) {
       connectWallet(selectedWallet);
     }
   };
-  const handleChainChanged = (chainId: number) => {
-    console.log('chainChanged', chainId);
-    if (selectedWallet) {
-      connectWallet(selectedWallet);
-    }
-  };
 
-  const handleNetworkChanged = (networkId: string) => {
-    console.log('Network changed: ', networkId);
+  // for now we use network changed as it returns the chain string instead of hex
+  // const handleChainChanged = (chainId: number) => {
+  //   console.log('chainChanged', chainId);
+  //   if (selectedWallet) {
+  //     connectWallet(selectedWallet);
+  //   }
+  // };
+
+  const handleNetworkChanged = () => {
     if (selectedWallet) {
       connectWallet(selectedWallet);
     }
@@ -89,6 +97,9 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       localStorage.removeItem('-walletlink:https://www.walletlink.org:session:id');
       localStorage.removeItem('-walletlink:https://www.walletlink.org:session:secret');
       localStorage.removeItem('-walletlink:https://www.walletlink.org:session:linked');
+      localStorage.removeItem('-walletlink:https://www.walletlink.org:AppVersion');
+      localStorage.removeItem('-walletlink:https://www.walletlink.org:Addresses');
+      localStorage.removeItem('-walletlink:https://www.walletlink.org:walletUsername');
     } else if (connector instanceof TorusConnector) {
       localStorage.removeItem('loglevel:torus.js');
       localStorage.removeItem('loglevel:torus-embed');
@@ -105,6 +116,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       await connector.close();
     }
 
+    localStorage.removeItem('walletProvider');
     setSelectedWallet(undefined);
     setLoading(false);
     setDeactivated(true);
@@ -126,7 +138,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         await activate(connector, undefined, true);
         setConnector(connector);
         setSelectedWallet(wallet);
-
+        localStorage.setItem('walletProvider', wallet.toString());
         // connector.on('chainChanged', handleChainChanged);
         connector.on('accountsChanged', handleAccountsChanged);
 
@@ -154,18 +166,25 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   // if it exists and has granted access already
   useEffect(() => {
     if (!active && !deactivated) {
-      const injected = getWallet(WalletType.INJECTED);
-      // @ts-expect-error isAuthorized not in AbstractConnector type. But method is there for
-      // injected provider
-      injected.isAuthorized().then((isAuthorized: boolean) => {
-        if (isAuthorized) {
-          connectWallet(WalletType.INJECTED).catch(() => {
-            setTried(true);
-          });
-        } else {
+      const lastWalletProvider = Number(localStorage.getItem('walletProvider'));
+      if (lastWalletProvider && lastWalletProvider > 0) {
+        connectWallet(lastWalletProvider).catch(() => {
           setTried(true);
-        }
-      });
+        });
+      } else {
+        const injected = getWallet(WalletType.INJECTED);
+        // @ts-expect-error isAuthorized not in AbstractConnector type. But method is there for
+        // injected provider
+        injected.isAuthorized().then((isAuthorized: boolean) => {
+          if (isAuthorized) {
+            connectWallet(WalletType.INJECTED).catch(() => {
+              setTried(true);
+            });
+          } else {
+            setTried(true);
+          }
+        });
+      }
     }
   }, [activate, setTried, active, connectWallet, deactivated]);
 
@@ -175,37 +194,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       setTried(true);
     }
   }, [tried, active]);
-
-  // handle logic to connect in reaction to certain events on
-  // the injected ethereum provider, if it exists
-  // useEffect(() => {
-  //   const { ethereum } = window;
-  //   if (ethereum && ethereum.on && !active && !error && (!tried || !!loading)) {
-  //     // const handleChainChanged = (chainId: number) => {
-  //     //   console.log('chainChanged', chainId);
-  //     //   connectWallet(WalletType.INJECTED);
-  //     // };
-
-  //     // const handleAccountsChanged = (accounts: string[]) => {
-  //     //   console.log('accountsChanged', accounts);
-  //     //   if (accounts.length > 0) {
-  //     //     connectWallet(WalletType.INJECTED);
-  //     //   }
-  //     // };
-
-  //     ethereum.on('chainChanged', handleChainChanged);
-  //     ethereum.on('accountsChanged', handleAccountsChanged);
-
-  //     return () => {
-  //       if (ethereum.removeListener) {
-  //         ethereum.removeListener('chainChanged', handleChainChanged);
-  //         ethereum.removeListener('accountsChanged', handleAccountsChanged);
-  //       }
-  //     };
-  //   }
-
-  //   return undefined;
-  // }, [active, error, activate, connectWallet, loading, tried]);
 
   useEffect(() => {
     const address = localStorage.getItem('mockWalletAddress');
@@ -241,6 +229,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     throw new Error('Error sending transaction. Provider not found');
   };
 
+  // TODO: recheck that it works on all wallets
   const signTxData = async (unsignedData: string): Promise<SignatureLike> => {
     if (provider && currentAccount) {
       const signature: SignatureLike = await provider.send('eth_signTypedData_v4', [
@@ -301,12 +290,13 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   }: ERC20TokenType): Promise<boolean> => {
     // using window.ethereum as looks like its only supported for metamask
     // and didn't manage to make the call with ethersjs
-    if (provider && currentAccount && window && window.ethereum) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const injectedProvider = (window as any).ethereum;
+    if (provider && currentAccount && window && injectedProvider) {
       if (address.toLowerCase() !== API_ETH_MOCK_ADDRESS.toLowerCase()) {
-        await window?.ethereum?.request({
+        await injectedProvider.request({
           method: 'wallet_watchAsset',
           params: {
-            // @ts-expect-error needed
             type: 'ERC20',
             options: {
               address,

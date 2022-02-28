@@ -16,7 +16,6 @@ export enum WalletType {
   FRAME,
 }
 
-const POLLING_INTERVAL = 12000;
 const APP_NAME = 'Aave';
 const APP_LOGO_URL = 'https://aave.com/favicon.ico';
 
@@ -74,9 +73,9 @@ export const getWallet = (
     //   return new SafeAppConnector();
     // }
     case WalletType.FRAME: {
-      // if (chainId !== ChainId.mainnet) {
-      //   throw new UnsupportedChainIdError(chainId, [1]);
-      // }
+      if (chainId !== ChainId.mainnet) {
+        throw new UnsupportedChainIdError(chainId, [1]);
+      }
       return new FrameConnector({ supportedChainIds: [1] });
     }
     default: {
