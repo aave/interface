@@ -2,13 +2,6 @@ import { Alert, Box, Button, Link, SvgIcon, Typography } from '@mui/material';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { WalletType } from 'src/libs/web3-data-provider/WalletOptions';
 import { TxModalTitle } from '../transactions/FlowCommons/TxModalTitle';
-
-import BrowserWalletIcon from '/public/icons/wallets/browserWallet.svg';
-import TorusIcon from '/public/icons/wallets/torus.svg';
-import WalletConnectIcon from '/public/icons/wallets/walletConnect.svg';
-import CoinbaseIcon from '/public/icons/wallets/coinbase.svg';
-import FrameIcon from '/public/icons/wallets/frame.svg';
-
 import { Trans } from '@lingui/macro';
 import { UnsupportedChainIdError } from '@web3-react/core';
 import { UserRejectedRequestError } from '@web3-react/walletconnect-connector';
@@ -24,19 +17,56 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
   const getWalletIcon = (walletType: WalletType) => {
     switch (walletType) {
       case WalletType.INJECTED:
-        return <BrowserWalletIcon />;
+        return (
+          <img
+            src={`/icons/wallets/browserWallet.svg`}
+            width="24px"
+            height="24px"
+            alt={`browser wallet icon`}
+          />
+        );
       case WalletType.WALLET_CONNECT:
-        return <WalletConnectIcon />;
+        return (
+          <img
+            src={`/icons/wallets/walletConnect.svg`}
+            width="24px"
+            height="24px"
+            alt={`browser wallet icon`}
+          />
+        );
       case WalletType.WALLET_LINK:
-        return <CoinbaseIcon />;
+        return (
+          <img
+            src={`/icons/wallets/coinbase.svg`}
+            width="24px"
+            height="24px"
+            alt={`browser wallet icon`}
+          />
+        );
       case WalletType.TORUS:
-        return <TorusIcon />;
+        return (
+          <img
+            src={`/icons/wallets/torus.svg`}
+            width="24px"
+            height="24px"
+            alt={`browser wallet icon`}
+          />
+        );
       case WalletType.FRAME:
-        return <FrameIcon />;
+        return (
+          <img
+            src={`/icons/wallets/frame.svg`}
+            width="24px"
+            height="24px"
+            alt={`browser wallet icon`}
+          />
+        );
       default:
         return null;
     }
   };
+
+  console.log(getWalletIcon(walletType));
 
   return (
     <Button
@@ -51,7 +81,7 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
       onClick={() => connectWallet(walletType)}
     >
       <Typography variant="buttonL">{walletName}</Typography>
-      <SvgIcon>{getWalletIcon(walletType)}</SvgIcon>
+      {getWalletIcon(walletType)}
     </Button>
   );
 };
@@ -94,11 +124,23 @@ export const WalletSelector = () => {
           {handleBlocking()}
         </Alert>
       )}
-      <WalletRow walletName="Browser wallet" walletType={WalletType.INJECTED} />
-      <WalletRow walletName="WalletConnect" walletType={WalletType.WALLET_CONNECT} />
-      <WalletRow walletName="Coinbase" walletType={WalletType.WALLET_LINK} />
-      <WalletRow walletName="Torus" walletType={WalletType.TORUS} />
-      <WalletRow walletName="Frame" walletType={WalletType.FRAME} />
+      <WalletRow
+        key="browser_wallet"
+        walletName="Browser wallet"
+        walletType={WalletType.INJECTED}
+      />
+      <WalletRow
+        key="walletconnect_wallet"
+        walletName="WalletConnect"
+        walletType={WalletType.WALLET_CONNECT}
+      />
+      <WalletRow
+        key="walletlink_wallet"
+        walletName="Coinbase"
+        walletType={WalletType.WALLET_LINK}
+      />
+      <WalletRow key="torus_wallet" walletName="Torus" walletType={WalletType.TORUS} />
+      <WalletRow key="frame_wallet" walletName="Frame" walletType={WalletType.FRAME} />
       <Typography variant="description" sx={{ mt: '22px', mb: '30px' }}>
         <Trans>
           Need help connecting a wallet? <Link>Read our FAQ</Link>
