@@ -815,6 +815,16 @@ export function getThemedComponents(theme: Theme) {
           },
         },
       },
+      MuiLinearProgress: {
+        styleOverrides: {
+          bar1Indeterminate: {
+            background: theme.palette.gradients.aaveGradient,
+          },
+          bar2Indeterminate: {
+            background: theme.palette.gradients.aaveGradient,
+          },
+        },
+      },
     },
   } as ThemeOptions;
 }
