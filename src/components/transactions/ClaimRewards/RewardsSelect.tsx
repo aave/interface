@@ -1,6 +1,5 @@
-import { ChevronDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Divider, FormLabel, SvgIcon, Typography } from '@mui/material';
+import { Box, Divider, FormLabel, Typography } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
@@ -52,11 +51,6 @@ export const RewardsSelect = ({
           '.MuiSelect-icon': { color: 'text.primary' },
         }}
         native={false}
-        IconComponent={(props) => (
-          <SvgIcon fontSize="small" {...props}>
-            <ChevronDownIcon />
-          </SvgIcon>
-        )}
         renderValue={(reward) => {
           if (reward === 'all') {
             return (
