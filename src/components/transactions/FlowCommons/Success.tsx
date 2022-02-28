@@ -147,12 +147,12 @@ export const TxSuccessView = ({
         <Link
           variant="helperText"
           href={currentNetworkConfig.explorerLinkBuilder({ tx: mainTxState.txHash })}
-          sx={{ display: 'inline-flex', alignItems: 'center' }}
+          sx={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'right', mb: 3 }}
           underline="hover"
           target="_blank"
           rel="noreferrer"
         >
-          <Trans>Review {action} tx details</Trans>
+          <Trans>Review tx details</Trans>
           <ExtLinkIcon />
         </Link>
         <Button
