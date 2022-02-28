@@ -1601,6 +1601,38 @@
     "@ethersproject/properties" "^5.5.0"
     "@ethersproject/strings" "^5.5.0"
 
+"@gnosis.pm/safe-apps-provider@0.10.1":
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/@gnosis.pm/safe-apps-provider/-/safe-apps-provider-0.10.1.tgz#a4cdadc9e398cd60cf83d20a3f8fcc851d9c4106"
+  integrity sha512-h0k0LHuoXmzheGcHbRxM19AOxAsGNzTZiCU5op9xzef9EQOEU/XKY9R8pHwVN6QK1RDTSmNwZQHFzAj+1Dyqhg==
+  dependencies:
+    "@gnosis.pm/safe-apps-sdk" "7.0.0"
+    events "^3.3.0"
+
+"@gnosis.pm/safe-apps-sdk@7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@gnosis.pm/safe-apps-sdk/-/safe-apps-sdk-7.0.0.tgz#e2320aca32edbb67d5b9e1e98cbfc448f1cfb2e0"
+  integrity sha512-Is9H7bcdPGh7Wp5oLc17CWbpd5Hi1+KL7z33ClyVP9Sw/s23ApIR7HkXmD5b3XsAW2vSiYfcHNT/yddolvACNg==
+  dependencies:
+    "@gnosis.pm/safe-react-gateway-sdk" "^2.8.5"
+    ethers "^5.4.7"
+
+"@gnosis.pm/safe-apps-web3-react@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@gnosis.pm/safe-apps-web3-react/-/safe-apps-web3-react-1.0.0.tgz#bfa095d368093ed611a8daf80f8847a8b60f9294"
+  integrity sha512-nL5rx4fgwMPyFtEvn90nM2Q0YppTX/qbvOv8aMUj6XdA5nVN7cCungtzismugRe1yEJVeVXb8SbQ9i/bVMzF9w==
+  dependencies:
+    "@gnosis.pm/safe-apps-provider" "0.10.1"
+    "@gnosis.pm/safe-apps-sdk" "7.0.0"
+    "@web3-react/abstract-connector" "6.0.7"
+
+"@gnosis.pm/safe-react-gateway-sdk@^2.8.5":
+  version "2.8.6"
+  resolved "https://registry.yarnpkg.com/@gnosis.pm/safe-react-gateway-sdk/-/safe-react-gateway-sdk-2.8.6.tgz#842c1f40ed6bd9164965836d7c4abcfe0a009af2"
+  integrity sha512-XPDOGQtUc1AON/xM4y5mGWMQ/VVaajRXVEdVmKCWOboK0bk1spkuD5oyo9hF0SB3f+lClIagb9PojOurjjWogw==
+  dependencies:
+    isomorphic-unfetch "^3.1.0"
+
 "@graphql-codegen/add@^3.1.1":
   version "3.1.1"
   resolved "https://registry.npmjs.org/@graphql-codegen/add/-/add-3.1.1.tgz"
@@ -3289,7 +3321,7 @@
   dependencies:
     "@walletconnect/window-getters" "^1.0.0"
 
-"@web3-react/abstract-connector@^6.0.7":
+"@web3-react/abstract-connector@6.0.7", "@web3-react/abstract-connector@^6.0.7":
   version "6.0.7"
   resolved "https://registry.yarnpkg.com/@web3-react/abstract-connector/-/abstract-connector-6.0.7.tgz#401b3c045f1e0fab04256311be49d5144e9badc6"
   integrity sha512-RhQasA4Ox8CxUC0OENc1AJJm8UTybu/oOCM61Zjg6y0iF7Z0sqv1Ai1VdhC33hrQpA8qSBgoXN9PaP8jKmtdqg==
@@ -5865,7 +5897,7 @@ ethereumjs-vm@^2.3.4:
     rustbn.js "~0.2.0"
     safe-buffer "^5.1.1"
 
-ethers@^5.5.0, ethers@^5.5.4:
+ethers@^5.4.7, ethers@^5.5.0, ethers@^5.5.4:
   version "5.5.4"
   resolved "https://registry.npmjs.org/ethers/-/ethers-5.5.4.tgz"
   integrity sha512-N9IAXsF8iKhgHIC6pquzRgPBJEzc9auw3JoRkaKe+y4Wl/LFBtDDunNe7YmdomontECAcC5APaAgWZBiu1kirw==

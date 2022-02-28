@@ -65,6 +65,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [tried, setTried] = useState(false);
   const [deactivated, setDeactivated] = useState(false);
   const [selectedWallet, setSelectedWallet] = useState<WalletType>();
+  const [triedSafe, setTriedSafe] = useState(false);
 
   // listener handlers
   const handleAccountsChanged = (accounts: string[]) => {
@@ -162,10 +163,27 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     [disconnectWallet]
   );
 
+  // first, try connecting to a gnosis safe
+  useEffect(() => {
+    if (!triedSafe) {
+      const gnosisConnector = getWallet(WalletType.GNOSIS);
+      // @ts-expect-error isSafeApp not in abstract connector type
+      gnosisConnector.isSafeApp().then((loadedInSafe) => {
+        if (loadedInSafe) {
+          connectWallet(WalletType.GNOSIS).catch(() => {
+            setTriedSafe(true);
+          });
+        } else {
+          setTriedSafe(true);
+        }
+      });
+    }
+  }, [connectWallet, setTriedSafe, triedSafe]);
+
   // handle logic to eagerly connect to the injected ethereum provider,
   // if it exists and has granted access already
   useEffect(() => {
-    if (!active && !deactivated) {
+    if (!active && !deactivated && triedSafe) {
       const lastWalletProvider = Number(localStorage.getItem('walletProvider'));
       if (lastWalletProvider && lastWalletProvider > 0) {
         connectWallet(lastWalletProvider).catch(() => {
@@ -186,7 +204,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         });
       }
     }
-  }, [activate, setTried, active, connectWallet, deactivated]);
+  }, [activate, setTried, active, connectWallet, deactivated, triedSafe]);
 
   // if the connection worked, wait until we get confirmation of that to flip the flag
   useEffect(() => {

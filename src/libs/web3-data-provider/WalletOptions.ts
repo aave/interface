@@ -7,6 +7,7 @@ import { TorusConnector } from '@web3-react/torus-connector';
 import { FrameConnector } from '@web3-react/frame-connector';
 import { getNetworkConfig, getSupportedChainIds } from 'src/utils/marketsAndNetworksConfig';
 import { UnsupportedChainIdError } from '@web3-react/core';
+import { SafeAppConnector } from '@gnosis.pm/safe-apps-web3-react';
 
 export enum WalletType {
   INJECTED,
@@ -14,6 +15,7 @@ export enum WalletType {
   WALLET_LINK,
   TORUS,
   FRAME,
+  GNOSIS,
 }
 
 const APP_NAME = 'Aave';
@@ -44,19 +46,9 @@ export const getWallet = (
         }, {} as { [networkId: number]: string }),
         bridge: 'https://aave.bridge.walletconnect.org',
         qrcode: true,
-        // pollingInterval: POLLING_INTERVAL,
-        // preferredNetworkId: chainId,
       });
-    // case WalletType.MEW_WALLET:
-    //   return new MewConnectConnector({
-    //     url:
-
-    //       networkConfig.privateJsonRPCWSUrl ||
-    //       networkConfig.privateJsonRPCUrl ||
-    //       networkConfig.publicJsonRPCWSUrl ||
-    //       networkConfig.publicJsonRPCUrl[0],
-    //     windowClosedError: true,
-    //   });
+    case WalletType.GNOSIS:
+      return new SafeAppConnector();
     case WalletType.TORUS:
       return new TorusConnector({
         chainId,
@@ -69,9 +61,6 @@ export const getWallet = (
           enabledVerifiers: false,
         },
       });
-    // case WalletType.GNOSIS_SAFE: {
-    //   return new SafeAppConnector();
-    // }
     case WalletType.FRAME: {
       if (chainId !== ChainId.mainnet) {
         throw new UnsupportedChainIdError(chainId, [1]);
