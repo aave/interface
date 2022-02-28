@@ -86,8 +86,6 @@ export const WalletSelector = () => {
     }
   };
 
-  console.log('wallet selector error::: ', error);
-
   return (
     <Box>
       <TxModalTitle title="Connect a wallet" />
