@@ -1,4 +1,3 @@
-import { ChevronDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -9,7 +8,6 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
-  SvgIcon,
   Typography,
 } from '@mui/material';
 import React from 'react';
@@ -162,18 +160,13 @@ export const AssetInput: React.FC<AssetInputProps> = ({
                   '&.AssetInput__select .MuiOutlinedInput-input': {
                     p: 0,
                     backgroundColor: 'transparent',
-                    pr: '16px !important',
+                    pr: '24px !important',
                   },
                   '&.AssetInput__select .MuiOutlinedInput-notchedOutline': { display: 'none' },
                   '&.AssetInput__select .MuiSelect-icon': {
                     color: 'text.primary',
                   },
                 }}
-                IconComponent={(props) => (
-                  <SvgIcon sx={{ fontSize: '16px', right: '-3px !important' }} {...props}>
-                    <ChevronDownIcon />
-                  </SvgIcon>
-                )}
                 renderValue={(symbol) => {
                   const asset =
                     assets.length === 1

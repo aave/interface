@@ -25,11 +25,17 @@ export const DelegationTypeSelector = ({
   setDelegationType,
 }: DelegationTypeSelectorProps) => {
   return (
-    <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+    <FormControl variant="standard" fullWidth sx={{ mb: 6 }}>
       <Select
+        fullWidth
         input={<OutlinedInput />}
         MenuProps={MenuProps}
         value={delegationType}
+        sx={{
+          '& .MuiSvgIcon-root': {
+            right: '12px',
+          },
+        }}
         onChange={(e) => {
           setDelegationType(e.target.value as DelegationType);
         }}

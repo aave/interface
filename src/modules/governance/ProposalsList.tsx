@@ -1,7 +1,13 @@
 import { ProposalState } from '@aave/contract-helpers';
-import { ChevronDownIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, MenuItem, Select, SelectChangeEvent, SvgIcon, Typography } from '@mui/material';
+import {
+  Box,
+  LinearProgress,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Typography,
+} from '@mui/material';
 import { GovernancePageProps } from 'pages/governance';
 import { useState } from 'react';
 import { usePolling } from 'src/hooks/usePolling';
@@ -92,17 +98,7 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
         <Typography sx={{ mx: 4 }}>
           <Trans>Filter</Trans>
         </Typography>
-        <Select
-          id="filter"
-          value={proposalFilter}
-          sx={{ minWidth: 140 }}
-          onChange={handleChange}
-          IconComponent={(props) => (
-            <SvgIcon {...props}>
-              <ChevronDownIcon />
-            </SvgIcon>
-          )}
-        >
+        <Select id="filter" value={proposalFilter} sx={{ minWidth: 140 }} onChange={handleChange}>
           <MenuItem value="all">
             <Trans>All proposals</Trans>
           </MenuItem>
@@ -113,7 +109,7 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
           ))}
         </Select>
       </Box>
-      {loadingNewProposals && <div>loading TODO: replace with sth nicer</div>}
+      {loadingNewProposals && <LinearProgress />}
       {proposals
         .slice()
         .reverse()

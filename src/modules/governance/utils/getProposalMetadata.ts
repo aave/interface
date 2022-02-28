@@ -1,6 +1,7 @@
 import { ProposalMetadata } from '@aave/contract-helpers';
 import { base58 } from 'ethers/lib/utils';
 import fetch from 'isomorphic-unfetch';
+import matter from 'gray-matter';
 
 export function getLink(hash: string, gateway: string): string {
   return `${gateway}/${hash}`;
@@ -26,11 +27,15 @@ export async function getProposalMetadata(
     throw Error('Fetch not working');
   }
 
-  const data: ProposalMetadata = await ipfsResponse.json();
+  const response: ProposalMetadata = await ipfsResponse.json();
+
+  const { content, data } = matter(response.description);
 
   MEMORIZE[ipfsHash] = {
-    ...data,
+    ...response,
     ipfsHash,
+    description: content,
+    ...data,
   };
   return MEMORIZE[ipfsHash];
 }

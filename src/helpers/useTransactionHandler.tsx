@@ -258,7 +258,13 @@ export const useTransactionHandler = ({
             setApprovalTx(data.find((tx) => tx.txType === 'ERC20_APPROVAL'));
             setActionTx(
               data.find((tx) =>
-                ['DLP_ACTION', 'REWARD_ACTION', 'FAUCET_MINT', 'STAKE_ACTION'].includes(tx.txType)
+                [
+                  'DLP_ACTION',
+                  'REWARD_ACTION',
+                  'FAUCET_MINT',
+                  'STAKE_ACTION',
+                  'GOV_DELEGATION_ACTION',
+                ].includes(tx.txType)
               )
             );
             setMainTxState({

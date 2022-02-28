@@ -43,23 +43,3 @@ export const governanceConfig: GovernanceConfig = {
   },
   ipfsGateway: 'https://gateway.pinata.cloud/ipfs',
 };
-
-export type DelegationToken = {
-  symbol: string;
-  address: string;
-};
-
-export const delegationTokens: Record<string, DelegationToken> = {
-  AAVE: {
-    symbol: 'AAVE',
-    address: '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9',
-  },
-  // aAAVE: {
-  //   symbol: 'aAAVE',
-  //   address: '0xDa5E8e1C3596D3Cc11a4dd5aD66b8f03B5410F8C',
-  // },
-  stkAAVE: {
-    symbol: 'stkAAVE',
-    address: '0x4da27a545c0c5b758a6ba100e3a049001de870f5',
-  },
-};
