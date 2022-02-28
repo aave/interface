@@ -1,6 +1,6 @@
 {
-  "name": "nextjs-with-typescript",
-  "version": "5.0.0",
+  "name": "aave-ui",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
