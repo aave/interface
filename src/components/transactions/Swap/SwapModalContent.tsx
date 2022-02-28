@@ -27,9 +27,15 @@ import { useSwap } from 'src/hooks/useSwap';
 import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
 import { TxModalTitle } from 'src/components/transactions/FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from 'src/components/transactions/Warnings/ChangeNetworkWarning';
-import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
+import {
+  DetailsHFLine,
+  DetailsIncentivesLine,
+  DetailsNumberLine,
+  TxModalDetails,
+} from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { TxErrorView } from 'src/components/transactions/FlowCommons/Error';
 import { GasEstimationError } from 'src/components/transactions/FlowCommons/GasEstimationError';
+import { useModalContext } from 'src/hooks/useModal';
 
 export type SupplyProps = {
   underlyingAsset: string;
@@ -45,6 +51,7 @@ export const SwapModalContent = ({ underlyingAsset, handleClose }: SupplyProps) 
   const { marketReferencePriceInUsd, reserves, user } = useAppDataContext();
   const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
   const { chainId: connectedChainId, currentAccount } = useWeb3Context();
+  const { approvalTxState, mainTxState: supplyTxState } = useModalContext();
 
   const poolReserve = reserves.find((reserve) => {
     return reserve.underlyingAsset === underlyingAsset;
@@ -62,7 +69,6 @@ export const SwapModalContent = ({ underlyingAsset, handleClose }: SupplyProps) 
     }));
 
   // states
-  const [supplyTxState, setSupplyTxState] = useState<TxState>({ success: false });
   const [_amount, setAmount] = useState('');
   const [targetReserve, setTargetReserve] = useState<Asset>(swapTargets[0]);
   const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
@@ -80,8 +86,6 @@ export const SwapModalContent = ({ underlyingAsset, handleClose }: SupplyProps) 
 
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToSwap : _amount;
-
-  const supplyApy = poolReserve.supplyAPY;
 
   const {
     priceRoute,
@@ -229,6 +233,8 @@ export const SwapModalContent = ({ underlyingAsset, handleClose }: SupplyProps) 
                 symbol: poolReserve.iconSymbol,
               },
             ]}
+            maxValue={maxAmountToSwap}
+            isMaxSelected={isMaxSelected}
           />
           <AssetInput
             value={outputAmount}
@@ -237,22 +243,30 @@ export const SwapModalContent = ({ underlyingAsset, handleClose }: SupplyProps) 
             usdValue={outputAmountUSD.toString()}
             symbol={targetReserve.symbol}
             assets={swapTargets}
+            disableInput={true}
           />
           {blockingError !== undefined && (
             <Typography variant="helperText" color="red">
               {handleBlocked()}
             </Typography>
           )}
-          <TxModalDetails
-            apy={supplyApy}
-            incentives={poolReserve.aIncentivesData}
-            showHf={showHealthFactor || false}
-            healthFactor={user ? user.healthFactor : '-1'}
-            // futureHealthFactor={healthFactorAfterDeposit.toString()}
-            gasLimit={gasLimit}
-            symbol={poolReserve.symbol}
-            action="Swap"
-          />
+          <TxModalDetails gasLimit={gasLimit}>
+            <DetailsNumberLine
+              description={<Trans>Supply apy</Trans>}
+              value={poolReserve.supplyAPY}
+              futureValue={swapTarget.supplyAPY}
+            />
+            <DetailsIncentivesLine
+              incentives={poolReserve.aIncentivesData}
+              symbol={poolReserve.symbol}
+              futureIncentives={swapTarget.aIncentivesData}
+              futureSymbol={swapTarget.symbol}
+            />
+            <DetailsHFLine
+              healthFactor={user ? user.healthFactor : '-1'}
+              futureHealthFactor={user ? user.healthFactor : '-1' /**TODO: future hf */}
+            />
+          </TxModalDetails>
         </>
       )}
       {supplyTxState.txError && <TxErrorView errorMessage={supplyTxState.txError} />}
@@ -264,13 +278,10 @@ export const SwapModalContent = ({ underlyingAsset, handleClose }: SupplyProps) 
       )}
       <SwapActions
         sx={{ mt: '48px' }}
-        setSupplyTxState={setSupplyTxState}
         poolReserve={poolReserve}
         amountToSwap={amount}
         amountToReceive={outputAmount}
-        handleClose={handleClose}
         isWrongNetwork={isWrongNetwork}
-        setGasLimit={setGasLimit}
         targetReserve={swapTarget}
         symbol={poolReserve.symbol}
         blocked={blockingError !== undefined}

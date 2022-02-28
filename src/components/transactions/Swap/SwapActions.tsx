@@ -26,10 +26,7 @@ export interface SwapActionProps extends BoxProps {
   poolReserve: ComputedReserveData;
   targetReserve: ComputedReserveData;
   isWrongNetwork: boolean;
-  setSupplyTxState: Dispatch<SetStateAction<TxState>>;
   customGasPrice?: string;
-  handleClose: () => void;
-  setGasLimit: Dispatch<SetStateAction<string | undefined>>;
   symbol: string;
   blocked: boolean;
   priceRoute: OptimalRate | null;
@@ -39,13 +36,8 @@ export interface SwapActionProps extends BoxProps {
 export const SwapActions = ({
   amountToSwap,
   amountToReceive,
-  setSupplyTxState,
-  handleClose,
-  setGasLimit,
   isWrongNetwork,
   sx,
-  symbol,
-  blocked,
   poolReserve,
   targetReserve,
   priceRoute,
@@ -59,17 +51,14 @@ export const SwapActions = ({
 
   const {
     approval,
-    approved,
     action,
     requiresApproval,
-    loading,
     approvalTxState,
     mainTxState,
     usePermit,
     resetStates,
+    loadingTxns,
   } = useTransactionHandler({
-    tryPermit:
-      currentMarketData.v3 && chainId !== ChainId.harmony && chainId !== ChainId.harmony_testnet,
     handleGetTxns: async () => {
       const { swapCallData, augustus } = await getSwapCallData({
         srcToken: poolReserve.underlyingAsset,
@@ -80,7 +69,7 @@ export const SwapActions = ({
         route: priceRoute as OptimalRate,
         chainId: chainId,
       });
-      const tx = await lendingPool.swapCollateral({
+      return lendingPool.swapCollateral({
         fromAsset: poolReserve.underlyingAsset,
         toAsset: targetReserve.underlyingAsset,
         swapAll: amountToSwap === '-1',
@@ -92,9 +81,6 @@ export const SwapActions = ({
         augustus,
         swapCallData,
       });
-      const gas: GasType | null = await tx[tx.length - 1].gas();
-      setGasLimit(gas?.gasLimit);
-      return tx;
     },
     customGasPrice:
       state.gasOption === GasOption.Custom
@@ -104,34 +90,20 @@ export const SwapActions = ({
     deps: [amountToSwap, priceRoute],
   });
 
-  const hasAmount = amountToSwap && amountToSwap !== '0';
-
-  useEffect(() => {
-    setSupplyTxState({
-      success: !!mainTxState.txHash,
-      txError: mainTxState.txError || approvalTxState.txError,
-      gasEstimationError: mainTxState.gasEstimationError || approvalTxState.gasEstimationError,
-    });
-  }, [setSupplyTxState, mainTxState, approvalTxState]);
-
-  const handleRetry = () => {
-    setSupplyTxState({
-      txError: undefined,
-      success: false,
-      gasEstimationError: undefined,
-    });
-    resetStates();
-  };
-
   return (
     <TxActionsWrapper
       mainTxState={mainTxState}
-      handleClose={handleClose}
-      handleRetry={handleRetry}
+      handleRetry={resetStates}
       approvalTxState={approvalTxState}
       isWrongNetwork={isWrongNetwork}
-      hasAmount={hasAmount}
-      withAmount
+      preparingTransactions={loadingTxns}
+      handleAction={action}
+      requiresAmount
+      amount={amountToSwap}
+      handleApproval={() => approval(amountToSwap, poolReserve.underlyingAsset)}
+      requiresApproval={true}
+      actionText={<Trans>Swap</Trans>}
+      actionInProgressText={<Trans>Swapping</Trans>}
       helperText={
         <>
           <LeftHelperText
@@ -152,62 +124,6 @@ export const SwapActions = ({
       }
       sx={sx}
       {...props}
-    >
-      <>
-        {hasAmount && requiresApproval && !approved && !approvalTxState.txError && !isWrongNetwork && (
-          <Button
-            variant="contained"
-            onClick={() => approval(amountToSwap, poolReserve.underlyingAsset)}
-            disabled={
-              approved ||
-              loading ||
-              isWrongNetwork ||
-              blocked ||
-              !!approvalTxState.gasEstimationError
-            }
-            size="large"
-            sx={{ minHeight: '44px', mb: 2 }}
-          >
-            {!approved && !loading && <Trans>Approve to continue</Trans>}
-            {!approved && loading && (
-              <>
-                <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-                <Trans>Approving {symbol} ...</Trans>
-              </>
-            )}
-          </Button>
-        )}
-
-        {hasAmount &&
-          !mainTxState.txHash &&
-          !mainTxState.txError &&
-          !approvalTxState.txError &&
-          !isWrongNetwork && (
-            <Button
-              variant="contained"
-              onClick={action}
-              disabled={
-                loading ||
-                (requiresApproval && !approved) ||
-                isWrongNetwork ||
-                blocked ||
-                !!mainTxState.gasEstimationError
-              }
-              size="large"
-              sx={{ minHeight: '44px' }}
-            >
-              {!mainTxState.txHash && !mainTxState.txError && (!loading || !approved) && (
-                <Trans>Supply {symbol}</Trans>
-              )}
-              {approved && loading && (
-                <>
-                  <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
-                  <Trans>Pending...</Trans>
-                </>
-              )}
-            </Button>
-          )}
-      </>
-    </TxActionsWrapper>
+    />
   );
 };

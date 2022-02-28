@@ -63,11 +63,12 @@ export interface AssetInputProps<T extends Asset = Asset> {
   symbol: string;
   onChange: (value: string) => void;
   disabled?: boolean;
+  disableInput?: boolean;
   onSelect?: (asset: T) => void;
   assets: T[];
   capType?: CapType;
-  maxValue: string;
-  isMaxSelected: boolean;
+  maxValue?: string;
+  isMaxSelected?: boolean;
 }
 
 export const AssetInput: React.FC<AssetInputProps> = ({
@@ -76,6 +77,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
   symbol,
   onChange,
   disabled,
+  disableInput,
   onSelect,
   assets,
   capType,
@@ -113,7 +115,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
           <InputBase
             sx={{ flex: 1 }}
             placeholder="0.00"
-            disabled={disabled}
+            disabled={disabled || disableInput}
             value={value}
             autoFocus
             onChange={(e) => {
