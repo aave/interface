@@ -1,11 +1,12 @@
-import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 
 import { Link } from '../../components/primitives/Link';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
+import EmissionIcon from '../../../public/icons/staking/emission-staking-icon.svg';
+import TrustIcon from '../../../public/icons/staking/trust-staking-icon.svg';
 
 interface StakingHeaderProps {
   tvl: string;
@@ -26,17 +27,14 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
     <TopInfoPanel
       titleComponent={
         <Box mb={4}>
-          <Box sx={{ display: 'flex', alignItems: 'flex-start', mb: 4 }}>
-            <Typography variant={downToXSM ? 'h2' : upToLG ? 'display1' : 'h1'} sx={{ mr: 3 }}>
-              <Trans>Stake</Trans>
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
+            <img src={`/aave.svg`} width="32px" height="32px" alt="" />
+            <Typography
+              variant={downToXSM ? 'h2' : upToLG ? 'display1' : 'h1'}
+              sx={{ ml: 2, mr: 3 }}
+            >
+              <Trans>Staking</Trans>
             </Typography>
-
-            <Button variant="surface" size="small" sx={{ minWidth: 'unset' }}>
-              FAQ
-              <SvgIcon sx={{ fontSize: '12px', ml: 0.5 }}>
-                <ExternalLinkIcon />
-              </SvgIcon>
-            </Button>
           </Box>
 
           <Typography sx={{ color: '#8E92A3', maxWidth: '824px' }}>
@@ -47,8 +45,7 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
               protection for the protocol.
             </Trans>{' '}
             <Link
-              // TODO: need check link
-              href="https://docs.aave.com/faq/"
+              href="https://docs.aave.com/faq/migration-and-staking"
               sx={{ textDecoration: 'underline', color: '#8E92A3' }}
             >
               <Trans>Learn more about risks involved</Trans>
@@ -57,7 +54,11 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
         </Box>
       }
     >
-      <TopInfoPanelItem title={<Trans>Funds in the Safety Module</Trans>} loading={loading}>
+      <TopInfoPanelItem
+        icon={<TrustIcon />}
+        title={<Trans>Funds in the Safety Module</Trans>}
+        loading={loading}
+      >
         {/** TBD value */}
         <FormattedNumber
           value={tvl || 0}
@@ -69,7 +70,11 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
         />
       </TopInfoPanelItem>
 
-      <TopInfoPanelItem title={<Trans>Total emission per day</Trans>} loading={loading}>
+      <TopInfoPanelItem
+        icon={<EmissionIcon />}
+        title={<Trans>Total emission per day</Trans>}
+        loading={loading}
+      >
         {/** TBD value */}
         <FormattedNumber
           value={stkEmission || 0}

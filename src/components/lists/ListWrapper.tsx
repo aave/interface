@@ -40,7 +40,6 @@ export const ListWrapper = ({
     <Paper
       sx={(theme) => ({
         mt: withTopMargin ? 4 : 0,
-        overflow: 'hidden',
         border: `1px solid ${theme.palette.divider}`,
       })}
     >

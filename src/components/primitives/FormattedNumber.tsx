@@ -111,16 +111,14 @@ export function FormattedNumber({
         </Typography>
       )}
 
-      <>
-        {!forceCompact ? (
-          i18n.number(formattedNumber, {
-            maximumFractionDigits: decimals,
-            minimumFractionDigits: decimals,
-          })
-        ) : (
-          <CompactNumber value={formattedNumber} visibleDecimals={decimals} />
-        )}
-      </>
+      {!forceCompact ? (
+        i18n.number(formattedNumber, {
+          maximumFractionDigits: decimals,
+          minimumFractionDigits: decimals,
+        })
+      ) : (
+        <CompactNumber value={formattedNumber} visibleDecimals={decimals} />
+      )}
 
       {percent && (
         <Typography

@@ -1,5 +1,6 @@
 import { mintAmountsPerToken } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
+import { Trans } from '@lingui/macro';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -11,7 +12,7 @@ import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { TxModalDetails } from '../FlowCommons/TxModalDetails';
+import { DetailsNumberLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { FaucetActions } from './FaucetActions';
@@ -63,11 +64,14 @@ export const FaucetModalContent = ({ underlyingAsset }: FaucetModalContentProps)
         <ChangeNetworkWarning networkName={currentNetworkConfig.name} chainId={currentChainId} />
       )}
 
-      <TxModalDetails
-        gasLimit={gasLimit}
-        symbol={poolReserve.symbol}
-        faucetAmount={normalizedAmount}
-      />
+      <TxModalDetails gasLimit={gasLimit}>
+        <DetailsNumberLine
+          description={<Trans>Amount</Trans>}
+          iconSymbol={poolReserve.symbol}
+          symbol={poolReserve.symbol}
+          value={normalizedAmount}
+        />
+      </TxModalDetails>
 
       {faucetTxState.gasEstimationError && (
         <GasEstimationError error={faucetTxState.gasEstimationError} />

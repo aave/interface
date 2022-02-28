@@ -26,6 +26,7 @@ export const NAME_MAP: { [key: string]: string } = {
   CRV: 'Curve DAO Token',
   DPI: 'DeFi Pulse Index',
   ENJ: 'EnjinCoin',
+  ENS: 'Ethereum Name Service',
   ETH: 'Ethereum',
   EUROS: 'STASIS EURO',
   FAI: 'Fei USD',
@@ -38,6 +39,7 @@ export const NAME_MAP: { [key: string]: string } = {
   PAX: 'Paxos Standard',
   RAI: 'Rai Reflex Index',
   REP: 'Augur',
+  STETH: 'Lido Staked Ether',
   STKAAVE: 'Stake Aave',
   TUSD: 'TrueUSD',
   UNI: 'Uniswap',
@@ -75,11 +77,11 @@ export function fetchIconSymbolAndName({
     return { iconSymbol: 'GUNI_USDC_USDT', name: 'G-UNI USDC/USDT', symbol };
   }
   // avalanche symbols have .e extensions
-  if (/\.e/.test(symbol)) {
+  if (/\.e$/.test(symbol)) {
     const rawSymbol = symbol.replace('.e', '');
     return {
       iconSymbol: rawSymbol || symbol,
-      name: `${NAME_MAP[rawSymbol] || rawSymbol} (${symbol})`,
+      name: NAME_MAP[rawSymbol] || rawSymbol,
       symbol,
     };
   }

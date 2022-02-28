@@ -1,14 +1,9 @@
 {
   "presets": ["next/babel"],
-  "plugins": [
-    "macros",
-    "@babel/plugin-proposal-class-properties"
-  ],
+  "plugins": ["macros", "@babel/plugin-proposal-class-properties"],
   "env": {
     "test": {
-      "plugins": [
-        "dynamic-import-node"
-      ]
+      "plugins": ["dynamic-import-node"]
     }
   }
 }

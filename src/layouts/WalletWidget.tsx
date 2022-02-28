@@ -336,6 +336,7 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
           anchorEl={anchorEl}
           open={open}
           onClose={handleClose}
+          keepMounted={true}
         >
           <MenuList disablePadding sx={{ '.MuiMenuItem-root.Mui-disabled': { opacity: 1 } }}>
             <Content component={MenuItem} />

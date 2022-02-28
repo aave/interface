@@ -89,6 +89,7 @@ export const TxActionsWrapper = ({
           onClick={approvalParams.handleClick}
           size="large"
           sx={{ minHeight: '44px' }}
+          data-cy="approvalButton"
         >
           {approvalParams.loading && (
             <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
@@ -103,6 +104,7 @@ export const TxActionsWrapper = ({
         onClick={handleClick}
         size="large"
         sx={{ minHeight: '44px', ...(approvalParams ? { mt: 2 } : {}) }}
+        data-cy="actionButton"
       >
         {loading && <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />}
         {content}
