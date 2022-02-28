@@ -20,6 +20,7 @@ import makeBlockie from 'ethereum-blockies-base64';
 import { stubTrue } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { WalletModal } from 'src/components/WalletConnection/WalletModal';
+import { useWalletModalContext } from 'src/hooks/useWalletModal';
 import useGetEns from 'src/libs/hooks/use-get-ens';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
@@ -39,7 +40,7 @@ interface WalletWidgetProps {
 export default function WalletWidget({ open, setOpen, headerHeight, md }: WalletWidgetProps) {
   const { disconnectWallet, currentAccount, connected, chainId, loading, error } = useWeb3Context();
 
-  const [isWalletModalOpen, setWalletModalOpen] = useState(false);
+  const { setWalletModalOpen } = useWalletModalContext();
 
   const { name: ensName, avatar: ensAvatar } = useGetEns(currentAccount);
   const ensNameAbbreviated = ensName
@@ -342,7 +343,7 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
         </Menu>
       )}
 
-      <WalletModal isWalletModalOpen={isWalletModalOpen} setWalletModalOpen={setWalletModalOpen} />
+      <WalletModal />
     </>
   );
 }

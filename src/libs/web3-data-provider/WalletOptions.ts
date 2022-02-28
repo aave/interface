@@ -51,6 +51,7 @@ export const getWallet = (
     // case WalletType.MEW_WALLET:
     //   return new MewConnectConnector({
     //     url:
+
     //       networkConfig.privateJsonRPCWSUrl ||
     //       networkConfig.privateJsonRPCUrl ||
     //       networkConfig.publicJsonRPCWSUrl ||

@@ -1,14 +1,10 @@
-import { Dispatch, SetStateAction } from 'react';
+import { useWalletModalContext } from 'src/hooks/useWalletModal';
 import { BasicModal } from '../primitives/BasicModal';
 import { WalletSelector } from './WalletSelector';
 
-export const WalletModal = ({
-  isWalletModalOpen,
-  setWalletModalOpen,
-}: {
-  isWalletModalOpen: boolean;
-  setWalletModalOpen: Dispatch<SetStateAction<boolean>>;
-}) => {
+export const WalletModal = () => {
+  const { isWalletModalOpen, setWalletModalOpen } = useWalletModalContext();
+
   return (
     <BasicModal open={isWalletModalOpen} setOpen={setWalletModalOpen}>
       <WalletSelector />
