@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 
 import { Warning } from '../primitives/Warning';
+import { Link } from '../primitives/Link';
 
 export const CooldownWarning = () => {
   return (
@@ -11,8 +12,12 @@ export const CooldownWarning = () => {
       </Typography>
       <Typography variant="caption">
         <Trans>
-          Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia
-          consequat duis enim velit mollit. FAQ link
+          The cooldown period is the time required prior to unstaking your tokens(10 days). You can
+          only withdraw your assets from the Security Module after the cooldown period and within
+          the active the unstake window.
+          <Link href="https://docs.aave.com/faq/migration-and-staking" fontWeight={500}>
+            <Trans>Learn more</Trans>
+          </Link>
         </Trans>
       </Typography>
     </Warning>

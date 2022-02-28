@@ -5,6 +5,8 @@ import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 
 import { Link } from '../../components/primitives/Link';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
+import EmissionIcon from '../../../public/icons/staking/emission-staking-icon.svg';
+import TrustIcon from '../../../public/icons/staking/trust-staking-icon.svg';
 
 interface StakingHeaderProps {
   tvl: string;
@@ -43,8 +45,7 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
               protection for the protocol.
             </Trans>{' '}
             <Link
-              // TODO: need check link
-              href="https://docs.aave.com/faq/"
+              href="https://docs.aave.com/faq/migration-and-staking"
               sx={{ textDecoration: 'underline', color: '#8E92A3' }}
             >
               <Trans>Learn more about risks involved</Trans>
@@ -53,7 +54,11 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
         </Box>
       }
     >
-      <TopInfoPanelItem title={<Trans>Funds in the Safety Module</Trans>} loading={loading}>
+      <TopInfoPanelItem
+        icon={<TrustIcon />}
+        title={<Trans>Funds in the Safety Module</Trans>}
+        loading={loading}
+      >
         {/** TBD value */}
         <FormattedNumber
           value={tvl || 0}
@@ -65,7 +70,11 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
         />
       </TopInfoPanelItem>
 
-      <TopInfoPanelItem title={<Trans>Total emission per day</Trans>} loading={loading}>
+      <TopInfoPanelItem
+        icon={<EmissionIcon />}
+        title={<Trans>Total emission per day</Trans>}
+        loading={loading}
+      >
         {/** TBD value */}
         <FormattedNumber
           value={stkEmission || 0}
