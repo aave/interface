@@ -1,11 +1,9 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { ContentContainer } from 'src/components/ContentContainer';
 import { GovVoteModal } from 'src/components/transactions/GovVote/GovVoteModal';
 import { GovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
 import { usePolling } from 'src/hooks/usePolling';
 import { MainLayout } from 'src/layouts/MainLayout';
-import { ProposalTopPanel } from 'src/modules/governance/proposal/ProposalTopPanel';
 import { enhanceProposalWithTimes } from 'src/modules/governance/utils/formatProposal';
 import { getProposalMetadata } from 'src/modules/governance/utils/getProposalMetadata';
 import { governanceContract } from 'src/modules/governance/utils/governanceProvider';

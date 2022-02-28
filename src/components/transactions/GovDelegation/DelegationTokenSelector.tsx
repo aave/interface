@@ -1,5 +1,4 @@
-import { Trans } from '@lingui/macro';
-import { Box, FormHelperText, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
 import OutlinedInput from '@mui/material/OutlinedInput';

@@ -94,15 +94,26 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
   if (!governanceConfig) return <div>Governance not enabled</div>;
 
   const {
-    yaeVotes = 0,
-    yaePercent = 0,
-    nayPercent = 0,
-    nayVotes = 0,
-    diffReached = false,
-    quorumReached = false,
-    requiredDiff = 0,
-    diff = 0,
-  } = formatProposal(proposal);
+    yaeVotes,
+    yaePercent,
+    nayPercent,
+    nayVotes,
+    diffReached,
+    quorumReached,
+    requiredDiff,
+    diff,
+  } = proposal
+    ? formatProposal(proposal)
+    : {
+        yaeVotes: 0,
+        yaePercent: 0,
+        nayPercent: 0,
+        nayVotes: 0,
+        diffReached: false,
+        quorumReached: false,
+        requiredDiff: 0,
+        diff: 0,
+      };
   return (
     <>
       <Meta title={ipfs.title} description={ipfs.shortDescription} />

@@ -3,8 +3,7 @@ import { normalizeBN } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
-export function formatProposal(proposal?: Omit<Proposal, 'values'>) {
-  if (!proposal) return {};
+export function formatProposal(proposal: Omit<Proposal, 'values'>) {
   const allVotes = new BigNumber(proposal.forVotes).plus(proposal.againstVotes);
   const yaePercent = allVotes.gt(0)
     ? new BigNumber(proposal.forVotes).dividedBy(allVotes).toNumber()

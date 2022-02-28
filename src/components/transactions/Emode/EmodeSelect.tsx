@@ -1,6 +1,5 @@
-import { ChevronDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { FormLabel, SvgIcon, Typography } from '@mui/material';
+import { FormLabel, Typography } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';

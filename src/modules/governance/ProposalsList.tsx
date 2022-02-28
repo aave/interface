@@ -1,5 +1,4 @@
 import { ProposalState } from '@aave/contract-helpers';
-import { ChevronDownIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -7,8 +6,6 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
-  Skeleton,
-  SvgIcon,
   Typography,
 } from '@mui/material';
 import { GovernancePageProps } from 'pages/governance';
