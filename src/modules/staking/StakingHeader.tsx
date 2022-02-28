@@ -43,8 +43,7 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
               protection for the protocol.
             </Trans>{' '}
             <Link
-              // TODO: need check link
-              href="https://docs.aave.com/faq/"
+              href="https://docs.aave.com/faq/migration-and-staking"
               sx={{ textDecoration: 'underline', color: '#8E92A3' }}
             >
               <Trans>Learn more about risks involved</Trans>
