@@ -115,7 +115,7 @@ export const WalletSelector = () => {
   };
 
   return (
-    <Box>
+    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
       <TxModalTitle title="Connect a wallet" />
       {error && (
         <Alert severity="error" sx={{ mb: '24px' }}>
@@ -139,9 +139,12 @@ export const WalletSelector = () => {
       />
       <WalletRow key="torus_wallet" walletName="Torus" walletType={WalletType.TORUS} />
       <WalletRow key="frame_wallet" walletName="Frame" walletType={WalletType.FRAME} />
-      <Typography variant="description" sx={{ mt: '22px', mb: '30px' }}>
+      <Typography variant="description" sx={{ mt: '22px', mb: '30px', alignSelf: 'center' }}>
         <Trans>
-          Need help connecting a wallet? <Link>Read our FAQ</Link>
+          Need help connecting a wallet?{' '}
+          <Link href="https://docs.aave.com/faq/troubleshooting" target="_blank">
+            Read our FAQ
+          </Link>
         </Trans>
       </Typography>
       <Typography variant="helperText">
