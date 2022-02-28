@@ -22,6 +22,11 @@ import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem
 import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvider';
 import { LiquidationRiskParametresInfoModal } from './LiquidationRiskParametresModal/LiquidationRiskParametresModal';
 
+import WalletIcon from '../../../public/icons/markets/wallet-icon.svg';
+import NetAPYIcon from '../../../public/icons/markets/net-apy-icon.svg';
+import EmptyHeartIcon from '../../../public/icons/markets/empty-heart-icon.svg';
+import ClaimGiftIcon from '../../../public/icons/markets/claim-gift-icon.svg';
+
 export const DashboardTopPanel = () => {
   const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
   const { user, reserves, loading } = useAppDataContext();
@@ -84,7 +89,7 @@ export const DashboardTopPanel = () => {
         withMarketSwitcher
         bridge={currentNetworkConfig.bridge}
       >
-        <TopInfoPanelItem title={<Trans>Net worth</Trans>} loading={loading}>
+        <TopInfoPanelItem icon={<WalletIcon />} title={<Trans>Net worth</Trans>} loading={loading}>
           {currentAccount ? (
             <FormattedNumber
               value={Number(user?.netWorthUSD || 0)}
@@ -92,7 +97,7 @@ export const DashboardTopPanel = () => {
               variant={valueTypographyVariant}
               visibleDecimals={2}
               compact
-              symbolsColor="#FFFFFFB2"
+              symbolsColor="#A5A8B6"
               symbolsVariant={noDataTypographyVariant}
             />
           ) : (
@@ -100,14 +105,14 @@ export const DashboardTopPanel = () => {
           )}
         </TopInfoPanelItem>
 
-        <TopInfoPanelItem title={<Trans>Net APY</Trans>} loading={loading}>
+        <TopInfoPanelItem icon={<NetAPYIcon />} title={<Trans>Net APY</Trans>} loading={loading}>
           {currentAccount ? (
             <FormattedNumber
               value={((user?.earnedAPY || 0) - (user?.debtAPY || 0)) / 100}
               variant={valueTypographyVariant}
               visibleDecimals={2}
               percent
-              symbolsColor="#FFFFFFB2"
+              symbolsColor="#A5A8B6"
               symbolsVariant={noDataTypographyVariant}
             />
           ) : (
@@ -117,6 +122,7 @@ export const DashboardTopPanel = () => {
 
         {currentAccount && user?.healthFactor !== '-1' && (
           <TopInfoPanelItem
+            icon={<EmptyHeartIcon />}
             title={
               <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
                 <Trans>Health factor</Trans>
@@ -145,7 +151,7 @@ export const DashboardTopPanel = () => {
         {currentAccount && claimableRewardsUsd > 0 && (
           <TopInfoPanelItem
             title={<Trans>Available rewards</Trans>}
-            hideIcon
+            icon={<ClaimGiftIcon />}
             withLine={!downToXSM}
             loading={loading}
           >
@@ -163,7 +169,7 @@ export const DashboardTopPanel = () => {
                   visibleDecimals={2}
                   compact
                   symbol="USD"
-                  symbolsColor="#FFFFFFB2"
+                  symbolsColor="#A5A8B6"
                   symbolsVariant={noDataTypographyVariant}
                 />
                 {assets && (

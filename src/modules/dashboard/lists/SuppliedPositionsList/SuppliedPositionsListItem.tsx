@@ -45,7 +45,7 @@ export const SuppliedPositionsListItem = ({
       }`}
     >
       <ListValueColumn
-        symbol={reserve.symbol}
+        symbol={reserve.iconSymbol}
         value={Number(underlyingBalance)}
         subValue={Number(underlyingBalanceUSD)}
         disabled={Number(underlyingBalance) === 0}
@@ -63,6 +63,7 @@ export const SuppliedPositionsListItem = ({
           usageAsCollateralEnabledOnUser={usageAsCollateralEnabledOnUser}
           canBeEnabledAsCollateral={canBeEnabledAsCollateral}
           onToggleSwitch={() => openCollateralChange(underlyingAsset)}
+          data-cy={`collateralStatus`}
         />
       </ListColumn>
 

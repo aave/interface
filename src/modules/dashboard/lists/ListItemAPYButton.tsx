@@ -63,6 +63,7 @@ export const ListItemAPYButton = ({
           )
         }
         disabled={disabled}
+        data-cy={`apyButton_${borrowRateMode}`}
       >
         {borrowRateMode}
       </Button>
@@ -74,12 +75,21 @@ export const ListItemAPYButton = ({
         MenuListProps={{
           'aria-labelledby': 'basic-button',
         }}
+        keepMounted={true}
+        data-cy={`apyMenu_${borrowRateMode}`}
       >
         <Typography variant="subheader2" sx={{ px: 4, py: 3 }}>
           <Trans>Select APY type to switch</Trans>
         </Typography>
 
-        <MenuItem value={InterestRate.Variable} onClick={onClick}>
+        <MenuItem
+          value={InterestRate.Variable}
+          onClick={() => {
+            onClick();
+            handleClose();
+          }}
+          disabled={borrowRateMode === InterestRate.Variable}
+        >
           <ListItemIcon>
             <SvgIcon>{borrowRateMode === InterestRate.Variable && <CheckIcon />}</SvgIcon>
           </ListItemIcon>
@@ -89,7 +99,14 @@ export const ListItemAPYButton = ({
           <FormattedNumber value={Number(variableBorrowAPY)} percent variant="description" />
         </MenuItem>
 
-        <MenuItem value={InterestRate.Stable} onClick={onClick}>
+        <MenuItem
+          value={InterestRate.Stable}
+          onClick={() => {
+            onClick();
+            handleClose();
+          }}
+          disabled={borrowRateMode === InterestRate.Stable}
+        >
           <ListItemIcon>
             <SvgIcon>{borrowRateMode === InterestRate.Stable && <CheckIcon />}</SvgIcon>
           </ListItemIcon>

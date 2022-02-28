@@ -31,7 +31,7 @@ export function MoreMenu() {
         aria-haspopup="true"
         onClick={handleClick}
         sx={{
-          color: 'common.white',
+          color: '#F1F1F3',
           minWidth: 'unset',
           p: '6px 8px',
           '&:hover': {
@@ -53,6 +53,7 @@ export function MoreMenu() {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
+        keepMounted={true}
       >
         {moreNavigation.map((item, index) => (
           <MenuItem component={Link} href={item.link} key={index}>

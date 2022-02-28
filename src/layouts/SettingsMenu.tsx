@@ -46,7 +46,7 @@ export function SettingsMenu() {
         onClick={handleSettingsClick}
         sx={{ p: '7px 8px', minWidth: 'unset', ml: 2 }}
       >
-        <SvgIcon sx={{ color: 'common.white' }} fontSize="small">
+        <SvgIcon sx={{ color: '#F1F1F3' }} fontSize="small">
           <CogIcon />
         </SvgIcon>
       </Button>
@@ -60,6 +60,7 @@ export function SettingsMenu() {
         open={settingsOpen}
         onClose={handleClose}
         sx={{ '.MuiMenuItem-root.Mui-disabled': { opacity: 1 } }}
+        keepMounted={true}
       >
         <MenuItem disabled sx={{ mb: '4px' }}>
           <Typography variant="subheader2" color="text.secondary">
@@ -80,6 +81,7 @@ export function SettingsMenu() {
         anchorEl={anchorEl}
         open={languagesOpen}
         onClose={handleClose}
+        keepMounted={true}
       >
         <LanguagesList onClick={handleCloseLanguage} component={MenuItem} />
       </Menu>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
+
 import { BasicModal } from '../../primitives/BasicModal';
 import { StakeModalContent } from './StakeModalContent';
 
@@ -8,11 +9,7 @@ export const StakeModal = () => {
   return (
     <BasicModal open={type === ModalType.Stake} setOpen={close}>
       {args?.icon && args?.stakeAssetName && (
-        <StakeModalContent
-          icon={args.icon}
-          stakeAssetName={args.stakeAssetName}
-          handleClose={close}
-        />
+        <StakeModalContent icon={args.icon} stakeAssetName={args.stakeAssetName} />
       )}
     </BasicModal>
   );

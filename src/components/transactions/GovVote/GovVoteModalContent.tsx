@@ -1,20 +1,18 @@
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { TxState } from 'src/helpers/types';
+import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { TxModalDetails } from '../FlowCommons/TxModalDetails';
+import { DetailsNumberLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { GovVoteActions } from './GovVoteActions';
 
 export type GovVoteModalContentProps = {
-  handleClose: () => void;
   proposalId: number;
   support: boolean;
   power: string;
@@ -35,23 +33,15 @@ export const GovVoteModalContent = ({
   proposalId,
   support,
   power: votingPower,
-  handleClose,
 }: GovVoteModalContentProps) => {
   const { chainId: connectedChainId } = useWeb3Context();
-  const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
-  const [txState, setTxState] = useState<TxState>({ success: false });
-
-  // error states
-  const [blockingError, setBlockingError] = useState<ErrorType>();
+  const { gasLimit, mainTxState: txState } = useModalContext();
 
   // handle delegate address errors
-  useEffect(() => {
-    if (votingPower === '0') {
-      setBlockingError(ErrorType.NOT_ENOUGH_VOTING_POWER);
-    } else {
-      setBlockingError(undefined);
-    }
-  }, [votingPower]);
+  let blockingError: ErrorType | undefined = undefined;
+  if (votingPower === '0') {
+    blockingError = ErrorType.NOT_ENOUGH_VOTING_POWER;
+  }
   // render error messages
   const handleBlocked = () => {
     switch (blockingError) {
@@ -72,33 +62,29 @@ export const GovVoteModalContent = ({
   const networkConfig = getNetworkConfig(govChain);
   const isWrongNetwork = connectedChainId !== govChain;
 
+  if (txState.txError) return <TxErrorView errorMessage={txState.txError} />;
+  if (txState.success) return <TxSuccessView action="Vote" />;
+
   return (
     <>
-      {!txState.txError && !txState.success && (
-        <>
-          <TxModalTitle title="Governance vote" />
-          {isWrongNetwork && (
-            <ChangeNetworkWarning networkName={networkConfig.name} chainId={govChain} />
-          )}
-          {blockingError !== undefined && (
-            <Typography variant="helperText" color="red">
-              {handleBlocked()}
-            </Typography>
-          )}
-          <TxModalDetails gasLimit={gasLimit} votingPower={votingPower} />
-        </>
+      <TxModalTitle title="Governance vote" />
+      {isWrongNetwork && (
+        <ChangeNetworkWarning networkName={networkConfig.name} chainId={govChain} />
       )}
+      {blockingError !== undefined && (
+        <Typography variant="helperText" color="red">
+          {handleBlocked()}
+        </Typography>
+      )}
+      <TxModalDetails gasLimit={gasLimit}>
+        <DetailsNumberLine description={<Trans>Voting power</Trans>} value={votingPower} />
+      </TxModalDetails>
 
-      {txState.txError && <TxErrorView errorMessage={txState.txError} />}
-      {txState.success && !txState.txError && <TxSuccessView action="Vote" />}
       {txState.gasEstimationError && <GasEstimationError error={txState.gasEstimationError} />}
 
       <GovVoteActions
-        setGasLimit={setGasLimit}
         proposalId={proposalId}
         support={support}
-        setTxState={setTxState}
-        handleClose={handleClose}
         isWrongNetwork={isWrongNetwork}
         blocked={blockingError !== undefined}
       />

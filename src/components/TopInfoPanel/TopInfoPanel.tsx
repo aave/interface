@@ -5,10 +5,12 @@ import { PageTitle, PageTitleProps } from './PageTitle';
 
 interface TopInfoPanelProps extends PageTitleProps {
   children?: ReactNode;
+  titleComponent?: ReactNode;
 }
 
 export const TopInfoPanel = ({
   pageTitle,
+  titleComponent,
   withMarketSwitcher,
   bridge,
   children,
@@ -16,19 +18,24 @@ export const TopInfoPanel = ({
   return (
     <Box
       sx={{
-        bgcolor: '#090815',
+        bgcolor: 'background.header',
         pt: { xs: 10, md: 12 },
-        pb: { xs: 16, xsm: 18.5, sm: 20, md: '75px', lg: '110px', xl: '124px', xxl: '144px' },
-        color: 'common.white',
+        pb: { xs: 18, md: 20, lg: '94px', xl: '92px', xxl: '96px' },
+        color: '#F1F1F3',
       }}
     >
       <Container sx={{ pb: 0 }}>
         <Box sx={{ px: { xs: 4, xsm: 6 } }}>
-          <PageTitle
-            pageTitle={pageTitle}
-            withMarketSwitcher={withMarketSwitcher}
-            bridge={bridge}
-          />
+          {!titleComponent && (
+            <PageTitle
+              pageTitle={pageTitle}
+              withMarketSwitcher={withMarketSwitcher}
+              bridge={bridge}
+            />
+          )}
+
+          {titleComponent && titleComponent}
+
           <Box
             sx={{
               display: 'flex',

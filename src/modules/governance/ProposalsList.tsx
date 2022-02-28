@@ -1,7 +1,13 @@
 import { ProposalState } from '@aave/contract-helpers';
-import { ChevronDownIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, MenuItem, Select, SelectChangeEvent, SvgIcon, Typography } from '@mui/material';
+import {
+  Box,
+  LinearProgress,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Typography,
+} from '@mui/material';
 import { GovernancePageProps } from 'pages/governance';
 import { useState } from 'react';
 import { usePolling } from 'src/hooks/usePolling';
@@ -76,24 +82,23 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
   usePolling(updatePendingProposals, 10000, false, [proposals.length]);
   return (
     <div>
-      <Box sx={{ px: 6, py: 8, display: 'flex', alignItems: 'center' }}>
+      <Box
+        sx={{
+          px: 6,
+          py: 8,
+          display: 'flex',
+          alignItems: 'center',
+          borderBottom: '1px solid',
+          borderColor: 'divider',
+        }}
+      >
         <Typography variant="h3" sx={{ flexGrow: 1 }}>
           <Trans>Proposals</Trans>
         </Typography>
         <Typography sx={{ mx: 4 }}>
           <Trans>Filter</Trans>
         </Typography>
-        <Select
-          id="filter"
-          value={proposalFilter}
-          sx={{ minWidth: 140 }}
-          onChange={handleChange}
-          IconComponent={(props) => (
-            <SvgIcon {...props}>
-              <ChevronDownIcon />
-            </SvgIcon>
-          )}
-        >
+        <Select id="filter" value={proposalFilter} sx={{ minWidth: 140 }} onChange={handleChange}>
           <MenuItem value="all">
             <Trans>All proposals</Trans>
           </MenuItem>
@@ -104,7 +109,7 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
           ))}
         </Select>
       </Box>
-      {loadingNewProposals && <div>loading TODO: replace with sth nicer</div>}
+      {loadingNewProposals && <LinearProgress />}
       {proposals
         .slice()
         .reverse()

@@ -28,6 +28,7 @@ const Content = ({
           variant="secondary14"
           sx={{ mb: !withTooltip && !!subValue ? '2px' : 0 }}
           color={disabled ? 'text.disabled' : 'text.main'}
+          data-cy={`nativeAmount`}
         />
         {capsComponent}
       </Box>
@@ -71,12 +72,14 @@ export const ListValueColumn = ({
                 variant="secondary14"
                 sx={{ mb: '2px' }}
                 symbolsColor="common.white"
+                compact={false}
               />
               <FormattedNumber
                 value={value}
                 variant="secondary12"
                 symbol={symbol}
                 symbolsColor="common.white"
+                compact={false}
               />
             </Box>
           }

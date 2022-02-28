@@ -13,7 +13,6 @@ export const GovVoteModal = () => {
           proposalId={args.proposalId}
           support={args.support}
           power={args.power}
-          handleClose={close}
         />
       )}
     </BasicModal>

@@ -14,6 +14,7 @@ import { InterestRateModelChart } from '../reserve-overview/InterestRateModelCha
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { eModeInfo } from 'src/utils/eMode';
+import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
   <Box
@@ -226,10 +227,30 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
             <TopInfoPanelItem title={<Trans>Total borrowed</Trans>} hideIcon variant="light">
               <FormattedNumber value={reserve.totalDebtUSD} symbol="USD" variant="main16" />
             </TopInfoPanelItem>
-            <TopInfoPanelItem title={<Trans>APY, variable</Trans>} hideIcon variant="light">
+            <TopInfoPanelItem
+              title={
+                <StableAPYTooltip
+                  text={<Trans>APY, variable</Trans>}
+                  key="APY_res_variable_type"
+                  variant="description"
+                />
+              }
+              hideIcon
+              variant="light"
+            >
               <FormattedNumber value={reserve.variableBorrowAPY} percent variant="main16" />
             </TopInfoPanelItem>
-            <TopInfoPanelItem title={<Trans>APY, stable</Trans>} hideIcon variant="light">
+            <TopInfoPanelItem
+              title={
+                <StableAPYTooltip
+                  text={<Trans>APY, stable</Trans>}
+                  key="APY_res_stable_type"
+                  variant="description"
+                />
+              }
+              hideIcon
+              variant="light"
+            >
               <FormattedNumber value={reserve.stableBorrowAPY} percent variant="main16" />
             </TopInfoPanelItem>
             {reserve.borrowCapUSD !== '0' && (

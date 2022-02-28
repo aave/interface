@@ -25,11 +25,15 @@ export const PageTitle = ({ pageTitle, withMarketSwitcher, bridge }: PageTitlePr
         flexDirection: { xs: 'column', xsm: 'row' },
       }}
     >
-      {pageTitle && (
+      {pageTitle && (downToXSM || !withMarketSwitcher) && (
         <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
           <Typography
             variant={downToXSM ? 'h2' : upToLG ? 'display1' : 'h1'}
-            sx={{ opacity: '0.7', mr: { xs: 5, xsm: 3 }, mb: { xs: 1, xsm: 0 } }}
+            sx={{
+              color: withMarketSwitcher ? 'text.muted' : 'text.white',
+              mr: { xs: 5, xsm: 3 },
+              mb: { xs: 1, xsm: 0 },
+            }}
           >
             {pageTitle}
           </Typography>
@@ -40,6 +44,7 @@ export const PageTitle = ({ pageTitle, withMarketSwitcher, bridge }: PageTitlePr
         sx={{
           display: 'flex',
           alignItems: 'flex-start',
+          mb: !pageTitle ? 4 : 0,
         }}
       >
         {withMarketSwitcher && <MarketSwitcher />}

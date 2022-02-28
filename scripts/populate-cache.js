@@ -58,10 +58,6 @@ var __toCommonJS = /* @__PURE__ */ ((cache) => {
     return cache && cache.get(module2) || (temp = __reExport(__markAsModule({}), module2, 1), cache && cache.set(module2, temp), temp);
   };
 })(typeof WeakMap !== "undefined" ? /* @__PURE__ */ new WeakMap() : 0);
-var __publicField = (obj, key, value) => {
-  __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
-  return value;
-};
 var __async = (__this, __arguments, generator) => {
   return new Promise((resolve, reject) => {
     var fulfilled = (value) => {
@@ -56031,7 +56027,7 @@ var import_contract_helpers2 = __toESM(require_cjs());
 var marketsData = {
   ["proto_eth_rinkeby_v3" /* proto_eth_rinkeby_v3 */]: {
     v3: true,
-    marketTitle: "AAVE v3 Rinkeby",
+    marketTitle: "Ethereum Rinkeby",
     chainId: import_contract_helpers2.ChainId.rinkeby,
     aTokenPrefix: "A",
     enabledFeatures: {
@@ -56051,7 +56047,7 @@ var marketsData = {
     }
   },
   ["proto_kovan" /* proto_kovan */]: {
-    marketTitle: "AAVE v2 Kovan",
+    marketTitle: "Ethereum Kovan",
     chainId: import_contract_helpers2.ChainId.kovan,
     aTokenPrefix: "A",
     enabledFeatures: {
@@ -56071,7 +56067,7 @@ var marketsData = {
     }
   },
   ["proto_mainnet" /* proto_mainnet */]: {
-    marketTitle: "AAVE v2",
+    marketTitle: "Ethereum",
     chainId: import_contract_helpers2.ChainId.mainnet,
     aTokenPrefix: "A",
     enabledFeatures: {
@@ -56094,7 +56090,7 @@ var marketsData = {
     halMarketName: "aavev2"
   },
   ["amm_kovan" /* amm_kovan */]: {
-    marketTitle: "AMM Kovan",
+    marketTitle: "Ethereum AMM Kovan",
     chainId: import_contract_helpers2.ChainId.kovan,
     aTokenPrefix: "AAMM",
     addresses: {
@@ -56108,7 +56104,7 @@ var marketsData = {
     }
   },
   ["amm_mainnet" /* amm_mainnet */]: {
-    marketTitle: "AMM",
+    marketTitle: "Ethereum AMM",
     chainId: import_contract_helpers2.ChainId.mainnet,
     aTokenPrefix: "AAMM",
     addresses: {
@@ -56121,7 +56117,7 @@ var marketsData = {
     }
   },
   ["proto_mumbai" /* proto_mumbai */]: {
-    marketTitle: "AAVE v2 Mumbai",
+    marketTitle: "Polygon Mumbai",
     chainId: import_contract_helpers2.ChainId.mumbai,
     aTokenPrefix: "AM",
     enabledFeatures: {
@@ -56139,7 +56135,7 @@ var marketsData = {
     }
   },
   ["proto_mumbai_v3" /* proto_mumbai_v3 */]: {
-    marketTitle: "AAVE v3 Mumbai",
+    marketTitle: "Polygon Mumbai",
     chainId: import_contract_helpers2.ChainId.mumbai,
     aTokenPrefix: "AM",
     enabledFeatures: {
@@ -56214,26 +56210,26 @@ var marketsData = {
     halMarketName: "aaveavalanche"
   },
   ["proto_arbitrum_rinkeby_v3" /* proto_arbitrum_rinkeby_v3 */]: {
-    marketTitle: "Arbitrum v3 Rinkeby",
+    marketTitle: "Arbitrum Rinkeby",
     v3: true,
     chainId: import_contract_helpers2.ChainId.arbitrum_rinkeby,
     aTokenPrefix: "AA",
     enabledFeatures: {
       faucet: true,
-      incentives: false
+      incentives: true
     },
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: "0xA5375B08232a0f5e911c8a92B390662e098a579A".toLowerCase(),
-      LENDING_POOL: "0xEce3383269ccE0B2ae66277101996b58c482817B",
-      WETH_GATEWAY: "0x9BBA071d1f2A397Da82687e951bFC0407280E348",
-      FAUCET: "0x02444D214962eC73ab733bB00Ca98879efAAa73d",
-      WALLET_BALANCE_PROVIDER: "0x63F0F2d9C338cA14ffb6D611df7d62710D13EBEF",
-      UI_POOL_DATA_PROVIDER: "0x1931722c81F8A6b27d21a8Abfc167134D2F1a790",
-      UI_INCENTIVE_DATA_PROVIDER: "0xA702C5Fe370734D38060621e05215C70e0A6939E"
+      LENDING_POOL_ADDRESS_PROVIDER: "0x82afFC26e25e7469D77D1F6922d3c669781CB232".toLowerCase(),
+      LENDING_POOL: "0xc3e6e13B82cA2c0536601fA4D746fB351B5A0591",
+      WETH_GATEWAY: "0x02D538e56A729C535F83b2DA20Ddf9AD7281FE6c",
+      FAUCET: "0x08Dbc45B4e520bd9686E3990d8E792507e83627F",
+      WALLET_BALANCE_PROVIDER: "0xE339D30cBa24C70dCCb82B234589E3C83249e658",
+      UI_POOL_DATA_PROVIDER: "0x7253fA6A8ab0ED2D31e05Dca9448FdD2FfBf6A06",
+      UI_INCENTIVE_DATA_PROVIDER: "0x2aD4c249719fd05eb644985620D284832132eD7f"
     }
   },
   ["proto_fuji_v3" /* proto_fuji_v3 */]: {
-    marketTitle: "Avalanche v3 Fuji",
+    marketTitle: "Avalanche Fuji",
     v3: true,
     chainId: import_contract_helpers2.ChainId.fuji,
     aTokenPrefix: "AAVA",
@@ -56252,7 +56248,7 @@ var marketsData = {
     }
   },
   ["proto_harmony_testnet_v3" /* proto_harmony_testnet_v3 */]: {
-    marketTitle: "Harmony v3 Testnet",
+    marketTitle: "Harmony Testnet",
     v3: true,
     chainId: import_contract_helpers2.ChainId.harmony_testnet,
     aTokenPrefix: "AAVA",
@@ -56271,7 +56267,7 @@ var marketsData = {
     }
   },
   ["proto_fantom_testnet_v3" /* proto_fantom_testnet_v3 */]: {
-    marketTitle: "Fantom v3 Testnet",
+    marketTitle: "Fantom Testnet",
     v3: true,
     chainId: import_contract_helpers2.ChainId.fantom_testnet,
     aTokenPrefix: "AAVA",
@@ -56290,7 +56286,7 @@ var marketsData = {
     }
   },
   ["proto_optimism_kovan_v3" /* proto_optimism_kovan_v3 */]: {
-    marketTitle: "Optimism v3 Kovan",
+    marketTitle: "Optimism Kovan",
     v3: true,
     chainId: import_contract_helpers2.ChainId.optimism_kovan,
     aTokenPrefix: "AAVA",
@@ -56324,7 +56320,7 @@ var networkConfigs = {
     explorerLink: "https://kovan.etherscan.io",
     rpcOnly: true,
     isTestnet: true,
-    networkLogoPath: "/icons/networks/polygon.svg"
+    networkLogoPath: "/icons/networks/ethereum.svg"
   },
   [import_contract_helpers3.ChainId.rinkeby]: {
     name: "Rinkeby",
@@ -56339,7 +56335,7 @@ var networkConfigs = {
     explorerLink: "https://rinkeby.etherscan.io/",
     rpcOnly: true,
     isTestnet: true,
-    networkLogoPath: "/icons/networks/polygon.svg"
+    networkLogoPath: "/icons/networks/ethereum.svg"
   },
   [import_contract_helpers3.ChainId.mainnet]: {
     name: "Ethereum",
@@ -56888,7 +56884,7 @@ var import_contract_helpers6 = __toESM(require_cjs());
 var LowWithLodash = class extends LowSync {
   constructor() {
     super(...arguments);
-    __publicField(this, "chain", import_lodash.default.chain(this).get("data"));
+    this.chain = import_lodash.default.chain(this).get("data");
   }
 };
 var file = (0, import_path2.join)(process.cwd(), "src/static-build", "ipfsFiles.json");
@@ -56949,7 +56945,7 @@ var isProposalStateImmutable = (proposal) => ![
 var LowWithLodash2 = class extends LowSync {
   constructor() {
     super(...arguments);
-    __publicField(this, "chain", import_lodash2.default.chain(this).get("data"));
+    this.chain = import_lodash2.default.chain(this).get("data");
   }
 };
 var file2 = (0, import_path3.join)(process.cwd(), "src/static-build", "proposals.json");
@@ -57015,7 +57011,7 @@ var getVotes = (startBlock, endBlock, currentBlock) => __async(void 0, null, fun
 var LowWithLodash3 = class extends LowSync {
   constructor() {
     super(...arguments);
-    __publicField(this, "chain", import_lodash3.default.chain(this).get("data"));
+    this.chain = import_lodash3.default.chain(this).get("data");
   }
 };
 var file3 = (0, import_path4.join)(process.cwd(), "src/static-build", "votes.json");

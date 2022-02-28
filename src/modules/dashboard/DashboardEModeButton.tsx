@@ -77,7 +77,7 @@ export const DashboardEModeButton = ({
             alignItems: 'center',
             position: 'relative',
             zIndex: 1,
-            bgcolor: 'background.surface',
+            bgcolor: 'background.paper',
             px: 1.5,
             borderRadius: '4px',
           }}
@@ -117,6 +117,7 @@ export const DashboardEModeButton = ({
         anchorEl={anchorEl}
         sx={{ '.MuiMenu-paper': { maxWidth: '280px' } }}
         onClose={handleClose}
+        keepMounted={true}
       >
         <Box sx={{ px: 4, pt: 2, pb: 3 }}>
           <Typography variant="subheader1" mb={isEModeDisabled ? 1 : 3}>

@@ -1,23 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { Alert, Checkbox, FormControlLabel, Link, Typography } from '@mui/material';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
-import { TxErrorView } from '../FlowCommons/Error';
-import { TxSuccessView } from '../FlowCommons/Success';
-import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
-import { TxModalTitle } from '../FlowCommons/TxModalTitle';
-import { TxState } from 'src/helpers/types';
-import { GasEstimationError } from '../FlowCommons/GasEstimationError';
+import { valueToBigNumber } from '@aave/math-utils';
+import { ArrowDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
-import { getStakeConfig } from 'src/ui-config/stakeConfig';
-import { StakeCooldownActions } from './StakeCooldownActions';
-import { GasStation } from '../GasStation/GasStation';
+import { Alert, Box, Checkbox, FormControlLabel, SvgIcon, Typography } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
+import React, { useState } from 'react';
+import { useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
+import { useModalContext } from 'src/hooks/useModal';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { getStakeConfig } from 'src/ui-config/stakeConfig';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+
+import { formattedTime, timeText } from '../../../helpers/timeHelper';
+import { Link } from '../../primitives/Link';
+import { TxErrorView } from '../FlowCommons/Error';
+import { GasEstimationError } from '../FlowCommons/GasEstimationError';
+import { TxSuccessView } from '../FlowCommons/Success';
+import { TxModalTitle } from '../FlowCommons/TxModalTitle';
+import { GasStation } from '../GasStation/GasStation';
+import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
+import { StakeCooldownActions } from './StakeCooldownActions';
 
 export type StakeCooldownProps = {
   stakeAssetName: string;
-  handleClose: () => void;
 };
 
 export enum ErrorType {
@@ -27,15 +31,13 @@ export enum ErrorType {
 
 type StakingType = 'aave' | 'bpt';
 
-export const StakeCooldownModalContent = ({ stakeAssetName, handleClose }: StakeCooldownProps) => {
+export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps) => {
   const { stakeUserResult, stakeGeneralResult } = useStakeData();
   const { chainId: connectedChainId } = useWeb3Context();
   const stakeConfig = getStakeConfig();
+  const { gasLimit, mainTxState: txState } = useModalContext();
 
   // states
-  const [txState, setTxState] = useState<TxState>({ success: false });
-  const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
-  const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
   const [cooldownCheck, setCooldownCheck] = useState(false);
 
   const userStakeData = stakeUserResult?.stakeUserUIData[stakeAssetName as StakingType];
@@ -49,19 +51,29 @@ export const StakeCooldownModalContent = ({ stakeAssetName, handleClose }: Stake
   const userCooldownDelta = now - userCooldown;
   const isCooldownActive = userCooldownDelta < stakeCooldownSeconds + stakeUnstakeWindow;
 
+  const cooldownPercent = valueToBigNumber(stakeCooldownSeconds)
+    .dividedBy(stakeCooldownSeconds + stakeUnstakeWindow)
+    .multipliedBy(100)
+    .toNumber();
+  const unstakeWindowPercent = valueToBigNumber(stakeUnstakeWindow)
+    .dividedBy(stakeCooldownSeconds + stakeUnstakeWindow)
+    .multipliedBy(100)
+    .toNumber();
+
+  const cooldownLineWidth = cooldownPercent < 15 ? 15 : cooldownPercent > 85 ? 85 : cooldownPercent;
+  const unstakeWindowLineWidth =
+    unstakeWindowPercent < 15 ? 15 : unstakeWindowPercent > 85 ? 85 : unstakeWindowPercent;
+
   const stakedAmount =
     stakeUserResult?.stakeUserUIData[stakeAssetName as StakingType].stakeTokenUserBalance;
 
   // error handler
-  useEffect(() => {
-    if (stakedAmount === '0') {
-      setBlockingError(ErrorType.NOT_ENOUGH_BALANCE);
-    } else if (isCooldownActive) {
-      setBlockingError(ErrorType.ALREADY_ON_COOLDOWN);
-    } else {
-      setBlockingError(undefined);
-    }
-  }, [isCooldownActive, stakedAmount]);
+  let blockingError: ErrorType | undefined = undefined;
+  if (stakedAmount === '0') {
+    blockingError = ErrorType.NOT_ENOUGH_BALANCE;
+  } else if (isCooldownActive) {
+    blockingError = ErrorType.ALREADY_ON_COOLDOWN;
+  }
 
   const handleBlocked = () => {
     switch (blockingError) {
@@ -79,63 +91,162 @@ export const StakeCooldownModalContent = ({ stakeAssetName, handleClose }: Stake
   const networkConfig = getNetworkConfig(stakingChain);
   const isWrongNetwork = connectedChainId !== stakingChain;
 
+  if (txState.txError) return <TxErrorView errorMessage={txState.txError} />;
+  if (txState.success) return <TxSuccessView action="Stake cooldown activated" />;
+
+  const timeMessage = (time: number) => {
+    return `${formattedTime(time)} ${timeText(time)}`;
+  };
+
   return (
     <>
-      {!txState.txError && !txState.success && (
-        <>
-          <TxModalTitle title="Cooldown to unstake" />
-          {isWrongNetwork && (
-            <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
-          )}
-          <>
-            <Typography variant="description">
-              <Trans>
-                The cooldown period is 10 days. After 10 days of cooldown, you will enter unstake
-                window of 2 days. You will continue receiving rewards during cooldown and unstake
-                window.
-              </Trans>{' '}
-              <Typography component={Link} variant="description">
-                Learn more.
-              </Typography>
-            </Typography>
-          </>
-          {blockingError !== undefined && (
-            <Typography variant="helperText" color="red">
-              {handleBlocked()}
-            </Typography>
-          )}
-
-          <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} />
-          <Alert severity="error">
-            <Typography variant="caption">
-              <Trans>
-                If you DO NOT unstake within 2 days of unstake widow, you will need to activate
-                cooldown process again.
-              </Trans>
-            </Typography>
-          </Alert>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={cooldownCheck}
-                onClick={() => setCooldownCheck(!cooldownCheck)}
-                inputProps={{ 'aria-label': 'controlled' }}
-              />
-            }
-            label={<Trans>I understand how cooldown (10 days) and unstaking (2 days) work</Trans>}
-          />
-        </>
+      <TxModalTitle title="Cooldown to unstake" />
+      {isWrongNetwork && (
+        <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
       )}
-      {txState.txError && <TxErrorView errorMessage={txState.txError} />}
-      {txState.success && !txState.txError && <TxSuccessView action="Stake cooldown activated" />}
+      <Typography variant="description" sx={{ mb: 6 }}>
+        <Trans>
+          The cooldown period is {timeMessage(stakeCooldownSeconds)}. After{' '}
+          {timeMessage(stakeCooldownSeconds)} of cooldown, you will enter unstake window of{' '}
+          {timeMessage(stakeUnstakeWindow)}. You will continue receiving rewards during cooldown and
+          unstake window.
+        </Trans>{' '}
+        <Link
+          variant="description"
+          // TODO: need change link
+          href="https://docs.aave.com/faq/"
+          sx={{ textDecoration: 'underline' }}
+        >
+          <Trans>Learn more</Trans>
+        </Link>
+        .
+      </Typography>
+
+      <Box mb={6}>
+        <Box
+          sx={{
+            width: `${unstakeWindowLineWidth}%`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            textAlign: 'center',
+            flexDirection: 'column',
+            ml: 'auto',
+          }}
+        >
+          <Typography variant="helperText" mb={1}>
+            <Trans>You unstake here</Trans>
+          </Typography>
+          <SvgIcon sx={{ fontSize: '13px' }}>
+            <ArrowDownIcon />
+          </SvgIcon>
+        </Box>
+
+        <Box sx={{ display: 'flex', alignItems: 'center', my: 3 }}>
+          <Box
+            sx={{
+              height: '2px',
+              width: `${cooldownLineWidth}%`,
+              bgcolor: 'error.main',
+              position: 'relative',
+              '&:after': {
+                content: "''",
+                position: 'absolute',
+                left: 0,
+                top: '50%',
+                transform: 'translateY(-50%)',
+                bgcolor: 'error.main',
+                width: '2px',
+                height: '8px',
+                borderRadius: '2px',
+              },
+            }}
+          />
+          <Box
+            sx={{
+              height: '2px',
+              width: `${unstakeWindowLineWidth}%`,
+              bgcolor: 'success.main',
+              position: 'relative',
+              '&:after, &:before': {
+                content: "''",
+                position: 'absolute',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                bgcolor: 'success.main',
+                width: '2px',
+                height: '8px',
+                borderRadius: '2px',
+              },
+              '&:before': {
+                left: 0,
+              },
+              '&:after': {
+                right: 0,
+              },
+            }}
+          />
+        </Box>
+
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Box>
+            <Typography variant="helperText" mb={1}>
+              <Trans>Cooldown period</Trans>
+            </Typography>
+            <Typography variant="subheader2" color="error.main">
+              <Trans>{timeMessage(stakeCooldownSeconds)}</Trans>
+            </Typography>
+          </Box>
+          <Box sx={{ textAlign: 'right' }}>
+            <Typography variant="helperText" mb={1}>
+              <Trans>Unstake window</Trans>
+            </Typography>
+            <Typography variant="subheader2" color="success.main">
+              <Trans>{timeMessage(stakeUnstakeWindow)}</Trans>
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
+
+      {blockingError !== undefined && (
+        <Typography variant="helperText" color="red">
+          {handleBlocked()}
+        </Typography>
+      )}
+
+      <Alert severity="error" sx={{ mb: 6 }}>
+        <Typography variant="caption">
+          <Trans>
+            If you DO NOT unstake within {timeMessage(stakeUnstakeWindow)} of unstake window, you
+            will need to activate cooldown process again.
+          </Trans>
+        </Typography>
+      </Alert>
+
+      <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} />
+
+      <FormControlLabel
+        sx={{ mt: 12 }}
+        control={
+          <Checkbox
+            checked={cooldownCheck}
+            onClick={() => setCooldownCheck(!cooldownCheck)}
+            inputProps={{ 'aria-label': 'controlled' }}
+          />
+        }
+        label={
+          <Trans>
+            I understand how cooldown ({timeMessage(stakeCooldownSeconds)}) and unstaking (
+            {timeMessage(stakeUnstakeWindow)}) work
+          </Trans>
+        }
+      />
+
       {txState.gasEstimationError && <GasEstimationError error={txState.gasEstimationError} />}
 
       <StakeCooldownActions
         sx={{ mt: '48px' }}
-        setTxState={setTxState}
-        handleClose={handleClose}
         isWrongNetwork={isWrongNetwork}
-        setGasLimit={setGasLimit}
         blocked={blockingError !== undefined || !cooldownCheck}
         selectedToken={stakeAssetName}
       />

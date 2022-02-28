@@ -1,10 +1,12 @@
 import { formatUserSummary } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Alert, Button, Link, Typography } from '@mui/material';
+import { Alert, Box, Button, Link, SvgIcon, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { EmodeCategory, TxState } from 'src/helpers/types';
+import { Row } from 'src/components/primitives/Row';
+import { EmodeCategory } from 'src/helpers/types';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
+import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
@@ -12,16 +14,13 @@ import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { TxModalDetails } from '../FlowCommons/TxModalDetails';
+import { DetailsHFLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { EmodeActions } from './EmodeActions';
 import { getEmodeMessage } from './EmodeNaming';
 import { EmodeSelect } from './EmodeSelect';
-
-export type EmodeModalContentProps = {
-  handleClose: () => void;
-};
+import LightningBoltGradient from '/public/lightningBoltGradient.svg';
 
 export enum ErrorType {
   EMODE_DISABLED_LIQUIDATION,
@@ -30,7 +29,7 @@ export enum ErrorType {
 }
 
 // TODO: need add Current Loan to Value
-export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
+export const EmodeModalContent = () => {
   const {
     user,
     reserves,
@@ -41,10 +40,7 @@ export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
   const { currentChainId } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
   const currentTimestamp = useCurrentTimestamp(1);
-
-  const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
-  const [emodeTxState, setEmodeTxState] = useState<TxState>({ success: false });
-  const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
+  const { gasLimit, mainTxState: emodeTxState } = useModalContext();
 
   const [selectedEmode, setSelectedEmode] = useState<EmodeCategory>();
   const [emodeCategories, setEmodeCategories] = useState<Record<number, EmodeCategory>>({});
@@ -107,34 +103,28 @@ export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
   });
 
   // error handling
-  useEffect(() => {
-    // if user is disabling eMode
-    if (user.isInEmode && selectedEmode?.id === 0) {
-      if (Number(newSummary.healthFactor) < 1.01 && newSummary.healthFactor !== '-1') {
-        setBlockingError(ErrorType.EMODE_DISABLED_LIQUIDATION); // intl.formatMessage(messages.eModeDisabledLiquidation);
-      } else {
-        setBlockingError(undefined);
-      }
-    } else if (user.userEmodeCategoryId !== selectedEmode?.id) {
-      // check if user has open positions different than future emode
-      const hasIncompatiblePositions = user.userReservesData.some(
-        (userReserve) =>
-          (Number(userReserve.scaledVariableDebt) > 0 ||
-            Number(userReserve.principalStableDebt) > 0) &&
-          userReserve.reserve.eModeCategoryId !== selectedEmode?.id
-      );
-
-      if (hasIncompatiblePositions) {
-        setBlockingError(ErrorType.CLOSE_POSITIONS_BEFORE_SWITCHING);
-      } else {
-        setBlockingError(undefined);
-      }
-    } else if (selectedEmode.id === user.userEmodeCategoryId) {
-      setBlockingError(ErrorType.SAME_EMODE);
-    } else {
-      setBlockingError(undefined);
+  let blockingError: ErrorType | undefined = undefined;
+  // if user is disabling eMode
+  if (user.isInEmode && selectedEmode?.id === 0) {
+    if (Number(newSummary.healthFactor) < 1.01 && newSummary.healthFactor !== '-1') {
+      blockingError = ErrorType.EMODE_DISABLED_LIQUIDATION; // intl.formatMessage(messages.eModeDisabledLiquidation);
     }
-  }, [selectedEmode, user.isInEmode, newSummary, user, user.userEmodeCategoryId]);
+  } else if (user.userEmodeCategoryId !== selectedEmode?.id) {
+    // check if user has open positions different than future emode
+    const hasIncompatiblePositions = user.userReservesData.some(
+      (userReserve) =>
+        (Number(userReserve.scaledVariableDebt) > 0 ||
+          Number(userReserve.principalStableDebt) > 0) &&
+        userReserve.reserve.eModeCategoryId !== selectedEmode?.id
+    );
+
+    if (hasIncompatiblePositions) {
+      blockingError = ErrorType.CLOSE_POSITIONS_BEFORE_SWITCHING;
+    }
+  } else if (selectedEmode.id === user.userEmodeCategoryId) {
+    blockingError = ErrorType.SAME_EMODE;
+  }
+
   // render error messages
   const handleBlocked = () => {
     switch (blockingError) {
@@ -173,83 +163,87 @@ export const EmodeModalContent = ({ handleClose }: EmodeModalContentProps) => {
   // is Network mismatched
   const isWrongNetwork = currentChainId !== connectedChainId;
 
+  if (emodeTxState.txError) return <TxErrorView errorMessage={emodeTxState.txError} />;
+  if (emodeTxState.success) return <TxSuccessView action="Emode" />;
+
   return (
     <>
-      {!emodeTxState.txError && !emodeTxState.success && (
-        <>
-          <TxModalTitle title="Efficiency mode (E-Mode)" />
-          {isWrongNetwork && (
-            <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
-          )}
-
-          {selectedEmode && selectedEmode.id !== 0 ? (
-            <Alert severity="info" sx={{ mb: 6 }}>
-              <Trans>
-                E-Mode increases your borrowing power for a selected category of assets up to 99%.{' '}
-                <Link
-                  href="https://docs.aave.com/faq/"
-                  target="_blank"
-                  variant="main14"
-                  sx={{ ml: 1 }}
-                >
-                  <Trans>Learn more</Trans>
-                </Link>
-              </Trans>
-            </Alert>
-          ) : (
-            <Alert severity="info" sx={{ mb: 6 }}>
-              <Trans>Warning here about geting out of emode</Trans>
-            </Alert>
-          )}
-
-          {selectedEmode && selectedEmode.id !== 0 && (
-            <Alert severity="info" sx={{ mb: 6 }}>
-              <Trans>
-                Enabling E-Mode only allows you to borrow assets belonging to the selected category
-                Stablecoins. Please visit our{' '}
-                <Link href="https://docs.aave.com/faq/" target="_blank">
-                  FAQ guide
-                </Link>{' '}
-                to learn more about how it works and the applied restrictions.
-              </Trans>
-            </Alert>
-          )}
-
-          {Object.keys(emodeCategories).length > 2 && user.userEmodeCategoryId === 0 && (
-            <EmodeSelect
-              emodeCategories={emodeCategories}
-              selectedEmode={selectedEmode?.id || 0}
-              setSelectedEmode={setSelectedEmode}
-            />
-          )}
-
-          {blockingError !== undefined && (
-            <Typography variant="helperText" color="red">
-              {handleBlocked()}
-            </Typography>
-          )}
-
-          <TxModalDetails
-            showHf={true}
-            healthFactor={user.healthFactor}
-            futureHealthFactor={newSummary.healthFactor}
-            gasLimit={gasLimit}
-            emodeAssets={selectedEmode?.assets}
-            selectedEmode={selectedEmode?.id || 0}
-          />
-        </>
+      <TxModalTitle title="Efficiency mode (E-Mode)" />
+      {isWrongNetwork && (
+        <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
       )}
 
-      {emodeTxState.txError && <TxErrorView errorMessage={emodeTxState.txError} />}
-      {emodeTxState.success && !emodeTxState.txError && <TxSuccessView action="Emode" />}
+      {selectedEmode && selectedEmode.id !== 0 ? (
+        <Alert severity="info" sx={{ mb: 6 }}>
+          <Trans>
+            E-Mode increases your borrowing power for a selected category of assets up to 99%.{' '}
+            <Link href="https://docs.aave.com/faq/" target="_blank" variant="main14" sx={{ ml: 1 }}>
+              <Trans>Learn more</Trans>
+            </Link>
+          </Trans>
+        </Alert>
+      ) : (
+        <Alert severity="info" sx={{ mb: 6 }}>
+          <Trans>Warning here about geting out of emode</Trans>
+        </Alert>
+      )}
+
+      {selectedEmode && selectedEmode.id !== 0 && (
+        <Alert severity="info" sx={{ mb: 6 }}>
+          <Trans>
+            Enabling E-Mode only allows you to borrow assets belonging to the selected category
+            Stablecoins. Please visit our{' '}
+            <Link href="https://docs.aave.com/faq/" target="_blank">
+              FAQ guide
+            </Link>{' '}
+            to learn more about how it works and the applied restrictions.
+          </Trans>
+        </Alert>
+      )}
+
+      {Object.keys(emodeCategories).length > 2 && user.userEmodeCategoryId === 0 && (
+        <EmodeSelect
+          emodeCategories={emodeCategories}
+          selectedEmode={selectedEmode?.id || 0}
+          setSelectedEmode={setSelectedEmode}
+        />
+      )}
+
+      {blockingError !== undefined && <Alert severity="error">{handleBlocked()}</Alert>}
+
+      <TxModalDetails gasLimit={gasLimit}>
+        {selectedEmode && selectedEmode.id !== 0 && (
+          <>
+            <Row caption={<Trans>Asset category</Trans>} captionVariant="description" mb={4}>
+              <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                <SvgIcon sx={{ fontSize: '12px', mr: 0.5 }}>
+                  <LightningBoltGradient />
+                </SvgIcon>
+                <Typography variant="subheader1">{getEmodeMessage(selectedEmode.id)}</Typography>
+              </Box>
+            </Row>
+            <Row caption={<Trans>Available assets</Trans>} captionVariant="description" mb={4}>
+              {!!selectedEmode ? (
+                <Typography>{selectedEmode.assets.join(', ')}</Typography>
+              ) : (
+                <Typography>
+                  <Trans>All</Trans>
+                </Typography>
+              )}
+            </Row>
+          </>
+        )}
+        <DetailsHFLine
+          healthFactor={user.healthFactor}
+          futureHealthFactor={newSummary.healthFactor}
+        />
+      </TxModalDetails>
+
       {emodeTxState.gasEstimationError && (
         <GasEstimationError error={emodeTxState.gasEstimationError} />
       )}
 
       <EmodeActions
-        setGasLimit={setGasLimit}
-        setEmodeTxState={setEmodeTxState}
-        handleClose={handleClose}
         isWrongNetwork={isWrongNetwork}
         blocked={blockingError !== undefined}
         selectedEmode={selectedEmode?.id || 0}

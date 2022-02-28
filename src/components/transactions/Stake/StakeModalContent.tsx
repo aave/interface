@@ -1,26 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { StakeActions } from './StakeActions';
-import { Typography } from '@mui/material';
-import { AssetInput } from '../AssetInput';
 import { normalize, valueToBigNumber } from '@aave/math-utils';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
-import { TxErrorView } from '../FlowCommons/Error';
-import { TxSuccessView } from '../FlowCommons/Success';
-import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
-import { TxModalTitle } from '../FlowCommons/TxModalTitle';
-import { TxState } from 'src/helpers/types';
-import { TxModalDetails } from '../FlowCommons/TxModalDetails';
-import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { Trans } from '@lingui/macro';
-import { CooldownWarning } from '../../Warnings/CooldownWarning';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { Typography } from '@mui/material';
+import React, { useRef, useState } from 'react';
 import { useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
+import { useModalContext } from 'src/hooks/useModal';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getStakeConfig } from 'src/ui-config/stakeConfig';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+
+import { CooldownWarning } from '../../Warnings/CooldownWarning';
+import { AssetInput } from '../AssetInput';
+import { TxErrorView } from '../FlowCommons/Error';
+import { GasEstimationError } from '../FlowCommons/GasEstimationError';
+import { TxSuccessView } from '../FlowCommons/Success';
+import { DetailsNumberLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
+import { TxModalTitle } from '../FlowCommons/TxModalTitle';
+import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
+import { StakeActions } from './StakeActions';
 
 export type StakeProps = {
   stakeAssetName: string;
   icon: string;
-  handleClose: () => void;
 };
 
 export enum ErrorType {
@@ -29,20 +29,16 @@ export enum ErrorType {
 
 type StakingType = 'aave' | 'bpt';
 
-export const StakeModalContent = ({ stakeAssetName, icon, handleClose }: StakeProps) => {
+export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
   const data = useStakeData();
   const stakeData = data.stakeGeneralResult?.stakeGeneralUIData[stakeAssetName as StakingType];
   const { chainId: connectedChainId } = useWeb3Context();
   const stakeConfig = getStakeConfig();
+  const { gasLimit, mainTxState: txState } = useModalContext();
 
   // states
-  const [txState, setTxState] = useState<TxState>({ success: false });
-  const [amount, setAmount] = useState('');
-  const [amountToSupply, setAmountToSupply] = useState(amount);
-  const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
-  const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
-  const [isMax, setIsMax] = useState(false);
-  const [maxAmount, setMaxAmount] = useState('0');
+  const [_amount, setAmount] = useState('');
+  const amountRef = useRef<string>();
 
   const walletBalance = normalize(
     data.stakeUserResult?.stakeUserUIData[stakeAssetName as StakingType]
@@ -50,41 +46,26 @@ export const StakeModalContent = ({ stakeAssetName, icon, handleClose }: StakePr
     18
   );
 
-  useEffect(() => {
-    if (amount === '-1') {
-      setAmountToSupply(walletBalance);
-      setIsMax(true);
-    } else {
-      setAmountToSupply(amount);
-      setIsMax(false);
-    }
-  }, [amount, walletBalance]);
+  const isMaxSelected = _amount === '-1';
+  const amount = isMaxSelected ? walletBalance : _amount;
 
-  useEffect(() => {
-    if (isMax) {
-      setMaxAmount(walletBalance);
-    }
-  }, [isMax]);
-
-  // This amount will stay the same after tx is submited even if we have an interval
-  // between tx success and tx success confirmation. This way all calcs are static
-  // and don't get recalculated in this interval state
-  const staticAmount = isMax ? maxAmount : amountToSupply;
+  const handleChange = (value: string) => {
+    const maxSelected = value === '-1';
+    amountRef.current = maxSelected ? walletBalance : value;
+    setAmount(value);
+  };
 
   // staking token usd value
   const amountInUsd =
-    Number(staticAmount) *
+    Number(amount) *
     (Number(normalize(stakeData?.stakeTokenPriceEth || 1, 18)) /
       Number(normalize(data.stakeGeneralResult?.stakeGeneralUIData.usdPriceEth || 1, 18)));
 
   // error handler
-  useEffect(() => {
-    if (valueToBigNumber(staticAmount).gt(walletBalance)) {
-      setBlockingError(ErrorType.NOT_ENOUGH_BALANCE);
-    } else {
-      setBlockingError(undefined);
-    }
-  }, [walletBalance, staticAmount]);
+  let blockingError: ErrorType | undefined = undefined;
+  if (valueToBigNumber(amount).gt(walletBalance)) {
+    blockingError = ErrorType.NOT_ENOUGH_BALANCE;
+  }
 
   const handleBlocked = () => {
     switch (blockingError) {
@@ -100,48 +81,50 @@ export const StakeModalContent = ({ stakeAssetName, icon, handleClose }: StakePr
   const networkConfig = getNetworkConfig(stakingChain);
   const isWrongNetwork = connectedChainId !== stakingChain;
 
+  if (txState.txError) return <TxErrorView errorMessage={txState.txError} />;
+  if (txState.success)
+    return <TxSuccessView action="Staked" amount={amountRef.current} symbol={icon} />;
+
   return (
     <>
-      {!txState.txError && !txState.success && (
-        <>
-          <TxModalTitle title="Stake" symbol={icon} />
-          <CooldownWarning />
-          {isWrongNetwork && (
-            <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
-          )}
+      <TxModalTitle title="Stake" symbol={icon} />
+      {isWrongNetwork && (
+        <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
+      )}
 
-          <AssetInput
-            value={staticAmount}
-            onChange={setAmount}
-            usdValue={amountInUsd.toString()}
-            symbol={icon}
-            assets={[
-              {
-                balance: walletBalance.toString(),
-                symbol: icon,
-              },
-            ]}
-          />
-          {blockingError !== undefined && (
-            <Typography variant="helperText" color="red">
-              {handleBlocked()}
-            </Typography>
-          )}
-          <TxModalDetails stakeAPR={stakeData?.stakeApy || '0'} gasLimit={gasLimit} />
-        </>
+      <CooldownWarning />
+
+      <AssetInput
+        value={amount}
+        onChange={handleChange}
+        usdValue={amountInUsd.toString()}
+        symbol={icon}
+        assets={[
+          {
+            balance: walletBalance.toString(),
+            symbol: icon,
+          },
+        ]}
+        isMaxSelected={isMaxSelected}
+        maxValue={walletBalance.toString()}
+      />
+      {blockingError !== undefined && (
+        <Typography variant="helperText" color="red">
+          {handleBlocked()}
+        </Typography>
       )}
-      {txState.txError && <TxErrorView errorMessage={txState.txError} />}
-      {txState.success && !txState.txError && (
-        <TxSuccessView action="Staked" amount={staticAmount} symbol={icon} />
-      )}
+      <TxModalDetails gasLimit={gasLimit}>
+        <DetailsNumberLine
+          description={<Trans>Staking APR</Trans>}
+          value={Number(stakeData?.stakeApy || '0') / 10000}
+          percent
+        />
+      </TxModalDetails>
       {txState.gasEstimationError && <GasEstimationError error={txState.gasEstimationError} />}
       <StakeActions
         sx={{ mt: '48px' }}
-        setTxState={setTxState}
-        amountToStake={amountToSupply}
-        handleClose={handleClose}
+        amountToStake={amount}
         isWrongNetwork={isWrongNetwork}
-        setGasLimit={setGasLimit}
         symbol={icon}
         blocked={blockingError !== undefined}
         selectedToken={stakeAssetName}

@@ -1,31 +1,25 @@
 import { canBeEnsAddress } from '@aave/contract-helpers';
 import { Trans, t } from '@lingui/macro';
-import { FormControl, FormHelperText, Input, Typography } from '@mui/material';
+import { FormControl, TextField, Typography } from '@mui/material';
 import { ethers } from 'ethers';
-import { useEffect, useState } from 'react';
-import { DelegationType, TxState } from 'src/helpers/types';
+import { parseUnits } from 'ethers/lib/utils';
+import { useState } from 'react';
+import { DelegationType } from 'src/helpers/types';
 import { useAaveTokensProviderContext } from 'src/hooks/governance-data-provider/AaveTokensDataProvider';
+import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import {
-  DelegationToken,
-  delegationTokens,
-  governanceConfig,
-} from 'src/ui-config/governanceConfig';
+import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
+import { GasStation } from '../GasStation/GasStation';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
-import { DelegationTokenSelector } from './DelegationTokenSelector';
+import { DelegationTokenSelector, DelegationToken } from './DelegationTokenSelector';
 import { DelegationTypeSelector } from './DelegationTypeSelector';
 import { GovDelegationActions } from './GovDelegationActions';
-
-export type GovDelegationModalContentProps = {
-  handleClose: () => void;
-};
 
 export interface Asset {
   symbol: string;
@@ -39,53 +33,50 @@ export enum ErrorType {
   NOT_AN_ADDRESS,
 }
 
-export const GovDelegationModalContent = ({ handleClose }: GovDelegationModalContentProps) => {
+export const GovDelegationModalContent = () => {
   const { chainId: connectedChainId } = useWeb3Context();
   const {
     daveTokens: { aave, stkAave },
   } = useAaveTokensProviderContext();
-
-  const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
-  const [txState, setTxState] = useState<TxState>({ success: false });
+  const { gasLimit, mainTxState: txState } = useModalContext();
 
   // error states
-  const [tokenBlockingError, setTokenBlockingError] = useState<ErrorType>();
-  const [delegateAddressBlockingError, setDelegateAddressBlockingError] = useState<
-    ErrorType | undefined
-  >();
 
   // selector states
-  const [delegationToken, setDelegationToken] = useState<DelegationToken>(delegationTokens['AAVE']);
+  const [delegationToken, setDelegationToken] = useState<string>('');
   const [delegationType, setDelegationType] = useState(DelegationType.VOTING);
   const [delegate, setDelegate] = useState('');
 
-  useEffect(() => {
-    if (delegationToken.symbol === 'AAVE' && aave === '0') {
-      setTokenBlockingError(ErrorType.NOT_ENOUGH_BALANCE);
-    } else if (delegationToken.symbol === 'stkAAVE' && stkAave === '0') {
-      setTokenBlockingError(ErrorType.NOT_ENOUGH_BALANCE);
-    } else {
-      setTokenBlockingError(undefined);
-    }
-  }, [delegationToken, aave, stkAave]);
+  const tokens: DelegationToken[] = [
+    {
+      address: governanceConfig.stkAaveTokenAddress,
+      symbol: 'stkAAVE',
+      name: 'Staked AAVE',
+      amount: stkAave,
+    },
+    {
+      address: governanceConfig.aaveTokenAddress,
+      symbol: 'AAVE',
+      name: 'AAVE',
+      amount: aave,
+    },
+  ];
+
+  const selectedToken = tokens.find((t) => t.address === delegationToken);
 
   // handle delegate address errors
-  useEffect(() => {
-    if (delegate !== '' && !ethers.utils.isAddress(delegate) && !canBeEnsAddress(delegate)) {
-      setDelegateAddressBlockingError(ErrorType.NOT_AN_ADDRESS);
-    } else {
-      setDelegateAddressBlockingError(undefined);
-    }
-  }, [delegate]);
+  let delegateAddressBlockingError: ErrorType | undefined = undefined;
+  if (delegate !== '' && !ethers.utils.isAddress(delegate) && !canBeEnsAddress(delegate)) {
+    delegateAddressBlockingError = ErrorType.NOT_AN_ADDRESS;
+  }
+
   // render error messages
   const handleDelegateAddressError = () => {
     switch (delegateAddressBlockingError) {
       case ErrorType.NOT_AN_ADDRESS:
         return (
           // TODO: fix text
-          <Typography>
-            <Trans>Not a valid address</Trans>
-          </Typography>
+          <Trans>Not a valid address</Trans>
         );
       default:
         return null;
@@ -97,68 +88,57 @@ export const GovDelegationModalContent = ({ handleClose }: GovDelegationModalCon
   const networkConfig = getNetworkConfig(govChain);
   const isWrongNetwork = connectedChainId !== govChain;
 
+  if (txState.txError) return <TxErrorView errorMessage={txState.txError} />;
+  if (txState.success) return <TxSuccessView action="Delegation" />;
   return (
     <>
-      {!txState.txError && !txState.success && (
-        <>
-          <TxModalTitle title="Governance delegation" />
-          {isWrongNetwork && (
-            <ChangeNetworkWarning networkName={networkConfig.name} chainId={govChain} />
-          )}
-          <Typography variant="description">
-            <Trans>Asset</Trans>
-          </Typography>
-          <DelegationTokenSelector
-            setDelegationToken={setDelegationToken}
-            delegationToken={delegationToken}
-            delegationTokens={delegationTokens}
-            blockingError={tokenBlockingError}
-          />
-          <Typography variant="description">
-            <Trans>Type</Trans>
-          </Typography>
-          <DelegationTypeSelector
-            delegationType={delegationType}
-            setDelegationType={setDelegationType}
-          />
-          <Typography variant="description">
-            <Trans>Delegation to address</Trans>
-          </Typography>
-          <FormControl error={delegateAddressBlockingError !== undefined} variant="standard">
-            <Input
-              value={delegate}
-              onChange={(e) => setDelegate(e.target.value)}
-              placeholder={t`Enter Eth address`}
-              error={delegateAddressBlockingError !== undefined}
-            />
-            {delegateAddressBlockingError !== undefined && (
-              <FormHelperText>
-                <Typography variant="helperText" sx={{ color: 'red' }}>
-                  {handleDelegateAddressError()}
-                </Typography>
-              </FormHelperText>
-            )}
-          </FormControl>
-          <TxModalDetails gasLimit={gasLimit} />
-        </>
+      <TxModalTitle title="Delegate your power" />
+      {isWrongNetwork && (
+        <ChangeNetworkWarning networkName={networkConfig.name} chainId={govChain} />
       )}
+      <Typography variant="description">
+        <Trans>Asset to delegate</Trans>
+      </Typography>
+      <DelegationTokenSelector
+        setDelegationToken={setDelegationToken}
+        delegationTokenAddress={delegationToken}
+        delegationTokens={tokens}
+      />
+      <Typography variant="description">
+        <Trans>Type of delegation</Trans>
+      </Typography>
+      <DelegationTypeSelector
+        delegationType={delegationType}
+        setDelegationType={setDelegationType}
+      />
+      <Typography variant="description">
+        <Trans>Recipient address</Trans>
+      </Typography>
+      <FormControl error={delegateAddressBlockingError !== undefined} variant="standard" fullWidth>
+        <TextField
+          variant="outlined"
+          fullWidth
+          value={delegate}
+          onChange={(e) => setDelegate(e.target.value)}
+          placeholder={t`Enter ETH address`}
+          error={delegateAddressBlockingError !== undefined}
+          helperText={handleDelegateAddressError()}
+        />
+      </FormControl>
+      <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} />
 
-      {txState.txError && <TxErrorView errorMessage={txState.txError} />}
-      {txState.success && !txState.txError && <TxSuccessView action="Delegation" />}
       {txState.gasEstimationError && <GasEstimationError error={txState.gasEstimationError} />}
 
       <GovDelegationActions
-        setGasLimit={setGasLimit}
         delegationType={delegationType}
-        delegationToken={delegationToken}
+        delegationToken={selectedToken}
         delegate={delegate}
-        setTxState={setTxState}
-        handleClose={handleClose}
         isWrongNetwork={isWrongNetwork}
         blocked={
-          tokenBlockingError !== undefined ||
           delegateAddressBlockingError !== undefined ||
-          delegate === ''
+          delegate === '' ||
+          !delegationType ||
+          !selectedToken
         }
       />
     </>

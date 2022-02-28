@@ -1,9 +1,13 @@
 import { normalize, UserIncentiveData } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { Reward, TxState } from 'src/helpers/types';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Row } from 'src/components/primitives/Row';
+import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { Reward } from 'src/helpers/types';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
@@ -11,33 +15,29 @@ import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { TxModalDetails } from '../FlowCommons/TxModalDetails';
+import {
+  DetailsNumberLine,
+  DetailsNumberLineWithSub,
+  TxModalDetails,
+} from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { ClaimRewardsActions } from './ClaimRewardsActions';
-
-export type ClaimRewardsModalContentProps = {
-  handleClose: () => void;
-};
+import { RewardsSelect } from './RewardsSelect';
 
 export enum ErrorType {
   NOT_ENOUGH_BALANCE,
 }
 
-export const ClaimRewardsModalContent = ({ handleClose }: ClaimRewardsModalContentProps) => {
+export const ClaimRewardsModalContent = () => {
+  const { gasLimit, mainTxState: claimRewardsTxState } = useModalContext();
   const { user, reserves } = useAppDataContext();
-  const { currentChainId, currentNetworkConfig, currentMarketData, currentMarket } =
-    useProtocolDataContext();
+  const { currentChainId, currentMarketData, currentMarket } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
-
-  const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
-  const [claimRewardsTxState, setClaimRewardsTxState] = useState<TxState>({ success: false });
-
-  const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
-
   const [claimableUsd, setClaimableUsd] = useState('0');
-  const [selectedReward, setSelectedReward] = useState<Reward>();
-  const [allRewards, setAllRewards] = useState<Reward[]>([]);
+  const [selectedRewardSymbol, setSelectedRewardSymbol] = useState<string>('all');
+  const [rewards, setRewards] = useState<Reward[]>([]);
+  const [allReward, setAllReward] = useState<Reward>();
 
   const networkConfig = getNetworkConfig(currentChainId);
 
@@ -58,7 +58,7 @@ export const ClaimRewardsModalContent = ({ handleClose }: ClaimRewardsModalConte
           tokenPrice = aave ? Number(aave.priceInUSD) : 0;
         } else {
           reserves.forEach((reserve) => {
-            if (reserve.symbol === currentNetworkConfig.wrappedBaseAssetSymbol) {
+            if (reserve.isWrappedBaseAsset) {
               tokenPrice = Number(reserve.priceInUSD);
             }
           });
@@ -88,7 +88,7 @@ export const ClaimRewardsModalContent = ({ handleClose }: ClaimRewardsModalConte
     });
 
     if (userIncentives.length === 1) {
-      setSelectedReward(userIncentives[0]);
+      setSelectedRewardSymbol(userIncentives[0].symbol);
     } else if (userIncentives.length > 1 && !selectedReward) {
       const allRewards = {
         assets: allAssets,
@@ -98,22 +98,19 @@ export const ClaimRewardsModalContent = ({ handleClose }: ClaimRewardsModalConte
         balanceUsd: totalClaimableUsd.toString(),
         rewardTokenAddress: '',
       };
-      userIncentives.push(allRewards);
-      setSelectedReward(allRewards);
+      setSelectedRewardSymbol('all');
+      setAllReward(allRewards);
     }
 
-    setAllRewards(userIncentives);
+    setRewards(userIncentives);
     setClaimableUsd(totalClaimableUsd.toString());
   }, []);
 
   // error handling
-  useEffect(() => {
-    if (claimableUsd === '0') {
-      setBlockingError(ErrorType.NOT_ENOUGH_BALANCE);
-    } else {
-      setBlockingError(undefined);
-    }
-  }, [claimableUsd]);
+  let blockingError: ErrorType | undefined = undefined;
+  if (claimableUsd === '0') {
+    blockingError = ErrorType.NOT_ENOUGH_BALANCE;
+  }
 
   // error handling render
   const handleBlocked = () => {
@@ -127,49 +124,97 @@ export const ClaimRewardsModalContent = ({ handleClose }: ClaimRewardsModalConte
 
   // is Network mismatched
   const isWrongNetwork = currentChainId !== connectedChainId;
+  const selectedReward =
+    selectedRewardSymbol === 'all'
+      ? allReward
+      : rewards.find((r) => r.symbol === selectedRewardSymbol);
+
+  if (claimRewardsTxState.txError)
+    return <TxErrorView errorMessage={claimRewardsTxState.txError} />;
+  if (claimRewardsTxState.success)
+    return <TxSuccessView action="Claimed" amount={selectedReward?.balanceUsd} />;
 
   return (
     <>
-      {!claimRewardsTxState.txError && !claimRewardsTxState.success && (
-        <>
-          <TxModalTitle title="Claim rewards" />
-          {isWrongNetwork && (
-            <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
-          )}
-
-          {blockingError !== undefined && (
-            <Typography variant="helperText" color="error.main">
-              {handleBlocked()}
-            </Typography>
-          )}
-          {allRewards && allRewards.length > 1 && (
-            <Typography>
-              <Trans>Reward(s) to claim</Trans>
-            </Typography>
-          )}
-
-          <TxModalDetails
-            gasLimit={gasLimit}
-            allRewards={allRewards}
-            selectedReward={selectedReward}
-            setSelectedReward={setSelectedReward}
-          />
-        </>
+      <TxModalTitle title="Claim rewards" />
+      {isWrongNetwork && (
+        <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
       )}
 
-      {claimRewardsTxState.txError && <TxErrorView errorMessage={claimRewardsTxState.txError} />}
-      {claimRewardsTxState.success && !claimRewardsTxState.txError && (
-        <TxSuccessView action="Claimed" amount={selectedReward?.balanceUsd} />
+      {blockingError !== undefined && (
+        <Typography variant="helperText" color="error.main">
+          {handleBlocked()}
+        </Typography>
       )}
+
+      {rewards.length > 1 && (
+        <RewardsSelect
+          rewards={rewards}
+          selectedReward={selectedRewardSymbol}
+          setSelectedReward={setSelectedRewardSymbol}
+        />
+      )}
+
+      {selectedReward && (
+        <TxModalDetails gasLimit={gasLimit}>
+          {selectedRewardSymbol === 'all' && (
+            <>
+              <Row
+                caption={<Trans>Balance</Trans>}
+                captionVariant="description"
+                align="flex-start"
+                mb={selectedReward.symbol !== 'all' ? 0 : 4}
+              >
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                  {rewards.map((reward) => (
+                    <Box
+                      key={`claim-${reward.symbol}`}
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'flex-end',
+                        mb: 4,
+                      }}
+                    >
+                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <TokenIcon symbol={reward.symbol} sx={{ mr: 1, fontSize: '16px' }} />
+                        <FormattedNumber value={Number(reward.balance)} variant="secondary14" />
+                        <Typography ml={1} variant="secondary14">
+                          {reward.symbol}
+                        </Typography>
+                      </Box>
+                      <FormattedNumber
+                        value={Number(reward.balanceUsd)}
+                        variant="helperText"
+                        compact
+                        symbol="USD"
+                        color="text.secondary"
+                      />
+                    </Box>
+                  ))}
+                </Box>
+              </Row>
+              <DetailsNumberLine description={<Trans>Total worth</Trans>} value={claimableUsd} />
+            </>
+          )}
+          {selectedRewardSymbol !== 'all' && (
+            <DetailsNumberLineWithSub
+              hideSymbolSuffix
+              symbol={selectedReward.symbol}
+              amount={selectedReward.balance}
+              amountUSD={selectedReward.balanceUsd}
+              description={<Trans>{selectedReward.symbol} Balance</Trans>}
+            />
+          )}
+        </TxModalDetails>
+      )}
+
       {claimRewardsTxState.gasEstimationError && (
         <GasEstimationError error={claimRewardsTxState.gasEstimationError} />
       )}
 
       <ClaimRewardsActions
-        setClaimRewardsTxState={setClaimRewardsTxState}
-        handleClose={handleClose}
         isWrongNetwork={isWrongNetwork}
-        setGasLimit={setGasLimit}
         selectedReward={selectedReward ?? ({} as Reward)}
         blocked={blockingError !== undefined}
       />

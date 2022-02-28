@@ -1,59 +1,68 @@
 import { DuplicateIcon, XIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Link, SvgIcon, Typography } from '@mui/material';
+import { useModalContext } from 'src/hooks/useModal';
 
 // TODO: need check texts
 export const TxErrorView = ({ errorMessage }: { errorMessage: string }) => {
+  const { close } = useModalContext();
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        mb: '92px',
-      }}
-    >
+    <>
       <Box
         sx={{
-          width: '48px',
-          height: '48px',
-          backgroundColor: '#F9EBEB',
-          borderRadius: '50%',
-          mt: 14,
           display: 'flex',
-          alignItems: 'center',
+          flexDirection: 'column',
           justifyContent: 'center',
+          alignItems: 'center',
+          mb: '92px',
         }}
       >
-        <SvgIcon sx={{ color: 'error.main', fontSize: '32px' }}>
-          <XIcon />
-        </SvgIcon>
+        <Box
+          sx={{
+            width: '48px',
+            height: '48px',
+            backgroundColor: 'error.200',
+            borderRadius: '50%',
+            mt: 14,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <SvgIcon sx={{ color: 'error.main', fontSize: '32px' }}>
+            <XIcon />
+          </SvgIcon>
+        </Box>
+
+        <Typography sx={{ mt: 2 }} variant="h2">
+          <Trans>Transaction failed</Trans>
+        </Typography>
+
+        <Typography>
+          <Trans>
+            You can report incident to our <Link href="https://discord.gg/7kHKnkDEUf">Discord</Link>{' '}
+            or <Link href="https://github.com/aave/aave-ui">Github</Link>.
+          </Trans>
+        </Typography>
+
+        <Button
+          variant="outlined"
+          onClick={() => navigator.clipboard.writeText(errorMessage)}
+          size="small"
+          sx={{ mt: 6 }}
+        >
+          <Trans>Copy error text</Trans>
+
+          <SvgIcon sx={{ ml: 0.5, fontSize: '12px' }}>
+            <DuplicateIcon />
+          </SvgIcon>
+        </Button>
       </Box>
-
-      <Typography sx={{ mt: 2 }} variant="h2">
-        <Trans>Transaction failed</Trans>
-      </Typography>
-
-      <Typography>
-        <Trans>
-          You can report incident to our <Link href="https://discord.gg/7kHKnkDEUf">Discord</Link>{' '}
-          or <Link href="https://github.com/aave/aave-ui">Github</Link>.
-        </Trans>
-      </Typography>
-
-      <Button
-        variant="outlined"
-        onClick={() => navigator.clipboard.writeText(errorMessage)}
-        size="small"
-        sx={{ mt: 6 }}
-      >
-        <Trans>Copy error text</Trans>
-
-        <SvgIcon sx={{ ml: 0.5, fontSize: '12px' }}>
-          <DuplicateIcon />
-        </SvgIcon>
-      </Button>
-    </Box>
+      <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12 }}>
+        <Button onClick={close} variant="contained" size="large" sx={{ minHeight: '44px' }}>
+          <Trans>Close</Trans>
+        </Button>
+      </Box>
+    </>
   );
 };

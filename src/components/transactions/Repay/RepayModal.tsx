@@ -9,9 +9,7 @@ export const RepayModal = () => {
 
   return (
     <BasicModal open={type === ModalType.Repay} setOpen={close}>
-      {args?.underlyingAsset && (
-        <RepayModalContent underlyingAsset={args.underlyingAsset} handleClose={close} />
-      )}
+      {args?.underlyingAsset && <RepayModalContent underlyingAsset={args.underlyingAsset} />}
     </BasicModal>
   );
 };

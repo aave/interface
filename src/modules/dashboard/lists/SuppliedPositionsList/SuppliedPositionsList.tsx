@@ -1,5 +1,8 @@
+import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { useMediaQuery, useTheme } from '@mui/material';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 import { CollateralSwitchTooltip } from '../../../../components/infoTooltips/CollateralSwitchTooltip';
 import { CollateralTooltip } from '../../../../components/infoTooltips/CollateralTooltip';
@@ -8,17 +11,32 @@ import { useAppDataContext } from '../../../../hooks/app-data-provider/useAppDat
 import { DashboardContentNoData } from '../../DashboardContentNoData';
 import { ListHeader } from '../ListHeader';
 import { ListLoader } from '../ListLoader';
-import { ListTopInfoItem } from '../ListTopInfoItem';
+
+import { ListTopInfoItem } from '../../../dashboard/lists/ListTopInfoItem';
 import { SuppliedPositionsListItem } from './SuppliedPositionsListItem';
 import { SuppliedPositionsListMobileItem } from './SuppliedPositionsListMobileItem';
 
 export const SuppliedPositionsList = () => {
   const { user, loading } = useAppDataContext();
+  const { currentNetworkConfig } = useProtocolDataContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const suppliedPosition =
-    user?.userReservesData.filter((userReserve) => userReserve.underlyingBalance !== '0') || [];
+    user?.userReservesData
+      .filter((userReserve) => userReserve.underlyingBalance !== '0')
+      .map((userReserve) => ({
+        ...userReserve,
+        reserve: {
+          ...userReserve.reserve,
+          ...(userReserve.reserve.isWrappedBaseAsset
+            ? fetchIconSymbolAndName({
+                symbol: currentNetworkConfig.baseAssetSymbol,
+                underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
+              })
+            : {}),
+        },
+      })) || [];
 
   const head = [
     <Trans key="Balance">Balance</Trans>,

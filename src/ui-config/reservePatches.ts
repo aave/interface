@@ -26,6 +26,7 @@ export const NAME_MAP: { [key: string]: string } = {
   CRV: 'Curve DAO Token',
   DPI: 'DeFi Pulse Index',
   ENJ: 'EnjinCoin',
+  ENS: 'Ethereum Name Service',
   ETH: 'Ethereum',
   EUROS: 'STASIS EURO',
   FAI: 'Fei USD',
@@ -38,6 +39,7 @@ export const NAME_MAP: { [key: string]: string } = {
   PAX: 'Paxos Standard',
   RAI: 'Rai Reflex Index',
   REP: 'Augur',
+  STETH: 'Lido Staked Ether',
   STKAAVE: 'Stake Aave',
   TUSD: 'TrueUSD',
   UNI: 'Uniswap',
@@ -67,23 +69,25 @@ export function fetchIconSymbolAndName({
   if (
     underlyingAsset.toLowerCase() === '0x50379f632ca68d36e50cfbc8f78fe16bd1499d1e'.toLowerCase()
   ) {
-    return { iconSymbol: 'GUNI_DAI_USDC', name: 'G-UNI DAI/USDC' };
+    return { iconSymbol: 'GUNI_DAI_USDC', name: 'G-UNI DAI/USDC', symbol };
   }
   if (
     underlyingAsset.toLowerCase() === '0xd2eec91055f07fe24c9ccb25828ecfefd4be0c41'.toLowerCase()
   ) {
-    return { iconSymbol: 'GUNI_USDC_USDT', name: 'G-UNI USDC/USDT' };
+    return { iconSymbol: 'GUNI_USDC_USDT', name: 'G-UNI USDC/USDT', symbol };
   }
   // avalanche symbols have .e extensions
-  if (/\.e/.test(symbol)) {
+  if (/\.e$/.test(symbol)) {
     const rawSymbol = symbol.replace('.e', '');
     return {
       iconSymbol: rawSymbol || symbol,
-      name: `${NAME_MAP[rawSymbol] || rawSymbol} (${symbol})`,
+      name: NAME_MAP[rawSymbol] || rawSymbol,
+      symbol,
     };
   }
   return {
     iconSymbol: SYMBOL_MAP[symbol] || symbol,
     name: NAME_MAP[symbol] || symbol,
+    symbol,
   };
 }

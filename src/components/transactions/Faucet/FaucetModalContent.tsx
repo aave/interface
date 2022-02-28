@@ -1,42 +1,34 @@
 import { mintAmountsPerToken } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
-import { useState } from 'react';
-import { TxState } from 'src/helpers/types';
+import { Trans } from '@lingui/macro';
 import {
   ComputedReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3ContextProvider';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { TxModalDetails } from '../FlowCommons/TxModalDetails';
+import { DetailsNumberLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { FaucetActions } from './FaucetActions';
 
 export type FaucetModalContentProps = {
   underlyingAsset: string;
-  handleClose: () => void;
 };
 
 export enum ErrorType {}
 
-export const FaucetModalContent = ({ underlyingAsset, handleClose }: FaucetModalContentProps) => {
+export const FaucetModalContent = ({ underlyingAsset }: FaucetModalContentProps) => {
   const { reserves } = useAppDataContext();
-  const { currentChainId } = useProtocolDataContext();
+  const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
-
-  const networkConfig = getNetworkConfig(currentChainId);
-
-  const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
-  const [faucetTxState, setFaucetTxState] = useState<TxState>({
-    success: false,
-  });
+  const { gasLimit, mainTxState: faucetTxState } = useModalContext();
 
   const poolReserve = reserves.find((reserve) => {
     return reserve.underlyingAsset === underlyingAsset;
@@ -55,44 +47,38 @@ export const FaucetModalContent = ({ underlyingAsset, handleClose }: FaucetModal
     decimals: poolReserve.decimals,
   };
 
+  if (faucetTxState.txError) return <TxErrorView errorMessage={faucetTxState.txError} />;
+  if (faucetTxState.success)
+    return (
+      <TxSuccessView
+        action="received"
+        symbol={poolReserve.symbol}
+        amount={normalizedAmount}
+        addToken={addToken}
+      />
+    );
+
   return (
     <>
-      {!faucetTxState.txError && !faucetTxState.success && (
-        <>
-          <TxModalTitle title="Faucet" symbol={poolReserve.symbol} />
-          {isWrongNetwork && (
-            <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
-          )}
-
-          <TxModalDetails
-            gasLimit={gasLimit}
-            symbol={poolReserve.symbol}
-            faucetAmount={normalizedAmount}
-          />
-        </>
+      <TxModalTitle title="Faucet" symbol={poolReserve.symbol} />
+      {isWrongNetwork && (
+        <ChangeNetworkWarning networkName={currentNetworkConfig.name} chainId={currentChainId} />
       )}
 
-      {faucetTxState.txError && <TxErrorView errorMessage={faucetTxState.txError} />}
-      {faucetTxState.success && !faucetTxState.txError && (
-        <TxSuccessView
-          action="received"
+      <TxModalDetails gasLimit={gasLimit}>
+        <DetailsNumberLine
+          description={<Trans>Amount</Trans>}
+          iconSymbol={poolReserve.symbol}
           symbol={poolReserve.symbol}
-          amount={normalizedAmount}
-          addToken={addToken}
+          value={normalizedAmount}
         />
-      )}
+      </TxModalDetails>
+
       {faucetTxState.gasEstimationError && (
         <GasEstimationError error={faucetTxState.gasEstimationError} />
       )}
 
-      <FaucetActions
-        poolReserve={poolReserve}
-        setGasLimit={setGasLimit}
-        setFaucetTxState={setFaucetTxState}
-        handleClose={handleClose}
-        isWrongNetwork={isWrongNetwork}
-        blocked={false}
-      />
+      <FaucetActions poolReserve={poolReserve} isWrongNetwork={isWrongNetwork} blocked={false} />
     </>
   );
 };

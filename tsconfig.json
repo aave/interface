@@ -1,7 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "target": "esnext",
+    "target": "es2016",
     "module": "esnext",
     "jsx": "preserve",
     "allowJs": false,
@@ -23,7 +23,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "incremental": true,
-    "useUnknownInCatchVariables": false
+    "useUnknownInCatchVariables": false,
+    "types": ["cypress"]
   },
   "exclude": [
     "dist",
@@ -36,7 +37,8 @@
     "**/*.spec.tsx",
     "**/*.test.ts",
     "**/*.test.tsx",
-    "coverage"
+    "coverage",
+    "cypress"
   ],
   "include": ["custom.d.ts", "next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }
