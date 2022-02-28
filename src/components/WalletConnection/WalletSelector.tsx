@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Link, SvgIcon, Typography } from '@mui/material';
+import { Alert, Box, Button, Link, Typography } from '@mui/material';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { WalletType } from 'src/libs/web3-data-provider/WalletOptions';
 import { TxModalTitle } from '../transactions/FlowCommons/TxModalTitle';
