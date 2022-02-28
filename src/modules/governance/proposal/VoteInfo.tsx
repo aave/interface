@@ -1,8 +1,11 @@
 import { ProposalState } from '@aave/contract-helpers';
+import { normalize } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Button, Typography } from '@mui/material';
+import { Alert, Button, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Row } from 'src/components/primitives/Row';
 import { useGovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -29,7 +32,7 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
 
       if (votingPower && votingPower.toString() !== '0') {
         setSupport(support);
-        setVotedPower(votingPower.toString());
+        setVotedPower(normalize(votingPower.toString(), 18));
         setDidVote(true);
       } else {
         setDidVote(false);
@@ -41,6 +44,7 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
 
   const fetchVotingPower = async () => {
     try {
+      console.log(startBlock, currentAccount, strategy);
       const power = await governanceService.getVotingPowerAt({
         user: currentAccount,
         block: startBlock,
@@ -58,47 +62,80 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
       setDidVote(undefined);
       setVotedPower(undefined);
       setPower('0');
+    } else {
+      fetchCurrentVote();
+      fetchVotingPower();
     }
-    fetchCurrentVote();
-    if (voteOngoing) fetchVotingPower();
-  }, [voteOngoing, currentAccount]);
+  }, [voteOngoing, currentAccount, startBlock]);
 
   return (
     <>
-      <Typography variant="h3">
+      <Typography variant="h3" sx={{ mb: 8 }}>
         <Trans>Your voting info</Trans>
       </Typography>
-      <Typography>
-        Did vote: {didVote ? 'yes' : 'no'}
-        <br />
-        InSupport: {support ? 'yes' : 'no'}
-        <br />
-        Voted with a power of: {votedPower}
-        <br />
-        Power at the time of creation: {power}
-        <br />
-        {currentAccount && voteOngoing && (
-          <>
-            <Button
-              color="success"
-              variant="contained"
-              onClick={() => openGovVote(id, true, power)}
-              disabled={support === true}
-            >
-              <Trans>Vote YAE</Trans>
-            </Button>
-            <Button
-              color="error"
-              variant="contained"
-              onClick={() => openGovVote(id, false, power)}
-              disabled={support === false}
-            >
-              <Trans>Vote NAY</Trans>
-            </Button>
-          </>
-        )}
-        {!currentAccount && <ConnectWalletButton />}
-      </Typography>
+      {currentAccount && !didVote && !voteOngoing && (
+        <Typography sx={{ textAlign: 'center' }} color="text.muted">
+          <Trans>You did not participate in this proposal</Trans>
+        </Typography>
+      )}
+      {currentAccount && voteOngoing && (
+        <Row
+          caption={
+            <>
+              <Typography variant="description">
+                <Trans>Voting power</Trans>
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                <Trans>(AAVE + stkAAVE)</Trans>
+              </Typography>
+            </>
+          }
+        >
+          <FormattedNumber value={power || 0} variant="main16" visibleDecimals={2} />
+        </Row>
+      )}
+      {currentAccount && didVote && (
+        <Alert severity={support ? 'success' : 'error'}>
+          <Typography variant="subheader1">
+            <Trans>You voted {support ? 'YAE' : 'NAY'}</Trans>
+          </Typography>
+          <Typography variant="caption">
+            <Trans>
+              With a voting power of{' '}
+              <FormattedNumber value={votedPower || 0} variant="caption" visibleDecimals={2} />
+            </Trans>
+          </Typography>
+        </Alert>
+      )}
+      {currentAccount && voteOngoing && power !== '0' && (
+        <Alert severity="warning">
+          <Trans>Not enough voting power to participate in this proposal</Trans>
+        </Alert>
+      )}
+      {currentAccount && voteOngoing && power !== '0' && (
+        <>
+          <Button
+            color="success"
+            variant="contained"
+            fullWidth
+            onClick={() => openGovVote(id, true, power)}
+            disabled={support === true}
+          >
+            <Trans>Vote YAE</Trans>
+          </Button>
+          <Button
+            color="error"
+            variant="contained"
+            fullWidth
+            onClick={() => openGovVote(id, false, power)}
+            disabled={support === false}
+            sx={{ mt: 2 }}
+          >
+            <Trans>Vote NAY</Trans>
+          </Button>
+        </>
+      )}
+      {!currentAccount && <ConnectWalletButton />}
     </>
   );
 }

@@ -11,6 +11,7 @@ import { isProposalStateImmutable } from 'src/modules/governance/utils/immutable
 import { IpfsType } from 'src/static-build/ipfs';
 import { CustomProposalType } from 'src/static-build/proposal';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
+import ProposalPage from './[proposalId]';
 
 export default function DynamicProposal() {
   const router = useRouter();
@@ -34,20 +35,20 @@ export default function DynamicProposal() {
   }
 
   // poll every 10s
-  usePolling(updateProposal, 10000, proposal ? isProposalStateImmutable(proposal) : false, []);
+  usePolling(
+    updateProposal,
+    20000,
+    (proposal ? isProposalStateImmutable(proposal) : false) || !id,
+    [id]
+  );
 
-  // fetch ipfs on initial load
+  // // fetch ipfs on initial load
   useEffect(() => {
     if (!proposal || ipfs) return;
     fetchIpfs();
   }, [proposal, ipfs]);
-  // TODO: ignore for now, can just render [proposalId] later
-  return (
-    <div>
-      {JSON.stringify(proposal)}
-      {JSON.stringify(ipfs)}
-    </div>
-  );
+  if (!proposal || !ipfs) return <div>loading</div>;
+  return <ProposalPage ipfs={ipfs} proposal={proposal} />;
 }
 
 DynamicProposal.getLayout = function getLayout(page: React.ReactElement) {

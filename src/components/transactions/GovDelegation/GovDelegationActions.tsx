@@ -5,15 +5,15 @@ import { GasOption } from '../GasStation/GasStationProvider';
 import { RightHelperText } from '../FlowCommons/RightHelperText';
 import { Trans } from '@lingui/macro';
 import { DelegationType } from 'src/helpers/types';
-import { DelegationToken } from 'src/ui-config/governanceConfig';
 import { useGovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
 import { TxActionsWrapper } from '../TxActionsWrapper';
+import { DelegationToken } from './DelegationTokenSelector';
 
 export type GovDelegationActionsProps = {
   isWrongNetwork: boolean;
   blocked: boolean;
   delegationType: DelegationType;
-  delegationToken: DelegationToken;
+  delegationToken?: DelegationToken;
   delegate: string;
 };
 
@@ -35,15 +35,15 @@ export const GovDelegationActions = ({
         user: currentAccount,
         delegatee: delegate,
         delegationType,
-        governanceToken: delegationToken.address,
+        governanceToken: (delegationToken as DelegationToken).address,
       });
     },
     customGasPrice:
       state.gasOption === GasOption.Custom
         ? state.customGas
         : gasPriceData.data?.[state.gasOption].legacyGasPrice,
-    skip: blocked,
-    deps: [delegate, delegationToken, delegationType],
+    skip: blocked || !delegationToken?.address,
+    deps: [delegate, delegationType, delegationToken?.address],
   });
 
   // TODO: hash link not working
