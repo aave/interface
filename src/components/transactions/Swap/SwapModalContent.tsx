@@ -28,6 +28,7 @@ import { TxSuccessView } from '../FlowCommons/Success';
 import { Box } from '@mui/system';
 import { Row } from 'src/components/primitives/Row';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { calculateHFAfterSwap } from 'src/utils/hfUtils';
 
 export type SupplyProps = {
   underlyingAsset: string;
@@ -69,6 +70,10 @@ export const SwapModalContent = ({ underlyingAsset }: SupplyProps) => {
     (r) => r.underlyingAsset === targetReserve.address
   ) as ComputedReserveData;
 
+  const swapTargetUserReserve = user.userReservesData.find((userReserve) => {
+    return targetReserve.address === userReserve.underlyingAsset;
+  }) as ComputedUserReserve;
+
   // a user can never swap more then 100% of available as the txn would fail on withdraw step
   const maxAmountToSwap = BigNumber.min(
     userReserve.underlyingBalance,
@@ -97,6 +102,21 @@ export const SwapModalContent = ({ underlyingAsset }: SupplyProps) => {
     setAmount(value);
   };
 
+  const { hfAfterSwap, hfEffectOfFromAmount } = calculateHFAfterSwap({
+    fromAmount: amount,
+    fromAssetData: poolReserve,
+    fromAssetUserData: userReserve,
+    user,
+    toAmountAfterSlippage: minimumReceived,
+    toAssetData: swapTarget,
+    toAssetUserData: swapTargetUserReserve,
+  });
+
+  // if the hf would drop below 1 from the hf effect a flashloan should be used to mitigate liquidation
+  const shouldUseFlashloan =
+    user.healthFactor !== '-1' &&
+    new BigNumber(user.healthFactor).minus(hfEffectOfFromAmount).lt('1.1');
+
   // consider caps
   // we cannot check this in advance as it's based on the swap result
   const surpassesTargetSupplyCap =
@@ -117,6 +137,11 @@ export const SwapModalContent = ({ underlyingAsset }: SupplyProps) => {
   // 4. swap isolated asset when isolated -> when no borrows i can probably swap all & new asset will in fact be collateral
   // 5. swap non-isolated when isolated -> can swap to anything
 
+  if (supplyTxState.txError) return <TxErrorView errorMessage={supplyTxState.txError} />;
+  if (supplyTxState.success)
+    return <TxSuccessView action="Swapped" amount={maxAmountToSwap} symbol={poolReserve.symbol} />;
+
+  // hf is only relevant when there are borrows
   const showHealthFactor =
     user &&
     user.totalBorrowsMarketReferenceCurrency !== '0' &&
@@ -125,10 +150,7 @@ export const SwapModalContent = ({ underlyingAsset }: SupplyProps) => {
   // is Network mismatched
   const isWrongNetwork = currentChainId !== connectedChainId;
 
-  if (supplyTxState.txError) return <TxErrorView errorMessage={supplyTxState.txError} />;
-  if (supplyTxState.success)
-    return <TxSuccessView action="Swapped" amount={maxAmountToSwap} symbol={poolReserve.symbol} />;
-
+  // calculate impact based on $ difference
   const priceImpact =
     outputAmountUSD && outputAmountUSD !== '0'
       ? new BigNumber(1).minus(new BigNumber(inputAmountUSD).dividedBy(outputAmountUSD)).toString()
@@ -220,8 +242,8 @@ export const SwapModalContent = ({ underlyingAsset }: SupplyProps) => {
         />
         {showHealthFactor && (
           <DetailsHFLine
-            healthFactor={user ? user.healthFactor : '-1'}
-            futureHealthFactor={user ? user.healthFactor : '-1' /**TODO: future hf */}
+            healthFactor={user.healthFactor}
+            futureHealthFactor={hfAfterSwap.toString()}
           />
         )}
       </TxModalDetails>
@@ -239,6 +261,7 @@ export const SwapModalContent = ({ underlyingAsset }: SupplyProps) => {
         symbol={poolReserve.symbol}
         blocked={surpassesTargetSupplyCap}
         priceRoute={priceRoute}
+        useFlashLoan={shouldUseFlashloan}
       />
     </>
   );

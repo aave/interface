@@ -28,6 +28,7 @@ export interface SwapActionProps extends BoxProps {
   blocked: boolean;
   priceRoute: OptimalRate | null;
   isMaxSelected: boolean;
+  useFlashLoan: boolean;
 }
 
 export const SwapActions = ({
@@ -39,6 +40,7 @@ export const SwapActions = ({
   targetReserve,
   priceRoute,
   isMaxSelected,
+  useFlashLoan,
   ...props
 }: SwapActionProps) => {
   const { user } = useAppDataContext();
@@ -75,7 +77,7 @@ export const SwapActions = ({
         fromAmount: amountToSwap,
         minToAmount: amountToReceive,
         user: currentAccount,
-        flash: user.healthFactor !== '-1',
+        flash: useFlashLoan,
         augustus,
         swapCallData,
       });
@@ -93,6 +95,7 @@ export const SwapActions = ({
       targetReserve.underlyingAsset,
       isMaxSelected,
       currentAccount,
+      useFlashLoan,
     ],
   });
 
