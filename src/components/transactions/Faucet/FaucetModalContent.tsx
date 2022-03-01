@@ -8,8 +8,7 @@ import {
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3ContextProvider';
-
+import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
