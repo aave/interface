@@ -87,6 +87,7 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
 export enum ErrorType {
   UNSUPORTED_CHAIN,
   USER_REJECTED_REQUEST,
+  UNDETERMINED_ERROR,
 }
 
 export const WalletSelector = () => {
@@ -98,6 +99,8 @@ export const WalletSelector = () => {
       blockingError = ErrorType.UNSUPORTED_CHAIN;
     } else if (error instanceof UserRejectedRequestError) {
       blockingError = ErrorType.USER_REJECTED_REQUEST;
+    } else {
+      blockingError = ErrorType.UNDETERMINED_ERROR;
     }
     // TODO: add other errors
   }

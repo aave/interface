@@ -165,19 +165,20 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   // first, try connecting to a gnosis safe
   useEffect(() => {
-    if (!triedSafe) {
-      const gnosisConnector = getWallet(WalletType.GNOSIS);
-      // @ts-expect-error isSafeApp not in abstract connector type
-      gnosisConnector.isSafeApp().then((loadedInSafe) => {
-        if (loadedInSafe) {
-          connectWallet(WalletType.GNOSIS).catch(() => {
-            setTriedSafe(true);
-          });
-        } else {
-          setTriedSafe(true);
-        }
-      });
-    }
+    // if (!triedSafe) {
+    //   const gnosisConnector = getWallet(WalletType.GNOSIS);
+    //   // @ts-expect-error isSafeApp not in abstract connector type
+    //   gnosisConnector.isSafeApp().then((loadedInSafe) => {
+    //     if (loadedInSafe) {
+    //       connectWallet(WalletType.GNOSIS).catch(() => {
+    //         setTriedSafe(true);
+    //       });
+    //     } else {
+    //       setTriedSafe(true);
+    //     }
+    //   });
+    // }
+    setTriedSafe(true);
   }, [connectWallet, setTriedSafe, triedSafe]);
 
   // handle logic to eagerly connect to the injected ethereum provider,
