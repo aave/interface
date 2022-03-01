@@ -610,6 +610,9 @@ export function getThemedComponents(theme: Theme) {
                 opacity: 1,
               },
             },
+            '&.Mui-disabled': {
+              opacity: theme.palette.mode === 'dark' ? 0.3 : 0.7,
+            },
           },
           thumb: {
             color: theme.palette.common.white,

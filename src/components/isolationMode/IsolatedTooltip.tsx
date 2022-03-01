@@ -39,10 +39,12 @@ export const IsolatedTooltip = () => {
       </Box> */}
 
       <Typography variant="subheader2" color="text.secondary">
-        <Trans>Learn more in our{' '}</Trans>
-        <Link href="https://docs.aave.com/faq/" fontWeight={500}>
-          <Trans>FAQ guide</Trans>
-        </Link>
+        <Trans>
+          Learn more in our{' '}
+          <Link href="https://docs.aave.com/faq/" fontWeight={500}>
+            FAQ guide
+          </Link>
+        </Trans>
       </Typography>
     </Box>
   );

@@ -47,7 +47,6 @@ export default function DynamicProposal() {
     if (!proposal || ipfs) return;
     fetchIpfs();
   }, [proposal, ipfs]);
-  if (!proposal || !ipfs) return <div>loading</div>;
   return <ProposalPage ipfs={ipfs} proposal={proposal} />;
 }
 

@@ -63,8 +63,8 @@ export async function getStaticProps({ params }: { params: { proposalId: string 
 }
 
 interface ProposalPageProps {
-  ipfs: IpfsType;
-  proposal: CustomProposalType;
+  ipfs?: IpfsType;
+  proposal?: CustomProposalType;
 }
 
 const CenterAlignedImage = styled('img')({
@@ -82,11 +82,22 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
   const [proposal, setProposal] = useState(initialProposal);
 
   async function updateProposal() {
+    if (!proposal) return;
     const { values, ...rest } = await governanceContract.getProposal({ proposalId: proposal.id });
     setProposal(await enhanceProposalWithTimes(rest));
   }
 
-  usePolling(updateProposal, 10000, proposal && isProposalStateImmutable(proposal), []);
+  usePolling(
+    updateProposal,
+    10000,
+    !proposal || (proposal && isProposalStateImmutable(proposal)),
+    []
+  );
+
+  // seed when no ssg
+  useEffect(() => {
+    if (!proposal && initialProposal) setProposal(initialProposal);
+  }, [initialProposal]);
 
   useEffect(() => {
     setUrl(window.location.href);
@@ -116,7 +127,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
       };
   return (
     <>
-      <Meta title={ipfs.title} description={ipfs.shortDescription} />
+      {ipfs && <Meta title={ipfs.title} description={ipfs.shortDescription} />}
       <ProposalTopPanel />
 
       <ContentContainer>
@@ -198,9 +209,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
             </Paper>
           </Grid>
           <Grid item xs={12} md={4}>
-            <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
-              <VoteInfo {...proposal} />
-            </Paper>
+            <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>{proposal && <VoteInfo {...proposal} />}</Paper>
             <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
               <Typography variant="h3">
                 <Trans>Voting results</Trans>
@@ -319,7 +328,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                       </Typography>
                     </Row>
                   )}
-                  {ipfs.author && (
+                  {ipfs?.author && (
                     <Row
                       caption={<Trans>Author</Trans>}
                       sx={{ height: 48 }}
@@ -332,7 +341,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                       </Typography>
                     </Row>
                   )}
-                  {ipfs.discussions && (
+                  {ipfs?.discussions && (
                     <Row
                       caption={<Trans>Discussion</Trans>}
                       sx={{ height: 48 }}

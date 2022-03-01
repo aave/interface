@@ -79,6 +79,7 @@
     "gray-matter": "^4.0.3",
     "lowdb": "^3.0.0",
     "next": "12.1.0",
+    "paraswap": "^5.0.1",
     "react": "latest",
     "react-dom": "latest",
     "react-markdown": "^8.0.0",

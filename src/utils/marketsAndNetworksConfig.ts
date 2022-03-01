@@ -1,5 +1,5 @@
 import { ChainId, ChainIdToNetwork } from '@aave/contract-helpers';
-import { ethers } from 'ethers';
+import { providers as ethersProviders } from 'ethers';
 
 import {
   CustomMarket,
@@ -130,14 +130,14 @@ export const isFeatureEnabled = {
   permissions: (data: MarketDataType) => data.enabledFeatures?.permissions,
 };
 
-const providers: { [network: string]: ethers.providers.Provider } = {};
+const providers: { [network: string]: ethersProviders.Provider } = {};
 
-export const getProvider = (chainId: ChainId): ethers.providers.Provider => {
+export const getProvider = (chainId: ChainId): ethersProviders.Provider => {
   if (!providers[chainId]) {
     const config = getNetworkConfig(chainId);
-    const chainProviders: ethers.providers.StaticJsonRpcProvider[] = [];
+    const chainProviders: ethersProviders.StaticJsonRpcProvider[] = [];
     if (config.privateJsonRPCUrl) {
-      providers[chainId] = new ethers.providers.StaticJsonRpcProvider(
+      providers[chainId] = new ethersProviders.StaticJsonRpcProvider(
         config.privateJsonRPCUrl,
         chainId
       );
@@ -145,7 +145,7 @@ export const getProvider = (chainId: ChainId): ethers.providers.Provider => {
     }
     if (config.publicJsonRPCUrl.length) {
       config.publicJsonRPCUrl.map((rpc) =>
-        chainProviders.push(new ethers.providers.StaticJsonRpcProvider(rpc, chainId))
+        chainProviders.push(new ethersProviders.StaticJsonRpcProvider(rpc, chainId))
       );
     }
     if (!chainProviders.length) {
@@ -154,7 +154,7 @@ export const getProvider = (chainId: ChainId): ethers.providers.Provider => {
     if (chainProviders.length === 1) {
       providers[chainId] = chainProviders[0];
     } else {
-      providers[chainId] = new ethers.providers.FallbackProvider(chainProviders);
+      providers[chainId] = new ethersProviders.FallbackProvider(chainProviders);
     }
   }
   return providers[chainId];

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import axios from 'axios';
-import { ethers } from 'ethers';
+import { getDefaultProvider, Contract, utils } from 'ethers';
 import ERC20_ABI from '../../fixtures/erc20_abi.json';
 
 const TENDERLY_KEY = Cypress.env('TENDERLY_KEY');
@@ -55,12 +55,12 @@ export class TenderlyFork {
 
   async getERC20Token(walletAddress: string, tokenAddress: string) {
     const _url = this.get_rpc_url();
-    const provider = ethers.getDefaultProvider(_url);
+    const provider = getDefaultProvider(_url);
     const TOP_HOLDER_ADDRESS = await this.getTopHolder(tokenAddress);
     // @ts-ignore
     const topHolderSigner = await provider.getSigner(TOP_HOLDER_ADDRESS);
-    const token = new ethers.Contract(tokenAddress, ERC20_ABI, topHolderSigner);
-    await token.transfer(walletAddress, ethers.utils.parseEther('1000'));
+    const token = new Contract(tokenAddress, ERC20_ABI, topHolderSigner);
+    await token.transfer(walletAddress, utils.parseEther('1000'));
   }
 
   async getTopHolder(token: string) {
