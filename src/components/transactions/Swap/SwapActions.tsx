@@ -46,7 +46,7 @@ export const SwapActions = ({
 }: SwapActionProps) => {
   const { user } = useAppDataContext();
   const { lendingPool } = useTxBuilderContext();
-  const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
+  const { currentChainId: chainId } = useProtocolDataContext();
   const { currentAccount, chainId: connectedChainId } = useWeb3Context();
   const { state, gasPriceData } = useGasStation();
 
@@ -90,6 +90,7 @@ export const SwapActions = ({
     skip: !priceRoute || !amountToSwap || parseFloat(amountToSwap) === 0 || !currentAccount,
     deps: [
       amountToSwap,
+      amountToReceive,
       priceRoute,
       poolReserve.underlyingAsset,
       targetReserve.underlyingAsset,
@@ -109,7 +110,7 @@ export const SwapActions = ({
       requiresAmount
       amount={amountToSwap}
       handleApproval={() => approval(amountToSwap, poolReserve.aTokenAddress)}
-      requiresApproval={true}
+      requiresApproval={requiresApproval}
       actionText={<Trans>Swap</Trans>}
       actionInProgressText={<Trans>Swapping</Trans>}
       helperText={

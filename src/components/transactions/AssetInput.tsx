@@ -61,7 +61,7 @@ export interface AssetInputProps<T extends Asset = Asset> {
   value: string;
   usdValue: string;
   symbol: string;
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
   disabled?: boolean;
   disableInput?: boolean;
   onSelect?: (asset: T) => void;
@@ -119,6 +119,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
             value={value}
             autoFocus
             onChange={(e) => {
+              if (!onChange) return;
               if (Number(e.target.value) > Number(maxValue)) {
                 onChange('-1');
               } else {

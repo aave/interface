@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -43,7 +43,6 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 
 export type SupplyProps = {
   underlyingAsset: string;
-  handleClose: () => void;
 };
 
 export enum ErrorType {
@@ -51,11 +50,11 @@ export enum ErrorType {
   CAP_REACHED,
 }
 
-export const SwapModalContent = ({ underlyingAsset, handleClose }: SupplyProps) => {
+export const SwapModalContent = ({ underlyingAsset }: SupplyProps) => {
   const { marketReferencePriceInUsd, reserves, user } = useAppDataContext();
   const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
   const { chainId: connectedChainId, currentAccount } = useWeb3Context();
-  const { approvalTxState, mainTxState: supplyTxState } = useModalContext();
+  const { gasLimit, mainTxState: supplyTxState } = useModalContext();
 
   const poolReserve = reserves.find((reserve) => {
     return reserve.underlyingAsset === underlyingAsset;
@@ -74,10 +73,9 @@ export const SwapModalContent = ({ underlyingAsset, handleClose }: SupplyProps) 
 
   // states
   const [_amount, setAmount] = useState('');
+  const amountRef = useRef<string>('');
   const [targetReserve, setTargetReserve] = useState<Asset>(swapTargets[0]);
   const [maxSlippage, setMaxSlippage] = useState('0.1');
-  const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
-  const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
 
   const swapTarget = reserves.find(
     (r) => r.underlyingAsset === targetReserve.address
@@ -92,18 +90,26 @@ export const SwapModalContent = ({ underlyingAsset, handleClose }: SupplyProps) 
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToSwap : _amount;
 
-  const { priceRoute, error, inputAmountUSD, outputAmount, outputAmountUSD } = useSwap({
-    chainId: currentChainId,
-    userId: currentAccount,
-    variant: 'exactIn',
-    swapIn: { ...poolReserve, amount },
-    swapOut: { ...swapTarget, amount: '0' },
-    max: isMaxSelected,
-  });
+  const { priceRoute, error, inputAmountUSD, inputAmount, outputAmount, outputAmountUSD } = useSwap(
+    {
+      chainId: currentChainId,
+      userId: currentAccount,
+      variant: 'exactIn',
+      swapIn: { ...poolReserve, amount: amountRef.current },
+      swapOut: { ...swapTarget, amount: '0' },
+      max: isMaxSelected,
+    }
+  );
 
   const minimumReceived = new BigNumber(outputAmount || '0')
     .multipliedBy(new BigNumber(100).minus(maxSlippage).dividedBy(100))
     .toString();
+
+  const handleChange = (value: string) => {
+    const maxSelected = value === '-1';
+    amountRef.current = maxSelected ? maxAmountToSwap.toString() : value;
+    setAmount(value);
+  };
 
   // consider caps
   // we cannot check this in advance as it's based on the swap result
@@ -188,16 +194,16 @@ export const SwapModalContent = ({ underlyingAsset, handleClose }: SupplyProps) 
   //   }
   // }, [walletBalance, amountToSupply, capReached]);
 
-  const handleBlocked = () => {
-    switch (blockingError) {
-      case ErrorType.NOT_ENOUGH_BALANCE:
-        return <Trans>Not enough balance on your wallet</Trans>;
-      case ErrorType.CAP_REACHED:
-        return <Trans>Cap reached. Lower supply amount</Trans>;
-      default:
-        return null;
-    }
-  };
+  // const handleBlocked = () => {
+  //   switch (blockingError) {
+  //     case ErrorType.NOT_ENOUGH_BALANCE:
+  //       return <Trans>Not enough balance on your wallet</Trans>;
+  //     case ErrorType.CAP_REACHED:
+  //       return <Trans>Cap reached. Lower supply amount</Trans>;
+  //     default:
+  //       return null;
+  //   }
+  // };
 
   const showHealthFactor =
     user &&
@@ -222,7 +228,7 @@ export const SwapModalContent = ({ underlyingAsset, handleClose }: SupplyProps) 
           )} */}
       <AssetInput
         value={amount}
-        onChange={setAmount}
+        onChange={handleChange}
         usdValue={inputAmountUSD.toString()}
         symbol={poolReserve.iconSymbol}
         assets={[
@@ -237,18 +243,12 @@ export const SwapModalContent = ({ underlyingAsset, handleClose }: SupplyProps) 
       />
       <AssetInput
         value={outputAmount}
-        onChange={setAmount}
         onSelect={setTargetReserve}
         usdValue={outputAmountUSD.toString()}
         symbol={targetReserve.symbol}
         assets={swapTargets}
         disableInput={true}
       />
-      {blockingError !== undefined && (
-        <Typography variant="helperText" color="red">
-          {handleBlocked()}
-        </Typography>
-      )}
       <Box
         sx={{
           bgcolor: 'background.default',
@@ -312,12 +312,12 @@ export const SwapModalContent = ({ underlyingAsset, handleClose }: SupplyProps) 
       <SwapActions
         isMaxSelected={isMaxSelected}
         poolReserve={poolReserve}
-        amountToSwap={amount}
+        amountToSwap={amountRef.current}
         amountToReceive={minimumReceived}
         isWrongNetwork={isWrongNetwork}
         targetReserve={swapTarget}
         symbol={poolReserve.symbol}
-        blocked={blockingError !== undefined}
+        blocked={false}
         priceRoute={priceRoute}
       />
     </>
