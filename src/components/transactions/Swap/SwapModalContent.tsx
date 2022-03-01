@@ -4,7 +4,7 @@ import {
   useAppDataContext,
 } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { SwapActions } from './SwapActions';
-import { Typography } from '@mui/material';
+import { Paper, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import {
   calculateHealthFactorFromBalancesBigUnits,
   ComputedUserReserve,
@@ -36,6 +36,10 @@ import {
 import { TxErrorView } from 'src/components/transactions/FlowCommons/Error';
 import { GasEstimationError } from 'src/components/transactions/FlowCommons/GasEstimationError';
 import { useModalContext } from 'src/hooks/useModal';
+import { TxSuccessView } from '../FlowCommons/Success';
+import { Box } from '@mui/system';
+import { Row } from 'src/components/primitives/Row';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 
 export type SupplyProps = {
   underlyingAsset: string;
@@ -71,6 +75,7 @@ export const SwapModalContent = ({ underlyingAsset, handleClose }: SupplyProps) 
   // states
   const [_amount, setAmount] = useState('');
   const [targetReserve, setTargetReserve] = useState<Asset>(swapTargets[0]);
+  const [maxSlippage, setMaxSlippage] = useState('0.1');
   const [gasLimit, setGasLimit] = useState<string | undefined>(undefined);
   const [blockingError, setBlockingError] = useState<ErrorType | undefined>();
 
@@ -87,23 +92,18 @@ export const SwapModalContent = ({ underlyingAsset, handleClose }: SupplyProps) 
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToSwap : _amount;
 
-  const {
-    priceRoute,
-    reserveIn,
-    reserveOut,
-    error,
-    inputAmount,
-    inputAmountUSD,
-    outputAmount,
-    outputAmountUSD,
-  } = useSwap({
+  const { priceRoute, error, inputAmountUSD, outputAmount, outputAmountUSD } = useSwap({
     chainId: currentChainId,
     userId: currentAccount,
     variant: 'exactIn',
-    swapIn: { address: poolReserve.underlyingAsset, amount },
-    swapOut: { address: targetReserve.address as string, amount: '0' },
+    swapIn: { ...poolReserve, amount },
+    swapOut: { ...swapTarget, amount: '0' },
     max: isMaxSelected,
   });
+
+  const minimumReceived = new BigNumber(outputAmount || '0')
+    .multipliedBy(new BigNumber(100).minus(maxSlippage).dividedBy(100))
+    .toString();
 
   // consider caps
   // we cannot check this in advance as it's based on the swap result
@@ -207,84 +207,113 @@ export const SwapModalContent = ({ underlyingAsset, handleClose }: SupplyProps) 
   // is Network mismatched
   const isWrongNetwork = currentChainId !== connectedChainId;
 
+  if (supplyTxState.txError) return <TxErrorView errorMessage={supplyTxState.txError} />;
+  if (supplyTxState.success)
+    return <TxSuccessView action="Swapped" amount={maxAmountToSwap} symbol={poolReserve.symbol} />;
+
   return (
     <>
-      {!supplyTxState.txError && !supplyTxState.success && (
-        <>
-          <TxModalTitle title="Swap" symbol={poolReserve.symbol} />
-          {isWrongNetwork && (
-            <ChangeNetworkWarning
-              networkName={currentNetworkConfig.name}
-              chainId={currentChainId}
-            />
-          )}
-          {/* {showIsolationWarning && (
+      <TxModalTitle title="Swap" symbol={poolReserve.symbol} />
+      {isWrongNetwork && (
+        <ChangeNetworkWarning networkName={currentNetworkConfig.name} chainId={currentChainId} />
+      )}
+      {/* {showIsolationWarning && (
             <Typography>You are about to enter into isolation. FAQ link</Typography>
           )} */}
-          <AssetInput
-            value={amount}
-            onChange={setAmount}
-            usdValue={inputAmountUSD.toString()}
-            symbol={poolReserve.iconSymbol}
-            assets={[
-              {
-                balance: maxAmountToSwap,
-                address: poolReserve.underlyingAsset,
-                symbol: poolReserve.iconSymbol,
-              },
-            ]}
-            maxValue={maxAmountToSwap}
-            isMaxSelected={isMaxSelected}
-          />
-          <AssetInput
-            value={outputAmount}
-            onChange={setAmount}
-            onSelect={setTargetReserve}
-            usdValue={outputAmountUSD.toString()}
-            symbol={targetReserve.symbol}
-            assets={swapTargets}
-            disableInput={true}
-          />
-          {blockingError !== undefined && (
-            <Typography variant="helperText" color="red">
-              {handleBlocked()}
-            </Typography>
-          )}
-          <TxModalDetails gasLimit={gasLimit}>
-            <DetailsNumberLine
-              description={<Trans>Supply apy</Trans>}
-              value={poolReserve.supplyAPY}
-              futureValue={swapTarget.supplyAPY}
-            />
-            <DetailsIncentivesLine
-              incentives={poolReserve.aIncentivesData}
-              symbol={poolReserve.symbol}
-              futureIncentives={swapTarget.aIncentivesData}
-              futureSymbol={swapTarget.symbol}
-            />
-            <DetailsHFLine
-              healthFactor={user ? user.healthFactor : '-1'}
-              futureHealthFactor={user ? user.healthFactor : '-1' /**TODO: future hf */}
-            />
-          </TxModalDetails>
-        </>
+      <AssetInput
+        value={amount}
+        onChange={setAmount}
+        usdValue={inputAmountUSD.toString()}
+        symbol={poolReserve.iconSymbol}
+        assets={[
+          {
+            balance: maxAmountToSwap,
+            address: poolReserve.underlyingAsset,
+            symbol: poolReserve.iconSymbol,
+          },
+        ]}
+        maxValue={maxAmountToSwap}
+        isMaxSelected={isMaxSelected}
+      />
+      <AssetInput
+        value={outputAmount}
+        onChange={setAmount}
+        onSelect={setTargetReserve}
+        usdValue={outputAmountUSD.toString()}
+        symbol={targetReserve.symbol}
+        assets={swapTargets}
+        disableInput={true}
+      />
+      {blockingError !== undefined && (
+        <Typography variant="helperText" color="red">
+          {handleBlocked()}
+        </Typography>
       )}
-      {supplyTxState.txError && <TxErrorView errorMessage={supplyTxState.txError} />}
-      {/* {supplyTxState.success && !supplyTxState.txError && (
-        <TxSuccessView action="Swapped" amount={amountToSupply} symbol={poolReserve.symbol} />
-      )} */}
+      <Box
+        sx={{
+          bgcolor: 'background.default',
+          border: '1px solid rgba(56, 61, 81, 0.12)',
+          borderRadius: '4px',
+          padding: '8px 16px',
+          mt: 6,
+        }}
+      >
+        <Row caption={<Trans>Minimum received</Trans>} captionVariant="subheader1">
+          <FormattedNumber
+            value={minimumReceived}
+            variant="secondary14"
+            symbol={swapTarget.symbol}
+          />
+        </Row>
+        <Typography variant="description" sx={{ mt: 4 }}>
+          <Trans>Max slippage rate</Trans>
+        </Typography>
+        <ToggleButtonGroup
+          sx={{ mt: 2 }}
+          value={maxSlippage}
+          onChange={(e, value) => setMaxSlippage(value)}
+          exclusive
+        >
+          <ToggleButton value="0.1" sx={{ minWidth: '74px' }}>
+            <Typography variant="secondary14">0.1%</Typography>
+          </ToggleButton>
+          <ToggleButton value="0.5" sx={{ minWidth: '74px' }}>
+            <Typography variant="secondary14">0.5%</Typography>
+          </ToggleButton>
+          <ToggleButton value="1" sx={{ minWidth: '74px' }}>
+            <Typography variant="secondary14">1%</Typography>
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </Box>
+      <TxModalDetails gasLimit={gasLimit}>
+        <DetailsNumberLine
+          description={<Trans>Supply apy</Trans>}
+          value={poolReserve.supplyAPY}
+          futureValue={swapTarget.supplyAPY}
+          percent
+        />
+        <DetailsIncentivesLine
+          incentives={poolReserve.aIncentivesData}
+          symbol={poolReserve.symbol}
+          futureIncentives={swapTarget.aIncentivesData}
+          futureSymbol={swapTarget.symbol}
+        />
+        {showHealthFactor && (
+          <DetailsHFLine
+            healthFactor={user ? user.healthFactor : '-1'}
+            futureHealthFactor={user ? user.healthFactor : '-1' /**TODO: future hf */}
+          />
+        )}
+      </TxModalDetails>
+
       {supplyTxState.gasEstimationError && (
         <GasEstimationError error={supplyTxState.gasEstimationError} />
       )}
       <SwapActions
-        sx={{ mt: '48px' }}
+        isMaxSelected={isMaxSelected}
         poolReserve={poolReserve}
         amountToSwap={amount}
-        amountToReceive={
-          new BigNumber(outputAmount)
-            .multipliedBy(0.99)
-            .toString() /** multiply by actual slippage */
-        }
+        amountToReceive={minimumReceived}
         isWrongNetwork={isWrongNetwork}
         targetReserve={swapTarget}
         symbol={poolReserve.symbol}

@@ -30,7 +30,7 @@ export interface SwapActionProps extends BoxProps {
   symbol: string;
   blocked: boolean;
   priceRoute: OptimalRate | null;
-  maxSlippage?: number;
+  isMaxSelected: boolean;
 }
 
 export const SwapActions = ({
@@ -41,6 +41,7 @@ export const SwapActions = ({
   poolReserve,
   targetReserve,
   priceRoute,
+  isMaxSelected,
   ...props
 }: SwapActionProps) => {
   const { user } = useAppDataContext();
@@ -72,7 +73,7 @@ export const SwapActions = ({
       return lendingPool.swapCollateral({
         fromAsset: poolReserve.underlyingAsset,
         toAsset: targetReserve.underlyingAsset,
-        swapAll: true, //amountToSwap === '-1',
+        swapAll: isMaxSelected,
         fromAToken: poolReserve.aTokenAddress,
         fromAmount: amountToSwap,
         minToAmount: amountToReceive,
@@ -86,8 +87,15 @@ export const SwapActions = ({
       state.gasOption === GasOption.Custom
         ? state.customGas
         : gasPriceData.data?.[state.gasOption].legacyGasPrice,
-    skip: !priceRoute || !amountToSwap || parseFloat(amountToSwap) === 0,
-    deps: [amountToSwap, priceRoute],
+    skip: !priceRoute || !amountToSwap || parseFloat(amountToSwap) === 0 || !currentAccount,
+    deps: [
+      amountToSwap,
+      priceRoute,
+      poolReserve.underlyingAsset,
+      targetReserve.underlyingAsset,
+      isMaxSelected,
+      currentAccount,
+    ],
   });
 
   return (

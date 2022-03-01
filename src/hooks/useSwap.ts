@@ -2,7 +2,7 @@ import { ParaSwap, APIError, Transaction } from 'paraswap';
 import { ContractMethod, SwapSide } from 'paraswap/build/constants';
 import { OptimalRate } from 'paraswap-core';
 import { useCallback, useEffect, useState } from 'react';
-import { ComputedReserveData, useAppDataContext } from './app-data-provider/useAppDataProvider';
+import { ComputedReserveData } from './app-data-provider/useAppDataProvider';
 import { ChainId } from '@aave/contract-helpers';
 import { BigNumberZeroDecimal, normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
 
@@ -19,23 +19,11 @@ const getParaswap = (chainId: ChainId) => {
 
 type UseSwapProps = {
   max?: boolean;
-  swapIn: { address: string; amount: string };
-  swapOut: { address: string; amount: string };
+  swapIn: ComputedReserveData & { amount: string };
+  swapOut: ComputedReserveData & { amount: string };
   variant: 'exactIn' | 'exactOut';
   userId?: string;
   chainId: ChainId;
-};
-
-const getReserve = (address: string, reserves: ComputedReserveData[]) => {
-  const reserve = reserves.find(
-    (reserve) => reserve.underlyingAsset.toLowerCase() === address.toLowerCase()
-  ) as ComputedReserveData;
-  return {
-    address,
-    decimals: reserve.decimals,
-    priceInEth: reserve.priceInMarketReferenceCurrency,
-    liquidityRate: reserve.supplyAPY,
-  };
 };
 
 const MESSAGE_MAP = {
@@ -48,28 +36,24 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId }: UseS
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [priceRoute, setPriceRoute] = useState<OptimalRate | null>(null);
-  const { reserves } = useAppDataContext();
-
-  const reserveIn = getReserve(swapIn.address, reserves);
-  const reserveOut = getReserve(swapOut.address, reserves);
 
   const fetchRoute = useCallback(async () => {
-    if (!swapIn.address || !swapOut.address || !userId) return;
+    if (!swapIn.underlyingAsset || !swapOut.underlyingAsset || !userId) return;
     if (variant === 'exactIn' && (!swapIn.amount || swapIn.amount === '0')) return;
     if (variant === 'exactOut' && (!swapOut.amount || swapOut.amount === '0')) return;
     setLoading(true);
     let _amount = valueToBigNumber(variant === 'exactIn' ? swapIn.amount : swapOut.amount);
     if (max) {
-      _amount = _amount.plus(_amount.multipliedBy(reserveIn.liquidityRate).dividedBy(360 * 24));
+      _amount = _amount.multipliedBy('1.0025');
     }
     const amount = normalizeBN(
       _amount,
-      (variant === 'exactIn' ? reserveIn.decimals : reserveOut.decimals) * -1
+      (variant === 'exactIn' ? swapIn.decimals : swapOut.decimals) * -1
     );
     try {
       const response = await paraSwap.getRate(
-        reserveIn.address,
-        reserveOut.address,
+        swapIn.underlyingAsset,
+        swapOut.underlyingAsset,
         amount.toFixed(0),
         userId,
         variant === 'exactIn' ? SwapSide.SELL : SwapSide.BUY,
@@ -82,8 +66,8 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId }: UseS
               }
             : {}),
         },
-        reserveIn.decimals,
-        reserveOut.decimals
+        swapIn.decimals,
+        swapOut.decimals
       );
       if ((response as APIError).message) throw new Error((response as APIError).message);
       setError('');
@@ -94,7 +78,18 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId }: UseS
       setError(message || 'There was an issue fetching data from Paraswap');
     }
     setLoading(false);
-  }, [JSON.stringify(swapIn), JSON.stringify(swapOut), variant, max]);
+  }, [
+    swapIn.amount,
+    swapIn.underlyingAsset,
+    swapIn.decimals,
+    swapOut.amount,
+    swapOut.underlyingAsset,
+    swapOut.decimals,
+    userId,
+    variant,
+    max,
+    chainId,
+  ]);
 
   // updates the route on input change
   useEffect(() => {
@@ -113,14 +108,12 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId }: UseS
     return {
       // full object needed for building the tx
       priceRoute: priceRoute,
-      outputAmount: normalize(priceRoute.destAmount ?? '0', reserveOut.decimals),
+      outputAmount: normalize(priceRoute.destAmount ?? '0', swapOut.decimals),
       outputAmountUSD: priceRoute.destUSD ?? '0',
-      inputAmount: normalize(priceRoute.srcAmount ?? '0', reserveIn.decimals),
+      inputAmount: normalize(priceRoute.srcAmount ?? '0', swapIn.decimals),
       inputAmountUSD: priceRoute.srcUSD ?? '0',
       loading: loading,
       error: error,
-      reserveIn,
-      reserveOut,
     };
   }
   return {
@@ -132,8 +125,6 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId }: UseS
     inputAmountUSD: '0',
     loading: loading,
     error: error,
-    reserveIn,
-    reserveOut,
   };
 };
 
