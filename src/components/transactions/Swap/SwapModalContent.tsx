@@ -51,7 +51,7 @@ export enum ErrorType {
 }
 
 export const SwapModalContent = ({ underlyingAsset }: SupplyProps) => {
-  const { marketReferencePriceInUsd, reserves, user } = useAppDataContext();
+  const { reserves, user } = useAppDataContext();
   const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
   const { chainId: connectedChainId, currentAccount } = useWeb3Context();
   const { gasLimit, mainTxState: supplyTxState } = useModalContext();
@@ -90,16 +90,14 @@ export const SwapModalContent = ({ underlyingAsset }: SupplyProps) => {
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToSwap : _amount;
 
-  const { priceRoute, error, inputAmountUSD, inputAmount, outputAmount, outputAmountUSD } = useSwap(
-    {
-      chainId: currentChainId,
-      userId: currentAccount,
-      variant: 'exactIn',
-      swapIn: { ...poolReserve, amount: amountRef.current },
-      swapOut: { ...swapTarget, amount: '0' },
-      max: isMaxSelected,
-    }
-  );
+  const { priceRoute, inputAmountUSD, outputAmount, outputAmountUSD } = useSwap({
+    chainId: currentChainId,
+    userId: currentAccount,
+    variant: 'exactIn',
+    swapIn: { ...poolReserve, amount: amountRef.current },
+    swapOut: { ...swapTarget, amount: '0' },
+    max: isMaxSelected,
+  });
 
   const minimumReceived = new BigNumber(outputAmount || '0')
     .multipliedBy(new BigNumber(100).minus(maxSlippage).dividedBy(100))
