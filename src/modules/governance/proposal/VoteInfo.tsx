@@ -94,7 +94,7 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
         </Row>
       )}
       {currentAccount && didVote && (
-        <Alert severity={support ? 'success' : 'error'}>
+        <Alert severity={support ? 'success' : 'error'} sx={{ my: 2 }}>
           <Typography variant="subheader1">
             <Trans>You voted {support ? 'YAE' : 'NAY'}</Trans>
           </Typography>
@@ -107,7 +107,7 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
         </Alert>
       )}
       {currentAccount && voteOngoing && power !== '0' && (
-        <Alert severity="warning">
+        <Alert severity="warning" sx={{ my: 2 }}>
           <Trans>Not enough voting power to participate in this proposal</Trans>
         </Alert>
       )}
