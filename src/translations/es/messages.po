@@ -13,8 +13,8 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/modules/governance/VotingPowerInfoPanel.tsx:30
-#: src/modules/governance/VotingPowerInfoPanel.tsx:45
+#: src/modules/governance/VotingPowerInfoPanel.tsx:31
+#: src/modules/governance/VotingPowerInfoPanel.tsx:46
 msgid "(AAVE + stkAAVE)"
 msgstr ""
 
@@ -34,7 +34,7 @@ msgstr ""
 msgid "<0>Ampleforth</0> is an asset affected by rebasing. Visit the <1>documentation</1> or <2>Ampleforth's FAQ</2> to learn more."
 msgstr ""
 
-#: src/modules/staking/StakingHeader.tsx:43
+#: src/modules/staking/StakingHeader.tsx:41
 msgid "AAVE holders can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
 msgstr ""
 
@@ -81,25 +81,29 @@ msgstr ""
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx:96
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx:79
-#: src/modules/dashboard/lists/ListItemAPYButton.tsx:106
+#: src/modules/dashboard/lists/ListItemAPYButton.tsx:114
 #: src/modules/reserve-overview/ReserveConfiguration.tsx:246
 msgid "APY, stable"
 msgstr ""
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx:91
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx:59
-#: src/modules/dashboard/lists/ListItemAPYButton.tsx:92
+#: src/modules/dashboard/lists/ListItemAPYButton.tsx:97
 #: src/modules/reserve-overview/ReserveConfiguration.tsx:233
 msgid "APY, variable"
 msgstr ""
 
-#: src/modules/governance/GovernanceTopPanel.tsx:9
-msgid "Aave Protocol Governance"
+#: src/modules/governance/GovernanceTopPanel.tsx:48
+msgid "Aave Governance"
 msgstr ""
 
+#: src/modules/governance/GovernanceTopPanel.tsx:9
+#~ msgid "Aave Protocol Governance"
+#~ msgstr ""
+
 #: src/modules/governance/GovernanceTopPanel.tsx:20
-msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance documentation."
-msgstr ""
+#~ msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance documentation."
+#~ msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx:307
 msgid "Aave per month"
@@ -109,7 +113,11 @@ msgstr ""
 #~ msgid "Aavenomics introduces a formalized path to the decentralisation and autonomy of the Aave Protocol. Covering governance mechanisms and financial incentives, it aims to share a vision of alignment between various stakeholders within the Aave ecosystem, protocol functionality and the AAVE token as a core securing element of the Aave Protocol. You can find all the details here."
 #~ msgstr ""
 
-#: src/layouts/WalletWidget.tsx:114
+#: src/modules/governance/GovernanceTopPanel.tsx:53
+msgid "Aavenomics introduces a formalized path to the decentralization and autonomy of the Aave Protocol. Covering governance mechanisms and financial incentives, it aims to share a vision of alignment between various stakeholders within the Aave ecosystem, protocol functionality and the AAVE token as a core securing element of the Aave Protocol."
+msgstr ""
+
+#: src/layouts/WalletWidget.tsx:118
 msgid "Account"
 msgstr ""
 
@@ -129,7 +137,7 @@ msgstr ""
 msgid "All done!"
 msgstr ""
 
-#: src/modules/governance/ProposalsList.tsx:98
+#: src/modules/governance/ProposalsList.tsx:107
 msgid "All proposals"
 msgstr ""
 
@@ -150,11 +158,11 @@ msgid "Already on cooldown"
 msgstr ""
 
 #: src/components/Warnings/CooldownWarning.tsx:13
-msgid "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. FAQ link"
-msgstr ""
+#~ msgid "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. FAQ link"
+#~ msgstr ""
 
 #: src/components/transactions/AssetInput.tsx:101
-#: src/components/transactions/Faucet/FaucetModalContent.tsx:70
+#: src/components/transactions/Faucet/FaucetModalContent.tsx:69
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx:88
 msgid "Amount"
 msgstr ""
@@ -199,7 +207,7 @@ msgstr ""
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx:217
 #: src/components/transactions/Emode/EmodeSelect.tsx:26
-#: src/modules/dashboard/DashboardEModeButton.tsx:129
+#: src/modules/dashboard/DashboardEModeButton.tsx:130
 msgid "Asset category"
 msgstr ""
 
@@ -362,7 +370,7 @@ msgstr ""
 msgid "Can be collateral"
 msgstr ""
 
-#: src/components/transactions/Supply/SupplyModalContent.tsx:175
+#: src/components/transactions/Supply/SupplyModalContent.tsx:177
 msgid "Cap reached. Lower supply amount"
 msgstr ""
 
@@ -399,7 +407,7 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: src/components/transactions/Repay/RepayModalContent.tsx:239
+#: src/components/transactions/Repay/RepayModalContent.tsx:247
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx:45
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx:68
 msgid "Collateral"
@@ -426,10 +434,8 @@ msgstr ""
 #~ msgid "Connect"
 #~ msgstr ""
 
-#: src/components/ConnectWalletPaper.tsx:50
-#: src/layouts/WalletWidget.tsx:100
-#: src/modules/governance/VotingPowerInfoPanel.tsx:70
-#: src/modules/governance/proposal/VoteInfo.tsx:101
+#: src/components/WalletConnection/ConnectWalletButton.tsx:12
+#: src/layouts/WalletWidget.tsx:104
 msgid "Connect wallet"
 msgstr ""
 
@@ -438,7 +444,7 @@ msgstr ""
 msgid "Cooldown period"
 msgstr ""
 
-#: src/components/Warnings/CooldownWarning.tsx:10
+#: src/components/Warnings/CooldownWarning.tsx:11
 msgid "Cooldown period warning"
 msgstr ""
 
@@ -454,7 +460,7 @@ msgstr ""
 msgid "Cooling down..."
 msgstr ""
 
-#: src/layouts/WalletWidget.tsx:210
+#: src/layouts/WalletWidget.tsx:218
 msgid "Copy address"
 msgstr ""
 
@@ -519,7 +525,7 @@ msgid "Define Retry with Approval text"
 msgstr ""
 
 #: src/components/transactions/GovDelegation/GovDelegationActions.tsx:57
-#: src/modules/governance/VotingPowerInfoPanel.tsx:66
+#: src/modules/governance/VotingPowerInfoPanel.tsx:67
 msgid "Delegate"
 msgstr ""
 
@@ -552,7 +558,7 @@ msgstr ""
 #~ msgid "Disable"
 #~ msgstr ""
 
-#: src/modules/dashboard/DashboardEModeButton.tsx:193
+#: src/modules/dashboard/DashboardEModeButton.tsx:194
 msgid "Disable E-Mode"
 msgstr ""
 
@@ -574,7 +580,7 @@ msgstr ""
 msgid "Disabling this asset as collateral affects your borrowing power and Health Factor."
 msgstr ""
 
-#: src/layouts/WalletWidget.tsx:255
+#: src/layouts/WalletWidget.tsx:263
 msgid "Disconnect Wallet"
 msgstr ""
 
@@ -595,7 +601,7 @@ msgid "E-Mode category"
 msgstr ""
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx:178
-#: src/modules/dashboard/DashboardEModeButton.tsx:179
+#: src/modules/dashboard/DashboardEModeButton.tsx:180
 msgid "E-Mode increases your borrowing power for a selected category of assets up to 99%. <0>Learn more</0>"
 msgstr ""
 
@@ -612,11 +618,11 @@ msgstr ""
 #~ msgid "Efficiency Mode(E-Mode)"
 #~ msgstr ""
 
-#: src/modules/dashboard/DashboardEModeButton.tsx:123
+#: src/modules/dashboard/DashboardEModeButton.tsx:124
 msgid "Efficiency mode (E-Mode)"
 msgstr ""
 
-#: src/modules/dashboard/DashboardEModeButton.tsx:193
+#: src/modules/dashboard/DashboardEModeButton.tsx:194
 msgid "Enable E-Mode"
 msgstr ""
 
@@ -633,7 +639,7 @@ msgid "Enable {symbol} as collateral"
 msgstr ""
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx:119
-#: src/modules/dashboard/DashboardEModeButton.tsx:170
+#: src/modules/dashboard/DashboardEModeButton.tsx:171
 msgid "Enabled"
 msgstr ""
 
@@ -669,6 +675,10 @@ msgstr ""
 msgid "Enter an amount"
 msgstr ""
 
+#: src/components/WalletConnection/WalletSelector.tsx:85
+msgid "Error connecting. Try refreshing the page."
+msgstr ""
+
 #: pages/governance/proposal/[proposalId].tsx:273
 msgid "Executed"
 msgstr ""
@@ -692,11 +702,11 @@ msgstr ""
 msgid "Faucet {0}"
 msgstr ""
 
-#: src/modules/governance/ProposalsList.tsx:84
+#: src/modules/governance/ProposalsList.tsx:93
 msgid "Filter"
 msgstr ""
 
-#: src/modules/staking/StakingHeader.tsx:60
+#: src/modules/staking/StakingHeader.tsx:59
 msgid "Funds in the Safety Module"
 msgstr ""
 
@@ -705,7 +715,7 @@ msgid "Github"
 msgstr ""
 
 #: src/layouts/MobileMenu.tsx:74
-#: src/layouts/SettingsMenu.tsx:66
+#: src/layouts/SettingsMenu.tsx:67
 msgid "Global settings"
 msgstr ""
 
@@ -723,7 +733,7 @@ msgstr ""
 msgid "Health factor"
 msgstr ""
 
-#: src/components/lists/ListWrapper.tsx:104
+#: src/components/lists/ListWrapper.tsx:103
 msgid "Hide"
 msgstr ""
 
@@ -796,7 +806,7 @@ msgstr ""
 msgid "Learn more"
 msgstr ""
 
-#: src/modules/staking/StakingHeader.tsx:54
+#: src/modules/staking/StakingHeader.tsx:51
 msgid "Learn more about risks involved"
 msgstr ""
 
@@ -893,6 +903,10 @@ msgstr ""
 msgid "NEY"
 msgstr ""
 
+#: src/components/WalletConnection/WalletSelector.tsx:105
+msgid "Need help connecting a wallet? <0>Read our FAQ</0>"
+msgstr ""
+
 #: src/components/incentives/IncentivesTooltipContent.tsx:82
 msgid "Net APR"
 msgstr ""
@@ -905,8 +919,12 @@ msgstr ""
 msgid "Net worth"
 msgstr ""
 
-#: src/layouts/WalletWidget.tsx:168
+#: src/layouts/WalletWidget.tsx:176
 msgid "Network"
+msgstr ""
+
+#: src/components/WalletConnection/WalletSelector.tsx:80
+msgid "Network not supported for this wallet"
 msgstr ""
 
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx:121
@@ -938,7 +956,7 @@ msgid "Not enough balance"
 msgstr ""
 
 #: src/components/transactions/Stake/StakeModalContent.tsx:73
-#: src/components/transactions/Supply/SupplyModalContent.tsx:173
+#: src/components/transactions/Supply/SupplyModalContent.tsx:175
 msgid "Not enough balance on your wallet"
 msgstr ""
 
@@ -975,7 +993,7 @@ msgstr ""
 #~ msgid "Ok,"
 #~ msgstr ""
 
-#: src/components/transactions/FlowCommons/Success.tsx:159
+#: src/components/transactions/FlowCommons/Success.tsx:165
 msgid "Ok, Close"
 msgstr ""
 
@@ -1024,12 +1042,12 @@ msgstr ""
 msgid "Proposal overview"
 msgstr ""
 
-#: src/modules/governance/ProposalsList.tsx:81
+#: src/modules/governance/ProposalsList.tsx:90
 msgid "Proposals"
 msgstr ""
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx:41
-#: src/modules/governance/VotingPowerInfoPanel.tsx:42
+#: src/modules/governance/VotingPowerInfoPanel.tsx:43
 msgid "Proposition power"
 msgstr ""
 
@@ -1042,7 +1060,11 @@ msgstr ""
 msgid "Recipient address"
 msgstr ""
 
-#: src/components/transactions/Repay/RepayModalContent.tsx:258
+#: src/components/WalletConnection/WalletSelector.tsx:82
+msgid "Rejected connection request"
+msgstr ""
+
+#: src/components/transactions/Repay/RepayModalContent.tsx:267
 msgid "Remaining debt"
 msgstr ""
 
@@ -1055,7 +1077,7 @@ msgstr ""
 msgid "Repay"
 msgstr ""
 
-#: src/components/transactions/Repay/RepayModalContent.tsx:211
+#: src/components/transactions/Repay/RepayModalContent.tsx:219
 msgid "Repay with"
 msgstr ""
 
@@ -1116,7 +1138,7 @@ msgstr ""
 #~ msgid "Riskier"
 #~ msgstr ""
 
-#: src/modules/dashboard/lists/ListItemAPYButton.tsx:126
+#: src/modules/dashboard/lists/ListItemAPYButton.tsx:134
 msgid "SEE CHARTS"
 msgstr ""
 
@@ -1151,7 +1173,7 @@ msgstr ""
 #~ msgid "Safety of your supplied collateral against the borrowed assets and its underlying value."
 #~ msgstr ""
 
-#: src/modules/dashboard/lists/ListItemAPYButton.tsx:80
+#: src/modules/dashboard/lists/ListItemAPYButton.tsx:82
 msgid "Select APY type to switch"
 msgstr ""
 
@@ -1171,7 +1193,7 @@ msgstr ""
 msgid "Setup triggers and receive notifications about your Health Factor status using Hal app."
 msgstr ""
 
-#: src/components/lists/ListWrapper.tsx:104
+#: src/components/lists/ListWrapper.tsx:103
 msgid "Show"
 msgstr ""
 
@@ -1213,7 +1235,6 @@ msgid "Stablecoin"
 msgstr ""
 
 #: src/components/transactions/Stake/StakeActions.tsx:60
-#: src/modules/staking/StakingHeader.tsx:31
 #: src/modules/staking/StakingPanel.tsx:116
 #: src/modules/staking/StakingPanel.tsx:200
 #: src/ui-config/menu-items/index.tsx:34
@@ -1233,6 +1254,7 @@ msgid "Staked"
 msgstr ""
 
 #: src/components/transactions/Stake/StakeActions.tsx:61
+#: src/modules/staking/StakingHeader.tsx:36
 msgid "Staking"
 msgstr ""
 
@@ -1258,7 +1280,7 @@ msgstr ""
 msgid "Supply"
 msgstr ""
 
-#: src/components/transactions/Supply/SupplyModalContent.tsx:282
+#: src/components/transactions/Supply/SupplyModalContent.tsx:284
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx:52
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx:57
 #: src/modules/markets/AssetsList.tsx:69
@@ -1333,6 +1355,10 @@ msgstr ""
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx:92
 #~ msgid "The cooldown period is 10 days. After 10 days of cooldown, you will enter unstake window of 2 days. You will continue receiving rewards during cooldown and unstake window."
 #~ msgstr ""
+
+#: src/components/Warnings/CooldownWarning.tsx:14
+msgid "The cooldown period is the time required prior to unstaking your tokens(10 days). You can only withdraw your assets from the Security Module after the cooldown period and within the active the unstake window.<0>Learn more</0>"
+msgstr ""
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx:108
 msgid "The cooldown period is {0}. After {1} of cooldown, you will enter unstake window of {2}. You will continue receiving rewards during cooldown and unstake window."
@@ -1428,7 +1454,7 @@ msgstr ""
 msgid "Total borrows"
 msgstr ""
 
-#: src/modules/staking/StakingHeader.tsx:72
+#: src/modules/staking/StakingHeader.tsx:75
 msgid "Total emission per day"
 msgstr ""
 
@@ -1534,15 +1560,15 @@ msgstr ""
 msgid "View details"
 msgstr ""
 
-#: src/layouts/WalletWidget.tsx:235
+#: src/layouts/WalletWidget.tsx:243
 msgid "View on Explorer"
 msgstr ""
 
-#: src/modules/governance/proposal/VoteInfo.tsx:95
+#: src/modules/governance/proposal/VoteInfo.tsx:96
 msgid "Vote NAY"
 msgstr ""
 
-#: src/modules/governance/proposal/VoteInfo.tsx:87
+#: src/modules/governance/proposal/VoteInfo.tsx:88
 msgid "Vote YAE"
 msgstr ""
 
@@ -1552,7 +1578,7 @@ msgstr ""
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx:38
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx:80
-#: src/modules/governance/VotingPowerInfoPanel.tsx:27
+#: src/modules/governance/VotingPowerInfoPanel.tsx:28
 msgid "Voting power"
 msgstr ""
 
@@ -1561,10 +1587,14 @@ msgid "Voting results"
 msgstr ""
 
 #: pages/faucet.tsx:58
-#: src/components/transactions/Repay/RepayModalContent.tsx:228
+#: src/components/transactions/Repay/RepayModalContent.tsx:236
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx:141
 #: src/modules/reserve-overview/ReserveActions.tsx:117
 msgid "Wallet balance"
+msgstr ""
+
+#: src/components/WalletConnection/WalletSelector.tsx:110
+msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 msgstr ""
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx:187
@@ -1606,6 +1636,10 @@ msgstr ""
 
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx:12
 msgid "You are entering Isolation mode"
+msgstr ""
+
+#: src/modules/governance/GovernanceTopPanel.tsx:65
+msgid "You can find all the details here."
 msgstr ""
 
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx:94
@@ -1694,7 +1728,7 @@ msgid "Your health factor and loan to value determine the assurance of your coll
 msgstr ""
 
 #: pages/reserve-overview.tsx:70
-#: src/modules/governance/VotingPowerInfoPanel.tsx:18
+#: src/modules/governance/VotingPowerInfoPanel.tsx:19
 #: src/modules/reserve-overview/ReserveActions.tsx:37
 msgid "Your info"
 msgstr ""
@@ -1716,7 +1750,7 @@ msgstr ""
 msgid "Your supplies"
 msgstr ""
 
-#: src/modules/governance/proposal/VoteInfo.tsx:68
+#: src/modules/governance/proposal/VoteInfo.tsx:69
 msgid "Your voting info"
 msgstr ""
 
