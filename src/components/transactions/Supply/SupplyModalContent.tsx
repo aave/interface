@@ -14,7 +14,7 @@ import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3ContextProvider';
+import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 
@@ -148,7 +148,9 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
     !user.isInIsolationMode &&
     poolReserve.isIsolated &&
     !hasDifferentCollateral &&
-    (userReserve?.underlyingBalance !== '0' ? userReserve?.usageAsCollateralEnabledOnUser : true);
+    (userReserve && userReserve.underlyingBalance !== '0'
+      ? userReserve.usageAsCollateralEnabledOnUser
+      : true);
 
   // TODO: check if calc is correct to see if cap reached
   const capReached =
@@ -194,7 +196,7 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
   let willBeUsedAsCollateral: CollateralType = poolReserve.usageAsCollateralEnabled
     ? CollateralType.ENABLED
     : CollateralType.DISABLED;
-  const userHasSuppliedReserve = userReserve?.scaledATokenBalance !== '0';
+  const userHasSuppliedReserve = userReserve && userReserve.scaledATokenBalance !== '0';
   const userHasCollateral = user.totalCollateralUSD !== '0';
 
   if (poolReserve.isIsolated) {

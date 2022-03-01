@@ -3,6 +3,7 @@ import { normalize } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Alert, Button, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { useGovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
@@ -12,7 +13,7 @@ import { CustomProposalType } from 'src/static-build/proposal';
 
 export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType) {
   const { openGovVote } = useModalContext();
-  const { currentAccount, connectWallet } = useWeb3Context();
+  const { currentAccount } = useWeb3Context();
 
   const [votedPower, setVotedPower] = useState<string>();
   const [support, setSupport] = useState<boolean>();
@@ -43,7 +44,6 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
 
   const fetchVotingPower = async () => {
     try {
-      console.log(startBlock, currentAccount, strategy);
       const power = await governanceService.getVotingPowerAt({
         user: currentAccount,
         block: startBlock,
@@ -134,11 +134,7 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
           </Button>
         </>
       )}
-      {!currentAccount && (
-        <Button variant="gradient" onClick={connectWallet}>
-          <Trans>Connect wallet</Trans>
-        </Button>
-      )}
+      {!currentAccount && <ConnectWalletButton />}
     </>
   );
 }

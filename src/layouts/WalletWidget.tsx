@@ -17,7 +17,10 @@ import {
   Typography,
 } from '@mui/material';
 import makeBlockie from 'ethereum-blockies-base64';
+import { stubTrue } from 'lodash';
 import React, { useEffect, useState } from 'react';
+import { WalletModal } from 'src/components/WalletConnection/WalletModal';
+import { useWalletModalContext } from 'src/hooks/useWalletModal';
 import useGetEns from 'src/libs/hooks/use-get-ens';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
@@ -35,8 +38,9 @@ interface WalletWidgetProps {
 }
 
 export default function WalletWidget({ open, setOpen, headerHeight, md }: WalletWidgetProps) {
-  const { connectWallet, disconnectWallet, currentAccount, connected, chainId, loading } =
-    useWeb3Context();
+  const { disconnectWallet, currentAccount, connected, chainId, loading } = useWeb3Context();
+
+  const { setWalletModalOpen } = useWalletModalContext();
 
   const { name: ensName, avatar: ensAvatar } = useGetEns(currentAccount);
   const ensNameAbbreviated = ensName
@@ -70,7 +74,7 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if (!connected) {
-      connectWallet();
+      setWalletModalOpen(stubTrue);
     } else {
       setOpen(true);
       setAnchorEl(event.currentTarget);
@@ -127,7 +131,11 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
             }}
           >
             <img
-              src={useBlockie ? makeBlockie(currentAccount) : ensAvatar}
+              src={
+                useBlockie
+                  ? makeBlockie(currentAccount !== '' ? currentAccount : 'default')
+                  : ensAvatar
+              }
               alt=""
               onError={() => setUseBlockie(true)}
             />
@@ -286,7 +294,11 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
                 }}
               >
                 <img
-                  src={useBlockie ? makeBlockie(currentAccount) : ensAvatar}
+                  src={
+                    useBlockie
+                      ? makeBlockie(currentAccount !== '' ? currentAccount : 'default')
+                      : ensAvatar
+                  }
                   alt=""
                   onError={() => setUseBlockie(true)}
                 />
@@ -331,6 +343,8 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
           </MenuList>
         </Menu>
       )}
+
+      <WalletModal />
     </>
   );
 }
