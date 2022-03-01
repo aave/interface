@@ -46,6 +46,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({ gasLimit, childr
 interface DetailsNumberLineProps extends FormattedNumberProps {
   description: ReactNode;
   value: FormattedNumberProps['value'];
+  futureValue?: FormattedNumberProps['value'];
   numberPrefix?: ReactNode;
   iconSymbol?: string;
 }
@@ -53,6 +54,7 @@ interface DetailsNumberLineProps extends FormattedNumberProps {
 export const DetailsNumberLine = ({
   description,
   value,
+  futureValue,
   numberPrefix,
   iconSymbol,
   ...rest
@@ -63,6 +65,14 @@ export const DetailsNumberLine = ({
         {iconSymbol && <TokenIcon symbol={iconSymbol} sx={{ mr: 1, fontSize: '16px' }} />}
         {numberPrefix && <Typography sx={{ mr: 1 }}>{numberPrefix}</Typography>}
         <FormattedNumber value={value} variant="secondary14" {...rest} />
+        {futureValue && (
+          <>
+            <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+              <ArrowNarrowRightIcon />
+            </SvgIcon>
+            <FormattedNumber value={futureValue} variant="secondary14" {...rest} />
+          </>
+        )}
       </Box>
     </Row>
   );
@@ -146,16 +156,31 @@ export const DetailsCollateralLine = ({ collateralType }: DetailsCollateralLine)
 };
 
 interface DetailsIncentivesLineProps {
+  futureIncentives?: ReserveIncentiveResponse[];
+  futureSymbol?: string;
   incentives?: ReserveIncentiveResponse[];
   // the token yielding the incentive, not the incentive itself
   symbol: string;
 }
 
-export const DetailsIncentivesLine = ({ incentives, symbol }: DetailsIncentivesLineProps) => {
+export const DetailsIncentivesLine = ({
+  incentives,
+  symbol,
+  futureIncentives,
+  futureSymbol,
+}: DetailsIncentivesLineProps) => {
   if (!incentives || incentives.filter((i) => i.incentiveAPR !== '0').length === 0) return null;
   return (
     <Row caption={<Trans>Rewards APR</Trans>} captionVariant="description" mb={4} minHeight={24}>
       <IncentivesButton incentives={incentives} symbol={symbol} />
+      {futureSymbol && (
+        <>
+          <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+            <ArrowNarrowRightIcon />
+          </SvgIcon>
+          <IncentivesButton incentives={futureIncentives} symbol={futureSymbol} />
+        </>
+      )}
     </Row>
   );
 };

@@ -17,7 +17,7 @@ import {
   Typography,
 } from '@mui/material';
 import makeBlockie from 'ethereum-blockies-base64';
-import { stubTrue } from 'lodash';
+import stubTrue from 'lodash/stubTrue';
 import React, { useEffect, useState } from 'react';
 import { WalletModal } from 'src/components/WalletConnection/WalletModal';
 import { useWalletModalContext } from 'src/hooks/useWalletModal';
