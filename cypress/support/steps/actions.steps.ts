@@ -32,7 +32,7 @@ export const doConfirm = ({ hasApproval, actionName, assetName }: ConfirmAction)
   assetName = ' ' + assetName;
   cy.log(`${hasApproval ? 'One step process' : 'Two step process'}`);
   if (!hasApproval) {
-    cy.get(`[data-cy=approvalButton]`).click();
+    cy.get(`[data-cy=approvalButton]`).should('not.be.disabled').click();
   }
   cy.get(`[data-cy=actionButton]`).as('button');
   cy.get('@button').should('not.be.disabled').click();
@@ -41,7 +41,7 @@ export const doConfirm = ({ hasApproval, actionName, assetName }: ConfirmAction)
 
 export const doCloseModal = () => {
   return it(`Close modal popup`, () => {
-    cy.get('[data-cy=closeButton]').click();
+    cy.get('[data-cy=closeButton]').should('not.be.disabled').click();
     cy.get('[data-cy=Modal]').should('not.exist');
   });
 };

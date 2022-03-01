@@ -72,7 +72,8 @@ export const dashboardAssetValuesVerification = (
                 }_${estimatedCase.apyType}]`
               ).within(($row) => {
                 expect($row.find(`[data-cy="assetName"]`)).to.contain(estimatedCase.assetName);
-                expect($row.find(`[data-cy="apyButton"]`)).to.contain(estimatedCase.apyType);
+                expect($row.find(`[data-cy="apyButton_${estimatedCase.apyType}"]`)).to.exist;
+                // expect($row.find(`[data-cy="apyButton"]`)).to.contain(estimatedCase.apyType);
                 if (estimatedCase.amount) {
                   cy.get('[data-cy=nativeAmount]').contains(estimatedCase.amount.toString());
                 }

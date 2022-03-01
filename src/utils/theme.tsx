@@ -172,7 +172,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         default: getColor('#F1F1F3', '#1B2030'),
         paper: getColor('#FFFFFF', '#292E41'),
         surface: getColor('#F7F7F9', '#383D51'),
-        header: getColor('#2B2D3C', '#151927'),
+        header: getColor('#2B2D3C', '#1B2030'),
       },
       divider: getColor('#EAEBEF', '#EBEBEF14'),
       action: {
@@ -547,6 +547,7 @@ export function getThemedComponents(theme: Theme) {
             props: { variant: 'elevation' },
             style: {
               boxShadow: '0px 2px 1px rgba(0, 0, 0, 0.05), 0px 0px 1px rgba(0, 0, 0, 0.25)',
+              ...(theme.palette.mode === 'dark' ? { backgroundImage: 'none' } : {}),
             },
           },
         ],
@@ -617,7 +618,7 @@ export function getThemedComponents(theme: Theme) {
           },
           track: {
             opacity: 1,
-            backgroundColor: theme.palette.primary.light,
+            backgroundColor: theme.palette.action.active,
             borderRadius: '8px',
           },
         },
