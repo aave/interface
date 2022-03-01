@@ -71,7 +71,7 @@ export interface AssetInputProps<T extends Asset = Asset> {
   isMaxSelected?: boolean;
 }
 
-export const AssetInput: React.FC<AssetInputProps> = ({
+export const AssetInput = <T extends Asset = Asset>({
   value,
   usdValue,
   symbol,
@@ -83,16 +83,16 @@ export const AssetInput: React.FC<AssetInputProps> = ({
   capType,
   maxValue,
   isMaxSelected,
-}) => {
+}: AssetInputProps<T>) => {
   const handleSelect = (event: SelectChangeEvent) => {
-    const newAsset = assets.find((asset) => asset.symbol === event.target.value) as Asset;
+    const newAsset = assets.find((asset) => asset.symbol === event.target.value) as T;
     onSelect && onSelect(newAsset);
   };
 
   const asset =
     assets.length === 1
       ? assets[0]
-      : assets && (assets.find((asset) => asset.symbol === symbol) as Asset);
+      : assets && (assets.find((asset) => asset.symbol === symbol) as T);
 
   return (
     <Box>
@@ -174,7 +174,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
                   const asset =
                     assets.length === 1
                       ? assets[0]
-                      : assets && (assets.find((asset) => asset.symbol === symbol) as Asset);
+                      : assets && (assets.find((asset) => asset.symbol === symbol) as T);
                   return (
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                       <TokenIcon
@@ -216,7 +216,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
             flexGrow={1}
           />
 
-          {asset.balance && (
+          {asset.balance && onChange && (
             <>
               <Typography component="div" variant="secondary12" color="text.secondary">
                 <Trans>Balance</Trans>{' '}

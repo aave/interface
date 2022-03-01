@@ -213,7 +213,7 @@ export const SwapModalContent = ({ underlyingAsset }: SupplyProps) => {
         <ToggleButtonGroup
           sx={{ mt: 2 }}
           value={maxSlippage}
-          onChange={(e, value) => setMaxSlippage(value)}
+          onChange={(_e, value) => setMaxSlippage(value)}
           exclusive
         >
           <ToggleButton value="0.1" sx={{ minWidth: '74px' }}>

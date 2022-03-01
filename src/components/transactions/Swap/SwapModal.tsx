@@ -8,9 +8,7 @@ export const SwapModal = () => {
   const { type, close, args } = useModalContext();
   return (
     <BasicModal open={type === ModalType.Swap} setOpen={close}>
-      {args?.underlyingAsset && (
-        <SwapModalContent underlyingAsset={args.underlyingAsset} handleClose={close} />
-      )}
+      {args?.underlyingAsset && <SwapModalContent underlyingAsset={args.underlyingAsset} />}
     </BasicModal>
   );
 };

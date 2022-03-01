@@ -1,9 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
-import {
-  ComputedReserveData,
-  useAppDataContext,
-} from 'src/hooks/app-data-provider/useAppDataProvider';
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useGasStation } from 'src/hooks/useGasStation';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { getSwapCallData } from 'src/hooks/useSwap';
@@ -43,7 +40,6 @@ export const SwapActions = ({
   useFlashLoan,
   ...props
 }: SwapActionProps) => {
-  const { user } = useAppDataContext();
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId } = useProtocolDataContext();
   const { currentAccount, chainId: connectedChainId } = useWeb3Context();
