@@ -1,28 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   ComputedReserveData,
   useAppDataContext,
 } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { SwapActions } from './SwapActions';
-import { Paper, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
-import {
-  calculateHealthFactorFromBalancesBigUnits,
-  ComputedUserReserve,
-  USD_DECIMALS,
-  valueToBigNumber,
-} from '@aave/math-utils';
+import { ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import { ComputedUserReserve } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
-import { TxState } from 'src/helpers/types';
-import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import {
-  getMaxAmountAvailableToSupply,
-  remainingCap,
-} from 'src/utils/getMaxAmountAvailableToSupply';
+import { remainingCap } from 'src/utils/getMaxAmountAvailableToSupply';
 import { useSwap } from 'src/hooks/useSwap';
 import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
 import { TxModalTitle } from 'src/components/transactions/FlowCommons/TxModalTitle';
@@ -215,6 +203,11 @@ export const SwapModalContent = ({ underlyingAsset }: SupplyProps) => {
   if (supplyTxState.success)
     return <TxSuccessView action="Swapped" amount={maxAmountToSwap} symbol={poolReserve.symbol} />;
 
+  const priceImpact =
+    outputAmountUSD && outputAmountUSD !== '0'
+      ? new BigNumber(1).minus(new BigNumber(inputAmountUSD).dividedBy(outputAmountUSD)).toString()
+      : '0';
+
   return (
     <>
       <TxModalTitle title="Swap" symbol={poolReserve.symbol} />
@@ -256,7 +249,10 @@ export const SwapModalContent = ({ underlyingAsset }: SupplyProps) => {
           mt: 6,
         }}
       >
-        <Row caption={<Trans>Minimum received</Trans>} captionVariant="subheader1">
+        <Row caption={<Trans>Price impact</Trans>} captionVariant="subheader1">
+          <FormattedNumber value={priceImpact} variant="secondary14" percent />
+        </Row>
+        <Row caption={<Trans>Minimum received</Trans>} captionVariant="subheader1" sx={{ mt: 4 }}>
           <FormattedNumber
             value={minimumReceived}
             variant="secondary14"
@@ -315,7 +311,7 @@ export const SwapModalContent = ({ underlyingAsset }: SupplyProps) => {
         isWrongNetwork={isWrongNetwork}
         targetReserve={swapTarget}
         symbol={poolReserve.symbol}
-        blocked={false}
+        blocked={surpassesTargetSupplyCap}
         priceRoute={priceRoute}
       />
     </>
