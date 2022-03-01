@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /// <reference types="cypress" />
 import {
   doSwitchToDashboardBorrowView,
@@ -120,7 +121,7 @@ export const switchCollateralBlocked = (
   },
   skip: SkipType
 ) => {
-  let _shortName = asset.shortName;
+  const _shortName = asset.shortName;
   return describe('Check that collateral switcher disabled', () => {
     skipSetup(skip);
     it(`Check that collateral switcher for ${_shortName} disabled`, () => {
@@ -141,12 +142,13 @@ export const switchApyBlocked = (
   },
   skip: SkipType
 ) => {
-  let _shortName = asset.shortName;
+  const _shortName = asset.shortName;
   return describe('Check that apy switcher disabled', () => {
     skipSetup(skip);
     it(`Check that APY switcher for ${_shortName} disabled`, () => {
       getDashBoardBorrowRow({
         assetName: _shortName,
+        apyType: 'Stable',
       })
         .find('.Switcher__swiper input')
         .should('be.disabled');

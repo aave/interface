@@ -82,12 +82,15 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
 
   // calculate max amount abailable to repay
   let maxAmountToRepay: BigNumber;
+  let balance: string;
   if (repayWithATokens) {
     maxAmountToRepay = BigNumber.min(underlyingBalance, debt);
+    balance = underlyingBalance;
   } else {
     const normalizedWalletBalance = valueToBigNumber(tokenToRepayWith.balance).minus(
       userReserve.reserve.symbol.toUpperCase() === networkConfig.baseAssetSymbol ? '0.004' : '0'
     );
+    balance = normalizedWalletBalance.toString();
     maxAmountToRepay = BigNumber.min(normalizedWalletBalance, debt);
   }
 
@@ -101,7 +104,11 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
     if (currentMarketData.v3 && maxSelected && (repayWithATokens || maxAmountToRepay.eq(debt))) {
       setRepayMax('-1');
     } else {
-      setRepayMax(BigNumber.min(safeAmountToRepayAll, maxAmountToRepay).toString());
+      setRepayMax(
+        safeAmountToRepayAll.lt(balance)
+          ? safeAmountToRepayAll.toString()
+          : maxAmountToRepay.toString()
+      );
     }
   };
 

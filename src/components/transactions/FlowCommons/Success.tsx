@@ -9,7 +9,7 @@ import { Base64Token } from 'src/components/primitives/TokenIcon';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3ContextProvider';
+import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 
 export type SuccessTxViewProps = {
   action?: string;
@@ -147,12 +147,12 @@ export const TxSuccessView = ({
         <Link
           variant="helperText"
           href={currentNetworkConfig.explorerLinkBuilder({ tx: mainTxState.txHash })}
-          sx={{ display: 'inline-flex', alignItems: 'center' }}
+          sx={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'right', mb: 3 }}
           underline="hover"
           target="_blank"
           rel="noreferrer"
         >
-          <Trans>Review {action} tx details</Trans>
+          <Trans>Review tx details</Trans>
           <ExtLinkIcon />
         </Link>
         <Button
