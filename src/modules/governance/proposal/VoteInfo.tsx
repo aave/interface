@@ -67,6 +67,8 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
     }
   }, [voteOngoing, currentAccount, startBlock]);
 
+  console.log(power);
+
   return (
     <>
       <Typography variant="h3" sx={{ mb: 8 }}>
@@ -106,12 +108,12 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
           </Typography>
         </Alert>
       )}
-      {currentAccount && voteOngoing && power !== '0' && (
+      {currentAccount && voteOngoing && Number(power) === 0 && (
         <Alert severity="warning" sx={{ my: 2 }}>
           <Trans>Not enough voting power to participate in this proposal</Trans>
         </Alert>
       )}
-      {currentAccount && voteOngoing && power !== '0' && (
+      {currentAccount && voteOngoing && Number(power) !== 0 && (
         <>
           <Button
             color="success"
