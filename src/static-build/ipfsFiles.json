@@ -922,6 +922,35 @@
       "ipfsHash": "QmVKuMiNYg8NpLii5EiqTnqixqQanhvjgpDy9e46NX2P3T",
       "originalHash": "0x67d0ca69f88710a443f28a1040f7c9097a77dd1b3893ad951b8d2858d5cfad8e",
       "id": 62
+    },
+    {
+      "title": "Add ENS to Aave V2",
+      "status": "Proposed",
+      "author": "Fire Eyes DAO (@fireeyesdao)",
+      "shortDescription": "List ENS as collateral and borrowing asset on the Aave V2 pool",
+      "discussions": "https://governance.aave.com/t/arc-add-ens-as-collateral/6342",
+      "created": "2022-02-24T00:00:00.000Z",
+      "preview": "## Simple Summary\n\nENS (Ethereum Name Service) is an critical piece …",
+      "basename": "C8A2BBD97C9C-AIP-ADD-ENS-TO-AAVE-V2",
+      "description": "\n\n\n## Simple Summary\n\nENS (Ethereum Name Service) is an critical piece of infrastructure for the Ethereum ecosystem with over 400,000 names registered and hundreds of intergrations across the ecosystem.\n\n$ENS is the governance token providing ownership over the ENS protocol. $ENS governs the direction of the ENS treasury as well as controlling crucial protocol parameters via the ENS registrar controller.\n\nThis proposal looks to onboard $ENS as a collateral asset to Aave.\n\n## Motivation\n\nFollowing conversations with Aave and ENS communities, we’ve found that ENS is a prime candidate for Aave, already having gathered over $1B in circulating market cap and millions of dollars in liquidity across the ecosystem.\n\nThe addition of ENS to Aave will unlock additional liquidity and optionality for all ENS holders.\n\n## Specification\n\nThis proposal initialises the ENS reserve, enables variable borrowing, sets a reserve factor and configures the reserve as collateral. As needed, it also connects a price source on the AaveOracle.\n\n## Test Cases\n\nAll the components involved in this proposal (tokens' implementations, interest rate strategy, oracle feed, proposal payload) have been tested and reviewed, including simulations on mainnet of the whole proposal lifecycle.\n\n## Implementation\n\n- [ProposalPayload](https://etherscan.io/address/0xf42d0a1b03c0795021272a4793cd03dcb97581d3#code)\n- [aENS implementation](https://etherscan.io/address/0xB2f4Fb41F01CdeF7c10F0e8aFbeB3cFA79d1686F#code)\n- [Variable Debt ENS implementation](https://etherscan.io/address/0x2386694b2696015dB1a511AB9cD310e800F93055#code)\n- [Stable Debt ENS implementation](https://etherscan.io/address/0x5746b5b6650dd8d9b1d9d1bbf5e7f23e9761183f#code)\n- [Interest rate strategy](https://etherscan.io/address/0xb2eD1eCE1c13455Ce9299d35D3B00358529f3Dc8#code) \n- [EnsUsdToEnsEth price feed](https://etherscan.io/address/0xd4641b75015E6536E8102D98479568D05D7123Db#code)\n- LTV: 50%\n- Liquidation threshold: 60%\n- Liquidation bonus: 8%\n- Reserve Factor: 20%\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).",
+      "ipfsHash": "QmU4MH1mps19vXJzWeV555T6yhqX2sqSceaN1fkkxgFDe1",
+      "originalHash": "0x54f91e12ea75ccaf9101fa8d59bf08b9edab7a745f16ca0ac26b668e47b93952",
+      "id": 63
+    },
+    {
+      "aip": 63,
+      "title": "Risk Parameter Updates 2022-02-24",
+      "status": "Proposed",
+      "author": "Paul Lei, Jonathan Reem, Nick Cannon, Watson Fu, Yorke Rhodes",
+      "shortDescription": "Risk parameter updates",
+      "discussions": "https://governance.aave.com/t/arc-risk-parameter-updates-2022-02-24/7385/2",
+      "created": "2021-03-01",
+      "preview": "## Simple Summary\n\nA proposal to adjust three (3) total risk parameters including …",
+      "basename": "AIP-63",
+      "description": "## Simple Summary\n\nA proposal to adjust three (3) total risk parameters including LTV, Liquidation Threshold, and Liquidation Bonus across two (2) Aave V2 assets. \n\n\n## Abstract\nThis proposal is a batch update of risk parameters to align with the the [Moderate risk level](https://snapshot.org/#/aave.eth/proposal/QmT9T4Rfnh1Z2HYmMPXvtFotMK2vSxiXK8dKStg2b6n4gi) chosen by the Aave community. These parameter updates are a continuation of Gauntlet's regular parameter recommendations.\n\n\n## Motivation\n\nThis set of parameter updates seeks to maintain the overall risk tolerance of the protocol while making risk trade-offs between specific assets.\n\nGauntlet's parameter recommendations are driven by an optimization function that balances 3 core metrics: insolvencies, liquidations, and borrow usage. Parameter recommendations seek to optimize for this objective function. Our agent-based simulations use a wide array of varied input data that changes on a daily basis (including but not limited to, asset volatility, asset correlation, asset collateral usage, DEX / CEX liquidity, trading volume, expected market impact of trades, and liquidator behavior). Gauntlet's simulations tease out complex relationships between these inputs that cannot be simply expressed as heuristics. The individual collateral pages on the [Gauntlet Risk Dashboard](https://gov.gauntlet.network/aave) cover other key statistics and outputs from our simulations that can help with understanding interesting inputs and results related to our simulations. \n\n\n## Specification\n\nThe past two weeks saw slight decreases in volatility. However, there were also decreases in liquidity and trading volume. Our simulations show that increasing borrow parameters across a wide array of assets could introduce significantly more risk in the short term. The below recommendations drive increases in capital efficiency while maintaining risk at safe levels.\n\n\n![](https://i.imgur.com/jq3kdSB.png)\n\n\n## Risk Dashboard\n\nThe community should use Gauntlet's [Risk Dashboard](https://gov.gauntlet.network/aave) to better understand the updated parameter suggestions and general market risk in Aave V2. \n\n\n![](https://i.imgur.com/0UZoeQX.png)\n\n\n## Implementation\n\nThe proposal sets the liquidation bonus, LTV and liquidation threshold ratios by calling `configureReserveAsCollateral` on the `LendingPoolConfigurator` contract at `0x311Bb771e4F8952E6Da169b425E7e92d6Ac45756`, using the address and parameters specific to each token.\n\nThe full list of parameter updates can be found in the [forum](https://governance.aave.com/t/arc-risk-parameter-updates-2022-02-24/7385/2).\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "QmYpkByYwDNxB6ds36Fi1UuLuMbRwXpEXwoNr3aiQyM9Ck",
+      "originalHash": "0x9bc7542875a9e1bf818c791d1d6bcb0f23372939c75601bcaa36be40f342de89",
+      "id": 64
     }
   ]
 }

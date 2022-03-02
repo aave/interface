@@ -32308,12 +32308,12 @@ var require_lib31 = __commonJS({
     };
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Wordlist = exports.version = exports.wordlists = exports.utils = exports.logger = exports.errors = exports.constants = exports.FixedNumber = exports.BigNumber = exports.ContractFactory = exports.Contract = exports.BaseContract = exports.providers = exports.getDefaultProvider = exports.VoidSigner = exports.Wallet = exports.Signer = exports.ethers = void 0;
-    var ethers2 = __importStar(require_ethers());
-    exports.ethers = ethers2;
+    var ethers = __importStar(require_ethers());
+    exports.ethers = ethers;
     try {
       anyGlobal = window;
       if (anyGlobal._ethers == null) {
-        anyGlobal._ethers = ethers2;
+        anyGlobal._ethers = ethers;
       }
     } catch (error) {
     }
@@ -56643,11 +56643,11 @@ var getProvider = (chainId) => {
     const config = getNetworkConfig(chainId);
     const chainProviders = [];
     if (config.privateJsonRPCUrl) {
-      providers[chainId] = new import_ethers.ethers.providers.StaticJsonRpcProvider(config.privateJsonRPCUrl, chainId);
+      providers[chainId] = new import_ethers.providers.StaticJsonRpcProvider(config.privateJsonRPCUrl, chainId);
       return providers[chainId];
     }
     if (config.publicJsonRPCUrl.length) {
-      config.publicJsonRPCUrl.map((rpc) => chainProviders.push(new import_ethers.ethers.providers.StaticJsonRpcProvider(rpc, chainId)));
+      config.publicJsonRPCUrl.map((rpc) => chainProviders.push(new import_ethers.providers.StaticJsonRpcProvider(rpc, chainId)));
     }
     if (!chainProviders.length) {
       throw new Error(`${chainId} has no jsonRPCUrl configured`);
@@ -56655,7 +56655,7 @@ var getProvider = (chainId) => {
     if (chainProviders.length === 1) {
       providers[chainId] = chainProviders[0];
     } else {
-      providers[chainId] = new import_ethers.ethers.providers.FallbackProvider(chainProviders);
+      providers[chainId] = new import_ethers.providers.FallbackProvider(chainProviders);
     }
   }
   return providers[chainId];
