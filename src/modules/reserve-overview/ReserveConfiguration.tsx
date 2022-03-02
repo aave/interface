@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import { Trans } from '@lingui/macro';
 import {
+  Alert,
   Box,
   BoxProps,
   Divider,
@@ -23,6 +24,7 @@ import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvi
 import { eModeInfo } from 'src/utils/eMode';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { IncentivesButton } from 'src/components/incentives/IncentivesButton';
+import { ExclamationIcon } from '@heroicons/react/outline';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
   <Box
@@ -152,7 +154,17 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
             </PanelItem>
             {reserve.supplyCapUSD !== '0' && (
               <PanelItem title={<Trans>Supply cap</Trans>}>
-                <FormattedNumber value={reserve.supplyCapUSD} symbol="USD" variant="main16" />
+                <FormattedNumber value={reserve.totalLiquidity} variant="main16" /> of{' '}
+                <FormattedNumber value={reserve.supplyCap} variant="main16" />
+              </PanelItem>
+            )}
+            {reserve.unbacked !== '0' && (
+              <PanelItem title={<Trans>Unbacked</Trans>}>
+                <FormattedNumber
+                  value={reserve.unbacked}
+                  variant="main16"
+                  symbol={reserve.symbol}
+                />
               </PanelItem>
             )}
           </Box>
@@ -172,30 +184,46 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
             </ChartContainer>
           )}
 
-          <Paper
+          <Box
             sx={{
               mt: 4,
               py: '12px',
               px: '16px',
-              bgcolor: 'background.surface',
+              bgcolor: 'background.default',
+              borderRadius: '6px',
             }}
-            variant="outlined"
           >
             <div>
-              <Typography sx={{ display: 'inline-flex', alignItems: 'center' }}>
-                <Trans>Collateral usage:</Trans>
-                {reserve.usageAsCollateralEnabled ? (
-                  <>
-                    <CheckRoundedIcon fontSize="small" color="success" sx={{ ml: 2 }} />
-                    <Trans>Can be collateral</Trans>
-                  </>
-                ) : (
-                  <>
-                    <CloseRoundedIcon fontSize="small" color="error" sx={{ ml: 2 }} />
-                    <Trans>No</Trans>
-                  </>
-                )}
-              </Typography>
+              {!reserve.isIsolated && (
+                <Typography sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                  <Trans>Collateral usage:</Trans>
+                  {reserve.usageAsCollateralEnabled ? (
+                    <>
+                      <CheckRoundedIcon fontSize="small" color="success" sx={{ ml: 2 }} />
+                      <Trans>Can be collateral</Trans>
+                    </>
+                  ) : (
+                    <>
+                      <CloseRoundedIcon fontSize="small" color="error" sx={{ ml: 2 }} />
+                      <Trans>No</Trans>
+                    </>
+                  )}
+                </Typography>
+              )}
+              {reserve.isIsolated && (
+                <Box
+                  sx={{
+                    display: 'inline-flex',
+                    bgcolor: 'warning.main',
+                    p: '4px 8px',
+                    color: '#fff',
+                    borderRadius: '6px',
+                  }}
+                >
+                  <ExclamationIcon style={{ height: 16, paddingRight: '4px' }} />
+                  Can be collateral in isolation mode
+                </Box>
+              )}
             </div>
             <Box
               sx={{
@@ -204,17 +232,15 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                 alignItems: { xs: 'flex-start', sm: 'center' },
                 flexWrap: 'wrap',
                 mt: '16px',
-                '& > :not(:last-child)::after': {
-                  content: '""',
-                  height: '16px',
-                  pr: 2,
-                  mr: 2,
-                  borderRight: (theme) => `1px solid ${theme.palette.divider}`,
+                '& > :not(:last-child)': {
+                  mr: 4,
                 },
               }}
             >
               <Typography sx={{ display: 'inline-flex' }}>
-                <Trans>Max LTV</Trans>
+                <Typography sx={{ color: 'text.muted' }} component="span">
+                  <Trans>Max LTV</Trans>
+                </Typography>
                 <FormattedNumber
                   value={reserve.formattedBaseLTVasCollateral}
                   percent
@@ -224,7 +250,9 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                 />
               </Typography>
               <Typography sx={{ display: 'inline-flex' }}>
-                <Trans>Liquidation threshold</Trans>
+                <Typography sx={{ color: 'text.muted' }} component="span">
+                  <Trans>Liquidation threshold</Trans>
+                </Typography>
                 <FormattedNumber
                   value={reserve.formattedReserveLiquidationThreshold}
                   percent
@@ -234,7 +262,9 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                 />
               </Typography>
               <Typography sx={{ display: 'inline-flex' }}>
-                <Trans>Liquidation penalty</Trans>
+                <Typography sx={{ color: 'text.muted' }} component="span">
+                  <Trans>Liquidation penalty</Trans>
+                </Typography>
                 <FormattedNumber
                   value={reserve.formattedReserveLiquidationBonus}
                   percent
@@ -243,85 +273,121 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                   visibleDecimals={0}
                 />
               </Typography>
+              {reserve.isIsolated && (
+                <Typography sx={{ display: 'inline-flex' }}>
+                  <Typography sx={{ color: 'text.muted' }} component="span">
+                    <Trans>Debt ceiling</Trans>
+                  </Typography>
+                  <FormattedNumber
+                    value={reserve.isolationModeTotalDebtUSD}
+                    variant="secondary14"
+                    sx={{ ml: 2 }}
+                    symbol="USD"
+                    visibleDecimals={0}
+                  />
+                  &nbsp;of
+                  <FormattedNumber
+                    value={reserve.debtCeilingUSD}
+                    variant="secondary14"
+                    sx={{ ml: 2 }}
+                    symbol="USD"
+                    visibleDecimals={0}
+                  />
+                </Typography>
+              )}
+              {reserve.isIsolated && (
+                <Typography variant="caption" sx={{ mt: 2 }}>
+                  <Trans>
+                    In Isolation mode you cannot supply other assets as collateral for borrowing.
+                    Assets used as collateral in Isolation mode can only be borrowed to a specific
+                    debt ceiling.
+                  </Trans>
+                </Typography>
+              )}
             </Box>
-          </Paper>
+          </Box>
         </Box>
       </PanelRow>
 
       <Divider sx={{ my: '40px' }} />
 
-      <PanelRow>
-        <PanelTitle>Borrow info</PanelTitle>
-        <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              flexWrap: 'wrap',
-            }}
-          >
-            <PanelItem title={<Trans>Total borrowed</Trans>}>
-              <FormattedNumber value={reserve.totalDebtUSD} symbol="USD" variant="main16" />
-            </PanelItem>
-            <PanelItem
-              title={
-                <StableAPYTooltip
-                  text={<Trans>APY, variable</Trans>}
-                  key="APY_res_variable_type"
-                  variant="description"
-                />
-              }
+      {reserve.borrowingEnabled && (
+        <PanelRow>
+          <PanelTitle>Borrow info</PanelTitle>
+          <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+              }}
             >
-              <FormattedNumber value={reserve.variableBorrowAPY} percent variant="main16" />
-            </PanelItem>
-            <PanelItem
-              title={
-                <StableAPYTooltip
-                  text={<Trans>APY, stable</Trans>}
-                  key="APY_res_stable_type"
-                  variant="description"
-                />
-              }
-            >
-              <FormattedNumber value={reserve.stableBorrowAPY} percent variant="main16" />
-            </PanelItem>
-            {reserve.borrowCapUSD !== '0' && (
-              <PanelItem title={<Trans>Borrow cap</Trans>}>
-                <FormattedNumber value={reserve.borrowCapUSD} symbol="USD" variant="main16" />
+              <PanelItem title={<Trans>Total borrowed</Trans>}>
+                <FormattedNumber value={reserve.totalDebtUSD} symbol="USD" variant="main16" />
               </PanelItem>
+              <PanelItem
+                title={
+                  <StableAPYTooltip
+                    text={<Trans>APY, variable</Trans>}
+                    key="APY_res_variable_type"
+                    variant="description"
+                  />
+                }
+              >
+                <FormattedNumber value={reserve.variableBorrowAPY} percent variant="main16" />
+              </PanelItem>
+              {reserve.stableBorrowRateEnabled && (
+                <PanelItem
+                  title={
+                    <StableAPYTooltip
+                      text={<Trans>APY, stable</Trans>}
+                      key="APY_res_stable_type"
+                      variant="description"
+                    />
+                  }
+                >
+                  <FormattedNumber value={reserve.stableBorrowAPY} percent variant="main16" />
+                </PanelItem>
+              )}
+              {reserve.borrowCapUSD !== '0' && (
+                <PanelItem title={<Trans>Borrow cap</Trans>}>
+                  <FormattedNumber value={reserve.totalDebt} variant="main16" /> of
+                  <FormattedNumber value={reserve.borrowCap} variant="main16" />
+                </PanelItem>
+              )}
+            </Box>
+            {renderCharts && !error && (
+              <ChartContainer sx={{ mt: 8 }}>
+                <ParentSize>
+                  {(parent) => (
+                    <ApyChart
+                      width={parent.width}
+                      height={parent.height}
+                      data={data}
+                      fields={[
+                        ...(reserve.stableBorrowRateEnabled
+                          ? ([
+                              {
+                                name: 'stableBorrowRate',
+                                color: '#0062D2',
+                                text: 'Borrow APR, stable',
+                              },
+                            ] as const)
+                          : []),
+                        {
+                          name: 'variableBorrowRate',
+                          color: '#B6509E',
+                          text: 'Borrow APR, variable',
+                        },
+                      ]}
+                    />
+                  )}
+                </ParentSize>
+              </ChartContainer>
             )}
           </Box>
-          {renderCharts && !error && (
-            <ChartContainer sx={{ mt: 8 }}>
-              <ParentSize>
-                {(parent) => (
-                  <ApyChart
-                    width={parent.width}
-                    height={parent.height}
-                    data={data}
-                    fields={[
-                      ...(reserve.stableBorrowRateEnabled
-                        ? ([
-                            {
-                              name: 'stableBorrowRate',
-                              color: '#0062D2',
-                              text: 'Borrow APR, stable',
-                            },
-                          ] as const)
-                        : []),
-                      {
-                        name: 'variableBorrowRate',
-                        color: '#B6509E',
-                        text: 'Borrow APR, variable',
-                      },
-                    ]}
-                  />
-                )}
-              </ParentSize>
-            </ChartContainer>
-          )}
-        </Box>
-      </PanelRow>
+        </PanelRow>
+      )}
 
       {reserve.borrowingEnabled && (
         <>
