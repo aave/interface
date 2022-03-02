@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Trans } from '@lingui/macro';
 import {
-  Alert,
   Box,
   BoxProps,
   Divider,
