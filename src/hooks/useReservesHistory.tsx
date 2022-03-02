@@ -12,7 +12,7 @@ type APIResponse = {
 };
 
 const fetchStats = async (address: string, endpointURL: string) => {
-  const thirtyDaysAgo = dayjs().subtract(30, 'day').unix();
+  const thirtyDaysAgo = dayjs().subtract(45, 'day').unix();
   try {
     const result = await fetch(
       `${endpointURL}?reserveId=${address}&from=${thirtyDaysAgo}&resolutionInHours=6`

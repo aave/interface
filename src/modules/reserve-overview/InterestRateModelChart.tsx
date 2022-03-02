@@ -145,6 +145,8 @@ export const InterestRateModelChart = withTooltip<AreaProps, TooltipData>(
 
     const data = useMemo(() => getRates(reserve), [JSON.stringify(reserve)]);
 
+    const utilizationColor = theme.palette.mode === 'dark' ? '#fff' : '#000';
+
     // bounds
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
@@ -209,7 +211,7 @@ export const InterestRateModelChart = withTooltip<AreaProps, TooltipData>(
       <>
         <ChartLegend
           labels={[
-            { text: 'Utilization rate', color: '#000' },
+            { text: 'Utilization rate', color: utilizationColor },
             { text: 'Borrow APR, variable', color: '#B6509E' },
             ...(reserve.stableBorrowRateEnabled
               ? ([{ text: 'Borrow APR, stable', color: '#0062D2' }] as const)
@@ -258,34 +260,14 @@ export const InterestRateModelChart = withTooltip<AreaProps, TooltipData>(
             <Line
               from={{ x: dateScale(0), y: innerHeight / 4 }}
               to={{ x: dateScale(100), y: innerHeight / 4 }}
-              stroke={'#000'}
-              strokeWidth={2}
-              pointerEvents="none"
-            />
-            <circle
-              cx={dateScale(ticks[1].value)}
-              cy={innerHeight / 4 + 1}
-              r={4}
-              fill="black"
-              fillOpacity={0.1}
-              stroke="black"
-              strokeOpacity={0.1}
-              strokeWidth={2}
-              pointerEvents="none"
-            />
-            <circle
-              cx={dateScale(ticks[1].value)}
-              cy={innerHeight / 4}
-              r={4}
-              fill="black"
-              stroke="white"
+              stroke={theme.palette.mode === 'dark' ? '#fff' : '#000'}
               strokeWidth={2}
               pointerEvents="none"
             />
             <Line
               from={{ x: dateScale(ticks[1].value), y: innerHeight / 4 - 5 }}
-              to={{ x: dateScale(ticks[1].value), y: innerHeight / 4 - 9 }}
-              stroke={'#000'}
+              to={{ x: dateScale(ticks[1].value), y: innerHeight / 4 + 5 }}
+              stroke={utilizationColor}
               strokeWidth={2}
               pointerEvents="none"
             />
@@ -296,33 +278,14 @@ export const InterestRateModelChart = withTooltip<AreaProps, TooltipData>(
               textAnchor="middle"
               verticalAnchor="middle"
               fontSize="10px"
+              fill={utilizationColor}
             >
               Current
             </Text>
-            <circle
-              cx={dateScale(ticks[0].value)}
-              cy={innerHeight / 4 + 1}
-              r={4}
-              fill="black"
-              fillOpacity={0.1}
-              stroke="black"
-              strokeOpacity={0.1}
-              strokeWidth={2}
-              pointerEvents="none"
-            />
-            <circle
-              cx={dateScale(ticks[0].value)}
-              cy={innerHeight / 4}
-              r={4}
-              fill="black"
-              stroke="white"
-              strokeWidth={2}
-              pointerEvents="none"
-            />
             <Line
               from={{ x: dateScale(ticks[0].value), y: innerHeight / 4 + 5 }}
-              to={{ x: dateScale(ticks[0].value), y: innerHeight / 4 + 9 }}
-              stroke={'#000'}
+              to={{ x: dateScale(ticks[0].value), y: innerHeight / 4 - 5 }}
+              stroke={utilizationColor}
               strokeWidth={2}
               pointerEvents="none"
             />
@@ -333,6 +296,7 @@ export const InterestRateModelChart = withTooltip<AreaProps, TooltipData>(
               textAnchor="middle"
               verticalAnchor="middle"
               fontSize="10px"
+              fill={utilizationColor}
             >
               Optimal
             </Text>

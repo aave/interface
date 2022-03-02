@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Trans } from '@lingui/macro';
 import { Box, BoxProps, Divider, Typography, TypographyProps } from '@mui/material';
 import Paper from '@mui/material/Paper';
@@ -15,6 +15,7 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { eModeInfo } from 'src/utils/eMode';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
+import { IncentivesButton } from 'src/components/incentives/IncentivesButton';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
   <Box
@@ -33,8 +34,36 @@ export const PanelTitle: React.FC<TypographyProps> = (props) => (
   <Typography variant="subheader1" sx={{ width: { sm: '170px' } }} {...props} />
 );
 
+interface PanelItemProps {
+  title: ReactNode;
+}
+
+export const PanelItem: React.FC<PanelItemProps> = ({ title, children }) => (
+  <Box
+    sx={{
+      position: 'relative',
+      '&:not(:last-child)': {
+        pr: 4,
+        mr: 4,
+      },
+      '&:not(:last-child)::after': {
+        content: '""',
+        height: '32px',
+        position: 'absolute',
+        right: 4,
+        top: 'calc(50% - 17px)',
+        borderRight: (theme) => `1px solid ${theme.palette.divider}`,
+      },
+    }}
+  >
+    <Typography color="text.secondary">{title}</Typography>
+    {children}
+  </Box>
+);
+
 const ChartContainer: React.FC<BoxProps> = (props) => (
   <Box
+    {...props}
     sx={{
       height: 300,
       marginLeft: 0,
@@ -42,7 +71,6 @@ const ChartContainer: React.FC<BoxProps> = (props) => (
       maxWidth: '100%',
       ...props.sx,
     }}
-    {...props}
   />
 );
 
@@ -87,35 +115,29 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
               display: 'flex',
               alignItems: 'center',
               flexWrap: 'wrap',
-              '& > :not(:last-child)::after': {
-                content: '""',
-                height: '32px',
-                pr: 3,
-                mr: 3,
-                borderRight: (theme) => `1px solid ${theme.palette.divider}`,
-              },
             }}
           >
-            <TopInfoPanelItem title={<Trans>Total supplied</Trans>} hideIcon variant="light">
+            <PanelItem title={<Trans>Total supplied</Trans>}>
               <FormattedNumber
                 value={reserve.totalLiquidityUSD /** TODO: should this be liquidity or all? */}
                 symbol="USD"
                 variant="main16"
                 compact
               />
-            </TopInfoPanelItem>
-            <TopInfoPanelItem title={<Trans>APY</Trans>} hideIcon variant="light">
-              <FormattedNumber value={reserve.supplyAPY} percent variant="main16" />
-            </TopInfoPanelItem>
+            </PanelItem>
+            <PanelItem title={<Trans>APY</Trans>}>
+              <FormattedNumber value={reserve.supplyAPY} percent variant="main16" sx={{ mr: 3 }} />
+              <IncentivesButton symbol={reserve.symbol} incentives={reserve.aIncentivesData} />
+            </PanelItem>
             {reserve.supplyCapUSD !== '0' && (
-              <TopInfoPanelItem title={<Trans>Supply cap</Trans>} hideIcon variant="light">
+              <PanelItem title={<Trans>Supply cap</Trans>}>
                 <FormattedNumber value={reserve.supplyCapUSD} symbol="USD" variant="main16" />
-              </TopInfoPanelItem>
+              </PanelItem>
             )}
           </Box>
 
           {renderCharts && !error && (
-            <ChartContainer>
+            <ChartContainer sx={{ mt: 8 }}>
               <ParentSize>
                 {(parent) => (
                   <ApyChart
@@ -215,19 +237,12 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
               display: 'flex',
               alignItems: 'center',
               flexWrap: 'wrap',
-              '& > :not(:last-child)::after': {
-                content: '""',
-                height: '32px',
-                pr: 3,
-                mr: 3,
-                borderRight: (theme) => `1px solid ${theme.palette.divider}`,
-              },
             }}
           >
-            <TopInfoPanelItem title={<Trans>Total borrowed</Trans>} hideIcon variant="light">
+            <PanelItem title={<Trans>Total borrowed</Trans>}>
               <FormattedNumber value={reserve.totalDebtUSD} symbol="USD" variant="main16" />
-            </TopInfoPanelItem>
-            <TopInfoPanelItem
+            </PanelItem>
+            <PanelItem
               title={
                 <StableAPYTooltip
                   text={<Trans>APY, variable</Trans>}
@@ -235,12 +250,10 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                   variant="description"
                 />
               }
-              hideIcon
-              variant="light"
             >
               <FormattedNumber value={reserve.variableBorrowAPY} percent variant="main16" />
-            </TopInfoPanelItem>
-            <TopInfoPanelItem
+            </PanelItem>
+            <PanelItem
               title={
                 <StableAPYTooltip
                   text={<Trans>APY, stable</Trans>}
@@ -248,19 +261,17 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                   variant="description"
                 />
               }
-              hideIcon
-              variant="light"
             >
               <FormattedNumber value={reserve.stableBorrowAPY} percent variant="main16" />
-            </TopInfoPanelItem>
+            </PanelItem>
             {reserve.borrowCapUSD !== '0' && (
-              <TopInfoPanelItem title={<Trans>Borrow cap</Trans>} hideIcon variant="light">
+              <PanelItem title={<Trans>Borrow cap</Trans>}>
                 <FormattedNumber value={reserve.borrowCapUSD} symbol="USD" variant="main16" />
-              </TopInfoPanelItem>
+              </PanelItem>
             )}
           </Box>
           {renderCharts && !error && (
-            <ChartContainer>
+            <ChartContainer sx={{ mt: 8 }}>
               <ParentSize>
                 {(parent) => (
                   <ApyChart
@@ -291,32 +302,36 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
         </Box>
       </PanelRow>
 
-      <Divider sx={{ my: '40px' }} />
+      {reserve.borrowingEnabled && (
+        <>
+          <Divider sx={{ my: '40px' }} />
 
-      <PanelRow>
-        <PanelTitle>Interest rate model</PanelTitle>
-        <ChartContainer>
-          <ParentSize>
-            {(parent) => (
-              <InterestRateModelChart
-                width={parent.width}
-                height={parent.height}
-                reserve={{
-                  baseStableBorrowRate: reserve.baseStableBorrowRate,
-                  baseVariableBorrowRate: reserve.baseVariableBorrowRate,
-                  optimalUsageRatio: reserve.optimalUsageRatio,
-                  stableRateSlope1: reserve.stableRateSlope1,
-                  stableRateSlope2: reserve.stableRateSlope2,
-                  utilizationRate: reserve.utilizationRate,
-                  variableRateSlope1: reserve.variableRateSlope1,
-                  variableRateSlope2: reserve.variableRateSlope2,
-                  stableBorrowRateEnabled: reserve.stableBorrowRateEnabled,
-                }}
-              />
-            )}
-          </ParentSize>
-        </ChartContainer>
-      </PanelRow>
+          <PanelRow>
+            <PanelTitle>Interest rate model</PanelTitle>
+            <ChartContainer>
+              <ParentSize>
+                {(parent) => (
+                  <InterestRateModelChart
+                    width={parent.width}
+                    height={parent.height}
+                    reserve={{
+                      baseStableBorrowRate: reserve.baseStableBorrowRate,
+                      baseVariableBorrowRate: reserve.baseVariableBorrowRate,
+                      optimalUsageRatio: reserve.optimalUsageRatio,
+                      stableRateSlope1: reserve.stableRateSlope1,
+                      stableRateSlope2: reserve.stableRateSlope2,
+                      utilizationRate: reserve.utilizationRate,
+                      variableRateSlope1: reserve.variableRateSlope1,
+                      variableRateSlope2: reserve.variableRateSlope2,
+                      stableBorrowRateEnabled: reserve.stableBorrowRateEnabled,
+                    }}
+                  />
+                )}
+              </ParentSize>
+            </ChartContainer>
+          </PanelRow>
+        </>
+      )}
     </Paper>
   );
 };
