@@ -80,6 +80,7 @@ export function FormattedNumber({
 
   return (
     <Typography
+      {...rest}
       sx={{
         display: 'inline-flex',
         flexDirection: 'row',
@@ -88,7 +89,6 @@ export function FormattedNumber({
         ...rest.sx,
       }}
       noWrap
-      {...rest}
     >
       {isSmallerThanMin && (
         <Typography
