@@ -1,8 +1,15 @@
 import React, { ReactNode } from 'react';
 import { Trans } from '@lingui/macro';
-import { Box, BoxProps, Divider, Typography, TypographyProps } from '@mui/material';
+import {
+  Box,
+  BoxProps,
+  Divider,
+  Typography,
+  TypographyProps,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import Paper from '@mui/material/Paper';
-import { TopInfoPanelItem } from 'src/components/TopInfoPanel/TopInfoPanelItem';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
@@ -19,56 +26,70 @@ import { IncentivesButton } from 'src/components/incentives/IncentivesButton';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
   <Box
+    {...props}
     sx={{
-      display: 'flex',
-      alignItems: 'flex-start',
-      gap: 4,
-      flexWrap: 'wrap',
-      mb: '24px',
+      position: 'relative',
+      display: { xs: 'block', md: 'flex' },
+      margin: '0 auto',
       ...props.sx,
     }}
-    {...props}
   />
 );
 export const PanelTitle: React.FC<TypographyProps> = (props) => (
-  <Typography variant="subheader1" sx={{ width: { sm: '170px' } }} {...props} />
+  <Typography
+    {...props}
+    variant="subheader1"
+    sx={{ minWidth: { xs: '170px' }, mr: 4, mb: { xs: 6, md: 0 }, ...props.sx }}
+  />
 );
 
 interface PanelItemProps {
   title: ReactNode;
 }
 
-export const PanelItem: React.FC<PanelItemProps> = ({ title, children }) => (
-  <Box
-    sx={{
-      position: 'relative',
-      '&:not(:last-child)': {
-        pr: 4,
-        mr: 4,
-      },
-      '&:not(:last-child)::after': {
-        content: '""',
-        height: '32px',
-        position: 'absolute',
-        right: 4,
-        top: 'calc(50% - 17px)',
-        borderRight: (theme) => `1px solid ${theme.palette.divider}`,
-      },
-    }}
-  >
-    <Typography color="text.secondary">{title}</Typography>
-    {children}
-  </Box>
-);
+export const PanelItem: React.FC<PanelItemProps> = ({ title, children }) => {
+  const theme = useTheme();
+  const mdUp = useMediaQuery(theme.breakpoints.up('md'));
+
+  return (
+    <Box
+      sx={{
+        position: 'relative',
+        mb: 4,
+        '&:not(:last-child)': {
+          pr: 4,
+          mr: 4,
+        },
+        ...(mdUp
+          ? {
+              '&:not(:last-child)::after': {
+                content: '""',
+                height: '32px',
+                position: 'absolute',
+                right: 4,
+                top: 'calc(50% - 17px)',
+                borderRight: (theme) => `1px solid ${theme.palette.divider}`,
+              },
+            }
+          : {}),
+      }}
+    >
+      <Typography color="text.secondary">{title}</Typography>
+      {children}
+    </Box>
+  );
+};
 
 const ChartContainer: React.FC<BoxProps> = (props) => (
   <Box
     {...props}
     sx={{
+      minWidth: 0,
+      width: '100%',
+      maxWidth: '100%',
       height: 300,
       marginLeft: 0,
       flexGrow: 1,
-      maxWidth: '100%',
       ...props.sx,
     }}
   />
@@ -109,7 +130,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
 
       <PanelRow>
         <PanelTitle>Supply Info</PanelTitle>
-        <Box sx={{ flexGrow: 1, maxWidth: '100%' }}>
+        <Box sx={{ minWidth: 0, maxWidth: '100%', width: '100%' }}>
           <Box
             sx={{
               display: 'flex',
@@ -137,7 +158,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
           </Box>
 
           {renderCharts && !error && (
-            <ChartContainer sx={{ mt: 8 }}>
+            <ChartContainer sx={{ mt: 4 }}>
               <ParentSize>
                 {(parent) => (
                   <ApyChart
@@ -231,7 +252,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
 
       <PanelRow>
         <PanelTitle>Borrow info</PanelTitle>
-        <Box sx={{ flexGrow: 1, maxWidth: '100%' }}>
+        <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
           <Box
             sx={{
               display: 'flex',
