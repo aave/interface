@@ -1,5 +1,6 @@
 name: Update build cache
-
+# This action checks if there's new proposal data every 12h
+# If new proposal data is found the cache will be warmed up & a new build will be generated
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
@@ -7,13 +8,15 @@ concurrency:
 on:
   workflow_dispatch:
   schedule:
-    - cron: 0 0 * * *
+    - cron: 0 */12 * * *
 
 jobs:
   cache-refresh:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.BOT_TOKEN }}
 
       - uses: actions/setup-node@v2
         with:
