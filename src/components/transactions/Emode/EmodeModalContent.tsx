@@ -173,23 +173,8 @@ export const EmodeModalContent = () => {
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
       )}
 
-      {selectedEmode && selectedEmode.id !== 0 ? (
-        <Alert severity="info" sx={{ mb: 6 }}>
-          <Trans>
-            E-Mode increases your borrowing power for a selected category of assets up to 99%.{' '}
-            <Link href="https://docs.aave.com/faq/" target="_blank" variant="main14" sx={{ ml: 1 }}>
-              <Trans>Learn more</Trans>
-            </Link>
-          </Trans>
-        </Alert>
-      ) : (
-        <Alert severity="info" sx={{ mb: 6 }}>
-          <Trans>Warning here about geting out of emode</Trans>
-        </Alert>
-      )}
-
       {selectedEmode && selectedEmode.id !== 0 && (
-        <Alert severity="info" sx={{ mb: 6 }}>
+        <Alert severity="warning" sx={{ mb: 6 }}>
           <Trans>
             Enabling E-Mode only allows you to borrow assets belonging to the selected category
             Stablecoins. Please visit our{' '}
