@@ -6,6 +6,7 @@ import { useGasStation } from 'src/hooks/useGasStation';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { optimizedPath } from 'src/utils/utils';
 
 import { RightHelperText } from '../FlowCommons/RightHelperText';
 import { GasOption } from '../GasStation/GasStationProvider';
@@ -37,12 +38,22 @@ export const WithdrawActions = ({
     tryPermit:
       currentMarketData.v3 && chainId !== ChainId.harmony && chainId !== ChainId.harmony_testnet,
     handleGetTxns: async () => {
-      return lendingPool.withdraw({
-        user: currentAccount,
-        reserve: poolAddress,
-        amount: amountToWithdraw,
-        aTokenAddress: poolReserve.aTokenAddress,
-      });
+      if (currentMarketData.v3) {
+        return lendingPool.withdraw({
+          user: currentAccount,
+          reserve: poolAddress,
+          amount: amountToWithdraw,
+          aTokenAddress: poolReserve.aTokenAddress,
+          useOptimizedPath: optimizedPath(chainId),
+        });
+      } else {
+        return lendingPool.withdraw({
+          user: currentAccount,
+          reserve: poolAddress,
+          amount: amountToWithdraw,
+          aTokenAddress: poolReserve.aTokenAddress,
+        });
+      }
     },
     customGasPrice:
       state.gasOption === GasOption.Custom
