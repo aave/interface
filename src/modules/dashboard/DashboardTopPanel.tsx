@@ -36,7 +36,6 @@ export const DashboardTopPanel = () => {
 
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
-  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const { claimableRewardsUsd, assets } = Object.keys(user.calculatedUserIncentives).reduce(
     (acc, rewardTokenAddress) => {
