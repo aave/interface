@@ -17,7 +17,7 @@
     "lint:fix": "next lint --fix",
     "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest",
     "i18n": "npm run extract && npm run compile",
-    "extract": "NODE_ENV=development lingui extract",
+    "extract": "NODE_ENV=development lingui extract --clean --overwrite",
     "compile": "lingui compile",
     "pre-commit": "lint-staged && npm run i18n && git add ./src/translations",
     "prepare": "husky install",
