@@ -234,6 +234,7 @@ export const EmodeModalContent = () => {
           </>
         )}
         <DetailsHFLine
+          visibleHfChange={!!selectedEmode}
           healthFactor={user.healthFactor}
           futureHealthFactor={newSummary.healthFactor}
         />
