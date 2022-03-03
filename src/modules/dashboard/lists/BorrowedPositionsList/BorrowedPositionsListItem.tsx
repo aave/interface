@@ -60,7 +60,7 @@ export const BorrowedPositionsListItem = ({
           stableBorrowRateEnabled={stableBorrowRateEnabled}
           borrowRateMode={borrowRateMode}
           disabled={!stableBorrowRateEnabled || isFrozen || !isActive}
-          onClick={() => openRateSwitch(reserve.underlyingAsset)}
+          onClick={() => openRateSwitch(reserve.underlyingAsset, borrowRateMode)}
           stableBorrowAPY={reserve.stableBorrowAPY}
           variableBorrowAPY={reserve.variableBorrowAPY}
           underlyingAsset={reserve.underlyingAsset}
