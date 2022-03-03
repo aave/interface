@@ -37,6 +37,10 @@ export type RepayProps = {
   underlyingAsset: string;
 };
 
+interface RepayAsset extends Asset {
+  balance: string;
+}
+
 export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
   const { gasLimit, mainTxState: repayTxState } = useModalContext();
   const { walletBalances } = useWalletBalances();
@@ -50,13 +54,13 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
 
   // states
   const [repayWithCollateral, setRepayWithCollateral] = useState(false);
-  const [tokenToRepayWith, setTokenToRepayWith] = useState<Asset>({
+  const [tokenToRepayWith, setTokenToRepayWith] = useState<RepayAsset>({
     address: poolReserve.underlyingAsset,
     symbol: poolReserve.symbol,
     iconSymbol: poolReserve.iconSymbol,
     balance: walletBalances[poolReserve.underlyingAsset]?.amount,
   });
-  const [assets, setAssets] = useState<Asset[]>([tokenToRepayWith]);
+  const [assets, setAssets] = useState<RepayAsset[]>([tokenToRepayWith]);
   const [repayMax, setRepayMax] = useState('');
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>();
@@ -114,7 +118,7 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
 
   // token info
   useEffect(() => {
-    const repayTokens: Asset[] = [];
+    const repayTokens: RepayAsset[] = [];
     // set possible repay tokens
     if (!repayWithCollateral) {
       // if wrapped reserve push both wrapped / native

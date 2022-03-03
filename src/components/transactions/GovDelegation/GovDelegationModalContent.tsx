@@ -1,7 +1,7 @@
 import { canBeEnsAddress } from '@aave/contract-helpers';
 import { Trans, t } from '@lingui/macro';
 import { FormControl, TextField, Typography } from '@mui/material';
-import { ethers } from 'ethers';
+import { utils } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
 import { useState } from 'react';
 import { DelegationType } from 'src/helpers/types';
@@ -66,7 +66,7 @@ export const GovDelegationModalContent = () => {
 
   // handle delegate address errors
   let delegateAddressBlockingError: ErrorType | undefined = undefined;
-  if (delegate !== '' && !ethers.utils.isAddress(delegate) && !canBeEnsAddress(delegate)) {
+  if (delegate !== '' && !utils.isAddress(delegate) && !canBeEnsAddress(delegate)) {
     delegateAddressBlockingError = ErrorType.NOT_AN_ADDRESS;
   }
 

@@ -28,9 +28,10 @@ import createEmotionCache from '../src/createEmotionCache';
 import { ProtocolDataProvider } from '../src/hooks/useProtocolDataContext';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
+import { SwapModal } from 'src/components/transactions/Swap/SwapModal';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
 import { Web3ReactProvider } from '@web3-react/core';
-import { ethers } from 'ethers';
+import { providers } from 'ethers';
 import { WalletModalContextProvider } from 'src/hooks/useWalletModal';
 
 // Client-side cache, shared for the whole session of the user in the browser.
@@ -41,8 +42,8 @@ type NextPageWithLayout = NextPage & {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function getWeb3Library(provider: any): ethers.providers.Web3Provider {
-  const library = new ethers.providers.Web3Provider(provider);
+function getWeb3Library(provider: any): providers.Web3Provider {
+  const library = new providers.Web3Provider(provider);
   library.pollingInterval = 12000;
   return library;
 }
@@ -91,6 +92,7 @@ export default function MyApp(props: MyAppProps) {
                                   <RateSwitchModal />
                                   <ClaimRewardsModal />
                                   <EmodeModal />
+                                  <SwapModal />
                                 </GasStationProvider>
                               </ModalContextProvider>
                             </WalletModalContextProvider>

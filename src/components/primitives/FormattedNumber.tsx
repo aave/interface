@@ -73,13 +73,14 @@ export function FormattedNumber({
   }
 
   const minValue = 10 ** -(decimals as number);
-  const isSmallerThanMin = number !== 0 && number < minValue;
+  const isSmallerThanMin = number !== 0 && Math.abs(number) < Math.abs(minValue);
   const formattedNumber = isSmallerThanMin ? minValue : number;
 
   const forceCompact = compact !== false && (compact || number > 99_999);
 
   return (
     <Typography
+      {...rest}
       sx={{
         display: 'inline-flex',
         flexDirection: 'row',
@@ -88,7 +89,6 @@ export function FormattedNumber({
         ...rest.sx,
       }}
       noWrap
-      {...rest}
     >
       {isSmallerThanMin && (
         <Typography

@@ -25,7 +25,7 @@ export const SuppliedPositionsListItem = ({
 }: ComputedUserReserveData & { user: ExtendedFormattedUser }) => {
   const { isIsolated, aIncentivesData, isFrozen, isActive } = reserve;
   const { currentMarketData } = useProtocolDataContext();
-  const { openSupply, openWithdraw, openCollateralChange } = useModalContext();
+  const { openSupply, openWithdraw, openCollateralChange, openSwap } = useModalContext();
   const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
 
   const canBeEnabledAsCollateral =
@@ -80,7 +80,7 @@ export const SuppliedPositionsListItem = ({
           <Button
             disabled={!isActive || isFrozen}
             variant="outlined"
-            onClick={() => console.log('TODO: should be swap modal')}
+            onClick={() => openSwap(underlyingAsset)}
           >
             <Trans>Swap</Trans>
           </Button>

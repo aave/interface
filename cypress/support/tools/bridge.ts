@@ -9,12 +9,12 @@
 
 import { Eip1193Bridge } from '@ethersproject/experimental/lib/eip1193-bridge';
 import { JsonRpcProvider } from '@ethersproject/providers';
-import { ethers, utils } from 'ethers';
+import { providers, Signer, utils } from 'ethers';
 
 export class CustomizedBridge extends Eip1193Bridge {
   chainId: number;
 
-  constructor(signer: ethers.Signer, provider?: ethers.providers.Provider, chainId?: number) {
+  constructor(signer: Signer, provider?: providers.Provider, chainId?: number) {
     super(signer, provider);
     this.chainId = chainId || 3030;
   }
@@ -47,7 +47,7 @@ export class CustomizedBridge extends Eip1193Bridge {
       }
 
       const address = await this.signer.getAddress();
-      if (address !== ethers.utils.getAddress(params[1])) {
+      if (address !== utils.getAddress(params[1])) {
         throw new Error(
           `personal_sign account mismatch or account not found: ${params[1] as string}`
         );

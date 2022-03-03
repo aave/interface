@@ -13,7 +13,7 @@ import {
   // Web3Provider,
 } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { BigNumber, ethers } from 'ethers';
+import { BigNumber, providers } from 'ethers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { API_ETH_MOCK_ADDRESS, transactionType } from '@aave/contract-helpers';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
@@ -55,7 +55,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     error,
     deactivate,
     setError,
-  } = useWeb3React<ethers.providers.Web3Provider>();
+  } = useWeb3React<providers.Web3Provider>();
 
   // const [provider, setProvider] = useState<JsonRpcProvider>();
   const [connector, setConnector] = useState<AbstractConnector>();

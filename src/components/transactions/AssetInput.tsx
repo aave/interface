@@ -50,7 +50,7 @@ const NumberFormatCustom = React.forwardRef<NumberFormatProps, CustomProps>(
 );
 
 export interface Asset {
-  balance: string;
+  balance?: string;
   symbol: string;
   iconSymbol?: string;
   address?: string;
@@ -61,36 +61,38 @@ export interface AssetInputProps<T extends Asset = Asset> {
   value: string;
   usdValue: string;
   symbol: string;
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
   disabled?: boolean;
+  disableInput?: boolean;
   onSelect?: (asset: T) => void;
   assets: T[];
   capType?: CapType;
-  maxValue: string;
-  isMaxSelected: boolean;
+  maxValue?: string;
+  isMaxSelected?: boolean;
 }
 
-export const AssetInput: React.FC<AssetInputProps> = ({
+export const AssetInput = <T extends Asset = Asset>({
   value,
   usdValue,
   symbol,
   onChange,
   disabled,
+  disableInput,
   onSelect,
   assets,
   capType,
   maxValue,
   isMaxSelected,
-}) => {
+}: AssetInputProps<T>) => {
   const handleSelect = (event: SelectChangeEvent) => {
-    const newAsset = assets.find((asset) => asset.symbol === event.target.value) as Asset;
+    const newAsset = assets.find((asset) => asset.symbol === event.target.value) as T;
     onSelect && onSelect(newAsset);
   };
 
   const asset =
     assets.length === 1
       ? assets[0]
-      : assets && (assets.find((asset) => asset.symbol === symbol) as Asset);
+      : assets && (assets.find((asset) => asset.symbol === symbol) as T);
 
   return (
     <Box>
@@ -113,10 +115,11 @@ export const AssetInput: React.FC<AssetInputProps> = ({
           <InputBase
             sx={{ flex: 1 }}
             placeholder="0.00"
-            disabled={disabled}
+            disabled={disabled || disableInput}
             value={value}
             autoFocus
             onChange={(e) => {
+              if (!onChange) return;
               if (Number(e.target.value) > Number(maxValue)) {
                 onChange('-1');
               } else {
@@ -171,7 +174,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
                   const asset =
                     assets.length === 1
                       ? assets[0]
-                      : assets && (assets.find((asset) => asset.symbol === symbol) as Asset);
+                      : assets && (assets.find((asset) => asset.symbol === symbol) as T);
                   return (
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                       <TokenIcon
@@ -194,7 +197,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({
                       sx={{ fontSize: '22px', mr: 1 }}
                     />
                     <ListItemText sx={{ mr: 6 }}>{asset.symbol}</ListItemText>
-                    <FormattedNumber value={asset.balance} compact />
+                    {asset.balance && <FormattedNumber value={asset.balance} compact />}
                   </MenuItem>
                 ))}
               </Select>
@@ -213,25 +216,28 @@ export const AssetInput: React.FC<AssetInputProps> = ({
             flexGrow={1}
           />
 
-          <Typography component="div" variant="secondary12" color="text.secondary">
-            Balance{' '}
-            <FormattedNumber
-              value={asset.balance}
-              compact
-              variant="secondary12"
-              color="text.secondary"
-              symbolsColor="text.disabled"
-            />
-          </Typography>
-
-          <Button
-            size="small"
-            sx={{ minWidth: 0, ml: '7px', p: 0 }}
-            onClick={() => onChange('-1')}
-            disabled={disabled || isMaxSelected}
-          >
-            <Trans>Max</Trans>
-          </Button>
+          {asset.balance && onChange && (
+            <>
+              <Typography component="div" variant="secondary12" color="text.secondary">
+                <Trans>Balance</Trans>{' '}
+                <FormattedNumber
+                  value={asset.balance}
+                  compact
+                  variant="secondary12"
+                  color="text.secondary"
+                  symbolsColor="text.disabled"
+                />
+              </Typography>
+              <Button
+                size="small"
+                sx={{ minWidth: 0, ml: '7px', p: 0 }}
+                onClick={() => onChange('-1')}
+                disabled={disabled || isMaxSelected}
+              >
+                <Trans>Max</Trans>
+              </Button>
+            </>
+          )}
         </Box>
       </Box>
     </Box>
