@@ -10,7 +10,10 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 interface UseTransactionHandlerProps {
   handleGetTxns: () => Promise<EthereumTransactionTypeExtended[]>;
-  handleGetPermitTxns?: (signature: SignatureLike) => Promise<EthereumTransactionTypeExtended[]>;
+  handleGetPermitTxns?: (
+    signature: SignatureLike,
+    deadline: string
+  ) => Promise<EthereumTransactionTypeExtended[]>;
   tryPermit?: boolean;
   customGasPrice?: string;
   skip?: boolean;
@@ -34,6 +37,7 @@ export const useTransactionHandler = ({
   // const [txs, setTxs] = useState<EthereumTransactionTypeExtended[]>([]);
   const [usePermit, setUsePermit] = useState<boolean>(tryPermit);
   const [signature, setSignature] = useState<SignatureLike>();
+  const [signatureDeadline, setSignatureDeadline] = useState<string>();
 
   const [approvalTx, setApprovalTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
@@ -95,15 +99,19 @@ export const useTransactionHandler = ({
         setApprovalTxState({ ...approvalTxState, loading: true });
         try {
           const newPool: Pool = lendingPool as Pool;
+          // deadline is an hour after signature
+          const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
           const unsingedPayload = await newPool.signERC20Approval({
             user: currentAccount,
             reserve: underlyingAsset,
             amount,
+            deadline,
           });
           try {
             const signature = await signTxData(unsingedPayload);
             if (!mounted.current) return;
             setSignature(signature);
+            setSignatureDeadline(deadline);
             setApprovalTxState({
               txHash: 'Signed correctly',
               txError: undefined,
@@ -169,10 +177,10 @@ export const useTransactionHandler = ({
 
   const action = async () => {
     if (approvalTx && usePermit && handleGetPermitTxns) {
-      if (!signature) throw new Error('signature needed');
+      if (!signature || !signatureDeadline) throw new Error('signature needed');
       try {
         setMainTxState({ ...mainTxState, loading: true });
-        const txns = await handleGetPermitTxns(signature);
+        const txns = await handleGetPermitTxns(signature, signatureDeadline);
         const params = await txns[0].tx();
         if (customGasPrice) params.gasPrice = BigNumber.from(customGasPrice);
         return processTx({
