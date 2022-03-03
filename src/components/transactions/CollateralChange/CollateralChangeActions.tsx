@@ -6,6 +6,7 @@ import { useGasStation } from 'src/hooks/useGasStation';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { optimizedPath } from 'src/utils/utils';
 
 import { RightHelperText } from '../FlowCommons/RightHelperText';
 import { GasOption } from '../GasStation/GasStationProvider';
@@ -35,11 +36,20 @@ export const CollateralChangeActions = ({
     tryPermit:
       currentMarketData.v3 && chainId !== ChainId.harmony && chainId !== ChainId.harmony_testnet,
     handleGetTxns: async () => {
-      return await lendingPool.setUsageAsCollateral({
-        user: currentAccount,
-        reserve: poolReserve.underlyingAsset,
-        usageAsCollateral,
-      });
+      if (currentMarketData.v3) {
+        return lendingPool.setUsageAsCollateral({
+          user: currentAccount,
+          reserve: poolReserve.underlyingAsset,
+          usageAsCollateral,
+          useOptimizedPath: optimizedPath(chainId),
+        });
+      } else {
+        return lendingPool.setUsageAsCollateral({
+          user: currentAccount,
+          reserve: poolReserve.underlyingAsset,
+          usageAsCollateral,
+        });
+      }
     },
     customGasPrice:
       state.gasOption === GasOption.Custom

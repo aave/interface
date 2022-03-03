@@ -157,6 +157,7 @@ export const CollateralChangeModalContent = ({
           value={userReserve.underlyingBalance}
         />
         <DetailsHFLine
+          visibleHfChange={true}
           healthFactor={user.healthFactor}
           futureHealthFactor={healthFactorAfterSwitch.toString()}
         />

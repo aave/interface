@@ -1,3 +1,4 @@
+import { InterestRate } from '@aave/contract-helpers';
 import { createContext, useContext, useState } from 'react';
 
 export enum ModalType {
@@ -26,6 +27,7 @@ export type ModalArgsType = {
   power?: string;
   icon?: string;
   stakeAssetName?: string;
+  currentRateMode?: InterestRate;
 };
 
 export type TxStateType = {
@@ -42,7 +44,7 @@ interface ModalContextType {
   openBorrow: (underlyingAsset: string) => void;
   openRepay: (underlyingAsset: string) => void;
   openCollateralChange: (underlyingAsset: string) => void;
-  openRateSwitch: (underlyingAsset: string) => void;
+  openRateSwitch: (underlyingAsset: string, currentRateMode: InterestRate) => void;
   openStake: (stakeAssetName: string, icon: string) => void;
   openUnstake: (stakeAssetName: string, icon: string) => void;
   openStakeCooldown: (stakeAssetName: string) => void;
@@ -99,9 +101,9 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setType(ModalType.CollateralChange);
           setArgs({ underlyingAsset });
         },
-        openRateSwitch: (underlyingAsset) => {
+        openRateSwitch: (underlyingAsset, currentRateMode) => {
           setType(ModalType.RateSwitch);
-          setArgs({ underlyingAsset });
+          setArgs({ underlyingAsset, currentRateMode });
         },
         openStake: (stakeAssetName, icon) => {
           setType(ModalType.Stake);
