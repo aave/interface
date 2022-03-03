@@ -5,7 +5,7 @@ import {
   withdraw,
   changeBorrowType,
   supply,
-} from "../../../support/steps/main.steps";
+} from '../../../support/steps/main.steps';
 import { dashboardAssetValuesVerification } from '../../../support/steps/verification.steps';
 import { skipState } from '../../../support/steps/common';
 import assets from '../../../fixtures/assets.json';
@@ -14,38 +14,38 @@ import constants from '../../../fixtures/constans.json';
 const testData = {
   depositETH: {
     asset: assets.aaveMarket.ETH,
-    amount: 0.1,
+    amount: 1,
     hasApproval: true,
   },
   testCases: {
     deposit: {
-      asset: assets.aaveMarket.DAI,
-      amount: 50,
+      asset: assets.aaveMarket.MKR,
+      amount: 0.05,
       hasApproval: false,
     },
     borrow: [
       {
-        asset: assets.aaveMarket.DAI,
-        amount: 50,
+        asset: assets.aaveMarket.MKR,
+        amount: 0.05,
         apyType: constants.borrowAPYType.variable,
         hasApproval: true,
       },
       {
-        asset: assets.aaveMarket.DAI,
-        amount: 50,
+        asset: assets.aaveMarket.MKR,
+        amount: 0.05,
         apyType: constants.borrowAPYType.stable,
         hasApproval: true,
       },
     ],
     changeBorrowType: [
       {
-        asset: assets.aaveMarket.DAI,
+        asset: assets.aaveMarket.MKR,
         apyType: constants.borrowAPYType.stable,
         newAPY: constants.borrowAPYType.variable,
         hasApproval: true,
       },
       {
-        asset: assets.aaveMarket.DAI,
+        asset: assets.aaveMarket.MKR,
         apyType: constants.borrowAPYType.variable,
         newAPY: constants.borrowAPYType.stable,
         hasApproval: true,
@@ -53,25 +53,25 @@ const testData = {
     ],
     repay: [
       {
-        asset: assets.aaveMarket.DAI,
+        asset: assets.aaveMarket.MKR,
         apyType: constants.apyType.stable,
-        amount: 10,
+        amount: 0.01,
         hasApproval: true,
         repayOption: constants.repayType.wallet,
       },
       // {
       //   asset: assets.aaveMarket.DAI,
       //   apyType: constants.apyType.stable,
-      //   amount: 10,
+      //   amount: 0.01,
       //   hasApproval: false,
       //   repayOption: constants.repayType.collateral,
       //   assetForRepay: assets.aaveMarket.BAT,
       // },
     ],
     withdraw: {
-      asset: assets.aaveMarket.DAI,
+      asset: assets.aaveMarket.MKR,
       isCollateral: true,
-      amount: 10,
+      amount: 0.01,
       hasApproval: true,
     },
   },
@@ -79,26 +79,26 @@ const testData = {
     finalDashboard: [
       {
         type: constants.dashboardTypes.deposit,
-        assetName: assets.aaveMarket.DAI.shortName,
-        wrapped: assets.aaveMarket.DAI.wrapped,
-        // amount: 30,
-        amount: 40,
+        assetName: assets.aaveMarket.MKR.shortName,
+        wrapped: assets.aaveMarket.MKR.wrapped,
+        // amount: 0.03,
+        amount: 0.04,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
       },
       {
         type: constants.dashboardTypes.borrow,
-        assetName: assets.aaveMarket.DAI.shortName,
-        wrapped: assets.aaveMarket.DAI.wrapped,
-        // amount: 80,
-        amount: 90,
+        assetName: assets.aaveMarket.MKR.shortName,
+        wrapped: assets.aaveMarket.MKR.wrapped,
+        // amount: 0.08,
+        amount: 0.09,
         apyType: constants.borrowAPYType.stable,
       },
     ],
   },
 };
 
-describe('DAI INTEGRATION SPEC, AAVE V2 MARKET', () => {
+describe('MKR INTEGRATION SPEC, AAVE V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyMainnetFork({});
   supply(testData.depositETH, skipTestState, true);

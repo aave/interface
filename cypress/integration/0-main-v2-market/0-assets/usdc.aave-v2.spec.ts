@@ -5,7 +5,7 @@ import {
   withdraw,
   changeBorrowType,
   supply,
-} from "../../../support/steps/main.steps";
+} from '../../../support/steps/main.steps';
 import { dashboardAssetValuesVerification } from '../../../support/steps/verification.steps';
 import { skipState } from '../../../support/steps/common';
 import assets from '../../../fixtures/assets.json';
@@ -19,19 +19,19 @@ const testData = {
   },
   testCases: {
     deposit: {
-      asset: assets.aaveMarket.BAT,
+      asset: assets.aaveMarket.USDC,
       amount: 50,
       hasApproval: false,
     },
     borrow: [
       {
-        asset: assets.aaveMarket.BAT,
+        asset: assets.aaveMarket.USDC,
         amount: 50,
         apyType: constants.borrowAPYType.variable,
         hasApproval: true,
       },
       {
-        asset: assets.aaveMarket.BAT,
+        asset: assets.aaveMarket.USDC,
         amount: 50,
         apyType: constants.borrowAPYType.stable,
         hasApproval: true,
@@ -39,13 +39,13 @@ const testData = {
     ],
     changeBorrowType: [
       {
-        asset: assets.aaveMarket.BAT,
+        asset: assets.aaveMarket.USDC,
         apyType: constants.borrowAPYType.stable,
         newAPY: constants.borrowAPYType.variable,
         hasApproval: true,
       },
       {
-        asset: assets.aaveMarket.BAT,
+        asset: assets.aaveMarket.USDC,
         apyType: constants.borrowAPYType.variable,
         newAPY: constants.borrowAPYType.stable,
         hasApproval: true,
@@ -53,23 +53,23 @@ const testData = {
     ],
     repay: [
       {
-        asset: assets.aaveMarket.BAT,
+        asset: assets.aaveMarket.USDC,
         apyType: constants.apyType.stable,
         amount: 10,
         hasApproval: true,
         repayOption: constants.repayType.wallet,
       },
       // {
-      //   asset: assets.aaveMarket.BAT,
+      //   asset: assets.aaveMarket.USDC,
       //   apyType: constants.apyType.stable,
       //   amount: 10,
       //   hasApproval: false,
       //   repayOption: constants.repayType.collateral,
-      //   assetForRepay: assets.aaveMarket.BAT,
+      //   assetForRepay: assets.aaveMarket.USDC,
       // },
     ],
     withdraw: {
-      asset: assets.aaveMarket.BAT,
+      asset: assets.aaveMarket.USDC,
       isCollateral: true,
       amount: 10,
       hasApproval: true,
@@ -79,8 +79,8 @@ const testData = {
     finalDashboard: [
       {
         type: constants.dashboardTypes.deposit,
-        assetName: assets.aaveMarket.BAT.shortName,
-        wrapped: assets.aaveMarket.BAT.wrapped,
+        assetName: assets.aaveMarket.USDC.shortName,
+        wrapped: assets.aaveMarket.USDC.wrapped,
         // amount: 30,
         amount: 40,
         collateralType: constants.collateralType.isCollateral,
@@ -88,8 +88,8 @@ const testData = {
       },
       {
         type: constants.dashboardTypes.borrow,
-        assetName: assets.aaveMarket.BAT.shortName,
-        wrapped: assets.aaveMarket.BAT.wrapped,
+        assetName: assets.aaveMarket.USDC.shortName,
+        wrapped: assets.aaveMarket.USDC.wrapped,
         // amount: 80,
         amount: 90,
         apyType: constants.borrowAPYType.stable,
@@ -98,7 +98,7 @@ const testData = {
   },
 };
 
-describe('BAT INTEGRATION SPEC, AAVE V2 MARKET', () => {
+describe('USDC INTEGRATION SPEC, AAVE V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyMainnetFork({});
   supply(testData.depositETH, skipTestState, true);

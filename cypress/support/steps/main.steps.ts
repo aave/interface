@@ -377,7 +377,6 @@ export const changeCollateral = (
   {
     asset,
     isCollateralType,
-    hasApproval = true,
   }: {
     asset: { shortName: string; fullName: string; wrapped: boolean };
     isCollateralType: boolean;
@@ -409,13 +408,9 @@ export const changeCollateral = (
     });
     it('Confirm switching', () => {
       if (isCollateralType) {
-        cy.get('[data-cy=actionButton] button')
-          .contains(`Disable ${_shortName} as collateral`)
-          .click();
+        cy.get('[data-cy=actionButton]').contains(`Disable ${_shortName} as collateral`).click();
       } else {
-        cy.get('[data-cy=actionButton] button')
-          .contains(`Enable ${_shortName} as collateral`)
-          .click();
+        cy.get('[data-cy=actionButton]').contains(`Enable ${_shortName} as collateral`).click();
       }
       cy.get("[data-cy=Modal] h2:contains('All done!')").should('be.visible');
       cy.get('[data-cy=Modal] [data-cy=CloseModalIcon]').click();
