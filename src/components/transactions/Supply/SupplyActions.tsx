@@ -6,6 +6,7 @@ import { useGasStation } from 'src/hooks/useGasStation';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { optimizedPath } from 'src/utils/utils';
 
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
 import { LeftHelperText } from '../FlowCommons/LeftHelperText';
@@ -57,6 +58,7 @@ export const SupplyActions = ({
           user: currentAccount,
           reserve: poolAddress,
           amount: amountToSupply,
+          useOptimizedPath: optimizedPath(chainId),
         });
       } else {
         return lendingPool.deposit({
@@ -66,13 +68,15 @@ export const SupplyActions = ({
         });
       }
     },
-    handleGetPermitTxns: async (signature) => {
+    handleGetPermitTxns: async (signature, deadline) => {
       const newPool: Pool = lendingPool as Pool;
       return newPool.supplyWithPermit({
         user: currentAccount,
         reserve: poolAddress,
         amount: amountToSupply,
         signature,
+        useOptimizedPath: optimizedPath(chainId),
+        deadline,
       });
     },
     customGasPrice:
