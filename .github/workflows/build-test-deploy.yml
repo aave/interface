@@ -58,7 +58,7 @@ jobs:
       - name: install
         run: yarn --frozen-lockfile --prefer-offline
 
-      - name: install
+      - name: i18n
         run: yarn i18n
 
       - name: check diff
