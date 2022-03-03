@@ -406,7 +406,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                       optimalUsageRatio: reserve.optimalUsageRatio,
                       stableRateSlope1: reserve.stableRateSlope1,
                       stableRateSlope2: reserve.stableRateSlope2,
-                      utilizationRate: reserve.utilizationRate,
+                      utilizationRate: reserve.borrowUsageRatio,
                       variableRateSlope1: reserve.variableRateSlope1,
                       variableRateSlope2: reserve.variableRateSlope2,
                       stableBorrowRateEnabled: reserve.stableBorrowRateEnabled,

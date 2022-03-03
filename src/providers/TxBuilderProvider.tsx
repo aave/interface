@@ -36,6 +36,7 @@ export const TxBuilderProvider: React.FC<{ children: ReactElement }> = ({ childr
       REPAY_WITH_COLLATERAL_ADAPTER: currentMarketData.addresses.REPAY_WITH_COLLATERAL_ADAPTER,
       SWAP_COLLATERAL_ADAPTER: currentMarketData.addresses.SWAP_COLLATERAL_ADAPTER,
       WETH_GATEWAY: currentMarketData.addresses.WETH_GATEWAY,
+      L2_ENCODER: currentMarketData.addresses.L2_ENCODER,
     });
   }
 
