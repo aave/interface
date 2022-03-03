@@ -288,6 +288,7 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
         />
         <DetailsCollateralLine collateralType={willBeUsedAsCollateral} />
         <DetailsHFLine
+          visibleHfChange={!!_amount}
           healthFactor={user ? user.healthFactor : '-1'}
           futureHealthFactor={healthFactorAfterDeposit.toString()}
         />

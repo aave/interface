@@ -242,6 +242,7 @@ export const SwapModalContent = ({ underlyingAsset }: SupplyProps) => {
         />
         {showHealthFactor && (
           <DetailsHFLine
+            visibleHfChange={!!_amount}
             healthFactor={user.healthFactor}
             futureHealthFactor={hfAfterSwap.toString()}
           />
