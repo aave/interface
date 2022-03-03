@@ -273,7 +273,11 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
           amountUSD={displayAmountAfterRepayInUsd.toString()}
           symbol={poolReserve.iconSymbol}
         />
-        <DetailsHFLine healthFactor={user?.healthFactor} futureHealthFactor={newHF?.toString()} />
+        <DetailsHFLine
+          visibleHfChange={!!_amount}
+          healthFactor={user?.healthFactor}
+          futureHealthFactor={newHF?.toString()}
+        />
       </TxModalDetails>
 
       {repayTxState.gasEstimationError && (

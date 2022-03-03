@@ -241,6 +241,7 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
           symbol={symbol}
         />
         <DetailsHFLine
+          visibleHfChange={!!_amount}
           healthFactor={user ? user.healthFactor : '-1'}
           futureHealthFactor={healthFactorAfterWithdraw.toString()}
         />
