@@ -58,6 +58,9 @@ jobs:
       - name: install
         run: yarn --frozen-lockfile
 
+      - name: install
+        run: yarn i18n
+
       - name: check diff
         run: |
           if [[ -z $(git status -s) ]]
