@@ -151,7 +151,7 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
         loading={loading}
       >
         <FormattedNumber
-          value={poolReserve?.utilizationRate}
+          value={poolReserve?.borrowUsageRatio}
           percent
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}
