@@ -43,6 +43,29 @@ jobs:
         with:
           name: out_${{github.sha}}
           path: out/
+          
+  i18n-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'yarn'
+
+      - name: install
+        run: yarn --frozen-lockfile
+        
+  	  - name: check diff
+        run: |
+          if [[ -z $(git status -s) ]]
+          then
+            echo "i18n up to date"
+          else
+          	echo "please run yarn i18n"
+            exit 1
+          exit
+          fi
 
   # test:
   #   runs-on: ubuntu-latest
