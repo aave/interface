@@ -152,7 +152,6 @@ export const DashboardTopPanel = () => {
           <TopInfoPanelItem
             title={<Trans>Available rewards</Trans>}
             icon={<ClaimGiftIcon />}
-            withLine={!downToXSM}
             loading={loading}
           >
             <Box
