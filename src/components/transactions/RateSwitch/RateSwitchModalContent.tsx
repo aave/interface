@@ -2,6 +2,7 @@ import { InterestRate } from '@aave/contract-helpers';
 import { ComputedUserReserve, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Alert } from '@mui/material';
+import { useEffect, useState } from 'react';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -37,6 +38,7 @@ export const RateSwitchModalContent = ({ underlyingAsset }: RateSwitchModalConte
   const { reserves, user } = useAppDataContext();
   const { currentChainId } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
+  const [expectedRateMode, setExpectedRateMode] = useState<InterestRate>(InterestRate.Variable);
 
   const networkConfig = getNetworkConfig(currentChainId);
 
@@ -101,13 +103,16 @@ export const RateSwitchModalContent = ({ underlyingAsset }: RateSwitchModalConte
     }
   };
 
-  console.log('TODO: do semething with blocking errors: ', blockingError);
-
   // is Network mismatched
   const isWrongNetwork = currentChainId !== connectedChainId;
 
+  // Save the expected rate mode for the Success view
+  useEffect(() => {
+    setExpectedRateMode(rateModeAfterSwitch);
+  }, []);
+
   if (rateSwitchTxState.txError) return <TxErrorView errorMessage={rateSwitchTxState.txError} />;
-  if (rateSwitchTxState.success) return <TxSuccessView rate={rateModeAfterSwitch} />;
+  if (rateSwitchTxState.success) return <TxSuccessView rate={expectedRateMode} />;
   return (
     <>
       <TxModalTitle title="Switch APY type" />
