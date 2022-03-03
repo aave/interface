@@ -188,9 +188,14 @@ export const DetailsIncentivesLine = ({
 export interface DetailsHFLineProps {
   healthFactor: string;
   futureHealthFactor: string;
+  visibleHfChange: boolean;
 }
 
-export const DetailsHFLine = ({ healthFactor, futureHealthFactor }: DetailsHFLineProps) => {
+export const DetailsHFLine = ({
+  healthFactor,
+  futureHealthFactor,
+  visibleHfChange,
+}: DetailsHFLineProps) => {
   if (healthFactor === '-1' && futureHealthFactor === '-1') return null;
   return (
     <Row
@@ -203,14 +208,18 @@ export const DetailsHFLine = ({ healthFactor, futureHealthFactor }: DetailsHFLin
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
           <HealthFactorNumber value={healthFactor} variant="secondary14" />
 
-          <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-            <ArrowNarrowRightIcon />
-          </SvgIcon>
+          {visibleHfChange && (
+            <>
+              <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+                <ArrowNarrowRightIcon />
+              </SvgIcon>
 
-          <HealthFactorNumber
-            value={Number(futureHealthFactor) ? futureHealthFactor : healthFactor}
-            variant="secondary14"
-          />
+              <HealthFactorNumber
+                value={Number(futureHealthFactor) ? futureHealthFactor : healthFactor}
+                variant="secondary14"
+              />
+            </>
+          )}
         </Box>
 
         <Typography variant="helperText" color="text.secondary">
