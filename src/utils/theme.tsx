@@ -82,6 +82,7 @@ declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
     display1: true;
     subheader1: true;
+    subheader1Gradient: true;
     subheader2: true;
     description: true;
     buttonL: true;
@@ -242,6 +243,18 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         letterSpacing: pxToRem(0.15),
         lineHeight: pxToRem(20),
         fontSize: pxToRem(14),
+      },
+      subheader1Gradient: {
+        fontFamily: FONT,
+        fontWeight: 600,
+        letterSpacing: pxToRem(0.15),
+        lineHeight: pxToRem(20),
+        fontSize: pxToRem(14),
+        background: 'linear-gradient(248.86deg, #B6509E 10.51%, #2EBAC6 93.41%)',
+        '-webkit-background-clip': 'text',
+        '-moz-background-clip': 'text',
+        '-webkit-text-fill-color': 'transparent',
+        '-moz-text-fill-color': 'transparent',
       },
       subheader2: {
         fontFamily: FONT,
@@ -446,6 +459,7 @@ export function getThemedComponents(theme: Theme) {
             h3: 'h3',
             h4: 'h4',
             subheader1: 'p',
+            subheader1Gradient: 'p',
             subheader2: 'p',
             caption: 'p',
             description: 'p',
@@ -791,21 +805,19 @@ export function getThemedComponents(theme: Theme) {
       MuiToggleButtonGroup: {
         styleOverrides: {
           root: {
-            backgroundColor: theme.palette.background.paper,
+            backgroundColor: '#383D51',
+            border: '1px solid rgba(235, 235, 237, 0.12)',
           },
         },
       },
       MuiToggleButton: {
         styleOverrides: {
           root: {
-            backgroundColor: theme.palette.action.selected,
+            border: '0px',
             flex: 1,
-            boxShadow: 'inset -1px 0px 0px rgba(0, 0, 0, 0.12)',
-            '&:last-of-type': {
-              boxShadow: 'unset',
-            },
-            '&.Mui-selected, &.Mui-disabled, &.Mui-selected:hover,  &:hover, &:focus': {
-              backgroundColor: theme.palette.background.paper,
+            '&.Mui-selected, &.Mui-disabled, &.Mui-selected:hover, &:hover, &:focus': {
+              backgroundColor: '#383D51',
+              border: '0px',
             },
           },
         },
