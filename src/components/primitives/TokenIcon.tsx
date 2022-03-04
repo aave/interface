@@ -173,9 +173,14 @@ interface MultiTokenIconProps extends IconProps {
 export function MultiTokenIcon({ symbols, badgeSymbol, ...rest }: MultiTokenIconProps) {
   if (!badgeSymbol)
     return (
-      <Box>
+      <Box sx={{ display: 'inline-flex', position: 'relative' }}>
         {symbols.map((symbol, ix) => (
-          <SingleTokenIcon key={symbol} symbol={symbol} sx={{ ml: ix === 0 ? 0 : -4 }} {...rest} />
+          <SingleTokenIcon
+            {...rest}
+            key={symbol}
+            symbol={symbol}
+            sx={{ ml: ix === 0 ? 0 : `calc(-1 * 0.5em)`, ...rest.sx }}
+          />
         ))}
       </Box>
     );
@@ -187,7 +192,12 @@ export function MultiTokenIcon({ symbols, badgeSymbol, ...rest }: MultiTokenIcon
       sx={{ '.MuiBadge-anchorOriginTopRight': { top: 9 } }}
     >
       {symbols.map((symbol, ix) => (
-        <SingleTokenIcon key={symbol} symbol={symbol} sx={{ ml: ix === 0 ? 0 : -4 }} {...rest} />
+        <SingleTokenIcon
+          {...rest}
+          key={symbol}
+          symbol={symbol}
+          sx={{ ml: ix === 0 ? 0 : 'calc(-1 * 0.5em)', ...rest.sx }}
+        />
       ))}
     </Badge>
   );
