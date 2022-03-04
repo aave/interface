@@ -174,7 +174,8 @@ export const SwapModalContent = ({ underlyingAsset }: SupplyProps) => {
           {
             balance: maxAmountToSwap,
             address: poolReserve.underlyingAsset,
-            symbol: poolReserve.iconSymbol,
+            symbol: poolReserve.symbol,
+            iconSymbol: poolReserve.iconSymbol,
           },
         ]}
         maxValue={maxAmountToSwap}

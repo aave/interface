@@ -144,6 +144,7 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
       repayTokens.push({
         address: poolReserve.underlyingAsset,
         symbol: poolReserve.symbol,
+        iconSymbol: poolReserve.iconSymbol,
         balance: maxReserveTokenForRepay.toString(),
       });
       // push reserve atoken
