@@ -171,10 +171,7 @@ export const DashboardTopPanel = () => {
                   symbolsVariant={noDataTypographyVariant}
                 />
                 {assets && (
-                  <MultiTokenIcon
-                    symbols={assets}
-                    sx={{ ml: 1, fontSize: { xs: '16px', xsm: '20px' } }}
-                  />
+                  <MultiTokenIcon symbols={assets} sx={{ fontSize: { xs: '16px', xsm: '20px' } }} />
                 )}
               </Box>
 
