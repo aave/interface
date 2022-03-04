@@ -1,14 +1,12 @@
 import { Trans } from '@lingui/macro';
 import {
   Box,
-  styled,
   ToggleButton,
   ToggleButtonGroup,
   Typography,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import sx from '@mui/system/sx';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import {
@@ -21,18 +19,6 @@ import { ReserveConfiguration } from 'src/modules/reserve-overview/ReserveConfig
 import { ReserveTopDetails } from 'src/modules/reserve-overview/ReserveTopDetails';
 
 import { ContentContainer } from '../src/components/ContentContainer';
-
-const ToggleButtonInternal = styled(Box)(
-  sx({
-    backgroundColor: '#FFFFFF',
-    boxShadow: '0px 1px 0px rgba(0, 0, 0, 0.05)',
-    borderRadius: '4px',
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-  })
-);
 
 export default function ReserveOverview() {
   const router = useRouter();
@@ -74,31 +60,15 @@ export default function ReserveOverview() {
             onChange={(_, value) => setMode(value)}
             sx={{ width: { xs: '100%', xsm: '359px' }, height: '44px' }}
           >
-            <ToggleButton value="overview" disabled={mode === 'overview'} sx={{ p: '4px' }}>
-              {mode === 'overview' ? (
-                <ToggleButtonInternal>
-                  <Typography variant="subheader1Gradient" sx={{ alignSelf: 'center' }}>
-                    <Trans>Overview</Trans>
-                  </Typography>
-                </ToggleButtonInternal>
-              ) : (
-                <Typography variant="subheader1">
-                  <Trans>Overview</Trans>
-                </Typography>
-              )}
+            <ToggleButton value="overview" disabled={mode === 'overview'}>
+              <Typography variant="subheader1">
+                <Trans>Overview</Trans>
+              </Typography>
             </ToggleButton>
-            <ToggleButton value="actions" disabled={mode === 'actions'} sx={{ p: '4px' }}>
-              {mode === 'actions' ? (
-                <ToggleButtonInternal>
-                  <Typography variant="subheader1Gradient" sx={{ alignSelf: 'center' }}>
-                    <Trans>Your info</Trans>
-                  </Typography>
-                </ToggleButtonInternal>
-              ) : (
-                <Typography variant="subheader1">
-                  <Trans>Your info</Trans>
-                </Typography>
-              )}
+            <ToggleButton value="actions" disabled={mode === 'actions'}>
+              <Typography variant="subheader1">
+                <Trans>Your info</Trans>
+              </Typography>
             </ToggleButton>
           </ToggleButtonGroup>
         </Box>

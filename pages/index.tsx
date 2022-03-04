@@ -1,7 +1,6 @@
 import { Trans } from '@lingui/macro';
 import {
   Box,
-  styled,
   ToggleButton,
   ToggleButtonGroup,
   Typography,
@@ -9,25 +8,12 @@ import {
   useTheme,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
-import sx from '@mui/system/sx';
 import { ConnectWalletPaper } from '../src/components/ConnectWalletPaper';
 import { ContentContainer } from '../src/components/ContentContainer';
 import { MainLayout } from '../src/layouts/MainLayout';
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 import { DashboardContentWrapper } from '../src/modules/dashboard/DashboardContentWrapper';
 import { DashboardTopPanel } from '../src/modules/dashboard/DashboardTopPanel';
-
-const ToggleButtonInternal = styled(Box)(
-  sx({
-    backgroundColor: '#FFFFFF',
-    boxShadow: '0px 1px 0px rgba(0, 0, 0, 0.05)',
-    borderRadius: '4px',
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-  })
-);
 
 export default function Home() {
   const { breakpoints } = useTheme();
@@ -62,31 +48,15 @@ export default function Home() {
               onChange={(_, value) => setMode(value)}
               sx={{ width: { xs: '100%', xsm: '359px' }, height: '44px' }}
             >
-              <ToggleButton value="supply" disabled={mode === 'supply'} sx={{ p: '4px' }}>
-                {mode === 'supply' ? (
-                  <ToggleButtonInternal>
-                    <Typography variant="subheader1Gradient" sx={{ alignSelf: 'center' }}>
-                      <Trans>Supply</Trans>
-                    </Typography>
-                  </ToggleButtonInternal>
-                ) : (
-                  <Typography variant="subheader1">
-                    <Trans>Supply</Trans>
-                  </Typography>
-                )}
+              <ToggleButton value="supply" disabled={mode === 'supply'}>
+                <Typography variant="subheader1">
+                  <Trans>Supply</Trans>
+                </Typography>
               </ToggleButton>
-              <ToggleButton value="borrow" disabled={mode === 'borrow'} sx={{ p: '4px' }}>
-                {mode === 'borrow' ? (
-                  <ToggleButtonInternal>
-                    <Typography variant="subheader1Gradient" sx={{ alignSelf: 'center' }}>
-                      <Trans>Borrow</Trans>
-                    </Typography>
-                  </ToggleButtonInternal>
-                ) : (
-                  <Typography variant="subheader1">
-                    <Trans>Borrow</Trans>
-                  </Typography>
-                )}
+              <ToggleButton value="borrow" disabled={mode === 'borrow'}>
+                <Typography variant="subheader1">
+                  <Trans>Borrow</Trans>
+                </Typography>
               </ToggleButton>
             </ToggleButtonGroup>
           </Box>
