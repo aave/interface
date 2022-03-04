@@ -82,7 +82,6 @@ declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
     display1: true;
     subheader1: true;
-    subheader1Gradient: true;
     subheader2: true;
     description: true;
     buttonL: true;
@@ -243,18 +242,6 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         letterSpacing: pxToRem(0.15),
         lineHeight: pxToRem(20),
         fontSize: pxToRem(14),
-      },
-      subheader1Gradient: {
-        fontFamily: FONT,
-        fontWeight: 600,
-        letterSpacing: pxToRem(0.15),
-        lineHeight: pxToRem(20),
-        fontSize: pxToRem(14),
-        background: 'linear-gradient(248.86deg, #B6509E 10.51%, #2EBAC6 93.41%)',
-        '-webkit-background-clip': 'text',
-        '-moz-background-clip': 'text',
-        '-webkit-text-fill-color': 'transparent',
-        '-moz-text-fill-color': 'transparent',
       },
       subheader2: {
         fontFamily: FONT,
@@ -459,7 +446,6 @@ export function getThemedComponents(theme: Theme) {
             h3: 'h3',
             h4: 'h4',
             subheader1: 'p',
-            subheader1Gradient: 'p',
             subheader2: 'p',
             caption: 'p',
             description: 'p',
@@ -807,6 +793,7 @@ export function getThemedComponents(theme: Theme) {
           root: {
             backgroundColor: '#383D51',
             border: '1px solid rgba(235, 235, 237, 0.12)',
+            padding: '4px',
           },
         },
       },
@@ -815,9 +802,34 @@ export function getThemedComponents(theme: Theme) {
           root: {
             border: '0px',
             flex: 1,
-            '&.Mui-selected, &.Mui-disabled, &.Mui-selected:hover, &:hover, &:focus': {
+            backgroundColor: '#383D51',
+            borderRadius: '4px',
+
+            '&.Mui-selected, &.Mui-disabled, &:focus': {
+              backgroundColor: '#FFFFFF',
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+
+              '.MuiTypography-subheader1': {
+                background: 'linear-gradient(248.86deg, #B6509E 10.51%, #2EBAC6 93.41%)',
+                '-webkit-background-clip': 'text',
+                '-moz-background-clip': 'text',
+                '-webkit-text-fill-color': 'transparent',
+                '-moz-text-fill-color': 'transparent',
+              },
+              '.MuiTypography-secondary14': {
+                background: 'linear-gradient(248.86deg, #B6509E 10.51%, #2EBAC6 93.41%)',
+                '-webkit-background-clip': 'text',
+                '-moz-background-clip': 'text',
+                '-webkit-text-fill-color': 'transparent',
+                '-moz-text-fill-color': 'transparent',
+              },
+            },
+
+            '&.Mui-selected:hover, &:hover': {
               backgroundColor: '#383D51',
-              border: '0px',
             },
           },
         },
