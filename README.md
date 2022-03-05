@@ -1,15 +1,27 @@
-# Next.js with TypeScript example
+```
+        .///.                .///.     //.            .//  `/////////////-
+       `++:++`              .++:++`    :++`          `++:  `++:......---.`
+      `/+: -+/`            `++- :+/`    /+/         `/+/   `++.
+      /+/   :+/            /+:   /+/    `/+/        /+/`   `++.
+  -::/++::`  /+:       -::/++::` `/+:    `++:      :++`    `++/:::::::::.
+  -:+++::-`  `/+:      --++/---`  `++-    .++-    -++.     `++/:::::::::.
+   -++.       .++-      -++`       .++.    .++.  .++-      `++.
+  .++-         -++.    .++.         -++.    -++``++-       `++.
+ `++:           :++`  .++-           :++`    :+//+:        `++:----------`
+ -/:             :/-  -/:             :/.     ://:         `/////////////-
+```
+
+# Aave protocol interface :ghost:
+
+An open source interface for the decentralized liquidity protocol Aave
+
+Enabling users to:
+
+- Manage and monitor their positions on the Aave Protocol, and the overall status of it
+- Manage and monitor their positions on the Aave Safety module
+- Participate in the Aave Governance
 
 ## How to use
-
-Download the example [or clone the repo](https://github.com/mui-org/material-ui):
-
-<!-- #default-branch-switch -->
-
-```sh
-curl https://codeload.github.com/mui-org/material-ui/tar.gz/master | tar -xz --strip=2  material-ui-master/examples/nextjs-with-typescript
-cd nextjs-with-typescript
-```
 
 Install it and run:
 
@@ -18,28 +30,40 @@ yarn
 yarn dev
 ```
 
-or:
+## Contribution
 
-<!-- #default-branch-switch -->
+For instructions on local development, deployment, configurations & feature proposals, see [Contributing](./CONTRIBUTING.md)
 
-[![Edit on StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/mui-org/material-ui/tree/master/examples/nextjs-with-typescript)
+## IPFS deployment
 
-[![Edit on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/mui-org/material-ui/tree/master/examples/nextjs-with-typescript)
+Each commit gets deployed to IPFS automatically
 
-## The idea behind the example
+There's a github action commenting the appropriate IPFS hash embedded in the Cloudflare IPFS gateway after each commit
 
-The project uses [Next.js](https://github.com/vercel/next.js), which is a framework for server-rendered React apps.
-It includes `@mui/material` and its peer dependencies, including `emotion`, the default style engine in MUI v5. If you prefer, you can [use styled-components instead](https://mui.com/guides/interoperability/#styled-components).
+For ease of use:
 
-## The link component
+- the DNS of [https://staging.aave.com](https://staging.aave.com) will always point to the latest master IPFS hash with all networks enabled
+- the DNS of [https://app.aave.com](https://app.aave.com) will always point to the latest master IPFS hash with disabled test networks
 
-Next.js has [a custom Link component](https://nextjs.org/docs/api-reference/next/link).
-The example folder provides adapters for usage with MUI.
-More information [in the documentation](https://mui.com/guides/routing/#next-js).
+### Links known to work at some point:
 
-## What's next?
+- [https://app-aave-com.ipns.cf-ipfs.com/#/](https://app-aave-com.ipns.cf-ipfs.com/#/)
+- [https://app-aave-com.ipns.dweb.link/#/](https://app-aave-com.ipns.dweb.link/#/)
 
-<!-- #default-branch-switch -->
+### Troubleshooting
 
-You now have a working example project.
-You can head back to the documentation, continuing browsing it from the [templates](https://mui.com/getting-started/templates/) section.
+Issue: I cannot connect to `app.aave.com`
+
+The aave-ui is hosted on IPFS in a decentralized manner. `app.aave.com` just holds a CNAME record to the Cloudflare IPFS gateway. You can use [any](https://ipfs.github.io/public-gateway-checker/) public or private IPFS gateway supporting origin isolation to access aave-ui if for some reason the Cloudflare gateway doesn't work for you
+
+Just go to `<your favorite public ipfs gateway>/ipns/app.aave.com`
+
+⚠️ Make sure the gateway supports origin isolation to avoid possible security issues: you should be redirected to URL that looks like `https://app-aave-com.<your gateway>`
+
+## License
+
+[BSD-3-Clause](./LICENSE.md)
+
+## Credits
+
+To all the Ethereum community
