@@ -59,7 +59,7 @@ To add a new token to the app, all you have to do is adding a svg token icon ins
 If you want a custom name to appear alongside the icon you can alter `src/ui-config/reservePatches.ts` accordingly.
 
 
-**## Translations**
+## Translations
 
 Aave uses [Crowdin](https://crowdin.com/project/aave-interface) for translation management.
 
