@@ -57,3 +57,30 @@ yarn test:amm|main|polygon|avalanche
 
 To add a new token to the app, all you have to do is adding a svg token icon inside `public/icons/tokens` please make sure the svg name equals the `lowercase` onchain `symbol`.
 If you want a custom name to appear alongside the icon you can alter `src/ui-config/reservePatches.ts` accordingly.
+
+
+**## Translations**
+
+Aave uses [Crowdin](https://crowdin.com/project/aave-interface) for translation management.
+
+Feel free to reach out to us on discord to become a translator!
+
+We only update strings within the app. Everything else is downloaded from crowdin.
+
+[Crowdin Docs](https://support.crowdin.com/enterprise/cli/) for installation of the cli
+
+To upload strings
+
+```sh
+
+crowdin upload sources
+
+```
+
+To download strings
+
+```sh
+
+crowdin download
+
+```
