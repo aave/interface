@@ -19,7 +19,7 @@ Enabling users to:
 
 - Manage and monitor their positions on the Aave Protocol, and the overall status of it
 - Manage and monitor their positions on the Aave Safety module
-- Participate on the Aave Governance
+- Participate in the Aave Governance
 
 ## How to use
 
