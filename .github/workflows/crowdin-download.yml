@@ -45,6 +45,7 @@ jobs:
           else
             yarn --frozen-lockfile
             yarn i18n:compile
+            git add .
             git config --global user.name 'Crowdin bot'
             git config --global user.email 'crowdin-bot@aave.com'
             git commit -am "chore(i18n): synchronize translations from crowdin"
