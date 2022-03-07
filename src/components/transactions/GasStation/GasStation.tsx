@@ -142,7 +142,7 @@ export const GasStation: React.FC<GasStationProps> = ({ gasLimit }) => {
             onClose={() => setOpen(false)}
             disableFocusListener
             disableHoverListener
-            placement="top"
+            placement="top-start"
             PopperComponent={PopperComponent}
             title={
               <Box sx={{ py: 4, px: 6, width: '280px' }}>
