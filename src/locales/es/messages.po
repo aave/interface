@@ -1,26 +1,27 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2022-03-03 18:16+0100\n"
+"POT-Creation-Date: 2022-03-07 15:58+0100\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
-"Language: en\n"
-"Project-Id-Version: \n"
+"Language: es\n"
+"Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: \n"
+"PO-Revision-Date: 2022-03-07 18:31\n"
 "Last-Translator: \n"
-"Language-Team: \n"
-"Plural-Forms: \n"
+"Language-Team: Spanish\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: aave-interface\n"
+"X-Crowdin-Project-ID: 502668\n"
+"X-Crowdin-Language: es-ES\n"
+"X-Crowdin-File: /src/locales/en/messages.po\n"
+"X-Crowdin-File-ID: 46\n"
 
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "(AAVE + stkAAVE)"
-msgstr ""
-
-#: src/components/transactions/FlowCommons/GasEstimationError.tsx
-msgid ". Please try changing the parameters."
 msgstr ""
 
 #: src/components/infoTooltips/AMPLWarning.tsx
@@ -394,14 +395,6 @@ msgstr ""
 msgid "Custom"
 msgstr ""
 
-#: src/components/transactions/Emode/EmodeActions.tsx
-msgid "DISABLE E-MODE"
-msgstr ""
-
-#: src/components/transactions/Emode/EmodeActions.tsx
-msgid "DISABLING E-MODE"
-msgstr ""
-
 #: src/layouts/components/DarkModeSwitcher.tsx
 msgid "Dark mode"
 msgstr ""
@@ -450,6 +443,7 @@ msgstr ""
 msgid "Differential"
 msgstr ""
 
+#: src/components/transactions/Emode/EmodeActions.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Disable E-Mode"
 msgstr ""
@@ -462,6 +456,10 @@ msgstr ""
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Disabled"
+msgstr ""
+
+#: src/components/transactions/Emode/EmodeActions.tsx
+msgid "Disabling E-Mode"
 msgstr ""
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
@@ -496,6 +494,7 @@ msgstr ""
 msgid "Efficiency mode (E-Mode)"
 msgstr ""
 
+#: src/components/transactions/Emode/EmodeActions.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Enable E-Mode"
 msgstr ""
@@ -515,6 +514,10 @@ msgstr ""
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Enabled in isolation"
+msgstr ""
+
+#: src/components/transactions/Emode/EmodeActions.tsx
+msgid "Enabling E-Mode"
 msgstr ""
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
@@ -777,6 +780,10 @@ msgstr ""
 msgid "No voting power"
 msgstr ""
 
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+msgid "None"
+msgstr ""
+
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Not a valid address"
 msgstr ""
@@ -950,16 +957,12 @@ msgstr ""
 msgid "SEE CHARTS"
 msgstr ""
 
-#: src/components/transactions/Emode/EmodeActions.tsx
-msgid "SWITCH TO E-MODE {0}"
-msgstr ""
-
-#: src/components/transactions/Emode/EmodeActions.tsx
-msgid "SWITCHING TO E-MODE {0}"
-msgstr ""
-
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Safety of your deposited collateral against the borrowed assets and its underlying value."
+msgstr ""
+
+#: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
+msgid "Seems like we can't switch the network automatically. Please check if you can change it from the wallet."
 msgstr ""
 
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
@@ -1151,7 +1154,7 @@ msgid "There are not enough funds in the{0}reserve to borrow"
 msgstr ""
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
-msgid "There was some"
+msgid "There was some <0>error</0>. Please try changing the parameters."
 msgstr ""
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
@@ -1337,6 +1340,10 @@ msgstr ""
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Wallet balance"
+msgstr ""
+
+#: src/components/WalletConnection/WalletSelector.tsx
+msgid "Wallet not detected. Connect or install wallet and retry"
 msgstr ""
 
 #: src/components/WalletConnection/WalletSelector.tsx
@@ -1578,3 +1585,4 @@ msgstr ""
 #: src/components/transactions/FlowCommons/TxModalTitle.tsx
 msgid "{title}"
 msgstr ""
+

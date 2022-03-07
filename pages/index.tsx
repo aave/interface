@@ -8,7 +8,6 @@ import {
   useTheme,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
-
 import { ConnectWalletPaper } from '../src/components/ConnectWalletPaper';
 import { ContentContainer } from '../src/components/ContentContainer';
 import { MainLayout } from '../src/layouts/MainLayout';
@@ -47,7 +46,7 @@ export default function Home() {
               value={mode}
               exclusive
               onChange={(_, value) => setMode(value)}
-              sx={{ width: { xs: '100%', xsm: '359px' } }}
+              sx={{ width: { xs: '100%', xsm: '359px' }, height: '44px' }}
             >
               <ToggleButton value="supply" disabled={mode === 'supply'}>
                 <Typography variant="subheader1">

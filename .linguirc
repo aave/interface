@@ -5,7 +5,7 @@
   ],
   "catalogs": [
     {
-      "path": "src/translations/{locale}/messages",
+      "path": "src/locales/{locale}/messages",
       "include": [
         "src",
         "pages"
@@ -16,5 +16,10 @@
   "formatOptions": {
     "origins": true,
     "lineNumbers": false
+  },
+  "orderBy": "messageId",
+  "sourceLocale": "en",
+  "fallbackLocales": {
+    "default": "en"
   }
 }

@@ -1,0 +1,56 @@
+name: Download crowdin files
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+on:
+  schedule:
+    - cron: '*/12 * * * *'
+  workflow_dispatch:
+
+jobs:
+  download-from-crowdin:
+    name: Download sources from Crowdin
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@2d1c1198e79c30cca5c3957b1e3b65ce95b5356e
+        with:
+          token: ${{ secrets.BOT_TOKEN }}
+
+      - uses: actions/setup-node@9ced9a43a244f3ac94f13bfd896db8c8f30da67a
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'yarn'
+
+      - name: crowdin action
+        uses: crowdin/github-action@9237b4cb361788dfce63feb2e2f15c09e2fe7415
+        with:
+          project_id: 502668
+          token: ${{ secrets.CROWDIN_TOKEN }}
+          upload_translations: false
+          download_translations: true
+          create_pull_request: false
+          push_translations: false
+          config: 'crowdin.yml'
+        env:
+          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_TOKEN }}
+
+      - name: check diff
+        run: |
+          if [[ -z $(git status -s) ]]
+          then
+            echo "tree is clean"
+          else
+            yarn --frozen-lockfile
+            yarn i18n:compile
+            git add .
+            git config --global user.name 'Crowdin bot'
+            git config --global user.email 'crowdin-bot@aave.com'
+            git commit -am "chore(i18n): synchronize translations from crowdin"
+            git push
+          exit
+          fi
