@@ -298,14 +298,13 @@ export const useTransactionHandler = ({
     } else {
       setApprovalTx(undefined);
       setActionTx(undefined);
-      setLoadingTxns(false);
     }
   }, [skip, ...deps]);
 
   return {
     approval,
     action,
-    loadingTxns,
+    loadingTxns: loadingTxns || !actionTx,
     setUsePermit,
     requiresApproval: !!approvalTx,
     approvalTxState,
