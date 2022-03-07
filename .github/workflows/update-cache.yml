@@ -18,7 +18,7 @@ jobs:
         with:
           token: ${{ secrets.BOT_TOKEN }}
 
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@9ced9a43a244f3ac94f13bfd896db8c8f30da67a
         with:
           node-version-file: '.nvmrc'
           cache: 'yarn'
@@ -35,7 +35,7 @@ jobs:
           then
             echo "tree is clean"
           else
-            git config --global user.name 'Cache update'
+            git config --global user.name 'Cache bot'
             git config --global user.email 'cache-bot@aave.com'
             git commit -am "Automated cache update"
             git push
