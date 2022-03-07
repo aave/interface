@@ -77,6 +77,8 @@ export const useTransactionHandler = ({
       const txnResult = await tx();
       try {
         await txnResult.wait();
+        // wait for confirmation
+        mounted.current && successCallback && successCallback(txnResult);
         refetchWalletBalances();
         refetchPoolData && refetchPoolData();
       } catch (e) {
@@ -93,8 +95,6 @@ export const useTransactionHandler = ({
         }
       }
 
-      // wait for confirmation
-      mounted.current && successCallback && successCallback(txnResult);
       return;
     } catch (e) {
       errorCallback && errorCallback(e);
@@ -235,7 +235,6 @@ export const useTransactionHandler = ({
               loading: false,
               success: true,
             });
-            refetchPoolData && refetchPoolData();
           },
           errorCallback: (error, hash) => {
             setMainTxState({
