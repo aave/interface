@@ -11,7 +11,7 @@ on:
 
 jobs:
   download-from-crowdin:
-    name: Download sources to Crowdin
+    name: Download sources from Crowdin
     runs-on: ubuntu-latest
 
     steps:
