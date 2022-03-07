@@ -186,23 +186,25 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   useEffect(() => {
     if (!active && !deactivated && triedSafe) {
       const lastWalletProvider = Number(localStorage.getItem('walletProvider'));
-      if (lastWalletProvider && lastWalletProvider > 0) {
+      if (lastWalletProvider && lastWalletProvider >= 0) {
         connectWallet(lastWalletProvider).catch(() => {
           setTried(true);
         });
       } else {
-        const injected = getWallet(WalletType.INJECTED);
-        // @ts-expect-error isAuthorized not in AbstractConnector type. But method is there for
-        // injected provider
-        injected.isAuthorized().then((isAuthorized: boolean) => {
-          if (isAuthorized) {
-            connectWallet(WalletType.INJECTED).catch(() => {
-              setTried(true);
-            });
-          } else {
-            setTried(true);
-          }
-        });
+        setTried(true);
+        // For now we will not eagerly connect to injected provider
+        // const injected = getWallet(WalletType.INJECTED);
+        // // @ts-expect-error isAuthorized not in AbstractConnector type. But method is there for
+        // // injected provider
+        // injected.isAuthorized().then((isAuthorized: boolean) => {
+        //   if (isAuthorized) {
+        //     connectWallet(WalletType.INJECTED).catch(() => {
+        //       setTried(true);
+        //     });
+        //   } else {
+        //     setTried(true);
+        //   }
+        // });
       }
     }
   }, [activate, setTried, active, connectWallet, deactivated, triedSafe]);
