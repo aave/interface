@@ -805,7 +805,11 @@ export function getThemedComponents(theme: Theme) {
             backgroundColor: '#383D51',
             borderRadius: '4px',
 
-            '&.Mui-selected, &.Mui-disabled, &:focus': {
+            '&.Mui-selected, &.Mui-selected:hover': {
+              backgroundColor: '#FFFFFF',
+            },
+
+            '&.Mui-selected, &.Mui-disabled': {
               backgroundColor: '#FFFFFF',
               width: '100%',
               height: '100%',
@@ -813,23 +817,15 @@ export function getThemedComponents(theme: Theme) {
               justifyContent: 'center',
 
               '.MuiTypography-subheader1': {
-                background: 'linear-gradient(248.86deg, #B6509E 10.51%, #2EBAC6 93.41%)',
-                '-webkit-background-clip': 'text',
-                '-moz-background-clip': 'text',
-                '-webkit-text-fill-color': 'transparent',
-                '-moz-text-fill-color': 'transparent',
+                background: theme.palette.gradients.aaveGradient,
+                backgroundClip: 'text',
+                textFillColor: 'transparent',
               },
               '.MuiTypography-secondary14': {
-                background: 'linear-gradient(248.86deg, #B6509E 10.51%, #2EBAC6 93.41%)',
-                '-webkit-background-clip': 'text',
-                '-moz-background-clip': 'text',
-                '-webkit-text-fill-color': 'transparent',
-                '-moz-text-fill-color': 'transparent',
+                background: theme.palette.gradients.aaveGradient,
+                backgroundClip: 'text',
+                textFillColor: 'transparent',
               },
-            },
-
-            '&.Mui-selected:hover, &:hover': {
-              backgroundColor: '#383D51',
             },
           },
         },
