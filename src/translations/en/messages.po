@@ -225,7 +225,6 @@ msgid "Before supplying, you need to approve its usage by the Aave protocol. You
 msgstr ""
 
 #: pages/index.tsx
-#: pages/index.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
@@ -820,7 +819,6 @@ msgid "Oracle price"
 msgstr ""
 
 #: pages/reserve-overview.tsx
-#: pages/reserve-overview.tsx
 msgid "Overview"
 msgstr ""
 
@@ -1054,7 +1052,6 @@ msgstr ""
 msgid "State"
 msgstr ""
 
-#: pages/index.tsx
 #: pages/index.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
@@ -1460,7 +1457,6 @@ msgstr ""
 msgid "Your health factor and loan to value determine the assurance of your collateral. To avoid liquidations you can supply more collateral or repay borrow positions."
 msgstr ""
 
-#: pages/reserve-overview.tsx
 #: pages/reserve-overview.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
