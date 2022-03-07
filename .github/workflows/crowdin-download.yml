@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@2d1c1198e79c30cca5c3957b1e3b65ce95b5356e
+        with:
+          token: ${{ secrets.BOT_TOKEN }}
 
       - uses: actions/setup-node@9ced9a43a244f3ac94f13bfd896db8c8f30da67a
         with:
@@ -30,12 +32,12 @@ jobs:
           token: ${{ secrets.CROWDIN_TOKEN }}
           upload_translations: false
           download_translations: true
-          source: 'src/locales/en.po'
-          translation: 'src/locales/%locale%.po'
           create_pull_request: false
           push_translations: false
+          config: 'crowdin.yml'
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_TOKEN }}
 
       - name: check diff
         run: |
