@@ -186,8 +186,8 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   useEffect(() => {
     if (!active && !deactivated && triedSafe) {
       const lastWalletProvider = Number(localStorage.getItem('walletProvider'));
-      if (lastWalletProvider && lastWalletProvider >= 0) {
-        connectWallet(lastWalletProvider).catch(() => {
+      if (lastWalletProvider !== undefined && lastWalletProvider >= 0) {
+        connectWallet(lastWalletProvider as WalletType).catch(() => {
           setTried(true);
         });
       } else {
