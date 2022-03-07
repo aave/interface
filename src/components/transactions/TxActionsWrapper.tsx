@@ -51,6 +51,7 @@ export const TxActionsWrapper = ({
       return { content: <Trans>Retry with approval</Trans>, handleClick: handleRetry };
     if (mainTxState?.loading)
       return { loading: true, disabled: true, content: actionInProgressText };
+    if (Object.keys(mainTxState).length === 0) return { loading: true, disabled: true };
     if (requiresApproval && !approvalTxState?.success)
       return { disabled: true, content: actionText };
     return { content: actionText, handleClick: handleAction };
@@ -100,7 +101,7 @@ export const TxActionsWrapper = ({
 
       <Button
         variant="contained"
-        disabled={disabled || blocked}
+        disabled={disabled || blocked || Object.keys(mainTxState).length === 0}
         onClick={handleClick}
         size="large"
         sx={{ minHeight: '44px', ...(approvalParams ? { mt: 2 } : {}) }}
