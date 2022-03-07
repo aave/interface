@@ -288,9 +288,9 @@ export const useTransactionHandler = ({
               txError: undefined,
               gasEstimationError: undefined,
             });
-            setLoadingTxns(false);
             const gas: GasType | null = await data[data.length - 1].gas();
             setGasLimit(gas?.gasLimit || '');
+            setLoadingTxns(false);
           })
           .catch((error) => {
             if (!mounted.current) return;

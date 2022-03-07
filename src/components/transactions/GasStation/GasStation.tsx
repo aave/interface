@@ -264,7 +264,8 @@ export const GasStation: React.FC<GasStationProps> = ({ gasLimit }) => {
               onClick={toggleDropdown}
               sx={{
                 cursor: 'pointer',
-                display: error ? 'none' : 'inline-block',
+                display: error ? 'none' : 'flex',
+                alignSelf: 'center',
                 fontSize: '16px',
                 ml: '2px',
               }}
