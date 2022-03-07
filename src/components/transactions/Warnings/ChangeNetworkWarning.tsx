@@ -28,7 +28,7 @@ export const ChangeNetworkWarning = ({ networkName, chainId }: ChangeNetworkWarn
       </Typography>
       {switchNetworkError && (
         <Typography>
-          <Trans>Cant switch network?. Check if you can change it from the wallet.</Trans>
+          <Trans>Seems like we can't switch the network automatically. Please check if you can change it from the wallet.</Trans>
         </Typography>
       )}
     </Warning>
