@@ -791,21 +791,45 @@ export function getThemedComponents(theme: Theme) {
       MuiToggleButtonGroup: {
         styleOverrides: {
           root: {
-            backgroundColor: theme.palette.background.paper,
+            backgroundColor: '#383D51',
+            border: '1px solid rgba(235, 235, 237, 0.12)',
+            padding: '4px',
           },
         },
       },
       MuiToggleButton: {
         styleOverrides: {
           root: {
-            backgroundColor: theme.palette.action.selected,
+            border: '0px',
             flex: 1,
-            boxShadow: 'inset -1px 0px 0px rgba(0, 0, 0, 0.12)',
-            '&:last-of-type': {
-              boxShadow: 'unset',
+            backgroundColor: '#383D51',
+            borderRadius: '4px',
+
+            '&.Mui-selected, &.Mui-disabled, &:focus': {
+              backgroundColor: '#FFFFFF',
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+
+              '.MuiTypography-subheader1': {
+                background: 'linear-gradient(248.86deg, #B6509E 10.51%, #2EBAC6 93.41%)',
+                '-webkit-background-clip': 'text',
+                '-moz-background-clip': 'text',
+                '-webkit-text-fill-color': 'transparent',
+                '-moz-text-fill-color': 'transparent',
+              },
+              '.MuiTypography-secondary14': {
+                background: 'linear-gradient(248.86deg, #B6509E 10.51%, #2EBAC6 93.41%)',
+                '-webkit-background-clip': 'text',
+                '-moz-background-clip': 'text',
+                '-webkit-text-fill-color': 'transparent',
+                '-moz-text-fill-color': 'transparent',
+              },
             },
-            '&.Mui-selected, &.Mui-disabled, &.Mui-selected:hover,  &:hover, &:focus': {
-              backgroundColor: theme.palette.background.paper,
+
+            '&.Mui-selected:hover, &:hover': {
+              backgroundColor: '#383D51',
             },
           },
         },
