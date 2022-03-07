@@ -8,7 +8,6 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { RightHelperText } from '../FlowCommons/RightHelperText';
 import { GasOption } from '../GasStation/GasStationProvider';
 import { TxActionsWrapper } from '../TxActionsWrapper';
-import { getEmodeMessage } from './EmodeNaming';
 
 export type EmodeActionsProps = {
   isWrongNetwork: boolean;
@@ -45,18 +44,10 @@ export const EmodeActions = ({ isWrongNetwork, blocked, selectedEmode }: EmodeAc
       preparingTransactions={loadingTxns}
       handleAction={action}
       actionText={
-        selectedEmode !== 0 ? (
-          <Trans>SWITCH TO E-MODE {getEmodeMessage(selectedEmode)}</Trans>
-        ) : (
-          <Trans>DISABLE E-MODE</Trans>
-        )
+        selectedEmode !== 0 ? <Trans>Enable E-Mode</Trans> : <Trans>Disable E-Mode</Trans>
       }
       actionInProgressText={
-        selectedEmode !== 0 ? (
-          <Trans>SWITCHING TO E-MODE {getEmodeMessage(selectedEmode)}</Trans>
-        ) : (
-          <Trans>DISABLING E-MODE</Trans>
-        )
+        selectedEmode !== 0 ? <Trans>Enabling E-Mode</Trans> : <Trans>Disabling E-Mode</Trans>
       }
       isWrongNetwork={isWrongNetwork}
       helperText={
