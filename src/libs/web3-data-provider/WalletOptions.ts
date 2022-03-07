@@ -10,12 +10,12 @@ import { UnsupportedChainIdError } from '@web3-react/core';
 // import { SafeAppConnector } from '@gnosis.pm/safe-apps-web3-react';
 
 export enum WalletType {
-  INJECTED,
-  WALLET_CONNECT,
-  WALLET_LINK,
-  TORUS,
-  FRAME,
-  // GNOSIS,
+  INJECTED = 'injected',
+  WALLET_CONNECT = 'wallet_connect',
+  WALLET_LINK = 'wallet_link',
+  TORUS = 'torus',
+  FRAME = 'frame',
+  // GNOSIS = 'gnosis,
 }
 
 const APP_NAME = 'Aave';
