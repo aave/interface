@@ -6,17 +6,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: es\n"
+"Project-Id-Version: aave-interface\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2022-03-07 15:26\n"
+"Last-Translator: \n"
+"Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Crowdin-Project: aave-interface\n"
 "X-Crowdin-Project-ID: 502668\n"
 "X-Crowdin-Language: es-ES\n"
 "X-Crowdin-File: /src/locales/en/messages.po\n"
 "X-Crowdin-File-ID: 46\n"
-"Project-Id-Version: aave-interface\n"
-"Language-Team: Spanish\n"
-"PO-Revision-Date: 2022-03-07 15:09\n"
-"Report-Msgid-Bugs-To: \n"
-"Last-Translator: \n"
 
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
@@ -1583,3 +1583,4 @@ msgstr ""
 #: src/components/transactions/FlowCommons/TxModalTitle.tsx
 msgid "{title}"
 msgstr ""
+
