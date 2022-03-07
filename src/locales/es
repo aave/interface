@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-07 13:01\n"
+"PO-Revision-Date: 2022-03-07 13:15\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -16,7 +16,7 @@ msgstr ""
 "X-Crowdin-Project-ID: 502668\n"
 "X-Crowdin-Language: es-ES\n"
 "X-Crowdin-File: en.po\n"
-"X-Crowdin-File-ID: 26\n"
+"X-Crowdin-File-ID: 28\n"
 
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
@@ -89,7 +89,7 @@ msgstr ""
 
 #: src/layouts/WalletWidget.tsx
 msgid "Account"
-msgstr ""
+msgstr "Cuenta"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add {0}{1} to the wallet"
