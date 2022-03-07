@@ -312,7 +312,7 @@ export const useTransactionHandler = ({
   return {
     approval,
     action,
-    loadingTxns: loadingTxns || !actionTx,
+    loadingTxns,
     setUsePermit,
     requiresApproval: !!approvalTx,
     approvalTxState,
