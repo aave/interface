@@ -259,6 +259,10 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
               borrowUnWrapped && poolReserve.isWrappedBaseAsset
                 ? networkConfig.baseAssetSymbol
                 : poolReserve.symbol,
+            iconSymbol:
+              borrowUnWrapped && poolReserve.isWrappedBaseAsset
+                ? networkConfig.baseAssetSymbol
+                : poolReserve.iconSymbol,
           },
         ]}
         symbol={

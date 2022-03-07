@@ -139,7 +139,7 @@ export const AssetInput = <T extends Asset = Asset>({
             inputComponent={NumberFormatCustom as any}
           />
 
-          {!onSelect ? (
+          {!onSelect || assets.length === 1 ? (
             <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
               <TokenIcon
                 aToken={asset.aToken}

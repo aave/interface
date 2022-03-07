@@ -266,6 +266,9 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
           {
             balance: maxAmountToSupply.toString(),
             symbol: supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol,
+            iconSymbol: supplyUnWrapped
+              ? currentNetworkConfig.baseAssetSymbol
+              : poolReserve.iconSymbol,
           },
         ]}
         capType={CapType.supplyCap}

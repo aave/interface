@@ -205,6 +205,10 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
               withdrawUnWrapped && poolReserve.isWrappedBaseAsset
                 ? networkConfig.baseAssetSymbol
                 : poolReserve.symbol,
+            iconSymbol:
+              withdrawUnWrapped && poolReserve.isWrappedBaseAsset
+                ? networkConfig.baseAssetSymbol
+                : poolReserve.iconSymbol,
           },
         ]}
         usdValue={usdValue.toString()}
