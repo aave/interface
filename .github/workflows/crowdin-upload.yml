@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  synchronize-with-crowdin:
+  upload-to-crowdin:
     name: Upload sources to Crowdin
     runs-on: ubuntu-latest
 

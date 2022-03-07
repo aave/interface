@@ -10,7 +10,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  synchronize-with-crowdin:
+  download-from-crowdin:
+    name: Download sources to Crowdin
     runs-on: ubuntu-latest
 
     steps:
@@ -36,7 +37,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
 
-    - name: check diff
+      - name: check diff
         run: |
           if [[ -z $(git status -s) ]]
           then
