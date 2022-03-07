@@ -109,6 +109,8 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   }, [connector]);
 
   const disconnectWallet = useCallback(async () => {
+    cleanConnectorStorage();
+    localStorage.removeItem('walletProvider');
     deactivate();
     // @ts-expect-error close can be returned by wallet
     if (connector && connector.close) {
@@ -117,12 +119,10 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       await connector.close();
     }
 
-    localStorage.removeItem('walletProvider');
     setSelectedWallet(undefined);
     setLoading(false);
     setDeactivated(true);
     setCurrentAccount('');
-    cleanConnectorStorage();
   }, [provider, connector]);
 
   // connect to the wallet specified by wallet type
@@ -184,9 +184,10 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   // handle logic to eagerly connect to the injected ethereum provider,
   // if it exists and has granted access already
   useEffect(() => {
+    const lastWalletProvider = localStorage.getItem('walletProvider');
+    console.log('last wallet provider: ', lastWalletProvider);
     if (!active && !deactivated && triedSafe) {
-      const lastWalletProvider = Number(localStorage.getItem('walletProvider'));
-      if (lastWalletProvider !== undefined && lastWalletProvider >= 0) {
+      if (!!lastWalletProvider) {
         connectWallet(lastWalletProvider as WalletType).catch(() => {
           setTried(true);
         });
