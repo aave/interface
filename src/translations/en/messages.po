@@ -289,6 +289,10 @@ msgstr ""
 msgid "Can be collateral"
 msgstr ""
 
+#: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
+msgid "Cant switch network?. Check if you can change it from the wallet."
+msgstr ""
+
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Cap reached. Lower supply amount"
 msgstr ""
@@ -1337,6 +1341,10 @@ msgstr ""
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Wallet balance"
+msgstr ""
+
+#: src/components/WalletConnection/WalletSelector.tsx
+msgid "Wallet not detected. Connect or install wallet and retry"
 msgstr ""
 
 #: src/components/WalletConnection/WalletSelector.tsx
