@@ -5,18 +5,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
-"Language: fr\n"
+"Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-07 13:01\n"
+"PO-Revision-Date: 2022-03-07 13:15\n"
 "Last-Translator: \n"
-"Language-Team: French\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language-Team: Spanish\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Crowdin-Project: aave-interface\n"
 "X-Crowdin-Project-ID: 502668\n"
-"X-Crowdin-Language: fr\n"
+"X-Crowdin-Language: es-ES\n"
 "X-Crowdin-File: en.po\n"
-"X-Crowdin-File-ID: 26\n"
+"X-Crowdin-File-ID: 28\n"
 
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
@@ -89,7 +89,7 @@ msgstr ""
 
 #: src/layouts/WalletWidget.tsx
 msgid "Account"
-msgstr ""
+msgstr "Cuenta"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add {0}{1} to the wallet"
@@ -292,10 +292,6 @@ msgstr ""
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Can be collateral"
-msgstr ""
-
-#: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
-msgid "Cant switch network?. Check if you can change it from the wallet."
 msgstr ""
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
@@ -1346,10 +1342,6 @@ msgstr ""
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Wallet balance"
-msgstr ""
-
-#: src/components/WalletConnection/WalletSelector.tsx
-msgid "Wallet not detected. Connect or install wallet and retry"
 msgstr ""
 
 #: src/components/WalletConnection/WalletSelector.tsx
