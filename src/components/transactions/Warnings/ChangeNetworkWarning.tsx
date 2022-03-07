@@ -11,7 +11,9 @@ export type ChangeNetworkWarningProps = {
 };
 
 export const ChangeNetworkWarning = ({ networkName, chainId }: ChangeNetworkWarningProps) => {
-  const { switchNetwork } = useWeb3Context();
+  const { switchNetwork, switchNetworkError } = useWeb3Context();
+
+  console.log('error here: ', switchNetworkError);
   return (
     <Warning severity="error" icon={false}>
       <Typography>
@@ -25,6 +27,11 @@ export const ChangeNetworkWarning = ({ networkName, chainId }: ChangeNetworkWarn
           <Trans>Switch Network</Trans>
         </Button>
       </Typography>
+      {switchNetworkError && (
+        <Typography>
+          <Trans>Cant switch network?. Check if you can change it from the wallet.</Trans>
+        </Typography>
+      )}
     </Warning>
   );
 };

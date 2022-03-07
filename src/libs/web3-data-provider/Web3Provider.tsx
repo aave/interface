@@ -44,6 +44,7 @@ export type Web3Data = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   signTxData: (unsignedData: string) => Promise<SignatureLike>;
   error: Error | undefined;
+  switchNetworkError: Error | undefined;
 };
 
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
@@ -66,6 +67,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [deactivated, setDeactivated] = useState(false);
   const [selectedWallet, setSelectedWallet] = useState<WalletType>();
   const [triedSafe, setTriedSafe] = useState(false);
+  const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
 
   // listener handlers
   const handleAccountsChanged = (accounts: string[]) => {
@@ -185,7 +187,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   // if it exists and has granted access already
   useEffect(() => {
     const lastWalletProvider = localStorage.getItem('walletProvider');
-    console.log('last wallet provider: ', lastWalletProvider);
     if (!active && !deactivated && triedSafe) {
       if (!!lastWalletProvider) {
         connectWallet(lastWalletProvider as WalletType).catch(() => {
@@ -270,8 +271,8 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         await provider.send('wallet_switchEthereumChain', [
           { chainId: `0x${newChainId.toString(16)}` },
         ]);
+        setSwitchNetworkError(undefined);
       } catch (switchError) {
-        console.log(switchError);
         const networkInfo = getNetworkConfig(newChainId);
         if (switchError.code === 4902) {
           try {
@@ -284,11 +285,12 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
                 blockExplorerUrls: networkInfo.explorerLink,
               },
             ]);
+            setSwitchNetworkError(undefined);
           } catch (addError) {
-            console.log(addError);
-            // TODO: handle error somehow
+            setSwitchNetworkError(addError);
           }
         }
+        setSwitchNetworkError(switchError);
       }
     }
   };
@@ -352,6 +354,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           currentAccount,
           addERC20Token,
           error,
+          switchNetworkError,
         },
       }}
     >
