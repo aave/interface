@@ -101,7 +101,7 @@ export const TxActionsWrapper = ({
 
       <Button
         variant="contained"
-        disabled={disabled || blocked || Object.keys(mainTxState).length === 0}
+        disabled={disabled || blocked}
         onClick={handleClick}
         size="large"
         sx={{ minHeight: '44px', ...(approvalParams ? { mt: 2 } : {}) }}
