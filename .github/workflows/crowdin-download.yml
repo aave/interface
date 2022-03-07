@@ -30,8 +30,8 @@ jobs:
           token: ${{ secrets.CROWDIN_TOKEN }}
           upload_translations: false
           download_translations: true
-          source: 'src/translations/en-US.po'
-          translation: 'src/translations/%locale%.po'
+          source: 'src/locales/en.po'
+          translation: 'src/locales/%locale%.po'
           create_pull_request: false
           push_translations: false
         env:
