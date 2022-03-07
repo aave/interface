@@ -197,27 +197,29 @@ export const EmodeModalContent = () => {
       {blockingError !== undefined && <Alert severity="error">{handleBlocked()}</Alert>}
 
       <TxModalDetails gasLimit={gasLimit}>
-        {selectedEmode && selectedEmode.id !== 0 && (
-          <>
-            <Row caption={<Trans>Asset category</Trans>} captionVariant="description" mb={4}>
-              <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-                <SvgIcon sx={{ fontSize: '12px', mr: 0.5 }}>
-                  <LightningBoltGradient />
-                </SvgIcon>
-                <Typography variant="subheader1">{getEmodeMessage(selectedEmode.id)}</Typography>
-              </Box>
-            </Row>
-            <Row caption={<Trans>Available assets</Trans>} captionVariant="description" mb={4}>
-              {!!selectedEmode ? (
-                <Typography>{selectedEmode.assets.join(', ')}</Typography>
+        <Row caption={<Trans>Asset category</Trans>} captionVariant="description" mb={4}>
+          <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+            <SvgIcon sx={{ fontSize: '12px', mr: 0.5 }}>
+              <LightningBoltGradient />
+            </SvgIcon>
+            <Typography variant="subheader1">
+              {selectedEmode && selectedEmode.id !== 0 ? (
+                getEmodeMessage(selectedEmode.id)
               ) : (
-                <Typography>
-                  <Trans>All</Trans>
-                </Typography>
+                <Trans>None</Trans>
               )}
-            </Row>
-          </>
-        )}
+            </Typography>
+          </Box>
+        </Row>
+        <Row caption={<Trans>Available assets</Trans>} captionVariant="description" mb={4}>
+          {selectedEmode && selectedEmode.id !== 0 ? (
+            <Typography>{selectedEmode.assets.join(', ')}</Typography>
+          ) : (
+            <Typography>
+              <Trans>All</Trans>
+            </Typography>
+          )}
+        </Row>
         <DetailsHFLine
           visibleHfChange={!!selectedEmode}
           healthFactor={user.healthFactor}

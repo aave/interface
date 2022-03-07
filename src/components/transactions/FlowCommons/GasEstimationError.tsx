@@ -5,11 +5,13 @@ export const GasEstimationError = ({ error }: { error: string }) => {
   return (
     <Alert severity="error" sx={{ mt: 4 }}>
       <Typography>
-        <Trans>There was some</Trans>{' '}
-        <Button variant="text" onClick={() => navigator.clipboard.writeText(error)}>
-          error
-        </Button>
-        <Trans>. Please try changing the parameters.</Trans>
+        <Trans>
+          There was some{' '}
+          <Button variant="text" onClick={() => navigator.clipboard.writeText(error)}>
+            error
+          </Button>
+          . Please try changing the parameters.
+        </Trans>
       </Typography>
     </Alert>
   );

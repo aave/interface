@@ -103,7 +103,7 @@ export const RepayActions = ({
         ? state.customGas
         : gasPriceData.data?.[state.gasOption].legacyGasPrice,
     skip: !amountToRepay || parseFloat(amountToRepay) === 0 || blocked,
-    deps: [amountToRepay, poolAddress],
+    deps: [amountToRepay, poolAddress, repayWithATokens],
   });
 
   return (

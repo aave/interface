@@ -19,10 +19,6 @@ msgstr ""
 msgid "(AAVE + stkAAVE)"
 msgstr "(AAVE + stkAAVE)"
 
-#: src/components/transactions/FlowCommons/GasEstimationError.tsx
-msgid ". Please try changing the parameters."
-msgstr ". Please try changing the parameters."
-
 #: src/components/infoTooltips/AMPLWarning.tsx
 msgid "<0>Ampleforth</0> is an asset affected by rebasing. Visit the <1>documentation</1> or <2>Ampleforth's FAQ</2> to learn more."
 msgstr "<0>Ampleforth</0> is an asset affected by rebasing. Visit the <1>documentation</1> or <2>Ampleforth's FAQ</2> to learn more."
@@ -394,14 +390,6 @@ msgstr "Current differential"
 msgid "Custom"
 msgstr "Custom"
 
-#: src/components/transactions/Emode/EmodeActions.tsx
-msgid "DISABLE E-MODE"
-msgstr "DISABLE E-MODE"
-
-#: src/components/transactions/Emode/EmodeActions.tsx
-msgid "DISABLING E-MODE"
-msgstr "DISABLING E-MODE"
-
 #: src/layouts/components/DarkModeSwitcher.tsx
 msgid "Dark mode"
 msgstr "Dark mode"
@@ -450,6 +438,7 @@ msgstr "Developers"
 msgid "Differential"
 msgstr "Differential"
 
+#: src/components/transactions/Emode/EmodeActions.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Disable E-Mode"
 msgstr "Disable E-Mode"
@@ -463,6 +452,10 @@ msgstr "Disable {symbol} as collateral"
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Disabled"
 msgstr "Disabled"
+
+#: src/components/transactions/Emode/EmodeActions.tsx
+msgid "Disabling E-Mode"
+msgstr "Disabling E-Mode"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "Disabling this asset as collateral affects your borrowing power and Health Factor."
@@ -496,6 +489,7 @@ msgstr "E-Mode increases your borrowing power for a selected category of assets 
 msgid "Efficiency mode (E-Mode)"
 msgstr "Efficiency mode (E-Mode)"
 
+#: src/components/transactions/Emode/EmodeActions.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Enable E-Mode"
 msgstr "Enable E-Mode"
@@ -516,6 +510,10 @@ msgstr "Enabled"
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Enabled in isolation"
 msgstr "Enabled in isolation"
+
+#: src/components/transactions/Emode/EmodeActions.tsx
+msgid "Enabling E-Mode"
+msgstr "Enabling E-Mode"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Enabling E-Mode only allows you to borrow assets belonging to the selected category Stablecoins. Please visit our <0>FAQ guide</0> to learn more about how it works and the applied restrictions."
@@ -777,6 +775,10 @@ msgstr "No rewards to claim"
 msgid "No voting power"
 msgstr "No voting power"
 
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+msgid "None"
+msgstr "None"
+
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Not a valid address"
 msgstr "Not a valid address"
@@ -949,14 +951,6 @@ msgstr "Risk details"
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
 msgid "SEE CHARTS"
 msgstr "SEE CHARTS"
-
-#: src/components/transactions/Emode/EmodeActions.tsx
-msgid "SWITCH TO E-MODE {0}"
-msgstr "SWITCH TO E-MODE {0}"
-
-#: src/components/transactions/Emode/EmodeActions.tsx
-msgid "SWITCHING TO E-MODE {0}"
-msgstr "SWITCHING TO E-MODE {0}"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Safety of your deposited collateral against the borrowed assets and its underlying value."
@@ -1155,8 +1149,8 @@ msgid "There are not enough funds in the{0}reserve to borrow"
 msgstr "There are not enough funds in the{0}reserve to borrow"
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
-msgid "There was some"
-msgstr "There was some"
+msgid "There was some <0>error</0>. Please try changing the parameters."
+msgstr "There was some <0>error</0>. Please try changing the parameters."
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
