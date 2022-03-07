@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2022-03-07 12:50+0100\n"
+"POT-Creation-Date: 2022-03-07 15:58+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -8,15 +8,15 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-07 13:18\n"
+"PO-Revision-Date: 2022-03-07 15:26\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Crowdin-Project: aave-interface\n"
 "X-Crowdin-Project-ID: 502668\n"
 "X-Crowdin-Language: es-ES\n"
-"X-Crowdin-File: en.po\n"
-"X-Crowdin-File-ID: 28\n"
+"X-Crowdin-File: /src/locales/en/messages.po\n"
+"X-Crowdin-File-ID: 46\n"
 
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
@@ -89,7 +89,7 @@ msgstr ""
 
 #: src/layouts/WalletWidget.tsx
 msgid "Account"
-msgstr "Cuenta"
+msgstr ""
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add {0}{1} to the wallet"
@@ -135,7 +135,7 @@ msgstr ""
 
 #: src/components/transactions/FlowCommons/LeftHelperText.tsx
 msgid "Approve confirmed"
-msgstr "Aprobar confirmado"
+msgstr ""
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Approve to continue"
