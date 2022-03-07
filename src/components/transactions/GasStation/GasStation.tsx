@@ -12,12 +12,14 @@ import {
   Typography,
   useTheme,
   ClickAwayListener,
+  CircularProgress,
 } from '@mui/material';
 import sx from '@mui/system/sx';
 import { BigNumber } from 'ethers/lib/ethers';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import React, { useState } from 'react';
 import { useGasStation } from 'src/hooks/useGasStation';
+import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 import { useAppDataContext } from '../../../hooks/app-data-provider/useAppDataProvider';
@@ -73,6 +75,7 @@ export const GasStation: React.FC<GasStationProps> = ({ gasLimit }) => {
   const {
     currentNetworkConfig: { wrappedBaseAssetSymbol },
   } = useProtocolDataContext();
+  const { loadingTxns } = useModalContext();
 
   const wrappedAsset = reserves.find(
     (token) => token.symbol.toLowerCase() === wrappedBaseAssetSymbol?.toLowerCase()
@@ -109,7 +112,9 @@ export const GasStation: React.FC<GasStationProps> = ({ gasLimit }) => {
     <Box sx={{ display: 'flex', alignItems: 'center', mt: 6 }}>
       <LocalGasStationIcon color="primary" sx={{ fontSize: '16px', mr: 1.5 }} />
 
-      {totalGasCostsUsd ? (
+      {loadingTxns ? (
+        <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
+      ) : totalGasCostsUsd ? (
         <FormattedNumber value={totalGasCostsUsd} symbol="USD" color="text.secondary" />
       ) : (
         '-'

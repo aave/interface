@@ -28,12 +28,20 @@ export const useTransactionHandler = ({
   skip,
   deps = [],
 }: UseTransactionHandlerProps) => {
-  const { approvalTxState, setApprovalTxState, mainTxState, setMainTxState, setGasLimit, resetTx } =
-    useModalContext();
+  const {
+    approvalTxState,
+    setApprovalTxState,
+    mainTxState,
+    setMainTxState,
+    setGasLimit,
+    resetTx,
+    loadingTxns,
+    setLoadingTxns,
+  } = useModalContext();
   const { signTxData, sendTx, getTxError, currentAccount } = useWeb3Context();
   const { refetchWalletBalances, refetchPoolData } = useBackgroundDataProvider();
   const { lendingPool } = useTxBuilderContext();
-  const [loadingTxns, setLoadingTxns] = useState(false);
+  // const [loadingTxns, setLoadingTxns] = useState(false);
   // const [txs, setTxs] = useState<EthereumTransactionTypeExtended[]>([]);
   const [usePermit, setUsePermit] = useState<boolean>(tryPermit);
   const [signature, setSignature] = useState<SignatureLike>();
