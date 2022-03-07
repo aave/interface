@@ -190,7 +190,13 @@ export const DashboardEModeButton = ({
             </Trans>
           </Typography>
 
-          <Button variant={isEModeDisabled ? 'gradient' : 'outlined'} onClick={onClick}>
+          <Button
+            variant={isEModeDisabled ? 'gradient' : 'outlined'}
+            onClick={() => {
+              onClick();
+              handleClose();
+            }}
+          >
             {isEModeDisabled ? <Trans>Enable E-Mode</Trans> : <Trans>Disable E-Mode</Trans>}
           </Button>
         </Box>
