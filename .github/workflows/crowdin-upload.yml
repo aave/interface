@@ -25,9 +25,7 @@ jobs:
         with:
           upload_sources: true
           download_translations: false
-          project_id: 502668
-          token: ${{ secrets.CROWDIN_TOKEN }}
-          source: 'src/locales/en.po'
-          translation: 'src/locales/%locale%.po'
+          config: 'crowdin.yml'
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_TOKEN }}

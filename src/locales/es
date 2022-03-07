@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-07 13:15\n"
+"PO-Revision-Date: 2022-03-07 13:18\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -135,7 +135,7 @@ msgstr ""
 
 #: src/components/transactions/FlowCommons/LeftHelperText.tsx
 msgid "Approve confirmed"
-msgstr ""
+msgstr "Aprobar confirmado"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Approve to continue"
