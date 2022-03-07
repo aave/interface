@@ -16,7 +16,7 @@
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest",
-    "i18n:extract": "npm run extract",
+    "i18n:extract": "npm run extract --locale en",
     "i18n:compile": "npm run compile",
     "extract": "NODE_ENV=development lingui extract --clean --overwrite",
     "compile": "lingui compile",
