@@ -4,7 +4,7 @@ import { I18nProvider } from '@lingui/react';
 import { en, es } from 'make-plural/plurals';
 import React, { useEffect } from 'react';
 
-import { messages } from '../locales/en.js';
+import { messages } from '../locales/en/messages.js';
 
 i18n.loadLocaleData({
   en: { plurals: en },
@@ -26,7 +26,7 @@ export const LANG_MAP = {
  * @param locale any locale string
  */
 export async function dynamicActivateLanguage(locale: string) {
-  const { messages } = await import(`../locales/${locale}.js`);
+  const { messages } = await import(`../locales/${locale}/messages.js`);
   i18n.load(locale, messages);
   i18n.activate(locale);
   localStorage.setItem('LOCALE', locale);

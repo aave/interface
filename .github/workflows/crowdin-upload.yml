@@ -4,7 +4,7 @@ name: Upload Crowdin files
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   upload-to-crowdin:
