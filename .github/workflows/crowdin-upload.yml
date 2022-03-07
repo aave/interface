@@ -1,4 +1,4 @@
-name: Crowdin Upload
+name: Upload Crowdin files
 
 # on any push to main, we upload the translations to be translated
 on:
