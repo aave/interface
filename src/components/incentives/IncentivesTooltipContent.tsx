@@ -5,6 +5,7 @@ import { ReserveIncentiveResponse } from '../../hooks/app-data-provider/useIncen
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { Row } from '../primitives/Row';
 import { TokenIcon } from '../primitives/TokenIcon';
+import { Link } from '../primitives/Link';
 
 interface IncentivesTooltipContentProps {
   incentives: ReserveIncentiveResponse[];
@@ -51,7 +52,10 @@ export const IncentivesTooltipContent = ({
       }}
     >
       <Typography variant="caption" color="text.secondary" mb={3}>
-        <Trans>Participating in this {symbol} reserve gives annualized rewards.</Trans>
+        <Trans>Participating in this {symbol} reserve gives rewards.</Trans>{' '}
+        <Link fontWeight={500} href={'https://docs.aave.com/faq/depositing-and-earning'}>
+          Learn more
+        </Link>
       </Typography>
 
       <Box sx={{ width: '100%' }}>
