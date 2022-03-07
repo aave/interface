@@ -5,12 +5,12 @@
 'api_token_env': 'CROWDIN_PERSONAL_TOKEN'
 'base_path': '.'
 'base_url': 'https://api.crowdin.com'
-
+'export_languages': ['en', 'es']
 #
 # Choose file structure in Crowdin
 # e.g. true or false
 #
-'preserve_hierarchy': false
+'preserve_hierarchy': true
 
 #
 # Files configuration
@@ -21,7 +21,7 @@ files: [
       # Source files filter
       # e.g. "/resources/en/*.json"
       #
-      'source': 'src/locales/%two_letters_code%/messages.po',
+      'source': 'src/locales/en/messages.po',
 
       #
       # Where translations will be placed
