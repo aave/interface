@@ -24,7 +24,7 @@ jobs:
           path: out
           name: out_${{github.sha}}
 
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@9ced9a43a244f3ac94f13bfd896db8c8f30da67a
         with:
           node-version-file: '.nvmrc'
           cache: 'yarn'
@@ -50,7 +50,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@9ced9a43a244f3ac94f13bfd896db8c8f30da67a
         with:
           node-version-file: '.nvmrc'
           cache: 'yarn'
@@ -59,7 +59,9 @@ jobs:
         run: yarn --frozen-lockfile --prefer-offline
 
       - name: i18n
-        run: yarn i18n
+        run: |
+          yarn i18n:extract
+          yarn i18n:compile
 
       - name: check diff
         run: |
@@ -87,7 +89,7 @@ jobs:
   #   steps:
   #     - uses: actions/checkout@v2
 
-  #     - uses: actions/setup-node@v2
+  #     - uses: actions/setup-node@9ced9a43a244f3ac94f13bfd896db8c8f30da67a
   #       with:
   #         node-version-file: '.nvmrc'
   #         cache: 'yarn'

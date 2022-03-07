@@ -1,4 +1,4 @@
-declare module '*/messages';
+declare module '*/locales/en.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace NodeJS {
