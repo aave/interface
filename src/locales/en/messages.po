@@ -289,10 +289,6 @@ msgstr "CLAIMING {symbol}"
 msgid "Can be collateral"
 msgstr "Can be collateral"
 
-#: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
-msgid "Cant switch network?. Check if you can change it from the wallet."
-msgstr "Cant switch network?. Check if you can change it from the wallet."
-
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Cap reached. Lower supply amount"
 msgstr "Cap reached. Lower supply amount"
@@ -965,6 +961,10 @@ msgstr "SWITCHING TO E-MODE {0}"
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Safety of your deposited collateral against the borrowed assets and its underlying value."
 msgstr "Safety of your deposited collateral against the borrowed assets and its underlying value."
+
+#: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
+msgid "Seems like we can't switch the network automatically. Please check if you can change it from the wallet."
+msgstr "Seems like we can't switch the network automatically. Please check if you can change it from the wallet."
 
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
 msgid "Select APY type to switch"
