@@ -289,6 +289,10 @@ msgstr "CLAIMING {symbol}"
 msgid "Can be collateral"
 msgstr "Can be collateral"
 
+#: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
+msgid "Cant switch network?. Check if you can change it from the wallet."
+msgstr "Cant switch network?. Check if you can change it from the wallet."
+
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Cap reached. Lower supply amount"
 msgstr "Cap reached. Lower supply amount"
@@ -1338,6 +1342,10 @@ msgstr "Voting results"
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Wallet balance"
 msgstr "Wallet balance"
+
+#: src/components/WalletConnection/WalletSelector.tsx
+msgid "Wallet not detected. Connect or install wallet and retry"
+msgstr "Wallet not detected. Connect or install wallet and retry"
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
