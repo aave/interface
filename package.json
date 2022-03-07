@@ -45,7 +45,7 @@
     "@heroicons/react": "^1.0.5",
     "@lingui/react": "^3.13.2",
     "@mui/icons-material": "^5.4.2",
-    "@mui/material": "^5.4.2",
+    "@mui/material": "^5.5.0",
     "@toruslabs/torus-embed": "^1.20.4",
     "@types/d3-array": "^3.0.2",
     "@types/d3-time-format": "^4.0.0",
