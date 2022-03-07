@@ -125,6 +125,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     setLoading(false);
     setDeactivated(true);
     setCurrentAccount('');
+    setSwitchNetworkError(undefined);
   }, [provider, connector]);
 
   // connect to the wallet specified by wallet type
@@ -141,6 +142,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         await activate(connector, undefined, true);
         setConnector(connector);
         setSelectedWallet(wallet);
+        setSwitchNetworkError(undefined);
         localStorage.setItem('walletProvider', wallet.toString());
         // connector.on('chainChanged', handleChainChanged);
         connector.on('accountsChanged', handleAccountsChanged);
