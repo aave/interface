@@ -85,7 +85,7 @@
     "reflect-metadata": "^0.1.13",
     "remark-gfm": "^3.0.1",
     "subscriptions-transport-ws": "^0.11.0",
-    "walletlink": "^2.4.7"
+    "walletlink": "^2.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",
