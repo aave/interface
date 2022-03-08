@@ -185,7 +185,6 @@ export const useTransactionHandler = ({
 
   const action = async () => {
     if (approvalTx && usePermit && handleGetPermitTxns) {
-      console.log('0000');
       if (!signature || !signatureDeadline) throw new Error('signature needed');
       try {
         setMainTxState({ ...mainTxState, loading: true });
