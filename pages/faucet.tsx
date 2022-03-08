@@ -5,6 +5,7 @@ import { Box } from '@mui/system';
 import * as React from 'react';
 import { FaucetModal } from 'src/components/transactions/Faucet/FaucetModal';
 import { useModalContext } from 'src/hooks/useModal';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { MainLayout } from 'src/layouts/MainLayout';
 
 import { ContentContainer } from '../src/components/ContentContainer';
@@ -20,6 +21,7 @@ import { useAppDataContext } from '../src/hooks/app-data-provider/useAppDataProv
 import { useWalletBalances } from '../src/hooks/app-data-provider/useWalletBalances';
 
 export default function Faucet() {
+  const { currentMarketData } = useProtocolDataContext();
   const { reserves } = useAppDataContext();
   const { walletBalances } = useWalletBalances();
   const { openFaucet } = useModalContext();
@@ -41,10 +43,10 @@ export default function Faucet() {
 
   return (
     <>
-      <TopInfoPanel pageTitle={<Trans>Faucet</Trans>} />
+      <TopInfoPanel pageTitle={<Trans>{currentMarketData.marketTitle} Faucet</Trans>} />
 
       <ContentContainer>
-        <ListWrapper title={<Trans>Faucet</Trans>} captionSize="h2">
+        <ListWrapper title={<Trans>Assets</Trans>} captionSize="h2">
           <ListHeaderWrapper px={downToXSM ? 4 : 6}>
             <ListColumn isRow maxWidth={280}>
               <ListHeaderTitle>
