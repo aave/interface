@@ -27,7 +27,7 @@ describe('REWARD, AVALANCHE V2 MARKET, INTEGRATION SPEC', () => {
 
   supply(testData.deposit, skipTestState, true);
   claimReward(testData.claimReward, skipTestState, true);
-  // withdraw(testData.withdraw, skipTestState, true);
-  // claimReward(testData.claimReward, skipTestState, true);
-  // rewardIsNotAvailable(skipTestState);
+  withdraw(testData.withdraw, skipTestState, true);
+  claimReward(testData.claimReward, skipTestState, true);
+  rewardIsNotAvailable(skipTestState);
 });

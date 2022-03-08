@@ -60,8 +60,6 @@ export const supply = (
     it(`Supply ${amount} amount for ${_shortName}`, () => {
       setAmount({
         amount,
-        actionName: _actionName,
-        assetName: _shortName,
         hasApproval,
       });
       doConfirm({
@@ -120,8 +118,6 @@ export const borrow = (
     it(`Borrow ${amount} amount for ${_shortName}`, () => {
       setAmount({
         amount,
-        actionName: _actionName,
-        assetName: _shortName,
         hasApproval,
       });
       doConfirm({
@@ -208,8 +204,6 @@ export const repay = (
     it(`Repay ${amount} amount for ${_shortName}, with ${repayOption} repay option`, () => {
       setAmount({
         amount,
-        actionName: _actionName,
-        assetName: _shortName,
         hasApproval,
       });
       doConfirm({
@@ -254,8 +248,6 @@ export const withdraw = (
     it(`Withdraw ${amount} amount for ${_shortName}`, () => {
       setAmount({
         amount,
-        actionName: _actionName,
-        assetName: _shortName,
         hasApproval,
       });
       doConfirm({

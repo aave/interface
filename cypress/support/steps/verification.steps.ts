@@ -37,12 +37,12 @@ export const dashboardAssetValuesVerification = (
     skipSetup(skip);
     estimatedCases.forEach((estimatedCase) => {
       describe(`Verification ${estimatedCase.assetName} ${estimatedCase.type}, have right values`, () => {
-        let _assetName: string;
-        if (estimatedCase.wrapped) {
-          _assetName = 'W' + estimatedCase.assetName.toUpperCase();
-        } else {
-          _assetName = estimatedCase.assetName;
-        }
+        const _assetName: string = estimatedCase.assetName;
+        // if (estimatedCase.wrapped) {
+        //   _assetName = 'W' + estimatedCase.assetName.toUpperCase();
+        // } else {
+        //   _assetName = estimatedCase.assetName;
+        // }
         switch (estimatedCase.type) {
           case constants.dashboardTypes.deposit:
             it(`Check that asset name is ${estimatedCase.assetName},

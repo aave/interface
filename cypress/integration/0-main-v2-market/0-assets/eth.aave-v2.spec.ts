@@ -42,7 +42,7 @@ const testData = {
       asset: assets.aaveMarket.ETH,
       amount: 0.04,
       apyType: constants.borrowAPYType.variable,
-      hasApproval: true,
+      hasApproval: false,
     },
     repay: {
       asset: assets.aaveMarket.ETH,
@@ -79,7 +79,7 @@ const testData = {
   },
 };
 
-describe.skip('ETH INTEGRATION SPEC, AAVE V2 MARKET', () => {
+describe('ETH INTEGRATION SPEC, AAVE V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyMainnetFork({});
 
@@ -91,7 +91,7 @@ describe.skip('ETH INTEGRATION SPEC, AAVE V2 MARKET', () => {
   });
   borrow(testData.testCases.borrow, skipTestState, true);
   // changeBorrowTypeNegative(testData.switchBorrowType, skipTestState, false);
-  changeCollateralNegative(testData.testCases.collateral.switchNegative, skipTestState, false);
+  // changeCollateralNegative(testData.testCases.collateral.switchNegative, skipTestState, false);
   repay(testData.testCases.repay, skipTestState, false);
   withdraw(testData.testCases.withdraw, skipTestState, false);
   dashboardAssetValuesVerification(testData.verifications.finalDashboard, skipTestState);
