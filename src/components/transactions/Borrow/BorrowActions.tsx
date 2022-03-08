@@ -1,4 +1,4 @@
-import { ChainId, InterestRate } from '@aave/contract-helpers';
+import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -36,53 +36,56 @@ export const BorrowActions = ({
   const { currentAccount, chainId: connectedChainId } = useWeb3Context();
   const { state, gasPriceData } = useGasStation();
 
-  const { action, loadingTxns, mainTxState } = useTransactionHandler({
-    tryPermit:
-      currentMarketData.v3 && chainId !== ChainId.harmony && chainId !== ChainId.harmony_testnet,
-    handleGetTxns: async () => {
-      if (currentMarketData.v3) {
-        return lendingPool.borrow({
-          interestRateMode,
-          user: currentAccount,
-          amount: amountToBorrow,
-          reserve: poolAddress,
-          debtTokenAddress:
-            interestRateMode === InterestRate.Variable
-              ? poolReserve.variableDebtTokenAddress
-              : poolReserve.stableDebtTokenAddress,
-          useOptimizedPath: optimizedPath(chainId),
-        });
-      } else {
-        return lendingPool.borrow({
-          interestRateMode,
-          user: currentAccount,
-          amount: amountToBorrow,
-          reserve: poolAddress,
-          debtTokenAddress:
-            interestRateMode === InterestRate.Variable
-              ? poolReserve.variableDebtTokenAddress
-              : poolReserve.stableDebtTokenAddress,
-        });
-      }
-    },
-    customGasPrice:
-      state.gasOption === GasOption.Custom
-        ? state.customGas
-        : gasPriceData.data?.[state.gasOption].legacyGasPrice,
-    skip: !amountToBorrow || amountToBorrow === '0' || blocked,
-    deps: [amountToBorrow, interestRateMode],
-  });
+  const { action, loadingTxns, mainTxState, approval, requiresApproval, approvalTxState } =
+    useTransactionHandler({
+      tryPermit: false,
+      handleGetTxns: async () => {
+        if (currentMarketData.v3) {
+          return lendingPool.borrow({
+            interestRateMode,
+            user: currentAccount,
+            amount: amountToBorrow,
+            reserve: poolAddress,
+            debtTokenAddress:
+              interestRateMode === InterestRate.Variable
+                ? poolReserve.variableDebtTokenAddress
+                : poolReserve.stableDebtTokenAddress,
+            useOptimizedPath: optimizedPath(chainId),
+          });
+        } else {
+          return lendingPool.borrow({
+            interestRateMode,
+            user: currentAccount,
+            amount: amountToBorrow,
+            reserve: poolAddress,
+            debtTokenAddress:
+              interestRateMode === InterestRate.Variable
+                ? poolReserve.variableDebtTokenAddress
+                : poolReserve.stableDebtTokenAddress,
+          });
+        }
+      },
+      customGasPrice:
+        state.gasOption === GasOption.Custom
+          ? state.customGas
+          : gasPriceData.data?.[state.gasOption].legacyGasPrice,
+      skip: !amountToBorrow || amountToBorrow === '0' || blocked,
+      deps: [amountToBorrow, interestRateMode],
+    });
 
   return (
     <TxActionsWrapper
       blocked={blocked}
       mainTxState={mainTxState}
+      approvalTxState={approvalTxState}
       requiresAmount={true}
       amount={amountToBorrow}
       isWrongNetwork={isWrongNetwork}
       handleAction={action}
       actionText={<Trans>Borrow {symbol}</Trans>}
       actionInProgressText={<Trans>Borrowing {symbol}</Trans>}
+      handleApproval={() => approval(amountToBorrow, poolAddress)}
+      requiresApproval={requiresApproval}
       helperText={
         <RightHelperText
           actionHash={mainTxState.txHash}
