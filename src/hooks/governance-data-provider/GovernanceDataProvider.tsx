@@ -19,8 +19,6 @@ const GovernanceDataProviderContext = React.createContext<GovernanceDataProvider
  * @returns
  */
 export const GovernanceDataProvider: React.FC = ({ children }) => {
-  if (!governanceConfig) return <>{children}</>;
-
   const { governanceService, governanceDelegationService } = _useGovernanceDataRPC({
     governanceConfig,
   });

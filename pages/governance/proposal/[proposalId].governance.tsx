@@ -34,7 +34,6 @@ import { GovVoteModal } from 'src/components/transactions/GovVote/GovVoteModal';
 // import { Vote } from 'src/static-build/vote';
 
 export async function getStaticPaths() {
-  if (!governanceConfig) return { paths: [] };
   const ProposalFetcher = new Proposal();
   const paths = [...Array(ProposalFetcher.count()).keys()].map((id) => ({
     params: { proposalId: id.toString() },
@@ -102,7 +101,6 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
   useEffect(() => {
     setUrl(window.location.href);
   }, []);
-  if (!governanceConfig) return <div>Governance not enabled</div>;
 
   const {
     yaeVotes,
@@ -150,7 +148,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                     <Button
                       component="a"
                       target="__BLANK"
-                      href={`${governanceConfig?.ipfsGateway}/${ipfs.ipfsHash}`}
+                      href={`${governanceConfig.ipfsGateway}/${ipfs.ipfsHash}`}
                       startIcon={
                         <SvgIcon sx={{ '& path': { strokeWidth: '1' } }}>
                           <DownloadIcon />

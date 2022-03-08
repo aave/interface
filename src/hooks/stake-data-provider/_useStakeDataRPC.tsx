@@ -9,17 +9,21 @@ import {
   C_StakeUserUiDataQuery,
 } from './graphql/hooks';
 import { getStakeConfig } from 'src/ui-config/stakeConfig';
+import { useProtocolDataContext } from '../useProtocolDataContext';
 
-export function _useStakeDataRPC(currentAccount?: string, skip = false) {
+export function _useStakeDataRPC(currentAccount: string, chainId: number, skip = false) {
   const { cache } = useApolloClient();
   const stakeConfig = getStakeConfig();
+  const { currentNetworkConfig, jsonRpcProvider } = useProtocolDataContext();
 
+  const isStakeFork =
+    currentNetworkConfig.isFork && currentNetworkConfig.underlyingChainId === stakeConfig?.chainId;
+  const rpcProvider = isStakeFork ? jsonRpcProvider : getProvider(stakeConfig.chainId);
+  const uiStakeDataProvider = new UiStakeDataProvider({
+    provider: rpcProvider,
+    uiStakeDataProvider: stakeConfig.stakeDataProvider,
+  });
   const loadGeneralStakeData = async () => {
-    if (!stakeConfig) return;
-    const uiStakeDataProvider = new UiStakeDataProvider({
-      provider: getProvider(stakeConfig.chainId),
-      uiStakeDataProvider: stakeConfig.stakeDataProvider,
-    });
     try {
       const generalStakeData = await uiStakeDataProvider.getGeneralStakeUIDataHumanized();
       cache.writeQuery<C_StakeGeneralUiDataQuery>({
@@ -38,12 +42,7 @@ export function _useStakeDataRPC(currentAccount?: string, skip = false) {
   };
 
   const loadUserStakeData = async () => {
-    const stakeConfig = getStakeConfig();
-    if (!stakeConfig || !currentAccount) return;
-    const uiStakeDataProvider = new UiStakeDataProvider({
-      provider: getProvider(stakeConfig.chainId),
-      uiStakeDataProvider: stakeConfig.stakeDataProvider,
-    });
+    if (!currentAccount) return;
     try {
       const userStakeData = await uiStakeDataProvider.getUserStakeUIDataHumanized({
         user: currentAccount,
@@ -57,7 +56,7 @@ export function _useStakeDataRPC(currentAccount?: string, skip = false) {
             ...userStakeData,
           },
         },
-        variables: { userAddress: currentAccount },
+        variables: { userAddress: currentAccount, chainId },
       });
     } catch (e) {
       console.log('Stake user data user loading error', e);
