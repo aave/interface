@@ -2,7 +2,7 @@ import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 
 import { NetworkConfig } from '../../ui-config/networksConfig';
-import { BridgeButton } from '../BridgeButton';
+// import { BridgeButton } from '../BridgeButton';
 import { MarketSwitcher } from '../MarketSwitcher';
 
 export interface PageTitleProps extends Pick<NetworkConfig, 'bridge'> {
