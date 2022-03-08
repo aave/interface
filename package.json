@@ -46,7 +46,6 @@
     "@lingui/react": "^3.13.2",
     "@mui/icons-material": "^5.5.0",
     "@mui/material": "^5.5.0",
-    "@toruslabs/torus-embed": "^1.20.4",
     "@visx/axis": "^2.6.0",
     "@visx/curve": "^2.1.0",
     "@visx/event": "^2.6.0",

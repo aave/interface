@@ -2573,7 +2573,7 @@
     keccak "^3.0.2"
     randombytes "^2.1.0"
 
-"@toruslabs/torus-embed@^1.18.3", "@toruslabs/torus-embed@^1.20.4":
+"@toruslabs/torus-embed@^1.18.3":
   version "1.20.4"
   resolved "https://registry.npmjs.org/@toruslabs/torus-embed/-/torus-embed-1.20.4.tgz"
   integrity sha512-s5mxLA2ZIY4YeadS4EQReXK1oKnJgVmdaZjJAprnDzSAIOLJnd5GRdbHgq5wNH1pBk+T5hrppv6fWBR1pXNlXw==
