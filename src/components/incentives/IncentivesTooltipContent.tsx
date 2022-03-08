@@ -54,7 +54,7 @@ export const IncentivesTooltipContent = ({
       <Typography variant="caption" color="text.secondary" mb={3}>
         <Trans>Participating in this {symbol} reserve gives rewards.</Trans>{' '}
         <Link fontWeight={500} href={'https://docs.aave.com/faq/depositing-and-earning'}>
-          Learn more
+          <Trans>Learn more</Trans>
         </Link>
       </Typography>
 
