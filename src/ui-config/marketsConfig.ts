@@ -408,6 +408,7 @@ export const marketsData: {
   },
   [CustomMarket.proto_avalanche_v3]: {
     marketTitle: 'Avalanche',
+    v3: true,
     chainId: ChainId.avalanche,
     aTokenPrefix: 'AV',
     enabledFeatures: {
@@ -446,6 +447,7 @@ export const marketsData: {
   [CustomMarket.proto_polygon_v3]: {
     marketTitle: 'Polygon',
     chainId: ChainId.polygon,
+    v3: true,
     aTokenPrefix: 'AM',
     enabledFeatures: {
       // liquiditySwap: true,
