@@ -10,10 +10,10 @@ export interface PageTitleProps extends Pick<NetworkConfig, 'bridge'> {
   withMarketSwitcher?: boolean;
 }
 
-export const PageTitle = ({ pageTitle, withMarketSwitcher, bridge }: PageTitleProps) => {
+export const PageTitle = ({ pageTitle, withMarketSwitcher }: PageTitleProps) => {
   const theme = useTheme();
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
-  const upToMD = useMediaQuery(theme.breakpoints.up('md'));
+  // const upToMD = useMediaQuery(theme.breakpoints.up('md'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   return (
