@@ -33,8 +33,8 @@ export const StakeDataProvider: React.FC = ({ children }) => {
     !stakeConfig.queryStakeDataUrl ||
     isGovernanceFork;
 
-  _useStakeDataCached(currentAccount, rpcMode);
-  const { refresh } = _useStakeDataRPC(currentAccount, !rpcMode);
+  _useStakeDataCached(currentAccount, stakeConfig.chainId, rpcMode);
+  const { refresh } = _useStakeDataRPC(currentAccount, stakeConfig.chainId, !rpcMode);
   return (
     <StakeDataProviderContext.Provider value={{ refresh }}>
       {children}
@@ -53,9 +53,10 @@ export const useStakeDataProvider = () => useContext(StakeDataProviderContext);
  */
 export const useStakeData = () => {
   const { currentAccount } = useWeb3Context();
+  const stakeConfig = getStakeConfig();
 
   const { data: stakeUserResult } = useC_StakeUserUiDataQuery({
-    variables: { userAddress: currentAccount },
+    variables: { userAddress: currentAccount, chainId: stakeConfig.chainId },
     skip: !currentAccount,
     fetchPolicy: 'cache-only',
   });

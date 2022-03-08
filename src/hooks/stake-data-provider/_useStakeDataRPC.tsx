@@ -11,7 +11,7 @@ import {
 import { getStakeConfig } from 'src/ui-config/stakeConfig';
 import { useProtocolDataContext } from '../useProtocolDataContext';
 
-export function _useStakeDataRPC(currentAccount?: string, skip = false) {
+export function _useStakeDataRPC(currentAccount: string, chainId: number, skip = false) {
   const { cache } = useApolloClient();
   const stakeConfig = getStakeConfig();
   const { currentNetworkConfig, jsonRpcProvider } = useProtocolDataContext();
@@ -56,7 +56,7 @@ export function _useStakeDataRPC(currentAccount?: string, skip = false) {
             ...userStakeData,
           },
         },
-        variables: { userAddress: currentAccount },
+        variables: { userAddress: currentAccount, chainId },
       });
     } catch (e) {
       console.log('Stake user data user loading error', e);

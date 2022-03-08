@@ -16,8 +16,7 @@ import { APOLLO_QUERY_TARGET } from 'src/utils/apolloClient';
  * @param skip
  * @returns
  */
-export function _useStakeDataCached(currentAccount?: string, skip = false) {
-  const userId = currentAccount || '';
+export function _useStakeDataCached(currentAccount: string, chainId: number, skip = false) {
   const {
     loading: stakeGeneralUIDataLoading,
     data: stakeGeneralResult,
@@ -42,26 +41,26 @@ export function _useStakeDataCached(currentAccount?: string, skip = false) {
         context: { target: APOLLO_QUERY_TARGET.STAKE },
       });
     }
-  }, [subscribeToStakeGeneralUiData]);
+  }, [subscribeToStakeGeneralUiData, skip]);
 
   const {
     loading: stakeUserUIDataLoading,
     data: stakeUserResult,
     subscribeToMore: subscribeToStakeUserUiData,
   } = useC_StakeUserUiDataQuery({
-    variables: { userAddress: userId },
-    skip: !userId || skip,
+    variables: { userAddress: currentAccount, chainId },
+    skip: !currentAccount || skip,
     context: { target: APOLLO_QUERY_TARGET.STAKE },
   });
 
   useEffect(() => {
-    if (userId && !skip) {
+    if (currentAccount && !skip) {
       return subscribeToStakeUserUiData<
         C_StakeUserUiDataUpdateSubscription,
         C_StakeUserUiDataUpdateSubscriptionVariables
       >({
         document: C_StakeUserUiDataUpdateDocument,
-        variables: { userAddress: userId },
+        variables: { userAddress: currentAccount, chainId },
         updateQuery: (previousQueryResult, { subscriptionData }) => {
           const stakeUserUIDataUpdate = subscriptionData.data?.stakeUserUIDataUpdate;
           if (!stakeUserUIDataUpdate) {
@@ -75,9 +74,9 @@ export function _useStakeDataCached(currentAccount?: string, skip = false) {
         context: { target: APOLLO_QUERY_TARGET.STAKE },
       });
     }
-  }, [subscribeToStakeUserUiData, userId]);
+  }, [subscribeToStakeUserUiData, currentAccount, skip, chainId]);
 
-  const loading = (userId && stakeUserUIDataLoading) || stakeGeneralUIDataLoading;
+  const loading = (currentAccount && stakeUserUIDataLoading) || stakeGeneralUIDataLoading;
 
   const stakeGeneralData = stakeGeneralResult?.stakeGeneralUIData || undefined;
   if (!stakeGeneralData || (!stakeUserResult?.stakeUserUIData && !stakeUserUIDataLoading)) {
