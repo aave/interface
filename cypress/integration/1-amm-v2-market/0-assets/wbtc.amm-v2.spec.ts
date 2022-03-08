@@ -11,35 +11,35 @@ import constants from '../../../fixtures/constans.json';
 const testData = {
   depositBaseAmount: {
     asset: assets.ammMarket.ETH,
-    amount: 0.1,
+    amount: 100,
     hasApproval: true,
   },
   testCases: {
     borrow: {
-      asset: assets.ammMarket.DAI,
-      amount: 25,
+      asset: assets.ammMarket.WBTC,
+      amount: 0.5,
       hasApproval: true,
     },
     deposit: {
-      asset: assets.ammMarket.DAI,
-      amount: 10,
+      asset: assets.ammMarket.WBTC,
+      amount: 0.2,
       hasApproval: false,
     },
     repay: {
-      asset: assets.ammMarket.DAI,
+      asset: assets.ammMarket.WBTC,
       apyType: constants.apyType.variable,
-      amount: 2,
+      amount: 0.1,
       hasApproval: true,
       repayOption: constants.repayType.default,
     },
     withdraw: {
-      asset: assets.ammMarket.DAI,
+      asset: assets.ammMarket.WBTC,
       isCollateral: true,
-      amount: 1,
+      amount: 0.1,
       hasApproval: true,
     },
     checkDisabledApy: {
-      asset: assets.ammMarket.DAI,
+      asset: assets.ammMarket.WBTC,
       apyType: constants.apyType.variable,
     },
   },
@@ -47,24 +47,24 @@ const testData = {
     finalDashboard: [
       {
         type: constants.dashboardTypes.deposit,
-        assetName: assets.ammMarket.DAI.shortName,
-        wrapped: assets.ammMarket.DAI.wrapped,
-        amount: 9.0,
+        assetName: assets.ammMarket.WBTC.shortName,
+        wrapped: assets.ammMarket.WBTC.wrapped,
+        amount: 0.1,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
       },
       {
         type: constants.dashboardTypes.borrow,
-        assetName: assets.ammMarket.DAI.shortName,
-        wrapped: assets.ammMarket.DAI.wrapped,
-        amount: 23.0,
+        assetName: assets.ammMarket.WBTC.shortName,
+        wrapped: assets.ammMarket.WBTC.wrapped,
+        amount: 0.4,
         apyType: constants.borrowAPYType.variable,
       },
     ],
   },
 };
 
-describe('DAI INTEGRATION SPEC, AMM V2 MARKET', () => {
+describe('WETH INTEGRATION SPEC, AMM V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyMainnetFork({
     market: 'fork_amm_mainnet',

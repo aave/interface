@@ -121,6 +121,12 @@
       "fullName": "Ethereum",
       "shortName": "ETH",
       "collateral": true,
+      "wrapped": true
+    },
+    "WBTC": {
+      "fullName": "Wrapped BTC",
+      "shortName": "WBTC",
+      "collateral": true,
       "wrapped": false
     },
     "USDT": {
@@ -188,6 +194,12 @@
     "TUSD": {
       "fullName": "TrueUSD",
       "shortName": "TUSD",
+      "collateral": true,
+      "wrapped": false
+    },
+    "stkAAVE": {
+      "fullName": "stkAAVE",
+      "shortName": "stkAAVE",
       "collateral": true,
       "wrapped": false
     }

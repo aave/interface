@@ -1,4 +1,7 @@
-import { configEnvWithTenderlyMainnetFork } from '../../../support/steps/configuration.steps';
+import {
+  configEnvWithTenderlyAvalancheFork,
+  configEnvWithTenderlyAvalancheFujiFork,
+} from '../../../support/steps/configuration.steps';
 import { supply, borrow, repay, withdraw } from '../../../support/steps/main.steps';
 import {
   dashboardAssetValuesVerification,
@@ -10,36 +13,36 @@ import constants from '../../../fixtures/constans.json';
 
 const testData = {
   depositBaseAmount: {
-    asset: assets.ammMarket.ETH,
-    amount: 0.1,
+    asset: assets.avalancheMarket.AVAX,
+    amount: 800,
     hasApproval: true,
   },
   testCases: {
     borrow: {
-      asset: assets.ammMarket.DAI,
+      asset: assets.avalancheMarket.DAI,
       amount: 25,
       hasApproval: true,
     },
     deposit: {
-      asset: assets.ammMarket.DAI,
+      asset: assets.avalancheMarket.DAI,
       amount: 10,
       hasApproval: false,
     },
     repay: {
-      asset: assets.ammMarket.DAI,
+      asset: assets.avalancheMarket.DAI,
       apyType: constants.apyType.variable,
       amount: 2,
       hasApproval: true,
       repayOption: constants.repayType.default,
     },
     withdraw: {
-      asset: assets.ammMarket.DAI,
+      asset: assets.avalancheMarket.DAI,
       isCollateral: true,
       amount: 1,
       hasApproval: true,
     },
     checkDisabledApy: {
-      asset: assets.ammMarket.DAI,
+      asset: assets.avalancheMarket.DAI,
       apyType: constants.apyType.variable,
     },
   },
@@ -47,16 +50,16 @@ const testData = {
     finalDashboard: [
       {
         type: constants.dashboardTypes.deposit,
-        assetName: assets.ammMarket.DAI.shortName,
-        wrapped: assets.ammMarket.DAI.wrapped,
+        assetName: assets.avalancheMarket.DAI.shortName,
+        wrapped: assets.avalancheMarket.DAI.wrapped,
         amount: 9.0,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
       },
       {
         type: constants.dashboardTypes.borrow,
-        assetName: assets.ammMarket.DAI.shortName,
-        wrapped: assets.ammMarket.DAI.wrapped,
+        assetName: assets.avalancheMarket.DAI.shortName,
+        wrapped: assets.avalancheMarket.DAI.wrapped,
         amount: 23.0,
         apyType: constants.borrowAPYType.variable,
       },
@@ -64,11 +67,10 @@ const testData = {
   },
 };
 
-describe('DAI INTEGRATION SPEC, AMM V2 MARKET', () => {
+describe('DAI INTEGRATION SPEC, AVALANCHE V2 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyMainnetFork({
-    market: 'fork_amm_mainnet',
-  });
+  // configEnvWithTenderlyAvalancheFork({});
+  configEnvWithTenderlyAvalancheFujiFork({});
 
   supply(testData.depositBaseAmount, skipTestState, true);
   borrow(testData.testCases.borrow, skipTestState, true);

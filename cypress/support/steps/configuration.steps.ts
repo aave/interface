@@ -39,10 +39,10 @@ export const configEnvWithTenderly = ({
         win.localStorage.setItem('forkNetworkId', '3030');
         win.localStorage.setItem('forkBaseChainId', chainId.toString());
         win.localStorage.setItem('forkRPCUrl', rpc);
-        // win.localStorage.setItem('currentProvider', 'browser');
         win.localStorage.setItem('WEB3_CONNECT_CACHED_PROVIDER', '"injected"');
         win.localStorage.setItem('selectedAccount', DEFAULT_TEST_ACCOUNT.address.toLowerCase());
         win.localStorage.setItem('selectedMarket', market);
+        win.localStorage.setItem('testnetsEnabled', 'true');
       },
     });
   });
@@ -79,4 +79,14 @@ export const configEnvWithTenderlyAvalancheFork = ({
   tokens?: { address: string }[];
 }) => {
   configEnvWithTenderly({ chainId: ChainId.avalanche, market, tokens });
+};
+
+export const configEnvWithTenderlyAvalancheFujiFork = ({
+  market = `proto_fuji_v3`,
+  tokens,
+}: {
+  market?: string;
+  tokens?: { address: string }[];
+}) => {
+  configEnvWithTenderly({ chainId: ChainId.fuji, market, tokens });
 };

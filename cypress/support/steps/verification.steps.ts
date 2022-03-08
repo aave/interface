@@ -21,10 +21,6 @@ const skipSetup = (skip: any) => {
   });
 };
 
-const amountVerification = (estimatedAmount: number) => {
-  cy.get('.Value__value').contains(estimatedAmount);
-};
-
 export const dashboardAssetValuesVerification = (
   estimatedCases: {
     apyType?: string;
@@ -41,16 +37,21 @@ export const dashboardAssetValuesVerification = (
     skipSetup(skip);
     estimatedCases.forEach((estimatedCase) => {
       describe(`Verification ${estimatedCase.assetName} ${estimatedCase.type}, have right values`, () => {
+        let _assetName: string;
+        if (estimatedCase.wrapped) {
+          _assetName = 'W' + estimatedCase.assetName.toUpperCase();
+        } else {
+          _assetName = estimatedCase.assetName;
+        }
         switch (estimatedCase.type) {
           case constants.dashboardTypes.deposit:
             it(`Check that asset name is ${estimatedCase.assetName},
             with collateral type ${estimatedCase.collateralType}
             ${estimatedCase.amount ? ' and amount ' + estimatedCase.amount : ''}`, () => {
-              cy.get(
-                `[data-cy=dashboardSuppliedListItem_${estimatedCase.wrapped ? 'W' : ''}${
-                  estimatedCase.assetName
-                }_${estimatedCase.isCollateral ? 'Collateral' : 'NoCollateral'}]`
-              ).within(($row) => {
+              getDashBoardDepositRow({
+                assetName: _assetName,
+                isCollateralType: estimatedCase.isCollateral,
+              }).within(($row) => {
                 expect($row.find(`[data-cy="assetName"]`)).to.contain(estimatedCase.assetName);
                 if (estimatedCase.isCollateral) {
                   expect($row.find('.MuiSwitch-input')).to.have.attr('checked');
@@ -67,14 +68,14 @@ export const dashboardAssetValuesVerification = (
             it(`Check that asset name is ${estimatedCase.assetName},
             with apy type ${estimatedCase.apyType}
             ${estimatedCase.amount ? ' and amount ' + estimatedCase.amount : ''}`, () => {
-              cy.get(
-                `[data-cy=dashboardBorrowedListItem_${estimatedCase.wrapped ? 'W' : ''}${
-                  estimatedCase.assetName
-                }_${estimatedCase.apyType}]`
-              ).within(($row) => {
+              getDashBoardBorrowRow({
+                assetName: _assetName,
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                apyType: estimatedCase.apyType,
+              }).within(($row) => {
                 expect($row.find(`[data-cy="assetName"]`)).to.contain(estimatedCase.assetName);
                 expect($row.find(`[data-cy="apyButton_${estimatedCase.apyType}"]`)).to.exist;
-                // expect($row.find(`[data-cy="apyButton"]`)).to.contain(estimatedCase.apyType);
                 if (estimatedCase.amount) {
                   cy.get('[data-cy=nativeAmount]').contains(estimatedCase.amount.toString());
                 }
@@ -108,7 +109,8 @@ export const rewardIsNotAvailable = (skip: SkipType) => {
   return describe('Check that reward not available', () => {
     skipSetup(skip);
     it('Check that reward not exist on dashboard page', () => {
-      cy.get('body').find(`.IncentiveWrapper`).should('not.exist');
+      doSwitchToDashboardSupplyView();
+      cy.get('[data-cy=Claim_Box]').should('not.exist');
     });
   });
 };
@@ -137,21 +139,24 @@ export const switchCollateralBlocked = (
 export const switchApyBlocked = (
   {
     asset,
+    apyType,
   }: {
     asset: { shortName: string; fullName: string };
+    apyType: string;
   },
   skip: SkipType
 ) => {
   const _shortName = asset.shortName;
   return describe('Check that apy switcher disabled', () => {
     skipSetup(skip);
-    it(`Check that APY switcher for ${_shortName} disabled`, () => {
-      getDashBoardBorrowRow({
-        assetName: _shortName,
-        apyType: 'Stable',
-      })
-        .find('.Switcher__swiper input')
-        .should('be.disabled');
+    it(`Open dashboard`, () => {
+      doSwitchToDashboardBorrowView();
+    });
+    it(`Verify that switching button disabled with APY ${apyType}`, () => {
+      getDashBoardBorrowRow({ assetName: _shortName, apyType })
+        .find(`[data-cy='apyButton_${apyType}']`)
+        .should('be.disabled')
+        .should('have.text', `${apyType}`);
     });
   });
 };

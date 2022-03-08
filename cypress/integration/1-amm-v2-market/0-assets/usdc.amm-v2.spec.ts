@@ -16,30 +16,30 @@ const testData = {
   },
   testCases: {
     borrow: {
-      asset: assets.ammMarket.DAI,
+      asset: assets.ammMarket.USDC,
       amount: 25,
       hasApproval: true,
     },
     deposit: {
-      asset: assets.ammMarket.DAI,
+      asset: assets.ammMarket.USDC,
       amount: 10,
       hasApproval: false,
     },
     repay: {
-      asset: assets.ammMarket.DAI,
+      asset: assets.ammMarket.USDC,
       apyType: constants.apyType.variable,
       amount: 2,
       hasApproval: true,
       repayOption: constants.repayType.default,
     },
     withdraw: {
-      asset: assets.ammMarket.DAI,
+      asset: assets.ammMarket.USDC,
       isCollateral: true,
       amount: 1,
       hasApproval: true,
     },
     checkDisabledApy: {
-      asset: assets.ammMarket.DAI,
+      asset: assets.ammMarket.USDC,
       apyType: constants.apyType.variable,
     },
   },
@@ -47,16 +47,16 @@ const testData = {
     finalDashboard: [
       {
         type: constants.dashboardTypes.deposit,
-        assetName: assets.ammMarket.DAI.shortName,
-        wrapped: assets.ammMarket.DAI.wrapped,
+        assetName: assets.ammMarket.USDC.shortName,
+        wrapped: assets.ammMarket.USDC.wrapped,
         amount: 9.0,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
       },
       {
         type: constants.dashboardTypes.borrow,
-        assetName: assets.ammMarket.DAI.shortName,
-        wrapped: assets.ammMarket.DAI.wrapped,
+        assetName: assets.ammMarket.USDC.shortName,
+        wrapped: assets.ammMarket.USDC.wrapped,
         amount: 23.0,
         apyType: constants.borrowAPYType.variable,
       },
@@ -64,7 +64,7 @@ const testData = {
   },
 };
 
-describe('DAI INTEGRATION SPEC, AMM V2 MARKET', () => {
+describe('USDC INTEGRATION SPEC, AMM V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyMainnetFork({
     market: 'fork_amm_mainnet',

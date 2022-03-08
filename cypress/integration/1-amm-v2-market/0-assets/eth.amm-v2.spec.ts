@@ -41,19 +41,16 @@ const testData = {
     borrow: {
       asset: assets.aaveMarket.ETH,
       amount: 0.04,
-      apyType: constants.borrowAPYType.variable,
       hasApproval: true,
     },
     repay: {
       asset: assets.aaveMarket.ETH,
-      apyType: constants.apyType.variable,
       amount: 0.01,
       hasApproval: true,
       repayOption: constants.repayType.default,
     },
     withdraw: {
       asset: assets.aaveMarket.ETH,
-      isCollateral: true,
       amount: 0.01,
       hasApproval: false,
     },
@@ -62,16 +59,13 @@ const testData = {
     finalDashboard: [
       {
         type: constants.dashboardTypes.deposit,
-        assetName: assets.aaveMarket.ETH.shortName,
-        wrapped: assets.aaveMarket.ETH.wrapped,
+        asset: assets.aaveMarket.ETH.shortName,
         amount: 0.08,
         collateralType: constants.collateralType.isCollateral,
-        isCollateral: true,
       },
       {
         type: constants.dashboardTypes.borrow,
-        assetName: assets.aaveMarket.ETH.shortName,
-        wrapped: assets.aaveMarket.ETH.wrapped,
+        asset: assets.aaveMarket.ETH.shortName,
         amount: 0.03,
         apyType: constants.borrowAPYType.variable,
       },
@@ -79,7 +73,7 @@ const testData = {
   },
 };
 
-describe.skip('ETH INTEGRATION SPEC, AAVE V2 MARKET', () => {
+describe('ETH INTEGRATION SPEC, AMM V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyMainnetFork({});
 

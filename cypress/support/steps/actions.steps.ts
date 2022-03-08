@@ -25,17 +25,34 @@ export const setAmount = ({ amount, actionName, assetName, hasApproval, max }: S
 type ConfirmAction = {
   hasApproval: boolean;
   actionName?: string;
-  assetName: string;
+  assetName?: string;
+  isWrapped?: boolean;
 };
 
-export const doConfirm = ({ hasApproval, actionName, assetName }: ConfirmAction) => {
-  assetName = ' ' + assetName;
+export const doConfirm = ({
+  hasApproval,
+  actionName,
+  assetName,
+  isWrapped = false,
+}: ConfirmAction) => {
+  if (isWrapped) assetName = 'W' + assetName;
   cy.log(`${hasApproval ? 'One step process' : 'Two step process'}`);
   if (!hasApproval) {
-    cy.get(`[data-cy=approvalButton]`).should('not.be.disabled').click();
+    cy.get(`[data-cy=approvalButton]`).should('not.be.disabled').wait(3000).click();
   }
   cy.get(`[data-cy=actionButton]`).as('button');
-  cy.get('@button').should('not.be.disabled').click();
+  cy.get('@button')
+    .then(($btn) => {
+      if (assetName && actionName) {
+        expect($btn.first()).to.contain(`${actionName} ${assetName}`);
+      }
+      if (assetName && !actionName) {
+        expect($btn.first()).to.contain(`${actionName}`);
+      }
+    })
+    .should('not.be.disabled')
+    .wait(3000)
+    .click();
   cy.get("[data-cy=Modal] h2:contains('All done!')").should('be.visible');
 };
 
@@ -74,7 +91,9 @@ type GetDashBoardBorrowRow = {
 };
 
 export const getDashBoardBorrowRow = ({ assetName, apyType }: GetDashBoardBorrowRow) => {
-  return cy.get(`[data-cy="dashboardBorrowedListItem_${assetName}_${apyType}"]`).first();
+  return cy
+    .get(`[data-cy='dashboardBorrowedListItem_${assetName.toUpperCase()}_${apyType}']`)
+    .first();
 };
 
 type GetDashBoardDepositRow = {
@@ -86,13 +105,13 @@ export const getDashBoardDepositRow = ({ assetName, isCollateralType }: GetDashB
   if (isCollateralType) {
     return cy
       .get(
-        `[data-cy="dashboardSuppliedListItem_${assetName}_Collateral"],
-    [data-cy="dashboardSuppliedListItem_W${assetName}_Collateral"]`
+        `[data-cy='dashboardSuppliedListItem_${assetName.toUpperCase()}_Collateral'],
+    [data-cy='dashboardSuppliedListItem_W${assetName.toUpperCase()}_Collateral']`
       )
       .first();
   } else {
-    return cy.get(`[data-cy="dashboardSuppliedListItem_${assetName}_NoCollateral"],
-    [data-cy="dashboardSuppliedListItem_W${assetName}_NoCollateral"]`);
+    return cy.get(`[data-cy='dashboardSuppliedListItem_${assetName.toUpperCase()}_NoCollateral'],
+    [data-cy='dashboardSuppliedListItem_W${assetName.toUpperCase()}_NoCollateral']`);
   }
 };
 

@@ -50,9 +50,8 @@ export const supply = (
     skipSetup({ skip, updateSkipStatus });
     it(`Open ${_shortName} supply popup view`, () => {
       doSwitchToDashboardSupplyView();
-      cy.get(`[data-cy=dashboardSupplyListItem_${_shortName}]`)
+      cy.get(`[data-cy='dashboardSupplyListItem_${_shortName.toUpperCase()}']`)
         .find('button:contains("Supply")')
-
         .click();
       cy.get(
         `[data-cy=Modal] h2:contains("Supply ${asset.wrapped ? 'W' : ''}${_shortName}")`
@@ -97,7 +96,7 @@ export const borrow = (
     skipSetup({ skip, updateSkipStatus });
     it(`Open ${_shortName} borrow popup view`, () => {
       doSwitchToDashboardBorrowView();
-      cy.get(`[data-cy=dashboardBorrowListItem_${_shortName}]`)
+      cy.get(`[data-cy='dashboardBorrowListItem_${_shortName.toUpperCase()}']`)
         .find('button:contains("Borrow")')
         .click();
       cy.get(
@@ -245,11 +244,7 @@ export const withdraw = (
     skipSetup({ skip, updateSkipStatus });
     it(`Open ${_shortName} Withdraw popup view`, () => {
       doSwitchToDashboardSupplyView();
-      cy.get(
-        `[data-cy=dashboardSuppliedListItem_${_shortName}_${
-          isCollateral ? 'Collateral' : 'NoCollateral'
-        }]`
-      )
+      getDashBoardDepositRow({ assetName: _shortName, isCollateralType: isCollateral })
         .find(`button:contains("Withdraw")`)
         .click();
       cy.get(
@@ -301,12 +296,12 @@ export const changeBorrowType = (
     });
     it(`Change the ${_shortName} borrowing apr type from ${apyType} to ${newAPY}`, () => {
       cy.get(`[data-cy="apyMenu_${apyType}"]`).contains(`APY, ${newAPY.toLowerCase()}`).click();
+      cy.wait(10000);
     });
     it(`Make approve for ${_shortName}, on confirmation page`, () => {
       doConfirm({
         hasApproval,
         actionName: _actionName,
-        assetName: '',
       });
     });
     doCloseModal();
@@ -408,9 +403,15 @@ export const changeCollateral = (
     });
     it('Confirm switching', () => {
       if (isCollateralType) {
-        cy.get('[data-cy=actionButton]').contains(`Disable ${_shortName} as collateral`).click();
+        cy.get('[data-cy=actionButton]')
+          .contains(`Disable ${_shortName} as collateral`)
+          .wait(3000)
+          .click();
       } else {
-        cy.get('[data-cy=actionButton]').contains(`Enable ${_shortName} as collateral`).click();
+        cy.get('[data-cy=actionButton]')
+          .contains(`Enable ${_shortName} as collateral`)
+          .wait(3000)
+          .click();
       }
       cy.get("[data-cy=Modal] h2:contains('All done!')").should('be.visible');
       cy.get('[data-cy=Modal] [data-cy=CloseModalIcon]').click();
@@ -418,14 +419,31 @@ export const changeCollateral = (
   });
 };
 
-export const claimReward = (skip: SkipType, updateSkipStatus = false) => {
+export const claimReward = (
+  {
+    asset,
+  }: {
+    asset: { shortName: string; fullName: string; wrapped: boolean };
+  },
+  skip: SkipType,
+  updateSkipStatus = false
+) => {
   return describe(`Claim reward`, () => {
     skipSetup({ skip, updateSkipStatus });
-    it('Open claim confirmation page', () => {
-      cy.get('.IncentiveWrapper .Link').contains('Claim').click();
+    it(`Open dashboard`, () => {
+      doSwitchToDashboardSupplyView();
+    });
+    it(`Open claim modal`, () => {
+      cy.get('[data-cy=Claim_Box]').should('be.visible');
+      cy.get('[data-cy=Dashboard_Claim_Button]').click();
     });
     it('Confirm claim', () => {
-      doConfirm({ hasApproval: true });
+      doConfirm({
+        hasApproval: true,
+        actionName: 'Claim',
+        assetName: asset.shortName,
+        isWrapped: asset.wrapped,
+      });
     });
   });
 };

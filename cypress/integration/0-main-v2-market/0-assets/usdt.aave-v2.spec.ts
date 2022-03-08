@@ -77,7 +77,7 @@ const testData = {
       amount: 10,
       hasApproval: true,
     },
-    checkDisabledCollateral: {
+    checkBorrowTypeBlocked: {
       asset: assets.aaveMarket.USDT,
       isCollateralType: false,
     },
@@ -120,6 +120,6 @@ describe('USDT INTEGRATION SPEC, AAVE V2 MARKET', () => {
     repay(repayCase, skipTestState, false);
   });
   withdraw(testData.testCases.withdraw, skipTestState, false);
-  changeBorrowTypeBlocked(testData.testCases.checkDisabledCollateral, skipTestState);
+  changeBorrowTypeBlocked(testData.testCases.checkBorrowTypeBlocked, skipTestState);
   dashboardAssetValuesVerification(testData.verifications.finalDashboard, skipTestState);
 });
