@@ -144,7 +144,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 18,
     explorerLink: 'https://cchain.explorer.avax-test.network',
     rpcOnly: true,
-    usdMarket: true,
+    // usdMarket: true,
     isTestnet: true,
     networkLogoPath: '/icons/networks/avalanche.svg',
     bridge: {
@@ -166,7 +166,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 18,
     explorerLink: 'https://cchain.explorer.avax.network',
     rpcOnly: false,
-    usdMarket: true,
+    // usdMarket: true,
     networkLogoPath: '/icons/networks/avalanche.svg',
     bridge: {
       icon: '/icons/bridge/avalanche.svg',
@@ -186,8 +186,27 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 18,
     explorerLink: 'https://testnet.arbiscan.io',
     rpcOnly: true,
-    usdMarket: true,
+    // usdMarket: true,
     isTestnet: true,
+    networkLogoPath: '/icons/networks/arbitrum.svg',
+    bridge: {
+      icon: '/icons/bridge/arbitrum.svg',
+      name: 'Arbitrum Bridge',
+      url: 'https://bridge.arbitrum.io',
+    },
+  },
+  [ChainId.arbitrum_one]: {
+    name: 'Arbitrum',
+    publicJsonRPCUrl: ['https://arb1.arbitrum.io/rpc'],
+    publicJsonRPCWSUrl: 'wss://arb1.arbitrum.io/rpc',
+    protocolDataUrl: '',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://testnet.arbiscan.io',
+    rpcOnly: true,
+    // usdMarket: true,
     networkLogoPath: '/icons/networks/arbitrum.svg',
     bridge: {
       icon: '/icons/bridge/arbitrum.svg',
@@ -206,8 +225,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 18,
     explorerLink: 'https://explorer.harmony.one',
     rpcOnly: true,
-    usdMarket: true,
-    isTestnet: true,
+    // usdMarket: true,
     networkLogoPath: '/icons/networks/harmony.svg',
     bridge: {
       icon: '/icons/bridge/harmony.svg',
@@ -226,7 +244,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 18,
     explorerLink: 'https://explorer.pops.one',
     rpcOnly: true,
-    usdMarket: true,
+    // usdMarket: true,
     isTestnet: true,
     networkLogoPath: '/icons/networks/harmony.svg',
     bridge: {
@@ -246,8 +264,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 18,
     explorerLink: 'https://optimistic.etherscan.io',
     rpcOnly: true,
-    usdMarket: true,
-    isTestnet: true,
+    // usdMarket: true,
     networkLogoPath: '/icons/networks/optimism.svg',
     bridge: {
       icon: '/icons/bridge/optimism.svg',
@@ -266,7 +283,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 18,
     explorerLink: 'https://kovan-optimistic.etherscan.io',
     rpcOnly: true,
-    usdMarket: true,
+    // usdMarket: true,
     isTestnet: true,
     networkLogoPath: '/icons/networks/optimism.svg',
     bridge: {
@@ -286,8 +303,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 18,
     explorerLink: 'https://ftmscan.com',
     rpcOnly: true,
-    usdMarket: true,
-    isTestnet: true,
+    // usdMarket: true,
     networkLogoPath: '/icons/networks/fantom.svg',
     bridge: {
       icon: '/icons/bridge/fantom.svg',
@@ -306,7 +322,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 18,
     explorerLink: 'https://testnet.ftmscan.com',
     rpcOnly: true,
-    usdMarket: true,
+    // usdMarket: true,
     isTestnet: true,
     networkLogoPath: '/icons/networks/fantom.svg',
     bridge: {
