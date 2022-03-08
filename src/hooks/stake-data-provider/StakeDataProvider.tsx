@@ -6,6 +6,7 @@ import { useConnectionStatusContext } from '../useConnectionStatusContext';
 import { _useStakeDataCached } from './_useStakeDataCached';
 import { _useStakeDataRPC } from './_useStakeDataRPC';
 import { useC_StakeGeneralUiDataQuery, useC_StakeUserUiDataQuery } from './graphql/hooks';
+import { useProtocolDataContext } from '../useProtocolDataContext';
 
 interface StakeDataProviderContextType {}
 
@@ -19,14 +20,21 @@ const StakeDataProviderContext = React.createContext<StakeDataProviderContextTyp
  * @returns
  */
 export const StakeDataProvider: React.FC = ({ children }) => {
+  const stakeConfig = getStakeConfig();
   const { currentAccount } = useWeb3Context();
   const { isRPCActive } = useConnectionStatusContext();
-  const stakeConfig = getStakeConfig();
+  const { currentNetworkConfig } = useProtocolDataContext();
 
-  const rpcMode = isRPCActive || !stakeConfig?.wsStakeDataUrl || !stakeConfig?.queryStakeDataUrl;
+  const isGovernanceFork =
+    currentNetworkConfig.isFork && currentNetworkConfig.underlyingChainId === stakeConfig.chainId;
+  const rpcMode =
+    isRPCActive ||
+    !stakeConfig.wsStakeDataUrl ||
+    !stakeConfig.queryStakeDataUrl ||
+    isGovernanceFork;
 
-  _useStakeDataCached(currentAccount, rpcMode);
-  const { refresh } = _useStakeDataRPC(currentAccount, !rpcMode);
+  _useStakeDataCached(currentAccount, stakeConfig.chainId, rpcMode);
+  const { refresh } = _useStakeDataRPC(currentAccount, stakeConfig.chainId, !rpcMode);
   return (
     <StakeDataProviderContext.Provider value={{ refresh }}>
       {children}
@@ -45,9 +53,10 @@ export const useStakeDataProvider = () => useContext(StakeDataProviderContext);
  */
 export const useStakeData = () => {
   const { currentAccount } = useWeb3Context();
+  const stakeConfig = getStakeConfig();
 
   const { data: stakeUserResult } = useC_StakeUserUiDataQuery({
-    variables: { userAddress: currentAccount },
+    variables: { userAddress: currentAccount, chainId: stakeConfig.chainId },
     skip: !currentAccount,
     fetchPolicy: 'cache-only',
   });

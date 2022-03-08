@@ -11,7 +11,7 @@ import { isProposalStateImmutable } from 'src/modules/governance/utils/immutable
 import { IpfsType } from 'src/static-build/ipfs';
 import { CustomProposalType } from 'src/static-build/proposal';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
-import ProposalPage from './[proposalId]';
+import ProposalPage from './[proposalId].governance';
 
 export default function DynamicProposal() {
   const router = useRouter();
