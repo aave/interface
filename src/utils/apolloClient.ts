@@ -110,7 +110,7 @@ const isSubscription = ({ query }: Operation) => {
 };
 
 const getGovernanceLink = (link?: ApolloLink) => {
-  if (governanceConfig && process.browser) {
+  if (process.env.ENABLE_GOVERNANCE === 'true' && process.browser) {
     const condition = (operation: Operation) =>
       operation.getContext().target === APOLLO_QUERY_TARGET.GOVERNANCE;
     const http = new HttpLink({ uri: governanceConfig.queryGovernanceDataUrl });
@@ -125,7 +125,7 @@ const getGovernanceLink = (link?: ApolloLink) => {
 };
 
 const getStakeLink = (link?: ApolloLink) => {
-  const stakeConfig = getStakeConfig();
+  const stakeConfig = process.env.ENABLE_STAKING === 'true' && getStakeConfig();
   if (
     stakeConfig &&
     stakeConfig.wsStakeDataUrl &&

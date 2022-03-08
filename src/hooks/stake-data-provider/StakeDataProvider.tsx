@@ -19,9 +19,9 @@ const StakeDataProviderContext = React.createContext<StakeDataProviderContextTyp
  * @returns
  */
 export const StakeDataProvider: React.FC = ({ children }) => {
+  const stakeConfig = getStakeConfig();
   const { currentAccount } = useWeb3Context();
   const { isRPCActive } = useConnectionStatusContext();
-  const stakeConfig = getStakeConfig();
 
   const rpcMode = isRPCActive || !stakeConfig?.wsStakeDataUrl || !stakeConfig?.queryStakeDataUrl;
 

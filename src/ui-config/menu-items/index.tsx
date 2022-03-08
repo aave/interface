@@ -6,11 +6,7 @@ import { ROUTES } from 'src/components/primitives/Link';
 import DiscordIcon from '/public/icons/discord.svg';
 import GithubIcon from '/public/icons/github.svg';
 
-import { governanceConfig } from '../governanceConfig';
 import { MarketDataType } from '../marketsConfig';
-import { getStakeConfig } from '../stakeConfig';
-
-const stakeConfig = getStakeConfig();
 
 interface Navigation {
   link: string;
@@ -32,12 +28,12 @@ export const navigation: Navigation[] = [
   {
     link: ROUTES.staking,
     title: t`Stake`,
-    isVisible: () => !!stakeConfig,
+    isVisible: () => process.env.ENABLE_STAKING === 'true',
   },
   {
     link: ROUTES.governance,
     title: t`Governance`,
-    isVisible: () => !!governanceConfig,
+    isVisible: () => process.env.ENABLE_GOVERNANCE === 'true',
   },
 ];
 
