@@ -44,6 +44,7 @@ export type Web3Data = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   signTxData: (unsignedData: string) => Promise<SignatureLike>;
   error: Error | undefined;
+  switchNetworkError: Error | undefined;
 };
 
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
@@ -66,6 +67,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [deactivated, setDeactivated] = useState(false);
   const [selectedWallet, setSelectedWallet] = useState<WalletType>();
   const [triedSafe, setTriedSafe] = useState(false);
+  const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
 
   // listener handlers
   const handleAccountsChanged = (accounts: string[]) => {
@@ -109,6 +111,8 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   }, [connector]);
 
   const disconnectWallet = useCallback(async () => {
+    cleanConnectorStorage();
+    localStorage.removeItem('walletProvider');
     deactivate();
     // @ts-expect-error close can be returned by wallet
     if (connector && connector.close) {
@@ -117,12 +121,11 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       await connector.close();
     }
 
-    localStorage.removeItem('walletProvider');
     setSelectedWallet(undefined);
     setLoading(false);
     setDeactivated(true);
     setCurrentAccount('');
-    cleanConnectorStorage();
+    setSwitchNetworkError(undefined);
   }, [provider, connector]);
 
   // connect to the wallet specified by wallet type
@@ -139,6 +142,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         await activate(connector, undefined, true);
         setConnector(connector);
         setSelectedWallet(wallet);
+        setSwitchNetworkError(undefined);
         localStorage.setItem('walletProvider', wallet.toString());
         // connector.on('chainChanged', handleChainChanged);
         connector.on('accountsChanged', handleAccountsChanged);
@@ -165,44 +169,46 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   // first, try connecting to a gnosis safe
   useEffect(() => {
-    // if (!triedSafe) {
-    //   const gnosisConnector = getWallet(WalletType.GNOSIS);
-    //   // @ts-expect-error isSafeApp not in abstract connector type
-    //   gnosisConnector.isSafeApp().then((loadedInSafe) => {
-    //     if (loadedInSafe) {
-    //       connectWallet(WalletType.GNOSIS).catch(() => {
-    //         setTriedSafe(true);
-    //       });
-    //     } else {
-    //       setTriedSafe(true);
-    //     }
-    //   });
-    // }
+    if (!triedSafe) {
+      const gnosisConnector = getWallet(WalletType.GNOSIS);
+      // @ts-expect-error isSafeApp not in abstract connector type
+      gnosisConnector.isSafeApp().then((loadedInSafe) => {
+        if (loadedInSafe) {
+          connectWallet(WalletType.GNOSIS).catch(() => {
+            setTriedSafe(true);
+          });
+        } else {
+          setTriedSafe(true);
+        }
+      });
+    }
     setTriedSafe(true);
   }, [connectWallet, setTriedSafe, triedSafe]);
 
   // handle logic to eagerly connect to the injected ethereum provider,
   // if it exists and has granted access already
   useEffect(() => {
+    const lastWalletProvider = localStorage.getItem('walletProvider');
     if (!active && !deactivated && triedSafe) {
-      const lastWalletProvider = Number(localStorage.getItem('walletProvider'));
-      if (lastWalletProvider && lastWalletProvider > 0) {
-        connectWallet(lastWalletProvider).catch(() => {
+      if (!!lastWalletProvider) {
+        connectWallet(lastWalletProvider as WalletType).catch(() => {
           setTried(true);
         });
       } else {
-        const injected = getWallet(WalletType.INJECTED);
-        // @ts-expect-error isAuthorized not in AbstractConnector type. But method is there for
-        // injected provider
-        injected.isAuthorized().then((isAuthorized: boolean) => {
-          if (isAuthorized) {
-            connectWallet(WalletType.INJECTED).catch(() => {
-              setTried(true);
-            });
-          } else {
-            setTried(true);
-          }
-        });
+        setTried(true);
+        // For now we will not eagerly connect to injected provider
+        // const injected = getWallet(WalletType.INJECTED);
+        // // @ts-expect-error isAuthorized not in AbstractConnector type. But method is there for
+        // // injected provider
+        // injected.isAuthorized().then((isAuthorized: boolean) => {
+        //   if (isAuthorized) {
+        //     connectWallet(WalletType.INJECTED).catch(() => {
+        //       setTried(true);
+        //     });
+        //   } else {
+        //     setTried(true);
+        //   }
+        // });
       }
     }
   }, [activate, setTried, active, connectWallet, deactivated, triedSafe]);
@@ -267,8 +273,8 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         await provider.send('wallet_switchEthereumChain', [
           { chainId: `0x${newChainId.toString(16)}` },
         ]);
+        setSwitchNetworkError(undefined);
       } catch (switchError) {
-        console.log(switchError);
         const networkInfo = getNetworkConfig(newChainId);
         if (switchError.code === 4902) {
           try {
@@ -281,11 +287,12 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
                 blockExplorerUrls: networkInfo.explorerLink,
               },
             ]);
+            setSwitchNetworkError(undefined);
           } catch (addError) {
-            console.log(addError);
-            // TODO: handle error somehow
+            setSwitchNetworkError(addError);
           }
         }
+        setSwitchNetworkError(switchError);
       }
     }
   };
@@ -349,6 +356,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           currentAccount,
           addERC20Token,
           error,
+          switchNetworkError,
         },
       }}
     >

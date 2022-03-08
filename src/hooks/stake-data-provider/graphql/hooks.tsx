@@ -50,23 +50,28 @@ export type Query = {
 };
 
 export type QueryProtocolDataArgs = {
+  chainId: Scalars['Int'];
   lendingPoolAddressProvider: Scalars['String'];
 };
 
 export type QueryReservesIncentivesArgs = {
+  chainId: Scalars['Int'];
   lendingPoolAddressProvider: Scalars['String'];
 };
 
 export type QueryStakeUserUiDataArgs = {
+  chainId: Scalars['Int'];
   userAddress: Scalars['String'];
 };
 
 export type QueryUserDataArgs = {
+  chainId: Scalars['Int'];
   lendingPoolAddressProvider: Scalars['String'];
   userAddress: Scalars['String'];
 };
 
 export type QueryUserIncentivesArgs = {
+  chainId: Scalars['Int'];
   lendingPoolAddressProvider: Scalars['String'];
   userAddress: Scalars['String'];
 };
@@ -78,6 +83,8 @@ export type ReserveData = {
   availableLiquidity: Scalars['String'];
   averageStableRate: Scalars['String'];
   baseLTVasCollateral: Scalars['String'];
+  baseStableBorrowRate: Scalars['String'];
+  baseVariableBorrowRate: Scalars['String'];
   borrowCap: Scalars['String'];
   borrowableInIsolation: Scalars['Boolean'];
   borrowingEnabled: Scalars['Boolean'];
@@ -100,7 +107,9 @@ export type ReserveData = {
   liquidityIndex: Scalars['String'];
   liquidityRate: Scalars['String'];
   name: Scalars['String'];
+  optimalUsageRatio: Scalars['String'];
   priceInMarketReferenceCurrency: Scalars['String'];
+  priceOracle: Scalars['String'];
   reserveFactor: Scalars['String'];
   reserveLiquidationBonus: Scalars['String'];
   reserveLiquidationThreshold: Scalars['String'];
@@ -127,6 +136,7 @@ export type ReserveData = {
 export type ReserveIncentivesData = {
   __typename?: 'ReserveIncentivesData';
   aIncentiveData: IncentiveData;
+  id: Scalars['String'];
   sIncentiveData: IncentiveData;
   underlyingAsset: Scalars['String'];
   vIncentiveData: IncentiveData;
@@ -193,23 +203,28 @@ export type Subscription = {
 };
 
 export type SubscriptionPoolIncentivesDataUpdateArgs = {
+  chainId: Scalars['Int'];
   lendingPoolAddressProvider: Scalars['String'];
 };
 
 export type SubscriptionProtocolDataUpdateArgs = {
+  chainId: Scalars['Int'];
   lendingPoolAddressProvider: Scalars['String'];
 };
 
 export type SubscriptionStakeUserUiDataUpdateArgs = {
+  chainId: Scalars['Int'];
   userAddress: Scalars['String'];
 };
 
 export type SubscriptionUserDataUpdateArgs = {
+  chainId: Scalars['Int'];
   lendingPoolAddressProvider: Scalars['String'];
   userAddress: Scalars['String'];
 };
 
 export type SubscriptionUserPoolIncentivesDataUpdateArgs = {
+  chainId: Scalars['Int'];
   lendingPoolAddressProvider: Scalars['String'];
   userAddress: Scalars['String'];
 };
@@ -224,6 +239,7 @@ export type UserIncentiveData = {
 export type UserIncentivesData = {
   __typename?: 'UserIncentivesData';
   aTokenIncentivesUserData: UserIncentiveData;
+  id: Scalars['String'];
   sTokenIncentivesUserData: UserIncentiveData;
   underlyingAsset: Scalars['String'];
   vTokenIncentivesUserData: UserIncentiveData;
@@ -231,6 +247,7 @@ export type UserIncentivesData = {
 
 export type UserReserveData = {
   __typename?: 'UserReserveData';
+  id: Scalars['String'];
   principalStableDebt: Scalars['String'];
   scaledATokenBalance: Scalars['String'];
   scaledVariableDebt: Scalars['String'];
@@ -372,6 +389,7 @@ export type StakeUserUiDataFragmentFragment = {
 
 export type C_StakeUserUiDataQueryVariables = Exact<{
   userAddress: Scalars['String'];
+  chainId: Scalars['Int'];
 }>;
 
 export type C_StakeUserUiDataQuery = {
@@ -400,6 +418,7 @@ export type C_StakeUserUiDataQuery = {
 
 export type C_StakeUserUiDataUpdateSubscriptionVariables = Exact<{
   userAddress: Scalars['String'];
+  chainId: Scalars['Int'];
 }>;
 
 export type C_StakeUserUiDataUpdateSubscription = {
@@ -568,8 +587,8 @@ export type C_StakeGeneralUiDataUpdateSubscriptionHookResult = ReturnType<
 export type C_StakeGeneralUiDataUpdateSubscriptionResult =
   ApolloReactCommon.SubscriptionResult<C_StakeGeneralUiDataUpdateSubscription>;
 export const C_StakeUserUiDataDocument = gql`
-  query C_StakeUserUIData($userAddress: String!) {
-    stakeUserUIData(userAddress: $userAddress) {
+  query C_StakeUserUIData($userAddress: String!, $chainId: Int!) {
+    stakeUserUIData(userAddress: $userAddress, chainId: $chainId) {
       ...StakeUserUIDataFragment
     }
   }
@@ -589,6 +608,7 @@ export const C_StakeUserUiDataDocument = gql`
  * const { data, loading, error } = useC_StakeUserUiDataQuery({
  *   variables: {
  *      userAddress: // value for 'userAddress'
+ *      chainId: // value for 'chainId'
  *   },
  * });
  */
@@ -623,8 +643,8 @@ export type C_StakeUserUiDataQueryResult = ApolloReactCommon.QueryResult<
   C_StakeUserUiDataQueryVariables
 >;
 export const C_StakeUserUiDataUpdateDocument = gql`
-  subscription C_StakeUserUIDataUpdate($userAddress: String!) {
-    stakeUserUIDataUpdate(userAddress: $userAddress) {
+  subscription C_StakeUserUIDataUpdate($userAddress: String!, $chainId: Int!) {
+    stakeUserUIDataUpdate(userAddress: $userAddress, chainId: $chainId) {
       ...StakeUserUIDataFragment
     }
   }
@@ -644,6 +664,7 @@ export const C_StakeUserUiDataUpdateDocument = gql`
  * const { data, loading, error } = useC_StakeUserUiDataUpdateSubscription({
  *   variables: {
  *      userAddress: // value for 'userAddress'
+ *      chainId: // value for 'chainId'
  *   },
  * });
  */

@@ -372,6 +372,7 @@ export const changeCollateral = (
   {
     asset,
     isCollateralType,
+    hasApproval = true,
   }: {
     asset: { shortName: string; fullName: string; wrapped: boolean };
     isCollateralType: boolean;

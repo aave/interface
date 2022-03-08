@@ -259,6 +259,10 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
               borrowUnWrapped && poolReserve.isWrappedBaseAsset
                 ? networkConfig.baseAssetSymbol
                 : poolReserve.symbol,
+            iconSymbol:
+              borrowUnWrapped && poolReserve.isWrappedBaseAsset
+                ? networkConfig.baseAssetSymbol
+                : poolReserve.iconSymbol,
           },
         ]}
         symbol={
@@ -304,6 +308,7 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
         )}
         <DetailsIncentivesLine incentives={incentive} symbol={poolReserve.symbol} />
         <DetailsHFLine
+          visibleHfChange={!!_amount}
           healthFactor={user.healthFactor}
           futureHealthFactor={newHealthFactor.toString()}
         />

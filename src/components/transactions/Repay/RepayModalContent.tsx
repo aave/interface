@@ -144,6 +144,7 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
       repayTokens.push({
         address: poolReserve.underlyingAsset,
         symbol: poolReserve.symbol,
+        iconSymbol: poolReserve.iconSymbol,
         balance: maxReserveTokenForRepay.toString(),
       });
       // push reserve atoken
@@ -273,7 +274,11 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
           amountUSD={displayAmountAfterRepayInUsd.toString()}
           symbol={poolReserve.iconSymbol}
         />
-        <DetailsHFLine healthFactor={user?.healthFactor} futureHealthFactor={newHF?.toString()} />
+        <DetailsHFLine
+          visibleHfChange={!!_amount}
+          healthFactor={user?.healthFactor}
+          futureHealthFactor={newHF?.toString()}
+        />
       </TxModalDetails>
 
       {repayTxState.gasEstimationError && (

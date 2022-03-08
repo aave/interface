@@ -7,6 +7,7 @@ import { useGasStation } from 'src/hooks/useGasStation';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { optimizedPath } from 'src/utils/utils';
 
 import { LeftHelperText } from '../FlowCommons/LeftHelperText';
 import { RightHelperText } from '../FlowCommons/RightHelperText';
@@ -64,6 +65,7 @@ export const RepayActions = ({
             reserve: poolAddress,
             amount: amountToRepay,
             rateMode: debtType as InterestRate,
+            useOptimizedPath: optimizedPath(chainId),
           });
         } else {
           return newPool.repay({
@@ -71,6 +73,7 @@ export const RepayActions = ({
             reserve: poolAddress,
             amount: amountToRepay,
             interestRateMode: debtType,
+            useOptimizedPath: optimizedPath(chainId),
           });
         }
       } else {
@@ -83,7 +86,7 @@ export const RepayActions = ({
       }
       // TODO: add here the case for repay with collateral
     },
-    handleGetPermitTxns: async (signature) => {
+    handleGetPermitTxns: async (signature, deadline) => {
       const newPool: Pool = lendingPool as Pool;
       return newPool.repayWithPermit({
         user: currentAccount,
@@ -91,6 +94,8 @@ export const RepayActions = ({
         amount: amountToRepay, // amountToRepay.toString(),
         interestRateMode: debtType,
         signature,
+        useOptimizedPath: optimizedPath(chainId),
+        deadline,
       });
     },
     customGasPrice:
@@ -98,7 +103,7 @@ export const RepayActions = ({
         ? state.customGas
         : gasPriceData.data?.[state.gasOption].legacyGasPrice,
     skip: !amountToRepay || parseFloat(amountToRepay) === 0 || blocked,
-    deps: [amountToRepay, poolAddress],
+    deps: [amountToRepay, poolAddress, repayWithATokens],
   });
 
   return (

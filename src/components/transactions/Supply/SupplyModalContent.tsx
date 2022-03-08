@@ -252,9 +252,9 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
       {showIsolationWarning && <IsolationModeWarning />}
       {showSupplyCapWarning && <SupplyCapWarning />}
       {poolReserve.symbol === 'AMPL' && <AMPLWarning />}
-      {poolReserve.symbol === 'AAVE' && isFeatureEnabled.staking(currentMarketData) && (
-        <AAVEWarning />
-      )}
+      {process.env.ENABLE_STAKING === 'true' &&
+        poolReserve.symbol === 'AAVE' &&
+        isFeatureEnabled.staking(currentMarketData) && <AAVEWarning />}
       {poolReserve.symbol === 'SNX' && !maxAmountToSupply.eq('0') && <SNXWarning />}
 
       <AssetInput
@@ -266,6 +266,9 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
           {
             balance: maxAmountToSupply.toString(),
             symbol: supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol,
+            iconSymbol: supplyUnWrapped
+              ? currentNetworkConfig.baseAssetSymbol
+              : poolReserve.iconSymbol,
           },
         ]}
         capType={CapType.supplyCap}
@@ -288,6 +291,7 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
         />
         <DetailsCollateralLine collateralType={willBeUsedAsCollateral} />
         <DetailsHFLine
+          visibleHfChange={!!_amount}
           healthFactor={user ? user.healthFactor : '-1'}
           futureHealthFactor={healthFactorAfterDeposit.toString()}
         />

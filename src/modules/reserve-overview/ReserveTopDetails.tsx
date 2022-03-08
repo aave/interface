@@ -79,7 +79,11 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
                   <ArrowBackRoundedIcon />
                 </SvgIcon>
               }
-              onClick={() => router.back()}
+              onClick={() => {
+                // https://github.com/vercel/next.js/discussions/34980
+                if (history.state.idx !== 0) router.back();
+                else router.push('/markets');
+              }}
               sx={{ mr: 3 }}
             >
               <Trans>Go Back</Trans>
@@ -151,7 +155,7 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
         loading={loading}
       >
         <FormattedNumber
-          value={poolReserve?.utilizationRate}
+          value={poolReserve?.borrowUsageRatio}
           percent
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}

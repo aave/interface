@@ -32611,6 +32611,7 @@ var require_types2 = __commonJS({
     var ProtocolAction;
     (function(ProtocolAction2) {
       ProtocolAction2["default"] = "default";
+      ProtocolAction2["supply"] = "supply";
       ProtocolAction2["withdraw"] = "withdraw";
       ProtocolAction2["deposit"] = "deposit";
       ProtocolAction2["liquidationCall"] = "liquidationCall";
@@ -34108,7 +34109,7 @@ var require_utils6 = __commonJS({
   "node_modules/@aave/contract-helpers/dist/cjs/commons/utils.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.mintAmountsPerToken = exports.gasLimitRecommendations = exports.SURPLUS = exports.uniswapEthAmount = exports.API_ETH_MOCK_ADDRESS = exports.SUPER_BIG_ALLOWANCE_NUMBER = exports.MAX_UINT_AMOUNT = exports.DEFAULT_APPROVE_AMOUNT = exports.DEFAULT_NULL_VALUE_ON_TX = exports.getTxValue = exports.decimalsToCurrencyUnits = exports.canBeEnsAddress = exports.valueToWei = void 0;
+    exports.augustusToAmountOffsetFromCalldata = exports.mintAmountsPerToken = exports.gasLimitRecommendations = exports.SURPLUS = exports.uniswapEthAmount = exports.API_ETH_MOCK_ADDRESS = exports.SUPER_BIG_ALLOWANCE_NUMBER = exports.MAX_UINT_AMOUNT = exports.DEFAULT_APPROVE_AMOUNT = exports.DEFAULT_NULL_VALUE_ON_TX = exports.getTxValue = exports.decimalsToCurrencyUnits = exports.canBeEnsAddress = exports.valueToWei = void 0;
     var bignumber_js_1 = require_bignumber2();
     var ethers_1 = require_lib31();
     var types_1 = require_types2();
@@ -34137,6 +34138,10 @@ var require_utils6 = __commonJS({
       [types_1.ProtocolAction.default]: {
         limit: "210000",
         recommended: "210000"
+      },
+      [types_1.ProtocolAction.supply]: {
+        limit: "300000",
+        recommended: "300000"
       },
       [types_1.ProtocolAction.deposit]: {
         limit: "300000",
@@ -34209,6 +34214,21 @@ var require_utils6 = __commonJS({
       UNIMKRETH: (0, exports.valueToWei)(exports.uniswapEthAmount, 18),
       EURS: (0, exports.valueToWei)("10000", 2)
     };
+    var augustusToAmountOffsetFromCalldata = (calldata) => {
+      switch (calldata.slice(0, 10)) {
+        case "0x935fb84b":
+          return 36;
+        case "0xc03786b0":
+          return 100;
+        case "0xb2f1e6db":
+          return 68;
+        case "0xb66bcbac":
+          return 164;
+        default:
+          throw new Error("Unrecognized function selector for Augustus");
+      }
+    };
+    exports.augustusToAmountOffsetFromCalldata = augustusToAmountOffsetFromCalldata;
   }
 });
 
@@ -34239,27 +34259,22 @@ var require_BaseService = __commonJS({
           return tx;
         });
         this.generateTxPriceEstimation = (txs, txCallback, action = types_1.ProtocolAction.default) => (force = false) => __async(this, null, function* () {
-          try {
-            const gasPrice = yield this.provider.getGasPrice();
-            const hasPendingApprovals = txs.find((tx) => tx.txType === types_1.eEthereumTxType.ERC20_APPROVAL);
-            if (!hasPendingApprovals || force) {
-              const { gasLimit, gasPrice: gasPriceProv } = yield txCallback();
-              if (!gasLimit) {
-                throw new Error("Transaction calculation error");
-              }
-              return {
-                gasLimit: gasLimit.toString(),
-                gasPrice: gasPriceProv ? gasPriceProv.toString() : gasPrice.toString()
-              };
+          const gasPrice = yield this.provider.getGasPrice();
+          const hasPendingApprovals = txs.find((tx) => tx.txType === types_1.eEthereumTxType.ERC20_APPROVAL);
+          if (!hasPendingApprovals || force) {
+            const { gasLimit, gasPrice: gasPriceProv } = yield txCallback();
+            if (!gasLimit) {
+              throw new Error("Transaction calculation error");
             }
             return {
-              gasLimit: utils_1.gasLimitRecommendations[action].recommended,
-              gasPrice: gasPrice.toString()
+              gasLimit: gasLimit.toString(),
+              gasPrice: gasPriceProv ? gasPriceProv.toString() : gasPrice.toString()
             };
-          } catch (error) {
-            console.error("Calculate error on calculate estimation gas price.", error);
-            return null;
           }
+          return {
+            gasLimit: utils_1.gasLimitRecommendations[action].recommended,
+            gasPrice: gasPrice.toString()
+          };
         });
         this.contractFactory = contractFactory;
         this.provider = provider;
@@ -35001,9 +35016,10 @@ var require_paramValidators = __commonJS({
   "node_modules/@aave/contract-helpers/dist/cjs/commons/validators/paramValidators.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.isPositiveOrMinusOneAmount = exports.is0OrPositiveAmount = exports.isPositiveAmount = exports.isEthAddressOrENS = exports.isEthAddressArray = exports.isEthAddress = exports.isEthAddressArrayMetadataKeyNotEmpty = exports.optionalMetadataKey = exports.is0OrPositiveMetadataKey = exports.isPositiveOrMinusOneMetadataKey = exports.isPositiveMetadataKey = exports.isEthAddressOrENSMetadataKey = exports.isEthAddressArrayMetadataKey = exports.isEthAddressMetadataKey = void 0;
+    exports.isPositiveOrMinusOneAmount = exports.is0OrPositiveAmount = exports.isPositiveAmount = exports.isEthAddressOrENS = exports.isEthAddressArray = exports.isEthAddress = exports.isDeadline32Bytes = exports.isEthAddressArrayMetadataKeyNotEmpty = exports.optionalMetadataKey = exports.is0OrPositiveMetadataKey = exports.isPositiveOrMinusOneMetadataKey = exports.isPositiveMetadataKey = exports.isEthAddressOrENSMetadataKey = exports.isEthAddressArrayMetadataKey = exports.isPermitDeadline32Bytes = exports.isEthAddressMetadataKey = void 0;
     require_Reflect();
     exports.isEthAddressMetadataKey = Symbol("ethAddress");
+    exports.isPermitDeadline32Bytes = Symbol("deadline32Bytes");
     exports.isEthAddressArrayMetadataKey = Symbol("ethAddressArray");
     exports.isEthAddressOrENSMetadataKey = Symbol("ethOrENSAddress");
     exports.isPositiveMetadataKey = Symbol("isPositive");
@@ -35011,6 +35027,17 @@ var require_paramValidators = __commonJS({
     exports.is0OrPositiveMetadataKey = Symbol("is0OrPositiveMetadataKey");
     exports.optionalMetadataKey = Symbol("Optional");
     exports.isEthAddressArrayMetadataKeyNotEmpty = Symbol("isEthAddressArrayMetadataKeyNotEmpty");
+    function isDeadline32Bytes(field) {
+      return function(target, propertyKey, parameterIndex) {
+        const existingPossibleAddresses = Reflect.getOwnMetadata(exports.isPermitDeadline32Bytes, target, propertyKey) || [];
+        existingPossibleAddresses.push({
+          index: parameterIndex,
+          field
+        });
+        Reflect.defineMetadata(exports.isPermitDeadline32Bytes, existingPossibleAddresses, target, propertyKey);
+      };
+    }
+    exports.isDeadline32Bytes = isDeadline32Bytes;
     function isEthAddress(field) {
       return function(target, propertyKey, parameterIndex) {
         const existingPossibleAddresses = Reflect.getOwnMetadata(exports.isEthAddressMetadataKey, target, propertyKey) || [];
@@ -35076,10 +35103,28 @@ var require_validations = __commonJS({
   "node_modules/@aave/contract-helpers/dist/cjs/commons/validators/validations.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.amountGtThan0OrMinus1 = exports.amount0OrPositiveValidator = exports.amountGtThan0Validator = exports.isEthAddressOrEnsValidator = exports.isEthAddressArrayValidatorNotEmpty = exports.isEthAddressArrayValidator = exports.isEthAddressValidator = void 0;
+    exports.amountGtThan0OrMinus1 = exports.amount0OrPositiveValidator = exports.amountGtThan0Validator = exports.isEthAddressOrEnsValidator = exports.isEthAddressArrayValidatorNotEmpty = exports.isEthAddressArrayValidator = exports.isEthAddressValidator = exports.isDeadline32BytesValidator = void 0;
     var ethers_1 = require_lib31();
     var utils_1 = require_utils6();
     var paramValidators_1 = require_paramValidators();
+    function isDeadline32BytesValidator(target, propertyName, methodArguments, isParamOptional) {
+      const addressParameters = Reflect.getOwnMetadata(paramValidators_1.isPermitDeadline32Bytes, target, propertyName);
+      if (addressParameters) {
+        addressParameters.forEach((storedParams) => {
+          if (storedParams.field) {
+            if (methodArguments[0][storedParams.field] && Buffer.byteLength(methodArguments[0][storedParams.field], "utf8") > 32) {
+              throw new Error(`Deadline: ${methodArguments[0][storedParams.field]} is bigger than 32 bytes`);
+            }
+          } else {
+            const isOptional = isParamOptional === null || isParamOptional === void 0 ? void 0 : isParamOptional[storedParams.index];
+            if (methodArguments[storedParams.index] && !isOptional && Buffer.byteLength(methodArguments[storedParams.index], "utf8") > 32) {
+              throw new Error(`Deadline: ${methodArguments[storedParams.index]} is bigger than 32 bytes`);
+            }
+          }
+        });
+      }
+    }
+    exports.isDeadline32BytesValidator = isDeadline32BytesValidator;
     function isEthAddressValidator(target, propertyName, methodArguments, isParamOptional) {
       const addressParameters = Reflect.getOwnMetadata(paramValidators_1.isEthAddressMetadataKey, target, propertyName);
       if (addressParameters) {
@@ -35250,7 +35295,7 @@ var require_methodValidators = __commonJS({
   "node_modules/@aave/contract-helpers/dist/cjs/commons/validators/methodValidators.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.StackeUiDataProviderValidator = exports.GovDelegationValidator = exports.GovValidator = exports.GovHelperValidator = exports.WETHValidator = exports.FaucetValidator = exports.SignStakingValidator = exports.StakingValidator = exports.RepayWithCollateralValidator = exports.LiquiditySwapValidator = exports.ERC20Validator = exports.SynthetixValidator = exports.DebtTokenValidator = exports.IncentivesValidator = exports.UiIncentiveDataProviderValidator = exports.LPValidatorV3 = exports.LPValidator = exports.LPSwapCollateralValidatorV3 = exports.LPRepayWithCollateralValidatorV3 = exports.LPSwapCollateralValidator = exports.LPRepayWithCollateralValidator = exports.LPFlashLiquidationValidatorV3 = exports.LPFlashLiquidationValidator = void 0;
+    exports.StackeUiDataProviderValidator = exports.GovDelegationValidator = exports.GovValidator = exports.GovHelperValidator = exports.WETHValidator = exports.FaucetValidator = exports.SignStakingValidator = exports.StakingValidator = exports.RepayWithCollateralValidator = exports.LiquiditySwapValidator = exports.ERC20Validator = exports.SynthetixValidator = exports.DebtTokenValidator = exports.IncentivesValidator = exports.UiIncentiveDataProviderValidator = exports.LPValidatorV3 = exports.L2PValidator = exports.LPValidator = exports.LPSwapCollateralValidatorV3 = exports.LPRepayWithCollateralValidatorV3 = exports.LPSwapCollateralValidator = exports.LPRepayWithCollateralValidator = exports.LPFlashLiquidationValidatorV3 = exports.LPFlashLiquidationValidator = void 0;
     var ethers_1 = require_lib31();
     var validations_1 = require_validations();
     function LPFlashLiquidationValidator(target, propertyName, descriptor) {
@@ -35348,6 +35393,18 @@ var require_methodValidators = __commonJS({
       };
     }
     exports.LPValidator = LPValidator;
+    function L2PValidator(target, propertyName, descriptor) {
+      const method = descriptor.value;
+      descriptor.value = function() {
+        if (!ethers_1.utils.isAddress(this.l2PoolAddress) || !ethers_1.utils.isAddress(this.encoderAddress)) {
+          console.error(`[L2PoolValidator] You need to pass valid addresses: l2pool: ${this.l2PoolAddress} encoder: ${this.encoderAddress}`);
+          return [];
+        }
+        (0, validations_1.isDeadline32BytesValidator)(target, propertyName, arguments);
+        return method.apply(this, arguments);
+      };
+    }
+    exports.L2PValidator = L2PValidator;
     function LPValidatorV3(target, propertyName, descriptor) {
       const method = descriptor.value;
       descriptor.value = function() {
@@ -39884,6 +39941,8 @@ var require_paraswap_liquiditySwapAdapter_contract = __commonJS({
           return 4;
         case "0xf5661034":
           return 68;
+        case "0x0b86a4c1":
+          return 36;
         case "0x64466805":
           return 68;
         case "0xa94e78ef":
@@ -43996,6 +44055,1365 @@ var require_erc20_2612 = __commonJS({
   }
 });
 
+// node_modules/@aave/contract-helpers/dist/cjs/paraswap-repayWithCollateralAdapter-contract/typechain/ParaSwapRepayAdapter__factory.js
+var require_ParaSwapRepayAdapter_factory = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/paraswap-repayWithCollateralAdapter-contract/typechain/ParaSwapRepayAdapter__factory.js"(exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.ParaSwapRepayAdapter__factory = void 0;
+    var ethers_1 = require_lib31();
+    var _abi = [
+      {
+        inputs: [
+          {
+            internalType: "contract IPoolAddressesProvider",
+            name: "addressesProvider",
+            type: "address"
+          },
+          {
+            internalType: "contract IParaSwapAugustusRegistry",
+            name: "augustusRegistry",
+            type: "address"
+          }
+        ],
+        stateMutability: "nonpayable",
+        type: "constructor"
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: true,
+            internalType: "address",
+            name: "fromAsset",
+            type: "address"
+          },
+          {
+            indexed: true,
+            internalType: "address",
+            name: "toAsset",
+            type: "address"
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "amountSold",
+            type: "uint256"
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "receivedAmount",
+            type: "uint256"
+          }
+        ],
+        name: "Bought",
+        type: "event"
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: true,
+            internalType: "address",
+            name: "previousOwner",
+            type: "address"
+          },
+          {
+            indexed: true,
+            internalType: "address",
+            name: "newOwner",
+            type: "address"
+          }
+        ],
+        name: "OwnershipTransferred",
+        type: "event"
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: true,
+            internalType: "address",
+            name: "fromAsset",
+            type: "address"
+          },
+          {
+            indexed: true,
+            internalType: "address",
+            name: "toAsset",
+            type: "address"
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "fromAmount",
+            type: "uint256"
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "receivedAmount",
+            type: "uint256"
+          }
+        ],
+        name: "Swapped",
+        type: "event"
+      },
+      {
+        inputs: [],
+        name: "ADDRESSES_PROVIDER",
+        outputs: [
+          {
+            internalType: "contract IPoolAddressesProvider",
+            name: "",
+            type: "address"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "AUGUSTUS_REGISTRY",
+        outputs: [
+          {
+            internalType: "contract IParaSwapAugustusRegistry",
+            name: "",
+            type: "address"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "MAX_SLIPPAGE_PERCENT",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "ORACLE",
+        outputs: [
+          {
+            internalType: "contract IPriceOracleGetter",
+            name: "",
+            type: "address"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "POOL",
+        outputs: [
+          {
+            internalType: "contract IPool",
+            name: "",
+            type: "address"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address[]",
+            name: "assets",
+            type: "address[]"
+          },
+          {
+            internalType: "uint256[]",
+            name: "amounts",
+            type: "uint256[]"
+          },
+          {
+            internalType: "uint256[]",
+            name: "premiums",
+            type: "uint256[]"
+          },
+          {
+            internalType: "address",
+            name: "initiator",
+            type: "address"
+          },
+          {
+            internalType: "bytes",
+            name: "params",
+            type: "bytes"
+          }
+        ],
+        name: "executeOperation",
+        outputs: [
+          {
+            internalType: "bool",
+            name: "",
+            type: "bool"
+          }
+        ],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "owner",
+        outputs: [
+          {
+            internalType: "address",
+            name: "",
+            type: "address"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [],
+        name: "renounceOwnership",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "contract IERC20",
+            name: "token",
+            type: "address"
+          }
+        ],
+        name: "rescueTokens",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "contract IERC20Detailed",
+            name: "collateralAsset",
+            type: "address"
+          },
+          {
+            internalType: "contract IERC20Detailed",
+            name: "debtAsset",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "collateralAmount",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "debtRepayAmount",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "debtRateMode",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "buyAllBalanceOffset",
+            type: "uint256"
+          },
+          {
+            internalType: "bytes",
+            name: "paraswapData",
+            type: "bytes"
+          },
+          {
+            components: [
+              {
+                internalType: "uint256",
+                name: "amount",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "deadline",
+                type: "uint256"
+              },
+              {
+                internalType: "uint8",
+                name: "v",
+                type: "uint8"
+              },
+              {
+                internalType: "bytes32",
+                name: "r",
+                type: "bytes32"
+              },
+              {
+                internalType: "bytes32",
+                name: "s",
+                type: "bytes32"
+              }
+            ],
+            internalType: "struct BaseParaSwapAdapter.PermitSignature",
+            name: "permitSignature",
+            type: "tuple"
+          }
+        ],
+        name: "swapAndRepay",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "newOwner",
+            type: "address"
+          }
+        ],
+        name: "transferOwnership",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      }
+    ];
+    var _bytecode = "0x6101006040523480156200001257600080fd5b506040516200333638038062003336833981016040819052620000359162000263565b81818180806001600160a01b03166080816001600160a01b031681525050806001600160a01b031663026b1d5f6040518163ffffffff1660e01b8152600401602060405180830381865afa15801562000092573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190620000b89190620002a2565b6001600160a01b031660a05250600080546001600160a01b031916339081178255604051909182917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908290a350806001600160a01b031663fca513a86040518163ffffffff1660e01b8152600401602060405180830381865afa15801562000145573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906200016b9190620002a2565b6001600160a01b0390811660c05260405163fb04e17b60e01b815260006004820152908316915063fb04e17b90602401602060405180830381865afa158015620001b9573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190620001df9190620002c9565b15620002315760405162461bcd60e51b815260206004820152601c60248201527f4e6f7420612076616c6964204175677573747573206164647265737300000000604482015260640160405180910390fd5b6001600160a01b031660e05250506001805550620002ed565b6001600160a01b03811681146200026057600080fd5b50565b600080604083850312156200027757600080fd5b825162000284816200024a565b602084015190925062000297816200024a565b809150509250929050565b600060208284031215620002b557600080fd5b8151620002c2816200024a565b9392505050565b600060208284031215620002dc57600080fd5b81518015158114620002c257600080fd5b60805160a05160c05160e051612fa06200039660003960008181610176015261111801526000818161014f015261237b0152600081816101b8015281816104bb015281816105750152818161064b015281816106e50152818161079f0152818161087501528181610a7001528181611a6801528181611b2601528181611bfe01528181611cc301528181611d5e01528181611fc6015261217b0152600060e70152612fa06000f3fe608060405234801561001057600080fd5b50600436106100c85760003560e01c80634db9dc97116100815780638da5cb5b1161005b5780638da5cb5b146101da578063920f5c84146101f8578063f2fde38b1461021b57600080fd5b80634db9dc9714610198578063715018a6146101ab5780637535d246146101b357600080fd5b806332e4b286116100b257806332e4b2861461013357806338013f021461014a5780633a8298671461017157600080fd5b8062ae3bf8146100cd5780630542975c146100e2575b600080fd5b6100e06100db366004612585565b61022e565b005b6101097f000000000000000000000000000000000000000000000000000000000000000081565b60405173ffffffffffffffffffffffffffffffffffffffff90911681526020015b60405180910390f35b61013c610bb881565b60405190815260200161012a565b6101097f000000000000000000000000000000000000000000000000000000000000000081565b6101097f000000000000000000000000000000000000000000000000000000000000000081565b6100e06101a63660046125eb565b610385565b6100e06108f4565b6101097f000000000000000000000000000000000000000000000000000000000000000081565b60005473ffffffffffffffffffffffffffffffffffffffff16610109565b61020b6102063660046126f9565b6109e4565b604051901515815260200161012a565b6100e0610229366004612585565b610c31565b60005473ffffffffffffffffffffffffffffffffffffffff1633146102b4576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e657260448201526064015b60405180910390fd5b6103826102d660005473ffffffffffffffffffffffffffffffffffffffff1690565b6040517f70a0823100000000000000000000000000000000000000000000000000000000815230600482015273ffffffffffffffffffffffffffffffffffffffff8416906370a0823190602401602060405180830381865afa158015610340573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061036491906127d4565b73ffffffffffffffffffffffffffffffffffffffff84169190610de2565b50565b600260015414156103f2576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601f60248201527f5265656e7472616e637947756172643a207265656e7472616e742063616c6c0060448201526064016102ab565b60026001556104048886868933610ebb565b955061042089338961041b3686900386018661291f565b61108e565b60006104688585858080601f0160208091040260200160405190810160405280939291908181526020018383808284376000920191909152508f92508e91508d90508c6110b4565b90506000610476828a61296a565b905080156106a8576040517f095ea7b300000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff7f000000000000000000000000000000000000000000000000000000000000000081166004830152600060248301528c169063095ea7b3906044016020604051808303816000875af1158015610513573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906105379190612981565b506040517f095ea7b300000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff7f000000000000000000000000000000000000000000000000000000000000000081166004830152602482018390528c169063095ea7b3906044016020604051808303816000875af11580156105cd573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906105f19190612981565b506040517fe8eda9df00000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff8c8116600483015260248201839052336044830152600060648301527f0000000000000000000000000000000000000000000000000000000000000000169063e8eda9df90608401600060405180830381600087803b15801561068f57600080fd5b505af11580156106a3573d6000803e3d6000fd5b505050505b6040517f095ea7b300000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff7f000000000000000000000000000000000000000000000000000000000000000081166004830152600060248301528b169063095ea7b3906044016020604051808303816000875af115801561073d573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906107619190612981565b506040517f095ea7b300000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff7f000000000000000000000000000000000000000000000000000000000000000081166004830152602482018a90528b169063095ea7b3906044016020604051808303816000875af11580156107f7573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061081b9190612981565b506040517f573ade8100000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff8b81166004830152602482018a9052604482018990523360648301527f0000000000000000000000000000000000000000000000000000000000000000169063573ade81906084016020604051808303816000875af11580156108be573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906108e291906127d4565b50506001805550505050505050505050565b60005473ffffffffffffffffffffffffffffffffffffffff163314610975576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e657260448201526064016102ab565b6000805460405173ffffffffffffffffffffffffffffffffffffffff909116907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908390a3600080547fffffffffffffffffffffffff0000000000000000000000000000000000000000169055565b600060026001541415610a53576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601f60248201527f5265656e7472616e637947756172643a207265656e7472616e742063616c6c0060448201526064016102ab565b60026001553373ffffffffffffffffffffffffffffffffffffffff7f00000000000000000000000000000000000000000000000000000000000000001614610af7576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601360248201527f43414c4c45525f4d5553545f42455f504f4f4c0000000000000000000000000060448201526064016102ab565b600189148015610b075750600187145b8015610b135750600185145b610b9f576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602760248201527f464c4153484c4f414e5f4d554c5449504c455f4153534554535f4e4f545f535560448201527f50504f525445440000000000000000000000000000000000000000000000000060648201526084016102ab565b600088886000818110610bb457610bb46129a3565b905060200201359050600087876000818110610bd257610bd26129a3565b905060200201359050600086905060008d8d6000818110610bf557610bf56129a3565b9050602002016020810190610c0a9190612585565b9050610c1a8787858585896119ed565b505060018080559c9b505050505050505050505050565b60005473ffffffffffffffffffffffffffffffffffffffff163314610cb2576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e657260448201526064016102ab565b73ffffffffffffffffffffffffffffffffffffffff8116610d55576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602660248201527f4f776e61626c653a206e6577206f776e657220697320746865207a65726f206160448201527f646472657373000000000000000000000000000000000000000000000000000060648201526084016102ab565b6000805460405173ffffffffffffffffffffffffffffffffffffffff808516939216917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e091a3600080547fffffffffffffffffffffffff00000000000000000000000000000000000000001673ffffffffffffffffffffffffffffffffffffffff92909216919091179055565b6040517fa9059cbb0000000000000000000000000000000000000000000000000000000080825273ffffffffffffffffffffffffffffffffffffffff84166004830152602482018390529060008060448382895af1610e45573d6000803e3d6000fd5b50610e4f84611e35565b610eb5576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601560248201527f475076323a206661696c6564207472616e73666572000000000000000000000060448201526064016102ab565b50505050565b600080610ec787611f01565b905060006001876002811115610edf57610edf6129d2565b6002811115610ef057610ef06129d2565b14610f0057816101400151610f07565b8161012001515b6040517f70a0823100000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff86811660048301529192506000918316906370a0823190602401602060405180830381865afa158015610f79573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610f9d91906127d4565b90508615611017578581111561100f576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601c60248201527f494e53554646494349454e545f414d4f554e545f544f5f52455041590000000060448201526064016102ab565b809550611081565b80861115611081576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601960248201527f494e56414c49445f444542545f52455041595f414d4f554e540000000000000060448201526064016102ab565b5093979650505050505050565b600061109985611f01565b610100015190506110ad8582868686612038565b5050505050565b6000806000878060200190518101906110cd9190612a73565b6040517ffb04e17b00000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff80831660048301529294509092507f00000000000000000000000000000000000000000000000000000000000000009091169063fb04e17b90602401602060405180830381865afa158015611161573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906111859190612981565b6111eb576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601060248201527f494e56414c49445f41554755535455530000000000000000000000000000000060448201526064016102ab565b60006111f688612251565b60ff169050600061120688612251565b60ff16905060006112168a612333565b905060006112238a612333565b9050600061127b611238612710610bb86123e8565b61127561125061124988600a612c26565b87906123f8565b61126f6112686112618b600a612c26565b88906123f8565b8e906123f8565b90612422565b90612435565b9050808a111561130d576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602360248201527f6d6178416d6f756e74546f5377617020657863656564206d617820736c69707060448201527f616765000000000000000000000000000000000000000000000000000000000060648201526084016102ab565b50506040517f70a082310000000000000000000000000000000000000000000000000000000081523060048201526000935073ffffffffffffffffffffffffffffffffffffffff8b1692506370a082319150602401602060405180830381865afa15801561137f573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906113a391906127d4565b90508581101561140f576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820181905260248201527f494e53554646494349454e545f42414c414e43455f4245464f52455f5357415060448201526064016102ab565b6040517f70a0823100000000000000000000000000000000000000000000000000000000815230600482015260009073ffffffffffffffffffffffffffffffffffffffff8916906370a0823190602401602060405180830381865afa15801561147c573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906114a091906127d4565b905060008373ffffffffffffffffffffffffffffffffffffffff1663d2c4b5986040518163ffffffff1660e01b8152600401602060405180830381865afa1580156114ef573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906115139190612c42565b6040517f095ea7b300000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff808316600483015260006024830152919250908b169063095ea7b3906044016020604051808303816000875af115801561158c573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906115b09190612981565b506040517f095ea7b300000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff8281166004830152602482018a90528b169063095ea7b3906044016020604051808303816000875af1158015611626573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061164a9190612981565b508b156116dd5760048c1015801561166e5750845161166a906020612478565b8c11155b6116d4576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601d60248201527f544f5f414d4f554e545f4f46465345545f4f55545f4f465f52414e474500000060448201526064016102ab565b8660208d018601525b60008473ffffffffffffffffffffffffffffffffffffffff16866040516117049190612c5f565b6000604051808303816000865af19150503d8060008114611741576040519150601f19603f3d011682016040523d82523d6000602084013e611746565b606091505b5050905080611759573d6000803e3d6000fd5b6040517f70a0823100000000000000000000000000000000000000000000000000000000815230600482015260009073ffffffffffffffffffffffffffffffffffffffff8d16906370a0823190602401602060405180830381865afa1580156117c6573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906117ea91906127d4565b90506117f6818661296a565b975089881115611862576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601860248201527f57524f4e475f42414c414e43455f41465445525f53574150000000000000000060448201526064016102ab565b6040517f70a082310000000000000000000000000000000000000000000000000000000081523060048201526000906118ff90869073ffffffffffffffffffffffffffffffffffffffff8f16906370a0823190602401602060405180830381865afa1580156118d5573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906118f991906127d4565b90612478565b90508981101561196b576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601c60248201527f494e53554646494349454e545f414d4f554e545f52454345495645440000000060448201526064016102ab565b8b73ffffffffffffffffffffffffffffffffffffffff168d73ffffffffffffffffffffffffffffffffffffffff167fbf77fd13a39d14dc0da779342c14105c38d9a5d0c60f2caa22f5fd1d5525416d8b846040516119d3929190918252602082015260400190565b60405180910390a350505050505050509695505050505050565b60008080808080611a008b8d018d612c7b565b955095509550955095509550611a19868486888d610ebb565b94506000611a2b85848b8a8c8b6110b4565b6040517f095ea7b300000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff7f000000000000000000000000000000000000000000000000000000000000000081166004830152600060248301529192509088169063095ea7b3906044016020604051808303816000875af1158015611ac4573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190611ae89190612981565b506040517f095ea7b300000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff7f0000000000000000000000000000000000000000000000000000000000000000811660048301526024820188905288169063095ea7b3906044016020604051808303816000875af1158015611b7e573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190611ba29190612981565b506040517f573ade8100000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff888116600483015260248201889052604482018690528b811660648301527f0000000000000000000000000000000000000000000000000000000000000000169063573ade81906084016020604051808303816000875af1158015611c47573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190611c6b91906127d4565b506000611c78828d6123e8565b9050611c868a8c838661108e565b6040517f095ea7b300000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff7f000000000000000000000000000000000000000000000000000000000000000081166004830152600060248301528b169063095ea7b3906044016020604051808303816000875af1158015611d1b573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190611d3f9190612981565b508973ffffffffffffffffffffffffffffffffffffffff1663095ea7b37f0000000000000000000000000000000000000000000000000000000000000000611d908f8d6123e890919063ffffffff16565b6040517fffffffff0000000000000000000000000000000000000000000000000000000060e085901b16815273ffffffffffffffffffffffffffffffffffffffff909216600483015260248201526044016020604051808303816000875af1158015611e00573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190611e249190612981565b505050505050505050505050505050565b6000611e75565b7f08c379a00000000000000000000000000000000000000000000000000000000060005260206004528060245250806044525060646000fd5b3d8015611eb45760208114611eee57611eaf7f475076323a206d616c666f726d6564207472616e7366657220726573756c7400601f611e3c565b611efb565b823b611ee557611ee57f475076323a206e6f74206120636f6e74726163740000000000000000000000006014611e3c565b60019150611efb565b3d6000803e600051151591505b50919050565b604080516102008101825260006101e08201818152825260208201819052918101829052606081018290526080810182905260a0810182905260c0810182905260e08101829052610100810182905261012081018290526101408101829052610160810182905261018081018290526101a081018290526101c08101919091526040517f35ea6a7500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff83811660048301527f000000000000000000000000000000000000000000000000000000000000000016906335ea6a75906024016101e060405180830381865afa15801561200e573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906120329190612dc0565b92915050565b60208101511561210557805160208201516040808401516060850151608086015192517fd505accf00000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff89811660048301523060248301526044820196909652606481019490945260ff909116608484015260a483015260c48201529085169063d505accf9060e401600060405180830381600087803b1580156120ec57600080fd5b505af1158015612100573d6000803e3d6000fd5b505050505b61212773ffffffffffffffffffffffffffffffffffffffff8516843085612488565b6040517f69328dec00000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff86811660048301526024820184905230604483015283917f0000000000000000000000000000000000000000000000000000000000000000909116906369328dec906064016020604051808303816000875af11580156121c6573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906121ea91906127d4565b146110ad576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601b60248201527f554e45585045435445445f414d4f554e545f57495448445241574e000000000060448201526064016102ab565b6000808273ffffffffffffffffffffffffffffffffffffffff1663313ce5676040518163ffffffff1660e01b8152600401602060405180830381865afa15801561229f573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906122c39190612ee3565b9050604d8160ff161115612032576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601a60248201527f544f4f5f4d414e595f444543494d414c535f4f4e5f544f4b454e00000000000060448201526064016102ab565b6040517fb3596f0700000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff82811660048301526000917f00000000000000000000000000000000000000000000000000000000000000009091169063b3596f0790602401602060405180830381865afa1580156123c4573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061203291906127d4565b8082018281101561203257600080fd5b60008215806124195750508181028183828161241657612416612f00565b04145b61203257600080fd5b600061242e8284612f2f565b9392505050565b600081157fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffec778390048411151761246a57600080fd5b506127109102611388010490565b8082038281111561203257600080fd5b6040517f23b872dd0000000000000000000000000000000000000000000000000000000080825273ffffffffffffffffffffffffffffffffffffffff8581166004840152841660248301526044820183905290600080606483828a5af16124f3573d6000803e3d6000fd5b506124fd85611e35565b6110ad576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601960248201527f475076323a206661696c6564207472616e7366657246726f6d0000000000000060448201526064016102ab565b73ffffffffffffffffffffffffffffffffffffffff8116811461038257600080fd5b60006020828403121561259757600080fd5b813561242e81612563565b60008083601f8401126125b457600080fd5b50813567ffffffffffffffff8111156125cc57600080fd5b6020830191508360208285010111156125e457600080fd5b9250929050565b6000806000806000806000806000898b0361018081121561260b57600080fd5b8a3561261681612563565b995060208b013561262681612563565b985060408b0135975060608b0135965060808b0135955060a08b0135945060c08b013567ffffffffffffffff81111561265e57600080fd5b61266a8d828e016125a2565b90955093505060a07fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff20820112156126a057600080fd5b5060e08a0190509295985092959850929598565b60008083601f8401126126c657600080fd5b50813567ffffffffffffffff8111156126de57600080fd5b6020830191508360208260051b85010111156125e457600080fd5b600080600080600080600080600060a08a8c03121561271757600080fd5b893567ffffffffffffffff8082111561272f57600080fd5b61273b8d838e016126b4565b909b50995060208c013591508082111561275457600080fd5b6127608d838e016126b4565b909950975060408c013591508082111561277957600080fd5b6127858d838e016126b4565b909750955060608c0135915061279a82612563565b90935060808b013590808211156127b057600080fd5b506127bd8c828d016125a2565b915080935050809150509295985092959850929598565b6000602082840312156127e657600080fd5b5051919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b6040516101e0810167ffffffffffffffff81118282101715612840576128406127ed565b60405290565b604051601f82017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe016810167ffffffffffffffff8111828210171561288d5761288d6127ed565b604052919050565b60ff8116811461038257600080fd5b600060a082840312156128b657600080fd5b60405160a0810181811067ffffffffffffffff821117156128d9576128d96127ed565b8060405250809150823581526020830135602082015260408301356128fd81612895565b8060408301525060608301356060820152608083013560808201525092915050565b600060a0828403121561293157600080fd5b61242e83836128a4565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052601160045260246000fd5b60008282101561297c5761297c61293b565b500390565b60006020828403121561299357600080fd5b8151801515811461242e57600080fd5b7f4e487b7100000000000000000000000000000000000000000000000000000000600052603260045260246000fd5b7f4e487b7100000000000000000000000000000000000000000000000000000000600052602160045260246000fd5b600067ffffffffffffffff821115612a1b57612a1b6127ed565b50601f017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe01660200190565b60005b83811015612a62578181015183820152602001612a4a565b83811115610eb55750506000910152565b60008060408385031215612a8657600080fd5b825167ffffffffffffffff811115612a9d57600080fd5b8301601f81018513612aae57600080fd5b8051612ac1612abc82612a01565b612846565b818152866020838501011115612ad657600080fd5b612ae7826020830160208601612a47565b8094505050506020830151612afb81612563565b809150509250929050565b600181815b80851115612b5f57817fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff04821115612b4557612b4561293b565b80851615612b5257918102915b93841c9390800290612b0b565b509250929050565b600082612b7657506001612032565b81612b8357506000612032565b8160018114612b995760028114612ba357612bbf565b6001915050612032565b60ff841115612bb457612bb461293b565b50506001821b612032565b5060208310610133831016604e8410600b8410161715612be2575081810a612032565b612bec8383612b06565b807fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff04821115612c1e57612c1e61293b565b029392505050565b600061242e8383612b67565b8051612c3d81612563565b919050565b600060208284031215612c5457600080fd5b815161242e81612563565b60008251612c71818460208701612a47565b9190910192915050565b6000806000806000806101408789031215612c9557600080fd5b8635612ca081612563565b9550602087013594506040870135935060608701359250608087013567ffffffffffffffff811115612cd157600080fd5b8701601f81018913612ce257600080fd5b8035612cf0612abc82612a01565b8181528a6020838501011115612d0557600080fd5b81602084016020830137600060208383010152809450505050612d2b8860a089016128a4565b90509295509295509295565b600060208284031215612d4957600080fd5b6040516020810181811067ffffffffffffffff82111715612d6c57612d6c6127ed565b6040529151825250919050565b80516fffffffffffffffffffffffffffffffff81168114612c3d57600080fd5b805164ffffffffff81168114612c3d57600080fd5b805161ffff81168114612c3d57600080fd5b60006101e08284031215612dd357600080fd5b612ddb61281c565b612de58484612d37565b8152612df360208401612d79565b6020820152612e0460408401612d79565b6040820152612e1560608401612d79565b6060820152612e2660808401612d79565b6080820152612e3760a08401612d79565b60a0820152612e4860c08401612d99565b60c0820152612e5960e08401612dae565b60e0820152610100612e6c818501612c32565b90820152610120612e7e848201612c32565b90820152610140612e90848201612c32565b90820152610160612ea2848201612c32565b90820152610180612eb4848201612d79565b908201526101a0612ec6848201612d79565b908201526101c0612ed8848201612d79565b908201529392505050565b600060208284031215612ef557600080fd5b815161242e81612895565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052601260045260246000fd5b600082612f65577f4e487b7100000000000000000000000000000000000000000000000000000000600052601260045260246000fd5b50049056fea26469706673582212201ae79dd35f34ecf1387bee8e87022a83fa61b3a7ba8b1ecade15267edadaceb264736f6c634300080a0033";
+    var ParaSwapRepayAdapter__factory = class extends ethers_1.ContractFactory {
+      constructor(signer) {
+        super(_abi, _bytecode, signer);
+      }
+      deploy(addressesProvider, augustusRegistry, overrides) {
+        return super.deploy(addressesProvider, augustusRegistry, overrides || {});
+      }
+      getDeployTransaction(addressesProvider, augustusRegistry, overrides) {
+        return super.getDeployTransaction(addressesProvider, augustusRegistry, overrides || {});
+      }
+      attach(address) {
+        return super.attach(address);
+      }
+      connect(signer) {
+        return super.connect(signer);
+      }
+      static createInterface() {
+        return new ethers_1.utils.Interface(_abi);
+      }
+      static connect(address, signerOrProvider) {
+        return new ethers_1.Contract(address, _abi, signerOrProvider);
+      }
+    };
+    exports.ParaSwapRepayAdapter__factory = ParaSwapRepayAdapter__factory;
+    ParaSwapRepayAdapter__factory.bytecode = _bytecode;
+    ParaSwapRepayAdapter__factory.abi = _abi;
+  }
+});
+
+// node_modules/@aave/contract-helpers/dist/cjs/paraswap-repayWithCollateralAdapter-contract/index.js
+var require_paraswap_repayWithCollateralAdapter_contract = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/paraswap-repayWithCollateralAdapter-contract/index.js"(exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.ParaswapRepayWithCollateral = void 0;
+    var tslib_1 = require_tslib();
+    var BaseService_1 = (0, tslib_1.__importDefault)(require_BaseService());
+    var types_1 = require_types2();
+    var utils_1 = require_utils6();
+    var methodValidators_1 = require_methodValidators();
+    var paramValidators_1 = require_paramValidators();
+    var ParaSwapRepayAdapter__factory_1 = require_ParaSwapRepayAdapter_factory();
+    var ParaswapRepayWithCollateral = class extends BaseService_1.default {
+      constructor(provider, repayWithCollateralAddress) {
+        super(provider, ParaSwapRepayAdapter__factory_1.ParaSwapRepayAdapter__factory);
+        this.repayWithCollateralAddress = repayWithCollateralAddress !== null && repayWithCollateralAddress !== void 0 ? repayWithCollateralAddress : "";
+        this.swapAndRepay = this.swapAndRepay.bind(this);
+      }
+      swapAndRepay({ collateralAsset, debtAsset, collateralAmount, debtRepayAmount, debtRateMode, repayAll, permitParams, swapAndRepayCallData, user }, txs) {
+        const numericInterestRate = debtRateMode === types_1.InterestRate.Stable ? 1 : 2;
+        const swapAndRepayContract = this.getContractInstance(this.repayWithCollateralAddress);
+        const txCallback = this.generateTxCallback({
+          rawTxMethod: () => __async(this, null, function* () {
+            return swapAndRepayContract.populateTransaction.swapAndRepay(collateralAsset, debtAsset, collateralAmount, debtRepayAmount, numericInterestRate, repayAll ? (0, utils_1.augustusToAmountOffsetFromCalldata)(swapAndRepayCallData) : 0, swapAndRepayCallData, permitParams);
+          }),
+          from: user
+        });
+        return {
+          tx: txCallback,
+          txType: types_1.eEthereumTxType.DLP_ACTION,
+          gas: this.generateTxPriceEstimation(txs !== null && txs !== void 0 ? txs : [], txCallback, types_1.ProtocolAction.repayCollateral)
+        };
+      }
+    };
+    (0, tslib_1.__decorate)([
+      methodValidators_1.RepayWithCollateralValidator,
+      (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("user")),
+      (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("collateralAsset")),
+      (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("debtAsset")),
+      (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)("collateralAmount")),
+      (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)("debtRepayAmount")),
+      (0, tslib_1.__metadata)("design:type", Function),
+      (0, tslib_1.__metadata)("design:paramtypes", [Object, Array]),
+      (0, tslib_1.__metadata)("design:returntype", Object)
+    ], ParaswapRepayWithCollateral.prototype, "swapAndRepay", null);
+    exports.ParaswapRepayWithCollateral = ParaswapRepayWithCollateral;
+  }
+});
+
+// node_modules/@aave/contract-helpers/dist/cjs/v3-pool-rollups/typechain/IL2Pool__factory.js
+var require_IL2Pool_factory = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/v3-pool-rollups/typechain/IL2Pool__factory.js"(exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.IL2Pool__factory = void 0;
+    var ethers_1 = require_lib31();
+    var _abi = [
+      {
+        inputs: [
+          {
+            internalType: "bytes32",
+            name: "args",
+            type: "bytes32"
+          }
+        ],
+        name: "borrow",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "bytes32",
+            name: "args1",
+            type: "bytes32"
+          },
+          {
+            internalType: "bytes32",
+            name: "args2",
+            type: "bytes32"
+          }
+        ],
+        name: "liquidationCall",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "bytes32",
+            name: "args",
+            type: "bytes32"
+          }
+        ],
+        name: "rebalanceStableBorrowRate",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "bytes32",
+            name: "args",
+            type: "bytes32"
+          }
+        ],
+        name: "repay",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "bytes32",
+            name: "args",
+            type: "bytes32"
+          }
+        ],
+        name: "repayWithATokens",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "bytes32",
+            name: "args",
+            type: "bytes32"
+          },
+          {
+            internalType: "bytes32",
+            name: "r",
+            type: "bytes32"
+          },
+          {
+            internalType: "bytes32",
+            name: "s",
+            type: "bytes32"
+          }
+        ],
+        name: "repayWithPermit",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
+          }
+        ],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "bytes32",
+            name: "args",
+            type: "bytes32"
+          }
+        ],
+        name: "setUserUseReserveAsCollateral",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "bytes32",
+            name: "args",
+            type: "bytes32"
+          }
+        ],
+        name: "supply",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "bytes32",
+            name: "args",
+            type: "bytes32"
+          },
+          {
+            internalType: "bytes32",
+            name: "r",
+            type: "bytes32"
+          },
+          {
+            internalType: "bytes32",
+            name: "s",
+            type: "bytes32"
+          }
+        ],
+        name: "supplyWithPermit",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "bytes32",
+            name: "args",
+            type: "bytes32"
+          }
+        ],
+        name: "swapBorrowRateMode",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "bytes32",
+            name: "args",
+            type: "bytes32"
+          }
+        ],
+        name: "withdraw",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function"
+      }
+    ];
+    var IL2Pool__factory = class {
+      static createInterface() {
+        return new ethers_1.utils.Interface(_abi);
+      }
+      static connect(address, signerOrProvider) {
+        return new ethers_1.Contract(address, _abi, signerOrProvider);
+      }
+    };
+    exports.IL2Pool__factory = IL2Pool__factory;
+    IL2Pool__factory.abi = _abi;
+  }
+});
+
+// node_modules/@aave/contract-helpers/dist/cjs/v3-pool-rollups/typechain/L2Encoder__factory.js
+var require_L2Encoder_factory = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/v3-pool-rollups/typechain/L2Encoder__factory.js"(exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.L2Encoder__factory = void 0;
+    var ethers_1 = require_lib31();
+    var _abi = [
+      {
+        inputs: [
+          {
+            internalType: "contract IPool",
+            name: "pool",
+            type: "address"
+          }
+        ],
+        stateMutability: "nonpayable",
+        type: "constructor"
+      },
+      {
+        inputs: [],
+        name: "POOL",
+        outputs: [
+          {
+            internalType: "contract IPool",
+            name: "",
+            type: "address"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "asset",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "interestRateMode",
+            type: "uint256"
+          },
+          {
+            internalType: "uint16",
+            name: "referralCode",
+            type: "uint16"
+          }
+        ],
+        name: "encodeBorrowParams",
+        outputs: [
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "collateralAsset",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "debtAsset",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "user",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "debtToCover",
+            type: "uint256"
+          },
+          {
+            internalType: "bool",
+            name: "receiveAToken",
+            type: "bool"
+          }
+        ],
+        name: "encodeLiquidationCall",
+        outputs: [
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          },
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "asset",
+            type: "address"
+          },
+          {
+            internalType: "address",
+            name: "user",
+            type: "address"
+          }
+        ],
+        name: "encodeRebalanceStableBorrowRate",
+        outputs: [
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "asset",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "interestRateMode",
+            type: "uint256"
+          }
+        ],
+        name: "encodeRepayParams",
+        outputs: [
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "asset",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "interestRateMode",
+            type: "uint256"
+          }
+        ],
+        name: "encodeRepayWithATokensParams",
+        outputs: [
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "asset",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "interestRateMode",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "deadline",
+            type: "uint256"
+          },
+          {
+            internalType: "uint8",
+            name: "permitV",
+            type: "uint8"
+          },
+          {
+            internalType: "bytes32",
+            name: "permitR",
+            type: "bytes32"
+          },
+          {
+            internalType: "bytes32",
+            name: "permitS",
+            type: "bytes32"
+          }
+        ],
+        name: "encodeRepayWithPermitParams",
+        outputs: [
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          },
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          },
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "asset",
+            type: "address"
+          },
+          {
+            internalType: "bool",
+            name: "useAsCollateral",
+            type: "bool"
+          }
+        ],
+        name: "encodeSetUserUseReserveAsCollateral",
+        outputs: [
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "asset",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          },
+          {
+            internalType: "uint16",
+            name: "referralCode",
+            type: "uint16"
+          }
+        ],
+        name: "encodeSupplyParams",
+        outputs: [
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "asset",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          },
+          {
+            internalType: "uint16",
+            name: "referralCode",
+            type: "uint16"
+          },
+          {
+            internalType: "uint256",
+            name: "deadline",
+            type: "uint256"
+          },
+          {
+            internalType: "uint8",
+            name: "permitV",
+            type: "uint8"
+          },
+          {
+            internalType: "bytes32",
+            name: "permitR",
+            type: "bytes32"
+          },
+          {
+            internalType: "bytes32",
+            name: "permitS",
+            type: "bytes32"
+          }
+        ],
+        name: "encodeSupplyWithPermitParams",
+        outputs: [
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          },
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          },
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "asset",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "interestRateMode",
+            type: "uint256"
+          }
+        ],
+        name: "encodeSwapBorrowRateMode",
+        outputs: [
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "asset",
+            type: "address"
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256"
+          }
+        ],
+        name: "encodeWithdrawParams",
+        outputs: [
+          {
+            internalType: "bytes32",
+            name: "",
+            type: "bytes32"
+          }
+        ],
+        stateMutability: "view",
+        type: "function"
+      }
+    ];
+    var _bytecode = "0x60a060405234801561001057600080fd5b5060405161143138038061143183398101604081905261002f91610040565b6001600160a01b0316608052610070565b60006020828403121561005257600080fd5b81516001600160a01b038116811461006957600080fd5b9392505050565b6080516113606100d16000396000818161016b0152818161027e015281816103760152818161043f015281816105180152818161062e0152818161073c015281816107fc0152818161094101528181610a700152610b5501526113606000f3fe608060405234801561001057600080fd5b50600436106100d45760003560e01c806388d5185211610081578063b76398e41161005b578063b76398e414610200578063fc0eed8514610213578063fed63a931461022157600080fd5b806388d51852146101b25780638da7fb18146101da5780639d2ffc1b146101ed57600080fd5b80635cc7bc10116100b25780635cc7bc1014610125578063671a7fae146101385780637535d2461461016657600080fd5b80631a64acf2146100d95780631a8f6dee146100ff5780631fd3479714610112575b600080fd5b6100ec6100e7366004610e66565b610234565b6040519081526020015b60405180910390f35b6100ec61010d366004610eb0565b61032c565b6100ec610120366004610ee9565b6103f5565b6100ec610133366004610ee9565b6104ce565b61014b610146366004610f2b565b6105e0565b604080519384526020840192909252908201526060016100f6565b61018d7f000000000000000000000000000000000000000000000000000000000000000081565b60405173ffffffffffffffffffffffffffffffffffffffff90911681526020016100f6565b6101c56101c0366004610fa9565b6106f0565b604080519283526020830191909152016100f6565b6100ec6101e836600461100d565b6108e2565b6100ec6101fb36600461100d565b6108f7565b6100ec61020e366004611042565b610a26565b6100ec61010d366004611084565b61014b61022f3660046110b9565b610b07565b6040517f35ea6a7500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff858116600483015260009182917f000000000000000000000000000000000000000000000000000000000000000016906335ea6a75906024016101e060405180830381865afa1580156102c6573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906102ea9190611207565b60e081015190915060006102fd87610c5d565b9050600061030a87610d08565b60109290921b60909290921b60989690961b9590950101019695505050505050565b6040517f35ea6a7500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff838116600483015260009182917f000000000000000000000000000000000000000000000000000000000000000016906335ea6a75906024016101e060405180830381865afa1580156103be573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906103e29190611207565b60e00151601084901b0191505092915050565b6040517f35ea6a7500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff838116600483015260009182917f000000000000000000000000000000000000000000000000000000000000000016906335ea6a75906024016101e060405180830381865afa158015610487573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906104ab9190611207565b60e081015190915060006104be85610d08565b60101b9190910195945050505050565b6040517f35ea6a7500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff838116600483015260009182917f000000000000000000000000000000000000000000000000000000000000000016906335ea6a75906024016101e060405180830381865afa158015610560573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906105849190611207565b60e081015190915060007fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff85146105c3576105be85610c5d565b6104be565b5071ffffffffffffffffffffffffffffffff000001949350505050565b6040517f35ea6a7500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff88811660048301526000918291829182917f000000000000000000000000000000000000000000000000000000000000000016906335ea6a75906024016101e060405180830381865afa158015610676573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061069a9190611207565b60e081015190915060006106ad8c610c5d565b905060006106ba8b610d9b565b905060008a60c01b8260a01b018d60901b018360101b0184019050808a8a97509750975050505050509750975097945050505050565b6040517f35ea6a7500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff8681166004830152600091829182917f0000000000000000000000000000000000000000000000000000000000000000909116906335ea6a75906024016101e060405180830381865afa158015610786573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906107aa9190611207565b60e08101516040517f35ea6a7500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff8a8116600483015292935090916000917f0000000000000000000000000000000000000000000000000000000000000000909116906335ea6a75906024016101e060405180830381865afa158015610846573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061086a9190611207565b60e081015190915060007fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff89146108a9576108a489610c5d565b6108bb565b6fffffffffffffffffffffffffffffffff5b60109290921b9390930160208a901b019550608087901b0193505050509550959350505050565b60006108ef8484846108f7565b949350505050565b6040517f35ea6a7500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff848116600483015260009182917f000000000000000000000000000000000000000000000000000000000000000016906335ea6a75906024016101e060405180830381865afa158015610989573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906109ad9190611207565b60e081015190915060007fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff86146109ec576109e786610c5d565b6109fe565b6fffffffffffffffffffffffffffffffff5b90506000610a0b86610d08565b60901b60109290921b91909101919091019695505050505050565b6040517f35ea6a7500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff848116600483015260009182917f000000000000000000000000000000000000000000000000000000000000000016906335ea6a75906024016101e060405180830381865afa158015610ab8573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610adc9190611207565b60e08101519091506000610aef86610c5d565b60101b609086901b0191909101925050509392505050565b6040517f35ea6a7500000000000000000000000000000000000000000000000000000000815273ffffffffffffffffffffffffffffffffffffffff88811660048301526000918291829182917f000000000000000000000000000000000000000000000000000000000000000016906335ea6a75906024016101e060405180830381865afa158015610b9d573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610bc19190611207565b60e081015190915060007fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8c14610c0057610bfb8c610c5d565b610c12565b6fffffffffffffffffffffffffffffffff5b90506000610c1f8c610d08565b90506000610c2c8c610d9b565b60b89b909b1b60989b909b1b9a909a0160909190911b0160109190911b01019b959a50939850939650505050505050565b60006fffffffffffffffffffffffffffffffff821115610d04576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602760248201527f53616665436173743a2076616c756520646f65736e27742066697420696e203160448201527f323820626974730000000000000000000000000000000000000000000000000060648201526084015b60405180910390fd5b5090565b600060ff821115610d04576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602560248201527f53616665436173743a2076616c756520646f65736e27742066697420696e203860448201527f20626974730000000000000000000000000000000000000000000000000000006064820152608401610cfb565b600063ffffffff821115610d04576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602660248201527f53616665436173743a2076616c756520646f65736e27742066697420696e203360448201527f32206269747300000000000000000000000000000000000000000000000000006064820152608401610cfb565b73ffffffffffffffffffffffffffffffffffffffff81168114610e5357600080fd5b50565b61ffff81168114610e5357600080fd5b60008060008060808587031215610e7c57600080fd5b8435610e8781610e31565b935060208501359250604085013591506060850135610ea581610e56565b939692955090935050565b60008060408385031215610ec357600080fd5b8235610ece81610e31565b91506020830135610ede81610e31565b809150509250929050565b60008060408385031215610efc57600080fd5b8235610f0781610e31565b946020939093013593505050565b803560ff81168114610f2657600080fd5b919050565b600080600080600080600060e0888a031215610f4657600080fd5b8735610f5181610e31565b9650602088013595506040880135610f6881610e56565b945060608801359350610f7d60808901610f15565b925060a0880135915060c0880135905092959891949750929550565b80358015158114610f2657600080fd5b600080600080600060a08688031215610fc157600080fd5b8535610fcc81610e31565b94506020860135610fdc81610e31565b93506040860135610fec81610e31565b92506060860135915061100160808701610f99565b90509295509295909350565b60008060006060848603121561102257600080fd5b833561102d81610e31565b95602085013595506040909401359392505050565b60008060006060848603121561105757600080fd5b833561106281610e31565b925060208401359150604084013561107981610e56565b809150509250925092565b6000806040838503121561109757600080fd5b82356110a281610e31565b91506110b060208401610f99565b90509250929050565b600080600080600080600060e0888a0312156110d457600080fd5b87356110df81610e31565b9650602088013595506040880135945060608801359350610f7d60808901610f15565b6040516101e0810167ffffffffffffffff8111828210171561114d577f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b60405290565b60006020828403121561116557600080fd5b6040516020810181811067ffffffffffffffff821117156111af577f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b6040529151825250919050565b80516fffffffffffffffffffffffffffffffff81168114610f2657600080fd5b805164ffffffffff81168114610f2657600080fd5b8051610f2681610e56565b8051610f2681610e31565b60006101e0828403121561121a57600080fd5b611222611102565b61122c8484611153565b815261123a602084016111bc565b602082015261124b604084016111bc565b604082015261125c606084016111bc565b606082015261126d608084016111bc565b608082015261127e60a084016111bc565b60a082015261128f60c084016111dc565b60c08201526112a060e084016111f1565b60e08201526101006112b38185016111fc565b908201526101206112c58482016111fc565b908201526101406112d78482016111fc565b908201526101606112e98482016111fc565b908201526101806112fb8482016111bc565b908201526101a061130d8482016111bc565b908201526101c061131f8482016111bc565b90820152939250505056fea2646970667358221220550a5d1ca13779d56fd6a3f9cf5cee982d93d61310d74a95690bcec9ee75ab4a64736f6c634300080a0033";
+    var L2Encoder__factory = class extends ethers_1.ContractFactory {
+      constructor(...args) {
+        if (args.length === 1) {
+          super(_abi, _bytecode, args[0]);
+        } else {
+          super(...args);
+        }
+      }
+      deploy(pool, overrides) {
+        return super.deploy(pool, overrides || {});
+      }
+      getDeployTransaction(pool, overrides) {
+        return super.getDeployTransaction(pool, overrides || {});
+      }
+      attach(address) {
+        return super.attach(address);
+      }
+      connect(signer) {
+        return super.connect(signer);
+      }
+      static createInterface() {
+        return new ethers_1.utils.Interface(_abi);
+      }
+      static connect(address, signerOrProvider) {
+        return new ethers_1.Contract(address, _abi, signerOrProvider);
+      }
+    };
+    exports.L2Encoder__factory = L2Encoder__factory;
+    L2Encoder__factory.bytecode = _bytecode;
+    L2Encoder__factory.abi = _abi;
+  }
+});
+
+// node_modules/@aave/contract-helpers/dist/cjs/v3-pool-rollups/index.js
+var require_v3_pool_rollups = __commonJS({
+  "node_modules/@aave/contract-helpers/dist/cjs/v3-pool-rollups/index.js"(exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.L2Pool = void 0;
+    var tslib_1 = require_tslib();
+    var BaseService_1 = (0, tslib_1.__importDefault)(require_BaseService());
+    var types_1 = require_types2();
+    var utils_1 = require_utils6();
+    var methodValidators_1 = require_methodValidators();
+    var paramValidators_1 = require_paramValidators();
+    var IL2Pool__factory_1 = require_IL2Pool_factory();
+    var L2Encoder__factory_1 = require_L2Encoder_factory();
+    var L2Pool = class extends BaseService_1.default {
+      constructor(provider, l2PoolConfig) {
+        super(provider, IL2Pool__factory_1.IL2Pool__factory);
+        const { l2PoolAddress, encoderAddress } = l2PoolConfig !== null && l2PoolConfig !== void 0 ? l2PoolConfig : {};
+        this.l2PoolAddress = l2PoolAddress !== null && l2PoolAddress !== void 0 ? l2PoolAddress : "";
+        this.encoderAddress = encoderAddress !== null && encoderAddress !== void 0 ? encoderAddress : "";
+      }
+      supply(_0, _1) {
+        return __async(this, arguments, function* ({ user, reserve, amount, referralCode }, txs) {
+          const encoder = this.getEncoder();
+          const encodedParams = yield encoder.encodeSupplyParams(reserve, amount, referralCode !== null && referralCode !== void 0 ? referralCode : 0);
+          const l2PoolContract = this.getContractInstance(this.l2PoolAddress);
+          const txCallback = this.generateTxCallback({
+            rawTxMethod: () => __async(this, null, function* () {
+              return l2PoolContract.populateTransaction.supply(encodedParams);
+            }),
+            from: user,
+            value: (0, utils_1.getTxValue)(reserve, amount)
+          });
+          txs.push({
+            tx: txCallback,
+            txType: types_1.eEthereumTxType.DLP_ACTION,
+            gas: this.generateTxPriceEstimation(txs, txCallback, types_1.ProtocolAction.supply)
+          });
+          return txs;
+        });
+      }
+      supplyWithPermit(_0, _1) {
+        return __async(this, arguments, function* ({ user, reserve, amount, deadline, referralCode, permitR, permitS, permitV }, txs) {
+          const encoder = this.getEncoder();
+          const encodedParams = yield encoder.encodeSupplyWithPermitParams(reserve, amount, referralCode !== null && referralCode !== void 0 ? referralCode : 0, deadline, permitV, permitR, permitS);
+          const l2PoolContract = this.getContractInstance(this.l2PoolAddress);
+          const txCallback = this.generateTxCallback({
+            rawTxMethod: () => __async(this, null, function* () {
+              return l2PoolContract.populateTransaction.supplyWithPermit(encodedParams[0], permitR, permitS);
+            }),
+            from: user
+          });
+          txs.push({
+            tx: txCallback,
+            txType: types_1.eEthereumTxType.DLP_ACTION,
+            gas: this.generateTxPriceEstimation(txs, txCallback)
+          });
+          return txs;
+        });
+      }
+      withdraw(_0) {
+        return __async(this, arguments, function* ({ user, reserve, amount }) {
+          const encoder = this.getEncoder();
+          const encodedParams = yield encoder.encodeWithdrawParams(reserve, amount);
+          const l2PoolContract = this.getContractInstance(this.l2PoolAddress);
+          const txCallback = this.generateTxCallback({
+            rawTxMethod: () => __async(this, null, function* () {
+              return l2PoolContract.populateTransaction.withdraw(encodedParams);
+            }),
+            from: user,
+            action: types_1.ProtocolAction.withdraw
+          });
+          return [
+            {
+              tx: txCallback,
+              txType: types_1.eEthereumTxType.DLP_ACTION,
+              gas: this.generateTxPriceEstimation([], txCallback, types_1.ProtocolAction.supply)
+            }
+          ];
+        });
+      }
+      borrow(_0) {
+        return __async(this, arguments, function* ({ user, reserve, amount, numericRateMode, referralCode }) {
+          const encoder = this.getEncoder();
+          const encodedParams = yield encoder.encodeBorrowParams(reserve, amount, numericRateMode, referralCode !== null && referralCode !== void 0 ? referralCode : 0);
+          const l2PoolContract = this.getContractInstance(this.l2PoolAddress);
+          const txCallback = this.generateTxCallback({
+            rawTxMethod: () => __async(this, null, function* () {
+              return l2PoolContract.populateTransaction.borrow(encodedParams);
+            }),
+            from: user
+          });
+          return [
+            {
+              tx: txCallback,
+              txType: types_1.eEthereumTxType.DLP_ACTION,
+              gas: this.generateTxPriceEstimation([], txCallback)
+            }
+          ];
+        });
+      }
+      repay(_0, _1) {
+        return __async(this, arguments, function* ({ reserve, user, amount, numericRateMode }, txs) {
+          const encoder = this.getEncoder();
+          const encodedParams = yield encoder.encodeRepayParams(reserve, amount, numericRateMode);
+          const l2PoolContract = this.getContractInstance(this.l2PoolAddress);
+          const txCallback = this.generateTxCallback({
+            rawTxMethod: () => __async(this, null, function* () {
+              return l2PoolContract.populateTransaction.repay(encodedParams);
+            }),
+            from: user,
+            value: (0, utils_1.getTxValue)(reserve, amount)
+          });
+          txs.push({
+            tx: txCallback,
+            txType: types_1.eEthereumTxType.DLP_ACTION,
+            gas: this.generateTxPriceEstimation([], txCallback, types_1.ProtocolAction.repay)
+          });
+          return txs;
+        });
+      }
+      repayWithPermit(_0, _1) {
+        return __async(this, arguments, function* ({ user, reserve, amount, numericRateMode, permitR, permitS, permitV, deadline }, txs) {
+          const encoder = this.getEncoder();
+          const encodedParams = yield encoder.encodeRepayWithPermitParams(reserve, amount, numericRateMode, deadline, permitV, permitR, permitS);
+          const l2PoolContract = this.getContractInstance(this.l2PoolAddress);
+          const txCallback = this.generateTxCallback({
+            rawTxMethod: () => __async(this, null, function* () {
+              return l2PoolContract.populateTransaction.repayWithPermit(encodedParams[0], permitR, permitS);
+            }),
+            from: user,
+            value: (0, utils_1.getTxValue)(reserve, amount)
+          });
+          txs.push({
+            tx: txCallback,
+            txType: types_1.eEthereumTxType.DLP_ACTION,
+            gas: this.generateTxPriceEstimation([], txCallback, types_1.ProtocolAction.repay)
+          });
+          return txs;
+        });
+      }
+      repayWithATokens(_0, _1) {
+        return __async(this, arguments, function* ({ reserve, user, amount, numericRateMode }, txs) {
+          const encoder = this.getEncoder();
+          const encodedParams = yield encoder.encodeRepayWithATokensParams(reserve, amount, numericRateMode);
+          const l2PoolContract = this.getContractInstance(this.l2PoolAddress);
+          const txCallback = this.generateTxCallback({
+            rawTxMethod: () => __async(this, null, function* () {
+              return l2PoolContract.populateTransaction.repayWithATokens(encodedParams);
+            }),
+            from: user,
+            value: (0, utils_1.getTxValue)(reserve, amount)
+          });
+          txs.push({
+            tx: txCallback,
+            txType: types_1.eEthereumTxType.DLP_ACTION,
+            gas: this.generateTxPriceEstimation([], txCallback, types_1.ProtocolAction.repay)
+          });
+          return txs;
+        });
+      }
+      swapBorrowRateMode(_0) {
+        return __async(this, arguments, function* ({ reserve, numericRateMode, user }) {
+          const encoder = this.getEncoder();
+          const encodedParams = yield encoder.encodeSwapBorrowRateMode(reserve, numericRateMode);
+          const l2PoolContract = this.getContractInstance(this.l2PoolAddress);
+          const txCallback = this.generateTxCallback({
+            rawTxMethod: () => __async(this, null, function* () {
+              return l2PoolContract.populateTransaction.swapBorrowRateMode(encodedParams);
+            }),
+            from: user
+          });
+          return [
+            {
+              tx: txCallback,
+              txType: types_1.eEthereumTxType.DLP_ACTION,
+              gas: this.generateTxPriceEstimation([], txCallback)
+            }
+          ];
+        });
+      }
+      setUserUseReserveAsCollateral(_0) {
+        return __async(this, arguments, function* ({ reserve, usageAsCollateral, user }) {
+          const encoder = this.getEncoder();
+          const encodedParams = yield encoder.encodeSetUserUseReserveAsCollateral(reserve, usageAsCollateral);
+          const l2PoolContract = this.getContractInstance(this.l2PoolAddress);
+          const txCallback = this.generateTxCallback({
+            rawTxMethod: () => __async(this, null, function* () {
+              return l2PoolContract.populateTransaction.setUserUseReserveAsCollateral(encodedParams);
+            }),
+            from: user
+          });
+          return [
+            {
+              tx: txCallback,
+              txType: types_1.eEthereumTxType.DLP_ACTION,
+              gas: this.generateTxPriceEstimation([], txCallback)
+            }
+          ];
+        });
+      }
+      liquidationCall(_0, _1) {
+        return __async(this, arguments, function* ({ liquidator, liquidatedUser, debtReserve, collateralReserve, debtToCover, getAToken }, txs) {
+          const encoder = this.getEncoder();
+          const encodedParams = yield encoder.encodeLiquidationCall(collateralReserve, debtReserve, liquidatedUser, debtToCover, getAToken !== null && getAToken !== void 0 ? getAToken : false);
+          const l2PoolContract = this.getContractInstance(this.l2PoolAddress);
+          const txCallback = this.generateTxCallback({
+            rawTxMethod: () => __async(this, null, function* () {
+              return l2PoolContract.populateTransaction.liquidationCall(encodedParams[0], encodedParams[1]);
+            }),
+            from: liquidator,
+            value: (0, utils_1.getTxValue)(debtReserve, debtToCover)
+          });
+          txs.push({
+            tx: txCallback,
+            txType: types_1.eEthereumTxType.DLP_ACTION,
+            gas: this.generateTxPriceEstimation([], txCallback, types_1.ProtocolAction.liquidationCall)
+          });
+          return txs;
+        });
+      }
+      getEncoder() {
+        if (!this.encoderContract && this.encoderAddress !== "") {
+          this.encoderContract = L2Encoder__factory_1.L2Encoder__factory.connect(this.encoderAddress, this.provider);
+        }
+        return this.encoderContract;
+      }
+    };
+    (0, tslib_1.__decorate)([
+      methodValidators_1.L2PValidator,
+      (0, tslib_1.__metadata)("design:type", Function),
+      (0, tslib_1.__metadata)("design:paramtypes", [Object, Array]),
+      (0, tslib_1.__metadata)("design:returntype", Promise)
+    ], L2Pool.prototype, "supply", null);
+    (0, tslib_1.__decorate)([
+      methodValidators_1.L2PValidator,
+      (0, tslib_1.__param)(0, (0, paramValidators_1.isDeadline32Bytes)("deadline")),
+      (0, tslib_1.__metadata)("design:type", Function),
+      (0, tslib_1.__metadata)("design:paramtypes", [Object, Array]),
+      (0, tslib_1.__metadata)("design:returntype", Promise)
+    ], L2Pool.prototype, "supplyWithPermit", null);
+    (0, tslib_1.__decorate)([
+      methodValidators_1.L2PValidator,
+      (0, tslib_1.__metadata)("design:type", Function),
+      (0, tslib_1.__metadata)("design:paramtypes", [Object]),
+      (0, tslib_1.__metadata)("design:returntype", Promise)
+    ], L2Pool.prototype, "withdraw", null);
+    (0, tslib_1.__decorate)([
+      methodValidators_1.L2PValidator,
+      (0, tslib_1.__metadata)("design:type", Function),
+      (0, tslib_1.__metadata)("design:paramtypes", [Object]),
+      (0, tslib_1.__metadata)("design:returntype", Promise)
+    ], L2Pool.prototype, "borrow", null);
+    (0, tslib_1.__decorate)([
+      methodValidators_1.L2PValidator,
+      (0, tslib_1.__metadata)("design:type", Function),
+      (0, tslib_1.__metadata)("design:paramtypes", [Object, Array]),
+      (0, tslib_1.__metadata)("design:returntype", Promise)
+    ], L2Pool.prototype, "repay", null);
+    (0, tslib_1.__decorate)([
+      methodValidators_1.L2PValidator,
+      (0, tslib_1.__param)(0, (0, paramValidators_1.isDeadline32Bytes)("deadline")),
+      (0, tslib_1.__metadata)("design:type", Function),
+      (0, tslib_1.__metadata)("design:paramtypes", [Object, Array]),
+      (0, tslib_1.__metadata)("design:returntype", Promise)
+    ], L2Pool.prototype, "repayWithPermit", null);
+    (0, tslib_1.__decorate)([
+      methodValidators_1.L2PValidator,
+      (0, tslib_1.__metadata)("design:type", Function),
+      (0, tslib_1.__metadata)("design:paramtypes", [Object, Array]),
+      (0, tslib_1.__metadata)("design:returntype", Promise)
+    ], L2Pool.prototype, "repayWithATokens", null);
+    (0, tslib_1.__decorate)([
+      methodValidators_1.L2PValidator,
+      (0, tslib_1.__metadata)("design:type", Function),
+      (0, tslib_1.__metadata)("design:paramtypes", [Object]),
+      (0, tslib_1.__metadata)("design:returntype", Promise)
+    ], L2Pool.prototype, "swapBorrowRateMode", null);
+    (0, tslib_1.__decorate)([
+      methodValidators_1.L2PValidator,
+      (0, tslib_1.__metadata)("design:type", Function),
+      (0, tslib_1.__metadata)("design:paramtypes", [Object]),
+      (0, tslib_1.__metadata)("design:returntype", Promise)
+    ], L2Pool.prototype, "setUserUseReserveAsCollateral", null);
+    (0, tslib_1.__decorate)([
+      methodValidators_1.L2PValidator,
+      (0, tslib_1.__metadata)("design:type", Function),
+      (0, tslib_1.__metadata)("design:paramtypes", [Object, Array]),
+      (0, tslib_1.__metadata)("design:returntype", Promise)
+    ], L2Pool.prototype, "liquidationCall", null);
+    exports.L2Pool = L2Pool;
+  }
+});
+
 // node_modules/@aave/contract-helpers/dist/cjs/v3-pool-contract/typechain/IPool__factory.js
 var require_IPool_factory = __commonJS({
   "node_modules/@aave/contract-helpers/dist/cjs/v3-pool-contract/typechain/IPool__factory.js"(exports) {
@@ -45649,8 +47067,10 @@ var require_v3_pool_contract = __commonJS({
     var erc20_2612_1 = require_erc20_2612();
     var erc20_contract_1 = require_erc20_contract();
     var paraswap_liquiditySwapAdapter_contract_1 = require_paraswap_liquiditySwapAdapter_contract();
+    var paraswap_repayWithCollateralAdapter_contract_1 = require_paraswap_repayWithCollateralAdapter_contract();
     var repayWithCollateralAdapter_contract_1 = require_repayWithCollateralAdapter_contract();
     var synthetix_contract_1 = require_synthetix_contract();
+    var v3_pool_rollups_1 = require_v3_pool_rollups();
     var wethgateway_contract_1 = require_wethgateway_contract();
     var IPool__factory_1 = require_IPool_factory();
     var buildParaSwapLiquiditySwapParams = (assetToSwapTo, minAmountToReceive, swapAllBalanceOffset, swapCalldata, augustus, permitAmount, deadline, v, r, s) => {
@@ -45673,17 +47093,23 @@ var require_v3_pool_contract = __commonJS({
     var Pool = class extends BaseService_1.default {
       constructor(provider, lendingPoolConfig) {
         super(provider, IPool__factory_1.IPool__factory);
-        const { POOL, FLASH_LIQUIDATION_ADAPTER, REPAY_WITH_COLLATERAL_ADAPTER, SWAP_COLLATERAL_ADAPTER, WETH_GATEWAY } = lendingPoolConfig !== null && lendingPoolConfig !== void 0 ? lendingPoolConfig : {};
+        const { POOL, FLASH_LIQUIDATION_ADAPTER, REPAY_WITH_COLLATERAL_ADAPTER, SWAP_COLLATERAL_ADAPTER, WETH_GATEWAY, L2_ENCODER } = lendingPoolConfig !== null && lendingPoolConfig !== void 0 ? lendingPoolConfig : {};
         this.poolAddress = POOL !== null && POOL !== void 0 ? POOL : "";
         this.flashLiquidationAddress = FLASH_LIQUIDATION_ADAPTER !== null && FLASH_LIQUIDATION_ADAPTER !== void 0 ? FLASH_LIQUIDATION_ADAPTER : "";
         this.swapCollateralAddress = SWAP_COLLATERAL_ADAPTER !== null && SWAP_COLLATERAL_ADAPTER !== void 0 ? SWAP_COLLATERAL_ADAPTER : "";
         this.repayWithCollateralAddress = REPAY_WITH_COLLATERAL_ADAPTER !== null && REPAY_WITH_COLLATERAL_ADAPTER !== void 0 ? REPAY_WITH_COLLATERAL_ADAPTER : "";
+        this.l2EncoderAddress = L2_ENCODER !== null && L2_ENCODER !== void 0 ? L2_ENCODER : "";
         this.erc20_2612Service = new erc20_2612_1.ERC20_2612Service(provider);
         this.erc20Service = new erc20_contract_1.ERC20Service(provider);
         this.synthetixService = new synthetix_contract_1.SynthetixService(provider);
         this.wethGatewayService = new wethgateway_contract_1.WETHGatewayService(provider, this.erc20Service, WETH_GATEWAY);
         this.liquiditySwapAdapterService = new paraswap_liquiditySwapAdapter_contract_1.LiquiditySwapAdapterService(provider, SWAP_COLLATERAL_ADAPTER);
         this.repayWithCollateralAdapterService = new repayWithCollateralAdapter_contract_1.RepayWithCollateralAdapterService(provider, REPAY_WITH_COLLATERAL_ADAPTER);
+        this.paraswapRepayWithCollateralAdapterService = new paraswap_repayWithCollateralAdapter_contract_1.ParaswapRepayWithCollateral(provider, REPAY_WITH_COLLATERAL_ADAPTER);
+        this.l2PoolService = new v3_pool_rollups_1.L2Pool(provider, {
+          l2PoolAddress: this.poolAddress,
+          encoderAddress: this.l2EncoderAddress
+        });
       }
       deposit(_0) {
         return __async(this, arguments, function* ({ user, reserve, amount, onBehalfOf, referralCode }) {
@@ -45734,13 +47160,13 @@ var require_v3_pool_contract = __commonJS({
           txs.push({
             tx: txCallback,
             txType: types_1.eEthereumTxType.DLP_ACTION,
-            gas: this.generateTxPriceEstimation(txs, txCallback, types_1.ProtocolAction.deposit)
+            gas: this.generateTxPriceEstimation(txs, txCallback, types_1.ProtocolAction.supply)
           });
           return txs;
         });
       }
       supply(_0) {
-        return __async(this, arguments, function* ({ user, reserve, amount, onBehalfOf, referralCode }) {
+        return __async(this, arguments, function* ({ user, reserve, amount, onBehalfOf, referralCode, useOptimizedPath }) {
           if (reserve.toLowerCase() === utils_1.API_ETH_MOCK_ADDRESS.toLowerCase()) {
             return this.wethGatewayService.depositETH({
               lendingPool: this.poolAddress,
@@ -45778,9 +47204,12 @@ var require_v3_pool_contract = __commonJS({
             txs.push(approveTx);
           }
           const lendingPoolContract = this.getContractInstance(this.poolAddress);
+          if (useOptimizedPath) {
+            return this.l2PoolService.supply({ user, reserve, amount: convertedAmount, referralCode }, txs);
+          }
           const txCallback = this.generateTxCallback({
             rawTxMethod: () => __async(this, null, function* () {
-              return lendingPoolContract.populateTransaction.deposit(reserve, convertedAmount, onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user, referralCode !== null && referralCode !== void 0 ? referralCode : "0");
+              return lendingPoolContract.populateTransaction.supply(reserve, convertedAmount, onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user, referralCode !== null && referralCode !== void 0 ? referralCode : "0");
             }),
             from: user,
             value: (0, utils_1.getTxValue)(reserve, convertedAmount)
@@ -45788,13 +47217,13 @@ var require_v3_pool_contract = __commonJS({
           txs.push({
             tx: txCallback,
             txType: types_1.eEthereumTxType.DLP_ACTION,
-            gas: this.generateTxPriceEstimation(txs, txCallback, types_1.ProtocolAction.deposit)
+            gas: this.generateTxPriceEstimation(txs, txCallback, types_1.ProtocolAction.supply)
           });
           return txs;
         });
       }
       signERC20Approval(_0) {
-        return __async(this, arguments, function* ({ user, reserve, amount }) {
+        return __async(this, arguments, function* ({ user, reserve, amount, deadline }) {
           const { getTokenData, isApproved } = this.erc20Service;
           const { name: name2, decimals } = yield getTokenData(reserve);
           const convertedAmount = amount === "-1" ? ethers_1.constants.MaxUint256.toString() : (0, utils_1.valueToWei)(amount, decimals);
@@ -45843,14 +47272,14 @@ var require_v3_pool_contract = __commonJS({
               spender: this.poolAddress,
               value: convertedAmount,
               nonce,
-              deadline: ethers_1.constants.MaxUint256.toString()
+              deadline
             }
           };
           return JSON.stringify(typeData);
         });
       }
       supplyWithPermit(_0) {
-        return __async(this, arguments, function* ({ user, reserve, onBehalfOf, amount, referralCode, signature }) {
+        return __async(this, arguments, function* ({ user, reserve, onBehalfOf, amount, referralCode, signature, useOptimizedPath, deadline }) {
           const txs = [];
           const { decimalsOf } = this.erc20Service;
           const poolContract = this.getContractInstance(this.poolAddress);
@@ -45865,9 +47294,21 @@ var require_v3_pool_contract = __commonJS({
           if (!fundsAvailable) {
             throw new Error("Not enough funds to execute operation");
           }
+          if (useOptimizedPath) {
+            return this.l2PoolService.supplyWithPermit({
+              user,
+              reserve,
+              amount: convertedAmount,
+              referralCode,
+              deadline,
+              permitV: sig.v,
+              permitR: sig.r,
+              permitS: sig.s
+            }, txs);
+          }
           const txCallback = this.generateTxCallback({
             rawTxMethod: () => __async(this, null, function* () {
-              return poolContract.populateTransaction.supplyWithPermit(reserve, convertedAmount, onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user, referralCode !== null && referralCode !== void 0 ? referralCode : 0, ethers_1.constants.MaxUint256.toString(), sig.v, sig.r, sig.s);
+              return poolContract.populateTransaction.supplyWithPermit(reserve, convertedAmount, onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user, referralCode !== null && referralCode !== void 0 ? referralCode : 0, deadline, sig.v, sig.r, sig.s);
             }),
             from: user
           });
@@ -45880,7 +47321,7 @@ var require_v3_pool_contract = __commonJS({
         });
       }
       withdraw(_0) {
-        return __async(this, arguments, function* ({ user, reserve, amount, onBehalfOf, aTokenAddress }) {
+        return __async(this, arguments, function* ({ user, reserve, amount, onBehalfOf, aTokenAddress, useOptimizedPath }) {
           if (reserve.toLowerCase() === utils_1.API_ETH_MOCK_ADDRESS.toLowerCase()) {
             if (!aTokenAddress) {
               throw new Error("To withdraw ETH you need to pass the aWETH token address");
@@ -45896,6 +47337,13 @@ var require_v3_pool_contract = __commonJS({
           const { decimalsOf } = this.erc20Service;
           const decimals = yield decimalsOf(reserve);
           const convertedAmount = amount === "-1" ? ethers_1.constants.MaxUint256.toString() : (0, utils_1.valueToWei)(amount, decimals);
+          if (useOptimizedPath) {
+            return this.l2PoolService.withdraw({
+              user,
+              reserve,
+              amount: convertedAmount
+            });
+          }
           const poolContract = this.getContractInstance(this.poolAddress);
           const txCallback = this.generateTxCallback({
             rawTxMethod: () => __async(this, null, function* () {
@@ -45914,7 +47362,7 @@ var require_v3_pool_contract = __commonJS({
         });
       }
       borrow(_0) {
-        return __async(this, arguments, function* ({ user, reserve, amount, interestRateMode, debtTokenAddress, onBehalfOf, referralCode }) {
+        return __async(this, arguments, function* ({ user, reserve, amount, interestRateMode, debtTokenAddress, onBehalfOf, referralCode, useOptimizedPath }) {
           if (reserve.toLowerCase() === utils_1.API_ETH_MOCK_ADDRESS.toLowerCase()) {
             if (!debtTokenAddress) {
               throw new Error(`To borrow ETH you need to pass the stable or variable WETH debt Token Address corresponding the interestRateMode`);
@@ -45932,6 +47380,15 @@ var require_v3_pool_contract = __commonJS({
           const reserveDecimals = yield decimalsOf(reserve);
           const formatAmount = (0, utils_1.valueToWei)(amount, reserveDecimals);
           const numericRateMode = interestRateMode === types_1.InterestRate.Variable ? 2 : 1;
+          if (useOptimizedPath) {
+            return this.l2PoolService.borrow({
+              user,
+              reserve,
+              amount: formatAmount,
+              numericRateMode,
+              referralCode
+            });
+          }
           const poolContract = this.getContractInstance(this.poolAddress);
           const txCallback = this.generateTxCallback({
             rawTxMethod: () => __async(this, null, function* () {
@@ -45949,7 +47406,7 @@ var require_v3_pool_contract = __commonJS({
         });
       }
       repay(_0) {
-        return __async(this, arguments, function* ({ user, reserve, amount, interestRateMode, onBehalfOf }) {
+        return __async(this, arguments, function* ({ user, reserve, amount, interestRateMode, onBehalfOf, useOptimizedPath }) {
           if (reserve.toLowerCase() === utils_1.API_ETH_MOCK_ADDRESS.toLowerCase()) {
             return this.wethGatewayService.repayETH({
               lendingPool: this.poolAddress,
@@ -45991,6 +47448,14 @@ var require_v3_pool_contract = __commonJS({
             });
             txs.push(approveTx);
           }
+          if (useOptimizedPath) {
+            return this.l2PoolService.repay({
+              user,
+              reserve,
+              amount: convertedAmount,
+              numericRateMode
+            }, txs);
+          }
           const txCallback = this.generateTxCallback({
             rawTxMethod: () => __async(this, null, function* () {
               return populateTransaction.repay(reserve, convertedAmount, numericRateMode, onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user);
@@ -46007,7 +47472,7 @@ var require_v3_pool_contract = __commonJS({
         });
       }
       repayWithPermit(_0) {
-        return __async(this, arguments, function* ({ user, reserve, amount, interestRateMode, onBehalfOf, signature }) {
+        return __async(this, arguments, function* ({ user, reserve, amount, interestRateMode, onBehalfOf, signature, useOptimizedPath, deadline }) {
           const txs = [];
           const { decimalsOf } = this.erc20Service;
           const poolContract = this.getContractInstance(this.poolAddress);
@@ -46026,9 +47491,21 @@ var require_v3_pool_contract = __commonJS({
               throw new Error("Not enough funds to execute operation");
             }
           }
+          if (useOptimizedPath) {
+            return this.l2PoolService.repayWithPermit({
+              user,
+              reserve,
+              amount: convertedAmount,
+              numericRateMode,
+              deadline,
+              permitR: sig.r,
+              permitS: sig.s,
+              permitV: sig.v
+            }, txs);
+          }
           const txCallback = this.generateTxCallback({
             rawTxMethod: () => __async(this, null, function* () {
-              return populateTransaction.repayWithPermit(reserve, convertedAmount, numericRateMode, onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user, ethers_1.constants.MaxUint256.toString(), sig.v, sig.r, sig.s);
+              return populateTransaction.repayWithPermit(reserve, convertedAmount, numericRateMode, onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user, deadline, sig.v, sig.r, sig.s);
             }),
             from: user,
             value: (0, utils_1.getTxValue)(reserve, convertedAmount)
@@ -46041,41 +47518,59 @@ var require_v3_pool_contract = __commonJS({
           return txs;
         });
       }
-      swapBorrowRateMode({ user, reserve, interestRateMode }) {
-        const numericRateMode = interestRateMode === types_1.InterestRate.Variable ? 2 : 1;
-        const poolContract = this.getContractInstance(this.poolAddress);
-        const txCallback = this.generateTxCallback({
-          rawTxMethod: () => __async(this, null, function* () {
-            return poolContract.populateTransaction.swapBorrowRateMode(reserve, numericRateMode);
-          }),
-          from: user
-        });
-        return [
-          {
-            txType: types_1.eEthereumTxType.DLP_ACTION,
-            tx: txCallback,
-            gas: this.generateTxPriceEstimation([], txCallback)
+      swapBorrowRateMode(_0) {
+        return __async(this, arguments, function* ({ user, reserve, interestRateMode, useOptimizedPath }) {
+          const numericRateMode = interestRateMode === types_1.InterestRate.Variable ? 2 : 1;
+          if (useOptimizedPath) {
+            return this.l2PoolService.swapBorrowRateMode({
+              user,
+              reserve,
+              numericRateMode
+            });
           }
-        ];
+          const poolContract = this.getContractInstance(this.poolAddress);
+          const txCallback = this.generateTxCallback({
+            rawTxMethod: () => __async(this, null, function* () {
+              return poolContract.populateTransaction.swapBorrowRateMode(reserve, numericRateMode);
+            }),
+            from: user
+          });
+          return [
+            {
+              txType: types_1.eEthereumTxType.DLP_ACTION,
+              tx: txCallback,
+              gas: this.generateTxPriceEstimation([], txCallback)
+            }
+          ];
+        });
       }
-      setUsageAsCollateral({ user, reserve, usageAsCollateral }) {
-        const poolContract = this.getContractInstance(this.poolAddress);
-        const txCallback = this.generateTxCallback({
-          rawTxMethod: () => __async(this, null, function* () {
-            return poolContract.populateTransaction.setUserUseReserveAsCollateral(reserve, usageAsCollateral);
-          }),
-          from: user
-        });
-        return [
-          {
-            tx: txCallback,
-            txType: types_1.eEthereumTxType.DLP_ACTION,
-            gas: this.generateTxPriceEstimation([], txCallback)
+      setUsageAsCollateral(_0) {
+        return __async(this, arguments, function* ({ user, reserve, usageAsCollateral, useOptimizedPath }) {
+          const poolContract = this.getContractInstance(this.poolAddress);
+          if (useOptimizedPath) {
+            return this.l2PoolService.setUserUseReserveAsCollateral({
+              user,
+              reserve,
+              usageAsCollateral
+            });
           }
-        ];
+          const txCallback = this.generateTxCallback({
+            rawTxMethod: () => __async(this, null, function* () {
+              return poolContract.populateTransaction.setUserUseReserveAsCollateral(reserve, usageAsCollateral);
+            }),
+            from: user
+          });
+          return [
+            {
+              tx: txCallback,
+              txType: types_1.eEthereumTxType.DLP_ACTION,
+              gas: this.generateTxPriceEstimation([], txCallback)
+            }
+          ];
+        });
       }
       liquidationCall(_0) {
-        return __async(this, arguments, function* ({ liquidator, liquidatedUser, debtReserve, collateralReserve, purchaseAmount, getAToken, liquidateAll }) {
+        return __async(this, arguments, function* ({ liquidator, liquidatedUser, debtReserve, collateralReserve, purchaseAmount, getAToken, liquidateAll, useOptimizedPath }) {
           const txs = [];
           const { isApproved, approve, decimalsOf } = this.erc20Service;
           const approved = yield isApproved({
@@ -46097,6 +47592,16 @@ var require_v3_pool_contract = __commonJS({
           if (!liquidateAll) {
             const reserveDecimals = yield decimalsOf(debtReserve);
             convertedAmount = (0, utils_1.valueToWei)(purchaseAmount, reserveDecimals);
+          }
+          if (useOptimizedPath) {
+            return this.l2PoolService.liquidationCall({
+              liquidator,
+              liquidatedUser,
+              debtReserve,
+              collateralReserve,
+              debtToCover: convertedAmount,
+              getAToken
+            }, txs);
           }
           const poolContract = this.getContractInstance(this.poolAddress);
           const txCallback = this.generateTxCallback({
@@ -46257,6 +47762,90 @@ var require_v3_pool_contract = __commonJS({
           return txs;
         });
       }
+      paraswapRepayWithCollateral(_0) {
+        return __async(this, arguments, function* ({ user, fromAsset, fromAToken, assetToRepay, repayWithAmount, repayAmount, permitSignature, repayAllDebt, rateMode, onBehalfOf, referralCode, flash, swapAndRepayCallData }) {
+          const txs = [];
+          const permitParams = permitSignature !== null && permitSignature !== void 0 ? permitSignature : {
+            amount: "0",
+            deadline: "0",
+            v: 0,
+            r: "0x0000000000000000000000000000000000000000000000000000000000000000",
+            s: "0x0000000000000000000000000000000000000000000000000000000000000000"
+          };
+          const approved = yield this.erc20Service.isApproved({
+            token: fromAToken,
+            user,
+            spender: this.repayWithCollateralAddress,
+            amount: repayWithAmount
+          });
+          if (!approved) {
+            const approveTx = this.erc20Service.approve({
+              user,
+              token: fromAToken,
+              spender: this.repayWithCollateralAddress,
+              amount: ethers_1.constants.MaxUint256.toString()
+            });
+            txs.push(approveTx);
+          }
+          const fromDecimals = yield this.erc20Service.decimalsOf(fromAsset);
+          const convertedRepayWithAmount = (0, utils_1.valueToWei)(repayWithAmount, fromDecimals);
+          const repayAmountWithSurplus = (Number(repayAmount) + Number(repayAmount) * Number(utils_1.SURPLUS) / 100).toString();
+          const decimals = yield this.erc20Service.decimalsOf(assetToRepay);
+          const convertedRepayAmount = repayAllDebt ? (0, utils_1.valueToWei)(repayAmountWithSurplus, decimals) : (0, utils_1.valueToWei)(repayAmount, decimals);
+          const numericInterestRate = rateMode === types_1.InterestRate.Stable ? 1 : 2;
+          if (flash) {
+            const params = ethers_1.utils.defaultAbiCoder.encode([
+              "address",
+              "uint256",
+              "uint256",
+              "uint256",
+              "bytes",
+              "uint256",
+              "uint256",
+              "uint8",
+              "bytes32",
+              "bytes32"
+            ], [
+              fromAsset,
+              convertedRepayWithAmount,
+              numericInterestRate,
+              repayAllDebt ? (0, utils_1.augustusToAmountOffsetFromCalldata)(swapAndRepayCallData) : 0,
+              swapAndRepayCallData,
+              permitParams.amount,
+              permitParams.deadline,
+              permitParams.v,
+              permitParams.r,
+              permitParams.s
+            ]);
+            const poolContract = this.getContractInstance(this.poolAddress);
+            const txCallback = this.generateTxCallback({
+              rawTxMethod: () => __async(this, null, function* () {
+                return poolContract.populateTransaction.flashLoan(this.repayWithCollateralAddress, [assetToRepay], [convertedRepayAmount], [0], onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user, params, referralCode !== null && referralCode !== void 0 ? referralCode : "0");
+              }),
+              from: user
+            });
+            txs.push({
+              tx: txCallback,
+              txType: types_1.eEthereumTxType.DLP_ACTION,
+              gas: this.generateTxPriceEstimation(txs, txCallback, types_1.ProtocolAction.repayCollateral)
+            });
+            return txs;
+          }
+          const swapAndRepayTx = this.paraswapRepayWithCollateralAdapterService.swapAndRepay({
+            user,
+            collateralAsset: fromAsset,
+            debtAsset: assetToRepay,
+            collateralAmount: convertedRepayWithAmount,
+            debtRepayAmount: convertedRepayAmount,
+            debtRateMode: rateMode,
+            permitParams,
+            repayAll: repayAllDebt !== null && repayAllDebt !== void 0 ? repayAllDebt : false,
+            swapAndRepayCallData
+          }, txs);
+          txs.push(swapAndRepayTx);
+          return txs;
+        });
+      }
       flashLiquidation(_0) {
         return __async(this, arguments, function* ({ user, collateralAsset, borrowedAsset, debtTokenCover, liquidateAll, initiator, useEthPath }) {
           const addSurplus = (amount) => {
@@ -46290,7 +47879,7 @@ var require_v3_pool_contract = __commonJS({
         });
       }
       repayWithATokens(_0) {
-        return __async(this, arguments, function* ({ user, amount, reserve, rateMode }) {
+        return __async(this, arguments, function* ({ user, amount, reserve, rateMode, useOptimizedPath }) {
           if (reserve.toLowerCase() === utils_1.API_ETH_MOCK_ADDRESS.toLowerCase()) {
             throw new Error("Can not repay with aTokens with eth. Should be WETH instead");
           }
@@ -46301,6 +47890,14 @@ var require_v3_pool_contract = __commonJS({
           const numericRateMode = rateMode === types_1.InterestRate.Variable ? 2 : 1;
           const decimals = yield decimalsOf(reserve);
           const convertedAmount = amount === "-1" ? ethers_1.constants.MaxUint256.toString() : (0, utils_1.valueToWei)(amount, decimals);
+          if (useOptimizedPath) {
+            return this.l2PoolService.repayWithATokens({
+              user,
+              reserve,
+              amount: convertedAmount,
+              numericRateMode
+            }, txs);
+          }
           const txCallback = this.generateTxCallback({
             rawTxMethod: () => __async(this, null, function* () {
               return populateTransaction.repayWithATokens(reserve, convertedAmount, numericRateMode);
@@ -46421,7 +48018,7 @@ var require_v3_pool_contract = __commonJS({
       (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("reserve")),
       (0, tslib_1.__metadata)("design:type", Function),
       (0, tslib_1.__metadata)("design:paramtypes", [Object]),
-      (0, tslib_1.__metadata)("design:returntype", Array)
+      (0, tslib_1.__metadata)("design:returntype", Promise)
     ], Pool.prototype, "swapBorrowRateMode", null);
     (0, tslib_1.__decorate)([
       methodValidators_1.LPValidatorV3,
@@ -46429,7 +48026,7 @@ var require_v3_pool_contract = __commonJS({
       (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("reserve")),
       (0, tslib_1.__metadata)("design:type", Function),
       (0, tslib_1.__metadata)("design:paramtypes", [Object]),
-      (0, tslib_1.__metadata)("design:returntype", Array)
+      (0, tslib_1.__metadata)("design:returntype", Promise)
     ], Pool.prototype, "setUsageAsCollateral", null);
     (0, tslib_1.__decorate)([
       methodValidators_1.LPValidatorV3,
@@ -46469,6 +48066,19 @@ var require_v3_pool_contract = __commonJS({
       (0, tslib_1.__metadata)("design:paramtypes", [Object]),
       (0, tslib_1.__metadata)("design:returntype", Promise)
     ], Pool.prototype, "repayWithCollateral", null);
+    (0, tslib_1.__decorate)([
+      methodValidators_1.LPRepayWithCollateralValidatorV3,
+      (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("user")),
+      (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("fromAsset")),
+      (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("fromAToken")),
+      (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("assetToRepay")),
+      (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("onBehalfOf")),
+      (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)("repayWithAmount")),
+      (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)("repayAmount")),
+      (0, tslib_1.__metadata)("design:type", Function),
+      (0, tslib_1.__metadata)("design:paramtypes", [Object]),
+      (0, tslib_1.__metadata)("design:returntype", Promise)
+    ], Pool.prototype, "paraswapRepayWithCollateral", null);
     (0, tslib_1.__decorate)([
       methodValidators_1.LPFlashLiquidationValidatorV3,
       (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("user")),
@@ -55804,7 +57414,8 @@ var require_reserve = __commonJS({
     var calculate_reserve_debt_1 = require_calculate_reserve_debt();
     function getComputedReserveFields({ reserve, currentTimestamp }) {
       const { totalDebt, totalStableDebt, totalVariableDebt, totalLiquidity } = (0, calculate_reserve_debt_1.calculateReserveDebt)(reserve, currentTimestamp);
-      const utilizationRate = totalLiquidity.eq(0) ? "0" : (0, bignumber_1.valueToBigNumber)(totalDebt).dividedBy(totalLiquidity).toFixed();
+      const borrowUsageRatio = totalLiquidity.eq(0) ? "0" : (0, bignumber_1.valueToBigNumber)(totalDebt).dividedBy(totalLiquidity).toFixed();
+      const supplyUsageRatio = totalLiquidity.eq(0) ? "0" : (0, bignumber_1.valueToBigNumber)(totalDebt).dividedBy(totalLiquidity.plus(reserve.unbacked)).toFixed();
       const reserveLiquidationBonus = (0, bignumber_1.normalize)((0, bignumber_1.valueToBigNumber)(reserve.reserveLiquidationBonus).minus(__pow(10, index_1.LTV_PRECISION)), index_1.LTV_PRECISION);
       const eModeLiquidationBonus = (0, bignumber_1.normalize)((0, bignumber_1.valueToBigNumber)(reserve.eModeLiquidationBonus).minus(__pow(10, index_1.LTV_PRECISION)), index_1.LTV_PRECISION);
       const availableLiquidity = reserve.borrowCap === "0" ? new bignumber_js_1.default(reserve.availableLiquidity) : bignumber_js_1.default.min(reserve.availableLiquidity, new bignumber_js_1.default(reserve.borrowCap).shiftedBy(reserve.decimals).minus(totalDebt.plus(1)));
@@ -55816,7 +57427,8 @@ var require_reserve = __commonJS({
         totalStableDebt,
         totalVariableDebt,
         totalLiquidity,
-        utilizationRate,
+        borrowUsageRatio,
+        supplyUsageRatio,
         formattedReserveLiquidationBonus: reserveLiquidationBonus,
         formattedEModeLiquidationBonus: eModeLiquidationBonus,
         formattedEModeLiquidationThreshold: reserve.eModeLiquidationThreshold.toString(),
@@ -55838,7 +57450,8 @@ var require_reserve = __commonJS({
         totalLiquidity: normalizeWithReserve(reserve.totalLiquidity),
         formattedAvailableLiquidity: normalizeWithReserve(reserve.availableLiquidity),
         unborrowedLiquidity: normalizeWithReserve(reserve.unborrowedLiquidity),
-        utilizationRate: reserve.utilizationRate,
+        borrowUsageRatio: reserve.borrowUsageRatio,
+        supplyUsageRatio: reserve.supplyUsageRatio,
         totalDebt: normalizeWithReserve(reserve.totalDebt),
         formattedBaseLTVasCollateral: (0, bignumber_1.normalize)(reserve.baseLTVasCollateral, index_1.LTV_PRECISION),
         formattedEModeLtv: (0, bignumber_1.normalize)(reserve.eModeLtv, index_1.LTV_PRECISION),
@@ -56112,7 +57725,7 @@ var marketsData = {
       LENDING_POOL: "0x7937d4799803fbbe595ed57278bc4ca21f3bffcb",
       WETH_GATEWAY: "0xcc9a0B7c43DC2a5F023Bb9b738E45B0Ef6B06E04",
       WALLET_BALANCE_PROVIDER: "0x8E8dAd5409E0263a51C0aB5055dA66Be28cFF922",
-      UI_POOL_DATA_PROVIDER: "0xff115c660f57dcc19a933dbf5ba3677979adcaec",
+      UI_POOL_DATA_PROVIDER: "0x548e95Ce38B8cb1D91FD82A9F094F26295840277",
       UI_INCENTIVE_DATA_PROVIDER: "0xD01ab9a6577E1D84F142e44D49380e23A340387d"
     }
   },
@@ -56219,13 +57832,14 @@ var marketsData = {
       incentives: true
     },
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: "0x82afFC26e25e7469D77D1F6922d3c669781CB232".toLowerCase(),
-      LENDING_POOL: "0xc3e6e13B82cA2c0536601fA4D746fB351B5A0591",
-      WETH_GATEWAY: "0x02D538e56A729C535F83b2DA20Ddf9AD7281FE6c",
-      FAUCET: "0x08Dbc45B4e520bd9686E3990d8E792507e83627F",
-      WALLET_BALANCE_PROVIDER: "0xE339D30cBa24C70dCCb82B234589E3C83249e658",
-      UI_POOL_DATA_PROVIDER: "0x7253fA6A8ab0ED2D31e05Dca9448FdD2FfBf6A06",
-      UI_INCENTIVE_DATA_PROVIDER: "0x2aD4c249719fd05eb644985620D284832132eD7f"
+      LENDING_POOL_ADDRESS_PROVIDER: "0xd792BBEb43b0C6A10E11f6D41947DfDf2F1637B7".toLowerCase(),
+      LENDING_POOL: "0xA1D75f1461B173EdAc800138A8440413710aC124",
+      WETH_GATEWAY: "0xD15d36975A0200D11B8a8964F4F267982D2a1cFe",
+      FAUCET: "0x10E5744B09Fb08b8373D6955952A8831A1285bbe",
+      WALLET_BALANCE_PROVIDER: "0x4A18e871CBEd993773958B6d6B4cfbbcF9883142",
+      UI_POOL_DATA_PROVIDER: "0x2f733c0389bfF96a3f930Deb2f6DB1d767Cd3215",
+      UI_INCENTIVE_DATA_PROVIDER: "0xEDcE7fE559118b364f1F9C065b14B34c35E76396",
+      L2_ENCODER: "0x5E52dEc931FFb32f609681B8438A51c675cc232d"
     }
   },
   ["proto_fuji_v3" /* proto_fuji_v3 */]: {

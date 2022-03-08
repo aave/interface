@@ -1,3 +1,4 @@
+import { InterestRate } from '@aave/contract-helpers';
 import { createContext, useContext, useState } from 'react';
 
 export enum ModalType {
@@ -26,6 +27,7 @@ export type ModalArgsType = {
   power?: string;
   icon?: string;
   stakeAssetName?: string;
+  currentRateMode?: InterestRate;
 };
 
 export type TxStateType = {
@@ -42,7 +44,7 @@ interface ModalContextType {
   openBorrow: (underlyingAsset: string) => void;
   openRepay: (underlyingAsset: string) => void;
   openCollateralChange: (underlyingAsset: string) => void;
-  openRateSwitch: (underlyingAsset: string) => void;
+  openRateSwitch: (underlyingAsset: string, currentRateMode: InterestRate) => void;
   openStake: (stakeAssetName: string, icon: string) => void;
   openUnstake: (stakeAssetName: string, icon: string) => void;
   openStakeCooldown: (stakeAssetName: string) => void;
@@ -63,6 +65,8 @@ interface ModalContextType {
   gasLimit: string;
   setGasLimit: (limit: string) => void;
   resetTx: () => void;
+  loadingTxns: boolean;
+  setLoadingTxns: (loading: boolean) => void;
 }
 
 export const ModalContext = createContext<ModalContextType>({} as ModalContextType);
@@ -75,6 +79,7 @@ export const ModalContextProvider: React.FC = ({ children }) => {
   const [approvalTxState, setApprovalTxState] = useState<TxStateType>({});
   const [mainTxState, setMainTxState] = useState<TxStateType>({});
   const [gasLimit, setGasLimit] = useState<string>('');
+  const [loadingTxns, setLoadingTxns] = useState(false);
 
   return (
     <ModalContext.Provider
@@ -99,9 +104,9 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setType(ModalType.CollateralChange);
           setArgs({ underlyingAsset });
         },
-        openRateSwitch: (underlyingAsset) => {
+        openRateSwitch: (underlyingAsset, currentRateMode) => {
           setType(ModalType.RateSwitch);
-          setArgs({ underlyingAsset });
+          setArgs({ underlyingAsset, currentRateMode });
         },
         openStake: (stakeAssetName, icon) => {
           setType(ModalType.Stake);
@@ -160,6 +165,8 @@ export const ModalContextProvider: React.FC = ({ children }) => {
         setMainTxState,
         gasLimit,
         setGasLimit,
+        loadingTxns,
+        setLoadingTxns,
       }}
     >
       {children}

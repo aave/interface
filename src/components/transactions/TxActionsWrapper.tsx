@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Box, BoxProps, Button, CircularProgress } from '@mui/material';
 import { ReactNode } from 'react';
 import { TxStateType } from 'src/hooks/useModal';
+import isEmpty from 'lodash/isEmpty';
 
 interface TxActionsWrapperProps extends BoxProps {
   actionInProgressText: ReactNode;
@@ -44,9 +45,11 @@ export const TxActionsWrapper = ({
   const isAmountMissing = requiresAmount && requiresAmount && Number(amount) === 0;
 
   function getMainParams() {
-    if (isWrongNetwork) return { disabled: true, content: <Trans>Switch Network</Trans> };
+    if (blocked) return { disabled: true, content: actionText };
+    if (mainTxState?.gasEstimationError) return { disabled: true, content: actionText };
+    if (isWrongNetwork) return { disabled: true, content: <Trans>Wrong Network</Trans> };
     if (isAmountMissing) return { disabled: true, content: <Trans>Enter an amount</Trans> };
-    if (preparingTransactions) return { disabled: true, loading: true };
+    if (preparingTransactions || isEmpty(mainTxState)) return { disabled: true, loading: true };
     if (hasApprovalError && handleRetry)
       return { content: <Trans>Retry with approval</Trans>, handleClick: handleRetry };
     if (mainTxState?.loading)

@@ -14,11 +14,11 @@ jobs:
   cache-refresh:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@2d1c1198e79c30cca5c3957b1e3b65ce95b5356e
         with:
           token: ${{ secrets.BOT_TOKEN }}
 
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@9ced9a43a244f3ac94f13bfd896db8c8f30da67a
         with:
           node-version-file: '.nvmrc'
           cache: 'yarn'
@@ -35,7 +35,7 @@ jobs:
           then
             echo "tree is clean"
           else
-            git config --global user.name 'Cache update'
+            git config --global user.name 'Cache bot'
             git config --global user.email 'cache-bot@aave.com'
             git commit -am "Automated cache update"
             git push

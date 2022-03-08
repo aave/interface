@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
-import { GovernancePageProps } from 'pages/governance';
+import { GovernancePageProps } from 'pages/governance/index.governance';
 import { CheckBadge } from 'src/components/primitives/CheckBadge';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 

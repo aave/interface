@@ -58,7 +58,7 @@ export default function ReserveOverview() {
             value={mode}
             exclusive
             onChange={(_, value) => setMode(value)}
-            sx={{ width: { xs: '100%', xsm: '359px' } }}
+            sx={{ width: { xs: '100%', xsm: '359px' }, height: '44px' }}
           >
             <ToggleButton value="overview" disabled={mode === 'overview'}>
               <Typography variant="subheader1">

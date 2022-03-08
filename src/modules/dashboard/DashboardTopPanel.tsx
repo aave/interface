@@ -36,7 +36,6 @@ export const DashboardTopPanel = () => {
 
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
-  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const { claimableRewardsUsd, assets } = Object.keys(user.calculatedUserIncentives).reduce(
     (acc, rewardTokenAddress) => {
@@ -108,7 +107,7 @@ export const DashboardTopPanel = () => {
         <TopInfoPanelItem icon={<NetAPYIcon />} title={<Trans>Net APY</Trans>} loading={loading}>
           {currentAccount ? (
             <FormattedNumber
-              value={((user?.earnedAPY || 0) - (user?.debtAPY || 0)) / 100}
+              value={(user?.earnedAPY || 0) - (user?.debtAPY || 0)}
               variant={valueTypographyVariant}
               visibleDecimals={2}
               percent
@@ -152,7 +151,6 @@ export const DashboardTopPanel = () => {
           <TopInfoPanelItem
             title={<Trans>Available rewards</Trans>}
             icon={<ClaimGiftIcon />}
-            withLine={!downToXSM}
             loading={loading}
           >
             <Box
@@ -174,15 +172,12 @@ export const DashboardTopPanel = () => {
                   data-cy={'Claim_Value'}
                 />
                 {assets && (
-                  <MultiTokenIcon
-                    symbols={assets}
-                    sx={{ ml: 1, fontSize: { xs: '16px', xsm: '20px' } }}
-                  />
+                  <MultiTokenIcon symbols={assets} sx={{ fontSize: { xs: '16px', xsm: '20px' } }} />
                 )}
               </Box>
 
               <Button
-                variant="surface"
+                variant="gradient"
                 size="small"
                 onClick={() => openClaimRewards()}
                 sx={{ minWidth: 'unset', ml: { xs: 0, xsm: 2 } }}

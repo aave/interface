@@ -16,14 +16,14 @@ fragment StakeUserUIDataFragment on StakeUserUIData {
   usdPriceEth
 }
 
-query C_StakeUserUIData($userAddress: String!) {
-  stakeUserUIData(userAddress: $userAddress) {
+query C_StakeUserUIData($userAddress: String!, $chainId: Int!) {
+  stakeUserUIData(userAddress: $userAddress, chainId: $chainId) {
     ...StakeUserUIDataFragment
   }
 }
 
-subscription C_StakeUserUIDataUpdate($userAddress: String!) {
-  stakeUserUIDataUpdate(userAddress: $userAddress) {
+subscription C_StakeUserUIDataUpdate($userAddress: String!, $chainId: Int!) {
+  stakeUserUIDataUpdate(userAddress: $userAddress, chainId: $chainId) {
     ...StakeUserUIDataFragment
   }
 }

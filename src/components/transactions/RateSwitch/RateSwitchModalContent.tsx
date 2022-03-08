@@ -24,6 +24,7 @@ import { RateSwitchActions } from './RateSwitchActions';
 
 export type RateSwitchModalContentProps = {
   underlyingAsset: string;
+  currentRateMode: InterestRate;
 };
 
 export enum ErrorType {
@@ -32,7 +33,10 @@ export enum ErrorType {
   STABLE_INTEREST_TYPE_IS_DISABLED,
 }
 
-export const RateSwitchModalContent = ({ underlyingAsset }: RateSwitchModalContentProps) => {
+export const RateSwitchModalContent = ({
+  underlyingAsset,
+  currentRateMode,
+}: RateSwitchModalContentProps) => {
   const { mainTxState: rateSwitchTxState, gasLimit } = useModalContext();
   const { reserves, user } = useAppDataContext();
   const { currentChainId } = useProtocolDataContext();
@@ -47,11 +51,6 @@ export const RateSwitchModalContent = ({ underlyingAsset }: RateSwitchModalConte
   const userReserve = user.userReservesData.find(
     (userReserve) => underlyingAsset === userReserve.underlyingAsset
   ) as ComputedUserReserve;
-
-  const currentRateMode =
-    Number(userReserve.stableBorrows) > Number(userReserve.variableBorrows)
-      ? InterestRate.Stable
-      : InterestRate.Variable;
 
   const rateModeAfterSwitch =
     InterestRate.Variable === currentRateMode ? InterestRate.Stable : InterestRate.Variable;
@@ -101,13 +100,12 @@ export const RateSwitchModalContent = ({ underlyingAsset }: RateSwitchModalConte
     }
   };
 
-  console.log('TODO: do semething with blocking errors: ', blockingError);
-
   // is Network mismatched
   const isWrongNetwork = currentChainId !== connectedChainId;
 
   if (rateSwitchTxState.txError) return <TxErrorView errorMessage={rateSwitchTxState.txError} />;
   if (rateSwitchTxState.success) return <TxSuccessView rate={rateModeAfterSwitch} />;
+
   return (
     <>
       <TxModalTitle title="Switch APY type" />

@@ -174,7 +174,8 @@ export const SwapModalContent = ({ underlyingAsset }: SupplyProps) => {
           {
             balance: maxAmountToSwap,
             address: poolReserve.underlyingAsset,
-            symbol: poolReserve.iconSymbol,
+            symbol: poolReserve.symbol,
+            iconSymbol: poolReserve.iconSymbol,
           },
         ]}
         maxValue={maxAmountToSwap}
@@ -242,6 +243,7 @@ export const SwapModalContent = ({ underlyingAsset }: SupplyProps) => {
         />
         {showHealthFactor && (
           <DetailsHFLine
+            visibleHfChange={!!_amount}
             healthFactor={user.healthFactor}
             futureHealthFactor={hfAfterSwap.toString()}
           />
