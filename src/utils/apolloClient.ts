@@ -94,7 +94,12 @@ const isSubscription = ({ query }: Operation) => {
 
 const getStakeLink = (link?: ApolloLink) => {
   const stakeConfig = getStakeConfig();
-  if (stakeConfig && stakeConfig.wsStakeDataUrl && stakeConfig.queryStakeDataUrl) {
+  if (
+    stakeConfig &&
+    stakeConfig.wsStakeDataUrl &&
+    stakeConfig.queryStakeDataUrl &&
+    process.browser
+  ) {
     const condition = (operation: Operation) =>
       operation.getContext().target === APOLLO_QUERY_TARGET.STAKE;
     const http = new HttpLink({ uri: stakeConfig.queryStakeDataUrl });
