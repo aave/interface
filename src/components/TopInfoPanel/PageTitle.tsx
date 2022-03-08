@@ -48,7 +48,8 @@ export const PageTitle = ({ pageTitle, withMarketSwitcher, bridge }: PageTitlePr
         }}
       >
         {withMarketSwitcher && <MarketSwitcher />}
-        <BridgeButton bridge={bridge} variant="surface" withoutIcon={!upToMD} />
+        {/* <BridgeButton bridge={bridge} variant="surface" withoutIcon={!upToMD} /> */}
+        {/* NOTE:// Removing for now  */}
       </Box>
     </Box>
   );
