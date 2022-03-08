@@ -45,7 +45,6 @@ export const WithdrawActions = ({
             aTokenAddress: poolReserve.aTokenAddress,
             useOptimizedPath: optimizedPath(chainId),
           });
-          console.log('tx: ', tx);
           return tx;
         } else {
           return lendingPool.withdraw({
