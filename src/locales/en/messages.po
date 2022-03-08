@@ -1107,7 +1107,6 @@ msgstr "Swap"
 msgid "Swapping"
 msgstr "Swapping"
 
-#: src/components/transactions/TxActionsWrapper.tsx
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Switch Network"
 msgstr "Switch Network"
@@ -1369,6 +1368,10 @@ msgstr "Withdraw {symbol}"
 #: src/components/transactions/Withdraw/WithdrawActions.tsx
 msgid "Withdrawing {symbol}"
 msgstr "Withdrawing {symbol}"
+
+#: src/components/transactions/TxActionsWrapper.tsx
+msgid "Wrong Network"
+msgstr "Wrong Network"
 
 #: src/modules/governance/VoteBar.tsx
 msgid "YAE"
