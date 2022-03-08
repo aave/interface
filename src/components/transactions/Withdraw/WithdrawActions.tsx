@@ -38,14 +38,13 @@ export const WithdrawActions = ({
       tryPermit: false,
       handleGetTxns: async () => {
         if (currentMarketData.v3) {
-          const tx = await lendingPool.withdraw({
+          return lendingPool.withdraw({
             user: currentAccount,
             reserve: poolAddress,
             amount: amountToWithdraw,
             aTokenAddress: poolReserve.aTokenAddress,
             useOptimizedPath: optimizedPath(chainId),
           });
-          return tx;
         } else {
           return lendingPool.withdraw({
             user: currentAccount,
