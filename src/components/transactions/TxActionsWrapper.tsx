@@ -46,6 +46,7 @@ export const TxActionsWrapper = ({
 
   function getMainParams() {
     if (blocked) return { disabled: true, content: actionText };
+    if (mainTxState?.gasEstimationError) return { disabled: true, content: actionText };
     if (isWrongNetwork) return { disabled: true, content: <Trans>Wrong Network</Trans> };
     if (isAmountMissing) return { disabled: true, content: <Trans>Enter an amount</Trans> };
     if (preparingTransactions || isEmpty(mainTxState)) return { disabled: true, loading: true };
