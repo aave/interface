@@ -155,6 +155,7 @@ msgstr "Asset category"
 msgid "Asset to delegate"
 msgstr "Asset to delegate"
 
+#: pages/faucet.tsx
 #: src/modules/dashboard/lists/ListHeader.tsx
 msgid "Assets"
 msgstr "Assets"
@@ -482,8 +483,8 @@ msgid "E-Mode category"
 msgstr "E-Mode category"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
-msgid "E-Mode increases your borrowing power for a selected category of assets up to 99%. <0>Learn more</0>"
-msgstr "E-Mode increases your borrowing power for a selected category of assets up to 99%. <0>Learn more</0>"
+msgid "E-Mode increases your borrowing power for a selected category of assets up to 97%. <0>Learn more</0>"
+msgstr "E-Mode increases your borrowing power for a selected category of assets up to 97%. <0>Learn more</0>"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Efficiency mode (E-Mode)"
@@ -547,8 +548,6 @@ msgstr "Executed"
 msgid "FAQ"
 msgstr "FAQ"
 
-#: pages/faucet.tsx
-#: pages/faucet.tsx
 #: pages/faucet.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Faucet"
@@ -1575,6 +1574,10 @@ msgstr "{0}"
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "{0} Balance"
 msgstr "{0} Balance"
+
+#: pages/faucet.tsx
+msgid "{0} Faucet"
+msgstr "{0} Faucet"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{0} days"
