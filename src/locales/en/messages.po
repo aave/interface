@@ -71,8 +71,8 @@ msgid "Aave Governance"
 msgstr "Aave Governance"
 
 #: src/modules/governance/GovernanceTopPanel.tsx
-msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance documentation."
-msgstr "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance documentation."
+msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance documentation"
+msgstr "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance documentation"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Aave per month"
@@ -1384,10 +1384,6 @@ msgstr "YYou can not use this currency as collateral"
 msgid "You are entering Isolation mode"
 msgstr "You are entering Isolation mode"
 
-#: src/modules/governance/GovernanceTopPanel.tsx
-msgid "You can find all the details here."
-msgstr "You can find all the details here."
-
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "You can not change Interest Type to stable as your borrowings are higher than your collateral"
 msgstr "You can not change Interest Type to stable as your borrowings are higher than your collateral"
@@ -1508,6 +1504,10 @@ msgstr "ends"
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 msgid "guide"
 msgstr "guide"
+
+#: src/modules/governance/GovernanceTopPanel.tsx
+msgid "here."
+msgstr "here."
 
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "is an asset affected by rebasing. Visit the"
