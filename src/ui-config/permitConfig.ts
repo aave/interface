@@ -35,7 +35,6 @@ export const permitByChainAndToken: {
     '0x74b23882a30290451A17c44f4F05243b6b58C76d': true,
     '0x049d68029688eAbF473097a2fC38ef61633A3C7A': true,
     '0x6a07A792ab2965C72a5B8088d3a069A7aC3a993B': true,
-    '0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83': false,
     '0xae75A438b2E0cB8Bb01Ec1E1e376De11D44477CC': true,
     '0x1E4F97b9f9F913c46F1632781732927B9019C68b': true,
   },
@@ -55,7 +54,6 @@ export const permitByChainAndToken: {
     '0x4e3Decbb3645551B8A19f0eA1678079FCB33fB4c': true,
   },
   [ChainId.mumbai]: {
-    '0x56fC5d9667cb23f045846BE6147a052FdDa26A99': false,
     '0x7e3d807Cb61745A75e375161E13970633B947356': true,
     '0xC87385b5E62099f92d490750Fcd6C901a524BBcA': true,
     '0x535817805258A4E5924dBE6AE66F9335C94Ffef3': true,
@@ -68,14 +66,8 @@ export const permitByChainAndToken: {
   [ChainId.harmony]: {},
   [ChainId.harmony_testnet]: {},
   [ChainId.avalanche]: {
-    '0xd586E7F844cEa2F87f50152665BCbc2C279D8d70': false,
-    '0x5947BB275c521040051D82396192181b413227A3': false,
     '0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E': true,
-    '0x50b7545627a5162F82A992c33b87aDc75187B218': false,
-    '0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB': false,
     '0x9702230A8Ea53601f5cD2dc00fDBc13d4dF4A8c7': true,
-    '0x63a72806098Bd3D9520cC43356dD78afe5D386D9': false,
-    '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7': false,
   },
   [ChainId.fuji]: {
     '0xde9Fa4A2d8435d45b767506D4A34791fa0371f79': true,
@@ -90,13 +82,7 @@ export const permitByChainAndToken: {
   },
   [ChainId.optimism]: {
     '0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1': true,
-    '0x350a791Bfc2C21F9Ed5d10980Dad2e2638ffa7f6': false,
-    '0x7F5c764cBc14f9669B88837ca1490cCa17c31607': false,
-    '0x68f180fcCe6836688e9084f035309E29Bf0A2095': false,
-    '0x4200000000000000000000000000000000000006': false,
-    '0x94b008aA00579c1307B0EF2c499aD98a8ce58e58': false,
     '0x76FB31fb4af56892A25e32cFC43De717950c9278': true,
-    '0x8c6f28f2F1A3C87F0f938b96d27520d9751ec8d9': false,
   },
   [ChainId.optimism_kovan]: {
     '0x0AB1917A0cf92cdcf7F7b637EaC3A46BBBE41409': true,
