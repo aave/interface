@@ -79,12 +79,9 @@ export const useTransactionHandler = ({
       try {
         mounted.current && successCallback && successCallback(txnResult);
         await txnResult.wait(1);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const refetchAll: any[] = [refetchWalletBalances()];
-
-        refetchPoolData && refetchAll.push(refetchPoolData());
-        refechIncentiveData && refetchAll.push(refechIncentiveData());
-        Promise.all(refetchAll);
+        refetchWalletBalances();
+        refetchPoolData && refetchPoolData();
+        refechIncentiveData && refechIncentiveData();
       } catch (e) {
         try {
           const error = await getTxError(txnResult.hash);
