@@ -1,12 +1,14 @@
-import { ChainId, InterestRate, Pool } from '@aave/contract-helpers';
+import { InterestRate, Pool } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
+import { utils } from 'ethers';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useGasStation } from 'src/hooks/useGasStation';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { permitByChainAndToken } from 'src/ui-config/permitConfig';
 import { optimizedPath } from 'src/utils/utils';
 
 import { LeftHelperText } from '../FlowCommons/LeftHelperText';
@@ -54,10 +56,9 @@ export const RepayActions = ({
     resetStates,
   } = useTransactionHandler({
     tryPermit:
-      currentMarketData.v3 && chainId !== ChainId.harmony && chainId !== ChainId.harmony_testnet,
+      currentMarketData.v3 && permitByChainAndToken[chainId][utils.getAddress(poolAddress)],
     handleGetTxns: async () => {
       if (currentMarketData.v3) {
-        // TO-DO: No need for this cast once a single Pool type is used in use-tx-builder-context
         const newPool: Pool = lendingPool as Pool;
         if (repayWithATokens) {
           return newPool.repayWithATokens({
