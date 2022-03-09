@@ -51,11 +51,10 @@ export const GovernanceTopPanel = () => {
 
           <Typography sx={{ color: '#8E92A3', maxWidth: '824px' }}>
             <Trans>
-              Aavenomics introduces a formalized path to the decentralization and autonomy of the
-              Aave Protocol. Covering governance mechanisms and financial incentives, it aims to
-              share a vision of alignment between various stakeholders within the Aave ecosystem,
-              protocol functionality and the AAVE token as a core securing element of the Aave
-              Protocol.
+              Aave is a fully decentralized, community governed protocol by the AAVE token-holders.
+              AAVE token-holders collectively discuss, propose, and vote on upgrades to the
+              protocol. AAVE token-holders can either vote themselves on new proposals or delagate
+              to an address of choice. To learn more check out the Governance documentation.
             </Trans>{' '}
             <Link
               // TODO: need check link
