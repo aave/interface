@@ -106,7 +106,11 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
     amountRef.current = maxSelected ? maxAmountToRepay.toString() : value;
     setAmount(value);
     if (currentMarketData.v3 && maxSelected && (repayWithATokens || maxAmountToRepay.eq(debt))) {
-      setRepayMax('-1');
+      if (tokenToRepayWith.address === API_ETH_MOCK_ADDRESS.toLowerCase()) {
+        setRepayMax(safeAmountToRepayAll.toString());
+      } else {
+        setRepayMax('-1');
+      }
     } else {
       setRepayMax(
         safeAmountToRepayAll.lt(balance)
