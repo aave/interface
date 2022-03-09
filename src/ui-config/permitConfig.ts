@@ -94,5 +94,4 @@ export const permitByChainAndToken: {
     '0x5343b5bA672Ae99d627A1C87866b8E53F47Db2E6': true,
     '0x2A9534682aF7e07bA9615e15dd9d88968173F6c3': true,
   },
-  [3030]: {},
 };
