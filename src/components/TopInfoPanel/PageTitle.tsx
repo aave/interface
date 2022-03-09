@@ -2,7 +2,7 @@ import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 
 import { NetworkConfig } from '../../ui-config/networksConfig';
-import { BridgeButton } from '../BridgeButton';
+// import { BridgeButton } from '../BridgeButton';
 import { MarketSwitcher } from '../MarketSwitcher';
 
 export interface PageTitleProps extends Pick<NetworkConfig, 'bridge'> {
@@ -10,10 +10,10 @@ export interface PageTitleProps extends Pick<NetworkConfig, 'bridge'> {
   withMarketSwitcher?: boolean;
 }
 
-export const PageTitle = ({ pageTitle, withMarketSwitcher, bridge }: PageTitleProps) => {
+export const PageTitle = ({ pageTitle, withMarketSwitcher }: PageTitleProps) => {
   const theme = useTheme();
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
-  const upToMD = useMediaQuery(theme.breakpoints.up('md'));
+  // const upToMD = useMediaQuery(theme.breakpoints.up('md'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   return (
@@ -48,7 +48,8 @@ export const PageTitle = ({ pageTitle, withMarketSwitcher, bridge }: PageTitlePr
         }}
       >
         {withMarketSwitcher && <MarketSwitcher />}
-        <BridgeButton bridge={bridge} variant="surface" withoutIcon={!upToMD} />
+        {/* <BridgeButton bridge={bridge} variant="surface" withoutIcon={!upToMD} /> */}
+        {/* NOTE:// Removing for now  */}
       </Box>
     </Box>
   );
