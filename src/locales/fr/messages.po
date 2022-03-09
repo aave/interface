@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-09 10:39\n"
+"PO-Revision-Date: 2022-03-09 10:49\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -127,84 +127,84 @@ msgstr "FAQ d'Ampleforth"
 
 #: src/components/infoModalContents/ApprovalInfoContent.tsx
 msgid "Approval"
-msgstr "Validation"
+msgstr "Approval"
 
 #: src/components/transactions/FlowCommons/LeftHelperText.tsx
 msgid "Approve confirmed"
-msgstr ""
+msgstr "Approve confirmée"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Approve to continue"
-msgstr ""
+msgstr "Approuver pour continuer"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Approved"
-msgstr ""
+msgstr "Approuvé"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Approving {symbol}..."
-msgstr ""
+msgstr "Approuver {symbol}..."
 
 #: pages/faucet.page.tsx
 #: src/modules/markets/AssetsList.tsx
 msgid "Asset"
-msgstr ""
+msgstr "Actif"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeSelect.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Asset category"
-msgstr ""
+msgstr "Catégorie d'actifs"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Asset to delegate"
-msgstr ""
+msgstr "Actif à déléguer"
 
 #: pages/faucet.page.tsx
 #: src/modules/dashboard/lists/ListHeader.tsx
 msgid "Assets"
-msgstr ""
+msgstr "Actifs"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Assets to borrow"
-msgstr ""
+msgstr "Actifs à emprunter"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Assets to supply"
-msgstr ""
+msgstr "Actifs à déposer"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Author"
-msgstr ""
+msgstr "Auteur"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Available"
-msgstr ""
+msgstr "Disponible"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Available assets"
-msgstr ""
+msgstr "Actifs disponibles"
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Available liquidity"
-msgstr ""
+msgstr "Liquidités disponibles"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Available rewards"
-msgstr ""
+msgstr "Récompenses disponibles"
 
 #: src/components/caps/CapsHint.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Available to borrow"
-msgstr ""
+msgstr "Disponible à emprunter"
 
 #: src/components/caps/CapsHint.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Available to supply"
-msgstr ""
+msgstr "Disponible au dépôt"
 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
@@ -212,15 +212,15 @@ msgstr ""
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 msgid "Balance"
-msgstr ""
+msgstr "Solde"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Be careful - You are very close to liqudation. Consider depositing more collateral or paying down some of your borrowed positions"
-msgstr ""
+msgstr "Faites attention - Vous êtes très proche de la liqudation. Pensez à déposer plus de collatéral ou à rembourser certaines de vos positions"
 
 #: src/components/transactions/Warnings/SNXWarning.tsx
 msgid "Before supplying"
-msgstr ""
+msgstr "Avant de déposer"
 
 #: src/components/infoModalContents/ApprovalInfoContent.tsx
 msgid "Before supplying, you need to approve its usage by the Aave protocol. You can learn more in our<0>FAQ</0>"
