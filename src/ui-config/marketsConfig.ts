@@ -425,7 +425,6 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: '0x8AaF462990dD5CC574c94C8266208996426A47e7',
     },
   },
-
   [CustomMarket.proto_polygon_v3]: {
     marketTitle: 'Polygon',
     chainId: ChainId.polygon,
