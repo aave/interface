@@ -4,9 +4,8 @@ import {
   USD_DECIMALS,
   valueToBigNumber,
 } from '@aave/math-utils';
-import { CheckIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { SvgIcon, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import { ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import { useRef, useState } from 'react';
 import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -88,11 +87,6 @@ const BorrowModeSwitch = ({
           value={InterestRate.Variable}
           disabled={interestRateMode === InterestRate.Variable}
         >
-          {interestRateMode === InterestRate.Variable && (
-            <SvgIcon sx={{ fontSize: '20px', mr: '2.5px' }}>
-              <CheckIcon />
-            </SvgIcon>
-          )}
           <Typography variant="subheader1" sx={{ mr: 1 }}>
             <Trans>Variable</Trans>
           </Typography>
@@ -102,11 +96,6 @@ const BorrowModeSwitch = ({
           value={InterestRate.Stable}
           disabled={interestRateMode === InterestRate.Stable}
         >
-          {interestRateMode === InterestRate.Stable && (
-            <SvgIcon sx={{ fontSize: '20px', mr: '2.5px' }}>
-              <CheckIcon />
-            </SvgIcon>
-          )}
           <Typography variant="subheader1" sx={{ mr: 1 }}>
             <Trans>Stable</Trans>
           </Typography>
