@@ -278,7 +278,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     publicJsonRPCWSUrl: 'wss://ws-kovan.optimism.io',
     protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
-    baseAssetSymbol: 'OR', // KOR
+    baseAssetSymbol: 'ETH', // KOR
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
     explorerLink: 'https://kovan-optimistic.etherscan.io',

@@ -39,7 +39,8 @@ export const useTransactionHandler = ({
     setLoadingTxns,
   } = useModalContext();
   const { signTxData, sendTx, getTxError, currentAccount } = useWeb3Context();
-  const { refetchWalletBalances, refetchPoolData } = useBackgroundDataProvider();
+  const { refetchWalletBalances, refetchPoolData, refechIncentiveData } =
+    useBackgroundDataProvider();
   const { lendingPool } = useTxBuilderContext();
   // const [loadingTxns, setLoadingTxns] = useState(false);
   // const [txs, setTxs] = useState<EthereumTransactionTypeExtended[]>([]);
@@ -76,14 +77,11 @@ export const useTransactionHandler = ({
     try {
       const txnResult = await tx();
       try {
+        await txnResult.wait(1);
         mounted.current && successCallback && successCallback(txnResult);
-        refetchWalletBalances();
-        refetchPoolData && refetchPoolData();
-
-        // TODO: commented for now. But should add
-        // as state in success view: wait for confirmation
-        // wait for confirmation
-        // await txnResult.wait();
+        await refetchWalletBalances();
+        refetchPoolData && (await refetchPoolData());
+        refechIncentiveData && (await refechIncentiveData());
       } catch (e) {
         try {
           const error = await getTxError(txnResult.hash);
