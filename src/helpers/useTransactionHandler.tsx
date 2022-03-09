@@ -77,11 +77,14 @@ export const useTransactionHandler = ({
     try {
       const txnResult = await tx();
       try {
-        await txnResult.wait(1);
         mounted.current && successCallback && successCallback(txnResult);
-        await refetchWalletBalances();
-        refetchPoolData && (await refetchPoolData());
-        refechIncentiveData && (await refechIncentiveData());
+        await txnResult.wait(1);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const refetchAll: any[] = [refetchWalletBalances()];
+
+        refetchPoolData && refetchAll.push(refetchPoolData());
+        refechIncentiveData && refetchAll.push(refechIncentiveData());
+        await Promise.all(refetchAll);
       } catch (e) {
         try {
           const error = await getTxError(txnResult.hash);

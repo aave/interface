@@ -185,7 +185,7 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
 
   return (
     <>
-      <TxModalTitle title="Withdraw" symbol={poolReserve.symbol} />
+      <TxModalTitle title="Withdraw" symbol={symbol} />
       {isWrongNetwork && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
       )}
@@ -242,7 +242,9 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
         <DetailsNumberLine
           description={<Trans>Remaining supply</Trans>}
           value={underlyingBalance.minus(amount || '0').toString()}
-          symbol={symbol}
+          symbol={
+            poolReserve.isWrappedBaseAsset ? networkConfig.baseAssetSymbol : poolReserve.symbol
+          }
         />
         <DetailsHFLine
           visibleHfChange={!!_amount}

@@ -214,9 +214,14 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
       <TxSuccessView action="repayed" amount={amountRef.current} symbol={tokenToRepayWith.symbol} />
     );
 
+  const modalSymbol =
+    poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
+      ? networkConfig.baseAssetSymbol
+      : poolReserve.symbol;
+
   return (
     <>
-      <TxModalTitle title="Repay" symbol={poolReserve.symbol} />
+      <TxModalTitle title="Repay" symbol={modalSymbol} />
       {isWrongNetwork && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
       )}
@@ -265,7 +270,11 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
           description={<Trans>Remaining debt</Trans>}
           amount={amountAfterRepay}
           amountUSD={displayAmountAfterRepayInUsd.toString()}
-          symbol={poolReserve.iconSymbol}
+          symbol={
+            poolReserve.iconSymbol === networkConfig.wrappedBaseAssetSymbol
+              ? networkConfig.baseAssetSymbol
+              : poolReserve.iconSymbol
+          }
         />
         <DetailsHFLine
           visibleHfChange={!!_amount}
@@ -285,7 +294,7 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
           repayWithATokens ? poolReserve.underlyingAsset : tokenToRepayWith.address ?? ''
         }
         isWrongNetwork={isWrongNetwork}
-        symbol={poolReserve.symbol}
+        symbol={modalSymbol}
         debtType={debtType}
         repayWithATokens={repayWithATokens}
       />
