@@ -71,6 +71,8 @@ export const DashboardTopPanel = () => {
     { claimableRewardsUsd: 0, assets: [] } as { claimableRewardsUsd: number; assets: string[] }
   );
 
+  console.log(claimableRewardsUsd, assets);
+
   const loanToValue =
     user?.totalCollateralMarketReferenceCurrency === '0'
       ? '0'
