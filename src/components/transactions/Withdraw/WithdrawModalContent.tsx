@@ -169,7 +169,7 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
     return (
       <TxSuccessView
         action="Withdrawed"
-        amount={amount}
+        amount={amountRef.current}
         symbol={
           withdrawUnWrapped && poolReserve.isWrappedBaseAsset
             ? networkConfig.baseAssetSymbol
