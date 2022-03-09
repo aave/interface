@@ -92,6 +92,7 @@ export function ProtocolDataProvider({ children }: PropsWithChildren<{}>) {
   const currentMarketData = marketsData[currentMarket];
 
   const handleSetMarket = (market: CustomMarket) => {
+    if (market === currentMarket) return;
     localStorage.setItem(LS_KEY, market);
     setCurrentMarket(market);
     push(pathname, { query: { ...query, marketName: market } }, { shallow: true });
