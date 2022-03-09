@@ -85,10 +85,11 @@ export const ListItemAPYButton = ({
         <MenuItem
           value={InterestRate.Variable}
           onClick={() => {
-            onClick();
+            if (borrowRateMode === InterestRate.Stable) {
+              onClick();
+            }
             handleClose();
           }}
-          disabled={borrowRateMode === InterestRate.Variable}
         >
           <ListItemIcon>
             <SvgIcon>{borrowRateMode === InterestRate.Variable && <CheckIcon />}</SvgIcon>
@@ -102,10 +103,11 @@ export const ListItemAPYButton = ({
         <MenuItem
           value={InterestRate.Stable}
           onClick={() => {
-            onClick();
+            if (borrowRateMode === InterestRate.Variable) {
+              onClick();
+            }
             handleClose();
           }}
-          disabled={borrowRateMode === InterestRate.Stable}
         >
           <ListItemIcon>
             <SvgIcon>{borrowRateMode === InterestRate.Stable && <CheckIcon />}</SvgIcon>
