@@ -266,6 +266,7 @@ export const useTransactionHandler = ({
   useEffect(() => {
     // good enough for now, but might need debounce or similar for swaps
     if (!skip) {
+      setLoadingTxns(true);
       const timeout = setTimeout(() => {
         setLoadingTxns(true);
         return handleGetTxns()

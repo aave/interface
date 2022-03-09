@@ -1,17 +1,10 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
-import {
-  calculateHealthFactorFromBalancesBigUnits,
-  ComputedUserReserve,
-  valueToBigNumber,
-} from '@aave/math-utils';
+import { calculateHealthFactorFromBalancesBigUnits, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { useRef, useState } from 'react';
-import {
-  ComputedReserveData,
-  useAppDataContext,
-} from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -20,6 +13,7 @@ import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { AssetInput } from '../AssetInput';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
+import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
 import {
   DetailsHFLine,
@@ -27,21 +21,22 @@ import {
   DetailsUnwrapSwitch,
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
-import { TxModalTitle } from '../FlowCommons/TxModalTitle';
-import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { WithdrawActions } from './WithdrawActions';
 
-export type WithdrawModalContentProps = {
-  underlyingAsset: string;
-};
 export enum ErrorType {
   CAN_NOT_WITHDRAW_THIS_AMOUNT,
   POOL_DOES_NOT_HAVE_ENOUGH_LIQUIDITY,
 }
 
-export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentProps) => {
+export const WithdrawModalContent = ({
+  poolReserve,
+  userReserve,
+  unwrap: withdrawUnWrapped,
+  setUnwrap: setWithdrawUnWrapped,
+  symbol,
+}: ModalWrapperProps & { unwrap: boolean; setUnwrap: (unwrap: boolean) => void }) => {
   const { gasLimit, mainTxState: withdrawTxState } = useModalContext();
-  const { reserves, user } = useAppDataContext();
+  const { user } = useAppDataContext();
   const { currentChainId } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
 
@@ -49,16 +44,6 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
   const amountRef = useRef<string>();
 
   const networkConfig = getNetworkConfig(currentChainId);
-
-  const poolReserve = reserves.find(
-    (reserve) => reserve.underlyingAsset === underlyingAsset
-  ) as ComputedReserveData;
-
-  const [withdrawUnWrapped, setWithdrawUnWrapped] = useState(true);
-
-  const userReserve = user.userReservesData.find(
-    (userReserve) => underlyingAsset === userReserve.underlyingAsset
-  ) as ComputedUserReserve;
 
   // calculations
   const underlyingBalance = valueToBigNumber(userReserve.underlyingBalance);
@@ -178,33 +163,16 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
       />
     );
 
-  const symbol =
-    withdrawUnWrapped && poolReserve.isWrappedBaseAsset
-      ? networkConfig.baseAssetSymbol
-      : poolReserve.symbol;
-
   return (
     <>
-      <TxModalTitle title="Withdraw" symbol={symbol} />
-      {isWrongNetwork && (
-        <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
-      )}
-
       <AssetInput
         value={amount}
         onChange={handleChange}
-        symbol={
-          withdrawUnWrapped && poolReserve.isWrappedBaseAsset
-            ? networkConfig.baseAssetSymbol
-            : poolReserve.symbol
-        }
+        symbol={symbol}
         assets={[
           {
             balance: maxAmountToWithdraw.toString(),
-            symbol:
-              withdrawUnWrapped && poolReserve.isWrappedBaseAsset
-                ? networkConfig.baseAssetSymbol
-                : poolReserve.symbol,
+            symbol: symbol,
             iconSymbol:
               withdrawUnWrapped && poolReserve.isWrappedBaseAsset
                 ? networkConfig.baseAssetSymbol
@@ -235,7 +203,7 @@ export const WithdrawModalContent = ({ underlyingAsset }: WithdrawModalContentPr
           <DetailsUnwrapSwitch
             unwrapped={withdrawUnWrapped}
             setUnWrapped={setWithdrawUnWrapped}
-            symbol={networkConfig.baseAssetSymbol}
+            symbol={poolReserve.symbol}
             unwrappedSymbol={networkConfig.baseAssetSymbol}
           />
         )}
