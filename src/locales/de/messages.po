@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-09 10:39\n"
+"PO-Revision-Date: 2022-03-09 16:02\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -75,12 +75,12 @@ msgstr ""
 msgid "Aave Governance"
 msgstr ""
 
-#: src/modules/staking/StakingPanel.tsx
-msgid "Aave per month"
+#: src/modules/governance/GovernanceTopPanel.tsx
+msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance documentation"
 msgstr ""
 
-#: src/modules/governance/GovernanceTopPanel.tsx
-msgid "Aavenomics introduces a formalized path to the decentralization and autonomy of the Aave Protocol. Covering governance mechanisms and financial incentives, it aims to share a vision of alignment between various stakeholders within the Aave ecosystem, protocol functionality and the AAVE token as a core securing element of the Aave Protocol."
+#: src/modules/staking/StakingPanel.tsx
+msgid "Aave per month"
 msgstr ""
 
 #: src/layouts/WalletWidget.tsx
@@ -1389,10 +1389,6 @@ msgstr ""
 msgid "You are entering Isolation mode"
 msgstr ""
 
-#: src/modules/governance/GovernanceTopPanel.tsx
-msgid "You can find all the details here."
-msgstr ""
-
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "You can not change Interest Type to stable as your borrowings are higher than your collateral"
 msgstr ""
@@ -1512,6 +1508,10 @@ msgstr ""
 
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 msgid "guide"
+msgstr ""
+
+#: src/modules/governance/GovernanceTopPanel.tsx
+msgid "here."
 msgstr ""
 
 #: src/components/transactions/Warnings/AMPLWarning.tsx
