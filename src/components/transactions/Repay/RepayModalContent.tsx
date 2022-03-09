@@ -1,7 +1,6 @@
 import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import {
   calculateHealthFactorFromBalancesBigUnits,
-  ComputedUserReserve,
   USD_DECIMALS,
   valueToBigNumber,
 } from '@aave/math-utils';
@@ -9,11 +8,7 @@ import { Trans } from '@lingui/macro';
 import { Box, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  ComputedReserveData,
-  useAppDataContext,
-} from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -28,45 +23,42 @@ import {
   DetailsNumberLineWithSub,
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
-import { TxModalTitle } from '../FlowCommons/TxModalTitle';
-import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { RepayActions } from './RepayActions';
+import { ReserveModalProps } from './RepayModal';
 
-export type RepayProps = {
-  underlyingAsset: string;
-};
-
+enum RepayType {
+  BALANCE,
+  COLLATERAL,
+}
 interface RepayAsset extends Asset {
   balance: string;
 }
 
-export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
+export const RepayModalContent = ({
+  poolReserve,
+  userReserve,
+  symbol: modalSymbol,
+  tokenBalance,
+  nativeBalance,
+  isWrongNetwork,
+}: ReserveModalProps) => {
   const { gasLimit, mainTxState: repayTxState } = useModalContext();
-  const { walletBalances } = useWalletBalances();
-  const { marketReferencePriceInUsd, reserves, user } = useAppDataContext();
+  const { marketReferencePriceInUsd, user } = useAppDataContext();
   const { currentChainId, currentMarketData } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
 
-  const poolReserve = reserves.find(
-    (reserve) => reserve.underlyingAsset === underlyingAsset
-  ) as ComputedReserveData;
-
   // states
-  const [repayWithCollateral, setRepayWithCollateral] = useState(false);
+  const [repayWithCollateral, setRepayWithCollateral] = useState(RepayType.BALANCE);
   const [tokenToRepayWith, setTokenToRepayWith] = useState<RepayAsset>({
     address: poolReserve.underlyingAsset,
     symbol: poolReserve.symbol,
     iconSymbol: poolReserve.iconSymbol,
-    balance: walletBalances[poolReserve.underlyingAsset]?.amount,
+    balance: tokenBalance,
   });
   const [assets, setAssets] = useState<RepayAsset[]>([tokenToRepayWith]);
   const [repayMax, setRepayMax] = useState('');
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>();
-
-  const userReserve = user?.userReservesData.find(
-    (userReserve) => underlyingAsset === userReserve.underlyingAsset
-  ) as ComputedUserReserve;
 
   const networkConfig = getNetworkConfig(currentChainId);
 
@@ -127,9 +119,7 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
       // if wrapped reserve push both wrapped / native
       if (poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol) {
         // we substract a bit so user can still pay for the tx
-        const nativeTokenWalletBalance = valueToBigNumber(
-          walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]?.amount
-        ).minus('0.004');
+        const nativeTokenWalletBalance = valueToBigNumber(nativeBalance).minus('0.004');
         const maxNativeToken = BigNumber.max(
           nativeTokenWalletBalance,
           BigNumber.min(nativeTokenWalletBalance, debt)
@@ -141,7 +131,7 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
         });
       }
       // push reserve asset
-      const walletBalance = walletBalances[underlyingAsset]?.amount;
+      const walletBalance = tokenBalance;
       const minReserveTokenRepay = BigNumber.min(valueToBigNumber(walletBalance), debt);
       const maxReserveTokenForRepay = BigNumber.max(minReserveTokenRepay, walletBalance);
       repayTokens.push({
@@ -166,12 +156,21 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
         });
       }
     } else {
-      // TODO: add collateral tokens
-      // go through all collateral tokens and add them
+      repayTokens.push(
+        ...user?.userReservesData
+          .filter((userReserve) => userReserve.underlyingBalance !== '0')
+          .map((userReserve) => ({
+            address: userReserve.underlyingAsset,
+            balance: userReserve.underlyingBalance,
+            symbol: userReserve.reserve.symbol,
+            iconSymbol: userReserve.reserve.iconSymbol,
+            aToken: true,
+          }))
+      );
     }
     setAssets(repayTokens);
     setTokenToRepayWith(repayTokens[0]);
-  }, []);
+  }, [repayWithCollateral]);
 
   // debt remaining after repay
   const amountAfterRepay = valueToBigNumber(debt)
@@ -202,9 +201,6 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
 
   // TODO: add here repay with collateral calculations and maybe do a conditional with other????
 
-  // is Network mismatched
-  const isWrongNetwork = currentChainId !== connectedChainId;
-
   // calculating input usd value
   const usdValue = valueToBigNumber(amount).multipliedBy(reserve.priceInUSD);
 
@@ -214,18 +210,8 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
       <TxSuccessView action="repayed" amount={amountRef.current} symbol={tokenToRepayWith.symbol} />
     );
 
-  const modalSymbol =
-    poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol
-      ? networkConfig.baseAssetSymbol
-      : poolReserve.symbol;
-
   return (
     <>
-      <TxModalTitle title="Repay" symbol={modalSymbol} />
-      {isWrongNetwork && (
-        <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
-      )}
-
       {currentMarketData.enabledFeatures?.collateralRepay && (
         <Box sx={{ mb: 6 }}>
           <Typography mb={1} color="text.secondary">
@@ -239,13 +225,19 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
             onChange={(_, value) => setRepayWithCollateral(value)}
             sx={{ width: '100%' }}
           >
-            <ToggleButton value={repayWithCollateral} disabled={repayWithCollateral}>
+            <ToggleButton
+              value={RepayType.BALANCE}
+              disabled={repayWithCollateral === RepayType.BALANCE}
+            >
               <Typography variant="subheader1" sx={{ mr: 1 }}>
                 <Trans>Wallet balance</Trans>
               </Typography>
             </ToggleButton>
 
-            <ToggleButton value={!repayWithCollateral} disabled={!repayWithCollateral}>
+            <ToggleButton
+              value={RepayType.COLLATERAL}
+              disabled={repayWithCollateral === RepayType.COLLATERAL}
+            >
               <Typography variant="subheader1" sx={{ mr: 1 }}>
                 <Trans>Collateral</Trans>
               </Typography>

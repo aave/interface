@@ -20,7 +20,7 @@ export enum ModalType {
   GovVote,
 }
 
-export type ModalArgsType = {
+export interface ModalArgsType {
   underlyingAsset?: string;
   proposalId?: number;
   support?: boolean;
@@ -28,7 +28,7 @@ export type ModalArgsType = {
   icon?: string;
   stakeAssetName?: string;
   currentRateMode?: InterestRate;
-};
+}
 
 export type TxStateType = {
   txHash?: string;
@@ -38,7 +38,7 @@ export type TxStateType = {
   success?: boolean;
 };
 
-interface ModalContextType {
+export interface ModalContextType<T extends ModalArgsType> {
   openSupply: (underlyingAsset: string) => void;
   openWithdraw: (underlyingAsset: string) => void;
   openBorrow: (underlyingAsset: string) => void;
@@ -57,7 +57,7 @@ interface ModalContextType {
   openGovVote: (proposalId: number, support: boolean, power: string) => void;
   close: () => void;
   type?: ModalType;
-  args?: ModalArgsType;
+  args: T;
   mainTxState: TxStateType;
   approvalTxState: TxStateType;
   setApprovalTxState: (data: TxStateType) => void;
@@ -69,7 +69,9 @@ interface ModalContextType {
   setLoadingTxns: (loading: boolean) => void;
 }
 
-export const ModalContext = createContext<ModalContextType>({} as ModalContextType);
+export const ModalContext = createContext<ModalContextType<ModalArgsType>>(
+  {} as ModalContextType<ModalArgsType>
+);
 
 export const ModalContextProvider: React.FC = ({ children }) => {
   // contains the current modal open state if any
