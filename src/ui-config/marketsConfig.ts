@@ -44,14 +44,6 @@ export type MarketDataType = {
 };
 
 export enum CustomMarket {
-  proto_kovan = 'proto_kovan',
-  proto_mainnet = 'proto_mainnet',
-  proto_avalanche = 'proto_avalanche',
-  proto_polygon = 'proto_polygon',
-  proto_mumbai = 'proto_mumbai',
-  amm_kovan = 'amm_kovan',
-  amm_mainnet = 'amm_mainnet',
-  proto_fuji = 'proto_fuji',
   // v3 test networks
   // proto_kovan_v3 = 'proto_kovan_v3',
   proto_arbitrum_rinkeby_v3 = 'proto_arbitrum_rinkeby_v3',
@@ -68,6 +60,15 @@ export enum CustomMarket {
   proto_avalanche_v3 = 'proto_avalanche_v3',
   proto_polygon_v3 = 'proto_polygon_v3',
   proto_arbitrum_v3 = 'proto_arbitrum_v3',
+  // v2
+  proto_kovan = 'proto_kovan',
+  proto_mainnet = 'proto_mainnet',
+  proto_avalanche = 'proto_avalanche',
+  proto_fuji = 'proto_fuji',
+  proto_polygon = 'proto_polygon',
+  proto_mumbai = 'proto_mumbai',
+  amm_kovan = 'amm_kovan',
+  amm_mainnet = 'amm_mainnet',
 }
 
 export const marketsData: {

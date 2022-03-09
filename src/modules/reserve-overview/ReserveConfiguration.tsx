@@ -188,7 +188,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
               mt: 4,
               py: '12px',
               px: '16px',
-              bgcolor: 'background.default',
+              bgcolor: 'background.surface',
               borderRadius: '6px',
             }}
           >

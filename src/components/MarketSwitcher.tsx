@@ -183,14 +183,14 @@ export const MarketSwitcher = () => {
 
       {isV3MarketsAvailable && (
         <Typography variant="subheader2" color="text.secondary" sx={{ px: 4, py: 2 }}>
-          <Trans>v2 markets</Trans>
+          <Trans>v3 markets</Trans>
         </Typography>
       )}
       {availableMarkets.map((marketId: CustomMarket) => {
         const { market, network } = getMarketInfoById(marketId);
 
         return (
-          !market.v3 && (
+          market.v3 && (
             <MenuItem
               key={marketId}
               data-cy={`marketSelector_${marketId}`}
@@ -222,14 +222,14 @@ export const MarketSwitcher = () => {
 
       {isV3MarketsAvailable && (
         <Typography variant="subheader2" color="text.secondary" sx={{ px: 4, py: 2 }}>
-          <Trans>v3 markets</Trans>
+          <Trans>v2 markets</Trans>
         </Typography>
       )}
       {availableMarkets.map((marketId: CustomMarket) => {
         const { market, network } = getMarketInfoById(marketId);
 
         return (
-          market.v3 && (
+          !market.v3 && (
             <MenuItem
               key={marketId}
               data-cy={`marketSelector_${marketId}`}
