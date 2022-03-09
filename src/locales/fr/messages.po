@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-09 10:49\n"
+"PO-Revision-Date: 2022-03-09 15:30\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -224,7 +224,7 @@ msgstr "Avant de déposer"
 
 #: src/components/infoModalContents/ApprovalInfoContent.tsx
 msgid "Before supplying, you need to approve its usage by the Aave protocol. You can learn more in our<0>FAQ</0>"
-msgstr ""
+msgstr "Avant de déposer, vous devez approuver cet actif pour le protocole Aave. Vous pouvez en apprendre plus dans notre <0>FAQ</0>"
 
 #: pages/index.page.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
@@ -233,29 +233,29 @@ msgstr ""
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrow"
-msgstr ""
+msgstr "Emprunter"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "Borrow APY rate"
-msgstr ""
+msgstr "Taux APY d'emprunt"
 
 #: src/modules/markets/AssetsList.tsx
 #: src/modules/markets/AssetsListMobileItem.tsx
 msgid "Borrow APY, stable"
-msgstr ""
+msgstr "Prêt APY, stable"
 
 #: src/modules/markets/AssetsList.tsx
 #: src/modules/markets/AssetsListMobileItem.tsx
 msgid "Borrow APY, variable"
-msgstr ""
+msgstr "Prêt APY, variable"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Borrow cap"
-msgstr ""
+msgstr "Limite d'emprunt"
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Borrow power used"
-msgstr ""
+msgstr "Puissance d'emprunt utilisée"
 
 #: src/components/transactions/Borrow/BorrowActions.tsx
 msgid "Borrow {symbol}"
@@ -477,49 +477,49 @@ msgstr ""
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Discussion"
-msgstr ""
+msgstr "Discussion"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode"
-msgstr ""
+msgstr "E-Mode"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "E-Mode category"
-msgstr ""
+msgstr "Catégorie E-Mode"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode increases your borrowing power for a selected category of assets up to 97%. <0>Learn more</0>"
-msgstr ""
+msgstr "Le E-Mode augmente votre puissance d'emprunt pour une catégorie d'actifs sélectionnée jusqu'à 97%. <0>En savoir plus</0>"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Efficiency mode (E-Mode)"
-msgstr ""
+msgstr "Mode efficacité (E-Mode)"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Enable E-Mode"
-msgstr ""
+msgstr "Activer le E-Mode"
 
 #: src/layouts/components/TestNetModeSwitcher.tsx
 msgid "Enable Testnet mode"
-msgstr ""
+msgstr "Activer le mode Testnet"
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 msgid "Enable {symbol} as collateral"
-msgstr ""
+msgstr "Activer {symbol} comme collatéral"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Enabled"
-msgstr ""
+msgstr "Activé"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Enabled in isolation"
-msgstr ""
+msgstr "Activé en isolation"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Enabling E-Mode"
-msgstr ""
+msgstr "Activation du E-Mode"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Enabling E-Mode only allows you to borrow assets belonging to the selected category Stablecoins. Please visit our <0>FAQ guide</0> to learn more about how it works and the applied restrictions."
