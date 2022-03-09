@@ -24,7 +24,13 @@ export const IsolatedBadge = () => {
         <Typography variant="secondary12" color="text.secondary">
           <Trans>Isolated</Trans>
         </Typography>
-        <SvgIcon sx={{ ml: '3px', color: 'divider', fontSize: `${iconSize}px` }}>
+        <SvgIcon
+          sx={{
+            ml: '3px',
+            color: 'text.muted',
+            fontSize: `${iconSize}px`,
+          }}
+        >
           <InformationCircleIcon />
         </SvgIcon>
       </Box>
