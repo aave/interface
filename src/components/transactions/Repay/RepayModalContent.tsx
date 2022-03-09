@@ -14,6 +14,7 @@ import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { Asset, AssetInput } from '../AssetInput';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
+import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
 import {
   DetailsHFLine,
@@ -21,7 +22,6 @@ import {
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
 import { RepayActions } from './RepayActions';
-import { ReserveModalProps } from './RepayModal';
 
 interface RepayAsset extends Asset {
   balance: string;
@@ -35,7 +35,7 @@ export const RepayModalContent = ({
   nativeBalance,
   isWrongNetwork,
   debtType,
-}: ReserveModalProps & { debtType: InterestRate }) => {
+}: ModalWrapperProps & { debtType: InterestRate }) => {
   const { gasLimit, mainTxState: repayTxState } = useModalContext();
   const { marketReferencePriceInUsd, user } = useAppDataContext();
   const { currentChainId, currentMarketData } = useProtocolDataContext();

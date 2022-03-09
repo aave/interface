@@ -5,12 +5,12 @@ import { useRef, useState } from 'react';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { Asset, AssetInput } from '../AssetInput';
+import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import {
   DetailsHFLine,
   DetailsNumberLineWithSub,
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
-import { ReserveModalProps } from './RepayModal';
 
 interface RepayAsset extends Asset {
   balance: string;
@@ -21,7 +21,7 @@ export function CollateralRepayModalContent({
   symbol,
   debtType,
   userReserve,
-}: ReserveModalProps & { debtType: InterestRate }) {
+}: ModalWrapperProps & { debtType: InterestRate }) {
   const { user, marketReferencePriceInUsd } = useAppDataContext();
   const { gasLimit } = useModalContext();
   const repayTokens = user?.userReservesData
