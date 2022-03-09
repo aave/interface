@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-09 15:30\n"
+"PO-Revision-Date: 2022-03-09 15:39\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -275,7 +275,7 @@ msgstr ""
 
 #: src/components/BridgeButton.tsx
 msgid "Bridge"
-msgstr ""
+msgstr "Bridge"
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
 msgid "CLAIM {symbol}"
@@ -378,7 +378,7 @@ msgstr ""
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Copy error text"
-msgstr ""
+msgstr "Copier le texte d'erreur"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Created"
@@ -403,12 +403,12 @@ msgstr ""
 #: src/modules/dashboard/DashboardTopPanel.tsx
 #: src/ui-config/menu-items/index.tsx
 msgid "Dashboard"
-msgstr ""
+msgstr "Tableau de bord"
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 msgid "Debt"
-msgstr ""
+msgstr "Dette"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Debt ceiling"
@@ -437,12 +437,12 @@ msgstr ""
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Developers"
-msgstr ""
+msgstr "Développeurs"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 #: src/modules/governance/ProposalListItem.tsx
 msgid "Differential"
-msgstr ""
+msgstr "Différentiel"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
@@ -473,7 +473,7 @@ msgstr ""
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Discord"
-msgstr ""
+msgstr "Discord"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Discussion"
@@ -551,16 +551,16 @@ msgstr ""
 
 #: src/ui-config/menu-items/index.tsx
 msgid "FAQ"
-msgstr ""
+msgstr "FAQ"
 
 #: pages/faucet.page.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Faucet"
-msgstr ""
+msgstr "Faucet"
 
 #: src/components/transactions/Faucet/FaucetActions.tsx
 msgid "Faucet {0}"
-msgstr ""
+msgstr "Faucet {0}"
 
 #: src/modules/governance/ProposalsList.tsx
 msgid "Filter"
@@ -572,7 +572,7 @@ msgstr ""
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Github"
-msgstr ""
+msgstr "Github"
 
 #: src/layouts/MobileMenu.tsx
 #: src/layouts/SettingsMenu.tsx
@@ -585,7 +585,7 @@ msgstr ""
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
-msgstr ""
+msgstr "Gouvernance"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/dashboard/DashboardTopPanel.tsx
@@ -656,7 +656,7 @@ msgstr ""
 
 #: src/layouts/MobileMenu.tsx
 msgid "Links"
-msgstr ""
+msgstr "Liens"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/LTVContent.tsx
 msgid "Liquidation <0/> threshold"
@@ -725,7 +725,7 @@ msgstr ""
 
 #: src/layouts/MobileMenu.tsx
 msgid "Menu"
-msgstr ""
+msgstr "Menu"
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Minimum received"
