@@ -85,6 +85,14 @@ export function fetchIconSymbolAndName({
       symbol,
     };
   }
+  if (/^1/.test(symbol)) {
+    const rawSymbol = symbol.replace('1', '');
+    return {
+      iconSymbol: rawSymbol || symbol,
+      name: NAME_MAP[rawSymbol] || rawSymbol,
+      symbol,
+    };
+  }
   return {
     iconSymbol: SYMBOL_MAP[symbol] || symbol,
     name: NAME_MAP[symbol] || symbol,
