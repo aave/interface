@@ -1,8 +1,8 @@
 import { Typography } from '@mui/material';
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 
 export type TxModalTitleProps = {
-  title: ReactElement;
+  title: ReactNode;
   symbol?: string;
 };
 
