@@ -10,14 +10,12 @@ import {
   useQuery,
 } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
-import { WebSocketLink as WebSocketLinkLegacy } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { print } from 'graphql';
 // eslint-disable-next-line import/no-named-as-default
 import gql from 'graphql-tag';
 import { Client, ClientOptions, createClient } from 'graphql-ws';
 
-import { governanceConfig } from '../ui-config/governanceConfig';
 import { getStakeConfig } from '../ui-config/stakeConfig';
 import { networkConfigs } from './marketsAndNetworksConfig';
 
@@ -81,21 +79,6 @@ function createWsLink(uri: string): WebSocketLink {
 }
 
 /**
- * Thegraph ws doesn't support modern ws standards so we use the legacy one.
- */
-function createWsLinkLegacy(uri: string): WebSocketLinkLegacy {
-  const wsLink = new WebSocketLinkLegacy({
-    uri,
-    options: {
-      reconnect: true,
-      timeout: 30000,
-      lazy: true,
-    },
-  });
-  return wsLink;
-}
-
-/**
  * used for tracking errors per graph
  */
 export const APOLLO_QUERY_TARGET = {
@@ -107,21 +90,6 @@ export const APOLLO_QUERY_TARGET = {
 const isSubscription = ({ query }: Operation) => {
   const definition = getMainDefinition(query);
   return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
-};
-
-const getGovernanceLink = (link?: ApolloLink) => {
-  if (governanceConfig && process.browser) {
-    const condition = (operation: Operation) =>
-      operation.getContext().target === APOLLO_QUERY_TARGET.GOVERNANCE;
-    const http = new HttpLink({ uri: governanceConfig.queryGovernanceDataUrl });
-    const ws = createWsLinkLegacy(governanceConfig.wsGovernanceDataUrl);
-    return split(
-      (operation) => condition(operation) && isSubscription(operation),
-      ws,
-      split((operation) => condition(operation), http, link)
-    );
-  }
-  return link;
 };
 
 const getStakeLink = (link?: ApolloLink) => {
@@ -146,7 +114,7 @@ const getStakeLink = (link?: ApolloLink) => {
 };
 
 export const getApolloClient = () => {
-  const link = getStakeLink(getGovernanceLink());
+  const link = getStakeLink();
 
   const combinedLink = Object.entries(networkConfigs).reduce((acc, [key, cfg]) => {
     if (cfg.cachingServerUrl && cfg.cachingWSServerUrl && process.browser) {

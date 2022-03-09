@@ -30,6 +30,9 @@ yarn build:static
 ```sh
 # you can default enable testnets by setting the following environment variable
 ENABLE_TESTNET=true
+# you can disable staking & governance by altering
+ENABLE_GOVERNANCE=true
+ENABLE_STAKING=true
 ```
 
 ## Test
@@ -57,7 +60,6 @@ yarn test:amm|main|polygon|avalanche
 
 To add a new token to the app, all you have to do is adding a svg token icon inside `public/icons/tokens` please make sure the svg name equals the `lowercase` onchain `symbol`.
 If you want a custom name to appear alongside the icon you can alter `src/ui-config/reservePatches.ts` accordingly.
-
 
 ## Translations
 

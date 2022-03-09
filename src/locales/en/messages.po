@@ -140,7 +140,7 @@ msgstr "Approved"
 msgid "Approving {symbol}..."
 msgstr "Approving {symbol}..."
 
-#: pages/faucet.tsx
+#: pages/faucet.page.tsx
 #: src/modules/markets/AssetsList.tsx
 msgid "Asset"
 msgstr "Asset"
@@ -155,7 +155,7 @@ msgstr "Asset category"
 msgid "Asset to delegate"
 msgstr "Asset to delegate"
 
-#: pages/faucet.tsx
+#: pages/faucet.page.tsx
 #: src/modules/dashboard/lists/ListHeader.tsx
 msgid "Assets"
 msgstr "Assets"
@@ -170,7 +170,7 @@ msgstr "Assets to borrow"
 msgid "Assets to supply"
 msgstr "Assets to supply"
 
-#: pages/governance/proposal/[proposalId].tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Author"
 msgstr "Author"
 
@@ -221,7 +221,7 @@ msgstr "Before supplying"
 msgid "Before supplying, you need to approve its usage by the Aave protocol. You can learn more in our<0>FAQ</0>"
 msgstr "Before supplying, you need to approve its usage by the Aave protocol. You can learn more in our<0>FAQ</0>"
 
-#: pages/index.tsx
+#: pages/index.page.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
@@ -375,7 +375,7 @@ msgstr "Copy address"
 msgid "Copy error text"
 msgstr "Copy error text"
 
-#: pages/governance/proposal/[proposalId].tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Created"
 msgstr "Created"
 
@@ -383,7 +383,7 @@ msgstr "Created"
 msgid "Current LTV"
 msgstr "Current LTV"
 
-#: pages/governance/proposal/[proposalId].tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Current differential"
 msgstr "Current differential"
 
@@ -434,7 +434,7 @@ msgstr "Details"
 msgid "Developers"
 msgstr "Developers"
 
-#: pages/governance/proposal/[proposalId].tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
 #: src/modules/governance/ProposalListItem.tsx
 msgid "Differential"
 msgstr "Differential"
@@ -470,7 +470,7 @@ msgstr "Disconnect Wallet"
 msgid "Discord"
 msgstr "Discord"
 
-#: pages/governance/proposal/[proposalId].tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Discussion"
 msgstr "Discussion"
 
@@ -540,7 +540,7 @@ msgstr "Enter an amount"
 msgid "Error connecting. Try refreshing the page."
 msgstr "Error connecting. Try refreshing the page."
 
-#: pages/governance/proposal/[proposalId].tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Executed"
 msgstr "Executed"
 
@@ -548,7 +548,7 @@ msgstr "Executed"
 msgid "FAQ"
 msgstr "FAQ"
 
-#: pages/faucet.tsx
+#: pages/faucet.page.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Faucet"
 msgstr "Faucet"
@@ -819,7 +819,7 @@ msgstr "Ok, I got it"
 msgid "Oracle price"
 msgstr "Oracle price"
 
-#: pages/reserve-overview.tsx
+#: pages/reserve-overview.page.tsx
 msgid "Overview"
 msgstr "Overview"
 
@@ -848,11 +848,11 @@ msgstr "Please, connect your wallet"
 msgid "Price impact"
 msgstr "Price impact"
 
-#: pages/governance/proposal/[proposalId].tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Proposal details"
 msgstr "Proposal details"
 
-#: pages/governance/proposal/[proposalId].tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Proposal overview"
 msgstr "Proposal overview"
 
@@ -865,7 +865,7 @@ msgstr "Proposals"
 msgid "Proposition power"
 msgstr "Proposition power"
 
-#: pages/governance/proposal/[proposalId].tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
 #: src/modules/governance/ProposalListItem.tsx
 msgid "Quorum"
 msgstr "Quorum"
@@ -1019,11 +1019,11 @@ msgstr "Stablecoin"
 msgid "Stake"
 msgstr "Stake"
 
-#: pages/staking.tsx
+#: pages/staking.staking.tsx
 msgid "Stake Aave"
 msgstr "Stake Aave"
 
-#: pages/staking.tsx
+#: pages/staking.staking.tsx
 msgid "Stake Aave/ETH BPT"
 msgstr "Stake Aave/ETH BPT"
 
@@ -1041,15 +1041,15 @@ msgstr "Staking"
 msgid "Staking APR"
 msgstr "Staking APR"
 
-#: pages/governance/proposal/[proposalId].tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Started"
 msgstr "Started"
 
-#: pages/governance/proposal/[proposalId].tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
 msgid "State"
 msgstr "State"
 
-#: pages/index.tsx
+#: pages/index.page.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
@@ -1122,7 +1122,7 @@ msgstr "Switching rate"
 msgid "The % of your total bowering power used. This is based on the amount of your collateral supplied and the total amount that you can borrow."
 msgstr "The % of your total bowering power used. This is based on the amount of your collateral supplied and the total amount that you can borrow."
 
-#: pages/staking.tsx
+#: pages/staking.staking.tsx
 msgid "The Balancer Pool Token (BPT) is a liquidity pool token. You can receive BPT by depositing a combination of AAVE + ETH in the <0>Balancer liquidity pool</0>. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
 msgstr "The Balancer Pool Token (BPT) is a liquidity pool token. You can receive BPT by depositing a combination of AAVE + ETH in the <0>Balancer liquidity pool</0>. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
 
@@ -1226,7 +1226,7 @@ msgstr "Total market size"
 msgid "Total supplied"
 msgstr "Total supplied"
 
-#: pages/governance/proposal/[proposalId].tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Total voting power"
 msgstr "Total voting power"
 
@@ -1313,7 +1313,7 @@ msgstr "Vote NAY"
 msgid "Vote YAE"
 msgstr "Vote YAE"
 
-#: pages/governance/proposal/[proposalId].tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Vote differential needed"
 msgstr "Vote differential needed"
 
@@ -1324,11 +1324,11 @@ msgstr "Vote differential needed"
 msgid "Voting power"
 msgstr "Voting power"
 
-#: pages/governance/proposal/[proposalId].tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Voting results"
 msgstr "Voting results"
 
-#: pages/faucet.tsx
+#: pages/faucet.page.tsx
 #: src/components/transactions/Repay/RepayModalContent.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
@@ -1343,7 +1343,7 @@ msgstr "Wallet not detected. Connect or install wallet and retry"
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 msgstr "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 
-#: pages/staking.tsx
+#: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake."
 msgstr "We couldn’t detect a wallet. Connect a wallet to stake."
 
@@ -1461,7 +1461,7 @@ msgstr "Your current loan to value based on your collateral supplied."
 msgid "Your health factor and loan to value determine the assurance of your collateral. To avoid liquidations you can supply more collateral or repay borrow positions."
 msgstr "Your health factor and loan to value determine the assurance of your collateral. To avoid liquidations you can supply more collateral or repay borrow positions."
 
-#: pages/reserve-overview.tsx
+#: pages/reserve-overview.page.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Your info"
@@ -1575,7 +1575,7 @@ msgstr "{0}"
 msgid "{0} Balance"
 msgstr "{0} Balance"
 
-#: pages/faucet.tsx
+#: pages/faucet.page.tsx
 msgid "{0} Faucet"
 msgstr "{0} Faucet"
 

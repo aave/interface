@@ -8,7 +8,7 @@ import {
   SelectChangeEvent,
   Typography,
 } from '@mui/material';
-import { GovernancePageProps } from 'pages/governance';
+import { GovernancePageProps } from 'pages/governance/index.governance';
 import { useState } from 'react';
 import { usePolling } from 'src/hooks/usePolling';
 import { getProposalMetadata } from 'src/modules/governance/utils/getProposalMetadata';
@@ -42,7 +42,7 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
             ipfs: {
               id: i,
               originalHash: proposal.ipfsHash,
-              ...(await getProposalMetadata(proposal.ipfsHash, governanceConfig?.ipfsGateway)),
+              ...(await getProposalMetadata(proposal.ipfsHash, governanceConfig.ipfsGateway)),
             },
             proposal: proposal,
             prerendered: false,
