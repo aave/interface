@@ -178,7 +178,7 @@ export const DashboardEModeButton = ({
 
           <Typography variant="caption" color="text.secondary" mb={4}>
             <Trans>
-              E-Mode increases your borrowing power for a selected category of assets up to 99%.{' '}
+              E-Mode increases your borrowing power for a selected category of assets up to 97%.{' '}
               <Link
                 href="https://docs.aave.com/faq/"
                 sx={{ textDecoration: 'underline' }}
