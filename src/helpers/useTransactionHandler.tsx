@@ -76,11 +76,14 @@ export const useTransactionHandler = ({
     try {
       const txnResult = await tx();
       try {
-        await txnResult.wait();
-        // wait for confirmation
         mounted.current && successCallback && successCallback(txnResult);
         refetchWalletBalances();
         refetchPoolData && refetchPoolData();
+
+        // TODO: commented for now. But should add
+        // as state in success view: wait for confirmation
+        // wait for confirmation
+        // await txnResult.wait();
       } catch (e) {
         try {
           const error = await getTxError(txnResult.hash);
