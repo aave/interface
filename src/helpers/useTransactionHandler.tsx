@@ -84,7 +84,7 @@ export const useTransactionHandler = ({
 
         refetchPoolData && refetchAll.push(refetchPoolData());
         refechIncentiveData && refetchAll.push(refechIncentiveData());
-        await Promise.all(refetchAll);
+        Promise.all(refetchAll);
       } catch (e) {
         try {
           const error = await getTxError(txnResult.hash);
