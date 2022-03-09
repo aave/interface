@@ -98,7 +98,7 @@ const getStakeLink = (link?: ApolloLink) => {
     stakeConfig &&
     stakeConfig.wsStakeDataUrl &&
     stakeConfig.queryStakeDataUrl &&
-    process.browser
+    typeof window !== 'undefined'
   ) {
     const condition = (operation: Operation) =>
       operation.getContext().target === APOLLO_QUERY_TARGET.STAKE;
@@ -117,7 +117,7 @@ export const getApolloClient = () => {
   const link = getStakeLink();
 
   const combinedLink = Object.entries(networkConfigs).reduce((acc, [key, cfg]) => {
-    if (cfg.cachingServerUrl && cfg.cachingWSServerUrl && process.browser) {
+    if (cfg.cachingServerUrl && cfg.cachingWSServerUrl && typeof window !== 'undefined') {
       const condition = (operation: Operation) =>
         operation.getContext().target === APOLLO_QUERY_TARGET.CHAIN(key as unknown as number);
       const http = new HttpLink({ uri: cfg.cachingServerUrl });
