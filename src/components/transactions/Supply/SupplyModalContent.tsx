@@ -252,9 +252,9 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
       {showIsolationWarning && <IsolationModeWarning />}
       {showSupplyCapWarning && <SupplyCapWarning />}
       {poolReserve.symbol === 'AMPL' && <AMPLWarning />}
-      {poolReserve.symbol === 'AAVE' && isFeatureEnabled.staking(currentMarketData) && (
-        <AAVEWarning />
-      )}
+      {process.env.ENABLE_STAKING === 'true' &&
+        poolReserve.symbol === 'AAVE' &&
+        isFeatureEnabled.staking(currentMarketData) && <AAVEWarning />}
       {poolReserve.symbol === 'SNX' && !maxAmountToSupply.eq('0') && <SNXWarning />}
 
       <AssetInput

@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-08 11:02\n"
+"PO-Revision-Date: 2022-03-08 13:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -145,7 +145,7 @@ msgstr ""
 msgid "Approving {symbol}..."
 msgstr ""
 
-#: pages/faucet.tsx
+#: pages/faucet.page.tsx
 #: src/modules/markets/AssetsList.tsx
 msgid "Asset"
 msgstr ""
@@ -160,6 +160,7 @@ msgstr ""
 msgid "Asset to delegate"
 msgstr ""
 
+#: pages/faucet.page.tsx
 #: src/modules/dashboard/lists/ListHeader.tsx
 msgid "Assets"
 msgstr ""
@@ -174,7 +175,7 @@ msgstr ""
 msgid "Assets to supply"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Author"
 msgstr ""
 
@@ -225,7 +226,7 @@ msgstr ""
 msgid "Before supplying, you need to approve its usage by the Aave protocol. You can learn more in our<0>FAQ</0>"
 msgstr ""
 
-#: pages/index.tsx
+#: pages/index.page.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
@@ -379,7 +380,7 @@ msgstr ""
 msgid "Copy error text"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Created"
 msgstr ""
 
@@ -387,7 +388,7 @@ msgstr ""
 msgid "Current LTV"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Current differential"
 msgstr ""
 
@@ -438,7 +439,7 @@ msgstr ""
 msgid "Developers"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
 #: src/modules/governance/ProposalListItem.tsx
 msgid "Differential"
 msgstr ""
@@ -474,7 +475,7 @@ msgstr ""
 msgid "Discord"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Discussion"
 msgstr ""
 
@@ -544,7 +545,7 @@ msgstr ""
 msgid "Error connecting. Try refreshing the page."
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Executed"
 msgstr ""
 
@@ -552,9 +553,7 @@ msgstr ""
 msgid "FAQ"
 msgstr ""
 
-#: pages/faucet.tsx
-#: pages/faucet.tsx
-#: pages/faucet.tsx
+#: pages/faucet.page.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Faucet"
 msgstr ""
@@ -825,7 +824,7 @@ msgstr ""
 msgid "Oracle price"
 msgstr ""
 
-#: pages/reserve-overview.tsx
+#: pages/reserve-overview.page.tsx
 msgid "Overview"
 msgstr ""
 
@@ -854,11 +853,11 @@ msgstr ""
 msgid "Price impact"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Proposal details"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Proposal overview"
 msgstr ""
 
@@ -871,7 +870,7 @@ msgstr ""
 msgid "Proposition power"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
 #: src/modules/governance/ProposalListItem.tsx
 msgid "Quorum"
 msgstr ""
@@ -1025,11 +1024,11 @@ msgstr ""
 msgid "Stake"
 msgstr ""
 
-#: pages/staking.tsx
+#: pages/staking.staking.tsx
 msgid "Stake Aave"
 msgstr ""
 
-#: pages/staking.tsx
+#: pages/staking.staking.tsx
 msgid "Stake Aave/ETH BPT"
 msgstr ""
 
@@ -1047,15 +1046,15 @@ msgstr ""
 msgid "Staking APR"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Started"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
 msgid "State"
 msgstr ""
 
-#: pages/index.tsx
+#: pages/index.page.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
@@ -1128,7 +1127,7 @@ msgstr ""
 msgid "The % of your total bowering power used. This is based on the amount of your collateral supplied and the total amount that you can borrow."
 msgstr ""
 
-#: pages/staking.tsx
+#: pages/staking.staking.tsx
 msgid "The Balancer Pool Token (BPT) is a liquidity pool token. You can receive BPT by depositing a combination of AAVE + ETH in the <0>Balancer liquidity pool</0>. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
 msgstr ""
 
@@ -1232,7 +1231,7 @@ msgstr ""
 msgid "Total supplied"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Total voting power"
 msgstr ""
 
@@ -1319,7 +1318,7 @@ msgstr ""
 msgid "Vote YAE"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Vote differential needed"
 msgstr ""
 
@@ -1330,11 +1329,11 @@ msgstr ""
 msgid "Voting power"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Voting results"
 msgstr ""
 
-#: pages/faucet.tsx
+#: pages/faucet.page.tsx
 #: src/components/transactions/Repay/RepayModalContent.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
@@ -1349,7 +1348,7 @@ msgstr ""
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 msgstr ""
 
-#: pages/staking.tsx
+#: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake."
 msgstr ""
 
@@ -1467,7 +1466,7 @@ msgstr ""
 msgid "Your health factor and loan to value determine the assurance of your collateral. To avoid liquidations you can supply more collateral or repay borrow positions."
 msgstr ""
 
-#: pages/reserve-overview.tsx
+#: pages/reserve-overview.page.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Your info"
@@ -1579,6 +1578,10 @@ msgstr ""
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "{0} Balance"
+msgstr ""
+
+#: pages/faucet.page.tsx
+msgid "{0} Faucet"
 msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx

@@ -84,7 +84,7 @@ export const GovDelegationModalContent = () => {
   };
 
   // is Network mismatched
-  const govChain = governanceConfig?.chainId || 1;
+  const govChain = governanceConfig.chainId;
   const networkConfig = getNetworkConfig(govChain);
   const isWrongNetwork = connectedChainId !== govChain;
 

@@ -409,13 +409,9 @@ export const changeCollateral = (
     });
     it('Confirm switching', () => {
       if (isCollateralType) {
-        cy.get('[data-cy=actionButton] button')
-          .contains(`Disable ${_shortName} as collateral`)
-          .click();
+        cy.get('[data-cy=actionButton]').click();
       } else {
-        cy.get('[data-cy=actionButton] button')
-          .contains(`Enable ${_shortName} as collateral`)
-          .click();
+        cy.get('[data-cy=actionButton]').click();
       }
       cy.get("[data-cy=Modal] h2:contains('All done!')").should('be.visible');
       cy.get('[data-cy=Modal] [data-cy=CloseModalIcon]').click();

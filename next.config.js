@@ -3,6 +3,10 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 
+const pageExtensions = ['page.tsx'];
+if (process.env.ENABLE_GOVERNANCE === 'true') pageExtensions.push('governance.tsx');
+if (process.env.ENABLE_STAKING === 'true') pageExtensions.push('staking.tsx');
+
 /** @type {import('next').NextConfig} */
 module.exports = withBundleAnalyzer({
   webpack(config) {
@@ -12,10 +16,10 @@ module.exports = withBundleAnalyzer({
       use: ['@svgr/webpack'],
     });
     config.experiments = { topLevelAwait: true };
-
     return config;
   },
   reactStrictMode: true,
   // assetPrefix: "./",
   trailingSlash: true,
+  pageExtensions,
 });
