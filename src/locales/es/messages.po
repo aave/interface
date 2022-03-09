@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-08 13:06\n"
+"PO-Revision-Date: 2022-03-09 09:17\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -488,7 +488,7 @@ msgid "E-Mode category"
 msgstr ""
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
-msgid "E-Mode increases your borrowing power for a selected category of assets up to 99%. <0>Learn more</0>"
+msgid "E-Mode increases your borrowing power for a selected category of assets up to 97%. <0>Learn more</0>"
 msgstr ""
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
