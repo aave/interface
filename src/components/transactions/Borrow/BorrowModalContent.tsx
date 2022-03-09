@@ -232,7 +232,14 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
       : poolReserve.vIncentivesData;
   return (
     <>
-      <TxModalTitle title="Borrow" symbol={poolReserve.symbol} />
+      <TxModalTitle
+        title="Borrow"
+        symbol={
+          borrowUnWrapped && poolReserve.isWrappedBaseAsset
+            ? networkConfig.baseAssetSymbol
+            : poolReserve.symbol
+        }
+      />
       {isWrongNetwork && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
       )}
