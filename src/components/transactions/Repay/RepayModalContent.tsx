@@ -5,9 +5,8 @@ import {
   USD_DECIMALS,
   valueToBigNumber,
 } from '@aave/math-utils';
-import { CheckIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, SvgIcon, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import { Box, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import React, { useEffect, useRef, useState } from 'react';
 import {
@@ -232,22 +231,12 @@ export const RepayModalContent = ({ underlyingAsset }: RepayProps) => {
             sx={{ width: '100%' }}
           >
             <ToggleButton value={repayWithCollateral} disabled={repayWithCollateral}>
-              {!repayWithCollateral && (
-                <SvgIcon sx={{ fontSize: '20px', mr: '2.5px' }}>
-                  <CheckIcon />
-                </SvgIcon>
-              )}
               <Typography variant="subheader1" sx={{ mr: 1 }}>
                 <Trans>Wallet balance</Trans>
               </Typography>
             </ToggleButton>
 
             <ToggleButton value={!repayWithCollateral} disabled={!repayWithCollateral}>
-              {repayWithCollateral && (
-                <SvgIcon sx={{ fontSize: '20px', mr: '2.5px' }}>
-                  <CheckIcon />
-                </SvgIcon>
-              )}
               <Typography variant="subheader1" sx={{ mr: 1 }}>
                 <Trans>Collateral</Trans>
               </Typography>

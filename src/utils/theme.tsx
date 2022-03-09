@@ -807,11 +807,11 @@ export function getThemedComponents(theme: Theme) {
 
             '&.Mui-selected, &.Mui-selected:hover': {
               backgroundColor: '#FFFFFF',
+              borderRadius: '4px !important',
             },
 
             '&.Mui-selected, &.Mui-disabled': {
-              backgroundColor: '#FFFFFF',
-              width: '100%',
+              zIndex: 100,
               height: '100%',
               display: 'flex',
               justifyContent: 'center',
