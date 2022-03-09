@@ -56,7 +56,7 @@ export const RepayActions = ({
     resetStates,
   } = useTransactionHandler({
     tryPermit:
-      currentMarketData.v3 && permitByChainAndToken[chainId][utils.getAddress(poolAddress)],
+      currentMarketData.v3 && permitByChainAndToken[chainId]?.[utils.getAddress(poolAddress)],
     handleGetTxns: async () => {
       if (currentMarketData.v3) {
         const newPool: Pool = lendingPool as Pool;
