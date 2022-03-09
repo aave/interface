@@ -1,5 +1,5 @@
-import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
-import React from 'react';
+import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
+import React, { useState } from 'react';
 import {
   ComputedReserveData,
   ComputedUserReserveData,
@@ -10,11 +10,12 @@ import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
-
 import { BasicModal } from '../../primitives/BasicModal';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
+import { CollateralRepayModalContent } from './CollateralRepayModalContent';
 import { RepayModalContent } from './RepayModalContent';
+import { RepayType, RepayTypeSelector } from './RepayTypeSelector';
 
 export interface ReserveModalProps {
   underlyingAsset: string;
@@ -28,9 +29,9 @@ export interface ReserveModalProps {
 
 const ReserveProvider: React.FC<{
   underlyingAsset: string;
-  Content: (params: ReserveModalProps) => JSX.Element;
   requiredChainId?: number;
-}> = ({ underlyingAsset, Content, requiredChainId: _requiredChainId }) => {
+  children: (props: ReserveModalProps) => React.ReactNode;
+}> = ({ underlyingAsset, children, requiredChainId: _requiredChainId }) => {
   const { chainId: connectedChainId } = useWeb3Context();
   const { walletBalances } = useWalletBalances();
   const { currentChainId: marketChainId, currentNetworkConfig } = useProtocolDataContext();
@@ -59,25 +60,42 @@ const ReserveProvider: React.FC<{
           chainId={requiredChainId}
         />
       )}
-      <Content
-        poolReserve={poolReserve}
-        userReserve={userReserve}
-        underlyingAsset={underlyingAsset}
-        symbol={symbol}
-        tokenBalance={walletBalances[poolReserve.underlyingAsset].amount}
-        nativeBalance={walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()].amount}
-        isWrongNetwork={isWrongNetwork}
-      />
+      {children({
+        isWrongNetwork,
+        nativeBalance: walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()].amount,
+        tokenBalance: walletBalances[poolReserve.underlyingAsset].amount,
+        poolReserve,
+        symbol,
+        underlyingAsset,
+        userReserve,
+      })}
     </>
   );
 };
 
 export const RepayModal = () => {
-  const { type, close, args } = useModalContext() as ModalContextType<{ underlyingAsset: string }>;
-
+  const { type, close, args } = useModalContext() as ModalContextType<{
+    underlyingAsset: string;
+    currentRateMode: InterestRate;
+  }>;
+  const [repayType, setRepayType] = useState(RepayType.BALANCE);
   return (
     <BasicModal open={type === ModalType.Repay} setOpen={close}>
-      <ReserveProvider underlyingAsset={args.underlyingAsset} Content={RepayModalContent} />
+      <ReserveProvider underlyingAsset={args.underlyingAsset}>
+        {(params) => {
+          return (
+            <>
+              <RepayTypeSelector repayType={repayType} setRepayType={setRepayType} />
+              {repayType === RepayType.BALANCE && (
+                <RepayModalContent {...params} debtType={args.currentRateMode} />
+              )}
+              {repayType === RepayType.COLLATERAL && (
+                <CollateralRepayModalContent {...params} debtType={args.currentRateMode} />
+              )}
+            </>
+          );
+        }}
+      </ReserveProvider>
     </BasicModal>
   );
 };
