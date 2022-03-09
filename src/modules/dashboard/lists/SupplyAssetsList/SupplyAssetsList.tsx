@@ -23,8 +23,13 @@ import { SupplyAssetsListMobileItem } from './SupplyAssetsListMobileItem';
 
 export const SupplyAssetsList = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
-  const { user, reserves, marketReferencePriceInUsd, loading } = useAppDataContext();
-  const { walletBalances } = useWalletBalances();
+  const {
+    user,
+    reserves,
+    marketReferencePriceInUsd,
+    loading: loadingReserves,
+  } = useAppDataContext();
+  const { walletBalances, loading } = useWalletBalances();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
@@ -143,7 +148,7 @@ export const SupplyAssetsList = () => {
     <Trans key="Can be collateral">Can be collateral</Trans>,
   ];
 
-  if (!sortedSupplyReserves.length || loading)
+  if (loadingReserves || loading)
     return <ListLoader title={<Trans>Assets to supply</Trans>} head={head} withTopMargin />;
 
   return (
