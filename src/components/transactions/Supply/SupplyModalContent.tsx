@@ -244,7 +244,14 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
 
   return (
     <>
-      <TxModalTitle title="Supply" symbol={poolReserve.symbol} />
+      <TxModalTitle
+        title="Supply"
+        symbol={
+          poolReserve.symbol === currentNetworkConfig.wrappedBaseAssetSymbol
+            ? currentNetworkConfig.baseAssetSymbol
+            : poolReserve.symbol
+        }
+      />
       {isWrongNetwork && (
         <ChangeNetworkWarning networkName={currentNetworkConfig.name} chainId={currentChainId} />
       )}
@@ -306,7 +313,11 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
         amountToSupply={amount}
         isWrongNetwork={isWrongNetwork}
         poolAddress={supplyUnWrapped ? underlyingAsset : poolReserve.underlyingAsset}
-        symbol={supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol}
+        symbol={
+          poolReserve.symbol === currentNetworkConfig.wrappedBaseAssetSymbol
+            ? currentNetworkConfig.baseAssetSymbol
+            : poolReserve.symbol
+        }
         blocked={blockingError !== undefined}
       />
     </>

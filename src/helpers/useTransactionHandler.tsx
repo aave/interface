@@ -77,11 +77,11 @@ export const useTransactionHandler = ({
     try {
       const txnResult = await tx();
       try {
-        await txnResult.wait(1);
         mounted.current && successCallback && successCallback(txnResult);
-        await refetchWalletBalances();
-        refetchPoolData && (await refetchPoolData());
-        refechIncentiveData && (await refechIncentiveData());
+        await txnResult.wait(1);
+        refetchWalletBalances();
+        refetchPoolData && refetchPoolData();
+        refechIncentiveData && refechIncentiveData();
       } catch (e) {
         try {
           const error = await getTxError(txnResult.hash);
