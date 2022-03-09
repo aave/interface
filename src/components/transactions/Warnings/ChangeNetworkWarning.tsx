@@ -15,23 +15,24 @@ export const ChangeNetworkWarning = ({ networkName, chainId }: ChangeNetworkWarn
 
   return (
     <Warning severity="error" icon={false}>
-      <Typography>
-        <Trans>Please switch to {networkName}.</Trans>{' '}
-        <Button
-          variant="text"
-          sx={{ ml: '2px' }}
-          onClick={() => switchNetwork(chainId)}
-          disableRipple
-        >
-          <Trans>Switch Network</Trans>
-        </Button>
-      </Typography>
-      {switchNetworkError && (
+      {switchNetworkError ? (
         <Typography>
           <Trans>
             Seems like we can&apos;t switch the network automatically. Please check if you can
             change it from the wallet.
           </Trans>
+        </Typography>
+      ) : (
+        <Typography>
+          <Trans>Please switch to {networkName}.</Trans>{' '}
+          <Button
+            variant="text"
+            sx={{ ml: '2px' }}
+            onClick={() => switchNetwork(chainId)}
+            disableRipple
+          >
+            <Trans>Switch Network</Trans>
+          </Button>
         </Typography>
       )}
     </Warning>
