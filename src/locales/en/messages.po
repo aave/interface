@@ -483,8 +483,8 @@ msgid "E-Mode category"
 msgstr "E-Mode category"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
-msgid "E-Mode increases your borrowing power for a selected category of assets up to 99%. <0>Learn more</0>"
-msgstr "E-Mode increases your borrowing power for a selected category of assets up to 99%. <0>Learn more</0>"
+msgid "E-Mode increases your borrowing power for a selected category of assets up to 97%. <0>Learn more</0>"
+msgstr "E-Mode increases your borrowing power for a selected category of assets up to 97%. <0>Learn more</0>"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Efficiency mode (E-Mode)"
