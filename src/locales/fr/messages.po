@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-09 15:39\n"
+"PO-Revision-Date: 2022-03-09 15:50\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -696,7 +696,7 @@ msgstr ""
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/LTVContent.tsx
 msgid "MAX"
-msgstr ""
+msgstr "MAX"
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Market"
@@ -737,7 +737,7 @@ msgstr ""
 
 #: src/modules/governance/VoteBar.tsx
 msgid "NEY"
-msgstr ""
+msgstr "NEY"
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Need help connecting a wallet? <0>Read our FAQ</0>"
@@ -745,11 +745,11 @@ msgstr ""
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Net APR"
-msgstr ""
+msgstr "APR Net"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Net APY"
-msgstr ""
+msgstr "APY Net"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Net worth"
@@ -802,7 +802,7 @@ msgstr ""
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Nothing borrowed yet"
-msgstr ""
+msgstr "Aucun emprunt pour l'instant"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Nothing staked"
@@ -998,7 +998,7 @@ msgstr ""
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Spanish"
-msgstr ""
+msgstr "Espagnol"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
@@ -1015,22 +1015,22 @@ msgstr ""
 
 #: src/utils/eMode.ts
 msgid "Stablecoin"
-msgstr ""
+msgstr "Stablecoin"
 
 #: src/components/transactions/Stake/StakeActions.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/ui-config/menu-items/index.tsx
 msgid "Stake"
-msgstr ""
+msgstr "Stake"
 
 #: pages/staking.staking.tsx
 msgid "Stake Aave"
-msgstr ""
+msgstr "Stake Aave"
 
 #: pages/staking.staking.tsx
 msgid "Stake Aave/ETH BPT"
-msgstr ""
+msgstr "Stake Aave/ETH BPT"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Staked"
@@ -1039,7 +1039,7 @@ msgstr ""
 #: src/components/transactions/Stake/StakeActions.tsx
 #: src/modules/staking/StakingHeader.tsx
 msgid "Staking"
-msgstr ""
+msgstr "Staking"
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
@@ -1105,7 +1105,7 @@ msgstr ""
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Swap"
-msgstr ""
+msgstr "Swap"
 
 #: src/components/transactions/Swap/SwapActions.tsx
 msgid "Swapping"
@@ -1312,11 +1312,11 @@ msgstr ""
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Vote NAY"
-msgstr ""
+msgstr "Vote NAY"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Vote YAE"
-msgstr ""
+msgstr "Vote YAE"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Vote differential needed"
@@ -1379,7 +1379,7 @@ msgstr ""
 
 #: src/modules/governance/VoteBar.tsx
 msgid "YAE"
-msgstr ""
+msgstr "YAE"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "YYou can not use this currency as collateral"
