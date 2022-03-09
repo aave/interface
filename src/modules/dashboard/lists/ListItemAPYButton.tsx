@@ -83,6 +83,7 @@ export const ListItemAPYButton = ({
         </Typography>
 
         <MenuItem
+          selected={borrowRateMode === InterestRate.Variable}
           value={InterestRate.Variable}
           onClick={() => {
             if (borrowRateMode === InterestRate.Stable) {
@@ -101,6 +102,7 @@ export const ListItemAPYButton = ({
         </MenuItem>
 
         <MenuItem
+          selected={borrowRateMode === InterestRate.Stable}
           value={InterestRate.Stable}
           onClick={() => {
             if (borrowRateMode === InterestRate.Variable) {
