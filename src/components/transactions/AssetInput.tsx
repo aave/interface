@@ -146,7 +146,7 @@ export const AssetInput = <T extends Asset = Asset>({
                 symbol={asset.iconSymbol || asset.symbol}
                 sx={{ mr: 2, ml: 4 }}
               />
-              <Typography variant="h3" sx={{ lineHeight: '28px' }}>
+              <Typography variant="h3" sx={{ lineHeight: '28px' }} data-cy={'inputAsset'}>
                 {symbol}
               </Typography>
             </Box>
@@ -158,6 +158,7 @@ export const AssetInput = <T extends Asset = Asset>({
                 onChange={handleSelect}
                 variant="outlined"
                 className="AssetInput__select"
+                data-cy={'assetSelect'}
                 sx={{
                   p: 0,
                   '&.AssetInput__select .MuiOutlinedInput-input': {
@@ -176,7 +177,10 @@ export const AssetInput = <T extends Asset = Asset>({
                       ? assets[0]
                       : assets && (assets.find((asset) => asset.symbol === symbol) as T);
                   return (
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Box
+                      sx={{ display: 'flex', alignItems: 'center' }}
+                      data-cy={`assetsSelectedOption_${asset.symbol.toUpperCase()}`}
+                    >
                       <TokenIcon
                         symbol={asset.iconSymbol || asset.symbol}
                         aToken={asset.aToken}
@@ -190,7 +194,11 @@ export const AssetInput = <T extends Asset = Asset>({
                 }}
               >
                 {assets.map((asset) => (
-                  <MenuItem key={asset.symbol} value={asset.symbol}>
+                  <MenuItem
+                    key={asset.symbol}
+                    value={asset.symbol}
+                    data-cy={`assetsSelectOption_${asset.symbol.toUpperCase()}`}
+                  >
                     <TokenIcon
                       aToken={asset.aToken}
                       symbol={asset.iconSymbol || asset.symbol}

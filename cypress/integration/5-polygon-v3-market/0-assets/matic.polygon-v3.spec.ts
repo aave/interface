@@ -1,4 +1,4 @@
-import { configEnvWithTenderlyMainnetFork } from '../../../support/steps/configuration.steps';
+import { configEnvWithTenderlyMumbaiFork } from "../../../support/steps/configuration.steps";
 import {
   supply,
   borrow,
@@ -18,48 +18,66 @@ import constants from '../../../fixtures/constans.json';
 const testData = {
   testCases: {
     deposit: {
-      asset: assets.ammMarket.ETH,
+      asset: assets.polygonMarket.MATIC,
       amount: 1.09,
       hasApproval: true,
     },
     collateral: {
       switchOff: {
-        asset: assets.ammMarket.ETH,
+        asset: assets.polygonMarket.MATIC,
         isCollateralType: true,
         hasApproval: true,
       },
       switchOn: {
-        asset: assets.aaveMarket.ETH,
+        asset: assets.polygonMarket.MATIC,
         isCollateralType: false,
         hasApproval: true,
       },
       switchNegative: {
-        asset: assets.ammMarket.ETH,
+        asset: assets.polygonMarket.MATIC,
         isCollateralType: true,
       },
     },
     borrow: {
-      asset: assets.aaveMarket.ETH,
+      asset: assets.polygonMarket.MATIC,
       amount: 0.04,
-      apyType: constants.borrowAPYType.variable,
+      apyType: constants.borrowAPYType.default,
       hasApproval: false,
     },
-    repay: {
-      asset: assets.ammMarket.ETH,
-      apyType: constants.apyType.variable,
-      amount: 0.01,
-      hasApproval: true,
-      repayOption: constants.repayType.default,
-    },
+    repay: [
+      {
+        asset: assets.polygonMarket.MATIC,
+        apyType: constants.apyType.variable,
+        amount: 0.01,
+        hasApproval: true,
+        repayOption: constants.repayType.default,
+      },
+      // {
+      //   asset: assets.polygonMarket.MATIC,
+      //   repayableAsset: assets.polygonMarket.WMATIC,
+      //   apyType: constants.apyType.variable,
+      //   amount: 0.01,
+      //   hasApproval: false,
+      //   repayOption: constants.repayType.default,
+      // },
+      {
+        asset: assets.polygonMarket.MATIC,
+        repayableAsset: assets.polygonMarket.amWMATIC,
+        apyType: constants.apyType.variable,
+        amount: 0.01,
+        hasApproval: true,
+        repayOption: constants.repayType.default,
+      },
+    ],
     withdraw: [
       {
-        asset: assets.ammMarket.ETH,
+        asset: assets.polygonMarket.MATIC,
         isCollateral: true,
         amount: 0.01,
         hasApproval: false,
       },
       {
-        asset: assets.ammMarket.ETH,
+        asset: assets.polygonMarket.MATIC,
         isCollateral: true,
         amount: 0.01,
         hasApproval: true,
@@ -71,26 +89,26 @@ const testData = {
     finalDashboard: [
       {
         type: constants.dashboardTypes.deposit,
-        assetName: assets.ammMarket.ETH.shortName,
-        wrapped: assets.ammMarket.ETH.wrapped,
-        amount: 1.07,
+        assetName: assets.polygonMarket.MATIC.shortName,
+        wrapped: assets.polygonMarket.MATIC.wrapped,
+        amount: 1.06,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
       },
       {
         type: constants.dashboardTypes.borrow,
-        assetName: assets.ammMarket.ETH.shortName,
-        wrapped: assets.ammMarket.ETH.wrapped,
-        amount: 0.03,
+        assetName: assets.polygonMarket.MATIC.shortName,
+        wrapped: assets.polygonMarket.MATIC.wrapped,
+        amount: 0.02,
         apyType: constants.borrowAPYType.variable,
       },
     ],
   },
 };
 
-describe('ETH INTEGRATION SPEC, AMM V2 MARKET', () => {
+describe('MATIC INTEGRATION SPEC, POLYGON V2 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyMainnetFork({});
+  configEnvWithTenderlyMumbaiFork({market:"fork_proto_mumbai_v3"});
 
   supply(testData.testCases.deposit, skipTestState, true);
   describe('Check Collateral switching', () => {
@@ -100,9 +118,11 @@ describe('ETH INTEGRATION SPEC, AMM V2 MARKET', () => {
   });
   borrow(testData.testCases.borrow, skipTestState, true);
   changeCollateralNegative(testData.testCases.collateral.switchNegative, skipTestState, false);
-  repay(testData.testCases.repay, skipTestState, false);
   testData.testCases.withdraw.forEach((withdrawCase) => {
     withdraw(withdrawCase, skipTestState, false);
+  });
+  testData.testCases.repay.forEach((repayCase) => {
+    repay(repayCase, skipTestState, false);
   });
   dashboardAssetValuesVerification(testData.verifications.finalDashboard, skipTestState);
 });

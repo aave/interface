@@ -14,7 +14,7 @@ const testData = {
     asset: assets.aaveMarket.ETH,
     isCollateral: true,
     amount: 2000,
-    hasApproval: true,
+    hasApproval: false,
   },
   claimReward: {
     asset: assets.aaveMarket.stkAAVE,

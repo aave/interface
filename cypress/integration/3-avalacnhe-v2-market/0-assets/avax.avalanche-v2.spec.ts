@@ -1,4 +1,4 @@
-import { configEnvWithTenderlyMainnetFork } from '../../../support/steps/configuration.steps';
+import { configEnvWithTenderlyAvalancheFork } from "../../../support/steps/configuration.steps";
 import {
   supply,
   borrow,
@@ -18,34 +18,34 @@ import constants from '../../../fixtures/constans.json';
 const testData = {
   testCases: {
     deposit: {
-      asset: assets.ammMarket.ETH,
+      asset: assets.avalancheMarket.AVAX,
       amount: 1.09,
       hasApproval: true,
     },
     collateral: {
       switchOff: {
-        asset: assets.ammMarket.ETH,
+        asset: assets.avalancheMarket.AVAX,
         isCollateralType: true,
         hasApproval: true,
       },
       switchOn: {
-        asset: assets.aaveMarket.ETH,
+        asset: assets.avalancheMarket.AVAX,
         isCollateralType: false,
         hasApproval: true,
       },
       switchNegative: {
-        asset: assets.ammMarket.ETH,
+        asset: assets.avalancheMarket.AVAX,
         isCollateralType: true,
       },
     },
     borrow: {
-      asset: assets.aaveMarket.ETH,
+      asset: assets.avalancheMarket.AVAX,
       amount: 0.04,
-      apyType: constants.borrowAPYType.variable,
+      apyType: constants.borrowAPYType.default,
       hasApproval: false,
     },
     repay: {
-      asset: assets.ammMarket.ETH,
+      asset: assets.avalancheMarket.AVAX,
       apyType: constants.apyType.variable,
       amount: 0.01,
       hasApproval: true,
@@ -53,13 +53,13 @@ const testData = {
     },
     withdraw: [
       {
-        asset: assets.ammMarket.ETH,
+        asset: assets.avalancheMarket.AVAX,
         isCollateral: true,
         amount: 0.01,
         hasApproval: false,
       },
       {
-        asset: assets.ammMarket.ETH,
+        asset: assets.avalancheMarket.AVAX,
         isCollateral: true,
         amount: 0.01,
         hasApproval: true,
@@ -71,16 +71,16 @@ const testData = {
     finalDashboard: [
       {
         type: constants.dashboardTypes.deposit,
-        assetName: assets.ammMarket.ETH.shortName,
-        wrapped: assets.ammMarket.ETH.wrapped,
+        assetName: assets.avalancheMarket.AVAX.shortName,
+        wrapped: assets.avalancheMarket.AVAX.wrapped,
         amount: 1.07,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
       },
       {
         type: constants.dashboardTypes.borrow,
-        assetName: assets.ammMarket.ETH.shortName,
-        wrapped: assets.ammMarket.ETH.wrapped,
+        assetName: assets.avalancheMarket.AVAX.shortName,
+        wrapped: assets.avalancheMarket.AVAX.wrapped,
         amount: 0.03,
         apyType: constants.borrowAPYType.variable,
       },
@@ -88,9 +88,9 @@ const testData = {
   },
 };
 
-describe('ETH INTEGRATION SPEC, AMM V2 MARKET', () => {
+describe('AVAX INTEGRATION SPEC, AVALANCHE V2 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyMainnetFork({});
+  configEnvWithTenderlyAvalancheFork({});
 
   supply(testData.testCases.deposit, skipTestState, true);
   describe('Check Collateral switching', () => {

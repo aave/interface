@@ -35,16 +35,16 @@ const testData = {
     },
     withdraw: {
       asset: assets.avalancheMarket.USDT,
-      isCollateral: true,
+      isCollateral: false,
       amount: 1,
       hasApproval: true,
     },
     checkDisabledApy: {
-      asset: assets.ammMarket.USDT,
+      asset: assets.avalancheMarket.USDT,
       apyType: constants.apyType.variable,
     },
     checkBorrowTypeBlocked: {
-      asset: assets.aaveMarket.USDT,
+      asset: assets.avalancheMarket.USDT,
       isCollateralType: false,
     },
   },
@@ -56,7 +56,7 @@ const testData = {
         wrapped: assets.avalancheMarket.USDT.wrapped,
         amount: 9.0,
         collateralType: constants.collateralType.isCollateral,
-        isCollateral: true,
+        isCollateral: false,
       },
       {
         type: constants.dashboardTypes.borrow,

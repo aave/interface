@@ -1,7 +1,4 @@
-import {
-  configEnvWithTenderlyAvalancheFork,
-  configEnvWithTenderlyAvalancheFujiFork,
-} from '../../../support/steps/configuration.steps';
+import { configEnvWithTenderlyAvalancheFork } from '../../../support/steps/configuration.steps';
 import { supply, borrow, repay, withdraw } from '../../../support/steps/main.steps';
 import {
   dashboardAssetValuesVerification,
@@ -69,8 +66,7 @@ const testData = {
 
 describe('DAI INTEGRATION SPEC, AVALANCHE V2 MARKET', () => {
   const skipTestState = skipState(false);
-  // configEnvWithTenderlyAvalancheFork({});
-  configEnvWithTenderlyAvalancheFujiFork({});
+  configEnvWithTenderlyAvalancheFork({});
 
   supply(testData.depositBaseAmount, skipTestState, true);
   borrow(testData.testCases.borrow, skipTestState, true);

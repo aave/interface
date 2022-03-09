@@ -14,7 +14,7 @@ const testData = {
     asset: assets.avalancheMarket.AVAX,
     isCollateral: true,
     amount: 2000,
-    hasApproval: true,
+    hasApproval: false,
   },
   claimReward: {
     asset: assets.avalancheMarket.AVAX,

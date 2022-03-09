@@ -35,37 +35,52 @@ const testData = {
       },
       switchNegative: {
         asset: assets.polygonMarket.MATIC,
-        collateralType: constants.collateralType.isCollateral,
+        isCollateralType: true,
       },
     },
     borrow: {
       asset: assets.polygonMarket.MATIC,
       amount: 0.04,
-      hasApproval: true,
+      apyType: constants.borrowAPYType.default,
+      hasApproval: false,
     },
     repay: {
       asset: assets.polygonMarket.MATIC,
+      apyType: constants.apyType.variable,
       amount: 0.01,
       hasApproval: true,
       repayOption: constants.repayType.default,
     },
-    withdraw: {
-      asset: assets.polygonMarket.MATIC,
-      amount: 0.01,
-      hasApproval: false,
-    },
+    withdraw: [
+      {
+        asset: assets.polygonMarket.MATIC,
+        isCollateral: true,
+        amount: 0.01,
+        hasApproval: false,
+      },
+      {
+        asset: assets.polygonMarket.MATIC,
+        isCollateral: true,
+        amount: 0.01,
+        hasApproval: true,
+        forWrapped: true,
+      },
+    ],
   },
   verifications: {
     finalDashboard: [
       {
         type: constants.dashboardTypes.deposit,
-        asset: assets.polygonMarket.MATIC.shortName,
-        amount: 0.08,
+        assetName: assets.polygonMarket.MATIC.shortName,
+        wrapped: assets.polygonMarket.MATIC.wrapped,
+        amount: 1.07,
         collateralType: constants.collateralType.isCollateral,
+        isCollateral: true,
       },
       {
         type: constants.dashboardTypes.borrow,
-        asset: assets.polygonMarket.MATIC.shortName,
+        assetName: assets.polygonMarket.MATIC.shortName,
+        wrapped: assets.polygonMarket.MATIC.wrapped,
         amount: 0.03,
         apyType: constants.borrowAPYType.variable,
       },
@@ -86,6 +101,8 @@ describe('MATIC INTEGRATION SPEC, POLYGON V2 MARKET', () => {
   borrow(testData.testCases.borrow, skipTestState, true);
   changeCollateralNegative(testData.testCases.collateral.switchNegative, skipTestState, false);
   repay(testData.testCases.repay, skipTestState, false);
-  withdraw(testData.testCases.withdraw, skipTestState, false);
+  testData.testCases.withdraw.forEach((withdrawCase) => {
+    withdraw(withdrawCase, skipTestState, false);
+  });
   dashboardAssetValuesVerification(testData.verifications.finalDashboard, skipTestState);
 });

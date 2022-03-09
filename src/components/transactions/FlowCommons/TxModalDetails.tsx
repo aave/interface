@@ -249,7 +249,7 @@ export const DetailsUnwrapSwitch = ({
       <FormControlLabel
         value="darkmode"
         control={
-          <Switch disableRipple checked={unwrapped} onClick={() => setUnWrapped(!unwrapped)} />
+          <Switch disableRipple checked={unwrapped} onClick={() => setUnWrapped(!unwrapped)} data-cy={"wrappedSwitcher"}/>
         }
         labelPlacement="end"
         label={''}

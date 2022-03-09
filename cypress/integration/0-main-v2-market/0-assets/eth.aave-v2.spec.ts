@@ -35,7 +35,7 @@ const testData = {
       },
       switchNegative: {
         asset: assets.aaveMarket.ETH,
-        collateralType: constants.collateralType.isCollateral,
+        isCollateralType: true,
       },
     },
     borrow: {
@@ -51,12 +51,21 @@ const testData = {
       hasApproval: true,
       repayOption: constants.repayType.default,
     },
-    withdraw: {
-      asset: assets.aaveMarket.ETH,
-      isCollateral: true,
-      amount: 0.01,
-      hasApproval: false,
-    },
+    withdraw: [
+      {
+        asset: assets.aaveMarket.ETH,
+        isCollateral: true,
+        amount: 0.01,
+        hasApproval: false,
+      },
+      {
+        asset: assets.aaveMarket.ETH,
+        isCollateral: true,
+        amount: 0.01,
+        hasApproval: true,
+        forWrapped: true,
+      },
+    ],
   },
   verifications: {
     finalDashboard: [
@@ -64,7 +73,7 @@ const testData = {
         type: constants.dashboardTypes.deposit,
         assetName: assets.aaveMarket.ETH.shortName,
         wrapped: assets.aaveMarket.ETH.wrapped,
-        amount: 0.08,
+        amount: 1.07,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
       },
@@ -90,9 +99,10 @@ describe('ETH INTEGRATION SPEC, AAVE V2 MARKET', () => {
     changeCollateral(testData.testCases.collateral.switchOn, skipTestState, false);
   });
   borrow(testData.testCases.borrow, skipTestState, true);
-  // changeBorrowTypeNegative(testData.switchBorrowType, skipTestState, false);
-  // changeCollateralNegative(testData.testCases.collateral.switchNegative, skipTestState, false);
+  changeCollateralNegative(testData.testCases.collateral.switchNegative, skipTestState, false);
   repay(testData.testCases.repay, skipTestState, false);
-  withdraw(testData.testCases.withdraw, skipTestState, false);
+  testData.testCases.withdraw.forEach((withdrawCase) => {
+    withdraw(withdrawCase, skipTestState, false);
+  });
   dashboardAssetValuesVerification(testData.verifications.finalDashboard, skipTestState);
 });

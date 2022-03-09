@@ -93,3 +93,43 @@ export const configEnvWithTenderlyAvalancheFujiFork = ({
 }) => {
   configEnvWithTenderly({ chainId: ChainId.fuji, market, tokens });
 };
+
+export const configEnvWithTenderlyRinkebyFork = ({
+ market = `fork_proto_eth_rinkeby_v3`,
+ tokens,
+}: {
+  market?: string;
+  tokens?: { address: string }[];
+}) => {
+  configEnvWithTenderly({ chainId: ChainId.rinkeby, market, tokens });
+};
+
+export const configEnvWithTenderlyMumbaiFork = ({
+ market = `fork_proto_eth_rinkeby_v3`,
+ tokens,
+}: {
+  market?: string;
+  tokens?: { address: string }[];
+}) => {
+  configEnvWithTenderly({ chainId: ChainId.mumbai, market, tokens });
+};
+
+export const configEnvWithTenderlyOptimismKovanFork = ({
+  market = `fork_proto_optimism_kovan_v3`,
+  tokens,
+}: {
+  market?: string;
+  tokens?: { address: string }[];
+}) => {
+  configEnvWithTenderly({ chainId: ChainId.optimism_kovan, market, tokens });
+};
+
+export const configEnvWithTenderlyFantomTestnetFork = ({
+ market = `fork_proto_fantom_testnet_v3`,
+ tokens,
+}: {
+  market?: string;
+  tokens?: { address: string }[];
+}) => {
+  configEnvWithTenderly({ chainId: ChainId.fantom_testnet, market, tokens });
+};

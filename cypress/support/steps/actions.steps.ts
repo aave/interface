@@ -105,7 +105,7 @@ export const getDashBoardDepositRow = ({ assetName, isCollateralType }: GetDashB
       .get(`[data-cy='dashboardSuppliedListItem_${assetName.toUpperCase()}_Collateral']`)
       .first();
   } else {
-    return cy.get(`[data-cy='dashboardSuppliedListItem_${assetName.toUpperCase()}_NoCollateral'],`);
+    return cy.get(`[data-cy='dashboardSuppliedListItem_${assetName.toUpperCase()}_NoCollateral']`);
   }
 };
 
