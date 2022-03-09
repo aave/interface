@@ -1,4 +1,4 @@
-import { ChainId, Pool } from '@aave/contract-helpers';
+import { Pool } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { utils } from 'ethers';
@@ -51,10 +51,7 @@ export const SupplyActions = ({
     resetStates,
   } = useTransactionHandler({
     tryPermit:
-      currentMarketData.v3 &&
-      chainId !== ChainId.harmony &&
-      chainId !== ChainId.harmony_testnet &&
-      permitByChainAndToken[chainId][utils.getAddress(poolAddress)],
+      currentMarketData.v3 && permitByChainAndToken[chainId][utils.getAddress(poolAddress)],
     handleGetTxns: async () => {
       if (currentMarketData.v3) {
         // TO-DO: No need for this cast once a single Pool type is used in use-tx-builder-context
