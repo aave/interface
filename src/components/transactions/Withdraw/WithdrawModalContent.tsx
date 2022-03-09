@@ -7,8 +7,6 @@ import { useRef, useState } from 'react';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { AssetInput } from '../AssetInput';
 import { TxErrorView } from '../FlowCommons/Error';
@@ -34,16 +32,14 @@ export const WithdrawModalContent = ({
   unwrap: withdrawUnWrapped,
   setUnwrap: setWithdrawUnWrapped,
   symbol,
+  isWrongNetwork,
 }: ModalWrapperProps & { unwrap: boolean; setUnwrap: (unwrap: boolean) => void }) => {
   const { gasLimit, mainTxState: withdrawTxState } = useModalContext();
   const { user } = useAppDataContext();
-  const { currentChainId } = useProtocolDataContext();
-  const { chainId: connectedChainId } = useWeb3Context();
+  const { currentNetworkConfig } = useProtocolDataContext();
 
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>();
-
-  const networkConfig = getNetworkConfig(currentChainId);
 
   // calculations
   const underlyingBalance = valueToBigNumber(userReserve.underlyingBalance);
@@ -143,9 +139,6 @@ export const WithdrawModalContent = ({
     }
   };
 
-  // is Network mismatched
-  const isWrongNetwork = currentChainId !== connectedChainId;
-
   // calculating input usd value
   const usdValue = valueToBigNumber(amount).multipliedBy(userReserve.reserve.priceInUSD);
 
@@ -157,7 +150,7 @@ export const WithdrawModalContent = ({
         amount={amountRef.current}
         symbol={
           withdrawUnWrapped && poolReserve.isWrappedBaseAsset
-            ? networkConfig.baseAssetSymbol
+            ? currentNetworkConfig.baseAssetSymbol
             : poolReserve.symbol
         }
       />
@@ -175,7 +168,7 @@ export const WithdrawModalContent = ({
             symbol: symbol,
             iconSymbol:
               withdrawUnWrapped && poolReserve.isWrappedBaseAsset
-                ? networkConfig.baseAssetSymbol
+                ? currentNetworkConfig.baseAssetSymbol
                 : poolReserve.iconSymbol,
           },
         ]}
@@ -204,14 +197,16 @@ export const WithdrawModalContent = ({
             unwrapped={withdrawUnWrapped}
             setUnWrapped={setWithdrawUnWrapped}
             symbol={poolReserve.symbol}
-            unwrappedSymbol={networkConfig.baseAssetSymbol}
+            unwrappedSymbol={currentNetworkConfig.baseAssetSymbol}
           />
         )}
         <DetailsNumberLine
           description={<Trans>Remaining supply</Trans>}
           value={underlyingBalance.minus(amount || '0').toString()}
           symbol={
-            poolReserve.isWrappedBaseAsset ? networkConfig.baseAssetSymbol : poolReserve.symbol
+            poolReserve.isWrappedBaseAsset
+              ? currentNetworkConfig.baseAssetSymbol
+              : poolReserve.symbol
           }
         />
         <DetailsHFLine
