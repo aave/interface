@@ -5,7 +5,6 @@ import { useGasStation } from 'src/hooks/useGasStation';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
-import { RightHelperText } from '../FlowCommons/RightHelperText';
 import { GasOption } from '../GasStation/GasStationProvider';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
@@ -17,10 +16,10 @@ export type FaucetActionsProps = {
 
 export const FaucetActions = ({ poolReserve, isWrongNetwork, blocked }: FaucetActionsProps) => {
   const { faucetService } = useTxBuilderContext();
-  const { currentAccount, chainId: connectedChainId } = useWeb3Context();
+  const { currentAccount } = useWeb3Context();
   const { state, gasPriceData } = useGasStation();
 
-  const { action, loadingTxns, mainTxState } = useTransactionHandler({
+  const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     tryPermit: false,
     handleGetTxns: async () => {
       return faucetService.mint({
@@ -38,6 +37,7 @@ export const FaucetActions = ({ poolReserve, isWrongNetwork, blocked }: FaucetAc
 
   return (
     <TxActionsWrapper
+      requiresApproval={requiresApproval}
       blocked={blocked}
       preparingTransactions={loadingTxns}
       handleAction={action}
@@ -45,13 +45,6 @@ export const FaucetActions = ({ poolReserve, isWrongNetwork, blocked }: FaucetAc
       actionInProgressText={<Trans>Pending...</Trans>}
       mainTxState={mainTxState}
       isWrongNetwork={isWrongNetwork}
-      helperText={
-        <RightHelperText
-          actionHash={mainTxState.txHash}
-          chainId={connectedChainId}
-          action="faucet"
-        />
-      }
     />
   );
 };

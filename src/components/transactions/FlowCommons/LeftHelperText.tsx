@@ -9,18 +9,10 @@ import { TextWithModal } from '../../TextWithModal';
 export type LeftHelperTextProps = {
   error?: string;
   approvalHash?: string;
-  actionHash?: string;
-  amount: string;
-  requiresApproval: boolean;
+  amount?: string;
 };
 
-export const LeftHelperText = ({
-  error,
-  approvalHash,
-  actionHash,
-  amount,
-  requiresApproval,
-}: LeftHelperTextProps) => {
+export const LeftHelperText = ({ error, approvalHash, amount }: LeftHelperTextProps) => {
   const theme = useTheme();
 
   return (
@@ -29,15 +21,9 @@ export const LeftHelperText = ({
         display: 'flex',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        mb:
-          (approvalHash && !actionHash && !error) ||
-          error ||
-          (!approvalHash && !error && !actionHash && Number(amount) > 0 && requiresApproval)
-            ? 3
-            : 0,
       }}
     >
-      {approvalHash && !actionHash && !error && (
+      {approvalHash && (
         <>
           <CheckIcon
             style={{
@@ -66,22 +52,18 @@ export const LeftHelperText = ({
         </TextWithModal>
       )}
 
-      {!approvalHash &&
-        !error &&
-        !actionHash &&
-        (Number(amount) > 0 || Number(amount) === -1) &&
-        requiresApproval && (
-          <TextWithModal
-            text={<Trans>Why do I need to approve?</Trans>}
-            iconSize={13}
-            iconColor={theme.palette.text.secondary}
-            withContentButton
-            variant="helperText"
-            color="text.secondary"
-          >
-            <ApprovalInfoContent />
-          </TextWithModal>
-        )}
+      {!approvalHash && !error && amount && (
+        <TextWithModal
+          text={<Trans>Why do I need to approve?</Trans>}
+          iconSize={13}
+          iconColor={theme.palette.text.secondary}
+          withContentButton
+          variant="helperText"
+          color="text.secondary"
+        >
+          <ApprovalInfoContent />
+        </TextWithModal>
+      )}
     </Box>
   );
 };

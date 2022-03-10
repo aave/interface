@@ -45,10 +45,11 @@ export const ModalWrapper: React.FC<{
   const { user } = useAppDataContext();
   const { approvalTxState, mainTxState } = useModalContext();
 
-  if (mainTxState.txError || approvalTxState.txError)
+  if (mainTxState.txError || approvalTxState.txError) {
     return (
       <TxErrorView errorMessage={(approvalTxState.txError || mainTxState.txError) as string} />
     );
+  }
 
   const requiredChainId = _requiredChainId ? _requiredChainId : marketChainId;
   const isWrongNetwork = connectedChainId !== requiredChainId;
