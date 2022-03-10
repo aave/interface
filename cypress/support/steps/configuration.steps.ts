@@ -28,7 +28,7 @@ export const configEnvWithTenderly = ({
   });
   before('Open main page', () => {
     const rpc = tenderly.get_rpc_url();
-    const provider = new JsonRpcProvider(rpc, 3030);
+    const provider = new JsonRpcProvider(rpc, 4002);
     const signer = new Wallet(DEFAULT_TEST_ACCOUNT.privateKey, provider);
     cy.visit(URL, {
       onBeforeLoad(win) {
@@ -36,7 +36,7 @@ export const configEnvWithTenderly = ({
         (win as any).ethereum = new CustomizedBridge(signer, provider);
         win.localStorage.setItem('forkEnabled', 'true');
         // forks are always expected to run on chainId 3030
-        win.localStorage.setItem('forkNetworkId', '3030');
+        win.localStorage.setItem('forkNetworkId', '4002');
         win.localStorage.setItem('forkBaseChainId', chainId.toString());
         win.localStorage.setItem('forkRPCUrl', rpc);
         // win.localStorage.setItem('currentProvider', 'browser');
@@ -95,8 +95,8 @@ export const configEnvWithTenderlyAvalancheFujiFork = ({
 };
 
 export const configEnvWithTenderlyRinkebyFork = ({
- market = `fork_proto_eth_rinkeby_v3`,
- tokens,
+  market = `fork_proto_eth_rinkeby_v3`,
+  tokens,
 }: {
   market?: string;
   tokens?: { address: string }[];
@@ -105,8 +105,8 @@ export const configEnvWithTenderlyRinkebyFork = ({
 };
 
 export const configEnvWithTenderlyMumbaiFork = ({
- market = `fork_proto_eth_rinkeby_v3`,
- tokens,
+  market = `fork_proto_eth_rinkeby_v3`,
+  tokens,
 }: {
   market?: string;
   tokens?: { address: string }[];
@@ -125,8 +125,8 @@ export const configEnvWithTenderlyOptimismKovanFork = ({
 };
 
 export const configEnvWithTenderlyFantomTestnetFork = ({
- market = `fork_proto_fantom_testnet_v3`,
- tokens,
+  market = `fork_proto_fantom_testnet_v3`,
+  tokens,
 }: {
   market?: string;
   tokens?: { address: string }[];
