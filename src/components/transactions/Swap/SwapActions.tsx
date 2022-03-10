@@ -8,8 +8,6 @@ import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
-import { LeftHelperText } from '../FlowCommons/LeftHelperText';
-import { RightHelperText } from '../FlowCommons/RightHelperText';
 import { GasOption } from '../GasStation/GasStationProvider';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { OptimalRate } from 'paraswap-core';
@@ -42,7 +40,7 @@ export const SwapActions = ({
 }: SwapActionProps) => {
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId } = useProtocolDataContext();
-  const { currentAccount, chainId: connectedChainId } = useWeb3Context();
+  const { currentAccount } = useWeb3Context();
   const { state, gasPriceData } = useGasStation();
 
   const {
@@ -51,7 +49,6 @@ export const SwapActions = ({
     requiresApproval,
     approvalTxState,
     mainTxState,
-    usePermit,
     resetStates,
     loadingTxns,
   } = useTransactionHandler({
@@ -109,24 +106,6 @@ export const SwapActions = ({
       requiresApproval={requiresApproval}
       actionText={<Trans>Swap</Trans>}
       actionInProgressText={<Trans>Swapping</Trans>}
-      helperText={
-        <>
-          <LeftHelperText
-            amount={amountToSwap}
-            error={mainTxState.txError || approvalTxState.txError}
-            approvalHash={approvalTxState.txHash}
-            actionHash={mainTxState.txHash}
-            requiresApproval={requiresApproval}
-          />
-          <RightHelperText
-            approvalHash={approvalTxState.txHash}
-            actionHash={mainTxState.txHash}
-            chainId={connectedChainId}
-            usePermit={usePermit}
-            action="supply"
-          />
-        </>
-      }
       sx={sx}
       {...props}
     />
