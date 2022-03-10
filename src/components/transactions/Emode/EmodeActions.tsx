@@ -5,7 +5,6 @@ import { useGasStation } from 'src/hooks/useGasStation';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
-import { RightHelperText } from '../FlowCommons/RightHelperText';
 import { GasOption } from '../GasStation/GasStationProvider';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
@@ -17,10 +16,10 @@ export type EmodeActionsProps = {
 
 export const EmodeActions = ({ isWrongNetwork, blocked, selectedEmode }: EmodeActionsProps) => {
   const { lendingPool } = useTxBuilderContext();
-  const { currentAccount, chainId: connectedChainId } = useWeb3Context();
+  const { currentAccount } = useWeb3Context();
   const { state, gasPriceData } = useGasStation();
 
-  const { action, loadingTxns, mainTxState } = useTransactionHandler({
+  const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     tryPermit: false,
     handleGetTxns: async () => {
       const newPool: PoolInterface = lendingPool as PoolInterface;
@@ -39,6 +38,7 @@ export const EmodeActions = ({ isWrongNetwork, blocked, selectedEmode }: EmodeAc
 
   return (
     <TxActionsWrapper
+      requiresApproval={requiresApproval}
       blocked={blocked}
       mainTxState={mainTxState}
       preparingTransactions={loadingTxns}
@@ -50,13 +50,6 @@ export const EmodeActions = ({ isWrongNetwork, blocked, selectedEmode }: EmodeAc
         selectedEmode !== 0 ? <Trans>Enabling E-Mode</Trans> : <Trans>Disabling E-Mode</Trans>
       }
       isWrongNetwork={isWrongNetwork}
-      helperText={
-        <RightHelperText
-          actionHash={mainTxState.txHash}
-          chainId={connectedChainId}
-          action="E-Mode switch"
-        />
-      }
     />
   );
 };

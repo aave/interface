@@ -5,8 +5,6 @@ import { useStakeTxBuilderContext } from 'src/hooks/useStakeTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
-import { LeftHelperText } from '../FlowCommons/LeftHelperText';
-import { RightHelperText } from '../FlowCommons/RightHelperText';
 import { GasOption } from '../GasStation/GasStationProvider';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
@@ -28,7 +26,7 @@ export const StakeActions = ({
   selectedToken,
   ...props
 }: StakeActionProps) => {
-  const { currentAccount, chainId: connectedChainId } = useWeb3Context();
+  const { currentAccount } = useWeb3Context();
   const { state, gasPriceData } = useGasStation();
   const stakingService = useStakeTxBuilderContext(selectedToken);
 
@@ -48,6 +46,7 @@ export const StakeActions = ({
 
   return (
     <TxActionsWrapper
+      requiresApproval={requiresApproval}
       preparingTransactions={loadingTxns}
       mainTxState={mainTxState}
       approvalTxState={approvalTxState}
@@ -59,23 +58,6 @@ export const StakeActions = ({
       requiresAmount
       actionText={<Trans>Stake</Trans>}
       actionInProgressText={<Trans>Staking</Trans>}
-      helperText={
-        <>
-          <LeftHelperText
-            amount={amountToStake}
-            error={mainTxState.txError || approvalTxState.txError}
-            approvalHash={approvalTxState.txHash}
-            actionHash={mainTxState.txHash}
-            requiresApproval={requiresApproval}
-          />
-          <RightHelperText
-            approvalHash={approvalTxState.txHash}
-            actionHash={mainTxState.txHash}
-            chainId={connectedChainId}
-            action="stake"
-          />
-        </>
-      }
       sx={sx}
       {...props}
     />
