@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-10 14:02\n"
+"PO-Revision-Date: 2022-03-10 17:29\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -789,7 +789,6 @@ msgid "Not a valid address"
 msgstr ""
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
-#: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Not enough balance on your wallet"
 msgstr ""
 
@@ -1093,6 +1092,10 @@ msgstr ""
 msgid "Supply cap"
 msgstr ""
 
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Supply cap on target reserve reached. Try lowering the amount."
+msgstr ""
+
 #: src/components/transactions/Supply/SupplyActions.tsx
 msgid "Supply {symbol}"
 msgstr ""
@@ -1150,6 +1153,10 @@ msgstr ""
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "The cooldown period is {0}. After {1} of cooldown, you will enter unstake window of {2}. You will continue receiving rewards during cooldown and unstake window."
+msgstr ""
+
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "The effects on the health factor would cause liquidation. Try lowering the amount."
 msgstr ""
 
 #: src/components/infoTooltips/CollateralTooltip.tsx
