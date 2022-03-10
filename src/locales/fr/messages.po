@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-10 10:39\n"
+"PO-Revision-Date: 2022-03-10 12:19\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -931,15 +931,11 @@ msgid "Retry with approval"
 msgstr ""
 
 #: src/components/transactions/FlowCommons/RightHelperText.tsx
-msgid "Review approve tx details"
+msgid "Review approval tx details"
 msgstr ""
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Review tx details"
-msgstr ""
-
-#: src/components/transactions/FlowCommons/RightHelperText.tsx
-msgid "Review {action} tx details"
 msgstr ""
 
 #: src/components/transactions/ClaimRewards/RewardsSelect.tsx
