@@ -1,23 +1,13 @@
-import {
-  calculateHealthFactorFromBalancesBigUnits,
-  ComputedUserReserve,
-  valueToBigNumber,
-} from '@aave/math-utils';
+import { calculateHealthFactorFromBalancesBigUnits, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Alert, Typography } from '@mui/material';
-import {
-  ComputedReserveData,
-  useAppDataContext,
-} from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
-import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
+import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { DetailsHFLine, DetailsNumberLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
-import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { IsolationModeWarning } from '../Warnings/IsolationModeWarning';
 import { CollateralChangeActions } from './CollateralChangeActions';
 
@@ -32,20 +22,13 @@ export enum ErrorType {
 }
 
 export const CollateralChangeModalContent = ({
-  underlyingAsset,
-}: CollateralChangeModalContentProps) => {
+  poolReserve,
+  userReserve,
+  isWrongNetwork,
+  symbol,
+}: ModalWrapperProps) => {
   const { gasLimit, mainTxState: collateralChangeTxState } = useModalContext();
-  const { reserves, user } = useAppDataContext();
-  const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
-  const { chainId: connectedChainId } = useWeb3Context();
-
-  const poolReserve = reserves.find(
-    (reserve) => reserve.underlyingAsset === underlyingAsset
-  ) as ComputedReserveData;
-
-  const userReserve = user.userReservesData.find(
-    (userReserve) => underlyingAsset === userReserve.underlyingAsset
-  ) as ComputedUserReserve;
+  const { user } = useAppDataContext();
 
   // health factor Calcs
   const usageAsCollateralModeAfterSwitch = !userReserve.usageAsCollateralEnabledOnUser;
@@ -86,7 +69,7 @@ export const CollateralChangeModalContent = ({
       case ErrorType.DO_NOT_HAVE_SUPPLIES_IN_THIS_CURRENCY:
         return <Trans>You do not have supplies in this currency</Trans>;
       case ErrorType.CAN_NOT_USE_THIS_CURRENCY_AS_COLLATERAL:
-        return <Trans>YYou can not use this currency as collateral</Trans>;
+        return <Trans>You can not use this currency as collateral</Trans>;
       case ErrorType.CAN_NOT_SWITCH_USAGE_AS_COLLATERAL_MODE:
         return (
           <Trans>
@@ -99,34 +82,13 @@ export const CollateralChangeModalContent = ({
     }
   };
 
-  // is Network mismatched
-  const isWrongNetwork = currentChainId !== connectedChainId;
-
-  if (collateralChangeTxState.txError)
-    return <TxErrorView errorMessage={collateralChangeTxState.txError} />;
   if (collateralChangeTxState.success)
     return (
       <TxSuccessView collateral={usageAsCollateralModeAfterSwitch} symbol={poolReserve.symbol} />
     );
 
-  const symbol = poolReserve.isWrappedBaseAsset
-    ? currentNetworkConfig.baseAssetSymbol
-    : poolReserve.symbol;
-
   return (
     <>
-      <Typography variant="h2" sx={{ mb: '24px' }}>
-        {usageAsCollateralModeAfterSwitch ? (
-          <Trans>Use {symbol} as collateral</Trans>
-        ) : (
-          <Trans>Disable {symbol} as collateral</Trans>
-        )}
-      </Typography>
-
-      {isWrongNetwork && (
-        <ChangeNetworkWarning networkName={currentNetworkConfig.name} chainId={currentChainId} />
-      )}
-
       {usageAsCollateralModeAfterSwitch ? (
         <Alert severity="warning" icon={false} sx={{ mb: 3 }}>
           <Trans>
