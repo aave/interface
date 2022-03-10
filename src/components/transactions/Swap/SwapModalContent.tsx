@@ -191,7 +191,7 @@ export const SwapModalContent = ({
         usdValue={outputAmountUSD.toString()}
         symbol={targetReserve.symbol}
         assets={swapTargets}
-        disableInput={true}
+        disableInput
       />
       <Box
         sx={{
