@@ -8,6 +8,8 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
+export const MOCK_SIGNED_HASH = 'Signed correctly';
+
 interface UseTransactionHandlerProps {
   handleGetTxns: () => Promise<EthereumTransactionTypeExtended[]>;
   handleGetPermitTxns?: (
@@ -122,7 +124,7 @@ export const useTransactionHandler = ({
             setSignature(signature);
             setSignatureDeadline(deadline);
             setApprovalTxState({
-              txHash: 'Signed correctly',
+              txHash: MOCK_SIGNED_HASH,
               txError: undefined,
               gasEstimationError: undefined,
               loading: false,

@@ -11,8 +11,6 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { permitByChainAndToken } from 'src/ui-config/permitConfig';
 import { optimizedPath } from 'src/utils/utils';
 
-import { LeftHelperText } from '../FlowCommons/LeftHelperText';
-import { RightHelperText } from '../FlowCommons/RightHelperText';
 import { GasOption } from '../GasStation/GasStationProvider';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
@@ -42,7 +40,7 @@ export const RepayActions = ({
 }: RepayActionProps) => {
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
-  const { currentAccount, chainId: connectedChainId } = useWeb3Context();
+  const { currentAccount } = useWeb3Context();
   const { state, gasPriceData } = useGasStation();
 
   const {
@@ -52,7 +50,6 @@ export const RepayActions = ({
     loadingTxns,
     approvalTxState,
     mainTxState,
-    usePermit,
     resetStates,
   } = useTransactionHandler({
     tryPermit:
@@ -85,7 +82,6 @@ export const RepayActions = ({
           interestRateMode: debtType,
         });
       }
-      // TODO: add here the case for repay with collateral
     },
     handleGetPermitTxns: async (signature, deadline) => {
       const newPool: Pool = lendingPool as Pool;
@@ -119,24 +115,6 @@ export const RepayActions = ({
       amount={amountToRepay}
       requiresApproval={requiresApproval}
       isWrongNetwork={isWrongNetwork}
-      helperText={
-        <>
-          <LeftHelperText
-            amount={amountToRepay}
-            error={mainTxState.txError || approvalTxState.txError}
-            approvalHash={approvalTxState.txHash}
-            actionHash={mainTxState.txHash}
-            requiresApproval={requiresApproval}
-          />
-          <RightHelperText
-            approvalHash={approvalTxState.txHash}
-            actionHash={mainTxState.txHash}
-            chainId={connectedChainId}
-            usePermit={usePermit}
-            action="supply"
-          />
-        </>
-      }
       sx={sx}
       {...props}
       handleAction={action}

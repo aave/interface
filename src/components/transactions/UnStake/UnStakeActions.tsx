@@ -4,7 +4,6 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
 import { useGasStation } from 'src/hooks/useGasStation';
 import { GasOption } from '../GasStation/GasStationProvider';
-import { RightHelperText } from '../FlowCommons/RightHelperText';
 import { useStakeTxBuilderContext } from 'src/hooks/useStakeTxBuilder';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
@@ -26,11 +25,11 @@ export const UnStakeActions = ({
   selectedToken,
   ...props
 }: UnStakeActionProps) => {
-  const { currentAccount, chainId: connectedChainId } = useWeb3Context();
+  const { currentAccount } = useWeb3Context();
   const { state, gasPriceData } = useGasStation();
   const stakingService = useStakeTxBuilderContext(selectedToken);
 
-  const { action, loadingTxns, mainTxState } = useTransactionHandler({
+  const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     tryPermit: false,
     handleGetTxns: async () => {
       return stakingService.redeem(currentAccount, amountToUnStake.toString());
@@ -45,6 +44,7 @@ export const UnStakeActions = ({
 
   return (
     <TxActionsWrapper
+      requiresApproval={requiresApproval}
       blocked={blocked}
       preparingTransactions={loadingTxns}
       handleAction={action}
@@ -54,13 +54,6 @@ export const UnStakeActions = ({
       actionInProgressText={<Trans>UNSTAKING {symbol}</Trans>}
       mainTxState={mainTxState}
       isWrongNetwork={isWrongNetwork}
-      helperText={
-        <RightHelperText
-          actionHash={mainTxState.txHash}
-          chainId={connectedChainId}
-          action="unstake"
-        />
-      }
       sx={sx}
       {...props}
     />

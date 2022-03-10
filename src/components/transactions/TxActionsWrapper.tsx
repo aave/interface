@@ -3,6 +3,8 @@ import { Box, BoxProps, Button, CircularProgress } from '@mui/material';
 import { ReactNode } from 'react';
 import { TxStateType } from 'src/hooks/useModal';
 import isEmpty from 'lodash/isEmpty';
+import { LeftHelperText } from './FlowCommons/LeftHelperText';
+import { RightHelperText } from './FlowCommons/RightHelperText';
 
 interface TxActionsWrapperProps extends BoxProps {
   actionInProgressText: ReactNode;
@@ -12,12 +14,11 @@ interface TxActionsWrapperProps extends BoxProps {
   handleApproval?: () => Promise<void>;
   handleAction: () => Promise<void>;
   handleRetry?: () => void;
-  helperText?: ReactNode;
   isWrongNetwork: boolean;
   mainTxState: TxStateType;
   preparingTransactions: boolean;
   requiresAmount?: boolean;
-  requiresApproval?: boolean;
+  requiresApproval: boolean;
   symbol?: string;
   blocked?: boolean;
 }
@@ -30,7 +31,6 @@ export const TxActionsWrapper = ({
   handleApproval,
   handleAction,
   handleRetry,
-  helperText,
   isWrongNetwork,
   mainTxState,
   preparingTransactions,
@@ -79,9 +79,10 @@ export const TxActionsWrapper = ({
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12, ...sx }} {...rest}>
-      {!!helperText && (
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          {helperText}
+      {requiresApproval && (
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+          <LeftHelperText amount={amount} approvalHash={approvalTxState?.txHash} />
+          <RightHelperText approvalHash={approvalTxState?.txHash} />
         </Box>
       )}
 

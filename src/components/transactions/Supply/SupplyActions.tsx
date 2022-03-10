@@ -11,8 +11,6 @@ import { permitByChainAndToken } from 'src/ui-config/permitConfig';
 import { optimizedPath } from 'src/utils/utils';
 
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
-import { LeftHelperText } from '../FlowCommons/LeftHelperText';
-import { RightHelperText } from '../FlowCommons/RightHelperText';
 import { GasOption } from '../GasStation/GasStationProvider';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
@@ -37,7 +35,7 @@ export const SupplyActions = ({
 }: SupplyActionProps) => {
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
-  const { currentAccount, chainId: connectedChainId } = useWeb3Context();
+  const { currentAccount } = useWeb3Context();
   const { state, gasPriceData } = useGasStation();
 
   const {
@@ -47,7 +45,6 @@ export const SupplyActions = ({
     loadingTxns,
     approvalTxState,
     mainTxState,
-    usePermit,
     resetStates,
   } = useTransactionHandler({
     tryPermit:
@@ -104,24 +101,6 @@ export const SupplyActions = ({
       handleApproval={() => approval(amountToSupply, poolAddress)}
       handleAction={action}
       requiresApproval={requiresApproval}
-      helperText={
-        <>
-          <LeftHelperText
-            amount={amountToSupply}
-            error={mainTxState.txError || approvalTxState.txError}
-            approvalHash={approvalTxState.txHash}
-            actionHash={mainTxState.txHash}
-            requiresApproval={requiresApproval}
-          />
-          <RightHelperText
-            approvalHash={approvalTxState.txHash}
-            actionHash={mainTxState.txHash}
-            chainId={connectedChainId}
-            usePermit={usePermit}
-            action="supply"
-          />
-        </>
-      }
       sx={sx}
       {...props}
     />

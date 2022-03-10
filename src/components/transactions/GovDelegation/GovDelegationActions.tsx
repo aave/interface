@@ -2,7 +2,6 @@ import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { useGasStation } from 'src/hooks/useGasStation';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { GasOption } from '../GasStation/GasStationProvider';
-import { RightHelperText } from '../FlowCommons/RightHelperText';
 import { Trans } from '@lingui/macro';
 import { DelegationType } from 'src/helpers/types';
 import { useGovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
@@ -25,10 +24,10 @@ export const GovDelegationActions = ({
   delegate,
 }: GovDelegationActionsProps) => {
   const { governanceDelegationService } = useGovernanceDataProvider();
-  const { currentAccount, chainId: connectedChainId } = useWeb3Context();
+  const { currentAccount } = useWeb3Context();
   const { state, gasPriceData } = useGasStation();
 
-  const { action, loadingTxns, mainTxState } = useTransactionHandler({
+  const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     tryPermit: false,
     handleGetTxns: async () => {
       return governanceDelegationService.delegateByType({
@@ -49,6 +48,7 @@ export const GovDelegationActions = ({
   // TODO: hash link not working
   return (
     <TxActionsWrapper
+      requiresApproval={requiresApproval}
       blocked={blocked}
       preparingTransactions={loadingTxns}
       mainTxState={mainTxState}
@@ -56,13 +56,6 @@ export const GovDelegationActions = ({
       handleAction={action}
       actionText={<Trans>Delegate</Trans>}
       actionInProgressText={<Trans>Delegating</Trans>}
-      helperText={
-        <RightHelperText
-          actionHash={mainTxState.txHash}
-          chainId={connectedChainId}
-          action="delegation"
-        />
-      }
     />
   );
 };
