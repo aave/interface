@@ -13,7 +13,6 @@ interface TxActionsWrapperProps extends BoxProps {
   approvalTxState?: TxStateType;
   handleApproval?: () => Promise<void>;
   handleAction: () => Promise<void>;
-  handleRetry?: () => void;
   isWrongNetwork: boolean;
   mainTxState: TxStateType;
   preparingTransactions: boolean;
@@ -30,7 +29,6 @@ export const TxActionsWrapper = ({
   approvalTxState,
   handleApproval,
   handleAction,
-  handleRetry,
   isWrongNetwork,
   mainTxState,
   preparingTransactions,
@@ -50,8 +48,8 @@ export const TxActionsWrapper = ({
     if (isWrongNetwork) return { disabled: true, content: <Trans>Wrong Network</Trans> };
     if (isAmountMissing) return { disabled: true, content: <Trans>Enter an amount</Trans> };
     if (preparingTransactions || isEmpty(mainTxState)) return { disabled: true, loading: true };
-    if (hasApprovalError && handleRetry)
-      return { content: <Trans>Retry with approval</Trans>, handleClick: handleRetry };
+    // if (hasApprovalError && handleRetry)
+    //   return { content: <Trans>Retry with approval</Trans>, handleClick: handleRetry };
     if (mainTxState?.loading)
       return { loading: true, disabled: true, content: actionInProgressText };
     if (requiresApproval && !approvalTxState?.success)

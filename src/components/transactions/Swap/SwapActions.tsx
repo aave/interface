@@ -43,59 +43,51 @@ export const SwapActions = ({
   const { currentAccount } = useWeb3Context();
   const { state, gasPriceData } = useGasStation();
 
-  const {
-    approval,
-    action,
-    requiresApproval,
-    approvalTxState,
-    mainTxState,
-    resetStates,
-    loadingTxns,
-  } = useTransactionHandler({
-    handleGetTxns: async () => {
-      const { swapCallData, augustus } = await getSwapCallData({
-        srcToken: poolReserve.underlyingAsset,
-        srcDecimals: poolReserve.decimals,
-        destToken: targetReserve.underlyingAsset,
-        destDecimals: targetReserve.decimals,
-        user: currentAccount,
-        route: priceRoute as OptimalRate,
-        chainId: chainId,
-      });
-      return lendingPool.swapCollateral({
-        fromAsset: poolReserve.underlyingAsset,
-        toAsset: targetReserve.underlyingAsset,
-        swapAll: isMaxSelected,
-        fromAToken: poolReserve.aTokenAddress,
-        fromAmount: amountToSwap,
-        minToAmount: amountToReceive,
-        user: currentAccount,
-        flash: useFlashLoan,
-        augustus,
-        swapCallData,
-      });
-    },
-    customGasPrice:
-      state.gasOption === GasOption.Custom
-        ? state.customGas
-        : gasPriceData.data?.[state.gasOption].legacyGasPrice,
-    skip: !priceRoute || !amountToSwap || parseFloat(amountToSwap) === 0 || !currentAccount,
-    deps: [
-      amountToSwap,
-      amountToReceive,
-      priceRoute,
-      poolReserve.underlyingAsset,
-      targetReserve.underlyingAsset,
-      isMaxSelected,
-      currentAccount,
-      useFlashLoan,
-    ],
-  });
+  const { approval, action, requiresApproval, approvalTxState, mainTxState, loadingTxns } =
+    useTransactionHandler({
+      handleGetTxns: async () => {
+        const { swapCallData, augustus } = await getSwapCallData({
+          srcToken: poolReserve.underlyingAsset,
+          srcDecimals: poolReserve.decimals,
+          destToken: targetReserve.underlyingAsset,
+          destDecimals: targetReserve.decimals,
+          user: currentAccount,
+          route: priceRoute as OptimalRate,
+          chainId: chainId,
+        });
+        return lendingPool.swapCollateral({
+          fromAsset: poolReserve.underlyingAsset,
+          toAsset: targetReserve.underlyingAsset,
+          swapAll: isMaxSelected,
+          fromAToken: poolReserve.aTokenAddress,
+          fromAmount: amountToSwap,
+          minToAmount: amountToReceive,
+          user: currentAccount,
+          flash: useFlashLoan,
+          augustus,
+          swapCallData,
+        });
+      },
+      customGasPrice:
+        state.gasOption === GasOption.Custom
+          ? state.customGas
+          : gasPriceData.data?.[state.gasOption].legacyGasPrice,
+      skip: !priceRoute || !amountToSwap || parseFloat(amountToSwap) === 0 || !currentAccount,
+      deps: [
+        amountToSwap,
+        amountToReceive,
+        priceRoute,
+        poolReserve.underlyingAsset,
+        targetReserve.underlyingAsset,
+        isMaxSelected,
+        currentAccount,
+        useFlashLoan,
+      ],
+    });
 
   return (
     <TxActionsWrapper
       mainTxState={mainTxState}
-      handleRetry={resetStates}
       approvalTxState={approvalTxState}
       isWrongNetwork={isWrongNetwork}
       preparingTransactions={loadingTxns}

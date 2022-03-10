@@ -9,7 +9,6 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 import { AssetInput } from '../AssetInput';
-import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -142,7 +141,6 @@ export const WithdrawModalContent = ({
   // calculating input usd value
   const usdValue = valueToBigNumber(amount).multipliedBy(userReserve.reserve.priceInUSD);
 
-  if (withdrawTxState.txError) return <TxErrorView errorMessage={withdrawTxState.txError} />;
   if (withdrawTxState.success)
     return (
       <TxSuccessView

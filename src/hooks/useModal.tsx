@@ -67,6 +67,8 @@ export interface ModalContextType<T extends ModalArgsType> {
   resetTx: () => void;
   loadingTxns: boolean;
   setLoadingTxns: (loading: boolean) => void;
+  forcedApproval: boolean;
+  setForcedApproval: (permit: boolean) => void;
 }
 
 export const ModalContext = createContext<ModalContextType<ModalArgsType>>(
@@ -82,6 +84,7 @@ export const ModalContextProvider: React.FC = ({ children }) => {
   const [mainTxState, setMainTxState] = useState<TxStateType>({});
   const [gasLimit, setGasLimit] = useState<string>('');
   const [loadingTxns, setLoadingTxns] = useState(false);
+  const [forcedApproval, setForcedApproval] = useState(false);
 
   return (
     <ModalContext.Provider
@@ -153,6 +156,7 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setMainTxState({});
           setApprovalTxState({});
           setGasLimit('');
+          setForcedApproval(false);
         },
         resetTx: () => {
           setMainTxState({});
@@ -169,6 +173,8 @@ export const ModalContextProvider: React.FC = ({ children }) => {
         setGasLimit,
         loadingTxns,
         setLoadingTxns,
+        forcedApproval,
+        setForcedApproval,
       }}
     >
       {children}
