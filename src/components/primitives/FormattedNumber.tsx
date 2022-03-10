@@ -1,5 +1,4 @@
 import { normalizeBN, valueToBigNumber } from '@aave/math-utils';
-import { useLingui } from '@lingui/react';
 import { Typography } from '@mui/material';
 import { Variant } from '@mui/material/styles/createTypography';
 import { TypographyProps } from '@mui/material/Typography';
@@ -14,8 +13,6 @@ interface CompactNumberProps {
 const POSTFIXES = ['', 'K', 'M', 'B', 'T', 'P', 'E', 'Z', 'Y'];
 
 function CompactNumber({ value, visibleDecimals = 2 }: CompactNumberProps) {
-  const { i18n } = useLingui();
-
   const bnValue = valueToBigNumber(value);
 
   const integerPlaces = bnValue.toFixed(0).length;
@@ -28,10 +25,10 @@ function CompactNumber({ value, visibleDecimals = 2 }: CompactNumberProps) {
 
   return (
     <>
-      {i18n.number(formattedValue, {
+      {new Intl.NumberFormat('en-US', {
         maximumFractionDigits: visibleDecimals,
         minimumFractionDigits: visibleDecimals,
-      })}
+      }).format(formattedValue)}
       {postfix}
     </>
   );
@@ -57,8 +54,6 @@ export function FormattedNumber({
   symbolsColor,
   ...rest
 }: FormattedNumberProps) {
-  const { i18n } = useLingui();
-
   const number = percent ? Number(value) * 100 : Number(value);
 
   let decimals = visibleDecimals;
@@ -112,10 +107,10 @@ export function FormattedNumber({
       )}
 
       {!forceCompact ? (
-        i18n.number(formattedNumber, {
+        new Intl.NumberFormat('en-US', {
           maximumFractionDigits: decimals,
           minimumFractionDigits: decimals,
-        })
+        }).format(formattedNumber)
       ) : (
         <CompactNumber value={formattedNumber} visibleDecimals={decimals} />
       )}
