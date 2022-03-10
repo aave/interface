@@ -6,7 +6,7 @@ import { TxAction, TxErrorType } from 'src/ui-config/errorMapping';
 
 // TODO: need check texts
 export const TxErrorView = ({ txError }: { txError: TxErrorType }) => {
-  const { close, approvalTxState, resetTx, setForcedApproval } = useModalContext();
+  const { close, resetTx, setForcedApproval } = useModalContext();
 
   const handleRetry = () => {
     resetTx();
