@@ -6,6 +6,7 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { optimizedPath } from 'src/utils/utils';
+import { LeftHelperText } from '../FlowCommons/LeftHelperText';
 
 import { RightHelperText } from '../FlowCommons/RightHelperText';
 import { GasOption } from '../GasStation/GasStationProvider';
@@ -77,11 +78,20 @@ export const WithdrawActions = ({
       handleApproval={() => approval(amountToWithdraw, poolAddress)}
       requiresApproval={requiresApproval}
       helperText={
-        <RightHelperText
-          actionHash={mainTxState.txHash}
-          chainId={connectedChainId}
-          action="withdraw"
-        />
+        <>
+          <LeftHelperText
+            amount={amountToWithdraw}
+            error={mainTxState.txError || approvalTxState.txError}
+            approvalHash={approvalTxState.txHash}
+            actionHash={mainTxState.txHash}
+            requiresApproval={requiresApproval}
+          />
+          <RightHelperText
+            actionHash={mainTxState.txHash}
+            chainId={connectedChainId}
+            action="withdraw"
+          />
+        </>
       }
     />
   );
