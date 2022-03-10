@@ -25,7 +25,6 @@ export const permitByChainAndToken: {
     '0x05375D2446593BEA44FEc4247696610aE58c1172': true,
     '0xD280748c384C17A4ef96b6c2d06D410C0355dB24': true,
     '0xE182379be13347F1Ba703080A1Df536E5e26326E': true,
-    '0x354b934ba4A5B36644e2425ea4E41bd3928044dF': true,
   },
   [ChainId.fantom]: {
     '0x8D11eC38a3EB5E956B052f67Da8Bdc9bef8Abf3E': true,

@@ -1,25 +1,16 @@
 import { InterestRate } from '@aave/contract-helpers';
-import { ComputedUserReserve, valueToBigNumber } from '@aave/math-utils';
+import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Alert } from '@mui/material';
-import {
-  ComputedReserveData,
-  useAppDataContext,
-} from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
-import { TxErrorView } from '../FlowCommons/Error';
+import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
 import {
   DetailsIncentivesLine,
   DetailsNumberLine,
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
-import { TxModalTitle } from '../FlowCommons/TxModalTitle';
-import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { RateSwitchActions } from './RateSwitchActions';
 
 export type RateSwitchModalContentProps = {
@@ -34,23 +25,12 @@ export enum ErrorType {
 }
 
 export const RateSwitchModalContent = ({
-  underlyingAsset,
   currentRateMode,
-}: RateSwitchModalContentProps) => {
+  isWrongNetwork,
+  poolReserve,
+  userReserve,
+}: ModalWrapperProps & { currentRateMode: InterestRate }) => {
   const { mainTxState: rateSwitchTxState, gasLimit } = useModalContext();
-  const { reserves, user } = useAppDataContext();
-  const { currentChainId } = useProtocolDataContext();
-  const { chainId: connectedChainId } = useWeb3Context();
-
-  const networkConfig = getNetworkConfig(currentChainId);
-
-  const poolReserve = reserves.find(
-    (reserve) => reserve.underlyingAsset === underlyingAsset
-  ) as ComputedReserveData;
-
-  const userReserve = user.userReservesData.find(
-    (userReserve) => underlyingAsset === userReserve.underlyingAsset
-  ) as ComputedUserReserve;
 
   const rateModeAfterSwitch =
     InterestRate.Variable === currentRateMode ? InterestRate.Stable : InterestRate.Variable;
@@ -100,19 +80,10 @@ export const RateSwitchModalContent = ({
     }
   };
 
-  // is Network mismatched
-  const isWrongNetwork = currentChainId !== connectedChainId;
-
-  if (rateSwitchTxState.txError) return <TxErrorView errorMessage={rateSwitchTxState.txError} />;
   if (rateSwitchTxState.success) return <TxSuccessView rate={rateModeAfterSwitch} />;
 
   return (
     <>
-      <TxModalTitle title="Switch APY type" />
-      {isWrongNetwork && (
-        <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
-      )}
-
       {blockingError !== undefined && <Alert severity="error">{handleBlocked()}</Alert>}
       <TxModalDetails gasLimit={gasLimit}>
         <DetailsNumberLine

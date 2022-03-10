@@ -12,7 +12,6 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { Asset, AssetInput } from '../AssetInput';
-import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -176,7 +175,6 @@ export const RepayModalContent = ({
   // calculating input usd value
   const usdValue = valueToBigNumber(amount).multipliedBy(reserve.priceInUSD);
 
-  if (repayTxState.txError) return <TxErrorView errorMessage={repayTxState.txError} />;
   if (repayTxState.success)
     return (
       <TxSuccessView action="repayed" amount={amountRef.current} symbol={tokenToRepayWith.symbol} />
