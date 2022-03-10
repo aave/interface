@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-09 16:02\n"
+"PO-Revision-Date: 2022-03-10 10:39\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -328,7 +328,7 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: src/components/transactions/Repay/RepayModalContent.tsx
+#: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 msgid "Collateral"
@@ -883,6 +883,7 @@ msgstr ""
 msgid "Rejected connection request"
 msgstr ""
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Repay/RepayModalContent.tsx
 msgid "Remaining debt"
 msgstr ""
@@ -891,12 +892,13 @@ msgstr ""
 msgid "Remaining supply"
 msgstr ""
 
+#: src/components/transactions/Repay/RepayModal.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 msgid "Repay"
 msgstr ""
 
-#: src/components/transactions/Repay/RepayModalContent.tsx
+#: src/components/transactions/Repay/RepayTypeSelector.tsx
 msgid "Repay with"
 msgstr ""
 
@@ -1055,6 +1057,7 @@ msgid "State"
 msgstr ""
 
 #: pages/index.page.tsx
+#: src/components/transactions/Supply/SupplyModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
@@ -1334,7 +1337,7 @@ msgid "Voting results"
 msgstr ""
 
 #: pages/faucet.page.tsx
-#: src/components/transactions/Repay/RepayModalContent.tsx
+#: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Wallet balance"
@@ -1360,6 +1363,7 @@ msgstr ""
 msgid "With a voting power of <0/>"
 msgstr ""
 
+#: src/components/transactions/Withdraw/WithdrawModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Withdraw"
@@ -1586,9 +1590,5 @@ msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{0} days"
-msgstr ""
-
-#: src/components/transactions/FlowCommons/TxModalTitle.tsx
-msgid "{title}"
 msgstr ""
 
