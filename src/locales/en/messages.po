@@ -926,16 +926,12 @@ msgid "Retry with approval"
 msgstr "Retry with approval"
 
 #: src/components/transactions/FlowCommons/RightHelperText.tsx
-msgid "Review approve tx details"
-msgstr "Review approve tx details"
+msgid "Review approval tx details"
+msgstr "Review approval tx details"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Review tx details"
 msgstr "Review tx details"
-
-#: src/components/transactions/FlowCommons/RightHelperText.tsx
-msgid "Review {action} tx details"
-msgstr "Review {action} tx details"
 
 #: src/components/transactions/ClaimRewards/RewardsSelect.tsx
 msgid "Reward(s) to claim"
