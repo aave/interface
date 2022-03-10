@@ -7,6 +7,7 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { optimizedPath } from 'src/utils/utils';
+import { LeftHelperText } from '../FlowCommons/LeftHelperText';
 
 import { RightHelperText } from '../FlowCommons/RightHelperText';
 import { GasOption } from '../GasStation/GasStationProvider';
@@ -87,11 +88,21 @@ export const BorrowActions = ({
       handleApproval={() => approval(amountToBorrow, poolAddress)}
       requiresApproval={requiresApproval}
       helperText={
-        <RightHelperText
-          actionHash={mainTxState.txHash}
-          chainId={connectedChainId}
-          action="borrow"
-        />
+        <>
+          <LeftHelperText
+            amount={amountToBorrow}
+            error={mainTxState.txError || approvalTxState.txError}
+            approvalHash={approvalTxState.txHash}
+            actionHash={mainTxState.txHash}
+            requiresApproval={requiresApproval}
+          />
+
+          <RightHelperText
+            actionHash={mainTxState.txHash}
+            chainId={connectedChainId}
+            action="borrow"
+          />
+        </>
       }
       preparingTransactions={loadingTxns}
     />
