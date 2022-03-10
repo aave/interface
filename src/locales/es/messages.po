@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-10 17:29\n"
+"PO-Revision-Date: 2022-03-10 18:18\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -565,6 +565,10 @@ msgstr ""
 
 #: src/modules/governance/ProposalsList.tsx
 msgid "Filter"
+msgstr ""
+
+#: src/layouts/components/LanguageSwitcher.tsx
+msgid "French"
 msgstr ""
 
 #: src/modules/staking/StakingHeader.tsx
