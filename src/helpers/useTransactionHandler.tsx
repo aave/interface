@@ -37,7 +37,6 @@ export const useTransactionHandler = ({
     resetTx,
     loadingTxns,
     setLoadingTxns,
-    setForcedApproval,
     forcedApproval,
   } = useModalContext();
   const { signTxData, sendTx, getTxError, currentAccount } = useWeb3Context();
@@ -57,7 +56,6 @@ export const useTransactionHandler = ({
     if (forcedApproval) setUsePermit(false);
     return () => {
       mounted.current = false;
-      setForcedApproval(false);
     }; // ... and to false on unmount
   }, []);
   /**
