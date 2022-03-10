@@ -66,18 +66,22 @@ export const LeftHelperText = ({
         </TextWithModal>
       )}
 
-      {!approvalHash && !error && !actionHash && Number(amount) > 0 && requiresApproval && (
-        <TextWithModal
-          text={<Trans>Why do I need to approve?</Trans>}
-          iconSize={13}
-          iconColor={theme.palette.text.secondary}
-          withContentButton
-          variant="helperText"
-          color="text.secondary"
-        >
-          <ApprovalInfoContent />
-        </TextWithModal>
-      )}
+      {!approvalHash &&
+        !error &&
+        !actionHash &&
+        (Number(amount) > 0 || Number(amount) === -1) &&
+        requiresApproval && (
+          <TextWithModal
+            text={<Trans>Why do I need to approve?</Trans>}
+            iconSize={13}
+            iconColor={theme.palette.text.secondary}
+            withContentButton
+            variant="helperText"
+            color="text.secondary"
+          >
+            <ApprovalInfoContent />
+          </TextWithModal>
+        )}
     </Box>
   );
 };
