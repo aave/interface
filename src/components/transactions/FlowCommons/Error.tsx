@@ -2,7 +2,7 @@ import { DuplicateIcon, XIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Link, SvgIcon, Typography } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
-import { TxErrorType } from 'src/ui-config/errorMapping';
+import { TxAction, TxErrorType } from 'src/ui-config/errorMapping';
 
 // TODO: need check texts
 export const TxErrorView = ({ txError }: { txError: TxErrorType }) => {
@@ -54,7 +54,6 @@ export const TxErrorView = ({ txError }: { txError: TxErrorType }) => {
 
         <Button
           variant="outlined"
-          // TODO: parse here the error
           onClick={() => navigator.clipboard.writeText(txError.rawError.message.toString())}
           size="small"
           sx={{ mt: 6 }}
@@ -67,8 +66,7 @@ export const TxErrorView = ({ txError }: { txError: TxErrorType }) => {
         </Button>
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12 }}>
-        {/* TODO: should the condition be anoter one???? */}
-        {txError && approvalTxState.txError && (
+        {txError && txError.txAction === TxAction.APPROVAL && (
           <Button
             onClick={handleRetry}
             variant="contained"
