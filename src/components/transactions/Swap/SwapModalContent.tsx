@@ -13,15 +13,12 @@ import { Trans } from '@lingui/macro';
 import { remainingCap } from 'src/utils/getMaxAmountAvailableToSupply';
 import { useSwap } from 'src/hooks/useSwap';
 import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
-import { TxModalTitle } from 'src/components/transactions/FlowCommons/TxModalTitle';
-import { ChangeNetworkWarning } from 'src/components/transactions/Warnings/ChangeNetworkWarning';
 import {
   DetailsHFLine,
   DetailsIncentivesLine,
   DetailsNumberLine,
   TxModalDetails,
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
-import { TxErrorView } from 'src/components/transactions/FlowCommons/Error';
 import { GasEstimationError } from 'src/components/transactions/FlowCommons/GasEstimationError';
 import { useModalContext } from 'src/hooks/useModal';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -29,6 +26,7 @@ import { Box } from '@mui/system';
 import { Row } from 'src/components/primitives/Row';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { calculateHFAfterSwap } from 'src/utils/hfUtils';
+import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 
 export type SupplyProps = {
   underlyingAsset: string;
@@ -39,19 +37,15 @@ export enum ErrorType {
   CAP_REACHED,
 }
 
-export const SwapModalContent = ({ underlyingAsset }: SupplyProps) => {
+export const SwapModalContent = ({
+  poolReserve,
+  userReserve,
+  isWrongNetwork,
+}: ModalWrapperProps) => {
   const { reserves, user } = useAppDataContext();
-  const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
-  const { chainId: connectedChainId, currentAccount } = useWeb3Context();
+  const { currentChainId } = useProtocolDataContext();
+  const { currentAccount } = useWeb3Context();
   const { gasLimit, mainTxState: supplyTxState } = useModalContext();
-
-  const poolReserve = reserves.find((reserve) => {
-    return reserve.underlyingAsset === underlyingAsset;
-  }) as ComputedReserveData;
-
-  const userReserve = user.userReservesData.find((userReserve) => {
-    return underlyingAsset === userReserve.underlyingAsset;
-  }) as ComputedUserReserve;
 
   const swapTargets = reserves
     .filter((r) => r.underlyingAsset !== poolReserve.underlyingAsset)
@@ -137,7 +131,6 @@ export const SwapModalContent = ({ underlyingAsset }: SupplyProps) => {
   // 4. swap isolated asset when isolated -> when no borrows i can probably swap all & new asset will in fact be collateral
   // 5. swap non-isolated when isolated -> can swap to anything
 
-  if (supplyTxState.txError) return <TxErrorView errorMessage={supplyTxState.txError} />;
   if (supplyTxState.success)
     return <TxSuccessView action="Swapped" amount={maxAmountToSwap} symbol={poolReserve.symbol} />;
 
@@ -147,9 +140,6 @@ export const SwapModalContent = ({ underlyingAsset }: SupplyProps) => {
     user.totalBorrowsMarketReferenceCurrency !== '0' &&
     poolReserve.usageAsCollateralEnabled;
 
-  // is Network mismatched
-  const isWrongNetwork = currentChainId !== connectedChainId;
-
   // calculate impact based on $ difference
   const priceImpact =
     outputAmountUSD && outputAmountUSD !== '0'
@@ -158,10 +148,6 @@ export const SwapModalContent = ({ underlyingAsset }: SupplyProps) => {
 
   return (
     <>
-      <TxModalTitle title="Swap" symbol={poolReserve.symbol} />
-      {isWrongNetwork && (
-        <ChangeNetworkWarning networkName={currentNetworkConfig.name} chainId={currentChainId} />
-      )}
       {/* {showIsolationWarning && (
             <Typography>You are about to enter into isolation. FAQ link</Typography>
           )} */}

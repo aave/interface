@@ -5,7 +5,13 @@ import { useModalContext } from 'src/hooks/useModal';
 
 // TODO: need check texts
 export const TxErrorView = ({ errorMessage }: { errorMessage: string }) => {
-  const { close } = useModalContext();
+  const { close, approvalTxState, resetTx, setForcedApproval } = useModalContext();
+
+  const handleRetry = () => {
+    resetTx();
+    setForcedApproval(true);
+  };
+
   return (
     <>
       <Box
@@ -59,6 +65,16 @@ export const TxErrorView = ({ errorMessage }: { errorMessage: string }) => {
         </Button>
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12 }}>
+        {approvalTxState.txError && (
+          <Button
+            onClick={handleRetry}
+            variant="contained"
+            size="large"
+            sx={{ minHeight: '44px', mb: '8px' }}
+          >
+            <Trans>Retry with approval</Trans>
+          </Button>
+        )}
         <Button onClick={close} variant="contained" size="large" sx={{ minHeight: '44px' }}>
           <Trans>Close</Trans>
         </Button>

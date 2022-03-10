@@ -17,7 +17,6 @@ import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 import { useAppDataContext } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { CapType } from '../../caps/helper';
 import { AssetInput } from '../AssetInput';
-import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -47,6 +46,7 @@ export const SupplyModalContent = ({
   isWrongNetwork,
   nativeBalance,
   tokenBalance,
+  symbol,
 }: ModalWrapperProps) => {
   const { marketReferencePriceInUsd, user } = useAppDataContext();
   const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
@@ -207,7 +207,6 @@ export const SupplyModalContent = ({
     }
   }
 
-  if (supplyTxState.txError) return <TxErrorView errorMessage={supplyTxState.txError} />;
   if (supplyTxState.success)
     return (
       <TxSuccessView
@@ -276,12 +275,8 @@ export const SupplyModalContent = ({
         poolReserve={poolReserve}
         amountToSupply={amount}
         isWrongNetwork={isWrongNetwork}
-        poolAddress={supplyUnWrapped ? underlyingAsset : poolReserve.underlyingAsset}
-        symbol={
-          poolReserve.symbol === currentNetworkConfig.wrappedBaseAssetSymbol
-            ? currentNetworkConfig.baseAssetSymbol
-            : poolReserve.symbol
-        }
+        poolAddress={supplyUnWrapped ? API_ETH_MOCK_ADDRESS : poolReserve.underlyingAsset}
+        symbol={symbol}
         blocked={blockingError !== undefined}
       />
     </>

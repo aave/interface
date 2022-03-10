@@ -222,6 +222,7 @@ msgid "Before supplying, you need to approve its usage by the Aave protocol. You
 msgstr "Before supplying, you need to approve its usage by the Aave protocol. You can learn more in our<0>FAQ</0>"
 
 #: pages/index.page.tsx
+#: src/components/transactions/Borrow/BorrowModal.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
@@ -445,7 +446,6 @@ msgid "Disable E-Mode"
 msgstr "Disable E-Mode"
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
-#: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "Disable {symbol} as collateral"
 msgstr "Disable {symbol} as collateral"
 
@@ -549,6 +549,7 @@ msgid "FAQ"
 msgstr "FAQ"
 
 #: pages/faucet.page.tsx
+#: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Faucet"
 msgstr "Faucet"
@@ -921,13 +922,17 @@ msgstr "Retry What?"
 msgid "Retry with Approval"
 msgstr "Retry with Approval"
 
-#: src/components/transactions/TxActionsWrapper.tsx
+#: src/components/transactions/FlowCommons/Error.tsx
 msgid "Retry with approval"
 msgstr "Retry with approval"
 
 #: src/components/transactions/FlowCommons/RightHelperText.tsx
 msgid "Review approval tx details"
 msgstr "Review approval tx details"
+
+#: src/components/transactions/CollateralChange/CollateralChangeModal.tsx
+msgid "Review tx"
+msgstr "Review tx"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Review tx details"
@@ -1096,6 +1101,7 @@ msgid "Supplying {symbol}"
 msgstr "Supplying {symbol}"
 
 #: src/components/transactions/Swap/SwapActions.tsx
+#: src/components/transactions/Swap/SwapModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Swap"
@@ -1104,6 +1110,10 @@ msgstr "Swap"
 #: src/components/transactions/Swap/SwapActions.tsx
 msgid "Swapping"
 msgstr "Swapping"
+
+#: src/components/transactions/RateSwitch/RateSwitchModal.tsx
+msgid "Switch APY type"
+msgstr "Switch APY type"
 
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Switch Network"
@@ -1265,10 +1275,6 @@ msgstr "Unstake now"
 msgid "Unstake window"
 msgstr "Unstake window"
 
-#: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
-msgid "Use {symbol} as collateral"
-msgstr "Use {symbol} as collateral"
-
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Used as collateral"
 msgstr "Used as collateral"
@@ -1376,10 +1382,6 @@ msgstr "Wrong Network"
 msgid "YAE"
 msgstr "YAE"
 
-#: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
-msgid "YYou can not use this currency as collateral"
-msgstr "YYou can not use this currency as collateral"
-
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "You are entering Isolation mode"
 msgstr "You are entering Isolation mode"
@@ -1395,6 +1397,10 @@ msgstr "You can not disable E-Mode as your current collateralization level is ab
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You can not switch usage as collateral mode for this currency, because it will cause collateral call"
 msgstr "You can not switch usage as collateral mode for this currency, because it will cause collateral call"
+
+#: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
+msgid "You can not use this currency as collateral"
+msgstr "You can not use this currency as collateral"
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "You can not withdraw this amount because it will cause collateral call"
