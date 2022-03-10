@@ -1,7 +1,6 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import {
   calculateHealthFactorFromBalancesBigUnits,
-  ComputedUserReserve,
   USD_DECIMALS,
   valueToBigNumber,
 } from '@aave/math-utils';
@@ -10,22 +9,17 @@ import { Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import React, { useRef, useState } from 'react';
 import { CollateralType } from 'src/helpers/types';
-import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
-
-import {
-  ComputedReserveData,
-  useAppDataContext,
-} from '../../../hooks/app-data-provider/useAppDataProvider';
+import { useAppDataContext } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { CapType } from '../../caps/helper';
 import { AssetInput } from '../AssetInput';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
+import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
 import {
   DetailsCollateralLine,
@@ -34,29 +28,28 @@ import {
   DetailsNumberLine,
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
-import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { AAVEWarning } from '../Warnings/AAVEWarning';
 import { AMPLWarning } from '../Warnings/AMPLWarning';
-import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { IsolationModeWarning } from '../Warnings/IsolationModeWarning';
 import { SNXWarning } from '../Warnings/SNXWarning';
 import { SupplyCapWarning } from '../Warnings/SupplyCapWarning';
 import { SupplyActions } from './SupplyActions';
-
-export type SupplyProps = {
-  underlyingAsset: string;
-};
 
 export enum ErrorType {
   NOT_ENOUGH_BALANCE,
   CAP_REACHED,
 }
 
-export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
-  const { walletBalances } = useWalletBalances();
-  const { marketReferencePriceInUsd, reserves, user } = useAppDataContext();
-  const { currentChainId, currentMarketData, currentNetworkConfig } = useProtocolDataContext();
-  const { chainId: connectedChainId } = useWeb3Context();
+export const SupplyModalContent = ({
+  underlyingAsset,
+  poolReserve,
+  userReserve,
+  isWrongNetwork,
+  nativeBalance,
+  tokenBalance,
+}: ModalWrapperProps) => {
+  const { marketReferencePriceInUsd, user } = useAppDataContext();
+  const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
   const { mainTxState: supplyTxState, gasLimit } = useModalContext();
 
   // states
@@ -64,21 +57,7 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
   const amountRef = useRef<string>();
   const supplyUnWrapped = underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase();
 
-  const poolReserve = reserves.find((reserve) => {
-    if (supplyUnWrapped) {
-      return reserve.isWrappedBaseAsset;
-    }
-    return reserve.underlyingAsset === underlyingAsset;
-  }) as ComputedReserveData;
-
-  const userReserve = user.userReservesData.find((userReserve) => {
-    if (supplyUnWrapped) {
-      return poolReserve.underlyingAsset === userReserve.underlyingAsset;
-    }
-    return underlyingAsset === userReserve.underlyingAsset;
-  }) as ComputedUserReserve;
-
-  const walletBalance = walletBalances[underlyingAsset]?.amount;
+  const walletBalance = supplyUnWrapped ? nativeBalance : tokenBalance;
 
   const supplyApy = poolReserve.supplyAPY;
 
@@ -180,9 +159,6 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
     }
   };
 
-  // is Network mismatched
-  const isWrongNetwork = currentChainId !== connectedChainId;
-
   // token info to add to wallet
   const addToken: ERC20TokenType = {
     address: poolReserve.aTokenAddress,
@@ -244,18 +220,6 @@ export const SupplyModalContent = ({ underlyingAsset }: SupplyProps) => {
 
   return (
     <>
-      <TxModalTitle
-        title="Supply"
-        symbol={
-          poolReserve.symbol === currentNetworkConfig.wrappedBaseAssetSymbol
-            ? currentNetworkConfig.baseAssetSymbol
-            : poolReserve.symbol
-        }
-      />
-      {isWrongNetwork && (
-        <ChangeNetworkWarning networkName={currentNetworkConfig.name} chainId={currentChainId} />
-      )}
-
       {showIsolationWarning && <IsolationModeWarning />}
       {showSupplyCapWarning && <SupplyCapWarning />}
       {poolReserve.symbol === 'AMPL' && <AMPLWarning />}

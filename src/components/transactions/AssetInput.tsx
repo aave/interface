@@ -87,6 +87,7 @@ export const AssetInput = <T extends Asset = Asset>({
   const handleSelect = (event: SelectChangeEvent) => {
     const newAsset = assets.find((asset) => asset.symbol === event.target.value) as T;
     onSelect && onSelect(newAsset);
+    onChange && onChange('0');
   };
 
   const asset =

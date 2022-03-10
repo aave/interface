@@ -323,7 +323,7 @@ msgstr "Claiming"
 msgid "Close"
 msgstr "Close"
 
-#: src/components/transactions/Repay/RepayModalContent.tsx
+#: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 msgid "Collateral"
@@ -878,6 +878,7 @@ msgstr "Recipient address"
 msgid "Rejected connection request"
 msgstr "Rejected connection request"
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Repay/RepayModalContent.tsx
 msgid "Remaining debt"
 msgstr "Remaining debt"
@@ -886,12 +887,13 @@ msgstr "Remaining debt"
 msgid "Remaining supply"
 msgstr "Remaining supply"
 
+#: src/components/transactions/Repay/RepayModal.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 msgid "Repay"
 msgstr "Repay"
 
-#: src/components/transactions/Repay/RepayModalContent.tsx
+#: src/components/transactions/Repay/RepayTypeSelector.tsx
 msgid "Repay with"
 msgstr "Repay with"
 
@@ -1050,6 +1052,7 @@ msgid "State"
 msgstr "State"
 
 #: pages/index.page.tsx
+#: src/components/transactions/Supply/SupplyModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
@@ -1329,7 +1332,7 @@ msgid "Voting results"
 msgstr "Voting results"
 
 #: pages/faucet.page.tsx
-#: src/components/transactions/Repay/RepayModalContent.tsx
+#: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Wallet balance"
@@ -1355,6 +1358,7 @@ msgstr "Why do I need to approve?"
 msgid "With a voting power of <0/>"
 msgstr "With a voting power of <0/>"
 
+#: src/components/transactions/Withdraw/WithdrawModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Withdraw"
@@ -1582,7 +1586,3 @@ msgstr "{0} Faucet"
 #: src/modules/staking/StakingPanel.tsx
 msgid "{0} days"
 msgstr "{0} days"
-
-#: src/components/transactions/FlowCommons/TxModalTitle.tsx
-msgid "{title}"
-msgstr "{title}"
