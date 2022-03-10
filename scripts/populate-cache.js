@@ -56734,7 +56734,7 @@ var require_calculate_accrued_incentives = __commonJS({
       const actualCurrentTimestamp = currentTimestamp > emissionEndTimestamp ? emissionEndTimestamp : currentTimestamp;
       const timeDelta = actualCurrentTimestamp - reserveIndexTimestamp;
       let currentReserveIndex;
-      if (reserveIndexTimestamp === Number(currentTimestamp) || reserveIndexTimestamp >= emissionEndTimestamp) {
+      if (reserveIndexTimestamp >= Number(currentTimestamp) || reserveIndexTimestamp >= emissionEndTimestamp) {
         currentReserveIndex = reserveIndex;
       } else {
         currentReserveIndex = emissionPerSecond.multipliedBy(timeDelta).shiftedBy(precision).dividedBy(totalSupply).plus(reserveIndex);
@@ -57747,25 +57747,6 @@ var marketsData = {
       UI_INCENTIVE_DATA_PROVIDER: "0x070a7D8F4d7A7A87452C5BaBaB3158e08411907E"
     }
   },
-  ["proto_mumbai_v3" /* proto_mumbai_v3 */]: {
-    marketTitle: "Polygon Mumbai",
-    chainId: import_contract_helpers2.ChainId.mumbai,
-    aTokenPrefix: "AM",
-    enabledFeatures: {
-      incentives: true,
-      faucet: true
-    },
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: "0xA5375B08232a0f5e911c8a92B390662e098a579A".toLowerCase(),
-      LENDING_POOL: "0xEce3383269ccE0B2ae66277101996b58c482817B",
-      WETH_GATEWAY: "0x9BBA071d1f2A397Da82687e951bFC0407280E348",
-      FAUCET: "0xE341D799E61d9caDBB6b05539f1d10aAdfA24d70",
-      WALLET_BALANCE_PROVIDER: "0x63F0F2d9C338cA14ffb6D611df7d62710D13EBEF",
-      UI_POOL_DATA_PROVIDER: "0x7C376eBA9e0dDC8c71Be7875618056a0bc071d0e",
-      UI_INCENTIVE_DATA_PROVIDER: "0xA702C5Fe370734D38060621e05215C70e0A6939E"
-    },
-    v3: true
-  },
   ["proto_polygon" /* proto_polygon */]: {
     marketTitle: "Polygon",
     chainId: import_contract_helpers2.ChainId.polygon,
@@ -57822,6 +57803,24 @@ var marketsData = {
     },
     halMarketName: "aaveavalanche"
   },
+  ["proto_arbitrum_v3" /* proto_arbitrum_v3 */]: {
+    marketTitle: "Arbitrum",
+    v3: true,
+    chainId: import_contract_helpers2.ChainId.arbitrum_one,
+    aTokenPrefix: "AA",
+    enabledFeatures: {
+      incentives: true
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: "0x7B291364Ce799edd4CD471E5C023FF965347E1E1".toLowerCase(),
+      LENDING_POOL: "0x439ED8C552A91500AAf9B902f997bA06EfD7D0E5",
+      WETH_GATEWAY: "0xAEe1FD5CB505aa48E49c01DdE732956eDef8b42f",
+      WALLET_BALANCE_PROVIDER: "0x70c24aF147cc72664eBB6765AC2E242A28b2f308",
+      UI_POOL_DATA_PROVIDER: "0xd428E98992696A79a844dE8e2E2a3d29F90b8872",
+      UI_INCENTIVE_DATA_PROVIDER: "0x6eC984De9E9b0b4E042F19FeEFb8B04674B5c40a",
+      L2_ENCODER: "0xDe25E50f913391a9Df29eD6e6d78a71c15BDFd35"
+    }
+  },
   ["proto_arbitrum_rinkeby_v3" /* proto_arbitrum_rinkeby_v3 */]: {
     marketTitle: "Arbitrum Rinkeby",
     v3: true,
@@ -57842,6 +57841,24 @@ var marketsData = {
       L2_ENCODER: "0x401bc319899dE01d0eF58111B5f7c49dB1610353"
     }
   },
+  ["proto_avalanche_v3" /* proto_avalanche_v3 */]: {
+    marketTitle: "Avalanche",
+    v3: true,
+    chainId: import_contract_helpers2.ChainId.avalanche,
+    aTokenPrefix: "AV",
+    enabledFeatures: {
+      incentives: true
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: "0x7013523049CeC8b06F594edb8c5fb7F232c0Df7C".toLowerCase(),
+      LENDING_POOL: "0x92c61c50B5701d28CfF7e6Bc382E47AaB5920EF4",
+      WETH_GATEWAY: "0x6eC984De9E9b0b4E042F19FeEFb8B04674B5c40a",
+      WALLET_BALANCE_PROVIDER: "0x51b7bd5AD903a8672e6BB772700802351DED6784",
+      UI_POOL_DATA_PROVIDER: "0x41e70CC0bB48c96FeC69212A4E8057076c5cF699",
+      UI_INCENTIVE_DATA_PROVIDER: "0x532C90cB5bFC8E929409678224D6D420E25c4F37"
+    },
+    halMarketName: "aaveavalanche"
+  },
   ["proto_fuji_v3" /* proto_fuji_v3 */]: {
     marketTitle: "Avalanche Fuji",
     v3: true,
@@ -57861,23 +57878,21 @@ var marketsData = {
       UI_INCENTIVE_DATA_PROVIDER: "0x535817805258A4E5924dBE6AE66F9335C94Ffef3"
     }
   },
-  ["proto_harmony_testnet_v3" /* proto_harmony_testnet_v3 */]: {
-    marketTitle: "Harmony Testnet",
+  ["proto_fantom_v3" /* proto_fantom_v3 */]: {
+    marketTitle: "Fantom",
     v3: true,
-    chainId: import_contract_helpers2.ChainId.harmony_testnet,
+    chainId: import_contract_helpers2.ChainId.fantom,
     aTokenPrefix: "AAVA",
     enabledFeatures: {
-      faucet: true,
       incentives: true
     },
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: "0xA5375B08232a0f5e911c8a92B390662e098a579A".toLowerCase(),
-      LENDING_POOL: "0xEce3383269ccE0B2ae66277101996b58c482817B",
-      WETH_GATEWAY: "0x9BBA071d1f2A397Da82687e951bFC0407280E348",
-      FAUCET: "0xE341D799E61d9caDBB6b05539f1d10aAdfA24d70",
-      WALLET_BALANCE_PROVIDER: "0x63F0F2d9C338cA14ffb6D611df7d62710D13EBEF",
-      UI_POOL_DATA_PROVIDER: "0x7C376eBA9e0dDC8c71Be7875618056a0bc071d0e",
-      UI_INCENTIVE_DATA_PROVIDER: "0xA702C5Fe370734D38060621e05215C70e0A6939E"
+      LENDING_POOL_ADDRESS_PROVIDER: "0x7013523049CeC8b06F594edb8c5fb7F232c0Df7C".toLowerCase(),
+      LENDING_POOL: "0x92c61c50B5701d28CfF7e6Bc382E47AaB5920EF4",
+      WETH_GATEWAY: "0xf1485Aa729DF94083ab61B2C65EeA99894Aabdb3",
+      WALLET_BALANCE_PROVIDER: "0x51b7bd5AD903a8672e6BB772700802351DED6784",
+      UI_POOL_DATA_PROVIDER: "0x55ea2d6114e20562Df92AAC44EDf471dFc909f74",
+      UI_INCENTIVE_DATA_PROVIDER: "0x804ED52fed3876A50EdefA6e71FfA35d7b493882"
     }
   },
   ["proto_fantom_testnet_v3" /* proto_fantom_testnet_v3 */]: {
@@ -57899,25 +57914,6 @@ var marketsData = {
       UI_INCENTIVE_DATA_PROVIDER: "0xBaaCc99123133851Ba2D6d34952aa08CBDf5A4E4"
     }
   },
-  ["proto_optimism_kovan_v3" /* proto_optimism_kovan_v3 */]: {
-    marketTitle: "Optimism Kovan",
-    v3: true,
-    chainId: import_contract_helpers2.ChainId.optimism_kovan,
-    aTokenPrefix: "AAVA",
-    enabledFeatures: {
-      faucet: true,
-      incentives: true
-    },
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: "0xFc7215C9498Fc12b22Bc0ed335871Db4315f03d3".toLowerCase(),
-      LENDING_POOL: "0x3Ee0444c892aAD6B225Ef20551116f79C52554AA",
-      WETH_GATEWAY: "0x3e4b51076d7e9B844B92F8c6377087f9cf8C8696",
-      FAUCET: "0x407287b03D1167593AF113d32093942be13A535f",
-      WALLET_BALANCE_PROVIDER: "0xdDc3C9B8614092e6188A86450c8D597509893E20",
-      UI_POOL_DATA_PROVIDER: "0x9D2729bC36f9E203002Bc5B5ee2E08C68Bd13794",
-      UI_INCENTIVE_DATA_PROVIDER: "0x8AaF462990dD5CC574c94C8266208996426A47e7"
-    }
-  },
   ["proto_harmony_v3" /* proto_harmony_v3 */]: {
     marketTitle: "Harmony",
     v3: true,
@@ -57935,21 +57931,23 @@ var marketsData = {
       UI_INCENTIVE_DATA_PROVIDER: "0x83Ff84900294eE4c3cfc3c68f6cB965c337044E2"
     }
   },
-  ["proto_fantom_v3" /* proto_fantom_v3 */]: {
-    marketTitle: "Fantom",
+  ["proto_harmony_testnet_v3" /* proto_harmony_testnet_v3 */]: {
+    marketTitle: "Harmony Testnet",
     v3: true,
-    chainId: import_contract_helpers2.ChainId.fantom,
+    chainId: import_contract_helpers2.ChainId.harmony_testnet,
     aTokenPrefix: "AAVA",
     enabledFeatures: {
+      faucet: true,
       incentives: true
     },
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: "0x7013523049CeC8b06F594edb8c5fb7F232c0Df7C".toLowerCase(),
-      LENDING_POOL: "0x92c61c50B5701d28CfF7e6Bc382E47AaB5920EF4",
-      WETH_GATEWAY: "0xf1485Aa729DF94083ab61B2C65EeA99894Aabdb3",
-      WALLET_BALANCE_PROVIDER: "0x51b7bd5AD903a8672e6BB772700802351DED6784",
-      UI_POOL_DATA_PROVIDER: "0x55ea2d6114e20562Df92AAC44EDf471dFc909f74",
-      UI_INCENTIVE_DATA_PROVIDER: "0x804ED52fed3876A50EdefA6e71FfA35d7b493882"
+      LENDING_POOL_ADDRESS_PROVIDER: "0xA5375B08232a0f5e911c8a92B390662e098a579A".toLowerCase(),
+      LENDING_POOL: "0xEce3383269ccE0B2ae66277101996b58c482817B",
+      WETH_GATEWAY: "0x9BBA071d1f2A397Da82687e951bFC0407280E348",
+      FAUCET: "0xE341D799E61d9caDBB6b05539f1d10aAdfA24d70",
+      WALLET_BALANCE_PROVIDER: "0x63F0F2d9C338cA14ffb6D611df7d62710D13EBEF",
+      UI_POOL_DATA_PROVIDER: "0x7C376eBA9e0dDC8c71Be7875618056a0bc071d0e",
+      UI_INCENTIVE_DATA_PROVIDER: "0xA702C5Fe370734D38060621e05215C70e0A6939E"
     }
   },
   ["proto_optimism_v3" /* proto_optimism_v3 */]: {
@@ -57970,40 +57968,23 @@ var marketsData = {
       L2_ENCODER: "0x77D395Fd770445782B2fCd1a560A5d93FFedf83A"
     }
   },
-  ["proto_avalanche_v3" /* proto_avalanche_v3 */]: {
-    marketTitle: "Avalanche",
+  ["proto_optimism_kovan_v3" /* proto_optimism_kovan_v3 */]: {
+    marketTitle: "Optimism Kovan",
     v3: true,
-    chainId: import_contract_helpers2.ChainId.avalanche,
-    aTokenPrefix: "AV",
+    chainId: import_contract_helpers2.ChainId.optimism_kovan,
+    aTokenPrefix: "AAVA",
     enabledFeatures: {
+      faucet: true,
       incentives: true
     },
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: "0x7013523049CeC8b06F594edb8c5fb7F232c0Df7C".toLowerCase(),
-      LENDING_POOL: "0x92c61c50B5701d28CfF7e6Bc382E47AaB5920EF4",
-      WETH_GATEWAY: "0x6eC984De9E9b0b4E042F19FeEFb8B04674B5c40a",
-      WALLET_BALANCE_PROVIDER: "0x51b7bd5AD903a8672e6BB772700802351DED6784",
-      UI_POOL_DATA_PROVIDER: "0x41e70CC0bB48c96FeC69212A4E8057076c5cF699",
-      UI_INCENTIVE_DATA_PROVIDER: "0x532C90cB5bFC8E929409678224D6D420E25c4F37"
-    },
-    halMarketName: "aaveavalanche"
-  },
-  ["proto_arbitrum_v3" /* proto_arbitrum_v3 */]: {
-    marketTitle: "Arbitrum",
-    v3: true,
-    chainId: import_contract_helpers2.ChainId.arbitrum_one,
-    aTokenPrefix: "AA",
-    enabledFeatures: {
-      incentives: true
-    },
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: "0x7B291364Ce799edd4CD471E5C023FF965347E1E1".toLowerCase(),
-      LENDING_POOL: "0x439ED8C552A91500AAf9B902f997bA06EfD7D0E5",
-      WETH_GATEWAY: "0xAEe1FD5CB505aa48E49c01DdE732956eDef8b42f",
-      WALLET_BALANCE_PROVIDER: "0x70c24aF147cc72664eBB6765AC2E242A28b2f308",
-      UI_POOL_DATA_PROVIDER: "0xd428E98992696A79a844dE8e2E2a3d29F90b8872",
-      UI_INCENTIVE_DATA_PROVIDER: "0x6eC984De9E9b0b4E042F19FeEFb8B04674B5c40a",
-      L2_ENCODER: "0xDe25E50f913391a9Df29eD6e6d78a71c15BDFd35"
+      LENDING_POOL_ADDRESS_PROVIDER: "0xFc7215C9498Fc12b22Bc0ed335871Db4315f03d3".toLowerCase(),
+      LENDING_POOL: "0x3Ee0444c892aAD6B225Ef20551116f79C52554AA",
+      WETH_GATEWAY: "0x3e4b51076d7e9B844B92F8c6377087f9cf8C8696",
+      FAUCET: "0x407287b03D1167593AF113d32093942be13A535f",
+      WALLET_BALANCE_PROVIDER: "0xdDc3C9B8614092e6188A86450c8D597509893E20",
+      UI_POOL_DATA_PROVIDER: "0x9D2729bC36f9E203002Bc5B5ee2E08C68Bd13794",
+      UI_INCENTIVE_DATA_PROVIDER: "0x8AaF462990dD5CC574c94C8266208996426A47e7"
     }
   },
   ["proto_polygon_v3" /* proto_polygon_v3 */]: {
@@ -58023,6 +58004,25 @@ var marketsData = {
       UI_INCENTIVE_DATA_PROVIDER: "0xce3Aa85237C075d2102b7B35079d305307D745C8"
     },
     halMarketName: "aavepolygon"
+  },
+  ["proto_mumbai_v3" /* proto_mumbai_v3 */]: {
+    marketTitle: "Polygon Mumbai",
+    chainId: import_contract_helpers2.ChainId.mumbai,
+    aTokenPrefix: "AM",
+    enabledFeatures: {
+      incentives: true,
+      faucet: true
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: "0xA5375B08232a0f5e911c8a92B390662e098a579A".toLowerCase(),
+      LENDING_POOL: "0xEce3383269ccE0B2ae66277101996b58c482817B",
+      WETH_GATEWAY: "0x9BBA071d1f2A397Da82687e951bFC0407280E348",
+      FAUCET: "0xE341D799E61d9caDBB6b05539f1d10aAdfA24d70",
+      WALLET_BALANCE_PROVIDER: "0x63F0F2d9C338cA14ffb6D611df7d62710D13EBEF",
+      UI_POOL_DATA_PROVIDER: "0x7C376eBA9e0dDC8c71Be7875618056a0bc071d0e",
+      UI_INCENTIVE_DATA_PROVIDER: "0xA702C5Fe370734D38060621e05215C70e0A6939E"
+    },
+    v3: true
   }
 };
 
@@ -58246,7 +58246,7 @@ var networkConfigs = {
     publicJsonRPCWSUrl: "wss://ws-kovan.optimism.io",
     protocolDataUrl: "",
     baseUniswapAdapter: "0x0",
-    baseAssetSymbol: "OR",
+    baseAssetSymbol: "ETH",
     wrappedBaseAssetSymbol: "WETH",
     baseAssetDecimals: 18,
     explorerLink: "https://kovan-optimistic.etherscan.io",
