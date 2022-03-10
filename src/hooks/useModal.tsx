@@ -156,6 +156,7 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setMainTxState({});
           setApprovalTxState({});
           setGasLimit('');
+          setForcedApproval(false);
         },
         resetTx: () => {
           setMainTxState({});
