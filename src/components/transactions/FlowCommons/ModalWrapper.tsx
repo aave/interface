@@ -31,8 +31,10 @@ export const ModalWrapper: React.FC<{
   requiredChainId?: number;
   // if true wETH will stay wETH otherwise wETH will be returned as ETH
   keepWrappedSymbol?: boolean;
+  hideTitleSymbol?: boolean;
   children: (props: ModalWrapperProps) => React.ReactNode;
 }> = ({
+  hideTitleSymbol,
   underlyingAsset,
   children,
   requiredChainId: _requiredChainId,
@@ -66,7 +68,7 @@ export const ModalWrapper: React.FC<{
       : userReserve.reserve.symbol;
   return (
     <>
-      <TxModalTitle title={title} symbol={symbol} />
+      <TxModalTitle title={title} symbol={hideTitleSymbol ? undefined : symbol} />
       {isWrongNetwork && (
         <ChangeNetworkWarning
           networkName={getNetworkConfig(requiredChainId).name}

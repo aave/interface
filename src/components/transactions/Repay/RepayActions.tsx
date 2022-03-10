@@ -43,65 +43,58 @@ export const RepayActions = ({
   const { currentAccount } = useWeb3Context();
   const { state, gasPriceData } = useGasStation();
 
-  const {
-    approval,
-    action,
-    requiresApproval,
-    loadingTxns,
-    approvalTxState,
-    mainTxState,
-    resetStates,
-  } = useTransactionHandler({
-    tryPermit:
-      currentMarketData.v3 && permitByChainAndToken[chainId]?.[utils.getAddress(poolAddress)],
-    handleGetTxns: async () => {
-      if (currentMarketData.v3) {
-        const newPool: Pool = lendingPool as Pool;
-        if (repayWithATokens) {
-          return newPool.repayWithATokens({
-            user: currentAccount,
-            reserve: poolAddress,
-            amount: amountToRepay,
-            rateMode: debtType as InterestRate,
-            useOptimizedPath: optimizedPath(chainId),
-          });
+  const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
+    useTransactionHandler({
+      tryPermit:
+        currentMarketData.v3 && permitByChainAndToken[chainId]?.[utils.getAddress(poolAddress)],
+      handleGetTxns: async () => {
+        if (currentMarketData.v3) {
+          const newPool: Pool = lendingPool as Pool;
+          if (repayWithATokens) {
+            return newPool.repayWithATokens({
+              user: currentAccount,
+              reserve: poolAddress,
+              amount: amountToRepay,
+              rateMode: debtType as InterestRate,
+              useOptimizedPath: optimizedPath(chainId),
+            });
+          } else {
+            return newPool.repay({
+              user: currentAccount,
+              reserve: poolAddress,
+              amount: amountToRepay,
+              interestRateMode: debtType,
+              useOptimizedPath: optimizedPath(chainId),
+            });
+          }
         } else {
-          return newPool.repay({
+          return lendingPool.repay({
             user: currentAccount,
             reserve: poolAddress,
             amount: amountToRepay,
             interestRateMode: debtType,
-            useOptimizedPath: optimizedPath(chainId),
           });
         }
-      } else {
-        return lendingPool.repay({
+      },
+      handleGetPermitTxns: async (signature, deadline) => {
+        const newPool: Pool = lendingPool as Pool;
+        return newPool.repayWithPermit({
           user: currentAccount,
           reserve: poolAddress,
-          amount: amountToRepay,
+          amount: amountToRepay, // amountToRepay.toString(),
           interestRateMode: debtType,
+          signature,
+          useOptimizedPath: optimizedPath(chainId),
+          deadline,
         });
-      }
-    },
-    handleGetPermitTxns: async (signature, deadline) => {
-      const newPool: Pool = lendingPool as Pool;
-      return newPool.repayWithPermit({
-        user: currentAccount,
-        reserve: poolAddress,
-        amount: amountToRepay, // amountToRepay.toString(),
-        interestRateMode: debtType,
-        signature,
-        useOptimizedPath: optimizedPath(chainId),
-        deadline,
-      });
-    },
-    customGasPrice:
-      state.gasOption === GasOption.Custom
-        ? state.customGas
-        : gasPriceData.data?.[state.gasOption].legacyGasPrice,
-    skip: !amountToRepay || parseFloat(amountToRepay) === 0 || blocked,
-    deps: [amountToRepay, poolAddress, repayWithATokens],
-  });
+      },
+      customGasPrice:
+        state.gasOption === GasOption.Custom
+          ? state.customGas
+          : gasPriceData.data?.[state.gasOption].legacyGasPrice,
+      skip: !amountToRepay || parseFloat(amountToRepay) === 0 || blocked,
+      deps: [amountToRepay, poolAddress, repayWithATokens],
+    });
 
   return (
     <TxActionsWrapper
@@ -110,7 +103,6 @@ export const RepayActions = ({
       symbol={poolReserve.symbol}
       mainTxState={mainTxState}
       approvalTxState={approvalTxState}
-      handleRetry={resetStates}
       requiresAmount
       amount={amountToRepay}
       requiresApproval={requiresApproval}

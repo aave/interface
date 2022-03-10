@@ -10,21 +10,16 @@ import { useRef, useState } from 'react';
 import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
-import {
-  ComputedReserveData,
-  useAppDataContext,
-} from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { CapType } from '../../caps/helper';
 import { AssetInput } from '../AssetInput';
-import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
+import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
 import {
   DetailsHFLine,
@@ -32,13 +27,7 @@ import {
   DetailsUnwrapSwitch,
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
-import { TxModalTitle } from '../FlowCommons/TxModalTitle';
-import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { BorrowActions } from './BorrowActions';
-
-export type BorrowModalContentProps = {
-  underlyingAsset: string;
-};
 
 export enum ErrorType {
   STABLE_RATE_NOT_ENABLED,
@@ -106,26 +95,22 @@ const BorrowModeSwitch = ({
   );
 };
 
-export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps) => {
+export const BorrowModalContent = ({
+  underlyingAsset,
+  isWrongNetwork,
+  poolReserve,
+  userReserve,
+  unwrap: borrowUnWrapped,
+  setUnwrap: setBorrowUnWrapped,
+  symbol,
+}: ModalWrapperProps & { unwrap: boolean; setUnwrap: (unwrap: boolean) => void }) => {
   const { mainTxState: borrowTxState, gasLimit } = useModalContext();
-  const { reserves, user, marketReferencePriceInUsd } = useAppDataContext();
-  const { currentChainId } = useProtocolDataContext();
-  const { chainId: connectedChainId } = useWeb3Context();
+  const { user, marketReferencePriceInUsd } = useAppDataContext();
+  const { currentNetworkConfig } = useProtocolDataContext();
 
-  const [borrowUnWrapped, setBorrowUnWrapped] = useState(true);
   const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>();
-
-  const networkConfig = getNetworkConfig(currentChainId);
-
-  const poolReserve = reserves.find((reserve) => {
-    return reserve.underlyingAsset === underlyingAsset;
-  }) as ComputedReserveData;
-
-  const userReserve = user?.userReservesData.find((reserve) => {
-    return reserve.underlyingAsset === underlyingAsset;
-  });
 
   // amount calculations
   const maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user, interestRateMode);
@@ -156,9 +141,6 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
     ),
     currentLiquidationThreshold: user.currentLiquidationThreshold,
   });
-
-  // is Network mismatched
-  const isWrongNetwork = currentChainId !== connectedChainId;
 
   // calculating input usd value
   const usdValue = valueToBigNumber(amount).multipliedBy(poolReserve.priceInUSD);
@@ -215,7 +197,6 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
     decimals: poolReserve.decimals,
   };
 
-  if (borrowTxState.txError) return <TxErrorView errorMessage={borrowTxState.txError} />;
   if (borrowTxState.success)
     return (
       <TxSuccessView
@@ -232,18 +213,6 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
       : poolReserve.vIncentivesData;
   return (
     <>
-      <TxModalTitle
-        title="Borrow"
-        symbol={
-          borrowUnWrapped && poolReserve.isWrappedBaseAsset
-            ? networkConfig.baseAssetSymbol
-            : poolReserve.symbol
-        }
-      />
-      {isWrongNetwork && (
-        <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
-      )}
-
       <AssetInput
         value={amount}
         onChange={handleChange}
@@ -251,21 +220,14 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
         assets={[
           {
             balance: formattedMaxAmountToBorrow,
-            symbol:
-              borrowUnWrapped && poolReserve.isWrappedBaseAsset
-                ? networkConfig.baseAssetSymbol
-                : poolReserve.symbol,
+            symbol: symbol,
             iconSymbol:
               borrowUnWrapped && poolReserve.isWrappedBaseAsset
-                ? networkConfig.baseAssetSymbol
+                ? currentNetworkConfig.baseAssetSymbol
                 : poolReserve.iconSymbol,
           },
         ]}
-        symbol={
-          borrowUnWrapped && poolReserve.isWrappedBaseAsset
-            ? networkConfig.baseAssetSymbol
-            : poolReserve.iconSymbol
-        }
+        symbol={symbol}
         capType={CapType.borrowCap}
         isMaxSelected={isMaxSelected}
         maxValue={maxAmountToBorrow.toString()}
@@ -299,7 +261,7 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
             unwrapped={borrowUnWrapped}
             setUnWrapped={setBorrowUnWrapped}
             symbol={poolReserve.symbol}
-            unwrappedSymbol={networkConfig.baseAssetSymbol}
+            unwrappedSymbol={currentNetworkConfig.baseAssetSymbol}
           />
         )}
         <DetailsIncentivesLine incentives={incentive} symbol={poolReserve.symbol} />
@@ -324,11 +286,7 @@ export const BorrowModalContent = ({ underlyingAsset }: BorrowModalContentProps)
         }
         interestRateMode={interestRateMode}
         isWrongNetwork={isWrongNetwork}
-        symbol={
-          borrowUnWrapped && poolReserve.isWrappedBaseAsset
-            ? networkConfig.baseAssetSymbol
-            : poolReserve.symbol
-        }
+        symbol={symbol}
         blocked={blockingError !== undefined}
       />
     </>
