@@ -1,5 +1,6 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { createContext, useContext, useState } from 'react';
+import { TxErrorType } from 'src/ui-config/errorsMaping';
 
 export enum ModalType {
   Supply,
@@ -33,7 +34,6 @@ export interface ModalArgsType {
 export type TxStateType = {
   txHash?: string;
   txError?: string;
-  gasEstimationError?: string;
   loading?: boolean;
   success?: boolean;
 };
@@ -69,6 +69,8 @@ export interface ModalContextType<T extends ModalArgsType> {
   setLoadingTxns: (loading: boolean) => void;
   forcedApproval: boolean;
   setForcedApproval: (permit: boolean) => void;
+  txError: TxErrorType | undefined;
+  setTxError: (error: TxErrorType | undefined) => void;
 }
 
 export const ModalContext = createContext<ModalContextType<ModalArgsType>>(
@@ -85,6 +87,7 @@ export const ModalContextProvider: React.FC = ({ children }) => {
   const [gasLimit, setGasLimit] = useState<string>('');
   const [loadingTxns, setLoadingTxns] = useState(false);
   const [forcedApproval, setForcedApproval] = useState(false);
+  const [txError, setTxError] = useState<TxErrorType>();
 
   return (
     <ModalContext.Provider
@@ -157,11 +160,13 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setApprovalTxState({});
           setGasLimit('');
           setForcedApproval(false);
+          setTxError(undefined);
         },
         resetTx: () => {
           setMainTxState({});
           setApprovalTxState({});
           setGasLimit('');
+          setTxError(undefined);
         },
         type,
         args,
@@ -175,6 +180,8 @@ export const ModalContextProvider: React.FC = ({ children }) => {
         setLoadingTxns,
         forcedApproval,
         setForcedApproval,
+        txError,
+        setTxError,
       }}
     >
       {children}

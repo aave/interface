@@ -46,12 +46,10 @@ export const ModalWrapper: React.FC<{
   const { walletBalances } = useWalletBalances();
   const { currentChainId: marketChainId, currentNetworkConfig } = useProtocolDataContext();
   const { user } = useAppDataContext();
-  const { approvalTxState, mainTxState } = useModalContext();
+  const { txError, mainTxState } = useModalContext();
 
-  if (mainTxState.txError || approvalTxState.txError) {
-    return (
-      <TxErrorView errorMessage={(approvalTxState.txError || mainTxState.txError) as string} />
-    );
+  if (txError && txError.blocking) {
+    return <TxErrorView txError={txError} />;
   }
 
   const requiredChainId = _requiredChainId ? _requiredChainId : marketChainId;

@@ -5,6 +5,7 @@ import { TxStateType } from 'src/hooks/useModal';
 import isEmpty from 'lodash/isEmpty';
 import { LeftHelperText } from './FlowCommons/LeftHelperText';
 import { RightHelperText } from './FlowCommons/RightHelperText';
+import { TxErrorType } from 'src/ui-config/errorMapping';
 
 interface TxActionsWrapperProps extends BoxProps {
   actionInProgressText: ReactNode;
@@ -20,6 +21,7 @@ interface TxActionsWrapperProps extends BoxProps {
   requiresApproval: boolean;
   symbol?: string;
   blocked?: boolean;
+  txError?: TxErrorType;
 }
 
 export const TxActionsWrapper = ({
@@ -27,6 +29,7 @@ export const TxActionsWrapper = ({
   actionText,
   amount,
   approvalTxState,
+  txError,
   handleApproval,
   handleAction,
   isWrongNetwork,
@@ -44,7 +47,7 @@ export const TxActionsWrapper = ({
 
   function getMainParams() {
     if (blocked) return { disabled: true, content: actionText };
-    if (mainTxState?.gasEstimationError) return { disabled: true, content: actionText };
+    if (txError) return { loading: false, disabled: true, content: actionText };
     if (isWrongNetwork) return { disabled: true, content: <Trans>Wrong Network</Trans> };
     if (isAmountMissing) return { disabled: true, content: <Trans>Enter an amount</Trans> };
     if (preparingTransactions || isEmpty(mainTxState)) return { disabled: true, loading: true };

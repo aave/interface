@@ -7,6 +7,7 @@ import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/Backgroun
 import { useModalContext } from 'src/hooks/useModal';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { getErrorTextFromError } from 'src/ui-config/errorMapping';
 
 export const MOCK_SIGNED_HASH = 'Signed correctly';
 
@@ -40,6 +41,7 @@ export const useTransactionHandler = ({
     loadingTxns,
     setLoadingTxns,
     forcedApproval,
+    setTxError,
   } = useModalContext();
   const { signTxData, sendTx, getTxError, currentAccount } = useWeb3Context();
   const { refetchWalletBalances, refetchPoolData, refechIncentiveData } =
@@ -100,7 +102,8 @@ export const useTransactionHandler = ({
 
       return;
     } catch (e) {
-      console.log('normal error:::::::: ', e);
+      const parsedError = getErrorTextFromError(e);
+      setTxError(parsedError);
       errorCallback && errorCallback(e);
     }
   };
@@ -127,27 +130,30 @@ export const useTransactionHandler = ({
             setApprovalTxState({
               txHash: MOCK_SIGNED_HASH,
               txError: undefined,
-              gasEstimationError: undefined,
+              // gasEstimationError: undefined,
               loading: false,
               success: true,
             });
           } catch (error) {
             if (!mounted.current) return;
-            console.log('errrorrrrrrrr: ', error);
+            const parsedError = getErrorTextFromError(error);
+            setTxError(parsedError);
 
             setApprovalTxState({
               txHash: undefined,
               txError: error.message.toString(),
-              gasEstimationError: undefined,
+              // gasEstimationError: undefined,
               loading: false,
             });
           }
         } catch (error) {
           if (!mounted.current) return;
+          const parsedError = getErrorTextFromError(error, false);
+          setTxError(parsedError);
           setApprovalTxState({
             txHash: undefined,
             txError: undefined,
-            gasEstimationError: error.message.toString(),
+            // gasEstimationError: error.message.toString(),
             loading: false,
           });
         }
@@ -162,7 +168,7 @@ export const useTransactionHandler = ({
               setApprovalTxState({
                 txHash: txnResponse.hash,
                 txError: undefined,
-                gasEstimationError: undefined,
+                // gasEstimationError: undefined,
                 loading: false,
                 success: true,
               });
@@ -171,17 +177,19 @@ export const useTransactionHandler = ({
               setApprovalTxState({
                 txHash: hash,
                 txError: error.message.toString(),
-                gasEstimationError: undefined,
+                // gasEstimationError: undefined,
                 loading: false,
               });
             },
           });
         } catch (error) {
           if (!mounted.current) return;
+          const parsedError = getErrorTextFromError(error, false);
+          setTxError(parsedError);
           setApprovalTxState({
             txHash: undefined,
             txError: undefined,
-            gasEstimationError: error.message.toString(),
+            // gasEstimationError: error.message.toString(),
             loading: false,
           });
         }
@@ -203,7 +211,7 @@ export const useTransactionHandler = ({
             setMainTxState({
               txHash: txnResponse.hash,
               txError: undefined,
-              gasEstimationError: undefined,
+              // gasEstimationError: undefined,
               loading: false,
               success: true,
             });
@@ -212,16 +220,18 @@ export const useTransactionHandler = ({
             setMainTxState({
               txHash: hash,
               txError: error.message.toString(),
-              gasEstimationError: undefined,
+              // gasEstimationError: undefined,
               loading: false,
             });
           },
         });
       } catch (error) {
+        const parsedError = getErrorTextFromError(error, false);
+        setTxError(parsedError);
         setMainTxState({
           txHash: undefined,
           txError: undefined,
-          gasEstimationError: error.message.toString(),
+          // gasEstimationError: error.message.toString(),
           loading: false,
         });
       }
@@ -237,7 +247,7 @@ export const useTransactionHandler = ({
             setMainTxState({
               txHash: txnResponse.hash,
               txError: undefined,
-              gasEstimationError: undefined,
+              // gasEstimationError: undefined,
               loading: false,
               success: true,
             });
@@ -246,16 +256,18 @@ export const useTransactionHandler = ({
             setMainTxState({
               txHash: hash,
               txError: error.message.toString(),
-              gasEstimationError: undefined,
+              // gasEstimationError: undefined,
               loading: false,
             });
           },
         });
       } catch (error) {
+        const parsedError = getErrorTextFromError(error, false);
+        setTxError(parsedError);
         setMainTxState({
           txHash: undefined,
           txError: undefined,
-          gasEstimationError: error.message.toString(),
+          // gasEstimationError: error.message.toString(),
           loading: false,
         });
       }
@@ -292,8 +304,9 @@ export const useTransactionHandler = ({
             setMainTxState({
               txHash: undefined,
               txError: undefined,
-              gasEstimationError: undefined,
+              // gasEstimationError: undefined,
             });
+            setTxError(undefined);
             const gas: GasType | null = await data[data.length - 1].gas();
             setGasLimit(gas?.gasLimit || '');
             setLoadingTxns(false);
@@ -303,8 +316,10 @@ export const useTransactionHandler = ({
             setMainTxState({
               txHash: undefined,
               txError: undefined,
-              gasEstimationError: error.message.toString(),
+              // gasEstimationError: error.message.toString(),
             });
+            const parsedError = getErrorTextFromError(error, false);
+            setTxError(parsedError);
             setLoadingTxns(false);
           });
       }, 1000);
