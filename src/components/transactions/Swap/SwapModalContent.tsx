@@ -77,7 +77,7 @@ export const SwapModalContent = ({
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToSwap : _amount;
 
-  const { priceRoute, inputAmountUSD, outputAmount, outputAmountUSD } = useSwap({
+  const { priceRoute, inputAmountUSD, inputAmount, outputAmount, outputAmountUSD } = useSwap({
     chainId: currentChainId,
     userId: currentAccount,
     variant: 'exactIn',
@@ -111,10 +111,11 @@ export const SwapModalContent = ({
     user.healthFactor !== '-1' &&
     new BigNumber(user.healthFactor).minus(hfEffectOfFromAmount).lt('1.05');
 
+  const remainingCapBn = remainingCap(swapTarget);
   // consider caps
   // we cannot check this in advance as it's based on the swap result
   let blockingError: ErrorType | undefined = undefined;
-  if (remainingCap(swapTarget).lt(amount)) {
+  if (!remainingCapBn.eq('-1') && remainingCapBn.lt(amount)) {
     blockingError = ErrorType.SUPPLY_CAP_REACHED;
   } else if (!hfAfterSwap.eq('-1') && hfAfterSwap.lt('1.05')) {
     blockingError = ErrorType.HF_BELOW_ONE;
@@ -264,12 +265,12 @@ export const SwapModalContent = ({
       <SwapActions
         isMaxSelected={isMaxSelected}
         poolReserve={poolReserve}
-        amountToSwap={amountRef.current}
+        amountToSwap={inputAmount}
         amountToReceive={minimumReceived}
         isWrongNetwork={isWrongNetwork}
         targetReserve={swapTarget}
         symbol={poolReserve.symbol}
-        blocked={blockingError}
+        blocked={!!blockingError}
         priceRoute={priceRoute}
         useFlashLoan={shouldUseFlashloan}
       />
