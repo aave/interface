@@ -45,6 +45,11 @@ export const ModalWrapper: React.FC<{
   const { user } = useAppDataContext();
   const { approvalTxState, mainTxState } = useModalContext();
 
+  if (mainTxState.txError || approvalTxState.txError)
+    return (
+      <TxErrorView errorMessage={(approvalTxState.txError || mainTxState.txError) as string} />
+    );
+
   const requiredChainId = _requiredChainId ? _requiredChainId : marketChainId;
   const isWrongNetwork = connectedChainId !== requiredChainId;
 
@@ -67,19 +72,15 @@ export const ModalWrapper: React.FC<{
           chainId={requiredChainId}
         />
       )}
-      {mainTxState.txError || approvalTxState.txError ? (
-        <TxErrorView errorMessage={(approvalTxState.txError || mainTxState.txError) as string} />
-      ) : (
-        children({
-          isWrongNetwork,
-          nativeBalance: walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()].amount,
-          tokenBalance: walletBalances[userReserve.reserve.underlyingAsset].amount,
-          poolReserve: userReserve.reserve,
-          symbol,
-          underlyingAsset,
-          userReserve,
-        })
-      )}
+      {children({
+        isWrongNetwork,
+        nativeBalance: walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()].amount,
+        tokenBalance: walletBalances[userReserve.reserve.underlyingAsset].amount,
+        poolReserve: userReserve.reserve,
+        symbol,
+        underlyingAsset,
+        userReserve,
+      })}
     </>
   );
 };
