@@ -20,7 +20,7 @@ export const FaucetModalContent = ({
   poolReserve,
   isWrongNetwork,
 }: ModalWrapperProps) => {
-  const { gasLimit, mainTxState: faucetTxState } = useModalContext();
+  const { gasLimit, mainTxState: faucetTxState, txError } = useModalContext();
 
   const mintAmount = mintAmountsPerToken[poolReserve.symbol.toUpperCase()];
   const normalizedAmount = normalize(mintAmount, poolReserve.decimals);
@@ -53,9 +53,7 @@ export const FaucetModalContent = ({
         />
       </TxModalDetails>
 
-      {faucetTxState.gasEstimationError && (
-        <GasEstimationError error={faucetTxState.gasEstimationError} />
-      )}
+      {txError && <GasEstimationError txError={txError} />}
 
       <FaucetActions poolReserve={poolReserve} isWrongNetwork={isWrongNetwork} blocked={false} />
     </>
