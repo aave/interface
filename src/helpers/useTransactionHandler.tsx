@@ -100,6 +100,7 @@ export const useTransactionHandler = ({
 
       return;
     } catch (e) {
+      console.log('normal error:::::::: ', e);
       errorCallback && errorCallback(e);
     }
   };
@@ -132,6 +133,8 @@ export const useTransactionHandler = ({
             });
           } catch (error) {
             if (!mounted.current) return;
+            console.log('errrorrrrrrrr: ', error);
+
             setApprovalTxState({
               txHash: undefined,
               txError: error.message.toString(),
