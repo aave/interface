@@ -22,7 +22,7 @@ export const LeftHelperText = ({
   requiresApproval,
 }: LeftHelperTextProps) => {
   const theme = useTheme();
-  console.log('------> ', Number(amount));
+
   return (
     <Box
       sx={{
