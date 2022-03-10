@@ -35,7 +35,6 @@ import { SupplyCapWarning } from '../Warnings/SupplyCapWarning';
 import { SupplyActions } from './SupplyActions';
 
 export enum ErrorType {
-  NOT_ENOUGH_BALANCE,
   CAP_REACHED,
 }
 
@@ -141,17 +140,13 @@ export const SupplyModalContent = ({
   // error handler
   let blockingError: ErrorType | undefined = undefined;
   if (!supplyTxState.success) {
-    if (valueToBigNumber(amount).gt(walletBalance)) {
-      blockingError = ErrorType.NOT_ENOUGH_BALANCE;
-    } else if (capReached) {
+    if (capReached) {
       blockingError = ErrorType.CAP_REACHED;
     }
   }
 
   const handleBlocked = () => {
     switch (blockingError) {
-      case ErrorType.NOT_ENOUGH_BALANCE:
-        return <Trans>Not enough balance on your wallet</Trans>;
       case ErrorType.CAP_REACHED:
         return <Trans>Cap reached. Lower supply amount</Trans>;
       default:

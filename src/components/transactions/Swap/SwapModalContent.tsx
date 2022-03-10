@@ -33,8 +33,8 @@ export type SupplyProps = {
 };
 
 export enum ErrorType {
-  NOT_ENOUGH_BALANCE,
-  CAP_REACHED,
+  SUPPLY_CAP_REACHED,
+  HF_BELOW_ONE,
 }
 
 export const SwapModalContent = ({
@@ -77,7 +77,7 @@ export const SwapModalContent = ({
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToSwap : _amount;
 
-  const { priceRoute, inputAmountUSD, outputAmount, outputAmountUSD } = useSwap({
+  const { priceRoute, inputAmountUSD, inputAmount, outputAmount, outputAmountUSD } = useSwap({
     chainId: currentChainId,
     userId: currentAccount,
     variant: 'exactIn',
@@ -109,18 +109,36 @@ export const SwapModalContent = ({
   // if the hf would drop below 1 from the hf effect a flashloan should be used to mitigate liquidation
   const shouldUseFlashloan =
     user.healthFactor !== '-1' &&
-    new BigNumber(user.healthFactor).minus(hfEffectOfFromAmount).lt('1.1');
+    new BigNumber(user.healthFactor).minus(hfEffectOfFromAmount).lt('1.05');
 
+  const remainingCapBn = remainingCap(swapTarget);
   // consider caps
   // we cannot check this in advance as it's based on the swap result
-  const surpassesTargetSupplyCap =
-    swapTarget.supplyCap !== '0' ? remainingCap(swapTarget).lt(amount) : false;
-  // TODO: show some error
-  if (user.isInIsolationMode && poolReserve.isIsolated) {
+  let blockingError: ErrorType | undefined = undefined;
+  if (!remainingCapBn.eq('-1') && remainingCapBn.lt(amount)) {
+    blockingError = ErrorType.SUPPLY_CAP_REACHED;
+  } else if (!hfAfterSwap.eq('-1') && hfAfterSwap.lt('1.05')) {
+    blockingError = ErrorType.HF_BELOW_ONE;
+  } else if (user.isInIsolationMode && poolReserve.isIsolated) {
     // TODO: make sure hf doesn't go below 1 because swapTarget will not be a collateral
   } else {
     // TODO: make sure hf doesn't go below 1
   }
+
+  const handleBlocked = () => {
+    switch (blockingError) {
+      case ErrorType.SUPPLY_CAP_REACHED:
+        return <Trans>Supply cap on target reserve reached. Try lowering the amount.</Trans>;
+      case ErrorType.HF_BELOW_ONE:
+        return (
+          <Trans>
+            The effects on the health factor would cause liquidation. Try lowering the amount.
+          </Trans>
+        );
+      default:
+        return null;
+    }
+  };
 
   // v2 edge cases
   // 1. swap more then available liquidity
@@ -214,6 +232,11 @@ export const SwapModalContent = ({
           </ToggleButton>
         </ToggleButtonGroup>
       </Box>
+      {blockingError !== undefined && (
+        <Typography variant="helperText" color="error.main">
+          {handleBlocked()}
+        </Typography>
+      )}
       <TxModalDetails gasLimit={gasLimit}>
         <DetailsNumberLine
           description={<Trans>Supply apy</Trans>}
@@ -242,12 +265,12 @@ export const SwapModalContent = ({
       <SwapActions
         isMaxSelected={isMaxSelected}
         poolReserve={poolReserve}
-        amountToSwap={amountRef.current}
+        amountToSwap={inputAmount}
         amountToReceive={minimumReceived}
         isWrongNetwork={isWrongNetwork}
         targetReserve={swapTarget}
         symbol={poolReserve.symbol}
-        blocked={surpassesTargetSupplyCap}
+        blocked={!!blockingError}
         priceRoute={priceRoute}
         useFlashLoan={shouldUseFlashloan}
       />

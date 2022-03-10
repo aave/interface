@@ -43,8 +43,8 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId }: UseS
     if (variant === 'exactOut' && (!swapOut.amount || swapOut.amount === '0')) return;
     setLoading(true);
     let _amount = valueToBigNumber(variant === 'exactIn' ? swapIn.amount : swapOut.amount);
-    if (max) {
-      _amount = _amount.multipliedBy('1.0025');
+    if (max && swapIn.supplyAPY !== '0') {
+      _amount = _amount.plus(_amount.multipliedBy(swapIn.supplyAPY).dividedBy(360 * 24));
     }
     const amount = normalizeBN(
       _amount,
