@@ -1,6 +1,6 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { createContext, useContext, useState } from 'react';
-import { TxErrorType } from 'src/ui-config/errorsMaping';
+import { TxErrorType } from 'src/ui-config/errorMapping';
 
 export enum ModalType {
   Supply,
@@ -33,7 +33,7 @@ export interface ModalArgsType {
 
 export type TxStateType = {
   txHash?: string;
-  txError?: string;
+  // txError?: string;
   loading?: boolean;
   success?: boolean;
 };
