@@ -14,6 +14,7 @@ import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { TxErrorView } from './Error';
+// import { TxSuccessView } from './Success';
 
 export interface ModalWrapperProps {
   underlyingAsset: string;
@@ -66,9 +67,15 @@ export const ModalWrapper: React.FC<{
     userReserve.reserve.isWrappedBaseAsset && !keepWrappedSymbol
       ? currentNetworkConfig.baseAssetSymbol
       : userReserve.reserve.symbol;
+
+  // if (mainTxState.success) {
+  //   return <TxSuccessView symbol={symbol} />;
+  // }
   return (
     <>
-      <TxModalTitle title={title} symbol={hideTitleSymbol ? undefined : symbol} />
+      {!mainTxState.success && (
+        <TxModalTitle title={title} symbol={hideTitleSymbol ? undefined : symbol} />
+      )}
       {isWrongNetwork && (
         <ChangeNetworkWarning
           networkName={getNetworkConfig(requiredChainId).name}
