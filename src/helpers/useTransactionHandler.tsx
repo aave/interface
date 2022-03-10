@@ -37,13 +37,13 @@ export const useTransactionHandler = ({
     resetTx,
     loadingTxns,
     setLoadingTxns,
+    setForcedApproval,
+    forcedApproval,
   } = useModalContext();
   const { signTxData, sendTx, getTxError, currentAccount } = useWeb3Context();
   const { refetchWalletBalances, refetchPoolData, refechIncentiveData } =
     useBackgroundDataProvider();
   const { lendingPool } = useTxBuilderContext();
-  // const [loadingTxns, setLoadingTxns] = useState(false);
-  // const [txs, setTxs] = useState<EthereumTransactionTypeExtended[]>([]);
   const [usePermit, setUsePermit] = useState<boolean>(tryPermit);
   const [signature, setSignature] = useState<SignatureLike>();
   const [signatureDeadline, setSignatureDeadline] = useState<string>();
@@ -54,8 +54,10 @@ export const useTransactionHandler = ({
 
   useEffect(() => {
     mounted.current = true; // Will set it to true on mount ...
+    if (forcedApproval) setUsePermit(false);
     return () => {
       mounted.current = false;
+      setForcedApproval(false);
     }; // ... and to false on unmount
   }, []);
   /**
