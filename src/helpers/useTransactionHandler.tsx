@@ -39,7 +39,8 @@ export const useTransactionHandler = ({
     setLoadingTxns,
   } = useModalContext();
   const { signTxData, sendTx, getTxError, currentAccount } = useWeb3Context();
-  const { refetchWalletBalances, refetchPoolData } = useBackgroundDataProvider();
+  const { refetchWalletBalances, refetchPoolData, refechIncentiveData } =
+    useBackgroundDataProvider();
   const { lendingPool } = useTxBuilderContext();
   // const [loadingTxns, setLoadingTxns] = useState(false);
   // const [txs, setTxs] = useState<EthereumTransactionTypeExtended[]>([]);
@@ -76,11 +77,11 @@ export const useTransactionHandler = ({
     try {
       const txnResult = await tx();
       try {
-        await txnResult.wait();
-        // wait for confirmation
         mounted.current && successCallback && successCallback(txnResult);
+        await txnResult.wait(1);
         refetchWalletBalances();
         refetchPoolData && refetchPoolData();
+        refechIncentiveData && refechIncentiveData();
       } catch (e) {
         try {
           const error = await getTxError(txnResult.hash);
@@ -265,6 +266,7 @@ export const useTransactionHandler = ({
   useEffect(() => {
     // good enough for now, but might need debounce or similar for swaps
     if (!skip) {
+      setLoadingTxns(true);
       const timeout = setTimeout(() => {
         setLoadingTxns(true);
         return handleGetTxns()

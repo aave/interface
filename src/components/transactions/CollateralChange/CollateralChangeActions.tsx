@@ -1,4 +1,3 @@
-import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -33,8 +32,7 @@ export const CollateralChangeActions = ({
   const { state, gasPriceData } = useGasStation();
 
   const { action, loadingTxns, mainTxState } = useTransactionHandler({
-    tryPermit:
-      currentMarketData.v3 && chainId !== ChainId.harmony && chainId !== ChainId.harmony_testnet,
+    tryPermit: false,
     handleGetTxns: async () => {
       if (currentMarketData.v3) {
         return lendingPool.setUsageAsCollateral({

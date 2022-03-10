@@ -77,10 +77,11 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
         width: '100%',
         mb: '8px',
       }}
+      size="large"
       onClick={() => connectWallet(walletType)}
+      endIcon={getWalletIcon(walletType)}
     >
-      <Typography variant="buttonL">{walletName}</Typography>
-      {getWalletIcon(walletType)}
+      {walletName}
     </Button>
   );
 };

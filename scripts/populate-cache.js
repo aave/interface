@@ -9012,7 +9012,7 @@ var require_typed_data = __commonJS({
       };
       TypedDataEncoder2.resolveNames = function(domain, types, value, resolveName) {
         return __awaiter(this, void 0, void 0, function() {
-          var ensCache, encoder, _a7, _b, _i, name_4, _c, _d;
+          var ensCache, encoder, _a7, _b2, _i, name_4, _c, _d;
           return __generator(this, function(_e) {
             switch (_e.label) {
               case 0:
@@ -9029,8 +9029,8 @@ var require_typed_data = __commonJS({
                   return value2;
                 });
                 _a7 = [];
-                for (_b in ensCache)
-                  _a7.push(_b);
+                for (_b2 in ensCache)
+                  _a7.push(_b2);
                 _i = 0;
                 _e.label = 1;
               case 1:
@@ -18920,8 +18920,8 @@ var require_lib24 = __commonJS({
       Provider2.prototype.getFeeData = function() {
         return __awaiter(this, void 0, void 0, function() {
           var _a7, block, gasPrice, maxFeePerGas, maxPriorityFeePerGas;
-          return __generator(this, function(_b) {
-            switch (_b.label) {
+          return __generator(this, function(_b2) {
+            switch (_b2.label) {
               case 0:
                 return [4, (0, properties_1.resolveProperties)({
                   block: this.getBlock("latest"),
@@ -18930,7 +18930,7 @@ var require_lib24 = __commonJS({
                   })
                 })];
               case 1:
-                _a7 = _b.sent(), block = _a7.block, gasPrice = _a7.gasPrice;
+                _a7 = _b2.sent(), block = _a7.block, gasPrice = _a7.gasPrice;
                 maxFeePerGas = null, maxPriorityFeePerGas = null;
                 if (block && block.baseFeePerGas) {
                   maxPriorityFeePerGas = bignumber_1.BigNumber.from("2500000000");
@@ -23634,22 +23634,22 @@ var require_base_provider = __commonJS({
       Resolver2.prototype._fetchBytes = function(selector, parameters) {
         return __awaiter(this, void 0, void 0, function() {
           var tx, _a7, error_1;
-          return __generator(this, function(_b) {
-            switch (_b.label) {
+          return __generator(this, function(_b2) {
+            switch (_b2.label) {
               case 0:
                 tx = {
                   to: this.address,
                   data: (0, bytes_1.hexConcat)([selector, (0, hash_1.namehash)(this.name), parameters || "0x"])
                 };
-                _b.label = 1;
+                _b2.label = 1;
               case 1:
-                _b.trys.push([1, 3, , 4]);
+                _b2.trys.push([1, 3, , 4]);
                 _a7 = _parseBytes;
                 return [4, this.provider.call(tx)];
               case 2:
-                return [2, _a7.apply(void 0, [_b.sent()])];
+                return [2, _a7.apply(void 0, [_b2.sent()])];
               case 3:
-                error_1 = _b.sent();
+                error_1 = _b2.sent();
                 if (error_1.code === logger_1.Logger.errors.CALL_EXCEPTION) {
                   return [2, null];
                 }
@@ -23760,7 +23760,7 @@ var require_base_provider = __commonJS({
       };
       Resolver2.prototype.getAvatar = function() {
         return __awaiter(this, void 0, void 0, function() {
-          var linkage, avatar, i, match, scheme, _a7, selector, owner, _b, comps, addr, tokenId, tokenOwner, _c, _d, balance, _e, _f, tx, metadataUrl, _g, metadata, imageUrl, ipfs, error_3;
+          var linkage, avatar, i, match, scheme, _a7, selector, owner, _b2, comps, addr, tokenId, tokenOwner, _c, _d, balance, _e, _f, tx, metadataUrl, _g, metadata, imageUrl, ipfs, error_3;
           return __generator(this, function(_h) {
             switch (_h.label) {
               case 0:
@@ -23810,15 +23810,15 @@ var require_base_provider = __commonJS({
               case 7:
                 selector = scheme === "erc721" ? "0xc87b56dd" : "0x0e89341c";
                 linkage.push({ type: scheme, content: avatar });
-                _b = this._resolvedAddress;
-                if (_b)
+                _b2 = this._resolvedAddress;
+                if (_b2)
                   return [3, 9];
                 return [4, this.getAddress()];
               case 8:
-                _b = _h.sent();
+                _b2 = _h.sent();
                 _h.label = 9;
               case 9:
-                owner = _b;
+                owner = _b2;
                 comps = (match[2] || "").split("/");
                 if (comps.length !== 2) {
                   return [2, null];
@@ -24862,7 +24862,7 @@ var require_base_provider = __commonJS({
       };
       BaseProvider2.prototype._getTransactionRequest = function(transaction) {
         return __awaiter(this, void 0, void 0, function() {
-          var values, tx, _a7, _b;
+          var values, tx, _a7, _b2;
           var _this = this;
           return __generator(this, function(_c) {
             switch (_c.label) {
@@ -24906,17 +24906,17 @@ var require_base_provider = __commonJS({
                     return v ? (0, bytes_1.hexlify)(v) : null;
                   });
                 });
-                _b = (_a7 = this.formatter).transactionRequest;
+                _b2 = (_a7 = this.formatter).transactionRequest;
                 return [4, (0, properties_1.resolveProperties)(tx)];
               case 2:
-                return [2, _b.apply(_a7, [_c.sent()])];
+                return [2, _b2.apply(_a7, [_c.sent()])];
             }
           });
         });
       };
       BaseProvider2.prototype._getFilter = function(filter) {
         return __awaiter(this, void 0, void 0, function() {
-          var result, _a7, _b;
+          var result, _a7, _b2;
           var _this = this;
           return __generator(this, function(_c) {
             switch (_c.label) {
@@ -24940,10 +24940,10 @@ var require_base_provider = __commonJS({
                   }
                   result[key] = _this._getBlockTag(filter[key]);
                 });
-                _b = (_a7 = this.formatter).filter;
+                _b2 = (_a7 = this.formatter).filter;
                 return [4, (0, properties_1.resolveProperties)(result)];
               case 2:
-                return [2, _b.apply(_a7, [_c.sent()])];
+                return [2, _b2.apply(_a7, [_c.sent()])];
             }
           });
         });
@@ -25042,15 +25042,15 @@ var require_base_provider = __commonJS({
         return __awaiter(this, void 0, void 0, function() {
           var blockNumber, params, _a7, error_8;
           var _this = this;
-          return __generator(this, function(_b) {
-            switch (_b.label) {
+          return __generator(this, function(_b2) {
+            switch (_b2.label) {
               case 0:
                 return [4, this.getNetwork()];
               case 1:
-                _b.sent();
+                _b2.sent();
                 return [4, blockHashOrBlockTag];
               case 2:
-                blockHashOrBlockTag = _b.sent();
+                blockHashOrBlockTag = _b2.sent();
                 blockNumber = -128;
                 params = {
                   includeTransactions: !!includeTransactions
@@ -25060,17 +25060,17 @@ var require_base_provider = __commonJS({
                 params.blockHash = blockHashOrBlockTag;
                 return [3, 6];
               case 3:
-                _b.trys.push([3, 5, , 6]);
+                _b2.trys.push([3, 5, , 6]);
                 _a7 = params;
                 return [4, this._getBlockTag(blockHashOrBlockTag)];
               case 4:
-                _a7.blockTag = _b.sent();
+                _a7.blockTag = _b2.sent();
                 if ((0, bytes_1.isHexString)(params.blockTag)) {
                   blockNumber = parseInt(params.blockTag.substring(2), 16);
                 }
                 return [3, 6];
               case 5:
-                error_8 = _b.sent();
+                error_8 = _b2.sent();
                 logger.throwArgumentError("invalid block hash or block tag", "blockHashOrBlockTag", blockHashOrBlockTag);
                 return [3, 6];
               case 6:
@@ -25360,7 +25360,7 @@ var require_base_provider = __commonJS({
       };
       BaseProvider2.prototype._getResolver = function(name2) {
         return __awaiter(this, void 0, void 0, function() {
-          var network, transaction, _a7, _b, error_10;
+          var network, transaction, _a7, _b2, error_10;
           return __generator(this, function(_c) {
             switch (_c.label) {
               case 0:
@@ -25377,10 +25377,10 @@ var require_base_provider = __commonJS({
                 _c.label = 2;
               case 2:
                 _c.trys.push([2, 4, , 5]);
-                _b = (_a7 = this.formatter).callAddress;
+                _b2 = (_a7 = this.formatter).callAddress;
                 return [4, this.call(transaction)];
               case 3:
-                return [2, _b.apply(_a7, [_c.sent()])];
+                return [2, _b2.apply(_a7, [_c.sent()])];
               case 4:
                 error_10 = _c.sent();
                 if (error_10.code === logger_1.Logger.errors.CALL_EXCEPTION) {
@@ -25428,17 +25428,17 @@ var require_base_provider = __commonJS({
       BaseProvider2.prototype.lookupAddress = function(address) {
         return __awaiter(this, void 0, void 0, function() {
           var reverseName, resolverAddress, bytes, _a7, length, name2, addr;
-          return __generator(this, function(_b) {
-            switch (_b.label) {
+          return __generator(this, function(_b2) {
+            switch (_b2.label) {
               case 0:
                 return [4, address];
               case 1:
-                address = _b.sent();
+                address = _b2.sent();
                 address = this.formatter.address(address);
                 reverseName = address.substring(2).toLowerCase() + ".addr.reverse";
                 return [4, this._getResolver(reverseName)];
               case 2:
-                resolverAddress = _b.sent();
+                resolverAddress = _b2.sent();
                 if (!resolverAddress) {
                   return [2, null];
                 }
@@ -25448,7 +25448,7 @@ var require_base_provider = __commonJS({
                   data: "0x691f3431" + (0, hash_1.namehash)(reverseName).substring(2)
                 })];
               case 3:
-                bytes = _a7.apply(void 0, [_b.sent()]);
+                bytes = _a7.apply(void 0, [_b2.sent()]);
                 if (bytes.length < 32 || !bignumber_1.BigNumber.from(bytes.slice(0, 32)).eq(32)) {
                   return [2, null];
                 }
@@ -25464,7 +25464,7 @@ var require_base_provider = __commonJS({
                 name2 = (0, strings_1.toUtf8String)(bytes.slice(0, length));
                 return [4, this.resolveName(name2)];
               case 4:
-                addr = _b.sent();
+                addr = _b2.sent();
                 if (addr != address) {
                   return [2, null];
                 }
@@ -30299,7 +30299,7 @@ var require_etherscan_provider = __commonJS({
       };
       EtherscanProvider2.prototype.perform = function(method, params) {
         return __awaiter(this, void 0, void 0, function() {
-          var _a7, postData, error_1, postData, error_2, args, topic0, logs, blocks, i, log, block, _b;
+          var _a7, postData, error_1, postData, error_2, args, topic0, logs, blocks, i, log, block, _b2;
           return __generator(this, function(_c) {
             switch (_c.label) {
               case 0:
@@ -30476,10 +30476,10 @@ var require_etherscan_provider = __commonJS({
                 if (this.network.name !== "homestead") {
                   return [2, 0];
                 }
-                _b = parseFloat;
+                _b2 = parseFloat;
                 return [4, this.fetch("stats", { action: "ethprice" })];
               case 27:
-                return [2, _b.apply(void 0, [_c.sent().ethusd])];
+                return [2, _b2.apply(void 0, [_c.sent().ethusd])];
               case 28:
                 return [3, 29];
               case 29:
@@ -30493,18 +30493,18 @@ var require_etherscan_provider = __commonJS({
           var params, result;
           var _a7;
           var _this = this;
-          return __generator(this, function(_b) {
-            switch (_b.label) {
+          return __generator(this, function(_b2) {
+            switch (_b2.label) {
               case 0:
                 _a7 = {
                   action: "txlist"
                 };
                 return [4, this.resolveName(addressOrName)];
               case 1:
-                params = (_a7.address = _b.sent(), _a7.startblock = startBlock == null ? 0 : startBlock, _a7.endblock = endBlock == null ? 99999999 : endBlock, _a7.sort = "asc", _a7);
+                params = (_a7.address = _b2.sent(), _a7.startblock = startBlock == null ? 0 : startBlock, _a7.endblock = endBlock == null ? 99999999 : endBlock, _a7.sort = "asc", _a7);
                 return [4, this.fetch("account", params)];
               case 2:
-                result = _b.sent();
+                result = _b2.sent();
                 return [2, result.map(function(tx) {
                   ["contractAddress", "to"].forEach(function(key) {
                     if (tx[key] == "") {
@@ -30925,8 +30925,8 @@ var require_fallback_provider = __commonJS({
     function getRunner(config, currentBlockNumber, method, params) {
       return __awaiter(this, void 0, void 0, function() {
         var provider, _a7, filter;
-        return __generator(this, function(_b) {
-          switch (_b.label) {
+        return __generator(this, function(_b2) {
+          switch (_b2.label) {
             case 0:
               provider = config.provider;
               _a7 = method;
@@ -30971,8 +30971,8 @@ var require_fallback_provider = __commonJS({
                 return [3, 5];
               return [4, waitForSync(config, currentBlockNumber)];
             case 4:
-              provider = _b.sent();
-              _b.label = 5;
+              provider = _b2.sent();
+              _b2.label = 5;
             case 5:
               return [2, provider[method](params.address, params.blockTag || "latest")];
             case 6:
@@ -30980,8 +30980,8 @@ var require_fallback_provider = __commonJS({
                 return [3, 8];
               return [4, waitForSync(config, currentBlockNumber)];
             case 7:
-              provider = _b.sent();
-              _b.label = 8;
+              provider = _b2.sent();
+              _b2.label = 8;
             case 8:
               return [2, provider.getStorageAt(params.address, params.position, params.blockTag || "latest")];
             case 9:
@@ -30989,8 +30989,8 @@ var require_fallback_provider = __commonJS({
                 return [3, 11];
               return [4, waitForSync(config, currentBlockNumber)];
             case 10:
-              provider = _b.sent();
-              _b.label = 11;
+              provider = _b2.sent();
+              _b2.label = 11;
             case 11:
               return [2, provider[params.includeTransactions ? "getBlockWithTransactions" : "getBlock"](params.blockTag || params.blockHash)];
             case 12:
@@ -30998,8 +30998,8 @@ var require_fallback_provider = __commonJS({
                 return [3, 14];
               return [4, waitForSync(config, currentBlockNumber)];
             case 13:
-              provider = _b.sent();
-              _b.label = 14;
+              provider = _b2.sent();
+              _b2.label = 14;
             case 14:
               return [2, provider[method](params.transaction)];
             case 15:
@@ -31010,8 +31010,8 @@ var require_fallback_provider = __commonJS({
                 return [3, 18];
               return [4, waitForSync(config, currentBlockNumber)];
             case 17:
-              provider = _b.sent();
-              _b.label = 18;
+              provider = _b2.sent();
+              _b2.label = 18;
             case 18:
               return [2, provider.getLogs(filter)];
             case 19:
@@ -31137,8 +31137,8 @@ var require_fallback_provider = __commonJS({
                 first = true;
                 _loop_1 = function() {
                   var t0, inflightWeight, _loop_2, waiting, results2, result2, errors;
-                  return __generator(this, function(_b) {
-                    switch (_b.label) {
+                  return __generator(this, function(_b2) {
+                    switch (_b2.label) {
                       case 0:
                         t0 = now();
                         inflightWeight = configs.filter(function(c) {
@@ -31207,8 +31207,8 @@ var require_fallback_provider = __commonJS({
                           return [3, 2];
                         return [4, Promise.race(waiting)];
                       case 1:
-                        _b.sent();
-                        _b.label = 2;
+                        _b2.sent();
+                        _b2.label = 2;
                       case 2:
                         results2 = configs.filter(function(c) {
                           return c.done && c.error == null;
@@ -31229,11 +31229,11 @@ var require_fallback_provider = __commonJS({
                           return [3, 4];
                         return [4, stall(100).getPromise()];
                       case 3:
-                        _b.sent();
-                        _b.label = 4;
+                        _b2.sent();
+                        _b2.label = 4;
                       case 4:
                         first = false;
-                        _b.label = 5;
+                        _b2.label = 5;
                       case 5:
                         errors = configs.reduce(function(accum, c) {
                           if (!c.done || c.error == null) {
@@ -45236,7 +45236,7 @@ var require_v3_pool_rollups = __commonJS({
           txs.push({
             tx: txCallback,
             txType: types_1.eEthereumTxType.DLP_ACTION,
-            gas: this.generateTxPriceEstimation([], txCallback, types_1.ProtocolAction.repay)
+            gas: this.generateTxPriceEstimation(txs, txCallback, types_1.ProtocolAction.repay)
           });
           return txs;
         });
@@ -45256,7 +45256,7 @@ var require_v3_pool_rollups = __commonJS({
           txs.push({
             tx: txCallback,
             txType: types_1.eEthereumTxType.DLP_ACTION,
-            gas: this.generateTxPriceEstimation([], txCallback, types_1.ProtocolAction.repay)
+            gas: this.generateTxPriceEstimation(txs, txCallback, types_1.ProtocolAction.repay)
           });
           return txs;
         });
@@ -45276,7 +45276,7 @@ var require_v3_pool_rollups = __commonJS({
           txs.push({
             tx: txCallback,
             txType: types_1.eEthereumTxType.DLP_ACTION,
-            gas: this.generateTxPriceEstimation([], txCallback, types_1.ProtocolAction.repay)
+            gas: this.generateTxPriceEstimation(txs, txCallback, types_1.ProtocolAction.repay)
           });
           return txs;
         });
@@ -56734,7 +56734,7 @@ var require_calculate_accrued_incentives = __commonJS({
       const actualCurrentTimestamp = currentTimestamp > emissionEndTimestamp ? emissionEndTimestamp : currentTimestamp;
       const timeDelta = actualCurrentTimestamp - reserveIndexTimestamp;
       let currentReserveIndex;
-      if (reserveIndexTimestamp === Number(currentTimestamp) || reserveIndexTimestamp >= emissionEndTimestamp) {
+      if (reserveIndexTimestamp >= Number(currentTimestamp) || reserveIndexTimestamp >= emissionEndTimestamp) {
         currentReserveIndex = reserveIndex;
       } else {
         currentReserveIndex = emissionPerSecond.multipliedBy(timeDelta).shiftedBy(precision).dividedBy(totalSupply).plus(reserveIndex);
@@ -57747,25 +57747,6 @@ var marketsData = {
       UI_INCENTIVE_DATA_PROVIDER: "0x070a7D8F4d7A7A87452C5BaBaB3158e08411907E"
     }
   },
-  ["proto_mumbai_v3" /* proto_mumbai_v3 */]: {
-    marketTitle: "Polygon Mumbai",
-    chainId: import_contract_helpers2.ChainId.mumbai,
-    aTokenPrefix: "AM",
-    enabledFeatures: {
-      incentives: true,
-      faucet: true
-    },
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: "0xA5375B08232a0f5e911c8a92B390662e098a579A".toLowerCase(),
-      LENDING_POOL: "0xEce3383269ccE0B2ae66277101996b58c482817B",
-      WETH_GATEWAY: "0x9BBA071d1f2A397Da82687e951bFC0407280E348",
-      FAUCET: "0xE341D799E61d9caDBB6b05539f1d10aAdfA24d70",
-      WALLET_BALANCE_PROVIDER: "0x63F0F2d9C338cA14ffb6D611df7d62710D13EBEF",
-      UI_POOL_DATA_PROVIDER: "0x7C376eBA9e0dDC8c71Be7875618056a0bc071d0e",
-      UI_INCENTIVE_DATA_PROVIDER: "0xA702C5Fe370734D38060621e05215C70e0A6939E"
-    },
-    v3: true
-  },
   ["proto_polygon" /* proto_polygon */]: {
     marketTitle: "Polygon",
     chainId: import_contract_helpers2.ChainId.polygon,
@@ -57822,6 +57803,24 @@ var marketsData = {
     },
     halMarketName: "aaveavalanche"
   },
+  ["proto_arbitrum_v3" /* proto_arbitrum_v3 */]: {
+    marketTitle: "Arbitrum",
+    v3: true,
+    chainId: import_contract_helpers2.ChainId.arbitrum_one,
+    aTokenPrefix: "AA",
+    enabledFeatures: {
+      incentives: true
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: "0x7B291364Ce799edd4CD471E5C023FF965347E1E1".toLowerCase(),
+      LENDING_POOL: "0x439ED8C552A91500AAf9B902f997bA06EfD7D0E5",
+      WETH_GATEWAY: "0xAEe1FD5CB505aa48E49c01DdE732956eDef8b42f",
+      WALLET_BALANCE_PROVIDER: "0x70c24aF147cc72664eBB6765AC2E242A28b2f308",
+      UI_POOL_DATA_PROVIDER: "0xd428E98992696A79a844dE8e2E2a3d29F90b8872",
+      UI_INCENTIVE_DATA_PROVIDER: "0x6eC984De9E9b0b4E042F19FeEFb8B04674B5c40a",
+      L2_ENCODER: "0xDe25E50f913391a9Df29eD6e6d78a71c15BDFd35"
+    }
+  },
   ["proto_arbitrum_rinkeby_v3" /* proto_arbitrum_rinkeby_v3 */]: {
     marketTitle: "Arbitrum Rinkeby",
     v3: true,
@@ -57832,15 +57831,33 @@ var marketsData = {
       incentives: true
     },
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: "0xd792BBEb43b0C6A10E11f6D41947DfDf2F1637B7".toLowerCase(),
-      LENDING_POOL: "0xA1D75f1461B173EdAc800138A8440413710aC124",
-      WETH_GATEWAY: "0xD15d36975A0200D11B8a8964F4F267982D2a1cFe",
-      FAUCET: "0x10E5744B09Fb08b8373D6955952A8831A1285bbe",
-      WALLET_BALANCE_PROVIDER: "0x4A18e871CBEd993773958B6d6B4cfbbcF9883142",
-      UI_POOL_DATA_PROVIDER: "0x2f733c0389bfF96a3f930Deb2f6DB1d767Cd3215",
-      UI_INCENTIVE_DATA_PROVIDER: "0xEDcE7fE559118b364f1F9C065b14B34c35E76396",
-      L2_ENCODER: "0x5E52dEc931FFb32f609681B8438A51c675cc232d"
+      LENDING_POOL_ADDRESS_PROVIDER: "0xde8fe461AC54e86DE63354Fad75182BB5A8974a3".toLowerCase(),
+      LENDING_POOL: "0x6907307E1bFaEF3d5646338A36170E3984756DE2",
+      WETH_GATEWAY: "0x6F7e8F4aFe40f52013f7Dbe08DFC5c8DA33841ED",
+      FAUCET: "0x9AD6Cf2673954f7c95B7C477760bA36B3208ff60",
+      WALLET_BALANCE_PROVIDER: "0xA560B50B8f0E581ea78CE298164847aC9BeA4fb6",
+      UI_POOL_DATA_PROVIDER: "0xd24472e139C6f603Cc513115e496e133562aCfDe",
+      UI_INCENTIVE_DATA_PROVIDER: "0x7B63e2E48aFE0a31B77a81503955B88DCEeB6b4A",
+      L2_ENCODER: "0x401bc319899dE01d0eF58111B5f7c49dB1610353"
     }
+  },
+  ["proto_avalanche_v3" /* proto_avalanche_v3 */]: {
+    marketTitle: "Avalanche",
+    v3: true,
+    chainId: import_contract_helpers2.ChainId.avalanche,
+    aTokenPrefix: "AV",
+    enabledFeatures: {
+      incentives: true
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: "0x7013523049CeC8b06F594edb8c5fb7F232c0Df7C".toLowerCase(),
+      LENDING_POOL: "0x92c61c50B5701d28CfF7e6Bc382E47AaB5920EF4",
+      WETH_GATEWAY: "0x6eC984De9E9b0b4E042F19FeEFb8B04674B5c40a",
+      WALLET_BALANCE_PROVIDER: "0x51b7bd5AD903a8672e6BB772700802351DED6784",
+      UI_POOL_DATA_PROVIDER: "0x41e70CC0bB48c96FeC69212A4E8057076c5cF699",
+      UI_INCENTIVE_DATA_PROVIDER: "0x532C90cB5bFC8E929409678224D6D420E25c4F37"
+    },
+    halMarketName: "aaveavalanche"
   },
   ["proto_fuji_v3" /* proto_fuji_v3 */]: {
     marketTitle: "Avalanche Fuji",
@@ -57861,23 +57878,21 @@ var marketsData = {
       UI_INCENTIVE_DATA_PROVIDER: "0x535817805258A4E5924dBE6AE66F9335C94Ffef3"
     }
   },
-  ["proto_harmony_testnet_v3" /* proto_harmony_testnet_v3 */]: {
-    marketTitle: "Harmony Testnet",
+  ["proto_fantom_v3" /* proto_fantom_v3 */]: {
+    marketTitle: "Fantom",
     v3: true,
-    chainId: import_contract_helpers2.ChainId.harmony_testnet,
+    chainId: import_contract_helpers2.ChainId.fantom,
     aTokenPrefix: "AAVA",
     enabledFeatures: {
-      faucet: true,
       incentives: true
     },
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: "0xA5375B08232a0f5e911c8a92B390662e098a579A".toLowerCase(),
-      LENDING_POOL: "0xEce3383269ccE0B2ae66277101996b58c482817B",
-      WETH_GATEWAY: "0x9BBA071d1f2A397Da82687e951bFC0407280E348",
-      FAUCET: "0xE341D799E61d9caDBB6b05539f1d10aAdfA24d70",
-      WALLET_BALANCE_PROVIDER: "0x63F0F2d9C338cA14ffb6D611df7d62710D13EBEF",
-      UI_POOL_DATA_PROVIDER: "0x7C376eBA9e0dDC8c71Be7875618056a0bc071d0e",
-      UI_INCENTIVE_DATA_PROVIDER: "0xA702C5Fe370734D38060621e05215C70e0A6939E"
+      LENDING_POOL_ADDRESS_PROVIDER: "0x7013523049CeC8b06F594edb8c5fb7F232c0Df7C".toLowerCase(),
+      LENDING_POOL: "0x92c61c50B5701d28CfF7e6Bc382E47AaB5920EF4",
+      WETH_GATEWAY: "0xf1485Aa729DF94083ab61B2C65EeA99894Aabdb3",
+      WALLET_BALANCE_PROVIDER: "0x51b7bd5AD903a8672e6BB772700802351DED6784",
+      UI_POOL_DATA_PROVIDER: "0x55ea2d6114e20562Df92AAC44EDf471dFc909f74",
+      UI_INCENTIVE_DATA_PROVIDER: "0x804ED52fed3876A50EdefA6e71FfA35d7b493882"
     }
   },
   ["proto_fantom_testnet_v3" /* proto_fantom_testnet_v3 */]: {
@@ -57899,6 +57914,60 @@ var marketsData = {
       UI_INCENTIVE_DATA_PROVIDER: "0xBaaCc99123133851Ba2D6d34952aa08CBDf5A4E4"
     }
   },
+  ["proto_harmony_v3" /* proto_harmony_v3 */]: {
+    marketTitle: "Harmony",
+    v3: true,
+    chainId: import_contract_helpers2.ChainId.harmony,
+    aTokenPrefix: "AAVA",
+    enabledFeatures: {
+      incentives: true
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: "0x7013523049CeC8b06F594edb8c5fb7F232c0Df7C".toLowerCase(),
+      LENDING_POOL: "0x92c61c50B5701d28CfF7e6Bc382E47AaB5920EF4",
+      WETH_GATEWAY: "0x6f7f2440006221F893c587b88f01afc42B6F8d2e",
+      WALLET_BALANCE_PROVIDER: "0x51b7bd5AD903a8672e6BB772700802351DED6784",
+      UI_POOL_DATA_PROVIDER: "0x452b0f88DD1590979AC1f2052b568D47d6698961",
+      UI_INCENTIVE_DATA_PROVIDER: "0x83Ff84900294eE4c3cfc3c68f6cB965c337044E2"
+    }
+  },
+  ["proto_harmony_testnet_v3" /* proto_harmony_testnet_v3 */]: {
+    marketTitle: "Harmony Testnet",
+    v3: true,
+    chainId: import_contract_helpers2.ChainId.harmony_testnet,
+    aTokenPrefix: "AAVA",
+    enabledFeatures: {
+      faucet: true,
+      incentives: true
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: "0xA5375B08232a0f5e911c8a92B390662e098a579A".toLowerCase(),
+      LENDING_POOL: "0xEce3383269ccE0B2ae66277101996b58c482817B",
+      WETH_GATEWAY: "0x9BBA071d1f2A397Da82687e951bFC0407280E348",
+      FAUCET: "0xE341D799E61d9caDBB6b05539f1d10aAdfA24d70",
+      WALLET_BALANCE_PROVIDER: "0x63F0F2d9C338cA14ffb6D611df7d62710D13EBEF",
+      UI_POOL_DATA_PROVIDER: "0x7C376eBA9e0dDC8c71Be7875618056a0bc071d0e",
+      UI_INCENTIVE_DATA_PROVIDER: "0xA702C5Fe370734D38060621e05215C70e0A6939E"
+    }
+  },
+  ["proto_optimism_v3" /* proto_optimism_v3 */]: {
+    marketTitle: "Optimism",
+    v3: true,
+    chainId: import_contract_helpers2.ChainId.optimism,
+    aTokenPrefix: "AAVA",
+    enabledFeatures: {
+      incentives: true
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: "0x7013523049CeC8b06F594edb8c5fb7F232c0Df7C".toLowerCase(),
+      LENDING_POOL: "0x92c61c50B5701d28CfF7e6Bc382E47AaB5920EF4",
+      WETH_GATEWAY: "0x83Ff84900294eE4c3cfc3c68f6cB965c337044E2",
+      WALLET_BALANCE_PROVIDER: "0x51b7bd5AD903a8672e6BB772700802351DED6784",
+      UI_POOL_DATA_PROVIDER: "0xeb4574A23832D913A981b749796BDC81554A79fF",
+      UI_INCENTIVE_DATA_PROVIDER: "0xf1485Aa729DF94083ab61B2C65EeA99894Aabdb3",
+      L2_ENCODER: "0x77D395Fd770445782B2fCd1a560A5d93FFedf83A"
+    }
+  },
   ["proto_optimism_kovan_v3" /* proto_optimism_kovan_v3 */]: {
     marketTitle: "Optimism Kovan",
     v3: true,
@@ -57917,6 +57986,43 @@ var marketsData = {
       UI_POOL_DATA_PROVIDER: "0x9D2729bC36f9E203002Bc5B5ee2E08C68Bd13794",
       UI_INCENTIVE_DATA_PROVIDER: "0x8AaF462990dD5CC574c94C8266208996426A47e7"
     }
+  },
+  ["proto_polygon_v3" /* proto_polygon_v3 */]: {
+    marketTitle: "Polygon",
+    chainId: import_contract_helpers2.ChainId.polygon,
+    v3: true,
+    aTokenPrefix: "AM",
+    enabledFeatures: {
+      incentives: true
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: "0x7013523049CeC8b06F594edb8c5fb7F232c0Df7C".toLowerCase(),
+      LENDING_POOL: "0x92c61c50B5701d28CfF7e6Bc382E47AaB5920EF4",
+      WETH_GATEWAY: "0x532C90cB5bFC8E929409678224D6D420E25c4F37",
+      WALLET_BALANCE_PROVIDER: "0x51b7bd5AD903a8672e6BB772700802351DED6784",
+      UI_POOL_DATA_PROVIDER: "0x053D55f9B5AF8694c503EB288a1B7E552f590710",
+      UI_INCENTIVE_DATA_PROVIDER: "0xce3Aa85237C075d2102b7B35079d305307D745C8"
+    },
+    halMarketName: "aavepolygon"
+  },
+  ["proto_mumbai_v3" /* proto_mumbai_v3 */]: {
+    marketTitle: "Polygon Mumbai",
+    chainId: import_contract_helpers2.ChainId.mumbai,
+    aTokenPrefix: "AM",
+    enabledFeatures: {
+      incentives: true,
+      faucet: true
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: "0xA5375B08232a0f5e911c8a92B390662e098a579A".toLowerCase(),
+      LENDING_POOL: "0xEce3383269ccE0B2ae66277101996b58c482817B",
+      WETH_GATEWAY: "0x9BBA071d1f2A397Da82687e951bFC0407280E348",
+      FAUCET: "0xE341D799E61d9caDBB6b05539f1d10aAdfA24d70",
+      WALLET_BALANCE_PROVIDER: "0x63F0F2d9C338cA14ffb6D611df7d62710D13EBEF",
+      UI_POOL_DATA_PROVIDER: "0x7C376eBA9e0dDC8c71Be7875618056a0bc071d0e",
+      UI_INCENTIVE_DATA_PROVIDER: "0xA702C5Fe370734D38060621e05215C70e0A6939E"
+    },
+    v3: true
   }
 };
 
@@ -58013,7 +58119,6 @@ var networkConfigs = {
     baseAssetDecimals: 18,
     explorerLink: "https://cchain.explorer.avax-test.network",
     rpcOnly: true,
-    usdMarket: true,
     isTestnet: true,
     networkLogoPath: "/icons/networks/avalanche.svg",
     bridge: {
@@ -58035,7 +58140,6 @@ var networkConfigs = {
     baseAssetDecimals: 18,
     explorerLink: "https://cchain.explorer.avax.network",
     rpcOnly: false,
-    usdMarket: true,
     networkLogoPath: "/icons/networks/avalanche.svg",
     bridge: {
       icon: "/icons/bridge/avalanche.svg",
@@ -58055,8 +58159,25 @@ var networkConfigs = {
     baseAssetDecimals: 18,
     explorerLink: "https://testnet.arbiscan.io",
     rpcOnly: true,
-    usdMarket: true,
     isTestnet: true,
+    networkLogoPath: "/icons/networks/arbitrum.svg",
+    bridge: {
+      icon: "/icons/bridge/arbitrum.svg",
+      name: "Arbitrum Bridge",
+      url: "https://bridge.arbitrum.io"
+    }
+  },
+  [import_contract_helpers3.ChainId.arbitrum_one]: {
+    name: "Arbitrum",
+    publicJsonRPCUrl: ["https://arb1.arbitrum.io/rpc"],
+    publicJsonRPCWSUrl: "wss://arb1.arbitrum.io/rpc",
+    protocolDataUrl: "",
+    baseUniswapAdapter: "0x0",
+    baseAssetSymbol: "ETH",
+    wrappedBaseAssetSymbol: "WETH",
+    baseAssetDecimals: 18,
+    explorerLink: "https://testnet.arbiscan.io",
+    rpcOnly: true,
     networkLogoPath: "/icons/networks/arbitrum.svg",
     bridge: {
       icon: "/icons/bridge/arbitrum.svg",
@@ -58075,8 +58196,6 @@ var networkConfigs = {
     baseAssetDecimals: 18,
     explorerLink: "https://explorer.harmony.one",
     rpcOnly: true,
-    usdMarket: true,
-    isTestnet: true,
     networkLogoPath: "/icons/networks/harmony.svg",
     bridge: {
       icon: "/icons/bridge/harmony.svg",
@@ -58095,7 +58214,6 @@ var networkConfigs = {
     baseAssetDecimals: 18,
     explorerLink: "https://explorer.pops.one",
     rpcOnly: true,
-    usdMarket: true,
     isTestnet: true,
     networkLogoPath: "/icons/networks/harmony.svg",
     bridge: {
@@ -58115,8 +58233,6 @@ var networkConfigs = {
     baseAssetDecimals: 18,
     explorerLink: "https://optimistic.etherscan.io",
     rpcOnly: true,
-    usdMarket: true,
-    isTestnet: true,
     networkLogoPath: "/icons/networks/optimism.svg",
     bridge: {
       icon: "/icons/bridge/optimism.svg",
@@ -58130,12 +58246,11 @@ var networkConfigs = {
     publicJsonRPCWSUrl: "wss://ws-kovan.optimism.io",
     protocolDataUrl: "",
     baseUniswapAdapter: "0x0",
-    baseAssetSymbol: "OR",
+    baseAssetSymbol: "ETH",
     wrappedBaseAssetSymbol: "WETH",
     baseAssetDecimals: 18,
     explorerLink: "https://kovan-optimistic.etherscan.io",
     rpcOnly: true,
-    usdMarket: true,
     isTestnet: true,
     networkLogoPath: "/icons/networks/optimism.svg",
     bridge: {
@@ -58155,8 +58270,6 @@ var networkConfigs = {
     baseAssetDecimals: 18,
     explorerLink: "https://ftmscan.com",
     rpcOnly: true,
-    usdMarket: true,
-    isTestnet: true,
     networkLogoPath: "/icons/networks/fantom.svg",
     bridge: {
       icon: "/icons/bridge/fantom.svg",
@@ -58175,7 +58288,6 @@ var networkConfigs = {
     baseAssetDecimals: 18,
     explorerLink: "https://testnet.ftmscan.com",
     rpcOnly: true,
-    usdMarket: true,
     isTestnet: true,
     networkLogoPath: "/icons/networks/fantom.svg",
     bridge: {
@@ -58187,8 +58299,8 @@ var networkConfigs = {
 };
 
 // src/utils/marketsAndNetworksConfig.ts
-var _a;
-var ENABLE_TESTNET = process.env.ENABLE_TESTNET === "true" || ((_a = global == null ? void 0 : global.window) == null ? void 0 : _a.localStorage.getItem("testnetsEnabled")) === "true";
+var _a, _b;
+var ENABLE_TESTNET = !((_a = global == null ? void 0 : global.window) == null ? void 0 : _a.localStorage.getItem("testnetsEnabled")) && process.env.ENABLE_TESTNET === "true" || ((_b = global == null ? void 0 : global.window) == null ? void 0 : _b.localStorage.getItem("testnetsEnabled")) === "true";
 var _a2;
 var FORK_ENABLED = ((_a2 = global == null ? void 0 : global.window) == null ? void 0 : _a2.localStorage.getItem("forkEnabled")) === "true";
 var _a3;
@@ -58276,13 +58388,10 @@ var getProvider = (chainId) => {
 };
 
 // src/modules/governance/utils/governanceProvider.tsx
-var governanceContract;
-if (governanceConfig) {
-  governanceContract = new import_contract_helpers5.AaveGovernanceService(getProvider(governanceConfig.chainId), {
-    GOVERNANCE_ADDRESS: governanceConfig.addresses.AAVE_GOVERNANCE_V2,
-    GOVERNANCE_HELPER_ADDRESS: governanceConfig.addresses.AAVE_GOVERNANCE_V2_HELPER
-  });
-}
+var governanceContract = new import_contract_helpers5.AaveGovernanceService(getProvider(governanceConfig.chainId), {
+  GOVERNANCE_ADDRESS: governanceConfig.addresses.AAVE_GOVERNANCE_V2,
+  GOVERNANCE_HELPER_ADDRESS: governanceConfig.addresses.AAVE_GOVERNANCE_V2_HELPER
+});
 
 // src/static-build/ipfs.ts
 var import_path2 = require("path");
@@ -58326,14 +58435,14 @@ _Writer_filename = /* @__PURE__ */ new WeakMap(), _Writer_tempFilename = /* @__P
   });
 }, _Writer_write = function _Writer_write2(data) {
   return __async(this, null, function* () {
-    var _a7, _b;
+    var _a7, _b2;
     __classPrivateFieldSet(this, _Writer_locked, true, "f");
     try {
       yield import_fs.default.promises.writeFile(__classPrivateFieldGet(this, _Writer_tempFilename, "f"), data, "utf-8");
       yield import_fs.default.promises.rename(__classPrivateFieldGet(this, _Writer_tempFilename, "f"), __classPrivateFieldGet(this, _Writer_filename, "f"));
       (_a7 = __classPrivateFieldGet(this, _Writer_prev, "f")) === null || _a7 === void 0 ? void 0 : _a7[0]();
     } catch (err) {
-      (_b = __classPrivateFieldGet(this, _Writer_prev, "f")) === null || _b === void 0 ? void 0 : _b[1](err);
+      (_b2 = __classPrivateFieldGet(this, _Writer_prev, "f")) === null || _b2 === void 0 ? void 0 : _b2[1](err);
       throw err;
     } finally {
       __classPrivateFieldSet(this, _Writer_locked, false, "f");
@@ -58568,8 +58677,8 @@ var db2 = new LowWithLodash2(adapter2);
 db2.read();
 var Proposal2 = class {
   count() {
-    var _a7, _b;
-    return ((_b = (_a7 = db2.data) == null ? void 0 : _a7.proposals) == null ? void 0 : _b.length) || 0;
+    var _a7, _b2;
+    return ((_b2 = (_a7 = db2.data) == null ? void 0 : _a7.proposals) == null ? void 0 : _b2.length) || 0;
   }
   get(id) {
     const value = db2.chain.get("proposals").find({ id }).value();

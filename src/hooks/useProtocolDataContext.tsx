@@ -1,5 +1,6 @@
 // import { BaseNetworkConfig } from "../ui-config/networksConfig";
 import { providers } from 'ethers';
+import { useRouter } from 'next/router';
 import React, { PropsWithChildren, useContext, useEffect, useState } from 'react';
 
 import {
@@ -74,25 +75,38 @@ export interface ProtocolContextData {
 
 const PoolDataContext = React.createContext({} as ProtocolContextData);
 
+const returnValidMarket = (market: string | CustomMarket | null): CustomMarket | undefined =>
+  market && availableMarkets.includes(market as CustomMarket)
+    ? (market as CustomMarket)
+    : undefined;
+
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function ProtocolDataProvider({ children }: PropsWithChildren<{}>) {
+  const { query, pathname, push } = useRouter();
   // const [markets, setMarkets] = useState(marketsData);
   // const [networkConfigs, setNetworkConfigs] = useState(_networkConfigs);
-  const [currentMarket, setCurrentMarket] = useState<CustomMarket>(availableMarkets[0]);
+  const [currentMarket, setCurrentMarket] = useState<CustomMarket>(
+    (typeof window !== 'undefined' && returnValidMarket(localStorage.getItem(LS_KEY))) ||
+      availableMarkets[0]
+  );
   const currentMarketData = marketsData[currentMarket];
 
   const handleSetMarket = (market: CustomMarket) => {
+    if (market === currentMarket) return;
     localStorage.setItem(LS_KEY, market);
     setCurrentMarket(market);
+    push(pathname, { query: { ...query, marketName: market } }, { shallow: true });
   };
 
   // set the last selected market onload
   useEffect(() => {
-    const cachedMarket = localStorage.getItem(LS_KEY) as CustomMarket | undefined;
-    if (cachedMarket && availableMarkets.includes(cachedMarket)) {
+    const cachedMarket = localStorage.getItem(LS_KEY) as CustomMarket;
+    if (returnValidMarket(query.marketName as string)) {
+      setCurrentMarket(query.marketName as CustomMarket);
+    } else if (returnValidMarket(localStorage.getItem(LS_KEY))) {
       setCurrentMarket(cachedMarket);
     }
-  }, []);
+  }, [query.marketName]);
 
   // set the available markets
   // useEffect(() => {
