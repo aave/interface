@@ -1,7 +1,7 @@
 // src/index.js
 import { i18n } from '@lingui/core';
 import { I18nProvider } from '@lingui/react';
-import { en, es } from 'make-plural/plurals';
+import { en, es, fr } from 'make-plural/plurals';
 import React, { useEffect } from 'react';
 
 import { messages } from '../locales/en/messages.js';
@@ -9,16 +9,18 @@ import { messages } from '../locales/en/messages.js';
 i18n.loadLocaleData({
   en: { plurals: en },
   es: { plurals: es },
+  fr: { plurals: fr },
 });
 i18n.load('en', messages);
 i18n.activate('en');
 
 export const DEFAULT_LOCALE = 'en';
 
-export const SUPPORTED_LANGUAGES = ['en', 'es'];
+export const SUPPORTED_LANGUAGES = ['en', 'es', 'fr'];
 export const LANG_MAP = {
   en: 'English',
   es: 'Spanish',
+  fr: 'French',
 };
 
 /**

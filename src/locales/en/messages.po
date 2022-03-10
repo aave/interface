@@ -562,6 +562,10 @@ msgstr "Faucet {0}"
 msgid "Filter"
 msgstr "Filter"
 
+#: src/layouts/components/LanguageSwitcher.tsx
+msgid "French"
+msgstr "French"
+
 #: src/modules/staking/StakingHeader.tsx
 msgid "Funds in the Safety Module"
 msgstr "Funds in the Safety Module"
