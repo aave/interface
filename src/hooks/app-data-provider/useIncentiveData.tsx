@@ -23,13 +23,11 @@ export interface UserIncentiveResponse {
 
 export const useIncentiveData = (skip = false) => {
   const { currentAccount } = useWeb3Context();
-  const { currentChainId, currentMarketData, currentNetworkConfig } = useProtocolDataContext();
+  const { currentChainId, currentMarketData } = useProtocolDataContext();
   const { isRPCActive } = useConnectionStatusContext();
 
   const rpcMode =
-    isRPCActive ||
-    !currentNetworkConfig.cachingServerUrl ||
-    !currentNetworkConfig.cachingWSServerUrl;
+    isRPCActive || !currentMarketData.cachingServerUrl || !currentMarketData.cachingWSServerUrl;
 
   const { loading: cachedDataLoading, error: cachedDataError } = useIncentivesDataCached(
     currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,

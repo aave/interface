@@ -7,13 +7,11 @@ import { usePoolDataRPC } from './usePoolDataRPC';
 
 export const usePoolData = () => {
   const { currentAccount } = useWeb3Context();
-  const { currentMarketData, currentChainId, currentNetworkConfig } = useProtocolDataContext();
+  const { currentMarketData, currentChainId } = useProtocolDataContext();
   const { isRPCActive } = useConnectionStatusContext();
 
   const rpcMode =
-    isRPCActive ||
-    !currentNetworkConfig.cachingWSServerUrl ||
-    !currentNetworkConfig.cachingServerUrl;
+    isRPCActive || !currentMarketData.cachingWSServerUrl || !currentMarketData.cachingServerUrl;
 
   const { loading: cachedDataLoading } = usePoolDataCached(
     currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,

@@ -17,7 +17,7 @@ import gql from 'graphql-tag';
 import { Client, ClientOptions, createClient } from 'graphql-ws';
 
 import { getStakeConfig } from '../ui-config/stakeConfig';
-import { networkConfigs } from './marketsAndNetworksConfig';
+import { marketsData } from './marketsAndNetworksConfig';
 
 /**
  *
@@ -116,7 +116,7 @@ const getStakeLink = (link?: ApolloLink) => {
 export const getApolloClient = () => {
   const link = getStakeLink();
 
-  const combinedLink = Object.entries(networkConfigs).reduce((acc, [key, cfg]) => {
+  const combinedLink = Object.entries(marketsData).reduce((acc, [key, cfg]) => {
     if (cfg.cachingServerUrl && cfg.cachingWSServerUrl && typeof window !== 'undefined') {
       const condition = (operation: Operation) =>
         operation.getContext().target === APOLLO_QUERY_TARGET.CHAIN(key as unknown as number);
