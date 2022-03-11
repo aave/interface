@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-11 15:30\n"
+"PO-Revision-Date: 2022-03-11 15:39\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -89,7 +89,7 @@ msgstr "Cuenta"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add {0}{1} to the wallet"
-msgstr "Añadir {0}{1} al monedero"
+msgstr "Añadir {0}{1} a la billetera"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "All"
@@ -350,7 +350,7 @@ msgstr ""
 #: src/components/WalletConnection/ConnectWalletButton.tsx
 #: src/layouts/WalletWidget.tsx
 msgid "Connect wallet"
-msgstr "Conectar Cartera"
+msgstr "Conectar billetera"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
@@ -375,7 +375,7 @@ msgstr ""
 
 #: src/layouts/WalletWidget.tsx
 msgid "Copy address"
-msgstr ""
+msgstr "Copiar dirección"
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Copy error text"
@@ -469,7 +469,7 @@ msgstr "Deshabilitar este activo como garantía afecta su poder de préstamo y F
 
 #: src/layouts/WalletWidget.tsx
 msgid "Disconnect Wallet"
-msgstr "Desconectar cartera"
+msgstr "Desconectar billetera"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Discord"
@@ -746,7 +746,7 @@ msgstr ""
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Need help connecting a wallet? <0>Read our FAQ</0>"
-msgstr ""
+msgstr "¿Necesitas ayuda para conectar una billetera? <0>Lee nuestras preguntas frecuentes</0>"
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Net APR"
@@ -762,11 +762,11 @@ msgstr ""
 
 #: src/layouts/WalletWidget.tsx
 msgid "Network"
-msgstr ""
+msgstr "Red"
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Network not supported for this wallet"
-msgstr ""
+msgstr "Red no soportada para esta billetera"
 
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "New APY"
@@ -794,7 +794,7 @@ msgstr ""
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
 msgid "Not enough balance on your wallet"
-msgstr "No hay suficiente saldo en su cartera"
+msgstr "No hay suficiente saldo en su billetera"
 
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Not enough staked balance"
@@ -843,7 +843,7 @@ msgstr "Pendiente..."
 
 #: src/components/ConnectWalletPaper.tsx
 msgid "Please connect your wallet to see your supplies, borrowings, and open positions."
-msgstr "Por favor, conecte su cartera para ver sus suministros, préstamos y posiciones abiertas."
+msgstr "Por favor, conecte su billetera para ver sus suministros, préstamos y posiciones abiertas."
 
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Please switch to {networkName}."
@@ -851,7 +851,7 @@ msgstr "Por favor, cambie a {networkName}."
 
 #: src/components/ConnectWalletPaper.tsx
 msgid "Please, connect your wallet"
-msgstr "Por favor, conecte su cartera"
+msgstr "Por favor, conecte su billetera"
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Price impact"
@@ -968,7 +968,7 @@ msgstr "Seguridad de su garantía depositada contra los activos prestados y su v
 
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Seems like we can't switch the network automatically. Please check if you can change it from the wallet."
-msgstr "Parece que no podemos cambiar la red automáticamente. Por favor, compruebe si puede cambiarla desde la cartera."
+msgstr "Parece que no podemos cambiar la red automáticamente. Por favor, compruebe si puede cambiarla desde la billetera."
 
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
 msgid "Select APY type to switch"
@@ -1000,7 +1000,7 @@ msgstr "Mostrar activos con 0 saldo"
 
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
-msgstr ""
+msgstr "Puesto que esta es una red de pruebas, puede obtener cualquiera de los activos si tiene ETH en su billetera"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Spanish"
@@ -1121,7 +1121,7 @@ msgstr "Intercambiar"
 
 #: src/components/transactions/Swap/SwapActions.tsx
 msgid "Swapping"
-msgstr ""
+msgstr "Intercambiando"
 
 #: src/components/transactions/RateSwitch/RateSwitchModal.tsx
 msgid "Switch APY type"
@@ -1129,11 +1129,11 @@ msgstr ""
 
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Switch Network"
-msgstr ""
+msgstr "Cambiar de red"
 
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switch rate"
-msgstr ""
+msgstr "Tasa de cambio"
 
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switching rate"
@@ -1169,7 +1169,7 @@ msgstr ""
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "There are not enough funds in the{0}reserve to borrow"
-msgstr ""
+msgstr "No hay fondos suficientes en la reserva{0}para pedir préstamos"
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "There was some <0>error</0>. Please try changing the parameters."
@@ -1177,7 +1177,7 @@ msgstr ""
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
-msgstr ""
+msgstr "Estos fondos han sido prestados y no están disponibles para su retirada en este momento."
 
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has almost reached its borrow cap. There is only {messageValue} available to be borrowed from this market."
@@ -1205,7 +1205,7 @@ msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Time left to be able to withdraw your staked asset."
-msgstr ""
+msgstr "Tiempo restante para poder retirar su activo apostado."
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Time left to unstake"
@@ -1213,7 +1213,7 @@ msgstr ""
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "To borrow you need to supply any asset to be used as collateral."
-msgstr ""
+msgstr "Para tomar prestado, necesita proporcionar cualquier activo para ser utilizado como garantía."
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "To prevent gaming the stable rate you can only borrow, when you borrow more then your current collateral in the same asset."
@@ -1225,31 +1225,31 @@ msgstr ""
 
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total available"
-msgstr ""
+msgstr "Total disponible"
 
 #: src/modules/markets/AssetsList.tsx
 #: src/modules/markets/AssetsListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Total borrowed"
-msgstr ""
+msgstr "Total prestado"
 
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total borrows"
-msgstr ""
+msgstr "Total de préstamos"
 
 #: src/modules/staking/StakingHeader.tsx
 msgid "Total emission per day"
-msgstr ""
+msgstr "Emisiones totales por día"
 
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total market size"
-msgstr ""
+msgstr "Tamaño total del mercado"
 
 #: src/modules/markets/AssetsList.tsx
 #: src/modules/markets/AssetsListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Total supplied"
-msgstr ""
+msgstr "Total suministrado"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Total voting power"
@@ -1261,7 +1261,7 @@ msgstr ""
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Transaction failed"
-msgstr ""
+msgstr "Error en la transacción"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Transaction overview"
@@ -1324,7 +1324,7 @@ msgstr ""
 
 #: src/layouts/WalletWidget.tsx
 msgid "View on Explorer"
-msgstr ""
+msgstr "Ver en el explorador"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Vote NAY"
@@ -1347,22 +1347,22 @@ msgstr ""
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Voting results"
-msgstr ""
+msgstr "Resultados de la votación"
 
 #: pages/faucet.page.tsx
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Wallet balance"
-msgstr ""
+msgstr "Saldo de la billetera"
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Wallet not detected. Connect or install wallet and retry"
-msgstr ""
+msgstr "Billetera no detectada. Conecte o instale el monedero y vuelva a intentarlo"
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
-msgstr ""
+msgstr "Las billeteras son proporcionadas por proveedores externos y al seleccionar usted acepta los términos de dichos proveedores. Su acceso a la billetera podría depender de que el proveedor externo esté operativo."
 
 #: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake."
@@ -1370,7 +1370,7 @@ msgstr ""
 
 #: src/components/transactions/FlowCommons/LeftHelperText.tsx
 msgid "Why do I need to approve?"
-msgstr ""
+msgstr "¿Por qué necesito aprobarlo?"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "With a voting power of <0/>"
@@ -1380,19 +1380,19 @@ msgstr ""
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Withdraw"
-msgstr ""
+msgstr "Retirar"
 
 #: src/components/transactions/Withdraw/WithdrawActions.tsx
 msgid "Withdraw {symbol}"
-msgstr ""
+msgstr "Retirar {symbol}"
 
 #: src/components/transactions/Withdraw/WithdrawActions.tsx
 msgid "Withdrawing {symbol}"
-msgstr ""
+msgstr "Retirando {symbol}"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Wrong Network"
-msgstr ""
+msgstr "Red incorrecta"
 
 #: src/modules/governance/VoteBar.tsx
 msgid "YAE"
@@ -1400,11 +1400,11 @@ msgstr ""
 
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "You are entering Isolation mode"
-msgstr ""
+msgstr "Estás entrando en el modo de aislamiento"
 
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "You can not change Interest Type to stable as your borrowings are higher than your collateral"
-msgstr ""
+msgstr "No puede cambiar el Tipo de Interés a estable, ya que sus préstamos son más altos que su garantía"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "You can not disable E-Mode as your current collateralization level is above 80%, disabling E-Mode can cause liquidation. To exit E-Mode supply or repay borrowed positions."
@@ -1416,7 +1416,7 @@ msgstr ""
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You can not use this currency as collateral"
-msgstr ""
+msgstr "No puede usar esta moneda como garantía"
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "You can not withdraw this amount because it will cause collateral call"
