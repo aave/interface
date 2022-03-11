@@ -46,7 +46,7 @@ export const ConnectionStatusProvider: React.FC = ({ children }) => {
   }, [RPC_ONLY_MODE]);
 
   const graphValid = useGraphValid(APOLLO_QUERY_TARGET.CHAIN(currentChainId));
-
+  console.log('preferredConnectionMode:: ', preferredConnectionMode);
   const isRPCMandatory = RPC_ONLY_MODE || !graphValid;
   const isRPCActive = preferredConnectionMode === ConnectionMode.rpc || isRPCMandatory;
   return (

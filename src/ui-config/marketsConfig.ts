@@ -131,6 +131,7 @@ export const marketsData: {
       collateralRepay: true,
       incentives: true,
     },
+    rpcOnly: false,
     cachingServerUrl: 'https://cache-api-1.aave.com/graphql',
     cachingWSServerUrl: 'wss://cache-api-1.aave.com/graphql',
     addresses: {

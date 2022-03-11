@@ -128,6 +128,7 @@ export const getApolloClient = () => {
         split((operation) => condition(operation), http, acc)
       );
     }
+    console.log(acc);
     return acc;
   }, link);
 
