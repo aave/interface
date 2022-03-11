@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-10 18:18\n"
+"PO-Revision-Date: 2022-03-11 18:18\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -1499,7 +1499,7 @@ msgid "Your voting info"
 msgstr ""
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
-msgid "Your {networkName} wallet is empty. Purchase/buy/transfer assets"
+msgid "Your {networkName} wallet is empty. Purchase or transfer assets"
 msgstr ""
 
 #: src/modules/markets/AssetsList.tsx
