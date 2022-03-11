@@ -1494,8 +1494,8 @@ msgid "Your voting info"
 msgstr "Your voting info"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
-msgid "Your {networkName} wallet is empty. Purchase/buy/transfer assets"
-msgstr "Your {networkName} wallet is empty. Purchase/buy/transfer assets"
+msgid "Your {networkName} wallet is empty. Purchase or transfer assets"
+msgstr "Your {networkName} wallet is empty. Purchase or transfer assets"
 
 #: src/modules/markets/AssetsList.tsx
 msgid "assets"
