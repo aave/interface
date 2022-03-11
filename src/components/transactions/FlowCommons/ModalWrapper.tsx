@@ -45,7 +45,7 @@ export const ModalWrapper: React.FC<{
   const { chainId: connectedChainId } = useWeb3Context();
   const { walletBalances } = useWalletBalances();
   const { currentChainId: marketChainId, currentNetworkConfig } = useProtocolDataContext();
-  const { user } = useAppDataContext();
+  const { user, reserves } = useAppDataContext();
   const { approvalTxState, mainTxState } = useModalContext();
 
   if (mainTxState.txError || approvalTxState.txError) {
@@ -56,6 +56,12 @@ export const ModalWrapper: React.FC<{
 
   const requiredChainId = _requiredChainId ? _requiredChainId : marketChainId;
   const isWrongNetwork = connectedChainId !== requiredChainId;
+
+  const poolReserve = reserves.find((reserve) => {
+    if (underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase())
+      return reserve.isWrappedBaseAsset;
+    return underlyingAsset === reserve.underlyingAsset;
+  }) as ComputedReserveData;
 
   const userReserve = user?.userReservesData.find((userReserve) => {
     if (underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase())
@@ -86,7 +92,7 @@ export const ModalWrapper: React.FC<{
         isWrongNetwork,
         nativeBalance: walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()].amount,
         tokenBalance: walletBalances[userReserve.reserve.underlyingAsset].amount,
-        poolReserve: userReserve.reserve,
+        poolReserve,
         symbol,
         underlyingAsset,
         userReserve,
