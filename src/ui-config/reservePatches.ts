@@ -93,6 +93,15 @@ export function fetchIconSymbolAndName({
       symbol,
     };
   }
+  //for fantom usdt => fUSDT
+  if (/fUSDT/.test(symbol)) {
+    const rawSymbol = symbol.replace('f', '');
+    return {
+      iconSymbol: rawSymbol || symbol,
+      name: NAME_MAP[rawSymbol] || rawSymbol,
+      symbol,
+    };
+  }
   return {
     iconSymbol: SYMBOL_MAP[symbol] || symbol,
     name: NAME_MAP[symbol] || symbol,
