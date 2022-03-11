@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-11 15:02\n"
+"PO-Revision-Date: 2022-03-11 15:17\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -35,7 +35,7 @@ msgstr "Los poseedores de AAVE pueden apostar su AAVE en el Módulo de Seguridad
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
 msgid "ACTIVATE COOLDOWN"
-msgstr ""
+msgstr "ACTIVAR ENFRIARSE"
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/IncentivesTooltipContent.tsx
@@ -443,49 +443,49 @@ msgstr "Desarrolladores"
 #: pages/governance/proposal/[proposalId].governance.tsx
 #: src/modules/governance/ProposalListItem.tsx
 msgid "Differential"
-msgstr ""
+msgstr "Diferencial"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Disable E-Mode"
-msgstr ""
+msgstr "Desactivar el modo E"
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 msgid "Disable {symbol} as collateral"
-msgstr ""
+msgstr "Desactivar {symbol} como garantía"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Disabled"
-msgstr ""
+msgstr "Deshabilitado"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Disabling E-Mode"
-msgstr ""
+msgstr "Desactivando el modo E"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "Disabling this asset as collateral affects your borrowing power and Health Factor."
-msgstr ""
+msgstr "Deshabilitar este activo como garantía afecta su poder de préstamo y Factor de Salud."
 
 #: src/layouts/WalletWidget.tsx
 msgid "Disconnect Wallet"
-msgstr ""
+msgstr "Desconectar cartera"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Discord"
-msgstr ""
+msgstr "Discord"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Discussion"
-msgstr ""
+msgstr "Debate"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode"
-msgstr ""
+msgstr "Modo E"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "E-Mode category"
-msgstr ""
+msgstr "Categoría del modo E"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode increases your borrowing power for a selected category of assets up to 97%. <0>Learn more</0>"
@@ -493,12 +493,12 @@ msgstr ""
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Efficiency mode (E-Mode)"
-msgstr ""
+msgstr "Modo de eficiencia (Modo-E)"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Enable E-Mode"
-msgstr ""
+msgstr "Habilitar Modo-E"
 
 #: src/layouts/components/TestNetModeSwitcher.tsx
 msgid "Enable Testnet mode"
@@ -506,16 +506,16 @@ msgstr ""
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 msgid "Enable {symbol} as collateral"
-msgstr ""
+msgstr "Desactivar {symbol} como garantía"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Enabled"
-msgstr ""
+msgstr "Activado"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Enabled in isolation"
-msgstr ""
+msgstr "Habilitado en aislamiento"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Enabling E-Mode"
@@ -531,76 +531,76 @@ msgstr ""
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "English"
-msgstr ""
+msgstr "Inglés"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Enter ETH address"
-msgstr ""
+msgstr "Introduzca la dirección ETH"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Enter an amount"
-msgstr ""
+msgstr "Ingrese una cantidad"
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Error connecting. Try refreshing the page."
-msgstr ""
+msgstr "Error de conexión. Intenta actualizar la página."
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Executed"
-msgstr ""
+msgstr "Ejecutado"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "FAQ"
-msgstr ""
+msgstr "FAQ"
 
 #: pages/faucet.page.tsx
 #: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Faucet"
-msgstr ""
+msgstr "Faucet"
 
 #: src/components/transactions/Faucet/FaucetActions.tsx
 msgid "Faucet {0}"
-msgstr ""
+msgstr "Faucet {0}"
 
 #: src/modules/governance/ProposalsList.tsx
 msgid "Filter"
-msgstr ""
+msgstr "Filtro"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "French"
-msgstr ""
+msgstr "Francés"
 
 #: src/modules/staking/StakingHeader.tsx
 msgid "Funds in the Safety Module"
-msgstr ""
+msgstr "Fondos en el módulo de seguridad"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Github"
-msgstr ""
+msgstr "Github"
 
 #: src/layouts/MobileMenu.tsx
 #: src/layouts/SettingsMenu.tsx
 msgid "Global settings"
-msgstr ""
+msgstr "Configuración global"
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Go Back"
-msgstr ""
+msgstr "Volver atrás"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
-msgstr ""
+msgstr "Gobernanza"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/dashboard/DashboardTopPanel.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Health factor"
-msgstr ""
+msgstr "Factor de salud"
 
 #: src/components/lists/ListWrapper.tsx
 msgid "Hide"
-msgstr ""
+msgstr "Ocultar"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "I understand how cooldown ({0}) and unstaking ({1}) work"
@@ -608,7 +608,7 @@ msgstr ""
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "If the health factor goes below 1, the liquidation of your collateral might be triggered."
-msgstr ""
+msgstr "Si el factor de salud se encuentra por debajo de 1, la liquidación de su colateral puede ser activada."
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "If you DO NOT unstake within {0} of unstake window, you will need to activate cooldown process again."
@@ -616,7 +616,7 @@ msgstr ""
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "If your loan to value goes above the liquidation threshold your collateral supplied may be liquidated."
-msgstr ""
+msgstr "Si su préstamo a valor supera el umbral de liquidación, su garantía puede ser liquidada."
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "In E-Mode some assets are not borrowable. Exit E-Mode to get access to all assets"
@@ -624,7 +624,7 @@ msgstr ""
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "In Isolation mode you cannot supply other assets as collateral for borrowing. Assets used as collateral in Isolation mode can only be borrowed to a specific debt ceiling."
-msgstr ""
+msgstr "En el modo de aislamiento no se pueden proporcionar otros activos como garantía para el préstamos. Los activos utilizados como garantía en el modo de aislamiento sólo se pueden tomar prestados a un bloqueo de deuda específico."
 
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "In Isolation mode, you cannot supply other assets as collateral. A global debt ceiling limits the borrowing power of the isolated asset. Read more in our <0>FAQ</0>"
@@ -794,19 +794,19 @@ msgstr ""
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
 msgid "Not enough balance on your wallet"
-msgstr ""
+msgstr "No hay suficiente saldo en su cartera"
 
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Not enough staked balance"
-msgstr ""
+msgstr "No hay suficiente saldo apostado"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Not enough voting power to participate in this proposal"
-msgstr ""
+msgstr "No hay suficiente poder de voto para participar en esta propuesta"
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Nothing borrowed yet"
-msgstr ""
+msgstr "Nada prestado aún"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Nothing staked"
@@ -818,23 +818,23 @@ msgstr ""
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Ok, Close"
-msgstr ""
+msgstr "Vale, cerrar"
 
 #: src/components/TextWithModal.tsx
 msgid "Ok, I got it"
-msgstr ""
+msgstr "Vale, lo tengo"
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Oracle price"
-msgstr ""
+msgstr "Precio del oráculo"
 
 #: pages/reserve-overview.page.tsx
 msgid "Overview"
-msgstr ""
+msgstr "Resumen"
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Participating in this {symbol} reserve gives annualized rewards."
-msgstr ""
+msgstr "Participar en esta reserva de {symbol} da recompensas anuales."
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 #: src/components/transactions/Faucet/FaucetActions.tsx
@@ -1508,7 +1508,7 @@ msgstr ""
 
 #: src/modules/governance/proposal/ProposalTopPanel.tsx
 msgid "back"
-msgstr ""
+msgstr "atras"
 
 #: src/components/transactions/Emode/EmodeSelect.tsx
 #: src/components/transactions/Emode/EmodeSelect.tsx
@@ -1517,7 +1517,7 @@ msgstr ""
 
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "documentation"
-msgstr ""
+msgstr "documentación"
 
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "ends"
@@ -1529,7 +1529,7 @@ msgstr ""
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "here."
-msgstr ""
+msgstr "aquí."
 
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "is an asset affected by rebasing. Visit the"
@@ -1541,7 +1541,7 @@ msgstr ""
 
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "or"
-msgstr ""
+msgstr "o"
 
 #: src/components/transactions/GasStation/GasStation.tsx
 msgid "or enter custom fee value"
@@ -1561,7 +1561,7 @@ msgstr ""
 
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "to learn more."
-msgstr ""
+msgstr "para obtener más información."
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "tokens is not the same as staking them. If you wish to stake your"
