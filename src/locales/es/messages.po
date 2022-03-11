@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-11 15:17\n"
+"PO-Revision-Date: 2022-03-11 15:30\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -81,7 +81,7 @@ msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Aave per month"
-msgstr ""
+msgstr "Aave por mes"
 
 #: src/layouts/WalletWidget.tsx
 msgid "Account"
@@ -319,7 +319,7 @@ msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Claimable AAVE"
-msgstr ""
+msgstr "AAVE Reclamable"
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsActions.tsx
 msgid "Claiming"
@@ -350,7 +350,7 @@ msgstr ""
 #: src/components/WalletConnection/ConnectWalletButton.tsx
 #: src/layouts/WalletWidget.tsx
 msgid "Connect wallet"
-msgstr ""
+msgstr "Conectar Cartera"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
@@ -399,7 +399,7 @@ msgstr ""
 
 #: src/layouts/components/DarkModeSwitcher.tsx
 msgid "Dark mode"
-msgstr ""
+msgstr "Modo oscuro"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 #: src/ui-config/menu-items/index.tsx
@@ -409,7 +409,7 @@ msgstr ""
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 msgid "Debt"
-msgstr ""
+msgstr "Deuda"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Debt ceiling"
@@ -644,7 +644,7 @@ msgstr ""
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Language"
-msgstr ""
+msgstr "Idioma"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
@@ -705,12 +705,12 @@ msgstr ""
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Market"
-msgstr ""
+msgstr "Mercado"
 
 #: src/modules/markets/MarketsTopPanel.tsx
 #: src/ui-config/menu-items/index.tsx
 msgid "Markets"
-msgstr ""
+msgstr "Mercados"
 
 #: src/components/transactions/AssetInput.tsx
 msgid "Max"
@@ -738,7 +738,7 @@ msgstr ""
 
 #: src/layouts/MoreMenu.tsx
 msgid "More"
-msgstr ""
+msgstr "Más"
 
 #: src/modules/governance/VoteBar.tsx
 msgid "NEY"
@@ -839,35 +839,35 @@ msgstr "Participar en esta reserva de {symbol} da recompensas anuales."
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 #: src/components/transactions/Faucet/FaucetActions.tsx
 msgid "Pending..."
-msgstr ""
+msgstr "Pendiente..."
 
 #: src/components/ConnectWalletPaper.tsx
 msgid "Please connect your wallet to see your supplies, borrowings, and open positions."
-msgstr ""
+msgstr "Por favor, conecte su cartera para ver sus suministros, préstamos y posiciones abiertas."
 
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Please switch to {networkName}."
-msgstr ""
+msgstr "Por favor, cambie a {networkName}."
 
 #: src/components/ConnectWalletPaper.tsx
 msgid "Please, connect your wallet"
-msgstr ""
+msgstr "Por favor, conecte su cartera"
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Price impact"
-msgstr ""
+msgstr "Impacto del precio"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Proposal details"
-msgstr ""
+msgstr "Detalles de la propuesta"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Proposal overview"
-msgstr ""
+msgstr "Resumen de la propuesta"
 
 #: src/modules/governance/ProposalsList.tsx
 msgid "Proposals"
-msgstr ""
+msgstr "Propuestas"
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
@@ -877,62 +877,62 @@ msgstr ""
 #: pages/governance/proposal/[proposalId].governance.tsx
 #: src/modules/governance/ProposalListItem.tsx
 msgid "Quorum"
-msgstr ""
+msgstr "Quorum"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Recipient address"
-msgstr ""
+msgstr "Dirección del destinatario"
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Rejected connection request"
-msgstr ""
+msgstr "Solicitud de conexión rechazada"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Repay/RepayModalContent.tsx
 msgid "Remaining debt"
-msgstr ""
+msgstr "Deuda restante"
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "Remaining supply"
-msgstr ""
+msgstr "Suministro restante"
 
 #: src/components/transactions/Repay/RepayModal.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 msgid "Repay"
-msgstr ""
+msgstr "Reembolso"
 
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 msgid "Repay with"
-msgstr ""
+msgstr "Reembolsar en"
 
 #: src/components/transactions/Repay/RepayActions.tsx
 msgid "Repay {symbol}"
-msgstr ""
+msgstr "Reembolsar {symbol}"
 
 #: src/components/transactions/Repay/RepayActions.tsx
 msgid "Repaying {symbol}"
-msgstr ""
+msgstr "Reembolsando {symbol}"
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Reserve Size"
-msgstr ""
+msgstr "Tamaño de la reserva"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Reserve status & configuration"
-msgstr ""
+msgstr "Configuración y estado de la reserva"
 
 #: src/components/transactions/FlowCommons/LeftHelperText.tsx
 msgid "Retry What?"
-msgstr ""
+msgstr "¿Reintentar qué?"
 
 #: src/components/infoModalContents/RetryWithApprovalInfoContent.tsx
 msgid "Retry with Approval"
-msgstr ""
+msgstr "Reintentar con aprobación"
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Retry with approval"
-msgstr ""
+msgstr "Reintentar con aprobación"
 
 #: src/components/transactions/FlowCommons/RightHelperText.tsx
 msgid "Review approval tx details"
@@ -940,15 +940,15 @@ msgstr ""
 
 #: src/components/transactions/CollateralChange/CollateralChangeModal.tsx
 msgid "Review tx"
-msgstr ""
+msgstr "Revisión tx"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Review tx details"
-msgstr ""
+msgstr "Revisar detalles de la tx"
 
 #: src/components/transactions/ClaimRewards/RewardsSelect.tsx
 msgid "Reward(s) to claim"
-msgstr ""
+msgstr "Recompensa(s) por reclamar"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Rewards APR"
@@ -960,43 +960,43 @@ msgstr ""
 
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
 msgid "SEE CHARTS"
-msgstr ""
+msgstr "VER GRÁFICOS"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Safety of your deposited collateral against the borrowed assets and its underlying value."
-msgstr ""
+msgstr "Seguridad de su garantía depositada contra los activos prestados y su valor subyacente."
 
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Seems like we can't switch the network automatically. Please check if you can change it from the wallet."
-msgstr ""
+msgstr "Parece que no podemos cambiar la red automáticamente. Por favor, compruebe si puede cambiarla desde la cartera."
 
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
 msgid "Select APY type to switch"
-msgstr ""
+msgstr "Seleccione el tipo APY para cambiar"
 
 #: src/components/MarketSwitcher.tsx
 msgid "Select Aave Market"
-msgstr ""
+msgstr "Seleccionar Mercado Aave"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Select language"
-msgstr ""
+msgstr "Seleccionar idioma"
 
 #: src/components/transactions/GasStation/GasStation.tsx
 msgid "Select transaction speed"
-msgstr ""
+msgstr "Seleccionar velocidad de transacción"
 
 #: src/components/HALTooltip.tsx
 msgid "Setup triggers and receive notifications about your Health Factor status using Hal app."
-msgstr ""
+msgstr "Configura los activadores y recibe notificaciones sobre el estado de tu Factor de Salud usando la aplicación Hal."
 
 #: src/components/lists/ListWrapper.tsx
 msgid "Show"
-msgstr ""
+msgstr "Mostrar"
 
 #: src/modules/dashboard/DashboardListTopPanel.tsx
 msgid "Show assets with 0 balance"
-msgstr ""
+msgstr "Mostrar activos con 0 saldo"
 
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
@@ -1013,15 +1013,15 @@ msgstr ""
 
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "Stable Interest Type is disabled for this currency"
-msgstr ""
+msgstr "Tipo de interés estable está deshabilitado para esta moneda"
 
 #: src/components/infoTooltips/StableAPYTooltip.tsx
 msgid "Stable interest rate will <0>stay the same</0> for the duration of your loan. Recommended for long-term loan periods and for users who prefer predictability."
-msgstr ""
+msgstr "La tasa de interés estable <0>permanecerá igual</0> durante la duración de su préstamo. Recomendado para los períodos de préstamo a largo plazo y para los usuarios que prefieren la previsibilidad."
 
 #: src/utils/eMode.ts
 msgid "Stablecoin"
-msgstr ""
+msgstr "Stablecoin"
 
 #: src/components/transactions/Stake/StakeActions.tsx
 #: src/modules/staking/StakingPanel.tsx
@@ -1054,11 +1054,11 @@ msgstr ""
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Started"
-msgstr ""
+msgstr "Iniciado"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "State"
-msgstr ""
+msgstr "Estado"
 
 #: pages/index.page.tsx
 #: src/components/transactions/Supply/SupplyModal.tsx
@@ -1068,7 +1068,7 @@ msgstr ""
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Supply"
-msgstr ""
+msgstr "Suministro"
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
@@ -1090,11 +1090,11 @@ msgstr ""
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 msgid "Supply balance"
-msgstr ""
+msgstr "Balance de suministro"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Supply cap"
-msgstr ""
+msgstr "Límite de suministro"
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Supply cap on target reserve reached. Try lowering the amount."
@@ -1117,7 +1117,7 @@ msgstr ""
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Swap"
-msgstr ""
+msgstr "Intercambiar"
 
 #: src/components/transactions/Swap/SwapActions.tsx
 msgid "Swapping"
@@ -1483,16 +1483,16 @@ msgstr ""
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Your info"
-msgstr ""
+msgstr "Tu información"
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "Your reward balance is 0"
-msgstr ""
+msgstr "Su saldo de recompensa es 0"
 
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 msgid "Your supplies"
-msgstr ""
+msgstr "Sus suministros"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Your voting info"
@@ -1504,7 +1504,7 @@ msgstr ""
 
 #: src/modules/markets/AssetsList.tsx
 msgid "assets"
-msgstr ""
+msgstr "activos"
 
 #: src/modules/governance/proposal/ProposalTopPanel.tsx
 msgid "back"
@@ -1513,7 +1513,7 @@ msgstr "atras"
 #: src/components/transactions/Emode/EmodeSelect.tsx
 #: src/components/transactions/Emode/EmodeSelect.tsx
 msgid "disabled"
-msgstr ""
+msgstr "deshabilitado"
 
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "documentation"
@@ -1521,11 +1521,11 @@ msgstr "documentación"
 
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "ends"
-msgstr ""
+msgstr "finaliza"
 
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 msgid "guide"
-msgstr ""
+msgstr "guía"
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "here."
@@ -1537,7 +1537,7 @@ msgstr ""
 
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "on"
-msgstr ""
+msgstr "en"
 
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "or"
@@ -1545,7 +1545,7 @@ msgstr "o"
 
 #: src/components/transactions/GasStation/GasStation.tsx
 msgid "or enter custom fee value"
-msgstr ""
+msgstr "o introduzca un valor de comisión personalizado"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "or use <0>{0}</0> to transfer your ETH assets."
@@ -1569,15 +1569,15 @@ msgstr ""
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "tokens, please go to the"
-msgstr ""
+msgstr "tokens, por favor vaya al"
 
 #: src/components/MarketSwitcher.tsx
 msgid "v2 markets"
-msgstr ""
+msgstr "mercados v2"
 
 #: src/components/MarketSwitcher.tsx
 msgid "v3 markets"
-msgstr ""
+msgstr "mercados v3"
 
 #: src/components/transactions/GasStation/GasStation.tsx
 msgid "{0, select, slow {Slow} normal {Normal} fast {Fast} other {-}}"
@@ -1595,13 +1595,13 @@ msgstr ""
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "{0} Balance"
-msgstr ""
+msgstr "Saldo {0}"
 
 #: pages/faucet.page.tsx
 msgid "{0} Faucet"
-msgstr ""
+msgstr "{0} Faucet"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{0} days"
-msgstr ""
+msgstr "{0} días"
 
