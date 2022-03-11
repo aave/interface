@@ -17,6 +17,7 @@ import { dynamicActivateLanguage } from '../../libs/LanguageProvider';
 const langMap = {
   en: t`English`,
   es: t`Spanish`,
+  fr: t`French`,
 };
 
 interface LanguageListItemProps {

@@ -86,3 +86,6 @@ To download strings
 crowdin download
 
 ```
+
+To add a new language first start an issue to check for public interest.
+If the community decides to go forward with your preferred language follow [this pr](https://github.com/aave/interface/pull/447#issue-1165545965) to add support for a new language.
