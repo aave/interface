@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-11 15:49\n"
+"PO-Revision-Date: 2022-03-11 16:02\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -298,24 +298,24 @@ msgstr "Límite alcanzado. Menos cantidad de suministro"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Claim"
-msgstr ""
+msgstr "Reclamar"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Claim AAVE"
-msgstr ""
+msgstr "Reclamar AAVE"
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsActions.tsx
 msgid "Claim all"
-msgstr ""
+msgstr "Reclamar todo"
 
 #: src/components/transactions/ClaimRewards/RewardsSelect.tsx
 #: src/components/transactions/ClaimRewards/RewardsSelect.tsx
 msgid "Claim all rewards"
-msgstr ""
+msgstr "Reclamar todas las recompensas"
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsActions.tsx
 msgid "Claim {0}"
-msgstr ""
+msgstr "Reclamar {0}"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Claimable AAVE"
@@ -323,25 +323,25 @@ msgstr "AAVE Reclamable"
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsActions.tsx
 msgid "Claiming"
-msgstr ""
+msgstr "Reclamando"
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Close"
-msgstr ""
+msgstr "Cerrar"
 
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 msgid "Collateral"
-msgstr ""
+msgstr "Garantía"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Collateral usage is limited because of isolation mode. <0>Learn More</0>"
-msgstr ""
+msgstr "El uso de la garantía es limitada debido al modo de aislamiento. <0>Más información</0>"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Collateral usage:"
-msgstr ""
+msgstr "Uso de la garantía:"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Collateralization"
@@ -383,7 +383,7 @@ msgstr ""
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Created"
-msgstr ""
+msgstr "Creado"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Current LTV"
@@ -391,11 +391,11 @@ msgstr ""
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Current differential"
-msgstr ""
+msgstr "Diferencial actual"
 
 #: src/components/transactions/GasStation/GasStation.tsx
 msgid "Custom"
-msgstr ""
+msgstr "Personalizado"
 
 #: src/layouts/components/DarkModeSwitcher.tsx
 msgid "Dark mode"
@@ -404,7 +404,7 @@ msgstr "Modo oscuro"
 #: src/modules/dashboard/DashboardTopPanel.tsx
 #: src/ui-config/menu-items/index.tsx
 msgid "Dashboard"
-msgstr ""
+msgstr "Panel"
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
@@ -413,7 +413,7 @@ msgstr "Deuda"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Debt ceiling"
-msgstr ""
+msgstr "Techo de deuda"
 
 #: src/components/infoModalContents/RetryWithApprovalInfoContent.tsx
 msgid "Define Retry with Approval text"
@@ -506,7 +506,7 @@ msgstr ""
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 msgid "Enable {symbol} as collateral"
-msgstr "Desactivar {symbol} como garantía"
+msgstr "Habilitar {symbol} como garantía"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
