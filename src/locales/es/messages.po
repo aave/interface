@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-11 15:39\n"
+"PO-Revision-Date: 2022-03-11 15:49\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -276,25 +276,25 @@ msgstr ""
 
 #: src/components/BridgeButton.tsx
 msgid "Bridge"
-msgstr ""
+msgstr "Puente"
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
 msgid "CLAIM {symbol}"
-msgstr ""
+msgstr "RECLAMAR {symbol}"
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
 msgid "CLAIMING {symbol}"
-msgstr ""
+msgstr "RECLAMANDO {symbol}"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Can be collateral"
-msgstr ""
+msgstr "Puede ser garantía"
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Cap reached. Lower supply amount"
-msgstr ""
+msgstr "Límite alcanzado. Menos cantidad de suministro"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Claim"
@@ -649,35 +649,35 @@ msgstr "Idioma"
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Learn more"
-msgstr ""
+msgstr "Más información"
 
 #: src/modules/staking/StakingHeader.tsx
 msgid "Learn more about risks involved"
-msgstr ""
+msgstr "Más información sobre los riesgos involucrados"
 
 #: src/components/isolationMode/IsolatedTooltip.tsx
 msgid "Learn more in our <0>FAQ guide</0>"
-msgstr ""
+msgstr "Más información en nuestra guía <0>FAQ</0>"
 
 #: src/layouts/MobileMenu.tsx
 msgid "Links"
-msgstr ""
+msgstr "Enlaces"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/LTVContent.tsx
 msgid "Liquidation <0/> threshold"
-msgstr ""
+msgstr "Umbral <0/> de liquidación"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Liquidation at"
-msgstr ""
+msgstr "Liquidación en"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Liquidation penalty"
-msgstr ""
+msgstr "Penalización de liquidación"
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "Liquidation risk is high. Lower amounts recomended."
-msgstr ""
+msgstr "El riesgo de liquidación es elevado, se recomiendan cantidades más bajas."
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "Liquidation risk is high. Lower amounts recommended."
@@ -685,11 +685,11 @@ msgstr ""
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Liquidation risk parametres"
-msgstr ""
+msgstr "Parámetros de riesgo de liquidación"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Liquidation threshold"
-msgstr ""
+msgstr "Umbral de liquidación"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/HFContent.tsx
 msgid "Liquidation value"
@@ -701,7 +701,7 @@ msgstr ""
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/LTVContent.tsx
 msgid "MAX"
-msgstr ""
+msgstr "MAX"
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Market"
@@ -714,7 +714,7 @@ msgstr "Mercados"
 
 #: src/components/transactions/AssetInput.tsx
 msgid "Max"
-msgstr ""
+msgstr "Max"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Max LTV"
@@ -726,15 +726,15 @@ msgstr ""
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Max slippage rate"
-msgstr ""
+msgstr "Tasa de deslizamiento máxima"
 
 #: src/layouts/MobileMenu.tsx
 msgid "Menu"
-msgstr ""
+msgstr "Menú"
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Minimum received"
-msgstr ""
+msgstr "Mínimo recibido"
 
 #: src/layouts/MoreMenu.tsx
 msgid "More"
@@ -778,7 +778,7 @@ msgstr ""
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 msgid "No rewards to claim"
-msgstr ""
+msgstr "No hay recompensas para reclamar"
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "No voting power"
@@ -790,7 +790,7 @@ msgstr ""
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Not a valid address"
-msgstr ""
+msgstr "Dirección no válida"
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
 msgid "Not enough balance on your wallet"
@@ -814,7 +814,7 @@ msgstr ""
 
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 msgid "Nothing supplied yet"
-msgstr ""
+msgstr "Nada suministrado aún"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Ok, Close"
@@ -956,7 +956,7 @@ msgstr ""
 
 #: src/components/HealthFactorNumber.tsx
 msgid "Risk details"
-msgstr ""
+msgstr "Detalles de riesgo"
 
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
 msgid "SEE CHARTS"
@@ -1004,12 +1004,12 @@ msgstr "Puesto que esta es una red de pruebas, puede obtener cualquiera de los a
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Spanish"
-msgstr ""
+msgstr "Español"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "Stable"
-msgstr ""
+msgstr "Estable"
 
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "Stable Interest Type is disabled for this currency"
@@ -1137,7 +1137,7 @@ msgstr "Tasa de cambio"
 
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switching rate"
-msgstr ""
+msgstr "Tasa de cambio"
 
 #: src/components/infoTooltips/BorrowPowerTooltip.tsx
 msgid "The % of your total bowering power used. This is based on the amount of your collateral supplied and the total amount that you can borrow."
@@ -1165,7 +1165,7 @@ msgstr ""
 
 #: src/components/infoTooltips/CollateralTooltip.tsx
 msgid "The total amount of your assets denominated in USD that can be used as collateral for borrowing assets."
-msgstr ""
+msgstr "La cantidad total de sus activos denominados en USD que pueden ser usados como garantía para activos de préstamo."
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "There are not enough funds in the{0}reserve to borrow"
@@ -1181,19 +1181,19 @@ msgstr "Estos fondos han sido prestados y no están disponibles para su retirada
 
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has almost reached its borrow cap. There is only {messageValue} available to be borrowed from this market."
-msgstr ""
+msgstr "Este activo casi ha alcanzado su límite de préstamo. Solo hay {messageValue} disponibles para ser prestado de este mercado."
 
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has almost reached its supply cap. There can only be {messageValue} supplied to this market."
-msgstr ""
+msgstr "Este activo casi ha alcanzado su límite de suministro. Sólo puede ofrecerse {messageValue} a este mercado."
 
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has reached its borrow cap. Nothing is available to be borrowed from this market."
-msgstr ""
+msgstr "Este activo ha alcanzado su límite de préstamo. No queda nada disponible para ser prestado de este mercado."
 
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has reached its supply cap. Nothing is available to be supplied from this market."
-msgstr ""
+msgstr "Este activo ha alcanzado su límite de suministro. No queda nada disponible para ser suministrado desde este mercado."
 
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount available for you to borrow. You can borrow based on your collateral and until the borrow cap is reached."
@@ -1201,7 +1201,7 @@ msgstr ""
 
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount that you are able to supply to in this reserve. You are able to supply your wallet balance up until the supply cap is reached."
-msgstr ""
+msgstr "Esta es la cantidad total a la que puede suministrar en esta reserva. Puede proporcionar el saldo de su billetera hasta que se alcance el límite de suministro."
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Time left to be able to withdraw your staked asset."
@@ -1221,7 +1221,7 @@ msgstr ""
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "To see your supplies and borrowings options, connect your wallet."
-msgstr ""
+msgstr "Para ver sus suministros y opciones de préstamo, conecte su billetera."
 
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total available"
@@ -1265,11 +1265,11 @@ msgstr "Error en la transacción"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Transaction overview"
-msgstr ""
+msgstr "Resumen de la transacción"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Type of delegation"
-msgstr ""
+msgstr "Tipo de delegación"
 
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 msgid "UNSTAKE {symbol}"
@@ -1293,11 +1293,11 @@ msgstr ""
 
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Used as collateral"
-msgstr ""
+msgstr "Utilizado como garantía"
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Utilization Rate"
-msgstr ""
+msgstr "Tasa de uso"
 
 #: src/components/transactions/GovVote/GovVoteActions.tsx
 #: src/components/transactions/GovVote/GovVoteActions.tsx
@@ -1312,15 +1312,15 @@ msgstr ""
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "Variable"
-msgstr ""
+msgstr "Variable"
 
 #: src/components/infoTooltips/VariableAPYTooltip.tsx
 msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions. Recommended for short-term loans."
-msgstr ""
+msgstr "La tasa de interés variable <0>fluctuará</0> según las condiciones del mercado. Recomendado para préstamos a corto plazo."
 
 #: src/modules/markets/AssetsListMobileItem.tsx
 msgid "View details"
-msgstr ""
+msgstr "Ver detalles"
 
 #: src/layouts/WalletWidget.tsx
 msgid "View on Explorer"
