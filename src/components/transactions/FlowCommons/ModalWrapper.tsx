@@ -70,9 +70,9 @@ export const ModalWrapper: React.FC<{
   }) as ComputedUserReserveData;
 
   const symbol =
-    userReserve.reserve.isWrappedBaseAsset && !keepWrappedSymbol
+    poolReserve.isWrappedBaseAsset && !keepWrappedSymbol
       ? currentNetworkConfig.baseAssetSymbol
-      : userReserve.reserve.symbol;
+      : poolReserve.symbol;
 
   // if (mainTxState.success) {
   //   return <TxSuccessView symbol={symbol} />;
