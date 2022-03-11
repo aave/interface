@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-11 14:17\n"
+"PO-Revision-Date: 2022-03-11 14:49\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -85,27 +85,27 @@ msgstr ""
 
 #: src/layouts/WalletWidget.tsx
 msgid "Account"
-msgstr ""
+msgstr "Cuenta"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add {0}{1} to the wallet"
-msgstr ""
+msgstr "Añadir {0}{1} al monedero"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "All"
-msgstr ""
+msgstr "Todo"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "All done!"
-msgstr ""
+msgstr "¡Todo listo!"
 
 #: src/modules/governance/ProposalsList.tsx
 msgid "All proposals"
-msgstr ""
+msgstr "Todas las propuestas"
 
 #: src/components/infoTooltips/CollateralSwitchTooltip.tsx
 msgid "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
-msgstr ""
+msgstr "Le permite decidir si utilizar un activo suministrado como garantía. Un activo utilizado como garantía afectará a su poder de préstamo y factor de salud."
 
 #: src/components/infoTooltips/APYTypeTooltip.tsx
 msgid "Allows you to switch between <0>variable</0> and <1>stable</1> interest rates, where variable rate can increase and decrease depending on the amount of liquidity in the reserve, and stable rate will stay the same for the duration of your loan."
@@ -119,46 +119,46 @@ msgstr ""
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 msgid "Amount"
-msgstr ""
+msgstr "Cantidad"
 
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "Ampleforth FAQ"
-msgstr ""
+msgstr "Ampleforth FAQ"
 
 #: src/components/infoModalContents/ApprovalInfoContent.tsx
 msgid "Approval"
-msgstr ""
+msgstr "Aprobación"
 
 #: src/components/transactions/FlowCommons/LeftHelperText.tsx
 msgid "Approve confirmed"
-msgstr ""
+msgstr "Aprobación confirmada"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Approve to continue"
-msgstr ""
+msgstr "Aprobar para continuar"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Approved"
-msgstr ""
+msgstr "Aprobado"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Approving {symbol}..."
-msgstr ""
+msgstr "Aprobando {symbol}..."
 
 #: pages/faucet.page.tsx
 #: src/modules/markets/AssetsList.tsx
 msgid "Asset"
-msgstr ""
+msgstr "Activo"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeSelect.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Asset category"
-msgstr ""
+msgstr "Categoría de activos"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Asset to delegate"
-msgstr ""
+msgstr "Activos a delegar"
 
 #: pages/faucet.page.tsx
 #: src/modules/dashboard/lists/ListHeader.tsx
