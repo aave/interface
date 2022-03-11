@@ -172,7 +172,7 @@ export const SupplyAssetsList = () => {
             )}
             {filteredSupplyReserves.length === 0 && (
               <Alert severity="info">
-                <Trans>Your {networkName} wallet is empty. Purchase/buy/transfer assets</Trans>{' '}
+                <Trans>Your {networkName} wallet is empty. Purchase or transfer assets</Trans>{' '}
                 {bridge && (
                   <Trans>
                     or use {<Link href={bridge.url}>{bridge.name}</Link>} to transfer your ETH
