@@ -1,8 +1,11 @@
+import { configEnvWithTenderlyFantomTestnetFork } from '../../../support/steps/configuration.steps';
 import {
-  configEnvWithTenderlyFantomTestnetFork,
-  configEnvWithTenderlyMumbaiFork, configEnvWithTenderlyOptimismKovanFork
-} from "../../../support/steps/configuration.steps";
-import { supply, borrow, repay, withdraw } from '../../../support/steps/main.steps';
+  supply,
+  borrow,
+  repay,
+  withdraw,
+  changeBorrowType,
+} from '../../../support/steps/main.steps';
 import { dashboardAssetValuesVerification } from '../../../support/steps/verification.steps';
 import { skipState } from '../../../support/steps/common';
 import assets from '../../../fixtures/assets.json';
@@ -15,27 +18,51 @@ const testData = {
     hasApproval: true,
   },
   testCases: {
-    borrow: {
-      asset: assets.fantomMarket.USDC,
-      amount: 25,
-      hasApproval: true,
-    },
-    deposit: {
-      asset: assets.fantomMarket.USDC,
-      amount: 10,
-      hasApproval: false,
-    },
-    repay:[
+    borrow: [
       {
         asset: assets.fantomMarket.USDC,
-        apyType: constants.apyType.variable,
+        amount: 25,
+        apyType: constants.borrowAPYType.variable,
+        hasApproval: true,
+      },
+      {
+        asset: assets.fantomMarket.USDC,
+        amount: 25,
+        apyType: constants.borrowAPYType.stable,
+        hasApproval: true,
+      },
+    ],
+    changeBorrowType: [
+      {
+        asset: assets.fantomMarket.USDC,
+        apyType: constants.borrowAPYType.stable,
+        newAPY: constants.borrowAPYType.variable,
+        hasApproval: true,
+      },
+      {
+        asset: assets.fantomMarket.USDC,
+        apyType: constants.borrowAPYType.variable,
+        newAPY: constants.borrowAPYType.stable,
+        hasApproval: true,
+      },
+    ],
+    deposit: {
+      asset: assets.fantomMarket.USDC,
+      amount: 10.1,
+      hasApproval: false,
+    },
+    repay: [
+      {
+        asset: assets.fantomMarket.USDC,
+        apyType: constants.apyType.stable,
         amount: 2,
         hasApproval: true,
         repayOption: constants.repayType.default,
       },
       {
-        asset: assets.fantomMarket.aUSDC,
-        apyType: constants.apyType.variable,
+        asset: assets.fantomMarket.USDC,
+        apyType: constants.apyType.stable,
+        repayableAsset: assets.fantomMarket.aUSDC,
         amount: 2,
         hasApproval: true,
         repayOption: constants.repayType.default,
@@ -62,8 +89,8 @@ const testData = {
         type: constants.dashboardTypes.borrow,
         assetName: assets.fantomMarket.USDC.shortName,
         wrapped: assets.fantomMarket.USDC.wrapped,
-        amount: 21.0,
-        apyType: constants.borrowAPYType.variable,
+        amount: 46.0,
+        apyType: constants.borrowAPYType.stable,
       },
     ],
   },
@@ -74,7 +101,12 @@ describe('USDC INTEGRATION SPEC, FANTOM V3 MARKET', () => {
   configEnvWithTenderlyFantomTestnetFork({});
 
   supply(testData.depositBaseAmount, skipTestState, true);
-  borrow(testData.testCases.borrow, skipTestState, true);
+  testData.testCases.borrow.forEach((borrowCase) => {
+    borrow(borrowCase, skipTestState, true);
+  });
+  testData.testCases.changeBorrowType.forEach((changeAPRCase) => {
+    changeBorrowType(changeAPRCase, skipTestState, true);
+  });
   supply(testData.testCases.deposit, skipTestState, true);
   testData.testCases.repay.forEach((repayCase) => {
     repay(repayCase, skipTestState, false);

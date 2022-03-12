@@ -1,8 +1,11 @@
+import { configEnvWithTenderlyMumbaiFork } from '../../../support/steps/configuration.steps';
 import {
-  configEnvWithTenderlyMumbaiFork,
-  configEnvWithTenderlyPolygonFork
-} from "../../../support/steps/configuration.steps";
-import { supply, borrow, repay, withdraw } from '../../../support/steps/main.steps';
+  supply,
+  borrow,
+  repay,
+  withdraw,
+  changeBorrowType,
+} from '../../../support/steps/main.steps';
 import { dashboardAssetValuesVerification } from '../../../support/steps/verification.steps';
 import { skipState } from '../../../support/steps/common';
 import assets from '../../../fixtures/assets.json';
@@ -10,39 +13,63 @@ import constants from '../../../fixtures/constans.json';
 
 const testData = {
   depositBaseAmount: {
-    asset: assets.polygonMarket.MATIC,
-    amount: 800,
+    asset: assets.polygonV3Market.FTM,
+    amount: 9000,
     hasApproval: true,
   },
   testCases: {
-    borrow: {
-      asset: assets.polygonMarket.USDC,
-      amount: 25,
-      hasApproval: true,
-    },
+    borrow: [
+      {
+        asset: assets.polygonV3Market.USDC,
+        amount: 25,
+        apyType: constants.borrowAPYType.variable,
+        hasApproval: true,
+      },
+      {
+        asset: assets.polygonV3Market.USDC,
+        amount: 25,
+        apyType: constants.borrowAPYType.stable,
+        hasApproval: true,
+      },
+    ],
+    changeBorrowType: [
+      {
+        asset: assets.polygonV3Market.USDC,
+        apyType: constants.borrowAPYType.stable,
+        newAPY: constants.borrowAPYType.variable,
+        hasApproval: true,
+      },
+      {
+        asset: assets.polygonV3Market.USDC,
+        apyType: constants.borrowAPYType.variable,
+        newAPY: constants.borrowAPYType.stable,
+        hasApproval: true,
+      },
+    ],
     deposit: {
-      asset: assets.polygonMarket.USDC,
-      amount: 10,
+      asset: assets.polygonV3Market.USDC,
+      amount: 10.1,
       hasApproval: false,
     },
-    repay:[
+    repay: [
       {
-        asset: assets.polygonMarket.USDC,
-        apyType: constants.apyType.variable,
+        asset: assets.polygonV3Market.USDC,
+        apyType: constants.apyType.stable,
         amount: 2,
         hasApproval: true,
         repayOption: constants.repayType.default,
       },
       {
-        asset: assets.polygonMarket.aUSDC,
-        apyType: constants.apyType.variable,
+        asset: assets.polygonV3Market.USDC,
+        apyType: constants.apyType.stable,
+        repayableAsset: assets.polygonV3Market.aUSDC,
         amount: 2,
         hasApproval: true,
         repayOption: constants.repayType.default,
       },
     ],
     withdraw: {
-      asset: assets.polygonMarket.USDC,
+      asset: assets.polygonV3Market.USDC,
       isCollateral: true,
       amount: 1,
       hasApproval: true,
@@ -52,18 +79,18 @@ const testData = {
     finalDashboard: [
       {
         type: constants.dashboardTypes.deposit,
-        assetName: assets.polygonMarket.USDC.shortName,
-        wrapped: assets.polygonMarket.USDC.wrapped,
+        assetName: assets.polygonV3Market.USDC.shortName,
+        wrapped: assets.polygonV3Market.USDC.wrapped,
         amount: 7.0,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
       },
       {
         type: constants.dashboardTypes.borrow,
-        assetName: assets.polygonMarket.USDC.shortName,
-        wrapped: assets.polygonMarket.USDC.wrapped,
-        amount: 21.0,
-        apyType: constants.borrowAPYType.variable,
+        assetName: assets.polygonV3Market.USDC.shortName,
+        wrapped: assets.polygonV3Market.USDC.wrapped,
+        amount: 46.0,
+        apyType: constants.borrowAPYType.stable,
       },
     ],
   },
@@ -71,10 +98,15 @@ const testData = {
 
 describe('USDC INTEGRATION SPEC, POLYGON V3 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyMumbaiFork({market:"fork_proto_mumbai_v3"});
+  configEnvWithTenderlyMumbaiFork({ market: 'fork_proto_mumbai_v3' });
 
   supply(testData.depositBaseAmount, skipTestState, true);
-  borrow(testData.testCases.borrow, skipTestState, true);
+  testData.testCases.borrow.forEach((borrowCase) => {
+    borrow(borrowCase, skipTestState, true);
+  });
+  testData.testCases.changeBorrowType.forEach((changeAPRCase) => {
+    changeBorrowType(changeAPRCase, skipTestState, true);
+  });
   supply(testData.testCases.deposit, skipTestState, true);
   testData.testCases.repay.forEach((repayCase) => {
     repay(repayCase, skipTestState, false);

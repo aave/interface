@@ -1,4 +1,4 @@
-import { configEnvWithTenderlyMumbaiFork } from '../../../support/steps/configuration.steps';
+import { configEnvWithTenderlyFantomTestnetFork } from '../../../support/steps/configuration.steps';
 import {
   supply,
   borrow,
@@ -13,20 +13,20 @@ import constants from '../../../fixtures/constans.json';
 
 const testData = {
   depositBaseAmount: {
-    asset: assets.polygonV3Market.MATIC,
+    asset: assets.fantomMarket.FTM,
     amount: 9000,
     hasApproval: true,
   },
   testCases: {
     borrow: [
       {
-        asset: assets.polygonV3Market.EURS,
-        amount: 25.1,
+        asset: assets.fantomMarket.USDT,
+        amount: 25,
         apyType: constants.borrowAPYType.variable,
         hasApproval: true,
       },
       {
-        asset: assets.polygonV3Market.EURS,
+        asset: assets.fantomMarket.USDT,
         amount: 25,
         apyType: constants.borrowAPYType.stable,
         hasApproval: true,
@@ -34,48 +34,48 @@ const testData = {
     ],
     changeBorrowType: [
       {
-        asset: assets.polygonV3Market.EURS,
+        asset: assets.fantomMarket.USDT,
         apyType: constants.borrowAPYType.stable,
         newAPY: constants.borrowAPYType.variable,
         hasApproval: true,
       },
       {
-        asset: assets.polygonV3Market.EURS,
+        asset: assets.fantomMarket.USDT,
         apyType: constants.borrowAPYType.variable,
         newAPY: constants.borrowAPYType.stable,
         hasApproval: true,
       },
     ],
     deposit: {
-      asset: assets.polygonV3Market.EURS,
+      asset: assets.fantomMarket.USDT,
       amount: 10.1,
       hasApproval: false,
     },
     repay: [
       {
-        asset: assets.polygonV3Market.EURS,
+        asset: assets.fantomMarket.USDT,
         apyType: constants.apyType.stable,
         amount: 2,
         hasApproval: true,
         repayOption: constants.repayType.default,
       },
       {
-        asset: assets.polygonV3Market.EURS,
+        asset: assets.fantomMarket.USDT,
         apyType: constants.apyType.stable,
-        repayableAsset: assets.polygonV3Market.aEURS,
+        repayableAsset: assets.fantomMarket.aUSDT,
         amount: 2,
         hasApproval: true,
         repayOption: constants.repayType.default,
       },
     ],
     withdraw: {
-      asset: assets.polygonV3Market.EURS,
+      asset: assets.fantomMarket.USDT,
       isCollateral: false,
       amount: 1,
       hasApproval: true,
     },
     checkBorrowTypeBlocked: {
-      asset: assets.polygonV3Market.EURS,
+      asset: assets.fantomMarket.USDT,
       isCollateralType: false,
     },
   },
@@ -83,16 +83,16 @@ const testData = {
     finalDashboard: [
       {
         type: constants.dashboardTypes.deposit,
-        assetName: assets.polygonV3Market.EURS.shortName,
-        wrapped: assets.polygonV3Market.EURS.wrapped,
+        assetName: assets.fantomMarket.USDT.shortName,
+        wrapped: assets.fantomMarket.USDT.wrapped,
         amount: 7.0,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: false,
       },
       {
         type: constants.dashboardTypes.borrow,
-        assetName: assets.polygonV3Market.EURS.shortName,
-        wrapped: assets.polygonV3Market.EURS.wrapped,
+        assetName: assets.fantomMarket.USDT.shortName,
+        wrapped: assets.fantomMarket.USDT.wrapped,
         amount: 46.0,
         apyType: constants.borrowAPYType.stable,
       },
@@ -100,9 +100,9 @@ const testData = {
   },
 };
 
-describe('EURS INTEGRATION SPEC, POLYGON V3 MARKET', () => {
+describe('USDT INTEGRATION SPEC, FANTOM V3 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyMumbaiFork({ market: 'fork_proto_mumbai_v3' });
+  configEnvWithTenderlyFantomTestnetFork({});
 
   supply(testData.depositBaseAmount, skipTestState, true);
   testData.testCases.borrow.forEach((borrowCase) => {

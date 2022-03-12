@@ -26,7 +26,7 @@ export class TenderlyFork {
 
   constructor({ forkNetworkID }: { forkNetworkID: number }) {
     this._forkNetworkID = forkNetworkID.toString();
-    this._chainID = 4002;
+    this._chainID = 3030;
   }
 
   async init() {

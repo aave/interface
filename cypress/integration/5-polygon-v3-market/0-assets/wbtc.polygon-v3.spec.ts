@@ -20,87 +20,83 @@ const testData = {
   testCases: {
     borrow: [
       {
-        asset: assets.polygonV3Market.EURS,
-        amount: 25.1,
+        asset: assets.polygonV3Market.WBTC,
+        amount: 0.25,
         apyType: constants.borrowAPYType.variable,
         hasApproval: true,
       },
       {
-        asset: assets.polygonV3Market.EURS,
-        amount: 25,
+        asset: assets.polygonV3Market.WBTC,
+        amount: 0.25,
         apyType: constants.borrowAPYType.stable,
         hasApproval: true,
       },
     ],
     changeBorrowType: [
       {
-        asset: assets.polygonV3Market.EURS,
+        asset: assets.polygonV3Market.WBTC,
         apyType: constants.borrowAPYType.stable,
         newAPY: constants.borrowAPYType.variable,
         hasApproval: true,
       },
       {
-        asset: assets.polygonV3Market.EURS,
+        asset: assets.polygonV3Market.WBTC,
         apyType: constants.borrowAPYType.variable,
         newAPY: constants.borrowAPYType.stable,
         hasApproval: true,
       },
     ],
     deposit: {
-      asset: assets.polygonV3Market.EURS,
-      amount: 10.1,
+      asset: assets.polygonV3Market.WBTC,
+      amount: 0.101,
       hasApproval: false,
     },
     repay: [
       {
-        asset: assets.polygonV3Market.EURS,
+        asset: assets.polygonV3Market.WBTC,
         apyType: constants.apyType.stable,
-        amount: 2,
+        amount: 0.02,
         hasApproval: true,
         repayOption: constants.repayType.default,
       },
       {
-        asset: assets.polygonV3Market.EURS,
+        asset: assets.polygonV3Market.WBTC,
         apyType: constants.apyType.stable,
-        repayableAsset: assets.polygonV3Market.aEURS,
-        amount: 2,
+        repayableAsset: assets.polygonV3Market.aWBTC,
+        amount: 0.02,
         hasApproval: true,
         repayOption: constants.repayType.default,
       },
     ],
     withdraw: {
-      asset: assets.polygonV3Market.EURS,
-      isCollateral: false,
-      amount: 1,
+      asset: assets.polygonV3Market.WBTC,
+      isCollateral: true,
+      amount: 0.01,
       hasApproval: true,
-    },
-    checkBorrowTypeBlocked: {
-      asset: assets.polygonV3Market.EURS,
-      isCollateralType: false,
     },
   },
   verifications: {
     finalDashboard: [
       {
         type: constants.dashboardTypes.deposit,
-        assetName: assets.polygonV3Market.EURS.shortName,
-        wrapped: assets.polygonV3Market.EURS.wrapped,
-        amount: 7.0,
+        assetName: assets.polygonV3Market.WBTC.shortName,
+        wrapped: assets.polygonV3Market.WBTC.wrapped,
+        amount: 0.07,
         collateralType: constants.collateralType.isCollateral,
-        isCollateral: false,
+        isCollateral: true,
       },
       {
         type: constants.dashboardTypes.borrow,
-        assetName: assets.polygonV3Market.EURS.shortName,
-        wrapped: assets.polygonV3Market.EURS.wrapped,
-        amount: 46.0,
+        assetName: assets.polygonV3Market.WBTC.shortName,
+        wrapped: assets.polygonV3Market.WBTC.wrapped,
+        amount: 0.46,
         apyType: constants.borrowAPYType.stable,
       },
     ],
   },
 };
 
-describe('EURS INTEGRATION SPEC, POLYGON V3 MARKET', () => {
+describe('WBTC INTEGRATION SPEC, POLYGON V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyMumbaiFork({ market: 'fork_proto_mumbai_v3' });
 

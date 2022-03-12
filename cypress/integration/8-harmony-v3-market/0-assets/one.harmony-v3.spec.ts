@@ -1,4 +1,4 @@
-import { configEnvWithTenderlyMumbaiFork } from '../../../support/steps/configuration.steps';
+import { configEnvWithTenderlyHarmonyTestnetFork } from '../../../support/steps/configuration.steps';
 import {
   supply,
   borrow,
@@ -18,29 +18,29 @@ import constants from '../../../fixtures/constans.json';
 const testData = {
   testCases: {
     deposit: {
-      asset: assets.polygonV3Market.MATIC,
+      asset: assets.harmonyMarket.ONE,
       amount: 1.09,
       hasApproval: true,
     },
     collateral: {
       switchOff: {
-        asset: assets.polygonV3Market.MATIC,
+        asset: assets.harmonyMarket.ONE,
         isCollateralType: true,
         hasApproval: true,
       },
       switchOn: {
-        asset: assets.polygonV3Market.MATIC,
+        asset: assets.harmonyMarket.ONE,
         isCollateralType: false,
         hasApproval: true,
       },
       switchNegative: {
-        asset: assets.polygonV3Market.MATIC,
+        asset: assets.harmonyMarket.ONE,
         isCollateralType: true,
       },
     },
     borrow: [
       {
-        asset: assets.polygonV3Market.MATIC,
+        asset: assets.harmonyMarket.ONE,
         amount: 0.06,
         apyType: constants.borrowAPYType.variable,
         hasApproval: false,
@@ -48,13 +48,13 @@ const testData = {
     ],
     withdraw: [
       {
-        asset: assets.polygonV3Market.MATIC,
+        asset: assets.harmonyMarket.ONE,
         isCollateral: true,
         amount: 0.01,
         hasApproval: false,
       },
       {
-        asset: assets.polygonV3Market.MATIC,
+        asset: assets.harmonyMarket.ONE,
         isCollateral: true,
         amount: 0.01,
         hasApproval: true,
@@ -63,24 +63,24 @@ const testData = {
     ],
     repay: [
       {
-        asset: assets.polygonV3Market.MATIC,
+        asset: assets.harmonyMarket.ONE,
         apyType: constants.apyType.variable,
         amount: 0.01,
         hasApproval: true,
         repayOption: constants.repayType.default,
       },
       {
-        asset: assets.polygonV3Market.MATIC,
+        asset: assets.harmonyMarket.ONE,
         apyType: constants.apyType.variable,
-        repayableAsset: assets.polygonV3Market.WMATIC,
+        repayableAsset: assets.harmonyMarket.WONE,
         amount: 0.01,
         hasApproval: false,
         repayOption: constants.repayType.default,
       },
       {
-        asset: assets.polygonV3Market.MATIC,
+        asset: assets.harmonyMarket.ONE,
         apyType: constants.apyType.variable,
-        repayableAsset: assets.polygonV3Market.aWMATIC,
+        repayableAsset: assets.harmonyMarket.aONE,
         amount: 0.01,
         hasApproval: true,
         repayOption: constants.repayType.default,
@@ -91,16 +91,16 @@ const testData = {
     finalDashboard: [
       {
         type: constants.dashboardTypes.deposit,
-        assetName: assets.polygonV3Market.MATIC.shortName,
-        wrapped: assets.polygonV3Market.MATIC.wrapped,
+        assetName: assets.harmonyMarket.ONE.shortName,
+        wrapped: assets.harmonyMarket.ONE.wrapped,
         amount: 1.07,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
       },
       {
         type: constants.dashboardTypes.borrow,
-        assetName: assets.polygonV3Market.MATIC.shortName,
-        wrapped: assets.polygonV3Market.MATIC.wrapped,
+        assetName: assets.harmonyMarket.ONE.shortName,
+        wrapped: assets.harmonyMarket.ONE.wrapped,
         amount: 0.02,
         apyType: constants.borrowAPYType.variable,
       },
@@ -108,9 +108,9 @@ const testData = {
   },
 };
 
-describe('MATIC INTEGRATION SPEC, POLYGON V3 MARKET', () => {
+describe('FTM INTEGRATION SPEC, HARMONY V3 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyMumbaiFork({ market: 'fork_proto_mumbai_v3' });
+  configEnvWithTenderlyHarmonyTestnetFork({});
 
   supply(testData.testCases.deposit, skipTestState, true);
   describe('Check Collateral switching', () => {

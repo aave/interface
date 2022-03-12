@@ -28,7 +28,7 @@ export const configEnvWithTenderly = ({
   });
   before('Open main page', () => {
     const rpc = tenderly.get_rpc_url();
-    const provider = new JsonRpcProvider(rpc, 4002);
+    const provider = new JsonRpcProvider(rpc, 3030);
     const signer = new Wallet(DEFAULT_TEST_ACCOUNT.privateKey, provider);
     cy.visit(URL, {
       onBeforeLoad(win) {
@@ -36,7 +36,7 @@ export const configEnvWithTenderly = ({
         (win as any).ethereum = new CustomizedBridge(signer, provider);
         win.localStorage.setItem('forkEnabled', 'true');
         // forks are always expected to run on chainId 3030
-        win.localStorage.setItem('forkNetworkId', '4002');
+        win.localStorage.setItem('forkNetworkId', '3030');
         win.localStorage.setItem('forkBaseChainId', chainId.toString());
         win.localStorage.setItem('forkRPCUrl', rpc);
         // win.localStorage.setItem('currentProvider', 'browser');
@@ -132,4 +132,14 @@ export const configEnvWithTenderlyFantomTestnetFork = ({
   tokens?: { address: string }[];
 }) => {
   configEnvWithTenderly({ chainId: ChainId.fantom_testnet, market, tokens });
+};
+
+export const configEnvWithTenderlyHarmonyTestnetFork = ({
+  market = `fork_proto_harmony_testnet_v3`,
+  tokens,
+}: {
+  market?: string;
+  tokens?: { address: string }[];
+}) => {
+  configEnvWithTenderly({ chainId: ChainId.harmony_testnet, market, tokens });
 };
