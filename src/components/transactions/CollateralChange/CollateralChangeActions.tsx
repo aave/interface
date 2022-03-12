@@ -7,7 +7,6 @@ import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { optimizedPath } from 'src/utils/utils';
 
-import { RightHelperText } from '../FlowCommons/RightHelperText';
 import { GasOption } from '../GasStation/GasStationProvider';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
@@ -28,10 +27,10 @@ export const CollateralChangeActions = ({
 }: CollateralChangeActionsProps) => {
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
-  const { currentAccount, chainId: connectedChainId } = useWeb3Context();
+  const { currentAccount } = useWeb3Context();
   const { state, gasPriceData } = useGasStation();
 
-  const { action, loadingTxns, mainTxState } = useTransactionHandler({
+  const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     tryPermit: false,
     handleGetTxns: async () => {
       if (currentMarketData.v3) {
@@ -58,6 +57,7 @@ export const CollateralChangeActions = ({
 
   return (
     <TxActionsWrapper
+      requiresApproval={requiresApproval}
       blocked={blocked}
       preparingTransactions={loadingTxns}
       mainTxState={mainTxState}
@@ -71,13 +71,6 @@ export const CollateralChangeActions = ({
       }
       actionInProgressText={<Trans>Pending...</Trans>}
       handleAction={action}
-      helperText={
-        <RightHelperText
-          actionHash={mainTxState.txHash}
-          chainId={connectedChainId}
-          action="collateral change"
-        />
-      }
     />
   );
 };

@@ -13,15 +13,12 @@ import { Trans } from '@lingui/macro';
 import { remainingCap } from 'src/utils/getMaxAmountAvailableToSupply';
 import { useSwap } from 'src/hooks/useSwap';
 import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
-import { TxModalTitle } from 'src/components/transactions/FlowCommons/TxModalTitle';
-import { ChangeNetworkWarning } from 'src/components/transactions/Warnings/ChangeNetworkWarning';
 import {
   DetailsHFLine,
   DetailsIncentivesLine,
   DetailsNumberLine,
   TxModalDetails,
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
-import { TxErrorView } from 'src/components/transactions/FlowCommons/Error';
 import { GasEstimationError } from 'src/components/transactions/FlowCommons/GasEstimationError';
 import { useModalContext } from 'src/hooks/useModal';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -29,29 +26,26 @@ import { Box } from '@mui/system';
 import { Row } from 'src/components/primitives/Row';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { calculateHFAfterSwap } from 'src/utils/hfUtils';
+import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 
 export type SupplyProps = {
   underlyingAsset: string;
 };
 
 export enum ErrorType {
-  NOT_ENOUGH_BALANCE,
-  CAP_REACHED,
+  SUPPLY_CAP_REACHED,
+  HF_BELOW_ONE,
 }
 
-export const SwapModalContent = ({ underlyingAsset }: SupplyProps) => {
+export const SwapModalContent = ({
+  poolReserve,
+  userReserve,
+  isWrongNetwork,
+}: ModalWrapperProps) => {
   const { reserves, user } = useAppDataContext();
-  const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
-  const { chainId: connectedChainId, currentAccount } = useWeb3Context();
+  const { currentChainId } = useProtocolDataContext();
+  const { currentAccount } = useWeb3Context();
   const { gasLimit, mainTxState: supplyTxState } = useModalContext();
-
-  const poolReserve = reserves.find((reserve) => {
-    return reserve.underlyingAsset === underlyingAsset;
-  }) as ComputedReserveData;
-
-  const userReserve = user.userReservesData.find((userReserve) => {
-    return underlyingAsset === userReserve.underlyingAsset;
-  }) as ComputedUserReserve;
 
   const swapTargets = reserves
     .filter((r) => r.underlyingAsset !== poolReserve.underlyingAsset)
@@ -83,7 +77,7 @@ export const SwapModalContent = ({ underlyingAsset }: SupplyProps) => {
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToSwap : _amount;
 
-  const { priceRoute, inputAmountUSD, outputAmount, outputAmountUSD } = useSwap({
+  const { priceRoute, inputAmountUSD, inputAmount, outputAmount, outputAmountUSD } = useSwap({
     chainId: currentChainId,
     userId: currentAccount,
     variant: 'exactIn',
@@ -115,18 +109,36 @@ export const SwapModalContent = ({ underlyingAsset }: SupplyProps) => {
   // if the hf would drop below 1 from the hf effect a flashloan should be used to mitigate liquidation
   const shouldUseFlashloan =
     user.healthFactor !== '-1' &&
-    new BigNumber(user.healthFactor).minus(hfEffectOfFromAmount).lt('1.1');
+    new BigNumber(user.healthFactor).minus(hfEffectOfFromAmount).lt('1.05');
 
+  const remainingCapBn = remainingCap(swapTarget);
   // consider caps
   // we cannot check this in advance as it's based on the swap result
-  const surpassesTargetSupplyCap =
-    swapTarget.supplyCap !== '0' ? remainingCap(swapTarget).lt(amount) : false;
-  // TODO: show some error
-  if (user.isInIsolationMode && poolReserve.isIsolated) {
+  let blockingError: ErrorType | undefined = undefined;
+  if (!remainingCapBn.eq('-1') && remainingCapBn.lt(amount)) {
+    blockingError = ErrorType.SUPPLY_CAP_REACHED;
+  } else if (!hfAfterSwap.eq('-1') && hfAfterSwap.lt('1.05')) {
+    blockingError = ErrorType.HF_BELOW_ONE;
+  } else if (user.isInIsolationMode && poolReserve.isIsolated) {
     // TODO: make sure hf doesn't go below 1 because swapTarget will not be a collateral
   } else {
     // TODO: make sure hf doesn't go below 1
   }
+
+  const handleBlocked = () => {
+    switch (blockingError) {
+      case ErrorType.SUPPLY_CAP_REACHED:
+        return <Trans>Supply cap on target reserve reached. Try lowering the amount.</Trans>;
+      case ErrorType.HF_BELOW_ONE:
+        return (
+          <Trans>
+            The effects on the health factor would cause liquidation. Try lowering the amount.
+          </Trans>
+        );
+      default:
+        return null;
+    }
+  };
 
   // v2 edge cases
   // 1. swap more then available liquidity
@@ -137,7 +149,6 @@ export const SwapModalContent = ({ underlyingAsset }: SupplyProps) => {
   // 4. swap isolated asset when isolated -> when no borrows i can probably swap all & new asset will in fact be collateral
   // 5. swap non-isolated when isolated -> can swap to anything
 
-  if (supplyTxState.txError) return <TxErrorView errorMessage={supplyTxState.txError} />;
   if (supplyTxState.success)
     return <TxSuccessView action="Swapped" amount={maxAmountToSwap} symbol={poolReserve.symbol} />;
 
@@ -147,9 +158,6 @@ export const SwapModalContent = ({ underlyingAsset }: SupplyProps) => {
     user.totalBorrowsMarketReferenceCurrency !== '0' &&
     poolReserve.usageAsCollateralEnabled;
 
-  // is Network mismatched
-  const isWrongNetwork = currentChainId !== connectedChainId;
-
   // calculate impact based on $ difference
   const priceImpact =
     outputAmountUSD && outputAmountUSD !== '0'
@@ -158,10 +166,6 @@ export const SwapModalContent = ({ underlyingAsset }: SupplyProps) => {
 
   return (
     <>
-      <TxModalTitle title="Swap" symbol={poolReserve.symbol} />
-      {isWrongNetwork && (
-        <ChangeNetworkWarning networkName={currentNetworkConfig.name} chainId={currentChainId} />
-      )}
       {/* {showIsolationWarning && (
             <Typography>You are about to enter into isolation. FAQ link</Typography>
           )} */}
@@ -228,6 +232,11 @@ export const SwapModalContent = ({ underlyingAsset }: SupplyProps) => {
           </ToggleButton>
         </ToggleButtonGroup>
       </Box>
+      {blockingError !== undefined && (
+        <Typography variant="helperText" color="error.main">
+          {handleBlocked()}
+        </Typography>
+      )}
       <TxModalDetails gasLimit={gasLimit}>
         <DetailsNumberLine
           description={<Trans>Supply apy</Trans>}
@@ -256,12 +265,12 @@ export const SwapModalContent = ({ underlyingAsset }: SupplyProps) => {
       <SwapActions
         isMaxSelected={isMaxSelected}
         poolReserve={poolReserve}
-        amountToSwap={amountRef.current}
+        amountToSwap={inputAmount}
         amountToReceive={minimumReceived}
         isWrongNetwork={isWrongNetwork}
         targetReserve={swapTarget}
         symbol={poolReserve.symbol}
-        blocked={surpassesTargetSupplyCap}
+        blocked={!!blockingError}
         priceRoute={priceRoute}
         useFlashLoan={shouldUseFlashloan}
       />

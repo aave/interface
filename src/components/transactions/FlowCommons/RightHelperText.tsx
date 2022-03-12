@@ -1,15 +1,11 @@
-import { ChainId } from '@aave/contract-helpers';
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Link, SvgIcon } from '@mui/material';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 export type RightHelperTextProps = {
   approvalHash?: string;
-  actionHash?: string;
-  chainId: ChainId;
-  usePermit?: boolean;
-  action: string;
 };
 
 const ExtLinkIcon = () => (
@@ -18,47 +14,29 @@ const ExtLinkIcon = () => (
   </SvgIcon>
 );
 
-export const RightHelperText = ({
-  approvalHash,
-  actionHash,
-  chainId,
-  usePermit,
-  action,
-}: RightHelperTextProps) => {
-  const networkConfig = getNetworkConfig(chainId);
+export const RightHelperText = ({ approvalHash }: RightHelperTextProps) => {
+  const { currentNetworkConfig } = useProtocolDataContext();
+  const isSigned = approvalHash === MOCK_SIGNED_HASH;
+  // a signature will not be reviewable on etherscan
+  if (!approvalHash || isSigned) return null;
   return (
     <Box
       sx={{
         display: 'flex',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        mb: (approvalHash && !actionHash && !usePermit) || actionHash ? 3 : 0,
       }}
     >
-      {approvalHash && !actionHash && !usePermit && (
+      {approvalHash && (
         <Link
           variant="helperText"
-          href={networkConfig.explorerLinkBuilder({ tx: approvalHash })}
+          href={currentNetworkConfig.explorerLinkBuilder({ tx: approvalHash })}
           sx={{ display: 'inline-flex', alignItems: 'center' }}
           underline="hover"
           target="_blank"
           rel="noreferrer"
         >
-          <Trans>Review approve tx details</Trans>
-          <ExtLinkIcon />
-        </Link>
-      )}
-
-      {actionHash && (
-        <Link
-          variant="helperText"
-          href={networkConfig.explorerLinkBuilder({ tx: actionHash })}
-          sx={{ display: 'inline-flex', alignItems: 'center' }}
-          underline="hover"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <Trans>Review {action} tx details</Trans>
+          <Trans>Review approval tx details</Trans>
           <ExtLinkIcon />
         </Link>
       )}

@@ -8,6 +8,8 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
+export const MOCK_SIGNED_HASH = 'Signed correctly';
+
 interface UseTransactionHandlerProps {
   handleGetTxns: () => Promise<EthereumTransactionTypeExtended[]>;
   handleGetPermitTxns?: (
@@ -37,13 +39,12 @@ export const useTransactionHandler = ({
     resetTx,
     loadingTxns,
     setLoadingTxns,
+    forcedApproval,
   } = useModalContext();
   const { signTxData, sendTx, getTxError, currentAccount } = useWeb3Context();
   const { refetchWalletBalances, refetchPoolData, refechIncentiveData } =
     useBackgroundDataProvider();
   const { lendingPool } = useTxBuilderContext();
-  // const [loadingTxns, setLoadingTxns] = useState(false);
-  // const [txs, setTxs] = useState<EthereumTransactionTypeExtended[]>([]);
   const [usePermit, setUsePermit] = useState<boolean>(tryPermit);
   const [signature, setSignature] = useState<SignatureLike>();
   const [signatureDeadline, setSignatureDeadline] = useState<string>();
@@ -54,6 +55,7 @@ export const useTransactionHandler = ({
 
   useEffect(() => {
     mounted.current = true; // Will set it to true on mount ...
+    if (forcedApproval) setUsePermit(false);
     return () => {
       mounted.current = false;
     }; // ... and to false on unmount
@@ -122,7 +124,7 @@ export const useTransactionHandler = ({
             setSignature(signature);
             setSignatureDeadline(deadline);
             setApprovalTxState({
-              txHash: 'Signed correctly',
+              txHash: MOCK_SIGNED_HASH,
               txError: undefined,
               gasEstimationError: undefined,
               loading: false,

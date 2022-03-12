@@ -11,8 +11,6 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { permitByChainAndToken } from 'src/ui-config/permitConfig';
 import { optimizedPath } from 'src/utils/utils';
 
-import { LeftHelperText } from '../FlowCommons/LeftHelperText';
-import { RightHelperText } from '../FlowCommons/RightHelperText';
 import { GasOption } from '../GasStation/GasStationProvider';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
@@ -42,70 +40,61 @@ export const RepayActions = ({
 }: RepayActionProps) => {
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
-  const { currentAccount, chainId: connectedChainId } = useWeb3Context();
+  const { currentAccount } = useWeb3Context();
   const { state, gasPriceData } = useGasStation();
 
-  const {
-    approval,
-    action,
-    requiresApproval,
-    loadingTxns,
-    approvalTxState,
-    mainTxState,
-    usePermit,
-    resetStates,
-  } = useTransactionHandler({
-    tryPermit:
-      currentMarketData.v3 && permitByChainAndToken[chainId]?.[utils.getAddress(poolAddress)],
-    handleGetTxns: async () => {
-      if (currentMarketData.v3) {
-        const newPool: Pool = lendingPool as Pool;
-        if (repayWithATokens) {
-          return newPool.repayWithATokens({
-            user: currentAccount,
-            reserve: poolAddress,
-            amount: amountToRepay,
-            rateMode: debtType as InterestRate,
-            useOptimizedPath: optimizedPath(chainId),
-          });
+  const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
+    useTransactionHandler({
+      tryPermit:
+        currentMarketData.v3 && permitByChainAndToken[chainId]?.[utils.getAddress(poolAddress)],
+      handleGetTxns: async () => {
+        if (currentMarketData.v3) {
+          const newPool: Pool = lendingPool as Pool;
+          if (repayWithATokens) {
+            return newPool.repayWithATokens({
+              user: currentAccount,
+              reserve: poolAddress,
+              amount: amountToRepay,
+              rateMode: debtType as InterestRate,
+              useOptimizedPath: optimizedPath(chainId),
+            });
+          } else {
+            return newPool.repay({
+              user: currentAccount,
+              reserve: poolAddress,
+              amount: amountToRepay,
+              interestRateMode: debtType,
+              useOptimizedPath: optimizedPath(chainId),
+            });
+          }
         } else {
-          return newPool.repay({
+          return lendingPool.repay({
             user: currentAccount,
             reserve: poolAddress,
             amount: amountToRepay,
             interestRateMode: debtType,
-            useOptimizedPath: optimizedPath(chainId),
           });
         }
-      } else {
-        return lendingPool.repay({
+      },
+      handleGetPermitTxns: async (signature, deadline) => {
+        const newPool: Pool = lendingPool as Pool;
+        return newPool.repayWithPermit({
           user: currentAccount,
           reserve: poolAddress,
-          amount: amountToRepay,
+          amount: amountToRepay, // amountToRepay.toString(),
           interestRateMode: debtType,
+          signature,
+          useOptimizedPath: optimizedPath(chainId),
+          deadline,
         });
-      }
-      // TODO: add here the case for repay with collateral
-    },
-    handleGetPermitTxns: async (signature, deadline) => {
-      const newPool: Pool = lendingPool as Pool;
-      return newPool.repayWithPermit({
-        user: currentAccount,
-        reserve: poolAddress,
-        amount: amountToRepay, // amountToRepay.toString(),
-        interestRateMode: debtType,
-        signature,
-        useOptimizedPath: optimizedPath(chainId),
-        deadline,
-      });
-    },
-    customGasPrice:
-      state.gasOption === GasOption.Custom
-        ? state.customGas
-        : gasPriceData.data?.[state.gasOption].legacyGasPrice,
-    skip: !amountToRepay || parseFloat(amountToRepay) === 0 || blocked,
-    deps: [amountToRepay, poolAddress, repayWithATokens],
-  });
+      },
+      customGasPrice:
+        state.gasOption === GasOption.Custom
+          ? state.customGas
+          : gasPriceData.data?.[state.gasOption].legacyGasPrice,
+      skip: !amountToRepay || parseFloat(amountToRepay) === 0 || blocked,
+      deps: [amountToRepay, poolAddress, repayWithATokens],
+    });
 
   return (
     <TxActionsWrapper
@@ -114,29 +103,10 @@ export const RepayActions = ({
       symbol={poolReserve.symbol}
       mainTxState={mainTxState}
       approvalTxState={approvalTxState}
-      handleRetry={resetStates}
       requiresAmount
       amount={amountToRepay}
       requiresApproval={requiresApproval}
       isWrongNetwork={isWrongNetwork}
-      helperText={
-        <>
-          <LeftHelperText
-            amount={amountToRepay}
-            error={mainTxState.txError || approvalTxState.txError}
-            approvalHash={approvalTxState.txHash}
-            actionHash={mainTxState.txHash}
-            requiresApproval={requiresApproval}
-          />
-          <RightHelperText
-            approvalHash={approvalTxState.txHash}
-            actionHash={mainTxState.txHash}
-            chainId={connectedChainId}
-            usePermit={usePermit}
-            action="supply"
-          />
-        </>
-      }
       sx={sx}
       {...props}
       handleAction={action}

@@ -144,10 +144,20 @@ export const MarketSwitcher = () => {
                   }}
                 >
                   {getMarketHelpData(market.marketTitle).name}
+                  {upToLG && ' Market'}
                 </Typography>
-                <Box sx={{ color: '#A5A8B6', px: 2, borderRadius: '12px', background: '#383D51' }}>
-                  <Typography variant="subheader2">{market.v3 ? 'v3' : 'v2'}</Typography>
-                </Box>
+                {market.v3 && (
+                  <Box
+                    sx={{
+                      color: '#fff',
+                      px: 2,
+                      borderRadius: '12px',
+                      background: (theme) => theme.palette.gradients.aaveGradient,
+                    }}
+                  >
+                    <Typography variant="subheader2">Version 3.0</Typography>
+                  </Box>
+                )}
               </Box>
             </Box>
           );

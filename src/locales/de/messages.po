@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-10 10:39\n"
+"PO-Revision-Date: 2022-03-11 18:18\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -227,6 +227,7 @@ msgid "Before supplying, you need to approve its usage by the Aave protocol. You
 msgstr ""
 
 #: pages/index.page.tsx
+#: src/components/transactions/Borrow/BorrowModal.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
@@ -450,7 +451,6 @@ msgid "Disable E-Mode"
 msgstr ""
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
-#: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "Disable {symbol} as collateral"
 msgstr ""
 
@@ -554,6 +554,7 @@ msgid "FAQ"
 msgstr ""
 
 #: pages/faucet.page.tsx
+#: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Faucet"
 msgstr ""
@@ -564,6 +565,10 @@ msgstr ""
 
 #: src/modules/governance/ProposalsList.tsx
 msgid "Filter"
+msgstr ""
+
+#: src/layouts/components/LanguageSwitcher.tsx
+msgid "French"
 msgstr ""
 
 #: src/modules/staking/StakingHeader.tsx
@@ -788,7 +793,6 @@ msgid "Not a valid address"
 msgstr ""
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
-#: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Not enough balance on your wallet"
 msgstr ""
 
@@ -926,20 +930,20 @@ msgstr ""
 msgid "Retry with Approval"
 msgstr ""
 
-#: src/components/transactions/TxActionsWrapper.tsx
+#: src/components/transactions/FlowCommons/Error.tsx
 msgid "Retry with approval"
 msgstr ""
 
 #: src/components/transactions/FlowCommons/RightHelperText.tsx
-msgid "Review approve tx details"
+msgid "Review approval tx details"
+msgstr ""
+
+#: src/components/transactions/CollateralChange/CollateralChangeModal.tsx
+msgid "Review tx"
 msgstr ""
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Review tx details"
-msgstr ""
-
-#: src/components/transactions/FlowCommons/RightHelperText.tsx
-msgid "Review {action} tx details"
 msgstr ""
 
 #: src/components/transactions/ClaimRewards/RewardsSelect.tsx
@@ -1092,6 +1096,10 @@ msgstr ""
 msgid "Supply cap"
 msgstr ""
 
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Supply cap on target reserve reached. Try lowering the amount."
+msgstr ""
+
 #: src/components/transactions/Supply/SupplyActions.tsx
 msgid "Supply {symbol}"
 msgstr ""
@@ -1105,6 +1113,7 @@ msgid "Supplying {symbol}"
 msgstr ""
 
 #: src/components/transactions/Swap/SwapActions.tsx
+#: src/components/transactions/Swap/SwapModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Swap"
@@ -1112,6 +1121,10 @@ msgstr ""
 
 #: src/components/transactions/Swap/SwapActions.tsx
 msgid "Swapping"
+msgstr ""
+
+#: src/components/transactions/RateSwitch/RateSwitchModal.tsx
+msgid "Switch APY type"
 msgstr ""
 
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
@@ -1144,6 +1157,10 @@ msgstr ""
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "The cooldown period is {0}. After {1} of cooldown, you will enter unstake window of {2}. You will continue receiving rewards during cooldown and unstake window."
+msgstr ""
+
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "The effects on the health factor would cause liquidation. Try lowering the amount."
 msgstr ""
 
 #: src/components/infoTooltips/CollateralTooltip.tsx
@@ -1274,10 +1291,6 @@ msgstr ""
 msgid "Unstake window"
 msgstr ""
 
-#: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
-msgid "Use {symbol} as collateral"
-msgstr ""
-
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Used as collateral"
 msgstr ""
@@ -1385,10 +1398,6 @@ msgstr ""
 msgid "YAE"
 msgstr ""
 
-#: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
-msgid "YYou can not use this currency as collateral"
-msgstr ""
-
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "You are entering Isolation mode"
 msgstr ""
@@ -1403,6 +1412,10 @@ msgstr ""
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You can not switch usage as collateral mode for this currency, because it will cause collateral call"
+msgstr ""
+
+#: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
+msgid "You can not use this currency as collateral"
 msgstr ""
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
@@ -1486,7 +1499,7 @@ msgid "Your voting info"
 msgstr ""
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
-msgid "Your {networkName} wallet is empty. Purchase/buy/transfer assets"
+msgid "Your {networkName} wallet is empty. Purchase or transfer assets"
 msgstr ""
 
 #: src/modules/markets/AssetsList.tsx

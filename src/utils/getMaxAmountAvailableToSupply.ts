@@ -4,9 +4,9 @@ import BigNumber from 'bignumber.js';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 export function remainingCap(poolReserve: ComputedReserveData) {
-  return new BigNumber(poolReserve.supplyCap)
-    .minus(poolReserve.totalLiquidity)
-    .multipliedBy('0.995');
+  return poolReserve.supplyCap === '0'
+    ? new BigNumber(-1)
+    : new BigNumber(poolReserve.supplyCap).minus(poolReserve.totalLiquidity).multipliedBy('0.995');
 }
 
 export function getMaxAmountAvailableToSupply(
