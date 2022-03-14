@@ -94,12 +94,12 @@ export const borrow = (
     skipSetup({ skip, updateSkipStatus });
     it(`Open ${_shortName} borrow popup view`, () => {
       doSwitchToDashboardBorrowView();
+      cy.wait(2000);
       cy.get(`[data-cy='dashboardBorrowListItem_${_shortName.toUpperCase()}']`)
-        .find('button:contains("Borrow")')
+        .contains('Borrow')
+        .should('not.be.disabled')
         .click();
-      // cy.get(
-      //   `[data-cy=Modal] h2:contains("Borrow ${asset.wrapped ? 'W' : ''}${_shortName}")`
-      // ).should('be.visible');
+      cy.get(`[data-cy=Modal] h2:contains("Borrow ${_shortName}")`).should('be.visible');
     });
     it(`Choose ${apyType} borrow option`, () => {
       switch (apyType) {
@@ -199,10 +199,6 @@ export const repay = (
         amount,
         hasApproval,
       });
-      if (repayableAsset) {
-        //bug
-        cy.get('[data-cy=actionButton]').should('not.be.disabled').wait(2000).click();
-      }
       doConfirm({
         hasApproval,
         actionName: _actionName,
@@ -391,13 +387,13 @@ export const changeCollateral = (
         .click();
       cy.get('[data-cy=Modal]').should('be.visible');
       if (isCollateralType) {
-        cy.get(`[data-cy=Modal] h2:contains('Disable ${_shortName} as collateral')`).should(
-          'be.visible'
-        );
+        // cy.get(`[data-cy=Modal] h2:contains('Disable ${_shortName} as collateral')`).should(
+        //   'be.visible'
+        // );
       } else {
-        cy.get(`[data-cy=Modal] h2:contains('Use ${_shortName} as collateral')`).should(
-          'be.visible'
-        );
+        // cy.get(`[data-cy=Modal] h2:contains('Enable ${_shortName} as collateral')`).should(
+        //   'be.visible'
+        // );
       }
     });
     it('Confirm switching', () => {

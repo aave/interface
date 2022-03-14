@@ -26,7 +26,7 @@
     "test:headless": "DOTENV_CONFIG_PATH='.env.local' cypress run --config watchForFileChanges=false numTestsKeptInMemory=0",
     "test:main": "npx cypress-repeat run -n 2 --rerun-failed-only --spec \"cypress/integration/0-main-market/**/*.spec.ts\"",
     "test:amm": "npx cypress-repeat run -n 2 --rerun-failed-only --spec \"cypress/integration/1-amm-market/**/*.spec.ts\"",
-    "test:polygon": "npx cypress-repeat run -n 2 --rerun-failed-only --spec \"cypress/integration/2-polygon-v2-market/**/*.spec.ts\"",
+    "test:polygon": "npx cypress-repeat run -n 2 --rerun-failed-only --spec \\\"cypress/integration/0-v2-markets/2-polygon-v2-market/**/*.spec.ts\\\"",
     "test:avalanche": "npx cypress-repeat run -n 2 --rerun-failed-only --spec \"cypress/integration/3-avalanche-market/**/*.spec.ts\""
   },
   "dependencies": {

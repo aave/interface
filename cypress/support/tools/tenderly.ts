@@ -8,8 +8,8 @@ const TENDERLY_ACCOUNT = Cypress.env('TENDERLY_ACCOUNT');
 const TENDERLY_PROJECT = Cypress.env('TENDERLY_PROJECT');
 
 export const DEFAULT_TEST_ACCOUNT = {
-  privateKey: '0x54c6ae44611f38e662093c9a3f4b26c3bf13f5b8adb02da1a76f321bd18efe92',
-  address: '0x56FB278a7191bdf7C5d493765Fec03E6EAdF72f1'.toLowerCase(),
+  privateKey: '2ab22efc6bc85a9cd2d6281416500d8523ba57206d94cb333cbd09977ca75479',
+  address: '0x38F217d0762F28c806BD32cFEC5984385Fed97cB'.toLowerCase(),
 };
 
 const tenderly = axios.create({

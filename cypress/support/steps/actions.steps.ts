@@ -33,12 +33,10 @@ export const doConfirm = ({
   assetName,
   isWrapped = false,
 }: ConfirmAction) => {
-  if (isWrapped) assetName = 'W' + assetName;
   cy.log(`${hasApproval ? 'One step process' : 'Two step process'}`);
   if (!hasApproval) {
-    cy.get(`[data-cy=approvalButton]`).should('not.be.disabled').wait(3000).click();
+    cy.get(`[data-cy=approvalButton]`).should('not.be.disabled').wait(1000).click();
   }
-  // cy.get(`[data-cy=actionButton]`).as('button');
   cy.get('[data-cy=actionButton]', { timeout: 10000 })
     .should('not.be.disabled')
     .then(($btn) => {
@@ -49,7 +47,7 @@ export const doConfirm = ({
         // expect($btn.first()).to.contain(`${actionName}`);
       }
     })
-    .wait(3000)
+    .wait(1000)
     .click();
   cy.get("[data-cy=Modal] h2:contains('All done!')").should('be.visible');
 };
