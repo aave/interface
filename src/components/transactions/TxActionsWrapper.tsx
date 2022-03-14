@@ -1,10 +1,11 @@
 import { Trans } from '@lingui/macro';
 import { Box, BoxProps, Button, CircularProgress } from '@mui/material';
 import { ReactNode } from 'react';
-import { TxStateType } from 'src/hooks/useModal';
+import { TxStateType, useModalContext } from 'src/hooks/useModal';
 import isEmpty from 'lodash/isEmpty';
 import { LeftHelperText } from './FlowCommons/LeftHelperText';
 import { RightHelperText } from './FlowCommons/RightHelperText';
+import { TxAction } from 'src/ui-config/errorMapping';
 
 interface TxActionsWrapperProps extends BoxProps {
   actionInProgressText: ReactNode;
@@ -39,12 +40,18 @@ export const TxActionsWrapper = ({
   blocked,
   ...rest
 }: TxActionsWrapperProps) => {
-  const hasApprovalError = requiresApproval && (approvalTxState?.txError || mainTxState?.txError);
+  const { txError } = useModalContext();
+
+  const hasApprovalError =
+    requiresApproval && txError && txError.txAction === TxAction.APPROVAL && txError.actionBlocked;
   const isAmountMissing = requiresAmount && requiresAmount && Number(amount) === 0;
 
   function getMainParams() {
     if (blocked) return { disabled: true, content: actionText };
-    if (mainTxState?.gasEstimationError) return { disabled: true, content: actionText };
+    if (txError && txError.txAction === TxAction.GAS_ESTIMATION && txError.actionBlocked)
+      return { loading: false, disabled: true, content: actionText };
+    if (txError && txError.txAction === TxAction.MAIN_ACTION && txError.actionBlocked)
+      return { loading: false, disabled: true, content: actionText };
     if (isWrongNetwork) return { disabled: true, content: <Trans>Wrong Network</Trans> };
     if (isAmountMissing) return { disabled: true, content: <Trans>Enter an amount</Trans> };
     if (preparingTransactions || isEmpty(mainTxState)) return { disabled: true, loading: true };

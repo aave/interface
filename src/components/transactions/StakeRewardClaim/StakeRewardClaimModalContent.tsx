@@ -30,7 +30,7 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName }: StakeRewardClai
   const stakeData = data.stakeGeneralResult?.stakeGeneralUIData[stakeAssetName as StakingType];
   const { chainId: connectedChainId } = useWeb3Context();
   const stakeConfig = getStakeConfig();
-  const { gasLimit, mainTxState: txState } = useModalContext();
+  const { gasLimit, mainTxState: txState, txError } = useModalContext();
 
   // hardcoded as all rewards will be in aave token
   const rewardsSymbol = 'AAVE';
@@ -68,7 +68,9 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName }: StakeRewardClai
   const networkConfig = getNetworkConfig(stakingChain);
   const isWrongNetwork = connectedChainId !== stakingChain;
 
-  if (txState.txError) return <TxErrorView errorMessage={txState.txError} />;
+  if (txError && txError.blocking) {
+    return <TxErrorView txError={txError} />;
+  }
   if (txState.success)
     return <TxSuccessView action="Claimed" amount={maxAmountToClaim} symbol={rewardsSymbol} />;
 
@@ -92,7 +94,8 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName }: StakeRewardClai
         />
       </TxModalDetails>
 
-      {txState.gasEstimationError && <GasEstimationError error={txState.gasEstimationError} />}
+      {txError && <GasEstimationError txError={txError} />}
+
       <StakeRewardClaimActions
         sx={{ mt: '48px' }}
         amountToClaim={amount}

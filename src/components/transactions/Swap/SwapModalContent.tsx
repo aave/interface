@@ -45,7 +45,7 @@ export const SwapModalContent = ({
   const { reserves, user } = useAppDataContext();
   const { currentChainId } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
-  const { gasLimit, mainTxState: supplyTxState } = useModalContext();
+  const { gasLimit, mainTxState: supplyTxState, txError } = useModalContext();
 
   const swapTargets = reserves
     .filter((r) => r.underlyingAsset !== poolReserve.underlyingAsset)
@@ -259,9 +259,8 @@ export const SwapModalContent = ({
         )}
       </TxModalDetails>
 
-      {supplyTxState.gasEstimationError && (
-        <GasEstimationError error={supplyTxState.gasEstimationError} />
-      )}
+      {txError && <GasEstimationError txError={txError} />}
+
       <SwapActions
         isMaxSelected={isMaxSelected}
         poolReserve={poolReserve}
