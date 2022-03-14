@@ -5,8 +5,6 @@ export type MarketDataType = {
   marketTitle: string;
   // the network the market operates on
   chainId: ChainId;
-  // aToken prefix string, which will be cut of in the ui
-  aTokenPrefix: string;
   enabledFeatures?: {
     liquiditySwap?: boolean;
     staking?: boolean;
@@ -80,7 +78,6 @@ export const marketsData: {
   [CustomMarket.proto_kovan]: {
     marketTitle: 'Ethereum Kovan',
     chainId: ChainId.kovan,
-    aTokenPrefix: 'A',
     enabledFeatures: {
       faucet: true,
       governance: true,
@@ -101,7 +98,6 @@ export const marketsData: {
   [CustomMarket.proto_mainnet]: {
     marketTitle: 'Ethereum',
     chainId: ChainId.mainnet,
-    aTokenPrefix: 'A',
     enabledFeatures: {
       governance: true,
       staking: true,
@@ -127,7 +123,6 @@ export const marketsData: {
   [CustomMarket.amm_kovan]: {
     marketTitle: 'Ethereum AMM Kovan',
     chainId: ChainId.kovan,
-    aTokenPrefix: 'AAMM',
     rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0x67FB118A780fD740C8936511947cC4bE7bb7730c'.toLowerCase(),
@@ -142,7 +137,6 @@ export const marketsData: {
   [CustomMarket.amm_mainnet]: {
     marketTitle: 'Ethereum AMM',
     chainId: ChainId.mainnet,
-    aTokenPrefix: 'AAMM',
     cachingServerUrl: 'https://cache-api-1.aave.com/graphql',
     cachingWSServerUrl: 'wss://cache-api-1.aave.com/graphql',
     rpcOnly: false,
@@ -158,7 +152,6 @@ export const marketsData: {
   [CustomMarket.proto_mumbai]: {
     marketTitle: 'Polygon Mumbai',
     chainId: ChainId.mumbai,
-    aTokenPrefix: 'AM',
     enabledFeatures: {
       incentives: true,
       faucet: true,
@@ -177,7 +170,6 @@ export const marketsData: {
   [CustomMarket.proto_polygon]: {
     marketTitle: 'Polygon',
     chainId: ChainId.polygon,
-    aTokenPrefix: 'AM',
     enabledFeatures: {
       liquiditySwap: true,
       incentives: true,
@@ -200,7 +192,6 @@ export const marketsData: {
   [CustomMarket.proto_fuji]: {
     marketTitle: 'Avalanche Fuji',
     chainId: ChainId.fuji,
-    aTokenPrefix: 'AAVA',
     enabledFeatures: {
       faucet: true,
       incentives: true,
@@ -219,7 +210,6 @@ export const marketsData: {
   [CustomMarket.proto_avalanche]: {
     marketTitle: 'Avalanche',
     chainId: ChainId.avalanche,
-    aTokenPrefix: 'AV',
     enabledFeatures: {
       liquiditySwap: true,
       incentives: true,
@@ -242,7 +232,6 @@ export const marketsData: {
     v3: true,
     marketTitle: 'Ethereum Rinkeby',
     chainId: ChainId.rinkeby,
-    aTokenPrefix: 'A',
     enabledFeatures: {
       faucet: true,
       governance: false,
@@ -264,7 +253,6 @@ export const marketsData: {
     marketTitle: 'Arbitrum',
     v3: true,
     chainId: ChainId.arbitrum_one,
-    aTokenPrefix: 'AA',
     enabledFeatures: {
       incentives: true,
     },
@@ -283,7 +271,6 @@ export const marketsData: {
     marketTitle: 'Arbitrum Rinkeby',
     v3: true,
     chainId: ChainId.arbitrum_rinkeby,
-    aTokenPrefix: 'AA',
     enabledFeatures: {
       faucet: true,
       incentives: true,
@@ -304,7 +291,6 @@ export const marketsData: {
     marketTitle: 'Avalanche',
     v3: true,
     chainId: ChainId.avalanche,
-    aTokenPrefix: 'AV',
     enabledFeatures: {
       // liquiditySwap: true,
       incentives: true,
@@ -325,7 +311,6 @@ export const marketsData: {
     marketTitle: 'Avalanche Fuji',
     v3: true,
     chainId: ChainId.fuji,
-    aTokenPrefix: 'AAVA',
     enabledFeatures: {
       faucet: true,
       incentives: true,
@@ -345,7 +330,6 @@ export const marketsData: {
     marketTitle: 'Fantom',
     v3: true,
     chainId: ChainId.fantom,
-    aTokenPrefix: 'AAVA',
     enabledFeatures: {
       incentives: true,
     },
@@ -363,7 +347,6 @@ export const marketsData: {
     marketTitle: 'Fantom Testnet',
     v3: true,
     chainId: ChainId.fantom_testnet,
-    aTokenPrefix: 'AAVA',
     enabledFeatures: {
       faucet: true,
       incentives: true,
@@ -383,7 +366,6 @@ export const marketsData: {
     marketTitle: 'Harmony',
     v3: true,
     chainId: ChainId.harmony,
-    aTokenPrefix: 'AAVA',
     enabledFeatures: {
       incentives: true,
     },
@@ -401,7 +383,6 @@ export const marketsData: {
     marketTitle: 'Harmony Testnet',
     v3: true,
     chainId: ChainId.harmony_testnet,
-    aTokenPrefix: 'AAVA',
     enabledFeatures: {
       faucet: true,
       incentives: true,
@@ -421,7 +402,6 @@ export const marketsData: {
     marketTitle: 'Optimism',
     v3: true,
     chainId: ChainId.optimism,
-    aTokenPrefix: 'AAVA',
     enabledFeatures: {
       incentives: true,
     },
@@ -440,7 +420,6 @@ export const marketsData: {
     marketTitle: 'Optimism Kovan',
     v3: true,
     chainId: ChainId.optimism_kovan,
-    aTokenPrefix: 'AAVA',
     enabledFeatures: {
       faucet: true,
       incentives: true,
@@ -460,7 +439,6 @@ export const marketsData: {
     marketTitle: 'Polygon',
     chainId: ChainId.polygon,
     v3: true,
-    aTokenPrefix: 'AM',
     enabledFeatures: {
       // liquiditySwap: true,
       incentives: true,
@@ -480,7 +458,6 @@ export const marketsData: {
   [CustomMarket.proto_mumbai_v3]: {
     marketTitle: 'Polygon Mumbai',
     chainId: ChainId.mumbai,
-    aTokenPrefix: 'AM',
     enabledFeatures: {
       incentives: true,
       faucet: true,
