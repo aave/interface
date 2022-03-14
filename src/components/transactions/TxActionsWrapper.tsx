@@ -45,7 +45,6 @@ export const TxActionsWrapper = ({
   const hasApprovalError =
     requiresApproval && txError && txError.txAction === TxAction.APPROVAL && txError.actionBlocked;
   const isAmountMissing = requiresAmount && requiresAmount && Number(amount) === 0;
-  console.log('aa', txError);
 
   function getMainParams() {
     if (blocked) return { disabled: true, content: actionText };
