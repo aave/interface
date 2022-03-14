@@ -23,7 +23,7 @@ export interface UserIncentiveResponse {
 
 export const useIncentiveData = (skip = false) => {
   const { currentAccount } = useWeb3Context();
-  const { currentChainId, currentMarketData } = useProtocolDataContext();
+  const { currentChainId, currentMarketData, currentMarket } = useProtocolDataContext();
   const { isRPCActive } = useConnectionStatusContext();
 
   const rpcMode =
@@ -32,6 +32,7 @@ export const useIncentiveData = (skip = false) => {
   const { loading: cachedDataLoading, error: cachedDataError } = useIncentivesDataCached(
     currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
     currentChainId,
+    currentMarket,
     currentAccount,
     skip || rpcMode || !currentMarketData.addresses.UI_INCENTIVE_DATA_PROVIDER
   );

@@ -84,7 +84,7 @@ function createWsLink(uri: string): WebSocketLink {
 export const APOLLO_QUERY_TARGET = {
   STAKE: 'STAKE',
   GOVERNANCE: 'GOVERNANCE',
-  CHAIN: (num: number) => `CHAIN_${num}`,
+  MARKET: (name: string) => `MARKET_${name}`,
 };
 
 const isSubscription = ({ query }: Operation) => {
@@ -119,8 +119,7 @@ export const getApolloClient = () => {
   const combinedLink = Object.entries(marketsData).reduce((acc, [key, cfg]) => {
     if (cfg.cachingServerUrl && cfg.cachingWSServerUrl && typeof window !== 'undefined') {
       const condition = (operation: Operation) =>
-        operation.getContext().target ===
-        APOLLO_QUERY_TARGET.CHAIN(cfg.chainId as unknown as number);
+        operation.getContext().target === APOLLO_QUERY_TARGET.MARKET(key);
       const http = new HttpLink({ uri: cfg.cachingServerUrl });
       const ws = createWsLink(cfg.cachingWSServerUrl);
       return split(

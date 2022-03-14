@@ -15,6 +15,7 @@ import {
 export function usePoolDataCached(
   lendingPoolAddressProvider: string,
   chainId: number,
+  marketName: string,
   currentAccount?: string,
   skip = false
 ) {
@@ -22,7 +23,7 @@ export function usePoolDataCached(
     useC_ProtocolDataQuery({
       variables: { lendingPoolAddressProvider, chainId },
       skip,
-      context: { target: APOLLO_QUERY_TARGET.CHAIN(chainId) },
+      context: { target: APOLLO_QUERY_TARGET.MARKET(marketName) },
     });
   useEffect(() => {
     if (!skip) {
@@ -43,15 +44,15 @@ export function usePoolDataCached(
             protocolData: protocolDataUpdate,
           };
         },
-        context: { target: APOLLO_QUERY_TARGET.CHAIN(chainId) },
+        context: { target: APOLLO_QUERY_TARGET.MARKET(marketName) },
       });
     }
-  }, [subscribeToProtocolData, lendingPoolAddressProvider, skip, chainId]);
+  }, [subscribeToProtocolData, lendingPoolAddressProvider, skip, chainId, marketName]);
 
   const { loading: userDataLoading, subscribeToMore: subscribeToUserData } = useC_UserDataQuery({
     variables: { lendingPoolAddressProvider, userAddress: currentAccount || '', chainId },
     skip: !currentAccount || skip,
-    context: { target: APOLLO_QUERY_TARGET.CHAIN(chainId) },
+    context: { target: APOLLO_QUERY_TARGET.MARKET(marketName) },
   });
   useEffect(() => {
     if (currentAccount && !skip)
@@ -71,9 +72,9 @@ export function usePoolDataCached(
             userData,
           };
         },
-        context: { target: APOLLO_QUERY_TARGET.CHAIN(chainId) },
+        context: { target: APOLLO_QUERY_TARGET.MARKET(marketName) },
       });
-  }, [subscribeToUserData, lendingPoolAddressProvider, currentAccount, skip, chainId]);
+  }, [subscribeToUserData, lendingPoolAddressProvider, currentAccount, skip, chainId, marketName]);
 
   const loading = (currentAccount && userDataLoading) || poolDataLoading;
 
