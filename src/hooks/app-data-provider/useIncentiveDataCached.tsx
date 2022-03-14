@@ -67,7 +67,7 @@ export function useIncentivesDataCached(
         context: { target: APOLLO_QUERY_TARGET.CHAIN(chainId) },
       });
     }
-  }, [subscribeToIncentivesData, lendingPoolAddressProvider, skip]);
+  }, [subscribeToIncentivesData, lendingPoolAddressProvider, skip, chainId]);
 
   // User incentives
   const { loading: userIncentivesDataLoading, subscribeToMore: subscribeToUserIncentivesData } =
@@ -105,7 +105,7 @@ export function useIncentivesDataCached(
         },
         context: { target: APOLLO_QUERY_TARGET.CHAIN(chainId) },
       });
-  }, [subscribeToUserIncentivesData, lendingPoolAddressProvider, currentAccount, skip]);
+  }, [subscribeToUserIncentivesData, lendingPoolAddressProvider, currentAccount, skip, chainId]);
 
   // logic
   const loading = (currentAccount && userIncentivesDataLoading) || incentivesDataLoading;

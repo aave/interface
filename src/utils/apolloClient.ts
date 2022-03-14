@@ -119,7 +119,8 @@ export const getApolloClient = () => {
   const combinedLink = Object.entries(marketsData).reduce((acc, [key, cfg]) => {
     if (cfg.cachingServerUrl && cfg.cachingWSServerUrl && typeof window !== 'undefined') {
       const condition = (operation: Operation) =>
-        operation.getContext().target === APOLLO_QUERY_TARGET.CHAIN(key as unknown as number);
+        operation.getContext().target ===
+        APOLLO_QUERY_TARGET.CHAIN(cfg.chainId as unknown as number);
       const http = new HttpLink({ uri: cfg.cachingServerUrl });
       const ws = createWsLink(cfg.cachingWSServerUrl);
       return split(
@@ -128,7 +129,6 @@ export const getApolloClient = () => {
         split((operation) => condition(operation), http, acc)
       );
     }
-    console.log(acc);
     return acc;
   }, link);
 

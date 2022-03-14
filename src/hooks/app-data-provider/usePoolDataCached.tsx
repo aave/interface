@@ -46,7 +46,7 @@ export function usePoolDataCached(
         context: { target: APOLLO_QUERY_TARGET.CHAIN(chainId) },
       });
     }
-  }, [subscribeToProtocolData, lendingPoolAddressProvider, skip]);
+  }, [subscribeToProtocolData, lendingPoolAddressProvider, skip, chainId]);
 
   const { loading: userDataLoading, subscribeToMore: subscribeToUserData } = useC_UserDataQuery({
     variables: { lendingPoolAddressProvider, userAddress: currentAccount || '', chainId },
@@ -73,7 +73,7 @@ export function usePoolDataCached(
         },
         context: { target: APOLLO_QUERY_TARGET.CHAIN(chainId) },
       });
-  }, [subscribeToUserData, lendingPoolAddressProvider, currentAccount, skip]);
+  }, [subscribeToUserData, lendingPoolAddressProvider, currentAccount, skip, chainId]);
 
   const loading = (currentAccount && userDataLoading) || poolDataLoading;
 
