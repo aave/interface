@@ -133,7 +133,7 @@ export const RepayModalContent = ({
       );
       repayTokens.push({
         address: poolReserve.aTokenAddress,
-        symbol: `${currentMarketData.aTokenPrefix.toLowerCase()}${poolReserve.symbol}`,
+        symbol: `a${poolReserve.symbol}`,
         iconSymbol: poolReserve.iconSymbol,
         aToken: true,
         balance: maxBalance.toString(),
