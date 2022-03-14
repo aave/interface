@@ -1,5 +1,4 @@
 import { Trans } from '@lingui/macro';
-import { any } from 'cypress/types/bluebird';
 import { ReactElement } from 'react';
 
 export enum TxAction {
