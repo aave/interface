@@ -143,6 +143,9 @@ export const marketsData: {
     marketTitle: 'Ethereum AMM',
     chainId: ChainId.mainnet,
     aTokenPrefix: 'AAMM',
+    cachingServerUrl: 'https://cache-api-1.aave.com/graphql',
+    cachingWSServerUrl: 'wss://cache-api-1.aave.com/graphql',
+    rpcOnly: false,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xacc030ef66f9dfeae9cbb0cd1b25654b82cfa8d5'.toLowerCase(),
       LENDING_POOL: '0x7937d4799803fbbe595ed57278bc4ca21f3bffcb',
