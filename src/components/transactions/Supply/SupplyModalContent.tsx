@@ -160,7 +160,6 @@ export const SupplyModalContent = ({
     symbol: poolReserve.iconSymbol,
     decimals: poolReserve.decimals,
     aToken: true,
-    aTokenPrefix: currentMarketData.aTokenPrefix,
   };
 
   // collateralization state
