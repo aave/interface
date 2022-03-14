@@ -1,4 +1,5 @@
 import { Trans } from '@lingui/macro';
+import { any } from 'cypress/types/bluebird';
 import { ReactElement } from 'react';
 
 export enum TxAction {
@@ -9,6 +10,7 @@ export enum TxAction {
 
 export type TxErrorType = {
   blocking: boolean;
+  actionBlocked: boolean;
   rawError: Error;
   error: ReactElement | undefined;
   txAction: TxAction;
@@ -19,7 +21,7 @@ export const getErrorTextFromError = (
   txAction: TxAction,
   blocking = true
 ): TxErrorType => {
-  const errorNumber = 1;
+  let errorNumber = 1;
 
   if (
     error.message === 'MetaMask Tx Signature: User denied transaction signature.' ||
@@ -28,18 +30,29 @@ export const getErrorTextFromError = (
     return {
       error: errorMapping[4001],
       blocking: false,
+      actionBlocked: false,
       rawError: error,
       txAction,
     };
   }
 
-  // TODO: parse error message to try and get the revert contract error
+  // Try to parse the Pool error number from RPC provider revert error
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const parsedError = JSON.parse((error as any)?.error?.body);
+    const parsedNumber = Number(parsedError.error.message.split(': ')[1]);
+    if (!isNaN(parsedNumber)) {
+      errorNumber = parsedNumber;
+    }
+  } catch {}
+
   const errorRender = errorMapping[errorNumber];
 
   if (errorRender) {
     return {
       error: errorRender,
       blocking,
+      actionBlocked: true,
       rawError: error,
       txAction,
     };
@@ -48,6 +61,7 @@ export const getErrorTextFromError = (
   return {
     error: undefined,
     blocking,
+    actionBlocked: true,
     rawError: error,
     txAction,
   };

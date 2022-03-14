@@ -7,17 +7,24 @@ export const GasEstimationError = ({ txError }: { txError: TxErrorType }) => {
     <Alert severity="error" sx={{ mt: 4 }}>
       <Typography>
         {txError.error ? (
-          txError.error
-        ) : (
-          <Trans>
-            There was some{' '}
+          <>
+            {txError.error}{' '}
             <Button
               variant="text"
               onClick={() => navigator.clipboard.writeText(txError.rawError.message.toString())}
             >
-              error
+              <Trans>Copy error</Trans>
             </Button>
-            . Please try changing the parameters.
+          </>
+        ) : (
+          <Trans>
+            There was some error. Please try changing the parameters or
+            <Button
+              variant="text"
+              onClick={() => navigator.clipboard.writeText(txError.rawError.message.toString())}
+            >
+              copy the error
+            </Button>
           </Trans>
         )}
       </Typography>

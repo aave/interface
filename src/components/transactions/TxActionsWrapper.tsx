@@ -43,12 +43,15 @@ export const TxActionsWrapper = ({
   const { txError } = useModalContext();
 
   const hasApprovalError =
-    requiresApproval && txError && txError.txAction === TxAction.APPROVAL && txError.blocking;
+    requiresApproval && txError && txError.txAction === TxAction.APPROVAL && txError.actionBlocked;
   const isAmountMissing = requiresAmount && requiresAmount && Number(amount) === 0;
+  console.log('aa', txError);
 
   function getMainParams() {
     if (blocked) return { disabled: true, content: actionText };
-    if (txError && txError.txAction === TxAction.MAIN_ACTION && txError.blocking)
+    if (txError && txError.txAction === TxAction.GAS_ESTIMATION && txError.actionBlocked)
+      return { loading: false, disabled: true, content: actionText };
+    if (txError && txError.txAction === TxAction.MAIN_ACTION && txError.actionBlocked)
       return { loading: false, disabled: true, content: actionText };
     if (isWrongNetwork) return { disabled: true, content: <Trans>Wrong Network</Trans> };
     if (isAmountMissing) return { disabled: true, content: <Trans>Enter an amount</Trans> };
