@@ -18,8 +18,8 @@ export interface ConnectionStatusProviderData {
 const ConnectionStatusDataContext = React.createContext({} as ConnectionStatusProviderData);
 
 export const ConnectionStatusProvider: React.FC = ({ children }) => {
-  const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
-  const RPC_ONLY_MODE = !!currentNetworkConfig.rpcOnly;
+  const { currentMarketData, currentMarket } = useProtocolDataContext();
+  const RPC_ONLY_MODE = !!currentMarketData.rpcOnly;
   const [preferredConnectionMode, setPreferredConnectionMode] = useState<ConnectionMode>(
     RPC_ONLY_MODE ? ConnectionMode.rpc : ConnectionMode.normal
   );
@@ -45,8 +45,7 @@ export const ConnectionStatusProvider: React.FC = ({ children }) => {
     console.log('RPC_ONLY_MODE_ENABLED', RPC_ONLY_MODE);
   }, [RPC_ONLY_MODE]);
 
-  const graphValid = useGraphValid(APOLLO_QUERY_TARGET.CHAIN(currentChainId));
-
+  const graphValid = useGraphValid(APOLLO_QUERY_TARGET.MARKET(currentMarket));
   const isRPCMandatory = RPC_ONLY_MODE || !graphValid;
   const isRPCActive = preferredConnectionMode === ConnectionMode.rpc || isRPCMandatory;
   return (
