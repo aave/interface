@@ -104,7 +104,7 @@ export const BorrowModalContent = ({
   setUnwrap: setBorrowUnWrapped,
   symbol,
 }: ModalWrapperProps & { unwrap: boolean; setUnwrap: (unwrap: boolean) => void }) => {
-  const { mainTxState: borrowTxState, gasLimit } = useModalContext();
+  const { mainTxState: borrowTxState, gasLimit, txError } = useModalContext();
   const { user, marketReferencePriceInUsd } = useAppDataContext();
   const { currentNetworkConfig } = useProtocolDataContext();
 
@@ -272,9 +272,7 @@ export const BorrowModalContent = ({
         />
       </TxModalDetails>
 
-      {borrowTxState.gasEstimationError && (
-        <GasEstimationError error={borrowTxState.gasEstimationError} />
-      )}
+      {txError && <GasEstimationError txError={txError} />}
 
       <BorrowActions
         poolReserve={poolReserve}

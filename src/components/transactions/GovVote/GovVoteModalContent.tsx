@@ -35,7 +35,7 @@ export const GovVoteModalContent = ({
   power: votingPower,
 }: GovVoteModalContentProps) => {
   const { chainId: connectedChainId } = useWeb3Context();
-  const { gasLimit, mainTxState: txState } = useModalContext();
+  const { gasLimit, mainTxState: txState, txError } = useModalContext();
 
   // handle delegate address errors
   let blockingError: ErrorType | undefined = undefined;
@@ -62,7 +62,9 @@ export const GovVoteModalContent = ({
   const networkConfig = getNetworkConfig(govChain);
   const isWrongNetwork = connectedChainId !== govChain;
 
-  if (txState.txError) return <TxErrorView errorMessage={txState.txError} />;
+  if (txError && txError.blocking) {
+    return <TxErrorView txError={txError} />;
+  }
   if (txState.success) return <TxSuccessView action="Vote" />;
 
   return (
@@ -80,7 +82,7 @@ export const GovVoteModalContent = ({
         <DetailsNumberLine description={<Trans>Voting power</Trans>} value={votingPower} />
       </TxModalDetails>
 
-      {txState.gasEstimationError && <GasEstimationError error={txState.gasEstimationError} />}
+      {txError && <GasEstimationError txError={txError} />}
 
       <GovVoteActions
         proposalId={proposalId}

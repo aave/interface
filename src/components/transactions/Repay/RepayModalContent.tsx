@@ -35,7 +35,7 @@ export const RepayModalContent = ({
   isWrongNetwork,
   debtType,
 }: ModalWrapperProps & { debtType: InterestRate }) => {
-  const { gasLimit, mainTxState: repayTxState } = useModalContext();
+  const { gasLimit, mainTxState: repayTxState, txError } = useModalContext();
   const { marketReferencePriceInUsd, user } = useAppDataContext();
   const { currentChainId, currentMarketData } = useProtocolDataContext();
 
@@ -211,9 +211,7 @@ export const RepayModalContent = ({
         />
       </TxModalDetails>
 
-      {repayTxState.gasEstimationError && (
-        <GasEstimationError error={repayTxState.gasEstimationError} />
-      )}
+      {txError && <GasEstimationError txError={txError} />}
 
       <RepayActions
         poolReserve={poolReserve}
