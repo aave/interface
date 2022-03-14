@@ -34212,7 +34212,14 @@ var require_utils6 = __commonJS({
       UNILENDETH: (0, exports.valueToWei)(exports.uniswapEthAmount, 18),
       UNILINKETH: (0, exports.valueToWei)(exports.uniswapEthAmount, 18),
       UNIMKRETH: (0, exports.valueToWei)(exports.uniswapEthAmount, 18),
-      EURS: (0, exports.valueToWei)("10000", 2)
+      EURS: (0, exports.valueToWei)("10000", 2),
+      AGEUR: (0, exports.valueToWei)("10000", 18),
+      BAL: (0, exports.valueToWei)("10000", 18),
+      CRV: (0, exports.valueToWei)("10000", 18),
+      DPI: (0, exports.valueToWei)("10000", 18),
+      GHST: (0, exports.valueToWei)("10000", 18),
+      JEUR: (0, exports.valueToWei)("10000", 18),
+      SUSHI: (0, exports.valueToWei)("10000", 18)
     };
     var augustusToAmountOffsetFromCalldata = (calldata) => {
       switch (calldata.slice(0, 10)) {
@@ -57796,13 +57803,13 @@ var marketsData = {
       incentives: false
     },
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: "0x651b8A8cA545b251a8f49B57D5838Da0a8DFbEF9".toLowerCase(),
-      LENDING_POOL: "0x329462f8ed05E5FfBF6dfB84106e76B69e6B1F94",
-      WETH_GATEWAY: "0x509B2506FbA1BD41765F6A82C7B0Dd4229191768",
-      FAUCET: "0x06Db7973d6D724Eb15404a0d178624f6e07834F9",
-      WALLET_BALANCE_PROVIDER: "0x57dDbfeab5Dc552d33dC8cacCdB490de80431334",
-      UI_POOL_DATA_PROVIDER: "0x47E83aeB8E1940aF16fF763F2c25ba75a1F4D0c5",
-      UI_INCENTIVE_DATA_PROVIDER: "0x335De793a66B839974aED2673b72a452c3Ee93A4"
+      LENDING_POOL_ADDRESS_PROVIDER: "0xBA6378f1c1D046e9EB0F538560BA7558546edF3C".toLowerCase(),
+      LENDING_POOL: "0xE039BdF1d874d27338e09B55CB09879Dedca52D8",
+      WETH_GATEWAY: "0xD1DECc6502cc690Bc85fAf618Da487d886E54Abe",
+      FAUCET: "0x88138CA1e9E485A1E688b030F85Bb79d63f156BA",
+      WALLET_BALANCE_PROVIDER: "0x116674C3Efe4e31F192d855284619DEd6fE2a1b9",
+      UI_POOL_DATA_PROVIDER: "0x550f9764d56291B5B793b6dD1623af3346128BD2",
+      UI_INCENTIVE_DATA_PROVIDER: "0x2c9f31b1F9838Bb8781bb61a0d0a4615f6530207"
     }
   },
   ["proto_arbitrum_v3" /* proto_arbitrum_v3 */]: {
@@ -57907,13 +57914,13 @@ var marketsData = {
       incentives: true
     },
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: "".toLowerCase(),
-      LENDING_POOL: "",
-      WETH_GATEWAY: "",
-      FAUCET: "",
-      WALLET_BALANCE_PROVIDER: "",
-      UI_POOL_DATA_PROVIDER: "",
-      UI_INCENTIVE_DATA_PROVIDER: ""
+      LENDING_POOL_ADDRESS_PROVIDER: "0xE339D30cBa24C70dCCb82B234589E3C83249e658".toLowerCase(),
+      LENDING_POOL: "0x771A45a19cE333a19356694C5fc80c76fe9bc741",
+      WETH_GATEWAY: "0x87770f04Bbece8092d777860907798138825f303",
+      FAUCET: "0x02D538e56A729C535F83b2DA20Ddf9AD7281FE6c",
+      WALLET_BALANCE_PROVIDER: "0xBb3F2bB6126b0709F738cbe6B50bFE69fd663e73",
+      UI_POOL_DATA_PROVIDER: "0xd0B607bb9e0aA3aFF73a8E99d7EfA54C4bc3d8a9",
+      UI_INCENTIVE_DATA_PROVIDER: "0x7Ce8eA134935F9FED1606Ba0dfD0509fec5D3a75"
     }
   },
   ["proto_harmony_v3" /* proto_harmony_v3 */]: {
