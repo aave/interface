@@ -1,9 +1,5 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
-import {
-  calculateHealthFactorFromBalances,
-  calculateHealthFactorFromBalancesBigUnits,
-  valueToBigNumber,
-} from '@aave/math-utils';
+import { calculateHealthFactorFromBalancesBigUnits, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
