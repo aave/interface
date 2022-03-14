@@ -30,7 +30,7 @@ export enum ErrorType {
 }
 
 export const ClaimRewardsModalContent = () => {
-  const { gasLimit, mainTxState: claimRewardsTxState } = useModalContext();
+  const { gasLimit, mainTxState: claimRewardsTxState, txError } = useModalContext();
   const { user, reserves } = useAppDataContext();
   const { currentChainId, currentMarketData, currentMarket } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
@@ -129,8 +129,9 @@ export const ClaimRewardsModalContent = () => {
       ? allReward
       : rewards.find((r) => r.symbol === selectedRewardSymbol);
 
-  if (claimRewardsTxState.txError)
-    return <TxErrorView errorMessage={claimRewardsTxState.txError} />;
+  if (txError && txError.blocking) {
+    return <TxErrorView txError={txError} />;
+  }
   if (claimRewardsTxState.success)
     return <TxSuccessView action="Claimed" amount={selectedReward?.balanceUsd} />;
 
@@ -209,9 +210,7 @@ export const ClaimRewardsModalContent = () => {
         </TxModalDetails>
       )}
 
-      {claimRewardsTxState.gasEstimationError && (
-        <GasEstimationError error={claimRewardsTxState.gasEstimationError} />
-      )}
+      {txError && <GasEstimationError txError={txError} />}
 
       <ClaimRewardsActions
         isWrongNetwork={isWrongNetwork}

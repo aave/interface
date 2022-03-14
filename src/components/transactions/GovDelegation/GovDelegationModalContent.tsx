@@ -38,7 +38,7 @@ export const GovDelegationModalContent = () => {
   const {
     daveTokens: { aave, stkAave },
   } = useAaveTokensProviderContext();
-  const { gasLimit, mainTxState: txState } = useModalContext();
+  const { gasLimit, mainTxState: txState, txError } = useModalContext();
 
   // error states
 
@@ -88,7 +88,9 @@ export const GovDelegationModalContent = () => {
   const networkConfig = getNetworkConfig(govChain);
   const isWrongNetwork = connectedChainId !== govChain;
 
-  if (txState.txError) return <TxErrorView errorMessage={txState.txError} />;
+  if (txError && txError.blocking) {
+    return <TxErrorView txError={txError} />;
+  }
   if (txState.success) return <TxSuccessView action="Delegation" />;
   return (
     <>
@@ -127,7 +129,7 @@ export const GovDelegationModalContent = () => {
       </FormControl>
       <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} />
 
-      {txState.gasEstimationError && <GasEstimationError error={txState.gasEstimationError} />}
+      {txError && <GasEstimationError txError={txError} />}
 
       <GovDelegationActions
         delegationType={delegationType}

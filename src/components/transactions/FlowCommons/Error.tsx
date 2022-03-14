@@ -2,10 +2,11 @@ import { DuplicateIcon, XIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Link, SvgIcon, Typography } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
+import { TxAction, TxErrorType } from 'src/ui-config/errorMapping';
 
 // TODO: need check texts
-export const TxErrorView = ({ errorMessage }: { errorMessage: string }) => {
-  const { close, approvalTxState, resetTx, setForcedApproval } = useModalContext();
+export const TxErrorView = ({ txError }: { txError: TxErrorType }) => {
+  const { close, resetTx, setForcedApproval } = useModalContext();
 
   const handleRetry = () => {
     resetTx();
@@ -53,7 +54,7 @@ export const TxErrorView = ({ errorMessage }: { errorMessage: string }) => {
 
         <Button
           variant="outlined"
-          onClick={() => navigator.clipboard.writeText(errorMessage)}
+          onClick={() => navigator.clipboard.writeText(txError.rawError.message.toString())}
           size="small"
           sx={{ mt: 6 }}
         >
@@ -65,7 +66,7 @@ export const TxErrorView = ({ errorMessage }: { errorMessage: string }) => {
         </Button>
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12 }}>
-        {approvalTxState.txError && (
+        {txError && txError.txAction === TxAction.APPROVAL && (
           <Button
             onClick={handleRetry}
             variant="contained"

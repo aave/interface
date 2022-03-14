@@ -34,7 +34,7 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
   const stakeData = data.stakeGeneralResult?.stakeGeneralUIData[stakeAssetName as StakingType];
   const { chainId: connectedChainId } = useWeb3Context();
   const stakeConfig = getStakeConfig();
-  const { gasLimit, mainTxState: txState } = useModalContext();
+  const { gasLimit, mainTxState: txState, txError } = useModalContext();
 
   // states
   const [_amount, setAmount] = useState('');
@@ -81,7 +81,9 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
   const networkConfig = getNetworkConfig(stakingChain);
   const isWrongNetwork = connectedChainId !== stakingChain;
 
-  if (txState.txError) return <TxErrorView errorMessage={txState.txError} />;
+  if (txError && txError.blocking) {
+    return <TxErrorView txError={txError} />;
+  }
   if (txState.success)
     return <TxSuccessView action="Staked" amount={amountRef.current} symbol={icon} />;
 
@@ -120,7 +122,9 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
           percent
         />
       </TxModalDetails>
-      {txState.gasEstimationError && <GasEstimationError error={txState.gasEstimationError} />}
+
+      {txError && <GasEstimationError txError={txError} />}
+
       <StakeActions
         sx={{ mt: '48px' }}
         amountToStake={amount}
