@@ -1,12 +1,10 @@
 import { configEnvWithTenderlyFantomTestnetFork } from '../../../../support/steps/configuration.steps';
+import { supply, borrow, repay, withdraw } from '../../../../support/steps/main.steps';
 import {
-  supply,
-  borrow,
-  repay,
-  withdraw,
-  changeBorrowType,
-} from '../../../../support/steps/main.steps';
-import { dashboardAssetValuesVerification } from '../../../../support/steps/verification.steps';
+  changeBorrowTypeBlocked,
+  dashboardAssetValuesVerification,
+  switchApyBlocked,
+} from '../../../../support/steps/verification.steps';
 import { skipState } from '../../../../support/steps/common';
 import assets from '../../../../fixtures/assets.json';
 import constants from '../../../../fixtures/constans.json';
@@ -21,28 +19,8 @@ const testData = {
     borrow: [
       {
         asset: assets.fantomMarket.LINK,
-        amount: 25,
-        apyType: constants.borrowAPYType.variable,
-        hasApproval: true,
-      },
-      {
-        asset: assets.fantomMarket.LINK,
-        amount: 25,
-        apyType: constants.borrowAPYType.stable,
-        hasApproval: true,
-      },
-    ],
-    changeBorrowType: [
-      {
-        asset: assets.fantomMarket.LINK,
-        apyType: constants.borrowAPYType.stable,
-        newAPY: constants.borrowAPYType.variable,
-        hasApproval: true,
-      },
-      {
-        asset: assets.fantomMarket.LINK,
-        apyType: constants.borrowAPYType.variable,
-        newAPY: constants.borrowAPYType.stable,
+        amount: 50,
+        apyType: constants.borrowAPYType.default,
         hasApproval: true,
       },
     ],
@@ -54,14 +32,14 @@ const testData = {
     repay: [
       {
         asset: assets.fantomMarket.LINK,
-        apyType: constants.apyType.stable,
+        apyType: constants.apyType.variable,
         amount: 2,
         hasApproval: true,
         repayOption: constants.repayType.default,
       },
       {
         asset: assets.fantomMarket.LINK,
-        apyType: constants.apyType.stable,
+        apyType: constants.apyType.variable,
         repayableAsset: assets.fantomMarket.aLINK,
         amount: 2,
         hasApproval: true,
@@ -73,6 +51,10 @@ const testData = {
       isCollateral: true,
       amount: 1,
       hasApproval: true,
+    },
+    checkDisabledApy: {
+      asset: assets.fantomMarket.LINK,
+      apyType: constants.apyType.variable,
     },
   },
   verifications: {
@@ -90,7 +72,7 @@ const testData = {
         assetName: assets.fantomMarket.LINK.shortName,
         wrapped: assets.fantomMarket.LINK.wrapped,
         amount: 46.0,
-        apyType: constants.borrowAPYType.stable,
+        apyType: constants.borrowAPYType.variable,
       },
     ],
   },
@@ -104,13 +86,11 @@ describe('LINK INTEGRATION SPEC, FANTOM V3 MARKET', () => {
   testData.testCases.borrow.forEach((borrowCase) => {
     borrow(borrowCase, skipTestState, true);
   });
-  testData.testCases.changeBorrowType.forEach((changeAPRCase) => {
-    changeBorrowType(changeAPRCase, skipTestState, true);
-  });
   supply(testData.testCases.deposit, skipTestState, true);
   testData.testCases.repay.forEach((repayCase) => {
     repay(repayCase, skipTestState, false);
   });
+  switchApyBlocked(testData.testCases.checkDisabledApy, skipTestState);
   withdraw(testData.testCases.withdraw, skipTestState, false);
   dashboardAssetValuesVerification(testData.verifications.finalDashboard, skipTestState);
 });

@@ -20,87 +20,83 @@ const testData = {
   testCases: {
     borrow: [
       {
-        asset: assets.fantomMarket.EURS,
-        amount: 25,
+        asset: assets.fantomMarket.WBTC,
+        amount: 0.025,
         apyType: constants.borrowAPYType.variable,
         hasApproval: true,
       },
       {
-        asset: assets.fantomMarket.EURS,
-        amount: 25,
+        asset: assets.fantomMarket.WBTC,
+        amount: 0.025,
         apyType: constants.borrowAPYType.stable,
         hasApproval: true,
       },
     ],
     changeBorrowType: [
       {
-        asset: assets.fantomMarket.EURS,
+        asset: assets.fantomMarket.WBTC,
         apyType: constants.borrowAPYType.stable,
         newAPY: constants.borrowAPYType.variable,
         hasApproval: true,
       },
       {
-        asset: assets.fantomMarket.EURS,
+        asset: assets.fantomMarket.WBTC,
         apyType: constants.borrowAPYType.variable,
         newAPY: constants.borrowAPYType.stable,
         hasApproval: true,
       },
     ],
     deposit: {
-      asset: assets.fantomMarket.EURS,
-      amount: 10.1,
+      asset: assets.fantomMarket.WBTC,
+      amount: 0.0101,
       hasApproval: false,
     },
     repay: [
       {
-        asset: assets.fantomMarket.EURS,
+        asset: assets.fantomMarket.WBTC,
         apyType: constants.apyType.stable,
-        amount: 2,
+        amount: 0.002,
         hasApproval: true,
         repayOption: constants.repayType.default,
       },
       {
-        asset: assets.fantomMarket.EURS,
+        asset: assets.fantomMarket.WBTC,
         apyType: constants.apyType.stable,
-        repayableAsset: assets.fantomMarket.aEURS,
-        amount: 2,
+        repayableAsset: assets.fantomMarket.aWBTC,
+        amount: 0.002,
         hasApproval: true,
         repayOption: constants.repayType.default,
       },
     ],
     withdraw: {
-      asset: assets.fantomMarket.EURS,
-      isCollateral: false,
-      amount: 1,
+      asset: assets.fantomMarket.WBTC,
+      isCollateral: true,
+      amount: 0.001,
       hasApproval: true,
-    },
-    checkBorrowTypeBlocked: {
-      asset: assets.fantomMarket.EURS,
-      isCollateralType: false,
     },
   },
   verifications: {
     finalDashboard: [
       {
         type: constants.dashboardTypes.deposit,
-        assetName: assets.fantomMarket.EURS.shortName,
-        wrapped: assets.fantomMarket.EURS.wrapped,
-        amount: 7.0,
+        assetName: assets.fantomMarket.WBTC.shortName,
+        wrapped: assets.fantomMarket.WBTC.wrapped,
+        amount: 0.007,
         collateralType: constants.collateralType.isCollateral,
-        isCollateral: false,
+        isCollateral: true,
       },
       {
         type: constants.dashboardTypes.borrow,
-        assetName: assets.fantomMarket.EURS.shortName,
-        wrapped: assets.fantomMarket.EURS.wrapped,
-        amount: 46.0,
+        assetName: assets.fantomMarket.WBTC.shortName,
+        wrapped: assets.fantomMarket.WBTC.wrapped,
+        amount: 0.046,
         apyType: constants.borrowAPYType.stable,
       },
     ],
   },
 };
 
-describe('EURS INTEGRATION SPEC, FANTOM V3 MARKET', () => {
+describe('WBTC INTEGRATION SPEC, FANTOM V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyFantomTestnetFork({});
 

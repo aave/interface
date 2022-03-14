@@ -1,4 +1,4 @@
-import { configEnvWithTenderlyFantomTestnetFork } from '../../../../support/steps/configuration.steps';
+import { configEnvWithTenderlyArbitrumRinkebyFork } from '../../../../support/steps/configuration.steps';
 import {
   supply,
   borrow,
@@ -13,65 +13,65 @@ import constants from '../../../../fixtures/constans.json';
 
 const testData = {
   depositBaseAmount: {
-    asset: assets.fantomMarket.FTM,
+    asset: assets.arbitrumMarket.ETH,
     amount: 9000,
     hasApproval: true,
   },
   testCases: {
     borrow: [
       {
-        asset: assets.fantomMarket.WBTC,
-        amount: 0.25,
+        asset: assets.arbitrumMarket.DAI,
+        amount: 25,
         apyType: constants.borrowAPYType.variable,
         hasApproval: true,
       },
       {
-        asset: assets.fantomMarket.WBTC,
-        amount: 0.25,
+        asset: assets.arbitrumMarket.DAI,
+        amount: 25,
         apyType: constants.borrowAPYType.stable,
         hasApproval: true,
       },
     ],
     changeBorrowType: [
       {
-        asset: assets.fantomMarket.WBTC,
+        asset: assets.arbitrumMarket.DAI,
         apyType: constants.borrowAPYType.stable,
         newAPY: constants.borrowAPYType.variable,
         hasApproval: true,
       },
       {
-        asset: assets.fantomMarket.WBTC,
+        asset: assets.arbitrumMarket.DAI,
         apyType: constants.borrowAPYType.variable,
         newAPY: constants.borrowAPYType.stable,
         hasApproval: true,
       },
     ],
     deposit: {
-      asset: assets.fantomMarket.WBTC,
-      amount: 0.101,
+      asset: assets.arbitrumMarket.DAI,
+      amount: 10.1,
       hasApproval: false,
     },
     repay: [
       {
-        asset: assets.fantomMarket.WBTC,
+        asset: assets.arbitrumMarket.DAI,
         apyType: constants.apyType.stable,
-        amount: 0.02,
+        amount: 2,
         hasApproval: true,
         repayOption: constants.repayType.default,
       },
       {
-        asset: assets.fantomMarket.WBTC,
+        asset: assets.arbitrumMarket.DAI,
         apyType: constants.apyType.stable,
-        repayableAsset: assets.fantomMarket.aWBTC,
-        amount: 0.02,
+        repayableAsset: assets.arbitrumMarket.aDAI,
+        amount: 2,
         hasApproval: true,
         repayOption: constants.repayType.default,
       },
     ],
     withdraw: {
-      asset: assets.fantomMarket.WBTC,
+      asset: assets.arbitrumMarket.DAI,
       isCollateral: true,
-      amount: 0.01,
+      amount: 1,
       hasApproval: true,
     },
   },
@@ -79,26 +79,26 @@ const testData = {
     finalDashboard: [
       {
         type: constants.dashboardTypes.deposit,
-        assetName: assets.fantomMarket.WBTC.shortName,
-        wrapped: assets.fantomMarket.WBTC.wrapped,
-        amount: 0.07,
+        assetName: assets.arbitrumMarket.DAI.shortName,
+        wrapped: assets.arbitrumMarket.DAI.wrapped,
+        amount: 7.0,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
       },
       {
         type: constants.dashboardTypes.borrow,
-        assetName: assets.fantomMarket.WBTC.shortName,
-        wrapped: assets.fantomMarket.WBTC.wrapped,
-        amount: 0.46,
+        assetName: assets.arbitrumMarket.DAI.shortName,
+        wrapped: assets.arbitrumMarket.DAI.wrapped,
+        amount: 46.0,
         apyType: constants.borrowAPYType.stable,
       },
     ],
   },
 };
 
-describe('WBTC INTEGRATION SPEC, FANTOM V3 MARKET', () => {
+describe('DAI INTEGRATION SPEC, ARBITRUM V3 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyFantomTestnetFork({});
+  configEnvWithTenderlyArbitrumRinkebyFork({ market: 'fork_proto_arbitrum_rinkeby_v3' });
 
   supply(testData.depositBaseAmount, skipTestState, true);
   testData.testCases.borrow.forEach((borrowCase) => {

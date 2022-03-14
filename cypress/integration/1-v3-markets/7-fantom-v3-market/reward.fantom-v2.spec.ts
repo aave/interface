@@ -24,7 +24,7 @@ const testData = {
   },
 };
 
-describe('REWARD, FANTOM V3 MARKET, INTEGRATION SPEC', () => {
+describe.skip('REWARD, FANTOM V3 MARKET, INTEGRATION SPEC', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyFantomTestnetFork({});
 

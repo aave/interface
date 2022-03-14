@@ -134,6 +134,16 @@ export const configEnvWithTenderlyFantomTestnetFork = ({
   configEnvWithTenderly({ chainId: ChainId.fantom_testnet, market, tokens });
 };
 
+export const configEnvWithTenderlyFantomFork = ({
+  market = `fork_proto_fantom_v3`,
+  tokens,
+}: {
+  market?: string;
+  tokens?: { address: string }[];
+}) => {
+  configEnvWithTenderly({ chainId: ChainId.fantom, market, tokens });
+};
+
 export const configEnvWithTenderlyHarmonyTestnetFork = ({
   market = `fork_proto_harmony_testnet_v3`,
   tokens,
@@ -142,4 +152,24 @@ export const configEnvWithTenderlyHarmonyTestnetFork = ({
   tokens?: { address: string }[];
 }) => {
   configEnvWithTenderly({ chainId: ChainId.harmony_testnet, market, tokens });
+};
+
+export const configEnvWithTenderlyArbitrumRinkebyFork = ({
+  market = `fork_proto_eth_rinkeby_v3`,
+  tokens,
+}: {
+  market?: string;
+  tokens?: { address: string }[];
+}) => {
+  configEnvWithTenderly({ chainId: ChainId.arbitrum_rinkeby, market, tokens });
+};
+
+export const configEnvWithTenderlyArbitrumFork = ({
+  market = `fork_proto_arbitrum_v3`,
+  tokens,
+}: {
+  market?: string;
+  tokens?: { address: string }[];
+}) => {
+  configEnvWithTenderly({ chainId: ChainId.arbitrum_one, market, tokens });
 };

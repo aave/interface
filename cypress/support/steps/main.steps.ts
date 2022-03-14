@@ -152,7 +152,9 @@ export const repay = (
   const _shortName = asset.shortName;
   const _actionName = constants.actionTypes.repay;
 
-  return describe(`Repay by ${repayOption} process for ${_shortName}`, () => {
+  return describe(`Repay by ${repayOption} process for ${_shortName} by ${
+    repayableAsset ? repayableAsset.shortName : _shortName
+  }`, () => {
     skipSetup({ skip, updateSkipStatus });
     it(`Open ${_shortName} repay popup view`, () => {
       doSwitchToDashboardBorrowView();
