@@ -40,7 +40,7 @@ export const EmodeModalContent = () => {
   const { currentChainId } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
   const currentTimestamp = useCurrentTimestamp(1);
-  const { gasLimit, mainTxState: emodeTxState } = useModalContext();
+  const { gasLimit, mainTxState: emodeTxState, txError } = useModalContext();
 
   const [selectedEmode, setSelectedEmode] = useState<EmodeCategory>();
   const [emodeCategories, setEmodeCategories] = useState<Record<number, EmodeCategory>>({});
@@ -163,7 +163,9 @@ export const EmodeModalContent = () => {
   // is Network mismatched
   const isWrongNetwork = currentChainId !== connectedChainId;
 
-  if (emodeTxState.txError) return <TxErrorView errorMessage={emodeTxState.txError} />;
+  if (txError && txError.blocking) {
+    return <TxErrorView txError={txError} />;
+  }
   if (emodeTxState.success) return <TxSuccessView action="Emode" />;
 
   return (
@@ -227,9 +229,7 @@ export const EmodeModalContent = () => {
         />
       </TxModalDetails>
 
-      {emodeTxState.gasEstimationError && (
-        <GasEstimationError error={emodeTxState.gasEstimationError} />
-      )}
+      {txError && <GasEstimationError txError={txError} />}
 
       <EmodeActions
         isWrongNetwork={isWrongNetwork}

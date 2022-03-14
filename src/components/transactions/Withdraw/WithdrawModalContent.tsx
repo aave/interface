@@ -33,7 +33,7 @@ export const WithdrawModalContent = ({
   symbol,
   isWrongNetwork,
 }: ModalWrapperProps & { unwrap: boolean; setUnwrap: (unwrap: boolean) => void }) => {
-  const { gasLimit, mainTxState: withdrawTxState } = useModalContext();
+  const { gasLimit, mainTxState: withdrawTxState, txError } = useModalContext();
   const { user } = useAppDataContext();
   const { currentNetworkConfig } = useProtocolDataContext();
 
@@ -214,9 +214,7 @@ export const WithdrawModalContent = ({
         />
       </TxModalDetails>
 
-      {withdrawTxState.gasEstimationError && (
-        <GasEstimationError error={withdrawTxState.gasEstimationError} />
-      )}
+      {txError && <GasEstimationError txError={txError} />}
 
       <WithdrawActions
         poolReserve={poolReserve}
