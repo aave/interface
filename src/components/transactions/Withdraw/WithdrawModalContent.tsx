@@ -1,5 +1,9 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
-import { calculateHealthFactorFromBalancesBigUnits, valueToBigNumber } from '@aave/math-utils';
+import {
+  calculateHealthFactorFromBalances,
+  calculateHealthFactorFromBalancesBigUnits,
+  valueToBigNumber,
+} from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
@@ -46,7 +50,7 @@ export const WithdrawModalContent = ({
   let maxAmountToWithdraw = BigNumber.min(underlyingBalance, unborrowedLiquidity);
   let maxCollateralToWithdrawInETH = valueToBigNumber('0');
   const reserveLiquidationThreshold =
-    user.userEmodeCategoryId === poolReserve.eModeCategoryId
+    user.isInEmode && user.userEmodeCategoryId === poolReserve.eModeCategoryId
       ? poolReserve.formattedEModeLiquidationThreshold
       : poolReserve.formattedReserveLiquidationThreshold;
   if (
@@ -96,7 +100,7 @@ export const WithdrawModalContent = ({
     liquidationThresholdAfterWithdraw = valueToBigNumber(
       user.totalCollateralMarketReferenceCurrency
     )
-      .multipliedBy(user.currentLiquidationThreshold)
+      .multipliedBy(valueToBigNumber(user.currentLiquidationThreshold))
       .minus(valueToBigNumber(amountToWithdrawInEth).multipliedBy(reserveLiquidationThreshold))
       .div(totalCollateralInETHAfterWithdraw)
       .toFixed(4, BigNumber.ROUND_DOWN);
