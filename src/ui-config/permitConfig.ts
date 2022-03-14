@@ -79,7 +79,7 @@ export const permitByChainAndToken: {
     '0x21C561e551638401b937b03fE5a0a0652B99B7DD': true,
     '0x85E44420b6137bbc75a85CAB5c9A3371af976FdE': true,
     '0xd575d4047f8c667E064a4ad433D04E25187F40BB': true,
-    '0xb685400156cF3CBE8725958DeAA61436727A30c3': true,
+    '0xb685400156cF3CBE8725958DeAA61436727A30c3': false, // WMATIC dont have permit
   },
   [ChainId.harmony]: {},
   [ChainId.harmony_testnet]: {},

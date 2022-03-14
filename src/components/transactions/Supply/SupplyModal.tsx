@@ -13,11 +13,7 @@ export const SupplyModal = () => {
 
   return (
     <BasicModal open={type === ModalType.Supply} setOpen={close}>
-      <ModalWrapper
-        title={<Trans>Supply</Trans>}
-        underlyingAsset={args.underlyingAsset}
-        keepWrappedSymbol
-      >
+      <ModalWrapper title={<Trans>Supply</Trans>} underlyingAsset={args.underlyingAsset}>
         {(params) => <SupplyModalContent {...params} />}
       </ModalWrapper>
     </BasicModal>
