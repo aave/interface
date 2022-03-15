@@ -115,7 +115,7 @@ const testData = {
 
 describe('ETH INTEGRATION SPEC, ARBITRUM V3 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyArbitrumFork({});
+  configEnvWithTenderlyArbitrumFork({ v3: true });
 
   supply(testData.testCases.deposit, skipTestState, true);
   describe('Check Collateral switching', () => {

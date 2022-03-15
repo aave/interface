@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+import { JsonRpcProvider } from '@ethersproject/providers';
 import axios from 'axios';
 import { getDefaultProvider, Contract, utils } from 'ethers';
 import ERC20_ABI from '../../fixtures/erc20_abi.json';
+import POOL_CONFIG_ABI from '../../fixtures/poolConfig.json';
 
 const TENDERLY_KEY = Cypress.env('TENDERLY_KEY');
 const TENDERLY_ACCOUNT = Cypress.env('TENDERLY_ACCOUNT');
@@ -51,6 +53,23 @@ export class TenderlyFork {
       `account/${TENDERLY_ACCOUNT}/project/${TENDERLY_PROJECT}/fork/${this.fork_id}/balance`,
       { accounts: [address], amount: amount }
     );
+  }
+
+  async unpauseMarket(): Promise<void> {
+    const _url = this.get_rpc_url();
+    const provider = new JsonRpcProvider(_url);
+    const emergencyAdmin = '0x4365F8e70CF38C6cA67DE41448508F2da8825500';
+    const signer = await provider.getSigner(emergencyAdmin);
+    // constant addresses:
+
+    const poolConfigurator = new Contract(
+      '0x8145eddDf43f50276641b55bd3AD95944510021E',
+      POOL_CONFIG_ABI,
+      signer
+    );
+
+    await poolConfigurator.setPoolPause(false, { from: signer._address, gasLimit: '300000' });
+    return;
   }
 
   async getERC20Token(walletAddress: string, tokenAddress: string) {

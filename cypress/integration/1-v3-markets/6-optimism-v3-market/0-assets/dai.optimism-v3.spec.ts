@@ -68,7 +68,7 @@ const testData = {
 
 describe('DAI INTEGRATION SPEC, OPTIMISM V3 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyOptimismKovanFork({});
+  configEnvWithTenderlyOptimismKovanFork({ v3: true });
 
   supply(testData.depositBaseAmount, skipTestState, true);
   borrow(testData.testCases.borrow, skipTestState, true);

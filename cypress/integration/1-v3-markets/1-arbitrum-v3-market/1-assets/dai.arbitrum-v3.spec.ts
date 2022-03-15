@@ -98,7 +98,7 @@ const testData = {
 
 describe('DAI INTEGRATION SPEC, ARBITRUM V3 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyArbitrumRinkebyFork({ market: 'fork_proto_arbitrum_rinkeby_v3' });
+  configEnvWithTenderlyArbitrumRinkebyFork({ market: 'fork_proto_arbitrum_rinkeby_v3', v3: true });
 
   supply(testData.depositBaseAmount, skipTestState, true);
   testData.testCases.borrow.forEach((borrowCase) => {

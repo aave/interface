@@ -11,15 +11,22 @@ export const configEnvWithTenderly = ({
   chainId,
   market,
   tokens,
+  unpause,
 }: {
   chainId: number;
   market: string;
   tokens?: { address: string }[];
+  unpause?: boolean;
 }) => {
   const tenderly = new TenderlyFork({ forkNetworkID: chainId });
   before(async () => {
     await tenderly.init();
     await tenderly.add_balance(DEFAULT_TEST_ACCOUNT.address, 10000);
+    console.log('unpause: ', unpause);
+    if (unpause) {
+      await tenderly.unpauseMarket();
+    }
+
     if (tokens) {
       await Promise.all(
         tokens.map((token) => tenderly.getERC20Token(DEFAULT_TEST_ACCOUNT.address, token.address))
@@ -57,119 +64,144 @@ export const configEnvWithTenderly = ({
 export const configEnvWithTenderlyMainnetFork = ({
   market = `fork_proto_mainnet`,
   tokens,
+  v3,
 }: {
   market?: string;
   tokens?: { address: string }[];
+  v3?: boolean;
 }) => {
-  configEnvWithTenderly({ chainId: ChainId.mainnet, market, tokens });
+  configEnvWithTenderly({ chainId: ChainId.mainnet, market, tokens, unpause: v3 });
 };
 
 export const configEnvWithTenderlyPolygonFork = ({
   market = `fork_proto_polygon`,
   tokens,
+  v3,
 }: {
   market?: string;
   tokens?: { address: string }[];
+  v3?: boolean;
 }) => {
-  configEnvWithTenderly({ chainId: ChainId.polygon, market, tokens });
+  configEnvWithTenderly({ chainId: ChainId.polygon, market, tokens, unpause: v3 });
 };
 
 export const configEnvWithTenderlyAvalancheFork = ({
   market = `fork_proto_avalanche`,
   tokens,
+  v3,
 }: {
   market?: string;
   tokens?: { address: string }[];
+  v3?: boolean;
 }) => {
-  configEnvWithTenderly({ chainId: ChainId.avalanche, market, tokens });
+  configEnvWithTenderly({ chainId: ChainId.avalanche, market, tokens, unpause: v3 });
 };
 
 export const configEnvWithTenderlyAvalancheFujiFork = ({
   market = `proto_fuji_v3`,
   tokens,
+  v3,
 }: {
   market?: string;
   tokens?: { address: string }[];
+  v3?: boolean;
 }) => {
-  configEnvWithTenderly({ chainId: ChainId.fuji, market, tokens });
+  configEnvWithTenderly({ chainId: ChainId.fuji, market, tokens, unpause: v3 });
 };
 
 export const configEnvWithTenderlyRinkebyFork = ({
   market = `fork_proto_eth_rinkeby_v3`,
   tokens,
+  v3,
 }: {
   market?: string;
   tokens?: { address: string }[];
+  v3?: boolean;
 }) => {
-  configEnvWithTenderly({ chainId: ChainId.rinkeby, market, tokens });
+  configEnvWithTenderly({ chainId: ChainId.rinkeby, market, tokens, unpause: v3 });
 };
 
+// TODO: this is wrong
 export const configEnvWithTenderlyMumbaiFork = ({
   market = `fork_proto_eth_rinkeby_v3`,
   tokens,
+  v3,
 }: {
   market?: string;
   tokens?: { address: string }[];
+  v3?: boolean;
 }) => {
-  configEnvWithTenderly({ chainId: ChainId.mumbai, market, tokens });
+  configEnvWithTenderly({ chainId: ChainId.mumbai, market, tokens, unpause: v3 });
 };
 
 export const configEnvWithTenderlyOptimismKovanFork = ({
   market = `fork_proto_optimism_kovan_v3`,
   tokens,
+  v3,
 }: {
   market?: string;
   tokens?: { address: string }[];
+  v3?: boolean;
 }) => {
-  configEnvWithTenderly({ chainId: ChainId.optimism_kovan, market, tokens });
+  configEnvWithTenderly({ chainId: ChainId.optimism_kovan, market, tokens, unpause: v3 });
 };
 
 export const configEnvWithTenderlyFantomTestnetFork = ({
   market = `fork_proto_fantom_testnet_v3`,
   tokens,
+  v3,
 }: {
   market?: string;
   tokens?: { address: string }[];
+  v3?: boolean;
 }) => {
-  configEnvWithTenderly({ chainId: ChainId.fantom_testnet, market, tokens });
+  configEnvWithTenderly({ chainId: ChainId.fantom_testnet, market, tokens, unpause: v3 });
 };
 
 export const configEnvWithTenderlyFantomFork = ({
   market = `fork_proto_fantom_v3`,
   tokens,
+  v3,
 }: {
   market?: string;
   tokens?: { address: string }[];
+  v3?: boolean;
 }) => {
-  configEnvWithTenderly({ chainId: ChainId.fantom, market, tokens });
+  configEnvWithTenderly({ chainId: ChainId.fantom, market, tokens, unpause: v3 });
 };
 
 export const configEnvWithTenderlyHarmonyTestnetFork = ({
   market = `fork_proto_harmony_testnet_v3`,
   tokens,
+  v3,
 }: {
   market?: string;
   tokens?: { address: string }[];
+  v3?: boolean;
 }) => {
-  configEnvWithTenderly({ chainId: ChainId.harmony_testnet, market, tokens });
+  configEnvWithTenderly({ chainId: ChainId.harmony_testnet, market, tokens, unpause: v3 });
 };
 
 export const configEnvWithTenderlyArbitrumRinkebyFork = ({
   market = `fork_proto_eth_rinkeby_v3`,
   tokens,
+  v3,
 }: {
   market?: string;
   tokens?: { address: string }[];
+  v3?: boolean;
 }) => {
-  configEnvWithTenderly({ chainId: ChainId.arbitrum_rinkeby, market, tokens });
+  configEnvWithTenderly({ chainId: ChainId.arbitrum_rinkeby, market, tokens, unpause: v3 });
 };
 
 export const configEnvWithTenderlyArbitrumFork = ({
   market = `fork_proto_arbitrum_v3`,
   tokens,
+  v3,
 }: {
   market?: string;
   tokens?: { address: string }[];
+  v3?: boolean;
 }) => {
-  configEnvWithTenderly({ chainId: ChainId.arbitrum_one, market, tokens });
+  configEnvWithTenderly({ chainId: ChainId.arbitrum_one, market, tokens, unpause: v3 });
 };

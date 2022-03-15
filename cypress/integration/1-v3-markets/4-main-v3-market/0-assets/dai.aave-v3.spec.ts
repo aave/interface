@@ -100,7 +100,7 @@ const testData = {
 
 describe('DAI INTEGRATION SPEC, AAVE V3 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyRinkebyFork({});
+  configEnvWithTenderlyRinkebyFork({ v3: true });
   supply(testData.depositETH, skipTestState, true);
   testData.testCases.borrow.forEach((borrowCase) => {
     borrow(borrowCase, skipTestState, true);
