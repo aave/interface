@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-15 16:48\n"
+"PO-Revision-Date: 2022-03-15 16:58\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1289,15 +1289,15 @@ msgstr ""
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "The Stable Rate is not enabled for this currency"
-msgstr ""
+msgstr "La tasa estable no está habilitada para esta moneda"
 
 #: src/ui-config/errorMapping.tsx
 msgid "The address of the pool addresses provider is invalid"
-msgstr ""
+msgstr "La dirección del proveedor del grupo de direcciones no es válida"
 
 #: src/ui-config/errorMapping.tsx
 msgid "The caller of the function is not an AToken"
-msgstr ""
+msgstr "El llamador de la función no es un AToken"
 
 #: src/ui-config/errorMapping.tsx
 msgid "The caller of this function must be a pool"
@@ -1397,7 +1397,7 @@ msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "To repay on behalf of a user an explicit amount to repay is needed"
-msgstr ""
+msgstr "Para reembolsar en nombre de un usuario, se necesita una cantidad explicitad para reembolsar"
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "To see your supplies and borrowings options, connect your wallet."
@@ -1433,11 +1433,11 @@ msgstr "Total suministrado"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Total voting power"
-msgstr ""
+msgstr "Poder total de votación"
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "Total worth"
-msgstr ""
+msgstr "Valor total"
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Transaction failed"
