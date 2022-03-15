@@ -155,7 +155,7 @@ export const MarketSwitcher = () => {
                       background: (theme) => theme.palette.gradients.aaveGradient,
                     }}
                   >
-                    <Typography variant="subheader2">Version 3.0</Typography>
+                    <Typography variant="subheader2">Version 3</Typography>
                   </Box>
                 )}
               </Box>
