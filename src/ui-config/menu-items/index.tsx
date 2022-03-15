@@ -58,7 +58,7 @@ const moreMenuItems: MoreMenuItem[] = [
     icon: <DiscordIcon />,
   },
   {
-    link: 'https://github.com/aave/aave-ui',
+    link: 'https://github.com/aave/interface',
     title: t`Github`,
     icon: <GithubIcon />,
   },
