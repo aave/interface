@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-15 12:04\n"
+"PO-Revision-Date: 2022-03-15 15:29\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -50,26 +50,26 @@ msgstr "TAE"
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "APY"
-msgstr ""
+msgstr "APY"
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 msgid "APY type"
-msgstr ""
+msgstr "Tipo APY"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "APY, stable"
-msgstr ""
+msgstr "APY, estable"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "APY, variable"
-msgstr ""
+msgstr "APY, variable"
 
 #: src/ui-config/errorMapping.tsx
 msgid "AToken supply is not zero"
@@ -77,7 +77,7 @@ msgstr ""
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave Governance"
-msgstr ""
+msgstr "Gobierno de Aave"
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance documentation"
