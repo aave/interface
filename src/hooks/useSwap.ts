@@ -3,8 +3,8 @@ import {
   constructFetchFetcher,
   constructGetRate,
   constructBuildTx,
+  TransactionParams,
 } from '@paraswap/sdk';
-import { TransactionParams } from '@paraswap/sdk/dist/transaction';
 import { OptimalRate, SwapSide, ContractMethod } from 'paraswap-core';
 import { useCallback, useEffect, useState } from 'react';
 import { ComputedReserveData } from './app-data-provider/useAppDataProvider';
