@@ -46,7 +46,7 @@ export const WithdrawModalContent = ({
   let maxAmountToWithdraw = BigNumber.min(underlyingBalance, unborrowedLiquidity);
   let maxCollateralToWithdrawInETH = valueToBigNumber('0');
   const reserveLiquidationThreshold =
-    user.userEmodeCategoryId === poolReserve.eModeCategoryId
+    user.isInEmode && user.userEmodeCategoryId === poolReserve.eModeCategoryId
       ? poolReserve.formattedEModeLiquidationThreshold
       : poolReserve.formattedReserveLiquidationThreshold;
   if (
@@ -96,7 +96,7 @@ export const WithdrawModalContent = ({
     liquidationThresholdAfterWithdraw = valueToBigNumber(
       user.totalCollateralMarketReferenceCurrency
     )
-      .multipliedBy(user.currentLiquidationThreshold)
+      .multipliedBy(valueToBigNumber(user.currentLiquidationThreshold))
       .minus(valueToBigNumber(amountToWithdrawInEth).multipliedBy(reserveLiquidationThreshold))
       .div(totalCollateralInETHAfterWithdraw)
       .toFixed(4, BigNumber.ROUND_DOWN);

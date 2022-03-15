@@ -5,8 +5,6 @@ export type MarketDataType = {
   marketTitle: string;
   // the network the market operates on
   chainId: ChainId;
-  // aToken prefix string, which will be cut of in the ui
-  aTokenPrefix: string;
   enabledFeatures?: {
     liquiditySwap?: boolean;
     staking?: boolean;
@@ -16,6 +14,9 @@ export type MarketDataType = {
     incentives?: boolean;
     permissions?: boolean;
   };
+  cachingServerUrl?: string;
+  cachingWSServerUrl?: string;
+  rpcOnly?: boolean;
   addresses: {
     LENDING_POOL_ADDRESS_PROVIDER: string;
     LENDING_POOL: string;
@@ -77,13 +78,13 @@ export const marketsData: {
   [CustomMarket.proto_kovan]: {
     marketTitle: 'Ethereum Kovan',
     chainId: ChainId.kovan,
-    aTokenPrefix: 'A',
     enabledFeatures: {
       faucet: true,
       governance: true,
       staking: true,
       incentives: true,
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0x88757f2f99175387ab4c6a4b3067c77a695b0349'.toLowerCase(),
       LENDING_POOL: '0xE0fBa4Fc209b4948668006B2bE61711b7f465bAe',
@@ -97,7 +98,6 @@ export const marketsData: {
   [CustomMarket.proto_mainnet]: {
     marketTitle: 'Ethereum',
     chainId: ChainId.mainnet,
-    aTokenPrefix: 'A',
     enabledFeatures: {
       governance: true,
       staking: true,
@@ -105,6 +105,9 @@ export const marketsData: {
       collateralRepay: true,
       incentives: true,
     },
+    rpcOnly: false,
+    cachingServerUrl: 'https://cache-api-1.aave.com/graphql',
+    cachingWSServerUrl: 'wss://cache-api-1.aave.com/graphql',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xB53C1a33016B2DC2fF3653530bfF1848a515c8c5'.toLowerCase(),
       LENDING_POOL: '0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9',
@@ -120,7 +123,7 @@ export const marketsData: {
   [CustomMarket.amm_kovan]: {
     marketTitle: 'Ethereum AMM Kovan',
     chainId: ChainId.kovan,
-    aTokenPrefix: 'AAMM',
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0x67FB118A780fD740C8936511947cC4bE7bb7730c'.toLowerCase(),
       LENDING_POOL: '0x762E2a3BBe729240ea44D31D5a81EAB44d34ef01',
@@ -134,7 +137,9 @@ export const marketsData: {
   [CustomMarket.amm_mainnet]: {
     marketTitle: 'Ethereum AMM',
     chainId: ChainId.mainnet,
-    aTokenPrefix: 'AAMM',
+    cachingServerUrl: 'https://cache-api-1.aave.com/graphql',
+    cachingWSServerUrl: 'wss://cache-api-1.aave.com/graphql',
+    rpcOnly: false,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xacc030ef66f9dfeae9cbb0cd1b25654b82cfa8d5'.toLowerCase(),
       LENDING_POOL: '0x7937d4799803fbbe595ed57278bc4ca21f3bffcb',
@@ -147,11 +152,11 @@ export const marketsData: {
   [CustomMarket.proto_mumbai]: {
     marketTitle: 'Polygon Mumbai',
     chainId: ChainId.mumbai,
-    aTokenPrefix: 'AM',
     enabledFeatures: {
       incentives: true,
       faucet: true,
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0x178113104fEcbcD7fF8669a0150721e231F0FD4B'.toLowerCase(),
       LENDING_POOL: '0x9198F13B08E299d85E096929fA9781A1E3d5d827',
@@ -165,12 +170,13 @@ export const marketsData: {
   [CustomMarket.proto_polygon]: {
     marketTitle: 'Polygon',
     chainId: ChainId.polygon,
-    aTokenPrefix: 'AM',
     enabledFeatures: {
       liquiditySwap: true,
       incentives: true,
       collateralRepay: true,
     },
+    cachingServerUrl: 'https://cache-api-137.aave.com/graphql',
+    cachingWSServerUrl: 'wss://cache-api-137.aave.com/graphql',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xd05e3E715d945B59290df0ae8eF85c1BdB684744'.toLowerCase(),
       LENDING_POOL: '0x8dFf5E27EA6b7AC08EbFdf9eB090F32ee9a30fcf',
@@ -186,11 +192,11 @@ export const marketsData: {
   [CustomMarket.proto_fuji]: {
     marketTitle: 'Avalanche Fuji',
     chainId: ChainId.fuji,
-    aTokenPrefix: 'AAVA',
     enabledFeatures: {
       faucet: true,
       incentives: true,
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0x7fdC1FdF79BE3309bf82f4abdAD9f111A6590C0f'.toLowerCase(),
       LENDING_POOL: '0x76cc67FF2CC77821A70ED14321111Ce381C2594D',
@@ -204,11 +210,12 @@ export const marketsData: {
   [CustomMarket.proto_avalanche]: {
     marketTitle: 'Avalanche',
     chainId: ChainId.avalanche,
-    aTokenPrefix: 'AV',
     enabledFeatures: {
       liquiditySwap: true,
       incentives: true,
     },
+    cachingServerUrl: 'https://cache-api-43114.aave.com/graphql',
+    cachingWSServerUrl: 'wss://cache-api-43114.aave.com/graphql',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xb6A86025F0FE1862B372cb0ca18CE3EDe02A318f'.toLowerCase(),
       LENDING_POOL: '0x4F01AeD16D97E3aB5ab2B501154DC9bb0F1A5A2C',
@@ -225,13 +232,13 @@ export const marketsData: {
     v3: true,
     marketTitle: 'Ethereum Rinkeby',
     chainId: ChainId.rinkeby,
-    aTokenPrefix: 'A',
     enabledFeatures: {
       faucet: true,
       governance: false,
       staking: false,
       incentives: false,
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xBA6378f1c1D046e9EB0F538560BA7558546edF3C'.toLowerCase(),
       LENDING_POOL: '0xE039BdF1d874d27338e09B55CB09879Dedca52D8',
@@ -246,10 +253,10 @@ export const marketsData: {
     marketTitle: 'Arbitrum',
     v3: true,
     chainId: ChainId.arbitrum_one,
-    aTokenPrefix: 'AA',
     enabledFeatures: {
       incentives: true,
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb'.toLowerCase(),
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
@@ -264,11 +271,11 @@ export const marketsData: {
     marketTitle: 'Arbitrum Rinkeby',
     v3: true,
     chainId: ChainId.arbitrum_rinkeby,
-    aTokenPrefix: 'AA',
     enabledFeatures: {
       faucet: true,
       incentives: true,
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xF7158D1412Bdc8EAfc6BF97DB4e2178379c9521c'.toLowerCase(),
       LENDING_POOL: '0x9C55a3C34de5fd46004Fa44a55490108f7cE388F',
@@ -284,11 +291,11 @@ export const marketsData: {
     marketTitle: 'Avalanche',
     v3: true,
     chainId: ChainId.avalanche,
-    aTokenPrefix: 'AV',
     enabledFeatures: {
       // liquiditySwap: true,
       incentives: true,
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb'.toLowerCase(),
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
@@ -304,11 +311,11 @@ export const marketsData: {
     marketTitle: 'Avalanche Fuji',
     v3: true,
     chainId: ChainId.fuji,
-    aTokenPrefix: 'AAVA',
     enabledFeatures: {
       faucet: true,
       incentives: true,
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0x1775ECC8362dB6CaB0c7A9C0957cF656A5276c29'.toLowerCase(),
       LENDING_POOL: '0xb47673b7a73D78743AFF1487AF69dBB5763F00cA',
@@ -323,10 +330,10 @@ export const marketsData: {
     marketTitle: 'Fantom',
     v3: true,
     chainId: ChainId.fantom,
-    aTokenPrefix: 'AAVA',
     enabledFeatures: {
       incentives: true,
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb'.toLowerCase(),
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
@@ -340,11 +347,11 @@ export const marketsData: {
     marketTitle: 'Fantom Testnet',
     v3: true,
     chainId: ChainId.fantom_testnet,
-    aTokenPrefix: 'AAVA',
     enabledFeatures: {
       faucet: true,
       incentives: true,
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xE339D30cBa24C70dCCb82B234589E3C83249e658'.toLowerCase(),
       LENDING_POOL: '0x771A45a19cE333a19356694C5fc80c76fe9bc741',
@@ -359,10 +366,10 @@ export const marketsData: {
     marketTitle: 'Harmony',
     v3: true,
     chainId: ChainId.harmony,
-    aTokenPrefix: 'AAVA',
     enabledFeatures: {
       incentives: true,
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb'.toLowerCase(),
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
@@ -376,11 +383,11 @@ export const marketsData: {
     marketTitle: 'Harmony Testnet',
     v3: true,
     chainId: ChainId.harmony_testnet,
-    aTokenPrefix: 'AAVA',
     enabledFeatures: {
       faucet: true,
       incentives: true,
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xd19443202328A66875a51560c28276868B8C61C2'.toLowerCase(),
       LENDING_POOL: '0x85C1F3f1bB439180f7Bfda9DFD61De82e10bD554',
@@ -395,10 +402,10 @@ export const marketsData: {
     marketTitle: 'Optimism',
     v3: true,
     chainId: ChainId.optimism,
-    aTokenPrefix: 'AAVA',
     enabledFeatures: {
       incentives: true,
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb'.toLowerCase(),
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
@@ -413,11 +420,11 @@ export const marketsData: {
     marketTitle: 'Optimism Kovan',
     v3: true,
     chainId: ChainId.optimism_kovan,
-    aTokenPrefix: 'AAVA',
     enabledFeatures: {
       faucet: true,
       incentives: true,
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xD15d36975A0200D11B8a8964F4F267982D2a1cFe'.toLowerCase(),
       LENDING_POOL: '0x139d8F557f70D1903787e929D7C42165c4667229',
@@ -432,11 +439,11 @@ export const marketsData: {
     marketTitle: 'Polygon',
     chainId: ChainId.polygon,
     v3: true,
-    aTokenPrefix: 'AM',
     enabledFeatures: {
       // liquiditySwap: true,
       incentives: true,
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb'.toLowerCase(),
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
@@ -451,11 +458,11 @@ export const marketsData: {
   [CustomMarket.proto_mumbai_v3]: {
     marketTitle: 'Polygon Mumbai',
     chainId: ChainId.mumbai,
-    aTokenPrefix: 'AM',
     enabledFeatures: {
       incentives: true,
       faucet: true,
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0x5343b5bA672Ae99d627A1C87866b8E53F47Db2E6'.toLowerCase(),
       LENDING_POOL: '0x6C9fB0D5bD9429eb9Cd96B85B81d872281771E6B',

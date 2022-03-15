@@ -22,7 +22,6 @@ var __spreadValues = (a, b) => {
   return a;
 };
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
-var __markAsModule = (target) => __defProp(target, "__esModule", { value: true });
 var __objRest = (source, exclude) => {
   var target = {};
   for (var prop in source)
@@ -42,22 +41,16 @@ var __export = (target, all) => {
   for (var name2 in all)
     __defProp(target, name2, { get: all[name2], enumerable: true });
 };
-var __reExport = (target, module2, copyDefault, desc) => {
-  if (module2 && typeof module2 === "object" || typeof module2 === "function") {
-    for (let key of __getOwnPropNames(module2))
-      if (!__hasOwnProp.call(target, key) && (copyDefault || key !== "default"))
-        __defProp(target, key, { get: () => module2[key], enumerable: !(desc = __getOwnPropDesc(module2, key)) || desc.enumerable });
+var __copyProps = (to, from, except, desc) => {
+  if (from && typeof from === "object" || typeof from === "function") {
+    for (let key of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key) && key !== except)
+        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
   }
-  return target;
+  return to;
 };
-var __toESM = (module2, isNodeMode) => {
-  return __reExport(__markAsModule(__defProp(module2 != null ? __create(__getProtoOf(module2)) : {}, "default", !isNodeMode && module2 && module2.__esModule ? { get: () => module2.default, enumerable: true } : { value: module2, enumerable: true })), module2);
-};
-var __toCommonJS = /* @__PURE__ */ ((cache) => {
-  return (module2, temp) => {
-    return cache && cache.get(module2) || (temp = __reExport(__markAsModule({}), module2, 1), cache && cache.set(module2, temp), temp);
-  };
-})(typeof WeakMap !== "undefined" ? /* @__PURE__ */ new WeakMap() : 0);
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target, mod));
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var __async = (__this, __arguments, generator) => {
   return new Promise((resolve, reject) => {
     var fulfilled = (value) => {
@@ -57610,6 +57603,7 @@ var populateCache_exports = {};
 __export(populateCache_exports, {
   populateCache: () => populateCache
 });
+module.exports = __toCommonJS(populateCache_exports);
 
 // src/modules/governance/utils/governanceProvider.tsx
 var import_contract_helpers5 = __toESM(require_cjs());
@@ -57648,13 +57642,13 @@ var marketsData = {
   ["proto_kovan" /* proto_kovan */]: {
     marketTitle: "Ethereum Kovan",
     chainId: import_contract_helpers2.ChainId.kovan,
-    aTokenPrefix: "A",
     enabledFeatures: {
       faucet: true,
       governance: true,
       staking: true,
       incentives: true
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: "0x88757f2f99175387ab4c6a4b3067c77a695b0349".toLowerCase(),
       LENDING_POOL: "0xE0fBa4Fc209b4948668006B2bE61711b7f465bAe",
@@ -57668,7 +57662,6 @@ var marketsData = {
   ["proto_mainnet" /* proto_mainnet */]: {
     marketTitle: "Ethereum",
     chainId: import_contract_helpers2.ChainId.mainnet,
-    aTokenPrefix: "A",
     enabledFeatures: {
       governance: true,
       staking: true,
@@ -57676,6 +57669,9 @@ var marketsData = {
       collateralRepay: true,
       incentives: true
     },
+    rpcOnly: false,
+    cachingServerUrl: "https://cache-api-1.aave.com/graphql",
+    cachingWSServerUrl: "wss://cache-api-1.aave.com/graphql",
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: "0xB53C1a33016B2DC2fF3653530bfF1848a515c8c5".toLowerCase(),
       LENDING_POOL: "0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9",
@@ -57691,7 +57687,7 @@ var marketsData = {
   ["amm_kovan" /* amm_kovan */]: {
     marketTitle: "Ethereum AMM Kovan",
     chainId: import_contract_helpers2.ChainId.kovan,
-    aTokenPrefix: "AAMM",
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: "0x67FB118A780fD740C8936511947cC4bE7bb7730c".toLowerCase(),
       LENDING_POOL: "0x762E2a3BBe729240ea44D31D5a81EAB44d34ef01",
@@ -57705,7 +57701,9 @@ var marketsData = {
   ["amm_mainnet" /* amm_mainnet */]: {
     marketTitle: "Ethereum AMM",
     chainId: import_contract_helpers2.ChainId.mainnet,
-    aTokenPrefix: "AAMM",
+    cachingServerUrl: "https://cache-api-1.aave.com/graphql",
+    cachingWSServerUrl: "wss://cache-api-1.aave.com/graphql",
+    rpcOnly: false,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: "0xacc030ef66f9dfeae9cbb0cd1b25654b82cfa8d5".toLowerCase(),
       LENDING_POOL: "0x7937d4799803fbbe595ed57278bc4ca21f3bffcb",
@@ -57718,11 +57716,11 @@ var marketsData = {
   ["proto_mumbai" /* proto_mumbai */]: {
     marketTitle: "Polygon Mumbai",
     chainId: import_contract_helpers2.ChainId.mumbai,
-    aTokenPrefix: "AM",
     enabledFeatures: {
       incentives: true,
       faucet: true
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: "0x178113104fEcbcD7fF8669a0150721e231F0FD4B".toLowerCase(),
       LENDING_POOL: "0x9198F13B08E299d85E096929fA9781A1E3d5d827",
@@ -57736,12 +57734,13 @@ var marketsData = {
   ["proto_polygon" /* proto_polygon */]: {
     marketTitle: "Polygon",
     chainId: import_contract_helpers2.ChainId.polygon,
-    aTokenPrefix: "AM",
     enabledFeatures: {
       liquiditySwap: true,
       incentives: true,
       collateralRepay: true
     },
+    cachingServerUrl: "https://cache-api-137.aave.com/graphql",
+    cachingWSServerUrl: "wss://cache-api-137.aave.com/graphql",
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: "0xd05e3E715d945B59290df0ae8eF85c1BdB684744".toLowerCase(),
       LENDING_POOL: "0x8dFf5E27EA6b7AC08EbFdf9eB090F32ee9a30fcf",
@@ -57757,11 +57756,11 @@ var marketsData = {
   ["proto_fuji" /* proto_fuji */]: {
     marketTitle: "Avalanche Fuji",
     chainId: import_contract_helpers2.ChainId.fuji,
-    aTokenPrefix: "AAVA",
     enabledFeatures: {
       faucet: true,
       incentives: true
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: "0x7fdC1FdF79BE3309bf82f4abdAD9f111A6590C0f".toLowerCase(),
       LENDING_POOL: "0x76cc67FF2CC77821A70ED14321111Ce381C2594D",
@@ -57775,11 +57774,12 @@ var marketsData = {
   ["proto_avalanche" /* proto_avalanche */]: {
     marketTitle: "Avalanche",
     chainId: import_contract_helpers2.ChainId.avalanche,
-    aTokenPrefix: "AV",
     enabledFeatures: {
       liquiditySwap: true,
       incentives: true
     },
+    cachingServerUrl: "https://cache-api-43114.aave.com/graphql",
+    cachingWSServerUrl: "wss://cache-api-43114.aave.com/graphql",
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: "0xb6A86025F0FE1862B372cb0ca18CE3EDe02A318f".toLowerCase(),
       LENDING_POOL: "0x4F01AeD16D97E3aB5ab2B501154DC9bb0F1A5A2C",
@@ -57795,13 +57795,13 @@ var marketsData = {
     v3: true,
     marketTitle: "Ethereum Rinkeby",
     chainId: import_contract_helpers2.ChainId.rinkeby,
-    aTokenPrefix: "A",
     enabledFeatures: {
       faucet: true,
       governance: false,
       staking: false,
       incentives: false
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: "0xBA6378f1c1D046e9EB0F538560BA7558546edF3C".toLowerCase(),
       LENDING_POOL: "0xE039BdF1d874d27338e09B55CB09879Dedca52D8",
@@ -57816,10 +57816,10 @@ var marketsData = {
     marketTitle: "Arbitrum",
     v3: true,
     chainId: import_contract_helpers2.ChainId.arbitrum_one,
-    aTokenPrefix: "AA",
     enabledFeatures: {
       incentives: true
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb".toLowerCase(),
       LENDING_POOL: "0x794a61358D6845594F94dc1DB02A252b5b4814aD",
@@ -57834,11 +57834,11 @@ var marketsData = {
     marketTitle: "Arbitrum Rinkeby",
     v3: true,
     chainId: import_contract_helpers2.ChainId.arbitrum_rinkeby,
-    aTokenPrefix: "AA",
     enabledFeatures: {
       faucet: true,
       incentives: true
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: "0xF7158D1412Bdc8EAfc6BF97DB4e2178379c9521c".toLowerCase(),
       LENDING_POOL: "0x9C55a3C34de5fd46004Fa44a55490108f7cE388F",
@@ -57854,10 +57854,10 @@ var marketsData = {
     marketTitle: "Avalanche",
     v3: true,
     chainId: import_contract_helpers2.ChainId.avalanche,
-    aTokenPrefix: "AV",
     enabledFeatures: {
       incentives: true
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb".toLowerCase(),
       LENDING_POOL: "0x794a61358D6845594F94dc1DB02A252b5b4814aD",
@@ -57872,11 +57872,11 @@ var marketsData = {
     marketTitle: "Avalanche Fuji",
     v3: true,
     chainId: import_contract_helpers2.ChainId.fuji,
-    aTokenPrefix: "AAVA",
     enabledFeatures: {
       faucet: true,
       incentives: true
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: "0x1775ECC8362dB6CaB0c7A9C0957cF656A5276c29".toLowerCase(),
       LENDING_POOL: "0xb47673b7a73D78743AFF1487AF69dBB5763F00cA",
@@ -57891,10 +57891,10 @@ var marketsData = {
     marketTitle: "Fantom",
     v3: true,
     chainId: import_contract_helpers2.ChainId.fantom,
-    aTokenPrefix: "AAVA",
     enabledFeatures: {
       incentives: true
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb".toLowerCase(),
       LENDING_POOL: "0x794a61358D6845594F94dc1DB02A252b5b4814aD",
@@ -57908,11 +57908,11 @@ var marketsData = {
     marketTitle: "Fantom Testnet",
     v3: true,
     chainId: import_contract_helpers2.ChainId.fantom_testnet,
-    aTokenPrefix: "AAVA",
     enabledFeatures: {
       faucet: true,
       incentives: true
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: "0xE339D30cBa24C70dCCb82B234589E3C83249e658".toLowerCase(),
       LENDING_POOL: "0x771A45a19cE333a19356694C5fc80c76fe9bc741",
@@ -57927,10 +57927,10 @@ var marketsData = {
     marketTitle: "Harmony",
     v3: true,
     chainId: import_contract_helpers2.ChainId.harmony,
-    aTokenPrefix: "AAVA",
     enabledFeatures: {
       incentives: true
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb".toLowerCase(),
       LENDING_POOL: "0x794a61358D6845594F94dc1DB02A252b5b4814aD",
@@ -57944,11 +57944,11 @@ var marketsData = {
     marketTitle: "Harmony Testnet",
     v3: true,
     chainId: import_contract_helpers2.ChainId.harmony_testnet,
-    aTokenPrefix: "AAVA",
     enabledFeatures: {
       faucet: true,
       incentives: true
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: "0xd19443202328A66875a51560c28276868B8C61C2".toLowerCase(),
       LENDING_POOL: "0x85C1F3f1bB439180f7Bfda9DFD61De82e10bD554",
@@ -57963,10 +57963,10 @@ var marketsData = {
     marketTitle: "Optimism",
     v3: true,
     chainId: import_contract_helpers2.ChainId.optimism,
-    aTokenPrefix: "AAVA",
     enabledFeatures: {
       incentives: true
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb".toLowerCase(),
       LENDING_POOL: "0x794a61358D6845594F94dc1DB02A252b5b4814aD",
@@ -57981,11 +57981,11 @@ var marketsData = {
     marketTitle: "Optimism Kovan",
     v3: true,
     chainId: import_contract_helpers2.ChainId.optimism_kovan,
-    aTokenPrefix: "AAVA",
     enabledFeatures: {
       faucet: true,
       incentives: true
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: "0xD15d36975A0200D11B8a8964F4F267982D2a1cFe".toLowerCase(),
       LENDING_POOL: "0x139d8F557f70D1903787e929D7C42165c4667229",
@@ -58000,10 +58000,10 @@ var marketsData = {
     marketTitle: "Polygon",
     chainId: import_contract_helpers2.ChainId.polygon,
     v3: true,
-    aTokenPrefix: "AM",
     enabledFeatures: {
       incentives: true
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb".toLowerCase(),
       LENDING_POOL: "0x794a61358D6845594F94dc1DB02A252b5b4814aD",
@@ -58017,11 +58017,11 @@ var marketsData = {
   ["proto_mumbai_v3" /* proto_mumbai_v3 */]: {
     marketTitle: "Polygon Mumbai",
     chainId: import_contract_helpers2.ChainId.mumbai,
-    aTokenPrefix: "AM",
     enabledFeatures: {
       incentives: true,
       faucet: true
     },
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: "0x5343b5bA672Ae99d627A1C87866b8E53F47Db2E6".toLowerCase(),
       LENDING_POOL: "0x6C9fB0D5bD9429eb9Cd96B85B81d872281771E6B",
@@ -58041,13 +58041,11 @@ var networkConfigs = {
   [import_contract_helpers3.ChainId.kovan]: {
     name: "Kovan",
     publicJsonRPCUrl: ["https://eth-kovan.alchemyapi.io/v2/demo", "https://kovan.poa.network"],
-    protocolDataUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v2-kovan",
     baseUniswapAdapter: "0xf86Be05f535EC2d217E4c6116B3fa147ee5C05A1",
     baseAssetSymbol: "ETH",
     wrappedBaseAssetSymbol: "WETH",
     baseAssetDecimals: 18,
     explorerLink: "https://kovan.etherscan.io",
-    rpcOnly: true,
     isTestnet: true,
     networkLogoPath: "/icons/networks/ethereum.svg"
   },
@@ -58056,13 +58054,11 @@ var networkConfigs = {
     publicJsonRPCUrl: [
       "https://rinkeby-light.eth.linkpool.io/"
     ],
-    protocolDataUrl: "",
     baseUniswapAdapter: "",
     baseAssetSymbol: "ETH",
     wrappedBaseAssetSymbol: "WETH",
     baseAssetDecimals: 18,
     explorerLink: "https://rinkeby.etherscan.io/",
-    rpcOnly: true,
     isTestnet: true,
     networkLogoPath: "/icons/networks/ethereum.svg"
   },
@@ -58073,15 +58069,11 @@ var networkConfigs = {
       "https://rpc.flashbots.net/"
     ],
     publicJsonRPCWSUrl: "wss://eth-mainnet.alchemyapi.io/v2/demo",
-    cachingServerUrl: "https://cache-api-1.aave.com/graphql",
-    cachingWSServerUrl: "wss://cache-api-1.aave.com/graphql",
-    protocolDataUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v2",
     baseUniswapAdapter: "0xc3efa200a60883a96ffe3d5b492b121d6e9a1f3f",
     baseAssetSymbol: "ETH",
     wrappedBaseAssetSymbol: "WETH",
     baseAssetDecimals: 18,
     explorerLink: "https://etherscan.io",
-    rpcOnly: false,
     ratesHistoryApiUrl: "https://aave-api-v2.aave.com/data/rates-history",
     networkLogoPath: "/icons/networks/ethereum.svg"
   },
@@ -58089,9 +58081,6 @@ var networkConfigs = {
     name: "Polygon POS",
     publicJsonRPCUrl: ["https://polygon-rpc.com"],
     publicJsonRPCWSUrl: "wss://polygon-rpc.com",
-    cachingServerUrl: "https://cache-api-137.aave.com/graphql",
-    cachingWSServerUrl: "wss://cache-api-137.aave.com/graphql",
-    protocolDataUrl: "https://api.thegraph.com/subgraphs/name/aave/aave-v2-matic",
     baseAssetSymbol: "MATIC",
     wrappedBaseAssetSymbol: "WMATIC",
     baseAssetDecimals: 18,
@@ -58108,12 +58097,10 @@ var networkConfigs = {
     name: "Mumbai",
     publicJsonRPCUrl: ["https://rpc-mumbai.maticvigil.com"],
     publicJsonRPCWSUrl: "wss://rpc-mumbai.maticvigil.com",
-    protocolDataUrl: "https://api.thegraph.com/subgraphs/name/aave/aave-v2-polygon-mumbai",
     baseAssetSymbol: "MATIC",
     wrappedBaseAssetSymbol: "WMATIC",
     baseAssetDecimals: 18,
     explorerLink: "https://explorer-mumbai.maticvigil.com",
-    rpcOnly: true,
     isTestnet: true,
     networkLogoPath: "/icons/networks/polygon.svg"
   },
@@ -58121,13 +58108,11 @@ var networkConfigs = {
     name: "Fuji",
     publicJsonRPCUrl: ["https://api.avax-test.network/ext/bc/C/rpc"],
     publicJsonRPCWSUrl: "wss://api.avax-test.network/ext/bc/C/rpc",
-    protocolDataUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v2-fuji",
     baseUniswapAdapter: "0x0",
     baseAssetSymbol: "AVAX",
     wrappedBaseAssetSymbol: "WAVAX",
     baseAssetDecimals: 18,
     explorerLink: "https://cchain.explorer.avax-test.network",
-    rpcOnly: true,
     isTestnet: true,
     networkLogoPath: "/icons/networks/avalanche.svg",
     bridge: {
@@ -58140,15 +58125,11 @@ var networkConfigs = {
     name: "Avalanche",
     publicJsonRPCUrl: ["https://api.avax.network/ext/bc/C/rpc"],
     publicJsonRPCWSUrl: "wss://api.avax.network/ext/bc/C/rpc",
-    protocolDataUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v2-avalanche",
-    cachingServerUrl: "https://cache-api-43114.aave.com/graphql",
-    cachingWSServerUrl: "wss://cache-api-43114.aave.com/graphql",
     baseUniswapAdapter: "0x0",
     baseAssetSymbol: "AVAX",
     wrappedBaseAssetSymbol: "WAVAX",
     baseAssetDecimals: 18,
     explorerLink: "https://cchain.explorer.avax.network",
-    rpcOnly: false,
     networkLogoPath: "/icons/networks/avalanche.svg",
     bridge: {
       icon: "/icons/bridge/avalanche.svg",
@@ -58161,13 +58142,11 @@ var networkConfigs = {
     name: "Arbitrum Rinkeby",
     publicJsonRPCUrl: ["https://rinkeby.arbitrum.io/rpc"],
     publicJsonRPCWSUrl: "wss://rinkeby.arbitrum.io/rpc",
-    protocolDataUrl: "https://api.thegraph.com/subgraphs/name/aave/protocol-v3-arbitrum-rinkeby",
     baseUniswapAdapter: "0x0",
     baseAssetSymbol: "ETH",
     wrappedBaseAssetSymbol: "WETH",
     baseAssetDecimals: 18,
     explorerLink: "https://testnet.arbiscan.io",
-    rpcOnly: true,
     isTestnet: true,
     networkLogoPath: "/icons/networks/arbitrum.svg",
     bridge: {
@@ -58180,13 +58159,11 @@ var networkConfigs = {
     name: "Arbitrum",
     publicJsonRPCUrl: ["https://arb1.arbitrum.io/rpc"],
     publicJsonRPCWSUrl: "wss://arb1.arbitrum.io/rpc",
-    protocolDataUrl: "",
     baseUniswapAdapter: "0x0",
     baseAssetSymbol: "ETH",
     wrappedBaseAssetSymbol: "WETH",
     baseAssetDecimals: 18,
     explorerLink: "https://testnet.arbiscan.io",
-    rpcOnly: true,
     networkLogoPath: "/icons/networks/arbitrum.svg",
     bridge: {
       icon: "/icons/bridge/arbitrum.svg",
@@ -58198,13 +58175,11 @@ var networkConfigs = {
     name: "Harmony",
     publicJsonRPCUrl: ["https://api.s0.t.hmny.io", "https://api.harmony.one"],
     publicJsonRPCWSUrl: "wss://ws.s0.t.hmny.io",
-    protocolDataUrl: "",
     baseUniswapAdapter: "0x0",
     baseAssetSymbol: "ONE",
     wrappedBaseAssetSymbol: "WONE",
     baseAssetDecimals: 18,
     explorerLink: "https://explorer.harmony.one",
-    rpcOnly: true,
     networkLogoPath: "/icons/networks/harmony.svg",
     bridge: {
       icon: "/icons/bridge/harmony.svg",
@@ -58216,13 +58191,11 @@ var networkConfigs = {
     name: "Harmony Testnet",
     publicJsonRPCUrl: ["https://api.s0.b.hmny.io", "https://api.s0.pops.one"],
     publicJsonRPCWSUrl: "wss://ws.s0.pops.one",
-    protocolDataUrl: "",
     baseUniswapAdapter: "0x0",
     baseAssetSymbol: "ONE",
     wrappedBaseAssetSymbol: "WONE",
     baseAssetDecimals: 18,
     explorerLink: "https://explorer.pops.one",
-    rpcOnly: true,
     isTestnet: true,
     networkLogoPath: "/icons/networks/harmony.svg",
     bridge: {
@@ -58235,13 +58208,11 @@ var networkConfigs = {
     name: "Optimism",
     publicJsonRPCUrl: ["https://mainnet.optimism.io"],
     publicJsonRPCWSUrl: "wss://ws-mainnet.optimism.io",
-    protocolDataUrl: "",
     baseUniswapAdapter: "0x0",
     baseAssetSymbol: "ETH",
     wrappedBaseAssetSymbol: "WETH",
     baseAssetDecimals: 18,
     explorerLink: "https://optimistic.etherscan.io",
-    rpcOnly: true,
     networkLogoPath: "/icons/networks/optimism.svg",
     bridge: {
       icon: "/icons/bridge/optimism.svg",
@@ -58253,13 +58224,11 @@ var networkConfigs = {
     name: "Optimism Testnet",
     publicJsonRPCUrl: ["https://kovan.optimism.io"],
     publicJsonRPCWSUrl: "wss://ws-kovan.optimism.io",
-    protocolDataUrl: "",
     baseUniswapAdapter: "0x0",
     baseAssetSymbol: "ETH",
     wrappedBaseAssetSymbol: "WETH",
     baseAssetDecimals: 18,
     explorerLink: "https://kovan-optimistic.etherscan.io",
-    rpcOnly: true,
     isTestnet: true,
     networkLogoPath: "/icons/networks/optimism.svg",
     bridge: {
@@ -58272,13 +58241,11 @@ var networkConfigs = {
     name: "Fantom",
     publicJsonRPCUrl: ["https://rpc.ftm.tools"],
     publicJsonRPCWSUrl: "wss://wsapi.fantom.network",
-    protocolDataUrl: "",
     baseUniswapAdapter: "0x0",
     baseAssetSymbol: "FTM",
     wrappedBaseAssetSymbol: "WFTM",
     baseAssetDecimals: 18,
     explorerLink: "https://ftmscan.com",
-    rpcOnly: true,
     networkLogoPath: "/icons/networks/fantom.svg",
     bridge: {
       icon: "/icons/bridge/fantom.svg",
@@ -58290,13 +58257,11 @@ var networkConfigs = {
     name: "Fantom Testnet",
     publicJsonRPCUrl: ["https://rpc.testnet.fantom.network"],
     publicJsonRPCWSUrl: "",
-    protocolDataUrl: "",
     baseUniswapAdapter: "0x0",
     baseAssetSymbol: "FTM",
     wrappedBaseAssetSymbol: "WFTM",
     baseAssetDecimals: 18,
     explorerLink: "https://testnet.ftmscan.com",
-    rpcOnly: true,
     isTestnet: true,
     networkLogoPath: "/icons/networks/fantom.svg",
     bridge: {
@@ -58324,7 +58289,6 @@ var networkConfigs2 = Object.keys(networkConfigs).reduce((acc, value) => {
   acc[value] = networkConfigs[value];
   if (FORK_ENABLED && Number(value) === FORK_BASE_CHAIN_ID) {
     acc[FORK_CHAIN_ID] = __spreadProps(__spreadValues({}, networkConfigs[value]), {
-      rpcOnly: true,
       isFork: true,
       privateJsonRPCUrl: FORK_RPC_URL,
       privateJsonRPCWSUrl: FORK_WS_RPC_URL,
@@ -58337,7 +58301,8 @@ var marketsData2 = Object.keys(marketsData).reduce((acc, value) => {
   acc[value] = marketsData[value];
   if (FORK_ENABLED && marketsData[value].chainId === FORK_BASE_CHAIN_ID) {
     acc[`fork_${value}`] = __spreadProps(__spreadValues({}, marketsData[value]), {
-      chainId: FORK_CHAIN_ID
+      chainId: FORK_CHAIN_ID,
+      rpcOnly: true
     });
   }
   return acc;
@@ -58803,7 +58768,6 @@ function populateCache() {
   });
 }
 populateCache().then(() => console.log("finished"));
-module.exports = __toCommonJS(populateCache_exports);
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   populateCache

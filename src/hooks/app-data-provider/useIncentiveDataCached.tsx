@@ -28,6 +28,7 @@ export interface PoolIncentivesWithCache {
 export function useIncentivesDataCached(
   lendingPoolAddressProvider: string,
   chainId: number,
+  marketName: string,
   currentAccount?: string,
   skip = false
 ): PoolIncentivesWithCache {
@@ -38,7 +39,7 @@ export function useIncentivesDataCached(
         chainId,
       },
       skip,
-      context: { target: APOLLO_QUERY_TARGET.CHAIN(chainId) },
+      context: { target: APOLLO_QUERY_TARGET.MARKET(marketName) },
     });
 
   // Reserve incentives
@@ -64,10 +65,10 @@ export function useIncentivesDataCached(
             poolIncentivesData: poolIncentivesDataUpdate,
           };
         },
-        context: { target: APOLLO_QUERY_TARGET.CHAIN(chainId) },
+        context: { target: APOLLO_QUERY_TARGET.MARKET(marketName) },
       });
     }
-  }, [subscribeToIncentivesData, lendingPoolAddressProvider, skip]);
+  }, [subscribeToIncentivesData, lendingPoolAddressProvider, skip, chainId, marketName]);
 
   // User incentives
   const { loading: userIncentivesDataLoading, subscribeToMore: subscribeToUserIncentivesData } =
@@ -78,7 +79,7 @@ export function useIncentivesDataCached(
         chainId,
       },
       skip: !currentAccount || skip,
-      context: { target: APOLLO_QUERY_TARGET.CHAIN(chainId) },
+      context: { target: APOLLO_QUERY_TARGET.MARKET(marketName) },
     });
 
   useEffect(() => {
@@ -103,9 +104,16 @@ export function useIncentivesDataCached(
             userIncentives: userData,
           };
         },
-        context: { target: APOLLO_QUERY_TARGET.CHAIN(chainId) },
+        context: { target: APOLLO_QUERY_TARGET.MARKET(marketName) },
       });
-  }, [subscribeToUserIncentivesData, lendingPoolAddressProvider, currentAccount, skip]);
+  }, [
+    subscribeToUserIncentivesData,
+    lendingPoolAddressProvider,
+    currentAccount,
+    skip,
+    chainId,
+    marketName,
+  ]);
 
   // logic
   const loading = (currentAccount && userIncentivesDataLoading) || incentivesDataLoading;
