@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-15 17:07\n"
+"PO-Revision-Date: 2022-03-15 17:17\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -133,7 +133,7 @@ msgstr "Te permite cambiar entre tasas de interés <0>variables</0> y <1>estable
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Already on cooldown"
-msgstr ""
+msgstr "Ya está tiempo de espera"
 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
@@ -190,7 +190,7 @@ msgstr "El activo no se puede pedir prestado en modo de aislamiento"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Asset is not listed"
-msgstr ""
+msgstr "El activo no está listado"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Asset to delegate"
@@ -270,7 +270,7 @@ msgstr "Antes de suministrar, necesita aprobar su uso por el protocolo Aave. Pue
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrow"
-msgstr "Préstamo"
+msgstr "Tomar prestado"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "Borrow APY rate"
