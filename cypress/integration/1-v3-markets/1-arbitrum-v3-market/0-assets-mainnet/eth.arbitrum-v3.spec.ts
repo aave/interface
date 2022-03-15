@@ -1,9 +1,4 @@
-import {
-  configEnvWithTenderlyArbitrumFork,
-  configEnvWithTenderlyAvalancheFork,
-  configEnvWithTenderlyMumbaiFork,
-  configEnvWithTenderlyPolygonFork,
-} from '../../../../support/steps/configuration.steps';
+import { configEnvWithTenderlyArbitrumFork } from '../../../../support/steps/configuration.steps';
 import {
   supply,
   borrow,
@@ -77,7 +72,7 @@ const testData = {
       {
         asset: assets.arbitrumMarket.ETH,
         apyType: constants.apyType.variable,
-        repayableAsset: assets.avalancheV3Market.WAVAX,
+        repayableAsset: assets.arbitrumMarket.WETH,
         amount: 0.01,
         hasApproval: false,
         repayOption: constants.repayType.default,
@@ -85,7 +80,7 @@ const testData = {
       {
         asset: assets.arbitrumMarket.ETH,
         apyType: constants.apyType.variable,
-        repayableAsset: assets.avalancheV3Market.aWAVAX,
+        repayableAsset: assets.arbitrumMarket.aWETH,
         amount: 0.01,
         hasApproval: true,
         repayOption: constants.repayType.default,

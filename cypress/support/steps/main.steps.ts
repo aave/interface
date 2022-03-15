@@ -53,9 +53,7 @@ export const supply = (
       cy.get(`[data-cy='dashboardSupplyListItem_${_shortName.toUpperCase()}']`)
         .find('button:contains("Supply")')
         .click();
-      cy.get(
-        `[data-cy=Modal] h2:contains("Supply ${asset.wrapped ? 'W' : ''}${_shortName}")`
-      ).should('be.visible');
+      cy.get(`[data-cy=Modal] h2:contains("Supply ${_shortName}")`).should('be.visible');
     });
     it(`Supply ${amount} amount for ${_shortName}`, () => {
       setAmount({
@@ -94,7 +92,7 @@ export const borrow = (
     skipSetup({ skip, updateSkipStatus });
     it(`Open ${_shortName} borrow popup view`, () => {
       doSwitchToDashboardBorrowView();
-      cy.wait(2000);
+      cy.wait(4000);
       cy.get(`[data-cy='dashboardBorrowListItem_${_shortName.toUpperCase()}']`)
         .contains('Borrow')
         .should('not.be.disabled')
