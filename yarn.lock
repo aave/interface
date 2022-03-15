@@ -9,10 +9,10 @@
   dependencies:
     isomorphic-unfetch "^3.1.0"
 
-"@aave/math-utils@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.0.2.tgz#3fd84322fe4aec74cfdab6a55f677128f1688418"
-  integrity sha512-beRe0+h7Wzh/Wh/qyLe8P4OW11Ezvh6zwpvgefN/4l/5IPM8ObxTRTvI03JXUnbHpYI78d7OJovE+HfJR9S7yg==
+"@aave/math-utils@1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.0.4.tgz#ab7f4002e9f95810448750c32abd250aa9b47452"
+  integrity sha512-gw2hMRMqVTpG9ABCyjXEvyoZpXUTKmo6Xoaj0ucNDqLbPE/cENwOqqZoCyURVyog9Cx5jJrzfd2UzK6N0vRKcQ==
   dependencies:
     bignumber.js "^9.0.1"
     tslib "^2.3.1"
