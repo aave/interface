@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-15 16:58\n"
+"PO-Revision-Date: 2022-03-15 17:07\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1393,7 +1393,7 @@ msgstr "Para tomar prestado, necesita proporcionar cualquier activo para ser uti
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "To prevent gaming the stable rate you can only borrow, when you borrow more then your current collateral in the same asset."
-msgstr ""
+msgstr "Para evitar jugar con la tasa estable, solo puedes pedir prestado cuando pides prestado más que tu cantidad actual de garantía en el mismo activo."
 
 #: src/ui-config/errorMapping.tsx
 msgid "To repay on behalf of a user an explicit amount to repay is needed"
@@ -1548,14 +1548,14 @@ msgstr ""
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Vote differential needed"
-msgstr ""
+msgstr "Se necesita un voto diferencial"
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Voting power"
-msgstr ""
+msgstr "Poder de votación"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Voting results"
@@ -1578,7 +1578,7 @@ msgstr "Las billeteras son proporcionadas por proveedores externos y al seleccio
 
 #: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake."
-msgstr ""
+msgstr "No podemos detectar una cartera. Conecta una cartera para invertir."
 
 #: src/components/transactions/FlowCommons/LeftHelperText.tsx
 msgid "Why do I need to approve?"
@@ -1586,7 +1586,7 @@ msgstr "¿Por qué necesito aprobarlo?"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "With a voting power of <0/>"
-msgstr ""
+msgstr "Con un poder de votación de <0/>"
 
 #: src/components/transactions/Withdraw/WithdrawModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
@@ -1608,7 +1608,7 @@ msgstr "Red incorrecta"
 
 #: src/modules/governance/VoteBar.tsx
 msgid "YAE"
-msgstr ""
+msgstr "YAE"
 
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "You are entering Isolation mode"
