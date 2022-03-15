@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-15 15:29\n"
+"PO-Revision-Date: 2022-03-15 15:49\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -81,7 +81,7 @@ msgstr "Gobierno de Aave"
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance documentation"
-msgstr ""
+msgstr "Aave es un protocolo completamente descentralizado y gobernado por la comunidad de los dueños de AAVE token. Los dueños de AAVE token pueden votarse a sí mismo en/sobre nuevas propuestas o delegar los votos a una dirección de elección. Para aprender más revisa la documentación de Gobierno"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Aave per month"
@@ -93,23 +93,23 @@ msgstr "Cuenta"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Action cannot be performed because the reserve is frozen"
-msgstr ""
+msgstr "No se puede realizar la acción porque la reserva está bloqueada"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Action cannot be performed because the reserve is paused"
-msgstr ""
+msgstr "No se puede realizar la acción porque la reserva está parada/detenida"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Action requires an active reserve"
-msgstr ""
+msgstr "La acción requiere una reserva activa"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add {0} to the wallet"
-msgstr ""
+msgstr "Añadir {0} a la cartera"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Address is not a contract"
-msgstr ""
+msgstr "La dirección no es un contrato"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "All"
