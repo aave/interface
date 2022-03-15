@@ -68,7 +68,7 @@ export class TenderlyFork {
       signer
     );
 
-    await poolConfigurator.setPoolPause(false, { from: signer._address, gasLimit: '300000' });
+    await poolConfigurator.setPoolPause(false, { from: signer._address, gasLimit: '4000000' });
     return;
   }
 
