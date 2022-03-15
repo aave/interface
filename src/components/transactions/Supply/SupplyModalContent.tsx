@@ -66,7 +66,6 @@ export const SupplyModalContent = ({
     poolReserve,
     underlyingAsset
   );
-
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToSupply.toString() : _amount;
 

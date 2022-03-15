@@ -88,8 +88,8 @@ export const ModalWrapper: React.FC<{
       )}
       {children({
         isWrongNetwork,
-        nativeBalance: walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()].amount,
-        tokenBalance: walletBalances[userReserve.reserve.underlyingAsset].amount,
+        nativeBalance: walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]?.amount || '0',
+        tokenBalance: walletBalances[poolReserve.underlyingAsset.toLowerCase()]?.amount || '0',
         poolReserve,
         symbol,
         underlyingAsset,
