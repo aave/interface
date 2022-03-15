@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-15 16:18\n"
+"PO-Revision-Date: 2022-03-15 16:34\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -566,7 +566,7 @@ msgstr "Habilitar Modo-E"
 
 #: src/layouts/components/TestNetModeSwitcher.tsx
 msgid "Enable Testnet mode"
-msgstr "Habilitar modo Testnet"
+msgstr "Habilitar/activar el modo Testnet"
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 msgid "Enable {symbol} as collateral"
@@ -583,11 +583,11 @@ msgstr "Habilitado en aislamiento"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Enabling E-Mode"
-msgstr ""
+msgstr "Activar E-Mode"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Enabling E-Mode only allows you to borrow assets belonging to the selected category Stablecoins. Please visit our <0>FAQ guide</0> to learn more about how it works and the applied restrictions."
-msgstr ""
+msgstr "Activar el modo E-mode te permite solo pedir prestado activos que pertenezcan a la categoría seleccionada de Stablecoins. Por favor visita nuestra <0>guía de preguntas y respuestas</0> para aprender más sobre cómo funciona y las restricciones que se aplican."
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "Enabling this asset as collateral increases your borrowing power and Health Factor. However, it can get liquidated if your health factor drops below 1."
