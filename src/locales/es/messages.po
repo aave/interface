@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-15 16:02\n"
+"PO-Revision-Date: 2022-03-15 16:18\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -435,7 +435,7 @@ msgstr "Error de copia"
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Copy error text"
-msgstr ""
+msgstr "Error de copia de texto"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Created"
@@ -443,7 +443,7 @@ msgstr "Creado"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Current LTV"
-msgstr ""
+msgstr "LTV actual"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Current differential"
@@ -473,15 +473,15 @@ msgstr "Techo de deuda"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Debt ceiling is exceeded"
-msgstr ""
+msgstr "El límite de la deuda está sobrepasado/excedido"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Debt ceiling is not zero"
-msgstr ""
+msgstr "El límite de la deuda no es cero"
 
 #: src/components/infoModalContents/RetryWithApprovalInfoContent.tsx
 msgid "Define Retry with Approval text"
-msgstr ""
+msgstr "Define reintentar con texto de aprobación"
 
 #: src/components/transactions/GovDelegation/GovDelegationActions.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
@@ -553,7 +553,7 @@ msgstr "Categoría del modo E"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode increases your borrowing power for a selected category of assets up to 97%. <0>Learn more</0>"
-msgstr ""
+msgstr "E-Mode aumenta tu poder de préstamo para una categoría seleccionada de activos de hasta el 97%. <0>Aprende más</0>"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Efficiency mode (E-Mode)"
@@ -566,7 +566,7 @@ msgstr "Habilitar Modo-E"
 
 #: src/layouts/components/TestNetModeSwitcher.tsx
 msgid "Enable Testnet mode"
-msgstr ""
+msgstr "Habilitar modo Testnet"
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 msgid "Enable {symbol} as collateral"
