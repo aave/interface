@@ -30,8 +30,8 @@
     "test:avalanche": "npx cypress-repeat run -n 2 --rerun-failed-only --spec \"cypress/integration/3-avalanche-market/**/*.spec.ts\""
   },
   "dependencies": {
-    "@aave/contract-helpers": "1.0.2-03aca1f7750a065fbaabac53005b4a9c93c36514.0+03aca1f",
-    "@aave/math-utils": "1.0.2-03aca1f7750a065fbaabac53005b4a9c93c36514.0+03aca1f",
+    "@aave/contract-helpers": "1.0.2",
+    "@aave/math-utils": "1.0.2",
     "@apollo/client": "^3.5.10",
     "@emotion/cache": "latest",
     "@emotion/react": "latest",
