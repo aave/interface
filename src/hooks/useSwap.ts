@@ -1,14 +1,31 @@
-import { ParaSwap, APIError, Transaction } from 'paraswap';
-import { ContractMethod, SwapSide } from 'paraswap/build/constants';
-import { OptimalRate } from 'paraswap-core';
+import {
+  constructPartialSDK,
+  constructFetchFetcher,
+  constructGetRate,
+  constructBuildTx,
+} from '@paraswap/sdk';
+import { TransactionParams } from '@paraswap/sdk/dist/transaction';
+import { OptimalRate, SwapSide, ContractMethod } from 'paraswap-core';
 import { useCallback, useEffect, useState } from 'react';
 import { ComputedReserveData } from './app-data-provider/useAppDataProvider';
 import { ChainId } from '@aave/contract-helpers';
 import { BigNumberZeroDecimal, normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
 
-const mainnetParaswap = new ParaSwap(ChainId.mainnet);
-const polygonParaswap = new ParaSwap(ChainId.polygon);
-const avalancheParaswap = new ParaSwap(ChainId.avalanche);
+const ParaSwap = (chainId: number) => {
+  const fetcher = constructFetchFetcher(fetch); // alternatively constructFetchFetcher
+  return constructPartialSDK(
+    {
+      network: chainId,
+      fetcher,
+    },
+    constructBuildTx,
+    constructGetRate
+  );
+};
+
+const mainnetParaswap = ParaSwap(ChainId.mainnet);
+const polygonParaswap = ParaSwap(ChainId.polygon);
+const avalancheParaswap = ParaSwap(ChainId.avalanche);
 
 const getParaswap = (chainId: ChainId) => {
   if (ChainId.mainnet === chainId) return mainnetParaswap;
@@ -30,7 +47,6 @@ const MESSAGE_MAP = {
   ESTIMATED_LOSS_GREATER_THAN_MAX_IMPACT: 'Price impact to high',
 };
 
-// TODO: resolve error codes to human understandable error messages https://github.com/paraswap/paraswap-sdk/issues/22
 export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId }: UseSwapProps) => {
   const paraSwap = getParaswap(chainId);
   const [loading, setLoading] = useState(false);
@@ -51,13 +67,15 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId }: UseS
       (variant === 'exactIn' ? swapIn.decimals : swapOut.decimals) * -1
     );
     try {
-      const response = await paraSwap.getRate(
-        swapIn.underlyingAsset,
-        swapOut.underlyingAsset,
-        amount.toFixed(0),
-        userId,
-        variant === 'exactIn' ? SwapSide.SELL : SwapSide.BUY,
-        {
+      const response = await paraSwap.getRate({
+        amount: amount.toFixed(0),
+        srcToken: swapIn.underlyingAsset,
+        srcDecimals: swapIn.decimals,
+        destToken: swapOut.underlyingAsset,
+        destDecimals: swapOut.decimals,
+        userAddress: userId,
+        side: variant === 'exactIn' ? SwapSide.SELL : SwapSide.BUY,
+        options: {
           partner: 'aave',
           ...(max
             ? {
@@ -66,10 +84,7 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId }: UseS
               }
             : {}),
         },
-        swapIn.decimals,
-        swapOut.decimals
-      );
-      if ((response as APIError).message) throw new Error((response as APIError).message);
+      });
       setError('');
       setPriceRoute(response as OptimalRate);
     } catch (e) {
@@ -153,21 +168,27 @@ export const getSwapCallData = async ({
     .multipliedBy(99)
     .dividedBy(100)
     .toFixed(0);
-  const params = await paraSwap.buildTx(
-    srcToken,
-    destToken,
-    route.srcAmount,
-    destAmountWithSlippage,
-    route,
-    user,
-    'aave',
-    undefined,
-    undefined,
-    undefined,
-    { ignoreChecks: true },
-    srcDecimals,
-    destDecimals
-  );
-  if ((params as APIError).message) throw new Error('Error getting txParams');
-  return { swapCallData: (params as Transaction).data, augustus: (params as Transaction).to };
+  try {
+    const params = await paraSwap.buildTx(
+      {
+        srcToken,
+        destToken,
+        srcAmount: route.srcAmount,
+        destAmount: destAmountWithSlippage,
+        priceRoute: route,
+        userAddress: user,
+        partner: 'aave',
+        srcDecimals,
+        destDecimals,
+      },
+      { ignoreChecks: true }
+    );
+    return {
+      swapCallData: (params as TransactionParams).data,
+      augustus: (params as TransactionParams).to,
+    };
+  } catch (e) {
+    console.log(e);
+    throw new Error('Error getting txParams');
+  }
 };
