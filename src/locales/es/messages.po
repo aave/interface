@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-15 15:49\n"
+"PO-Revision-Date: 2022-03-15 16:02\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -129,7 +129,7 @@ msgstr "Le permite decidir si utilizar un activo suministrado como garantía. Un
 
 #: src/components/infoTooltips/APYTypeTooltip.tsx
 msgid "Allows you to switch between <0>variable</0> and <1>stable</1> interest rates, where variable rate can increase and decrease depending on the amount of liquidity in the reserve, and stable rate will stay the same for the duration of your loan."
-msgstr ""
+msgstr "Te permite cambiar entre tasas de interés <0>variables</0> y <1>estables</1>, donde la tasa variable puede aumentar o disminuir según la cantidad de liquidez en la reserva, y la tasa estable permanecerá igual durante la duración de su prestamo."
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Already on cooldown"
@@ -143,7 +143,7 @@ msgstr "Cantidad"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Amount must be greater than 0"
-msgstr ""
+msgstr "La cantidad debe ser mayor que 0"
 
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "Ampleforth FAQ"
@@ -171,7 +171,7 @@ msgstr "Aprobando {symbol}..."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Array parameters that should be equal length are not"
-msgstr ""
+msgstr "El conjunto de parámetros que deberían ser iguales en longitud no lo son"
 
 #: pages/faucet.page.tsx
 #: src/modules/markets/AssetsList.tsx
@@ -186,7 +186,7 @@ msgstr "Categoría de activos"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Asset is not borrowable in isolation mode"
-msgstr ""
+msgstr "El activo no se puede pedir prestado en modo de aislamiento"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Asset is not listed"
@@ -316,7 +316,7 @@ msgstr ""
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Borrowing power and assets are limited due to Isolation mode."
-msgstr ""
+msgstr "El poder de préstamo y los activos están limitados debido al modo de aislamiento."
 
 #: src/components/transactions/Borrow/BorrowActions.tsx
 msgid "Borrowing {symbol}"
@@ -431,7 +431,7 @@ msgstr "Copiar dirección"
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "Copy error"
-msgstr ""
+msgstr "Error de copia"
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Copy error text"
