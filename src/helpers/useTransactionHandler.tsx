@@ -80,8 +80,11 @@ export const useTransactionHandler = ({
     try {
       const txnResult = await tx();
       try {
-        mounted.current && successCallback && successCallback(txnResult);
+        refetchWalletBalances();
+        refetchPoolData && refetchPoolData();
+        refechIncentiveData && refechIncentiveData();
         await txnResult.wait(1);
+        mounted.current && successCallback && successCallback(txnResult);
         refetchWalletBalances();
         refetchPoolData && refetchPoolData();
         refechIncentiveData && refechIncentiveData();
