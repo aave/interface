@@ -39,7 +39,7 @@ export function VoteBar({ percent, yae, votes, ...rest }: VoteBarProps) {
     <Box {...rest}>
       <Box sx={{ display: 'flex' }}>
         <Typography variant="description" sx={{ mr: 2 }}>
-          {yae ? <Trans>YAE</Trans> : <Trans>NEY</Trans>}
+          {yae ? <Trans>YAE</Trans> : <Trans>NAY</Trans>}
         </Typography>
         <FormattedNumber
           value={votes}

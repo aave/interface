@@ -852,8 +852,8 @@ msgid "More"
 msgstr "More"
 
 #: src/modules/governance/VoteBar.tsx
-msgid "NEY"
-msgstr "NEY"
+msgid "NAY"
+msgstr "NAY"
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Need help connecting a wallet? <0>Read our FAQ</0>"
