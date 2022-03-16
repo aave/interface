@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-16 10:18\n"
+"PO-Revision-Date: 2022-03-16 10:30\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -744,15 +744,15 @@ msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid signature"
-msgstr ""
+msgstr "Firma incorrecta/inválida"
 
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Isolated"
-msgstr ""
+msgstr "Aislado"
 
 #: src/components/isolationMode/IsolatedTooltip.tsx
 msgid "Isolated assets have limited borrowing power and other assets cannot be used as collateral."
-msgstr ""
+msgstr "Los activos aislados han limitado su capacidad de préstamo y otros activos no pueden ser usados como garantía."
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Language"
@@ -793,7 +793,7 @@ msgstr "El riesgo de liquidación es elevado, se recomiendan cantidades más baj
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "Liquidation risk is high. Lower amounts recommended."
-msgstr ""
+msgstr "El riesgo de liquidación es alto. Se recomiendan cantidades más bajas."
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Liquidation risk parametres"
@@ -805,7 +805,7 @@ msgstr "Umbral de liquidación"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/HFContent.tsx
 msgid "Liquidation value"
-msgstr ""
+msgstr "Valor de liquidación"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis, quia?"
@@ -890,7 +890,7 @@ msgstr ""
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "No"
-msgstr ""
+msgstr "No"
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 msgid "No rewards to claim"
@@ -898,7 +898,7 @@ msgstr "No hay recompensas para reclamar"
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "No voting power"
-msgstr ""
+msgstr "Sin poder de voto"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "None"
@@ -942,7 +942,7 @@ msgstr "Vale, lo tengo"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Operation not supported"
-msgstr ""
+msgstr "Operación no compatible/admitidia"
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Oracle price"
@@ -996,7 +996,7 @@ msgstr "Propuestas"
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Proposition power"
-msgstr ""
+msgstr "Poder de proposición"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 #: src/modules/governance/ProposalListItem.tsx
@@ -1242,15 +1242,15 @@ msgstr ""
 
 #: src/components/transactions/Supply/SupplyActions.tsx
 msgid "Supply {symbol}"
-msgstr ""
+msgstr "Suministrar {symbol}"
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "Supplying your"
-msgstr ""
+msgstr "Suministrando tu"
 
 #: src/components/transactions/Supply/SupplyActions.tsx
 msgid "Supplying {symbol}"
-msgstr ""
+msgstr "Suministrando {symbol}"
 
 #: src/components/transactions/Swap/SwapActions.tsx
 #: src/components/transactions/Swap/SwapModal.tsx
@@ -1281,7 +1281,7 @@ msgstr "Tasa de cambio"
 
 #: src/components/infoTooltips/BorrowPowerTooltip.tsx
 msgid "The % of your total bowering power used. This is based on the amount of your collateral supplied and the total amount that you can borrow."
-msgstr ""
+msgstr "El % de tu capacidad de préstamo usado. Esto se basa en la cantidad de tu garantía proporcionada y en la cantidad total que puedes tomar prestada."
 
 #: pages/staking.staking.tsx
 msgid "The Balancer Pool Token (BPT) is a liquidity pool token. You can receive BPT by depositing a combination of AAVE + ETH in the <0>Balancer liquidity pool</0>. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
