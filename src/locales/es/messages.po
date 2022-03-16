@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-16 14:27\n"
+"PO-Revision-Date: 2022-03-16 14:38\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -385,7 +385,7 @@ msgstr "Garantía"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Collateral is (mostly) the same currency that is being borrowed"
-msgstr ""
+msgstr "La garantía es (en su mayoría) el mismo activo que se está tomando prestado"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Collateral usage is limited because of isolation mode. <0>Learn More</0>"
@@ -397,7 +397,7 @@ msgstr "Uso de la garantía:"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Collateralization"
-msgstr ""
+msgstr "Colateralización"
 
 #: src/components/WalletConnection/ConnectWalletButton.tsx
 #: src/layouts/WalletWidget.tsx
@@ -740,7 +740,7 @@ msgstr "Préstamo flash inválido"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid return value of the flashloan executor function"
-msgstr "Valor de retorno no válido de la función ejecutora de préstamo flash"
+msgstr "Valor de retorno no válido en la función executor de préstamo flash"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid signature"
@@ -813,7 +813,7 @@ msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "Ltv validation failed"
-msgstr ""
+msgstr "La validación del LTV ha fallado"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/LTVContent.tsx
 msgid "MAX"
@@ -834,11 +834,11 @@ msgstr "Max"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Max LTV"
-msgstr ""
+msgstr "LTV máximo"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Max slashing"
-msgstr ""
+msgstr "Max slashing"
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Max slippage rate"
@@ -858,7 +858,7 @@ msgstr "Más"
 
 #: src/modules/governance/VoteBar.tsx
 msgid "NAY"
-msgstr ""
+msgstr "NO"
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Need help connecting a wallet? <0>Read our FAQ</0>"
@@ -866,15 +866,15 @@ msgstr "¿Necesitas ayuda para conectar una billetera? <0>Lee nuestras preguntas
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Net APR"
-msgstr ""
+msgstr "APR Neto"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Net APY"
-msgstr ""
+msgstr "APY neto"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Net worth"
-msgstr ""
+msgstr "Valor neto"
 
 #: src/layouts/WalletWidget.tsx
 msgid "Network"
@@ -886,7 +886,7 @@ msgstr "Red no soportada para esta billetera"
 
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "New APY"
-msgstr ""
+msgstr "Nuevo APY"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "No"
@@ -902,7 +902,7 @@ msgstr "Sin poder de voto"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "None"
-msgstr ""
+msgstr "Ninguno"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Not a valid address"
@@ -975,7 +975,7 @@ msgstr "Por favor, conecte su billetera"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Pool addresses provider is not registered"
-msgstr ""
+msgstr "La dirección del proveedor del pool no esta registrada"
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Price impact"
@@ -1060,7 +1060,7 @@ msgstr "Reintentar con aprobación"
 
 #: src/components/transactions/FlowCommons/RightHelperText.tsx
 msgid "Review approval tx details"
-msgstr ""
+msgstr "Revisa los detalles del approve"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModal.tsx
 msgid "Review tx"
@@ -1076,7 +1076,7 @@ msgstr "Recompensa(s) por reclamar"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Rewards APR"
-msgstr ""
+msgstr "APR de recompensas"
 
 #: src/components/HealthFactorNumber.tsx
 msgid "Risk details"
@@ -1141,15 +1141,15 @@ msgstr "Tipo de interés estable está deshabilitado para esta moneda"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Stable borrowing is enabled"
-msgstr ""
+msgstr "El préstamo estable no está habilitado"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Stable borrowing is not enabled"
-msgstr ""
+msgstr "El préstamo estable no está habilitado"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Stable debt supply is not zero"
-msgstr ""
+msgstr "El balance de deuda estable no es cero"
 
 #: src/components/infoTooltips/StableAPYTooltip.tsx
 msgid "Stable interest rate will <0>stay the same</0> for the duration of your loan. Recommended for long-term loan periods and for users who prefer predictability."
@@ -1220,7 +1220,7 @@ msgstr "La cantidad depositada está limitada debido al límite del depósito"
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Supply apy"
-msgstr ""
+msgstr "APY de depósito"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
@@ -1265,7 +1265,7 @@ msgstr "Intercambiando"
 
 #: src/components/transactions/RateSwitch/RateSwitchModal.tsx
 msgid "Switch APY type"
-msgstr ""
+msgstr "Cambiar el tipo de APY"
 
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Switch Network"
@@ -1301,11 +1301,11 @@ msgstr "El llamador de la función no es un AToken"
 
 #: src/ui-config/errorMapping.tsx
 msgid "The caller of this function must be a pool"
-msgstr ""
+msgstr "La función debe ser llamada por un pool"
 
 #: src/ui-config/errorMapping.tsx
 msgid "The collateral balance is 0"
-msgstr ""
+msgstr "El balance de garantía es 0"
 
 #: src/ui-config/errorMapping.tsx
 msgid "The collateral chosen cannot be liquidated"
@@ -1337,7 +1337,7 @@ msgstr "El activo base no puede ser rescatado"
 
 #: src/ui-config/errorMapping.tsx
 msgid "The underlying balance needs to be greater than 0"
-msgstr ""
+msgstr "El balance subyacente debe ser mayor que 0"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "There are not enough funds in the{0}reserve to borrow"
@@ -1461,11 +1461,11 @@ msgstr "UNSTAKING {symbol}"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Unbacked"
-msgstr ""
+msgstr "No respaldado"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Unbacked mint cap is exceeded"
-msgstr ""
+msgstr "El límite de minteo sin respaldo ha sido excedido"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Unstake now"
@@ -1769,7 +1769,7 @@ msgstr "o introduzca un valor de comisión personalizado"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "or use <0>{0}</0> to transfer your ETH assets."
-msgstr ""
+msgstr "o usa <0>{0}</0> para transferir tus activos de ETH."
 
 #: src/components/transactions/Warnings/SNXWarning.tsx
 msgid "please check that the amount you want to supply is not currently being used for staking. If it is being used for staking, your transaction might fail."
@@ -1785,7 +1785,7 @@ msgstr "para obtener más información."
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "tokens is not the same as staking them. If you wish to stake your"
-msgstr ""
+msgstr "tokens no es lo mismo que stakearlos. Si deseas stakearlos"
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "tokens, please go to the"
