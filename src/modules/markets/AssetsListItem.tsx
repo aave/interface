@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Button, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { useRouter } from 'next/router';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { AMPLWarning } from '../../components/infoTooltips/AMPLWarning';
@@ -14,12 +15,13 @@ import { ComputedReserveData } from '../../hooks/app-data-provider/useAppDataPro
 
 export const AssetsListItem = ({ ...reserve }: ComputedReserveData) => {
   const router = useRouter();
+  const { currentMarket } = useProtocolDataContext();
 
   return (
     <ListItem
       px={6}
       minHeight={76}
-      onClick={() => router.push(ROUTES.reserveOverview(reserve.underlyingAsset))}
+      onClick={() => router.push(ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket))}
       sx={{ cursor: 'pointer' }}
       button
     >
@@ -91,7 +93,7 @@ export const AssetsListItem = ({ ...reserve }: ComputedReserveData) => {
         <Button
           variant="outlined"
           component={Link}
-          href={ROUTES.reserveOverview(reserve.underlyingAsset)}
+          href={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket)}
         >
           <Trans>Details</Trans>
         </Button>

@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -30,6 +31,7 @@ export const SupplyAssetsListItem = ({
   usageAsCollateralEnabledOnUser,
   detailsAddress,
 }: SupplyAssetsItem) => {
+  const { currentMarket } = useProtocolDataContext();
   const { openSupply } = useModalContext();
   return (
     <ListItemWrapper
@@ -38,6 +40,7 @@ export const SupplyAssetsListItem = ({
       name={name}
       detailsAddress={detailsAddress}
       data-cy={`dashboardSupplyListItem_${symbol.toUpperCase()}`}
+      currentMarket={currentMarket}
     >
       <ListValueColumn
         symbol={symbol}
@@ -72,7 +75,11 @@ export const SupplyAssetsListItem = ({
         >
           <Trans>Supply</Trans>
         </Button>
-        <Button variant="outlined" component={Link} href={ROUTES.reserveOverview(detailsAddress)}>
+        <Button
+          variant="outlined"
+          component={Link}
+          href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
+        >
           <Trans>Details</Trans>
         </Button>
       </ListButtonsColumn>

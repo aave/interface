@@ -90,6 +90,7 @@ export function ProtocolDataProvider({ children }: PropsWithChildren<{}>) {
       availableMarkets[0]
   );
   const currentMarketData = marketsData[currentMarket];
+  console.log('current market ===> ', currentMarket);
 
   const handleSetMarket = (market: CustomMarket) => {
     if (market === currentMarket) return;

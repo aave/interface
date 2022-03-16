@@ -1,6 +1,7 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
 import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
@@ -18,6 +19,7 @@ export const BorrowedPositionsListMobileItem = ({
   borrowRateMode,
   stableBorrowAPY,
 }: ComputedUserReserveData & { borrowRateMode: InterestRate }) => {
+  const { currentMarket } = useProtocolDataContext();
   const { openBorrow, openRepay, openRateSwitch } = useModalContext();
   const {
     symbol,
@@ -39,6 +41,7 @@ export const BorrowedPositionsListMobileItem = ({
       iconSymbol={iconSymbol}
       name={name}
       underlyingAsset={reserve.underlyingAsset}
+      currentMarket={currentMarket}
     >
       <ListValueRow
         title={<Trans>Debt</Trans>}
@@ -73,6 +76,7 @@ export const BorrowedPositionsListMobileItem = ({
           stableBorrowAPY={stableBorrowAPY}
           variableBorrowAPY={variableBorrowAPY}
           underlyingAsset={underlyingAsset}
+          currentMarket={currentMarket}
         />
       </Row>
 
