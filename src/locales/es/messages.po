@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-16 13:39\n"
+"PO-Revision-Date: 2022-03-16 13:50\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1238,7 +1238,7 @@ msgstr "El límite de depósito se ha sobrepasado"
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Supply cap on target reserve reached. Try lowering the amount."
-msgstr ""
+msgstr "Se ha alcanzado el límite de depósito en la reserva especificada. Prueba reduciendo la cantidad."
 
 #: src/components/transactions/Supply/SupplyActions.tsx
 msgid "Supply {symbol}"
