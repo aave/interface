@@ -71,17 +71,25 @@ export const useTransactionHandler = ({
     tx,
     errorCallback,
     successCallback,
+    action,
   }: {
     tx: () => Promise<TransactionResponse>;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     errorCallback?: (error: any, hash?: string) => void;
     successCallback?: (param: TransactionResponse) => void;
+    action: TxAction;
   }) => {
     try {
       const txnResult = await tx();
       try {
-        mounted.current && successCallback && successCallback(txnResult);
-        await txnResult.wait(1);
+        if (action === TxAction.APPROVAL) {
+          await txnResult.wait(1);
+          mounted.current && successCallback && successCallback(txnResult);
+        } else {
+          mounted.current && successCallback && successCallback(txnResult);
+          await txnResult.wait(1);
+        }
+
         refetchWalletBalances();
         refetchPoolData && refetchPoolData();
         refechIncentiveData && refechIncentiveData();
@@ -181,6 +189,7 @@ export const useTransactionHandler = ({
                 loading: false,
               });
             },
+            action: TxAction.APPROVAL,
           });
         } catch (error) {
           if (!mounted.current) return;
@@ -227,6 +236,7 @@ export const useTransactionHandler = ({
               loading: false,
             });
           },
+          action: TxAction.MAIN_ACTION,
         });
       } catch (error) {
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
@@ -266,6 +276,7 @@ export const useTransactionHandler = ({
               loading: false,
             });
           },
+          action: TxAction.MAIN_ACTION,
         });
       } catch (error) {
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
