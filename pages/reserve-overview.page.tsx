@@ -25,20 +25,11 @@ import { ContentContainer } from '../src/components/ContentContainer';
 export default function ReserveOverview() {
   const router = useRouter();
   const { reserves } = useAppDataContext();
-  const { currentMarket, setCurrentMarket } = useProtocolDataContext();
   const underlyingAsset = router.query.underlyingAsset as string;
-  const market = router.query.marketName as CustomMarket;
-  console.log('market==============> ', market);
   const { breakpoints } = useTheme();
   const lg = useMediaQuery(breakpoints.up('lg'));
 
   const [mode, setMode] = useState<'overview' | 'actions' | ''>('');
-
-  useEffect(() => {
-    if (currentMarket !== market) {
-      setCurrentMarket(market);
-    }
-  }, []);
 
   useEffect(() => {
     if (!mode) setMode('overview');
@@ -48,8 +39,6 @@ export default function ReserveOverview() {
   const reserve = reserves.find(
     (reserve) => reserve.underlyingAsset === underlyingAsset
   ) as ComputedReserveData;
-
-  console.log('reserve is ===========> ', reserve);
 
   const isOverview = mode === 'overview';
 
