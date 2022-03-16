@@ -13,23 +13,32 @@ import {
   ComputedReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { ReserveActions } from 'src/modules/reserve-overview/ReserveActions';
 import { ReserveConfiguration } from 'src/modules/reserve-overview/ReserveConfiguration';
 import { ReserveTopDetails } from 'src/modules/reserve-overview/ReserveTopDetails';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 import { ContentContainer } from '../src/components/ContentContainer';
 
 export default function ReserveOverview() {
   const router = useRouter();
   const { reserves } = useAppDataContext();
+  const { currentMarket, setCurrentMarket } = useProtocolDataContext();
   const underlyingAsset = router.query.underlyingAsset as string;
-  const market = router.query.marketId as string;
-
+  const market = router.query.marketName as CustomMarket;
+  console.log('market==============> ', market);
   const { breakpoints } = useTheme();
   const lg = useMediaQuery(breakpoints.up('lg'));
 
   const [mode, setMode] = useState<'overview' | 'actions' | ''>('');
+
+  useEffect(() => {
+    if (currentMarket !== market) {
+      setCurrentMarket(market);
+    }
+  }, []);
 
   useEffect(() => {
     if (!mode) setMode('overview');
@@ -39,6 +48,8 @@ export default function ReserveOverview() {
   const reserve = reserves.find(
     (reserve) => reserve.underlyingAsset === underlyingAsset
   ) as ComputedReserveData;
+
+  console.log('reserve is ===========> ', reserve);
 
   const isOverview = mode === 'overview';
 
