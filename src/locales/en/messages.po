@@ -1390,10 +1390,6 @@ msgstr "Time left to unstake"
 msgid "To borrow you need to supply any asset to be used as collateral."
 msgstr "To borrow you need to supply any asset to be used as collateral."
 
-#: src/components/transactions/Borrow/BorrowModalContent.tsx
-msgid "To prevent gaming the stable rate you can only borrow, when you borrow more then your current collateral in the same asset."
-msgstr "To prevent gaming the stable rate you can only borrow, when you borrow more then your current collateral in the same asset."
-
 #: src/ui-config/errorMapping.tsx
 msgid "To repay on behalf of a user an explicit amount to repay is needed"
 msgstr "To repay on behalf of a user an explicit amount to repay is needed"
@@ -1612,6 +1608,10 @@ msgstr "YAE"
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "You are entering Isolation mode"
 msgstr "You are entering Isolation mode"
+
+#: src/components/transactions/Borrow/BorrowModalContent.tsx
+msgid "You can borrow this asset with a stable rate only if you borrow more than the amount you are supplying as collateral."
+msgstr "You can borrow this asset with a stable rate only if you borrow more than the amount you are supplying as collateral."
 
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "You can not change Interest Type to stable as your borrowings are higher than your collateral"
