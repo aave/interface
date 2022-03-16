@@ -36,7 +36,7 @@ export const SupplyAssetsListItem = ({
       symbol={symbol}
       iconSymbol={iconSymbol}
       name={name}
-      underlyingAsset={underlyingAsset}
+      detailsAddress={detailsAddress}
       data-cy={`dashboardSupplyListItem_${symbol.toUpperCase()}`}
     >
       <ListValueColumn
