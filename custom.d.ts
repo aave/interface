@@ -5,7 +5,7 @@ namespace NodeJS {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface ProcessEnv {
     CACHE_PATH: string;
-    ENABLE_GOVERNANCE: string;
-    ENABLE_STAKING: string;
+    NEXT_PUBLIC_ENABLE_GOVERNANCE: string;
+    NEXT_PUBLIC_ENABLE_STAKING: string;
   }
 }
