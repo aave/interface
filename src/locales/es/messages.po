@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-16 11:50\n"
+"PO-Revision-Date: 2022-03-16 12:03\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -407,23 +407,23 @@ msgstr "Conectar billetera"
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "Cooldown period"
-msgstr ""
+msgstr "Periodo de cooldown"
 
 #: src/components/Warnings/CooldownWarning.tsx
 msgid "Cooldown period warning"
-msgstr ""
+msgstr "Advertencia periodo de cooldown"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Cooldown time left"
-msgstr ""
+msgstr "Periodo restante de cooldown"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Cooldown to unstake"
-msgstr ""
+msgstr "Cooldown para undstakear"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Cooling down..."
-msgstr ""
+msgstr "Cooling down..."
 
 #: src/layouts/WalletWidget.tsx
 msgid "Copy address"
@@ -1712,15 +1712,15 @@ msgstr "Sus suministros"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Your voting info"
-msgstr ""
+msgstr "Tu información de voto"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Your {networkName} wallet is empty. Purchase or transfer assets"
-msgstr ""
+msgstr "Tu {networkName} cartera está vacía. Compra o transfiere activos"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Zero address not valid"
-msgstr ""
+msgstr "Dirección cero no válida"
 
 #: src/modules/markets/AssetsList.tsx
 msgid "assets"
@@ -1753,7 +1753,7 @@ msgstr "aquí."
 
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "is an asset affected by rebasing. Visit the"
-msgstr ""
+msgstr "es un activo afectado por el rebase. Visita el"
 
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "on"
