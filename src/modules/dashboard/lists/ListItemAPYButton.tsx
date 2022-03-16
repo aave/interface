@@ -20,6 +20,7 @@ import {
 import * as React from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 interface ListItemAPYButtonProps {
   stableBorrowRateEnabled: boolean;
@@ -29,6 +30,7 @@ interface ListItemAPYButtonProps {
   stableBorrowAPY: string;
   variableBorrowAPY: string;
   underlyingAsset: string;
+  currentMarket: CustomMarket;
 }
 
 export const ListItemAPYButton = ({
@@ -39,6 +41,7 @@ export const ListItemAPYButton = ({
   stableBorrowAPY,
   variableBorrowAPY,
   underlyingAsset,
+  currentMarket,
 }: ListItemAPYButtonProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
