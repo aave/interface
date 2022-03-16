@@ -169,8 +169,8 @@ export const BorrowModalContent = ({
       case ErrorType.NOT_ENOUGH_BORROWED:
         return (
           <Trans>
-            To prevent gaming the stable rate you can only borrow, when you borrow more then your
-            current collateral in the same asset.
+            You can borrow this asset with a stable rate only if you borrow more than the amount you
+            are supplying as collateral.
           </Trans>
         );
       case ErrorType.NOT_ENOUGH_LIQUIDITY:
