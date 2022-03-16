@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-16 12:03\n"
+"PO-Revision-Date: 2022-03-16 12:18\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -680,7 +680,7 @@ msgstr "Ocultar"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "I understand how cooldown ({0}) and unstaking ({1}) work"
-msgstr ""
+msgstr "Entiendo como funciona el cooldown ({0}) y unstakear ({1})"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "If the health factor goes below 1, the liquidation of your collateral might be triggered."
@@ -688,7 +688,7 @@ msgstr "Si el factor de salud se encuentra por debajo de 1, la liquidación de s
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "If you DO NOT unstake within {0} of unstake window, you will need to activate cooldown process again."
-msgstr ""
+msgstr "Si NO unstakeas entre {0} de la ventana de unstakeo, necesitarás activar el proceso de cooldown de nuevo."
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "If your loan to value goes above the liquidation threshold your collateral supplied may be liquidated."
@@ -696,7 +696,7 @@ msgstr "Si su préstamo a valor supera el umbral de liquidación, su garantía p
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "In E-Mode some assets are not borrowable. Exit E-Mode to get access to all assets"
-msgstr ""
+msgstr "En E-Mode algunos activos no se pueden pedir prestados. Sal del E-Mode para obtener acceso a todos los activos"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "In Isolation mode you cannot supply other assets as collateral for borrowing. Assets used as collateral in Isolation mode can only be borrowed to a specific debt ceiling."
@@ -712,7 +712,7 @@ msgstr "Para cambiar el E-Mode de la categoría de activos{0}, necesitarás cerr
 
 #: src/ui-config/errorMapping.tsx
 msgid "Inconsistent flashloan parameters"
-msgstr ""
+msgstr "Parámetros inconsistentes de préstemo flash"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Interest rate rebalance conditions were not met"
@@ -720,11 +720,11 @@ msgstr "No se cumplieron las condiciones de ajuste de tasas de interés"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid amount to burn"
-msgstr ""
+msgstr "Cantidad invalidad para quemar"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid amount to mint"
-msgstr ""
+msgstr "Cantidad invalidad para generar"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid bridge protocol fee"
