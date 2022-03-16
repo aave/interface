@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-16 12:18\n"
+"PO-Revision-Date: 2022-03-16 12:35\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -728,7 +728,7 @@ msgstr "Cantidad invalidad para generar"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid bridge protocol fee"
-msgstr ""
+msgstr "Comisión de puente de protocolo inválida"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid expiration"
@@ -736,7 +736,7 @@ msgstr "Caducidad inválida"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid flashloan premium"
-msgstr ""
+msgstr "Préstamo flash inválido"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid return value of the flashloan executor function"
