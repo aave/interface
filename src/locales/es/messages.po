@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-16 10:30\n"
+"PO-Revision-Date: 2022-03-16 10:39\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1321,11 +1321,11 @@ msgstr ""
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "The effects on the health factor would cause liquidation. Try lowering the amount."
-msgstr ""
+msgstr "Los efectos en el factor de salud podrían causar liquidación. Intenta reducir la cantidad."
 
 #: src/ui-config/errorMapping.tsx
 msgid "The requested amount is greater than the max loan size in stable rate mode"
-msgstr ""
+msgstr "La cantidad solicitada es mayor que el tamaño máximo del préstamo en el modo de tasa estable"
 
 #: src/components/infoTooltips/CollateralTooltip.tsx
 msgid "The total amount of your assets denominated in USD that can be used as collateral for borrowing assets."
@@ -1333,7 +1333,7 @@ msgstr "La cantidad total de sus activos denominados en USD que pueden ser usado
 
 #: src/ui-config/errorMapping.tsx
 msgid "The underlying asset cannot be rescued"
-msgstr ""
+msgstr "El activo base no puede ser rescatado"
 
 #: src/ui-config/errorMapping.tsx
 msgid "The underlying balance needs to be greater than 0"
@@ -1345,11 +1345,11 @@ msgstr "No hay fondos suficientes en la reserva{0}para pedir préstamos"
 
 #: src/ui-config/errorMapping.tsx
 msgid "There is not enough collateral to cover a new borrow"
-msgstr ""
+msgstr "No hay suficiente garantía para cubrir un nuevo préstamo"
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "There was some error. Please try changing the parameters or<0>copy the error</0>"
-msgstr ""
+msgstr "Hubo un error. Por favor, intenta cambiar los parámetros o<0>copiar el error</0>"
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
