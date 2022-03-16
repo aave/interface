@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-16 11:02\n"
+"PO-Revision-Date: 2022-03-16 11:17\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1620,11 +1620,11 @@ msgstr "No puede cambiar el Tipo de Interés a estable, ya que sus préstamos so
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "You can not disable E-Mode as your current collateralization level is above 80%, disabling E-Mode can cause liquidation. To exit E-Mode supply or repay borrowed positions."
-msgstr ""
+msgstr "No puedes desactivar el E-Mode, ya que tu nivel actual de garantía está por encima del 80%, desactivar el E-Mode puede causar liquidación. Para salir del E-Mode proporciona o pagas las posiciones prestadas."
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You can not switch usage as collateral mode for this currency, because it will cause collateral call"
-msgstr ""
+msgstr "No puedes cambiar el uso como modo de garantía para este activo, porque causará una liquidación"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You can not use this currency as collateral"
