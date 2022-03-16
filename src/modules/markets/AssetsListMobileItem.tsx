@@ -19,6 +19,7 @@ export const AssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
       iconSymbol={reserve.iconSymbol}
       name={reserve.name}
       underlyingAsset={reserve.underlyingAsset}
+      currentMarket={currentMarket}
     >
       <Row caption={<Trans>Total supplied</Trans>} captionVariant="description" mb={3}>
         <FormattedNumber

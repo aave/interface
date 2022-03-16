@@ -39,6 +39,7 @@ export const SupplyAssetsListMobileItem = ({
       iconSymbol={iconSymbol}
       name={name}
       underlyingAsset={underlyingAsset}
+      currentMarket={currentMarket}
     >
       <ListValueRow
         title={<Trans>Supply balance</Trans>}

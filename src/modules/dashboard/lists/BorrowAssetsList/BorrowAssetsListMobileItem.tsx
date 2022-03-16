@@ -39,6 +39,7 @@ export const BorrowAssetsListMobileItem = ({
       iconSymbol={iconSymbol}
       name={name}
       underlyingAsset={underlyingAsset}
+      currentMarket={currentMarket}
     >
       <ListValueRow
         title={<Trans>Available to borrow</Trans>}
