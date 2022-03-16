@@ -34,7 +34,7 @@ export const BorrowAssetsListItem = ({
       symbol={symbol}
       iconSymbol={iconSymbol}
       name={name}
-      underlyingAsset={underlyingAsset}
+      detailsAddress={underlyingAsset}
       data-cy={`dashboardBorrowListItem_${symbol.toUpperCase()}`}
     >
       <ListValueColumn

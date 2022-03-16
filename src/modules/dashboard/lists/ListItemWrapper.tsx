@@ -11,7 +11,7 @@ interface ListItemWrapperProps {
   symbol: string;
   iconSymbol: string;
   name: string;
-  underlyingAsset: string;
+  detailsAddress: string;
   children: ReactNode;
 }
 
@@ -20,14 +20,14 @@ export const ListItemWrapper = ({
   iconSymbol,
   children,
   name,
-  underlyingAsset,
+  detailsAddress,
   ...rest
 }: ListItemWrapperProps) => {
   return (
     <ListItem {...rest}>
       <ListColumn maxWidth={160} isRow>
         <Link
-          href={ROUTES.reserveOverview(underlyingAsset)}
+          href={ROUTES.reserveOverview(detailsAddress)}
           noWrap
           sx={{ display: 'inline-flex', alignItems: 'center' }}
         >
