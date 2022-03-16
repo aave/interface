@@ -60,7 +60,6 @@ export const permitByChainAndToken: {
     '0xF7475b635EbE06d9C5178CC40D50856Fa98C7332': true,
   },
   [ChainId.polygon]: {
-    '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063': true,
     '0x4e3Decbb3645551B8A19f0eA1678079FCB33fB4c': true,
   },
   [ChainId.mumbai]: {
