@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-16 12:35\n"
+"PO-Revision-Date: 2022-03-16 13:18\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1176,17 +1176,17 @@ msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Staked"
-msgstr ""
+msgstr "Stakeado"
 
 #: src/components/transactions/Stake/StakeActions.tsx
 #: src/modules/staking/StakingHeader.tsx
 msgid "Staking"
-msgstr ""
+msgstr "Staking"
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "Staking APR"
-msgstr ""
+msgstr "Staking APR"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Started"
@@ -1212,7 +1212,7 @@ msgstr "Suministro"
 #: src/modules/markets/AssetsList.tsx
 #: src/modules/markets/AssetsListMobileItem.tsx
 msgid "Supply APY"
-msgstr ""
+msgstr "Depositar APY"
 
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 msgid "Supply amount is limited due to Supply Cap"
@@ -1469,11 +1469,11 @@ msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Unstake now"
-msgstr ""
+msgstr "Unstakea ahora"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Unstake window"
-msgstr ""
+msgstr "Ventana de unstakeo"
 
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Used as collateral"
@@ -1510,12 +1510,12 @@ msgstr "Tasa de uso"
 #: src/components/transactions/GovVote/GovVoteActions.tsx
 #: src/components/transactions/GovVote/GovVoteActions.tsx
 msgid "VOTE NAY"
-msgstr ""
+msgstr "VOTAR NO"
 
 #: src/components/transactions/GovVote/GovVoteActions.tsx
 #: src/components/transactions/GovVote/GovVoteActions.tsx
 msgid "VOTE YAE"
-msgstr ""
+msgstr "VOTAR SI"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
@@ -1524,7 +1524,7 @@ msgstr "Variable"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Variable debt supply is not zero"
-msgstr ""
+msgstr "La oferta/el deposito de deuda variable no es cero"
 
 #: src/components/infoTooltips/VariableAPYTooltip.tsx
 msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions. Recommended for short-term loans."
@@ -1540,11 +1540,11 @@ msgstr "Ver en el explorador"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Vote NAY"
-msgstr ""
+msgstr "Votar NO"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Vote YAE"
-msgstr ""
+msgstr "Votar SI"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Vote differential needed"
@@ -1773,11 +1773,11 @@ msgstr ""
 
 #: src/components/transactions/Warnings/SNXWarning.tsx
 msgid "please check that the amount you want to supply is not currently being used for staking. If it is being used for staking, your transaction might fail."
-msgstr ""
+msgstr "por favor comprueba que la cantidad que deseas depositar no está siendo utilizada actualmente para stakear. Si está utilizando para stakear, tu transacción podría fallar."
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "staking view"
-msgstr ""
+msgstr "vista de stakeo"
 
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "to learn more."
@@ -1801,7 +1801,7 @@ msgstr "mercados v3"
 
 #: src/components/transactions/GasStation/GasStation.tsx
 msgid "{0, select, slow {Slow} normal {Normal} fast {Fast} other {-}}"
-msgstr ""
+msgstr "{0, select, slow {Slow} normal {Normal} fast {Fast} other {-}}"
 
 #: src/components/transactions/GasStation/GasStation.tsx
 #: src/components/transactions/GasStation/GasStation.tsx
@@ -1811,7 +1811,7 @@ msgstr ""
 #: src/modules/dashboard/DashboardEModeButton.tsx
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "{0}"
-msgstr ""
+msgstr "{0}"
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "{0} Balance"
