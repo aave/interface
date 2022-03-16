@@ -1270,6 +1270,10 @@ msgstr "Switch Network"
 msgid "Switch rate"
 msgstr "Switch rate"
 
+#: src/ui-config/menu-items/index.tsx
+msgid "Switch to Aave Classic"
+msgstr "Switch to Aave Classic"
+
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switching rate"
 msgstr "Switching rate"
