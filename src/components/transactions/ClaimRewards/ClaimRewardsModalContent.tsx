@@ -69,22 +69,24 @@ export const ClaimRewardsModalContent = () => {
 
       const rewardBalanceUsd = Number(rewardBalance) * tokenPrice;
 
-      incentive.assets.forEach((asset) => {
-        if (allAssets.indexOf(asset) === -1) {
-          allAssets.push(asset);
-        }
-      });
+      if (rewardBalanceUsd > 0) {
+        incentive.assets.forEach((asset) => {
+          if (allAssets.indexOf(asset) === -1) {
+            allAssets.push(asset);
+          }
+        });
 
-      userIncentives.push({
-        assets: incentive.assets,
-        incentiveControllerAddress: incentive.incentiveControllerAddress,
-        symbol: incentive.rewardTokenSymbol,
-        balance: rewardBalance,
-        balanceUsd: rewardBalanceUsd.toString(),
-        rewardTokenAddress,
-      });
+        userIncentives.push({
+          assets: incentive.assets,
+          incentiveControllerAddress: incentive.incentiveControllerAddress,
+          symbol: incentive.rewardTokenSymbol,
+          balance: rewardBalance,
+          balanceUsd: rewardBalanceUsd.toString(),
+          rewardTokenAddress,
+        });
 
-      totalClaimableUsd = totalClaimableUsd + Number(rewardBalanceUsd);
+        totalClaimableUsd = totalClaimableUsd + Number(rewardBalanceUsd);
+      }
     });
 
     if (userIncentives.length === 1) {
