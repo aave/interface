@@ -44,6 +44,7 @@ export type Web3Data = {
   signTxData: (unsignedData: string) => Promise<SignatureLike>;
   error: Error | undefined;
   switchNetworkError: Error | undefined;
+  setSwitchNetworkError: (err: Error | undefined) => void;
 };
 
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
@@ -281,9 +282,12 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
               {
                 chainId: `0x${newChainId.toString(16)}`,
                 chainName: networkInfo.name,
-                nativeCurrency: networkInfo.baseAssetSymbol,
+                nativeCurrency: {
+                  symbol: networkInfo.baseAssetSymbol,
+                  decimals: networkInfo.baseAssetDecimals,
+                },
                 rpcUrls: [...networkInfo.publicJsonRPCUrl, networkInfo.publicJsonRPCWSUrl],
-                blockExplorerUrls: networkInfo.explorerLink,
+                blockExplorerUrls: [networkInfo.explorerLink],
               },
             ]);
             setSwitchNetworkError(undefined);
@@ -356,6 +360,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           addERC20Token,
           error,
           switchNetworkError,
+          setSwitchNetworkError,
         },
       }}
     >
