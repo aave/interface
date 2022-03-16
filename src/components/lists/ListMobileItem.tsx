@@ -1,5 +1,6 @@
 import { Box, Divider, Skeleton, Typography } from '@mui/material';
 import { ReactNode } from 'react';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 import { Link, ROUTES } from '../primitives/Link';
 import { TokenIcon } from '../primitives/TokenIcon';
@@ -12,6 +13,7 @@ interface ListMobileItemProps {
   name?: string;
   underlyingAsset?: string;
   loading?: boolean;
+  currentMarket?: CustomMarket;
 }
 
 export const ListMobileItem = ({
@@ -22,6 +24,7 @@ export const ListMobileItem = ({
   name,
   underlyingAsset,
   loading,
+  currentMarket,
 }: ListMobileItemProps) => {
   return (
     <Box>
@@ -40,9 +43,10 @@ export const ListMobileItem = ({
             symbol &&
             underlyingAsset &&
             name &&
+            currentMarket &&
             iconSymbol && (
               <Link
-                href={ROUTES.reserveOverview(underlyingAsset)}
+                href={ROUTES.reserveOverview(underlyingAsset, currentMarket)}
                 sx={{ display: 'inline-flex', alignItems: 'center' }}
               >
                 <TokenIcon symbol={iconSymbol} sx={{ fontSize: '40px' }} />

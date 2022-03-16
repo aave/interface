@@ -1,5 +1,6 @@
 import { Tooltip, Typography } from '@mui/material';
 import { ReactNode } from 'react';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 import { AMPLWarning } from '../../../components/infoTooltips/AMPLWarning';
 import { ListColumn } from '../../../components/lists/ListColumn';
@@ -13,6 +14,7 @@ interface ListItemWrapperProps {
   name: string;
   detailsAddress: string;
   children: ReactNode;
+  currentMarket: CustomMarket;
 }
 
 export const ListItemWrapper = ({
@@ -21,13 +23,14 @@ export const ListItemWrapper = ({
   children,
   name,
   detailsAddress,
+  currentMarket,
   ...rest
 }: ListItemWrapperProps) => {
   return (
     <ListItem {...rest}>
       <ListColumn maxWidth={160} isRow>
         <Link
-          href={ROUTES.reserveOverview(detailsAddress)}
+          href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
           noWrap
           sx={{ display: 'inline-flex', alignItems: 'center' }}
         >

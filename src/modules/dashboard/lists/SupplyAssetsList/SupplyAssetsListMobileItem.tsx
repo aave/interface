@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -29,6 +30,7 @@ export const SupplyAssetsListMobileItem = ({
   underlyingAsset,
   detailsAddress,
 }: SupplyAssetsItem) => {
+  const { currentMarket } = useProtocolDataContext();
   const { openSupply } = useModalContext();
 
   return (
@@ -92,7 +94,7 @@ export const SupplyAssetsListMobileItem = ({
         <Button
           variant="outlined"
           component={Link}
-          href={ROUTES.reserveOverview(detailsAddress)}
+          href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
           fullWidth
         >
           <Trans>Details</Trans>
