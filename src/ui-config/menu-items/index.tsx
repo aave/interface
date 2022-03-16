@@ -29,12 +29,12 @@ export const navigation: Navigation[] = [
   {
     link: ROUTES.staking,
     title: t`Stake`,
-    isVisible: () => process.env.ENABLE_STAKING === 'true',
+    isVisible: () => process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true',
   },
   {
     link: ROUTES.governance,
     title: t`Governance`,
-    isVisible: () => process.env.ENABLE_GOVERNANCE === 'true',
+    isVisible: () => process.env.NEXT_PUBLIC_ENABLE_GOVERNANCE === 'true',
   },
 ];
 

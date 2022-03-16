@@ -1,5 +1,5 @@
 import { ChainId, Stake } from '@aave/contract-helpers';
-import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
+import { NEXT_PUBLIC_ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
 
 export interface StakeConfig {
   chainId: ChainId;
@@ -51,7 +51,7 @@ export const kovanStakeConfig: StakeConfig = {
 };
 
 export const getStakeConfig = () => {
-  if (ENABLE_TESTNET) {
+  if (NEXT_PUBLIC_ENABLE_TESTNET) {
     return kovanStakeConfig;
   }
   return mainnetStakeConfig;
