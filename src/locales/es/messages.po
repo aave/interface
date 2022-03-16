@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-16 13:18\n"
+"PO-Revision-Date: 2022-03-16 13:30\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1309,15 +1309,15 @@ msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "The collateral chosen cannot be liquidated"
-msgstr ""
+msgstr "La garantía elegida no puede ser liquidada"
 
 #: src/components/Warnings/CooldownWarning.tsx
 msgid "The cooldown period is the time required prior to unstaking your tokens(10 days). You can only withdraw your assets from the Security Module after the cooldown period and within the active the unstake window.<0>Learn more</0>"
-msgstr ""
+msgstr "El periodo de cooldown es el tiempo requerido antes de unstakear tus tokens (10 días). Solo puedes retirar tus activos desde el Modulo de Seguridad después del periodo de cooldown y entre la ventana activa de unstakeo.<0>Aprende más</0>"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "The cooldown period is {0}. After {1} of cooldown, you will enter unstake window of {2}. You will continue receiving rewards during cooldown and unstake window."
-msgstr ""
+msgstr "El periodo de cooldown es {0}. Después {1} del cooldown, entrarás a la ventana de unstakeo de {2}. Continuarás recibiendo premios durante el cooldown y la ventana de unstakeo."
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "The effects on the health factor would cause liquidation. Try lowering the amount."
@@ -1385,7 +1385,7 @@ msgstr "Tiempo restante para poder retirar su activo apostado."
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Time left to unstake"
-msgstr ""
+msgstr "Tempo restante para unstakear"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "To borrow you need to supply any asset to be used as collateral."
@@ -1453,11 +1453,11 @@ msgstr "Tipo de delegación"
 
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 msgid "UNSTAKE {symbol}"
-msgstr ""
+msgstr "UNSTAKEAR {symbol}"
 
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 msgid "UNSTAKING {symbol}"
-msgstr ""
+msgstr "UNSTAKING {symbol}"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Unbacked"
