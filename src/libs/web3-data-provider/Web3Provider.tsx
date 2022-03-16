@@ -278,24 +278,33 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         const networkInfo = getNetworkConfig(newChainId);
         if (switchError.code === 4902) {
           try {
-            await provider.send('wallet_addEthereumChain', [
-              {
-                chainId: `0x${newChainId.toString(16)}`,
-                chainName: networkInfo.name,
-                nativeCurrency: {
-                  symbol: networkInfo.baseAssetSymbol,
-                  decimals: networkInfo.baseAssetDecimals,
+            try {
+              await provider.send('wallet_addEthereumChain', [
+                {
+                  chainId: `0x${newChainId.toString(16)}`,
+                  chainName: networkInfo.name,
+                  nativeCurrency: {
+                    symbol: networkInfo.baseAssetSymbol,
+                    decimals: networkInfo.baseAssetDecimals,
+                  },
+                  rpcUrls: [...networkInfo.publicJsonRPCUrl, networkInfo.publicJsonRPCWSUrl],
+                  blockExplorerUrls: [networkInfo.explorerLink],
                 },
-                rpcUrls: [...networkInfo.publicJsonRPCUrl, networkInfo.publicJsonRPCWSUrl],
-                blockExplorerUrls: [networkInfo.explorerLink],
-              },
-            ]);
+              ]);
+            } catch (error) {
+              if (error.code !== 4001) {
+                throw error;
+              }
+            }
             setSwitchNetworkError(undefined);
           } catch (addError) {
             setSwitchNetworkError(addError);
           }
+        } else if (switchError.code === 4001) {
+          setSwitchNetworkError(undefined);
+        } else {
+          setSwitchNetworkError(switchError);
         }
-        setSwitchNetworkError(switchError);
       }
     }
   };
