@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-16 13:50\n"
+"PO-Revision-Date: 2022-03-16 14:18\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -26,7 +26,7 @@ msgstr "(AAVE + stkAAVE)"
 
 #: src/components/infoTooltips/AMPLWarning.tsx
 msgid "<0>Ampleforth</0> is an asset affected by rebasing. Visit the <1>documentation</1> or <2>Ampleforth's FAQ</2> to learn more."
-msgstr ""
+msgstr "<0>Ampleforth</0> es un activo afectado por el rebase. Visita la <1>documentación</1> o <2>Ampleforth's Preguntas Frecuentes</2> para aprender más."
 
 #: src/modules/staking/StakingHeader.tsx
 msgid "AAVE holders can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
@@ -73,7 +73,7 @@ msgstr "APY, variable"
 
 #: src/ui-config/errorMapping.tsx
 msgid "AToken supply is not zero"
-msgstr ""
+msgstr "El balance de AToken no es cero"
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave Governance"
@@ -274,12 +274,12 @@ msgstr "Tomar prestado"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "Borrow APY rate"
-msgstr ""
+msgstr "Tasa de interés de préstamo APY"
 
 #: src/modules/markets/AssetsList.tsx
 #: src/modules/markets/AssetsListMobileItem.tsx
 msgid "Borrow APY, stable"
-msgstr ""
+msgstr "Interés de prestamo APY, estable"
 
 #: src/modules/markets/AssetsList.tsx
 #: src/modules/markets/AssetsListMobileItem.tsx
