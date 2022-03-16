@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-16 14:18\n"
+"PO-Revision-Date: 2022-03-16 14:27\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -279,12 +279,12 @@ msgstr "Tasa de interés de préstamo APY"
 #: src/modules/markets/AssetsList.tsx
 #: src/modules/markets/AssetsListMobileItem.tsx
 msgid "Borrow APY, stable"
-msgstr "Interés de prestamo APY, estable"
+msgstr "Interés de préstamo APY, estable"
 
 #: src/modules/markets/AssetsList.tsx
 #: src/modules/markets/AssetsListMobileItem.tsx
 msgid "Borrow APY, variable"
-msgstr ""
+msgstr "Interés de préstamo APY, variable"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Borrow and repay in same block is not allowed"
@@ -300,7 +300,7 @@ msgstr "El límite del prestamo se ha sobrepasado"
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Borrow power used"
-msgstr ""
+msgstr "Capacidad de préstamo utilizada"
 
 #: src/components/transactions/Borrow/BorrowActions.tsx
 msgid "Borrow {symbol}"
@@ -312,7 +312,7 @@ msgstr "Tomar prestado no está disponible actualmente para {0}."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Borrowing is not enabled"
-msgstr ""
+msgstr "Tomar prestado no está habilitado"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Borrowing power and assets are limited due to Isolation mode."
@@ -320,7 +320,7 @@ msgstr "La capacidad de pretamo y los activos están limitados debido al modo de
 
 #: src/components/transactions/Borrow/BorrowActions.tsx
 msgid "Borrowing {symbol}"
-msgstr ""
+msgstr "Tomando prestado {symbol}"
 
 #: src/components/BridgeButton.tsx
 msgid "Bridge"
