@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-16 13:30\n"
+"PO-Revision-Date: 2022-03-16 13:39\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -740,7 +740,7 @@ msgstr "Préstamo flash inválido"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid return value of the flashloan executor function"
-msgstr ""
+msgstr "Valor de retorno no válido de la función ejecutora de préstamo flash"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid signature"
@@ -1164,15 +1164,15 @@ msgstr "Stablecoin"
 #: src/modules/staking/StakingPanel.tsx
 #: src/ui-config/menu-items/index.tsx
 msgid "Stake"
-msgstr ""
+msgstr "Stakear"
 
 #: pages/staking.staking.tsx
 msgid "Stake Aave"
-msgstr ""
+msgstr "Stakear Aave"
 
 #: pages/staking.staking.tsx
 msgid "Stake Aave/ETH BPT"
-msgstr ""
+msgstr "Stakear Aave/ETH BPT"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Staked"
@@ -1216,7 +1216,7 @@ msgstr "Depositar APY"
 
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 msgid "Supply amount is limited due to Supply Cap"
-msgstr ""
+msgstr "La cantidad depositada está limitada debido al límite del depósito"
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Supply apy"
@@ -1234,7 +1234,7 @@ msgstr "Límite de suministro"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Supply cap is exceeded"
-msgstr ""
+msgstr "El límite de depósito se ha sobrepasado"
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Supply cap on target reserve reached. Try lowering the amount."
