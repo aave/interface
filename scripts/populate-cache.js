@@ -57334,8 +57334,9 @@ var require_native_to_usd = __commonJS({
     exports.nativeToUSD = void 0;
     var tslib_1 = require_tslib();
     var bignumber_js_1 = (0, tslib_1.__importDefault)(require_bignumber2());
+    var bignumber_1 = require_bignumber3();
     function nativeToUSD({ amount, currencyDecimals, priceInMarketReferenceCurrency, marketReferenceCurrencyDecimals, normalizedMarketReferencePriceInUsd }) {
-      return amount.multipliedBy(priceInMarketReferenceCurrency).multipliedBy(normalizedMarketReferencePriceInUsd).dividedBy(new bignumber_js_1.default(1).shiftedBy(currencyDecimals + marketReferenceCurrencyDecimals)).toString();
+      return (0, bignumber_1.valueToBigNumber)(amount.toString()).multipliedBy(priceInMarketReferenceCurrency).multipliedBy(normalizedMarketReferencePriceInUsd).dividedBy(new bignumber_js_1.default(1).shiftedBy(currencyDecimals + marketReferenceCurrencyDecimals)).toString();
     }
     exports.nativeToUSD = nativeToUSD;
   }
