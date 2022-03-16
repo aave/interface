@@ -36,9 +36,9 @@ jobs:
         if: steps.restore.outcome != 'success'
         run: yarn build:static
         env:
-          ENABLE_TESTNET: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' && 'false' || 'true' }}
-          ENABLE_GOVERNANCE: true
-          ENABLE_STAKING: true
+          NEXT_PUBLIC_ENABLE_TESTNET: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' && 'false' || 'true' }}
+          NEXT_PUBLIC_ENABLE_GOVERNANCE: true
+          NEXT_PUBLIC_ENABLE_STAKING: true
 
       - name: store artifact
         uses: actions/upload-artifact@v2
