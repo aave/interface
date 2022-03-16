@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-16 10:50\n"
+"PO-Revision-Date: 2022-03-16 11:50\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1489,19 +1489,19 @@ msgstr "El usuario no tomó prestado el activo especificado"
 
 #: src/ui-config/errorMapping.tsx
 msgid "User does not have outstanding stable rate debt on this reserve"
-msgstr ""
+msgstr "El usuario no tiene deuda pendiente de tasa estable en esta reserva"
 
 #: src/ui-config/errorMapping.tsx
 msgid "User does not have outstanding variable rate debt on this reserve"
-msgstr ""
+msgstr "El usuario no tiene deuda pendiente de tasa variable en esta reserva"
 
 #: src/ui-config/errorMapping.tsx
 msgid "User is in isolation mode"
-msgstr ""
+msgstr "El usuario está en modo aislamiento"
 
 #: src/ui-config/errorMapping.tsx
 msgid "User is trying to borrow multiple assets including a siloed one"
-msgstr ""
+msgstr "El usuario está intentando tomar prestado múltiples activos incluido uno aislado"
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Utilization Rate"
@@ -1620,11 +1620,11 @@ msgstr "No puede cambiar el Tipo de Interés a estable, ya que sus préstamos so
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "You can not disable E-Mode as your current collateralization level is above 80%, disabling E-Mode can cause liquidation. To exit E-Mode supply or repay borrowed positions."
-msgstr ""
+msgstr "No puedes desactivar el E-Mode, ya que tu nivel actual de garantía está por encima del 80%, desactivar el E-Mode puede causar liquidación. Para salir del E-Mode proporciona o pagas las posiciones prestadas."
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You can not switch usage as collateral mode for this currency, because it will cause collateral call"
-msgstr ""
+msgstr "No puedes cambiar el uso como modo de garantía para este activo, porque causará una liquidación"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You can not use this currency as collateral"
@@ -1632,68 +1632,68 @@ msgstr "No puede usar esta moneda como garantía"
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "You can not withdraw this amount because it will cause collateral call"
-msgstr ""
+msgstr "No puedes retirar esta cantidad porque causará una liquidación"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "You can only withdraw your assets from the Security Module after the cooldown period ends and the unstake window is active."
-msgstr ""
+msgstr "Solo puedes retirar tus activos del Módulo de Seguridad después de que finalice el período de cooldown y la ventana de unstakeo esté activa."
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "You can report incident to our <0>Discord</0> or <1>Github</1>."
-msgstr ""
+msgstr "Puedes reportar un incidente a nuestro <0>Discord</0> o <1>Github</1>."
 
 #: src/ui-config/errorMapping.tsx
 msgid "You cancelled the transaction."
-msgstr ""
+msgstr "Has cancelado la transacción."
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "You did not participate in this proposal"
-msgstr ""
+msgstr "No has participado en esta propuesta"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You do not have supplies in this currency"
-msgstr ""
+msgstr "No tienes suministros en este activo"
 
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "You have not borrow yet using this currency"
-msgstr ""
+msgstr "Aún no has tomado prestado usando este activo"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "You need to change E-Mode to continue."
-msgstr ""
+msgstr "Necesitas cambiar el E-Mode para continuar."
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You switched to {0} rate"
-msgstr ""
+msgstr "Has cambiado a tasa {0}"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "You unstake here"
-msgstr ""
+msgstr "Unstakea aquí"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "You voted {0}"
-msgstr ""
+msgstr "Has votado {0}"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You will exit isolation mode and other tokens can now be used as collateral"
-msgstr ""
+msgstr "Saldrás del modo aislamiento y otros tokens pueden ser usados ahora como garantía"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You {action} <0/> {symbol}"
-msgstr ""
+msgstr "Tu {action} <0/> {symbol}"
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Your borrows"
-msgstr ""
+msgstr "Tus prestamos"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Your current loan to value based on your collateral supplied."
-msgstr ""
+msgstr "Tu préstamo actual basado en tu garantía proporcionada."
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Your health factor and loan to value determine the assurance of your collateral. To avoid liquidations you can supply more collateral or repay borrow positions."
-msgstr ""
+msgstr "Tu factor de salud y préstamo determinan la seguridad de tu garantía. Para evitar liquidaciones, puedes proporcionar más garantías o pagar las posiciones de préstamo."
 
 #: pages/reserve-overview.page.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
