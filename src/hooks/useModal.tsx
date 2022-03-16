@@ -1,5 +1,6 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { createContext, useContext, useState } from 'react';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { TxErrorType } from 'src/ui-config/errorMapping';
 
 export enum ModalType {
@@ -78,6 +79,7 @@ export const ModalContext = createContext<ModalContextType<ModalArgsType>>(
 );
 
 export const ModalContextProvider: React.FC = ({ children }) => {
+  const { setSwitchNetworkError } = useWeb3Context();
   // contains the current modal open state if any
   const [type, setType] = useState<ModalType>();
   // contains arbitrary key-value pairs as a modal context
@@ -161,6 +163,7 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setGasLimit('');
           setForcedApproval(false);
           setTxError(undefined);
+          setSwitchNetworkError(undefined);
         },
         resetTx: () => {
           setMainTxState({});
