@@ -97,7 +97,6 @@ export const permitByChainAndToken: {
     '0xCcbBaf8D40a5C34bf1c836e8dD33c7B7646706C5': true,
   },
   [ChainId.optimism]: {
-    '0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1': true,
     '0x76FB31fb4af56892A25e32cFC43De717950c9278': true,
   },
   [ChainId.optimism_kovan]: {
