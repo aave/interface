@@ -61,11 +61,14 @@ export const DashboardTopPanel = () => {
 
       const rewardBalanceUsd = Number(rewardBalance) * tokenPrice;
 
-      if (acc.assets.indexOf(incentive.rewardTokenSymbol) === -1) {
-        acc.assets.push(incentive.rewardTokenSymbol);
+      if (rewardBalanceUsd > 0) {
+        if (acc.assets.indexOf(incentive.rewardTokenSymbol) === -1) {
+          acc.assets.push(incentive.rewardTokenSymbol);
+        }
+
+        acc.claimableRewardsUsd += Number(rewardBalanceUsd);
       }
 
-      acc.claimableRewardsUsd += Number(rewardBalanceUsd);
       return acc;
     },
     { claimableRewardsUsd: 0, assets: [] } as { claimableRewardsUsd: number; assets: string[] }
