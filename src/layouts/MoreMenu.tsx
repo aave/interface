@@ -1,7 +1,7 @@
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Button, Divider, ListItemIcon, ListItemText, SvgIcon } from '@mui/material';
+import { Button, ListItemIcon, ListItemText, SvgIcon } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import React from 'react';
@@ -57,7 +57,6 @@ export function MoreMenu() {
       >
         {moreNavigation.map((item, index) => (
           <>
-            {index === moreNavigation.length - 1 && <Divider light />}
             <MenuItem component={Link} href={item.link} key={index}>
               <ListItemIcon>
                 <SvgIcon sx={{ fontSize: '20px' }}>{item.icon}</SvgIcon>

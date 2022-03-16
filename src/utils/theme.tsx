@@ -522,7 +522,6 @@ export function getThemedComponents(theme: Theme) {
       MuiDivider: {
         styleOverrides: {
           root: {
-            backgroundColor: theme.palette.text.disabled,
             marginTop: 0,
             marginBottom: 0,
           },
