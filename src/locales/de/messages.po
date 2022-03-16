@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-15 12:04\n"
+"PO-Revision-Date: 2022-03-16 15:02\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1273,6 +1273,10 @@ msgstr ""
 
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switch rate"
+msgstr ""
+
+#: src/ui-config/menu-items/index.tsx
+msgid "Switch to Aave Classic"
 msgstr ""
 
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
