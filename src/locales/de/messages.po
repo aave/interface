@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-16 15:02\n"
+"PO-Revision-Date: 2022-03-16 15:17\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1395,10 +1395,6 @@ msgstr ""
 msgid "To borrow you need to supply any asset to be used as collateral."
 msgstr ""
 
-#: src/components/transactions/Borrow/BorrowModalContent.tsx
-msgid "To prevent gaming the stable rate you can only borrow, when you borrow more then your current collateral in the same asset."
-msgstr ""
-
 #: src/ui-config/errorMapping.tsx
 msgid "To repay on behalf of a user an explicit amount to repay is needed"
 msgstr ""
@@ -1616,6 +1612,10 @@ msgstr ""
 
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "You are entering Isolation mode"
+msgstr ""
+
+#: src/components/transactions/Borrow/BorrowModalContent.tsx
+msgid "You can borrow this asset with a stable rate only if you borrow more than the amount you are supplying as collateral."
 msgstr ""
 
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx

@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-16 15:02\n"
+"PO-Revision-Date: 2022-03-16 15:17\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1395,10 +1395,6 @@ msgstr "Tempo restante para unstakear"
 msgid "To borrow you need to supply any asset to be used as collateral."
 msgstr "Para tomar prestado, necesita proporcionar cualquier activo para ser utilizado como garantía."
 
-#: src/components/transactions/Borrow/BorrowModalContent.tsx
-msgid "To prevent gaming the stable rate you can only borrow, when you borrow more then your current collateral in the same asset."
-msgstr "Para evitar jugar con la tasa estable, solo puedes pedir prestado cuando pides prestado más que tu cantidad actual de garantía en el mismo activo."
-
 #: src/ui-config/errorMapping.tsx
 msgid "To repay on behalf of a user an explicit amount to repay is needed"
 msgstr "Para reembolsar en nombre de un usuario, se necesita una cantidad explicitad para reembolsar"
@@ -1617,6 +1613,10 @@ msgstr "YAE"
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "You are entering Isolation mode"
 msgstr "Estás entrando en el modo de aislamiento"
+
+#: src/components/transactions/Borrow/BorrowModalContent.tsx
+msgid "You can borrow this asset with a stable rate only if you borrow more than the amount you are supplying as collateral."
+msgstr ""
 
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "You can not change Interest Type to stable as your borrowings are higher than your collateral"
