@@ -24,7 +24,7 @@ export const SuppliedPositionsListMobileItem = ({
 }: ComputedUserReserveData & { user: ExtendedFormattedUser }) => {
   const { symbol, iconSymbol, name, supplyAPY, isIsolated, aIncentivesData, isFrozen, isActive } =
     reserve;
-  const { currentMarketData } = useProtocolDataContext();
+  const { currentMarketData, currentMarket } = useProtocolDataContext();
   const { openSupply, openWithdraw, openCollateralChange } = useModalContext();
   const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
 
@@ -40,6 +40,7 @@ export const SuppliedPositionsListMobileItem = ({
       iconSymbol={iconSymbol}
       name={name}
       underlyingAsset={underlyingAsset}
+      currentMarket={currentMarket}
     >
       <ListValueRow
         title={<Trans>Supply balance</Trans>}
