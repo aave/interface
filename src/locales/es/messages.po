@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-16 10:39\n"
+"PO-Revision-Date: 2022-03-16 10:50\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1373,7 +1373,7 @@ msgstr "Este activo ha alcanzado su límite de suministro. No queda nada disponi
 
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount available for you to borrow. You can borrow based on your collateral and until the borrow cap is reached."
-msgstr ""
+msgstr "Esta es la cantidad total disponible que puedes tomar prestada. Puedes tomar prestado basado en tu garantía y hasta que el límite de préstamo se alcance."
 
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount that you are able to supply to in this reserve. You are able to supply your wallet balance up until the supply cap is reached."
@@ -1481,11 +1481,11 @@ msgstr "Utilizado como garantía"
 
 #: src/ui-config/errorMapping.tsx
 msgid "User cannot withdraw more than the available balance"
-msgstr ""
+msgstr "El usuario no puede retirar más que el balance disponible"
 
 #: src/ui-config/errorMapping.tsx
 msgid "User did not borrow the specified currency"
-msgstr ""
+msgstr "El usuario no tomó prestado el activo especificado"
 
 #: src/ui-config/errorMapping.tsx
 msgid "User does not have outstanding stable rate debt on this reserve"
