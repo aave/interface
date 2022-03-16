@@ -56,14 +56,12 @@ export function MoreMenu() {
         keepMounted={true}
       >
         {moreNavigation.map((item, index) => (
-          <>
-            <MenuItem component={Link} href={item.link} key={index}>
-              <ListItemIcon>
-                <SvgIcon sx={{ fontSize: '20px' }}>{item.icon}</SvgIcon>
-              </ListItemIcon>
-              <ListItemText>{i18n._(item.title)}</ListItemText>
-            </MenuItem>
-          </>
+          <MenuItem component={Link} href={item.link} key={index}>
+            <ListItemIcon>
+              <SvgIcon sx={{ fontSize: '20px' }}>{item.icon}</SvgIcon>
+            </ListItemIcon>
+            <ListItemText>{i18n._(item.title)}</ListItemText>
+          </MenuItem>
         ))}
       </Menu>
     </>
