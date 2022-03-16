@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-16 10:50\n"
+"PO-Revision-Date: 2022-03-16 11:02\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1489,19 +1489,19 @@ msgstr "El usuario no tomó prestado el activo especificado"
 
 #: src/ui-config/errorMapping.tsx
 msgid "User does not have outstanding stable rate debt on this reserve"
-msgstr ""
+msgstr "El usuario no tiene deuda pendiente de tasa estable en esta reserva"
 
 #: src/ui-config/errorMapping.tsx
 msgid "User does not have outstanding variable rate debt on this reserve"
-msgstr ""
+msgstr "El usuario no tiene deuda pendiente de tasa variable en esta reserva"
 
 #: src/ui-config/errorMapping.tsx
 msgid "User is in isolation mode"
-msgstr ""
+msgstr "El usuario está en modo aislamiento"
 
 #: src/ui-config/errorMapping.tsx
 msgid "User is trying to borrow multiple assets including a siloed one"
-msgstr ""
+msgstr "El usuario está intentando tomar prestado múltiples activos incluido uno aislado"
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Utilization Rate"
