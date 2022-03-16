@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-15 17:29\n"
+"PO-Revision-Date: 2022-03-16 10:50\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -308,7 +308,7 @@ msgstr "Prestado {symbol}"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "Borrowing is currently unavailable for {0}."
-msgstr ""
+msgstr "Tomar prestado no está disponible actualmente para {0}."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Borrowing is not enabled"
@@ -704,11 +704,11 @@ msgstr "En el modo de aislamiento no se pueden proporcionar otros activos como g
 
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "In Isolation mode, you cannot supply other assets as collateral. A global debt ceiling limits the borrowing power of the isolated asset. Read more in our <0>FAQ</0>"
-msgstr ""
+msgstr "En el modo aislamiento, no puedes suministrar otros activos como garantía. Un techo de deuda global limita la capacidad de préstamo del activo aislado. Lee más en nuestras <0>Preguntas Frecuentes</0>"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "In order to change E-Mode from asset category{0}you will need to close your position in your current category. See our <0>FAQ</0> to learn more."
-msgstr ""
+msgstr "Para cambiar el E-Mode de la categoría de activos{0}, necesitarás cerrar tu posición en tu categoría actual. Mira nuestras <0>Preguntas Frecuentes</0> para aprender más."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Inconsistent flashloan parameters"
@@ -716,7 +716,7 @@ msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "Interest rate rebalance conditions were not met"
-msgstr ""
+msgstr "No se cumplieron las condiciones de ajuste de tasas de interés"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid amount to burn"
@@ -732,7 +732,7 @@ msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid expiration"
-msgstr ""
+msgstr "Caducidad inválida"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid flashloan premium"
@@ -744,15 +744,15 @@ msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid signature"
-msgstr ""
+msgstr "Firma incorrecta/inválida"
 
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Isolated"
-msgstr ""
+msgstr "Aislado"
 
 #: src/components/isolationMode/IsolatedTooltip.tsx
 msgid "Isolated assets have limited borrowing power and other assets cannot be used as collateral."
-msgstr ""
+msgstr "Los activos aislados han limitado su capacidad de préstamo y otros activos no pueden ser usados como garantía."
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Language"
@@ -793,7 +793,7 @@ msgstr "El riesgo de liquidación es elevado, se recomiendan cantidades más baj
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "Liquidation risk is high. Lower amounts recommended."
-msgstr ""
+msgstr "El riesgo de liquidación es alto. Se recomiendan cantidades más bajas."
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Liquidation risk parametres"
@@ -805,7 +805,7 @@ msgstr "Umbral de liquidación"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/HFContent.tsx
 msgid "Liquidation value"
-msgstr ""
+msgstr "Valor de liquidación"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis, quia?"
@@ -890,7 +890,7 @@ msgstr ""
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "No"
-msgstr ""
+msgstr "No"
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 msgid "No rewards to claim"
@@ -898,7 +898,7 @@ msgstr "No hay recompensas para reclamar"
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "No voting power"
-msgstr ""
+msgstr "Sin poder de voto"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "None"
@@ -942,7 +942,7 @@ msgstr "Vale, lo tengo"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Operation not supported"
-msgstr ""
+msgstr "Operación no compatible/admitidia"
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Oracle price"
@@ -996,7 +996,7 @@ msgstr "Propuestas"
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Proposition power"
-msgstr ""
+msgstr "Poder de proposición"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 #: src/modules/governance/ProposalListItem.tsx
@@ -1242,15 +1242,15 @@ msgstr ""
 
 #: src/components/transactions/Supply/SupplyActions.tsx
 msgid "Supply {symbol}"
-msgstr ""
+msgstr "Suministrar {symbol}"
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "Supplying your"
-msgstr ""
+msgstr "Suministrando tu"
 
 #: src/components/transactions/Supply/SupplyActions.tsx
 msgid "Supplying {symbol}"
-msgstr ""
+msgstr "Suministrando {symbol}"
 
 #: src/components/transactions/Swap/SwapActions.tsx
 #: src/components/transactions/Swap/SwapModal.tsx
@@ -1281,7 +1281,7 @@ msgstr "Tasa de cambio"
 
 #: src/components/infoTooltips/BorrowPowerTooltip.tsx
 msgid "The % of your total bowering power used. This is based on the amount of your collateral supplied and the total amount that you can borrow."
-msgstr ""
+msgstr "El % de tu capacidad de préstamo usado. Esto se basa en la cantidad de tu garantía proporcionada y en la cantidad total que puedes tomar prestada."
 
 #: pages/staking.staking.tsx
 msgid "The Balancer Pool Token (BPT) is a liquidity pool token. You can receive BPT by depositing a combination of AAVE + ETH in the <0>Balancer liquidity pool</0>. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
@@ -1321,11 +1321,11 @@ msgstr ""
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "The effects on the health factor would cause liquidation. Try lowering the amount."
-msgstr ""
+msgstr "Los efectos en el factor de salud podrían causar liquidación. Intenta reducir la cantidad."
 
 #: src/ui-config/errorMapping.tsx
 msgid "The requested amount is greater than the max loan size in stable rate mode"
-msgstr ""
+msgstr "La cantidad solicitada es mayor que el tamaño máximo del préstamo en el modo de tasa estable"
 
 #: src/components/infoTooltips/CollateralTooltip.tsx
 msgid "The total amount of your assets denominated in USD that can be used as collateral for borrowing assets."
@@ -1333,7 +1333,7 @@ msgstr "La cantidad total de sus activos denominados en USD que pueden ser usado
 
 #: src/ui-config/errorMapping.tsx
 msgid "The underlying asset cannot be rescued"
-msgstr ""
+msgstr "El activo base no puede ser rescatado"
 
 #: src/ui-config/errorMapping.tsx
 msgid "The underlying balance needs to be greater than 0"
@@ -1345,11 +1345,11 @@ msgstr "No hay fondos suficientes en la reserva{0}para pedir préstamos"
 
 #: src/ui-config/errorMapping.tsx
 msgid "There is not enough collateral to cover a new borrow"
-msgstr ""
+msgstr "No hay suficiente garantía para cubrir un nuevo préstamo"
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "There was some error. Please try changing the parameters or<0>copy the error</0>"
-msgstr ""
+msgstr "Hubo un error. Por favor, intenta cambiar los parámetros o<0>copiar el error</0>"
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
@@ -1373,7 +1373,7 @@ msgstr "Este activo ha alcanzado su límite de suministro. No queda nada disponi
 
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount available for you to borrow. You can borrow based on your collateral and until the borrow cap is reached."
-msgstr ""
+msgstr "Esta es la cantidad total disponible que puedes tomar prestada. Puedes tomar prestado basado en tu garantía y hasta que el límite de préstamo se alcance."
 
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount that you are able to supply to in this reserve. You are able to supply your wallet balance up until the supply cap is reached."
@@ -1481,11 +1481,11 @@ msgstr "Utilizado como garantía"
 
 #: src/ui-config/errorMapping.tsx
 msgid "User cannot withdraw more than the available balance"
-msgstr ""
+msgstr "El usuario no puede retirar más que el balance disponible"
 
 #: src/ui-config/errorMapping.tsx
 msgid "User did not borrow the specified currency"
-msgstr ""
+msgstr "El usuario no tomó prestado el activo especificado"
 
 #: src/ui-config/errorMapping.tsx
 msgid "User does not have outstanding stable rate debt on this reserve"
