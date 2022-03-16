@@ -131,7 +131,7 @@ export const ListItemAPYButton = ({
             size="small"
             component={Link}
             target="_blank"
-            href={ROUTES.reserveOverview(underlyingAsset)}
+            href={ROUTES.reserveOverview(underlyingAsset, currentMarket)}
             endIcon={
               <SvgIcon>
                 <ExternalLinkIcon />
