@@ -29,10 +29,10 @@ yarn build:static
 
 ```sh
 # you can default enable testnets by setting the following environment variable
-ENABLE_TESTNET=true
+NEXT_PUBLIC_ENABLE_TESTNET=true
 # you can disable staking & governance by altering
-ENABLE_GOVERNANCE=true
-ENABLE_STAKING=true
+NEXT_PUBLIC_ENABLE_GOVERNANCE=true
+NEXT_PUBLIC_ENABLE_STAKING=true
 ```
 
 ## Test

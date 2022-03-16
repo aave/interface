@@ -23,9 +23,9 @@ jobs:
       - name: build
         run: yarn build:static
         env:
-          ENABLE_TESTNET: false
-          ENABLE_GOVERNANCE: true
-          ENABLE_STAKING: true
+          NEXT_PUBLIC_ENABLE_TESTNET: false
+          NEXT_PUBLIC_ENABLE_GOVERNANCE: true
+          NEXT_PUBLIC_ENABLE_STAKING: true
       # ----------- Deploy to IPFS---------------------------------------
       - name: pinata
         id: pinata

@@ -49,8 +49,8 @@ jobs:
         # change this if your site requires a custom build command
         run: ./node_modules/.bin/next build
         env:
-          ENABLE_GOVERNANCE: true
-          ENABLE_STAKING: true
+          NEXT_PUBLIC_ENABLE_GOVERNANCE: true
+          NEXT_PUBLIC_ENABLE_STAKING: true
 
       # Here's the first place where next-bundle-analysis' own script is used
       # This step pulls the raw bundle stats for the current bundle

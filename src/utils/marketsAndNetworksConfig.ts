@@ -18,9 +18,9 @@ export type Pool = {
   address: string;
 };
 
-export const ENABLE_TESTNET =
+export const NEXT_PUBLIC_ENABLE_TESTNET =
   (!global?.window?.localStorage.getItem('testnetsEnabled') &&
-    process.env.ENABLE_TESTNET === 'true') ||
+    process.env.NEXT_PUBLIC_ENABLE_TESTNET === 'true') ||
   global?.window?.localStorage.getItem('testnetsEnabled') === 'true';
 
 // determines if forks should be shown
@@ -79,7 +79,7 @@ export function getSupportedChainIds(): number[] {
   return Array.from(
     Object.keys(marketsData).reduce((acc, value) => {
       if (
-        ENABLE_TESTNET ||
+        NEXT_PUBLIC_ENABLE_TESTNET ||
         !networkConfigs[marketsData[value as keyof typeof CustomMarket].chainId].isTestnet
       )
         acc.add(marketsData[value as keyof typeof CustomMarket].chainId);
