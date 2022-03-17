@@ -82,7 +82,6 @@ export const permitByChainAndToken: {
   [ChainId.harmony]: {},
   [ChainId.harmony_testnet]: {},
   [ChainId.avalanche]: {
-    '0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E': true,
     '0x9702230A8Ea53601f5cD2dc00fDBc13d4dF4A8c7': true,
   },
   [ChainId.fuji]: {
