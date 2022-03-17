@@ -8,7 +8,7 @@ on:
   pull_request:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build:
@@ -36,7 +36,7 @@ jobs:
         if: steps.restore.outcome != 'success'
         run: yarn build:static
         env:
-          NEXT_PUBLIC_ENABLE_TESTNET: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' && 'false' || 'true' }}
+          NEXT_PUBLIC_ENABLE_TESTNET: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && 'false' || 'true' }}
           NEXT_PUBLIC_ENABLE_GOVERNANCE: true
           NEXT_PUBLIC_ENABLE_STAKING: true
 
@@ -161,18 +161,18 @@ jobs:
         uses: crustio/ipfs-crust-action@18f5ab4e8496351cfaca10a55ced7119cb0fe677
         if: |
           github.event_name == 'push' &&
-          github.ref == 'refs/heads/master'
+          github.ref == 'refs/heads/main'
         continue-on-error: true
         timeout-minutes: 2
         with:
           cid: ${{ steps.pinata.outputs.hash }}
           seeds: ${{ secrets.CRUST_SEEDS }}
 
-      - name: Deploy master
+      - name: Deploy staging
         id: deploy
         if: |
           github.event_name == 'push' &&
-          github.ref == 'refs/heads/master'
+          github.ref == 'refs/heads/main'
         env:
           CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
           CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
