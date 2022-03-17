@@ -181,7 +181,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         }
       });
     }
-    setTriedSafe(true);
   }, [connectWallet, setTriedSafe, triedSafe]);
 
   // handle logic to eagerly connect to the injected ethereum provider,
