@@ -230,6 +230,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
 
 export const useAppDataContext = () => useContext(AppDataContext);
 
+// tokens flagged stable will be sorted on top when no other sorting is selected
 const stable = [
   'DAI',
   'TUSD',
@@ -243,11 +244,15 @@ const stable = [
   'PAX',
   'USDP',
   'SUSD',
+  'UST',
+  'EURS',
+  'JEUR',
+  'AGEUR',
 ];
 
 const reserveSortFn = (a: { iconSymbol: string }, b: { iconSymbol: string }) => {
-  const aIsStable = stable.includes(a.iconSymbol);
-  const bIsStable = stable.includes(b.iconSymbol);
+  const aIsStable = stable.includes(a.iconSymbol.toUpperCase());
+  const bIsStable = stable.includes(b.iconSymbol.toUpperCase());
   if (aIsStable && !bIsStable) return -1;
   if (!aIsStable && bIsStable) return 1;
   return a.iconSymbol > b.iconSymbol ? 1 : -1;
