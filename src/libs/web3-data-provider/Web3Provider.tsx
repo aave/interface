@@ -186,7 +186,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   // handle logic to eagerly connect to the injected ethereum provider,
   // if it exists and has granted access already
   useEffect(() => {
-    console.log('tired safe: ', triedSafe);
     const lastWalletProvider = localStorage.getItem('walletProvider');
     if (!active && !deactivated && triedSafe) {
       if (!!lastWalletProvider) {
