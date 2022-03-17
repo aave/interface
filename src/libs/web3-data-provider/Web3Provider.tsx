@@ -221,13 +221,11 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   }, [tried, active]);
 
   useEffect(() => {
-    const address = localStorage.getItem('mockWalletAddress');
-    if (address) {
+    const address = localStorage.getItem('mockWalletAddress')?.toLocaleLowerCase();
+    if (address && (currentAccount !== address || currentAccount === '')) {
       setCurrentAccount(address);
-    } else {
-      setCurrentAccount(account?.toLowerCase() || '');
     }
-  }, [account]);
+  }, [currentAccount]);
 
   useEffect(() => {
     if (provider) {
