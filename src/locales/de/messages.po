@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-16 19:17\n"
+"PO-Revision-Date: 2022-03-17 11:17\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -17,12 +17,6 @@ msgstr ""
 "X-Crowdin-Language: de\n"
 "X-Crowdin-File: /src/locales/en/messages.po\n"
 "X-Crowdin-File-ID: 46\n"
-
-#: src/modules/governance/VotingPowerInfoPanel.tsx
-#: src/modules/governance/VotingPowerInfoPanel.tsx
-#: src/modules/governance/proposal/VoteInfo.tsx
-msgid "(AAVE + stkAAVE)"
-msgstr ""
 
 #: src/components/infoTooltips/AMPLWarning.tsx
 msgid "<0>Ampleforth</0> is an asset affected by rebasing. Visit the <1>documentation</1> or <2>Ampleforth's FAQ</2> to learn more."
@@ -562,10 +556,6 @@ msgstr ""
 #: src/components/transactions/Emode/EmodeActions.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Enable E-Mode"
-msgstr ""
-
-#: src/layouts/components/TestNetModeSwitcher.tsx
-msgid "Enable Testnet mode"
 msgstr ""
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
@@ -1281,6 +1271,10 @@ msgstr ""
 
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switching rate"
+msgstr ""
+
+#: src/layouts/components/TestNetModeSwitcher.tsx
+msgid "Testnet mode"
 msgstr ""
 
 #: src/components/infoTooltips/BorrowPowerTooltip.tsx
