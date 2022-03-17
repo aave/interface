@@ -32,7 +32,7 @@ export const TestNetModeSwitcher = ({ component = ListItem }: TestNetModeSwitche
       }}
     >
       <ListItemText>
-        <Trans>Enable Testnet mode</Trans>
+        <Trans>Testnet mode</Trans>
       </ListItemText>
       <FormControlLabel
         sx={{ mr: 0 }}
