@@ -58275,7 +58275,7 @@ var networkConfigs = {
 
 // src/utils/marketsAndNetworksConfig.ts
 var _a, _b;
-var ENABLE_TESTNET = !((_a = global == null ? void 0 : global.window) == null ? void 0 : _a.localStorage.getItem("testnetsEnabled")) && process.env.ENABLE_TESTNET === "true" || ((_b = global == null ? void 0 : global.window) == null ? void 0 : _b.localStorage.getItem("testnetsEnabled")) === "true";
+var NEXT_PUBLIC_ENABLE_TESTNET = !((_a = global == null ? void 0 : global.window) == null ? void 0 : _a.localStorage.getItem("testnetsEnabled")) && process.env.NEXT_PUBLIC_ENABLE_TESTNET === "true" || ((_b = global == null ? void 0 : global.window) == null ? void 0 : _b.localStorage.getItem("testnetsEnabled")) === "true";
 var _a2;
 var FORK_ENABLED = ((_a2 = global == null ? void 0 : global.window) == null ? void 0 : _a2.localStorage.getItem("forkEnabled")) === "true";
 var _a3;
@@ -58310,7 +58310,7 @@ var marketsData2 = Object.keys(marketsData).reduce((acc, value) => {
 }, {});
 function getSupportedChainIds() {
   return Array.from(Object.keys(marketsData2).reduce((acc, value) => {
-    if (ENABLE_TESTNET || !networkConfigs2[marketsData2[value].chainId].isTestnet)
+    if (NEXT_PUBLIC_ENABLE_TESTNET || !networkConfigs2[marketsData2[value].chainId].isTestnet)
       acc.add(marketsData2[value].chainId);
     return acc;
   }, /* @__PURE__ */ new Set()));
