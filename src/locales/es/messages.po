@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-17 11:02\n"
+"PO-Revision-Date: 2022-03-17 11:17\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -17,12 +17,6 @@ msgstr ""
 "X-Crowdin-Language: es-ES\n"
 "X-Crowdin-File: /src/locales/en/messages.po\n"
 "X-Crowdin-File-ID: 46\n"
-
-#: src/modules/governance/VotingPowerInfoPanel.tsx
-#: src/modules/governance/VotingPowerInfoPanel.tsx
-#: src/modules/governance/proposal/VoteInfo.tsx
-msgid "(AAVE + stkAAVE)"
-msgstr "(AAVE + stkAAVE)"
 
 #: src/components/infoTooltips/AMPLWarning.tsx
 msgid "<0>Ampleforth</0> is an asset affected by rebasing. Visit the <1>documentation</1> or <2>Ampleforth's FAQ</2> to learn more."
@@ -81,7 +75,7 @@ msgstr "Gobierno de Aave"
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance documentation"
-msgstr "Aave es un protocolo completamente descentralizado y gobernado por la comunidad de los dueños de AAVE token. Los dueños de AAVE token pueden votarse a sí mismo en/sobre nuevas propuestas o delegar los votos a una dirección de elección. Para aprender más revisa la documentación de Gobierno"
+msgstr "Aave es un protocolo completamente descentralizado y gobernado por la comunidad de los dueños de AAVE token. Los dueños de token AAVE pueden votar por nuevas propuestas o delegar los votos a una dirección de su elección. Para aprender más revisa la documentación de Gobierno"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Aave per month"
@@ -93,11 +87,11 @@ msgstr "Cuenta"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Action cannot be performed because the reserve is frozen"
-msgstr "No se puede realizar la acción porque la reserva está bloqueada"
+msgstr "No se puede realizar la acción porque la reserva está congelada"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Action cannot be performed because the reserve is paused"
-msgstr "No se puede realizar la acción porque la reserva está parada/detenida"
+msgstr "No se puede realizar la acción porque la reserva está pausada"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Action requires an active reserve"
@@ -125,15 +119,15 @@ msgstr "Todas las propuestas"
 
 #: src/components/infoTooltips/CollateralSwitchTooltip.tsx
 msgid "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
-msgstr "Le permite decidir si utilizar un activo suministrado como garantía. Un activo utilizado como garantía afectará a su poder de préstamo y factor de salud."
+msgstr "Te permite decidir si utilizar un activo suministrado como garantía. Un activo utilizado como garantía afectará a tu poder de préstamo y factor de salud."
 
 #: src/components/infoTooltips/APYTypeTooltip.tsx
 msgid "Allows you to switch between <0>variable</0> and <1>stable</1> interest rates, where variable rate can increase and decrease depending on the amount of liquidity in the reserve, and stable rate will stay the same for the duration of your loan."
-msgstr "Te permite cambiar entre tasas de interés <0>variables</0> y <1>estables</1>, donde la tasa variable puede aumentar o disminuir según la cantidad de liquidez en la reserva, y la tasa estable permanecerá igual durante la duración de su prestamo."
+msgstr "Te permite cambiar entre tasas de interés <0>variables</0> y <1>estables</1>, donde la tasa variable puede aumentar o disminuir según la cantidad de liquidez en la reserva, y la tasa estable permanecerá igual durante la duración de tu préstamo."
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Already on cooldown"
-msgstr "Ya está tiempo de espera"
+msgstr "Ya en cooldown"
 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
@@ -260,7 +254,7 @@ msgstr "Antes de suministrar"
 
 #: src/components/infoModalContents/ApprovalInfoContent.tsx
 msgid "Before supplying, you need to approve its usage by the Aave protocol. You can learn more in our<0>FAQ</0>"
-msgstr "Antes de suministrar, necesita aprobar su uso por el protocolo Aave. Puede obtener más información en nuestras<0>Preguntas frecuentes</0>"
+msgstr "Antes de suministrar, necesitas aprobar tu uso por el protocolo Aave. Puedes obtener más información en nuestras<0>Preguntas frecuentes</0>"
 
 #: pages/index.page.tsx
 #: src/components/transactions/Borrow/BorrowModal.tsx
@@ -316,7 +310,7 @@ msgstr "Tomar prestado no está habilitado"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Borrowing power and assets are limited due to Isolation mode."
-msgstr "La capacidad de pretamo y los activos están limitados debido al modo de aislamiento."
+msgstr "La capacidad de préstamo y los activos están limitados debido al Isolation mode."
 
 #: src/components/transactions/Borrow/BorrowActions.tsx
 msgid "Borrowing {symbol}"
@@ -473,7 +467,7 @@ msgstr "Techo de deuda"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Debt ceiling is exceeded"
-msgstr "El límite de la deuda está sobrepasado/excedido"
+msgstr "El límite de la deuda está sobrepasado"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Debt ceiling is not zero"
@@ -525,15 +519,15 @@ msgstr "Deshabilitado"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Disabling E-Mode"
-msgstr "Desactivando el modo E"
+msgstr "Desactivando el E-Mode"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "Disabling this asset as collateral affects your borrowing power and Health Factor."
-msgstr "Deshabilitar este activo como garantía afecta su poder de préstamo y Factor de Salud."
+msgstr "Deshabilitar este activo como garantía afecta tu poder de préstamo y Factor de Salud."
 
 #: src/layouts/WalletWidget.tsx
 msgid "Disconnect Wallet"
-msgstr "Desconectar billetera"
+msgstr "Desconectar cartera"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Discord"
@@ -545,11 +539,11 @@ msgstr "Debate"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode"
-msgstr "Modo E"
+msgstr "E-Mode"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "E-Mode category"
-msgstr "Categoría del modo E"
+msgstr "Categoría del E-Mode"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode increases your LTV for a selected category of assets up to 97%. <0>Learn more</0>"
@@ -563,10 +557,6 @@ msgstr "Modo de eficiencia (Modo-E)"
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Enable E-Mode"
 msgstr "Habilitar Modo-E"
-
-#: src/layouts/components/TestNetModeSwitcher.tsx
-msgid "Enable Testnet mode"
-msgstr "Habilitar/activar el modo Testnet"
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 msgid "Enable {symbol} as collateral"
@@ -1282,6 +1272,10 @@ msgstr ""
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switching rate"
 msgstr "Tasa de cambio"
+
+#: src/layouts/components/TestNetModeSwitcher.tsx
+msgid "Testnet mode"
+msgstr ""
 
 #: src/components/infoTooltips/BorrowPowerTooltip.tsx
 msgid "The % of your total bowering power used. This is based on the amount of your collateral supplied and the total amount that you can borrow."
