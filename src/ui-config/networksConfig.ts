@@ -204,7 +204,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
-    explorerLink: 'https://testnet.arbiscan.io',
+    explorerLink: 'https://arbiscan.io',
     // rpcOnly: true,
     // usdMarket: true,
     networkLogoPath: '/icons/networks/arbitrum.svg',
