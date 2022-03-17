@@ -50,7 +50,6 @@ export type Web3Data = {
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
   const {
     library: provider,
-    account,
     activate,
     active,
     error,
@@ -221,13 +220,11 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   }, [tried, active]);
 
   useEffect(() => {
-    const address = localStorage.getItem('mockWalletAddress');
-    if (address) {
+    const address = localStorage.getItem('mockWalletAddress')?.toLowerCase();
+    if (address && (currentAccount !== address || currentAccount === '')) {
       setCurrentAccount(address);
-    } else {
-      setCurrentAccount(account?.toLowerCase() || '');
     }
-  }, [account]);
+  }, [currentAccount]);
 
   useEffect(() => {
     if (provider) {
