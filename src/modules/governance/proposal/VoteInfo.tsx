@@ -87,7 +87,7 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
                 <Trans>Voting power</Trans>
               </Typography>
               <Typography variant="caption" color="text.secondary">
-                <Trans>(AAVE + stkAAVE)</Trans>
+                (AAVE + stkAAVE)
               </Typography>
             </>
           }
