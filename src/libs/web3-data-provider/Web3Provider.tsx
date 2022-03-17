@@ -50,7 +50,6 @@ export type Web3Data = {
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
   const {
     library: provider,
-    account,
     activate,
     active,
     error,
