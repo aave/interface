@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-16 19:17\n"
+"PO-Revision-Date: 2022-03-17 11:02\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -30,17 +30,17 @@ msgstr "<0>Ampleforth</0> es un activo afectado por el rebase. Visita la <1>docu
 
 #: src/modules/staking/StakingHeader.tsx
 msgid "AAVE holders can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
-msgstr "Los poseedores de AAVE pueden apostar su AAVE en el Módulo de Seguridad para añadir más seguridad al protocolo y ganar Incentivos de Seguridad. En el caso de un evento de déficit, hasta un 30% de tu apuesta puede ser cortada para cubrir el déficit, proporcionando una capa adicional de protección para el protocolo."
+msgstr "Los poseedores de AAVE pueden stakear su AAVE en el Módulo de Seguridad para añadir más seguridad al protocolo y ganar Incentivos de Seguridad. En el caso de un evento de déficit, hasta un 30% de tu apuesta puede ser slasheada para cubrir el déficit, proporcionando una capa adicional de protección para el protocolo."
 
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
 msgid "ACTIVATE COOLDOWN"
-msgstr "ACTIVAR ENFRIARSE"
+msgstr "ACTIVAR COOLDOWN"
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "APR"
-msgstr "TAE"
+msgstr "APR"
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
