@@ -23,7 +23,7 @@ export const permitByChainAndToken: {
     '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1': true,
     '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9': true,
     '0xba5DdD1f9d7F570dc94a51479a000E3BCE967196': true,
-    '0xD22a58f79e9481D1a88e00c343885A588b34b68B': true,
+    '0xD22a58f79e9481D1a88e00c343885A588b34b68B': false, // eurs
   },
   [ChainId.arbitrum_rinkeby]: {
     '0x5eb35Fe1f1074Ae8d6D23Bf771705846Cc812c09': true,
@@ -43,7 +43,7 @@ export const permitByChainAndToken: {
     '0x74b23882a30290451A17c44f4F05243b6b58C76d': true,
     '0x049d68029688eAbF473097a2fC38ef61633A3C7A': true,
     '0x6a07A792ab2965C72a5B8088d3a069A7aC3a993B': true,
-    '0xae75A438b2E0cB8Bb01Ec1E1e376De11D44477CC': true,
+    '0xae75A438b2E0cB8Bb01Ec1E1e376De11D44477CC': false, // sushi
     '0x1E4F97b9f9F913c46F1632781732927B9019C68b': true,
   },
   [ChainId.fantom_testnet]: {
@@ -95,7 +95,7 @@ export const permitByChainAndToken: {
     '0xCcbBaf8D40a5C34bf1c836e8dD33c7B7646706C5': true,
   },
   [ChainId.optimism]: {
-    '0x76FB31fb4af56892A25e32cFC43De717950c9278': true,
+    '0x76FB31fb4af56892A25e32cFC43De717950c9278': false, // AAVE
   },
   [ChainId.optimism_kovan]: {
     '0xb532118d86765Eb544958e47df77bb8bDDe2F096': true,
