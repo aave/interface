@@ -126,7 +126,6 @@ export const MarketSwitcher = () => {
         ),
         renderValue: (marketId) => {
           const { market, network } = getMarketInfoById(marketId as CustomMarket);
-
           return (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <MarketLogo
