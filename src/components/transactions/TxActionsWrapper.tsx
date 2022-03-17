@@ -40,7 +40,7 @@ export const TxActionsWrapper = ({
   blocked,
   ...rest
 }: TxActionsWrapperProps) => {
-  const { txError } = useModalContext();
+  const { txError, retryWithApproval } = useModalContext();
 
   const hasApprovalError =
     requiresApproval && txError && txError.txAction === TxAction.APPROVAL && txError.actionBlocked;
@@ -76,6 +76,8 @@ export const TxActionsWrapper = ({
     if (approvalTxState?.loading)
       return { loading: true, disabled: true, content: <Trans>Approving {symbol}...</Trans> };
     if (approvalTxState?.success) return { disabled: true, content: <Trans>Approved</Trans> };
+    if (retryWithApproval)
+      return { content: <Trans>Retry with approval</Trans>, handleClick: handleApproval };
     return { content: <Trans>Approve to continue</Trans>, handleClick: handleApproval };
   }
 
