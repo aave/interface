@@ -85,10 +85,7 @@ export function ProtocolDataProvider({ children }: PropsWithChildren<{}>) {
   const { query, pathname, push } = useRouter();
   // const [markets, setMarkets] = useState(marketsData);
   // const [networkConfigs, setNetworkConfigs] = useState(_networkConfigs);
-  const [currentMarket, setCurrentMarket] = useState<CustomMarket>(
-    (typeof window !== 'undefined' && returnValidMarket(localStorage.getItem(LS_KEY))) ||
-      availableMarkets[0]
-  );
+  const [currentMarket, setCurrentMarket] = useState<CustomMarket>(availableMarkets[0]);
   const currentMarketData = marketsData[currentMarket];
 
   const handleSetMarket = (market: CustomMarket) => {
