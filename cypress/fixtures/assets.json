@@ -786,15 +786,33 @@
       "collateral": true,
       "wrapped": false
     },
+    "aDAI": {
+      "fullName": "aDAI (DAI.e)",
+      "shortName": "aDAI.e",
+      "collateral": true,
+      "wrapped": false
+    },
     "USDC": {
       "fullName": "USD Coin (USDC.e)",
-      "shortName": "USDC.e",
+      "shortName": "USDC",
+      "collateral": true,
+      "wrapped": false
+    },
+    "aUSDC": {
+      "fullName": "USD Coin (USDC.e)",
+      "shortName": "aUSDC",
       "collateral": true,
       "wrapped": false
     },
     "USDT": {
       "fullName": "USDT Coin (USDT.e)",
-      "shortName": "USDT.e",
+      "shortName": "USDt",
+      "collateral": false,
+      "wrapped": false
+    },
+    "aUSDT": {
+      "fullName": "USDT Coin (USDT.e)",
+      "shortName": "aUSDt",
       "collateral": false,
       "wrapped": false
     },
@@ -804,9 +822,21 @@
       "collateral": true,
       "wrapped": false
     },
+    "aWBTC": {
+      "fullName": "WBTC Coin (WBTC.e)",
+      "shortName": "aWBTC.e",
+      "collateral": true,
+      "wrapped": false
+    },
     "WETH": {
       "fullName": "Wrapped ETH (WETH.e)",
       "shortName": "WETH.e",
+      "collateral": true,
+      "wrapped": false
+    },
+    "aWETH": {
+      "fullName": "Wrapped ETH (WETH.e)",
+      "shortName": "axWETH.e",
       "collateral": true,
       "wrapped": false
     }

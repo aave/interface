@@ -146,6 +146,18 @@ export const configEnvWithTenderlyOptimismKovanFork = ({
   configEnvWithTenderly({ chainId: ChainId.optimism_kovan, market, tokens, unpause: v3 });
 };
 
+export const configEnvWithTenderlyOptimismFork = ({
+  market = `fork_proto_optimism_v3`,
+  tokens,
+  v3,
+}: {
+  market?: string;
+  tokens?: { address: string }[];
+  v3?: boolean;
+}) => {
+  configEnvWithTenderly({ chainId: ChainId.optimism, market, tokens, unpause: v3 });
+};
+
 export const configEnvWithTenderlyFantomTestnetFork = ({
   market = `fork_proto_fantom_testnet_v3`,
   tokens,

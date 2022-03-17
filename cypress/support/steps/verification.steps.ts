@@ -25,7 +25,6 @@ export const dashboardAssetValuesVerification = (
   estimatedCases: {
     apyType?: string;
     assetName: string;
-    wrapped: boolean;
     isCollateral?: boolean;
     type: string;
     amount?: number;
@@ -38,11 +37,6 @@ export const dashboardAssetValuesVerification = (
     estimatedCases.forEach((estimatedCase) => {
       describe(`Verification ${estimatedCase.assetName} ${estimatedCase.type}, have right values`, () => {
         const _assetName: string = estimatedCase.assetName;
-        // if (estimatedCase.wrapped) {
-        //   _assetName = 'W' + estimatedCase.assetName.toUpperCase();
-        // } else {
-        //   _assetName = estimatedCase.assetName;
-        // }
         switch (estimatedCase.type) {
           case constants.dashboardTypes.deposit:
             it(`Check that asset name is ${estimatedCase.assetName},
@@ -127,6 +121,7 @@ export const switchCollateralBlocked = (
   return describe('Check that collateral switcher disabled', () => {
     skipSetup(skip);
     it(`Check that collateral switcher for ${_shortName} disabled`, () => {
+      doSwitchToDashboardBorrowView();
       getDashBoardDepositRow({
         assetName: _shortName,
       })

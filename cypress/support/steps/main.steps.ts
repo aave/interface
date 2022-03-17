@@ -189,7 +189,7 @@ export const repay = (
         cy.get('[data-cy=Modal] ').as('Modal');
         cy.get('@Modal').get('[data-cy=assetSelect]').click();
         cy.get('@Modal')
-          .get(`[data-cy=assetsSelectOption_${repayableAsset.shortName.toUpperCase()}]`)
+          .get(`[data-cy='assetsSelectOption_${repayableAsset.shortName.toUpperCase()}']`)
           .click();
         cy.get('@Modal').get('[data-cy=assetSelect]').contains(repayableAsset.shortName);
       });
@@ -366,11 +366,9 @@ export const changeCollateral = (
   {
     asset,
     isCollateralType,
-    hasApproval = true,
   }: {
     asset: { shortName: string; fullName: string; wrapped: boolean };
     isCollateralType: boolean;
-    hasApproval?: boolean;
   },
   skip: SkipType,
   updateSkipStatus = false
@@ -386,15 +384,7 @@ export const changeCollateral = (
         .find('.MuiSwitch-input ')
         .click();
       cy.get('[data-cy=Modal]').should('be.visible');
-      if (isCollateralType) {
-        // cy.get(`[data-cy=Modal] h2:contains('Disable ${_shortName} as collateral')`).should(
-        //   'be.visible'
-        // );
-      } else {
-        // cy.get(`[data-cy=Modal] h2:contains('Enable ${_shortName} as collateral')`).should(
-        //   'be.visible'
-        // );
-      }
+      cy.get(`[data-cy=Modal] h2:contains('Review tx ${_shortName}')`).should('be.visible');
     });
     it('Confirm switching', () => {
       if (isCollateralType) {

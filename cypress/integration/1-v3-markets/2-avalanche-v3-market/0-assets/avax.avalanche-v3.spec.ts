@@ -1,8 +1,4 @@
-import {
-  configEnvWithTenderlyAvalancheFork,
-  configEnvWithTenderlyMumbaiFork,
-  configEnvWithTenderlyPolygonFork,
-} from '../../../../support/steps/configuration.steps';
+import { configEnvWithTenderlyAvalancheFork } from '../../../../support/steps/configuration.steps';
 import {
   supply,
   borrow,
@@ -96,7 +92,6 @@ const testData = {
       {
         type: constants.dashboardTypes.deposit,
         assetName: assets.avalancheV3Market.AVAX.shortName,
-        wrapped: assets.avalancheV3Market.AVAX.wrapped,
         amount: 1.07,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
@@ -104,7 +99,6 @@ const testData = {
       {
         type: constants.dashboardTypes.borrow,
         assetName: assets.avalancheV3Market.AVAX.shortName,
-        wrapped: assets.avalancheV3Market.AVAX.wrapped,
         amount: 0.03,
         apyType: constants.borrowAPYType.variable,
       },

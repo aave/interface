@@ -41,10 +41,10 @@ export const doConfirm = ({
     .should('not.be.disabled')
     .then(($btn) => {
       if (assetName && actionName) {
-        // expect($btn.first()).to.contain(`${actionName} ${assetName}`);
+        expect($btn.first()).to.contain(`${actionName} ${assetName}`);
       }
       if (assetName && !actionName) {
-        // expect($btn.first()).to.contain(`${actionName}`);
+        expect($btn.first()).to.contain(`${actionName}`);
       }
     })
     .wait(1000)
