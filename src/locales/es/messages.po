@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-18 10:39\n"
+"PO-Revision-Date: 2022-03-18 10:50\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -694,11 +694,11 @@ msgstr "En E-Mode algunos activos no se pueden pedir prestados. Sal del E-Mode p
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "In Isolation mode you cannot supply other assets as collateral for borrowing. Assets used as collateral in Isolation mode can only be borrowed to a specific debt ceiling."
-msgstr "En el modo de aislamiento no se pueden proporcionar otros activos como garantía para el préstamos. Los activos utilizados como garantía en el modo de aislamiento sólo se pueden tomar prestados a un bloqueo de deuda específico."
+msgstr "En el Isolation mode no se pueden proporcionar otros activos como garantía para el préstamo. Los activos utilizados como garantía en el Isolation mode sólo se pueden tomar prestados hasta un techo de deuda específico."
 
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "In Isolation mode, you cannot supply other assets as collateral. A global debt ceiling limits the borrowing power of the isolated asset. Read more in our <0>FAQ</0>"
-msgstr "En el modo aislamiento, no puedes suministrar otros activos como garantía. Un techo de deuda global limita la capacidad de préstamo del activo aislado. Lee más en nuestras <0>Preguntas Frecuentes</0>"
+msgstr "En el Isolation mode, no puedes suministrar otros activos como garantía. Un techo de deuda global limita la capacidad de préstamo del activo aislado. Lee más en nuestras <0>Preguntas Frecuentes</0>"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "In order to change E-Mode from asset category{0}you will need to close your position in your current category. See our <0>FAQ</0> to learn more."
@@ -706,7 +706,7 @@ msgstr "Para cambiar el E-Mode de la categoría de activos{0}, necesitarás cerr
 
 #: src/ui-config/errorMapping.tsx
 msgid "Inconsistent flashloan parameters"
-msgstr "Parámetros inconsistentes de préstemo flash"
+msgstr "Parámetros inconsistentes de préstamo flash"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Interest rate rebalance conditions were not met"
@@ -714,7 +714,7 @@ msgstr "No se cumplieron las condiciones de ajuste de tasas de interés"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid amount to burn"
-msgstr "Cantidad invalidad para quemar"
+msgstr "Cantidad inválida para quemar"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid amount to mint"
@@ -738,7 +738,7 @@ msgstr "Valor de retorno no válido en la función executor de préstamo flash"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid signature"
-msgstr "Firma incorrecta/inválida"
+msgstr "Firma inválida"
 
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Isolated"
@@ -856,7 +856,7 @@ msgstr "NO"
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Need help connecting a wallet? <0>Read our FAQ</0>"
-msgstr "¿Necesitas ayuda para conectar una billetera? <0>Lee nuestras preguntas frecuentes</0>"
+msgstr "¿Necesitas ayuda para conectar una cartera? <0>Lee nuestras preguntas frecuentes</0>"
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Net APR"
@@ -876,7 +876,7 @@ msgstr "Red"
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Network not supported for this wallet"
-msgstr "Red no soportada para esta billetera"
+msgstr "Red no soportada para esta cartera"
 
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "New APY"
@@ -904,7 +904,7 @@ msgstr "Dirección no válida"
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
 msgid "Not enough balance on your wallet"
-msgstr "No hay suficiente saldo en su billetera"
+msgstr "No hay suficiente saldo en tu cartera"
 
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Not enough staked balance"
@@ -1118,7 +1118,7 @@ msgstr "Mostrar activos con 0 saldo"
 
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
-msgstr "Puesto que esta es una red de pruebas, puede obtener cualquiera de los activos si tiene ETH en su billetera"
+msgstr "Puesto que esta es una red de pruebas, puedes obtener cualquiera de los activos si tienes ETH en tu cartera"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Spanish"
@@ -1147,7 +1147,7 @@ msgstr "El balance de deuda estable no es cero"
 
 #: src/components/infoTooltips/StableAPYTooltip.tsx
 msgid "Stable interest rate will <0>stay the same</0> for the duration of your loan. Recommended for long-term loan periods and for users who prefer predictability."
-msgstr "La tasa de interés estable <0>permanecerá igual</0> durante la duración de su préstamo. Recomendado para los períodos de préstamo a largo plazo y para los usuarios que prefieren la previsibilidad."
+msgstr "La tasa de interés estable <0>permanecerá igual</0> durante la duración de su préstamo. Está recomendado para los períodos de préstamo a largo plazo y para los usuarios que prefieren la previsibilidad."
 
 #: src/utils/eMode.ts
 msgid "Stablecoin"
@@ -1206,11 +1206,11 @@ msgstr "Suministro"
 #: src/modules/markets/AssetsList.tsx
 #: src/modules/markets/AssetsListMobileItem.tsx
 msgid "Supply APY"
-msgstr "Depositar APY"
+msgstr "Suministrar APY"
 
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 msgid "Supply amount is limited due to Supply Cap"
-msgstr "La cantidad depositada está limitada debido al límite del depósito"
+msgstr "La cantidad suministrada está limitada debido al límite del depósito"
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Supply apy"
