@@ -47,6 +47,7 @@
     "@mui/icons-material": "^5.5.1",
     "@mui/material": "^5.5.1",
     "@paraswap/sdk": "5.6.0-alpha.3",
+    "@reputation.link/vyps-kit": "^0.5.7",
     "@visx/axis": "^2.6.0",
     "@visx/curve": "^2.1.0",
     "@visx/event": "^2.6.0",

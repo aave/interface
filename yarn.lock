@@ -2441,6 +2441,11 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.4.tgz#d8c7b8db9226d2d7664553a0741ad7d0397ee503"
   integrity sha512-q/ytXxO5NKvyT37pmisQAItCFqA7FD/vNb8dgaJy3/630Fsc+Mz9/9f2SziBoIZ30TJooXyTwZmhi1zjXmObYg==
 
+"@reputation.link/vyps-kit@^0.5.7":
+  version "0.5.8"
+  resolved "https://registry.yarnpkg.com/@reputation.link/vyps-kit/-/vyps-kit-0.5.8.tgz#9d2ff5cb37ee4f2eae2a4491e3c15aa49c7c862e"
+  integrity sha512-ckTaUPSZegsoPlz+eDak+1Etpg++/2D6rGWEPRi2etypTzoohs3rbT9lTTCd4K+i0tOUb4EAdiPpNwPtoQ+RQg==
+
 "@rushstack/eslint-patch@^1.0.8":
   version "1.1.0"
   resolved "https://registry.npmjs.org/@rushstack/eslint-patch/-/eslint-patch-1.1.0.tgz"
