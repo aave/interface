@@ -39,8 +39,8 @@ export const useTransactionHandler = ({
     setGasLimit,
     loadingTxns,
     setLoadingTxns,
-    forcedApproval,
     setTxError,
+    setRetryWithApproval,
   } = useModalContext();
   const { signTxData, sendTx, getTxError, currentAccount } = useWeb3Context();
   const { refetchWalletBalances, refetchPoolData, refechIncentiveData } =
@@ -56,7 +56,6 @@ export const useTransactionHandler = ({
 
   useEffect(() => {
     mounted.current = true; // Will set it to true on mount ...
-    if (forcedApproval) setUsePermit(false);
     return () => {
       mounted.current = false;
     }; // ... and to false on unmount
@@ -133,8 +132,6 @@ export const useTransactionHandler = ({
             setSignatureDeadline(deadline);
             setApprovalTxState({
               txHash: MOCK_SIGNED_HASH,
-              // txError: undefined,
-              // gasEstimationError: undefined,
               loading: false,
               success: true,
             });
@@ -146,19 +143,20 @@ export const useTransactionHandler = ({
 
             setApprovalTxState({
               txHash: undefined,
-              // txError: error.message.toString(),
-              // gasEstimationError: undefined,
               loading: false,
             });
           }
         } catch (error) {
           if (!mounted.current) return;
+
+          // set use permit to false to retry with normal approval
+          setUsePermit(false);
+          setRetryWithApproval(true);
+
           const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
           setTxError(parsedError);
           setApprovalTxState({
             txHash: undefined,
-            // txError: undefined,
-            // gasEstimationError: error.message.toString(),
             loading: false,
           });
         }
@@ -172,8 +170,6 @@ export const useTransactionHandler = ({
             successCallback: (txnResponse: TransactionResponse) => {
               setApprovalTxState({
                 txHash: txnResponse.hash,
-                // txError: undefined,
-                // gasEstimationError: undefined,
                 loading: false,
                 success: true,
               });
@@ -184,8 +180,6 @@ export const useTransactionHandler = ({
               setTxError(parsedError);
               setApprovalTxState({
                 txHash: hash,
-                // txError: error.message.toString(),
-                // gasEstimationError: undefined,
                 loading: false,
               });
             },
@@ -197,8 +191,6 @@ export const useTransactionHandler = ({
           setTxError(parsedError);
           setApprovalTxState({
             txHash: undefined,
-            // txError: undefined,
-            // gasEstimationError: error.message.toString(),
             loading: false,
           });
         }
@@ -219,8 +211,6 @@ export const useTransactionHandler = ({
           successCallback: (txnResponse: TransactionResponse) => {
             setMainTxState({
               txHash: txnResponse.hash,
-              // txError: undefined,
-              // gasEstimationError: undefined,
               loading: false,
               success: true,
             });
@@ -231,8 +221,6 @@ export const useTransactionHandler = ({
             setTxError(parsedError);
             setMainTxState({
               txHash: hash,
-              // txError: error.message.toString(),
-              // gasEstimationError: undefined,
               loading: false,
             });
           },
@@ -243,8 +231,6 @@ export const useTransactionHandler = ({
         setTxError(parsedError);
         setMainTxState({
           txHash: undefined,
-          // txError: undefined,
-          // gasEstimationError: error.message.toString(),
           loading: false,
         });
       }
@@ -259,8 +245,6 @@ export const useTransactionHandler = ({
           successCallback: (txnResponse: TransactionResponse) => {
             setMainTxState({
               txHash: txnResponse.hash,
-              // txError: undefined,
-              // gasEstimationError: undefined,
               loading: false,
               success: true,
             });
@@ -271,8 +255,6 @@ export const useTransactionHandler = ({
             setTxError(parsedError);
             setMainTxState({
               txHash: hash,
-              // txError: error.message.toString(),
-              // gasEstimationError: undefined,
               loading: false,
             });
           },
@@ -283,8 +265,6 @@ export const useTransactionHandler = ({
         setTxError(parsedError);
         setMainTxState({
           txHash: undefined,
-          // txError: undefined,
-          // gasEstimationError: error.message.toString(),
           loading: false,
         });
       }
@@ -315,8 +295,6 @@ export const useTransactionHandler = ({
             );
             setMainTxState({
               txHash: undefined,
-              // txError: undefined,
-              // gasEstimationError: undefined,
             });
             setTxError(undefined);
             let gas: GasType | null = null;
@@ -333,8 +311,6 @@ export const useTransactionHandler = ({
             if (!mounted.current) return;
             setMainTxState({
               txHash: undefined,
-              // txError: undefined,
-              // gasEstimationError: error.message.toString(),
             });
             const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
             setTxError(parsedError);

@@ -65,13 +65,12 @@ export interface ModalContextType<T extends ModalArgsType> {
   setMainTxState: (data: TxStateType) => void;
   gasLimit: string;
   setGasLimit: (limit: string) => void;
-  resetTx: () => void;
   loadingTxns: boolean;
   setLoadingTxns: (loading: boolean) => void;
-  forcedApproval: boolean;
-  setForcedApproval: (permit: boolean) => void;
   txError: TxErrorType | undefined;
   setTxError: (error: TxErrorType | undefined) => void;
+  retryWithApproval: boolean;
+  setRetryWithApproval: (permit: boolean) => void;
 }
 
 export const ModalContext = createContext<ModalContextType<ModalArgsType>>(
@@ -85,10 +84,10 @@ export const ModalContextProvider: React.FC = ({ children }) => {
   // contains arbitrary key-value pairs as a modal context
   const [args, setArgs] = useState<ModalArgsType>({});
   const [approvalTxState, setApprovalTxState] = useState<TxStateType>({});
+  const [retryWithApproval, setRetryWithApproval] = useState<boolean>(false);
   const [mainTxState, setMainTxState] = useState<TxStateType>({});
   const [gasLimit, setGasLimit] = useState<string>('');
   const [loadingTxns, setLoadingTxns] = useState(false);
-  const [forcedApproval, setForcedApproval] = useState(false);
   const [txError, setTxError] = useState<TxErrorType>();
 
   return (
@@ -161,15 +160,9 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setMainTxState({});
           setApprovalTxState({});
           setGasLimit('');
-          setForcedApproval(false);
           setTxError(undefined);
           setSwitchNetworkError(undefined);
-        },
-        resetTx: () => {
-          setMainTxState({});
-          setApprovalTxState({});
-          setGasLimit('');
-          setTxError(undefined);
+          setRetryWithApproval(false);
         },
         type,
         args,
@@ -181,10 +174,10 @@ export const ModalContextProvider: React.FC = ({ children }) => {
         setGasLimit,
         loadingTxns,
         setLoadingTxns,
-        forcedApproval,
-        setForcedApproval,
         txError,
         setTxError,
+        retryWithApproval,
+        setRetryWithApproval,
       }}
     >
       {children}
