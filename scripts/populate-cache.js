@@ -58164,7 +58164,7 @@ var networkConfigs = {
     baseAssetSymbol: "ETH",
     wrappedBaseAssetSymbol: "WETH",
     baseAssetDecimals: 18,
-    explorerLink: "https://testnet.arbiscan.io",
+    explorerLink: "https://arbiscan.io",
     networkLogoPath: "/icons/networks/arbitrum.svg",
     bridge: {
       icon: "/icons/bridge/arbitrum.svg",
