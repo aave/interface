@@ -114,7 +114,6 @@ export function getNetworkConfig(chainId: ChainId): NetworkConfig {
     const name = ChainIdToNetwork[chainId];
     return {
       name: name || `unknown chainId: ${chainId}`,
-      explorerLinkBuilder: () => console.log('exploreLinkBuilder'), // TODO
     } as unknown as NetworkConfig;
   }
   return {

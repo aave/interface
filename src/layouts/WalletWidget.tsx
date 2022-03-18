@@ -219,31 +219,33 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
         </ListItemText>
       </Box>
 
-      <Link href={networkConfig.explorerLinkBuilder({ address: currentAccount })}>
-        <Box
-          component={component}
-          sx={{ color: { xs: '#F1F1F3', md: 'text.primary' } }}
-          onClick={handleClose}
-        >
-          <ListItemIcon
-            sx={{
-              color: {
-                xs: '#F1F1F3',
-                md: 'primary.light',
-                minWidth: 'unset',
-                marginRight: 12,
-              },
-            }}
+      {networkConfig?.explorerLinkBuilder && (
+        <Link href={networkConfig.explorerLinkBuilder({ address: currentAccount })}>
+          <Box
+            component={component}
+            sx={{ color: { xs: '#F1F1F3', md: 'text.primary' } }}
+            onClick={handleClose}
           >
-            <SvgIcon fontSize="small">
-              <ExternalLinkIcon />
-            </SvgIcon>
-          </ListItemIcon>
-          <ListItemText>
-            <Trans>View on Explorer</Trans>
-          </ListItemText>
-        </Box>
-      </Link>
+            <ListItemIcon
+              sx={{
+                color: {
+                  xs: '#F1F1F3',
+                  md: 'primary.light',
+                  minWidth: 'unset',
+                  marginRight: 12,
+                },
+              }}
+            >
+              <SvgIcon fontSize="small">
+                <ExternalLinkIcon />
+              </SvgIcon>
+            </ListItemIcon>
+            <ListItemText>
+              <Trans>View on Explorer</Trans>
+            </ListItemText>
+          </Box>
+        </Link>
+      )}
 
       <Box
         component={component}
