@@ -1043,7 +1043,7 @@ msgstr "Retry What?"
 msgid "Retry with Approval"
 msgstr "Retry with Approval"
 
-#: src/components/transactions/FlowCommons/Error.tsx
+#: src/components/transactions/TxActionsWrapper.tsx
 msgid "Retry with approval"
 msgstr "Retry with approval"
 
