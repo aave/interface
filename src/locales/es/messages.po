@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-18 10:30\n"
+"PO-Revision-Date: 2022-03-18 10:39\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -510,7 +510,7 @@ msgstr "Diferencial"
 #: src/components/transactions/Emode/EmodeActions.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Disable E-Mode"
-msgstr "Desactivar el modo E"
+msgstr "Desactivar el E-Mode"
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 msgid "Disable {symbol} as collateral"
@@ -551,16 +551,16 @@ msgstr "Categoría del E-Mode"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode increases your LTV for a selected category of assets up to 97%. <0>Learn more</0>"
-msgstr ""
+msgstr "El E-Mode incrementa tu LTV hasta el 97% para una categoría seleccionada de activos. <0>Aprende más</0>"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Efficiency mode (E-Mode)"
-msgstr "Modo de eficiencia (Modo-E)"
+msgstr "Modo de eficiencia (E-Mode)"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Enable E-Mode"
-msgstr "Habilitar Modo-E"
+msgstr "Habilitar E-Mode"
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 msgid "Enable {symbol} as collateral"
@@ -569,23 +569,23 @@ msgstr "Habilitar {symbol} como garantía"
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Enabled"
-msgstr "Activado"
+msgstr "Habilitado"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Enabled in isolation"
-msgstr "Habilitado en aislamiento"
+msgstr "Habilitado en isolation"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Enabling E-Mode"
-msgstr "Activar E-Mode"
+msgstr "Habilitar E-Mode"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Enabling E-Mode only allows you to borrow assets belonging to the selected category Stablecoins. Please visit our <0>FAQ guide</0> to learn more about how it works and the applied restrictions."
-msgstr "Activar el modo E-mode te permite solo pedir prestado activos que pertenezcan a la categoría seleccionada de Stablecoins. Por favor visita nuestra <0>guía de preguntas y respuestas</0> para aprender más sobre cómo funciona y las restricciones que se aplican."
+msgstr "Activar el modo E-mode te permite solo pedir prestado activos que pertenezcan a la categoría seleccionada de Stablecoins. Por favor visita nuestra <0>guía de Preguntas Frecuentes</0> para aprender más sobre cómo funciona y las restricciones que se aplican."
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "Enabling this asset as collateral increases your borrowing power and Health Factor. However, it can get liquidated if your health factor drops below 1."
-msgstr "Activar este activo como colateral aumenta tu poder préstamo y el factor de salud. Sin embargo, puede liquidarse si tu factor de salud cae por debajo de 1."
+msgstr "Habilitar este activo como colateral aumenta tu poder préstamo y el factor de salud. Sin embargo, puede liquidarse si tu factor de salud cae por debajo de 1."
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "English"
@@ -686,7 +686,7 @@ msgstr "Si NO unstakeas entre {0} de la ventana de unstakeo, necesitarás activa
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "If your loan to value goes above the liquidation threshold your collateral supplied may be liquidated."
-msgstr "Si su préstamo a valor supera el umbral de liquidación, su garantía puede ser liquidada."
+msgstr "Si tu préstamo a valor supera el umbral de liquidación, tu garantía puede ser liquidada."
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "In E-Mode some assets are not borrowable. Exit E-Mode to get access to all assets"
