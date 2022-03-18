@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-18 10:50\n"
+"PO-Revision-Date: 2022-03-18 11:02\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1214,7 +1214,7 @@ msgstr "La cantidad suministrada está limitada debido al límite del depósito"
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Supply apy"
-msgstr "APY de depósito"
+msgstr "Apy de suministro"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
@@ -1271,7 +1271,7 @@ msgstr "Tasa de cambio"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Switch to Aave Classic"
-msgstr ""
+msgstr "Cambiar a Aave Classic"
 
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switching rate"
@@ -1279,7 +1279,7 @@ msgstr "Tasa de cambio"
 
 #: src/layouts/components/TestNetModeSwitcher.tsx
 msgid "Testnet mode"
-msgstr ""
+msgstr "Testnet mode"
 
 #: src/components/infoTooltips/BorrowPowerTooltip.tsx
 msgid "The % of your total bowering power used. This is based on the amount of your collateral supplied and the total amount that you can borrow."
@@ -1291,7 +1291,7 @@ msgstr "Los tokens de pool de Balancer (BPT) son tokens de un pool de liquidez. 
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "The Stable Rate is not enabled for this currency"
-msgstr "La tasa estable no está habilitada para esta moneda"
+msgstr "La tasa estable no está habilitada para este activo"
 
 #: src/ui-config/errorMapping.tsx
 msgid "The address of the pool addresses provider is invalid"
@@ -1383,7 +1383,7 @@ msgstr "Esta es la cantidad total a la que puede suministrar en esta reserva. Pu
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Time left to be able to withdraw your staked asset."
-msgstr "Tiempo restante para poder retirar su activo apostado."
+msgstr "Tiempo restante para poder retirar tu activo stakeado."
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Time left to unstake"
@@ -1391,7 +1391,7 @@ msgstr "Tempo restante para unstakear"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "To borrow you need to supply any asset to be used as collateral."
-msgstr "Para tomar prestado, necesita proporcionar cualquier activo para ser utilizado como garantía."
+msgstr "Para tomar prestado, necesitas proporcionar cualquier activo para ser utilizado como garantía."
 
 #: src/ui-config/errorMapping.tsx
 msgid "To repay on behalf of a user an explicit amount to repay is needed"
@@ -1399,7 +1399,7 @@ msgstr "Para reembolsar en nombre de un usuario, se necesita una cantidad explic
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "To see your supplies and borrowings options, connect your wallet."
-msgstr "Para ver sus suministros y opciones de préstamo, conecte su billetera."
+msgstr "Para ver sus suministros y opciones de préstamo, conecta tu cartera."
 
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total available"
@@ -1495,7 +1495,7 @@ msgstr "El usuario no tiene deuda pendiente de tasa variable en esta reserva"
 
 #: src/ui-config/errorMapping.tsx
 msgid "User is in isolation mode"
-msgstr "El usuario está en modo aislamiento"
+msgstr "El usuario está en Isolation mode"
 
 #: src/ui-config/errorMapping.tsx
 msgid "User is trying to borrow multiple assets including a siloed one"
@@ -1522,7 +1522,7 @@ msgstr "Variable"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Variable debt supply is not zero"
-msgstr "La oferta/el deposito de deuda variable no es cero"
+msgstr "El suministro de deuda variable no es cero"
 
 #: src/components/infoTooltips/VariableAPYTooltip.tsx
 msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions. Recommended for short-term loans."
@@ -1564,15 +1564,15 @@ msgstr "Resultados de la votación"
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Wallet balance"
-msgstr "Saldo de la billetera"
+msgstr "Saldo de la cartera"
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Wallet not detected. Connect or install wallet and retry"
-msgstr "Billetera no detectada. Conecte o instale el monedero y vuelva a intentarlo"
+msgstr "Cartera no detectada. Conecta o instala el monedero y vuelve a intentarlo"
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
-msgstr "Las billeteras son proporcionadas por proveedores externos y al seleccionar usted acepta los términos de dichos proveedores. Su acceso a la billetera podría depender de que el proveedor externo esté operativo."
+msgstr "Las carteras son proporcionadas por proveedores externos y al seleccionarla, aceptas los términos de dichos proveedores. Tu acceso a la cartera podría depender de que el proveedor externo esté operativo."
 
 #: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake."
@@ -1610,7 +1610,7 @@ msgstr "YAE"
 
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "You are entering Isolation mode"
-msgstr "Estás entrando en el modo de aislamiento"
+msgstr "Estás entrando en el Isolation mode"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "You can borrow this asset with a stable rate only if you borrow more than the amount you are supplying as collateral."
@@ -1630,7 +1630,7 @@ msgstr "No puedes cambiar el uso como modo de garantía para este activo, porque
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You can not use this currency as collateral"
-msgstr "No puede usar esta moneda como garantía"
+msgstr "No puedes usar este activo como garantía"
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "You can not withdraw this amount because it will cause collateral call"
@@ -1687,7 +1687,7 @@ msgstr "Tu {action} <0/> {symbol}"
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Your borrows"
-msgstr "Tus prestamos"
+msgstr "Tus préstamos"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Your current loan to value based on your collateral supplied."
@@ -1767,7 +1767,7 @@ msgstr "o"
 
 #: src/components/transactions/GasStation/GasStation.tsx
 msgid "or enter custom fee value"
-msgstr "o introduzca un valor de comisión personalizado"
+msgstr "o introduce un valor de comisión personalizado"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "or use <0>{0}</0> to transfer your ETH assets."
