@@ -220,7 +220,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                   }}
                 >
                   <ExclamationIcon style={{ height: 16, paddingRight: '4px' }} />
-                  Can only be used as collateral in isolation mode
+                  <Trans>Can only be used as collateral in isolation mode</Trans>
                 </Box>
               )}
             </div>
