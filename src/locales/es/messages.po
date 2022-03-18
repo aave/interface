@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-18 09:28\n"
+"PO-Revision-Date: 2022-03-18 10:30\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -180,7 +180,7 @@ msgstr "Categoría de activos"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Asset is not borrowable in isolation mode"
-msgstr "El activo no se puede pedir prestado en modo de aislamiento"
+msgstr "El activo no se puede pedir prestado en isolation mode"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Asset is not listed"
@@ -246,7 +246,7 @@ msgstr "Balance"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Be careful - You are very close to liqudation. Consider depositing more collateral or paying down some of your borrowed positions"
-msgstr "Tenga cuidado - Está muy cerca de la liquidación. Considere depositar más garantías o pagar algunas de sus posiciones prestadas"
+msgstr "Ten cuidado - Estás muy cerca de la liquidación. Considera depositar más garantías o pagar algunas de tus posiciones prestadas"
 
 #: src/components/transactions/Warnings/SNXWarning.tsx
 msgid "Before supplying"
@@ -254,7 +254,7 @@ msgstr "Antes de suministrar"
 
 #: src/components/infoModalContents/ApprovalInfoContent.tsx
 msgid "Before supplying, you need to approve its usage by the Aave protocol. You can learn more in our<0>FAQ</0>"
-msgstr "Antes de suministrar, necesitas aprobar tu uso por el protocolo Aave. Puedes obtener más información en nuestras<0>Preguntas frecuentes</0>"
+msgstr "Antes de suministrar, necesitas aprobar tu uso por el protocolo Aave. Puedes obtener más información en nuestras<0>Preguntas Frecuentes</0>"
 
 #: pages/index.page.tsx
 #: src/components/transactions/Borrow/BorrowModal.tsx
@@ -290,7 +290,7 @@ msgstr "Límite del préstamo"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Borrow cap is exceeded"
-msgstr "El límite del prestamo se ha sobrepasado"
+msgstr "El límite del préstamo se ha sobrepasado"
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Borrow power used"
@@ -336,7 +336,7 @@ msgstr "Puede ser garantía"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Can only be used as collateral in isolation mode"
-msgstr ""
+msgstr "Solo puede ser usado como garantía en isolation mode"
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Cap reached. Lower supply amount"
@@ -387,7 +387,7 @@ msgstr "La garantía es (en su mayoría) el mismo activo que se está tomando pr
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Collateral usage is limited because of isolation mode. <0>Learn More</0>"
-msgstr "El uso de la garantía es limitada debido al modo de aislamiento. <0>Más información</0>"
+msgstr "El uso como garantía está limitado debido al isolation mode. <0>Más información</0>"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Collateral usage:"
@@ -400,7 +400,7 @@ msgstr "Colateralización"
 #: src/components/WalletConnection/ConnectWalletButton.tsx
 #: src/layouts/WalletWidget.tsx
 msgid "Connect wallet"
-msgstr "Conectar billetera"
+msgstr "Conectar cartera"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
@@ -471,11 +471,11 @@ msgstr "Techo de deuda"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Debt ceiling is exceeded"
-msgstr "El límite de la deuda está sobrepasado"
+msgstr "El techo de deuda está sobrepasado"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Debt ceiling is not zero"
-msgstr "El límite de la deuda no es cero"
+msgstr "El techo de deuda no es cero"
 
 #: src/components/infoModalContents/RetryWithApprovalInfoContent.tsx
 msgid "Define Retry with Approval text"
