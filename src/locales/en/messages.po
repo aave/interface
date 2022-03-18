@@ -329,6 +329,10 @@ msgstr "CLAIMING {symbol}"
 msgid "Can be collateral"
 msgstr "Can be collateral"
 
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Can only be used as collateral in isolation mode"
+msgstr "Can only be used as collateral in isolation mode"
+
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Cap reached. Lower supply amount"
 msgstr "Cap reached. Lower supply amount"
