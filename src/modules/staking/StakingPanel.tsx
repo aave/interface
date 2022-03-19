@@ -7,9 +7,46 @@ import React from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { StakeGeneralData, StakeUserData } from 'src/hooks/stake-data-provider/graphql/hooks';
+import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 
 import { TextWithTooltip } from '../../components/TextWithTooltip';
 import { StakeActionBox } from './StakeActionBox';
+
+function secondsToDHMS(seconds: number) {
+  const d = Math.floor(seconds / (3600 * 24));
+  const h = Math.floor((seconds % (3600 * 24)) / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = Math.floor(seconds % 60);
+  return { d, h, m, s };
+}
+
+function SecondsToString({ seconds }: { seconds: number }) {
+  const { d, h, m, s } = secondsToDHMS(seconds);
+  return (
+    <>
+      {d !== 0 && (
+        <span>
+          <Trans>{d}d</Trans>
+        </span>
+      )}
+      {h !== 0 && (
+        <span>
+          <Trans>{h}h</Trans>
+        </span>
+      )}
+      {m !== 0 && (
+        <span>
+          <Trans>{m}m</Trans>
+        </span>
+      )}
+      {s !== 0 && (
+        <span>
+          <Trans>{s}s</Trans>
+        </span>
+      )}
+    </>
+  );
+}
 
 export interface StakingPanelProps {
   onStakeAction?: () => void;
@@ -24,23 +61,6 @@ export interface StakingPanelProps {
   stakedToken: string;
   maxSlash: string;
   icon: string;
-}
-
-function getTimeRemaining(endtime: number) {
-  if (endtime == 0) {
-    return { days: 0, hours: 0, minutes: 0, seconds: 0 };
-  }
-  const days = Math.floor(endtime / (60 * 60 * 24)),
-    hours = Math.floor((endtime % (60 * 60 * 24)) / (60 * 60)),
-    minutes = Math.floor((endtime % (60 * 60)) / 60),
-    seconds = Math.floor(endtime % 60);
-
-  return {
-    days,
-    hours,
-    minutes,
-    seconds,
-  };
 }
 
 export const StakingPanel: React.FC<StakingPanelProps> = ({
@@ -59,9 +79,9 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
 }) => {
   const { breakpoints } = useTheme();
   const xsm = useMediaQuery(breakpoints.up('xsm'));
+  const now = useCurrentTimestamp(1);
 
   // Cooldown logic
-  const now = Date.now() / 1000;
   const stakeCooldownSeconds = stakeData?.stakeCooldownSeconds || 0;
   const userCooldown = stakeUserData?.userCooldown || 0;
   const stakeUnstakeWindow = stakeData?.stakeUnstakeWindow || 0;
@@ -71,17 +91,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   const isUnstakeWindowActive =
     isCooldownActive &&
     userCooldownDelta > stakeCooldownSeconds &&
-    userCooldownDelta < stakeUnstakeWindow;
-
-  const cooldownDays = stakeCooldownSeconds ? stakeCooldownSeconds / 86400 : 10;
-  const cooldownCountdown =
-    isCooldownActive && !isUnstakeWindowActive
-      ? getTimeRemaining(stakeCooldownSeconds - userCooldownDelta)
-      : getTimeRemaining(0);
-
-  const stakeUnstakeWindowCountdown = isUnstakeWindowActive
-    ? getTimeRemaining(stakeUnstakeWindow - userCooldownDelta)
-    : getTimeRemaining(0);
+    userCooldownDelta < stakeUnstakeWindow + stakeCooldownSeconds;
 
   // Others
   const availableToStake = formatEther(
@@ -229,9 +239,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
                 {isCooldownActive && !isUnstakeWindowActive ? (
                   <Trans>Time left to be able to withdraw your staked asset.</Trans>
                 ) : isUnstakeWindowActive ? (
-                  <Trans>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis, quia?
-                  </Trans>
+                  <Trans>Time left until the withdrawal window closes.</Trans>
                 ) : (
                   <Trans>
                     You can only withdraw your assets from the Security Module after the cooldown
@@ -245,31 +253,17 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             <>
               {isCooldownActive && !isUnstakeWindowActive ? (
                 <Typography variant="secondary14" sx={{ display: 'inline-flex', gap: 1 }}>
-                  {!!cooldownCountdown.days && <span>{cooldownCountdown.days}d</span>}
-                  {!!cooldownCountdown.hours && <span>{cooldownCountdown.hours}h</span>}
-                  {!!cooldownCountdown.minutes && <span>{cooldownCountdown.minutes}m</span>}
-                  {!cooldownCountdown.hours && !!cooldownCountdown.seconds && (
-                    <span>{cooldownCountdown.seconds}s</span>
-                  )}
+                  <SecondsToString seconds={stakeCooldownSeconds - userCooldownDelta} />
                 </Typography>
               ) : isUnstakeWindowActive ? (
                 <Typography variant="secondary14" sx={{ display: 'inline-flex', gap: 1 }}>
-                  {!!stakeUnstakeWindowCountdown.days && (
-                    <span>{stakeUnstakeWindowCountdown.days}d</span>
-                  )}
-                  {!!stakeUnstakeWindowCountdown.hours && (
-                    <span>{stakeUnstakeWindowCountdown.hours}h</span>
-                  )}
-                  {!!stakeUnstakeWindowCountdown.minutes && (
-                    <span>{stakeUnstakeWindowCountdown.minutes}m</span>
-                  )}
-                  {!stakeUnstakeWindowCountdown.hours && !!stakeUnstakeWindowCountdown.seconds && (
-                    <span>{stakeUnstakeWindowCountdown.seconds}s</span>
-                  )}
+                  <SecondsToString
+                    seconds={stakeUnstakeWindow + stakeCooldownSeconds - userCooldownDelta}
+                  />
                 </Typography>
               ) : (
                 <Typography variant="secondary14">
-                  <Trans>{cooldownDays > 1 ? cooldownDays : '<1'} days</Trans>
+                  <SecondsToString seconds={stakeCooldownSeconds} />
                 </Typography>
               )}
             </>
