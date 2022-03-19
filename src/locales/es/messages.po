@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-18 11:02\n"
+"PO-Revision-Date: 2022-03-19 11:37\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -801,10 +801,6 @@ msgstr "Umbral de liquidación"
 msgid "Liquidation value"
 msgstr "Valor de liquidación"
 
-#: src/modules/staking/StakingPanel.tsx
-msgid "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis, quia?"
-msgstr ""
-
 #: src/ui-config/errorMapping.tsx
 msgid "Ltv validation failed"
 msgstr "La validación del LTV ha fallado"
@@ -1389,6 +1385,10 @@ msgstr "Tiempo restante para poder retirar tu activo stakeado."
 msgid "Time left to unstake"
 msgstr "Tempo restante para unstakear"
 
+#: src/modules/staking/StakingPanel.tsx
+msgid "Time left until the withdrawal window closes."
+msgstr ""
+
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "To borrow you need to supply any asset to be used as collateral."
 msgstr "Para tomar prestado, necesitas proporcionar cualquier activo para ser utilizado como garantía."
@@ -1824,6 +1824,18 @@ msgid "{0} Faucet"
 msgstr "{0} Faucet"
 
 #: src/modules/staking/StakingPanel.tsx
-msgid "{0} days"
-msgstr "{0} días"
+msgid "{d}d"
+msgstr ""
+
+#: src/modules/staking/StakingPanel.tsx
+msgid "{h}h"
+msgstr ""
+
+#: src/modules/staking/StakingPanel.tsx
+msgid "{m}m"
+msgstr ""
+
+#: src/modules/staking/StakingPanel.tsx
+msgid "{s}s"
+msgstr ""
 
