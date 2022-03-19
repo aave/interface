@@ -1,6 +1,13 @@
 import { Trans } from '@lingui/macro';
-import { Box, FormControlLabel, ListItem, ListItemText, MenuItem, Switch } from '@mui/material';
-import { useTheme } from '@mui/system';
+import {
+  Box,
+  FormControlLabel,
+  ListItem,
+  ListItemText,
+  MenuItem,
+  Switch,
+  useTheme,
+} from '@mui/material';
 import React from 'react';
 
 import { ColorModeContext } from '../AppGlobalStyles';
