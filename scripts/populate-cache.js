@@ -58330,8 +58330,7 @@ function getNetworkConfig(chainId) {
   if (!config) {
     const name2 = import_contract_helpers4.ChainIdToNetwork[chainId];
     return {
-      name: name2 || `unknown chainId: ${chainId}`,
-      explorerLinkBuilder: () => console.log("exploreLinkBuilder")
+      name: name2 || `unknown chainId: ${chainId}`
     };
   }
   return __spreadProps(__spreadValues({}, config), {
