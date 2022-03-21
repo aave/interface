@@ -110,14 +110,7 @@ export const DashboardTopPanel = () => {
         <TopInfoPanelItem icon={<NetAPYIcon />} title={<Trans>Net APY</Trans>} loading={loading}>
           {currentAccount ? (
             <FormattedNumber
-              value={
-                (user?.earnedAPY || 0) *
-                  (Number(user.totalLiquidityUSD) /
-                    Number(user.netWorthUSD !== '0' ? user.netWorthUSD : '1')) -
-                (user?.debtAPY || 0) *
-                  (Number(user.totalBorrowsUSD) /
-                    Number(user.netWorthUSD !== '0' ? user.netWorthUSD : '1'))
-              }
+              value={user.netAPY}
               variant={valueTypographyVariant}
               visibleDecimals={2}
               percent
