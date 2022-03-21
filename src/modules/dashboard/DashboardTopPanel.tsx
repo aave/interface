@@ -112,8 +112,11 @@ export const DashboardTopPanel = () => {
             <FormattedNumber
               value={
                 (user?.earnedAPY || 0) *
-                  (Number(user.totalLiquidityUSD) / Number(user.netWorthUSD)) -
-                (user?.debtAPY || 0) * (Number(user.totalBorrowsUSD) / Number(user.netWorthUSD))
+                  (Number(user.totalLiquidityUSD) /
+                    Number(user.netWorthUSD !== '0' ? user.netWorthUSD : '1')) -
+                (user?.debtAPY || 0) *
+                  (Number(user.totalBorrowsUSD) /
+                    Number(user.netWorthUSD !== '0' ? user.netWorthUSD : '1'))
               }
               variant={valueTypographyVariant}
               visibleDecimals={2}
