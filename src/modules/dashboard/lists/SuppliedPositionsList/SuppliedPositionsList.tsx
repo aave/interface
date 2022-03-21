@@ -6,6 +6,7 @@ import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 import { CollateralSwitchTooltip } from '../../../../components/infoTooltips/CollateralSwitchTooltip';
 import { CollateralTooltip } from '../../../../components/infoTooltips/CollateralTooltip';
+import { TotalSupplyAPYTooltip } from '../../../../components/infoTooltips/TotalSupplyAPYTooltip';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { useAppDataContext } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { DashboardContentNoData } from '../../DashboardContentNoData';
@@ -63,7 +64,12 @@ export const SuppliedPositionsList = () => {
                 title={<Trans>Balance</Trans>}
                 value={user?.totalLiquidityUSD || 0}
               />
-              <ListTopInfoItem title={<Trans>APY</Trans>} value={user?.earnedAPY || 0} percent />
+              <ListTopInfoItem
+                title={<Trans>APY</Trans>}
+                value={user?.earnedAPY || 0}
+                percent
+                tooltip={<TotalSupplyAPYTooltip />}
+              />
               <ListTopInfoItem
                 title={<Trans>Collateral</Trans>}
                 value={user?.totalCollateralUSD || 0}

@@ -8,6 +8,7 @@ import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
 import { BorrowPowerTooltip } from '../../../../components/infoTooltips/BorrowPowerTooltip';
+import { TotalBorrowAPYTooltip } from '../../../../components/infoTooltips/TotalBorrowAPYTooltip';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import {
   ComputedUserReserveData,
@@ -97,7 +98,12 @@ export const BorrowedPositionsList = () => {
           {!!borrowPositions.length && (
             <>
               <ListTopInfoItem title={<Trans>Balance</Trans>} value={user?.totalBorrowsUSD || 0} />
-              <ListTopInfoItem title={<Trans>APY</Trans>} value={user?.debtAPY || 0} percent />
+              <ListTopInfoItem
+                title={<Trans>APY</Trans>}
+                value={user?.debtAPY || 0}
+                percent
+                tooltip={<TotalBorrowAPYTooltip />}
+              />
               <ListTopInfoItem
                 title={<Trans>Borrow power used</Trans>}
                 value={collateralUsagePercent || 0}
