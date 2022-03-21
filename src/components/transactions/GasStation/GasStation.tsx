@@ -13,8 +13,8 @@ import {
   useTheme,
   ClickAwayListener,
   CircularProgress,
+  experimental_sx,
 } from '@mui/material';
-import sx from '@mui/system/sx';
 import { BigNumber } from 'ethers/lib/ethers';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import React, { useState } from 'react';
@@ -29,7 +29,7 @@ import { GasButton } from './GasButton';
 import { GasOption } from './GasStationProvider';
 
 const PopperComponent = styled(Popper)(
-  sx({
+  experimental_sx({
     '.MuiTooltip-tooltip': {
       backgroundColor: 'background.paper',
       p: 0,

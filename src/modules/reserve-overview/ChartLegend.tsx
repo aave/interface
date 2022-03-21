@@ -1,5 +1,4 @@
-import { Typography } from '@mui/material';
-import { Box } from '@mui/system';
+import { Typography, Box } from '@mui/material';
 
 interface ChartLegendProps {
   labels: { text: string; color: string }[];

@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Button, Typography } from '@mui/material';
-import { Box } from '@mui/system';
+import { Button, Typography, Box } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
