@@ -144,14 +144,19 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   // first, try connecting to a gnosis safe
   useEffect(() => {
+    console.log('tried safe::: ', triedSafe);
     if (!triedSafe) {
       const gnosisConnector = getWallet(WalletType.GNOSIS);
       // @ts-expect-error isSafeApp not in abstract connector type
       gnosisConnector.isSafeApp().then((loadedInSafe) => {
         if (loadedInSafe) {
-          connectWallet(WalletType.GNOSIS).catch(() => {
-            setTriedSafe(true);
-          });
+          connectWallet(WalletType.GNOSIS)
+            .then(() => {
+              setTriedSafe(true);
+            })
+            .catch(() => {
+              setTriedSafe(true);
+            });
         } else {
           setTriedSafe(true);
         }
