@@ -214,8 +214,8 @@ export const AppDataProvider: React.FC = ({ children }) => {
           userReservesData: user.userReservesData.sort((a, b) =>
             reserveSortFn(a.reserve, b.reserve)
           ),
-          earnedAPY: proportions.positiveProportion.dividedBy(user.netWorthUSD).toNumber(),
-          debtAPY: proportions.negativeProportion.dividedBy(user.netWorthUSD).toNumber(),
+          earnedAPY: proportions.positiveProportion.dividedBy(user.totalLiquidityUSD).toNumber(),
+          debtAPY: proportions.negativeProportion.dividedBy(user.totalBorrowsUSD).toNumber(),
         },
         userReserves,
         isUserHasDeposits,
