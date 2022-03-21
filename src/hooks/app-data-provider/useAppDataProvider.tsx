@@ -41,6 +41,7 @@ export type ComputedUserReserveData = ComputedUserReserve<ComputedReserveData>;
 export type ExtendedFormattedUser = FormatUserSummaryAndIncentivesResponse<ComputedReserveData> & {
   earnedAPY: number;
   debtAPY: number;
+  netAPY: number;
   isInEmode: boolean;
   userEmodeCategoryId: number;
 };
@@ -200,6 +201,14 @@ export const AppDataProvider: React.FC = ({ children }) => {
     (userReserve) => userReserve.scaledATokenBalance !== '0'
   );
 
+  const earnedAPY = proportions.positiveProportion.dividedBy(user.totalLiquidityUSD).toNumber();
+  const debtAPY = proportions.negativeProportion.dividedBy(user.totalBorrowsUSD).toNumber();
+  const netAPY =
+    (earnedAPY || 0) *
+      (Number(user.totalLiquidityUSD) / Number(user.netWorthUSD !== '0' ? user.netWorthUSD : '1')) -
+    (debtAPY || 0) *
+      (Number(user.totalBorrowsUSD) / Number(user.netWorthUSD !== '0' ? user.netWorthUSD : '1'));
+
   return (
     <AppDataContext.Provider
       value={{
@@ -214,8 +223,9 @@ export const AppDataProvider: React.FC = ({ children }) => {
           userReservesData: user.userReservesData.sort((a, b) =>
             reserveSortFn(a.reserve, b.reserve)
           ),
-          earnedAPY: proportions.positiveProportion.dividedBy(user.netWorthUSD).toNumber(),
-          debtAPY: proportions.negativeProportion.dividedBy(user.netWorthUSD).toNumber(),
+          earnedAPY,
+          debtAPY,
+          netAPY,
         },
         userReserves,
         isUserHasDeposits,

@@ -1332,6 +1332,14 @@ msgstr "The underlying asset cannot be rescued"
 msgid "The underlying balance needs to be greater than 0"
 msgstr "The underlying balance needs to be greater than 0"
 
+#: src/components/infoTooltips/TotalBorrowAPYTooltip.tsx
+msgid "The weighted average of APY for all borrowed assets, including incentives."
+msgstr "The weighted average of APY for all borrowed assets, including incentives."
+
+#: src/components/infoTooltips/TotalSupplyAPYTooltip.tsx
+msgid "The weighted average of APY for all supplied assets, including incentives."
+msgstr "The weighted average of APY for all supplied assets, including incentives."
+
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "There are not enough funds in the{0}reserve to borrow"
 msgstr "There are not enough funds in the{0}reserve to borrow"
