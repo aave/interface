@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Popper, styled, SvgIcon, Tooltip, Typography } from '@mui/material';
-import sx from '@mui/system/sx';
+import { Box, Popper, styled, SvgIcon, Tooltip, Typography, experimental_sx } from '@mui/material';
 import { useMemo } from 'react';
 
 import Hal from '/public/icons/healthFactor/HAL.svg';
@@ -12,7 +11,7 @@ import { CustomMarket } from '../ui-config/marketsConfig';
 import { Link } from './primitives/Link';
 
 const PopperComponent = styled(Popper)(
-  sx({
+  experimental_sx({
     '.MuiTooltip-tooltip': {
       color: 'text.primary',
       backgroundColor: 'background.paper',

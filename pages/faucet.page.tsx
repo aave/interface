@@ -1,7 +1,6 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Button, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { Box } from '@mui/system';
+import { Button, Typography, useMediaQuery, useTheme, Box } from '@mui/material';
 import * as React from 'react';
 import { FaucetModal } from 'src/components/transactions/Faucet/FaucetModal';
 import { useModalContext } from 'src/hooks/useModal';

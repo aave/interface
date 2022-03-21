@@ -4,7 +4,7 @@ import {
   useAppDataContext,
 } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { SwapActions } from './SwapActions';
-import { ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import { ToggleButton, ToggleButtonGroup, Typography, Box } from '@mui/material';
 import { ComputedUserReserve } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -22,7 +22,6 @@ import {
 import { GasEstimationError } from 'src/components/transactions/FlowCommons/GasEstimationError';
 import { useModalContext } from 'src/hooks/useModal';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { Box } from '@mui/system';
 import { Row } from 'src/components/primitives/Row';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { calculateHFAfterSwap } from 'src/utils/hfUtils';

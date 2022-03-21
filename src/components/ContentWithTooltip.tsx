@@ -1,5 +1,4 @@
-import { Box, ClickAwayListener, Popper, styled, Tooltip } from '@mui/material';
-import sx from '@mui/system/sx';
+import { Box, ClickAwayListener, Popper, styled, Tooltip, experimental_sx } from '@mui/material';
 import { JSXElementConstructor, ReactElement, ReactNode, useState } from 'react';
 
 interface ContentWithTooltipProps {
@@ -13,7 +12,7 @@ interface ContentWithTooltipProps {
 }
 
 const PopperComponent = styled(Popper)(
-  sx({
+  experimental_sx({
     '.MuiTooltip-tooltip': {
       color: 'text.primary',
       backgroundColor: 'background.paper',

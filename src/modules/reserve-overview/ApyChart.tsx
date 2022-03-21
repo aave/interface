@@ -9,10 +9,9 @@ import { LinearGradient } from '@visx/gradient';
 import { AxisLeft, AxisBottom } from '@visx/axis';
 import { max, extent, bisector } from 'd3-array';
 import { timeFormat } from 'd3-time-format';
-import { lighten } from '@mui/system';
 import { Group } from '@visx/group';
 import { FormattedReserveHistoryItem } from 'src/hooks/useReservesHistory';
-import { useTheme } from '@mui/material';
+import { useTheme, lighten } from '@mui/material';
 import { ChartLegend } from './ChartLegend';
 import { GridRows } from '@visx/grid';
 
