@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-19 11:37\n"
+"PO-Revision-Date: 2022-03-21 18:05\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -67,7 +67,7 @@ msgstr "APY, variable"
 
 #: src/ui-config/errorMapping.tsx
 msgid "AToken supply is not zero"
-msgstr ""
+msgstr "L'approvisionnement en aTokens n'est pas nul"
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave Governance"
@@ -75,7 +75,7 @@ msgstr "Gouvernance Aave"
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance documentation"
-msgstr ""
+msgstr "Aave est un protocole entièrement décentralisé et régi par la communauté par les détenteurs de tokens AAVE. Les détenteurs de tokens AAVE discutent, proposent et votent collectivement sur les mises à niveau du protocole. Les détenteurs de tokens AAVE peuvent soit voter eux-mêmes sur de nouvelles propositions, soit déléguer à une adresse de leur choix. Pour en savoir plus, consultez la documentation sur la gouvernance"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Aave per month"
@@ -87,23 +87,23 @@ msgstr "Compte"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Action cannot be performed because the reserve is frozen"
-msgstr ""
+msgstr "L'action ne peut pas être effectuée car la réserve est gelée"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Action cannot be performed because the reserve is paused"
-msgstr ""
+msgstr "L'action ne peut pas être effectuée car la réserve est mise en pause"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Action requires an active reserve"
-msgstr ""
+msgstr "L'action nécessite une réserve active"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add {0} to the wallet"
-msgstr ""
+msgstr "Ajouter {0} au wallet"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Address is not a contract"
-msgstr ""
+msgstr "L'adresse n'est pas un contrat"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "All"
