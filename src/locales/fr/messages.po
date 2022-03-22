@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-21 18:05\n"
+"PO-Revision-Date: 2022-03-22 00:15\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -1335,6 +1335,14 @@ msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "The underlying balance needs to be greater than 0"
+msgstr ""
+
+#: src/components/infoTooltips/TotalBorrowAPYTooltip.tsx
+msgid "The weighted average of APY for all borrowed assets, including incentives."
+msgstr ""
+
+#: src/components/infoTooltips/TotalSupplyAPYTooltip.tsx
+msgid "The weighted average of APY for all supplied assets, including incentives."
 msgstr ""
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
