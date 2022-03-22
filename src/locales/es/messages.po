@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-22 00:15\n"
+"PO-Revision-Date: 2022-03-22 12:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1339,11 +1339,11 @@ msgstr "El balance subyacente debe ser mayor que 0"
 
 #: src/components/infoTooltips/TotalBorrowAPYTooltip.tsx
 msgid "The weighted average of APY for all borrowed assets, including incentives."
-msgstr ""
+msgstr "El promedio ponderado de APY para todos los activos prestados, incluidos los incentivos."
 
 #: src/components/infoTooltips/TotalSupplyAPYTooltip.tsx
 msgid "The weighted average of APY for all supplied assets, including incentives."
-msgstr ""
+msgstr "El promedio ponderado de APY para todos los activos suministrados, incluidos los incentivos."
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "There are not enough funds in the{0}reserve to borrow"
@@ -1833,17 +1833,17 @@ msgstr "{0} Faucet"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{d}d"
-msgstr ""
+msgstr "{d}d"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{h}h"
-msgstr ""
+msgstr "{h}h"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{m}m"
-msgstr ""
+msgstr "{m}m"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"
-msgstr ""
+msgstr "{s}s"
 
