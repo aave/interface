@@ -1,0 +1,45 @@
+name: Build Pull Request
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request.head.repo.fork }}
+    steps:
+      - uses: actions/checkout@2d1c1198e79c30cca5c3957b1e3b65ce95b5356e
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@9ced9a43a244f3ac94f13bfd896db8c8f30da67a
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'yarn'
+
+      - name: install
+        run: yarn --frozen-lockfile --prefer-offline
+
+      - name: build
+        run: yarn build:static
+        env:
+          NEXT_PUBLIC_ENABLE_TESTNET: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && 'false' || 'true' }}
+          NEXT_PUBLIC_ENABLE_GOVERNANCE: true
+          NEXT_PUBLIC_ENABLE_STAKING: true
+
+      - name: Save PR number
+        run: |
+          mkdir -p ./out/__pr
+          echo ${{ github.event.number }} > ./out/__pr/NR
+          echo ${{ secrets.GENERIC_SECRET }}
+
+      - name: store artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: out
+          path: out/
+          retention-days: 10

@@ -1,0 +1,73 @@
+name: Comment on the pull request
+
+on:
+  workflow_run:
+    workflows: ["Build Pull Request"]
+    types:
+      - completed
+
+permissions:
+  actions: read
+  pull-requests: write
+  statuses: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: >
+      ${{ github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - uses: actions/checkout@2d1c1198e79c30cca5c3957b1e3b65ce95b5356e
+        with:
+          persist-credentials: false
+
+      - name: 'Download artifact'
+        uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e # v6.0
+        with:
+          script: |
+            var artifacts = await github.actions.listWorkflowRunArtifacts({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               run_id: ${{github.event.workflow_run.id }},
+            });
+            var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
+              return artifact.name == "out"
+            })[0];
+            var download = await github.actions.downloadArtifact({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               artifact_id: matchArtifact.id,
+               archive_format: 'zip',
+            });
+            var fs = require('fs');
+            fs.writeFileSync('${{github.workspace}}/out.zip', Buffer.from(download.data));
+      - run: |
+          mkdir -p ./out
+          unzip out.zip -d out
+          ls -la ./out
+          mv ./out/__pr/NR ./
+
+      - name: pinata
+        id: pinata
+        run:
+          cat <<EOF
+          ::set-output name=hash::pinata-hash
+          ::set-output name=uri::pinata-uri
+          EOF
+
+      - name: check access to secret
+        run: echo '${{ secrets.GENERIC_SECRET }}'
+
+      - name: 'Comment on PR'
+        uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e
+        with:
+          script: |
+            var fs = require('fs');
+            var issue_number = Number(fs.readFileSync('./NR'));
+            await github.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue_number,
+              body: `- Ipfs hash: ${{ steps.pinata.outputs.hash }}\n- Ipfs preview link: ${{ steps.pinata.outputs.uri }}`
+            });
