@@ -47,7 +47,7 @@ export const doConfirm = ({
         expect($btn.first()).to.contain(`${actionName}`);
       }
     })
-    .wait(1000)
+    .wait(3000)
     .click();
   cy.get("[data-cy=Modal] h2:contains('All done!')").should('be.visible');
 };

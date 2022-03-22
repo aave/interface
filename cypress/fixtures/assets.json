@@ -816,6 +816,18 @@
       "collateral": false,
       "wrapped": false
     },
+    "LINK": {
+      "fullName": "LINK Coin",
+      "shortName": "LINK.e",
+      "collateral": true,
+      "wrapped": false
+    },
+    "aLINK": {
+      "fullName": "aLINK Coin",
+      "shortName": "aLINK.e",
+      "collateral": true,
+      "wrapped": false
+    },
     "WBTC": {
       "fullName": "WBTC Coin (WBTC.e)",
       "shortName": "WBTC.e",
@@ -836,7 +848,7 @@
     },
     "aWETH": {
       "fullName": "Wrapped ETH (WETH.e)",
-      "shortName": "axWETH.e",
+      "shortName": "aWETH.e",
       "collateral": true,
       "wrapped": false
     }

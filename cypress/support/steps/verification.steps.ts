@@ -121,11 +121,11 @@ export const switchCollateralBlocked = (
   return describe('Check that collateral switcher disabled', () => {
     skipSetup(skip);
     it(`Check that collateral switcher for ${_shortName} disabled`, () => {
-      doSwitchToDashboardBorrowView();
+      doSwitchToDashboardSupplyView();
       getDashBoardDepositRow({
         assetName: _shortName,
       })
-        .find('.Switcher__swiper input')
+        .find('input[type="checkbox"]')
         .should('be.disabled');
     });
   });
