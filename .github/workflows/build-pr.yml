@@ -27,7 +27,7 @@ jobs:
       - name: build
         run: yarn build:static
         env:
-          NEXT_PUBLIC_ENABLE_TESTNET: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && 'false' || 'true' }}
+          NEXT_PUBLIC_ENABLE_TESTNET: true
           NEXT_PUBLIC_ENABLE_GOVERNANCE: true
           NEXT_PUBLIC_ENABLE_STAKING: true
 
@@ -42,4 +42,4 @@ jobs:
         with:
           name: out
           path: out/
-          retention-days: 10
+          retention-days: 5
