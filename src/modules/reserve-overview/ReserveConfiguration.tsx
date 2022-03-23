@@ -22,6 +22,8 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { eModeInfo } from 'src/utils/eMode';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
+import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
+
 import { IncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { ExclamationIcon } from '@heroicons/react/outline';
 
@@ -326,7 +328,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
               </PanelItem>
               <PanelItem
                 title={
-                  <StableAPYTooltip
+                  <VariableAPYTooltip
                     text={<Trans>APY, variable</Trans>}
                     key="APY_res_variable_type"
                     variant="description"
