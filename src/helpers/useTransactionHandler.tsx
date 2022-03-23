@@ -290,6 +290,7 @@ export const useTransactionHandler = ({
                   'FAUCET_MINT',
                   'STAKE_ACTION',
                   'GOV_DELEGATION_ACTION',
+                  'GOVERNANCE_ACTION',
                 ].includes(tx.txType)
               )
             );
