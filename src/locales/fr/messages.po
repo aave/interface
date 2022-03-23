@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-22 00:15\n"
+"PO-Revision-Date: 2022-03-23 00:15\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -137,7 +137,7 @@ msgstr "Montant"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Amount must be greater than 0"
-msgstr ""
+msgstr "Le montant doit être supérieur à 0"
 
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "Ampleforth FAQ"
@@ -165,7 +165,7 @@ msgstr "Approuver {symbol}..."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Array parameters that should be equal length are not"
-msgstr ""
+msgstr "Les paramètres de tableau devraient être de même longueur ne sont pas"
 
 #: pages/faucet.page.tsx
 #: src/modules/markets/AssetsList.tsx
@@ -180,11 +180,11 @@ msgstr "Catégorie d'actifs"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Asset is not borrowable in isolation mode"
-msgstr ""
+msgstr "L'actif n'est pas empruntable en mode d'isolement"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Asset is not listed"
-msgstr ""
+msgstr "L'actif n'est pas répertorié"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Asset to delegate"
