@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-23 18:04\n"
+"PO-Revision-Date: 2022-03-24 00:13\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -795,15 +795,15 @@ msgstr "Paramètres du risque de liquidation"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Liquidation threshold"
-msgstr ""
+msgstr "Seuil de liquidation"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/HFContent.tsx
 msgid "Liquidation value"
-msgstr ""
+msgstr "Valeur de liquidation"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Ltv validation failed"
-msgstr ""
+msgstr "Échec de la validation LTV"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/LTVContent.tsx
 msgid "MAX"
@@ -811,28 +811,28 @@ msgstr "MAX"
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Market"
-msgstr ""
+msgstr "Marché"
 
 #: src/modules/markets/MarketsTopPanel.tsx
 #: src/ui-config/menu-items/index.tsx
 msgid "Markets"
-msgstr ""
+msgstr "Marchés"
 
 #: src/components/transactions/AssetInput.tsx
 msgid "Max"
-msgstr ""
+msgstr "Max"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Max LTV"
-msgstr ""
+msgstr "Max LTV"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Max slashing"
-msgstr ""
+msgstr "Coupure maximale"
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Max slippage rate"
-msgstr ""
+msgstr "Taux de glissement maximum"
 
 #: src/layouts/MobileMenu.tsx
 msgid "Menu"
@@ -840,7 +840,7 @@ msgstr "Menu"
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Minimum received"
-msgstr ""
+msgstr "Minimum reçu"
 
 #: src/layouts/MoreMenu.tsx
 msgid "More"
@@ -848,11 +848,11 @@ msgstr ""
 
 #: src/modules/governance/VoteBar.tsx
 msgid "NAY"
-msgstr ""
+msgstr "NON"
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Need help connecting a wallet? <0>Read our FAQ</0>"
-msgstr ""
+msgstr "Besoin d'aide pour connecter un portefeuille ? <0>Lire notre FAQ</0>"
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Net APR"
@@ -864,43 +864,43 @@ msgstr "APY Net"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Net worth"
-msgstr ""
+msgstr "Valeur nette"
 
 #: src/layouts/WalletWidget.tsx
 msgid "Network"
-msgstr ""
+msgstr "Réseau"
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Network not supported for this wallet"
-msgstr ""
+msgstr "Réseau non pris en charge pour ce portefeuille"
 
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "New APY"
-msgstr ""
+msgstr "Nouveau APY"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "No"
-msgstr ""
+msgstr "Non"
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 msgid "No rewards to claim"
-msgstr ""
+msgstr "Aucune récompense à réclamer"
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "No voting power"
-msgstr ""
+msgstr "Pas de pouvoir de vote"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "None"
-msgstr ""
+msgstr "Aucun/Aucune"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Not a valid address"
-msgstr ""
+msgstr "Pas une adresse valide"
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
 msgid "Not enough balance on your wallet"
-msgstr ""
+msgstr "Pas assez de solde sur votre portefeuille"
 
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Not enough staked balance"
