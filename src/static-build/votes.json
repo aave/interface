@@ -19585,6 +19585,24 @@
         "transactionHash": "0x030c92cf60bb65f484ad43a7979248e522aa710b3072c6562e01b88086890063",
         "timestamp": 1648028396,
         "blockNumber": 14441774
+      },
+      {
+        "proposalId": 67,
+        "voter": "0xc17cB209D5aBdb2d00f566a1E48F558DEBC264E1",
+        "support": true,
+        "votingPower": 103333.8474304624,
+        "transactionHash": "0x371d936c34a95f60fe40c618a49711950f56a1332e148ac669c512d55e283215",
+        "timestamp": 1648056004,
+        "blockNumber": 14443860
+      },
+      {
+        "proposalId": 67,
+        "voter": "0xDD659911EcBD4458db07Ee7cDdeC79bf8F859AbC",
+        "support": true,
+        "votingPower": 50.1412964,
+        "transactionHash": "0x1f24e38de5aa2d13450f401556421793fb978bf52b1c3ffe008633309d0ab501",
+        "timestamp": 1648058540,
+        "blockNumber": 14444022
       }
     ],
     "finished": false
