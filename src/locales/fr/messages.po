@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-24 00:13\n"
+"PO-Revision-Date: 2022-03-24 06:05\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -514,24 +514,24 @@ msgstr "Désactiver le E-mode"
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 msgid "Disable {symbol} as collateral"
-msgstr ""
+msgstr "Désactiver {symbol} comme garantie"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Disabled"
-msgstr ""
+msgstr "Désactivé"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Disabling E-Mode"
-msgstr ""
+msgstr "Désactiver le E-mode"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "Disabling this asset as collateral affects your borrowing power and Health Factor."
-msgstr ""
+msgstr "La désactivation de cet actif en tant que garantie affecte votre pouvoir d'emprunt et votre facteur de santé."
 
 #: src/layouts/WalletWidget.tsx
 msgid "Disconnect Wallet"
-msgstr ""
+msgstr "Déconnecter le portefeuille"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Discord"
@@ -551,7 +551,7 @@ msgstr "Catégorie E-Mode"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode increases your LTV for a selected category of assets up to 97%. <0>Learn more</0>"
-msgstr ""
+msgstr "E-Mode augmente votre LTV pour une catégorie d'actifs sélectionnée jusqu'à 97 %. <0>En savoir plus</0>"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Efficiency mode (E-Mode)"
@@ -581,31 +581,31 @@ msgstr "Activation du E-Mode"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Enabling E-Mode only allows you to borrow assets belonging to the selected category Stablecoins. Please visit our <0>FAQ guide</0> to learn more about how it works and the applied restrictions."
-msgstr ""
+msgstr "L'activation du E-Mode vous permet uniquement d'emprunter des actifs appartenant à la catégorie Stablecoins sélectionnée. Veuillez consulter notre <0>guide FAQ</0> pour en savoir plus sur son fonctionnement et les restrictions appliquées."
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "Enabling this asset as collateral increases your borrowing power and Health Factor. However, it can get liquidated if your health factor drops below 1."
-msgstr ""
+msgstr "L'activation de cet actif comme garantie augmente votre pouvoir d'emprunt et votre facteur de santé. Cependant, il peut être liquidé si votre facteur de santé tombe en dessous de 1."
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "English"
-msgstr ""
+msgstr "Anglais"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Enter ETH address"
-msgstr ""
+msgstr "Entrez l'adresse ETH"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Enter an amount"
-msgstr ""
+msgstr "Entrez un montant"
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Error connecting. Try refreshing the page."
-msgstr ""
+msgstr "Erreur de connexion. Essayez d'actualiser la page."
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Executed"
-msgstr ""
+msgstr "Réalisé"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "FAQ"
@@ -623,19 +623,19 @@ msgstr "Faucet {0}"
 
 #: src/modules/governance/ProposalsList.tsx
 msgid "Filter"
-msgstr ""
+msgstr "Filtrer"
 
 #: src/ui-config/errorMapping.tsx
 msgid "For repayment of a specific type of debt, the user needs to have debt that type"
-msgstr ""
+msgstr "For repayment of a specific type of debt, the user needs to have debt that type"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "French"
-msgstr ""
+msgstr "Français"
 
 #: src/modules/staking/StakingHeader.tsx
 msgid "Funds in the Safety Module"
-msgstr ""
+msgstr "Funds in the Safety Module"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Github"
@@ -644,11 +644,11 @@ msgstr "Github"
 #: src/layouts/MobileMenu.tsx
 #: src/layouts/SettingsMenu.tsx
 msgid "Global settings"
-msgstr ""
+msgstr "Paramètres globaux"
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Go Back"
-msgstr ""
+msgstr "Retourner"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
@@ -658,27 +658,27 @@ msgstr "Gouvernance"
 #: src/modules/dashboard/DashboardTopPanel.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Health factor"
-msgstr ""
+msgstr "Facteur de santé"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Health factor is lesser than the liquidation threshold"
-msgstr ""
+msgstr "Le facteur santé est inférieur au seuil de liquidation"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Health factor is not below the threshold"
-msgstr ""
+msgstr "Le facteur de santé n'est pas inférieur au seuil"
 
 #: src/components/lists/ListWrapper.tsx
 msgid "Hide"
-msgstr ""
+msgstr "Cacher"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "I understand how cooldown ({0}) and unstaking ({1}) work"
-msgstr ""
+msgstr "Je comprends comment fonctionnent le temps de recharge ({0}) et le retrait ({1})"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "If the health factor goes below 1, the liquidation of your collateral might be triggered."
-msgstr ""
+msgstr "Si le facteur de santé descend en dessous de 1, la liquidation de votre collatéral peut être déclenchée."
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "If you DO NOT unstake within {0} of unstake window, you will need to activate cooldown process again."
@@ -734,11 +734,11 @@ msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid return value of the flashloan executor function"
-msgstr ""
+msgstr "Valeur de retour invalide de la fonction flashloan executor"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid signature"
-msgstr ""
+msgstr "Signature non valide"
 
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Isolated"
@@ -779,7 +779,7 @@ msgstr ""
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Liquidation penalty"
-msgstr ""
+msgstr "Pénalité de liquidation"
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "Liquidation risk is high. Lower amounts recomended."
@@ -844,7 +844,7 @@ msgstr "Minimum reçu"
 
 #: src/layouts/MoreMenu.tsx
 msgid "More"
-msgstr ""
+msgstr "Plus"
 
 #: src/modules/governance/VoteBar.tsx
 msgid "NAY"
@@ -904,11 +904,11 @@ msgstr "Pas assez de solde sur votre portefeuille"
 
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Not enough staked balance"
-msgstr ""
+msgstr "Pas assez de solde staké"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Not enough voting power to participate in this proposal"
-msgstr ""
+msgstr "Pas assez de pouvoir de vote pour participer à cette proposition"
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Nothing borrowed yet"
@@ -916,23 +916,23 @@ msgstr "Aucun emprunt pour l'instant"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Nothing staked"
-msgstr ""
+msgstr "Rien staké"
 
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 msgid "Nothing supplied yet"
-msgstr ""
+msgstr "Rien fourni pour le moment"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Ok, Close"
-msgstr ""
+msgstr "D'accord, fermer"
 
 #: src/components/TextWithModal.tsx
 msgid "Ok, I got it"
-msgstr ""
+msgstr "OK j'ai compris"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Operation not supported"
-msgstr ""
+msgstr "Opération non prise en charge"
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Oracle price"
