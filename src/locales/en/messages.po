@@ -1340,6 +1340,10 @@ msgstr "The weighted average of APY for all borrowed assets, including incentive
 msgid "The weighted average of APY for all supplied assets, including incentives."
 msgstr "The weighted average of APY for all supplied assets, including incentives."
 
+#: src/components/infoTooltips/NetAPYTooltip.tsx
+msgid "The weighted average of all supply and borrow positions, including incentives. It is possible to have a negative net APY if debt APY is higher than supply APY."
+msgstr "The weighted average of all supply and borrow positions, including incentives. It is possible to have a negative net APY if debt APY is higher than supply APY."
+
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "There are not enough funds in the{0}reserve to borrow"
 msgstr "There are not enough funds in the{0}reserve to borrow"
