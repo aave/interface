@@ -100,7 +100,7 @@ export const DetailsNumberLineWithSub = ({
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <TokenIcon symbol={symbol} sx={{ mr: 1, fontSize: '16px' }} />
-          <FormattedNumber value={amount} variant="secondary14" color={color ? color : undefined} />
+          <FormattedNumber value={amount} variant="secondary14" color={color} />
           {!hideSymbolSuffix && (
             <Typography ml={1} variant="secondary14">
               {symbol}
