@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-24 06:05\n"
+"PO-Revision-Date: 2022-03-24 18:04\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -682,39 +682,39 @@ msgstr "Si le facteur de santé descend en dessous de 1, la liquidation de votre
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "If you DO NOT unstake within {0} of unstake window, you will need to activate cooldown process again."
-msgstr ""
+msgstr "Si vous NE vous désengagez PAS dans les {0} de la fenêtre de désengagement, vous devrez réactiver le processus de refroidissement."
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "If your loan to value goes above the liquidation threshold your collateral supplied may be liquidated."
-msgstr ""
+msgstr "Si votre prêt à la valeur dépasse le seuil de liquidation, votre garantie fournie peut être liquidée."
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "In E-Mode some assets are not borrowable. Exit E-Mode to get access to all assets"
-msgstr ""
+msgstr "En E-Mode, certains actifs ne sont pas empruntables. Quittez le E-mode pour accéder à tous les actifs"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "In Isolation mode you cannot supply other assets as collateral for borrowing. Assets used as collateral in Isolation mode can only be borrowed to a specific debt ceiling."
-msgstr ""
+msgstr "En mode Isolation, vous ne pouvez pas fournir d'autres actifs en garantie d'un emprunt. Les actifs utilisés comme garantie en mode Isolation ne peuvent être empruntés que jusqu'à un plafond d'endettement spécifique."
 
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "In Isolation mode, you cannot supply other assets as collateral. A global debt ceiling limits the borrowing power of the isolated asset. Read more in our <0>FAQ</0>"
-msgstr ""
+msgstr "En mode Isolation, vous ne pouvez pas fournir d'autres actifs en garantie. Un plafond d'endettement global limite la capacité d'emprunt de l'actif isolé. En savoir plus dans notre <0>FAQ</0>"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "In order to change E-Mode from asset category{0}you will need to close your position in your current category. See our <0>FAQ</0> to learn more."
-msgstr ""
+msgstr "Pour changer le E-mode de la catégorie d'actifs{0}, vous devrez clôturer votre position dans votre catégorie actuelle. Consultez notre <0>FAQ</0> pour en savoir plus."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Inconsistent flashloan parameters"
-msgstr ""
+msgstr "Paramètres de prêt flash incohérents"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Interest rate rebalance conditions were not met"
-msgstr ""
+msgstr "Les conditions de rééquilibrage des taux d'intérêt n'ont pas été remplies"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid amount to burn"
-msgstr ""
+msgstr "Montant non valide à brûler"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid amount to mint"
