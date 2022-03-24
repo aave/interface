@@ -7,6 +7,7 @@ import {
 import { Trans } from '@lingui/macro';
 import BigNumber from 'bignumber.js';
 import React, { useEffect, useRef, useState } from 'react';
+import { RepayWithDustTooltip } from 'src/components/infoTooltips/RepayWithDustTooltip';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -153,6 +154,11 @@ export const RepayModalContent = ({
     .multipliedBy(marketReferencePriceInUsd)
     .shiftedBy(-USD_DECIMALS);
 
+  const maxRepayWithDustRemaining =
+    isMaxSelected &&
+    displayAmountAfterRepayInUsd.toNumber() > 0 &&
+    displayAmountAfterRepayInUsd.toNumber() < 5;
+
   // health factor calculations
   // we use usd values instead of MarketreferenceCurrency so it has same precision
   const newHF = amount
@@ -195,7 +201,12 @@ export const RepayModalContent = ({
 
       <TxModalDetails gasLimit={gasLimit}>
         <DetailsNumberLineWithSub
-          description={<Trans>Remaining debt</Trans>}
+          description={
+            <div style={{ display: 'flex' }}>
+              <Trans>Remaining debt</Trans>
+              {maxRepayWithDustRemaining && <RepayWithDustTooltip />}
+            </div>
+          }
           amount={amountAfterRepay}
           amountUSD={displayAmountAfterRepayInUsd.toString()}
           symbol={
@@ -203,6 +214,7 @@ export const RepayModalContent = ({
               ? networkConfig.baseAssetSymbol
               : poolReserve.iconSymbol
           }
+          dustRemainingWarning={maxRepayWithDustRemaining}
         />
         <DetailsHFLine
           visibleHfChange={!!_amount}

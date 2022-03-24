@@ -84,6 +84,7 @@ interface DetailsNumberLineWithSubProps {
   amount: string;
   amountUSD: string;
   hideSymbolSuffix?: boolean;
+  dustRemainingWarning?: boolean;
 }
 
 export const DetailsNumberLineWithSub = ({
@@ -92,13 +93,18 @@ export const DetailsNumberLineWithSub = ({
   amount,
   amountUSD,
   hideSymbolSuffix,
+  dustRemainingWarning,
 }: DetailsNumberLineWithSubProps) => {
   return (
     <Row caption={description} captionVariant="description" mb={4} align="flex-start">
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <TokenIcon symbol={symbol} sx={{ mr: 1, fontSize: '16px' }} />
-          <FormattedNumber value={amount} variant="secondary14" />
+          <FormattedNumber
+            value={amount}
+            variant="secondary14"
+            color={dustRemainingWarning ? 'error.main' : undefined}
+          />
           {!hideSymbolSuffix && (
             <Typography ml={1} variant="secondary14">
               {symbol}
