@@ -154,10 +154,7 @@ export const RepayModalContent = ({
     .multipliedBy(marketReferencePriceInUsd)
     .shiftedBy(-USD_DECIMALS);
 
-  const maxRepayWithDustRemaining =
-    isMaxSelected &&
-    displayAmountAfterRepayInUsd.toNumber() > 0 &&
-    displayAmountAfterRepayInUsd.toNumber() < 5;
+  const maxRepayWithDustRemaining = isMaxSelected && displayAmountAfterRepayInUsd.toNumber() > 0;
 
   // health factor calculations
   // we use usd values instead of MarketreferenceCurrency so it has same precision
