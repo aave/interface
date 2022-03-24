@@ -214,7 +214,7 @@ export const RepayModalContent = ({
               ? networkConfig.baseAssetSymbol
               : poolReserve.iconSymbol
           }
-          dustRemainingWarning={maxRepayWithDustRemaining}
+          color={maxRepayWithDustRemaining ? 'error.main' : undefined}
         />
         <DetailsHFLine
           visibleHfChange={!!_amount}
