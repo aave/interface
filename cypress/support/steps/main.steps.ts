@@ -256,7 +256,7 @@ export const withdraw = (
       doConfirm({
         hasApproval,
         actionName: _actionName,
-        assetName: _shortName,
+        assetName: forWrapped ? 'W' + _shortName : _shortName,
       });
     });
     doCloseModal();

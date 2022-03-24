@@ -316,13 +316,13 @@
     },
     "USDT": {
       "fullName": "USDT Coin",
-      "shortName": "USDT",
+      "shortName": "fUSDT",
       "collateral": false,
       "wrapped": false
     },
     "aUSDT": {
       "fullName": "aUSDT",
-      "shortName": "aUSDT",
+      "shortName": "afUSDT",
       "collateral": false,
       "wrapped": false
     },
@@ -340,13 +340,13 @@
     },
     "WBTC": {
       "fullName": "WBTC Coin",
-      "shortName": "WBTC",
+      "shortName": "BTC",
       "collateral": true,
       "wrapped": false
     },
     "aWBTC": {
       "fullName": "AAVA WBTC Coin",
-      "shortName": "aWBTC",
+      "shortName": "aBTC",
       "collateral": true,
       "wrapped": false
     },
@@ -595,7 +595,7 @@
     },
     "aDAI": {
       "fullName": "aDAI",
-      "shortName": "amDAI",
+      "shortName": "aDAI",
       "collateral": true,
       "wrapped": false
     },

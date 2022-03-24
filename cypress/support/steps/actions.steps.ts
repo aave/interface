@@ -35,7 +35,10 @@ export const doConfirm = ({
 }: ConfirmAction) => {
   cy.log(`${hasApproval ? 'One step process' : 'Two step process'}`);
   if (!hasApproval) {
-    cy.get(`[data-cy=approvalButton]`).should('not.be.disabled').wait(1000).click();
+    cy.get(`[data-cy=approvalButton]`, { timeout: 10000 })
+      .should('not.be.disabled')
+      .wait(1000)
+      .click();
   }
   cy.get('[data-cy=actionButton]', { timeout: 10000 })
     .should('not.be.disabled')
