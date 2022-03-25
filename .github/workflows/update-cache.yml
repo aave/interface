@@ -18,16 +18,10 @@ jobs:
         with:
           token: ${{ secrets.BOT_TOKEN }}
 
-      - uses: actions/setup-node@9ced9a43a244f3ac94f13bfd896db8c8f30da67a # v3.0.0
+      - name: Update cache
+        uses: ./.github/actions/build
         with:
-          node-version-file: '.nvmrc'
-          cache: 'yarn'
-
-      - name: install
-        run: yarn --frozen-lockfile
-
-      - name: update-cache
-        run: yarn cache:update
+          YARN_COMMAND: "cache:update"
 
       - name: check diff
         run: |

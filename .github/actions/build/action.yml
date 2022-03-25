@@ -1,0 +1,46 @@
+name: Build app and static
+description: Build nextjs app and export static files
+inputs:
+  YARN_COMMAND:
+    description: yarn command to run
+    required: false
+    default: "build:static"
+  NEXT_PUBLIC_ENABLE_TESTNET:
+    description: enable testnet
+    required: false
+    default: "true"
+  USE_NEXT_CACHE:
+    description: use nextjs cache or not
+    required: false
+    default: "true"
+runs:
+  using: "composite"
+  steps:  
+    - uses: actions/setup-node@9ced9a43a244f3ac94f13bfd896db8c8f30da67a # v3.0.0
+      with:
+        node-version-file: '.nvmrc'
+        cache: 'yarn'
+
+    - name: install
+      shell: sh
+      run: yarn --frozen-lockfile --prefer-offline
+
+    - name: Restore next cache
+      uses: actions/cache@4b0cf6cc4619e737324ddfcec08fff2413359514 # v3.0.0
+      if: inputs.USE_NEXT_CACHE == 'true'
+      id: restore-build-cache
+      env:
+        cache-name: cache-next-build
+      with:
+        path: .next/cache
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ github.head_ref || github.ref }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-main
+
+    - name: build
+      shell: sh
+      run: yarn ${{ inputs.YARN_COMMAND }}
+      env:
+        NEXT_PUBLIC_ENABLE_TESTNET: "${{ inputs.NEXT_PUBLIC_ENABLE_TESTNET }}"
+        NEXT_PUBLIC_ENABLE_GOVERNANCE: "true"
+        NEXT_PUBLIC_ENABLE_STAKING: "true"

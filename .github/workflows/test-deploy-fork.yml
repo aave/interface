@@ -1,0 +1,94 @@
+name: Test and deploy PR from fork
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.workflow_run.id }}
+  cancel-in-progress: true
+
+on:
+  workflow_run:
+    workflows: ["Build PR From Fork"]
+    types: ["completed"]
+    branches-ignore: ["main"]
+
+permissions:
+  actions: read
+  contents: read
+  pull-requests: write
+  statuses: read
+
+jobs:
+  prepare_jobs:
+    runs-on: ubuntu-latest
+    if: |
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success'
+    outputs:
+      pr_number: ${{ steps.get_pr_number.outputs.pr_number }}
+    steps:
+      - name: Download PR info
+        uses: dawidd6/action-download-artifact@575b1e4167df67acf7e692af784566618b23c71e # v2.17.0
+        with:
+          workflow: build-fork.yml
+          run_id: ${{ github.event.workflow_run.id }}
+          workflow_conclusion: success
+          name: pr
+          path: ./
+
+      - name: Get PR number
+        id: get_pr_number
+        run: |
+          echo "::set-output name=pr_number::$(cat NUM)"
+
+  next_js_analyze:
+    runs-on: ubuntu-latest
+    needs: ["prepare_jobs"]
+    env:
+      PR_NUMBER: ${{ needs.prepare_jobs.outputs.pr_number }}
+    steps:
+      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/actions/analyze-comment
+        with:
+          PULL_REQUEST_NUMBER: ${{ env.PR_NUMBER }}
+
+  deploy_fork:
+    runs-on: ubuntu-latest
+    needs: ["prepare_jobs"]
+    env:
+      PR_NUMBER: ${{ needs.prepare_jobs.outputs.pr_number }}
+    steps:
+      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+        with:
+          persist-credentials: false
+
+      - name: Download static build
+        uses: dawidd6/action-download-artifact@575b1e4167df67acf7e692af784566618b23c71e # v2.17.0
+        with:
+          workflow: build-fork.yml
+          run_id: ${{ github.event.workflow_run.id }}
+          workflow_conclusion: success
+          name: out
+          path: out
+
+      - name: pinata
+        id: pinata
+        uses: aave/pinata-action@v1.1
+        with:
+          PINATA_API_KEY: ${{ secrets.PINATA_API_KEY }}
+          PINATA_SECRET_KEY: ${{ secrets.PINATA_SECRET_KEY }}
+          PIN_ALIAS: "${{ format('pull_request_{0}', github.event.workflow_run.id) }}"
+          BUILD_LOCATION: './out'
+          CID_VERSION: 1
+
+      - name: 'Comment on PR'
+        uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e # v6.0.0
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ env.PR_NUMBER }},
+              body: `- Ipfs hash: ${{ steps.pinata.outputs.hash }}\n- Ipfs preview link: ${{ steps.pinata.outputs.uri }}`
+            });
