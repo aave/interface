@@ -857,6 +857,10 @@ msgstr "Net APR"
 msgid "Net APY"
 msgstr "Net APY"
 
+#: src/components/infoTooltips/NetAPYTooltip.tsx
+msgid "Net APY is the combined effect of all supply and borrow positions on net worth, including incentives. It is possible to have a negative net APY if debt APY is higher than supply APY."
+msgstr "Net APY is the combined effect of all supply and borrow positions on net worth, including incentives. It is possible to have a negative net APY if debt APY is higher than supply APY."
+
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Net worth"
 msgstr "Net worth"
@@ -1315,10 +1319,6 @@ msgstr "The cooldown period is {0}. After {1} of cooldown, you will enter unstak
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "The effects on the health factor would cause liquidation. Try lowering the amount."
 msgstr "The effects on the health factor would cause liquidation. Try lowering the amount."
-
-#: src/components/infoTooltips/NetAPYTooltip.tsx
-msgid "The net APY is the combined effect of all supply and borrow positions on net worth, including incentives. It is possible to have a negative net APY if debt APY is higher than supply APY."
-msgstr "The net APY is the combined effect of all supply and borrow positions on net worth, including incentives. It is possible to have a negative net APY if debt APY is higher than supply APY."
 
 #: src/ui-config/errorMapping.tsx
 msgid "The requested amount is greater than the max loan size in stable rate mode"
