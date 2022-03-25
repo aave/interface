@@ -90,7 +90,7 @@ export const borrowsUnavailable = (skip: SkipType) => {
     it('Open Dashboard', () => {
       doSwitchToDashboardBorrowView();
     });
-    it('Check blocked message', () => {
+    it('Check that Borrow unavailable', () => {
       cy.get('[data-cy^="dashboardBorrowListItem_"]')
         .first()
         .contains('Borrow')

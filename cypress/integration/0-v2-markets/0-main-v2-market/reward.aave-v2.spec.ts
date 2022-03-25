@@ -17,7 +17,7 @@ const testData = {
     hasApproval: false,
   },
   claimReward: {
-    asset: assets.aaveMarket.stkAAVE,
+    asset: assets.aaveMarket.ALL,
   },
 };
 

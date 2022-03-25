@@ -24,23 +24,17 @@ type ConfirmAction = {
   hasApproval: boolean;
   actionName?: string;
   assetName?: string;
-  isWrapped?: boolean;
 };
 
-export const doConfirm = ({
-  hasApproval,
-  actionName,
-  assetName,
-  isWrapped = false,
-}: ConfirmAction) => {
+export const doConfirm = ({ hasApproval, actionName, assetName }: ConfirmAction) => {
   cy.log(`${hasApproval ? 'One step process' : 'Two step process'}`);
   if (!hasApproval) {
-    cy.get(`[data-cy=approvalButton]`, { timeout: 10000 })
+    cy.get(`[data-cy=approvalButton]`, { timeout: 20000 })
       .should('not.be.disabled')
       .wait(1000)
       .click();
   }
-  cy.get('[data-cy=actionButton]', { timeout: 10000 })
+  cy.get('[data-cy=actionButton]', { timeout: 20000 })
     .should('not.be.disabled')
     .then(($btn) => {
       if (assetName && actionName) {

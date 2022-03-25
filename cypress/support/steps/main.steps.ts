@@ -2,7 +2,6 @@
 import {
   setAmount,
   doConfirm,
-  doSwapForRepay,
   getDashBoardBorrowRow,
   getDashBoardDepositRow,
   doCloseModal,
@@ -36,7 +35,7 @@ export const supply = (
     amount,
     hasApproval = true,
   }: {
-    asset: { shortName: string; fullName: string; wrapped: boolean };
+    asset: { shortName: string; fullName: string };
     amount: number;
     hasApproval: boolean;
   },
@@ -77,7 +76,7 @@ export const borrow = (
     apyType,
     hasApproval = true,
   }: {
-    asset: { shortName: string; fullName: string; wrapped: boolean };
+    asset: { shortName: string; fullName: string };
     amount: number;
     apyType?: string;
     hasApproval: boolean;
@@ -137,7 +136,7 @@ export const repay = (
     repayableAsset,
     hasApproval = false,
   }: {
-    asset: { shortName: string; fullName: string; wrapped: boolean };
+    asset: { shortName: string; fullName: string };
     apyType: string;
     amount: number;
     repayOption: string;
@@ -159,9 +158,7 @@ export const repay = (
       getDashBoardBorrowRow({ assetName: _shortName, apyType })
         .find(`button:contains("Repay")`)
         .click();
-      // cy.get(
-      //   `[data-cy=Modal] h2:contains("Repay ${asset.wrapped ? 'W' : ''}${_shortName}")`
-      // ).should('be.visible');
+      cy.get(`[data-cy=Modal] h2:contains("Repay ${_shortName}")`).should('be.visible');
     });
     it(`Choose ${repayOption} repay option`, () => {
       switch (repayOption) {
@@ -217,7 +214,7 @@ export const withdraw = (
     hasApproval = false,
     forWrapped = false,
   }: {
-    asset: { shortName: string; fullName: string; wrapped: boolean };
+    asset: { shortName: string; fullName: string };
     isCollateral: boolean;
     amount: number;
     hasApproval: boolean;
@@ -236,9 +233,7 @@ export const withdraw = (
       getDashBoardDepositRow({ assetName: _shortName, isCollateralType: isCollateral })
         .find(`button:contains("Withdraw")`)
         .click();
-      // cy.get(
-      //   `[data-cy=Modal] h2:contains("Withdraw ${asset.wrapped ? 'W' : ''}${_shortName}")`
-      // ).should('be.visible');
+      cy.get(`[data-cy=Modal] h2:contains("Withdraw ${_shortName}")`).should('be.visible');
     });
     it(`Choose ${forWrapped ? 'usual token' : 'wrapped token'}`, () => {
       if (forWrapped) {
@@ -367,7 +362,7 @@ export const changeCollateral = (
     asset,
     isCollateralType,
   }: {
-    asset: { shortName: string; fullName: string; wrapped: boolean };
+    asset: { shortName: string; fullName: string };
     isCollateralType: boolean;
   },
   skip: SkipType,
@@ -399,8 +394,8 @@ export const changeCollateral = (
           .click();
       }
       cy.get("[data-cy=Modal] h2:contains('All done!')").should('be.visible');
-      cy.get('[data-cy=Modal] [data-cy=CloseModalIcon]').click();
     });
+    doCloseModal();
   });
 };
 
@@ -408,7 +403,7 @@ export const claimReward = (
   {
     asset,
   }: {
-    asset: { shortName: string; fullName: string; wrapped: boolean };
+    asset: { shortName: string; fullName: string };
   },
   skip: SkipType,
   updateSkipStatus = false
@@ -427,7 +422,6 @@ export const claimReward = (
         hasApproval: true,
         actionName: 'Claim',
         assetName: asset.shortName,
-        isWrapped: asset.wrapped,
       });
     });
     doCloseModal();

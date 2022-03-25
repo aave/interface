@@ -6,6 +6,12 @@
       "collateral": true,
       "wrapped": true
     },
+    "WAVAX": {
+      "fullName": "Wrapped Avalanche",
+      "shortName": "WAVAX",
+      "collateral": true,
+      "wrapped": true
+    },
     "DAI": {
       "fullName": "DAI (DAI.e)",
       "shortName": "DAI.e",
@@ -35,6 +41,10 @@
       "shortName": "WETH.e",
       "collateral": true,
       "wrapped": false
+    },
+    "ALL": {
+      "fullName": "ALL",
+      "shortName": "all"
     }
   },
   "polygonMarket": {
@@ -260,6 +270,11 @@
       "shortName": "stkAAVE",
       "collateral": true,
       "wrapped": false
+    },
+    "ALL": {
+      "fullName": "all",
+      "shortName": "all",
+      "collateral": true
     }
   },
   "staking": {

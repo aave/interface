@@ -17,7 +17,7 @@ const testData = {
     hasApproval: false,
   },
   claimReward: {
-    asset: assets.avalancheMarket.AVAX,
+    asset: assets.avalancheMarket.WAVAX,
   },
 };
 
