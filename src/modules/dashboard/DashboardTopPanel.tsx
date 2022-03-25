@@ -26,6 +26,7 @@ import WalletIcon from '../../../public/icons/markets/wallet-icon.svg';
 import NetAPYIcon from '../../../public/icons/markets/net-apy-icon.svg';
 import EmptyHeartIcon from '../../../public/icons/markets/empty-heart-icon.svg';
 import ClaimGiftIcon from '../../../public/icons/markets/claim-gift-icon.svg';
+import { NetAPYTooltip } from 'src/components/infoTooltips/NetAPYTooltip';
 
 export const DashboardTopPanel = () => {
   const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
@@ -107,7 +108,16 @@ export const DashboardTopPanel = () => {
           )}
         </TopInfoPanelItem>
 
-        <TopInfoPanelItem icon={<NetAPYIcon />} title={<Trans>Net APY</Trans>} loading={loading}>
+        <TopInfoPanelItem
+          icon={<NetAPYIcon />}
+          title={
+            <div style={{ display: 'flex' }}>
+              <Trans>Net APY</Trans>
+              <NetAPYTooltip />
+            </div>
+          }
+          loading={loading}
+        >
           {currentAccount ? (
             <FormattedNumber
               value={user.netAPY}
