@@ -1,0 +1,32 @@
+name: Build app and static
+description: Build nextjs app and export static files
+runs:
+  using: "composite"
+  steps:  
+    - name: Save PR number
+      if: github.event.number 
+      shell: sh
+      run: |
+        mkdir -p ./__pr
+        echo ${{ github.event.number }} > ./__pr/NUM
+    - name: store PR info
+      if: github.event.number 
+      uses: actions/upload-artifact@6673cd052c4cd6fcf4b4e6e60ea986c889389535 # v3.0.0
+      with:
+        name: pr
+        path: __pr/
+        retention-days: 10
+    - name: store static build
+      uses: actions/upload-artifact@6673cd052c4cd6fcf4b4e6e60ea986c889389535 # v3.0.0
+      with:
+        name: out
+        path: out/
+        retention-days: 10
+    - name: store nextjs build
+      uses: actions/upload-artifact@6673cd052c4cd6fcf4b4e6e60ea986c889389535 # v3.0.0
+      with:
+        name: nextjs
+        path: |
+          .next
+          !.next/cache
+        retention-days: 10
