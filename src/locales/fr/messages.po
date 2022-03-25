@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-24 06:05\n"
+"PO-Revision-Date: 2022-03-25 06:05\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -682,55 +682,55 @@ msgstr "Si le facteur de santé descend en dessous de 1, la liquidation de votre
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "If you DO NOT unstake within {0} of unstake window, you will need to activate cooldown process again."
-msgstr ""
+msgstr "Si vous NE vous désengagez PAS dans les {0} de la fenêtre de désengagement, vous devrez réactiver le processus de refroidissement."
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "If your loan to value goes above the liquidation threshold your collateral supplied may be liquidated."
-msgstr ""
+msgstr "Si votre prêt à la valeur dépasse le seuil de liquidation, votre garantie fournie peut être liquidée."
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "In E-Mode some assets are not borrowable. Exit E-Mode to get access to all assets"
-msgstr ""
+msgstr "En E-Mode, certains actifs ne sont pas empruntables. Quittez le E-mode pour accéder à tous les actifs"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "In Isolation mode you cannot supply other assets as collateral for borrowing. Assets used as collateral in Isolation mode can only be borrowed to a specific debt ceiling."
-msgstr ""
+msgstr "En mode Isolation, vous ne pouvez pas fournir d'autres actifs en garantie d'un emprunt. Les actifs utilisés comme garantie en mode Isolation ne peuvent être empruntés que jusqu'à un plafond d'endettement spécifique."
 
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "In Isolation mode, you cannot supply other assets as collateral. A global debt ceiling limits the borrowing power of the isolated asset. Read more in our <0>FAQ</0>"
-msgstr ""
+msgstr "En mode Isolation, vous ne pouvez pas fournir d'autres actifs en garantie. Un plafond d'endettement global limite la capacité d'emprunt de l'actif isolé. En savoir plus dans notre <0>FAQ</0>"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "In order to change E-Mode from asset category{0}you will need to close your position in your current category. See our <0>FAQ</0> to learn more."
-msgstr ""
+msgstr "Pour changer le E-mode de la catégorie d'actifs{0}, vous devrez clôturer votre position dans votre catégorie actuelle. Consultez notre <0>FAQ</0> pour en savoir plus."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Inconsistent flashloan parameters"
-msgstr ""
+msgstr "Paramètres de prêt flash incohérents"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Interest rate rebalance conditions were not met"
-msgstr ""
+msgstr "Les conditions de rééquilibrage des taux d'intérêt n'ont pas été remplies"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid amount to burn"
-msgstr ""
+msgstr "Montant non valide à brûler"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid amount to mint"
-msgstr ""
+msgstr "Montant invalide à frapper"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid bridge protocol fee"
-msgstr ""
+msgstr "Frais de protocole de pont invalide"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid expiration"
-msgstr ""
+msgstr "Expiration invalide"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid flashloan premium"
-msgstr ""
+msgstr "Prime flash non valide"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid return value of the flashloan executor function"
@@ -742,28 +742,28 @@ msgstr "Signature non valide"
 
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Isolated"
-msgstr ""
+msgstr "Isolé"
 
 #: src/components/isolationMode/IsolatedTooltip.tsx
 msgid "Isolated assets have limited borrowing power and other assets cannot be used as collateral."
-msgstr ""
+msgstr "Les actifs isolés ont un pouvoir d'emprunt limité et les autres actifs ne peuvent pas être utilisés comme garantie."
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Language"
-msgstr ""
+msgstr "Language"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Learn more"
-msgstr ""
+msgstr "Apprendre encore plus"
 
 #: src/modules/staking/StakingHeader.tsx
 msgid "Learn more about risks involved"
-msgstr ""
+msgstr "En savoir plus sur les risques encourus"
 
 #: src/components/isolationMode/IsolatedTooltip.tsx
 msgid "Learn more in our <0>FAQ guide</0>"
-msgstr ""
+msgstr "En savoir plus dans notre <0>guide FAQ</0>"
 
 #: src/layouts/MobileMenu.tsx
 msgid "Links"
@@ -771,11 +771,11 @@ msgstr "Liens"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/LTVContent.tsx
 msgid "Liquidation <0/> threshold"
-msgstr ""
+msgstr "Seuil de liquidation <0/>"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Liquidation at"
-msgstr ""
+msgstr "Liquidation à"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Liquidation penalty"
@@ -783,7 +783,7 @@ msgstr "Pénalité de liquidation"
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "Liquidation risk is high. Lower amounts recomended."
-msgstr ""
+msgstr "Le risque de liquidation est élevé. Quantités inférieures recommandées."
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "Liquidation risk is high. Lower amounts recommended."
@@ -936,125 +936,125 @@ msgstr "Opération non prise en charge"
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Oracle price"
-msgstr ""
+msgstr "Prix Oracle"
 
 #: pages/reserve-overview.page.tsx
 msgid "Overview"
-msgstr ""
+msgstr "Aperçu"
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Participating in this {symbol} reserve gives annualized rewards."
-msgstr ""
+msgstr "Participer à cette réserve {symbol} donne des récompenses annualisées."
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 #: src/components/transactions/Faucet/FaucetActions.tsx
 msgid "Pending..."
-msgstr ""
+msgstr "En attente..."
 
 #: src/components/ConnectWalletPaper.tsx
 msgid "Please connect your wallet to see your supplies, borrowings, and open positions."
-msgstr ""
+msgstr "Veuillez connecter votre portefeuille pour voir vos fournitures, vos emprunts et vos positions ouvertes."
 
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Please switch to {networkName}."
-msgstr ""
+msgstr "Veuillez passer à {networkName}."
 
 #: src/components/ConnectWalletPaper.tsx
 msgid "Please, connect your wallet"
-msgstr ""
+msgstr "S'il vous plaît, connectez votre portefeuille"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Pool addresses provider is not registered"
-msgstr ""
+msgstr "Le fournisseur d'adresses de pool n'est pas enregistré"
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Price impact"
-msgstr ""
+msgstr "Incidence sur les prix"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Proposal details"
-msgstr ""
+msgstr "Détails de la proposition"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Proposal overview"
-msgstr ""
+msgstr "Aperçu de la proposition"
 
 #: src/modules/governance/ProposalsList.tsx
 msgid "Proposals"
-msgstr ""
+msgstr "Les propositions"
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Proposition power"
-msgstr ""
+msgstr "Pouvoir de proposition"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 #: src/modules/governance/ProposalListItem.tsx
 msgid "Quorum"
-msgstr ""
+msgstr "Quorum"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Recipient address"
-msgstr ""
+msgstr "Adresse du destinataire"
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Rejected connection request"
-msgstr ""
+msgstr "Demande de connexion rejetée"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Repay/RepayModalContent.tsx
 msgid "Remaining debt"
-msgstr ""
+msgstr "Dette restante"
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "Remaining supply"
-msgstr ""
+msgstr "Offre restante"
 
 #: src/components/transactions/Repay/RepayModal.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 msgid "Repay"
-msgstr ""
+msgstr "Rembourser"
 
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 msgid "Repay with"
-msgstr ""
+msgstr "Rembourser avec"
 
 #: src/components/transactions/Repay/RepayActions.tsx
 msgid "Repay {symbol}"
-msgstr ""
+msgstr "Rembourser {symbole}"
 
 #: src/components/transactions/Repay/RepayActions.tsx
 msgid "Repaying {symbol}"
-msgstr ""
+msgstr "Remboursement {symbole}"
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Reserve Size"
-msgstr ""
+msgstr "Taille de réserve"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Reserve status & configuration"
-msgstr ""
+msgstr "Statut et configuration de la réserve"
 
 #: src/components/transactions/FlowCommons/LeftHelperText.tsx
 msgid "Retry What?"
-msgstr ""
+msgstr "Réessayer Quoi ?"
 
 #: src/components/infoModalContents/RetryWithApprovalInfoContent.tsx
 msgid "Retry with Approval"
-msgstr ""
+msgstr "Réessayer avec approbation"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Retry with approval"
-msgstr ""
+msgstr "Réessayer avec approbation"
 
 #: src/components/transactions/FlowCommons/RightHelperText.tsx
 msgid "Review approval tx details"
-msgstr ""
+msgstr "Examiner les détails de la taxe d'approbation"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModal.tsx
 msgid "Review tx"
-msgstr ""
+msgstr "Réviser tx"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Review tx details"
