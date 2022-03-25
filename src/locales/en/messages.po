@@ -1659,6 +1659,10 @@ msgstr "You did not participate in this proposal"
 msgid "You do not have supplies in this currency"
 msgstr "You do not have supplies in this currency"
 
+#: src/components/infoTooltips/RepayWithDustTooltip.tsx
+msgid "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
+msgstr "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
+
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "You have not borrow yet using this currency"
 msgstr "You have not borrow yet using this currency"
