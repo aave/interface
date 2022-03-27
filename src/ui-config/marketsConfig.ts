@@ -46,7 +46,7 @@ export type MarketDataType = {
 
 export enum CustomMarket {
   // v3 test networks
-  // proto_kovan_v3 = 'proto_kovan_v3',
+  proto_kovan_v3 = 'proto_kovan_v3',
   proto_arbitrum_rinkeby_v3 = 'proto_arbitrum_rinkeby_v3',
   proto_mumbai_v3 = 'proto_mumbai_v3',
   proto_eth_rinkeby_v3 = 'proto_eth_rinkeby_v3',
@@ -228,6 +228,27 @@ export const marketsData: {
     halMarketName: 'aaveavalanche',
   },
   // v3
+  [CustomMarket.proto_kovan_v3]: {
+    v3: true,
+    marketTitle: 'Ethereum Kovan',
+    chainId: ChainId.kovan,
+    enabledFeatures: {
+      faucet: true,
+      governance: false,
+      staking: false,
+      incentives: false,
+    },
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0x651b8A8cA545b251a8f49B57D5838Da0a8DFbEF9'.toLowerCase(),
+      LENDING_POOL: '0x329462f8ed05E5FfBF6dfB84106e76B69e6B1F94',
+      WETH_GATEWAY: '0x509B2506FbA1BD41765F6A82C7B0Dd4229191768',
+      FAUCET: '0x06Db7973d6D724Eb15404a0d178624f6e07834F9',
+      WALLET_BALANCE_PROVIDER: '0x57dDbfeab5Dc552d33dC8cacCdB490de80431334',
+      UI_POOL_DATA_PROVIDER: '0x47E83aeB8E1940aF16fF763F2c25ba75a1F4D0c5',
+      UI_INCENTIVE_DATA_PROVIDER: '0x335De793a66B839974aED2673b72a452c3Ee93A4',
+    },
+  },
   [CustomMarket.proto_eth_rinkeby_v3]: {
     v3: true,
     marketTitle: 'Ethereum Rinkeby',
