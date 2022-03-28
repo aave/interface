@@ -10,6 +10,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { ComputedReserveData } from './app-data-provider/useAppDataProvider';
 import { ChainId } from '@aave/contract-helpers';
 import { BigNumberZeroDecimal, normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
+import { useProtocolDataContext } from './useProtocolDataContext';
 
 const ParaSwap = (chainId: number) => {
   const fetcher = constructFetchFetcher(fetch); // alternatively constructFetchFetcher
@@ -27,10 +28,11 @@ const mainnetParaswap = ParaSwap(ChainId.mainnet);
 const polygonParaswap = ParaSwap(ChainId.polygon);
 const avalancheParaswap = ParaSwap(ChainId.avalanche);
 
-const getParaswap = (chainId: ChainId) => {
-  if (ChainId.mainnet === chainId) return mainnetParaswap;
-  if (ChainId.polygon === chainId) return polygonParaswap;
-  if (ChainId.avalanche === chainId) return avalancheParaswap;
+const getParaswap = (chainId: ChainId, currentChainId: ChainId) => {
+  if (ChainId.mainnet === chainId || ChainId.mainnet === currentChainId) return mainnetParaswap;
+  if (ChainId.polygon === chainId || ChainId.polygon === currentChainId) return polygonParaswap;
+  if (ChainId.avalanche === chainId || ChainId.avalanche === currentChainId)
+    return avalancheParaswap;
   throw new Error('chain not supported');
 };
 
@@ -48,7 +50,8 @@ const MESSAGE_MAP = {
 };
 
 export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId }: UseSwapProps) => {
-  const paraSwap = getParaswap(chainId);
+  const { currentChainId } = useProtocolDataContext();
+  const paraSwap = getParaswap(chainId, currentChainId);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [priceRoute, setPriceRoute] = useState<OptimalRate | null>(null);
