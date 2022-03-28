@@ -7,7 +7,7 @@ export const GasTooltip = ({ ...rest }: TextWithTooltipProps) => {
     <TextWithTooltip {...rest}>
       <Trans>
         This gas calculation is only an estimation. Your wallet will set the price of the
-        transaction. Check there if you want to change its priority.
+        transaction. You can modify the gas settings directly from your wallet provider.
       </Trans>
     </TextWithTooltip>
   );

@@ -3,7 +3,6 @@ import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { utils } from 'ethers';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useGasStation } from 'src/hooks/useGasStation';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -11,7 +10,6 @@ import { permitByChainAndToken } from 'src/ui-config/permitConfig';
 import { optimizedPath } from 'src/utils/utils';
 
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
-import { GasOption } from '../GasStation/GasStationProvider';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
 export interface SupplyActionProps extends BoxProps {
@@ -36,7 +34,6 @@ export const SupplyActions = ({
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
-  const { state, gasPriceData } = useGasStation();
 
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({
@@ -71,10 +68,6 @@ export const SupplyActions = ({
           deadline,
         });
       },
-      customGasPrice:
-        state.gasOption === GasOption.Custom
-          ? state.customGas
-          : gasPriceData.data?.[state.gasOption].legacyGasPrice,
       skip: !amountToSupply || parseFloat(amountToSupply) === 0,
       deps: [amountToSupply, poolAddress],
     });

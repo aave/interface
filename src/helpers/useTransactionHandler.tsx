@@ -1,5 +1,4 @@
 import { EthereumTransactionTypeExtended, GasType, Pool } from '@aave/contract-helpers';
-// import { BigNumber } from '@ethersproject/bignumber';
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
 import { DependencyList, useEffect, useRef, useState } from 'react';
@@ -18,7 +17,6 @@ interface UseTransactionHandlerProps {
     deadline: string
   ) => Promise<EthereumTransactionTypeExtended[]>;
   tryPermit?: boolean;
-  customGasPrice?: string;
   skip?: boolean;
   deps?: DependencyList;
 }
@@ -163,7 +161,6 @@ export const useTransactionHandler = ({
         try {
           setApprovalTxState({ ...approvalTxState, loading: true });
           const params = await approvalTx.tx();
-          // if (customGasPrice) params.gasPrice = BigNumber.from(customGasPrice);
           delete params.gasPrice;
           await processTx({
             tx: () => sendTx(params),
@@ -205,7 +202,6 @@ export const useTransactionHandler = ({
         setMainTxState({ ...mainTxState, loading: true });
         const txns = await handleGetPermitTxns(signature, signatureDeadline);
         const params = await txns[0].tx();
-        // if (customGasPrice) params.gasPrice = BigNumber.from(customGasPrice);
         delete params.gasPrice;
         return processTx({
           tx: () => sendTx(params),
@@ -240,7 +236,6 @@ export const useTransactionHandler = ({
       try {
         setMainTxState({ ...mainTxState, loading: true });
         const params = await actionTx.tx();
-        // if (customGasPrice) params.gasPrice = BigNumber.from(customGasPrice);
         delete params.gasPrice;
         return processTx({
           tx: () => sendTx(params),
