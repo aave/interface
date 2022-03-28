@@ -57,29 +57,6 @@ const useGetGasPrices = (): GetGasPricesHook => {
   const { currentChainId, jsonRpcProvider } = useProtocolDataContext();
   const { connected } = useWeb3Context();
 
-  const apiRequest = async () => {
-    if (connected && type !== undefined) {
-      setLoading(true);
-      const data = await fetch(
-        `https://apiv5.paraswap.io/prices/gas/${currentChainId}?eip1559=true`
-      );
-      if (!data.ok) {
-        throw {
-          error: data.statusText,
-          body: await data.json(),
-        };
-      }
-      const dataJson = (await data.json()) as ResponseGasPrice;
-      const gasPricesData: GasPriceData = {
-        [GasOption.Slow]: dataJson.safeLow,
-        [GasOption.Normal]: dataJson.average,
-        [GasOption.Fast]: dataJson.fast,
-      };
-      setData(gasPricesData);
-      setError(false);
-    }
-  };
-
   const web3Request = async () => {
     if (jsonRpcProvider) {
       const feeData = await jsonRpcProvider.getFeeData();
@@ -91,15 +68,6 @@ const useGetGasPrices = (): GetGasPricesHook => {
   const estimateGasPrice = async () => {
     let apiRequestError;
 
-    // Call to Paraswap API
-    try {
-      await apiRequest();
-      return;
-    } catch (err) {
-      apiRequestError = err;
-    }
-
-    // If fails (fn not returned), call to `getFeeData` via Web3 Provider.
     try {
       await web3Request();
     } catch (web3ProviderError) {
