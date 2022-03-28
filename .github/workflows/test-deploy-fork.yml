@@ -10,12 +10,6 @@ on:
     types: ["completed"]
     branches-ignore: ["main"]
 
-permissions:
-  actions: read
-  contents: read
-  pull-requests: write
-  statuses: read
-
 jobs:
   prepare_jobs:
     runs-on: ubuntu-latest
