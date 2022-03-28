@@ -19,7 +19,7 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'yarn'
       - name: install
-        run: yarn --frozen-lockfile --prefer-offline
+        run: yarn --frozen-lockfile
       - name: build
         run: yarn build:static
         env:

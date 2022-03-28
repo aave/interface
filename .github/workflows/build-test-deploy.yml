@@ -30,7 +30,7 @@ jobs:
           cache: 'yarn'
 
       - name: install
-        run: yarn --frozen-lockfile --prefer-offline
+        run: yarn --frozen-lockfile
 
       - name: build
         if: steps.restore.outcome != 'success'
@@ -59,7 +59,7 @@ jobs:
           cache: 'yarn'
 
       - name: install
-        run: yarn --frozen-lockfile --prefer-offline
+        run: yarn --frozen-lockfile
 
       - name: i18n
         run: |
@@ -98,7 +98,7 @@ jobs:
   #         cache: 'yarn'
 
   #     - name: install
-  #       run: yarn --frozen-lockfile --prefer-offline
+  #       run: yarn --frozen-lockfile
 
   #     - name: download build
   #       uses: actions/download-artifact@v2
