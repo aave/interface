@@ -1,23 +1,24 @@
-import { Select, Trans } from '@lingui/macro';
-import { Settings } from '@mui/icons-material';
+// import { Select, Trans } from '@lingui/macro';
+// import { Settings } from '@mui/icons-material';
 import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
 import {
   Box,
-  Popper,
-  styled,
-  TextField,
-  ToggleButton,
-  ToggleButtonGroup,
-  Tooltip,
-  Typography,
-  useTheme,
-  ClickAwayListener,
+  // Popper,
+  // styled,
+  // TextField,
+  // ToggleButton,
+  // ToggleButtonGroup,
+  // Tooltip,
+  // Typography,
+  // useTheme,
+  // ClickAwayListener,
   CircularProgress,
-  experimental_sx,
+  // experimental_sx,
 } from '@mui/material';
 import { BigNumber } from 'ethers/lib/ethers';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
-import React, { useState } from 'react';
+import React from 'react';
+import { GasTooltip } from 'src/components/infoTooltips/GasTooltip';
 import { useGasStation } from 'src/hooks/useGasStation';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -25,25 +26,25 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useAppDataContext } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { GasPriceData } from '../../../hooks/useGetGasPrices';
 import { FormattedNumber } from '../../primitives/FormattedNumber';
-import { GasButton } from './GasButton';
+// import { GasButton } from './GasButton';
 import { GasOption } from './GasStationProvider';
 
-const PopperComponent = styled(Popper)(
-  experimental_sx({
-    '.MuiTooltip-tooltip': {
-      backgroundColor: 'background.paper',
-      p: 0,
-      borderRadius: '6px',
-      boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
-    },
-    '.MuiTooltip-arrow': {
-      color: 'background.paper',
-      '&:before': {
-        boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
-      },
-    },
-  })
-);
+// const PopperComponent = styled(Popper)(
+//   experimental_sx({
+//     '.MuiTooltip-tooltip': {
+//       backgroundColor: 'background.paper',
+//       p: 0,
+//       borderRadius: '6px',
+//       boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
+//     },
+//     '.MuiTooltip-arrow': {
+//       color: 'background.paper',
+//       '&:before': {
+//         boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
+//       },
+//     },
+//   })
+// );
 
 export interface GasStationProps {
   gasLimit: BigNumber;
@@ -64,12 +65,12 @@ export const getGasCosts = (
 };
 
 export const GasStation: React.FC<GasStationProps> = ({ gasLimit }) => {
-  const theme = useTheme();
+  // const theme = useTheme();
 
   const {
     state,
-    dispatch,
-    gasPriceData: { data, error },
+    // dispatch,
+    gasPriceData: { data },
   } = useGasStation();
   const { reserves } = useAppDataContext();
   const {
@@ -86,27 +87,27 @@ export const GasStation: React.FC<GasStationProps> = ({ gasLimit }) => {
       ? getGasCosts(gasLimit, state.gasOption, state.customGas, data, wrappedAsset.priceInUSD)
       : undefined;
 
-  const [open, setOpen] = useState(false);
-  const toggleDropdown = () => setOpen(!open);
+  // const [open, setOpen] = useState(false);
+  // const toggleDropdown = () => setOpen(!open);
 
-  const onSetGasPrice = (
-    _event: React.MouseEvent<HTMLElement, MouseEvent>,
-    gasOption: GasOption
-  ) => {
-    if (gasOption !== null) {
-      dispatch({ type: 'setGasOption', value: gasOption });
-    }
-  };
+  // const onSetGasPrice = (
+  //   _event: React.MouseEvent<HTMLElement, MouseEvent>,
+  //   gasOption: GasOption
+  // ) => {
+  //   if (gasOption !== null) {
+  //     dispatch({ type: 'setGasOption', value: gasOption });
+  //   }
+  // };
 
-  const onSetCustomGasPrice = (
-    event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => {
-    dispatch({ type: 'setCustomGasOption', value: event.target.value });
-  };
+  // const onSetCustomGasPrice = (
+  //   event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  // ) => {
+  //   dispatch({ type: 'setCustomGasOption', value: event.target.value });
+  // };
 
-  const onClickCustomGasField = () => {
-    dispatch({ type: 'setCustomGasOption', value: state.customGas });
-  };
+  // const onClickCustomGasField = () => {
+  //   dispatch({ type: 'setCustomGasOption', value: state.customGas });
+  // };
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', mt: 6 }}>
@@ -115,12 +116,15 @@ export const GasStation: React.FC<GasStationProps> = ({ gasLimit }) => {
       {loadingTxns ? (
         <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />
       ) : totalGasCostsUsd ? (
-        <FormattedNumber value={totalGasCostsUsd} symbol="USD" color="text.secondary" />
+        <>
+          <FormattedNumber value={totalGasCostsUsd} symbol="USD" color="text.secondary" />
+          <GasTooltip />
+        </>
       ) : (
         '-'
       )}
 
-      <Typography sx={{ mx: 1.5 }} variant="caption" color="divider">
+      {/* <Typography sx={{ mx: 1.5 }} variant="caption" color="divider">
         |
       </Typography>
 
@@ -272,7 +276,7 @@ export const GasStation: React.FC<GasStationProps> = ({ gasLimit }) => {
             />
           </Tooltip>
         </div>
-      </ClickAwayListener>
+      </ClickAwayListener> */}
     </Box>
   );
 };
