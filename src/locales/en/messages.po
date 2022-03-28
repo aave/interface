@@ -1369,8 +1369,8 @@ msgid "This asset has reached its supply cap. Nothing is available to be supplie
 msgstr "This asset has reached its supply cap. Nothing is available to be supplied from this market."
 
 #: src/components/infoTooltips/GasTooltip.tsx
-msgid "This gas calculation is only an estimation. Your wallet will set the price of the transaction. Check there if you want to change its priority."
-msgstr "This gas calculation is only an estimation. Your wallet will set the price of the transaction. Check there if you want to change its priority."
+msgid "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
+msgstr "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
 
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount available for you to borrow. You can borrow based on your collateral and until the borrow cap is reached."
