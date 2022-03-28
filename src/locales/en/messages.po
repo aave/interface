@@ -442,10 +442,6 @@ msgstr "Current LTV"
 msgid "Current differential"
 msgstr "Current differential"
 
-#: src/components/transactions/GasStation/GasStation.tsx
-msgid "Custom"
-msgstr "Custom"
-
 #: src/layouts/components/DarkModeSwitcher.tsx
 msgid "Dark mode"
 msgstr "Dark mode"
@@ -1095,10 +1091,6 @@ msgstr "Select Aave Market"
 msgid "Select language"
 msgstr "Select language"
 
-#: src/components/transactions/GasStation/GasStation.tsx
-msgid "Select transaction speed"
-msgstr "Select transaction speed"
-
 #: src/components/HALTooltip.tsx
 msgid "Setup triggers and receive notifications about your Health Factor status using Hal app."
 msgstr "Setup triggers and receive notifications about your Health Factor status using Hal app."
@@ -1375,6 +1367,10 @@ msgstr "This asset has reached its borrow cap. Nothing is available to be borrow
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has reached its supply cap. Nothing is available to be supplied from this market."
 msgstr "This asset has reached its supply cap. Nothing is available to be supplied from this market."
+
+#: src/components/infoTooltips/GasTooltip.tsx
+msgid "This gas calculation is only an estimation. Your wallet will set the price of the transaction. Check there if you want to change its priority."
+msgstr "This gas calculation is only an estimation. Your wallet will set the price of the transaction. Check there if you want to change its priority."
 
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount available for you to borrow. You can borrow based on your collateral and until the borrow cap is reached."
@@ -1776,10 +1772,6 @@ msgstr "on"
 msgid "or"
 msgstr "or"
 
-#: src/components/transactions/GasStation/GasStation.tsx
-msgid "or enter custom fee value"
-msgstr "or enter custom fee value"
-
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "or use <0>{0}</0> to transfer your ETH assets."
 msgstr "or use <0>{0}</0> to transfer your ETH assets."
@@ -1812,13 +1804,6 @@ msgstr "v2 markets"
 msgid "v3 markets"
 msgstr "v3 markets"
 
-#: src/components/transactions/GasStation/GasStation.tsx
-msgid "{0, select, slow {Slow} normal {Normal} fast {Fast} other {-}}"
-msgstr "{0, select, slow {Slow} normal {Normal} fast {Fast} other {-}}"
-
-#: src/components/transactions/GasStation/GasStation.tsx
-#: src/components/transactions/GasStation/GasStation.tsx
-#: src/components/transactions/GasStation/GasStation.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
