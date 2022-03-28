@@ -995,6 +995,21 @@
       "ipfsHash": "QmdS3bGNQx8yuATy9Hfzd9BZHcHrkkNBiXZLJuibp1t11Z",
       "originalHash": "0xe04114acd4b2ad3e3493397599570929bd7d9d619bca1e1844f0e460a0dc8b78",
       "id": 67
+    },
+    {
+      "title": "Optimizing ETH rates",
+      "status": "Proposed",
+      "author": "Samyak Jain (@smykjain)",
+      "shortDescription": "Optimizing ETH rates to meet borrow demands & increase ETH revenue generation",
+      "discussions": "https://governance.aave.com/t/optimize-rate-curve-for-eth-improve-revenue-generation/7571",
+      "created": "2022-03-23T00:00:00.000Z",
+      "updated (*optional)": "2022-03-23T00:00:00.000Z",
+      "preview": "## Simple Summary\nOptimizing ETH rates on Aave v2 ethereum mainnet …",
+      "basename": "C80DBB8511E8-AIP-OPTIMIZING-ETH-RATES",
+      "description": "\n\n## Simple Summary\nOptimizing ETH rates on Aave v2 ethereum mainnet to meet the borrowing demands generated from the inclusion of stETH collateral.\n\n\n## Motivation\n\nWith the inclusion of new collateral type stETH the borrowing of ETH has increased to an all time high (4-6x more utilization) it is now critical to adjust rates to continue growth under current conditions.\n\nCurrently, stETH earns ~3.9% APR from staking rewards, while still being used as collateral in Aave, which allows users to go leverage on stETH while borrowing ETH. This is only sensible to do when ETH borrow rates are lower than stETH rewards. With the current interest modals the utilization has reached up to 19% (an all time high) and can grow further to about 24%. With the above updates it will allow utilization to go up to 70%. Yeilding good returns to users and a 3-4x increase in ETH revenue for the Aave protocol.\n\nFollow the forum post [here](https://governance.aave.com/t/optimize-rate-curve-for-eth-improve-revenue-generation/7571) for more detailed description on calcualations, benefits & risks.\n\n## Specification\n\nProposed updated to ETH rates:\n\n- OPTIMAL_UTILIZATION_RATE = **70** (previously: 65)\n- EXCESS_UTILIZATION_RATE = **30** (previously: 35)\n- baseVariableBorrowRate = **0** (previously: 0)\n- variableRateSlope1 = **3** (previously: 8)\n- variableRateSlope2 = **100** (previously: 100)\n- stableRateSlope1 = **4** (previously: 10)\n- stableRateSlope2 = **100** (previously: 100)\n\n\n## Rationale\nCurrent stETH rewards are 4%. Staking rewards on ETH via Lido are still relatively high and stETH still has the capacity to accept another $4.5B of ETH. This increase in stETH supply would only reduce the rewards by 0.3%, meaning there is at least 1.5M ETH (~$4-5B USD) that could get staked. For Aave, it represents $4-5B in borrowings of ETH (more significant than any borrowing market that currently exists across any token)\n\n**Projected rates at current a 3% borrowing rate:**\n\n- Utilization: 24.5% [very low utilization leading to less revenue generation]\n- Borrowing rate: 3.02%\n- Supplying rate: 0.66% [low incentives for new lenders to come in]\n\n**Projected rates at 3% borrow rate and 70% utilization:**\n\n- Utilization: 70% [good revenue for governance]\n- Borrow rate: 3%\n- Supplying rate: 1.9% [decent for new lenders to come in or to get a discount for stable coin borrowing against ETH]\n\nSee Governance Post [here](https://governance.aave.com/t/optimize-rate-curve-for-eth-improve-revenue-generation/7571) for more detailed description on calcualations, benefits & risks.\n\n## Implementation\n\n[Here](https://etherscan.io/address/0xEc368D82cb2ad9fc5EfAF823B115A622b52bcD5F#code) is the new rate strategy.\n[Here](https://etherscan.io/address/0x49e4db0a4d63c73bae75747ee12ab63bbdda3207#code) is the execution payload.\n\n# Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "QmU8YK9g7ELcjJx75roKGaLMSm2kg7DxTxZQjZencbVRH3",
+      "originalHash": "0x560beb8b858395e146aaaf9d242f7a4da3569311fa288eaf63648402ca929a22",
+      "id": 68
     }
   ]
 }
