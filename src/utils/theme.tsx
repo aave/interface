@@ -769,6 +769,7 @@ export function getThemedComponents(theme: Theme) {
       MuiCssBaseline: {
         styleOverrides: {
           body: {
+            fontVariantNumeric: 'tabular-nums',
             fontFamily: FONT,
             fontWeight: 400,
             fontSize: pxToRem(14),
