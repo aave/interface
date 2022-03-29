@@ -30,15 +30,6 @@ export function formatProposal(proposal: Omit<Proposal, 'values'>) {
 
   const diffReached = requiredDiff.lte(diff);
 
-  console.log(`
-  for: ${proposal.forVotes}
-  against: ${proposal.againstVotes}
-  min: ${proposal.minimumDiff} 
-  diff: ${diff}
-  requiredDiff: ${requiredDiff}
-  diffReached: ${diffReached}
-`);
-
   return {
     yaePercent,
     yaeVotes,
