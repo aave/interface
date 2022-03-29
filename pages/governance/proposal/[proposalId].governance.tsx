@@ -264,14 +264,14 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                     sx={{ height: 48 }}
                     captionVariant="description"
                   >
-                    <FormattedNumber value={requiredDiff} visibleDecimals={2} percent />
+                    <FormattedNumber value={requiredDiff} visibleDecimals={2} />
                   </Row>
                   <Row
                     caption={<Trans>Current differential</Trans>}
                     sx={{ height: 48 }}
                     captionVariant="description"
                   >
-                    <FormattedNumber value={diff} visibleDecimals={2} percent />
+                    <FormattedNumber value={diff} visibleDecimals={2} />
                   </Row>
                   <Row
                     caption={

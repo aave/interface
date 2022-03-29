@@ -21,11 +21,13 @@ export function formatProposal(proposal: Omit<Proposal, 'values'>) {
   if (quorumPercent.gte(100)) {
     quorumReached = true;
   }
-  const diff = new BigNumber(proposal.forVotes)
-    .minus(proposal.againstVotes)
-    .dividedBy(proposal.totalVotingSupply)
-    .multipliedBy(100);
-  const requiredDiff = new BigNumber(proposal.minimumDiff).dividedBy(100);
+
+  const diff = new BigNumber(proposal.forVotes).minus(proposal.againstVotes);
+
+  const requiredDiff = new BigNumber(proposal.forVotes)
+    .plus(proposal.againstVotes)
+    .multipliedBy(new BigNumber(proposal.minimumDiff).dividedBy(100));
+
   const diffReached = requiredDiff.lte(diff);
 
   return {
@@ -36,8 +38,8 @@ export function formatProposal(proposal: Omit<Proposal, 'values'>) {
     minQuorumNeeded,
     quorumPercent,
     quorumReached,
-    diff: diff.toNumber(),
-    requiredDiff: requiredDiff.toNumber(),
+    diff: normalizeBN(diff, 18).toNumber(),
+    requiredDiff: normalizeBN(requiredDiff, 18).toNumber(),
     diffReached,
   };
 }
