@@ -544,6 +544,7 @@ msgstr "E-Mode"
 msgid "E-Mode category"
 msgstr "E-Mode category"
 
+#: src/components/infoTooltips/EModeTooltip.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode increases your LTV for a selected category of assets up to 97%. <0>Learn more</0>"
 msgstr "E-Mode increases your LTV for a selected category of assets up to 97%. <0>Learn more</0>"
