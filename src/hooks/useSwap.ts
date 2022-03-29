@@ -27,16 +27,10 @@ const mainnetParaswap = ParaSwap(ChainId.mainnet);
 const polygonParaswap = ParaSwap(ChainId.polygon);
 const avalancheParaswap = ParaSwap(ChainId.avalanche);
 
-const getParaswap = (chainId: ChainId, underlyingChainId: ChainId | undefined) => {
-  if (ChainId.mainnet === chainId || (underlyingChainId && ChainId.mainnet === underlyingChainId))
-    return mainnetParaswap;
-  if (ChainId.polygon === chainId || (underlyingChainId && ChainId.polygon === underlyingChainId))
-    return polygonParaswap;
-  if (
-    ChainId.avalanche === chainId ||
-    (underlyingChainId && ChainId.avalanche === underlyingChainId)
-  )
-    return avalancheParaswap;
+const getParaswap = (chainId: ChainId) => {
+  if (ChainId.mainnet === chainId) return mainnetParaswap;
+  if (ChainId.polygon === chainId) return polygonParaswap;
+  if (ChainId.avalanche === chainId) return avalancheParaswap;
   throw new Error('chain not supported');
 };
 
@@ -47,23 +41,14 @@ type UseSwapProps = {
   variant: 'exactIn' | 'exactOut';
   userId?: string;
   chainId: ChainId;
-  underlyingChainId?: ChainId;
 };
 
 const MESSAGE_MAP = {
   ESTIMATED_LOSS_GREATER_THAN_MAX_IMPACT: 'Price impact to high',
 };
 
-export const useSwap = ({
-  swapIn,
-  swapOut,
-  variant,
-  userId,
-  max,
-  chainId,
-  underlyingChainId,
-}: UseSwapProps) => {
-  const paraSwap = getParaswap(chainId, underlyingChainId);
+export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId }: UseSwapProps) => {
+  const paraSwap = getParaswap(chainId);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [priceRoute, setPriceRoute] = useState<OptimalRate | null>(null);
@@ -119,7 +104,6 @@ export const useSwap = ({
     variant,
     max,
     chainId,
-    underlyingChainId,
   ]);
 
   // updates the route on input change
@@ -168,7 +152,6 @@ type GetSwapCallDataProps = {
   route: OptimalRate;
   max?: boolean;
   chainId: ChainId;
-  underlyingChainId?: ChainId;
 };
 
 export const getSwapCallData = async ({
@@ -179,9 +162,8 @@ export const getSwapCallData = async ({
   user,
   route,
   chainId,
-  underlyingChainId,
 }: GetSwapCallDataProps) => {
-  const paraSwap = getParaswap(chainId, underlyingChainId);
+  const paraSwap = getParaswap(chainId);
   const destAmountWithSlippage = new BigNumberZeroDecimal(route.destAmount)
     .multipliedBy(99)
     .dividedBy(100)

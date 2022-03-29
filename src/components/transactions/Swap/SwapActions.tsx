@@ -53,8 +53,7 @@ export const SwapActions = ({
           destDecimals: targetReserve.decimals,
           user: currentAccount,
           route: priceRoute as OptimalRate,
-          chainId: chainId,
-          underlyingChainId: currentNetworkConfig.underlyingChainId,
+          chainId: currentNetworkConfig.underlyingChainId || chainId,
         });
         return lendingPool.swapCollateral({
           fromAsset: poolReserve.underlyingAsset,

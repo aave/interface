@@ -77,13 +77,12 @@ export const SwapModalContent = ({
   const amount = isMaxSelected ? maxAmountToSwap : _amount;
 
   const { priceRoute, inputAmountUSD, inputAmount, outputAmount, outputAmountUSD } = useSwap({
-    chainId: currentChainId,
+    chainId: currentNetworkConfig.underlyingChainId || currentChainId,
     userId: currentAccount,
     variant: 'exactIn',
     swapIn: { ...poolReserve, amount: amountRef.current },
     swapOut: { ...swapTarget, amount: '0' },
     max: isMaxSelected,
-    underlyingChainId: currentNetworkConfig.underlyingChainId,
   });
 
   const minimumReceived = new BigNumber(outputAmount || '0')
