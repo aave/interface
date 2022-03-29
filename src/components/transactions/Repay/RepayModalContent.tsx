@@ -5,9 +5,9 @@ import {
   valueToBigNumber,
 } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
+import Typography from '@mui/material/Typography';
 import BigNumber from 'bignumber.js';
 import React, { useEffect, useRef, useState } from 'react';
-import { RepayWithDustTooltip } from 'src/components/infoTooltips/RepayWithDustTooltip';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -60,6 +60,11 @@ export const RepayModalContent = ({
 
   const debt =
     debtType === InterestRate.Stable ? userReserve.stableBorrows : userReserve.variableBorrows;
+  const debtUSD = new BigNumber(debt)
+    .multipliedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
+    .multipliedBy(marketReferencePriceInUsd)
+    .shiftedBy(-USD_DECIMALS);
+
   const safeAmountToRepayAll = valueToBigNumber(debt).multipliedBy('1.0025');
 
   // calculate max amount abailable to repay
@@ -196,22 +201,28 @@ export const RepayModalContent = ({
         maxValue={maxAmountToRepay.toString()}
       />
 
+      {maxRepayWithDustRemaining && (
+        <Typography color="warning.main" variant="helperText">
+          <Trans>
+            You don’t have enough funds in your wallet to repay the full amount. If you proceed to
+            repay with your current amount of funds, you will still have a small borrowing position
+            in your dashboard.
+          </Trans>
+        </Typography>
+      )}
+
       <TxModalDetails gasLimit={gasLimit}>
         <DetailsNumberLineWithSub
-          description={
-            <div style={{ display: 'flex' }}>
-              <Trans>Remaining debt</Trans>
-              {maxRepayWithDustRemaining && <RepayWithDustTooltip />}
-            </div>
-          }
+          description={<Trans>Remaining debt</Trans>}
           amount={amountAfterRepay}
           amountUSD={displayAmountAfterRepayInUsd.toString()}
+          previousAmount={debt}
+          previousAmountUSD={debtUSD.toString()}
           symbol={
             poolReserve.iconSymbol === networkConfig.wrappedBaseAssetSymbol
               ? networkConfig.baseAssetSymbol
               : poolReserve.iconSymbol
           }
-          color={maxRepayWithDustRemaining ? 'error.main' : undefined}
         />
         <DetailsHFLine
           visibleHfChange={!!_amount}
