@@ -284,7 +284,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                     variant="secondary14"
                     sx={{ ml: 2 }}
                     symbol="USD"
-                    visibleDecimals={0}
+                    visibleDecimals={2}
                   />
                   &nbsp;of
                   <FormattedNumber
@@ -292,7 +292,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                     variant="secondary14"
                     sx={{ ml: 2 }}
                     symbol="USD"
-                    visibleDecimals={0}
+                    visibleDecimals={2}
                   />
                 </Typography>
               )}
