@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-25 12:05\n"
+"PO-Revision-Date: 2022-03-29 12:05\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -864,7 +864,7 @@ msgstr "APY Net"
 
 #: src/components/infoTooltips/NetAPYTooltip.tsx
 msgid "Net APY is the combined effect of all supply and borrow positions on net worth, including incentives. It is possible to have a negative net APY if debt APY is higher than supply APY."
-msgstr ""
+msgstr "L'APY net est l'effet combiné de toutes les positions d'offre et d'emprunt sur la valeur nette, y compris les incitations. Il est possible d'avoir un APY net négatif si l'APY de la dette est supérieur à l'APY de l'offre."
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Net worth"
@@ -1062,23 +1062,23 @@ msgstr "Réviser tx"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Review tx details"
-msgstr ""
+msgstr "Examiner les détails de la transaction"
 
 #: src/components/transactions/ClaimRewards/RewardsSelect.tsx
 msgid "Reward(s) to claim"
-msgstr ""
+msgstr "Récompense(s) à réclamer"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Rewards APR"
-msgstr ""
+msgstr "Récompenses APR"
 
 #: src/components/HealthFactorNumber.tsx
 msgid "Risk details"
-msgstr ""
+msgstr "Détails des risques"
 
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
 msgid "SEE CHARTS"
-msgstr ""
+msgstr "VOIR LES GRAPHIQUES"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Safety of your deposited collateral against the borrowed assets and its underlying value."
