@@ -103,6 +103,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
   }, []);
 
   const {
+    totalVotes,
     yaeVotes,
     yaePercent,
     nayPercent,
@@ -110,16 +111,19 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
     diffReached,
     quorumReached,
     requiredDiff,
+    minQuorumVotes,
     diff,
   } = proposal
     ? formatProposal(proposal)
     : {
+        totalVotes: 0,
         yaeVotes: 0,
         yaePercent: 0,
         nayPercent: 0,
         nayVotes: 0,
         diffReached: false,
         quorumReached: false,
+        minQuorumVotes: 0,
         requiredDiff: 0,
         diff: 0,
       };
@@ -242,6 +246,20 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                     sx={{ flexGrow: 1, justifyContent: 'space-between', height: 48 }}
                     variant="description"
                   />
+                  <Row
+                    caption={<Trans>Current votes</Trans>}
+                    sx={{ height: 48 }}
+                    captionVariant="description"
+                  >
+                    <FormattedNumber value={totalVotes} visibleDecimals={2} compact />
+                  </Row>
+                  <Row
+                    caption={<Trans>Votes needed for quorum</Trans>}
+                    sx={{ height: 48 }}
+                    captionVariant="description"
+                  >
+                    <FormattedNumber value={minQuorumVotes} visibleDecimals={2} compact />
+                  </Row>
                   <CheckBadge
                     text={<Trans>Differential</Trans>}
                     checked={diffReached}
