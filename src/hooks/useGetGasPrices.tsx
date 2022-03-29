@@ -14,13 +14,6 @@ type GasInfo = {
   maxPriorityFeePerGas: string;
 };
 
-export type ResponseGasPrice = {
-  safeLow: GasInfo;
-  average: GasInfo;
-  fast: GasInfo;
-  fastest: GasInfo;
-};
-
 export type GasPriceData = {
   [GasOption.Slow]: GasInfo;
   [GasOption.Normal]: GasInfo;
