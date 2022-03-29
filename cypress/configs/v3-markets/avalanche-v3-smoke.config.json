@@ -1,0 +1,19 @@
+{
+  "integrationFolder": "cypress/integration/1-v3-markets/1-avalanche-v3-market",
+  "testFiles": [
+    "0-assets/avax.avalanche-v3.spec.ts",
+    "0-assets/usdc.avalanche-v3.spec.ts",
+    "0-assets/usdt.avalanche-v3.spec.ts",
+    "0-assets/weth.avalanche-v3.spec.ts"
+  ],
+  "viewportWidth": 1200,
+  "viewportHeight": 800,
+  "defaultCommandTimeout": 40000,
+  "pageLoadTimeout": 120000,
+  "video": false,
+  "scrollBehavior": "center",
+  "retries": {
+    "runMode": 2,
+    "openMode": 0
+  }
+}
