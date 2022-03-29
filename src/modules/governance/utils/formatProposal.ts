@@ -21,12 +21,24 @@ export function formatProposal(proposal: Omit<Proposal, 'values'>) {
   if (quorumPercent.gte(100)) {
     quorumReached = true;
   }
-  const diff = new BigNumber(proposal.forVotes)
-    .minus(proposal.againstVotes)
-    .dividedBy(proposal.totalVotingSupply)
-    .multipliedBy(100);
-  const requiredDiff = new BigNumber(proposal.minimumDiff).dividedBy(100);
-  const diffReached = requiredDiff.lte(diff);
+
+  const diff = normalizeBN(
+    new BigNumber(proposal.forVotes).minus(proposal.againstVotes),
+    18
+  ).toNumber();
+  const requiredDiff =
+    normalizeBN(proposal.forVotes, 18).toNumber() * (Number(proposal.minimumDiff) / 100);
+
+  const diffReached = requiredDiff <= diff;
+
+  console.log(`
+  for: ${proposal.forVotes}
+  against: ${proposal.againstVotes}
+  min: ${proposal.minimumDiff} 
+  diff: ${diff}
+  requiredDiff: ${requiredDiff}
+  diffReached: ${diffReached}
+`);
 
   return {
     yaePercent,
@@ -36,8 +48,8 @@ export function formatProposal(proposal: Omit<Proposal, 'values'>) {
     minQuorumNeeded,
     quorumPercent,
     quorumReached,
-    diff: diff.toNumber(),
-    requiredDiff: requiredDiff.toNumber(),
+    diff,
+    requiredDiff,
     diffReached,
   };
 }
