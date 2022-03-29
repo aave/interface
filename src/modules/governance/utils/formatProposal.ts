@@ -22,14 +22,13 @@ export function formatProposal(proposal: Omit<Proposal, 'values'>) {
     quorumReached = true;
   }
 
-  const diff = normalizeBN(
-    new BigNumber(proposal.forVotes).minus(proposal.againstVotes),
-    18
-  ).toNumber();
-  const requiredDiff =
-    normalizeBN(proposal.forVotes, 18).toNumber() * (Number(proposal.minimumDiff) / 100);
+  const diff = new BigNumber(proposal.forVotes).minus(proposal.againstVotes);
 
-  const diffReached = requiredDiff <= diff;
+  const requiredDiff = new BigNumber(proposal.forVotes)
+    .plus(proposal.againstVotes)
+    .multipliedBy(new BigNumber(proposal.minimumDiff).dividedBy(100));
+
+  const diffReached = requiredDiff.lte(diff);
 
   console.log(`
   for: ${proposal.forVotes}
@@ -48,8 +47,8 @@ export function formatProposal(proposal: Omit<Proposal, 'values'>) {
     minQuorumNeeded,
     quorumPercent,
     quorumReached,
-    diff,
-    requiredDiff,
+    diff: normalizeBN(diff, 18).toNumber(),
+    requiredDiff: normalizeBN(requiredDiff, 18).toNumber(),
     diffReached,
   };
 }
