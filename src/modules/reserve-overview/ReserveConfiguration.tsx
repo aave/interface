@@ -126,7 +126,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
             <Typography variant="subheader1" sx={{ ml: 2 }}>
               {eModeInfo[reserve.eModeCategoryId].label}
             </Typography>
-            <EModeTooltip />
+            <EModeTooltip eModeLtv={reserve.eModeLtv} />
           </Typography>
         )}
       </Box>
