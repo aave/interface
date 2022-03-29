@@ -247,7 +247,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                   percent
                   variant="secondary14"
                   sx={{ ml: 2 }}
-                  visibleDecimals={0}
+                  visibleDecimals={2}
                 />
               </Typography>
               <Typography sx={{ display: 'inline-flex' }}>
@@ -259,7 +259,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                   percent
                   variant="secondary14"
                   sx={{ ml: 2 }}
-                  visibleDecimals={0}
+                  visibleDecimals={2}
                 />
               </Typography>
               <Typography sx={{ display: 'inline-flex' }}>
@@ -271,7 +271,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                   percent
                   variant="secondary14"
                   sx={{ ml: 2 }}
-                  visibleDecimals={0}
+                  visibleDecimals={2}
                 />
               </Typography>
               {reserve.isIsolated && (
