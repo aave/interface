@@ -28,10 +28,15 @@ const mainnetParaswap = ParaSwap(ChainId.mainnet);
 const polygonParaswap = ParaSwap(ChainId.polygon);
 const avalancheParaswap = ParaSwap(ChainId.avalanche);
 
-const getParaswap = (chainId: ChainId, currentChainId: ChainId) => {
-  if (ChainId.mainnet === chainId || ChainId.mainnet === currentChainId) return mainnetParaswap;
-  if (ChainId.polygon === chainId || ChainId.polygon === currentChainId) return polygonParaswap;
-  if (ChainId.avalanche === chainId || ChainId.avalanche === currentChainId)
+const getParaswap = (chainId: ChainId, underlyingChainId: ChainId | undefined) => {
+  if (ChainId.mainnet === chainId || (underlyingChainId && ChainId.mainnet === underlyingChainId))
+    return mainnetParaswap;
+  if (ChainId.polygon === chainId || (underlyingChainId && ChainId.polygon === underlyingChainId))
+    return polygonParaswap;
+  if (
+    ChainId.avalanche === chainId ||
+    (underlyingChainId && ChainId.avalanche === underlyingChainId)
+  )
     return avalancheParaswap;
   throw new Error('chain not supported');
 };
@@ -43,15 +48,23 @@ type UseSwapProps = {
   variant: 'exactIn' | 'exactOut';
   userId?: string;
   chainId: ChainId;
+  underlyingChainId?: ChainId;
 };
 
 const MESSAGE_MAP = {
   ESTIMATED_LOSS_GREATER_THAN_MAX_IMPACT: 'Price impact to high',
 };
 
-export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId }: UseSwapProps) => {
-  const { currentChainId } = useProtocolDataContext();
-  const paraSwap = getParaswap(chainId, currentChainId);
+export const useSwap = ({
+  swapIn,
+  swapOut,
+  variant,
+  userId,
+  max,
+  chainId,
+  underlyingChainId,
+}: UseSwapProps) => {
+  const paraSwap = getParaswap(chainId, underlyingChainId);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [priceRoute, setPriceRoute] = useState<OptimalRate | null>(null);
@@ -107,6 +120,7 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId }: UseS
     variant,
     max,
     chainId,
+    underlyingChainId,
   ]);
 
   // updates the route on input change
@@ -155,6 +169,7 @@ type GetSwapCallDataProps = {
   route: OptimalRate;
   max?: boolean;
   chainId: ChainId;
+  underlyingChainId?: ChainId;
 };
 
 export const getSwapCallData = async ({
@@ -165,8 +180,9 @@ export const getSwapCallData = async ({
   user,
   route,
   chainId,
+  underlyingChainId,
 }: GetSwapCallDataProps) => {
-  const paraSwap = getParaswap(chainId);
+  const paraSwap = getParaswap(chainId, underlyingChainId);
   const destAmountWithSlippage = new BigNumberZeroDecimal(route.destAmount)
     .multipliedBy(99)
     .dividedBy(100)

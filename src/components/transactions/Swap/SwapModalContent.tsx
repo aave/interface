@@ -42,7 +42,7 @@ export const SwapModalContent = ({
   isWrongNetwork,
 }: ModalWrapperProps) => {
   const { reserves, user } = useAppDataContext();
-  const { currentChainId } = useProtocolDataContext();
+  const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
   const { gasLimit, mainTxState: supplyTxState, txError } = useModalContext();
 
@@ -83,6 +83,7 @@ export const SwapModalContent = ({
     swapIn: { ...poolReserve, amount: amountRef.current },
     swapOut: { ...swapTarget, amount: '0' },
     max: isMaxSelected,
+    underlyingChainId: currentNetworkConfig.underlyingChainId,
   });
 
   const minimumReceived = new BigNumber(outputAmount || '0')
