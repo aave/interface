@@ -31,6 +31,7 @@ import { Link } from 'src/components/primitives/Link';
 
 import { ContentContainer } from '../../../src/components/ContentContainer';
 import { GovVoteModal } from 'src/components/transactions/GovVote/GovVoteModal';
+import { FormattedProposalTime } from 'src/modules/governance/FormattedProposalTime';
 // import { Vote } from 'src/static-build/vote';
 
 export async function getStaticPaths() {
@@ -145,8 +146,22 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                 </Typography>
                 {proposal && ipfs ? (
                   <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <Box>
-                      <StateBadge state={proposal.state} />
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        flexWrap: 'wrap',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Box sx={{ mr: '24px' }}>
+                        <StateBadge state={proposal.state} />
+                      </Box>
+                      <FormattedProposalTime
+                        state={proposal.state}
+                        executionTime={proposal.executionTime}
+                        expirationTimestamp={proposal.expirationTimestamp}
+                      />
                     </Box>
                     <Box sx={{ flexGrow: 1 }} />
                     <Button
@@ -238,7 +253,16 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                     sx={{ height: 48 }}
                     captionVariant="description"
                   >
-                    <StateBadge state={proposal.state} />
+                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                      <StateBadge state={proposal.state} />
+                      <Box sx={{ mt: '2px' }}>
+                        <FormattedProposalTime
+                          state={proposal.state}
+                          executionTime={proposal.executionTime}
+                          expirationTimestamp={proposal.expirationTimestamp}
+                        />
+                      </Box>
+                    </Box>
                   </Row>
                   <CheckBadge
                     text={<Trans>Quorum</Trans>}

@@ -14,6 +14,7 @@ interface FormattedProposalTimeProps {
 
 function RelativeWord({ state }: { state: ProposalState }) {
   if ([ProposalState.Active, ProposalState.Pending].includes(state)) return <Trans>ends</Trans>;
+  if ([ProposalState.Queued]) return null;
   return <Trans>on</Trans>;
 }
 
