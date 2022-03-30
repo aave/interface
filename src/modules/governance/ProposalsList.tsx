@@ -22,6 +22,7 @@ import { enhanceProposalWithTimes } from './utils/formatProposal';
 export function ProposalsList({ proposals: initialProposals }: GovernancePageProps) {
   // will only initially be set to true, till the client is hydrated with new proposals
   const [loadingNewProposals, setLoadingNewProposals] = useState(true);
+  const [updatingPendingProposals, setUpdatingPendingProposals] = useState(true);
   const [proposals, setProposals] = useState(initialProposals);
   const [proposalFilter, setProposalFilter] = useState<string>('all');
 
@@ -73,6 +74,7 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
         }
         setProposals(copy);
       }
+      setUpdatingPendingProposals(false);
     } catch (e) {
       console.log('error updating proposals', e);
     }
@@ -109,7 +111,7 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
           ))}
         </Select>
       </Box>
-      {loadingNewProposals && <LinearProgress />}
+      {(loadingNewProposals || updatingPendingProposals) && <LinearProgress />}
       {proposals
         .slice()
         .reverse()
