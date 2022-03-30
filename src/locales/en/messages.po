@@ -329,6 +329,10 @@ msgstr "CLAIMING {symbol}"
 msgid "Can be collateral"
 msgstr "Can be collateral"
 
+#: src/modules/governance/FormattedProposalTime.tsx
+msgid "Can be executed"
+msgstr "Can be executed"
+
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Can only be used as collateral in isolation mode"
 msgstr "Can only be used as collateral in isolation mode"
@@ -441,6 +445,10 @@ msgstr "Current LTV"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Current differential"
 msgstr "Current differential"
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Current votes"
+msgstr "Current votes"
 
 #: src/layouts/components/DarkModeSwitcher.tsx
 msgid "Dark mode"
@@ -601,6 +609,10 @@ msgstr "Error connecting. Try refreshing the page."
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Executed"
 msgstr "Executed"
+
+#: src/modules/governance/FormattedProposalTime.tsx
+msgid "Expires"
+msgstr "Expires"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "FAQ"
@@ -992,6 +1004,10 @@ msgstr "Proposition power"
 msgid "Quorum"
 msgstr "Quorum"
 
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Raw-Ipfs"
+msgstr "Raw-Ipfs"
+
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Recipient address"
 msgstr "Recipient address"
@@ -1098,6 +1114,10 @@ msgstr "Select language"
 #: src/components/HALTooltip.tsx
 msgid "Setup triggers and receive notifications about your Health Factor status using Hal app."
 msgstr "Setup triggers and receive notifications about your Health Factor status using Hal app."
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Share on twitter"
+msgstr "Share on twitter"
 
 #: src/components/lists/ListWrapper.tsx
 msgid "Show"
@@ -1554,6 +1574,10 @@ msgstr "Vote YAE"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Vote differential needed"
 msgstr "Vote differential needed"
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Votes needed for quorum"
+msgstr "Votes needed for quorum"
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
