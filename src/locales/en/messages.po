@@ -536,10 +536,6 @@ msgstr "Disconnect Wallet"
 msgid "Discord"
 msgstr "Discord"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
-msgid "Discussion"
-msgstr "Discussion"
-
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode"
 msgstr "E-Mode"
@@ -635,6 +631,10 @@ msgstr "Filter"
 #: src/ui-config/errorMapping.tsx
 msgid "For repayment of a specific type of debt, the user needs to have debt that type"
 msgstr "For repayment of a specific type of debt, the user needs to have debt that type"
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Forum discussion"
+msgstr "Forum discussion"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "French"
