@@ -1,5 +1,5 @@
 import { normalize } from '@aave/math-utils';
-import { DownloadIcon } from '@heroicons/react/solid';
+import { DownloadIcon, ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Twitter } from '@mui/icons-material';
 import {
@@ -117,7 +117,6 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
   }, []);
 
   const {
-    totalVotes,
     yaeVotes,
     yaePercent,
     nayPercent,
@@ -130,7 +129,6 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
   } = proposal
     ? formatProposal(proposal)
     : {
-        totalVotes: 0,
         yaeVotes: 0,
         yaePercent: 0,
         nayPercent: 0,
@@ -149,7 +147,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
       <ContentContainer>
         <Grid container spacing={4}>
           <Grid item xs={12} md={8}>
-            <Paper sx={{ px: 6, py: 4, wordBreak: 'break-word' }}>
+            <Paper sx={{ px: 6, pt: 4, pb: 12 }}>
               <Typography variant="h3">
                 <Trans>Proposal overview</Trans>
               </Typography>
@@ -246,28 +244,21 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                 <Trans>Voting results</Trans>
               </Typography>
               {proposal ? (
-                <VoteBar yae percent={yaePercent} votes={yaeVotes} sx={{ mt: 8 }} />
-              ) : (
-                <Skeleton height={28} sx={{ mt: 8 }} />
-              )}
-              {proposal ? (
-                <VoteBar percent={nayPercent} votes={nayVotes} sx={{ mt: 3 }} />
-              ) : (
-                <Skeleton height={28} sx={{ mt: 8 }} />
-              )}
-            </Paper>
-            <Paper sx={{ px: 6, py: 4 }}>
-              <Typography variant="h3" sx={{ mb: '22px' }}>
-                <Trans>Proposal details</Trans>
-              </Typography>
-              {proposal ? (
                 <>
+                  <VoteBar yae percent={yaePercent} votes={yaeVotes} sx={{ mt: 8 }} />
+                  <VoteBar percent={nayPercent} votes={nayVotes} sx={{ mt: 3 }} />
                   <Row
                     caption={<Trans>State</Trans>}
-                    sx={{ height: 48 }}
+                    sx={{ height: 48, mt: 10 }}
                     captionVariant="description"
                   >
-                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'flex-end',
+                      }}
+                    >
                       <StateBadge state={proposal.state} />
                       <Box sx={{ mt: '2px' }}>
                         <FormattedProposalTime
@@ -279,45 +270,77 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                       </Box>
                     </Box>
                   </Row>
-                  <CheckBadge
-                    text={<Trans>Quorum</Trans>}
-                    checked={quorumReached}
-                    sx={{ flexGrow: 1, justifyContent: 'space-between', height: 48 }}
-                    variant="description"
-                  />
                   <Row
-                    caption={<Trans>Current votes</Trans>}
+                    caption={<Trans>Quorum</Trans>}
                     sx={{ height: 48 }}
                     captionVariant="description"
                   >
-                    <FormattedNumber value={totalVotes} visibleDecimals={2} compact />
+                    <CheckBadge
+                      text={quorumReached ? <Trans>Reached</Trans> : <Trans>Not reached</Trans>}
+                      checked={quorumReached}
+                      sx={{ height: 48 }}
+                      variant="description"
+                    />
                   </Row>
                   <Row
-                    caption={<Trans>Votes needed for quorum</Trans>}
+                    caption={
+                      <>
+                        <Trans>Current votes</Trans>
+                        <Typography variant="caption" color="text.muted">
+                          Required
+                        </Typography>
+                      </>
+                    }
                     sx={{ height: 48 }}
                     captionVariant="description"
                   >
-                    <FormattedNumber value={minQuorumVotes} visibleDecimals={2} compact />
+                    <Box sx={{ textAlign: 'right' }}>
+                      <FormattedNumber
+                        value={yaeVotes}
+                        visibleDecimals={2}
+                        sx={{ display: 'block' }}
+                      />
+                      <FormattedNumber
+                        variant="caption"
+                        value={minQuorumVotes}
+                        visibleDecimals={2}
+                        color="text.muted"
+                      />
+                    </Box>
                   </Row>
-                  <CheckBadge
-                    text={<Trans>Differential</Trans>}
-                    checked={diffReached}
-                    sx={{ flexGrow: 1, justifyContent: 'space-between', height: 48 }}
-                    variant="description"
-                  />
                   <Row
-                    caption={<Trans>Vote differential needed</Trans>}
+                    caption={<Trans>Differential</Trans>}
                     sx={{ height: 48 }}
                     captionVariant="description"
                   >
-                    <FormattedNumber value={requiredDiff} visibleDecimals={2} />
+                    <CheckBadge
+                      text={diffReached ? <Trans>Reached</Trans> : <Trans>Not reached</Trans>}
+                      checked={diffReached}
+                      sx={{ height: 48 }}
+                      variant="description"
+                    />
                   </Row>
                   <Row
-                    caption={<Trans>Current differential</Trans>}
+                    caption={
+                      <>
+                        <Trans>Current differential</Trans>
+                        <Typography variant="caption" color="text.muted">
+                          Required
+                        </Typography>
+                      </>
+                    }
                     sx={{ height: 48 }}
                     captionVariant="description"
                   >
-                    <FormattedNumber value={diff} visibleDecimals={2} />
+                    <Box sx={{ textAlign: 'right' }}>
+                      <FormattedNumber value={diff} visibleDecimals={2} sx={{ display: 'block' }} />
+                      <FormattedNumber
+                        variant="caption"
+                        value={requiredDiff}
+                        visibleDecimals={2}
+                        color="text.muted"
+                      />
+                    </Box>
                   </Row>
                   <Row
                     caption={<Trans>Total voting power</Trans>}
@@ -330,6 +353,20 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                       compact={false}
                     />
                   </Row>
+                </>
+              ) : (
+                <>
+                  <Skeleton height={28} sx={{ mt: 8 }} />
+                  <Skeleton height={28} sx={{ mt: 8 }} />
+                </>
+              )}
+            </Paper>
+            <Paper sx={{ px: 6, py: 4 }}>
+              <Typography variant="h3" sx={{ mb: '22px' }}>
+                <Trans>Proposal details</Trans>
+              </Typography>
+              {proposal ? (
+                <>
                   <Row
                     caption={
                       <>
@@ -397,20 +434,20 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                     </Row>
                   )}
                   {ipfs?.discussions && (
-                    <Row
-                      caption={<Trans>Discussion</Trans>}
-                      sx={{ height: 48 }}
-                      captionVariant="description"
+                    <Button
+                      component={Link}
+                      target="_blank"
+                      href={ipfs.discussions}
+                      variant="outlined"
+                      sx={{ mt: 10, mb: 2 }}
+                      endIcon={
+                        <SvgIcon>
+                          <ExternalLinkIcon />
+                        </SvgIcon>
+                      }
                     >
-                      <Typography
-                        component={Link}
-                        target="_blank"
-                        href={ipfs.discussions}
-                        sx={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}
-                      >
-                        {ipfs.discussions}
-                      </Typography>
-                    </Row>
+                      <Trans>Forum discussion</Trans>
+                    </Button>
                   )}
                 </>
               ) : (
