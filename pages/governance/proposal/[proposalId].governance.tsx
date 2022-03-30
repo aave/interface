@@ -117,7 +117,6 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
   }, []);
 
   const {
-    totalVotes,
     yaeVotes,
     yaePercent,
     nayPercent,
