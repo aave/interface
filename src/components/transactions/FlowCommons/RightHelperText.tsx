@@ -8,7 +8,7 @@ export type RightHelperTextProps = {
   approvalHash?: string;
 };
 
-const ExtLinkIcon = () => (
+export const ExtLinkIcon = () => (
   <SvgIcon sx={{ ml: '2px', fontSize: '11px' }}>
     <ExternalLinkIcon />
   </SvgIcon>
