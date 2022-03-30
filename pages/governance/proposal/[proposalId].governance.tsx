@@ -154,12 +154,13 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                         alignItems: 'center',
                       }}
                     >
-                      <Box sx={{ mr: '24px', mb: '2px' }}>
+                      <Box sx={{ mr: '24px' }}>
                         <StateBadge state={proposal.state} />
                       </Box>
                       <FormattedProposalTime
                         state={proposal.state}
                         executionTime={proposal.executionTime}
+                        executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
                         expirationTimestamp={proposal.expirationTimestamp}
                       />
                     </Box>
@@ -260,6 +261,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                           state={proposal.state}
                           executionTime={proposal.executionTime}
                           expirationTimestamp={proposal.expirationTimestamp}
+                          executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
                         />
                       </Box>
                     </Box>
@@ -291,17 +293,6 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                     variant="description"
                   />
                   <Row
-                    caption={<Trans>Total voting power</Trans>}
-                    sx={{ height: 48 }}
-                    captionVariant="description"
-                  >
-                    <FormattedNumber
-                      value={normalize(proposal.totalVotingSupply, 18)}
-                      visibleDecimals={0}
-                      compact={false}
-                    />
-                  </Row>
-                  <Row
                     caption={<Trans>Vote differential needed</Trans>}
                     sx={{ height: 48 }}
                     captionVariant="description"
@@ -314,6 +305,17 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                     captionVariant="description"
                   >
                     <FormattedNumber value={diff} visibleDecimals={2} />
+                  </Row>
+                  <Row
+                    caption={<Trans>Total voting power</Trans>}
+                    sx={{ height: 48 }}
+                    captionVariant="description"
+                  >
+                    <FormattedNumber
+                      value={normalize(proposal.totalVotingSupply, 18)}
+                      visibleDecimals={0}
+                      compact={false}
+                    />
                   </Row>
                   <Row
                     caption={
