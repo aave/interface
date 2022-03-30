@@ -52,6 +52,7 @@ export function ProposalListItem({
             state={proposal.state}
             executionTime={proposal.executionTime}
             expirationTimestamp={proposal.expirationTimestamp}
+            executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
           />
           <CheckBadge text={<Trans>Quorum</Trans>} checked={quorumReached} />
           <CheckBadge text={<Trans>Differential</Trans>} checked={diffReached} />
