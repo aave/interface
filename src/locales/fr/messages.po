@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-30 12:08\n"
+"PO-Revision-Date: 2022-03-30 18:05\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -541,10 +541,6 @@ msgstr "Déconnecter le portefeuille"
 msgid "Discord"
 msgstr "Discord"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
-msgid "Discussion"
-msgstr "Discussion"
-
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode"
 msgstr "E-Mode"
@@ -640,6 +636,10 @@ msgstr "Filtrer"
 #: src/ui-config/errorMapping.tsx
 msgid "For repayment of a specific type of debt, the user needs to have debt that type"
 msgstr "For repayment of a specific type of debt, the user needs to have debt that type"
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Forum discussion"
+msgstr ""
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "French"
@@ -926,6 +926,11 @@ msgstr "Pas assez de solde staké"
 msgid "Not enough voting power to participate in this proposal"
 msgstr "Pas assez de pouvoir de vote pour participer à cette proposition"
 
+#: pages/governance/proposal/[proposalId].governance.tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Not reached"
+msgstr ""
+
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Nothing borrowed yet"
 msgstr "Aucun emprunt pour l'instant"
@@ -1011,6 +1016,11 @@ msgstr "Quorum"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Raw-Ipfs"
+msgstr ""
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Reached"
 msgstr ""
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
@@ -1575,14 +1585,6 @@ msgstr "Vote NAY"
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Vote YAE"
 msgstr "Vote YAE"
-
-#: pages/governance/proposal/[proposalId].governance.tsx
-msgid "Vote differential needed"
-msgstr ""
-
-#: pages/governance/proposal/[proposalId].governance.tsx
-msgid "Votes needed for quorum"
-msgstr ""
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
