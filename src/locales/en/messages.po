@@ -442,6 +442,10 @@ msgstr "Current LTV"
 msgid "Current differential"
 msgstr "Current differential"
 
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Current votes"
+msgstr "Current votes"
+
 #: src/components/transactions/GasStation/GasStation.tsx
 msgid "Custom"
 msgstr "Custom"
@@ -1558,6 +1562,10 @@ msgstr "Vote YAE"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Vote differential needed"
 msgstr "Vote differential needed"
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Votes needed for quorum"
+msgstr "Votes needed for quorum"
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
