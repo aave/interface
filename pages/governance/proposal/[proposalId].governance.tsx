@@ -129,7 +129,6 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
   } = proposal
     ? formatProposal(proposal)
     : {
-        totalVotes: 0,
         yaeVotes: 0,
         yaePercent: 0,
         nayPercent: 0,
