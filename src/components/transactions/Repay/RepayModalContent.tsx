@@ -80,21 +80,23 @@ export const RepayModalContent = ({
   const amount = isMaxSelected ? maxAmountToRepay.toString() : _amount;
 
   const handleChange = (value: string) => {
-    const maxSelected = value === '-1';
-    amountRef.current = maxSelected ? maxAmountToRepay.toString() : value;
-    setAmount(value);
-    if (currentMarketData.v3 && maxSelected && (repayWithATokens || maxAmountToRepay.eq(debt))) {
-      if (tokenToRepayWith.address === API_ETH_MOCK_ADDRESS.toLowerCase()) {
-        setRepayMax(safeAmountToRepayAll.toString());
+    if (_amount !== value) {
+      const maxSelected = value === '-1';
+      amountRef.current = maxSelected ? maxAmountToRepay.toString() : value;
+      setAmount(value);
+      if (currentMarketData.v3 && maxSelected && (repayWithATokens || maxAmountToRepay.eq(debt))) {
+        if (tokenToRepayWith.address === API_ETH_MOCK_ADDRESS.toLowerCase()) {
+          setRepayMax(safeAmountToRepayAll.toString());
+        } else {
+          setRepayMax('-1');
+        }
       } else {
-        setRepayMax('-1');
+        setRepayMax(
+          safeAmountToRepayAll.lt(balance)
+            ? safeAmountToRepayAll.toString()
+            : maxAmountToRepay.toString()
+        );
       }
-    } else {
-      setRepayMax(
-        safeAmountToRepayAll.lt(balance)
-          ? safeAmountToRepayAll.toString()
-          : maxAmountToRepay.toString()
-      );
     }
   };
 
