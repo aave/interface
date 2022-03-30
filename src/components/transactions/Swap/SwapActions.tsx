@@ -37,7 +37,7 @@ export const SwapActions = ({
   ...props
 }: SwapActionProps) => {
   const { lendingPool } = useTxBuilderContext();
-  const { currentChainId: chainId } = useProtocolDataContext();
+  const { currentChainId: chainId, currentNetworkConfig } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
 
   const { approval, action, requiresApproval, approvalTxState, mainTxState, loadingTxns } =
@@ -50,7 +50,7 @@ export const SwapActions = ({
           destDecimals: targetReserve.decimals,
           user: currentAccount,
           route: priceRoute as OptimalRate,
-          chainId: chainId,
+          chainId: currentNetworkConfig.underlyingChainId || chainId,
         });
         return lendingPool.swapCollateral({
           fromAsset: poolReserve.underlyingAsset,
