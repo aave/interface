@@ -1,5 +1,5 @@
 import { normalize } from '@aave/math-utils';
-import { DownloadIcon } from '@heroicons/react/solid';
+import { DownloadIcon, ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Twitter } from '@mui/icons-material';
 import {
@@ -43,7 +43,6 @@ import { Link } from 'src/components/primitives/Link';
 import { ContentContainer } from '../../../src/components/ContentContainer';
 import { GovVoteModal } from 'src/components/transactions/GovVote/GovVoteModal';
 import { FormattedProposalTime } from 'src/modules/governance/FormattedProposalTime';
-import { ExtLinkIcon } from 'src/components/transactions/FlowCommons/RightHelperText';
 // import { Vote } from 'src/static-build/vote';
 
 export async function getStaticPaths() {
@@ -437,21 +436,20 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                     </Row>
                   )}
                   {ipfs?.discussions && (
-                    <Row
-                      caption={<Trans>Discussion</Trans>}
-                      sx={{ height: 48 }}
-                      captionVariant="description"
+                    <Button
                       component={Link}
                       target="_blank"
                       href={ipfs.discussions}
+                      variant="outlined"
+                      sx={{ mt: 10, mb: 2 }}
+                      endIcon={
+                        <SvgIcon>
+                          <ExternalLinkIcon />
+                        </SvgIcon>
+                      }
                     >
-                      <Typography
-                        sx={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}
-                      >
-                        {ipfs.discussions}
-                      </Typography>
-                      <ExtLinkIcon />
-                    </Row>
+                      <Trans>Forum discussion</Trans>
+                    </Button>
                   )}
                 </>
               ) : (
