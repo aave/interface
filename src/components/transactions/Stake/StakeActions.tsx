@@ -1,11 +1,9 @@
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
-import { useGasStation } from 'src/hooks/useGasStation';
 import { useStakeTxBuilderContext } from 'src/hooks/useStakeTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
-import { GasOption } from '../GasStation/GasStationProvider';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
 export interface StakeActionProps extends BoxProps {
@@ -27,7 +25,6 @@ export const StakeActions = ({
   ...props
 }: StakeActionProps) => {
   const { currentAccount } = useWeb3Context();
-  const { state, gasPriceData } = useGasStation();
   const stakingService = useStakeTxBuilderContext(selectedToken);
 
   const { action, approval, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
@@ -36,10 +33,6 @@ export const StakeActions = ({
       handleGetTxns: async () => {
         return stakingService.stake(currentAccount, amountToStake.toString());
       },
-      customGasPrice:
-        state.gasOption === GasOption.Custom
-          ? state.customGas
-          : gasPriceData.data?.[state.gasOption].legacyGasPrice,
       skip: !amountToStake || parseFloat(amountToStake) === 0 || blocked,
       deps: [amountToStake],
     });

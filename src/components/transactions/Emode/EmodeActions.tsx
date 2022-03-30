@@ -1,11 +1,8 @@
 import { PoolInterface } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
-import { useGasStation } from 'src/hooks/useGasStation';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-
-import { GasOption } from '../GasStation/GasStationProvider';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
 export type EmodeActionsProps = {
@@ -17,7 +14,6 @@ export type EmodeActionsProps = {
 export const EmodeActions = ({ isWrongNetwork, blocked, selectedEmode }: EmodeActionsProps) => {
   const { lendingPool } = useTxBuilderContext();
   const { currentAccount } = useWeb3Context();
-  const { state, gasPriceData } = useGasStation();
 
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     tryPermit: false,
@@ -28,10 +24,6 @@ export const EmodeActions = ({ isWrongNetwork, blocked, selectedEmode }: EmodeAc
         categoryId: selectedEmode,
       });
     },
-    customGasPrice:
-      state.gasOption === GasOption.Custom
-        ? state.customGas
-        : gasPriceData.data?.[state.gasOption].legacyGasPrice,
     skip: blocked,
     deps: [selectedEmode],
   });
