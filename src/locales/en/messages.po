@@ -536,10 +536,6 @@ msgstr "Disconnect Wallet"
 msgid "Discord"
 msgstr "Discord"
 
-#: pages/governance/proposal/[proposalId].governance.tsx
-msgid "Discussion"
-msgstr "Discussion"
-
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode"
 msgstr "E-Mode"
@@ -635,6 +631,10 @@ msgstr "Filter"
 #: src/ui-config/errorMapping.tsx
 msgid "For repayment of a specific type of debt, the user needs to have debt that type"
 msgstr "For repayment of a specific type of debt, the user needs to have debt that type"
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Forum discussion"
+msgstr "Forum discussion"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "French"
@@ -921,6 +921,11 @@ msgstr "Not enough staked balance"
 msgid "Not enough voting power to participate in this proposal"
 msgstr "Not enough voting power to participate in this proposal"
 
+#: pages/governance/proposal/[proposalId].governance.tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Not reached"
+msgstr "Not reached"
+
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Nothing borrowed yet"
 msgstr "Nothing borrowed yet"
@@ -1007,6 +1012,11 @@ msgstr "Quorum"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Raw-Ipfs"
 msgstr "Raw-Ipfs"
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Reached"
+msgstr "Reached"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Recipient address"
@@ -1570,14 +1580,6 @@ msgstr "Vote NAY"
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Vote YAE"
 msgstr "Vote YAE"
-
-#: pages/governance/proposal/[proposalId].governance.tsx
-msgid "Vote differential needed"
-msgstr "Vote differential needed"
-
-#: pages/governance/proposal/[proposalId].governance.tsx
-msgid "Votes needed for quorum"
-msgstr "Votes needed for quorum"
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
