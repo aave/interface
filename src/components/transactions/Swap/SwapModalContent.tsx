@@ -71,7 +71,7 @@ export const SwapModalContent = ({
   const maxAmountToSwap = BigNumber.min(
     userReserve.underlyingBalance,
     new BigNumber(poolReserve.availableLiquidity).multipliedBy(0.99)
-  ).toString();
+  ).toString(10);
 
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToSwap : _amount;
@@ -87,11 +87,11 @@ export const SwapModalContent = ({
 
   const minimumReceived = new BigNumber(outputAmount || '0')
     .multipliedBy(new BigNumber(100).minus(maxSlippage).dividedBy(100))
-    .toString();
+    .toString(10);
 
   const handleChange = (value: string) => {
     const maxSelected = value === '-1';
-    amountRef.current = maxSelected ? maxAmountToSwap.toString() : value;
+    amountRef.current = maxSelected ? maxAmountToSwap : value;
     setAmount(value);
   };
 
@@ -160,7 +160,9 @@ export const SwapModalContent = ({
   // calculate impact based on $ difference
   const priceImpact =
     outputAmountUSD && outputAmountUSD !== '0'
-      ? new BigNumber(1).minus(new BigNumber(inputAmountUSD).dividedBy(outputAmountUSD)).toString()
+      ? new BigNumber(1)
+          .minus(new BigNumber(inputAmountUSD).dividedBy(outputAmountUSD))
+          .toString(10)
       : '0';
 
   return (
@@ -171,7 +173,7 @@ export const SwapModalContent = ({
       <AssetInput
         value={amount}
         onChange={handleChange}
-        usdValue={inputAmountUSD.toString()}
+        usdValue={inputAmountUSD}
         symbol={poolReserve.iconSymbol}
         assets={[
           {
@@ -187,7 +189,7 @@ export const SwapModalContent = ({
       <AssetInput
         value={outputAmount}
         onSelect={setTargetReserve}
-        usdValue={outputAmountUSD.toString()}
+        usdValue={outputAmountUSD}
         symbol={targetReserve.symbol}
         assets={swapTargets}
         disableInput={true}
@@ -253,7 +255,7 @@ export const SwapModalContent = ({
           <DetailsHFLine
             visibleHfChange={!!_amount}
             healthFactor={user.healthFactor}
-            futureHealthFactor={hfAfterSwap.toString()}
+            futureHealthFactor={hfAfterSwap.toString(10)}
           />
         )}
       </TxModalDetails>
