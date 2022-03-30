@@ -1,14 +1,12 @@
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useGasStation } from 'src/hooks/useGasStation';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { getSwapCallData } from 'src/hooks/useSwap';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
-import { GasOption } from '../GasStation/GasStationProvider';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { OptimalRate } from 'paraswap-core';
 
@@ -41,7 +39,6 @@ export const SwapActions = ({
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentNetworkConfig } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
-  const { state, gasPriceData } = useGasStation();
 
   const { approval, action, requiresApproval, approvalTxState, mainTxState, loadingTxns } =
     useTransactionHandler({
@@ -68,10 +65,6 @@ export const SwapActions = ({
           swapCallData,
         });
       },
-      customGasPrice:
-        state.gasOption === GasOption.Custom
-          ? state.customGas
-          : gasPriceData.data?.[state.gasOption].legacyGasPrice,
       skip: !priceRoute || !amountToSwap || parseFloat(amountToSwap) === 0 || !currentAccount,
       deps: [
         amountToSwap,

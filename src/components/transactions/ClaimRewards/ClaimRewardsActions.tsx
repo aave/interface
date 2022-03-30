@@ -1,12 +1,10 @@
 import { Trans } from '@lingui/macro';
 import { Reward } from 'src/helpers/types';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
-import { useGasStation } from 'src/hooks/useGasStation';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
-import { GasOption } from '../GasStation/GasStationProvider';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
 export type ClaimRewardsActionsProps = {
@@ -23,7 +21,6 @@ export const ClaimRewardsActions = ({
   const { incentivesTxBuilderV2, incentivesTxBuilder } = useTxBuilderContext();
   const { currentMarketData } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
-  const { state, gasPriceData } = useGasStation();
 
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     tryPermit: false,
@@ -54,10 +51,6 @@ export const ClaimRewardsActions = ({
         });
       }
     },
-    customGasPrice:
-      state.gasOption === GasOption.Custom
-        ? state.customGas
-        : gasPriceData.data?.[state.gasOption].legacyGasPrice,
     skip: Object.keys(selectedReward).length === 0 || blocked,
     deps: [selectedReward],
   });

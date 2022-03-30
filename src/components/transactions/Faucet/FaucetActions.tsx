@@ -1,11 +1,8 @@
 import { Trans } from '@lingui/macro';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useGasStation } from 'src/hooks/useGasStation';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-
-import { GasOption } from '../GasStation/GasStationProvider';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
 export type FaucetActionsProps = {
@@ -17,7 +14,6 @@ export type FaucetActionsProps = {
 export const FaucetActions = ({ poolReserve, isWrongNetwork, blocked }: FaucetActionsProps) => {
   const { faucetService } = useTxBuilderContext();
   const { currentAccount } = useWeb3Context();
-  const { state, gasPriceData } = useGasStation();
 
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     tryPermit: false,
@@ -28,10 +24,6 @@ export const FaucetActions = ({ poolReserve, isWrongNetwork, blocked }: FaucetAc
         reserve: poolReserve.underlyingAsset,
       });
     },
-    customGasPrice:
-      state.gasOption === GasOption.Custom
-        ? state.customGas
-        : gasPriceData.data?.[state.gasOption].legacyGasPrice,
     skip: blocked,
   });
 
