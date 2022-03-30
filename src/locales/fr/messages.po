@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-29 18:04\n"
+"PO-Revision-Date: 2022-03-30 12:08\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -334,6 +334,10 @@ msgstr "RÉCLAMATION {symbole}"
 msgid "Can be collateral"
 msgstr "Peut être collatéral"
 
+#: src/modules/governance/FormattedProposalTime.tsx
+msgid "Can be executed"
+msgstr ""
+
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Can only be used as collateral in isolation mode"
 msgstr "Ne peut être utilisé comme garantie qu'en mode d'isolement"
@@ -447,9 +451,9 @@ msgstr "LTV actuelle"
 msgid "Current differential"
 msgstr "Différentiel de courant"
 
-#: src/components/transactions/GasStation/GasStation.tsx
-msgid "Custom"
-msgstr "Personnalisé"
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Current votes"
+msgstr ""
 
 #: src/layouts/components/DarkModeSwitcher.tsx
 msgid "Dark mode"
@@ -610,6 +614,10 @@ msgstr "Erreur de connexion. Essayez d'actualiser la page."
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Executed"
 msgstr "Réalisé"
+
+#: src/modules/governance/FormattedProposalTime.tsx
+msgid "Expires"
+msgstr ""
 
 #: src/ui-config/menu-items/index.tsx
 msgid "FAQ"
@@ -1001,6 +1009,10 @@ msgstr "Pouvoir de proposition"
 msgid "Quorum"
 msgstr "Quorum"
 
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Raw-Ipfs"
+msgstr ""
+
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Recipient address"
 msgstr "Adresse du destinataire"
@@ -1104,12 +1116,12 @@ msgstr ""
 msgid "Select language"
 msgstr ""
 
-#: src/components/transactions/GasStation/GasStation.tsx
-msgid "Select transaction speed"
-msgstr ""
-
 #: src/components/HALTooltip.tsx
 msgid "Setup triggers and receive notifications about your Health Factor status using Hal app."
+msgstr ""
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Share on twitter"
 msgstr ""
 
 #: src/components/lists/ListWrapper.tsx
@@ -1385,6 +1397,10 @@ msgstr ""
 msgid "This asset has reached its supply cap. Nothing is available to be supplied from this market."
 msgstr ""
 
+#: src/components/infoTooltips/GasTooltip.tsx
+msgid "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
+msgstr ""
+
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount available for you to borrow. You can borrow based on your collateral and until the borrow cap is reached."
 msgstr ""
@@ -1562,6 +1578,10 @@ msgstr "Vote YAE"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Vote differential needed"
+msgstr ""
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Votes needed for quorum"
 msgstr ""
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
@@ -1785,10 +1805,6 @@ msgstr ""
 msgid "or"
 msgstr ""
 
-#: src/components/transactions/GasStation/GasStation.tsx
-msgid "or enter custom fee value"
-msgstr ""
-
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "or use <0>{0}</0> to transfer your ETH assets."
 msgstr ""
@@ -1821,13 +1837,6 @@ msgstr ""
 msgid "v3 markets"
 msgstr ""
 
-#: src/components/transactions/GasStation/GasStation.tsx
-msgid "{0, select, slow {Slow} normal {Normal} fast {Fast} other {-}}"
-msgstr ""
-
-#: src/components/transactions/GasStation/GasStation.tsx
-#: src/components/transactions/GasStation/GasStation.tsx
-#: src/components/transactions/GasStation/GasStation.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
