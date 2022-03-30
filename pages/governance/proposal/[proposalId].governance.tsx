@@ -154,7 +154,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                         alignItems: 'center',
                       }}
                     >
-                      <Box sx={{ mr: '24px' }}>
+                      <Box sx={{ mr: '24px', mb: '2px' }}>
                         <StateBadge state={proposal.state} />
                       </Box>
                       <FormattedProposalTime
