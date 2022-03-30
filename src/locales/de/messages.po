@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-30 12:08\n"
+"PO-Revision-Date: 2022-03-30 18:05\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -541,10 +541,6 @@ msgstr ""
 msgid "Discord"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].governance.tsx
-msgid "Discussion"
-msgstr ""
-
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode"
 msgstr ""
@@ -639,6 +635,10 @@ msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "For repayment of a specific type of debt, the user needs to have debt that type"
+msgstr ""
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Forum discussion"
 msgstr ""
 
 #: src/layouts/components/LanguageSwitcher.tsx
@@ -926,6 +926,11 @@ msgstr ""
 msgid "Not enough voting power to participate in this proposal"
 msgstr ""
 
+#: pages/governance/proposal/[proposalId].governance.tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Not reached"
+msgstr ""
+
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Nothing borrowed yet"
 msgstr ""
@@ -1011,6 +1016,11 @@ msgstr ""
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Raw-Ipfs"
+msgstr ""
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Reached"
 msgstr ""
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
@@ -1574,14 +1584,6 @@ msgstr ""
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Vote YAE"
-msgstr ""
-
-#: pages/governance/proposal/[proposalId].governance.tsx
-msgid "Vote differential needed"
-msgstr ""
-
-#: pages/governance/proposal/[proposalId].governance.tsx
-msgid "Votes needed for quorum"
 msgstr ""
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
