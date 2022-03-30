@@ -2,7 +2,18 @@ import { normalize } from '@aave/math-utils';
 import { DownloadIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Twitter } from '@mui/icons-material';
-import { Box, Button, Grid, Paper, Skeleton, styled, SvgIcon, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Grid,
+  Paper,
+  Skeleton,
+  styled,
+  SvgIcon,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
@@ -80,6 +91,8 @@ const StyledLink = styled('a')({
 export default function ProposalPage({ proposal: initialProposal, ipfs }: ProposalPageProps) {
   const [url, setUrl] = useState('');
   const [proposal, setProposal] = useState(initialProposal);
+  const { breakpoints } = useTheme();
+  const xsmUp = useMediaQuery(breakpoints.up('xsm'));
 
   async function updateProposal() {
     if (!proposal) return;
@@ -154,7 +167,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                         alignItems: 'center',
                       }}
                     >
-                      <Box sx={{ mr: '24px' }}>
+                      <Box sx={{ mr: '24px', mb: { xs: '2px', sm: 0 } }}>
                         <StateBadge state={proposal.state} />
                       </Box>
                       <FormattedProposalTime
@@ -175,7 +188,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                         </SvgIcon>
                       }
                     >
-                      Raw-Ipfs
+                      {xsmUp && <Trans>Raw-Ipfs</Trans>}
                     </Button>
                     <Button
                       component="a"
@@ -185,7 +198,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                       )}&url=${url}`}
                       startIcon={<Twitter />}
                     >
-                      Share on twitter
+                      {xsmUp && <Trans>Share on twitter</Trans>}
                     </Button>
                   </Box>
                 ) : (

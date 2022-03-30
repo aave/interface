@@ -1004,6 +1004,10 @@ msgstr "Proposition power"
 msgid "Quorum"
 msgstr "Quorum"
 
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Raw-Ipfs"
+msgstr "Raw-Ipfs"
+
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Recipient address"
 msgstr "Recipient address"
@@ -1110,6 +1114,10 @@ msgstr "Select language"
 #: src/components/HALTooltip.tsx
 msgid "Setup triggers and receive notifications about your Health Factor status using Hal app."
 msgstr "Setup triggers and receive notifications about your Health Factor status using Hal app."
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Share on twitter"
+msgstr "Share on twitter"
 
 #: src/components/lists/ListWrapper.tsx
 msgid "Show"
