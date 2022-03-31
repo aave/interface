@@ -71,11 +71,11 @@ export const WithdrawModalContent = ({
   }
 
   const isMaxSelected = _amount === '-1';
-  const amount = isMaxSelected ? maxAmountToWithdraw.toString() : _amount;
+  const amount = isMaxSelected ? maxAmountToWithdraw.toString(10) : _amount;
 
   const handleChange = (value: string) => {
     const maxSelected = value === '-1';
-    amountRef.current = maxSelected ? maxAmountToWithdraw.toString() : value;
+    amountRef.current = maxSelected ? maxAmountToWithdraw.toString(10) : value;
     setAmount(value);
   };
 
@@ -162,7 +162,7 @@ export const WithdrawModalContent = ({
         symbol={symbol}
         assets={[
           {
-            balance: maxAmountToWithdraw.toString(),
+            balance: maxAmountToWithdraw.toString(10),
             symbol: symbol,
             iconSymbol:
               withdrawUnWrapped && poolReserve.isWrappedBaseAsset
@@ -170,10 +170,10 @@ export const WithdrawModalContent = ({
                 : poolReserve.iconSymbol,
           },
         ]}
-        usdValue={usdValue.toString()}
+        usdValue={usdValue.toString(10)}
         isMaxSelected={isMaxSelected}
         disabled={withdrawTxState.loading}
-        maxValue={maxAmountToWithdraw.toString()}
+        maxValue={maxAmountToWithdraw.toString(10)}
       />
 
       {blockingError !== undefined && (
@@ -200,7 +200,7 @@ export const WithdrawModalContent = ({
         )}
         <DetailsNumberLine
           description={<Trans>Remaining supply</Trans>}
-          value={underlyingBalance.minus(amount || '0').toString()}
+          value={underlyingBalance.minus(amount || '0').toString(10)}
           symbol={
             poolReserve.isWrappedBaseAsset
               ? currentNetworkConfig.baseAssetSymbol
@@ -210,7 +210,7 @@ export const WithdrawModalContent = ({
         <DetailsHFLine
           visibleHfChange={!!_amount}
           healthFactor={user ? user.healthFactor : '-1'}
-          futureHealthFactor={healthFactorAfterWithdraw.toString()}
+          futureHealthFactor={healthFactorAfterWithdraw.toString(10)}
         />
       </TxModalDetails>
 
@@ -222,7 +222,7 @@ export const WithdrawModalContent = ({
           isMaxSelected
             ? maxAmountToWithdraw.eq(underlyingBalance)
               ? '-1'
-              : maxAmountToWithdraw.multipliedBy(0.995).toString()
+              : maxAmountToWithdraw.multipliedBy(0.995).toString(10)
             : amount
         }
         poolAddress={

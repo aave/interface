@@ -117,7 +117,7 @@ export const BorrowModalContent = ({
   const formattedMaxAmountToBorrow = maxAmountToBorrow.toString(10);
 
   const isMaxSelected = _amount === '-1';
-  const amount = isMaxSelected ? maxAmountToBorrow.toString() : _amount;
+  const amount = isMaxSelected ? maxAmountToBorrow.toString(10) : _amount;
 
   // We set this in a useEffect, so it doesnt constantly change when
   // max amount selected
@@ -216,7 +216,7 @@ export const BorrowModalContent = ({
       <AssetInput
         value={amount}
         onChange={handleChange}
-        usdValue={usdValue.toString()}
+        usdValue={usdValue.toString(10)}
         assets={[
           {
             balance: formattedMaxAmountToBorrow,
@@ -230,7 +230,7 @@ export const BorrowModalContent = ({
         symbol={symbol}
         capType={CapType.borrowCap}
         isMaxSelected={isMaxSelected}
-        maxValue={maxAmountToBorrow.toString()}
+        maxValue={maxAmountToBorrow.toString(10)}
       />
 
       {blockingError !== undefined && (
@@ -268,7 +268,7 @@ export const BorrowModalContent = ({
         <DetailsHFLine
           visibleHfChange={!!_amount}
           healthFactor={user.healthFactor}
-          futureHealthFactor={newHealthFactor.toString()}
+          futureHealthFactor={newHealthFactor.toString(10)}
         />
       </TxModalDetails>
 

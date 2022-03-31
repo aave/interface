@@ -50,7 +50,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
 
   const handleChange = (value: string) => {
     const maxSelected = value === '-1';
-    amountRef.current = maxSelected ? walletBalance.toString() : value;
+    amountRef.current = maxSelected ? walletBalance : value;
     setAmount(value);
   };
 
@@ -99,7 +99,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
         symbol={icon}
         assets={[
           {
-            balance: walletBalance.toString(),
+            balance: walletBalance,
             symbol: icon,
           },
         ]}

@@ -121,7 +121,7 @@ export const CollateralChangeModalContent = ({
         <DetailsHFLine
           visibleHfChange={true}
           healthFactor={user.healthFactor}
-          futureHealthFactor={healthFactorAfterSwitch.toString()}
+          futureHealthFactor={healthFactorAfterSwitch.toString(10)}
         />
       </TxModalDetails>
 
