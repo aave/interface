@@ -306,7 +306,6 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: '0xdBbFaFC45983B4659E368a3025b81f69Ab6E5093',
       UI_INCENTIVE_DATA_PROVIDER: '0x270f51cf3F681010B46f5c4Ee2aD5120Db33026F',
     },
-    halMarketName: 'aaveavalanche',
   },
   [CustomMarket.proto_fuji_v3]: {
     marketTitle: 'Avalanche Fuji',
@@ -454,7 +453,6 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: '0x8F1AD487C9413d7e81aB5B4E88B024Ae3b5637D0',
       UI_INCENTIVE_DATA_PROVIDER: '0x05E309C97317d8abc0f7e78185FC966FfbD2CEC0',
     },
-    halMarketName: 'aavepolygon',
   },
   [CustomMarket.proto_mumbai_v3]: {
     marketTitle: 'Polygon Mumbai',
