@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         market:
           - main
@@ -56,7 +56,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         market:
           - arbitrum
@@ -168,7 +168,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: deploy
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         market:
           - main
@@ -190,7 +190,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: deploy
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         market:
           - arbitrum
