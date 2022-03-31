@@ -1,5 +1,5 @@
 {
-  "integrationFolder": "cypress/integration/1-v3-markets/1-avalanche-v3-market",
+  "integrationFolder": "cypress/integration/1-v3-markets/2-avalanche-v3-market",
   "testFiles": [
     "0-assets/avax.avalanche-v3.spec.ts",
     "0-assets/usdc.avalanche-v3.spec.ts",
@@ -13,7 +13,7 @@
   "video": false,
   "scrollBehavior": "center",
   "retries": {
-    "runMode": 2,
+    "runMode": 1,
     "openMode": 0
   }
 }
