@@ -78,13 +78,8 @@ export const useTransactionHandler = ({
     try {
       const txnResult = await tx();
       try {
-        if (action === TxAction.APPROVAL) {
-          await txnResult.wait(1);
-          mounted.current && successCallback && successCallback(txnResult);
-        } else {
-          mounted.current && successCallback && successCallback(txnResult);
-          await txnResult.wait(1);
-        }
+        await txnResult.wait(1);
+        mounted.current && successCallback && successCallback(txnResult);
 
         refetchWalletBalances();
         refetchPoolData && refetchPoolData();
