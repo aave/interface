@@ -149,7 +149,9 @@ export const SwapModalContent = ({
   // 5. swap non-isolated when isolated -> can swap to anything
 
   if (supplyTxState.success)
-    return <TxSuccessView action="Swapped" amount={maxAmountToSwap} symbol={poolReserve.symbol} />;
+    return (
+      <TxSuccessView action="Swapped" amount={amountRef.current} symbol={poolReserve.symbol} />
+    );
 
   // hf is only relevant when there are borrows
   const showHealthFactor =
@@ -270,7 +272,7 @@ export const SwapModalContent = ({
         isWrongNetwork={isWrongNetwork}
         targetReserve={swapTarget}
         symbol={poolReserve.symbol}
-        blocked={!!blockingError}
+        blocked={blockingError !== undefined}
         priceRoute={priceRoute}
         useFlashLoan={shouldUseFlashloan}
       />
