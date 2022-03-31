@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-30 18:05\n"
+"PO-Revision-Date: 2022-03-31 06:06\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -336,7 +336,7 @@ msgstr "Peut être collatéral"
 
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "Can be executed"
-msgstr ""
+msgstr "Peut être exécuté"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Can only be used as collateral in isolation mode"
@@ -453,7 +453,7 @@ msgstr "Différentiel de courant"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Current votes"
-msgstr ""
+msgstr "Votes actuels"
 
 #: src/layouts/components/DarkModeSwitcher.tsx
 msgid "Dark mode"
@@ -555,7 +555,7 @@ msgstr "E-Mode augmente votre LTV pour une catégorie d'actifs sélectionnée ju
 
 #: src/components/infoTooltips/EModeTooltip.tsx
 msgid "E-Mode increases your LTV for a selected category of assets up to<0/>. <1>Learn more</1>"
-msgstr ""
+msgstr "E-Mode augmente votre LTV pour une catégorie d'actifs sélectionnée jusqu'à <0/>. <1>En savoir plus</1>"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Efficiency mode (E-Mode)"
@@ -613,7 +613,7 @@ msgstr "Réalisé"
 
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "Expires"
-msgstr ""
+msgstr "Expire"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "FAQ"
@@ -639,7 +639,7 @@ msgstr "For repayment of a specific type of debt, the user needs to have debt th
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Forum discussion"
-msgstr ""
+msgstr "Discussion de forum"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "French"
@@ -929,7 +929,7 @@ msgstr "Pas assez de pouvoir de vote pour participer à cette proposition"
 #: pages/governance/proposal/[proposalId].governance.tsx
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Not reached"
-msgstr ""
+msgstr "Non atteint"
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Nothing borrowed yet"
@@ -1016,12 +1016,12 @@ msgstr "Quorum"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Raw-Ipfs"
-msgstr ""
+msgstr "Raw-Ipfs"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Reached"
-msgstr ""
+msgstr "Atteint"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Recipient address"
@@ -1108,43 +1108,43 @@ msgstr "VOIR LES GRAPHIQUES"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Safety of your deposited collateral against the borrowed assets and its underlying value."
-msgstr ""
+msgstr "Sécurité de votre garantie déposée contre les actifs empruntés et sa valeur sous-jacente."
 
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Seems like we can't switch the network automatically. Please check if you can change it from the wallet."
-msgstr ""
+msgstr "On dirait que nous ne pouvons pas changer de réseau automatiquement. Veuillez vérifier si vous pouvez le changer depuis le portefeuille."
 
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
 msgid "Select APY type to switch"
-msgstr ""
+msgstr "Sélectionnez le type APY pour basculer"
 
 #: src/components/MarketSwitcher.tsx
 msgid "Select Aave Market"
-msgstr ""
+msgstr "Sélectionnez le marché d'Aave"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Select language"
-msgstr ""
+msgstr "Choisir la langue"
 
 #: src/components/HALTooltip.tsx
 msgid "Setup triggers and receive notifications about your Health Factor status using Hal app."
-msgstr ""
+msgstr "Setup triggers and receive notifications about your Health Factor status using Hal app."
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Share on twitter"
-msgstr ""
+msgstr "Partager sur Twitter"
 
 #: src/components/lists/ListWrapper.tsx
 msgid "Show"
-msgstr ""
+msgstr "Montrer"
 
 #: src/modules/dashboard/DashboardListTopPanel.tsx
 msgid "Show assets with 0 balance"
-msgstr ""
+msgstr "Afficher les actifs avec 0 solde"
 
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
-msgstr ""
+msgstr "Comme il s'agit d'un réseau de test, vous pouvez obtenir n'importe lequel des actifs si vous avez ETH dans votre portefeuille"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Spanish"
@@ -1153,27 +1153,27 @@ msgstr "Espagnol"
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "Stable"
-msgstr ""
+msgstr "Stable"
 
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "Stable Interest Type is disabled for this currency"
-msgstr ""
+msgstr "Le type d'intérêt stable est désactivé pour cette devise"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Stable borrowing is enabled"
-msgstr ""
+msgstr "L'emprunt stable est activé"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Stable borrowing is not enabled"
-msgstr ""
+msgstr "L'emprunt stable n'est pas activé"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Stable debt supply is not zero"
-msgstr ""
+msgstr "L'offre de dette stable n'est pas nulle"
 
 #: src/components/infoTooltips/StableAPYTooltip.tsx
 msgid "Stable interest rate will <0>stay the same</0> for the duration of your loan. Recommended for long-term loan periods and for users who prefer predictability."
-msgstr ""
+msgstr "Le taux d'intérêt stable <0>restera le même</0> pendant toute la durée de votre prêt. Recommandé pour les périodes de prêt à long terme et pour les utilisateurs qui préfèrent la prévisibilité."
 
 #: src/utils/eMode.ts
 msgid "Stablecoin"
@@ -1210,11 +1210,11 @@ msgstr ""
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Started"
-msgstr ""
+msgstr "Commencé"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "State"
-msgstr ""
+msgstr "État"
 
 #: pages/index.page.tsx
 #: src/components/transactions/Supply/SupplyModal.tsx
@@ -1224,7 +1224,7 @@ msgstr ""
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Supply"
-msgstr ""
+msgstr "Fournir"
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
@@ -1232,45 +1232,45 @@ msgstr ""
 #: src/modules/markets/AssetsList.tsx
 #: src/modules/markets/AssetsListMobileItem.tsx
 msgid "Supply APY"
-msgstr ""
+msgstr "Fournir APY"
 
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 msgid "Supply amount is limited due to Supply Cap"
-msgstr ""
+msgstr "La quantité d'approvisionnement est limitée en raison du plafond d'approvisionnement"
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Supply apy"
-msgstr ""
+msgstr "Fournir apy"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 msgid "Supply balance"
-msgstr ""
+msgstr "Bilan d'approvisionnement"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Supply cap"
-msgstr ""
+msgstr "Plafond d'approvisionnement"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Supply cap is exceeded"
-msgstr ""
+msgstr "Le plafond d'approvisionnement est dépassé"
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Supply cap on target reserve reached. Try lowering the amount."
-msgstr ""
+msgstr "Plafond d'approvisionnement sur la réserve cible atteint. Essayez de réduire le montant."
 
 #: src/components/transactions/Supply/SupplyActions.tsx
 msgid "Supply {symbol}"
-msgstr ""
+msgstr "Fournir {symbole}"
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "Supplying your"
-msgstr ""
+msgstr "Fournir votre"
 
 #: src/components/transactions/Supply/SupplyActions.tsx
 msgid "Supplying {symbol}"
-msgstr ""
+msgstr "Fournir {symbole}"
 
 #: src/components/transactions/Swap/SwapActions.tsx
 #: src/components/transactions/Swap/SwapModal.tsx
@@ -1281,47 +1281,47 @@ msgstr "Swap"
 
 #: src/components/transactions/Swap/SwapActions.tsx
 msgid "Swapping"
-msgstr ""
+msgstr "Échange"
 
 #: src/components/transactions/RateSwitch/RateSwitchModal.tsx
 msgid "Switch APY type"
-msgstr ""
+msgstr "Changer de type APY"
 
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Switch Network"
-msgstr ""
+msgstr "Changer de réseau"
 
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switch rate"
-msgstr ""
+msgstr "Taux de changement"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Switch to Aave Classic"
-msgstr ""
+msgstr "Passer à Aave Classic"
 
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switching rate"
-msgstr ""
+msgstr "Taux de commutation"
 
 #: src/layouts/components/TestNetModeSwitcher.tsx
 msgid "Testnet mode"
-msgstr ""
+msgstr "Mode réseau test"
 
 #: src/components/infoTooltips/BorrowPowerTooltip.tsx
 msgid "The % of your total bowering power used. This is based on the amount of your collateral supplied and the total amount that you can borrow."
-msgstr ""
+msgstr "Le % de votre puissance totale de bowering utilisée. Ceci est basé sur le montant de votre garantie fournie et le montant total que vous pouvez emprunter."
 
 #: pages/staking.staking.tsx
 msgid "The Balancer Pool Token (BPT) is a liquidity pool token. You can receive BPT by depositing a combination of AAVE + ETH in the <0>Balancer liquidity pool</0>. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
-msgstr ""
+msgstr "Le Balancer Pool Token (BPT) est un token de pool de liquidités. Vous pouvez recevoir des BPT en déposant une combinaison d'AAVE + ETH dans le <0>pool de liquidités Balancer</0>. Vous pouvez ensuite staker votre BPT dans le module de sécurité pour sécuriser le protocole et gagner des incitations à la sécurité."
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "The Stable Rate is not enabled for this currency"
-msgstr ""
+msgstr "Le taux stable n'est pas activé pour cette devise"
 
 #: src/ui-config/errorMapping.tsx
 msgid "The address of the pool addresses provider is invalid"
-msgstr ""
+msgstr "L'adresse du fournisseur d'adresses du pool n'est pas valide"
 
 #: src/ui-config/errorMapping.tsx
 msgid "The caller of the function is not an AToken"
