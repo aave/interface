@@ -17,6 +17,7 @@ export type MarketDataType = {
   cachingServerUrl?: string;
   cachingWSServerUrl?: string;
   rpcOnly?: boolean;
+  isFork?: boolean;
   addresses: {
     LENDING_POOL_ADDRESS_PROVIDER: string;
     LENDING_POOL: string;

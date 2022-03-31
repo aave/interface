@@ -66,6 +66,7 @@ export const marketsData = Object.keys(_marketsData).reduce((acc, value) => {
       ..._marketsData[value as keyof typeof CustomMarket],
       chainId: FORK_CHAIN_ID,
       rpcOnly: true,
+      isFork: true,
     };
   }
   return acc;
