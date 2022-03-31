@@ -265,5 +265,5 @@ const reserveSortFn = (a: { iconSymbol: string }, b: { iconSymbol: string }) => 
   const bIsStable = stable.includes(b.iconSymbol.toUpperCase());
   if (aIsStable && !bIsStable) return -1;
   if (!aIsStable && bIsStable) return 1;
-  return a.iconSymbol > b.iconSymbol ? 1 : -1;
+  return a.iconSymbol.toUpperCase() > b.iconSymbol.toUpperCase() ? 1 : -1;
 };
