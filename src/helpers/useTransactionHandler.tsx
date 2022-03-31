@@ -67,7 +67,6 @@ export const useTransactionHandler = ({
     tx,
     errorCallback,
     successCallback,
-    action,
   }: {
     tx: () => Promise<TransactionResponse>;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
