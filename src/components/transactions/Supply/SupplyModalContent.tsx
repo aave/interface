@@ -67,11 +67,11 @@ export const SupplyModalContent = ({
     underlyingAsset
   );
   const isMaxSelected = _amount === '-1';
-  const amount = isMaxSelected ? maxAmountToSupply.toString() : _amount;
+  const amount = isMaxSelected ? maxAmountToSupply.toString(10) : _amount;
 
   const handleChange = (value: string) => {
     const maxSelected = value === '-1';
-    amountRef.current = maxSelected ? maxAmountToSupply.toString() : value;
+    amountRef.current = maxSelected ? maxAmountToSupply.toString(10) : value;
     setAmount(value);
   };
 
@@ -223,11 +223,11 @@ export const SupplyModalContent = ({
       <AssetInput
         value={amount}
         onChange={handleChange}
-        usdValue={amountInUsd.toString()}
+        usdValue={amountInUsd.toString(10)}
         symbol={supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol}
         assets={[
           {
-            balance: maxAmountToSupply.toString(),
+            balance: maxAmountToSupply.toString(10),
             symbol: supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol,
             iconSymbol: supplyUnWrapped
               ? currentNetworkConfig.baseAssetSymbol
@@ -237,7 +237,7 @@ export const SupplyModalContent = ({
         capType={CapType.supplyCap}
         isMaxSelected={isMaxSelected}
         disabled={supplyTxState.loading}
-        maxValue={maxAmountToSupply.toString()}
+        maxValue={maxAmountToSupply.toString(10)}
       />
 
       {blockingError !== undefined && (
@@ -256,7 +256,7 @@ export const SupplyModalContent = ({
         <DetailsHFLine
           visibleHfChange={!!_amount}
           healthFactor={user ? user.healthFactor : '-1'}
-          futureHealthFactor={healthFactorAfterDeposit.toString()}
+          futureHealthFactor={healthFactorAfterDeposit.toString(10)}
         />
       </TxModalDetails>
 

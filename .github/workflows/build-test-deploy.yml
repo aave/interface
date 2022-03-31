@@ -84,12 +84,25 @@ jobs:
           github.event_name == 'push' &&
           github.ref == 'refs/heads/main'
         continue-on-error: true
-        timeout-minutes: 2
+        timeout-minutes: 3
         with:
           cid: ${{ steps.pinata.outputs.hash }}
           seeds: ${{ secrets.CRUST_SEEDS }}
 
-      - name: Update staging DNS
+      - uses: actions/setup-node@9ced9a43a244f3ac94f13bfd896db8c8f30da67a # v3.0.0
+        if: |
+          github.event_name == 'push' &&
+          github.ref == 'refs/heads/main'
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'yarn'
+      - name: install
+        if: |
+          github.event_name == 'push' &&
+          github.ref == 'refs/heads/main'
+        run: yarn add axios
+
+      - name: Update prod DNS
         id: deploy
         if: |
           github.event_name == 'push' &&
@@ -98,7 +111,6 @@ jobs:
           CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
           CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
           HASH: ${{ steps.pinata.outputs.hash }}
-          CF_DEPLOYMENT_DOMAIN: staging.aave.com
-        run: |
-          yarn add axios
-          node scripts/update-cloudflare.js
+          CF_DEPLOYMENT_DOMAIN: app.aave.com
+        run: node scripts/update-cloudflare.js
+

@@ -57866,8 +57866,7 @@ var marketsData = {
       WALLET_BALANCE_PROVIDER: "0xBc790382B3686abffE4be14A030A96aC6154023a",
       UI_POOL_DATA_PROVIDER: "0xdBbFaFC45983B4659E368a3025b81f69Ab6E5093",
       UI_INCENTIVE_DATA_PROVIDER: "0x270f51cf3F681010B46f5c4Ee2aD5120Db33026F"
-    },
-    halMarketName: "aaveavalanche"
+    }
   },
   ["proto_fuji_v3" /* proto_fuji_v3 */]: {
     marketTitle: "Avalanche Fuji",
@@ -58012,8 +58011,7 @@ var marketsData = {
       WALLET_BALANCE_PROVIDER: "0xBc790382B3686abffE4be14A030A96aC6154023a",
       UI_POOL_DATA_PROVIDER: "0x8F1AD487C9413d7e81aB5B4E88B024Ae3b5637D0",
       UI_INCENTIVE_DATA_PROVIDER: "0x05E309C97317d8abc0f7e78185FC966FfbD2CEC0"
-    },
-    halMarketName: "aavepolygon"
+    }
   },
   ["proto_mumbai_v3" /* proto_mumbai_v3 */]: {
     marketTitle: "Polygon Mumbai",
@@ -58303,7 +58301,8 @@ var marketsData2 = Object.keys(marketsData).reduce((acc, value) => {
   if (FORK_ENABLED && marketsData[value].chainId === FORK_BASE_CHAIN_ID) {
     acc[`fork_${value}`] = __spreadProps(__spreadValues({}, marketsData[value]), {
       chainId: FORK_CHAIN_ID,
-      rpcOnly: true
+      rpcOnly: true,
+      isFork: true
     });
   }
   return acc;
