@@ -1,5 +1,4 @@
 import { EthereumTransactionTypeExtended, GasType, Pool } from '@aave/contract-helpers';
-import { BigNumber } from '@ethersproject/bignumber';
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
 import { DependencyList, useEffect, useRef, useState } from 'react';
@@ -18,7 +17,6 @@ interface UseTransactionHandlerProps {
     deadline: string
   ) => Promise<EthereumTransactionTypeExtended[]>;
   tryPermit?: boolean;
-  customGasPrice?: string;
   skip?: boolean;
   deps?: DependencyList;
 }
@@ -27,7 +25,6 @@ export const useTransactionHandler = ({
   handleGetTxns,
   handleGetPermitTxns,
   tryPermit = false,
-  customGasPrice,
   skip,
   deps = [],
 }: UseTransactionHandlerProps) => {
@@ -70,7 +67,6 @@ export const useTransactionHandler = ({
     tx,
     errorCallback,
     successCallback,
-    action,
   }: {
     tx: () => Promise<TransactionResponse>;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -81,13 +77,8 @@ export const useTransactionHandler = ({
     try {
       const txnResult = await tx();
       try {
-        if (action === TxAction.APPROVAL) {
-          await txnResult.wait(1);
-          mounted.current && successCallback && successCallback(txnResult);
-        } else {
-          mounted.current && successCallback && successCallback(txnResult);
-          await txnResult.wait(1);
-        }
+        await txnResult.wait(1);
+        mounted.current && successCallback && successCallback(txnResult);
 
         refetchWalletBalances();
         refetchPoolData && refetchPoolData();
@@ -164,7 +155,7 @@ export const useTransactionHandler = ({
         try {
           setApprovalTxState({ ...approvalTxState, loading: true });
           const params = await approvalTx.tx();
-          if (customGasPrice) params.gasPrice = BigNumber.from(customGasPrice);
+          delete params.gasPrice;
           await processTx({
             tx: () => sendTx(params),
             successCallback: (txnResponse: TransactionResponse) => {
@@ -205,7 +196,7 @@ export const useTransactionHandler = ({
         setMainTxState({ ...mainTxState, loading: true });
         const txns = await handleGetPermitTxns(signature, signatureDeadline);
         const params = await txns[0].tx();
-        if (customGasPrice) params.gasPrice = BigNumber.from(customGasPrice);
+        delete params.gasPrice;
         return processTx({
           tx: () => sendTx(params),
           successCallback: (txnResponse: TransactionResponse) => {
@@ -239,7 +230,7 @@ export const useTransactionHandler = ({
       try {
         setMainTxState({ ...mainTxState, loading: true });
         const params = await actionTx.tx();
-        if (customGasPrice) params.gasPrice = BigNumber.from(customGasPrice);
+        delete params.gasPrice;
         return processTx({
           tx: () => sendTx(params),
           successCallback: (txnResponse: TransactionResponse) => {

@@ -1,0 +1,4 @@
+# generated files
+scripts/populate-cache.js linguist-vendored
+src/locales/*.js linguist-vendored
+src/static-build/*.json linguist-vendored

@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-03-22 00:15\n"
+"PO-Revision-Date: 2022-03-30 18:05\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -334,6 +334,10 @@ msgstr ""
 msgid "Can be collateral"
 msgstr ""
 
+#: src/modules/governance/FormattedProposalTime.tsx
+msgid "Can be executed"
+msgstr ""
+
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Can only be used as collateral in isolation mode"
 msgstr ""
@@ -447,8 +451,8 @@ msgstr ""
 msgid "Current differential"
 msgstr ""
 
-#: src/components/transactions/GasStation/GasStation.tsx
-msgid "Custom"
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Current votes"
 msgstr ""
 
 #: src/layouts/components/DarkModeSwitcher.tsx
@@ -537,10 +541,6 @@ msgstr ""
 msgid "Discord"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].governance.tsx
-msgid "Discussion"
-msgstr ""
-
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode"
 msgstr ""
@@ -551,6 +551,10 @@ msgstr ""
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode increases your LTV for a selected category of assets up to 97%. <0>Learn more</0>"
+msgstr ""
+
+#: src/components/infoTooltips/EModeTooltip.tsx
+msgid "E-Mode increases your LTV for a selected category of assets up to<0/>. <1>Learn more</1>"
 msgstr ""
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
@@ -607,6 +611,10 @@ msgstr ""
 msgid "Executed"
 msgstr ""
 
+#: src/modules/governance/FormattedProposalTime.tsx
+msgid "Expires"
+msgstr ""
+
 #: src/ui-config/menu-items/index.tsx
 msgid "FAQ"
 msgstr ""
@@ -627,6 +635,10 @@ msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "For repayment of a specific type of debt, the user needs to have debt that type"
+msgstr ""
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Forum discussion"
 msgstr ""
 
 #: src/layouts/components/LanguageSwitcher.tsx
@@ -862,6 +874,10 @@ msgstr ""
 msgid "Net APY"
 msgstr ""
 
+#: src/components/infoTooltips/NetAPYTooltip.tsx
+msgid "Net APY is the combined effect of all supply and borrow positions on net worth, including incentives. It is possible to have a negative net APY if debt APY is higher than supply APY."
+msgstr ""
+
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Net worth"
 msgstr ""
@@ -908,6 +924,11 @@ msgstr ""
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Not enough voting power to participate in this proposal"
+msgstr ""
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Not reached"
 msgstr ""
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
@@ -991,6 +1012,15 @@ msgstr ""
 #: pages/governance/proposal/[proposalId].governance.tsx
 #: src/modules/governance/ProposalListItem.tsx
 msgid "Quorum"
+msgstr ""
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Raw-Ipfs"
+msgstr ""
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Reached"
 msgstr ""
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
@@ -1096,12 +1126,12 @@ msgstr ""
 msgid "Select language"
 msgstr ""
 
-#: src/components/transactions/GasStation/GasStation.tsx
-msgid "Select transaction speed"
-msgstr ""
-
 #: src/components/HALTooltip.tsx
 msgid "Setup triggers and receive notifications about your Health Factor status using Hal app."
+msgstr ""
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Share on twitter"
 msgstr ""
 
 #: src/components/lists/ListWrapper.tsx
@@ -1377,6 +1407,10 @@ msgstr ""
 msgid "This asset has reached its supply cap. Nothing is available to be supplied from this market."
 msgstr ""
 
+#: src/components/infoTooltips/GasTooltip.tsx
+msgid "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
+msgstr ""
+
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount available for you to borrow. You can borrow based on your collateral and until the borrow cap is reached."
 msgstr ""
@@ -1552,10 +1586,6 @@ msgstr ""
 msgid "Vote YAE"
 msgstr ""
 
-#: pages/governance/proposal/[proposalId].governance.tsx
-msgid "Vote differential needed"
-msgstr ""
-
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
@@ -1662,6 +1692,10 @@ msgstr ""
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You do not have supplies in this currency"
+msgstr ""
+
+#: src/components/infoTooltips/RepayWithDustTooltip.tsx
+msgid "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
 msgstr ""
 
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
@@ -1773,10 +1807,6 @@ msgstr ""
 msgid "or"
 msgstr ""
 
-#: src/components/transactions/GasStation/GasStation.tsx
-msgid "or enter custom fee value"
-msgstr ""
-
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "or use <0>{0}</0> to transfer your ETH assets."
 msgstr ""
@@ -1809,13 +1839,6 @@ msgstr ""
 msgid "v3 markets"
 msgstr ""
 
-#: src/components/transactions/GasStation/GasStation.tsx
-msgid "{0, select, slow {Slow} normal {Normal} fast {Fast} other {-}}"
-msgstr ""
-
-#: src/components/transactions/GasStation/GasStation.tsx
-#: src/components/transactions/GasStation/GasStation.tsx
-#: src/components/transactions/GasStation/GasStation.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx

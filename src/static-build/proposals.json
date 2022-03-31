@@ -2935,22 +2935,57 @@
       ],
       "startBlock": 14439998,
       "endBlock": 14459198,
-      "executionTime": 0,
-      "forVotes": "122400405066333052355541",
+      "executionTime": 1648356003,
+      "forVotes": "327009329565782183497841",
       "againstVotes": "0",
-      "executed": false,
+      "executed": true,
       "canceled": false,
       "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
-      "state": "Active",
+      "state": "Executed",
       "minimumQuorum": "200",
       "minimumDiff": "50",
-      "executionTimeWithGracePeriod": 0,
+      "executionTimeWithGracePeriod": 1648788003,
       "proposalCreated": 14439998,
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0xe04114acd4b2ad3e3493397599570929bd7d9d619bca1e1844f0e460a0dc8b78",
       "startTimestamp": 1648003790,
       "creationTimestamp": 1648003790,
       "expirationTimestamp": 1648262990
+    },
+    {
+      "id": 68,
+      "creator": "0xa7615CD307F323172331865181DC8b80a2834324",
+      "executor": "0xEE56e2B3D491590B5b31738cC34d5232F378a8D5",
+      "targets": [
+        "0x49E4DB0a4D63C73BAE75747EE12AB63BBdda3207"
+      ],
+      "signatures": [
+        "execute()"
+      ],
+      "calldatas": [
+        "0x"
+      ],
+      "withDelegatecalls": [
+        true
+      ],
+      "startBlock": 14457247,
+      "endBlock": 14476447,
+      "executionTime": 1648635558,
+      "forVotes": "373675935453836003847473",
+      "againstVotes": "0",
+      "executed": true,
+      "canceled": false,
+      "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
+      "state": "Executed",
+      "minimumQuorum": "200",
+      "minimumDiff": "50",
+      "executionTimeWithGracePeriod": 1649067558,
+      "proposalCreated": 14457247,
+      "totalVotingSupply": "16000000000000000000000000",
+      "ipfsHash": "0x560beb8b858395e146aaaf9d242f7a4da3569311fa288eaf63648402ca929a22",
+      "startTimestamp": 1648235565,
+      "creationTimestamp": 1648235565,
+      "expirationTimestamp": 1648494765
     }
   ]
 }
