@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "precommit": "yarn i18n",
     "dev": "next dev",
     "build": "next build",
     "build:analyze": "ANALYZE=true yarn build",
