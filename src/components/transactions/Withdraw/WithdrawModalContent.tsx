@@ -38,10 +38,11 @@ export const WithdrawModalContent = ({
   const { currentNetworkConfig } = useProtocolDataContext();
 
   const [_amount, setAmount] = useState('');
+  const [withdrawMax, setWithdrawMax] = useState('');
   const amountRef = useRef<string>();
 
   // calculations
-  const underlyingBalance = valueToBigNumber(userReserve.underlyingBalance);
+  const underlyingBalance = valueToBigNumber(userReserve?.underlyingBalance || '0');
   const unborrowedLiquidity = valueToBigNumber(poolReserve.unborrowedLiquidity);
   let maxAmountToWithdraw = BigNumber.min(underlyingBalance, unborrowedLiquidity);
   let maxCollateralToWithdrawInETH = valueToBigNumber('0');
@@ -50,7 +51,7 @@ export const WithdrawModalContent = ({
       ? poolReserve.formattedEModeLiquidationThreshold
       : poolReserve.formattedReserveLiquidationThreshold;
   if (
-    userReserve.usageAsCollateralEnabledOnUser &&
+    userReserve?.usageAsCollateralEnabledOnUser &&
     poolReserve.usageAsCollateralEnabled &&
     user.totalBorrowsMarketReferenceCurrency !== '0'
   ) {
@@ -77,6 +78,11 @@ export const WithdrawModalContent = ({
     const maxSelected = value === '-1';
     amountRef.current = maxSelected ? maxAmountToWithdraw.toString(10) : value;
     setAmount(value);
+    if (maxSelected && maxAmountToWithdraw.eq(underlyingBalance)) {
+      setWithdrawMax('-1');
+    } else {
+      setWithdrawMax(maxAmountToWithdraw.multipliedBy(0.995).toString(10));
+    }
   };
 
   // health factor calculations
@@ -86,7 +92,7 @@ export const WithdrawModalContent = ({
   let liquidationThresholdAfterWithdraw = user.currentLiquidationThreshold;
   let healthFactorAfterWithdraw = valueToBigNumber(user.healthFactor);
 
-  if (userReserve.usageAsCollateralEnabledOnUser && poolReserve.usageAsCollateralEnabled) {
+  if (userReserve?.usageAsCollateralEnabledOnUser && poolReserve.usageAsCollateralEnabled) {
     const amountToWithdrawInEth = valueToBigNumber(amount).multipliedBy(
       poolReserve.formattedPriceInMarketReferenceCurrency
     );
@@ -139,7 +145,7 @@ export const WithdrawModalContent = ({
   };
 
   // calculating input usd value
-  const usdValue = valueToBigNumber(amount).multipliedBy(userReserve.reserve.priceInUSD);
+  const usdValue = valueToBigNumber(amount).multipliedBy(userReserve?.reserve.priceInUSD || 0);
 
   if (withdrawTxState.success)
     return (
@@ -218,13 +224,7 @@ export const WithdrawModalContent = ({
 
       <WithdrawActions
         poolReserve={poolReserve}
-        amountToWithdraw={
-          isMaxSelected
-            ? maxAmountToWithdraw.eq(underlyingBalance)
-              ? '-1'
-              : maxAmountToWithdraw.multipliedBy(0.995).toString(10)
-            : amount
-        }
+        amountToWithdraw={isMaxSelected ? withdrawMax : amount}
         poolAddress={
           withdrawUnWrapped && poolReserve.isWrappedBaseAsset
             ? API_ETH_MOCK_ADDRESS
