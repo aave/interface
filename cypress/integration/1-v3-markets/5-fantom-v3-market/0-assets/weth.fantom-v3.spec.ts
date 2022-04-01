@@ -1,12 +1,9 @@
 import { configEnvWithTenderlyFantomFork } from '../../../../support/steps/configuration.steps';
+import { supply, borrow, repay, withdraw } from '../../../../support/steps/main.steps';
 import {
-  supply,
-  borrow,
-  repay,
-  withdraw,
-  changeBorrowType,
-} from '../../../../support/steps/main.steps';
-import { dashboardAssetValuesVerification } from '../../../../support/steps/verification.steps';
+  dashboardAssetValuesVerification,
+  switchApyBlocked,
+} from '../../../../support/steps/verification.steps';
 import { skipState } from '../../../../support/steps/common';
 import assets from '../../../../fixtures/assets.json';
 import constants from '../../../../fixtures/constans.json';
@@ -21,28 +18,8 @@ const testData = {
     borrow: [
       {
         asset: assets.fantomMarket.WETH,
-        amount: 0.25,
+        amount: 0.5,
         apyType: constants.borrowAPYType.variable,
-        hasApproval: true,
-      },
-      {
-        asset: assets.fantomMarket.WETH,
-        amount: 0.25,
-        apyType: constants.borrowAPYType.stable,
-        hasApproval: true,
-      },
-    ],
-    changeBorrowType: [
-      {
-        asset: assets.fantomMarket.WETH,
-        apyType: constants.borrowAPYType.stable,
-        newAPY: constants.borrowAPYType.variable,
-        hasApproval: true,
-      },
-      {
-        asset: assets.fantomMarket.WETH,
-        apyType: constants.borrowAPYType.variable,
-        newAPY: constants.borrowAPYType.stable,
         hasApproval: true,
       },
     ],
@@ -51,17 +28,21 @@ const testData = {
       amount: 0.101,
       hasApproval: false,
     },
+    checkDisabledApy: {
+      asset: assets.fantomMarket.WETH,
+      apyType: constants.apyType.variable,
+    },
     repay: [
       {
         asset: assets.fantomMarket.WETH,
-        apyType: constants.apyType.stable,
+        apyType: constants.apyType.variable,
         amount: 0.02,
         hasApproval: true,
         repayOption: constants.repayType.default,
       },
       {
         asset: assets.fantomMarket.WETH,
-        apyType: constants.apyType.stable,
+        apyType: constants.apyType.variable,
         repayableAsset: assets.fantomMarket.aWETH,
         amount: 0.02,
         hasApproval: true,
@@ -88,7 +69,7 @@ const testData = {
         type: constants.dashboardTypes.borrow,
         assetName: assets.fantomMarket.WETH.shortName,
         amount: 0.46,
-        apyType: constants.borrowAPYType.stable,
+        apyType: constants.borrowAPYType.variable,
       },
     ],
   },
@@ -102,9 +83,7 @@ describe('WETH INTEGRATION SPEC, FANTOM V3 MARKET', () => {
   testData.testCases.borrow.forEach((borrowCase) => {
     borrow(borrowCase, skipTestState, true);
   });
-  testData.testCases.changeBorrowType.forEach((changeAPRCase) => {
-    changeBorrowType(changeAPRCase, skipTestState, true);
-  });
+  switchApyBlocked(testData.testCases.checkDisabledApy, skipTestState);
   supply(testData.testCases.deposit, skipTestState, true);
   testData.testCases.repay.forEach((repayCase) => {
     repay(repayCase, skipTestState, false);

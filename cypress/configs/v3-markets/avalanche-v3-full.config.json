@@ -1,5 +1,5 @@
 {
-  "integrationFolder": "cypress/integration/1-v3-markets/1-avalanche-v3-market",
+  "integrationFolder": "cypress/integration/1-v3-markets/2-avalanche-v3-market",
   "testFiles": [
     "**/*.*"
   ],
