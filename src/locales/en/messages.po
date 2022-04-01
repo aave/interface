@@ -552,6 +552,18 @@ msgstr "E-Mode increases your LTV for a selected category of assets up to 97%. <
 msgid "E-Mode increases your LTV for a selected category of assets up to<0/>. <1>Learn more</1>"
 msgstr "E-Mode increases your LTV for a selected category of assets up to<0/>. <1>Learn more</1>"
 
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "E-Mode liquidation penalty"
+msgstr "E-Mode liquidation penalty"
+
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "E-Mode liquidation threshold"
+msgstr "E-Mode liquidation threshold"
+
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "E-Mode max LTV"
+msgstr "E-Mode max LTV"
+
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Efficiency mode (E-Mode)"
 msgstr "Efficiency mode (E-Mode)"

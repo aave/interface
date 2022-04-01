@@ -296,16 +296,67 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                   />
                 </Typography>
               )}
-              {reserve.isIsolated && (
-                <Typography variant="caption" sx={{ mt: 2 }}>
-                  <Trans>
-                    In Isolation mode you cannot supply other assets as collateral for borrowing.
-                    Assets used as collateral in Isolation mode can only be borrowed to a specific
-                    debt ceiling.
-                  </Trans>
-                </Typography>
-              )}
             </Box>
+            {reserve.eModeCategoryId !== 0 && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: { xs: 'column', sm: 'row' },
+                  alignItems: { xs: 'flex-start', sm: 'center' },
+                  flexWrap: 'wrap',
+                  mt: '16px',
+                  '& > :not(:last-child)': {
+                    mr: 4,
+                  },
+                }}
+              >
+                <Typography sx={{ display: 'inline-flex' }}>
+                  <Typography sx={{ color: 'text.muted' }} component="span">
+                    <Trans>E-Mode max LTV</Trans>
+                  </Typography>
+                  <FormattedNumber
+                    value={reserve.formattedEModeLtv}
+                    percent
+                    variant="secondary14"
+                    sx={{ ml: 2 }}
+                    visibleDecimals={0}
+                  />
+                </Typography>
+                <Typography sx={{ display: 'inline-flex' }}>
+                  <Typography sx={{ color: 'text.muted' }} component="span">
+                    <Trans>E-Mode liquidation threshold</Trans>
+                  </Typography>
+                  <FormattedNumber
+                    value={reserve.formattedEModeLiquidationThreshold}
+                    percent
+                    variant="secondary14"
+                    sx={{ ml: 2 }}
+                    visibleDecimals={0}
+                  />
+                </Typography>
+                <Typography sx={{ display: 'inline-flex' }}>
+                  <Typography sx={{ color: 'text.muted' }} component="span">
+                    <Trans>E-Mode liquidation penalty</Trans>
+                  </Typography>
+                  <FormattedNumber
+                    value={reserve.formattedEModeLiquidationBonus}
+                    percent
+                    variant="secondary14"
+                    sx={{ ml: 2 }}
+                    visibleDecimals={0}
+                  />
+                </Typography>
+              </Box>
+            )}
+            {reserve.isIsolated && (
+              <Typography variant="caption" sx={{ mt: 2 }}>
+                <Trans>
+                  In Isolation mode you cannot supply other assets as collateral for borrowing.
+                  Assets used as collateral in Isolation mode can only be borrowed to a specific
+                  debt ceiling.
+                </Trans>
+              </Typography>
+            )}
           </Box>
         </Box>
       </PanelRow>
