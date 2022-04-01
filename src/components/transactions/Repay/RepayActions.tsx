@@ -38,7 +38,7 @@ export const RepayActions = ({
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
-  console.log('amount to repay: ', amountToRepay);
+
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({
       tryPermit:

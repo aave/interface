@@ -88,15 +88,21 @@ export const RepayModalContent = ({
     amountRef.current = maxSelected ? maxAmountToRepay.toString(10) : value;
     setAmount(value);
     if (maxSelected && (repayWithATokens || maxAmountToRepay.eq(debt))) {
-      console.log('--------------');
       if (
         tokenToRepayWith.address === API_ETH_MOCK_ADDRESS.toLowerCase() ||
         (synthetixProxyByChainId[currentChainId] &&
           synthetixProxyByChainId[currentChainId].toLowerCase() ===
             reserve.underlyingAsset.toLowerCase())
       ) {
+        // for native token and synthetix (only mainnet) we can't send -1 as
+        // contract does not accept max unit256
         setRepayMax(safeAmountToRepayAll.toString(10));
       } else {
+        // -1 can always be used for v3 otherwise
+        // for v2 we can onl use -1 when user has more balance than max debt to repay
+        // this is accounted for when maxAmountToRepay.eq(debt) as maxAmountToRepay is
+        // min between debt and walletbalance, so if it enters here for v2 it means
+        // balance is bigger and will be able to transact with -1
         setRepayMax('-1');
       }
     } else {
