@@ -1303,8 +1303,8 @@ msgid "Testnet mode"
 msgstr "Testnet mode"
 
 #: src/components/infoTooltips/BorrowPowerTooltip.tsx
-msgid "The % of your total bowering power used. This is based on the amount of your collateral supplied and the total amount that you can borrow."
-msgstr "The % of your total bowering power used. This is based on the amount of your collateral supplied and the total amount that you can borrow."
+msgid "The % of your total borrowing power used. This is based on the amount of your collateral supplied and the total amount that you can borrow."
+msgstr "The % of your total borrowing power used. This is based on the amount of your collateral supplied and the total amount that you can borrow."
 
 #: pages/staking.staking.tsx
 msgid "The Balancer Pool Token (BPT) is a liquidity pool token. You can receive BPT by depositing a combination of AAVE + ETH in the <0>Balancer liquidity pool</0>. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
