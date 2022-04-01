@@ -1,4 +1,8 @@
-import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
+import {
+  API_ETH_MOCK_ADDRESS,
+  InterestRate,
+  synthetixProxyByChainId,
+} from '@aave/contract-helpers';
 import {
   calculateHealthFactorFromBalancesBigUnits,
   USD_DECIMALS,
@@ -83,8 +87,14 @@ export const RepayModalContent = ({
     const maxSelected = value === '-1';
     amountRef.current = maxSelected ? maxAmountToRepay.toString(10) : value;
     setAmount(value);
-    if (currentMarketData.v3 && maxSelected && (repayWithATokens || maxAmountToRepay.eq(debt))) {
-      if (tokenToRepayWith.address === API_ETH_MOCK_ADDRESS.toLowerCase()) {
+    if (maxSelected && (repayWithATokens || maxAmountToRepay.eq(debt))) {
+      console.log('--------------');
+      if (
+        tokenToRepayWith.address === API_ETH_MOCK_ADDRESS.toLowerCase() ||
+        (synthetixProxyByChainId[currentChainId] &&
+          synthetixProxyByChainId[currentChainId].toLowerCase() ===
+            reserve.underlyingAsset.toLowerCase())
+      ) {
         setRepayMax(safeAmountToRepayAll.toString(10));
       } else {
         setRepayMax('-1');
