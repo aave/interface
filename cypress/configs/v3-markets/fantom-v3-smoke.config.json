@@ -12,7 +12,7 @@
   "video": false,
   "scrollBehavior": "center",
   "retries": {
-    "runMode": 3,
+    "runMode": 1,
     "openMode": 0
   }
 }

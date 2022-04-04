@@ -31,14 +31,14 @@
     "test:avalanche-v3-smoke": "npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v3-markets/avalanche-v3-smoke.config.json",
     "test:fantom-v3-smoke": "npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v3-markets/fantom-v3-smoke.config.json",
     "test:polygon-v3-smoke": "npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v3-markets/polygon-v3-smoke.config.json",
-    "test:main-v2-full": "npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v2-markets/ethereum-v2-full.config.json",
-    "test:amm-v2-full": "npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v2-markets/amm-v2-full.config.json",
-    "test:polygon-v2-full": "npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v2-markets/polygon-v2-full.config.json",
-    "test:avalanche-v2-full": "npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v2-markets/avalanche-v2-full.config.json",
-    "test:arbitrum-v3-full": "npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v3-markets/arbitrum-v3-full.config.json",
-    "test:avalanche-v3-full": "npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v3-markets/avalanche-v3-full.config.json",
-    "test:fantom-v3-full": "npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v3-markets/fantom-v3-full.config.json",
-    "test:polygon-v3-full": "npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v3-markets/polygon-v3-full.config.json"
+    "test:main-v2-full": "npx cypress-repeat run -n 3 --rerun-failed-only --config-file ./cypress/configs/v2-markets/ethereum-v2-full.config.json",
+    "test:amm-v2-full": "npx cypress-repeat run -n 3 --rerun-failed-only --config-file ./cypress/configs/v2-markets/amm-v2-full.config.json",
+    "test:polygon-v2-full": "npx cypress-repeat run -n 3 --rerun-failed-only --config-file ./cypress/configs/v2-markets/polygon-v2-full.config.json",
+    "test:avalanche-v2-full": "npx cypress-repeat run -n 3 --rerun-failed-only --config-file ./cypress/configs/v2-markets/avalanche-v2-full.config.json",
+    "test:arbitrum-v3-full": "npx cypress-repeat run -n 3 --rerun-failed-only --config-file ./cypress/configs/v3-markets/arbitrum-v3-full.config.json",
+    "test:avalanche-v3-full": "npx cypress-repeat run -n 3 --rerun-failed-only --config-file ./cypress/configs/v3-markets/avalanche-v3-full.config.json",
+    "test:fantom-v3-full": "npx cypress-repeat run -n 3 --rerun-failed-only --config-file ./cypress/configs/v3-markets/fantom-v3-full.config.json",
+    "test:polygon-v3-full": "npx cypress-repeat run -n 3 --rerun-failed-only --config-file ./cypress/configs/v3-markets/polygon-v3-full.config.json"
   },
   "dependencies": {
     "@aave/contract-helpers": "1.0.4",
