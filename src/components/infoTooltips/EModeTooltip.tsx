@@ -20,7 +20,7 @@ export const EModeTooltip = ({
         />
         .{' '}
         <Link
-          href="https://docs.aave.com/faq/"
+          href="https://docs.aave.com/faq/aave-v3-features"
           sx={{ textDecoration: 'underline' }}
           variant="caption"
           color="text.secondary"
