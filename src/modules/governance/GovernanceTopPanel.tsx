@@ -57,8 +57,7 @@ export const GovernanceTopPanel = () => {
               to an address of choice. To learn more check out the Governance documentation
             </Trans>{' '}
             <Link
-              // TODO: need check link
-              href="https://docs.aave.com/faq/"
+              href="https://docs.aave.com/faq/governance"
               sx={{ textDecoration: 'underline', color: '#8E92A3' }}
             >
               <Trans>here.</Trans>
@@ -78,7 +77,7 @@ export const GovernanceTopPanel = () => {
       >
         <ExternalLink text="SNAPSHOTS" href="https://snapshot.org/#/aave.eth" />
         <ExternalLink text="FORUM" href="https://governance.aave.com/" />
-        <ExternalLink text="FAQ" href="https://docs.aave.com/faq/" />
+        <ExternalLink text="FAQ" href="https://docs.aave.com/faq/governance" />
       </Box>
     </TopInfoPanel>
   );
