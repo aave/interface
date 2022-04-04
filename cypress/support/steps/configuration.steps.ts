@@ -23,7 +23,8 @@ export const configEnvWithTenderly = ({
     await tenderly.init();
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     await setTimeout(() => {}, 3000);
-    await tenderly.add_balance(DEFAULT_TEST_ACCOUNT.address, 10000);
+    await tenderly.add_balance_rpc(DEFAULT_TEST_ACCOUNT.address);
+    // await tenderly.add_balance(DEFAULT_TEST_ACCOUNT.address, 10000);
     console.log('unpause: ', unpause);
     if (unpause) {
       await tenderly.unpauseMarket();
