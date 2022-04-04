@@ -230,10 +230,10 @@ export const RepayModalContent = ({
       <TxModalDetails gasLimit={gasLimit}>
         <DetailsNumberLineWithSub
           description={<Trans>Remaining debt</Trans>}
-          amount={amountAfterRepay}
-          amountUSD={displayAmountAfterRepayInUsd.toString(10)}
-          previousAmount={debt}
-          previousAmountUSD={debtUSD.toString()}
+          futureValue={amountAfterRepay}
+          futureValueUSD={displayAmountAfterRepayInUsd.toString(10)}
+          value={debt}
+          valueUSD={debtUSD.toString()}
           symbol={
             poolReserve.iconSymbol === networkConfig.wrappedBaseAssetSymbol
               ? networkConfig.baseAssetSymbol

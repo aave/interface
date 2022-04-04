@@ -204,8 +204,8 @@ export const ClaimRewardsModalContent = () => {
             <DetailsNumberLineWithSub
               hideSymbolSuffix
               symbol={selectedReward.symbol}
-              amount={selectedReward.balance}
-              amountUSD={selectedReward.balanceUsd}
+              futureValue={selectedReward.balance}
+              futureValueUSD={selectedReward.balanceUsd}
               description={<Trans>{selectedReward.symbol} Balance</Trans>}
             />
           )}
