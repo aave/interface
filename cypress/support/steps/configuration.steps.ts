@@ -21,6 +21,8 @@ export const configEnvWithTenderly = ({
   const tenderly = new TenderlyFork({ forkNetworkID: chainId });
   before(async () => {
     await tenderly.init();
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    await setTimeout(() => {}, 3000);
     await tenderly.add_balance(DEFAULT_TEST_ACCOUNT.address, 10000);
     console.log('unpause: ', unpause);
     if (unpause) {
