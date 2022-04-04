@@ -2,7 +2,6 @@
   "integrationFolder": "cypress/integration/1-v3-markets/1-arbitrum-v3-market",
   "testFiles": [
     "0-assets/eth.arbitrum-v3.spec.ts",
-    "0-assets/link.arbitrum-v3.spec.ts",
     "0-assets/usdt.arbitrum-v3.spec.ts"
   ],
   "viewportWidth": 1200,
@@ -12,7 +11,7 @@
   "video": false,
   "scrollBehavior": "center",
   "retries": {
-    "runMode": 2,
+    "runMode": 3,
     "openMode": 0
   }
 }
