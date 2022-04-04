@@ -1,8 +1,19 @@
 import { normalize } from '@aave/math-utils';
-import { DownloadIcon } from '@heroicons/react/solid';
+import { DownloadIcon, ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Twitter } from '@mui/icons-material';
-import { Box, Button, Grid, Paper, Skeleton, styled, SvgIcon, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Grid,
+  Paper,
+  Skeleton,
+  styled,
+  SvgIcon,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
@@ -31,6 +42,7 @@ import { Link } from 'src/components/primitives/Link';
 
 import { ContentContainer } from '../../../src/components/ContentContainer';
 import { GovVoteModal } from 'src/components/transactions/GovVote/GovVoteModal';
+import { FormattedProposalTime } from 'src/modules/governance/FormattedProposalTime';
 // import { Vote } from 'src/static-build/vote';
 
 export async function getStaticPaths() {
@@ -79,6 +91,8 @@ const StyledLink = styled('a')({
 export default function ProposalPage({ proposal: initialProposal, ipfs }: ProposalPageProps) {
   const [url, setUrl] = useState('');
   const [proposal, setProposal] = useState(initialProposal);
+  const { breakpoints } = useTheme();
+  const xsmUp = useMediaQuery(breakpoints.up('xsm'));
 
   async function updateProposal() {
     if (!proposal) return;
@@ -110,6 +124,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
     diffReached,
     quorumReached,
     requiredDiff,
+    minQuorumVotes,
     diff,
   } = proposal
     ? formatProposal(proposal)
@@ -120,6 +135,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
         nayVotes: 0,
         diffReached: false,
         quorumReached: false,
+        minQuorumVotes: 0,
         requiredDiff: 0,
         diff: 0,
       };
@@ -131,7 +147,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
       <ContentContainer>
         <Grid container spacing={4}>
           <Grid item xs={12} md={8}>
-            <Paper sx={{ px: 6, py: 4, wordBreak: 'break-word' }}>
+            <Paper sx={{ px: 6, pt: 4, pb: 12 }}>
               <Typography variant="h3">
                 <Trans>Proposal overview</Trans>
               </Typography>
@@ -141,8 +157,23 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                 </Typography>
                 {proposal && ipfs ? (
                   <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <Box>
-                      <StateBadge state={proposal.state} />
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        flexWrap: 'wrap',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Box sx={{ mr: '24px', mb: { xs: '2px', sm: 0 } }}>
+                        <StateBadge state={proposal.state} />
+                      </Box>
+                      <FormattedProposalTime
+                        state={proposal.state}
+                        executionTime={proposal.executionTime}
+                        executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
+                        expirationTimestamp={proposal.expirationTimestamp}
+                      />
                     </Box>
                     <Box sx={{ flexGrow: 1 }} />
                     <Button
@@ -155,7 +186,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                         </SvgIcon>
                       }
                     >
-                      Raw-Ipfs
+                      {xsmUp && <Trans>Raw-Ipfs</Trans>}
                     </Button>
                     <Button
                       component="a"
@@ -165,7 +196,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                       )}&url=${url}`}
                       startIcon={<Twitter />}
                     >
-                      Share on twitter
+                      {xsmUp && <Trans>Share on twitter</Trans>}
                     </Button>
                   </Box>
                 ) : (
@@ -213,41 +244,104 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                 <Trans>Voting results</Trans>
               </Typography>
               {proposal ? (
-                <VoteBar yae percent={yaePercent} votes={yaeVotes} sx={{ mt: 8 }} />
-              ) : (
-                <Skeleton height={28} sx={{ mt: 8 }} />
-              )}
-              {proposal ? (
-                <VoteBar percent={nayPercent} votes={nayVotes} sx={{ mt: 3 }} />
-              ) : (
-                <Skeleton height={28} sx={{ mt: 8 }} />
-              )}
-            </Paper>
-            <Paper sx={{ px: 6, py: 4 }}>
-              <Typography variant="h3" sx={{ mb: '22px' }}>
-                <Trans>Proposal details</Trans>
-              </Typography>
-              {proposal ? (
                 <>
+                  <VoteBar yae percent={yaePercent} votes={yaeVotes} sx={{ mt: 8 }} />
+                  <VoteBar percent={nayPercent} votes={nayVotes} sx={{ mt: 3 }} />
                   <Row
                     caption={<Trans>State</Trans>}
+                    sx={{ height: 48, mt: 10 }}
+                    captionVariant="description"
+                  >
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'flex-end',
+                      }}
+                    >
+                      <StateBadge state={proposal.state} />
+                      <Box sx={{ mt: '2px' }}>
+                        <FormattedProposalTime
+                          state={proposal.state}
+                          executionTime={proposal.executionTime}
+                          expirationTimestamp={proposal.expirationTimestamp}
+                          executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
+                        />
+                      </Box>
+                    </Box>
+                  </Row>
+                  <Row
+                    caption={<Trans>Quorum</Trans>}
                     sx={{ height: 48 }}
                     captionVariant="description"
                   >
-                    <StateBadge state={proposal.state} />
+                    <CheckBadge
+                      text={quorumReached ? <Trans>Reached</Trans> : <Trans>Not reached</Trans>}
+                      checked={quorumReached}
+                      sx={{ height: 48 }}
+                      variant="description"
+                    />
                   </Row>
-                  <CheckBadge
-                    text={<Trans>Quorum</Trans>}
-                    checked={quorumReached}
-                    sx={{ flexGrow: 1, justifyContent: 'space-between', height: 48 }}
-                    variant="description"
-                  />
-                  <CheckBadge
-                    text={<Trans>Differential</Trans>}
-                    checked={diffReached}
-                    sx={{ flexGrow: 1, justifyContent: 'space-between', height: 48 }}
-                    variant="description"
-                  />
+                  <Row
+                    caption={
+                      <>
+                        <Trans>Current votes</Trans>
+                        <Typography variant="caption" color="text.muted">
+                          Required
+                        </Typography>
+                      </>
+                    }
+                    sx={{ height: 48 }}
+                    captionVariant="description"
+                  >
+                    <Box sx={{ textAlign: 'right' }}>
+                      <FormattedNumber
+                        value={yaeVotes}
+                        visibleDecimals={2}
+                        sx={{ display: 'block' }}
+                      />
+                      <FormattedNumber
+                        variant="caption"
+                        value={minQuorumVotes}
+                        visibleDecimals={2}
+                        color="text.muted"
+                      />
+                    </Box>
+                  </Row>
+                  <Row
+                    caption={<Trans>Differential</Trans>}
+                    sx={{ height: 48 }}
+                    captionVariant="description"
+                  >
+                    <CheckBadge
+                      text={diffReached ? <Trans>Reached</Trans> : <Trans>Not reached</Trans>}
+                      checked={diffReached}
+                      sx={{ height: 48 }}
+                      variant="description"
+                    />
+                  </Row>
+                  <Row
+                    caption={
+                      <>
+                        <Trans>Current differential</Trans>
+                        <Typography variant="caption" color="text.muted">
+                          Required
+                        </Typography>
+                      </>
+                    }
+                    sx={{ height: 48 }}
+                    captionVariant="description"
+                  >
+                    <Box sx={{ textAlign: 'right' }}>
+                      <FormattedNumber value={diff} visibleDecimals={2} sx={{ display: 'block' }} />
+                      <FormattedNumber
+                        variant="caption"
+                        value={requiredDiff}
+                        visibleDecimals={2}
+                        color="text.muted"
+                      />
+                    </Box>
+                  </Row>
                   <Row
                     caption={<Trans>Total voting power</Trans>}
                     sx={{ height: 48 }}
@@ -259,20 +353,20 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                       compact={false}
                     />
                   </Row>
-                  <Row
-                    caption={<Trans>Vote differential needed</Trans>}
-                    sx={{ height: 48 }}
-                    captionVariant="description"
-                  >
-                    <FormattedNumber value={requiredDiff} visibleDecimals={2} percent />
-                  </Row>
-                  <Row
-                    caption={<Trans>Current differential</Trans>}
-                    sx={{ height: 48 }}
-                    captionVariant="description"
-                  >
-                    <FormattedNumber value={diff} visibleDecimals={2} percent />
-                  </Row>
+                </>
+              ) : (
+                <>
+                  <Skeleton height={28} sx={{ mt: 8 }} />
+                  <Skeleton height={28} sx={{ mt: 8 }} />
+                </>
+              )}
+            </Paper>
+            <Paper sx={{ px: 6, py: 4 }}>
+              <Typography variant="h3" sx={{ mb: '22px' }}>
+                <Trans>Proposal details</Trans>
+              </Typography>
+              {proposal ? (
+                <>
                   <Row
                     caption={
                       <>
@@ -340,20 +434,20 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                     </Row>
                   )}
                   {ipfs?.discussions && (
-                    <Row
-                      caption={<Trans>Discussion</Trans>}
-                      sx={{ height: 48 }}
-                      captionVariant="description"
+                    <Button
+                      component={Link}
+                      target="_blank"
+                      href={ipfs.discussions}
+                      variant="outlined"
+                      sx={{ mt: 10, mb: 2 }}
+                      endIcon={
+                        <SvgIcon>
+                          <ExternalLinkIcon />
+                        </SvgIcon>
+                      }
                     >
-                      <Typography
-                        component={Link}
-                        target="_blank"
-                        href={ipfs.discussions}
-                        sx={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}
-                      >
-                        {ipfs.discussions}
-                      </Typography>
-                    </Row>
+                      <Trans>Forum discussion</Trans>
+                    </Button>
                   )}
                 </>
               ) : (

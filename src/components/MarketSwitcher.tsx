@@ -142,7 +142,7 @@ export const MarketSwitcher = () => {
                     mr: 1,
                   }}
                 >
-                  {getMarketHelpData(market.marketTitle).name}
+                  {getMarketHelpData(market.marketTitle).name} {market.isFork ? 'Fork' : ''}
                   {upToLG && ' Market'}
                 </Typography>
                 {market.v3 && (
@@ -212,7 +212,7 @@ export const MarketSwitcher = () => {
                 testChainName={getMarketHelpData(market.marketTitle).testChainName}
               />
               <ListItemText sx={{ mr: 3 }}>
-                {getMarketHelpData(market.marketTitle).name}
+                {getMarketHelpData(market.marketTitle).name} {market.isFork ? 'Fork' : ''}
               </ListItemText>
 
               {currentMarket === marketId && (
@@ -251,7 +251,7 @@ export const MarketSwitcher = () => {
                 testChainName={getMarketHelpData(market.marketTitle).testChainName}
               />
               <ListItemText sx={{ mr: 3 }}>
-                {getMarketHelpData(market.marketTitle).name}
+                {getMarketHelpData(market.marketTitle).name} {market.isFork ? 'Fork' : ''}
               </ListItemText>
 
               {currentMarket === marketId && (

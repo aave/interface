@@ -67,8 +67,6 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
     }
   }, [voteOngoing, currentAccount, startBlock]);
 
-  console.log(power);
-
   return (
     <>
       <Typography variant="h3" sx={{ mb: 8 }}>

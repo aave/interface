@@ -1,4 +1,8 @@
-import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
+import {
+  API_ETH_MOCK_ADDRESS,
+  InterestRate,
+  synthetixProxyByChainId,
+} from '@aave/contract-helpers';
 import {
   calculateHealthFactorFromBalancesBigUnits,
   USD_DECIMALS,
@@ -77,28 +81,40 @@ export const RepayModalContent = ({
     const normalizedWalletBalance = valueToBigNumber(tokenToRepayWith.balance).minus(
       userReserve.reserve.symbol.toUpperCase() === networkConfig.baseAssetSymbol ? '0.004' : '0'
     );
-    balance = normalizedWalletBalance.toString();
+    balance = normalizedWalletBalance.toString(10);
     maxAmountToRepay = BigNumber.min(normalizedWalletBalance, debt);
   }
 
   const isMaxSelected = _amount === '-1';
-  const amount = isMaxSelected ? maxAmountToRepay.toString() : _amount;
+  const amount = isMaxSelected ? maxAmountToRepay.toString(10) : _amount;
 
   const handleChange = (value: string) => {
     const maxSelected = value === '-1';
-    amountRef.current = maxSelected ? maxAmountToRepay.toString() : value;
+    amountRef.current = maxSelected ? maxAmountToRepay.toString(10) : value;
     setAmount(value);
-    if (currentMarketData.v3 && maxSelected && (repayWithATokens || maxAmountToRepay.eq(debt))) {
-      if (tokenToRepayWith.address === API_ETH_MOCK_ADDRESS.toLowerCase()) {
-        setRepayMax(safeAmountToRepayAll.toString());
+    if (maxSelected && (repayWithATokens || maxAmountToRepay.eq(debt))) {
+      if (
+        tokenToRepayWith.address === API_ETH_MOCK_ADDRESS.toLowerCase() ||
+        (synthetixProxyByChainId[currentChainId] &&
+          synthetixProxyByChainId[currentChainId].toLowerCase() ===
+            reserve.underlyingAsset.toLowerCase())
+      ) {
+        // for native token and synthetix (only mainnet) we can't send -1 as
+        // contract does not accept max unit256
+        setRepayMax(safeAmountToRepayAll.toString(10));
       } else {
+        // -1 can always be used for v3 otherwise
+        // for v2 we can onl use -1 when user has more balance than max debt to repay
+        // this is accounted for when maxAmountToRepay.eq(debt) as maxAmountToRepay is
+        // min between debt and walletbalance, so if it enters here for v2 it means
+        // balance is bigger and will be able to transact with -1
         setRepayMax('-1');
       }
     } else {
       setRepayMax(
         safeAmountToRepayAll.lt(balance)
-          ? safeAmountToRepayAll.toString()
-          : maxAmountToRepay.toString()
+          ? safeAmountToRepayAll.toString(10)
+          : maxAmountToRepay.toString(10)
       );
     }
   };
@@ -118,7 +134,7 @@ export const RepayModalContent = ({
       repayTokens.push({
         address: API_ETH_MOCK_ADDRESS.toLowerCase(),
         symbol: networkConfig.baseAssetSymbol,
-        balance: maxNativeToken.toString(),
+        balance: maxNativeToken.toString(10),
       });
     }
     // push reserve asset
@@ -128,21 +144,21 @@ export const RepayModalContent = ({
       address: poolReserve.underlyingAsset,
       symbol: poolReserve.symbol,
       iconSymbol: poolReserve.iconSymbol,
-      balance: maxReserveTokenForRepay.toString(),
+      balance: maxReserveTokenForRepay.toString(10),
     });
     // push reserve atoken
     if (currentMarketData.v3) {
       const aTokenBalance = valueToBigNumber(underlyingBalance);
       const maxBalance = BigNumber.max(
         aTokenBalance,
-        BigNumber.min(aTokenBalance, debt).toString()
+        BigNumber.min(aTokenBalance, debt).toString(10)
       );
       repayTokens.push({
         address: poolReserve.aTokenAddress,
         symbol: `a${poolReserve.symbol}`,
         iconSymbol: poolReserve.iconSymbol,
         aToken: true,
-        balance: maxBalance.toString(),
+        balance: maxBalance.toString(10),
       });
     }
     setAssets(repayTokens);
@@ -152,7 +168,7 @@ export const RepayModalContent = ({
   // debt remaining after repay
   const amountAfterRepay = valueToBigNumber(debt)
     .minus(amount || '0')
-    .toString();
+    .toString(10);
   const displayAmountAfterRepay = BigNumber.min(amountAfterRepay, maxAmountToRepay);
   const displayAmountAfterRepayInUsd = displayAmountAfterRepay
     .multipliedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
@@ -175,7 +191,7 @@ export const RepayModalContent = ({
           valueToBigNumber(reserve.priceInUSD).multipliedBy(amount)
         ),
         currentLiquidationThreshold: user?.currentLiquidationThreshold || '0',
-      }).toString()
+      }).toString(10)
     : user?.healthFactor;
 
   // TODO: add here repay with collateral calculations and maybe do a conditional with other????
@@ -193,12 +209,12 @@ export const RepayModalContent = ({
       <AssetInput
         value={amount}
         onChange={handleChange}
-        usdValue={usdValue.toString()}
+        usdValue={usdValue.toString(10)}
         symbol={tokenToRepayWith.symbol}
         assets={assets}
         onSelect={setTokenToRepayWith}
         isMaxSelected={isMaxSelected}
-        maxValue={maxAmountToRepay.toString()}
+        maxValue={maxAmountToRepay.toString(10)}
       />
 
       {maxRepayWithDustRemaining && (
@@ -215,7 +231,7 @@ export const RepayModalContent = ({
         <DetailsNumberLineWithSub
           description={<Trans>Remaining debt</Trans>}
           amount={amountAfterRepay}
-          amountUSD={displayAmountAfterRepayInUsd.toString()}
+          amountUSD={displayAmountAfterRepayInUsd.toString(10)}
           previousAmount={debt}
           previousAmountUSD={debtUSD.toString()}
           symbol={
@@ -227,7 +243,7 @@ export const RepayModalContent = ({
         <DetailsHFLine
           visibleHfChange={!!_amount}
           healthFactor={user?.healthFactor}
-          futureHealthFactor={newHF?.toString()}
+          futureHealthFactor={newHF}
         />
       </TxModalDetails>
 

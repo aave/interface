@@ -13,7 +13,6 @@ import Paper from '@mui/material/Paper';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import HelpOutlinedIcon from '@mui/icons-material/HelpOutlined';
 import { useReserveRatesHistory } from 'src/hooks/useReservesHistory';
 import { ParentSize } from '@visx/responsive';
 import { ApyChart } from '../reserve-overview/ApyChart';
@@ -26,6 +25,7 @@ import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYToolt
 
 import { IncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { ExclamationIcon } from '@heroicons/react/outline';
+import { EModeTooltip } from 'src/components/infoTooltips/EModeTooltip';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
   <Box
@@ -126,7 +126,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
             <Typography variant="subheader1" sx={{ ml: 2 }}>
               {eModeInfo[reserve.eModeCategoryId].label}
             </Typography>
-            <HelpOutlinedIcon fontSize="small" sx={{ color: 'divider', ml: 1 }} />
+            <EModeTooltip eModeLtv={reserve.eModeLtv} />
           </Typography>
         )}
       </Box>
@@ -247,7 +247,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                   percent
                   variant="secondary14"
                   sx={{ ml: 2 }}
-                  visibleDecimals={0}
+                  visibleDecimals={2}
                 />
               </Typography>
               <Typography sx={{ display: 'inline-flex' }}>
@@ -259,7 +259,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                   percent
                   variant="secondary14"
                   sx={{ ml: 2 }}
-                  visibleDecimals={0}
+                  visibleDecimals={2}
                 />
               </Typography>
               <Typography sx={{ display: 'inline-flex' }}>
@@ -271,7 +271,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                   percent
                   variant="secondary14"
                   sx={{ ml: 2 }}
-                  visibleDecimals={0}
+                  visibleDecimals={2}
                 />
               </Typography>
               {reserve.isIsolated && (
@@ -284,7 +284,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                     variant="secondary14"
                     sx={{ ml: 2 }}
                     symbol="USD"
-                    visibleDecimals={0}
+                    visibleDecimals={2}
                   />
                   &nbsp;of
                   <FormattedNumber
@@ -292,20 +292,71 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                     variant="secondary14"
                     sx={{ ml: 2 }}
                     symbol="USD"
-                    visibleDecimals={0}
+                    visibleDecimals={2}
                   />
                 </Typography>
               )}
-              {reserve.isIsolated && (
-                <Typography variant="caption" sx={{ mt: 2 }}>
-                  <Trans>
-                    In Isolation mode you cannot supply other assets as collateral for borrowing.
-                    Assets used as collateral in Isolation mode can only be borrowed to a specific
-                    debt ceiling.
-                  </Trans>
-                </Typography>
-              )}
             </Box>
+            {reserve.eModeCategoryId !== 0 && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: { xs: 'column', sm: 'row' },
+                  alignItems: { xs: 'flex-start', sm: 'center' },
+                  flexWrap: 'wrap',
+                  mt: '16px',
+                  '& > :not(:last-child)': {
+                    mr: 4,
+                  },
+                }}
+              >
+                <Typography sx={{ display: 'inline-flex' }}>
+                  <Typography sx={{ color: 'text.muted' }} component="span">
+                    <Trans>E-Mode max LTV</Trans>
+                  </Typography>
+                  <FormattedNumber
+                    value={reserve.formattedEModeLtv}
+                    percent
+                    variant="secondary14"
+                    sx={{ ml: 2 }}
+                    visibleDecimals={0}
+                  />
+                </Typography>
+                <Typography sx={{ display: 'inline-flex' }}>
+                  <Typography sx={{ color: 'text.muted' }} component="span">
+                    <Trans>E-Mode liquidation threshold</Trans>
+                  </Typography>
+                  <FormattedNumber
+                    value={reserve.formattedEModeLiquidationThreshold}
+                    percent
+                    variant="secondary14"
+                    sx={{ ml: 2 }}
+                    visibleDecimals={0}
+                  />
+                </Typography>
+                <Typography sx={{ display: 'inline-flex' }}>
+                  <Typography sx={{ color: 'text.muted' }} component="span">
+                    <Trans>E-Mode liquidation penalty</Trans>
+                  </Typography>
+                  <FormattedNumber
+                    value={reserve.formattedEModeLiquidationBonus}
+                    percent
+                    variant="secondary14"
+                    sx={{ ml: 2 }}
+                    visibleDecimals={0}
+                  />
+                </Typography>
+              </Box>
+            )}
+            {reserve.isIsolated && (
+              <Typography variant="caption" sx={{ mt: 2 }}>
+                <Trans>
+                  In Isolation mode you cannot supply other assets as collateral for borrowing.
+                  Assets used as collateral in Isolation mode can only be borrowed to a specific
+                  debt ceiling.
+                </Trans>
+              </Typography>
+            )}
           </Box>
         </Box>
       </PanelRow>
