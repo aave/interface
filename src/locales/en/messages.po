@@ -240,8 +240,8 @@ msgid "Balance"
 msgstr "Balance"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
-msgid "Be careful - You are very close to liqudation. Consider depositing more collateral or paying down some of your borrowed positions"
-msgstr "Be careful - You are very close to liqudation. Consider depositing more collateral or paying down some of your borrowed positions"
+msgid "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
+msgstr "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
 
 #: src/components/transactions/Warnings/SNXWarning.tsx
 msgid "Before supplying"

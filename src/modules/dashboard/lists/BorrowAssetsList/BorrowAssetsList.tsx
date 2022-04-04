@@ -114,7 +114,7 @@ export const BorrowAssetsList = () => {
               {+collateralUsagePercent >= 0.98 && (
                 <Alert sx={{ mb: '12px' }} severity="error">
                   <Trans>
-                    Be careful - You are very close to liqudation. Consider depositing more
+                    Be careful - You are very close to liquidation. Consider depositing more
                     collateral or paying down some of your borrowed positions
                   </Trans>
                 </Alert>
