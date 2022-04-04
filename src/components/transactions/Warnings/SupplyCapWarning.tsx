@@ -16,11 +16,11 @@ export const SupplyCapWarning = () => {
           Supply caps limit the amount of a certain asset that can be supplied to the Aave protocol.
           This helps reducing exposure to the asset and mitigate attacks like infinite minting or
           price oracle manipulation.
+          <Link href="https://docs.aave.com/developers/whats-new/supply-borrow-caps">
+            FAQ guide
+          </Link>
+          .
         </Trans>
-        <Link href="https://docs.aave.com/developers/whats-new/supply-borrow-caps">
-          FAQ <Trans>guide</Trans>
-        </Link>
-        .
       </Typography>
     </Warning>
   );
