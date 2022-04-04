@@ -267,7 +267,11 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                   <Trans>Liquidation penalty</Trans>
                 </Typography>
                 <FormattedNumber
-                  value={reserve.formattedReserveLiquidationBonus}
+                  value={
+                    Number(reserve.formattedReserveLiquidationBonus) < 0
+                      ? '0'
+                      : reserve.formattedReserveLiquidationBonus
+                  }
                   percent
                   variant="secondary14"
                   sx={{ ml: 2 }}
@@ -319,7 +323,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                     percent
                     variant="secondary14"
                     sx={{ ml: 2 }}
-                    visibleDecimals={0}
+                    visibleDecimals={2}
                   />
                 </Typography>
                 <Typography sx={{ display: 'inline-flex' }}>
@@ -331,7 +335,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                     percent
                     variant="secondary14"
                     sx={{ ml: 2 }}
-                    visibleDecimals={0}
+                    visibleDecimals={2}
                   />
                 </Typography>
                 <Typography sx={{ display: 'inline-flex' }}>
@@ -339,11 +343,15 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                     <Trans>E-Mode liquidation penalty</Trans>
                   </Typography>
                   <FormattedNumber
-                    value={reserve.formattedEModeLiquidationBonus}
+                    value={
+                      Number(reserve.formattedEModeLiquidationBonus) < 0
+                        ? '0'
+                        : reserve.formattedEModeLiquidationBonus
+                    }
                     percent
                     variant="secondary14"
                     sx={{ ml: 2 }}
-                    visibleDecimals={0}
+                    visibleDecimals={2}
                   />
                 </Typography>
               </Box>
