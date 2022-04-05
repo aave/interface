@@ -226,77 +226,79 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                 </Box>
               )}
             </div>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: { xs: 'column', sm: 'row' },
-                alignItems: { xs: 'flex-start', sm: 'center' },
-                flexWrap: 'wrap',
-                mt: '16px',
-                '& > :not(:last-child)': {
-                  mr: 4,
-                },
-              }}
-            >
-              <Typography sx={{ display: 'inline-flex' }}>
-                <Typography sx={{ color: 'text.muted' }} component="span">
-                  <Trans>Max LTV</Trans>
-                </Typography>
-                <FormattedNumber
-                  value={reserve.formattedBaseLTVasCollateral}
-                  percent
-                  variant="secondary14"
-                  sx={{ ml: 2 }}
-                  visibleDecimals={2}
-                />
-              </Typography>
-              <Typography sx={{ display: 'inline-flex' }}>
-                <Typography sx={{ color: 'text.muted' }} component="span">
-                  <Trans>Liquidation threshold</Trans>
-                </Typography>
-                <FormattedNumber
-                  value={reserve.formattedReserveLiquidationThreshold}
-                  percent
-                  variant="secondary14"
-                  sx={{ ml: 2 }}
-                  visibleDecimals={2}
-                />
-              </Typography>
-              <Typography sx={{ display: 'inline-flex' }}>
-                <Typography sx={{ color: 'text.muted' }} component="span">
-                  <Trans>Liquidation penalty</Trans>
-                </Typography>
-                <FormattedNumber
-                  value={reserve.formattedReserveLiquidationBonus}
-                  percent
-                  variant="secondary14"
-                  sx={{ ml: 2 }}
-                  visibleDecimals={2}
-                />
-              </Typography>
-              {reserve.isIsolated && (
+            {reserve.usageAsCollateralEnabled && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: { xs: 'column', sm: 'row' },
+                  alignItems: { xs: 'flex-start', sm: 'center' },
+                  flexWrap: 'wrap',
+                  mt: '16px',
+                  '& > :not(:last-child)': {
+                    mr: 4,
+                  },
+                }}
+              >
                 <Typography sx={{ display: 'inline-flex' }}>
                   <Typography sx={{ color: 'text.muted' }} component="span">
-                    <Trans>Debt ceiling</Trans>
+                    <Trans>Max LTV</Trans>
                   </Typography>
                   <FormattedNumber
-                    value={reserve.isolationModeTotalDebtUSD}
+                    value={reserve.formattedBaseLTVasCollateral}
+                    percent
                     variant="secondary14"
                     sx={{ ml: 2 }}
-                    symbol="USD"
-                    visibleDecimals={2}
-                  />
-                  &nbsp;of
-                  <FormattedNumber
-                    value={reserve.debtCeilingUSD}
-                    variant="secondary14"
-                    sx={{ ml: 2 }}
-                    symbol="USD"
                     visibleDecimals={2}
                   />
                 </Typography>
-              )}
-            </Box>
+                <Typography sx={{ display: 'inline-flex' }}>
+                  <Typography sx={{ color: 'text.muted' }} component="span">
+                    <Trans>Liquidation threshold</Trans>
+                  </Typography>
+                  <FormattedNumber
+                    value={reserve.formattedReserveLiquidationThreshold}
+                    percent
+                    variant="secondary14"
+                    sx={{ ml: 2 }}
+                    visibleDecimals={2}
+                  />
+                </Typography>
+                <Typography sx={{ display: 'inline-flex' }}>
+                  <Typography sx={{ color: 'text.muted' }} component="span">
+                    <Trans>Liquidation penalty</Trans>
+                  </Typography>
+                  <FormattedNumber
+                    value={reserve.formattedReserveLiquidationBonus}
+                    percent
+                    variant="secondary14"
+                    sx={{ ml: 2 }}
+                    visibleDecimals={2}
+                  />
+                </Typography>
+                {reserve.isIsolated && (
+                  <Typography sx={{ display: 'inline-flex' }}>
+                    <Typography sx={{ color: 'text.muted' }} component="span">
+                      <Trans>Debt ceiling</Trans>
+                    </Typography>
+                    <FormattedNumber
+                      value={reserve.isolationModeTotalDebtUSD}
+                      variant="secondary14"
+                      sx={{ ml: 2 }}
+                      symbol="USD"
+                      visibleDecimals={2}
+                    />
+                    &nbsp;of
+                    <FormattedNumber
+                      value={reserve.debtCeilingUSD}
+                      variant="secondary14"
+                      sx={{ ml: 2 }}
+                      symbol="USD"
+                      visibleDecimals={2}
+                    />
+                  </Typography>
+                )}
+              </Box>
+            )}
             {reserve.eModeCategoryId !== 0 && (
               <Box
                 sx={{
@@ -319,7 +321,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                     percent
                     variant="secondary14"
                     sx={{ ml: 2 }}
-                    visibleDecimals={0}
+                    visibleDecimals={2}
                   />
                 </Typography>
                 <Typography sx={{ display: 'inline-flex' }}>
@@ -331,7 +333,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                     percent
                     variant="secondary14"
                     sx={{ ml: 2 }}
-                    visibleDecimals={0}
+                    visibleDecimals={2}
                   />
                 </Typography>
                 <Typography sx={{ display: 'inline-flex' }}>
@@ -343,7 +345,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                     percent
                     variant="secondary14"
                     sx={{ ml: 2 }}
-                    visibleDecimals={0}
+                    visibleDecimals={2}
                   />
                 </Typography>
               </Box>
