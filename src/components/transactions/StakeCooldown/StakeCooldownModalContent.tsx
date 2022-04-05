@@ -115,8 +115,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
         </Trans>{' '}
         <Link
           variant="description"
-          // TODO: need change link
-          href="https://docs.aave.com/faq/"
+          href="https://docs.aave.com/faq/migration-and-staking"
           sx={{ textDecoration: 'underline' }}
         >
           <Trans>Learn more</Trans>
