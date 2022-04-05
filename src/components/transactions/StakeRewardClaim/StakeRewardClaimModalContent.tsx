@@ -88,9 +88,9 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName }: StakeRewardClai
       <TxModalDetails gasLimit={gasLimit}>
         <DetailsNumberLineWithSub
           description={<Trans>Amount</Trans>}
-          amount={maxAmountToClaim}
           symbol={rewardsSymbol}
-          amountUSD={amountInUsd.toString()}
+          futureValue={maxAmountToClaim}
+          futureValueUSD={amountInUsd.toString()}
         />
       </TxModalDetails>
 
