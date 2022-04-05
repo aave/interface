@@ -15,7 +15,7 @@ export const IsolationModeWarning = () => {
         <Trans>
           In Isolation mode, you cannot supply other assets as collateral. A global debt ceiling
           limits the borrowing power of the isolated asset. Read more in our{' '}
-          <Link href="https://docs.aave.com/faq/">FAQ</Link>
+          <Link href="https://docs.aave.com/faq/aave-v3-features#isolation-mode">FAQ</Link>
         </Trans>
       </Typography>
     </Warning>

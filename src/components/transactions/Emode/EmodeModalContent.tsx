@@ -137,7 +137,7 @@ export const EmodeModalContent = () => {
             <Button
               variant="text"
               component={Link}
-              href="https://docs.aave.com/faq/"
+              href="https://docs.aave.com/faq/aave-v3-features#high-efficiency-mode-e-mode"
               target="_blank"
             >
               FAQ
@@ -180,7 +180,10 @@ export const EmodeModalContent = () => {
           <Trans>
             Enabling E-Mode only allows you to borrow assets belonging to the selected category
             Stablecoins. Please visit our{' '}
-            <Link href="https://docs.aave.com/faq/" target="_blank">
+            <Link
+              href="https://docs.aave.com/faq/aave-v3-features#high-efficiency-mode-e-mode"
+              target="_blank"
+            >
               FAQ guide
             </Link>{' '}
             to learn more about how it works and the applied restrictions.
