@@ -379,13 +379,13 @@
     },
     "WETH": {
       "fullName": "Wrapped ETH",
-      "shortName": "WETH",
+      "shortName": "ETH",
       "collateral": true,
       "wrapped": false
     },
     "aWETH": {
       "fullName": "aavaWrapped ETH",
-      "shortName": "aWETH",
+      "shortName": "aETH",
       "collateral": true,
       "wrapped": false
     }

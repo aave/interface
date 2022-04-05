@@ -19,7 +19,7 @@ const testData = {
       {
         asset: assets.fantomMarket.WETH,
         amount: 0.5,
-        apyType: constants.borrowAPYType.variable,
+        apyType: constants.borrowAPYType.default,
         hasApproval: true,
       },
     ],

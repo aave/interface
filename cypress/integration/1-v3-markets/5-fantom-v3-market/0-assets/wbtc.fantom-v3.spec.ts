@@ -19,7 +19,7 @@ const testData = {
       {
         asset: assets.fantomMarket.WBTC,
         amount: 0.05,
-        apyType: constants.borrowAPYType.variable,
+        apyType: constants.borrowAPYType.default,
         hasApproval: true,
       },
     ],

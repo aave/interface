@@ -42,7 +42,7 @@ const testData = {
       },
       {
         asset: assets.avalancheV3Market.LINK,
-        apyType: constants.apyType.stable,
+        apyType: constants.apyType.variable,
         repayableAsset: assets.avalancheV3Market.aLINK,
         amount: 2,
         hasApproval: true,
