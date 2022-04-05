@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-04-01 12:07\n"
+"PO-Revision-Date: 2022-04-05 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -245,8 +245,8 @@ msgid "Balance"
 msgstr "Balance"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
-msgid "Be careful - You are very close to liqudation. Consider depositing more collateral or paying down some of your borrowed positions"
-msgstr "Ten cuidado - Estás muy cerca de la liquidación. Considera depositar más garantías o pagar algunas de tus posiciones prestadas"
+msgid "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
+msgstr ""
 
 #: src/components/transactions/Warnings/SNXWarning.tsx
 msgid "Before supplying"
@@ -1272,6 +1272,10 @@ msgstr "El límite de depósito se ha sobrepasado"
 msgid "Supply cap on target reserve reached. Try lowering the amount."
 msgstr "Se ha alcanzado el límite de depósito en la reserva especificada. Prueba reduciendo la cantidad."
 
+#: src/components/transactions/Warnings/SupplyCapWarning.tsx
+msgid "Supply caps limit the amount of a certain asset that can be supplied to the Aave protocol. This helps reducing exposure to the asset and mitigate attacks like infinite minting or price oracle manipulation.<0>FAQ guide</0>."
+msgstr ""
+
 #: src/components/transactions/Supply/SupplyActions.tsx
 msgid "Supply {symbol}"
 msgstr "Suministrar {symbol}"
@@ -1706,7 +1710,7 @@ msgstr "No has participado en esta propuesta"
 msgid "You do not have supplies in this currency"
 msgstr "No tienes suministros en este activo"
 
-#: src/components/infoTooltips/RepayWithDustTooltip.tsx
+#: src/components/transactions/Repay/RepayModalContent.tsx
 msgid "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
 msgstr "No tienes suficientes fondos en tu cartera para pagar la cantidad total. Si procedes a pagar con tu cantidad actual de fondos, aún tendrás un pequeño préstamo en tu panel de control."
 
@@ -1798,10 +1802,6 @@ msgstr "documentación"
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "ends"
 msgstr "finaliza"
-
-#: src/components/transactions/Warnings/SupplyCapWarning.tsx
-msgid "guide"
-msgstr "guía"
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "here."
