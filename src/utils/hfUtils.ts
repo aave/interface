@@ -46,11 +46,7 @@ export function calculateHFAfterSwap({
   // it takes into account if in emode as threshold is different
   let hfEffectOfFromAmount = user.healthFactor;
 
-  if (
-    fromAssetUserData &&
-    fromAssetUserData.usageAsCollateralEnabledOnUser &&
-    toAssetData.usageAsCollateralEnabled
-  ) {
+  if (fromAssetUserData.usageAsCollateralEnabledOnUser && toAssetData.usageAsCollateralEnabled) {
     const amountToWithdrawInEth = valueToBigNumber(fromAmount).multipliedBy(
       toAssetData.formattedPriceInMarketReferenceCurrency
     );
@@ -72,7 +68,7 @@ export function calculateHFAfterSwap({
     }).toString();
   }
 
-  // HF after swap (same as supply calcs as it needs to alculate as if we where supplying new reserve)
+  // HF after swap (same as supply calcs as it needs to calculate as if we where supplying new reserve)
   const amountIntEth = new BigNumber(toAmountAfterSlippage).multipliedBy(
     toAssetData.formattedPriceInMarketReferenceCurrency
   );
