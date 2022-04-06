@@ -173,7 +173,7 @@ export const DashboardTopPanel = () => {
                 flexDirection: { xs: 'column', xsm: 'row' },
               }}
             >
-              <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+              <Box sx={{ display: 'inline-flex', alignItems: 'center' }} data-cy={'Claim_Box'}>
                 <FormattedNumber
                   value={claimableRewardsUsd}
                   variant={valueTypographyVariant}
@@ -182,6 +182,7 @@ export const DashboardTopPanel = () => {
                   symbol="USD"
                   symbolsColor="#A5A8B6"
                   symbolsVariant={noDataTypographyVariant}
+                  data-cy={'Claim_Value'}
                 />
                 {assets && (
                   <MultiTokenIcon symbols={assets} sx={{ fontSize: { xs: '16px', xsm: '20px' } }} />
@@ -193,6 +194,7 @@ export const DashboardTopPanel = () => {
                 size="small"
                 onClick={() => openClaimRewards()}
                 sx={{ minWidth: 'unset', ml: { xs: 0, xsm: 2 } }}
+                data-cy={'Dashboard_Claim_Button'}
               >
                 <Trans>Claim</Trans>
               </Button>
