@@ -44,7 +44,7 @@ export function calculateHFAfterSwap({
   // this is needed because on contracts hf can't be < 1 so in the case
   // that fromHF < 1 we need to do a flashloan to not go below
   // it takes into account if in emode as threshold is different
-  let hfEffectOfFromAmount = '0';
+  let hfEffectOfFromAmount = user.healthFactor;
 
   if (
     fromAssetUserData &&
@@ -87,7 +87,7 @@ export function calculateHFAfterSwap({
     .dividedBy(totalCollateralMarketReferenceCurrencyAfter);
 
   // how the hf will be with the swapped to amount. It takes into account isolation mode
-  let hfEffectOfToAmount = '0';
+  let hfEffectOfToAmount = user.healthFactor;
 
   if (
     (!user.isInIsolationMode && !toAssetData.isIsolated) ||
@@ -108,6 +108,6 @@ export function calculateHFAfterSwap({
     hfAfterSwap:
       user.healthFactor === '-1'
         ? valueToBigNumber('-1')
-        : valueToBigNumber(hfEffectOfToAmount).minus(hfEffectOfFromAmount),
+        : valueToBigNumber(user.healthFactor).plus(hfEffectOfToAmount).minus(hfEffectOfFromAmount),
   };
 }
