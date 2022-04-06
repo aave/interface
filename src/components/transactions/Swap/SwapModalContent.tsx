@@ -68,7 +68,7 @@ export const SwapModalContent = ({
   }) as ComputedUserReserve;
 
   // a user can never swap more then 100% of available as the txn would fail on withdraw step
-  const maxLiquidityAmountToSwap = BigNumber.min(
+  const maxAmountToSwap = BigNumber.min(
     userReserve.underlyingBalance,
     new BigNumber(poolReserve.availableLiquidity).multipliedBy(0.99)
   ).toString(10);
@@ -76,7 +76,7 @@ export const SwapModalContent = ({
   const remainingCapBn = remainingCap(swapTarget);
 
   // max amount cant be bigger than remaining cap
-  const maxAmountToSwap = BigNumber.min(maxLiquidityAmountToSwap, remainingCapBn).toString(10);
+  // const maxAmountToSwap = BigNumber.min(maxLiquidityAmountToSwap, remainingCapBn).toString(10);
 
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToSwap : _amount;

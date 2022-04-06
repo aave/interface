@@ -105,9 +105,9 @@ export function calculateHFAfterSwap({
 
   return {
     hfEffectOfFromAmount,
-    hfAfterSwap:
-      user.healthFactor === '-1'
-        ? valueToBigNumber('-1')
-        : valueToBigNumber(user.healthFactor).minus(hfEffectOfFromAmount).plus(hfEffectOfToAmount),
+    hfAfterSwap: valueToBigNumber(hfEffectOfToAmount),
+    // user.healthFactor === '-1'
+    //   ? valueToBigNumber('-1')
+    //   : valueToBigNumber(user.healthFactor).minus(hfEffectOfFromAmount).plus(hfEffectOfToAmount),
   };
 }
