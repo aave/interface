@@ -41,6 +41,7 @@ export type ComputedUserReserveData = ComputedUserReserve<ComputedReserveData>;
 export type ExtendedFormattedUser = FormatUserSummaryAndIncentivesResponse<ComputedReserveData> & {
   earnedAPY: number;
   debtAPY: number;
+  netAPY: number;
   isInEmode: boolean;
   userEmodeCategoryId: number;
 };
@@ -200,6 +201,14 @@ export const AppDataProvider: React.FC = ({ children }) => {
     (userReserve) => userReserve.scaledATokenBalance !== '0'
   );
 
+  const earnedAPY = proportions.positiveProportion.dividedBy(user.totalLiquidityUSD).toNumber();
+  const debtAPY = proportions.negativeProportion.dividedBy(user.totalBorrowsUSD).toNumber();
+  const netAPY =
+    (earnedAPY || 0) *
+      (Number(user.totalLiquidityUSD) / Number(user.netWorthUSD !== '0' ? user.netWorthUSD : '1')) -
+    (debtAPY || 0) *
+      (Number(user.totalBorrowsUSD) / Number(user.netWorthUSD !== '0' ? user.netWorthUSD : '1'));
+
   return (
     <AppDataContext.Provider
       value={{
@@ -214,8 +223,9 @@ export const AppDataProvider: React.FC = ({ children }) => {
           userReservesData: user.userReservesData.sort((a, b) =>
             reserveSortFn(a.reserve, b.reserve)
           ),
-          earnedAPY: proportions.positiveProportion.dividedBy(user.netWorthUSD).toNumber(),
-          debtAPY: proportions.negativeProportion.dividedBy(user.netWorthUSD).toNumber(),
+          earnedAPY,
+          debtAPY,
+          netAPY,
         },
         userReserves,
         isUserHasDeposits,
@@ -230,6 +240,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
 
 export const useAppDataContext = () => useContext(AppDataContext);
 
+// tokens flagged stable will be sorted on top when no other sorting is selected
 const stable = [
   'DAI',
   'TUSD',
@@ -243,12 +254,16 @@ const stable = [
   'PAX',
   'USDP',
   'SUSD',
+  'UST',
+  'EURS',
+  'JEUR',
+  'AGEUR',
 ];
 
 const reserveSortFn = (a: { iconSymbol: string }, b: { iconSymbol: string }) => {
-  const aIsStable = stable.includes(a.iconSymbol);
-  const bIsStable = stable.includes(b.iconSymbol);
+  const aIsStable = stable.includes(a.iconSymbol.toUpperCase());
+  const bIsStable = stable.includes(b.iconSymbol.toUpperCase());
   if (aIsStable && !bIsStable) return -1;
   if (!aIsStable && bIsStable) return 1;
-  return a.iconSymbol > b.iconSymbol ? 1 : -1;
+  return a.iconSymbol.toUpperCase() > b.iconSymbol.toUpperCase() ? 1 : -1;
 };

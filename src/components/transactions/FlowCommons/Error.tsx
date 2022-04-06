@@ -2,15 +2,11 @@ import { DuplicateIcon, XIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Link, SvgIcon, Typography } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
+import { TxErrorType } from 'src/ui-config/errorMapping';
 
 // TODO: need check texts
-export const TxErrorView = ({ errorMessage }: { errorMessage: string }) => {
-  const { close, approvalTxState, resetTx, setForcedApproval } = useModalContext();
-
-  const handleRetry = () => {
-    resetTx();
-    setForcedApproval(true);
-  };
+export const TxErrorView = ({ txError }: { txError: TxErrorType }) => {
+  const { close } = useModalContext();
 
   return (
     <>
@@ -47,13 +43,13 @@ export const TxErrorView = ({ errorMessage }: { errorMessage: string }) => {
         <Typography>
           <Trans>
             You can report incident to our <Link href="https://discord.gg/7kHKnkDEUf">Discord</Link>{' '}
-            or <Link href="https://github.com/aave/aave-ui">Github</Link>.
+            or <Link href="https://github.com/aave/interface">Github</Link>.
           </Trans>
         </Typography>
 
         <Button
           variant="outlined"
-          onClick={() => navigator.clipboard.writeText(errorMessage)}
+          onClick={() => navigator.clipboard.writeText(txError.rawError.message.toString())}
           size="small"
           sx={{ mt: 6 }}
         >
@@ -65,16 +61,6 @@ export const TxErrorView = ({ errorMessage }: { errorMessage: string }) => {
         </Button>
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12 }}>
-        {approvalTxState.txError && (
-          <Button
-            onClick={handleRetry}
-            variant="contained"
-            size="large"
-            sx={{ minHeight: '44px', mb: '8px' }}
-          >
-            <Trans>Retry with approval</Trans>
-          </Button>
-        )}
         <Button onClick={close} variant="contained" size="large" sx={{ minHeight: '44px' }}>
           <Trans>Close</Trans>
         </Button>

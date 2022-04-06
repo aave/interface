@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -27,6 +28,7 @@ export const BorrowAssetsListItem = ({
   isFreezed,
 }: BorrowAssetsItem) => {
   const { openBorrow } = useModalContext();
+  const { currentMarket } = useProtocolDataContext();
   const borrowButtonDisable = isFreezed || Number(availableBorrows) <= 0;
 
   return (
@@ -34,8 +36,9 @@ export const BorrowAssetsListItem = ({
       symbol={symbol}
       iconSymbol={iconSymbol}
       name={name}
-      underlyingAsset={underlyingAsset}
+      detailsAddress={underlyingAsset}
       data-cy={`dashboardBorrowListItem_${symbol.toUpperCase()}`}
+      currentMarket={currentMarket}
     >
       <ListValueColumn
         symbol={symbol}
@@ -72,7 +75,11 @@ export const BorrowAssetsListItem = ({
         >
           <Trans>Borrow</Trans>
         </Button>
-        <Button variant="outlined" component={Link} href={ROUTES.reserveOverview(underlyingAsset)}>
+        <Button
+          variant="outlined"
+          component={Link}
+          href={ROUTES.reserveOverview(underlyingAsset, currentMarket)}
+        >
           <Trans>Details</Trans>
         </Button>
       </ListButtonsColumn>

@@ -33,24 +33,25 @@ export const WithdrawModalContent = ({
   symbol,
   isWrongNetwork,
 }: ModalWrapperProps & { unwrap: boolean; setUnwrap: (unwrap: boolean) => void }) => {
-  const { gasLimit, mainTxState: withdrawTxState } = useModalContext();
+  const { gasLimit, mainTxState: withdrawTxState, txError } = useModalContext();
   const { user } = useAppDataContext();
   const { currentNetworkConfig } = useProtocolDataContext();
 
   const [_amount, setAmount] = useState('');
+  const [withdrawMax, setWithdrawMax] = useState('');
   const amountRef = useRef<string>();
 
   // calculations
-  const underlyingBalance = valueToBigNumber(userReserve.underlyingBalance);
+  const underlyingBalance = valueToBigNumber(userReserve?.underlyingBalance || '0');
   const unborrowedLiquidity = valueToBigNumber(poolReserve.unborrowedLiquidity);
   let maxAmountToWithdraw = BigNumber.min(underlyingBalance, unborrowedLiquidity);
   let maxCollateralToWithdrawInETH = valueToBigNumber('0');
   const reserveLiquidationThreshold =
-    user.userEmodeCategoryId === poolReserve.eModeCategoryId
+    user.isInEmode && user.userEmodeCategoryId === poolReserve.eModeCategoryId
       ? poolReserve.formattedEModeLiquidationThreshold
       : poolReserve.formattedReserveLiquidationThreshold;
   if (
-    userReserve.usageAsCollateralEnabledOnUser &&
+    userReserve?.usageAsCollateralEnabledOnUser &&
     poolReserve.usageAsCollateralEnabled &&
     user.totalBorrowsMarketReferenceCurrency !== '0'
   ) {
@@ -71,12 +72,17 @@ export const WithdrawModalContent = ({
   }
 
   const isMaxSelected = _amount === '-1';
-  const amount = isMaxSelected ? maxAmountToWithdraw.toString() : _amount;
+  const amount = isMaxSelected ? maxAmountToWithdraw.toString(10) : _amount;
 
   const handleChange = (value: string) => {
     const maxSelected = value === '-1';
-    amountRef.current = maxSelected ? maxAmountToWithdraw.toString() : value;
+    amountRef.current = maxSelected ? maxAmountToWithdraw.toString(10) : value;
     setAmount(value);
+    if (maxSelected && maxAmountToWithdraw.eq(underlyingBalance)) {
+      setWithdrawMax('-1');
+    } else {
+      setWithdrawMax(maxAmountToWithdraw.multipliedBy(0.995).toString(10));
+    }
   };
 
   // health factor calculations
@@ -86,7 +92,7 @@ export const WithdrawModalContent = ({
   let liquidationThresholdAfterWithdraw = user.currentLiquidationThreshold;
   let healthFactorAfterWithdraw = valueToBigNumber(user.healthFactor);
 
-  if (userReserve.usageAsCollateralEnabledOnUser && poolReserve.usageAsCollateralEnabled) {
+  if (userReserve?.usageAsCollateralEnabledOnUser && poolReserve.usageAsCollateralEnabled) {
     const amountToWithdrawInEth = valueToBigNumber(amount).multipliedBy(
       poolReserve.formattedPriceInMarketReferenceCurrency
     );
@@ -96,7 +102,7 @@ export const WithdrawModalContent = ({
     liquidationThresholdAfterWithdraw = valueToBigNumber(
       user.totalCollateralMarketReferenceCurrency
     )
-      .multipliedBy(user.currentLiquidationThreshold)
+      .multipliedBy(valueToBigNumber(user.currentLiquidationThreshold))
       .minus(valueToBigNumber(amountToWithdrawInEth).multipliedBy(reserveLiquidationThreshold))
       .div(totalCollateralInETHAfterWithdraw)
       .toFixed(4, BigNumber.ROUND_DOWN);
@@ -139,7 +145,7 @@ export const WithdrawModalContent = ({
   };
 
   // calculating input usd value
-  const usdValue = valueToBigNumber(amount).multipliedBy(userReserve.reserve.priceInUSD);
+  const usdValue = valueToBigNumber(amount).multipliedBy(userReserve?.reserve.priceInUSD || 0);
 
   if (withdrawTxState.success)
     return (
@@ -162,7 +168,7 @@ export const WithdrawModalContent = ({
         symbol={symbol}
         assets={[
           {
-            balance: maxAmountToWithdraw.toString(),
+            balance: maxAmountToWithdraw.toString(10),
             symbol: symbol,
             iconSymbol:
               withdrawUnWrapped && poolReserve.isWrappedBaseAsset
@@ -170,10 +176,10 @@ export const WithdrawModalContent = ({
                 : poolReserve.iconSymbol,
           },
         ]}
-        usdValue={usdValue.toString()}
+        usdValue={usdValue.toString(10)}
         isMaxSelected={isMaxSelected}
         disabled={withdrawTxState.loading}
-        maxValue={maxAmountToWithdraw.toString()}
+        maxValue={maxAmountToWithdraw.toString(10)}
       />
 
       {blockingError !== undefined && (
@@ -200,7 +206,7 @@ export const WithdrawModalContent = ({
         )}
         <DetailsNumberLine
           description={<Trans>Remaining supply</Trans>}
-          value={underlyingBalance.minus(amount || '0').toString()}
+          value={underlyingBalance.minus(amount || '0').toString(10)}
           symbol={
             poolReserve.isWrappedBaseAsset
               ? currentNetworkConfig.baseAssetSymbol
@@ -210,23 +216,15 @@ export const WithdrawModalContent = ({
         <DetailsHFLine
           visibleHfChange={!!_amount}
           healthFactor={user ? user.healthFactor : '-1'}
-          futureHealthFactor={healthFactorAfterWithdraw.toString()}
+          futureHealthFactor={healthFactorAfterWithdraw.toString(10)}
         />
       </TxModalDetails>
 
-      {withdrawTxState.gasEstimationError && (
-        <GasEstimationError error={withdrawTxState.gasEstimationError} />
-      )}
+      {txError && <GasEstimationError txError={txError} />}
 
       <WithdrawActions
         poolReserve={poolReserve}
-        amountToWithdraw={
-          isMaxSelected
-            ? maxAmountToWithdraw.eq(underlyingBalance)
-              ? '-1'
-              : maxAmountToWithdraw.multipliedBy(0.995).toString()
-            : amount
-        }
+        amountToWithdraw={isMaxSelected ? withdrawMax : amount}
         poolAddress={
           withdrawUnWrapped && poolReserve.isWrappedBaseAsset
             ? API_ETH_MOCK_ADDRESS

@@ -12,7 +12,7 @@ export const AMPLWarning = () => {
         <Box>
           <Trans>
             <b>Ampleforth</b> is an asset affected by rebasing. Visit the{' '}
-            <Link href="https://docs.aave.com/developers/guides/ampl-asset-listing">
+            <Link href="https://docs.aave.com/developers/v/2.0/guides/ampl-asset-listing">
               <Trans>documentation</Trans>
             </Link>{' '}
             or{' '}

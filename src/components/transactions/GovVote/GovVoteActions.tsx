@@ -1,9 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { useGovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
-import { useGasStation } from 'src/hooks/useGasStation';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { GasOption } from '../GasStation/GasStationProvider';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
 export type GovVoteActionsProps = {
@@ -21,7 +19,6 @@ export const GovVoteActions = ({
 }: GovVoteActionsProps) => {
   const { governanceService } = useGovernanceDataProvider();
   const { currentAccount } = useWeb3Context();
-  const { state, gasPriceData } = useGasStation();
 
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     tryPermit: false,
@@ -32,10 +29,6 @@ export const GovVoteActions = ({
         support: support || false,
       });
     },
-    customGasPrice:
-      state.gasOption === GasOption.Custom
-        ? state.customGas
-        : gasPriceData.data?.[state.gasOption].legacyGasPrice,
     skip: blocked,
     deps: [],
   });

@@ -26,6 +26,7 @@ import WalletIcon from '../../../public/icons/markets/wallet-icon.svg';
 import NetAPYIcon from '../../../public/icons/markets/net-apy-icon.svg';
 import EmptyHeartIcon from '../../../public/icons/markets/empty-heart-icon.svg';
 import ClaimGiftIcon from '../../../public/icons/markets/claim-gift-icon.svg';
+import { NetAPYTooltip } from 'src/components/infoTooltips/NetAPYTooltip';
 
 export const DashboardTopPanel = () => {
   const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
@@ -61,11 +62,14 @@ export const DashboardTopPanel = () => {
 
       const rewardBalanceUsd = Number(rewardBalance) * tokenPrice;
 
-      if (acc.assets.indexOf(incentive.rewardTokenSymbol) === -1) {
-        acc.assets.push(incentive.rewardTokenSymbol);
+      if (rewardBalanceUsd > 0) {
+        if (acc.assets.indexOf(incentive.rewardTokenSymbol) === -1) {
+          acc.assets.push(incentive.rewardTokenSymbol);
+        }
+
+        acc.claimableRewardsUsd += Number(rewardBalanceUsd);
       }
 
-      acc.claimableRewardsUsd += Number(rewardBalanceUsd);
       return acc;
     },
     { claimableRewardsUsd: 0, assets: [] } as { claimableRewardsUsd: number; assets: string[] }
@@ -104,10 +108,19 @@ export const DashboardTopPanel = () => {
           )}
         </TopInfoPanelItem>
 
-        <TopInfoPanelItem icon={<NetAPYIcon />} title={<Trans>Net APY</Trans>} loading={loading}>
+        <TopInfoPanelItem
+          icon={<NetAPYIcon />}
+          title={
+            <div style={{ display: 'flex' }}>
+              <Trans>Net APY</Trans>
+              <NetAPYTooltip />
+            </div>
+          }
+          loading={loading}
+        >
           {currentAccount ? (
             <FormattedNumber
-              value={(user?.earnedAPY || 0) - (user?.debtAPY || 0)}
+              value={user.netAPY}
               variant={valueTypographyVariant}
               visibleDecimals={2}
               percent

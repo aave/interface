@@ -81,32 +81,59 @@ export const DetailsNumberLine = ({
 interface DetailsNumberLineWithSubProps {
   description: ReactNode;
   symbol: string;
-  amount: string;
-  amountUSD: string;
+  value?: string;
+  valueUSD?: string;
+  futureValue: string;
+  futureValueUSD: string;
   hideSymbolSuffix?: boolean;
+  color?: string;
 }
 
 export const DetailsNumberLineWithSub = ({
   description,
   symbol,
-  amount,
-  amountUSD,
+  value,
+  valueUSD,
+  futureValue,
+  futureValueUSD,
   hideSymbolSuffix,
+  color,
 }: DetailsNumberLineWithSubProps) => {
   return (
     <Row caption={description} captionVariant="description" mb={4} align="flex-start">
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <TokenIcon symbol={symbol} sx={{ mr: 1, fontSize: '16px' }} />
-          <FormattedNumber value={amount} variant="secondary14" />
+          {value && (
+            <>
+              <FormattedNumber value={value} variant="secondary14" color={color} />
+              {!hideSymbolSuffix && (
+                <Typography ml={1} variant="secondary14">
+                  {symbol}
+                </Typography>
+              )}
+              <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+                <ArrowNarrowRightIcon />
+              </SvgIcon>
+            </>
+          )}
+          <FormattedNumber value={futureValue} variant="secondary14" color={color} />
           {!hideSymbolSuffix && (
             <Typography ml={1} variant="secondary14">
               {symbol}
             </Typography>
           )}
         </Box>
-
-        <FormattedNumber value={amountUSD} variant="helperText" compact symbol="USD" />
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          {valueUSD && (
+            <>
+              <FormattedNumber value={valueUSD} variant="helperText" compact symbol="USD" />
+              <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+                <ArrowNarrowRightIcon />
+              </SvgIcon>
+            </>
+          )}
+          <FormattedNumber value={futureValueUSD} variant="helperText" compact symbol="USD" />
+        </Box>
       </Box>
     </Row>
   );

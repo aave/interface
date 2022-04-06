@@ -30,7 +30,7 @@ export enum ErrorType {
 }
 
 export const ClaimRewardsModalContent = () => {
-  const { gasLimit, mainTxState: claimRewardsTxState } = useModalContext();
+  const { gasLimit, mainTxState: claimRewardsTxState, txError } = useModalContext();
   const { user, reserves } = useAppDataContext();
   const { currentChainId, currentMarketData, currentMarket } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
@@ -69,22 +69,24 @@ export const ClaimRewardsModalContent = () => {
 
       const rewardBalanceUsd = Number(rewardBalance) * tokenPrice;
 
-      incentive.assets.forEach((asset) => {
-        if (allAssets.indexOf(asset) === -1) {
-          allAssets.push(asset);
-        }
-      });
+      if (rewardBalanceUsd > 0) {
+        incentive.assets.forEach((asset) => {
+          if (allAssets.indexOf(asset) === -1) {
+            allAssets.push(asset);
+          }
+        });
 
-      userIncentives.push({
-        assets: incentive.assets,
-        incentiveControllerAddress: incentive.incentiveControllerAddress,
-        symbol: incentive.rewardTokenSymbol,
-        balance: rewardBalance,
-        balanceUsd: rewardBalanceUsd.toString(),
-        rewardTokenAddress,
-      });
+        userIncentives.push({
+          assets: incentive.assets,
+          incentiveControllerAddress: incentive.incentiveControllerAddress,
+          symbol: incentive.rewardTokenSymbol,
+          balance: rewardBalance,
+          balanceUsd: rewardBalanceUsd.toString(),
+          rewardTokenAddress,
+        });
 
-      totalClaimableUsd = totalClaimableUsd + Number(rewardBalanceUsd);
+        totalClaimableUsd = totalClaimableUsd + Number(rewardBalanceUsd);
+      }
     });
 
     if (userIncentives.length === 1) {
@@ -129,8 +131,9 @@ export const ClaimRewardsModalContent = () => {
       ? allReward
       : rewards.find((r) => r.symbol === selectedRewardSymbol);
 
-  if (claimRewardsTxState.txError)
-    return <TxErrorView errorMessage={claimRewardsTxState.txError} />;
+  if (txError && txError.blocking) {
+    return <TxErrorView txError={txError} />;
+  }
   if (claimRewardsTxState.success)
     return <TxSuccessView action="Claimed" amount={selectedReward?.balanceUsd} />;
 
@@ -201,17 +204,15 @@ export const ClaimRewardsModalContent = () => {
             <DetailsNumberLineWithSub
               hideSymbolSuffix
               symbol={selectedReward.symbol}
-              amount={selectedReward.balance}
-              amountUSD={selectedReward.balanceUsd}
+              futureValue={selectedReward.balance}
+              futureValueUSD={selectedReward.balanceUsd}
               description={<Trans>{selectedReward.symbol} Balance</Trans>}
             />
           )}
         </TxModalDetails>
       )}
 
-      {claimRewardsTxState.gasEstimationError && (
-        <GasEstimationError error={claimRewardsTxState.gasEstimationError} />
-      )}
+      {txError && <GasEstimationError txError={txError} />}
 
       <ClaimRewardsActions
         isWrongNetwork={isWrongNetwork}

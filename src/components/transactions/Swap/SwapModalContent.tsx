@@ -4,7 +4,7 @@ import {
   useAppDataContext,
 } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { SwapActions } from './SwapActions';
-import { ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import { ToggleButton, ToggleButtonGroup, Typography, Box } from '@mui/material';
 import { ComputedUserReserve } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -22,7 +22,6 @@ import {
 import { GasEstimationError } from 'src/components/transactions/FlowCommons/GasEstimationError';
 import { useModalContext } from 'src/hooks/useModal';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { Box } from '@mui/system';
 import { Row } from 'src/components/primitives/Row';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { calculateHFAfterSwap } from 'src/utils/hfUtils';
@@ -43,9 +42,9 @@ export const SwapModalContent = ({
   isWrongNetwork,
 }: ModalWrapperProps) => {
   const { reserves, user } = useAppDataContext();
-  const { currentChainId } = useProtocolDataContext();
+  const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
-  const { gasLimit, mainTxState: supplyTxState } = useModalContext();
+  const { gasLimit, mainTxState: supplyTxState, txError } = useModalContext();
 
   const swapTargets = reserves
     .filter((r) => r.underlyingAsset !== poolReserve.underlyingAsset)
@@ -72,13 +71,13 @@ export const SwapModalContent = ({
   const maxAmountToSwap = BigNumber.min(
     userReserve.underlyingBalance,
     new BigNumber(poolReserve.availableLiquidity).multipliedBy(0.99)
-  ).toString();
+  ).toString(10);
 
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToSwap : _amount;
 
   const { priceRoute, inputAmountUSD, inputAmount, outputAmount, outputAmountUSD } = useSwap({
-    chainId: currentChainId,
+    chainId: currentNetworkConfig.underlyingChainId || currentChainId,
     userId: currentAccount,
     variant: 'exactIn',
     swapIn: { ...poolReserve, amount: amountRef.current },
@@ -88,11 +87,11 @@ export const SwapModalContent = ({
 
   const minimumReceived = new BigNumber(outputAmount || '0')
     .multipliedBy(new BigNumber(100).minus(maxSlippage).dividedBy(100))
-    .toString();
+    .toString(10);
 
   const handleChange = (value: string) => {
     const maxSelected = value === '-1';
-    amountRef.current = maxSelected ? maxAmountToSwap.toString() : value;
+    amountRef.current = maxSelected ? maxAmountToSwap : value;
     setAmount(value);
   };
 
@@ -150,7 +149,9 @@ export const SwapModalContent = ({
   // 5. swap non-isolated when isolated -> can swap to anything
 
   if (supplyTxState.success)
-    return <TxSuccessView action="Swapped" amount={maxAmountToSwap} symbol={poolReserve.symbol} />;
+    return (
+      <TxSuccessView action="Swapped" amount={amountRef.current} symbol={poolReserve.symbol} />
+    );
 
   // hf is only relevant when there are borrows
   const showHealthFactor =
@@ -161,7 +162,9 @@ export const SwapModalContent = ({
   // calculate impact based on $ difference
   const priceImpact =
     outputAmountUSD && outputAmountUSD !== '0'
-      ? new BigNumber(1).minus(new BigNumber(inputAmountUSD).dividedBy(outputAmountUSD)).toString()
+      ? new BigNumber(1)
+          .minus(new BigNumber(inputAmountUSD).dividedBy(outputAmountUSD))
+          .toString(10)
       : '0';
 
   return (
@@ -172,7 +175,7 @@ export const SwapModalContent = ({
       <AssetInput
         value={amount}
         onChange={handleChange}
-        usdValue={inputAmountUSD.toString()}
+        usdValue={inputAmountUSD}
         symbol={poolReserve.iconSymbol}
         assets={[
           {
@@ -188,7 +191,7 @@ export const SwapModalContent = ({
       <AssetInput
         value={outputAmount}
         onSelect={setTargetReserve}
-        usdValue={outputAmountUSD.toString()}
+        usdValue={outputAmountUSD}
         symbol={targetReserve.symbol}
         assets={swapTargets}
         disableInput
@@ -254,14 +257,13 @@ export const SwapModalContent = ({
           <DetailsHFLine
             visibleHfChange={!!_amount}
             healthFactor={user.healthFactor}
-            futureHealthFactor={hfAfterSwap.toString()}
+            futureHealthFactor={hfAfterSwap.toString(10)}
           />
         )}
       </TxModalDetails>
 
-      {supplyTxState.gasEstimationError && (
-        <GasEstimationError error={supplyTxState.gasEstimationError} />
-      )}
+      {txError && <GasEstimationError txError={txError} />}
+
       <SwapActions
         isMaxSelected={isMaxSelected}
         poolReserve={poolReserve}
@@ -270,7 +272,7 @@ export const SwapModalContent = ({
         isWrongNetwork={isWrongNetwork}
         targetReserve={swapTarget}
         symbol={poolReserve.symbol}
-        blocked={!!blockingError}
+        blocked={blockingError !== undefined}
         priceRoute={priceRoute}
         useFlashLoan={shouldUseFlashloan}
       />

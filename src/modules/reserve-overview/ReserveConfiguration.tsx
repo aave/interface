@@ -13,7 +13,6 @@ import Paper from '@mui/material/Paper';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import HelpOutlinedIcon from '@mui/icons-material/HelpOutlined';
 import { useReserveRatesHistory } from 'src/hooks/useReservesHistory';
 import { ParentSize } from '@visx/responsive';
 import { ApyChart } from '../reserve-overview/ApyChart';
@@ -22,8 +21,11 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { eModeInfo } from 'src/utils/eMode';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
+import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
+
 import { IncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { ExclamationIcon } from '@heroicons/react/outline';
+import { EModeTooltip } from 'src/components/infoTooltips/EModeTooltip';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
   <Box
@@ -124,7 +126,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
             <Typography variant="subheader1" sx={{ ml: 2 }}>
               {eModeInfo[reserve.eModeCategoryId].label}
             </Typography>
-            <HelpOutlinedIcon fontSize="small" sx={{ color: 'divider', ml: 1 }} />
+            <EModeTooltip eModeLtv={reserve.eModeLtv} />
           </Typography>
         )}
       </Box>
@@ -220,90 +222,143 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                   }}
                 >
                   <ExclamationIcon style={{ height: 16, paddingRight: '4px' }} />
-                  Can be collateral in isolation mode
+                  <Trans>Can only be used as collateral in isolation mode</Trans>
                 </Box>
               )}
             </div>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: { xs: 'column', sm: 'row' },
-                alignItems: { xs: 'flex-start', sm: 'center' },
-                flexWrap: 'wrap',
-                mt: '16px',
-                '& > :not(:last-child)': {
-                  mr: 4,
-                },
-              }}
-            >
-              <Typography sx={{ display: 'inline-flex' }}>
-                <Typography sx={{ color: 'text.muted' }} component="span">
-                  <Trans>Max LTV</Trans>
-                </Typography>
-                <FormattedNumber
-                  value={reserve.formattedBaseLTVasCollateral}
-                  percent
-                  variant="secondary14"
-                  sx={{ ml: 2 }}
-                  visibleDecimals={0}
-                />
-              </Typography>
-              <Typography sx={{ display: 'inline-flex' }}>
-                <Typography sx={{ color: 'text.muted' }} component="span">
-                  <Trans>Liquidation threshold</Trans>
-                </Typography>
-                <FormattedNumber
-                  value={reserve.formattedReserveLiquidationThreshold}
-                  percent
-                  variant="secondary14"
-                  sx={{ ml: 2 }}
-                  visibleDecimals={0}
-                />
-              </Typography>
-              <Typography sx={{ display: 'inline-flex' }}>
-                <Typography sx={{ color: 'text.muted' }} component="span">
-                  <Trans>Liquidation penalty</Trans>
-                </Typography>
-                <FormattedNumber
-                  value={reserve.formattedReserveLiquidationBonus}
-                  percent
-                  variant="secondary14"
-                  sx={{ ml: 2 }}
-                  visibleDecimals={0}
-                />
-              </Typography>
-              {reserve.isIsolated && (
+            {reserve.usageAsCollateralEnabled && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: { xs: 'column', sm: 'row' },
+                  alignItems: { xs: 'flex-start', sm: 'center' },
+                  flexWrap: 'wrap',
+                  mt: '16px',
+                  '& > :not(:last-child)': {
+                    mr: 4,
+                  },
+                }}
+              >
                 <Typography sx={{ display: 'inline-flex' }}>
                   <Typography sx={{ color: 'text.muted' }} component="span">
-                    <Trans>Debt ceiling</Trans>
+                    <Trans>Max LTV</Trans>
                   </Typography>
                   <FormattedNumber
-                    value={reserve.isolationModeTotalDebtUSD}
+                    value={reserve.formattedBaseLTVasCollateral}
+                    percent
                     variant="secondary14"
                     sx={{ ml: 2 }}
-                    symbol="USD"
-                    visibleDecimals={0}
+                    visibleDecimals={2}
                   />
-                  &nbsp;of
+                </Typography>
+                <Typography sx={{ display: 'inline-flex' }}>
+                  <Typography sx={{ color: 'text.muted' }} component="span">
+                    <Trans>Liquidation threshold</Trans>
+                  </Typography>
                   <FormattedNumber
-                    value={reserve.debtCeilingUSD}
+                    value={reserve.formattedReserveLiquidationThreshold}
+                    percent
                     variant="secondary14"
                     sx={{ ml: 2 }}
-                    symbol="USD"
-                    visibleDecimals={0}
+                    visibleDecimals={2}
                   />
                 </Typography>
-              )}
-              {reserve.isIsolated && (
-                <Typography variant="caption" sx={{ mt: 2 }}>
-                  <Trans>
-                    In Isolation mode you cannot supply other assets as collateral for borrowing.
-                    Assets used as collateral in Isolation mode can only be borrowed to a specific
-                    debt ceiling.
-                  </Trans>
+                <Typography sx={{ display: 'inline-flex' }}>
+                  <Typography sx={{ color: 'text.muted' }} component="span">
+                    <Trans>Liquidation penalty</Trans>
+                  </Typography>
+                  <FormattedNumber
+                    value={reserve.formattedReserveLiquidationBonus}
+                    percent
+                    variant="secondary14"
+                    sx={{ ml: 2 }}
+                    visibleDecimals={2}
+                  />
                 </Typography>
-              )}
-            </Box>
+                {reserve.isIsolated && (
+                  <Typography sx={{ display: 'inline-flex' }}>
+                    <Typography sx={{ color: 'text.muted' }} component="span">
+                      <Trans>Debt ceiling</Trans>
+                    </Typography>
+                    <FormattedNumber
+                      value={reserve.isolationModeTotalDebtUSD}
+                      variant="secondary14"
+                      sx={{ ml: 2 }}
+                      symbol="USD"
+                      visibleDecimals={2}
+                    />
+                    &nbsp;of
+                    <FormattedNumber
+                      value={reserve.debtCeilingUSD}
+                      variant="secondary14"
+                      sx={{ ml: 2 }}
+                      symbol="USD"
+                      visibleDecimals={2}
+                    />
+                  </Typography>
+                )}
+              </Box>
+            )}
+            {reserve.eModeCategoryId !== 0 && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: { xs: 'column', sm: 'row' },
+                  alignItems: { xs: 'flex-start', sm: 'center' },
+                  flexWrap: 'wrap',
+                  mt: '16px',
+                  '& > :not(:last-child)': {
+                    mr: 4,
+                  },
+                }}
+              >
+                <Typography sx={{ display: 'inline-flex' }}>
+                  <Typography sx={{ color: 'text.muted' }} component="span">
+                    <Trans>E-Mode max LTV</Trans>
+                  </Typography>
+                  <FormattedNumber
+                    value={reserve.formattedEModeLtv}
+                    percent
+                    variant="secondary14"
+                    sx={{ ml: 2 }}
+                    visibleDecimals={2}
+                  />
+                </Typography>
+                <Typography sx={{ display: 'inline-flex' }}>
+                  <Typography sx={{ color: 'text.muted' }} component="span">
+                    <Trans>E-Mode liquidation threshold</Trans>
+                  </Typography>
+                  <FormattedNumber
+                    value={reserve.formattedEModeLiquidationThreshold}
+                    percent
+                    variant="secondary14"
+                    sx={{ ml: 2 }}
+                    visibleDecimals={2}
+                  />
+                </Typography>
+                <Typography sx={{ display: 'inline-flex' }}>
+                  <Typography sx={{ color: 'text.muted' }} component="span">
+                    <Trans>E-Mode liquidation penalty</Trans>
+                  </Typography>
+                  <FormattedNumber
+                    value={reserve.formattedEModeLiquidationBonus}
+                    percent
+                    variant="secondary14"
+                    sx={{ ml: 2 }}
+                    visibleDecimals={2}
+                  />
+                </Typography>
+              </Box>
+            )}
+            {reserve.isIsolated && (
+              <Typography variant="caption" sx={{ mt: 2 }}>
+                <Trans>
+                  In Isolation mode you cannot supply other assets as collateral for borrowing.
+                  Assets used as collateral in Isolation mode can only be borrowed to a specific
+                  debt ceiling.
+                </Trans>
+              </Typography>
+            )}
           </Box>
         </Box>
       </PanelRow>
@@ -326,7 +381,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
               </PanelItem>
               <PanelItem
                 title={
-                  <StableAPYTooltip
+                  <VariableAPYTooltip
                     text={<Trans>APY, variable</Trans>}
                     key="APY_res_variable_type"
                     variant="description"

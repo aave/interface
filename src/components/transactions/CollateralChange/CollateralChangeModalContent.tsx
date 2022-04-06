@@ -27,7 +27,7 @@ export const CollateralChangeModalContent = ({
   isWrongNetwork,
   symbol,
 }: ModalWrapperProps) => {
-  const { gasLimit, mainTxState: collateralChangeTxState } = useModalContext();
+  const { gasLimit, mainTxState: collateralChangeTxState, txError } = useModalContext();
   const { user } = useAppDataContext();
 
   // health factor Calcs
@@ -121,7 +121,7 @@ export const CollateralChangeModalContent = ({
         <DetailsHFLine
           visibleHfChange={true}
           healthFactor={user.healthFactor}
-          futureHealthFactor={healthFactorAfterSwitch.toString()}
+          futureHealthFactor={healthFactorAfterSwitch.toString(10)}
         />
       </TxModalDetails>
 
@@ -131,9 +131,7 @@ export const CollateralChangeModalContent = ({
         </Typography>
       )}
 
-      {collateralChangeTxState.gasEstimationError && (
-        <GasEstimationError error={collateralChangeTxState.gasEstimationError} />
-      )}
+      {txError && <GasEstimationError txError={txError} />}
 
       <CollateralChangeActions
         symbol={symbol}

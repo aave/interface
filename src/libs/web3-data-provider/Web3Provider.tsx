@@ -8,7 +8,6 @@ import { getWallet, WalletType } from './WalletOptions';
 import { AbstractConnector } from '@web3-react/abstract-connector';
 import {
   JsonRpcProvider,
-  Network,
   TransactionResponse,
   // Web3Provider,
 } from '@ethersproject/providers';
@@ -26,7 +25,6 @@ export type ERC20TokenType = {
   decimals: number;
   image?: string;
   aToken?: boolean;
-  aTokenPrefix?: string;
 };
 
 export type Web3Data = {
@@ -45,12 +43,14 @@ export type Web3Data = {
   signTxData: (unsignedData: string) => Promise<SignatureLike>;
   error: Error | undefined;
   switchNetworkError: Error | undefined;
+  setSwitchNetworkError: (err: Error | undefined) => void;
 };
 
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
   const {
-    library: provider,
     account,
+    chainId,
+    library: provider,
     activate,
     active,
     error,
@@ -59,22 +59,13 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   } = useWeb3React<providers.Web3Provider>();
 
   // const [provider, setProvider] = useState<JsonRpcProvider>();
+  const [mockAddress, setMockAddress] = useState<string>();
   const [connector, setConnector] = useState<AbstractConnector>();
-  const [chainId, setChainId] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [currentAccount, setCurrentAccount] = useState('');
   const [tried, setTried] = useState(false);
   const [deactivated, setDeactivated] = useState(false);
-  const [selectedWallet, setSelectedWallet] = useState<WalletType>();
   const [triedSafe, setTriedSafe] = useState(false);
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
-
-  // listener handlers
-  const handleAccountsChanged = (accounts: string[]) => {
-    if (accounts.length > 0 && selectedWallet) {
-      connectWallet(selectedWallet);
-    }
-  };
 
   // for now we use network changed as it returns the chain string instead of hex
   // const handleChainChanged = (chainId: number) => {
@@ -83,12 +74,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   //     connectWallet(selectedWallet);
   //   }
   // };
-
-  const handleNetworkChanged = () => {
-    if (selectedWallet) {
-      connectWallet(selectedWallet);
-    }
-  };
 
   // Wallet connection and disconnection
   // clean local storage
@@ -121,11 +106,13 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       await connector.close();
     }
 
-    setSelectedWallet(undefined);
     setLoading(false);
     setDeactivated(true);
-    setCurrentAccount('');
     setSwitchNetworkError(undefined);
+    if (mockAddress) {
+      setMockAddress(undefined);
+      localStorage.removeItem('mockWalletAddress');
+    }
   }, [provider, connector]);
 
   // connect to the wallet specified by wallet type
@@ -141,20 +128,8 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
         await activate(connector, undefined, true);
         setConnector(connector);
-        setSelectedWallet(wallet);
         setSwitchNetworkError(undefined);
         localStorage.setItem('walletProvider', wallet.toString());
-        // connector.on('chainChanged', handleChainChanged);
-        connector.on('accountsChanged', handleAccountsChanged);
-
-        // TODO: take a look why this doesnt work fro frame
-        connector.on('networkChanged', handleNetworkChanged);
-
-        const address = await connector.getAccount();
-        setCurrentAccount(address?.toLowerCase() || '');
-        const connectorChainId = await connector.getChainId();
-        setChainId(Number(connectorChainId));
-        // TODO: add listeners to account changed and chain changed
         setDeactivated(false);
         setLoading(false);
       } catch (e) {
@@ -174,15 +149,18 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       // @ts-expect-error isSafeApp not in abstract connector type
       gnosisConnector.isSafeApp().then((loadedInSafe) => {
         if (loadedInSafe) {
-          connectWallet(WalletType.GNOSIS).catch(() => {
-            setTriedSafe(true);
-          });
+          connectWallet(WalletType.GNOSIS)
+            .then(() => {
+              setTriedSafe(true);
+            })
+            .catch(() => {
+              setTriedSafe(true);
+            });
         } else {
           setTriedSafe(true);
         }
       });
     }
-    setTriedSafe(true);
   }, [connectWallet, setTriedSafe, triedSafe]);
 
   // handle logic to eagerly connect to the injected ethereum provider,
@@ -220,23 +198,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     }
   }, [tried, active]);
 
-  useEffect(() => {
-    const address = localStorage.getItem('mockWalletAddress');
-    if (address) {
-      setCurrentAccount(address);
-    } else {
-      setCurrentAccount(account?.toLowerCase() || '');
-    }
-  }, [account]);
-
-  useEffect(() => {
-    if (provider) {
-      provider.getNetwork().then((networkInfo: Network) => {
-        setChainId(networkInfo.chainId);
-      });
-    }
-  }, [provider]);
-
   // Tx methods
 
   // TODO: we use from instead of currentAccount because of the mock wallet.
@@ -256,9 +217,9 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   // TODO: recheck that it works on all wallets
   const signTxData = async (unsignedData: string): Promise<SignatureLike> => {
-    if (provider && currentAccount) {
+    if (provider && account) {
       const signature: SignatureLike = await provider.send('eth_signTypedData_v4', [
-        currentAccount,
+        account,
         unsignedData,
       ]);
 
@@ -278,21 +239,33 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         const networkInfo = getNetworkConfig(newChainId);
         if (switchError.code === 4902) {
           try {
-            await provider.send('wallet_addEthereumChain', [
-              {
-                chainId: `0x${newChainId.toString(16)}`,
-                chainName: networkInfo.name,
-                nativeCurrency: networkInfo.baseAssetSymbol,
-                rpcUrls: [...networkInfo.publicJsonRPCUrl, networkInfo.publicJsonRPCWSUrl],
-                blockExplorerUrls: networkInfo.explorerLink,
-              },
-            ]);
+            try {
+              await provider.send('wallet_addEthereumChain', [
+                {
+                  chainId: `0x${newChainId.toString(16)}`,
+                  chainName: networkInfo.name,
+                  nativeCurrency: {
+                    symbol: networkInfo.baseAssetSymbol,
+                    decimals: networkInfo.baseAssetDecimals,
+                  },
+                  rpcUrls: [...networkInfo.publicJsonRPCUrl, networkInfo.publicJsonRPCWSUrl],
+                  blockExplorerUrls: [networkInfo.explorerLink],
+                },
+              ]);
+            } catch (error) {
+              if (error.code !== 4001) {
+                throw error;
+              }
+            }
             setSwitchNetworkError(undefined);
           } catch (addError) {
             setSwitchNetworkError(addError);
           }
+        } else if (switchError.code === 4001) {
+          setSwitchNetworkError(undefined);
+        } else {
+          setSwitchNetworkError(switchError);
         }
-        setSwitchNetworkError(switchError);
       }
     }
   };
@@ -318,7 +291,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     // and didn't manage to make the call with ethersjs
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const injectedProvider = (window as any).ethereum;
-    if (provider && currentAccount && window && injectedProvider) {
+    if (provider && account && window && injectedProvider) {
       if (address.toLowerCase() !== API_ETH_MOCK_ADDRESS.toLowerCase()) {
         await injectedProvider.request({
           method: 'wallet_watchAsset',
@@ -339,6 +312,10 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     return false;
   };
 
+  useEffect(() => {
+    setMockAddress(localStorage.getItem('mockWalletAddress')?.toLowerCase());
+  }, []);
+
   return (
     <Web3Context.Provider
       value={{
@@ -348,15 +325,16 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           provider,
           connected: active,
           loading,
-          chainId,
+          chainId: chainId || 1,
           switchNetwork,
           getTxError,
           sendTx,
           signTxData,
-          currentAccount,
+          currentAccount: mockAddress || account?.toLowerCase() || '',
           addERC20Token,
           error,
           switchNetworkError,
+          setSwitchNetworkError,
         },
       }}
     >

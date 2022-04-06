@@ -45,17 +45,21 @@ export const ModalWrapper: React.FC<{
   const { chainId: connectedChainId } = useWeb3Context();
   const { walletBalances } = useWalletBalances();
   const { currentChainId: marketChainId, currentNetworkConfig } = useProtocolDataContext();
-  const { user } = useAppDataContext();
-  const { approvalTxState, mainTxState } = useModalContext();
+  const { user, reserves } = useAppDataContext();
+  const { txError, mainTxState } = useModalContext();
 
-  if (mainTxState.txError || approvalTxState.txError) {
-    return (
-      <TxErrorView errorMessage={(approvalTxState.txError || mainTxState.txError) as string} />
-    );
+  if (txError && txError.blocking) {
+    return <TxErrorView txError={txError} />;
   }
 
   const requiredChainId = _requiredChainId ? _requiredChainId : marketChainId;
   const isWrongNetwork = connectedChainId !== requiredChainId;
+
+  const poolReserve = reserves.find((reserve) => {
+    if (underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase())
+      return reserve.isWrappedBaseAsset;
+    return underlyingAsset === reserve.underlyingAsset;
+  }) as ComputedReserveData;
 
   const userReserve = user?.userReservesData.find((userReserve) => {
     if (underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase())
@@ -64,9 +68,9 @@ export const ModalWrapper: React.FC<{
   }) as ComputedUserReserveData;
 
   const symbol =
-    userReserve.reserve.isWrappedBaseAsset && !keepWrappedSymbol
+    poolReserve.isWrappedBaseAsset && !keepWrappedSymbol
       ? currentNetworkConfig.baseAssetSymbol
-      : userReserve.reserve.symbol;
+      : poolReserve.symbol;
 
   // if (mainTxState.success) {
   //   return <TxSuccessView symbol={symbol} />;
@@ -84,9 +88,9 @@ export const ModalWrapper: React.FC<{
       )}
       {children({
         isWrongNetwork,
-        nativeBalance: walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()].amount,
-        tokenBalance: walletBalances[userReserve.reserve.underlyingAsset].amount,
-        poolReserve: userReserve.reserve,
+        nativeBalance: walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]?.amount || '0',
+        tokenBalance: walletBalances[poolReserve.underlyingAsset.toLowerCase()]?.amount || '0',
+        poolReserve,
         symbol,
         underlyingAsset,
         userReserve,

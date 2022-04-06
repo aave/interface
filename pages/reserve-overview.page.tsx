@@ -24,7 +24,6 @@ export default function ReserveOverview() {
   const router = useRouter();
   const { reserves } = useAppDataContext();
   const underlyingAsset = router.query.underlyingAsset as string;
-
   const { breakpoints } = useTheme();
   const lg = useMediaQuery(breakpoints.up('lg'));
 

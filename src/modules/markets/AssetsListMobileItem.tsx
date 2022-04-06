@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Button, Divider } from '@mui/material';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
@@ -11,12 +12,14 @@ import { ComputedReserveData } from '../../hooks/app-data-provider/useAppDataPro
 import { ListMobileItemWrapper } from '../dashboard/lists/ListMobileItemWrapper';
 
 export const AssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
+  const { currentMarket } = useProtocolDataContext();
   return (
     <ListMobileItemWrapper
       symbol={reserve.symbol}
       iconSymbol={reserve.iconSymbol}
       name={reserve.name}
       underlyingAsset={reserve.underlyingAsset}
+      currentMarket={currentMarket}
     >
       <Row caption={<Trans>Total supplied</Trans>} captionVariant="description" mb={3}>
         <FormattedNumber
@@ -90,7 +93,7 @@ export const AssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
       <Button
         variant="outlined"
         component={Link}
-        href={ROUTES.reserveOverview(reserve.underlyingAsset)}
+        href={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket)}
         fullWidth
       >
         <Trans>View details</Trans>

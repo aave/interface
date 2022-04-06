@@ -112,8 +112,8 @@ export function CollateralRepayModalContent({
       <TxModalDetails gasLimit={gasLimit}>
         <DetailsNumberLineWithSub
           description={<Trans>Remaining debt</Trans>}
-          amount={amountAfterRepay.toString()}
-          amountUSD={displayAmountAfterRepayInUsd.toString()}
+          futureValue={amountAfterRepay.toString()}
+          futureValueUSD={displayAmountAfterRepayInUsd.toString()}
           symbol={symbol}
         />
         <DetailsHFLine

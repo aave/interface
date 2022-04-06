@@ -14,20 +14,14 @@ jobs:
   cache-refresh:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@2d1c1198e79c30cca5c3957b1e3b65ce95b5356e
+      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
         with:
           token: ${{ secrets.BOT_TOKEN }}
 
-      - uses: actions/setup-node@9ced9a43a244f3ac94f13bfd896db8c8f30da67a
+      - name: Update cache
+        uses: ./.github/actions/build
         with:
-          node-version-file: '.nvmrc'
-          cache: 'yarn'
-
-      - name: install
-        run: yarn --frozen-lockfile
-
-      - name: update-cache
-        run: yarn cache:update
+          YARN_COMMAND: "cache:update"
 
       - name: check diff
         run: |

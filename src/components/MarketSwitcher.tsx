@@ -126,7 +126,6 @@ export const MarketSwitcher = () => {
         ),
         renderValue: (marketId) => {
           const { market, network } = getMarketInfoById(marketId as CustomMarket);
-
           return (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <MarketLogo
@@ -143,7 +142,7 @@ export const MarketSwitcher = () => {
                     mr: 1,
                   }}
                 >
-                  {getMarketHelpData(market.marketTitle).name}
+                  {getMarketHelpData(market.marketTitle).name} {market.isFork ? 'Fork' : ''}
                   {upToLG && ' Market'}
                 </Typography>
                 {market.v3 && (
@@ -155,7 +154,7 @@ export const MarketSwitcher = () => {
                       background: (theme) => theme.palette.gradients.aaveGradient,
                     }}
                   >
-                    <Typography variant="subheader2">Version 3.0</Typography>
+                    <Typography variant="subheader2">Version 3</Typography>
                   </Box>
                 )}
               </Box>
@@ -213,7 +212,7 @@ export const MarketSwitcher = () => {
                 testChainName={getMarketHelpData(market.marketTitle).testChainName}
               />
               <ListItemText sx={{ mr: 3 }}>
-                {getMarketHelpData(market.marketTitle).name}
+                {getMarketHelpData(market.marketTitle).name} {market.isFork ? 'Fork' : ''}
               </ListItemText>
 
               {currentMarket === marketId && (
@@ -252,7 +251,7 @@ export const MarketSwitcher = () => {
                 testChainName={getMarketHelpData(market.marketTitle).testChainName}
               />
               <ListItemText sx={{ mr: 3 }}>
-                {getMarketHelpData(market.marketTitle).name}
+                {getMarketHelpData(market.marketTitle).name} {market.isFork ? 'Fork' : ''}
               </ListItemText>
 
               {currentMarket === marketId && (

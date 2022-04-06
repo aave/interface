@@ -35,7 +35,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
   const { stakeUserResult, stakeGeneralResult } = useStakeData();
   const { chainId: connectedChainId } = useWeb3Context();
   const stakeConfig = getStakeConfig();
-  const { gasLimit, mainTxState: txState } = useModalContext();
+  const { gasLimit, mainTxState: txState, txError } = useModalContext();
 
   // states
   const [cooldownCheck, setCooldownCheck] = useState(false);
@@ -91,7 +91,9 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
   const networkConfig = getNetworkConfig(stakingChain);
   const isWrongNetwork = connectedChainId !== stakingChain;
 
-  if (txState.txError) return <TxErrorView errorMessage={txState.txError} />;
+  if (txError && txError.blocking) {
+    return <TxErrorView txError={txError} />;
+  }
   if (txState.success) return <TxSuccessView action="Stake cooldown activated" />;
 
   const timeMessage = (time: number) => {
@@ -113,8 +115,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
         </Trans>{' '}
         <Link
           variant="description"
-          // TODO: need change link
-          href="https://docs.aave.com/faq/"
+          href="https://docs.aave.com/faq/migration-and-staking"
           sx={{ textDecoration: 'underline' }}
         >
           <Trans>Learn more</Trans>
@@ -242,7 +243,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
         }
       />
 
-      {txState.gasEstimationError && <GasEstimationError error={txState.gasEstimationError} />}
+      {txError && <GasEstimationError txError={txError} />}
 
       <StakeCooldownActions
         sx={{ mt: '48px' }}

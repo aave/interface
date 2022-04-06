@@ -12,12 +12,15 @@ export const SupplyCapWarning = () => {
         <Trans>Supply amount is limited due to Supply Cap</Trans>
       </Typography>
       <Typography>
-        Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia
-        consequat duis enim velit mollit.{' '}
-        <Link href="https://docs.aave.com/faq/">
-          FAQ <Trans>guide</Trans>
-        </Link>
-        .
+        <Trans>
+          Supply caps limit the amount of a certain asset that can be supplied to the Aave protocol.
+          This helps reducing exposure to the asset and mitigate attacks like infinite minting or
+          price oracle manipulation.
+          <Link href="https://docs.aave.com/developers/whats-new/supply-borrow-caps">
+            FAQ guide
+          </Link>
+          .
+        </Trans>
       </Typography>
     </Warning>
   );

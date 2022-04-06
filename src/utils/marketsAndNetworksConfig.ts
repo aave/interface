@@ -18,9 +18,9 @@ export type Pool = {
   address: string;
 };
 
-export const ENABLE_TESTNET =
+export const NEXT_PUBLIC_ENABLE_TESTNET =
   (!global?.window?.localStorage.getItem('testnetsEnabled') &&
-    process.env.ENABLE_TESTNET === 'true') ||
+    process.env.NEXT_PUBLIC_ENABLE_TESTNET === 'true') ||
   global?.window?.localStorage.getItem('testnetsEnabled') === 'true';
 
 // determines if forks should be shown
@@ -42,7 +42,7 @@ export const networkConfigs = Object.keys(_networkConfigs).reduce((acc, value) =
   if (FORK_ENABLED && Number(value) === FORK_BASE_CHAIN_ID) {
     acc[FORK_CHAIN_ID] = {
       ..._networkConfigs[value],
-      rpcOnly: true,
+      // rpcOnly: true,
       isFork: true,
       privateJsonRPCUrl: FORK_RPC_URL,
       privateJsonRPCWSUrl: FORK_WS_RPC_URL,
@@ -65,6 +65,8 @@ export const marketsData = Object.keys(_marketsData).reduce((acc, value) => {
     acc[`fork_${value}`] = {
       ..._marketsData[value as keyof typeof CustomMarket],
       chainId: FORK_CHAIN_ID,
+      rpcOnly: true,
+      isFork: true,
     };
   }
   return acc;
@@ -78,7 +80,7 @@ export function getSupportedChainIds(): number[] {
   return Array.from(
     Object.keys(marketsData).reduce((acc, value) => {
       if (
-        ENABLE_TESTNET ||
+        NEXT_PUBLIC_ENABLE_TESTNET ||
         !networkConfigs[marketsData[value as keyof typeof CustomMarket].chainId].isTestnet
       )
         acc.add(marketsData[value as keyof typeof CustomMarket].chainId);
@@ -113,7 +115,6 @@ export function getNetworkConfig(chainId: ChainId): NetworkConfig {
     const name = ChainIdToNetwork[chainId];
     return {
       name: name || `unknown chainId: ${chainId}`,
-      explorerLinkBuilder: () => console.log('exploreLinkBuilder'), // TODO
     } as unknown as NetworkConfig;
   }
   return {

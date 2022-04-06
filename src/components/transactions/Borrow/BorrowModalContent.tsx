@@ -104,7 +104,7 @@ export const BorrowModalContent = ({
   setUnwrap: setBorrowUnWrapped,
   symbol,
 }: ModalWrapperProps & { unwrap: boolean; setUnwrap: (unwrap: boolean) => void }) => {
-  const { mainTxState: borrowTxState, gasLimit } = useModalContext();
+  const { mainTxState: borrowTxState, gasLimit, txError } = useModalContext();
   const { user, marketReferencePriceInUsd } = useAppDataContext();
   const { currentNetworkConfig } = useProtocolDataContext();
 
@@ -117,7 +117,7 @@ export const BorrowModalContent = ({
   const formattedMaxAmountToBorrow = maxAmountToBorrow.toString(10);
 
   const isMaxSelected = _amount === '-1';
-  const amount = isMaxSelected ? maxAmountToBorrow.toString() : _amount;
+  const amount = isMaxSelected ? maxAmountToBorrow.toString(10) : _amount;
 
   // We set this in a useEffect, so it doesnt constantly change when
   // max amount selected
@@ -169,8 +169,8 @@ export const BorrowModalContent = ({
       case ErrorType.NOT_ENOUGH_BORROWED:
         return (
           <Trans>
-            To prevent gaming the stable rate you can only borrow, when you borrow more then your
-            current collateral in the same asset.
+            You can borrow this asset with a stable rate only if you borrow more than the amount you
+            are supplying as collateral.
           </Trans>
         );
       case ErrorType.NOT_ENOUGH_LIQUIDITY:
@@ -216,7 +216,7 @@ export const BorrowModalContent = ({
       <AssetInput
         value={amount}
         onChange={handleChange}
-        usdValue={usdValue.toString()}
+        usdValue={usdValue.toString(10)}
         assets={[
           {
             balance: formattedMaxAmountToBorrow,
@@ -230,7 +230,7 @@ export const BorrowModalContent = ({
         symbol={symbol}
         capType={CapType.borrowCap}
         isMaxSelected={isMaxSelected}
-        maxValue={maxAmountToBorrow.toString()}
+        maxValue={maxAmountToBorrow.toString(10)}
       />
 
       {blockingError !== undefined && (
@@ -268,13 +268,11 @@ export const BorrowModalContent = ({
         <DetailsHFLine
           visibleHfChange={!!_amount}
           healthFactor={user.healthFactor}
-          futureHealthFactor={newHealthFactor.toString()}
+          futureHealthFactor={newHealthFactor.toString(10)}
         />
       </TxModalDetails>
 
-      {borrowTxState.gasEstimationError && (
-        <GasEstimationError error={borrowTxState.gasEstimationError} />
-      )}
+      {txError && <GasEstimationError txError={txError} />}
 
       <BorrowActions
         poolReserve={poolReserve}

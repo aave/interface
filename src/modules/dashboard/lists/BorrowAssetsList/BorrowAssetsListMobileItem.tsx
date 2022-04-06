@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -29,6 +30,7 @@ export const BorrowAssetsListMobileItem = ({
   isFreezed,
 }: BorrowAssetsItem) => {
   const { openBorrow } = useModalContext();
+  const { currentMarket } = useProtocolDataContext();
   const borrowButtonDisable = isFreezed || Number(availableBorrows) <= 0;
 
   return (
@@ -37,6 +39,7 @@ export const BorrowAssetsListMobileItem = ({
       iconSymbol={iconSymbol}
       name={name}
       underlyingAsset={underlyingAsset}
+      currentMarket={currentMarket}
     >
       <ListValueRow
         title={<Trans>Available to borrow</Trans>}
@@ -106,7 +109,7 @@ export const BorrowAssetsListMobileItem = ({
         <Button
           variant="outlined"
           component={Link}
-          href={ROUTES.reserveOverview(underlyingAsset)}
+          href={ROUTES.reserveOverview(underlyingAsset, currentMarket)}
           fullWidth
         >
           <Trans>Details</Trans>

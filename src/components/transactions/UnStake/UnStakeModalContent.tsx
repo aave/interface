@@ -33,7 +33,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   const stakeData = data.stakeGeneralResult?.stakeGeneralUIData[stakeAssetName as StakingType];
   const { chainId: connectedChainId } = useWeb3Context();
   const stakeConfig = getStakeConfig();
-  const { gasLimit, mainTxState: txState } = useModalContext();
+  const { gasLimit, mainTxState: txState, txError } = useModalContext();
 
   // states
   const [_amount, setAmount] = useState('');
@@ -50,7 +50,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
 
   const handleChange = (value: string) => {
     const maxSelected = value === '-1';
-    amountRef.current = maxSelected ? walletBalance.toString() : value;
+    amountRef.current = maxSelected ? walletBalance : value;
     setAmount(value);
   };
 
@@ -80,7 +80,9 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   const networkConfig = getNetworkConfig(stakingChain);
   const isWrongNetwork = connectedChainId !== stakingChain;
 
-  if (txState.txError) return <TxErrorView errorMessage={txState.txError} />;
+  if (txError && txError.blocking) {
+    return <TxErrorView txError={txError} />;
+  }
   if (txState.success)
     return <TxSuccessView action="Staked" amount={amountRef.current} symbol={icon} />;
 
@@ -97,7 +99,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
         symbol={icon}
         assets={[
           {
-            balance: walletBalance.toString(),
+            balance: walletBalance,
             symbol: icon,
           },
         ]}
@@ -110,7 +112,9 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
         </Typography>
       )}
       <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} />
-      {txState.gasEstimationError && <GasEstimationError error={txState.gasEstimationError} />}
+
+      {txError && <GasEstimationError txError={txError} />}
+
       <UnStakeActions
         sx={{ mt: '48px' }}
         amountToUnStake={amount}

@@ -1,9 +1,8 @@
 import MuiLink, { LinkProps as MuiLinkProps } from '@mui/material/Link';
 import { styled } from '@mui/material/styles';
-import clsx from 'clsx';
 import NextLink, { LinkProps as NextLinkProps } from 'next/link';
-import { useRouter } from 'next/router';
 import * as React from 'react';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 // Add support for the sx prop for consistency with the other branches.
 const Anchor = styled('a')({});
@@ -38,7 +37,6 @@ export const NextLinkComposed = React.forwardRef<HTMLAnchorElement, NextLinkComp
 );
 
 export type LinkProps = {
-  activeClassName?: string;
   as?: NextLinkProps['as'];
   href: NextLinkProps['href'];
   linkAs?: NextLinkProps['as']; // Useful when the as prop is shallow by styled().
@@ -50,20 +48,13 @@ export type LinkProps = {
 // https://nextjs.org/docs/#with-link
 export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link(props, ref) {
   const {
-    activeClassName = 'active',
     as: linkAs,
-    className: classNameProps,
+    className,
     href,
     noLinkStyle,
     role, // Link don't have roles.
     ...other
   } = props;
-
-  const router = useRouter();
-  const pathname = typeof href === 'string' ? href : href.pathname;
-  const className = clsx(classNameProps, {
-    [activeClassName]: router?.pathname === pathname && activeClassName,
-  });
 
   const isExternal =
     typeof href === 'string' && (href.indexOf('http') === 0 || href.indexOf('mailto:') === 0);
@@ -120,6 +111,6 @@ export const ROUTES = {
   governance: '/governance',
   prerenderedProposal: (proposalId: number) => `/governance/proposal/${proposalId}`,
   dynamicRenderedProposal: (proposalId: number) => `/governance/proposal?proposalId=${proposalId}`,
-  reserveOverview: (underlyingAsset: string) =>
-    `/reserve-overview/?underlyingAsset=${underlyingAsset}`,
+  reserveOverview: (underlyingAsset: string, marketName: CustomMarket) =>
+    `/reserve-overview/?underlyingAsset=${underlyingAsset}&marketName=${marketName}`,
 };

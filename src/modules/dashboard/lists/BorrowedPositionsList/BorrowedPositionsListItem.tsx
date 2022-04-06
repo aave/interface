@@ -2,6 +2,7 @@ import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
 import { ComputedUserReserveData } from '../../../../hooks/app-data-provider/useAppDataProvider';
@@ -21,6 +22,7 @@ export const BorrowedPositionsListItem = ({
   stableBorrowAPY,
 }: ComputedUserReserveData & { borrowRateMode: InterestRate }) => {
   const { openBorrow, openRepay, openRateSwitch } = useModalContext();
+  const { currentMarket } = useProtocolDataContext();
   const {
     isActive,
     isFrozen,
@@ -36,7 +38,8 @@ export const BorrowedPositionsListItem = ({
       symbol={reserve.symbol}
       iconSymbol={reserve.iconSymbol}
       name={reserve.name}
-      underlyingAsset={reserve.underlyingAsset}
+      detailsAddress={reserve.underlyingAsset}
+      currentMarket={currentMarket}
       data-cy={`dashboardBorrowedListItem_${reserve.symbol.toUpperCase()}_${borrowRateMode}`}
     >
       <ListValueColumn
@@ -64,6 +67,7 @@ export const BorrowedPositionsListItem = ({
           stableBorrowAPY={reserve.stableBorrowAPY}
           variableBorrowAPY={reserve.variableBorrowAPY}
           underlyingAsset={reserve.underlyingAsset}
+          currentMarket={currentMarket}
         />
       </ListColumn>
 
