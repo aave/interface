@@ -79,24 +79,22 @@ export default function MyApp(props: MyAppProps) {
                     <BackgroundDataProvider>
                       <AppDataProvider>
                         <TxBuilderProvider>
-                          <AppGlobalStyles>
-                            <WalletModalContextProvider>
-                              <ModalContextProvider>
-                                <GasStationProvider>
-                                  {getLayout(<Component {...pageProps} />)}
-                                  <SupplyModal />
-                                  <WithdrawModal />
-                                  <BorrowModal />
-                                  <RepayModal />
-                                  <CollateralChangeModal />
-                                  <RateSwitchModal />
-                                  <ClaimRewardsModal />
-                                  <EmodeModal />
-                                  <SwapModal />
-                                </GasStationProvider>
-                              </ModalContextProvider>
-                            </WalletModalContextProvider>
-                          </AppGlobalStyles>
+                          <WalletModalContextProvider>
+                            <ModalContextProvider>
+                              <GasStationProvider>
+                                {getLayout(<Component {...pageProps} />)}
+                                <SupplyModal />
+                                <WithdrawModal />
+                                <BorrowModal />
+                                <RepayModal />
+                                <CollateralChangeModal />
+                                <RateSwitchModal />
+                                <ClaimRewardsModal />
+                                <EmodeModal />
+                                <SwapModal />
+                              </GasStationProvider>
+                            </ModalContextProvider>
+                          </WalletModalContextProvider>
                         </TxBuilderProvider>
                       </AppDataProvider>
                     </BackgroundDataProvider>
