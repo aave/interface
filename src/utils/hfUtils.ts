@@ -15,7 +15,6 @@ interface CalculateHFAfterSwapProps {
   fromAssetUserData: ComputedUserReserve;
   toAmountAfterSlippage: BigNumberValue;
   toAssetData: ComputedReserveData;
-  toAssetUserData?: ComputedUserReserve;
   user: ExtendedFormattedUser;
 }
 
@@ -25,10 +24,8 @@ export function calculateHFAfterSwap({
   fromAssetUserData,
   toAmountAfterSlippage,
   toAssetData,
-  // toAssetUserData,
   user,
 }: CalculateHFAfterSwapProps) {
-  // calculate hf params taking into account removing swap amount (as if it where a withdraw)
   const reserveLiquidationThreshold =
     user.isInEmode && user.userEmodeCategoryId === fromAssetData.eModeCategoryId
       ? fromAssetData.formattedEModeLiquidationThreshold
@@ -38,7 +35,7 @@ export function calculateHFAfterSwap({
   // this is needed because on contracts hf can't be < 1 so in the case
   // that fromHF < 1 we need to do a flashloan to not go below
   // it takes into account if in emode as threshold is different
-  let hfEffectOfFromAmount = '0'; //user.healthFactor;
+  let hfEffectOfFromAmount = '0';
 
   if (fromAssetUserData.usageAsCollateralEnabledOnUser && fromAssetData.usageAsCollateralEnabled) {
     hfEffectOfFromAmount = calculateHealthFactorFromBalancesBigUnits({
@@ -50,10 +47,7 @@ export function calculateHFAfterSwap({
     }).toString();
   }
 
-  // ----------------------------------------------------------------------------------------------------------
   // HF after swap (same as supply calcs as it needs to calculate as if we where supplying new reserve)
-  // how the hf will be with the swapped to amount. It takes into account isolation mode
-  // let hfEffectOfToAmount = hfEffectOfFromAmount;
   let hfEffectOfToAmount = '0';
   if (
     (!user.isInIsolationMode && !toAssetData.isIsolated) ||
