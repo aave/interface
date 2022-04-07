@@ -1,15 +1,19 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+import { JsonRpcProvider } from '@ethersproject/providers';
 import axios from 'axios';
 import { getDefaultProvider, Contract, utils } from 'ethers';
 import ERC20_ABI from '../../fixtures/erc20_abi.json';
+import POOL_CONFIG_ABI from '../../fixtures/poolConfig.json';
 
 const TENDERLY_KEY = Cypress.env('TENDERLY_KEY');
 const TENDERLY_ACCOUNT = Cypress.env('TENDERLY_ACCOUNT');
 const TENDERLY_PROJECT = Cypress.env('TENDERLY_PROJECT');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const request = require('request');
 
 export const DEFAULT_TEST_ACCOUNT = {
-  privateKey: '0x54c6ae44611f38e662093c9a3f4b26c3bf13f5b8adb02da1a76f321bd18efe92',
-  address: '0x56FB278a7191bdf7C5d493765Fec03E6EAdF72f1'.toLowerCase(),
+  privateKey: '2ab22efc6bc85a9cd2d6281416500d8523ba57206d94cb333cbd09977ca75479',
+  address: '0x38F217d0762F28c806BD32cFEC5984385Fed97cB'.toLowerCase(),
 };
 
 const tenderly = axios.create({
@@ -51,6 +55,39 @@ export class TenderlyFork {
       `account/${TENDERLY_ACCOUNT}/project/${TENDERLY_PROJECT}/fork/${this.fork_id}/balance`,
       { accounts: [address], amount: amount }
     );
+  }
+
+  async add_balance_rpc(address: string) {
+    if (!this.fork_id) throw new Error('Fork not initialized!');
+    const options = {
+      url: this.get_rpc_url(),
+      method: 'post',
+      headers: { 'content-type': 'text/plain' },
+      body: JSON.stringify({
+        jsonrpc: '2.0',
+        method: 'tenderly_setBalance',
+        params: [address, '0x21e19e0c9bab2400000'],
+        id: '1234',
+      }),
+    };
+    request(options);
+  }
+
+  async unpauseMarket(): Promise<void> {
+    const _url = this.get_rpc_url();
+    const provider = new JsonRpcProvider(_url);
+    const emergencyAdmin = '0x4365F8e70CF38C6cA67DE41448508F2da8825500';
+    const signer = await provider.getSigner(emergencyAdmin);
+    // constant addresses:
+
+    const poolConfigurator = new Contract(
+      '0x8145eddDf43f50276641b55bd3AD95944510021E',
+      POOL_CONFIG_ABI,
+      signer
+    );
+
+    await poolConfigurator.setPoolPause(false, { from: signer._address, gasLimit: '4000000' });
+    return;
   }
 
   async getERC20Token(walletAddress: string, tokenAddress: string) {

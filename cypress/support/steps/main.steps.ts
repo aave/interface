@@ -2,7 +2,6 @@
 import {
   setAmount,
   doConfirm,
-  doSwapForRepay,
   getDashBoardBorrowRow,
   getDashBoardDepositRow,
   doCloseModal,
@@ -36,7 +35,7 @@ export const supply = (
     amount,
     hasApproval = true,
   }: {
-    asset: { shortName: string; fullName: string; wrapped: boolean };
+    asset: { shortName: string; fullName: string };
     amount: number;
     hasApproval: boolean;
   },
@@ -50,19 +49,14 @@ export const supply = (
     skipSetup({ skip, updateSkipStatus });
     it(`Open ${_shortName} supply popup view`, () => {
       doSwitchToDashboardSupplyView();
-      cy.get(`[data-cy=dashboardSupplyListItem_${_shortName}]`)
+      cy.get(`[data-cy='dashboardSupplyListItem_${_shortName.toUpperCase()}']`)
         .find('button:contains("Supply")')
-
         .click();
-      cy.get(
-        `[data-cy=Modal] h2:contains("Supply ${asset.wrapped ? 'W' : ''}${_shortName}")`
-      ).should('be.visible');
+      cy.get(`[data-cy=Modal] h2:contains("Supply ${_shortName}")`).should('be.visible');
     });
     it(`Supply ${amount} amount for ${_shortName}`, () => {
       setAmount({
         amount,
-        actionName: _actionName,
-        assetName: _shortName,
         hasApproval,
       });
       doConfirm({
@@ -82,7 +76,7 @@ export const borrow = (
     apyType,
     hasApproval = true,
   }: {
-    asset: { shortName: string; fullName: string; wrapped: boolean };
+    asset: { shortName: string; fullName: string };
     amount: number;
     apyType?: string;
     hasApproval: boolean;
@@ -97,12 +91,12 @@ export const borrow = (
     skipSetup({ skip, updateSkipStatus });
     it(`Open ${_shortName} borrow popup view`, () => {
       doSwitchToDashboardBorrowView();
-      cy.get(`[data-cy=dashboardBorrowListItem_${_shortName}]`)
-        .find('button:contains("Borrow")')
+      cy.wait(4000);
+      cy.get(`[data-cy='dashboardBorrowListItem_${_shortName.toUpperCase()}']`)
+        .contains('Borrow')
+        .should('not.be.disabled')
         .click();
-      cy.get(
-        `[data-cy=Modal] h2:contains("Borrow ${asset.wrapped ? 'W' : ''}${_shortName}")`
-      ).should('be.visible');
+      cy.get(`[data-cy=Modal] h2:contains("Borrow ${_shortName}")`).should('be.visible');
     });
     it(`Choose ${apyType} borrow option`, () => {
       switch (apyType) {
@@ -121,8 +115,6 @@ export const borrow = (
     it(`Borrow ${amount} amount for ${_shortName}`, () => {
       setAmount({
         amount,
-        actionName: _actionName,
-        assetName: _shortName,
         hasApproval,
       });
       doConfirm({
@@ -131,22 +123,6 @@ export const borrow = (
         assetName: _shortName,
       });
     });
-    // it(`Choose ${
-    //   apyType === constants.borrowAPYType.variable ? 'Variable' : 'Stable'
-    // } APY type`, () => {
-    //   switch (apyType) {
-    //     case constants.borrowAPYType.variable:
-    //       cy.get('.InterestRateButton__inner p').contains('Variable APY').click();
-    //       break;
-    //     case constants.borrowAPYType.stable:
-    //       cy.get('.InterestRateButton__inner p').contains('Stable APY').click();
-    //       break;
-    //     default:
-    //       cy.get('.InterestRateButton__inner p').contains('Variable APY').click();
-    //       break;
-    //   }
-    //   cy.get('.Button').contains('Continue').click();
-    // });
     doCloseModal();
   });
 };
@@ -157,14 +133,14 @@ export const repay = (
     apyType,
     amount,
     repayOption,
-    assetForRepay,
+    repayableAsset,
     hasApproval = false,
   }: {
-    asset: { shortName: string; fullName: string; wrapped: boolean };
+    asset: { shortName: string; fullName: string };
     apyType: string;
     amount: number;
     repayOption: string;
-    assetForRepay?: { shortName: string; fullName: string };
+    repayableAsset?: { shortName: string };
     hasApproval: boolean;
   },
   skip: SkipType,
@@ -172,18 +148,17 @@ export const repay = (
 ) => {
   const _shortName = asset.shortName;
   const _actionName = constants.actionTypes.repay;
-  const _shortNameAssetForRepay = assetForRepay ? assetForRepay.shortName : undefined;
 
-  return describe(`Repay by ${repayOption} process for ${_shortName}`, () => {
+  return describe(`Repay by ${repayOption} process for ${_shortName} by ${
+    repayableAsset ? repayableAsset.shortName : _shortName
+  }`, () => {
     skipSetup({ skip, updateSkipStatus });
     it(`Open ${_shortName} repay popup view`, () => {
       doSwitchToDashboardBorrowView();
       getDashBoardBorrowRow({ assetName: _shortName, apyType })
         .find(`button:contains("Repay")`)
         .click();
-      cy.get(
-        `[data-cy=Modal] h2:contains("Repay ${asset.wrapped ? 'W' : ''}${_shortName}")`
-      ).should('be.visible');
+      cy.get(`[data-cy=Modal] h2:contains("Repay ${_shortName}")`).should('be.visible');
     });
     it(`Choose ${repayOption} repay option`, () => {
       switch (repayOption) {
@@ -206,11 +181,19 @@ export const repay = (
           break;
       }
     });
+    if (repayableAsset) {
+      it(`Choose ${repayableAsset.shortName} as option to repay`, () => {
+        cy.get('[data-cy=Modal] ').as('Modal');
+        cy.get('@Modal').get('[data-cy=assetSelect]').click();
+        cy.get('@Modal')
+          .get(`[data-cy='assetsSelectOption_${repayableAsset.shortName.toUpperCase()}']`)
+          .click();
+        cy.get('@Modal').get('[data-cy=assetSelect]').contains(repayableAsset.shortName);
+      });
+    }
     it(`Repay ${amount} amount for ${_shortName}, with ${repayOption} repay option`, () => {
       setAmount({
         amount,
-        actionName: _actionName,
-        assetName: _shortName,
         hasApproval,
       });
       doConfirm({
@@ -229,11 +212,13 @@ export const withdraw = (
     isCollateral,
     amount,
     hasApproval = false,
+    forWrapped = false,
   }: {
-    asset: { shortName: string; fullName: string; wrapped: boolean };
+    asset: { shortName: string; fullName: string };
     isCollateral: boolean;
     amount: number;
     hasApproval: boolean;
+    forWrapped?: boolean;
   },
   skip: SkipType,
   updateSkipStatus = false
@@ -245,28 +230,28 @@ export const withdraw = (
     skipSetup({ skip, updateSkipStatus });
     it(`Open ${_shortName} Withdraw popup view`, () => {
       doSwitchToDashboardSupplyView();
-      cy.get(
-        `[data-cy=dashboardSuppliedListItem_${_shortName}_${
-          isCollateral ? 'Collateral' : 'NoCollateral'
-        }]`
-      )
+      getDashBoardDepositRow({ assetName: _shortName, isCollateralType: isCollateral })
         .find(`button:contains("Withdraw")`)
         .click();
-      cy.get(
-        `[data-cy=Modal] h2:contains("Withdraw ${asset.wrapped ? 'W' : ''}${_shortName}")`
-      ).should('be.visible');
+      cy.get(`[data-cy=Modal] h2:contains("Withdraw ${_shortName}")`).should('be.visible');
+    });
+    it(`Choose ${forWrapped ? 'usual token' : 'wrapped token'}`, () => {
+      if (forWrapped) {
+        cy.get('[data-cy=Modal]').get('[data-cy=wrappedSwitcher]').click();
+      }
+      cy.get('[data-cy=Modal]')
+        .get('[data-cy=inputAsset]')
+        .contains(`${forWrapped ? 'W' + _shortName : _shortName}`);
     });
     it(`Withdraw ${amount} amount for ${_shortName}`, () => {
       setAmount({
         amount,
-        actionName: _actionName,
-        assetName: _shortName,
         hasApproval,
       });
       doConfirm({
         hasApproval,
         actionName: _actionName,
-        assetName: _shortName,
+        assetName: forWrapped ? 'W' + _shortName : _shortName,
       });
     });
     doCloseModal();
@@ -306,7 +291,6 @@ export const changeBorrowType = (
       doConfirm({
         hasApproval,
         actionName: _actionName,
-        assetName: '',
       });
     });
     doCloseModal();
@@ -377,11 +361,9 @@ export const changeCollateral = (
   {
     asset,
     isCollateralType,
-    hasApproval = true,
   }: {
-    asset: { shortName: string; fullName: string; wrapped: boolean };
+    asset: { shortName: string; fullName: string };
     isCollateralType: boolean;
-    hasApproval?: boolean;
   },
   skip: SkipType,
   updateSkipStatus = false
@@ -397,47 +379,62 @@ export const changeCollateral = (
         .find('.MuiSwitch-input ')
         .click();
       cy.get('[data-cy=Modal]').should('be.visible');
-      if (isCollateralType) {
-        cy.get(`[data-cy=Modal] h2:contains('Disable ${_shortName} as collateral')`).should(
-          'be.visible'
-        );
-      } else {
-        cy.get(`[data-cy=Modal] h2:contains('Use ${_shortName} as collateral')`).should(
-          'be.visible'
-        );
-      }
+      cy.get(`[data-cy=Modal] h2:contains('Review tx ${_shortName}')`).should('be.visible');
     });
     it('Confirm switching', () => {
       if (isCollateralType) {
-        cy.get('[data-cy=actionButton]').click();
+        cy.get('[data-cy=actionButton]')
+          .contains(`Disable ${_shortName} as collateral`)
+          .wait(3000)
+          .click();
       } else {
-        cy.get('[data-cy=actionButton]').click();
+        cy.get('[data-cy=actionButton]')
+          .contains(`Enable ${_shortName} as collateral`)
+          .wait(3000)
+          .click();
       }
       cy.get("[data-cy=Modal] h2:contains('All done!')").should('be.visible');
-      cy.get('[data-cy=Modal] [data-cy=CloseModalIcon]').click();
     });
+    doCloseModal();
   });
 };
 
-export const claimReward = (skip: SkipType, updateSkipStatus = false) => {
+export const claimReward = (
+  {
+    asset,
+  }: {
+    asset: { shortName: string; fullName: string };
+  },
+  skip: SkipType,
+  updateSkipStatus = false
+) => {
   return describe(`Claim reward`, () => {
     skipSetup({ skip, updateSkipStatus });
-    it('Open claim confirmation page', () => {
-      cy.get('.IncentiveWrapper .Link').contains('Claim').click();
+    it(`Open dashboard`, () => {
+      doSwitchToDashboardSupplyView();
+    });
+    it(`Open claim modal`, () => {
+      cy.get('[data-cy=Claim_Box]').should('be.visible');
+      cy.get('[data-cy=Dashboard_Claim_Button]').click();
     });
     it('Confirm claim', () => {
-      doConfirm({ hasApproval: true });
+      doConfirm({
+        hasApproval: true,
+        actionName: 'Claim',
+        assetName: asset.shortName,
+      });
     });
+    doCloseModal();
   });
 };
 
 export const changeCollateralNegative = (
   {
     asset,
-    collateralType,
+    isCollateralType,
   }: {
     asset: { shortName: string; fullName: string };
-    collateralType: string;
+    isCollateralType: boolean;
   },
   skip: SkipType,
   updateSkipStatus = false
@@ -446,16 +443,19 @@ export const changeCollateralNegative = (
   return describe(`Switch collateral type negative`, () => {
     skipSetup({ skip, updateSkipStatus });
     it('Switch type', () => {
-      getDashBoardDepositRow({ assetName: _shortName, collateralType })
-        .find('.Switcher__swiper')
+      doSwitchToDashboardSupplyView();
+      getDashBoardDepositRow({ assetName: _shortName, isCollateralType })
+        .find('.MuiSwitch-input ')
         .click();
     });
-    it('Confirm switching', () => {
-      cy.get('.TxConfirmationView')
-        .find('span')
-        .contains(
-          "You can't switch usage as collateral mode for this currency, because it will cause collateral call"
-        );
+    it(`Check that switch type unavailable`, () => {
+      cy.get('[data-cy=Modal]').contains(
+        'You can not switch usage as collateral mode for this currency, because it will cause collateral call'
+      );
+      cy.get('[data-cy=actionButton]').should('be.disabled');
+    });
+    it(`Close Modal`, () => {
+      cy.get('[data-cy=Modal]').get('[data-cy=CloseModalIcon]').click();
     });
   });
 };
