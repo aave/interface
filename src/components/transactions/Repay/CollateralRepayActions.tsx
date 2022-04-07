@@ -60,16 +60,20 @@ export const CollateralRepayActions = ({
           route: priceRoute as OptimalRate,
           chainId: chainId,
         });
-        // if (currentMarketData.v3) {
-        //   const newPool: Pool = lendingPool as Pool;
-        //   return newPool.paraswapRepayWithCollateral({
-        //     user: currentAccount,
-        //   });
-        // } else {
-        //   return lendingPool.repayWithCollateral({
-        //     user: currentAccount,
-        //   });
-        // }
+        const newPool: Pool = lendingPool as Pool;
+        return newPool.paraswapRepayWithCollateral({
+          user: currentAccount,
+          fromAsset: poolReserve.underlyingAsset,
+          fromAToken: poolReserve.aTokenAddress,
+          assetToRepay: targetReserve.underlyingAsset,
+          repayWithAmount: amountToRepay, // ?? is this correct?
+          repayAmount: '',
+          repayAllDebt: isMaxSelected,
+          rateMode: debtType,
+          flash: useFlashLoan,
+          swapAndRepayCallData: swapCallData,
+          augustus,
+        });
       },
       customGasPrice:
         state.gasOption === GasOption.Custom
