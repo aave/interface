@@ -58,6 +58,10 @@ export function CollateralRepayModalContent({
     debtType === InterestRate.Stable ? userReserve.stableBorrows : userReserve.variableBorrows;
   const safeAmountToRepayAll = valueToBigNumber(debt).multipliedBy('1.0025');
 
+  // for v3 we need hf after withdraw collateral, because when removing collateral to repay
+  // debt, hf could go under 1 then it would fail. If that is the case then we need
+  // to use flashloan path
+
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? safeAmountToRepayAll.toString() : _amount;
   const usdValue = valueToBigNumber(amount).multipliedBy(poolReserve.priceInUSD);
