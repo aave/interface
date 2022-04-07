@@ -296,6 +296,7 @@ export const marketsData: {
     enabledFeatures: {
       // liquiditySwap: true,
       incentives: true,
+      collateralRepay: true,
     },
     rpcOnly: true,
     addresses: {
@@ -303,6 +304,7 @@ export const marketsData: {
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
       WETH_GATEWAY: '0xa938d8536aEed1Bd48f548380394Ab30Aa11B00E',
       // SWAP_COLLATERAL_ADAPTER: '',
+      REPAY_WITH_COLLATERAL_ADAPTER: '0xA911965AbBE61460cB91f8259a8dF8509D877EBc',
       WALLET_BALANCE_PROVIDER: '0xBc790382B3686abffE4be14A030A96aC6154023a',
       UI_POOL_DATA_PROVIDER: '0xdBbFaFC45983B4659E368a3025b81f69Ab6E5093',
       UI_INCENTIVE_DATA_PROVIDER: '0x270f51cf3F681010B46f5c4Ee2aD5120Db33026F',
@@ -333,6 +335,7 @@ export const marketsData: {
     chainId: ChainId.fantom,
     enabledFeatures: {
       incentives: true,
+      collateralRepay: true,
     },
     rpcOnly: true,
     addresses: {
@@ -342,6 +345,7 @@ export const marketsData: {
       WALLET_BALANCE_PROVIDER: '0xBc790382B3686abffE4be14A030A96aC6154023a',
       UI_POOL_DATA_PROVIDER: '0x1CCbfeC508da8D5242D5C1b368694Ab0066b39f1',
       UI_INCENTIVE_DATA_PROVIDER: '0xbA14c06011f4AF5970cFDe4364ba6320E190BD4B',
+      REPAY_WITH_COLLATERAL_ADAPTER: '0x85272bf6DdCCBDea45Cf0535ea5C65bf91B480c4',
     },
   },
   [CustomMarket.proto_fantom_testnet_v3]: {
@@ -443,6 +447,7 @@ export const marketsData: {
     enabledFeatures: {
       // liquiditySwap: true,
       incentives: true,
+      collateralRepay: true,
     },
     rpcOnly: true,
     addresses: {
@@ -450,6 +455,7 @@ export const marketsData: {
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
       WETH_GATEWAY: '0x9BdB5fcc80A49640c7872ac089Cc0e00A98451B6',
       // SWAP_COLLATERAL_ADAPTER: '',
+      REPAY_WITH_COLLATERAL_ADAPTER: '0xD0E8f168d297DfA0f3EE1711c538BcC0663320aF',
       WALLET_BALANCE_PROVIDER: '0xBc790382B3686abffE4be14A030A96aC6154023a',
       UI_POOL_DATA_PROVIDER: '0x8F1AD487C9413d7e81aB5B4E88B024Ae3b5637D0',
       UI_INCENTIVE_DATA_PROVIDER: '0x05E309C97317d8abc0f7e78185FC966FfbD2CEC0',

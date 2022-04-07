@@ -16,7 +16,7 @@ export interface RepayActionProps extends BoxProps {
   debtType: InterestRate;
   amountToRepay: string;
   amountToSwap: string;
-  poolReserve: ComputedReserveData;
+  fromReserve: ComputedReserveData;
   targetReserve: ComputedReserveData;
   isWrongNetwork: boolean;
   customGasPrice?: string;
@@ -29,7 +29,7 @@ export interface RepayActionProps extends BoxProps {
 
 export const CollateralRepayActions = ({
   amountToRepay,
-  poolReserve,
+  fromReserve,
   targetReserve,
   isWrongNetwork,
   sx,
@@ -37,6 +37,8 @@ export const CollateralRepayActions = ({
   debtType,
   blocked,
   priceRoute,
+  isMaxSelected,
+  useFlashLoan,
   ...props
 }: RepayActionProps) => {
   const { lendingPool } = useTxBuilderContext();
@@ -47,8 +49,8 @@ export const CollateralRepayActions = ({
     useTransactionHandler({
       handleGetTxns: async () => {
         const { swapCallData, augustus } = await getSwapCallData({
-          srcToken: poolReserve.underlyingAsset,
-          srcDecimals: poolReserve.decimals,
+          srcToken: fromReserve.underlyingAsset,
+          srcDecimals: fromReserve.decimals,
           destToken: targetReserve.underlyingAsset,
           destDecimals: targetReserve.decimals,
           user: currentAccount,
@@ -58,8 +60,8 @@ export const CollateralRepayActions = ({
         const newPool: Pool = lendingPool as Pool;
         return newPool.paraswapRepayWithCollateral({
           user: currentAccount,
-          fromAsset: poolReserve.underlyingAsset,
-          fromAToken: poolReserve.aTokenAddress,
+          fromAsset: fromReserve.underlyingAsset,
+          fromAToken: fromReserve.aTokenAddress,
           assetToRepay: targetReserve.underlyingAsset,
           repayWithAmount: amountToRepay, // ?? is this correct?
           repayAmount: '',

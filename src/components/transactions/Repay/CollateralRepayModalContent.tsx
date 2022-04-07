@@ -123,8 +123,11 @@ export function CollateralRepayModalContent({
         />
       </TxModalDetails>
       <CollateralRepayActions
-        poolReserve={poolReserve}
+        fromReserve={poolReserve}
+        targetReserve={targetReserve}
         amountToRepay={isMaxSelected ? safeAmountToRepayAll.toString() : amount}
+        isMaxSelected={isMaxSelected}
+        useFlashLoan={false}
         poolAddress={tokenToRepayWith.address}
         isWrongNetwork={isWrongNetwork}
         symbol={symbol}
