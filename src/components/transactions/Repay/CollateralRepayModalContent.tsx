@@ -20,11 +20,6 @@ import {
 } from '../FlowCommons/TxModalDetails';
 import { CollateralRepayActions } from './CollateralRepayActions';
 
-interface RepayAsset extends Asset {
-  balance: string;
-  address: string;
-}
-
 export function CollateralRepayModalContent({
   poolReserve,
   symbol,
@@ -32,11 +27,11 @@ export function CollateralRepayModalContent({
   userReserve,
   isWrongNetwork,
 }: ModalWrapperProps & { debtType: InterestRate }) {
-  const { user, marketReferencePriceInUsd } = useAppDataContext();
+  const { user, marketReferencePriceInUsd, reserves } = useAppDataContext();
   const { gasLimit } = useModalContext();
   const { currentChainId } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
-  const repayTokens = user?.userReservesData
+  const repayTokens = user.userReservesData
     .filter((userReserve) => userReserve.underlyingBalance !== '0')
     .map((userReserve) => ({
       address: userReserve.underlyingAsset,
@@ -45,12 +40,12 @@ export function CollateralRepayModalContent({
       iconSymbol: userReserve.reserve.iconSymbol,
       aToken: true,
     }));
-  const [tokenToRepayWith, setTokenToRepayWith] = useState<RepayAsset>(
-    repayTokens[0] as RepayAsset
-  );
-  const swapSourceUserReserve = user?.userReservesData.find(
-    (userReserve) => userReserve.underlyingAsset === tokenToRepayWith.address
-  ) as ComputedUserReserveData;
+  const [tokenToRepayWith, setTokenToRepayWith] = useState<Asset>(repayTokens[0]);
+
+  const repayWithReserve = reserves.find(
+    (reserve) => reserve.underlyingAsset === tokenToRepayWith.address
+  ) as ComputedReserveData;
+
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>('');
 
@@ -70,7 +65,7 @@ export function CollateralRepayModalContent({
     chainId: currentChainId,
     userId: currentAccount,
     variant: 'exactOut',
-    swapIn: { ...swapSourceUserReserve?.reserve, amount: '0' },
+    swapIn: { ...repayWithReserve, amount: '0' },
     swapOut: { ...poolReserve, amount: amountRef.current },
     max: isMaxSelected,
   });

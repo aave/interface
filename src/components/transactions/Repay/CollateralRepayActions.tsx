@@ -6,7 +6,6 @@ import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvi
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { optimizedPath } from 'src/utils/utils';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { OptimalRate } from 'paraswap-core';
@@ -16,8 +15,8 @@ export interface RepayActionProps extends BoxProps {
   debtType: InterestRate;
   amountToRepay: string;
   amountToSwap: string;
-  fromReserve: ComputedReserveData;
-  targetReserve: ComputedReserveData;
+  repayWithReserve: ComputedReserveData;
+  poolReserve: ComputedReserveData;
   isWrongNetwork: boolean;
   customGasPrice?: string;
   symbol: string;
@@ -29,8 +28,9 @@ export interface RepayActionProps extends BoxProps {
 
 export const CollateralRepayActions = ({
   amountToRepay,
-  fromReserve,
-  targetReserve,
+  amountToSwap,
+  poolReserve,
+  repayWithReserve,
   isWrongNetwork,
   sx,
   symbol,
@@ -49,10 +49,10 @@ export const CollateralRepayActions = ({
     useTransactionHandler({
       handleGetTxns: async () => {
         const { swapCallData, augustus } = await getSwapCallData({
-          srcToken: fromReserve.underlyingAsset,
-          srcDecimals: fromReserve.decimals,
-          destToken: targetReserve.underlyingAsset,
-          destDecimals: targetReserve.decimals,
+          srcToken: repayWithReserve.underlyingAsset,
+          srcDecimals: repayWithReserve.decimals,
+          destToken: poolReserve.underlyingAsset,
+          destDecimals: poolReserve.decimals,
           user: currentAccount,
           route: priceRoute as OptimalRate,
           chainId: chainId,
@@ -60,11 +60,11 @@ export const CollateralRepayActions = ({
         const newPool: Pool = lendingPool as Pool;
         return newPool.paraswapRepayWithCollateral({
           user: currentAccount,
-          fromAsset: fromReserve.underlyingAsset,
-          fromAToken: fromReserve.aTokenAddress,
-          assetToRepay: targetReserve.underlyingAsset,
-          repayWithAmount: amountToRepay, // ?? is this correct?
-          repayAmount: '',
+          fromAsset: repayWithReserve.underlyingAsset,
+          fromAToken: repayWithReserve.aTokenAddress,
+          assetToRepay: poolReserve.underlyingAsset,
+          repayWithAmount: amountToSwap,
+          repayAmount: amountToRepay,
           repayAllDebt: isMaxSelected,
           rateMode: debtType,
           flash: useFlashLoan,
@@ -73,7 +73,16 @@ export const CollateralRepayActions = ({
         });
       },
       skip: !amountToRepay || parseFloat(amountToRepay) === 0 || blocked,
-      deps: [amountToRepay],
+      deps: [
+        amountToSwap,
+        amountToRepay,
+        priceRoute,
+        poolReserve.underlyingAsset,
+        repayWithReserve.underlyingAsset,
+        isMaxSelected,
+        currentAccount,
+        useFlashLoan,
+      ],
     });
 
   return (
