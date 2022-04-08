@@ -34,7 +34,7 @@ export const doConfirm = ({ hasApproval, actionName, assetName }: ConfirmAction)
       .wait(1000)
       .click();
   }
-  cy.get('[data-cy=actionButton]', { timeout: 20000 })
+  cy.get('[data-cy=actionButton]', { timeout: 30000 })
     .should('not.be.disabled')
     .then(($btn) => {
       if (assetName && actionName) {
