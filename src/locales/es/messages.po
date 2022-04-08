@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-04-05 18:04\n"
+"PO-Revision-Date: 2022-04-08 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -165,7 +165,7 @@ msgstr "Aprobando {symbol}..."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Array parameters that should be equal length are not"
-msgstr "El conjunto de parámetros que deberían ser iguales en longitud no lo son"
+msgstr "Los parámetros del array que deberían ser iguales en longitud no lo son"
 
 #: pages/faucet.page.tsx
 #: src/modules/markets/AssetsList.tsx
@@ -437,7 +437,7 @@ msgstr "Error de copia"
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Copy error text"
-msgstr "Error de copia de texto"
+msgstr "Copiar el texto del error"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Created"
@@ -601,7 +601,7 @@ msgstr "Activar el modo E-mode te permite solo pedir prestado activos que perten
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "Enabling this asset as collateral increases your borrowing power and Health Factor. However, it can get liquidated if your health factor drops below 1."
-msgstr "Habilitar este activo como colateral aumenta tu poder préstamo y el factor de salud. Sin embargo, puede liquidarse si tu factor de salud cae por debajo de 1."
+msgstr "Habilitar este activo como garantía aumenta tu poder préstamo y el factor de salud. Sin embargo, puede ser liquidado si tu factor de salud cae por debajo de 1."
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "English"
@@ -651,7 +651,7 @@ msgstr "Para el reembolso de un tipo específico de deuda, el usuario necesita t
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Forum discussion"
-msgstr "Foro de discusión"
+msgstr "Hilo de discusión del foro"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "French"
@@ -698,7 +698,7 @@ msgstr "Ocultar"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "I understand how cooldown ({0}) and unstaking ({1}) work"
-msgstr "Entiendo como funciona el cooldown ({0}) y unstakear ({1})"
+msgstr "Entiendo como el cooldown ({0}) y el proceso de unstaking ({1}) funcionan"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "If the health factor goes below 1, the liquidation of your collateral might be triggered."
@@ -730,7 +730,7 @@ msgstr "Para cambiar el E-Mode de la categoría de activos{0}, necesitarás cerr
 
 #: src/ui-config/errorMapping.tsx
 msgid "Inconsistent flashloan parameters"
-msgstr "Parámetros inconsistentes de préstamo flash"
+msgstr "Parámetros inconsistentes del préstamo flash"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Interest rate rebalance conditions were not met"
