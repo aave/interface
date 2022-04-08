@@ -26,11 +26,13 @@ const ParaSwap = (chainId: number) => {
 const mainnetParaswap = ParaSwap(ChainId.mainnet);
 const polygonParaswap = ParaSwap(ChainId.polygon);
 const avalancheParaswap = ParaSwap(ChainId.avalanche);
+const fantomParaswap = ParaSwap(ChainId.fantom);
 
 const getParaswap = (chainId: ChainId) => {
   if (ChainId.mainnet === chainId) return mainnetParaswap;
   if (ChainId.polygon === chainId) return polygonParaswap;
   if (ChainId.avalanche === chainId) return avalancheParaswap;
+  if (ChainId.fantom === chainId) return fantomParaswap;
   throw new Error('chain not supported');
 };
 
@@ -41,13 +43,14 @@ type UseSwapProps = {
   variant: 'exactIn' | 'exactOut';
   userId?: string;
   chainId: ChainId;
+  skip?: boolean;
 };
 
 const MESSAGE_MAP = {
   ESTIMATED_LOSS_GREATER_THAN_MAX_IMPACT: 'Price impact to high',
 };
 
-export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId }: UseSwapProps) => {
+export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }: UseSwapProps) => {
   const paraSwap = getParaswap(chainId);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -104,20 +107,23 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId }: UseS
     variant,
     max,
     chainId,
+    skip,
   ]);
 
   // updates the route on input change
   useEffect(() => {
+    if (skip) return;
     setPriceRoute(null);
     const timeout = setTimeout(fetchRoute, 400);
     return () => clearTimeout(timeout);
-  }, [fetchRoute]);
+  }, [fetchRoute, skip]);
 
   // updates the route based on on interval
   useEffect(() => {
+    if (skip) return;
     const interval = setInterval(fetchRoute, error ? 3000 : 15000);
     return () => clearInterval(interval);
-  }, [fetchRoute, error]);
+  }, [fetchRoute, error, skip]);
 
   if (priceRoute) {
     return {

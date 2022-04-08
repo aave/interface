@@ -1,0 +1,20 @@
+{
+  "integrationFolder": "cypress/integration/1-v3-markets/1-arbitrum-v3-market",
+  "testFiles": [
+    "**/*.*"
+  ],
+  "ignoreTestFiles": [
+    "0-assets/eth.arbitrum-v3.spec.ts",
+    "0-assets/usdt.arbitrum-v3.spec.ts"
+  ],
+  "viewportWidth": 1200,
+  "viewportHeight": 800,
+  "defaultCommandTimeout": 40000,
+  "pageLoadTimeout": 120000,
+  "video": false,
+  "scrollBehavior": "center",
+  "retries": {
+    "runMode": 1,
+    "openMode": 0
+  }
+}

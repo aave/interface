@@ -1,0 +1,20 @@
+{
+  "integrationFolder": "cypress/integration/0-v2-markets/1-amm-v2-market",
+  "testFiles": [
+    "**/*.*"
+  ],
+  "ignoreTestFiles": [
+    "0-assets/eth.amm-v2.spec.ts",
+    "0-assets/usdt.amm-v2.spec.ts"
+  ],
+  "viewportWidth": 1200,
+  "viewportHeight": 800,
+  "defaultCommandTimeout": 40000,
+  "pageLoadTimeout": 120000,
+  "video": false,
+  "scrollBehavior": "center",
+  "retries": {
+    "runMode": 1,
+    "openMode": 0
+  }
+}
