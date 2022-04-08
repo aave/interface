@@ -3,8 +3,6 @@
   "testFiles": [
     "0-assets/eth.aave-v2.spec.ts",
     "0-assets/dai.aave-v2.spec.ts",
-    "0-assets/usdt.aave-v2.spec.ts",
-    "0-assets/mana.aave-v2.spec.ts",
     "reward.aave-v2.spec.ts"
   ],
   "viewportWidth": 1200,

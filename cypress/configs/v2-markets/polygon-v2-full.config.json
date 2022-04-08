@@ -3,6 +3,11 @@
   "testFiles": [
     "**/*.*"
   ],
+  "ignoreTestFiles": [
+    "0-assets/matic.polygon-v2.spec.ts",
+    "0-assets/usdt.polygon-v2.spec.ts",
+    "swap.polygon-v2.spec.ts"
+  ],
   "viewportWidth": 1200,
   "viewportHeight": 800,
   "defaultCommandTimeout": 40000,

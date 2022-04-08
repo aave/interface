@@ -26,11 +26,13 @@ const ParaSwap = (chainId: number) => {
 const mainnetParaswap = ParaSwap(ChainId.mainnet);
 const polygonParaswap = ParaSwap(ChainId.polygon);
 const avalancheParaswap = ParaSwap(ChainId.avalanche);
+const fantomParaswap = ParaSwap(ChainId.fantom);
 
 const getParaswap = (chainId: ChainId) => {
   if (ChainId.mainnet === chainId) return mainnetParaswap;
   if (ChainId.polygon === chainId) return polygonParaswap;
   if (ChainId.avalanche === chainId) return avalancheParaswap;
+  if (ChainId.fantom === chainId) return fantomParaswap;
   throw new Error('chain not supported');
 };
 
@@ -55,7 +57,6 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }
   const [priceRoute, setPriceRoute] = useState<OptimalRate | null>(null);
 
   const fetchRoute = useCallback(async () => {
-    if (skip) return;
     if (!swapIn.underlyingAsset || !swapOut.underlyingAsset || !userId) return;
     if (variant === 'exactIn' && (!swapIn.amount || swapIn.amount === '0')) return;
     if (variant === 'exactOut' && (!swapOut.amount || swapOut.amount === '0')) return;
@@ -111,16 +112,18 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }
 
   // updates the route on input change
   useEffect(() => {
+    if (skip) return;
     setPriceRoute(null);
     const timeout = setTimeout(fetchRoute, 400);
     return () => clearTimeout(timeout);
-  }, [fetchRoute]);
+  }, [fetchRoute, skip]);
 
   // updates the route based on on interval
   useEffect(() => {
+    if (skip) return;
     const interval = setInterval(fetchRoute, error ? 3000 : 15000);
     return () => clearInterval(interval);
-  }, [fetchRoute, error]);
+  }, [fetchRoute, error, skip]);
 
   if (priceRoute) {
     return {

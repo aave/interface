@@ -3,9 +3,7 @@
   "testFiles": [
     "0-assets/matic.polygon-v3.spec.ts",
     "0-assets/eurs.polygon-v3.spec.ts",
-    "0-assets/usdt.polygon-v3.spec.ts",
-    "0-assets/usdc.polygon-v3.spec.ts",
-    "0-assets/wbtc.polygon-v3.spec.ts"
+    "swap.polygon-v3.spec.ts"
   ],
   "viewportWidth": 1200,
   "viewportHeight": 800,

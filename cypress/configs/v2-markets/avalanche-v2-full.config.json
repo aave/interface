@@ -3,6 +3,12 @@
   "testFiles": [
     "**/*.*"
   ],
+  "ignoreTestFiles": [
+    "0-assets/avax.avalanche-v2.spec.ts",
+    "0-assets/usdt.avalanche-v2.spec.ts",
+    "reward.avalanche-v2.spec.ts",
+    "swap.avalanche-v2.spec.ts"
+  ],
   "viewportWidth": 1200,
   "viewportHeight": 800,
   "defaultCommandTimeout": 40000,
