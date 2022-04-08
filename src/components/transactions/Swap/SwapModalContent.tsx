@@ -49,7 +49,8 @@ export const SwapModalContent = ({
     .filter((r) => r.underlyingAsset !== poolReserve.underlyingAsset)
     .map((reserve) => ({
       address: reserve.underlyingAsset,
-      symbol: reserve.iconSymbol,
+      symbol: reserve.symbol,
+      iconSymbol: reserve.iconSymbol,
     }));
 
   // states
