@@ -80,6 +80,7 @@ export const SwapModalContent = ({
     swapIn: { ...poolReserve, amount: amountRef.current },
     swapOut: { ...swapTarget, amount: '0' },
     max: isMaxSelected,
+    skip: supplyTxState.loading,
   });
 
   const minimumReceived = new BigNumber(outputAmount || '0')

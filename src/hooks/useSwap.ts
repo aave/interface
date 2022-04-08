@@ -43,19 +43,21 @@ type UseSwapProps = {
   variant: 'exactIn' | 'exactOut';
   userId?: string;
   chainId: ChainId;
+  skip?: boolean;
 };
 
 const MESSAGE_MAP = {
   ESTIMATED_LOSS_GREATER_THAN_MAX_IMPACT: 'Price impact to high',
 };
 
-export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId }: UseSwapProps) => {
+export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }: UseSwapProps) => {
   const paraSwap = getParaswap(chainId);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [priceRoute, setPriceRoute] = useState<OptimalRate | null>(null);
 
   const fetchRoute = useCallback(async () => {
+    if (skip) return;
     if (!swapIn.underlyingAsset || !swapOut.underlyingAsset || !userId) return;
     if (variant === 'exactIn' && (!swapIn.amount || swapIn.amount === '0')) return;
     if (variant === 'exactOut' && (!swapOut.amount || swapOut.amount === '0')) return;
@@ -106,6 +108,7 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId }: UseS
     variant,
     max,
     chainId,
+    skip,
   ]);
 
   // updates the route on input change
