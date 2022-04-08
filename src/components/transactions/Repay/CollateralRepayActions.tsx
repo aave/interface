@@ -20,7 +20,6 @@ export interface RepayActionProps extends BoxProps {
   isWrongNetwork: boolean;
   customGasPrice?: string;
   symbol: string;
-  blocked: boolean;
   priceRoute: OptimalRate | null;
   isMaxSelected: boolean;
   useFlashLoan: boolean;
@@ -35,7 +34,6 @@ export const CollateralRepayActions = ({
   sx,
   symbol,
   debtType,
-  blocked,
   priceRoute,
   isMaxSelected,
   useFlashLoan,
@@ -71,7 +69,7 @@ export const CollateralRepayActions = ({
           augustus,
         });
       },
-      skip: !amountToRepay || parseFloat(amountToRepay) === 0 || blocked,
+      skip: !amountToRepay || parseFloat(amountToRepay) === 0,
       deps: [
         amountToSwap,
         amountToRepay,
@@ -86,7 +84,6 @@ export const CollateralRepayActions = ({
 
   return (
     <TxActionsWrapper
-      blocked={blocked}
       preparingTransactions={loadingTxns}
       symbol={poolReserve.symbol}
       mainTxState={mainTxState}

@@ -70,17 +70,9 @@ export function CollateralRepayModalContent({
     max: isMaxSelected,
   });
 
-  const amountAfterRepay = valueToBigNumber(debt).minus(amount || '0');
-  const displayAmountAfterRepayInUsd = amountAfterRepay
-    .multipliedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
-    .multipliedBy(marketReferencePriceInUsd)
-    .shiftedBy(-USD_DECIMALS);
-
-
   const minimumReceived = new BigNumber(outputAmount || '0')
     .multipliedBy(new BigNumber(100).minus(maxSlippage).dividedBy(100))
     .toString(10);
-
 
   const handleChange = (value: string) => {
     const maxSelected = value === '-1';
@@ -93,7 +85,7 @@ export function CollateralRepayModalContent({
   // to use flashloan path
   const { hfAfterSwap, hfEffectOfFromAmount } = calculateHFAfterRepay({
     fromAmountAfterSlippage: minimumReceived,
-    fromAssetData: poolReserve,
+    fromAssetData: repayWithReserve,
     user,
     amountToRepay: amount,
     toAssetData: poolReserve,
@@ -104,7 +96,11 @@ export function CollateralRepayModalContent({
     user.healthFactor !== '-1' &&
     new BigNumber(user.healthFactor).minus(hfEffectOfFromAmount).lt('1.05');
 
-  const blockingError = undefined;
+  const amountAfterRepay = valueToBigNumber(debt).minus(minimumReceived || '0');
+  const displayAmountAfterRepayInUsd = amountAfterRepay
+    .multipliedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
+    .multipliedBy(marketReferencePriceInUsd)
+    .shiftedBy(-USD_DECIMALS);
 
   return (
     <>
@@ -142,7 +138,7 @@ export function CollateralRepayModalContent({
         <DetailsHFLine
           visibleHfChange={!!_amount}
           healthFactor={user?.healthFactor}
-          futureHealthFactor={'2' /** TODO */}
+          futureHealthFactor={hfAfterSwap.toString(10)}
         />
       </TxModalDetails>
       <CollateralRepayActions
@@ -156,7 +152,6 @@ export function CollateralRepayModalContent({
         symbol={symbol}
         debtType={debtType}
         priceRoute={priceRoute}
-        blocked={blockingError !== undefined}
       />
     </>
   );

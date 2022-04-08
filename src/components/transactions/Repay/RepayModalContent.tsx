@@ -194,8 +194,6 @@ export const RepayModalContent = ({
       }).toString(10)
     : user?.healthFactor;
 
-  // TODO: add here repay with collateral calculations and maybe do a conditional with other????
-
   // calculating input usd value
   const usdValue = valueToBigNumber(amount).multipliedBy(reserve.priceInUSD);
 
