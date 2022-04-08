@@ -57,7 +57,6 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }
   const [priceRoute, setPriceRoute] = useState<OptimalRate | null>(null);
 
   const fetchRoute = useCallback(async () => {
-    if (skip) return;
     if (!swapIn.underlyingAsset || !swapOut.underlyingAsset || !userId) return;
     if (variant === 'exactIn' && (!swapIn.amount || swapIn.amount === '0')) return;
     if (variant === 'exactOut' && (!swapOut.amount || swapOut.amount === '0')) return;
@@ -113,16 +112,18 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }
 
   // updates the route on input change
   useEffect(() => {
+    if (skip) return;
     setPriceRoute(null);
     const timeout = setTimeout(fetchRoute, 400);
     return () => clearTimeout(timeout);
-  }, [fetchRoute]);
+  }, [fetchRoute, skip]);
 
   // updates the route based on on interval
   useEffect(() => {
+    if (skip) return;
     const interval = setInterval(fetchRoute, error ? 3000 : 15000);
     return () => clearInterval(interval);
-  }, [fetchRoute, error]);
+  }, [fetchRoute, error, skip]);
 
   if (priceRoute) {
     return {

@@ -265,7 +265,7 @@ export const useTransactionHandler = ({
   // populate txns
   useEffect(() => {
     // good enough for now, but might need debounce or similar for swaps
-    if (!skip && !mainTxState.loading) {
+    if (!skip) {
       setLoadingTxns(true);
       const timeout = setTimeout(() => {
         setLoadingTxns(true);
