@@ -1,4 +1,4 @@
-import { InterestRate, Pool } from '@aave/contract-helpers';
+import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
@@ -57,8 +57,7 @@ export const CollateralRepayActions = ({
           route: priceRoute as OptimalRate,
           chainId: chainId,
         });
-        const newPool: Pool = lendingPool as Pool;
-        return newPool.paraswapRepayWithCollateral({
+        return lendingPool.paraswapRepayWithCollateral({
           user: currentAccount,
           fromAsset: repayWithReserve.underlyingAsset,
           fromAToken: repayWithReserve.aTokenAddress,

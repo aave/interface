@@ -65,3 +65,5 @@ export function calculateHFAfterSwap({
         : valueToBigNumber(user.healthFactor).minus(hfEffectOfFromAmount).plus(hfEffectOfToAmount),
   };
 }
+
+export const calculateHFAfterRepay = ({}) => {};

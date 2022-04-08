@@ -20,6 +20,7 @@ import {
 } from '../FlowCommons/TxModalDetails';
 import { CollateralRepayActions } from './CollateralRepayActions';
 import BigNumber from 'bignumber.js';
+import { calculateHFAfterRepay } from 'src/utils/hfUtils';
 
 export function CollateralRepayModalContent({
   poolReserve,
@@ -48,6 +49,8 @@ export function CollateralRepayModalContent({
   ) as ComputedReserveData;
 
   const [_amount, setAmount] = useState('');
+  const [maxSlippage, setMaxSlippage] = useState('0.1');
+
   const amountRef = useRef<string>('');
 
   const debt =
@@ -73,6 +76,12 @@ export function CollateralRepayModalContent({
     .multipliedBy(marketReferencePriceInUsd)
     .shiftedBy(-USD_DECIMALS);
 
+
+  const minimumReceived = new BigNumber(outputAmount || '0')
+    .multipliedBy(new BigNumber(100).minus(maxSlippage).dividedBy(100))
+    .toString(10);
+
+
   const handleChange = (value: string) => {
     const maxSelected = value === '-1';
     amountRef.current = maxSelected ? safeAmountToRepayAll.toString() : value;
@@ -83,13 +92,12 @@ export function CollateralRepayModalContent({
   // debt, hf could go under 1 then it would fail. If that is the case then we need
   // to use flashloan path
   const { hfAfterSwap, hfEffectOfFromAmount } = calculateHFAfterRepay({
-    fromAmount: amount,
+    fromAmountAfterSlippage: minimumReceived,
     fromAssetData: poolReserve,
-    fromAssetUserData: userReserve,
     user,
-    toAmountAfterSlippage: minimumReceived,
-    toAssetData: swapTarget,
-    toAssetUserData: swapTargetUserReserve,
+    amountToRepay: amount,
+    toAssetData: poolReserve,
+    userReserve,
   });
 
   const shouldUseFlashloan =
