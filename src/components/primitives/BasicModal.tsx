@@ -59,7 +59,7 @@ export const BasicModal = ({
                 borderRadius: '50%',
                 p: 0,
                 minWidth: 0,
-                position: 'fixed',
+                position: 'absolute',
                 bgcolor: 'background.paper',
               }}
               onClick={handleClose}
