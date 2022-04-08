@@ -57957,6 +57957,7 @@ var marketsData = {
     v3: true,
     chainId: import_contract_helpers2.ChainId.avalanche,
     enabledFeatures: {
+      liquiditySwap: true,
       incentives: true
     },
     rpcOnly: true,
@@ -57964,6 +57965,7 @@ var marketsData = {
       LENDING_POOL_ADDRESS_PROVIDER: "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb".toLowerCase(),
       LENDING_POOL: "0x794a61358D6845594F94dc1DB02A252b5b4814aD",
       WETH_GATEWAY: "0xa938d8536aEed1Bd48f548380394Ab30Aa11B00E",
+      SWAP_COLLATERAL_ADAPTER: "0xAe02ECA9445ec43B53118DD41658DB17eaB55987",
       WALLET_BALANCE_PROVIDER: "0xBc790382B3686abffE4be14A030A96aC6154023a",
       UI_POOL_DATA_PROVIDER: "0xdBbFaFC45983B4659E368a3025b81f69Ab6E5093",
       UI_INCENTIVE_DATA_PROVIDER: "0x270f51cf3F681010B46f5c4Ee2aD5120Db33026F"
@@ -57993,13 +57995,15 @@ var marketsData = {
     v3: true,
     chainId: import_contract_helpers2.ChainId.fantom,
     enabledFeatures: {
-      incentives: true
+      incentives: true,
+      liquiditySwap: true
     },
     rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb".toLowerCase(),
       LENDING_POOL: "0x794a61358D6845594F94dc1DB02A252b5b4814aD",
       WETH_GATEWAY: "0x17d013C19FE25cf4D911CE85eD5f40FE8880F46f",
+      SWAP_COLLATERAL_ADAPTER: "0x35DDe5599318112829d97A29f4E8f4C49aAfc47C",
       WALLET_BALANCE_PROVIDER: "0xBc790382B3686abffE4be14A030A96aC6154023a",
       UI_POOL_DATA_PROVIDER: "0x1CCbfeC508da8D5242D5C1b368694Ab0066b39f1",
       UI_INCENTIVE_DATA_PROVIDER: "0xbA14c06011f4AF5970cFDe4364ba6320E190BD4B"
@@ -58102,6 +58106,7 @@ var marketsData = {
     chainId: import_contract_helpers2.ChainId.polygon,
     v3: true,
     enabledFeatures: {
+      liquiditySwap: true,
       incentives: true
     },
     rpcOnly: true,
@@ -58109,6 +58114,7 @@ var marketsData = {
       LENDING_POOL_ADDRESS_PROVIDER: "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb".toLowerCase(),
       LENDING_POOL: "0x794a61358D6845594F94dc1DB02A252b5b4814aD",
       WETH_GATEWAY: "0x9BdB5fcc80A49640c7872ac089Cc0e00A98451B6",
+      SWAP_COLLATERAL_ADAPTER: "0x00d48554f570B6f1c474EBe56116159c3B1D625f",
       WALLET_BALANCE_PROVIDER: "0xBc790382B3686abffE4be14A030A96aC6154023a",
       UI_POOL_DATA_PROVIDER: "0x8F1AD487C9413d7e81aB5B4E88B024Ae3b5637D0",
       UI_INCENTIVE_DATA_PROVIDER: "0x05E309C97317d8abc0f7e78185FC966FfbD2CEC0"
