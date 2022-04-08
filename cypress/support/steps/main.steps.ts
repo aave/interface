@@ -301,59 +301,54 @@ export const swap = (
   {
     fromAsset,
     toAsset,
+    isCollateralFromAsset,
     amount,
     hasApproval = true,
-    failCase = false,
   }: {
     fromAsset: { shortName: string; fullName: string };
     toAsset: { shortName: string; fullName: string };
+    isCollateralFromAsset: boolean;
     amount: number;
     hasApproval: boolean;
-    failCase?: boolean;
   },
   skip: SkipType,
   updateSkipStatus = false
 ) => {
   const _shortNameFrom = fromAsset.shortName;
   const _shortNameTo = toAsset.shortName;
+  const _actionName = 'Swap';
+
   describe(`Swap ${amount} ${_shortNameFrom} to ${_shortNameTo}`, () => {
     skipSetup({ skip, updateSkipStatus });
-    it(`Open swap page`, () => {
-      cy.get('.Menu strong').contains('Swap').click();
+    it(`Open Swap modal for ${_shortNameFrom}`, () => {
+      doSwitchToDashboardSupplyView();
+      getDashBoardDepositRow({ assetName: _shortNameFrom, isCollateralType: isCollateralFromAsset })
+        .find(`[data-cy=swapButton]`)
+        .click();
+      cy.get(`[data-cy=Modal] h2:contains("Swap ${_shortNameFrom}")`).should('be.visible');
     });
-    it(`Choosing swap options, ${amount} ${_shortNameFrom} to ${_shortNameTo}`, () => {
-      cy.get('.AssetSelect__button')
-        .first()
-        .invoke('text')
-        .then((text) => {
-          if (text != _shortNameFrom) {
-            cy.get('.AssetSelect__button').first().click();
-            cy.get('.AssetSelect__content')
-              .first()
-              .get('.AssetSelect__option')
-              .contains(_shortNameFrom)
-              .click();
-          }
-        });
-      cy.get(':nth-child(1) > .AmountFieldWithSelect__field-inner  [data-cy=amountInput]').type(
-        amount.toString(),
-        { delay: 0 }
+    it('Choose swapping options: swap to asset', () => {
+      cy.get('[data-cy=Modal]').as('Modal');
+      cy.get('@Modal').find('[data-cy=assetSelect]').click();
+      cy.get(`[data-cy=assetsSelectOption_${_shortNameTo}]`, { timeout: 10000 })
+        .should('be.visible')
+        .click();
+      cy.get(`[data-cy=assetsSelectedOption_${_shortNameTo}]`, { timeout: 10000 }).should(
+        'be.visible',
+        { timeout: 10000 }
       );
-      cy.get('.AssetSelect__reverse .AssetSelect__button').click();
-      cy.get('.AssetSelect__reverse .TokenIcon__name').contains(_shortNameTo).click();
     });
-    if (failCase) {
-      it(`Should not be clickable`, () => {
-        cy.get('.Button').contains('Continue').parents('.Button').should('be.disabled');
+    it('Make approve', () => {
+      setAmount({
+        amount,
+        hasApproval,
       });
-    } else {
-      it('Click continue', () => {
-        cy.get('.Button').contains('Continue').parents('.Button').should('not.be.disabled').click();
+      doConfirm({
+        hasApproval,
+        actionName: _actionName,
       });
-      it(`Make approve for swap`, () => {
-        doConfirm({ hasApproval, actionName: 'Swap' });
-      });
-    }
+    });
+    doCloseModal();
   });
 };
 

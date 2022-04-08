@@ -5,7 +5,6 @@ import {
 } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { SwapActions } from './SwapActions';
 import { ToggleButton, ToggleButtonGroup, Typography, Box } from '@mui/material';
-import { ComputedUserReserve } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -63,15 +62,13 @@ export const SwapModalContent = ({
     (r) => r.underlyingAsset === targetReserve.address
   ) as ComputedReserveData;
 
-  const swapTargetUserReserve = user.userReservesData.find((userReserve) => {
-    return targetReserve.address === userReserve.underlyingAsset;
-  }) as ComputedUserReserve;
-
   // a user can never swap more then 100% of available as the txn would fail on withdraw step
   const maxAmountToSwap = BigNumber.min(
     userReserve.underlyingBalance,
     new BigNumber(poolReserve.availableLiquidity).multipliedBy(0.99)
   ).toString(10);
+
+  const remainingCapBn = remainingCap(swapTarget);
 
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToSwap : _amount;
@@ -103,7 +100,6 @@ export const SwapModalContent = ({
     user,
     toAmountAfterSlippage: minimumReceived,
     toAssetData: swapTarget,
-    toAssetUserData: swapTargetUserReserve,
   });
 
   // if the hf would drop below 1 from the hf effect a flashloan should be used to mitigate liquidation
@@ -111,7 +107,6 @@ export const SwapModalContent = ({
     user.healthFactor !== '-1' &&
     new BigNumber(user.healthFactor).minus(hfEffectOfFromAmount).lt('1.05');
 
-  const remainingCapBn = remainingCap(swapTarget);
   // consider caps
   // we cannot check this in advance as it's based on the swap result
   let blockingError: ErrorType | undefined = undefined;
@@ -139,15 +134,6 @@ export const SwapModalContent = ({
         return null;
     }
   };
-
-  // v2 edge cases
-  // 1. swap more then available liquidity
-
-  // v3 edge cases
-  // 2. swap more then supply cap of target allows
-  // 3. swap isolated asset when isolated -> make sure hf doesn't go below 1 as the target will no longer be collateral
-  // 4. swap isolated asset when isolated -> when no borrows i can probably swap all & new asset will in fact be collateral
-  // 5. swap non-isolated when isolated -> can swap to anything
 
   if (supplyTxState.success)
     return (
