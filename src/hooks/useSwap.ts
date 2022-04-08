@@ -26,11 +26,13 @@ const ParaSwap = (chainId: number) => {
 const mainnetParaswap = ParaSwap(ChainId.mainnet);
 const polygonParaswap = ParaSwap(ChainId.polygon);
 const avalancheParaswap = ParaSwap(ChainId.avalanche);
+const fantomParaswap = ParaSwap(ChainId.fantom);
 
 const getParaswap = (chainId: ChainId) => {
   if (ChainId.mainnet === chainId) return mainnetParaswap;
   if (ChainId.polygon === chainId) return polygonParaswap;
   if (ChainId.avalanche === chainId) return avalancheParaswap;
+  if (ChainId.fantom === chainId) return fantomParaswap;
   throw new Error('chain not supported');
 };
 
