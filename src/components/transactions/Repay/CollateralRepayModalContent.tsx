@@ -19,6 +19,7 @@ import {
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
 import { CollateralRepayActions } from './CollateralRepayActions';
+import BigNumber from 'bignumber.js';
 
 export function CollateralRepayModalContent({
   poolReserve,
@@ -53,10 +54,6 @@ export function CollateralRepayModalContent({
     debtType === InterestRate.Stable ? userReserve.stableBorrows : userReserve.variableBorrows;
   const safeAmountToRepayAll = valueToBigNumber(debt).multipliedBy('1.0025');
 
-  // for v3 we need hf after withdraw collateral, because when removing collateral to repay
-  // debt, hf could go under 1 then it would fail. If that is the case then we need
-  // to use flashloan path
-
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? safeAmountToRepayAll.toString() : _amount;
   const usdValue = valueToBigNumber(amount).multipliedBy(poolReserve.priceInUSD);
@@ -81,6 +78,25 @@ export function CollateralRepayModalContent({
     amountRef.current = maxSelected ? safeAmountToRepayAll.toString() : value;
     setAmount(value);
   };
+
+  // for v3 we need hf after withdraw collateral, because when removing collateral to repay
+  // debt, hf could go under 1 then it would fail. If that is the case then we need
+  // to use flashloan path
+  const { hfAfterSwap, hfEffectOfFromAmount } = calculateHFAfterRepay({
+    fromAmount: amount,
+    fromAssetData: poolReserve,
+    fromAssetUserData: userReserve,
+    user,
+    toAmountAfterSlippage: minimumReceived,
+    toAssetData: swapTarget,
+    toAssetUserData: swapTargetUserReserve,
+  });
+
+  const shouldUseFlashloan =
+    user.healthFactor !== '-1' &&
+    new BigNumber(user.healthFactor).minus(hfEffectOfFromAmount).lt('1.05');
+
+  const blockingError = undefined;
 
   return (
     <>
@@ -122,15 +138,17 @@ export function CollateralRepayModalContent({
         />
       </TxModalDetails>
       <CollateralRepayActions
-        fromReserve={poolReserve}
-        targetReserve={targetReserve}
+        poolReserve={poolReserve}
+        repayWithReserve={repayWithReserve}
         amountToRepay={isMaxSelected ? safeAmountToRepayAll.toString() : amount}
+        amountToSwap={outputAmount}
         isMaxSelected={isMaxSelected}
-        useFlashLoan={false}
-        poolAddress={tokenToRepayWith.address}
+        useFlashLoan={shouldUseFlashloan}
         isWrongNetwork={isWrongNetwork}
         symbol={symbol}
         debtType={debtType}
+        priceRoute={priceRoute}
+        blocked={blockingError !== undefined}
       />
     </>
   );
