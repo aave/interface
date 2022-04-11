@@ -330,13 +330,12 @@ export const swap = (
     it('Choose swapping options: swap to asset', () => {
       cy.get('[data-cy=Modal]').as('Modal');
       cy.get('@Modal').find('[data-cy=assetSelect]').click();
-      cy.get(`[data-cy=assetsSelectOption_${_shortNameTo}]`, { timeout: 10000 })
+      cy.get(`[data-cy="assetsSelectOption_${_shortNameTo.toUpperCase()}"]`, { timeout: 10000 })
         .should('be.visible')
         .click();
-      cy.get(`[data-cy=assetsSelectedOption_${_shortNameTo}]`, { timeout: 10000 }).should(
-        'be.visible',
-        { timeout: 10000 }
-      );
+      cy.get(`[data-cy="assetsSelectedOption_${_shortNameTo.toUpperCase()}"]`, {
+        timeout: 10000,
+      }).should('be.visible', { timeout: 10000 });
     });
     it('Make approve', () => {
       setAmount({
