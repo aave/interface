@@ -42,6 +42,9 @@ export const CollateralRepayActions = ({
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
+
+  console.log('amount to repay: ', amountToRepay);
+
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({
       handleGetTxns: async () => {
@@ -54,7 +57,6 @@ export const CollateralRepayActions = ({
           route: priceRoute as OptimalRate,
           chainId: chainId,
         });
-        console.log('----------------------------');
         return lendingPool.paraswapRepayWithCollateral({
           user: currentAccount,
           fromAsset: repayWithReserve.underlyingAsset,

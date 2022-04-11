@@ -26,6 +26,10 @@ import { Row } from 'src/components/primitives/Row';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 
+export enum ErrorType {
+  NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH,
+}
+
 export function CollateralRepayModalContent({
   poolReserve,
   symbol,
@@ -61,6 +65,8 @@ export function CollateralRepayModalContent({
 
   const amountRef = useRef<string>('');
 
+  console.log('repay: ', tokenToRepayWith);
+
   const debt =
     debtType === InterestRate.Stable ? userReserve.stableBorrows : userReserve.variableBorrows;
   const safeAmountToRepayAll = valueToBigNumber(debt).multipliedBy('1.0025');
@@ -83,10 +89,29 @@ export function CollateralRepayModalContent({
     .multipliedBy(new BigNumber(100).minus(maxSlippage).dividedBy(100))
     .toString(10);
 
+  const maxAmountToRepay = BigNumber.min(outputAmount, debt); //valueToBigNumber(debt);
+  console.log('debt: ', debt);
+  const debtUsd = maxAmountToRepay.multipliedBy(poolReserve.priceInUSD);
+  const tokenToRepayWithUsdValue = valueToBigNumber(tokenToRepayWith?.balance || '0').multipliedBy(
+    repayWithReserve.priceInUSD
+  );
+  // if (tokenToRepayWithUsdValue.lt()) {
+  //   maxAmountToRepay =
+  // }
+
   const handleChange = (value: string) => {
     const maxSelected = value === '-1';
-    amountRef.current = maxSelected ? safeAmountToRepayAll.toString() : value;
+    amountRef.current = maxSelected ? maxAmountToRepay.toString(10) : value;
     setAmount(value);
+    if (maxSelected && maxAmountToRepay.eq(debt)) {
+      // setRepayMax(safeAmountToRepayAll.toString(10));
+    } else {
+      // setRepayMax(
+      //   safeAmountToRepayAll.lt(balance)
+      //     ? safeAmountToRepayAll.toString(10)
+      //     : maxAmountToRepay.toString(10)
+      // );
+    }
   };
 
   // for v3 we need hf after withdraw collateral, because when removing collateral to repay
@@ -119,6 +144,20 @@ export function CollateralRepayModalContent({
           .minus(new BigNumber(inputAmountUSD).dividedBy(outputAmountUSD))
           .toString(10)
       : '0';
+
+  let blockingError: ErrorType | undefined = undefined;
+  if (Number(usdValue) > Number(tokenToRepayWithUsdValue.toString(10))) {
+    blockingError = ErrorType.NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH;
+  }
+
+  const handleBlocked = () => {
+    switch (blockingError) {
+      case ErrorType.NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH:
+        return <Trans>Not enough collateral to repay this amount of debt with</Trans>;
+      default:
+        return null;
+    }
+  };
 
   return (
     <>
@@ -185,6 +224,11 @@ export function CollateralRepayModalContent({
           </ToggleButton>
         </ToggleButtonGroup>
       </Box>
+      {blockingError !== undefined && (
+        <Typography variant="helperText" color="error.main">
+          {handleBlocked()}
+        </Typography>
+      )}
       <TxModalDetails gasLimit={gasLimit}>
         <DetailsNumberLineWithSub
           description={<Trans>Remaining debt</Trans>}

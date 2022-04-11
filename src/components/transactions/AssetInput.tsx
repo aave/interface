@@ -55,6 +55,8 @@ export interface Asset {
   iconSymbol?: string;
   address?: string;
   aToken?: boolean;
+  priceInUsd?: string;
+  decimals?: number;
 }
 
 export interface AssetInputProps<T extends Asset = Asset> {
