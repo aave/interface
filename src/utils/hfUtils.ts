@@ -89,6 +89,7 @@ export const calculateHFAfterRepay = ({
   toAssetData,
   userReserve,
 }: CalculateHFAfterSwapRepayProps) => {
+  // it takes into account if in emode as threshold is different
   const reserveLiquidationThreshold =
     user.isInEmode && user.userEmodeCategoryId === fromAssetData.eModeCategoryId
       ? fromAssetData.formattedEModeLiquidationThreshold
@@ -97,21 +98,56 @@ export const calculateHFAfterRepay = ({
   // hf indicating how the state would be if we withdrew this amount.
   // this is needed because on contracts hf can't be < 1 so in the case
   // that fromHF < 1 we need to do a flashloan to not go below
-  // it takes into account if in emode as threshold is different
   let hfEffectOfFromAmount = '0';
 
-  if (fromAssetUserData.usageAsCollateralEnabledOnUser && fromAssetData.usageAsCollateralEnabled) {
+  if (userReserve.usageAsCollateralEnabledOnUser && fromAssetData.usageAsCollateralEnabled) {
     hfEffectOfFromAmount = calculateHealthFactorFromBalancesBigUnits({
-      collateralBalanceMarketReferenceCurrency: valueToBigNumber(fromAmount).multipliedBy(
-        fromAssetData.formattedPriceInMarketReferenceCurrency
-      ),
+      collateralBalanceMarketReferenceCurrency: valueToBigNumber(
+        fromAmountAfterSlippage
+      ).multipliedBy(fromAssetData.formattedPriceInMarketReferenceCurrency),
       borrowBalanceMarketReferenceCurrency: user.totalBorrowsMarketReferenceCurrency,
       currentLiquidationThreshold: reserveLiquidationThreshold,
     }).toString();
   }
 
+  // const hfEffectOfToAmount = calculateHealthFactorFromBalancesBigUnits({
+  //   collateralBalanceMarketReferenceCurrency:
+  //     //  usageAsCollateralEnabledOnUser
+  //     //   ? valueToBigNumber(user?.totalCollateralUSD || '0').minus(
+  //     //       valueToBigNumber(reserve.priceInUSD).multipliedBy(amount)
+  //     //     )
+  //     user.totalCollateralMarketReferenceCurrency,
+  //   borrowBalanceMarketReferenceCurrency: valueToBigNumber(
+  //     user.totalBorrowsMarketReferenceCurrency
+  //   ).minus(
+  //     valueToBigNumber(toAssetData.formattedPriceInMarketReferenceCurrency).multipliedBy(
+  //       amountToRepay
+  //     )
+  //   ),
+  //   currentLiquidationThreshold: reserveLiquidationThreshold,
+  // }).toString();
+
+  const hfEffectOfToAmount = calculateHealthFactorFromBalancesBigUnits({
+    collateralBalanceMarketReferenceCurrency:
+      // repayWithATokens && usageAsCollateralEnabledOnUser
+      //   ? valueToBigNumber(user?.totalCollateralUSD || '0').minus(
+      //       valueToBigNumber(reserve.priceInUSD).multipliedBy(amount)
+      //     )
+      //   :
+      user.totalCollateralUSD,
+    borrowBalanceMarketReferenceCurrency: valueToBigNumber(
+      user.totalBorrowsMarketReferenceCurrency
+    ).minus(
+      valueToBigNumber(toAssetData.priceInMarketReferenceCurrency).multipliedBy(amountToRepay)
+    ),
+    currentLiquidationThreshold: toAssetData.formattedReserveLiquidationThreshold,
+  }).toString(10);
+
   return {
-    hfAfterSwap: valueToBigNumber('0'),
-    hfEffectOfFromAmount: valueToBigNumber('2'),
+    hfEffectOfFromAmount: valueToBigNumber(hfEffectOfFromAmount),
+    // valueToBigNumber(hfEffectOfToAmount),
+    hfAfterSwap: valueToBigNumber(user.healthFactor)
+      .plus(hfEffectOfToAmount)
+      .minus(hfEffectOfFromAmount),
   };
 };

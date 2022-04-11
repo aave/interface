@@ -174,6 +174,7 @@ export const getSwapCallData = async ({
     .multipliedBy(99)
     .dividedBy(100)
     .toFixed(0);
+
   try {
     const params = await paraSwap.buildTx(
       {
@@ -189,6 +190,54 @@ export const getSwapCallData = async ({
       },
       { ignoreChecks: true }
     );
+
+    return {
+      swapCallData: (params as TransactionParams).data,
+      augustus: (params as TransactionParams).to,
+    };
+  } catch (e) {
+    console.log(e);
+    throw new Error('Error getting txParams');
+  }
+};
+
+export const getRepayCallData = async ({
+  srcToken,
+  srcDecimals,
+  destToken,
+  destDecimals,
+  user,
+  route,
+  chainId,
+}: GetSwapCallDataProps) => {
+  const paraSwap = getParaswap(chainId);
+  const srcAmountWithSlippage = new BigNumberZeroDecimal(route.srcAmount)
+    .multipliedBy(99)
+    .dividedBy(100)
+    .toFixed(0);
+  console.log(`
+    destAmount: ${srcAmountWithSlippage}
+    route dest: ${route.destAmount}
+    srcAmount:  ${route.srcAmount}
+    route: ${route}
+  `);
+
+  try {
+    const params = await paraSwap.buildTx(
+      {
+        srcToken,
+        destToken,
+        srcAmount: srcAmountWithSlippage,
+        destAmount: route.destAmount,
+        priceRoute: route,
+        userAddress: user,
+        partner: 'aave',
+        srcDecimals,
+        destDecimals,
+      },
+      { ignoreChecks: true }
+    );
+    console.log('params: ', params);
     return {
       swapCallData: (params as TransactionParams).data,
       augustus: (params as TransactionParams).to,

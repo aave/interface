@@ -9,7 +9,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { OptimalRate } from 'paraswap-core';
-import { getSwapCallData } from 'src/hooks/useSwap';
+import { getRepayCallData, getSwapCallData } from 'src/hooks/useSwap';
 
 export interface RepayActionProps extends BoxProps {
   debtType: InterestRate;
@@ -42,11 +42,10 @@ export const CollateralRepayActions = ({
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
-
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({
       handleGetTxns: async () => {
-        const { swapCallData, augustus } = await getSwapCallData({
+        const { swapCallData, augustus } = await getRepayCallData({
           srcToken: repayWithReserve.underlyingAsset,
           srcDecimals: repayWithReserve.decimals,
           destToken: poolReserve.underlyingAsset,
@@ -55,6 +54,7 @@ export const CollateralRepayActions = ({
           route: priceRoute as OptimalRate,
           chainId: chainId,
         });
+        console.log('----------------------------');
         return lendingPool.paraswapRepayWithCollateral({
           user: currentAccount,
           fromAsset: repayWithReserve.underlyingAsset,
