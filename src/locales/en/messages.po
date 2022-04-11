@@ -849,6 +849,7 @@ msgstr "Max LTV"
 msgid "Max slashing"
 msgstr "Max slashing"
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Max slippage rate"
 msgstr "Max slippage rate"
@@ -857,6 +858,7 @@ msgstr "Max slippage rate"
 msgid "Menu"
 msgstr "Menu"
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Minimum received"
 msgstr "Minimum received"
@@ -995,6 +997,7 @@ msgstr "Please, connect your wallet"
 msgid "Pool addresses provider is not registered"
 msgstr "Pool addresses provider is not registered"
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Price impact"
 msgstr "Price impact"
