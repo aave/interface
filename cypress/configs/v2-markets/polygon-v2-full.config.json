@@ -4,8 +4,8 @@
     "**/*.*"
   ],
   "ignoreTestFiles": [
-    "0-assets/matic.polygon-v2.spec.ts",
-    "0-assets/usdt.polygon-v2.spec.ts",
+    "matic.polygon-v2.spec.ts",
+    "usdt.polygon-v2.spec.ts",
     "swap.polygon-v2.spec.ts"
   ],
   "viewportWidth": 1200,
