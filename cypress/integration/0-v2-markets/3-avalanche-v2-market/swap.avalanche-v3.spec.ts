@@ -14,7 +14,7 @@ const testData = {
   swap: [
     {
       fromAsset: assets.avalancheMarket.AVAX,
-      toAsset: assets.aaveMarket.USDC,
+      toAsset: assets.avalancheMarket.USDC,
       isCollateralFromAsset: true,
       amount: 10,
       hasApproval: false,

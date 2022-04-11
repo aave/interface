@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-04-05 18:04\n"
+"PO-Revision-Date: 2022-04-11 12:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -165,7 +165,7 @@ msgstr "Aprobando {symbol}..."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Array parameters that should be equal length are not"
-msgstr "El conjunto de parámetros que deberían ser iguales en longitud no lo son"
+msgstr "Los parámetros del array que deberían ser iguales en longitud no lo son"
 
 #: pages/faucet.page.tsx
 #: src/modules/markets/AssetsList.tsx
@@ -246,7 +246,7 @@ msgstr "Balance"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
-msgstr ""
+msgstr "Ten cuidado: Estás muy cerca de la liquidación. Considera depositar más garantías o pagar algunos de tus préstamos"
 
 #: src/components/transactions/Warnings/SNXWarning.tsx
 msgid "Before supplying"
@@ -437,7 +437,7 @@ msgstr "Error de copia"
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Copy error text"
-msgstr "Error de copia de texto"
+msgstr "Copiar el texto del error"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Created"
@@ -559,15 +559,15 @@ msgstr "El E-Mode incrementa tu LTV para una categoría seleccionada de activos 
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "E-Mode liquidation penalty"
-msgstr ""
+msgstr "Penalización de liquidación del E-Mode"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "E-Mode liquidation threshold"
-msgstr ""
+msgstr "Umbral de liquidación del E-Mode"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "E-Mode max LTV"
-msgstr ""
+msgstr "E-Mode max LTV"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Efficiency mode (E-Mode)"
@@ -601,7 +601,7 @@ msgstr "Activar el modo E-mode te permite solo pedir prestado activos que perten
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "Enabling this asset as collateral increases your borrowing power and Health Factor. However, it can get liquidated if your health factor drops below 1."
-msgstr "Habilitar este activo como colateral aumenta tu poder préstamo y el factor de salud. Sin embargo, puede liquidarse si tu factor de salud cae por debajo de 1."
+msgstr "Habilitar este activo como garantía aumenta tu poder préstamo y el factor de salud. Sin embargo, puede ser liquidado si tu factor de salud cae por debajo de 1."
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "English"
@@ -651,7 +651,7 @@ msgstr "Para el reembolso de un tipo específico de deuda, el usuario necesita t
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Forum discussion"
-msgstr "Foro de discusión"
+msgstr "Hilo de discusión del foro"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "French"
@@ -698,7 +698,7 @@ msgstr "Ocultar"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "I understand how cooldown ({0}) and unstaking ({1}) work"
-msgstr "Entiendo como funciona el cooldown ({0}) y unstakear ({1})"
+msgstr "Entiendo como el cooldown ({0}) y el proceso de unstaking ({1}) funcionan"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "If the health factor goes below 1, the liquidation of your collateral might be triggered."
@@ -730,7 +730,7 @@ msgstr "Para cambiar el E-Mode de la categoría de activos{0}, necesitarás cerr
 
 #: src/ui-config/errorMapping.tsx
 msgid "Inconsistent flashloan parameters"
-msgstr "Parámetros inconsistentes de préstamo flash"
+msgstr "Parámetros inconsistentes del préstamo flash"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Interest rate rebalance conditions were not met"
@@ -1028,7 +1028,7 @@ msgstr "Quorum"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Raw-Ipfs"
-msgstr ""
+msgstr "Raw-Ipfs"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 #: pages/governance/proposal/[proposalId].governance.tsx
@@ -1274,7 +1274,7 @@ msgstr "Se ha alcanzado el límite de depósito en la reserva especificada. Prue
 
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 msgid "Supply caps limit the amount of a certain asset that can be supplied to the Aave protocol. This helps reducing exposure to the asset and mitigate attacks like infinite minting or price oracle manipulation.<0>FAQ guide</0>."
-msgstr ""
+msgstr "Los límites de suministro limitan la cantidad de un determinado activo que se puede suministrar al protocolo de Aave. Esto ayuda a reducir la exposición al activo y mitigar ataques como la acuñación infinita o la manipulación del oráculo de precios.<0>Guía de preguntas frecuentes</0>."
 
 #: src/components/transactions/Supply/SupplyActions.tsx
 msgid "Supply {symbol}"
@@ -1325,7 +1325,7 @@ msgstr "Testnet mode"
 
 #: src/components/infoTooltips/BorrowPowerTooltip.tsx
 msgid "The % of your total borrowing power used. This is based on the amount of your collateral supplied and the total amount that you can borrow."
-msgstr ""
+msgstr "El % de tu poder de préstamo total utilizado. Esto se basa en la cantidad de tu garantía suministrada y la cantidad total que puedes pedir prestado."
 
 #: pages/staking.staking.tsx
 msgid "The Balancer Pool Token (BPT) is a liquidity pool token. You can receive BPT by depositing a combination of AAVE + ETH in the <0>Balancer liquidity pool</0>. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."

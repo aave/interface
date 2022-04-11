@@ -4,8 +4,8 @@
     "**/*.*"
   ],
   "ignoreTestFiles": [
-    "0-assets/avax.avalanche-v3.spec.ts",
-    "0-assets/usdc.avalanche-v3.spec.ts",
+    "avax.avalanche-v3.spec.ts",
+    "usdc.avalanche-v3.spec.ts",
     "swap.polygon-v2.spec.ts"
   ],
   "viewportWidth": 1200,
