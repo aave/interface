@@ -4,6 +4,7 @@ import { Trans } from '@lingui/macro';
 import { useRef, useState } from 'react';
 import {
   ComputedReserveData,
+  ComputedUserReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
@@ -19,7 +20,7 @@ import {
 } from '../FlowCommons/TxModalDetails';
 import { CollateralRepayActions } from './CollateralRepayActions';
 import BigNumber from 'bignumber.js';
-import { calculateHFAfterRepay } from 'src/utils/hfUtils';
+import { calculateHFAfterRepay, calculateHFAfterRepay2 } from 'src/utils/hfUtils';
 import { Box, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import { Row } from 'src/components/primitives/Row';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -36,7 +37,7 @@ export function CollateralRepayModalContent({
   userReserve,
   isWrongNetwork,
 }: ModalWrapperProps & { debtType: InterestRate }) {
-  const { user, marketReferencePriceInUsd, reserves } = useAppDataContext();
+  const { user, marketReferencePriceInUsd, reserves, userReserves } = useAppDataContext();
   const { gasLimit, txError, mainTxState } = useModalContext();
   const { currentChainId } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
@@ -58,6 +59,10 @@ export function CollateralRepayModalContent({
   const repayWithReserve = reserves.find(
     (reserve) => reserve.underlyingAsset === tokenToRepayWith.address
   ) as ComputedReserveData;
+
+  const repayWithUserReserve = userReserves.find(
+    (userReserve) => userReserve.underlyingAsset === tokenToRepayWith.address
+  ) as ComputedUserReserveData;
 
   const [_amount, setAmount] = useState('');
   const [maxSlippage, setMaxSlippage] = useState('0.1');
@@ -111,13 +116,15 @@ export function CollateralRepayModalContent({
   // for v3 we need hf after withdraw collateral, because when removing collateral to repay
   // debt, hf could go under 1 then it would fail. If that is the case then we need
   // to use flashloan path
-  const { hfAfterSwap, hfEffectOfFromAmount } = calculateHFAfterRepay({
+  const { hfAfterSwap, hfEffectOfFromAmount } = calculateHFAfterRepay2({
     fromAmountAfterSlippage: minimumReceived,
     fromAssetData: repayWithReserve,
     user,
-    amountToRepay: amount,
+    amountToRepay: amountRef.current,
     toAssetData: poolReserve,
+    repayWithUserReserve,
     userReserve,
+    debt,
   });
 
   const shouldUseFlashloan =
@@ -128,11 +135,6 @@ export function CollateralRepayModalContent({
   // a safe amount to repay all. When this happens amountAfterRepay would be < 0 and
   // this would show as certain amount left to repay when we are actually repaying all debt
   const amountAfterRepay = valueToBigNumber(debt).minus(BigNumber.min(minimumReceived, debt));
-  console.log(`
-    debt            : ${debt}
-    minimumReceived : ${minimumReceived}
-    amountAfterRepay: ${amountAfterRepay.toString(10)}
-  `);
   const displayAmountAfterRepayInUsd = amountAfterRepay
     .multipliedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
     .multipliedBy(marketReferencePriceInUsd)
