@@ -112,7 +112,6 @@ export function CollateralRepayModalContent({
       setRepayMax(maxRepayableDebt.toString(10));
     }
   };
-
   // for v3 we need hf after withdraw collateral, because when removing collateral to repay
   // debt, hf could go under 1 then it would fail. If that is the case then we need
   // to use flashloan path
@@ -254,8 +253,8 @@ export function CollateralRepayModalContent({
       <CollateralRepayActions
         poolReserve={poolReserve}
         repayWithReserve={repayWithReserve}
-        amountToRepay={isMaxSelected ? repayMax : amount}
-        amountToSwap={outputAmount}
+        amountToRepay={priceRoute?.destAmount || '0'}
+        amountToSwap={priceRoute?.srcAmount || '0'}
         isMaxSelected={isMaxSelected}
         useFlashLoan={shouldUseFlashloan}
         isWrongNetwork={isWrongNetwork}
