@@ -6,6 +6,7 @@ import { Link } from '../../components/primitives/Link';
 import { useProtocolDataContext } from '../../hooks/useProtocolDataContext';
 import { navigation } from '../../ui-config/menu-items';
 import { MoreMenu } from '../MoreMenu';
+import { useRouter } from 'next/router';
 
 interface NavItemsProps {
   setOpen?: (value: boolean) => void;
@@ -17,6 +18,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
 
   const { breakpoints } = useTheme();
   const md = useMediaQuery(breakpoints.down('md'));
+  const router = useRouter();
 
   return (
     <List
@@ -66,13 +68,15 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
                   content: "''",
                   position: 'absolute',
                   width: '100%',
-                  transform: 'scaleX(0)',
                   height: '2px',
                   bottom: '-6px',
                   left: '0',
                   background: theme.palette.gradients.aaveGradient,
-                  transformOrigin: 'bottom right',
-                  transition: 'transform 0.25s ease-out',
+                  ...(router.pathname !== item.link && {
+                    transform: 'scaleX(0)',
+                    transformOrigin: 'bottom right',
+                    transition: 'transform 0.25s ease-out',
+                  }),
                 },
               })}
             >
