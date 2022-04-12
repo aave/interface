@@ -253,8 +253,8 @@ export function CollateralRepayModalContent({
       <CollateralRepayActions
         poolReserve={poolReserve}
         repayWithReserve={repayWithReserve}
-        amountToRepay={priceRoute?.destAmount || '0'}
-        amountToSwap={priceRoute?.srcAmount || '0'}
+        amountToRepay={isMaxSelected ? repayMax : amount}
+        amountToSwap={inputAmount}
         isMaxSelected={isMaxSelected}
         useFlashLoan={shouldUseFlashloan}
         isWrongNetwork={isWrongNetwork}
