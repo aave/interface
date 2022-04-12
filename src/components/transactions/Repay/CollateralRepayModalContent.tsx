@@ -4,7 +4,6 @@ import { Trans } from '@lingui/macro';
 import { useRef, useState } from 'react';
 import {
   ComputedReserveData,
-  ComputedUserReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
@@ -62,10 +61,9 @@ export function CollateralRepayModalContent({
 
   const [_amount, setAmount] = useState('');
   const [maxSlippage, setMaxSlippage] = useState('0.1');
+  const [repayMax, setRepayMax] = useState('');
 
   const amountRef = useRef<string>('');
-
-  console.log('repay: ', tokenToRepayWith);
 
   const debt =
     debtType === InterestRate.Stable ? userReserve.stableBorrows : userReserve.variableBorrows;
@@ -89,28 +87,24 @@ export function CollateralRepayModalContent({
     .multipliedBy(new BigNumber(100).minus(maxSlippage).dividedBy(100))
     .toString(10);
 
-  const maxAmountToRepay = BigNumber.min(outputAmount, debt); //valueToBigNumber(debt);
-  console.log('debt: ', debt);
-  const debtUsd = maxAmountToRepay.multipliedBy(poolReserve.priceInUSD);
-  const tokenToRepayWithUsdValue = valueToBigNumber(tokenToRepayWith?.balance || '0').multipliedBy(
-    repayWithReserve.priceInUSD
+  // Calculations to get the max repayable debt depending on the balance and value of the
+  // selected collateral
+  const maxCollateral = valueToBigNumber(tokenToRepayWith?.balance || 0).multipliedBy(
+    repayWithReserve.priceInMarketReferenceCurrency
   );
-  // if (tokenToRepayWithUsdValue.lt()) {
-  //   maxAmountToRepay =
-  // }
-
+  const maxDebtThatCanBeRepaidWithSelectedCollateral = maxCollateral.dividedBy(
+    poolReserve.priceInMarketReferenceCurrency
+  );
+  const maxRepayableDebt = BigNumber.min(
+    maxDebtThatCanBeRepaidWithSelectedCollateral,
+    safeAmountToRepayAll
+  );
   const handleChange = (value: string) => {
     const maxSelected = value === '-1';
-    amountRef.current = maxSelected ? maxAmountToRepay.toString(10) : value;
+    amountRef.current = maxSelected ? maxRepayableDebt.toString(10) : value;
     setAmount(value);
-    if (maxSelected && maxAmountToRepay.eq(debt)) {
-      // setRepayMax(safeAmountToRepayAll.toString(10));
-    } else {
-      // setRepayMax(
-      //   safeAmountToRepayAll.lt(balance)
-      //     ? safeAmountToRepayAll.toString(10)
-      //     : maxAmountToRepay.toString(10)
-      // );
+    if (maxSelected) {
+      setRepayMax(maxRepayableDebt.toString(10));
     }
   };
 
@@ -130,8 +124,15 @@ export function CollateralRepayModalContent({
     user.healthFactor !== '-1' &&
     new BigNumber(user.healthFactor).minus(hfEffectOfFromAmount).lt('1.05');
 
-  //TODO: this calc may be wrong. revisit
-  const amountAfterRepay = valueToBigNumber(debt).minus(minimumReceived || '0');
+  // we need to get the min as minimumReceived can be greater than debt as we are swapping
+  // a safe amount to repay all. When this happens amountAfterRepay would be < 0 and
+  // this would show as certain amount left to repay when we are actually repaying all debt
+  const amountAfterRepay = valueToBigNumber(debt).minus(BigNumber.min(minimumReceived, debt));
+  console.log(`
+    debt            : ${debt}
+    minimumReceived : ${minimumReceived}
+    amountAfterRepay: ${amountAfterRepay.toString(10)}
+  `);
   const displayAmountAfterRepayInUsd = amountAfterRepay
     .multipliedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
     .multipliedBy(marketReferencePriceInUsd)
@@ -146,6 +147,9 @@ export function CollateralRepayModalContent({
       : '0';
 
   let blockingError: ErrorType | undefined = undefined;
+  const tokenToRepayWithUsdValue = valueToBigNumber(tokenToRepayWith?.balance || '0').multipliedBy(
+    repayWithReserve.priceInUSD
+  );
   if (Number(usdValue) > Number(tokenToRepayWithUsdValue.toString(10))) {
     blockingError = ErrorType.NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH;
   }
@@ -175,7 +179,7 @@ export function CollateralRepayModalContent({
           },
         ]}
         isMaxSelected={isMaxSelected}
-        maxValue={debt}
+        maxValue={repayMax /*debt*/}
       />
       <AssetInput
         value={inputAmount}
@@ -248,7 +252,7 @@ export function CollateralRepayModalContent({
       <CollateralRepayActions
         poolReserve={poolReserve}
         repayWithReserve={repayWithReserve}
-        amountToRepay={isMaxSelected ? safeAmountToRepayAll.toString() : amount}
+        amountToRepay={isMaxSelected ? repayMax : amount}
         amountToSwap={outputAmount}
         isMaxSelected={isMaxSelected}
         useFlashLoan={shouldUseFlashloan}

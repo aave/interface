@@ -215,12 +215,6 @@ export const getRepayCallData = async ({
     .multipliedBy(99)
     .dividedBy(100)
     .toFixed(0);
-  console.log(`
-    destAmount: ${srcAmountWithSlippage}
-    route dest: ${route.destAmount}
-    srcAmount:  ${route.srcAmount}
-    route: ${route}
-  `);
 
   try {
     const params = await paraSwap.buildTx(
@@ -237,7 +231,7 @@ export const getRepayCallData = async ({
       },
       { ignoreChecks: true }
     );
-    console.log('params: ', params);
+
     return {
       swapCallData: (params as TransactionParams).data,
       augustus: (params as TransactionParams).to,
