@@ -70,6 +70,8 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }
       (variant === 'exactIn' ? swapIn.decimals : swapOut.decimals) * -1
     );
     try {
+      const excludedMethod =
+        variant === 'exactIn' ? ContractMethod.simpleSwap : ContractMethod.simpleBuy;
       const response = await paraSwap.getRate({
         amount: amount.toFixed(0),
         srcToken: swapIn.underlyingAsset,
@@ -83,7 +85,7 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }
           ...(max
             ? {
                 excludeDEXS: 'Balancer',
-                excludeContractMethods: [ContractMethod.simpleSwap],
+                excludeContractMethods: [excludedMethod],
               }
             : {}),
         },
