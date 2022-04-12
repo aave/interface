@@ -82,7 +82,7 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
               onClick={() => {
                 // https://github.com/vercel/next.js/discussions/34980
                 if (history.state.idx !== 0) router.back();
-                else router.push('/markets');
+                else router.push('/');
               }}
               sx={{ mr: 3 }}
             >

@@ -105,8 +105,8 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link
 });
 
 export const ROUTES = {
-  dashboard: '/',
-  markets: '/markets',
+  dashboard: '/dashboard',
+  markets: '/',
   staking: '/staking',
   governance: '/governance',
   prerenderedProposal: (proposalId: number) => `/governance/proposal/${proposalId}`,
