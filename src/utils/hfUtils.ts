@@ -222,13 +222,13 @@ export const calculateHFAfterRepay2 = ({
   //   currentLiquidationThreshold: toAssetData.formattedReserveLiquidationThreshold,
   // }).toString(10);
 
-  console.log(`
-    hf org           : ${user.healthFactor}
-    hf initial       : ${hfInitialEffectOfFromAmount}
-    hf after before  : ${hfAfterRepayBeforeWithdraw}
-    hf real after    : ${hfRealEffectOfFromAmount}
-    hf af            : ${hfAfterSwap}
-  `);
+  // console.log(`
+  //   hf org           : ${user.healthFactor}
+  //   hf initial       : ${hfInitialEffectOfFromAmount}
+  //   hf after before  : ${hfAfterRepayBeforeWithdraw}
+  //   hf real after    : ${hfRealEffectOfFromAmount}
+  //   hf af            : ${hfAfterSwap}
+  // `);
 
   return {
     hfEffectOfFromAmount: valueToBigNumber(hfInitialEffectOfFromAmount),

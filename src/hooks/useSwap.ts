@@ -128,12 +128,22 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }
   }, [fetchRoute, error, skip]);
 
   if (priceRoute) {
+    console.log(`
+      dest amount: ${priceRoute.destAmount}
+      src amount : ${priceRoute.srcAmount}
+    `);
     return {
       // full object needed for building the tx
       priceRoute: priceRoute,
-      outputAmount: normalize(priceRoute.destAmount ?? '0', swapOut.decimals),
+      outputAmount: normalize(
+        priceRoute.destAmount ?? '0',
+        variant === 'exactIn' ? swapOut.decimals : swapIn.decimals
+      ),
       outputAmountUSD: priceRoute.destUSD ?? '0',
-      inputAmount: normalize(priceRoute.srcAmount ?? '0', swapIn.decimals),
+      inputAmount: normalize(
+        priceRoute.srcAmount ?? '0',
+        variant === 'exactIn' ? swapIn.decimals : swapOut.decimals
+      ),
       inputAmountUSD: priceRoute.srcUSD ?? '0',
       loading: loading,
       error: error,
@@ -217,7 +227,7 @@ export const getRepayCallData = async ({
     .multipliedBy(99)
     .dividedBy(100)
     .toFixed(0);
-
+  console.log('src amount with slippage: ', srcAmountWithSlippage);
   try {
     const params = await paraSwap.buildTx(
       {

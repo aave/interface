@@ -207,7 +207,7 @@ export function CollateralRepayModalContent({
           <FormattedNumber
             value={minimumReceived}
             variant="secondary14"
-            symbol={tokenToRepayWith.symbol}
+            symbol={poolReserve.symbol}
           />
         </Row>
         <Typography variant="description" sx={{ mt: 4 }}>
