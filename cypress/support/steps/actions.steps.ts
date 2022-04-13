@@ -105,6 +105,7 @@ export const getDashBoardDepositRow = ({ assetName, isCollateralType }: GetDashB
 };
 
 export const doSwitchToDashboardBorrowView = () => {
+  cy.get('[data-cy="menuDashboard"]').click();
   cy.get('[role=group]')
     .contains('Borrow')
     .then(($btn) => {
@@ -116,6 +117,7 @@ export const doSwitchToDashboardBorrowView = () => {
 };
 
 export const doSwitchToDashboardSupplyView = () => {
+  cy.get('[data-cy="menuDashboard"]').click();
   cy.get('[role=group]')
     .contains('Supply')
     .then(($btn) => {
