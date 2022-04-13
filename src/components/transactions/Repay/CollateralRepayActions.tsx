@@ -24,6 +24,7 @@ export interface RepayActionProps extends BoxProps {
   repayAllDebt: boolean;
   useFlashLoan: boolean;
   blocked: boolean;
+  maxSlippage: string;
 }
 
 export const CollateralRepayActions = ({
@@ -38,6 +39,7 @@ export const CollateralRepayActions = ({
   priceRoute,
   repayAllDebt,
   useFlashLoan,
+  maxSlippage,
   blocked,
   ...props
 }: RepayActionProps) => {
