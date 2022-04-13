@@ -88,8 +88,9 @@ export function CollateralRepayModalContent({
     skip: mainTxState.loading,
   });
   console.log(`
-    input amount: ${inputAmount}
-    output amount: ${outputAmount}
+    input amount  : ${inputAmount}
+    output amount : ${outputAmount}
+    current       : ${amountRef.current}
   `);
   const minimumReceived = new BigNumber(outputAmount || '0')
     .multipliedBy(new BigNumber(100).minus(maxSlippage).dividedBy(100))
@@ -257,7 +258,7 @@ export function CollateralRepayModalContent({
       <CollateralRepayActions
         poolReserve={poolReserve}
         fromAssetData={fromAssetData}
-        repayAmount={isMaxSelected ? repayMax : amount}
+        repayAmount={outputAmount}
         repayWithAmount={inputAmount}
         repayAllDebt={isMaxSelected}
         useFlashLoan={shouldUseFlashloan}

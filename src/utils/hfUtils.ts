@@ -196,20 +196,20 @@ export const calculateHFAfterRepay2 = ({
     fromAmountInMarketReferenceCurrency
   );
 
-  console.log(`
-    debt                                : ${debt}
-    total borrows usd                   : ${user.totalBorrowsUSD}
-    amount after slippage               : ${amountToReceiveAfterSwap}
-    fromAmountInMarketReferenceCurrency : ${fromAmountInMarketReferenceCurrency}
-    debtLeftInMarketReference           : ${debtLeftInMarketReference}
-  `);
+  // console.log(`
+  //   debt                                : ${debt}
+  //   total borrows usd                   : ${user.totalBorrowsUSD}
+  //   amount after slippage               : ${amountToReceiveAfterSwap}
+  //   fromAmountInMarketReferenceCurrency : ${fromAmountInMarketReferenceCurrency}
+  //   debtLeftInMarketReference           : ${debtLeftInMarketReference.toString(10)}
+  // `);
 
-  console.log('fromAmountInMarketReferenceCurrency: ', user.totalBorrowsMarketReferenceCurrency);
-  console.log('remaining debt: ', debtLeftInMarketReference.toString(10));
+  // console.log('fromAmountInMarketReferenceCurrency: ', user.totalBorrowsMarketReferenceCurrency);
+  // console.log('remaining debt: ', debtLeftInMarketReference.toString(10));
 
   const hfAfterRepayBeforeWithdraw = calculateHealthFactorFromBalancesBigUnits({
     collateralBalanceMarketReferenceCurrency: user.totalCollateralUSD,
-    borrowBalanceMarketReferenceCurrency: debtLeftInMarketReference,
+    borrowBalanceMarketReferenceCurrency: debtLeftInMarketReference.toString(10),
     currentLiquidationThreshold: user.currentLiquidationThreshold,
   });
 
@@ -219,7 +219,7 @@ export const calculateHFAfterRepay2 = ({
           collateralBalanceMarketReferenceCurrency: valueToBigNumber(amountToSwap).multipliedBy(
             fromAssetData.priceInUSD
           ),
-          borrowBalanceMarketReferenceCurrency: debtLeftInMarketReference,
+          borrowBalanceMarketReferenceCurrency: debtLeftInMarketReference.toString(10),
           currentLiquidationThreshold: fromAssetData.formattedReserveLiquidationThreshold,
         }).toString()
       : '0';
@@ -228,29 +228,16 @@ export const calculateHFAfterRepay2 = ({
     ? hfAfterRepayBeforeWithdraw
     : hfAfterRepayBeforeWithdraw.minus(hfRealEffectOfFromAmount);
 
-  // const hfEffectOfToAmount = calculateHealthFactorFromBalancesBigUnits({
-  //   collateralBalanceMarketReferenceCurrency: user.totalCollateralUSD,
-  //   borrowBalanceMarketReferenceCurrency: valueToBigNumber(
-  //     user.totalBorrowsMarketReferenceCurrency
-  //   ).minus(
-  //     valueToBigNumber(toAssetData.priceInMarketReferenceCurrency).multipliedBy(amountToRepay)
-  //   ),
-  //   currentLiquidationThreshold: toAssetData.formattedReserveLiquidationThreshold,
-  // }).toString(10);
-
-  console.log(`
-    hf org           : ${user.healthFactor}
-    hf initial       : ${hfInitialEffectOfFromAmount}
-    hf after before  : ${hfAfterRepayBeforeWithdraw}
-    hf real after    : ${hfRealEffectOfFromAmount}
-    hf af            : ${hfAfterSwap}
-  `);
+  // console.log(`
+  //   hf org           : ${user.healthFactor}
+  //   hf initial       : ${hfInitialEffectOfFromAmount}
+  //   hf after before  : ${hfAfterRepayBeforeWithdraw}
+  //   hf real after    : ${hfRealEffectOfFromAmount}
+  //   hf af            : ${hfAfterSwap}
+  // `);
 
   return {
     hfEffectOfFromAmount: valueToBigNumber(hfInitialEffectOfFromAmount),
     hfAfterSwap,
-    // valueToBigNumber(user.healthFactor)
-    //   .plus(hfEffectOfToAmount)
-    //   .minus(hfEffectOfFromAmount),
   };
 };

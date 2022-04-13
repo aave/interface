@@ -70,8 +70,6 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }
       (variant === 'exactIn' ? swapIn.decimals : swapOut.decimals) * -1
     );
 
-    console.log('amount::: ', amount.toString(10));
-
     try {
       const excludedMethod =
         variant === 'exactIn' ? ContractMethod.simpleSwap : ContractMethod.simpleBuy;
@@ -93,7 +91,7 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }
             : {}),
         },
       });
-      console.log('priceRoute: ', response);
+
       setError('');
       setPriceRoute(response as OptimalRate);
     } catch (e) {
@@ -131,12 +129,6 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }
   }, [fetchRoute, error, skip]);
 
   if (priceRoute) {
-    console.log(`
-      dest amount: ${priceRoute.destAmount}
-      src amount : ${priceRoute.srcAmount}
-      swapIn: ${swapIn.decimals}
-      swapOut: ${swapOut.decimals}
-    `);
     return {
       // full object needed for building the tx
       priceRoute: priceRoute,
