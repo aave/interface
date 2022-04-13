@@ -15,7 +15,7 @@ export interface RepayActionProps extends BoxProps {
   debtType: InterestRate;
   amountToRepay: string;
   amountToSwap: string;
-  repayWithReserve: ComputedReserveData;
+  fromAssetData: ComputedReserveData;
   poolReserve: ComputedReserveData;
   isWrongNetwork: boolean;
   customGasPrice?: string;
@@ -30,7 +30,7 @@ export const CollateralRepayActions = ({
   amountToRepay,
   amountToSwap,
   poolReserve,
-  repayWithReserve,
+  fromAssetData,
   isWrongNetwork,
   sx,
   symbol,
@@ -49,8 +49,8 @@ export const CollateralRepayActions = ({
     useTransactionHandler({
       handleGetTxns: async () => {
         const { swapCallData, augustus } = await getRepayCallData({
-          srcToken: repayWithReserve.underlyingAsset,
-          srcDecimals: repayWithReserve.decimals,
+          srcToken: fromAssetData.underlyingAsset,
+          srcDecimals: fromAssetData.decimals,
           destToken: poolReserve.underlyingAsset,
           destDecimals: poolReserve.decimals,
           user: currentAccount,
@@ -63,8 +63,8 @@ export const CollateralRepayActions = ({
         console.log('repay all debt: ', isMaxSelected);
         return lendingPool.paraswapRepayWithCollateral({
           user: currentAccount,
-          fromAsset: repayWithReserve.underlyingAsset,
-          fromAToken: repayWithReserve.aTokenAddress,
+          fromAsset: fromAssetData.underlyingAsset,
+          fromAToken: fromAssetData.aTokenAddress,
           assetToRepay: poolReserve.underlyingAsset,
           repayWithAmount: amountToSwap,
           repayAmount: amountToRepay,
@@ -81,7 +81,7 @@ export const CollateralRepayActions = ({
         amountToRepay,
         priceRoute,
         poolReserve.underlyingAsset,
-        repayWithReserve.underlyingAsset,
+        fromAssetData.underlyingAsset,
         isMaxSelected,
         currentAccount,
         useFlashLoan,
