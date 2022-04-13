@@ -1,8 +1,10 @@
 import MuiLink, { LinkProps as MuiLinkProps } from '@mui/material/Link';
 import { styled } from '@mui/material/styles';
 import NextLink, { LinkProps as NextLinkProps } from 'next/link';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
+import clsx from 'clsx';
 
 // Add support for the sx prop for consistency with the other branches.
 const Anchor = styled('a')({});
@@ -49,7 +51,7 @@ export type LinkProps = {
 export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link(props, ref) {
   const {
     as: linkAs,
-    className,
+    className: classNameProps,
     href,
     noLinkStyle,
     role, // Link don't have roles.
@@ -59,6 +61,11 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link
   const isExternal =
     typeof href === 'string' && (href.indexOf('http') === 0 || href.indexOf('mailto:') === 0);
 
+  const router = useRouter();
+  const pathname = typeof href === 'string' ? href : href.pathname;
+  const className = clsx(classNameProps, {
+    active: router?.pathname === pathname,
+  });
   if (isExternal) {
     if (noLinkStyle) {
       return (
