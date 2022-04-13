@@ -23,7 +23,7 @@ interface CalculateHFAfterSwapRepayProps {
   fromAmountAfterSlippage: BigNumberValue;
   fromAssetData: ComputedReserveData;
   userReserve: ComputedUserReserve;
-  amountToRepay: BigNumberValue;
+  // amountToRepay: BigNumberValue;
   toAssetData: ComputedReserveData;
   user: ExtendedFormattedUser;
   debt: string;
@@ -33,8 +33,6 @@ interface CalculateHFAfterSwapRepayProps2 {
   amountToReceiveAfterSwap: BigNumberValue;
   amountToSwap: BigNumberValue;
   fromAssetData: ComputedReserveData;
-  userReserve: ComputedUserReserve;
-  amountToRepay: BigNumberValue;
   toAssetData: ComputedReserveData;
   user: ExtendedFormattedUser;
   repayWithUserReserve: ComputedUserReserve;
@@ -99,7 +97,6 @@ export const calculateHFAfterRepay = ({
   user,
   fromAmountAfterSlippage,
   fromAssetData,
-  amountToRepay,
   toAssetData,
   userReserve,
   debt,
@@ -157,9 +154,7 @@ export const calculateHFAfterRepay2 = ({
   amountToReceiveAfterSwap,
   amountToSwap,
   fromAssetData,
-  amountToRepay,
   toAssetData,
-  userReserve,
   repayWithUserReserve,
   debt,
 }: CalculateHFAfterSwapRepayProps2) => {

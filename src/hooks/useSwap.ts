@@ -10,7 +10,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { ComputedReserveData } from './app-data-provider/useAppDataProvider';
 import { ChainId } from '@aave/contract-helpers';
 import { BigNumberZeroDecimal, normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
-import BigNumber from 'bignumber.js';
+// import BigNumber from 'bignumber.js';
 
 const ParaSwap = (chainId: number) => {
   const fetcher = constructFetchFetcher(fetch); // alternatively constructFetchFetcher
@@ -231,19 +231,12 @@ export const getRepayCallData = async ({
   user,
   route,
   chainId,
-  repayWithAmount,
 }: GetSwapAndRepayCallDataProps) => {
   const paraSwap = getParaswap(chainId);
   // const srcAmountWithSlippage = new BigNumberZeroDecimal(route.srcAmount)
   //   .multipliedBy(99)
   //   .dividedBy(100)
   //   .toFixed(0);
-
-  const srcAmountWithSlippage = new BigNumber(route.srcAmount)
-    .multipliedBy(new BigNumber(101).dividedBy(100))
-    .toString(10);
-
-  console.log('src amount with slippage: ', srcAmountWithSlippage);
   try {
     const params = await paraSwap.buildTx(
       {

@@ -20,7 +20,7 @@ import {
 } from '../FlowCommons/TxModalDetails';
 import { CollateralRepayActions } from './CollateralRepayActions';
 import BigNumber from 'bignumber.js';
-import { calculateHFAfterRepay, calculateHFAfterRepay2 } from 'src/utils/hfUtils';
+import { calculateHFAfterRepay2 } from 'src/utils/hfUtils';
 import { Box, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import { Row } from 'src/components/primitives/Row';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -66,7 +66,7 @@ export function CollateralRepayModalContent({
 
   const [_amount, setAmount] = useState('');
   const [maxSlippage, setMaxSlippage] = useState('0.1');
-  const [repayMax, setRepayMax] = useState('');
+  // const [repayMax, setRepayMax] = useState('');
 
   const amountRef = useRef<string>('');
 
@@ -115,9 +115,9 @@ export function CollateralRepayModalContent({
     const maxSelected = value === '-1';
     amountRef.current = maxSelected ? maxRepayableDebt.toString(10) : value;
     setAmount(value);
-    if (maxSelected) {
-      setRepayMax(maxRepayableDebt.toString(10));
-    }
+    // if (maxSelected) {
+    //   setRepayMax(maxRepayableDebt.toString(10));
+    // }
   };
   // for v3 we need hf after withdraw collateral, because when removing collateral to repay
   // debt, hf could go under 1 then it would fail. If that is the case then we need
@@ -127,10 +127,10 @@ export function CollateralRepayModalContent({
     amountToSwap: inputAmount,
     fromAssetData,
     user,
-    amountToRepay: amountRef.current,
+    // amountToRepay: amountRef.current,
     toAssetData: poolReserve,
     repayWithUserReserve,
-    userReserve,
+    // userReserve,
     debt,
   });
 
