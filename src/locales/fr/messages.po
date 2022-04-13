@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-04-13 06:05\n"
+"PO-Revision-Date: 2022-04-13 18:05\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -1684,7 +1684,7 @@ msgstr "Vous ne pouvez pas changer d'utilisation en tant que mode de garantie po
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You can not use this currency as collateral"
-msgstr ""
+msgstr "Vous ne pouvez pas utiliser cette devise comme garantie"
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "You can not withdraw this amount because it will cause collateral call"
@@ -1841,42 +1841,42 @@ msgstr ""
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "tokens, please go to the"
-msgstr ""
+msgstr "tokens, veuillez vous rendre sur"
 
 #: src/components/MarketSwitcher.tsx
 msgid "v2 markets"
-msgstr ""
+msgstr "marchés v2"
 
 #: src/components/MarketSwitcher.tsx
 msgid "v3 markets"
-msgstr ""
+msgstr "marchés v3"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "{0}"
-msgstr ""
+msgstr "{0}"
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "{0} Balance"
-msgstr ""
+msgstr "{0} Balance"
 
 #: pages/faucet.page.tsx
 msgid "{0} Faucet"
-msgstr ""
+msgstr "{0} Faucet"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{d}d"
-msgstr ""
+msgstr "{d}d"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{h}h"
-msgstr ""
+msgstr "{h}h"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{m}m"
-msgstr ""
+msgstr "{m}m"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"
