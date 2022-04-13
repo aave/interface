@@ -142,12 +142,12 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }
       priceRoute: priceRoute,
       outputAmount: normalize(
         priceRoute.destAmount ?? '0',
-        variant === 'exactIn' ? swapIn.decimals : swapOut.decimals
+        variant === 'exactIn' ? swapOut.decimals : swapOut.decimals
       ),
       outputAmountUSD: priceRoute.destUSD ?? '0',
       inputAmount: normalize(
         priceRoute.srcAmount ?? '0',
-        variant === 'exactIn' ? swapOut.decimals : swapIn.decimals
+        variant === 'exactIn' ? swapIn.decimals : swapIn.decimals
       ),
       inputAmountUSD: priceRoute.srcUSD ?? '0',
       loading: loading,

@@ -183,7 +183,7 @@ export function CollateralRepayModalContent({
           },
         ]}
         isMaxSelected={isMaxSelected}
-        maxValue={repayMax /*debt*/}
+        maxValue={maxRepayableDebt.toString(10) /*debt*/}
       />
       <AssetInput
         value={inputAmount}
