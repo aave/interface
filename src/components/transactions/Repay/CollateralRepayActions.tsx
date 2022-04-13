@@ -23,6 +23,7 @@ export interface RepayActionProps extends BoxProps {
   priceRoute: OptimalRate | null;
   isMaxSelected: boolean;
   useFlashLoan: boolean;
+  blocked: boolean;
 }
 
 export const CollateralRepayActions = ({
@@ -37,6 +38,7 @@ export const CollateralRepayActions = ({
   priceRoute,
   isMaxSelected,
   useFlashLoan,
+  blocked,
   ...props
 }: RepayActionProps) => {
   const { lendingPool } = useTxBuilderContext();
@@ -55,9 +57,10 @@ export const CollateralRepayActions = ({
           route: priceRoute as OptimalRate,
           chainId: chainId,
         });
-
+        console.log('swap call data: ', swapCallData);
         console.log('repayWithAmount: ', amountToSwap);
         console.log('repayAmount    : ', amountToRepay);
+        console.log('repay all debt: ', isMaxSelected);
         return lendingPool.paraswapRepayWithCollateral({
           user: currentAccount,
           fromAsset: repayWithReserve.underlyingAsset,
@@ -72,7 +75,7 @@ export const CollateralRepayActions = ({
           augustus,
         });
       },
-      skip: !amountToRepay || parseFloat(amountToRepay) === 0,
+      skip: !amountToRepay || parseFloat(amountToRepay) === 0 || blocked,
       deps: [
         amountToSwap,
         amountToRepay,

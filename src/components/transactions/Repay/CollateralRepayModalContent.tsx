@@ -87,7 +87,10 @@ export function CollateralRepayModalContent({
     max: isMaxSelected,
     skip: mainTxState.loading,
   });
-
+  console.log(`
+    input amount: ${inputAmount}
+    output amount: ${outputAmount}
+  `);
   const minimumReceived = new BigNumber(outputAmount || '0')
     .multipliedBy(new BigNumber(100).minus(maxSlippage).dividedBy(100))
     .toString(10);
@@ -116,7 +119,7 @@ export function CollateralRepayModalContent({
   // debt, hf could go under 1 then it would fail. If that is the case then we need
   // to use flashloan path
   const { hfAfterSwap, hfEffectOfFromAmount } = calculateHFAfterRepay2({
-    fromAmountAfterSlippage: minimumReceived,
+    fromAmountAfterSlippage: inputAmount, // minimumAmount
     fromAssetData: repayWithReserve,
     user,
     amountToRepay: amountRef.current,
@@ -190,6 +193,11 @@ export function CollateralRepayModalContent({
         onSelect={setTokenToRepayWith}
         disableInput
       />
+      {blockingError !== undefined && (
+        <Typography variant="helperText" color="error.main">
+          {handleBlocked()}
+        </Typography>
+      )}
       <Box
         sx={{
           bgcolor: 'background.default',
@@ -229,11 +237,6 @@ export function CollateralRepayModalContent({
           </ToggleButton>
         </ToggleButtonGroup>
       </Box>
-      {blockingError !== undefined && (
-        <Typography variant="helperText" color="error.main">
-          {handleBlocked()}
-        </Typography>
-      )}
       <TxModalDetails gasLimit={gasLimit}>
         <DetailsNumberLineWithSub
           description={<Trans>Remaining debt</Trans>}
@@ -261,6 +264,7 @@ export function CollateralRepayModalContent({
         symbol={symbol}
         debtType={debtType}
         priceRoute={priceRoute}
+        blocked={blockingError !== undefined}
       />
     </>
   );

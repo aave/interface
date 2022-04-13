@@ -62,13 +62,16 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }
     if (variant === 'exactOut' && (!swapOut.amount || swapOut.amount === '0')) return;
     setLoading(true);
     let _amount = valueToBigNumber(variant === 'exactIn' ? swapIn.amount : swapOut.amount);
-    if (max && swapIn.supplyAPY !== '0') {
+    if (variant === 'exactIn' && max && swapIn.supplyAPY !== '0') {
       _amount = _amount.plus(_amount.multipliedBy(swapIn.supplyAPY).dividedBy(360 * 24));
     }
     const amount = normalizeBN(
       _amount,
       (variant === 'exactIn' ? swapIn.decimals : swapOut.decimals) * -1
     );
+
+    console.log('amount::: ', amount.toString(10));
+
     try {
       const excludedMethod =
         variant === 'exactIn' ? ContractMethod.simpleSwap : ContractMethod.simpleBuy;
@@ -90,6 +93,7 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }
             : {}),
         },
       });
+      console.log('priceRoute: ', response);
       setError('');
       setPriceRoute(response as OptimalRate);
     } catch (e) {
@@ -109,7 +113,6 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }
     variant,
     max,
     chainId,
-    skip,
   ]);
 
   // updates the route on input change
@@ -131,18 +134,20 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }
     console.log(`
       dest amount: ${priceRoute.destAmount}
       src amount : ${priceRoute.srcAmount}
+      swapIn: ${swapIn.decimals}
+      swapOut: ${swapOut.decimals}
     `);
     return {
       // full object needed for building the tx
       priceRoute: priceRoute,
       outputAmount: normalize(
         priceRoute.destAmount ?? '0',
-        variant === 'exactIn' ? swapOut.decimals : swapIn.decimals
+        variant === 'exactIn' ? swapIn.decimals : swapOut.decimals
       ),
       outputAmountUSD: priceRoute.destUSD ?? '0',
       inputAmount: normalize(
         priceRoute.srcAmount ?? '0',
-        variant === 'exactIn' ? swapIn.decimals : swapOut.decimals
+        variant === 'exactIn' ? swapOut.decimals : swapIn.decimals
       ),
       inputAmountUSD: priceRoute.srcUSD ?? '0',
       loading: loading,
