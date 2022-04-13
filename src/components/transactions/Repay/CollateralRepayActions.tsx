@@ -12,31 +12,31 @@ import { OptimalRate } from 'paraswap-core';
 import { getRepayCallData } from 'src/hooks/useSwap';
 
 export interface RepayActionProps extends BoxProps {
-  debtType: InterestRate;
-  amountToRepay: string;
-  amountToSwap: string;
+  rateMode: InterestRate;
+  repayAmount: string;
+  repayWithAmount: string;
   fromAssetData: ComputedReserveData;
   poolReserve: ComputedReserveData;
   isWrongNetwork: boolean;
   customGasPrice?: string;
   symbol: string;
   priceRoute: OptimalRate | null;
-  isMaxSelected: boolean;
+  repayAllDebt: boolean;
   useFlashLoan: boolean;
   blocked: boolean;
 }
 
 export const CollateralRepayActions = ({
-  amountToRepay,
-  amountToSwap,
+  repayAmount,
+  repayWithAmount,
   poolReserve,
   fromAssetData,
   isWrongNetwork,
   sx,
   symbol,
-  debtType,
+  rateMode,
   priceRoute,
-  isMaxSelected,
+  repayAllDebt,
   useFlashLoan,
   blocked,
   ...props
@@ -58,31 +58,31 @@ export const CollateralRepayActions = ({
           chainId: chainId,
         });
         console.log('swap call data: ', swapCallData);
-        console.log('repayWithAmount: ', amountToSwap);
-        console.log('repayAmount    : ', amountToRepay);
-        console.log('repay all debt: ', isMaxSelected);
+        console.log('repayWithAmount: ', repayWithAmount);
+        console.log('repayAmount    : ', repayAmount);
+        console.log('repay all debt: ', repayAllDebt);
         return lendingPool.paraswapRepayWithCollateral({
           user: currentAccount,
           fromAsset: fromAssetData.underlyingAsset,
           fromAToken: fromAssetData.aTokenAddress,
           assetToRepay: poolReserve.underlyingAsset,
-          repayWithAmount: amountToSwap,
-          repayAmount: amountToRepay,
-          repayAllDebt: isMaxSelected,
-          rateMode: debtType,
+          repayWithAmount,
+          repayAmount,
+          repayAllDebt,
+          rateMode,
           flash: useFlashLoan,
           swapAndRepayCallData: swapCallData,
           augustus,
         });
       },
-      skip: !amountToRepay || parseFloat(amountToRepay) === 0 || blocked,
+      skip: !repayAmount || parseFloat(repayAmount) === 0 || blocked,
       deps: [
-        amountToSwap,
-        amountToRepay,
+        repayWithAmount,
+        repayAmount,
         priceRoute,
         poolReserve.underlyingAsset,
         fromAssetData.underlyingAsset,
-        isMaxSelected,
+        repayAllDebt,
         currentAccount,
         useFlashLoan,
       ],
@@ -95,7 +95,7 @@ export const CollateralRepayActions = ({
       mainTxState={mainTxState}
       approvalTxState={approvalTxState}
       requiresAmount
-      amount={amountToRepay}
+      amount={repayAmount}
       requiresApproval={requiresApproval}
       isWrongNetwork={isWrongNetwork}
       sx={sx}
