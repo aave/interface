@@ -119,7 +119,8 @@ export function CollateralRepayModalContent({
   // debt, hf could go under 1 then it would fail. If that is the case then we need
   // to use flashloan path
   const { hfAfterSwap, hfEffectOfFromAmount } = calculateHFAfterRepay2({
-    fromAmountAfterSlippage: inputAmount, // minimumAmount
+    amountToReceiveAfterSwap: minimumReceived, // minimumAmount
+    amountToSwap: inputAmount,
     fromAssetData,
     user,
     amountToRepay: amountRef.current,
