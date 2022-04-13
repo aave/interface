@@ -66,6 +66,10 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }
     if (variant === 'exactIn' && max && swapIn.supplyAPY !== '0') {
       _amount = _amount.plus(_amount.multipliedBy(swapIn.supplyAPY).dividedBy(360 * 24));
     }
+    if (variant === 'exactOut' && max) {
+      // variableBorrowAPY in most cases should be higher than stableRate so while this is slightly inaccurate it should be enough
+      _amount = _amount.plus(_amount.multipliedBy(swapIn.variableBorrowAPY).dividedBy(360 * 24));
+    }
     const amount = normalizeBN(
       _amount,
       (variant === 'exactIn' ? swapIn.decimals : swapOut.decimals) * -1
