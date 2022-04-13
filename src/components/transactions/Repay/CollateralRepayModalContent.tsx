@@ -89,7 +89,7 @@ export function CollateralRepayModalContent({
   });
 
   const minimumReceived = new BigNumber(outputAmount || '0')
-    .multipliedBy(new BigNumber(100).minus(maxSlippage).dividedBy(100))
+    .multipliedBy(new BigNumber(100).plus(maxSlippage).dividedBy(100))
     .toString(10);
 
   console.log(`

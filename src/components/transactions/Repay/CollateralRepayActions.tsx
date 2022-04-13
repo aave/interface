@@ -56,6 +56,7 @@ export const CollateralRepayActions = ({
           user: currentAccount,
           route: priceRoute as OptimalRate,
           chainId: chainId,
+          repayWithAmount,
         });
 
         console.log('swap call data: ', swapCallData);

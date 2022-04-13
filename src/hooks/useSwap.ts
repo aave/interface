@@ -10,6 +10,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { ComputedReserveData } from './app-data-provider/useAppDataProvider';
 import { ChainId } from '@aave/contract-helpers';
 import { BigNumberZeroDecimal, normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
+import BigNumber from 'bignumber.js';
 
 const ParaSwap = (chainId: number) => {
   const fetcher = constructFetchFetcher(fetch); // alternatively constructFetchFetcher
@@ -169,6 +170,18 @@ type GetSwapCallDataProps = {
   chainId: ChainId;
 };
 
+type GetSwapAndRepayCallDataProps = {
+  srcToken: string;
+  srcDecimals: number;
+  destToken: string;
+  destDecimals: number;
+  user: string;
+  route: OptimalRate;
+  max?: boolean;
+  chainId: ChainId;
+  repayWithAmount: string;
+};
+
 export const getSwapCallData = async ({
   srcToken,
   srcDecimals,
@@ -218,19 +231,25 @@ export const getRepayCallData = async ({
   user,
   route,
   chainId,
-}: GetSwapCallDataProps) => {
+  repayWithAmount,
+}: GetSwapAndRepayCallDataProps) => {
   const paraSwap = getParaswap(chainId);
-  const srcAmountWithSlippage = new BigNumberZeroDecimal(route.srcAmount)
-    .multipliedBy(99)
-    .dividedBy(100)
-    .toFixed(0);
+  // const srcAmountWithSlippage = new BigNumberZeroDecimal(route.srcAmount)
+  //   .multipliedBy(99)
+  //   .dividedBy(100)
+  //   .toFixed(0);
+
+  const srcAmountWithSlippage = new BigNumber(route.srcAmount)
+    .multipliedBy(new BigNumber(101).dividedBy(100))
+    .toString(10);
+
   console.log('src amount with slippage: ', srcAmountWithSlippage);
   try {
     const params = await paraSwap.buildTx(
       {
         srcToken,
         destToken,
-        srcAmount: srcAmountWithSlippage,
+        srcAmount: route.srcAmount,
         destAmount: route.destAmount,
         priceRoute: route,
         userAddress: user,
