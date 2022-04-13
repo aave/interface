@@ -87,14 +87,17 @@ export function CollateralRepayModalContent({
     max: isMaxSelected,
     skip: mainTxState.loading,
   });
-  console.log(`
-    input amount  : ${inputAmount}
-    output amount : ${outputAmount}
-    current       : ${amountRef.current}
-  `);
+
   const minimumReceived = new BigNumber(outputAmount || '0')
     .multipliedBy(new BigNumber(100).minus(maxSlippage).dividedBy(100))
     .toString(10);
+
+  console.log(`
+    input amount  : ${inputAmount}
+    output amount : ${outputAmount}
+    min amount    : ${minimumReceived}
+    current       : ${amountRef.current}
+  `);
 
   // Calculations to get the max repayable debt depending on the balance and value of the
   // selected collateral
@@ -120,7 +123,7 @@ export function CollateralRepayModalContent({
   // debt, hf could go under 1 then it would fail. If that is the case then we need
   // to use flashloan path
   const { hfAfterSwap, hfEffectOfFromAmount } = calculateHFAfterRepay2({
-    amountToReceiveAfterSwap: minimumReceived, // minimumAmount
+    amountToReceiveAfterSwap: minimumReceived,
     amountToSwap: inputAmount,
     fromAssetData,
     user,
@@ -258,7 +261,7 @@ export function CollateralRepayModalContent({
       <CollateralRepayActions
         poolReserve={poolReserve}
         fromAssetData={fromAssetData}
-        repayAmount={outputAmount}
+        repayAmount={minimumReceived}
         repayWithAmount={inputAmount}
         repayAllDebt={isMaxSelected}
         useFlashLoan={shouldUseFlashloan}
