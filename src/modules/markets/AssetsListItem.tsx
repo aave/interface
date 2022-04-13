@@ -39,11 +39,14 @@ export const AssetsListItem = ({ ...reserve }: ComputedReserveData) => {
       </ListColumn>
 
       <ListColumn>
+        <FormattedNumber compact value={reserve.totalLiquidity} variant="main16" />
         <FormattedNumber
           compact
           value={reserve.totalLiquidityUSD}
-          variant="main16"
-          symbolsVariant="secondary16"
+          variant="secondary14"
+          color="text.secondary"
+          symbolsVariant="secondary14"
+          symbolsColor="text.secondary"
           symbol="USD"
         />
       </ListColumn>
@@ -59,11 +62,14 @@ export const AssetsListItem = ({ ...reserve }: ComputedReserveData) => {
       </ListColumn>
 
       <ListColumn>
+        <FormattedNumber compact value={reserve.totalDebt} variant="main16" />
         <FormattedNumber
           compact
           value={reserve.totalDebtUSD}
-          variant="main16"
-          symbolsVariant="secondary16"
+          variant="secondary14"
+          color="text.secondary"
+          symbolsVariant="secondary14"
+          symbolsColor="text.secondary"
           symbol="USD"
         />
       </ListColumn>
