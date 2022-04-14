@@ -41,7 +41,7 @@
     "test:polygon-v3-full": "npx cypress-repeat run -n 3 --rerun-failed-only --config-file ./cypress/configs/v3-markets/polygon-v3-full.config.json"
   },
   "dependencies": {
-    "@aave/contract-helpers": "1.1.1-c91f5a7110f6eee922e897641eacdb14807b6d77.0+c91f5a7",
+    "@aave/contract-helpers": "1.1.1-a4d3bd2c04fff79cc89c06a95177af8a1fc8d1c2.0+a4d3bd2",
     "@aave/math-utils": "1.1.0",
     "@apollo/client": "^3.5.10",
     "@emotion/cache": "latest",
