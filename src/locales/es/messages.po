@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-04-11 12:06\n"
+"PO-Revision-Date: 2022-04-12 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -246,7 +246,7 @@ msgstr "Balance"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
-msgstr "Ten cuidado: Estás muy cerca de la liquidación. Considera depositar más garantías o pagar algunos de tus préstamos"
+msgstr "Ten cuidado - Estás muy cerca de la liquidación. Considera depositar más garantía o pagar alguno de tus préstamos"
 
 #: src/components/transactions/Warnings/SNXWarning.tsx
 msgid "Before supplying"
@@ -567,7 +567,7 @@ msgstr "Umbral de liquidación del E-Mode"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "E-Mode max LTV"
-msgstr "E-Mode max LTV"
+msgstr "LTV máximo del E-Mode"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Efficiency mode (E-Mode)"
@@ -750,7 +750,7 @@ msgstr "Comisión de puente de protocolo inválida"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid expiration"
-msgstr "Caducidad inválida"
+msgstr "Expiración inválida"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid flashloan premium"
@@ -758,7 +758,7 @@ msgstr "Préstamo flash inválido"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid return value of the flashloan executor function"
-msgstr "Valor de retorno no válido en la función executor de préstamo flash"
+msgstr "Valor de retorno inválido en la función executor del préstamo flash"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid signature"
@@ -888,7 +888,7 @@ msgstr "APY neto"
 
 #: src/components/infoTooltips/NetAPYTooltip.tsx
 msgid "Net APY is the combined effect of all supply and borrow positions on net worth, including incentives. It is possible to have a negative net APY if debt APY is higher than supply APY."
-msgstr "El APY neto es el efecto combinado de todos los suministros y préstamos sobre el patrimonio neto, incluidos los incentivos. Es posible tener un APY neto negativo si el APY de la deuda es mayor que el APY de la oferta."
+msgstr "El APY neto es el efecto combinado de todos los suministros y préstamos sobre total, incluidos los incentivos. Es posible tener un APY neto negativo si el APY de la deuda es mayor que el APY de suministro."
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Net worth"
@@ -965,7 +965,7 @@ msgstr "Vale, lo tengo"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Operation not supported"
-msgstr "Operación no compatible/admitidia"
+msgstr "Operación no soportada"
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Oracle price"

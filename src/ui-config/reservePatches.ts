@@ -76,6 +76,11 @@ export function fetchIconSymbolAndName({
   ) {
     return { iconSymbol: 'GUNI_USDC_USDT', name: 'G-UNI USDC/USDT', symbol };
   }
+  if (
+    underlyingAsset.toLowerCase() === '0xa693B19d2931d498c5B318dF961919BB4aee87a5'.toLowerCase()
+  ) {
+    return { iconSymbol: 'UST', name: 'UST (Wormhole)', symbol };
+  }
   // avalanche symbols have .e extensions
   if (/\.e$/.test(symbol)) {
     const rawSymbol = symbol.replace('.e', '');

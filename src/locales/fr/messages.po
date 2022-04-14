@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-04-05 18:04\n"
+"PO-Revision-Date: 2022-04-14 00:18\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -246,7 +246,7 @@ msgstr "Solde"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
-msgstr ""
+msgstr "Soyez prudent - Vous êtes très proche de la liquidation. Envisagez de déposer plus de garantie ou de rembourser certaines de vos positions empruntées"
 
 #: src/components/transactions/Warnings/SNXWarning.tsx
 msgid "Before supplying"
@@ -659,7 +659,7 @@ msgstr "Français"
 
 #: src/modules/staking/StakingHeader.tsx
 msgid "Funds in the Safety Module"
-msgstr "Funds in the Safety Module"
+msgstr "Fonds dans le Safety Module"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Github"
@@ -1208,7 +1208,7 @@ msgstr "Stake Aave/ETH BPT"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Staked"
-msgstr ""
+msgstr "Staké"
 
 #: src/components/transactions/Stake/StakeActions.tsx
 #: src/modules/staking/StakingHeader.tsx
@@ -1218,7 +1218,7 @@ msgstr "Staking"
 #: src/components/transactions/Stake/StakeModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "Staking APR"
-msgstr ""
+msgstr "APR staké"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Started"
@@ -1274,7 +1274,7 @@ msgstr "Plafond d'approvisionnement sur la réserve cible atteint. Essayez de r�
 
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 msgid "Supply caps limit the amount of a certain asset that can be supplied to the Aave protocol. This helps reducing exposure to the asset and mitigate attacks like infinite minting or price oracle manipulation.<0>FAQ guide</0>."
-msgstr ""
+msgstr "Les plafonds d'approvisionnement limitent la quantité d'un certain actif qui peut être fourni au protocole Aave. Cela permet de réduire l'exposition à l'actif et d'atténuer les attaques telles que la frappe infinie ou la manipulation d'oracle des prix.<0>Guide FAQ</0>."
 
 #: src/components/transactions/Supply/SupplyActions.tsx
 msgid "Supply {symbol}"
@@ -1475,124 +1475,124 @@ msgstr "Total des emprunts"
 
 #: src/modules/staking/StakingHeader.tsx
 msgid "Total emission per day"
-msgstr ""
+msgstr "Émission totale par jour"
 
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total market size"
-msgstr ""
+msgstr "Taille totale du marché"
 
 #: src/modules/markets/AssetsList.tsx
 #: src/modules/markets/AssetsListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Total supplied"
-msgstr ""
+msgstr "Total fourni"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Total voting power"
-msgstr ""
+msgstr "Pouvoir de vote total"
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "Total worth"
-msgstr ""
+msgstr "Valeur totale"
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Transaction failed"
-msgstr ""
+msgstr "La transaction a échoué"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Transaction overview"
-msgstr ""
+msgstr "Aperçu des transactions"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Type of delegation"
-msgstr ""
+msgstr "Type de délégation"
 
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 msgid "UNSTAKE {symbol}"
-msgstr ""
+msgstr "DÉPOSER {symbole}"
 
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 msgid "UNSTAKING {symbol}"
-msgstr ""
+msgstr "Arrêter de staker {symbol}"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Unbacked"
-msgstr ""
+msgstr "Sans support"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Unbacked mint cap is exceeded"
-msgstr ""
+msgstr "Le plafond de mintage non soutenu est dépassé"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Unstake now"
-msgstr ""
+msgstr "Arrêter de staker maintenant"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Unstake window"
-msgstr ""
+msgstr "Fenêtre d'arrêt de staking"
 
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Used as collateral"
-msgstr ""
+msgstr "Utilisé comme collatéral"
 
 #: src/ui-config/errorMapping.tsx
 msgid "User cannot withdraw more than the available balance"
-msgstr ""
+msgstr "L'utilisateur ne peut pas retirer plus que le solde disponible"
 
 #: src/ui-config/errorMapping.tsx
 msgid "User did not borrow the specified currency"
-msgstr ""
+msgstr "L'utilisateur n'a pas emprunté la devise spécifiée"
 
 #: src/ui-config/errorMapping.tsx
 msgid "User does not have outstanding stable rate debt on this reserve"
-msgstr ""
+msgstr "L'utilisateur n'a pas de dette à taux stable impayée sur cette réserve"
 
 #: src/ui-config/errorMapping.tsx
 msgid "User does not have outstanding variable rate debt on this reserve"
-msgstr ""
+msgstr "L'utilisateur n'a pas de dette à taux variable impayée sur cette réserve"
 
 #: src/ui-config/errorMapping.tsx
 msgid "User is in isolation mode"
-msgstr ""
+msgstr "L'utilisateur est en mode d'isolement"
 
 #: src/ui-config/errorMapping.tsx
 msgid "User is trying to borrow multiple assets including a siloed one"
-msgstr ""
+msgstr "L'utilisateur essaie d'emprunter plusieurs actifs, y compris un en silo"
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Utilization Rate"
-msgstr ""
+msgstr "Taux d'utilisation"
 
 #: src/components/transactions/GovVote/GovVoteActions.tsx
 #: src/components/transactions/GovVote/GovVoteActions.tsx
 msgid "VOTE NAY"
-msgstr ""
+msgstr "VOTER NON"
 
 #: src/components/transactions/GovVote/GovVoteActions.tsx
 #: src/components/transactions/GovVote/GovVoteActions.tsx
 msgid "VOTE YAE"
-msgstr ""
+msgstr "VOTER OUI"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "Variable"
-msgstr ""
+msgstr "Variable"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Variable debt supply is not zero"
-msgstr ""
+msgstr "L'offre de dette variable n'est pas nulle"
 
 #: src/components/infoTooltips/VariableAPYTooltip.tsx
 msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions. Recommended for short-term loans."
-msgstr ""
+msgstr "Le taux d'intérêt variable <0>fluctuera</0> en fonction des conditions du marché. Recommandé pour les prêts à court terme."
 
 #: src/modules/markets/AssetsListMobileItem.tsx
 msgid "View details"
-msgstr ""
+msgstr "Voir détails"
 
 #: src/layouts/WalletWidget.tsx
 msgid "View on Explorer"
-msgstr ""
+msgstr "Voir sur l'explorer"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Vote NAY"
@@ -1607,56 +1607,56 @@ msgstr "Vote YAE"
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Voting power"
-msgstr ""
+msgstr "Pouvoir de vote"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Voting results"
-msgstr ""
+msgstr "Résultats du vote"
 
 #: pages/faucet.page.tsx
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Wallet balance"
-msgstr ""
+msgstr "Solde du portefeuille"
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Wallet not detected. Connect or install wallet and retry"
-msgstr ""
+msgstr "Portefeuille non détecté. Connectez ou installez le portefeuille et réessayez"
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
-msgstr ""
+msgstr "Les portefeuilles sont fournis par des fournisseurs externes et en sélectionnant, vous acceptez les conditions de ces fournisseurs. Votre accès au portefeuille peut dépendre du fonctionnement du fournisseur externe."
 
 #: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake."
-msgstr ""
+msgstr "Nous n'avons pas pu détecter de portefeuille. Connectez un portefeuille pour miser."
 
 #: src/components/transactions/FlowCommons/LeftHelperText.tsx
 msgid "Why do I need to approve?"
-msgstr ""
+msgstr "Pourquoi dois-je approuver ?"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "With a voting power of <0/>"
-msgstr ""
+msgstr "Avec un pouvoir de vote de <0/>"
 
 #: src/components/transactions/Withdraw/WithdrawModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Withdraw"
-msgstr ""
+msgstr "Retirer"
 
 #: src/components/transactions/Withdraw/WithdrawActions.tsx
 msgid "Withdraw {symbol}"
-msgstr ""
+msgstr "Retirer {symbole}"
 
 #: src/components/transactions/Withdraw/WithdrawActions.tsx
 msgid "Withdrawing {symbol}"
-msgstr ""
+msgstr "Retrait {symbole}"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Wrong Network"
-msgstr ""
+msgstr "Mauvais réseau"
 
 #: src/modules/governance/VoteBar.tsx
 msgid "YAE"
@@ -1664,221 +1664,221 @@ msgstr "YAE"
 
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "You are entering Isolation mode"
-msgstr ""
+msgstr "Vous entrez en mode Isolation"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "You can borrow this asset with a stable rate only if you borrow more than the amount you are supplying as collateral."
-msgstr ""
+msgstr "Vous ne pouvez emprunter cet actif avec un taux stable que si vous empruntez plus que le montant que vous fournissez en garantie."
 
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "You can not change Interest Type to stable as your borrowings are higher than your collateral"
-msgstr ""
+msgstr "Vous ne pouvez pas changer le type d'intérêt en stable car vos emprunts sont supérieurs à votre garantie"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "You can not disable E-Mode as your current collateralization level is above 80%, disabling E-Mode can cause liquidation. To exit E-Mode supply or repay borrowed positions."
-msgstr ""
+msgstr "You can not disable E-Mode as your current collateralization level is above 80%, disabling E-Mode can cause liquidation. To exit E-Mode supply or repay borrowed positions."
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You can not switch usage as collateral mode for this currency, because it will cause collateral call"
-msgstr ""
+msgstr "Vous ne pouvez pas changer d'utilisation en tant que mode de garantie pour cette devise, car cela entraînera un appel de garantie"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You can not use this currency as collateral"
-msgstr ""
+msgstr "Vous ne pouvez pas utiliser cette devise comme garantie"
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "You can not withdraw this amount because it will cause collateral call"
-msgstr ""
+msgstr "Vous ne pouvez pas retirer ce montant car cela entraînera un appel de garantie"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "You can only withdraw your assets from the Security Module after the cooldown period ends and the unstake window is active."
-msgstr ""
+msgstr "Vous ne pouvez retirer vos actifs du module de sécurité qu'après la fin de la période de refroidissement et que la fenêtre de retrait est active."
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "You can report incident to our <0>Discord</0> or <1>Github</1>."
-msgstr ""
+msgstr "Vous pouvez signaler un incident sur notre <0>Discord</0> ou <1>Github</1>."
 
 #: src/ui-config/errorMapping.tsx
 msgid "You cancelled the transaction."
-msgstr ""
+msgstr "Vous avez annulé la transaction."
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "You did not participate in this proposal"
-msgstr ""
+msgstr "Vous n'avez pas participé à cette proposition"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You do not have supplies in this currency"
-msgstr ""
+msgstr "Vous n'avez pas de fournitures dans cette devise"
 
 #: src/components/transactions/Repay/RepayModalContent.tsx
 msgid "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
-msgstr ""
+msgstr "Vous n'avez pas assez de fonds dans votre portefeuille pour rembourser le montant total. Si vous continuez à rembourser avec votre montant actuel de fonds, vous aurez toujours une petite position d'emprunt dans votre tableau de bord."
 
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "You have not borrow yet using this currency"
-msgstr ""
+msgstr "You have not borrow yet using this currency"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "You need to change E-Mode to continue."
-msgstr ""
+msgstr "Vous devez changer le mode E pour continuer."
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You switched to {0} rate"
-msgstr ""
+msgstr "Vous êtes passé au tarif {0}"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "You unstake here"
-msgstr ""
+msgstr "Vous unstaké ici"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "You voted {0}"
-msgstr ""
+msgstr "Vous avez voté {0}"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "You will exit isolation mode and other tokens can now be used as collateral"
-msgstr ""
+msgstr "Vous quitterez le mode d'isolement et d'autres jetons peuvent désormais être utilisés comme collatéral"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You {action} <0/> {symbol}"
-msgstr ""
+msgstr "Vous {action} <0/> {symbole}"
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Your borrows"
-msgstr ""
+msgstr "Vos emprunts"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Your current loan to value based on your collateral supplied."
-msgstr ""
+msgstr "Votre prêt actuel à la valeur en fonction de votre collatéral fournie."
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Your health factor and loan to value determine the assurance of your collateral. To avoid liquidations you can supply more collateral or repay borrow positions."
-msgstr ""
+msgstr "Votre facteur de santé et votre prêt à la valeur déterminent l'assurance de votre collatéral. Pour éviter les liquidations, vous pouvez fournir plus de garanties ou rembourser les positions d'emprunt."
 
 #: pages/reserve-overview.page.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Your info"
-msgstr ""
+msgstr "Vos informations"
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "Your reward balance is 0"
-msgstr ""
+msgstr "Votre solde de récompenses est de 0"
 
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 msgid "Your supplies"
-msgstr ""
+msgstr "Vos ressources"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Your voting info"
-msgstr ""
+msgstr "Vos informations de vote"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Your {networkName} wallet is empty. Purchase or transfer assets"
-msgstr ""
+msgstr "Votre portefeuille {networkName} est vide. Acheter ou transférer des actifs"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Zero address not valid"
-msgstr ""
+msgstr "Adresse zéro non-valide"
 
 #: src/modules/markets/AssetsList.tsx
 msgid "assets"
-msgstr ""
+msgstr "actifs"
 
 #: src/modules/governance/proposal/ProposalTopPanel.tsx
 msgid "back"
-msgstr ""
+msgstr "arrière"
 
 #: src/components/transactions/Emode/EmodeSelect.tsx
 #: src/components/transactions/Emode/EmodeSelect.tsx
 msgid "disabled"
-msgstr ""
+msgstr "désactivé"
 
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "documentation"
-msgstr ""
+msgstr "documentation"
 
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "ends"
-msgstr ""
+msgstr "Prend fin"
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "here."
-msgstr ""
+msgstr "ici."
 
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "is an asset affected by rebasing. Visit the"
-msgstr ""
+msgstr "est un actif affecté par le rebasage. Visiter le"
 
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "on"
-msgstr ""
+msgstr "sur"
 
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "or"
-msgstr ""
+msgstr "ou"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "or use <0>{0}</0> to transfer your ETH assets."
-msgstr ""
+msgstr "ou utilisez <0>{0}</0> pour transférer vos actifs ETH."
 
 #: src/components/transactions/Warnings/SNXWarning.tsx
 msgid "please check that the amount you want to supply is not currently being used for staking. If it is being used for staking, your transaction might fail."
-msgstr ""
+msgstr "veuillez vérifier que le montant que vous souhaitez fournir n'est pas actuellement utilisé pour le staking. S'il est utilisé pour le staking, votre transaction peut échouer."
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "staking view"
-msgstr ""
+msgstr "vue de staking"
 
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "to learn more."
-msgstr ""
+msgstr "pour apprendre plus."
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "tokens is not the same as staking them. If you wish to stake your"
-msgstr ""
+msgstr "tokens n'est pas la même chose que de les staker . Si vous souhaitez staker votre"
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "tokens, please go to the"
-msgstr ""
+msgstr "tokens, veuillez vous rendre sur"
 
 #: src/components/MarketSwitcher.tsx
 msgid "v2 markets"
-msgstr ""
+msgstr "marchés v2"
 
 #: src/components/MarketSwitcher.tsx
 msgid "v3 markets"
-msgstr ""
+msgstr "marchés v3"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "{0}"
-msgstr ""
+msgstr "{0}"
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "{0} Balance"
-msgstr ""
+msgstr "{0} Balance"
 
 #: pages/faucet.page.tsx
 msgid "{0} Faucet"
-msgstr ""
+msgstr "{0} Faucet"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{d}d"
-msgstr ""
+msgstr "{d}d"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{h}h"
-msgstr ""
+msgstr "{h}h"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{m}m"
-msgstr ""
+msgstr "{m}m"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"
-msgstr ""
+msgstr "{s}s"
 
