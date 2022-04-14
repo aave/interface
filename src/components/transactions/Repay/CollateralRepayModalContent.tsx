@@ -20,7 +20,7 @@ import {
 } from '../FlowCommons/TxModalDetails';
 import { CollateralRepayActions } from './CollateralRepayActions';
 import BigNumber from 'bignumber.js';
-import { calculateHFAfterRepay2 } from 'src/utils/hfUtils';
+import { calculateHFAfterRepay } from 'src/utils/hfUtils';
 import { Box, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import { Row } from 'src/components/primitives/Row';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -66,7 +66,6 @@ export function CollateralRepayModalContent({
 
   const [_amount, setAmount] = useState('');
   const [maxSlippage, setMaxSlippage] = useState('0.1');
-  // const [repayMax, setRepayMax] = useState('');
 
   const amountRef = useRef<string>('');
 
@@ -89,16 +88,6 @@ export function CollateralRepayModalContent({
     maxSlippage,
   });
 
-  // const minimumReceived = new BigNumber(outputAmount || '0')
-  //   .multipliedBy(new BigNumber(100).plus(maxSlippage).dividedBy(100))
-  //   .toString(10);
-
-  console.log(`
-    input amount  : ${inputAmount}
-    output amount : ${outputAmount}
-    current       : ${amountRef.current}
-  `);
-
   // Calculations to get the max repayable debt depending on the balance and value of the
   // selected collateral
   const maxCollateral = valueToBigNumber(tokenToRepayWith?.balance || 0).multipliedBy(
@@ -115,22 +104,17 @@ export function CollateralRepayModalContent({
     const maxSelected = value === '-1';
     amountRef.current = maxSelected ? maxRepayableDebt.toString(10) : value;
     setAmount(value);
-    // if (maxSelected) {
-    //   setRepayMax(maxRepayableDebt.toString(10));
-    // }
   };
   // for v3 we need hf after withdraw collateral, because when removing collateral to repay
   // debt, hf could go under 1 then it would fail. If that is the case then we need
   // to use flashloan path
-  const { hfAfterSwap, hfEffectOfFromAmount } = calculateHFAfterRepay2({
+  const { hfAfterSwap, hfEffectOfFromAmount } = calculateHFAfterRepay({
     amountToReceiveAfterSwap: outputAmount,
     amountToSwap: inputAmount,
     fromAssetData,
     user,
-    // amountToRepay: amountRef.current,
     toAssetData: poolReserve,
     repayWithUserReserve,
-    // userReserve,
     debt,
   });
 
@@ -188,7 +172,7 @@ export function CollateralRepayModalContent({
           },
         ]}
         isMaxSelected={isMaxSelected}
-        maxValue={maxRepayableDebt.toString(10) /*debt*/}
+        maxValue={debt}
       />
       <AssetInput
         value={inputAmount}

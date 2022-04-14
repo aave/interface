@@ -20,16 +20,6 @@ interface CalculateHFAfterSwapProps {
 }
 
 interface CalculateHFAfterSwapRepayProps {
-  fromAmountAfterSlippage: BigNumberValue;
-  fromAssetData: ComputedReserveData;
-  userReserve: ComputedUserReserve;
-  // amountToRepay: BigNumberValue;
-  toAssetData: ComputedReserveData;
-  user: ExtendedFormattedUser;
-  debt: string;
-}
-
-interface CalculateHFAfterSwapRepayProps2 {
   amountToReceiveAfterSwap: BigNumberValue;
   amountToSwap: BigNumberValue;
   fromAssetData: ComputedReserveData;
@@ -95,69 +85,13 @@ export function calculateHFAfterSwap({
 
 export const calculateHFAfterRepay = ({
   user,
-  fromAmountAfterSlippage,
-  fromAssetData,
-  toAssetData,
-  userReserve,
-  debt,
-}: CalculateHFAfterSwapRepayProps) => {
-  // it takes into account if in emode as threshold is different
-  const reserveLiquidationThreshold =
-    user.isInEmode && user.userEmodeCategoryId === fromAssetData.eModeCategoryId
-      ? fromAssetData.formattedEModeLiquidationThreshold
-      : fromAssetData.formattedReserveLiquidationThreshold;
-
-  // hf indicating how the state would be if we withdrew this amount.
-  // this is needed because on contracts hf can't be < 1 so in the case
-  // that fromHF < 1 we need to do a flashloan to not go below
-  let hfEffectOfFromAmount = '0';
-
-  if (userReserve.usageAsCollateralEnabledOnUser && fromAssetData.usageAsCollateralEnabled) {
-    hfEffectOfFromAmount = calculateHealthFactorFromBalancesBigUnits({
-      collateralBalanceMarketReferenceCurrency: valueToBigNumber(
-        fromAmountAfterSlippage
-      ).multipliedBy(fromAssetData.formattedPriceInMarketReferenceCurrency),
-      borrowBalanceMarketReferenceCurrency: user.totalBorrowsMarketReferenceCurrency,
-      currentLiquidationThreshold: reserveLiquidationThreshold,
-    }).toString();
-  }
-
-  const hfEffectOfToAmount = calculateHealthFactorFromBalancesBigUnits({
-    collateralBalanceMarketReferenceCurrency: user.totalCollateralUSD,
-    borrowBalanceMarketReferenceCurrency: valueToBigNumber(debt).minus(
-      BigNumber.min(fromAmountAfterSlippage, debt)
-    ),
-    currentLiquidationThreshold: toAssetData.formattedReserveLiquidationThreshold,
-  });
-
-  console.log(`
-    hf org : ${user.healthFactor}
-    hf pre : ${hfEffectOfFromAmount}
-    hf to  : ${hfEffectOfToAmount}
-    hf af  : ${
-      hfEffectOfToAmount.eq(-1)
-        ? hfEffectOfToAmount
-        : valueToBigNumber(user.healthFactor).plus(hfEffectOfToAmount).minus(hfEffectOfFromAmount)
-    }
-  `);
-
-  return {
-    hfEffectOfFromAmount: valueToBigNumber(hfEffectOfFromAmount),
-    hfAfterSwap: hfEffectOfToAmount.eq(-1)
-      ? hfEffectOfToAmount
-      : valueToBigNumber(user.healthFactor).plus(hfEffectOfToAmount).minus(hfEffectOfFromAmount),
-  };
-};
-
-export const calculateHFAfterRepay2 = ({
-  user,
   amountToReceiveAfterSwap,
   amountToSwap,
   fromAssetData,
   toAssetData,
   repayWithUserReserve,
   debt,
-}: CalculateHFAfterSwapRepayProps2) => {
+}: CalculateHFAfterSwapRepayProps) => {
   // it takes into account if in emode as threshold is different
   const reserveLiquidationThreshold =
     user.isInEmode && user.userEmodeCategoryId === fromAssetData.eModeCategoryId
@@ -191,17 +125,6 @@ export const calculateHFAfterRepay2 = ({
     fromAmountInMarketReferenceCurrency
   );
 
-  // console.log(`
-  //   debt                                : ${debt}
-  //   total borrows usd                   : ${user.totalBorrowsUSD}
-  //   amount after slippage               : ${amountToReceiveAfterSwap}
-  //   fromAmountInMarketReferenceCurrency : ${fromAmountInMarketReferenceCurrency}
-  //   debtLeftInMarketReference           : ${debtLeftInMarketReference.toString(10)}
-  // `);
-
-  // console.log('fromAmountInMarketReferenceCurrency: ', user.totalBorrowsMarketReferenceCurrency);
-  // console.log('remaining debt: ', debtLeftInMarketReference.toString(10));
-
   const hfAfterRepayBeforeWithdraw = calculateHealthFactorFromBalancesBigUnits({
     collateralBalanceMarketReferenceCurrency: user.totalCollateralUSD,
     borrowBalanceMarketReferenceCurrency: debtLeftInMarketReference.toString(10),
@@ -222,14 +145,6 @@ export const calculateHFAfterRepay2 = ({
   const hfAfterSwap = hfAfterRepayBeforeWithdraw.eq(-1)
     ? hfAfterRepayBeforeWithdraw
     : hfAfterRepayBeforeWithdraw.minus(hfRealEffectOfFromAmount);
-
-  // console.log(`
-  //   hf org           : ${user.healthFactor}
-  //   hf initial       : ${hfInitialEffectOfFromAmount}
-  //   hf after before  : ${hfAfterRepayBeforeWithdraw}
-  //   hf real after    : ${hfRealEffectOfFromAmount}
-  //   hf af            : ${hfAfterSwap}
-  // `);
 
   return {
     hfEffectOfFromAmount: valueToBigNumber(hfInitialEffectOfFromAmount),

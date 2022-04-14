@@ -58,13 +58,6 @@ export const CollateralRepayActions = ({
           chainId: chainId,
           repayWithAmount,
         });
-
-        console.log('swap call data: ', swapCallData);
-        console.log('price route: ', priceRoute);
-        console.log('repayWithAmount: ', repayWithAmount);
-        console.log('repayAmount    : ', repayAmount);
-        console.log('repay all debt: ', repayAllDebt);
-        console.log('use flash loan: ', useFlashLoan);
         return lendingPool.paraswapRepayWithCollateral({
           user: currentAccount,
           fromAsset: fromAssetData.underlyingAsset,

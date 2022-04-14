@@ -80,7 +80,6 @@ export const useSwap = ({
       _amount = new BigNumber(_amount).multipliedBy(
         new BigNumber(100).plus(maxSlippage || 0).dividedBy(100)
       );
-      _amount = _amount.multipliedBy(1.05);
     }
     if (variant === 'exactOut' && max) {
       // variableBorrowAPY in most cases should be higher than stableRate so while this is slightly inaccurate it should be enough
