@@ -190,6 +190,7 @@ export const useTransactionHandler = ({
   };
 
   const action = async () => {
+    console.log('------------------|||||||||||||||');
     if (approvalTx && usePermit && handleGetPermitTxns) {
       if (!signature || !signatureDeadline) throw new Error('signature needed');
       try {
@@ -230,6 +231,7 @@ export const useTransactionHandler = ({
       try {
         setMainTxState({ ...mainTxState, loading: true });
         const params = await actionTx.tx();
+        console.log('---------- params:::::: ', params);
         delete params.gasPrice;
         return processTx({
           tx: () => sendTx(params),
@@ -292,6 +294,7 @@ export const useTransactionHandler = ({
             let gas: GasType | null = null;
             try {
               gas = await data[data.length - 1].gas();
+              console.log('-------------------------> gas: ', gas);
             } catch (error) {
               const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
               setTxError(parsedError);

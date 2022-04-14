@@ -39,7 +39,7 @@ export function CollateralRepayModalContent({
 }: ModalWrapperProps & { debtType: InterestRate }) {
   const { user, marketReferencePriceInUsd, reserves, userReserves } = useAppDataContext();
   const { gasLimit, txError, mainTxState } = useModalContext();
-  const { currentChainId } = useProtocolDataContext();
+  const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
   const repayTokens = user.userReservesData
     .filter(
@@ -79,7 +79,7 @@ export function CollateralRepayModalContent({
   const usdValue = valueToBigNumber(amount).multipliedBy(poolReserve.priceInUSD);
 
   const { priceRoute, inputAmountUSD, inputAmount, outputAmount, outputAmountUSD } = useSwap({
-    chainId: currentChainId,
+    chainId: currentNetworkConfig.underlyingChainId || currentChainId,
     userId: currentAccount,
     variant: 'exactOut',
     swapIn: { ...fromAssetData, amount: '0' },

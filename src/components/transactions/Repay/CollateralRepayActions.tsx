@@ -64,6 +64,7 @@ export const CollateralRepayActions = ({
         console.log('repayWithAmount: ', repayWithAmount);
         console.log('repayAmount    : ', repayAmount);
         console.log('repay all debt: ', repayAllDebt);
+        console.log('use flash loan: ', useFlashLoan);
         return lendingPool.paraswapRepayWithCollateral({
           user: currentAccount,
           fromAsset: fromAssetData.underlyingAsset,
