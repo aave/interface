@@ -10,7 +10,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { ComputedReserveData } from './app-data-provider/useAppDataProvider';
 import { ChainId } from '@aave/contract-helpers';
 import { BigNumberZeroDecimal, normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
-// import BigNumber from 'bignumber.js';
+import BigNumber from 'bignumber.js';
 
 const ParaSwap = (chainId: number) => {
   const fetcher = constructFetchFetcher(fetch); // alternatively constructFetchFetcher
@@ -45,13 +45,23 @@ type UseSwapProps = {
   userId?: string;
   chainId: ChainId;
   skip?: boolean;
+  maxSlippage?: string;
 };
 
 const MESSAGE_MAP = {
   ESTIMATED_LOSS_GREATER_THAN_MAX_IMPACT: 'Price impact to high',
 };
 
-export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }: UseSwapProps) => {
+export const useSwap = ({
+  swapIn,
+  swapOut,
+  variant,
+  userId,
+  max,
+  chainId,
+  skip,
+  maxSlippage,
+}: UseSwapProps) => {
   const paraSwap = getParaswap(chainId);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -65,6 +75,11 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }
     let _amount = valueToBigNumber(variant === 'exactIn' ? swapIn.amount : swapOut.amount);
     if (variant === 'exactIn' && max && swapIn.supplyAPY !== '0') {
       _amount = _amount.plus(_amount.multipliedBy(swapIn.supplyAPY).dividedBy(360 * 24));
+    }
+    if (variant === 'exactOut') {
+      _amount = new BigNumber(_amount).multipliedBy(
+        new BigNumber(100).plus(maxSlippage || 0).dividedBy(100)
+      );
     }
     if (variant === 'exactOut' && max) {
       // variableBorrowAPY in most cases should be higher than stableRate so while this is slightly inaccurate it should be enough
@@ -116,6 +131,7 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }
     variant,
     max,
     chainId,
+    maxSlippage,
   ]);
 
   // updates the route on input change
@@ -237,10 +253,7 @@ export const getRepayCallData = async ({
   chainId,
 }: GetSwapAndRepayCallDataProps) => {
   const paraSwap = getParaswap(chainId);
-  // const srcAmountWithSlippage = new BigNumberZeroDecimal(route.srcAmount)
-  //   .multipliedBy(99)
-  //   .dividedBy(100)
-  //   .toFixed(0);
+
   try {
     const params = await paraSwap.buildTx(
       {

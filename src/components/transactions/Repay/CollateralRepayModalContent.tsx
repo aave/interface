@@ -86,16 +86,16 @@ export function CollateralRepayModalContent({
     swapOut: { ...poolReserve, amount: amountRef.current },
     max: isMaxSelected,
     skip: mainTxState.loading,
+    maxSlippage,
   });
 
-  const minimumReceived = new BigNumber(outputAmount || '0')
-    .multipliedBy(new BigNumber(100).plus(maxSlippage).dividedBy(100))
-    .toString(10);
+  // const minimumReceived = new BigNumber(outputAmount || '0')
+  //   .multipliedBy(new BigNumber(100).plus(maxSlippage).dividedBy(100))
+  //   .toString(10);
 
   console.log(`
     input amount  : ${inputAmount}
     output amount : ${outputAmount}
-    min amount    : ${minimumReceived}
     current       : ${amountRef.current}
   `);
 
@@ -123,7 +123,7 @@ export function CollateralRepayModalContent({
   // debt, hf could go under 1 then it would fail. If that is the case then we need
   // to use flashloan path
   const { hfAfterSwap, hfEffectOfFromAmount } = calculateHFAfterRepay2({
-    amountToReceiveAfterSwap: minimumReceived,
+    amountToReceiveAfterSwap: outputAmount,
     amountToSwap: inputAmount,
     fromAssetData,
     user,
@@ -141,7 +141,7 @@ export function CollateralRepayModalContent({
   // we need to get the min as minimumReceived can be greater than debt as we are swapping
   // a safe amount to repay all. When this happens amountAfterRepay would be < 0 and
   // this would show as certain amount left to repay when we are actually repaying all debt
-  const amountAfterRepay = valueToBigNumber(debt).minus(BigNumber.min(minimumReceived, debt));
+  const amountAfterRepay = valueToBigNumber(debt).minus(BigNumber.min(outputAmount, debt));
   const displayAmountAfterRepayInUsd = amountAfterRepay
     .multipliedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
     .multipliedBy(marketReferencePriceInUsd)
@@ -216,11 +216,7 @@ export function CollateralRepayModalContent({
           <FormattedNumber value={priceImpact} variant="secondary14" percent />
         </Row>
         <Row caption={<Trans>Minimum received</Trans>} captionVariant="subheader1" sx={{ mt: 4 }}>
-          <FormattedNumber
-            value={minimumReceived}
-            variant="secondary14"
-            symbol={poolReserve.symbol}
-          />
+          <FormattedNumber value={outputAmount} variant="secondary14" symbol={poolReserve.symbol} />
         </Row>
         <Typography variant="description" sx={{ mt: 4 }}>
           <Trans>Max slippage rate</Trans>
@@ -261,7 +257,7 @@ export function CollateralRepayModalContent({
       <CollateralRepayActions
         poolReserve={poolReserve}
         fromAssetData={fromAssetData}
-        repayAmount={minimumReceived}
+        repayAmount={outputAmount}
         repayWithAmount={inputAmount}
         repayAllDebt={isMaxSelected}
         useFlashLoan={shouldUseFlashloan}
