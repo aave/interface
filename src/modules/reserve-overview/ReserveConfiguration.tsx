@@ -46,6 +46,28 @@ export const PanelTitle: React.FC<TypographyProps> = (props) => (
   />
 );
 
+interface PanelColumnProps {
+  children?: ReactNode;
+}
+
+export const PanelColumn = ({ children }: PanelColumnProps) => {
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-end',
+        flex: 1,
+        overflow: 'hidden',
+        py: 1,
+      }}
+    >
+      {children}
+    </Box>
+  );
+};
+
 interface PanelItemProps {
   title: ReactNode;
 }
@@ -78,7 +100,7 @@ export const PanelItem: React.FC<PanelItemProps> = ({ title, children }) => {
       }}
     >
       <Typography color="text.secondary">{title}</Typography>
-      {children}
+      <PanelColumn>{children}</PanelColumn>
     </Box>
   );
 };
@@ -143,28 +165,48 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
           >
             <PanelItem title={<Trans>Total supplied</Trans>}>
               <FormattedNumber
-                value={reserve.totalLiquidityUSD /** TODO: should this be liquidity or all? */}
+                value={reserve.totalLiquidity}
                 symbol="USD"
                 variant="main16"
                 compact
               />
+              <FormattedNumber
+                compact
+                value={reserve.totalLiquidityUSD}
+                variant="secondary14"
+                color="text.secondary"
+                symbolsVariant="secondary14"
+                symbolsColor="text.secondary"
+                symbol="USD"
+              />
             </PanelItem>
             <PanelItem title={<Trans>APY</Trans>}>
-              <FormattedNumber value={reserve.supplyAPY} percent variant="main16" sx={{ mr: 3 }} />
+              <FormattedNumber value={reserve.supplyAPY} percent variant="main16" />
               <IncentivesButton symbol={reserve.symbol} incentives={reserve.aIncentivesData} />
             </PanelItem>
             {reserve.supplyCapUSD !== '0' && (
               <PanelItem title={<Trans>Supply cap</Trans>}>
-                <FormattedNumber value={reserve.totalLiquidity} variant="main16" /> of{' '}
                 <FormattedNumber value={reserve.supplyCap} variant="main16" />
+                <FormattedNumber
+                  value={reserve.supplyCapUSD}
+                  variant="secondary14"
+                  color="text.secondary"
+                  symbolsVariant="secondary14"
+                  symbolsColor="text.secondary"
+                  symbol="USD"
+                />
               </PanelItem>
             )}
             {reserve.unbacked !== '0' && (
               <PanelItem title={<Trans>Unbacked</Trans>}>
+                <FormattedNumber value={reserve.unbacked} variant="main16" symbol={reserve.name} />
                 <FormattedNumber
-                  value={reserve.unbacked}
-                  variant="main16"
-                  symbol={reserve.symbol}
+                  value={reserve.unbackedUSD}
+                  variant="secondary14"
+                  color="text.secondary"
+                  symbolsVariant="secondary14"
+                  symbolsColor="text.secondary"
+                  symbol="USD"
                 />
               </PanelItem>
             )}
@@ -377,7 +419,16 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
               }}
             >
               <PanelItem title={<Trans>Total borrowed</Trans>}>
-                <FormattedNumber value={reserve.totalDebtUSD} symbol="USD" variant="main16" />
+                <FormattedNumber value={reserve.totalDebt} symbol="USD" variant="main16" />
+                <FormattedNumber
+                  compact
+                  value={reserve.totalDebtUSD}
+                  variant="secondary14"
+                  color="text.secondary"
+                  symbolsVariant="secondary14"
+                  symbolsColor="text.secondary"
+                  symbol="USD"
+                />
               </PanelItem>
               <PanelItem
                 title={
@@ -389,6 +440,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                 }
               >
                 <FormattedNumber value={reserve.variableBorrowAPY} percent variant="main16" />
+                <IncentivesButton symbol={reserve.symbol} incentives={reserve.vIncentivesData} />
               </PanelItem>
               {reserve.stableBorrowRateEnabled && (
                 <PanelItem
@@ -401,12 +453,20 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                   }
                 >
                   <FormattedNumber value={reserve.stableBorrowAPY} percent variant="main16" />
+                  <IncentivesButton symbol={reserve.symbol} incentives={reserve.sIncentivesData} />
                 </PanelItem>
               )}
               {reserve.borrowCapUSD !== '0' && (
                 <PanelItem title={<Trans>Borrow cap</Trans>}>
-                  <FormattedNumber value={reserve.totalDebt} variant="main16" /> of
                   <FormattedNumber value={reserve.borrowCap} variant="main16" />
+                  <FormattedNumber
+                    value={reserve.borrowCapUSD}
+                    variant="secondary14"
+                    color="text.secondary"
+                    symbolsVariant="secondary14"
+                    symbolsColor="text.secondary"
+                    symbol="USD"
+                  />
                 </PanelItem>
               )}
             </Box>
