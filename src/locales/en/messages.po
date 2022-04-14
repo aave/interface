@@ -303,6 +303,14 @@ msgstr "Borrowing is currently unavailable for {0}."
 msgid "Borrowing is not enabled"
 msgstr "Borrowing is not enabled"
 
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
+msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
+
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "Borrowing is unavailable because you’ve enabled isolation mode, which limits borrowable assets to stablecoins. To manage isolation mode visit your <0>Dashboard</0>."
+msgstr "Borrowing is unavailable because you’ve enabled isolation mode, which limits borrowable assets to stablecoins. To manage isolation mode visit your <0>Dashboard</0>."
+
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Borrowing power and assets are limited due to Isolation mode."
 msgstr "Borrowing power and assets are limited due to Isolation mode."
@@ -1509,6 +1517,10 @@ msgstr "UNSTAKE {symbol}"
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 msgid "UNSTAKING {symbol}"
 msgstr "UNSTAKING {symbol}"
+
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "Unavailable"
+msgstr "Unavailable"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Unbacked"

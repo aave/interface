@@ -1,6 +1,7 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import {
+  Alert,
   Box,
   Button,
   Paper,
@@ -29,6 +30,8 @@ import { CapType } from '../../components/caps/helper';
 import { ConnectWalletPaper } from '../../components/ConnectWalletPaper';
 import { AvailableTooltip } from '../../components/infoTooltips/AvailableTooltip';
 import { Row } from '../../components/primitives/Row';
+import { Link, ROUTES } from '../../components/primitives/Link';
+import { getEmodeMessage } from '../../components/transactions/Emode/EmodeNaming';
 
 const PaperWrapper = ({ children }: { children: ReactNode }) => {
   return (
@@ -160,14 +163,42 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
             capType={CapType.borrowCap}
           />
         }
-        mb={10}
+        mb={3}
       >
-        <FormattedNumber
-          value={canBorrow ? maxAmountToBorrow : '0'}
-          variant="secondary14"
-          symbol={poolReserve.symbol}
-        />
+        {canBorrow ? (
+          <FormattedNumber
+            value={canBorrow ? maxAmountToBorrow : '0'}
+            variant="secondary14"
+            symbol={poolReserve.symbol}
+          />
+        ) : (
+          <Typography variant="secondary14" color="text.secondary">
+            <Trans>Unavailable</Trans>
+          </Typography>
+        )}
       </Row>
+
+      {user?.isInEmode && poolReserve.eModeCategoryId !== user.userEmodeCategoryId && (
+        <Alert sx={{ mb: '12px' }} severity="info" icon={false}>
+          <Trans>
+            Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for{' '}
+            {getEmodeMessage(user.userEmodeCategoryId)} category. To manage E-Mode categories visit
+            your <Link href={ROUTES.dashboard}>Dashboard</Link>.
+          </Trans>
+        </Alert>
+      )}
+
+      {user?.isInIsolationMode && !poolReserve.borrowableInIsolation && (
+        <Alert sx={{ mb: '12px' }} severity="info" icon={false}>
+          <Trans>
+            Borrowing is unavailable because you’ve enabled isolation mode, which limits borrowable
+            assets to stablecoins. To manage isolation mode visit your{' '}
+            <Link href={ROUTES.dashboard}>Dashboard</Link>.
+          </Trans>
+        </Alert>
+      )}
+
+      <Row mb={5} />
 
       <Stack direction="row" spacing={2}>
         <Button
