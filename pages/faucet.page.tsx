@@ -29,7 +29,7 @@ export default function Faucet() {
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const listData = reserves
-    .filter((reserve) => !reserve.isWrappedBaseAsset && !reserve.isFrozen)
+    .filter((reserve) => !reserve.isFrozen)
     .map((reserve) => {
       const walletBalanceUSD = valueToBigNumber(
         walletBalances[reserve.underlyingAsset]?.amountUSD || '0'
