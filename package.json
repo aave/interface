@@ -81,7 +81,7 @@
     "dayjs": "^1.10.8",
     "eth-provider": "^0.10.0",
     "ethereum-blockies-base64": "^1.0.2",
-    "ethers": "^5.5.4",
+    "ethers": "^5.6.4",
     "graphql": "^16.2.0",
     "graphql-ws": "^5.6.2",
     "gray-matter": "^4.0.3",
