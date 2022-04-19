@@ -380,6 +380,10 @@ msgstr "Close"
 msgid "Collateral"
 msgstr "Collateral"
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Collateral amount to repay with"
+msgstr "Collateral amount to repay with"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Collateral is (mostly) the same currency that is being borrowed"
 msgstr "Collateral is (mostly) the same currency that is being borrowed"
@@ -463,6 +467,10 @@ msgstr "Dashboard"
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 msgid "Debt"
 msgstr "Debt"
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Debt amount to repay"
+msgstr "Debt amount to repay"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Debt ceiling"
