@@ -132,8 +132,11 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
           title={!loading && <Trans>{poolReserve.symbol}</Trans>}
           withoutIconWrapper
           icon={<ReserveIcon />}
-          titleIcon={
-            loading ? (
+          loading={loading}
+        >
+          <Box sx={{ display: 'inline-flex' }}>
+            <ReserveName />
+            {loading ? (
               <Skeleton width={16} height={16} sx={{ ml: 1, background: '#383D51' }} />
             ) : (
               <Link
@@ -146,11 +149,8 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
                   <ExternalLinkIcon />
                 </SvgIcon>
               </Link>
-            )
-          }
-          loading={loading}
-        >
-          <ReserveName />
+            )}
+          </Box>
         </TopInfoPanelItem>
       )}
 
@@ -192,11 +192,16 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
         />
       </TopInfoPanelItem>
 
-      <TopInfoPanelItem
-        icon={<DollarIcon />}
-        title={<Trans>Oracle price</Trans>}
-        titleIcon={
-          loading ? (
+      <TopInfoPanelItem icon={<DollarIcon />} title={<Trans>Oracle price</Trans>} loading={loading}>
+        <Box sx={{ display: 'inline-flex' }}>
+          <FormattedNumber
+            value={poolReserve?.priceInUSD}
+            symbol="USD"
+            variant={valueTypographyVariant}
+            symbolsVariant={symbolsTypographyVariant}
+            symbolsColor="#A5A8B6"
+          />
+          {loading ? (
             <Skeleton width={16} height={16} sx={{ ml: 1, background: '#383D51' }} />
           ) : (
             <Link
@@ -207,17 +212,8 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
                 <ExternalLinkIcon />
               </SvgIcon>
             </Link>
-          )
-        }
-        loading={loading}
-      >
-        <FormattedNumber
-          value={poolReserve?.priceInUSD}
-          symbol="USD"
-          variant={valueTypographyVariant}
-          symbolsVariant={symbolsTypographyVariant}
-          symbolsColor="#A5A8B6"
-        />
+          )}
+        </Box>
       </TopInfoPanelItem>
     </TopInfoPanel>
   );
