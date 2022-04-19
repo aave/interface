@@ -1,7 +1,7 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   ComputedReserveData,
   ComputedUserReserveData,
@@ -25,6 +25,7 @@ import { Box, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material'
 import { Row } from 'src/components/primitives/Row';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
+import { TxSuccessView } from '../FlowCommons/Success';
 
 export enum ErrorType {
   NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH,
@@ -41,6 +42,7 @@ export function CollateralRepayModalContent({
   const { gasLimit, txError, mainTxState } = useModalContext();
   const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
+
   const repayTokens = user.userReservesData
     .filter(
       (userReserve) =>
@@ -157,6 +159,11 @@ export function CollateralRepayModalContent({
         return null;
     }
   };
+
+  if (mainTxState.success)
+    return (
+      <TxSuccessView action="repayed" amount={amountRef.current} symbol={poolReserve.symbol} />
+    );
 
   return (
     <>

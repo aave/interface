@@ -1,12 +1,14 @@
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 import { useConnectionStatusContext } from '../useConnectionStatusContext';
+import { useModalContext } from '../useModal';
 import { useProtocolDataContext } from '../useProtocolDataContext';
 import { usePoolDataCached } from './usePoolDataCached';
 import { usePoolDataRPC } from './usePoolDataRPC';
 
 export const usePoolData = () => {
   const { currentAccount } = useWeb3Context();
+  const { mainTxState } = useModalContext();
   const { currentMarketData, currentChainId, currentMarket } = useProtocolDataContext();
   const { isRPCActive } = useConnectionStatusContext();
 
@@ -18,7 +20,7 @@ export const usePoolData = () => {
     currentChainId,
     currentMarket,
     currentAccount,
-    rpcMode
+    rpcMode || (mainTxState.loading ?? false)
   );
 
   const {
@@ -29,7 +31,7 @@ export const usePoolData = () => {
     currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
     currentChainId,
     currentMarketData.addresses.UI_POOL_DATA_PROVIDER,
-    !rpcMode,
+    !rpcMode || (mainTxState.loading ?? false),
     currentAccount
   );
 
