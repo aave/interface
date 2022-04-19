@@ -26,6 +26,7 @@ import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYToolt
 import { IncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { ExclamationIcon } from '@heroicons/react/outline';
 import { EModeTooltip } from 'src/components/infoTooltips/EModeTooltip';
+import { ReserveSubheader } from 'src/components/ReserveSubheader';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
   <Box
@@ -164,21 +165,8 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
             }}
           >
             <PanelItem title={<Trans>Total supplied</Trans>}>
-              <FormattedNumber
-                value={reserve.totalLiquidity}
-                symbol="USD"
-                variant="main16"
-                compact
-              />
-              <FormattedNumber
-                compact
-                value={reserve.totalLiquidityUSD}
-                variant="secondary14"
-                color="text.secondary"
-                symbolsVariant="secondary14"
-                symbolsColor="text.secondary"
-                symbol="USD"
-              />
+              <FormattedNumber value={reserve.totalLiquidity} variant="main16" compact />
+              <ReserveSubheader value={reserve.totalLiquidityUSD} />
             </PanelItem>
             <PanelItem title={<Trans>APY</Trans>}>
               <FormattedNumber value={reserve.supplyAPY} percent variant="main16" />
@@ -187,27 +175,13 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
             {reserve.supplyCapUSD !== '0' && (
               <PanelItem title={<Trans>Supply cap</Trans>}>
                 <FormattedNumber value={reserve.supplyCap} variant="main16" />
-                <FormattedNumber
-                  value={reserve.supplyCapUSD}
-                  variant="secondary14"
-                  color="text.secondary"
-                  symbolsVariant="secondary14"
-                  symbolsColor="text.secondary"
-                  symbol="USD"
-                />
+                <ReserveSubheader value={reserve.supplyCapUSD} />
               </PanelItem>
             )}
             {reserve.unbacked !== '0' && (
               <PanelItem title={<Trans>Unbacked</Trans>}>
                 <FormattedNumber value={reserve.unbacked} variant="main16" symbol={reserve.name} />
-                <FormattedNumber
-                  value={reserve.unbackedUSD}
-                  variant="secondary14"
-                  color="text.secondary"
-                  symbolsVariant="secondary14"
-                  symbolsColor="text.secondary"
-                  symbol="USD"
-                />
+                <ReserveSubheader value={reserve.unbackedUSD} />
               </PanelItem>
             )}
           </Box>
@@ -419,16 +393,8 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
               }}
             >
               <PanelItem title={<Trans>Total borrowed</Trans>}>
-                <FormattedNumber value={reserve.totalDebt} symbol="USD" variant="main16" />
-                <FormattedNumber
-                  compact
-                  value={reserve.totalDebtUSD}
-                  variant="secondary14"
-                  color="text.secondary"
-                  symbolsVariant="secondary14"
-                  symbolsColor="text.secondary"
-                  symbol="USD"
-                />
+                <FormattedNumber value={reserve.totalDebt} variant="main16" />
+                <ReserveSubheader value={reserve.totalDebtUSD} />
               </PanelItem>
               <PanelItem
                 title={
@@ -459,14 +425,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
               {reserve.borrowCapUSD !== '0' && (
                 <PanelItem title={<Trans>Borrow cap</Trans>}>
                   <FormattedNumber value={reserve.borrowCap} variant="main16" />
-                  <FormattedNumber
-                    value={reserve.borrowCapUSD}
-                    variant="secondary14"
-                    color="text.secondary"
-                    symbolsVariant="secondary14"
-                    symbolsColor="text.secondary"
-                    symbol="USD"
-                  />
+                  <ReserveSubheader value={reserve.borrowCapUSD} />
                 </PanelItem>
               )}
             </Box>

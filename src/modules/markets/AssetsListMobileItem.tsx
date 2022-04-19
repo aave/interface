@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Button, Divider, Box } from '@mui/material';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
+import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
@@ -26,21 +27,13 @@ export const AssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            alignItems: { xs: 'flex-end', xsm: 'center' },
+            alignItems: { xs: 'flex-end' },
             justifyContent: 'center',
             textAlign: 'center',
           }}
         >
           <FormattedNumber compact value={reserve.totalLiquidity} variant="secondary14" />
-          <FormattedNumber
-            compact
-            value={reserve.totalLiquidityUSD}
-            variant="secondary12"
-            color="text.secondary"
-            symbolsVariant="secondary12"
-            symbolsColor="text.secondary"
-            symbol="USD"
-          />
+          <ReserveSubheader value={reserve.totalLiquidityUSD} rightAlign={true} />
         </Box>
       </Row>
       <Row
@@ -65,21 +58,13 @@ export const AssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            alignItems: { xs: 'flex-end', xsm: 'center' },
+            alignItems: { xs: 'flex-end' },
             justifyContent: 'center',
             textAlign: 'center',
           }}
         >
           <FormattedNumber compact value={reserve.totalDebt} variant="secondary14" />
-          <FormattedNumber
-            compact
-            value={reserve.totalDebtUSD}
-            variant="secondary12"
-            color="text.secondary"
-            symbolsVariant="secondary12"
-            symbolsColor="text.secondary"
-            symbol="USD"
-          />
+          <ReserveSubheader value={reserve.totalDebtUSD} rightAlign={true} />
         </Box>
       </Row>
       <Row

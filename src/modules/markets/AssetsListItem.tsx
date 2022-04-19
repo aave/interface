@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Button, Typography, Box } from '@mui/material';
 import { useRouter } from 'next/router';
+import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
@@ -40,15 +41,7 @@ export const AssetsListItem = ({ ...reserve }: ComputedReserveData) => {
 
       <ListColumn>
         <FormattedNumber compact value={reserve.totalLiquidity} variant="main16" />
-        <FormattedNumber
-          compact
-          value={reserve.totalLiquidityUSD}
-          variant="secondary14"
-          color="text.secondary"
-          symbolsVariant="secondary14"
-          symbolsColor="text.secondary"
-          symbol="USD"
-        />
+        <ReserveSubheader value={reserve.totalLiquidityUSD} />
       </ListColumn>
 
       <ListColumn>
@@ -63,15 +56,7 @@ export const AssetsListItem = ({ ...reserve }: ComputedReserveData) => {
 
       <ListColumn>
         <FormattedNumber compact value={reserve.totalDebt} variant="main16" />
-        <FormattedNumber
-          compact
-          value={reserve.totalDebtUSD}
-          variant="secondary14"
-          color="text.secondary"
-          symbolsVariant="secondary14"
-          symbolsColor="text.secondary"
-          symbol="USD"
-        />
+        <ReserveSubheader value={reserve.totalDebtUSD} />
       </ListColumn>
 
       <ListColumn>
