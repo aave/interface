@@ -70,7 +70,9 @@ export function CollateralRepayModalContent({
   const amountRef = useRef<string>('');
 
   const debt =
-    debtType === InterestRate.Stable ? userReserve.stableBorrows : userReserve.variableBorrows;
+    debtType === InterestRate.Stable
+      ? userReserve?.stableBorrows || '0'
+      : userReserve?.variableBorrows || '0';
   const safeAmountToRepayAll = valueToBigNumber(debt).multipliedBy('1.0025');
 
   const isMaxSelected = _amount === '-1';

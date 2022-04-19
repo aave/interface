@@ -25,7 +25,7 @@ interface CalculateHFAfterSwapRepayProps {
   fromAssetData: ComputedReserveData;
   toAssetData: ComputedReserveData;
   user: ExtendedFormattedUser;
-  repayWithUserReserve: ComputedUserReserve;
+  repayWithUserReserve?: ComputedUserReserve;
   debt: string;
 }
 
@@ -104,7 +104,7 @@ export const calculateHFAfterRepay = ({
   let hfInitialEffectOfFromAmount = '0';
 
   if (
-    repayWithUserReserve.usageAsCollateralEnabledOnUser &&
+    repayWithUserReserve?.usageAsCollateralEnabledOnUser &&
     fromAssetData.usageAsCollateralEnabled
   ) {
     hfInitialEffectOfFromAmount = calculateHealthFactorFromBalancesBigUnits({
