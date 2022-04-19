@@ -1,7 +1,7 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import {
   ComputedReserveData,
   ComputedUserReserveData,
