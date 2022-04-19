@@ -1,9 +1,11 @@
 import React, { ReactNode } from 'react';
 import { Trans } from '@lingui/macro';
 import {
+  Alert,
   Box,
   BoxProps,
   Divider,
+  Link,
   Typography,
   TypographyProps,
   useMediaQuery,
@@ -185,181 +187,183 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
             </ChartContainer>
           )}
 
-          <Box
-            sx={{
-              mt: 4,
-              py: '12px',
-              px: '16px',
-              bgcolor: 'background.surface',
-              borderRadius: '6px',
-            }}
-          >
-            <div>
-              {!reserve.isIsolated && (
-                <Typography sx={{ display: 'inline-flex', alignItems: 'center' }}>
-                  <Trans>Collateral usage:</Trans>
-                  {reserve.usageAsCollateralEnabled ? (
-                    <>
-                      <CheckRoundedIcon fontSize="small" color="success" sx={{ ml: 2 }} />
-                      <Trans>Can be collateral</Trans>
-                    </>
-                  ) : (
-                    <>
-                      <CloseRoundedIcon fontSize="small" color="error" sx={{ ml: 2 }} />
-                      <Trans>No</Trans>
-                    </>
-                  )}
-                </Typography>
-              )}
-              {reserve.isIsolated && (
-                <Box
-                  sx={{
-                    display: 'inline-flex',
-                    bgcolor: 'warning.main',
-                    p: '4px 8px',
-                    color: '#fff',
-                    borderRadius: '6px',
-                  }}
-                >
-                  <ExclamationIcon style={{ height: 16, paddingRight: '4px' }} />
-                  <Trans>Can only be used as collateral in isolation mode</Trans>
+          <div>
+            {!reserve.isIsolated ? (
+              reserve.usageAsCollateralEnabled ? (
+                <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                  <Typography color="text.secondary">
+                    <Trans>Collateral usage</Trans>
+                  </Typography>
+                  <CheckRoundedIcon fontSize="small" color="success" sx={{ ml: 2 }} />
+                  <Typography variant="subheader1" sx={{ color: '#46BC4B' }}>
+                    <Trans>Can be collateral</Trans>
+                  </Typography>
                 </Box>
-              )}
-            </div>
-            {reserve.usageAsCollateralEnabled && (
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: { xs: 'column', sm: 'row' },
-                  alignItems: { xs: 'flex-start', sm: 'center' },
-                  flexWrap: 'wrap',
-                  mt: '16px',
-                  '& > :not(:last-child)': {
-                    mr: 4,
-                  },
-                }}
-              >
-                <Typography sx={{ display: 'inline-flex' }}>
-                  <Typography sx={{ color: 'text.muted' }} component="span">
-                    <Trans>Max LTV</Trans>
+              ) : (
+                <div>
+                  <Typography color="text.secondary">
+                    <Trans>Collateral usage</Trans>
                   </Typography>
-                  <FormattedNumber
-                    value={reserve.formattedBaseLTVasCollateral}
-                    percent
-                    variant="secondary14"
-                    sx={{ ml: 2 }}
-                    visibleDecimals={2}
-                  />
+                  <Alert sx={{ my: '12px' }} severity="warning">
+                    <Trans>Asset cannot be used as collateral.</Trans>
+                  </Alert>
+                </div>
+              )
+            ) : (
+              <div>
+                <Typography color="text.secondary">
+                  <Trans>Collateral usage</Trans>
                 </Typography>
-                <Typography sx={{ display: 'inline-flex' }}>
-                  <Typography sx={{ color: 'text.muted' }} component="span">
-                    <Trans>Liquidation threshold</Trans>
+                <Alert sx={{ my: '12px' }} severity="warning">
+                  <Typography variant="subheader1">
+                    <Trans>Asset can only be used as collateral in isolation mode only.</Trans>
                   </Typography>
-                  <FormattedNumber
-                    value={reserve.formattedReserveLiquidationThreshold}
-                    percent
-                    variant="secondary14"
-                    sx={{ ml: 2 }}
-                    visibleDecimals={2}
-                  />
-                </Typography>
-                <Typography sx={{ display: 'inline-flex' }}>
-                  <Typography sx={{ color: 'text.muted' }} component="span">
-                    <Trans>Liquidation penalty</Trans>
+                  <Typography variant="caption">
+                    In Isolation mode you cannot supply other assets as collateral for borrowing.
+                    Assets used as collateral in Isolation mode can only be borrowed to a specific
+                    debt ceiling.{' '}
+                    <Link href="https://docs.aave.com/faq/aave-v3-features#isolation-mode">
+                      Learn more
+                    </Link>
                   </Typography>
-                  <FormattedNumber
-                    value={reserve.formattedReserveLiquidationBonus}
-                    percent
-                    variant="secondary14"
-                    sx={{ ml: 2 }}
-                    visibleDecimals={2}
-                  />
-                </Typography>
-                {reserve.isIsolated && (
-                  <Typography sx={{ display: 'inline-flex' }}>
-                    <Typography sx={{ color: 'text.muted' }} component="span">
-                      <Trans>Debt ceiling</Trans>
-                    </Typography>
-                    <FormattedNumber
-                      value={reserve.isolationModeTotalDebtUSD}
-                      variant="secondary14"
-                      sx={{ ml: 2 }}
-                      symbol="USD"
-                      visibleDecimals={2}
-                    />
-                    &nbsp;of
-                    <FormattedNumber
-                      value={reserve.debtCeilingUSD}
-                      variant="secondary14"
-                      sx={{ ml: 2 }}
-                      symbol="USD"
-                      visibleDecimals={2}
-                    />
-                  </Typography>
-                )}
-              </Box>
+                </Alert>
+              </div>
             )}
-            {reserve.eModeCategoryId !== 0 && (
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: { xs: 'column', sm: 'row' },
-                  alignItems: { xs: 'flex-start', sm: 'center' },
-                  flexWrap: 'wrap',
-                  mt: '16px',
-                  '& > :not(:last-child)': {
-                    mr: 4,
-                  },
-                }}
-              >
-                <Typography sx={{ display: 'inline-flex' }}>
-                  <Typography sx={{ color: 'text.muted' }} component="span">
-                    <Trans>E-Mode max LTV</Trans>
-                  </Typography>
-                  <FormattedNumber
-                    value={reserve.formattedEModeLtv}
-                    percent
-                    variant="secondary14"
-                    sx={{ ml: 2 }}
-                    visibleDecimals={2}
-                  />
+          </div>
+
+          {reserve.usageAsCollateralEnabled && (
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: { xs: 'column', sm: 'row' },
+                alignItems: { xs: 'flex-start', sm: 'center' },
+                flexWrap: 'wrap',
+                mt: '16px',
+                '& > :not(:last-child)': {
+                  mr: 4,
+                },
+              }}
+            >
+              <Typography sx={{ display: 'inline-flex' }}>
+                <Typography sx={{ color: 'text.muted' }} component="span">
+                  <Trans>Max LTV</Trans>
                 </Typography>
-                <Typography sx={{ display: 'inline-flex' }}>
-                  <Typography sx={{ color: 'text.muted' }} component="span">
-                    <Trans>E-Mode liquidation threshold</Trans>
-                  </Typography>
-                  <FormattedNumber
-                    value={reserve.formattedEModeLiquidationThreshold}
-                    percent
-                    variant="secondary14"
-                    sx={{ ml: 2 }}
-                    visibleDecimals={2}
-                  />
-                </Typography>
-                <Typography sx={{ display: 'inline-flex' }}>
-                  <Typography sx={{ color: 'text.muted' }} component="span">
-                    <Trans>E-Mode liquidation penalty</Trans>
-                  </Typography>
-                  <FormattedNumber
-                    value={reserve.formattedEModeLiquidationBonus}
-                    percent
-                    variant="secondary14"
-                    sx={{ ml: 2 }}
-                    visibleDecimals={2}
-                  />
-                </Typography>
-              </Box>
-            )}
-            {reserve.isIsolated && (
-              <Typography variant="caption" sx={{ mt: 2 }}>
-                <Trans>
-                  In Isolation mode you cannot supply other assets as collateral for borrowing.
-                  Assets used as collateral in Isolation mode can only be borrowed to a specific
-                  debt ceiling.
-                </Trans>
+                <FormattedNumber
+                  value={reserve.formattedBaseLTVasCollateral}
+                  percent
+                  variant="secondary14"
+                  sx={{ ml: 2 }}
+                  visibleDecimals={2}
+                />
               </Typography>
-            )}
-          </Box>
+              <Typography sx={{ display: 'inline-flex' }}>
+                <Typography sx={{ color: 'text.muted' }} component="span">
+                  <Trans>Liquidation threshold</Trans>
+                </Typography>
+                <FormattedNumber
+                  value={reserve.formattedReserveLiquidationThreshold}
+                  percent
+                  variant="secondary14"
+                  sx={{ ml: 2 }}
+                  visibleDecimals={2}
+                />
+              </Typography>
+              <Typography sx={{ display: 'inline-flex' }}>
+                <Typography sx={{ color: 'text.muted' }} component="span">
+                  <Trans>Liquidation penalty</Trans>
+                </Typography>
+                <FormattedNumber
+                  value={reserve.formattedReserveLiquidationBonus}
+                  percent
+                  variant="secondary14"
+                  sx={{ ml: 2 }}
+                  visibleDecimals={2}
+                />
+              </Typography>
+              {reserve.isIsolated && (
+                <Typography sx={{ display: 'inline-flex' }}>
+                  <Typography sx={{ color: 'text.muted' }} component="span">
+                    <Trans>Debt ceiling</Trans>
+                  </Typography>
+                  <FormattedNumber
+                    value={reserve.isolationModeTotalDebtUSD}
+                    variant="secondary14"
+                    sx={{ ml: 2 }}
+                    symbol="USD"
+                    visibleDecimals={2}
+                  />
+                  &nbsp;of
+                  <FormattedNumber
+                    value={reserve.debtCeilingUSD}
+                    variant="secondary14"
+                    sx={{ ml: 2 }}
+                    symbol="USD"
+                    visibleDecimals={2}
+                  />
+                </Typography>
+              )}
+            </Box>
+          )}
+          {reserve.eModeCategoryId !== 0 && (
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: { xs: 'column', sm: 'row' },
+                alignItems: { xs: 'flex-start', sm: 'center' },
+                flexWrap: 'wrap',
+                mt: '16px',
+                '& > :not(:last-child)': {
+                  mr: 4,
+                },
+              }}
+            >
+              <Typography sx={{ display: 'inline-flex' }}>
+                <Typography sx={{ color: 'text.muted' }} component="span">
+                  <Trans>E-Mode max LTV</Trans>
+                </Typography>
+                <FormattedNumber
+                  value={reserve.formattedEModeLtv}
+                  percent
+                  variant="secondary14"
+                  sx={{ ml: 2 }}
+                  visibleDecimals={2}
+                />
+              </Typography>
+              <Typography sx={{ display: 'inline-flex' }}>
+                <Typography sx={{ color: 'text.muted' }} component="span">
+                  <Trans>E-Mode liquidation threshold</Trans>
+                </Typography>
+                <FormattedNumber
+                  value={reserve.formattedEModeLiquidationThreshold}
+                  percent
+                  variant="secondary14"
+                  sx={{ ml: 2 }}
+                  visibleDecimals={2}
+                />
+              </Typography>
+              <Typography sx={{ display: 'inline-flex' }}>
+                <Typography sx={{ color: 'text.muted' }} component="span">
+                  <Trans>E-Mode liquidation penalty</Trans>
+                </Typography>
+                <FormattedNumber
+                  value={reserve.formattedEModeLiquidationBonus}
+                  percent
+                  variant="secondary14"
+                  sx={{ ml: 2 }}
+                  visibleDecimals={2}
+                />
+              </Typography>
+            </Box>
+          )}
+          {reserve.isIsolated && (
+            <Typography variant="caption" sx={{ mt: 2 }}>
+              <Trans>
+                In Isolation mode you cannot supply other assets as collateral for borrowing. Assets
+                used as collateral in Isolation mode can only be borrowed to a specific debt
+                ceiling.
+              </Trans>
+            </Typography>
+          )}
         </Box>
       </PanelRow>
 
