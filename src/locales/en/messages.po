@@ -167,6 +167,14 @@ msgstr "Array parameters that should be equal length are not"
 msgid "Asset"
 msgstr "Asset"
 
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Asset can only be used as collateral in isolation mode only."
+msgstr "Asset can only be used as collateral in isolation mode only."
+
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Asset cannot be used as collateral."
+msgstr "Asset cannot be used as collateral."
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeSelect.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
@@ -333,10 +341,6 @@ msgstr "Can be collateral"
 msgid "Can be executed"
 msgstr "Can be executed"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "Can only be used as collateral in isolation mode"
-msgstr "Can only be used as collateral in isolation mode"
-
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Cap reached. Lower supply amount"
 msgstr "Cap reached. Lower supply amount"
@@ -384,13 +388,15 @@ msgstr "Collateral"
 msgid "Collateral is (mostly) the same currency that is being borrowed"
 msgstr "Collateral is (mostly) the same currency that is being borrowed"
 
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Collateral usage"
+msgstr "Collateral usage"
+
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Collateral usage is limited because of isolation mode. <0>Learn More</0>"
 msgstr "Collateral usage is limited because of isolation mode. <0>Learn More</0>"
-
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "Collateral usage:"
-msgstr "Collateral usage:"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Collateralization"
@@ -900,10 +906,6 @@ msgstr "Network not supported for this wallet"
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "New APY"
 msgstr "New APY"
-
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "No"
-msgstr "No"
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 msgid "No rewards to claim"
