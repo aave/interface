@@ -170,7 +170,11 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
             </PanelItem>
             <PanelItem title={<Trans>APY</Trans>}>
               <FormattedNumber value={reserve.supplyAPY} percent variant="main16" />
-              <IncentivesButton symbol={reserve.symbol} incentives={reserve.aIncentivesData} />
+              <IncentivesButton
+                symbol={reserve.symbol}
+                incentives={reserve.aIncentivesData}
+                displayBlank={true}
+              />
             </PanelItem>
             {reserve.supplyCapUSD !== '0' && (
               <PanelItem title={<Trans>Supply cap</Trans>}>
@@ -406,7 +410,11 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                 }
               >
                 <FormattedNumber value={reserve.variableBorrowAPY} percent variant="main16" />
-                <IncentivesButton symbol={reserve.symbol} incentives={reserve.vIncentivesData} />
+                <IncentivesButton
+                  symbol={reserve.symbol}
+                  incentives={reserve.vIncentivesData}
+                  displayBlank={true}
+                />
               </PanelItem>
               {reserve.stableBorrowRateEnabled && (
                 <PanelItem
@@ -419,7 +427,11 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                   }
                 >
                   <FormattedNumber value={reserve.stableBorrowAPY} percent variant="main16" />
-                  <IncentivesButton symbol={reserve.symbol} incentives={reserve.sIncentivesData} />
+                  <IncentivesButton
+                    symbol={reserve.symbol}
+                    incentives={reserve.sIncentivesData}
+                    displayBlank={true}
+                  />
                 </PanelItem>
               )}
               {reserve.borrowCapUSD !== '0' && (
