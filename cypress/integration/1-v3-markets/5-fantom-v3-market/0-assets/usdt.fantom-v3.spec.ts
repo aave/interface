@@ -17,7 +17,7 @@ import constants from '../../../../fixtures/constans.json';
 const testData = {
   depositBaseAmount: {
     asset: assets.fantomMarket.FTM,
-    amount: 9000,
+    amount: 900,
     hasApproval: true,
   },
   testCases: {

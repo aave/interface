@@ -92,7 +92,7 @@ const testData = {
       {
         type: constants.dashboardTypes.deposit,
         assetName: assets.arbitrumMarket.ETH.shortName,
-        amount: 1.07,
+        amount: 1.06,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
       },
@@ -106,7 +106,7 @@ const testData = {
   },
 };
 
-describe('ETH INTEGRATION SPEC, ARBITRUM V3 MARKET', () => {
+describe.skip('ETH INTEGRATION SPEC, ARBITRUM V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyArbitrumFork({ v3: true });
 
