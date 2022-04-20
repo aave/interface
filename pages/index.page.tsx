@@ -8,6 +8,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { usePermissions } from 'src/hooks/usePermissions';
 import { ConnectWalletPaper } from '../src/components/ConnectWalletPaper';
 import { ContentContainer } from '../src/components/ContentContainer';
 import { MainLayout } from '../src/layouts/MainLayout';
@@ -20,6 +21,7 @@ export default function Home() {
   const lg = useMediaQuery(breakpoints.up('lg'));
 
   const { currentAccount, loading: web3Loading } = useWeb3Context();
+  const { isPermissionsLoading } = usePermissions();
 
   const [mode, setMode] = useState<'supply' | 'borrow' | ''>('');
 
@@ -33,7 +35,7 @@ export default function Home() {
       <DashboardTopPanel />
 
       <ContentContainer>
-        {currentAccount && (
+        {currentAccount && !isPermissionsLoading && (
           <Box
             sx={{
               display: { xs: 'flex', lg: 'none' },
@@ -62,7 +64,7 @@ export default function Home() {
           </Box>
         )}
 
-        {currentAccount ? (
+        {currentAccount && !isPermissionsLoading ? (
           <DashboardContentWrapper isBorrow={mode === 'borrow'} />
         ) : (
           <ConnectWalletPaper loading={web3Loading} />

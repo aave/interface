@@ -7,10 +7,12 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 type PermissionsContext = {
   permissions: PERMISSION[];
+  isPermissionsLoading: boolean;
 };
 
 const Context = React.createContext<PermissionsContext>({
   permissions: [],
+  isPermissionsLoading: false,
 });
 
 export const PermissionProvider: React.FC = ({ children }) => {
@@ -46,14 +48,11 @@ export const PermissionProvider: React.FC = ({ children }) => {
     }
   }, [walletAddress, currentMarketData.addresses.PERMISSION_MANAGER]);
 
-  if (isPermissionsLoading) {
-    return <Preloader />;
-  }
-
   return (
     <Context.Provider
       value={{
         permissions,
+        isPermissionsLoading,
       }}
     >
       {children}
