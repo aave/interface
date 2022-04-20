@@ -75,7 +75,7 @@ const testData = {
   },
 };
 
-describe('LINK INTEGRATION SPEC, ARBITRUM V3 MARKET', () => {
+describe.skip('LINK INTEGRATION SPEC, ARBITRUM V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyArbitrumFork({ v3: true });
 

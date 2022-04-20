@@ -94,7 +94,7 @@ const testData = {
   },
 };
 
-describe('USDC INTEGRATION SPEC, ARBITRUM V3 MARKET', () => {
+describe.skip('USDC INTEGRATION SPEC, ARBITRUM V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyArbitrumFork({ v3: true });
 

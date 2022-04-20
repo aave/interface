@@ -10,7 +10,7 @@ import {
   SelectChangeEvent,
   Typography,
 } from '@mui/material';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import NumberFormat, { NumberFormatProps } from 'react-number-format';
 
 import { CapType } from '../caps/helper';
@@ -55,6 +55,8 @@ export interface Asset {
   iconSymbol?: string;
   address?: string;
   aToken?: boolean;
+  priceInUsd?: string;
+  decimals?: number;
 }
 
 export interface AssetInputProps<T extends Asset = Asset> {
@@ -69,6 +71,7 @@ export interface AssetInputProps<T extends Asset = Asset> {
   capType?: CapType;
   maxValue?: string;
   isMaxSelected?: boolean;
+  inputTitle?: ReactNode;
 }
 
 export const AssetInput = <T extends Asset = Asset>({
@@ -82,6 +85,7 @@ export const AssetInput = <T extends Asset = Asset>({
   assets,
   capType,
   maxValue,
+  inputTitle,
   isMaxSelected,
 }: AssetInputProps<T>) => {
   const handleSelect = (event: SelectChangeEvent) => {
@@ -99,7 +103,7 @@ export const AssetInput = <T extends Asset = Asset>({
     <Box>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
         <Typography color="text.secondary">
-          <Trans>Amount</Trans>
+          {inputTitle ? inputTitle : <Trans>Amount</Trans>}
         </Typography>
         {capType && <AvailableTooltip capType={capType} />}
       </Box>

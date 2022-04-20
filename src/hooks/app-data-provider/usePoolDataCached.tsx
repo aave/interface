@@ -53,9 +53,12 @@ export function usePoolDataCached(
     variables: { lendingPoolAddressProvider, userAddress: currentAccount || '', chainId },
     skip: !currentAccount || skip,
     context: { target: APOLLO_QUERY_TARGET.MARKET(marketName) },
+    fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'cache-and-network',
   });
+
   useEffect(() => {
-    if (currentAccount && !skip)
+    if (currentAccount && !skip) {
       return subscribeToUserData<
         C_UserDataUpdateSubscription,
         C_UserDataUpdateSubscriptionVariables
@@ -74,6 +77,7 @@ export function usePoolDataCached(
         },
         context: { target: APOLLO_QUERY_TARGET.MARKET(marketName) },
       });
+    }
   }, [subscribeToUserData, lendingPoolAddressProvider, currentAccount, skip, chainId, marketName]);
 
   const loading = (currentAccount && userDataLoading) || poolDataLoading;

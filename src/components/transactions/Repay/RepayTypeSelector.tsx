@@ -8,7 +8,7 @@ export enum RepayType {
 }
 
 // set false to enable switch on ui
-const UNFINISHED = true;
+const UNFINISHED = false;
 
 export function RepayTypeSelector({
   repayType,

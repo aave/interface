@@ -21,7 +21,7 @@ const testData = {
   },
 };
 
-describe('REWARD, AVALANCHE V2 MARKET, INTEGRATION SPEC', () => {
+describe.skip('REWARD, AVALANCHE V2 MARKET, INTEGRATION SPEC', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyAvalancheFork({});
 

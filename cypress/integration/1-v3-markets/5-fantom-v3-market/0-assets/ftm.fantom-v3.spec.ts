@@ -92,7 +92,7 @@ const testData = {
       {
         type: constants.dashboardTypes.deposit,
         assetName: assets.fantomMarket.FTM.shortName,
-        amount: 1.07,
+        amount: 1.06,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
       },
