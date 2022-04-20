@@ -38,6 +38,7 @@ export function usePoolDataRPC(
   skip: boolean,
   currentAccount?: string
 ) {
+  console.log('rpc skip: ', skip);
   const { cache } = useApolloClient();
   const [loadingReserves, setLoadingReserves] = useState<boolean>(true);
   const [errorReserves, setErrorReserves] = useState<boolean>(false);

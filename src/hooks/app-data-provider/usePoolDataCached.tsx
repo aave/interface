@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { APOLLO_QUERY_TARGET } from 'src/utils/apolloClient';
+import { useModalContext } from '../useModal';
 
 import {
   C_ProtocolDataUpdateDocument,
@@ -19,6 +20,8 @@ export function usePoolDataCached(
   currentAccount?: string,
   skip = false
 ) {
+  const { mainTxState } = useModalContext();
+  console.log('cache skip::::: ', skip, 'current account: ', currentAccount);
   const { loading: poolDataLoading, subscribeToMore: subscribeToProtocolData } =
     useC_ProtocolDataQuery({
       variables: { lendingPoolAddressProvider, chainId },
@@ -49,13 +52,31 @@ export function usePoolDataCached(
     }
   }, [subscribeToProtocolData, lendingPoolAddressProvider, skip, chainId, marketName]);
 
-  const { loading: userDataLoading, subscribeToMore: subscribeToUserData } = useC_UserDataQuery({
+  const {
+    loading: userDataLoading,
+    subscribeToMore: subscribeToUserData,
+    data,
+  } = useC_UserDataQuery({
     variables: { lendingPoolAddressProvider, userAddress: currentAccount || '', chainId },
     skip: !currentAccount || skip,
     context: { target: APOLLO_QUERY_TARGET.MARKET(marketName) },
   });
+
+  console.log('data: ', data);
+
   useEffect(() => {
-    if (currentAccount && !skip)
+    console.log(
+      'loading:::: ',
+      mainTxState.loading,
+      ' | is it true? ::: ',
+      mainTxState.loading !== true
+    );
+    console.log(
+      'currentAccount && !skip ::: ',
+      currentAccount && !skip && mainTxState.loading !== true
+    );
+    if (currentAccount && !skip && mainTxState.loading !== true) {
+      console.log('=============');
       return subscribeToUserData<
         C_UserDataUpdateSubscription,
         C_UserDataUpdateSubscriptionVariables
@@ -64,6 +85,7 @@ export function usePoolDataCached(
         variables: { lendingPoolAddressProvider, userAddress: currentAccount || '', chainId },
         updateQuery: (previousQueryResult, { subscriptionData }) => {
           const userData = subscriptionData.data?.userDataUpdate;
+          console.log('user data: ', userData);
           if (!userData) {
             return previousQueryResult;
           }
@@ -74,7 +96,16 @@ export function usePoolDataCached(
         },
         context: { target: APOLLO_QUERY_TARGET.MARKET(marketName) },
       });
-  }, [subscribeToUserData, lendingPoolAddressProvider, currentAccount, skip, chainId, marketName]);
+    }
+  }, [
+    subscribeToUserData,
+    lendingPoolAddressProvider,
+    currentAccount,
+    skip,
+    chainId,
+    marketName,
+    mainTxState,
+  ]);
 
   const loading = (currentAccount && userDataLoading) || poolDataLoading;
 
