@@ -1,4 +1,4 @@
-import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS, PERMISSION } from '@aave/contract-helpers';
 import React from 'react';
 import { ReactElement } from 'react-markdown/lib/react-markdown';
 import {
@@ -8,13 +8,14 @@ import {
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useModalContext } from 'src/hooks/useModal';
+import { usePermissions } from 'src/hooks/usePermissions';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { getNetworkConfig, isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { TxErrorView } from './Error';
-// import { TxSuccessView } from './Success';
+import { PermissionView } from './PermissionView';
 
 export interface ModalWrapperProps {
   underlyingAsset: string;
@@ -33,6 +34,7 @@ export const ModalWrapper: React.FC<{
   // if true wETH will stay wETH otherwise wETH will be returned as ETH
   keepWrappedSymbol?: boolean;
   hideTitleSymbol?: boolean;
+  requiredPermission?: PERMISSION;
   children: (props: ModalWrapperProps) => React.ReactNode;
 }> = ({
   hideTitleSymbol,
@@ -40,16 +42,30 @@ export const ModalWrapper: React.FC<{
   children,
   requiredChainId: _requiredChainId,
   title,
+  requiredPermission,
   keepWrappedSymbol,
 }) => {
   const { chainId: connectedChainId } = useWeb3Context();
   const { walletBalances } = useWalletBalances();
-  const { currentChainId: marketChainId, currentNetworkConfig } = useProtocolDataContext();
+  const {
+    currentChainId: marketChainId,
+    currentNetworkConfig,
+    currentMarketData,
+  } = useProtocolDataContext();
   const { user, reserves } = useAppDataContext();
   const { txError, mainTxState } = useModalContext();
+  const { permissions } = usePermissions();
 
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
+  }
+
+  if (
+    requiredPermission &&
+    isFeatureEnabled.permissions(currentMarketData) &&
+    permissions.includes(requiredPermission)
+  ) {
+    return <PermissionView />;
   }
 
   const requiredChainId = _requiredChainId ? _requiredChainId : marketChainId;
@@ -72,9 +88,6 @@ export const ModalWrapper: React.FC<{
       ? currentNetworkConfig.baseAssetSymbol
       : poolReserve.symbol;
 
-  // if (mainTxState.success) {
-  //   return <TxSuccessView symbol={symbol} />;
-  // }
   return (
     <>
       {!mainTxState.success && (

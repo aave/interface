@@ -18,6 +18,7 @@ import {
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useModalContext } from 'src/hooks/useModal';
+import { usePermissions } from 'src/hooks/usePermissions';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import {
   assetCanBeBorrowedByUser,
@@ -55,8 +56,9 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   const { currentAccount, loading: web3Loading } = useWeb3Context();
   const { user, reserves, loading: loadingReserves } = useAppDataContext();
   const { walletBalances, loading: loadingBalance } = useWalletBalances();
+  const { isPermissionsLoading } = usePermissions();
 
-  if (!currentAccount)
+  if (!currentAccount && !isPermissionsLoading)
     return (
       <ConnectWalletPaper
         description={
