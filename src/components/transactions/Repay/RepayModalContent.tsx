@@ -63,7 +63,9 @@ export const RepayModalContent = ({
   const repayWithATokens = tokenToRepayWith.address === poolReserve.aTokenAddress;
 
   const debt =
-    debtType === InterestRate.Stable ? userReserve.stableBorrows : userReserve.variableBorrows;
+    debtType === InterestRate.Stable
+      ? userReserve?.stableBorrows || '0'
+      : userReserve?.variableBorrows || '0';
   const debtUSD = new BigNumber(debt)
     .multipliedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
     .multipliedBy(marketReferencePriceInUsd)
@@ -79,7 +81,7 @@ export const RepayModalContent = ({
     balance = underlyingBalance;
   } else {
     const normalizedWalletBalance = valueToBigNumber(tokenToRepayWith.balance).minus(
-      userReserve.reserve.symbol.toUpperCase() === networkConfig.baseAssetSymbol ? '0.004' : '0'
+      userReserve?.reserve.symbol.toUpperCase() === networkConfig.baseAssetSymbol ? '0.004' : '0'
     );
     balance = normalizedWalletBalance.toString(10);
     maxAmountToRepay = BigNumber.min(normalizedWalletBalance, debt);

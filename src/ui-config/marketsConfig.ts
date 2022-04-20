@@ -214,6 +214,7 @@ export const marketsData: {
     enabledFeatures: {
       liquiditySwap: true,
       incentives: true,
+      collateralRepay: true,
     },
     cachingServerUrl: 'https://cache-api-43114.aave.com/graphql',
     cachingWSServerUrl: 'wss://cache-api-43114.aave.com/graphql',

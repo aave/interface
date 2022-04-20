@@ -49,11 +49,7 @@ export function usePoolDataCached(
     }
   }, [subscribeToProtocolData, lendingPoolAddressProvider, skip, chainId, marketName]);
 
-  const {
-    loading: userDataLoading,
-    subscribeToMore: subscribeToUserData,
-    data,
-  } = useC_UserDataQuery({
+  const { loading: userDataLoading, subscribeToMore: subscribeToUserData } = useC_UserDataQuery({
     variables: { lendingPoolAddressProvider, userAddress: currentAccount || '', chainId },
     skip: !currentAccount || skip,
     context: { target: APOLLO_QUERY_TARGET.MARKET(marketName) },
@@ -71,7 +67,6 @@ export function usePoolDataCached(
         variables: { lendingPoolAddressProvider, userAddress: currentAccount || '', chainId },
         updateQuery: (previousQueryResult, { subscriptionData }) => {
           const userData = subscriptionData.data?.userDataUpdate;
-          console.log('user data: ', userData);
           if (!userData) {
             return previousQueryResult;
           }
