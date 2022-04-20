@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-04-14 00:18\n"
+"PO-Revision-Date: 2022-04-19 18:05\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -79,7 +79,7 @@ msgstr "Aave est un protocole entièrement décentralisé et régi par la commun
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Aave per month"
-msgstr "Aave per mois"
+msgstr "Aave par mois"
 
 #: src/layouts/WalletWidget.tsx
 msgid "Account"
@@ -145,11 +145,11 @@ msgstr "FAQ d'Ampleforth"
 
 #: src/components/infoModalContents/ApprovalInfoContent.tsx
 msgid "Approval"
-msgstr "Approval"
+msgstr "Approbation"
 
 #: src/components/transactions/FlowCommons/LeftHelperText.tsx
 msgid "Approve confirmed"
-msgstr "Approve confirmée"
+msgstr "Validation confirmée"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Approve to continue"
@@ -246,7 +246,7 @@ msgstr "Solde"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
-msgstr "Soyez prudent - Vous êtes très proche de la liquidation. Envisagez de déposer plus de garantie ou de rembourser certaines de vos positions empruntées"
+msgstr "Soyez prudent - Vous êtes très proche de la liquidation. Envisagez de déposer plus de collatéral ou de rembourser certaines de vos positions empruntées"
 
 #: src/components/transactions/Warnings/SNXWarning.tsx
 msgid "Before supplying"
