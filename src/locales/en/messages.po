@@ -717,10 +717,6 @@ msgstr "If your loan to value goes above the liquidation threshold your collater
 msgid "In E-Mode some assets are not borrowable. Exit E-Mode to get access to all assets"
 msgstr "In E-Mode some assets are not borrowable. Exit E-Mode to get access to all assets"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "In Isolation mode you cannot supply other assets as collateral for borrowing. Assets used as collateral in Isolation mode can only be borrowed to a specific debt ceiling."
-msgstr "In Isolation mode you cannot supply other assets as collateral for borrowing. Assets used as collateral in Isolation mode can only be borrowed to a specific debt ceiling."
-
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "In Isolation mode, you cannot supply other assets as collateral. A global debt ceiling limits the borrowing power of the isolated asset. Read more in our <0>FAQ</0>"
 msgstr "In Isolation mode, you cannot supply other assets as collateral. A global debt ceiling limits the borrowing power of the isolated asset. Read more in our <0>FAQ</0>"

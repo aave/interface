@@ -26,6 +26,7 @@ import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYToolt
 import { IncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { EModeTooltip } from 'src/components/infoTooltips/EModeTooltip';
 import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
+import { getEmodeMessage } from 'src/components/transactions/Emode/EmodeNaming';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
   <Box
@@ -389,6 +390,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
           <PanelRow>
             <PanelTitle>E-Mode info</PanelTitle>
             <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
+              <Box>E-Mode Category {getEmodeMessage(reserve.eModeCategoryId)}</Box>
               <Box
                 sx={{
                   display: 'flex',
