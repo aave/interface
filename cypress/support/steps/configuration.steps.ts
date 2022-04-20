@@ -5,7 +5,7 @@ import { CustomizedBridge } from '../tools/bridge';
 import { ChainId } from '@aave/contract-helpers';
 
 const URL = Cypress.env('URL');
-const PERSIST_FORK_AFTER_RUN = Cypress.env('PERSIST_FORK_AFTER_RUN') || false;
+const CYPRESS_PERSIST_FORK_AFTER_RUN = Cypress.env('CYPRESS_PERSIST_FORK_AFTER_RUN') || false;
 
 export const configEnvWithTenderly = ({
   chainId,
@@ -60,7 +60,7 @@ export const configEnvWithTenderly = ({
     });
   });
   after(async () => {
-    if (!PERSIST_FORK_AFTER_RUN) await tenderly.deleteFork();
+    if (!CYPRESS_PERSIST_FORK_AFTER_RUN) await tenderly.deleteFork();
   });
 };
 
