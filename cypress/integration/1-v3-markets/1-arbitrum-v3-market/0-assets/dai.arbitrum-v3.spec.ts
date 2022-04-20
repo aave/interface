@@ -94,7 +94,7 @@ const testData = {
   },
 };
 
-describe.skip('DAI INTEGRATION SPEC, ARBITRUM V3 MARKET', () => {
+describe('DAI INTEGRATION SPEC, ARBITRUM V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyArbitrumFork({ v3: true });
 
