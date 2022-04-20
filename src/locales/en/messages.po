@@ -112,6 +112,10 @@ msgstr "All done!"
 msgid "All proposals"
 msgstr "All proposals"
 
+#: src/components/transactions/FlowCommons/PermissionView.tsx
+msgid "Allowance required action"
+msgstr "Allowance required action"
+
 #: src/components/infoTooltips/CollateralSwitchTooltip.tsx
 msgid "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
 msgstr "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
@@ -371,6 +375,7 @@ msgid "Claiming"
 msgstr "Claiming"
 
 #: src/components/transactions/FlowCommons/Error.tsx
+#: src/components/transactions/FlowCommons/PermissionView.tsx
 msgid "Close"
 msgstr "Close"
 
@@ -1445,6 +1450,10 @@ msgstr "Time left until the withdrawal window closes."
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "To borrow you need to supply any asset to be used as collateral."
 msgstr "To borrow you need to supply any asset to be used as collateral."
+
+#: src/components/transactions/FlowCommons/PermissionView.tsx
+msgid "To get allowed to use this market please visit: <0>Fireblocks</0>"
+msgstr "To get allowed to use this market please visit: <0>Fireblocks</0>"
 
 #: src/ui-config/errorMapping.tsx
 msgid "To repay on behalf of a user an explicit amount to repay is needed"
