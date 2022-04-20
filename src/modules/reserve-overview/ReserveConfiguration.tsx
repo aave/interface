@@ -25,6 +25,7 @@ import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { IncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { EModeTooltip } from 'src/components/infoTooltips/EModeTooltip';
+import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
   <Box
@@ -234,68 +235,67 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                 alignItems: { xs: 'flex-start', sm: 'center' },
                 flexWrap: 'wrap',
                 mt: '16px',
-                '& > :not(:last-child)': {
-                  mr: 4,
-                },
               }}
             >
-              <Typography sx={{ display: 'inline-flex' }}>
-                <Typography sx={{ color: 'text.muted' }} component="span">
+              <ReserveOverviewBox>
+                <Typography color="text.secondary" component="span">
                   <Trans>Max LTV</Trans>
                 </Typography>
                 <FormattedNumber
                   value={reserve.formattedBaseLTVasCollateral}
                   percent
                   variant="secondary14"
-                  sx={{ ml: 2 }}
                   visibleDecimals={2}
                 />
-              </Typography>
-              <Typography sx={{ display: 'inline-flex' }}>
-                <Typography sx={{ color: 'text.muted' }} component="span">
+              </ReserveOverviewBox>
+
+              <ReserveOverviewBox>
+                <Typography color="text.secondary" component="span">
                   <Trans>Liquidation threshold</Trans>
                 </Typography>
                 <FormattedNumber
                   value={reserve.formattedReserveLiquidationThreshold}
                   percent
                   variant="secondary14"
-                  sx={{ ml: 2 }}
                   visibleDecimals={2}
                 />
-              </Typography>
-              <Typography sx={{ display: 'inline-flex' }}>
-                <Typography sx={{ color: 'text.muted' }} component="span">
+              </ReserveOverviewBox>
+
+              <ReserveOverviewBox>
+                <Typography color="text.secondary" component="span">
                   <Trans>Liquidation penalty</Trans>
                 </Typography>
                 <FormattedNumber
                   value={reserve.formattedReserveLiquidationBonus}
                   percent
                   variant="secondary14"
-                  sx={{ ml: 2 }}
                   visibleDecimals={2}
                 />
-              </Typography>
+              </ReserveOverviewBox>
+
               {reserve.isIsolated && (
-                <Typography sx={{ display: 'inline-flex' }}>
-                  <Typography sx={{ color: 'text.muted' }} component="span">
+                <ReserveOverviewBox>
+                  <Typography color="text.secondary" component="span">
                     <Trans>Debt ceiling</Trans>
                   </Typography>
-                  <FormattedNumber
-                    value={reserve.isolationModeTotalDebtUSD}
-                    variant="secondary14"
-                    sx={{ ml: 2 }}
-                    symbol="USD"
-                    visibleDecimals={2}
-                  />
-                  &nbsp;of
-                  <FormattedNumber
-                    value={reserve.debtCeilingUSD}
-                    variant="secondary14"
-                    sx={{ ml: 2 }}
-                    symbol="USD"
-                    visibleDecimals={2}
-                  />
-                </Typography>
+                  <Box sx={{ display: 'inline-flex' }}>
+                    <FormattedNumber
+                      value={reserve.isolationModeTotalDebtUSD}
+                      variant="secondary14"
+                      symbol="USD"
+                      symbolsVariant="secondary14"
+                      visibleDecimals={2}
+                    />
+                    &nbsp;of
+                    <FormattedNumber
+                      value={reserve.debtCeilingUSD}
+                      variant="secondary14"
+                      symbol="USD"
+                      symbolsVariant="secondary14"
+                      visibleDecimals={2}
+                    />
+                  </Box>
+                </ReserveOverviewBox>
               )}
             </Box>
           )}
@@ -401,7 +401,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                   },
                 }}
               >
-                <Typography sx={{ display: 'inline-flex' }}>
+                <ReserveOverviewBox>
                   <Typography sx={{ color: 'text.muted' }} component="span">
                     <Trans>E-Mode max LTV</Trans>
                   </Typography>
@@ -412,8 +412,8 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                     sx={{ ml: 2 }}
                     visibleDecimals={2}
                   />
-                </Typography>
-                <Typography sx={{ display: 'inline-flex' }}>
+                </ReserveOverviewBox>
+                <ReserveOverviewBox>
                   <Typography sx={{ color: 'text.muted' }} component="span">
                     <Trans>E-Mode liquidation threshold</Trans>
                   </Typography>
@@ -424,8 +424,8 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                     sx={{ ml: 2 }}
                     visibleDecimals={2}
                   />
-                </Typography>
-                <Typography sx={{ display: 'inline-flex' }}>
+                </ReserveOverviewBox>
+                <ReserveOverviewBox>
                   <Typography sx={{ color: 'text.muted' }} component="span">
                     <Trans>E-Mode liquidation penalty</Trans>
                   </Typography>
@@ -436,7 +436,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                     sx={{ ml: 2 }}
                     visibleDecimals={2}
                   />
-                </Typography>
+                </ReserveOverviewBox>
               </Box>
             </Box>
           </PanelRow>
