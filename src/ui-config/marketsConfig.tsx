@@ -1,4 +1,6 @@
 import { ChainId } from '@aave/contract-helpers';
+import { ReactNode } from 'react';
+import { PermissionView } from 'src/components/transactions/FlowCommons/PermissionView';
 
 export type MarketDataType = {
   v3?: boolean;
@@ -18,6 +20,7 @@ export type MarketDataType = {
   cachingWSServerUrl?: string;
   rpcOnly?: boolean;
   isFork?: boolean;
+  permissionComponent?: ReactNode;
   addresses: {
     LENDING_POOL_ADDRESS_PROVIDER: string;
     LENDING_POOL: string;
@@ -71,6 +74,8 @@ export enum CustomMarket {
   proto_mumbai = 'proto_mumbai',
   amm_kovan = 'amm_kovan',
   amm_mainnet = 'amm_mainnet',
+  // external
+  arc_v2 = 'arc_v2',
 }
 
 export const marketsData: {
@@ -120,6 +125,29 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: '0xD01ab9a6577E1D84F142e44D49380e23A340387d',
     },
     halMarketName: 'aavev2',
+  },
+  [CustomMarket.arc_v2]: {
+    marketTitle: 'Ethereum Arc',
+    chainId: ChainId.mainnet,
+    enabledFeatures: {
+      // liquiditySwap: true,
+      // collateralRepay: true,
+      // incentives: true,
+      permissions: true,
+    },
+    rpcOnly: true,
+    permissionComponent: <PermissionView />,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0x6FdfafB66d39cD72CFE7984D3Bbcc76632faAb00'.toLowerCase(),
+      LENDING_POOL: '0x37D7306019a38Af123e4b245Eb6C28AF552e0bB0',
+      WETH_GATEWAY: '0xD51E46B02eCB71357cBdf661E2789EC787d94Af9',
+      // REPAY_WITH_COLLATERAL_ADAPTER: '0x80Aca0C645fEdABaa20fd2Bf0Daf57885A309FE6',
+      // SWAP_COLLATERAL_ADAPTER: '0x135896DE8421be2ec868E0b811006171D9df802A',
+      WALLET_BALANCE_PROVIDER: '0x8E8dAd5409E0263a51C0aB5055dA66Be28cFF922',
+      UI_POOL_DATA_PROVIDER: '0x548e95Ce38B8cb1D91FD82A9F094F26295840277',
+      // UI_INCENTIVE_DATA_PROVIDER: '0xD01ab9a6577E1D84F142e44D49380e23A340387d',
+      PERMISSION_MANAGER: '0xF4a1F5fEA79C3609514A417425971FadC10eCfBE',
+    },
   },
   [CustomMarket.amm_kovan]: {
     marketTitle: 'Ethereum AMM Kovan',

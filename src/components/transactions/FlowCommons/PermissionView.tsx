@@ -23,7 +23,7 @@ export const PermissionView = () => {
         <Typography sx={{ mt: '10px', textAlign: 'center' }}>
           <Trans>
             To get allowed to use this market please visit:{' '}
-            <Link href="https://info.fireblocks.com/pd-beta">Fireblocks</Link>
+            <Link href={'https://info.fireblocks.com/pd-beta'}>Fireblocks</Link>
           </Trans>
         </Typography>
       </Box>

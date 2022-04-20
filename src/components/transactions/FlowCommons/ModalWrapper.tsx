@@ -15,7 +15,6 @@ import { getNetworkConfig, isFeatureEnabled } from 'src/utils/marketsAndNetworks
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { TxErrorView } from './Error';
-import { PermissionView } from './PermissionView';
 
 export interface ModalWrapperProps {
   underlyingAsset: string;
@@ -63,9 +62,10 @@ export const ModalWrapper: React.FC<{
   if (
     requiredPermission &&
     isFeatureEnabled.permissions(currentMarketData) &&
-    permissions.includes(requiredPermission)
+    !permissions.includes(requiredPermission) &&
+    currentMarketData.permissionComponent
   ) {
-    return <PermissionView />;
+    return <>{currentMarketData.permissionComponent}</>;
   }
 
   const requiredChainId = _requiredChainId ? _requiredChainId : marketChainId;
