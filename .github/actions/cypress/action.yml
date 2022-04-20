@@ -58,6 +58,7 @@ runs:
         CYPRESS_TENDERLY_ACCOUNT: ${{ inputs.CYPRESS_TENDERLY_ACCOUNT }}
         CYPRESS_TENDERLY_KEY: ${{ inputs.CYPRESS_TENDERLY_KEY }}
         CYPRESS_TENDERLY_PROJECT: ${{ inputs.CYPRESS_TENDERLY_PROJECT }}
+        CYPRESS_PERSIST_FORK_AFTER_RUN: 'false'
 
     - name: upload screenshots
       uses: actions/upload-artifact@6673cd052c4cd6fcf4b4e6e60ea986c889389535 # v3.0.0
