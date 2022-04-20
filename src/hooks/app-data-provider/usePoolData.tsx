@@ -22,7 +22,7 @@ export const usePoolData = () => {
     currentChainId,
     currentMarket,
     currentAccount,
-    rpcMode
+    rpcMode || mainTxState.loading
   );
 
   const {
