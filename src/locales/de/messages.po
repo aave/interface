@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-04-05 18:04\n"
+"PO-Revision-Date: 2022-04-20 18:04\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -385,6 +385,10 @@ msgstr ""
 msgid "Collateral"
 msgstr ""
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Collateral amount to repay with"
+msgstr ""
+
 #: src/ui-config/errorMapping.tsx
 msgid "Collateral is (mostly) the same currency that is being borrowed"
 msgstr ""
@@ -467,6 +471,10 @@ msgstr ""
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 msgid "Debt"
+msgstr ""
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Debt amount to repay"
 msgstr ""
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
@@ -854,6 +862,7 @@ msgstr ""
 msgid "Max slashing"
 msgstr ""
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Max slippage rate"
 msgstr ""
@@ -862,6 +871,7 @@ msgstr ""
 msgid "Menu"
 msgstr ""
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Minimum received"
 msgstr ""
@@ -928,6 +938,10 @@ msgstr ""
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
 msgid "Not enough balance on your wallet"
+msgstr ""
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Not enough collateral to repay this amount of debt with"
 msgstr ""
 
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
@@ -1000,6 +1014,7 @@ msgstr ""
 msgid "Pool addresses provider is not registered"
 msgstr ""
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Price impact"
 msgstr ""
@@ -1062,10 +1077,12 @@ msgstr ""
 msgid "Repay with"
 msgstr ""
 
+#: src/components/transactions/Repay/CollateralRepayActions.tsx
 #: src/components/transactions/Repay/RepayActions.tsx
 msgid "Repay {symbol}"
 msgstr ""
 
+#: src/components/transactions/Repay/CollateralRepayActions.tsx
 #: src/components/transactions/Repay/RepayActions.tsx
 msgid "Repaying {symbol}"
 msgstr ""

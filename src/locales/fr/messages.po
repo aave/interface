@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-04-19 18:05\n"
+"PO-Revision-Date: 2022-04-20 18:04\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -385,6 +385,10 @@ msgstr "Fermer"
 msgid "Collateral"
 msgstr "Collatérale"
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Collateral amount to repay with"
+msgstr ""
+
 #: src/ui-config/errorMapping.tsx
 msgid "Collateral is (mostly) the same currency that is being borrowed"
 msgstr "La garantie est (principalement) la même devise que celle qui est empruntée"
@@ -468,6 +472,10 @@ msgstr "Tableau de bord"
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 msgid "Debt"
 msgstr "Dette"
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Debt amount to repay"
+msgstr ""
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Debt ceiling"
@@ -854,6 +862,7 @@ msgstr "Max LTV"
 msgid "Max slashing"
 msgstr "Coupure maximale"
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Max slippage rate"
 msgstr "Taux de glissement maximum"
@@ -862,6 +871,7 @@ msgstr "Taux de glissement maximum"
 msgid "Menu"
 msgstr "Menu"
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Minimum received"
 msgstr "Minimum reçu"
@@ -929,6 +939,10 @@ msgstr "Pas une adresse valide"
 #: src/components/transactions/Stake/StakeModalContent.tsx
 msgid "Not enough balance on your wallet"
 msgstr "Pas assez de solde sur votre portefeuille"
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Not enough collateral to repay this amount of debt with"
+msgstr ""
 
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Not enough staked balance"
@@ -1000,6 +1014,7 @@ msgstr "S'il vous plaît, connectez votre portefeuille"
 msgid "Pool addresses provider is not registered"
 msgstr "Le fournisseur d'adresses de pool n'est pas enregistré"
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Price impact"
 msgstr "Incidence sur les prix"
@@ -1062,10 +1077,12 @@ msgstr "Rembourser"
 msgid "Repay with"
 msgstr "Rembourser avec"
 
+#: src/components/transactions/Repay/CollateralRepayActions.tsx
 #: src/components/transactions/Repay/RepayActions.tsx
 msgid "Repay {symbol}"
 msgstr "Rembourser {symbole}"
 
+#: src/components/transactions/Repay/CollateralRepayActions.tsx
 #: src/components/transactions/Repay/RepayActions.tsx
 msgid "Repaying {symbol}"
 msgstr "Remboursement {symbole}"
