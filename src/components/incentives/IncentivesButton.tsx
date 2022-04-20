@@ -23,13 +23,15 @@ export const IncentivesButton = ({ incentives, symbol, displayBlank }: Incentive
       return (
         <Box
           sx={{
-            p: { xs: '0 4px', xsm: '2px 4px' },
+            p: { xs: '0 4px', xsm: '3.625px 4px' },
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
           }}
         >
-          &nbsp;
+          <Typography variant="main12" color="text.secondary">
+            &nbsp;
+          </Typography>
         </Box>
       );
     } else {

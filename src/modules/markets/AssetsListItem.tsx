@@ -31,11 +31,16 @@ export const AssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           <Typography variant="h4" noWrap>
             {reserve.name}
           </Typography>
-          <Typography variant="subheader2" color="text.muted" noWrap>
-            {reserve.symbol}
-          </Typography>
+          <Box
+            sx={{
+              p: { xs: '0 4px', xsm: '3.625px 4px' },
+            }}
+          >
+            <Typography variant="subheader2" color="text.muted" noWrap>
+              {reserve.symbol}
+            </Typography>
+          </Box>
         </Box>
-
         {reserve.symbol === 'AMPL' && <AMPLWarning />}
       </ListColumn>
 
