@@ -200,25 +200,17 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   // second, try connecting to coinbase
   useEffect(() => {
-    console.log('--------------------');
     if (!triedCoinbase) {
-      console.log('===============');
       // do check if condition applies to try and connect directly to coinbase
-      console.log('tried coinbase: ', triedCoinbase);
-      console.log('tried safe: ', triedSafe);
       if (triedSafe) {
         if (isMobile(window.navigator.userAgent)) {
           const canConnectToCoinbase = activateInjectedProvider('CoinBase');
-          console.log('can connect: ', canConnectToCoinbase);
           if (canConnectToCoinbase) {
-            console.log('trying coinbase');
             connectWallet(WalletType.INJECTED)
               .then(() => {
-                console.log('success finding coinbase wallet');
                 setTriedCoinbase(true);
               })
               .catch(() => {
-                console.log('error finding coinbase wallet');
                 setTriedCoinbase(true);
               });
           } else {
@@ -227,7 +219,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
             if (ethereum) {
               activateInjectedProvider('CoinBase');
-              console.log('||||||||||||||||||');
               ethereum.request({ method: 'eth_requestAccounts' });
             }
 
