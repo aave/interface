@@ -1468,13 +1468,13 @@ msgstr "Time left until the withdrawal window closes."
 msgid "To borrow you need to supply any asset to be used as collateral."
 msgstr "To borrow you need to supply any asset to be used as collateral."
 
-#: src/components/transactions/FlowCommons/PermissionView.tsx
-msgid "To get allowed to use this market please visit: <0>Fireblocks</0>"
-msgstr "To get allowed to use this market please visit: <0>Fireblocks</0>"
-
 #: src/ui-config/errorMapping.tsx
 msgid "To repay on behalf of a user an explicit amount to repay is needed"
 msgstr "To repay on behalf of a user an explicit amount to repay is needed"
+
+#: src/components/transactions/FlowCommons/PermissionView.tsx
+msgid "To request access for this permissioned market, please visit: <0>Fireblocks</0>"
+msgstr "To request access for this permissioned market, please visit: <0>Fireblocks</0>"
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "To see your supplies and borrowings options, connect your wallet."
