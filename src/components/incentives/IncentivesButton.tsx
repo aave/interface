@@ -12,12 +12,32 @@ import { IncentivesTooltipContent } from './IncentivesTooltipContent';
 interface IncentivesButtonProps {
   symbol: string;
   incentives?: ReserveIncentiveResponse[];
+  displayBlank?: boolean;
 }
 
-export const IncentivesButton = ({ incentives, symbol }: IncentivesButtonProps) => {
+export const IncentivesButton = ({ incentives, symbol, displayBlank }: IncentivesButtonProps) => {
   const [open, setOpen] = useState(false);
 
-  if (!(incentives && incentives.length > 0)) return null;
+  if (!(incentives && incentives.length > 0)) {
+    if (displayBlank) {
+      return (
+        <Box
+          sx={{
+            p: { xs: '0 4px', xsm: '3.625px 4px' },
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Typography variant="main12" color="text.secondary">
+            &nbsp;
+          </Typography>
+        </Box>
+      );
+    } else {
+      return null;
+    }
+  }
 
   const isIncentivesInfinity = incentives.some(
     (incentive) => incentive.incentiveAPR === 'Infinity'
