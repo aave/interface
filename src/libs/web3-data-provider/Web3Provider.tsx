@@ -65,6 +65,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [tried, setTried] = useState(false);
   const [deactivated, setDeactivated] = useState(false);
   const [triedSafe, setTriedSafe] = useState(false);
+  const [triedCoinbase, setTriedCoinbase] = useState(false);
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
 
   // for now we use network changed as it returns the chain string instead of hex
@@ -142,6 +143,39 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     [disconnectWallet]
   );
 
+  const activateInjectedProvider = (providerName: string | 'MetaMask' | 'CoinBase') => {
+    //@ts-expect-error ethereum doesnt necessarly exist
+    const { ethereum } = window;
+
+    if (!ethereum?.providers) {
+      return false;
+    }
+
+    let provider;
+    switch (providerName) {
+      case 'CoinBase':
+        //@ts-expect-error no type
+        provider = ethereum.providers.find(({ isCoinbaseWallet }) => isCoinbaseWallet);
+        break;
+      case 'MetaMask':
+        //@ts-expect-error no type
+        provider = ethereum.providers.find(({ isMetaMask }) => isMetaMask);
+        break;
+      default:
+        return false;
+    }
+
+    if (provider) {
+      ethereum.setSelectedProvider(provider);
+      return true;
+    }
+
+    return false;
+  };
+
+  // activateInjectedProvider('MetaMask');
+  // activate(injected);
+
   // first, try connecting to a gnosis safe
   useEffect(() => {
     if (!triedSafe) {
@@ -163,11 +197,48 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     }
   }, [connectWallet, setTriedSafe, triedSafe]);
 
+  // second, try connecting to coinbase
+  useEffect(() => {
+    console.log('--------------------');
+    if (!triedCoinbase) {
+      console.log('===============');
+      // do check if condition applies to try and connect directly to coinbase
+      const canConnectToCoinbase = activateInjectedProvider('CoinBase');
+      console.log('can connect: ', canConnectToCoinbase);
+      console.log('tried coinbase: ', triedCoinbase);
+      console.log('tried safe: ', triedSafe);
+      if (triedSafe) {
+        if (canConnectToCoinbase) {
+          console.log('trying coinbase');
+          connectWallet(WalletType.INJECTED)
+            .then(() => {
+              console.log('success finding coinbase wallet');
+              setTriedCoinbase(true);
+            })
+            .catch(() => {
+              console.log('error finding coinbase wallet');
+              setTriedCoinbase(true);
+            });
+        } else {
+          // @ts-expect-error ethereum might not be in window
+          const { ethereum } = window;
+
+          if (ethereum) {
+            console.log('||||||||||||||||||');
+            ethereum.request({ method: 'eth_requestAccounts' });
+          }
+
+          setTriedCoinbase(true);
+        }
+      }
+    }
+  }, [connectWallet, triedSafe, setTriedCoinbase, triedCoinbase]);
+
   // handle logic to eagerly connect to the injected ethereum provider,
   // if it exists and has granted access already
   useEffect(() => {
     const lastWalletProvider = localStorage.getItem('walletProvider');
-    if (!active && !deactivated && triedSafe) {
+    if (!active && !deactivated && triedSafe && triedCoinbase) {
       if (!!lastWalletProvider) {
         connectWallet(lastWalletProvider as WalletType).catch(() => {
           setTried(true);
@@ -189,7 +260,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         // });
       }
     }
-  }, [activate, setTried, active, connectWallet, deactivated, triedSafe]);
+  }, [activate, setTried, active, connectWallet, deactivated, triedSafe, triedCoinbase]);
 
   // if the connection worked, wait until we get confirmation of that to flip the flag
   useEffect(() => {
