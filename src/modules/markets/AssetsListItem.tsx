@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Button, Typography, Box } from '@mui/material';
 import { useRouter } from 'next/router';
+import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
@@ -30,22 +31,22 @@ export const AssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           <Typography variant="h4" noWrap>
             {reserve.name}
           </Typography>
-          <Typography variant="subheader2" color="text.muted" noWrap>
-            {reserve.symbol}
-          </Typography>
+          <Box
+            sx={{
+              p: { xs: '0', xsm: '3.625px 0px' },
+            }}
+          >
+            <Typography variant="subheader2" color="text.muted" noWrap>
+              {reserve.symbol}
+            </Typography>
+          </Box>
         </Box>
-
         {reserve.symbol === 'AMPL' && <AMPLWarning />}
       </ListColumn>
 
       <ListColumn>
-        <FormattedNumber
-          compact
-          value={reserve.totalLiquidityUSD}
-          variant="main16"
-          symbolsVariant="secondary16"
-          symbol="USD"
-        />
+        <FormattedNumber compact value={reserve.totalLiquidity} variant="main16" />
+        <ReserveSubheader value={reserve.totalLiquidityUSD} />
       </ListColumn>
 
       <ListColumn>
@@ -59,13 +60,8 @@ export const AssetsListItem = ({ ...reserve }: ComputedReserveData) => {
       </ListColumn>
 
       <ListColumn>
-        <FormattedNumber
-          compact
-          value={reserve.totalDebtUSD}
-          variant="main16"
-          symbolsVariant="secondary16"
-          symbol="USD"
-        />
+        <FormattedNumber compact value={reserve.totalDebt} variant="main16" />
+        <ReserveSubheader value={reserve.totalDebtUSD} />
       </ListColumn>
 
       <ListColumn>
