@@ -1,10 +1,9 @@
 import React, { ReactNode } from 'react';
 import { Box, Typography } from '@mui/material';
-import { Trans } from '@lingui/macro';
 
 type ReserveOverviewBoxProps = {
   children: ReactNode;
-  title: string;
+  title: ReactNode;
 };
 
 export function ReserveOverviewBox({ title, children }: ReserveOverviewBoxProps) {
@@ -30,7 +29,7 @@ export function ReserveOverviewBox({ title, children }: ReserveOverviewBoxProps)
         }}
       >
         <Typography variant="secondary14" color="text.secondary" component="span">
-          <Trans>{title}</Trans>
+          {title}
         </Typography>
         {children}
       </Box>

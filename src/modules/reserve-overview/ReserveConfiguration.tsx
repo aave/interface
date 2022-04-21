@@ -28,6 +28,9 @@ import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
 import { getEmodeMessage } from 'src/components/transactions/Emode/EmodeNaming';
 import LightningBoltGradient from '/public/lightningBoltGradient.svg';
 import { ROUTES } from 'src/components/primitives/Link';
+import { MaxLTVTooltip } from 'src/components/infoTooltips/MaxLTVTooltip';
+import { LiquidationThresholdTooltip } from 'src/components/infoTooltips/LiquidationThresholdTooltip';
+import { LiquidationPenaltyTooltip } from 'src/components/infoTooltips/LiquidationPenaltyTooltip';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
   <Box
@@ -229,7 +232,9 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                 pt: '8px',
               }}
             >
-              <ReserveOverviewBox title="Max LTV">
+              <ReserveOverviewBox
+                title={<MaxLTVTooltip variant="description" text={<Trans>Max LTV</Trans>} />}
+              >
                 <FormattedNumber
                   value={reserve.formattedBaseLTVasCollateral}
                   percent
@@ -238,7 +243,14 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                 />
               </ReserveOverviewBox>
 
-              <ReserveOverviewBox title="Liquidation threshold">
+              <ReserveOverviewBox
+                title={
+                  <LiquidationThresholdTooltip
+                    variant="description"
+                    text={<Trans>Liquidation threshold</Trans>}
+                  />
+                }
+              >
                 <FormattedNumber
                   value={reserve.formattedReserveLiquidationThreshold}
                   percent
@@ -247,7 +259,14 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                 />
               </ReserveOverviewBox>
 
-              <ReserveOverviewBox title="Liquidation penalty">
+              <ReserveOverviewBox
+                title={
+                  <LiquidationPenaltyTooltip
+                    variant="description"
+                    text={<Trans>Liquidation penalty</Trans>}
+                  />
+                }
+              >
                 <FormattedNumber
                   value={reserve.formattedReserveLiquidationBonus}
                   percent
@@ -388,7 +407,9 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                   pt: '12px',
                 }}
               >
-                <ReserveOverviewBox title="Max LTV">
+                <ReserveOverviewBox
+                  title={<MaxLTVTooltip variant="description" text={<Trans>Max LTV</Trans>} />}
+                >
                   <FormattedNumber
                     value={reserve.formattedEModeLtv}
                     percent
@@ -396,7 +417,14 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                     visibleDecimals={2}
                   />
                 </ReserveOverviewBox>
-                <ReserveOverviewBox title="Liquidation threshold">
+                <ReserveOverviewBox
+                  title={
+                    <LiquidationThresholdTooltip
+                      variant="description"
+                      text={<Trans>Liquidation threshold</Trans>}
+                    />
+                  }
+                >
                   <FormattedNumber
                     value={reserve.formattedEModeLiquidationThreshold}
                     percent
@@ -404,7 +432,14 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                     visibleDecimals={2}
                   />
                 </ReserveOverviewBox>
-                <ReserveOverviewBox title="Liquidation penalty">
+                <ReserveOverviewBox
+                  title={
+                    <LiquidationPenaltyTooltip
+                      variant="description"
+                      text={<Trans>Liquidation penalty</Trans>}
+                    />
+                  }
+                >
                   <FormattedNumber
                     value={reserve.formattedEModeLiquidationBonus}
                     percent
