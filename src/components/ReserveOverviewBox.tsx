@@ -14,7 +14,7 @@ export function ReserveOverviewBox({ title, children }: ReserveOverviewBoxProps)
         border: `1px solid ${theme.palette.divider}`,
         flex: '0 32%',
         marginBottom: '2%',
-        height: { xs: '5em', xxs: '7em' },
+        height: { md: '70px', lg: '60px' },
         maxWidth: '32%',
       })}
     >
@@ -22,10 +22,9 @@ export function ReserveOverviewBox({ title, children }: ReserveOverviewBoxProps)
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          ml: 2,
           height: '100%',
           justifyContent: 'space-around',
-          padding: '4px',
+          padding: '8px',
         }}
       >
         <Typography variant="secondary14" color="text.secondary" component="span">

@@ -183,12 +183,12 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
 
           <div>
             {reserve.isIsolated ? (
-              <div>
-                <Typography variant="secondary14" color="text.secondary">
+              <Box sx={{ pt: '42px', pb: '12px' }}>
+                <Typography variant="secondary14" color="text.secondary" paddingBottom={'12px'}>
                   <Trans>Collateral usage</Trans>
                 </Typography>
-                <Alert sx={{ my: '12px' }} severity="warning">
-                  <Typography variant="subheader1" paddingTop={'0px'}>
+                <Alert severity="warning">
+                  <Typography variant="subheader1">
                     <Trans>Asset can only be used as collateral in isolation mode only.</Trans>
                   </Typography>
                   <Typography variant="caption">
@@ -200,9 +200,12 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                     </Link>
                   </Typography>
                 </Alert>
-              </div>
+              </Box>
             ) : reserve.usageAsCollateralEnabled ? (
-              <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+              <Box
+                sx={{ display: 'inline-flex', alignItems: 'center', pt: '42px', pb: '12px' }}
+                paddingTop={'42px'}
+              >
                 <Typography variant="secondary14" color="text.secondary">
                   <Trans>Collateral usage</Trans>
                 </Typography>
@@ -212,14 +215,14 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                 </Typography>
               </Box>
             ) : (
-              <div>
+              <Box sx={{ pt: '42px', pb: '12px' }}>
                 <Typography variant="secondary14" color="text.secondary">
                   <Trans>Collateral usage</Trans>
                 </Typography>
                 <Alert sx={{ my: '12px' }} severity="warning">
                   <Trans>Asset cannot be used as collateral.</Trans>
                 </Alert>
-              </div>
+              </Box>
             )}
           </div>
 
@@ -229,7 +232,6 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                 display: 'flex',
                 flexWrap: 'wrap',
                 justifyContent: 'space-between',
-                pt: '8px',
               }}
             >
               <ReserveOverviewBox
@@ -448,7 +450,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                   />
                 </ReserveOverviewBox>
               </Box>
-              <Typography variant="caption" color="text.secondary" paddingTop="8px">
+              <Typography variant="caption" color="text.secondary" paddingTop="24px">
                 <Trans>
                   E-Mode increases your LTV for a selected category of assets, meaning that when
                   E-mode is enabled, you will have higher borrowing power over assets of the same
