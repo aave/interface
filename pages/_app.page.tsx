@@ -76,11 +76,11 @@ export default function MyApp(props: MyAppProps) {
               <ProtocolDataProvider>
                 <ConnectionStatusProvider>
                   <AppGlobalStyles>
-                    <BackgroundDataProvider>
-                      <AppDataProvider>
-                        <TxBuilderProvider>
-                          <WalletModalContextProvider>
-                            <ModalContextProvider>
+                    <ModalContextProvider>
+                      <BackgroundDataProvider>
+                        <AppDataProvider>
+                          <TxBuilderProvider>
+                            <WalletModalContextProvider>
                               <GasStationProvider>
                                 {getLayout(<Component {...pageProps} />)}
                                 <SupplyModal />
@@ -93,11 +93,11 @@ export default function MyApp(props: MyAppProps) {
                                 <EmodeModal />
                                 <SwapModal />
                               </GasStationProvider>
-                            </ModalContextProvider>
-                          </WalletModalContextProvider>
-                        </TxBuilderProvider>
-                      </AppDataProvider>
-                    </BackgroundDataProvider>
+                            </WalletModalContextProvider>
+                          </TxBuilderProvider>
+                        </AppDataProvider>
+                      </BackgroundDataProvider>
+                    </ModalContextProvider>
                   </AppGlobalStyles>
                 </ConnectionStatusProvider>
               </ProtocolDataProvider>

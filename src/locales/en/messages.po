@@ -384,6 +384,10 @@ msgstr "Close"
 msgid "Collateral"
 msgstr "Collateral"
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Collateral amount to repay with"
+msgstr "Collateral amount to repay with"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Collateral is (mostly) the same currency that is being borrowed"
 msgstr "Collateral is (mostly) the same currency that is being borrowed"
@@ -469,6 +473,10 @@ msgstr "Dashboard"
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 msgid "Debt"
 msgstr "Debt"
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Debt amount to repay"
+msgstr "Debt amount to repay"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Debt ceiling is exceeded"
@@ -827,6 +835,7 @@ msgstr "Max"
 msgid "Max slashing"
 msgstr "Max slashing"
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Max slippage rate"
 msgstr "Max slippage rate"
@@ -835,6 +844,7 @@ msgstr "Max slippage rate"
 msgid "Menu"
 msgstr "Menu"
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Minimum received"
 msgstr "Minimum received"
@@ -898,6 +908,10 @@ msgstr "Not a valid address"
 #: src/components/transactions/Stake/StakeModalContent.tsx
 msgid "Not enough balance on your wallet"
 msgstr "Not enough balance on your wallet"
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Not enough collateral to repay this amount of debt with"
+msgstr "Not enough collateral to repay this amount of debt with"
 
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Not enough staked balance"
@@ -969,6 +983,7 @@ msgstr "Please, connect your wallet"
 msgid "Pool addresses provider is not registered"
 msgstr "Pool addresses provider is not registered"
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Price impact"
 msgstr "Price impact"
@@ -1031,10 +1046,12 @@ msgstr "Repay"
 msgid "Repay with"
 msgstr "Repay with"
 
+#: src/components/transactions/Repay/CollateralRepayActions.tsx
 #: src/components/transactions/Repay/RepayActions.tsx
 msgid "Repay {symbol}"
 msgstr "Repay {symbol}"
 
+#: src/components/transactions/Repay/CollateralRepayActions.tsx
 #: src/components/transactions/Repay/RepayActions.tsx
 msgid "Repaying {symbol}"
 msgstr "Repaying {symbol}"

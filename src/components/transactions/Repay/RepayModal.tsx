@@ -9,7 +9,7 @@ import { RepayModalContent } from './RepayModalContent';
 import { RepayType, RepayTypeSelector } from './RepayTypeSelector';
 
 export const RepayModal = () => {
-  const { type, close, args } = useModalContext() as ModalContextType<{
+  const { type, close, args, mainTxState } = useModalContext() as ModalContextType<{
     underlyingAsset: string;
     currentRateMode: InterestRate;
   }>;
@@ -20,7 +20,9 @@ export const RepayModal = () => {
         {(params) => {
           return (
             <>
-              <RepayTypeSelector repayType={repayType} setRepayType={setRepayType} />
+              {!mainTxState.txHash && (
+                <RepayTypeSelector repayType={repayType} setRepayType={setRepayType} />
+              )}
               {repayType === RepayType.BALANCE && (
                 <RepayModalContent {...params} debtType={args.currentRateMode} />
               )}
