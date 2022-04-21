@@ -6,6 +6,7 @@ import {
   BoxProps,
   Divider,
   Link,
+  SvgIcon,
   Typography,
   TypographyProps,
   useMediaQuery,
@@ -20,13 +21,13 @@ import { ApyChart } from '../reserve-overview/ApyChart';
 import { InterestRateModelChart } from '../reserve-overview/InterestRateModelChart';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { eModeInfo } from 'src/utils/eMode';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { IncentivesButton } from 'src/components/incentives/IncentivesButton';
-import { EModeTooltip } from 'src/components/infoTooltips/EModeTooltip';
 import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
 import { getEmodeMessage } from 'src/components/transactions/Emode/EmodeNaming';
+import LightningBoltGradient from '/public/lightningBoltGradient.svg';
+import { ROUTES } from 'src/components/primitives/Link';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
   <Box
@@ -115,21 +116,12 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
           alignItems: 'center',
           gap: 6,
           flexWrap: 'wrap',
-          mb: '24px',
+          mb: '36px',
         }}
       >
         <Typography variant="h3">
           <Trans>Reserve status &#38; configuration</Trans>
         </Typography>
-        {reserve.isEmodeEnabled && (
-          <Typography color="text.secondary" variant="description" sx={{ display: 'inline-flex' }}>
-            <Trans>E-Mode category</Trans>
-            <Typography variant="subheader1" sx={{ ml: 2 }}>
-              {eModeInfo[reserve.eModeCategoryId].label}
-            </Typography>
-            <EModeTooltip eModeLtv={reserve.eModeLtv} />
-          </Typography>
-        )}
       </Box>
 
       <PanelRow>
@@ -189,7 +181,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
           <div>
             {reserve.isIsolated ? (
               <div>
-                <Typography color="text.secondary">
+                <Typography variant="secondary14" color="text.secondary">
                   <Trans>Collateral usage</Trans>
                 </Typography>
                 <Alert sx={{ my: '12px' }} severity="warning">
@@ -208,7 +200,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
               </div>
             ) : reserve.usageAsCollateralEnabled ? (
               <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-                <Typography color="text.secondary">
+                <Typography variant="secondary14" color="text.secondary">
                   <Trans>Collateral usage</Trans>
                 </Typography>
                 <CheckRoundedIcon fontSize="small" color="success" sx={{ ml: 2 }} />
@@ -218,7 +210,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
               </Box>
             ) : (
               <div>
-                <Typography color="text.secondary">
+                <Typography variant="secondary14" color="text.secondary">
                   <Trans>Collateral usage</Trans>
                 </Typography>
                 <Alert sx={{ my: '12px' }} severity="warning">
@@ -232,16 +224,12 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
             <Box
               sx={{
                 display: 'flex',
-                flexDirection: { xs: 'column', sm: 'row' },
-                alignItems: { xs: 'flex-start', sm: 'center' },
                 flexWrap: 'wrap',
-                mt: '16px',
+                justifyContent: 'space-between',
+                pt: '8px',
               }}
             >
-              <ReserveOverviewBox>
-                <Typography color="text.secondary" component="span">
-                  <Trans>Max LTV</Trans>
-                </Typography>
+              <ReserveOverviewBox title="Max LTV">
                 <FormattedNumber
                   value={reserve.formattedBaseLTVasCollateral}
                   percent
@@ -250,10 +238,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                 />
               </ReserveOverviewBox>
 
-              <ReserveOverviewBox>
-                <Typography color="text.secondary" component="span">
-                  <Trans>Liquidation threshold</Trans>
-                </Typography>
+              <ReserveOverviewBox title="Liquidation threshold">
                 <FormattedNumber
                   value={reserve.formattedReserveLiquidationThreshold}
                   percent
@@ -262,10 +247,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                 />
               </ReserveOverviewBox>
 
-              <ReserveOverviewBox>
-                <Typography color="text.secondary" component="span">
-                  <Trans>Liquidation penalty</Trans>
-                </Typography>
+              <ReserveOverviewBox title="Liquidation penalty">
                 <FormattedNumber
                   value={reserve.formattedReserveLiquidationBonus}
                   percent
@@ -275,11 +257,8 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
               </ReserveOverviewBox>
 
               {reserve.isIsolated && (
-                <ReserveOverviewBox>
-                  <Typography color="text.secondary" component="span">
-                    <Trans>Debt ceiling</Trans>
-                  </Typography>
-                  <Box sx={{ display: 'inline-flex' }}>
+                <ReserveOverviewBox title="Debt ceiling">
+                  <Box sx={{ display: { sm: 'inline-flex', xs: 'block' } }}>
                     <FormattedNumber
                       value={reserve.isolationModeTotalDebtUSD}
                       variant="secondary14"
@@ -287,7 +266,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                       symbolsVariant="secondary14"
                       visibleDecimals={2}
                     />
-                    &nbsp;of
+                    &nbsp;of&nbsp;
                     <FormattedNumber
                       value={reserve.debtCeilingUSD}
                       variant="secondary14"
@@ -390,56 +369,85 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
           <PanelRow>
             <PanelTitle>E-Mode info</PanelTitle>
             <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
-              <Box>E-Mode Category {getEmodeMessage(reserve.eModeCategoryId)}</Box>
+              <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                <Typography variant="secondary14" color="text.secondary">
+                  <Trans>E-Mode Category</Trans>
+                </Typography>
+                <SvgIcon sx={{ fontSize: '14px', mr: 0.5, ml: 2 }}>
+                  <LightningBoltGradient />
+                </SvgIcon>
+                <Typography variant="subheader1">
+                  {getEmodeMessage(reserve.eModeCategoryId)}
+                </Typography>
+              </Box>
               <Box
                 sx={{
                   display: 'flex',
-                  flexDirection: { xs: 'column', sm: 'row' },
-                  alignItems: { xs: 'flex-start', sm: 'center' },
                   flexWrap: 'wrap',
-                  mt: '16px',
-                  '& > :not(:last-child)': {
-                    mr: 4,
-                  },
+                  justifyContent: 'space-between',
+                  pt: '12px',
                 }}
               >
-                <ReserveOverviewBox>
-                  <Typography sx={{ color: 'text.muted' }} component="span">
-                    <Trans>E-Mode max LTV</Trans>
-                  </Typography>
+                <ReserveOverviewBox title="Max LTV">
                   <FormattedNumber
                     value={reserve.formattedEModeLtv}
                     percent
                     variant="secondary14"
-                    sx={{ ml: 2 }}
                     visibleDecimals={2}
                   />
                 </ReserveOverviewBox>
-                <ReserveOverviewBox>
-                  <Typography sx={{ color: 'text.muted' }} component="span">
-                    <Trans>E-Mode liquidation threshold</Trans>
-                  </Typography>
+                <ReserveOverviewBox title="Liquidation threshold">
                   <FormattedNumber
                     value={reserve.formattedEModeLiquidationThreshold}
                     percent
                     variant="secondary14"
-                    sx={{ ml: 2 }}
                     visibleDecimals={2}
                   />
                 </ReserveOverviewBox>
-                <ReserveOverviewBox>
-                  <Typography sx={{ color: 'text.muted' }} component="span">
-                    <Trans>E-Mode liquidation penalty</Trans>
-                  </Typography>
+                <ReserveOverviewBox title="Liquidation penalty">
                   <FormattedNumber
                     value={reserve.formattedEModeLiquidationBonus}
                     percent
                     variant="secondary14"
-                    sx={{ ml: 2 }}
                     visibleDecimals={2}
                   />
                 </ReserveOverviewBox>
               </Box>
+              <Typography variant="caption" color="text.secondary" paddingTop="8px">
+                <Trans>
+                  E-Mode increases your LTV for a selected category of assets, meaning that when
+                  E-mode is enabled, you will have higher borrowing power over assets of the same
+                  E-mode category which are defined by Aave Governance. You can enter E-Mode from
+                  your{' '}
+                  <Link
+                    href={ROUTES.dashboard}
+                    sx={{ textDecoration: 'underline' }}
+                    variant="caption"
+                    color="text.secondary"
+                  >
+                    Dashboard
+                  </Link>
+                  . To learn more about E-Mode and applied restrictions in{' '}
+                  <Link
+                    href="https://docs.aave.com/faq/aave-v3-features#high-efficiency-mode-e-mode"
+                    sx={{ textDecoration: 'underline' }}
+                    variant="caption"
+                    color="text.secondary"
+                  >
+                    FAQ
+                  </Link>{' '}
+                  or{' '}
+                  <Link
+                    href="https://github.com/aave/aave-v3-core/blob/master/techpaper/Aave_V3_Technical_Paper.pdf"
+                    sx={{ textDecoration: 'underline' }}
+                    variant="caption"
+                    color="text.secondary"
+                  >
+                    Aave V3 Technical Paper
+                  </Link>
+                  .
+                </Trans>
+              </Typography>
             </Box>
           </PanelRow>
         </>
