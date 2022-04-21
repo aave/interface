@@ -119,8 +119,23 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
                     {poolReserve.symbol}
                   </Typography>
                 )}
-
-                <ReserveName />
+                <Box sx={{ display: 'inline-flex' }}>
+                  <ReserveName />
+                  {loading ? (
+                    <Skeleton width={16} height={16} sx={{ ml: 1, background: '#383D51' }} />
+                  ) : (
+                    <Link
+                      href={currentNetworkConfig.explorerLinkBuilder({
+                        address: poolReserve?.underlyingAsset,
+                      })}
+                      sx={{ display: 'inline-flex', alignItems: 'center', ml: 1, color: '#A5A8B6' }}
+                    >
+                      <SvgIcon sx={{ fontSize: '16px' }}>
+                        <ExternalLinkIcon />
+                      </SvgIcon>
+                    </Link>
+                  )}
+                </Box>
               </Box>
             </Box>
           )}
@@ -134,7 +149,23 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
           icon={<ReserveIcon />}
           loading={loading}
         >
-          <ReserveName />
+          <Box sx={{ display: 'inline-flex' }}>
+            <ReserveName />
+            {loading ? (
+              <Skeleton width={16} height={16} sx={{ ml: 1, background: '#383D51' }} />
+            ) : (
+              <Link
+                href={currentNetworkConfig.explorerLinkBuilder({
+                  address: poolReserve?.underlyingAsset,
+                })}
+                sx={{ display: 'inline-flex', alignItems: 'center', ml: 1, color: '#A5A8B6' }}
+              >
+                <SvgIcon sx={{ fontSize: '16px' }}>
+                  <ExternalLinkIcon />
+                </SvgIcon>
+              </Link>
+            )}
+          </Box>
         </TopInfoPanelItem>
       )}
 
@@ -176,11 +207,16 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
         />
       </TopInfoPanelItem>
 
-      <TopInfoPanelItem
-        icon={<DollarIcon />}
-        title={<Trans>Oracle price</Trans>}
-        titleIcon={
-          loading ? (
+      <TopInfoPanelItem icon={<DollarIcon />} title={<Trans>Oracle price</Trans>} loading={loading}>
+        <Box sx={{ display: 'inline-flex' }}>
+          <FormattedNumber
+            value={poolReserve?.priceInUSD}
+            symbol="USD"
+            variant={valueTypographyVariant}
+            symbolsVariant={symbolsTypographyVariant}
+            symbolsColor="#A5A8B6"
+          />
+          {loading ? (
             <Skeleton width={16} height={16} sx={{ ml: 1, background: '#383D51' }} />
           ) : (
             <Link
@@ -191,17 +227,8 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
                 <ExternalLinkIcon />
               </SvgIcon>
             </Link>
-          )
-        }
-        loading={loading}
-      >
-        <FormattedNumber
-          value={poolReserve?.priceInUSD}
-          symbol="USD"
-          variant={valueTypographyVariant}
-          symbolsVariant={symbolsTypographyVariant}
-          symbolsColor="#A5A8B6"
-        />
+          )}
+        </Box>
       </TopInfoPanelItem>
     </TopInfoPanel>
   );
