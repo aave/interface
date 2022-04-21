@@ -226,7 +226,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
             const { ethereum } = window;
 
             if (ethereum) {
-              const canConnectToCoinbase = activateInjectedProvider('CoinBase');
+              activateInjectedProvider('CoinBase');
               console.log('||||||||||||||||||');
               ethereum.request({ method: 'eth_requestAccounts' });
             }
