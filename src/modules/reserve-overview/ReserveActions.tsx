@@ -254,13 +254,14 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
       <Stack direction="row" spacing={2}>
         <Button
           variant="contained"
+          disabled={balance?.amount === '0'}
           onClick={() => openSupply(underlyingAsset)}
           fullWidth={downToXSM}
         >
           <Trans>Supply</Trans> {downToXSM && poolReserve.symbol}
         </Button>
         <Button
-          disabled={!canBorrow}
+          disabled={!canBorrow || user?.totalCollateralMarketReferenceCurrency === '0'}
           variant="contained"
           onClick={() => openBorrow(underlyingAsset)}
           fullWidth={downToXSM}
