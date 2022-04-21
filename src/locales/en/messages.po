@@ -470,10 +470,6 @@ msgstr "Dashboard"
 msgid "Debt"
 msgstr "Debt"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "Debt ceiling"
-msgstr "Debt ceiling"
-
 #: src/ui-config/errorMapping.tsx
 msgid "Debt ceiling is exceeded"
 msgstr "Debt ceiling is exceeded"
@@ -547,8 +543,8 @@ msgid "E-Mode"
 msgstr "E-Mode"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "E-Mode category"
-msgstr "E-Mode category"
+msgid "E-Mode Category"
+msgstr "E-Mode Category"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode increases your LTV for a selected category of assets up to 97%. <0>Learn more</0>"
@@ -559,16 +555,8 @@ msgid "E-Mode increases your LTV for a selected category of assets up to<0/>. <1
 msgstr "E-Mode increases your LTV for a selected category of assets up to<0/>. <1>Learn more</1>"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "E-Mode liquidation penalty"
-msgstr "E-Mode liquidation penalty"
-
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "E-Mode liquidation threshold"
-msgstr "E-Mode liquidation threshold"
-
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "E-Mode max LTV"
-msgstr "E-Mode max LTV"
+msgid "E-Mode increases your LTV for a selected category of assets, meaning that when E-mode is enabled, you will have higher borrowing power over assets of the same E-mode category which are defined by Aave Governance. You can enter E-Mode from your <0>Dashboard</0>. To learn more about E-Mode and applied restrictions in <1>FAQ</1> or <2>Aave V3 Technical Paper</2>."
+msgstr "E-Mode increases your LTV for a selected category of assets, meaning that when E-mode is enabled, you will have higher borrowing power over assets of the same E-mode category which are defined by Aave Governance. You can enter E-Mode from your <0>Dashboard</0>. To learn more about E-Mode and applied restrictions in <1>FAQ</1> or <2>Aave V3 Technical Paper</2>."
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Efficiency mode (E-Mode)"
@@ -798,10 +786,6 @@ msgstr "Liquidation <0/> threshold"
 msgid "Liquidation at"
 msgstr "Liquidation at"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "Liquidation penalty"
-msgstr "Liquidation penalty"
-
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "Liquidation risk is high. Lower amounts recomended."
 msgstr "Liquidation risk is high. Lower amounts recomended."
@@ -813,10 +797,6 @@ msgstr "Liquidation risk is high. Lower amounts recommended."
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Liquidation risk parametres"
 msgstr "Liquidation risk parametres"
-
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "Liquidation threshold"
-msgstr "Liquidation threshold"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/HFContent.tsx
 msgid "Liquidation value"
@@ -842,10 +822,6 @@ msgstr "Markets"
 #: src/components/transactions/AssetInput.tsx
 msgid "Max"
 msgstr "Max"
-
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "Max LTV"
-msgstr "Max LTV"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Max slashing"
@@ -1874,3 +1850,7 @@ msgstr "{m}m"
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"
 msgstr "{s}s"
+
+#: src/components/ReserveOverviewBox.tsx
+msgid "{title}"
+msgstr "{title}"
