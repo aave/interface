@@ -18,6 +18,7 @@ import { API_ETH_MOCK_ADDRESS, transactionType } from '@aave/contract-helpers';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { TorusConnector } from '@web3-react/torus-connector';
+import { isMobile } from 'src/utils/userAgent';
 
 export type ERC20TokenType = {
   address: string;
@@ -203,31 +204,36 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     if (!triedCoinbase) {
       console.log('===============');
       // do check if condition applies to try and connect directly to coinbase
-      const canConnectToCoinbase = activateInjectedProvider('CoinBase');
-      console.log('can connect: ', canConnectToCoinbase);
       console.log('tried coinbase: ', triedCoinbase);
       console.log('tried safe: ', triedSafe);
       if (triedSafe) {
-        if (canConnectToCoinbase) {
-          console.log('trying coinbase');
-          connectWallet(WalletType.INJECTED)
-            .then(() => {
-              console.log('success finding coinbase wallet');
-              setTriedCoinbase(true);
-            })
-            .catch(() => {
-              console.log('error finding coinbase wallet');
-              setTriedCoinbase(true);
-            });
-        } else {
-          // @ts-expect-error ethereum might not be in window
-          const { ethereum } = window;
+        if (isMobile(window.navigator.userAgent)) {
+          const canConnectToCoinbase = activateInjectedProvider('CoinBase');
+          console.log('can connect: ', canConnectToCoinbase);
+          if (canConnectToCoinbase) {
+            console.log('trying coinbase');
+            connectWallet(WalletType.INJECTED)
+              .then(() => {
+                console.log('success finding coinbase wallet');
+                setTriedCoinbase(true);
+              })
+              .catch(() => {
+                console.log('error finding coinbase wallet');
+                setTriedCoinbase(true);
+              });
+          } else {
+            // @ts-expect-error ethereum might not be in window
+            const { ethereum } = window;
 
-          if (ethereum) {
-            console.log('||||||||||||||||||');
-            ethereum.request({ method: 'eth_requestAccounts' });
+            if (ethereum) {
+              const canConnectToCoinbase = activateInjectedProvider('CoinBase');
+              console.log('||||||||||||||||||');
+              ethereum.request({ method: 'eth_requestAccounts' });
+            }
+
+            setTriedCoinbase(true);
           }
-
+        } else {
           setTriedCoinbase(true);
         }
       }
