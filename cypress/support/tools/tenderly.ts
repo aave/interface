@@ -96,7 +96,11 @@ export class TenderlyFork {
     const TOP_HOLDER_ADDRESS = await this.getTopHolder(tokenAddress);
     // @ts-ignore
     const topHolderSigner = await provider.getSigner(TOP_HOLDER_ADDRESS);
+    console.log(topHolderSigner)
     const token = new Contract(tokenAddress, ERC20_ABI, topHolderSigner);
+    await token.approve(walletAddress, utils.parseEther('1000')).then((res)=>{
+      console.log(res)
+    });
     await token.transfer(walletAddress, utils.parseEther('1000'));
   }
 
