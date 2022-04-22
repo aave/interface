@@ -23,12 +23,11 @@ export function formatProposal(proposal: Omit<Proposal, 'values'>) {
   }
 
   const diff = new BigNumber(proposal.forVotes).minus(proposal.againstVotes);
+  const voteSum = new BigNumber(proposal.forVotes).plus(proposal.againstVotes);
+  const requiredDiff = voteSum.multipliedBy(new BigNumber(proposal.minimumDiff).dividedBy(100));
 
-  const requiredDiff = new BigNumber(proposal.forVotes)
-    .plus(proposal.againstVotes)
-    .multipliedBy(new BigNumber(proposal.minimumDiff).dividedBy(100));
-
-  const diffReached = requiredDiff.lte(diff);
+  // Differential reached if difference between yea and nay votes exceeds min threshold, and proposal has at least one voter
+  const diffReached = requiredDiff.lte(diff) && !voteSum.eq(0);
 
   return {
     totalVotes: normalizeBN(allVotes, 18).toNumber(),
