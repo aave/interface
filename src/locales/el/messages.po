@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-04-22 12:05\n"
+"PO-Revision-Date: 2022-04-23 06:04\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -20,21 +20,21 @@ msgstr ""
 
 #: src/components/infoTooltips/AMPLWarning.tsx
 msgid "<0>Ampleforth</0> is an asset affected by rebasing. Visit the <1>documentation</1> or <2>Ampleforth's FAQ</2> to learn more."
-msgstr ""
+msgstr "Το<0>Ampleforth</0> είναι ένα περιουσιακό στοιχείο που επηρεάζεται από την αναπροσαρμογή. Επισκεφθείτε την <1>τεκμηρίωση</1> ή τις <2>Συχνές Ερωτήσεις του Ampleforth </2> για να μάθετε περισσότερα."
 
 #: src/modules/staking/StakingHeader.tsx
 msgid "AAVE holders can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
-msgstr ""
+msgstr "Οι κάτοχοι AAVE μπορούν να κλειδώσουν το AAVE τους στην Μονάδα Ασφάλειας για να προσθέσουν περισσότερη ασφάλεια στο πρωτόκολλο και να κερδίσουν κίνητρα ασφάλειας. Σε περίπτωση εκδήλωσης ελλείμματος, έως και το 30% του κλειδώματος σας μπορεί να μειωθεί για να καλυφθεί το έλλειμμα, παρέχοντας ένα επιπλέον επίπεδο προστασίας για το πρωτόκολλο."
 
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
 msgid "ACTIVATE COOLDOWN"
-msgstr ""
+msgstr "ΕΝΕΡΓΟΠΟΙΗΣΗ ΨΥΞΗΣ"
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "APR"
-msgstr ""
+msgstr "APR"
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
@@ -44,197 +44,197 @@ msgstr ""
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "APY"
-msgstr ""
+msgstr "APY"
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 msgid "APY type"
-msgstr ""
+msgstr "Τύπος APY"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "APY, stable"
-msgstr ""
+msgstr "APY, σταθερό"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "APY, variable"
-msgstr ""
+msgstr "APY, μεταβλητό"
 
 #: src/ui-config/errorMapping.tsx
 msgid "AToken supply is not zero"
-msgstr ""
+msgstr "Η προσφορά AToken δεν είναι μηδενική"
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave Governance"
-msgstr ""
+msgstr "Διακυβέρνηση Aave"
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance documentation"
-msgstr ""
+msgstr "Το Aave είναι ένα πλήρως αποκεντρωμένο πρωτόκολλο, το οποίο ελέγχεται από την κοινότητα των κατόχων του token του AAVE. Οι κάτοχοι των token του AAVE συζητούν, προτείνουν και ψηφίζουν συλλογικά για τις αναβαθμίσεις του πρωτοκόλλου. Οι κάτοχοι των token του AAVE μπορούν είτε να ψηφίσουν οι ίδιοι για νέες προτάσεις είτε να μεταβιβαστούν σε μια διεύθυνση της επιλογής τους. Για να μάθετε περισσότερα δείτε την τεκμηρίωση Διακυβέρνησης"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Aave per month"
-msgstr ""
+msgstr "Aave ανά μήνα"
 
 #: src/layouts/WalletWidget.tsx
 msgid "Account"
-msgstr ""
+msgstr "Λογαριασμός"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Action cannot be performed because the reserve is frozen"
-msgstr ""
+msgstr "Η ενέργεια δεν μπορεί να εκτελεστεί επειδή το αποθεματικό έχει παγώσει"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Action cannot be performed because the reserve is paused"
-msgstr ""
+msgstr "Η ενέργεια δεν μπορεί να εκτελεστεί επειδή η εφεδρεία βρίσκεται σε παύση"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Action requires an active reserve"
-msgstr ""
+msgstr "Η δράση απαιτεί ενεργό απόθεμα"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add {0} to the wallet"
-msgstr ""
+msgstr "Προσθέστε {0} στο πορτοφόλι"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Address is not a contract"
-msgstr ""
+msgstr "Η διεύθυνση δεν είναι συμβόλαιο"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "All"
-msgstr ""
+msgstr "Όλα"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "All done!"
-msgstr ""
+msgstr "Όλα έτοιμα!"
 
 #: src/modules/governance/ProposalsList.tsx
 msgid "All proposals"
-msgstr ""
+msgstr "Όλες οι προτάσεις"
 
 #: src/components/infoTooltips/CollateralSwitchTooltip.tsx
 msgid "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
-msgstr ""
+msgstr "Σας επιτρέπει να αποφασίσετε αν θα χρησιμοποιήσετε ένα παρεχόμενο περιουσιακό στοιχείο ως εγγύηση. Ένα περιουσιακό στοιχείο που χρησιμοποιείται ως εγγύηση θα επηρεάσει τη δανειοληπτική σας ικανότητα και τον συντελεστή υγείας."
 
 #: src/components/infoTooltips/APYTypeTooltip.tsx
 msgid "Allows you to switch between <0>variable</0> and <1>stable</1> interest rates, where variable rate can increase and decrease depending on the amount of liquidity in the reserve, and stable rate will stay the same for the duration of your loan."
-msgstr ""
+msgstr "Σας επιτρέπει την εναλλαγή μεταξύ <0>μεταβλητού</0> και <1>σταθερού</1> επιτοκίου, όπου το μεταβλητό επιτόκιο μπορεί να αυξάνεται και να μειώνεται ανάλογα με την ποσότητα ρευστότητας στο αποθεματικό, ενώ το σταθερό επιτόκιο θα παραμείνει το ίδιο για τη διάρκεια του δανείου σας."
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Already on cooldown"
-msgstr ""
+msgstr "Ήδη σε ψύξη"
 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 msgid "Amount"
-msgstr ""
+msgstr "Ποσό"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Amount must be greater than 0"
-msgstr ""
+msgstr "Το ποσό πρέπει να είναι μεγαλύτερο από 0"
 
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "Ampleforth FAQ"
-msgstr ""
+msgstr "Συχνές ερωτήσεις του Ampleforth"
 
 #: src/components/infoModalContents/ApprovalInfoContent.tsx
 msgid "Approval"
-msgstr ""
+msgstr "Έγκριση"
 
 #: src/components/transactions/FlowCommons/LeftHelperText.tsx
 msgid "Approve confirmed"
-msgstr ""
+msgstr "Έγκριση επιβεβαιώθηκε"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Approve to continue"
-msgstr ""
+msgstr "Εγκρίνετε για να συνεχίσετε"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Approved"
-msgstr ""
+msgstr "Εγκρίθηκε"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Approving {symbol}..."
-msgstr ""
+msgstr "Έγκριση του {symbol}..."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Array parameters that should be equal length are not"
-msgstr ""
+msgstr "Οι παράμετροι της συστοιχίας που θα έπρεπε να είναι ίσου μήκους δεν είναι"
 
 #: pages/faucet.page.tsx
 #: src/modules/markets/AssetsList.tsx
 msgid "Asset"
-msgstr ""
+msgstr "Περιουσιακό στοιχείο"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeSelect.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Asset category"
-msgstr ""
+msgstr "Κατηγορία περιουσιακών στοιχείων"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Asset is not borrowable in isolation mode"
-msgstr ""
+msgstr "Το περιουσιακό στοιχείο δεν είναι δανείσιμο σε λειτουργία απομόνωσης"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Asset is not listed"
-msgstr ""
+msgstr "Το περιουσιακό στοιχείο δεν περιλαμβάνεται στον κατάλογο"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Asset to delegate"
-msgstr ""
+msgstr "Περιουσιακό στοιχείο προς εκχώρηση"
 
 #: pages/faucet.page.tsx
 #: src/modules/dashboard/lists/ListHeader.tsx
 msgid "Assets"
-msgstr ""
+msgstr "Περιουσιακά Στοιχεία"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Assets to borrow"
-msgstr ""
+msgstr "Περιουσιακά στοιχεία προς δανεισμό"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Assets to supply"
-msgstr ""
+msgstr "Περιουσιακά στοιχεία προς προμήθεια"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Author"
-msgstr ""
+msgstr "Συγγραφέας"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Available"
-msgstr ""
+msgstr "Διαθέσιμο"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Available assets"
-msgstr ""
+msgstr "Διαθέσιμα περιουσιακά στοιχεία"
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Available liquidity"
-msgstr ""
+msgstr "Διαθέσιμη ρευστότητα"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Available rewards"
-msgstr ""
+msgstr "Διαθέσιμες ανταμοιβές"
 
 #: src/components/caps/CapsHint.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Available to borrow"
-msgstr ""
+msgstr "Διαθέσιμο για δανεισμό"
 
 #: src/components/caps/CapsHint.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Available to supply"
-msgstr ""
+msgstr "Διαθέσιμο για προμήθεια"
 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
@@ -242,11 +242,11 @@ msgstr ""
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 msgid "Balance"
-msgstr ""
+msgstr "Υπόλοιπο"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
-msgstr ""
+msgstr "Προσοχή - Είστε πολύ κοντά στην ρευστοποίηση. Εξετάστε το ενδεχόμενο να καταθέσετε περισσότερες εγγυήσεις ή να εξοφλήσετε κάποιες από τις δανειακές σας θέσεις"
 
 #: src/components/transactions/Warnings/SNXWarning.tsx
 msgid "Before supplying"
@@ -466,12 +466,12 @@ msgstr ""
 #: src/modules/dashboard/DashboardTopPanel.tsx
 #: src/ui-config/menu-items/index.tsx
 msgid "Dashboard"
-msgstr ""
+msgstr "Ταμπλό"
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 msgid "Debt"
-msgstr ""
+msgstr "Χρέος"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Debt amount to repay"
@@ -479,28 +479,28 @@ msgstr ""
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Debt ceiling"
-msgstr ""
+msgstr "Ανώτατο όριο χρέους"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Debt ceiling is exceeded"
-msgstr ""
+msgstr "Υπέρβαση του ανώτατου ορίου χρέους"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Debt ceiling is not zero"
-msgstr ""
+msgstr "Το ανώτατο όριο χρέους δεν είναι μηδενικό"
 
 #: src/components/infoModalContents/RetryWithApprovalInfoContent.tsx
 msgid "Define Retry with Approval text"
-msgstr ""
+msgstr "Ορίστε Επανάληψη με κείμενο έγκρισης"
 
 #: src/components/transactions/GovDelegation/GovDelegationActions.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Delegate"
-msgstr ""
+msgstr "Εκπρόσωπος"
 
 #: src/components/transactions/GovDelegation/GovDelegationActions.tsx
 msgid "Delegating"
-msgstr ""
+msgstr "Ανάθεση αρμοδιοτήτων"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
@@ -508,58 +508,58 @@ msgstr ""
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/markets/AssetsListItem.tsx
 msgid "Details"
-msgstr ""
+msgstr "Λεπτομέρειες"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Developers"
-msgstr ""
+msgstr "Προγραμματιστές"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 #: src/modules/governance/ProposalListItem.tsx
 msgid "Differential"
-msgstr ""
+msgstr "Διαφορικό"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Disable E-Mode"
-msgstr ""
+msgstr "Απενεργοποίηση E-Mode"
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 msgid "Disable {symbol} as collateral"
-msgstr ""
+msgstr "Απενεργοποίηση {symbol} ως εγγύηση"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Disabled"
-msgstr ""
+msgstr "Απενεργοποιημένο"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Disabling E-Mode"
-msgstr ""
+msgstr "Απενεργοποίηση E-Mode"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "Disabling this asset as collateral affects your borrowing power and Health Factor."
-msgstr ""
+msgstr "Η απενεργοποίηση αυτού του περιουσιακού στοιχείου ως εγγύηση επηρεάζει τη δανειοληπτική σας ικανότητα και τον Συντελεστή Υγείας."
 
 #: src/layouts/WalletWidget.tsx
 msgid "Disconnect Wallet"
-msgstr ""
+msgstr "Αποσυνδέστε το πορτοφόλι"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Discord"
-msgstr ""
+msgstr "Discord"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode"
-msgstr ""
+msgstr "E-Mode"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "E-Mode category"
-msgstr ""
+msgstr "Κατηγορία E-Mode"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode increases your LTV for a selected category of assets up to 97%. <0>Learn more</0>"
-msgstr ""
+msgstr "Το E-Mode αυξάνει το LTV σας για μια επιλεγμένη κατηγορία περιουσιακών στοιχείων έως και 97%. <0>Μάθετε περισσότερα</0>"
 
 #: src/components/infoTooltips/EModeTooltip.tsx
 msgid "E-Mode increases your LTV for a selected category of assets up to<0/>. <1>Learn more</1>"
@@ -579,57 +579,57 @@ msgstr ""
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Efficiency mode (E-Mode)"
-msgstr ""
+msgstr "Λειτουργία αποδοτικότητας (E-Mode)"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Enable E-Mode"
-msgstr ""
+msgstr "Ενεργοποίηση E-Mode"
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 msgid "Enable {symbol} as collateral"
-msgstr ""
+msgstr "Ενεργοποίηση {symbol} ως εγγύηση"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Enabled"
-msgstr ""
+msgstr "Ενεργοποιημένο"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Enabled in isolation"
-msgstr ""
+msgstr "Ενεργοποιημένο σε απομόνωση"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Enabling E-Mode"
-msgstr ""
+msgstr "Ενεργοποίηση E-Mode"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Enabling E-Mode only allows you to borrow assets belonging to the selected category Stablecoins. Please visit our <0>FAQ guide</0> to learn more about how it works and the applied restrictions."
-msgstr ""
+msgstr "Η ενεργοποίηση του E-Mode σας επιτρέπει να δανείζεστε μόνο περιουσιακά στοιχεία που ανήκουν στην επιλεγμένη κατηγορία Σταθερών Νομισμάτων. Παρακαλούμε επισκεφθείτε τον <0>Οδηγό ερωτήσεων</0> για να μάθετε περισσότερα σχετικά με τον τρόπο λειτουργίας και τους περιορισμούς που ισχύουν."
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "Enabling this asset as collateral increases your borrowing power and Health Factor. However, it can get liquidated if your health factor drops below 1."
-msgstr ""
+msgstr "Η ενεργοποίηση αυτού του περιουσιακού στοιχείου ως εγγύηση αυξάνει τη δανειοληπτική σας ικανότητα και τον Συντελεστή Υγείας. Ωστόσο, μπορεί να ρευστοποιηθεί εάν ο συντελεστής υγείας σας πέσει κάτω από το 1."
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "English"
-msgstr ""
+msgstr "Αγγλικά"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Enter ETH address"
-msgstr ""
+msgstr "Εισάγετε διεύθυνση ETH"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Enter an amount"
-msgstr ""
+msgstr "Εισάγετε ένα ποσό"
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Error connecting. Try refreshing the page."
-msgstr ""
+msgstr "Σφάλμα σύνδεσης. Δοκιμάστε να ανανεώσετε τη σελίδα."
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Executed"
-msgstr ""
+msgstr "Εκτελέστηκε"
 
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "Expires"
@@ -637,25 +637,25 @@ msgstr ""
 
 #: src/ui-config/menu-items/index.tsx
 msgid "FAQ"
-msgstr ""
+msgstr "ΣΥΧΝΕΣ ΕΡΩΤΗΣΕΙΣ"
 
 #: pages/faucet.page.tsx
 #: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Faucet"
-msgstr ""
+msgstr "Βρύση"
 
 #: src/components/transactions/Faucet/FaucetActions.tsx
 msgid "Faucet {0}"
-msgstr ""
+msgstr "Βρύση {0}"
 
 #: src/modules/governance/ProposalsList.tsx
 msgid "Filter"
-msgstr ""
+msgstr "Φίλτρο"
 
 #: src/ui-config/errorMapping.tsx
 msgid "For repayment of a specific type of debt, the user needs to have debt that type"
-msgstr ""
+msgstr "Για την αποπληρωμή ενός συγκεκριμένου τύπου χρέους, ο χρήστης πρέπει να έχει χρέος αυτού του τύπου"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Forum discussion"
