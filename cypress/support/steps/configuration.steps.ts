@@ -12,34 +12,37 @@ export const configEnvWithTenderly = ({
   market,
   tokens,
   unpause,
+  wallet,
 }: {
   chainId: number;
   market: string;
   tokens?: { address: string }[];
   unpause?: boolean;
+  wallet?: { address: string; privateKey: string };
 }) => {
   const tenderly = new TenderlyFork({ forkNetworkID: chainId });
+  const walletAddress: string = wallet != null ? wallet.address : DEFAULT_TEST_ACCOUNT.address;
+  const privateKey: string = wallet != null ? wallet.privateKey : DEFAULT_TEST_ACCOUNT.privateKey;
   before(async () => {
     await tenderly.init();
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     await setTimeout(() => {}, 3000);
-    await tenderly.add_balance_rpc(DEFAULT_TEST_ACCOUNT.address);
-    // await tenderly.add_balance(DEFAULT_TEST_ACCOUNT.address, 10000);
-    console.log('unpause: ', unpause);
+
+    await tenderly.add_balance_rpc(walletAddress);
     if (unpause) {
       await tenderly.unpauseMarket();
     }
 
     if (tokens) {
       await Promise.all(
-        tokens.map((token) => tenderly.getERC20Token(DEFAULT_TEST_ACCOUNT.address, token.address))
+        tokens.map((token) => tenderly.getERC20Token(walletAddress, token.address))
       );
     }
   });
   before('Open main page', () => {
     const rpc = tenderly.get_rpc_url();
     const provider = new JsonRpcProvider(rpc, 3030);
-    const signer = new Wallet(DEFAULT_TEST_ACCOUNT.privateKey, provider);
+    const signer = new Wallet(privateKey, provider);
     cy.visit(URL, {
       onBeforeLoad(win) {
         // eslint-disable-next-line
@@ -49,13 +52,11 @@ export const configEnvWithTenderly = ({
         win.localStorage.setItem('forkNetworkId', '3030');
         win.localStorage.setItem('forkBaseChainId', chainId.toString());
         win.localStorage.setItem('forkRPCUrl', rpc);
-        // win.localStorage.setItem('currentProvider', 'browser');
         win.localStorage.setItem('walletProvider', 'injected');
-        // win.localStorage.setItem('WEB3_CONNECT_CACHED_PROVIDER', '"injected"');
-        win.localStorage.setItem('selectedAccount', DEFAULT_TEST_ACCOUNT.address.toLowerCase());
+        win.localStorage.setItem('selectedAccount', walletAddress.toLowerCase());
         win.localStorage.setItem('selectedMarket', market);
-        // required when testing governance/staking as otherwise the fork will check for kovan fork
         win.localStorage.setItem('testnetsEnabled', 'true');
+        win.localStorage.setItem('mockWalletAddress', walletAddress.toLowerCase());
       },
     });
   });
@@ -71,12 +72,14 @@ export const configEnvWithTenderlyMainnetFork = ({
   market = `fork_proto_mainnet`,
   tokens,
   v3,
+  wallet,
 }: {
   market?: string;
   tokens?: { address: string }[];
   v3?: boolean;
+  wallet?: { address: string; privateKey: string };
 }) => {
-  configEnvWithTenderly({ chainId: ChainId.mainnet, market, tokens, unpause: v3 });
+  configEnvWithTenderly({ chainId: ChainId.mainnet, market, tokens, unpause: v3, wallet });
 };
 
 export const configEnvWithTenderlyPolygonFork = ({
