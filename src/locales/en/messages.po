@@ -307,9 +307,21 @@ msgstr "Borrow {symbol}"
 msgid "Borrowing is currently unavailable for {0}."
 msgstr "Borrowing is currently unavailable for {0}."
 
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "Borrowing is navailable because you’re using Isolation mode. To manage Isolation mode visit your <0>Dashboard</0>."
+msgstr "Borrowing is navailable because you’re using Isolation mode. To manage Isolation mode visit your <0>Dashboard</0>."
+
 #: src/ui-config/errorMapping.tsx
 msgid "Borrowing is not enabled"
 msgstr "Borrowing is not enabled"
+
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) and Isolation mode. To manage E-Mode and Isolation mode visit your <0>Dashboard</0>."
+msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) and Isolation mode. To manage E-Mode and Isolation mode visit your <0>Dashboard</0>."
+
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
+msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Borrowing power and assets are limited due to Isolation mode."
@@ -397,6 +409,10 @@ msgstr "Collateral is (mostly) the same currency that is being borrowed"
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Collateral usage"
 msgstr "Collateral usage"
+
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "Collateral usage is limited because of Isolation mode."
+msgstr "Collateral usage is limited because of Isolation mode."
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Collateral usage is limited because of isolation mode. <0>Learn More</0>"
@@ -982,6 +998,10 @@ msgstr "Participating in this {symbol} reserve gives annualized rewards."
 msgid "Pending..."
 msgstr "Pending..."
 
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "Please connect a wallet to view your personal information here."
+msgstr "Please connect a wallet to view your personal information here."
+
 #: src/components/ConnectWalletPaper.tsx
 msgid "Please connect your wallet to see your supplies, borrowings, and open positions."
 msgstr "Please connect your wallet to see your supplies, borrowings, and open positions."
@@ -1457,16 +1477,13 @@ msgid "Time left until the withdrawal window closes."
 msgstr "Time left until the withdrawal window closes."
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
+#: src/modules/reserve-overview/ReserveActions.tsx
 msgid "To borrow you need to supply any asset to be used as collateral."
 msgstr "To borrow you need to supply any asset to be used as collateral."
 
 #: src/ui-config/errorMapping.tsx
 msgid "To repay on behalf of a user an explicit amount to repay is needed"
 msgstr "To repay on behalf of a user an explicit amount to repay is needed"
-
-#: src/modules/reserve-overview/ReserveActions.tsx
-msgid "To see your supplies and borrowings options, connect your wallet."
-msgstr "To see your supplies and borrowings options, connect your wallet."
 
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total available"
@@ -1523,6 +1540,10 @@ msgstr "UNSTAKE {symbol}"
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 msgid "UNSTAKING {symbol}"
 msgstr "UNSTAKING {symbol}"
+
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "Unavailable"
+msgstr "Unavailable"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Unbacked"
@@ -1771,6 +1792,7 @@ msgstr "Your health factor and loan to value determine the assurance of your col
 #: pages/reserve-overview.page.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
+#: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Your info"
 msgstr "Your info"
 
@@ -1788,6 +1810,7 @@ msgid "Your voting info"
 msgstr "Your voting info"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+#: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Your {networkName} wallet is empty. Purchase or transfer assets"
 msgstr "Your {networkName} wallet is empty. Purchase or transfer assets"
 
@@ -1833,6 +1856,7 @@ msgid "or"
 msgstr "or"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+#: src/modules/reserve-overview/ReserveActions.tsx
 msgid "or use <0>{0}</0> to transfer your ETH assets."
 msgstr "or use <0>{0}</0> to transfer your ETH assets."
 
