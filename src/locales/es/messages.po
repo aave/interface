@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-04-20 18:04\n"
+"PO-Revision-Date: 2022-04-25 12:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -387,7 +387,7 @@ msgstr "Garantía"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Collateral amount to repay with"
-msgstr ""
+msgstr "Cantidad de garantía a pagar con"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Collateral is (mostly) the same currency that is being borrowed"
@@ -475,7 +475,7 @@ msgstr "Deuda"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Debt amount to repay"
-msgstr ""
+msgstr "Cantidad de deuda a pagar"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Debt ceiling"
@@ -942,7 +942,7 @@ msgstr "No hay suficiente saldo en tu cartera"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Not enough collateral to repay this amount of debt with"
-msgstr ""
+msgstr "No hay suficiente garantía para pagar esta cantidad de deuda con"
 
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Not enough staked balance"
