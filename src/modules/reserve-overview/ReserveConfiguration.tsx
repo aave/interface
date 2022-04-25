@@ -136,7 +136,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
       : ''
   ); // TODO: might make sense to move this to gql as well
   return (
-    <Paper sx={{ py: '16px', px: '24px' }}>
+    <Paper sx={{ py: '16px', px: '24px', minHeight: '471px' }}>
       <Box
         sx={{
           display: 'flex',
