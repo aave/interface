@@ -7,7 +7,7 @@ export const StableAPYTooltip = ({ ...rest }: TextWithTooltipProps) => {
     <TextWithTooltip {...rest}>
       <Trans>
         Stable interest rate will <b>stay the same</b> for the duration of your loan. Recommended
-        for long-term loan periods and for users who prefer predictability.
+        for long-term positions and for users who prefer predictability.
       </Trans>
     </TextWithTooltip>
   );
