@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Button, Typography, Box } from '@mui/material';
 import { useRouter } from 'next/router';
+import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
@@ -60,8 +61,14 @@ export const AssetsListItem = ({ ...reserve }: ComputedReserveData) => {
       </ListColumn>
 
       <ListColumn>
-        <FormattedNumber compact value={reserve.totalDebt} variant="main16" />
-        <ReserveSubheader value={reserve.totalDebtUSD} />
+        {reserve.totalDebt !== '0' ? (
+          <>
+            <FormattedNumber compact value={reserve.totalDebt} variant="main16" />
+            <ReserveSubheader value={reserve.totalDebtUSD} />
+          </>
+        ) : (
+          <NoData variant="main16" color="text.secondary" />
+        )}
       </ListColumn>
 
       <ListColumn>
