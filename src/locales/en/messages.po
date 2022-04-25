@@ -167,6 +167,14 @@ msgstr "Array parameters that should be equal length are not"
 msgid "Asset"
 msgstr "Asset"
 
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Asset can only be used as collateral in isolation mode only."
+msgstr "Asset can only be used as collateral in isolation mode only."
+
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Asset cannot be used as collateral."
+msgstr "Asset cannot be used as collateral."
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeSelect.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
@@ -345,10 +353,6 @@ msgstr "Can be collateral"
 msgid "Can be executed"
 msgstr "Can be executed"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "Can only be used as collateral in isolation mode"
-msgstr "Can only be used as collateral in isolation mode"
-
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Cap reached. Lower supply amount"
 msgstr "Cap reached. Lower supply amount"
@@ -400,6 +404,12 @@ msgstr "Collateral amount to repay with"
 msgid "Collateral is (mostly) the same currency that is being borrowed"
 msgstr "Collateral is (mostly) the same currency that is being borrowed"
 
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Collateral usage"
+msgstr "Collateral usage"
+
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Collateral usage is limited because of Isolation mode."
 msgstr "Collateral usage is limited because of Isolation mode."
@@ -407,10 +417,6 @@ msgstr "Collateral usage is limited because of Isolation mode."
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Collateral usage is limited because of isolation mode. <0>Learn More</0>"
 msgstr "Collateral usage is limited because of isolation mode. <0>Learn More</0>"
-
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "Collateral usage:"
-msgstr "Collateral usage:"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Collateralization"
@@ -488,10 +494,6 @@ msgstr "Debt"
 msgid "Debt amount to repay"
 msgstr "Debt amount to repay"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "Debt ceiling"
-msgstr "Debt ceiling"
-
 #: src/ui-config/errorMapping.tsx
 msgid "Debt ceiling is exceeded"
 msgstr "Debt ceiling is exceeded"
@@ -565,8 +567,8 @@ msgid "E-Mode"
 msgstr "E-Mode"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "E-Mode category"
-msgstr "E-Mode category"
+msgid "E-Mode Category"
+msgstr "E-Mode Category"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode increases your LTV for a selected category of assets up to 97%. <0>Learn more</0>"
@@ -577,16 +579,8 @@ msgid "E-Mode increases your LTV for a selected category of assets up to<0/>. <1
 msgstr "E-Mode increases your LTV for a selected category of assets up to<0/>. <1>Learn more</1>"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "E-Mode liquidation penalty"
-msgstr "E-Mode liquidation penalty"
-
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "E-Mode liquidation threshold"
-msgstr "E-Mode liquidation threshold"
-
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "E-Mode max LTV"
-msgstr "E-Mode max LTV"
+msgid "E-Mode increases your LTV for a selected category of assets, meaning that when E-mode is enabled, you will have higher borrowing power over assets of the same E-mode category which are defined by Aave Governance. You can enter E-Mode from your <0>Dashboard</0>. To learn more about E-Mode and applied restrictions in <1>FAQ</1> or <2>Aave V3 Technical Paper</2>."
+msgstr "E-Mode increases your LTV for a selected category of assets, meaning that when E-mode is enabled, you will have higher borrowing power over assets of the same E-mode category which are defined by Aave Governance. You can enter E-Mode from your <0>Dashboard</0>. To learn more about E-Mode and applied restrictions in <1>FAQ</1> or <2>Aave V3 Technical Paper</2>."
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Efficiency mode (E-Mode)"
@@ -735,10 +729,6 @@ msgstr "If your loan to value goes above the liquidation threshold your collater
 msgid "In E-Mode some assets are not borrowable. Exit E-Mode to get access to all assets"
 msgstr "In E-Mode some assets are not borrowable. Exit E-Mode to get access to all assets"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "In Isolation mode you cannot supply other assets as collateral for borrowing. Assets used as collateral in Isolation mode can only be borrowed to a specific debt ceiling."
-msgstr "In Isolation mode you cannot supply other assets as collateral for borrowing. Assets used as collateral in Isolation mode can only be borrowed to a specific debt ceiling."
-
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "In Isolation mode, you cannot supply other assets as collateral. A global debt ceiling limits the borrowing power of the isolated asset. Read more in our <0>FAQ</0>"
 msgstr "In Isolation mode, you cannot supply other assets as collateral. A global debt ceiling limits the borrowing power of the isolated asset. Read more in our <0>FAQ</0>"
@@ -821,6 +811,7 @@ msgid "Liquidation at"
 msgstr "Liquidation at"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Liquidation penalty"
 msgstr "Liquidation penalty"
 
@@ -836,6 +827,7 @@ msgstr "Liquidation risk is high. Lower amounts recommended."
 msgid "Liquidation risk parametres"
 msgstr "Liquidation risk parametres"
 
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Liquidation threshold"
 msgstr "Liquidation threshold"
@@ -865,6 +857,7 @@ msgstr "Markets"
 msgid "Max"
 msgstr "Max"
 
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Max LTV"
 msgstr "Max LTV"
@@ -926,10 +919,6 @@ msgstr "Network not supported for this wallet"
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "New APY"
 msgstr "New APY"
-
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "No"
-msgstr "No"
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 msgid "No rewards to claim"
@@ -1363,6 +1352,10 @@ msgstr "The % of your total borrowing power used. This is based on the amount of
 msgid "The Balancer Pool Token (BPT) is a liquidity pool token. You can receive BPT by depositing a combination of AAVE + ETH in the <0>Balancer liquidity pool</0>. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
 msgstr "The Balancer Pool Token (BPT) is a liquidity pool token. You can receive BPT by depositing a combination of AAVE + ETH in the <0>Balancer liquidity pool</0>. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
 
+#: src/components/infoTooltips/MaxLTVTooltip.tsx
+msgid "The Maximum LTV ratio represents the maximum borrowing power of a specific collateral. For example, if a collateral has an LTV of 75%, the user can borrow up to 0.75 worth of ETH in the principal currency for every 1 ETH worth of collateral."
+msgstr "The Maximum LTV ratio represents the maximum borrowing power of a specific collateral. For example, if a collateral has an LTV of 75%, the user can borrow up to 0.75 worth of ETH in the principal currency for every 1 ETH worth of collateral."
+
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "The Stable Rate is not enabled for this currency"
 msgstr "The Stable Rate is not enabled for this currency"
@@ -1466,6 +1459,10 @@ msgstr "This is the total amount available for you to borrow. You can borrow bas
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount that you are able to supply to in this reserve. You are able to supply your wallet balance up until the supply cap is reached."
 msgstr "This is the total amount that you are able to supply to in this reserve. You are able to supply your wallet balance up until the supply cap is reached."
+
+#: src/components/infoTooltips/LiquidationThresholdTooltip.tsx
+msgid "This represents the threshold at which a borrow position will be considered undercollateralized and subject to liquidation for each collateral. For example, if a collateral has a liquidation threshold of 80%, it means that the position will be liquidated when the debt value is worth 80% of the collateral value."
+msgstr "This represents the threshold at which a borrow position will be considered undercollateralized and subject to liquidation for each collateral. For example, if a collateral has a liquidation threshold of 80%, it means that the position will be liquidated when the debt value is worth 80% of the collateral value."
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Time left to be able to withdraw your staked asset."
@@ -1664,6 +1661,10 @@ msgstr "Wallets are provided by External Providers and by selecting you agree to
 #: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake."
 msgstr "We couldn’t detect a wallet. Connect a wallet to stake."
+
+#: src/components/infoTooltips/LiquidationPenaltyTooltip.tsx
+msgid "When a liquidation occurs, liquidators repay up to 50% of the outstanding borrowed amount on behalf of the borrower. In return, they can buy the collateral at a discount and keep the difference (liquidation penalty) as a bonus."
+msgstr "When a liquidation occurs, liquidators repay up to 50% of the outstanding borrowed amount on behalf of the borrower. In return, they can buy the collateral at a discount and keep the difference (liquidation penalty) as a bonus."
 
 #: src/components/transactions/FlowCommons/LeftHelperText.tsx
 msgid "Why do I need to approve?"

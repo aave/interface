@@ -40377,7 +40377,6 @@ var require_paraswap_repayWithCollateralAdapter_contract = __commonJS({
       swapAndRepay({ collateralAsset, debtAsset, collateralAmount, debtRepayAmount, debtRateMode, repayAll, permitParams, swapAndRepayCallData, user, augustus }, txs) {
         const numericInterestRate = debtRateMode === types_1.InterestRate.Stable ? 1 : 2;
         const swapAndRepayContract = this.getContractInstance(this.repayWithCollateralAddress);
-        console.log("augustus: ", augustus);
         const callDataEncoded = ethers_1.utils.defaultAbiCoder.encode(["bytes", "address"], [swapAndRepayCallData, augustus]);
         const txCallback = this.generateTxCallback({
           rawTxMethod: () => __async(this, null, function* () {
@@ -47887,8 +47886,6 @@ var require_v3_pool_contract = __commonJS({
             spender: this.repayWithCollateralAddress,
             amount: repayWithAmount
           });
-          console.log("approved:: ", this.repayWithCollateralAddress);
-          console.log("a token: ", fromAToken);
           if (!approved) {
             const approveTx = this.erc20Service.approve({
               user,
@@ -57653,7 +57650,8 @@ var require_reserve = __commonJS({
           normalizedMarketReferencePriceInUsd
         }),
         borrowCapUSD: (0, normalized_to_usd_1.normalizedToUsd)(new bignumber_js_1.default(reserve.borrowCap), marketReferencePriceInUsd, marketReferenceCurrencyDecimals).toString(),
-        supplyCapUSD: (0, normalized_to_usd_1.normalizedToUsd)(new bignumber_js_1.default(reserve.supplyCap), marketReferencePriceInUsd, marketReferenceCurrencyDecimals).toString()
+        supplyCapUSD: (0, normalized_to_usd_1.normalizedToUsd)(new bignumber_js_1.default(reserve.supplyCap), marketReferencePriceInUsd, marketReferenceCurrencyDecimals).toString(),
+        unbackedUSD: (0, normalized_to_usd_1.normalizedToUsd)(new bignumber_js_1.default(reserve.unbacked), marketReferencePriceInUsd, marketReferenceCurrencyDecimals).toString()
       });
     }
     exports.formatReserveUSD = formatReserveUSD;
