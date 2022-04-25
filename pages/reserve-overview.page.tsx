@@ -14,6 +14,7 @@ import {
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { MainLayout } from 'src/layouts/MainLayout';
+import { AAVEReserveActions } from 'src/modules/reserve-overview/AAVEReserveActions';
 import { ReserveActions } from 'src/modules/reserve-overview/ReserveActions';
 import { ReserveConfiguration } from 'src/modules/reserve-overview/ReserveConfiguration';
 import { ReserveTopDetails } from 'src/modules/reserve-overview/ReserveTopDetails';
@@ -91,7 +92,11 @@ export default function ReserveOverview() {
               width: { xs: '100%', lg: '416px' },
             }}
           >
-            <ReserveActions underlyingAsset={underlyingAsset} />
+            {reserve.symbol === 'AAVE' ? (
+              <AAVEReserveActions underlyingAsset={underlyingAsset} />
+            ) : (
+              <ReserveActions underlyingAsset={underlyingAsset} />
+            )}
           </Box>
         </Box>
       </ContentContainer>
