@@ -15,25 +15,29 @@ interface IncentivesButtonProps {
   displayBlank?: boolean;
 }
 
+const BlankIncentives = () => {
+  return (
+    <Box
+      sx={{
+        p: { xs: '0 4px', xsm: '3.625px 4px' },
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <Typography variant="main12" color="text.secondary">
+        &nbsp;
+      </Typography>
+    </Box>
+  );
+};
+
 export const IncentivesButton = ({ incentives, symbol, displayBlank }: IncentivesButtonProps) => {
   const [open, setOpen] = useState(false);
 
   if (!(incentives && incentives.length > 0)) {
     if (displayBlank) {
-      return (
-        <Box
-          sx={{
-            p: { xs: '0 4px', xsm: '3.625px 4px' },
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Typography variant="main12" color="text.secondary">
-            &nbsp;
-          </Typography>
-        </Box>
-      );
+      return <BlankIncentives />;
     } else {
       return null;
     }
@@ -52,7 +56,13 @@ export const IncentivesButton = ({ incentives, symbol, displayBlank }: Incentive
     ? valueToBigNumber(incentivesAPRSum || 0).toNumber()
     : 'Infinity';
 
-  if (incentivesNetAPR === 0) return null;
+  if (incentivesNetAPR === 0) {
+    if (displayBlank) {
+      return <BlankIncentives />;
+    } else {
+      return null;
+    }
+  }
 
   const incentivesButtonValue = () => {
     if (incentivesNetAPR !== 'Infinity' && incentivesNetAPR < 10000) {
