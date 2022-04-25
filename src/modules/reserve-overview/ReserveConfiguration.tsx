@@ -32,6 +32,7 @@ import { MaxLTVTooltip } from 'src/components/infoTooltips/MaxLTVTooltip';
 import { LiquidationThresholdTooltip } from 'src/components/infoTooltips/LiquidationThresholdTooltip';
 import { LiquidationPenaltyTooltip } from 'src/components/infoTooltips/LiquidationPenaltyTooltip';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
+import { AMPLWarning } from 'src/components/transactions/Warnings/AMPLWarning';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
   <Box
@@ -142,13 +143,19 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
           alignItems: 'center',
           gap: 6,
           flexWrap: 'wrap',
-          mb: '36px',
+          mb: reserve.symbol === 'AMPL' ? '16px' : '36px',
         }}
       >
         <Typography variant="h3">
           <Trans>Reserve status &#38; configuration</Trans>
         </Typography>
       </Box>
+
+      {reserve.symbol === 'AMPL' && (
+        <Box sx={{ pb: '28px' }}>
+          <AMPLWarning />
+        </Box>
+      )}
 
       <PanelRow>
         <PanelTitle>Supply Info</PanelTitle>
