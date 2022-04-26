@@ -40,6 +40,8 @@ export const HFContent = ({ healthFactor }: HFContentProps) => {
     dotPosition = 15;
   } else if (+healthFactor < 1.2 && +healthFactor > 1.1) {
     dotPosition = 10;
+  } else if (+healthFactor < 1.1 && +healthFactor > 1) {
+    dotPosition = 9;
   } else if (+healthFactor === 1) {
     dotPosition = 0;
   }
