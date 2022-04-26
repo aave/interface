@@ -37,7 +37,7 @@ export const DashboardTopPanel = () => {
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const { claimableRewardsUsd, assets } = Object.keys(user.calculatedUserIncentives).reduce(
+  const { claimableRewardsUsd } = Object.keys(user.calculatedUserIncentives).reduce(
     (acc, rewardTokenAddress) => {
       const incentive: UserIncentiveData = user.calculatedUserIncentives[rewardTokenAddress];
       const rewardBalance = normalize(incentive.claimableRewards, incentive.rewardTokenDecimals);
