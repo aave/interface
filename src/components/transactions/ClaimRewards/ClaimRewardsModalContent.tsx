@@ -137,7 +137,6 @@ export const ClaimRewardsModalContent = () => {
   if (claimRewardsTxState.success)
     return <TxSuccessView action="Claimed" amount={selectedReward?.balanceUsd} />;
 
-  console.log('rewards: ', rewards);
 
   return (
     <>
