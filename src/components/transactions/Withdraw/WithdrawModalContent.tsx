@@ -75,7 +75,9 @@ export const WithdrawModalContent = ({
     const maxSelected = value === '-1';
     amountRef.current = maxSelected ? maxAmountToWithdraw.toString(10) : value;
     setAmount(value);
-    if (maxSelected) {
+    if (maxSelected && maxAmountToWithdraw.eq(underlyingBalance)) {
+      setWithdrawMax('-1');
+    } else {
       setWithdrawMax(maxAmountToWithdraw.toString(10));
     }
   };
