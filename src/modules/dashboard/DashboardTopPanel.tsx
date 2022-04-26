@@ -3,7 +3,6 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
 import * as React from 'react';
 import { useState } from 'react';
-import { MultiTokenIcon } from 'src/components/primitives/TokenIcon';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
