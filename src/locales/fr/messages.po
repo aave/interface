@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-04-25 18:05\n"
+"PO-Revision-Date: 2022-04-26 00:20\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -403,7 +403,7 @@ msgstr "Collatérale"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Collateral amount to repay with"
-msgstr ""
+msgstr "Montant de collatéral à rembourser avec"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Collateral is (mostly) the same currency that is being borrowed"
@@ -497,7 +497,7 @@ msgstr "Dette"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Debt amount to repay"
-msgstr ""
+msgstr "Montant de la dette à rembourser"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Debt ceiling is exceeded"
@@ -947,7 +947,7 @@ msgstr "Pas assez de solde sur votre portefeuille"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Not enough collateral to repay this amount of debt with"
-msgstr ""
+msgstr "Pas assez de collatéral pour rembourser ce montant de dette avec"
 
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Not enough staked balance"
