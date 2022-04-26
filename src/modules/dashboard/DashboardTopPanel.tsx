@@ -184,9 +184,6 @@ export const DashboardTopPanel = () => {
                   symbolsVariant={noDataTypographyVariant}
                   data-cy={'Claim_Value'}
                 />
-                {assets && (
-                  <MultiTokenIcon symbols={assets} sx={{ fontSize: { xs: '16px', xsm: '20px' } }} />
-                )}
               </Box>
 
               <Button

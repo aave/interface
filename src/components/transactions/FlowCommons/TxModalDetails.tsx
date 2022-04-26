@@ -86,6 +86,7 @@ interface DetailsNumberLineWithSubProps {
   futureValue: string;
   futureValueUSD: string;
   hideSymbolSuffix?: boolean;
+  showSymbolIcon?: boolean;
   color?: string;
 }
 
@@ -98,6 +99,7 @@ export const DetailsNumberLineWithSub = ({
   futureValueUSD,
   hideSymbolSuffix,
   color,
+  showSymbolIcon,
 }: DetailsNumberLineWithSubProps) => {
   return (
     <Row caption={description} captionVariant="description" mb={4} align="flex-start">
@@ -121,6 +123,9 @@ export const DetailsNumberLineWithSub = ({
             <Typography ml={1} variant="secondary14">
               {symbol}
             </Typography>
+          )}
+          {symbol && showSymbolIcon && (
+            <TokenIcon symbol={symbol} fontSize="inherit" sx={{ ml: '2px' }} />
           )}
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -276,7 +281,12 @@ export const DetailsUnwrapSwitch = ({
       <FormControlLabel
         value="darkmode"
         control={
-          <Switch disableRipple checked={unwrapped} onClick={() => setUnWrapped(!unwrapped)} data-cy={"wrappedSwitcher"}/>
+          <Switch
+            disableRipple
+            checked={unwrapped}
+            onClick={() => setUnWrapped(!unwrapped)}
+            data-cy={'wrappedSwitcher'}
+          />
         }
         labelPlacement="end"
         label={''}

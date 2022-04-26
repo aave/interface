@@ -137,6 +137,8 @@ export const ClaimRewardsModalContent = () => {
   if (claimRewardsTxState.success)
     return <TxSuccessView action="Claimed" amount={selectedReward?.balanceUsd} />;
 
+  console.log('rewards: ', rewards);
+
   return (
     <>
       <TxModalTitle title="Claim rewards" />
@@ -203,6 +205,7 @@ export const ClaimRewardsModalContent = () => {
           {selectedRewardSymbol !== 'all' && (
             <DetailsNumberLineWithSub
               hideSymbolSuffix
+              showSymbolIcon
               symbol={selectedReward.symbol}
               futureValue={selectedReward.balance}
               futureValueUSD={selectedReward.balanceUsd}
