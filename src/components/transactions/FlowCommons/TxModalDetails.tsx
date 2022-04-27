@@ -80,7 +80,7 @@ export const DetailsNumberLine = ({
 
 interface DetailsNumberLineWithSubProps {
   description: ReactNode;
-  symbol: string;
+  symbol: ReactNode;
   value?: string;
   valueUSD?: string;
   futureValue: string;
@@ -276,7 +276,12 @@ export const DetailsUnwrapSwitch = ({
       <FormControlLabel
         value="darkmode"
         control={
-          <Switch disableRipple checked={unwrapped} onClick={() => setUnWrapped(!unwrapped)} data-cy={"wrappedSwitcher"}/>
+          <Switch
+            disableRipple
+            checked={unwrapped}
+            onClick={() => setUnWrapped(!unwrapped)}
+            data-cy={'wrappedSwitcher'}
+          />
         }
         labelPlacement="end"
         label={''}

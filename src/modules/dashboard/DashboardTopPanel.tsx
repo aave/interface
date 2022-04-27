@@ -3,7 +3,6 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
 import * as React from 'react';
 import { useState } from 'react';
-import { MultiTokenIcon } from 'src/components/primitives/TokenIcon';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -38,7 +37,7 @@ export const DashboardTopPanel = () => {
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const { claimableRewardsUsd, assets } = Object.keys(user.calculatedUserIncentives).reduce(
+  const { claimableRewardsUsd } = Object.keys(user.calculatedUserIncentives).reduce(
     (acc, rewardTokenAddress) => {
       const incentive: UserIncentiveData = user.calculatedUserIncentives[rewardTokenAddress];
       const rewardBalance = normalize(incentive.claimableRewards, incentive.rewardTokenDecimals);
@@ -184,9 +183,6 @@ export const DashboardTopPanel = () => {
                   symbolsVariant={noDataTypographyVariant}
                   data-cy={'Claim_Value'}
                 />
-                {assets && (
-                  <MultiTokenIcon symbols={assets} sx={{ fontSize: { xs: '16px', xsm: '20px' } }} />
-                )}
               </Box>
 
               <Button
