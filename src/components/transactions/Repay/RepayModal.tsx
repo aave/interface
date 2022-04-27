@@ -1,5 +1,4 @@
 import { InterestRate } from '@aave/contract-helpers';
-import { UserReserveData } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import React, { useState } from 'react';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
