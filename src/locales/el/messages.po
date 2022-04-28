@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-04-26 18:05\n"
+"PO-Revision-Date: 2022-04-28 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -456,10 +456,6 @@ msgstr "Ψύξη..."
 #: src/layouts/WalletWidget.tsx
 msgid "Copy address"
 msgstr "Αντιγραφή διεύθυνσης"
-
-#: src/components/transactions/FlowCommons/GasEstimationError.tsx
-msgid "Copy error"
-msgstr "Σφάλμα αντιγραφής"
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Copy error text"
@@ -1431,8 +1427,8 @@ msgid "There is not enough collateral to cover a new borrow"
 msgstr "Δεν υπάρχουν επαρκείς εξασφαλίσεις για την κάλυψη ενός νέου δανείου"
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
-msgid "There was some error. Please try changing the parameters or<0>copy the error</0>"
-msgstr "Υπήρξε κάποιο σφάλμα. Προσπαθήστε να αλλάξετε τις παραμέτρους ή<0>αντιγράψτε το σφάλμα</0>"
+msgid "There was some error. Please try changing the parameters or <0><1>copy the error</1></0>"
+msgstr ""
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
@@ -1831,6 +1827,10 @@ msgstr "περιουσιακά στοιχεία"
 #: src/modules/governance/proposal/ProposalTopPanel.tsx
 msgid "back"
 msgstr "πίσω"
+
+#: src/components/transactions/FlowCommons/GasEstimationError.tsx
+msgid "copy the error"
+msgstr ""
 
 #: src/components/transactions/Emode/EmodeSelect.tsx
 #: src/components/transactions/Emode/EmodeSelect.tsx
