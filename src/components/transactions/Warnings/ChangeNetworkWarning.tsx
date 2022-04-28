@@ -23,15 +23,17 @@ export const ChangeNetworkWarning = ({ networkName, chainId }: ChangeNetworkWarn
           </Trans>
         </Typography>
       ) : (
-        <Typography>
+        <Typography variant="description">
           <Trans>Please switch to {networkName}.</Trans>{' '}
           <Button
             variant="text"
-            sx={{ ml: '2px' }}
+            sx={{ ml: '2px', verticalAlign: 'top' }}
             onClick={() => switchNetwork(chainId)}
             disableRipple
           >
-            <Trans>Switch Network</Trans>
+            <Typography variant="description">
+              <Trans>Switch Network</Trans>
+            </Typography>
           </Button>
         </Typography>
       )}
