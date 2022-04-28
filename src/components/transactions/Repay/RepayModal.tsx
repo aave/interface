@@ -1,5 +1,4 @@
 import { InterestRate } from '@aave/contract-helpers';
-import { UserReserveData } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import React, { useState } from 'react';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -21,36 +20,35 @@ export const RepayModal = () => {
   const { currentMarketData } = useProtocolDataContext();
   const [repayType, setRepayType] = useState(RepayType.BALANCE);
 
+  // repay with collateral is only possible:
+  // 1. on chains with paraswap deployed
+  // 2. when you have a different supplied(not necessarily collateral) asset then the one your debt is in
+  // For repaying your debt with the same assets aToken you can use repayWithAToken on aave protocol v3
+  const collateralRepayPossible =
+    isFeatureEnabled.collateralRepay(currentMarketData) &&
+    userReserves.some(
+      (userReserve) =>
+        userReserve.scaledATokenBalance !== '0' &&
+        userReserve.underlyingAsset !== args.underlyingAsset
+    );
+
   return (
     <BasicModal open={type === ModalType.Repay} setOpen={close}>
       <ModalWrapper title={<Trans>Repay</Trans>} underlyingAsset={args.underlyingAsset}>
         {(params) => {
-          if (isFeatureEnabled.collateralRepay(currentMarketData)) {
-            const supplies = userReserves
-              .filter((userReserve: UserReserveData) => userReserve.scaledATokenBalance !== '0')
-              .map((userReserve: UserReserveData) => userReserve.underlyingAsset.toLowerCase());
-            const remainingSupplies = supplies.filter(
-              (address: string) => address !== params.underlyingAsset.toLowerCase()
-            );
-
-            if (remainingSupplies.length > 0) {
-              return (
-                <>
-                  {!mainTxState.txHash && (
-                    <RepayTypeSelector repayType={repayType} setRepayType={setRepayType} />
-                  )}
-                  {repayType === RepayType.BALANCE && (
-                    <RepayModalContent {...params} debtType={args.currentRateMode} />
-                  )}
-                  {repayType === RepayType.COLLATERAL && (
-                    <CollateralRepayModalContent {...params} debtType={args.currentRateMode} />
-                  )}
-                </>
-              );
-            }
-          }
-
-          return <RepayModalContent {...params} debtType={args.currentRateMode} />;
+          return (
+            <>
+              {collateralRepayPossible && !mainTxState.txHash && (
+                <RepayTypeSelector repayType={repayType} setRepayType={setRepayType} />
+              )}
+              {repayType === RepayType.BALANCE && (
+                <RepayModalContent {...params} debtType={args.currentRateMode} />
+              )}
+              {repayType === RepayType.COLLATERAL && (
+                <CollateralRepayModalContent {...params} debtType={args.currentRateMode} />
+              )}
+            </>
+          );
         }}
       </ModalWrapper>
     </BasicModal>
