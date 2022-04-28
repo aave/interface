@@ -15,34 +15,7 @@ export const HFContent = ({ healthFactor }: HFContentProps) => {
     valueToBigNumber(healthFactor).toFixed(2, BigNumber.ROUND_DOWN)
   );
 
-  let dotPosition = 0;
-  if (+healthFactor > 10) {
-    dotPosition = 100;
-  } else if (+healthFactor < 10 && +healthFactor > 7) {
-    dotPosition = 85;
-  } else if (+healthFactor < 7 && +healthFactor > 5) {
-    dotPosition = 75;
-  } else if (+healthFactor < 5 && +healthFactor > 4) {
-    dotPosition = 70;
-  } else if (+healthFactor < 4 && +healthFactor > 3.5) {
-    dotPosition = 65;
-  } else if (+healthFactor < 3.5 && +healthFactor > 3) {
-    dotPosition = 60;
-  } else if (+healthFactor < 3 && +healthFactor > 2.5) {
-    dotPosition = 50;
-  } else if (+healthFactor < 2.5 && +healthFactor > 2) {
-    dotPosition = 40;
-  } else if (+healthFactor < 2 && +healthFactor > 1.5) {
-    dotPosition = 30;
-  } else if (+healthFactor < 1.5 && +healthFactor > 1.3) {
-    dotPosition = 20;
-  } else if (+healthFactor < 1.3 && +healthFactor > 1.2) {
-    dotPosition = 15;
-  } else if (+healthFactor < 1.2 && +healthFactor > 1.1) {
-    dotPosition = 10;
-  } else if (+healthFactor === 1) {
-    dotPosition = 0;
-  }
+  const dotPosition = +healthFactor > 10 ? 100 : +healthFactor * 10;
 
   return (
     <Box sx={{ position: 'relative', mt: '33px', mb: 4 }}>
@@ -103,15 +76,14 @@ export const HFContent = ({ healthFactor }: HFContentProps) => {
 
       <Box
         sx={{
-          maxWidth: '56px',
+          maxWidth: '20%',
           textAlign: 'center',
           pt: 1.5,
-          position: 'relative',
           '&:after': {
             content: "''",
             position: 'absolute',
             bottom: '85%',
-            left: '50%',
+            left: '10%',
             transform: 'translateX(-50%)',
             height: '10px',
             width: '2px',

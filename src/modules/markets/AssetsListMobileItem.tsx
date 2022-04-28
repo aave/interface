@@ -1,7 +1,8 @@
 import { Trans } from '@lingui/macro';
-import { Button, Divider } from '@mui/material';
+import { Button, Divider, Box } from '@mui/material';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
+import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
@@ -22,12 +23,18 @@ export const AssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
       currentMarket={currentMarket}
     >
       <Row caption={<Trans>Total supplied</Trans>} captionVariant="description" mb={3}>
-        <FormattedNumber
-          compact
-          value={reserve.totalLiquidityUSD}
-          variant="secondary14"
-          symbol="USD"
-        />
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: { xs: 'flex-end' },
+            justifyContent: 'center',
+            textAlign: 'center',
+          }}
+        >
+          <FormattedNumber compact value={reserve.totalLiquidity} variant="secondary14" />
+          <ReserveSubheader value={reserve.totalLiquidityUSD} rightAlign={true} />
+        </Box>
       </Row>
       <Row
         caption={<Trans>Supply APY</Trans>}
@@ -47,7 +54,18 @@ export const AssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
       <Divider sx={{ mb: 3 }} />
 
       <Row caption={<Trans>Total borrowed</Trans>} captionVariant="description" mb={3}>
-        <FormattedNumber compact value={reserve.totalDebtUSD} variant="secondary14" symbol="USD" />
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: { xs: 'flex-end' },
+            justifyContent: 'center',
+            textAlign: 'center',
+          }}
+        >
+          <FormattedNumber compact value={reserve.totalDebt} variant="secondary14" />
+          <ReserveSubheader value={reserve.totalDebtUSD} rightAlign={true} />
+        </Box>
       </Row>
       <Row
         caption={

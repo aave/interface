@@ -1,9 +1,12 @@
 import React, { ReactNode } from 'react';
 import { Trans } from '@lingui/macro';
 import {
+  Alert,
   Box,
   BoxProps,
   Divider,
+  Link,
+  SvgIcon,
   Typography,
   TypographyProps,
   useMediaQuery,
@@ -12,20 +15,23 @@ import {
 import Paper from '@mui/material/Paper';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { useReserveRatesHistory } from 'src/hooks/useReservesHistory';
 import { ParentSize } from '@visx/responsive';
 import { ApyChart } from '../reserve-overview/ApyChart';
 import { InterestRateModelChart } from '../reserve-overview/InterestRateModelChart';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { eModeInfo } from 'src/utils/eMode';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
-
 import { IncentivesButton } from 'src/components/incentives/IncentivesButton';
-import { ExclamationIcon } from '@heroicons/react/outline';
-import { EModeTooltip } from 'src/components/infoTooltips/EModeTooltip';
+import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
+import { getEmodeMessage } from 'src/components/transactions/Emode/EmodeNaming';
+import LightningBoltGradient from '/public/lightningBoltGradient.svg';
+import { ROUTES } from 'src/components/primitives/Link';
+import { MaxLTVTooltip } from 'src/components/infoTooltips/MaxLTVTooltip';
+import { LiquidationThresholdTooltip } from 'src/components/infoTooltips/LiquidationThresholdTooltip';
+import { LiquidationPenaltyTooltip } from 'src/components/infoTooltips/LiquidationPenaltyTooltip';
+import { ReserveSubheader } from 'src/components/ReserveSubheader';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
   <Box
@@ -45,6 +51,28 @@ export const PanelTitle: React.FC<TypographyProps> = (props) => (
     sx={{ minWidth: { xs: '170px' }, mr: 4, mb: { xs: 6, md: 0 }, ...props.sx }}
   />
 );
+
+interface PanelColumnProps {
+  children?: ReactNode;
+}
+
+export const PanelColumn = ({ children }: PanelColumnProps) => {
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-end',
+        flex: 1,
+        overflow: 'hidden',
+        py: 1,
+      }}
+    >
+      {children}
+    </Box>
+  );
+};
 
 interface PanelItemProps {
   title: ReactNode;
@@ -78,7 +106,7 @@ export const PanelItem: React.FC<PanelItemProps> = ({ title, children }) => {
       }}
     >
       <Typography color="text.secondary">{title}</Typography>
-      {children}
+      <PanelColumn>{children}</PanelColumn>
     </Box>
   );
 };
@@ -114,21 +142,12 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
           alignItems: 'center',
           gap: 6,
           flexWrap: 'wrap',
-          mb: '24px',
+          mb: '36px',
         }}
       >
         <Typography variant="h3">
           <Trans>Reserve status &#38; configuration</Trans>
         </Typography>
-        {reserve.isEmodeEnabled && (
-          <Typography color="text.secondary" variant="description" sx={{ display: 'inline-flex' }}>
-            <Trans>E-Mode category</Trans>
-            <Typography variant="subheader1" sx={{ ml: 2 }}>
-              {eModeInfo[reserve.eModeCategoryId].label}
-            </Typography>
-            <EModeTooltip eModeLtv={reserve.eModeLtv} />
-          </Typography>
-        )}
       </Box>
 
       <PanelRow>
@@ -142,36 +161,33 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
             }}
           >
             <PanelItem title={<Trans>Total supplied</Trans>}>
-              <FormattedNumber
-                value={reserve.totalLiquidityUSD /** TODO: should this be liquidity or all? */}
-                symbol="USD"
-                variant="main16"
-                compact
-              />
+              <FormattedNumber value={reserve.totalLiquidity} variant="main16" compact />
+              <ReserveSubheader value={reserve.totalLiquidityUSD} />
             </PanelItem>
             <PanelItem title={<Trans>APY</Trans>}>
-              <FormattedNumber value={reserve.supplyAPY} percent variant="main16" sx={{ mr: 3 }} />
-              <IncentivesButton symbol={reserve.symbol} incentives={reserve.aIncentivesData} />
+              <FormattedNumber value={reserve.supplyAPY} percent variant="main16" />
+              <IncentivesButton
+                symbol={reserve.symbol}
+                incentives={reserve.aIncentivesData}
+                displayBlank={true}
+              />
             </PanelItem>
             {reserve.supplyCapUSD !== '0' && (
               <PanelItem title={<Trans>Supply cap</Trans>}>
-                <FormattedNumber value={reserve.totalLiquidity} variant="main16" /> of{' '}
                 <FormattedNumber value={reserve.supplyCap} variant="main16" />
+                <ReserveSubheader value={reserve.supplyCapUSD} />
               </PanelItem>
             )}
             {reserve.unbacked !== '0' && (
               <PanelItem title={<Trans>Unbacked</Trans>}>
-                <FormattedNumber
-                  value={reserve.unbacked}
-                  variant="main16"
-                  symbol={reserve.symbol}
-                />
+                <FormattedNumber value={reserve.unbacked} variant="main16" symbol={reserve.name} />
+                <ReserveSubheader value={reserve.unbackedUSD} />
               </PanelItem>
             )}
           </Box>
 
-          {renderCharts && !error && (
-            <ChartContainer sx={{ mt: 4 }}>
+          {renderCharts && !error && reserve.borrowingEnabled && (
+            <ChartContainer sx={{ mt: 4, pb: 8 }}>
               <ParentSize>
                 {(parent) => (
                   <ApyChart
@@ -185,262 +201,324 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
             </ChartContainer>
           )}
 
-          <Box
-            sx={{
-              mt: 4,
-              py: '12px',
-              px: '16px',
-              bgcolor: 'background.surface',
-              borderRadius: '6px',
-            }}
-          >
-            <div>
-              {!reserve.isIsolated && (
-                <Typography sx={{ display: 'inline-flex', alignItems: 'center' }}>
-                  <Trans>Collateral usage:</Trans>
-                  {reserve.usageAsCollateralEnabled ? (
-                    <>
-                      <CheckRoundedIcon fontSize="small" color="success" sx={{ ml: 2 }} />
-                      <Trans>Can be collateral</Trans>
-                    </>
-                  ) : (
-                    <>
-                      <CloseRoundedIcon fontSize="small" color="error" sx={{ ml: 2 }} />
-                      <Trans>No</Trans>
-                    </>
-                  )}
+          <div>
+            {reserve.isIsolated ? (
+              <Box sx={{ pt: '42px', pb: '12px' }}>
+                <Typography variant="secondary14" color="text.secondary" paddingBottom={'12px'}>
+                  <Trans>Collateral usage</Trans>
                 </Typography>
-              )}
-              {reserve.isIsolated && (
-                <Box
-                  sx={{
-                    display: 'inline-flex',
-                    bgcolor: 'warning.main',
-                    p: '4px 8px',
-                    color: '#fff',
-                    borderRadius: '6px',
-                  }}
-                >
-                  <ExclamationIcon style={{ height: 16, paddingRight: '4px' }} />
-                  <Trans>Can only be used as collateral in isolation mode</Trans>
-                </Box>
-              )}
-            </div>
-            {reserve.usageAsCollateralEnabled && (
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: { xs: 'column', sm: 'row' },
-                  alignItems: { xs: 'flex-start', sm: 'center' },
-                  flexWrap: 'wrap',
-                  mt: '16px',
-                  '& > :not(:last-child)': {
-                    mr: 4,
-                  },
-                }}
-              >
-                <Typography sx={{ display: 'inline-flex' }}>
-                  <Typography sx={{ color: 'text.muted' }} component="span">
-                    <Trans>Max LTV</Trans>
+                <Alert severity="warning">
+                  <Typography variant="subheader1">
+                    <Trans>Asset can only be used as collateral in isolation mode only.</Trans>
                   </Typography>
-                  <FormattedNumber
-                    value={reserve.formattedBaseLTVasCollateral}
-                    percent
-                    variant="secondary14"
-                    sx={{ ml: 2 }}
-                    visibleDecimals={2}
-                  />
-                </Typography>
-                <Typography sx={{ display: 'inline-flex' }}>
-                  <Typography sx={{ color: 'text.muted' }} component="span">
-                    <Trans>Liquidation threshold</Trans>
+                  <Typography variant="caption">
+                    In Isolation mode you cannot supply other assets as collateral for borrowing.
+                    Assets used as collateral in Isolation mode can only be borrowed to a specific
+                    debt ceiling.{' '}
+                    <Link href="https://docs.aave.com/faq/aave-v3-features#isolation-mode">
+                      Learn more
+                    </Link>
                   </Typography>
-                  <FormattedNumber
-                    value={reserve.formattedReserveLiquidationThreshold}
-                    percent
-                    variant="secondary14"
-                    sx={{ ml: 2 }}
-                    visibleDecimals={2}
-                  />
-                </Typography>
-                <Typography sx={{ display: 'inline-flex' }}>
-                  <Typography sx={{ color: 'text.muted' }} component="span">
-                    <Trans>Liquidation penalty</Trans>
-                  </Typography>
-                  <FormattedNumber
-                    value={reserve.formattedReserveLiquidationBonus}
-                    percent
-                    variant="secondary14"
-                    sx={{ ml: 2 }}
-                    visibleDecimals={2}
-                  />
-                </Typography>
-                {reserve.isIsolated && (
-                  <Typography sx={{ display: 'inline-flex' }}>
-                    <Typography sx={{ color: 'text.muted' }} component="span">
-                      <Trans>Debt ceiling</Trans>
-                    </Typography>
-                    <FormattedNumber
-                      value={reserve.isolationModeTotalDebtUSD}
-                      variant="secondary14"
-                      sx={{ ml: 2 }}
-                      symbol="USD"
-                      visibleDecimals={2}
-                    />
-                    &nbsp;of
-                    <FormattedNumber
-                      value={reserve.debtCeilingUSD}
-                      variant="secondary14"
-                      sx={{ ml: 2 }}
-                      symbol="USD"
-                      visibleDecimals={2}
-                    />
-                  </Typography>
-                )}
+                </Alert>
               </Box>
-            )}
-            {reserve.eModeCategoryId !== 0 && (
+            ) : reserve.usageAsCollateralEnabled ? (
               <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: { xs: 'column', sm: 'row' },
-                  alignItems: { xs: 'flex-start', sm: 'center' },
-                  flexWrap: 'wrap',
-                  mt: '16px',
-                  '& > :not(:last-child)': {
-                    mr: 4,
-                  },
-                }}
+                sx={{ display: 'inline-flex', alignItems: 'center', pt: '42px', pb: '12px' }}
+                paddingTop={'42px'}
               >
-                <Typography sx={{ display: 'inline-flex' }}>
-                  <Typography sx={{ color: 'text.muted' }} component="span">
-                    <Trans>E-Mode max LTV</Trans>
-                  </Typography>
-                  <FormattedNumber
-                    value={reserve.formattedEModeLtv}
-                    percent
-                    variant="secondary14"
-                    sx={{ ml: 2 }}
-                    visibleDecimals={2}
-                  />
+                <Typography variant="secondary14" color="text.secondary">
+                  <Trans>Collateral usage</Trans>
                 </Typography>
-                <Typography sx={{ display: 'inline-flex' }}>
-                  <Typography sx={{ color: 'text.muted' }} component="span">
-                    <Trans>E-Mode liquidation threshold</Trans>
-                  </Typography>
-                  <FormattedNumber
-                    value={reserve.formattedEModeLiquidationThreshold}
-                    percent
-                    variant="secondary14"
-                    sx={{ ml: 2 }}
-                    visibleDecimals={2}
-                  />
-                </Typography>
-                <Typography sx={{ display: 'inline-flex' }}>
-                  <Typography sx={{ color: 'text.muted' }} component="span">
-                    <Trans>E-Mode liquidation penalty</Trans>
-                  </Typography>
-                  <FormattedNumber
-                    value={reserve.formattedEModeLiquidationBonus}
-                    percent
-                    variant="secondary14"
-                    sx={{ ml: 2 }}
-                    visibleDecimals={2}
-                  />
+                <CheckRoundedIcon fontSize="small" color="success" sx={{ ml: 2 }} />
+                <Typography variant="subheader1" sx={{ color: '#46BC4B' }}>
+                  <Trans>Can be collateral</Trans>
                 </Typography>
               </Box>
+            ) : (
+              <Box sx={{ pt: '42px', pb: '12px' }}>
+                <Typography variant="secondary14" color="text.secondary">
+                  <Trans>Collateral usage</Trans>
+                </Typography>
+                <Alert sx={{ my: '12px' }} severity="warning">
+                  <Trans>Asset cannot be used as collateral.</Trans>
+                </Alert>
+              </Box>
             )}
-            {reserve.isIsolated && (
-              <Typography variant="caption" sx={{ mt: 2 }}>
-                <Trans>
-                  In Isolation mode you cannot supply other assets as collateral for borrowing.
-                  Assets used as collateral in Isolation mode can only be borrowed to a specific
-                  debt ceiling.
-                </Trans>
-              </Typography>
-            )}
-          </Box>
-        </Box>
-      </PanelRow>
+          </div>
 
-      <Divider sx={{ my: '40px' }} />
-
-      {reserve.borrowingEnabled && (
-        <PanelRow>
-          <PanelTitle>Borrow info</PanelTitle>
-          <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
+          {reserve.usageAsCollateralEnabled && (
             <Box
               sx={{
                 display: 'flex',
-                alignItems: 'center',
                 flexWrap: 'wrap',
+                justifyContent: 'space-between',
               }}
             >
-              <PanelItem title={<Trans>Total borrowed</Trans>}>
-                <FormattedNumber value={reserve.totalDebtUSD} symbol="USD" variant="main16" />
-              </PanelItem>
-              <PanelItem
+              <ReserveOverviewBox
+                title={<MaxLTVTooltip variant="description" text={<Trans>Max LTV</Trans>} />}
+              >
+                <FormattedNumber
+                  value={reserve.formattedBaseLTVasCollateral}
+                  percent
+                  variant="secondary14"
+                  visibleDecimals={2}
+                />
+              </ReserveOverviewBox>
+
+              <ReserveOverviewBox
                 title={
-                  <VariableAPYTooltip
-                    text={<Trans>APY, variable</Trans>}
-                    key="APY_res_variable_type"
+                  <LiquidationThresholdTooltip
                     variant="description"
+                    text={<Trans>Liquidation threshold</Trans>}
                   />
                 }
               >
-                <FormattedNumber value={reserve.variableBorrowAPY} percent variant="main16" />
-              </PanelItem>
-              {reserve.stableBorrowRateEnabled && (
+                <FormattedNumber
+                  value={reserve.formattedReserveLiquidationThreshold}
+                  percent
+                  variant="secondary14"
+                  visibleDecimals={2}
+                />
+              </ReserveOverviewBox>
+
+              <ReserveOverviewBox
+                title={
+                  <LiquidationPenaltyTooltip
+                    variant="description"
+                    text={<Trans>Liquidation penalty</Trans>}
+                  />
+                }
+              >
+                <FormattedNumber
+                  value={reserve.formattedReserveLiquidationBonus}
+                  percent
+                  variant="secondary14"
+                  visibleDecimals={2}
+                />
+              </ReserveOverviewBox>
+
+              {reserve.isIsolated && (
+                <ReserveOverviewBox title="Debt ceiling">
+                  <Box sx={{ display: { sm: 'inline-flex', xs: 'block' } }}>
+                    <FormattedNumber
+                      value={reserve.isolationModeTotalDebtUSD}
+                      variant="secondary14"
+                      symbol="USD"
+                      symbolsVariant="secondary14"
+                      visibleDecimals={2}
+                    />
+                    &nbsp;of&nbsp;
+                    <FormattedNumber
+                      value={reserve.debtCeilingUSD}
+                      variant="secondary14"
+                      symbol="USD"
+                      symbolsVariant="secondary14"
+                      visibleDecimals={2}
+                    />
+                  </Box>
+                </ReserveOverviewBox>
+              )}
+            </Box>
+          )}
+        </Box>
+      </PanelRow>
+
+      {reserve.borrowingEnabled && (
+        <>
+          <Divider sx={{ my: '40px' }} />
+          <PanelRow>
+            <PanelTitle>Borrow info</PanelTitle>
+            <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  flexWrap: 'wrap',
+                }}
+              >
+                <PanelItem title={<Trans>Total borrowed</Trans>}>
+                  <FormattedNumber value={reserve.totalDebt} variant="main16" />
+                  <ReserveSubheader value={reserve.totalDebtUSD} />
+                </PanelItem>
                 <PanelItem
                   title={
-                    <StableAPYTooltip
-                      text={<Trans>APY, stable</Trans>}
-                      key="APY_res_stable_type"
+                    <VariableAPYTooltip
+                      text={<Trans>APY, variable</Trans>}
+                      key="APY_res_variable_type"
                       variant="description"
                     />
                   }
                 >
-                  <FormattedNumber value={reserve.stableBorrowAPY} percent variant="main16" />
+                  <FormattedNumber value={reserve.variableBorrowAPY} percent variant="main16" />
+                  <IncentivesButton
+                    symbol={reserve.symbol}
+                    incentives={reserve.vIncentivesData}
+                    displayBlank={true}
+                  />
                 </PanelItem>
-              )}
-              {reserve.borrowCapUSD !== '0' && (
-                <PanelItem title={<Trans>Borrow cap</Trans>}>
-                  <FormattedNumber value={reserve.totalDebt} variant="main16" /> of
-                  <FormattedNumber value={reserve.borrowCap} variant="main16" />
-                </PanelItem>
+                {reserve.stableBorrowRateEnabled && (
+                  <PanelItem
+                    title={
+                      <StableAPYTooltip
+                        text={<Trans>APY, stable</Trans>}
+                        key="APY_res_stable_type"
+                        variant="description"
+                      />
+                    }
+                  >
+                    <FormattedNumber value={reserve.stableBorrowAPY} percent variant="main16" />
+                    <IncentivesButton
+                      symbol={reserve.symbol}
+                      incentives={reserve.sIncentivesData}
+                      displayBlank={true}
+                    />
+                  </PanelItem>
+                )}
+                {reserve.borrowCapUSD !== '0' && (
+                  <PanelItem title={<Trans>Borrow cap</Trans>}>
+                    <FormattedNumber value={reserve.borrowCap} variant="main16" />
+                    <ReserveSubheader value={reserve.borrowCapUSD} />
+                  </PanelItem>
+                )}
+              </Box>
+              {renderCharts && !error && (
+                <ChartContainer sx={{ mt: 8 }}>
+                  <ParentSize>
+                    {(parent) => (
+                      <ApyChart
+                        width={parent.width}
+                        height={parent.height}
+                        data={data}
+                        fields={[
+                          ...(reserve.stableBorrowRateEnabled
+                            ? ([
+                                {
+                                  name: 'stableBorrowRate',
+                                  color: '#0062D2',
+                                  text: 'Borrow APR, stable',
+                                },
+                              ] as const)
+                            : []),
+                          {
+                            name: 'variableBorrowRate',
+                            color: '#B6509E',
+                            text: 'Borrow APR, variable',
+                          },
+                        ]}
+                      />
+                    )}
+                  </ParentSize>
+                </ChartContainer>
               )}
             </Box>
-            {renderCharts && !error && (
-              <ChartContainer sx={{ mt: 8 }}>
-                <ParentSize>
-                  {(parent) => (
-                    <ApyChart
-                      width={parent.width}
-                      height={parent.height}
-                      data={data}
-                      fields={[
-                        ...(reserve.stableBorrowRateEnabled
-                          ? ([
-                              {
-                                name: 'stableBorrowRate',
-                                color: '#0062D2',
-                                text: 'Borrow APR, stable',
-                              },
-                            ] as const)
-                          : []),
-                        {
-                          name: 'variableBorrowRate',
-                          color: '#B6509E',
-                          text: 'Borrow APR, variable',
-                        },
-                      ]}
+          </PanelRow>
+        </>
+      )}
+
+      {reserve.eModeCategoryId !== 0 && (
+        <>
+          <Divider sx={{ my: '40px' }} />
+          <PanelRow>
+            <PanelTitle>E-Mode info</PanelTitle>
+            <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
+              <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                <Typography variant="secondary14" color="text.secondary">
+                  <Trans>E-Mode Category</Trans>
+                </Typography>
+                <SvgIcon sx={{ fontSize: '14px', mr: 0.5, ml: 2 }}>
+                  <LightningBoltGradient />
+                </SvgIcon>
+                <Typography variant="subheader1">
+                  {getEmodeMessage(reserve.eModeCategoryId)}
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  justifyContent: 'space-between',
+                  pt: '12px',
+                }}
+              >
+                <ReserveOverviewBox
+                  title={<MaxLTVTooltip variant="description" text={<Trans>Max LTV</Trans>} />}
+                >
+                  <FormattedNumber
+                    value={reserve.formattedEModeLtv}
+                    percent
+                    variant="secondary14"
+                    visibleDecimals={2}
+                  />
+                </ReserveOverviewBox>
+                <ReserveOverviewBox
+                  title={
+                    <LiquidationThresholdTooltip
+                      variant="description"
+                      text={<Trans>Liquidation threshold</Trans>}
                     />
-                  )}
-                </ParentSize>
-              </ChartContainer>
-            )}
-          </Box>
-        </PanelRow>
+                  }
+                >
+                  <FormattedNumber
+                    value={reserve.formattedEModeLiquidationThreshold}
+                    percent
+                    variant="secondary14"
+                    visibleDecimals={2}
+                  />
+                </ReserveOverviewBox>
+                <ReserveOverviewBox
+                  title={
+                    <LiquidationPenaltyTooltip
+                      variant="description"
+                      text={<Trans>Liquidation penalty</Trans>}
+                    />
+                  }
+                >
+                  <FormattedNumber
+                    value={reserve.formattedEModeLiquidationBonus}
+                    percent
+                    variant="secondary14"
+                    visibleDecimals={2}
+                  />
+                </ReserveOverviewBox>
+              </Box>
+              <Typography variant="caption" color="text.secondary" paddingTop="24px">
+                <Trans>
+                  E-Mode increases your LTV for a selected category of assets, meaning that when
+                  E-mode is enabled, you will have higher borrowing power over assets of the same
+                  E-mode category which are defined by Aave Governance. You can enter E-Mode from
+                  your{' '}
+                  <Link
+                    href={ROUTES.dashboard}
+                    sx={{ textDecoration: 'underline' }}
+                    variant="caption"
+                    color="text.secondary"
+                  >
+                    Dashboard
+                  </Link>
+                  . To learn more about E-Mode and applied restrictions in{' '}
+                  <Link
+                    href="https://docs.aave.com/faq/aave-v3-features#high-efficiency-mode-e-mode"
+                    sx={{ textDecoration: 'underline' }}
+                    variant="caption"
+                    color="text.secondary"
+                  >
+                    FAQ
+                  </Link>{' '}
+                  or{' '}
+                  <Link
+                    href="https://github.com/aave/aave-v3-core/blob/master/techpaper/Aave_V3_Technical_Paper.pdf"
+                    sx={{ textDecoration: 'underline' }}
+                    variant="caption"
+                    color="text.secondary"
+                  >
+                    Aave V3 Technical Paper
+                  </Link>
+                  .
+                </Trans>
+              </Typography>
+            </Box>
+          </PanelRow>
+        </>
       )}
 
       {reserve.borrowingEnabled && (
