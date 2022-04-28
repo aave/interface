@@ -1,6 +1,6 @@
 import { ChainId } from '@aave/contract-helpers';
 import { ReactNode } from 'react';
-import { PermissionView } from 'src/components/transactions/FlowCommons/PermissionView';
+// import { PermissionView } from 'src/components/transactions/FlowCommons/PermissionView';
 
 export type MarketDataType = {
   v3?: boolean;
