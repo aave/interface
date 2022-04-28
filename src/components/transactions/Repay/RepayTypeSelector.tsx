@@ -6,10 +6,6 @@ export enum RepayType {
   BALANCE,
   COLLATERAL,
 }
-
-// set false to enable switch on ui
-const UNFINISHED = false;
-
 export function RepayTypeSelector({
   repayType,
   setRepayType,
@@ -18,7 +14,7 @@ export function RepayTypeSelector({
   setRepayType: (type: RepayType) => void;
 }) {
   const { currentMarketData } = useProtocolDataContext();
-  if (UNFINISHED || !currentMarketData.enabledFeatures?.collateralRepay) return null;
+  if (!currentMarketData.enabledFeatures?.collateralRepay) return null;
   return (
     <Box sx={{ mb: 6 }}>
       <Typography mb={1} color="text.secondary">

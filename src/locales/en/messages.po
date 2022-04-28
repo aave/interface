@@ -457,10 +457,6 @@ msgstr "Cooling down..."
 msgid "Copy address"
 msgstr "Copy address"
 
-#: src/components/transactions/FlowCommons/GasEstimationError.tsx
-msgid "Copy error"
-msgstr "Copy error"
-
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Copy error text"
 msgstr "Copy error text"
@@ -1430,8 +1426,8 @@ msgid "There is not enough collateral to cover a new borrow"
 msgstr "There is not enough collateral to cover a new borrow"
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
-msgid "There was some error. Please try changing the parameters or<0>copy the error</0>"
-msgstr "There was some error. Please try changing the parameters or<0>copy the error</0>"
+msgid "There was some error. Please try changing the parameters or <0><1>copy the error</1></0>"
+msgstr "There was some error. Please try changing the parameters or <0><1>copy the error</1></0>"
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
@@ -1834,6 +1830,10 @@ msgstr "assets"
 #: src/modules/governance/proposal/ProposalTopPanel.tsx
 msgid "back"
 msgstr "back"
+
+#: src/components/transactions/FlowCommons/GasEstimationError.tsx
+msgid "copy the error"
+msgstr "copy the error"
 
 #: src/components/transactions/Emode/EmodeSelect.tsx
 #: src/components/transactions/Emode/EmodeSelect.tsx
