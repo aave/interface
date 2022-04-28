@@ -41,3 +41,6 @@ export const optimizedPath = (currentChainId: ChainId) => {
     // currentChainId === ChainId.optimism_kovan
   );
 };
+
+export const APP_NAME = 'Aave';
+export const APP_LOGO_URL = 'https://aave.com/favicon.ico';
