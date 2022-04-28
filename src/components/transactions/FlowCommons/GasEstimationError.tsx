@@ -10,6 +10,7 @@ export const GasEstimationError = ({ txError }: { txError: TxErrorType }) => {
           <>
             {txError.error}{' '}
             <Button
+              sx={{ verticalAlign: 'top' }}
               variant="text"
               onClick={() => navigator.clipboard.writeText(txError.rawError.message.toString())}
             >
