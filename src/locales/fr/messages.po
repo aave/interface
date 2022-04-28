@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-04-26 06:04\n"
+"PO-Revision-Date: 2022-04-28 00:23\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -178,7 +178,7 @@ msgstr ""
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Asset cannot be used as collateral."
-msgstr ""
+msgstr "L'actif ne peut pas être utilisé comme collatéral."
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeSelect.tsx
@@ -1548,7 +1548,7 @@ msgstr "Arrêter de staker {symbol}"
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Unavailable"
-msgstr ""
+msgstr "Non disponible"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Unbacked"
