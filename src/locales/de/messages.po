@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-04-25 18:05\n"
+"PO-Revision-Date: 2022-04-28 18:05\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -455,10 +455,6 @@ msgstr ""
 
 #: src/layouts/WalletWidget.tsx
 msgid "Copy address"
-msgstr ""
-
-#: src/components/transactions/FlowCommons/GasEstimationError.tsx
-msgid "Copy error"
 msgstr ""
 
 #: src/components/transactions/FlowCommons/Error.tsx
@@ -1430,7 +1426,7 @@ msgid "There is not enough collateral to cover a new borrow"
 msgstr ""
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
-msgid "There was some error. Please try changing the parameters or<0>copy the error</0>"
+msgid "There was some error. Please try changing the parameters or <0><1>copy the error</1></0>"
 msgstr ""
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
@@ -1829,6 +1825,10 @@ msgstr ""
 
 #: src/modules/governance/proposal/ProposalTopPanel.tsx
 msgid "back"
+msgstr ""
+
+#: src/components/transactions/FlowCommons/GasEstimationError.tsx
+msgid "copy the error"
 msgstr ""
 
 #: src/components/transactions/Emode/EmodeSelect.tsx
