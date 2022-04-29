@@ -69,7 +69,16 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
     <TopInfoPanel
       titleComponent={
         <Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 4, minHeight: '40px' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: downToSM ? 'flex-start' : 'center',
+              alignSelf: downToSM ? 'flex-start' : 'center',
+              mb: 4,
+              minHeight: '40px',
+              flexDirection: downToSM ? 'column' : 'row',
+            }}
+          >
             <Button
               variant="surface"
               size="medium"
@@ -84,7 +93,7 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
                 if (history.state.idx !== 0) router.back();
                 else router.push('/markets');
               }}
-              sx={{ mr: 3 }}
+              sx={{ mr: 3, mb: downToSM ? '24px' : '0' }}
             >
               <Trans>Go Back</Trans>
             </Button>
