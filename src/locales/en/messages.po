@@ -811,10 +811,6 @@ msgstr "Liquidation at"
 msgid "Liquidation penalty"
 msgstr "Liquidation penalty"
 
-#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
-msgid "Liquidation risk is high. Lower amounts recomended."
-msgstr "Liquidation risk is high. Lower amounts recomended."
-
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "Liquidation risk is high. Lower amounts recommended."
 msgstr "Liquidation risk is high. Lower amounts recommended."
@@ -1679,6 +1675,10 @@ msgstr "Withdraw"
 #: src/components/transactions/Withdraw/WithdrawActions.tsx
 msgid "Withdraw {symbol}"
 msgstr "Withdraw {symbol}"
+
+#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+msgid "Withdrawing this amount will reduce your health factor and increase risk of liquidation. By clicking this checkbox you are acknowleding this risk."
+msgstr "Withdrawing this amount will reduce your health factor and increase risk of liquidation. By clicking this checkbox you are acknowleding this risk."
 
 #: src/components/transactions/Withdraw/WithdrawActions.tsx
 msgid "Withdrawing {symbol}"
