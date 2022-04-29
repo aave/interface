@@ -20,6 +20,7 @@ import {
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useModalContext } from 'src/hooks/useModal';
+import { usePermissions } from 'src/hooks/usePermissions';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import {
   assetCanBeBorrowedByUser,
@@ -60,11 +61,12 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   const { currentAccount, loading: web3Loading } = useWeb3Context();
   const { user, reserves, loading: loadingReserves } = useAppDataContext();
   const { walletBalances, loading: loadingBalance } = useWalletBalances();
+  const { isPermissionsLoading } = usePermissions();
 
   const { currentNetworkConfig } = useProtocolDataContext();
   const { bridge, name: networkName } = currentNetworkConfig;
 
-  if (!currentAccount)
+  if (!currentAccount && !isPermissionsLoading)
     return (
       <Paper sx={{ pt: 4, pb: { xs: 4, xsm: 6 }, px: { xs: 4, xsm: 6 } }}>
         {web3Loading ? (

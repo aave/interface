@@ -1,4 +1,4 @@
-import { InterestRate } from '@aave/contract-helpers';
+import { InterestRate, PERMISSION } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import React, { useState } from 'react';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -34,7 +34,11 @@ export const RepayModal = () => {
 
   return (
     <BasicModal open={type === ModalType.Repay} setOpen={close}>
-      <ModalWrapper title={<Trans>Repay</Trans>} underlyingAsset={args.underlyingAsset}>
+      <ModalWrapper
+        title={<Trans>Repay</Trans>}
+        underlyingAsset={args.underlyingAsset}
+        requiredPermission={PERMISSION.BORROWER}
+      >
         {(params) => {
           return (
             <>

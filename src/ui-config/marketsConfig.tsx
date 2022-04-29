@@ -1,4 +1,6 @@
 import { ChainId } from '@aave/contract-helpers';
+import { ReactNode } from 'react';
+// import { PermissionView } from 'src/components/transactions/FlowCommons/PermissionView';
 
 export type MarketDataType = {
   v3?: boolean;
@@ -18,6 +20,7 @@ export type MarketDataType = {
   cachingWSServerUrl?: string;
   rpcOnly?: boolean;
   isFork?: boolean;
+  permissionComponent?: ReactNode;
   addresses: {
     LENDING_POOL_ADDRESS_PROVIDER: string;
     LENDING_POOL: string;
@@ -71,6 +74,8 @@ export enum CustomMarket {
   proto_mumbai = 'proto_mumbai',
   amm_kovan = 'amm_kovan',
   amm_mainnet = 'amm_mainnet',
+  // external
+  // permissioned_market = 'permissioned_market',
 }
 
 export const marketsData: {
@@ -121,6 +126,29 @@ export const marketsData: {
     },
     halMarketName: 'aavev2',
   },
+  // [CustomMarket.permissioned_market]: {
+  //   marketTitle: 'Ethereum Permissioned Market example',
+  //   chainId: ChainId.mainnet,
+  //   enabledFeatures: {
+  //     // liquiditySwap: true,
+  //     // collateralRepay: true,
+  //     // incentives: true,
+  //     permissions: true,
+  //   },
+  //   rpcOnly: true,
+  //   permissionComponent: <PermissionView />,
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: '<address here>'.toLowerCase(),
+  //     LENDING_POOL: '<address here>',
+  //     WETH_GATEWAY: '<address here>',
+  //     // REPAY_WITH_COLLATERAL_ADAPTER: '<address here>',
+  //     // SWAP_COLLATERAL_ADAPTER: '<address here>',
+  //     WALLET_BALANCE_PROVIDER: '<address here>',
+  //     UI_POOL_DATA_PROVIDER: '<address here>',
+  //     // UI_INCENTIVE_DATA_PROVIDER: '<address here>',
+  //     PERMISSION_MANAGER: '<address here>',
+  //   },
+  // },
   [CustomMarket.amm_kovan]: {
     marketTitle: 'Ethereum AMM Kovan',
     chainId: ChainId.kovan,

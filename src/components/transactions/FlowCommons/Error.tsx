@@ -4,7 +4,6 @@ import { Box, Button, Link, SvgIcon, Typography } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
 import { TxErrorType } from 'src/ui-config/errorMapping';
 
-// TODO: need check texts
 export const TxErrorView = ({ txError }: { txError: TxErrorType }) => {
   const { close } = useModalContext();
 
