@@ -111,8 +111,8 @@ export const WithdrawModalContent = ({
       currentLiquidationThreshold: liquidationThresholdAfterWithdraw,
     });
   }
-
-  const displayRiskCheckbox = healthFactorAfterWithdraw.toNumber() < 1.5;
+  const displayRiskCheckbox =
+    healthFactorAfterWithdraw.toNumber() >= 1 && healthFactorAfterWithdraw.toNumber() < 1.5;
 
   let blockingError: ErrorType | undefined = undefined;
   if (!withdrawTxState.success && !withdrawTxState.txHash) {
