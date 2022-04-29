@@ -57750,7 +57750,7 @@ var governanceConfig = {
 var import_contract_helpers4 = __toESM(require_cjs());
 var import_ethers = __toESM(require_lib31());
 
-// src/ui-config/marketsConfig.ts
+// src/ui-config/marketsConfig.tsx
 var import_contract_helpers2 = __toESM(require_cjs());
 var marketsData = {
   ["proto_kovan" /* proto_kovan */]: {
