@@ -54,7 +54,7 @@ export const AAVEReserveActions = ({ underlyingAsset }: ReserveActionsProps) => 
   const { openSupply } = useModalContext();
 
   const { currentAccount, loading: web3Loading } = useWeb3Context();
-  const { user, reserves, loading: loadingReserves } = useAppDataContext();
+  const { reserves, loading: loadingReserves } = useAppDataContext();
   const { walletBalances, loading: loadingBalance } = useWalletBalances();
 
   const { currentNetworkConfig } = useProtocolDataContext();
@@ -171,7 +171,7 @@ export const AAVEReserveActions = ({ underlyingAsset }: ReserveActionsProps) => 
         />
       </Row>
 
-      {poolReserve.symbol === 'AAVE' && balance?.amount !== '0' && (
+      {balance?.amount !== '0' && (
         <Alert sx={{ mb: '12px' }} severity="info" icon={false}>
           <Trans>
             Supplying your AAVE tokens is not the same as staking them. If you wish to stake your
@@ -189,7 +189,7 @@ export const AAVEReserveActions = ({ underlyingAsset }: ReserveActionsProps) => 
           onClick={() => openSupply(underlyingAsset)}
           fullWidth={downToXSM}
         >
-          <Trans>Supply</Trans> {(downToXSM || poolReserve.symbol === 'AAVE') && poolReserve.symbol}
+          <Trans>Supply</Trans> {poolReserve.symbol}
         </Button>
         {balance?.amount !== '0' && (
           <Button variant="text" fullWidth={downToXSM}>

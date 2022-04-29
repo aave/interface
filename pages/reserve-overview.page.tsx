@@ -13,6 +13,7 @@ import {
   ComputedReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { AAVEReserveActions } from 'src/modules/reserve-overview/AAVEReserveActions';
 import { ReserveActions } from 'src/modules/reserve-overview/ReserveActions';
@@ -24,6 +25,7 @@ import { ContentContainer } from '../src/components/ContentContainer';
 export default function ReserveOverview() {
   const router = useRouter();
   const { reserves } = useAppDataContext();
+  const { currentMarketData } = useProtocolDataContext();
   const underlyingAsset = router.query.underlyingAsset as string;
   const { breakpoints } = useTheme();
   const lg = useMediaQuery(breakpoints.up('lg'));
@@ -92,7 +94,7 @@ export default function ReserveOverview() {
               width: { xs: '100%', lg: '416px' },
             }}
           >
-            {reserve.symbol === 'AAVE' ? (
+            {reserve.symbol === 'AAVE' && currentMarketData.chainId === 1 ? (
               <AAVEReserveActions underlyingAsset={underlyingAsset} />
             ) : (
               <ReserveActions underlyingAsset={underlyingAsset} />
