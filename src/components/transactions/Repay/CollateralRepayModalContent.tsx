@@ -71,7 +71,7 @@ export function CollateralRepayModalContent({
   ) as ComputedUserReserveData;
 
   const [_amount, setAmount] = useState('');
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   const [maxSlippage, setMaxSlippage] = useState('0.1');
 
   const amountRef = useRef<string>('');
@@ -119,14 +119,14 @@ export function CollateralRepayModalContent({
     const maxSelected = value === '-1';
     amountRef.current = maxSelected ? maxRepayableDebt.toString(10) : value;
     setAmount(value);
+    setMaxSlippage('0'); // TO-DO: remove
   };
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  /* 
   const handleSliderChange = (value: string) => {
     const maxSelected = value === '-1';
     amountRef.current = maxSelected ? maxRepayableDebt.toString(10) : value;
     setAmount(value);
-  };
+  }; */
 
   // for v3 we need hf after withdraw collateral, because when removing collateral to repay
   // debt, hf could go under 1 then it would fail. If that is the case then we need
