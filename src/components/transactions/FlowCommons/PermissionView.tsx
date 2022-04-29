@@ -2,7 +2,6 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, Link, Typography } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
 
-// TODO: need check texts
 export const PermissionView = () => {
   const { close } = useModalContext();
 
