@@ -71,6 +71,7 @@ export function CollateralRepayModalContent({
   ) as ComputedUserReserveData;
 
   const [_amount, setAmount] = useState('');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [maxSlippage, setMaxSlippage] = useState('0.1');
 
   const amountRef = useRef<string>('');
@@ -120,6 +121,7 @@ export function CollateralRepayModalContent({
     setAmount(value);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleSliderChange = (value: string) => {
     const maxSelected = value === '-1';
     amountRef.current = maxSelected ? maxRepayableDebt.toString(10) : value;
