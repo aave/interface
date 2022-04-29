@@ -63,6 +63,7 @@ interface TypographyCustomVariants {
   secondary14: React.CSSProperties;
   main12: React.CSSProperties;
   secondary12: React.CSSProperties;
+  description21: React.CSSProperties;
 }
 
 declare module '@mui/material/styles' {
@@ -97,6 +98,7 @@ declare module '@mui/material/Typography' {
     secondary14: true;
     main12: true;
     secondary12: true;
+    description21: true;
     h5: false;
     h6: false;
     subtitle1: false;
@@ -311,6 +313,12 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         lineHeight: '133.4%',
         fontSize: pxToRem(21),
       },
+      description21: {
+        fontFamily: FONT,
+        fontWeight: 400,
+        lineHeight: '133.4%',
+        fontSize: pxToRem(21),
+      },
       main16: {
         fontFamily: FONT,
         fontWeight: 600,
@@ -460,6 +468,7 @@ export function getThemedComponents(theme: Theme) {
             secondary14: 'p',
             secondary16: 'p',
             secondary21: 'p',
+            description21: 'p',
             helperText: 'span',
             tooltip: 'span',
           },
