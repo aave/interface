@@ -309,7 +309,7 @@ export const BorrowModalContent = ({
         interestRateMode={interestRateMode}
         isWrongNetwork={isWrongNetwork}
         symbol={symbol}
-        blocked={blockingError !== undefined}
+        blocked={blockingError !== undefined || (displayRiskCheckbox && !riskCheckboxAccepted)}
         sx={displayRiskCheckbox ? { mt: 0 } : {}}
       />
     </>
