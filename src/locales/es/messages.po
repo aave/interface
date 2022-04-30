@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-04-25 18:05\n"
+"PO-Revision-Date: 2022-04-29 12:10\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -117,6 +117,10 @@ msgstr "¡Todo listo!"
 msgid "All proposals"
 msgstr "Todas las propuestas"
 
+#: src/components/transactions/FlowCommons/PermissionView.tsx
+msgid "Allowance required action"
+msgstr ""
+
 #: src/components/infoTooltips/CollateralSwitchTooltip.tsx
 msgid "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
 msgstr "Te permite decidir si utilizar un activo suministrado como garantía. Un activo utilizado como garantía afectará a tu poder de préstamo y factor de salud."
@@ -174,11 +178,11 @@ msgstr "Activo"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Asset can only be used as collateral in isolation mode only."
-msgstr ""
+msgstr "El activo solo puede usarse como garantía en el Isolation mode únicamente."
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Asset cannot be used as collateral."
-msgstr ""
+msgstr "El activo no puede usarse como garantía."
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeSelect.tsx
@@ -314,7 +318,7 @@ msgstr "Tomar prestado no está disponible actualmente para {0}."
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrowing is navailable because you’re using Isolation mode. To manage Isolation mode visit your <0>Dashboard</0>."
-msgstr ""
+msgstr "Tomar prestado no está disponible porque estás utilizando el Isolation mode. Para administrar el Isolation mode, visita tu <0>Panel de control</0>."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Borrowing is not enabled"
@@ -322,11 +326,11 @@ msgstr "Tomar prestado no está habilitado"
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) and Isolation mode. To manage E-Mode and Isolation mode visit your <0>Dashboard</0>."
-msgstr ""
+msgstr "Tomar prestado no está disponible porque has habilitado el Efficiency Mode (E-Mode) en el Isolation mode. Para administrar el E-Mode y el Isolation Mode, visita tu <0>Panel de control</0>."
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
-msgstr ""
+msgstr "Tomar prestado no está disponible porque has habilitado el Efficieny Mode (E-Mode) para la categoría {0}. Para manejar las categorías del E-Mode visita tu <0>Panel de control</0>."
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Borrowing power and assets are limited due to Isolation mode."
@@ -392,6 +396,7 @@ msgid "Claiming"
 msgstr "Reclamando"
 
 #: src/components/transactions/FlowCommons/Error.tsx
+#: src/components/transactions/FlowCommons/PermissionView.tsx
 msgid "Close"
 msgstr "Cerrar"
 
@@ -417,7 +422,7 @@ msgstr ""
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Collateral usage is limited because of Isolation mode."
-msgstr ""
+msgstr "El uso de garantías está limitado debido al Isolation mode."
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Collateral usage is limited because of isolation mode. <0>Learn More</0>"
@@ -456,10 +461,6 @@ msgstr "Cooling down..."
 #: src/layouts/WalletWidget.tsx
 msgid "Copy address"
 msgstr "Copiar dirección"
-
-#: src/components/transactions/FlowCommons/GasEstimationError.tsx
-msgid "Copy error"
-msgstr "Error de copia"
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Copy error text"
@@ -573,7 +574,7 @@ msgstr "E-Mode"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "E-Mode Category"
-msgstr ""
+msgstr "Categoría E-Mode"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode increases your LTV for a selected category of assets up to 97%. <0>Learn more</0>"
@@ -585,7 +586,7 @@ msgstr "El E-Mode incrementa tu LTV para una categoría seleccionada de activos 
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "E-Mode increases your LTV for a selected category of assets, meaning that when E-mode is enabled, you will have higher borrowing power over assets of the same E-mode category which are defined by Aave Governance. You can enter E-Mode from your <0>Dashboard</0>. To learn more about E-Mode and applied restrictions in <1>FAQ</1> or <2>Aave V3 Technical Paper</2>."
-msgstr ""
+msgstr "El E-Mode aumenta tu LTV para una categoría seleccionada de activos, lo que significa que cuando el E-mode está habilitado, tendrás un mayor poder de préstamo sobre los activos de la misma categoría del E-mode que están definidos por el gobierno de Aave. Puedes entrar al E-Mode desde tu <0>Panel de control</0>. Para apreneder más sobre el E-Mode y las restricciones aplicables, puedes consultar las <1>Preguntas frecuentes</1> o el <2>Documento técnico de Aave V3</2>."
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Efficiency mode (E-Mode)"
@@ -1430,8 +1431,8 @@ msgid "There is not enough collateral to cover a new borrow"
 msgstr "No hay suficiente garantía para cubrir un nuevo préstamo"
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
-msgid "There was some error. Please try changing the parameters or<0>copy the error</0>"
-msgstr "Hubo un error. Por favor, intenta cambiar los parámetros o<0>copiar el error</0>"
+msgid "There was some error. Please try changing the parameters or <0><1>copy the error</1></0>"
+msgstr ""
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
@@ -1489,6 +1490,10 @@ msgstr "Para tomar prestado, necesitas proporcionar cualquier activo para ser ut
 #: src/ui-config/errorMapping.tsx
 msgid "To repay on behalf of a user an explicit amount to repay is needed"
 msgstr "Para reembolsar en nombre de un usuario, se necesita una cantidad explicitad para reembolsar"
+
+#: src/components/transactions/FlowCommons/PermissionView.tsx
+msgid "To request access for this permissioned market, please visit: <0>Acces Provider Name</0>"
+msgstr ""
 
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total available"
@@ -1830,6 +1835,10 @@ msgstr "activos"
 #: src/modules/governance/proposal/ProposalTopPanel.tsx
 msgid "back"
 msgstr "atras"
+
+#: src/components/transactions/FlowCommons/GasEstimationError.tsx
+msgid "copy the error"
+msgstr ""
 
 #: src/components/transactions/Emode/EmodeSelect.tsx
 #: src/components/transactions/Emode/EmodeSelect.tsx

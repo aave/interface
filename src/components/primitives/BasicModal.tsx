@@ -63,6 +63,7 @@ export const BasicModal = ({
                 bgcolor: 'background.paper',
               }}
               onClick={handleClose}
+              data-cy={'close-button'}
             >
               <SvgIcon sx={{ fontSize: '28px', color: 'text.primary' }}>
                 <XIcon data-cy={'CloseModalIcon'} />

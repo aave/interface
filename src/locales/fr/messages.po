@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-04-28 00:23\n"
+"PO-Revision-Date: 2022-04-29 12:10\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -116,6 +116,10 @@ msgstr "Tout est fait !"
 #: src/modules/governance/ProposalsList.tsx
 msgid "All proposals"
 msgstr "Toutes les propositions"
+
+#: src/components/transactions/FlowCommons/PermissionView.tsx
+msgid "Allowance required action"
+msgstr ""
 
 #: src/components/infoTooltips/CollateralSwitchTooltip.tsx
 msgid "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
@@ -392,6 +396,7 @@ msgid "Claiming"
 msgstr "Réclamer"
 
 #: src/components/transactions/FlowCommons/Error.tsx
+#: src/components/transactions/FlowCommons/PermissionView.tsx
 msgid "Close"
 msgstr "Fermer"
 
@@ -456,10 +461,6 @@ msgstr "Refroidissement..."
 #: src/layouts/WalletWidget.tsx
 msgid "Copy address"
 msgstr "Copier l'adresse"
-
-#: src/components/transactions/FlowCommons/GasEstimationError.tsx
-msgid "Copy error"
-msgstr "Erreur de copie"
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Copy error text"
@@ -1430,8 +1431,8 @@ msgid "There is not enough collateral to cover a new borrow"
 msgstr "Il n'y a pas assez de collatéral pour couvrir un nouvel emprunt"
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
-msgid "There was some error. Please try changing the parameters or<0>copy the error</0>"
-msgstr "Il y a eu une erreur. Veuillez essayer de modifier les paramètres ou<0>copier l'erreur</0>"
+msgid "There was some error. Please try changing the parameters or <0><1>copy the error</1></0>"
+msgstr ""
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
@@ -1489,6 +1490,10 @@ msgstr "Pour emprunter, vous devez fournir tout actif à utiliser comme garantie
 #: src/ui-config/errorMapping.tsx
 msgid "To repay on behalf of a user an explicit amount to repay is needed"
 msgstr "Pour rembourser au nom d'un utilisateur, un montant explicite à rembourser est nécessaire"
+
+#: src/components/transactions/FlowCommons/PermissionView.tsx
+msgid "To request access for this permissioned market, please visit: <0>Acces Provider Name</0>"
+msgstr ""
 
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total available"
@@ -1830,6 +1835,10 @@ msgstr "actifs"
 #: src/modules/governance/proposal/ProposalTopPanel.tsx
 msgid "back"
 msgstr "arrière"
+
+#: src/components/transactions/FlowCommons/GasEstimationError.tsx
+msgid "copy the error"
+msgstr ""
 
 #: src/components/transactions/Emode/EmodeSelect.tsx
 #: src/components/transactions/Emode/EmodeSelect.tsx

@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-04-25 18:05\n"
+"PO-Revision-Date: 2022-04-29 12:10\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -115,6 +115,10 @@ msgstr ""
 
 #: src/modules/governance/ProposalsList.tsx
 msgid "All proposals"
+msgstr ""
+
+#: src/components/transactions/FlowCommons/PermissionView.tsx
+msgid "Allowance required action"
 msgstr ""
 
 #: src/components/infoTooltips/CollateralSwitchTooltip.tsx
@@ -392,6 +396,7 @@ msgid "Claiming"
 msgstr ""
 
 #: src/components/transactions/FlowCommons/Error.tsx
+#: src/components/transactions/FlowCommons/PermissionView.tsx
 msgid "Close"
 msgstr ""
 
@@ -455,10 +460,6 @@ msgstr ""
 
 #: src/layouts/WalletWidget.tsx
 msgid "Copy address"
-msgstr ""
-
-#: src/components/transactions/FlowCommons/GasEstimationError.tsx
-msgid "Copy error"
 msgstr ""
 
 #: src/components/transactions/FlowCommons/Error.tsx
@@ -1430,7 +1431,7 @@ msgid "There is not enough collateral to cover a new borrow"
 msgstr ""
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
-msgid "There was some error. Please try changing the parameters or<0>copy the error</0>"
+msgid "There was some error. Please try changing the parameters or <0><1>copy the error</1></0>"
 msgstr ""
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
@@ -1488,6 +1489,10 @@ msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "To repay on behalf of a user an explicit amount to repay is needed"
+msgstr ""
+
+#: src/components/transactions/FlowCommons/PermissionView.tsx
+msgid "To request access for this permissioned market, please visit: <0>Acces Provider Name</0>"
 msgstr ""
 
 #: src/modules/markets/MarketsTopPanel.tsx
@@ -1829,6 +1834,10 @@ msgstr ""
 
 #: src/modules/governance/proposal/ProposalTopPanel.tsx
 msgid "back"
+msgstr ""
+
+#: src/components/transactions/FlowCommons/GasEstimationError.tsx
+msgid "copy the error"
 msgstr ""
 
 #: src/components/transactions/Emode/EmodeSelect.tsx

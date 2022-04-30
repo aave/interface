@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-04-26 18:05\n"
+"PO-Revision-Date: 2022-04-29 12:10\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -116,6 +116,10 @@ msgstr "Όλα έτοιμα!"
 #: src/modules/governance/ProposalsList.tsx
 msgid "All proposals"
 msgstr "Όλες οι προτάσεις"
+
+#: src/components/transactions/FlowCommons/PermissionView.tsx
+msgid "Allowance required action"
+msgstr ""
 
 #: src/components/infoTooltips/CollateralSwitchTooltip.tsx
 msgid "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
@@ -392,6 +396,7 @@ msgid "Claiming"
 msgstr "Διεκδίκηση"
 
 #: src/components/transactions/FlowCommons/Error.tsx
+#: src/components/transactions/FlowCommons/PermissionView.tsx
 msgid "Close"
 msgstr "Κλείσιμο"
 
@@ -456,10 +461,6 @@ msgstr "Ψύξη..."
 #: src/layouts/WalletWidget.tsx
 msgid "Copy address"
 msgstr "Αντιγραφή διεύθυνσης"
-
-#: src/components/transactions/FlowCommons/GasEstimationError.tsx
-msgid "Copy error"
-msgstr "Σφάλμα αντιγραφής"
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Copy error text"
@@ -1431,8 +1432,8 @@ msgid "There is not enough collateral to cover a new borrow"
 msgstr "Δεν υπάρχουν επαρκείς εξασφαλίσεις για την κάλυψη ενός νέου δανείου"
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
-msgid "There was some error. Please try changing the parameters or<0>copy the error</0>"
-msgstr "Υπήρξε κάποιο σφάλμα. Προσπαθήστε να αλλάξετε τις παραμέτρους ή<0>αντιγράψτε το σφάλμα</0>"
+msgid "There was some error. Please try changing the parameters or <0><1>copy the error</1></0>"
+msgstr ""
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
@@ -1490,6 +1491,10 @@ msgstr "Για να δανειστείτε πρέπει να προσκομίσ�
 #: src/ui-config/errorMapping.tsx
 msgid "To repay on behalf of a user an explicit amount to repay is needed"
 msgstr "Για την εξόφληση εκ μέρους ενός χρήστη απαιτείται ένα ρητό ποσό προς εξόφληση"
+
+#: src/components/transactions/FlowCommons/PermissionView.tsx
+msgid "To request access for this permissioned market, please visit: <0>Acces Provider Name</0>"
+msgstr ""
 
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total available"
@@ -1831,6 +1836,10 @@ msgstr "περιουσιακά στοιχεία"
 #: src/modules/governance/proposal/ProposalTopPanel.tsx
 msgid "back"
 msgstr "πίσω"
+
+#: src/components/transactions/FlowCommons/GasEstimationError.tsx
+msgid "copy the error"
+msgstr ""
 
 #: src/components/transactions/Emode/EmodeSelect.tsx
 #: src/components/transactions/Emode/EmodeSelect.tsx
