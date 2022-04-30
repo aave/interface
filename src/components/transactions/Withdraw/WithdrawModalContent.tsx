@@ -57,7 +57,7 @@ export const WithdrawModalContent = ({
     user.totalBorrowsMarketReferenceCurrency !== '0'
   ) {
     // if we have any borrowings we should check how much we can withdraw to a minimum HF of 1.005
-    const excessHF = valueToBigNumber(user.healthFactor).minus('1.01');
+    const excessHF = valueToBigNumber(user.healthFactor).minus('1.005');
     if (excessHF.gt('0')) {
       maxCollateralToWithdrawInETH = excessHF
         .multipliedBy(user.totalBorrowsMarketReferenceCurrency)
@@ -112,7 +112,9 @@ export const WithdrawModalContent = ({
     });
   }
   const displayRiskCheckbox =
-    healthFactorAfterWithdraw.toNumber() >= 1 && healthFactorAfterWithdraw.toNumber() < 1.5;
+    healthFactorAfterWithdraw.toNumber() >= 1 &&
+    healthFactorAfterWithdraw.toNumber() < 1.5 &&
+    userReserve.usageAsCollateralEnabledOnUser;
 
   let blockingError: ErrorType | undefined = undefined;
   if (!withdrawTxState.success && !withdrawTxState.txHash) {
