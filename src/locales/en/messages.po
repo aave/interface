@@ -327,6 +327,10 @@ msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mod
 msgid "Borrowing power and assets are limited due to Isolation mode."
 msgstr "Borrowing power and assets are limited due to Isolation mode."
 
+#: src/components/transactions/Borrow/BorrowModalContent.tsx
+msgid "Borrowing this amount will reduce your health factor and increase risk of liquidation."
+msgstr "Borrowing this amount will reduce your health factor and increase risk of liquidation."
+
 #: src/components/transactions/Borrow/BorrowActions.tsx
 msgid "Borrowing {symbol}"
 msgstr "Borrowing {symbol}"
@@ -705,6 +709,7 @@ msgstr "Health factor is not below the threshold"
 msgid "Hide"
 msgstr "Hide"
 
+#: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "I acknowledge the risks involved."
 msgstr "I acknowledge the risks involved."
@@ -814,10 +819,6 @@ msgstr "Liquidation at"
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Liquidation penalty"
 msgstr "Liquidation penalty"
-
-#: src/components/transactions/Borrow/BorrowModalContent.tsx
-msgid "Liquidation risk is high. Lower amounts recommended."
-msgstr "Liquidation risk is high. Lower amounts recommended."
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Liquidation risk parametres"
