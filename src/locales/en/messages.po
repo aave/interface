@@ -705,6 +705,10 @@ msgstr "Health factor is not below the threshold"
 msgid "Hide"
 msgstr "Hide"
 
+#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+msgid "I acknowledge the risks involved."
+msgstr "I acknowledge the risks involved."
+
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "I understand how cooldown ({0}) and unstaking ({1}) work"
 msgstr "I understand how cooldown ({0}) and unstaking ({1}) work"
@@ -1677,8 +1681,8 @@ msgid "Withdraw {symbol}"
 msgstr "Withdraw {symbol}"
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
-msgid "Withdrawing this amount will reduce your health factor and increase risk of liquidation. By clicking this checkbox you are acknowleding this risk."
-msgstr "Withdrawing this amount will reduce your health factor and increase risk of liquidation. By clicking this checkbox you are acknowleding this risk."
+msgid "Withdrawing this amount will reduce your health factor and increase risk of liquidation."
+msgstr "Withdrawing this amount will reduce your health factor and increase risk of liquidation."
 
 #: src/components/transactions/Withdraw/WithdrawActions.tsx
 msgid "Withdrawing {symbol}"
