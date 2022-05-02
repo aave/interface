@@ -16,9 +16,14 @@ import { GasStation } from '../GasStation/GasStation';
 
 export interface TxModalDetailsProps {
   gasLimit?: string;
+  slippageSelector?: ReactNode;
 }
 
-export const TxModalDetails: React.FC<TxModalDetailsProps> = ({ gasLimit, children }) => {
+export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
+  gasLimit,
+  slippageSelector,
+  children,
+}) => {
   return (
     <Box sx={{ pt: 5 }}>
       <Typography sx={{ mb: 1 }} color="text.secondary">
@@ -38,7 +43,10 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({ gasLimit, childr
         {children}
       </Box>
 
-      <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} />
+      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} />
+        {slippageSelector}
+      </Box>
     </Box>
   );
 };
@@ -87,6 +95,7 @@ interface DetailsNumberLineWithSubProps {
   futureValueUSD: string;
   hideSymbolSuffix?: boolean;
   color?: string;
+  tokenIcon?: string;
 }
 
 export const DetailsNumberLineWithSub = ({
@@ -98,6 +107,7 @@ export const DetailsNumberLineWithSub = ({
   futureValueUSD,
   hideSymbolSuffix,
   color,
+  tokenIcon,
 }: DetailsNumberLineWithSubProps) => {
   return (
     <Row caption={description} captionVariant="description" mb={4} align="flex-start">
@@ -116,6 +126,7 @@ export const DetailsNumberLineWithSub = ({
               </SvgIcon>
             </>
           )}
+          {tokenIcon && <TokenIcon symbol={tokenIcon} sx={{ mr: 1, fontSize: '14px' }} />}
           <FormattedNumber value={futureValue} variant="secondary14" color={color} />
           {!hideSymbolSuffix && (
             <Typography ml={1} variant="secondary14">
