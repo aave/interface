@@ -1011,6 +1011,10 @@ msgstr "Please, connect your wallet"
 msgid "Pool addresses provider is not registered"
 msgstr "Pool addresses provider is not registered"
 
+#: src/components/SlippageModal.tsx
+msgid "Powered by"
+msgstr "Powered by"
+
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Price impact"
 msgstr "Price impact"
@@ -1154,6 +1158,10 @@ msgstr "Select Aave Market"
 msgid "Select language"
 msgstr "Select language"
 
+#: src/components/SlippageModal.tsx
+msgid "Select slippage tolerance"
+msgstr "Select slippage tolerance"
+
 #: src/components/HALTooltip.tsx
 msgid "Setup triggers and receive notifications about your Health Factor status using Hal app."
 msgstr "Setup triggers and receive notifications about your Health Factor status using Hal app."
@@ -1173,6 +1181,10 @@ msgstr "Show assets with 0 balance"
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
 msgstr "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Slippage tolerance {maxSlippage}%"
+msgstr "Slippage tolerance {maxSlippage}%"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Spanish"
