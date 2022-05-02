@@ -1347,10 +1347,6 @@ msgstr "Switch to Aave Classic"
 msgid "Switching rate"
 msgstr "Switching rate"
 
-#: src/components/infoTooltips/MaxRepayWithCollateralTooltip.tsx
-msgid "TO-DO."
-msgstr "TO-DO."
-
 #: src/layouts/components/TestNetModeSwitcher.tsx
 msgid "Testnet mode"
 msgstr "Testnet mode"
@@ -1374,6 +1370,10 @@ msgstr "The Stable Rate is not enabled for this currency"
 #: src/ui-config/errorMapping.tsx
 msgid "The address of the pool addresses provider is invalid"
 msgstr "The address of the pool addresses provider is invalid"
+
+#: src/components/infoTooltips/MaxRepayWithCollateralTooltip.tsx
+msgid "The available balance is the minimum of your wallet balance, amount needed to pay off all debt, or amount needed to remain above liquidation threshold."
+msgstr "The available balance is the minimum of your wallet balance, amount needed to pay off all debt, or amount needed to remain above liquidation threshold."
 
 #: src/ui-config/errorMapping.tsx
 msgid "The caller of the function is not an AToken"
