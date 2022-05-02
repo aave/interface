@@ -71,6 +71,7 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
             proposalId: proposal.id,
           });
           copy[proposal.id].proposal = await enhanceProposalWithTimes(rest);
+          copy[proposal.id].prerendered = false;
         }
         setProposals(copy);
       }

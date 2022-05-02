@@ -91,21 +91,20 @@ const StyledLink = styled('a')({
 export default function ProposalPage({ proposal: initialProposal, ipfs }: ProposalPageProps) {
   const [url, setUrl] = useState('');
   const [proposal, setProposal] = useState(initialProposal);
+  const [loading, setLoading] = useState(!proposal || !isProposalStateImmutable(proposal));
   const { breakpoints } = useTheme();
   const xsmUp = useMediaQuery(breakpoints.up('xsm'));
+
+  const mightBeStale = !proposal || !isProposalStateImmutable(proposal);
 
   async function updateProposal() {
     if (!proposal) return;
     const { values, ...rest } = await governanceContract.getProposal({ proposalId: proposal.id });
     setProposal(await enhanceProposalWithTimes(rest));
+    setLoading(false);
   }
 
-  usePolling(
-    updateProposal,
-    10000,
-    !proposal || (proposal && isProposalStateImmutable(proposal)),
-    []
-  );
+  usePolling(updateProposal, 10000, !mightBeStale, []);
 
   // seed when no ssg
   useEffect(() => {
@@ -166,14 +165,16 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                       }}
                     >
                       <Box sx={{ mr: '24px', mb: { xs: '2px', sm: 0 } }}>
-                        <StateBadge state={proposal.state} />
+                        <StateBadge state={proposal.state} loading={loading} />
                       </Box>
-                      <FormattedProposalTime
-                        state={proposal.state}
-                        executionTime={proposal.executionTime}
-                        executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
-                        expirationTimestamp={proposal.expirationTimestamp}
-                      />
+                      {!loading && (
+                        <FormattedProposalTime
+                          state={proposal.state}
+                          executionTime={proposal.executionTime}
+                          executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
+                          expirationTimestamp={proposal.expirationTimestamp}
+                        />
+                      )}
                     </Box>
                     <Box sx={{ flexGrow: 1 }} />
                     <Button
@@ -245,8 +246,14 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
               </Typography>
               {proposal ? (
                 <>
-                  <VoteBar yae percent={yaePercent} votes={yaeVotes} sx={{ mt: 8 }} />
-                  <VoteBar percent={nayPercent} votes={nayVotes} sx={{ mt: 3 }} />
+                  <VoteBar
+                    yae
+                    percent={yaePercent}
+                    votes={yaeVotes}
+                    sx={{ mt: 8 }}
+                    loading={loading}
+                  />
+                  <VoteBar percent={nayPercent} votes={nayVotes} sx={{ mt: 3 }} loading={loading} />
                   <Row
                     caption={<Trans>State</Trans>}
                     sx={{ height: 48, mt: 10 }}
@@ -259,7 +266,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                         alignItems: 'flex-end',
                       }}
                     >
-                      <StateBadge state={proposal.state} />
+                      <StateBadge state={proposal.state} loading={loading} />
                       <Box sx={{ mt: '2px' }}>
                         <FormattedProposalTime
                           state={proposal.state}
@@ -276,6 +283,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                     captionVariant="description"
                   >
                     <CheckBadge
+                      loading={loading}
                       text={quorumReached ? <Trans>Reached</Trans> : <Trans>Not reached</Trans>}
                       checked={quorumReached}
                       sx={{ height: 48 }}
@@ -314,6 +322,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                     captionVariant="description"
                   >
                     <CheckBadge
+                      loading={loading}
                       text={diffReached ? <Trans>Reached</Trans> : <Trans>Not reached</Trans>}
                       checked={diffReached}
                       sx={{ height: 48 }}
