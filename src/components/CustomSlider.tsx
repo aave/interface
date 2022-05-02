@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 
 export const CustomSlider = styled(Slider)({
   color: '#46BC4B',
-  height: 8,
+  height: '5px',
   '& .MuiSlider-track': {
     border: 'none',
   },
@@ -15,10 +15,12 @@ export const CustomSlider = styled(Slider)({
     height: 15,
     width: 15,
     backgroundColor: '#fff',
-    border: '1px solid currentColor',
+    border: '1px solid rgba(70,188,75,0.5)',
     '&:focus, &:hover, &.Mui-active, &.Mui-focusVisible': {
       boxShadow: 'inherit',
+      border: '1px solid rgba(70,188,75,1)',
     },
+
     '&:before': {
       display: 'none',
     },
@@ -33,6 +35,7 @@ export const CustomSlider = styled(Slider)({
     lineHeight: '26px',
     letterSpacing: '0.1px',
     color: '#A5A8B6',
+    top: '20px',
   },
   '& .MuiSlider-markLabel[data-index="0"]': {
     transform: 'translateX(0%)',
