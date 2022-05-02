@@ -33,6 +33,7 @@ import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
 import { Web3ReactProvider } from '@web3-react/core';
 import { providers } from 'ethers';
 import { WalletModalContextProvider } from 'src/hooks/useWalletModal';
+import { PermissionProvider } from 'src/hooks/usePermissions';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -76,28 +77,30 @@ export default function MyApp(props: MyAppProps) {
               <ProtocolDataProvider>
                 <ConnectionStatusProvider>
                   <AppGlobalStyles>
-                    <ModalContextProvider>
-                      <BackgroundDataProvider>
-                        <AppDataProvider>
-                          <TxBuilderProvider>
-                            <WalletModalContextProvider>
-                              <GasStationProvider>
-                                {getLayout(<Component {...pageProps} />)}
-                                <SupplyModal />
-                                <WithdrawModal />
-                                <BorrowModal />
-                                <RepayModal />
-                                <CollateralChangeModal />
-                                <RateSwitchModal />
-                                <ClaimRewardsModal />
-                                <EmodeModal />
-                                <SwapModal />
-                              </GasStationProvider>
-                            </WalletModalContextProvider>
-                          </TxBuilderProvider>
-                        </AppDataProvider>
-                      </BackgroundDataProvider>
-                    </ModalContextProvider>
+                    <PermissionProvider>
+                      <ModalContextProvider>
+                        <BackgroundDataProvider>
+                          <AppDataProvider>
+                            <TxBuilderProvider>
+                              <WalletModalContextProvider>
+                                <GasStationProvider>
+                                  {getLayout(<Component {...pageProps} />)}
+                                  <SupplyModal />
+                                  <WithdrawModal />
+                                  <BorrowModal />
+                                  <RepayModal />
+                                  <CollateralChangeModal />
+                                  <RateSwitchModal />
+                                  <ClaimRewardsModal />
+                                  <EmodeModal />
+                                  <SwapModal />
+                                </GasStationProvider>
+                              </WalletModalContextProvider>
+                            </TxBuilderProvider>
+                          </AppDataProvider>
+                        </BackgroundDataProvider>
+                      </ModalContextProvider>
+                    </PermissionProvider>
                   </AppGlobalStyles>
                 </ConnectionStatusProvider>
               </ProtocolDataProvider>

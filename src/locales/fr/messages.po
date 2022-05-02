@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-04-28 18:05\n"
+"PO-Revision-Date: 2022-04-29 12:10\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -116,6 +116,10 @@ msgstr "Tout est fait !"
 #: src/modules/governance/ProposalsList.tsx
 msgid "All proposals"
 msgstr "Toutes les propositions"
+
+#: src/components/transactions/FlowCommons/PermissionView.tsx
+msgid "Allowance required action"
+msgstr ""
 
 #: src/components/infoTooltips/CollateralSwitchTooltip.tsx
 msgid "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
@@ -392,6 +396,7 @@ msgid "Claiming"
 msgstr "Réclamer"
 
 #: src/components/transactions/FlowCommons/Error.tsx
+#: src/components/transactions/FlowCommons/PermissionView.tsx
 msgid "Close"
 msgstr "Fermer"
 
@@ -1485,6 +1490,10 @@ msgstr "Pour emprunter, vous devez fournir tout actif à utiliser comme garantie
 #: src/ui-config/errorMapping.tsx
 msgid "To repay on behalf of a user an explicit amount to repay is needed"
 msgstr "Pour rembourser au nom d'un utilisateur, un montant explicite à rembourser est nécessaire"
+
+#: src/components/transactions/FlowCommons/PermissionView.tsx
+msgid "To request access for this permissioned market, please visit: <0>Acces Provider Name</0>"
+msgstr ""
 
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total available"
