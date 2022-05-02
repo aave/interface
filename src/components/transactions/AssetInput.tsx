@@ -73,6 +73,7 @@ export interface AssetInputProps<T extends Asset = Asset> {
   isMaxSelected?: boolean;
   inputTitle?: ReactNode;
   maxBalanceText?: string;
+  useMaxBalance?: boolean;
   maxBalanceTooltip?: ReactNode;
 }
 
@@ -90,6 +91,7 @@ export const AssetInput = <T extends Asset = Asset>({
   inputTitle,
   isMaxSelected,
   maxBalanceText,
+  useMaxBalance,
   maxBalanceTooltip,
 }: AssetInputProps<T>) => {
   const handleSelect = (event: SelectChangeEvent) => {
@@ -238,7 +240,7 @@ export const AssetInput = <T extends Asset = Asset>({
               <Typography component="div" variant="secondary12" color="text.secondary">
                 <Trans>{maxBalanceText || 'Balance'}</Trans>{' '}
                 <FormattedNumber
-                  value={asset.balance}
+                  value={useMaxBalance && maxValue ? maxValue : asset.balance}
                   compact
                   variant="secondary12"
                   color="text.secondary"
