@@ -33,6 +33,6 @@ export const repayCollateral = (
     supply(testCase.deposit, skipTestState, true);
     borrow(testCase.borrow, skipTestState, true);
     repay(testCase.repay, skipTestState, true);
-    verifyBorrowsEmpty();
+    verifyBorrowsEmpty(skipTestState);
   });
 };

@@ -181,8 +181,9 @@ export const changeBorrowTypeBlocked = (
   });
 };
 
-export const verifyBorrowsEmpty = () => {
+export const verifyBorrowsEmpty = (skip: SkipType) => {
   return describe(`Verify that Your borrows table is empty`, () => {
+    skipSetup(skip);
     it('Open dashboard', () => {
       doSwitchToDashboardBorrowView();
     });
