@@ -1040,6 +1040,17 @@
       "ipfsHash": "QmeMxWj6ugqFGTiKuNYTwZdvps2onGvPxRqbo8uWy5zF3q",
       "originalHash": "0xee10b3d37198d0e6e103c2e7ca84cc69835deef401ee9309ac0e66160bc34d04",
       "id": 70
+    },
+    {
+      "ipfsHash": "QmW2Mw15fhopJN7Tt9SJc3MHqJ5zPQrnFuPqDrf34TWmW9",
+      "title": "Proposal - QmW2Mw15fhopJN7Tt9SJc3MHqJ5zPQrnFuPqDrf34TWmW9",
+      "description": "Proposal with invalid metadata format or IPFS gateway is down",
+      "shortDescription": "Proposal with invalid metadata format or IPFS gateway is down",
+      "aip": 0,
+      "author": "Proposal with invalid metadata format or IPFS gateway is down",
+      "discussions": "Proposal with invalid metadata format or IPFS gateway is down",
+      "originalHash": "0x722e11fe1e1a1cbeb06c64a278d343a2537b5f9f80975cc5f7788e9f402ce852",
+      "id": 71
     }
   ]
 }
