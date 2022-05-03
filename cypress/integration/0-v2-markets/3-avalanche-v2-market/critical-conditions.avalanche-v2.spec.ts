@@ -9,13 +9,13 @@ const testData = {
   testCases: {
     deposit1: {
       asset: assets.avalancheMarket.AVAX,
-      amount: 1,
+      amount: 0.5,
       hasApproval: true,
     },
     borrow: {
       asset: assets.avalancheMarket.AVAX,
       amount: 1,
-      apyType: constants.borrowAPYType.variable,
+      apyType: constants.borrowAPYType.default,
       hasApproval: false,
       isRisk: true,
     },
@@ -40,7 +40,7 @@ describe('CRITICAL CONDITIONS SPEC, AVALANCHE V2 MARKET', () => {
 
   supply(testData.testCases.deposit1, skipTestState, true);
   borrow(testData.testCases.borrow, skipTestState, true);
-  checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.07 }, skipTestState);
+  checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.5 }, skipTestState);
   supply(testData.testCases.deposit2, skipTestState, true);
   withdraw(testData.testCases.withdraw, skipTestState, false);
   checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.07 }, skipTestState);

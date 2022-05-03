@@ -15,7 +15,7 @@ const testData = {
     borrow: {
       asset: assets.polygonMarket.MATIC,
       amount: 1,
-      apyType: constants.borrowAPYType.variable,
+      apyType: constants.borrowAPYType.default,
       hasApproval: false,
       isRisk: true,
     },

@@ -15,7 +15,7 @@ const testData = {
     borrow: {
       asset: assets.avalancheV3Market.AVAX,
       amount: 1,
-      apyType: constants.borrowAPYType.variable,
+      apyType: constants.borrowAPYType.default,
       hasApproval: false,
       isRisk: true,
     },

@@ -15,7 +15,7 @@ const testData = {
     borrow: {
       asset: assets.fantomMarket.FTM,
       amount: 1,
-      apyType: constants.borrowAPYType.variable,
+      apyType: constants.borrowAPYType.default,
       hasApproval: false,
       isRisk: true,
     },
@@ -40,7 +40,7 @@ describe('CRITICAL CONDITIONS SPEC, FANTOM V3 MARKET', () => {
 
   supply(testData.testCases.deposit1, skipTestState, true);
   borrow(testData.testCases.borrow, skipTestState, true);
-  checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.07 }, skipTestState);
+  checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 2.3 }, skipTestState);
   supply(testData.testCases.deposit2, skipTestState, true);
   withdraw(testData.testCases.withdraw, skipTestState, false);
   checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.07 }, skipTestState);
