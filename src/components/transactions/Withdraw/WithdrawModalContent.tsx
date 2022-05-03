@@ -239,6 +239,7 @@ export const WithdrawModalContent = ({
               checked={riskCheckboxAccepted}
               onChange={() => setRiskCheckboxAccepted(!riskCheckboxAccepted)}
               size="small"
+              data-cy={`risk-checkbox`}
             />
             <Typography variant="description">
               <Trans>I acknowledge the risks involved.</Trans>
