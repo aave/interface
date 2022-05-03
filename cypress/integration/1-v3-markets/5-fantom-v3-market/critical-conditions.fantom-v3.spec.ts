@@ -17,7 +17,7 @@ const testData = {
       amount: 1,
       apyType: constants.borrowAPYType.default,
       hasApproval: false,
-      isRisk: true,
+      isRisk: false,
     },
     deposit2: {
       asset: assets.fantomMarket.FTM,
