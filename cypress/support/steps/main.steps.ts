@@ -150,7 +150,7 @@ export const repay = (
   const _actionName = constants.actionTypes.repay;
 
   return describe(`Repay by ${repayOption} process for ${_shortName} by ${
-    repayableAsset ? repayableAsset.shortName : _shortName
+    repayableAsset ? repayableAsset.shortName : 'default asset'
   }`, () => {
     skipSetup({ skip, updateSkipStatus });
     it(`Open ${_shortName} repay popup view`, () => {
@@ -174,10 +174,6 @@ export const repay = (
         case constants.repayType.default:
           break;
         default:
-          cy.get('[data-cy=Modal] button')
-            .contains('Wallet balance')
-            .click()
-            .should('not.be.disabled');
           break;
       }
     });

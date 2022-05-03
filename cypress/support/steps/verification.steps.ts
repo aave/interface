@@ -180,3 +180,14 @@ export const changeBorrowTypeBlocked = (
     });
   });
 };
+
+export const verifyBorrowsEmpty = () => {
+  return describe(`Verify that Your borrows table is empty`, () => {
+    it('Open dashboard', () => {
+      doSwitchToDashboardBorrowView();
+    });
+    it('Check that table empty', () => {
+      cy.get('main').contains('Nothing borrowed yet');
+    });
+  });
+};

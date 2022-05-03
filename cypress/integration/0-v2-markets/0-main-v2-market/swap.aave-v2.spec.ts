@@ -40,7 +40,7 @@ const testData = {
   },
 };
 
-describe.skip('SWAP, AAVE V2 MARKET, INTEGRATION SPEC', () => {
+describe('SWAP, AAVE V2 MARKET, INTEGRATION SPEC', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyMainnetFork({});
 
