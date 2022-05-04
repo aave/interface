@@ -1873,6 +1873,10 @@ msgstr "or use <0>{0}</0> to transfer your ETH assets."
 msgid "please check that the amount you want to supply is not currently being used for staking. If it is being used for staking, your transaction might fail."
 msgstr "please check that the amount you want to supply is not currently being used for staking. If it is being used for staking, your transaction might fail."
 
+#: src/components/transactions/Repay/RepayModalContent.tsx
+msgid "repaid"
+msgstr "repaid"
+
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "staking view"
 msgstr "staking view"
@@ -1896,6 +1900,10 @@ msgstr "v2 markets"
 #: src/components/MarketSwitcher.tsx
 msgid "v3 markets"
 msgstr "v3 markets"
+
+#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+msgid "withdrew"
+msgstr "withdrew"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
