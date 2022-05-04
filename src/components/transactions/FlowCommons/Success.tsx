@@ -1,7 +1,7 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { PlusSmIcon, ExternalLinkIcon } from '@heroicons/react/outline';
 import { CheckIcon } from '@heroicons/react/solid';
-import { ReactElement, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Link, SvgIcon, Typography } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -12,7 +12,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 
 export type SuccessTxViewProps = {
-  action?: ReactElement;
+  action?: ReactNode;
   amount?: string;
   symbol?: string;
   collateral?: boolean;
