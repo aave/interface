@@ -31,6 +31,7 @@ export const HealthFactorNumber = ({ value, onInfoClick, ...rest }: HealthFactor
         alignItems: { xs: 'flex-start', xsm: 'center' },
         flexDirection: { xs: 'column', xsm: 'row' },
       }}
+      data-cy={'HealthFactorTopPannel'}
     >
       {value === '-1' ? (
         <Typography variant="secondary14" color={palette.success.main}>

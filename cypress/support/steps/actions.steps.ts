@@ -1,22 +1,14 @@
 type SetAmount = {
   amount: number;
-  hasApproval: boolean;
   max?: boolean;
 };
 
-export const setAmount = ({ amount, hasApproval, max }: SetAmount) => {
+export const setAmount = ({ amount, max }: SetAmount) => {
   cy.get('[data-cy=Modal]').find('button:contains("Enter an amount")').should('be.disabled');
   if (max) {
     cy.get('[data-cy=Modal]').find('button:contains("Max")').click();
   } else {
     cy.get('[data-cy=Modal] input').first().type(amount.toString());
-  }
-  if (hasApproval) {
-    cy.get(`[data-cy=Modal] [data-cy=actionButton]`).as('button');
-    cy.get('@button').should('not.be.disabled');
-  } else {
-    cy.get(`[data-cy=Modal] [data-cy=approvalButton]`).as('button');
-    cy.get('@button').should('not.be.disabled');
   }
 };
 

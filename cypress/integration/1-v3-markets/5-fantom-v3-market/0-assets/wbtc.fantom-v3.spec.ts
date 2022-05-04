@@ -18,7 +18,7 @@ const testData = {
     borrow: [
       {
         asset: assets.fantomMarket.WBTC,
-        amount: 0.05,
+        amount: 0.02,
         apyType: constants.borrowAPYType.default,
         hasApproval: true,
       },
@@ -68,7 +68,7 @@ const testData = {
       {
         type: constants.dashboardTypes.borrow,
         assetName: assets.fantomMarket.WBTC.shortName,
-        amount: 0.046,
+        amount: 0.016,
         apyType: constants.borrowAPYType.variable,
       },
     ],

@@ -1,4 +1,5 @@
 import { Trans } from '@lingui/macro';
+import { BoxProps } from '@mui/material';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -7,14 +8,14 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { optimizedPath } from 'src/utils/utils';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
-export type WithdrawActionsProps = {
+export interface WithdrawActionsProps extends BoxProps {
   poolReserve: ComputedReserveData;
   amountToWithdraw: string;
   poolAddress: string;
   isWrongNetwork: boolean;
   symbol: string;
   blocked: boolean;
-};
+}
 
 export const WithdrawActions = ({
   poolReserve,
@@ -23,6 +24,7 @@ export const WithdrawActions = ({
   isWrongNetwork,
   symbol,
   blocked,
+  sx,
 }: WithdrawActionsProps) => {
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
@@ -67,6 +69,7 @@ export const WithdrawActions = ({
       handleAction={action}
       handleApproval={() => approval(amountToWithdraw, poolAddress)}
       requiresApproval={requiresApproval}
+      sx={sx}
     />
   );
 };

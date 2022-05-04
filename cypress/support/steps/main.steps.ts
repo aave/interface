@@ -57,7 +57,6 @@ export const supply = (
     it(`Supply ${amount} amount for ${_shortName}`, () => {
       setAmount({
         amount,
-        hasApproval,
       });
       doConfirm({
         hasApproval,
@@ -75,11 +74,13 @@ export const borrow = (
     amount,
     apyType,
     hasApproval = true,
+    isRisk = false,
   }: {
     asset: { shortName: string; fullName: string };
     amount: number;
     apyType?: string;
     hasApproval: boolean;
+    isRisk?: boolean;
   },
   skip: SkipType,
   updateSkipStatus = false
@@ -115,8 +116,14 @@ export const borrow = (
     it(`Borrow ${amount} amount for ${_shortName}`, () => {
       setAmount({
         amount,
-        hasApproval,
       });
+    });
+    if (isRisk) {
+      it(`Click risk checkbox`, () => {
+        cy.get('[data-cy=Modal]').find(`[data-cy="risk-checkbox"]`).click();
+      });
+    }
+    it(`Confirmation process`, () => {
       doConfirm({
         hasApproval,
         actionName: _actionName,
@@ -194,7 +201,6 @@ export const repay = (
     it(`Repay ${amount} amount for ${_shortName}, with ${repayOption} repay option`, () => {
       setAmount({
         amount,
-        hasApproval,
       });
       doConfirm({
         hasApproval,
@@ -213,12 +219,14 @@ export const withdraw = (
     amount,
     hasApproval = false,
     forWrapped = false,
+    isRisk = false,
   }: {
     asset: { shortName: string; fullName: string };
     isCollateral: boolean;
     amount: number;
     hasApproval: boolean;
     forWrapped?: boolean;
+    isRisk?: boolean;
   },
   skip: SkipType,
   updateSkipStatus = false
@@ -246,8 +254,14 @@ export const withdraw = (
     it(`Withdraw ${amount} amount for ${_shortName}`, () => {
       setAmount({
         amount,
-        hasApproval,
       });
+    });
+    if (isRisk) {
+      it(`Click risk checkbox`, () => {
+        cy.get('[data-cy=Modal]').find(`[data-cy="risk-checkbox"]`).click();
+      });
+    }
+    it(`Confirmation process`, () => {
       doConfirm({
         hasApproval,
         actionName: _actionName,
@@ -340,7 +354,6 @@ export const swap = (
     it('Make approve', () => {
       setAmount({
         amount,
-        hasApproval,
       });
       doConfirm({
         hasApproval,
