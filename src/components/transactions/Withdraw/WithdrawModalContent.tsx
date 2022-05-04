@@ -1,7 +1,7 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { calculateHealthFactorFromBalancesBigUnits, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
+import { Alert, Box, Checkbox, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { useRef, useState } from 'react';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -39,6 +39,7 @@ export const WithdrawModalContent = ({
 
   const [_amount, setAmount] = useState('');
   const [withdrawMax, setWithdrawMax] = useState('');
+  const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
   const amountRef = useRef<string>();
 
   // calculations
@@ -55,8 +56,8 @@ export const WithdrawModalContent = ({
     poolReserve.usageAsCollateralEnabled &&
     user.totalBorrowsMarketReferenceCurrency !== '0'
   ) {
-    // if we have any borrowings we should check how much we can withdraw to a minimum HF of 1.07
-    const excessHF = valueToBigNumber(user.healthFactor).minus('1.07');
+    // if we have any borrowings we should check how much we can withdraw to a minimum HF of 1.01
+    const excessHF = valueToBigNumber(user.healthFactor).minus('1.01');
     if (excessHF.gt('0')) {
       maxCollateralToWithdrawInETH = excessHF
         .multipliedBy(user.totalBorrowsMarketReferenceCurrency)
@@ -110,6 +111,10 @@ export const WithdrawModalContent = ({
       currentLiquidationThreshold: liquidationThresholdAfterWithdraw,
     });
   }
+  const displayRiskCheckbox =
+    healthFactorAfterWithdraw.toNumber() >= 1 &&
+    healthFactorAfterWithdraw.toNumber() < 1.5 &&
+    userReserve.usageAsCollateralEnabledOnUser;
 
   let blockingError: ErrorType | undefined = undefined;
   if (!withdrawTxState.success && !withdrawTxState.txHash) {
@@ -184,13 +189,6 @@ export const WithdrawModalContent = ({
           {handleBlocked()}
         </Typography>
       )}
-      {blockingError === undefined &&
-        healthFactorAfterWithdraw.toNumber() < 1.5 &&
-        healthFactorAfterWithdraw.toNumber() >= 1 && (
-          <Typography variant="helperText" color="warning.main">
-            <Trans>Liquidation risk is high. Lower amounts recomended.</Trans>
-          </Typography>
-        )}
 
       <TxModalDetails gasLimit={gasLimit}>
         {poolReserve.isWrappedBaseAsset && (
@@ -219,6 +217,37 @@ export const WithdrawModalContent = ({
 
       {txError && <GasEstimationError txError={txError} />}
 
+      {displayRiskCheckbox && (
+        <>
+          <Alert severity="error" sx={{ my: '24px' }}>
+            <Trans>
+              Withdrawing this amount will reduce your health factor and increase risk of
+              liquidation.
+            </Trans>
+          </Alert>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              mx: '24px',
+              mb: '12px',
+            }}
+          >
+            <Checkbox
+              checked={riskCheckboxAccepted}
+              onChange={() => setRiskCheckboxAccepted(!riskCheckboxAccepted)}
+              size="small"
+              data-cy={`risk-checkbox`}
+            />
+            <Typography variant="description">
+              <Trans>I acknowledge the risks involved.</Trans>
+            </Typography>
+          </Box>
+        </>
+      )}
+
       <WithdrawActions
         poolReserve={poolReserve}
         amountToWithdraw={isMaxSelected ? withdrawMax : amount}
@@ -229,7 +258,8 @@ export const WithdrawModalContent = ({
         }
         isWrongNetwork={isWrongNetwork}
         symbol={symbol}
-        blocked={blockingError !== undefined}
+        blocked={blockingError !== undefined || (displayRiskCheckbox && !riskCheckboxAccepted)}
+        sx={displayRiskCheckbox ? { mt: 0 } : {}}
       />
     </>
   );

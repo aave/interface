@@ -180,3 +180,37 @@ export const changeBorrowTypeBlocked = (
     });
   });
 };
+
+export const checkDashboardHealthFactor = (
+  {
+    value,
+    valueFrom,
+    valueTo,
+  }: {
+    value?: number;
+    valueFrom?: number;
+    valueTo?: number;
+  },
+  skip: SkipType
+) => {
+  return describe(`Check that health factor ${
+    value ? 'is ' + value : 'in range from ' + valueFrom + 'till ' + valueTo
+  }`, () => {
+    skipSetup(skip);
+    it('Open dashboard page', () => {
+      doSwitchToDashboardSupplyView();
+    });
+    it('Check value', () => {
+      cy.get(`[data-cy=HealthFactorTopPannel]`).then(($health) => {
+        const _health = parseFloat($health.text());
+        if (value) {
+          expect(_health).to.be.equal(value);
+        }
+        if (valueFrom && valueTo) {
+          expect(_health).to.be.within(valueFrom, valueTo);
+        }
+      });
+      cy.get(`[data-cy=HealthFactorTopPannel]`);
+    });
+  });
+};
