@@ -142,7 +142,8 @@ export const BorrowModalContent = ({
     ),
     currentLiquidationThreshold: user.currentLiquidationThreshold,
   });
-  const displayRiskCheckbox = newHealthFactor.toNumber() < 1.5;
+  const displayRiskCheckbox =
+    newHealthFactor.toNumber() < 1.5 && newHealthFactor.toString() !== '-1';
 
   // calculating input usd value
   const usdValue = valueToBigNumber(amount).multipliedBy(poolReserve.priceInUSD);
