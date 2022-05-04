@@ -20766,6 +20766,24 @@
         "transactionHash": "0x5873bd5156f4f94b90003f4fb39dc145d21486a2a9df7336a21f99d8dd7cb45f",
         "timestamp": 1651603440,
         "blockNumber": 14706317
+      },
+      {
+        "proposalId": 71,
+        "voter": "0x0F11640BF66e2D9352d9c41434A5C6E597c5e4c8",
+        "support": true,
+        "votingPower": 45.24292743,
+        "transactionHash": "0xbd49060842681845c8938dd0b6d46eebb132a2e8143b9a323e734de6840edf81",
+        "timestamp": 1651603653,
+        "blockNumber": 14706334
+      },
+      {
+        "proposalId": 71,
+        "voter": "0xA0efD27acC781549D5b78e89E561AA0903932d56",
+        "support": true,
+        "votingPower": 8.002657782527367,
+        "transactionHash": "0x1ad3a34a7406dd5d04c4cc6fa37de8bb07ff2cff500b3da3262542d76d6defd6",
+        "timestamp": 1651606450,
+        "blockNumber": 14706552
       }
     ],
     "finished": false
