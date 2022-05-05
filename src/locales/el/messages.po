@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-05-04 18:10\n"
+"PO-Revision-Date: 2022-05-05 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -313,6 +313,10 @@ msgid "Borrow {symbol}"
 msgstr "Δανεισμός {symbol}"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
+msgid "Borrowed"
+msgstr ""
+
+#: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "Borrowing is currently unavailable for {0}."
 msgstr "Ο δανεισμός δεν είναι επί του παρόντος διαθέσιμος για {0}."
 
@@ -394,6 +398,11 @@ msgstr "Διεκδίκηση {0}"
 #: src/modules/staking/StakingPanel.tsx
 msgid "Claimable AAVE"
 msgstr "Διεκδικήσιμο AAVE"
+
+#: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
+#: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
+msgid "Claimed"
+msgstr ""
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsActions.tsx
 msgid "Claiming"
@@ -525,6 +534,10 @@ msgstr "Εκπρόσωπος"
 msgid "Delegating"
 msgstr "Ανάθεση αρμοδιοτήτων"
 
+#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
+msgid "Delegation"
+msgstr ""
+
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
@@ -595,6 +608,10 @@ msgstr "Η λειτουργία E-Mode αυξάνει το LTV σας για μ�
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Efficiency mode (E-Mode)"
 msgstr "Λειτουργία αποδοτικότητας (E-Mode)"
+
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+msgid "Emode"
+msgstr ""
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
@@ -1061,6 +1078,10 @@ msgstr "Raw-Ipfs"
 msgid "Reached"
 msgstr "Επιτεύχθηκε"
 
+#: src/components/transactions/Faucet/FaucetModalContent.tsx
+msgid "Received"
+msgstr ""
+
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Recipient address"
 msgstr "Διεύθυνση παραλήπτη"
@@ -1234,6 +1255,12 @@ msgstr "Κλειδώστε Aave"
 msgid "Stake Aave/ETH BPT"
 msgstr "Κλειδώστε Aave/ETH BPT"
 
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+msgid "Stake cooldown activated"
+msgstr ""
+
+#: src/components/transactions/Stake/StakeModalContent.tsx
+#: src/components/transactions/UnStake/UnStakeModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "Staked"
 msgstr "Κλειδωμένο"
@@ -1255,6 +1282,10 @@ msgstr "Ξεκίνησε"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "State"
 msgstr "Κατάσταση"
+
+#: src/components/transactions/Supply/SupplyModalContent.tsx
+msgid "Supplied"
+msgstr ""
 
 #: pages/index.page.tsx
 #: src/components/transactions/Supply/SupplyModal.tsx
@@ -1323,6 +1354,10 @@ msgstr "Παροχή {symbol}"
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Swap"
 msgstr "Ανταλλαγή"
+
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Swapped"
+msgstr ""
 
 #: src/components/transactions/Swap/SwapActions.tsx
 msgid "Swapping"
@@ -1636,6 +1671,10 @@ msgstr "Προβολή λεπτομερειών"
 msgid "View on Explorer"
 msgstr "Προβολή στον Explorer"
 
+#: src/components/transactions/GovVote/GovVoteModalContent.tsx
+msgid "Vote"
+msgstr ""
+
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Vote NAY"
 msgstr "Ψηφίστε ΚΑΤΑ"
@@ -1884,6 +1923,11 @@ msgstr "ή χρησιμοποιήστε <0>{0}</0> για να μεταφέρε�
 msgid "please check that the amount you want to supply is not currently being used for staking. If it is being used for staking, your transaction might fail."
 msgstr "παρακαλούμε ελέγξτε ότι το ποσό που θέλετε να παρέχετε δεν χρησιμοποιείται επί του παρόντος για κλείδωμα. Εάν χρησιμοποιείται για κλείδωμα, η συναλλαγή σας ενδέχεται να αποτύχει."
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+#: src/components/transactions/Repay/RepayModalContent.tsx
+msgid "repaid"
+msgstr ""
+
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "staking view"
 msgstr "προβολή κλειδώματος"
@@ -1907,6 +1951,10 @@ msgstr "αγορές v2"
 #: src/components/MarketSwitcher.tsx
 msgid "v3 markets"
 msgstr "αγορές v3"
+
+#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+msgid "withdrew"
+msgstr ""
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
