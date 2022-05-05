@@ -281,7 +281,7 @@ export function CollateralRepayModalContent({
             variant="description21"
             sx={{ mr: '4px' }}
           />
-          <Typography variant="description21" color="#303549">
+          <Typography variant="description21" color="text.primary">
             {poolReserve.symbol}
           </Typography>
         </Box>
