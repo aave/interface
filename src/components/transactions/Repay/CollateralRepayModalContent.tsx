@@ -242,23 +242,24 @@ export function CollateralRepayModalContent({
         maxValue={maxRepayableCollateral.toString()}
         inputTitle={<Trans>Collateral to repay with</Trans>}
       />
-
-      <CustomSlider
-        value={Number(collateralSelection.amount)}
-        min={0}
-        max={maxRepayableCollateral.toNumber()}
-        step={maxRepayableCollateral.toNumber() / 100}
-        onChange={handleSliderDrag}
-        onChangeCommitted={handleSliderRelease}
-        valueLabelDisplay="off"
-        marks={[
-          { value: 0, label: `0 ${tokenToRepayWith.symbol}` },
-          {
-            value: maxRepayableCollateral.toNumber(),
-            label: `${maxRepayableCollateral.toFixed(5)} ${tokenToRepayWith.symbol}`,
-          },
-        ]}
-      />
+      <Box sx={{ width: '96.5%', margin: '0 auto' }}>
+        <CustomSlider
+          value={Number(collateralSelection.amount)}
+          min={0}
+          max={maxRepayableCollateral.toNumber()}
+          step={maxRepayableCollateral.toNumber() / 100}
+          onChange={handleSliderDrag}
+          onChangeCommitted={handleSliderRelease}
+          valueLabelDisplay="off"
+          marks={[
+            { value: 0, label: `0 ${tokenToRepayWith.symbol}` },
+            {
+              value: maxRepayableCollateral.toNumber(),
+              label: `${maxRepayableCollateral.toFixed(5)} ${tokenToRepayWith.symbol}`,
+            },
+          ]}
+        />
+      </Box>
 
       {blockingError !== undefined && (
         <Typography variant="helperText" color="error.main">
