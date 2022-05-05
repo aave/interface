@@ -81,12 +81,12 @@ export function CollateralRepayModalContent({
   const [maxSlippage, setMaxSlippage] = useState('0.1');
 
   const [collateralSelection, setCollateralSelection] = useState<CollateralSelection>({
-    amount: '0',
+    amount: '',
     amountUSD: '0',
   });
   const [debtAmount, setDebtAmount] = useState('');
   const [maxSelected, setMaxSelected] = useState(false);
-  const amountRef = useRef<string>('');
+  const amountRef = useRef<string>('0');
 
   const debt =
     debtType === InterestRate.Stable
@@ -131,18 +131,21 @@ export function CollateralRepayModalContent({
     .dividedBy(fromAssetData.priceInMarketReferenceCurrency);
 
   // Update collateral and debt amount based on input from slider or text box
-  const updateAmounts = (value: string, apiCall: boolean) => {
-    const collateralAmount = maxSelected ? maxRepayableCollateral.toString(10) : value;
+  const updateAmounts = (value: string, isMax: boolean, apiCall: boolean) => {
+    setMaxSelected(isMax);
+    const collateralAmount = isMax ? maxRepayableCollateral.toString(10) : value;
     const usd = valueToBigNumber(collateralAmount).multipliedBy(
       fromAssetData.formattedPriceInMarketReferenceCurrency
     );
-    const selectedDebt = usd.dividedBy(poolReserve.formattedPriceInMarketReferenceCurrency);
+    const selectedDebt = usd.isNaN()
+      ? '0'
+      : usd.dividedBy(poolReserve.formattedPriceInMarketReferenceCurrency);
     setCollateralSelection({
       amount: collateralAmount,
-      amountUSD: usd.toString(10),
+      amountUSD: usd.isNaN() ? '0' : usd.toString(10),
     });
     setDebtAmount(selectedDebt.toString(10));
-    if (apiCall) {
+    if (apiCall && !usd.isNaN()) {
       // Set ref value for calculating Paraswap inputs
       amountRef.current = selectedDebt.toString(10);
     }
@@ -150,15 +153,15 @@ export function CollateralRepayModalContent({
 
   // Update amount from text box and make paraswap api call
   const handleChange = (value: string) => {
-    setMaxSelected(value === '-1');
-    updateAmounts(value, true);
+    const isMax: boolean = value === '-1';
+    updateAmounts(value, isMax, true);
   };
 
   // On slider drag, update amounts but do not make paraswap api call
   const handleSliderDrag = (_event: Event, value: number | number[]) => {
     const newValue = (value as number).toString();
-    setMaxSelected(value === maxRepayableCollateral.toNumber());
-    updateAmounts(newValue, false);
+    const isMax: boolean = value === maxRepayableCollateral.toNumber();
+    updateAmounts(newValue, isMax, false);
   };
 
   // On slider release (or click), update amounts and make api call
@@ -167,8 +170,8 @@ export function CollateralRepayModalContent({
     value: number | number[]
   ) => {
     const newValue = (value as number).toString();
-    setMaxSelected(value === maxRepayableCollateral.toNumber());
-    updateAmounts(newValue, true);
+    const isMax: boolean = value === maxRepayableCollateral.toNumber();
+    updateAmounts(newValue, isMax, true);
   };
 
   // for v3 we need hf after withdraw collateral, because when removing collateral to repay
