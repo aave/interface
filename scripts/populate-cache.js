@@ -47728,7 +47728,7 @@ var require_v3_pool_contract = __commonJS({
         });
       }
       swapCollateral(_0) {
-        return __async(this, arguments, function* ({ user, flash, fromAsset, fromAToken, toAsset, fromAmount, minToAmount, permitSignature, swapAll, referralCode, augustus, swapCallData }) {
+        return __async(this, arguments, function* ({ user, flash, fromAsset, fromAToken, toAsset, fromAmount, minToAmount, permitSignature, swapAll, onBehalfOf, referralCode, augustus, swapCallData }) {
           const txs = [];
           const permitParams = permitSignature !== null && permitSignature !== void 0 ? permitSignature : {
             amount: "0",
@@ -47763,7 +47763,7 @@ var require_v3_pool_contract = __commonJS({
             const convertedAmountWithSurplus = (0, utils_1.valueToWei)(amountWithSurplus, tokenDecimals);
             const txCallback = this.generateTxCallback({
               rawTxMethod: () => __async(this, null, function* () {
-                return poolContract.populateTransaction.flashLoanSimple(this.swapCollateralAddress, fromAsset, swapAll ? convertedAmountWithSurplus : convertedAmount, params, referralCode !== null && referralCode !== void 0 ? referralCode : "0");
+                return poolContract.populateTransaction.flashLoan(this.swapCollateralAddress, [fromAsset], swapAll ? [convertedAmountWithSurplus] : [convertedAmount], [0], onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user, params, referralCode !== null && referralCode !== void 0 ? referralCode : "0");
               }),
               from: user
             });
@@ -47790,7 +47790,7 @@ var require_v3_pool_contract = __commonJS({
         });
       }
       repayWithCollateral(_0) {
-        return __async(this, arguments, function* ({ user, fromAsset, fromAToken, assetToRepay, repayWithAmount, repayAmount, permitSignature, repayAllDebt, rateMode, referralCode, flash, useEthPath }) {
+        return __async(this, arguments, function* ({ user, fromAsset, fromAToken, assetToRepay, repayWithAmount, repayAmount, permitSignature, repayAllDebt, rateMode, onBehalfOf, referralCode, flash, useEthPath }) {
           const txs = [];
           const permitParams = permitSignature !== null && permitSignature !== void 0 ? permitSignature : {
             amount: "0",
@@ -47845,7 +47845,7 @@ var require_v3_pool_contract = __commonJS({
             const poolContract = this.getContractInstance(this.poolAddress);
             const txCallback = this.generateTxCallback({
               rawTxMethod: () => __async(this, null, function* () {
-                return poolContract.populateTransaction.flashLoanSimple(this.repayWithCollateralAddress, assetToRepay, convertedRepayAmount, params, referralCode !== null && referralCode !== void 0 ? referralCode : "0");
+                return poolContract.populateTransaction.flashLoan(this.repayWithCollateralAddress, [assetToRepay], [convertedRepayAmount], [0], onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user, params, referralCode !== null && referralCode !== void 0 ? referralCode : "0");
               }),
               from: user
             });
@@ -47871,7 +47871,7 @@ var require_v3_pool_contract = __commonJS({
         });
       }
       paraswapRepayWithCollateral(_0) {
-        return __async(this, arguments, function* ({ user, fromAsset, fromAToken, assetToRepay, repayWithAmount, repayAmount, permitSignature, repayAllDebt, rateMode, referralCode, flash, swapAndRepayCallData, augustus }) {
+        return __async(this, arguments, function* ({ user, fromAsset, fromAToken, assetToRepay, repayWithAmount, repayAmount, permitSignature, repayAllDebt, rateMode, onBehalfOf, referralCode, flash, swapAndRepayCallData, augustus }) {
           const txs = [];
           const permitParams = permitSignature !== null && permitSignature !== void 0 ? permitSignature : {
             amount: "0",
@@ -47930,7 +47930,7 @@ var require_v3_pool_contract = __commonJS({
             const poolContract = this.getContractInstance(this.poolAddress);
             const txCallback = this.generateTxCallback({
               rawTxMethod: () => __async(this, null, function* () {
-                return poolContract.populateTransaction.flashLoanSimple(this.repayWithCollateralAddress, fromAsset, repayAllDebt ? convertedRepayWithAmountWithSurplus : convertedRepayWithAmount, params, referralCode !== null && referralCode !== void 0 ? referralCode : "0");
+                return poolContract.populateTransaction.flashLoan(this.repayWithCollateralAddress, [fromAsset], repayAllDebt ? [convertedRepayWithAmountWithSurplus] : [convertedRepayWithAmount], [0], onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user, params, referralCode !== null && referralCode !== void 0 ? referralCode : "0");
               }),
               from: user
             });
@@ -47977,7 +47977,7 @@ var require_v3_pool_contract = __commonJS({
           ]);
           const txCallback = this.generateTxCallback({
             rawTxMethod: () => __async(this, null, function* () {
-              return poolContract.populateTransaction.flashLoanSimple(this.flashLiquidationAddress, borrowedAsset, flashBorrowAmount, params, "0");
+              return poolContract.populateTransaction.flashLoan(this.flashLiquidationAddress, [borrowedAsset], [flashBorrowAmount], [0], initiator, params, "0");
             }),
             from: initiator
           });
@@ -48156,6 +48156,7 @@ var require_v3_pool_contract = __commonJS({
       (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("fromAsset")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("fromAToken")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("toAsset")),
+      (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("onBehalfOf")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("augustus")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)("fromAmount")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)("minToAmount")),
@@ -48169,6 +48170,7 @@ var require_v3_pool_contract = __commonJS({
       (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("fromAsset")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("fromAToken")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("assetToRepay")),
+      (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("onBehalfOf")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)("repayWithAmount")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)("repayAmount")),
       (0, tslib_1.__metadata)("design:type", Function),
@@ -48181,6 +48183,7 @@ var require_v3_pool_contract = __commonJS({
       (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("fromAsset")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("fromAToken")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("assetToRepay")),
+      (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("onBehalfOf")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)("repayWithAmount")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)("repayAmount")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("augustus")),
