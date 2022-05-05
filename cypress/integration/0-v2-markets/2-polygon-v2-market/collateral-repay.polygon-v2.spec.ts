@@ -13,7 +13,7 @@ const testData = {
     borrow: {
       asset: assets.polygonMarket.USDT,
       amount: 10,
-      apyType: constants.borrowAPYType.variable,
+      apyType: constants.borrowAPYType.default,
       hasApproval: true,
     },
     repay: {
@@ -33,12 +33,12 @@ const testData = {
     borrow: {
       asset: assets.polygonMarket.USDC,
       amount: 10,
-      apyType: constants.borrowAPYType.stable,
+      apyType: constants.borrowAPYType.default,
       hasApproval: true,
     },
     repay: {
       asset: assets.polygonMarket.USDC,
-      apyType: constants.apyType.stable,
+      apyType: constants.apyType.variable,
       amount: 10,
       hasApproval: false,
       repayOption: constants.repayType.collateral,

@@ -12,14 +12,14 @@ const testData = {
     },
     borrow: {
       asset: assets.avalancheV3Market.USDT,
-      amount: 10,
+      amount: 5,
       apyType: constants.borrowAPYType.variable,
       hasApproval: true,
     },
     repay: {
       asset: assets.avalancheV3Market.USDT,
       apyType: constants.apyType.variable,
-      amount: 10,
+      amount: 1,
       hasApproval: false,
       repayOption: constants.repayType.collateral,
     },
@@ -32,14 +32,14 @@ const testData = {
     },
     borrow: {
       asset: assets.avalancheV3Market.USDC,
-      amount: 10,
+      amount: 5,
       apyType: constants.borrowAPYType.stable,
       hasApproval: true,
     },
     repay: {
       asset: assets.avalancheV3Market.USDC,
       apyType: constants.apyType.stable,
-      amount: 10,
+      amount: 1,
       hasApproval: false,
       repayOption: constants.repayType.collateral,
     },
