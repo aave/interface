@@ -48,7 +48,7 @@ const testData = {
 
 const configEnv = () => configEnvWithTenderlyMainnetFork({});
 
-describe('REPAY AS COLLATERAL, AAVE V2 MARKET, INTEGRATION SPEC', () => {
+describe.skip('REPAY AS COLLATERAL, AAVE V2 MARKET, INTEGRATION SPEC', () => {
   repayCollateral(testData.USDCCase, configEnv);
   repayCollateral(testData.USDTCase, configEnv);
 });
