@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-05-04 18:10\n"
+"PO-Revision-Date: 2022-05-05 00:17\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -24,7 +24,7 @@ msgstr "<0>Ampleforth</0> est un actif affecté par le rebasing. Visitez la <1>d
 
 #: src/modules/staking/StakingHeader.tsx
 msgid "AAVE holders can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
-msgstr "Les détenteurs d'AAVE peuvent mettre leur AAVE dans le Safety Module pour renforcer la sécurité au protocole et gagner des Safety Incentives. Dans le cas d'un shortfall Event, jusqu'à 30% de votre stake peut être slashed pour couvrir le déficit, fournissant une couche supplémentaire de protection pour le protocole."
+msgstr "Les détenteurs d'AAVE peuvent mettre leur AAVE dans le Safety Module pour renforcer la sécurité au protocole et gagner des Safety Incentives. Dans le cas d'un évènement de shortfall, jusqu'à 30% de votre stake peut être slashed pour couvrir le déficit, fournissant une couche supplémentaire de protection pour le protocole."
 
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
@@ -119,7 +119,7 @@ msgstr "Toutes les propositions"
 
 #: src/components/transactions/FlowCommons/PermissionView.tsx
 msgid "Allowance required action"
-msgstr ""
+msgstr "Allocation action requise"
 
 #: src/components/infoTooltips/CollateralSwitchTooltip.tsx
 msgid "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
@@ -178,7 +178,7 @@ msgstr "Actif"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Asset can only be used as collateral in isolation mode only."
-msgstr ""
+msgstr "L'actif ne peut être utilisé comme garantie qu'en mode isolé."
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Asset cannot be used as collateral."
@@ -318,7 +318,7 @@ msgstr "L'emprunt n'est actuellement pas disponible pour {0}."
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrowing is navailable because you’re using Isolation mode. To manage Isolation mode visit your <0>Dashboard</0>."
-msgstr ""
+msgstr "L'emprunt n'est pas disponible car vous utilisez le mode Isolement. Pour gérer le mode d'isolation, visitez votre <0>tableau de bord</0>."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Borrowing is not enabled"
@@ -326,11 +326,11 @@ msgstr "L'emprunt n'est pas activé"
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) and Isolation mode. To manage E-Mode and Isolation mode visit your <0>Dashboard</0>."
-msgstr ""
+msgstr "L'emprunt n'est pas disponible car vous avez activé le mode Efficacité (E-Mode) et le mode Isolation. Pour gérer le mode E et le mode Isolation, rendez-vous sur votre <0>tableau de bord</0>."
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
-msgstr ""
+msgstr "L'emprunt n'est pas disponible, car vous avez activé le mode d'efficacité (E-Mode) pour la catégorie {0}. Pour gérer les catégories E-Mode, visitez votre <0>tableau de bord</0>."
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Borrowing power and assets are limited due to Isolation mode."
@@ -338,7 +338,7 @@ msgstr "Le pouvoir d'emprunt et les actifs sont limités en raison du mode d'iso
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "Borrowing this amount will reduce your health factor and increase risk of liquidation."
-msgstr ""
+msgstr "Emprunter ce montant réduira votre facteur santé et augmentera le risque de liquidation."
 
 #: src/components/transactions/Borrow/BorrowActions.tsx
 msgid "Borrowing {symbol}"
@@ -422,11 +422,11 @@ msgstr "La garantie est (principalement) la même devise que celle qui est empru
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Collateral usage"
-msgstr ""
+msgstr "Usage de collatéral"
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Collateral usage is limited because of Isolation mode."
-msgstr ""
+msgstr "L'utilisation du collatéral est limitée en raison du mode d'isolation."
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Collateral usage is limited because of isolation mode. <0>Learn More</0>"
@@ -578,7 +578,7 @@ msgstr "E-Mode"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "E-Mode Category"
-msgstr ""
+msgstr "Catégorie E-mode"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode increases your LTV for a selected category of assets up to 97%. <0>Learn more</0>"
@@ -590,7 +590,7 @@ msgstr "E-Mode augmente votre LTV pour une catégorie d'actifs sélectionnée ju
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "E-Mode increases your LTV for a selected category of assets, meaning that when E-mode is enabled, you will have higher borrowing power over assets of the same E-mode category which are defined by Aave Governance. You can enter E-Mode from your <0>Dashboard</0>. To learn more about E-Mode and applied restrictions in <1>FAQ</1> or <2>Aave V3 Technical Paper</2>."
-msgstr ""
+msgstr "Le E-mode augmente votre LTV pour une catégorie d'actifs sélectionnée, ce qui signifie que lorsque le E-mode est activé, vous aurez un pouvoir d'emprunt plus élevé sur les actifs de la même catégorie de mode E qui sont définis par Aave Governance. Vous pouvez accéder au E-Mode depuis votre <0>Tableau de bord</0>. Pour en savoir plus sur le E-mode et les restrictions appliquées, consultez la <1>FAQ</1> ou le <2>Document technique Aave V3</2>."
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Efficiency mode (E-Mode)"
@@ -722,7 +722,7 @@ msgstr "Cacher"
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "I acknowledge the risks involved."
-msgstr ""
+msgstr "Je reconnais les risques encourus."
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "I understand how cooldown ({0}) and unstaking ({1}) work"
@@ -1007,7 +1007,7 @@ msgstr "En attente..."
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Please connect a wallet to view your personal information here."
-msgstr ""
+msgstr "Veuillez connecter un portefeuille pour afficher vos informations personnelles ici."
 
 #: src/components/ConnectWalletPaper.tsx
 msgid "Please connect your wallet to see your supplies, borrowings, and open positions."
@@ -1361,7 +1361,7 @@ msgstr "Le Balancer Pool Token (BPT) est un token de pool de liquidités. Vous p
 
 #: src/components/infoTooltips/MaxLTVTooltip.tsx
 msgid "The Maximum LTV ratio represents the maximum borrowing power of a specific collateral. For example, if a collateral has an LTV of 75%, the user can borrow up to 0.75 worth of ETH in the principal currency for every 1 ETH worth of collateral."
-msgstr ""
+msgstr "Le ratio LTV maximum représente le pouvoir d'emprunt maximum d'une garantie spécifique. Par exemple, si une garantie a un LTV de 75 %, l'utilisateur peut emprunter jusqu'à 0,75 ETH dans la devise principale pour chaque 1 ETH de garantie."
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "The Stable Rate is not enabled for this currency"
@@ -1433,7 +1433,7 @@ msgstr "Il n'y a pas assez de collatéral pour couvrir un nouvel emprunt"
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "There was some error. Please try changing the parameters or <0><1>copy the error</1></0>"
-msgstr ""
+msgstr "Il y a eu une erreur. Veuillez essayer de modifier les paramètres ou <0><1>copier l'erreur</1></0>"
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
@@ -1469,7 +1469,7 @@ msgstr "Il s'agit du montant total que vous pouvez emprunter. Vous pouvez emprun
 
 #: src/components/infoTooltips/LiquidationThresholdTooltip.tsx
 msgid "This represents the threshold at which a borrow position will be considered undercollateralized and subject to liquidation for each collateral. For example, if a collateral has a liquidation threshold of 80%, it means that the position will be liquidated when the debt value is worth 80% of the collateral value."
-msgstr ""
+msgstr "Cela représente le seuil auquel une position d'emprunt sera considérée comme sous-garantie et sujette à liquidation pour chaque garantie. Par exemple, si une garantie a un seuil de liquidation de 80 %, cela signifie que la position sera liquidée lorsque la valeur de la dette vaut 80 % de la valeur de la garantie."
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Time left to be able to withdraw your staked asset."
@@ -1494,7 +1494,7 @@ msgstr "Pour rembourser au nom d'un utilisateur, un montant explicite à rembour
 
 #: src/components/transactions/FlowCommons/PermissionView.tsx
 msgid "To request access for this permissioned market, please visit: <0>Acces Provider Name</0>"
-msgstr ""
+msgstr "Pour demander l'accès à ce marché autorisé, veuillez consulter : <0>Nom du fournisseur d'accès</0>"
 
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total available"
@@ -1675,7 +1675,7 @@ msgstr "Nous n'avons pas pu détecter de portefeuille. Connectez un portefeuille
 
 #: src/components/infoTooltips/LiquidationPenaltyTooltip.tsx
 msgid "When a liquidation occurs, liquidators repay up to 50% of the outstanding borrowed amount on behalf of the borrower. In return, they can buy the collateral at a discount and keep the difference (liquidation penalty) as a bonus."
-msgstr ""
+msgstr "Lorsqu'une liquidation survient, les liquidateurs remboursent jusqu'à 50 % de l'encours emprunté au nom de l'emprunteur. En contrepartie, ils peuvent acheter le collatéral à prix réduit et conserver la différence (pénalité de liquidation) en bonus."
 
 #: src/components/transactions/FlowCommons/LeftHelperText.tsx
 msgid "Why do I need to approve?"
@@ -1697,7 +1697,7 @@ msgstr "Retirer {symbole}"
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "Withdrawing this amount will reduce your health factor and increase risk of liquidation."
-msgstr ""
+msgstr "Le retrait de ce montant réduira votre facteur santé et augmentera le risque de liquidation."
 
 #: src/components/transactions/Withdraw/WithdrawActions.tsx
 msgid "Withdrawing {symbol}"
@@ -1843,7 +1843,7 @@ msgstr "arrière"
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "copy the error"
-msgstr ""
+msgstr "copier l'erreur"
 
 #: src/components/transactions/Emode/EmodeSelect.tsx
 #: src/components/transactions/Emode/EmodeSelect.tsx
