@@ -180,6 +180,7 @@ export const AssetInput = <T extends Asset = Asset>({
                   '&.AssetInput__select .MuiOutlinedInput-notchedOutline': { display: 'none' },
                   '&.AssetInput__select .MuiSelect-icon': {
                     color: 'text.primary',
+                    right: '0%',
                   },
                 }}
                 renderValue={(symbol) => {
