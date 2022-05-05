@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-04-29 12:10\n"
+"PO-Revision-Date: 2022-05-04 18:10\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -335,6 +335,10 @@ msgstr "Tomar prestado no está disponible porque has habilitado el Efficieny Mo
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Borrowing power and assets are limited due to Isolation mode."
 msgstr "La capacidad de préstamo y los activos están limitados debido al Isolation mode."
+
+#: src/components/transactions/Borrow/BorrowModalContent.tsx
+msgid "Borrowing this amount will reduce your health factor and increase risk of liquidation."
+msgstr ""
 
 #: src/components/transactions/Borrow/BorrowActions.tsx
 msgid "Borrowing {symbol}"
@@ -715,6 +719,11 @@ msgstr "El factor de salud no está por debajo del umbral"
 msgid "Hide"
 msgstr "Ocultar"
 
+#: src/components/transactions/Borrow/BorrowModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+msgid "I acknowledge the risks involved."
+msgstr ""
+
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "I understand how cooldown ({0}) and unstaking ({1}) work"
 msgstr "Entiendo como el cooldown ({0}) y el proceso de unstaking ({1}) funcionan"
@@ -820,14 +829,6 @@ msgstr "Liquidación en"
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Liquidation penalty"
 msgstr "Penalización de liquidación"
-
-#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
-msgid "Liquidation risk is high. Lower amounts recomended."
-msgstr "El riesgo de liquidación es elevado, se recomiendan cantidades más bajas."
-
-#: src/components/transactions/Borrow/BorrowModalContent.tsx
-msgid "Liquidation risk is high. Lower amounts recommended."
-msgstr "El riesgo de liquidación es alto. Se recomiendan cantidades más bajas."
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Liquidation risk parametres"
@@ -1693,6 +1694,10 @@ msgstr "Retirar"
 #: src/components/transactions/Withdraw/WithdrawActions.tsx
 msgid "Withdraw {symbol}"
 msgstr "Retirar {symbol}"
+
+#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+msgid "Withdrawing this amount will reduce your health factor and increase risk of liquidation."
+msgstr ""
 
 #: src/components/transactions/Withdraw/WithdrawActions.tsx
 msgid "Withdrawing {symbol}"

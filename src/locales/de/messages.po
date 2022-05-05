@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-04-29 12:10\n"
+"PO-Revision-Date: 2022-05-04 18:10\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -334,6 +334,10 @@ msgstr ""
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Borrowing power and assets are limited due to Isolation mode."
+msgstr ""
+
+#: src/components/transactions/Borrow/BorrowModalContent.tsx
+msgid "Borrowing this amount will reduce your health factor and increase risk of liquidation."
 msgstr ""
 
 #: src/components/transactions/Borrow/BorrowActions.tsx
@@ -715,6 +719,11 @@ msgstr ""
 msgid "Hide"
 msgstr ""
 
+#: src/components/transactions/Borrow/BorrowModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+msgid "I acknowledge the risks involved."
+msgstr ""
+
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "I understand how cooldown ({0}) and unstaking ({1}) work"
 msgstr ""
@@ -819,14 +828,6 @@ msgstr ""
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Liquidation penalty"
-msgstr ""
-
-#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
-msgid "Liquidation risk is high. Lower amounts recomended."
-msgstr ""
-
-#: src/components/transactions/Borrow/BorrowModalContent.tsx
-msgid "Liquidation risk is high. Lower amounts recommended."
 msgstr ""
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
@@ -1692,6 +1693,10 @@ msgstr ""
 
 #: src/components/transactions/Withdraw/WithdrawActions.tsx
 msgid "Withdraw {symbol}"
+msgstr ""
+
+#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+msgid "Withdrawing this amount will reduce your health factor and increase risk of liquidation."
 msgstr ""
 
 #: src/components/transactions/Withdraw/WithdrawActions.tsx
