@@ -166,7 +166,7 @@ export const EmodeModalContent = () => {
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
   }
-  if (emodeTxState.success) return <TxSuccessView action="Emode" />;
+  if (emodeTxState.success) return <TxSuccessView action={<Trans>Emode</Trans>} />;
 
   return (
     <>

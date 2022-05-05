@@ -5,7 +5,7 @@ import {
   valueToBigNumber,
 } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import { Alert, Box, Checkbox, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import { useRef, useState } from 'react';
 import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -110,6 +110,7 @@ export const BorrowModalContent = ({
 
   const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
   const [_amount, setAmount] = useState('');
+  const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
   const amountRef = useRef<string>();
 
   // amount calculations
@@ -141,6 +142,8 @@ export const BorrowModalContent = ({
     ),
     currentLiquidationThreshold: user.currentLiquidationThreshold,
   });
+  const displayRiskCheckbox =
+    newHealthFactor.toNumber() < 1.5 && newHealthFactor.toString() !== '-1';
 
   // calculating input usd value
   const usdValue = valueToBigNumber(amount).multipliedBy(poolReserve.priceInUSD);
@@ -200,7 +203,7 @@ export const BorrowModalContent = ({
   if (borrowTxState.success)
     return (
       <TxSuccessView
-        action="Borrowed"
+        action={<Trans>Borrowed</Trans>}
         amount={amountRef.current}
         symbol={poolReserve.symbol}
         addToken={addToken}
@@ -238,13 +241,6 @@ export const BorrowModalContent = ({
           {handleBlocked()}
         </Typography>
       )}
-      {blockingError === undefined &&
-        newHealthFactor.toNumber() < 1.5 &&
-        newHealthFactor.toNumber() >= 1 && (
-          <Typography variant="helperText" color="warning.main">
-            <Trans>Liquidation risk is high. Lower amounts recommended.</Trans>
-          </Typography>
-        )}
 
       {poolReserve.stableBorrowRateEnabled && (
         <BorrowModeSwitch
@@ -274,6 +270,36 @@ export const BorrowModalContent = ({
 
       {txError && <GasEstimationError txError={txError} />}
 
+      {displayRiskCheckbox && (
+        <>
+          <Alert severity="error" sx={{ my: '24px' }}>
+            <Trans>
+              Borrowing this amount will reduce your health factor and increase risk of liquidation.
+            </Trans>
+          </Alert>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              mx: '24px',
+              mb: '12px',
+            }}
+          >
+            <Checkbox
+              checked={riskCheckboxAccepted}
+              onChange={() => setRiskCheckboxAccepted(!riskCheckboxAccepted)}
+              size="small"
+              data-cy={'risk-checkbox'}
+            />
+            <Typography variant="description">
+              <Trans>I acknowledge the risks involved.</Trans>
+            </Typography>
+          </Box>
+        </>
+      )}
+
       <BorrowActions
         poolReserve={poolReserve}
         amountToBorrow={amount}
@@ -285,7 +311,8 @@ export const BorrowModalContent = ({
         interestRateMode={interestRateMode}
         isWrongNetwork={isWrongNetwork}
         symbol={symbol}
-        blocked={blockingError !== undefined}
+        blocked={blockingError !== undefined || (displayRiskCheckbox && !riskCheckboxAccepted)}
+        sx={displayRiskCheckbox ? { mt: 0 } : {}}
       />
     </>
   );

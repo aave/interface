@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-04-29 12:10\n"
+"PO-Revision-Date: 2022-05-05 18:05\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -313,6 +313,10 @@ msgid "Borrow {symbol}"
 msgstr ""
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
+msgid "Borrowed"
+msgstr ""
+
+#: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "Borrowing is currently unavailable for {0}."
 msgstr ""
 
@@ -334,6 +338,10 @@ msgstr ""
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Borrowing power and assets are limited due to Isolation mode."
+msgstr ""
+
+#: src/components/transactions/Borrow/BorrowModalContent.tsx
+msgid "Borrowing this amount will reduce your health factor and increase risk of liquidation."
 msgstr ""
 
 #: src/components/transactions/Borrow/BorrowActions.tsx
@@ -389,6 +397,11 @@ msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Claimable AAVE"
+msgstr ""
+
+#: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
+#: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
+msgid "Claimed"
 msgstr ""
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsActions.tsx
@@ -521,6 +534,10 @@ msgstr ""
 msgid "Delegating"
 msgstr ""
 
+#: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
+msgid "Delegation"
+msgstr ""
+
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
@@ -590,6 +607,10 @@ msgstr ""
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Efficiency mode (E-Mode)"
+msgstr ""
+
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+msgid "Emode"
 msgstr ""
 
 #: src/components/transactions/Emode/EmodeActions.tsx
@@ -715,6 +736,11 @@ msgstr ""
 msgid "Hide"
 msgstr ""
 
+#: src/components/transactions/Borrow/BorrowModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+msgid "I acknowledge the risks involved."
+msgstr ""
+
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "I understand how cooldown ({0}) and unstaking ({1}) work"
 msgstr ""
@@ -819,14 +845,6 @@ msgstr ""
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Liquidation penalty"
-msgstr ""
-
-#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
-msgid "Liquidation risk is high. Lower amounts recomended."
-msgstr ""
-
-#: src/components/transactions/Borrow/BorrowModalContent.tsx
-msgid "Liquidation risk is high. Lower amounts recommended."
 msgstr ""
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
@@ -1060,6 +1078,10 @@ msgstr ""
 msgid "Reached"
 msgstr ""
 
+#: src/components/transactions/Faucet/FaucetModalContent.tsx
+msgid "Received"
+msgstr ""
+
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Recipient address"
 msgstr ""
@@ -1233,6 +1255,12 @@ msgstr ""
 msgid "Stake Aave/ETH BPT"
 msgstr ""
 
+#: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+msgid "Stake cooldown activated"
+msgstr ""
+
+#: src/components/transactions/Stake/StakeModalContent.tsx
+#: src/components/transactions/UnStake/UnStakeModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "Staked"
 msgstr ""
@@ -1253,6 +1281,10 @@ msgstr ""
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "State"
+msgstr ""
+
+#: src/components/transactions/Supply/SupplyModalContent.tsx
+msgid "Supplied"
 msgstr ""
 
 #: pages/index.page.tsx
@@ -1320,6 +1352,10 @@ msgstr ""
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Swap"
+msgstr ""
+
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Swapped"
 msgstr ""
 
 #: src/components/transactions/Swap/SwapActions.tsx
@@ -1634,6 +1670,10 @@ msgstr ""
 msgid "View on Explorer"
 msgstr ""
 
+#: src/components/transactions/GovVote/GovVoteModalContent.tsx
+msgid "Vote"
+msgstr ""
+
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Vote NAY"
 msgstr ""
@@ -1692,6 +1732,10 @@ msgstr ""
 
 #: src/components/transactions/Withdraw/WithdrawActions.tsx
 msgid "Withdraw {symbol}"
+msgstr ""
+
+#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+msgid "Withdrawing this amount will reduce your health factor and increase risk of liquidation."
 msgstr ""
 
 #: src/components/transactions/Withdraw/WithdrawActions.tsx
@@ -1878,6 +1922,11 @@ msgstr ""
 msgid "please check that the amount you want to supply is not currently being used for staking. If it is being used for staking, your transaction might fail."
 msgstr ""
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+#: src/components/transactions/Repay/RepayModalContent.tsx
+msgid "repaid"
+msgstr ""
+
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "staking view"
 msgstr ""
@@ -1900,6 +1949,10 @@ msgstr ""
 
 #: src/components/MarketSwitcher.tsx
 msgid "v3 markets"
+msgstr ""
+
+#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+msgid "withdrew"
 msgstr ""
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
