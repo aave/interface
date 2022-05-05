@@ -214,6 +214,7 @@ export const checkDashboardHealthFactor = (
     });
     it('Check value', () => {
       cy.get(`[data-cy=HealthFactorTopPannel]`).then(($health) => {
+        cy.wait(4000);
         const _health = parseFloat($health.text());
         if (value) {
           expect(_health).to.be.equal(value);
