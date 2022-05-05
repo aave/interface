@@ -203,7 +203,7 @@ export const BorrowModalContent = ({
   if (borrowTxState.success)
     return (
       <TxSuccessView
-        action="Borrowed"
+        action={<Trans>Borrowed</Trans>}
         amount={amountRef.current}
         symbol={poolReserve.symbol}
         addToken={addToken}

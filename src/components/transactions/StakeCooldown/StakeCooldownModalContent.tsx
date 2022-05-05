@@ -94,7 +94,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
   }
-  if (txState.success) return <TxSuccessView action="Stake cooldown activated" />;
+  if (txState.success) return <TxSuccessView action={<Trans>Stake cooldown activated</Trans>} />;
 
   const timeMessage = (time: number) => {
     return `${formattedTime(time)} ${timeText(time)}`;

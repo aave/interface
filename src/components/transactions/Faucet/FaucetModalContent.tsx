@@ -35,7 +35,7 @@ export const FaucetModalContent = ({
   if (faucetTxState.success)
     return (
       <TxSuccessView
-        action="received"
+        action={<Trans>Received</Trans>}
         symbol={poolReserve.symbol}
         amount={normalizedAmount}
         addToken={addToken}

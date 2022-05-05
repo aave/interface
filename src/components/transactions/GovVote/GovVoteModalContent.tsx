@@ -65,7 +65,7 @@ export const GovVoteModalContent = ({
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
   }
-  if (txState.success) return <TxSuccessView action="Vote" />;
+  if (txState.success) return <TxSuccessView action={<Trans>Vote</Trans>} />;
 
   return (
     <>

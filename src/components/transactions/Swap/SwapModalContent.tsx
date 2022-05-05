@@ -138,7 +138,11 @@ export const SwapModalContent = ({
 
   if (supplyTxState.success)
     return (
-      <TxSuccessView action="Swapped" amount={amountRef.current} symbol={poolReserve.symbol} />
+      <TxSuccessView
+        action={<Trans>Swapped</Trans>}
+        amount={amountRef.current}
+        symbol={poolReserve.symbol}
+      />
     );
 
   // hf is only relevant when there are borrows

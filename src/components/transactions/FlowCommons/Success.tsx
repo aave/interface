@@ -1,9 +1,9 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { PlusSmIcon, ExternalLinkIcon } from '@heroicons/react/outline';
 import { CheckIcon } from '@heroicons/react/solid';
+import { ReactNode, useState } from 'react';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Link, SvgIcon, Typography } from '@mui/material';
-import { useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Base64Token } from 'src/components/primitives/TokenIcon';
 import { useModalContext } from 'src/hooks/useModal';
@@ -12,7 +12,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 
 export type SuccessTxViewProps = {
-  action?: string;
+  action?: ReactNode;
   amount?: string;
   symbol?: string;
   collateral?: boolean;
