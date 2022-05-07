@@ -21,16 +21,15 @@ import {
 import { CollateralRepayActions } from './CollateralRepayActions';
 import BigNumber from 'bignumber.js';
 import { calculateHFAfterRepay } from 'src/utils/hfUtils';
-import { Box, Button, CircularProgress, Typography } from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { MaxRepayWithCollateralTooltip } from 'src/components/infoTooltips/MaxRepayWithCollateralTooltip';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { CustomSlider } from 'src/components/CustomSlider';
-import { SlippageModal } from 'src/components/SlippageModal';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
-import { SlippageTooltip } from 'src/components/infoTooltips/SlippageTooltip';
+import { ListSlippageButton } from 'src/modules/dashboard/lists/ListSlippageButton';
 
 export enum ErrorType {
   NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH,
@@ -79,7 +78,6 @@ export function CollateralRepayModalContent({
     (userReserve) => userReserve.underlyingAsset === tokenToRepayWith.address
   ) as ComputedUserReserveData;
 
-  const [slippageModalOpen, setSlippageModalOpen] = useState(false);
   const [maxSlippage, setMaxSlippage] = useState('0.1');
   const [dragActive, setDragActive] = useState(false);
 
@@ -304,13 +302,7 @@ export function CollateralRepayModalContent({
       <TxModalDetails
         gasLimit={gasLimit}
         slippageSelector={
-          <Button variant="text" onClick={() => setSlippageModalOpen(true)} sx={{ mt: 6 }}>
-            <SlippageTooltip
-              text={<Trans>Slippage tolerance {maxSlippage}%</Trans>}
-              variant="secondary14"
-              color="#0062D2"
-            />
-          </Button>
+          <ListSlippageButton selectedSlippage={maxSlippage} setSlippage={setMaxSlippage} />
         }
       >
         <DetailsHFLine
@@ -335,13 +327,6 @@ export function CollateralRepayModalContent({
       </TxModalDetails>
 
       {txError && <GasEstimationError txError={txError} />}
-
-      <SlippageModal
-        open={slippageModalOpen}
-        setOpen={setSlippageModalOpen}
-        value={maxSlippage}
-        setSlippage={setMaxSlippage}
-      />
 
       <CollateralRepayActions
         poolReserve={poolReserve}
