@@ -8,9 +8,6 @@ import {
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useSwap } from 'src/hooks/useSwap';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { Asset, AssetInput } from '../AssetInput';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import {
@@ -49,8 +46,6 @@ export function CollateralRepayModalContent({
 }: ModalWrapperProps & { debtType: InterestRate }) {
   const { user, reserves, userReserves } = useAppDataContext();
   const { gasLimit, txError, mainTxState } = useModalContext();
-  const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
-  const { currentAccount } = useWeb3Context();
 
   // List of tokens eligble to repay with, ordered by USD value
   const repayTokens = user.userReservesData
@@ -99,24 +94,12 @@ export function CollateralRepayModalContent({
       : userReserve?.variableBorrowsUSD || '0';
   const safeAmountToRepayAll = valueToBigNumber(debt).multipliedBy('1.0025');
 
-  // Paraswap API Call
-  const {
-    priceRoute,
-    inputAmountUSD,
-    inputAmount,
-    outputAmount,
-    outputAmountUSD,
-    loading: loadingParaswapCall,
-  } = useSwap({
-    chainId: currentNetworkConfig.underlyingChainId || currentChainId,
-    userId: currentAccount,
-    variant: 'exactOut',
-    swapIn: { ...fromAssetData, amount: '0' },
-    swapOut: { ...poolReserve, amount: amountRef.current },
-    max: maxSelected,
-    skip: mainTxState.loading,
-    maxSlippage,
-  });
+  // Hardcoded
+  const inputAmountUSD = collateralSelection.amountUSD;
+  const inputAmount = collateralSelection.amount;
+  const outputAmount = debtAmount;
+  const outputAmountUSD = collateralSelection.amountUSD;
+  const loadingParaswapCall = false;
 
   // Calculations to get the max repayable debt depending on the balance and value of the
   // selected collateral
@@ -338,8 +321,8 @@ export function CollateralRepayModalContent({
         isWrongNetwork={isWrongNetwork}
         symbol={symbol}
         rateMode={debtType}
-        priceRoute={priceRoute}
-        blocked={false}
+        priceRoute={null}
+        blocked={true}
       />
     </>
   );

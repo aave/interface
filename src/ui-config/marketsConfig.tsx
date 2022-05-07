@@ -89,6 +89,7 @@ export const marketsData: {
       governance: true,
       staking: true,
       incentives: true,
+      collateralRepay: true,
     },
     rpcOnly: true,
     addresses: {
@@ -224,6 +225,7 @@ export const marketsData: {
     enabledFeatures: {
       faucet: true,
       incentives: true,
+      collateralRepay: true,
     },
     rpcOnly: true,
     addresses: {
@@ -268,6 +270,7 @@ export const marketsData: {
       governance: false,
       staking: false,
       incentives: false,
+      collateralRepay: true,
     },
     rpcOnly: true,
     addresses: {
@@ -305,6 +308,7 @@ export const marketsData: {
     enabledFeatures: {
       faucet: true,
       incentives: true,
+      collateralRepay: true,
     },
     rpcOnly: true,
     addresses: {
@@ -386,6 +390,7 @@ export const marketsData: {
     enabledFeatures: {
       faucet: true,
       incentives: true,
+      collateralRepay: true,
     },
     rpcOnly: true,
     addresses: {
@@ -422,6 +427,7 @@ export const marketsData: {
     enabledFeatures: {
       faucet: true,
       incentives: true,
+      collateralRepay: true,
     },
     rpcOnly: true,
     addresses: {
@@ -459,6 +465,7 @@ export const marketsData: {
     enabledFeatures: {
       faucet: true,
       incentives: true,
+      collateralRepay: true,
     },
     rpcOnly: true,
     addresses: {
@@ -498,6 +505,7 @@ export const marketsData: {
     enabledFeatures: {
       incentives: true,
       faucet: true,
+      collateralRepay: true,
     },
     rpcOnly: true,
     addresses: {
