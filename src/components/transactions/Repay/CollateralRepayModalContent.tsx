@@ -30,6 +30,7 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { CustomSlider } from 'src/components/CustomSlider';
 import { SlippageModal } from 'src/components/SlippageModal';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
+import { SlippageTooltip } from 'src/components/infoTooltips/SlippageTooltip';
 
 export enum ErrorType {
   NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH,
@@ -304,9 +305,11 @@ export function CollateralRepayModalContent({
         gasLimit={gasLimit}
         slippageSelector={
           <Button variant="text" onClick={() => setSlippageModalOpen(true)} sx={{ mt: 6 }}>
-            <Typography variant="secondary14" color="#0062D2">
-              <Trans>Slippage tolerance {maxSlippage}%</Trans>
-            </Typography>
+            <SlippageTooltip
+              text={<Trans>Slippage tolerance {maxSlippage}%</Trans>}
+              variant="secondary14"
+              color="#0062D2"
+            />
           </Button>
         }
       >
