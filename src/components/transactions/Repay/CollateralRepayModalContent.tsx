@@ -29,6 +29,7 @@ import { MaxRepayWithCollateralTooltip } from 'src/components/infoTooltips/MaxRe
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { CustomSlider } from 'src/components/CustomSlider';
 import { SlippageModal } from 'src/components/SlippageModal';
+import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
 
 export enum ErrorType {
   NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH,
@@ -281,8 +282,15 @@ export function CollateralRepayModalContent({
             symbolsColor="text.muted"
           />
           <Box sx={{ px: '8px' }}>&#8226;</Box>
-          <Box sx={{ display: 'inline-flex' }}>
-            <Trans>Price impact</Trans>
+          <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+            <Box sx={{ pr: '4px' }}>
+              <PriceImpactTooltip
+                variant="subheader2"
+                color="text.muted"
+                text={<Trans>Price impact</Trans>}
+              />
+            </Box>
+
             {loadingParaswapCall || dragActive ? (
               <CircularProgress color="inherit" size="12px" sx={{ mx: 2 }} />
             ) : (
