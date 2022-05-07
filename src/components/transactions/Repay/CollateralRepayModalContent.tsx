@@ -1,5 +1,5 @@
 import { InterestRate } from '@aave/contract-helpers';
-import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
+import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { SyntheticEvent, useRef, useState } from 'react';
 import {
@@ -21,7 +21,7 @@ import {
 import { CollateralRepayActions } from './CollateralRepayActions';
 import BigNumber from 'bignumber.js';
 import { calculateHFAfterRepay } from 'src/utils/hfUtils';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -46,7 +46,7 @@ export function CollateralRepayModalContent({
   userReserve,
   isWrongNetwork,
 }: ModalWrapperProps & { debtType: InterestRate }) {
-  const { user, marketReferencePriceInUsd, reserves, userReserves } = useAppDataContext();
+  const { user, reserves, userReserves } = useAppDataContext();
   const { gasLimit, txError, mainTxState } = useModalContext();
   const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
@@ -79,6 +79,7 @@ export function CollateralRepayModalContent({
 
   const [slippageModalOpen, setSlippageModalOpen] = useState(false);
   const [maxSlippage, setMaxSlippage] = useState('0.1');
+  const [dragActive, setDragActive] = useState(false);
 
   const [collateralSelection, setCollateralSelection] = useState<CollateralSelection>({
     amount: '',
@@ -98,11 +99,15 @@ export function CollateralRepayModalContent({
       : userReserve?.variableBorrowsUSD || '0';
   const safeAmountToRepayAll = valueToBigNumber(debt).multipliedBy('1.0025');
 
-  const amount = maxSelected ? safeAmountToRepayAll.toString() : debtAmount;
-  const usdValue = valueToBigNumber(amount).multipliedBy(poolReserve.priceInUSD);
-
   // Paraswap API Call
-  const { priceRoute, inputAmountUSD, inputAmount, outputAmount, outputAmountUSD } = useSwap({
+  const {
+    priceRoute,
+    inputAmountUSD,
+    inputAmount,
+    outputAmount,
+    outputAmountUSD,
+    loading: loadingParaswapCall,
+  } = useSwap({
     chainId: currentNetworkConfig.underlyingChainId || currentChainId,
     userId: currentAccount,
     variant: 'exactOut',
@@ -116,10 +121,10 @@ export function CollateralRepayModalContent({
   // Calculations to get the max repayable debt depending on the balance and value of the
   // selected collateral
   const maxCollateral = valueToBigNumber(tokenToRepayWith?.balance || 0).multipliedBy(
-    fromAssetData.priceInMarketReferenceCurrency
+    fromAssetData.priceInUSD
   );
   const maxDebtThatCanBeRepaidWithSelectedCollateral = maxCollateral.dividedBy(
-    poolReserve.priceInMarketReferenceCurrency
+    poolReserve.priceInUSD
   );
   const maxRepayableDebt = BigNumber.min(
     maxDebtThatCanBeRepaidWithSelectedCollateral,
@@ -127,19 +132,15 @@ export function CollateralRepayModalContent({
   );
   // Max avilable balance for input box and slider
   const maxRepayableCollateral = maxRepayableDebt
-    .multipliedBy(poolReserve.priceInMarketReferenceCurrency)
-    .dividedBy(fromAssetData.priceInMarketReferenceCurrency);
+    .multipliedBy(poolReserve.priceInUSD)
+    .dividedBy(fromAssetData.priceInUSD);
 
   // Update collateral and debt amount based on input from slider or text box
   const updateAmounts = (value: string, isMax: boolean, apiCall: boolean) => {
     setMaxSelected(isMax);
     const collateralAmount = isMax ? maxRepayableCollateral.toString(10) : value;
-    const usd = valueToBigNumber(collateralAmount).multipliedBy(
-      fromAssetData.formattedPriceInMarketReferenceCurrency
-    );
-    const selectedDebt = usd.isNaN()
-      ? '0'
-      : usd.dividedBy(poolReserve.formattedPriceInMarketReferenceCurrency);
+    const usd = valueToBigNumber(collateralAmount).multipliedBy(fromAssetData.priceInUSD);
+    const selectedDebt = usd.isNaN() ? '0' : usd.dividedBy(poolReserve.priceInUSD);
     setCollateralSelection({
       amount: collateralAmount,
       amountUSD: usd.isNaN() ? '0' : usd.toString(10),
@@ -161,6 +162,7 @@ export function CollateralRepayModalContent({
   const handleSliderDrag = (_event: Event, value: number | number[]) => {
     const newValue = (value as number).toString();
     const isMax: boolean = value === maxRepayableCollateral.toNumber();
+    setDragActive(true);
     updateAmounts(newValue, isMax, false);
   };
 
@@ -171,6 +173,7 @@ export function CollateralRepayModalContent({
   ) => {
     const newValue = (value as number).toString();
     const isMax: boolean = value === maxRepayableCollateral.toNumber();
+    setDragActive(false);
     updateAmounts(newValue, isMax, true);
   };
 
@@ -195,35 +198,16 @@ export function CollateralRepayModalContent({
   // a safe amount to repay all. When this happens amountAfterRepay would be < 0 and
   // this would show as certain amount left to repay when we are actually repaying all debt
   const amountAfterRepay = valueToBigNumber(debt).minus(BigNumber.min(outputAmount, debt));
-  const displayAmountAfterRepayInUsd = amountAfterRepay
-    .multipliedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
-    .multipliedBy(marketReferencePriceInUsd)
-    .shiftedBy(-USD_DECIMALS);
+  const displayAmountAfterRepayInUsd = amountAfterRepay.multipliedBy(poolReserve.priceInUSD);
 
   // calculate impact based on $ difference
   const priceImpact =
     outputAmountUSD && outputAmountUSD !== '0'
       ? new BigNumber(1)
           .minus(new BigNumber(inputAmountUSD).dividedBy(outputAmountUSD))
+          .absoluteValue()
           .toString(10)
       : '0';
-
-  let blockingError: ErrorType | undefined = undefined;
-  const tokenToRepayWithUsdValue = valueToBigNumber(tokenToRepayWith?.balance || '0').multipliedBy(
-    fromAssetData.priceInUSD
-  );
-  if (Number(usdValue) > Number(tokenToRepayWithUsdValue.toString(10))) {
-    blockingError = ErrorType.NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH;
-  }
-
-  const handleBlocked = () => {
-    switch (blockingError) {
-      case ErrorType.NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH:
-        return <Trans>Not enough collateral to repay this amount of debt with</Trans>;
-      default:
-        return null;
-    }
-  };
 
   if (mainTxState.success)
     return (
@@ -233,7 +217,6 @@ export function CollateralRepayModalContent({
         symbol={poolReserve.symbol}
       />
     );
-
   return (
     <>
       <AssetInput
@@ -268,12 +251,6 @@ export function CollateralRepayModalContent({
         />
       </Box>
 
-      {blockingError !== undefined && (
-        <Typography variant="helperText" color="error.main">
-          {handleBlocked()}
-        </Typography>
-      )}
-
       <Box sx={{ display: 'flex', flexDirection: 'column', pt: '24px', pb: '4px' }}>
         <Typography color="text.secondary">
           <Trans>Expected amount to repay</Trans>
@@ -281,7 +258,7 @@ export function CollateralRepayModalContent({
         <Box sx={{ display: 'flex', alignItems: 'center', pt: '6px' }}>
           <TokenIcon symbol={poolReserve.iconSymbol} sx={{ mr: 1, fontSize: '21px' }} />
           <FormattedNumber
-            value={debtAmount === '-1' || debtAmount > debt ? debt : debtAmount}
+            value={debtAmount === '-1' || Number(debtAmount) > Number(debt) ? debt : debtAmount}
             variant="description21"
             sx={{ mr: '4px' }}
           />
@@ -290,7 +267,11 @@ export function CollateralRepayModalContent({
           </Typography>
         </Box>
 
-        <Typography variant="subheader2" color="text.muted" sx={{ display: 'flex', pt: '6px' }}>
+        <Typography
+          variant="subheader2"
+          color="text.muted"
+          sx={{ display: 'inline-flex', pt: '6px' }}
+        >
           <FormattedNumber
             symbol={'USD'}
             value={collateralSelection.amountUSD}
@@ -300,7 +281,14 @@ export function CollateralRepayModalContent({
             symbolsColor="text.muted"
           />
           <Box sx={{ px: '8px' }}>&#8226;</Box>
-          <Box>{`Price impact ${Number(priceImpact).toFixed(2)}%`}</Box>
+          <Box sx={{ display: 'inline-flex' }}>
+            <Trans>Price impact</Trans>
+            {loadingParaswapCall || dragActive ? (
+              <CircularProgress color="inherit" size="12px" sx={{ mx: 2 }} />
+            ) : (
+              ' ' + Number(priceImpact).toFixed(2) + ' %'
+            )}
+          </Box>
         </Typography>
       </Box>
 
@@ -355,7 +343,7 @@ export function CollateralRepayModalContent({
         symbol={symbol}
         rateMode={debtType}
         priceRoute={priceRoute}
-        blocked={blockingError !== undefined}
+        blocked={false}
       />
     </>
   );
