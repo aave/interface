@@ -231,8 +231,8 @@ export const AssetInput = <T extends Asset = Asset>({
             compact
             symbol="USD"
             variant="secondary12"
-            color="text.disabled"
-            symbolsColor="text.disabled"
+            color="text.muted"
+            symbolsColor="text.muted"
             flexGrow={1}
           />
 
