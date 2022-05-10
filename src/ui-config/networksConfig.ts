@@ -122,8 +122,8 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.mumbai]: {
     name: 'Mumbai',
-    publicJsonRPCUrl: ['https://rpc-mumbai.maticvigil.com'],
-    publicJsonRPCWSUrl: 'wss://rpc-mumbai.maticvigil.com',
+    publicJsonRPCUrl: ['https://polygon-mumbai.g.alchemy.com/v2/demo'],
+    publicJsonRPCWSUrl: 'wss://polygon-mumbai.g.alchemy.com/v2/demo',
     // protocolDataUrl: 'https://api.thegraph.com/subgraphs/name/aave/aave-v2-polygon-mumbai',
     baseAssetSymbol: 'MATIC',
     wrappedBaseAssetSymbol: 'WMATIC',
