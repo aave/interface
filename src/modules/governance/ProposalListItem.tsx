@@ -7,6 +7,7 @@ import { Link, ROUTES } from 'src/components/primitives/Link';
 import { FormattedProposalTime } from './FormattedProposalTime';
 import { StateBadge } from './StateBadge';
 import { formatProposal } from './utils/formatProposal';
+import { isProposalStateImmutable } from './utils/immutableStates';
 import { VoteBar } from './VoteBar';
 
 export function ProposalListItem({
@@ -16,6 +17,8 @@ export function ProposalListItem({
 }: GovernancePageProps['proposals'][0]) {
   const { nayPercent, yaePercent, nayVotes, yaeVotes, quorumReached, diffReached } =
     formatProposal(proposal);
+
+  const mightBeStale = prerendered && !isProposalStateImmutable(proposal);
   return (
     <Box
       sx={{
@@ -47,15 +50,19 @@ export function ProposalListItem({
           {ipfs.title}
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-          <StateBadge state={proposal.state} />
+          <StateBadge state={proposal.state} loading={mightBeStale} />
           <FormattedProposalTime
             state={proposal.state}
             executionTime={proposal.executionTime}
             expirationTimestamp={proposal.expirationTimestamp}
             executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
           />
-          <CheckBadge text={<Trans>Quorum</Trans>} checked={quorumReached} />
-          <CheckBadge text={<Trans>Differential</Trans>} checked={diffReached} />
+          <CheckBadge text={<Trans>Quorum</Trans>} checked={quorumReached} loading={mightBeStale} />
+          <CheckBadge
+            text={<Trans>Differential</Trans>}
+            checked={diffReached}
+            loading={mightBeStale}
+          />
         </Box>
       </Box>
       <Box
@@ -65,8 +72,8 @@ export function ProposalListItem({
           mt: { xs: 7, lg: 0 },
         }}
       >
-        <VoteBar yae percent={yaePercent} votes={yaeVotes} sx={{ mb: 4 }} />
-        <VoteBar percent={nayPercent} votes={nayVotes} />
+        <VoteBar yae percent={yaePercent} votes={yaeVotes} sx={{ mb: 4 }} loading={mightBeStale} />
+        <VoteBar percent={nayPercent} votes={nayVotes} loading={mightBeStale} />
       </Box>
     </Box>
   );
