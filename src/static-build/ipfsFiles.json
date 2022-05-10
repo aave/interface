@@ -1054,6 +1054,21 @@
       "ipfsHash": "QmW2Mw15fhopJN7Tt9SJc3MHqJ5zPQrnFuPqDrf34TWmW9",
       "originalHash": "0x722e11fe1e1a1cbeb06c64a278d343a2537b5f9f80975cc5f7788e9f402ce852",
       "id": 71
+    },
+    {
+      "aip": 72,
+      "title": "Aave Arc Market - Update Asset Listing Risk Parameters",
+      "status": "Proposed",
+      "author": "Governance House - MatthewGraham, ncitron, 3SE Holdings, UHOM",
+      "shortDescription": "Update AAVE Arc Risk Parameters",
+      "discussions": "https://governance.aave.com/t/arc-update-risk-parameters-mainnet-arc-market/7638",
+      "created": "2022-05-09T00:00:00.000Z",
+      "preview": "# Simple Summary\nThis AIP proposes updating the Aave Arc market Loan …",
+      "basename": "AIP-72",
+      "description": "\n\n# Simple Summary\nThis AIP proposes updating the Aave Arc market Loan to Value (LTV) and Liquidation Threshold to be the same asset listed on mainnet V2 market, as determined by Gauntlet.\n# Abstract\nThe risk parameters on the Aave Arc market are currently not being maintained and are more conservative than those belonging to the same asset on the Aave mainnet v2 market. This proposal recommends updating the Aave Arc market LTV parameter to match the LiquidationThreshold of the same asset listed on Aave mainnet v2 market. \nWe intend to re-propose a quarterly update of the risk parameters for the Aave Arc market quarterly in an attempt to keep both markets in sync with Aave mainnet v2 market, or Aave mainnet v3 once live.\n# Motivation\nThis risk parameter change is targeting the following improvements on the Aave Arc Market:\nAlign Risk Parameters - The risk parameters on Aave Arc market are currently more conservative and are in need of being updated to better reflect the Aave mainnet v2 market and also the risk profile of the user.\nImprove UX - Increasing LTV ratios and reducing the Liquidity Penalty enables greater capital efficiency across the market. \nGiven the extra precaution shown when approving Borrowers on the Aave Arc Market, the recommendation is to amend the LTV to reflect the risk profiles of market participants. For now, the intent is to maintain the Aave Arc market in line with the mainent v2 market on a quarterly basis.\n# Specification\nThe below table shows the assets listed on the Aave Arc market and their respective risk parameters.\n\n![](https://i.imgur.com/srP17ZX.png)\n\n\nThe below table shows the assets listed on the Aave Arc market and their respective risk parameters on the Aave v2 market. This is for comparison purposes only.\n\n![](https://i.imgur.com/E6PbPEQ.png)\n\n\nThe below table shows the assets listed on the Aave Arc market and the proposed risk parameters.\n\n![](https://i.imgur.com/WKvbkYq.png)\n\nAdditionally, this proposal will transfer 15 AAVE from the ecosystem reserve to the proposers. This is to reimburse the proposers for their gas costs.\n\n# Implementation\nThe payload can be found [here](https://github.com/ncitron/aave-proposals/blob/main/src/ArcUpdateProposalPayload.sol). Snapshot [here](https://snapshot.org/#/aave.eth/proposal/0x8574423107275337c4892ec1af6a712fc53e3f4ab678f68b5770372f372029d0) and Governance forum discussion [here](https://governance.aave.com/t/arc-update-risk-parameters-mainnet-arc-market/7638/3).\n\n# Voting\n**FOR**:\nDO Update the risk parameters on Aave Arc market as per Aave mainnet v2 market\n\n**AGAINST**:\nDO NOT change the existing arrangement.\n\n\n# Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "QmcUAwjq6F8BSeMgxe8NkaAjTxvECotMpM8NmknDWK3aNe",
+      "originalHash": "0xd1f0de97ffc5c214e0da4272b4262e2c04b57c99e1ad70cc98ad51b29bcb5b9b",
+      "id": 72
     }
   ]
 }

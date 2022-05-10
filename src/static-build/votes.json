@@ -21030,5 +21030,37 @@
       }
     ],
     "finished": true
+  },
+  {
+    "votes": [
+      {
+        "proposalId": 72,
+        "voter": "0xd2362DbB5Aa708Bc454Ce5C3F11050C016764fA6",
+        "support": true,
+        "votingPower": 88530.66976951904,
+        "transactionHash": "0x42b7718813fb4b3a9688663f0f830fd053f8775593ef42582ba0ddce90411eaa",
+        "timestamp": 1652133080,
+        "blockNumber": 14744805
+      },
+      {
+        "proposalId": 72,
+        "voter": "0xA86f7cb847bF41b049002cb0c96e6156a8B27E25",
+        "support": true,
+        "votingPower": 147.04558281,
+        "transactionHash": "0xd6da7a914ca254248be43462f377a9483f103f218b6a493d9dd6df2ae22249b6",
+        "timestamp": 1652134267,
+        "blockNumber": 14744899
+      },
+      {
+        "proposalId": 72,
+        "voter": "0xc290Cfb8D020c0615e9C63036f4319Cc41717E68",
+        "support": true,
+        "votingPower": 109.49220153592667,
+        "transactionHash": "0x8b51aea0b5cde5560a2239090f7c436b0f1499527535c63b01f0fc5fed9b3871",
+        "timestamp": 1652163214,
+        "blockNumber": 14746997
+      }
+    ],
+    "finished": false
   }
 ]
