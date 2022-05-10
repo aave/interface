@@ -1,8 +1,9 @@
 import { ProposalState } from '@aave/contract-helpers';
-import { alpha, experimental_sx, styled } from '@mui/material';
+import { alpha, experimental_sx, Skeleton, styled } from '@mui/material';
 
 interface StateBadgeProps {
   state: ProposalState;
+  loading?: boolean;
 }
 
 const Badge = styled('span')<StateBadgeProps>(({ theme, state }) => {
@@ -39,6 +40,7 @@ const Badge = styled('span')<StateBadgeProps>(({ theme, state }) => {
   });
 });
 
-export function StateBadge({ state }: StateBadgeProps) {
+export function StateBadge({ state, loading }: StateBadgeProps) {
+  if (loading) return <Skeleton width={70} />;
   return <Badge state={state}>{state}</Badge>;
 }
