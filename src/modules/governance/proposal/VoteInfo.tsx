@@ -111,14 +111,13 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
           <Trans>Not enough voting power to participate in this proposal</Trans>
         </Alert>
       )}
-      {currentAccount && voteOngoing && Number(power) !== 0 && (
+      {!didVote && currentAccount && voteOngoing && Number(power) !== 0 && (
         <>
           <Button
             color="success"
             variant="contained"
             fullWidth
             onClick={() => openGovVote(id, true, power)}
-            disabled={support === true}
           >
             <Trans>Vote YAE</Trans>
           </Button>
@@ -127,7 +126,6 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
             variant="contained"
             fullWidth
             onClick={() => openGovVote(id, false, power)}
-            disabled={support === false}
             sx={{ mt: 2 }}
           >
             <Trans>Vote NAY</Trans>
