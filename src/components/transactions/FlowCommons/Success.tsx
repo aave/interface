@@ -111,7 +111,7 @@ export const TxSuccessView = ({
               onClick={() => {
                 addERC20Token({
                   address: addToken.address,
-                  decimals: 18,
+                  decimals: addToken.decimals,
                   symbol: addToken.aToken ? `a${addToken.symbol}` : addToken.symbol,
                   image: !/_/.test(addToken.symbol) ? base64 : undefined,
                 });
