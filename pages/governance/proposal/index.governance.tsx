@@ -38,7 +38,7 @@ export default function DynamicProposal() {
   usePolling(
     updateProposal,
     20000,
-    (proposal ? isProposalStateImmutable(proposal) : false) || !id,
+    (proposal ? isProposalStateImmutable(proposal) : false) || id === undefined,
     [id]
   );
 
