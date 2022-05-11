@@ -1198,6 +1198,10 @@ msgstr "Show"
 msgid "Show assets with 0 balance"
 msgstr "Show assets with 0 balance"
 
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Simulation report"
+msgstr "Simulation report"
+
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
 msgstr "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
