@@ -201,6 +201,7 @@ export const checkDashboardHealthFactor = (
       doSwitchToDashboardSupplyView();
     });
     it('Check value', () => {
+      cy.wait(3000);
       cy.get(`[data-cy=HealthFactorTopPannel]`).then(($health) => {
         const _health = parseFloat($health.text());
         if (value) {
