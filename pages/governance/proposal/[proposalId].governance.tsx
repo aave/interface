@@ -442,22 +442,39 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                       </Typography>
                     </Row>
                   )}
-                  {ipfs?.discussions && (
+                  <Box sx={{ mt: 10, mb: 2, display: 'flex', justifyContent: 'space-between' }}>
+                    {ipfs?.discussions && (
+                      <Button
+                        component={Link}
+                        target="_blank"
+                        href={ipfs.discussions}
+                        variant="outlined"
+                        endIcon={
+                          <SvgIcon>
+                            <ExternalLinkIcon />
+                          </SvgIcon>
+                        }
+                      >
+                        <Trans>Forum discussion</Trans>
+                      </Button>
+                    )}
                     <Button
                       component={Link}
                       target="_blank"
-                      href={ipfs.discussions}
+                      href={`https://github.com/bgd-labs/seatbelt-for-ghosts/tree/master/reports/Aave/0xEC568fffba86c094cf06b22134B23074DFE2252c/${String(
+                        proposal.id
+                      ).padStart(3, '0')}.md`}
                       variant="outlined"
-                      sx={{ mt: 10, mb: 2 }}
+                      color="info"
                       endIcon={
                         <SvgIcon>
                           <ExternalLinkIcon />
                         </SvgIcon>
                       }
                     >
-                      <Trans>Forum discussion</Trans>
+                      <Trans>Simulation report</Trans>
                     </Button>
-                  )}
+                  </Box>
                 </>
               ) : (
                 <>

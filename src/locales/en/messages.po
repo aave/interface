@@ -1202,6 +1202,10 @@ msgstr "Show"
 msgid "Show assets with 0 balance"
 msgstr "Show assets with 0 balance"
 
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Simulation report"
+msgstr "Simulation report"
+
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Since this asset is frozen, the only available actions are withdraw and repay which can be accessed from the <0>Dashboard</0>"
 msgstr "Since this asset is frozen, the only available actions are withdraw and repay which can be accessed from the <0>Dashboard</0>"
