@@ -265,6 +265,7 @@ export function CollateralRepayModalContent({
         rateMode={debtType}
         priceRoute={priceRoute}
         blocked={blockingError !== undefined}
+        maxSlippage={Number(maxSlippage)}
       />
     </>
   );

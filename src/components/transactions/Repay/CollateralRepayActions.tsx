@@ -24,6 +24,7 @@ export interface RepayActionProps extends BoxProps {
   repayAllDebt: boolean;
   useFlashLoan: boolean;
   blocked: boolean;
+  maxSlippage: number;
 }
 
 export const CollateralRepayActions = ({
@@ -39,6 +40,7 @@ export const CollateralRepayActions = ({
   repayAllDebt,
   useFlashLoan,
   blocked,
+  maxSlippage,
   ...props
 }: RepayActionProps) => {
   const { lendingPool } = useTxBuilderContext();
@@ -56,7 +58,7 @@ export const CollateralRepayActions = ({
           user: currentAccount,
           route: priceRoute as OptimalRate,
           chainId: currentNetworkConfig.underlyingChainId || chainId,
-          repayWithAmount,
+          maxSlippage,
         });
         return lendingPool.paraswapRepayWithCollateral({
           user: currentAccount,
