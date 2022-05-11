@@ -61762,8 +61762,8 @@ var networkConfigs = {
   },
   [import_contract_helpers3.ChainId.mumbai]: {
     name: "Mumbai",
-    publicJsonRPCUrl: ["https://rpc-mumbai.maticvigil.com"],
-    publicJsonRPCWSUrl: "wss://rpc-mumbai.maticvigil.com",
+    publicJsonRPCUrl: ["https://polygon-mumbai.g.alchemy.com/v2/demo"],
+    publicJsonRPCWSUrl: "wss://polygon-mumbai.g.alchemy.com/v2/demo",
     baseAssetSymbol: "MATIC",
     wrappedBaseAssetSymbol: "WMATIC",
     baseAssetDecimals: 18,

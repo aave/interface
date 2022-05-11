@@ -1069,6 +1069,35 @@
       "ipfsHash": "QmcUAwjq6F8BSeMgxe8NkaAjTxvECotMpM8NmknDWK3aNe",
       "originalHash": "0xd1f0de97ffc5c214e0da4272b4262e2c04b57c99e1ad70cc98ad51b29bcb5b9b",
       "id": 72
+    },
+    {
+      "title": "Renew Aave Grants DAO",
+      "status": "Proposed",
+      "author": "Shreyas Hariharan (@hello-shreyas), Austin Green (@austingreen)",
+      "shortDescription": "Provide funding to expand the budget and scope of Aave Grants DAO",
+      "discussions": "https://governance.aave.com/t/aave-grants-dao-update-and-renewal/7842",
+      "created": "2022-05-02T00:00:00.000Z",
+      "preview": "## Simple Summary\n\nProvide Aave Grants DAO (AGD) with $6m ($3m per …",
+      "basename": "0DC11FACBC53-AIP-RENEW_AAVE_GRANTS",
+      "description": "\n\n## Simple Summary\n\nProvide Aave Grants DAO (AGD) with $6m ($3m per quarter budget) to fund more projects that benefit Aave.\n\n## Abstract\n\nAfter two successful quarters of Aave Grants DAO, we are looking to renew the program for the next two quarters by providing $3 million dollars in AAVE and $3 million dollars in aUSDC ($3 million per quarter). By partially funding the AGD with stablecoins, budgeting will be easier. The aUSDC will be funded through an approval and the AAVE will be funded with a transfer. Our initial proposal was made in May 2021 and our renewal proposal was made in November 2021.\n\n## Motivation\n\nAave Grants DAO is a community-led grants program, focused on growing a thriving ecosystem of contributors within Aave through funding ideas, projects and events that benefit the ecosystem. We aim to drive development on top of Aave and ensure a constant influx of talented builders to maintain Aave’s long term growth. We help build culture and community around the Aave ecosystem that in turn attracts the best contributors.\n\n## Test Cases\n\nThe full test of this proposal can be found here: https://github.com/llama-community/renew-aave-grants\n\n## Implementation\n\nThis proposal includes a $3M transfer of AAVE from the AaveEcosystemReserve to the grants DAO multisig and the AaveV2Collector approving $3M of aUSDC to the grants DAO multisig. This will allow the grants DAO to withdraw funds as needed and let the V2Collector to continue to earn interest in the meantime. The proposa payload will target the contract AaveEcosystemReserveController and call the function `function transfer(address collector, IERC20 token, address recipient, uint256 amount)` and `approve(address collector, IERC20 token, address recipient, uint256 amount)`.\n\n**Target Contracts**\n\nProposalPayload = [0x8e7df91fed22c192a3aa1bb6143879295ee91295](\nhttps://etherscan.io/address/0x8e7df91fed22c192a3aa1bb6143879295ee91295)\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "QmQh4kBVdvj6m3eXmxns5ovehwa9bisgWxkz6eGSgRuE7B",
+      "originalHash": "0x22f22ad910127d3ca76dc642f94db34397f94ca969485a216b9d82387808cdfa",
+      "id": 73
+    },
+    {
+      "aip": 73,
+      "title": "Risk Parameter Updates 2022-05-05",
+      "status": "Proposed",
+      "author": "Paul Lei, Jonathan Reem, Nick Cannon, Watson Fu",
+      "shortDescription": "Risk parameter updates",
+      "discussions": "https://governance.aave.com/t/arc-risk-parameter-updates-2022-05-05/8068",
+      "created": "2022-05-10T00:00:00.000Z",
+      "preview": "## A proposal to adjust nine (9) total risk parameters …",
+      "basename": "AIP-73",
+      "description": "## Simple Summary\n\nA proposal to adjust nine (9) total risk parameters, including LTV, Liquidation Threshold, and Liquidation Bonus across five (5) Aave V2 assets. \n\n\n## Abstract\nThis proposal is a batch update of risk parameters to align with the the [Moderate risk level](https://snapshot.org/#/aave.eth/proposal/QmT9T4Rfnh1Z2HYmMPXvtFotMK2vSxiXK8dKStg2b6n4gi) chosen by the Aave community. These parameter updates are a continuation of Gauntlet's regular parameter recommendations.\n\n\n## Motivation\n\n\nThis set of parameter updates seeks to maintain the overall risk tolerance of the protocol while making risk trade-offs between specific assets.\n\nGauntlet's parameter recommendations are driven by an optimization function that balances 3 core metrics: insolvencies, liquidations, and borrow usage. Parameter recommendations seek to optimize for this objective function. Our agent-based simulations use a wide array of varied input data that changes on a daily basis (including but not limited to asset volatility, asset correlation, asset collateral usage, DEX / CEX liquidity, trading volume, expected market impact of trades, and liquidator behavior). Gauntlet's simulations tease out complex relationships between these inputs that cannot be simply expressed as heuristics. The individual collateral pages on the [Gauntlet Risk Dashboard](https://gov.gauntlet.network/aave) cover other key statistics and outputs from our simulations that can help with understanding interesting inputs and results related to our simulations. \n\n\n## Specification\n\nOur recent [market downturn report](https://governance.aave.com/t/market-risk-monthly-february-2022-updates-and-review/7476) showed that many collaterals are resilient to insolvencies, as our simulation models have predicted. Gauntlet's simulation engine will continue to adjust risk parameters to drive increases in capital efficiency while maintaining protocol risk at safe levels. \n\n\n![](https://i.imgur.com/7qEAEdw.png)\n\n\n\n\n\n\n## Risk Dashboard\n\n\n\nThe community should use Gauntlet's [Risk Dashboard](https://gov.gauntlet.network/aave) to better understand the updated parameter suggestions and general market risk in Aave V2. \n\n\n![](https://i.imgur.com/AIPBN02.png)\n\n\n\n\n\n\n## Implementation\n\nThe proposal sets the liquidation bonus, LTV and liquidation threshold ratios by calling `configureReserveAsCollateral` on the `LendingPoolConfigurator` contract at `0x311Bb771e4F8952E6Da169b425E7e92d6Ac45756`, using the address and parameters specific to each token.\n\nThe full list of parameter updates can be found in the [forum](https://governance.aave.com/t/arc-risk-parameter-updates-2022-05-05/8068).\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n\n",
+      "ipfsHash": "QmYoKR6CFGznJx2uYN17iwJAYh1Xm8Ce3CQTS3hgtLDk7c",
+      "originalHash": "0x9b69bc6b214f9510817259012e222af073bc49c8077a2ffe5e6a106508f80b3b",
+      "id": 74
     }
   ]
 }
