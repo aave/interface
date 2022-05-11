@@ -18,7 +18,7 @@ const testData = {
     borrow: [
       {
         asset: assets.fantomMarket.WETH,
-        amount: 0.5,
+        amount: 0.2,
         apyType: constants.borrowAPYType.default,
         hasApproval: true,
       },
@@ -68,7 +68,7 @@ const testData = {
       {
         type: constants.dashboardTypes.borrow,
         assetName: assets.fantomMarket.WETH.shortName,
-        amount: 0.46,
+        amount: 0.16,
         apyType: constants.borrowAPYType.variable,
       },
     ],
