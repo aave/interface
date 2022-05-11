@@ -262,6 +262,7 @@ export const getRepayCallData = async ({
     return {
       swapCallData: (params as TransactionParams).data,
       augustus: (params as TransactionParams).to,
+      srcAmountWithSlippage,
     };
   } catch (e) {
     console.log(e);
