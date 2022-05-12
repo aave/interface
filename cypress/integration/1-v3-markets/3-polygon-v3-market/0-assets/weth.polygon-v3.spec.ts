@@ -18,7 +18,7 @@ const testData = {
     borrow: [
       {
         asset: assets.polygonV3Market.WETH,
-        amount: 0.5,
+        amount: 0.3,
         apyType: constants.borrowAPYType.default,
         hasApproval: true,
       },
@@ -70,7 +70,7 @@ const testData = {
         type: constants.dashboardTypes.borrow,
         assetName: assets.polygonV3Market.WETH.shortName,
         wrapped: assets.polygonV3Market.WETH.wrapped,
-        amount: 0.46,
+        amount: 0.26,
         apyType: constants.borrowAPYType.variable,
       },
     ],

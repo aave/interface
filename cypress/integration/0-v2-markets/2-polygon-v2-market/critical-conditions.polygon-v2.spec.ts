@@ -27,7 +27,7 @@ const testData = {
     withdraw: {
       asset: assets.polygonMarket.MATIC,
       isCollateral: true,
-      amount: 10,
+      amount: 9999,
       hasApproval: false,
       isRisk: true,
     },
