@@ -27,7 +27,7 @@ const testData = {
     withdraw: {
       asset: assets.avalancheV3Market.AVAX,
       isCollateral: true,
-      amount: 10,
+      amount: 9999,
       hasApproval: false,
       isRisk: true,
     },
