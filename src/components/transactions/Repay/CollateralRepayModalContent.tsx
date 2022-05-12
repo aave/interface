@@ -89,7 +89,6 @@ export function CollateralRepayModalContent({
     swapOut: { ...poolReserve, amount: amountRef.current },
     max: isMaxSelected,
     skip: mainTxState.loading,
-    maxSlippage,
   });
 
   // Calculations to get the max repayable debt depending on the balance and value of the
