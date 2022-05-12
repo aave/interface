@@ -1,8 +1,7 @@
 {
-  "integrationFolder": "cypress/integration/1-v3-markets/5-fantom-v3-market",
+  "integrationFolder": "cypress/integration/0-v2-markets/3-avalanche-v2-market",
   "testFiles": [
-    "0-assets/ftm.fantom-v3.spec.ts",
-    "0-assets/usdt.fantom-v3.spec.ts"
+    "swap.avalanche-v2.spec.ts"
   ],
   "viewportWidth": 1200,
   "viewportHeight": 800,
