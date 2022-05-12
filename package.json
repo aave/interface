@@ -22,7 +22,7 @@
     "pre-commit": "lint-staged && yarn i18n && git add ./src/locales",
     "prepare": "husky install",
     "gql-gen": "graphql-codegen --config codegen.yml",
-    "test:open": "DOTENV_CONFIG_PATH='.env.local' cypress open",
+    "test:open": "DOTENV_CONFIG_PATH='.env.local' cypress open"
   },
   "dependencies": {
     "@aave/contract-helpers": "1.2.1",
