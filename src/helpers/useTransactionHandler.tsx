@@ -136,6 +136,10 @@ export const useTransactionHandler = ({
               txHash: undefined,
               loading: false,
             });
+
+            // set use permit to false to retry with normal approval
+            setUsePermit(false);
+            setRetryWithApproval(true);
           }
         } catch (error) {
           if (!mounted.current) return;
