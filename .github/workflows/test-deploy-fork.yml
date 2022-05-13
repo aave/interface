@@ -60,7 +60,7 @@ jobs:
 
   cypress_smoke_v2:
     runs-on: ubuntu-latest
-    needs: build
+    needs: ["prepare_jobs"]
     strategy:
       fail-fast: false
       matrix:
@@ -82,7 +82,7 @@ jobs:
 
   cypress_smoke_v3:
     runs-on: ubuntu-latest
-    needs: build
+    needs: ["prepare_jobs"]
     strategy:
       fail-fast: false
       matrix:
@@ -147,10 +147,7 @@ jobs:
 
   cypress_full_v2:
     runs-on: ubuntu-latest
-    needs:
-      - deploy
-      - cypress_smoke_v2
-      - cypress_smoke_v3
+    needs: ["deploy_fork"]
     strategy:
       fail-fast: false
       matrix:
@@ -172,10 +169,7 @@ jobs:
 
   cypress_full_v3:
     runs-on: ubuntu-latest
-    needs:
-      - deploy
-      - cypress_smoke_v2
-      - cypress_smoke_v3
+    needs: ["deploy_fork"]
     strategy:
       fail-fast: false
       matrix:
@@ -197,10 +191,7 @@ jobs:
 
   cypress_additional_v2:
     runs-on: ubuntu-latest
-    needs:
-      - deploy
-      - cypress_smoke_v2
-      - cypress_smoke_v3
+    needs: ["deploy_fork"]
     strategy:
       fail-fast: false
       matrix:
@@ -221,10 +212,7 @@ jobs:
 
   cypress_additional_v3:
     runs-on: ubuntu-latest
-    needs:
-      - deploy
-      - cypress_smoke_v2
-      - cypress_smoke_v3
+    needs: ["deploy_fork"]
     strategy:
       fail-fast: false
       matrix:
