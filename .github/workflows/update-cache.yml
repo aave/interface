@@ -31,7 +31,7 @@ jobs:
           else
             git config --global user.name 'Cache bot'
             git config --global user.email 'cache-bot@aave.com'
-            git commit -am "Automated cache update"
+            git commit -am "Automated cache update [skip cypress]"
             git push
           exit
           fi
