@@ -18,7 +18,7 @@ const testData = {
     borrow: [
       {
         asset: assets.polygonV3Market.WBTC,
-        amount: 0.05,
+        amount: 0.02,
         apyType: constants.borrowAPYType.default,
         hasApproval: true,
       },
@@ -70,7 +70,7 @@ const testData = {
         type: constants.dashboardTypes.borrow,
         assetName: assets.polygonV3Market.WBTC.shortName,
         wrapped: assets.polygonV3Market.WBTC.wrapped,
-        amount: 0.046,
+        amount: 0.016,
         apyType: constants.borrowAPYType.variable,
       },
     ],
