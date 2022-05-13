@@ -52,7 +52,7 @@ runs:
         record: false
         start: yarn serve:static
         wait-on: 'http://localhost:3000'
-        command: yarn test:${{ inputs.YARN_TEST_COMMAND }}
+        command: ${{ inputs.YARN_TEST_COMMAND }}
       env:
         CYPRESS_URL: 'http://localhost:3000'
         CYPRESS_TENDERLY_ACCOUNT: ${{ inputs.CYPRESS_TENDERLY_ACCOUNT }}

@@ -50,7 +50,7 @@ jobs:
             git add .
             git config --global user.name 'Crowdin bot'
             git config --global user.email 'crowdin-bot@aave.com'
-            git commit -am "chore(i18n): synchronize translations from crowdin"
+            git commit -am "chore(i18n): synchronize translations from crowdin [skip cypress]"
             git push
           exit
           fi
