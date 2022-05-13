@@ -1,4 +1,4 @@
-name: Build and deploy to IPFS
+name: Build, test and deploy to IPFS
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
