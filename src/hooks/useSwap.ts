@@ -10,7 +10,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { ComputedReserveData } from './app-data-provider/useAppDataProvider';
 import { ChainId } from '@aave/contract-helpers';
 import { BigNumberZeroDecimal, normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
-import BigNumber from 'bignumber.js';
 
 const ParaSwap = (chainId: number) => {
   const fetcher = constructFetchFetcher(fetch); // alternatively constructFetchFetcher
