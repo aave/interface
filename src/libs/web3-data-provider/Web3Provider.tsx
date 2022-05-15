@@ -18,6 +18,7 @@ import { API_ETH_MOCK_ADDRESS, transactionType } from '@aave/contract-helpers';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { TorusConnector } from '@web3-react/torus-connector';
+import WalletConnectProvider from '@walletconnect/ethereum-provider';
 
 export type ERC20TokenType = {
   address: string;
@@ -38,6 +39,7 @@ export type Web3Data = {
   switchNetwork: (chainId: number) => Promise<void>;
   getTxError: (txHash: string) => Promise<string>;
   sendTx: (txData: transactionType) => Promise<TransactionResponse>;
+  sendBatchTx: (txData: transactionType[]) => Promise<TransactionResponse>;
   addERC20Token: (args: ERC20TokenType) => Promise<boolean>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   signTxData: (unsignedData: string) => Promise<SignatureLike>;
@@ -215,6 +217,17 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     throw new Error('Error sending transaction. Provider not found');
   };
 
+  const sendBatchTx = async (txData: transactionType[]): Promise<TransactionResponse> => {
+    if (provider) {
+      const wcProvider = provider.provider as WalletConnectProvider;
+      return await wcProvider.connector.sendCustomRequest({
+        method: 'ambire_sendBatchTransaction',
+        params: txData,
+      });
+    }
+    throw new Error('Error sending transaction. Provider not found');
+  };
+
   // TODO: recheck that it works on all wallets
   const signTxData = async (unsignedData: string): Promise<SignatureLike> => {
     if (provider && account) {
@@ -329,6 +342,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           switchNetwork,
           getTxError,
           sendTx,
+          sendBatchTx,
           signTxData,
           currentAccount: mockAddress || account?.toLowerCase() || '',
           addERC20Token,
