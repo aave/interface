@@ -8,7 +8,7 @@ assignees: ''
 ---
 
 **Describe the bug**
-A clear and concise description of what the bug is.
+A clear and concise description of what the bug is, including the exact market(e.g. polygon v3) on which it was observed.
 
 **To Reproduce**
 Steps to reproduce the behavior:
