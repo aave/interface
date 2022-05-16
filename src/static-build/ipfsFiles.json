@@ -1098,6 +1098,21 @@
       "ipfsHash": "QmYoKR6CFGznJx2uYN17iwJAYh1Xm8Ce3CQTS3hgtLDk7c",
       "originalHash": "0x9b69bc6b214f9510817259012e222af073bc49c8077a2ffe5e6a106508f80b3b",
       "id": 74
+    },
+    {
+      "aip": 75,
+      "title": "Freezing UST and Updating stETH Parameters",
+      "status": "Proposed",
+      "author": "Paul Lei, Jonathan Reem, Nick Cannon, Watson Fu, Henry Prior",
+      "shortDescription": "Risk Parameter Updates",
+      "discussions": "https://governance.aave.com/t/canceling-aip-74-freezing-ust-and-updating-steth-parameters/8154",
+      "created": "2022-05-14T00:00:00.000Z",
+      "preview": "## Simple Summary\n\nGauntlet proposes freezing UST on Aave v2, increasing liquidation threshold …",
+      "basename": "AIP-75",
+      "description": "## Simple Summary\n\nGauntlet proposes freezing UST on Aave v2, increasing liquidation threshold on stETH, and decreasing loan-to-value (LTV) on stETH.\n\n## Abstract\n\n\nDue to market conditions around UST and related oracle unreliability, Gauntlet proposes freezing UST.\n\nDue to current uncertainty around the stETH peg, Gauntlet proposes increasing stETH liquidation threshold to 81% and decreasing stETH LTV to 69%. Currently, stETH liquidation threshold is 75% and stETH LTV is 73%.\n\n## Specification\n\n\n![](https://i.imgur.com/OV5VRxV.png)\n\n\nDue to uncertainty around the stETH peg, Gauntlet proposes increasing stETH liquidation threshold. This will allow borrowers using stETH as collateral with more buffer in case stETH continues to depeg, and thus decrease the chances of liquidation cascades that lead to insolvency on the Aave platform. stETH LTV will also be decreased, so new positions will not be able to take on riskier positions using stETH as collateral. Our analysis indicates that an 81% liquidation threshold for stETH should allow for the protocol to withstand an additional 10% depeg from stETH and ETH price. Gauntlet's simulations of the Aave protocol indicated that a decrease in LTV to between 66-69% and an increase in liquidation threshold to 81-82% could significantly decrease liquidation volume as well as total insolvencies while minimally decreasing capital efficiency. \n\nOur simulations also considered larger increases in stETH's liquidation threshold, but these changes had a diminishing impact on liquidation and insolvency decreases in our models. Drastic changes to liquidation threshold can also lead to a negative user experience should protocol parameters be reversed to a more optimal state after the market returns to normal. However, a decrease in LTV only impacts a user's ability to borrow more assets and not deposit or repay debts, and thus won't affect user experience as heavily.\n\n\n## Implementation\n\nThe proposal sets the LTV and liquidation threshold ratios by calling `configureReserveAsCollateral` on the `LendingPoolConfigurator` contract at `0x311Bb771e4F8952E6Da169b425E7e92d6Ac45756`, using the address and parameters specific to each token.\n\nThe full list of parameter updates can be found in the [forum](https://governance.aave.com/t/canceling-aip-74-freezing-ust-and-updating-steth-parameters/8154).\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "QmPxhb43h3rx9u7WTvq7omQXaiuhQQ1s45abcJ5JbZuR2w",
+      "originalHash": "0x1817d9c4e40170c6e2636ac17191c9b51c692fca77813f4378e608256ee9f070",
+      "id": 75
     }
   ]
 }
