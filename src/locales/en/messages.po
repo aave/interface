@@ -1104,6 +1104,10 @@ msgstr "Repay"
 msgid "Repay with"
 msgstr "Repay with"
 
+#: src/components/Warnings/RepayCollateralWarning.tsx
+msgid "Repay with collateral is experiencing degraded performance which may cause your transaction to fail. Consider using another service or add more collateral to avoid liquidation."
+msgstr "Repay with collateral is experiencing degraded performance which may cause your transaction to fail. Consider using another service or add more collateral to avoid liquidation."
+
 #: src/components/transactions/Repay/CollateralRepayActions.tsx
 #: src/components/transactions/Repay/RepayActions.tsx
 msgid "Repay {symbol}"

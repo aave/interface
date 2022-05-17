@@ -26,6 +26,7 @@ import { Row } from 'src/components/primitives/Row';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
+import { RepayCollateralWarning } from 'src/components/Warnings/RepayCollateralWarning.tsx';
 
 export enum ErrorType {
   NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH,
@@ -171,6 +172,7 @@ export function CollateralRepayModalContent({
 
   return (
     <>
+      <RepayCollateralWarning />
       <AssetInput
         value={amount}
         onChange={handleChange}
