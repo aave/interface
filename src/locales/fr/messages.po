@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-05-05 18:05\n"
+"PO-Revision-Date: 2022-05-17 18:05\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -1108,6 +1108,10 @@ msgstr "Rembourser"
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 msgid "Repay with"
 msgstr "Rembourser avec"
+
+#: src/components/Warnings/RepayCollateralWarning.tsx
+msgid "Repay with collateral is experiencing degraded performance which may cause your transaction to fail. Consider using another service or add more collateral to avoid liquidation."
+msgstr ""
 
 #: src/components/transactions/Repay/CollateralRepayActions.tsx
 #: src/components/transactions/Repay/RepayActions.tsx
