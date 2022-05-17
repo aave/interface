@@ -6,9 +6,6 @@ import { Warning } from '../primitives/Warning';
 export const RepayCollateralWarning = () => {
   return (
     <Warning severity="warning" sx={{ '.MuiAlert-message': { p: 0 }, mb: 6 }}>
-      {/* <Typography variant="subheader1">
-        <Trans>Cooldown period warning</Trans>
-      </Typography> */}
       <Typography variant="caption">
         <Trans>
           Repay with collateral is experiencing degraded performance which may cause your
