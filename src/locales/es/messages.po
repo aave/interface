@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-05-17 18:05\n"
+"PO-Revision-Date: 2022-05-23 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -314,7 +314,7 @@ msgstr "Prestado {symbol}"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "Borrowed"
-msgstr ""
+msgstr "Prestado"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "Borrowing is currently unavailable for {0}."
@@ -342,7 +342,7 @@ msgstr "La capacidad de préstamo y los activos están limitados debido al Isola
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "Borrowing this amount will reduce your health factor and increase risk of liquidation."
-msgstr ""
+msgstr "Tomar prestado esta cantidad reducirá tu factor de salud y aumentará el riesgo de liquidación."
 
 #: src/components/transactions/Borrow/BorrowActions.tsx
 msgid "Borrowing {symbol}"
@@ -402,7 +402,7 @@ msgstr "AAVE Reclamable"
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 msgid "Claimed"
-msgstr ""
+msgstr "Reclamado"
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsActions.tsx
 msgid "Claiming"
@@ -431,7 +431,7 @@ msgstr "La garantía es (en su mayoría) el mismo activo que se está tomando pr
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Collateral usage"
-msgstr ""
+msgstr "Uso de la garantía"
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Collateral usage is limited because of Isolation mode."
@@ -511,7 +511,7 @@ msgstr "Deuda"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Debt amount to repay"
-msgstr "Cantidad de deuda a pagar"
+msgstr "Cantidad de deuda a reembolsar"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Debt ceiling is exceeded"
@@ -536,7 +536,7 @@ msgstr "Delegando"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Delegation"
-msgstr ""
+msgstr "Delegación"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
@@ -611,7 +611,7 @@ msgstr "Modo de eficiencia (E-Mode)"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Emode"
-msgstr ""
+msgstr "Modo E"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
@@ -687,7 +687,7 @@ msgstr "Filtro"
 
 #: src/ui-config/errorMapping.tsx
 msgid "For repayment of a specific type of debt, the user needs to have debt that type"
-msgstr "Para el reembolso de un tipo específico de deuda, el usuario necesita tener una deuda de ese tipo"
+msgstr "Para el pago de un tipo específico de deuda, el usuario necesita tener una deuda de ese tipo"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Forum discussion"
@@ -739,7 +739,7 @@ msgstr "Ocultar"
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "I acknowledge the risks involved."
-msgstr ""
+msgstr "Acepto los riesgos involucadros."
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "I understand how cooldown ({0}) and unstaking ({1}) work"
@@ -1024,7 +1024,7 @@ msgstr "Pendiente..."
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Please connect a wallet to view your personal information here."
-msgstr ""
+msgstr "Por favor conecta una billetera para ver tu información personal aquí."
 
 #: src/components/ConnectWalletPaper.tsx
 msgid "Please connect your wallet to see your supplies, borrowings, and open positions."
@@ -1080,7 +1080,7 @@ msgstr "Alcanzado"
 
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 msgid "Received"
-msgstr ""
+msgstr "Recibido"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Recipient address"
@@ -1111,7 +1111,7 @@ msgstr "Reembolsar en"
 
 #: src/components/Warnings/RepayCollateralWarning.tsx
 msgid "Repay with collateral is experiencing degraded performance which may cause your transaction to fail. Consider using another service or add more collateral to avoid liquidation."
-msgstr ""
+msgstr "El pago con garantía está experimentando un rendimiento degradado que puede hacer que tu transacción falle. Considera usar otro servicio o añade más garantías para evitar la liquidación."
 
 #: src/components/transactions/Repay/CollateralRepayActions.tsx
 #: src/components/transactions/Repay/RepayActions.tsx
@@ -1261,7 +1261,7 @@ msgstr "Stakear Aave/ETH BPT"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Stake cooldown activated"
-msgstr ""
+msgstr "Cooldown de stakeo activado"
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
@@ -1289,7 +1289,7 @@ msgstr "Estado"
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Supplied"
-msgstr ""
+msgstr "Suministrado"
 
 #: pages/index.page.tsx
 #: src/components/transactions/Supply/SupplyModal.tsx
@@ -1360,7 +1360,7 @@ msgstr "Intercambiar"
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Swapped"
-msgstr ""
+msgstr "Intercambiado"
 
 #: src/components/transactions/Swap/SwapActions.tsx
 msgid "Swapping"
@@ -1400,7 +1400,7 @@ msgstr "Los tokens de pool de Balancer (BPT) son tokens de un pool de liquidez. 
 
 #: src/components/infoTooltips/MaxLTVTooltip.tsx
 msgid "The Maximum LTV ratio represents the maximum borrowing power of a specific collateral. For example, if a collateral has an LTV of 75%, the user can borrow up to 0.75 worth of ETH in the principal currency for every 1 ETH worth of collateral."
-msgstr ""
+msgstr "El ratio LTV máximo representa el poder de endeudamiento máximo de una garantía específica. Por ejemplo, si una garantía tiene un LTV del 75 %, el usuario puede pedir prestado hasta 0,75 ETH en la moneda principal por cada 1 ETH de garantía."
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "The Stable Rate is not enabled for this currency"
@@ -1472,7 +1472,7 @@ msgstr "No hay suficiente garantía para cubrir un nuevo préstamo"
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "There was some error. Please try changing the parameters or <0><1>copy the error</1></0>"
-msgstr ""
+msgstr "Hubo un error. Por favor intenta cambiar los parámetros o <0><1>copiar el error</1></0>"
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
@@ -1508,7 +1508,7 @@ msgstr "Esta es la cantidad total a la que puede suministrar en esta reserva. Pu
 
 #: src/components/infoTooltips/LiquidationThresholdTooltip.tsx
 msgid "This represents the threshold at which a borrow position will be considered undercollateralized and subject to liquidation for each collateral. For example, if a collateral has a liquidation threshold of 80%, it means that the position will be liquidated when the debt value is worth 80% of the collateral value."
-msgstr ""
+msgstr "Esto representa el umbral en el que un préstamo será considerado sin garantía suficiente y sujeto a la liquidación de la misma. Por ejemplo, si una garantía tiene un umbral de liquidación del 80 %, significa que el préstamo será liquidado cuando el valor de la deuda alcanze el 80% del valor de la garantía."
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Time left to be able to withdraw your staked asset."
@@ -1529,11 +1529,11 @@ msgstr "Para tomar prestado, necesitas proporcionar cualquier activo para ser ut
 
 #: src/ui-config/errorMapping.tsx
 msgid "To repay on behalf of a user an explicit amount to repay is needed"
-msgstr "Para reembolsar en nombre de un usuario, se necesita una cantidad explicitad para reembolsar"
+msgstr "Para pagar en nombre de un usuario, se necesita una cantidad explícita para pagar"
 
 #: src/components/transactions/FlowCommons/PermissionView.tsx
 msgid "To request access for this permissioned market, please visit: <0>Acces Provider Name</0>"
-msgstr ""
+msgstr "Para solicitar acceso a este mercado, porfavor visita: <0>Nombre del proveedor de acceso</0>"
 
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total available"
@@ -1593,7 +1593,7 @@ msgstr "UNSTAKING {symbol}"
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Unavailable"
-msgstr ""
+msgstr "No disponible"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Unbacked"
@@ -1676,7 +1676,7 @@ msgstr "Ver en el explorador"
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "Vote"
-msgstr ""
+msgstr "Votar"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Vote NAY"
@@ -1718,7 +1718,7 @@ msgstr "No podemos detectar una cartera. Conecta una cartera para invertir."
 
 #: src/components/infoTooltips/LiquidationPenaltyTooltip.tsx
 msgid "When a liquidation occurs, liquidators repay up to 50% of the outstanding borrowed amount on behalf of the borrower. In return, they can buy the collateral at a discount and keep the difference (liquidation penalty) as a bonus."
-msgstr ""
+msgstr "Cuando ocurre una liquidación, los liquidadores pagan hasta el 50% de la cantidad pendiente del préstamo en nombre del prestatario. A cambio, pueden comprar la garantía con descuento y quedarse con la diferencia (sanción de liquidación) como bonificación."
 
 #: src/components/transactions/FlowCommons/LeftHelperText.tsx
 msgid "Why do I need to approve?"
@@ -1740,7 +1740,7 @@ msgstr "Retirar {symbol}"
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "Withdrawing this amount will reduce your health factor and increase risk of liquidation."
-msgstr ""
+msgstr "Retirar esta cantidad reducirá tu factor de salud y aumentará el riesgo de liquidación."
 
 #: src/components/transactions/Withdraw/WithdrawActions.tsx
 msgid "Withdrawing {symbol}"
@@ -1886,7 +1886,7 @@ msgstr "atras"
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "copy the error"
-msgstr ""
+msgstr "copiar el error"
 
 #: src/components/transactions/Emode/EmodeSelect.tsx
 #: src/components/transactions/Emode/EmodeSelect.tsx
@@ -1929,7 +1929,7 @@ msgstr "por favor comprueba que la cantidad que deseas depositar no está siendo
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Repay/RepayModalContent.tsx
 msgid "repaid"
-msgstr ""
+msgstr "reembolsado"
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "staking view"
