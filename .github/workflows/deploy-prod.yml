@@ -31,20 +31,12 @@ jobs:
           cid: '${{ inputs.PINATA_HASH }}'
           seeds: '${{ secrets.CRUST_SEEDS }}'
 
-      - uses: actions/setup-node@9ced9a43a244f3ac94f13bfd896db8c8f30da67a # v3.0.0
+      - uses: aave/cloudflare-update-action@5c1b528c9c6e0aed18a7dbdd7f957e0b8815a75e
         with:
-          node-version-file: '.nvmrc'
-          cache: 'yarn'
-      - name: install
-        run: yarn add axios
-
-      - name: Update prod DNS
-        env:
           CF_API_TOKEN: '${{ secrets.CF_API_TOKEN }}'
           CF_ZONE_ID: '${{ secrets.CF_ZONE_ID }}'
           HASH: '${{ inputs.PINATA_HASH }}'
           CF_DEPLOYMENT_DOMAIN: app.aave.com
-        run: node scripts/update-cloudflare.js
     
       - name: prepare release
         run: |
