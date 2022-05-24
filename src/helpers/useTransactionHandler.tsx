@@ -7,6 +7,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
+import useIsAmbireWC from 'src/hooks/useAmbireWC';
 
 export const MOCK_SIGNED_HASH = 'Signed correctly';
 
@@ -39,7 +40,7 @@ export const useTransactionHandler = ({
     setTxError,
     setRetryWithApproval,
   } = useModalContext();
-  const { signTxData, sendTx, getTxError, currentAccount } = useWeb3Context();
+  const { signTxData, sendTx, sendBatchTx, getTxError, currentAccount } = useWeb3Context();
   const { refetchWalletBalances, refetchPoolData, refechIncentiveData } =
     useBackgroundDataProvider();
   const { lendingPool } = useTxBuilderContext();
@@ -50,6 +51,7 @@ export const useTransactionHandler = ({
   const [approvalTx, setApprovalTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const mounted = useRef(false);
+  const isAmbireWC = useIsAmbireWC();
 
   useEffect(() => {
     mounted.current = true; // Will set it to true on mount ...
@@ -194,7 +196,7 @@ export const useTransactionHandler = ({
   };
 
   const action = async () => {
-    if (approvalTx && usePermit && handleGetPermitTxns) {
+    if (approvalTx && usePermit && handleGetPermitTxns && !isAmbireWC) {
       if (!signature || !signatureDeadline) throw new Error('signature needed');
       try {
         setMainTxState({ ...mainTxState, loading: true });
@@ -230,13 +232,23 @@ export const useTransactionHandler = ({
         });
       }
     }
-    if ((!usePermit || !approvalTx) && actionTx) {
+    if ((!usePermit || !approvalTx || isAmbireWC) && actionTx) {
       try {
         setMainTxState({ ...mainTxState, loading: true });
-        const params = await actionTx.tx();
+        const batching = approvalTx && isAmbireWC;
+        const params = await actionTx.tx(batching);
         delete params.gasPrice;
+
+        let tx;
+        if (batching) {
+          const approvalParams = await approvalTx.tx();
+          tx = () => sendBatchTx([approvalParams, params]);
+        } else {
+          tx = () => sendTx(params);
+        }
+
         return processTx({
-          tx: () => sendTx(params),
+          tx,
           successCallback: (txnResponse: TransactionResponse) => {
             setMainTxState({
               txHash: txnResponse.hash,
@@ -325,7 +337,7 @@ export const useTransactionHandler = ({
     action,
     loadingTxns,
     setUsePermit,
-    requiresApproval: !!approvalTx,
+    requiresApproval: !!approvalTx && !isAmbireWC,
     approvalTxState,
     mainTxState,
     usePermit,
