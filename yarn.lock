@@ -2,17 +2,17 @@
 # yarn lockfile v1
 
 
-"@aave/contract-helpers@1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.2.1.tgz#c6f3e217a5ebe09d6ddc4479fa3653f585283b8b"
-  integrity sha512-3hjPQOJojOPcK0sLh3v2DOqOWzgnYD1QvwxrlP72RShXkmnHFkQaCDDsSwKPIVSQP6wJD0RFETeLacmTYl8Plg==
+"@aave/contract-helpers@1.3.3":
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.3.3.tgz#ed157f6b6843881b8fc924dafac643ff18f2ade5"
+  integrity sha512-xJ24N36ktz5VD1VVUyEvOVVIgxjknWsMfhWnJnpDLT+Zk01yQW0gsxbpdbR5QXwq1d2kx0+ECElU2gDPc8IaQw==
   dependencies:
     isomorphic-unfetch "^3.1.0"
 
-"@aave/math-utils@1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.2.1.tgz#ef3c68c119606e39f16f6fb0714c18c120a443e0"
-  integrity sha512-fMAY23mKYsnHaASIdIiW42nLYFivpuvegbrslgEbL7PRPQJ9akAg1c/FovLUZ/xBFxxtpMy74zeAsZm5JIjDgg==
+"@aave/math-utils@1.3.3":
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.3.3.tgz#ea3a4ec31b70c1a7461215b98c4338a0daa45c52"
+  integrity sha512-n4WzB9wzgwgqgEl9tyiP49AegqIe7qEYfioPgCTOGITDkACDT5QcURuGk0AwSaMioyJ+6yQk5A3V49/3+NlyzQ==
   dependencies:
     bignumber.js "^9.0.1"
     tslib "^2.3.1"
@@ -1127,7 +1127,7 @@
     "@babel/helper-validator-identifier" "^7.16.7"
     to-fast-properties "^2.0.0"
 
-"@coinbase/wallet-sdk@^3.0.4":
+"@coinbase/wallet-sdk@3.1.0", "@coinbase/wallet-sdk@^3.0.4":
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/@coinbase/wallet-sdk/-/wallet-sdk-3.1.0.tgz#294fbd52cf7262b68137731ac414f0cf5a0580a3"
   integrity sha512-8IGfVklv/CMfCT4qd9KfL0IwlINsIgSlW1oQB/or8uSY9wAqoY8lIoQVpOyFx7YDK094Xfd9alhulZtRZNJBjw==
