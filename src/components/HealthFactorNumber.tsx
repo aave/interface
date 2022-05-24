@@ -4,14 +4,21 @@ import { Typography, Box, Button, useTheme } from '@mui/material';
 import { TypographyProps } from '@mui/material/Typography';
 import BigNumber from 'bignumber.js';
 
+import HALLink from './HALLink';
 import { FormattedNumber } from './primitives/FormattedNumber';
 
 interface HealthFactorNumberProps extends TypographyProps {
   value: string;
   onInfoClick?: () => void;
+  withHALLink?: boolean;
 }
 
-export const HealthFactorNumber = ({ value, onInfoClick, ...rest }: HealthFactorNumberProps) => {
+export const HealthFactorNumber = ({
+  value,
+  onInfoClick,
+  withHALLink,
+  ...rest
+}: HealthFactorNumberProps) => {
   const { palette } = useTheme();
 
   const formattedHealthFactor = Number(valueToBigNumber(value).toFixed(2, BigNumber.ROUND_DOWN));
@@ -57,6 +64,8 @@ export const HealthFactorNumber = ({ value, onInfoClick, ...rest }: HealthFactor
           <Trans>Risk details</Trans>
         </Button>
       )}
+
+      {withHALLink && <HALLink healthFactor={formattedHealthFactor} />}
     </Box>
   );
 };
