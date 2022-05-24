@@ -21,7 +21,8 @@ const testData = {
   },
 };
 
-describe('REWARD, AAVE V2 MARKET, INTEGRATION SPEC', () => {
+// TODO: Add back after incentives merged fix
+describe.skip('REWARD, AAVE V2 MARKET, INTEGRATION SPEC', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyMainnetFork({});
 
