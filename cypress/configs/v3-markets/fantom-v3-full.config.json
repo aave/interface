@@ -6,7 +6,8 @@
   "ignoreTestFiles": [
     "ftm.fantom-v3.spec.ts",
     "usdt.fantom-v3.spec.ts",
-    "swap.fantom-v3.spec.ts"
+    "swap.fantom-v3.spec.ts",
+    "e-mode.fantom-v3.spec.ts"
   ],
   "viewportWidth": 1200,
   "viewportHeight": 800,

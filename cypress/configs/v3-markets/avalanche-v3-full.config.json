@@ -6,7 +6,8 @@
   "ignoreTestFiles": [
     "avax.avalanche-v3.spec.ts",
     "dai.avalanche-v3.spec.ts",
-    "swap.polygon-v2.spec.ts"
+    "swap.avalanche-v2.spec.ts",
+    "e-mode.avalanche-v3.spec.ts"
   ],
   "viewportWidth": 1200,
   "viewportHeight": 800,

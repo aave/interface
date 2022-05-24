@@ -52,6 +52,7 @@ export const DashboardEModeButton = ({
           e.stopPropagation();
           handleClick(e);
         }}
+        data-cy={`emode-open`}
         size="small"
         variant="outlined"
         sx={(theme) => ({
@@ -196,6 +197,7 @@ export const DashboardEModeButton = ({
               onClick();
               handleClose();
             }}
+            data-cy={`${isEModeDisabled ? 'emode-enable' : 'emode-disable'}`}
           >
             {isEModeDisabled ? <Trans>Enable E-Mode</Trans> : <Trans>Disable E-Mode</Trans>}
           </Button>

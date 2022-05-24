@@ -650,6 +650,18 @@
       "collateral": false,
       "wrapped": false
     },
+    "jEUR": {
+      "fullName": "jEUR",
+      "shortName": "jEUR",
+      "collateral": false,
+      "wrapped": false
+    },
+    "agEUR": {
+      "fullName": "agEUR",
+      "shortName": "agEUR",
+      "collateral": false,
+      "wrapped": false
+    },
     "WBTC": {
       "fullName": "WBTC Coin",
       "shortName": "WBTC",
