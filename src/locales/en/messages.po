@@ -988,6 +988,10 @@ msgstr "Nothing staked"
 msgid "Nothing supplied yet"
 msgstr "Nothing supplied yet"
 
+#: src/components/HALLink.tsx
+msgid "Notify"
+msgstr "Notify"
+
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Ok, Close"
 msgstr "Ok, Close"
@@ -1072,6 +1076,10 @@ msgstr "Raw-Ipfs"
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Reached"
 msgstr "Reached"
+
+#: src/components/HALLink.tsx
+msgid "Receive notifications about your Health Factor status using Hal app."
+msgstr "Receive notifications about your Health Factor status using Hal app."
 
 #: src/components/transactions/Faucet/FaucetModalContent.tsx
 msgid "Received"
@@ -1185,10 +1193,6 @@ msgstr "Select Aave Market"
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Select language"
 msgstr "Select language"
-
-#: src/components/HALTooltip.tsx
-msgid "Setup triggers and receive notifications about your Health Factor status using Hal app."
-msgstr "Setup triggers and receive notifications about your Health Factor status using Hal app."
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Share on twitter"
