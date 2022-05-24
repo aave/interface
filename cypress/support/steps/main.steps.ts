@@ -34,10 +34,12 @@ export const supply = (
     asset,
     amount,
     hasApproval = true,
+    isMaxAmount = false,
   }: {
     asset: { shortName: string; fullName: string };
     amount: number;
     hasApproval: boolean;
+    isMaxAmount?: boolean;
   },
   skip: SkipType,
   updateSkipStatus = false
@@ -54,9 +56,10 @@ export const supply = (
         .click();
       cy.get(`[data-cy=Modal] h2:contains("Supply ${_shortName}")`).should('be.visible');
     });
-    it(`Supply ${amount} amount for ${_shortName}`, () => {
+    it(`Supply ${isMaxAmount ? 'MAX' : amount} amount for ${_shortName}`, () => {
       setAmount({
         amount,
+        max: isMaxAmount,
       });
       doConfirm({
         hasApproval,
@@ -75,12 +78,14 @@ export const borrow = (
     apyType,
     hasApproval = true,
     isRisk = false,
+    isMaxAmount = false,
   }: {
     asset: { shortName: string; fullName: string };
     amount: number;
     apyType?: string;
     hasApproval: boolean;
     isRisk?: boolean;
+    isMaxAmount?: boolean;
   },
   skip: SkipType,
   updateSkipStatus = false
@@ -113,9 +118,10 @@ export const borrow = (
           break;
       }
     });
-    it(`Borrow ${amount} amount for ${_shortName}`, () => {
+    it(`Borrow ${isMaxAmount ? 'MAX' : amount} amount for ${_shortName}`, () => {
       setAmount({
         amount,
+        max: isMaxAmount,
       });
     });
     if (isRisk) {
@@ -142,6 +148,7 @@ export const repay = (
     repayOption,
     repayableAsset,
     hasApproval = false,
+    isMaxAmount = false,
   }: {
     asset: { shortName: string; fullName: string };
     apyType: string;
@@ -149,6 +156,7 @@ export const repay = (
     repayOption: string;
     repayableAsset?: { shortName: string };
     hasApproval: boolean;
+    isMaxAmount?: boolean;
   },
   skip: SkipType,
   updateSkipStatus = false
@@ -198,9 +206,12 @@ export const repay = (
         cy.get('@Modal').get('[data-cy=assetSelect]').contains(repayableAsset.shortName);
       });
     }
-    it(`Repay ${amount} amount for ${_shortName}, with ${repayOption} repay option`, () => {
+    it(`Repay ${
+      isMaxAmount ? 'MAX' : amount
+    } amount for ${_shortName}, with ${repayOption} repay option`, () => {
       setAmount({
         amount,
+        max: isMaxAmount,
       });
       doConfirm({
         hasApproval,
@@ -220,6 +231,7 @@ export const withdraw = (
     hasApproval = false,
     forWrapped = false,
     isRisk = false,
+    isMaxAmount = false,
   }: {
     asset: { shortName: string; fullName: string };
     isCollateral: boolean;
@@ -227,6 +239,7 @@ export const withdraw = (
     hasApproval: boolean;
     forWrapped?: boolean;
     isRisk?: boolean;
+    isMaxAmount?: boolean;
   },
   skip: SkipType,
   updateSkipStatus = false
@@ -251,9 +264,10 @@ export const withdraw = (
         .get('[data-cy=inputAsset]')
         .contains(`${forWrapped ? 'W' + _shortName : _shortName}`);
     });
-    it(`Withdraw ${amount} amount for ${_shortName}`, () => {
+    it(`Withdraw ${isMaxAmount ? 'MAX' : amount} amount for ${_shortName}`, () => {
       setAmount({
         amount,
+        max: isMaxAmount,
       });
     });
     if (isRisk) {
@@ -318,12 +332,14 @@ export const swap = (
     isCollateralFromAsset,
     amount,
     hasApproval = true,
+    isMaxAmount = false,
   }: {
     fromAsset: { shortName: string; fullName: string };
     toAsset: { shortName: string; fullName: string };
     isCollateralFromAsset: boolean;
     amount: number;
     hasApproval: boolean;
+    isMaxAmount?: boolean;
   },
   skip: SkipType,
   updateSkipStatus = false
@@ -351,9 +367,10 @@ export const swap = (
         timeout: 10000,
       }).should('be.visible', { timeout: 10000 });
     });
-    it('Make approve', () => {
+    it(`Make approve for ${isMaxAmount ? 'MAX' : amount} amount`, () => {
       setAmount({
         amount,
+        max: isMaxAmount,
       });
       doConfirm({
         hasApproval,
@@ -463,6 +480,37 @@ export const changeCollateralNegative = (
     });
     it(`Close Modal`, () => {
       cy.get('[data-cy=Modal]').get('[data-cy=CloseModalIcon]').click();
+    });
+  });
+};
+
+export const emodeActivating = (
+  {
+    turnOn,
+  }: {
+    turnOn: boolean;
+  },
+  skip: SkipType,
+  updateSkipStatus = false
+) => {
+  return describe(`${turnOn ? 'Turn on E-mode' : 'Turn off E-mode'}`, () => {
+    skipSetup({ skip, updateSkipStatus });
+    it('Open E-mode switcher modal', () => {
+      doSwitchToDashboardBorrowView();
+      cy.get('[data-cy=emode-open]').click();
+      if (turnOn) cy.get(`[data-cy="emode-enable"]`).click();
+      else cy.get(`[data-cy="emode-disable"]`).click();
+    });
+    it(`${turnOn ? 'Turn on E-mode' : 'Turn off E-mode'}`, () => {
+      const actionName = turnOn ? 'Enable E-Mode' : 'Disable E-Mode';
+      doConfirm({
+        hasApproval: true,
+        actionName,
+      });
+    });
+    doCloseModal();
+    it(`Check that E-mode was ${turnOn ? 'on' : 'off'}`, () => {
+      cy.get(`[data-cy="emode-open"]`).should('have.text', turnOn ? 'Stablecoins' : 'Disabled');
     });
   });
 };
