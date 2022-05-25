@@ -4,10 +4,7 @@ import { useMemo } from 'react';
 
 import Hal from '/public/icons/healthFactor/HAL.svg';
 import HalHover from '/public/icons/healthFactor/HALHover.svg';
-
-import { useProtocolDataContext } from '../hooks/useProtocolDataContext';
 import { useWeb3Context } from '../libs/hooks/useWeb3Context';
-import { CustomMarket } from '../ui-config/marketsConfig';
 import { Link } from './primitives/Link';
 
 const PopperComponent = styled(Popper)(
@@ -29,50 +26,16 @@ const PopperComponent = styled(Popper)(
   })
 );
 
-const marketToHALAaveVersionUrlParam = (market: CustomMarket): string | undefined => {
-  const exhaustCases = (_: string) => undefined;
-
-  switch (market) {
-    case CustomMarket.proto_polygon:
-      return 'aavepolygon';
-    case CustomMarket.proto_avalanche:
-      return 'aaveavalanche';
-    case CustomMarket.proto_mainnet:
-      return 'aavev2';
-
-    case CustomMarket.proto_kovan:
-    case CustomMarket.proto_mumbai:
-    case CustomMarket.proto_fuji:
-    case CustomMarket.amm_kovan:
-    case CustomMarket.amm_mainnet:
-      return undefined;
-
-    default:
-      return exhaustCases(market);
-  }
-};
-
-export default function HALTooltip({}) {
-  const { currentMarket } = useProtocolDataContext();
+export default function HALTooltip({ halMarketName }: { halMarketName: string }) {
   const { currentAccount } = useWeb3Context();
 
-  const supportedAaveVersion = marketToHALAaveVersionUrlParam(currentMarket);
   const urlString = useMemo(() => {
     const url = new URL('https://9000.hal.xyz/recipes/aave-track-your-health-factor');
     url.searchParams.set('user', currentAccount);
-
-    const aaveVersionParam = supportedAaveVersion;
-    if (aaveVersionParam !== undefined) {
-      url.searchParams.set('aaveversion', aaveVersionParam);
-    }
+    url.searchParams.set('aaveversion', halMarketName);
 
     return url.toString();
-  }, [currentAccount, supportedAaveVersion]);
-
-  // Do not show the HAL Noticiation icon on unsupported markets.
-  if (supportedAaveVersion === undefined) {
-    return null;
-  }
+  }, [currentAccount, halMarketName]);
 
   return (
     <Tooltip

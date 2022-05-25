@@ -137,7 +137,9 @@ export const DashboardTopPanel = () => {
             title={
               <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
                 <Trans>Health factor</Trans>
-                <HALTooltip />
+                {currentMarketData.halMarketName && (
+                  <HALTooltip halMarketName={currentMarketData.halMarketName} />
+                )}
               </Box>
             }
             // TODO: need change icon
