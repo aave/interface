@@ -36655,7 +36655,7 @@ var require_v3_UiIncentiveDataProvider_contract = __commonJS({
             lendingPoolAddressProvider
           });
           return response.map((r) => ({
-            id: `${this.chainId}-${r.underlyingAsset}-${lendingPoolAddressProvider}`.toLowerCase(),
+            id: `${this.chainId}-${user}-${r.underlyingAsset}-${lendingPoolAddressProvider}`.toLowerCase(),
             underlyingAsset: r.underlyingAsset.toLowerCase(),
             aTokenIncentivesUserData: this._formatUserIncentiveData(r.aTokenIncentivesUserData),
             vTokenIncentivesUserData: this._formatUserIncentiveData(r.vTokenIncentivesUserData),
@@ -47176,7 +47176,6 @@ var require_v3_pool_contract = __commonJS({
     var erc20_contract_1 = require_erc20_contract();
     var paraswap_liquiditySwapAdapter_contract_1 = require_paraswap_liquiditySwapAdapter_contract();
     var paraswap_repayWithCollateralAdapter_contract_1 = require_paraswap_repayWithCollateralAdapter_contract();
-    var repayWithCollateralAdapter_contract_1 = require_repayWithCollateralAdapter_contract();
     var synthetix_contract_1 = require_synthetix_contract();
     var v3_pool_rollups_1 = require_v3_pool_rollups();
     var wethgateway_contract_1 = require_wethgateway_contract();
@@ -47212,7 +47211,6 @@ var require_v3_pool_contract = __commonJS({
         this.synthetixService = new synthetix_contract_1.SynthetixService(provider);
         this.wethGatewayService = new wethgateway_contract_1.WETHGatewayService(provider, this.erc20Service, WETH_GATEWAY);
         this.liquiditySwapAdapterService = new paraswap_liquiditySwapAdapter_contract_1.LiquiditySwapAdapterService(provider, SWAP_COLLATERAL_ADAPTER);
-        this.repayWithCollateralAdapterService = new repayWithCollateralAdapter_contract_1.RepayWithCollateralAdapterService(provider, REPAY_WITH_COLLATERAL_ADAPTER);
         this.paraswapRepayWithCollateralAdapterService = new paraswap_repayWithCollateralAdapter_contract_1.ParaswapRepayWithCollateral(provider, REPAY_WITH_COLLATERAL_ADAPTER);
         this.l2PoolService = new v3_pool_rollups_1.L2Pool(provider, {
           l2PoolAddress: this.poolAddress,
@@ -47728,7 +47726,7 @@ var require_v3_pool_contract = __commonJS({
         });
       }
       swapCollateral(_0) {
-        return __async(this, arguments, function* ({ user, flash, fromAsset, fromAToken, toAsset, fromAmount, minToAmount, permitSignature, swapAll, onBehalfOf, referralCode, augustus, swapCallData }) {
+        return __async(this, arguments, function* ({ user, flash, fromAsset, fromAToken, toAsset, fromAmount, minToAmount, permitSignature, swapAll, referralCode, augustus, swapCallData }) {
           const txs = [];
           const permitParams = permitSignature !== null && permitSignature !== void 0 ? permitSignature : {
             amount: "0",
@@ -47763,7 +47761,7 @@ var require_v3_pool_contract = __commonJS({
             const convertedAmountWithSurplus = (0, utils_1.valueToWei)(amountWithSurplus, tokenDecimals);
             const txCallback = this.generateTxCallback({
               rawTxMethod: () => __async(this, null, function* () {
-                return poolContract.populateTransaction.flashLoan(this.swapCollateralAddress, [fromAsset], swapAll ? [convertedAmountWithSurplus] : [convertedAmount], [0], onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user, params, referralCode !== null && referralCode !== void 0 ? referralCode : "0");
+                return poolContract.populateTransaction.flashLoanSimple(this.swapCollateralAddress, fromAsset, swapAll ? convertedAmountWithSurplus : convertedAmount, params, referralCode !== null && referralCode !== void 0 ? referralCode : "0");
               }),
               from: user
             });
@@ -47789,89 +47787,8 @@ var require_v3_pool_contract = __commonJS({
           return txs;
         });
       }
-      repayWithCollateral(_0) {
-        return __async(this, arguments, function* ({ user, fromAsset, fromAToken, assetToRepay, repayWithAmount, repayAmount, permitSignature, repayAllDebt, rateMode, onBehalfOf, referralCode, flash, useEthPath }) {
-          const txs = [];
-          const permitParams = permitSignature !== null && permitSignature !== void 0 ? permitSignature : {
-            amount: "0",
-            deadline: "0",
-            v: 0,
-            r: "0x0000000000000000000000000000000000000000000000000000000000000000",
-            s: "0x0000000000000000000000000000000000000000000000000000000000000000"
-          };
-          const approved = yield this.erc20Service.isApproved({
-            token: fromAToken,
-            user,
-            spender: this.repayWithCollateralAddress,
-            amount: repayWithAmount
-          });
-          if (!approved) {
-            const approveTx = this.erc20Service.approve({
-              user,
-              token: fromAToken,
-              spender: this.repayWithCollateralAddress,
-              amount: ethers_1.constants.MaxUint256.toString()
-            });
-            txs.push(approveTx);
-          }
-          const fromDecimals = yield this.erc20Service.decimalsOf(fromAsset);
-          const convertedRepayWithAmount = (0, utils_1.valueToWei)(repayWithAmount, fromDecimals);
-          const repayAmountWithSurplus = (Number(repayAmount) + Number(repayAmount) * Number(utils_1.SURPLUS) / 100).toString();
-          const decimals = yield this.erc20Service.decimalsOf(assetToRepay);
-          const convertedRepayAmount = repayAllDebt ? (0, utils_1.valueToWei)(repayAmountWithSurplus, decimals) : (0, utils_1.valueToWei)(repayAmount, decimals);
-          const numericInterestRate = rateMode === types_1.InterestRate.Stable ? 1 : 2;
-          if (flash) {
-            const params = ethers_1.utils.defaultAbiCoder.encode([
-              "address",
-              "uint256",
-              "uint256",
-              "uint256",
-              "uint256",
-              "uint8",
-              "bytes32",
-              "bytes32",
-              "bool"
-            ], [
-              fromAsset,
-              convertedRepayWithAmount,
-              numericInterestRate,
-              permitParams.amount,
-              permitParams.deadline,
-              permitParams.v,
-              permitParams.r,
-              permitParams.s,
-              useEthPath !== null && useEthPath !== void 0 ? useEthPath : false
-            ]);
-            const poolContract = this.getContractInstance(this.poolAddress);
-            const txCallback = this.generateTxCallback({
-              rawTxMethod: () => __async(this, null, function* () {
-                return poolContract.populateTransaction.flashLoan(this.repayWithCollateralAddress, [assetToRepay], [convertedRepayAmount], [0], onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user, params, referralCode !== null && referralCode !== void 0 ? referralCode : "0");
-              }),
-              from: user
-            });
-            txs.push({
-              tx: txCallback,
-              txType: types_1.eEthereumTxType.DLP_ACTION,
-              gas: this.generateTxPriceEstimation(txs, txCallback, types_1.ProtocolAction.repayCollateral)
-            });
-            return txs;
-          }
-          const swapAndRepayTx = this.repayWithCollateralAdapterService.swapAndRepay({
-            user,
-            collateralAsset: fromAsset,
-            debtAsset: assetToRepay,
-            collateralAmount: convertedRepayWithAmount,
-            debtRepayAmount: convertedRepayAmount,
-            debtRateMode: rateMode,
-            permit: permitParams,
-            useEthPath
-          }, txs);
-          txs.push(swapAndRepayTx);
-          return txs;
-        });
-      }
       paraswapRepayWithCollateral(_0) {
-        return __async(this, arguments, function* ({ user, fromAsset, fromAToken, assetToRepay, repayWithAmount, repayAmount, permitSignature, repayAllDebt, rateMode, onBehalfOf, referralCode, flash, swapAndRepayCallData, augustus }) {
+        return __async(this, arguments, function* ({ user, fromAsset, fromAToken, assetToRepay, repayWithAmount, repayAmount, permitSignature, repayAllDebt, rateMode, referralCode, flash, swapAndRepayCallData, augustus }) {
           const txs = [];
           const permitParams = permitSignature !== null && permitSignature !== void 0 ? permitSignature : {
             amount: "0",
@@ -47930,7 +47847,7 @@ var require_v3_pool_contract = __commonJS({
             const poolContract = this.getContractInstance(this.poolAddress);
             const txCallback = this.generateTxCallback({
               rawTxMethod: () => __async(this, null, function* () {
-                return poolContract.populateTransaction.flashLoan(this.repayWithCollateralAddress, [fromAsset], repayAllDebt ? [convertedRepayWithAmountWithSurplus] : [convertedRepayWithAmount], [0], onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user, params, referralCode !== null && referralCode !== void 0 ? referralCode : "0");
+                return poolContract.populateTransaction.flashLoanSimple(this.repayWithCollateralAddress, fromAsset, repayAllDebt ? convertedRepayWithAmountWithSurplus : convertedRepayWithAmount, params, referralCode !== null && referralCode !== void 0 ? referralCode : "0");
               }),
               from: user
             });
@@ -47977,7 +47894,7 @@ var require_v3_pool_contract = __commonJS({
           ]);
           const txCallback = this.generateTxCallback({
             rawTxMethod: () => __async(this, null, function* () {
-              return poolContract.populateTransaction.flashLoan(this.flashLiquidationAddress, [borrowedAsset], [flashBorrowAmount], [0], initiator, params, "0");
+              return poolContract.populateTransaction.flashLoanSimple(this.flashLiquidationAddress, borrowedAsset, flashBorrowAmount, params, "0");
             }),
             from: initiator
           });
@@ -48156,7 +48073,6 @@ var require_v3_pool_contract = __commonJS({
       (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("fromAsset")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("fromAToken")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("toAsset")),
-      (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("onBehalfOf")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("augustus")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)("fromAmount")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)("minToAmount")),
@@ -48170,20 +48086,6 @@ var require_v3_pool_contract = __commonJS({
       (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("fromAsset")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("fromAToken")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("assetToRepay")),
-      (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("onBehalfOf")),
-      (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)("repayWithAmount")),
-      (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)("repayAmount")),
-      (0, tslib_1.__metadata)("design:type", Function),
-      (0, tslib_1.__metadata)("design:paramtypes", [Object]),
-      (0, tslib_1.__metadata)("design:returntype", Promise)
-    ], Pool.prototype, "repayWithCollateral", null);
-    (0, tslib_1.__decorate)([
-      methodValidators_1.LPRepayWithCollateralValidatorV3,
-      (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("user")),
-      (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("fromAsset")),
-      (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("fromAToken")),
-      (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("assetToRepay")),
-      (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("onBehalfOf")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)("repayWithAmount")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)("repayAmount")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("augustus")),
@@ -60585,16 +60487,22 @@ var require_calculate_reserve_incentives = __commonJS({
       return "0";
     }
     exports2.calculateRewardTokenPrice = calculateRewardTokenPrice;
+    var rewardEmissionActive = (reward) => {
+      if (reward.emissionEndTimestamp > reward.incentivesLastUpdateTimestamp) {
+        return true;
+      }
+      return false;
+    };
     function calculateReserveIncentives({ reserves, reserveIncentiveData, totalLiquidity, totalVariableDebt, totalStableDebt, decimals, priceInMarketReferenceCurrency }) {
       const aIncentivesData = reserveIncentiveData.aIncentiveData.rewardsTokenInformation.map((reward) => {
-        const aIncentivesAPR = (0, calculate_incentive_apr_1.calculateIncentiveAPR)({
+        const aIncentivesAPR = rewardEmissionActive(reward) ? (0, calculate_incentive_apr_1.calculateIncentiveAPR)({
           emissionPerSecond: reward.emissionPerSecond,
           rewardTokenPriceInMarketReferenceCurrency: calculateRewardTokenPrice(reserves, reward.rewardTokenAddress, reward.rewardPriceFeed, reward.priceFeedDecimals),
           priceInMarketReferenceCurrency,
           totalTokenSupply: totalLiquidity,
           decimals,
           rewardTokenDecimals: reward.rewardTokenDecimals
-        });
+        }) : "0";
         const aIncentiveData = {
           incentiveAPR: aIncentivesAPR,
           rewardTokenAddress: reward.rewardTokenAddress,
@@ -60603,14 +60511,14 @@ var require_calculate_reserve_incentives = __commonJS({
         return aIncentiveData;
       });
       const vIncentivesData = reserveIncentiveData.vIncentiveData.rewardsTokenInformation.map((reward) => {
-        const vIncentivesAPR = (0, calculate_incentive_apr_1.calculateIncentiveAPR)({
+        const vIncentivesAPR = rewardEmissionActive(reward) ? (0, calculate_incentive_apr_1.calculateIncentiveAPR)({
           emissionPerSecond: reward.emissionPerSecond,
           rewardTokenPriceInMarketReferenceCurrency: calculateRewardTokenPrice(reserves, reward.rewardTokenAddress, reward.rewardPriceFeed, reward.priceFeedDecimals),
           priceInMarketReferenceCurrency,
           totalTokenSupply: totalVariableDebt,
           decimals,
           rewardTokenDecimals: reward.rewardTokenDecimals
-        });
+        }) : "0";
         const vIncentiveData = {
           incentiveAPR: vIncentivesAPR,
           rewardTokenAddress: reward.rewardTokenAddress,
@@ -60619,14 +60527,14 @@ var require_calculate_reserve_incentives = __commonJS({
         return vIncentiveData;
       });
       const sIncentivesData = reserveIncentiveData.sIncentiveData.rewardsTokenInformation.map((reward) => {
-        const sIncentivesAPR = (0, calculate_incentive_apr_1.calculateIncentiveAPR)({
+        const sIncentivesAPR = rewardEmissionActive(reward) ? (0, calculate_incentive_apr_1.calculateIncentiveAPR)({
           emissionPerSecond: reward.emissionPerSecond,
           rewardTokenPriceInMarketReferenceCurrency: calculateRewardTokenPrice(reserves, reward.rewardTokenAddress, reward.rewardPriceFeed, reward.priceFeedDecimals),
           priceInMarketReferenceCurrency,
           totalTokenSupply: totalStableDebt,
           decimals,
           rewardTokenDecimals: reward.rewardTokenDecimals
-        });
+        }) : "0";
         const sIncentiveData = {
           incentiveAPR: sIncentivesAPR,
           rewardTokenAddress: reward.rewardTokenAddress,

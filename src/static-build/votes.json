@@ -22090,5 +22090,19 @@
       }
     ],
     "finished": true
+  },
+  {
+    "votes": [
+      {
+        "proposalId": 77,
+        "voter": "0x5B3bFfC0bcF8D4cAEC873fDcF719F60725767c98",
+        "support": true,
+        "votingPower": 183364.3447189123,
+        "transactionHash": "0x5a9eb1005e57c277bec02f7af7667f4b845127105d24938795e8c80051def79c",
+        "timestamp": 1653421997,
+        "blockNumber": 14837609
+      }
+    ],
+    "finished": false
   }
 ]
