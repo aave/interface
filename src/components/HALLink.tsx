@@ -63,6 +63,7 @@ export default function HALLink({ healthFactor, marketName, integrationURL }: Pr
     url.searchParams.set('healthfactor', formattedHealthFactor);
     url.searchParams.set('chain', marketName);
     url.searchParams.set('aaveversion', marketName);
+    url.searchParams.set('utm_source', 'aave-integration');
 
     return url.toString();
   }, [currentAccount, healthFactor, marketName, integrationURL]);
