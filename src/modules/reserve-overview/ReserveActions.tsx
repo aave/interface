@@ -133,6 +133,43 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   const eModeBorrowDisabled =
     user?.isInEmode && poolReserve.eModeCategoryId !== user.userEmodeCategoryId;
 
+  // Remove all supply/borrow elements and display warning message instead for frozen reserves
+  if (poolReserve.isFrozen) {
+    return (
+      <PaperWrapper>
+        {balance?.amount !== '0' && (
+          <Row
+            caption={<Trans>Wallet balance</Trans>}
+            align="flex-start"
+            mb={6}
+            captionVariant="description"
+          >
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+              <FormattedNumber
+                value={balance?.amount || 0}
+                variant="secondary14"
+                symbol={poolReserve.symbol}
+              />
+              <FormattedNumber
+                value={balance?.amountUSD || '0'}
+                variant="helperText"
+                color="text.muted"
+                symbolsColor="text.muted"
+                symbol="USD"
+              />
+            </Box>
+          </Row>
+        )}
+        <Alert sx={{ mb: '12px' }} severity="error" icon={true}>
+          <Trans>
+            Since this asset is frozen, the only available actions are withdraw and repay which can
+            be accessed from the <Link href={ROUTES.dashboard}>Dashboard</Link>
+          </Trans>
+        </Alert>
+      </PaperWrapper>
+    );
+  }
+
   return (
     <PaperWrapper>
       {balance?.amount === '0' ? (
@@ -210,13 +247,11 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
         )}
       </Row>
 
-      {balance?.amount !== '0' &&
-        user?.totalCollateralMarketReferenceCurrency === '0' &&
-        !poolReserve.isFrozen && (
-          <Alert sx={{ mb: '12px' }} severity="info" icon={false}>
-            <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
-          </Alert>
-        )}
+      {balance?.amount !== '0' && user?.totalCollateralMarketReferenceCurrency === '0' && (
+        <Alert sx={{ mb: '12px' }} severity="info" icon={false}>
+          <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
+        </Alert>
+      )}
 
       {isolationModeBorrowDisabled && (
         <Alert sx={{ mb: '12px' }} severity="warning" icon={false}>
@@ -247,7 +282,7 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
       {!eModeBorrowDisabled && isolationModeBorrowDisabled && (
         <Alert sx={{ mb: '12px' }} severity="info" icon={false}>
           <Trans>
-            Borrowing is navailable because you’re using Isolation mode. To manage Isolation mode
+            Borrowing is unavailable because you’re using Isolation mode. To manage Isolation mode
             visit your <Link href={ROUTES.dashboard}>Dashboard</Link>.
           </Trans>
         </Alert>
@@ -258,18 +293,14 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
       <Stack direction="row" spacing={2}>
         <Button
           variant="contained"
-          disabled={balance?.amount == '0' || poolReserve.isFrozen}
+          disabled={balance?.amount === '0'}
           onClick={() => openSupply(underlyingAsset)}
           fullWidth={downToXSM}
         >
           <Trans>Supply</Trans> {downToXSM && poolReserve.symbol}
         </Button>
         <Button
-          disabled={
-            !canBorrow ||
-            user?.totalCollateralMarketReferenceCurrency === '0' ||
-            poolReserve.isFrozen
-          }
+          disabled={!canBorrow || user?.totalCollateralMarketReferenceCurrency === '0'}
           variant="contained"
           onClick={() => openBorrow(underlyingAsset)}
           fullWidth={downToXSM}
