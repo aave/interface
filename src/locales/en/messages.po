@@ -315,13 +315,13 @@ msgstr "Borrowed"
 msgid "Borrowing is currently unavailable for {0}."
 msgstr "Borrowing is currently unavailable for {0}."
 
-#: src/modules/reserve-overview/ReserveActions.tsx
-msgid "Borrowing is navailable because you’re using Isolation mode. To manage Isolation mode visit your <0>Dashboard</0>."
-msgstr "Borrowing is navailable because you’re using Isolation mode. To manage Isolation mode visit your <0>Dashboard</0>."
-
 #: src/ui-config/errorMapping.tsx
 msgid "Borrowing is not enabled"
 msgstr "Borrowing is not enabled"
+
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "Borrowing is unavailable because you’re using Isolation mode. To manage Isolation mode visit your <0>Dashboard</0>."
+msgstr "Borrowing is unavailable because you’re using Isolation mode. To manage Isolation mode visit your <0>Dashboard</0>."
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) and Isolation mode. To manage E-Mode and Isolation mode visit your <0>Dashboard</0>."
@@ -1202,6 +1202,10 @@ msgstr "Show"
 msgid "Show assets with 0 balance"
 msgstr "Show assets with 0 balance"
 
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "Since this asset is frozen, the only available actions are withdraw and repay which can be accessed from the <0>Dashboard</0>"
+msgstr "Since this asset is frozen, the only available actions are withdraw and repay which can be accessed from the <0>Dashboard</0>"
+
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
 msgstr "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
@@ -1695,6 +1699,7 @@ msgstr "Voting results"
 #: pages/faucet.page.tsx
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+#: src/modules/reserve-overview/ReserveActions.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Wallet balance"
 msgstr "Wallet balance"
