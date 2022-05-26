@@ -87,9 +87,12 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }
         side: variant === 'exactIn' ? SwapSide.SELL : SwapSide.BUY,
         options: {
           partner: 'aave',
+          excludeDEXS:
+            'ParaSwapPool,ParaSwapPool2,ParaSwapPool3,ParaSwapPool4,ParaSwapPool5,ParaSwapPool6,ParaSwapPool7,ParaSwapPool8,ParaSwapPool9,ParaSwapPool10',
           ...(max
             ? {
-                excludeDEXS: 'Balancer',
+                excludeDEXS:
+                  'Balancer,ParaSwapPool,ParaSwapPool2,ParaSwapPool3,ParaSwapPool4,ParaSwapPool5,ParaSwapPool6,ParaSwapPool7,ParaSwapPool8,ParaSwapPool9,ParaSwapPool10',
                 excludeContractMethods: [excludedMethod],
               }
             : {}),
