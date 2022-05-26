@@ -12,6 +12,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 // import HfFull from '/public/icons/healthFactor/hfFull.svg';
 // import HfLow from '/public/icons/healthFactor/hfLow.svg';
 // import HfMiddle from '/public/icons/healthFactor/hfMiddle.svg';
+import HALLink from '../../components/HALLink';
 import { HealthFactorNumber } from '../../components/HealthFactorNumber';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { NoData } from '../../components/primitives/NoData';
@@ -153,7 +154,15 @@ export const DashboardTopPanel = () => {
               value={user?.healthFactor || '-1'}
               variant={valueTypographyVariant}
               onInfoClick={() => setOpen(true)}
-              withHALLink
+              HALIntegrationComponent={
+                currentMarketData.halIntegration && (
+                  <HALLink
+                    healthFactor={user?.healthFactor || '-1'}
+                    marketName={currentMarketData.halIntegration.marketName}
+                    integrationURL={currentMarketData.halIntegration.URL}
+                  />
+                )
+              }
             />
           </TopInfoPanelItem>
         )}

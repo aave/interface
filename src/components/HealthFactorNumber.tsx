@@ -4,19 +4,18 @@ import { Typography, Box, Button, useTheme } from '@mui/material';
 import { TypographyProps } from '@mui/material/Typography';
 import BigNumber from 'bignumber.js';
 
-import HALLink from './HALLink';
 import { FormattedNumber } from './primitives/FormattedNumber';
 
 interface HealthFactorNumberProps extends TypographyProps {
   value: string;
   onInfoClick?: () => void;
-  withHALLink?: boolean;
+  HALIntegrationComponent?: React.ReactNode;
 }
 
 export const HealthFactorNumber = ({
   value,
   onInfoClick,
-  withHALLink,
+  HALIntegrationComponent,
   ...rest
 }: HealthFactorNumberProps) => {
   const { palette } = useTheme();
@@ -65,7 +64,11 @@ export const HealthFactorNumber = ({
         </Button>
       )}
 
-      {withHALLink && <HALLink healthFactor={formattedHealthFactor} />}
+      {HALIntegrationComponent && (
+        <Box ml={{ xs: 0, xsm: 2 }} mt={{ xs: 1, xsm: 0 }}>
+          {HALIntegrationComponent}
+        </Box>
+      )}
     </Box>
   );
 };
