@@ -1969,6 +1969,10 @@ msgstr "{0} Balance"
 msgid "{0} Faucet"
 msgstr "{0} Faucet"
 
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "{0} is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
+msgstr "{0} is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
+
 #: src/modules/staking/StakingPanel.tsx
 msgid "{d}d"
 msgstr "{d}d"
@@ -1980,6 +1984,10 @@ msgstr "{h}h"
 #: src/modules/staking/StakingPanel.tsx
 msgid "{m}m"
 msgstr "{m}m"
+
+#: src/components/infoTooltips/FrozenWarning.tsx
+msgid "{symbol} is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
+msgstr "{symbol} is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"
