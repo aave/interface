@@ -2,17 +2,17 @@
 # yarn lockfile v1
 
 
-"@aave/contract-helpers@1.3.2":
-  version "1.3.2"
-  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.3.2.tgz#b85795d762aa1fad03d9ff1cbf8299e2e822870e"
-  integrity sha512-4iyivLgo5EzkFEaX5p6Ul6k5HrHvDhrE69Z7ZSotbCwMtTN2IG5Zc5uS/c2/XsefZNnLM5S3MvqH7/W9sB8drw==
+"@aave/contract-helpers@1.3.3":
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.3.3.tgz#ed157f6b6843881b8fc924dafac643ff18f2ade5"
+  integrity sha512-xJ24N36ktz5VD1VVUyEvOVVIgxjknWsMfhWnJnpDLT+Zk01yQW0gsxbpdbR5QXwq1d2kx0+ECElU2gDPc8IaQw==
   dependencies:
     isomorphic-unfetch "^3.1.0"
 
-"@aave/math-utils@1.3.2":
-  version "1.3.2"
-  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.3.2.tgz#75b092f7b67401f089d30fbc5c65e9bb37c53bf5"
-  integrity sha512-aF26o2NjrVXTPXy++vp2vN8rW0olOFysmnFcFmCWTn9OwxDVVRISB54T+5eRN2KRm6+Uanjai8MNDkVdpmrsxA==
+"@aave/math-utils@1.3.3":
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.3.3.tgz#ea3a4ec31b70c1a7461215b98c4338a0daa45c52"
+  integrity sha512-n4WzB9wzgwgqgEl9tyiP49AegqIe7qEYfioPgCTOGITDkACDT5QcURuGk0AwSaMioyJ+6yQk5A3V49/3+NlyzQ==
   dependencies:
     bignumber.js "^9.0.1"
     tslib "^2.3.1"
@@ -1126,6 +1126,26 @@
   dependencies:
     "@babel/helper-validator-identifier" "^7.16.7"
     to-fast-properties "^2.0.0"
+
+"@coinbase/wallet-sdk@3.1.0", "@coinbase/wallet-sdk@^3.0.4":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@coinbase/wallet-sdk/-/wallet-sdk-3.1.0.tgz#294fbd52cf7262b68137731ac414f0cf5a0580a3"
+  integrity sha512-8IGfVklv/CMfCT4qd9KfL0IwlINsIgSlW1oQB/or8uSY9wAqoY8lIoQVpOyFx7YDK094Xfd9alhulZtRZNJBjw==
+  dependencies:
+    "@metamask/safe-event-emitter" "2.0.0"
+    bind-decorator "^1.0.11"
+    bn.js "^5.1.1"
+    clsx "^1.1.0"
+    eth-block-tracker "4.4.3"
+    eth-json-rpc-filters "4.2.2"
+    eth-rpc-errors "4.0.2"
+    js-sha256 "0.9.0"
+    json-rpc-engine "6.1.0"
+    keccak "^3.0.1"
+    preact "^10.5.9"
+    qs "^6.10.3"
+    rxjs "^6.6.3"
+    stream-browserify "^3.0.0"
 
 "@cypress/request@^2.88.6":
   version "2.88.10"
@@ -3466,14 +3486,14 @@
     "@web3-react/types" "^6.0.7"
     tiny-invariant "^1.0.6"
 
-"@web3-react/walletlink-connector@^6.2.13":
-  version "6.2.13"
-  resolved "https://registry.yarnpkg.com/@web3-react/walletlink-connector/-/walletlink-connector-6.2.13.tgz#7de4c0a02a8372fed9282ee56a0abeb76b8e811d"
-  integrity sha512-rMjppw8167pNKphOYQcodIvuUgv3z/N1vLbGqmy1P70alhn4ZXCr/Ft7TR8zT6LUtkrqCSbWXbUt/lZSssE+xA==
+"@web3-react/walletlink-connector@^6.2.14":
+  version "6.2.14"
+  resolved "https://registry.yarnpkg.com/@web3-react/walletlink-connector/-/walletlink-connector-6.2.14.tgz#4adf7b94de5d7018a9fc9e3b6009e78cd33d6e15"
+  integrity sha512-F2v1Uu7Nhptt7AaUEJpz69+NVUJxyUfDEA5B/Vr1HkqAL1aJM5gv6B1m4M/VdXKLpmjZ9Kg6X0+VUEyAx1eQ4w==
   dependencies:
+    "@coinbase/wallet-sdk" "^3.0.4"
     "@web3-react/abstract-connector" "^6.0.7"
     "@web3-react/types" "^6.0.7"
-    walletlink "^2.5.0"
 
 "@wry/context@^0.6.0":
   version "0.6.1"
@@ -9052,6 +9072,13 @@ qrcode@1.4.4:
     pngjs "^3.3.0"
     yargs "^13.2.4"
 
+qs@^6.10.3:
+  version "6.10.3"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.10.3.tgz#d6cde1b2ffca87b5aa57889816c5f81535e22e8e"
+  integrity sha512-wr7M2E0OFRfIfJZjKGieI8lBKb7fRCH4Fv5KNPEs7gJ8jadvotdsS08PzOKR7opXhZ/Xkjtt3WF9g38drmyRqQ==
+  dependencies:
+    side-channel "^1.0.4"
+
 qs@~6.5.2:
   version "6.5.3"
   resolved "https://registry.npmjs.org/qs/-/qs-6.5.3.tgz"
@@ -10674,25 +10701,6 @@ vfile@^5.0.0:
     is-buffer "^2.0.0"
     unist-util-stringify-position "^3.0.0"
     vfile-message "^3.0.0"
-
-walletlink@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/walletlink/-/walletlink-2.5.0.tgz#b8db10f4d9f124084feb16d1e2b2d08ba8c20d21"
-  integrity sha512-PBJmK5tZmonwKPABBI2/optaZ11O4kKmkmnU5eLKhk4XRlal5qJ1igZ4U5j3w6w8wxxdhCWpLMHzGWt3n/p7mw==
-  dependencies:
-    "@metamask/safe-event-emitter" "2.0.0"
-    bind-decorator "^1.0.11"
-    bn.js "^5.1.1"
-    clsx "^1.1.0"
-    eth-block-tracker "4.4.3"
-    eth-json-rpc-filters "4.2.2"
-    eth-rpc-errors "4.0.2"
-    js-sha256 "0.9.0"
-    json-rpc-engine "6.1.0"
-    keccak "^3.0.1"
-    preact "^10.5.9"
-    rxjs "^6.6.3"
-    stream-browserify "^3.0.0"
 
 wcwidth@^1.0.1:
   version "1.0.1"
