@@ -69,10 +69,16 @@ export function getMaxAmountAvailableToBorrow(
 }
 
 export function assetCanBeBorrowedByUser(
-  { borrowingEnabled, isActive, borrowableInIsolation, eModeCategoryId }: ComputedReserveData,
+  {
+    borrowingEnabled,
+    isActive,
+    borrowableInIsolation,
+    eModeCategoryId,
+    isFrozen,
+  }: ComputedReserveData,
   user: ExtendedFormattedUser
 ) {
-  if (!borrowingEnabled || !isActive) return false;
+  if (!borrowingEnabled || !isActive || isFrozen) return false;
   if (user?.isInEmode && eModeCategoryId !== user.userEmodeCategoryId) return false;
   if (user?.isInIsolationMode && !borrowableInIsolation) return false;
   return true;

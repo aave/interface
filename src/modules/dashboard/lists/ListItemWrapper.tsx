@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 import { AMPLWarning } from '../../../components/infoTooltips/AMPLWarning';
+import { FrozenWarning } from '../../../components/infoTooltips/FrozenWarning';
 import { ListColumn } from '../../../components/lists/ListColumn';
 import { ListItem } from '../../../components/lists/ListItem';
 import { Link, ROUTES } from '../../../components/primitives/Link';
@@ -15,6 +16,7 @@ interface ListItemWrapperProps {
   detailsAddress: string;
   children: ReactNode;
   currentMarket: CustomMarket;
+  frozen?: boolean;
 }
 
 export const ListItemWrapper = ({
@@ -24,6 +26,7 @@ export const ListItemWrapper = ({
   name,
   detailsAddress,
   currentMarket,
+  frozen,
   ...rest
 }: ListItemWrapperProps) => {
   return (
@@ -41,8 +44,8 @@ export const ListItemWrapper = ({
             </Typography>
           </Tooltip>
         </Link>
-
-        {symbol === 'AMPL' && <AMPLWarning />}
+        {frozen && <FrozenWarning symbol={symbol} />}
+        {!frozen && symbol === 'AMPL' && <AMPLWarning />}
       </ListColumn>
 
       {children}

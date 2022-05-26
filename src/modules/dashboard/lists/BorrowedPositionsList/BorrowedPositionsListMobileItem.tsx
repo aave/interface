@@ -42,6 +42,7 @@ export const BorrowedPositionsListMobileItem = ({
       name={name}
       underlyingAsset={reserve.underlyingAsset}
       currentMarket={currentMarket}
+      frozen={reserve.isFrozen}
     >
       <ListValueRow
         title={<Trans>Debt</Trans>}

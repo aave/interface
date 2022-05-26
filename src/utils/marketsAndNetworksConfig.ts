@@ -162,6 +162,29 @@ export const getProvider = (chainId: ChainId): ethersProviders.Provider => {
   return providers[chainId];
 };
 
+const ammDisableProposal = 'https://app.aave.com/governance/proposal/?proposalId=44';
+
+export const frozenProposalMap: Record<string, string> = {
+  ['UST']: 'https://app.aave.com/governance/proposal/?proposalId=75',
+  ['KNC']: 'https://app.aave.com/governance/proposal/?proposalId=69',
+  ['UNIDAIUSDC']: ammDisableProposal,
+  ['UNIWBTCUSDC']: ammDisableProposal,
+  ['UNIDAIWETH']: ammDisableProposal,
+  ['UNIUSDCWETH']: ammDisableProposal,
+  ['UNIAAVEWETH']: ammDisableProposal,
+  ['UNIBATWETH']: ammDisableProposal,
+  ['UNICRVWETH']: ammDisableProposal,
+  ['UNILINKWETH']: ammDisableProposal,
+  ['UNIMKRWETH']: ammDisableProposal,
+  ['UNIRENWETH']: ammDisableProposal,
+  ['UNISNXWETH']: ammDisableProposal,
+  ['UNIUNIWETH']: ammDisableProposal,
+  ['UNIWBTCWETH']: ammDisableProposal,
+  ['UNIYFIWETH']: ammDisableProposal,
+  ['BPTWBTCWETH']: ammDisableProposal,
+  ['BPTBALWETH']: ammDisableProposal,
+};
+
 // reexport so we can forbit config import
 export { CustomMarket };
 export type { MarketDataType, NetworkConfig };

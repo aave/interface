@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 import { AMPLWarning } from '../../../components/infoTooltips/AMPLWarning';
+import { FrozenWarning } from '../../../components/infoTooltips/FrozenWarning';
 import { ListMobileItem } from '../../../components/lists/ListMobileItem';
 
 interface ListMobileItemWrapperProps {
@@ -12,6 +13,7 @@ interface ListMobileItemWrapperProps {
   children: ReactNode;
   loading?: boolean;
   currentMarket?: CustomMarket;
+  frozen?: boolean;
 }
 
 export const ListMobileItemWrapper = ({
@@ -22,6 +24,7 @@ export const ListMobileItemWrapper = ({
   underlyingAsset,
   loading,
   currentMarket,
+  frozen,
 }: ListMobileItemWrapperProps) => {
   return (
     <ListMobileItem
@@ -29,7 +32,9 @@ export const ListMobileItemWrapper = ({
       iconSymbol={iconSymbol}
       name={name}
       underlyingAsset={underlyingAsset}
-      warningComponent={symbol === 'AMPL' && <AMPLWarning />}
+      warningComponent={
+        frozen ? <FrozenWarning symbol={symbol} /> : symbol === 'AMPL' ? <AMPLWarning /> : undefined
+      }
       loading={loading}
       currentMarket={currentMarket}
     >

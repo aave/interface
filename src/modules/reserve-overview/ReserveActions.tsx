@@ -133,6 +133,43 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   const eModeBorrowDisabled =
     user?.isInEmode && poolReserve.eModeCategoryId !== user.userEmodeCategoryId;
 
+  // Remove all supply/borrow elements and display warning message instead for frozen reserves
+  if (poolReserve.isFrozen) {
+    return (
+      <PaperWrapper>
+        {balance?.amount !== '0' && (
+          <Row
+            caption={<Trans>Wallet balance</Trans>}
+            align="flex-start"
+            mb={6}
+            captionVariant="description"
+          >
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+              <FormattedNumber
+                value={balance?.amount || 0}
+                variant="secondary14"
+                symbol={poolReserve.symbol}
+              />
+              <FormattedNumber
+                value={balance?.amountUSD || '0'}
+                variant="helperText"
+                color="text.muted"
+                symbolsColor="text.muted"
+                symbol="USD"
+              />
+            </Box>
+          </Row>
+        )}
+        <Alert sx={{ mb: '12px' }} severity="error" icon={true}>
+          <Trans>
+            Since this asset is frozen, the only available actions are withdraw and repay which can
+            be accessed from the <Link href={ROUTES.dashboard}>Dashboard</Link>
+          </Trans>
+        </Alert>
+      </PaperWrapper>
+    );
+  }
+
   return (
     <PaperWrapper>
       {balance?.amount === '0' ? (
@@ -245,7 +282,7 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
       {!eModeBorrowDisabled && isolationModeBorrowDisabled && (
         <Alert sx={{ mb: '12px' }} severity="info" icon={false}>
           <Trans>
-            Borrowing is navailable because you’re using Isolation mode. To manage Isolation mode
+            Borrowing is unavailable because you’re using Isolation mode. To manage Isolation mode
             visit your <Link href={ROUTES.dashboard}>Dashboard</Link>.
           </Trans>
         </Alert>
