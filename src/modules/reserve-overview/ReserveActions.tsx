@@ -210,11 +210,13 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
         )}
       </Row>
 
-      {balance?.amount !== '0' && user?.totalCollateralMarketReferenceCurrency === '0' && (
-        <Alert sx={{ mb: '12px' }} severity="info" icon={false}>
-          <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
-        </Alert>
-      )}
+      {balance?.amount !== '0' &&
+        user?.totalCollateralMarketReferenceCurrency === '0' &&
+        !poolReserve.isFrozen && (
+          <Alert sx={{ mb: '12px' }} severity="info" icon={false}>
+            <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
+          </Alert>
+        )}
 
       {isolationModeBorrowDisabled && (
         <Alert sx={{ mb: '12px' }} severity="warning" icon={false}>
@@ -256,14 +258,18 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
       <Stack direction="row" spacing={2}>
         <Button
           variant="contained"
-          disabled={balance?.amount === '0'}
+          disabled={balance?.amount == '0' || poolReserve.isFrozen}
           onClick={() => openSupply(underlyingAsset)}
           fullWidth={downToXSM}
         >
           <Trans>Supply</Trans> {downToXSM && poolReserve.symbol}
         </Button>
         <Button
-          disabled={!canBorrow || user?.totalCollateralMarketReferenceCurrency === '0'}
+          disabled={
+            !canBorrow ||
+            user?.totalCollateralMarketReferenceCurrency === '0' ||
+            poolReserve.isFrozen
+          }
           variant="contained"
           onClick={() => openBorrow(underlyingAsset)}
           fullWidth={downToXSM}

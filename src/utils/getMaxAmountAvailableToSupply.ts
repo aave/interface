@@ -14,6 +14,10 @@ export function getMaxAmountAvailableToSupply(
   poolReserve: ComputedReserveData,
   underlyingAsset: string
 ) {
+  if (poolReserve.isFrozen) {
+    return '0';
+  }
+
   // Calculate max amount to supply
   let maxAmountToSupply = valueToBigNumber(walletBalance);
 
