@@ -68,7 +68,7 @@ export function CollateralRepayModalContent({
   ) as ComputedUserReserveData;
 
   const [_amount, setAmount] = useState('');
-  const [maxSlippage, setMaxSlippage] = useState('0.1');
+  const [maxSlippage, setMaxSlippage] = useState('0.5');
 
   const amountRef = useRef<string>('');
 
