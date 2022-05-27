@@ -147,24 +147,24 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     //@ts-expect-error ethereum doesnt necessarly exist
     const { ethereum } = window;
 
-    if (!ethereum?.providers) {
-      return false;
-    }
-
     let provider;
-    switch (providerName) {
-      case 'CoinBase':
-        provider = ethereum.providers.find(
+    if (!ethereum?.providers) {
+      provider = ethereum;
+    } else {
+      switch (providerName) {
+        case 'CoinBase':
+          provider = ethereum.providers.find(
+            //@ts-expect-error no type
+            ({ isCoinbaseWallet, isCoinbaseBrowser }) => isCoinbaseWallet || isCoinbaseBrowser
+          );
+          break;
+        case 'MetaMask':
           //@ts-expect-error no type
-          ({ isCoinbaseWallet, isCoinbaseBrowser }) => isCoinbaseWallet || isCoinbaseBrowser
-        );
-        break;
-      case 'MetaMask':
-        //@ts-expect-error no type
-        provider = ethereum.providers.find(({ isMetaMask }) => isMetaMask);
-        break;
-      default:
-        return false;
+          provider = ethereum.providers.find(({ isMetaMask }) => isMetaMask);
+          break;
+        default:
+          return false;
+      }
     }
 
     if (provider) {
@@ -182,15 +182,12 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       if (triedSafe) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const injectedProvider = (window as any)?.ethereum;
-        alert(`Is browser ${injectedProvider?.isCoinbaseBrowser}`);
         if (injectedProvider?.isCoinbaseBrowser) {
           const canConnectToCoinbase = activateInjectedProvider('CoinBase');
-          alert(`Can connect ${canConnectToCoinbase}`);
           if (canConnectToCoinbase) {
             connectWallet(WalletType.INJECTED)
               .then(() => {
                 setTriedCoinbase(true);
-                alert(`connected`);
               })
               .catch(() => {
                 setTriedCoinbase(true);
