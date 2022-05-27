@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-05-17 18:05\n"
+"PO-Revision-Date: 2022-05-26 18:05\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -320,13 +320,13 @@ msgstr ""
 msgid "Borrowing is currently unavailable for {0}."
 msgstr "L'emprunt n'est actuellement pas disponible pour {0}."
 
-#: src/modules/reserve-overview/ReserveActions.tsx
-msgid "Borrowing is navailable because you’re using Isolation mode. To manage Isolation mode visit your <0>Dashboard</0>."
-msgstr "L'emprunt n'est pas disponible car vous utilisez le mode Isolement. Pour gérer le mode d'isolation, visitez votre <0>tableau de bord</0>."
-
 #: src/ui-config/errorMapping.tsx
 msgid "Borrowing is not enabled"
 msgstr "L'emprunt n'est pas activé"
+
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "Borrowing is unavailable because you’re using Isolation mode. To manage Isolation mode visit your <0>Dashboard</0>."
+msgstr ""
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) and Isolation mode. To manage E-Mode and Isolation mode visit your <0>Dashboard</0>."
@@ -1207,6 +1207,10 @@ msgstr "Montrer"
 msgid "Show assets with 0 balance"
 msgstr "Afficher les actifs avec 0 solde"
 
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "Since this asset is frozen, the only available actions are withdraw and repay which can be accessed from the <0>Dashboard</0>"
+msgstr ""
+
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
 msgstr "Comme il s'agit d'un réseau de test, vous pouvez obtenir n'importe lequel des actifs si vous avez ETH dans votre portefeuille"
@@ -1701,6 +1705,7 @@ msgstr "Résultats du vote"
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
+#: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Wallet balance"
 msgstr "Solde du portefeuille"
 
@@ -1974,6 +1979,10 @@ msgstr "{0} Balance"
 msgid "{0} Faucet"
 msgstr "{0} Faucet"
 
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "{0} is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
+msgstr ""
+
 #: src/modules/staking/StakingPanel.tsx
 msgid "{d}d"
 msgstr "{d}d"
@@ -1985,6 +1994,10 @@ msgstr "{h}h"
 #: src/modules/staking/StakingPanel.tsx
 msgid "{m}m"
 msgstr "{m}m"
+
+#: src/components/infoTooltips/FrozenWarning.tsx
+msgid "{symbol} is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
+msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"

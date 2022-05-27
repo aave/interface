@@ -226,7 +226,6 @@ jobs:
           YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v3-markets/${{ matrix.market }}-v3-additional.config.json
 
   deploy_production:
-    runs-on: ubuntu-latest
     if: |
       github.event_name == 'push' &&
       github.ref == 'refs/heads/main'
@@ -234,64 +233,19 @@ jobs:
       - deploy
       - cypress_full_v2
       - cypress_full_v3
-    steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
-
-      - name: crust
-        uses: crustio/ipfs-crust-action@18f5ab4e8496351cfaca10a55ced7119cb0fe677 # v2.0.6
-        continue-on-error: true
-        timeout-minutes: 3
-        with:
-          cid: '${{ needs.deploy.outputs.pinata_hash }}'
-          seeds: ${{ secrets.CRUST_SEEDS }}
-
-      - uses: actions/setup-node@9ced9a43a244f3ac94f13bfd896db8c8f30da67a # v3.0.0
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'yarn'
-      - name: install
-        run: yarn add axios
-
-      - name: Update prod DNS
-        id: deploy
-        env:
-          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
-          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
-          HASH: '${{ needs.deploy.outputs.pinata_hash }}'
-          CF_DEPLOYMENT_DOMAIN: app.aave.com
-        run: node scripts/update-cloudflare.js
+    uses: ./.github/workflows/deploy-prod.yml
+    with:
+      PINATA_HASH: '${{ needs.deploy.outputs.pinata_hash }}'
+    secrets: inherit
 
   deploy_production_no_cypress:
-    runs-on: ubuntu-latest
     if: |
       github.event_name == 'push' &&
       github.ref == 'refs/heads/main' &&
       contains(github.event.head_commit.message, '[skip cypress]')
     needs:
       - deploy
-    steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
-
-      - name: crust
-        uses: crustio/ipfs-crust-action@18f5ab4e8496351cfaca10a55ced7119cb0fe677 # v2.0.6
-        continue-on-error: true
-        timeout-minutes: 3
-        with:
-          cid: '${{ needs.deploy.outputs.pinata_hash }}'
-          seeds: ${{ secrets.CRUST_SEEDS }}
-
-      - uses: actions/setup-node@9ced9a43a244f3ac94f13bfd896db8c8f30da67a # v3.0.0
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'yarn'
-      - name: install
-        run: yarn add axios
-
-      - name: Update prod DNS
-        id: deploy
-        env:
-          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
-          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
-          HASH: '${{ needs.deploy.outputs.pinata_hash }}'
-          CF_DEPLOYMENT_DOMAIN: app.aave.com
-        run: node scripts/update-cloudflare.js
+    uses: ./.github/workflows/deploy-prod.yml
+    with:
+      PINATA_HASH: '${{ needs.deploy.outputs.pinata_hash }}'
+    secrets: inherit

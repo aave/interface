@@ -99,6 +99,21 @@ export const borrowsUnavailable = (skip: SkipType) => {
   });
 };
 
+export const borrowsAvailable = (skip: SkipType) => {
+  return describe('Check that borrowing available', () => {
+    skipSetup(skip);
+    it('Open Dashboard', () => {
+      doSwitchToDashboardBorrowView();
+    });
+    it('Check that Borrow available', () => {
+      cy.get('[data-cy^="dashboardBorrowListItem_"]')
+        .first()
+        .contains('Borrow')
+        .should('not.be.disabled');
+    });
+  });
+};
+
 export const rewardIsNotAvailable = (skip: SkipType) => {
   return describe('Check that reward not available', () => {
     skipSetup(skip);
@@ -194,7 +209,7 @@ export const checkDashboardHealthFactor = (
   skip: SkipType
 ) => {
   return describe(`Check that health factor ${
-    value ? 'is ' + value : 'in range from ' + valueFrom + 'till ' + valueTo
+    value ? 'is ' + value : 'in range from ' + valueFrom + ' till ' + valueTo
   }`, () => {
     skipSetup(skip);
     it('Open dashboard page', () => {
@@ -212,6 +227,50 @@ export const checkDashboardHealthFactor = (
         }
       });
       cy.get(`[data-cy=HealthFactorTopPannel]`);
+    });
+  });
+};
+
+export const checkEmodeActivatingDisabled = (
+  {
+    turnOn,
+  }: {
+    turnOn: boolean;
+  },
+  skip: SkipType
+) => {
+  return describe(`${turnOn ? 'Turn on E-mode' : 'Turn off E-mode'}`, () => {
+    skipSetup(skip);
+    it('Open E-mode switcher modal', () => {
+      doSwitchToDashboardBorrowView();
+      cy.get('[data-cy=emode-open]').click();
+      if (turnOn)
+        cy.get(`[data-cy="emode-enable"]`).should('have.class', 'MuiButton-disableElevation');
+      else cy.get(`[data-cy="emode-disable"]`).should('have.class', 'MuiButton-disableElevation');
+    });
+  });
+};
+
+export const verifyCountOfBorrowAssets = (
+  {
+    assets,
+  }: {
+    assets: { shortName: string; fullName: string }[];
+  },
+  skip: SkipType
+) => {
+  return describe(`Verify that count available borrowed assets is ${assets.length}`, () => {
+    skipSetup(skip);
+    assets.forEach(($asset) => {
+      it(`Verifying that ${$asset.shortName} is exist`, () => {
+        cy.get(`[data-cy="dashboardBorrowListItem_${$asset.shortName.toUpperCase()}"]`).should(
+          'be.visible'
+        );
+      });
+    });
+    it('Verifying length', () => {
+      doSwitchToDashboardBorrowView();
+      cy.get('[data-cy*=dashboardBorrowListItem_]').should('have.length', assets.length);
     });
   });
 };
