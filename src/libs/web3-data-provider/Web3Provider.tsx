@@ -147,24 +147,24 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     //@ts-expect-error ethereum doesnt necessarly exist
     const { ethereum } = window;
 
-    let provider;
     if (!ethereum?.providers) {
-      provider = ethereum;
-    } else {
-      switch (providerName) {
-        case 'CoinBase':
-          provider = ethereum.providers.find(
-            //@ts-expect-error no type
-            ({ isCoinbaseWallet, isCoinbaseBrowser }) => isCoinbaseWallet || isCoinbaseBrowser
-          );
-          break;
-        case 'MetaMask':
+      return true;
+    }
+
+    let provider;
+    switch (providerName) {
+      case 'CoinBase':
+        provider = ethereum.providers.find(
           //@ts-expect-error no type
-          provider = ethereum.providers.find(({ isMetaMask }) => isMetaMask);
-          break;
-        default:
-          return false;
-      }
+          ({ isCoinbaseWallet, isCoinbaseBrowser }) => isCoinbaseWallet || isCoinbaseBrowser
+        );
+        break;
+      case 'MetaMask':
+        //@ts-expect-error no type
+        provider = ethereum.providers.find(({ isMetaMask }) => isMetaMask);
+        break;
+      default:
+        return false;
     }
 
     if (provider) {
