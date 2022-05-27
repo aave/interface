@@ -126,11 +126,11 @@ jobs:
 
       - name: pinata
         id: pinata
-        uses: aave/pinata-action@v1.1
+        uses: aave/pinata-action@b03be403ea86f79077ea9cc0b835c3295faa12dd
         with:
           PINATA_API_KEY: ${{ secrets.PINATA_API_KEY }}
           PINATA_SECRET_KEY: ${{ secrets.PINATA_SECRET_KEY }}
-          PIN_ALIAS: "${{ format('pull_request_{0}', github.event.workflow_run.id) }}"
+          PIN_ALIAS: 'pull_request_${{ env.PR_NUMBER }}'
           BUILD_LOCATION: './out'
           CID_VERSION: 1
 
