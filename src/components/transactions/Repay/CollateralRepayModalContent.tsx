@@ -68,7 +68,7 @@ export function CollateralRepayModalContent({
   ) as ComputedUserReserveData;
 
   const [_amount, setAmount] = useState('');
-  const [maxSlippage, setMaxSlippage] = useState('0.5');
+  const [maxSlippage, setMaxSlippage] = useState('0.1');
 
   const amountRef = useRef<string>('');
 
@@ -90,6 +90,7 @@ export function CollateralRepayModalContent({
     swapOut: { ...poolReserve, amount: amountRef.current },
     max: isMaxSelected,
     skip: mainTxState.loading,
+    maxSlippage,
   });
 
   // Calculations to get the max repayable debt depending on the balance and value of the
@@ -266,7 +267,6 @@ export function CollateralRepayModalContent({
         rateMode={debtType}
         priceRoute={priceRoute}
         blocked={blockingError !== undefined}
-        maxSlippage={Number(maxSlippage)}
       />
     </>
   );
