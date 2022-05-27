@@ -182,12 +182,15 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       if (triedSafe) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const injectedProvider = (window as any)?.ethereum;
+        alert(`Is browser ${injectedProvider?.isCoinbaseBrowser}`);
         if (injectedProvider?.isCoinbaseBrowser) {
           const canConnectToCoinbase = activateInjectedProvider('CoinBase');
+          alert(`Can connect ${canConnectToCoinbase}`);
           if (canConnectToCoinbase) {
             connectWallet(WalletType.INJECTED)
               .then(() => {
                 setTriedCoinbase(true);
+                alert(`connected`);
               })
               .catch(() => {
                 setTriedCoinbase(true);
