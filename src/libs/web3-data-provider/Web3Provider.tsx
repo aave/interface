@@ -154,8 +154,10 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     let provider;
     switch (providerName) {
       case 'CoinBase':
-        //@ts-expect-error no type
-        provider = ethereum.providers.find(({ isCoinbaseWallet }) => isCoinbaseWallet);
+        provider = ethereum.providers.find(
+          //@ts-expect-error no type
+          ({ isCoinbaseWallet, isCoinbaseBrowser }) => isCoinbaseWallet || isCoinbaseBrowser
+        );
         break;
       case 'MetaMask':
         //@ts-expect-error no type
