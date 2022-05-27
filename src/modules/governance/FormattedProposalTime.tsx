@@ -21,6 +21,7 @@ export function FormattedProposalTime({
   executionTimeWithGracePeriod,
 }: FormattedProposalTimeProps) {
   const timestamp = useCurrentTimestamp(30);
+
   if ([ProposalState.Active, ProposalState.Pending].includes(state)) {
     return (
       <Typography component="span" variant="caption">
