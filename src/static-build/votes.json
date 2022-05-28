@@ -23514,8 +23514,17 @@
         "transactionHash": "0xf7f7d1e627773c299caf28d7da6aebd5a234ca4059e59aaad75794a56d078dac",
         "timestamp": 1653651443,
         "blockNumber": 14853941
+      },
+      {
+        "proposalId": 77,
+        "voter": "0xdd45542cCf17A16F5c515c20db7F7C7D8bB74Cc5",
+        "support": true,
+        "votingPower": 65498,
+        "transactionHash": "0x96a5ba7845b5054bba9a7751b10549ad17972f7a3fef4eb21c328ead9ef2e6d8",
+        "timestamp": 1653653267,
+        "blockNumber": 14854078
       }
     ],
-    "finished": false
+    "finished": true
   }
 ]
