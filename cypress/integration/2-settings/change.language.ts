@@ -20,4 +20,12 @@ describe('Changing the language', () => {
     cy.get('a[href*="/markets/"]').contains('Marchés');
     cy.get('#more-button').contains('Plus');
   });
+  it('User must be able to switch language back to English', () => {
+    cy.get('#settings-button').click();
+    cy.contains('Language').click();
+    cy.contains('Anglais').click();
+    cy.reload();
+    cy.get('a[href*="/markets/"]').contains('Markets');
+    cy.get('#more-button').contains('More');
+  });
 });
