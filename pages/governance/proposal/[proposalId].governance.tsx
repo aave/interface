@@ -64,6 +64,7 @@ export async function getStaticProps({ params }: { params: { proposalId: string 
     props: {
       proposal,
       ipfs: IpfsFetcher.get(Number(params.proposalId)),
+      prerendered: true,
       // votes: await VoteFetcher.get(
       //   Number(params.proposalId),
       //   proposal.startBlock,
@@ -76,6 +77,7 @@ export async function getStaticProps({ params }: { params: { proposalId: string 
 interface ProposalPageProps {
   ipfs?: IpfsType;
   proposal?: CustomProposalType;
+  prerendered?: boolean;
 }
 
 const CenterAlignedImage = styled('img')({
@@ -88,7 +90,11 @@ const StyledLink = styled('a')({
   color: 'inherit',
 });
 
-export default function ProposalPage({ proposal: initialProposal, ipfs }: ProposalPageProps) {
+export default function ProposalPage({
+  proposal: initialProposal,
+  ipfs,
+  prerendered,
+}: ProposalPageProps) {
   const [url, setUrl] = useState('');
   const [proposal, setProposal] = useState(initialProposal);
   const [loading, setLoading] = useState(!proposal || !isProposalStateImmutable(proposal));
@@ -458,8 +464,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                         <Trans>Forum discussion</Trans>
                       </Button>
                     )}
-                    {Math.floor(new Date().getTime() / 1000) - proposal.creationTimestamp > // only show the button when at least two hours have passed since creation
-                      60 * 60 * 2 && (
+                    {prerendered && ( // only render the button for prerendered proposals as fro them we can be sure ci already ran
                       <Button
                         component={Link}
                         target="_blank"
