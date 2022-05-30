@@ -442,7 +442,7 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                       </Typography>
                     </Row>
                   )}
-                  <Box sx={{ mt: 10, mb: 2, display: 'flex', justifyContent: 'space-between' }}>
+                  <Box sx={{ mt: 10, mb: 2, display: 'flex', gap: 2 }}>
                     {ipfs?.discussions && (
                       <Button
                         component={Link}
@@ -458,22 +458,24 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                         <Trans>Forum discussion</Trans>
                       </Button>
                     )}
-                    <Button
-                      component={Link}
-                      target="_blank"
-                      href={`https://github.com/bgd-labs/seatbelt-for-ghosts/tree/master/reports/Aave/0xEC568fffba86c094cf06b22134B23074DFE2252c/${String(
-                        proposal.id
-                      ).padStart(3, '0')}.md`}
-                      variant="outlined"
-                      color="info"
-                      endIcon={
-                        <SvgIcon>
-                          <ExternalLinkIcon />
-                        </SvgIcon>
-                      }
-                    >
-                      <Trans>Simulation report</Trans>
-                    </Button>
+                    {Math.floor(new Date().getTime() / 1000) - proposal.creationTimestamp > // only show the button when at least two hours have passed since creation
+                      60 * 60 * 2 && (
+                      <Button
+                        component={Link}
+                        target="_blank"
+                        href={`https://github.com/bgd-labs/seatbelt-for-ghosts/tree/master/reports/Aave/0xEC568fffba86c094cf06b22134B23074DFE2252c/${String(
+                          proposal.id
+                        ).padStart(3, '0')}.md`}
+                        variant="outlined"
+                        endIcon={
+                          <SvgIcon>
+                            <ExternalLinkIcon />
+                          </SvgIcon>
+                        }
+                      >
+                        <Trans>Seatbelt report</Trans>
+                      </Button>
+                    )}
                   </Box>
                 </>
               ) : (
