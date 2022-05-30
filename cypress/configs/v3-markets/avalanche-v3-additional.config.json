@@ -2,7 +2,8 @@
   "integrationFolder": "cypress/integration/1-v3-markets/2-avalanche-v3-market",
   "testFiles": [
     "swap.avalanche-v3.spec.ts",
-    "e-mode.avalanche-v3.spec.ts"
+    "e-mode.avalanche-v3.spec.ts",
+    "isolated-mode.avalanche-v3.spec.ts"
   ],
   "viewportWidth": 1200,
   "viewportHeight": 800,

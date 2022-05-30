@@ -2,7 +2,8 @@
   "integrationFolder": "cypress/integration/1-v3-markets/3-polygon-v3-market",
   "testFiles": [
     "swap.polygon-v3.spec.ts",
-    "e-mode.polygon-v3.spec.ts"
+    "e-mode.polygon-v3.spec.ts",
+    "isolated-mode.polygon-v3.spec.ts"
   ],
   "viewportWidth": 1200,
   "viewportHeight": 800,
