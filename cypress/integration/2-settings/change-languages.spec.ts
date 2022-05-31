@@ -1,55 +1,45 @@
 import { configEnvWithTenderlyMainnetFork } from '../../support/steps/configuration.steps';
 
-
-const switchLanguageStep = (language:string, languageTo: string) => {
+const switchLanguageStep = (language: string, languageTo: string) => {
   cy.get('#settings-button').click();
   cy.contains(language).click();
   cy.contains(languageTo).click();
-  cy.reload();
-}
+  cy.get('a[href*="/"]').click({ force: true });
+};
 
-describe('Changing the language', () => {
+const verifyTranslation = (markets: string, dashboard: string) => {
+  cy.get('a[href*="/markets/"]').contains(markets);
+  cy.get('a[href*="/"]').contains(dashboard);
+};
+
+describe('CASE1:Changing the language to Spanish', () => {
   configEnvWithTenderlyMainnetFork({});
 
-  describe('CASE1: description', ()=>{
-    it('step1', ()=>{
-
-    })
-    it('verification ', ()=>{
-
-    });
+  it('step1: Switch language from English to Spanish', () => {
+    switchLanguageStep('Language', 'Spanish');
   });
 
-  it('CASE: SWITCH LANGUAGE FROM ENG TO SPANISH', () => {
-    switchLanguageStep('Language','Spanish');
+  it('step2: Verify Spanish translation', () => {
+    verifyTranslation('Mercados', 'Panel');
+  });
+});
+
+describe('CASE2: Changing the Language from Spanish to French', () => {
+  it('step1: Change language from Spanish to French', () => {
+    switchLanguageStep('Idioma', 'Francés');
   });
 
-  it('CASE2:VERIFY SPANISH TRANSLATION', () => {
-    cy.get('a[href*="/markets/"]').contains('Mercados');
-    cy.get('a[href*="/"]').contains('Panel');
+  it('step2:Verify the French Translation', () => {
+    verifyTranslation('Marchés', 'Plus');
+  });
+});
+
+describe('CASE3: Change language from French to English', () => {
+  it('step1:Change the language from French to English', () => {
+    switchLanguageStep('Language', 'Anglais');
   });
 
-  it('CASE3:SWITCH LANGUAGE FROM SPANISH TO FRENCH', () => {
-    cy.get('#settings-button').click();
-    cy.contains('Idioma').click(); // Spanish translation of the word Language
-    cy.contains('Francés').click();
-    cy.reload();
-  });
-
-  it('CASE4:VERIFY FRENCH TRANSLATION', () => {
-    cy.get('a[href*="/markets/"]').contains('Marchés');
-    cy.get('#more-button').contains('Plus');
-  });
-
-  it('CASE5: SWITCH LANGUAGE FROM FRENCH TO ENGLISH', () => {
-    cy.get('#settings-button').click();
-    cy.contains('Language').click();
-    cy.contains('Anglais').click();
-    cy.reload();
-  });
-
-  it('CASE6:VEIRFY ENGLISH TRANSLATION', () => {
-    cy.get('a[href*="/markets/"]').contains('Markets');
-    cy.get('#more-button').contains('More');
+  it('step2:Verify English Translation', () => {
+    verifyTranslation('Markets', 'More');
   });
 });
