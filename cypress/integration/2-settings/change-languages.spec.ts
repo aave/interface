@@ -1,14 +1,27 @@
-import { changeLanguageCase } from '../../support/steps/actions.steps';
 import { configEnvWithTenderlyMainnetFork } from '../../support/steps/configuration.steps';
+
+
+const switchLanguageStep = (language:string, languageTo: string) => {
+  cy.get('#settings-button').click();
+  cy.contains(language).click();
+  cy.contains(languageTo).click();
+  cy.reload();
+}
 
 describe('Changing the language', () => {
   configEnvWithTenderlyMainnetFork({});
 
+  describe('CASE1: description', ()=>{
+    it('step1', ()=>{
+
+    })
+    it('verification ', ()=>{
+
+    });
+  });
+
   it('CASE: SWITCH LANGUAGE FROM ENG TO SPANISH', () => {
-    cy.get('#settings-button').click();
-    cy.contains('Language').click();
-    cy.contains('Spanish').click();
-    cy.reload();
+    switchLanguageStep('Language','Spanish');
   });
 
   it('CASE2:VERIFY SPANISH TRANSLATION', () => {
@@ -16,7 +29,7 @@ describe('Changing the language', () => {
     cy.get('a[href*="/"]').contains('Panel');
   });
 
-  it('CASE3: SWITCH LANGUAGE FROM SPANISH TO FRENCH', () => {
+  it('CASE3:SWITCH LANGUAGE FROM SPANISH TO FRENCH', () => {
     cy.get('#settings-button').click();
     cy.contains('Idioma').click(); // Spanish translation of the word Language
     cy.contains('Francés').click();
