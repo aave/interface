@@ -1,10 +1,12 @@
 import { configEnvWithTenderlyMainnetFork } from '../../support/steps/configuration.steps';
 
 const switchLanguageStep = (language: string, languageTo: string) => {
-  cy.get('#settings-button').click();
-  cy.contains(language).click();
-  cy.contains(languageTo).click();
-  cy.get('a[href*="/"]').click({ force: true });
+  it(`step1: Switch language from English to ${languageTo}`, () => {
+    cy.get('#settings-button').click();
+    cy.contains(language).click();
+    cy.contains(languageTo).click();
+    cy.get('body').click(0, 0);
+  });
 };
 
 const verifyTranslation = (markets: string, dashboard: string) => {
@@ -15,9 +17,7 @@ const verifyTranslation = (markets: string, dashboard: string) => {
 describe('CASE1:Changing the language to Spanish', () => {
   configEnvWithTenderlyMainnetFork({});
 
-  it('step1: Switch language from English to Spanish', () => {
-    switchLanguageStep('Language', 'Spanish');
-  });
+  switchLanguageStep('Language', 'Spanish');
 
   it('step2: Verify Spanish translation', () => {
     verifyTranslation('Mercados', 'Panel');
