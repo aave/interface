@@ -20,7 +20,7 @@ jobs:
         with:
           token: ${{ secrets.BOT_TOKEN }}
 
-      - uses: actions/setup-node@9ced9a43a244f3ac94f13bfd896db8c8f30da67a # v3.0.0
+      - uses: actions/setup-node@17f8bd926464a1afa4c6a11669539e9c1ba77048 # v3.0.0
         with:
           node-version-file: '.nvmrc'
           cache: 'yarn'
