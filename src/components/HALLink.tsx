@@ -1,7 +1,6 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import {
-  Box,
   Popper,
   styled,
   SvgIcon,
@@ -10,6 +9,7 @@ import {
   experimental_sx,
   Button,
   Link,
+  Stack,
 } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { useMemo } from 'react';
@@ -27,7 +27,7 @@ const PopperComponent = styled(Popper)(
       p: 0,
       borderRadius: '6px',
       boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
-      maxWidth: '200px',
+      maxWidth: '300px',
     },
     '.MuiTooltip-arrow': {
       color: 'background.paper',
@@ -70,16 +70,32 @@ export default function HALLink({ healthFactor, marketName, integrationURL }: Pr
 
   return (
     <Tooltip
-      title={
-        <Box sx={{ py: 4, px: 6 }}>
-          <Typography variant="tooltip" color="text.secondary">
-            <Trans>Receive notifications about your Health Factor status using Hal app.</Trans>
-          </Typography>
-        </Box>
-      }
-      PopperComponent={PopperComponent}
       arrow
       placement="top"
+      PopperComponent={PopperComponent}
+      title={
+        <Stack sx={{ py: 4, px: 6 }} spacing={1}>
+          <Typography variant="tooltip" color="text.secondary" fontWeight={500}>
+            <Trans>Setup notifications about your Health Factor using the Hal app.</Trans>
+          </Typography>
+          <Typography variant="tooltip" color="text.secondary" fontWeight={500}>
+            <Trans>
+              This integration was
+              <Link
+                mx={1}
+                variant="tooltip"
+                color="text.secondary"
+                fontWeight={500}
+                target="_blank"
+                href="https://snapshot.org/#/aave.eth/proposal/0xa730caeec3c28e014ff456b454186ef41c6c1f382cf0a7caa3d99c4ae16c8318"
+              >
+                proposed and approved
+              </Link>
+              by the community.
+            </Trans>
+          </Typography>
+        </Stack>
+      }
     >
       <Button
         href={urlString}
