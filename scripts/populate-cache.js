@@ -43706,17 +43706,17 @@ var require_types6 = __commonJS({
       ExecutorType2[ExecutorType2["Short"] = 0] = "Short";
       ExecutorType2[ExecutorType2["Long"] = 1] = "Long";
     })(ExecutorType = exports2.ExecutorType || (exports2.ExecutorType = {}));
-    var ProposalState2;
-    (function(ProposalState3) {
-      ProposalState3["Pending"] = "Pending";
-      ProposalState3["Canceled"] = "Canceled";
-      ProposalState3["Active"] = "Active";
-      ProposalState3["Failed"] = "Failed";
-      ProposalState3["Succeeded"] = "Succeeded";
-      ProposalState3["Queued"] = "Queued";
-      ProposalState3["Expired"] = "Expired";
-      ProposalState3["Executed"] = "Executed";
-    })(ProposalState2 = exports2.ProposalState || (exports2.ProposalState = {}));
+    var ProposalState3;
+    (function(ProposalState4) {
+      ProposalState4["Pending"] = "Pending";
+      ProposalState4["Canceled"] = "Canceled";
+      ProposalState4["Active"] = "Active";
+      ProposalState4["Failed"] = "Failed";
+      ProposalState4["Succeeded"] = "Succeeded";
+      ProposalState4["Queued"] = "Queued";
+      ProposalState4["Expired"] = "Expired";
+      ProposalState4["Executed"] = "Executed";
+    })(ProposalState3 = exports2.ProposalState || (exports2.ProposalState = {}));
   }
 });
 
@@ -62225,12 +62225,21 @@ var import_path3 = require("path");
 // src/modules/governance/utils/formatProposal.ts
 var import_contract_helpers6 = __toESM(require_cjs());
 var import_bignumber = __toESM(require_bignumber2());
-var averageBlockTime = 13.5;
+var averageBlockTime = 14;
 function enhanceProposalWithTimes(proposal) {
   return __async(this, null, function* () {
     const provider = getProvider(import_contract_helpers6.ChainId.mainnet);
     const { timestamp: startTimestamp } = yield provider.getBlock(proposal.startBlock);
     const { timestamp: creationTimestamp } = yield provider.getBlock(proposal.proposalCreated);
+    if (proposal.state === import_contract_helpers6.ProposalState.Active) {
+      const currentBlockNumber = yield provider.getBlockNumber();
+      const currentBlock = yield provider.getBlock(currentBlockNumber);
+      return __spreadProps(__spreadValues({}, proposal), {
+        startTimestamp,
+        creationTimestamp,
+        expirationTimestamp: currentBlock.timestamp + (proposal.endBlock - currentBlockNumber) * averageBlockTime
+      });
+    }
     const expirationTimestamp = startTimestamp + (proposal.endBlock - proposal.startBlock) * averageBlockTime;
     return __spreadProps(__spreadValues({}, proposal), { startTimestamp, creationTimestamp, expirationTimestamp });
   });
