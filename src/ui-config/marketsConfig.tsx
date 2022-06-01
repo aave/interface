@@ -74,6 +74,7 @@ export enum CustomMarket {
   proto_mumbai = 'proto_mumbai',
   amm_kovan = 'amm_kovan',
   amm_mainnet = 'amm_mainnet',
+  proto_ropsten = 'proto_ropsten',
   // external
   // permissioned_market = 'permissioned_market',
 }
@@ -99,6 +100,26 @@ export const marketsData: {
       WALLET_BALANCE_PROVIDER: '0x07DC923859b68e9399d787bf52c4Aa9eBe3490aF',
       UI_POOL_DATA_PROVIDER: '0x0D410Ce47834798028c9CD894A29A4b12A9d5624',
       UI_INCENTIVE_DATA_PROVIDER: '0x50e468e1AAF408a2EB4614e4b45f832700Cda7F4',
+    },
+  },
+  [CustomMarket.proto_ropsten]: {
+    marketTitle: 'Ethereum Ropsten',
+    chainId: ChainId.ropsten,
+    enabledFeatures: {
+      faucet: true,
+      governance: true,
+      staking: true,
+      incentives: true,
+    },
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0x303a4B174663A6201Da77782413B4b54EFa3E97e'.toLowerCase(),
+      LENDING_POOL: '0x23a85024f54A19e243bA7a74E339a5C80998c7a4',
+      WETH_GATEWAY: '0x96A4fd1f289888cCa772298f7BDCF41C02122c01',
+      FAUCET: '0xb7263ADfB7C094aa24b91A51b297A278e105584a',
+      WALLET_BALANCE_PROVIDER: '0xEEac3ad1b3f4c43A782a951348c5387506B9AB06',
+      UI_POOL_DATA_PROVIDER: '0xda8AD7f77A229513f8a7fDA53fDC49fB2f5400E7',
+      UI_INCENTIVE_DATA_PROVIDER: '0x0C501fB73808e1BD73cBDdd0c99237bbc481Bb58',
     },
   },
   [CustomMarket.proto_mainnet]: {
