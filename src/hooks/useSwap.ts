@@ -87,12 +87,9 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }
         side: variant === 'exactIn' ? SwapSide.SELL : SwapSide.BUY,
         options: {
           partner: 'aave',
-          excludeDEXS:
-            'ParaSwapPool,ParaSwapPool2,ParaSwapPool3,ParaSwapPool4,ParaSwapPool5,ParaSwapPool6,ParaSwapPool7,ParaSwapPool8,ParaSwapPool9,ParaSwapPool10',
           ...(max
             ? {
-                excludeDEXS:
-                  'Balancer,ParaSwapPool,ParaSwapPool2,ParaSwapPool3,ParaSwapPool4,ParaSwapPool5,ParaSwapPool6,ParaSwapPool7,ParaSwapPool8,ParaSwapPool9,ParaSwapPool10',
+                excludeDEXS: 'Balancer',
                 excludeContractMethods: [excludedMethod],
               }
             : {}),
@@ -204,6 +201,18 @@ export const getSwapCallData = async ({
     .toFixed(0);
 
   try {
+    const buildTxParams = {
+      srcToken,
+      destToken,
+      srcAmount: route.srcAmount,
+      destAmount: destAmountWithSlippage,
+      priceRoute: route,
+      userAddress: user,
+      partner: 'aave',
+      srcDecimals,
+      destDecimals,
+    };
+    console.log(`Build Tx Params`, buildTxParams);
     const params = await paraSwap.buildTx(
       {
         srcToken,
@@ -218,6 +227,7 @@ export const getSwapCallData = async ({
       },
       { ignoreChecks: true }
     );
+    console.log(`Build Tx Response`, params);
 
     return {
       swapCallData: (params as TransactionParams).data,
@@ -246,6 +256,18 @@ export const getRepayCallData = async ({
     .toFixed(0);
 
   try {
+    const buildTxParams = {
+      srcToken,
+      destToken,
+      srcAmount: srcAmountWithSlippage,
+      destAmount: route.destAmount,
+      priceRoute: route,
+      userAddress: user,
+      partner: 'aave',
+      srcDecimals,
+      destDecimals,
+    };
+    console.log(`Build Tx Params`, buildTxParams);
     const params = await paraSwap.buildTx(
       {
         srcToken,
@@ -260,6 +282,7 @@ export const getRepayCallData = async ({
       },
       { ignoreChecks: true }
     );
+    console.log(`Build Tx Response`, params);
 
     return {
       swapCallData: (params as TransactionParams).data,
