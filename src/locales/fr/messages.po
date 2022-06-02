@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-05-26 18:05\n"
+"PO-Revision-Date: 2022-06-02 18:05\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -717,6 +717,10 @@ msgstr "Retourner"
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
 msgstr "Gouvernance"
+
+#: src/layouts/components/LanguageSwitcher.tsx
+msgid "Greek"
+msgstr ""
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/dashboard/DashboardTopPanel.tsx
