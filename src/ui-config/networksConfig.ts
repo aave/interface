@@ -83,7 +83,8 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.ropsten]: {
     name: 'Ropsten Testnet',
-    publicJsonRPCUrl: [''],
+    // Public RPC found at https://rpc.info/
+    publicJsonRPCUrl: ['https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'],
     publicJsonRPCWSUrl: '',
     // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
