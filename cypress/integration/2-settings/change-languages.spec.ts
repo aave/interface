@@ -22,13 +22,6 @@ export const verifyTranslationOnMarketsPage = (totalBorrows: string, totalMarket
     cy.contains(totalMarketSize);
   });
 };
-const reloadPageAndCheckTranslation = (totalBorrows: string, totalMarketSize: string) => {
-  it('step4:Reload the page and check Translation', () => {
-    cy.reload(true);
-    cy.contains(totalBorrows);
-    cy.contains(totalMarketSize);
-  });
-};
 
 describe('Manipulation on the language', () => {
   describe('CASE1:Changing the language from English to Spanish', () => {
@@ -36,20 +29,17 @@ describe('Manipulation on the language', () => {
     switchLanguageStep('Language', 'Spanish');
     verifyTranslation('Mercados', 'Más');
     verifyTranslationOnMarketsPage('Total de préstamos', 'Tamaño total del mercado');
-    reloadPageAndCheckTranslation('Total de préstamos', 'Tamaño total del mercado');
   });
 
   describe('CASE2: Changing the Language from Spanish to French', () => {
     switchLanguageStep('Idioma', 'Francés');
     verifyTranslation('Marchés', 'Plus');
     verifyTranslationOnMarketsPage('Total des emprunts', 'Taille totale du marché');
-    reloadPageAndCheckTranslation('Total des emprunts', 'Taille totale du marché');
   });
 
   describe('CASE3: Change language from French to English', () => {
     switchLanguageStep('Language', 'Anglais');
     verifyTranslation('Markets', 'More');
     verifyTranslationOnMarketsPage('Total borrows', 'Total market size');
-    reloadPageAndCheckTranslation('Total borrows', 'Total market size');
   });
 });
