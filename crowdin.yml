@@ -5,7 +5,7 @@
 'api_token_env': 'CROWDIN_PERSONAL_TOKEN'
 'base_path': '.'
 'base_url': 'https://api.crowdin.com'
-'export_languages': ['en', 'es', 'fr']
+'export_languages': ['en', 'es', 'fr', 'el']
 #
 # Choose file structure in Crowdin
 # e.g. true or false
