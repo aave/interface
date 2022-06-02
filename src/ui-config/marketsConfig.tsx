@@ -65,6 +65,8 @@ export enum CustomMarket {
   proto_avalanche_v3 = 'proto_avalanche_v3',
   proto_polygon_v3 = 'proto_polygon_v3',
   proto_arbitrum_v3 = 'proto_arbitrum_v3',
+  proto_ropsten_v3 = 'proto_ropsten_v3',
+
   // v2
   proto_kovan = 'proto_kovan',
   proto_mainnet = 'proto_mainnet',
@@ -74,7 +76,6 @@ export enum CustomMarket {
   proto_mumbai = 'proto_mumbai',
   amm_kovan = 'amm_kovan',
   amm_mainnet = 'amm_mainnet',
-  proto_ropsten = 'proto_ropsten',
   // external
   // permissioned_market = 'permissioned_market',
 }
@@ -100,27 +101,6 @@ export const marketsData: {
       WALLET_BALANCE_PROVIDER: '0x07DC923859b68e9399d787bf52c4Aa9eBe3490aF',
       UI_POOL_DATA_PROVIDER: '0x0D410Ce47834798028c9CD894A29A4b12A9d5624',
       UI_INCENTIVE_DATA_PROVIDER: '0x50e468e1AAF408a2EB4614e4b45f832700Cda7F4',
-    },
-  },
-  [CustomMarket.proto_ropsten]: {
-    marketTitle: 'Ethereum Ropsten',
-    chainId: ChainId.ropsten,
-    enabledFeatures: {
-      // Note: We should remove this based on the addresses that you provide in the addresses below
-      faucet: true,
-      // governance: true,
-      // staking: true,
-      // incentives: true,
-    },
-    rpcOnly: true,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0x303a4B174663A6201Da77782413B4b54EFa3E97e'.toLowerCase(),
-      LENDING_POOL: '0x23a85024f54A19e243bA7a74E339a5C80998c7a4',
-      WETH_GATEWAY: '0x96A4fd1f289888cCa772298f7BDCF41C02122c01',
-      FAUCET: '0xb7263ADfB7C094aa24b91A51b297A278e105584a',
-      WALLET_BALANCE_PROVIDER: '0xEEac3ad1b3f4c43A782a951348c5387506B9AB06',
-      UI_POOL_DATA_PROVIDER: '0xb815B9EE078Dab098965D8e52dD5C747d70bb481',
-      UI_INCENTIVE_DATA_PROVIDER: '0x2526D407F722C0D1e0326eC1840A235bf173b9Ca',
     },
   },
   [CustomMarket.proto_mainnet]: {
@@ -359,6 +339,28 @@ export const marketsData: {
       WALLET_BALANCE_PROVIDER: '0xBc790382B3686abffE4be14A030A96aC6154023a',
       UI_POOL_DATA_PROVIDER: '0xdBbFaFC45983B4659E368a3025b81f69Ab6E5093',
       UI_INCENTIVE_DATA_PROVIDER: '0x270f51cf3F681010B46f5c4Ee2aD5120Db33026F',
+    },
+  },
+  [CustomMarket.proto_ropsten_v3]: {
+    marketTitle: 'Ethereum Ropsten',
+    v3: true,
+    chainId: ChainId.ropsten,
+    enabledFeatures: {
+      // Note: We should remove this based on the addresses that you provide in the addresses below
+      faucet: true,
+      // governance: true,
+      // staking: true,
+      // incentives: true,
+    },
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0x303a4B174663A6201Da77782413B4b54EFa3E97e'.toLowerCase(),
+      LENDING_POOL: '0x23a85024f54A19e243bA7a74E339a5C80998c7a4',
+      WETH_GATEWAY: '0x96A4fd1f289888cCa772298f7BDCF41C02122c01',
+      FAUCET: '0xb7263ADfB7C094aa24b91A51b297A278e105584a',
+      WALLET_BALANCE_PROVIDER: '0xEEac3ad1b3f4c43A782a951348c5387506B9AB06',
+      UI_POOL_DATA_PROVIDER: '0xb815B9EE078Dab098965D8e52dD5C747d70bb481',
+      UI_INCENTIVE_DATA_PROVIDER: '0x2526D407F722C0D1e0326eC1840A235bf173b9Ca',
     },
   },
   [CustomMarket.proto_fuji_v3]: {
