@@ -106,10 +106,11 @@ export const marketsData: {
     marketTitle: 'Ethereum Ropsten',
     chainId: ChainId.ropsten,
     enabledFeatures: {
+      // Note: We should remove this based on the addresses that you provide in the addresses below
       faucet: true,
-      governance: true,
-      staking: true,
-      incentives: true,
+      // governance: true,
+      // staking: true,
+      // incentives: true,
     },
     rpcOnly: true,
     addresses: {
@@ -118,8 +119,8 @@ export const marketsData: {
       WETH_GATEWAY: '0x96A4fd1f289888cCa772298f7BDCF41C02122c01',
       FAUCET: '0xb7263ADfB7C094aa24b91A51b297A278e105584a',
       WALLET_BALANCE_PROVIDER: '0xEEac3ad1b3f4c43A782a951348c5387506B9AB06',
-      UI_POOL_DATA_PROVIDER: '0xda8AD7f77A229513f8a7fDA53fDC49fB2f5400E7',
-      UI_INCENTIVE_DATA_PROVIDER: '0x0C501fB73808e1BD73cBDdd0c99237bbc481Bb58',
+      UI_POOL_DATA_PROVIDER: '',
+      // UI_INCENTIVE_DATA_PROVIDER: '0x0C501fB73808e1BD73cBDdd0c99237bbc481Bb58',
     },
   },
   [CustomMarket.proto_mainnet]: {
