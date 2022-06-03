@@ -211,22 +211,52 @@
     }
   },
   "aaveMarket": {
-    "DAI": {
-      "fullName": "DAI",
-      "shortName": "DAI",
-      "collateral": true,
-      "wrapped": false
-    },
     "ETH": {
       "fullName": "Ethereum",
       "shortName": "ETH",
       "collateral": true,
       "wrapped": true
     },
-    "USDT": {
-      "fullName": "USDT Coin",
-      "shortName": "USDT",
-      "collateral": false,
+    "BUSD": {
+      "fullName": "BUSD",
+      "shortName": "BUSD",
+      "collateral": true,
+      "wrapped": false
+    },
+    "DAI": {
+      "fullName": "DAI",
+      "shortName": "DAI",
+      "collateral": true,
+      "wrapped": false
+    },
+    "FEI": {
+      "fullName": "FEI",
+      "shortName": "FEI",
+      "collateral": true,
+      "wrapped": false
+    },
+    "FRAX": {
+      "fullName": "FRAX",
+      "shortName": "FRAX",
+      "collateral": true,
+      "wrapped": false
+    },
+    "GUSD": {
+      "fullName": "GUSD",
+      "shortName": "GUSD",
+      "collateral": true,
+      "wrapped": false
+    },
+    "sUSD": {
+      "fullName": "sUSD",
+      "shortName": "sUSD",
+      "collateral": true,
+      "wrapped": false
+    },
+    "TUSD": {
+      "fullName": "TrueUSD",
+      "shortName": "TUSD",
+      "collateral": true,
       "wrapped": false
     },
     "USDC": {
@@ -235,9 +265,81 @@
       "collateral": true,
       "wrapped": false
     },
+    "USDP": {
+      "fullName": "USDP",
+      "shortName": "USDP",
+      "collateral": true,
+      "wrapped": false
+    },
+    "USDT": {
+      "fullName": "USDT Coin",
+      "shortName": "USDT",
+      "collateral": false,
+      "wrapped": false
+    },
+    "UST": {
+      "fullName": "UST",
+      "shortName": "UST",
+      "collateral": false,
+      "wrapped": false
+    },
+    "AAVE": {
+      "fullName": "AAVE",
+      "shortName": "AAVE",
+      "collateral": true,
+      "wrapped": false
+    },
+    "AMPL": {
+      "fullName": "AMPL",
+      "shortName": "AMPL",
+      "collateral": true,
+      "wrapped": false
+    },
+    "BAL": {
+      "fullName": "BAL",
+      "shortName": "BAL",
+      "collateral": true,
+      "wrapped": false
+    },
     "BAT": {
       "fullName": "Basic Attention Token",
       "shortName": "BAT",
+      "collateral": true,
+      "wrapped": false
+    },
+    "CRV": {
+      "fullName": "CRV",
+      "shortName": "CRV",
+      "collateral": true,
+      "wrapped": false
+    },
+    "DPI": {
+      "fullName": "DPI",
+      "shortName": "DPI",
+      "collateral": true,
+      "wrapped": false
+    },
+    "ENJ": {
+      "fullName": "ENJ",
+      "shortName": "ENJ",
+      "collateral": true,
+      "wrapped": false
+    },
+    "ENS": {
+      "fullName": "ENS",
+      "shortName": "ENS",
+      "collateral": true,
+      "wrapped": false
+    },
+    "KNC": {
+      "fullName": "KNC",
+      "shortName": "KNC",
+      "collateral": true,
+      "wrapped": false
+    },
+    "LINK": {
+      "fullName": "LINK",
+      "shortName": "LINK",
       "collateral": true,
       "wrapped": false
     },
@@ -253,15 +355,69 @@
       "collateral": true,
       "wrapped": false
     },
+    "RAI": {
+      "fullName": "RAI",
+      "shortName": "RAI",
+      "collateral": true,
+      "wrapped": false
+    },
     "REN": {
       "fullName": "REN",
       "shortName": "REN",
       "collateral": true,
       "wrapped": false
     },
-    "TUSD": {
-      "fullName": "TrueUSD",
-      "shortName": "TUSD",
+    "renFIL": {
+      "fullName": "renFIL",
+      "shortName": "renFIL",
+      "collateral": true,
+      "wrapped": false
+    },
+    "SNX": {
+      "fullName": "SNX",
+      "shortName": "SNX",
+      "collateral": true,
+      "wrapped": false
+    },
+    "stETH": {
+      "fullName": "stETH",
+      "shortName": "stETH",
+      "collateral": true,
+      "wrapped": false
+    },
+    "UNI": {
+      "fullName": "UNI",
+      "shortName": "UNI",
+      "collateral": true,
+      "wrapped": false
+    },
+    "WBTC": {
+      "fullName": "WBTC",
+      "shortName": "WBTC",
+      "collateral": true,
+      "wrapped": false
+    },
+    "xSUSHI": {
+      "fullName": "xSUSHI",
+      "shortName": "xSUSHI",
+      "collateral": true,
+      "wrapped": false
+    },
+    "YFI": {
+      "fullName": "YFI",
+      "shortName": "YFI",
+      "collateral": true,
+      "wrapped": false
+    },
+    "ZRX": {
+      "fullName": "ZRX",
+      "shortName": "ZRX",
+      "collateral": true,
+      "wrapped": false
+    },
+    "WETH": {
+      "fullName": "WETH",
+      "shortName": "WETH",
       "collateral": true,
       "wrapped": false
     },

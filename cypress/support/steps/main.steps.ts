@@ -336,7 +336,7 @@ export const swap = (
   }: {
     fromAsset: { shortName: string; fullName: string };
     toAsset: { shortName: string; fullName: string };
-    isCollateralFromAsset: boolean;
+    isCollateralFromAsset?: boolean;
     amount: number;
     hasApproval: boolean;
     isMaxAmount?: boolean;
@@ -361,6 +361,7 @@ export const swap = (
       cy.get('[data-cy=Modal]').as('Modal');
       cy.get('@Modal').find('[data-cy=assetSelect]').click();
       cy.get(`[data-cy="assetsSelectOption_${_shortNameTo.toUpperCase()}"]`, { timeout: 10000 })
+        .scrollIntoView()
         .should('be.visible')
         .click();
       cy.get(`[data-cy="assetsSelectedOption_${_shortNameTo.toUpperCase()}"]`, {
