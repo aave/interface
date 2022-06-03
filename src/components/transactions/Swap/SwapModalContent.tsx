@@ -113,7 +113,7 @@ export const SwapModalContent = ({
   let blockingError: ErrorType | undefined = undefined;
   if (!remainingCapBn.eq('-1') && remainingCapBn.lt(amount)) {
     blockingError = ErrorType.SUPPLY_CAP_REACHED;
-  } else if (!hfAfterSwap.eq('-1') && hfAfterSwap.lt('1.05')) {
+  } else if (!hfAfterSwap.eq('-1') && hfAfterSwap.lt('1.01')) {
     blockingError = ErrorType.HF_BELOW_ONE;
   } else if (user.isInIsolationMode && poolReserve.isIsolated) {
     // TODO: make sure hf doesn't go below 1 because swapTarget will not be a collateral
