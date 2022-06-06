@@ -33,9 +33,9 @@ runs:
         cache-name: cache-next-build
       with:
         path: .next/cache
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ github.head_ref || github.ref }}
+        key: 'build-${{ env.cache-name }}-${{ github.head_ref || github.ref }}-${{ github.job }}'
         restore-keys: |
-          ${{ runner.os }}-build-${{ env.cache-name }}-main
+          build-${{ env.cache-name }}-main-${{ github.job }}
 
     - name: build
       shell: sh
