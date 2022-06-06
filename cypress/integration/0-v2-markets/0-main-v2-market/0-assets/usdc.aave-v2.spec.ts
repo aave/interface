@@ -14,7 +14,7 @@ import constants from '../../../../fixtures/constans.json';
 const testData = {
   depositETH: {
     asset: assets.aaveMarket.ETH,
-    amount: 0.1,
+    amount: 0.5,
     hasApproval: true,
   },
   testCases: {
