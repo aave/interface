@@ -713,6 +713,10 @@ msgstr "Go Back"
 msgid "Governance"
 msgstr "Governance"
 
+#: src/layouts/components/LanguageSwitcher.tsx
+msgid "Greek"
+msgstr "Greek"
+
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/dashboard/DashboardTopPanel.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx

@@ -1,4 +1,4 @@
-import { ChainId, Proposal } from '@aave/contract-helpers';
+import { ChainId, Proposal, ProposalState } from '@aave/contract-helpers';
 import { normalizeBN } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
@@ -43,12 +43,23 @@ export function formatProposal(proposal: Omit<Proposal, 'values'>) {
   };
 }
 
-const averageBlockTime = 13.5;
+const averageBlockTime = 14;
 
 export async function enhanceProposalWithTimes(proposal: Omit<Proposal, 'values'>) {
   const provider = getProvider(ChainId.mainnet);
   const { timestamp: startTimestamp } = await provider.getBlock(proposal.startBlock);
   const { timestamp: creationTimestamp } = await provider.getBlock(proposal.proposalCreated);
+  if (proposal.state === ProposalState.Active) {
+    const currentBlockNumber = await provider.getBlockNumber();
+    const currentBlock = await provider.getBlock(currentBlockNumber);
+    return {
+      ...proposal,
+      startTimestamp,
+      creationTimestamp,
+      expirationTimestamp:
+        currentBlock.timestamp + (proposal.endBlock - currentBlockNumber) * averageBlockTime,
+    };
+  }
   const expirationTimestamp =
     startTimestamp + (proposal.endBlock - proposal.startBlock) * averageBlockTime;
   return { ...proposal, startTimestamp, creationTimestamp, expirationTimestamp };

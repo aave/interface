@@ -146,6 +146,34 @@ export const switchCollateralBlocked = (
   });
 };
 
+export const switchCollateralBlockedInModal = (
+  {
+    asset,
+    isCollateralType,
+  }: {
+    asset: { shortName: string; fullName: string };
+    isCollateralType: boolean;
+  },
+  skip: SkipType
+) => {
+  const _shortName = asset.shortName;
+  return describe('Check that collateral switcher disabled', () => {
+    skipSetup(skip);
+    it(`Check that collateral switching blocked in popup`, () => {
+      doSwitchToDashboardSupplyView();
+      getDashBoardDepositRow({
+        assetName: _shortName,
+        isCollateralType,
+      })
+        .find('input[type="checkbox"]')
+        .should('be.enabled')
+        .click();
+      cy.get('[data-cy=Modal]').find('[data-cy=actionButton]').should('be.disabled');
+      cy.get('[data-cy=Modal]').find('[data-cy="CloseModalIcon"]').click();
+    });
+  });
+};
+
 export const switchApyBlocked = (
   {
     asset,
@@ -216,7 +244,7 @@ export const checkDashboardHealthFactor = (
       doSwitchToDashboardSupplyView();
     });
     it('Check value', () => {
-      cy.wait(3000);
+      cy.wait(8000);
       cy.get(`[data-cy=HealthFactorTopPannel]`).then(($health) => {
         const _health = parseFloat($health.text());
         if (value) {
@@ -261,6 +289,9 @@ export const verifyCountOfBorrowAssets = (
 ) => {
   return describe(`Verify that count available borrowed assets is ${assets.length}`, () => {
     skipSetup(skip);
+    it(`Open Borrow dashboard part`, () => {
+      doSwitchToDashboardBorrowView();
+    });
     assets.forEach(($asset) => {
       it(`Verifying that ${$asset.shortName} is exist`, () => {
         cy.get(`[data-cy="dashboardBorrowListItem_${$asset.shortName.toUpperCase()}"]`).should(
