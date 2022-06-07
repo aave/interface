@@ -996,6 +996,10 @@ msgstr "Nothing staked"
 msgid "Nothing supplied yet"
 msgstr "Nothing supplied yet"
 
+#: src/components/HALLink.tsx
+msgid "Notify"
+msgstr "Notify"
+
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Ok, Close"
 msgstr "Ok, Close"
@@ -1194,9 +1198,9 @@ msgstr "Select Aave Market"
 msgid "Select language"
 msgstr "Select language"
 
-#: src/components/HALTooltip.tsx
-msgid "Setup triggers and receive notifications about your Health Factor status using Hal app."
-msgstr "Setup triggers and receive notifications about your Health Factor status using Hal app."
+#: src/components/HALLink.tsx
+msgid "Setup notifications about your Health Factor using the Hal app."
+msgstr "Setup notifications about your Health Factor using the Hal app."
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Share on twitter"
@@ -1504,6 +1508,10 @@ msgstr "This asset has reached its supply cap. Nothing is available to be suppli
 #: src/components/infoTooltips/GasTooltip.tsx
 msgid "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
 msgstr "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
+
+#: src/components/HALLink.tsx
+msgid "This integration was<0>proposed and approved</0>by the community."
+msgstr "This integration was<0>proposed and approved</0>by the community."
 
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount available for you to borrow. You can borrow based on your collateral and until the borrow cap is reached."
