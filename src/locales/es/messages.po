@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-06-03 12:05\n"
+"PO-Revision-Date: 2022-06-07 00:14\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -997,6 +997,10 @@ msgstr "Nada invertido"
 msgid "Nothing supplied yet"
 msgstr "Nada suministrado aún"
 
+#: src/components/HALLink.tsx
+msgid "Notify"
+msgstr ""
+
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Ok, Close"
 msgstr "Vale, cerrar"
@@ -1195,9 +1199,9 @@ msgstr "Seleccionar Mercado Aave"
 msgid "Select language"
 msgstr "Seleccionar idioma"
 
-#: src/components/HALTooltip.tsx
-msgid "Setup triggers and receive notifications about your Health Factor status using Hal app."
-msgstr "Configura los activadores y recibe notificaciones sobre el estado de tu Factor de Salud usando la aplicación Hal."
+#: src/components/HALLink.tsx
+msgid "Setup notifications about your Health Factor using the Hal app."
+msgstr ""
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Share on twitter"
@@ -1505,6 +1509,10 @@ msgstr "Este activo ha alcanzado su límite de suministro. No queda nada disponi
 #: src/components/infoTooltips/GasTooltip.tsx
 msgid "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
 msgstr "Este cálculo de gas es solo una estimación. Tu cartera establecerá el precio de la transacción. Puedes modificar la configuración de gas directamente desde tu proveedor de cartera."
+
+#: src/components/HALLink.tsx
+msgid "This integration was<0>proposed and approved</0>by the community."
+msgstr ""
 
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount available for you to borrow. You can borrow based on your collateral and until the borrow cap is reached."
