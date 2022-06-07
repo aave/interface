@@ -2,17 +2,17 @@
 # yarn lockfile v1
 
 
-"@aave/contract-helpers@1.3.3":
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.3.3.tgz#ed157f6b6843881b8fc924dafac643ff18f2ade5"
-  integrity sha512-xJ24N36ktz5VD1VVUyEvOVVIgxjknWsMfhWnJnpDLT+Zk01yQW0gsxbpdbR5QXwq1d2kx0+ECElU2gDPc8IaQw==
+"@aave/contract-helpers@1.3.4":
+  version "1.3.4"
+  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.3.4.tgz#6db96276155f2a5a01f0022cdfa4ba7eca50de64"
+  integrity sha512-wmpt7reYpg/KsosZdHjBkLkSd0OP+UQCU7Pnmuk7h9+omqD3AUPIc9+cc5NCyLaLybb6GyM3wslfxra+PpvdHg==
   dependencies:
     isomorphic-unfetch "^3.1.0"
 
-"@aave/math-utils@1.3.3":
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.3.3.tgz#ea3a4ec31b70c1a7461215b98c4338a0daa45c52"
-  integrity sha512-n4WzB9wzgwgqgEl9tyiP49AegqIe7qEYfioPgCTOGITDkACDT5QcURuGk0AwSaMioyJ+6yQk5A3V49/3+NlyzQ==
+"@aave/math-utils@1.3.4":
+  version "1.3.4"
+  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.3.4.tgz#b3744356457000191a2aefb4e7c5a0095d58b531"
+  integrity sha512-TCCa3rYdQ0b8DG+GxuA1tkaqDXiBPEV0QELU/6S4iPCxzP7O7lahbcb9amfhGONedNFbyVF37OnfYFVnDRgNwA==
   dependencies:
     bignumber.js "^9.0.1"
     tslib "^2.3.1"
@@ -1808,16 +1808,16 @@
     auto-bind "~4.0.0"
     tslib "~2.3.0"
 
-"@graphql-codegen/typescript-react-apollo@^3.2.8":
-  version "3.2.8"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript-react-apollo/-/typescript-react-apollo-3.2.8.tgz#776e4f219c9484ff43249569079091fe912bb8d4"
-  integrity sha512-XmYeBSS3KZF9WePMN5RqYwOHbDybhOxB89C+fvUscFX8MVI5DugMI99qYsdqS8mWQfElRe8ib68zKPaIGTnC0w==
+"@graphql-codegen/typescript-react-apollo@^3.2.15":
+  version "3.2.15"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript-react-apollo/-/typescript-react-apollo-3.2.15.tgz#82638a92567923a5dd31cb02ffa5c6fbdda177b7"
+  integrity sha512-FLOt8A246AKN8n6GRNyx0Kyc0nUOOi8xLtv4lrM6tUYjQI5IVqM7O8o2P7pexqOtbo3HiQnDxohWN26wnQ3tDw==
   dependencies:
     "@graphql-codegen/plugin-helpers" "^2.4.0"
-    "@graphql-codegen/visitor-plugin-common" "2.7.1"
+    "@graphql-codegen/visitor-plugin-common" "2.9.0"
     auto-bind "~4.0.0"
     change-case-all "1.0.14"
-    tslib "~2.3.0"
+    tslib "~2.4.0"
 
 "@graphql-codegen/typescript@^2.4.5":
   version "2.4.5"
@@ -1845,6 +1845,22 @@
     graphql-tag "^2.11.0"
     parse-filepath "^1.0.2"
     tslib "~2.3.0"
+
+"@graphql-codegen/visitor-plugin-common@2.9.0":
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-2.9.0.tgz#a13556c805e72b63ee9d80fb437b9ba2eb0a9fa2"
+  integrity sha512-w353lPpXlgsQT6dxfcHw3hQdodGnfSwsxofHVfROqrIBZIjH0kNiFHOt8rnewYkLGEa75bWDVaM1ofyXEaN+3w==
+  dependencies:
+    "@graphql-codegen/plugin-helpers" "^2.4.0"
+    "@graphql-tools/optimize" "^1.0.1"
+    "@graphql-tools/relay-operation-optimizer" "^6.3.7"
+    "@graphql-tools/utils" "^8.3.0"
+    auto-bind "~4.0.0"
+    change-case-all "1.0.14"
+    dependency-graph "^0.11.0"
+    graphql-tag "^2.11.0"
+    parse-filepath "^1.0.2"
+    tslib "~2.4.0"
 
 "@graphql-tools/apollo-engine-loader@^7.0.5":
   version "7.2.2"
@@ -10349,7 +10365,12 @@ tslib@^1.8.1, tslib@^1.9.0:
   resolved "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
 
-tslib@^2, tslib@^2.0.0, tslib@^2.0.3, tslib@^2.1.0, tslib@^2.3.0, tslib@^2.3.1, tslib@~2.3.0:
+tslib@^2, tslib@^2.0.0, tslib@^2.0.3, tslib@^2.1.0, tslib@^2.3.0, tslib@^2.3.1, tslib@~2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.4.0.tgz#7cecaa7f073ce680a05847aa77be941098f36dc3"
+  integrity sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==
+
+tslib@~2.3.0:
   version "2.3.1"
   resolved "https://registry.npmjs.org/tslib/-/tslib-2.3.1.tgz"
   integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==
