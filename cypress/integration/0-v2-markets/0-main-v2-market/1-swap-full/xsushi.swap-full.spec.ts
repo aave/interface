@@ -13,15 +13,15 @@ const testData = {
   },
 };
 
-const keyFrom = 'USDP';
-const valueFrom = assets.aaveMarket.USDP;
+const keyFrom = 'xSUSHI';
+const valueFrom = assets.aaveMarket.xSUSHI;
 
 Object.entries(assets.aaveMarket).forEach(([keyTo, valueTo]) => {
   if (keyFrom != keyTo && keyTo != 'stkAAVE' && keyTo != 'ALL' && keyTo != 'ETH') {
     const borrowAssetFrom = {
       asset: valueFrom,
       amount: 5,
-      apyType: constants.borrowAPYType.default,
+      apyType: constants.borrowAPYType.variable,
       hasApproval: true,
     };
     const supplyAssetFrom = {
@@ -32,6 +32,7 @@ Object.entries(assets.aaveMarket).forEach(([keyTo, valueTo]) => {
     const swapCase = {
       fromAsset: valueFrom,
       toAsset: valueTo,
+      isCollateralFromAsset: true,
       amount: 10,
       hasApproval: false,
     };

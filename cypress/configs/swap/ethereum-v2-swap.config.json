@@ -1,13 +1,18 @@
 {
   "integrationFolder": "cypress/integration/0-v2-markets/0-main-v2-market/1-swap-full",
   "testFiles": [
-    "**/*.*"
-  ],
-  "ignoreTestFiles": [
     "busd.swap-full.spec.ts",
     "dai.swap-full.spec.ts",
     "eth.swap-full.spec.ts",
-    "fei.swap-full.spec.ts"
+    "fei.swap-full.spec.ts",
+    "usdp.swap-full.spec.ts",
+    "usdt.swap-full.spec.ts",
+    "dpi.swap-full.spec.ts",
+    "knc.swap-full.spec.ts",
+    "xsushi.swap-full.spec.ts"
+  ],
+  "ignoreTestFiles": [
+
   ],
   "viewportWidth": 1200,
   "viewportHeight": 800,
