@@ -1,0 +1,16 @@
+{
+  "integrationFolder": "cypress/integration/2-settings",
+  "testFiles": [
+    "change-language.spec.ts"
+  ],
+  "viewportWidth": 1200,
+  "viewportHeight": 800,
+  "defaultCommandTimeout": 40000,
+  "pageLoadTimeout": 120000,
+  "video": false,
+  "scrollBehavior": "center",
+  "retries": {
+    "runMode": 1,
+    "openMode": 0
+  }
+}
