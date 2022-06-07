@@ -70,7 +70,10 @@ export function calculateHFAfterSwap({
         toAmountAfterSlippage
       ).multipliedBy(toAssetData.formattedPriceInMarketReferenceCurrency),
       borrowBalanceMarketReferenceCurrency: user.totalBorrowsMarketReferenceCurrency,
-      currentLiquidationThreshold: toAssetData.formattedReserveLiquidationThreshold,
+      currentLiquidationThreshold:
+        user.isInEmode && user.userEmodeCategoryId === toAssetData.eModeCategoryId
+          ? toAssetData.formattedEModeLiquidationThreshold
+          : toAssetData.formattedReserveLiquidationThreshold,
     }).toString();
   }
 
