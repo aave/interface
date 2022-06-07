@@ -74,7 +74,7 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
             <MenuItemsWrapper title={<Trans>Global settings</Trans>}>
               <List>
                 <DarkModeSwitcher />
-                <TestNetModeSwitcher />
+                {process.env.NEXT_PUBLIC_ENV === 'app' && <TestNetModeSwitcher />}
                 <LanguageListItem onClick={() => setIsLanguagesListOpen(true)} />
               </List>
             </MenuItemsWrapper>

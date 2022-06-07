@@ -28,8 +28,8 @@ yarn build:static
 ### Environment
 
 ```sh
-# you can default enable testnets by setting the following environment variable
-NEXT_PUBLIC_ENABLE_TESTNET=true
+# setting the environment to staging will enable only testnet markets. Set to 'app' to enable production markets
+NEXT_PUBLIC_ENV=staging
 # you can disable staking & governance by altering
 NEXT_PUBLIC_ENABLE_GOVERNANCE=true
 NEXT_PUBLIC_ENABLE_STAKING=true
