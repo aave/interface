@@ -9,9 +9,15 @@ import { FormattedNumber } from './primitives/FormattedNumber';
 interface HealthFactorNumberProps extends TypographyProps {
   value: string;
   onInfoClick?: () => void;
+  HALIntegrationComponent?: React.ReactNode;
 }
 
-export const HealthFactorNumber = ({ value, onInfoClick, ...rest }: HealthFactorNumberProps) => {
+export const HealthFactorNumber = ({
+  value,
+  onInfoClick,
+  HALIntegrationComponent,
+  ...rest
+}: HealthFactorNumberProps) => {
   const { palette } = useTheme();
 
   const formattedHealthFactor = Number(valueToBigNumber(value).toFixed(2, BigNumber.ROUND_DOWN));
@@ -56,6 +62,12 @@ export const HealthFactorNumber = ({ value, onInfoClick, ...rest }: HealthFactor
         >
           <Trans>Risk details</Trans>
         </Button>
+      )}
+
+      {HALIntegrationComponent && (
+        <Box ml={{ xs: 0, xsm: 2 }} mt={{ xs: 1, xsm: 0 }}>
+          {HALIntegrationComponent}
+        </Box>
       )}
     </Box>
   );

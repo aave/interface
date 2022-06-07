@@ -81,6 +81,22 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     isTestnet: true,
     networkLogoPath: '/icons/networks/ethereum.svg',
   },
+  [ChainId.ropsten]: {
+    name: 'Ropsten Testnet',
+    // Public RPC found at https://rpc.info/
+    publicJsonRPCUrl: ['https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'],
+    publicJsonRPCWSUrl: '',
+    // protocolDataUrl: '',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://ropsten.etherscan.io',
+    // rpcOnly: true,
+    // usdMarket: true,
+    isTestnet: true,
+    networkLogoPath: '/icons/networks/ethereum.svg',
+  },
   [ChainId.mainnet]: {
     name: 'Ethereum',
     publicJsonRPCUrl: [
