@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-06-07 00:14\n"
+"PO-Revision-Date: 2022-06-07 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -713,6 +713,10 @@ msgstr "Configuración global"
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Go Back"
 msgstr "Volver atrás"
+
+#: src/modules/governance/proposal/ProposalTopPanel.tsx
+msgid "Go back"
+msgstr ""
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
@@ -1896,10 +1900,6 @@ msgstr "Dirección cero no válida"
 #: src/modules/markets/AssetsList.tsx
 msgid "assets"
 msgstr "activos"
-
-#: src/modules/governance/proposal/ProposalTopPanel.tsx
-msgid "back"
-msgstr "atras"
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "copy the error"

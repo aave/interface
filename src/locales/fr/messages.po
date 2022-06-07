@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-06-07 00:14\n"
+"PO-Revision-Date: 2022-06-07 18:05\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -713,6 +713,10 @@ msgstr "Paramètres globaux"
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Go Back"
 msgstr "Retourner"
+
+#: src/modules/governance/proposal/ProposalTopPanel.tsx
+msgid "Go back"
+msgstr ""
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
@@ -1896,10 +1900,6 @@ msgstr "Adresse zéro non-valide"
 #: src/modules/markets/AssetsList.tsx
 msgid "assets"
 msgstr "actifs"
-
-#: src/modules/governance/proposal/ProposalTopPanel.tsx
-msgid "back"
-msgstr "arrière"
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "copy the error"
