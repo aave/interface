@@ -29,29 +29,6 @@ jobs:
 
       - name: Upload artifacts
         uses: ./.github/actions/upload-artifacts
-        with:
-          BUILD_ARTIFACT_NAME: out
-
-  build_staging:
-    runs-on: ubuntu-latest
-    if: |
-      github.event_name == 'push' && github.ref == 'refs/heads/main'
-    steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
-        with:
-          persist-credentials: false
-
-      - name: Build App
-        uses: ./.github/actions/build
-        with:
-          NEXT_PUBLIC_ENABLE_TESTNET: true
-
-      - name: Upload artifacts
-        uses: ./.github/actions/upload-artifacts
-        with:
-          BUILD_ARTIFACT_NAME: out_staging
-          NEXTJS_BUILD: 'false'
-          PR_INFO: 'false'
 
 
   cypress_smoke_v2:
@@ -109,7 +86,7 @@ jobs:
       - name: download build
         uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
         with:
-          name: nextjs_build
+          name: nextjs
           path: .next
 
       - uses: ./.github/actions/analyze-comment
@@ -142,7 +119,7 @@ jobs:
         with:
           PINATA_API_KEY: ${{ secrets.PINATA_API_KEY }}
           PINATA_SECRET_KEY: ${{ secrets.PINATA_SECRET_KEY }}
-          PIN_ALIAS: 'app-aave-${{ github.head_ref || github.ref }}'
+          PIN_ALIAS: "${{ format('pull_request_{0}', github.head_ref) }}"
           BUILD_LOCATION: './out'
           CID_VERSION: 1
 
@@ -248,7 +225,30 @@ jobs:
           CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
           YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v3-markets/${{ matrix.market }}-v3-additional.config.json
 
-  update_domains:
+  cypress_app_functionality:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip cypress]')"
+    needs:
+      - deploy
+      - cypress_smoke_v2
+      - cypress_smoke_v3
+    strategy:
+      fail-fast: false
+      matrix:
+        scoupe:
+          - settings
+    steps:
+      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+
+      - name: Run tests
+        uses: ./.github/actions/cypress
+        with:
+          CYPRESS_TENDERLY_ACCOUNT: ${{ secrets.TENDERLY_ACCOUNT }}
+          CYPRESS_TENDERLY_KEY: ${{ secrets.TENDERLY_KEY }}
+          CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
+          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/${{ matrix.scoupe }}.config.json
+
+  deploy_production:
     if: |
       github.event_name == 'push' &&
       github.ref == 'refs/heads/main'
@@ -256,19 +256,20 @@ jobs:
       - deploy
       - cypress_full_v2
       - cypress_full_v3
-    uses: ./.github/workflows/update-prod-staging.yml
+      - cypress_app_functionality
+    uses: ./.github/workflows/deploy-prod.yml
     with:
       PINATA_HASH: '${{ needs.deploy.outputs.pinata_hash }}'
     secrets: inherit
 
-  update_domains_no_cypress:
+  deploy_production_no_cypress:
     if: |
       github.event_name == 'push' &&
       github.ref == 'refs/heads/main' &&
       contains(github.event.head_commit.message, '[skip cypress]')
     needs:
       - deploy
-    uses: ./.github/workflows/update-prod-staging.yml
+    uses: ./.github/workflows/deploy-prod.yml
     with:
       PINATA_HASH: '${{ needs.deploy.outputs.pinata_hash }}'
     secrets: inherit
