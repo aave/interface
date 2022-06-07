@@ -61245,7 +61245,10 @@ var marketsData = {
       UI_POOL_DATA_PROVIDER: "0x548e95Ce38B8cb1D91FD82A9F094F26295840277",
       UI_INCENTIVE_DATA_PROVIDER: "0xD01ab9a6577E1D84F142e44D49380e23A340387d"
     },
-    halMarketName: "aavev2"
+    halIntegration: {
+      URL: "https://app.hal.xyz/recipes/aave-track-your-health-factor",
+      marketName: "aavev2"
+    }
   },
   ["amm_kovan" /* amm_kovan */]: {
     marketTitle: "Ethereum AMM Kovan",
@@ -61314,7 +61317,10 @@ var marketsData = {
       UI_POOL_DATA_PROVIDER: "0x67acdB3469580185811E5769113509c6e8B6Cba5",
       UI_INCENTIVE_DATA_PROVIDER: "0x645654D59A5226CBab969b1f5431aA47CBf64ab8"
     },
-    halMarketName: "aavepolygon"
+    halIntegration: {
+      URL: "https://app.hal.xyz/recipes/aave-track-your-health-factor",
+      marketName: "aavepolygon"
+    }
   },
   ["proto_fuji" /* proto_fuji */]: {
     marketTitle: "Avalanche Fuji",
@@ -61354,7 +61360,10 @@ var marketsData = {
       UI_POOL_DATA_PROVIDER: "0x88be7eC36719fadAbdE4307ec61EAB6fda788CEF",
       UI_INCENTIVE_DATA_PROVIDER: "0x11979886A6dBAE27D7a72c49fCF3F23240D647bF"
     },
-    halMarketName: "aaveavalanche"
+    halIntegration: {
+      URL: "https://app.hal.xyz/recipes/aave-track-your-health-factor",
+      marketName: "aaveavalanche"
+    }
   },
   ["proto_eth_rinkeby_v3" /* proto_eth_rinkeby_v3 */]: {
     v3: true,
@@ -61393,6 +61402,10 @@ var marketsData = {
       UI_POOL_DATA_PROVIDER: "0x3f960bB91e85Ae2dB561BDd01B515C5A5c65802b",
       UI_INCENTIVE_DATA_PROVIDER: "0xEFdd7374551897B11a23Ec7b5694C713DFDa76f1",
       L2_ENCODER: "0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC"
+    },
+    halIntegration: {
+      URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
+      marketName: "arbitrum"
     }
   },
   ["proto_arbitrum_rinkeby_v3" /* proto_arbitrum_rinkeby_v3 */]: {
@@ -61434,6 +61447,10 @@ var marketsData = {
       WALLET_BALANCE_PROVIDER: "0xBc790382B3686abffE4be14A030A96aC6154023a",
       UI_POOL_DATA_PROVIDER: "0xdBbFaFC45983B4659E368a3025b81f69Ab6E5093",
       UI_INCENTIVE_DATA_PROVIDER: "0x270f51cf3F681010B46f5c4Ee2aD5120Db33026F"
+    },
+    halIntegration: {
+      URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
+      marketName: "avalanche"
     }
   },
   ["proto_fuji_v3" /* proto_fuji_v3 */]: {
@@ -61474,6 +61491,10 @@ var marketsData = {
       UI_POOL_DATA_PROVIDER: "0x1CCbfeC508da8D5242D5C1b368694Ab0066b39f1",
       UI_INCENTIVE_DATA_PROVIDER: "0xbA14c06011f4AF5970cFDe4364ba6320E190BD4B",
       REPAY_WITH_COLLATERAL_ADAPTER: "0x85272bf6DdCCBDea45Cf0535ea5C65bf91B480c4"
+    },
+    halIntegration: {
+      URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
+      marketName: "fantom"
     }
   },
   ["proto_fantom_testnet_v3" /* proto_fantom_testnet_v3 */]: {
@@ -61587,6 +61608,10 @@ var marketsData = {
       WALLET_BALANCE_PROVIDER: "0xBc790382B3686abffE4be14A030A96aC6154023a",
       UI_POOL_DATA_PROVIDER: "0x8F1AD487C9413d7e81aB5B4E88B024Ae3b5637D0",
       UI_INCENTIVE_DATA_PROVIDER: "0x05E309C97317d8abc0f7e78185FC966FfbD2CEC0"
+    },
+    halIntegration: {
+      URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
+      marketName: "polygon"
     }
   },
   ["proto_mumbai_v3" /* proto_mumbai_v3 */]: {
