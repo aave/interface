@@ -227,7 +227,7 @@ jobs:
 
   cypress_app_functionality:
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[skip cypress]')"
+    if: "!(github.event_name == 'push' && github.ref == 'refs/heads/main')"
     needs:
       - deploy
       - cypress_smoke_v2
