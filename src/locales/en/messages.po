@@ -709,6 +709,10 @@ msgstr "Global settings"
 msgid "Go Back"
 msgstr "Go Back"
 
+#: src/modules/governance/proposal/ProposalTopPanel.tsx
+msgid "Go back"
+msgstr "Go back"
+
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
 msgstr "Governance"
@@ -1887,10 +1891,6 @@ msgstr "Zero address not valid"
 #: src/modules/markets/AssetsList.tsx
 msgid "assets"
 msgstr "assets"
-
-#: src/modules/governance/proposal/ProposalTopPanel.tsx
-msgid "back"
-msgstr "back"
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "copy the error"

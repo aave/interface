@@ -61453,6 +61453,24 @@ var marketsData = {
       marketName: "avalanche"
     }
   },
+  ["proto_ropsten_v3" /* proto_ropsten_v3 */]: {
+    marketTitle: "Ethereum Ropsten",
+    v3: true,
+    chainId: import_contract_helpers2.ChainId.ropsten,
+    enabledFeatures: {
+      faucet: true
+    },
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: "0x303a4B174663A6201Da77782413B4b54EFa3E97e".toLowerCase(),
+      LENDING_POOL: "0x23a85024f54A19e243bA7a74E339a5C80998c7a4",
+      WETH_GATEWAY: "0x96A4fd1f289888cCa772298f7BDCF41C02122c01",
+      FAUCET: "0xb7263ADfB7C094aa24b91A51b297A278e105584a",
+      WALLET_BALANCE_PROVIDER: "0xEEac3ad1b3f4c43A782a951348c5387506B9AB06",
+      UI_POOL_DATA_PROVIDER: "0xb815B9EE078Dab098965D8e52dD5C747d70bb481",
+      UI_INCENTIVE_DATA_PROVIDER: "0x2526D407F722C0D1e0326eC1840A235bf173b9Ca"
+    }
+  },
   ["proto_fuji_v3" /* proto_fuji_v3 */]: {
     marketTitle: "Avalanche Fuji",
     v3: true,
@@ -61659,6 +61677,18 @@ var networkConfigs = {
     wrappedBaseAssetSymbol: "WETH",
     baseAssetDecimals: 18,
     explorerLink: "https://rinkeby.etherscan.io/",
+    isTestnet: true,
+    networkLogoPath: "/icons/networks/ethereum.svg"
+  },
+  [import_contract_helpers3.ChainId.ropsten]: {
+    name: "Ropsten Testnet",
+    publicJsonRPCUrl: ["https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"],
+    publicJsonRPCWSUrl: "",
+    baseUniswapAdapter: "0x0",
+    baseAssetSymbol: "ETH",
+    wrappedBaseAssetSymbol: "WETH",
+    baseAssetDecimals: 18,
+    explorerLink: "https://ropsten.etherscan.io",
     isTestnet: true,
     networkLogoPath: "/icons/networks/ethereum.svg"
   },
