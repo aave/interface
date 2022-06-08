@@ -36,9 +36,13 @@ const getMarketHelpData = (marketName: string) => {
   const testChains = ['Kovan', 'Rinkeby', 'Ropsten', 'Mumbai', 'Fuji', 'Testnet'];
   const arrayName = marketName.split(' ');
   const testChainName = arrayName.filter((el) => testChains.indexOf(el) > -1);
-  const formattedMarketTitle = arrayName.filter((el) => !testChainName.includes(el));
+  const marketTitle = arrayName.filter((el) => !testChainName.includes(el)).join(' ');
+  // Instead of calling all Eth testnets 'Ethereum', display as market name instead
+  const formattedMarketTitle =
+    marketTitle === 'Ethereum' && testChainName[0] ? testChainName[0] : marketTitle;
+
   return {
-    name: formattedMarketTitle.join(' '),
+    name: formattedMarketTitle,
     testChainName: testChainName[0],
   };
 };
