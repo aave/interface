@@ -233,11 +233,7 @@ jobs:
 
   cypress_app_functionality:
     runs-on: ubuntu-latest
-    if: "!(github.event_name == 'push' && github.ref == 'refs/heads/main')"
-    needs:
-      - deploy
-      - cypress_smoke_v2
-      - cypress_smoke_v3
+    needs: ["deploy_fork"]
     strategy:
       fail-fast: false
       matrix:
@@ -285,6 +281,7 @@ jobs:
       - next_js_analyze
       - cypress_full_v2
       - cypress_full_v3
+      - cypress_app_functionality
     env:
       PR_NUMBER: ${{ needs.prepare_jobs.outputs.pr_number }}
     steps:
