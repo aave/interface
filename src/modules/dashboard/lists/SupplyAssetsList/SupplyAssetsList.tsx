@@ -156,14 +156,16 @@ export const SupplyAssetsList = () => {
     <ListWrapper
       title={<Trans>Assets to supply</Trans>}
       subTitleComponent={
-        <Typography>
-          <Link href="/faucet" sx={{ display: 'flex', alignItems: 'center' }}>
-            <Trans>Faucet</Trans>
-            <SvgIcon sx={{ fontSize: 14, ml: 1 }}>
-              <ExternalLinkIcon />
-            </SvgIcon>
-          </Link>
-        </Typography>
+        isTestnet && (
+          <Typography>
+            <Link href="/faucet" sx={{ display: 'flex', alignItems: 'center' }}>
+              <Trans>Faucet</Trans>
+              <SvgIcon sx={{ fontSize: 14, ml: 1 }}>
+                <ExternalLinkIcon />
+              </SvgIcon>
+            </Link>
+          </Typography>
+        )
       }
       localStorageName="supplyAssetsDashboardTableCollapse"
       withTopMargin

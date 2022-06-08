@@ -105,14 +105,16 @@ export default function AssetsList() {
         </>
       }
       subTitleComponent={
-        <Typography>
-          <Link href="/faucet" sx={{ display: 'flex', alignItems: 'center' }}>
-            <Trans>Faucet</Trans>
-            <SvgIcon sx={{ fontSize: 14, ml: 1 }}>
-              <ExternalLinkIcon />
-            </SvgIcon>
-          </Link>
-        </Typography>
+        currentNetworkConfig.isTestnet && (
+          <Typography>
+            <Link href="/faucet" sx={{ display: 'flex', alignItems: 'center' }}>
+              <Trans>Faucet</Trans>
+              <SvgIcon sx={{ fontSize: 14, ml: 1 }}>
+                <ExternalLinkIcon />
+              </SvgIcon>
+            </Link>
+          </Typography>
+        )
       }
       captionSize="h2"
     >
