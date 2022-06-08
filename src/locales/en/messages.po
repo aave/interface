@@ -1295,8 +1295,8 @@ msgid "Staking is only available on Ethereum."
 msgstr "Staking is only available on Ethereum."
 
 #: src/components/Warnings/Warning.tsx
-msgid "Staking on test nets is only available on an Ethereum fork. <0>Learn more</0>"
-msgstr "Staking on test nets is only available on an Ethereum fork. <0>Learn more</0>"
+msgid "Staking on test nets is only available on an Ethereum fork.<0>Learn more</0>"
+msgstr "Staking on test nets is only available on an Ethereum fork.<0>Learn more</0>"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Started"
