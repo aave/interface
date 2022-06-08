@@ -23979,11 +23979,31 @@
     "finished": true
   },
   {
-    "votes": [],
+    "votes": [
+      {
+        "proposalId": 80,
+        "voter": "0x070341aA5Ed571f0FB2c4a5641409B1A46b4961b",
+        "support": false,
+        "votingPower": 9999.9999,
+        "transactionHash": "0x2a2a082d866dfc59e1135121f1911067cdf6713b321431e1e39390f9271a8116",
+        "timestamp": 1654664380,
+        "blockNumber": 14924875
+      }
+    ],
     "finished": false
   },
   {
-    "votes": [],
+    "votes": [
+      {
+        "proposalId": 81,
+        "voter": "0x070341aA5Ed571f0FB2c4a5641409B1A46b4961b",
+        "support": true,
+        "votingPower": 9999.9999,
+        "transactionHash": "0x4fc626b46b255c78a679fbb269fb868c01645a3141edf033062448b592d2b849",
+        "timestamp": 1654664431,
+        "blockNumber": 14924878
+      }
+    ],
     "finished": false
   }
 ]
