@@ -1290,6 +1290,14 @@ msgstr "Staking"
 msgid "Staking APR"
 msgstr "Staking APR"
 
+#: src/components/Warnings/Warning.tsx
+msgid "Staking is only available on Ethereum."
+msgstr "Staking is only available on Ethereum."
+
+#: src/components/Warnings/Warning.tsx
+msgid "Staking on test nets is only available on an Ethereum fork. <0>Learn more</0>"
+msgstr "Staking on test nets is only available on an Ethereum fork. <0>Learn more</0>"
+
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Started"
 msgstr "Started"
@@ -1381,6 +1389,7 @@ msgstr "Swapping"
 msgid "Switch APY type"
 msgstr "Switch APY type"
 
+#: src/components/Warnings/Warning.tsx
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Switch Network"
 msgstr "Switch Network"

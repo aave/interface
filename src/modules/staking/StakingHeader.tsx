@@ -2,11 +2,17 @@ import { Trans } from '@lingui/macro';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
+import { ChainId } from '@aave/contract-helpers';
+
+// import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 import { Link } from '../../components/primitives/Link';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 import EmissionIcon from '../../../public/icons/staking/emission-staking-icon.svg';
 import TrustIcon from '../../../public/icons/staking/trust-staking-icon.svg';
+import { StakingWarning } from '../../components/Warnings/Warning';
 
 interface StakingHeaderProps {
   tvl: string;
@@ -22,6 +28,16 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
 
   const valueTypographyVariant = downToSM ? 'main16' : 'main21';
   const symbolsTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
+  // const testnetsEnabledId = 'testnetsEnabled';
+  // const testnetsEnabledLocalstorage = localStorage.getItem(testnetsEnabledId) === 'true' || false;
+
+  const testnetsEnabledLocalstorage =
+    global?.window?.localStorage.getItem('testnetsEnabled') === 'true';
+  const { chainId: connectedChainId } = useWeb3Context();
+
+  const { currentChainId } = useProtocolDataContext();
+
+  const isWrongNetwork = connectedChainId !== ChainId.mainnet;
 
   return (
     <TopInfoPanel
@@ -35,6 +51,14 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
             >
               <Trans>Staking</Trans>
             </Typography>
+            {testnetsEnabledLocalstorage || isWrongNetwork ? (
+              <StakingWarning
+                isTestNet={testnetsEnabledLocalstorage}
+                isWrongNetwork={isWrongNetwork}
+              />
+            ) : (
+              ''
+            )}
           </Box>
 
           <Typography sx={{ color: '#8E92A3', maxWidth: '824px' }}>
