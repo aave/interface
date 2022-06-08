@@ -8,7 +8,7 @@ concurrency:
 on:
   workflow_dispatch:
   schedule:
-    - cron: 0 */12 * * *
+    - cron: 0 */3 * * *
 
 jobs:
   cache-refresh:
@@ -21,7 +21,7 @@ jobs:
       - name: Update cache
         uses: ./.github/actions/build
         with:
-          YARN_COMMAND: "cache:update"
+          YARN_COMMAND: 'cache:update'
 
       - name: check diff
         run: |
