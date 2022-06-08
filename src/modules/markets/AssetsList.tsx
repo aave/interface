@@ -1,9 +1,11 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
+import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { useMediaQuery } from '@mui/material';
+import { SvgIcon, Typography, useMediaQuery } from '@mui/material';
 import { useState } from 'react';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
+import { Link } from 'src/components/primitives/Link';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
@@ -101,6 +103,16 @@ export default function AssetsList() {
         <>
           {currentMarketData.marketTitle} <Trans>assets</Trans>
         </>
+      }
+      subTitleComponent={
+        <Typography>
+          <Link href="/faucet" sx={{ display: 'flex', alignItems: 'center' }}>
+            <Trans>Faucet</Trans>
+            <SvgIcon sx={{ fontSize: 14, ml: 1 }}>
+              <ExternalLinkIcon />
+            </SvgIcon>
+          </Link>
+        </Typography>
       }
       captionSize="h2"
     >

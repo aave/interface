@@ -1,7 +1,8 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
+import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Alert, Box, useMediaQuery, useTheme } from '@mui/material';
+import { Alert, Box, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { useState } from 'react';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
@@ -15,7 +16,6 @@ import {
 import { useWalletBalances } from '../../../../hooks/app-data-provider/useWalletBalances';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import { DashboardListTopPanel } from '../../DashboardListTopPanel';
-import { ListBottomText } from '../ListBottomText';
 import { ListHeader } from '../ListHeader';
 import { ListLoader } from '../ListLoader';
 import { SupplyAssetsListItem } from './SupplyAssetsListItem';
@@ -155,8 +155,17 @@ export const SupplyAssetsList = () => {
   return (
     <ListWrapper
       title={<Trans>Assets to supply</Trans>}
+      subTitleComponent={
+        <Typography>
+          <Link href="/faucet" sx={{ display: 'flex', alignItems: 'center' }}>
+            <Trans>Faucet</Trans>
+            <SvgIcon sx={{ fontSize: 14, ml: 1 }}>
+              <ExternalLinkIcon />
+            </SvgIcon>
+          </Link>
+        </Typography>
+      }
       localStorageName="supplyAssetsDashboardTableCollapse"
-      bottomComponent={isTestnet ? <ListBottomText /> : undefined}
       withTopMargin
       subChildrenComponent={
         <>
