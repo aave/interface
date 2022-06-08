@@ -28,7 +28,7 @@ yarn build:static
 ### Environment
 
 ```sh
-# setting the environment to staging will enable only testnet markets. Set to 'app' to enable production markets
+# setting the environment to 'staging' will enable only testnet markets. Set to 'prod' to enable production markets
 NEXT_PUBLIC_ENV=staging
 # you can disable staking & governance by altering
 NEXT_PUBLIC_ENABLE_GOVERNANCE=true

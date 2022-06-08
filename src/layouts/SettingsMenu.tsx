@@ -69,7 +69,7 @@ export function SettingsMenu() {
         </MenuItem>
 
         <DarkModeSwitcher component={MenuItem} />
-        {process.env.NEXT_PUBLIC_ENV === 'app' && <TestNetModeSwitcher />}
+        {process.env.NEXT_PUBLIC_ENV === 'prod' && <TestNetModeSwitcher />}
         <LanguageListItem onClick={handleLanguageClick} component={MenuItem} />
       </Menu>
 

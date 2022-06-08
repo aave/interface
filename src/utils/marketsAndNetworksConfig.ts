@@ -19,7 +19,7 @@ export type Pool = {
 };
 
 export const NEXT_PUBLIC_ENABLE_TESTNET =
-  process.env.NEXT_PUBLIC_ENV === 'app' &&
+  process.env.NEXT_PUBLIC_ENV === 'prod' &&
   global?.window?.localStorage.getItem('testnetsEnabled') === 'true';
 
 // determines if forks should be shown
