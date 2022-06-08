@@ -33,13 +33,12 @@ export const getMarketInfoById = (marketId: CustomMarket) => {
 };
 
 const getMarketHelpData = (marketName: string) => {
-  const testChains = ['Kovan', 'Rinkeby', 'Mumbai', 'Fuji', 'Testnet'];
+  const testChains = ['Kovan', 'Rinkeby', 'Ropsten', 'Mumbai', 'Fuji', 'Testnet'];
   const arrayName = marketName.split(' ');
   const testChainName = arrayName.filter((el) => testChains.indexOf(el) > -1);
-  const formattedMarketTittle = arrayName.filter((el) => !testChainName.includes(el));
-
+  const formattedMarketTitle = arrayName.filter((el) => !testChainName.includes(el));
   return {
-    name: formattedMarketTittle.join(' '),
+    name: formattedMarketTitle.join(' '),
     testChainName: testChainName[0],
   };
 };
