@@ -5,10 +5,10 @@ inputs:
     description: yarn command to run
     required: false
     default: "build:static"
-  NEXT_PUBLIC_ENABLE_TESTNET:
-    description: enable testnet
+  NEXT_PUBLIC_ENV:
+    description: app (production) or staging (everything else)
     required: false
-    default: "true"
+    default: "staging"
   USE_NEXT_CACHE:
     description: use nextjs cache or not
     required: false
@@ -41,6 +41,6 @@ runs:
       shell: sh
       run: yarn ${{ inputs.YARN_COMMAND }}
       env:
-        NEXT_PUBLIC_ENABLE_TESTNET: "${{ inputs.NEXT_PUBLIC_ENABLE_TESTNET }}"
+        NEXT_PUBLIC_ENV: "${{ inputs.NEXT_PUBLIC_ENV }}"
         NEXT_PUBLIC_ENABLE_GOVERNANCE: "true"
         NEXT_PUBLIC_ENABLE_STAKING: "true"
