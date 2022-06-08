@@ -48,6 +48,50 @@ const PaperWrapper = ({ children }: { children: ReactNode }) => {
   );
 };
 
+const testNetActionsAlert = (balance: string, networkName: string, onFaucetClick: () => void) => {
+  if (balance === '0') {
+    return (
+      <Alert severity="info" icon={false}>
+        <Trans>Your {networkName} wallet is empty. Get free test assets at </Trans>{' '}
+        <Button variant="text" onClick={onFaucetClick}>
+          <Trans>{networkName} Faucet</Trans>
+        </Button>
+      </Alert>
+    );
+  }
+
+  return (
+    <Alert severity="info" icon={false}>
+      <Trans>Get free test assets at </Trans>{' '}
+      <Button variant="text" onClick={onFaucetClick}>
+        <Trans>{networkName} Faucet</Trans>
+      </Button>
+    </Alert>
+  );
+};
+
+const actionsAlert = (
+  networkName: string,
+  bridge:
+    | {
+        icon: string;
+        name: string;
+        url: string;
+      }
+    | undefined
+) => {
+  return (
+    <Alert severity="info" icon={false}>
+      <Trans>Your {networkName} wallet is empty. Purchase or transfer assets</Trans>{' '}
+      {bridge && (
+        <Trans>
+          or use {<Link href={bridge.url}>{bridge.name}</Link>} to transfer your ETH assets.
+        </Trans>
+      )}
+    </Alert>
+  );
+};
+
 interface ReserveActionsProps {
   underlyingAsset: string;
 }
@@ -56,7 +100,7 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
-  const { openBorrow, openSupply } = useModalContext();
+  const { openBorrow, openFaucet, openSupply } = useModalContext();
 
   const { currentAccount, loading: web3Loading } = useWeb3Context();
   const { user, reserves, loading: loadingReserves } = useAppDataContext();
@@ -170,42 +214,39 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
     );
   }
 
+  let alert = <></>;
+  if (currentNetworkConfig.isTestnet) {
+    alert = testNetActionsAlert(balance?.amount, networkName, () => openFaucet(underlyingAsset));
+  } else if (balance?.amount === '0') {
+    alert = actionsAlert(networkName, bridge);
+  }
+
   return (
     <PaperWrapper>
-      {balance?.amount === '0' ? (
-        <Row align="flex-start" mb={6}>
-          <Alert severity="info" icon={false}>
-            <Trans>Your {networkName} wallet is empty. Purchase or transfer assets</Trans>{' '}
-            {bridge && (
-              <Trans>
-                or use {<Link href={bridge.url}>{bridge.name}</Link>} to transfer your ETH assets.
-              </Trans>
-            )}
-          </Alert>
-        </Row>
-      ) : (
-        <Row
-          caption={<Trans>Wallet balance</Trans>}
-          align="flex-start"
-          mb={6}
-          captionVariant="description"
-        >
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-            <FormattedNumber
-              value={balance?.amount || 0}
-              variant="secondary14"
-              symbol={poolReserve.symbol}
-            />
-            <FormattedNumber
-              value={balance?.amountUSD || '0'}
-              variant="helperText"
-              color="text.muted"
-              symbolsColor="text.muted"
-              symbol="USD"
-            />
-          </Box>
-        </Row>
-      )}
+      <Row align="flex-start" mb={6}>
+        {alert}
+      </Row>
+      <Row
+        caption={<Trans>Wallet balance</Trans>}
+        align="flex-start"
+        mb={6}
+        captionVariant="description"
+      >
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+          <FormattedNumber
+            value={balance?.amount || 0}
+            variant="secondary14"
+            symbol={poolReserve.symbol}
+          />
+          <FormattedNumber
+            value={balance?.amountUSD || '0'}
+            variant="helperText"
+            color="text.muted"
+            symbolsColor="text.muted"
+            symbol="USD"
+          />
+        </Box>
+      </Row>
 
       <Row
         caption={
