@@ -669,6 +669,8 @@ msgstr "FAQ"
 #: pages/faucet.page.tsx
 #: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+#: src/modules/markets/AssetsList.tsx
 msgid "Faucet"
 msgstr "Faucet"
 
@@ -695,6 +697,10 @@ msgstr "French"
 #: src/modules/staking/StakingHeader.tsx
 msgid "Funds in the Safety Module"
 msgstr "Funds in the Safety Module"
+
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "Get free test assets at"
+msgstr "Get free test assets at"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Github"
@@ -1887,6 +1893,10 @@ msgstr "Your supplies"
 msgid "Your voting info"
 msgstr "Your voting info"
 
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "Your {networkName} wallet is empty. Get free test assets at"
+msgstr "Your {networkName} wallet is empty. Get free test assets at"
+
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Your {networkName} wallet is empty. Purchase or transfer assets"
@@ -2005,6 +2015,11 @@ msgstr "{h}h"
 #: src/modules/staking/StakingPanel.tsx
 msgid "{m}m"
 msgstr "{m}m"
+
+#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "{networkName} Faucet"
+msgstr "{networkName} Faucet"
 
 #: src/components/infoTooltips/FrozenWarning.tsx
 msgid "{symbol} is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
