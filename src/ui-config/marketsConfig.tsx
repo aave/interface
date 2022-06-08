@@ -71,13 +71,11 @@ export enum CustomMarket {
   proto_ropsten_v3 = 'proto_ropsten_v3',
 
   // v2
-  proto_kovan = 'proto_kovan',
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
   proto_fuji = 'proto_fuji',
   proto_polygon = 'proto_polygon',
   proto_mumbai = 'proto_mumbai',
-  amm_kovan = 'amm_kovan',
   amm_mainnet = 'amm_mainnet',
   // external
   // permissioned_market = 'permissioned_market',
@@ -86,26 +84,6 @@ export enum CustomMarket {
 export const marketsData: {
   [key in keyof typeof CustomMarket]: MarketDataType;
 } = {
-  [CustomMarket.proto_kovan]: {
-    marketTitle: 'Ethereum Kovan',
-    chainId: ChainId.kovan,
-    enabledFeatures: {
-      faucet: true,
-      governance: true,
-      staking: true,
-      incentives: true,
-    },
-    rpcOnly: true,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0x88757f2f99175387ab4c6a4b3067c77a695b0349'.toLowerCase(),
-      LENDING_POOL: '0xE0fBa4Fc209b4948668006B2bE61711b7f465bAe',
-      WETH_GATEWAY: '0xA61ca04DF33B72b235a8A28CfB535bb7A5271B70',
-      FAUCET: '0x600103d518cC5E8f3319D532eB4e5C268D32e604',
-      WALLET_BALANCE_PROVIDER: '0x07DC923859b68e9399d787bf52c4Aa9eBe3490aF',
-      UI_POOL_DATA_PROVIDER: '0x0D410Ce47834798028c9CD894A29A4b12A9d5624',
-      UI_INCENTIVE_DATA_PROVIDER: '0x50e468e1AAF408a2EB4614e4b45f832700Cda7F4',
-    },
-  },
   [CustomMarket.proto_mainnet]: {
     marketTitle: 'Ethereum',
     chainId: ChainId.mainnet,
@@ -157,20 +135,6 @@ export const marketsData: {
   //     PERMISSION_MANAGER: '<address here>',
   //   },
   // },
-  [CustomMarket.amm_kovan]: {
-    marketTitle: 'Ethereum AMM Kovan',
-    chainId: ChainId.kovan,
-    rpcOnly: true,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0x67FB118A780fD740C8936511947cC4bE7bb7730c'.toLowerCase(),
-      LENDING_POOL: '0x762E2a3BBe729240ea44D31D5a81EAB44d34ef01',
-      WETH_GATEWAY: '0xA61ca04DF33B72b235a8A28CfB535bb7A5271B70',
-      FAUCET: '0x600103d518cC5E8f3319D532eB4e5C268D32e604',
-      WALLET_BALANCE_PROVIDER: '0x07DC923859b68e9399d787bf52c4Aa9eBe3490aF',
-      UI_POOL_DATA_PROVIDER: '0x31fe1309B1169e7136AdAB01d4ba3882b5852d08',
-      UI_INCENTIVE_DATA_PROVIDER: '0x50e468e1AAF408a2EB4614e4b45f832700Cda7F4',
-    },
-  },
   [CustomMarket.amm_mainnet]: {
     marketTitle: 'Ethereum AMM',
     chainId: ChainId.mainnet,

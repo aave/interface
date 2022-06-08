@@ -33,6 +33,7 @@ export const mainnetStakeConfig: StakeConfig = {
 };
 
 // kovan config
+// TODO: Other testnet for staking?
 export const kovanStakeConfig: StakeConfig = {
   chainId: ChainId.kovan,
   stakeDataProvider: '0x2bd8bfcfa19D4c9982d86d7CEf71e3A2e1bcf2cD',
