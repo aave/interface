@@ -1,4 +1,4 @@
-name: Reusable workflow for deploying to production
+name: Reusable workflow for updating prod and staging
 
 on:
   workflow_call:
@@ -9,7 +9,7 @@ on:
         required: true
 
 jobs: 
-  deploy_production:
+  production:
     runs-on: ubuntu-latest
     environment:
       name: Production
@@ -31,20 +31,12 @@ jobs:
           cid: '${{ inputs.PINATA_HASH }}'
           seeds: '${{ secrets.CRUST_SEEDS }}'
 
-      - uses: actions/setup-node@9ced9a43a244f3ac94f13bfd896db8c8f30da67a # v3.0.0
+      - uses: aave/cloudflare-update-action@5c1b528c9c6e0aed18a7dbdd7f957e0b8815a75e
         with:
-          node-version-file: '.nvmrc'
-          cache: 'yarn'
-      - name: install
-        run: yarn add axios
-
-      - name: Update prod DNS
-        env:
           CF_API_TOKEN: '${{ secrets.CF_API_TOKEN }}'
           CF_ZONE_ID: '${{ secrets.CF_ZONE_ID }}'
           HASH: '${{ inputs.PINATA_HASH }}'
           CF_DEPLOYMENT_DOMAIN: app.aave.com
-        run: node scripts/update-cloudflare.js
     
       - name: prepare release
         run: |
@@ -61,3 +53,32 @@ jobs:
           bodyFile: release-notes.md
           commit: '${{ github.sha }}'
           tag: '${{ env.TAG }}'
+
+  staging:
+    runs-on: ubuntu-latest
+    environment:
+      name: Staging
+      url: 'https://staging.aave.com'
+    steps:
+      - name: download build
+        uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+        with:
+          name: out_staging
+          path: out_staging
+
+      - name: pinata
+        id: pinata
+        uses: aave/pinata-action@b03be403ea86f79077ea9cc0b835c3295faa12dd
+        with:
+          PINATA_API_KEY: '${{ secrets.PINATA_API_KEY }}'
+          PINATA_SECRET_KEY: '${{ secrets.PINATA_SECRET_KEY }}'
+          PIN_ALIAS: "app-aave-staging"
+          BUILD_LOCATION: './out_staging'
+          CID_VERSION: 1
+
+      - uses: aave/cloudflare-update-action@5c1b528c9c6e0aed18a7dbdd7f957e0b8815a75e
+        with:
+          CF_API_TOKEN: '${{ secrets.CF_API_TOKEN }}'
+          CF_ZONE_ID: '${{ secrets.CF_ZONE_ID }}'
+          HASH: '${{ steps.pinata.outputs.hash }}'
+          CF_DEPLOYMENT_DOMAIN: staging.aave.com

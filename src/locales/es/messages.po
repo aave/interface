@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-05-26 18:05\n"
+"PO-Revision-Date: 2022-06-07 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -326,7 +326,7 @@ msgstr "Tomar prestado no está habilitado"
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrowing is unavailable because you’re using Isolation mode. To manage Isolation mode visit your <0>Dashboard</0>."
-msgstr ""
+msgstr "Tomar prestado no está disponible porque estás usando el Isolation mode. Para administrar el Isolation mode, visita tu <0>Panel de control</0>."
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) and Isolation mode. To manage E-Mode and Isolation mode visit your <0>Dashboard</0>."
@@ -714,9 +714,17 @@ msgstr "Configuración global"
 msgid "Go Back"
 msgstr "Volver atrás"
 
+#: src/modules/governance/proposal/ProposalTopPanel.tsx
+msgid "Go back"
+msgstr ""
+
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
 msgstr "Gobernanza"
+
+#: src/layouts/components/LanguageSwitcher.tsx
+msgid "Greek"
+msgstr "Griego"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/dashboard/DashboardTopPanel.tsx
@@ -993,6 +1001,10 @@ msgstr "Nada invertido"
 msgid "Nothing supplied yet"
 msgstr "Nada suministrado aún"
 
+#: src/components/HALLink.tsx
+msgid "Notify"
+msgstr ""
+
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Ok, Close"
 msgstr "Vale, cerrar"
@@ -1191,9 +1203,9 @@ msgstr "Seleccionar Mercado Aave"
 msgid "Select language"
 msgstr "Seleccionar idioma"
 
-#: src/components/HALTooltip.tsx
-msgid "Setup triggers and receive notifications about your Health Factor status using Hal app."
-msgstr "Configura los activadores y recibe notificaciones sobre el estado de tu Factor de Salud usando la aplicación Hal."
+#: src/components/HALLink.tsx
+msgid "Setup notifications about your Health Factor using the Hal app."
+msgstr ""
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Share on twitter"
@@ -1209,7 +1221,7 @@ msgstr "Mostrar activos con 0 saldo"
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Since this asset is frozen, the only available actions are withdraw and repay which can be accessed from the <0>Dashboard</0>"
-msgstr ""
+msgstr "Dado que este activo está congelado, las únicas acciones disponibles son retirar y pagar, a las que se puede acceder desde el <0>Panel de control</0>"
 
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
@@ -1501,6 +1513,10 @@ msgstr "Este activo ha alcanzado su límite de suministro. No queda nada disponi
 #: src/components/infoTooltips/GasTooltip.tsx
 msgid "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
 msgstr "Este cálculo de gas es solo una estimación. Tu cartera establecerá el precio de la transacción. Puedes modificar la configuración de gas directamente desde tu proveedor de cartera."
+
+#: src/components/HALLink.tsx
+msgid "This integration was<0>proposed and approved</0>by the community."
+msgstr ""
 
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount available for you to borrow. You can borrow based on your collateral and until the borrow cap is reached."
@@ -1885,10 +1901,6 @@ msgstr "Dirección cero no válida"
 msgid "assets"
 msgstr "activos"
 
-#: src/modules/governance/proposal/ProposalTopPanel.tsx
-msgid "back"
-msgstr "atras"
-
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "copy the error"
 msgstr "copiar el error"
@@ -1962,7 +1974,7 @@ msgstr "mercados v3"
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "withdrew"
-msgstr ""
+msgstr "retirado"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
@@ -1981,7 +1993,7 @@ msgstr "{0} Faucet"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "{0} is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
-msgstr ""
+msgstr "{0} está congelado debido a una decisión del gobierno del protocolo Aave. <0>Más detalles</0>"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{d}d"
@@ -1997,7 +2009,7 @@ msgstr "{m}m"
 
 #: src/components/infoTooltips/FrozenWarning.tsx
 msgid "{symbol} is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
-msgstr ""
+msgstr "{symbol} está congelado debido a una decisión del gobierno del protocolo Aave. <0>Más detalles</0>"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"

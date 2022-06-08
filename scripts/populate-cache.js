@@ -43706,17 +43706,17 @@ var require_types6 = __commonJS({
       ExecutorType2[ExecutorType2["Short"] = 0] = "Short";
       ExecutorType2[ExecutorType2["Long"] = 1] = "Long";
     })(ExecutorType = exports2.ExecutorType || (exports2.ExecutorType = {}));
-    var ProposalState2;
-    (function(ProposalState3) {
-      ProposalState3["Pending"] = "Pending";
-      ProposalState3["Canceled"] = "Canceled";
-      ProposalState3["Active"] = "Active";
-      ProposalState3["Failed"] = "Failed";
-      ProposalState3["Succeeded"] = "Succeeded";
-      ProposalState3["Queued"] = "Queued";
-      ProposalState3["Expired"] = "Expired";
-      ProposalState3["Executed"] = "Executed";
-    })(ProposalState2 = exports2.ProposalState || (exports2.ProposalState = {}));
+    var ProposalState3;
+    (function(ProposalState4) {
+      ProposalState4["Pending"] = "Pending";
+      ProposalState4["Canceled"] = "Canceled";
+      ProposalState4["Active"] = "Active";
+      ProposalState4["Failed"] = "Failed";
+      ProposalState4["Succeeded"] = "Succeeded";
+      ProposalState4["Queued"] = "Queued";
+      ProposalState4["Expired"] = "Expired";
+      ProposalState4["Executed"] = "Executed";
+    })(ProposalState3 = exports2.ProposalState || (exports2.ProposalState = {}));
   }
 });
 
@@ -47726,7 +47726,7 @@ var require_v3_pool_contract = __commonJS({
         });
       }
       swapCollateral(_0) {
-        return __async(this, arguments, function* ({ user, flash, fromAsset, fromAToken, toAsset, fromAmount, minToAmount, permitSignature, swapAll, referralCode, augustus, swapCallData }) {
+        return __async(this, arguments, function* ({ user, flash, fromAsset, fromAToken, toAsset, fromAmount, minToAmount, permitSignature, swapAll, onBehalfOf, referralCode, augustus, swapCallData }) {
           const txs = [];
           const permitParams = permitSignature !== null && permitSignature !== void 0 ? permitSignature : {
             amount: "0",
@@ -47761,7 +47761,7 @@ var require_v3_pool_contract = __commonJS({
             const convertedAmountWithSurplus = (0, utils_1.valueToWei)(amountWithSurplus, tokenDecimals);
             const txCallback = this.generateTxCallback({
               rawTxMethod: () => __async(this, null, function* () {
-                return poolContract.populateTransaction.flashLoanSimple(this.swapCollateralAddress, fromAsset, swapAll ? convertedAmountWithSurplus : convertedAmount, params, referralCode !== null && referralCode !== void 0 ? referralCode : "0");
+                return poolContract.populateTransaction.flashLoan(this.swapCollateralAddress, [fromAsset], swapAll ? [convertedAmountWithSurplus] : [convertedAmount], [0], onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user, params, referralCode !== null && referralCode !== void 0 ? referralCode : "0");
               }),
               from: user
             });
@@ -47788,7 +47788,7 @@ var require_v3_pool_contract = __commonJS({
         });
       }
       paraswapRepayWithCollateral(_0) {
-        return __async(this, arguments, function* ({ user, fromAsset, fromAToken, assetToRepay, repayWithAmount, repayAmount, permitSignature, repayAllDebt, rateMode, referralCode, flash, swapAndRepayCallData, augustus }) {
+        return __async(this, arguments, function* ({ user, fromAsset, fromAToken, assetToRepay, repayWithAmount, repayAmount, permitSignature, repayAllDebt, rateMode, onBehalfOf, referralCode, flash, swapAndRepayCallData, augustus }) {
           const txs = [];
           const permitParams = permitSignature !== null && permitSignature !== void 0 ? permitSignature : {
             amount: "0",
@@ -47847,7 +47847,7 @@ var require_v3_pool_contract = __commonJS({
             const poolContract = this.getContractInstance(this.poolAddress);
             const txCallback = this.generateTxCallback({
               rawTxMethod: () => __async(this, null, function* () {
-                return poolContract.populateTransaction.flashLoanSimple(this.repayWithCollateralAddress, fromAsset, repayAllDebt ? convertedRepayWithAmountWithSurplus : convertedRepayWithAmount, params, referralCode !== null && referralCode !== void 0 ? referralCode : "0");
+                return poolContract.populateTransaction.flashLoan(this.repayWithCollateralAddress, [fromAsset], repayAllDebt ? [convertedRepayWithAmountWithSurplus] : [convertedRepayWithAmount], [0], onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user, params, referralCode !== null && referralCode !== void 0 ? referralCode : "0");
               }),
               from: user
             });
@@ -47894,7 +47894,7 @@ var require_v3_pool_contract = __commonJS({
           ]);
           const txCallback = this.generateTxCallback({
             rawTxMethod: () => __async(this, null, function* () {
-              return poolContract.populateTransaction.flashLoanSimple(this.flashLiquidationAddress, borrowedAsset, flashBorrowAmount, params, "0");
+              return poolContract.populateTransaction.flashLoan(this.flashLiquidationAddress, [borrowedAsset], [flashBorrowAmount], [0], initiator, params, "0");
             }),
             from: initiator
           });
@@ -48073,6 +48073,7 @@ var require_v3_pool_contract = __commonJS({
       (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("fromAsset")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("fromAToken")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("toAsset")),
+      (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("onBehalfOf")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("augustus")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)("fromAmount")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)("minToAmount")),
@@ -48086,6 +48087,7 @@ var require_v3_pool_contract = __commonJS({
       (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("fromAsset")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("fromAToken")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("assetToRepay")),
+      (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("onBehalfOf")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)("repayWithAmount")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)("repayAmount")),
       (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)("augustus")),
@@ -61245,7 +61247,10 @@ var marketsData = {
       UI_POOL_DATA_PROVIDER: "0x548e95Ce38B8cb1D91FD82A9F094F26295840277",
       UI_INCENTIVE_DATA_PROVIDER: "0xD01ab9a6577E1D84F142e44D49380e23A340387d"
     },
-    halMarketName: "aavev2"
+    halIntegration: {
+      URL: "https://app.hal.xyz/recipes/aave-track-your-health-factor",
+      marketName: "aavev2"
+    }
   },
   ["amm_kovan" /* amm_kovan */]: {
     marketTitle: "Ethereum AMM Kovan",
@@ -61314,7 +61319,10 @@ var marketsData = {
       UI_POOL_DATA_PROVIDER: "0x67acdB3469580185811E5769113509c6e8B6Cba5",
       UI_INCENTIVE_DATA_PROVIDER: "0x645654D59A5226CBab969b1f5431aA47CBf64ab8"
     },
-    halMarketName: "aavepolygon"
+    halIntegration: {
+      URL: "https://app.hal.xyz/recipes/aave-track-your-health-factor",
+      marketName: "aavepolygon"
+    }
   },
   ["proto_fuji" /* proto_fuji */]: {
     marketTitle: "Avalanche Fuji",
@@ -61354,7 +61362,10 @@ var marketsData = {
       UI_POOL_DATA_PROVIDER: "0x88be7eC36719fadAbdE4307ec61EAB6fda788CEF",
       UI_INCENTIVE_DATA_PROVIDER: "0x11979886A6dBAE27D7a72c49fCF3F23240D647bF"
     },
-    halMarketName: "aaveavalanche"
+    halIntegration: {
+      URL: "https://app.hal.xyz/recipes/aave-track-your-health-factor",
+      marketName: "aaveavalanche"
+    }
   },
   ["proto_eth_rinkeby_v3" /* proto_eth_rinkeby_v3 */]: {
     v3: true,
@@ -61393,6 +61404,10 @@ var marketsData = {
       UI_POOL_DATA_PROVIDER: "0x3f960bB91e85Ae2dB561BDd01B515C5A5c65802b",
       UI_INCENTIVE_DATA_PROVIDER: "0xEFdd7374551897B11a23Ec7b5694C713DFDa76f1",
       L2_ENCODER: "0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC"
+    },
+    halIntegration: {
+      URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
+      marketName: "arbitrum"
     }
   },
   ["proto_arbitrum_rinkeby_v3" /* proto_arbitrum_rinkeby_v3 */]: {
@@ -61434,6 +61449,28 @@ var marketsData = {
       WALLET_BALANCE_PROVIDER: "0xBc790382B3686abffE4be14A030A96aC6154023a",
       UI_POOL_DATA_PROVIDER: "0xdBbFaFC45983B4659E368a3025b81f69Ab6E5093",
       UI_INCENTIVE_DATA_PROVIDER: "0x270f51cf3F681010B46f5c4Ee2aD5120Db33026F"
+    },
+    halIntegration: {
+      URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
+      marketName: "avalanche"
+    }
+  },
+  ["proto_ropsten_v3" /* proto_ropsten_v3 */]: {
+    marketTitle: "Ethereum Ropsten",
+    v3: true,
+    chainId: import_contract_helpers2.ChainId.ropsten,
+    enabledFeatures: {
+      faucet: true
+    },
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: "0x303a4B174663A6201Da77782413B4b54EFa3E97e".toLowerCase(),
+      LENDING_POOL: "0x23a85024f54A19e243bA7a74E339a5C80998c7a4",
+      WETH_GATEWAY: "0x96A4fd1f289888cCa772298f7BDCF41C02122c01",
+      FAUCET: "0xb7263ADfB7C094aa24b91A51b297A278e105584a",
+      WALLET_BALANCE_PROVIDER: "0xEEac3ad1b3f4c43A782a951348c5387506B9AB06",
+      UI_POOL_DATA_PROVIDER: "0xb815B9EE078Dab098965D8e52dD5C747d70bb481",
+      UI_INCENTIVE_DATA_PROVIDER: "0x2526D407F722C0D1e0326eC1840A235bf173b9Ca"
     }
   },
   ["proto_fuji_v3" /* proto_fuji_v3 */]: {
@@ -61474,6 +61511,10 @@ var marketsData = {
       UI_POOL_DATA_PROVIDER: "0x1CCbfeC508da8D5242D5C1b368694Ab0066b39f1",
       UI_INCENTIVE_DATA_PROVIDER: "0xbA14c06011f4AF5970cFDe4364ba6320E190BD4B",
       REPAY_WITH_COLLATERAL_ADAPTER: "0x85272bf6DdCCBDea45Cf0535ea5C65bf91B480c4"
+    },
+    halIntegration: {
+      URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
+      marketName: "fantom"
     }
   },
   ["proto_fantom_testnet_v3" /* proto_fantom_testnet_v3 */]: {
@@ -61587,6 +61628,10 @@ var marketsData = {
       WALLET_BALANCE_PROVIDER: "0xBc790382B3686abffE4be14A030A96aC6154023a",
       UI_POOL_DATA_PROVIDER: "0x8F1AD487C9413d7e81aB5B4E88B024Ae3b5637D0",
       UI_INCENTIVE_DATA_PROVIDER: "0x05E309C97317d8abc0f7e78185FC966FfbD2CEC0"
+    },
+    halIntegration: {
+      URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
+      marketName: "polygon"
     }
   },
   ["proto_mumbai_v3" /* proto_mumbai_v3 */]: {
@@ -61634,6 +61679,18 @@ var networkConfigs = {
     wrappedBaseAssetSymbol: "WETH",
     baseAssetDecimals: 18,
     explorerLink: "https://rinkeby.etherscan.io/",
+    isTestnet: true,
+    networkLogoPath: "/icons/networks/ethereum.svg"
+  },
+  [import_contract_helpers3.ChainId.ropsten]: {
+    name: "Ropsten Testnet",
+    publicJsonRPCUrl: ["https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"],
+    publicJsonRPCWSUrl: "",
+    baseUniswapAdapter: "0x0",
+    baseAssetSymbol: "ETH",
+    wrappedBaseAssetSymbol: "WETH",
+    baseAssetDecimals: 18,
+    explorerLink: "https://ropsten.etherscan.io",
     isTestnet: true,
     networkLogoPath: "/icons/networks/ethereum.svg"
   },
@@ -62225,12 +62282,21 @@ var import_path3 = require("path");
 // src/modules/governance/utils/formatProposal.ts
 var import_contract_helpers6 = __toESM(require_cjs());
 var import_bignumber = __toESM(require_bignumber2());
-var averageBlockTime = 13.5;
+var averageBlockTime = 14;
 function enhanceProposalWithTimes(proposal) {
   return __async(this, null, function* () {
     const provider = getProvider(import_contract_helpers6.ChainId.mainnet);
     const { timestamp: startTimestamp } = yield provider.getBlock(proposal.startBlock);
     const { timestamp: creationTimestamp } = yield provider.getBlock(proposal.proposalCreated);
+    if (proposal.state === import_contract_helpers6.ProposalState.Active) {
+      const currentBlockNumber = yield provider.getBlockNumber();
+      const currentBlock = yield provider.getBlock(currentBlockNumber);
+      return __spreadProps(__spreadValues({}, proposal), {
+        startTimestamp,
+        creationTimestamp,
+        expirationTimestamp: currentBlock.timestamp + (proposal.endBlock - currentBlockNumber) * averageBlockTime
+      });
+    }
     const expirationTimestamp = startTimestamp + (proposal.endBlock - proposal.startBlock) * averageBlockTime;
     return __spreadProps(__spreadValues({}, proposal), { startTimestamp, creationTimestamp, expirationTimestamp });
   });

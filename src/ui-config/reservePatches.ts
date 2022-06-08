@@ -39,6 +39,7 @@ export const NAME_MAP: { [key: string]: string } = {
   PAX: 'Paxos Standard',
   RAI: 'Rai Reflex Index',
   REP: 'Augur',
+  SAVAX: 'Benqi Staked Avalanche',
   STETH: 'Lido Staked Ether',
   STKAAVE: 'Stake Aave',
   TUSD: 'TrueUSD',
