@@ -1,10 +1,10 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
-import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Alert, Box, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Alert, Box, useMediaQuery, useTheme } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { useState } from 'react';
+import { FaucetButton } from 'src/components/FaucetButton';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
@@ -155,18 +155,7 @@ export const SupplyAssetsList = () => {
   return (
     <ListWrapper
       title={<Trans>Assets to supply</Trans>}
-      subTitleComponent={
-        isTestnet && (
-          <Typography>
-            <Link href="/faucet" sx={{ display: 'flex', alignItems: 'center' }}>
-              <Trans>Faucet</Trans>
-              <SvgIcon sx={{ fontSize: 14, ml: 1 }}>
-                <ExternalLinkIcon />
-              </SvgIcon>
-            </Link>
-          </Typography>
-        )
-      }
+      subTitleComponent={currentNetworkConfig.isTestnet && <FaucetButton />}
       localStorageName="supplyAssetsDashboardTableCollapse"
       withTopMargin
       subChildrenComponent={

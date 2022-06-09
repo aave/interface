@@ -1,11 +1,10 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
-import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { SvgIcon, Typography, useMediaQuery } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import { useState } from 'react';
+import { FaucetButton } from 'src/components/FaucetButton';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
-import { Link } from 'src/components/primitives/Link';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
@@ -104,18 +103,7 @@ export default function AssetsList() {
           {currentMarketData.marketTitle} <Trans>assets</Trans>
         </>
       }
-      subTitleComponent={
-        currentNetworkConfig.isTestnet && (
-          <Typography>
-            <Link href="/faucet" sx={{ display: 'flex', alignItems: 'center' }}>
-              <Trans>Faucet</Trans>
-              <SvgIcon sx={{ fontSize: 14, ml: 1 }}>
-                <ExternalLinkIcon />
-              </SvgIcon>
-            </Link>
-          </Typography>
-        )
-      }
+      subTitleComponent={currentNetworkConfig.isTestnet && <FaucetButton />}
       captionSize="h2"
     >
       {!isTableChangedToCards && (
