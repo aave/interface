@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-06-07 18:05\n"
+"PO-Revision-Date: 2022-06-08 18:05\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1185,6 +1185,10 @@ msgstr ""
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Safety of your deposited collateral against the borrowed assets and its underlying value."
+msgstr ""
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Seatbelt report"
 msgstr ""
 
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
