@@ -26,6 +26,7 @@ Enabling users to:
 Install it and run:
 
 ```sh
+cp .env.example .env.local
 yarn
 yarn dev
 ```

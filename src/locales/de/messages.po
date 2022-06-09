@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-06-07 00:14\n"
+"PO-Revision-Date: 2022-06-08 18:05\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -714,6 +714,10 @@ msgstr ""
 msgid "Go Back"
 msgstr ""
 
+#: src/modules/governance/proposal/ProposalTopPanel.tsx
+msgid "Go back"
+msgstr ""
+
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
 msgstr ""
@@ -1181,6 +1185,10 @@ msgstr ""
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Safety of your deposited collateral against the borrowed assets and its underlying value."
+msgstr ""
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Seatbelt report"
 msgstr ""
 
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
@@ -1895,10 +1903,6 @@ msgstr ""
 
 #: src/modules/markets/AssetsList.tsx
 msgid "assets"
-msgstr ""
-
-#: src/modules/governance/proposal/ProposalTopPanel.tsx
-msgid "back"
 msgstr ""
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx

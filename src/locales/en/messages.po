@@ -709,6 +709,10 @@ msgstr "Global settings"
 msgid "Go Back"
 msgstr "Go Back"
 
+#: src/modules/governance/proposal/ProposalTopPanel.tsx
+msgid "Go back"
+msgstr "Go back"
+
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
 msgstr "Governance"
@@ -1177,6 +1181,10 @@ msgstr "SEE CHARTS"
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Safety of your deposited collateral against the borrowed assets and its underlying value."
 msgstr "Safety of your deposited collateral against the borrowed assets and its underlying value."
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Seatbelt report"
+msgstr "Seatbelt report"
 
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Seems like we can't switch the network automatically. Please check if you can change it from the wallet."
@@ -1891,10 +1899,6 @@ msgstr "Zero address not valid"
 #: src/modules/markets/AssetsList.tsx
 msgid "assets"
 msgstr "assets"
-
-#: src/modules/governance/proposal/ProposalTopPanel.tsx
-msgid "back"
-msgstr "back"
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "copy the error"

@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-06-07 00:14\n"
+"PO-Revision-Date: 2022-06-08 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -714,6 +714,10 @@ msgstr "Configuración global"
 msgid "Go Back"
 msgstr "Volver atrás"
 
+#: src/modules/governance/proposal/ProposalTopPanel.tsx
+msgid "Go back"
+msgstr "Volver a atrás"
+
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
 msgstr "Gobernanza"
@@ -999,7 +1003,7 @@ msgstr "Nada suministrado aún"
 
 #: src/components/HALLink.tsx
 msgid "Notify"
-msgstr ""
+msgstr "Notificar"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Ok, Close"
@@ -1183,6 +1187,10 @@ msgstr "VER GRÁFICOS"
 msgid "Safety of your deposited collateral against the borrowed assets and its underlying value."
 msgstr "Seguridad de su garantía depositada contra los activos prestados y su valor subyacente."
 
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Seatbelt report"
+msgstr ""
+
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Seems like we can't switch the network automatically. Please check if you can change it from the wallet."
 msgstr "Parece que no podemos cambiar la red automáticamente. Por favor, compruebe si puede cambiarla desde la billetera."
@@ -1201,7 +1209,7 @@ msgstr "Seleccionar idioma"
 
 #: src/components/HALLink.tsx
 msgid "Setup notifications about your Health Factor using the Hal app."
-msgstr ""
+msgstr "Configura notificaciones sobre tu factor de salud usando la aplicación Hal."
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Share on twitter"
@@ -1512,7 +1520,7 @@ msgstr "Este cálculo de gas es solo una estimación. Tu cartera establecerá el
 
 #: src/components/HALLink.tsx
 msgid "This integration was<0>proposed and approved</0>by the community."
-msgstr ""
+msgstr "Esta integración fue<0>propuesta y aprobada</0>por la comunidad."
 
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount available for you to borrow. You can borrow based on your collateral and until the borrow cap is reached."
@@ -1896,10 +1904,6 @@ msgstr "Dirección cero no válida"
 #: src/modules/markets/AssetsList.tsx
 msgid "assets"
 msgstr "activos"
-
-#: src/modules/governance/proposal/ProposalTopPanel.tsx
-msgid "back"
-msgstr "atras"
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "copy the error"

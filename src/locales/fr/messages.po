@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-06-07 00:14\n"
+"PO-Revision-Date: 2022-06-08 18:05\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -714,6 +714,10 @@ msgstr "Paramètres globaux"
 msgid "Go Back"
 msgstr "Retourner"
 
+#: src/modules/governance/proposal/ProposalTopPanel.tsx
+msgid "Go back"
+msgstr ""
+
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
 msgstr "Gouvernance"
@@ -1182,6 +1186,10 @@ msgstr "VOIR LES GRAPHIQUES"
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Safety of your deposited collateral against the borrowed assets and its underlying value."
 msgstr "Sécurité de votre garantie déposée contre les actifs empruntés et sa valeur sous-jacente."
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Seatbelt report"
+msgstr ""
 
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Seems like we can't switch the network automatically. Please check if you can change it from the wallet."
@@ -1896,10 +1904,6 @@ msgstr "Adresse zéro non-valide"
 #: src/modules/markets/AssetsList.tsx
 msgid "assets"
 msgstr "actifs"
-
-#: src/modules/governance/proposal/ProposalTopPanel.tsx
-msgid "back"
-msgstr "arrière"
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "copy the error"
