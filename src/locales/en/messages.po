@@ -667,10 +667,9 @@ msgid "FAQ"
 msgstr "FAQ"
 
 #: pages/faucet.page.tsx
+#: src/components/FaucetButton.tsx
 #: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
-#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
-#: src/modules/markets/AssetsList.tsx
 msgid "Faucet"
 msgstr "Faucet"
 
@@ -697,6 +696,10 @@ msgstr "French"
 #: src/modules/staking/StakingHeader.tsx
 msgid "Funds in the Safety Module"
 msgstr "Funds in the Safety Module"
+
+#: src/components/FaucetButton.tsx
+msgid "Get free assets to test Aave protocol"
+msgstr "Get free assets to test Aave protocol"
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Get free test assets at"
