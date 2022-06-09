@@ -15,7 +15,7 @@ runs:
         workflow: build-fork.yml
         run_id: ${{ github.event.workflow_run.id }}
         workflow_conclusion: success
-        name: nextjs
+        name: nextjs_build
         path: .next
 
     - name: Analyze bundle
