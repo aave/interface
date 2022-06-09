@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-06-07 18:05\n"
+"PO-Revision-Date: 2022-06-08 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1186,6 +1186,10 @@ msgstr "ΔΕΙΤΕ ΓΡΑΦΗΜΑΤΑ"
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Safety of your deposited collateral against the borrowed assets and its underlying value."
 msgstr "Ασφάλεια των κατατεθειμένων εξασφαλίσεών σας έναντι των δανειζόμενων περιουσιακών στοιχείων και της υποκείμενης αξίας τους."
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Seatbelt report"
+msgstr ""
 
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Seems like we can't switch the network automatically. Please check if you can change it from the wallet."
