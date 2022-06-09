@@ -35,7 +35,7 @@ jobs:
           echo "::set-output name=pr_number::$(cat NUM | tr -dc '[:digit:]')"
 
       - name: Link this CI run to PR
-        uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e # v6.0.0
+        uses: actions/github-script@7a5c598405937d486b0331594b5da2b14db670da # v6.0.0
         with:
           script: |
             await github.rest.issues.createComment({
@@ -136,7 +136,7 @@ jobs:
           CID_VERSION: 1
 
       - name: 'Comment on PR'
-        uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e # v6.0.0
+        uses: actions/github-script@7a5c598405937d486b0331594b5da2b14db670da # v6.0.0
         with:
           script: |
             await github.rest.issues.createComment({
