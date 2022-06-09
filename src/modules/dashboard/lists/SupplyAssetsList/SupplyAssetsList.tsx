@@ -155,7 +155,7 @@ export const SupplyAssetsList = () => {
   return (
     <ListWrapper
       title={<Trans>Assets to supply</Trans>}
-      subTitleComponent={currentNetworkConfig.isTestnet && <FaucetButton />}
+      subTitleComponent={isTestnet && <FaucetButton />}
       localStorageName="supplyAssetsDashboardTableCollapse"
       withTopMargin
       subChildrenComponent={
