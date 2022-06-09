@@ -12,7 +12,7 @@ import { Link } from '../../components/primitives/Link';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 import EmissionIcon from '../../../public/icons/staking/emission-staking-icon.svg';
 import TrustIcon from '../../../public/icons/staking/trust-staking-icon.svg';
-import { StakingWarning } from '../../components/Warnings/Warning';
+import { StakingWarning } from '../../components/Warnings/StakingWarning';
 
 interface StakingHeaderProps {
   tvl: string;
