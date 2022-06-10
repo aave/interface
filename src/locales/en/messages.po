@@ -1434,6 +1434,10 @@ msgstr "The Stable Rate is not enabled for this currency"
 msgid "The address of the pool addresses provider is invalid"
 msgstr "The address of the pool addresses provider is invalid"
 
+#: src/layouts/MainLayout.tsx
+msgid "The app is running in testnet mode"
+msgstr "The app is running in testnet mode"
+
 #: src/ui-config/errorMapping.tsx
 msgid "The caller of the function is not an AToken"
 msgstr "The caller of the function is not an AToken"
