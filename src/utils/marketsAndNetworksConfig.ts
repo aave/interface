@@ -79,16 +79,15 @@ export function getSupportedChainIds(): number[] {
   return Array.from(
     Object.keys(marketsData)
       .filter((value) => {
-        // For staging, we only show testnest markets
-        if (process.env.NEXT_PUBLIC_ENV === 'staging') {
-          return networkConfigs[marketsData[value as keyof typeof CustomMarket].chainId].isTestnet;
+        const isTestnet =
+          networkConfigs[marketsData[value as keyof typeof CustomMarket].chainId].isTestnet;
+
+        // If this is a staging environment, or the testnet toggle is on, only show testnets
+        if (process.env.NEXT_PUBLIC_ENV === 'staging' || ENABLE_TESTNET) {
+          return isTestnet;
         }
 
-        // Testnet markets can still be enabled in prod
-        return (
-          ENABLE_TESTNET ||
-          !networkConfigs[marketsData[value as keyof typeof CustomMarket].chainId].isTestnet
-        );
+        return !isTestnet;
       })
       .reduce(
         (acc, value) => acc.add(marketsData[value as keyof typeof CustomMarket].chainId),
