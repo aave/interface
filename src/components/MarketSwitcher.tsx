@@ -1,9 +1,8 @@
-import { CheckIcon, ChevronDownIcon } from '@heroicons/react/outline';
+import { ChevronDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
   Box,
   Divider,
-  ListItemIcon,
   ListItemText,
   MenuItem,
   SvgIcon,
@@ -37,12 +36,8 @@ const getMarketHelpData = (marketName: string) => {
   const arrayName = marketName.split(' ');
   const testChainName = arrayName.filter((el) => testChains.indexOf(el) > -1);
   const marketTitle = arrayName.filter((el) => !testChainName.includes(el)).join(' ');
-  // Instead of calling all Eth testnets 'Ethereum', display as market name instead
-  const formattedMarketTitle =
-    marketTitle === 'Ethereum' && testChainName[0] ? testChainName[0] : marketTitle;
-
   return {
-    name: formattedMarketTitle,
+    name: marketTitle,
     testChainName: testChainName[0],
   };
 };
@@ -178,7 +173,7 @@ export const MarketSwitcher = () => {
           },
           PaperProps: {
             style: {
-              minWidth: 240,
+              minWidth: 280,
             },
             variant: 'outlined',
             elevation: 0,
@@ -200,7 +195,7 @@ export const MarketSwitcher = () => {
       )}
       {availableMarkets.map((marketId: CustomMarket) => {
         const { market, network } = getMarketInfoById(marketId);
-
+        const marketNaming = getMarketHelpData(market.marketTitle);
         return (
           market.v3 && (
             <MenuItem
@@ -212,19 +207,25 @@ export const MarketSwitcher = () => {
               <MarketLogo
                 size={32}
                 logo={network.networkLogoPath}
-                testChainName={getMarketHelpData(market.marketTitle).testChainName}
+                testChainName={marketNaming.testChainName}
               />
-              <ListItemText sx={{ mr: 3 }}>
-                {getMarketHelpData(market.marketTitle).name} {market.isFork ? 'Fork' : ''}
+              <ListItemText sx={{ mr: 0 }}>
+                {marketNaming.name} {market.isFork ? 'Fork' : ''}
               </ListItemText>
 
-              {currentMarket === marketId && (
+              {/*               {currentMarket === marketId && (
                 <ListItemIcon sx={{ m: 0 }}>
                   <SvgIcon>
                     <CheckIcon />
                   </SvgIcon>
                 </ListItemIcon>
-              )}
+              )} */}
+
+              <ListItemText sx={{ textAlign: 'right' }}>
+                <Typography color="text.muted" variant="description">
+                  {marketNaming.testChainName}
+                </Typography>
+              </ListItemText>
             </MenuItem>
           )
         );
@@ -239,7 +240,7 @@ export const MarketSwitcher = () => {
       )}
       {availableMarkets.map((marketId: CustomMarket) => {
         const { market, network } = getMarketInfoById(marketId);
-
+        const marketNaming = getMarketHelpData(market.marketTitle);
         return (
           !market.v3 && (
             <MenuItem
@@ -251,19 +252,25 @@ export const MarketSwitcher = () => {
               <MarketLogo
                 size={32}
                 logo={network.networkLogoPath}
-                testChainName={getMarketHelpData(market.marketTitle).testChainName}
+                testChainName={marketNaming.testChainName}
               />
-              <ListItemText sx={{ mr: 3 }}>
-                {getMarketHelpData(market.marketTitle).name} {market.isFork ? 'Fork' : ''}
+              <ListItemText sx={{ mr: 0 }}>
+                {marketNaming.name} {market.isFork ? 'Fork' : ''}
               </ListItemText>
 
-              {currentMarket === marketId && (
+              {/*               {currentMarket === marketId && (
                 <ListItemIcon sx={{ m: 0 }}>
                   <SvgIcon>
                     <CheckIcon />
                   </SvgIcon>
                 </ListItemIcon>
-              )}
+              )} */}
+
+              <ListItemText sx={{ textAlign: 'right' }}>
+                <Typography color="text.muted" variant="description">
+                  {marketNaming.testChainName}
+                </Typography>
+              </ListItemText>
             </MenuItem>
           )
         );
