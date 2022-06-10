@@ -285,7 +285,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     bridge: {
       icon: '/icons/bridge/optimism.svg',
       name: 'Optimism Bridge',
-      url: 'https://gateway.optimism.io',
+      url: 'https://app.optimism.io/bridge',
     },
   },
   [ChainId.optimism_kovan]: {
@@ -305,7 +305,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     bridge: {
       icon: '/icons/bridge/optimism.svg',
       name: 'Optimism Bridge',
-      url: 'https://gateway.optimism.io',
+      url: 'https://app.optimism.io/bridge',
     },
   },
   [ChainId.fantom]: {
