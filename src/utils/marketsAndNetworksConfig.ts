@@ -18,7 +18,7 @@ export type Pool = {
   address: string;
 };
 
-export const NEXT_PUBLIC_ENABLE_TESTNET =
+export const ENABLE_TESTNET =
   process.env.NEXT_PUBLIC_ENV === 'prod' &&
   global?.window?.localStorage.getItem('testnetsEnabled') === 'true';
 
@@ -86,7 +86,7 @@ export function getSupportedChainIds(): number[] {
 
         // Testnet markets can still be enabled in prod
         return (
-          NEXT_PUBLIC_ENABLE_TESTNET ||
+          ENABLE_TESTNET ||
           !networkConfigs[marketsData[value as keyof typeof CustomMarket].chainId].isTestnet
         );
       })
