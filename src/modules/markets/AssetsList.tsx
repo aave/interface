@@ -2,6 +2,7 @@ import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { useMediaQuery } from '@mui/material';
 import { useState } from 'react';
+import { FaucetButton } from 'src/components/FaucetButton';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -102,6 +103,7 @@ export default function AssetsList() {
           {currentMarketData.marketTitle} <Trans>assets</Trans>
         </>
       }
+      subTitleComponent={currentNetworkConfig.isTestnet && <FaucetButton />}
       captionSize="h2"
     >
       {!isTableChangedToCards && (

@@ -4,6 +4,7 @@ import { Trans } from '@lingui/macro';
 import { Alert, Box, useMediaQuery, useTheme } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { useState } from 'react';
+import { FaucetButton } from 'src/components/FaucetButton';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
@@ -15,7 +16,6 @@ import {
 import { useWalletBalances } from '../../../../hooks/app-data-provider/useWalletBalances';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import { DashboardListTopPanel } from '../../DashboardListTopPanel';
-import { ListBottomText } from '../ListBottomText';
 import { ListHeader } from '../ListHeader';
 import { ListLoader } from '../ListLoader';
 import { SupplyAssetsListItem } from './SupplyAssetsListItem';
@@ -155,8 +155,8 @@ export const SupplyAssetsList = () => {
   return (
     <ListWrapper
       title={<Trans>Assets to supply</Trans>}
+      subTitleComponent={isTestnet && <FaucetButton />}
       localStorageName="supplyAssetsDashboardTableCollapse"
-      bottomComponent={isTestnet ? <ListBottomText /> : undefined}
       withTopMargin
       subChildrenComponent={
         <>
