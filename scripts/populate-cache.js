@@ -61849,7 +61849,7 @@ var networkConfigs = {
     bridge: {
       icon: "/icons/bridge/optimism.svg",
       name: "Optimism Bridge",
-      url: "https://gateway.optimism.io"
+      url: "https://app.optimism.io/bridge"
     }
   },
   [import_contract_helpers3.ChainId.optimism_kovan]: {
@@ -61866,7 +61866,7 @@ var networkConfigs = {
     bridge: {
       icon: "/icons/bridge/optimism.svg",
       name: "Optimism Bridge",
-      url: "https://gateway.optimism.io"
+      url: "https://app.optimism.io/bridge"
     }
   },
   [import_contract_helpers3.ChainId.fantom]: {
