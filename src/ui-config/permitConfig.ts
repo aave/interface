@@ -15,7 +15,6 @@ export const permitByChainAndToken: {
     '0xaE4A267987f640AE1b0Dd757854Af00651cf2EC7': true,
     '0xF1bE881Ee7034ebC0CD47E1af1bA94EC30DF3583': true,
   },
-  [ChainId.kovan]: {},
   [ChainId.arbitrum_one]: {
     '0xf97f4df75117a78c1A5a0DBb814Af92458539FB4': true,
     '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8': true,
