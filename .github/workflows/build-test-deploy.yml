@@ -25,12 +25,12 @@ jobs:
       - name: Build App
         uses: ./.github/actions/build
         with:
-          NEXT_PUBLIC_ENV: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && 'prod' || 'staging' }}
+          NEXT_PUBLIC_ENV: 'prod'
 
       - name: Upload artifacts
         uses: ./.github/actions/upload-artifacts
         with:
-          BUILD_ARTIFACT_NAME: out
+          BUILD_ARTIFACT_NAME: 'out'
 
   build_staging:
     runs-on: ubuntu-latest
@@ -44,12 +44,12 @@ jobs:
       - name: Build App
         uses: ./.github/actions/build
         with:
-          NEXT_PUBLIC_ENV: staging
+          NEXT_PUBLIC_ENV: 'staging'
 
       - name: Upload artifacts
         uses: ./.github/actions/upload-artifacts
         with:
-          BUILD_ARTIFACT_NAME: out_staging
+          BUILD_ARTIFACT_NAME: 'out_staging'
           NEXTJS_BUILD: 'false'
           PR_INFO: 'false'
 
