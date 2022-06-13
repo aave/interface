@@ -7,10 +7,6 @@ const pageExtensions = ['page.tsx'];
 if (process.env.NEXT_PUBLIC_ENABLE_GOVERNANCE === 'true') pageExtensions.push('governance.tsx');
 if (process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true') pageExtensions.push('staking.tsx');
 
-if (!process.env.NEXT_PUBLIC_ENV) {
-  process.env.NEXT_PUBLIC_ENV = 'prod';
-}
-
 /** @type {import('next').NextConfig} */
 module.exports = withBundleAnalyzer({
   webpack(config) {

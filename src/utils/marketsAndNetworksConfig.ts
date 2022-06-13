@@ -18,9 +18,10 @@ export type Pool = {
   address: string;
 };
 
+export const STAGING_ENV = process.env.NEXT_PUBLIC_ENV === 'staging';
+export const PROD_ENV = !process.env.NEXT_PUBLIC_ENV || process.env.NEXT_PUBLIC_ENV === 'prod';
 export const ENABLE_TESTNET =
-  process.env.NEXT_PUBLIC_ENV === 'prod' &&
-  global?.window?.localStorage.getItem('testnetsEnabled') === 'true';
+  PROD_ENV && global?.window?.localStorage.getItem('testnetsEnabled') === 'true';
 
 // determines if forks should be shown
 const FORK_ENABLED = global?.window?.localStorage.getItem('forkEnabled') === 'true';
@@ -83,7 +84,7 @@ export function getSupportedChainIds(): number[] {
           networkConfigs[marketsData[value as keyof typeof CustomMarket].chainId].isTestnet;
 
         // If this is a staging environment, or the testnet toggle is on, only show testnets
-        if (process.env.NEXT_PUBLIC_ENV === 'staging' || ENABLE_TESTNET) {
+        if (STAGING_ENV || ENABLE_TESTNET) {
           return isTestnet;
         }
 
