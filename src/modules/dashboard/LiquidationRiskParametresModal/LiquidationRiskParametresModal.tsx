@@ -29,7 +29,7 @@ export const LiquidationRiskParametresInfoModal = ({
   return (
     <BasicModal open={open} setOpen={setOpen}>
       <Typography variant="h2" mb={6}>
-        <Trans>Liquidation risk parametres</Trans>
+        <Trans>Liquidation risk parameters</Trans>
       </Typography>
       <Typography mb={6}>
         <Trans>
