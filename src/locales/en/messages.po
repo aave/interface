@@ -667,7 +667,6 @@ msgid "FAQ"
 msgstr "FAQ"
 
 #: pages/faucet.page.tsx
-#: src/components/FaucetButton.tsx
 #: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Faucet"
@@ -696,14 +695,6 @@ msgstr "French"
 #: src/modules/staking/StakingHeader.tsx
 msgid "Funds in the Safety Module"
 msgstr "Funds in the Safety Module"
-
-#: src/components/FaucetButton.tsx
-msgid "Get free assets to test Aave protocol"
-msgstr "Get free assets to test Aave protocol"
-
-#: src/modules/reserve-overview/ReserveActions.tsx
-msgid "Get free test assets at"
-msgstr "Get free test assets at"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Github"
@@ -1900,6 +1891,7 @@ msgstr "Your supplies"
 msgid "Your voting info"
 msgstr "Your voting info"
 
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Your {networkName} wallet is empty. Get free test assets at"
 msgstr "Your {networkName} wallet is empty. Get free test assets at"
@@ -2023,7 +2015,7 @@ msgstr "{h}h"
 msgid "{m}m"
 msgstr "{m}m"
 
-#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "{networkName} Faucet"
 msgstr "{networkName} Faucet"

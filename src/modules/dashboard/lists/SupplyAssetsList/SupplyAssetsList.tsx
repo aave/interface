@@ -1,10 +1,9 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Alert, Box, useMediaQuery, useTheme } from '@mui/material';
+import { Alert, Box, Button, useMediaQuery, useTheme } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { useState } from 'react';
-import { FaucetButton } from 'src/components/FaucetButton';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
@@ -152,10 +151,34 @@ export const SupplyAssetsList = () => {
   if (loadingReserves || loading)
     return <ListLoader title={<Trans>Assets to supply</Trans>} head={head} withTopMargin />;
 
+  let alert = <></>;
+  if (filteredSupplyReserves.length === 0) {
+    if (isTestnet) {
+      alert = (
+        <Alert severity="info">
+          <Trans>Your {networkName} wallet is empty. Get free test assets at </Trans>{' '}
+          <Button variant="text" href="/faucet">
+            <Trans>{networkName} Faucet</Trans>
+          </Button>
+        </Alert>
+      );
+    } else {
+      alert = (
+        <Alert severity="info">
+          <Trans>Your {networkName} wallet is empty. Purchase or transfer assets</Trans>{' '}
+          {bridge && (
+            <Trans>
+              or use {<Link href={bridge.url}>{bridge.name}</Link>} to transfer your ETH assets.
+            </Trans>
+          )}
+        </Alert>
+      );
+    }
+  }
+
   return (
     <ListWrapper
       title={<Trans>Assets to supply</Trans>}
-      subTitleComponent={isTestnet && <FaucetButton />}
       localStorageName="supplyAssetsDashboardTableCollapse"
       withTopMargin
       subChildrenComponent={
@@ -171,17 +194,7 @@ export const SupplyAssetsList = () => {
                 </Trans>
               </Alert>
             )}
-            {filteredSupplyReserves.length === 0 && (
-              <Alert severity="info">
-                <Trans>Your {networkName} wallet is empty. Purchase or transfer assets</Trans>{' '}
-                {bridge && (
-                  <Trans>
-                    or use {<Link href={bridge.url}>{bridge.name}</Link>} to transfer your ETH
-                    assets.
-                  </Trans>
-                )}
-              </Alert>
-            )}
+            {alert}
           </Box>
 
           {filteredSupplyReserves.length >= 1 && (

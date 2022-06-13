@@ -48,50 +48,6 @@ const PaperWrapper = ({ children }: { children: ReactNode }) => {
   );
 };
 
-const testNetActionsAlert = (balance: string, networkName: string, onFaucetClick: () => void) => {
-  if (balance === '0') {
-    return (
-      <Alert severity="info" icon={false}>
-        <Trans>Your {networkName} wallet is empty. Get free test assets at </Trans>{' '}
-        <Button variant="text" onClick={onFaucetClick}>
-          <Trans>{networkName} Faucet</Trans>
-        </Button>
-      </Alert>
-    );
-  }
-
-  return (
-    <Alert severity="info" icon={false}>
-      <Trans>Get free test assets at </Trans>{' '}
-      <Button variant="text" onClick={onFaucetClick}>
-        <Trans>{networkName} Faucet</Trans>
-      </Button>
-    </Alert>
-  );
-};
-
-const actionsAlert = (
-  networkName: string,
-  bridge:
-    | {
-        icon: string;
-        name: string;
-        url: string;
-      }
-    | undefined
-) => {
-  return (
-    <Alert severity="info" icon={false}>
-      <Trans>Your {networkName} wallet is empty. Purchase or transfer assets</Trans>{' '}
-      {bridge && (
-        <Trans>
-          or use {<Link href={bridge.url}>{bridge.name}</Link>} to transfer your ETH assets.
-        </Trans>
-      )}
-    </Alert>
-  );
-};
-
 interface ReserveActionsProps {
   underlyingAsset: string;
 }
@@ -215,10 +171,28 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   }
 
   let alert = <></>;
-  if (currentNetworkConfig.isTestnet) {
-    alert = testNetActionsAlert(balance?.amount, networkName, () => openFaucet(underlyingAsset));
-  } else if (balance?.amount === '0') {
-    alert = actionsAlert(networkName, bridge);
+  if (balance?.amount === '0') {
+    if (currentNetworkConfig.isTestnet) {
+      alert = (
+        <Alert severity="info" icon={false}>
+          <Trans>Your {networkName} wallet is empty. Get free test assets at </Trans>{' '}
+          <Button variant="text" onClick={() => openFaucet(underlyingAsset)}>
+            <Trans>{networkName} Faucet</Trans>
+          </Button>
+        </Alert>
+      );
+    } else {
+      alert = (
+        <Alert severity="info" icon={false}>
+          <Trans>Your {networkName} wallet is empty. Purchase or transfer assets</Trans>{' '}
+          {bridge && (
+            <Trans>
+              or use {<Link href={bridge.url}>{bridge.name}</Link>} to transfer your ETH assets.
+            </Trans>
+          )}
+        </Alert>
+      );
+    }
   }
 
   return (
