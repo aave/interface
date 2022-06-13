@@ -24,7 +24,9 @@
     "gql-gen": "graphql-codegen --config codegen.yml",
     "test:open": "DOTENV_CONFIG_PATH='.env.local' cypress open",
     "test:cypress": "DOTENV_CONFIG_PATH='.env.local' cypress run --spec ./cypress/integration/0-v2-markets/0-main-v2-market/swap-full.aave-v2.spec.ts",
-    "test:swap-mainnet": "DOTENV_CONFIG_PATH='.env.local' cypress run --config-file ./cypress/configs/swap/ethereum-v2-swap.config.json"
+    "test:swap-mainnet": "DOTENV_CONFIG_PATH='.env.local' cypress run --config-file ./cypress/configs/swap/ethereum-v2-swap.config.json",
+    "test:swap-avalancheV2": "DOTENV_CONFIG_PATH='.env.local' cypress run --config-file ./cypress/configs/swap/avalanche-v2-swap.config.json",
+    "test:swap-avalancheV3": "DOTENV_CONFIG_PATH='.env.local' cypress run --config-file ./cypress/configs/swap/avalanche-v3-swap.config.json"
   },
   "dependencies": {
     "@aave/contract-helpers": "1.3.3",

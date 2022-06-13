@@ -43,6 +43,7 @@ export const configEnvWithTenderly = ({
     const rpc = tenderly.get_rpc_url();
     const provider = new JsonRpcProvider(rpc, 3030);
     const signer = new Wallet(privateKey, provider);
+    cy.log('URL: ' + URL);
     cy.visit(URL, {
       onBeforeLoad(win) {
         // eslint-disable-next-line
