@@ -1,6 +1,6 @@
 import { ChainId } from '@aave/contract-helpers';
 import { ReactNode } from 'react';
-// import { PermissionView } from 'src/components/transactions/FlowCommons/PermissionView';
+import { PermissionView } from 'src/components/transactions/FlowCommons/PermissionView';
 
 export type MarketDataType = {
   v3?: boolean;
@@ -80,7 +80,7 @@ export enum CustomMarket {
   amm_kovan = 'amm_kovan',
   amm_mainnet = 'amm_mainnet',
   // external
-  // permissioned_market = 'permissioned_market',
+  permissioned_market = 'permissioned_market',
 }
 
 export const marketsData: {
@@ -134,29 +134,30 @@ export const marketsData: {
       marketName: 'aavev2',
     },
   },
-  // [CustomMarket.permissioned_market]: {
-  //   marketTitle: 'Ethereum Permissioned Market example',
-  //   chainId: ChainId.mainnet,
-  //   enabledFeatures: {
-  //     // liquiditySwap: true,
-  //     // collateralRepay: true,
-  //     // incentives: true,
-  //     permissions: true,
-  //   },
-  //   rpcOnly: true,
-  //   permissionComponent: <PermissionView />,
-  //   addresses: {
-  //     LENDING_POOL_ADDRESS_PROVIDER: '<address here>'.toLowerCase(),
-  //     LENDING_POOL: '<address here>',
-  //     WETH_GATEWAY: '<address here>',
-  //     // REPAY_WITH_COLLATERAL_ADAPTER: '<address here>',
-  //     // SWAP_COLLATERAL_ADAPTER: '<address here>',
-  //     WALLET_BALANCE_PROVIDER: '<address here>',
-  //     UI_POOL_DATA_PROVIDER: '<address here>',
-  //     // UI_INCENTIVE_DATA_PROVIDER: '<address here>',
-  //     PERMISSION_MANAGER: '<address here>',
-  //   },
-  // },
+  [CustomMarket.permissioned_market]: {
+    marketTitle: 'Ethereum Permissioned Market example',
+    chainId: ChainId.kovan,
+    enabledFeatures: {
+      // liquiditySwap: true,
+      // collateralRepay: true,
+      // incentives: true,
+      permissions: true,
+      faucet: true,
+    },
+    rpcOnly: true,
+    permissionComponent: <PermissionView />,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0x0dC896E7d8f4BF74665Fb8fB57186B563a439d50'.toLowerCase(),
+      LENDING_POOL: '0x10bB197612856C1dcE4Ff835Ab478C7Fafc76425',
+      WETH_GATEWAY: '0x9dAd54A03f54340eE9B297ed94927261555344d7',
+      // REPAY_WITH_COLLATERAL_ADAPTER: '<address here>',
+      // SWAP_COLLATERAL_ADAPTER: '<address here>',
+      WALLET_BALANCE_PROVIDER: '0x0C028d1f4f911462b33DC8e68008D9A2CD2e3572',
+      UI_POOL_DATA_PROVIDER: '0x0D410Ce47834798028c9CD894A29A4b12A9d5624',
+      // UI_INCENTIVE_DATA_PROVIDER: '<address here>',
+      PERMISSION_MANAGER: '0x2fD64233d566C7D1db1F3a580709abF461917424',
+    },
+  },
   [CustomMarket.amm_kovan]: {
     marketTitle: 'Ethereum AMM Kovan',
     chainId: ChainId.kovan,
