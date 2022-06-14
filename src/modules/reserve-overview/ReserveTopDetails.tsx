@@ -55,13 +55,11 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
     </Box>
   );
 
-  const ReserveName = () => {
-    return loading ? (
-      <Skeleton width={60} height={28} sx={{ background: '#383D51' }} />
-    ) : (
-      <Typography variant={valueTypographyVariant}>{poolReserve.name}</Typography>
-    );
-  };
+  const ReserveName = loading ? (
+    <Skeleton width={60} height={28} sx={{ background: '#383D51' }} />
+  ) : (
+    <Typography variant={valueTypographyVariant}>{poolReserve.name}</Typography>
+  );
 
   return (
     <TopInfoPanel
@@ -127,7 +125,7 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
                   </Typography>
                 )}
                 <Box sx={{ display: 'inline-flex' }}>
-                  <ReserveName />
+                  {ReserveName}
                   {loading ? (
                     <Skeleton width={16} height={16} sx={{ ml: 1, background: '#383D51' }} />
                   ) : (
@@ -157,7 +155,7 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
           loading={loading}
         >
           <Box sx={{ display: 'inline-flex' }}>
-            <ReserveName />
+            {ReserveName}
             {loading ? (
               <Skeleton width={16} height={16} sx={{ ml: 1, background: '#383D51' }} />
             ) : (
