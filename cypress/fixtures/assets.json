@@ -391,20 +391,11 @@
     }
   },
   "optimismMarket": {
-    "OR": {
-      "fullName": "OR",
-      "shortName": "OR",
-      "wrapped": true
-    },
-    "WMATIC": {
-      "fullName": "Wrapped Matic",
-      "shortName": "WMATIC",
-      "wrapped": true
-    },
-    "amWMATIC": {
-      "fullName": "amWrapped Matic",
-      "shortName": "aWMATIC",
-      "wrapped": true
+    "ETH": {
+      "fullName": "ETH",
+      "shortName": "ETH",
+      "collateral": true,
+      "wrapped": false
     },
     "DAI": {
       "fullName": "DAI",
@@ -430,6 +421,18 @@
       "collateral": true,
       "wrapped": false
     },
+    "sUSD": {
+      "fullName": "sUSD",
+      "shortName": "sUSD",
+      "collateral": true,
+      "wrapped": false
+    },
+    "asUSD": {
+      "fullName": "asUSD",
+      "shortName": "asUSD",
+      "collateral": true,
+      "wrapped": false
+    },
     "USDT": {
       "fullName": "USDT Coin",
       "shortName": "USDT",
@@ -442,21 +445,15 @@
       "collateral": false,
       "wrapped": false
     },
-    "EURS": {
-      "fullName": "EURS",
-      "shortName": "EURS",
-      "collateral": false,
-      "wrapped": false
-    },
-    "aEURS": {
-      "fullName": "aEURS",
-      "shortName": "aEURS",
-      "collateral": false,
-      "wrapped": false
-    },
     "WBTC": {
       "fullName": "WBTC Coin",
       "shortName": "WBTC",
+      "collateral": true,
+      "wrapped": false
+    },
+    "aWBTC": {
+      "fullName": "WBTC Coin",
+      "shortName": "aWBTC",
       "collateral": true,
       "wrapped": false
     },
