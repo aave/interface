@@ -40,22 +40,20 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
   const valueTypographyVariant = downToSM ? 'main16' : 'main21';
   const symbolsTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
 
-  const ReserveIcon = () => {
-    return (
-      <Box mr={3} sx={{ mr: 3, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        {loading ? (
-          <Skeleton variant="circular" width={40} height={40} sx={{ background: '#383D51' }} />
-        ) : (
-          <img
-            src={`/icons/tokens/${poolReserve.iconSymbol.toLowerCase()}.svg`}
-            width="40px"
-            height="40px"
-            alt=""
-          />
-        )}
-      </Box>
-    );
-  };
+  const ReserveIcon = (
+    <Box mr={3} sx={{ mr: 3, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      {loading ? (
+        <Skeleton variant="circular" width={40} height={40} sx={{ background: '#383D51' }} />
+      ) : (
+        <img
+          src={`/icons/tokens/${poolReserve.iconSymbol.toLowerCase()}.svg`}
+          width="40px"
+          height="40px"
+          alt=""
+        />
+      )}
+    </Box>
+  );
 
   const ReserveName = () => {
     return loading ? (
@@ -121,7 +119,7 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
 
           {downToSM && (
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 6 }}>
-              <ReserveIcon />
+              {ReserveIcon}
               <Box>
                 {!loading && (
                   <Typography sx={{ color: '#A5A8B6' }} variant="caption">
@@ -153,9 +151,9 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
     >
       {!downToSM && (
         <TopInfoPanelItem
-          title={!loading && <Trans>{poolReserve.symbol}</Trans>}
+          title={!loading && poolReserve.symbol}
           withoutIconWrapper
-          icon={<ReserveIcon />}
+          icon={ReserveIcon}
           loading={loading}
         >
           <Box sx={{ display: 'inline-flex' }}>
