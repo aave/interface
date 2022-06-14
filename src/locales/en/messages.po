@@ -1978,7 +1978,6 @@ msgstr "withdrew"
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
-#: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "{0}"
 msgstr "{0}"
 
