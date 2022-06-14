@@ -24,7 +24,7 @@ export const NAME_MAP: { [key: string]: string } = {
   BAT: 'Basic Attention Token',
   BUSD: 'Binance USD',
   CRV: 'Curve DAO Token',
-  CVX: 'Convex Finance',
+  CVX: 'Convex Token',
   DPI: 'DeFi Pulse Index',
   ENJ: 'EnjinCoin',
   ENS: 'Ethereum Name Service',
