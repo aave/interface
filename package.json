@@ -82,7 +82,7 @@
     "subscriptions-transport-ws": "^0.11.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.17.7",
+    "@babel/core": "^7.18.5",
     "@babel/plugin-proposal-class-properties": "^7.16.7",
     "@ethersproject/experimental": "^5.5.0",
     "@ethersproject/providers": "^5.5.3",
@@ -132,7 +132,8 @@
     "*.js": "eslint --cache --fix",
     "*.jsx": "eslint --cache --fix",
     "*.ts": "eslint --cache --fix",
-    "*.tsx": "eslint --cache --fix"
+    "*.tsx": "eslint --cache --fix",
+    "*.svg": "npx svgo"
   },
   "nextBundleAnalysis": {
     "budget": null,
