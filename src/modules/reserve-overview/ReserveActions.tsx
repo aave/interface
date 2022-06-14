@@ -175,7 +175,9 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
     if (currentNetworkConfig.isTestnet) {
       alert = (
         <Alert severity="info" icon={false}>
-          <Trans>Your {networkName} wallet is empty. Get free test assets at </Trans>{' '}
+          <Trans>
+            Your {networkName} wallet is empty. Get free test {poolReserve.name} at
+          </Trans>{' '}
           <Button variant="text" onClick={() => openFaucet(underlyingAsset)}>
             <Trans>{networkName} Faucet</Trans>
           </Button>
