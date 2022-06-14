@@ -555,6 +555,10 @@ msgstr "Differential"
 msgid "Disable E-Mode"
 msgstr "Disable E-Mode"
 
+#: src/layouts/AppHeader.tsx
+msgid "Disable testnet"
+msgstr "Disable testnet"
+
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 msgid "Disable {symbol} as collateral"
 msgstr "Disable {symbol} as collateral"
@@ -1405,6 +1409,10 @@ msgstr "Switching rate"
 msgid "Testnet mode"
 msgstr "Testnet mode"
 
+#: src/layouts/AppHeader.tsx
+msgid "Testnet mode is ON"
+msgstr "Testnet mode is ON"
+
 #: src/components/infoTooltips/BorrowPowerTooltip.tsx
 msgid "The % of your total borrowing power used. This is based on the amount of your collateral supplied and the total amount that you can borrow."
 msgstr "The % of your total borrowing power used. This is based on the amount of your collateral supplied and the total amount that you can borrow."
@@ -1425,9 +1433,9 @@ msgstr "The Stable Rate is not enabled for this currency"
 msgid "The address of the pool addresses provider is invalid"
 msgstr "The address of the pool addresses provider is invalid"
 
-#: src/layouts/MainLayout.tsx
-msgid "The app is running in testnet mode"
-msgstr "The app is running in testnet mode"
+#: src/layouts/AppHeader.tsx
+msgid "The app is running in testnet mode. Learn how it works in"
+msgstr "The app is running in testnet mode. Learn how it works in"
 
 #: src/ui-config/errorMapping.tsx
 msgid "The caller of the function is not an AToken"
