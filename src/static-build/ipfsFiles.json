@@ -1213,6 +1213,21 @@
       "ipfsHash": "QmTGzYiWMBG5pdUL5pc5i4jTSkad366rwtXnb2bmbSNYEo",
       "originalHash": "0x495a8adb28587f0b208aaa0fcb19686c15cd344e5d360480220b0d2f1ff86694",
       "id": 82
+    },
+    {
+      "aip": 83,
+      "title": "Freeze stETH, Increase stETH Liq. Threshold to 90%, Pause ETH Borrowing",
+      "status": "Proposed",
+      "author": "Paul Lei, Jonathan Reem, Nick Cannon, Watson Fu, Tony Salvatore, Sarah Chen",
+      "shortDescription": "Risk Parameter Updates",
+      "discussions": "https://governance.aave.com/t/staked-eth-and-aave-risk-june-11th-update/8469",
+      "created": "2022-06-13T00:00:00.000Z",
+      "preview": "## Simple Summary\n\n Mitigate risk to Aave v2 markets relating to the price deviation of stETH/ETH …",
+      "basename": "AIP-83",
+      "description": "# Freeze stETH, Increase stETH Liq. Threshold to 90%, Pause ETH Borrowing\n\n## Simple Summary\n\nMitigate risk to Aave v2 markets relating to the price deviation of stETH/ETH.\n\n## Abstract\n\n[Forum Discussion](https://governance.aave.com/t/staked-eth-and-aave-risk-june-11th-update/8469)\n\nstETH has emerged over recent months as one of the most popular collateral types on AAVE. Many users have deposited stETH and borrowed ETH against it. This means that if those prices diverge or the asset “depegs”, there could be a lot of liquidations in AAVE. There has been much speculation on the risks posed by a stETH/ETH price depeg on the protocol. This proposal follows up on our [last post](https://governance.aave.com/t/canceling-aip-74-freezing-ust-and-updating-steth-parameters/8154) to provide further risk mitigation actions.\n\nStarting June 10, Gauntlet observed a large spike in AAVE VaR due to volatility in stETH price and immediately investigated it further. The following steps mitigate the chance of a liquidation spiral negatively impacting AAVE tokenholders and users.\n\n\n1. Freeze the stETH market\n\nThis will prevent new positions from being opened. This will temporarily pause the stETH market except for people winding down their positions. This is essential as it allows us to take the next step, increasing the liquidation threshold (LT) for ETH. If we don’t pause the market, users could increase the risk by opening new positions that take advantage of the increased LT.\n\n2. Increase LT for stETH to 90%\n\nThis will give existing positions more breathing room with regards to stETH/ETH price deviation (you can the see effect of this in the heatmaps above) and will make the protocol much more resilient to a further depeg.\n\n3. Pause ETH borrowing\n\nIf LT is changed, then preventing existing positions from increasing their risk exposure is required. To do this, you would need to prevent new ETH borrows from being opened. Almost all ETH borrowing is recursive borrowing and so while there is limited demand for ETH borrow, it’s still something users want.\n\n## Implementation\n\nThe proposal implements its changes by calling configureReserveAsCollateral, freezeReserve, and disableBorrowingOnReserve on the LendingPoolConfigurator contract at 0x311Bb771e4F8952E6Da169b425E7e92d6Ac45756, using the address and parameters specific to each token and each parameter update.\n\n## Copyright\n\nCopyright and related rights waived via CC0.\n\nBy approving this proposal, you agree that any services provided by Gauntlet shall be governed by the terms of service available at gauntlet.network/tos.\n",
+      "ipfsHash": "QmWkaPq5rXQqbR5Cxf8dbgE7973ac6mEhE597wJ8U6qX2c",
+      "originalHash": "0x7cfe8e430467c7c48e4debeb1f8d797eec11c9128f0e23b96857f15335fe7b85",
+      "id": 83
     }
   ]
 }
