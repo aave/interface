@@ -132,7 +132,8 @@
     "*.js": "eslint --cache --fix",
     "*.jsx": "eslint --cache --fix",
     "*.ts": "eslint --cache --fix",
-    "*.tsx": "eslint --cache --fix"
+    "*.tsx": "eslint --cache --fix",
+    "*.svg": "npx svgo"
   },
   "nextBundleAnalysis": {
     "budget": null,
