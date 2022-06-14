@@ -1892,9 +1892,12 @@ msgid "Your voting info"
 msgstr "Your voting info"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Your {networkName} wallet is empty. Get free test assets at"
 msgstr "Your {networkName} wallet is empty. Get free test assets at"
+
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "Your {networkName} wallet is empty. Get free test {0} at"
+msgstr "Your {networkName} wallet is empty. Get free test {0} at"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
