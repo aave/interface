@@ -42,7 +42,8 @@ const testData = {
       isCollateralType: false,
     },
     repay: {
-      asset: assets.avalancheV3Market.aUSDT,
+      asset: assets.avalancheV3Market.USDT,
+      repayableAsset: assets.avalancheV3Market.aUSDT,
       apyType: constants.apyType.variable,
       amount: 2,
       isMaxAmount: true,
