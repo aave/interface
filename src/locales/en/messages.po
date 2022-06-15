@@ -1978,6 +1978,7 @@ msgstr "withdrew"
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
+#: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "{0}"
 msgstr "{0}"
 
@@ -2012,3 +2013,7 @@ msgstr "{symbol} is frozen due to an Aave Protocol Governance decision. <0>More 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"
 msgstr "{s}s"
+
+#: src/components/CircleIcon.tsx
+msgid "{tooltipText}"
+msgstr "{tooltipText}"
