@@ -851,8 +851,8 @@ msgid "Liquidation penalty"
 msgstr "Liquidation penalty"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
-msgid "Liquidation risk parametres"
-msgstr "Liquidation risk parametres"
+msgid "Liquidation risk parameters"
+msgstr "Liquidation risk parameters"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
