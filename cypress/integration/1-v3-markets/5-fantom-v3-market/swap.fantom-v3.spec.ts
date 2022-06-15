@@ -8,7 +8,7 @@ import constants from '../../../fixtures/constans.json';
 const testData = {
   deposit: {
     asset: assets.fantomMarket.FTM,
-    amount: 100,
+    amount: 5000,
     hasApproval: true,
   },
   swap: [
@@ -16,7 +16,7 @@ const testData = {
       fromAsset: assets.fantomMarket.FTM,
       toAsset: assets.fantomMarket.USDC,
       isCollateralFromAsset: true,
-      amount: 10,
+      amount: 1000,
       hasApproval: false,
     },
   ],
@@ -32,7 +32,7 @@ const testData = {
       {
         type: constants.dashboardTypes.deposit,
         assetName: assets.fantomMarket.FTM.shortName,
-        amount: 90,
+        amount: 4000,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
       },

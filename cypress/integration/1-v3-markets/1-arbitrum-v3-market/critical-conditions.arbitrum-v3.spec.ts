@@ -30,6 +30,7 @@ const testData = {
       amount: 9999,
       hasApproval: false,
       isRisk: true,
+      isMaxAmount: true,
     },
   },
 };
@@ -42,6 +43,7 @@ describe('CRITICAL CONDITIONS SPEC, ARBITRUM V3 MARKET', () => {
   borrow(testData.testCases.borrow, skipTestState, true);
   checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.07 }, skipTestState);
   supply(testData.testCases.deposit2, skipTestState, true);
+  checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 200 }, skipTestState);
   withdraw(testData.testCases.withdraw, skipTestState, false);
   checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.07 }, skipTestState);
 });
