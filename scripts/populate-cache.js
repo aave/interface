@@ -34225,6 +34225,7 @@ var require_utils6 = __commonJS({
         case "0xb2f1e6db":
           return 68;
         case "0xb66bcbac":
+        case "0x35326910":
           return 164;
         default:
           throw new Error("Unrecognized function selector for Augustus");
