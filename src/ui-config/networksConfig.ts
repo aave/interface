@@ -66,7 +66,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     networkLogoPath: '/icons/networks/ethereum.svg',
   },
   [ChainId.rinkeby]: {
-    name: 'Rinkeby',
+    name: 'Ethereum Rinkeby',
     publicJsonRPCUrl: [
       // 'https://eth-rinkeby.alchemyapi.io/v2/demo',
       'https://rinkeby-light.eth.linkpool.io/',
@@ -82,7 +82,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     networkLogoPath: '/icons/networks/ethereum.svg',
   },
   [ChainId.ropsten]: {
-    name: 'Ropsten Testnet',
+    name: 'Ethereum Ropsten',
     // Public RPC found at https://rpc.info/
     publicJsonRPCUrl: ['https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'],
     publicJsonRPCWSUrl: '',
