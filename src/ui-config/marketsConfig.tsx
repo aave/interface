@@ -153,12 +153,12 @@ export const marketsData: {
       // REPAY_WITH_COLLATERAL_ADAPTER: '<address here>',
       // SWAP_COLLATERAL_ADAPTER: '<address here>',
       WALLET_BALANCE_PROVIDER: '0x0C028d1f4f911462b33DC8e68008D9A2CD2e3572',
-      UI_POOL_DATA_PROVIDER: '0x0D410Ce47834798028c9CD894A29A4b12A9d5624',
+      UI_POOL_DATA_PROVIDER: '0x0D410Ce47834798028c9CD894A29A4b12A9d5624', // '0x0D410Ce47834798028c9CD894A29A4b12A9d5624'// 0xCF4c9A9f5c23029e7438caB8293899759AB7A8d9,
       // UI_INCENTIVE_DATA_PROVIDER: '<address here>',
       PERMISSION_MANAGER: '0x2fD64233d566C7D1db1F3a580709abF461917424',
       FAUCET: '0x600103d518cC5E8f3319D532eB4e5C268D32e604',
     },
-  },
+  }, // Does exist a version of UIdataprovider contract that works for arc market and v3 interface
   [CustomMarket.amm_kovan]: {
     marketTitle: 'Ethereum AMM Kovan',
     chainId: ChainId.kovan,
