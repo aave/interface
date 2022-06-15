@@ -1,6 +1,8 @@
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackOutlined';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import CheckIcon from '@mui/icons-material/Check';
 import { Box, Button, Skeleton, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useRouter } from 'next/router';
 import { getMarketInfoById, MarketLogo } from 'src/components/MarketSwitcher';
@@ -19,6 +21,11 @@ import CubeIcon from '../../../public/icons/markets/cube-icon.svg';
 import PieIcon from '../../../public/icons/markets/pie-icon.svg';
 import UptrendIcon from '../../../public/icons/markets/uptrend-icon.svg';
 import DollarIcon from '../../../public/icons/markets/dollar-icon.svg';
+import { useState } from 'react';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { Base64Token } from 'src/components/primitives/TokenIcon';
+import { CircleIcon } from 'src/components/CircleIcon';
+import { AddToWallet } from 'src/components/transactions/AddTokenToWallet/AddToWallet';
 
 interface ReserveTopDetailsProps {
   underlyingAsset: string;
@@ -27,8 +34,11 @@ interface ReserveTopDetailsProps {
 export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) => {
   const router = useRouter();
   const { reserves, loading } = useAppDataContext();
-  const { currentMarket, currentNetworkConfig } = useProtocolDataContext();
+  const { currentMarket, currentNetworkConfig, currentChainId } = useProtocolDataContext();
   const { market, network } = getMarketInfoById(currentMarket);
+  const { addERC20Token, switchNetwork, chainId: connectedChainId } = useWeb3Context();
+  const [copyClicked, setCopyClicked] = useState<boolean>(false);
+  const [base64, setBase64] = useState('');
 
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -40,31 +50,57 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
   const valueTypographyVariant = downToSM ? 'main16' : 'main21';
   const symbolsTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
 
-  const ReserveIcon = (
-    <Box mr={3} sx={{ mr: 3, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      {loading ? (
-        <Skeleton variant="circular" width={40} height={40} sx={{ background: '#383D51' }} />
-      ) : (
-        <img
-          src={`/icons/tokens/${poolReserve.iconSymbol.toLowerCase()}.svg`}
-          width="40px"
-          height="40px"
-          alt=""
-        />
-      )}
-    </Box>
-  );
+  const ReserveIcon = () => {
+    return (
+      <Box mr={3} sx={{ mr: 3, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {loading ? (
+          <Skeleton variant="circular" width={40} height={40} sx={{ background: '#383D51' }} />
+        ) : (
+          <img
+            src={`/icons/tokens/${poolReserve.iconSymbol.toLowerCase()}.svg`}
+            width="40px"
+            height="40px"
+            alt=""
+          />
+        )}
+      </Box>
+    );
+  };
 
-  const ReserveName = loading ? (
-    <Skeleton width={60} height={28} sx={{ background: '#383D51' }} />
-  ) : (
-    <Typography variant={valueTypographyVariant}>{poolReserve.name}</Typography>
-  );
+  const iconStyling = {
+    display: 'inline-flex',
+    alignItems: 'center',
+    color: '#A5A8B6',
+    '&:hover': { color: '#F1F1F3' },
+    cursor: 'pointer',
+  };
+
+  const ReserveName = () => {
+    return loading ? (
+      <Skeleton width={60} height={28} sx={{ background: '#383D51' }} />
+    ) : (
+      <Typography variant={valueTypographyVariant}>{poolReserve.name}</Typography>
+    );
+  };
+
+  const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+
+  // Copy token address to clipboard and display check for 1000ms
+  const copyClick = async () => {
+    navigator.clipboard.writeText(poolReserve.underlyingAsset);
+    setCopyClicked(true);
+    await delay(1000);
+    setCopyClicked(false);
+  };
 
   return (
     <TopInfoPanel
       titleComponent={
         <Box>
+          {/* Load base64 token symbol for adding token to wallet */}
+          {poolReserve?.symbol && !/_/.test(poolReserve.symbol) && (
+            <Base64Token symbol={poolReserve.symbol} onImageGenerated={setBase64} aToken={false} />
+          )}
           <Box
             sx={{
               display: 'flex',
@@ -117,28 +153,54 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
 
           {downToSM && (
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 6 }}>
-              {ReserveIcon}
+              <ReserveIcon />
               <Box>
                 {!loading && (
                   <Typography sx={{ color: '#A5A8B6' }} variant="caption">
                     {poolReserve.symbol}
                   </Typography>
                 )}
-                <Box sx={{ display: 'inline-flex' }}>
-                  {ReserveName}
+                <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                  <ReserveName />
                   {loading ? (
                     <Skeleton width={16} height={16} sx={{ ml: 1, background: '#383D51' }} />
                   ) : (
-                    <Link
-                      href={currentNetworkConfig.explorerLinkBuilder({
-                        address: poolReserve?.underlyingAsset,
-                      })}
-                      sx={{ display: 'inline-flex', alignItems: 'center', ml: 1, color: '#A5A8B6' }}
-                    >
-                      <SvgIcon sx={{ fontSize: '16px' }}>
-                        <ExternalLinkIcon />
-                      </SvgIcon>
-                    </Link>
+                    <Box sx={{ display: 'flex' }}>
+                      <CircleIcon tooltipText="View token contract" downToSM={downToSM}>
+                        <Link
+                          href={currentNetworkConfig.explorerLinkBuilder({
+                            address: poolReserve?.underlyingAsset,
+                          })}
+                          sx={iconStyling}
+                        >
+                          <SvgIcon sx={{ fontSize: '14px' }}>
+                            <ExternalLinkIcon />
+                          </SvgIcon>
+                        </Link>
+                      </CircleIcon>
+
+                      <CircleIcon
+                        tooltipText={copyClicked ? 'Copied' : 'Copy token contract address'}
+                        downToSM={downToSM}
+                      >
+                        <Box onClick={() => copyClick()} sx={iconStyling}>
+                          <SvgIcon sx={{ fontSize: '14px' }}>
+                            {copyClicked ? <CheckIcon /> : <ContentCopyIcon />}
+                          </SvgIcon>
+                        </Box>
+                      </CircleIcon>
+
+                      <CircleIcon tooltipText="Add token to wallet" downToSM={downToSM}>
+                        <AddToWallet
+                          poolReserve={poolReserve}
+                          currentChainId={currentChainId}
+                          connectedChainId={connectedChainId}
+                          switchNetwork={switchNetwork}
+                          addERC20Token={addERC20Token}
+                          iconBase64={base64}
+                        />
+                      </CircleIcon>
+                    </Box>
                   )}
                 </Box>
               </Box>
@@ -149,26 +211,52 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
     >
       {!downToSM && (
         <TopInfoPanelItem
-          title={!loading && poolReserve.symbol}
+          title={!loading && <Trans>{poolReserve.symbol}</Trans>}
           withoutIconWrapper
-          icon={ReserveIcon}
+          icon={<ReserveIcon />}
           loading={loading}
         >
-          <Box sx={{ display: 'inline-flex' }}>
-            {ReserveName}
+          <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+            <ReserveName />
             {loading ? (
               <Skeleton width={16} height={16} sx={{ ml: 1, background: '#383D51' }} />
             ) : (
-              <Link
-                href={currentNetworkConfig.explorerLinkBuilder({
-                  address: poolReserve?.underlyingAsset,
-                })}
-                sx={{ display: 'inline-flex', alignItems: 'center', ml: 1, color: '#A5A8B6' }}
-              >
-                <SvgIcon sx={{ fontSize: '16px' }}>
-                  <ExternalLinkIcon />
-                </SvgIcon>
-              </Link>
+              <Box sx={{ display: 'flex' }}>
+                <CircleIcon tooltipText="View token contract" downToSM={downToSM}>
+                  <Link
+                    href={currentNetworkConfig.explorerLinkBuilder({
+                      address: poolReserve?.underlyingAsset,
+                    })}
+                    sx={iconStyling}
+                  >
+                    <SvgIcon sx={{ fontSize: '14px' }}>
+                      <ExternalLinkIcon />
+                    </SvgIcon>
+                  </Link>
+                </CircleIcon>
+
+                <CircleIcon
+                  tooltipText={copyClicked ? 'Copied' : 'Copy token contract address'}
+                  downToSM={downToSM}
+                >
+                  <Box onClick={() => copyClick()} sx={iconStyling}>
+                    <SvgIcon sx={{ fontSize: '14px' }}>
+                      {copyClicked ? <CheckIcon /> : <ContentCopyIcon />}
+                    </SvgIcon>
+                  </Box>
+                </CircleIcon>
+
+                <CircleIcon tooltipText="Add token to wallet" downToSM={downToSM}>
+                  <AddToWallet
+                    poolReserve={poolReserve}
+                    currentChainId={currentChainId}
+                    connectedChainId={connectedChainId}
+                    switchNetwork={switchNetwork}
+                    addERC20Token={addERC20Token}
+                    iconBase64={base64}
+                  />
+                </CircleIcon>
+              </Box>
             )}
           </Box>
         </TopInfoPanelItem>
@@ -213,7 +301,7 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
       </TopInfoPanelItem>
 
       <TopInfoPanelItem icon={<DollarIcon />} title={<Trans>Oracle price</Trans>} loading={loading}>
-        <Box sx={{ display: 'inline-flex' }}>
+        <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
           <FormattedNumber
             value={poolReserve?.priceInUSD}
             symbol="USD"
@@ -224,14 +312,18 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
           {loading ? (
             <Skeleton width={16} height={16} sx={{ ml: 1, background: '#383D51' }} />
           ) : (
-            <Link
-              href={currentNetworkConfig.explorerLinkBuilder({ address: poolReserve?.priceOracle })}
-              sx={{ display: 'inline-flex', alignItems: 'center', ml: 1, color: '#A5A8B6' }}
-            >
-              <SvgIcon sx={{ fontSize: '16px' }}>
-                <ExternalLinkIcon />
-              </SvgIcon>
-            </Link>
+            <CircleIcon tooltipText="View oracle contract" downToSM={downToSM}>
+              <Link
+                href={currentNetworkConfig.explorerLinkBuilder({
+                  address: poolReserve?.priceOracle,
+                })}
+                sx={iconStyling}
+              >
+                <SvgIcon sx={{ fontSize: downToSM ? '12px' : '14px' }}>
+                  <ExternalLinkIcon />
+                </SvgIcon>
+              </Link>
+            </CircleIcon>
           )}
         </Box>
       </TopInfoPanelItem>
