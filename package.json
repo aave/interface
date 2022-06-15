@@ -25,8 +25,8 @@
     "test:open": "DOTENV_CONFIG_PATH='.env.local' cypress open"
   },
   "dependencies": {
-    "@aave/contract-helpers": "1.3.6",
-    "@aave/math-utils": "1.3.6",
+    "@aave/contract-helpers": "1.3.7",
+    "@aave/math-utils": "1.3.7",
     "@apollo/client": "^3.5.10",
     "@emotion/cache": "latest",
     "@emotion/react": "latest",
