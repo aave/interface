@@ -24957,6 +24957,24 @@
         "transactionHash": "0xedd6a8196aca8282c0b5a629f9fa9bc77ff73a7450acecc68784ea5c6ddedcc6",
         "timestamp": 1655265175,
         "blockNumber": 14965464
+      },
+      {
+        "proposalId": 83,
+        "voter": "0x775f6A8EAA17775EB19e7f873ae2d8a807B20B95",
+        "support": true,
+        "votingPower": 6.098222497109016,
+        "transactionHash": "0xc5e1a0bdc63ff16e4914e4ced898aaf8986b5d2145b9c515f81c7a33d704a0da",
+        "timestamp": 1655291927,
+        "blockNumber": 14967213
+      },
+      {
+        "proposalId": 83,
+        "voter": "0x05eBf7B089a859af295B4F4D96673eDcB5ef6621",
+        "support": true,
+        "votingPower": 2.163648477422404,
+        "transactionHash": "0xece15108f730e89987157565b519f703943bc4dbc39d720c51e6a6ac169ccf1f",
+        "timestamp": 1655292010,
+        "blockNumber": 14967222
       }
     ],
     "finished": false
