@@ -2,7 +2,7 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import { Trans } from '@lingui/macro';
 import { Box, Menu, MenuItem, SvgIcon, Typography } from '@mui/material';
 import * as React from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CircleIcon } from 'src/components/CircleIcon';
 import { Base64Token, TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -15,6 +15,7 @@ interface AddTokenDropdownProps {
   addERC20Token: (args: ERC20TokenType) => Promise<boolean>;
   currentChainId: number;
   connectedChainId: number;
+  switchNetworkError?: Error;
 }
 
 export const AddTokenDropdown = ({
@@ -26,6 +27,7 @@ export const AddTokenDropdown = ({
   connectedChainId,
 }: AddTokenDropdownProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [changingNetwork, setChangingNetwork] = useState(false);
   const [underlyingBase64, setUnderlyingBase64] = useState('');
   const [aTokenBase64, setATokenBase64] = useState('');
   const open = Boolean(anchorEl);
@@ -36,9 +38,32 @@ export const AddTokenDropdown = ({
     setAnchorEl(null);
   };
 
+  // The switchNetwork function has no return type, so to detect if a user successfully switched networks before adding token to wallet, check the selected vs connected chain id
+  useEffect(() => {
+    if (changingNetwork && currentChainId === connectedChainId) {
+      addERC20Token({
+        address: poolReserve.underlyingAsset,
+        decimals: poolReserve.decimals,
+        symbol: poolReserve.symbol,
+        image: !/_/.test(poolReserve.iconSymbol) ? underlyingBase64 : undefined,
+      });
+      setChangingNetwork(false);
+    }
+  }, [
+    currentChainId,
+    connectedChainId,
+    changingNetwork,
+    addERC20Token,
+    poolReserve.underlyingAsset,
+    poolReserve.decimals,
+    poolReserve.symbol,
+    poolReserve.iconSymbol,
+    underlyingBase64,
+  ]);
+
   return (
     <>
-      {/* Load base64 token symbol for adding token to wallet */}
+      {/* Load base64 token symbol for adding underlying token to wallet */}
       {poolReserve?.symbol && !/_/.test(poolReserve.symbol) && (
         <Base64Token
           symbol={poolReserve.iconSymbol}
@@ -46,7 +71,7 @@ export const AddTokenDropdown = ({
           aToken={false}
         />
       )}
-      {/* Load base64 token symbol for adding token to wallet */}
+      {/* Load base64 token symbol for adding aToken token to wallet */}
       {poolReserve?.symbol && !/_/.test(poolReserve.symbol) && (
         <Base64Token
           symbol={poolReserve.iconSymbol}
@@ -94,12 +119,7 @@ export const AddTokenDropdown = ({
           onClick={() => {
             if (currentChainId !== connectedChainId) {
               switchNetwork(currentChainId).then(() => {
-                addERC20Token({
-                  address: poolReserve.underlyingAsset,
-                  decimals: poolReserve.decimals,
-                  symbol: poolReserve.symbol,
-                  image: !/_/.test(poolReserve.iconSymbol) ? underlyingBase64 : undefined,
-                });
+                setChangingNetwork(true);
               });
             } else {
               addERC20Token({
@@ -123,12 +143,7 @@ export const AddTokenDropdown = ({
           onClick={() => {
             if (currentChainId !== connectedChainId) {
               switchNetwork(currentChainId).then(() => {
-                addERC20Token({
-                  address: poolReserve.aTokenAddress,
-                  decimals: poolReserve.decimals,
-                  symbol: `a${poolReserve.symbol}`,
-                  image: !/_/.test(poolReserve.symbol) ? aTokenBase64 : undefined,
-                });
+                setChangingNetwork(true);
               });
             } else {
               addERC20Token({
