@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-06-08 18:05\n"
+"PO-Revision-Date: 2022-06-15 12:06\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -856,8 +856,8 @@ msgid "Liquidation penalty"
 msgstr "Ποινή ρευστοποίησης"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
-msgid "Liquidation risk parametres"
-msgstr "Παράμετροι κινδύνου ρευστοποίησης"
+msgid "Liquidation risk parameters"
+msgstr ""
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
@@ -1984,7 +1984,6 @@ msgstr ""
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
-#: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "{0}"
 msgstr "{0}"
 

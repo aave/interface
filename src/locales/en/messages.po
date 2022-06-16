@@ -856,8 +856,8 @@ msgid "Liquidation penalty"
 msgstr "Liquidation penalty"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
-msgid "Liquidation risk parametres"
-msgstr "Liquidation risk parametres"
+msgid "Liquidation risk parameters"
+msgstr "Liquidation risk parameters"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
@@ -1999,7 +1999,6 @@ msgstr "withdrew"
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
-#: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "{0}"
 msgstr "{0}"
 

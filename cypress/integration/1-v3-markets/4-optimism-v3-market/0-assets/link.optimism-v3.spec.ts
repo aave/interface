@@ -1,4 +1,4 @@
-import { configEnvWithTenderlyArbitrumFork } from '../../../../support/steps/configuration.steps';
+import { configEnvWithTenderlyOptimismFork } from '../../../../support/steps/configuration.steps';
 import { supply, borrow, repay, withdraw } from '../../../../support/steps/main.steps';
 import {
   dashboardAssetValuesVerification,
@@ -10,49 +10,49 @@ import constants from '../../../../fixtures/constans.json';
 
 const testData = {
   depositBaseAmount: {
-    asset: assets.arbitrumMarket.ETH,
+    asset: assets.optimismMarket.ETH,
     amount: 9000,
     hasApproval: true,
   },
   testCases: {
     borrow: [
       {
-        asset: assets.arbitrumMarket.WBTC,
-        amount: 0.05,
+        asset: assets.optimismMarket.LINK,
+        amount: 50,
         apyType: constants.borrowAPYType.default,
         hasApproval: true,
       },
     ],
     deposit: {
-      asset: assets.arbitrumMarket.WBTC,
-      amount: 0.0101,
+      asset: assets.optimismMarket.LINK,
+      amount: 10.1,
       hasApproval: false,
     },
     checkDisabledApy: {
-      asset: assets.arbitrumMarket.WBTC,
+      asset: assets.optimismMarket.LINK,
       apyType: constants.apyType.variable,
     },
     repay: [
       {
-        asset: assets.arbitrumMarket.WBTC,
+        asset: assets.optimismMarket.LINK,
         apyType: constants.apyType.variable,
-        amount: 0.002,
+        amount: 2,
         hasApproval: true,
         repayOption: constants.repayType.default,
       },
       {
-        asset: assets.arbitrumMarket.WBTC,
+        asset: assets.optimismMarket.LINK,
         apyType: constants.apyType.variable,
-        repayableAsset: assets.arbitrumMarket.aWBTC,
-        amount: 0.002,
+        repayableAsset: assets.optimismMarket.aLINK,
+        amount: 2,
         hasApproval: true,
         repayOption: constants.repayType.default,
       },
     ],
     withdraw: {
-      asset: assets.arbitrumMarket.WBTC,
+      asset: assets.optimismMarket.LINK,
       isCollateral: true,
-      amount: 0.001,
+      amount: 1,
       hasApproval: true,
     },
   },
@@ -60,24 +60,24 @@ const testData = {
     finalDashboard: [
       {
         type: constants.dashboardTypes.deposit,
-        assetName: assets.arbitrumMarket.WBTC.shortName,
-        amount: 0.007,
+        assetName: assets.optimismMarket.LINK.shortName,
+        amount: 7.0,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
       },
       {
         type: constants.dashboardTypes.borrow,
-        assetName: assets.arbitrumMarket.WBTC.shortName,
-        amount: 0.046,
+        assetName: assets.optimismMarket.LINK.shortName,
+        amount: 46.0,
         apyType: constants.borrowAPYType.variable,
       },
     ],
   },
 };
 
-describe('WBTC INTEGRATION SPEC, ARBITRUM V3 MARKET', () => {
+describe('LINK INTEGRATION SPEC, OPTIMISM V3 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyArbitrumFork({ v3: true });
+  configEnvWithTenderlyOptimismFork({ v3: true });
 
   supply(testData.depositBaseAmount, skipTestState, true);
   testData.testCases.borrow.forEach((borrowCase) => {

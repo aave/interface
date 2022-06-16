@@ -212,15 +212,6 @@ export const MarketSwitcher = () => {
               <ListItemText sx={{ mr: 0 }}>
                 {marketNaming.name} {market.isFork ? 'Fork' : ''}
               </ListItemText>
-
-              {/*               {currentMarket === marketId && (
-                <ListItemIcon sx={{ m: 0 }}>
-                  <SvgIcon>
-                    <CheckIcon />
-                  </SvgIcon>
-                </ListItemIcon>
-              )} */}
-
               <ListItemText sx={{ textAlign: 'right' }}>
                 <Typography color="text.muted" variant="description">
                   {marketNaming.testChainName}
@@ -257,15 +248,6 @@ export const MarketSwitcher = () => {
               <ListItemText sx={{ mr: 0 }}>
                 {marketNaming.name} {market.isFork ? 'Fork' : ''}
               </ListItemText>
-
-              {/*               {currentMarket === marketId && (
-                <ListItemIcon sx={{ m: 0 }}>
-                  <SvgIcon>
-                    <CheckIcon />
-                  </SvgIcon>
-                </ListItemIcon>
-              )} */}
-
               <ListItemText sx={{ textAlign: 'right' }}>
                 <Typography color="text.muted" variant="description">
                   {marketNaming.testChainName}

@@ -24,6 +24,7 @@ export const NAME_MAP: { [key: string]: string } = {
   BAT: 'Basic Attention Token',
   BUSD: 'Binance USD',
   CRV: 'Curve DAO Token',
+  CVX: 'Convex Token',
   DPI: 'DeFi Pulse Index',
   ENJ: 'EnjinCoin',
   ENS: 'Ethereum Name Service',
@@ -87,7 +88,7 @@ export function fetchIconSymbolAndName({
     const rawSymbol = symbol.replace('.e', '');
     return {
       iconSymbol: rawSymbol || symbol,
-      name: NAME_MAP[rawSymbol] || rawSymbol,
+      name: NAME_MAP[rawSymbol.toUpperCase()] || rawSymbol,
       symbol,
     };
   }
@@ -95,7 +96,7 @@ export function fetchIconSymbolAndName({
     const rawSymbol = symbol.replace('1', '');
     return {
       iconSymbol: rawSymbol || symbol,
-      name: NAME_MAP[rawSymbol] || rawSymbol,
+      name: NAME_MAP[rawSymbol.toUpperCase()] || rawSymbol,
       symbol,
     };
   }
@@ -104,13 +105,13 @@ export function fetchIconSymbolAndName({
     const rawSymbol = symbol.replace('f', '');
     return {
       iconSymbol: rawSymbol || symbol,
-      name: NAME_MAP[rawSymbol] || rawSymbol,
+      name: NAME_MAP[rawSymbol.toUpperCase()] || rawSymbol,
       symbol,
     };
   }
   return {
     iconSymbol: SYMBOL_MAP[symbol] || symbol,
-    name: NAME_MAP[symbol] || symbol,
+    name: NAME_MAP[symbol.toUpperCase()] || symbol,
     symbol,
   };
 }

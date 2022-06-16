@@ -1,0 +1,17 @@
+{
+  "integrationFolder": "cypress/integration/1-v3-markets/4-optimism-v3-market",
+  "testFiles": [
+    "critical-conditions.optimism-v3.spec.ts",
+    "e-mode.optimism-v3.spec.ts"
+  ],
+  "viewportWidth": 1200,
+  "viewportHeight": 800,
+  "defaultCommandTimeout": 40000,
+  "pageLoadTimeout": 120000,
+  "video": false,
+  "scrollBehavior": "center",
+  "retries": {
+    "runMode": 1,
+    "openMode": 0
+  }
+}
