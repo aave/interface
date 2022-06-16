@@ -1,14 +1,6 @@
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import { Trans } from '@lingui/macro';
-import {
-  Box,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
-  SvgIcon,
-  Typography,
-} from '@mui/material';
+import { Box, Menu, MenuItem, SvgIcon, Typography } from '@mui/material';
 import * as React from 'react';
 import { useState } from 'react';
 import { CircleIcon } from 'src/components/CircleIcon';

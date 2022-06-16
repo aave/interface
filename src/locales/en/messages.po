@@ -1202,6 +1202,10 @@ msgstr "Select Aave Market"
 msgid "Select language"
 msgstr "Select language"
 
+#: src/modules/reserve-overview/AddTokenDropdown.tsx
+msgid "Select token to add"
+msgstr "Select token to add"
+
 #: src/components/HALLink.tsx
 msgid "Setup notifications about your Health Factor using the Hal app."
 msgstr "Setup notifications about your Health Factor using the Hal app."
