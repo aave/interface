@@ -61,6 +61,7 @@ export enum CustomMarket {
   proto_harmony_testnet_v3 = 'proto_harmony_testnet_v3',
   proto_fuji_v3 = 'proto_fuji_v3',
   proto_optimism_kovan_v3 = 'proto_optimism_kovan_v3',
+  proto_ropsten_v3 = 'proto_ropsten_v3',
   // v3 mainnets
   proto_optimism_v3 = 'proto_optimism_v3',
   proto_fantom_v3 = 'proto_fantom_v3',
@@ -68,8 +69,6 @@ export enum CustomMarket {
   proto_avalanche_v3 = 'proto_avalanche_v3',
   proto_polygon_v3 = 'proto_polygon_v3',
   proto_arbitrum_v3 = 'proto_arbitrum_v3',
-  proto_ropsten_v3 = 'proto_ropsten_v3',
-
   // v2
   proto_kovan = 'proto_kovan',
   proto_mainnet = 'proto_mainnet',
@@ -294,6 +293,28 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: '0x2c9f31b1F9838Bb8781bb61a0d0a4615f6530207',
     },
   },
+  [CustomMarket.proto_ropsten_v3]: {
+    marketTitle: 'Ethereum Ropsten',
+    v3: true,
+    chainId: ChainId.ropsten,
+    enabledFeatures: {
+      // Note: We should remove this based on the addresses that you provide in the addresses below
+      faucet: true,
+      // governance: true,
+      // staking: true,
+      // incentives: true,
+    },
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0x303a4B174663A6201Da77782413B4b54EFa3E97e'.toLowerCase(),
+      LENDING_POOL: '0x23a85024f54A19e243bA7a74E339a5C80998c7a4',
+      WETH_GATEWAY: '0x96A4fd1f289888cCa772298f7BDCF41C02122c01',
+      FAUCET: '0xb7263ADfB7C094aa24b91A51b297A278e105584a',
+      WALLET_BALANCE_PROVIDER: '0xEEac3ad1b3f4c43A782a951348c5387506B9AB06',
+      UI_POOL_DATA_PROVIDER: '0xb815B9EE078Dab098965D8e52dD5C747d70bb481',
+      UI_INCENTIVE_DATA_PROVIDER: '0x2526D407F722C0D1e0326eC1840A235bf173b9Ca',
+    },
+  },
   [CustomMarket.proto_arbitrum_v3]: {
     marketTitle: 'Arbitrum',
     v3: true,
@@ -350,8 +371,8 @@ export const marketsData: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb'.toLowerCase(),
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
       WETH_GATEWAY: '0xa938d8536aEed1Bd48f548380394Ab30Aa11B00E',
-      REPAY_WITH_COLLATERAL_ADAPTER: '0xA911965AbBE61460cB91f8259a8dF8509D877EBc',
-      SWAP_COLLATERAL_ADAPTER: '0xAe02ECA9445ec43B53118DD41658DB17eaB55987',
+      REPAY_WITH_COLLATERAL_ADAPTER: '0x8a743090e9759E758d15a4CFd18408fb6332c625',
+      SWAP_COLLATERAL_ADAPTER: '0xF7fC20D9D1D8DFE55F5F2c3180272a5747dD327F',
       WALLET_BALANCE_PROVIDER: '0xBc790382B3686abffE4be14A030A96aC6154023a',
       UI_POOL_DATA_PROVIDER: '0xdBbFaFC45983B4659E368a3025b81f69Ab6E5093',
       UI_INCENTIVE_DATA_PROVIDER: '0x270f51cf3F681010B46f5c4Ee2aD5120Db33026F',
@@ -359,28 +380,6 @@ export const marketsData: {
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
       marketName: 'avalanche',
-    },
-  },
-  [CustomMarket.proto_ropsten_v3]: {
-    marketTitle: 'Ethereum Ropsten',
-    v3: true,
-    chainId: ChainId.ropsten,
-    enabledFeatures: {
-      // Note: We should remove this based on the addresses that you provide in the addresses below
-      faucet: true,
-      // governance: true,
-      // staking: true,
-      // incentives: true,
-    },
-    rpcOnly: true,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0x303a4B174663A6201Da77782413B4b54EFa3E97e'.toLowerCase(),
-      LENDING_POOL: '0x23a85024f54A19e243bA7a74E339a5C80998c7a4',
-      WETH_GATEWAY: '0x96A4fd1f289888cCa772298f7BDCF41C02122c01',
-      FAUCET: '0xb7263ADfB7C094aa24b91A51b297A278e105584a',
-      WALLET_BALANCE_PROVIDER: '0xEEac3ad1b3f4c43A782a951348c5387506B9AB06',
-      UI_POOL_DATA_PROVIDER: '0xb815B9EE078Dab098965D8e52dD5C747d70bb481',
-      UI_INCENTIVE_DATA_PROVIDER: '0x2526D407F722C0D1e0326eC1840A235bf173b9Ca',
     },
   },
   [CustomMarket.proto_fuji_v3]: {
@@ -416,11 +415,11 @@ export const marketsData: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb'.toLowerCase(),
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
       WETH_GATEWAY: '0x17d013C19FE25cf4D911CE85eD5f40FE8880F46f',
-      SWAP_COLLATERAL_ADAPTER: '0x35DDe5599318112829d97A29f4E8f4C49aAfc47C',
+      SWAP_COLLATERAL_ADAPTER: '0xe387c6053ce8ec9f8c3fa5ce085af73114a695d3',
+      REPAY_WITH_COLLATERAL_ADAPTER: '0x1408401B2A7E28cB747b3e258D0831Fc926bAC51',
       WALLET_BALANCE_PROVIDER: '0xBc790382B3686abffE4be14A030A96aC6154023a',
       UI_POOL_DATA_PROVIDER: '0x1CCbfeC508da8D5242D5C1b368694Ab0066b39f1',
       UI_INCENTIVE_DATA_PROVIDER: '0xbA14c06011f4AF5970cFDe4364ba6320E190BD4B',
-      REPAY_WITH_COLLATERAL_ADAPTER: '0x85272bf6DdCCBDea45Cf0535ea5C65bf91B480c4',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
@@ -533,8 +532,8 @@ export const marketsData: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb'.toLowerCase(),
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
       WETH_GATEWAY: '0x9BdB5fcc80A49640c7872ac089Cc0e00A98451B6',
-      REPAY_WITH_COLLATERAL_ADAPTER: '0xD0E8f168d297DfA0f3EE1711c538BcC0663320aF',
-      SWAP_COLLATERAL_ADAPTER: '0x00d48554f570B6f1c474EBe56116159c3B1D625f',
+      REPAY_WITH_COLLATERAL_ADAPTER: '0xA125561fca253f19eA93970534Bb0364ea74187a',
+      SWAP_COLLATERAL_ADAPTER: '0x301F221bc732907E2da2dbBFaA8F8F6847c170c3',
       WALLET_BALANCE_PROVIDER: '0xBc790382B3686abffE4be14A030A96aC6154023a',
       UI_POOL_DATA_PROVIDER: '0x8F1AD487C9413d7e81aB5B4E88B024Ae3b5637D0',
       UI_INCENTIVE_DATA_PROVIDER: '0x05E309C97317d8abc0f7e78185FC966FfbD2CEC0',
