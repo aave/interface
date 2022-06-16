@@ -178,7 +178,12 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
           <Trans>
             Your {networkName} wallet is empty. Get free test {poolReserve.name} at
           </Trans>{' '}
-          <Button variant="text" onClick={() => openFaucet(underlyingAsset)}>
+          <Button
+            variant="text"
+            sx={{ verticalAlign: 'top' }}
+            onClick={() => openFaucet(underlyingAsset)}
+            disableRipple
+          >
             <Trans>{networkName} Faucet</Trans>
           </Button>
         </Alert>
