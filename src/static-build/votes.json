@@ -25308,6 +25308,15 @@
         "transactionHash": "0xb13b263c246b23a863e6656628afceec344d671f8361e2e8e85bca909c0287f0",
         "timestamp": 1655390634,
         "blockNumber": 14973876
+      },
+      {
+        "proposalId": 83,
+        "voter": "0xd2362DbB5Aa708Bc454Ce5C3F11050C016764fA6",
+        "support": false,
+        "votingPower": 77764.93744824127,
+        "transactionHash": "0x8ed13612447136d1100964de6d61151b1e9a65273b145130604d72c897973743",
+        "timestamp": 1655401105,
+        "blockNumber": 14974619
       }
     ],
     "finished": false
