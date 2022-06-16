@@ -673,6 +673,7 @@ msgstr "FAQ"
 #: pages/faucet.page.tsx
 #: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
+#: src/ui-config/menu-items/index.tsx
 msgid "Faucet"
 msgstr "Faucet"
 
