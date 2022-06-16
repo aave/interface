@@ -2008,6 +2008,7 @@ msgid "{0} Balance"
 msgstr "{0} Balance"
 
 #: pages/faucet.page.tsx
+#: src/components/FaucetButton.tsx
 msgid "{0} Faucet"
 msgstr "{0} Faucet"
 
