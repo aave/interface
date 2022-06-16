@@ -1,3 +1,4 @@
+"use strict";
 var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __defProps = Object.defineProperties;
@@ -34225,6 +34226,7 @@ var require_utils6 = __commonJS({
         case "0xb2f1e6db":
           return 68;
         case "0xb66bcbac":
+        case "0x35326910":
           return 164;
         default:
           throw new Error("Unrecognized function selector for Augustus");
@@ -61386,6 +61388,24 @@ var marketsData = {
       UI_INCENTIVE_DATA_PROVIDER: "0x2c9f31b1F9838Bb8781bb61a0d0a4615f6530207"
     }
   },
+  ["proto_ropsten_v3" /* proto_ropsten_v3 */]: {
+    marketTitle: "Ethereum Ropsten",
+    v3: true,
+    chainId: import_contract_helpers2.ChainId.ropsten,
+    enabledFeatures: {
+      faucet: true
+    },
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: "0x303a4B174663A6201Da77782413B4b54EFa3E97e".toLowerCase(),
+      LENDING_POOL: "0x23a85024f54A19e243bA7a74E339a5C80998c7a4",
+      WETH_GATEWAY: "0x96A4fd1f289888cCa772298f7BDCF41C02122c01",
+      FAUCET: "0xb7263ADfB7C094aa24b91A51b297A278e105584a",
+      WALLET_BALANCE_PROVIDER: "0xEEac3ad1b3f4c43A782a951348c5387506B9AB06",
+      UI_POOL_DATA_PROVIDER: "0xb815B9EE078Dab098965D8e52dD5C747d70bb481",
+      UI_INCENTIVE_DATA_PROVIDER: "0x2526D407F722C0D1e0326eC1840A235bf173b9Ca"
+    }
+  },
   ["proto_arbitrum_v3" /* proto_arbitrum_v3 */]: {
     marketTitle: "Arbitrum",
     v3: true,
@@ -61451,24 +61471,6 @@ var marketsData = {
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
       marketName: "avalanche"
-    }
-  },
-  ["proto_ropsten_v3" /* proto_ropsten_v3 */]: {
-    marketTitle: "Ethereum Ropsten",
-    v3: true,
-    chainId: import_contract_helpers2.ChainId.ropsten,
-    enabledFeatures: {
-      faucet: true
-    },
-    rpcOnly: true,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: "0x303a4B174663A6201Da77782413B4b54EFa3E97e".toLowerCase(),
-      LENDING_POOL: "0x23a85024f54A19e243bA7a74E339a5C80998c7a4",
-      WETH_GATEWAY: "0x96A4fd1f289888cCa772298f7BDCF41C02122c01",
-      FAUCET: "0xb7263ADfB7C094aa24b91A51b297A278e105584a",
-      WALLET_BALANCE_PROVIDER: "0xEEac3ad1b3f4c43A782a951348c5387506B9AB06",
-      UI_POOL_DATA_PROVIDER: "0xb815B9EE078Dab098965D8e52dD5C747d70bb481",
-      UI_INCENTIVE_DATA_PROVIDER: "0x2526D407F722C0D1e0326eC1840A235bf173b9Ca"
     }
   },
   ["proto_fuji_v3" /* proto_fuji_v3 */]: {
@@ -61668,7 +61670,7 @@ var networkConfigs = {
     networkLogoPath: "/icons/networks/ethereum.svg"
   },
   [import_contract_helpers3.ChainId.rinkeby]: {
-    name: "Rinkeby",
+    name: "Ethereum Rinkeby",
     publicJsonRPCUrl: [
       "https://rinkeby-light.eth.linkpool.io/"
     ],
@@ -61681,7 +61683,7 @@ var networkConfigs = {
     networkLogoPath: "/icons/networks/ethereum.svg"
   },
   [import_contract_helpers3.ChainId.ropsten]: {
-    name: "Ropsten Testnet",
+    name: "Ethereum Ropsten",
     publicJsonRPCUrl: ["https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"],
     publicJsonRPCWSUrl: "",
     baseUniswapAdapter: "0x0",
