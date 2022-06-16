@@ -8,15 +8,15 @@ import constants from '../../../fixtures/constans.json';
 const testData = {
   deposit: {
     asset: assets.polygonV3Market.MATIC,
-    amount: 100,
+    amount: 900,
     hasApproval: true,
   },
   swap: [
     {
       fromAsset: assets.polygonV3Market.MATIC,
-      toAsset: assets.polygonV3Market.USDC,
+      toAsset: assets.polygonV3Market.DAI,
       isCollateralFromAsset: true,
-      amount: 10,
+      amount: 200,
       hasApproval: false,
     },
   ],
@@ -24,15 +24,15 @@ const testData = {
     finalDashboard: [
       {
         type: constants.dashboardTypes.deposit,
-        assetName: assets.polygonV3Market.USDC.shortName,
-        wrapped: assets.polygonV3Market.USDC.wrapped,
+        assetName: assets.polygonV3Market.DAI.shortName,
+        wrapped: assets.polygonV3Market.DAI.wrapped,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
       },
       {
         type: constants.dashboardTypes.deposit,
         assetName: assets.polygonV3Market.MATIC.shortName,
-        amount: 90,
+        amount: 700,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
       },

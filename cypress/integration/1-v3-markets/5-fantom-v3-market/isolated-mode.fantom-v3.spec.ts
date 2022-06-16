@@ -44,9 +44,10 @@ const testData = {
     repay: {
       asset: assets.fantomMarket.USDT,
       apyType: constants.apyType.variable,
+      repayableAsset: assets.fantomMarket.aUSDT,
       amount: 2,
       isMaxAmount: true,
-      hasApproval: false,
+      hasApproval: true,
       repayOption: constants.repayType.default,
     },
     switchCollateralForUSDT: {
