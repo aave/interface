@@ -43,6 +43,11 @@ export const navigation: Navigation[] = [
       process.env.NEXT_PUBLIC_ENV === 'prod' &&
       !ENABLE_TESTNET,
   },
+  {
+    link: ROUTES.faucet,
+    title: t`Faucet`,
+    isVisible: () => process.env.NEXT_PUBLIC_ENV === 'staging' || ENABLE_TESTNET,
+  },
 ];
 
 interface MoreMenuItem extends Navigation {
