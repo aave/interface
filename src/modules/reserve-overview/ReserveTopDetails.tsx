@@ -23,9 +23,8 @@ import UptrendIcon from '../../../public/icons/markets/uptrend-icon.svg';
 import DollarIcon from '../../../public/icons/markets/dollar-icon.svg';
 import { useState } from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { Base64Token } from 'src/components/primitives/TokenIcon';
 import { CircleIcon } from 'src/components/CircleIcon';
-import { AddToWallet } from 'src/components/transactions/AddTokenToWallet/AddToWallet';
+import { AddTokenDropdown } from './AddTokenDropdown';
 
 interface ReserveTopDetailsProps {
   underlyingAsset: string;
@@ -38,7 +37,6 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
   const { market, network } = getMarketInfoById(currentMarket);
   const { addERC20Token, switchNetwork, chainId: connectedChainId } = useWeb3Context();
   const [copyClicked, setCopyClicked] = useState<boolean>(false);
-  const [base64, setBase64] = useState('');
 
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -97,10 +95,6 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
     <TopInfoPanel
       titleComponent={
         <Box>
-          {/* Load base64 token symbol for adding token to wallet */}
-          {poolReserve?.symbol && !/_/.test(poolReserve.symbol) && (
-            <Base64Token symbol={poolReserve.symbol} onImageGenerated={setBase64} aToken={false} />
-          )}
           <Box
             sx={{
               display: 'flex',
@@ -189,17 +183,14 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
                           </SvgIcon>
                         </Box>
                       </CircleIcon>
-
-                      <CircleIcon tooltipText="Add token to wallet" downToSM={downToSM}>
-                        <AddToWallet
-                          poolReserve={poolReserve}
-                          currentChainId={currentChainId}
-                          connectedChainId={connectedChainId}
-                          switchNetwork={switchNetwork}
-                          addERC20Token={addERC20Token}
-                          iconBase64={base64}
-                        />
-                      </CircleIcon>
+                      <AddTokenDropdown
+                        poolReserve={poolReserve}
+                        downToSM={downToSM}
+                        switchNetwork={switchNetwork}
+                        addERC20Token={addERC20Token}
+                        currentChainId={currentChainId}
+                        connectedChainId={connectedChainId}
+                      />
                     </Box>
                   )}
                 </Box>
@@ -245,17 +236,14 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
                     </SvgIcon>
                   </Box>
                 </CircleIcon>
-
-                <CircleIcon tooltipText="Add token to wallet" downToSM={downToSM}>
-                  <AddToWallet
-                    poolReserve={poolReserve}
-                    currentChainId={currentChainId}
-                    connectedChainId={connectedChainId}
-                    switchNetwork={switchNetwork}
-                    addERC20Token={addERC20Token}
-                    iconBase64={base64}
-                  />
-                </CircleIcon>
+                <AddTokenDropdown
+                  poolReserve={poolReserve}
+                  downToSM={downToSM}
+                  switchNetwork={switchNetwork}
+                  addERC20Token={addERC20Token}
+                  currentChainId={currentChainId}
+                  connectedChainId={connectedChainId}
+                />
               </Box>
             )}
           </Box>
