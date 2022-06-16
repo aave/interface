@@ -1,13 +1,13 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Alert, Box, Button, useMediaQuery, useTheme } from '@mui/material';
+import { Alert, Box, useMediaQuery, useTheme } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { useState } from 'react';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
-import { Link } from '../../../../components/primitives/Link';
+import { Link, ROUTES } from '../../../../components/primitives/Link';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -157,9 +157,9 @@ export const SupplyAssetsList = () => {
       alert = (
         <Alert severity="info">
           <Trans>Your {networkName} wallet is empty. Get free test assets at </Trans>{' '}
-          <Button variant="text" href="/faucet">
+          <Link href={ROUTES.faucet}>
             <Trans>{networkName} Faucet</Trans>
-          </Button>
+          </Link>
         </Alert>
       );
     } else {
