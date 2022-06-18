@@ -15,7 +15,6 @@ interface AddTokenDropdownProps {
   addERC20Token: (args: ERC20TokenType) => Promise<boolean>;
   currentChainId: number;
   connectedChainId: number;
-  switchNetworkError?: Error;
 }
 
 export const AddTokenDropdown = ({
@@ -129,6 +128,7 @@ export const AddTokenDropdown = ({
                 image: !/_/.test(poolReserve.symbol) ? underlyingBase64 : undefined,
               });
             }
+            handleClose();
           }}
         >
           <TokenIcon symbol={poolReserve.iconSymbol} fontSize="large" />
@@ -153,6 +153,7 @@ export const AddTokenDropdown = ({
                 image: !/_/.test(poolReserve.symbol) ? aTokenBase64 : undefined,
               });
             }
+            handleClose();
           }}
         >
           <TokenIcon symbol={poolReserve.iconSymbol} fontSize="large" aToken={true} />

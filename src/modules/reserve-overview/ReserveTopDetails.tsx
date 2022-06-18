@@ -1,8 +1,6 @@
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackOutlined';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import CheckIcon from '@mui/icons-material/Check';
 import { Box, Button, Skeleton, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useRouter } from 'next/router';
 import { getMarketInfoById, MarketLogo } from 'src/components/MarketSwitcher';
@@ -21,10 +19,10 @@ import CubeIcon from '../../../public/icons/markets/cube-icon.svg';
 import PieIcon from '../../../public/icons/markets/pie-icon.svg';
 import UptrendIcon from '../../../public/icons/markets/uptrend-icon.svg';
 import DollarIcon from '../../../public/icons/markets/dollar-icon.svg';
-import { useState } from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { CircleIcon } from 'src/components/CircleIcon';
 import { AddTokenDropdown } from './AddTokenDropdown';
+import { CopyAddressDropdown } from './CopyAddressDropdown';
 
 interface ReserveTopDetailsProps {
   underlyingAsset: string;
@@ -35,8 +33,7 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
   const { reserves, loading } = useAppDataContext();
   const { currentMarket, currentNetworkConfig, currentChainId } = useProtocolDataContext();
   const { market, network } = getMarketInfoById(currentMarket);
-  const { addERC20Token, switchNetwork, chainId: connectedChainId } = useWeb3Context();
-  const [copyClicked, setCopyClicked] = useState<boolean>(false);
+  const { addERC20Token, switchNetwork, chainId: connectedChainId, connected } = useWeb3Context();
 
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -79,16 +76,6 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
     ) : (
       <Typography variant={valueTypographyVariant}>{poolReserve.name}</Typography>
     );
-  };
-
-  const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
-
-  // Copy token address to clipboard and display check for 1000ms
-  const copyClick = async () => {
-    navigator.clipboard.writeText(poolReserve.underlyingAsset);
-    setCopyClicked(true);
-    await delay(1000);
-    setCopyClicked(false);
   };
 
   return (
@@ -173,24 +160,17 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
                         </Link>
                       </CircleIcon>
 
-                      <CircleIcon
-                        tooltipText={copyClicked ? 'Copied' : 'Copy token contract address'}
-                        downToSM={downToSM}
-                      >
-                        <Box onClick={() => copyClick()} sx={iconStyling}>
-                          <SvgIcon sx={{ fontSize: '14px' }}>
-                            {copyClicked ? <CheckIcon /> : <ContentCopyIcon />}
-                          </SvgIcon>
-                        </Box>
-                      </CircleIcon>
-                      <AddTokenDropdown
-                        poolReserve={poolReserve}
-                        downToSM={downToSM}
-                        switchNetwork={switchNetwork}
-                        addERC20Token={addERC20Token}
-                        currentChainId={currentChainId}
-                        connectedChainId={connectedChainId}
-                      />
+                      <CopyAddressDropdown poolReserve={poolReserve} downToSM={downToSM} />
+                      {connected && (
+                        <AddTokenDropdown
+                          poolReserve={poolReserve}
+                          downToSM={downToSM}
+                          switchNetwork={switchNetwork}
+                          addERC20Token={addERC20Token}
+                          currentChainId={currentChainId}
+                          connectedChainId={connectedChainId}
+                        />
+                      )}
                     </Box>
                   )}
                 </Box>
@@ -226,24 +206,17 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
                   </Link>
                 </CircleIcon>
 
-                <CircleIcon
-                  tooltipText={copyClicked ? 'Copied' : 'Copy token contract address'}
-                  downToSM={downToSM}
-                >
-                  <Box onClick={() => copyClick()} sx={iconStyling}>
-                    <SvgIcon sx={{ fontSize: '14px' }}>
-                      {copyClicked ? <CheckIcon /> : <ContentCopyIcon />}
-                    </SvgIcon>
-                  </Box>
-                </CircleIcon>
-                <AddTokenDropdown
-                  poolReserve={poolReserve}
-                  downToSM={downToSM}
-                  switchNetwork={switchNetwork}
-                  addERC20Token={addERC20Token}
-                  currentChainId={currentChainId}
-                  connectedChainId={connectedChainId}
-                />
+                <CopyAddressDropdown poolReserve={poolReserve} downToSM={downToSM} />
+                {connected && (
+                  <AddTokenDropdown
+                    poolReserve={poolReserve}
+                    downToSM={downToSM}
+                    switchNetwork={switchNetwork}
+                    addERC20Token={addERC20Token}
+                    currentChainId={currentChainId}
+                    connectedChainId={connectedChainId}
+                  />
+                )}
               </Box>
             )}
           </Box>
