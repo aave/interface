@@ -1206,13 +1206,13 @@ msgstr "Select Aave Market"
 msgid "Select language"
 msgstr "Select language"
 
-#: src/modules/reserve-overview/CopyAddressDropdown.tsx
-msgid "Select token address to copy"
-msgstr "Select token address to copy"
-
 #: src/modules/reserve-overview/AddTokenDropdown.tsx
 msgid "Select token to add"
 msgstr "Select token to add"
+
+#: src/modules/reserve-overview/TokenLinkDropdown.tsx
+msgid "Select token to view in block explorer"
+msgstr "Select token to view in block explorer"
 
 #: src/components/HALLink.tsx
 msgid "Setup notifications about your Health Factor using the Hal app."
