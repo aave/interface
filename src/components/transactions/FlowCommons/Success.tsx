@@ -1,11 +1,11 @@
 import { InterestRate } from '@aave/contract-helpers';
-import { PlusSmIcon, ExternalLinkIcon } from '@heroicons/react/outline';
+import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { CheckIcon } from '@heroicons/react/solid';
 import { ReactNode, useState } from 'react';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Link, SvgIcon, Typography } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { Base64Token } from 'src/components/primitives/TokenIcon';
+import { Base64Token, TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -105,36 +105,48 @@ export const TxSuccessView = ({
             </Typography>
           )}
 
-          {addToken && (
-            <Button
-              variant="outlined"
-              onClick={() => {
-                addERC20Token({
-                  address: addToken.address,
-                  decimals: addToken.decimals,
-                  symbol: addToken.aToken ? `a${addToken.symbol}` : addToken.symbol,
-                  image: !/_/.test(addToken.symbol) ? base64 : undefined,
-                });
+          {addToken && symbol && (
+            <Box
+              sx={{
+                width: '352px',
+                background: '#F7F7F9',
+                borderRadius: '12px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                my: '24px',
               }}
-              size="small"
-              sx={{ mt: 6 }}
             >
-              {addToken.symbol && !/_/.test(addToken.symbol) && (
-                <Base64Token
-                  symbol={addToken.symbol}
-                  onImageGenerated={setBase64}
-                  aToken={addToken.aToken}
-                />
-              )}
-              <Typography sx={{ display: 'inline-flex', alignItems: 'center' }} variant="buttonS">
-                <SvgIcon sx={{ fontSize: '12px', mx: '2px' }}>
-                  <PlusSmIcon />
-                </SvgIcon>
-                <Trans>
-                  Add {addToken.aToken ? `a${addToken.symbol}` : addToken.symbol} to the wallet
-                </Trans>
+              <TokenIcon symbol={symbol} aToken={true} sx={{ fontSize: '32px', margin: '12px' }} />
+              <Typography variant="description" color="text.primary" sx={{ mx: '24px' }}>
+                <Trans>Add aToken to the wallet to track your supply balance</Trans>
               </Typography>
-            </Button>
+              <Button
+                onClick={() => {
+                  addERC20Token({
+                    address: addToken.address,
+                    decimals: addToken.decimals,
+                    symbol: addToken.aToken ? `a${addToken.symbol}` : addToken.symbol,
+                    image: !/_/.test(addToken.symbol) ? base64 : undefined,
+                  });
+                }}
+                variant="contained"
+                size="large"
+                sx={{ height: '36px', marginY: '8px' }}
+              >
+                {addToken.symbol && !/_/.test(addToken.symbol) && (
+                  <Base64Token
+                    symbol={addToken.symbol}
+                    onImageGenerated={setBase64}
+                    aToken={addToken.aToken}
+                  />
+                )}
+                <Typography variant="buttonM" color="white">
+                  <Trans>Add To Wallet</Trans>
+                </Typography>
+              </Button>
+            </Box>
           )}
         </Box>
       </Box>

@@ -93,8 +93,12 @@ msgid "Action requires an active reserve"
 msgstr "Action requires an active reserve"
 
 #: src/components/transactions/FlowCommons/Success.tsx
-msgid "Add {0} to the wallet"
-msgstr "Add {0} to the wallet"
+msgid "Add To Wallet"
+msgstr "Add To Wallet"
+
+#: src/components/transactions/FlowCommons/Success.tsx
+msgid "Add aToken to the wallet to track your supply balance"
+msgstr "Add aToken to the wallet to track your supply balance"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Address is not a contract"
@@ -1204,6 +1208,14 @@ msgstr "Select APY type to switch"
 msgid "Select language"
 msgstr "Select language"
 
+#: src/modules/reserve-overview/AddTokenDropdown.tsx
+msgid "Select token to add"
+msgstr "Select token to add"
+
+#: src/modules/reserve-overview/TokenLinkDropdown.tsx
+msgid "Select token to view in block explorer"
+msgstr "Select token to view in block explorer"
+
 #: src/components/HALLink.tsx
 msgid "Setup notifications about your Health Factor using the Hal app."
 msgstr "Setup notifications about your Health Factor using the Hal app."
@@ -2001,6 +2013,7 @@ msgstr "withdrew"
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
+#: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "{0}"
 msgstr "{0}"
 
@@ -2041,3 +2054,7 @@ msgstr "{symbol} is frozen due to an Aave Protocol Governance decision. <0>More 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"
 msgstr "{s}s"
+
+#: src/components/CircleIcon.tsx
+msgid "{tooltipText}"
+msgstr "{tooltipText}"
