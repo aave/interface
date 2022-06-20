@@ -40,6 +40,7 @@ function HideOnScroll({ children }: Props) {
 export function AppHeader() {
   const { breakpoints } = useTheme();
   const md = useMediaQuery(breakpoints.down('md'));
+  const sm = useMediaQuery(breakpoints.down('sm'));
   const router = useRouter();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -73,7 +74,7 @@ export function AppHeader() {
           FAQ.
         </Link>
       </Typography>
-      <Button variant="text" onClick={disableTestnet}>
+      <Button variant="outlined" sx={{ mt: '12px' }} onClick={disableTestnet}>
         <Trans>Disable testnet</Trans>
       </Button>
     </Box>
@@ -116,7 +117,7 @@ export function AppHeader() {
         >
           <img src={uiConfig.appLogo} alt="An SVG of an eye" height={20} />
         </Box>
-        <Box sx={{ mr: 3 }}>
+        <Box sx={{ mr: sm ? 1 : 3 }}>
           {ENABLE_TESTNET && (
             <ContentWithTooltip tooltipContent={testnetTooltip} withoutHover>
               <Button
