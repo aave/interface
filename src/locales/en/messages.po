@@ -166,7 +166,7 @@ msgstr "Approving {symbol}..."
 msgid "Array parameters that should be equal length are not"
 msgstr "Array parameters that should be equal length are not"
 
-#: pages/faucet.page.tsx
+#: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/markets/AssetsList.tsx
 msgid "Asset"
 msgstr "Asset"
@@ -197,7 +197,6 @@ msgstr "Asset is not listed"
 msgid "Asset to delegate"
 msgstr "Asset to delegate"
 
-#: pages/faucet.page.tsx
 #: src/modules/dashboard/lists/ListHeader.tsx
 msgid "Assets"
 msgstr "Assets"
@@ -670,9 +669,11 @@ msgstr "Expires"
 msgid "FAQ"
 msgstr "FAQ"
 
-#: pages/faucet.page.tsx
 #: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
+#: src/modules/faucet/FaucetAssetsList.tsx
+#: src/modules/faucet/FaucetItemLoader.tsx
+#: src/modules/faucet/FaucetMobileItemLoader.tsx
 #: src/ui-config/menu-items/index.tsx
 msgid "Faucet"
 msgstr "Faucet"
@@ -1199,10 +1200,6 @@ msgstr "Seems like we can't switch the network automatically. Please check if yo
 msgid "Select APY type to switch"
 msgstr "Select APY type to switch"
 
-#: src/components/MarketSwitcher.tsx
-msgid "Select Aave Market"
-msgstr "Select Aave Market"
-
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Select language"
 msgstr "Select language"
@@ -1405,6 +1402,10 @@ msgstr "Switch to Aave Classic"
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switching rate"
 msgstr "Switching rate"
+
+#: src/modules/faucet/FaucetAssetsList.tsx
+msgid "Test Assets"
+msgstr "Test Assets"
 
 #: src/layouts/components/TestNetModeSwitcher.tsx
 msgid "Testnet mode"
@@ -1698,6 +1699,14 @@ msgstr "Variable debt supply is not zero"
 msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions. Recommended for short-term loans."
 msgstr "Variable interest rate will <0>fluctuate</0> based on the market conditions. Recommended for short-term loans."
 
+#: src/components/MarketSwitcher.tsx
+msgid "Version 2"
+msgstr "Version 2"
+
+#: src/components/MarketSwitcher.tsx
+msgid "Version 3"
+msgstr "Version 3"
+
 #: src/modules/markets/AssetsListMobileItem.tsx
 msgid "View details"
 msgstr "View details"
@@ -1729,9 +1738,9 @@ msgstr "Voting power"
 msgid "Voting results"
 msgstr "Voting results"
 
-#: pages/faucet.page.tsx
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+#: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Wallet balance"
@@ -1984,18 +1993,11 @@ msgstr "tokens is not the same as staking them. If you wish to stake your"
 msgid "tokens, please go to the"
 msgstr "tokens, please go to the"
 
-#: src/components/MarketSwitcher.tsx
-msgid "v2 markets"
-msgstr "v2 markets"
-
-#: src/components/MarketSwitcher.tsx
-msgid "v3 markets"
-msgstr "v3 markets"
-
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "withdrew"
 msgstr "withdrew"
 
+#: src/components/MarketSwitcher.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
@@ -2006,8 +2008,8 @@ msgstr "{0}"
 msgid "{0} Balance"
 msgstr "{0} Balance"
 
-#: pages/faucet.page.tsx
 #: src/components/FaucetButton.tsx
+#: src/modules/faucet/FaucetTopPanel.tsx
 msgid "{0} Faucet"
 msgstr "{0} Faucet"
 
