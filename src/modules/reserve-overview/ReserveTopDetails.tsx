@@ -22,7 +22,7 @@ import DollarIcon from '../../../public/icons/markets/dollar-icon.svg';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { CircleIcon } from 'src/components/CircleIcon';
 import { AddTokenDropdown } from './AddTokenDropdown';
-import { CopyAddressDropdown } from './CopyAddressDropdown';
+import { TokenLinkDropdown } from './TokenLinkDropdown';
 
 interface ReserveTopDetailsProps {
   underlyingAsset: string;
@@ -147,20 +147,7 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
                     <Skeleton width={16} height={16} sx={{ ml: 1, background: '#383D51' }} />
                   ) : (
                     <Box sx={{ display: 'flex' }}>
-                      <CircleIcon tooltipText="View token contract" downToSM={downToSM}>
-                        <Link
-                          href={currentNetworkConfig.explorerLinkBuilder({
-                            address: poolReserve?.underlyingAsset,
-                          })}
-                          sx={iconStyling}
-                        >
-                          <SvgIcon sx={{ fontSize: '14px' }}>
-                            <ExternalLinkIcon />
-                          </SvgIcon>
-                        </Link>
-                      </CircleIcon>
-
-                      <CopyAddressDropdown poolReserve={poolReserve} downToSM={downToSM} />
+                      <TokenLinkDropdown poolReserve={poolReserve} downToSM={downToSM} />
                       {connected && (
                         <AddTokenDropdown
                           poolReserve={poolReserve}
@@ -193,20 +180,7 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
               <Skeleton width={16} height={16} sx={{ ml: 1, background: '#383D51' }} />
             ) : (
               <Box sx={{ display: 'flex' }}>
-                <CircleIcon tooltipText="View token contract" downToSM={downToSM}>
-                  <Link
-                    href={currentNetworkConfig.explorerLinkBuilder({
-                      address: poolReserve?.underlyingAsset,
-                    })}
-                    sx={iconStyling}
-                  >
-                    <SvgIcon sx={{ fontSize: '14px' }}>
-                      <ExternalLinkIcon />
-                    </SvgIcon>
-                  </Link>
-                </CircleIcon>
-
-                <CopyAddressDropdown poolReserve={poolReserve} downToSM={downToSM} />
+                <TokenLinkDropdown poolReserve={poolReserve} downToSM={downToSM} />
                 {connected && (
                   <AddTokenDropdown
                     poolReserve={poolReserve}
