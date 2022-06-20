@@ -2,26 +2,29 @@ import { ChevronDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
   Box,
-  Divider,
   ListItemText,
   MenuItem,
   SvgIcon,
   TextField,
+  ToggleButton,
+  ToggleButtonGroup,
   Tooltip,
   Typography,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 
 import { useProtocolDataContext } from '../hooks/useProtocolDataContext';
 import {
   availableMarkets,
   CustomMarket,
+  ENABLE_TESTNET,
   MarketDataType,
   marketsData,
   networkConfigs,
+  STAGING_ENV,
 } from '../utils/marketsAndNetworksConfig';
 
 export const getMarketInfoById = (marketId: CustomMarket) => {
@@ -87,8 +90,15 @@ export const MarketLogo = ({ size, logo, testChainName }: MarketLogoProps) => {
   );
 };
 
+enum SelectedMarketVersion {
+  V2,
+  V3,
+}
 export const MarketSwitcher = () => {
   const { currentMarket, setCurrentMarket } = useProtocolDataContext();
+  const [selectedMarketVersion, setSelectedMarketVersion] = useState<SelectedMarketVersion>(
+    SelectedMarketVersion.V3
+  );
   const theme = useTheme();
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
@@ -183,57 +193,71 @@ export const MarketSwitcher = () => {
     >
       <Box>
         <Typography variant="subheader2" color="text.secondary" sx={{ px: 4, py: 2 }}>
-          <Trans>Select Aave Market</Trans>
+          <Trans>
+            {ENABLE_TESTNET || STAGING_ENV ? 'Select Aave Testnet Market' : 'Select Aave Market'}
+          </Trans>
         </Typography>
-        <Divider />
       </Box>
 
       {isV3MarketsAvailable && (
-        <Typography variant="subheader2" color="text.secondary" sx={{ px: 4, py: 2 }}>
-          <Trans>v3 markets</Trans>
-        </Typography>
+        <Box sx={{ mx: '18px', display: 'flex', justifyContent: 'center' }}>
+          <ToggleButtonGroup
+            color="primary"
+            value={selectedMarketVersion}
+            exclusive
+            onChange={(_, value) => setSelectedMarketVersion(value)}
+            sx={{
+              width: '100%',
+              height: '36px',
+              background: '#383D51',
+              border: '1px solid #1B2030',
+              borderRadius: '6px',
+              marginTop: '18px',
+              marginBottom: '12px',
+              padding: '2px',
+            }}
+          >
+            <ToggleButton value={SelectedMarketVersion.V2}>
+              <Typography
+                variant="buttonM"
+                sx={
+                  selectedMarketVersion === SelectedMarketVersion.V2
+                    ? {
+                        backgroundImage: (theme) => theme.palette.gradients.aaveGradient,
+                        backgroundClip: 'text',
+                        color: 'transparent',
+                      }
+                    : { color: '#D2D4DC' }
+                }
+              >
+                <Trans>Version 2</Trans>
+              </Typography>
+            </ToggleButton>
+            <ToggleButton value={SelectedMarketVersion.V3}>
+              <Typography
+                variant="buttonM"
+                sx={
+                  selectedMarketVersion === SelectedMarketVersion.V3
+                    ? {
+                        backgroundImage: (theme) => theme.palette.gradients.aaveGradient,
+                        backgroundClip: 'text',
+                        color: 'transparent',
+                      }
+                    : { color: '#D2D4DC' }
+                }
+              >
+                <Trans>Version 3</Trans>
+              </Typography>
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Box>
       )}
       {availableMarkets.map((marketId: CustomMarket) => {
         const { market, network } = getMarketInfoById(marketId);
         const marketNaming = getMarketHelpData(market.marketTitle);
         return (
-          market.v3 && (
-            <MenuItem
-              key={marketId}
-              data-cy={`marketSelector_${marketId}`}
-              value={marketId}
-              sx={{ '.MuiListItemIcon-root': { minWidth: 'unset' } }}
-            >
-              <MarketLogo
-                size={32}
-                logo={network.networkLogoPath}
-                testChainName={marketNaming.testChainName}
-              />
-              <ListItemText sx={{ mr: 0 }}>
-                {marketNaming.name} {market.isFork ? 'Fork' : ''}
-              </ListItemText>
-              <ListItemText sx={{ textAlign: 'right' }}>
-                <Typography color="text.muted" variant="description">
-                  {marketNaming.testChainName}
-                </Typography>
-              </ListItemText>
-            </MenuItem>
-          )
-        );
-      })}
-
-      {isV3MarketsAvailable && <Divider />}
-
-      {isV3MarketsAvailable && (
-        <Typography variant="subheader2" color="text.secondary" sx={{ px: 4, py: 2 }}>
-          <Trans>v2 markets</Trans>
-        </Typography>
-      )}
-      {availableMarkets.map((marketId: CustomMarket) => {
-        const { market, network } = getMarketInfoById(marketId);
-        const marketNaming = getMarketHelpData(market.marketTitle);
-        return (
-          !market.v3 && (
+          ((market.v3 && selectedMarketVersion === SelectedMarketVersion.V3) ||
+            (!market.v3 && selectedMarketVersion === SelectedMarketVersion.V2)) && (
             <MenuItem
               key={marketId}
               data-cy={`marketSelector_${marketId}`}
