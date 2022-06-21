@@ -184,7 +184,9 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
             onClick={() => openFaucet(underlyingAsset)}
             disableRipple
           >
-            <Trans>{networkName} Faucet</Trans>
+            <Typography variant="caption">
+              <Trans>{networkName} Faucet</Trans>
+            </Typography>
           </Button>
         </Alert>
       );
