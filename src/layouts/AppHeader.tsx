@@ -149,7 +149,6 @@ export function AppHeader() {
             open={walletWidgetOpen}
             setOpen={setWalletWidgetOpen}
             headerHeight={headerHeight}
-            md={md}
           />
         )}
 
