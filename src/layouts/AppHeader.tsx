@@ -126,16 +126,13 @@ export function AppHeader() {
                 color="primary"
                 sx={{
                   backgroundColor: '#B6509E',
-                  border: '1px solid rgba(235, 235, 237, 0.12)',
                   '&:hover, &.Mui-focusVisible': { backgroundColor: 'rgba(182, 80, 158, 0.7)' },
                 }}
-                endIcon={
-                  <SvgIcon fontSize="small">
-                    <InformationCircleIcon />
-                  </SvgIcon>
-                }
               >
                 TESTNET
+                <SvgIcon sx={{ marginLeft: '2px', fontSize: '16px' }}>
+                  <InformationCircleIcon />
+                </SvgIcon>
               </Button>
             </ContentWithTooltip>
           )}
