@@ -1,5 +1,4 @@
 {
-  "chromeWebSecurity": false,
   "supportFile": "cypress/support/index.ts",
   "viewportWidth": 1200,
   "viewportHeight": 800,

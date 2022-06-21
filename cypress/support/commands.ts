@@ -37,10 +37,6 @@ Cypress.on('uncaught:exception', (err) => {
   }
 });
 
-Cypress.Commands.add('getIframe', () => {
-  return cy.get('#torusIframe').its('0.contentDocument.body').should('be.visible').then(cy.wrap);
-});
-
 // Cypress.Commands.add('initFork', (market, tokens = []) => {
 //   if (!Object.keys(MARKETS).includes(market)) throw new Error(`not sure how to setup ${market}`);
 //   if (market === MARKETS.fork_proto_mainnet)

@@ -42,14 +42,3 @@ describe('CASE2:Connect and disconnect wallet over Coinbase', () => {
     closeModal('.-cbwsdk-extension-dialog-box-cancel');
   });
 });
-
-describe('CASE3:Connect and disconnect wallet over Torus', () => {
-  it('step1:Connect wallet over Torus', () => {
-    optionOnConnectionModal('Torus');
-  });
-
-  it('step2:Close Torus modal', () => {
-    cy.wait(2500);
-    cy.getIframe('#torusIframe').find('.v-btn__content').click({ multiple: true });
-  });
-});
