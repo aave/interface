@@ -9,6 +9,7 @@ interface ContentWithTooltipProps {
   withoutHover?: boolean;
   open?: boolean;
   setOpen?: (value: boolean) => void;
+  offset?: [number, number];
 }
 
 const PopperComponent = styled(Popper)(
@@ -37,6 +38,7 @@ export const ContentWithTooltip = ({
   withoutHover,
   open,
   setOpen,
+  offset,
 }: ContentWithTooltipProps) => {
   const [openTooltip, setOpenTooltip] = useState(false);
 
@@ -55,6 +57,18 @@ export const ContentWithTooltip = ({
       disableTouchListener
       placement={placement}
       PopperComponent={PopperComponent}
+      componentsProps={{
+        popper: {
+          modifiers: [
+            {
+              name: 'offset',
+              options: {
+                offset: offset ?? [],
+              },
+            },
+          ],
+        },
+      }}
       title={
         <ClickAwayListener
           mouseEvent="onMouseDown"

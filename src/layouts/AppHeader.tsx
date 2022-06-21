@@ -119,15 +119,15 @@ export function AppHeader() {
         </Box>
         <Box sx={{ mr: sm ? 1 : 3 }}>
           {ENABLE_TESTNET && (
-            <ContentWithTooltip tooltipContent={testnetTooltip} withoutHover>
+            <ContentWithTooltip tooltipContent={testnetTooltip} offset={[0, -4]} withoutHover>
               <Button
                 variant="surface"
                 size="small"
                 color="primary"
                 sx={{
-                  backgroundColor: '#9C65A6',
+                  backgroundColor: '#B6509E',
                   border: '1px solid rgba(235, 235, 237, 0.12)',
-                  '&:hover, &.Mui-focusVisible': { backgroundColor: 'rgba(156, 101, 166, 0.7)' },
+                  '&:hover, &.Mui-focusVisible': { backgroundColor: 'rgba(182, 80, 158, 0.7)' },
                 }}
                 endIcon={
                   <SvgIcon fontSize="small">
