@@ -70,7 +70,10 @@ export function AppHeader() {
       </Typography>
       <Typography variant="description">
         <Trans>The app is running in testnet mode. Learn how it works in</Trans>{' '}
-        <Link href="https://docs.aave.com/faq/testing-aave" sx={{ textDecoration: 'underline' }}>
+        <Link
+          href="https://docs.aave.com/faq/testing-aave"
+          style={{ fontSize: '14px', fontWeight: 400, textDecoration: 'underline' }}
+        >
           FAQ.
         </Link>
       </Typography>
