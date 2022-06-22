@@ -155,7 +155,7 @@ export const SupplyAssetsList = () => {
   if (filteredSupplyReserves.length === 0) {
     if (isTestnet) {
       alert = (
-        <Alert severity="info">
+        <Alert severity="info" sx={{ mb: 4 }}>
           <Trans>Your {networkName} wallet is empty. Get free test assets at </Trans>{' '}
           <Link href={ROUTES.faucet}>
             <Trans>{networkName} Faucet</Trans>
