@@ -3,7 +3,7 @@ import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { CheckIcon } from '@heroicons/react/solid';
 import { ReactNode, useState } from 'react';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Link, SvgIcon, Typography } from '@mui/material';
+import { Box, Button, Link, SvgIcon, Typography, useTheme } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Base64Token, TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useModalContext } from 'src/hooks/useModal';
@@ -38,6 +38,7 @@ export const TxSuccessView = ({
   const { addERC20Token } = useWeb3Context();
   const { currentNetworkConfig } = useProtocolDataContext();
   const [base64, setBase64] = useState('');
+  const theme = useTheme();
 
   return (
     <>
@@ -47,7 +48,6 @@ export const TxSuccessView = ({
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          mb: '124px',
         }}
       >
         <Box
@@ -107,20 +107,25 @@ export const TxSuccessView = ({
 
           {addToken && symbol && (
             <Box
-              sx={{
-                width: '352px',
-                background: '#F7F7F9',
+              sx={(theme) => ({
+                border:
+                  theme.palette.mode === 'dark' ? `1px solid ${theme.palette.divider}` : 'none',
+                background: theme.palette.mode === 'dark' ? 'none' : '#F7F7F9',
                 borderRadius: '12px',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
                 my: '24px',
-              }}
+              })}
             >
-              <TokenIcon symbol={symbol} aToken={true} sx={{ fontSize: '32px', margin: '12px' }} />
+              <TokenIcon
+                symbol={symbol}
+                aToken={true}
+                sx={{ fontSize: '32px', mt: '12px', mb: '8px' }}
+              />
               <Typography variant="description" color="text.primary" sx={{ mx: '24px' }}>
-                <Trans>Add aToken to the wallet to track your supply balance</Trans>
+                <Trans>Add aToken to the wallet to track your supply balance.</Trans>
               </Typography>
               <Button
                 onClick={() => {
@@ -131,9 +136,9 @@ export const TxSuccessView = ({
                     image: !/_/.test(addToken.symbol) ? base64 : undefined,
                   });
                 }}
-                variant="contained"
-                size="large"
-                sx={{ height: '36px', marginY: '8px' }}
+                variant={theme.palette.mode === 'dark' ? 'outlined' : 'contained'}
+                size="medium"
+                sx={{ mt: '8px', mb: '12px' }}
               >
                 {addToken.symbol && !/_/.test(addToken.symbol) && (
                   <Base64Token
@@ -142,8 +147,14 @@ export const TxSuccessView = ({
                     aToken={addToken.aToken}
                   />
                 )}
-                <Typography variant="buttonM" color="white">
-                  <Trans>Add To Wallet</Trans>
+                <img
+                  src="/icons/wallets/walletIcon.svg"
+                  width="24px"
+                  height="24px"
+                  alt="wallet icon"
+                />
+                <Typography variant="buttonM" color="white" ml="4px">
+                  <Trans>Add to wallet</Trans>
                 </Typography>
               </Button>
             </Box>
@@ -151,7 +162,7 @@ export const TxSuccessView = ({
         </Box>
       </Box>
 
-      <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <Link
           variant="helperText"
           href={currentNetworkConfig.explorerLinkBuilder({ tx: mainTxState.txHash })}
