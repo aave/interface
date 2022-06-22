@@ -1,6 +1,5 @@
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import { Trans } from '@lingui/macro';
-import { Box, Menu, MenuItem, SvgIcon, Typography } from '@mui/material';
+import { Box, Menu, MenuItem, Typography } from '@mui/material';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { CircleIcon } from 'src/components/CircleIcon';
@@ -83,14 +82,37 @@ export const AddTokenDropdown = ({
             sx={{
               display: 'inline-flex',
               alignItems: 'center',
-              color: '#A5A8B6',
-              '&:hover': { color: '#F1F1F3' },
+              '&:hover': {
+                '.Wallet__icon': { opacity: '0 !important' },
+                '.Wallet__iconHover': { opacity: '1 !important' },
+              },
               cursor: 'pointer',
             }}
           >
-            <SvgIcon sx={{ fontSize: '14px' }}>
-              <AccountBalanceWalletIcon />
-            </SvgIcon>
+            <img
+              src="/icons/wallets/walletIcon.svg"
+              width="17px"
+              height="17px"
+              alt="wallet icon"
+              className="Wallet__icon"
+              style={{
+                opacity: 1,
+                position: 'relative',
+                left: '8.5px',
+              }}
+            />
+            <img
+              src="/icons/wallets/walletIconHover.svg"
+              width="17px"
+              height="17px"
+              alt="wallet hover icon"
+              className="Wallet__iconHover"
+              style={{
+                opacity: 0,
+                position: 'relative',
+                left: '-8.5px',
+              }}
+            />
           </Box>
         </CircleIcon>
       </Box>
