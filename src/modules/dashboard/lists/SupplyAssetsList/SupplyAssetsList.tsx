@@ -157,7 +157,7 @@ export const SupplyAssetsList = () => {
       alert = (
         <Alert severity="info" sx={{ mb: 4 }}>
           <Trans>Your {networkName} wallet is empty. Get free test assets at </Trans>{' '}
-          <Link href={ROUTES.faucet}>
+          <Link href={ROUTES.faucet} style={{ fontWeight: 400 }}>
             <Trans>{networkName} Faucet</Trans>
           </Link>
         </Alert>
