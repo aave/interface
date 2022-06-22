@@ -39,7 +39,12 @@ export default function FaucetAssetsList() {
     });
 
   if (!currentAccount || web3Loading) {
-    return <ConnectWalletPaper loading={web3Loading} />;
+    return (
+      <ConnectWalletPaper
+        loading={web3Loading}
+        description={<Trans>Please connect your wallet to get free testnet assets.</Trans>}
+      />
+    );
   }
 
   return (
