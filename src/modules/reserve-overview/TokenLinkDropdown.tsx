@@ -3,6 +3,7 @@ import { Box, Menu, MenuItem, SvgIcon, Typography } from '@mui/material';
 import * as React from 'react';
 import { useState } from 'react';
 import { CircleIcon } from 'src/components/CircleIcon';
+import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Link } from 'src/components/primitives/Link';
@@ -53,9 +54,8 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
         }}
         keepMounted={true}
         data-cy="addToWaletSelector"
-        sx={{ mt: '10px' }}
       >
-        <Box sx={{ px: '16px', py: '12px' }}>
+        <Box sx={{ px: '16px', py: '12px', width: '240px' }}>
           <Typography variant="secondary12" color="text.secondary">
             <Trans>Select token to view in block explorer</Trans>
           </Typography>
@@ -66,7 +66,9 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
             href={currentNetworkConfig.explorerLinkBuilder({
               address: poolReserve?.underlyingAsset,
             })}
+            sx={{ display: 'flex' }}
           >
+            <TokenIcon symbol={poolReserve.iconSymbol} sx={{ fontSize: '20px' }} />
             <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
               {poolReserve.symbol}
             </Typography>
@@ -78,7 +80,9 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
             href={currentNetworkConfig.explorerLinkBuilder({
               address: poolReserve?.aTokenAddress,
             })}
+            sx={{ display: 'flex' }}
           >
+            <TokenIcon symbol={poolReserve.iconSymbol} aToken={true} sx={{ fontSize: '20px' }} />
             <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
               {'a' + poolReserve.symbol}
             </Typography>
@@ -90,9 +94,11 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
               href={currentNetworkConfig.explorerLinkBuilder({
                 address: poolReserve?.variableDebtTokenAddress,
               })}
+              sx={{ display: 'flex' }}
             >
+              <TokenIcon symbol="default" sx={{ fontSize: '20px' }} />
               <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
-                {'variableDebt' + poolReserve.symbol}
+                {'Variable debt ' + poolReserve.symbol}
               </Typography>
             </Link>
           </MenuItem>
@@ -103,9 +109,11 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
               href={currentNetworkConfig.explorerLinkBuilder({
                 address: poolReserve?.stableDebtTokenAddress,
               })}
+              sx={{ display: 'flex' }}
             >
+              <TokenIcon symbol="default" sx={{ fontSize: '20px' }} />
               <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
-                {'stableDebt' + poolReserve.symbol}
+                {'Stable debt ' + poolReserve.symbol}
               </Typography>
             </Link>
           </MenuItem>

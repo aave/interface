@@ -62,21 +62,20 @@ export const AddTokenDropdown = ({
 
   return (
     <>
-      {/* Load base64 token symbol for adding underlying token to wallet */}
+      {/* Load base64 token symbol for adding underlying and aTokens to wallet */}
       {poolReserve?.symbol && !/_/.test(poolReserve.symbol) && (
-        <Base64Token
-          symbol={poolReserve.iconSymbol}
-          onImageGenerated={setUnderlyingBase64}
-          aToken={false}
-        />
-      )}
-      {/* Load base64 token symbol for adding aToken token to wallet */}
-      {poolReserve?.symbol && !/_/.test(poolReserve.symbol) && (
-        <Base64Token
-          symbol={poolReserve.iconSymbol}
-          onImageGenerated={setATokenBase64}
-          aToken={true}
-        />
+        <>
+          <Base64Token
+            symbol={poolReserve.iconSymbol}
+            onImageGenerated={setUnderlyingBase64}
+            aToken={false}
+          />
+          <Base64Token
+            symbol={poolReserve.iconSymbol}
+            onImageGenerated={setATokenBase64}
+            aToken={true}
+          />
+        </>
       )}
       <Box onClick={handleClick}>
         <CircleIcon tooltipText="Add token to wallet" downToSM={downToSM}>
@@ -104,9 +103,8 @@ export const AddTokenDropdown = ({
         }}
         keepMounted={true}
         data-cy="addToWaletSelector"
-        sx={{ mt: '10px' }}
       >
-        <Box sx={{ px: '16px', py: '12px' }}>
+        <Box sx={{ px: '16px', py: '12px', width: '240px' }}>
           <Typography variant="secondary12" color="text.secondary">
             <Trans>Select token to add</Trans>
           </Typography>
@@ -131,7 +129,7 @@ export const AddTokenDropdown = ({
             handleClose();
           }}
         >
-          <TokenIcon symbol={poolReserve.iconSymbol} fontSize="large" />
+          <TokenIcon symbol={poolReserve.iconSymbol} sx={{ fontSize: '20px' }} />
           <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
             {poolReserve.symbol}
           </Typography>
@@ -156,7 +154,7 @@ export const AddTokenDropdown = ({
             handleClose();
           }}
         >
-          <TokenIcon symbol={poolReserve.iconSymbol} fontSize="large" aToken={true} />
+          <TokenIcon symbol={poolReserve.iconSymbol} sx={{ fontSize: '20px' }} aToken={true} />
           <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
             {`a${poolReserve.symbol}`}
           </Typography>
