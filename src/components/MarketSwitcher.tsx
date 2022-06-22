@@ -95,9 +95,9 @@ enum SelectedMarketVersion {
   V3,
 }
 export const MarketSwitcher = () => {
-  const { currentMarket, setCurrentMarket } = useProtocolDataContext();
+  const { currentMarket, setCurrentMarket, currentMarketData } = useProtocolDataContext();
   const [selectedMarketVersion, setSelectedMarketVersion] = useState<SelectedMarketVersion>(
-    SelectedMarketVersion.V3
+    currentMarketData.v3 ? SelectedMarketVersion.V3 : SelectedMarketVersion.V2
   );
   const theme = useTheme();
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
@@ -183,7 +183,7 @@ export const MarketSwitcher = () => {
           },
           PaperProps: {
             style: {
-              minWidth: 280,
+              minWidth: 240,
             },
             variant: 'outlined',
             elevation: 0,
@@ -192,7 +192,7 @@ export const MarketSwitcher = () => {
       }}
     >
       <Box>
-        <Typography variant="subheader2" color="text.secondary" sx={{ px: 4, py: 2 }}>
+        <Typography variant="subheader2" color="text.secondary" sx={{ px: 4, pt: 2 }}>
           <Trans>
             {ENABLE_TESTNET || STAGING_ENV ? 'Select Aave Testnet Market' : 'Select Aave Market'}
           </Trans>
@@ -202,38 +202,33 @@ export const MarketSwitcher = () => {
       {isV3MarketsAvailable && (
         <Box sx={{ mx: '18px', display: 'flex', justifyContent: 'center' }}>
           <ToggleButtonGroup
-            color="primary"
             value={selectedMarketVersion}
             exclusive
             onChange={(_, value) => setSelectedMarketVersion(value)}
             sx={{
               width: '100%',
               height: '36px',
-              background: '#383D51',
-              border: '1px solid #1B2030',
+              background: theme.palette.primary.main,
+              border: `1px solid ${
+                theme.palette.mode === 'dark' ? 'rgba(235, 235, 237, 0.12)' : '#1B2030'
+              }`,
               borderRadius: '6px',
-              marginTop: '18px',
+              marginTop: '16px',
               marginBottom: '12px',
               padding: '2px',
             }}
           >
-            <ToggleButton value={SelectedMarketVersion.V2}>
-              <Typography
-                variant="buttonM"
-                sx={
-                  selectedMarketVersion === SelectedMarketVersion.V2
-                    ? {
-                        backgroundImage: (theme) => theme.palette.gradients.aaveGradient,
-                        backgroundClip: 'text',
-                        color: 'transparent',
-                      }
-                    : { color: '#D2D4DC' }
-                }
-              >
-                <Trans>Version 2</Trans>
-              </Typography>
-            </ToggleButton>
-            <ToggleButton value={SelectedMarketVersion.V3}>
+            <ToggleButton
+              value={SelectedMarketVersion.V3}
+              sx={{
+                backgroundColor: theme.palette.mode === 'dark' ? '#EAEBEF' : '#383D51',
+                '&.Mui-selected, &.Mui-selected:hover': {
+                  backgroundColor: theme.palette.mode === 'dark' ? '#292E41' : '#FFFFFF',
+                  boxShadow: '0px 1px 0px rgba(0, 0, 0, 0.05)',
+                },
+                borderRadius: '4px',
+              }}
+            >
               <Typography
                 variant="buttonM"
                 sx={
@@ -243,10 +238,40 @@ export const MarketSwitcher = () => {
                         backgroundClip: 'text',
                         color: 'transparent',
                       }
-                    : { color: '#D2D4DC' }
+                    : {
+                        color: theme.palette.mode === 'dark' ? '#0F121D' : '#FFFFFF',
+                      }
                 }
               >
                 <Trans>Version 3</Trans>
+              </Typography>
+            </ToggleButton>
+            <ToggleButton
+              value={SelectedMarketVersion.V2}
+              sx={{
+                backgroundColor: theme.palette.mode === 'dark' ? '#EAEBEF' : '#383D51',
+                '&.Mui-selected, &.Mui-selected:hover': {
+                  backgroundColor: theme.palette.mode === 'dark' ? '#292E41' : '#FFFFFF',
+                  boxShadow: '0px 1px 0px rgba(0, 0, 0, 0.05)',
+                },
+                borderRadius: '4px',
+              }}
+            >
+              <Typography
+                variant="buttonM"
+                sx={
+                  selectedMarketVersion === SelectedMarketVersion.V2
+                    ? {
+                        backgroundImage: (theme) => theme.palette.gradients.aaveGradient,
+                        backgroundClip: 'text',
+                        color: 'transparent',
+                      }
+                    : {
+                        color: theme.palette.mode === 'dark' ? '#0F121D' : '#FFFFFF',
+                      }
+                }
+              >
+                <Trans>Version 2</Trans>
               </Typography>
             </ToggleButton>
           </ToggleButtonGroup>
