@@ -91,26 +91,26 @@ export const AddTokenDropdown = ({
           >
             <img
               src="/icons/wallets/walletIcon.svg"
-              width="17px"
-              height="17px"
+              width="14px"
+              height="14px"
               alt="wallet icon"
               className="Wallet__icon"
               style={{
                 opacity: 1,
                 position: 'relative',
-                left: '8.5px',
+                left: '7px',
               }}
             />
             <img
               src="/icons/wallets/walletIconHover.svg"
-              width="17px"
-              height="17px"
+              width="14px"
+              height="14px"
               alt="wallet hover icon"
               className="Wallet__iconHover"
               style={{
                 opacity: 0,
                 position: 'relative',
-                left: '-8.5px',
+                left: '-7px',
               }}
             />
           </Box>
