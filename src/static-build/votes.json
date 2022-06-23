@@ -25493,6 +25493,24 @@
         "transactionHash": "0xde143cf9cbb85d09e56ea7c6cc33541325effc0ac8820eaf8d35a90c3517fb1e",
         "timestamp": 1655936206,
         "blockNumber": 15009817
+      },
+      {
+        "proposalId": 84,
+        "voter": "0x236884bb674067C96fcBCc5dff728141E05BE99d",
+        "support": true,
+        "votingPower": 1,
+        "transactionHash": "0x45e198162a3cb7b046fdd8b0beb4e4a9d2516f63cac76b6afd85ae1b6976af0f",
+        "timestamp": 1655945282,
+        "blockNumber": 15010389
+      },
+      {
+        "proposalId": 84,
+        "voter": "0x4d477F1aabcFc2FC3FC9b802E861C013E0123AD9",
+        "support": true,
+        "votingPower": 0.1092903026824001,
+        "transactionHash": "0xd55f3a3a3dfba2d47fff0a230cb26898731c9715a3d27b3bbaff8780e4dabf4d",
+        "timestamp": 1655951277,
+        "blockNumber": 15010733
       }
     ],
     "finished": false
