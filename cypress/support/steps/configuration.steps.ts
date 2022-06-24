@@ -13,12 +13,14 @@ export const configEnvWithTenderly = ({
   tokens,
   unpause,
   wallet,
+  enableTestnet = false,
 }: {
   chainId: number;
   market: string;
   tokens?: { address: string }[];
   unpause?: boolean;
   wallet?: { address: string; privateKey: string };
+  enableTestnet?: boolean;
 }) => {
   const tenderly = new TenderlyFork({ forkNetworkID: chainId });
   const walletAddress: string = wallet != null ? wallet.address : DEFAULT_TEST_ACCOUNT.address;
@@ -55,7 +57,7 @@ export const configEnvWithTenderly = ({
         win.localStorage.setItem('walletProvider', 'injected');
         win.localStorage.setItem('selectedAccount', walletAddress.toLowerCase());
         win.localStorage.setItem('selectedMarket', market);
-        win.localStorage.setItem('testnetsEnabled', 'true');
+        win.localStorage.setItem('testnetsEnabled', enableTestnet.toString());
         win.localStorage.setItem('mockWalletAddress', walletAddress.toLowerCase());
       },
     });
@@ -127,7 +129,13 @@ export const configEnvWithTenderlyRinkebyFork = ({
   tokens?: { address: string }[];
   v3?: boolean;
 }) => {
-  configEnvWithTenderly({ chainId: ChainId.rinkeby, market, tokens, unpause: v3 });
+  configEnvWithTenderly({
+    chainId: ChainId.rinkeby,
+    market,
+    tokens,
+    unpause: v3,
+    enableTestnet: true,
+  });
 };
 
 // TODO: this is wrong
@@ -152,7 +160,13 @@ export const configEnvWithTenderlyOptimismKovanFork = ({
   tokens?: { address: string }[];
   v3?: boolean;
 }) => {
-  configEnvWithTenderly({ chainId: ChainId.optimism_kovan, market, tokens, unpause: v3 });
+  configEnvWithTenderly({
+    chainId: ChainId.optimism_kovan,
+    market,
+    tokens,
+    unpause: v3,
+    enableTestnet: true,
+  });
 };
 
 export const configEnvWithTenderlyOptimismFork = ({

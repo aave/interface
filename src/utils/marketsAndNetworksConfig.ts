@@ -18,10 +18,10 @@ export type Pool = {
   address: string;
 };
 
-export const NEXT_PUBLIC_ENABLE_TESTNET =
-  (!global?.window?.localStorage.getItem('testnetsEnabled') &&
-    process.env.NEXT_PUBLIC_ENABLE_TESTNET === 'true') ||
-  global?.window?.localStorage.getItem('testnetsEnabled') === 'true';
+export const STAGING_ENV = process.env.NEXT_PUBLIC_ENV === 'staging';
+export const PROD_ENV = !process.env.NEXT_PUBLIC_ENV || process.env.NEXT_PUBLIC_ENV === 'prod';
+export const ENABLE_TESTNET =
+  PROD_ENV && global?.window?.localStorage.getItem('testnetsEnabled') === 'true';
 
 // determines if forks should be shown
 const FORK_ENABLED = global?.window?.localStorage.getItem('forkEnabled') === 'true';
@@ -78,14 +78,22 @@ export function getDefaultChainId() {
 
 export function getSupportedChainIds(): number[] {
   return Array.from(
-    Object.keys(marketsData).reduce((acc, value) => {
-      if (
-        NEXT_PUBLIC_ENABLE_TESTNET ||
-        !networkConfigs[marketsData[value as keyof typeof CustomMarket].chainId].isTestnet
+    Object.keys(marketsData)
+      .filter((value) => {
+        const isTestnet =
+          networkConfigs[marketsData[value as keyof typeof CustomMarket].chainId].isTestnet;
+
+        // If this is a staging environment, or the testnet toggle is on, only show testnets
+        if (STAGING_ENV || ENABLE_TESTNET) {
+          return isTestnet;
+        }
+
+        return !isTestnet;
+      })
+      .reduce(
+        (acc, value) => acc.add(marketsData[value as keyof typeof CustomMarket].chainId),
+        new Set<number>()
       )
-        acc.add(marketsData[value as keyof typeof CustomMarket].chainId);
-      return acc;
-    }, new Set<number>())
   );
 }
 

@@ -9006,7 +9006,7 @@ var require_typed_data = __commonJS({
       };
       TypedDataEncoder2.resolveNames = function(domain, types, value, resolveName) {
         return __awaiter(this, void 0, void 0, function() {
-          var ensCache, encoder, _a7, _b2, _i, name_4, _c, _d;
+          var ensCache, encoder, _a7, _b, _i, name_4, _c, _d;
           return __generator(this, function(_e) {
             switch (_e.label) {
               case 0:
@@ -9023,8 +9023,8 @@ var require_typed_data = __commonJS({
                   return value2;
                 });
                 _a7 = [];
-                for (_b2 in ensCache)
-                  _a7.push(_b2);
+                for (_b in ensCache)
+                  _a7.push(_b);
                 _i = 0;
                 _e.label = 1;
               case 1:
@@ -18914,8 +18914,8 @@ var require_lib24 = __commonJS({
       Provider2.prototype.getFeeData = function() {
         return __awaiter(this, void 0, void 0, function() {
           var _a7, block, gasPrice, maxFeePerGas, maxPriorityFeePerGas;
-          return __generator(this, function(_b2) {
-            switch (_b2.label) {
+          return __generator(this, function(_b) {
+            switch (_b.label) {
               case 0:
                 return [4, (0, properties_1.resolveProperties)({
                   block: this.getBlock("latest"),
@@ -18924,7 +18924,7 @@ var require_lib24 = __commonJS({
                   })
                 })];
               case 1:
-                _a7 = _b2.sent(), block = _a7.block, gasPrice = _a7.gasPrice;
+                _a7 = _b.sent(), block = _a7.block, gasPrice = _a7.gasPrice;
                 maxFeePerGas = null, maxPriorityFeePerGas = null;
                 if (block && block.baseFeePerGas) {
                   maxPriorityFeePerGas = bignumber_1.BigNumber.from("2500000000");
@@ -23628,22 +23628,22 @@ var require_base_provider = __commonJS({
       Resolver2.prototype._fetchBytes = function(selector, parameters) {
         return __awaiter(this, void 0, void 0, function() {
           var tx, _a7, error_1;
-          return __generator(this, function(_b2) {
-            switch (_b2.label) {
+          return __generator(this, function(_b) {
+            switch (_b.label) {
               case 0:
                 tx = {
                   to: this.address,
                   data: (0, bytes_1.hexConcat)([selector, (0, hash_1.namehash)(this.name), parameters || "0x"])
                 };
-                _b2.label = 1;
+                _b.label = 1;
               case 1:
-                _b2.trys.push([1, 3, , 4]);
+                _b.trys.push([1, 3, , 4]);
                 _a7 = _parseBytes;
                 return [4, this.provider.call(tx)];
               case 2:
-                return [2, _a7.apply(void 0, [_b2.sent()])];
+                return [2, _a7.apply(void 0, [_b.sent()])];
               case 3:
-                error_1 = _b2.sent();
+                error_1 = _b.sent();
                 if (error_1.code === logger_1.Logger.errors.CALL_EXCEPTION) {
                   return [2, null];
                 }
@@ -23754,7 +23754,7 @@ var require_base_provider = __commonJS({
       };
       Resolver2.prototype.getAvatar = function() {
         return __awaiter(this, void 0, void 0, function() {
-          var linkage, avatar, i, match, scheme, _a7, selector, owner, _b2, comps, addr, tokenId, tokenOwner, _c, _d, balance, _e, _f, tx, metadataUrl, _g, metadata, imageUrl, ipfs, error_3;
+          var linkage, avatar, i, match, scheme, _a7, selector, owner, _b, comps, addr, tokenId, tokenOwner, _c, _d, balance, _e, _f, tx, metadataUrl, _g, metadata, imageUrl, ipfs, error_3;
           return __generator(this, function(_h) {
             switch (_h.label) {
               case 0:
@@ -23804,15 +23804,15 @@ var require_base_provider = __commonJS({
               case 7:
                 selector = scheme === "erc721" ? "0xc87b56dd" : "0x0e89341c";
                 linkage.push({ type: scheme, content: avatar });
-                _b2 = this._resolvedAddress;
-                if (_b2)
+                _b = this._resolvedAddress;
+                if (_b)
                   return [3, 9];
                 return [4, this.getAddress()];
               case 8:
-                _b2 = _h.sent();
+                _b = _h.sent();
                 _h.label = 9;
               case 9:
-                owner = _b2;
+                owner = _b;
                 comps = (match[2] || "").split("/");
                 if (comps.length !== 2) {
                   return [2, null];
@@ -24856,7 +24856,7 @@ var require_base_provider = __commonJS({
       };
       BaseProvider2.prototype._getTransactionRequest = function(transaction) {
         return __awaiter(this, void 0, void 0, function() {
-          var values, tx, _a7, _b2;
+          var values, tx, _a7, _b;
           var _this = this;
           return __generator(this, function(_c) {
             switch (_c.label) {
@@ -24900,17 +24900,17 @@ var require_base_provider = __commonJS({
                     return v ? (0, bytes_1.hexlify)(v) : null;
                   });
                 });
-                _b2 = (_a7 = this.formatter).transactionRequest;
+                _b = (_a7 = this.formatter).transactionRequest;
                 return [4, (0, properties_1.resolveProperties)(tx)];
               case 2:
-                return [2, _b2.apply(_a7, [_c.sent()])];
+                return [2, _b.apply(_a7, [_c.sent()])];
             }
           });
         });
       };
       BaseProvider2.prototype._getFilter = function(filter) {
         return __awaiter(this, void 0, void 0, function() {
-          var result, _a7, _b2;
+          var result, _a7, _b;
           var _this = this;
           return __generator(this, function(_c) {
             switch (_c.label) {
@@ -24934,10 +24934,10 @@ var require_base_provider = __commonJS({
                   }
                   result[key] = _this._getBlockTag(filter[key]);
                 });
-                _b2 = (_a7 = this.formatter).filter;
+                _b = (_a7 = this.formatter).filter;
                 return [4, (0, properties_1.resolveProperties)(result)];
               case 2:
-                return [2, _b2.apply(_a7, [_c.sent()])];
+                return [2, _b.apply(_a7, [_c.sent()])];
             }
           });
         });
@@ -25036,15 +25036,15 @@ var require_base_provider = __commonJS({
         return __awaiter(this, void 0, void 0, function() {
           var blockNumber, params, _a7, error_8;
           var _this = this;
-          return __generator(this, function(_b2) {
-            switch (_b2.label) {
+          return __generator(this, function(_b) {
+            switch (_b.label) {
               case 0:
                 return [4, this.getNetwork()];
               case 1:
-                _b2.sent();
+                _b.sent();
                 return [4, blockHashOrBlockTag];
               case 2:
-                blockHashOrBlockTag = _b2.sent();
+                blockHashOrBlockTag = _b.sent();
                 blockNumber = -128;
                 params = {
                   includeTransactions: !!includeTransactions
@@ -25054,17 +25054,17 @@ var require_base_provider = __commonJS({
                 params.blockHash = blockHashOrBlockTag;
                 return [3, 6];
               case 3:
-                _b2.trys.push([3, 5, , 6]);
+                _b.trys.push([3, 5, , 6]);
                 _a7 = params;
                 return [4, this._getBlockTag(blockHashOrBlockTag)];
               case 4:
-                _a7.blockTag = _b2.sent();
+                _a7.blockTag = _b.sent();
                 if ((0, bytes_1.isHexString)(params.blockTag)) {
                   blockNumber = parseInt(params.blockTag.substring(2), 16);
                 }
                 return [3, 6];
               case 5:
-                error_8 = _b2.sent();
+                error_8 = _b.sent();
                 logger.throwArgumentError("invalid block hash or block tag", "blockHashOrBlockTag", blockHashOrBlockTag);
                 return [3, 6];
               case 6:
@@ -25354,7 +25354,7 @@ var require_base_provider = __commonJS({
       };
       BaseProvider2.prototype._getResolver = function(name2) {
         return __awaiter(this, void 0, void 0, function() {
-          var network, transaction, _a7, _b2, error_10;
+          var network, transaction, _a7, _b, error_10;
           return __generator(this, function(_c) {
             switch (_c.label) {
               case 0:
@@ -25371,10 +25371,10 @@ var require_base_provider = __commonJS({
                 _c.label = 2;
               case 2:
                 _c.trys.push([2, 4, , 5]);
-                _b2 = (_a7 = this.formatter).callAddress;
+                _b = (_a7 = this.formatter).callAddress;
                 return [4, this.call(transaction)];
               case 3:
-                return [2, _b2.apply(_a7, [_c.sent()])];
+                return [2, _b.apply(_a7, [_c.sent()])];
               case 4:
                 error_10 = _c.sent();
                 if (error_10.code === logger_1.Logger.errors.CALL_EXCEPTION) {
@@ -25422,17 +25422,17 @@ var require_base_provider = __commonJS({
       BaseProvider2.prototype.lookupAddress = function(address) {
         return __awaiter(this, void 0, void 0, function() {
           var reverseName, resolverAddress, bytes, _a7, length, name2, addr;
-          return __generator(this, function(_b2) {
-            switch (_b2.label) {
+          return __generator(this, function(_b) {
+            switch (_b.label) {
               case 0:
                 return [4, address];
               case 1:
-                address = _b2.sent();
+                address = _b.sent();
                 address = this.formatter.address(address);
                 reverseName = address.substring(2).toLowerCase() + ".addr.reverse";
                 return [4, this._getResolver(reverseName)];
               case 2:
-                resolverAddress = _b2.sent();
+                resolverAddress = _b.sent();
                 if (!resolverAddress) {
                   return [2, null];
                 }
@@ -25442,7 +25442,7 @@ var require_base_provider = __commonJS({
                   data: "0x691f3431" + (0, hash_1.namehash)(reverseName).substring(2)
                 })];
               case 3:
-                bytes = _a7.apply(void 0, [_b2.sent()]);
+                bytes = _a7.apply(void 0, [_b.sent()]);
                 if (bytes.length < 32 || !bignumber_1.BigNumber.from(bytes.slice(0, 32)).eq(32)) {
                   return [2, null];
                 }
@@ -25458,7 +25458,7 @@ var require_base_provider = __commonJS({
                 name2 = (0, strings_1.toUtf8String)(bytes.slice(0, length));
                 return [4, this.resolveName(name2)];
               case 4:
-                addr = _b2.sent();
+                addr = _b.sent();
                 if (addr != address) {
                   return [2, null];
                 }
@@ -30293,7 +30293,7 @@ var require_etherscan_provider = __commonJS({
       };
       EtherscanProvider2.prototype.perform = function(method, params) {
         return __awaiter(this, void 0, void 0, function() {
-          var _a7, postData, error_1, postData, error_2, args, topic0, logs, blocks, i, log, block, _b2;
+          var _a7, postData, error_1, postData, error_2, args, topic0, logs, blocks, i, log, block, _b;
           return __generator(this, function(_c) {
             switch (_c.label) {
               case 0:
@@ -30470,10 +30470,10 @@ var require_etherscan_provider = __commonJS({
                 if (this.network.name !== "homestead") {
                   return [2, 0];
                 }
-                _b2 = parseFloat;
+                _b = parseFloat;
                 return [4, this.fetch("stats", { action: "ethprice" })];
               case 27:
-                return [2, _b2.apply(void 0, [_c.sent().ethusd])];
+                return [2, _b.apply(void 0, [_c.sent().ethusd])];
               case 28:
                 return [3, 29];
               case 29:
@@ -30487,18 +30487,18 @@ var require_etherscan_provider = __commonJS({
           var params, result;
           var _a7;
           var _this = this;
-          return __generator(this, function(_b2) {
-            switch (_b2.label) {
+          return __generator(this, function(_b) {
+            switch (_b.label) {
               case 0:
                 _a7 = {
                   action: "txlist"
                 };
                 return [4, this.resolveName(addressOrName)];
               case 1:
-                params = (_a7.address = _b2.sent(), _a7.startblock = startBlock == null ? 0 : startBlock, _a7.endblock = endBlock == null ? 99999999 : endBlock, _a7.sort = "asc", _a7);
+                params = (_a7.address = _b.sent(), _a7.startblock = startBlock == null ? 0 : startBlock, _a7.endblock = endBlock == null ? 99999999 : endBlock, _a7.sort = "asc", _a7);
                 return [4, this.fetch("account", params)];
               case 2:
-                result = _b2.sent();
+                result = _b.sent();
                 return [2, result.map(function(tx) {
                   ["contractAddress", "to"].forEach(function(key) {
                     if (tx[key] == "") {
@@ -30919,8 +30919,8 @@ var require_fallback_provider = __commonJS({
     function getRunner(config, currentBlockNumber, method, params) {
       return __awaiter(this, void 0, void 0, function() {
         var provider, _a7, filter;
-        return __generator(this, function(_b2) {
-          switch (_b2.label) {
+        return __generator(this, function(_b) {
+          switch (_b.label) {
             case 0:
               provider = config.provider;
               _a7 = method;
@@ -30965,8 +30965,8 @@ var require_fallback_provider = __commonJS({
                 return [3, 5];
               return [4, waitForSync(config, currentBlockNumber)];
             case 4:
-              provider = _b2.sent();
-              _b2.label = 5;
+              provider = _b.sent();
+              _b.label = 5;
             case 5:
               return [2, provider[method](params.address, params.blockTag || "latest")];
             case 6:
@@ -30974,8 +30974,8 @@ var require_fallback_provider = __commonJS({
                 return [3, 8];
               return [4, waitForSync(config, currentBlockNumber)];
             case 7:
-              provider = _b2.sent();
-              _b2.label = 8;
+              provider = _b.sent();
+              _b.label = 8;
             case 8:
               return [2, provider.getStorageAt(params.address, params.position, params.blockTag || "latest")];
             case 9:
@@ -30983,8 +30983,8 @@ var require_fallback_provider = __commonJS({
                 return [3, 11];
               return [4, waitForSync(config, currentBlockNumber)];
             case 10:
-              provider = _b2.sent();
-              _b2.label = 11;
+              provider = _b.sent();
+              _b.label = 11;
             case 11:
               return [2, provider[params.includeTransactions ? "getBlockWithTransactions" : "getBlock"](params.blockTag || params.blockHash)];
             case 12:
@@ -30992,8 +30992,8 @@ var require_fallback_provider = __commonJS({
                 return [3, 14];
               return [4, waitForSync(config, currentBlockNumber)];
             case 13:
-              provider = _b2.sent();
-              _b2.label = 14;
+              provider = _b.sent();
+              _b.label = 14;
             case 14:
               return [2, provider[method](params.transaction)];
             case 15:
@@ -31004,8 +31004,8 @@ var require_fallback_provider = __commonJS({
                 return [3, 18];
               return [4, waitForSync(config, currentBlockNumber)];
             case 17:
-              provider = _b2.sent();
-              _b2.label = 18;
+              provider = _b.sent();
+              _b.label = 18;
             case 18:
               return [2, provider.getLogs(filter)];
             case 19:
@@ -31131,8 +31131,8 @@ var require_fallback_provider = __commonJS({
                 first = true;
                 _loop_1 = function() {
                   var t0, inflightWeight, _loop_2, waiting, results2, result2, errors;
-                  return __generator(this, function(_b2) {
-                    switch (_b2.label) {
+                  return __generator(this, function(_b) {
+                    switch (_b.label) {
                       case 0:
                         t0 = now();
                         inflightWeight = configs.filter(function(c) {
@@ -31201,8 +31201,8 @@ var require_fallback_provider = __commonJS({
                           return [3, 2];
                         return [4, Promise.race(waiting)];
                       case 1:
-                        _b2.sent();
-                        _b2.label = 2;
+                        _b.sent();
+                        _b.label = 2;
                       case 2:
                         results2 = configs.filter(function(c) {
                           return c.done && c.error == null;
@@ -31223,11 +31223,11 @@ var require_fallback_provider = __commonJS({
                           return [3, 4];
                         return [4, stall(100).getPromise()];
                       case 3:
-                        _b2.sent();
-                        _b2.label = 4;
+                        _b.sent();
+                        _b.label = 4;
                       case 4:
                         first = false;
-                        _b2.label = 5;
+                        _b.label = 5;
                       case 5:
                         errors = configs.reduce(function(accum, c) {
                           if (!c.done || c.error == null) {
@@ -61905,8 +61905,8 @@ var networkConfigs = {
 };
 
 // src/utils/marketsAndNetworksConfig.ts
-var _a, _b;
-var NEXT_PUBLIC_ENABLE_TESTNET = !((_a = global == null ? void 0 : global.window) == null ? void 0 : _a.localStorage.getItem("testnetsEnabled")) && process.env.NEXT_PUBLIC_ENABLE_TESTNET === "true" || ((_b = global == null ? void 0 : global.window) == null ? void 0 : _b.localStorage.getItem("testnetsEnabled")) === "true";
+var _a;
+var NEXT_PUBLIC_ENABLE_TESTNET = process.env.NEXT_PUBLIC_ENV === "prod" && ((_a = global == null ? void 0 : global.window) == null ? void 0 : _a.localStorage.getItem("testnetsEnabled")) === "true";
 var _a2;
 var FORK_ENABLED = ((_a2 = global == null ? void 0 : global.window) == null ? void 0 : _a2.localStorage.getItem("forkEnabled")) === "true";
 var _a3;
@@ -61941,11 +61941,12 @@ var marketsData2 = Object.keys(marketsData).reduce((acc, value) => {
   return acc;
 }, {});
 function getSupportedChainIds() {
-  return Array.from(Object.keys(marketsData2).reduce((acc, value) => {
-    if (NEXT_PUBLIC_ENABLE_TESTNET || !networkConfigs2[marketsData2[value].chainId].isTestnet)
-      acc.add(marketsData2[value].chainId);
-    return acc;
-  }, /* @__PURE__ */ new Set()));
+  return Array.from(Object.keys(marketsData2).filter((value) => {
+    if (process.env.NEXT_PUBLIC_ENV === "staging") {
+      return networkConfigs2[marketsData2[value].chainId].isTestnet;
+    }
+    return NEXT_PUBLIC_ENABLE_TESTNET || !networkConfigs2[marketsData2[value].chainId].isTestnet;
+  }).reduce((acc, value) => acc.add(marketsData2[value].chainId), /* @__PURE__ */ new Set()));
 }
 var availableMarkets = Object.keys(marketsData2).filter((key) => getSupportedChainIds().includes(marketsData2[key].chainId));
 var linkBuilder = ({ baseUrl, addressPrefix = "address", txPrefix = "tx" }) => ({ tx, address }) => {
@@ -62041,14 +62042,14 @@ _Writer_filename = /* @__PURE__ */ new WeakMap(), _Writer_tempFilename = /* @__P
   });
 }, _Writer_write = function _Writer_write2(data) {
   return __async(this, null, function* () {
-    var _a7, _b2;
+    var _a7, _b;
     __classPrivateFieldSet(this, _Writer_locked, true, "f");
     try {
       yield import_fs.default.promises.writeFile(__classPrivateFieldGet(this, _Writer_tempFilename, "f"), data, "utf-8");
       yield import_fs.default.promises.rename(__classPrivateFieldGet(this, _Writer_tempFilename, "f"), __classPrivateFieldGet(this, _Writer_filename, "f"));
       (_a7 = __classPrivateFieldGet(this, _Writer_prev, "f")) === null || _a7 === void 0 ? void 0 : _a7[0]();
     } catch (err) {
-      (_b2 = __classPrivateFieldGet(this, _Writer_prev, "f")) === null || _b2 === void 0 ? void 0 : _b2[1](err);
+      (_b = __classPrivateFieldGet(this, _Writer_prev, "f")) === null || _b === void 0 ? void 0 : _b[1](err);
       throw err;
     } finally {
       __classPrivateFieldSet(this, _Writer_locked, false, "f");
@@ -62324,8 +62325,8 @@ var db2 = new LowWithLodash2(adapter2);
 db2.read();
 var Proposal2 = class {
   count() {
-    var _a7, _b2;
-    return ((_b2 = (_a7 = db2.data) == null ? void 0 : _a7.proposals) == null ? void 0 : _b2.length) || 0;
+    var _a7, _b;
+    return ((_b = (_a7 = db2.data) == null ? void 0 : _a7.proposals) == null ? void 0 : _b.length) || 0;
   }
   get(id) {
     const value = db2.chain.get("proposals").find({ id }).value();

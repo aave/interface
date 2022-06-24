@@ -3,7 +3,6 @@ import { Box, Paper, Typography } from '@mui/material';
 import { ReactNode, useState } from 'react';
 
 import { toggleLocalStorageClick } from '../../helpers/toggle-local-storage-click';
-import { ListItem } from './ListItem';
 
 interface ListWrapperProps {
   title: ReactNode;
@@ -15,7 +14,6 @@ interface ListWrapperProps {
   withTopMargin?: boolean;
   noData?: boolean;
   captionSize?: 'h2' | 'h3';
-  bottomComponent?: ReactNode;
 }
 
 export const ListWrapper = ({
@@ -28,7 +26,6 @@ export const ListWrapper = ({
   withTopMargin,
   noData,
   captionSize = 'h3',
-  bottomComponent,
 }: ListWrapperProps) => {
   const [isCollapse, setIsCollapse] = useState(
     localStorageName ? localStorage.getItem(localStorageName) === 'true' : false
@@ -124,8 +121,6 @@ export const ListWrapper = ({
         <Box sx={{ marginBottom: { xs: 2, xsm: 0 } }}>{subChildrenComponent}</Box>
       )}
       <Box sx={{ display: collapsed ? 'none' : 'block' }}>{children}</Box>
-
-      {!!bottomComponent && !collapsed && <ListItem>{bottomComponent}</ListItem>}
     </Paper>
   );
 };
