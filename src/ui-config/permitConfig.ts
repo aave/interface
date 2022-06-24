@@ -5,17 +5,6 @@ export const permitByChainAndToken: {
 } = {
   [ChainId.mainnet]: {},
   [ChainId.ropsten]: {},
-  [ChainId.rinkeby]: {
-    '0xA3a8697C4C6A7D9ccF9238cb567b122d53012ac9': true,
-    '0x58Cd851c28dF05Edc7F018B533C0257DE57673f7': true,
-    '0x8017B7FC5473d05e67E617072fB237D24Add550b': true,
-    '0xFfaDa869df79320120dfFd6eeE8cF664Dba43146': true,
-    '0xa982Aef90A37675C0E321e3e2f3aDC959fB89351': true,
-    '0x8D01d567AFdE8601C6BA784CF0da7Da12b3BFd66': true,
-    '0xaE4A267987f640AE1b0Dd757854Af00651cf2EC7': true,
-    '0xF1bE881Ee7034ebC0CD47E1af1bA94EC30DF3583': true,
-  },
-  [ChainId.kovan]: {},
   [ChainId.arbitrum_one]: {
     '0xf97f4df75117a78c1A5a0DBb814Af92458539FB4': true,
     '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8': true,

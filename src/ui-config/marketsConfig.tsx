@@ -53,10 +53,8 @@ export type MarketDataType = {
 
 export enum CustomMarket {
   // v3 test networks
-  // proto_kovan_v3 = 'proto_kovan_v3',
   proto_arbitrum_rinkeby_v3 = 'proto_arbitrum_rinkeby_v3',
   proto_mumbai_v3 = 'proto_mumbai_v3',
-  proto_eth_rinkeby_v3 = 'proto_eth_rinkeby_v3',
   proto_fantom_testnet_v3 = 'proto_fantom_testnet_v3',
   proto_harmony_testnet_v3 = 'proto_harmony_testnet_v3',
   proto_fuji_v3 = 'proto_fuji_v3',
@@ -70,13 +68,11 @@ export enum CustomMarket {
   proto_polygon_v3 = 'proto_polygon_v3',
   proto_arbitrum_v3 = 'proto_arbitrum_v3',
   // v2
-  proto_kovan = 'proto_kovan',
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
   proto_fuji = 'proto_fuji',
   proto_polygon = 'proto_polygon',
   proto_mumbai = 'proto_mumbai',
-  amm_kovan = 'amm_kovan',
   amm_mainnet = 'amm_mainnet',
   // external
   // permissioned_market = 'permissioned_market',
@@ -85,26 +81,6 @@ export enum CustomMarket {
 export const marketsData: {
   [key in keyof typeof CustomMarket]: MarketDataType;
 } = {
-  [CustomMarket.proto_kovan]: {
-    marketTitle: 'Ethereum Kovan',
-    chainId: ChainId.kovan,
-    enabledFeatures: {
-      faucet: true,
-      governance: true,
-      staking: true,
-      incentives: true,
-    },
-    rpcOnly: true,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0x88757f2f99175387ab4c6a4b3067c77a695b0349'.toLowerCase(),
-      LENDING_POOL: '0xE0fBa4Fc209b4948668006B2bE61711b7f465bAe',
-      WETH_GATEWAY: '0xA61ca04DF33B72b235a8A28CfB535bb7A5271B70',
-      FAUCET: '0x600103d518cC5E8f3319D532eB4e5C268D32e604',
-      WALLET_BALANCE_PROVIDER: '0x07DC923859b68e9399d787bf52c4Aa9eBe3490aF',
-      UI_POOL_DATA_PROVIDER: '0x0D410Ce47834798028c9CD894A29A4b12A9d5624',
-      UI_INCENTIVE_DATA_PROVIDER: '0x50e468e1AAF408a2EB4614e4b45f832700Cda7F4',
-    },
-  },
   [CustomMarket.proto_mainnet]: {
     marketTitle: 'Ethereum',
     chainId: ChainId.mainnet,
@@ -156,20 +132,6 @@ export const marketsData: {
   //     PERMISSION_MANAGER: '<address here>',
   //   },
   // },
-  [CustomMarket.amm_kovan]: {
-    marketTitle: 'Ethereum AMM Kovan',
-    chainId: ChainId.kovan,
-    rpcOnly: true,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0x67FB118A780fD740C8936511947cC4bE7bb7730c'.toLowerCase(),
-      LENDING_POOL: '0x762E2a3BBe729240ea44D31D5a81EAB44d34ef01',
-      WETH_GATEWAY: '0xA61ca04DF33B72b235a8A28CfB535bb7A5271B70',
-      FAUCET: '0x600103d518cC5E8f3319D532eB4e5C268D32e604',
-      WALLET_BALANCE_PROVIDER: '0x07DC923859b68e9399d787bf52c4Aa9eBe3490aF',
-      UI_POOL_DATA_PROVIDER: '0x31fe1309B1169e7136AdAB01d4ba3882b5852d08',
-      UI_INCENTIVE_DATA_PROVIDER: '0x50e468e1AAF408a2EB4614e4b45f832700Cda7F4',
-    },
-  },
   [CustomMarket.amm_mainnet]: {
     marketTitle: 'Ethereum AMM',
     chainId: ChainId.mainnet,
@@ -272,27 +234,6 @@ export const marketsData: {
     },
   },
   // v3
-  [CustomMarket.proto_eth_rinkeby_v3]: {
-    v3: true,
-    marketTitle: 'Ethereum Rinkeby',
-    chainId: ChainId.rinkeby,
-    enabledFeatures: {
-      faucet: true,
-      governance: false,
-      staking: false,
-      incentives: false,
-    },
-    rpcOnly: true,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0xBA6378f1c1D046e9EB0F538560BA7558546edF3C'.toLowerCase(),
-      LENDING_POOL: '0xE039BdF1d874d27338e09B55CB09879Dedca52D8',
-      WETH_GATEWAY: '0xD1DECc6502cc690Bc85fAf618Da487d886E54Abe',
-      FAUCET: '0x88138CA1e9E485A1E688b030F85Bb79d63f156BA',
-      WALLET_BALANCE_PROVIDER: '0x116674C3Efe4e31F192d855284619DEd6fE2a1b9',
-      UI_POOL_DATA_PROVIDER: '0x550f9764d56291B5B793b6dD1623af3346128BD2',
-      UI_INCENTIVE_DATA_PROVIDER: '0x2c9f31b1F9838Bb8781bb61a0d0a4615f6530207',
-    },
-  },
   [CustomMarket.proto_ropsten_v3]: {
     marketTitle: 'Ethereum Ropsten',
     v3: true,
