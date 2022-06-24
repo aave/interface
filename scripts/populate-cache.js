@@ -61905,8 +61905,10 @@ var networkConfigs = {
 };
 
 // src/utils/marketsAndNetworksConfig.ts
+var STAGING_ENV = process.env.NEXT_PUBLIC_ENV === "staging";
+var PROD_ENV = !process.env.NEXT_PUBLIC_ENV || process.env.NEXT_PUBLIC_ENV === "prod";
 var _a;
-var NEXT_PUBLIC_ENABLE_TESTNET = process.env.NEXT_PUBLIC_ENV === "prod" && ((_a = global == null ? void 0 : global.window) == null ? void 0 : _a.localStorage.getItem("testnetsEnabled")) === "true";
+var ENABLE_TESTNET = PROD_ENV && ((_a = global == null ? void 0 : global.window) == null ? void 0 : _a.localStorage.getItem("testnetsEnabled")) === "true";
 var _a2;
 var FORK_ENABLED = ((_a2 = global == null ? void 0 : global.window) == null ? void 0 : _a2.localStorage.getItem("forkEnabled")) === "true";
 var _a3;
@@ -61942,10 +61944,11 @@ var marketsData2 = Object.keys(marketsData).reduce((acc, value) => {
 }, {});
 function getSupportedChainIds() {
   return Array.from(Object.keys(marketsData2).filter((value) => {
-    if (process.env.NEXT_PUBLIC_ENV === "staging") {
-      return networkConfigs2[marketsData2[value].chainId].isTestnet;
+    const isTestnet = networkConfigs2[marketsData2[value].chainId].isTestnet;
+    if (STAGING_ENV || ENABLE_TESTNET) {
+      return isTestnet;
     }
-    return NEXT_PUBLIC_ENABLE_TESTNET || !networkConfigs2[marketsData2[value].chainId].isTestnet;
+    return !isTestnet;
   }).reduce((acc, value) => acc.add(marketsData2[value].chainId), /* @__PURE__ */ new Set()));
 }
 var availableMarkets = Object.keys(marketsData2).filter((key) => getSupportedChainIds().includes(marketsData2[key].chainId));
