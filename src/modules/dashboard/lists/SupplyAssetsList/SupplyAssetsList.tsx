@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
-import { Link } from '../../../../components/primitives/Link';
+import { Link, ROUTES } from '../../../../components/primitives/Link';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -15,7 +15,6 @@ import {
 import { useWalletBalances } from '../../../../hooks/app-data-provider/useWalletBalances';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import { DashboardListTopPanel } from '../../DashboardListTopPanel';
-import { ListBottomText } from '../ListBottomText';
 import { ListHeader } from '../ListHeader';
 import { ListLoader } from '../ListLoader';
 import { SupplyAssetsListItem } from './SupplyAssetsListItem';
@@ -152,11 +151,35 @@ export const SupplyAssetsList = () => {
   if (loadingReserves || loading)
     return <ListLoader title={<Trans>Assets to supply</Trans>} head={head} withTopMargin />;
 
+  let alert = <></>;
+  if (filteredSupplyReserves.length === 0) {
+    if (isTestnet) {
+      alert = (
+        <Alert severity="info" sx={{ mb: 4 }}>
+          <Trans>Your {networkName} wallet is empty. Get free test assets at </Trans>{' '}
+          <Link href={ROUTES.faucet} style={{ fontWeight: 400 }}>
+            <Trans>{networkName} Faucet</Trans>
+          </Link>
+        </Alert>
+      );
+    } else {
+      alert = (
+        <Alert severity="info">
+          <Trans>Your {networkName} wallet is empty. Purchase or transfer assets</Trans>{' '}
+          {bridge && (
+            <Trans>
+              or use {<Link href={bridge.url}>{bridge.name}</Link>} to transfer your ETH assets.
+            </Trans>
+          )}
+        </Alert>
+      );
+    }
+  }
+
   return (
     <ListWrapper
       title={<Trans>Assets to supply</Trans>}
       localStorageName="supplyAssetsDashboardTableCollapse"
-      bottomComponent={isTestnet ? <ListBottomText /> : undefined}
       withTopMargin
       subChildrenComponent={
         <>
@@ -171,17 +194,7 @@ export const SupplyAssetsList = () => {
                 </Trans>
               </Alert>
             )}
-            {filteredSupplyReserves.length === 0 && (
-              <Alert severity="info">
-                <Trans>Your {networkName} wallet is empty. Purchase or transfer assets</Trans>{' '}
-                {bridge && (
-                  <Trans>
-                    or use {<Link href={bridge.url}>{bridge.name}</Link>} to transfer your ETH
-                    assets.
-                  </Trans>
-                )}
-              </Alert>
-            )}
+            {alert}
           </Box>
 
           {filteredSupplyReserves.length >= 1 && (
