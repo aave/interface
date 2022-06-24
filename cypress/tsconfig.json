@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "noEmit": true,
+    "types": ["cypress"],
+    "resolveJsonModule": true,
+    "esModuleInterop": true
+  },
+  "include": ["../node_modules/cypress", "./**/*.ts"]
+}
