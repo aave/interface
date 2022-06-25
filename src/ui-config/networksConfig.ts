@@ -102,6 +102,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     publicJsonRPCUrl: [
       'https://cloudflare-eth.com',
       'https://rpc.flashbots.net/',
+      'https://eth-mainnet.gateway.pokt.network/62b3314e123e6f00397f19ca',
       // 'https://eth-mainnet.alchemyapi.io/v2/demo',
     ],
     publicJsonRPCWSUrl: 'wss://eth-mainnet.alchemyapi.io/v2/demo',
@@ -119,7 +120,10 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.polygon]: {
     name: 'Polygon POS',
-    publicJsonRPCUrl: ['https://polygon-rpc.com'],
+    publicJsonRPCUrl: [
+      'https://polygon-rpc.com',
+      'https://poly-mainnet.gateway.pokt.network/62b3314e123e6f00397f19ca',
+    ],
     publicJsonRPCWSUrl: 'wss://polygon-rpc.com',
     // cachingServerUrl: 'https://cache-api-137.aave.com/graphql',
     // cachingWSServerUrl: 'wss://cache-api-137.aave.com/graphql',
@@ -171,7 +175,10 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.avalanche]: {
     name: 'Avalanche',
-    publicJsonRPCUrl: ['https://api.avax.network/ext/bc/C/rpc'],
+    publicJsonRPCUrl: [
+      'https://api.avax.network/ext/bc/C/rpc',
+      'https://avax-mainnet.gateway.pokt.network/62b3314e123e6f00397f19ca/ext/bc/C/rpc',
+    ],
     publicJsonRPCWSUrl: 'wss://api.avax.network/ext/bc/C/rpc',
     // protocolDataUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2-avalanche',
     // cachingServerUrl: 'https://cache-api-43114.aave.com/graphql',
@@ -232,7 +239,12 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.harmony]: {
     name: 'Harmony',
-    publicJsonRPCUrl: ['https://api.s0.t.hmny.io', 'https://api.harmony.one'],
+    publicJsonRPCUrl: [
+      'https://api.s0.t.hmny.io',
+      'https://api.harmony.one',
+      'https://harmony-0.gateway.pokt.network/62b3314e123e6f00397f19ca',
+      ''
+    ],
     publicJsonRPCWSUrl: 'wss://ws.s0.t.hmny.io',
     // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
@@ -271,7 +283,10 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.optimism]: {
     name: 'Optimism',
-    publicJsonRPCUrl: ['https://mainnet.optimism.io'],
+    publicJsonRPCUrl: [
+      'https://mainnet.optimism.io',
+      'https://optimism-mainnet.gateway.pokt.network/62b3314e123e6f00397f19ca',
+    ],
     publicJsonRPCWSUrl: 'wss://ws-mainnet.optimism.io',
     // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
@@ -310,7 +325,10 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.fantom]: {
     name: 'Fantom',
-    publicJsonRPCUrl: ['https://rpc.ftm.tools'],
+    publicJsonRPCUrl: [
+      'https://rpc.ftm.tools',
+      'https://fantom-mainnet.gateway.pokt.network/62b3314e123e6f00397f19ca',
+    ],
     publicJsonRPCWSUrl: 'wss://wsapi.fantom.network',
     // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
