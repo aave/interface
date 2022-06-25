@@ -100,9 +100,9 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   [ChainId.mainnet]: {
     name: 'Ethereum',
     publicJsonRPCUrl: [
+      'https://eth-mainnet.gateway.pokt.network/62b3314e123e6f00397f19ca',
       'https://cloudflare-eth.com',
       'https://rpc.flashbots.net/',
-      'https://eth-mainnet.gateway.pokt.network/62b3314e123e6f00397f19ca',
       // 'https://eth-mainnet.alchemyapi.io/v2/demo',
     ],
     publicJsonRPCWSUrl: 'wss://eth-mainnet.alchemyapi.io/v2/demo',
@@ -121,8 +121,8 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   [ChainId.polygon]: {
     name: 'Polygon POS',
     publicJsonRPCUrl: [
-      'https://polygon-rpc.com',
       'https://poly-mainnet.gateway.pokt.network/62b3314e123e6f00397f19ca',
+      'https://polygon-rpc.com',
     ],
     publicJsonRPCWSUrl: 'wss://polygon-rpc.com',
     // cachingServerUrl: 'https://cache-api-137.aave.com/graphql',
@@ -176,8 +176,8 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   [ChainId.avalanche]: {
     name: 'Avalanche',
     publicJsonRPCUrl: [
-      'https://api.avax.network/ext/bc/C/rpc',
       'https://avax-mainnet.gateway.pokt.network/62b3314e123e6f00397f19ca/ext/bc/C/rpc',
+      'https://api.avax.network/ext/bc/C/rpc',
     ],
     publicJsonRPCWSUrl: 'wss://api.avax.network/ext/bc/C/rpc',
     // protocolDataUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2-avalanche',
@@ -240,9 +240,9 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   [ChainId.harmony]: {
     name: 'Harmony',
     publicJsonRPCUrl: [
+      'https://harmony-0.gateway.pokt.network/62b3314e123e6f00397f19ca',
       'https://api.s0.t.hmny.io',
       'https://api.harmony.one',
-      'https://harmony-0.gateway.pokt.network/62b3314e123e6f00397f19ca',
       ''
     ],
     publicJsonRPCWSUrl: 'wss://ws.s0.t.hmny.io',
@@ -284,8 +284,8 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   [ChainId.optimism]: {
     name: 'Optimism',
     publicJsonRPCUrl: [
-      'https://mainnet.optimism.io',
       'https://optimism-mainnet.gateway.pokt.network/62b3314e123e6f00397f19ca',
+      'https://mainnet.optimism.io',
     ],
     publicJsonRPCWSUrl: 'wss://ws-mainnet.optimism.io',
     // protocolDataUrl: '',
@@ -326,8 +326,8 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   [ChainId.fantom]: {
     name: 'Fantom',
     publicJsonRPCUrl: [
-      'https://rpc.ftm.tools',
       'https://fantom-mainnet.gateway.pokt.network/62b3314e123e6f00397f19ca',
+      'https://rpc.ftm.tools',
     ],
     publicJsonRPCWSUrl: 'wss://wsapi.fantom.network',
     // protocolDataUrl: '',
