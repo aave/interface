@@ -8,6 +8,7 @@ import { FrameConnector } from '@web3-react/frame-connector';
 import { getNetworkConfig, getSupportedChainIds } from 'src/utils/marketsAndNetworksConfig';
 import { UnsupportedChainIdError } from '@web3-react/core';
 import { SafeAppConnector } from '@gnosis.pm/safe-apps-web3-react';
+import { InfinityWalletConnector, openInfinityWallet } from '@infinitywallet/infinity-connector';
 
 export enum WalletType {
   INJECTED = 'injected',
@@ -16,6 +17,7 @@ export enum WalletType {
   TORUS = 'torus',
   FRAME = 'frame',
   GNOSIS = 'gnosis',
+  INFINITY_WALLET = 'infinity_wallet',
 }
 
 const APP_NAME = 'Aave';
@@ -69,6 +71,22 @@ export const getWallet = (
         throw new UnsupportedChainIdError(chainId, [1]);
       }
       return new FrameConnector({ supportedChainIds: [1] });
+    }
+    case WalletType.INFINITY_WALLET: {
+      if (!window.ethereum?.isInfinityWallet) {
+        openInfinityWallet(window.location.href, chainId);
+        return new WalletConnectConnector({
+          rpc: supportedChainIds.reduce((acc, network) => {
+            const config = getNetworkConfig(network);
+            acc[network] = config.privateJsonRPCUrl || config.publicJsonRPCUrl[0];
+            return acc;
+          }, {} as { [networkId: number]: string }),
+          bridge: 'https://aave.bridge.walletconnect.org',
+          qrcode: true,
+        });
+      } else {
+        return new InfinityWalletConnector({});
+      }
     }
     default: {
       throw new Error(`unsupported wallet`);

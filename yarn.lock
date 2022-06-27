@@ -2095,6 +2095,15 @@
   resolved "https://registry.npmjs.org/@iarna/toml/-/toml-2.2.5.tgz"
   integrity sha512-trnsAYxU3xnS1gPHPyU961coFyLkh4gAD/0zQ5mymY4yOZ+CYvsPqUbOFSw0aDM4y0tV7tiFxL/1XfXPNC6IPg==
 
+"@infinitywallet/infinity-connector@^1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@infinitywallet/infinity-connector/-/infinity-connector-1.0.5.tgz#1d75b0b3ece41ffca2f4edd5c7ee8e786f7c19fb"
+  integrity sha512-KCiDHNQUbJeopmTlplx28eQ6RaWzFHrqlBtM3AY5OWbNHu42XY2SlmGdrzb6wOHLvcmt0VIyXEbQiuk471svIg==
+  dependencies:
+    "@web3-react/abstract-connector" "^6.0.7"
+    "@web3-react/types" "^6.0.7"
+    tiny-warning "^1.0.3"
+
 "@jest/types@^26.6.2":
   version "26.6.2"
   resolved "https://registry.npmjs.org/@jest/types/-/types-26.6.2.tgz"

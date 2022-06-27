@@ -38,6 +38,7 @@
     "@graphql-codegen/typescript-operations": "^2.3.2",
     "@graphql-codegen/typescript-react-apollo": "^3.2.8",
     "@heroicons/react": "^1.0.6",
+    "@infinitywallet/infinity-connector": "^1.0.5",
     "@lingui/react": "^3.13.2",
     "@mui/icons-material": "^5.5.1",
     "@mui/material": "^5.5.1",

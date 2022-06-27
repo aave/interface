@@ -62,6 +62,15 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
             alt={`browser wallet icon`}
           />
         );
+      case WalletType.INFINITY_WALLET:
+        return (
+          <img
+            src={`/icons/wallets/infinityWallet.svg`}
+            width="26px"
+            height="24px"
+            alt={`Infinity Wallet Logo`}
+          />
+        );
       default:
         return null;
     }
@@ -146,6 +155,11 @@ export const WalletSelector = () => {
         key="walletlink_wallet"
         walletName="Coinbase"
         walletType={WalletType.WALLET_LINK}
+      />
+      <WalletRow
+        key="infinity_wallet"
+        walletName="Infinity Wallet"
+        walletType={WalletType.INFINITY_WALLET}
       />
       <WalletRow key="torus_wallet" walletName="Torus" walletType={WalletType.TORUS} />
       <WalletRow key="frame_wallet" walletName="Frame" walletType={WalletType.FRAME} />
