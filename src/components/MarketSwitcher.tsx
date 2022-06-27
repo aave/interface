@@ -95,9 +95,9 @@ enum SelectedMarketVersion {
   V3,
 }
 export const MarketSwitcher = () => {
-  const { currentMarket, setCurrentMarket, currentMarketData } = useProtocolDataContext();
+  const { currentMarket, setCurrentMarket } = useProtocolDataContext();
   const [selectedMarketVersion, setSelectedMarketVersion] = useState<SelectedMarketVersion>(
-    currentMarketData.v3 ? SelectedMarketVersion.V3 : SelectedMarketVersion.V2
+    SelectedMarketVersion.V3
   );
   const theme = useTheme();
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
