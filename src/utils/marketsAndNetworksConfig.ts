@@ -164,7 +164,6 @@ export const getProvider = (chainId: ChainId): ethersProviders.Provider => {
     if (chainProviders.length === 1) {
       providers[chainId] = chainProviders[0].provider;
     } else {
-      // this provider is only used for the read side of things, so we're setting
       providers[chainId] = new ethersProviders.FallbackProvider(chainProviders);
     }
   }
