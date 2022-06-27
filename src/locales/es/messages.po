@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-06-24 18:05\n"
+"PO-Revision-Date: 2022-06-27 12:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -565,7 +565,7 @@ msgstr "Desactivar el E-Mode"
 
 #: src/layouts/AppHeader.tsx
 msgid "Disable testnet"
-msgstr ""
+msgstr "Deshabilitar testnet"
 
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 msgid "Disable {symbol} as collateral"
@@ -1050,7 +1050,7 @@ msgstr "Por favor conecta una billetera para ver tu información personal aquí.
 
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Please connect your wallet to get free testnet assets."
-msgstr ""
+msgstr "Por favor conecta tu cartera para obtener activos testnet gratis."
 
 #: src/components/ConnectWalletPaper.tsx
 msgid "Please connect your wallet to see your supplies, borrowings, and open positions."
@@ -1722,11 +1722,11 @@ msgstr "La tasa de interés variable <0>fluctuará</0> según las condiciones de
 
 #: src/components/MarketSwitcher.tsx
 msgid "Version 2"
-msgstr ""
+msgstr "Versión 2"
 
 #: src/components/MarketSwitcher.tsx
 msgid "Version 3"
-msgstr ""
+msgstr "Versión 3"
 
 #: src/modules/markets/AssetsListMobileItem.tsx
 msgid "View details"
