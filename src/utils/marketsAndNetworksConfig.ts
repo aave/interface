@@ -147,7 +147,6 @@ export const getProvider = (chainId: ChainId): ethersProviders.Provider => {
       chainProviders.push({
         provider: new ethersProviders.StaticJsonRpcProvider(config.privateJsonRPCUrl, chainId),
         priority: 0,
-        weight: 2,
       });
     }
     if (config.publicJsonRPCUrl.length) {
@@ -164,7 +163,7 @@ export const getProvider = (chainId: ChainId): ethersProviders.Provider => {
     if (chainProviders.length === 1) {
       providers[chainId] = chainProviders[0].provider;
     } else {
-      providers[chainId] = new ethersProviders.FallbackProvider(chainProviders);
+      providers[chainId] = new ethersProviders.FallbackProvider(chainProviders, 1);
     }
   }
   return providers[chainId];
