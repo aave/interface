@@ -92,7 +92,7 @@ export default function FaucetAssetsList() {
                 <Typography variant="h4" noWrap>
                   {reserve.name}
                 </Typography>
-                <Typography variant="subheader2" color="text.disabled" noWrap>
+                <Typography variant="subheader2" color="text.muted" noWrap>
                   {reserve.symbol}
                 </Typography>
               </Box>
