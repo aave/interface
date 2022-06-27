@@ -58,5 +58,4 @@ describe('STAKE INTEGRATION SPEC, AAVE V2 MARKET', () => {
       });
     });
   });
-
 });
