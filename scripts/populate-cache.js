@@ -61979,19 +61979,24 @@ var getProvider = (chainId) => {
     const config = getNetworkConfig(chainId);
     const chainProviders = [];
     if (config.privateJsonRPCUrl) {
-      providers[chainId] = new import_ethers.providers.StaticJsonRpcProvider(config.privateJsonRPCUrl, chainId);
-      return providers[chainId];
+      chainProviders.push({
+        provider: new import_ethers.providers.StaticJsonRpcProvider(config.privateJsonRPCUrl, chainId),
+        priority: 0
+      });
     }
     if (config.publicJsonRPCUrl.length) {
-      config.publicJsonRPCUrl.map((rpc) => chainProviders.push(new import_ethers.providers.StaticJsonRpcProvider(rpc, chainId)));
+      config.publicJsonRPCUrl.map((rpc, ix) => chainProviders.push({
+        provider: new import_ethers.providers.StaticJsonRpcProvider(rpc, chainId),
+        priority: ix + 1
+      }));
     }
     if (!chainProviders.length) {
       throw new Error(`${chainId} has no jsonRPCUrl configured`);
     }
     if (chainProviders.length === 1) {
-      providers[chainId] = chainProviders[0];
+      providers[chainId] = chainProviders[0].provider;
     } else {
-      providers[chainId] = new import_ethers.providers.FallbackProvider(chainProviders);
+      providers[chainId] = new import_ethers.providers.FallbackProvider(chainProviders, 1);
     }
   }
   return providers[chainId];
