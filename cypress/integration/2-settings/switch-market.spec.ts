@@ -1,4 +1,5 @@
 import { configEnvWithTenderlyMainnetFork } from '../../support/steps/configuration.steps';
+import markets from '../../fixtures/markets.json';
 
 export const changeNetwork = (selector: string) => {
   cy.get('#mui-2').click();
@@ -12,6 +13,15 @@ export const checkNameOfNetwork = (networkName: string) => {
 };
 
 describe('Change markets', () => {
+  Object.entries(markets).forEach(([keyTo, valueTo])=>{
+    describe(`Switching market to ${keyTo}`, () => {
+      configEnvWithTenderlyMainnetFork({});
+      it(`step1: Change the network to the Avalanche ${valueTo.name}`, () => {
+        changeNetwork(valueTo.dataCy);
+      });
+      checkNameOfNetwork(valueTo.name);
+    });
+  });
   describe('CASE1:Switching markets', () => {
     configEnvWithTenderlyMainnetFork({});
     it('step1: Change the network from ETH fork to the Avalanche', () => {
