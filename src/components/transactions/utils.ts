@@ -17,7 +17,7 @@ export const useFlashloan = (healthFactor: string, hfEffectOfFromAmount: string)
 
 // The stETH contract has a bug where there is a 2gwei precision error when
 // calling balanceOf() making it impossible to flashlon this asset.
-const stETHAddress = '0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84'.toLowerCase();
+const stETHAddress = '0xae7ab96520de3a18e5e111b5eaab095312d7fe84';
 const stETHChainId = ChainId.mainnet;
 
 export const flashLoanNotAvailable = (underlyingAsset: string, currentChainId: number) => {
