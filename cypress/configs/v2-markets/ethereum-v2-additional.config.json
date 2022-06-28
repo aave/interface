@@ -1,7 +1,10 @@
 {
   "integrationFolder": "cypress/integration/0-v2-markets/0-main-v2-market",
   "testFiles": [
-    "swap.aave-v2.spec.ts"
+    "swap.aave-v2.spec.ts",
+    "stake.aave-v2.spec.ts",
+    "reward.aave-v2.spec.ts",
+    "critical-conditions.aave-v2.spec.ts"
   ],
   "viewportWidth": 1200,
   "viewportHeight": 800,

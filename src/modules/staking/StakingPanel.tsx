@@ -273,13 +273,23 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           gradientBorder={isUnstakeWindowActive}
         >
           {isUnstakeWindowActive && (
-            <Button variant="gradient" fullWidth onClick={onUnstakeAction} data-cy={`unstakeBtn_${stakedToken}`}>
+            <Button
+              variant="gradient"
+              fullWidth
+              onClick={onUnstakeAction}
+              data-cy={`unstakeBtn_${stakedToken}`}
+            >
               <Trans>Unstake now</Trans>
             </Button>
           )}
 
           {isCooldownActive && !isUnstakeWindowActive && (
-            <Button variant="outlined" fullWidth disabled data-cy={`coolDownBtn_${stakedToken}`}>
+            <Button
+              variant="outlined"
+              fullWidth
+              disabled
+              data-cy={`awaitCoolDownBtn_${stakedToken}`}
+            >
               <Trans>Cooling down...</Trans>
             </Button>
           )}
@@ -290,6 +300,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
               fullWidth
               onClick={onCooldownAction}
               disabled={stakeUserData?.stakeTokenUserBalance === '0'}
+              data-cy={`coolDownBtn_${stakedToken}`}
             >
               <Trans>Cooldown to unstake</Trans>
             </Button>

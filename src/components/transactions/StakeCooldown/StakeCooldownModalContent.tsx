@@ -238,6 +238,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
             checked={cooldownCheck}
             onClick={() => setCooldownCheck(!cooldownCheck)}
             inputProps={{ 'aria-label': 'controlled' }}
+            data-cy={`cooldownAcceptCheckbox`}
           />
         }
         label={
