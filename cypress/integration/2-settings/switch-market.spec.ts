@@ -17,10 +17,7 @@ describe('Change markets', () => {
     it('step1: Change the network from ETH fork to the Avalanche', () => {
       changeNetwork('marketSelector_proto_avalanche');
     });
-
-    it('step2:Check the name of the Market', () => {
-      checkNameOfNetwork('Avalanche');
-    });
+    checkNameOfNetwork('Avalanche');
   });
 
   describe('CASE2: Switch from Avalanche to Polygon', () => {
