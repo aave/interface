@@ -246,7 +246,6 @@ msgstr "Available to borrow"
 msgid "Available to supply"
 msgstr "Available to supply"
 
-#: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
@@ -293,6 +292,10 @@ msgstr "Borrow APY, variable"
 #: src/ui-config/errorMapping.tsx
 msgid "Borrow and repay in same block is not allowed"
 msgstr "Borrow and repay in same block is not allowed"
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Borrow balance after repay"
+msgstr "Borrow balance after repay"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Borrow cap"
@@ -418,12 +421,16 @@ msgid "Collateral"
 msgstr "Collateral"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
-msgid "Collateral amount to repay with"
-msgstr "Collateral amount to repay with"
+msgid "Collateral balance after repay"
+msgstr "Collateral balance after repay"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Collateral is (mostly) the same currency that is being borrowed"
 msgstr "Collateral is (mostly) the same currency that is being borrowed"
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Collateral to repay with"
+msgstr "Collateral to repay with"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
@@ -506,10 +513,6 @@ msgstr "Dashboard"
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 msgid "Debt"
 msgstr "Debt"
-
-#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
-msgid "Debt amount to repay"
-msgstr "Debt amount to repay"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Debt ceiling is exceeded"
@@ -664,6 +667,10 @@ msgstr "Error connecting. Try refreshing the page."
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Executed"
 msgstr "Executed"
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Expected amount to repay"
+msgstr "Expected amount to repay"
 
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "Expires"
@@ -903,7 +910,6 @@ msgstr "Max LTV"
 msgid "Max slashing"
 msgstr "Max slashing"
 
-#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Max slippage rate"
 msgstr "Max slippage rate"
@@ -912,7 +918,6 @@ msgstr "Max slippage rate"
 msgid "Menu"
 msgstr "Menu"
 
-#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Minimum received"
 msgstr "Minimum received"
@@ -1063,10 +1068,21 @@ msgstr "Please, connect your wallet"
 msgid "Pool addresses provider is not registered"
 msgstr "Pool addresses provider is not registered"
 
-#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+#: src/modules/dashboard/lists/SlippageList.tsx
+msgid "Powered by"
+msgstr "Powered by"
+
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Price impact"
 msgstr "Price impact"
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+msgid "Price impact <0/>%"
+msgstr "Price impact <0/>%"
+
+#: src/components/infoTooltips/PriceImpactTooltips.tsx
+msgid "Price impact is the spread between the total value of the entry tokens swapped and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
+msgstr "Price impact is the spread between the total value of the entry tokens swapped and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Proposal details"
@@ -1111,7 +1127,6 @@ msgstr "Recipient address"
 msgid "Rejected connection request"
 msgstr "Rejected connection request"
 
-#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Repay/RepayModalContent.tsx
 msgid "Remaining debt"
 msgstr "Remaining debt"
@@ -1129,10 +1144,6 @@ msgstr "Repay"
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 msgid "Repay with"
 msgstr "Repay with"
-
-#: src/components/Warnings/RepayCollateralWarning.tsx
-msgid "Repay with collateral is experiencing degraded performance which may cause your transaction to fail. Consider using another service or add more collateral to avoid liquidation."
-msgstr "Repay with collateral is experiencing degraded performance which may cause your transaction to fail. Consider using another service or add more collateral to avoid liquidation."
 
 #: src/components/transactions/Repay/CollateralRepayActions.tsx
 #: src/components/transactions/Repay/RepayActions.tsx
@@ -1212,6 +1223,10 @@ msgstr "Select APY type to switch"
 msgid "Select language"
 msgstr "Select language"
 
+#: src/modules/dashboard/lists/SlippageList.tsx
+msgid "Select slippage tolerance"
+msgstr "Select slippage tolerance"
+
 #: src/modules/reserve-overview/AddTokenDropdown.tsx
 msgid "Select token to add"
 msgstr "Select token to add"
@@ -1243,6 +1258,14 @@ msgstr "Since this asset is frozen, the only available actions are withdraw and 
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
 msgstr "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
+
+#: src/components/infoTooltips/SlippageTooltip.tsx
+msgid "Slippage is the difference between the quoted and received amounts from changing market conditions between the moment the transaction is submitted and its verification."
+msgstr "Slippage is the difference between the quoted and received amounts from changing market conditions between the moment the transaction is submitted and its verification."
+
+#: src/modules/dashboard/lists/SlippageList.tsx
+msgid "Slippage tolerance {selectedSlippage}%"
+msgstr "Slippage tolerance {selectedSlippage}%"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Spanish"
@@ -2018,6 +2041,7 @@ msgid "withdrew"
 msgstr "withdrew"
 
 #: src/components/MarketSwitcher.tsx
+#: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
