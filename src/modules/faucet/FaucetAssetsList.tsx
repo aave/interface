@@ -29,12 +29,12 @@ export default function FaucetAssetsList() {
   const listData = reserves
     .filter((reserve) => !reserve.isWrappedBaseAsset && !reserve.isFrozen)
     .map((reserve) => {
-      const walletBalanceUSD = valueToBigNumber(
-        walletBalances[reserve.underlyingAsset]?.amountUSD || '0'
+      const walletBalance = valueToBigNumber(
+        walletBalances[reserve.underlyingAsset]?.amount || '0'
       );
       return {
         ...reserve,
-        walletBalanceUSD,
+        walletBalance,
       };
     });
 
@@ -102,9 +102,8 @@ export default function FaucetAssetsList() {
               <ListColumn>
                 <FormattedNumber
                   compact
-                  value={reserve.walletBalanceUSD.toString()}
+                  value={reserve.walletBalance.toString()}
                   variant="main16"
-                  symbol="USD"
                 />
               </ListColumn>
             )}
