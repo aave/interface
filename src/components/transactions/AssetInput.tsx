@@ -72,6 +72,7 @@ export interface AssetInputProps<T extends Asset = Asset> {
   maxValue?: string;
   isMaxSelected?: boolean;
   inputTitle?: ReactNode;
+  balanceText?: string;
 }
 
 export const AssetInput = <T extends Asset = Asset>({
@@ -87,6 +88,7 @@ export const AssetInput = <T extends Asset = Asset>({
   maxValue,
   inputTitle,
   isMaxSelected,
+  balanceText,
 }: AssetInputProps<T>) => {
   const handleSelect = (event: SelectChangeEvent) => {
     const newAsset = assets.find((asset) => asset.symbol === event.target.value) as T;
@@ -224,15 +226,15 @@ export const AssetInput = <T extends Asset = Asset>({
             compact
             symbol="USD"
             variant="secondary12"
-            color="text.disabled"
-            symbolsColor="text.disabled"
+            color="text.muted"
+            symbolsColor="text.muted"
             flexGrow={1}
           />
 
           {asset.balance && onChange && (
             <>
               <Typography component="div" variant="secondary12" color="text.secondary">
-                <Trans>Balance</Trans>{' '}
+                <Trans>{balanceText || 'Balance'}</Trans>{' '}
                 <FormattedNumber
                   value={asset.balance}
                   compact
@@ -241,14 +243,16 @@ export const AssetInput = <T extends Asset = Asset>({
                   symbolsColor="text.disabled"
                 />
               </Typography>
-              <Button
-                size="small"
-                sx={{ minWidth: 0, ml: '7px', p: 0 }}
-                onClick={() => onChange('-1')}
-                disabled={disabled || isMaxSelected}
-              >
-                <Trans>Max</Trans>
-              </Button>
+              {!disableInput && (
+                <Button
+                  size="small"
+                  sx={{ minWidth: 0, ml: '7px', p: 0 }}
+                  onClick={() => onChange('-1')}
+                  disabled={disabled || isMaxSelected}
+                >
+                  <Trans>Max</Trans>
+                </Button>
+              )}
             </>
           )}
         </Box>
