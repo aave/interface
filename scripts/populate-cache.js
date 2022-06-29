@@ -61100,9 +61100,9 @@ var require_reserve = __commonJS({
           priceInMarketReferenceCurrency: reserve.priceInMarketReferenceCurrency,
           normalizedMarketReferencePriceInUsd
         }),
-        borrowCapUSD: (0, normalized_to_usd_1.normalizedToUsd)(new bignumber_js_1.default(reserve.borrowCap), marketReferencePriceInUsd, marketReferenceCurrencyDecimals).toString(),
-        supplyCapUSD: (0, normalized_to_usd_1.normalizedToUsd)(new bignumber_js_1.default(reserve.supplyCap), marketReferencePriceInUsd, marketReferenceCurrencyDecimals).toString(),
-        unbackedUSD: (0, normalized_to_usd_1.normalizedToUsd)(new bignumber_js_1.default(reserve.unbacked), marketReferencePriceInUsd, marketReferenceCurrencyDecimals).toString()
+        borrowCapUSD: (0, normalized_to_usd_1.normalizedToUsd)(new bignumber_js_1.default(reserve.borrowCap), reserve.priceInMarketReferenceCurrency, marketReferenceCurrencyDecimals).toString(),
+        supplyCapUSD: (0, normalized_to_usd_1.normalizedToUsd)(new bignumber_js_1.default(reserve.supplyCap), reserve.priceInMarketReferenceCurrency, marketReferenceCurrencyDecimals).toString(),
+        unbackedUSD: (0, normalized_to_usd_1.normalizedToUsd)(new bignumber_js_1.default(reserve.unbacked), reserve.priceInMarketReferenceCurrency, marketReferenceCurrencyDecimals).toString()
       });
     }
     exports2.formatReserveUSD = formatReserveUSD;
@@ -61979,19 +61979,24 @@ var getProvider = (chainId) => {
     const config = getNetworkConfig(chainId);
     const chainProviders = [];
     if (config.privateJsonRPCUrl) {
-      providers[chainId] = new import_ethers.providers.StaticJsonRpcProvider(config.privateJsonRPCUrl, chainId);
-      return providers[chainId];
+      chainProviders.push({
+        provider: new import_ethers.providers.StaticJsonRpcProvider(config.privateJsonRPCUrl, chainId),
+        priority: 0
+      });
     }
     if (config.publicJsonRPCUrl.length) {
-      config.publicJsonRPCUrl.map((rpc) => chainProviders.push(new import_ethers.providers.StaticJsonRpcProvider(rpc, chainId)));
+      config.publicJsonRPCUrl.map((rpc, ix) => chainProviders.push({
+        provider: new import_ethers.providers.StaticJsonRpcProvider(rpc, chainId),
+        priority: ix + 1
+      }));
     }
     if (!chainProviders.length) {
       throw new Error(`${chainId} has no jsonRPCUrl configured`);
     }
     if (chainProviders.length === 1) {
-      providers[chainId] = chainProviders[0];
+      providers[chainId] = chainProviders[0].provider;
     } else {
-      providers[chainId] = new import_ethers.providers.FallbackProvider(chainProviders);
+      providers[chainId] = new import_ethers.providers.FallbackProvider(chainProviders, 1);
     }
   }
   return providers[chainId];
