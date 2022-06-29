@@ -297,8 +297,9 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
         <Alert sx={{ mb: '12px' }} severity="info" icon={false}>
           <Trans>
             Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for{' '}
-            {getEmodeMessage(user.userEmodeCategoryId)} category. To manage E-Mode categories visit
-            your <Link href={ROUTES.dashboard}>Dashboard</Link>.
+            {getEmodeMessage(user.userEmodeCategoryId, currentNetworkConfig.baseAssetSymbol)}{' '}
+            category. To manage E-Mode categories visit your{' '}
+            <Link href={ROUTES.dashboard}>Dashboard</Link>.
           </Trans>
         </Alert>
       )}
