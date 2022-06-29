@@ -118,10 +118,6 @@ export const SwapModalContent = ({
     blockingError = ErrorType.HF_BELOW_ONE;
   } else if (disableFlashLoan) {
     blockingError = ErrorType.FLASH_LOAN_NOT_AVAILABLE;
-  } else if (user.isInIsolationMode && poolReserve.isIsolated) {
-    // TODO: make sure hf doesn't go below 1 because swapTarget will not be a collateral
-  } else {
-    // TODO: make sure hf doesn't go below 1
   }
 
   const handleBlocked = () => {
