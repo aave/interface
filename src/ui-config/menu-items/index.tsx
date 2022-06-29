@@ -26,10 +26,12 @@ export const navigation: Navigation[] = [
   {
     link: ROUTES.markets,
     title: t`Markets`,
+    dataCy: 'menuMarkets',
   },
   {
     link: ROUTES.staking,
     title: t`Stake`,
+    dataCy: 'menuStake',
     isVisible: () =>
       process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true' &&
       process.env.NEXT_PUBLIC_ENV === 'prod' &&
@@ -38,6 +40,7 @@ export const navigation: Navigation[] = [
   {
     link: ROUTES.governance,
     title: t`Governance`,
+    dataCy: 'menuGovernance',
     isVisible: () =>
       process.env.NEXT_PUBLIC_ENABLE_GOVERNANCE === 'true' &&
       process.env.NEXT_PUBLIC_ENV === 'prod' &&
