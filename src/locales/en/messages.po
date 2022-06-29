@@ -368,14 +368,6 @@ msgstr "Can be collateral"
 msgid "Can be executed"
 msgstr "Can be executed"
 
-#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
-msgid "Can not do a flash loan with this asset"
-msgstr "Can not do a flash loan with this asset"
-
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "Can not do a flash loan with this asset."
-msgstr "Can not do a flash loan with this asset."
-
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Cap reached. Lower supply amount"
 msgstr "Cap reached. Lower supply amount"
@@ -594,6 +586,11 @@ msgstr "Disconnect Wallet"
 #: src/ui-config/menu-items/index.tsx
 msgid "Discord"
 msgstr "Discord"
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Due to a precision bug in the stETH contract, this asset can not be used in flashloan transactions"
+msgstr "Due to a precision bug in the stETH contract, this asset can not be used in flashloan transactions"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode"

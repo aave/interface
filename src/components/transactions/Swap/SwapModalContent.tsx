@@ -131,7 +131,12 @@ export const SwapModalContent = ({
           </Trans>
         );
       case ErrorType.FLASH_LOAN_NOT_AVAILABLE:
-        return <Trans>Can not do a flash loan with this asset.</Trans>;
+        return (
+          <Trans>
+            Due to a precision bug in the stETH contract, this asset can not be used in flashloan
+            transactions
+          </Trans>
+        );
       default:
         return null;
     }
