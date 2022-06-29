@@ -1068,6 +1068,10 @@ msgstr "Pool addresses provider is not registered"
 msgid "Price impact"
 msgstr "Price impact"
 
+#: src/components/infoTooltips/PriceImpactTooltips.tsx
+msgid "Price impact is the spread between the total value of the entry tokens swapped and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
+msgstr "Price impact is the spread between the total value of the entry tokens swapped and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
+
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Proposal details"
 msgstr "Proposal details"
