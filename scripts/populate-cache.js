@@ -61100,9 +61100,9 @@ var require_reserve = __commonJS({
           priceInMarketReferenceCurrency: reserve.priceInMarketReferenceCurrency,
           normalizedMarketReferencePriceInUsd
         }),
-        borrowCapUSD: (0, normalized_to_usd_1.normalizedToUsd)(new bignumber_js_1.default(reserve.borrowCap), marketReferencePriceInUsd, marketReferenceCurrencyDecimals).toString(),
-        supplyCapUSD: (0, normalized_to_usd_1.normalizedToUsd)(new bignumber_js_1.default(reserve.supplyCap), marketReferencePriceInUsd, marketReferenceCurrencyDecimals).toString(),
-        unbackedUSD: (0, normalized_to_usd_1.normalizedToUsd)(new bignumber_js_1.default(reserve.unbacked), marketReferencePriceInUsd, marketReferenceCurrencyDecimals).toString()
+        borrowCapUSD: (0, normalized_to_usd_1.normalizedToUsd)(new bignumber_js_1.default(reserve.borrowCap), reserve.priceInMarketReferenceCurrency, marketReferenceCurrencyDecimals).toString(),
+        supplyCapUSD: (0, normalized_to_usd_1.normalizedToUsd)(new bignumber_js_1.default(reserve.supplyCap), reserve.priceInMarketReferenceCurrency, marketReferenceCurrencyDecimals).toString(),
+        unbackedUSD: (0, normalized_to_usd_1.normalizedToUsd)(new bignumber_js_1.default(reserve.unbacked), reserve.priceInMarketReferenceCurrency, marketReferenceCurrencyDecimals).toString()
       });
     }
     exports2.formatReserveUSD = formatReserveUSD;
