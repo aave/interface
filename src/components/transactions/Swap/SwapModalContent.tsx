@@ -25,15 +25,11 @@ import { Row } from 'src/components/primitives/Row';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { calculateHFAfterSwap } from 'src/utils/hfUtils';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
+import { ErrorType, flashLoanNotAvailable, useFlashloan } from '../utils';
 
 export type SupplyProps = {
   underlyingAsset: string;
 };
-
-export enum ErrorType {
-  SUPPLY_CAP_REACHED,
-  HF_BELOW_ONE,
-}
 
 export const SwapModalContent = ({
   poolReserve,
@@ -104,9 +100,14 @@ export const SwapModalContent = ({
   });
 
   // if the hf would drop below 1 from the hf effect a flashloan should be used to mitigate liquidation
-  const shouldUseFlashloan =
-    user.healthFactor !== '-1' &&
-    new BigNumber(user.healthFactor).minus(hfEffectOfFromAmount).lt('1.05');
+  const shouldUseFlashloan = useFlashloan(user.healthFactor, hfEffectOfFromAmount);
+
+  const disableFlashLoan =
+    shouldUseFlashloan &&
+    flashLoanNotAvailable(
+      userReserve.underlyingAsset,
+      currentNetworkConfig.underlyingChainId || currentChainId
+    );
 
   // consider caps
   // we cannot check this in advance as it's based on the swap result
@@ -115,10 +116,8 @@ export const SwapModalContent = ({
     blockingError = ErrorType.SUPPLY_CAP_REACHED;
   } else if (!hfAfterSwap.eq('-1') && hfAfterSwap.lt('1.01')) {
     blockingError = ErrorType.HF_BELOW_ONE;
-  } else if (user.isInIsolationMode && poolReserve.isIsolated) {
-    // TODO: make sure hf doesn't go below 1 because swapTarget will not be a collateral
-  } else {
-    // TODO: make sure hf doesn't go below 1
+  } else if (disableFlashLoan) {
+    blockingError = ErrorType.FLASH_LOAN_NOT_AVAILABLE;
   }
 
   const handleBlocked = () => {
@@ -129,6 +128,13 @@ export const SwapModalContent = ({
         return (
           <Trans>
             The effects on the health factor would cause liquidation. Try lowering the amount.
+          </Trans>
+        );
+      case ErrorType.FLASH_LOAN_NOT_AVAILABLE:
+        return (
+          <Trans>
+            Due to a precision bug in the stETH contract, this asset can not be used in flashloan
+            transactions
           </Trans>
         );
       default:

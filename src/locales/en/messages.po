@@ -587,6 +587,11 @@ msgstr "Disconnect Wallet"
 msgid "Discord"
 msgstr "Discord"
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Due to a precision bug in the stETH contract, this asset can not be used in flashloan transactions"
+msgstr "Due to a precision bug in the stETH contract, this asset can not be used in flashloan transactions"
+
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode"
 msgstr "E-Mode"
