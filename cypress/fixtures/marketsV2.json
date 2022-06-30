@@ -1,0 +1,22 @@
+{
+  "EthereumKovanV2Market": {
+    "name": "Ethereum",
+    "version": "v2",
+    "dataCy": "marketSelector_proto_kovan"
+  },
+  "EthereumAmmKovanV2Market": {
+    "name": "Ethereum AMM",
+    "version": "v2",
+    "dataCy": "marketSelector_amm_kovan"
+  },
+  "PolygonMumbaiV2Market": {
+    "name": "Polygon",
+    "version": "v2",
+    "dataCy": "marketSelector_proto_mumbai"
+  },
+  "AvalancheFujiV2Market": {
+    "name": "Avalanche",
+    "version": "v2",
+    "dataCy": "marketSelector_proto_fuji"
+  }
+}
