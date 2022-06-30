@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro';
 import { Box, FormControlLabel, ListItem, ListItemText, MenuItem, Switch } from '@mui/material';
-import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 interface TestNetModeSwitcherProps {
@@ -8,8 +7,6 @@ interface TestNetModeSwitcherProps {
 }
 
 export const TestNetModeSwitcher = ({ component = ListItem }: TestNetModeSwitcherProps) => {
-  const router = useRouter();
-
   const testnetsEnabledId = 'testnetsEnabled';
   const testnetsEnabledLocalstorage = localStorage.getItem(testnetsEnabledId) === 'true' || false;
   const [testnetsEnabled, setTestnetsMode] = useState(testnetsEnabledLocalstorage);
@@ -18,7 +15,8 @@ export const TestNetModeSwitcher = ({ component = ListItem }: TestNetModeSwitche
     const newState = !testnetsEnabled;
     setTestnetsMode(!testnetsEnabled);
     localStorage.setItem(testnetsEnabledId, newState ? 'true' : 'false');
-    router.reload();
+    // Set window.location to trigger a page reload when navigating to the the dashboard
+    window.location.href = '/';
   };
 
   return (

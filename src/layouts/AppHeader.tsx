@@ -10,7 +10,6 @@ import {
   useTheme,
 } from '@mui/material';
 import Box from '@mui/material/Box';
-import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
@@ -41,7 +40,6 @@ export function AppHeader() {
   const { breakpoints } = useTheme();
   const md = useMediaQuery(breakpoints.down('md'));
   const sm = useMediaQuery(breakpoints.down('sm'));
-  const router = useRouter();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [walletWidgetOpen, setWalletWidgetOpen] = useState(false);
@@ -60,7 +58,8 @@ export function AppHeader() {
 
   const disableTestnet = () => {
     localStorage.setItem('testnetsEnabled', 'false');
-    router.reload();
+    // Set window.location to trigger a page reload when navigating to the the dashboard
+    window.location.href = '/';
   };
 
   const testnetTooltip = (
