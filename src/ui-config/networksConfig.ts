@@ -55,7 +55,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   [ChainId.ropsten]: {
     name: 'Ethereum Ropsten',
     publicJsonRPCUrl: [
-      'https://eth-rposten.alchemyapi.io/v2/demo',
+      'https://eth-ropsten.alchemyapi.io/v2/demo',
       'https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
     ],
     publicJsonRPCWSUrl: 'wss://eth-rposten.alchemyapi.io/v2/demo',
