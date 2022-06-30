@@ -4,7 +4,26 @@ export const permitByChainAndToken: {
   [chainId: number]: Record<string, boolean>;
 } = {
   [ChainId.mainnet]: {},
-  [ChainId.ropsten]: {},
+  [ChainId.ropsten]: {
+    '0x85b3362a4c46d57b77844cd64480657ba8d24c8c': true,
+    '0xf48271dc38dc811cd7ce2720192e9e8acd180c03': true,
+    '0xe99f86ec081bca8b1627bdf8062c19facc79997b': true,
+    '0xaf5a1d0523cf9e38005e234a9eea82cc167cc474': true,
+    '0xa17669420ed99fac51308567b08b7bac86837baf': true,
+    '0xe7f01afb875ad81f11e65ff256bb316cc5faffc0': true,
+    '0x1a57e7d60baeff506634ef69920aaa5de35dea47': true,
+    '0x7066ee910f85f3a4a4976670a349d7fe617ed8f5': true,
+  },
+  [ChainId.goerli]: {
+    '0xdf1742fe5b0bfc12331d8eaec6b478dfdbd31464': true,
+    '0xaa63e0c86b531e2edfe9f91f6436df20c301963d': true,
+    '0xa2025b15a1757311bfd68cb14eaefcc237af5b43': true,
+    '0xc2c527c0cacf457746bd31b2a698fe89de2b6d49': true,
+    '0x63242b9bd3c22f18706d5c4e627b4735973f1f07': true,
+    '0x07c725d58437504ca5f814ae406e70e21c5e8e9e': true,
+    '0x8869dfd060c682675c2a8ae5b21f2cf738a0e3ce': true,
+    '0x2e3a2fb8473316a02b8a297b982498e661e1f6f5': true,
+  },
   [ChainId.arbitrum_one]: {
     '0xf97f4df75117a78c1A5a0DBb814Af92458539FB4': true,
     '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8': true,
