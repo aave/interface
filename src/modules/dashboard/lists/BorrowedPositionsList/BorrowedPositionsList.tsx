@@ -89,6 +89,7 @@ export const BorrowedPositionsList = () => {
           <DashboardEModeButton
             userEmodeCategoryId={user.userEmodeCategoryId}
             onClick={() => openEmode()}
+            baseAssetSymbol={currentNetworkConfig.baseAssetSymbol}
           />
         ) : undefined
       }

@@ -15,11 +15,13 @@ import { getEmodeMessage } from '../../components/transactions/Emode/EmodeNaming
 interface DashboardEModeButtonProps {
   userEmodeCategoryId: number;
   onClick: () => void;
+  baseAssetSymbol: string;
 }
 
 export const DashboardEModeButton = ({
   onClick,
   userEmodeCategoryId,
+  baseAssetSymbol,
 }: DashboardEModeButtonProps) => {
   const iconButtonSize = 12;
 
@@ -34,7 +36,9 @@ export const DashboardEModeButton = ({
 
   const isEModeDisabled = userEmodeCategoryId === 0;
 
-  const EModeLabelMessage = () => <Trans>{getEmodeMessage(userEmodeCategoryId)}</Trans>;
+  const EModeLabelMessage = () => (
+    <Trans>{getEmodeMessage(userEmodeCategoryId, baseAssetSymbol)}</Trans>
+  );
 
   return (
     <Box

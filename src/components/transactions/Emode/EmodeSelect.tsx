@@ -12,12 +12,14 @@ export type EmodeSelectProps = {
   emodeCategories: Record<number, EmodeCategory>;
   selectedEmode: number;
   setSelectedEmode: React.Dispatch<React.SetStateAction<EmodeCategory | undefined>>;
+  baseAssetSymbol: string;
 };
 
 export const EmodeSelect = ({
   emodeCategories,
   selectedEmode,
   setSelectedEmode,
+  baseAssetSymbol,
 }: EmodeSelectProps) => {
   return (
     <FormControl sx={{ mb: 1, width: '100%' }}>
@@ -62,7 +64,7 @@ export const EmodeSelect = ({
 
           return (
             <Typography color="text.primary">
-              {getEmodeMessage(emodeCategories[selectedEmode].id)}
+              {getEmodeMessage(emodeCategories[selectedEmode].id, baseAssetSymbol)}
             </Typography>
           );
         }}
@@ -82,7 +84,7 @@ export const EmodeSelect = ({
               </Typography>
             ) : (
               <Typography color="text.primary">
-                {getEmodeMessage(emodeCategories[Number(categoryKey)].id)}
+                {getEmodeMessage(emodeCategories[Number(categoryKey)].id, baseAssetSymbol)}
               </Typography>
             )}
           </MenuItem>
