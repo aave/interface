@@ -28,7 +28,11 @@ export const FaucetTopPanel = () => {
                 switch your wallet provider to the appropriate testnet network, select desired
                 asset, and click ‘Faucet’ to get tokens transferred to your wallet. The assets on a
                 testnet are not “real,” meaning they have no monetary value.{' '}
-                <Link color="#A5A8B6" href="https://docs.aave.com/developers/guides/testing-guide">
+                <Link
+                  color="#A5A8B6"
+                  href="https://docs.aave.com/developers/guides/testing-guide"
+                  sx={{ textDecoration: 'underline' }}
+                >
                   Learn more
                 </Link>
               </Trans>

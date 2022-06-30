@@ -16,12 +16,15 @@ import { FaucetItemLoader } from './FaucetItemLoader';
 import { FaucetMobileItemLoader } from './FaucetMobileItemLoader';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { Link, ROUTES } from 'src/components/primitives/Link';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 export default function FaucetAssetsList() {
   const { reserves, loading } = useAppDataContext();
   const { walletBalances } = useWalletBalances();
   const { openFaucet } = useModalContext();
   const { currentAccount, loading: web3Loading } = useWeb3Context();
+  const { currentMarket } = useProtocolDataContext();
 
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
@@ -29,12 +32,12 @@ export default function FaucetAssetsList() {
   const listData = reserves
     .filter((reserve) => !reserve.isWrappedBaseAsset && !reserve.isFrozen)
     .map((reserve) => {
-      const walletBalanceUSD = valueToBigNumber(
-        walletBalances[reserve.underlyingAsset]?.amountUSD || '0'
+      const walletBalance = valueToBigNumber(
+        walletBalances[reserve.underlyingAsset]?.amount || '0'
       );
       return {
         ...reserve,
-        walletBalanceUSD,
+        walletBalance,
       };
     });
 
@@ -87,24 +90,29 @@ export default function FaucetAssetsList() {
         listData.map((reserve) => (
           <ListItem px={downToXSM ? 4 : 6} key={reserve.symbol}>
             <ListColumn isRow maxWidth={280}>
-              <TokenIcon symbol={reserve.iconSymbol} fontSize="large" />
-              <Box sx={{ pl: 3.5, overflow: 'hidden' }}>
-                <Typography variant="h4" noWrap>
-                  {reserve.name}
-                </Typography>
-                <Typography variant="subheader2" color="text.disabled" noWrap>
-                  {reserve.symbol}
-                </Typography>
-              </Box>
+              <Link
+                href={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket)}
+                noWrap
+                sx={{ display: 'inline-flex', alignItems: 'center' }}
+              >
+                <TokenIcon symbol={reserve.iconSymbol} fontSize="large" />
+                <Box sx={{ pl: 3.5, overflow: 'hidden' }}>
+                  <Typography variant="h4" noWrap>
+                    {reserve.name}
+                  </Typography>
+                  <Typography variant="subheader2" color="text.muted" noWrap>
+                    {reserve.symbol}
+                  </Typography>
+                </Box>
+              </Link>
             </ListColumn>
 
             {!downToXSM && (
               <ListColumn>
                 <FormattedNumber
                   compact
-                  value={reserve.walletBalanceUSD.toString()}
+                  value={reserve.walletBalance.toString()}
                   variant="main16"
-                  symbol="USD"
                 />
               </ListColumn>
             )}
