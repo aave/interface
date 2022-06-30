@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 import { HealthFactorNumber } from '../../../components/HealthFactorNumber';
 import { BasicModal } from '../../../components/primitives/BasicModal';
@@ -88,10 +88,16 @@ export const LiquidationRiskParametresInfoModal = ({
           />
         }
         bottomText={
-          <Trans>
-            If your loan to value goes above the liquidation threshold your collateral supplied may
-            be liquidated.
-          </Trans>
+          <Box
+            sx={{
+              color: 'error.main',
+            }}
+          >
+            <Trans>
+              If your loan to value goes above the liquidation threshold your collateral supplied
+              may be liquidated.
+            </Trans>
+          </Box>
         }
         isWarning={
           +loanToValue * 100 < +currentLoanToValue * 100 &&
