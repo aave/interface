@@ -27,6 +27,7 @@ import { TxSuccessView } from '../FlowCommons/Success';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
 import { ArrowDownIcon } from '@heroicons/react/outline';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
 
 export enum ErrorType {
   NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH,
@@ -57,7 +58,6 @@ export function CollateralRepayModalContent({
       balanceUSD: userReserve.underlyingBalanceUSD,
       symbol: userReserve.reserve.symbol,
       iconSymbol: userReserve.reserve.iconSymbol,
-      aToken: true,
     }))
     .sort((a, b) => Number(b.balanceUSD) - Number(a.balanceUSD));
   const [tokenToRepayWith, setTokenToRepayWith] = useState<Asset>(repayTokens[0]);
@@ -196,16 +196,20 @@ export function CollateralRepayModalContent({
         inputTitle={<Trans>Expected amount to repay</Trans>}
         balanceText="Borrow balance"
       />
-      <Box sx={{ padding: '18px', display: 'flex', justifyContent: 'space-between' }}>
-        <SvgIcon sx={{ fontSize: '16px !important' }}>
+      <Box sx={{ padding: '18px', pt: '14px', display: 'flex', justifyContent: 'space-between' }}>
+        <SvgIcon sx={{ fontSize: '18px !important' }}>
           <ArrowDownIcon />
         </SvgIcon>
-        <Typography component="div" variant="secondary12" color="text.secondary">
-          <Trans>
-            Price impact{' '}
-            <FormattedNumber value={priceImpact} variant="secondary12" color="text.secondary" />%
-          </Trans>
-        </Typography>
+
+        <PriceImpactTooltip
+          text={
+            <Trans>
+              Price impact{' '}
+              <FormattedNumber value={priceImpact} variant="secondary12" color="text.secondary" />%
+            </Trans>
+          }
+          variant="secondary14"
+        />
       </Box>
       <AssetInput
         value={inputAmount}
