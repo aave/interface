@@ -39,20 +39,29 @@ export const ListSlippageButton = ({ setSlippage, selectedSlippage }: ListSlippa
         onClick={handleClick}
         size="medium"
         endIcon={
-          <SvgIcon sx={{ fontSize: '14px !important' }}>
-            {open ? <ChevronUpIcon /> : <ChevronDownIcon />}
-          </SvgIcon>
+          <SlippageTooltip
+            text={
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Trans>
+                  <Typography color="text.secondary" variant="description">
+                    Slippage tolerance{' '}
+                  </Typography>
+                  <Typography color="text.main" variant="secondary14" sx={{ px: '4px' }}>
+                    {selectedSlippage}%{' '}
+                  </Typography>
+                  <SvgIcon sx={{ fontSize: '14px !important', mr: '4px' }}>
+                    {open ? <ChevronUpIcon /> : <ChevronDownIcon />}
+                  </SvgIcon>
+                </Trans>
+              </Box>
+            }
+            variant="secondary14"
+          />
         }
         disabled={false}
         data-cy={`slippageButton_${selectedSlippage}`}
         sx={{ mt: 6 }}
-      >
-        <SlippageTooltip
-          text={<Trans>Slippage tolerance {selectedSlippage}%</Trans>}
-          variant="secondary14"
-          color="#0062D2"
-        />
-      </Button>
+      />
 
       <Menu
         anchorEl={anchorEl}
