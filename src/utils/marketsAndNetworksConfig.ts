@@ -18,10 +18,10 @@ export type Pool = {
   address: string;
 };
 
-export const NEXT_PUBLIC_ENABLE_TESTNET =
-  (!global?.window?.localStorage.getItem('testnetsEnabled') &&
-    process.env.NEXT_PUBLIC_ENABLE_TESTNET === 'true') ||
-  global?.window?.localStorage.getItem('testnetsEnabled') === 'true';
+export const STAGING_ENV = process.env.NEXT_PUBLIC_ENV === 'staging';
+export const PROD_ENV = !process.env.NEXT_PUBLIC_ENV || process.env.NEXT_PUBLIC_ENV === 'prod';
+export const ENABLE_TESTNET =
+  PROD_ENV && global?.window?.localStorage.getItem('testnetsEnabled') === 'true';
 
 // determines if forks should be shown
 const FORK_ENABLED = global?.window?.localStorage.getItem('forkEnabled') === 'true';
@@ -78,14 +78,22 @@ export function getDefaultChainId() {
 
 export function getSupportedChainIds(): number[] {
   return Array.from(
-    Object.keys(marketsData).reduce((acc, value) => {
-      if (
-        NEXT_PUBLIC_ENABLE_TESTNET ||
-        !networkConfigs[marketsData[value as keyof typeof CustomMarket].chainId].isTestnet
+    Object.keys(marketsData)
+      .filter((value) => {
+        const isTestnet =
+          networkConfigs[marketsData[value as keyof typeof CustomMarket].chainId].isTestnet;
+
+        // If this is a staging environment, or the testnet toggle is on, only show testnets
+        if (STAGING_ENV || ENABLE_TESTNET) {
+          return isTestnet;
+        }
+
+        return !isTestnet;
+      })
+      .reduce(
+        (acc, value) => acc.add(marketsData[value as keyof typeof CustomMarket].chainId),
+        new Set<number>()
       )
-        acc.add(marketsData[value as keyof typeof CustomMarket].chainId);
-      return acc;
-    }, new Set<number>())
   );
 }
 
@@ -134,29 +142,36 @@ export const isFeatureEnabled = {
 
 const providers: { [network: string]: ethersProviders.Provider } = {};
 
+/**
+ * Created a fallback rpc provider in which providers are prioritized from private to public and in case there are multiple public ones, from top to bottom.
+ * @param chainId
+ * @returns provider or fallbackprovider in case multiple rpcs are configured
+ */
 export const getProvider = (chainId: ChainId): ethersProviders.Provider => {
   if (!providers[chainId]) {
     const config = getNetworkConfig(chainId);
-    const chainProviders: ethersProviders.StaticJsonRpcProvider[] = [];
+    const chainProviders: ethersProviders.FallbackProviderConfig[] = [];
     if (config.privateJsonRPCUrl) {
-      providers[chainId] = new ethersProviders.StaticJsonRpcProvider(
-        config.privateJsonRPCUrl,
-        chainId
-      );
-      return providers[chainId];
+      chainProviders.push({
+        provider: new ethersProviders.StaticJsonRpcProvider(config.privateJsonRPCUrl, chainId),
+        priority: 0,
+      });
     }
     if (config.publicJsonRPCUrl.length) {
-      config.publicJsonRPCUrl.map((rpc) =>
-        chainProviders.push(new ethersProviders.StaticJsonRpcProvider(rpc, chainId))
+      config.publicJsonRPCUrl.map((rpc, ix) =>
+        chainProviders.push({
+          provider: new ethersProviders.StaticJsonRpcProvider(rpc, chainId),
+          priority: ix + 1,
+        })
       );
     }
     if (!chainProviders.length) {
       throw new Error(`${chainId} has no jsonRPCUrl configured`);
     }
     if (chainProviders.length === 1) {
-      providers[chainId] = chainProviders[0];
+      providers[chainId] = chainProviders[0].provider;
     } else {
-      providers[chainId] = new ethersProviders.FallbackProvider(chainProviders);
+      providers[chainId] = new ethersProviders.FallbackProvider(chainProviders, 1);
     }
   }
   return providers[chainId];
