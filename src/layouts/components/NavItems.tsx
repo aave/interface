@@ -27,60 +27,60 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
       }}
       disablePadding
     >
-      {navigation.map((item, index) => (
-        <ListItem
-          sx={{
-            display:
-              !!item.isVisible && !item.isVisible(currentMarketData) ? 'none' : 'inline-flex',
-            width: { xs: '100%', md: 'unset' },
-            mr: { xs: 0, md: 2 },
-          }}
-          data-cy={item.dataCy}
-          disablePadding
-          key={index}
-        >
-          {md ? (
-            <Typography
-              component={Link}
-              href={item.link}
-              variant="h2"
-              color="#F1F1F3"
-              sx={{ width: '100%', p: 4 }}
-              onClick={() => (setOpen ? setOpen(false) : undefined)}
-            >
-              {i18n._(item.title)}
-            </Typography>
-          ) : (
-            <Button
-              component={Link}
-              href={item.link}
-              sx={(theme) => ({
-                color: '#F1F1F3',
-                p: '6px 8px',
-                position: 'relative',
-                '.active&:after, &:hover&:after': {
-                  transform: 'scaleX(1)',
-                  transformOrigin: 'bottom left',
-                },
-                '&:after': {
-                  content: "''",
-                  position: 'absolute',
-                  width: '100%',
-                  transform: 'scaleX(0)',
-                  height: '2px',
-                  bottom: '-6px',
-                  left: '0',
-                  background: theme.palette.gradients.aaveGradient,
-                  transformOrigin: 'bottom right',
-                  transition: 'transform 0.25s ease-out',
-                },
-              })}
-            >
-              {i18n._(item.title)}
-            </Button>
-          )}
-        </ListItem>
-      ))}
+      {navigation
+        .filter((item) => !item.isVisible || item.isVisible(currentMarketData))
+        .map((item, index) => (
+          <ListItem
+            sx={{
+              width: { xs: '100%', md: 'unset' },
+              mr: { xs: 0, md: 2 },
+            }}
+            data-cy={item.dataCy}
+            disablePadding
+            key={index}
+          >
+            {md ? (
+              <Typography
+                component={Link}
+                href={item.link}
+                variant="h2"
+                color="#F1F1F3"
+                sx={{ width: '100%', p: 4 }}
+                onClick={() => (setOpen ? setOpen(false) : undefined)}
+              >
+                {i18n._(item.title)}
+              </Typography>
+            ) : (
+              <Button
+                component={Link}
+                href={item.link}
+                sx={(theme) => ({
+                  color: '#F1F1F3',
+                  p: '6px 8px',
+                  position: 'relative',
+                  '.active&:after, &:hover&:after': {
+                    transform: 'scaleX(1)',
+                    transformOrigin: 'bottom left',
+                  },
+                  '&:after': {
+                    content: "''",
+                    position: 'absolute',
+                    width: '100%',
+                    transform: 'scaleX(0)',
+                    height: '2px',
+                    bottom: '-6px',
+                    left: '0',
+                    background: theme.palette.gradients.aaveGradient,
+                    transformOrigin: 'bottom right',
+                    transition: 'transform 0.25s ease-out',
+                  },
+                })}
+              >
+                {i18n._(item.title)}
+              </Button>
+            )}
+          </ListItem>
+        ))}
 
       <ListItem sx={{ display: { xs: 'none', md: 'flex' }, width: 'unset' }} disablePadding>
         <MoreMenu />

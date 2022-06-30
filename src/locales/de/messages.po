@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-06-15 12:06\n"
+"PO-Revision-Date: 2022-06-24 18:05\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -98,7 +98,11 @@ msgid "Action requires an active reserve"
 msgstr ""
 
 #: src/components/transactions/FlowCommons/Success.tsx
-msgid "Add {0} to the wallet"
+msgid "Add aToken to the wallet to track your supply balance."
+msgstr ""
+
+#: src/components/transactions/FlowCommons/Success.tsx
+msgid "Add to wallet"
 msgstr ""
 
 #: src/ui-config/errorMapping.tsx
@@ -171,7 +175,7 @@ msgstr ""
 msgid "Array parameters that should be equal length are not"
 msgstr ""
 
-#: pages/faucet.page.tsx
+#: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/markets/AssetsList.tsx
 msgid "Asset"
 msgstr ""
@@ -202,7 +206,6 @@ msgstr ""
 msgid "Asset to delegate"
 msgstr ""
 
-#: pages/faucet.page.tsx
 #: src/modules/dashboard/lists/ListHeader.tsx
 msgid "Assets"
 msgstr ""
@@ -560,6 +563,10 @@ msgstr ""
 msgid "Disable E-Mode"
 msgstr ""
 
+#: src/layouts/AppHeader.tsx
+msgid "Disable testnet"
+msgstr ""
+
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 msgid "Disable {symbol} as collateral"
 msgstr ""
@@ -671,9 +678,12 @@ msgstr ""
 msgid "FAQ"
 msgstr ""
 
-#: pages/faucet.page.tsx
 #: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
+#: src/modules/faucet/FaucetAssetsList.tsx
+#: src/modules/faucet/FaucetItemLoader.tsx
+#: src/modules/faucet/FaucetMobileItemLoader.tsx
+#: src/ui-config/menu-items/index.tsx
 msgid "Faucet"
 msgstr ""
 
@@ -1038,6 +1048,10 @@ msgstr ""
 msgid "Please connect a wallet to view your personal information here."
 msgstr ""
 
+#: src/modules/faucet/FaucetAssetsList.tsx
+msgid "Please connect your wallet to get free testnet assets."
+msgstr ""
+
 #: src/components/ConnectWalletPaper.tsx
 msgid "Please connect your wallet to see your supplies, borrowings, and open positions."
 msgstr ""
@@ -1199,12 +1213,16 @@ msgstr ""
 msgid "Select APY type to switch"
 msgstr ""
 
-#: src/components/MarketSwitcher.tsx
-msgid "Select Aave Market"
-msgstr ""
-
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Select language"
+msgstr ""
+
+#: src/modules/reserve-overview/AddTokenDropdown.tsx
+msgid "Select token to add"
+msgstr ""
+
+#: src/modules/reserve-overview/TokenLinkDropdown.tsx
+msgid "Select token to view in block explorer"
 msgstr ""
 
 #: src/components/HALLink.tsx
@@ -1406,8 +1424,16 @@ msgstr ""
 msgid "Switching rate"
 msgstr ""
 
+#: src/modules/faucet/FaucetAssetsList.tsx
+msgid "Test Assets"
+msgstr ""
+
 #: src/layouts/components/TestNetModeSwitcher.tsx
 msgid "Testnet mode"
+msgstr ""
+
+#: src/layouts/AppHeader.tsx
+msgid "Testnet mode is ON"
 msgstr ""
 
 #: src/components/infoTooltips/BorrowPowerTooltip.tsx
@@ -1428,6 +1454,10 @@ msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "The address of the pool addresses provider is invalid"
+msgstr ""
+
+#: src/layouts/AppHeader.tsx
+msgid "The app is running in testnet mode. Learn how it works in"
 msgstr ""
 
 #: src/ui-config/errorMapping.tsx
@@ -1690,6 +1720,14 @@ msgstr ""
 msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions. Recommended for short-term loans."
 msgstr ""
 
+#: src/components/MarketSwitcher.tsx
+msgid "Version 2"
+msgstr ""
+
+#: src/components/MarketSwitcher.tsx
+msgid "Version 3"
+msgstr ""
+
 #: src/modules/markets/AssetsListMobileItem.tsx
 msgid "View details"
 msgstr ""
@@ -1721,9 +1759,9 @@ msgstr ""
 msgid "Voting results"
 msgstr ""
 
-#: pages/faucet.page.tsx
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+#: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Wallet balance"
@@ -1751,6 +1789,10 @@ msgstr ""
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "With a voting power of <0/>"
+msgstr ""
+
+#: src/modules/faucet/FaucetTopPanel.tsx
+msgid "With testnet Faucet you can get free assets to test the Aave Protocol. Make sure to switch your wallet provider to the appropriate testnet network, select desired asset, and click ‘Faucet’ to get tokens transferred to your wallet. The assets on a testnet are not “real,” meaning they have no monetary value. <0>Learn more</0>"
 msgstr ""
 
 #: src/components/transactions/Withdraw/WithdrawModal.tsx
@@ -1893,6 +1935,14 @@ msgid "Your voting info"
 msgstr ""
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+msgid "Your {networkName} wallet is empty. Get free test assets at"
+msgstr ""
+
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "Your {networkName} wallet is empty. Get free test {0} at"
+msgstr ""
+
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Your {networkName} wallet is empty. Purchase or transfer assets"
 msgstr ""
@@ -1968,21 +2018,15 @@ msgstr ""
 msgid "tokens, please go to the"
 msgstr ""
 
-#: src/components/MarketSwitcher.tsx
-msgid "v2 markets"
-msgstr ""
-
-#: src/components/MarketSwitcher.tsx
-msgid "v3 markets"
-msgstr ""
-
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "withdrew"
 msgstr ""
 
+#: src/components/MarketSwitcher.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
+#: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "{0}"
 msgstr ""
 
@@ -1990,7 +2034,8 @@ msgstr ""
 msgid "{0} Balance"
 msgstr ""
 
-#: pages/faucet.page.tsx
+#: src/components/FaucetButton.tsx
+#: src/modules/faucet/FaucetTopPanel.tsx
 msgid "{0} Faucet"
 msgstr ""
 
@@ -2010,11 +2055,20 @@ msgstr ""
 msgid "{m}m"
 msgstr ""
 
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "{networkName} Faucet"
+msgstr ""
+
 #: src/components/infoTooltips/FrozenWarning.tsx
 msgid "{symbol} is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
 msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"
+msgstr ""
+
+#: src/components/CircleIcon.tsx
+msgid "{tooltipText}"
 msgstr ""
 

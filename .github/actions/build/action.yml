@@ -4,18 +4,18 @@ inputs:
   YARN_COMMAND:
     description: yarn command to run
     required: false
-    default: "build:static"
-  NEXT_PUBLIC_ENABLE_TESTNET:
-    description: enable testnet
+    default: 'build:static'
+  NEXT_PUBLIC_ENV:
+    description: app (production) or staging (everything else)
     required: false
-    default: "true"
+    default: 'staging'
   USE_NEXT_CACHE:
     description: use nextjs cache or not
     required: false
-    default: "true"
+    default: 'true'
 runs:
-  using: "composite"
-  steps:  
+  using: 'composite'
+  steps:
     - uses: actions/setup-node@9ced9a43a244f3ac94f13bfd896db8c8f30da67a # v3.0.0
       with:
         node-version-file: '.nvmrc'
@@ -41,6 +41,6 @@ runs:
       shell: sh
       run: yarn ${{ inputs.YARN_COMMAND }}
       env:
-        NEXT_PUBLIC_ENABLE_TESTNET: "${{ inputs.NEXT_PUBLIC_ENABLE_TESTNET }}"
-        NEXT_PUBLIC_ENABLE_GOVERNANCE: "true"
-        NEXT_PUBLIC_ENABLE_STAKING: "true"
+        NEXT_PUBLIC_ENV: '${{ inputs.NEXT_PUBLIC_ENV }}'
+        NEXT_PUBLIC_ENABLE_GOVERNANCE: 'true'
+        NEXT_PUBLIC_ENABLE_STAKING: 'true'
