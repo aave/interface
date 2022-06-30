@@ -37,7 +37,7 @@ export const EmodeModalContent = () => {
     marketReferencePriceInUsd,
     userReserves,
   } = useAppDataContext();
-  const { currentChainId } = useProtocolDataContext();
+  const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
   const currentTimestamp = useCurrentTimestamp(1);
   const { gasLimit, mainTxState: emodeTxState, txError } = useModalContext();
@@ -132,7 +132,7 @@ export const EmodeModalContent = () => {
         return (
           <Trans>
             In order to change E-Mode from asset category
-            {getEmodeMessage(user.userEmodeCategoryId)}
+            {getEmodeMessage(user.userEmodeCategoryId, currentNetworkConfig.baseAssetSymbol)}
             you will need to close your position in your current category. See our{' '}
             <Button
               variant="text"
@@ -196,6 +196,7 @@ export const EmodeModalContent = () => {
           emodeCategories={emodeCategories}
           selectedEmode={selectedEmode?.id || 0}
           setSelectedEmode={setSelectedEmode}
+          baseAssetSymbol={currentNetworkConfig.baseAssetSymbol}
         />
       )}
 
@@ -209,7 +210,7 @@ export const EmodeModalContent = () => {
             </SvgIcon>
             <Typography variant="subheader1">
               {selectedEmode && selectedEmode.id !== 0 ? (
-                getEmodeMessage(selectedEmode.id)
+                getEmodeMessage(selectedEmode.id, currentNetworkConfig.baseAssetSymbol)
               ) : (
                 <Trans>None</Trans>
               )}
