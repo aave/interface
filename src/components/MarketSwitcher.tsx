@@ -204,7 +204,9 @@ export const MarketSwitcher = () => {
           <ToggleButtonGroup
             value={selectedMarketVersion}
             exclusive
-            onChange={(_, value) => setSelectedMarketVersion(value)}
+            onChange={(_, value) => {
+              setSelectedMarketVersion(value);
+            }}
             sx={{
               width: '100%',
               height: '36px',
@@ -281,29 +283,33 @@ export const MarketSwitcher = () => {
         const { market, network } = getMarketInfoById(marketId);
         const marketNaming = getMarketHelpData(market.marketTitle);
         return (
-          ((market.v3 && selectedMarketVersion === SelectedMarketVersion.V3) ||
-            (!market.v3 && selectedMarketVersion === SelectedMarketVersion.V2)) && (
-            <MenuItem
-              key={marketId}
-              data-cy={`marketSelector_${marketId}`}
-              value={marketId}
-              sx={{ '.MuiListItemIcon-root': { minWidth: 'unset' } }}
-            >
-              <MarketLogo
-                size={32}
-                logo={network.networkLogoPath}
-                testChainName={marketNaming.testChainName}
-              />
-              <ListItemText sx={{ mr: 0 }}>
-                {marketNaming.name} {market.isFork ? 'Fork' : ''}
-              </ListItemText>
-              <ListItemText sx={{ textAlign: 'right' }}>
-                <Typography color="text.muted" variant="description">
-                  {marketNaming.testChainName}
-                </Typography>
-              </ListItemText>
-            </MenuItem>
-          )
+          <MenuItem
+            key={marketId}
+            data-cy={`marketSelector_${marketId}`}
+            value={marketId}
+            sx={{
+              '.MuiListItemIcon-root': { minWidth: 'unset' },
+              display:
+                (market.v3 && selectedMarketVersion === SelectedMarketVersion.V2) ||
+                (!market.v3 && selectedMarketVersion === SelectedMarketVersion.V3)
+                  ? 'none'
+                  : 'flex',
+            }}
+          >
+            <MarketLogo
+              size={32}
+              logo={network.networkLogoPath}
+              testChainName={marketNaming.testChainName}
+            />
+            <ListItemText sx={{ mr: 0 }}>
+              {marketNaming.name} {market.isFork ? 'Fork' : ''}
+            </ListItemText>
+            <ListItemText sx={{ textAlign: 'right' }}>
+              <Typography color="text.muted" variant="description">
+                {marketNaming.testChainName}
+              </Typography>
+            </ListItemText>
+          </MenuItem>
         );
       })}
     </TextField>
