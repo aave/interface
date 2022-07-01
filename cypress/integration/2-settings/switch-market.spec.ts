@@ -1,6 +1,5 @@
 import { configEnvWithTenderlyMainnetFork } from '../../support/steps/configuration.steps';
-import marketsV2 from '../../fixtures/marketsV2.json';
-import marketsV3 from '../../fixtures/marketsV3.json';
+import markets from '../../fixtures/markets.json';
 
 export const changeNetwork = (selector: string) => {
   cy.get('#mui-3').click();
@@ -21,6 +20,13 @@ export const switchToV3Markets = () => {
   cy.contains('Version 3').click();
   cy.get(`[data-cy="marketSelector_proto_eth_rinkeby_v3"]`).click();
 };
+export const switchMarket = (market) => {
+  if (market.version == 'v3') {
+    //switch to V3
+  } else {
+    //switch to V2
+  }
+};
 
 describe('Change markets', () => {
   configEnvWithTenderlyMainnetFork({});
@@ -29,22 +35,10 @@ describe('Change markets', () => {
       switchToTestNet();
     });
   });
-  Object.entries(marketsV2).forEach(([keyTo, valueTo]) => {
+  Object.entries(markets).forEach(([keyTo, valueTo]) => {
     describe(`Switching market to ${keyTo}`, () => {
       it(`step1: Change the network to ${valueTo.name}`, () => {
-        changeNetwork(valueTo.dataCy);
-      });
-      checkNameOfNetwork(valueTo.name);
-    });
-  });
-  describe('Switch to V3 markets', () => {
-    it('Switch from V2 to V3 market', () => {
-      switchToV3Markets();
-    });
-  });
-  Object.entries(marketsV3).forEach(([keyTo, valueTo]) => {
-    describe(`Switch V3 market to ${keyTo}`, () => {
-      it(`step2: Change network to ${valueTo.name} V3`, () => {
+        switchMarket();
         changeNetwork(valueTo.dataCy);
       });
       checkNameOfNetwork(valueTo.name);
