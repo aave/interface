@@ -318,8 +318,8 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   [ChainId.fantom]: {
     name: 'Fantom',
     privateJsonRPCUrl: 'https://fantom-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
-    publicJsonRPCUrl: ['https://rpc.ftm.tools'],
-    publicJsonRPCWSUrl: 'wss://wsapi.fantom.network',
+    publicJsonRPCUrl: [], // 'https://rpc.ftm.tools' compromised
+    // publicJsonRPCWSUrl: 'wss://wsapi.fantom.network',
     // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'FTM',
