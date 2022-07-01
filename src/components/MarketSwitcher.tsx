@@ -205,7 +205,9 @@ export const MarketSwitcher = () => {
             value={selectedMarketVersion}
             exclusive
             onChange={(_, value) => {
-              setSelectedMarketVersion(value);
+              if (value !== null) {
+                setSelectedMarketVersion(value);
+              }
             }}
             sx={{
               width: '100%',
