@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-06-24 18:05\n"
+"PO-Revision-Date: 2022-07-01 00:19\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -592,6 +592,11 @@ msgstr "Αποσυνδέστε το πορτοφόλι"
 msgid "Discord"
 msgstr "Discord"
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Due to a precision bug in the stETH contract, this asset can not be used in flashloan transactions"
+msgstr ""
+
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode"
 msgstr "E-Mode"
@@ -1134,10 +1139,6 @@ msgstr "Αποπληρωμή"
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 msgid "Repay with"
 msgstr "Αποπληρωμή με"
-
-#: src/components/Warnings/RepayCollateralWarning.tsx
-msgid "Repay with collateral is experiencing degraded performance which may cause your transaction to fail. Consider using another service or add more collateral to avoid liquidation."
-msgstr ""
 
 #: src/components/transactions/Repay/CollateralRepayActions.tsx
 #: src/components/transactions/Repay/RepayActions.tsx
