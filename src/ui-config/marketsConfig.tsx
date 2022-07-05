@@ -55,6 +55,7 @@ export enum CustomMarket {
   // v3 test networks
   proto_arbitrum_rinkeby_v3 = 'proto_arbitrum_rinkeby_v3',
   proto_mumbai_v3 = 'proto_mumbai_v3',
+  proto_eth_rinkeby_v3 = 'proto_eth_rinkeby_v3',
   proto_fantom_testnet_v3 = 'proto_fantom_testnet_v3',
   proto_harmony_testnet_v3 = 'proto_harmony_testnet_v3',
   proto_fuji_v3 = 'proto_fuji_v3',
@@ -235,6 +236,27 @@ export const marketsData: {
     },
   },
   // v3
+  [CustomMarket.proto_eth_rinkeby_v3]: {
+    v3: true,
+    marketTitle: 'Ethereum Rinkeby',
+    chainId: ChainId.rinkeby,
+    enabledFeatures: {
+      faucet: true,
+      governance: false,
+      staking: false,
+      incentives: false,
+    },
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0xBA6378f1c1D046e9EB0F538560BA7558546edF3C'.toLowerCase(),
+      LENDING_POOL: '0xE039BdF1d874d27338e09B55CB09879Dedca52D8',
+      WETH_GATEWAY: '0xD1DECc6502cc690Bc85fAf618Da487d886E54Abe',
+      FAUCET: '0x88138CA1e9E485A1E688b030F85Bb79d63f156BA',
+      WALLET_BALANCE_PROVIDER: '0x116674C3Efe4e31F192d855284619DEd6fE2a1b9',
+      UI_POOL_DATA_PROVIDER: '0x550f9764d56291B5B793b6dD1623af3346128BD2',
+      UI_INCENTIVE_DATA_PROVIDER: '0x2c9f31b1F9838Bb8781bb61a0d0a4615f6530207',
+    },
+  },
   [CustomMarket.proto_ropsten_v3]: {
     marketTitle: 'Ethereum Ropsten',
     v3: true,

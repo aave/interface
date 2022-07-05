@@ -52,6 +52,22 @@ export type NetworkConfig = {
 export type BaseNetworkConfig = Omit<NetworkConfig, 'explorerLinkBuilder'>;
 
 export const networkConfigs: Record<string, BaseNetworkConfig> = {
+  [ChainId.rinkeby]: {
+    name: 'Ethereum Rinkeby',
+    publicJsonRPCUrl: [
+      'https://rinkeby-light.eth.linkpool.io/',
+      'https://eth-rinkeby.alchemyapi.io/v2/demo',
+    ],
+    // protocolDataUrl: '',
+    baseUniswapAdapter: '',
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://rinkeby.etherscan.io/',
+    // rpcOnly: true,
+    isTestnet: true,
+    networkLogoPath: '/icons/networks/ethereum.svg',
+  },
   [ChainId.ropsten]: {
     name: 'Ethereum Ropsten',
     publicJsonRPCUrl: [
