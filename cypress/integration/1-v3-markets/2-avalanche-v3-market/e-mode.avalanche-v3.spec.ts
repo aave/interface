@@ -63,7 +63,7 @@ describe('E-MODE SPEC, AVALANCHE V3 MARKET', () => {
     verifyCountOfBorrowAssets({ assets: testData.testCases.eModeAssets }, skipTestState);
   });
   describe('Turn off E-mode and verify decrease of health factor', () => {
-    emodeActivating({ turnOn: false }, skipTestState, true);
+    emodeActivating({ turnOn: false, multipleEmodes: true }, skipTestState, true);
     checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.07 }, skipTestState);
   });
   describe('Turn off E-mode blocked with low health factor', () => {
