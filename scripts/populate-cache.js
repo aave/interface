@@ -61713,8 +61713,7 @@ var networkConfigs = {
   [import_contract_helpers3.ChainId.polygon]: {
     name: "Polygon POS",
     privateJsonRPCUrl: "https://poly-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca",
-    publicJsonRPCUrl: ["https://polygon-rpc.com"],
-    publicJsonRPCWSUrl: "wss://polygon-rpc.com",
+    publicJsonRPCUrl: [],
     baseAssetSymbol: "MATIC",
     wrappedBaseAssetSymbol: "WMATIC",
     baseAssetDecimals: 18,
@@ -61877,8 +61876,7 @@ var networkConfigs = {
   [import_contract_helpers3.ChainId.fantom]: {
     name: "Fantom",
     privateJsonRPCUrl: "https://fantom-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca",
-    publicJsonRPCUrl: ["https://rpc.ftm.tools"],
-    publicJsonRPCWSUrl: "wss://wsapi.fantom.network",
+    publicJsonRPCUrl: [],
     baseUniswapAdapter: "0x0",
     baseAssetSymbol: "FTM",
     wrappedBaseAssetSymbol: "WFTM",
