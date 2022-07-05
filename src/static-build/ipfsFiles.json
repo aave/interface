@@ -1243,6 +1243,20 @@
       "ipfsHash": "QmRQWTc4pKWJsxFdQP3v4WaeyvnV1rMVEtqyAtb549XQQD",
       "originalHash": "0x2d900e4177145ded5595790def76a02e744d61a17b70b54501819744ba85d88e",
       "id": 84
+    },
+    {
+      "title": "Aave <> Starknet - Phase I (Part 2)",
+      "status": "Proposed",
+      "author": "Ernesto Boado (@eboadom)",
+      "shortDescription": "Requests for the second scheduled payment on Aave <> Starknet Phase I",
+      "discussions": "https://governance.aave.com/t/request-for-approval-aave-starkware-phase-i/7145#payments-8",
+      "created": "2022-07-01T00:00:00.000Z",
+      "preview": "## Simple Summary\n\nAave <> Starknet Phase I was approved by the Aave …",
+      "basename": "541C8BE22C02-AIP-AAVE_STARKNET_PHASE_I_PART2",
+      "description": "\n\n## Simple Summary\n\nAave <> Starknet Phase I was approved by the Aave community with 2 payment tranches. This proposal releases the second payment tranche of 92'500 USDC.\n\n## Abstract\n\nBack in February 26th, the Aave community approved both on [Snapshot](https://snapshot.org/#/aave.eth/proposal/0x56eb24ad5e2811990899653155caee022a80f3800e51b2b37ecc9254a0a51335) and [on-chain governance](https://app.aave.com/governance/proposal/61/) the execution of the Aave <> Starknet Phase I project, with a planned budget of 192'500 USD to be released from the Aave DAO.\n\nWith the project almost ready for delivery as described in the last update [HERE](https://governance.aave.com/t/request-for-approval-aave-starkware-phase-i/7145/20), it is the moment now to request for the release of the second tranche of payment, accounting for 92'500 USDC and to be used to cover the rest of expenses of the project.\n\n## Relevant links\n\n- Thread of the Aave <> Starknet Phase I project: [https://governance.aave.com/t/request-for-approval-aave-starkware-phase-i/7145](https://governance.aave.com/t/request-for-approval-aave-starkware-phase-i/7145)\n\n- Definition of payment schedule: [https://governance.aave.com/t/request-for-approval-aave-starkware-phase-i/7145#payments-8](https://governance.aave.com/t/request-for-approval-aave-starkware-phase-i/7145#payments-8)\n\n- Snapshot approval of the project: [https://snapshot.org/#/aave.eth/proposal/0x56eb24ad5e2811990899653155caee022a80f3800e51b2b37ecc9254a0a51335](https://snapshot.org/#/aave.eth/proposal/0x56eb24ad5e2811990899653155caee022a80f3800e51b2b37ecc9254a0a51335)\n\n- On-chain governance approval of the project: [https://app.aave.com/governance/proposal/61/](https://app.aave.com/governance/proposal/61/)\n\n## Implementation\n\nThis proposal exclusively releases 92'500 USDC from the Aave V2 Ethereum collector, to the account receiving the funds on behalf of the Aave <> Starknet project.\n\nThe implementation can be found on [https://github.com/eboadom/aip-aave-starknet-phase1-part2/blob/main/src/contracts/PayloadAaveStarknetPhaseIPart2.sol](https://github.com/eboadom/aip-aave-starknet-phase1-part2/blob/main/src/contracts/PayloadAaveStarknetPhaseIPart2.sol)\n\nSimple tests can be found on [https://github.com/eboadom/aip-aave-starknet-phase1-part2/blob/main/test/PayloadAaveStarknetPhaseIPart2.t.sol](https://github.com/eboadom/aip-aave-starknet-phase1-part2/blob/main/test/PayloadAaveStarknetPhaseIPart2.t.sol)\n\n**Target Contracts**\n\nPayloadAaveStarknetPhaseIPart2 = [https://etherscan.io/address/0x0e06e1618e11ae602539b8d70fb6b611272d8a71#code](\nhttps://etherscan.io/address/0x0e06e1618e11ae602539b8d70fb6b611272d8a71#code)\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "QmTDH2nsmCJsh2NHJG2GiZS7p17gzo9x8RT6zgeFGfj2nC",
+      "originalHash": "0x4866db95bac1722f825c8eaaebc47409068cc7075e6dda228effe10a71ac47b1",
+      "id": 85
     }
   ]
 }
