@@ -31,6 +31,7 @@ export const EmodeSelect = ({
         value={selectedEmode}
         onChange={(e) => setSelectedEmode(emodeCategories[Number(e.target.value)])}
         className="EmodeSelect"
+        data-cy="EmodeSelect"
         sx={{
           width: '100%',
           height: '44px',
@@ -79,7 +80,7 @@ export const EmodeSelect = ({
             }}
           >
             {emodeCategories[Number(categoryKey)].id === 0 ? (
-              <Typography color="text.primary">
+              <Typography color="text.primary" data-cy="disableEmode">
                 E-Mode <Trans>disabled</Trans>
               </Typography>
             ) : (

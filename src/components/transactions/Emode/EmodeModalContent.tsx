@@ -191,7 +191,7 @@ export const EmodeModalContent = () => {
         </Alert>
       )}
 
-      {Object.keys(emodeCategories).length > 2 && user.userEmodeCategoryId === 0 && (
+      {Object.keys(emodeCategories).length > 2 && (
         <EmodeSelect
           emodeCategories={emodeCategories}
           selectedEmode={selectedEmode?.id || 0}

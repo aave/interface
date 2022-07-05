@@ -487,8 +487,10 @@ export const changeCollateralNegative = (
 export const emodeActivating = (
   {
     turnOn,
+    multipleEmodes,
   }: {
     turnOn: boolean;
+    multipleEmodes?: boolean;
   },
   skip: SkipType,
   updateSkipStatus = false
@@ -500,6 +502,11 @@ export const emodeActivating = (
       cy.get('[data-cy=emode-open]').click();
       if (turnOn) cy.get(`[data-cy="emode-enable"]`).click();
       else cy.get(`[data-cy="emode-disable"]`).click();
+
+      if (!turnOn && multipleEmodes) {
+        cy.get('[data-cy=EmodeSelect]').click();
+        cy.get(`[data-cy="disableEmode"]`).click();
+      }
     });
     it(`${turnOn ? 'Turn on E-mode' : 'Turn off E-mode'}`, () => {
       const actionName = turnOn ? 'Enable E-Mode' : 'Disable E-Mode';
