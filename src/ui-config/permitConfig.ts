@@ -115,14 +115,4 @@ export const permitByChainAndToken: {
   [ChainId.optimism]: {
     '0x76FB31fb4af56892A25e32cFC43De717950c9278': false, // AAVE
   },
-  [ChainId.optimism_kovan]: {
-    '0xb532118d86765Eb544958e47df77bb8bDDe2F096': true,
-    '0xd6B095c27bDf158C462AaB8Cb947BdA9351C0e1d': true,
-    '0xFbBCcCCA95b5F676D8f044Ec75e7eA5899280efF': true,
-    '0x6883D765088f90bAE62048dE45f2202D72985B01': true,
-    '0x9cCc44Aa7C301b6655ec9891BdaD20fa6eb2b552': true,
-    '0xeE6b5ad81c7d88a632b24Bcdac055D6f5F469495': true,
-    '0xfF5b900f020d663719EEE1731C21778632e6C424': true,
-    '0x46e213C62d4734C64986879af00eEc5128395776': true,
-  },
 };

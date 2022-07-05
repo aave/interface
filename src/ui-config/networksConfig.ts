@@ -292,26 +292,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       url: 'https://app.optimism.io/bridge',
     },
   },
-  [ChainId.optimism_kovan]: {
-    name: 'Optimism Testnet',
-    publicJsonRPCUrl: ['https://kovan.optimism.io'],
-    publicJsonRPCWSUrl: 'wss://ws-kovan.optimism.io',
-    // protocolDataUrl: '',
-    baseUniswapAdapter: '0x0',
-    baseAssetSymbol: 'ETH', // KOR
-    wrappedBaseAssetSymbol: 'WETH',
-    baseAssetDecimals: 18,
-    explorerLink: 'https://kovan-optimistic.etherscan.io',
-    // rpcOnly: true,
-    // usdMarket: true,
-    isTestnet: true,
-    networkLogoPath: '/icons/networks/optimism.svg',
-    bridge: {
-      icon: '/icons/bridge/optimism.svg',
-      name: 'Optimism Bridge',
-      url: 'https://app.optimism.io/bridge',
-    },
-  },
   [ChainId.fantom]: {
     name: 'Fantom',
     publicJsonRPCUrl: ['https://rpc.ftm.tools'],

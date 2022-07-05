@@ -59,7 +59,6 @@ export enum CustomMarket {
   proto_fantom_testnet_v3 = 'proto_fantom_testnet_v3',
   proto_harmony_testnet_v3 = 'proto_harmony_testnet_v3',
   proto_fuji_v3 = 'proto_fuji_v3',
-  proto_optimism_kovan_v3 = 'proto_optimism_kovan_v3',
   proto_ropsten_v3 = 'proto_ropsten_v3',
   proto_goerli_v3 = 'proto_goerli_v3',
   // v3 mainnets
@@ -483,25 +482,6 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: '0x64f558d4BFC1c03a8c8B2ff84976fF04c762b51f',
       UI_INCENTIVE_DATA_PROVIDER: '0x6dD4b295B457A26CC2646aAf2519436681afb5d4',
       L2_ENCODER: '0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC',
-    },
-  },
-  [CustomMarket.proto_optimism_kovan_v3]: {
-    marketTitle: 'Optimism Kovan',
-    v3: true,
-    chainId: ChainId.optimism_kovan,
-    enabledFeatures: {
-      faucet: true,
-      incentives: true,
-    },
-    rpcOnly: true,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0xD15d36975A0200D11B8a8964F4F267982D2a1cFe'.toLowerCase(),
-      LENDING_POOL: '0x139d8F557f70D1903787e929D7C42165c4667229',
-      WETH_GATEWAY: '0x698851Fc324Ff9572289Dd72dfC102DB778b52f1',
-      FAUCET: '0xed97140B58B97FaF70b70Ae26714Aa59705c74aE',
-      WALLET_BALANCE_PROVIDER: '0xA8751C0e2383cE144a95386A2E30f7E2BD78236C',
-      UI_POOL_DATA_PROVIDER: '0xBCb61ecc7997cc736E4802de2D5ce76D0908C97c',
-      UI_INCENTIVE_DATA_PROVIDER: '0xe2E3a30E77469397dc3CF74f1Fa35f39493207C2',
     },
   },
   [CustomMarket.proto_polygon_v3]: {
