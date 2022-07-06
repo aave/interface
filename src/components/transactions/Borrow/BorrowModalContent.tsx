@@ -13,7 +13,6 @@ import { Row } from 'src/components/primitives/Row';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
 
 import { CapType } from '../../caps/helper';
@@ -96,7 +95,6 @@ const BorrowModeSwitch = ({
 };
 
 export const BorrowModalContent = ({
-  underlyingAsset,
   isWrongNetwork,
   poolReserve,
   userReserve,
@@ -194,11 +192,11 @@ export const BorrowModalContent = ({
   };
 
   // token info to add to wallet
-  const addToken: ERC20TokenType = {
-    address: underlyingAsset,
-    symbol: poolReserve.iconSymbol,
-    decimals: poolReserve.decimals,
-  };
+  // const addToken: ERC20TokenType = {
+  //   address: underlyingAsset,
+  //   symbol: poolReserve.iconSymbol,
+  //   decimals: poolReserve.decimals,
+  // };
 
   if (borrowTxState.success)
     return (
@@ -206,7 +204,6 @@ export const BorrowModalContent = ({
         action={<Trans>Borrowed</Trans>}
         amount={amountRef.current}
         symbol={poolReserve.symbol}
-        addToken={addToken}
       />
     );
 

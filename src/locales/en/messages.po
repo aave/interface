@@ -1746,8 +1746,8 @@ msgstr "Vote YAE"
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
-#: src/modules/governance/VotingPowerInfoPanel.tsx
 #: src/modules/governance/proposal/VoteInfo.tsx
+#: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Voting power"
 msgstr "Voting power"
 
