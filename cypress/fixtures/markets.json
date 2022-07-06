@@ -1,4 +1,44 @@
 {
+  "ETHRinkebyeV3Market": {
+    "name": "Ethereum",
+    "version": "v3",
+    "dataCy": "marketSelector_proto_eth_rinkeby_v3"
+  },
+  "RopstenV3Market": {
+    "name": "Ethereum",
+    "version": "v3",
+    "dataCy": "marketSelector_proto_ropsten_v3"
+  },
+  "ArbitrumV3Market": {
+    "name": "Arbitrum",
+    "version": "v3",
+    "dataCy": "marketSelector_proto_arbitrum_rinkeby_v3"
+  },
+  "AvalancheFujiV3Market": {
+    "name": "Avalanche",
+    "version": "v3",
+    "dataCy": "marketSelector_proto_fuji_v3"
+  },
+  "FantomTestnetV3Market": {
+    "name": "Fantom",
+    "version": "v3",
+    "dataCy": "marketSelector_proto_fantom_testnet_v3"
+  },
+   "HarmonyTestNetV3Market": {
+    "name": "Harmony",
+    "version": "v3",
+    "dataCy": "marketSelector_proto_harmony_testnet_v3"
+  }, 
+  "OptimismKovanV3Market": {
+    "name": "Optimism",
+    "version": "v3",
+    "dataCy": "marketSelector_proto_optimism_kovan_v3"
+  },
+  "PolygonMumbaiV3Market": {
+    "name": "Polygon",
+    "version": "v3",
+    "dataCy": "marketSelector_proto_mumbai_v3"
+  },
   "EthereumKovanV2Market": {
     "name": "Ethereum",
     "version": "v2",
@@ -18,45 +58,5 @@
     "name": "Avalanche",
     "version": "v2",
     "dataCy": "marketSelector_proto_fuji"
-  },
-    "ETHRinkebyeV3Market": {
-        "name": "Ethereum",
-        "version": "v3",
-        "dataCy": "marketSelector_proto_eth_rinkeby_v3"
-      },
-      "RopstenV3Market": {
-        "name": "Ethereum",
-        "version": "v3",
-        "dataCy": "marketSelector_proto_ropsten_v3"
-      },
-      "ArbitrumV3Market": {
-        "name": "Arbitrum",
-        "version": "v3",
-        "dataCy": "marketSelector_proto_arbitrum_rinkeby_v3"
-      },
-      "AvalancheFujiV3Market": {
-        "name": "Avalanche",
-        "version": "v3",
-        "dataCy": "marketSelector_proto_fuji_v3"
-      },
-      "FantomTestnetV3Market": {
-        "name": "Fantom",
-        "version": "v3",
-        "dataCy": "marketSelector_proto_fantom_testnet_v3"
-      },
-       "HarmonyTestNetV3Market": {
-        "name": "Harmony",
-        "version": "v3",
-        "dataCy": "marketSelector_proto_harmony_testnet_v3"
-      }, 
-      "OptimismKovanV3Market": {
-        "name": "Optimism",
-        "version": "v3",
-        "dataCy": "marketSelector_proto_optimism_kovan_v3"
-      },
-      "PolygonMumbaiV3Market": {
-        "name": "Polygon",
-        "version": "v3",
-        "dataCy": "marketSelector_proto_mumbai_v3"
-      }
+  }
 }

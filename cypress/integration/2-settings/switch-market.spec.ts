@@ -15,16 +15,15 @@ export const switchToTestNet = () => {
   cy.get('#settings-button').click();
   cy.contains('Testnet mode').click();
 };
-export const switchToV3Markets = () => {
+export const switchToV2Markets = () => {
   cy.get('#mui-3').click();
-  cy.contains('Version 3').click();
-  cy.get(`[data-cy="marketSelector_proto_eth_rinkeby_v3"]`).click();
+  cy.contains('Version 2').click();
+  cy.get(`[data-cy="marketSelector_proto_kovan"]`).click();
 };
-export const switchMarket = (market) => {
-  if (market.version == 'v3') {
-    //switch to V3
+export const switchMarket = (markets) => {
+  if (markets.version == 'v2') {
+    switchToV2Markets();
   } else {
-    //switch to V2
   }
 };
 
@@ -38,7 +37,7 @@ describe('Change markets', () => {
   Object.entries(markets).forEach(([keyTo, valueTo]) => {
     describe(`Switching market to ${keyTo}`, () => {
       it(`step1: Change the network to ${valueTo.name}`, () => {
-        switchMarket();
+        switchMarket(valueTo);
         changeNetwork(valueTo.dataCy);
       });
       checkNameOfNetwork(valueTo.name);
