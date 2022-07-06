@@ -1,3 +1,4 @@
+import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -9,6 +10,7 @@ import {
 } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import CustomPVEWidget from 'src/components/CustomVYPSWidget';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -95,6 +97,7 @@ export default function ReserveOverview() {
           </Box>
         </Box>
       </ContentContainer>
+      <CustomPVEWidget allowedChainIDs={[ChainId.mainnet]} token={reserve?.symbol} />
     </>
   );
 }
