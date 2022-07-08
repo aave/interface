@@ -1257,6 +1257,20 @@
       "ipfsHash": "QmTDH2nsmCJsh2NHJG2GiZS7p17gzo9x8RT6zgeFGfj2nC",
       "originalHash": "0x4866db95bac1722f825c8eaaebc47409068cc7075e6dda228effe10a71ac47b1",
       "id": 85
+    },
+    {
+      "title": "Bounty to Hacxyk for fallback oracle misconfiguration",
+      "status": "Proposed",
+      "author": "BGD Labs (@bgdlabs)",
+      "shortDescription": "Releases the bug bounty payment to the Hacxyk team for their finding on the fallback oracle of Aave v3",
+      "discussions": "https://governance.aave.com/t/bgd-proposal-for-bounty-fallback-oracle-misconfiguration/8421",
+      "created": "2022-07-05T00:00:00.000Z",
+      "preview": "## Simple Summary\n\nThis proposal releases the 50'000 USDC …",
+      "basename": "8EB7754E04CE-AIP-BOUNTY-TO-HACXYK-FALLBACK-ORACLE",
+      "description": "\n\n## Simple Summary\n\nThis proposal releases the 50'000 USDC pre-approved by the Aave community on forum and Snapshot to the Hacxyc team, for their finding concerning a misconfiguration on Aave v3 fallback oracle.\n\n## Abstract\n\nDuring the past month of April, the security firm Hacxyk disclosed to the Aave community a misconfiguration on the fallback oracle used for Aave v3 pools across markets.\nThis disclosure was analysed from a technical perspective and a bounty proposed to the Aave community to approve [HERE](https://governance.aave.com/t/bgd-proposal-for-bounty-fallback-oracle-misconfiguration/8421).\nAfter having support in both forum and Snapshot, this on-chain proposal will release the pre-approved 50'000 USDC to Hacxyk.\n\n\n## Relevant links\n\n- Governance discussion: [https://governance.aave.com/t/bgd-proposal-for-bounty-fallback-oracle-misconfiguration/8421](https://governance.aave.com/t/bgd-proposal-for-bounty-fallback-oracle-misconfiguration/8421)\n\n- Snapshot vote: [https://snapshot.org/#/aave.eth/proposal/0xb4886ff25f454773a779be3627863181ec7dbe1fb6b6e631678610dbe3f03a88](https://snapshot.org/#/aave.eth/proposal/0xb4886ff25f454773a779be3627863181ec7dbe1fb6b6e631678610dbe3f03a88)\n\n## Implementation\n\nThis proposal exclusively releases 50'000 USDC from the Aave V2 Ethereum collector, to the Ethereum account provided by the Hacxyk team.\n\nThe implementation can be found on [https://github.com/bgd-labs/aip-hacxyk-bug-bounty/blob/main/src/contracts/PayloadBountyHacxykFallbackOracle.sol](https://github.com/bgd-labs/aip-hacxyk-bug-bounty/blob/main/src/contracts/PayloadBountyHacxykFallbackOracle.sol)\n\nSimple tests can be found on [https://github.com/bgd-labs/aip-hacxyk-bug-bounty/blob/main/test/PayloadBountyHacxykFallbackOracle.t.sol](https://github.com/bgd-labs/aip-hacxyk-bug-bounty/blob/main/test/PayloadBountyHacxykFallbackOracle.t.sol)\n\n**Target Contracts**\n\nPayloadBountyHacxykFallbackOracle = [https://etherscan.io/address/0xF4294973B7E6F6C411dD8A388592E7c7D32F2486#code](\nhttps://etherscan.io/address/0xF4294973B7E6F6C411dD8A388592E7c7D32F2486#code)\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "QmcpAZfpiaWmLhfUFg9PyrT4AvzVBBV5hH6SJMyMrrwgbN",
+      "originalHash": "0xd7100e323d90e31a5af8b57d1ab43180ab1ffb8c7a3a53daa311bfe909fff365",
+      "id": 86
     }
   ]
 }
