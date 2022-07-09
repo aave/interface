@@ -31128,6 +31128,60 @@
         "transactionHash": "0x58109f3fee4d069bbe8f60357a1a25c00a5995e603c185b273cfe866aa95c3f4",
         "timestamp": 1657368417,
         "blockNumber": 15108239
+      },
+      {
+        "proposalId": 86,
+        "voter": "0x9CB0525D06c14aA22c18414dC6EE4Cf4edb27566",
+        "support": true,
+        "votingPower": 0.11,
+        "transactionHash": "0xf24f4fbc5501b2b0b3377e27cc29eee8aa6b376d73c3b0bfab2a3bf441d1298a",
+        "timestamp": 1657372270,
+        "blockNumber": 15108542
+      },
+      {
+        "proposalId": 86,
+        "voter": "0xEAA6A500543581753eF27d1Def789458B3b102aD",
+        "support": true,
+        "votingPower": 0.1,
+        "transactionHash": "0x31c5b56d8ec896c947c2e9b550990ab5e34253d84f79b33d1ccd850c2da2c8f7",
+        "timestamp": 1657372371,
+        "blockNumber": 15108555
+      },
+      {
+        "proposalId": 86,
+        "voter": "0x7bFEeF335b5F0BfA62fdCD9Ce718B469eB7C310f",
+        "support": true,
+        "votingPower": 0.22,
+        "transactionHash": "0x300297d0e80a4e22f6bd53c904328ad372233e5b8dfd5bc76db1c6fef9e58a52",
+        "timestamp": 1657372410,
+        "blockNumber": 15108561
+      },
+      {
+        "proposalId": 86,
+        "voter": "0x6488ea4A5177ADC1B150BB7C13944Ed3AB6A85a6",
+        "support": true,
+        "votingPower": 20,
+        "transactionHash": "0x5ed9fc87180b2fcd92da13f21d879e30dc66c5506170f2ba5994e1b237a6f8a3",
+        "timestamp": 1657373415,
+        "blockNumber": 15108651
+      },
+      {
+        "proposalId": 86,
+        "voter": "0x99e284aB353E12bF709E6f03f90543e574364101",
+        "support": true,
+        "votingPower": 1.6255932083263307,
+        "transactionHash": "0x9a2faaa7e610ce270ddc370955b99ec2a5f20889995d6f9622b289466d9ff8c1",
+        "timestamp": 1657373481,
+        "blockNumber": 15108659
+      },
+      {
+        "proposalId": 86,
+        "voter": "0xFaee4eDdD05510bBfBfC9142e20d03F8C7595B00",
+        "support": true,
+        "votingPower": 28.684627520617788,
+        "transactionHash": "0x9cff1eb37a20d5b073104824f7f11f6fc818fb54c63491697f22d65e9a59d300",
+        "timestamp": 1657373548,
+        "blockNumber": 15108662
       }
     ],
     "finished": false
