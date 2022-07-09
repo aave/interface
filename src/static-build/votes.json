@@ -30849,6 +30849,60 @@
         "transactionHash": "0x1368e6df9f2d3c5167f5568d281dab1f31ce62e6be16407d92f4e6e5aa134e33",
         "timestamp": 1657311710,
         "blockNumber": 15104085
+      },
+      {
+        "proposalId": 86,
+        "voter": "0xc21611A12525D3aB940c339b8aE4C4BE5865B6a2",
+        "support": true,
+        "votingPower": 0.11382236582795392,
+        "transactionHash": "0x31a8cfc98bb1b42833c97441e4325dd5429ca7780426129233157bad4c5e31af",
+        "timestamp": 1657324541,
+        "blockNumber": 15105056
+      },
+      {
+        "proposalId": 86,
+        "voter": "0x40Cb0B19D71Eda986C275c85A6e5b26b6AC7E2E4",
+        "support": true,
+        "votingPower": 0.09511727369202091,
+        "transactionHash": "0xc17acc81b19e970285e10e367dc3b500e1e26903cbee674a716447191a0ddf28",
+        "timestamp": 1657325199,
+        "blockNumber": 15105106
+      },
+      {
+        "proposalId": 86,
+        "voter": "0xBCCb2e1B4292D4DBb3F6A4C257BB5ec9bfC69fdA",
+        "support": true,
+        "votingPower": 0.22967136007561578,
+        "transactionHash": "0xffc78afbc5c40dac0624fbcb2a5b53fbcc466cd2f18aef9934b0386407a794ab",
+        "timestamp": 1657326680,
+        "blockNumber": 15105212
+      },
+      {
+        "proposalId": 86,
+        "voter": "0x7ADbD800d49D2A75A736c97CD32b1B9AEEC3D24F",
+        "support": true,
+        "votingPower": 0.14847450883246788,
+        "transactionHash": "0x3c8a86a6c381d04a88dced32fa3501d121a62174b7db531994198ed15a010f0c",
+        "timestamp": 1657327555,
+        "blockNumber": 15105294
+      },
+      {
+        "proposalId": 86,
+        "voter": "0x8755f08374bB0bc598681C324913CBde3283AC18",
+        "support": true,
+        "votingPower": 0.3194277316688895,
+        "transactionHash": "0xe11779332db30adf551eb3239c67794da535a846081d65ac777d7bfd0a23aaef",
+        "timestamp": 1657327884,
+        "blockNumber": 15105314
+      },
+      {
+        "proposalId": 86,
+        "voter": "0xBD90F0243173E91385224a8117212d17C2E9e494",
+        "support": true,
+        "votingPower": 0.022079767861370916,
+        "transactionHash": "0x8e5ce7f2f107a4ec5dde03bb8cd0ddaf16cc0c6cac4ccc83ecd211c85c8c1521",
+        "timestamp": 1657329345,
+        "blockNumber": 15105419
       }
     ],
     "finished": false
