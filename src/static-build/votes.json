@@ -31263,6 +31263,15 @@
         "transactionHash": "0x623fde1f6708f615c8a655f809a83db6e5d4447bf3fca87ef1e20dccbd6972f7",
         "timestamp": 1657395968,
         "blockNumber": 15110358
+      },
+      {
+        "proposalId": 86,
+        "voter": "0xa178F4062887800d28580414bE2132c640C4aec6",
+        "support": true,
+        "votingPower": 0.5166259470788541,
+        "transactionHash": "0x017c95fba818b93fe531a3df9f0115b1fba85610d10a3d74c09cdf10d0c8eaed",
+        "timestamp": 1657411934,
+        "blockNumber": 15111537
       }
     ],
     "finished": false
