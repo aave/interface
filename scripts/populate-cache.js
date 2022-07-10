@@ -48133,7 +48133,7 @@ var require_unfetch = __commonJS({
     module2.exports = function(e, n) {
       return n = n || {}, new Promise(function(t, r) {
         var s = new XMLHttpRequest(), o = [], u = [], i = {}, a = function() {
-          return { ok: (s.status / 100 | 0) == 2, statusText: s.statusText, status: s.status, url: s.responseURL, text: function() {
+          return { ok: 2 == (s.status / 100 | 0), statusText: s.statusText, status: s.status, url: s.responseURL, text: function() {
             return Promise.resolve(s.responseText);
           }, json: function() {
             return Promise.resolve(s.responseText).then(JSON.parse);
@@ -48153,7 +48153,7 @@ var require_unfetch = __commonJS({
           s.getAllResponseHeaders().replace(/^(.*?):[^\S\n]*([\s\S]*?)$/gm, function(e2, n2, t2) {
             o.push(n2 = n2.toLowerCase()), u.push([n2, t2]), i[n2] = i[n2] ? i[n2] + "," + t2 : t2;
           }), t(a());
-        }, s.onerror = r, s.withCredentials = n.credentials == "include", n.headers)
+        }, s.onerror = r, s.withCredentials = "include" == n.credentials, n.headers)
           s.setRequestHeader(l, n.headers[l]);
         s.send(n.body || null);
       });
