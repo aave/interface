@@ -3,6 +3,8 @@ import { normalizeBN } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
+// The implementation replicates the validation in https://github.com/aave/governance-v2/blob/master/contracts/governance/ProposalValidator.sol#L17
+// 10000 in % calculations corresponds to 100 with 2 decimals precision
 export function formatProposal(proposal: Omit<Proposal, 'values'>) {
   const allVotes = new BigNumber(proposal.forVotes).plus(proposal.againstVotes);
   const yaePercent = allVotes.gt(0)
