@@ -138,24 +138,6 @@ export default function Staking() {
                   onUnstakeAction={() => openUnstake('bpt', 'stkBPT')}
                   onStakeRewardClaimAction={() => openStakeRewardsClaim('bpt')}
                   headerAction={<GetABPToken />}
-                  description={
-                    <Typography color="text.muted" sx={{ mt: 4 }} variant="caption">
-                      <Trans>
-                        The Balancer Pool Token (BPT) is a liquidity pool token. You can receive BPT
-                        by depositing a combination of AAVE + ETH in the{' '}
-                        <Link
-                          href="https://pools.balancer.exchange/#/pool/0xc697051d1c6296c24ae3bcef39aca743861d9a81/about"
-                          variant="caption"
-                          color="text.muted"
-                          sx={{ textDecoration: 'underline' }}
-                        >
-                          Balancer liquidity pool
-                        </Link>
-                        . You can then stake your BPT in the Safety Module to secure the protocol
-                        and earn Safety Incentives.
-                      </Trans>
-                    </Typography>
-                  }
                 />
               </Grid>
             </Grid>
