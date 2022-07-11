@@ -56,6 +56,7 @@ export interface StakingPanelProps {
   stakeData?: StakeGeneralData;
   stakeUserData?: StakeUserData;
   description?: React.ReactNode;
+  headerAction?: React.ReactNode;
   ethUsdPrice?: string;
   stakeTitle: string;
   stakedToken: string;
@@ -71,6 +72,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   stakeTitle,
   stakedToken,
   description,
+  headerAction,
   icon,
   stakeData,
   stakeUserData,
@@ -122,9 +124,12 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
 
   return (
     <Paper sx={{ p: { xs: 4, xsm: 6 }, pt: 4, height: '100%' }}>
-      <Typography variant="h3" mb={8} sx={{ display: { xs: 'none', xsm: 'block' } }}>
-        <Trans>Stake</Trans> {stakeTitle}
-      </Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 8 }}>
+        <Typography variant="h3" sx={{ display: { xs: 'none', xsm: 'block' }, mr: 3 }}>
+          <Trans>Stake</Trans> {stakeTitle}
+        </Typography>
+        {headerAction && headerAction}
+      </Box>
 
       <Box
         sx={(theme) => ({

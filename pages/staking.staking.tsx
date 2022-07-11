@@ -12,6 +12,7 @@ import { BigNumber } from 'ethers/lib/ethers';
 import { formatEther } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { ContentContainer } from 'src/components/ContentContainer';
+import { GetABPToken } from 'src/modules/staking/GetABPToken';
 import { StakeModal } from 'src/components/transactions/Stake/StakeModal';
 import { StakeCooldownModal } from 'src/components/transactions/StakeCooldown/StakeCooldownModal';
 import { StakeRewardClaimModal } from 'src/components/transactions/StakeRewardClaim/StakeRewardClaimModal';
@@ -136,6 +137,7 @@ export default function Staking() {
                   onCooldownAction={() => openStakeCooldown('bpt')}
                   onUnstakeAction={() => openUnstake('bpt', 'stkBPT')}
                   onStakeRewardClaimAction={() => openStakeRewardsClaim('bpt')}
+                  headerAction={<GetABPToken />}
                   description={
                     <Typography color="text.muted" sx={{ mt: 4 }} variant="caption">
                       <Trans>
