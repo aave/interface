@@ -34,7 +34,7 @@ const testData = {
   },
 };
 
-describe.skip('CRITICAL CONDITIONS SPEC, FANTOM V3 MARKET', () => {
+describe('CRITICAL CONDITIONS SPEC, FANTOM V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyFantomFork({ v3: true });
 
