@@ -25,7 +25,6 @@ import { StakingPanel } from 'src/modules/staking/StakingPanel';
 import { StakeTxBuilderProvider } from 'src/providers/StakeTxBuilderProvider';
 
 import { ConnectWalletPaper } from '../src/components/ConnectWalletPaper';
-import { Link } from '../src/components/primitives/Link';
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 
 export default function Staking() {
