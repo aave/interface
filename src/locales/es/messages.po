@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-07-05 12:06\n"
+"PO-Revision-Date: 2022-07-12 18:10\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -98,12 +98,12 @@ msgid "Action requires an active reserve"
 msgstr "La acción requiere una reserva activa"
 
 #: src/components/transactions/FlowCommons/Success.tsx
-msgid "Add aToken to the wallet to track your supply balance."
-msgstr "Añade aToken a la cartera para rastrear tu saldo de suministro."
-
-#: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add to wallet"
 msgstr "Añadir a la cartera"
+
+#: src/components/transactions/FlowCommons/Success.tsx
+msgid "Add {0} to wallet to track your balance."
+msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "Address is not a contract"
