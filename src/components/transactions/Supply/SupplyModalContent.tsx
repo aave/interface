@@ -5,7 +5,7 @@ import {
   valueToBigNumber,
 } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
+import { Link, Typography, Alert } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import React, { useRef, useState } from 'react';
 import { CollateralType } from 'src/helpers/types';
@@ -219,6 +219,17 @@ export const SupplyModalContent = ({
         poolReserve.symbol === 'AAVE' &&
         isFeatureEnabled.staking(currentMarketData) && <AAVEWarning />}
       {poolReserve.symbol === 'SNX' && !maxAmountToSupply.eq('0') && <SNXWarning />}
+      {currentNetworkConfig.name === 'Harmony' && (
+        <Alert severity="error">
+          Placeholder text.{' '}
+          <Link
+            href="https://governance.aave.com/t/harmony-horizon-bridge-exploit-consequences-to-aave-v3-harmony/8614"
+            target="_blank"
+          >
+            Learn More
+          </Link>
+        </Alert>
+      )}
 
       <AssetInput
         value={amount}
