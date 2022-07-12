@@ -32,7 +32,7 @@ export const GetAPBTokenModal = ({ open, close }: GetAPBTokenModalProps) => (
       }
       fullWidth
       sx={{ display: 'flex', justifyContent: 'space-between' }}
-      href="https://balancer.fi/"
+      href="https://pools.balancer.exchange/#/pool/0xc697051d1c6296c24ae3bcef39aca743861d9a81/"
       target="_blank"
       rel="noopener"
     >
