@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-07-01 00:19\n"
+"PO-Revision-Date: 2022-07-12 18:10\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -98,11 +98,11 @@ msgid "Action requires an active reserve"
 msgstr "L'action nécessite une réserve active"
 
 #: src/components/transactions/FlowCommons/Success.tsx
-msgid "Add aToken to the wallet to track your supply balance."
+msgid "Add to wallet"
 msgstr ""
 
 #: src/components/transactions/FlowCommons/Success.tsx
-msgid "Add to wallet"
+msgid "Add {0} to wallet to track your balance."
 msgstr ""
 
 #: src/ui-config/errorMapping.tsx
