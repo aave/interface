@@ -50,6 +50,8 @@ type UseSwapProps = {
 
 const MESSAGE_MAP = {
   ESTIMATED_LOSS_GREATER_THAN_MAX_IMPACT: 'Price impact to high',
+  // not sure why this error-code is not upper-cased
+  'No routes found with enough liquidity': 'No routes found with enough liquidity',
 };
 
 export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }: UseSwapProps) => {
@@ -105,6 +107,7 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }
       setPriceRoute(response as OptimalRate);
     } catch (e) {
       console.log(e);
+      console.log(e.message);
       const message = (MESSAGE_MAP as { [key: string]: string })[e.message];
       setError(message || 'There was an issue fetching data from Paraswap');
     }
