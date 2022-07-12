@@ -7,7 +7,7 @@ export const VariableAPYTooltip = ({ ...rest }: TextWithTooltipProps) => {
     <TextWithTooltip {...rest}>
       <Trans>
         Variable interest rate will <b>fluctuate</b> based on the market conditions. Recommended for
-        short-term loans.
+        short-term positions.
       </Trans>
     </TextWithTooltip>
   );
