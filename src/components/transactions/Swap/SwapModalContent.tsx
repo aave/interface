@@ -4,7 +4,7 @@ import {
   useAppDataContext,
 } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { SwapActions } from './SwapActions';
-import { ToggleButton, ToggleButtonGroup, Typography, Box } from '@mui/material';
+import { ToggleButton, ToggleButtonGroup, Typography, Box, SvgIcon } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -26,6 +26,9 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { calculateHFAfterSwap } from 'src/utils/hfUtils';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { ErrorType, flashLoanNotAvailable, useFlashloan } from '../utils';
+import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
+import { SwitchVerticalIcon } from '@heroicons/react/outline';
+import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
 
 export type SupplyProps = {
   underlyingAsset: string;
@@ -184,63 +187,62 @@ export const SwapModalContent = ({
           },
         ]}
         maxValue={maxAmountToSwap}
+        inputTitle={<Trans>Supplied asset amount</Trans>}
+        balanceText="Supply balance"
         isMaxSelected={isMaxSelected}
       />
+      <Box sx={{ padding: '18px', pt: '14px', display: 'flex', justifyContent: 'space-between' }}>
+        <SvgIcon sx={{ fontSize: '18px !important' }}>
+          <SwitchVerticalIcon />
+        </SvgIcon>
+
+        <PriceImpactTooltip
+          text={
+            <Trans>
+              Price impact{' '}
+              <FormattedNumber value={priceImpact} variant="secondary12" color="text.secondary" />%
+            </Trans>
+          }
+          variant="secondary14"
+        />
+      </Box>
       <AssetInput
         value={outputAmount}
         onSelect={setTargetReserve}
         usdValue={outputAmountUSD}
         symbol={targetReserve.symbol}
         assets={swapTargets}
+        inputTitle={<Trans>Swap to</Trans>}
         disableInput
       />
-      <Box
-        sx={{
-          bgcolor: 'background.default',
-          border: '1px solid rgba(56, 61, 81, 0.12)',
-          borderRadius: '4px',
-          padding: '8px 16px',
-          mt: 6,
-        }}
-      >
-        <Row caption={<Trans>Price impact</Trans>} captionVariant="subheader1">
-          <FormattedNumber value={priceImpact} variant="secondary14" percent />
-        </Row>
-        <Row caption={<Trans>Minimum received</Trans>} captionVariant="subheader1" sx={{ mt: 4 }}>
-          <FormattedNumber
-            value={minimumReceived}
-            variant="secondary14"
-            symbol={swapTarget.symbol}
-          />
-        </Row>
-        <Typography variant="description" sx={{ mt: 4 }}>
-          <Trans>Max slippage rate</Trans>
-        </Typography>
-        <ToggleButtonGroup
-          sx={{ mt: 2 }}
-          value={maxSlippage}
-          onChange={(_e, value) => setMaxSlippage(value)}
-          exclusive
-        >
-          <ToggleButton value="0.1" sx={{ minWidth: '74px' }}>
-            <Typography variant="secondary14">0.1%</Typography>
-          </ToggleButton>
-          <ToggleButton value="0.5" sx={{ minWidth: '74px' }}>
-            <Typography variant="secondary14">0.5%</Typography>
-          </ToggleButton>
-          <ToggleButton value="1" sx={{ minWidth: '74px' }}>
-            <Typography variant="secondary14">1%</Typography>
-          </ToggleButton>
-        </ToggleButtonGroup>
-      </Box>
+
       {blockingError !== undefined && (
         <Typography variant="helperText" color="error.main">
           {handleBlocked()}
         </Typography>
       )}
-      <TxModalDetails gasLimit={gasLimit}>
+
+      <TxModalDetails
+        gasLimit={gasLimit}
+        slippageSelector={
+          <ListSlippageButton selectedSlippage={maxSlippage} setSlippage={setMaxSlippage} />
+        }
+      >
+        {showHealthFactor && (
+          <DetailsHFLine
+            visibleHfChange={!!_amount}
+            healthFactor={user.healthFactor}
+            futureHealthFactor={hfAfterSwap.toString(10)}
+          />
+        )}
         <DetailsNumberLine
           description={<Trans>Supply apy</Trans>}
+          value={poolReserve.supplyAPY}
+          futureValue={swapTarget.supplyAPY}
+          percent
+        />
+        <DetailsNumberLine
+          description={<Trans>Can be collateral</Trans>}
           value={poolReserve.supplyAPY}
           futureValue={swapTarget.supplyAPY}
           percent
@@ -251,13 +253,18 @@ export const SwapModalContent = ({
           futureIncentives={swapTarget.aIncentivesData}
           futureSymbol={swapTarget.symbol}
         />
-        {showHealthFactor && (
-          <DetailsHFLine
-            visibleHfChange={!!_amount}
-            healthFactor={user.healthFactor}
-            futureHealthFactor={hfAfterSwap.toString(10)}
-          />
-        )}
+        <DetailsNumberLine
+          description={<Trans>Liquidation threshold</Trans>}
+          value={poolReserve.supplyAPY}
+          futureValue={swapTarget.supplyAPY}
+          percent
+        />
+        <DetailsNumberLine
+          description={<Trans>Supply balance after swap</Trans>}
+          value={poolReserve.supplyAPY}
+          futureValue={swapTarget.supplyAPY}
+          percent
+        />
       </TxModalDetails>
 
       {txError && <GasEstimationError txError={txError} />}
