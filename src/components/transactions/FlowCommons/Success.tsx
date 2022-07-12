@@ -116,7 +116,7 @@ export const TxSuccessView = ({
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                my: '24px',
+                mt: '24px',
               })}
             >
               <TokenIcon
@@ -166,7 +166,13 @@ export const TxSuccessView = ({
         <Link
           variant="helperText"
           href={currentNetworkConfig.explorerLinkBuilder({ tx: mainTxState.txHash })}
-          sx={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'right', mb: 3 }}
+          sx={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'right',
+            mt: 6,
+            mb: 3,
+          }}
           underline="hover"
           target="_blank"
           rel="noreferrer"

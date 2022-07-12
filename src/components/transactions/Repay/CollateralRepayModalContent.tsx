@@ -28,10 +28,7 @@ import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
 import { ArrowDownIcon } from '@heroicons/react/outline';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
-
-export enum ErrorType {
-  NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH,
-}
+import { ErrorType, flashLoanNotAvailable, useFlashloan } from '../utils';
 
 export function CollateralRepayModalContent({
   poolReserve,
@@ -125,9 +122,14 @@ export function CollateralRepayModalContent({
     debt,
   });
 
-  const shouldUseFlashloan =
-    user.healthFactor !== '-1' &&
-    new BigNumber(user.healthFactor).minus(hfEffectOfFromAmount).lt('1.05');
+  const shouldUseFlashloan = useFlashloan(user.healthFactor, hfEffectOfFromAmount.toString());
+
+  const disableFlashLoan =
+    shouldUseFlashloan &&
+    flashLoanNotAvailable(
+      userReserve.underlyingAsset,
+      currentNetworkConfig.underlyingChainId || currentChainId
+    );
 
   // we need to get the min as minimumReceived can be greater than debt as we are swapping
   // a safe amount to repay all. When this happens amountAfterRepay would be < 0 and
@@ -156,12 +158,21 @@ export function CollateralRepayModalContent({
   );
   if (Number(usdValue) > Number(tokenToRepayWithUsdValue.toString(10))) {
     blockingError = ErrorType.NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH;
+  } else if (disableFlashLoan) {
+    blockingError = ErrorType.FLASH_LOAN_NOT_AVAILABLE;
   }
 
   const handleBlocked = () => {
     switch (blockingError) {
       case ErrorType.NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH:
         return <Trans>Not enough collateral to repay this amount of debt with</Trans>;
+      case ErrorType.FLASH_LOAN_NOT_AVAILABLE:
+        return (
+          <Trans>
+            Due to a precision bug in the stETH contract, this asset can not be used in flashloan
+            transactions
+          </Trans>
+        );
       default:
         return null;
     }

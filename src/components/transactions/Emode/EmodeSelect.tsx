@@ -12,12 +12,14 @@ export type EmodeSelectProps = {
   emodeCategories: Record<number, EmodeCategory>;
   selectedEmode: number;
   setSelectedEmode: React.Dispatch<React.SetStateAction<EmodeCategory | undefined>>;
+  baseAssetSymbol: string;
 };
 
 export const EmodeSelect = ({
   emodeCategories,
   selectedEmode,
   setSelectedEmode,
+  baseAssetSymbol,
 }: EmodeSelectProps) => {
   return (
     <FormControl sx={{ mb: 1, width: '100%' }}>
@@ -29,6 +31,7 @@ export const EmodeSelect = ({
         value={selectedEmode}
         onChange={(e) => setSelectedEmode(emodeCategories[Number(e.target.value)])}
         className="EmodeSelect"
+        data-cy="EmodeSelect"
         sx={{
           width: '100%',
           height: '44px',
@@ -62,7 +65,7 @@ export const EmodeSelect = ({
 
           return (
             <Typography color="text.primary">
-              {getEmodeMessage(emodeCategories[selectedEmode].id)}
+              {getEmodeMessage(emodeCategories[selectedEmode].id, baseAssetSymbol)}
             </Typography>
           );
         }}
@@ -77,12 +80,12 @@ export const EmodeSelect = ({
             }}
           >
             {emodeCategories[Number(categoryKey)].id === 0 ? (
-              <Typography color="text.primary">
+              <Typography color="text.primary" data-cy="disableEmode">
                 E-Mode <Trans>disabled</Trans>
               </Typography>
             ) : (
               <Typography color="text.primary">
-                {getEmodeMessage(emodeCategories[Number(categoryKey)].id)}
+                {getEmodeMessage(emodeCategories[Number(categoryKey)].id, baseAssetSymbol)}
               </Typography>
             )}
           </MenuItem>

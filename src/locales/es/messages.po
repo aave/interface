@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-06-27 12:06\n"
+"PO-Revision-Date: 2022-07-05 12:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -99,11 +99,11 @@ msgstr "La acción requiere una reserva activa"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add aToken to the wallet to track your supply balance."
-msgstr ""
+msgstr "Añade aToken a la cartera para rastrear tu saldo de suministro."
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add to wallet"
-msgstr ""
+msgstr "Añadir a la cartera"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Address is not a contract"
@@ -592,6 +592,11 @@ msgstr "Desconectar cartera"
 msgid "Discord"
 msgstr "Discord"
 
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Due to a precision bug in the stETH contract, this asset can not be used in flashloan transactions"
+msgstr "Debido a un error de precisión en el contrato stETH, este activo no se puede utilizar en transacciones de préstamo flash"
+
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode"
 msgstr "E-Mode"
@@ -867,7 +872,7 @@ msgstr "Penalización de liquidación"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Liquidation risk parameters"
-msgstr ""
+msgstr "Parámetros de riesgo de liquidación"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
@@ -1135,10 +1140,6 @@ msgstr "Reembolso"
 msgid "Repay with"
 msgstr "Reembolsar en"
 
-#: src/components/Warnings/RepayCollateralWarning.tsx
-msgid "Repay with collateral is experiencing degraded performance which may cause your transaction to fail. Consider using another service or add more collateral to avoid liquidation."
-msgstr "El pago con garantía está experimentando un rendimiento degradado que puede hacer que tu transacción falle. Considera usar otro servicio o añade más garantías para evitar la liquidación."
-
 #: src/components/transactions/Repay/CollateralRepayActions.tsx
 #: src/components/transactions/Repay/RepayActions.tsx
 msgid "Repay {symbol}"
@@ -1219,11 +1220,11 @@ msgstr "Seleccionar idioma"
 
 #: src/modules/reserve-overview/AddTokenDropdown.tsx
 msgid "Select token to add"
-msgstr ""
+msgstr "Selecciona token para añadir"
 
 #: src/modules/reserve-overview/TokenLinkDropdown.tsx
 msgid "Select token to view in block explorer"
-msgstr ""
+msgstr "Selecciona token para ver en el explorador de bloques"
 
 #: src/components/HALLink.tsx
 msgid "Setup notifications about your Health Factor using the Hal app."
@@ -1426,7 +1427,7 @@ msgstr "Tasa de cambio"
 
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Test Assets"
-msgstr ""
+msgstr "Activos de prueba"
 
 #: src/layouts/components/TestNetModeSwitcher.tsx
 msgid "Testnet mode"
@@ -1434,7 +1435,7 @@ msgstr "Testnet mode"
 
 #: src/layouts/AppHeader.tsx
 msgid "Testnet mode is ON"
-msgstr ""
+msgstr "Testnet mode está ON"
 
 #: src/components/infoTooltips/BorrowPowerTooltip.tsx
 msgid "The % of your total borrowing power used. This is based on the amount of your collateral supplied and the total amount that you can borrow."
@@ -1458,7 +1459,7 @@ msgstr "La dirección del proveedor del grupo de direcciones no es válida"
 
 #: src/layouts/AppHeader.tsx
 msgid "The app is running in testnet mode. Learn how it works in"
-msgstr ""
+msgstr "La aplicación se está ejecutando en testnet mode. Aprende como funciona en"
 
 #: src/ui-config/errorMapping.tsx
 msgid "The caller of the function is not an AToken"
@@ -1793,7 +1794,7 @@ msgstr "Con un poder de votación de <0/>"
 
 #: src/modules/faucet/FaucetTopPanel.tsx
 msgid "With testnet Faucet you can get free assets to test the Aave Protocol. Make sure to switch your wallet provider to the appropriate testnet network, select desired asset, and click ‘Faucet’ to get tokens transferred to your wallet. The assets on a testnet are not “real,” meaning they have no monetary value. <0>Learn more</0>"
-msgstr ""
+msgstr "Con la testnet Faucet puedes obtener activos gratuitos para probar el Protocolo Aave. Asegúrate de cambiar tu proveedor de cartera a la red de testnet adecuada, selecciona el activo deseado y haz clic en \"Faucet\" para obtener tokens transferidos a tu cartera. Los activos de una testnet no son \"reales\", lo que significada que no tienen valor monetario. <0>Más información</0>"
 
 #: src/components/transactions/Withdraw/WithdrawModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
@@ -1936,11 +1937,11 @@ msgstr "Tu información de voto"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Your {networkName} wallet is empty. Get free test assets at"
-msgstr ""
+msgstr "Tu cartera {networkName} está vacía. Consigue activos de prueba gratis en"
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Your {networkName} wallet is empty. Get free test {0} at"
-msgstr ""
+msgstr "Tu cartera {networkName} está vacía. Consigue {0} de prueba gratis en"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
@@ -2058,7 +2059,7 @@ msgstr "{m}m"
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "{networkName} Faucet"
-msgstr ""
+msgstr "Faucet {networkName}"
 
 #: src/components/infoTooltips/FrozenWarning.tsx
 msgid "{symbol} is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
@@ -2070,5 +2071,5 @@ msgstr "{s}s"
 
 #: src/components/CircleIcon.tsx
 msgid "{tooltipText}"
-msgstr ""
+msgstr "{tooltipText}"
 
