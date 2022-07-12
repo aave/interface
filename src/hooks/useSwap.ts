@@ -27,12 +27,14 @@ const mainnetParaswap = ParaSwap(ChainId.mainnet);
 const polygonParaswap = ParaSwap(ChainId.polygon);
 const avalancheParaswap = ParaSwap(ChainId.avalanche);
 const fantomParaswap = ParaSwap(ChainId.fantom);
+const arbitrumParaswap = ParaSwap(ChainId.arbitrum_one);
 
 const getParaswap = (chainId: ChainId) => {
   if (ChainId.mainnet === chainId) return mainnetParaswap;
   if (ChainId.polygon === chainId) return polygonParaswap;
   if (ChainId.avalanche === chainId) return avalancheParaswap;
   if (ChainId.fantom === chainId) return fantomParaswap;
+  if (ChainId.arbitrum_one === chainId) return arbitrumParaswap;
   throw new Error('chain not supported');
 };
 
