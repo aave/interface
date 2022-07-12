@@ -365,6 +365,7 @@ msgstr "CLAIM {symbol}"
 msgid "CLAIMING {symbol}"
 msgstr "CLAIMING {symbol}"
 
+#: src/components/transactions/Swap/SwapModalContent.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
@@ -880,6 +881,7 @@ msgstr "Liquidation penalty"
 msgid "Liquidation risk parameters"
 msgstr "Liquidation risk parameters"
 
+#: src/components/transactions/Swap/SwapModalContent.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Liquidation threshold"
@@ -919,17 +921,9 @@ msgstr "Max LTV"
 msgid "Max slashing"
 msgstr "Max slashing"
 
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "Max slippage rate"
-msgstr "Max slippage rate"
-
 #: src/layouts/MobileMenu.tsx
 msgid "Menu"
 msgstr "Menu"
-
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "Minimum received"
-msgstr "Minimum received"
 
 #: src/layouts/MoreMenu.tsx
 msgid "More"
@@ -1081,11 +1075,8 @@ msgstr "Pool addresses provider is not registered"
 msgid "Powered by"
 msgstr "Powered by"
 
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "Price impact"
-msgstr "Price impact"
-
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Price impact <0/>%"
 msgstr "Price impact <0/>%"
 
@@ -1352,6 +1343,10 @@ msgstr "State"
 msgid "Supplied"
 msgstr "Supplied"
 
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Supplied asset amount"
+msgstr "Supplied asset amount"
+
 #: pages/index.page.tsx
 #: src/components/transactions/Supply/SupplyModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
@@ -1383,6 +1378,10 @@ msgstr "Supply apy"
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 msgid "Supply balance"
 msgstr "Supply balance"
+
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Supply balance after swap"
+msgstr "Supply balance after swap"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Supply cap"
@@ -1418,6 +1417,10 @@ msgstr "Supplying {symbol}"
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Swap"
 msgstr "Swap"
+
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Swap to"
+msgstr "Swap to"
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Swapped"
