@@ -68,8 +68,8 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   [ChainId.rinkeby]: {
     name: 'Ethereum Rinkeby',
     publicJsonRPCUrl: [
-      // 'https://eth-rinkeby.alchemyapi.io/v2/demo',
-      'https://rinkeby-light.eth.linkpool.io/',
+      'https://eth-rinkeby.alchemyapi.io/v2/demo',
+      // 'https://rinkeby-light.eth.linkpool.io/',
     ],
     // protocolDataUrl: '',
     baseUniswapAdapter: '',
