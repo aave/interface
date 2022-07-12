@@ -99,9 +99,7 @@ export class TenderlyFork {
 
   async getTopHolder(token: string) {
     const res = (
-      await axios.get(
-        `https://ethplorer.io/service/service.php?data=${token}&page=tab%3Dtab-holders%26pageSize%3D10%26holders%3D1`
-      )
+      await axios.get(`https://api.ethplorer.io/getTopTokenHolders/${token}?apiKey=freekey`)
     ).data.holders[0].address;
     return res;
   }
