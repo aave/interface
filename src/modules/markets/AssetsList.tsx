@@ -1,6 +1,6 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { useMediaQuery } from '@mui/material';
+import { Alert, Link, useMediaQuery } from '@mui/material';
 import { useState } from 'react';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
@@ -104,6 +104,17 @@ export default function AssetsList() {
       }
       captionSize="h2"
     >
+      {currentNetworkConfig.name === 'Harmony' && (
+        <Alert severity="error" sx={{ m: '24px' }}>
+          Placeholder text.{' '}
+          <Link
+            href="https://governance.aave.com/t/harmony-horizon-bridge-exploit-consequences-to-aave-v3-harmony/8614"
+            target="_blank"
+          >
+            Learn more
+          </Link>
+        </Alert>
+      )}
       {!isTableChangedToCards && (
         <ListHeaderWrapper px={6}>
           {header.map((col) => (
