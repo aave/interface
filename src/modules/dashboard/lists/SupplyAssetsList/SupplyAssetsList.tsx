@@ -184,7 +184,19 @@ export const SupplyAssetsList = () => {
       subChildrenComponent={
         <>
           <Box sx={{ px: 6 }}>
-            {user?.isInIsolationMode && (
+            {currentNetworkConfig.name === 'Harmony' ? (
+              <Alert severity="error">
+                <Trans>
+                  Placeholder text.{' '}
+                  <Link
+                    href="https://governance.aave.com/t/harmony-horizon-bridge-exploit-consequences-to-aave-v3-harmony/8614"
+                    target="_blank"
+                  >
+                    Learn More
+                  </Link>
+                </Trans>
+              </Alert>
+            ) : user?.isInIsolationMode ? (
               <Alert severity="warning">
                 <Trans>
                   Collateral usage is limited because of isolation mode.{' '}
@@ -193,8 +205,9 @@ export const SupplyAssetsList = () => {
                   </Link>
                 </Trans>
               </Alert>
+            ) : (
+              <>{alert}</>
             )}
-            {alert}
           </Box>
 
           {filteredSupplyReserves.length >= 1 && (

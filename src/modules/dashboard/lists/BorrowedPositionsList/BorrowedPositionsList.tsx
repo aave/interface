@@ -1,7 +1,7 @@
 import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { useMediaQuery, useTheme } from '@mui/material';
+import { Link, useMediaQuery, useTheme, Alert } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
@@ -96,6 +96,17 @@ export const BorrowedPositionsList = () => {
       noData={!borrowPositions.length}
       topInfo={
         <>
+          {currentNetworkConfig.name === 'Harmony' && (
+            <Alert severity="warning" sx={{ width: '100%' }}>
+              Currently borrowing in this market is frozen.{' '}
+              <Link
+                href="https://governance.aave.com/t/harmony-horizon-bridge-exploit-consequences-to-aave-v3-harmony/8614"
+                target="_blank"
+              >
+                Learn more
+              </Link>
+            </Alert>
+          )}
           {!!borrowPositions.length && (
             <>
               <ListTopInfoItem title={<Trans>Balance</Trans>} value={user?.totalBorrowsUSD || 0} />
