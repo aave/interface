@@ -125,10 +125,10 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   return (
     <Paper sx={{ p: { xs: 4, xsm: 6 }, pt: 4, height: '100%' }}>
       <Box sx={{ display: { xs: 'none', xsm: 'flex' }, alignItems: 'center', mb: 8 }}>
-        <Typography variant="h3" sx={{ mr: 3 }}>
+        <Typography variant="h3">
           <Trans>Stake</Trans> {stakeTitle}
         </Typography>
-        {headerAction && headerAction}
+        {headerAction && <Box sx={{ ml: 3 }}>{headerAction}</Box>}
       </Box>
 
       <Box
