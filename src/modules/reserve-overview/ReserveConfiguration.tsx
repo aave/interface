@@ -33,6 +33,7 @@ import { LiquidationThresholdTooltip } from 'src/components/infoTooltips/Liquida
 import { LiquidationPenaltyTooltip } from 'src/components/infoTooltips/LiquidationPenaltyTooltip';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { frozenProposalMap } from 'src/utils/marketsAndNetworksConfig';
+import { ReserveFactorTooltip } from 'src/components/infoTooltips/ReserveFactorTooltip';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
   <Box
@@ -401,6 +402,25 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                     <ReserveSubheader value={reserve.borrowCapUSD} />
                   </PanelItem>
                 )}
+                <PanelItem
+                  title={
+                    <ReserveFactorTooltip
+                      text={<Trans>Reserve factor</Trans>}
+                      key="res_factor"
+                      variant="description"
+                      collectorLink={
+                        currentMarketData.addresses.COLLECTOR
+                          ? currentNetworkConfig.explorerLinkBuilder({
+                              address: currentMarketData.addresses.COLLECTOR,
+                            })
+                          : undefined
+                      }
+                    />
+                  }
+                >
+                  <FormattedNumber value={reserve.reserveFactor} percent variant="main16" />
+                  <IncentivesButton symbol={reserve.symbol} displayBlank={true} />
+                </PanelItem>
               </Box>
               {renderCharts && !error && (
                 <ChartContainer sx={{ mt: 8 }}>
