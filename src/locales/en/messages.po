@@ -93,12 +93,12 @@ msgid "Action requires an active reserve"
 msgstr "Action requires an active reserve"
 
 #: src/components/transactions/FlowCommons/Success.tsx
-msgid "Add aToken to the wallet to track your supply balance."
-msgstr "Add aToken to the wallet to track your supply balance."
-
-#: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add to wallet"
 msgstr "Add to wallet"
+
+#: src/components/transactions/FlowCommons/Success.tsx
+msgid "Add {0} to wallet to track your balance."
+msgstr "Add {0} to wallet to track your balance."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Address is not a contract"
