@@ -9,7 +9,6 @@ import { BadgeCheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
   Alert,
-  AlertTitle,
   Box,
   Checkbox,
   Link,
