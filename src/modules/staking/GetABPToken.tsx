@@ -26,7 +26,7 @@ export const GetABPToken = () => {
           onClick={handleClick}
           startIcon={
             <Box sx={{ mr: -1 }}>
-              <TokenIcon symbol="BAL" fontSize="small" />
+              <TokenIcon symbol="BAL" sx={{ fontSize: '14px' }} />
             </Box>
           }
         >
