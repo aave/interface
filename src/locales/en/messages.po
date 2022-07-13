@@ -448,10 +448,6 @@ msgstr "Collateralization"
 msgid "Connect wallet"
 msgstr "Connect wallet"
 
-#: src/modules/staking/GetABPTokenModal.tsx
-msgid "Continue to Balancer Protocol"
-msgstr "Continue to Balancer Protocol"
-
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "Cooldown period"
@@ -736,6 +732,10 @@ msgstr "Go Back"
 #: src/modules/governance/proposal/ProposalTopPanel.tsx
 msgid "Go back"
 msgstr "Go back"
+
+#: src/modules/staking/GetABPTokenModal.tsx
+msgid "Go to Balancer Pool"
+msgstr "Go to Balancer Pool"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
@@ -1295,12 +1295,12 @@ msgid "Stake"
 msgstr "Stake"
 
 #: pages/staking.staking.tsx
-msgid "Stake Aave"
-msgstr "Stake Aave"
+msgid "Stake AAVE"
+msgstr "Stake AAVE"
 
 #: pages/staking.staking.tsx
-msgid "Stake Aave/ETH BPT"
-msgstr "Stake Aave/ETH BPT"
+msgid "Stake ABPT"
+msgstr "Stake ABPT"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Stake cooldown activated"
