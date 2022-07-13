@@ -86,12 +86,12 @@ export default function Staking() {
               >
                 <ToggleButton value="aave" disabled={mode === 'aave'}>
                   <Typography variant="subheader1">
-                    <Trans>Stake Aave</Trans>
+                    <Trans>Stake AAVE</Trans>
                   </Typography>
                 </ToggleButton>
                 <ToggleButton value="bpt" disabled={mode === 'bpt'}>
                   <Typography variant="subheader1">
-                    <Trans>Stake Aave/ETH BPT</Trans>
+                    <Trans>Stake ABPT</Trans>
                   </Typography>
                 </ToggleButton>
               </ToggleButtonGroup>
@@ -105,7 +105,7 @@ export default function Staking() {
                 sx={{ display: { xs: !isStakeAAVE ? 'none' : 'block', lg: 'block' } }}
               >
                 <StakingPanel
-                  stakeTitle="Aave"
+                  stakeTitle="AAVE"
                   stakedToken="AAVE"
                   maxSlash="0.3"
                   icon="aave"
@@ -125,7 +125,7 @@ export default function Staking() {
                 sx={{ display: { xs: isStakeAAVE ? 'none' : 'block', lg: 'block' } }}
               >
                 <StakingPanel
-                  stakeTitle="AAVE/ETH BPT"
+                  stakeTitle="ABPT"
                   stakedToken="ABPT"
                   maxSlash="0.3"
                   icon="stkbpt"

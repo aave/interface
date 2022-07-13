@@ -124,7 +124,13 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
 
   return (
     <Paper sx={{ p: { xs: 4, xsm: 6 }, pt: 4, height: '100%' }}>
-      <Box sx={{ display: { xs: 'none', xsm: 'flex' }, alignItems: 'center', mb: 8 }}>
+      <Box
+        sx={{
+          display: { xs: 'none', xsm: 'flex' },
+          alignItems: 'center',
+          mb: 8,
+        }}
+      >
         <Typography variant="h3">
           <Trans>Stake</Trans> {stakeTitle}
         </Typography>
@@ -157,13 +163,23 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           },
         })}
       >
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: { xs: 4, xsm: 0 } }}>
+        <Box
+          sx={{
+            display: 'flex',
+            width: { xs: '100%', xsm: 'unset' },
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            mb: { xs: 4, xsm: 0 },
+          }}
+        >
           <TokenIcon symbol={icon} sx={{ fontSize: { xs: '40px', xsm: '32px' } }} />
           <Typography variant={xsm ? 'subheader1' : 'h4'} ml={2}>
             {stakedToken}
           </Typography>
           {headerAction && (
-            <Box sx={{ display: { xs: 'block', xsm: 'none' }, ml: 3 }}>{headerAction}</Box>
+            <Box sx={{ display: { xs: 'block', xsm: 'none' }, textAlign: 'right', flexGrow: 1 }}>
+              {headerAction}
+            </Box>
           )}
         </Box>
 
