@@ -31583,6 +31583,15 @@
         "transactionHash": "0x6038330d9c393a8f7fd9d35b1d56587c67a2f23a50fedf9fc086131de0875709",
         "timestamp": 1657691751,
         "blockNumber": 15132546
+      },
+      {
+        "proposalId": 87,
+        "voter": "0xBD90F0243173E91385224a8117212d17C2E9e494",
+        "support": true,
+        "votingPower": 0.022079767861370916,
+        "transactionHash": "0x80d0d22f2382a6f43140266770a95954b60efd8a08319aea8f8fc20e16d633e6",
+        "timestamp": 1657700068,
+        "blockNumber": 15133161
       }
     ],
     "finished": false
