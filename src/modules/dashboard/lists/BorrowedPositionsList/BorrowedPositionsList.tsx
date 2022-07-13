@@ -80,6 +80,8 @@ export const BorrowedPositionsList = () => {
 
   if (loading) return <ListLoader title={<Trans>Your borrows</Trans>} head={head} />;
 
+  const displayHarmonyBorrowWarning = currentNetworkConfig.name === 'Harmony';
+
   return (
     <ListWrapper
       title={<Trans>Your borrows</Trans>}
@@ -96,17 +98,6 @@ export const BorrowedPositionsList = () => {
       noData={!borrowPositions.length}
       topInfo={
         <>
-          {currentNetworkConfig.name === 'Harmony' && (
-            <Alert severity="warning" sx={{ width: '100%' }}>
-              Currently borrowing in this market is frozen.{' '}
-              <Link
-                href="https://governance.aave.com/t/harmony-horizon-bridge-exploit-consequences-to-aave-v3-harmony/8614"
-                target="_blank"
-              >
-                Learn more
-              </Link>
-            </Alert>
-          )}
           {!!borrowPositions.length && (
             <>
               <ListTopInfoItem title={<Trans>Balance</Trans>} value={user?.totalBorrowsUSD || 0} />
@@ -125,6 +116,19 @@ export const BorrowedPositionsList = () => {
             </>
           )}
         </>
+      }
+      warning={
+        displayHarmonyBorrowWarning && (
+          <Alert severity="warning" sx={{ width: '100%', mb: '26px' }}>
+            Borrowing in this market is currently frozen.{' '}
+            <Link
+              href="https://governance.aave.com/t/harmony-horizon-bridge-exploit-consequences-to-aave-v3-harmony/8614"
+              target="_blank"
+            >
+              Learn more
+            </Link>
+          </Alert>
+        )
       }
     >
       {borrowPositions.length ? (
@@ -145,7 +149,9 @@ export const BorrowedPositionsList = () => {
           )}
         </>
       ) : (
-        <DashboardContentNoData text={<Trans>Nothing borrowed yet</Trans>} />
+        !displayHarmonyBorrowWarning && (
+          <DashboardContentNoData text={<Trans>Nothing borrowed yet</Trans>} />
+        )
       )}
     </ListWrapper>
   );
