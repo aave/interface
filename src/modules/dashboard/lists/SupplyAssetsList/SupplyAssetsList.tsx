@@ -187,7 +187,8 @@ export const SupplyAssetsList = () => {
             {currentNetworkConfig.name === 'Harmony' ? (
               <Alert severity="error">
                 <Trans>
-                  Placeholder text.{' '}
+                  Due to the Harmony bridge exploit, certain assets on the Harmony network are
+                  unbacked which affects the Aave V3 Harmony market.{' '}
                   <Link
                     href="https://governance.aave.com/t/harmony-horizon-bridge-exploit-consequences-to-aave-v3-harmony/8614"
                     target="_blank"

@@ -105,14 +105,17 @@ export default function AssetsList() {
       captionSize="h2"
     >
       {currentNetworkConfig.name === 'Harmony' && (
-        <Alert severity="error" sx={{ m: '24px' }}>
-          Placeholder text.{' '}
-          <Link
-            href="https://governance.aave.com/t/harmony-horizon-bridge-exploit-consequences-to-aave-v3-harmony/8614"
-            target="_blank"
-          >
-            Learn more
-          </Link>
+        <Alert severity="error" sx={{ mx: '24px' }}>
+          <Trans>
+            Due to the Harmony bridge exploit, certain assets on the Harmony network are unbacked
+            which affects the Aave V3 Harmony market.{' '}
+            <Link
+              href="https://governance.aave.com/t/harmony-horizon-bridge-exploit-consequences-to-aave-v3-harmony/8614"
+              target="_blank"
+            >
+              Learn More
+            </Link>
+          </Trans>
         </Alert>
       )}
       {!isTableChangedToCards && (

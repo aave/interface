@@ -220,14 +220,17 @@ export const SupplyModalContent = ({
         isFeatureEnabled.staking(currentMarketData) && <AAVEWarning />}
       {poolReserve.symbol === 'SNX' && !maxAmountToSupply.eq('0') && <SNXWarning />}
       {currentNetworkConfig.name === 'Harmony' && (
-        <Alert severity="error">
-          Placeholder text.{' '}
-          <Link
-            href="https://governance.aave.com/t/harmony-horizon-bridge-exploit-consequences-to-aave-v3-harmony/8614"
-            target="_blank"
-          >
-            Learn More
-          </Link>
+        <Alert severity="error" sx={{ my: '16px' }}>
+          <Trans>
+            Due to the Harmony bridge exploit, certain assets on the Harmony network are unbacked
+            which affects the Aave V3 Harmony market.{' '}
+            <Link
+              href="https://governance.aave.com/t/harmony-horizon-bridge-exploit-consequences-to-aave-v3-harmony/8614"
+              target="_blank"
+            >
+              Learn More
+            </Link>
+          </Trans>
         </Alert>
       )}
 

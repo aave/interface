@@ -592,6 +592,12 @@ msgstr "Discord"
 msgid "Due to a precision bug in the stETH contract, this asset can not be used in flashloan transactions"
 msgstr "Due to a precision bug in the stETH contract, this asset can not be used in flashloan transactions"
 
+#: src/components/transactions/Supply/SupplyModalContent.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+#: src/modules/markets/AssetsList.tsx
+msgid "Due to the Harmony bridge exploit, certain assets on the Harmony network are unbacked which affects the Aave V3 Harmony market. <0>Learn More</0>"
+msgstr "Due to the Harmony bridge exploit, certain assets on the Harmony network are unbacked which affects the Aave V3 Harmony market. <0>Learn More</0>"
+
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode"
 msgstr "E-Mode"
@@ -1043,10 +1049,6 @@ msgstr "Participating in this {symbol} reserve gives annualized rewards."
 #: src/components/transactions/Faucet/FaucetActions.tsx
 msgid "Pending..."
 msgstr "Pending..."
-
-#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
-msgid "Placeholder text. <0>Learn More</0>"
-msgstr "Placeholder text. <0>Learn More</0>"
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Please connect a wallet to view your personal information here."
