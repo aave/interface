@@ -61672,6 +61672,7 @@ var networkConfigs = {
   [import_contract_helpers3.ChainId.rinkeby]: {
     name: "Ethereum Rinkeby",
     publicJsonRPCUrl: [
+      "https://eth-rinkeby.alchemyapi.io/v2/demo",
       "https://rinkeby-light.eth.linkpool.io/"
     ],
     baseUniswapAdapter: "",
