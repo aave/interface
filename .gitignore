@@ -41,4 +41,7 @@ yarn-error.log*
 package-lock.json
 
 .eslintcache
+
+# IDE Specific
+.vscode
 .idea
