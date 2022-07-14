@@ -93,7 +93,7 @@ const isSubscription = ({ query }: Operation) => {
 
 export const getApolloClient = () => {
   const marketsWithCaching = Object.entries(marketsData).filter(
-    ([key, cfg]) => cfg.cachingServerUrl && cfg.cachingWSServerUrl && typeof window !== 'undefined'
+    ([, cfg]) => cfg.cachingServerUrl && cfg.cachingWSServerUrl && typeof window !== 'undefined'
   );
 
   const combinedLink = marketsWithCaching.reduce((acc, [key, cfg]) => {
