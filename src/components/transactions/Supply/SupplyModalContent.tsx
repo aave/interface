@@ -5,7 +5,7 @@ import {
   valueToBigNumber,
 } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Link, Typography, Warning } from '@mui/material';
+import { Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import React, { useRef, useState } from 'react';
 import { CollateralType } from 'src/helpers/types';

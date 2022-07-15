@@ -82,7 +82,7 @@ export const SuppliedPositionsList = () => {
     >
       {suppliedPosition.length ? (
         <>
-          {!downToXSM && <ListHeader head={head} sx={{ pb: 0 }} />}
+          {!downToXSM && <ListHeader head={head} />}
           {suppliedPosition.map((item) =>
             downToXSM ? (
               <SuppliedPositionsListMobileItem {...item} user={user} key={item.underlyingAsset} />
