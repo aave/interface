@@ -34,7 +34,7 @@ export const RightHelperText = ({ approvalHash }: RightHelperTextProps) => {
           sx={{ display: 'inline-flex', alignItems: 'center' }}
           underline="hover"
           target="_blank"
-          rel="noreferrer"
+          rel="noreferrer noopener"
         >
           <Trans>Review approval tx details</Trans>
           <ExtLinkIcon />

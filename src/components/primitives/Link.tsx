@@ -74,6 +74,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link
           href={href}
           ref={ref}
           target="_blank"
+          rel="noopener"
           underline="none"
           {...other}
         />
@@ -86,6 +87,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link
         href={href}
         ref={ref}
         target="_blank"
+        rel="noopener"
         underline="none"
         {...other}
       />
