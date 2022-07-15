@@ -1,9 +1,10 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Alert, Link, useMediaQuery } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
 import { useState } from 'react';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
+import { HarmonyWarning } from 'src/components/transactions/Warnings/HarmonyWarning';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
@@ -105,18 +106,9 @@ export default function AssetsList() {
       captionSize="h2"
     >
       {currentNetworkConfig.name === 'Harmony' && (
-        <Alert severity="error" sx={{ mx: '24px' }}>
-          <Trans>
-            Due to the Harmony bridge exploit, certain assets on the Harmony network are unbacked
-            which affects the Aave V3 Harmony market.{' '}
-            <Link
-              href="https://governance.aave.com/t/harmony-horizon-bridge-exploit-consequences-to-aave-v3-harmony/8614"
-              target="_blank"
-            >
-              Learn More
-            </Link>
-          </Trans>
-        </Alert>
+        <Box sx={{ mx: '24px' }}>
+          <HarmonyWarning />
+        </Box>
       )}
       {!isTableChangedToCards && (
         <ListHeaderWrapper px={6}>

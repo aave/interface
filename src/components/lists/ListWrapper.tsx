@@ -14,7 +14,6 @@ interface ListWrapperProps {
   withTopMargin?: boolean;
   noData?: boolean;
   captionSize?: 'h2' | 'h3';
-  warning?: ReactNode;
 }
 
 export const ListWrapper = ({
@@ -27,7 +26,6 @@ export const ListWrapper = ({
   withTopMargin,
   noData,
   captionSize = 'h3',
-  warning,
 }: ListWrapperProps) => {
   const [isCollapse, setIsCollapse] = useState(
     localStorageName ? localStorage.getItem(localStorageName) === 'true' : false
@@ -104,19 +102,7 @@ export const ListWrapper = ({
           </Box>
         )}
       </Box>
-      {warning && (
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            px: { xs: 4, xsm: 6 },
-            pb: { xs: collapsed && !noData ? 6 : 2, xsm: collapsed && !noData ? 6 : 0 },
-            overflowX: 'auto',
-          }}
-        >
-          {warning}
-        </Box>
-      )}
+
       {topInfo && (
         <Box
           sx={{

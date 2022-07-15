@@ -314,6 +314,10 @@ msgstr "Borrow {symbol}"
 msgid "Borrowed"
 msgstr "Borrowed"
 
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
+msgid "Borrowing in this market is currently disabled. <0>Learn More</0>"
+msgstr "Borrowing in this market is currently disabled. <0>Learn More</0>"
+
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "Borrowing is currently unavailable for {0}."
 msgstr "Borrowing is currently unavailable for {0}."
@@ -592,11 +596,9 @@ msgstr "Discord"
 msgid "Due to a precision bug in the stETH contract, this asset can not be used in flashloan transactions"
 msgstr "Due to a precision bug in the stETH contract, this asset can not be used in flashloan transactions"
 
-#: src/components/transactions/Supply/SupplyModalContent.tsx
-#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
-#: src/modules/markets/AssetsList.tsx
-msgid "Due to the Harmony bridge exploit, certain assets on the Harmony network are unbacked which affects the Aave V3 Harmony market. <0>Learn More</0>"
-msgstr "Due to the Harmony bridge exploit, certain assets on the Harmony network are unbacked which affects the Aave V3 Harmony market. <0>Learn More</0>"
+#: src/components/transactions/Warnings/HarmonyWarning.tsx
+msgid "Due to the Horizon bridge exploit, certain assets on the Harmony network are unbacked which affects the Aave V3 Harmony market. <0>Learn More</0>"
+msgstr "Due to the Horizon bridge exploit, certain assets on the Harmony network are unbacked which affects the Aave V3 Harmony market. <0>Learn More</0>"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode"
@@ -1382,6 +1384,10 @@ msgstr "Supply caps limit the amount of a certain asset that can be supplied to 
 #: src/components/transactions/Supply/SupplyActions.tsx
 msgid "Supply {symbol}"
 msgstr "Supply {symbol}"
+
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+msgid "Supplying in this market is currently disabled. <0>Learn More</0>"
+msgstr "Supplying in this market is currently disabled. <0>Learn More</0>"
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "Supplying your"

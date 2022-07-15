@@ -1,11 +1,10 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Alert, Box, useMediaQuery, useTheme } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { useState } from 'react';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
 import {
@@ -19,6 +18,8 @@ import { ListHeader } from '../ListHeader';
 import { ListLoader } from '../ListLoader';
 import { SupplyAssetsListItem } from './SupplyAssetsListItem';
 import { SupplyAssetsListMobileItem } from './SupplyAssetsListMobileItem';
+import { Warning } from 'src/components/primitives/Warning';
+import { HarmonyWarning } from 'src/components/transactions/Warnings/HarmonyWarning';
 
 export const SupplyAssetsList = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
@@ -151,44 +152,45 @@ export const SupplyAssetsList = () => {
   if (loadingReserves || loading)
     return <ListLoader title={<Trans>Assets to supply</Trans>} head={head} withTopMargin />;
 
-  let alert = <></>;
+  let WalletNotification = <></>;
   if (filteredSupplyReserves.length === 0) {
     if (isTestnet) {
-      alert = (
-        <Alert severity="info" sx={{ mb: 4 }}>
+      WalletNotification = (
+        <Warning severity="info">
           <Trans>Your {networkName} wallet is empty. Get free test assets at </Trans>{' '}
           <Link href={ROUTES.faucet} style={{ fontWeight: 400 }}>
             <Trans>{networkName} Faucet</Trans>
           </Link>
-        </Alert>
+        </Warning>
       );
     } else {
-      alert = (
-        <Alert severity="info">
+      WalletNotification = (
+        <Warning severity="info">
           <Trans>Your {networkName} wallet is empty. Purchase or transfer assets</Trans>{' '}
           {bridge && (
             <Trans>
               or use {<Link href={bridge.url}>{bridge.name}</Link>} to transfer your ETH assets.
             </Trans>
           )}
-        </Alert>
+        </Warning>
       );
     }
   }
 
+  const supplyDisabled = !tokensToSupply.length;
   return (
     <ListWrapper
       title={<Trans>Assets to supply</Trans>}
       localStorageName="supplyAssetsDashboardTableCollapse"
       withTopMargin
+      noData={supplyDisabled}
       subChildrenComponent={
         <>
           <Box sx={{ px: 6 }}>
-            {currentNetworkConfig.name === 'Harmony' ? (
-              <Alert severity="error">
+            {supplyDisabled && currentNetworkConfig.name === 'Harmony' ? (
+              <Warning severity="warning">
                 <Trans>
-                  Due to the Harmony bridge exploit, certain assets on the Harmony network are
-                  unbacked which affects the Aave V3 Harmony market.{' '}
+                  Supplying in this market is currently disabled.{' '}
                   <Link
                     href="https://governance.aave.com/t/harmony-horizon-bridge-exploit-consequences-to-aave-v3-harmony/8614"
                     target="_blank"
@@ -196,18 +198,20 @@ export const SupplyAssetsList = () => {
                     Learn More
                   </Link>
                 </Trans>
-              </Alert>
+              </Warning>
+            ) : currentNetworkConfig.name === 'Harmony' ? (
+              <HarmonyWarning />
             ) : user?.isInIsolationMode ? (
-              <Alert severity="warning">
+              <Warning severity="warning">
                 <Trans>
                   Collateral usage is limited because of isolation mode.{' '}
                   <Link href="https://docs.aave.com/faq/" target="_blank">
                     Learn More
                   </Link>
                 </Trans>
-              </Alert>
+              </Warning>
             ) : (
-              <>{alert}</>
+              <>{WalletNotification}</>
             )}
           </Box>
 
@@ -223,7 +227,7 @@ export const SupplyAssetsList = () => {
       }
     >
       <>
-        {!downToXSM && <ListHeader head={head} />}
+        {!downToXSM && !!supplyReserves && <ListHeader head={head} />}
         {supplyReserves.map((item) =>
           downToXSM ? (
             <SupplyAssetsListMobileItem {...item} key={item.id} />

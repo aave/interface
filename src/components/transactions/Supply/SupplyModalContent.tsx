@@ -5,7 +5,7 @@ import {
   valueToBigNumber,
 } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Link, Typography, Alert } from '@mui/material';
+import { Link, Typography, Warning } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import React, { useRef, useState } from 'react';
 import { CollateralType } from 'src/helpers/types';
@@ -29,6 +29,7 @@ import {
 } from '../FlowCommons/TxModalDetails';
 import { AAVEWarning } from '../Warnings/AAVEWarning';
 import { AMPLWarning } from '../Warnings/AMPLWarning';
+import { HarmonyWarning } from '../Warnings/HarmonyWarning';
 import { IsolationModeWarning } from '../Warnings/IsolationModeWarning';
 import { SNXWarning } from '../Warnings/SNXWarning';
 import { SupplyCapWarning } from '../Warnings/SupplyCapWarning';
@@ -219,20 +220,7 @@ export const SupplyModalContent = ({
         poolReserve.symbol === 'AAVE' &&
         isFeatureEnabled.staking(currentMarketData) && <AAVEWarning />}
       {poolReserve.symbol === 'SNX' && !maxAmountToSupply.eq('0') && <SNXWarning />}
-      {currentNetworkConfig.name === 'Harmony' && (
-        <Alert severity="error" sx={{ my: '16px' }}>
-          <Trans>
-            Due to the Harmony bridge exploit, certain assets on the Harmony network are unbacked
-            which affects the Aave V3 Harmony market.{' '}
-            <Link
-              href="https://governance.aave.com/t/harmony-horizon-bridge-exploit-consequences-to-aave-v3-harmony/8614"
-              target="_blank"
-            >
-              Learn More
-            </Link>
-          </Trans>
-        </Alert>
-      )}
+      {currentNetworkConfig.name === 'Harmony' && <HarmonyWarning />}
 
       <AssetInput
         value={amount}

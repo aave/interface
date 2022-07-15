@@ -1,7 +1,7 @@
 import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Link, useMediaQuery, useTheme, Alert } from '@mui/material';
+import { useMediaQuery, useTheme } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
@@ -80,8 +80,6 @@ export const BorrowedPositionsList = () => {
 
   if (loading) return <ListLoader title={<Trans>Your borrows</Trans>} head={head} />;
 
-  const displayHarmonyBorrowWarning = currentNetworkConfig.name === 'Harmony';
-
   return (
     <ListWrapper
       title={<Trans>Your borrows</Trans>}
@@ -117,19 +115,6 @@ export const BorrowedPositionsList = () => {
           )}
         </>
       }
-      warning={
-        displayHarmonyBorrowWarning && (
-          <Alert severity="warning" sx={{ width: '100%', mb: '26px' }}>
-            Borrowing in this market is currently frozen.{' '}
-            <Link
-              href="https://governance.aave.com/t/harmony-horizon-bridge-exploit-consequences-to-aave-v3-harmony/8614"
-              target="_blank"
-            >
-              Learn more
-            </Link>
-          </Alert>
-        )
-      }
     >
       {borrowPositions.length ? (
         <>
@@ -149,9 +134,7 @@ export const BorrowedPositionsList = () => {
           )}
         </>
       ) : (
-        !displayHarmonyBorrowWarning && (
-          <DashboardContentNoData text={<Trans>Nothing borrowed yet</Trans>} />
-        )
+        <DashboardContentNoData text={<Trans>Nothing borrowed yet</Trans>} />
       )}
     </ListWrapper>
   );

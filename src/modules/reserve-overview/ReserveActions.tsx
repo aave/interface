@@ -1,7 +1,6 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import {
-  Alert,
   Box,
   Button,
   CircularProgress,
@@ -35,6 +34,8 @@ import { Link, ROUTES } from '../../components/primitives/Link';
 import { getEmodeMessage } from '../../components/transactions/Emode/EmodeNaming';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
+import { Warning } from 'src/components/primitives/Warning';
+import { HarmonyWarning } from 'src/components/transactions/Warnings/HarmonyWarning';
 
 const PaperWrapper = ({ children }: { children: ReactNode }) => {
   return (
@@ -160,21 +161,21 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
             </Box>
           </Row>
         )}
-        <Alert sx={{ mb: '12px' }} severity="error" icon={true}>
+        <Warning sx={{ mb: '12px' }} severity="error" icon={true}>
           <Trans>
             Since this asset is frozen, the only available actions are withdraw and repay which can
             be accessed from the <Link href={ROUTES.dashboard}>Dashboard</Link>
           </Trans>
-        </Alert>
+        </Warning>
       </PaperWrapper>
     );
   }
 
-  let alert = <></>;
+  let WalletNotification = <></>;
   if (balance?.amount === '0') {
     if (currentNetworkConfig.isTestnet) {
-      alert = (
-        <Alert severity="info" icon={false}>
+      WalletNotification = (
+        <Warning severity="info" icon={false}>
           <Trans>
             Your {networkName} wallet is empty. Get free test {poolReserve.name} at
           </Trans>{' '}
@@ -188,27 +189,25 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
               <Trans>{networkName} Faucet</Trans>
             </Typography>
           </Button>
-        </Alert>
+        </Warning>
       );
     } else {
-      alert = (
-        <Alert severity="info" icon={false}>
+      WalletNotification = (
+        <Warning severity="info" icon={false}>
           <Trans>Your {networkName} wallet is empty. Purchase or transfer assets</Trans>{' '}
           {bridge && (
             <Trans>
               or use {<Link href={bridge.url}>{bridge.name}</Link>} to transfer your ETH assets.
             </Trans>
           )}
-        </Alert>
+        </Warning>
       );
     }
   }
 
   return (
     <PaperWrapper>
-      <Row align="flex-start" mb={6}>
-        {alert}
-      </Row>
+      <Row align="flex-start">{WalletNotification}</Row>
       <Row
         caption={<Trans>Wallet balance</Trans>}
         align="flex-start"
@@ -272,48 +271,54 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
       </Row>
 
       {balance?.amount !== '0' && user?.totalCollateralMarketReferenceCurrency === '0' && (
-        <Alert sx={{ mb: '12px' }} severity="info" icon={false}>
+        <Warning sx={{ mb: '12px' }} severity="info" icon={false}>
           <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
-        </Alert>
+        </Warning>
       )}
 
       {isolationModeBorrowDisabled && (
-        <Alert sx={{ mb: '12px' }} severity="warning" icon={false}>
+        <Warning sx={{ mb: '12px' }} severity="warning" icon={false}>
           <Trans>Collateral usage is limited because of Isolation mode.</Trans>
-        </Alert>
+        </Warning>
       )}
 
       {eModeBorrowDisabled && isolationModeBorrowDisabled && (
-        <Alert sx={{ mb: '12px' }} severity="info" icon={false}>
+        <Warning sx={{ mb: '12px' }} severity="info" icon={false}>
           <Trans>
             Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) and Isolation
             mode. To manage E-Mode and Isolation mode visit your{' '}
             <Link href={ROUTES.dashboard}>Dashboard</Link>.
           </Trans>
-        </Alert>
+        </Warning>
       )}
 
       {eModeBorrowDisabled && !isolationModeBorrowDisabled && (
-        <Alert sx={{ mb: '12px' }} severity="info" icon={false}>
+        <Warning sx={{ mb: '12px' }} severity="info" icon={false}>
           <Trans>
             Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for{' '}
             {getEmodeMessage(user.userEmodeCategoryId, currentNetworkConfig.baseAssetSymbol)}{' '}
             category. To manage E-Mode categories visit your{' '}
             <Link href={ROUTES.dashboard}>Dashboard</Link>.
           </Trans>
-        </Alert>
+        </Warning>
       )}
 
       {!eModeBorrowDisabled && isolationModeBorrowDisabled && (
-        <Alert sx={{ mb: '12px' }} severity="info" icon={false}>
+        <Warning sx={{ mb: '12px' }} severity="info" icon={false}>
           <Trans>
             Borrowing is unavailable because you’re using Isolation mode. To manage Isolation mode
             visit your <Link href={ROUTES.dashboard}>Dashboard</Link>.
           </Trans>
-        </Alert>
+        </Warning>
       )}
 
-      <Row mb={5} />
+      <Row mb={3} />
+
+      {currentNetworkConfig.name === 'Harmony' && (
+        <Row align="flex-start" mb={3}>
+          <HarmonyWarning />
+        </Row>
+      )}
 
       <Stack direction="row" spacing={2}>
         <Button
