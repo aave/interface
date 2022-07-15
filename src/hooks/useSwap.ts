@@ -27,12 +27,14 @@ const mainnetParaswap = ParaSwap(ChainId.mainnet);
 const polygonParaswap = ParaSwap(ChainId.polygon);
 const avalancheParaswap = ParaSwap(ChainId.avalanche);
 const fantomParaswap = ParaSwap(ChainId.fantom);
+const arbitrumParaswap = ParaSwap(ChainId.arbitrum_one);
 
 const getParaswap = (chainId: ChainId) => {
   if (ChainId.mainnet === chainId) return mainnetParaswap;
   if (ChainId.polygon === chainId) return polygonParaswap;
   if (ChainId.avalanche === chainId) return avalancheParaswap;
   if (ChainId.fantom === chainId) return fantomParaswap;
+  if (ChainId.arbitrum_one === chainId) return arbitrumParaswap;
   throw new Error('chain not supported');
 };
 
@@ -48,6 +50,8 @@ type UseSwapProps = {
 
 const MESSAGE_MAP = {
   ESTIMATED_LOSS_GREATER_THAN_MAX_IMPACT: 'Price impact to high',
+  // not sure why this error-code is not upper-cased
+  'No routes found with enough liquidity': 'No routes found with enough liquidity',
 };
 
 export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }: UseSwapProps) => {
@@ -103,6 +107,7 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }
       setPriceRoute(response as OptimalRate);
     } catch (e) {
       console.log(e);
+      console.log(e.message);
       const message = (MESSAGE_MAP as { [key: string]: string })[e.message];
       setError(message || 'There was an issue fetching data from Paraswap');
     }

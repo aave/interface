@@ -70,15 +70,17 @@ export const SwapModalContent = ({
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToSwap : _amount;
 
-  const { priceRoute, inputAmountUSD, inputAmount, outputAmount, outputAmountUSD } = useSwap({
-    chainId: currentNetworkConfig.underlyingChainId || currentChainId,
-    userId: currentAccount,
-    variant: 'exactIn',
-    swapIn: { ...poolReserve, amount: amountRef.current },
-    swapOut: { ...swapTarget, amount: '0' },
-    max: isMaxSelected,
-    skip: supplyTxState.loading,
-  });
+  const { priceRoute, inputAmountUSD, inputAmount, outputAmount, outputAmountUSD, error } = useSwap(
+    {
+      chainId: currentNetworkConfig.underlyingChainId || currentChainId,
+      userId: currentAccount,
+      variant: 'exactIn',
+      swapIn: { ...poolReserve, amount: amountRef.current },
+      swapOut: { ...swapTarget, amount: '0' },
+      max: isMaxSelected,
+      skip: supplyTxState.loading,
+    }
+  );
 
   const minimumReceived = new BigNumber(outputAmount || '0')
     .multipliedBy(new BigNumber(100).minus(maxSlippage).dividedBy(100))
@@ -236,6 +238,11 @@ export const SwapModalContent = ({
       {blockingError !== undefined && (
         <Typography variant="helperText" color="error.main">
           {handleBlocked()}
+        </Typography>
+      )}
+      {error && (
+        <Typography variant="helperText" color="error.main">
+          {error}
         </Typography>
       )}
       <TxModalDetails gasLimit={gasLimit}>
