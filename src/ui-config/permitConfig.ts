@@ -4,26 +4,6 @@ export const permitByChainAndToken: {
   [chainId: number]: Record<string, boolean>;
 } = {
   [ChainId.mainnet]: {},
-  [ChainId.rinkeby]: {
-    '0xA3a8697C4C6A7D9ccF9238cb567b122d53012ac9': true,
-    '0x58Cd851c28dF05Edc7F018B533C0257DE57673f7': true,
-    '0x8017B7FC5473d05e67E617072fB237D24Add550b': true,
-    '0xFfaDa869df79320120dfFd6eeE8cF664Dba43146': true,
-    '0xa982Aef90A37675C0E321e3e2f3aDC959fB89351': true,
-    '0x8D01d567AFdE8601C6BA784CF0da7Da12b3BFd66': true,
-    '0xaE4A267987f640AE1b0Dd757854Af00651cf2EC7': true,
-    '0xF1bE881Ee7034ebC0CD47E1af1bA94EC30DF3583': true,
-  },
-  [ChainId.ropsten]: {
-    '0x85b3362a4c46d57b77844cd64480657ba8d24c8c': true,
-    '0xf48271dc38dc811cd7ce2720192e9e8acd180c03': true,
-    '0xe99f86ec081bca8b1627bdf8062c19facc79997b': true,
-    '0xaf5a1d0523cf9e38005e234a9eea82cc167cc474': true,
-    '0xa17669420ed99fac51308567b08b7bac86837baf': true,
-    '0xe7f01afb875ad81f11e65ff256bb316cc5faffc0': true,
-    '0x1a57e7d60baeff506634ef69920aaa5de35dea47': true,
-    '0x7066ee910f85f3a4a4976670a349d7fe617ed8f5': true,
-  },
   [ChainId.goerli]: {
     '0xdf1742fe5b0bfc12331d8eaec6b478dfdbd31464': true,
     '0xaa63e0c86b531e2edfe9f91f6436df20c301963d': true,
@@ -114,5 +94,24 @@ export const permitByChainAndToken: {
   },
   [ChainId.optimism]: {
     '0x76FB31fb4af56892A25e32cFC43De717950c9278': false, // AAVE
+  },
+  [ChainId.optimism_goerli]: {
+    ['0xdf1742fe5b0bfc12331d8eaec6b478dfdbd31464']: true,
+    ['0xaA63E0C86b531E2eDFE9F91F6436dF20C301963D']: true,
+    ['0xA2025B15a1757311bfD68cb14eaeFCc237AF5b43']: true,
+    ['0xC2C527C0CACF457746Bd31B2a698Fe89de2b6d49']: true,
+    ['0x63242B9Bd3C22f18706d5c4E627B4735973f1f07']: true,
+    ['0x07C725d58437504CA5f814AE406e70E21C5e8e9e']: true,
+    ['0x2e3A2fb8473316A02b8A297B982498E661E1f6f5']: true,
+  },
+  [ChainId.optimism_kovan]: {
+    '0xb532118d86765Eb544958e47df77bb8bDDe2F096': true,
+    '0xd6B095c27bDf158C462AaB8Cb947BdA9351C0e1d': true,
+    '0xFbBCcCCA95b5F676D8f044Ec75e7eA5899280efF': true,
+    '0x6883D765088f90bAE62048dE45f2202D72985B01': true,
+    '0x9cCc44Aa7C301b6655ec9891BdaD20fa6eb2b552': true,
+    '0xeE6b5ad81c7d88a632b24Bcdac055D6f5F469495': true,
+    '0xfF5b900f020d663719EEE1731C21778632e6C424': true,
+    '0x46e213C62d4734C64986879af00eEc5128395776': true,
   },
 };

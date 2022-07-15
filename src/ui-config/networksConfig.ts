@@ -52,6 +52,19 @@ export type NetworkConfig = {
 export type BaseNetworkConfig = Omit<NetworkConfig, 'explorerLinkBuilder'>;
 
 export const networkConfigs: Record<string, BaseNetworkConfig> = {
+  [ChainId.kovan]: {
+    name: 'Ethereum Kovan',
+    publicJsonRPCUrl: ['https://eth-kovan.alchemyapi.io/v2/demo', 'https://kovan.poa.network'],
+    // protocolDataUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2-kovan',
+    baseUniswapAdapter: '0xf86Be05f535EC2d217E4c6116B3fa147ee5C05A1',
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://kovan.etherscan.io',
+    // rpcOnly: true,
+    isTestnet: true,
+    networkLogoPath: '/icons/networks/ethereum.svg',
+  },
   [ChainId.goerli]: {
     name: 'Ethereum Goerli',
     publicJsonRPCUrl: ['https://eth-goerli.alchemyapi.io/v2/demo', 'https://goerli.prylabs.net'],
