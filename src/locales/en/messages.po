@@ -93,12 +93,12 @@ msgid "Action requires an active reserve"
 msgstr "Action requires an active reserve"
 
 #: src/components/transactions/FlowCommons/Success.tsx
-msgid "Add aToken to the wallet to track your supply balance."
-msgstr "Add aToken to the wallet to track your supply balance."
-
-#: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add to wallet"
 msgstr "Add to wallet"
+
+#: src/components/transactions/FlowCommons/Success.tsx
+msgid "Add {0} to wallet to track your balance."
+msgstr "Add {0} to wallet to track your balance."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Address is not a contract"
@@ -586,6 +586,11 @@ msgstr "Disconnect Wallet"
 #: src/ui-config/menu-items/index.tsx
 msgid "Discord"
 msgstr "Discord"
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Due to a precision bug in the stETH contract, this asset can not be used in flashloan transactions"
+msgstr "Due to a precision bug in the stETH contract, this asset can not be used in flashloan transactions"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode"
@@ -1129,10 +1134,6 @@ msgstr "Repay"
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 msgid "Repay with"
 msgstr "Repay with"
-
-#: src/components/Warnings/RepayCollateralWarning.tsx
-msgid "Repay with collateral is experiencing degraded performance which may cause your transaction to fail. Consider using another service or add more collateral to avoid liquidation."
-msgstr "Repay with collateral is experiencing degraded performance which may cause your transaction to fail. Consider using another service or add more collateral to avoid liquidation."
 
 #: src/components/transactions/Repay/CollateralRepayActions.tsx
 #: src/components/transactions/Repay/RepayActions.tsx

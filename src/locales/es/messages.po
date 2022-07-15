@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-06-28 12:06\n"
+"PO-Revision-Date: 2022-07-14 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -98,12 +98,12 @@ msgid "Action requires an active reserve"
 msgstr "La acción requiere una reserva activa"
 
 #: src/components/transactions/FlowCommons/Success.tsx
-msgid "Add aToken to the wallet to track your supply balance."
-msgstr "Añade aToken a la cartera para rastrear tu saldo de suministro."
-
-#: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add to wallet"
 msgstr "Añadir a la cartera"
+
+#: src/components/transactions/FlowCommons/Success.tsx
+msgid "Add {0} to wallet to track your balance."
+msgstr "Añade {0} a tu cartera para hacer un seguimiento de tu balance."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Address is not a contract"
@@ -123,7 +123,7 @@ msgstr "Todas las propuestas"
 
 #: src/components/transactions/FlowCommons/PermissionView.tsx
 msgid "Allowance required action"
-msgstr ""
+msgstr "Acción de permiso requerida"
 
 #: src/components/infoTooltips/CollateralSwitchTooltip.tsx
 msgid "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
@@ -591,6 +591,11 @@ msgstr "Desconectar cartera"
 #: src/ui-config/menu-items/index.tsx
 msgid "Discord"
 msgstr "Discord"
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Due to a precision bug in the stETH contract, this asset can not be used in flashloan transactions"
+msgstr "Debido a un error de precisión en el contrato stETH, este activo no se puede utilizar en transacciones de préstamo flash"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode"
@@ -1135,10 +1140,6 @@ msgstr "Reembolso"
 msgid "Repay with"
 msgstr "Reembolsar en"
 
-#: src/components/Warnings/RepayCollateralWarning.tsx
-msgid "Repay with collateral is experiencing degraded performance which may cause your transaction to fail. Consider using another service or add more collateral to avoid liquidation."
-msgstr "El pago con garantía está experimentando un rendimiento degradado que puede hacer que tu transacción falle. Considera usar otro servicio o añade más garantías para evitar la liquidación."
-
 #: src/components/transactions/Repay/CollateralRepayActions.tsx
 #: src/components/transactions/Repay/RepayActions.tsx
 msgid "Repay {symbol}"
@@ -1203,7 +1204,7 @@ msgstr "Seguridad de su garantía depositada contra los activos prestados y su v
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Seatbelt report"
-msgstr ""
+msgstr "Reporte de seatbelt"
 
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Seems like we can't switch the network automatically. Please check if you can change it from the wallet."

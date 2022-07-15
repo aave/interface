@@ -116,16 +116,19 @@ export const TxSuccessView = ({
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                my: '24px',
+                mt: '24px',
               })}
             >
               <TokenIcon
                 symbol={symbol}
-                aToken={true}
+                aToken={addToken && addToken.aToken ? true : false}
                 sx={{ fontSize: '32px', mt: '12px', mb: '8px' }}
               />
               <Typography variant="description" color="text.primary" sx={{ mx: '24px' }}>
-                <Trans>Add aToken to the wallet to track your supply balance.</Trans>
+                <Trans>
+                  Add {addToken && addToken.aToken ? 'aToken ' : 'token '} to wallet to track your
+                  balance.
+                </Trans>
               </Typography>
               <Button
                 onClick={() => {
@@ -166,7 +169,13 @@ export const TxSuccessView = ({
         <Link
           variant="helperText"
           href={currentNetworkConfig.explorerLinkBuilder({ tx: mainTxState.txHash })}
-          sx={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'right', mb: 3 }}
+          sx={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'right',
+            mt: 6,
+            mb: 3,
+          }}
           underline="hover"
           target="_blank"
           rel="noreferrer"
