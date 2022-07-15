@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-07-12 18:10\n"
+"PO-Revision-Date: 2022-07-14 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -103,7 +103,7 @@ msgstr "Añadir a la cartera"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add {0} to wallet to track your balance."
-msgstr ""
+msgstr "Añade {0} a tu cartera para hacer un seguimiento de tu balance."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Address is not a contract"
@@ -123,7 +123,7 @@ msgstr "Todas las propuestas"
 
 #: src/components/transactions/FlowCommons/PermissionView.tsx
 msgid "Allowance required action"
-msgstr ""
+msgstr "Acción de permiso requerida"
 
 #: src/components/infoTooltips/CollateralSwitchTooltip.tsx
 msgid "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
@@ -1204,7 +1204,7 @@ msgstr "Seguridad de su garantía depositada contra los activos prestados y su v
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Seatbelt report"
-msgstr ""
+msgstr "Reporte de seatbelt"
 
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Seems like we can't switch the network automatically. Please check if you can change it from the wallet."
