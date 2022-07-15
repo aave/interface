@@ -3717,7 +3717,7 @@
       "executed": false,
       "canceled": false,
       "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
-      "state": "Active",
+      "state": "Succeeded",
       "minimumQuorum": "200",
       "minimumDiff": "50",
       "executionTimeWithGracePeriod": 0,
@@ -3726,7 +3726,7 @@
       "ipfsHash": "0xf27eb37dc1f6129638e61204393c7f27bafa4c4f9ae4ea6170132af7f51bc7e2",
       "startTimestamp": 1657660978,
       "creationTimestamp": 1657660978,
-      "expirationTimestamp": 1657918620
+      "expirationTimestamp": 1657929778
     },
     {
       "id": 88,
@@ -3761,7 +3761,7 @@
       "ipfsHash": "0xec8fc43da4504c01c0aaf85dec47289e5d3abcc3bc08b90c3018c15acd373644",
       "startTimestamp": 1657793335,
       "creationTimestamp": 1657793335,
-      "expirationTimestamp": 1658056672
+      "expirationTimestamp": 1658055489
     }
   ]
 }

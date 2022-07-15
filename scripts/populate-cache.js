@@ -61411,7 +61411,9 @@ var marketsData = {
     v3: true,
     chainId: import_contract_helpers2.ChainId.arbitrum_one,
     enabledFeatures: {
-      incentives: true
+      incentives: true,
+      liquiditySwap: true,
+      collateralRepay: true
     },
     rpcOnly: true,
     addresses: {
@@ -61421,7 +61423,9 @@ var marketsData = {
       WALLET_BALANCE_PROVIDER: "0xBc790382B3686abffE4be14A030A96aC6154023a",
       UI_POOL_DATA_PROVIDER: "0x3f960bB91e85Ae2dB561BDd01B515C5A5c65802b",
       UI_INCENTIVE_DATA_PROVIDER: "0xEFdd7374551897B11a23Ec7b5694C713DFDa76f1",
-      L2_ENCODER: "0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC"
+      L2_ENCODER: "0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC",
+      SWAP_COLLATERAL_ADAPTER: "0xAE9f94BD98eC2831a1330e0418bE0fDb5C95C2B9",
+      REPAY_WITH_COLLATERAL_ADAPTER: "0x32FdC26aFFA1eB331263Bcdd59F2e46eCbCC2E24"
     },
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
