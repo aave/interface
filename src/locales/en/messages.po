@@ -443,6 +443,14 @@ msgstr "Collateral usage is limited because of isolation mode. <0>Learn More</0>
 msgid "Collateralization"
 msgstr "Collateralization"
 
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Collector Contract"
+msgstr "Collector Contract"
+
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Collector Info"
+msgstr "Collector Info"
+
 #: src/components/WalletConnection/ConnectWalletButton.tsx
 #: src/layouts/WalletWidget.tsx
 msgid "Connect wallet"

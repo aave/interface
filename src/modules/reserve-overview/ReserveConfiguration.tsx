@@ -4,6 +4,7 @@ import {
   Alert,
   Box,
   BoxProps,
+  Button,
   Divider,
   Link,
   SvgIcon,
@@ -34,6 +35,8 @@ import { LiquidationPenaltyTooltip } from 'src/components/infoTooltips/Liquidati
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { frozenProposalMap } from 'src/utils/marketsAndNetworksConfig';
 import { ReserveFactorTooltip } from 'src/components/infoTooltips/ReserveFactorTooltip';
+import { CollectorTooltip } from 'src/components/infoTooltips/CollectorTooltip';
+import { ExternalLinkIcon } from '@heroicons/react/outline';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
   <Box
@@ -226,7 +229,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
           <div>
             {reserve.isIsolated ? (
               <Box sx={{ pt: '42px', pb: '12px' }}>
-                <Typography variant="secondary14" color="text.secondary" paddingBottom={'12px'}>
+                <Typography variant="subheader1" color="text.main" paddingBottom={'12px'}>
                   <Trans>Collateral usage</Trans>
                 </Typography>
                 <Alert severity="warning">
@@ -248,7 +251,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                 sx={{ display: 'inline-flex', alignItems: 'center', pt: '42px', pb: '12px' }}
                 paddingTop={'42px'}
               >
-                <Typography variant="secondary14" color="text.secondary">
+                <Typography variant="subheader1" color="text.main">
                   <Trans>Collateral usage</Trans>
                 </Typography>
                 <CheckRoundedIcon fontSize="small" color="success" sx={{ ml: 2 }} />
@@ -258,7 +261,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
               </Box>
             ) : (
               <Box sx={{ pt: '42px', pb: '12px' }}>
-                <Typography variant="secondary14" color="text.secondary">
+                <Typography variant="subheader1" color="text.main">
                   <Trans>Collateral usage</Trans>
                 </Typography>
                 <Alert sx={{ my: '12px' }} severity="warning">
@@ -402,25 +405,6 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                     <ReserveSubheader value={reserve.borrowCapUSD} />
                   </PanelItem>
                 )}
-                <PanelItem
-                  title={
-                    <ReserveFactorTooltip
-                      text={<Trans>Reserve factor</Trans>}
-                      key="res_factor"
-                      variant="description"
-                      collectorLink={
-                        currentMarketData.addresses.COLLECTOR
-                          ? currentNetworkConfig.explorerLinkBuilder({
-                              address: currentMarketData.addresses.COLLECTOR,
-                            })
-                          : undefined
-                      }
-                    />
-                  }
-                >
-                  <FormattedNumber value={reserve.reserveFactor} percent variant="main16" />
-                  <IncentivesButton symbol={reserve.symbol} displayBlank={true} />
-                </PanelItem>
               </Box>
               {renderCharts && !error && (
                 <ChartContainer sx={{ mt: 8 }}>
@@ -451,6 +435,84 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                   </ParentSize>
                 </ChartContainer>
               )}
+              <Box
+                sx={{ display: 'inline-flex', alignItems: 'center', pt: '42px', pb: '12px' }}
+                paddingTop={'42px'}
+              >
+                <Typography variant="subheader1" color="text.main">
+                  <Trans>Collector Info</Trans>
+                </Typography>
+              </Box>
+
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  justifyContent: 'space-around',
+                }}
+              >
+                <ReserveOverviewBox
+                  title={
+                    <ReserveFactorTooltip
+                      text={<Trans>Reserve factor</Trans>}
+                      key="res_factor"
+                      variant="description"
+                      collectorLink={
+                        currentMarketData.addresses.COLLECTOR
+                          ? currentNetworkConfig.explorerLinkBuilder({
+                              address: currentMarketData.addresses.COLLECTOR,
+                            })
+                          : undefined
+                      }
+                    />
+                  }
+                >
+                  <FormattedNumber
+                    value={reserve.reserveFactor}
+                    percent
+                    variant="secondary14"
+                    visibleDecimals={2}
+                  />
+                </ReserveOverviewBox>
+
+                {currentMarketData.addresses.COLLECTOR && (
+                  <>
+                    <ReserveOverviewBox
+                      title={
+                        <Typography variant="description">
+                          <Trans>Collector Contract</Trans>
+                        </Typography>
+                      }
+                    >
+                      <Link
+                        href={currentNetworkConfig.explorerLinkBuilder({
+                          address: currentMarketData.addresses.COLLECTOR,
+                        })}
+                        target="_blank"
+                        sx={{ textDecoration: 'none' }}
+                      >
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                          <Typography variant="description" color="text.secondary">
+                            Link
+                          </Typography>
+                          <SvgIcon sx={{ ml: 1, fontSize: 14 }}>
+                            <ExternalLinkIcon />
+                          </SvgIcon>
+                        </Box>
+                      </Link>
+                    </ReserveOverviewBox>
+                    {/* TO-DO: Refactor grid layout, currently uses flex: space-around which breaks with 2 elements */}
+                    <Box
+                      sx={{
+                        flex: '0 32%',
+                        marginBottom: '2%',
+                        height: { md: '70px', lg: '60px' },
+                        maxWidth: '32%',
+                      }}
+                    />
+                  </>
+                )}
+              </Box>
             </Box>
           </PanelRow>
         </>
