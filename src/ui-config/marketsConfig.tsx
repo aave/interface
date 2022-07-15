@@ -75,7 +75,7 @@ export enum CustomMarket {
   proto_polygon = 'proto_polygon',
   proto_mumbai = 'proto_mumbai',
   amm_mainnet = 'amm_mainnet',
-  proto_goerli = 'proto_goerli',
+  //proto_goerli = 'proto_goerli',
   // external
   // permissioned_market = 'permissioned_market',
 }
@@ -111,22 +111,22 @@ export const marketsData: {
       marketName: 'aavev2',
     },
   },
-  [CustomMarket.proto_goerli]: {
-    marketTitle: 'Ethereum Goerli',
-    chainId: ChainId.goerli,
-    enabledFeatures: {
-      faucet: true,
-    },
-    rpcOnly: true,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: ''.toLowerCase(),
-      LENDING_POOL: '',
-      WETH_GATEWAY: '',
-      WALLET_BALANCE_PROVIDER: '',
-      UI_POOL_DATA_PROVIDER: '',
-      UI_INCENTIVE_DATA_PROVIDER: '',
-    },
-  },
+  // [CustomMarket.proto_goerli]: {
+  //   marketTitle: 'Ethereum Goerli',
+  //   chainId: ChainId.goerli,
+  //   enabledFeatures: {
+  //   faucet: true,
+  //   },
+  //   rpcOnly: true,
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: ''.toLowerCase(),
+  //     LENDING_POOL: '',
+  //     WETH_GATEWAY: '',
+  //     WALLET_BALANCE_PROVIDER: '',
+  //     UI_POOL_DATA_PROVIDER: '',
+  //     UI_INCENTIVE_DATA_PROVIDER: '',
+  //  },
+  // },
   // [CustomMarket.permissioned_market]: {
   //   marketTitle: 'Ethereum Permissioned Market example',
   //   chainId: ChainId.mainnet,
