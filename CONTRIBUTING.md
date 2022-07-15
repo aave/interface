@@ -60,14 +60,16 @@ yarn test:amm|main|polygon|avalanche
 
 You can run the ui against a forked network similar to what the tests do which allows you to play around on the ui without spending actual funds.
 To enable forks in the ui, you have to run the following commands in console.
+
 ```
 localStorage.setItem('forkEnabled', 'true');
 localStorage.setItem('forkBaseChainId', 1); // the networkId you are forking
 localStorage.setItem('forkNetworkId', '3030'); // the networkId on the fork
 localStorage.setItem('forkRPCUrl', <rpcurl>);
 ```
+
 As localeStorage is not observed you need to **reload** after setting the parameters.
-Not the market selection should show forked markets for all the markets that run on `forkBaseChainId`.
+Now the market selection should show forked markets for all the markets that run on `forkBaseChainId`.
 To do actual transactions on the fork you need to setup your wallet to use the same `rpcurl` you provided as `forkRPCUrl`.
 
 ## Token addition

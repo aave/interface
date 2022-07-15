@@ -185,7 +185,8 @@ export default function ProposalPage({
                     <Box sx={{ flexGrow: 1 }} />
                     <Button
                       component="a"
-                      target="__BLANK"
+                      target="_blank"
+                      rel="noopener"
                       href={`${governanceConfig.ipfsGateway}/${ipfs.ipfsHash}`}
                       startIcon={
                         <SvgIcon sx={{ '& path': { strokeWidth: '1' } }}>
@@ -197,7 +198,8 @@ export default function ProposalPage({
                     </Button>
                     <Button
                       component="a"
-                      target="__BLANK"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
                         ipfs.title
                       )}&url=${url}`}
@@ -453,6 +455,7 @@ export default function ProposalPage({
                       <Button
                         component={Link}
                         target="_blank"
+                        rel="noopener"
                         href={ipfs.discussions}
                         variant="outlined"
                         endIcon={
@@ -468,6 +471,7 @@ export default function ProposalPage({
                       <Button
                         component={Link}
                         target="_blank"
+                        rel="noopener"
                         href={`https://github.com/bgd-labs/seatbelt-for-ghosts/tree/master/reports/Aave/0xEC568fffba86c094cf06b22134B23074DFE2252c/${String(
                           proposal.id
                         ).padStart(3, '0')}.md`}

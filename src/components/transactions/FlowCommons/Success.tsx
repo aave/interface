@@ -178,7 +178,7 @@ export const TxSuccessView = ({
           }}
           underline="hover"
           target="_blank"
-          rel="noreferrer"
+          rel="noreferrer noopener"
         >
           <Trans>Review tx details</Trans>
           <ExtLinkIcon />

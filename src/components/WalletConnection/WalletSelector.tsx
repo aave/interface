@@ -152,7 +152,7 @@ export const WalletSelector = () => {
       <Typography variant="description" sx={{ mt: '22px', mb: '30px', alignSelf: 'center' }}>
         <Trans>
           Need help connecting a wallet?{' '}
-          <Link href="https://docs.aave.com/faq/troubleshooting" target="_blank">
+          <Link href="https://docs.aave.com/faq/troubleshooting" target="_blank" rel="noopener">
             Read our FAQ
           </Link>
         </Trans>

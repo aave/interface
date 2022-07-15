@@ -20,6 +20,7 @@ function ExternalLink({ text, href }: ExternalLinkProps) {
       component={Link}
       href={href}
       target="_blank"
+      rel="noopener"
     >
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         {text}

@@ -188,7 +188,7 @@ export const SupplyAssetsList = () => {
               <Alert severity="warning">
                 <Trans>
                   Collateral usage is limited because of isolation mode.{' '}
-                  <Link href="https://docs.aave.com/faq/" target="_blank">
+                  <Link href="https://docs.aave.com/faq/" target="_blank" rel="noopener">
                     Learn More
                   </Link>
                 </Trans>
