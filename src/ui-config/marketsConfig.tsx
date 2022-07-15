@@ -55,12 +55,12 @@ export enum CustomMarket {
   // v3 test networks
   proto_arbitrum_rinkeby_v3 = 'proto_arbitrum_rinkeby_v3',
   proto_mumbai_v3 = 'proto_mumbai_v3',
-  proto_eth_rinkeby_v3 = 'proto_eth_rinkeby_v3',
   proto_fantom_testnet_v3 = 'proto_fantom_testnet_v3',
   proto_harmony_testnet_v3 = 'proto_harmony_testnet_v3',
   proto_fuji_v3 = 'proto_fuji_v3',
-  proto_ropsten_v3 = 'proto_ropsten_v3',
   proto_goerli_v3 = 'proto_goerli_v3',
+  proto_optimism_kovan_v3 = 'proto_optimism_kovan_v3',
+  proto_optimism_goerli_v3 = 'proto_optimism_goerli_v3',
   // v3 mainnets
   proto_optimism_v3 = 'proto_optimism_v3',
   proto_fantom_v3 = 'proto_fantom_v3',
@@ -75,6 +75,7 @@ export enum CustomMarket {
   proto_polygon = 'proto_polygon',
   proto_mumbai = 'proto_mumbai',
   amm_mainnet = 'amm_mainnet',
+  proto_goerli = 'proto_goerli',
   // external
   // permissioned_market = 'permissioned_market',
 }
@@ -108,6 +109,22 @@ export const marketsData: {
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
       marketName: 'aavev2',
+    },
+  },
+  [CustomMarket.proto_goerli]: {
+    marketTitle: 'Ethereum Goerli',
+    chainId: ChainId.goerli,
+    enabledFeatures: {
+      faucet: true,
+    },
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: ''.toLowerCase(),
+      LENDING_POOL: '',
+      WETH_GATEWAY: '',
+      WALLET_BALANCE_PROVIDER: '',
+      UI_POOL_DATA_PROVIDER: '',
+      UI_INCENTIVE_DATA_PROVIDER: '',
     },
   },
   // [CustomMarket.permissioned_market]: {
@@ -235,49 +252,6 @@ export const marketsData: {
     },
   },
   // v3
-  [CustomMarket.proto_eth_rinkeby_v3]: {
-    v3: true,
-    marketTitle: 'Ethereum Rinkeby',
-    chainId: ChainId.rinkeby,
-    enabledFeatures: {
-      faucet: true,
-      governance: false,
-      staking: false,
-      incentives: false,
-    },
-    rpcOnly: true,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0xBA6378f1c1D046e9EB0F538560BA7558546edF3C'.toLowerCase(),
-      LENDING_POOL: '0xE039BdF1d874d27338e09B55CB09879Dedca52D8',
-      WETH_GATEWAY: '0xD1DECc6502cc690Bc85fAf618Da487d886E54Abe',
-      FAUCET: '0x88138CA1e9E485A1E688b030F85Bb79d63f156BA',
-      WALLET_BALANCE_PROVIDER: '0x116674C3Efe4e31F192d855284619DEd6fE2a1b9',
-      UI_POOL_DATA_PROVIDER: '0x550f9764d56291B5B793b6dD1623af3346128BD2',
-      UI_INCENTIVE_DATA_PROVIDER: '0x2c9f31b1F9838Bb8781bb61a0d0a4615f6530207',
-    },
-  },
-  [CustomMarket.proto_ropsten_v3]: {
-    marketTitle: 'Ethereum Ropsten',
-    v3: true,
-    chainId: ChainId.ropsten,
-    enabledFeatures: {
-      // Note: We should remove this based on the addresses that you provide in the addresses below
-      faucet: true,
-      // governance: true,
-      // staking: true,
-      // incentives: true,
-    },
-    rpcOnly: true,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0x303a4B174663A6201Da77782413B4b54EFa3E97e'.toLowerCase(),
-      LENDING_POOL: '0x23a85024f54A19e243bA7a74E339a5C80998c7a4',
-      WETH_GATEWAY: '0x96A4fd1f289888cCa772298f7BDCF41C02122c01',
-      FAUCET: '0xb7263ADfB7C094aa24b91A51b297A278e105584a',
-      WALLET_BALANCE_PROVIDER: '0xEEac3ad1b3f4c43A782a951348c5387506B9AB06',
-      UI_POOL_DATA_PROVIDER: '0xb815B9EE078Dab098965D8e52dD5C747d70bb481',
-      UI_INCENTIVE_DATA_PROVIDER: '0x2526D407F722C0D1e0326eC1840A235bf173b9Ca',
-    },
-  },
   [CustomMarket.proto_goerli_v3]: {
     marketTitle: 'Ethereum Goerli',
     v3: true,
@@ -384,6 +358,44 @@ export const marketsData: {
       WALLET_BALANCE_PROVIDER: '0xd19443202328A66875a51560c28276868B8C61C2',
       UI_POOL_DATA_PROVIDER: '0x1D01f7d8B42Ec47837966732f831E1D6321df499',
       UI_INCENTIVE_DATA_PROVIDER: '0x036dDd300B57F6a8A6A55e2ede8b50b517A5094f',
+    },
+  },
+  [CustomMarket.proto_optimism_kovan_v3]: {
+    marketTitle: 'Optimism Kovan',
+    v3: true,
+    chainId: ChainId.optimism_kovan,
+    enabledFeatures: {
+      faucet: true,
+      incentives: true,
+    },
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0xD15d36975A0200D11B8a8964F4F267982D2a1cFe'.toLowerCase(),
+      LENDING_POOL: '0x139d8F557f70D1903787e929D7C42165c4667229',
+      WETH_GATEWAY: '0x698851Fc324Ff9572289Dd72dfC102DB778b52f1',
+      FAUCET: '0xed97140B58B97FaF70b70Ae26714Aa59705c74aE',
+      WALLET_BALANCE_PROVIDER: '0xA8751C0e2383cE144a95386A2E30f7E2BD78236C',
+      UI_POOL_DATA_PROVIDER: '0xBCb61ecc7997cc736E4802de2D5ce76D0908C97c',
+      UI_INCENTIVE_DATA_PROVIDER: '0xe2E3a30E77469397dc3CF74f1Fa35f39493207C2',
+    },
+  },
+  [CustomMarket.proto_optimism_goerli_v3]: {
+    marketTitle: 'Optimism Goerli',
+    v3: true,
+    chainId: ChainId.optimism_goerli,
+    enabledFeatures: {
+      faucet: true,
+      incentives: true,
+    },
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0x74a328ED938160D702378Daeb7aB2504714B4E4b'.toLowerCase(),
+      LENDING_POOL: '0x4b529A5d8268d74B687aC3dbb00e1b85bF4BF0d4',
+      WETH_GATEWAY: '0x6f7f2440006221F893c587b88f01afc42B6F8d2e',
+      FAUCET: '0xC52eA1F19C22E5a3725105BC0cf4988614e84D98',
+      WALLET_BALANCE_PROVIDER: '0xAEe1FD5CB505aa48E49c01DdE732956eDef8b42f',
+      UI_POOL_DATA_PROVIDER: '0x4D8201fB7a3367AB3e4Ba257F7462C81306799d6',
+      UI_INCENTIVE_DATA_PROVIDER: '0x596b5804E1f541baC5f265aF7C4bcc5077522876',
     },
   },
   [CustomMarket.proto_fantom_v3]: {
