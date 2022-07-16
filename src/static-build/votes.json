@@ -33514,6 +33514,24 @@
         "transactionHash": "0x31e13400255f91a724bce7d66aa2869a6f838c4ab433739ab99717ffab98c60c",
         "timestamp": 1657961570,
         "blockNumber": 15152772
+      },
+      {
+        "proposalId": 88,
+        "voter": "0x91D6E70676b39A45D9D1198aB01319a810Ce7618",
+        "support": true,
+        "votingPower": 0.1,
+        "transactionHash": "0xbbe1b77b611c08e1b4450d83b68cfc9fb36aa0eed7076e8b2ff59d2e8ee4b755",
+        "timestamp": 1657963346,
+        "blockNumber": 15152918
+      },
+      {
+        "proposalId": 88,
+        "voter": "0xaFDAbFb6227507fF6522b8a242168F6b5F353a6E",
+        "support": true,
+        "votingPower": 93459.962854,
+        "transactionHash": "0x9f9368fc57672637cfe3175d9ef4900c77bcb9b46dc22178a7eb582b6c4b1e59",
+        "timestamp": 1657971905,
+        "blockNumber": 15153541
       }
     ],
     "finished": false
