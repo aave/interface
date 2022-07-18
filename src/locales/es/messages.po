@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-07-14 18:05\n"
+"PO-Revision-Date: 2022-07-15 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -716,6 +716,11 @@ msgstr "Francés"
 msgid "Funds in the Safety Module"
 msgstr "Fondos en el módulo de seguridad"
 
+#: src/modules/staking/GetABPToken.tsx
+#: src/modules/staking/GetABPTokenModal.tsx
+msgid "Get ABP Token"
+msgstr ""
+
 #: src/ui-config/menu-items/index.tsx
 msgid "Github"
 msgstr "Github"
@@ -732,6 +737,10 @@ msgstr "Volver atrás"
 #: src/modules/governance/proposal/ProposalTopPanel.tsx
 msgid "Go back"
 msgstr "Volver a atrás"
+
+#: src/modules/staking/GetABPTokenModal.tsx
+msgid "Go to Balancer Pool"
+msgstr ""
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
@@ -1291,12 +1300,12 @@ msgid "Stake"
 msgstr "Stakear"
 
 #: pages/staking.staking.tsx
-msgid "Stake Aave"
-msgstr "Stakear Aave"
+msgid "Stake AAVE"
+msgstr ""
 
 #: pages/staking.staking.tsx
-msgid "Stake Aave/ETH BPT"
-msgstr "Stakear Aave/ETH BPT"
+msgid "Stake ABPT"
+msgstr ""
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Stake cooldown activated"
@@ -1441,9 +1450,9 @@ msgstr "Testnet mode está ON"
 msgid "The % of your total borrowing power used. This is based on the amount of your collateral supplied and the total amount that you can borrow."
 msgstr "El % de tu poder de préstamo total utilizado. Esto se basa en la cantidad de tu garantía suministrada y la cantidad total que puedes pedir prestado."
 
-#: pages/staking.staking.tsx
-msgid "The Balancer Pool Token (BPT) is a liquidity pool token. You can receive BPT by depositing a combination of AAVE + ETH in the <0>Balancer liquidity pool</0>. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
-msgstr "Los tokens de pool de Balancer (BPT) son tokens de un pool de liquidez. Puedes recibir tokens BPT depositando una combinación de AAVE + ETH en el <0>pool de liquidez de Balancer</0>. Puedes luego usar estos tokens BPT para stakearlos en el Safety Module para asegurar el protocolo y obtener incentivos de seguridad."
+#: src/modules/staking/GetABPTokenModal.tsx
+msgid "The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can receive ABPT by depositing a combination of AAVE + ETH in the Balancer liquidity pool. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
+msgstr ""
 
 #: src/components/infoTooltips/MaxLTVTooltip.tsx
 msgid "The Maximum LTV ratio represents the maximum borrowing power of a specific collateral. For example, if a collateral has an LTV of 75%, the user can borrow up to 0.75 worth of ETH in the principal currency for every 1 ETH worth of collateral."
