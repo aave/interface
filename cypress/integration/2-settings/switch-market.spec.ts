@@ -1,45 +1,47 @@
 import { configEnvWithTenderlyMainnetFork } from '../../support/steps/configuration.steps';
 import markets from '../../fixtures/markets.json';
 
-export const changeNetwork = (selector: string) => {
-  cy.get('#mui-3').click();
-  cy.get(`[data-cy="${selector}"]`).click();
-};
-
-export const checkNameOfNetwork = (networkName: string) => {
-  it(`step2: Check the name of the ${networkName} Market`, () => {
-    cy.get('#mui-3').contains(networkName);
-  });
-};
-export const switchToTestNet = () => {
+const switchToTestNet = () => {
   cy.get('#settings-button').click();
   cy.contains('Testnet mode').click();
 };
-export const switchToV2Markets = () => {
-  cy.get('#mui-3').click();
-  cy.contains('Version 2').click();
-  cy.get(`[data-cy="marketSelector_proto_kovan"]`).click();
-};
-export const switchMarket = (markets) => {
-  if (markets.version == 'v2') {
-    switchToV2Markets();
-  } else {
-  }
+
+const switchMarket = (name: string, version: string, dataCy: string) => {
+  it(`Change the network to ${name}`, () => {
+    cy.get('[data-cy="marketSelector"]').click();
+    cy.get(`[data-cy="markets_switch_button_${version}"]`).then(($btn) => {
+      if (!$btn.attr('aria-passed')) {
+        $btn.click();
+      }
+    });
+    cy.get(`[data-cy="${dataCy}"]`).click();
+  });
 };
 
-describe('Change markets', () => {
+const checkNameOfNetwork = (networkName: string) => {
+  it(`Check the name of the ${networkName} Market`, () => {
+    cy.get('[data-cy="marketSelector"]').contains(networkName);
+  });
+};
+
+describe('Switching main markets', () => {
   configEnvWithTenderlyMainnetFork({});
-  describe('Switch network', () => {
-    it('Switch to testnet', () => {
-      switchToTestNet();
+  Object.entries(markets.mainnet).forEach(([keyTo, valueTo]) => {
+    describe(`Switching market to ${keyTo}`, () => {
+      switchMarket(valueTo.name, valueTo.version, valueTo.dataCy);
+      checkNameOfNetwork(valueTo.name);
     });
   });
-  Object.entries(markets).forEach(([keyTo, valueTo]) => {
+});
+
+describe('Switching testnet markets', () => {
+  configEnvWithTenderlyMainnetFork({});
+  before(`Turn on testnet mode`, () => {
+    switchToTestNet();
+  });
+  Object.entries(markets.testnet).forEach(([keyTo, valueTo]) => {
     describe(`Switching market to ${keyTo}`, () => {
-      it(`step1: Change the network to ${valueTo.name}`, () => {
-        switchMarket(valueTo);
-        changeNetwork(valueTo.dataCy);
-      });
+      switchMarket(valueTo.name, valueTo.version, valueTo.dataCy);
       checkNameOfNetwork(valueTo.name);
     });
   });
