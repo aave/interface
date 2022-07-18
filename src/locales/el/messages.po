@@ -716,6 +716,11 @@ msgstr "Γαλλικά"
 msgid "Funds in the Safety Module"
 msgstr "Κεφάλαια στην Μονάδα Ασφάλειας"
 
+#: src/modules/staking/GetABPToken.tsx
+#: src/modules/staking/GetABPTokenModal.tsx
+msgid "Get ABP Token"
+msgstr ""
+
 #: src/ui-config/menu-items/index.tsx
 msgid "Github"
 msgstr "Github"
@@ -1291,12 +1296,12 @@ msgid "Stake"
 msgstr "Κλειδώστε"
 
 #: pages/staking.staking.tsx
-msgid "Stake Aave"
-msgstr "Κλειδώστε Aave"
+msgid "Stake AAVE"
+msgstr ""
 
 #: pages/staking.staking.tsx
-msgid "Stake Aave/ETH BPT"
-msgstr "Κλειδώστε Aave/ETH BPT"
+msgid "Stake ABPT"
+msgstr ""
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Stake cooldown activated"
@@ -1442,9 +1447,9 @@ msgstr ""
 msgid "The % of your total borrowing power used. This is based on the amount of your collateral supplied and the total amount that you can borrow."
 msgstr "Το % της συνολικής δανειοληπτικής σας δύναμης που χρησιμοποιείται. Αυτό βασίζεται στο ποσό της παρεχόμενης εξασφάλισής σας και στο συνολικό ποσό που μπορείτε να δανειστείτε."
 
-#: pages/staking.staking.tsx
-msgid "The Balancer Pool Token (BPT) is a liquidity pool token. You can receive BPT by depositing a combination of AAVE + ETH in the <0>Balancer liquidity pool</0>. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
-msgstr "Το Balancer Pool Token (BPT) είναι ένα token συγκέντρωσης ρευστότητας. Μπορείτε να λάβετε το BPT καταθέτοντας έναν συνδυασμό AAVE + ETH στην <0>Πληρότητα του ταμείου ρευστότητας του Balancer</0>. Στη συνέχεια, μπορείτε να κλειδώσετε το BPT σας στη μονάδα ασφαλείας για να διασφαλίσετε το πρωτόκολλο και να κερδίσετε κίνητρα ασφαλείας."
+#: src/modules/staking/GetABPTokenModal.tsx
+msgid "The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can receive ABPT by depositing a combination of AAVE + ETH in the Balancer liquidity pool. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
+msgstr ""
 
 #: src/components/infoTooltips/MaxLTVTooltip.tsx
 msgid "The Maximum LTV ratio represents the maximum borrowing power of a specific collateral. For example, if a collateral has an LTV of 75%, the user can borrow up to 0.75 worth of ETH in the principal currency for every 1 ETH worth of collateral."

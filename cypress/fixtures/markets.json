@@ -28,7 +28,7 @@
     "name": "Harmony",
     "version": "v3",
     "dataCy": "marketSelector_proto_harmony_testnet_v3"
-  }, 
+  },
   "OptimismKovanV3Market": {
     "name": "Optimism",
     "version": "v3",
