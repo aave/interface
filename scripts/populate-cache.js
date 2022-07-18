@@ -62304,15 +62304,16 @@ var averageBlockTime = 14;
 function enhanceProposalWithTimes(proposal) {
   return __async(this, null, function* () {
     const provider = getProvider(import_contract_helpers6.ChainId.mainnet);
-    const { timestamp: startTimestamp } = yield provider.getBlock(proposal.startBlock);
-    const { timestamp: creationTimestamp } = yield provider.getBlock(proposal.proposalCreated);
+    const [{ timestamp: startTimestamp }, { timestamp: creationTimestamp }] = yield Promise.all([
+      provider.getBlock(proposal.startBlock),
+      provider.getBlock(proposal.proposalCreated)
+    ]);
     if (proposal.state === import_contract_helpers6.ProposalState.Active) {
-      const currentBlockNumber = yield provider.getBlockNumber();
-      const currentBlock = yield provider.getBlock(currentBlockNumber);
+      const currentBlock = yield provider.getBlock("latest");
       return __spreadProps(__spreadValues({}, proposal), {
         startTimestamp,
         creationTimestamp,
-        expirationTimestamp: currentBlock.timestamp + (proposal.endBlock - currentBlockNumber) * averageBlockTime
+        expirationTimestamp: currentBlock.timestamp + (proposal.endBlock - currentBlock.number) * averageBlockTime
       });
     }
     const expirationTimestamp = startTimestamp + (proposal.endBlock - proposal.startBlock) * averageBlockTime;
