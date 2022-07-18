@@ -65,15 +65,21 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
 
     try {
       if (pendingProposals.length) {
-        const copy = [...proposals];
-        for (const { proposal } of pendingProposals) {
-          const { values, ...rest } = await governanceContract.getProposal({
-            proposalId: proposal.id,
+        const updatedProposals = await Promise.all(
+          pendingProposals.map(async ({ proposal }) => {
+            const { values, ...rest } = await governanceContract.getProposal({
+              proposalId: proposal.id,
+            });
+            return enhanceProposalWithTimes(rest);
+          })
+        );
+        setProposals((proposals) => {
+          updatedProposals.map((proposal) => {
+            proposals[proposal.id].proposal = proposal;
+            proposals[proposal.id].prerendered = false;
           });
-          copy[proposal.id].proposal = await enhanceProposalWithTimes(rest);
-          copy[proposal.id].prerendered = false;
-        }
-        setProposals(copy);
+          return proposals;
+        });
       }
       setUpdatingPendingProposals(false);
     } catch (e) {
@@ -81,8 +87,8 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
     }
   }
 
-  usePolling(fetchNewProposals, 30000, false, [proposals.length]);
-  usePolling(updatePendingProposals, 10000, false, [proposals.length]);
+  usePolling(fetchNewProposals, 60000, false, [proposals.length]);
+  usePolling(updatePendingProposals, 15000, false, [proposals.length]);
   return (
     <div>
       <Box
