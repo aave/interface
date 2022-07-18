@@ -716,6 +716,10 @@ msgstr "Funds in the Safety Module"
 msgid "Get ABP Token"
 msgstr "Get ABP Token"
 
+#: src/components/transactions/Borrow/BorrowModalContent.tsx
+msgid "Get discounted borrow APY — 1.6%"
+msgstr "Get discounted borrow APY — 1.6%"
+
 #: src/ui-config/menu-items/index.tsx
 msgid "Github"
 msgstr "Github"
@@ -843,6 +847,10 @@ msgstr "Isolated assets have limited borrowing power and other assets cannot be 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Language"
 msgstr "Language"
+
+#: src/components/transactions/Borrow/BorrowModalContent.tsx
+msgid "Learn More"
+msgstr "Learn More"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
@@ -1697,6 +1705,10 @@ msgstr "User is in isolation mode"
 #: src/ui-config/errorMapping.tsx
 msgid "User is trying to borrow multiple assets including a siloed one"
 msgstr "User is trying to borrow multiple assets including a siloed one"
+
+#: src/components/transactions/Borrow/BorrowModalContent.tsx
+msgid "Users who stake their AAVE in Safety Module get discounted borrow rate 1.6% for each 100 GHO per 1 staked AAVE."
+msgstr "Users who stake their AAVE in Safety Module get discounted borrow rate 1.6% for each 100 GHO per 1 staked AAVE."
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Utilization Rate"
