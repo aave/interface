@@ -18,7 +18,6 @@ import { SupplyModal } from 'src/components/transactions/Supply/SupplyModal';
 import { WithdrawModal } from 'src/components/transactions/Withdraw/WithdrawModal';
 import { BackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { ConnectionStatusProvider } from 'src/hooks/useConnectionStatusContext';
 import { ModalContextProvider } from 'src/hooks/useModal';
 // import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3ContextProvider';
 import { TxBuilderProvider } from 'src/providers/TxBuilderProvider';
@@ -77,37 +76,35 @@ export default function MyApp(props: MyAppProps) {
           <Web3ReactProvider getLibrary={getWeb3Library}>
             <Web3ContextProvider>
               <ProtocolDataProvider>
-                <ConnectionStatusProvider>
-                  <AppGlobalStyles>
-                    <AddressBlocked>
-                      <PermissionProvider>
-                        <ModalContextProvider>
-                          <BackgroundDataProvider>
-                            <AppDataProvider>
-                              <TxBuilderProvider>
-                                <WalletModalContextProvider>
-                                  <GasStationProvider>
-                                    {getLayout(<Component {...pageProps} />)}
-                                    <SupplyModal />
-                                    <WithdrawModal />
-                                    <BorrowModal />
-                                    <RepayModal />
-                                    <CollateralChangeModal />
-                                    <RateSwitchModal />
-                                    <ClaimRewardsModal />
-                                    <EmodeModal />
-                                    <SwapModal />
-                                    <FaucetModal />
-                                  </GasStationProvider>
-                                </WalletModalContextProvider>
-                              </TxBuilderProvider>
-                            </AppDataProvider>
-                          </BackgroundDataProvider>
-                        </ModalContextProvider>
-                      </PermissionProvider>
-                    </AddressBlocked>
-                  </AppGlobalStyles>
-                </ConnectionStatusProvider>
+                <AppGlobalStyles>
+                  <AddressBlocked>
+                    <PermissionProvider>
+                      <ModalContextProvider>
+                        <BackgroundDataProvider>
+                          <AppDataProvider>
+                            <TxBuilderProvider>
+                              <WalletModalContextProvider>
+                                <GasStationProvider>
+                                  {getLayout(<Component {...pageProps} />)}
+                                  <SupplyModal />
+                                  <WithdrawModal />
+                                  <BorrowModal />
+                                  <RepayModal />
+                                  <CollateralChangeModal />
+                                  <RateSwitchModal />
+                                  <ClaimRewardsModal />
+                                  <EmodeModal />
+                                  <SwapModal />
+                                  <FaucetModal />
+                                </GasStationProvider>
+                              </WalletModalContextProvider>
+                            </TxBuilderProvider>
+                          </AppDataProvider>
+                        </BackgroundDataProvider>
+                      </ModalContextProvider>
+                    </PermissionProvider>
+                  </AddressBlocked>
+                </AppGlobalStyles>
               </ProtocolDataProvider>
             </Web3ContextProvider>
           </Web3ReactProvider>

@@ -16,8 +16,6 @@ export type MarketDataType = {
     incentives?: boolean;
     permissions?: boolean;
   };
-  cachingServerUrl?: string;
-  cachingWSServerUrl?: string;
   rpcOnly?: boolean;
   isFork?: boolean;
   permissionComponent?: ReactNode;
@@ -221,8 +219,6 @@ export const marketsData: {
       incentives: true,
       collateralRepay: true,
     },
-    cachingServerUrl: 'https://cache-api-137.aave.com/graphql',
-    cachingWSServerUrl: 'wss://cache-api-137.aave.com/graphql',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xd05e3E715d945B59290df0ae8eF85c1BdB684744'.toLowerCase(),
       LENDING_POOL: '0x8dFf5E27EA6b7AC08EbFdf9eB090F32ee9a30fcf',
@@ -265,8 +261,6 @@ export const marketsData: {
       incentives: true,
       collateralRepay: true,
     },
-    cachingServerUrl: 'https://cache-api-43114.aave.com/graphql',
-    cachingWSServerUrl: 'wss://cache-api-43114.aave.com/graphql',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xb6A86025F0FE1862B372cb0ca18CE3EDe02A318f'.toLowerCase(),
       LENDING_POOL: '0x4F01AeD16D97E3aB5ab2B501154DC9bb0F1A5A2C',
