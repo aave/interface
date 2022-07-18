@@ -64,6 +64,7 @@ export async function getStaticProps({ params }: { params: { proposalId: string 
     props: {
       proposal,
       ipfs: IpfsFetcher.get(Number(params.proposalId)),
+      prerendered: true,
       // votes: await VoteFetcher.get(
       //   Number(params.proposalId),
       //   proposal.startBlock,
@@ -76,6 +77,7 @@ export async function getStaticProps({ params }: { params: { proposalId: string 
 interface ProposalPageProps {
   ipfs?: IpfsType;
   proposal?: CustomProposalType;
+  prerendered?: boolean;
 }
 
 const CenterAlignedImage = styled('img')({
@@ -88,7 +90,11 @@ const StyledLink = styled('a')({
   color: 'inherit',
 });
 
-export default function ProposalPage({ proposal: initialProposal, ipfs }: ProposalPageProps) {
+export default function ProposalPage({
+  proposal: initialProposal,
+  ipfs,
+  prerendered,
+}: ProposalPageProps) {
   const [url, setUrl] = useState('');
   const [proposal, setProposal] = useState(initialProposal);
   const [loading, setLoading] = useState(!proposal || !isProposalStateImmutable(proposal));
@@ -442,22 +448,40 @@ export default function ProposalPage({ proposal: initialProposal, ipfs }: Propos
                       </Typography>
                     </Row>
                   )}
-                  {ipfs?.discussions && (
-                    <Button
-                      component={Link}
-                      target="_blank"
-                      href={ipfs.discussions}
-                      variant="outlined"
-                      sx={{ mt: 10, mb: 2 }}
-                      endIcon={
-                        <SvgIcon>
-                          <ExternalLinkIcon />
-                        </SvgIcon>
-                      }
-                    >
-                      <Trans>Forum discussion</Trans>
-                    </Button>
-                  )}
+                  <Box sx={{ mt: 10, mb: 2, display: 'flex', gap: 2 }}>
+                    {ipfs?.discussions && (
+                      <Button
+                        component={Link}
+                        target="_blank"
+                        href={ipfs.discussions}
+                        variant="outlined"
+                        endIcon={
+                          <SvgIcon>
+                            <ExternalLinkIcon />
+                          </SvgIcon>
+                        }
+                      >
+                        <Trans>Forum discussion</Trans>
+                      </Button>
+                    )}
+                    {prerendered && ( // only render the button for prerendered proposals as fro them we can be sure ci already ran
+                      <Button
+                        component={Link}
+                        target="_blank"
+                        href={`https://github.com/bgd-labs/seatbelt-for-ghosts/tree/master/reports/Aave/0xEC568fffba86c094cf06b22134B23074DFE2252c/${String(
+                          proposal.id
+                        ).padStart(3, '0')}.md`}
+                        variant="outlined"
+                        endIcon={
+                          <SvgIcon>
+                            <ExternalLinkIcon />
+                          </SvgIcon>
+                        }
+                      >
+                        <Trans>Seatbelt report</Trans>
+                      </Button>
+                    )}
+                  </Box>
                 </>
               ) : (
                 <>

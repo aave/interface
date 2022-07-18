@@ -450,7 +450,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                   <LightningBoltGradient />
                 </SvgIcon>
                 <Typography variant="subheader1">
-                  {getEmodeMessage(reserve.eModeCategoryId)}
+                  {getEmodeMessage(reserve.eModeCategoryId, currentNetworkConfig.baseAssetSymbol)}
                 </Typography>
               </Box>
               <Box

@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-06-02 18:05\n"
+"PO-Revision-Date: 2022-07-14 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -98,8 +98,12 @@ msgid "Action requires an active reserve"
 msgstr "La acción requiere una reserva activa"
 
 #: src/components/transactions/FlowCommons/Success.tsx
-msgid "Add {0} to the wallet"
-msgstr "Añadir {0} a la cartera"
+msgid "Add to wallet"
+msgstr "Añadir a la cartera"
+
+#: src/components/transactions/FlowCommons/Success.tsx
+msgid "Add {0} to wallet to track your balance."
+msgstr "Añade {0} a tu cartera para hacer un seguimiento de tu balance."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Address is not a contract"
@@ -119,7 +123,7 @@ msgstr "Todas las propuestas"
 
 #: src/components/transactions/FlowCommons/PermissionView.tsx
 msgid "Allowance required action"
-msgstr ""
+msgstr "Acción de permiso requerida"
 
 #: src/components/infoTooltips/CollateralSwitchTooltip.tsx
 msgid "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
@@ -171,7 +175,7 @@ msgstr "Aprobando {symbol}..."
 msgid "Array parameters that should be equal length are not"
 msgstr "Los parámetros del array que deberían ser iguales en longitud no lo son"
 
-#: pages/faucet.page.tsx
+#: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/markets/AssetsList.tsx
 msgid "Asset"
 msgstr "Activo"
@@ -202,7 +206,6 @@ msgstr "El activo no está listado"
 msgid "Asset to delegate"
 msgstr "Activos a delegar"
 
-#: pages/faucet.page.tsx
 #: src/modules/dashboard/lists/ListHeader.tsx
 msgid "Assets"
 msgstr "Activos"
@@ -326,7 +329,7 @@ msgstr "Tomar prestado no está habilitado"
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrowing is unavailable because you’re using Isolation mode. To manage Isolation mode visit your <0>Dashboard</0>."
-msgstr ""
+msgstr "Tomar prestado no está disponible porque estás usando el Isolation mode. Para administrar el Isolation mode, visita tu <0>Panel de control</0>."
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) and Isolation mode. To manage E-Mode and Isolation mode visit your <0>Dashboard</0>."
@@ -560,6 +563,10 @@ msgstr "Diferencial"
 msgid "Disable E-Mode"
 msgstr "Desactivar el E-Mode"
 
+#: src/layouts/AppHeader.tsx
+msgid "Disable testnet"
+msgstr "Deshabilitar testnet"
+
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 msgid "Disable {symbol} as collateral"
 msgstr "Desactivar {symbol} como garantía"
@@ -584,6 +591,11 @@ msgstr "Desconectar cartera"
 #: src/ui-config/menu-items/index.tsx
 msgid "Discord"
 msgstr "Discord"
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Due to a precision bug in the stETH contract, this asset can not be used in flashloan transactions"
+msgstr "Debido a un error de precisión en el contrato stETH, este activo no se puede utilizar en transacciones de préstamo flash"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode"
@@ -671,9 +683,12 @@ msgstr "Caduca"
 msgid "FAQ"
 msgstr "FAQ"
 
-#: pages/faucet.page.tsx
 #: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
+#: src/modules/faucet/FaucetAssetsList.tsx
+#: src/modules/faucet/FaucetItemLoader.tsx
+#: src/modules/faucet/FaucetMobileItemLoader.tsx
+#: src/ui-config/menu-items/index.tsx
 msgid "Faucet"
 msgstr "Faucet"
 
@@ -714,13 +729,17 @@ msgstr "Configuración global"
 msgid "Go Back"
 msgstr "Volver atrás"
 
+#: src/modules/governance/proposal/ProposalTopPanel.tsx
+msgid "Go back"
+msgstr "Volver a atrás"
+
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
 msgstr "Gobernanza"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Greek"
-msgstr ""
+msgstr "Griego"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/dashboard/DashboardTopPanel.tsx
@@ -852,7 +871,7 @@ msgid "Liquidation penalty"
 msgstr "Penalización de liquidación"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
-msgid "Liquidation risk parametres"
+msgid "Liquidation risk parameters"
 msgstr "Parámetros de riesgo de liquidación"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
@@ -997,6 +1016,10 @@ msgstr "Nada invertido"
 msgid "Nothing supplied yet"
 msgstr "Nada suministrado aún"
 
+#: src/components/HALLink.tsx
+msgid "Notify"
+msgstr "Notificar"
+
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Ok, Close"
 msgstr "Vale, cerrar"
@@ -1029,6 +1052,10 @@ msgstr "Pendiente..."
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Please connect a wallet to view your personal information here."
 msgstr "Por favor conecta una billetera para ver tu información personal aquí."
+
+#: src/modules/faucet/FaucetAssetsList.tsx
+msgid "Please connect your wallet to get free testnet assets."
+msgstr "Por favor conecta tu cartera para obtener activos testnet gratis."
 
 #: src/components/ConnectWalletPaper.tsx
 msgid "Please connect your wallet to see your supplies, borrowings, and open positions."
@@ -1113,10 +1140,6 @@ msgstr "Reembolso"
 msgid "Repay with"
 msgstr "Reembolsar en"
 
-#: src/components/Warnings/RepayCollateralWarning.tsx
-msgid "Repay with collateral is experiencing degraded performance which may cause your transaction to fail. Consider using another service or add more collateral to avoid liquidation."
-msgstr "El pago con garantía está experimentando un rendimiento degradado que puede hacer que tu transacción falle. Considera usar otro servicio o añade más garantías para evitar la liquidación."
-
 #: src/components/transactions/Repay/CollateralRepayActions.tsx
 #: src/components/transactions/Repay/RepayActions.tsx
 msgid "Repay {symbol}"
@@ -1179,6 +1202,10 @@ msgstr "VER GRÁFICOS"
 msgid "Safety of your deposited collateral against the borrowed assets and its underlying value."
 msgstr "Seguridad de su garantía depositada contra los activos prestados y su valor subyacente."
 
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Seatbelt report"
+msgstr "Reporte de seatbelt"
+
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Seems like we can't switch the network automatically. Please check if you can change it from the wallet."
 msgstr "Parece que no podemos cambiar la red automáticamente. Por favor, compruebe si puede cambiarla desde la billetera."
@@ -1187,17 +1214,21 @@ msgstr "Parece que no podemos cambiar la red automáticamente. Por favor, compru
 msgid "Select APY type to switch"
 msgstr "Seleccione el tipo APY para cambiar"
 
-#: src/components/MarketSwitcher.tsx
-msgid "Select Aave Market"
-msgstr "Seleccionar Mercado Aave"
-
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Select language"
 msgstr "Seleccionar idioma"
 
-#: src/components/HALTooltip.tsx
-msgid "Setup triggers and receive notifications about your Health Factor status using Hal app."
-msgstr "Configura los activadores y recibe notificaciones sobre el estado de tu Factor de Salud usando la aplicación Hal."
+#: src/modules/reserve-overview/AddTokenDropdown.tsx
+msgid "Select token to add"
+msgstr "Selecciona token para añadir"
+
+#: src/modules/reserve-overview/TokenLinkDropdown.tsx
+msgid "Select token to view in block explorer"
+msgstr "Selecciona token para ver en el explorador de bloques"
+
+#: src/components/HALLink.tsx
+msgid "Setup notifications about your Health Factor using the Hal app."
+msgstr "Configura notificaciones sobre tu factor de salud usando la aplicación Hal."
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Share on twitter"
@@ -1213,7 +1244,7 @@ msgstr "Mostrar activos con 0 saldo"
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Since this asset is frozen, the only available actions are withdraw and repay which can be accessed from the <0>Dashboard</0>"
-msgstr ""
+msgstr "Dado que este activo está congelado, las únicas acciones disponibles son retirar y pagar, a las que se puede acceder desde el <0>Panel de control</0>"
 
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
@@ -1394,9 +1425,17 @@ msgstr "Cambiar a Aave Classic"
 msgid "Switching rate"
 msgstr "Tasa de cambio"
 
+#: src/modules/faucet/FaucetAssetsList.tsx
+msgid "Test Assets"
+msgstr "Activos de prueba"
+
 #: src/layouts/components/TestNetModeSwitcher.tsx
 msgid "Testnet mode"
 msgstr "Testnet mode"
+
+#: src/layouts/AppHeader.tsx
+msgid "Testnet mode is ON"
+msgstr "Testnet mode está ON"
 
 #: src/components/infoTooltips/BorrowPowerTooltip.tsx
 msgid "The % of your total borrowing power used. This is based on the amount of your collateral supplied and the total amount that you can borrow."
@@ -1417,6 +1456,10 @@ msgstr "La tasa estable no está habilitada para este activo"
 #: src/ui-config/errorMapping.tsx
 msgid "The address of the pool addresses provider is invalid"
 msgstr "La dirección del proveedor del grupo de direcciones no es válida"
+
+#: src/layouts/AppHeader.tsx
+msgid "The app is running in testnet mode. Learn how it works in"
+msgstr "La aplicación se está ejecutando en testnet mode. Aprende como funciona en"
 
 #: src/ui-config/errorMapping.tsx
 msgid "The caller of the function is not an AToken"
@@ -1505,6 +1548,10 @@ msgstr "Este activo ha alcanzado su límite de suministro. No queda nada disponi
 #: src/components/infoTooltips/GasTooltip.tsx
 msgid "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
 msgstr "Este cálculo de gas es solo una estimación. Tu cartera establecerá el precio de la transacción. Puedes modificar la configuración de gas directamente desde tu proveedor de cartera."
+
+#: src/components/HALLink.tsx
+msgid "This integration was<0>proposed and approved</0>by the community."
+msgstr "Esta integración fue<0>propuesta y aprobada</0>por la comunidad."
 
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount available for you to borrow. You can borrow based on your collateral and until the borrow cap is reached."
@@ -1674,6 +1721,14 @@ msgstr "El suministro de deuda variable no es cero"
 msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions. Recommended for short-term loans."
 msgstr "La tasa de interés variable <0>fluctuará</0> según las condiciones del mercado. Recomendado para préstamos a corto plazo."
 
+#: src/components/MarketSwitcher.tsx
+msgid "Version 2"
+msgstr "Versión 2"
+
+#: src/components/MarketSwitcher.tsx
+msgid "Version 3"
+msgstr "Versión 3"
+
 #: src/modules/markets/AssetsListMobileItem.tsx
 msgid "View details"
 msgstr "Ver detalles"
@@ -1705,9 +1760,9 @@ msgstr "Poder de votación"
 msgid "Voting results"
 msgstr "Resultados de la votación"
 
-#: pages/faucet.page.tsx
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+#: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Wallet balance"
@@ -1736,6 +1791,10 @@ msgstr "¿Por qué necesito aprobarlo?"
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "With a voting power of <0/>"
 msgstr "Con un poder de votación de <0/>"
+
+#: src/modules/faucet/FaucetTopPanel.tsx
+msgid "With testnet Faucet you can get free assets to test the Aave Protocol. Make sure to switch your wallet provider to the appropriate testnet network, select desired asset, and click ‘Faucet’ to get tokens transferred to your wallet. The assets on a testnet are not “real,” meaning they have no monetary value. <0>Learn more</0>"
+msgstr "Con la testnet Faucet puedes obtener activos gratuitos para probar el Protocolo Aave. Asegúrate de cambiar tu proveedor de cartera a la red de testnet adecuada, selecciona el activo deseado y haz clic en \"Faucet\" para obtener tokens transferidos a tu cartera. Los activos de una testnet no son \"reales\", lo que significada que no tienen valor monetario. <0>Más información</0>"
 
 #: src/components/transactions/Withdraw/WithdrawModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
@@ -1870,11 +1929,19 @@ msgstr "Su saldo de recompensa es 0"
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 msgid "Your supplies"
-msgstr "Sus suministros"
+msgstr "Tus suministros"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Your voting info"
 msgstr "Tu información de voto"
+
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+msgid "Your {networkName} wallet is empty. Get free test assets at"
+msgstr "Tu cartera {networkName} está vacía. Consigue activos de prueba gratis en"
+
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "Your {networkName} wallet is empty. Get free test {0} at"
+msgstr "Tu cartera {networkName} está vacía. Consigue {0} de prueba gratis en"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
@@ -1888,10 +1955,6 @@ msgstr "Dirección cero no válida"
 #: src/modules/markets/AssetsList.tsx
 msgid "assets"
 msgstr "activos"
-
-#: src/modules/governance/proposal/ProposalTopPanel.tsx
-msgid "back"
-msgstr "atras"
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "copy the error"
@@ -1956,18 +2019,11 @@ msgstr "tokens no es lo mismo que stakearlos. Si deseas stakearlos"
 msgid "tokens, please go to the"
 msgstr "tokens, por favor vaya al"
 
-#: src/components/MarketSwitcher.tsx
-msgid "v2 markets"
-msgstr "mercados v2"
-
-#: src/components/MarketSwitcher.tsx
-msgid "v3 markets"
-msgstr "mercados v3"
-
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "withdrew"
-msgstr ""
+msgstr "retirado"
 
+#: src/components/MarketSwitcher.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
@@ -1979,13 +2035,14 @@ msgstr "{0}"
 msgid "{0} Balance"
 msgstr "Saldo {0}"
 
-#: pages/faucet.page.tsx
+#: src/components/FaucetButton.tsx
+#: src/modules/faucet/FaucetTopPanel.tsx
 msgid "{0} Faucet"
 msgstr "{0} Faucet"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "{0} is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
-msgstr ""
+msgstr "{0} está congelado debido a una decisión del gobierno del protocolo Aave. <0>Más detalles</0>"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{d}d"
@@ -1999,11 +2056,20 @@ msgstr "{h}h"
 msgid "{m}m"
 msgstr "{m}m"
 
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "{networkName} Faucet"
+msgstr "Faucet {networkName}"
+
 #: src/components/infoTooltips/FrozenWarning.tsx
 msgid "{symbol} is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
-msgstr ""
+msgstr "{symbol} está congelado debido a una decisión del gobierno del protocolo Aave. <0>Más detalles</0>"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"
 msgstr "{s}s"
+
+#: src/components/CircleIcon.tsx
+msgid "{tooltipText}"
+msgstr "{tooltipText}"
 

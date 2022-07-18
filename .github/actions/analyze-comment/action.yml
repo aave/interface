@@ -15,7 +15,7 @@ runs:
         workflow: build-fork.yml
         run_id: ${{ github.event.workflow_run.id }}
         workflow_conclusion: success
-        name: nextjs
+        name: nextjs_build
         path: .next
 
     - name: Analyze bundle
@@ -59,21 +59,21 @@ runs:
       if: github.event_name != 'push'
       id: fc
       with:
-        issue-number: ${{ inputs.PULL_REQUEST_NUMBER }}
+        issue-number: '${{ inputs.PULL_REQUEST_NUMBER }}'
         body-includes: '<!-- __NEXTJS_BUNDLE -->'
 
     - name: Create Comment
       uses: peter-evans/create-or-update-comment@c9fcb64660bc90ec1cc535646af190c992007c32 # v2.0.0
       if: github.event_name != 'push' && steps.fc.outputs.comment-id == 0
       with:
-        issue-number: ${{ inputs.PULL_REQUEST_NUMBER }}
+        issue-number: '${{ inputs.PULL_REQUEST_NUMBER }}'
         body: ${{ steps.get-comment-body.outputs.body }}
 
     - name: Update Comment
       uses: peter-evans/create-or-update-comment@c9fcb64660bc90ec1cc535646af190c992007c32 # v2.0.0
       if: github.event_name != 'push' && steps.fc.outputs.comment-id != 0
       with:
-        issue-number: ${{ inputs.PULL_REQUEST_NUMBER }}
+        issue-number: '${{ inputs.PULL_REQUEST_NUMBER }}'
         body: ${{ steps.get-comment-body.outputs.body }}
         comment-id: ${{ steps.fc.outputs.comment-id }}
         edit-mode: replace

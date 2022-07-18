@@ -43,10 +43,11 @@ const testData = {
     },
     repay: {
       asset: assets.avalancheV3Market.USDT,
+      repayableAsset: assets.avalancheV3Market.aUSDT,
       apyType: constants.apyType.variable,
       amount: 2,
       isMaxAmount: true,
-      hasApproval: false,
+      hasApproval: true,
       repayOption: constants.repayType.default,
     },
     switchCollateralForUSDT: {

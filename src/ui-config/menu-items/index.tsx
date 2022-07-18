@@ -8,6 +8,7 @@ import GithubIcon from '/public/icons/github.svg';
 import AaveClassic from '/public/icons/aave_classic.svg';
 
 import { MarketDataType } from '../marketsConfig';
+import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
 
 interface Navigation {
   link: string;
@@ -25,16 +26,30 @@ export const navigation: Navigation[] = [
   {
     link: ROUTES.markets,
     title: t`Markets`,
+    dataCy: 'menuMarkets',
   },
   {
     link: ROUTES.staking,
     title: t`Stake`,
-    isVisible: () => process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true',
+    dataCy: 'menuStake',
+    isVisible: () =>
+      process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true' &&
+      process.env.NEXT_PUBLIC_ENV === 'prod' &&
+      !ENABLE_TESTNET,
   },
   {
     link: ROUTES.governance,
     title: t`Governance`,
-    isVisible: () => process.env.NEXT_PUBLIC_ENABLE_GOVERNANCE === 'true',
+    dataCy: 'menuGovernance',
+    isVisible: () =>
+      process.env.NEXT_PUBLIC_ENABLE_GOVERNANCE === 'true' &&
+      process.env.NEXT_PUBLIC_ENV === 'prod' &&
+      !ENABLE_TESTNET,
+  },
+  {
+    link: ROUTES.faucet,
+    title: t`Faucet`,
+    isVisible: () => process.env.NEXT_PUBLIC_ENV === 'staging' || ENABLE_TESTNET,
   },
 ];
 

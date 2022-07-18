@@ -1,3 +1,4 @@
+"use strict";
 var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __defProps = Object.defineProperties;
@@ -9005,7 +9006,7 @@ var require_typed_data = __commonJS({
       };
       TypedDataEncoder2.resolveNames = function(domain, types, value, resolveName) {
         return __awaiter(this, void 0, void 0, function() {
-          var ensCache, encoder, _a7, _b2, _i, name_4, _c, _d;
+          var ensCache, encoder, _a7, _b, _i, name_4, _c, _d;
           return __generator(this, function(_e) {
             switch (_e.label) {
               case 0:
@@ -9022,8 +9023,8 @@ var require_typed_data = __commonJS({
                   return value2;
                 });
                 _a7 = [];
-                for (_b2 in ensCache)
-                  _a7.push(_b2);
+                for (_b in ensCache)
+                  _a7.push(_b);
                 _i = 0;
                 _e.label = 1;
               case 1:
@@ -18913,8 +18914,8 @@ var require_lib24 = __commonJS({
       Provider2.prototype.getFeeData = function() {
         return __awaiter(this, void 0, void 0, function() {
           var _a7, block, gasPrice, maxFeePerGas, maxPriorityFeePerGas;
-          return __generator(this, function(_b2) {
-            switch (_b2.label) {
+          return __generator(this, function(_b) {
+            switch (_b.label) {
               case 0:
                 return [4, (0, properties_1.resolveProperties)({
                   block: this.getBlock("latest"),
@@ -18923,7 +18924,7 @@ var require_lib24 = __commonJS({
                   })
                 })];
               case 1:
-                _a7 = _b2.sent(), block = _a7.block, gasPrice = _a7.gasPrice;
+                _a7 = _b.sent(), block = _a7.block, gasPrice = _a7.gasPrice;
                 maxFeePerGas = null, maxPriorityFeePerGas = null;
                 if (block && block.baseFeePerGas) {
                   maxPriorityFeePerGas = bignumber_1.BigNumber.from("2500000000");
@@ -23627,22 +23628,22 @@ var require_base_provider = __commonJS({
       Resolver2.prototype._fetchBytes = function(selector, parameters) {
         return __awaiter(this, void 0, void 0, function() {
           var tx, _a7, error_1;
-          return __generator(this, function(_b2) {
-            switch (_b2.label) {
+          return __generator(this, function(_b) {
+            switch (_b.label) {
               case 0:
                 tx = {
                   to: this.address,
                   data: (0, bytes_1.hexConcat)([selector, (0, hash_1.namehash)(this.name), parameters || "0x"])
                 };
-                _b2.label = 1;
+                _b.label = 1;
               case 1:
-                _b2.trys.push([1, 3, , 4]);
+                _b.trys.push([1, 3, , 4]);
                 _a7 = _parseBytes;
                 return [4, this.provider.call(tx)];
               case 2:
-                return [2, _a7.apply(void 0, [_b2.sent()])];
+                return [2, _a7.apply(void 0, [_b.sent()])];
               case 3:
-                error_1 = _b2.sent();
+                error_1 = _b.sent();
                 if (error_1.code === logger_1.Logger.errors.CALL_EXCEPTION) {
                   return [2, null];
                 }
@@ -23753,7 +23754,7 @@ var require_base_provider = __commonJS({
       };
       Resolver2.prototype.getAvatar = function() {
         return __awaiter(this, void 0, void 0, function() {
-          var linkage, avatar, i, match, scheme, _a7, selector, owner, _b2, comps, addr, tokenId, tokenOwner, _c, _d, balance, _e, _f, tx, metadataUrl, _g, metadata, imageUrl, ipfs, error_3;
+          var linkage, avatar, i, match, scheme, _a7, selector, owner, _b, comps, addr, tokenId, tokenOwner, _c, _d, balance, _e, _f, tx, metadataUrl, _g, metadata, imageUrl, ipfs, error_3;
           return __generator(this, function(_h) {
             switch (_h.label) {
               case 0:
@@ -23803,15 +23804,15 @@ var require_base_provider = __commonJS({
               case 7:
                 selector = scheme === "erc721" ? "0xc87b56dd" : "0x0e89341c";
                 linkage.push({ type: scheme, content: avatar });
-                _b2 = this._resolvedAddress;
-                if (_b2)
+                _b = this._resolvedAddress;
+                if (_b)
                   return [3, 9];
                 return [4, this.getAddress()];
               case 8:
-                _b2 = _h.sent();
+                _b = _h.sent();
                 _h.label = 9;
               case 9:
-                owner = _b2;
+                owner = _b;
                 comps = (match[2] || "").split("/");
                 if (comps.length !== 2) {
                   return [2, null];
@@ -24855,7 +24856,7 @@ var require_base_provider = __commonJS({
       };
       BaseProvider2.prototype._getTransactionRequest = function(transaction) {
         return __awaiter(this, void 0, void 0, function() {
-          var values, tx, _a7, _b2;
+          var values, tx, _a7, _b;
           var _this = this;
           return __generator(this, function(_c) {
             switch (_c.label) {
@@ -24899,17 +24900,17 @@ var require_base_provider = __commonJS({
                     return v ? (0, bytes_1.hexlify)(v) : null;
                   });
                 });
-                _b2 = (_a7 = this.formatter).transactionRequest;
+                _b = (_a7 = this.formatter).transactionRequest;
                 return [4, (0, properties_1.resolveProperties)(tx)];
               case 2:
-                return [2, _b2.apply(_a7, [_c.sent()])];
+                return [2, _b.apply(_a7, [_c.sent()])];
             }
           });
         });
       };
       BaseProvider2.prototype._getFilter = function(filter) {
         return __awaiter(this, void 0, void 0, function() {
-          var result, _a7, _b2;
+          var result, _a7, _b;
           var _this = this;
           return __generator(this, function(_c) {
             switch (_c.label) {
@@ -24933,10 +24934,10 @@ var require_base_provider = __commonJS({
                   }
                   result[key] = _this._getBlockTag(filter[key]);
                 });
-                _b2 = (_a7 = this.formatter).filter;
+                _b = (_a7 = this.formatter).filter;
                 return [4, (0, properties_1.resolveProperties)(result)];
               case 2:
-                return [2, _b2.apply(_a7, [_c.sent()])];
+                return [2, _b.apply(_a7, [_c.sent()])];
             }
           });
         });
@@ -25035,15 +25036,15 @@ var require_base_provider = __commonJS({
         return __awaiter(this, void 0, void 0, function() {
           var blockNumber, params, _a7, error_8;
           var _this = this;
-          return __generator(this, function(_b2) {
-            switch (_b2.label) {
+          return __generator(this, function(_b) {
+            switch (_b.label) {
               case 0:
                 return [4, this.getNetwork()];
               case 1:
-                _b2.sent();
+                _b.sent();
                 return [4, blockHashOrBlockTag];
               case 2:
-                blockHashOrBlockTag = _b2.sent();
+                blockHashOrBlockTag = _b.sent();
                 blockNumber = -128;
                 params = {
                   includeTransactions: !!includeTransactions
@@ -25053,17 +25054,17 @@ var require_base_provider = __commonJS({
                 params.blockHash = blockHashOrBlockTag;
                 return [3, 6];
               case 3:
-                _b2.trys.push([3, 5, , 6]);
+                _b.trys.push([3, 5, , 6]);
                 _a7 = params;
                 return [4, this._getBlockTag(blockHashOrBlockTag)];
               case 4:
-                _a7.blockTag = _b2.sent();
+                _a7.blockTag = _b.sent();
                 if ((0, bytes_1.isHexString)(params.blockTag)) {
                   blockNumber = parseInt(params.blockTag.substring(2), 16);
                 }
                 return [3, 6];
               case 5:
-                error_8 = _b2.sent();
+                error_8 = _b.sent();
                 logger.throwArgumentError("invalid block hash or block tag", "blockHashOrBlockTag", blockHashOrBlockTag);
                 return [3, 6];
               case 6:
@@ -25353,7 +25354,7 @@ var require_base_provider = __commonJS({
       };
       BaseProvider2.prototype._getResolver = function(name2) {
         return __awaiter(this, void 0, void 0, function() {
-          var network, transaction, _a7, _b2, error_10;
+          var network, transaction, _a7, _b, error_10;
           return __generator(this, function(_c) {
             switch (_c.label) {
               case 0:
@@ -25370,10 +25371,10 @@ var require_base_provider = __commonJS({
                 _c.label = 2;
               case 2:
                 _c.trys.push([2, 4, , 5]);
-                _b2 = (_a7 = this.formatter).callAddress;
+                _b = (_a7 = this.formatter).callAddress;
                 return [4, this.call(transaction)];
               case 3:
-                return [2, _b2.apply(_a7, [_c.sent()])];
+                return [2, _b.apply(_a7, [_c.sent()])];
               case 4:
                 error_10 = _c.sent();
                 if (error_10.code === logger_1.Logger.errors.CALL_EXCEPTION) {
@@ -25421,17 +25422,17 @@ var require_base_provider = __commonJS({
       BaseProvider2.prototype.lookupAddress = function(address) {
         return __awaiter(this, void 0, void 0, function() {
           var reverseName, resolverAddress, bytes, _a7, length, name2, addr;
-          return __generator(this, function(_b2) {
-            switch (_b2.label) {
+          return __generator(this, function(_b) {
+            switch (_b.label) {
               case 0:
                 return [4, address];
               case 1:
-                address = _b2.sent();
+                address = _b.sent();
                 address = this.formatter.address(address);
                 reverseName = address.substring(2).toLowerCase() + ".addr.reverse";
                 return [4, this._getResolver(reverseName)];
               case 2:
-                resolverAddress = _b2.sent();
+                resolverAddress = _b.sent();
                 if (!resolverAddress) {
                   return [2, null];
                 }
@@ -25441,7 +25442,7 @@ var require_base_provider = __commonJS({
                   data: "0x691f3431" + (0, hash_1.namehash)(reverseName).substring(2)
                 })];
               case 3:
-                bytes = _a7.apply(void 0, [_b2.sent()]);
+                bytes = _a7.apply(void 0, [_b.sent()]);
                 if (bytes.length < 32 || !bignumber_1.BigNumber.from(bytes.slice(0, 32)).eq(32)) {
                   return [2, null];
                 }
@@ -25457,7 +25458,7 @@ var require_base_provider = __commonJS({
                 name2 = (0, strings_1.toUtf8String)(bytes.slice(0, length));
                 return [4, this.resolveName(name2)];
               case 4:
-                addr = _b2.sent();
+                addr = _b.sent();
                 if (addr != address) {
                   return [2, null];
                 }
@@ -30292,7 +30293,7 @@ var require_etherscan_provider = __commonJS({
       };
       EtherscanProvider2.prototype.perform = function(method, params) {
         return __awaiter(this, void 0, void 0, function() {
-          var _a7, postData, error_1, postData, error_2, args, topic0, logs, blocks, i, log, block, _b2;
+          var _a7, postData, error_1, postData, error_2, args, topic0, logs, blocks, i, log, block, _b;
           return __generator(this, function(_c) {
             switch (_c.label) {
               case 0:
@@ -30469,10 +30470,10 @@ var require_etherscan_provider = __commonJS({
                 if (this.network.name !== "homestead") {
                   return [2, 0];
                 }
-                _b2 = parseFloat;
+                _b = parseFloat;
                 return [4, this.fetch("stats", { action: "ethprice" })];
               case 27:
-                return [2, _b2.apply(void 0, [_c.sent().ethusd])];
+                return [2, _b.apply(void 0, [_c.sent().ethusd])];
               case 28:
                 return [3, 29];
               case 29:
@@ -30486,18 +30487,18 @@ var require_etherscan_provider = __commonJS({
           var params, result;
           var _a7;
           var _this = this;
-          return __generator(this, function(_b2) {
-            switch (_b2.label) {
+          return __generator(this, function(_b) {
+            switch (_b.label) {
               case 0:
                 _a7 = {
                   action: "txlist"
                 };
                 return [4, this.resolveName(addressOrName)];
               case 1:
-                params = (_a7.address = _b2.sent(), _a7.startblock = startBlock == null ? 0 : startBlock, _a7.endblock = endBlock == null ? 99999999 : endBlock, _a7.sort = "asc", _a7);
+                params = (_a7.address = _b.sent(), _a7.startblock = startBlock == null ? 0 : startBlock, _a7.endblock = endBlock == null ? 99999999 : endBlock, _a7.sort = "asc", _a7);
                 return [4, this.fetch("account", params)];
               case 2:
-                result = _b2.sent();
+                result = _b.sent();
                 return [2, result.map(function(tx) {
                   ["contractAddress", "to"].forEach(function(key) {
                     if (tx[key] == "") {
@@ -30918,8 +30919,8 @@ var require_fallback_provider = __commonJS({
     function getRunner(config, currentBlockNumber, method, params) {
       return __awaiter(this, void 0, void 0, function() {
         var provider, _a7, filter;
-        return __generator(this, function(_b2) {
-          switch (_b2.label) {
+        return __generator(this, function(_b) {
+          switch (_b.label) {
             case 0:
               provider = config.provider;
               _a7 = method;
@@ -30964,8 +30965,8 @@ var require_fallback_provider = __commonJS({
                 return [3, 5];
               return [4, waitForSync(config, currentBlockNumber)];
             case 4:
-              provider = _b2.sent();
-              _b2.label = 5;
+              provider = _b.sent();
+              _b.label = 5;
             case 5:
               return [2, provider[method](params.address, params.blockTag || "latest")];
             case 6:
@@ -30973,8 +30974,8 @@ var require_fallback_provider = __commonJS({
                 return [3, 8];
               return [4, waitForSync(config, currentBlockNumber)];
             case 7:
-              provider = _b2.sent();
-              _b2.label = 8;
+              provider = _b.sent();
+              _b.label = 8;
             case 8:
               return [2, provider.getStorageAt(params.address, params.position, params.blockTag || "latest")];
             case 9:
@@ -30982,8 +30983,8 @@ var require_fallback_provider = __commonJS({
                 return [3, 11];
               return [4, waitForSync(config, currentBlockNumber)];
             case 10:
-              provider = _b2.sent();
-              _b2.label = 11;
+              provider = _b.sent();
+              _b.label = 11;
             case 11:
               return [2, provider[params.includeTransactions ? "getBlockWithTransactions" : "getBlock"](params.blockTag || params.blockHash)];
             case 12:
@@ -30991,8 +30992,8 @@ var require_fallback_provider = __commonJS({
                 return [3, 14];
               return [4, waitForSync(config, currentBlockNumber)];
             case 13:
-              provider = _b2.sent();
-              _b2.label = 14;
+              provider = _b.sent();
+              _b.label = 14;
             case 14:
               return [2, provider[method](params.transaction)];
             case 15:
@@ -31003,8 +31004,8 @@ var require_fallback_provider = __commonJS({
                 return [3, 18];
               return [4, waitForSync(config, currentBlockNumber)];
             case 17:
-              provider = _b2.sent();
-              _b2.label = 18;
+              provider = _b.sent();
+              _b.label = 18;
             case 18:
               return [2, provider.getLogs(filter)];
             case 19:
@@ -31130,8 +31131,8 @@ var require_fallback_provider = __commonJS({
                 first = true;
                 _loop_1 = function() {
                   var t0, inflightWeight, _loop_2, waiting, results2, result2, errors;
-                  return __generator(this, function(_b2) {
-                    switch (_b2.label) {
+                  return __generator(this, function(_b) {
+                    switch (_b.label) {
                       case 0:
                         t0 = now();
                         inflightWeight = configs.filter(function(c) {
@@ -31200,8 +31201,8 @@ var require_fallback_provider = __commonJS({
                           return [3, 2];
                         return [4, Promise.race(waiting)];
                       case 1:
-                        _b2.sent();
-                        _b2.label = 2;
+                        _b.sent();
+                        _b.label = 2;
                       case 2:
                         results2 = configs.filter(function(c) {
                           return c.done && c.error == null;
@@ -31222,11 +31223,11 @@ var require_fallback_provider = __commonJS({
                           return [3, 4];
                         return [4, stall(100).getPromise()];
                       case 3:
-                        _b2.sent();
-                        _b2.label = 4;
+                        _b.sent();
+                        _b.label = 4;
                       case 4:
                         first = false;
-                        _b2.label = 5;
+                        _b.label = 5;
                       case 5:
                         errors = configs.reduce(function(accum, c) {
                           if (!c.done || c.error == null) {
@@ -34225,6 +34226,7 @@ var require_utils6 = __commonJS({
         case "0xb2f1e6db":
           return 68;
         case "0xb66bcbac":
+        case "0x35326910":
           return 164;
         default:
           throw new Error("Unrecognized function selector for Augustus");
@@ -48131,7 +48133,7 @@ var require_unfetch = __commonJS({
     module2.exports = function(e, n) {
       return n = n || {}, new Promise(function(t, r) {
         var s = new XMLHttpRequest(), o = [], u = [], i = {}, a = function() {
-          return { ok: (s.status / 100 | 0) == 2, statusText: s.statusText, status: s.status, url: s.responseURL, text: function() {
+          return { ok: 2 == (s.status / 100 | 0), statusText: s.statusText, status: s.status, url: s.responseURL, text: function() {
             return Promise.resolve(s.responseText);
           }, json: function() {
             return Promise.resolve(s.responseText).then(JSON.parse);
@@ -48151,7 +48153,7 @@ var require_unfetch = __commonJS({
           s.getAllResponseHeaders().replace(/^(.*?):[^\S\n]*([\s\S]*?)$/gm, function(e2, n2, t2) {
             o.push(n2 = n2.toLowerCase()), u.push([n2, t2]), i[n2] = i[n2] ? i[n2] + "," + t2 : t2;
           }), t(a());
-        }, s.onerror = r, s.withCredentials = n.credentials == "include", n.headers)
+        }, s.onerror = r, s.withCredentials = "include" == n.credentials, n.headers)
           s.setRequestHeader(l, n.headers[l]);
         s.send(n.body || null);
       });
@@ -61098,9 +61100,9 @@ var require_reserve = __commonJS({
           priceInMarketReferenceCurrency: reserve.priceInMarketReferenceCurrency,
           normalizedMarketReferencePriceInUsd
         }),
-        borrowCapUSD: (0, normalized_to_usd_1.normalizedToUsd)(new bignumber_js_1.default(reserve.borrowCap), marketReferencePriceInUsd, marketReferenceCurrencyDecimals).toString(),
-        supplyCapUSD: (0, normalized_to_usd_1.normalizedToUsd)(new bignumber_js_1.default(reserve.supplyCap), marketReferencePriceInUsd, marketReferenceCurrencyDecimals).toString(),
-        unbackedUSD: (0, normalized_to_usd_1.normalizedToUsd)(new bignumber_js_1.default(reserve.unbacked), marketReferencePriceInUsd, marketReferenceCurrencyDecimals).toString()
+        borrowCapUSD: (0, normalized_to_usd_1.normalizedToUsd)(new bignumber_js_1.default(reserve.borrowCap), reserve.priceInMarketReferenceCurrency, marketReferenceCurrencyDecimals).toString(),
+        supplyCapUSD: (0, normalized_to_usd_1.normalizedToUsd)(new bignumber_js_1.default(reserve.supplyCap), reserve.priceInMarketReferenceCurrency, marketReferenceCurrencyDecimals).toString(),
+        unbackedUSD: (0, normalized_to_usd_1.normalizedToUsd)(new bignumber_js_1.default(reserve.unbacked), reserve.priceInMarketReferenceCurrency, marketReferenceCurrencyDecimals).toString()
       });
     }
     exports2.formatReserveUSD = formatReserveUSD;
@@ -61245,7 +61247,10 @@ var marketsData = {
       UI_POOL_DATA_PROVIDER: "0x548e95Ce38B8cb1D91FD82A9F094F26295840277",
       UI_INCENTIVE_DATA_PROVIDER: "0xD01ab9a6577E1D84F142e44D49380e23A340387d"
     },
-    halMarketName: "aavev2"
+    halIntegration: {
+      URL: "https://app.hal.xyz/recipes/aave-track-your-health-factor",
+      marketName: "aavev2"
+    }
   },
   ["amm_kovan" /* amm_kovan */]: {
     marketTitle: "Ethereum AMM Kovan",
@@ -61314,7 +61319,10 @@ var marketsData = {
       UI_POOL_DATA_PROVIDER: "0x67acdB3469580185811E5769113509c6e8B6Cba5",
       UI_INCENTIVE_DATA_PROVIDER: "0x645654D59A5226CBab969b1f5431aA47CBf64ab8"
     },
-    halMarketName: "aavepolygon"
+    halIntegration: {
+      URL: "https://app.hal.xyz/recipes/aave-track-your-health-factor",
+      marketName: "aavepolygon"
+    }
   },
   ["proto_fuji" /* proto_fuji */]: {
     marketTitle: "Avalanche Fuji",
@@ -61354,7 +61362,10 @@ var marketsData = {
       UI_POOL_DATA_PROVIDER: "0x88be7eC36719fadAbdE4307ec61EAB6fda788CEF",
       UI_INCENTIVE_DATA_PROVIDER: "0x11979886A6dBAE27D7a72c49fCF3F23240D647bF"
     },
-    halMarketName: "aaveavalanche"
+    halIntegration: {
+      URL: "https://app.hal.xyz/recipes/aave-track-your-health-factor",
+      marketName: "aaveavalanche"
+    }
   },
   ["proto_eth_rinkeby_v3" /* proto_eth_rinkeby_v3 */]: {
     v3: true,
@@ -61377,6 +61388,24 @@ var marketsData = {
       UI_INCENTIVE_DATA_PROVIDER: "0x2c9f31b1F9838Bb8781bb61a0d0a4615f6530207"
     }
   },
+  ["proto_ropsten_v3" /* proto_ropsten_v3 */]: {
+    marketTitle: "Ethereum Ropsten",
+    v3: true,
+    chainId: import_contract_helpers2.ChainId.ropsten,
+    enabledFeatures: {
+      faucet: true
+    },
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: "0x303a4B174663A6201Da77782413B4b54EFa3E97e".toLowerCase(),
+      LENDING_POOL: "0x23a85024f54A19e243bA7a74E339a5C80998c7a4",
+      WETH_GATEWAY: "0x96A4fd1f289888cCa772298f7BDCF41C02122c01",
+      FAUCET: "0xb7263ADfB7C094aa24b91A51b297A278e105584a",
+      WALLET_BALANCE_PROVIDER: "0xEEac3ad1b3f4c43A782a951348c5387506B9AB06",
+      UI_POOL_DATA_PROVIDER: "0xb815B9EE078Dab098965D8e52dD5C747d70bb481",
+      UI_INCENTIVE_DATA_PROVIDER: "0x2526D407F722C0D1e0326eC1840A235bf173b9Ca"
+    }
+  },
   ["proto_arbitrum_v3" /* proto_arbitrum_v3 */]: {
     marketTitle: "Arbitrum",
     v3: true,
@@ -61393,6 +61422,10 @@ var marketsData = {
       UI_POOL_DATA_PROVIDER: "0x3f960bB91e85Ae2dB561BDd01B515C5A5c65802b",
       UI_INCENTIVE_DATA_PROVIDER: "0xEFdd7374551897B11a23Ec7b5694C713DFDa76f1",
       L2_ENCODER: "0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC"
+    },
+    halIntegration: {
+      URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
+      marketName: "arbitrum"
     }
   },
   ["proto_arbitrum_rinkeby_v3" /* proto_arbitrum_rinkeby_v3 */]: {
@@ -61429,11 +61462,15 @@ var marketsData = {
       LENDING_POOL_ADDRESS_PROVIDER: "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb".toLowerCase(),
       LENDING_POOL: "0x794a61358D6845594F94dc1DB02A252b5b4814aD",
       WETH_GATEWAY: "0xa938d8536aEed1Bd48f548380394Ab30Aa11B00E",
-      REPAY_WITH_COLLATERAL_ADAPTER: "0xA911965AbBE61460cB91f8259a8dF8509D877EBc",
-      SWAP_COLLATERAL_ADAPTER: "0xAe02ECA9445ec43B53118DD41658DB17eaB55987",
+      REPAY_WITH_COLLATERAL_ADAPTER: "0x8a743090e9759E758d15a4CFd18408fb6332c625",
+      SWAP_COLLATERAL_ADAPTER: "0xF7fC20D9D1D8DFE55F5F2c3180272a5747dD327F",
       WALLET_BALANCE_PROVIDER: "0xBc790382B3686abffE4be14A030A96aC6154023a",
       UI_POOL_DATA_PROVIDER: "0xdBbFaFC45983B4659E368a3025b81f69Ab6E5093",
       UI_INCENTIVE_DATA_PROVIDER: "0x270f51cf3F681010B46f5c4Ee2aD5120Db33026F"
+    },
+    halIntegration: {
+      URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
+      marketName: "avalanche"
     }
   },
   ["proto_fuji_v3" /* proto_fuji_v3 */]: {
@@ -61469,11 +61506,15 @@ var marketsData = {
       LENDING_POOL_ADDRESS_PROVIDER: "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb".toLowerCase(),
       LENDING_POOL: "0x794a61358D6845594F94dc1DB02A252b5b4814aD",
       WETH_GATEWAY: "0x17d013C19FE25cf4D911CE85eD5f40FE8880F46f",
-      SWAP_COLLATERAL_ADAPTER: "0x35DDe5599318112829d97A29f4E8f4C49aAfc47C",
+      SWAP_COLLATERAL_ADAPTER: "0xe387c6053ce8ec9f8c3fa5ce085af73114a695d3",
+      REPAY_WITH_COLLATERAL_ADAPTER: "0x1408401B2A7E28cB747b3e258D0831Fc926bAC51",
       WALLET_BALANCE_PROVIDER: "0xBc790382B3686abffE4be14A030A96aC6154023a",
       UI_POOL_DATA_PROVIDER: "0x1CCbfeC508da8D5242D5C1b368694Ab0066b39f1",
-      UI_INCENTIVE_DATA_PROVIDER: "0xbA14c06011f4AF5970cFDe4364ba6320E190BD4B",
-      REPAY_WITH_COLLATERAL_ADAPTER: "0x85272bf6DdCCBDea45Cf0535ea5C65bf91B480c4"
+      UI_INCENTIVE_DATA_PROVIDER: "0xbA14c06011f4AF5970cFDe4364ba6320E190BD4B"
+    },
+    halIntegration: {
+      URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
+      marketName: "fantom"
     }
   },
   ["proto_fantom_testnet_v3" /* proto_fantom_testnet_v3 */]: {
@@ -61582,11 +61623,15 @@ var marketsData = {
       LENDING_POOL_ADDRESS_PROVIDER: "0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb".toLowerCase(),
       LENDING_POOL: "0x794a61358D6845594F94dc1DB02A252b5b4814aD",
       WETH_GATEWAY: "0x9BdB5fcc80A49640c7872ac089Cc0e00A98451B6",
-      REPAY_WITH_COLLATERAL_ADAPTER: "0xD0E8f168d297DfA0f3EE1711c538BcC0663320aF",
-      SWAP_COLLATERAL_ADAPTER: "0x00d48554f570B6f1c474EBe56116159c3B1D625f",
+      REPAY_WITH_COLLATERAL_ADAPTER: "0xA125561fca253f19eA93970534Bb0364ea74187a",
+      SWAP_COLLATERAL_ADAPTER: "0x301F221bc732907E2da2dbBFaA8F8F6847c170c3",
       WALLET_BALANCE_PROVIDER: "0xBc790382B3686abffE4be14A030A96aC6154023a",
       UI_POOL_DATA_PROVIDER: "0x8F1AD487C9413d7e81aB5B4E88B024Ae3b5637D0",
       UI_INCENTIVE_DATA_PROVIDER: "0x05E309C97317d8abc0f7e78185FC966FfbD2CEC0"
+    },
+    halIntegration: {
+      URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
+      marketName: "polygon"
     }
   },
   ["proto_mumbai_v3" /* proto_mumbai_v3 */]: {
@@ -61625,8 +61670,9 @@ var networkConfigs = {
     networkLogoPath: "/icons/networks/ethereum.svg"
   },
   [import_contract_helpers3.ChainId.rinkeby]: {
-    name: "Rinkeby",
+    name: "Ethereum Rinkeby",
     publicJsonRPCUrl: [
+      "https://eth-rinkeby.alchemyapi.io/v2/demo",
       "https://rinkeby-light.eth.linkpool.io/"
     ],
     baseUniswapAdapter: "",
@@ -61637,8 +61683,21 @@ var networkConfigs = {
     isTestnet: true,
     networkLogoPath: "/icons/networks/ethereum.svg"
   },
+  [import_contract_helpers3.ChainId.ropsten]: {
+    name: "Ethereum Ropsten",
+    publicJsonRPCUrl: ["https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"],
+    publicJsonRPCWSUrl: "",
+    baseUniswapAdapter: "0x0",
+    baseAssetSymbol: "ETH",
+    wrappedBaseAssetSymbol: "WETH",
+    baseAssetDecimals: 18,
+    explorerLink: "https://ropsten.etherscan.io",
+    isTestnet: true,
+    networkLogoPath: "/icons/networks/ethereum.svg"
+  },
   [import_contract_helpers3.ChainId.mainnet]: {
     name: "Ethereum",
+    privateJsonRPCUrl: "https://eth-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca",
     publicJsonRPCUrl: [
       "https://cloudflare-eth.com",
       "https://rpc.flashbots.net/"
@@ -61654,8 +61713,8 @@ var networkConfigs = {
   },
   [import_contract_helpers3.ChainId.polygon]: {
     name: "Polygon POS",
-    publicJsonRPCUrl: ["https://polygon-rpc.com"],
-    publicJsonRPCWSUrl: "wss://polygon-rpc.com",
+    privateJsonRPCUrl: "https://poly-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca",
+    publicJsonRPCUrl: [],
     baseAssetSymbol: "MATIC",
     wrappedBaseAssetSymbol: "WMATIC",
     baseAssetDecimals: 18,
@@ -61698,6 +61757,7 @@ var networkConfigs = {
   },
   [import_contract_helpers3.ChainId.avalanche]: {
     name: "Avalanche",
+    privateJsonRPCUrl: "https://avax-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca/ext/bc/C/rpc",
     publicJsonRPCUrl: ["https://api.avax.network/ext/bc/C/rpc"],
     publicJsonRPCWSUrl: "wss://api.avax.network/ext/bc/C/rpc",
     baseUniswapAdapter: "0x0",
@@ -61748,6 +61808,7 @@ var networkConfigs = {
   },
   [import_contract_helpers3.ChainId.harmony]: {
     name: "Harmony",
+    privateJsonRPCUrl: "https://harmony-0.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca",
     publicJsonRPCUrl: ["https://api.s0.t.hmny.io", "https://api.harmony.one"],
     publicJsonRPCWSUrl: "wss://ws.s0.t.hmny.io",
     baseUniswapAdapter: "0x0",
@@ -61781,6 +61842,7 @@ var networkConfigs = {
   },
   [import_contract_helpers3.ChainId.optimism]: {
     name: "Optimism",
+    privateJsonRPCUrl: "https://optimism-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca",
     publicJsonRPCUrl: ["https://mainnet.optimism.io"],
     publicJsonRPCWSUrl: "wss://ws-mainnet.optimism.io",
     baseUniswapAdapter: "0x0",
@@ -61792,7 +61854,7 @@ var networkConfigs = {
     bridge: {
       icon: "/icons/bridge/optimism.svg",
       name: "Optimism Bridge",
-      url: "https://gateway.optimism.io"
+      url: "https://app.optimism.io/bridge"
     }
   },
   [import_contract_helpers3.ChainId.optimism_kovan]: {
@@ -61809,13 +61871,13 @@ var networkConfigs = {
     bridge: {
       icon: "/icons/bridge/optimism.svg",
       name: "Optimism Bridge",
-      url: "https://gateway.optimism.io"
+      url: "https://app.optimism.io/bridge"
     }
   },
   [import_contract_helpers3.ChainId.fantom]: {
     name: "Fantom",
-    publicJsonRPCUrl: ["https://rpc.ftm.tools"],
-    publicJsonRPCWSUrl: "wss://wsapi.fantom.network",
+    privateJsonRPCUrl: "https://fantom-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca",
+    publicJsonRPCUrl: [],
     baseUniswapAdapter: "0x0",
     baseAssetSymbol: "FTM",
     wrappedBaseAssetSymbol: "WFTM",
@@ -61848,8 +61910,10 @@ var networkConfigs = {
 };
 
 // src/utils/marketsAndNetworksConfig.ts
-var _a, _b;
-var NEXT_PUBLIC_ENABLE_TESTNET = !((_a = global == null ? void 0 : global.window) == null ? void 0 : _a.localStorage.getItem("testnetsEnabled")) && process.env.NEXT_PUBLIC_ENABLE_TESTNET === "true" || ((_b = global == null ? void 0 : global.window) == null ? void 0 : _b.localStorage.getItem("testnetsEnabled")) === "true";
+var STAGING_ENV = process.env.NEXT_PUBLIC_ENV === "staging";
+var PROD_ENV = !process.env.NEXT_PUBLIC_ENV || process.env.NEXT_PUBLIC_ENV === "prod";
+var _a;
+var ENABLE_TESTNET = PROD_ENV && ((_a = global == null ? void 0 : global.window) == null ? void 0 : _a.localStorage.getItem("testnetsEnabled")) === "true";
 var _a2;
 var FORK_ENABLED = ((_a2 = global == null ? void 0 : global.window) == null ? void 0 : _a2.localStorage.getItem("forkEnabled")) === "true";
 var _a3;
@@ -61884,11 +61948,13 @@ var marketsData2 = Object.keys(marketsData).reduce((acc, value) => {
   return acc;
 }, {});
 function getSupportedChainIds() {
-  return Array.from(Object.keys(marketsData2).reduce((acc, value) => {
-    if (NEXT_PUBLIC_ENABLE_TESTNET || !networkConfigs2[marketsData2[value].chainId].isTestnet)
-      acc.add(marketsData2[value].chainId);
-    return acc;
-  }, /* @__PURE__ */ new Set()));
+  return Array.from(Object.keys(marketsData2).filter((value) => {
+    const isTestnet = networkConfigs2[marketsData2[value].chainId].isTestnet;
+    if (STAGING_ENV || ENABLE_TESTNET) {
+      return isTestnet;
+    }
+    return !isTestnet;
+  }).reduce((acc, value) => acc.add(marketsData2[value].chainId), /* @__PURE__ */ new Set()));
 }
 var availableMarkets = Object.keys(marketsData2).filter((key) => getSupportedChainIds().includes(marketsData2[key].chainId));
 var linkBuilder = ({ baseUrl, addressPrefix = "address", txPrefix = "tx" }) => ({ tx, address }) => {
@@ -61918,19 +61984,24 @@ var getProvider = (chainId) => {
     const config = getNetworkConfig(chainId);
     const chainProviders = [];
     if (config.privateJsonRPCUrl) {
-      providers[chainId] = new import_ethers.providers.StaticJsonRpcProvider(config.privateJsonRPCUrl, chainId);
-      return providers[chainId];
+      chainProviders.push({
+        provider: new import_ethers.providers.StaticJsonRpcProvider(config.privateJsonRPCUrl, chainId),
+        priority: 0
+      });
     }
     if (config.publicJsonRPCUrl.length) {
-      config.publicJsonRPCUrl.map((rpc) => chainProviders.push(new import_ethers.providers.StaticJsonRpcProvider(rpc, chainId)));
+      config.publicJsonRPCUrl.map((rpc, ix) => chainProviders.push({
+        provider: new import_ethers.providers.StaticJsonRpcProvider(rpc, chainId),
+        priority: ix + 1
+      }));
     }
     if (!chainProviders.length) {
       throw new Error(`${chainId} has no jsonRPCUrl configured`);
     }
     if (chainProviders.length === 1) {
-      providers[chainId] = chainProviders[0];
+      providers[chainId] = chainProviders[0].provider;
     } else {
-      providers[chainId] = new import_ethers.providers.FallbackProvider(chainProviders);
+      providers[chainId] = new import_ethers.providers.FallbackProvider(chainProviders, 1);
     }
   }
   return providers[chainId];
@@ -61984,14 +62055,14 @@ _Writer_filename = /* @__PURE__ */ new WeakMap(), _Writer_tempFilename = /* @__P
   });
 }, _Writer_write = function _Writer_write2(data) {
   return __async(this, null, function* () {
-    var _a7, _b2;
+    var _a7, _b;
     __classPrivateFieldSet(this, _Writer_locked, true, "f");
     try {
       yield import_fs.default.promises.writeFile(__classPrivateFieldGet(this, _Writer_tempFilename, "f"), data, "utf-8");
       yield import_fs.default.promises.rename(__classPrivateFieldGet(this, _Writer_tempFilename, "f"), __classPrivateFieldGet(this, _Writer_filename, "f"));
       (_a7 = __classPrivateFieldGet(this, _Writer_prev, "f")) === null || _a7 === void 0 ? void 0 : _a7[0]();
     } catch (err) {
-      (_b2 = __classPrivateFieldGet(this, _Writer_prev, "f")) === null || _b2 === void 0 ? void 0 : _b2[1](err);
+      (_b = __classPrivateFieldGet(this, _Writer_prev, "f")) === null || _b === void 0 ? void 0 : _b[1](err);
       throw err;
     } finally {
       __classPrivateFieldSet(this, _Writer_locked, false, "f");
@@ -62267,8 +62338,8 @@ var db2 = new LowWithLodash2(adapter2);
 db2.read();
 var Proposal2 = class {
   count() {
-    var _a7, _b2;
-    return ((_b2 = (_a7 = db2.data) == null ? void 0 : _a7.proposals) == null ? void 0 : _b2.length) || 0;
+    var _a7, _b;
+    return ((_b = (_a7 = db2.data) == null ? void 0 : _a7.proposals) == null ? void 0 : _b.length) || 0;
   }
   get(id) {
     const value = db2.chain.get("proposals").find({ id }).value();

@@ -17,21 +17,22 @@ jobs:
       github.event.workflow_run.event == 'pull_request' &&
       github.event.workflow_run.conclusion == 'success'
     outputs:
-      pr_number: ${{ steps.get_pr_number.outputs.pr_number }}
+      pr_number: '${{ steps.get_pr_number.outputs.pr_number }}'
     steps:
       - name: Download PR info
         uses: dawidd6/action-download-artifact@575b1e4167df67acf7e692af784566618b23c71e # v2.17.0
         with:
           workflow: build-fork.yml
-          run_id: ${{ github.event.workflow_run.id }}
+          run_id: "${{ github.event.workflow_run.id }}"
           workflow_conclusion: success
           name: pr
           path: ./
 
       - name: Get PR number
+        shell: sh
         id: get_pr_number
         run: |
-          echo "::set-output name=pr_number::$(cat NUM)"
+          echo "::set-output name=pr_number::$(cat NUM | tr -dc '[:digit:]')"
 
       - name: Link this CI run to PR
         uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e # v6.0.0
@@ -40,7 +41,7 @@ jobs:
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: Number(${{ steps.get_pr_number.outputs.pr_number }}),
+              issue_number: Number('${{ steps.get_pr_number.outputs.pr_number }}'),
               body: '🔎 Tests and deployment are running now!\nSee progress at ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
             });
 
@@ -56,7 +57,7 @@ jobs:
 
       - uses: ./.github/actions/analyze-comment
         with:
-          PULL_REQUEST_NUMBER: ${{ env.PR_NUMBER }}
+          PULL_REQUEST_NUMBER: "${{ env.PR_NUMBER }}"
 
   cypress_smoke_v2:
     runs-on: ubuntu-latest
@@ -75,9 +76,9 @@ jobs:
       - name: Run tests
         uses: ./.github/actions/cypress
         with:
-          CYPRESS_TENDERLY_ACCOUNT: ${{ secrets.TENDERLY_ACCOUNT }}
-          CYPRESS_TENDERLY_KEY: ${{ secrets.TENDERLY_KEY }}
-          CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
+          CYPRESS_TENDERLY_ACCOUNT: '${{ secrets.TENDERLY_ACCOUNT }}'
+          CYPRESS_TENDERLY_KEY: '${{ secrets.TENDERLY_KEY }}'
+          CYPRESS_TENDERLY_PROJECT: '${{ secrets.TENDERLY_PROJECT }}'
           YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v2-markets/${{ matrix.market }}-v2-smoke.config.json
 
   cypress_smoke_v3:
@@ -87,19 +88,19 @@ jobs:
       fail-fast: false
       matrix:
         market:
-          - arbitrum
           - fantom
           - polygon
           - avalanche
+          - optimism
     steps:
       - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
 
       - name: Run tests
         uses: ./.github/actions/cypress
         with:
-          CYPRESS_TENDERLY_ACCOUNT: ${{ secrets.TENDERLY_ACCOUNT }}
-          CYPRESS_TENDERLY_KEY: ${{ secrets.TENDERLY_KEY }}
-          CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
+          CYPRESS_TENDERLY_ACCOUNT: '${{ secrets.TENDERLY_ACCOUNT }}'
+          CYPRESS_TENDERLY_KEY: '${{ secrets.TENDERLY_KEY }}'
+          CYPRESS_TENDERLY_PROJECT: '${{ secrets.TENDERLY_PROJECT }}'
           YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v3-markets/${{ matrix.market }}-v3-smoke.config.json
 
   deploy_fork:
@@ -126,11 +127,11 @@ jobs:
 
       - name: pinata
         id: pinata
-        uses: aave/pinata-action@v1.1
+        uses: aave/pinata-action@b03be403ea86f79077ea9cc0b835c3295faa12dd
         with:
-          PINATA_API_KEY: ${{ secrets.PINATA_API_KEY }}
-          PINATA_SECRET_KEY: ${{ secrets.PINATA_SECRET_KEY }}
-          PIN_ALIAS: "${{ format('pull_request_{0}', github.event.workflow_run.id) }}"
+          PINATA_API_KEY: '${{ secrets.PINATA_API_KEY }}'
+          PINATA_SECRET_KEY: '${{ secrets.PINATA_SECRET_KEY }}'
+          PIN_ALIAS: 'pull_request_${{ env.PR_NUMBER }}'
           BUILD_LOCATION: './out'
           CID_VERSION: 1
 
@@ -162,9 +163,9 @@ jobs:
       - name: Run tests
         uses: ./.github/actions/cypress
         with:
-          CYPRESS_TENDERLY_ACCOUNT: ${{ secrets.TENDERLY_ACCOUNT }}
-          CYPRESS_TENDERLY_KEY: ${{ secrets.TENDERLY_KEY }}
-          CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
+          CYPRESS_TENDERLY_ACCOUNT: '${{ secrets.TENDERLY_ACCOUNT }}'
+          CYPRESS_TENDERLY_KEY: '${{ secrets.TENDERLY_KEY }}'
+          CYPRESS_TENDERLY_PROJECT: '${{ secrets.TENDERLY_PROJECT }}'
           YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v2-markets/${{ matrix.market }}-v2-full.config.json
 
   cypress_full_v3:
@@ -174,19 +175,19 @@ jobs:
       fail-fast: false
       matrix:
         market:
-          - arbitrum
           - fantom
           - polygon
           - avalanche
+          - optimism
     steps:
       - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
 
       - name: Run tests
         uses: ./.github/actions/cypress
         with:
-          CYPRESS_TENDERLY_ACCOUNT: ${{ secrets.TENDERLY_ACCOUNT }}
-          CYPRESS_TENDERLY_KEY: ${{ secrets.TENDERLY_KEY }}
-          CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
+          CYPRESS_TENDERLY_ACCOUNT: '${{ secrets.TENDERLY_ACCOUNT }}'
+          CYPRESS_TENDERLY_KEY: '${{ secrets.TENDERLY_KEY }}'
+          CYPRESS_TENDERLY_PROJECT: '${{ secrets.TENDERLY_PROJECT }}'
           YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v3-markets/${{ matrix.market }}-v3-full.config.json
 
   cypress_additional_v2:
@@ -205,9 +206,9 @@ jobs:
       - name: Run tests
         uses: ./.github/actions/cypress
         with:
-          CYPRESS_TENDERLY_ACCOUNT: ${{ secrets.TENDERLY_ACCOUNT }}
-          CYPRESS_TENDERLY_KEY: ${{ secrets.TENDERLY_KEY }}
-          CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
+          CYPRESS_TENDERLY_ACCOUNT: '${{ secrets.TENDERLY_ACCOUNT }}'
+          CYPRESS_TENDERLY_KEY: '${{ secrets.TENDERLY_KEY }}'
+          CYPRESS_TENDERLY_PROJECT: '${{ secrets.TENDERLY_PROJECT }}'
           YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v2-markets/${{ matrix.market }}-v2-additional.config.json
 
   cypress_additional_v3:
@@ -220,6 +221,26 @@ jobs:
           - fantom
           - polygon
           - avalanche
+          - optimism
+    steps:
+      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+
+      - name: Run tests
+        uses: ./.github/actions/cypress
+        with:
+          CYPRESS_TENDERLY_ACCOUNT: '${{ secrets.TENDERLY_ACCOUNT }}'
+          CYPRESS_TENDERLY_KEY: '${{ secrets.TENDERLY_KEY }}'
+          CYPRESS_TENDERLY_PROJECT: '${{ secrets.TENDERLY_PROJECT }}'
+          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v3-markets/${{ matrix.market }}-v3-additional.config.json
+
+  cypress_app_functionality:
+    runs-on: ubuntu-latest
+    needs: ["deploy_fork"]
+    strategy:
+      fail-fast: false
+      matrix:
+        scoupe:
+          - settings
     steps:
       - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
 
@@ -229,7 +250,8 @@ jobs:
           CYPRESS_TENDERLY_ACCOUNT: ${{ secrets.TENDERLY_ACCOUNT }}
           CYPRESS_TENDERLY_KEY: ${{ secrets.TENDERLY_KEY }}
           CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
-          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v3-markets/${{ matrix.market }}-v3-additional.config.json
+          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/${{ matrix.scoupe }}.config.json
+
 
   notify_failure:
     runs-on: ubuntu-latest
@@ -239,6 +261,7 @@ jobs:
       - next_js_analyze
       - cypress_full_v2
       - cypress_full_v3
+      - cypress_app_functionality
     env:
       PR_NUMBER: ${{ needs.prepare_jobs.outputs.pr_number }}
     steps:
@@ -260,6 +283,7 @@ jobs:
       - next_js_analyze
       - cypress_full_v2
       - cypress_full_v3
+      - cypress_app_functionality
     env:
       PR_NUMBER: ${{ needs.prepare_jobs.outputs.pr_number }}
     steps:

@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-06-02 18:05\n"
+"PO-Revision-Date: 2022-07-12 18:10\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -98,7 +98,11 @@ msgid "Action requires an active reserve"
 msgstr ""
 
 #: src/components/transactions/FlowCommons/Success.tsx
-msgid "Add {0} to the wallet"
+msgid "Add to wallet"
+msgstr ""
+
+#: src/components/transactions/FlowCommons/Success.tsx
+msgid "Add {0} to wallet to track your balance."
 msgstr ""
 
 #: src/ui-config/errorMapping.tsx
@@ -171,7 +175,7 @@ msgstr ""
 msgid "Array parameters that should be equal length are not"
 msgstr ""
 
-#: pages/faucet.page.tsx
+#: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/markets/AssetsList.tsx
 msgid "Asset"
 msgstr ""
@@ -202,7 +206,6 @@ msgstr ""
 msgid "Asset to delegate"
 msgstr ""
 
-#: pages/faucet.page.tsx
 #: src/modules/dashboard/lists/ListHeader.tsx
 msgid "Assets"
 msgstr ""
@@ -560,6 +563,10 @@ msgstr ""
 msgid "Disable E-Mode"
 msgstr ""
 
+#: src/layouts/AppHeader.tsx
+msgid "Disable testnet"
+msgstr ""
+
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 msgid "Disable {symbol} as collateral"
 msgstr ""
@@ -583,6 +590,11 @@ msgstr ""
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Discord"
+msgstr ""
+
+#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Due to a precision bug in the stETH contract, this asset can not be used in flashloan transactions"
 msgstr ""
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
@@ -671,9 +683,12 @@ msgstr ""
 msgid "FAQ"
 msgstr ""
 
-#: pages/faucet.page.tsx
 #: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
+#: src/modules/faucet/FaucetAssetsList.tsx
+#: src/modules/faucet/FaucetItemLoader.tsx
+#: src/modules/faucet/FaucetMobileItemLoader.tsx
+#: src/ui-config/menu-items/index.tsx
 msgid "Faucet"
 msgstr ""
 
@@ -712,6 +727,10 @@ msgstr ""
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Go Back"
+msgstr ""
+
+#: src/modules/governance/proposal/ProposalTopPanel.tsx
+msgid "Go back"
 msgstr ""
 
 #: src/ui-config/menu-items/index.tsx
@@ -852,7 +871,7 @@ msgid "Liquidation penalty"
 msgstr ""
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
-msgid "Liquidation risk parametres"
+msgid "Liquidation risk parameters"
 msgstr ""
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
@@ -997,6 +1016,10 @@ msgstr ""
 msgid "Nothing supplied yet"
 msgstr ""
 
+#: src/components/HALLink.tsx
+msgid "Notify"
+msgstr ""
+
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Ok, Close"
 msgstr ""
@@ -1028,6 +1051,10 @@ msgstr ""
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Please connect a wallet to view your personal information here."
+msgstr ""
+
+#: src/modules/faucet/FaucetAssetsList.tsx
+msgid "Please connect your wallet to get free testnet assets."
 msgstr ""
 
 #: src/components/ConnectWalletPaper.tsx
@@ -1113,10 +1140,6 @@ msgstr ""
 msgid "Repay with"
 msgstr ""
 
-#: src/components/Warnings/RepayCollateralWarning.tsx
-msgid "Repay with collateral is experiencing degraded performance which may cause your transaction to fail. Consider using another service or add more collateral to avoid liquidation."
-msgstr ""
-
 #: src/components/transactions/Repay/CollateralRepayActions.tsx
 #: src/components/transactions/Repay/RepayActions.tsx
 msgid "Repay {symbol}"
@@ -1179,6 +1202,10 @@ msgstr ""
 msgid "Safety of your deposited collateral against the borrowed assets and its underlying value."
 msgstr ""
 
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Seatbelt report"
+msgstr ""
+
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Seems like we can't switch the network automatically. Please check if you can change it from the wallet."
 msgstr ""
@@ -1187,16 +1214,20 @@ msgstr ""
 msgid "Select APY type to switch"
 msgstr ""
 
-#: src/components/MarketSwitcher.tsx
-msgid "Select Aave Market"
-msgstr ""
-
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Select language"
 msgstr ""
 
-#: src/components/HALTooltip.tsx
-msgid "Setup triggers and receive notifications about your Health Factor status using Hal app."
+#: src/modules/reserve-overview/AddTokenDropdown.tsx
+msgid "Select token to add"
+msgstr ""
+
+#: src/modules/reserve-overview/TokenLinkDropdown.tsx
+msgid "Select token to view in block explorer"
+msgstr ""
+
+#: src/components/HALLink.tsx
+msgid "Setup notifications about your Health Factor using the Hal app."
 msgstr ""
 
 #: pages/governance/proposal/[proposalId].governance.tsx
@@ -1394,8 +1425,16 @@ msgstr ""
 msgid "Switching rate"
 msgstr ""
 
+#: src/modules/faucet/FaucetAssetsList.tsx
+msgid "Test Assets"
+msgstr ""
+
 #: src/layouts/components/TestNetModeSwitcher.tsx
 msgid "Testnet mode"
+msgstr ""
+
+#: src/layouts/AppHeader.tsx
+msgid "Testnet mode is ON"
 msgstr ""
 
 #: src/components/infoTooltips/BorrowPowerTooltip.tsx
@@ -1416,6 +1455,10 @@ msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "The address of the pool addresses provider is invalid"
+msgstr ""
+
+#: src/layouts/AppHeader.tsx
+msgid "The app is running in testnet mode. Learn how it works in"
 msgstr ""
 
 #: src/ui-config/errorMapping.tsx
@@ -1504,6 +1547,10 @@ msgstr ""
 
 #: src/components/infoTooltips/GasTooltip.tsx
 msgid "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
+msgstr ""
+
+#: src/components/HALLink.tsx
+msgid "This integration was<0>proposed and approved</0>by the community."
 msgstr ""
 
 #: src/components/infoTooltips/AvailableTooltip.tsx
@@ -1674,6 +1721,14 @@ msgstr ""
 msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions. Recommended for short-term loans."
 msgstr ""
 
+#: src/components/MarketSwitcher.tsx
+msgid "Version 2"
+msgstr ""
+
+#: src/components/MarketSwitcher.tsx
+msgid "Version 3"
+msgstr ""
+
 #: src/modules/markets/AssetsListMobileItem.tsx
 msgid "View details"
 msgstr ""
@@ -1705,9 +1760,9 @@ msgstr ""
 msgid "Voting results"
 msgstr ""
 
-#: pages/faucet.page.tsx
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+#: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Wallet balance"
@@ -1735,6 +1790,10 @@ msgstr ""
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "With a voting power of <0/>"
+msgstr ""
+
+#: src/modules/faucet/FaucetTopPanel.tsx
+msgid "With testnet Faucet you can get free assets to test the Aave Protocol. Make sure to switch your wallet provider to the appropriate testnet network, select desired asset, and click ‘Faucet’ to get tokens transferred to your wallet. The assets on a testnet are not “real,” meaning they have no monetary value. <0>Learn more</0>"
 msgstr ""
 
 #: src/components/transactions/Withdraw/WithdrawModal.tsx
@@ -1877,6 +1936,14 @@ msgid "Your voting info"
 msgstr ""
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+msgid "Your {networkName} wallet is empty. Get free test assets at"
+msgstr ""
+
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "Your {networkName} wallet is empty. Get free test {0} at"
+msgstr ""
+
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Your {networkName} wallet is empty. Purchase or transfer assets"
 msgstr ""
@@ -1887,10 +1954,6 @@ msgstr ""
 
 #: src/modules/markets/AssetsList.tsx
 msgid "assets"
-msgstr ""
-
-#: src/modules/governance/proposal/ProposalTopPanel.tsx
-msgid "back"
 msgstr ""
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
@@ -1956,18 +2019,11 @@ msgstr ""
 msgid "tokens, please go to the"
 msgstr ""
 
-#: src/components/MarketSwitcher.tsx
-msgid "v2 markets"
-msgstr ""
-
-#: src/components/MarketSwitcher.tsx
-msgid "v3 markets"
-msgstr ""
-
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "withdrew"
 msgstr ""
 
+#: src/components/MarketSwitcher.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
@@ -1979,7 +2035,8 @@ msgstr ""
 msgid "{0} Balance"
 msgstr ""
 
-#: pages/faucet.page.tsx
+#: src/components/FaucetButton.tsx
+#: src/modules/faucet/FaucetTopPanel.tsx
 msgid "{0} Faucet"
 msgstr ""
 
@@ -1999,11 +2056,20 @@ msgstr ""
 msgid "{m}m"
 msgstr ""
 
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "{networkName} Faucet"
+msgstr ""
+
 #: src/components/infoTooltips/FrozenWarning.tsx
 msgid "{symbol} is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
 msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"
+msgstr ""
+
+#: src/components/CircleIcon.tsx
+msgid "{tooltipText}"
 msgstr ""
 
