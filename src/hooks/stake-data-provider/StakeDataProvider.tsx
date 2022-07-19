@@ -4,7 +4,7 @@ import { stakeConfig } from 'src/ui-config/stakeConfig';
 
 import { _useStakeDataRPC } from './_useStakeDataRPC';
 import { useC_StakeUserUiDataQuery } from './graphql/hooks';
-import { useStakeDataSubscription, useStore } from 'src/store/root';
+import { useRootStore, useStakeDataSubscription } from 'src/store/root';
 
 interface StakeDataProviderContextType {}
 
@@ -45,7 +45,7 @@ export const useStakeData = () => {
     fetchPolicy: 'cache-only',
   });
 
-  const stakeGeneralResult = useStore((state) => state.stakeGeneralResult);
+  const stakeGeneralResult = useRootStore((state) => state.stakeGeneralResult);
 
   return {
     stakeUserResult,
