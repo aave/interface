@@ -132,6 +132,7 @@ export const EmodeSelect = ({
             <Checkbox
               sx={{ px: 0 }}
               value={disableEmode}
+              data-cy={`disableCheckboxEmode`}
               defaultChecked={false}
               onChange={() => {
                 if (disableEmode) {
