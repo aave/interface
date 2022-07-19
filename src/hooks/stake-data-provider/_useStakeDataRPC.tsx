@@ -12,7 +12,7 @@ export function _useStakeDataRPC(currentAccount: string, chainId: number, skip =
 
   const isStakeFork =
     currentNetworkConfig.isFork && currentNetworkConfig.underlyingChainId === stakeConfig?.chainId;
-  const rpcProvider = isStakeFork ? jsonRpcProvider : getProvider(stakeConfig.chainId);
+  const rpcProvider = isStakeFork ? jsonRpcProvider() : getProvider(stakeConfig.chainId);
   const uiStakeDataProvider = new UiStakeDataProvider({
     provider: rpcProvider,
     uiStakeDataProvider: stakeConfig.stakeDataProvider,

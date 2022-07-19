@@ -14,7 +14,7 @@ export interface ProtocolDataSlice {
   currentMarketData: MarketDataType;
   currentChainId: number;
   currentNetworkConfig: NetworkConfig;
-  jsonRpcProvider: providers.Provider;
+  jsonRpcProvider: () => providers.Provider;
   setCurrentMarket: (market: CustomMarket) => void;
 }
 
@@ -23,7 +23,7 @@ export const createProtocolDataSlice: StateCreator<
   [['zustand/devtools', never], ['zustand/persist', unknown]],
   [],
   ProtocolDataSlice
-> = (set) => {
+> = (set, get) => {
   const initialMarket = availableMarkets[0]; // currently seeded with localStorage, but might not be necessary with persist
   const initialMarketData = marketsData[initialMarket];
   return {
@@ -31,7 +31,7 @@ export const createProtocolDataSlice: StateCreator<
     currentMarketData: initialMarketData,
     currentChainId: initialMarketData.chainId,
     currentNetworkConfig: getNetworkConfig(initialMarketData.chainId),
-    jsonRpcProvider: getProvider(initialMarketData.chainId),
+    jsonRpcProvider: () => getProvider(get().currentChainId),
     setCurrentMarket: (market) => {
       const nextMarketData = marketsData[market];
       set({
@@ -39,7 +39,6 @@ export const createProtocolDataSlice: StateCreator<
         currentMarketData: nextMarketData,
         currentChainId: nextMarketData.chainId,
         currentNetworkConfig: getNetworkConfig(nextMarketData.chainId),
-        jsonRpcProvider: getProvider(nextMarketData.chainId),
       });
     },
   };

@@ -70,7 +70,7 @@ export const createStakeSlice: StateCreator<
     const isStakeFork =
       currentNetworkConfig.isFork &&
       currentNetworkConfig.underlyingChainId === stakeConfig?.chainId;
-    const rpcProvider = isStakeFork ? get().jsonRpcProvider : getProvider(stakeConfig.chainId);
+    const rpcProvider = isStakeFork ? get().jsonRpcProvider() : getProvider(stakeConfig.chainId);
     const uiStakeDataProvider = new UiStakeDataProvider({
       provider: rpcProvider,
       uiStakeDataProvider: stakeConfig.stakeDataProvider,

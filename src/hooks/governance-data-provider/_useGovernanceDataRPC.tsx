@@ -28,7 +28,7 @@ export function _useGovernanceDataRPC({ governanceConfig }: UseGovernanceDataPro
   const isGovernanceFork =
     currentNetworkConfig.isFork &&
     currentNetworkConfig.underlyingChainId === governanceConfig.chainId;
-  const rpcProvider = isGovernanceFork ? jsonRpcProvider : getProvider(governanceConfig.chainId);
+  const rpcProvider = isGovernanceFork ? jsonRpcProvider() : getProvider(governanceConfig.chainId);
   const { aaveTokenAddress, stkAaveTokenAddress } = governanceConfig;
 
   const governanceService = new AaveGovernanceService(rpcProvider, {

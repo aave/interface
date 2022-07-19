@@ -119,7 +119,7 @@ export const useUpdateWalletBalances = () => {
     if (!currentAccount) return;
     const contract = new WalletBalanceProvider({
       walletBalanceProviderAddress: currentMarketData.addresses.WALLET_BALANCE_PROVIDER,
-      provider: jsonRpcProvider,
+      provider: jsonRpcProvider(),
     });
     const { 0: tokenAddresses, 1: balances } =
       await contract.getUserWalletBalancesForLendingPoolProvider(

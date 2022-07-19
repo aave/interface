@@ -14,7 +14,7 @@ export const StakeTxBuilderProvider: React.FC<{ children: ReactElement }> = ({ c
 
   const isStakeFork =
     currentNetworkConfig.isFork && currentNetworkConfig.underlyingChainId === stakeConfig.chainId;
-  const rpcProvider = isStakeFork ? jsonRpcProvider : getProvider(stakeConfig.chainId);
+  const rpcProvider = isStakeFork ? jsonRpcProvider() : getProvider(stakeConfig.chainId);
 
   const stakingServices: Record<string, StakingService> = {};
 
