@@ -1,6 +1,6 @@
+import { useState } from 'react';
 import { Trans } from '@lingui/macro';
-import { Checkbox, FormLabel, Typography } from '@mui/material';
-
+import { Box, Checkbox, FormLabel, Typography } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
@@ -15,6 +15,7 @@ export type EmodeSelectProps = {
   selectedEmode: number;
   setSelectedEmode: React.Dispatch<React.SetStateAction<EmodeCategory | undefined>>;
   baseAssetSymbol: string;
+  userEmode: number;
 };
 
 export const EmodeSelect = ({
@@ -22,12 +23,14 @@ export const EmodeSelect = ({
   selectedEmode,
   setSelectedEmode,
   baseAssetSymbol,
+  userEmode,
 }: EmodeSelectProps) => {
   const { user } = useAppDataContext();
+  const [disableEmode, setDisableEmode] = useState<boolean>(selectedEmode === 0 ? true : false);
   return (
     <FormControl sx={{ mb: 1, width: '100%' }}>
       <FormLabel sx={{ mb: 1, color: 'text.secondary' }}>
-        <Trans>Asset category</Trans>
+        <Trans>Switch asset category</Trans>
       </FormLabel>
 
       <Select
@@ -37,6 +40,7 @@ export const EmodeSelect = ({
         }}
         className="EmodeSelect"
         data-cy="EmodeSelect"
+        disabled={disableEmode}
         sx={{
           width: '100%',
           height: '44px',
@@ -60,31 +64,24 @@ export const EmodeSelect = ({
         }}
         native={false}
         renderValue={(emode) => {
-          if (emode === 0) {
+          if (disableEmode) {
+            return <Typography color="text.primary">----------</Typography>;
+          }
+          if (emode !== 0) {
             return (
               <Typography color="text.primary">
-                <Trans>Disable</Trans> E-mode
+                {getEmodeMessage(emodeCategories[selectedEmode].id, baseAssetSymbol)}
               </Typography>
             );
           }
-
-          return (
-            <Typography color="text.primary">
-              {getEmodeMessage(emodeCategories[selectedEmode].id, baseAssetSymbol)}
-            </Typography>
-          );
         }}
       >
         {Object.keys(emodeCategories).map((categoryKey) => {
-          if (emodeCategories[Number(categoryKey)].id !== 0) {
+          if (userEmode !== Number(categoryKey) && Number(categoryKey) !== 0) {
             return (
               <MenuItem
                 key={`emode-${emodeCategories[Number(categoryKey)].id}`}
                 value={emodeCategories[Number(categoryKey)].id}
-                sx={{
-                  display:
-                    emodeCategories[Number(categoryKey)].id === selectedEmode ? 'none' : undefined,
-                }}
               >
                 {
                   <Typography color="text.primary">
@@ -98,41 +95,55 @@ export const EmodeSelect = ({
       </Select>
 
       {user.userEmodeCategoryId !== 0 && (
-        <Row
-          sx={{
-            width: '100%',
-            height: '44px',
-            borderRadius: '6px',
-            borderColor: 'divider',
-            outline: 'none !important',
-            color: 'text.primary',
-            '.MuiOutlinedInput-input': {
-              backgroundColor: 'transparent',
-            },
-            '.MuiOutlinedInput-notchedOutline, .MuiOutlinedInput-notchedOutline': {
+        <>
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', my: 2 }}>
+            <Typography variant="description" color="text.primary">
+              <Trans>or</Trans>
+            </Typography>
+          </Box>
+          <Row
+            sx={{
+              width: '100%',
+              alignItems: 'center',
+              height: '44px',
+              borderRadius: '6px',
               borderColor: 'divider',
               outline: 'none !important',
-              borderWidth: '1px',
-            },
-            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-              borderColor: 'divider',
-              borderWidth: '1px',
-            },
-            '&.EmodeSelect .MuiSelect-icon': { color: 'text.primary' },
-          }}
-        >
-          <Typography>Disable E-mode</Typography>
-          <Checkbox
-            value={0}
-            defaultChecked={false}
-            onChange={(e) => {
-              e.target.checked === true
-                ? setSelectedEmode(emodeCategories[Number(e.target.value)])
-                : (e.target.value = String(user.userEmodeCategoryId)) &&
-                  setSelectedEmode(emodeCategories[Number(e.target.value)]);
+              color: 'text.primary',
+              '.MuiOutlinedInput-input': {
+                backgroundColor: 'transparent',
+              },
+              '.MuiOutlinedInput-notchedOutline, .MuiOutlinedInput-notchedOutline': {
+                borderColor: 'divider',
+                outline: 'none !important',
+                borderWidth: '1px',
+              },
+              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: 'divider',
+                borderWidth: '1px',
+              },
+              '&.EmodeSelect .MuiSelect-icon': { color: 'text.primary' },
             }}
-          />
-        </Row>
+          >
+            <FormLabel sx={{ color: 'text.secondary' }}>
+              <Trans>Disable E-mode</Trans>
+            </FormLabel>
+
+            <Checkbox
+              sx={{ px: 0 }}
+              value={disableEmode}
+              defaultChecked={false}
+              onChange={() => {
+                if (disableEmode) {
+                  setSelectedEmode(userEmode === 1 ? emodeCategories[2] : emodeCategories[1]);
+                } else {
+                  setSelectedEmode(emodeCategories[0]);
+                }
+                setDisableEmode(!disableEmode);
+              }}
+            />
+          </Row>
+        </>
       )}
     </FormControl>
   );

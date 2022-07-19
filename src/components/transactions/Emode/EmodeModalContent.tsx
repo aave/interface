@@ -1,8 +1,9 @@
 import { formatUserSummary } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Alert, Box, Button, Link, SvgIcon, Typography } from '@mui/material';
+import { Box, Link, SvgIcon, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Row } from 'src/components/primitives/Row';
+import { Warning } from 'src/components/primitives/Warning';
 import { EmodeCategory } from 'src/helpers/types';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
@@ -25,7 +26,6 @@ import LightningBoltGradient from '/public/lightningBoltGradient.svg';
 export enum ErrorType {
   EMODE_DISABLED_LIQUIDATION,
   CLOSE_POSITIONS_BEFORE_SWITCHING,
-  SAME_EMODE,
 }
 
 // TODO: need add Current Loan to Value
@@ -49,50 +49,59 @@ export const EmodeModalContent = () => {
 
   // get all emodes
   useEffect(() => {
-    const emodeCategoriesArray: EmodeCategory[] = [];
-    reserves.forEach((reserve) => {
-      const emodeFound = emodeCategoriesArray.find(
-        (category) => category.id === reserve.eModeCategoryId
-      );
-      if (!emodeFound) {
-        const emodeParams: EmodeCategory = {
-          id: reserve.eModeCategoryId,
-          ltv: reserve.eModeLtv,
-          liquidationThreshold: reserve.eModeLiquidationThreshold,
-          liquidationBonus: reserve.eModeLiquidationBonus,
-          priceSource: reserve.eModePriceSource,
-          label: reserve.eModeLabel,
-          assets: [],
-        };
+    if (!selectedEmode) {
+      const emodeCategoriesArray: EmodeCategory[] = [];
+      reserves.forEach((reserve) => {
+        const emodeFound = emodeCategoriesArray.find(
+          (category) => category.id === reserve.eModeCategoryId
+        );
+        if (!emodeFound) {
+          const emodeParams: EmodeCategory = {
+            id: reserve.eModeCategoryId,
+            ltv: reserve.eModeLtv,
+            liquidationThreshold: reserve.eModeLiquidationThreshold,
+            liquidationBonus: reserve.eModeLiquidationBonus,
+            priceSource: reserve.eModePriceSource,
+            label: reserve.eModeLabel,
+            assets: [],
+          };
 
-        // get all emode asets
-        reserves.forEach((eReserve) => {
-          if (eReserve.eModeCategoryId === reserve.eModeCategoryId) {
-            emodeParams.assets.push(eReserve.symbol);
-          }
-        });
+          // get all emode asets
+          reserves.forEach((eReserve) => {
+            if (eReserve.eModeCategoryId === reserve.eModeCategoryId) {
+              emodeParams.assets.push(eReserve.symbol);
+            }
+          });
 
-        emodeCategoriesArray.push(emodeParams);
+          emodeCategoriesArray.push(emodeParams);
+        }
+      });
+      const emodeCategories: Record<number, EmodeCategory> = {};
+      emodeCategoriesArray.forEach((category) => {
+        emodeCategories[category.id] = category;
+      });
+      // Default settings of the modal window, depending on the user's active emode and # of available categories
+      const selectedEmodeId =
+        emodeCategoriesArray.length > 2
+          ? user.userEmodeCategoryId === 0
+            ? 1 // If user has emode disabled, default to 1st emode
+            : user.userEmodeCategoryId === 1
+            ? 2 // Default state is to switch emode
+            : 1 // Default state is to switch emode
+          : user.userEmodeCategoryId === 0 // If there are only 2 choices, just set the opposite of the users current emode
+          ? 1
+          : 0;
+      const selectedCategory = emodeCategories[selectedEmodeId];
+      if (selectedCategory) {
+        setSelectedEmode(selectedCategory);
+      } else {
+        setSelectedEmode(emodeCategories[0]);
       }
-    });
+      setEmodeCategories(emodeCategories);
+    }
+  }, [reserves, selectedEmode, user.userEmodeCategoryId]);
 
-    const emodeCategories: Record<number, EmodeCategory> = {};
-    emodeCategoriesArray.forEach((category) => {
-      emodeCategories[category.id] = category;
-    });
-
-    const selectedEmode =
-      Object.keys(emodeCategories).length > 2 && user.userEmodeCategoryId !== 0
-        ? emodeCategories[user.userEmodeCategoryId]
-        : user.userEmodeCategoryId === 0
-        ? emodeCategories[1]
-        : emodeCategories[0];
-
-    setSelectedEmode(selectedEmode);
-    setEmodeCategories(emodeCategories);
-  }, []);
-
-  // calcs
+  // calculate user summary after emode change
   const newSummary = formatUserSummary({
     currentTimestamp,
     userReserves: userReserves,
@@ -117,34 +126,30 @@ export const EmodeModalContent = () => {
           Number(userReserve.principalStableDebt) > 0) &&
         userReserve.reserve.eModeCategoryId !== selectedEmode?.id
     );
-
     if (hasIncompatiblePositions) {
       blockingError = ErrorType.CLOSE_POSITIONS_BEFORE_SWITCHING;
     }
-  } else if (selectedEmode.id === user.userEmodeCategoryId) {
-    blockingError = ErrorType.SAME_EMODE;
   }
-
   // render error messages
-  const handleBlocked = () => {
+  const Blocked: React.FC = () => {
     switch (blockingError) {
       case ErrorType.CLOSE_POSITIONS_BEFORE_SWITCHING:
         return (
-          <Trans>
-            In order to change E-Mode from asset category
-            {getEmodeMessage(user.userEmodeCategoryId, currentNetworkConfig.baseAssetSymbol)}
-            you will need to close your position in your current category. See our{' '}
-            <Button
-              variant="text"
-              component={Link}
-              href="https://docs.aave.com/faq/aave-v3-features#high-efficiency-mode-e-mode"
-              target="_blank"
-              rel="noopener"
-            >
-              FAQ
-            </Button>{' '}
-            to learn more.
-          </Trans>
+          <Warning severity="error" sx={{ mt: 4 }}>
+            <Trans>
+              Enabling E-Mode requires all borrowed assets to belong to the same category. To enable
+              a new E-Mode, all borrow positions outside of this asset category must be closed. See
+              our{' '}
+              <Link
+                href="https://docs.aave.com/faq/aave-v3-features#high-efficiency-mode-e-mode"
+                target="_blank"
+                rel="noopener"
+              >
+                FAQ
+              </Link>{' '}
+              to learn more.
+            </Trans>
+          </Warning>
         );
       case ErrorType.EMODE_DISABLED_LIQUIDATION:
         return (
@@ -154,8 +159,6 @@ export const EmodeModalContent = () => {
             positions.
           </Trans>
         );
-      case ErrorType.SAME_EMODE:
-        return <Trans>You need to change E-Mode to continue.</Trans>;
       default:
         return null;
     }
@@ -176,11 +179,12 @@ export const EmodeModalContent = () => {
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
       )}
 
-      {selectedEmode && selectedEmode.id !== 0 && (
-        <Alert severity="warning" sx={{ mb: 6 }}>
+      {user.userEmodeCategoryId === 0 && selectedEmode && (
+        <Warning severity="warning">
           <Trans>
-            Enabling E-Mode only allows you to borrow assets belonging to the selected category
-            Stablecoins. Please visit our{' '}
+            Enabling E-Mode only allows you to borrow assets belonging to the selected category:{' '}
+            {getEmodeMessage(selectedEmode.id, currentNetworkConfig.baseAssetSymbol)}. Please visit
+            our{' '}
             <Link
               href="https://docs.aave.com/faq/aave-v3-features#high-efficiency-mode-e-mode"
               target="_blank"
@@ -190,7 +194,7 @@ export const EmodeModalContent = () => {
             </Link>{' '}
             to learn more about how it works and the applied restrictions.
           </Trans>
-        </Alert>
+        </Warning>
       )}
 
       {Object.keys(emodeCategories).length > 2 && (
@@ -199,13 +203,14 @@ export const EmodeModalContent = () => {
           selectedEmode={selectedEmode?.id || 0}
           setSelectedEmode={setSelectedEmode}
           baseAssetSymbol={currentNetworkConfig.baseAssetSymbol}
+          userEmode={user.userEmodeCategoryId}
         />
       )}
 
-      {blockingError !== undefined && <Alert severity="error">{handleBlocked()}</Alert>}
+      {blockingError !== undefined && <Blocked />}
 
       <TxModalDetails gasLimit={gasLimit}>
-        <Row caption={<Trans>Asset category</Trans>} captionVariant="description" mb={4}>
+        <Row caption={<Trans>New E-Mode category</Trans>} captionVariant="description" mb={4}>
           <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
             <SvgIcon sx={{ fontSize: '12px', mr: 0.5 }}>
               <LightningBoltGradient />
@@ -241,6 +246,7 @@ export const EmodeModalContent = () => {
         isWrongNetwork={isWrongNetwork}
         blocked={blockingError !== undefined}
         selectedEmode={selectedEmode?.id || 0}
+        activeEmode={user.userEmodeCategoryId}
       />
     </>
   );
