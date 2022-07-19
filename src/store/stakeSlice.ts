@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
 import { StateCreator } from 'zustand';
+import { RootStore } from './root';
 
 export type C_StakeGeneralUiDataQuery = {
   __typename?: 'Query';
@@ -62,7 +62,12 @@ export interface StakeSlice {
   test: number;
 }
 
-export const createStakeSlice: StateCreator<StakeSlice, [['zustand/devtools', never]]> = (set) => ({
+export const createStakeSlice: StateCreator<
+  RootStore,
+  [['zustand/devtools', never], ['zustand/persist', unknown]],
+  [],
+  StakeSlice
+> = (set) => ({
   refetchStakeData: () => {
     set((state) => ({ test: state.test + 3 }));
   },

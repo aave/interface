@@ -1,40 +1,20 @@
-import { useEffect } from 'react';
 import create from 'zustand';
-import { devtools } from 'zustand/middleware';
+import { devtools, persist } from 'zustand/middleware';
 
 import { StakeSlice, createStakeSlice } from './stakeSlice';
+import { ProtocolDataSlice, createProtocolDataSlice } from './protocolDataSlice';
+import { createSingletonSubscriber } from './utils/createSingletonSubscriber';
 
-interface RootStore extends StakeSlice {}
+export interface RootStore extends StakeSlice, ProtocolDataSlice {}
 
 export const useStore = create<RootStore>()(
-  devtools((...args) => ({
-    ...createStakeSlice(...args),
-  }))
+  devtools(
+    persist((...args) => ({
+      ...createStakeSlice(...args),
+      ...createProtocolDataSlice(...args),
+    }))
+  )
 );
-
-function createSingletonSubscriber(implementation: () => void, interval: number) {
-  let id: NodeJS.Timer | null;
-  let listeners = 0;
-  function subscribe() {
-    listeners++;
-    if (!id) {
-      id = setInterval(implementation, interval);
-    }
-  }
-  function unsubscribe() {
-    listeners--;
-    if (id && listeners === 0) {
-      console.log('unsubscribed');
-      clearInterval(id);
-      id = null;
-    }
-  }
-  return () =>
-    useEffect(() => {
-      subscribe();
-      return unsubscribe;
-    }, []);
-}
 
 export const useStakeDataSubscription = createSingletonSubscriber(() => {
   useStore.getState().refetchStakeData();
