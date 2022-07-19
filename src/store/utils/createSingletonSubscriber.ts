@@ -11,6 +11,7 @@ export function createSingletonSubscriber(implementation: () => void, interval: 
   let id: NodeJS.Timer | null;
   let listeners = 0;
   function subscribe() {
+    implementation();
     listeners++;
     if (!id) {
       id = setInterval(implementation, interval);
@@ -19,7 +20,6 @@ export function createSingletonSubscriber(implementation: () => void, interval: 
   function unsubscribe() {
     listeners--;
     if (id && listeners === 0) {
-      console.log('unsubscribed');
       clearInterval(id);
       id = null;
     }

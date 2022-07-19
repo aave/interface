@@ -7,7 +7,7 @@ import { createSingletonSubscriber } from './utils/createSingletonSubscriber';
 
 export interface RootStore extends StakeSlice, ProtocolDataSlice {}
 
-export const useStore = create<RootStore>()(
+export const useRootStore = create<RootStore>()(
   devtools(
     persist(
       (...args) => ({
@@ -20,5 +20,5 @@ export const useStore = create<RootStore>()(
 );
 
 export const useStakeDataSubscription = createSingletonSubscriber(() => {
-  useStore.getState().refetchStakeData();
-}, 500);
+  useRootStore.getState().refetchStakeData();
+}, 60000);
