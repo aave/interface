@@ -78,7 +78,8 @@
     "react-number-format": "^4.9.1",
     "reflect-metadata": "^0.1.13",
     "remark-gfm": "^3.0.1",
-    "subscriptions-transport-ws": "^0.11.0"
+    "subscriptions-transport-ws": "^0.11.0",
+    "zustand": "^4.0.0-rc.2"
   },
   "devDependencies": {
     "@babel/core": "^7.18.9",
