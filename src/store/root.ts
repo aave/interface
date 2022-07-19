@@ -9,10 +9,13 @@ export interface RootStore extends StakeSlice, ProtocolDataSlice {}
 
 export const useStore = create<RootStore>()(
   devtools(
-    persist((...args) => ({
-      ...createStakeSlice(...args),
-      ...createProtocolDataSlice(...args),
-    }))
+    persist(
+      (...args) => ({
+        ...createStakeSlice(...args),
+        ...createProtocolDataSlice(...args),
+      }),
+      { name: 'root' }
+    )
   )
 );
 

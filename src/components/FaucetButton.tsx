@@ -2,12 +2,12 @@ import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Button, SvgIcon, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useStore } from 'src/store/root';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { DarkTooltip } from './infoTooltips/DarkTooltip';
 import { ROUTES } from './primitives/Link';
 
 export const FaucetButton = () => {
-  const currentNetworkConfig = useStore((state) => state.currentNetworkConfig);
+  const currentNetworkConfig = useProtocolDataContext();
   const router = useRouter();
 
   return (

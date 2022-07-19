@@ -44,20 +44,20 @@ export default function Staking() {
 
   // Total funds at Safety Module (stkaave tvl + stkbpt tvl)
   const tvl = formatEther(
-    BigNumber.from(data.stakeGeneralResult?.stakeGeneralUIData.aave.stakeTokenTotalSupply || '0')
-      .mul(data.stakeGeneralResult?.stakeGeneralUIData.aave.stakeTokenPriceEth || '0')
+    BigNumber.from(data.stakeGeneralResult?.aave.stakeTokenTotalSupply || '0')
+      .mul(data.stakeGeneralResult?.aave.stakeTokenPriceEth || '0')
       .add(
-        BigNumber.from(
-          data.stakeGeneralResult?.stakeGeneralUIData.bpt.stakeTokenTotalSupply || '0'
-        ).mul(data.stakeGeneralResult?.stakeGeneralUIData.bpt.stakeTokenPriceEth || '0')
+        BigNumber.from(data.stakeGeneralResult?.bpt.stakeTokenTotalSupply || '0').mul(
+          data.stakeGeneralResult?.bpt.stakeTokenPriceEth || '0'
+        )
       )
-      .div(data.stakeGeneralResult?.stakeGeneralUIData.usdPriceEth || 1)
+      .div(data.stakeGeneralResult?.usdPriceEth || 1)
   );
 
   // Total AAVE Emissions (stkaave dps + stkbpt dps)
   const stkEmission = formatEther(
-    BigNumber.from(data.stakeGeneralResult?.stakeGeneralUIData.aave.distributionPerSecond || '0')
-      .add(data.stakeGeneralResult?.stakeGeneralUIData.bpt.distributionPerSecond || '0')
+    BigNumber.from(data.stakeGeneralResult?.aave.distributionPerSecond || '0')
+      .add(data.stakeGeneralResult?.bpt.distributionPerSecond || '0')
       .mul('86400')
   );
 
