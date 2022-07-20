@@ -34,7 +34,6 @@ import { LiquidationPenaltyTooltip } from 'src/components/infoTooltips/Liquidati
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { frozenProposalMap } from 'src/utils/marketsAndNetworksConfig';
 import { ReserveFactorTooltip } from 'src/components/infoTooltips/ReserveFactorTooltip';
-import { CollectorTooltip } from 'src/components/infoTooltips/CollectorTooltip';
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
