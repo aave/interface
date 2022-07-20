@@ -62247,12 +62247,22 @@ function getProposalMetadata(hash, gateway = "https://cloudflare-ipfs.com/ipfs")
     if (!ipfsResponse.ok) {
       throw Error("Fetch not working");
     }
-    const response = yield ipfsResponse.json();
-    const { content, data } = (0, import_gray_matter.default)(response.description);
-    MEMORIZE[ipfsHash] = __spreadValues(__spreadProps(__spreadValues({}, response), {
-      ipfsHash,
-      description: content
-    }), data);
+    const clone = yield ipfsResponse.clone();
+    try {
+      const response = yield ipfsResponse.json();
+      const { content, data } = (0, import_gray_matter.default)(response.description);
+      MEMORIZE[ipfsHash] = __spreadValues(__spreadProps(__spreadValues({}, response), {
+        ipfsHash,
+        description: content
+      }), data);
+    } catch (e) {
+      const text = yield clone.text();
+      const { content, data } = (0, import_gray_matter.default)(text);
+      MEMORIZE[ipfsHash] = __spreadProps(__spreadValues({}, data), {
+        ipfsHash,
+        description: content
+      });
+    }
     return MEMORIZE[ipfsHash];
   });
 }
