@@ -12,6 +12,7 @@ import { BigNumber } from 'ethers/lib/ethers';
 import { formatEther } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { ContentContainer } from 'src/components/ContentContainer';
+import { GetABPToken } from 'src/modules/staking/GetABPToken';
 import { StakeModal } from 'src/components/transactions/Stake/StakeModal';
 import { StakeCooldownModal } from 'src/components/transactions/StakeCooldown/StakeCooldownModal';
 import { StakeRewardClaimModal } from 'src/components/transactions/StakeRewardClaim/StakeRewardClaimModal';
@@ -24,7 +25,6 @@ import { StakingPanel } from 'src/modules/staking/StakingPanel';
 import { StakeTxBuilderProvider } from 'src/providers/StakeTxBuilderProvider';
 
 import { ConnectWalletPaper } from '../src/components/ConnectWalletPaper';
-import { Link } from '../src/components/primitives/Link';
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 
 export default function Staking() {
@@ -86,12 +86,12 @@ export default function Staking() {
               >
                 <ToggleButton value="aave" disabled={mode === 'aave'}>
                   <Typography variant="subheader1">
-                    <Trans>Stake Aave</Trans>
+                    <Trans>Stake AAVE</Trans>
                   </Typography>
                 </ToggleButton>
                 <ToggleButton value="bpt" disabled={mode === 'bpt'}>
                   <Typography variant="subheader1">
-                    <Trans>Stake Aave/ETH BPT</Trans>
+                    <Trans>Stake ABPT</Trans>
                   </Typography>
                 </ToggleButton>
               </ToggleButtonGroup>
@@ -105,7 +105,7 @@ export default function Staking() {
                 sx={{ display: { xs: !isStakeAAVE ? 'none' : 'block', lg: 'block' } }}
               >
                 <StakingPanel
-                  stakeTitle="Aave"
+                  stakeTitle="AAVE"
                   stakedToken="AAVE"
                   maxSlash="0.3"
                   icon="aave"
@@ -125,7 +125,7 @@ export default function Staking() {
                 sx={{ display: { xs: isStakeAAVE ? 'none' : 'block', lg: 'block' } }}
               >
                 <StakingPanel
-                  stakeTitle="AAVE/ETH BPT"
+                  stakeTitle="ABPT"
                   stakedToken="ABPT"
                   maxSlash="0.3"
                   icon="stkbpt"
@@ -136,24 +136,7 @@ export default function Staking() {
                   onCooldownAction={() => openStakeCooldown('bpt')}
                   onUnstakeAction={() => openUnstake('bpt', 'stkBPT')}
                   onStakeRewardClaimAction={() => openStakeRewardsClaim('bpt')}
-                  description={
-                    <Typography color="text.muted" sx={{ mt: 4 }} variant="caption">
-                      <Trans>
-                        The Balancer Pool Token (BPT) is a liquidity pool token. You can receive BPT
-                        by depositing a combination of AAVE + ETH in the{' '}
-                        <Link
-                          href="https://pools.balancer.exchange/#/pool/0xc697051d1c6296c24ae3bcef39aca743861d9a81/about"
-                          variant="caption"
-                          color="text.muted"
-                          sx={{ textDecoration: 'underline' }}
-                        >
-                          Balancer liquidity pool
-                        </Link>
-                        . You can then stake your BPT in the Safety Module to secure the protocol
-                        and earn Safety Incentives.
-                      </Trans>
-                    </Typography>
-                  }
+                  headerAction={<GetABPToken />}
                 />
               </Grid>
             </Grid>
