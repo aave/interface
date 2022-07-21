@@ -2096,10 +2096,6 @@ msgstr "{symbol} is frozen due to an Aave Protocol Governance decision. <0>More 
 msgid "{s}s"
 msgstr "{s}s"
 
-#: src/components/ReserveOverviewBox.tsx
-msgid "{title}"
-msgstr "{title}"
-
 #: src/components/CircleIcon.tsx
 msgid "{tooltipText}"
 msgstr "{tooltipText}"
