@@ -24,3 +24,7 @@ export const useRootStore = create<RootStore>()(
 export const useStakeDataSubscription = createSingletonSubscriber(() => {
   useRootStore.getState().refetchStakeData();
 }, 60000);
+
+export const useWalletBalancesSubscription = createSingletonSubscriber(() => {
+  useRootStore.getState().refetchWalletBalances();
+}, 30000);

@@ -7,7 +7,7 @@ import {
   UserReserveData,
 } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 

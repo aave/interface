@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
+import { useWalletBalancesSubscription } from 'src/store/root';
 
 import { useIncentiveData } from './useIncentiveData';
 import { usePoolData } from './usePoolData';
-import { useUpdateWalletBalances } from './useWalletBalances';
 
 interface BackgroundDataProviderContextType {
   refetchWalletBalances: () => Promise<void>;
@@ -22,7 +22,7 @@ const BackgroundDataProviderContext = React.createContext<BackgroundDataProvider
 export const BackgroundDataProvider: React.FC = ({ children }) => {
   const { refresh: refechIncentiveData } = useIncentiveData();
   const { refresh: refetchPoolData } = usePoolData();
-  const { refetch: refetchWalletBalances } = useUpdateWalletBalances();
+  const refetchWalletBalances = useWalletBalancesSubscription();
   return (
     <BackgroundDataProviderContext.Provider
       value={{ refetchWalletBalances, refechIncentiveData, refetchPoolData }}

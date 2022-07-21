@@ -7,7 +7,10 @@ import { useEffect } from 'react';
  * @param interval the interval for in which the implementation should be executed
  * @returns react hook
  */
-export function createSingletonSubscriber(implementation: () => void, interval: number) {
+export function createSingletonSubscriber<T extends () => Promise<void>>(
+  implementation: T,
+  interval: number
+): () => T {
   let id: NodeJS.Timer | null;
   let listeners = 0;
   function subscribe() {
@@ -24,9 +27,11 @@ export function createSingletonSubscriber(implementation: () => void, interval: 
       id = null;
     }
   }
-  return () =>
+  return () => {
     useEffect(() => {
       subscribe();
       return unsubscribe;
     }, []);
+    return implementation;
+  };
 }
