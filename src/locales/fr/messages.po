@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-07-01 00:19\n"
+"PO-Revision-Date: 2022-07-15 18:04\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -98,11 +98,11 @@ msgid "Action requires an active reserve"
 msgstr "L'action nécessite une réserve active"
 
 #: src/components/transactions/FlowCommons/Success.tsx
-msgid "Add aToken to the wallet to track your supply balance."
+msgid "Add to wallet"
 msgstr ""
 
 #: src/components/transactions/FlowCommons/Success.tsx
-msgid "Add to wallet"
+msgid "Add {0} to wallet to track your balance."
 msgstr ""
 
 #: src/ui-config/errorMapping.tsx
@@ -716,6 +716,11 @@ msgstr "Français"
 msgid "Funds in the Safety Module"
 msgstr "Fonds dans le Safety Module"
 
+#: src/modules/staking/GetABPToken.tsx
+#: src/modules/staking/GetABPTokenModal.tsx
+msgid "Get ABP Token"
+msgstr ""
+
 #: src/ui-config/menu-items/index.tsx
 msgid "Github"
 msgstr "Github"
@@ -731,6 +736,10 @@ msgstr "Retourner"
 
 #: src/modules/governance/proposal/ProposalTopPanel.tsx
 msgid "Go back"
+msgstr ""
+
+#: src/modules/staking/GetABPTokenModal.tsx
+msgid "Go to Balancer Pool"
 msgstr ""
 
 #: src/ui-config/menu-items/index.tsx
@@ -1291,12 +1300,12 @@ msgid "Stake"
 msgstr "Stake"
 
 #: pages/staking.staking.tsx
-msgid "Stake Aave"
-msgstr "Stake Aave"
+msgid "Stake AAVE"
+msgstr ""
 
 #: pages/staking.staking.tsx
-msgid "Stake Aave/ETH BPT"
-msgstr "Stake Aave/ETH BPT"
+msgid "Stake ABPT"
+msgstr ""
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Stake cooldown activated"
@@ -1441,9 +1450,9 @@ msgstr ""
 msgid "The % of your total borrowing power used. This is based on the amount of your collateral supplied and the total amount that you can borrow."
 msgstr "Le % de votre pouvoir d'emprunt total utilisé. Ceci est basé sur le montant de votre garantie fournie et le montant total que vous pouvez emprunter."
 
-#: pages/staking.staking.tsx
-msgid "The Balancer Pool Token (BPT) is a liquidity pool token. You can receive BPT by depositing a combination of AAVE + ETH in the <0>Balancer liquidity pool</0>. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
-msgstr "Le Balancer Pool Token (BPT) est un token de pool de liquidités. Vous pouvez recevoir des BPT en déposant une combinaison d'AAVE + ETH dans le <0>pool de liquidités Balancer</0>. Vous pouvez ensuite staker votre BPT dans le module de sécurité pour sécuriser le protocole et gagner des incitations à la sécurité."
+#: src/modules/staking/GetABPTokenModal.tsx
+msgid "The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can receive ABPT by depositing a combination of AAVE + ETH in the Balancer liquidity pool. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
+msgstr ""
 
 #: src/components/infoTooltips/MaxLTVTooltip.tsx
 msgid "The Maximum LTV ratio represents the maximum borrowing power of a specific collateral. For example, if a collateral has an LTV of 75%, the user can borrow up to 0.75 worth of ETH in the principal currency for every 1 ETH worth of collateral."

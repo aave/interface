@@ -32569,6 +32569,7 @@ var require_types2 = __commonJS({
       4002: "fantom_testnet",
       10: "optimism",
       69: "optimism_kovan",
+      420: "optimism_goerli",
       16666e5: "harmony",
       16667e5: "harmony_testnet"
     };
@@ -32590,6 +32591,7 @@ var require_types2 = __commonJS({
       ChainId7[ChainId7["fantom_testnet"] = 4002] = "fantom_testnet";
       ChainId7[ChainId7["optimism"] = 10] = "optimism";
       ChainId7[ChainId7["optimism_kovan"] = 69] = "optimism_kovan";
+      ChainId7[ChainId7["optimism_goerli"] = 420] = "optimism_goerli";
       ChainId7[ChainId7["harmony"] = 16666e5] = "harmony";
       ChainId7[ChainId7["harmony_testnet"] = 16667e5] = "harmony_testnet";
     })(ChainId6 = exports2.ChainId || (exports2.ChainId = {}));
@@ -61224,6 +61226,20 @@ var marketsData = {
       UI_INCENTIVE_DATA_PROVIDER: "0x50e468e1AAF408a2EB4614e4b45f832700Cda7F4"
     }
   },
+  ["amm_kovan" /* amm_kovan */]: {
+    marketTitle: "Ethereum AMM Kovan",
+    chainId: import_contract_helpers2.ChainId.kovan,
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: "0x67FB118A780fD740C8936511947cC4bE7bb7730c".toLowerCase(),
+      LENDING_POOL: "0x762E2a3BBe729240ea44D31D5a81EAB44d34ef01",
+      WETH_GATEWAY: "0xA61ca04DF33B72b235a8A28CfB535bb7A5271B70",
+      FAUCET: "0x600103d518cC5E8f3319D532eB4e5C268D32e604",
+      WALLET_BALANCE_PROVIDER: "0x07DC923859b68e9399d787bf52c4Aa9eBe3490aF",
+      UI_POOL_DATA_PROVIDER: "0x31fe1309B1169e7136AdAB01d4ba3882b5852d08",
+      UI_INCENTIVE_DATA_PROVIDER: "0x50e468e1AAF408a2EB4614e4b45f832700Cda7F4"
+    }
+  },
   ["proto_mainnet" /* proto_mainnet */]: {
     marketTitle: "Ethereum",
     chainId: import_contract_helpers2.ChainId.mainnet,
@@ -61250,20 +61266,6 @@ var marketsData = {
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-track-your-health-factor",
       marketName: "aavev2"
-    }
-  },
-  ["amm_kovan" /* amm_kovan */]: {
-    marketTitle: "Ethereum AMM Kovan",
-    chainId: import_contract_helpers2.ChainId.kovan,
-    rpcOnly: true,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: "0x67FB118A780fD740C8936511947cC4bE7bb7730c".toLowerCase(),
-      LENDING_POOL: "0x762E2a3BBe729240ea44D31D5a81EAB44d34ef01",
-      WETH_GATEWAY: "0xA61ca04DF33B72b235a8A28CfB535bb7A5271B70",
-      FAUCET: "0x600103d518cC5E8f3319D532eB4e5C268D32e604",
-      WALLET_BALANCE_PROVIDER: "0x07DC923859b68e9399d787bf52c4Aa9eBe3490aF",
-      UI_POOL_DATA_PROVIDER: "0x31fe1309B1169e7136AdAB01d4ba3882b5852d08",
-      UI_INCENTIVE_DATA_PROVIDER: "0x50e468e1AAF408a2EB4614e4b45f832700Cda7F4"
     }
   },
   ["amm_mainnet" /* amm_mainnet */]: {
@@ -61367,43 +61369,22 @@ var marketsData = {
       marketName: "aaveavalanche"
     }
   },
-  ["proto_eth_rinkeby_v3" /* proto_eth_rinkeby_v3 */]: {
+  ["proto_goerli_v3" /* proto_goerli_v3 */]: {
+    marketTitle: "Ethereum Goerli",
     v3: true,
-    marketTitle: "Ethereum Rinkeby",
-    chainId: import_contract_helpers2.ChainId.rinkeby,
-    enabledFeatures: {
-      faucet: true,
-      governance: false,
-      staking: false,
-      incentives: false
-    },
-    rpcOnly: true,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: "0xBA6378f1c1D046e9EB0F538560BA7558546edF3C".toLowerCase(),
-      LENDING_POOL: "0xE039BdF1d874d27338e09B55CB09879Dedca52D8",
-      WETH_GATEWAY: "0xD1DECc6502cc690Bc85fAf618Da487d886E54Abe",
-      FAUCET: "0x88138CA1e9E485A1E688b030F85Bb79d63f156BA",
-      WALLET_BALANCE_PROVIDER: "0x116674C3Efe4e31F192d855284619DEd6fE2a1b9",
-      UI_POOL_DATA_PROVIDER: "0x550f9764d56291B5B793b6dD1623af3346128BD2",
-      UI_INCENTIVE_DATA_PROVIDER: "0x2c9f31b1F9838Bb8781bb61a0d0a4615f6530207"
-    }
-  },
-  ["proto_ropsten_v3" /* proto_ropsten_v3 */]: {
-    marketTitle: "Ethereum Ropsten",
-    v3: true,
-    chainId: import_contract_helpers2.ChainId.ropsten,
+    chainId: import_contract_helpers2.ChainId.goerli,
     enabledFeatures: {
       faucet: true
     },
     rpcOnly: true,
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: "0x303a4B174663A6201Da77782413B4b54EFa3E97e".toLowerCase(),
-      LENDING_POOL: "0x23a85024f54A19e243bA7a74E339a5C80998c7a4",
-      WETH_GATEWAY: "0x96A4fd1f289888cCa772298f7BDCF41C02122c01",
-      FAUCET: "0xb7263ADfB7C094aa24b91A51b297A278e105584a",
-      WALLET_BALANCE_PROVIDER: "0xEEac3ad1b3f4c43A782a951348c5387506B9AB06",
-      UI_POOL_DATA_PROVIDER: "0xb815B9EE078Dab098965D8e52dD5C747d70bb481",
-      UI_INCENTIVE_DATA_PROVIDER: "0x2526D407F722C0D1e0326eC1840A235bf173b9Ca"
+      LENDING_POOL_ADDRESS_PROVIDER: "0xc4dCB5126a3AfEd129BC3668Ea19285A9f56D15D".toLowerCase(),
+      LENDING_POOL: "0x368EedF3f56ad10b9bC57eed4Dac65B26Bb667f6",
+      WETH_GATEWAY: "0xd5B55D3Ed89FDa19124ceB5baB620328287b915d",
+      FAUCET: "0x1ca525Cd5Cb77DB5Fa9cBbA02A0824e283469DBe",
+      WALLET_BALANCE_PROVIDER: "0x75CC0f0E3764be7594772D08EEBc322970CbB3a9",
+      UI_POOL_DATA_PROVIDER: "0x851F44e30C469b9E4Bf9591309611c28eAb85fAb",
+      UI_INCENTIVE_DATA_PROVIDER: "0x2A15b87783b9d590a6c528E7b1Df71ee73540F5A"
     }
   },
   ["proto_arbitrum_v3" /* proto_arbitrum_v3 */]: {
@@ -61411,7 +61392,9 @@ var marketsData = {
     v3: true,
     chainId: import_contract_helpers2.ChainId.arbitrum_one,
     enabledFeatures: {
-      incentives: true
+      incentives: true,
+      liquiditySwap: true,
+      collateralRepay: true
     },
     rpcOnly: true,
     addresses: {
@@ -61421,7 +61404,9 @@ var marketsData = {
       WALLET_BALANCE_PROVIDER: "0xBc790382B3686abffE4be14A030A96aC6154023a",
       UI_POOL_DATA_PROVIDER: "0x3f960bB91e85Ae2dB561BDd01B515C5A5c65802b",
       UI_INCENTIVE_DATA_PROVIDER: "0xEFdd7374551897B11a23Ec7b5694C713DFDa76f1",
-      L2_ENCODER: "0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC"
+      L2_ENCODER: "0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC",
+      SWAP_COLLATERAL_ADAPTER: "0xAE9f94BD98eC2831a1330e0418bE0fDb5C95C2B9",
+      REPAY_WITH_COLLATERAL_ADAPTER: "0x32FdC26aFFA1eB331263Bcdd59F2e46eCbCC2E24"
     },
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
@@ -61490,6 +61475,44 @@ var marketsData = {
       WALLET_BALANCE_PROVIDER: "0xd19443202328A66875a51560c28276868B8C61C2",
       UI_POOL_DATA_PROVIDER: "0x1D01f7d8B42Ec47837966732f831E1D6321df499",
       UI_INCENTIVE_DATA_PROVIDER: "0x036dDd300B57F6a8A6A55e2ede8b50b517A5094f"
+    }
+  },
+  ["proto_optimism_kovan_v3" /* proto_optimism_kovan_v3 */]: {
+    marketTitle: "Optimism Kovan",
+    v3: true,
+    chainId: import_contract_helpers2.ChainId.optimism_kovan,
+    enabledFeatures: {
+      faucet: true,
+      incentives: true
+    },
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: "0xD15d36975A0200D11B8a8964F4F267982D2a1cFe".toLowerCase(),
+      LENDING_POOL: "0x139d8F557f70D1903787e929D7C42165c4667229",
+      WETH_GATEWAY: "0x698851Fc324Ff9572289Dd72dfC102DB778b52f1",
+      FAUCET: "0xed97140B58B97FaF70b70Ae26714Aa59705c74aE",
+      WALLET_BALANCE_PROVIDER: "0xA8751C0e2383cE144a95386A2E30f7E2BD78236C",
+      UI_POOL_DATA_PROVIDER: "0xBCb61ecc7997cc736E4802de2D5ce76D0908C97c",
+      UI_INCENTIVE_DATA_PROVIDER: "0xe2E3a30E77469397dc3CF74f1Fa35f39493207C2"
+    }
+  },
+  ["proto_optimism_goerli_v3" /* proto_optimism_goerli_v3 */]: {
+    marketTitle: "Optimism Goerli",
+    v3: true,
+    chainId: import_contract_helpers2.ChainId.optimism_goerli,
+    enabledFeatures: {
+      faucet: true,
+      incentives: true
+    },
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: "0x74a328ED938160D702378Daeb7aB2504714B4E4b".toLowerCase(),
+      LENDING_POOL: "0x4b529A5d8268d74B687aC3dbb00e1b85bF4BF0d4",
+      WETH_GATEWAY: "0x6f7f2440006221F893c587b88f01afc42B6F8d2e",
+      FAUCET: "0xC52eA1F19C22E5a3725105BC0cf4988614e84D98",
+      WALLET_BALANCE_PROVIDER: "0xAEe1FD5CB505aa48E49c01DdE732956eDef8b42f",
+      UI_POOL_DATA_PROVIDER: "0x4D8201fB7a3367AB3e4Ba257F7462C81306799d6",
+      UI_INCENTIVE_DATA_PROVIDER: "0x596b5804E1f541baC5f265aF7C4bcc5077522876"
     }
   },
   ["proto_fantom_v3" /* proto_fantom_v3 */]: {
@@ -61590,25 +61613,6 @@ var marketsData = {
       L2_ENCODER: "0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC"
     }
   },
-  ["proto_optimism_kovan_v3" /* proto_optimism_kovan_v3 */]: {
-    marketTitle: "Optimism Kovan",
-    v3: true,
-    chainId: import_contract_helpers2.ChainId.optimism_kovan,
-    enabledFeatures: {
-      faucet: true,
-      incentives: true
-    },
-    rpcOnly: true,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: "0xD15d36975A0200D11B8a8964F4F267982D2a1cFe".toLowerCase(),
-      LENDING_POOL: "0x139d8F557f70D1903787e929D7C42165c4667229",
-      WETH_GATEWAY: "0x698851Fc324Ff9572289Dd72dfC102DB778b52f1",
-      FAUCET: "0xed97140B58B97FaF70b70Ae26714Aa59705c74aE",
-      WALLET_BALANCE_PROVIDER: "0xA8751C0e2383cE144a95386A2E30f7E2BD78236C",
-      UI_POOL_DATA_PROVIDER: "0xBCb61ecc7997cc736E4802de2D5ce76D0908C97c",
-      UI_INCENTIVE_DATA_PROVIDER: "0xe2E3a30E77469397dc3CF74f1Fa35f39493207C2"
-    }
-  },
   ["proto_polygon_v3" /* proto_polygon_v3 */]: {
     marketTitle: "Polygon",
     chainId: import_contract_helpers2.ChainId.polygon,
@@ -61659,7 +61663,7 @@ var marketsData = {
 var import_contract_helpers3 = __toESM(require_cjs());
 var networkConfigs = {
   [import_contract_helpers3.ChainId.kovan]: {
-    name: "Kovan",
+    name: "Ethereum Kovan",
     publicJsonRPCUrl: ["https://eth-kovan.alchemyapi.io/v2/demo", "https://kovan.poa.network"],
     baseUniswapAdapter: "0xf86Be05f535EC2d217E4c6116B3fa147ee5C05A1",
     baseAssetSymbol: "ETH",
@@ -61669,28 +61673,15 @@ var networkConfigs = {
     isTestnet: true,
     networkLogoPath: "/icons/networks/ethereum.svg"
   },
-  [import_contract_helpers3.ChainId.rinkeby]: {
-    name: "Ethereum Rinkeby",
-    publicJsonRPCUrl: [
-      "https://rinkeby-light.eth.linkpool.io/"
-    ],
-    baseUniswapAdapter: "",
-    baseAssetSymbol: "ETH",
-    wrappedBaseAssetSymbol: "WETH",
-    baseAssetDecimals: 18,
-    explorerLink: "https://rinkeby.etherscan.io/",
-    isTestnet: true,
-    networkLogoPath: "/icons/networks/ethereum.svg"
-  },
-  [import_contract_helpers3.ChainId.ropsten]: {
-    name: "Ethereum Ropsten",
-    publicJsonRPCUrl: ["https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"],
-    publicJsonRPCWSUrl: "",
+  [import_contract_helpers3.ChainId.goerli]: {
+    name: "Ethereum Goerli",
+    publicJsonRPCUrl: ["https://eth-goerli.alchemyapi.io/v2/demo", "https://goerli.prylabs.net"],
+    publicJsonRPCWSUrl: "wss://eth-goerli.alchemyapi.io/v2/demo",
     baseUniswapAdapter: "0x0",
     baseAssetSymbol: "ETH",
     wrappedBaseAssetSymbol: "WETH",
     baseAssetDecimals: 18,
-    explorerLink: "https://ropsten.etherscan.io",
+    explorerLink: "https://goerli.etherscan.io",
     isTestnet: true,
     networkLogoPath: "/icons/networks/ethereum.svg"
   },
@@ -61872,6 +61863,18 @@ var networkConfigs = {
       name: "Optimism Bridge",
       url: "https://app.optimism.io/bridge"
     }
+  },
+  [import_contract_helpers3.ChainId.optimism_goerli]: {
+    name: "Optimism Testnet",
+    publicJsonRPCUrl: ["https://goerli.optimism.io"],
+    publicJsonRPCWSUrl: "wss://goerli.optimism.io",
+    baseUniswapAdapter: "0x0",
+    baseAssetSymbol: "ETH",
+    wrappedBaseAssetSymbol: "WETH",
+    baseAssetDecimals: 18,
+    explorerLink: "https://l2-explorer.surge.sh",
+    isTestnet: true,
+    networkLogoPath: "/icons/networks/optimism.svg"
   },
   [import_contract_helpers3.ChainId.fantom]: {
     name: "Fantom",
@@ -62244,12 +62247,22 @@ function getProposalMetadata(hash, gateway = "https://cloudflare-ipfs.com/ipfs")
     if (!ipfsResponse.ok) {
       throw Error("Fetch not working");
     }
-    const response = yield ipfsResponse.json();
-    const { content, data } = (0, import_gray_matter.default)(response.description);
-    MEMORIZE[ipfsHash] = __spreadValues(__spreadProps(__spreadValues({}, response), {
-      ipfsHash,
-      description: content
-    }), data);
+    const clone = yield ipfsResponse.clone();
+    try {
+      const response = yield ipfsResponse.json();
+      const { content, data } = (0, import_gray_matter.default)(response.description);
+      MEMORIZE[ipfsHash] = __spreadValues(__spreadProps(__spreadValues({}, response), {
+        ipfsHash,
+        description: content
+      }), data);
+    } catch (e) {
+      const text = yield clone.text();
+      const { content, data } = (0, import_gray_matter.default)(text);
+      MEMORIZE[ipfsHash] = __spreadProps(__spreadValues({}, data), {
+        ipfsHash,
+        description: content
+      });
+    }
     return MEMORIZE[ipfsHash];
   });
 }
@@ -62299,15 +62312,16 @@ var averageBlockTime = 14;
 function enhanceProposalWithTimes(proposal) {
   return __async(this, null, function* () {
     const provider = getProvider(import_contract_helpers6.ChainId.mainnet);
-    const { timestamp: startTimestamp } = yield provider.getBlock(proposal.startBlock);
-    const { timestamp: creationTimestamp } = yield provider.getBlock(proposal.proposalCreated);
+    const [{ timestamp: startTimestamp }, { timestamp: creationTimestamp }] = yield Promise.all([
+      provider.getBlock(proposal.startBlock),
+      provider.getBlock(proposal.proposalCreated)
+    ]);
     if (proposal.state === import_contract_helpers6.ProposalState.Active) {
-      const currentBlockNumber = yield provider.getBlockNumber();
-      const currentBlock = yield provider.getBlock(currentBlockNumber);
+      const currentBlock = yield provider.getBlock("latest");
       return __spreadProps(__spreadValues({}, proposal), {
         startTimestamp,
         creationTimestamp,
-        expirationTimestamp: currentBlock.timestamp + (proposal.endBlock - currentBlockNumber) * averageBlockTime
+        expirationTimestamp: currentBlock.timestamp + (proposal.endBlock - currentBlock.number) * averageBlockTime
       });
     }
     const expirationTimestamp = startTimestamp + (proposal.endBlock - proposal.startBlock) * averageBlockTime;

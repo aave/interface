@@ -87,6 +87,7 @@ export default function HALLink({ healthFactor, marketName, integrationURL }: Pr
                 color="text.secondary"
                 fontWeight={500}
                 target="_blank"
+                rel="noopener"
                 href="https://snapshot.org/#/aave.eth/proposal/0xa730caeec3c28e014ff456b454186ef41c6c1f382cf0a7caa3d99c4ae16c8318"
               >
                 proposed and approved
@@ -102,6 +103,7 @@ export default function HALLink({ healthFactor, marketName, integrationURL }: Pr
         variant="surface"
         size="small"
         target="_blank"
+        rel="noopener"
         component={Link}
         sx={{
           pl: 6,

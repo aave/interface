@@ -53,15 +53,14 @@ export type MarketDataType = {
 
 export enum CustomMarket {
   // v3 test networks
-  // proto_kovan_v3 = 'proto_kovan_v3',
   proto_arbitrum_rinkeby_v3 = 'proto_arbitrum_rinkeby_v3',
   proto_mumbai_v3 = 'proto_mumbai_v3',
-  proto_eth_rinkeby_v3 = 'proto_eth_rinkeby_v3',
   proto_fantom_testnet_v3 = 'proto_fantom_testnet_v3',
   proto_harmony_testnet_v3 = 'proto_harmony_testnet_v3',
   proto_fuji_v3 = 'proto_fuji_v3',
+  proto_goerli_v3 = 'proto_goerli_v3',
   proto_optimism_kovan_v3 = 'proto_optimism_kovan_v3',
-  proto_ropsten_v3 = 'proto_ropsten_v3',
+  proto_optimism_goerli_v3 = 'proto_optimism_goerli_v3',
   // v3 mainnets
   proto_optimism_v3 = 'proto_optimism_v3',
   proto_fantom_v3 = 'proto_fantom_v3',
@@ -70,14 +69,15 @@ export enum CustomMarket {
   proto_polygon_v3 = 'proto_polygon_v3',
   proto_arbitrum_v3 = 'proto_arbitrum_v3',
   // v2
-  proto_kovan = 'proto_kovan',
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
   proto_fuji = 'proto_fuji',
   proto_polygon = 'proto_polygon',
   proto_mumbai = 'proto_mumbai',
-  amm_kovan = 'amm_kovan',
   amm_mainnet = 'amm_mainnet',
+  //proto_goerli = 'proto_goerli',
+  proto_kovan = 'proto_kovan',
+  amm_kovan = 'amm_kovan',
   // external
   // permissioned_market = 'permissioned_market',
 }
@@ -102,6 +102,20 @@ export const marketsData: {
       FAUCET: '0x600103d518cC5E8f3319D532eB4e5C268D32e604',
       WALLET_BALANCE_PROVIDER: '0x07DC923859b68e9399d787bf52c4Aa9eBe3490aF',
       UI_POOL_DATA_PROVIDER: '0x0D410Ce47834798028c9CD894A29A4b12A9d5624',
+      UI_INCENTIVE_DATA_PROVIDER: '0x50e468e1AAF408a2EB4614e4b45f832700Cda7F4',
+    },
+  },
+  [CustomMarket.amm_kovan]: {
+    marketTitle: 'Ethereum AMM Kovan',
+    chainId: ChainId.kovan,
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0x67FB118A780fD740C8936511947cC4bE7bb7730c'.toLowerCase(),
+      LENDING_POOL: '0x762E2a3BBe729240ea44D31D5a81EAB44d34ef01',
+      WETH_GATEWAY: '0xA61ca04DF33B72b235a8A28CfB535bb7A5271B70',
+      FAUCET: '0x600103d518cC5E8f3319D532eB4e5C268D32e604',
+      WALLET_BALANCE_PROVIDER: '0x07DC923859b68e9399d787bf52c4Aa9eBe3490aF',
+      UI_POOL_DATA_PROVIDER: '0x31fe1309B1169e7136AdAB01d4ba3882b5852d08',
       UI_INCENTIVE_DATA_PROVIDER: '0x50e468e1AAF408a2EB4614e4b45f832700Cda7F4',
     },
   },
@@ -133,6 +147,22 @@ export const marketsData: {
       marketName: 'aavev2',
     },
   },
+  // [CustomMarket.proto_goerli]: {
+  //   marketTitle: 'Ethereum Goerli',
+  //   chainId: ChainId.goerli,
+  //   enabledFeatures: {
+  //   faucet: true,
+  //   },
+  //   rpcOnly: true,
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: ''.toLowerCase(),
+  //     LENDING_POOL: '',
+  //     WETH_GATEWAY: '',
+  //     WALLET_BALANCE_PROVIDER: '',
+  //     UI_POOL_DATA_PROVIDER: '',
+  //     UI_INCENTIVE_DATA_PROVIDER: '',
+  //  },
+  // },
   // [CustomMarket.permissioned_market]: {
   //   marketTitle: 'Ethereum Permissioned Market example',
   //   chainId: ChainId.mainnet,
@@ -156,20 +186,6 @@ export const marketsData: {
   //     PERMISSION_MANAGER: '<address here>',
   //   },
   // },
-  [CustomMarket.amm_kovan]: {
-    marketTitle: 'Ethereum AMM Kovan',
-    chainId: ChainId.kovan,
-    rpcOnly: true,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0x67FB118A780fD740C8936511947cC4bE7bb7730c'.toLowerCase(),
-      LENDING_POOL: '0x762E2a3BBe729240ea44D31D5a81EAB44d34ef01',
-      WETH_GATEWAY: '0xA61ca04DF33B72b235a8A28CfB535bb7A5271B70',
-      FAUCET: '0x600103d518cC5E8f3319D532eB4e5C268D32e604',
-      WALLET_BALANCE_PROVIDER: '0x07DC923859b68e9399d787bf52c4Aa9eBe3490aF',
-      UI_POOL_DATA_PROVIDER: '0x31fe1309B1169e7136AdAB01d4ba3882b5852d08',
-      UI_INCENTIVE_DATA_PROVIDER: '0x50e468e1AAF408a2EB4614e4b45f832700Cda7F4',
-    },
-  },
   [CustomMarket.amm_mainnet]: {
     marketTitle: 'Ethereum AMM',
     chainId: ChainId.mainnet,
@@ -272,31 +288,10 @@ export const marketsData: {
     },
   },
   // v3
-  [CustomMarket.proto_eth_rinkeby_v3]: {
+  [CustomMarket.proto_goerli_v3]: {
+    marketTitle: 'Ethereum Goerli',
     v3: true,
-    marketTitle: 'Ethereum Rinkeby',
-    chainId: ChainId.rinkeby,
-    enabledFeatures: {
-      faucet: true,
-      governance: false,
-      staking: false,
-      incentives: false,
-    },
-    rpcOnly: true,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0xBA6378f1c1D046e9EB0F538560BA7558546edF3C'.toLowerCase(),
-      LENDING_POOL: '0xE039BdF1d874d27338e09B55CB09879Dedca52D8',
-      WETH_GATEWAY: '0xD1DECc6502cc690Bc85fAf618Da487d886E54Abe',
-      FAUCET: '0x88138CA1e9E485A1E688b030F85Bb79d63f156BA',
-      WALLET_BALANCE_PROVIDER: '0x116674C3Efe4e31F192d855284619DEd6fE2a1b9',
-      UI_POOL_DATA_PROVIDER: '0x550f9764d56291B5B793b6dD1623af3346128BD2',
-      UI_INCENTIVE_DATA_PROVIDER: '0x2c9f31b1F9838Bb8781bb61a0d0a4615f6530207',
-    },
-  },
-  [CustomMarket.proto_ropsten_v3]: {
-    marketTitle: 'Ethereum Ropsten',
-    v3: true,
-    chainId: ChainId.ropsten,
+    chainId: ChainId.goerli,
     enabledFeatures: {
       // Note: We should remove this based on the addresses that you provide in the addresses below
       faucet: true,
@@ -306,13 +301,13 @@ export const marketsData: {
     },
     rpcOnly: true,
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0x303a4B174663A6201Da77782413B4b54EFa3E97e'.toLowerCase(),
-      LENDING_POOL: '0x23a85024f54A19e243bA7a74E339a5C80998c7a4',
-      WETH_GATEWAY: '0x96A4fd1f289888cCa772298f7BDCF41C02122c01',
-      FAUCET: '0xb7263ADfB7C094aa24b91A51b297A278e105584a',
-      WALLET_BALANCE_PROVIDER: '0xEEac3ad1b3f4c43A782a951348c5387506B9AB06',
-      UI_POOL_DATA_PROVIDER: '0xb815B9EE078Dab098965D8e52dD5C747d70bb481',
-      UI_INCENTIVE_DATA_PROVIDER: '0x2526D407F722C0D1e0326eC1840A235bf173b9Ca',
+      LENDING_POOL_ADDRESS_PROVIDER: '0xc4dCB5126a3AfEd129BC3668Ea19285A9f56D15D'.toLowerCase(),
+      LENDING_POOL: '0x368EedF3f56ad10b9bC57eed4Dac65B26Bb667f6',
+      WETH_GATEWAY: '0xd5B55D3Ed89FDa19124ceB5baB620328287b915d',
+      FAUCET: '0x1ca525Cd5Cb77DB5Fa9cBbA02A0824e283469DBe',
+      WALLET_BALANCE_PROVIDER: '0x75CC0f0E3764be7594772D08EEBc322970CbB3a9',
+      UI_POOL_DATA_PROVIDER: '0x851F44e30C469b9E4Bf9591309611c28eAb85fAb',
+      UI_INCENTIVE_DATA_PROVIDER: '0x2A15b87783b9d590a6c528E7b1Df71ee73540F5A',
     },
   },
   [CustomMarket.proto_arbitrum_v3]: {
@@ -321,6 +316,8 @@ export const marketsData: {
     chainId: ChainId.arbitrum_one,
     enabledFeatures: {
       incentives: true,
+      liquiditySwap: true,
+      collateralRepay: true,
     },
     rpcOnly: true,
     addresses: {
@@ -331,6 +328,8 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: '0x3f960bB91e85Ae2dB561BDd01B515C5A5c65802b',
       UI_INCENTIVE_DATA_PROVIDER: '0xEFdd7374551897B11a23Ec7b5694C713DFDa76f1',
       L2_ENCODER: '0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC',
+      SWAP_COLLATERAL_ADAPTER: '0xAE9f94BD98eC2831a1330e0418bE0fDb5C95C2B9',
+      REPAY_WITH_COLLATERAL_ADAPTER: '0x32FdC26aFFA1eB331263Bcdd59F2e46eCbCC2E24',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
@@ -399,6 +398,44 @@ export const marketsData: {
       WALLET_BALANCE_PROVIDER: '0xd19443202328A66875a51560c28276868B8C61C2',
       UI_POOL_DATA_PROVIDER: '0x1D01f7d8B42Ec47837966732f831E1D6321df499',
       UI_INCENTIVE_DATA_PROVIDER: '0x036dDd300B57F6a8A6A55e2ede8b50b517A5094f',
+    },
+  },
+  [CustomMarket.proto_optimism_kovan_v3]: {
+    marketTitle: 'Optimism Kovan',
+    v3: true,
+    chainId: ChainId.optimism_kovan,
+    enabledFeatures: {
+      faucet: true,
+      incentives: true,
+    },
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0xD15d36975A0200D11B8a8964F4F267982D2a1cFe'.toLowerCase(),
+      LENDING_POOL: '0x139d8F557f70D1903787e929D7C42165c4667229',
+      WETH_GATEWAY: '0x698851Fc324Ff9572289Dd72dfC102DB778b52f1',
+      FAUCET: '0xed97140B58B97FaF70b70Ae26714Aa59705c74aE',
+      WALLET_BALANCE_PROVIDER: '0xA8751C0e2383cE144a95386A2E30f7E2BD78236C',
+      UI_POOL_DATA_PROVIDER: '0xBCb61ecc7997cc736E4802de2D5ce76D0908C97c',
+      UI_INCENTIVE_DATA_PROVIDER: '0xe2E3a30E77469397dc3CF74f1Fa35f39493207C2',
+    },
+  },
+  [CustomMarket.proto_optimism_goerli_v3]: {
+    marketTitle: 'Optimism Goerli',
+    v3: true,
+    chainId: ChainId.optimism_goerli,
+    enabledFeatures: {
+      faucet: true,
+      incentives: true,
+    },
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0x74a328ED938160D702378Daeb7aB2504714B4E4b'.toLowerCase(),
+      LENDING_POOL: '0x4b529A5d8268d74B687aC3dbb00e1b85bF4BF0d4',
+      WETH_GATEWAY: '0x6f7f2440006221F893c587b88f01afc42B6F8d2e',
+      FAUCET: '0xC52eA1F19C22E5a3725105BC0cf4988614e84D98',
+      WALLET_BALANCE_PROVIDER: '0xAEe1FD5CB505aa48E49c01DdE732956eDef8b42f',
+      UI_POOL_DATA_PROVIDER: '0x4D8201fB7a3367AB3e4Ba257F7462C81306799d6',
+      UI_INCENTIVE_DATA_PROVIDER: '0x596b5804E1f541baC5f265aF7C4bcc5077522876',
     },
   },
   [CustomMarket.proto_fantom_v3]: {
@@ -497,25 +534,6 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: '0x64f558d4BFC1c03a8c8B2ff84976fF04c762b51f',
       UI_INCENTIVE_DATA_PROVIDER: '0x6dD4b295B457A26CC2646aAf2519436681afb5d4',
       L2_ENCODER: '0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC',
-    },
-  },
-  [CustomMarket.proto_optimism_kovan_v3]: {
-    marketTitle: 'Optimism Kovan',
-    v3: true,
-    chainId: ChainId.optimism_kovan,
-    enabledFeatures: {
-      faucet: true,
-      incentives: true,
-    },
-    rpcOnly: true,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0xD15d36975A0200D11B8a8964F4F267982D2a1cFe'.toLowerCase(),
-      LENDING_POOL: '0x139d8F557f70D1903787e929D7C42165c4667229',
-      WETH_GATEWAY: '0x698851Fc324Ff9572289Dd72dfC102DB778b52f1',
-      FAUCET: '0xed97140B58B97FaF70b70Ae26714Aa59705c74aE',
-      WALLET_BALANCE_PROVIDER: '0xA8751C0e2383cE144a95386A2E30f7E2BD78236C',
-      UI_POOL_DATA_PROVIDER: '0xBCb61ecc7997cc736E4802de2D5ce76D0908C97c',
-      UI_INCENTIVE_DATA_PROVIDER: '0xe2E3a30E77469397dc3CF74f1Fa35f39493207C2',
     },
   },
   [CustomMarket.proto_polygon_v3]: {
