@@ -7,7 +7,7 @@ import { DarkTooltip } from './infoTooltips/DarkTooltip';
 import { ROUTES } from './primitives/Link';
 
 export const FaucetButton = () => {
-  const currentNetworkConfig = useProtocolDataContext();
+  const { currentNetworkConfig } = useProtocolDataContext();
   const router = useRouter();
 
   return (

@@ -10,11 +10,11 @@ import { DetailsNumberLineWithSub, TxModalDetails } from '../FlowCommons/TxModal
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { Trans } from '@lingui/macro';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { StakeRewardClaimActions } from './StakeRewardClaimActions';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
 
 export type StakeRewardClaimProps = {
   stakeAssetName: string;
@@ -27,8 +27,11 @@ export enum ErrorType {
 type StakingType = 'aave' | 'bpt';
 
 export const StakeRewardClaimModalContent = ({ stakeAssetName }: StakeRewardClaimProps) => {
-  const data = useStakeData();
-  const stakeData = data.stakeGeneralResult?.stakeGeneralUIData[stakeAssetName as StakingType];
+  const [stakeGeneralResult, stakeUserResult] = useRootStore((state) => [
+    state.stakeGeneralResult,
+    state.stakeUserResult,
+  ]);
+  const stakeData = stakeGeneralResult?.[stakeAssetName as StakingType];
   const { chainId: connectedChainId } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
@@ -38,8 +41,7 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName }: StakeRewardClai
 
   const amount = '-1';
   const maxAmountToClaim = normalize(
-    data.stakeUserResult?.stakeUserUIData[stakeAssetName as StakingType].userIncentivesToClaim ||
-      '0',
+    stakeUserResult?.[stakeAssetName as StakingType].userIncentivesToClaim || '0',
     18
   );
 
@@ -47,7 +49,7 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName }: StakeRewardClai
   const amountInUsd =
     Number(maxAmountToClaim) *
     (Number(normalize(stakeData?.stakeTokenPriceEth || 1, 18)) /
-      Number(normalize(data.stakeGeneralResult?.stakeGeneralUIData.usdPriceEth || 1, 18)));
+      Number(normalize(stakeGeneralResult?.usdPriceEth || 1, 18)));
 
   // error handler
   let blockingError: ErrorType | undefined = undefined;

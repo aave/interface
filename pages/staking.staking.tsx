@@ -17,7 +17,6 @@ import { StakeModal } from 'src/components/transactions/Stake/StakeModal';
 import { StakeCooldownModal } from 'src/components/transactions/StakeCooldown/StakeCooldownModal';
 import { StakeRewardClaimModal } from 'src/components/transactions/StakeRewardClaim/StakeRewardClaimModal';
 import { UnStakeModal } from 'src/components/transactions/UnStake/UnStakeModal';
-import { StakeDataProvider, useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
@@ -26,10 +25,16 @@ import { StakeTxBuilderProvider } from 'src/providers/StakeTxBuilderProvider';
 
 import { ConnectWalletPaper } from '../src/components/ConnectWalletPaper';
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
+import { useRootStore, useStakeDataSubscription } from 'src/store/root';
 
 export default function Staking() {
   const { currentAccount, loading } = useWeb3Context();
-  const data = useStakeData();
+  const [stakeGeneralResult, stakeUserResult, stakeDataLoading] = useRootStore((state) => [
+    state.stakeGeneralResult,
+    state.stakeUserResult,
+    state.stakeDataLoading,
+  ]);
+  useStakeDataSubscription();
   const { openStake, openStakeCooldown, openUnstake, openStakeRewardsClaim } = useModalContext();
 
   const { breakpoints } = useTheme();
@@ -44,20 +49,20 @@ export default function Staking() {
 
   // Total funds at Safety Module (stkaave tvl + stkbpt tvl)
   const tvl = formatEther(
-    BigNumber.from(data.stakeGeneralResult?.aave.stakeTokenTotalSupply || '0')
-      .mul(data.stakeGeneralResult?.aave.stakeTokenPriceEth || '0')
+    BigNumber.from(stakeGeneralResult?.aave.stakeTokenTotalSupply || '0')
+      .mul(stakeGeneralResult?.aave.stakeTokenPriceEth || '0')
       .add(
-        BigNumber.from(data.stakeGeneralResult?.bpt.stakeTokenTotalSupply || '0').mul(
-          data.stakeGeneralResult?.bpt.stakeTokenPriceEth || '0'
+        BigNumber.from(stakeGeneralResult?.bpt.stakeTokenTotalSupply || '0').mul(
+          stakeGeneralResult?.bpt.stakeTokenPriceEth || '0'
         )
       )
-      .div(data.stakeGeneralResult?.usdPriceEth || 1)
+      .div(stakeGeneralResult?.usdPriceEth || 1)
   );
 
   // Total AAVE Emissions (stkaave dps + stkbpt dps)
   const stkEmission = formatEther(
-    BigNumber.from(data.stakeGeneralResult?.aave.distributionPerSecond || '0')
-      .add(data.stakeGeneralResult?.bpt.distributionPerSecond || '0')
+    BigNumber.from(stakeGeneralResult?.aave.distributionPerSecond || '0')
+      .add(stakeGeneralResult?.bpt.distributionPerSecond || '0')
       .mul('86400')
   );
 
@@ -65,7 +70,7 @@ export default function Staking() {
 
   return (
     <>
-      <StakingHeader tvl={tvl} stkEmission={stkEmission} loading={data.loading} />
+      <StakingHeader tvl={tvl} stkEmission={stkEmission} loading={stakeDataLoading} />
 
       <ContentContainer>
         {currentAccount ? (
@@ -109,9 +114,9 @@ export default function Staking() {
                   stakedToken="AAVE"
                   maxSlash="0.3"
                   icon="aave"
-                  stakeData={data.stakeGeneralResult?.stakeGeneralUIData.aave}
-                  stakeUserData={data.stakeUserResult?.stakeUserUIData.aave}
-                  ethUsdPrice={data.stakeGeneralResult?.stakeGeneralUIData.usdPriceEth}
+                  stakeData={stakeGeneralResult?.aave}
+                  stakeUserData={stakeUserResult?.aave}
+                  ethUsdPrice={stakeGeneralResult?.usdPriceEth}
                   onStakeAction={() => openStake('aave', 'AAVE')}
                   onCooldownAction={() => openStakeCooldown('aave')}
                   onUnstakeAction={() => openUnstake('aave', 'AAVE')}
@@ -129,9 +134,9 @@ export default function Staking() {
                   stakedToken="ABPT"
                   maxSlash="0.3"
                   icon="stkbpt"
-                  stakeData={data.stakeGeneralResult?.stakeGeneralUIData.bpt}
-                  stakeUserData={data.stakeUserResult?.stakeUserUIData.bpt}
-                  ethUsdPrice={data.stakeGeneralResult?.stakeGeneralUIData.usdPriceEth}
+                  stakeData={stakeGeneralResult?.bpt}
+                  stakeUserData={stakeUserResult?.bpt}
+                  ethUsdPrice={stakeGeneralResult?.usdPriceEth}
                   onStakeAction={() => openStake('bpt', 'stkBPT')}
                   onCooldownAction={() => openStakeCooldown('bpt')}
                   onUnstakeAction={() => openUnstake('bpt', 'stkBPT')}
@@ -156,7 +161,7 @@ Staking.getLayout = function getLayout(page: React.ReactElement) {
   return (
     <MainLayout>
       <StakeTxBuilderProvider>
-        <StakeDataProvider>
+        <>
           {page}
           {/** Modals */}
           <StakeModal />
@@ -164,7 +169,7 @@ Staking.getLayout = function getLayout(page: React.ReactElement) {
           <UnStakeModal />
           <StakeRewardClaimModal />
           {/** End of modals */}
-        </StakeDataProvider>
+        </>
       </StakeTxBuilderProvider>
     </MainLayout>
   );
