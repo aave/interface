@@ -197,6 +197,10 @@ msgstr "Asset is not borrowable in isolation mode"
 msgid "Asset is not listed"
 msgstr "Asset is not listed"
 
+#: src/components/infoTooltips/TotalSuppliedTooltip.tsx
+msgid "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
+msgstr "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
+
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Asset to delegate"
 msgstr "Asset to delegate"
@@ -333,6 +337,10 @@ msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mod
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
+
+#: src/components/infoTooltips/TotalBorrowedTooltip.tsx
+msgid "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
+msgstr "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Borrowing power and assets are limited due to Isolation mode."
@@ -507,6 +515,10 @@ msgstr "Dashboard"
 msgid "Debt"
 msgstr "Debt"
 
+#: src/components/caps/DebtCeilingStatus.tsx
+msgid "Debt Ceiling"
+msgstr "Debt Ceiling"
+
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Debt amount to repay"
 msgstr "Debt amount to repay"
@@ -518,6 +530,10 @@ msgstr "Debt ceiling is exceeded"
 #: src/ui-config/errorMapping.tsx
 msgid "Debt ceiling is not zero"
 msgstr "Debt ceiling is not zero"
+
+#: src/components/infoTooltips/DebtCeilingTooltip.tsx
+msgid "Debt ceiling limits the amount possible to borrow against this asset by protocol users."
+msgstr "Debt ceiling limits the amount possible to borrow against this asset by protocol users."
 
 #: src/components/infoModalContents/RetryWithApprovalInfoContent.tsx
 msgid "Define Retry with Approval text"
@@ -844,6 +860,9 @@ msgstr "Isolated assets have limited borrowing power and other assets cannot be 
 msgid "Language"
 msgstr "Language"
 
+#: src/components/infoTooltips/DebtCeilingTooltip.tsx
+#: src/components/infoTooltips/TotalBorrowedTooltip.tsx
+#: src/components/infoTooltips/TotalSuppliedTooltip.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Learn more"
@@ -1365,10 +1384,6 @@ msgstr "Supply apy"
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 msgid "Supply balance"
 msgstr "Supply balance"
-
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "Supply cap"
-msgstr "Supply cap"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Supply cap is exceeded"
@@ -1985,6 +2000,10 @@ msgstr "here."
 msgid "is an asset affected by rebasing. Visit the"
 msgstr "is an asset affected by rebasing. Visit the"
 
+#: src/components/caps/DebtCeilingStatus.tsx
+msgid "of"
+msgstr "of"
+
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "on"
 msgstr "on"
@@ -2072,6 +2091,10 @@ msgstr "{symbol} is frozen due to an Aave Protocol Governance decision. <0>More 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"
 msgstr "{s}s"
+
+#: src/components/ReserveOverviewBox.tsx
+msgid "{title}"
+msgstr "{title}"
 
 #: src/components/CircleIcon.tsx
 msgid "{tooltipText}"
