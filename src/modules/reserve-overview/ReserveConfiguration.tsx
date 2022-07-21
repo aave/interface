@@ -202,15 +202,25 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                 <>
                   <Box>
                     <FormattedNumber value={reserve.totalLiquidity} variant="main16" compact />
-                    <Typography component="span" color="text.primary" variant="secondary16">
-                      {' of '}
+                    <Typography
+                      component="span"
+                      color="text.primary"
+                      variant="secondary16"
+                      sx={{ display: 'inline-block', mx: 1 }}
+                    >
+                      <Trans>of</Trans>
                     </Typography>
                     <FormattedNumber value={reserve.supplyCap} variant="main16" />
                   </Box>
                   <Box>
                     <ReserveSubheader value={reserve.totalLiquidityUSD} />
-                    <Typography component="span" color="text.secondary" variant="secondary12">
-                      {' of '}
+                    <Typography
+                      component="span"
+                      color="text.secondary"
+                      variant="secondary12"
+                      sx={{ display: 'inline-block', mx: 1 }}
+                    >
+                      <Trans>of</Trans>
                     </Typography>
                     <ReserveSubheader value={reserve.supplyCapUSD} />
                   </Box>
@@ -387,15 +397,25 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                     <>
                       <Box>
                         <FormattedNumber value={reserve.totalDebt} variant="main16" />
-                        <Typography component="span" color="text.primary" variant="secondary16">
-                          {' of '}
+                        <Typography
+                          component="span"
+                          color="text.primary"
+                          variant="secondary16"
+                          sx={{ display: 'inline-block', mx: 1 }}
+                        >
+                          <Trans>of</Trans>
                         </Typography>
                         <FormattedNumber value={reserve.borrowCap} variant="main16" />
                       </Box>
                       <Box>
                         <ReserveSubheader value={reserve.totalDebtUSD} />
-                        <Typography component="span" color="text.primary" variant="secondary16">
-                          {' of '}
+                        <Typography
+                          component="span"
+                          color="text.primary"
+                          variant="secondary16"
+                          sx={{ display: 'inline-block', mx: 1 }}
+                        >
+                          <Trans>of</Trans>
                         </Typography>
                         <ReserveSubheader value={reserve.borrowCapUSD} />
                       </Box>

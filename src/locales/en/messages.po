@@ -2001,6 +2001,10 @@ msgid "is an asset affected by rebasing. Visit the"
 msgstr "is an asset affected by rebasing. Visit the"
 
 #: src/components/caps/DebtCeilingStatus.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "of"
 msgstr "of"
 
