@@ -11,22 +11,6 @@ export interface WalletBalance {
   amount: string;
 }
 
-// allow fetching single wallet balance
-// export const useWalletBalance = (chainId: number, address = '') => {
-//   const { cache } = useApolloClient();
-//   const balance = cache.readFragment<WalletBalance>({
-//     id: `WalletBalance:${chainId}_${address.toLowerCase()}`,
-//     fragment: gql`
-//       fragment Balance on WalletBalance {
-//         id @client
-//         address @client
-//         amount @client
-//       }
-//     `,
-//   });
-//   return balance;
-// };
-
 export const useWalletBalances = () => {
   const { currentAccount } = useWeb3Context();
   const { currentChainId, currentNetworkConfig } = useProtocolDataContext();

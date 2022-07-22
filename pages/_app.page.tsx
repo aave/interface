@@ -1,6 +1,5 @@
 import '/public/fonts/inter/inter.css';
 
-import { ApolloProvider } from '@apollo/client';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
@@ -21,7 +20,6 @@ import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider'
 import { ModalContextProvider } from 'src/hooks/useModal';
 // import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3ContextProvider';
 import { TxBuilderProvider } from 'src/providers/TxBuilderProvider';
-import { apolloClient } from 'src/utils/apolloClient';
 
 import createEmotionCache from '../src/createEmotionCache';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
@@ -68,42 +66,39 @@ export default function MyApp(props: MyAppProps) {
         }
         imageUrl={AaveMetaImage.src}
       />
-
-      <ApolloProvider client={apolloClient}>
-        <LanguageProvider>
-          <Web3ReactProvider getLibrary={getWeb3Library}>
-            <Web3ContextProvider>
-              <AppGlobalStyles>
-                <AddressBlocked>
-                  <PermissionProvider>
-                    <ModalContextProvider>
-                      <BackgroundDataProvider>
-                        <AppDataProvider>
-                          <TxBuilderProvider>
-                            <GasStationProvider>
-                              {getLayout(<Component {...pageProps} />)}
-                              <SupplyModal />
-                              <WithdrawModal />
-                              <BorrowModal />
-                              <RepayModal />
-                              <CollateralChangeModal />
-                              <RateSwitchModal />
-                              <ClaimRewardsModal />
-                              <EmodeModal />
-                              <SwapModal />
-                              <FaucetModal />
-                            </GasStationProvider>
-                          </TxBuilderProvider>
-                        </AppDataProvider>
-                      </BackgroundDataProvider>
-                    </ModalContextProvider>
-                  </PermissionProvider>
-                </AddressBlocked>
-              </AppGlobalStyles>
-            </Web3ContextProvider>
-          </Web3ReactProvider>
-        </LanguageProvider>
-      </ApolloProvider>
+      <LanguageProvider>
+        <Web3ReactProvider getLibrary={getWeb3Library}>
+          <Web3ContextProvider>
+            <AppGlobalStyles>
+              <AddressBlocked>
+                <PermissionProvider>
+                  <ModalContextProvider>
+                    <BackgroundDataProvider>
+                      <AppDataProvider>
+                        <TxBuilderProvider>
+                          <GasStationProvider>
+                            {getLayout(<Component {...pageProps} />)}
+                            <SupplyModal />
+                            <WithdrawModal />
+                            <BorrowModal />
+                            <RepayModal />
+                            <CollateralChangeModal />
+                            <RateSwitchModal />
+                            <ClaimRewardsModal />
+                            <EmodeModal />
+                            <SwapModal />
+                            <FaucetModal />
+                          </GasStationProvider>
+                        </TxBuilderProvider>
+                      </AppDataProvider>
+                    </BackgroundDataProvider>
+                  </ModalContextProvider>
+                </PermissionProvider>
+              </AddressBlocked>
+            </AppGlobalStyles>
+          </Web3ContextProvider>
+        </Web3ReactProvider>
+      </LanguageProvider>
     </CacheProvider>
   );
 }
