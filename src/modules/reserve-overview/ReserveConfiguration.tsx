@@ -359,7 +359,10 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
 
               {reserve.isIsolated && (
                 <ReserveOverviewBox fullWidth>
-                  <DebtCeilingStatus debt={reserve.totalDebtUSD} ceiling={reserve.debtCeilingUSD} />
+                  <DebtCeilingStatus
+                    debt={reserve.isolationModeTotalDebt}
+                    ceiling={reserve.debtCeiling}
+                  />
                 </ReserveOverviewBox>
               )}
             </Box>

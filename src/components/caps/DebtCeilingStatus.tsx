@@ -20,7 +20,7 @@ export const DebtCeilingStatus = (props: LinearProgressProps & DebtCeilingToolti
   if (percentage === Infinity) return null;
 
   const determineColor = (theme: Theme): string => {
-    if (percentage >= 100) {
+    if (percentage >= 99.95) {
       return theme.palette.error.main;
     } else if (percentage >= 80) {
       return theme.palette.warning.main;
