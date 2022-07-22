@@ -11,18 +11,21 @@ import { Trans } from '@lingui/macro';
 type DebtCeilingTooltipProps = {
   debt: string;
   ceiling: string;
+  usage: number;
 };
 
-export const DebtCeilingStatus = (props: LinearProgressProps & DebtCeilingTooltipProps) => {
-  const percentage = (parseInt(props.debt) / parseInt(props.ceiling)) * 100;
-
+export const DebtCeilingStatus = ({
+  debt,
+  ceiling,
+  usage,
+}: LinearProgressProps & DebtCeilingTooltipProps) => {
   // Protect when dividing by zero
-  if (percentage === Infinity) return null;
+  if (usage === Infinity) return null;
 
   const determineColor = (theme: Theme): string => {
-    if (percentage >= 99.95) {
+    if (usage >= 99.95) {
       return theme.palette.error.main;
-    } else if (percentage >= 80) {
+    } else if (usage >= 80) {
       return theme.palette.warning.main;
     } else {
       return theme.palette.success.main;
@@ -40,7 +43,7 @@ export const DebtCeilingStatus = (props: LinearProgressProps & DebtCeilingToolti
         </Box>
         <Box>
           <FormattedNumber
-            value={props.debt}
+            value={debt}
             variant="main14"
             symbol="USD"
             symbolsVariant="secondary14"
@@ -55,7 +58,7 @@ export const DebtCeilingStatus = (props: LinearProgressProps & DebtCeilingToolti
             <Trans>of</Trans>
           </Typography>
           <FormattedNumber
-            value={props.ceiling}
+            value={ceiling}
             variant="main14"
             symbol="USD"
             symbolsVariant="secondary14"
@@ -63,11 +66,12 @@ export const DebtCeilingStatus = (props: LinearProgressProps & DebtCeilingToolti
           />
         </Box>
       </Box>
-
       <LinearProgress
         variant="determinate"
         sx={{
           borderRadius: 5,
+          my: 2,
+          height: 5,
           [`&.${linearProgressClasses.colorPrimary}`]: {
             backgroundColor: (theme) =>
               theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
@@ -77,8 +81,8 @@ export const DebtCeilingStatus = (props: LinearProgressProps & DebtCeilingToolti
             backgroundColor: (theme) => determineColor(theme),
           },
         }}
-        {...props}
-        value={percentage <= 1 ? 1 : percentage}
+        // We show at minium, 1% color to represent small values
+        value={usage <= 1 ? 1 : usage}
       />
     </>
   );

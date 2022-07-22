@@ -130,7 +130,19 @@ const ChartContainer: React.FC<BoxProps> = (props) => (
   />
 );
 
-export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = ({ reserve }) => {
+type ReserveConfigurationProps = {
+  reserve: ComputedReserveData;
+  supplyCapUsage: number;
+  borrowCapUsage: number;
+  debtCeilingUsage: number;
+};
+
+export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({
+  reserve,
+  supplyCapUsage,
+  borrowCapUsage,
+  debtCeilingUsage,
+}) => {
   const { currentNetworkConfig, currentMarketData } = useProtocolDataContext();
   const renderCharts = !!currentNetworkConfig.ratesHistoryApiUrl;
   const { data, error } = useReserveRatesHistory(
@@ -186,9 +198,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
             }}
           >
             {reserve.supplyCap && reserve.supplyCap !== '0' && (
-              <CapsCircularStatus
-                value={(parseInt(reserve.totalLiquidity) / parseInt(reserve.supplyCap)) * 100}
-              />
+              <CapsCircularStatus value={supplyCapUsage} />
             )}
             <PanelItem
               title={
@@ -362,6 +372,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                   <DebtCeilingStatus
                     debt={reserve.isolationModeTotalDebt}
                     ceiling={reserve.debtCeiling}
+                    usage={debtCeilingUsage}
                   />
                 </ReserveOverviewBox>
               )}
@@ -384,9 +395,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                 }}
               >
                 {reserve.borrowCap && reserve.borrowCap !== '0' && (
-                  <CapsCircularStatus
-                    value={(parseInt(reserve.totalDebt) / parseInt(reserve.borrowCap)) * 100}
-                  />
+                  <CapsCircularStatus value={borrowCapUsage} />
                 )}
                 <PanelItem
                   title={

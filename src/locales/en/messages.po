@@ -865,6 +865,9 @@ msgstr "Language"
 #: src/components/infoTooltips/TotalSuppliedTooltip.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
+#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/modules/reserve-overview/ReserveActions.tsx
+#: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Learn more"
 msgstr "Learn more"
 
@@ -940,6 +943,18 @@ msgstr "Max slashing"
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Max slippage rate"
 msgstr "Max slippage rate"
+
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "Maximum amount available to borrow against this asset is limited because debt ceiling is at {0}%."
+msgstr "Maximum amount available to borrow against this asset is limited because debt ceiling is at {0}%."
+
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "Maximum amount available to borrow is limited because borrow cap is nearly reached."
+msgstr "Maximum amount available to borrow is limited because borrow cap is nearly reached."
+
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
+msgstr "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
 
 #: src/layouts/MobileMenu.tsx
 msgid "Menu"
@@ -1117,6 +1132,18 @@ msgstr "Proposals"
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Proposition power"
 msgstr "Proposition power"
+
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "Protocol borrow cap is at 100% for this asset. Further borrowing unavailable."
+msgstr "Protocol borrow cap is at 100% for this asset. Further borrowing unavailable."
+
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "Protocol debt ceiling is at 100% for this asset. Further borrowing against this asset is unavailable."
+msgstr "Protocol debt ceiling is at 100% for this asset. Further borrowing against this asset is unavailable."
+
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "Protocol supply cap is at 100% for this asset. Further supply unavailable."
+msgstr "Protocol supply cap is at 100% for this asset. Further supply unavailable."
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 #: src/modules/governance/ProposalListItem.tsx

@@ -40,6 +40,21 @@ export default function ReserveOverview() {
 
   const isOverview = mode === 'overview';
 
+  const supplyCapUsage: number = reserve
+    ? (parseInt(reserve.totalLiquidity) / parseInt(reserve.supplyCap)) * 100
+    : 0;
+  const borrowCapUsage: number = reserve
+    ? (parseInt(reserve.totalDebt) / parseInt(reserve.borrowCap)) * 100
+    : 0;
+  const debtCeilingUsage: number = reserve
+    ? (parseInt(reserve.isolationModeTotalDebt) / parseInt(reserve.debtCeiling)) * 100
+    : 0;
+
+  // TODO: Alert test values
+  // const supplyCapUsage = 92.9;
+  // const borrowCapUsage = 84.3;
+  // const debtCeilingUsage = 60.3;
+
   return (
     <>
       <ReserveTopDetails underlyingAsset={underlyingAsset} />
@@ -81,7 +96,14 @@ export default function ReserveOverview() {
               mr: { xs: 0, lg: 4 },
             }}
           >
-            {reserve && <ReserveConfiguration reserve={reserve} />}
+            {reserve && (
+              <ReserveConfiguration
+                reserve={reserve}
+                supplyCapUsage={supplyCapUsage}
+                borrowCapUsage={borrowCapUsage}
+                debtCeilingUsage={debtCeilingUsage}
+              />
+            )}
           </Box>
 
           {/** Right panel with actions*/}
@@ -91,7 +113,12 @@ export default function ReserveOverview() {
               width: { xs: '100%', lg: '416px' },
             }}
           >
-            <ReserveActions underlyingAsset={underlyingAsset} />
+            <ReserveActions
+              underlyingAsset={underlyingAsset}
+              supplyCapUsage={supplyCapUsage}
+              borrowCapUsage={borrowCapUsage}
+              debtCeilingUsage={debtCeilingUsage}
+            />
           </Box>
         </Box>
       </ContentContainer>
