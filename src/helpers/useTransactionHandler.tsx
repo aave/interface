@@ -40,7 +40,7 @@ export const useTransactionHandler = ({
     setRetryWithApproval,
   } = useModalContext();
   const { signTxData, sendTx, getTxError, currentAccount } = useWeb3Context();
-  const { refetchWalletBalances, refetchPoolData, refechIncentiveData } =
+  const { refetchWalletBalances, refetchPoolData, refetchIncentiveData } =
     useBackgroundDataProvider();
   const { lendingPool } = useTxBuilderContext();
   const [usePermit, setUsePermit] = useState<boolean>(tryPermit);
@@ -82,7 +82,7 @@ export const useTransactionHandler = ({
 
         refetchWalletBalances();
         refetchPoolData && refetchPoolData();
-        refechIncentiveData && refechIncentiveData();
+        refetchIncentiveData && refetchIncentiveData();
       } catch (e) {
         // TODO: what to do with this error?
         try {

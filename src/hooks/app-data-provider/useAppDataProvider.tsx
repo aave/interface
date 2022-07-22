@@ -7,18 +7,13 @@ import {
   UserReserveData,
 } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 import { useCurrentTimestamp } from '../useCurrentTimestamp';
 import { useProtocolDataContext } from '../useProtocolDataContext';
-import {
-  useC_ProtocolDataQuery,
-  useC_ReservesIncentivesQuery,
-  useC_UserDataQuery,
-  useC_UserIncentivesQuery,
-} from './graphql/hooks';
 
 /**
  * removes the marketPrefix from a symbol
@@ -69,54 +64,30 @@ const AppDataContext = React.createContext<AppDataContextType>({} as AppDataCont
 export const AppDataProvider: React.FC = ({ children }) => {
   const currentTimestamp = useCurrentTimestamp(1);
   const { currentAccount } = useWeb3Context();
-  const { currentMarketData, currentChainId, currentNetworkConfig } = useProtocolDataContext();
+  const { currentNetworkConfig } = useProtocolDataContext();
+  const [_reserves, _userReserves, _userEmodeCategoryId, reserveIncentiveData, userIncentiveData] =
+    useRootStore((state) => [
+      state.reserves,
+      state.userReserves,
+      state.userEmodeCategoryId,
+      state.reserveIncentiveData,
+      state.userIncentiveData,
+    ]);
 
-  const { data: reservesData } = useC_ProtocolDataQuery({
-    variables: {
-      lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-      chainId: currentChainId,
-    },
-    fetchPolicy: 'cache-only',
-  });
-
-  const { data: userReservesData } = useC_UserDataQuery({
-    variables: {
-      lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-      userAddress: currentAccount,
-      chainId: currentChainId,
-    },
-    fetchPolicy: 'cache-only',
-  });
-
-  const reserves: ReserveDataHumanized[] = reservesData?.protocolData.reserves || [];
-  const baseCurrencyData = reservesData?.protocolData.baseCurrencyData || {
+  const reserves: ReserveDataHumanized[] = _reserves?.reservesData || [];
+  const baseCurrencyData = _reserves?.baseCurrencyData || {
     marketReferenceCurrencyDecimals: 0,
     marketReferenceCurrencyPriceInUsd: '0',
     networkBaseTokenPriceInUsd: '0',
     networkBaseTokenPriceDecimals: 0,
   };
-  const { data: reservesIncentivesData } = useC_ReservesIncentivesQuery({
-    variables: {
-      lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-      chainId: currentChainId,
-    },
-    fetchPolicy: 'cache-only',
-  });
-  const { data: userReservesIncentivesData } = useC_UserIncentivesQuery({
-    variables: {
-      lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-      userAddress: currentAccount,
-      chainId: currentChainId,
-    },
-    fetchPolicy: 'cache-only',
-  });
 
   const formattedPoolReserves = formatReservesAndIncentives({
     reserves,
     currentTimestamp,
     marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
     marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
-    reserveIncentives: reservesIncentivesData?.reservesIncentives || [],
+    reserveIncentives: reserveIncentiveData || [],
   })
     .map((r) => ({
       ...r,
@@ -127,9 +98,9 @@ export const AppDataProvider: React.FC = ({ children }) => {
     }))
     .sort(reserveSortFn);
 
-  const userReserves: UserReserveData[] = userReservesData?.userData.userReserves || [];
+  const userReserves: UserReserveData[] = _userReserves || [];
 
-  const userEmodeCategoryId = userReservesData?.userData.userEmodeCategoryId || 0;
+  const userEmodeCategoryId = _userEmodeCategoryId || 0;
 
   const user = formatUserSummaryAndIncentives({
     currentTimestamp,
@@ -138,8 +109,8 @@ export const AppDataProvider: React.FC = ({ children }) => {
     userReserves,
     formattedReserves: formattedPoolReserves,
     userEmodeCategoryId: userEmodeCategoryId,
-    reserveIncentives: reservesIncentivesData?.reservesIncentives || [],
-    userIncentives: userReservesIncentivesData?.userIncentives || [],
+    reserveIncentives: reserveIncentiveData || [],
+    userIncentives: userIncentiveData || [],
   });
 
   const proportions = user.userReservesData.reduce(
@@ -212,9 +183,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
   return (
     <AppDataContext.Provider
       value={{
-        loading:
-          !reserves.length ||
-          (!!currentAccount && userReservesData?.userData.userReserves === undefined),
+        loading: !reserves.length || (!!currentAccount && userReserves === undefined),
         reserves: formattedPoolReserves,
         user: {
           ...user,

@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useRootStore } from '../root';
 
 /**
  * This function returns a useEffect hook which will call `implementation` based on the supplied `interval`.
@@ -28,10 +29,11 @@ export function createSingletonSubscriber<T extends () => Promise<void>>(
     }
   }
   return () => {
+    const currentMarket = useRootStore((state) => state.currentMarket);
     useEffect(() => {
       subscribe();
       return unsubscribe;
-    }, []);
+    }, [currentMarket]);
     return implementation;
   };
 }

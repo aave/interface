@@ -5,8 +5,15 @@ import { createSingletonSubscriber } from './utils/createSingletonSubscriber';
 import { StakeSlice, createStakeSlice } from './stakeSlice';
 import { ProtocolDataSlice, createProtocolDataSlice } from './protocolDataSlice';
 import { WalletSlice, createWalletSlice } from './walletSlice';
+import { PoolSlice, createPoolSlice } from './poolSlice';
+import { IncentiveSlice, createIncentiveSlice } from './incentiveSlice';
 
-export interface RootStore extends StakeSlice, ProtocolDataSlice, WalletSlice {}
+export interface RootStore
+  extends StakeSlice,
+    ProtocolDataSlice,
+    WalletSlice,
+    PoolSlice,
+    IncentiveSlice {}
 
 export const useRootStore = create<RootStore>()(
   devtools(
@@ -15,6 +22,8 @@ export const useRootStore = create<RootStore>()(
         ...createStakeSlice(...args),
         ...createProtocolDataSlice(...args),
         ...createWalletSlice(...args),
+        ...createPoolSlice(...args),
+        ...createIncentiveSlice(...args),
       }),
       { name: 'root' }
     )
@@ -22,9 +31,17 @@ export const useRootStore = create<RootStore>()(
 );
 
 export const useStakeDataSubscription = createSingletonSubscriber(() => {
-  useRootStore.getState().refetchStakeData();
+  return useRootStore.getState().refetchStakeData();
 }, 60000);
 
 export const useWalletBalancesSubscription = createSingletonSubscriber(() => {
-  useRootStore.getState().refetchWalletBalances();
-}, 30000);
+  return useRootStore.getState().refetchWalletBalances();
+}, 60000);
+
+export const usePoolDataSubscription = createSingletonSubscriber(() => {
+  return useRootStore.getState().refreshPoolData();
+}, 60000);
+
+export const useIncentiveDataSubscription = createSingletonSubscriber(() => {
+  return useRootStore.getState().refreshIncentiveData();
+}, 60000);

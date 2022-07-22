@@ -2,10 +2,9 @@ import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { nativeToUSD, normalize, USD_DECIMALS } from '@aave/math-utils';
 import { BigNumber } from 'bignumber.js';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { useRootStore, useWalletBalancesSubscription } from 'src/store/root';
+import { useRootStore } from 'src/store/root';
 
 import { useProtocolDataContext } from '../useProtocolDataContext';
-import { useC_ProtocolDataQuery } from './graphql/hooks';
 
 export interface WalletBalance {
   address: string;
@@ -30,24 +29,16 @@ export interface WalletBalance {
 
 export const useWalletBalances = () => {
   const { currentAccount } = useWeb3Context();
-  const { currentMarketData, currentChainId, currentNetworkConfig } = useProtocolDataContext();
-  useWalletBalancesSubscription();
-  const balances = useRootStore(
-    (state) => state.walletBalances?.[currentAccount]?.[currentChainId]
-  );
-  // fetch unformatted reserve data for prices
-  const { data: reservesData } = useC_ProtocolDataQuery({
-    variables: {
-      lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-      chainId: currentChainId,
-    },
-    fetchPolicy: 'cache-only',
-  });
+  const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
+  const [balances, _reserves] = useRootStore((state) => [
+    state.walletBalances?.[currentAccount]?.[currentChainId],
+    state.reserves,
+  ]);
 
   // process data
   const walletBalances = balances || [];
-  const reserves = reservesData?.protocolData.reserves || [];
-  const baseCurrencyData = reservesData?.protocolData.baseCurrencyData || {
+  const reserves = _reserves?.reservesData || [];
+  const baseCurrencyData = _reserves?.baseCurrencyData || {
     marketReferenceCurrencyDecimals: 0,
     marketReferenceCurrencyPriceInUsd: '0',
     networkBaseTokenPriceInUsd: '0',

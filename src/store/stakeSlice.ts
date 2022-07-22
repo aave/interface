@@ -47,7 +47,7 @@ export type StakeUserUiData = {
 };
 
 export interface StakeSlice {
-  refetchStakeData: () => void;
+  refetchStakeData: () => Promise<void>;
   stakeDataLoading: boolean;
   stakeUserResult?: StakeUserUiData;
   stakeGeneralResult?: StakeGeneralUiData;
