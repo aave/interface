@@ -443,7 +443,7 @@ msgstr "Collateral usage is limited because of isolation mode. <0>Learn More</0>
 msgid "Collateralization"
 msgstr "Collateralization"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveFactorOverview.tsx
 msgid "Collector Contract"
 msgstr "Collector Contract"
 
@@ -1166,7 +1166,7 @@ msgstr "Repaying {symbol}"
 msgid "Reserve Size"
 msgstr "Reserve Size"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveFactorOverview.tsx
 msgid "Reserve factor"
 msgstr "Reserve factor"
 

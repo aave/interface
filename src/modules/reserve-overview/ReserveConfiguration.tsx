@@ -33,8 +33,7 @@ import { LiquidationThresholdTooltip } from 'src/components/infoTooltips/Liquida
 import { LiquidationPenaltyTooltip } from 'src/components/infoTooltips/LiquidationPenaltyTooltip';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { frozenProposalMap } from 'src/utils/marketsAndNetworksConfig';
-import { ReserveFactorTooltip } from 'src/components/infoTooltips/ReserveFactorTooltip';
-import { ExternalLinkIcon } from '@heroicons/react/outline';
+import { ReserveFactorOverview } from 'src/modules/reserve-overview/ReserveFactorOverview';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
   <Box
@@ -441,76 +440,13 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                   <Trans>Collector Info</Trans>
                 </Typography>
               </Box>
-
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  justifyContent: 'space-around',
-                }}
-              >
-                <ReserveOverviewBox
-                  title={
-                    <ReserveFactorTooltip
-                      text={<Trans>Reserve factor</Trans>}
-                      key="res_factor"
-                      variant="description"
-                      collectorLink={
-                        currentMarketData.addresses.COLLECTOR
-                          ? currentNetworkConfig.explorerLinkBuilder({
-                              address: currentMarketData.addresses.COLLECTOR,
-                            })
-                          : undefined
-                      }
-                    />
-                  }
-                >
-                  <FormattedNumber
-                    value={reserve.reserveFactor}
-                    percent
-                    variant="secondary14"
-                    visibleDecimals={2}
-                  />
-                </ReserveOverviewBox>
-
-                {currentMarketData.addresses.COLLECTOR && (
-                  <>
-                    <ReserveOverviewBox
-                      title={
-                        <Typography variant="description">
-                          <Trans>Collector Contract</Trans>
-                        </Typography>
-                      }
-                    >
-                      <Link
-                        href={currentNetworkConfig.explorerLinkBuilder({
-                          address: currentMarketData.addresses.COLLECTOR,
-                        })}
-                        target="_blank"
-                        sx={{ textDecoration: 'none' }}
-                      >
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                          <Typography variant="description" color="text.secondary">
-                            Link
-                          </Typography>
-                          <SvgIcon sx={{ ml: 1, fontSize: 14 }}>
-                            <ExternalLinkIcon />
-                          </SvgIcon>
-                        </Box>
-                      </Link>
-                    </ReserveOverviewBox>
-                    {/* TO-DO: Refactor grid layout, currently uses flex: space-around which breaks with 2 elements */}
-                    <Box
-                      sx={{
-                        flex: '0 32%',
-                        marginBottom: '2%',
-                        height: { md: '70px', lg: '60px' },
-                        maxWidth: '32%',
-                      }}
-                    />
-                  </>
-                )}
-              </Box>
+              {currentMarketData.addresses.COLLECTOR && (
+                <ReserveFactorOverview
+                  collectorContract={currentMarketData.addresses.COLLECTOR}
+                  explorerLinkBuilder={currentNetworkConfig.explorerLinkBuilder}
+                  reserveFactor={reserve.reserveFactor}
+                />
+              )}
             </Box>
           </PanelRow>
         </>
