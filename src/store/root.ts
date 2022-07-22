@@ -7,13 +7,15 @@ import { ProtocolDataSlice, createProtocolDataSlice } from './protocolDataSlice'
 import { WalletSlice, createWalletSlice } from './walletSlice';
 import { PoolSlice, createPoolSlice } from './poolSlice';
 import { IncentiveSlice, createIncentiveSlice } from './incentiveSlice';
+import { GovernanceSlice, createGovernanceSlice } from './governanceSlice';
 
 export interface RootStore
   extends StakeSlice,
     ProtocolDataSlice,
     WalletSlice,
     PoolSlice,
-    IncentiveSlice {}
+    IncentiveSlice,
+    GovernanceSlice {}
 
 export const useRootStore = create<RootStore>()(
   devtools(
@@ -24,6 +26,7 @@ export const useRootStore = create<RootStore>()(
         ...createWalletSlice(...args),
         ...createPoolSlice(...args),
         ...createIncentiveSlice(...args),
+        ...createGovernanceSlice(...args),
       }),
       { name: 'root' }
     )
