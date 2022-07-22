@@ -458,6 +458,7 @@ export const marketsData: {
       WALLET_BALANCE_PROVIDER: '0xBc790382B3686abffE4be14A030A96aC6154023a',
       UI_POOL_DATA_PROVIDER: '0x1CCbfeC508da8D5242D5C1b368694Ab0066b39f1',
       UI_INCENTIVE_DATA_PROVIDER: '0xbA14c06011f4AF5970cFDe4364ba6320E190BD4B',
+      COLLECTOR: '0xBe85413851D195fC6341619cD68BfDc26a25b928',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
