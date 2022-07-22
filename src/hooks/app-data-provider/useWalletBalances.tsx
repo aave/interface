@@ -14,15 +14,16 @@ export interface WalletBalance {
 export const useWalletBalances = () => {
   const { currentAccount } = useWeb3Context();
   const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
-  const [balances, _reserves] = useRootStore((state) => [
+  const [balances, _reserves, _baseCurrencyData] = useRootStore((state) => [
     state.walletBalances?.[currentAccount]?.[currentChainId],
     state.reserves,
+    state.baseCurrencyData,
   ]);
 
   // process data
   const walletBalances = balances || [];
-  const reserves = _reserves?.reservesData || [];
-  const baseCurrencyData = _reserves?.baseCurrencyData || {
+  const reserves = _reserves || [];
+  const baseCurrencyData = _baseCurrencyData || {
     marketReferenceCurrencyDecimals: 0,
     marketReferenceCurrencyPriceInUsd: '0',
     networkBaseTokenPriceInUsd: '0',

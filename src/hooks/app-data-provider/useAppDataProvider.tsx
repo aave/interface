@@ -62,20 +62,27 @@ const AppDataContext = React.createContext<AppDataContextType>({} as AppDataCont
  * It fetches reserves /incentives & walletbalances & keeps them updated.
  */
 export const AppDataProvider: React.FC = ({ children }) => {
-  const currentTimestamp = useCurrentTimestamp(1);
+  const currentTimestamp = useCurrentTimestamp(5);
   const { currentAccount } = useWeb3Context();
   const { currentNetworkConfig } = useProtocolDataContext();
-  const [_reserves, _userReserves, _userEmodeCategoryId, reserveIncentiveData, userIncentiveData] =
-    useRootStore((state) => [
-      state.reserves,
-      state.userReserves,
-      state.userEmodeCategoryId,
-      state.reserveIncentiveData,
-      state.userIncentiveData,
-    ]);
+  const [
+    _reserves,
+    _baseCurrencyData,
+    _userReserves,
+    _userEmodeCategoryId,
+    reserveIncentiveData,
+    userIncentiveData,
+  ] = useRootStore((state) => [
+    state.reserves,
+    state.baseCurrencyData,
+    state.userReserves,
+    state.userEmodeCategoryId,
+    state.reserveIncentiveData,
+    state.userIncentiveData,
+  ]);
 
-  const reserves: ReserveDataHumanized[] = _reserves?.reservesData || [];
-  const baseCurrencyData = _reserves?.baseCurrencyData || {
+  const reserves: ReserveDataHumanized[] = _reserves || [];
+  const baseCurrencyData = _baseCurrencyData || {
     marketReferenceCurrencyDecimals: 0,
     marketReferenceCurrencyPriceInUsd: '0',
     networkBaseTokenPriceInUsd: '0',

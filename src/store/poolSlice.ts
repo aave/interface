@@ -1,5 +1,6 @@
 import {
-  ReservesDataHumanized,
+  PoolBaseCurrencyHumanized,
+  ReserveDataHumanized,
   UiPoolDataProvider,
   UserReserveDataHumanized,
 } from '@aave/contract-helpers';
@@ -8,7 +9,8 @@ import { RootStore } from './root';
 
 // TODO: add chain/provider/account mapping
 export interface PoolSlice {
-  reserves?: ReservesDataHumanized;
+  reserves?: ReserveDataHumanized[];
+  baseCurrencyData?: PoolBaseCurrencyHumanized;
   userReserves?: UserReserveDataHumanized[];
   userEmodeCategoryId?: number;
   refreshPoolData: () => Promise<void>;
@@ -33,7 +35,10 @@ export const createPoolSlice: StateCreator<
       const reservesResponse = await poolDataProviderContract.getReservesHumanized({
         lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
       });
-      set({ reserves: reservesResponse });
+      set({
+        reserves: reservesResponse.reservesData,
+        baseCurrencyData: reservesResponse.baseCurrencyData,
+      });
     } catch (e) {
       console.log('error fetching reserves');
     }
