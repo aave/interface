@@ -1,5 +1,5 @@
 import create from 'zustand';
-import { devtools, persist } from 'zustand/middleware';
+import { devtools } from 'zustand/middleware';
 import { createSingletonSubscriber } from './utils/createSingletonSubscriber';
 
 import { StakeSlice, createStakeSlice } from './stakeSlice';
@@ -18,19 +18,14 @@ export interface RootStore
     GovernanceSlice {}
 
 export const useRootStore = create<RootStore>()(
-  devtools(
-    persist(
-      (...args) => ({
-        ...createStakeSlice(...args),
-        ...createProtocolDataSlice(...args),
-        ...createWalletSlice(...args),
-        ...createPoolSlice(...args),
-        ...createIncentiveSlice(...args),
-        ...createGovernanceSlice(...args),
-      }),
-      { name: 'root' }
-    )
-  )
+  devtools((...args) => ({
+    ...createStakeSlice(...args),
+    ...createProtocolDataSlice(...args),
+    ...createWalletSlice(...args),
+    ...createPoolSlice(...args),
+    ...createIncentiveSlice(...args),
+    ...createGovernanceSlice(...args),
+  }))
 );
 
 export const useStakeDataSubscription = createSingletonSubscriber(() => {

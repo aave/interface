@@ -20,7 +20,7 @@ export interface ProtocolDataSlice {
 
 export const createProtocolDataSlice: StateCreator<
   RootStore,
-  [['zustand/devtools', never], ['zustand/persist', unknown]],
+  [['zustand/devtools', never]],
   [],
   ProtocolDataSlice
 > = (set, get) => {
