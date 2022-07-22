@@ -1,18 +1,19 @@
-import CircularProgress, {
-  circularProgressClasses,
-  CircularProgressProps,
-} from '@mui/material/CircularProgress';
+import CircularProgress, { circularProgressClasses } from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
-export const CapsCircularStatus = (props: CircularProgressProps & { value: number }) => {
+type CapsCircularStatusProps = {
+  value: number;
+};
+
+export const CapsCircularStatus = ({ value }: CapsCircularStatusProps) => {
   // Protect when dividing by zero
-  if (props.value === Infinity) return null;
+  if (value === Infinity) return null;
 
   const determineColor = (): 'error' | 'warning' | 'success' => {
-    if (Math.round(props.value) >= 100) {
+    if (Math.round(value) >= 100) {
       return 'error';
-    } else if (props.value >= 80) {
+    } else if (value >= 80) {
       return 'warning';
     } else {
       return 'success';
@@ -20,14 +21,14 @@ export const CapsCircularStatus = (props: CircularProgressProps & { value: numbe
   };
 
   const determineValueDisplay = (): string => {
-    if (props.value >= 100) {
+    if (value >= 100) {
       return '100%';
-    } else if (props.value === 0) {
+    } else if (value === 0) {
       return 'N/A';
-    } else if (props.value < 0.01) {
+    } else if (value < 0.01) {
       return '<0.01%';
     } else {
-      return `${props.value.toFixed(2)}%`;
+      return `${value.toFixed(2)}%`;
     }
   };
 
@@ -56,9 +57,8 @@ export const CapsCircularStatus = (props: CircularProgressProps & { value: numbe
         }}
         size={80}
         thickness={4}
-        {...props}
         // We show at minimum, 2% color to represent small values
-        value={props.value <= 2 ? 2 : props.value}
+        value={value <= 2 ? 2 : value}
       />
       <Typography
         variant="secondary14"
