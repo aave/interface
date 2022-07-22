@@ -6,10 +6,10 @@ import { useEffect, useState } from 'react';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
-import { useGovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { CustomProposalType } from 'src/static-build/proposal';
+import { useRootStore } from 'src/store/root';
 
 export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType) {
   const { openGovVote } = useModalContext();
@@ -20,12 +20,15 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
   const [didVote, setDidVote] = useState<boolean>();
   const [power, setPower] = useState<string>('0');
 
-  const { governanceService } = useGovernanceDataProvider();
+  const [getVoteOnProposal, getVotingPowerAt] = useRootStore((state) => [
+    state.getVoteOnProposal,
+    state.getVotingPowerAt,
+  ]);
   const voteOngoing = state === ProposalState.Active;
 
   const fetchCurrentVote = async () => {
     try {
-      const { support, votingPower } = await governanceService.getVoteOnProposal({
+      const { support, votingPower } = await getVoteOnProposal({
         user: currentAccount,
         proposalId: id,
       });
@@ -44,7 +47,7 @@ export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType
 
   const fetchVotingPower = async () => {
     try {
-      const power = await governanceService.getVotingPowerAt({
+      const power = await getVotingPowerAt({
         user: currentAccount,
         block: startBlock,
         strategy,

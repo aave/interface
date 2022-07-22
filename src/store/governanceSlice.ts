@@ -21,6 +21,10 @@ export interface GovernanceSlice {
     aaveTokenPower: Power;
     stkAaveTokenPower: Power;
   };
+  delegateByType: GovernancePowerDelegationTokenService['delegateByType'];
+  submitVote: AaveGovernanceService['submitVote'];
+  getVoteOnProposal: AaveGovernanceService['getVoteOnProposal'];
+  getVotingPowerAt: AaveGovernanceService['getVotingPowerAt'];
   refreshGovernanceData: () => Promise<void>;
 }
 
@@ -32,74 +36,94 @@ export const createGovernanceSlice: StateCreator<
   [['zustand/devtools', never], ['zustand/persist', unknown]],
   [],
   GovernanceSlice
-> = (set, get) => ({
-  getGovernanceDelegationService: () => {
+> = (set, get) => {
+  function getCorrectProvider() {
     const currentNetworkConfig = get().currentNetworkConfig;
     console.log('triggered');
     const isStakeFork =
       currentNetworkConfig.isFork &&
       currentNetworkConfig.underlyingChainId === governanceConfig?.chainId;
-    const rpcProvider = isStakeFork
-      ? get().jsonRpcProvider()
-      : getProvider(governanceConfig.chainId);
-    return new GovernancePowerDelegationTokenService(rpcProvider);
-  },
-  refreshGovernanceData: async () => {
-    const account = get().account;
-    if (!account) return;
-    const currentNetworkConfig = get().currentNetworkConfig;
-    const isStakeFork =
-      currentNetworkConfig.isFork &&
-      currentNetworkConfig.underlyingChainId === governanceConfig?.chainId;
-    const rpcProvider = isStakeFork
-      ? get().jsonRpcProvider()
-      : getProvider(governanceConfig.chainId);
-    const governanceService = new AaveGovernanceService(rpcProvider, {
-      GOVERNANCE_ADDRESS: governanceConfig.addresses.AAVE_GOVERNANCE_V2,
-      GOVERNANCE_HELPER_ADDRESS: governanceConfig.addresses.AAVE_GOVERNANCE_V2_HELPER,
-      ipfsGateway: governanceConfig.ipfsGateway,
-    });
-    const { aaveTokenAddress, stkAaveTokenAddress } = governanceConfig;
-    try {
-      const [aaveTokenPower, stkAaveTokenPower] = await governanceService.getTokensPower({
-        user: account,
-        tokens: [aaveTokenAddress, stkAaveTokenAddress],
+    return isStakeFork ? get().jsonRpcProvider() : getProvider(governanceConfig.chainId);
+  }
+  return {
+    delegateByType: (args) => {
+      const service = new GovernancePowerDelegationTokenService(getCorrectProvider());
+      return service.delegateByType(args);
+    },
+    submitVote: (args) => {
+      const governanceService = new AaveGovernanceService(getCorrectProvider(), {
+        GOVERNANCE_ADDRESS: governanceConfig.addresses.AAVE_GOVERNANCE_V2,
+        GOVERNANCE_HELPER_ADDRESS: governanceConfig.addresses.AAVE_GOVERNANCE_V2_HELPER,
+        ipfsGateway: governanceConfig.ipfsGateway,
       });
-      const powers = {
-        votingPower: normalize(
-          valueToBigNumber(aaveTokenPower.votingPower.toString())
-            .plus(stkAaveTokenPower.votingPower.toString())
-            .toString(),
-          18
-        ),
-        aaveTokenPower,
-        stkAaveTokenPower,
-        propositionPower: normalize(
-          valueToBigNumber(aaveTokenPower.propositionPower.toString())
-            .plus(stkAaveTokenPower.propositionPower.toString())
-            .toString(),
-          18
-        ),
-        aaveVotingDelegatee: checkIfDelegateeIsUser(
-          aaveTokenPower.delegatedAddressVotingPower,
-          account
-        ),
-        aavePropositionDelegatee: checkIfDelegateeIsUser(
-          aaveTokenPower.delegatedAddressPropositionPower,
-          account
-        ),
-        stkAaveVotingDelegatee: checkIfDelegateeIsUser(
-          stkAaveTokenPower.delegatedAddressVotingPower,
-          account
-        ),
-        stkAavePropositionDelegatee: checkIfDelegateeIsUser(
-          stkAaveTokenPower.delegatedAddressPropositionPower,
-          account
-        ),
-      };
-      set({ powers });
-    } catch (e) {
-      console.log('error fetching reserves');
-    }
-  },
-});
+      return governanceService.submitVote(args);
+    },
+    getVoteOnProposal: (args) => {
+      const governanceService = new AaveGovernanceService(getCorrectProvider(), {
+        GOVERNANCE_ADDRESS: governanceConfig.addresses.AAVE_GOVERNANCE_V2,
+        GOVERNANCE_HELPER_ADDRESS: governanceConfig.addresses.AAVE_GOVERNANCE_V2_HELPER,
+        ipfsGateway: governanceConfig.ipfsGateway,
+      });
+      return governanceService.getVoteOnProposal(args);
+    },
+    getVotingPowerAt: (args) => {
+      const governanceService = new AaveGovernanceService(getCorrectProvider(), {
+        GOVERNANCE_ADDRESS: governanceConfig.addresses.AAVE_GOVERNANCE_V2,
+        GOVERNANCE_HELPER_ADDRESS: governanceConfig.addresses.AAVE_GOVERNANCE_V2_HELPER,
+        ipfsGateway: governanceConfig.ipfsGateway,
+      });
+      return governanceService.getVotingPowerAt(args);
+    },
+    refreshGovernanceData: async () => {
+      const account = get().account;
+      if (!account) return;
+      const governanceService = new AaveGovernanceService(getCorrectProvider(), {
+        GOVERNANCE_ADDRESS: governanceConfig.addresses.AAVE_GOVERNANCE_V2,
+        GOVERNANCE_HELPER_ADDRESS: governanceConfig.addresses.AAVE_GOVERNANCE_V2_HELPER,
+        ipfsGateway: governanceConfig.ipfsGateway,
+      });
+      const { aaveTokenAddress, stkAaveTokenAddress } = governanceConfig;
+      try {
+        const [aaveTokenPower, stkAaveTokenPower] = await governanceService.getTokensPower({
+          user: account,
+          tokens: [aaveTokenAddress, stkAaveTokenAddress],
+        });
+        const powers = {
+          votingPower: normalize(
+            valueToBigNumber(aaveTokenPower.votingPower.toString())
+              .plus(stkAaveTokenPower.votingPower.toString())
+              .toString(),
+            18
+          ),
+          aaveTokenPower,
+          stkAaveTokenPower,
+          propositionPower: normalize(
+            valueToBigNumber(aaveTokenPower.propositionPower.toString())
+              .plus(stkAaveTokenPower.propositionPower.toString())
+              .toString(),
+            18
+          ),
+          aaveVotingDelegatee: checkIfDelegateeIsUser(
+            aaveTokenPower.delegatedAddressVotingPower,
+            account
+          ),
+          aavePropositionDelegatee: checkIfDelegateeIsUser(
+            aaveTokenPower.delegatedAddressPropositionPower,
+            account
+          ),
+          stkAaveVotingDelegatee: checkIfDelegateeIsUser(
+            stkAaveTokenPower.delegatedAddressVotingPower,
+            account
+          ),
+          stkAavePropositionDelegatee: checkIfDelegateeIsUser(
+            stkAaveTokenPower.delegatedAddressPropositionPower,
+            account
+          ),
+        };
+        set({ powers });
+      } catch (e) {
+        console.log('error fetching reserves');
+      }
+    },
+  };
+};
