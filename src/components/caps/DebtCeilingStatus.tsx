@@ -81,7 +81,7 @@ export const DebtCeilingStatus = ({
             backgroundColor: (theme) => determineColor(theme),
           },
         }}
-        // We show at minium, 1% color to represent small values
+        // We show at minimum, 1% color to represent small values
         value={usage <= 1 ? 1 : usage}
       />
     </>

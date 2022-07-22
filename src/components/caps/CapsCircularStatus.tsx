@@ -57,7 +57,7 @@ export const CapsCircularStatus = (props: CircularProgressProps & { value: numbe
         size={80}
         thickness={4}
         {...props}
-        // We show at minium, 2% color to represent small values
+        // We show at minimum, 2% color to represent small values
         value={props.value <= 2 ? 2 : props.value}
       />
       <Typography
