@@ -9,11 +9,17 @@ import { RootStore } from './root';
 
 // TODO: add chain/provider/account mapping
 export interface PoolSlice {
-  reserves?: ReserveDataHumanized[];
-  baseCurrencyData?: PoolBaseCurrencyHumanized;
-  userReserves?: UserReserveDataHumanized[];
-  userEmodeCategoryId?: number;
+  reserves?: { [chainId: number]: { [address: string]: ReserveDataHumanized[] } };
+  baseCurrencyData?: { [chainId: number]: { [address: string]: PoolBaseCurrencyHumanized } };
+  userReserves?: { [chainId: number]: { [address: string]: UserReserveDataHumanized[] } };
+  userEmodeCategoryId?: { [chainId: number]: { [address: string]: number } };
   refreshPoolData: () => Promise<void>;
+  computed: {
+    get currentUserReserves(): UserReserveDataHumanized[];
+    get currentUserEmodeCategoryId(): number;
+    get currentReserves(): ReserveDataHumanized[];
+    get currentBaseCurrencyData(): PoolBaseCurrencyHumanized;
+  };
 }
 
 export const createPoolSlice: StateCreator<
@@ -22,6 +28,41 @@ export const createPoolSlice: StateCreator<
   [],
   PoolSlice
 > = (set, get) => ({
+  computed: {
+    get currentUserEmodeCategoryId() {
+      return (
+        get()?.userEmodeCategoryId?.[get().currentChainId]?.[
+          get().currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER
+        ] || 0
+      );
+    },
+    get currentUserReserves() {
+      return (
+        get()?.userReserves?.[get().currentChainId]?.[
+          get().currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER
+        ] || []
+      );
+    },
+    get currentReserves() {
+      return (
+        get()?.reserves?.[get().currentChainId]?.[
+          get().currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER
+        ] || []
+      );
+    },
+    get currentBaseCurrencyData() {
+      return (
+        get()?.baseCurrencyData?.[get().currentChainId]?.[
+          get().currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER
+        ] || {
+          marketReferenceCurrencyDecimals: 0,
+          marketReferenceCurrencyPriceInUsd: '0',
+          networkBaseTokenPriceInUsd: '0',
+          networkBaseTokenPriceDecimals: 0,
+        }
+      );
+    },
+  },
   refreshPoolData: async () => {
     const account = get().account;
     const currentMarketData = get().currentMarketData;
@@ -31,14 +72,27 @@ export const createPoolSlice: StateCreator<
       provider: get().jsonRpcProvider(),
       chainId: currentChainId,
     });
+    const lendingPoolAddressProvider = currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER;
     try {
       const reservesResponse = await poolDataProviderContract.getReservesHumanized({
-        lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
+        lendingPoolAddressProvider,
       });
-      set({
-        reserves: reservesResponse.reservesData,
-        baseCurrencyData: reservesResponse.baseCurrencyData,
-      });
+      set((state) => ({
+        reserves: {
+          ...state.reserves,
+          [currentChainId]: {
+            ...state.reserves?.[currentChainId],
+            [lendingPoolAddressProvider]: reservesResponse.reservesData,
+          },
+        },
+        baseCurrencyData: {
+          ...state.baseCurrencyData,
+          [currentChainId]: {
+            ...state.baseCurrencyData?.[currentChainId],
+            [lendingPoolAddressProvider]: reservesResponse.baseCurrencyData,
+          },
+        },
+      }));
     } catch (e) {
       console.log('error fetching reserves');
     }
@@ -46,13 +100,25 @@ export const createPoolSlice: StateCreator<
     if (account) {
       try {
         const userReservesResponse = await poolDataProviderContract.getUserReservesHumanized({
-          lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
+          lendingPoolAddressProvider,
           user: account,
         });
-        set({
-          userEmodeCategoryId: userReservesResponse.userEmodeCategoryId,
-          userReserves: userReservesResponse.userReserves,
-        });
+        set((state) => ({
+          userReserves: {
+            ...state.userReserves,
+            [currentChainId]: {
+              ...state.userReserves?.[currentChainId],
+              [lendingPoolAddressProvider]: userReservesResponse.userReserves,
+            },
+          },
+          userEmodeCategoryId: {
+            ...state.userEmodeCategoryId,
+            [currentChainId]: {
+              ...state.userEmodeCategoryId?.[currentChainId],
+              [lendingPoolAddressProvider]: userReservesResponse.userEmodeCategoryId,
+            },
+          },
+        }));
       } catch (e) {
         console.log('error fetching user-reserves');
       }

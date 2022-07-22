@@ -1,7 +1,6 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { nativeToUSD, normalize, USD_DECIMALS } from '@aave/math-utils';
 import { BigNumber } from 'bignumber.js';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 
 import { useProtocolDataContext } from '../useProtocolDataContext';
@@ -12,23 +11,15 @@ export interface WalletBalance {
 }
 
 export const useWalletBalances = () => {
-  const { currentAccount } = useWeb3Context();
-  const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
-  const [balances, _reserves, _baseCurrencyData] = useRootStore((state) => [
-    state.walletBalances?.[currentAccount]?.[currentChainId],
-    state.reserves,
-    state.baseCurrencyData,
+  const { currentNetworkConfig } = useProtocolDataContext();
+  const [balances, reserves, baseCurrencyData] = useRootStore((state) => [
+    state.computed.currentWalletBalances,
+    state.computed.currentReserves,
+    state.computed.currentBaseCurrencyData,
   ]);
 
   // process data
   const walletBalances = balances || [];
-  const reserves = _reserves || [];
-  const baseCurrencyData = _baseCurrencyData || {
-    marketReferenceCurrencyDecimals: 0,
-    marketReferenceCurrencyPriceInUsd: '0',
-    networkBaseTokenPriceInUsd: '0',
-    networkBaseTokenPriceDecimals: 0,
-  };
   let hasEmptyWallet = true;
   const aggregatedBalance = walletBalances.reduce((acc, reserve) => {
     const poolReserve = reserves.find((poolReserve) => {

@@ -2,14 +2,21 @@ import { WalletBalanceProvider } from '@aave/contract-helpers';
 import { StateCreator } from 'zustand';
 import { RootStore } from './root';
 
+type WalletBalance = { address: string; amount: string };
+
 export interface WalletSlice {
   account: string;
   isWalletModalOpen: boolean;
   setWalletModalOpen: (open: boolean) => void;
   walletBalances?: {
-    [address: string]: { [chainId: number]: { address: string; amount: string }[] };
+    [account: string]: {
+      [chainId: number]: { [address: string]: WalletBalance[] };
+    };
   };
   refetchWalletBalances: () => Promise<void>;
+  computed: {
+    get currentWalletBalances(): WalletBalance[];
+  };
 }
 
 export const createWalletSlice: StateCreator<
@@ -25,6 +32,15 @@ export const createWalletSlice: StateCreator<
   setWalletModalOpen(open) {
     set({ isWalletModalOpen: open });
   },
+  computed: {
+    get currentWalletBalances() {
+      return (
+        get()?.walletBalances?.[get().account]?.[get().currentChainId]?.[
+          get().currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER
+        ] || []
+      );
+    },
+  },
   refetchWalletBalances: async () => {
     const account = get().account;
     if (!account) return;
@@ -34,11 +50,12 @@ export const createWalletSlice: StateCreator<
       walletBalanceProviderAddress: currentMarketData.addresses.WALLET_BALANCE_PROVIDER,
       provider: get().jsonRpcProvider(),
     });
+    const lendingPoolAddressProvider = currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER;
     try {
       const { 0: tokenAddresses, 1: balances } =
         await contract.getUserWalletBalancesForLendingPoolProvider(
           account,
-          currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER
+          lendingPoolAddressProvider
         );
       const mappedBalances = tokenAddresses.map((address, ix) => ({
         address: address.toLowerCase(),
@@ -47,7 +64,10 @@ export const createWalletSlice: StateCreator<
       set((state) => ({
         walletBalances: {
           ...state.walletBalances,
-          [account]: { ...state.walletBalances?.[account], [currentChainId]: mappedBalances },
+          [account]: {
+            ...state.walletBalances?.[account],
+            [currentChainId]: { [lendingPoolAddressProvider]: mappedBalances },
+          },
         },
       }));
     } catch (e) {

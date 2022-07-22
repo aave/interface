@@ -9,23 +9,44 @@ import { PoolSlice, createPoolSlice } from './poolSlice';
 import { IncentiveSlice, createIncentiveSlice } from './incentiveSlice';
 import { GovernanceSlice, createGovernanceSlice } from './governanceSlice';
 
-export interface RootStore
-  extends StakeSlice,
-    ProtocolDataSlice,
-    WalletSlice,
-    PoolSlice,
-    IncentiveSlice,
-    GovernanceSlice {}
+export type RootStore = StakeSlice &
+  ProtocolDataSlice &
+  WalletSlice &
+  PoolSlice &
+  IncentiveSlice &
+  GovernanceSlice;
+
+function mergeGetters<A, B>(a: A, b: B): A & B {
+  const result = Object.defineProperties(
+    {},
+    {
+      ...Object.getOwnPropertyDescriptors(a),
+      ...Object.getOwnPropertyDescriptors(b),
+    }
+  );
+  return result as A & B;
+}
 
 export const useRootStore = create<RootStore>()(
-  devtools((...args) => ({
-    ...createStakeSlice(...args),
-    ...createProtocolDataSlice(...args),
-    ...createWalletSlice(...args),
-    ...createPoolSlice(...args),
-    ...createIncentiveSlice(...args),
-    ...createGovernanceSlice(...args),
-  }))
+  devtools((...args) => {
+    return {
+      ...createStakeSlice(...args),
+      ...createProtocolDataSlice(...args),
+      ...createWalletSlice(...args),
+      ...createPoolSlice(...args),
+      ...createIncentiveSlice(...args),
+      ...createGovernanceSlice(...args),
+      computed: mergeGetters(
+        createWalletSlice(...args).computed,
+        createPoolSlice(...args).computed
+      ),
+      // ...createStakeSlice(...args),
+      // ...createProtocolDataSlice(...args),
+      // ...createWalletSlice(...args),
+      // ...createIncentiveSlice(...args),
+      // ...createGovernanceSlice(...args),
+    };
+  })
 );
 
 export const useStakeDataSubscription = createSingletonSubscriber(() => {

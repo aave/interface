@@ -66,28 +66,20 @@ export const AppDataProvider: React.FC = ({ children }) => {
   const { currentAccount } = useWeb3Context();
   const { currentNetworkConfig } = useProtocolDataContext();
   const [
-    _reserves,
-    _baseCurrencyData,
-    _userReserves,
-    _userEmodeCategoryId,
+    reserves,
+    baseCurrencyData,
+    userReserves,
+    userEmodeCategoryId,
     reserveIncentiveData,
     userIncentiveData,
   ] = useRootStore((state) => [
-    state.reserves,
-    state.baseCurrencyData,
-    state.userReserves,
-    state.userEmodeCategoryId,
+    state.computed.currentReserves,
+    state.computed.currentBaseCurrencyData,
+    state.computed.currentUserReserves,
+    state.computed.currentUserEmodeCategoryId,
     state.reserveIncentiveData,
     state.userIncentiveData,
   ]);
-
-  const reserves: ReserveDataHumanized[] = _reserves || [];
-  const baseCurrencyData = _baseCurrencyData || {
-    marketReferenceCurrencyDecimals: 0,
-    marketReferenceCurrencyPriceInUsd: '0',
-    networkBaseTokenPriceInUsd: '0',
-    networkBaseTokenPriceDecimals: 0,
-  };
 
   const formattedPoolReserves = formatReservesAndIncentives({
     reserves,
@@ -104,10 +96,6 @@ export const AppDataProvider: React.FC = ({ children }) => {
         r.symbol.toLowerCase() === currentNetworkConfig.wrappedBaseAssetSymbol?.toLowerCase(),
     }))
     .sort(reserveSortFn);
-
-  const userReserves: UserReserveData[] = _userReserves || [];
-
-  const userEmodeCategoryId = _userEmodeCategoryId || 0;
 
   const user = formatUserSummaryAndIncentives({
     currentTimestamp,
