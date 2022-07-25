@@ -21,7 +21,6 @@ import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
-import { StakeTxBuilderProvider } from 'src/providers/StakeTxBuilderProvider';
 
 import { ConnectWalletPaper } from '../src/components/ConnectWalletPaper';
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
@@ -160,17 +159,13 @@ export default function Staking() {
 Staking.getLayout = function getLayout(page: React.ReactElement) {
   return (
     <MainLayout>
-      <StakeTxBuilderProvider>
-        <>
-          {page}
-          {/** Modals */}
-          <StakeModal />
-          <StakeCooldownModal />
-          <UnStakeModal />
-          <StakeRewardClaimModal />
-          {/** End of modals */}
-        </>
-      </StakeTxBuilderProvider>
+      {page}
+      {/** Modals */}
+      <StakeModal />
+      <StakeCooldownModal />
+      <UnStakeModal />
+      <StakeRewardClaimModal />
+      {/** End of modals */}
     </MainLayout>
   );
 };

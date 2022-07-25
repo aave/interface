@@ -1,5 +1,5 @@
-import { UiStakeDataProvider } from '@aave/contract-helpers';
-import { stakeConfig } from 'src/ui-config/stakeConfig';
+import { StakingService, UiStakeDataProvider } from '@aave/contract-helpers';
+import { getStakeConfig } from 'src/ui-config/stakeConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { StateCreator } from 'zustand';
 import { RootStore } from './root';
@@ -51,6 +51,10 @@ export interface StakeSlice {
   stakeDataLoading: boolean;
   stakeUserResult?: StakeUserUiData;
   stakeGeneralResult?: StakeGeneralUiData;
+  stake: (token: string) => StakingService['stake'];
+  cooldown: (token: string) => StakingService['cooldown'];
+  claimRewards: (token: string) => StakingService['claimRewards'];
+  redeem: (token: string) => StakingService['redeem'];
 }
 
 export const createStakeSlice: StateCreator<
@@ -60,8 +64,8 @@ export const createStakeSlice: StateCreator<
   StakeSlice
 > = (set, get) => {
   function getCorrectProvider() {
+    const stakeConfig = getStakeConfig();
     const currentNetworkConfig = get().currentNetworkConfig;
-    console.log('triggered');
     const isStakeFork =
       currentNetworkConfig.isFork &&
       currentNetworkConfig.underlyingChainId === stakeConfig?.chainId;
@@ -70,6 +74,7 @@ export const createStakeSlice: StateCreator<
   return {
     stakeDataLoading: true,
     refetchStakeData: async () => {
+      const stakeConfig = getStakeConfig();
       const uiStakeDataProvider = new UiStakeDataProvider({
         provider: getCorrectProvider(),
         uiStakeDataProvider: stakeConfig.stakeDataProvider,
@@ -95,6 +100,38 @@ export const createStakeSlice: StateCreator<
         console.log('error fetching general stake data');
       }
       set({ stakeDataLoading: false });
+    },
+    stake(tokenName) {
+      const provider = getCorrectProvider();
+      const stakeConfig = getStakeConfig();
+      const service = new StakingService(provider, {
+        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[tokenName].TOKEN_STAKING,
+      });
+      return (...args) => service.stake(...args);
+    },
+    cooldown(tokenName) {
+      const provider = getCorrectProvider();
+      const stakeConfig = getStakeConfig();
+      const service = new StakingService(provider, {
+        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[tokenName].TOKEN_STAKING,
+      });
+      return (...args) => service.cooldown(...args);
+    },
+    claimRewards(tokenName) {
+      const provider = getCorrectProvider();
+      const stakeConfig = getStakeConfig();
+      const service = new StakingService(provider, {
+        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[tokenName].TOKEN_STAKING,
+      });
+      return (...args) => service.claimRewards(...args);
+    },
+    redeem(tokenName) {
+      const provider = getCorrectProvider();
+      const stakeConfig = getStakeConfig();
+      const service = new StakingService(provider, {
+        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[tokenName].TOKEN_STAKING,
+      });
+      return (...args) => service.redeem(...args);
     },
   };
 };

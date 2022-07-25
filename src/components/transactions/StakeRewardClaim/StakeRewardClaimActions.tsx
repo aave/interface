@@ -2,8 +2,8 @@ import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
-import { useStakeTxBuilderContext } from 'src/hooks/useStakeTxBuilder';
 import { TxActionsWrapper } from '../TxActionsWrapper';
+import { useRootStore } from 'src/store/root';
 
 export interface StakeRewardClaimActionProps extends BoxProps {
   amountToClaim: string;
@@ -24,12 +24,12 @@ export const StakeRewardClaimActions = ({
   ...props
 }: StakeRewardClaimActionProps) => {
   const { currentAccount } = useWeb3Context();
-  const stakingService = useStakeTxBuilderContext(selectedToken);
+  const claimRewards = useRootStore((state) => state.claimRewards);
 
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     tryPermit: false,
     handleGetTxns: async () => {
-      return stakingService.claimRewards(currentAccount, amountToClaim);
+      return claimRewards(selectedToken)(currentAccount, amountToClaim);
     },
     skip: blocked,
     deps: [],

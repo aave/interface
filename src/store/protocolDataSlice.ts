@@ -1,11 +1,12 @@
 import { providers } from 'ethers';
 import { NetworkConfig } from '../ui-config/networksConfig';
-import { CustomMarket, MarketDataType, marketsData } from '../ui-config/marketsConfig';
+import { CustomMarket, MarketDataType } from '../ui-config/marketsConfig';
 import { StateCreator } from 'zustand';
 import {
   availableMarkets,
   getNetworkConfig,
   getProvider,
+  marketsData,
 } from 'src/utils/marketsAndNetworksConfig';
 import { RootStore } from './root';
 import { getQueryParameter, setQueryParameter } from './utils/queryParams';
