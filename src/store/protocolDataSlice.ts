@@ -8,6 +8,7 @@ import {
   getProvider,
 } from 'src/utils/marketsAndNetworksConfig';
 import { RootStore } from './root';
+import { getQueryParameter, setQueryParameter } from './utils/queryParams';
 
 export interface ProtocolDataSlice {
   currentMarket: CustomMarket;
@@ -24,7 +25,10 @@ export const createProtocolDataSlice: StateCreator<
   [],
   ProtocolDataSlice
 > = (set, get) => {
-  const initialMarket = availableMarkets[0]; // currently seeded with localStorage, but might not be necessary with persist
+  const preselectedMarket = getQueryParameter('marketName') as CustomMarket;
+  const initialMarket = availableMarkets.includes(preselectedMarket)
+    ? preselectedMarket
+    : availableMarkets[0]; // currently seeded with localStorage, but might not be necessary with persist
   const initialMarketData = marketsData[initialMarket];
   return {
     currentMarket: initialMarket,
@@ -34,6 +38,7 @@ export const createProtocolDataSlice: StateCreator<
     jsonRpcProvider: () => getProvider(get().currentChainId),
     setCurrentMarket: (market) => {
       const nextMarketData = marketsData[market];
+      setQueryParameter('marketName', market);
       set({
         currentMarket: market,
         currentMarketData: nextMarketData,
