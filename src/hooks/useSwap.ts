@@ -179,6 +179,7 @@ type GetSwapCallDataProps = {
   route: OptimalRate;
   max?: boolean;
   chainId: ChainId;
+  maxSlippage: number;
 };
 
 type GetSwapAndRepayCallDataProps = {
@@ -201,10 +202,11 @@ export const getSwapCallData = async ({
   user,
   route,
   chainId,
+  maxSlippage,
 }: GetSwapCallDataProps) => {
   const paraSwap = getParaswap(chainId);
   const destAmountWithSlippage = new BigNumberZeroDecimal(route.destAmount)
-    .multipliedBy(99)
+    .multipliedBy(100 - maxSlippage)
     .dividedBy(100)
     .toFixed(0);
 
