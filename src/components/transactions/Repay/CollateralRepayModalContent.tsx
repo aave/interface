@@ -97,9 +97,9 @@ export function CollateralRepayModalContent({
   const maxCollateral = valueToBigNumber(tokenToRepayWith?.balance || 0).multipliedBy(
     fromAssetData.priceInUSD
   );
-  const maxDebtThatCanBeRepaidWithSelectedCollateral = maxCollateral.dividedBy(
-    poolReserve.priceInUSD
-  );
+  const maxDebtThatCanBeRepaidWithSelectedCollateral = maxCollateral
+    .multipliedBy(1 - Number(maxSlippage) / 100)
+    .dividedBy(poolReserve.priceInUSD);
   const maxRepayableDebt = BigNumber.min(
     maxDebtThatCanBeRepaidWithSelectedCollateral,
     safeAmountToRepayAll
@@ -107,7 +107,7 @@ export function CollateralRepayModalContent({
   const handleChange = (value: string) => {
     const maxSelected = value === '-1';
     amountRef.current = maxSelected ? maxRepayableDebt.toString(10) : value;
-    setAmount(value);
+    setAmount(amountRef.current);
   };
   // for v3 we need hf after withdraw collateral, because when removing collateral to repay
   // debt, hf could go under 1 then it would fail. If that is the case then we need
