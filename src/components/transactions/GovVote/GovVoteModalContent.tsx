@@ -78,10 +78,7 @@ export const GovVoteModalContent = ({
     <>
       <TxModalTitle title="Governance vote" />
       {isWrongNetwork && (
-        <ChangeNetworkWarning
-          networkName={currentNetworkConfig.isFork ? 'Fork' : networkConfig.name}
-          chainId={govChain}
-        />
+        <ChangeNetworkWarning networkName={networkConfig.name} chainId={govChain} />
       )}
       {blockingError !== undefined && (
         <Typography variant="helperText" color="red">

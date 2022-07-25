@@ -92,6 +92,8 @@ export const GovDelegationModalContent = () => {
       : governanceConfig.chainId;
   const isWrongNetwork = connectedChainId !== govChain;
 
+  const networkConfig = getNetworkConfig(govChain);
+
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
   }

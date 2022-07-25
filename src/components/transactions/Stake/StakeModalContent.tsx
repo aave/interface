@@ -98,10 +98,7 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
     <>
       <TxModalTitle title="Stake" symbol={icon} />
       {isWrongNetwork && (
-        <ChangeNetworkWarning
-          networkName={currentNetworkConfig.isFork ? 'Fork' : networkConfig.name}
-          chainId={stakingChain}
-        />
+        <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
       )}
 
       <CooldownWarning />

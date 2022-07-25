@@ -83,6 +83,8 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
       : stakeConfig.chainId;
   const isWrongNetwork = connectedChainId !== stakingChain;
 
+  const networkConfig = getNetworkConfig(stakingChain);
+
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
   }
