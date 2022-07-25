@@ -10,8 +10,6 @@ export interface StakeConfig {
       STAKING_HELPER?: string;
     };
   };
-  queryStakeDataUrl?: string;
-  wsStakeDataUrl?: string;
 }
 
 export const mainnetStakeConfig: StakeConfig = {
@@ -28,8 +26,6 @@ export const mainnetStakeConfig: StakeConfig = {
       STAKING_REWARD_TOKEN: '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9',
     },
   },
-  queryStakeDataUrl: 'https://cache-api-1.aave.com/graphql',
-  wsStakeDataUrl: 'wss://cache-api-1.aave.com/graphql',
 };
 
 export const getStakeConfig = () => {

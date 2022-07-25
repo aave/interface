@@ -2,11 +2,8 @@ import React, { useContext } from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getStakeConfig } from 'src/ui-config/stakeConfig';
 
-import { useConnectionStatusContext } from '../useConnectionStatusContext';
-import { _useStakeDataCached } from './_useStakeDataCached';
 import { _useStakeDataRPC } from './_useStakeDataRPC';
 import { useC_StakeGeneralUiDataQuery, useC_StakeUserUiDataQuery } from './graphql/hooks';
-import { useProtocolDataContext } from '../useProtocolDataContext';
 
 interface StakeDataProviderContextType {}
 
@@ -22,19 +19,7 @@ const StakeDataProviderContext = React.createContext<StakeDataProviderContextTyp
 export const StakeDataProvider: React.FC = ({ children }) => {
   const stakeConfig = getStakeConfig();
   const { currentAccount } = useWeb3Context();
-  const { isRPCActive } = useConnectionStatusContext();
-  const { currentNetworkConfig } = useProtocolDataContext();
-
-  const isGovernanceFork =
-    currentNetworkConfig.isFork && currentNetworkConfig.underlyingChainId === stakeConfig.chainId;
-  const rpcMode =
-    isRPCActive ||
-    !stakeConfig.wsStakeDataUrl ||
-    !stakeConfig.queryStakeDataUrl ||
-    isGovernanceFork;
-
-  _useStakeDataCached(currentAccount, stakeConfig.chainId, rpcMode);
-  const { refresh } = _useStakeDataRPC(currentAccount, stakeConfig.chainId, !rpcMode);
+  const { refresh } = _useStakeDataRPC(currentAccount, stakeConfig.chainId);
   return (
     <StakeDataProviderContext.Provider value={{ refresh }}>
       {children}
