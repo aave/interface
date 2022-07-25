@@ -15,6 +15,7 @@ export const SYMBOL_MAP: { [key: string]: string } = {
   UNIWBTCUSDC: 'UNI_WBTC_USDC',
   UNIWBTCWETH: 'UNI_WBTC_WETH',
   UNIYFIWETH: 'UNI_YFI_WETH',
+  fUSDT: 'USDT',
 };
 
 export const NAME_MAP: { [key: string]: string } = {
@@ -94,15 +95,6 @@ export function fetchIconSymbolAndName({
   }
   if (/^1/.test(symbol)) {
     const rawSymbol = symbol.replace('1', '');
-    return {
-      iconSymbol: rawSymbol || symbol,
-      name: NAME_MAP[rawSymbol.toUpperCase()] || rawSymbol,
-      symbol,
-    };
-  }
-  //for fantom usdt => fUSDT
-  if (/fUSDT/.test(symbol)) {
-    const rawSymbol = symbol.replace('f', '');
     return {
       iconSymbol: rawSymbol || symbol,
       name: NAME_MAP[rawSymbol.toUpperCase()] || rawSymbol,
