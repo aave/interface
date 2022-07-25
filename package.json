@@ -94,7 +94,7 @@
     "@types/lodash": "^4.14.179",
     "@types/react": "latest",
     "@typescript-eslint/eslint-plugin": "^5.14.0",
-    "axios": "^0.26.0",
+    "axios": "^0.27.2",
     "babel-loader": "^8.2.5",
     "babel-plugin-dynamic-import-node": "^2.3.3",
     "babel-plugin-macros": "^3.1.0",
