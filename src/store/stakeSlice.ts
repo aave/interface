@@ -1,5 +1,5 @@
 import { UiStakeDataProvider } from '@aave/contract-helpers';
-import { getStakeConfig } from 'src/ui-config/stakeConfig';
+import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { StateCreator } from 'zustand';
 import { RootStore } from './root';
@@ -58,35 +58,43 @@ export const createStakeSlice: StateCreator<
   [['zustand/devtools', never]],
   [],
   StakeSlice
-> = (set, get) => ({
-  stakeDataLoading: true,
-  refetchStakeData: async () => {
-    const stakeConfig = getStakeConfig();
+> = (set, get) => {
+  function getCorrectProvider() {
     const currentNetworkConfig = get().currentNetworkConfig;
+    console.log('triggered');
     const isStakeFork =
       currentNetworkConfig.isFork &&
       currentNetworkConfig.underlyingChainId === stakeConfig?.chainId;
-    const rpcProvider = isStakeFork ? get().jsonRpcProvider() : getProvider(stakeConfig.chainId);
-    const uiStakeDataProvider = new UiStakeDataProvider({
-      provider: rpcProvider,
-      uiStakeDataProvider: stakeConfig.stakeDataProvider,
-    });
-    try {
-      const generalStakeData = await uiStakeDataProvider.getGeneralStakeUIDataHumanized();
-      set({ stakeGeneralResult: generalStakeData });
-    } catch (e) {
-      console.log('error fetching general stake data');
-    }
-    if (get().account) {
+    return isStakeFork ? get().jsonRpcProvider() : getProvider(stakeConfig.chainId);
+  }
+  return {
+    stakeDataLoading: true,
+    refetchStakeData: async () => {
+      const uiStakeDataProvider = new UiStakeDataProvider({
+        provider: getCorrectProvider(),
+        uiStakeDataProvider: stakeConfig.stakeDataProvider,
+      });
+      const promises: Promise<void>[] = [];
       try {
-        const userStakeData = await uiStakeDataProvider.getUserStakeUIDataHumanized({
-          user: get().account,
-        });
-        set({ stakeUserResult: userStakeData });
+        promises.push(
+          uiStakeDataProvider
+            .getGeneralStakeUIDataHumanized()
+            .then((generalStakeData) => set({ stakeGeneralResult: generalStakeData }))
+        );
+        if (get().account) {
+          promises.push(
+            uiStakeDataProvider
+              .getUserStakeUIDataHumanized({
+                user: get().account,
+              })
+              .then((userStakeData) => set({ stakeUserResult: userStakeData }))
+          );
+        }
+        await Promise.all(promises);
       } catch (e) {
-        console.log('error fetching user stake data');
+        console.log('error fetching general stake data');
       }
-    }
-    set({ stakeDataLoading: false });
-  },
-});
+      set({ stakeDataLoading: false });
+    },
+  };
+};
