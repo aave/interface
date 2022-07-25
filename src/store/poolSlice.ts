@@ -24,7 +24,7 @@ export interface PoolSlice {
 
 export const createPoolSlice: StateCreator<
   RootStore,
-  [['zustand/devtools', never]],
+  [['zustand/devtools', never], ['zustand/persist', unknown]],
   [],
   PoolSlice
 > = (set, get) => ({

@@ -22,7 +22,7 @@ export interface ProtocolDataSlice {
 
 export const createProtocolDataSlice: StateCreator<
   RootStore,
-  [['zustand/devtools', never]],
+  [['zustand/devtools', never], ['zustand/persist', unknown]],
   [],
   ProtocolDataSlice
 > = (set, get) => {
@@ -39,6 +39,7 @@ export const createProtocolDataSlice: StateCreator<
     jsonRpcProvider: () => getProvider(get().currentChainId),
     setCurrentMarket: (market) => {
       const nextMarketData = marketsData[market];
+      console.log(market, nextMarketData);
       setQueryParameter('marketName', market);
       set({
         currentMarket: market,

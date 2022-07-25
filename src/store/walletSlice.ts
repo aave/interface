@@ -21,7 +21,7 @@ export interface WalletSlice {
 
 export const createWalletSlice: StateCreator<
   RootStore,
-  [['zustand/devtools', never]],
+  [['zustand/devtools', never], ['zustand/persist', unknown]],
   [],
   WalletSlice
 > = (set, get) => ({

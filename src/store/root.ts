@@ -1,5 +1,5 @@
 import create from 'zustand';
-import { devtools } from 'zustand/middleware';
+import { devtools, persist } from 'zustand/middleware';
 import { createSingletonSubscriber } from './utils/createSingletonSubscriber';
 
 import { StakeSlice, createStakeSlice } from './stakeSlice';
@@ -28,25 +28,39 @@ function mergeGetters<A, B>(a: A, b: B): A & B {
 }
 
 export const useRootStore = create<RootStore>()(
-  devtools((...args) => {
-    return {
-      ...createStakeSlice(...args),
-      ...createProtocolDataSlice(...args),
-      ...createWalletSlice(...args),
-      ...createPoolSlice(...args),
-      ...createIncentiveSlice(...args),
-      ...createGovernanceSlice(...args),
-      computed: mergeGetters(
-        createWalletSlice(...args).computed,
-        createPoolSlice(...args).computed
-      ),
-      // ...createStakeSlice(...args),
-      // ...createProtocolDataSlice(...args),
-      // ...createWalletSlice(...args),
-      // ...createIncentiveSlice(...args),
-      // ...createGovernanceSlice(...args),
-    };
-  })
+  devtools(
+    persist(
+      (...args) => {
+        return {
+          ...createStakeSlice(...args),
+          ...createProtocolDataSlice(...args),
+          ...createWalletSlice(...args),
+          ...createPoolSlice(...args),
+          ...createIncentiveSlice(...args),
+          ...createGovernanceSlice(...args),
+          computed: mergeGetters(
+            createWalletSlice(...args).computed,
+            createPoolSlice(...args).computed
+          ),
+          // ...createStakeSlice(...args),
+          // ...createProtocolDataSlice(...args),
+          // ...createWalletSlice(...args),
+          // ...createIncentiveSlice(...args),
+          // ...createGovernanceSlice(...args),
+        };
+      },
+      {
+        name: 'session-storage',
+        partialize: (state) => ({
+          // TODO: decide what to store, some values might be problematic as they rely on context
+          // currentMarket: state.currentMarket,
+          // account: state.account,
+          // currentMarketData: state.currentMarketData,
+          // currentChainId: state.currentChainId,
+        }),
+      }
+    )
+  )
 );
 
 export const useStakeDataSubscription = createSingletonSubscriber(() => {
