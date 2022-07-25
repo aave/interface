@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { DelegationType } from 'src/helpers/types';
 import { useAaveTokensProviderContext } from 'src/hooks/governance-data-provider/AaveTokensDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
@@ -39,7 +40,7 @@ export const GovDelegationModalContent = () => {
     daveTokens: { aave, stkAave },
   } = useAaveTokensProviderContext();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
-
+  const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
   // error states
 
   // selector states
@@ -84,8 +85,11 @@ export const GovDelegationModalContent = () => {
   };
 
   // is Network mismatched
-  const govChain = governanceConfig.chainId;
-  const networkConfig = getNetworkConfig(govChain);
+  const govChain =
+    currentNetworkConfig.isFork &&
+    currentNetworkConfig.underlyingChainId === governanceConfig.chainId
+      ? currentChainId
+      : governanceConfig.chainId;
   const isWrongNetwork = connectedChainId !== govChain;
 
   if (txError && txError.blocking) {

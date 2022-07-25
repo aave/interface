@@ -16,6 +16,7 @@ import { UnStakeActions } from './UnStakeActions';
 import { GasStation } from '../GasStation/GasStation';
 import { parseUnits } from 'ethers/lib/utils';
 import { useModalContext } from 'src/hooks/useModal';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 export type UnStakeProps = {
   stakeAssetName: string;
@@ -33,6 +34,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   const stakeData = data.stakeGeneralResult?.stakeGeneralUIData[stakeAssetName as StakingType];
   const { chainId: connectedChainId } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
+  const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
 
   // states
   const [_amount, setAmount] = useState('');
@@ -75,8 +77,10 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   };
 
   // is Network mismatched
-  const stakingChain = stakeConfig.chainId;
-  const networkConfig = getNetworkConfig(stakingChain);
+  const stakingChain =
+    currentNetworkConfig.isFork && currentNetworkConfig.underlyingChainId === stakeConfig.chainId
+      ? currentChainId
+      : stakeConfig.chainId;
   const isWrongNetwork = connectedChainId !== stakingChain;
 
   if (txError && txError.blocking) {
