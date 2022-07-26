@@ -45,6 +45,12 @@ export const SupplyAssetsList = () => {
       const walletBalance = walletBalances[reserve.underlyingAsset]?.amount;
       const walletBalanceUSD = walletBalances[reserve.underlyingAsset]?.amountUSD;
 
+      const supplyCapUsage: number =
+        reserve.totalLiquidity !== '0' && reserve.supplyCap !== '0'
+          ? (parseInt(reserve.totalLiquidity) / parseInt(reserve.supplyCap)) * 100
+          : 0;
+      const supplyCapReached = supplyCapUsage >= 99.95;
+
       let availableToDeposit = valueToBigNumber(walletBalance);
       if (reserve.supplyCap !== '0') {
         availableToDeposit = BigNumber.min(
@@ -88,6 +94,7 @@ export const SupplyAssetsList = () => {
         return [
           {
             ...reserve,
+            supplyCapReached,
             underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
             ...fetchIconSymbolAndName({
               symbol: baseAssetSymbol,
@@ -103,6 +110,7 @@ export const SupplyAssetsList = () => {
           },
           {
             ...reserve,
+            supplyCapReached,
             walletBalance,
             walletBalanceUSD,
             availableToDeposit:
@@ -117,6 +125,7 @@ export const SupplyAssetsList = () => {
 
       return {
         ...reserve,
+        supplyCapReached,
         walletBalance,
         walletBalanceUSD,
         availableToDeposit:

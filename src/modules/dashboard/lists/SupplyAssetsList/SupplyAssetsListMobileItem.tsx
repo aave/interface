@@ -22,6 +22,7 @@ export const SupplyAssetsListMobileItem = ({
   supplyCap,
   totalLiquidity,
   supplyAPY,
+  supplyCapReached,
   aIncentivesData,
   isIsolated,
   usageAsCollateralEnabledOnUser,
@@ -32,6 +33,9 @@ export const SupplyAssetsListMobileItem = ({
 }: SupplyAssetsItem) => {
   const { currentMarket } = useProtocolDataContext();
   const { openSupply } = useModalContext();
+
+  // Hide the asset to prevent it from being supplied if supply cap has been reached
+  if (supplyCapReached) return null;
 
   return (
     <ListMobileItemWrapper
