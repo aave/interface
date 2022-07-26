@@ -97,11 +97,12 @@ export const getApolloClient = () => {
   );
 
   const combinedLink = marketsWithCaching.reduce((acc, [key, cfg]) => {
-    const condition = (operation: Operation) =>
+    const condition = (operation: Operation): boolean =>
       operation.getContext().target === APOLLO_QUERY_TARGET.MARKET(key);
     const http = new HttpLink({ uri: cfg.cachingServerUrl });
     const ws = createWsLink(cfg.cachingWSServerUrl as string);
-    if (!acc) return split((operation) => condition(operation) && isSubscription(operation), ws);
+    if (!acc)
+      return split((operation) => condition(operation) && isSubscription(operation), ws, http);
     return split(
       (operation) => condition(operation) && isSubscription(operation),
       ws,

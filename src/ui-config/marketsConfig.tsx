@@ -130,8 +130,6 @@ export const marketsData: {
       incentives: true,
     },
     rpcOnly: true,
-    cachingServerUrl: 'https://cache-api-1.aave.com/graphql',
-    cachingWSServerUrl: 'wss://cache-api-1.aave.com/graphql',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xB53C1a33016B2DC2fF3653530bfF1848a515c8c5'.toLowerCase(),
       LENDING_POOL: '0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9',
@@ -189,9 +187,7 @@ export const marketsData: {
   [CustomMarket.amm_mainnet]: {
     marketTitle: 'Ethereum AMM',
     chainId: ChainId.mainnet,
-    cachingServerUrl: 'https://cache-api-1.aave.com/graphql',
-    cachingWSServerUrl: 'wss://cache-api-1.aave.com/graphql',
-    rpcOnly: false,
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xacc030ef66f9dfeae9cbb0cd1b25654b82cfa8d5'.toLowerCase(),
       LENDING_POOL: '0x7937d4799803fbbe595ed57278bc4ca21f3bffcb',
