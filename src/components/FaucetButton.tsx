@@ -12,8 +12,22 @@ export const FaucetButton = () => {
 
   return (
     <DarkTooltip title="Get free assets to test the Aave Protocol">
-      <Button variant="outlined" size="small" onClick={() => router.push(ROUTES.faucet)}>
-        <Typography sx={{ display: 'inline-flex', alignItems: 'center' }} variant="buttonS">
+      <Button
+        variant="outlined"
+        size="small"
+        sx={{
+          bgcolor: 'background.paper',
+          '&:hover': {
+            bgcolor: 'background.paper',
+          },
+        }}
+        onClick={() => router.push(ROUTES.faucet)}
+      >
+        <Typography
+          sx={{ display: 'inline-flex', alignItems: 'center' }}
+          variant="buttonS"
+          color="text.muted"
+        >
           <Trans>{currentNetworkConfig.name} Faucet</Trans>
           <SvgIcon sx={{ fontSize: '14px', mx: '2px' }}>
             <ExternalLinkIcon />

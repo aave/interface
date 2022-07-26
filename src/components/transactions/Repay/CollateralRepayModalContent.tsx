@@ -1,5 +1,5 @@
 import { InterestRate } from '@aave/contract-helpers';
-import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
+import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { useRef, useState } from 'react';
 import {
@@ -21,11 +21,13 @@ import {
 import { CollateralRepayActions } from './CollateralRepayActions';
 import BigNumber from 'bignumber.js';
 import { calculateHFAfterRepay } from 'src/utils/hfUtils';
-import { Box, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
-import { Row } from 'src/components/primitives/Row';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Box, Typography, SvgIcon } from '@mui/material';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
+import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
+import { ArrowDownIcon } from '@heroicons/react/outline';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
 import { ErrorType, flashLoanNotAvailable, useFlashloan } from '../utils';
 
 export function CollateralRepayModalContent({
@@ -35,11 +37,12 @@ export function CollateralRepayModalContent({
   userReserve,
   isWrongNetwork,
 }: ModalWrapperProps & { debtType: InterestRate }) {
-  const { user, marketReferencePriceInUsd, reserves, userReserves } = useAppDataContext();
+  const { user, reserves, userReserves } = useAppDataContext();
   const { gasLimit, txError, mainTxState } = useModalContext();
   const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
 
+  // List of tokens eligble to repay with, ordered by USD value
   const repayTokens = user.userReservesData
     .filter(
       (userReserve) =>
@@ -49,10 +52,11 @@ export function CollateralRepayModalContent({
     .map((userReserve) => ({
       address: userReserve.underlyingAsset,
       balance: userReserve.underlyingBalance,
+      balanceUSD: userReserve.underlyingBalanceUSD,
       symbol: userReserve.reserve.symbol,
       iconSymbol: userReserve.reserve.iconSymbol,
-      aToken: true,
-    }));
+    }))
+    .sort((a, b) => Number(b.balanceUSD) - Number(a.balanceUSD));
   const [tokenToRepayWith, setTokenToRepayWith] = useState<Asset>(repayTokens[0]);
 
   const fromAssetData = reserves.find(
@@ -91,11 +95,11 @@ export function CollateralRepayModalContent({
   // Calculations to get the max repayable debt depending on the balance and value of the
   // selected collateral
   const maxCollateral = valueToBigNumber(tokenToRepayWith?.balance || 0).multipliedBy(
-    fromAssetData.priceInMarketReferenceCurrency
+    fromAssetData.priceInUSD
   );
-  const maxDebtThatCanBeRepaidWithSelectedCollateral = maxCollateral.dividedBy(
-    poolReserve.priceInMarketReferenceCurrency
-  );
+  const maxDebtThatCanBeRepaidWithSelectedCollateral = maxCollateral
+    .multipliedBy(1 - Number(maxSlippage) / 100)
+    .dividedBy(poolReserve.priceInUSD);
   const maxRepayableDebt = BigNumber.min(
     maxDebtThatCanBeRepaidWithSelectedCollateral,
     safeAmountToRepayAll
@@ -103,7 +107,7 @@ export function CollateralRepayModalContent({
   const handleChange = (value: string) => {
     const maxSelected = value === '-1';
     amountRef.current = maxSelected ? maxRepayableDebt.toString(10) : value;
-    setAmount(value);
+    setAmount(amountRef.current);
   };
   // for v3 we need hf after withdraw collateral, because when removing collateral to repay
   // debt, hf could go under 1 then it would fail. If that is the case then we need
@@ -131,18 +135,22 @@ export function CollateralRepayModalContent({
   // a safe amount to repay all. When this happens amountAfterRepay would be < 0 and
   // this would show as certain amount left to repay when we are actually repaying all debt
   const amountAfterRepay = valueToBigNumber(debt).minus(BigNumber.min(outputAmount, debt));
-  const displayAmountAfterRepayInUsd = amountAfterRepay
-    .multipliedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
-    .multipliedBy(marketReferencePriceInUsd)
-    .shiftedBy(-USD_DECIMALS);
+  const displayAmountAfterRepayInUsd = amountAfterRepay.multipliedBy(poolReserve.priceInUSD);
+  const collateralAmountAfterRepay = tokenToRepayWith.balance
+    ? valueToBigNumber(tokenToRepayWith.balance).minus(inputAmount)
+    : valueToBigNumber('0');
+  const collateralAmountAfterRepayUSD = collateralAmountAfterRepay.multipliedBy(
+    fromAssetData.priceInUSD
+  );
 
   // calculate impact based on $ difference
-  const priceImpact =
+  let priceImpact =
     outputAmountUSD && outputAmountUSD !== '0'
-      ? new BigNumber(1)
-          .minus(new BigNumber(inputAmountUSD).dividedBy(outputAmountUSD))
-          .toString(10)
+      ? new BigNumber(1).minus(new BigNumber(inputAmountUSD).dividedBy(outputAmountUSD)).toFixed(2)
       : '0';
+  if (priceImpact === '-0.00') {
+    priceImpact = '0.00';
+  }
 
   let blockingError: ErrorType | undefined = undefined;
   const tokenToRepayWithUsdValue = valueToBigNumber(tokenToRepayWith?.balance || '0').multipliedBy(
@@ -196,68 +204,66 @@ export function CollateralRepayModalContent({
         ]}
         isMaxSelected={isMaxSelected}
         maxValue={debt}
-        inputTitle={<Trans>Debt amount to repay</Trans>}
+        inputTitle={<Trans>Expected amount to repay</Trans>}
+        balanceText="Borrow balance"
       />
+      <Box sx={{ padding: '18px', pt: '14px', display: 'flex', justifyContent: 'space-between' }}>
+        <SvgIcon sx={{ fontSize: '18px !important' }}>
+          <ArrowDownIcon />
+        </SvgIcon>
+
+        <PriceImpactTooltip
+          text={
+            <Trans>
+              Price impact{' '}
+              <FormattedNumber value={priceImpact} variant="secondary12" color="text.secondary" />%
+            </Trans>
+          }
+          variant="secondary14"
+        />
+      </Box>
       <AssetInput
         value={inputAmount}
         usdValue={inputAmountUSD}
         symbol={tokenToRepayWith.symbol}
         assets={repayTokens}
         onSelect={setTokenToRepayWith}
-        inputTitle={<Trans>Collateral amount to repay with</Trans>}
+        onChange={handleChange}
+        inputTitle={<Trans>Collateral to repay with</Trans>}
+        maxValue={tokenToRepayWith.balance ? tokenToRepayWith.balance : '0'}
         disableInput
+        balanceText="Collateral balance"
       />
       {blockingError !== undefined && (
         <Typography variant="helperText" color="error.main">
           {handleBlocked()}
         </Typography>
       )}
-      <Box
-        sx={{
-          bgcolor: 'background.default',
-          border: '1px solid rgba(56, 61, 81, 0.12)',
-          borderRadius: '4px',
-          padding: '8px 16px',
-          mt: 6,
-        }}
+
+      <TxModalDetails
+        gasLimit={gasLimit}
+        slippageSelector={
+          <ListSlippageButton selectedSlippage={maxSlippage} setSlippage={setMaxSlippage} />
+        }
       >
-        <Row caption={<Trans>Price impact</Trans>} captionVariant="subheader1">
-          <FormattedNumber value={priceImpact} variant="secondary14" percent />
-        </Row>
-        <Row caption={<Trans>Minimum received</Trans>} captionVariant="subheader1" sx={{ mt: 4 }}>
-          <FormattedNumber value={outputAmount} variant="secondary14" symbol={poolReserve.symbol} />
-        </Row>
-        <Typography variant="description" sx={{ mt: 4 }}>
-          <Trans>Max slippage rate</Trans>
-        </Typography>
-        <ToggleButtonGroup
-          sx={{ mt: 2 }}
-          value={maxSlippage}
-          onChange={(_e, value) => setMaxSlippage(value)}
-          exclusive
-        >
-          <ToggleButton value="0.1" sx={{ minWidth: '74px' }}>
-            <Typography variant="secondary14">0.1%</Typography>
-          </ToggleButton>
-          <ToggleButton value="0.5" sx={{ minWidth: '74px' }}>
-            <Typography variant="secondary14">0.5%</Typography>
-          </ToggleButton>
-          <ToggleButton value="1" sx={{ minWidth: '74px' }}>
-            <Typography variant="secondary14">1%</Typography>
-          </ToggleButton>
-        </ToggleButtonGroup>
-      </Box>
-      <TxModalDetails gasLimit={gasLimit}>
-        <DetailsNumberLineWithSub
-          description={<Trans>Remaining debt</Trans>}
-          futureValue={amountAfterRepay.toString()}
-          futureValueUSD={displayAmountAfterRepayInUsd.toString()}
-          symbol={symbol}
-        />
         <DetailsHFLine
           visibleHfChange={!!_amount}
           healthFactor={user?.healthFactor}
           futureHealthFactor={hfAfterSwap.toString(10)}
+        />
+        <DetailsNumberLineWithSub
+          description={<Trans>Borrow balance after repay</Trans>}
+          futureValue={amountAfterRepay.toString()}
+          futureValueUSD={displayAmountAfterRepayInUsd.toString()}
+          symbol={symbol}
+          tokenIcon={poolReserve.iconSymbol}
+        />
+        <DetailsNumberLineWithSub
+          description={<Trans>Collateral balance after repay</Trans>}
+          futureValue={collateralAmountAfterRepay.toString()}
+          futureValueUSD={collateralAmountAfterRepayUSD.toString()}
+          symbol={tokenToRepayWith.symbol}
+          tokenIcon={tokenToRepayWith.iconSymbol}
         />
       </TxModalDetails>
 

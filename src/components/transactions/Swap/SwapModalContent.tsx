@@ -280,6 +280,7 @@ export const SwapModalContent = ({
         blocked={blockingError !== undefined}
         priceRoute={priceRoute}
         useFlashLoan={shouldUseFlashloan}
+        maxSlippage={Number(maxSlippage)}
       />
     </>
   );

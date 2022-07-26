@@ -70,7 +70,7 @@ const BorrowModeSwitch = ({
         value={interestRateMode}
         exclusive
         onChange={(_, value) => setInterestRateMode(value)}
-        sx={{ width: '100%', mt: 0.5 }}
+        sx={{ width: '100%', height: '36px', p: '2px', mt: 0.5 }}
       >
         <ToggleButton
           value={InterestRate.Variable}
