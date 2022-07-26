@@ -861,6 +861,8 @@ msgid "Language"
 msgstr "Language"
 
 #: src/components/infoTooltips/DebtCeilingTooltip.tsx
+#: src/components/infoTooltips/MaxBorrowedTooltip.tsx
+#: src/components/infoTooltips/MaxSuppliedTooltip.tsx
 #: src/components/infoTooltips/TotalBorrowedTooltip.tsx
 #: src/components/infoTooltips/TotalSuppliedTooltip.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
@@ -1133,6 +1135,10 @@ msgstr "Proposals"
 msgid "Proposition power"
 msgstr "Proposition power"
 
+#: src/components/infoTooltips/MaxBorrowedTooltip.tsx
+msgid "Protocol borrow cap at 100% for this asset. Further supply unavailable."
+msgstr "Protocol borrow cap at 100% for this asset. Further supply unavailable."
+
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Protocol borrow cap is at 100% for this asset. Further borrowing unavailable."
 msgstr "Protocol borrow cap is at 100% for this asset. Further borrowing unavailable."
@@ -1140,6 +1146,10 @@ msgstr "Protocol borrow cap is at 100% for this asset. Further borrowing unavail
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Protocol debt ceiling is at 100% for this asset. Further borrowing against this asset is unavailable."
 msgstr "Protocol debt ceiling is at 100% for this asset. Further borrowing against this asset is unavailable."
+
+#: src/components/infoTooltips/MaxSuppliedTooltip.tsx
+msgid "Protocol supply cap at 100% for this asset. Further supply unavailable."
+msgstr "Protocol supply cap at 100% for this asset. Further supply unavailable."
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Protocol supply cap is at 100% for this asset. Further supply unavailable."
