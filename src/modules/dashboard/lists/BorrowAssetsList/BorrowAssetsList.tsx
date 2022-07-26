@@ -33,6 +33,14 @@ export const BorrowAssetsList = () => {
   const tokensToBorrow: BorrowAssetsItem[] = reserves
     .filter((reserve) => assetCanBeBorrowedByUser(reserve, user))
     .map<BorrowAssetsItem>((reserve) => {
+      // Determine if supply cap has been reached
+      const borrowCapUsage: number =
+        reserve.totalDebt !== '0' && reserve.borrowCap !== '0'
+          ? (parseInt(reserve.totalDebt) / parseInt(reserve.borrowCap)) * 100
+          : 0;
+      // TODO: Can test UI with const borrowCapReached = true
+      const borrowCapReached = borrowCapUsage >= 99.95;
+
       const availableBorrows = user
         ? getMaxAmountAvailableToBorrow(reserve, user, InterestRate.Variable).toNumber()
         : 0;
@@ -45,6 +53,7 @@ export const BorrowAssetsList = () => {
 
       return {
         ...reserve,
+        borrowCapReached,
         totalBorrows: reserve.totalDebt,
         availableBorrows,
         availableBorrowsInUSD,

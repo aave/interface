@@ -31,6 +31,7 @@ export const BorrowedPositionsListItem = ({
     sIncentivesData,
     vIncentivesData,
     variableBorrowAPY,
+    borrowCapReached,
   } = reserve;
 
   return (
@@ -42,6 +43,7 @@ export const BorrowedPositionsListItem = ({
       currentMarket={currentMarket}
       frozen={reserve.isFrozen}
       data-cy={`dashboardBorrowedListItem_${reserve.symbol.toUpperCase()}_${borrowRateMode}`}
+      borrowCapReached={borrowCapReached}
     >
       <ListValueColumn
         symbol={reserve.symbol}

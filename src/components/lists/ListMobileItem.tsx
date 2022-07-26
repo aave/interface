@@ -1,6 +1,7 @@
 import { Box, Divider, Skeleton, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
+import { MaxBorrowedTooltip } from '../infoTooltips/MaxBorrowedTooltip';
 import { MaxSuppliedTooltip } from '../infoTooltips/MaxSuppliedTooltip';
 
 import { Link, ROUTES } from '../primitives/Link';
@@ -15,7 +16,8 @@ interface ListMobileItemProps {
   underlyingAsset?: string;
   loading?: boolean;
   currentMarket?: CustomMarket;
-  supplyCapReached: boolean;
+  supplyCapReached?: boolean;
+  borrowCapReached?: boolean;
 }
 
 export const ListMobileItem = ({
@@ -27,7 +29,8 @@ export const ListMobileItem = ({
   underlyingAsset,
   loading,
   currentMarket,
-  supplyCapReached,
+  supplyCapReached = false,
+  borrowCapReached = false,
 }: ListMobileItemProps) => {
   return (
     <Box>
@@ -60,6 +63,7 @@ export const ListMobileItem = ({
                   </Typography>
                 </Box>
                 {supplyCapReached && <MaxSuppliedTooltip />}
+                {borrowCapReached && <MaxBorrowedTooltip />}
               </Link>
             )
           )}

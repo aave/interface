@@ -31,6 +31,16 @@ export const BorrowedPositionsList = () => {
 
   const borrowPositions =
     user?.userReservesData.reduce((acc, userReserve) => {
+      // Determine if supply cap has been reached
+      const borrowCapUsage: number =
+        userReserve.reserve.totalDebt !== '0' && userReserve.reserve.borrowCap !== '0'
+          ? (parseInt(userReserve.reserve.totalDebt) / parseInt(userReserve.reserve.borrowCap)) *
+            100
+          : 0;
+
+      // TODO: Can test UI with const borrowCapReached = true
+      const borrowCapReached = borrowCapUsage >= 99.95;
+
       if (userReserve.variableBorrows !== '0') {
         acc.push({
           ...userReserve,
@@ -43,6 +53,7 @@ export const BorrowedPositionsList = () => {
                   underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
                 })
               : {}),
+            borrowCapReached,
           },
         });
       }
@@ -58,6 +69,7 @@ export const BorrowedPositionsList = () => {
                   underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
                 })
               : {}),
+            borrowCapReached,
           },
         });
       }

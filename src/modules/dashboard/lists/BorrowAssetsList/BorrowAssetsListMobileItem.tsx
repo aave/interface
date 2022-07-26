@@ -24,6 +24,7 @@ export const BorrowAssetsListMobileItem = ({
   totalBorrows,
   variableBorrowRate,
   stableBorrowRate,
+  borrowCapReached,
   sIncentivesData,
   vIncentivesData,
   underlyingAsset,
@@ -32,6 +33,9 @@ export const BorrowAssetsListMobileItem = ({
   const { openBorrow } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
   const borrowButtonDisable = isFreezed || Number(availableBorrows) <= 0;
+
+  // Hide the asset to prevent it from being borrowed if borrow cap has been reached
+  if (borrowCapReached) return null;
 
   return (
     <ListMobileItemWrapper

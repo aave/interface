@@ -33,6 +33,7 @@ export const BorrowedPositionsListMobileItem = ({
     vIncentivesData,
     variableBorrowAPY,
     underlyingAsset,
+    borrowCapReached,
   } = reserve;
 
   return (
@@ -43,6 +44,7 @@ export const BorrowedPositionsListMobileItem = ({
       underlyingAsset={reserve.underlyingAsset}
       currentMarket={currentMarket}
       frozen={reserve.isFrozen}
+      borrowCapReached={borrowCapReached}
     >
       <ListValueRow
         title={<Trans>Debt</Trans>}

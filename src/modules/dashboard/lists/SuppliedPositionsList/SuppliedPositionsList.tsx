@@ -34,6 +34,7 @@ export const SuppliedPositionsList = () => {
                 parseInt(userReserve.reserve.supplyCap)) *
               100
             : 0;
+        // TODO: Can test UI with const supplyCapReached = true
         const supplyCapReached = supplyCapUsage >= 99.95;
 
         return {

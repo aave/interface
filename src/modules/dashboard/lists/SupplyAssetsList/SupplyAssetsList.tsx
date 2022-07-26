@@ -50,6 +50,7 @@ export const SupplyAssetsList = () => {
         reserve.totalLiquidity !== '0' && reserve.supplyCap !== '0'
           ? (parseInt(reserve.totalLiquidity) / parseInt(reserve.supplyCap)) * 100
           : 0;
+      // TODO: Can test UI with const supplyCapReached = true
       const supplyCapReached = supplyCapUsage >= 99.95;
 
       let availableToDeposit = valueToBigNumber(walletBalance);
