@@ -10,6 +10,7 @@ export type SupplyAssetsItem = {
   availableToDeposit: string;
   availableToDepositUSD: string;
   supplyAPY: number | string;
+  supplyCapReached: boolean;
   aIncentivesData?: ReserveIncentiveResponse[];
   isFreezed?: boolean;
   isIsolated: boolean;
