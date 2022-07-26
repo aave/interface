@@ -42,7 +42,6 @@ export const networkConfigs = Object.keys(_networkConfigs).reduce((acc, value) =
   if (FORK_ENABLED && Number(value) === FORK_BASE_CHAIN_ID) {
     acc[FORK_CHAIN_ID] = {
       ..._networkConfigs[value],
-      // rpcOnly: true,
       name: `${_networkConfigs[value].name} Fork`,
       isFork: true,
       privateJsonRPCUrl: FORK_RPC_URL,
@@ -68,7 +67,6 @@ export const marketsData = Object.keys(_marketsData).reduce((acc, value) => {
     acc[`fork_${value}`] = {
       ..._marketsData[value as keyof typeof CustomMarket],
       chainId: FORK_CHAIN_ID,
-      rpcOnly: true,
       isFork: true,
     };
   }
