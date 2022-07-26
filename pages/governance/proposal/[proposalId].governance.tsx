@@ -110,7 +110,7 @@ export default function ProposalPage({
     setLoading(false);
   }
 
-  usePolling(updateProposal, 60000, !mightBeStale, []);
+  usePolling(updateProposal, 30000, !mightBeStale, []);
 
   // seed when no ssg
   useEffect(() => {
