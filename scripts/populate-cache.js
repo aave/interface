@@ -32747,6 +32747,7 @@ var require_types2 = __commonJS({
       43113: "fuji",
       42161: "arbitrum_one",
       421611: "arbitrum_rinkeby",
+      421613: "arbitrum_goerli",
       250: "fantom_opera",
       4002: "fantom_testnet",
       10: "optimism",
@@ -32769,6 +32770,7 @@ var require_types2 = __commonJS({
       ChainId7[ChainId7["fuji"] = 43113] = "fuji";
       ChainId7[ChainId7["arbitrum_one"] = 42161] = "arbitrum_one";
       ChainId7[ChainId7["arbitrum_rinkeby"] = 421611] = "arbitrum_rinkeby";
+      ChainId7[ChainId7["arbitrum_goerli"] = 421613] = "arbitrum_goerli";
       ChainId7[ChainId7["fantom"] = 250] = "fantom";
       ChainId7[ChainId7["fantom_testnet"] = 4002] = "fantom_testnet";
       ChainId7[ChainId7["optimism"] = 10] = "optimism";
@@ -61515,8 +61517,6 @@ var marketsData = {
       incentives: true
     },
     rpcOnly: true,
-    cachingServerUrl: "https://cache-api-1.aave.com/graphql",
-    cachingWSServerUrl: "wss://cache-api-1.aave.com/graphql",
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: "0xB53C1a33016B2DC2fF3653530bfF1848a515c8c5".toLowerCase(),
       LENDING_POOL: "0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9",
@@ -61535,9 +61535,7 @@ var marketsData = {
   ["amm_mainnet" /* amm_mainnet */]: {
     marketTitle: "Ethereum AMM",
     chainId: import_contract_helpers2.ChainId.mainnet,
-    cachingServerUrl: "https://cache-api-1.aave.com/graphql",
-    cachingWSServerUrl: "wss://cache-api-1.aave.com/graphql",
-    rpcOnly: false,
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: "0xacc030ef66f9dfeae9cbb0cd1b25654b82cfa8d5".toLowerCase(),
       LENDING_POOL: "0x7937d4799803fbbe595ed57278bc4ca21f3bffcb",
@@ -61634,7 +61632,7 @@ var marketsData = {
     }
   },
   ["proto_goerli_v3" /* proto_goerli_v3 */]: {
-    marketTitle: "Ethereum Goerli",
+    marketTitle: "Ethereum G\xF6rli",
     v3: true,
     chainId: import_contract_helpers2.ChainId.goerli,
     enabledFeatures: {
@@ -61695,6 +61693,26 @@ var marketsData = {
       UI_POOL_DATA_PROVIDER: "0xa3D26e300df5Aa91713fB5963A6A6C48777243Aa",
       UI_INCENTIVE_DATA_PROVIDER: "0x8E90a6524931E097DefB662B3DEa33809D410E6c",
       L2_ENCODER: "0x3d0d309DC8f999f34c4E7296dB38F0e65D3115DF"
+    }
+  },
+  ["proto_arbitrum_goerli_v3" /* proto_arbitrum_goerli_v3 */]: {
+    marketTitle: "Arbitrum G\xF6rli",
+    v3: true,
+    chainId: import_contract_helpers2.ChainId.arbitrum_goerli,
+    enabledFeatures: {
+      faucet: true,
+      incentives: true
+    },
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: "0xF8aa90E66B8BAe13f2e4aDe6104abAb8eeDaBfdc".toLowerCase(),
+      LENDING_POOL: "0x6Cbb4E8eC402E07fDF96DbbC6c752aCfB0eB6075",
+      WETH_GATEWAY: "0xBCca2fc5F30A65cE2155d739364f3fc8F57E6999",
+      FAUCET: "0x98256500C9f1CE77e4C925b7bbF1588515E34422",
+      WALLET_BALANCE_PROVIDER: "0xA0025bE90591971ad76D12F8c9CecA09f66db3D8",
+      UI_POOL_DATA_PROVIDER: "0xd5dE38432Ef93B574B5eAbeBaa8F92bB480dD14F",
+      UI_INCENTIVE_DATA_PROVIDER: "0x71af6535f74Ac34e61a0Df6221ec0442b512eBC1",
+      L2_ENCODER: "0xBFB521464727c3B31A6D9183413cc2B66f4F6686"
     }
   },
   ["proto_avalanche_v3" /* proto_avalanche_v3 */]: {
@@ -61761,7 +61779,7 @@ var marketsData = {
     }
   },
   ["proto_optimism_goerli_v3" /* proto_optimism_goerli_v3 */]: {
-    marketTitle: "Optimism Goerli",
+    marketTitle: "Optimism G\xF6rli",
     v3: true,
     chainId: import_contract_helpers2.ChainId.optimism_goerli,
     enabledFeatures: {
@@ -61938,7 +61956,7 @@ var networkConfigs = {
     networkLogoPath: "/icons/networks/ethereum.svg"
   },
   [import_contract_helpers3.ChainId.goerli]: {
-    name: "Ethereum Goerli",
+    name: "Ethereum G\xF6rli",
     publicJsonRPCUrl: ["https://eth-goerli.alchemyapi.io/v2/demo", "https://goerli.prylabs.net"],
     publicJsonRPCWSUrl: "wss://eth-goerli.alchemyapi.io/v2/demo",
     baseUniswapAdapter: "0x0",
@@ -61993,7 +62011,7 @@ var networkConfigs = {
     networkLogoPath: "/icons/networks/polygon.svg"
   },
   [import_contract_helpers3.ChainId.fuji]: {
-    name: "Fuji",
+    name: "Avalanche Fuji",
     publicJsonRPCUrl: ["https://api.avax-test.network/ext/bc/C/rpc"],
     publicJsonRPCWSUrl: "wss://api.avax-test.network/ext/bc/C/rpc",
     baseUniswapAdapter: "0x0",
@@ -62036,6 +62054,23 @@ var networkConfigs = {
     wrappedBaseAssetSymbol: "WETH",
     baseAssetDecimals: 18,
     explorerLink: "https://testnet.arbiscan.io",
+    isTestnet: true,
+    networkLogoPath: "/icons/networks/arbitrum.svg",
+    bridge: {
+      icon: "/icons/bridge/arbitrum.svg",
+      name: "Arbitrum Bridge",
+      url: "https://bridge.arbitrum.io"
+    }
+  },
+  [import_contract_helpers3.ChainId.arbitrum_goerli]: {
+    name: "Arbitrum G\xF6rli",
+    publicJsonRPCUrl: ["https://goerli-rollup.arbitrum.io/rpc"],
+    publicJsonRPCWSUrl: "wss://goerli-rollup.arbitrum.io/rpc",
+    baseUniswapAdapter: "0x0",
+    baseAssetSymbol: "ETH",
+    wrappedBaseAssetSymbol: "WETH",
+    baseAssetDecimals: 18,
+    explorerLink: "https://goerli-rollup-explorer.arbitrum.io",
     isTestnet: true,
     networkLogoPath: "/icons/networks/arbitrum.svg",
     bridge: {
@@ -62112,7 +62147,7 @@ var networkConfigs = {
     }
   },
   [import_contract_helpers3.ChainId.optimism_kovan]: {
-    name: "Optimism Testnet",
+    name: "Optimism Kovan",
     publicJsonRPCUrl: ["https://kovan.optimism.io"],
     publicJsonRPCWSUrl: "wss://ws-kovan.optimism.io",
     baseUniswapAdapter: "0x0",
@@ -62129,7 +62164,7 @@ var networkConfigs = {
     }
   },
   [import_contract_helpers3.ChainId.optimism_goerli]: {
-    name: "Optimism Testnet",
+    name: "Optimism G\xF6rli",
     publicJsonRPCUrl: ["https://goerli.optimism.io"],
     publicJsonRPCWSUrl: "wss://goerli.optimism.io",
     baseUniswapAdapter: "0x0",
@@ -62194,6 +62229,7 @@ var networkConfigs2 = Object.keys(networkConfigs).reduce((acc, value) => {
   acc[value] = networkConfigs[value];
   if (FORK_ENABLED && Number(value) === FORK_BASE_CHAIN_ID) {
     acc[FORK_CHAIN_ID] = __spreadProps(__spreadValues({}, networkConfigs[value]), {
+      name: `${networkConfigs[value].name} Fork`,
       isFork: true,
       privateJsonRPCUrl: FORK_RPC_URL,
       privateJsonRPCWSUrl: FORK_WS_RPC_URL,
