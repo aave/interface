@@ -1,4 +1,4 @@
-import { BookOpenIcon, QuestionMarkCircleIcon } from '@heroicons/react/outline';
+import { BookOpenIcon, QuestionMarkCircleIcon, CreditCardIcon } from '@heroicons/react/outline';
 import { t } from '@lingui/macro';
 import { ReactNode } from 'react';
 import { ROUTES } from 'src/components/primitives/Link';
@@ -82,6 +82,11 @@ const moreMenuItems: MoreMenuItem[] = [
     link: 'https://classic.aave.com',
     title: t`Switch to Aave Classic`,
     icon: <AaveClassic />,
+  },
+  {
+    link: 'https://global.transak.com',
+    title: t`Buy Crypto With Fiat`,
+    icon: <CreditCardIcon />,
   },
 ];
 

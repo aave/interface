@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
-import { GetAPBTokenModal } from './GetABPTokenModal';
+import { GetABPTokenModal } from './GetABPTokenModal';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 
 export const GetABPToken = () => {
@@ -33,7 +33,7 @@ export const GetABPToken = () => {
           <Trans>Get ABP Token</Trans>
         </Button>
       </DarkTooltip>
-      <GetAPBTokenModal open={open} close={handleClose} />
+      <GetABPTokenModal open={open} close={handleClose} />
     </>
   );
 };
