@@ -50,7 +50,7 @@ export default function ReserveOverview() {
     ? (parseInt(reserve.isolationModeTotalDebt) / parseInt(reserve.debtCeiling)) * 100
     : 0;
 
-  // TODO: Alert test values
+  // TODO: Test UI changes by updating these values
   // const supplyCapUsage = 92.9;
   // const borrowCapUsage = 84.3;
   // const debtCeilingUsage = 60.3;
