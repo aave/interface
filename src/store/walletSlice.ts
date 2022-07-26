@@ -6,7 +6,7 @@ type WalletBalance = { address: string; amount: string };
 
 export interface WalletSlice {
   account: string;
-  setAccount: (account: undefined) => void;
+  setAccount: (account: string | undefined) => void;
   isWalletModalOpen: boolean;
   setWalletModalOpen: (open: boolean) => void;
   walletBalances?: {
