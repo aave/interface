@@ -23,7 +23,7 @@ export const ReserveFactorOverview = ({
       sx={{
         display: 'flex',
         flexWrap: 'wrap',
-        justifyContent: 'space-around',
+        justifyContent: 'space-between',
       }}
     >
       <ReserveOverviewBox
