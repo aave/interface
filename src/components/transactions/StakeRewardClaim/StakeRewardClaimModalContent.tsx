@@ -31,7 +31,7 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName }: StakeRewardClai
   const stakeData = data.stakeGeneralResult?.stakeGeneralUIData[stakeAssetName as StakingType];
   const { chainId: connectedChainId } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
-  const { currentNetworkConfig } = useProtocolDataContext();
+  const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
 
   // hardcoded as all rewards will be in aave token
   const rewardsSymbol = 'AAVE';
@@ -65,10 +65,11 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName }: StakeRewardClai
   };
 
   // is Network mismatched
-  const stakingChain = stakeConfig.chainId;
-  const isStakeFork =
-    currentNetworkConfig.isFork && currentNetworkConfig.underlyingChainId === stakingChain;
-  const isWrongNetwork = !isStakeFork && connectedChainId !== stakingChain;
+  const stakingChain =
+    currentNetworkConfig.isFork && currentNetworkConfig.underlyingChainId === stakeConfig.chainId
+      ? currentChainId
+      : stakeConfig.chainId;
+  const isWrongNetwork = connectedChainId !== stakingChain;
 
   const networkConfig = getNetworkConfig(stakingChain);
 

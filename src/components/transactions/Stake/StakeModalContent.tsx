@@ -35,7 +35,7 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
   const stakeData = data.stakeGeneralResult?.stakeGeneralUIData[stakeAssetName as StakingType];
   const { chainId: connectedChainId } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
-  const { currentNetworkConfig } = useProtocolDataContext();
+  const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
 
   // states
   const [_amount, setAmount] = useState('');
@@ -78,10 +78,11 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
   };
 
   // is Network mismatched
-  const stakingChain = stakeConfig.chainId;
-  const isStakeFork =
-    currentNetworkConfig.isFork && currentNetworkConfig.underlyingChainId === stakingChain;
-  const isWrongNetwork = !isStakeFork && connectedChainId !== stakingChain;
+  const stakingChain =
+    currentNetworkConfig.isFork && currentNetworkConfig.underlyingChainId === stakeConfig.chainId
+      ? currentChainId
+      : stakeConfig.chainId;
+  const isWrongNetwork = connectedChainId !== stakingChain;
 
   const networkConfig = getNetworkConfig(stakingChain);
 
