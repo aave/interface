@@ -4,10 +4,13 @@ import {
   IncentivesControllerV2Interface,
   LendingPool,
   PoolInterface,
+  IAaveBiconomyForwarderServiceInterface
 } from '@aave/contract-helpers';
 import React, { useContext } from 'react';
 
 export interface TxBuilderContextInterface {
+
+  BiconomyProxy?: IAaveBiconomyForwarderServiceInterface;
   lendingPool: LendingPool | PoolInterface;
   faucetService: FaucetService;
   incentivesTxBuilder: IncentivesControllerInterface;

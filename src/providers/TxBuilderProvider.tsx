@@ -7,12 +7,16 @@ import {
   LendingPool,
   Pool,
   PoolInterface,
+  AaveBiconomyForwarderService,
+  IAaveBiconomyForwarderServiceInterface
 } from '@aave/contract-helpers';
 import React, { ReactElement } from 'react';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { TxBuilderContext } from 'src/hooks/useTxBuilder';
 
 export interface TxBuilderContextInterface {
+
+  BiconomyProxy: IAaveBiconomyForwarderServiceInterface|any;
   lendingPool: LendingPool | PoolInterface;
   faucetService: FaucetService;
   incentivesTxBuilder: IncentivesControllerInterface;
@@ -22,6 +26,8 @@ export interface TxBuilderContextInterface {
 export const TxBuilderProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
   const { currentMarketData, jsonRpcProvider } = useProtocolDataContext();
 
+  let BiconomyProxy;
+  let proxyAddress =  "0x77cCf0A218D054662c743b94aBDc57fA98D06b68";
   let lendingPool;
   if (!currentMarketData.v3) {
     lendingPool = new LendingPool(jsonRpcProvider, {
@@ -38,7 +44,11 @@ export const TxBuilderProvider: React.FC<{ children: ReactElement }> = ({ childr
       WETH_GATEWAY: currentMarketData.addresses.WETH_GATEWAY,
       L2_ENCODER: currentMarketData.addresses.L2_ENCODER,
     });
+    BiconomyProxy = new AaveBiconomyForwarderService(jsonRpcProvider, proxyAddress);
+    console.log("HHH",BiconomyProxy);
   }
+  if (!BiconomyProxy)
+  BiconomyProxy=undefined;
 
   const faucetService = new FaucetService(jsonRpcProvider, currentMarketData.addresses.FAUCET);
 
@@ -51,7 +61,7 @@ export const TxBuilderProvider: React.FC<{ children: ReactElement }> = ({ childr
 
   return (
     <TxBuilderContext.Provider
-      value={{ lendingPool, faucetService, incentivesTxBuilder, incentivesTxBuilderV2 }}
+      value={{ BiconomyProxy, lendingPool, faucetService, incentivesTxBuilder, incentivesTxBuilderV2 }}
     >
       {children}
     </TxBuilderContext.Provider>

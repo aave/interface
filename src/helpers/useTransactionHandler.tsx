@@ -1,4 +1,4 @@
-import { EthereumTransactionTypeExtended, GasType, Pool } from '@aave/contract-helpers';
+import { EthereumTransactionTypeExtended, GasType, Pool, AaveBiconomyForwarderService } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
 import { DependencyList, useEffect, useRef, useState } from 'react';
@@ -7,8 +7,10 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
-
+import AProxy from './AProxy.json'
+import ERC20 from './ERC20.json'
 export const MOCK_SIGNED_HASH = 'Signed correctly';
+import {ethers} from 'ethers';
 
 interface UseTransactionHandlerProps {
   handleGetTxns: () => Promise<EthereumTransactionTypeExtended[]>;
@@ -39,10 +41,10 @@ export const useTransactionHandler = ({
     setTxError,
     setRetryWithApproval,
   } = useModalContext();
-  const { signTxData, sendTx, getTxError, currentAccount } = useWeb3Context();
+  const { signTxData, sendTx, sendBiconomyTx,getTxError, currentAccount } = useWeb3Context();
   const { refetchWalletBalances, refetchPoolData, refechIncentiveData } =
     useBackgroundDataProvider();
-  const { lendingPool } = useTxBuilderContext();
+  const { lendingPool, BiconomyProxy } = useTxBuilderContext();
   const [usePermit, setUsePermit] = useState<boolean>(tryPermit);
   const [signature, setSignature] = useState<SignatureLike>();
   const [signatureDeadline, setSignatureDeadline] = useState<string>();
@@ -51,11 +53,50 @@ export const useTransactionHandler = ({
   const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const mounted = useRef(false);
 
+  const tokenAddress="0x9A753f0F7886C9fbF63cF59D0D4423C5eFaCE95B";
+  const myadd="0x620E1cf616444d524c81841B85f60F8d3Ea64751"
+  const proxyAddress="0x77cCf0A218D054662c743b94aBDc57fA98D06b68"
   useEffect(() => {
     mounted.current = true; // Will set it to true on mount ...
     return () => {
       mounted.current = false;
     }; // ... and to false on unmount
+  }, []);
+
+
+
+  useEffect(() => {
+
+    const bcp =async()=> {
+      console.log("AAAAA",currentAccount)
+      const Proxy: AaveBiconomyForwarderService = BiconomyProxy as AaveBiconomyForwarderService;
+      let Payload = await Proxy.depositToAave({
+        user: currentAccount,
+        asset: tokenAddress,
+        amount:"10",
+        onBehalfOf:currentAccount,
+        referralCode:"0"
+      });
+      let adata = await Payload[0].tx();
+       console.log("APAY",adata);
+
+      const provider = new ethers.providers.JsonRpcProvider("https://rpc-mumbai.maticvigil.com/v1/1ba48c273c7a79a97ec2876d6ea5823ad1a84946");
+      let contract = new ethers.Contract(proxyAddress, AProxy,provider);
+      console.log("2")
+      let { data } = await contract.populateTransaction.depositToAave(tokenAddress,ethers.utils.parseEther("20"),myadd,0);
+
+      
+    let txParams = {
+        data: data,
+        to: proxyAddress,
+        from: myadd,
+        signatureType: "EIP712_SIGN"
+    };
+      // deadline is an hour after signature
+      sendBiconomyTx(adata);
+    }
+    bcp();
+    
   }, []);
   /**
    * Executes the transactions and handles loading & error states.

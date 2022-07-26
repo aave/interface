@@ -16,6 +16,20 @@ module.exports = withBundleAnalyzer({
       use: ['@svgr/webpack'],
     });
     config.experiments = { topLevelAwait: true };
+    config.resolve.fallback = {  
+        fs: false,
+        http: false,
+        https: false,
+        tls: false,
+        net: false,
+        crypto: false,
+        stream: false,
+        path: false,
+        os: false,
+        zlib: false,
+        assert: false,
+        querystring: false
+    };
     return config;
   },
   reactStrictMode: true,

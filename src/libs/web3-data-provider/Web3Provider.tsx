@@ -1,5 +1,5 @@
 import React, { ReactElement, useCallback, useEffect, useState } from 'react';
-
+import { Biconomy } from '@biconomy/mexa'
 import { hexToAscii } from 'src/utils/utils';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
@@ -12,12 +12,14 @@ import {
   // Web3Provider,
 } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { BigNumber, providers } from 'ethers';
+import { BigNumber, providers, ethers } from 'ethers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { API_ETH_MOCK_ADDRESS, transactionType } from '@aave/contract-helpers';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { TorusConnector } from '@web3-react/torus-connector';
+import AProxy from '../../helpers/AProxy.json';
+import ERC20 from '../../helpers/ERC20.json';
 
 export type ERC20TokenType = {
   address: string;
@@ -38,6 +40,7 @@ export type Web3Data = {
   switchNetwork: (chainId: number) => Promise<void>;
   getTxError: (txHash: string) => Promise<string>;
   sendTx: (txData: transactionType) => Promise<TransactionResponse>;
+  sendBiconomyTx: (txData: transactionType) => Promise<TransactionResponse>;
   addERC20Token: (args: ERC20TokenType) => Promise<boolean>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   signTxData: (unsignedData: string) => Promise<SignatureLike>;
@@ -283,6 +286,32 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     throw new Error('Error sending transaction. Provider not found');
   };
 
+  const sendBiconomyTx = async (txData: transactionType): Promise<TransactionResponse> => {
+    
+    if (provider) {
+      const api = "I8c1XB-l6.ed819000-2f9a-43d0-8c76-583b9b77bb98";
+      let biconomy = new Biconomy(provider.provider,{
+      apiKey:api, 
+      debug: true,
+      
+    });
+    biconomy.onEvent(biconomy.READY, async () => {
+      // Initialize your dapp here like getting user accounts etc
+      console.log("AbC")
+      let bprovidr = biconomy.getEthersProvider();
+    let txResponse = await bprovidr.send("eth_sendTransaction", [txData]);
+    console.log("Transaction hash : ", txResponse);
+    }).onEvent(biconomy.ERROR, (error:any) => {
+      // Handle error while initializing mexa
+      console.log(error)
+    });
+    
+    }
+      throw new Error('Error sending transaction. Provider not found');
+    };
+
+
+
   // TODO: recheck that it works on all wallets
   const signTxData = async (unsignedData: string): Promise<SignatureLike> => {
     if (provider && account) {
@@ -397,6 +426,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           switchNetwork,
           getTxError,
           sendTx,
+          sendBiconomyTx,
           signTxData,
           currentAccount: mockAddress || account?.toLowerCase() || '',
           addERC20Token,
