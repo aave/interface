@@ -39,7 +39,6 @@ export const createProtocolDataSlice: StateCreator<
     jsonRpcProvider: () => getProvider(get().currentChainId),
     setCurrentMarket: (market) => {
       const nextMarketData = marketsData[market];
-      console.log(market, nextMarketData);
       setQueryParameter('marketName', market);
       set({
         currentMarket: market,

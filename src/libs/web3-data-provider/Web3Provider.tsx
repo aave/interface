@@ -19,6 +19,7 @@ import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { TorusConnector } from '@web3-react/torus-connector';
 import { useWalletModalContext } from 'src/hooks/useWalletModal';
+import { useRootStore } from 'src/store/root';
 
 export type ERC20TokenType = {
   address: string;
@@ -68,6 +69,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [triedSafe, setTriedSafe] = useState(false);
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
   const [triedCoinbase, setTriedCoinbase] = useState(false);
+  const setAccount = useRootStore((store) => store.setAccount);
 
   const { setWalletModalOpen } = useWalletModalContext();
 
@@ -392,6 +394,10 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   useEffect(() => {
     setMockAddress(localStorage.getItem('mockWalletAddress')?.toLowerCase());
   }, []);
+
+  useEffect(() => {
+    setAccount(mockAddress || account?.toLowerCase());
+  }, [account, mockAddress]);
 
   return (
     <Web3Context.Provider

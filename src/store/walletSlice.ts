@@ -6,6 +6,7 @@ type WalletBalance = { address: string; amount: string };
 
 export interface WalletSlice {
   account: string;
+  setAccount: (account: undefined) => void;
   isWalletModalOpen: boolean;
   setWalletModalOpen: (open: boolean) => void;
   walletBalances?: {
@@ -25,9 +26,10 @@ export const createWalletSlice: StateCreator<
   [],
   WalletSlice
 > = (set, get) => ({
-  // as this is currently 100% mocked you need to also set mockWalletAddress accordingly
-  account: '0x464c71f6c2f760dda6093dcb91c24c39e5d6e18c', // Treasury holding lot's of mainnet assets
-  // account: '0xafdabfb6227507ff6522b8a242168f6b5f353a6e', // Top stkAAVE holder to test staking
+  account: '',
+  setAccount(account) {
+    set({ account: account || '' });
+  },
   isWalletModalOpen: false,
   setWalletModalOpen(open) {
     set({ isWalletModalOpen: open });

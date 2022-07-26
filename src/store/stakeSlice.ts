@@ -1,5 +1,5 @@
 import { StakingService, UiStakeDataProvider } from '@aave/contract-helpers';
-import { getStakeConfig } from 'src/ui-config/stakeConfig';
+import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { StateCreator } from 'zustand';
 import { RootStore } from './root';
@@ -64,7 +64,6 @@ export const createStakeSlice: StateCreator<
   StakeSlice
 > = (set, get) => {
   function getCorrectProvider() {
-    const stakeConfig = getStakeConfig();
     const currentNetworkConfig = get().currentNetworkConfig;
     const isStakeFork =
       currentNetworkConfig.isFork &&
@@ -74,7 +73,6 @@ export const createStakeSlice: StateCreator<
   return {
     stakeDataLoading: true,
     refetchStakeData: async () => {
-      const stakeConfig = getStakeConfig();
       const uiStakeDataProvider = new UiStakeDataProvider({
         provider: getCorrectProvider(),
         uiStakeDataProvider: stakeConfig.stakeDataProvider,
@@ -103,7 +101,6 @@ export const createStakeSlice: StateCreator<
     },
     stake(tokenName) {
       const provider = getCorrectProvider();
-      const stakeConfig = getStakeConfig();
       const service = new StakingService(provider, {
         TOKEN_STAKING_ADDRESS: stakeConfig.tokens[tokenName].TOKEN_STAKING,
       });
@@ -111,7 +108,6 @@ export const createStakeSlice: StateCreator<
     },
     cooldown(tokenName) {
       const provider = getCorrectProvider();
-      const stakeConfig = getStakeConfig();
       const service = new StakingService(provider, {
         TOKEN_STAKING_ADDRESS: stakeConfig.tokens[tokenName].TOKEN_STAKING,
       });
@@ -119,7 +115,6 @@ export const createStakeSlice: StateCreator<
     },
     claimRewards(tokenName) {
       const provider = getCorrectProvider();
-      const stakeConfig = getStakeConfig();
       const service = new StakingService(provider, {
         TOKEN_STAKING_ADDRESS: stakeConfig.tokens[tokenName].TOKEN_STAKING,
       });
@@ -127,7 +122,6 @@ export const createStakeSlice: StateCreator<
     },
     redeem(tokenName) {
       const provider = getCorrectProvider();
-      const stakeConfig = getStakeConfig();
       const service = new StakingService(provider, {
         TOKEN_STAKING_ADDRESS: stakeConfig.tokens[tokenName].TOKEN_STAKING,
       });

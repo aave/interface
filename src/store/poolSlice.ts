@@ -73,55 +73,62 @@ export const createPoolSlice: StateCreator<
       chainId: currentChainId,
     });
     const lendingPoolAddressProvider = currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER;
+    const promises: Promise<void>[] = [];
     try {
-      const reservesResponse = await poolDataProviderContract.getReservesHumanized({
-        lendingPoolAddressProvider,
-      });
-      set((state) => ({
-        reserves: {
-          ...state.reserves,
-          [currentChainId]: {
-            ...state.reserves?.[currentChainId],
-            [lendingPoolAddressProvider]: reservesResponse.reservesData,
-          },
-        },
-        baseCurrencyData: {
-          ...state.baseCurrencyData,
-          [currentChainId]: {
-            ...state.baseCurrencyData?.[currentChainId],
-            [lendingPoolAddressProvider]: reservesResponse.baseCurrencyData,
-          },
-        },
-      }));
-    } catch (e) {
-      console.log('error fetching reserves');
-    }
-
-    if (account) {
-      try {
-        const userReservesResponse = await poolDataProviderContract.getUserReservesHumanized({
-          lendingPoolAddressProvider,
-          user: account,
-        });
-        set((state) => ({
-          userReserves: {
-            ...state.userReserves,
-            [currentChainId]: {
-              ...state.userReserves?.[currentChainId],
-              [lendingPoolAddressProvider]: userReservesResponse.userReserves,
-            },
-          },
-          userEmodeCategoryId: {
-            ...state.userEmodeCategoryId,
-            [currentChainId]: {
-              ...state.userEmodeCategoryId?.[currentChainId],
-              [lendingPoolAddressProvider]: userReservesResponse.userEmodeCategoryId,
-            },
-          },
-        }));
-      } catch (e) {
-        console.log('error fetching user-reserves');
+      promises.push(
+        poolDataProviderContract
+          .getReservesHumanized({
+            lendingPoolAddressProvider,
+          })
+          .then((reservesResponse) =>
+            set((state) => ({
+              reserves: {
+                ...state.reserves,
+                [currentChainId]: {
+                  ...state.reserves?.[currentChainId],
+                  [lendingPoolAddressProvider]: reservesResponse.reservesData,
+                },
+              },
+              baseCurrencyData: {
+                ...state.baseCurrencyData,
+                [currentChainId]: {
+                  ...state.baseCurrencyData?.[currentChainId],
+                  [lendingPoolAddressProvider]: reservesResponse.baseCurrencyData,
+                },
+              },
+            }))
+          )
+      );
+      if (account) {
+        promises.push(
+          poolDataProviderContract
+            .getUserReservesHumanized({
+              lendingPoolAddressProvider,
+              user: account,
+            })
+            .then((userReservesResponse) =>
+              set((state) => ({
+                userReserves: {
+                  ...state.userReserves,
+                  [currentChainId]: {
+                    ...state.userReserves?.[currentChainId],
+                    [lendingPoolAddressProvider]: userReservesResponse.userReserves,
+                  },
+                },
+                userEmodeCategoryId: {
+                  ...state.userEmodeCategoryId,
+                  [currentChainId]: {
+                    ...state.userEmodeCategoryId?.[currentChainId],
+                    [lendingPoolAddressProvider]: userReservesResponse.userEmodeCategoryId,
+                  },
+                },
+              }))
+            )
+        );
       }
+      await Promise.all(promises);
+    } catch (e) {
+      console.log('error fetching pool data');
     }
   },
 });

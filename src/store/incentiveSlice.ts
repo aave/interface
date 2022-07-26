@@ -29,29 +29,33 @@ export const createIncentiveSlice: StateCreator<
       provider: get().jsonRpcProvider(),
       chainId: currentChainId,
     });
-    try {
-      const reserveIncentiveData =
-        await poolDataProviderContract.getReservesIncentivesDataHumanized({
-          lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-        });
-      set({ reserveIncentiveData });
-    } catch (e) {
-      console.log('error fetching reserves');
-    }
+    const promises: Promise<void>[] = [];
 
-    if (account) {
-      try {
-        const userIncentiveData =
-          await poolDataProviderContract.getUserReservesIncentivesDataHumanized({
+    try {
+      promises.push(
+        poolDataProviderContract
+          .getReservesIncentivesDataHumanized({
             lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-            user: account,
-          });
-        set({
-          userIncentiveData: userIncentiveData,
-        });
-      } catch (e) {
-        console.log('error fetching user-reserves');
+          })
+          .then((reserveIncentiveData) => set({ reserveIncentiveData }))
+      );
+      if (account) {
+        promises.push(
+          poolDataProviderContract
+            .getUserReservesIncentivesDataHumanized({
+              lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
+              user: account,
+            })
+            .then((userIncentiveData) =>
+              set({
+                userIncentiveData,
+              })
+            )
+        );
       }
+      await Promise.all(promises);
+    } catch (e) {
+      console.log('error fetching incentives');
     }
   },
 });

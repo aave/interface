@@ -29,11 +29,11 @@ export function createSingletonSubscriber<T extends () => Promise<void>>(
     }
   }
   return () => {
-    const currentMarket = useRootStore((state) => state.currentMarket);
+    const [currentMarket, account] = useRootStore((state) => [state.currentMarket, state.account]);
     useEffect(() => {
       subscribe();
       return unsubscribe;
-    }, [currentMarket]);
+    }, [currentMarket, account]);
     return implementation;
   };
 }
