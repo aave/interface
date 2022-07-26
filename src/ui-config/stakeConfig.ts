@@ -12,7 +12,7 @@ export interface StakeConfig {
   };
 }
 
-export const mainnetStakeConfig: StakeConfig = {
+export const stakeConfig: StakeConfig = {
   chainId: ChainId.mainnet,
   stakeDataProvider: '0xc57450af527d10Fe182521AB39C1AD23c1e1BaDE',
   tokens: {
@@ -26,8 +26,4 @@ export const mainnetStakeConfig: StakeConfig = {
       STAKING_REWARD_TOKEN: '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9',
     },
   },
-};
-
-export const getStakeConfig = () => {
-  return mainnetStakeConfig;
 };
