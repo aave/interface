@@ -1,4 +1,5 @@
 import {
+  FaucetService,
   PoolBaseCurrencyHumanized,
   ReserveDataHumanized,
   UiPoolDataProvider,
@@ -20,6 +21,8 @@ export interface PoolSlice {
     get currentReserves(): ReserveDataHumanized[];
     get currentBaseCurrencyData(): PoolBaseCurrencyHumanized;
   };
+  // methods
+  mint: FaucetService['mint'];
 }
 
 export const createPoolSlice: StateCreator<
@@ -130,5 +133,14 @@ export const createPoolSlice: StateCreator<
     } catch (e) {
       console.log('error fetching pool data');
     }
+  },
+  mint: (...args) => {
+    if (!get().currentMarketData.addresses.FAUCET)
+      throw Error('currently selected market does not have a faucet attached');
+    const service = new FaucetService(
+      get().jsonRpcProvider(),
+      get().currentMarketData.addresses.FAUCET
+    );
+    return service.mint(...args);
   },
 });

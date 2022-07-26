@@ -1,5 +1,4 @@
 import {
-  FaucetService,
   IncentivesController,
   IncentivesControllerInterface,
   IncentivesControllerV2,
@@ -14,7 +13,6 @@ import { TxBuilderContext } from 'src/hooks/useTxBuilder';
 
 export interface TxBuilderContextInterface {
   lendingPool: LendingPool | PoolInterface;
-  faucetService: FaucetService;
   incentivesTxBuilder: IncentivesControllerInterface;
   incentivesTxBuilderV2: IncentivesControllerV2Interface;
 }
@@ -40,8 +38,6 @@ export const TxBuilderProvider: React.FC<{ children: ReactElement }> = ({ childr
     });
   }
 
-  const faucetService = new FaucetService(jsonRpcProvider(), currentMarketData.addresses.FAUCET);
-
   const incentivesTxBuilder: IncentivesControllerInterface = new IncentivesController(
     jsonRpcProvider()
   );
@@ -50,9 +46,7 @@ export const TxBuilderProvider: React.FC<{ children: ReactElement }> = ({ childr
   );
 
   return (
-    <TxBuilderContext.Provider
-      value={{ lendingPool, faucetService, incentivesTxBuilder, incentivesTxBuilderV2 }}
-    >
+    <TxBuilderContext.Provider value={{ lendingPool, incentivesTxBuilder, incentivesTxBuilderV2 }}>
       {children}
     </TxBuilderContext.Provider>
   );

@@ -1,5 +1,4 @@
 import {
-  FaucetService,
   IncentivesControllerInterface,
   IncentivesControllerV2Interface,
   LendingPool,
@@ -9,7 +8,6 @@ import React, { useContext } from 'react';
 
 export interface TxBuilderContextInterface {
   lendingPool: LendingPool | PoolInterface;
-  faucetService: FaucetService;
   incentivesTxBuilder: IncentivesControllerInterface;
   incentivesTxBuilderV2: IncentivesControllerV2Interface;
 }
