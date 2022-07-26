@@ -43,6 +43,7 @@ export const networkConfigs = Object.keys(_networkConfigs).reduce((acc, value) =
     acc[FORK_CHAIN_ID] = {
       ..._networkConfigs[value],
       // rpcOnly: true,
+      name: `${_networkConfigs[value].name} Fork`,
       isFork: true,
       privateJsonRPCUrl: FORK_RPC_URL,
       privateJsonRPCWSUrl: FORK_WS_RPC_URL,
