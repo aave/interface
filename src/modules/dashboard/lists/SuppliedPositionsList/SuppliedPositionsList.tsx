@@ -26,18 +26,30 @@ export const SuppliedPositionsList = () => {
   const suppliedPosition =
     user?.userReservesData
       .filter((userReserve) => userReserve.underlyingBalance !== '0')
-      .map((userReserve) => ({
-        ...userReserve,
-        reserve: {
-          ...userReserve.reserve,
-          ...(userReserve.reserve.isWrappedBaseAsset
-            ? fetchIconSymbolAndName({
-                symbol: currentNetworkConfig.baseAssetSymbol,
-                underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
-              })
-            : {}),
-        },
-      })) || [];
+      .map((userReserve) => {
+        // Determine if supply cap has been reached
+        const supplyCapUsage: number =
+          userReserve.reserve.totalLiquidity !== '0' && userReserve.reserve.supplyCap !== '0'
+            ? (parseInt(userReserve.reserve.totalLiquidity) /
+                parseInt(userReserve.reserve.supplyCap)) *
+              100
+            : 0;
+        const supplyCapReached = supplyCapUsage >= 99.95;
+
+        return {
+          ...userReserve,
+          reserve: {
+            ...userReserve.reserve,
+            ...(userReserve.reserve.isWrappedBaseAsset
+              ? fetchIconSymbolAndName({
+                  symbol: currentNetworkConfig.baseAssetSymbol,
+                  underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
+                })
+              : {}),
+            supplyCapReached,
+          },
+        };
+      }) || [];
 
   const head = [
     <Trans key="Balance">Balance</Trans>,

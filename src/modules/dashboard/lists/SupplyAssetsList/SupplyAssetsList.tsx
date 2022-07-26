@@ -45,6 +45,7 @@ export const SupplyAssetsList = () => {
       const walletBalance = walletBalances[reserve.underlyingAsset]?.amount;
       const walletBalanceUSD = walletBalances[reserve.underlyingAsset]?.amountUSD;
 
+      // Determine if supply cap has been reached
       const supplyCapUsage: number =
         reserve.totalLiquidity !== '0' && reserve.supplyCap !== '0'
           ? (parseInt(reserve.totalLiquidity) / parseInt(reserve.supplyCap)) * 100
