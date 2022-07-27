@@ -56,7 +56,6 @@ export const ReserveFactorOverview = ({
           href={explorerLinkBuilder({
             address: collectorContract,
           })}
-          target="_blank"
           sx={{ textDecoration: 'none' }}
         >
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
