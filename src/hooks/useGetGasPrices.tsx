@@ -6,7 +6,6 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useModalContext } from './useModal';
 import { usePolling } from './usePolling';
 import { useProtocolDataContext } from './useProtocolDataContext';
-import { useStateLoading } from './useStateLoading';
 
 type GasInfo = {
   legacyGasPrice: string;
@@ -43,7 +42,7 @@ export const rawToGasPriceData = (feeData: FeeData): GasPriceData => {
 };
 
 const useGetGasPrices = (): GetGasPricesHook => {
-  const { loading, setLoading } = useStateLoading(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [data, setData] = useState<GasPriceData | null>();
   const { type } = useModalContext();
