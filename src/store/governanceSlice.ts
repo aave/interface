@@ -39,7 +39,6 @@ export const createGovernanceSlice: StateCreator<
 > = (set, get) => {
   function getCorrectProvider() {
     const currentNetworkConfig = get().currentNetworkConfig;
-    console.log('triggered');
     const isStakeFork =
       currentNetworkConfig.isFork &&
       currentNetworkConfig.underlyingChainId === governanceConfig?.chainId;
