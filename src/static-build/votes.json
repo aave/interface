@@ -36359,6 +36359,60 @@
         "transactionHash": "0xd1295aedb5a8e8197d147d91329b44d60b058473cc5209686db0bac81c3fa906",
         "timestamp": 1658874510,
         "blockNumber": 15220790
+      },
+      {
+        "proposalId": 90,
+        "voter": "0xce575De2c04618511Ce3e984B9b2655aa6385231",
+        "support": true,
+        "votingPower": 0.17882045334541669,
+        "transactionHash": "0x1fc5e41e47ff1dac6f8de08217852dc7851e754c4c7a7e5fd32f76b266116fb9",
+        "timestamp": 1658882995,
+        "blockNumber": 15221429
+      },
+      {
+        "proposalId": 90,
+        "voter": "0x60dd456273Cbb018C2222621d4c2Dc5016E870d3",
+        "support": true,
+        "votingPower": 0.13047043946417894,
+        "transactionHash": "0x87218d6df1405f5eb0c3b6ce92bcb4864a5eb954b747595fea0e11a153fa3f4d",
+        "timestamp": 1658883335,
+        "blockNumber": 15221457
+      },
+      {
+        "proposalId": 90,
+        "voter": "0x484AdfdA2B22B76109087bFfFcB1D120F8e045A9",
+        "support": true,
+        "votingPower": 0.15192877,
+        "transactionHash": "0x2b6918da9319a6f2bcf9ab943a4988810f348ef9c2269b7bcecd45a44c1da8b8",
+        "timestamp": 1658886926,
+        "blockNumber": 15221731
+      },
+      {
+        "proposalId": 90,
+        "voter": "0x2EB4f35B998ba230562f646dc235AC25F18A3034",
+        "support": true,
+        "votingPower": 0.13499988,
+        "transactionHash": "0x9524a703b6e622696314deac17ff4ef91b58bc3eb9f0ef693589e895d5e49b32",
+        "timestamp": 1658888436,
+        "blockNumber": 15221826
+      },
+      {
+        "proposalId": 90,
+        "voter": "0x11952c380da6e34DbB9aafB6e4BD250008F23c9A",
+        "support": true,
+        "votingPower": 0.03,
+        "transactionHash": "0x4b8e0a985120b7671d33b3a5f43b3c4e9fd5e47798612e63621b4a17dc1cfc4a",
+        "timestamp": 1658890236,
+        "blockNumber": 15221957
+      },
+      {
+        "proposalId": 90,
+        "voter": "0x5b862bb7cAe4E7796e09EFca206Cfc42355cA299",
+        "support": false,
+        "votingPower": 0.0083,
+        "transactionHash": "0x115435b05d6e23cec973e7f3016c59abbf7a783c293bca69d6c1584724e37504",
+        "timestamp": 1658891740,
+        "blockNumber": 15222057
       }
     ],
     "finished": false
