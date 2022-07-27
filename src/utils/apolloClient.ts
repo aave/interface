@@ -16,7 +16,6 @@ import { print } from 'graphql';
 import gql from 'graphql-tag';
 import { Client, ClientOptions, createClient } from 'graphql-ws';
 
-import { getStakeConfig } from '../ui-config/stakeConfig';
 import { marketsData } from './marketsAndNetworksConfig';
 
 /**
@@ -92,44 +91,24 @@ const isSubscription = ({ query }: Operation) => {
   return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
 };
 
-const getStakeLink = (link?: ApolloLink) => {
-  const stakeConfig = getStakeConfig();
-  if (
-    stakeConfig &&
-    stakeConfig.wsStakeDataUrl &&
-    stakeConfig.queryStakeDataUrl &&
-    typeof window !== 'undefined'
-  ) {
-    const condition = (operation: Operation) =>
-      operation.getContext().target === APOLLO_QUERY_TARGET.STAKE;
-    const http = new HttpLink({ uri: stakeConfig.queryStakeDataUrl });
-    const ws = createWsLink(stakeConfig.wsStakeDataUrl);
+export const getApolloClient = () => {
+  const marketsWithCaching = Object.entries(marketsData).filter(
+    ([, cfg]) => cfg.cachingServerUrl && cfg.cachingWSServerUrl && typeof window !== 'undefined'
+  );
+
+  const combinedLink = marketsWithCaching.reduce((acc, [key, cfg]) => {
+    const condition = (operation: Operation): boolean =>
+      operation.getContext().target === APOLLO_QUERY_TARGET.MARKET(key);
+    const http = new HttpLink({ uri: cfg.cachingServerUrl });
+    const ws = createWsLink(cfg.cachingWSServerUrl as string);
+    if (!acc)
+      return split((operation) => condition(operation) && isSubscription(operation), ws, http);
     return split(
       (operation) => condition(operation) && isSubscription(operation),
       ws,
-      split((operation) => condition(operation), http, link)
+      split((operation) => condition(operation), http, acc)
     );
-  }
-  return link;
-};
-
-export const getApolloClient = () => {
-  const link = getStakeLink();
-
-  const combinedLink = Object.entries(marketsData).reduce((acc, [key, cfg]) => {
-    if (cfg.cachingServerUrl && cfg.cachingWSServerUrl && typeof window !== 'undefined') {
-      const condition = (operation: Operation) =>
-        operation.getContext().target === APOLLO_QUERY_TARGET.MARKET(key);
-      const http = new HttpLink({ uri: cfg.cachingServerUrl });
-      const ws = createWsLink(cfg.cachingWSServerUrl);
-      return split(
-        (operation) => condition(operation) && isSubscription(operation),
-        ws,
-        split((operation) => condition(operation), http, acc)
-      );
-    }
-    return acc;
-  }, link);
+  }, undefined as unknown as ApolloLink);
 
   const cache = new InMemoryCache({});
 

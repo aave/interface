@@ -26,16 +26,26 @@ export async function getProposalMetadata(
   if (!ipfsResponse.ok) {
     throw Error('Fetch not working');
   }
+  const clone = await ipfsResponse.clone();
+  try {
+    const response: ProposalMetadata = await ipfsResponse.json();
 
-  const response: ProposalMetadata = await ipfsResponse.json();
+    const { content, data } = matter(response.description);
 
-  const { content, data } = matter(response.description);
-
-  MEMORIZE[ipfsHash] = {
-    ...response,
-    ipfsHash,
-    description: content,
-    ...data,
-  };
+    MEMORIZE[ipfsHash] = {
+      ...response,
+      ipfsHash,
+      description: content,
+      ...data,
+    };
+  } catch (e) {
+    const text = await clone.text();
+    const { content, data } = matter(text);
+    MEMORIZE[ipfsHash] = {
+      ...(data as ProposalMetadata),
+      ipfsHash,
+      description: content,
+    };
+  }
   return MEMORIZE[ipfsHash];
 }

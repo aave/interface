@@ -49,6 +49,7 @@ export type MarketDataType = {
 export enum CustomMarket {
   // v3 test networks
   proto_arbitrum_rinkeby_v3 = 'proto_arbitrum_rinkeby_v3',
+  proto_arbitrum_goerli_v3 = 'proto_arbitrum_goerli_v3',
   proto_mumbai_v3 = 'proto_mumbai_v3',
   proto_fantom_testnet_v3 = 'proto_fantom_testnet_v3',
   proto_harmony_testnet_v3 = 'proto_harmony_testnet_v3',
@@ -124,9 +125,7 @@ export const marketsData: {
       collateralRepay: true,
       incentives: true,
     },
-    rpcOnly: false,
-    cachingServerUrl: 'https://cache-api-1.aave.com/graphql',
-    cachingWSServerUrl: 'wss://cache-api-1.aave.com/graphql',
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xB53C1a33016B2DC2fF3653530bfF1848a515c8c5'.toLowerCase(),
       LENDING_POOL: '0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9',
@@ -144,7 +143,7 @@ export const marketsData: {
     },
   },
   // [CustomMarket.proto_goerli]: {
-  //   marketTitle: 'Ethereum Goerli',
+  //   marketTitle: 'Ethereum Görli',
   //   chainId: ChainId.goerli,
   //   enabledFeatures: {
   //   faucet: true,
@@ -185,9 +184,7 @@ export const marketsData: {
   [CustomMarket.amm_mainnet]: {
     marketTitle: 'Ethereum AMM',
     chainId: ChainId.mainnet,
-    cachingServerUrl: 'https://cache-api-1.aave.com/graphql',
-    cachingWSServerUrl: 'wss://cache-api-1.aave.com/graphql',
-    rpcOnly: false,
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xacc030ef66f9dfeae9cbb0cd1b25654b82cfa8d5'.toLowerCase(),
       LENDING_POOL: '0x7937d4799803fbbe595ed57278bc4ca21f3bffcb',
@@ -288,7 +285,7 @@ export const marketsData: {
   },
   // v3
   [CustomMarket.proto_goerli_v3]: {
-    marketTitle: 'Ethereum Goerli',
+    marketTitle: 'Ethereum Görli',
     v3: true,
     chainId: ChainId.goerli,
     enabledFeatures: {
@@ -356,6 +353,26 @@ export const marketsData: {
       L2_ENCODER: '0x3d0d309DC8f999f34c4E7296dB38F0e65D3115DF',
     },
   },
+  [CustomMarket.proto_arbitrum_goerli_v3]: {
+    marketTitle: 'Arbitrum Görli',
+    v3: true,
+    chainId: ChainId.arbitrum_goerli,
+    enabledFeatures: {
+      faucet: true,
+      incentives: true,
+    },
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0xF8aa90E66B8BAe13f2e4aDe6104abAb8eeDaBfdc'.toLowerCase(),
+      LENDING_POOL: '0x6Cbb4E8eC402E07fDF96DbbC6c752aCfB0eB6075',
+      WETH_GATEWAY: '0xBCca2fc5F30A65cE2155d739364f3fc8F57E6999',
+      FAUCET: '0x98256500C9f1CE77e4C925b7bbF1588515E34422',
+      WALLET_BALANCE_PROVIDER: '0xA0025bE90591971ad76D12F8c9CecA09f66db3D8',
+      UI_POOL_DATA_PROVIDER: '0xd5dE38432Ef93B574B5eAbeBaa8F92bB480dD14F',
+      UI_INCENTIVE_DATA_PROVIDER: '0x71af6535f74Ac34e61a0Df6221ec0442b512eBC1',
+      L2_ENCODER: '0xBFB521464727c3B31A6D9183413cc2B66f4F6686',
+    },
+  },
   [CustomMarket.proto_avalanche_v3]: {
     marketTitle: 'Avalanche',
     v3: true,
@@ -421,7 +438,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_optimism_goerli_v3]: {
-    marketTitle: 'Optimism Goerli',
+    marketTitle: 'Optimism Görli',
     v3: true,
     chainId: ChainId.optimism_goerli,
     enabledFeatures: {
