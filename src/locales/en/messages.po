@@ -1761,6 +1761,10 @@ msgstr "Version 2"
 msgid "Version 3"
 msgstr "Version 3"
 
+#: src/modules/reserve-overview/ReserveFactorOverview.tsx
+msgid "View contract"
+msgstr "View contract"
+
 #: src/modules/markets/AssetsListMobileItem.tsx
 msgid "View details"
 msgstr "View details"
