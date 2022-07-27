@@ -190,7 +190,7 @@ export const SupplyAssetsList = () => {
             {supplyDisabled && currentNetworkConfig.name === 'Harmony' ? (
               <Warning severity="warning">
                 <Trans>
-                  Supplying in this market is currently disabled.{' '}
+                  Per the community, supplying in this market is currently disabled.{' '}
                   <Link
                     href="https://governance.aave.com/t/harmony-horizon-bridge-exploit-consequences-to-aave-v3-harmony/8614"
                     target="_blank"
@@ -200,7 +200,7 @@ export const SupplyAssetsList = () => {
                 </Trans>
               </Warning>
             ) : currentNetworkConfig.name === 'Harmony' ? (
-              <HarmonyWarning />
+              <HarmonyWarning learnMore={true} />
             ) : user?.isInIsolationMode ? (
               <Warning severity="warning">
                 <Trans>

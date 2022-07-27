@@ -220,7 +220,7 @@ export const SupplyModalContent = ({
         poolReserve.symbol === 'AAVE' &&
         isFeatureEnabled.staking(currentMarketData) && <AAVEWarning />}
       {poolReserve.symbol === 'SNX' && !maxAmountToSupply.eq('0') && <SNXWarning />}
-      {currentNetworkConfig.name === 'Harmony' && <HarmonyWarning />}
+      {currentNetworkConfig.name === 'Harmony' && <HarmonyWarning learnMore={true} />}
 
       <AssetInput
         value={amount}

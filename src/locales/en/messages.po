@@ -314,10 +314,6 @@ msgstr "Borrow {symbol}"
 msgid "Borrowed"
 msgstr "Borrowed"
 
-#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
-msgid "Borrowing in this market is currently disabled. <0>Learn More</0>"
-msgstr "Borrowing in this market is currently disabled. <0>Learn More</0>"
-
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "Borrowing is currently unavailable for {0}."
 msgstr "Borrowing is currently unavailable for {0}."
@@ -597,8 +593,8 @@ msgid "Due to a precision bug in the stETH contract, this asset can not be used 
 msgstr "Due to a precision bug in the stETH contract, this asset can not be used in flashloan transactions"
 
 #: src/components/transactions/Warnings/HarmonyWarning.tsx
-msgid "Due to the Horizon bridge exploit, certain assets on the Harmony network are unbacked which affects the Aave V3 Harmony market. <0>Learn More</0>"
-msgstr "Due to the Horizon bridge exploit, certain assets on the Harmony network are unbacked which affects the Aave V3 Harmony market. <0>Learn More</0>"
+msgid "Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Aave V3 Harmony market. <0>{0}</0>"
+msgstr "Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Aave V3 Harmony market. <0>{0}</0>"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode"
@@ -1061,6 +1057,14 @@ msgstr "Participating in this {symbol} reserve gives annualized rewards."
 msgid "Pending..."
 msgstr "Pending..."
 
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
+msgid "Per the community, borrowing in this market is currently disabled. <0>Learn More</0>"
+msgstr "Per the community, borrowing in this market is currently disabled. <0>Learn More</0>"
+
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+msgid "Per the community, supplying in this market is currently disabled. <0>Learn More</0>"
+msgstr "Per the community, supplying in this market is currently disabled. <0>Learn More</0>"
+
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Please connect a wallet to view your personal information here."
 msgstr "Please connect a wallet to view your personal information here."
@@ -1393,10 +1397,6 @@ msgstr "Supply caps limit the amount of a certain asset that can be supplied to 
 #: src/components/transactions/Supply/SupplyActions.tsx
 msgid "Supply {symbol}"
 msgstr "Supply {symbol}"
-
-#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
-msgid "Supplying in this market is currently disabled. <0>Learn More</0>"
-msgstr "Supplying in this market is currently disabled. <0>Learn More</0>"
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "Supplying your"

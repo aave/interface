@@ -316,7 +316,7 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
 
       {currentNetworkConfig.name === 'Harmony' && (
         <Row align="flex-start" mb={3}>
-          <HarmonyWarning />
+          <HarmonyWarning learnMore={true} />
         </Row>
       )}
 

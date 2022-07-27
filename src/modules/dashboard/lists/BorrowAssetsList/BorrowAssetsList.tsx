@@ -115,7 +115,7 @@ export const BorrowAssetsList = () => {
           {borrowDisabled && currentNetworkConfig.name === 'Harmony' ? (
             <Warning severity="warning">
               <Trans>
-                Borrowing in this market is currently disabled.{' '}
+                Per the community, borrowing in this market is currently disabled.{' '}
                 <Link
                   href="https://governance.aave.com/t/harmony-horizon-bridge-exploit-consequences-to-aave-v3-harmony/8614"
                   target="_blank"
