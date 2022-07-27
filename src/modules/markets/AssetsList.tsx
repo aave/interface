@@ -1,9 +1,10 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { useMediaQuery } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
 import { useState } from 'react';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
+import { HarmonyWarning } from 'src/components/transactions/Warnings/HarmonyWarning';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
@@ -104,6 +105,11 @@ export default function AssetsList() {
       }
       captionSize="h2"
     >
+      {currentNetworkConfig.name === 'Harmony' && (
+        <Box sx={{ mx: '24px' }}>
+          <HarmonyWarning />
+        </Box>
+      )}
       {!isTableChangedToCards && (
         <ListHeaderWrapper px={6}>
           {header.map((col) => (
