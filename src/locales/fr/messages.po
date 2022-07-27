@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-07-15 18:04\n"
+"PO-Revision-Date: 2022-07-27 12:06\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -597,6 +597,10 @@ msgstr "Discord"
 msgid "Due to a precision bug in the stETH contract, this asset can not be used in flashloan transactions"
 msgstr ""
 
+#: src/components/transactions/Warnings/HarmonyWarning.tsx
+msgid "Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Aave V3 Harmony market. <0>{0}</0>"
+msgstr ""
+
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode"
 msgstr "E-Mode"
@@ -1057,6 +1061,14 @@ msgstr "Participer à cette réserve {symbol} donne des récompenses annualisée
 #: src/components/transactions/Faucet/FaucetActions.tsx
 msgid "Pending..."
 msgstr "En attente..."
+
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
+msgid "Per the community, borrowing in this market is currently disabled. <0>Learn More</0>"
+msgstr ""
+
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+msgid "Per the community, supplying in this market is currently disabled. <0>Learn More</0>"
+msgstr ""
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Please connect a wallet to view your personal information here."
