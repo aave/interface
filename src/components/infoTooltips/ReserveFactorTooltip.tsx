@@ -13,9 +13,7 @@ export const ReserveFactorTooltip = ({ collectorLink, ...rest }: ReserveFactorTo
       <Trans>
         Reserve factor is a percentage of interest which goes to a{' '}
         {collectorLink ? (
-          <Link href={collectorLink} target="_blank">
-            collector contract
-          </Link>
+          <Link href={collectorLink}>collector contract</Link>
         ) : (
           'collector contract'
         )}{' '}
