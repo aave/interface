@@ -171,43 +171,38 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
     );
   }
 
-  let WalletNotification = <></>;
-  if (balance?.amount === '0') {
-    if (currentNetworkConfig.isTestnet) {
-      WalletNotification = (
-        <Warning severity="info" icon={false}>
-          <Trans>
-            Your {networkName} wallet is empty. Get free test {poolReserve.name} at
-          </Trans>{' '}
-          <Button
-            variant="text"
-            sx={{ verticalAlign: 'top' }}
-            onClick={() => openFaucet(underlyingAsset)}
-            disableRipple
-          >
-            <Typography variant="caption">
-              <Trans>{networkName} Faucet</Trans>
-            </Typography>
-          </Button>
-        </Warning>
-      );
-    } else {
-      WalletNotification = (
-        <Warning severity="info" icon={false}>
-          <Trans>Your {networkName} wallet is empty. Purchase or transfer assets</Trans>{' '}
-          {bridge && (
-            <Trans>
-              or use {<Link href={bridge.url}>{bridge.name}</Link>} to transfer your ETH assets.
-            </Trans>
-          )}
-        </Warning>
-      );
-    }
-  }
-
   return (
     <PaperWrapper>
-      <Row align="flex-start">{WalletNotification}</Row>
+      {balance?.amount === '0' && (
+        <Row align="flex-start">
+          {currentNetworkConfig.isTestnet ? (
+            <Warning severity="info" icon={false}>
+              <Trans>
+                Your {networkName} wallet is empty. Get free test {poolReserve.name} at
+              </Trans>{' '}
+              <Button
+                variant="text"
+                sx={{ verticalAlign: 'top' }}
+                onClick={() => openFaucet(underlyingAsset)}
+                disableRipple
+              >
+                <Typography variant="caption">
+                  <Trans>{networkName} Faucet</Trans>
+                </Typography>
+              </Button>
+            </Warning>
+          ) : (
+            <Warning severity="info" icon={false}>
+              <Trans>Your {networkName} wallet is empty. Purchase or transfer assets</Trans>{' '}
+              {bridge && (
+                <Trans>
+                  or use {<Link href={bridge.url}>{bridge.name}</Link>} to transfer your ETH assets.
+                </Trans>
+              )}
+            </Warning>
+          )}
+        </Row>
+      )}
       <Row
         caption={<Trans>Wallet balance</Trans>}
         align="flex-start"

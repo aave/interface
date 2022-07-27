@@ -152,31 +152,6 @@ export const SupplyAssetsList = () => {
   if (loadingReserves || loading)
     return <ListLoader title={<Trans>Assets to supply</Trans>} head={head} withTopMargin />;
 
-  let WalletNotification = <></>;
-  if (filteredSupplyReserves.length === 0) {
-    if (isTestnet) {
-      WalletNotification = (
-        <Warning severity="info">
-          <Trans>Your {networkName} wallet is empty. Get free test assets at </Trans>{' '}
-          <Link href={ROUTES.faucet} style={{ fontWeight: 400 }}>
-            <Trans>{networkName} Faucet</Trans>
-          </Link>
-        </Warning>
-      );
-    } else {
-      WalletNotification = (
-        <Warning severity="info">
-          <Trans>Your {networkName} wallet is empty. Purchase or transfer assets</Trans>{' '}
-          {bridge && (
-            <Trans>
-              or use {<Link href={bridge.url}>{bridge.name}</Link>} to transfer your ETH assets.
-            </Trans>
-          )}
-        </Warning>
-      );
-    }
-  }
-
   const supplyDisabled = !tokensToSupply.length;
   return (
     <ListWrapper
@@ -210,8 +185,23 @@ export const SupplyAssetsList = () => {
                   </Link>
                 </Trans>
               </Warning>
+            ) : filteredSupplyReserves.length === 0 && isTestnet ? (
+              <Warning severity="info">
+                <Trans>Your {networkName} wallet is empty. Get free test assets at </Trans>{' '}
+                <Link href={ROUTES.faucet} style={{ fontWeight: 400 }}>
+                  <Trans>{networkName} Faucet</Trans>
+                </Link>
+              </Warning>
             ) : (
-              <>{WalletNotification}</>
+              <Warning severity="info">
+                <Trans>Your {networkName} wallet is empty. Purchase or transfer assets</Trans>{' '}
+                {bridge && (
+                  <Trans>
+                    or use {<Link href={bridge.url}>{bridge.name}</Link>} to transfer your ETH
+                    assets.
+                  </Trans>
+                )}
+              </Warning>
             )}
           </Box>
 
