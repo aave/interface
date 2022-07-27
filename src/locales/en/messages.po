@@ -183,8 +183,6 @@ msgstr "Asset can only be used as collateral in isolation mode only."
 msgid "Asset cannot be used as collateral."
 msgstr "Asset cannot be used as collateral."
 
-#: src/components/transactions/Emode/EmodeModalContent.tsx
-#: src/components/transactions/Emode/EmodeSelect.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Asset category"
 msgstr "Asset category"
@@ -554,9 +552,12 @@ msgid "Differential"
 msgstr "Differential"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
-#: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Disable E-Mode"
 msgstr "Disable E-Mode"
+
+#: src/components/transactions/Emode/EmodeSelect.tsx
+msgid "Disable E-mode"
+msgstr "Disable E-mode"
 
 #: src/layouts/AppHeader.tsx
 msgid "Disable testnet"
@@ -643,8 +644,12 @@ msgid "Enabling E-Mode"
 msgstr "Enabling E-Mode"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
-msgid "Enabling E-Mode only allows you to borrow assets belonging to the selected category Stablecoins. Please visit our <0>FAQ guide</0> to learn more about how it works and the applied restrictions."
-msgstr "Enabling E-Mode only allows you to borrow assets belonging to the selected category Stablecoins. Please visit our <0>FAQ guide</0> to learn more about how it works and the applied restrictions."
+msgid "Enabling E-Mode only allows you to borrow assets belonging to the selected category: {0}. Please visit our <0>FAQ guide</0> to learn more about how it works and the applied restrictions."
+msgstr "Enabling E-Mode only allows you to borrow assets belonging to the selected category: {0}. Please visit our <0>FAQ guide</0> to learn more about how it works and the applied restrictions."
+
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+msgid "Enabling E-Mode requires all borrowed assets to belong to the same category. To enable a new E-Mode, all borrow positions outside of this asset category must be closed. See our <0>FAQ</0> to learn more."
+msgstr "Enabling E-Mode requires all borrowed assets to belong to the same category. To enable a new E-Mode, all borrow positions outside of this asset category must be closed. See our <0>FAQ</0> to learn more."
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "Enabling this asset as collateral increases your borrowing power and Health Factor. However, it can get liquidated if your health factor drops below 1."
@@ -792,10 +797,6 @@ msgstr "In E-Mode some assets are not borrowable. Exit E-Mode to get access to a
 msgid "In Isolation mode, you cannot supply other assets as collateral. A global debt ceiling limits the borrowing power of the isolated asset. Read more in our <0>FAQ</0>"
 msgstr "In Isolation mode, you cannot supply other assets as collateral. A global debt ceiling limits the borrowing power of the isolated asset. Read more in our <0>FAQ</0>"
 
-#: src/components/transactions/Emode/EmodeModalContent.tsx
-msgid "In order to change E-Mode from asset category{0}you will need to close your position in your current category. See our <0>FAQ</0> to learn more."
-msgstr "In order to change E-Mode from asset category{0}you will need to close your position in your current category. See our <0>FAQ</0> to learn more."
-
 #: src/ui-config/errorMapping.tsx
 msgid "Inconsistent flashloan parameters"
 msgstr "Inconsistent flashloan parameters"
@@ -931,6 +932,10 @@ msgstr "Menu"
 msgid "Minimum received"
 msgstr "Minimum received"
 
+#: src/modules/dashboard/DashboardEModeButton.tsx
+msgid "Modify E-Mode"
+msgstr "Modify E-Mode"
+
 #: src/layouts/MoreMenu.tsx
 msgid "More"
 msgstr "More"
@@ -970,6 +975,10 @@ msgstr "Network not supported for this wallet"
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "New APY"
 msgstr "New APY"
+
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+msgid "New E-Mode category"
+msgstr "New E-Mode category"
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 msgid "No rewards to claim"
@@ -1413,9 +1422,17 @@ msgstr "Swapping"
 msgid "Switch APY type"
 msgstr "Switch APY type"
 
+#: src/components/transactions/Emode/EmodeActions.tsx
+msgid "Switch E-Mode"
+msgstr "Switch E-Mode"
+
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Switch Network"
 msgstr "Switch Network"
+
+#: src/components/transactions/Emode/EmodeSelect.tsx
+msgid "Switch asset category"
+msgstr "Switch asset category"
 
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switch rate"
@@ -1424,6 +1441,10 @@ msgstr "Switch rate"
 #: src/ui-config/menu-items/index.tsx
 msgid "Switch to Aave Classic"
 msgstr "Switch to Aave Classic"
+
+#: src/components/transactions/Emode/EmodeActions.tsx
+msgid "Switching E-Mode"
+msgstr "Switching E-Mode"
 
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switching rate"
@@ -1882,10 +1903,6 @@ msgstr "You don’t have enough funds in your wallet to repay the full amount. I
 msgid "You have not borrow yet using this currency"
 msgstr "You have not borrow yet using this currency"
 
-#: src/components/transactions/Emode/EmodeModalContent.tsx
-msgid "You need to change E-Mode to continue."
-msgstr "You need to change E-Mode to continue."
-
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You switched to {0} rate"
 msgstr "You switched to {0} rate"
@@ -1964,11 +1981,6 @@ msgstr "assets"
 msgid "copy the error"
 msgstr "copy the error"
 
-#: src/components/transactions/Emode/EmodeSelect.tsx
-#: src/components/transactions/Emode/EmodeSelect.tsx
-msgid "disabled"
-msgstr "disabled"
-
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "documentation"
 msgstr "documentation"
@@ -1989,6 +2001,7 @@ msgstr "is an asset affected by rebasing. Visit the"
 msgid "on"
 msgstr "on"
 
+#: src/components/transactions/Emode/EmodeSelect.tsx
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "or"
 msgstr "or"

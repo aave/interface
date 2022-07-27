@@ -203,7 +203,7 @@ export const DashboardEModeButton = ({
             }}
             data-cy={`${isEModeDisabled ? 'emode-enable' : 'emode-disable'}`}
           >
-            {isEModeDisabled ? <Trans>Enable E-Mode</Trans> : <Trans>Disable E-Mode</Trans>}
+            {isEModeDisabled ? <Trans>Enable E-Mode</Trans> : <Trans>Modify E-Mode</Trans>}
           </Button>
         </Box>
       </Menu>

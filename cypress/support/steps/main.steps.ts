@@ -502,10 +502,10 @@ export const emodeActivating = (
       cy.get('[data-cy=emode-open]').click();
       if (turnOn) cy.get(`[data-cy="emode-enable"]`).click();
       else cy.get(`[data-cy="emode-disable"]`).click();
-
       if (!turnOn && multipleEmodes) {
-        cy.get('[data-cy=EmodeSelect]').click();
-        cy.get(`[data-cy="disableEmode"]`).click();
+        // cy.get('[data-cy=EmodeSelect]').click();
+        // cy.get(`[data-cy="disableEmode"]`).click();
+        cy.get(`[data-cy="disableCheckboxEmode"]`).click();
       }
     });
     it(`${turnOn ? 'Turn on E-mode' : 'Turn off E-mode'}`, () => {
