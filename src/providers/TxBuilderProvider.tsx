@@ -16,7 +16,7 @@ import { TxBuilderContext } from 'src/hooks/useTxBuilder';
 
 export interface TxBuilderContextInterface {
 
-  BiconomyProxy: IAaveBiconomyForwarderServiceInterface|any;
+  BiconomyProxy: IAaveBiconomyForwarderServiceInterface|undefined;
   lendingPool: LendingPool | PoolInterface;
   faucetService: FaucetService;
   incentivesTxBuilder: IncentivesControllerInterface;

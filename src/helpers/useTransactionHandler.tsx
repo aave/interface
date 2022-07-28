@@ -11,6 +11,7 @@ import AProxy from './AProxy.json'
 import ERC20 from './ERC20.json'
 export const MOCK_SIGNED_HASH = 'Signed correctly';
 import {ethers} from 'ethers';
+import { parseEther } from 'ethers/lib/utils';
 
 interface UseTransactionHandlerProps {
   handleGetTxns: () => Promise<EthereumTransactionTypeExtended[]>;
@@ -54,8 +55,6 @@ export const useTransactionHandler = ({
   const mounted = useRef(false);
 
   const tokenAddress="0x9A753f0F7886C9fbF63cF59D0D4423C5eFaCE95B";
-  const myadd="0x620E1cf616444d524c81841B85f60F8d3Ea64751"
-  const proxyAddress="0x77cCf0A218D054662c743b94aBDc57fA98D06b68"
   useEffect(() => {
     mounted.current = true; // Will set it to true on mount ...
     return () => {
@@ -70,30 +69,23 @@ export const useTransactionHandler = ({
     const bcp =async()=> {
       console.log("AAAAA",currentAccount)
       const Proxy: AaveBiconomyForwarderService = BiconomyProxy as AaveBiconomyForwarderService;
+      
       let Payload = await Proxy.depositToAave({
         user: currentAccount,
         asset: tokenAddress,
-        amount:"10",
+        amount: "10",
         onBehalfOf:currentAccount,
         referralCode:"0"
       });
-      let adata = await Payload[0].tx();
-       console.log("APAY",adata);
-
-      const provider = new ethers.providers.JsonRpcProvider("https://rpc-mumbai.maticvigil.com/v1/1ba48c273c7a79a97ec2876d6ea5823ad1a84946");
-      let contract = new ethers.Contract(proxyAddress, AProxy,provider);
-      console.log("2")
-      let { data } = await contract.populateTransaction.depositToAave(tokenAddress,ethers.utils.parseEther("20"),myadd,0);
-
       
-    let txParams = {
-        data: data,
-        to: proxyAddress,
-        from: myadd,
-        signatureType: "EIP712_SIGN"
-    };
-      // deadline is an hour after signature
-      sendBiconomyTx(adata);
+      console.log("F",Payload)
+      let adata = await Payload[0].tx();
+     
+      
+      console.log("GDA",tokenAddress)
+       console.log("APAY",adata);
+      const r=await sendBiconomyTx(adata);
+      console.log("R",r);
     }
     bcp();
     

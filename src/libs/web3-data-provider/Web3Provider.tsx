@@ -12,14 +12,12 @@ import {
   // Web3Provider,
 } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { BigNumber, providers, ethers } from 'ethers';
+import { BigNumber, providers } from 'ethers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { API_ETH_MOCK_ADDRESS, transactionType } from '@aave/contract-helpers';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { TorusConnector } from '@web3-react/torus-connector';
-import AProxy from '../../helpers/AProxy.json';
-import ERC20 from '../../helpers/ERC20.json';
 
 export type ERC20TokenType = {
   address: string;
@@ -287,29 +285,37 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   };
 
   const sendBiconomyTx = async (txData: transactionType): Promise<TransactionResponse> => {
-    
     if (provider) {
+      txData.signatureType="EIP712_SIGN";
+      console.log("aa",txData)
       const api = "I8c1XB-l6.ed819000-2f9a-43d0-8c76-583b9b77bb98";
       let biconomy = new Biconomy(provider.provider,{
       apiKey:api, 
       debug: true,
       
     });
-    biconomy.onEvent(biconomy.READY, async () => {
+    console.log("AbC")
+      
+    let a =new Promise<TransactionResponse>((resolve,reject)=>{
+      biconomy.onEvent(biconomy.READY, async () => {
       // Initialize your dapp here like getting user accounts etc
-      console.log("AbC")
       let bprovidr = biconomy.getEthersProvider();
-    let txResponse = await bprovidr.send("eth_sendTransaction", [txData]);
-    console.log("Transaction hash : ", txResponse);
-    }).onEvent(biconomy.ERROR, (error:any) => {
-      // Handle error while initializing mexa
-      console.log(error)
-    });
-    
-    }
+      
+      let txResponse =  await bprovidr.send("eth_sendTransaction", [txData]);
+      console.log("Transaction hash : ", txResponse);
+      resolve(txResponse)
+
+    }).onEvent(biconomy.ERROR,(error:any)=>{
+      reject(new Error("FAIL"))
+      
+    })
+  });
+  const result= await a;
+  biconomy=undefined
+  return a;
+  }
       throw new Error('Error sending transaction. Provider not found');
     };
-
 
 
   // TODO: recheck that it works on all wallets
