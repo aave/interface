@@ -59,6 +59,7 @@ export const NAME_MAP: { [key: string]: string } = {
   WONE: 'Wrapped ONE',
   YFI: 'yearn.finance',
   ZRX: '0x Coin',
+  '1INCH': '1inch Network',
 };
 
 export function fetchIconSymbolAndName({
