@@ -15,7 +15,6 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
-
 import { CapType } from '../../caps/helper';
 import { AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -27,6 +26,7 @@ import {
   DetailsUnwrapSwitch,
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
+import { BorrowCapWarning } from '../Warnings/BorrowCapWarning';
 import { BorrowActions } from './BorrowActions';
 
 export enum ErrorType {
@@ -120,7 +120,7 @@ export const BorrowModalContent = ({
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToBorrow.toString(10) : _amount;
 
-  // We set this in a useEffect, so it doesnt constantly change when
+  // We set this in a useEffect, so it doesn't constantly change when
   // max amount selected
   const handleChange = (_value: string) => {
     const maxSelected = _value === '-1';
@@ -147,6 +147,13 @@ export const BorrowModalContent = ({
 
   // calculating input usd value
   const usdValue = valueToBigNumber(amount).multipliedBy(poolReserve.priceInUSD);
+
+  // ************** Warnings **********
+  // borrow cap warning
+  const percentageOfCap =
+    valueToBigNumber(poolReserve.totalDebt).dividedBy(poolReserve.borrowCap).toNumber() * 100;
+  const showBorrowCapWarning: boolean =
+    poolReserve.borrowCap !== '0' && percentageOfCap >= 98 && percentageOfCap < 100;
 
   // error types handling
   let blockingError: ErrorType | undefined = undefined;
@@ -216,6 +223,8 @@ export const BorrowModalContent = ({
       : poolReserve.vIncentivesData;
   return (
     <>
+      {showBorrowCapWarning && <BorrowCapWarning />}
+
       <AssetInput
         value={amount}
         onChange={handleChange}

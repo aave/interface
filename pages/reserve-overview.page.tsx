@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { valueToBigNumber } from '@aave/math-utils';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -17,7 +18,6 @@ import { MainLayout } from 'src/layouts/MainLayout';
 import { ReserveActions } from 'src/modules/reserve-overview/ReserveActions';
 import { ReserveConfiguration } from 'src/modules/reserve-overview/ReserveConfiguration';
 import { ReserveTopDetails } from 'src/modules/reserve-overview/ReserveTopDetails';
-
 import { ContentContainer } from '../src/components/ContentContainer';
 
 export default function ReserveOverview() {
@@ -40,20 +40,21 @@ export default function ReserveOverview() {
 
   const isOverview = mode === 'overview';
 
-  // const supplyCapUsage: number = reserve
-  //   ? (parseInt(reserve.totalLiquidity) / parseInt(reserve.supplyCap)) * 100
-  //   : 0;
-  // const borrowCapUsage: number = reserve
-  //   ? (parseInt(reserve.totalDebt) / parseInt(reserve.borrowCap)) * 100
-  //   : 0;
-  // const debtCeilingUsage: number = reserve
-  //   ? (parseInt(reserve.isolationModeTotalDebt) / parseInt(reserve.debtCeiling)) * 100
-  //   : 0;
+  const supplyCapUsage: number = reserve
+    ? valueToBigNumber(reserve.totalLiquidity).dividedBy(reserve.supplyCap).toNumber() * 100
+    : 0;
+  const borrowCapUsage: number = reserve
+    ? valueToBigNumber(reserve.totalDebt).dividedBy(reserve.borrowCap).toNumber() * 100
+    : 0;
+  const debtCeilingUsage: number = reserve
+    ? valueToBigNumber(reserve.isolationModeTotalDebt).dividedBy(reserve.debtCeiling).toNumber() *
+      100
+    : 0;
 
   // TODO: Test UI changes by updating these values
-  const supplyCapUsage = 98;
-  const borrowCapUsage = 82.3;
-  const debtCeilingUsage = 60.3;
+  // const supplyCapUsage = 98;
+  // const borrowCapUsage = 82.3;
+  // const debtCeilingUsage = 60.3;
 
   return (
     <>
