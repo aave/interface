@@ -88,7 +88,7 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
   }
 
   usePolling(fetchNewProposals, 60000, false, [proposals.length]);
-  usePolling(updatePendingProposals, 15000, false, [proposals.length]);
+  usePolling(updatePendingProposals, 30000, false, [proposals.length]);
   return (
     <div>
       <Box
