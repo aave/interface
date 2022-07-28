@@ -13,6 +13,7 @@ export const ContentContainer = ({ children }: ContentContainerProps) => {
         flexDirection: 'column',
         flex: 1,
         mt: { xs: '-32px', lg: '-46px', xl: '-44px', xxl: '-48px' },
+        wordBreak: 'break-word',
       }}
     >
       <Container>{children}</Container>
