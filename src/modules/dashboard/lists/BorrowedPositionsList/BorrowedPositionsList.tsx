@@ -39,7 +39,7 @@ export const BorrowedPositionsList = () => {
           : 0;
 
       // TODO: Can test UI with const borrowCapReached = true
-      const borrowCapReached = borrowCapUsage >= 99.95;
+      const borrowCapReached = borrowCapUsage >= 100;
 
       if (userReserve.variableBorrows !== '0') {
         acc.push({

@@ -39,7 +39,7 @@ export const BorrowAssetsList = () => {
           ? (parseInt(reserve.totalDebt) / parseInt(reserve.borrowCap)) * 100
           : 0;
       // TODO: Can test UI with const borrowCapReached = true
-      const borrowCapReached = borrowCapUsage >= 99.95;
+      const borrowCapReached = borrowCapUsage >= 100;
 
       const availableBorrows = user
         ? getMaxAmountAvailableToBorrow(reserve, user, InterestRate.Variable).toNumber()

@@ -13,7 +13,7 @@ export const CapsCircularStatus = ({ value }: CapsCircularStatusProps) => {
   const determineColor = (): 'error' | 'warning' | 'success' => {
     if (Math.round(value) >= 100) {
       return 'error';
-    } else if (value >= 80) {
+    } else if (value >= 98) {
       return 'warning';
     } else {
       return 'success';

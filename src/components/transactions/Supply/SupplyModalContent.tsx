@@ -213,7 +213,7 @@ export const SupplyModalContent = ({
   return (
     <>
       {showIsolationWarning && <IsolationModeWarning />}
-      {showSupplyCapWarning && <SupplyCapWarning />}
+      {true && <SupplyCapWarning />}
       {poolReserve.symbol === 'AMPL' && <AMPLWarning />}
       {process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true' &&
         poolReserve.symbol === 'AAVE' &&
