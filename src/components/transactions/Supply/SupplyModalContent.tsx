@@ -111,11 +111,10 @@ export const SupplyModalContent = ({
 
   // ************** Warnings **********
   // supply cap warning
-  const percentageOfCap = valueToBigNumber(poolReserve.totalLiquidity)
-    .dividedBy(poolReserve.supplyCap)
-    .toNumber();
+  const percentageOfCap =
+    valueToBigNumber(poolReserve.totalLiquidity).dividedBy(poolReserve.supplyCap).toNumber() * 100;
   const showSupplyCapWarning: boolean =
-    poolReserve.supplyCap !== '0' && percentageOfCap >= 0.99 && percentageOfCap < 1;
+    poolReserve.supplyCap !== '0' && percentageOfCap >= 98 && percentageOfCap < 100;
 
   // isolation warning
   const hasDifferentCollateral = user.userReservesData.find(
@@ -213,7 +212,7 @@ export const SupplyModalContent = ({
   return (
     <>
       {showIsolationWarning && <IsolationModeWarning />}
-      {true && <SupplyCapWarning />}
+      {showSupplyCapWarning && <SupplyCapWarning supplyCapUsage={percentageOfCap} />}
       {poolReserve.symbol === 'AMPL' && <AMPLWarning />}
       {process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true' &&
         poolReserve.symbol === 'AAVE' &&

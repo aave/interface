@@ -1,27 +1,21 @@
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
-
 import { Link } from '../../primitives/Link';
 import { Warning } from '../../primitives/Warning';
 
-// TODO: need text
-export const SupplyCapWarning = () => {
+type SupplyCapWarningProps = {
+  supplyCapUsage: number;
+};
+
+export const SupplyCapWarning = ({ supplyCapUsage }: SupplyCapWarningProps) => {
   return (
-    <Warning severity="warning" icon={false}>
-      <Typography variant="subheader1" mb={0.5}>
-        <Trans>Supply amount is limited due to Supply Cap</Trans>
-      </Typography>
-      <Typography>
-        <Trans>
-          Supply caps limit the amount of a certain asset that can be supplied to the Aave protocol.
-          This helps reducing exposure to the asset and mitigate attacks like infinite minting or
-          price oracle manipulation.
-          <Link href="https://docs.aave.com/developers/whats-new/supply-borrow-caps">
-            FAQ guide
-          </Link>
-          .
-        </Trans>
-      </Typography>
+    <Warning severity="warning">
+      <Trans>
+        Maximum amount available to supply is limited because protocol supply cap is at{' '}
+        {supplyCapUsage.toFixed(2)}%.
+      </Trans>{' '}
+      <Link href="https://docs.aave.com/developers/whats-new/supply-borrow-caps">
+        <Trans>Learn more</Trans>
+      </Link>
     </Warning>
   );
 };
