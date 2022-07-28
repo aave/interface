@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-07-27 12:06\n"
+"PO-Revision-Date: 2022-07-28 00:19\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -447,6 +447,14 @@ msgstr "Η χρήση εγγύησης είναι περιορισμένη λό�
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Collateralization"
 msgstr "Εξασφάλιση"
+
+#: src/modules/reserve-overview/ReserveFactorOverview.tsx
+msgid "Collector Contract"
+msgstr ""
+
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Collector Info"
+msgstr ""
 
 #: src/components/WalletConnection/ConnectWalletButton.tsx
 #: src/layouts/WalletWidget.tsx
@@ -1175,6 +1183,14 @@ msgstr "Αποπληρώνοντας {symbol}"
 msgid "Reserve Size"
 msgstr "Μέγεθος Αποθεματικού"
 
+#: src/modules/reserve-overview/ReserveFactorOverview.tsx
+msgid "Reserve factor"
+msgstr ""
+
+#: src/components/infoTooltips/ReserveFactorTooltip.tsx
+msgid "Reserve factor is a percentage of interest which goes to a {0} that is controlled by Aave governance to promote ecosystem growth."
+msgstr ""
+
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Reserve status & configuration"
 msgstr "Κατάσταση & διαμόρφωση αποθεματικού"
@@ -1740,8 +1756,8 @@ msgid "Variable debt supply is not zero"
 msgstr "Η προσφορά μεταβλητού χρέους δεν είναι μηδενική"
 
 #: src/components/infoTooltips/VariableAPYTooltip.tsx
-msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions. Recommended for short-term loans."
-msgstr "Το μεταβλητό επιτόκιο θα <0>μεταβάλλεται</0> ανάλογα με τις συνθήκες της αγοράς. Συνιστάται για βραχυπρόθεσμα δάνεια."
+msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions. Recommended for short-term positions."
+msgstr ""
 
 #: src/components/MarketSwitcher.tsx
 msgid "Version 2"
@@ -1749,6 +1765,10 @@ msgstr ""
 
 #: src/components/MarketSwitcher.tsx
 msgid "Version 3"
+msgstr ""
+
+#: src/modules/reserve-overview/ReserveFactorOverview.tsx
+msgid "View contract"
 msgstr ""
 
 #: src/modules/markets/AssetsListMobileItem.tsx
