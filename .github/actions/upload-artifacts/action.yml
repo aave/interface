@@ -15,7 +15,7 @@ inputs:
     default: "true"
 runs:
   using: "composite"
-  steps:  
+  steps:
     - name: Save PR number
       if: github.event.number && inputs.PR_INFO == 'true'
       shell: sh

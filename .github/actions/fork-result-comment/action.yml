@@ -10,7 +10,7 @@ inputs:
     required: true
 runs:
   using: "composite"
-  steps:  
+  steps:
     - name: Find Comment
       uses: peter-evans/find-comment@1769778a0c5bd330272d749d12c036d65e70d39d # v2.0.0
       id: fc
