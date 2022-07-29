@@ -5,14 +5,14 @@ describe('Checking ABPT token modal on Staking page', () => {
     configEnvWithTenderlyMainnetFork({});
 
     it('step1:Open Stake page', () => {
-      cy.get('a[href*="/staking/"]').click();
+      cy.get('[data-cy="menuStake"]').click();
     });
   });
 
   describe('CASE2:GET ABP Token', () => {
     it('step2:Get ABP Token', () => {
       cy.contains('Stake ABPT').click();
-      cy.contains('Get ABP Token').click();
+      cy.get('#getAbp-token').click();
     });
 
     it('step3:Verify does Get ABP Token modal is opened', () => {
