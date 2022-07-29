@@ -8,7 +8,8 @@ export const TotalSuppliedTooltip = ({ ...rest }: TextWithTooltipProps) => (
       <Trans>
         Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to
         help manage risks involved.
-      </Trans>{' '}
+      </Trans>
+      <br />
       <Link href="#" target="_blank" rel="noopener">
         <Trans>Learn more</Trans>
       </Link>

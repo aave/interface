@@ -8,7 +8,8 @@ export const TotalBorrowedTooltip = ({ ...rest }: TextWithTooltipProps) => (
       <Trans>
         Borrowing of this asset is limited to a certain amount to minimize liquidity pool
         insolvency.
-      </Trans>{' '}
+      </Trans>
+      <br />
       <Link href="#" target="_blank" rel="noopener">
         <Trans>Learn more</Trans>
       </Link>
