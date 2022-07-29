@@ -1,4 +1,3 @@
-// Test commit comment for SVGO
 module.exports = {
   multipass: true,
   plugins: [
