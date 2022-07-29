@@ -1,6 +1,6 @@
+import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { Box } from '@mui/material';
 
-import { ReserveIncentiveResponse } from '../../hooks/app-data-provider/useIncentiveData';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { NoData } from '../primitives/NoData';
 import { IncentivesButton } from './IncentivesButton';

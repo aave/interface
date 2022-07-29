@@ -1,6 +1,5 @@
 import '/public/fonts/inter/inter.css';
 
-import { ApolloProvider } from '@apollo/client';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
@@ -18,21 +17,17 @@ import { SupplyModal } from 'src/components/transactions/Supply/SupplyModal';
 import { WithdrawModal } from 'src/components/transactions/Withdraw/WithdrawModal';
 import { BackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { ConnectionStatusProvider } from 'src/hooks/useConnectionStatusContext';
 import { ModalContextProvider } from 'src/hooks/useModal';
 // import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3ContextProvider';
 import { TxBuilderProvider } from 'src/providers/TxBuilderProvider';
-import { apolloClient } from 'src/utils/apolloClient';
 
 import createEmotionCache from '../src/createEmotionCache';
-import { ProtocolDataProvider } from '../src/hooks/useProtocolDataContext';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
 import { SwapModal } from 'src/components/transactions/Swap/SwapModal';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
 import { Web3ReactProvider } from '@web3-react/core';
 import { providers } from 'ethers';
-import { WalletModalContextProvider } from 'src/hooks/useWalletModal';
 import { PermissionProvider } from 'src/hooks/usePermissions';
 import AaveMetaImage from 'public/aaveMetaLogo.png';
 import { FaucetModal } from 'src/components/transactions/Faucet/FaucetModal';
@@ -71,45 +66,37 @@ export default function MyApp(props: MyAppProps) {
         imageUrl={AaveMetaImage.src}
       />
 
-      <ApolloProvider client={apolloClient}>
-        <LanguageProvider>
-          <Web3ReactProvider getLibrary={getWeb3Library}>
-            <Web3ContextProvider>
-              <ProtocolDataProvider>
-                <ConnectionStatusProvider>
-                  <AppGlobalStyles>
-                    <PermissionProvider>
-                      <ModalContextProvider>
-                        <BackgroundDataProvider>
-                          <AppDataProvider>
-                            <TxBuilderProvider>
-                              <WalletModalContextProvider>
-                                <GasStationProvider>
-                                  {getLayout(<Component {...pageProps} />)}
-                                  <SupplyModal />
-                                  <WithdrawModal />
-                                  <BorrowModal />
-                                  <RepayModal />
-                                  <CollateralChangeModal />
-                                  <RateSwitchModal />
-                                  <ClaimRewardsModal />
-                                  <EmodeModal />
-                                  <SwapModal />
-                                  <FaucetModal />
-                                </GasStationProvider>
-                              </WalletModalContextProvider>
-                            </TxBuilderProvider>
-                          </AppDataProvider>
-                        </BackgroundDataProvider>
-                      </ModalContextProvider>
-                    </PermissionProvider>
-                  </AppGlobalStyles>
-                </ConnectionStatusProvider>
-              </ProtocolDataProvider>
-            </Web3ContextProvider>
-          </Web3ReactProvider>
-        </LanguageProvider>
-      </ApolloProvider>
+      <LanguageProvider>
+        <Web3ReactProvider getLibrary={getWeb3Library}>
+          <Web3ContextProvider>
+            <AppGlobalStyles>
+              <PermissionProvider>
+                <ModalContextProvider>
+                  <BackgroundDataProvider>
+                    <AppDataProvider>
+                      <TxBuilderProvider>
+                        <GasStationProvider>
+                          {getLayout(<Component {...pageProps} />)}
+                          <SupplyModal />
+                          <WithdrawModal />
+                          <BorrowModal />
+                          <RepayModal />
+                          <CollateralChangeModal />
+                          <RateSwitchModal />
+                          <ClaimRewardsModal />
+                          <EmodeModal />
+                          <SwapModal />
+                          <FaucetModal />
+                        </GasStationProvider>
+                      </TxBuilderProvider>
+                    </AppDataProvider>
+                  </BackgroundDataProvider>
+                </ModalContextProvider>
+              </PermissionProvider>
+            </AppGlobalStyles>
+          </Web3ContextProvider>
+        </Web3ReactProvider>
+      </LanguageProvider>
     </CacheProvider>
   );
 }

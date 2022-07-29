@@ -1,8 +1,8 @@
 import { Trans } from '@lingui/macro';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
 export type FaucetActionsProps = {
@@ -12,13 +12,13 @@ export type FaucetActionsProps = {
 };
 
 export const FaucetActions = ({ poolReserve, isWrongNetwork, blocked }: FaucetActionsProps) => {
-  const { faucetService } = useTxBuilderContext();
+  const mint = useRootStore((state) => state.mint);
   const { currentAccount } = useWeb3Context();
 
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     tryPermit: false,
     handleGetTxns: async () => {
-      return faucetService.mint({
+      return mint({
         userAddress: currentAccount,
         tokenSymbol: poolReserve.symbol,
         reserve: poolReserve.underlyingAsset,

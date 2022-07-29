@@ -4,11 +4,11 @@ import { Trans } from '@lingui/macro';
 import { Alert, Box, Checkbox, FormControlLabel, SvgIcon, Typography } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { useState } from 'react';
-import { useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
+import { useRootStore } from 'src/store/root';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { formattedTime, timeText } from '../../../helpers/timeHelper';
@@ -33,7 +33,10 @@ export enum ErrorType {
 type StakingType = 'aave' | 'bpt';
 
 export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps) => {
-  const { stakeUserResult, stakeGeneralResult } = useStakeData();
+  const [stakeUserResult, stakeGeneralResult] = useRootStore((state) => [
+    state.stakeUserResult,
+    state.stakeGeneralResult,
+  ]);
   const { chainId: connectedChainId } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
@@ -41,8 +44,8 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
   // states
   const [cooldownCheck, setCooldownCheck] = useState(false);
 
-  const userStakeData = stakeUserResult?.stakeUserUIData[stakeAssetName as StakingType];
-  const stakeData = stakeGeneralResult?.stakeGeneralUIData[stakeAssetName as StakingType];
+  const userStakeData = stakeUserResult?.[stakeAssetName as StakingType];
+  const stakeData = stakeGeneralResult?.[stakeAssetName as StakingType];
 
   // Cooldown logic
   const now = Date.now() / 1000;
@@ -65,8 +68,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
   const unstakeWindowLineWidth =
     unstakeWindowPercent < 15 ? 15 : unstakeWindowPercent > 85 ? 85 : unstakeWindowPercent;
 
-  const stakedAmount =
-    stakeUserResult?.stakeUserUIData[stakeAssetName as StakingType].stakeTokenUserBalance;
+  const stakedAmount = stakeUserResult?.[stakeAssetName as StakingType].stakeTokenUserBalance;
 
   // error handler
   let blockingError: ErrorType | undefined = undefined;

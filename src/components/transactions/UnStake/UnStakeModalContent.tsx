@@ -10,13 +10,13 @@ import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { Trans } from '@lingui/macro';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { UnStakeActions } from './UnStakeActions';
 import { GasStation } from '../GasStation/GasStation';
 import { parseUnits } from 'ethers/lib/utils';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
 
 export type UnStakeProps = {
   stakeAssetName: string;
@@ -30,8 +30,11 @@ export enum ErrorType {
 type StakingType = 'aave' | 'bpt';
 
 export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
-  const data = useStakeData();
-  const stakeData = data.stakeGeneralResult?.stakeGeneralUIData[stakeAssetName as StakingType];
+  const [stakeGeneralResult, stakeUserResult] = useRootStore((state) => [
+    state.stakeGeneralResult,
+    state.stakeUserResult,
+  ]);
+  const stakeData = stakeGeneralResult?.[stakeAssetName as StakingType];
   const { chainId: connectedChainId } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
@@ -41,8 +44,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   const amountRef = useRef<string>();
 
   const walletBalance = normalize(
-    data.stakeUserResult?.stakeUserUIData[stakeAssetName as StakingType].stakeTokenUserBalance ||
-      '0',
+    stakeUserResult?.[stakeAssetName as StakingType].stakeTokenUserBalance || '0',
     18
   );
 
@@ -59,7 +61,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   const amountInUsd =
     Number(amount) *
     (Number(normalize(stakeData?.stakeTokenPriceEth || 1, 18)) /
-      Number(normalize(data.stakeGeneralResult?.stakeGeneralUIData.usdPriceEth || 1, 18)));
+      Number(normalize(stakeGeneralResult?.usdPriceEth || 1, 18)));
 
   // error handler
   let blockingError: ErrorType | undefined = undefined;
