@@ -11,7 +11,7 @@ export const CapsCircularStatus = ({ value }: CapsCircularStatusProps) => {
   if (value === Infinity) return null;
 
   const determineColor = (): 'error' | 'warning' | 'success' => {
-    if (Math.round(value) >= 100) {
+    if (Math.round(value) >= 99.99) {
       return 'error';
     } else if (value >= 98) {
       return 'warning';
@@ -21,7 +21,7 @@ export const CapsCircularStatus = ({ value }: CapsCircularStatusProps) => {
   };
 
   const determineValueDisplay = (): string => {
-    if (value >= 100) {
+    if (value >= 99.99) {
       return '100%';
     } else if (value === 0) {
       return 'N/A';

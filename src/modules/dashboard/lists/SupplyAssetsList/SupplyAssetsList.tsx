@@ -46,12 +46,19 @@ export const SupplyAssetsList = () => {
       const walletBalanceUSD = walletBalances[reserve.underlyingAsset]?.amountUSD;
 
       // Determine if supply cap has been reached
-      const supplyCapUsage: number =
-        reserve.totalLiquidity !== '0' && reserve.supplyCap !== '0'
-          ? (parseInt(reserve.totalLiquidity) / parseInt(reserve.supplyCap)) * 100
-          : 0;
-      // TODO: Can test UI with const supplyCapReached = true
-      const supplyCapReached = supplyCapUsage >= 100;
+      const supplyCapUsage: number = reserve
+        ? valueToBigNumber(reserve.totalLiquidity).dividedBy(reserve.supplyCap).toNumber() * 100
+        : 0;
+      const supplyCapReached = supplyCapUsage !== Infinity && supplyCapUsage >= 99.99;
+
+      // Determine if debt ceiling has been reached
+      // Note: Does an asset have to be isolated to have a debt ceiling?
+      const debtCeilingUsage: number = reserve.isIsolated
+        ? valueToBigNumber(reserve.isolationModeTotalDebt)
+            .dividedBy(reserve.debtCeiling)
+            .toNumber() * 100
+        : 0;
+      const debtCeilingReached = debtCeilingUsage !== Infinity && debtCeilingUsage >= 99.99;
 
       let availableToDeposit = valueToBigNumber(walletBalance);
       if (reserve.supplyCap !== '0') {
@@ -97,6 +104,7 @@ export const SupplyAssetsList = () => {
           {
             ...reserve,
             supplyCapReached,
+            debtCeilingReached,
             underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
             ...fetchIconSymbolAndName({
               symbol: baseAssetSymbol,
@@ -113,6 +121,7 @@ export const SupplyAssetsList = () => {
           {
             ...reserve,
             supplyCapReached,
+            debtCeilingReached,
             walletBalance,
             walletBalanceUSD,
             availableToDeposit:
@@ -128,6 +137,7 @@ export const SupplyAssetsList = () => {
       return {
         ...reserve,
         supplyCapReached,
+        debtCeilingReached,
         walletBalance,
         walletBalanceUSD,
         availableToDeposit:

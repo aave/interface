@@ -3,7 +3,7 @@ import { Trans } from '@lingui/macro';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-
+import { valueToBigNumber } from '@aave/math-utils';
 import { CollateralSwitchTooltip } from '../../../../components/infoTooltips/CollateralSwitchTooltip';
 import { CollateralTooltip } from '../../../../components/infoTooltips/CollateralTooltip';
 import { TotalSupplyAPYTooltip } from '../../../../components/infoTooltips/TotalSupplyAPYTooltip';
@@ -12,7 +12,6 @@ import { useAppDataContext } from '../../../../hooks/app-data-provider/useAppDat
 import { DashboardContentNoData } from '../../DashboardContentNoData';
 import { ListHeader } from '../ListHeader';
 import { ListLoader } from '../ListLoader';
-
 import { ListTopInfoItem } from '../../../dashboard/lists/ListTopInfoItem';
 import { SuppliedPositionsListItem } from './SuppliedPositionsListItem';
 import { SuppliedPositionsListMobileItem } from './SuppliedPositionsListMobileItem';
@@ -28,14 +27,21 @@ export const SuppliedPositionsList = () => {
       .filter((userReserve) => userReserve.underlyingBalance !== '0')
       .map((userReserve) => {
         // Determine if supply cap has been reached
-        const supplyCapUsage: number =
-          userReserve.reserve.totalLiquidity !== '0' && userReserve.reserve.supplyCap !== '0'
-            ? (parseInt(userReserve.reserve.totalLiquidity) /
-                parseInt(userReserve.reserve.supplyCap)) *
-              100
-            : 0;
-        // TODO: Can test UI with const supplyCapReached = true
-        const supplyCapReached = supplyCapUsage >= 100;
+        const supplyCapUsage: number = userReserve.reserve
+          ? valueToBigNumber(userReserve.reserve.totalLiquidity)
+              .dividedBy(userReserve.reserve.supplyCap)
+              .toNumber() * 100
+          : 0;
+        const supplyCapReached = supplyCapUsage !== Infinity && supplyCapUsage >= 99.99;
+
+        // Determine if debt ceiling has been reached
+        // Note: Does an asset have to be isolated to have a debt ceiling?
+        const debtCeilingUsage: number = userReserve.reserve.isIsolated
+          ? valueToBigNumber(userReserve.reserve.isolationModeTotalDebt)
+              .dividedBy(userReserve.reserve.debtCeiling)
+              .toNumber() * 100
+          : 0;
+        const debtCeilingReached = debtCeilingUsage !== Infinity && debtCeilingUsage >= 99.99;
 
         return {
           ...userReserve,
@@ -48,6 +54,7 @@ export const SuppliedPositionsList = () => {
                 })
               : {}),
             supplyCapReached,
+            debtCeilingReached,
           },
         };
       }) || [];

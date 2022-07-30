@@ -51,11 +51,6 @@ export default function ReserveOverview() {
       100
     : 0;
 
-  // TODO: Test UI changes by updating these values
-  // const supplyCapUsage = 98;
-  // const borrowCapUsage = 82.3;
-  // const debtCeilingUsage = 60.3;
-
   return (
     <>
       <ReserveTopDetails underlyingAsset={underlyingAsset} />

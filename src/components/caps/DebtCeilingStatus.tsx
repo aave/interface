@@ -23,7 +23,7 @@ export const DebtCeilingStatus = ({
   if (usage === Infinity) return null;
 
   const determineColor = (theme: Theme): string => {
-    if (usage >= 100) {
+    if (usage >= 99.99) {
       return theme.palette.error.main;
     } else if (usage >= 98) {
       return theme.palette.warning.main;

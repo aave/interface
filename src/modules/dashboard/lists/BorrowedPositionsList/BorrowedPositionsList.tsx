@@ -5,7 +5,6 @@ import { useMediaQuery, useTheme } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-
 import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
 import { BorrowPowerTooltip } from '../../../../components/infoTooltips/BorrowPowerTooltip';
 import { TotalBorrowAPYTooltip } from '../../../../components/infoTooltips/TotalBorrowAPYTooltip';
@@ -32,14 +31,12 @@ export const BorrowedPositionsList = () => {
   const borrowPositions =
     user?.userReservesData.reduce((acc, userReserve) => {
       // Determine if supply cap has been reached
-      const borrowCapUsage: number =
-        userReserve.reserve.totalDebt !== '0' && userReserve.reserve.borrowCap !== '0'
-          ? (parseInt(userReserve.reserve.totalDebt) / parseInt(userReserve.reserve.borrowCap)) *
-            100
-          : 0;
-
-      // TODO: Can test UI with const borrowCapReached = true
-      const borrowCapReached = borrowCapUsage >= 100;
+      const borrowCapUsage: number = userReserve.reserve
+        ? valueToBigNumber(userReserve.reserve.totalDebt)
+            .dividedBy(userReserve.reserve.borrowCap)
+            .toNumber() * 100
+        : 0;
+      const borrowCapReached = borrowCapUsage !== Infinity && borrowCapUsage >= 99.99;
 
       if (userReserve.variableBorrows !== '0') {
         acc.push({

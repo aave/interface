@@ -30,6 +30,7 @@ export const SupplyAssetsListItem = ({
   isFreezed,
   isIsolated,
   usageAsCollateralEnabledOnUser,
+  debtCeilingReached,
   detailsAddress,
 }: SupplyAssetsItem) => {
   const { currentMarket } = useProtocolDataContext();
@@ -46,6 +47,7 @@ export const SupplyAssetsListItem = ({
       detailsAddress={detailsAddress}
       data-cy={`dashboardSupplyListItem_${symbol.toUpperCase()}`}
       currentMarket={currentMarket}
+      debtCeilingReached={debtCeilingReached}
     >
       <ListValueColumn
         symbol={symbol}

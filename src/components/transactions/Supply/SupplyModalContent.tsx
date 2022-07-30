@@ -30,6 +30,7 @@ import {
 import { AAVEWarning } from '../Warnings/AAVEWarning';
 import { AMPLWarning } from '../Warnings/AMPLWarning';
 import { IsolationModeWarning } from '../Warnings/IsolationModeWarning';
+import { MaxDebtCeilingWarning } from '../Warnings/MaxDebtCeilingWarning';
 import { SNXWarning } from '../Warnings/SNXWarning';
 import { SupplyCapWarning } from '../Warnings/SupplyCapWarning';
 import { SupplyActions } from './SupplyActions';
@@ -110,12 +111,6 @@ export const SupplyModalContent = ({
   }
 
   // ************** Warnings **********
-  // supply cap warning
-  const percentageOfCap =
-    valueToBigNumber(poolReserve.totalLiquidity).dividedBy(poolReserve.supplyCap).toNumber() * 100;
-  const showSupplyCapWarning: boolean =
-    poolReserve.supplyCap !== '0' && percentageOfCap >= 98 && percentageOfCap < 100;
-
   // isolation warning
   const hasDifferentCollateral = user.userReservesData.find(
     (reserve) => reserve.usageAsCollateralEnabledOnUser && reserve.reserve.id !== poolReserve.id
@@ -128,6 +123,20 @@ export const SupplyModalContent = ({
       ? userReserve.usageAsCollateralEnabledOnUser
       : true);
 
+  // debt ceiling warning
+  // Note: Does an asset have to be isolated to have a debt ceiling?
+  const debtCeilingUsage: number = poolReserve.isIsolated
+    ? valueToBigNumber(poolReserve.isolationModeTotalDebt)
+        .dividedBy(poolReserve.debtCeiling)
+        .toNumber() * 100
+    : 0;
+  const debtCeilingReached = debtCeilingUsage !== Infinity && debtCeilingUsage >= 99.99;
+
+  // supply cap warning
+  const percentageOfCap =
+    valueToBigNumber(poolReserve.totalLiquidity).dividedBy(poolReserve.supplyCap).toNumber() * 100;
+  const showSupplyCapWarning: boolean =
+    poolReserve.supplyCap !== '0' && percentageOfCap >= 98 && percentageOfCap < 100;
   // TODO: check if calc is correct to see if cap reached
   const capReached =
     poolReserve.supplyCap !== '0' &&
@@ -135,14 +144,13 @@ export const SupplyModalContent = ({
       new BigNumber(poolReserve.supplyCap).minus(poolReserve.totalLiquidity)
     );
 
-  // error handler
+  // handle error for supply cap reached
   let blockingError: ErrorType | undefined = undefined;
   if (!supplyTxState.success) {
     if (capReached) {
       blockingError = ErrorType.CAP_REACHED;
     }
   }
-
   const handleBlocked = () => {
     switch (blockingError) {
       case ErrorType.CAP_REACHED:
@@ -168,7 +176,10 @@ export const SupplyModalContent = ({
   const userHasCollateral = user.totalCollateralUSD !== '0';
 
   if (poolReserve.isIsolated) {
-    if (user.isInIsolationMode) {
+    // Note: is debt ceiling only used for isolated assets?
+    if (debtCeilingReached) {
+      willBeUsedAsCollateral = CollateralType.UNAVAILABLE;
+    } else if (user.isInIsolationMode) {
       if (userHasSuppliedReserve) {
         willBeUsedAsCollateral = userReserve.usageAsCollateralEnabledOnUser
           ? CollateralType.ISOLATED_ENABLED
@@ -211,6 +222,7 @@ export const SupplyModalContent = ({
 
   return (
     <>
+      {debtCeilingReached && <MaxDebtCeilingWarning />}
       {showIsolationWarning && <IsolationModeWarning />}
       {showSupplyCapWarning && <SupplyCapWarning supplyCapUsage={percentageOfCap} />}
       {poolReserve.symbol === 'AMPL' && <AMPLWarning />}

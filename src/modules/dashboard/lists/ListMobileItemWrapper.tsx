@@ -16,6 +16,7 @@ interface ListMobileItemWrapperProps {
   frozen?: boolean;
   supplyCapReached?: boolean;
   borrowCapReached?: boolean;
+  debtCeilingReached?: boolean;
 }
 
 export const ListMobileItemWrapper = ({
@@ -29,6 +30,7 @@ export const ListMobileItemWrapper = ({
   frozen,
   supplyCapReached = false,
   borrowCapReached = false,
+  debtCeilingReached = false,
 }: ListMobileItemWrapperProps) => {
   return (
     <ListMobileItem
@@ -43,6 +45,7 @@ export const ListMobileItemWrapper = ({
       currentMarket={currentMarket}
       supplyCapReached={supplyCapReached}
       borrowCapReached={borrowCapReached}
+      debtCeilingReached={debtCeilingReached}
     >
       {children}
     </ListMobileItem>

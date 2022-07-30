@@ -26,6 +26,7 @@ export const SupplyAssetsListMobileItem = ({
   aIncentivesData,
   isIsolated,
   usageAsCollateralEnabledOnUser,
+  debtCeilingReached,
   isActive,
   isFreezed,
   underlyingAsset,
@@ -44,6 +45,7 @@ export const SupplyAssetsListMobileItem = ({
       name={name}
       underlyingAsset={underlyingAsset}
       currentMarket={currentMarket}
+      debtCeilingReached={debtCeilingReached}
     >
       <ListValueRow
         title={<Trans>Supply balance</Trans>}

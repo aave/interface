@@ -107,7 +107,7 @@ export const ReserveActions = ({
       return null;
 
     const determineText = (): JSX.Element => {
-      if (supplyCapUsage >= 100) {
+      if (supplyCapUsage >= 99.99) {
         return (
           <Trans>Protocol supply cap is at 100% for this asset. Further supply unavailable.</Trans>
         );
@@ -144,7 +144,7 @@ export const ReserveActions = ({
       return null;
 
     const determineText = (): JSX.Element => {
-      if (borrowCapUsage >= 100) {
+      if (borrowCapUsage >= 99.99) {
         return (
           <Trans>
             Protocol borrow cap is at 100% for this asset. Further borrowing unavailable.
@@ -176,7 +176,7 @@ export const ReserveActions = ({
     if (debtCeilingUsage < 98 || debtCeilingUsage === Infinity || !debtCeilingUsage) return null;
 
     const determineSeverity = (): AlertColor => {
-      if (debtCeilingUsage >= 100) {
+      if (debtCeilingUsage >= 99.99) {
         return 'error';
       } else if (debtCeilingUsage >= 98) {
         return 'warning';
@@ -186,7 +186,7 @@ export const ReserveActions = ({
     };
 
     const determineText = (): JSX.Element => {
-      if (debtCeilingUsage >= 100) {
+      if (debtCeilingUsage >= 99.99) {
         return (
           <Trans>
             Protocol debt ceiling is at 100% for this asset. Further borrowing against this asset is

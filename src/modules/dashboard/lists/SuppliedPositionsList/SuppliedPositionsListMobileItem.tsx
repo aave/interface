@@ -32,12 +32,14 @@ export const SuppliedPositionsListMobileItem = ({
     isFrozen,
     isActive,
     supplyCapReached,
+    debtCeilingReached,
   } = reserve;
   const { currentMarketData, currentMarket } = useProtocolDataContext();
   const { openSupply, openWithdraw, openCollateralChange } = useModalContext();
   const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
 
   const canBeEnabledAsCollateral =
+    !debtCeilingReached &&
     reserve.usageAsCollateralEnabled &&
     ((!reserve.isIsolated && !user.isInIsolationMode) ||
       user.isolatedReserve?.underlyingAsset === reserve.underlyingAsset ||
@@ -51,7 +53,8 @@ export const SuppliedPositionsListMobileItem = ({
       underlyingAsset={underlyingAsset}
       currentMarket={currentMarket}
       frozen={reserve.isFrozen}
-      supplyCapReached={supplyCapReached ?? false}
+      supplyCapReached={supplyCapReached}
+      debtCeilingReached={debtCeilingReached}
     >
       <ListValueRow
         title={<Trans>Supply balance</Trans>}

@@ -862,11 +862,13 @@ msgstr "Language"
 
 #: src/components/infoTooltips/DebtCeilingTooltip.tsx
 #: src/components/infoTooltips/MaxBorrowedTooltip.tsx
+#: src/components/infoTooltips/MaxDebtCeilingTooltip.tsx
 #: src/components/infoTooltips/MaxSuppliedTooltip.tsx
 #: src/components/infoTooltips/TotalBorrowedTooltip.tsx
 #: src/components/infoTooltips/TotalSuppliedTooltip.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/Warnings/BorrowCapWarning.tsx
+#: src/components/transactions/Warnings/MaxDebtCeilingWarning.tsx
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
@@ -1150,9 +1152,14 @@ msgstr "Protocol borrow cap at 100% for this asset. Further supply unavailable."
 msgid "Protocol borrow cap is at 100% for this asset. Further borrowing unavailable."
 msgstr "Protocol borrow cap is at 100% for this asset. Further borrowing unavailable."
 
+#: src/components/transactions/Warnings/MaxDebtCeilingWarning.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Protocol debt ceiling is at 100% for this asset. Further borrowing against this asset is unavailable."
 msgstr "Protocol debt ceiling is at 100% for this asset. Further borrowing against this asset is unavailable."
+
+#: src/components/infoTooltips/MaxDebtCeilingTooltip.tsx
+msgid "Protocol debt ceiling is at 100% for this asset. Futher borrowing against this asset is unavailable."
+msgstr "Protocol debt ceiling is at 100% for this asset. Futher borrowing against this asset is unavailable."
 
 #: src/components/infoTooltips/MaxSuppliedTooltip.tsx
 msgid "Protocol supply cap at 100% for this asset. Further supply unavailable."
@@ -1701,6 +1708,7 @@ msgstr "UNSTAKE {symbol}"
 msgid "UNSTAKING {symbol}"
 msgstr "UNSTAKING {symbol}"
 
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Unavailable"
 msgstr "Unavailable"
