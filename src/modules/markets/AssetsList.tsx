@@ -25,7 +25,7 @@ export default function AssetsList() {
   const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
 
   const filteredData = reserves
-    .filter((res) => res.isActive && !res.isFrozen)
+    .filter((res) => res.isActive)
     .map((reserve) => ({
       ...reserve,
       ...(reserve.isWrappedBaseAsset
