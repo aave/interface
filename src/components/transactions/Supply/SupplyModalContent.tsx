@@ -30,7 +30,7 @@ import {
 import { AAVEWarning } from '../Warnings/AAVEWarning';
 import { AMPLWarning } from '../Warnings/AMPLWarning';
 import { IsolationModeWarning } from '../Warnings/IsolationModeWarning';
-import { MaxDebtCeilingWarning } from '../Warnings/MaxDebtCeilingWarning';
+import { DebtCeilingWarning } from '../Warnings/DebtCeilingWarning';
 import { SNXWarning } from '../Warnings/SNXWarning';
 import { SupplyCapWarning } from '../Warnings/SupplyCapWarning';
 import { SupplyActions } from './SupplyActions';
@@ -131,6 +131,7 @@ export const SupplyModalContent = ({
         .toNumber() * 100
     : 0;
   const debtCeilingReached = debtCeilingUsage !== Infinity && debtCeilingUsage >= 99.99;
+  const showDebtCeilingWarning = debtCeilingUsage >= 98 && debtCeilingUsage < 99.99;
 
   // supply cap warning
   const percentageOfCap =
@@ -222,9 +223,14 @@ export const SupplyModalContent = ({
 
   return (
     <>
-      {debtCeilingReached && <MaxDebtCeilingWarning />}
       {showIsolationWarning && <IsolationModeWarning />}
       {showSupplyCapWarning && <SupplyCapWarning supplyCapUsage={percentageOfCap} />}
+      {showDebtCeilingWarning && (
+        <DebtCeilingWarning
+          debtCeilingUsage={debtCeilingUsage}
+          debtCeilingReached={debtCeilingReached}
+        />
+      )}
       {poolReserve.symbol === 'AMPL' && <AMPLWarning />}
       {process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true' &&
         poolReserve.symbol === 'AAVE' &&

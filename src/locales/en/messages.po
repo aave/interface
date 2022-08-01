@@ -868,7 +868,7 @@ msgstr "Language"
 #: src/components/infoTooltips/TotalSuppliedTooltip.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/Warnings/BorrowCapWarning.tsx
-#: src/components/transactions/Warnings/MaxDebtCeilingWarning.tsx
+#: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
@@ -950,6 +950,7 @@ msgstr "Max slashing"
 msgid "Max slippage rate"
 msgstr "Max slippage rate"
 
+#: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Maximum amount available to borrow against this asset is limited because debt ceiling is at {0}%."
 msgstr "Maximum amount available to borrow against this asset is limited because debt ceiling is at {0}%."
@@ -1152,7 +1153,7 @@ msgstr "Protocol borrow cap at 100% for this asset. Further supply unavailable."
 msgid "Protocol borrow cap is at 100% for this asset. Further borrowing unavailable."
 msgstr "Protocol borrow cap is at 100% for this asset. Further borrowing unavailable."
 
-#: src/components/transactions/Warnings/MaxDebtCeilingWarning.tsx
+#: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Protocol debt ceiling is at 100% for this asset. Further borrowing against this asset is unavailable."
 msgstr "Protocol debt ceiling is at 100% for this asset. Further borrowing against this asset is unavailable."
