@@ -8,6 +8,7 @@ import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { DetailsHFLine, DetailsNumberLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
+import { DebtCeilingWarning } from '../Warnings/DebtCeilingWarning';
 import { IsolationModeWarning } from '../Warnings/IsolationModeWarning';
 import { CollateralChangeActions } from './CollateralChangeActions';
 
@@ -45,6 +46,16 @@ export const CollateralChangeModalContent = ({
     borrowBalanceMarketReferenceCurrency: user.totalBorrowsMarketReferenceCurrency,
     currentLiquidationThreshold: user.currentLiquidationThreshold,
   });
+
+  // debt ceiling warning
+  // Note: Does an asset have to be isolated to have a debt ceiling?
+  const debtCeilingUsage: number = poolReserve.isIsolated
+    ? valueToBigNumber(poolReserve.isolationModeTotalDebt)
+        .dividedBy(poolReserve.debtCeiling)
+        .toNumber() * 100
+    : 0;
+  const debtCeilingReached = debtCeilingUsage !== Infinity && debtCeilingUsage >= 99.99;
+  const showDebtCeilingWarning = debtCeilingUsage >= 98 && debtCeilingUsage < 99.99;
 
   // error handling
   let blockingError: ErrorType | undefined = undefined;
@@ -109,6 +120,13 @@ export const CollateralChangeModalContent = ({
         <Alert severity="info" icon={false}>
           <Trans>You will exit isolation mode and other tokens can now be used as collateral</Trans>
         </Alert>
+      )}
+
+      {showDebtCeilingWarning && (
+        <DebtCeilingWarning
+          debtCeilingUsage={debtCeilingUsage}
+          debtCeilingReached={debtCeilingReached}
+        />
       )}
 
       <TxModalDetails gasLimit={gasLimit}>

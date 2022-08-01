@@ -9,6 +9,7 @@ export interface TextWithTooltipProps extends TypographyProps {
   text?: ReactNode;
   icon?: ReactNode;
   iconSize?: number;
+  color?: string;
   // eslint-disable-next-line
   children?: ReactElement<any, string | JSXElementConstructor<any>>;
 }
@@ -17,6 +18,7 @@ export const TextWithTooltip = ({
   text,
   icon,
   iconSize = 14,
+  color,
   children,
   ...rest
 }: TextWithTooltipProps) => {
@@ -43,9 +45,9 @@ export const TextWithTooltip = ({
           <SvgIcon
             sx={{
               fontSize: iconSize,
-              color: open ? 'info.main' : 'text.muted',
+              color: color ? color : open ? 'info.main' : 'text.muted',
               borderRadius: '50%',
-              '&:hover': { color: 'info.main' },
+              '&:hover': { color: color || 'info.main' },
             }}
           >
             {icon || <InformationCircleIcon />}

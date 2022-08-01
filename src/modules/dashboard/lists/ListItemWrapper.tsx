@@ -1,5 +1,8 @@
 import { Tooltip, Typography } from '@mui/material';
 import { ReactNode } from 'react';
+import { MaxSuppliedTooltip } from 'src/components/infoTooltips/MaxSuppliedTooltip';
+import { MaxBorrowedTooltip } from 'src/components/infoTooltips/MaxBorrowedTooltip';
+import { MaxDebtCeilingTooltip } from 'src/components/infoTooltips/MaxDebtCeilingTooltip';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 import { AMPLWarning } from '../../../components/infoTooltips/AMPLWarning';
@@ -17,6 +20,9 @@ interface ListItemWrapperProps {
   children: ReactNode;
   currentMarket: CustomMarket;
   frozen?: boolean;
+  supplyCapReached?: boolean;
+  borrowCapReached?: boolean;
+  debtCeilingReached?: boolean;
 }
 
 export const ListItemWrapper = ({
@@ -27,6 +33,9 @@ export const ListItemWrapper = ({
   detailsAddress,
   currentMarket,
   frozen,
+  supplyCapReached = false,
+  borrowCapReached = false,
+  debtCeilingReached = false,
   ...rest
 }: ListItemWrapperProps) => {
   return (
@@ -44,6 +53,9 @@ export const ListItemWrapper = ({
             </Typography>
           </Tooltip>
         </Link>
+        {supplyCapReached && <MaxSuppliedTooltip />}
+        {borrowCapReached && <MaxBorrowedTooltip />}
+        {debtCeilingReached && <MaxDebtCeilingTooltip />}
         {frozen && <FrozenWarning symbol={symbol} />}
         {!frozen && symbol === 'AMPL' && <AMPLWarning />}
       </ListColumn>

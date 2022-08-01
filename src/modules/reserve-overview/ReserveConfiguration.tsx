@@ -33,6 +33,10 @@ import { LiquidationThresholdTooltip } from 'src/components/infoTooltips/Liquida
 import { LiquidationPenaltyTooltip } from 'src/components/infoTooltips/LiquidationPenaltyTooltip';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { frozenProposalMap } from 'src/utils/marketsAndNetworksConfig';
+import { TotalSuppliedTooltip } from 'src/components/infoTooltips/TotalSuppliedTooltip';
+import { TotalBorrowedTooltip } from 'src/components/infoTooltips/TotalBorrowedTooltip';
+import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
+import { DebtCeilingStatus } from 'src/components/caps/DebtCeilingStatus';
 import { ReserveFactorOverview } from 'src/modules/reserve-overview/ReserveFactorOverview';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
@@ -88,7 +92,6 @@ export const PanelItem: React.FC<PanelItemProps> = ({ title, children }) => {
     <Box
       sx={{
         position: 'relative',
-        mb: 4,
         '&:not(:last-child)': {
           pr: 4,
           mr: 4,
@@ -128,7 +131,19 @@ const ChartContainer: React.FC<BoxProps> = (props) => (
   />
 );
 
-export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = ({ reserve }) => {
+type ReserveConfigurationProps = {
+  reserve: ComputedReserveData;
+  supplyCapUsage: number;
+  borrowCapUsage: number;
+  debtCeilingUsage: number;
+};
+
+export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({
+  reserve,
+  supplyCapUsage,
+  borrowCapUsage,
+  debtCeilingUsage,
+}) => {
   const { currentNetworkConfig, currentMarketData } = useProtocolDataContext();
   const renderCharts = !!currentNetworkConfig.ratesHistoryApiUrl;
   const { data, error } = useReserveRatesHistory(
@@ -136,6 +151,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
       ? `${reserve.underlyingAsset}${currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER}`
       : ''
   ); // TODO: might make sense to move this to gql as well
+
   return (
     <Paper sx={{ py: '16px', px: '24px' }}>
       <Box
@@ -182,10 +198,52 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
               flexWrap: 'wrap',
             }}
           >
-            <PanelItem title={<Trans>Total supplied</Trans>}>
-              <FormattedNumber value={reserve.totalLiquidity} variant="main16" compact />
-              <ReserveSubheader value={reserve.totalLiquidityUSD} />
+            {reserve.supplyCap && reserve.supplyCap !== '0' && (
+              <CapsCircularStatus value={supplyCapUsage} />
+            )}
+            <PanelItem
+              title={
+                <Box display="flex" alignItems="center">
+                  <Trans>Total supplied</Trans>
+                  {reserve.supplyCap && reserve.supplyCap !== '0' && <TotalSuppliedTooltip />}
+                </Box>
+              }
+            >
+              {reserve.supplyCap && reserve.supplyCap !== '0' ? (
+                <>
+                  <Box>
+                    <FormattedNumber value={reserve.totalLiquidity} variant="main16" compact />
+                    <Typography
+                      component="span"
+                      color="text.primary"
+                      variant="secondary16"
+                      sx={{ display: 'inline-block', mx: 1 }}
+                    >
+                      <Trans>of</Trans>
+                    </Typography>
+                    <FormattedNumber value={reserve.supplyCap} variant="main16" />
+                  </Box>
+                  <Box>
+                    <ReserveSubheader value={reserve.totalLiquidityUSD} />
+                    <Typography
+                      component="span"
+                      color="text.secondary"
+                      variant="secondary12"
+                      sx={{ display: 'inline-block', mx: 1 }}
+                    >
+                      <Trans>of</Trans>
+                    </Typography>
+                    <ReserveSubheader value={reserve.supplyCapUSD} />
+                  </Box>
+                </>
+              ) : (
+                <>
+                  <FormattedNumber value={reserve.totalLiquidity} variant="main16" compact />
+                  <ReserveSubheader value={reserve.totalLiquidityUSD} />
+                </>
+              )}
             </PanelItem>
+
             <PanelItem title={<Trans>APY</Trans>}>
               <FormattedNumber value={reserve.supplyAPY} percent variant="main16" />
               <IncentivesButton
@@ -194,20 +252,13 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                 displayBlank={true}
               />
             </PanelItem>
-            {reserve.supplyCapUSD !== '0' && (
-              <PanelItem title={<Trans>Supply cap</Trans>}>
-                <FormattedNumber value={reserve.supplyCap} variant="main16" />
-                <ReserveSubheader value={reserve.supplyCapUSD} />
-              </PanelItem>
-            )}
-            {reserve.unbacked !== '0' && (
+            {reserve.unbacked && reserve.unbacked !== '0' && (
               <PanelItem title={<Trans>Unbacked</Trans>}>
                 <FormattedNumber value={reserve.unbacked} variant="main16" symbol={reserve.name} />
                 <ReserveSubheader value={reserve.unbackedUSD} />
               </PanelItem>
             )}
           </Box>
-
           {renderCharts && !error && reserve.borrowingEnabled && (
             <ChartContainer sx={{ mt: 4, pb: 8 }}>
               <ParentSize>
@@ -222,7 +273,6 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
               </ParentSize>
             </ChartContainer>
           )}
-
           <div>
             {reserve.isIsolated ? (
               <Box sx={{ pt: '42px', pb: '12px' }}>
@@ -267,7 +317,6 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
               </Box>
             )}
           </div>
-
           {reserve.usageAsCollateralEnabled && (
             <Box
               sx={{
@@ -320,24 +369,12 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
               </ReserveOverviewBox>
 
               {reserve.isIsolated && (
-                <ReserveOverviewBox title="Debt ceiling">
-                  <Box sx={{ display: { sm: 'inline-flex', xs: 'block' } }}>
-                    <FormattedNumber
-                      value={reserve.isolationModeTotalDebtUSD}
-                      variant="secondary14"
-                      symbol="USD"
-                      symbolsVariant="secondary14"
-                      visibleDecimals={2}
-                    />
-                    &nbsp;of&nbsp;
-                    <FormattedNumber
-                      value={reserve.debtCeilingUSD}
-                      variant="secondary14"
-                      symbol="USD"
-                      symbolsVariant="secondary14"
-                      visibleDecimals={2}
-                    />
-                  </Box>
+                <ReserveOverviewBox fullWidth>
+                  <DebtCeilingStatus
+                    debt={reserve.isolationModeTotalDebt}
+                    ceiling={reserve.debtCeiling}
+                    usage={debtCeilingUsage}
+                  />
                 </ReserveOverviewBox>
               )}
             </Box>
@@ -358,9 +395,50 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                   flexWrap: 'wrap',
                 }}
               >
-                <PanelItem title={<Trans>Total borrowed</Trans>}>
-                  <FormattedNumber value={reserve.totalDebt} variant="main16" />
-                  <ReserveSubheader value={reserve.totalDebtUSD} />
+                {reserve.borrowCap && reserve.borrowCap !== '0' && (
+                  <CapsCircularStatus value={borrowCapUsage} />
+                )}
+                <PanelItem
+                  title={
+                    <Box display="flex" alignItems="center">
+                      <Trans>Total borrowed</Trans>
+                      {reserve.borrowCap && reserve.borrowCap !== '0' && <TotalBorrowedTooltip />}
+                    </Box>
+                  }
+                >
+                  {reserve.borrowCap && reserve.borrowCap !== '0' ? (
+                    <>
+                      <Box>
+                        <FormattedNumber value={reserve.totalDebt} variant="main16" />
+                        <Typography
+                          component="span"
+                          color="text.primary"
+                          variant="secondary16"
+                          sx={{ display: 'inline-block', mx: 1 }}
+                        >
+                          <Trans>of</Trans>
+                        </Typography>
+                        <FormattedNumber value={reserve.borrowCap} variant="main16" />
+                      </Box>
+                      <Box>
+                        <ReserveSubheader value={reserve.totalDebtUSD} />
+                        <Typography
+                          component="span"
+                          color="text.primary"
+                          variant="secondary16"
+                          sx={{ display: 'inline-block', mx: 1 }}
+                        >
+                          <Trans>of</Trans>
+                        </Typography>
+                        <ReserveSubheader value={reserve.borrowCapUSD} />
+                      </Box>
+                    </>
+                  ) : (
+                    <>
+                      <FormattedNumber value={reserve.totalDebt} variant="main16" />
+                      <ReserveSubheader value={reserve.totalDebtUSD} />
+                    </>
+                  )}
                 </PanelItem>
                 <PanelItem
                   title={
@@ -396,7 +474,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                     />
                   </PanelItem>
                 )}
-                {reserve.borrowCapUSD !== '0' && (
+                {reserve.borrowCapUSD && reserve.borrowCapUSD !== '0' && (
                   <PanelItem title={<Trans>Borrow cap</Trans>}>
                     <FormattedNumber value={reserve.borrowCap} variant="main16" />
                     <ReserveSubheader value={reserve.borrowCapUSD} />

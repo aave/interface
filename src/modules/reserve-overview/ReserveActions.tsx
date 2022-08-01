@@ -1,6 +1,8 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import {
+  Alert,
+  AlertColor,
   Box,
   Button,
   CircularProgress,
@@ -51,9 +53,17 @@ const PaperWrapper = ({ children }: { children: ReactNode }) => {
 
 interface ReserveActionsProps {
   underlyingAsset: string;
+  supplyCapUsage: number;
+  borrowCapUsage: number;
+  debtCeilingUsage: number;
 }
 
-export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
+export const ReserveActions = ({
+  underlyingAsset,
+  supplyCapUsage,
+  borrowCapUsage,
+  debtCeilingUsage,
+}: ReserveActionsProps) => {
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
@@ -66,6 +76,151 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
 
   const { currentNetworkConfig } = useProtocolDataContext();
   const { bridge, name: networkName } = currentNetworkConfig;
+
+  const poolReserve = reserves.find(
+    (reserve) => reserve.underlyingAsset === underlyingAsset
+  ) as ComputedReserveData;
+
+  const balance = walletBalances[underlyingAsset];
+  const canBorrow = assetCanBeBorrowedByUser(poolReserve, user);
+  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(
+    poolReserve,
+    user,
+    InterestRate.Variable
+  ).toString();
+  const maxAmountToSupply = getMaxAmountAvailableToSupply(
+    balance.amount,
+    poolReserve,
+    underlyingAsset
+  ).toString();
+
+  const isolationModeBorrowDisabled = user?.isInIsolationMode && !poolReserve.borrowableInIsolation;
+  const eModeBorrowDisabled =
+    user?.isInEmode && poolReserve.eModeCategoryId !== user.userEmodeCategoryId;
+
+  const displaySupplyCapAlert = (): JSX.Element | null => {
+    // Don't show anything if under 98% usage or not applicable
+    if (
+      supplyCapUsage < 98 ||
+      supplyCapUsage === Infinity ||
+      !supplyCapUsage ||
+      maxAmountToSupply === '0'
+    )
+      return null;
+
+    const determineText = (): JSX.Element => {
+      if (supplyCapUsage >= 99.99) {
+        return (
+          <Trans>Protocol supply cap is at 100% for this asset. Further supply unavailable.</Trans>
+        );
+      } else if (supplyCapUsage >= 98) {
+        return (
+          <Trans>
+            Maximum amount available to supply is limited because protocol supply cap is at{' '}
+            {supplyCapUsage.toFixed(2)}%.
+          </Trans>
+        );
+      } else {
+        return <></>;
+      }
+    };
+
+    return (
+      <Alert severity="warning" icon={false} sx={{ mt: 4 }}>
+        {determineText()}
+        <Link href="#" target="_blank" rel="noopener" sx={{ ml: 1 }}>
+          <Trans>Learn more</Trans>
+        </Link>
+      </Alert>
+    );
+  };
+
+  const displayBorrowCapAlert = (): JSX.Element | null => {
+    // Don't show anything if under 98% usage or not applicable
+    if (
+      borrowCapUsage < 98 ||
+      borrowCapUsage === Infinity ||
+      !borrowCapUsage ||
+      maxAmountToBorrow === '0'
+    )
+      return null;
+
+    const determineText = (): JSX.Element => {
+      if (borrowCapUsage >= 99.99) {
+        return (
+          <Trans>
+            Protocol borrow cap is at 100% for this asset. Further borrowing unavailable.
+          </Trans>
+        );
+      } else if (borrowCapUsage >= 98) {
+        return (
+          <Trans>
+            Maximum amount available to borrow is limited because borrow cap is nearly reached.
+          </Trans>
+        );
+      } else {
+        return <></>;
+      }
+    };
+
+    return (
+      <Alert severity="warning" icon={false} sx={{ mt: 4 }}>
+        {determineText()}
+        <Link href="#" target="_blank" rel="noopener" sx={{ ml: 1 }}>
+          <Trans>Learn more</Trans>
+        </Link>
+      </Alert>
+    );
+  };
+
+  const displayDebtCeilingAlert = (): JSX.Element | null => {
+    // Don't show anything if under 98% usage or not applicable
+    if (debtCeilingUsage < 98 || debtCeilingUsage === Infinity || !debtCeilingUsage) return null;
+
+    const determineSeverity = (): AlertColor => {
+      if (debtCeilingUsage >= 99.99) {
+        return 'error';
+      } else if (debtCeilingUsage >= 98) {
+        return 'warning';
+      } else {
+        return 'success';
+      }
+    };
+
+    const determineText = (): JSX.Element => {
+      if (debtCeilingUsage >= 99.99) {
+        return (
+          <Trans>
+            Protocol debt ceiling is at 100% for this asset. Further borrowing against this asset is
+            unavailable.
+          </Trans>
+        );
+      } else if (debtCeilingUsage >= 98) {
+        return (
+          <Trans>
+            Maximum amount available to borrow against this asset is limited because debt ceiling is
+            at {debtCeilingUsage.toFixed(2)}%.
+          </Trans>
+        );
+      } else {
+        return <></>;
+      }
+    };
+
+    return (
+      <Alert severity={determineSeverity()} icon={false} sx={{ mt: 4 }}>
+        {determineText()}
+        <Link
+          href="https://docs.aave.com/faq/aave-v3-features#how-does-isolation-mode-affect-my-borrowing-power"
+          target="_blank"
+          rel="noopener"
+          sx={{ ml: 1 }}
+        >
+          <Trans>Learn more</Trans>
+        </Link>
+      </Alert>
+    );
+  };
 
   if (!currentAccount && !isPermissionsLoading)
     return (
@@ -112,27 +267,6 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
         </Stack>
       </PaperWrapper>
     );
-
-  const poolReserve = reserves.find(
-    (reserve) => reserve.underlyingAsset === underlyingAsset
-  ) as ComputedReserveData;
-
-  const balance = walletBalances[underlyingAsset];
-  const canBorrow = assetCanBeBorrowedByUser(poolReserve, user);
-  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(
-    poolReserve,
-    user,
-    InterestRate.Variable
-  ).toString();
-  const maxAmountToSupply = getMaxAmountAvailableToSupply(
-    balance.amount,
-    poolReserve,
-    underlyingAsset
-  ).toString();
-
-  const isolationModeBorrowDisabled = user?.isInIsolationMode && !poolReserve.borrowableInIsolation;
-  const eModeBorrowDisabled =
-    user?.isInEmode && poolReserve.eModeCategoryId !== user.userEmodeCategoryId;
 
   // Remove all supply/borrow elements and display warning message instead for frozen reserves
   if (poolReserve.isFrozen) {
@@ -333,6 +467,9 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
           <Trans>Borrow</Trans> {downToXSM && poolReserve.symbol}
         </Button>
       </Stack>
+      {displaySupplyCapAlert()}
+      {displayBorrowCapAlert()}
+      {displayDebtCeilingAlert()}
     </PaperWrapper>
   );
 };

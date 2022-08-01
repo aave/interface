@@ -23,16 +23,22 @@ export const SupplyAssetsListItem = ({
   supplyCap,
   totalLiquidity,
   supplyAPY,
+  supplyCapReached,
   aIncentivesData,
   underlyingAsset,
   isActive,
   isFreezed,
   isIsolated,
   usageAsCollateralEnabledOnUser,
+  debtCeilingReached,
   detailsAddress,
 }: SupplyAssetsItem) => {
   const { currentMarket } = useProtocolDataContext();
   const { openSupply } = useModalContext();
+
+  // Hide the asset to prevent it from being supplied if supply cap has been reached
+  if (supplyCapReached) return null;
+
   return (
     <ListItemWrapper
       symbol={symbol}
@@ -41,6 +47,7 @@ export const SupplyAssetsListItem = ({
       detailsAddress={detailsAddress}
       data-cy={`dashboardSupplyListItem_${symbol.toUpperCase()}`}
       currentMarket={currentMarket}
+      debtCeilingReached={debtCeilingReached}
     >
       <ListValueColumn
         symbol={symbol}
