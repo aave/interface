@@ -12,7 +12,7 @@ describe('Checking ABPT token modal on Staking page', () => {
   describe('CASE2:GET ABP Token', () => {
     it('step2:Get ABP Token', () => {
       cy.contains('Stake ABPT').click();
-      cy.get('#getAbp-token').click();
+      cy.get('[data-cy="getAbp-token"]').first().click();
     });
 
     it('step3:Verify does Get ABP Token modal is opened', () => {
