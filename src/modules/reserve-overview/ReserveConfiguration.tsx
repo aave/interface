@@ -37,6 +37,7 @@ import { TotalSuppliedTooltip } from 'src/components/infoTooltips/TotalSuppliedT
 import { TotalBorrowedTooltip } from 'src/components/infoTooltips/TotalBorrowedTooltip';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { DebtCeilingStatus } from 'src/components/caps/DebtCeilingStatus';
+import { ReserveFactorOverview } from 'src/modules/reserve-overview/ReserveFactorOverview';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
   <Box
@@ -275,7 +276,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({
           <div>
             {reserve.isIsolated ? (
               <Box sx={{ pt: '42px', pb: '12px' }}>
-                <Typography variant="secondary14" color="text.secondary" paddingBottom={'12px'}>
+                <Typography variant="subheader1" color="text.main" paddingBottom={'12px'}>
                   <Trans>Collateral usage</Trans>
                 </Typography>
                 <Alert severity="warning">
@@ -297,7 +298,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({
                 sx={{ display: 'inline-flex', alignItems: 'center', pt: '42px', pb: '12px' }}
                 paddingTop={'42px'}
               >
-                <Typography variant="secondary14" color="text.secondary">
+                <Typography variant="subheader1" color="text.main">
                   <Trans>Collateral usage</Trans>
                 </Typography>
                 <CheckRoundedIcon fontSize="small" color="success" sx={{ ml: 2 }} />
@@ -307,7 +308,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({
               </Box>
             ) : (
               <Box sx={{ pt: '42px', pb: '12px' }}>
-                <Typography variant="secondary14" color="text.secondary">
+                <Typography variant="subheader1" color="text.main">
                   <Trans>Collateral usage</Trans>
                 </Typography>
                 <Alert sx={{ my: '12px' }} severity="warning">
@@ -508,6 +509,21 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({
                     )}
                   </ParentSize>
                 </ChartContainer>
+              )}
+              <Box
+                sx={{ display: 'inline-flex', alignItems: 'center', pt: '42px', pb: '12px' }}
+                paddingTop={'42px'}
+              >
+                <Typography variant="subheader1" color="text.main">
+                  <Trans>Collector Info</Trans>
+                </Typography>
+              </Box>
+              {currentMarketData.addresses.COLLECTOR && (
+                <ReserveFactorOverview
+                  collectorContract={currentMarketData.addresses.COLLECTOR}
+                  explorerLinkBuilder={currentNetworkConfig.explorerLinkBuilder}
+                  reserveFactor={reserve.reserveFactor}
+                />
               )}
             </Box>
           </PanelRow>

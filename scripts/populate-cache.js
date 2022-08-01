@@ -50,7 +50,10 @@ var __copyProps = (to, from, except, desc) => {
   }
   return to;
 };
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target, mod));
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+  mod
+));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var __async = (__this, __arguments, generator) => {
   return new Promise((resolve, reject) => {
@@ -2996,7 +2999,11 @@ var require_bn = __commonJS({
         return num.imul(this.k);
       };
       function K256() {
-        MPrime.call(this, "k256", "ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff fffffffe fffffc2f");
+        MPrime.call(
+          this,
+          "k256",
+          "ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff fffffffe fffffc2f"
+        );
       }
       inherits(K256, MPrime);
       K256.prototype.split = function split(input, output) {
@@ -3046,15 +3053,27 @@ var require_bn = __commonJS({
         return num;
       };
       function P224() {
-        MPrime.call(this, "p224", "ffffffff ffffffff ffffffff ffffffff 00000000 00000000 00000001");
+        MPrime.call(
+          this,
+          "p224",
+          "ffffffff ffffffff ffffffff ffffffff 00000000 00000000 00000001"
+        );
       }
       inherits(P224, MPrime);
       function P192() {
-        MPrime.call(this, "p192", "ffffffff ffffffff ffffffff fffffffe ffffffff ffffffff");
+        MPrime.call(
+          this,
+          "p192",
+          "ffffffff ffffffff ffffffff fffffffe ffffffff ffffffff"
+        );
       }
       inherits(P192, MPrime);
       function P25519() {
-        MPrime.call(this, "25519", "7fffffffffffffff ffffffffffffffff ffffffffffffffff ffffffffffffffed");
+        MPrime.call(
+          this,
+          "25519",
+          "7fffffffffffffff ffffffffffffffff ffffffffffffffff ffffffffffffffed"
+        );
       }
       inherits(P25519, MPrime);
       P25519.prototype.imulK = function imulK(num) {
@@ -3106,7 +3125,10 @@ var require_bn = __commonJS({
       };
       Red.prototype._verify2 = function _verify2(a, b) {
         assert((a.negative | b.negative) === 0, "red works only with positives");
-        assert(a.red && a.red === b.red, "red works only with red numbers");
+        assert(
+          a.red && a.red === b.red,
+          "red works only with red numbers"
+        );
       };
       Red.prototype.imod = function imod(a) {
         if (this.prime)
@@ -10458,7 +10480,10 @@ var require_base = __commonJS({
           assert(bytes[bytes.length - 1] % 2 === 0);
         else if (bytes[0] === 7)
           assert(bytes[bytes.length - 1] % 2 === 1);
-        var res = this.point(bytes.slice(1, 1 + len), bytes.slice(1 + len, 1 + 2 * len));
+        var res = this.point(
+          bytes.slice(1, 1 + len),
+          bytes.slice(1 + len, 1 + 2 * len)
+        );
         return res;
       } else if ((bytes[0] === 2 || bytes[0] === 3) && bytes.length - 1 === len) {
         return this.pointFromX(bytes.slice(1, 1 + len), bytes[0] === 3);
@@ -11676,7 +11701,12 @@ var require_edwards = __commonJS({
       return this;
     };
     Point.prototype.neg = function neg() {
-      return this.curve.point(this.x.redNeg(), this.y, this.z, this.t && this.t.redNeg());
+      return this.curve.point(
+        this.x.redNeg(),
+        this.y,
+        this.z,
+        this.t && this.t.redNeg()
+      );
     };
     Point.prototype.getX = function getX() {
       this.normalize();
@@ -12576,8 +12606,26 @@ var require__4 = __commonJS({
         var c2_lo = g0_512_lo(W[i - 30], W[i - 29]);
         var c3_hi = W[i - 32];
         var c3_lo = W[i - 31];
-        W[i] = sum64_4_hi(c0_hi, c0_lo, c1_hi, c1_lo, c2_hi, c2_lo, c3_hi, c3_lo);
-        W[i + 1] = sum64_4_lo(c0_hi, c0_lo, c1_hi, c1_lo, c2_hi, c2_lo, c3_hi, c3_lo);
+        W[i] = sum64_4_hi(
+          c0_hi,
+          c0_lo,
+          c1_hi,
+          c1_lo,
+          c2_hi,
+          c2_lo,
+          c3_hi,
+          c3_lo
+        );
+        W[i + 1] = sum64_4_lo(
+          c0_hi,
+          c0_lo,
+          c1_hi,
+          c1_lo,
+          c2_hi,
+          c2_lo,
+          c3_hi,
+          c3_lo
+        );
       }
     };
     SHA512.prototype._update = function _update(msg, start) {
@@ -12611,8 +12659,30 @@ var require__4 = __commonJS({
         var c3_lo = this.k[i + 1];
         var c4_hi = W[i];
         var c4_lo = W[i + 1];
-        var T1_hi = sum64_5_hi(c0_hi, c0_lo, c1_hi, c1_lo, c2_hi, c2_lo, c3_hi, c3_lo, c4_hi, c4_lo);
-        var T1_lo = sum64_5_lo(c0_hi, c0_lo, c1_hi, c1_lo, c2_hi, c2_lo, c3_hi, c3_lo, c4_hi, c4_lo);
+        var T1_hi = sum64_5_hi(
+          c0_hi,
+          c0_lo,
+          c1_hi,
+          c1_lo,
+          c2_hi,
+          c2_lo,
+          c3_hi,
+          c3_lo,
+          c4_hi,
+          c4_lo
+        );
+        var T1_lo = sum64_5_lo(
+          c0_hi,
+          c0_lo,
+          c1_hi,
+          c1_lo,
+          c2_hi,
+          c2_lo,
+          c3_hi,
+          c3_lo,
+          c4_hi,
+          c4_lo
+        );
         c0_hi = s0_512_hi(ah, al);
         c0_lo = s0_512_lo(ah, al);
         c1_hi = maj64_hi(ah, al, bh, bl, ch, cl);
@@ -12842,13 +12912,25 @@ var require_ripemd = __commonJS({
       var Dh = D;
       var Eh = E;
       for (var j = 0; j < 80; j++) {
-        var T = sum32(rotl32(sum32_4(A, f(j, B, C, D), msg[r[j] + start], K(j)), s[j]), E);
+        var T = sum32(
+          rotl32(
+            sum32_4(A, f(j, B, C, D), msg[r[j] + start], K(j)),
+            s[j]
+          ),
+          E
+        );
         A = E;
         E = D;
         D = rotl32(C, 10);
         C = B;
         B = T;
-        T = sum32(rotl32(sum32_4(Ah, f(79 - j, Bh, Ch, Dh), msg[rh[j] + start], Kh(j)), sh[j]), Eh);
+        T = sum32(
+          rotl32(
+            sum32_4(Ah, f(79 - j, Bh, Ch, Dh), msg[rh[j] + start], Kh(j)),
+            sh[j]
+          ),
+          Eh
+        );
         Ah = Eh;
         Eh = Dh;
         Dh = rotl32(Ch, 10);
@@ -14274,7 +14356,10 @@ var require_hmac_drbg = __commonJS({
       var entropy = utils.toArray(options2.entropy, options2.entropyEnc || "hex");
       var nonce = utils.toArray(options2.nonce, options2.nonceEnc || "hex");
       var pers = utils.toArray(options2.pers, options2.persEnc || "hex");
-      assert(entropy.length >= this.minEntropy / 8, "Not enough entropy. Minimum is: " + this.minEntropy + " bits");
+      assert(
+        entropy.length >= this.minEntropy / 8,
+        "Not enough entropy. Minimum is: " + this.minEntropy + " bits"
+      );
       this._init(entropy, nonce, pers);
     }
     module2.exports = HmacDRBG;
@@ -14312,7 +14397,10 @@ var require_hmac_drbg = __commonJS({
       }
       entropy = utils.toArray(entropy, entropyEnc);
       add = utils.toArray(add, addEnc);
-      assert(entropy.length >= this.minEntropy / 8, "Not enough entropy. Minimum is: " + this.minEntropy + " bits");
+      assert(
+        entropy.length >= this.minEntropy / 8,
+        "Not enough entropy. Minimum is: " + this.minEntropy + " bits"
+      );
       this._update(entropy.concat(add || []));
       this._reseed = 1;
     };
@@ -14597,7 +14685,10 @@ var require_ec = __commonJS({
       if (!(this instanceof EC))
         return new EC(options2);
       if (typeof options2 === "string") {
-        assert(Object.prototype.hasOwnProperty.call(curves, options2), "Unknown curve " + options2);
+        assert(
+          Object.prototype.hasOwnProperty.call(curves, options2),
+          "Unknown curve " + options2
+        );
         options2 = curves[options2];
       }
       if (options2 instanceof curves.PresetCurve)
@@ -16849,7 +16940,9 @@ var require_aes_js = __commonJS({
       function convertToInt32(bytes) {
         var result = [];
         for (var i = 0; i < bytes.length; i += 4) {
-          result.push(bytes[i] << 24 | bytes[i + 1] << 16 | bytes[i + 2] << 8 | bytes[i + 3]);
+          result.push(
+            bytes[i] << 24 | bytes[i + 1] << 16 | bytes[i + 2] << 8 | bytes[i + 3]
+          );
         }
         return result;
       }
@@ -26883,7 +26976,11 @@ var require_permessage_deflate = __commonJS({
           this._deflate.close();
           this._deflate = null;
           if (callback) {
-            callback(new Error("The deflate stream was closed while data was being processed"));
+            callback(
+              new Error(
+                "The deflate stream was closed while data was being processed"
+              )
+            );
           }
         }
       }
@@ -26924,7 +27021,9 @@ var require_permessage_deflate = __commonJS({
             params.client_max_window_bits = this._options.clientMaxWindowBits;
           }
         } else if (this._options.clientMaxWindowBits === false || typeof this._options.clientMaxWindowBits === "number" && params.client_max_window_bits > this._options.clientMaxWindowBits) {
-          throw new Error('Unexpected or invalid parameter "client_max_window_bits"');
+          throw new Error(
+            'Unexpected or invalid parameter "client_max_window_bits"'
+          );
         }
         return params;
       }
@@ -26940,21 +27039,29 @@ var require_permessage_deflate = __commonJS({
               if (value !== true) {
                 const num = +value;
                 if (!Number.isInteger(num) || num < 8 || num > 15) {
-                  throw new TypeError(`Invalid value for parameter "${key}": ${value}`);
+                  throw new TypeError(
+                    `Invalid value for parameter "${key}": ${value}`
+                  );
                 }
                 value = num;
               } else if (!this._isServer) {
-                throw new TypeError(`Invalid value for parameter "${key}": ${value}`);
+                throw new TypeError(
+                  `Invalid value for parameter "${key}": ${value}`
+                );
               }
             } else if (key === "server_max_window_bits") {
               const num = +value;
               if (!Number.isInteger(num) || num < 8 || num > 15) {
-                throw new TypeError(`Invalid value for parameter "${key}": ${value}`);
+                throw new TypeError(
+                  `Invalid value for parameter "${key}": ${value}`
+                );
               }
               value = num;
             } else if (key === "client_no_context_takeover" || key === "server_no_context_takeover") {
               if (value !== true) {
-                throw new TypeError(`Invalid value for parameter "${key}": ${value}`);
+                throw new TypeError(
+                  `Invalid value for parameter "${key}": ${value}`
+                );
               }
             } else {
               throw new Error(`Unknown parameter "${key}"`);
@@ -27006,7 +27113,10 @@ var require_permessage_deflate = __commonJS({
             callback(err);
             return;
           }
-          const data2 = bufferUtil.concat(this._inflate[kBuffers], this._inflate[kTotalLength]);
+          const data2 = bufferUtil.concat(
+            this._inflate[kBuffers],
+            this._inflate[kTotalLength]
+          );
           if (this._inflate._readableState.endEmitted) {
             this._inflate.close();
             this._inflate = null;
@@ -27039,7 +27149,10 @@ var require_permessage_deflate = __commonJS({
           if (!this._deflate) {
             return;
           }
-          let data2 = bufferUtil.concat(this._deflate[kBuffers], this._deflate[kTotalLength]);
+          let data2 = bufferUtil.concat(
+            this._deflate[kBuffers],
+            this._deflate[kTotalLength]
+          );
           if (fin)
             data2 = data2.slice(0, data2.length - 4);
           this._deflate[kCallback] = null;
@@ -27322,7 +27435,12 @@ var require_receiver = __commonJS({
           }
           if (this._payloadLength > 125) {
             this._loop = false;
-            return error(RangeError, `invalid payload length ${this._payloadLength}`, true, 1002);
+            return error(
+              RangeError,
+              `invalid payload length ${this._payloadLength}`,
+              true,
+              1002
+            );
           }
         } else {
           this._loop = false;
@@ -27364,7 +27482,12 @@ var require_receiver = __commonJS({
         const num = buf.readUInt32BE(0);
         if (num > Math.pow(2, 53 - 32) - 1) {
           this._loop = false;
-          return error(RangeError, "Unsupported WebSocket frame: payload length > 2^53 - 1", false, 1009);
+          return error(
+            RangeError,
+            "Unsupported WebSocket frame: payload length > 2^53 - 1",
+            false,
+            1009
+          );
         }
         this._payloadLength = num * Math.pow(2, 32) + buf.readUInt32BE(4);
         return this.haveLength();
@@ -27422,7 +27545,9 @@ var require_receiver = __commonJS({
           if (buf.length) {
             this._messageLength += buf.length;
             if (this._messageLength > this._maxPayload && this._maxPayload > 0) {
-              return cb(error(RangeError, "Max payload size exceeded", false, 1009));
+              return cb(
+                error(RangeError, "Max payload size exceeded", false, 1009)
+              );
             }
             this._fragments.push(buf);
           }
@@ -27491,7 +27616,9 @@ var require_receiver = __commonJS({
     };
     module2.exports = Receiver;
     function error(ErrorCtor, message, prefix, statusCode) {
-      const err = new ErrorCtor(prefix ? `Invalid WebSocket frame: ${message}` : message);
+      const err = new ErrorCtor(
+        prefix ? `Invalid WebSocket frame: ${message}` : message
+      );
       Error.captureStackTrace(err, error);
       err[kStatusCode] = statusCode;
       return err;
@@ -27581,13 +27708,16 @@ var require_sender = __commonJS({
         }
       }
       doClose(data, mask2, cb) {
-        this.sendFrame(Sender.frame(data, {
-          fin: true,
-          rsv1: false,
-          opcode: 8,
-          mask: mask2,
-          readOnly: false
-        }), cb);
+        this.sendFrame(
+          Sender.frame(data, {
+            fin: true,
+            rsv1: false,
+            opcode: 8,
+            mask: mask2,
+            readOnly: false
+          }),
+          cb
+        );
       }
       ping(data, mask2, cb) {
         const buf = toBuffer(data);
@@ -27601,13 +27731,16 @@ var require_sender = __commonJS({
         }
       }
       doPing(data, mask2, readOnly, cb) {
-        this.sendFrame(Sender.frame(data, {
-          fin: true,
-          rsv1: false,
-          opcode: 9,
-          mask: mask2,
-          readOnly
-        }), cb);
+        this.sendFrame(
+          Sender.frame(data, {
+            fin: true,
+            rsv1: false,
+            opcode: 9,
+            mask: mask2,
+            readOnly
+          }),
+          cb
+        );
       }
       pong(data, mask2, cb) {
         const buf = toBuffer(data);
@@ -27621,13 +27754,16 @@ var require_sender = __commonJS({
         }
       }
       doPong(data, mask2, readOnly, cb) {
-        this.sendFrame(Sender.frame(data, {
-          fin: true,
-          rsv1: false,
-          opcode: 10,
-          mask: mask2,
-          readOnly
-        }), cb);
+        this.sendFrame(
+          Sender.frame(data, {
+            fin: true,
+            rsv1: false,
+            opcode: 10,
+            mask: mask2,
+            readOnly
+          }),
+          cb
+        );
       }
       send(data, options2, cb) {
         const buf = toBuffer(data);
@@ -27660,13 +27796,16 @@ var require_sender = __commonJS({
             this.dispatch(buf, this._compress, opts, cb);
           }
         } else {
-          this.sendFrame(Sender.frame(buf, {
-            fin: options2.fin,
-            rsv1: false,
-            opcode,
-            mask: options2.mask,
-            readOnly: toBuffer.readOnly
-          }), cb);
+          this.sendFrame(
+            Sender.frame(buf, {
+              fin: options2.fin,
+              rsv1: false,
+              opcode,
+              mask: options2.mask,
+              readOnly: toBuffer.readOnly
+            }),
+            cb
+          );
         }
       }
       dispatch(data, compress, options2, cb) {
@@ -27679,7 +27818,9 @@ var require_sender = __commonJS({
         this._deflating = true;
         perMessageDeflate.compress(data, options2.fin, (_, buf) => {
           if (this._socket.destroyed) {
-            const err = new Error("The socket was closed while data was being compressed");
+            const err = new Error(
+              "The socket was closed while data was being compressed"
+            );
             if (typeof cb === "function")
               cb(err);
             for (let i = 0; i < this._queue.length; i++) {
@@ -28089,12 +28230,14 @@ var require_extension = __commonJS({
         if (!Array.isArray(configurations))
           configurations = [configurations];
         return configurations.map((params) => {
-          return [extension].concat(Object.keys(params).map((k) => {
-            let values = params[k];
-            if (!Array.isArray(values))
-              values = [values];
-            return values.map((v) => v === true ? k : `${k}=${v}`).join("; ");
-          })).join("; ");
+          return [extension].concat(
+            Object.keys(params).map((k) => {
+              let values = params[k];
+              if (!Array.isArray(values))
+                values = [values];
+              return values.map((v) => v === true ? k : `${k}=${v}`).join("; ");
+            })
+          ).join("; ");
         }).join(", ");
       }).join(", ");
     }
@@ -28188,7 +28331,12 @@ var require_websocket = __commonJS({
         return this._url;
       }
       setSocket(socket, head, maxPayload) {
-        const receiver = new Receiver(this.binaryType, this._extensions, this._isServer, maxPayload);
+        const receiver = new Receiver(
+          this.binaryType,
+          this._extensions,
+          this._isServer,
+          maxPayload
+        );
         this._sender = new Sender(socket, this._extensions);
         this._receiver = receiver;
         this._socket = socket;
@@ -28244,7 +28392,10 @@ var require_websocket = __commonJS({
           if (this._closeFrameReceived)
             this._socket.end();
         });
-        this._closeTimer = setTimeout(this._socket.destroy.bind(this._socket), closeTimeout);
+        this._closeTimer = setTimeout(
+          this._socket.destroy.bind(this._socket),
+          closeTimeout
+        );
       }
       ping(data, mask, cb) {
         if (this.readyState === WebSocket.CONNECTING) {
@@ -28385,7 +28536,9 @@ var require_websocket = __commonJS({
         port: void 0
       });
       if (!protocolVersions.includes(opts.protocolVersion)) {
-        throw new RangeError(`Unsupported protocol version: ${opts.protocolVersion} (supported versions: ${protocolVersions.join(", ")})`);
+        throw new RangeError(
+          `Unsupported protocol version: ${opts.protocolVersion} (supported versions: ${protocolVersions.join(", ")})`
+        );
       }
       let parsedUrl;
       if (address instanceof URL) {
@@ -28417,7 +28570,11 @@ var require_websocket = __commonJS({
       opts.path = parsedUrl.pathname + parsedUrl.search;
       opts.timeout = opts.handshakeTimeout;
       if (opts.perMessageDeflate) {
-        perMessageDeflate = new PerMessageDeflate(opts.perMessageDeflate !== true ? opts.perMessageDeflate : {}, false, opts.maxPayload);
+        perMessageDeflate = new PerMessageDeflate(
+          opts.perMessageDeflate !== true ? opts.perMessageDeflate : {},
+          false,
+          opts.maxPayload
+        );
         opts.headers["Sec-WebSocket-Extensions"] = format({
           [PerMessageDeflate.extensionName]: perMessageDeflate.offer()
         });
@@ -28466,7 +28623,11 @@ var require_websocket = __commonJS({
           const addr = new URL(location, address);
           initAsClient(websocket, addr, protocols, options2);
         } else if (!websocket.emit("unexpected-response", req, res)) {
-          abortHandshake(websocket, req, `Unexpected server response: ${res.statusCode}`);
+          abortHandshake(
+            websocket,
+            req,
+            `Unexpected server response: ${res.statusCode}`
+          );
         }
       });
       req.on("upgrade", (res, socket, head) => {
@@ -28503,7 +28664,11 @@ var require_websocket = __commonJS({
               websocket._extensions[PerMessageDeflate.extensionName] = perMessageDeflate;
             }
           } catch (err) {
-            abortHandshake(websocket, socket, "Invalid Sec-WebSocket-Extensions header");
+            abortHandshake(
+              websocket,
+              socket,
+              "Invalid Sec-WebSocket-Extensions header"
+            );
             return;
           }
         }
@@ -28547,7 +28712,9 @@ var require_websocket = __commonJS({
           websocket._bufferedAmount += length;
       }
       if (cb) {
-        const err = new Error(`WebSocket is not open: readyState ${websocket.readyState} (${readyStates[websocket.readyState]})`);
+        const err = new Error(
+          `WebSocket is not open: readyState ${websocket.readyState} (${readyStates[websocket.readyState]})`
+        );
         cb(err);
       }
     }
@@ -28776,7 +28943,9 @@ var require_websocket_server = __commonJS({
           port: null
         }, options2);
         if (options2.port == null && !options2.server && !options2.noServer) {
-          throw new TypeError('One of the "port", "server", or "noServer" options must be specified');
+          throw new TypeError(
+            'One of the "port", "server", or "noServer" options must be specified'
+          );
         }
         if (options2.port != null) {
           this._server = createServer((req, res) => {
@@ -28787,7 +28956,12 @@ var require_websocket_server = __commonJS({
             });
             res.end(body);
           });
-          this._server.listen(options2.port, options2.host, options2.backlog, callback);
+          this._server.listen(
+            options2.port,
+            options2.host,
+            options2.backlog,
+            callback
+          );
         } else if (options2.server) {
           this._server = options2.server;
         }
@@ -28851,7 +29025,11 @@ var require_websocket_server = __commonJS({
           return abortHandshake(socket, 400);
         }
         if (this.options.perMessageDeflate) {
-          const perMessageDeflate = new PerMessageDeflate(this.options.perMessageDeflate, true, this.options.maxPayload);
+          const perMessageDeflate = new PerMessageDeflate(
+            this.options.perMessageDeflate,
+            true,
+            this.options.maxPayload
+          );
           try {
             const offers = parse2(req.headers["sec-websocket-extensions"]);
             if (offers[PerMessageDeflate.extensionName]) {
@@ -28886,7 +29064,9 @@ var require_websocket_server = __commonJS({
         if (!socket.readable || !socket.writable)
           return socket.destroy();
         if (socket[kWebSocket]) {
-          throw new Error("server.handleUpgrade() was called more than once with the same socket, possibly due to a misconfiguration");
+          throw new Error(
+            "server.handleUpgrade() was called more than once with the same socket, possibly due to a misconfiguration"
+          );
         }
         const digest = createHash("sha1").update(key + GUID).digest("base64");
         const headers = [
@@ -28952,8 +29132,10 @@ var require_websocket_server = __commonJS({
           "Content-Type": "text/html",
           "Content-Length": Buffer.byteLength(message)
         }, headers);
-        socket.write(`HTTP/1.1 ${code} ${STATUS_CODES[code]}\r
-` + Object.keys(headers).map((h) => `${h}: ${headers[h]}`).join("\r\n") + "\r\n\r\n" + message);
+        socket.write(
+          `HTTP/1.1 ${code} ${STATUS_CODES[code]}\r
+` + Object.keys(headers).map((h) => `${h}: ${headers[h]}`).join("\r\n") + "\r\n\r\n" + message
+        );
       }
       socket.removeListener("error", socketOnError);
       socket.destroy();
@@ -32565,6 +32747,7 @@ var require_types2 = __commonJS({
       43113: "fuji",
       42161: "arbitrum_one",
       421611: "arbitrum_rinkeby",
+      421613: "arbitrum_goerli",
       250: "fantom_opera",
       4002: "fantom_testnet",
       10: "optimism",
@@ -32587,6 +32770,7 @@ var require_types2 = __commonJS({
       ChainId7[ChainId7["fuji"] = 43113] = "fuji";
       ChainId7[ChainId7["arbitrum_one"] = 42161] = "arbitrum_one";
       ChainId7[ChainId7["arbitrum_rinkeby"] = 421611] = "arbitrum_rinkeby";
+      ChainId7[ChainId7["arbitrum_goerli"] = 421613] = "arbitrum_goerli";
       ChainId7[ChainId7["fantom"] = 250] = "fantom";
       ChainId7[ChainId7["fantom_testnet"] = 4002] = "fantom_testnet";
       ChainId7[ChainId7["optimism"] = 10] = "optimism";
@@ -33064,7 +33248,12 @@ var require_bignumber2 = __commonJS({
               y = new BigNumber3(baseIn);
               x = y.pow(str2.length - i);
               POW_PRECISION = k;
-              y.c = toBaseOut(toFixedPoint(coeffToString(x.c), x.e, "0"), 10, baseOut, decimal);
+              y.c = toBaseOut(
+                toFixedPoint(coeffToString(x.c), x.e, "0"),
+                10,
+                baseOut,
+                decimal
+              );
               y.e = y.c.length;
             }
             xc = toBaseOut(str2, baseIn, baseOut, callerIsToString ? (alphabet = ALPHABET, decimal) : (alphabet = decimal, ALPHABET));
@@ -33153,7 +33342,9 @@ var require_bignumber2 = __commonJS({
           return function(x, y, dp, rm, base) {
             var cmp, e, i, more, n, prod, prodL, q, qc, rem, remL, rem0, xi, xL, yc0, yL, yz, s = x.s == y.s ? 1 : -1, xc = x.c, yc = y.c;
             if (!xc || !xc[0] || !yc || !yc[0]) {
-              return new BigNumber3(!x.s || !y.s || (xc ? yc && xc[0] == yc[0] : !yc) ? NaN : xc && xc[0] == 0 || !yc ? s * 0 : s / 0);
+              return new BigNumber3(
+                !x.s || !y.s || (xc ? yc && xc[0] == yc[0] : !yc) ? NaN : xc && xc[0] == 0 || !yc ? s * 0 : s / 0
+              );
             }
             q = new BigNumber3(s);
             qc = q.c = [];
@@ -33928,7 +34119,10 @@ var require_bignumber2 = __commonJS({
               if (isNeg)
                 intPart = "-" + intPart;
             }
-            str2 = fractionPart ? intPart + (format2.decimalSeparator || "") + ((g2 = +format2.fractionGroupSize) ? fractionPart.replace(new RegExp("\\d{" + g2 + "}\\B", "g"), "$&" + (format2.fractionGroupSeparator || "")) : fractionPart) : intPart;
+            str2 = fractionPart ? intPart + (format2.decimalSeparator || "") + ((g2 = +format2.fractionGroupSize) ? fractionPart.replace(
+              new RegExp("\\d{" + g2 + "}\\B", "g"),
+              "$&" + (format2.fractionGroupSeparator || "")
+            ) : fractionPart) : intPart;
           }
           return (format2.prefix || "") + str2 + (format2.suffix || "");
         };
@@ -33970,7 +34164,9 @@ var require_bignumber2 = __commonJS({
           d0 = d0.plus(d2.times(d1));
           n0.s = n1.s = x.s;
           e = e * 2;
-          r = div(n1, d1, e, ROUNDING_MODE).minus(x).abs().comparedTo(div(n0, d0, e, ROUNDING_MODE).minus(x).abs()) < 1 ? [n1, d1] : [n0, d0];
+          r = div(n1, d1, e, ROUNDING_MODE).minus(x).abs().comparedTo(
+            div(n0, d0, e, ROUNDING_MODE).minus(x).abs()
+          ) < 1 ? [n1, d1] : [n0, d0];
           MAX_EXP = exp;
           return r;
         };
@@ -35403,7 +35599,9 @@ var require_methodValidators = __commonJS({
       const method = descriptor.value;
       descriptor.value = function() {
         if (!ethers_1.utils.isAddress(this.l2PoolAddress) || !ethers_1.utils.isAddress(this.encoderAddress)) {
-          console.error(`[L2PoolValidator] You need to pass valid addresses: l2pool: ${this.l2PoolAddress} encoder: ${this.encoderAddress}`);
+          console.error(
+            `[L2PoolValidator] You need to pass valid addresses: l2pool: ${this.l2PoolAddress} encoder: ${this.encoderAddress}`
+          );
           return [];
         }
         (0, validations_1.isDeadline32BytesValidator)(target, propertyName, arguments);
@@ -41661,7 +41859,15 @@ var require_lendingPool_contract = __commonJS({
             const convertedAmountWithSurplus = (0, utils_1.valueToWei)(amountWithSurplus, tokenDecimals);
             const txCallback = this.generateTxCallback({
               rawTxMethod: () => __async(this, null, function* () {
-                return lendingPoolContract.populateTransaction.flashLoan(this.swapCollateralAddress, [fromAsset], swapAll ? [convertedAmountWithSurplus] : [convertedAmount], [0], onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user, params, referralCode !== null && referralCode !== void 0 ? referralCode : "0");
+                return lendingPoolContract.populateTransaction.flashLoan(
+                  this.swapCollateralAddress,
+                  [fromAsset],
+                  swapAll ? [convertedAmountWithSurplus] : [convertedAmount],
+                  [0],
+                  onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user,
+                  params,
+                  referralCode !== null && referralCode !== void 0 ? referralCode : "0"
+                );
               }),
               from: user
             });
@@ -41743,7 +41949,15 @@ var require_lendingPool_contract = __commonJS({
             const lendingPoolContract = this.getContractInstance(this.lendingPoolAddress);
             const txCallback = this.generateTxCallback({
               rawTxMethod: () => __async(this, null, function* () {
-                return lendingPoolContract.populateTransaction.flashLoan(this.repayWithCollateralAddress, [assetToRepay], [convertedRepayAmount], [0], onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user, params, referralCode !== null && referralCode !== void 0 ? referralCode : "0");
+                return lendingPoolContract.populateTransaction.flashLoan(
+                  this.repayWithCollateralAddress,
+                  [assetToRepay],
+                  [convertedRepayAmount],
+                  [0],
+                  onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user,
+                  params,
+                  referralCode !== null && referralCode !== void 0 ? referralCode : "0"
+                );
               }),
               from: user
             });
@@ -41828,7 +42042,15 @@ var require_lendingPool_contract = __commonJS({
             const poolContract = this.getContractInstance(this.lendingPoolAddress);
             const txCallback = this.generateTxCallback({
               rawTxMethod: () => __async(this, null, function* () {
-                return poolContract.populateTransaction.flashLoan(this.repayWithCollateralAddress, [fromAsset], repayAllDebt ? [convertedRepayWithAmountWithSurplus] : [convertedRepayWithAmount], [0], onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user, params, referralCode !== null && referralCode !== void 0 ? referralCode : "0");
+                return poolContract.populateTransaction.flashLoan(
+                  this.repayWithCollateralAddress,
+                  [fromAsset],
+                  repayAllDebt ? [convertedRepayWithAmountWithSurplus] : [convertedRepayWithAmount],
+                  [0],
+                  onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user,
+                  params,
+                  referralCode !== null && referralCode !== void 0 ? referralCode : "0"
+                );
               }),
               from: user
             });
@@ -50121,11 +50343,14 @@ var require_lib33 = __commonJS({
       blob() {
         let ct = this.headers && this.headers.get("content-type") || "";
         return consumeBody.call(this).then(function(buf) {
-          return Object.assign(new Blob2([], {
-            type: ct.toLowerCase()
-          }), {
-            [BUFFER]: buf
-          });
+          return Object.assign(
+            new Blob2([], {
+              type: ct.toLowerCase()
+            }),
+            {
+              [BUFFER]: buf
+            }
+          );
         });
       },
       json() {
@@ -51813,7 +52038,9 @@ var require_lodash = __commonJS({
         var nativeObjectToString = objectProto.toString;
         var objectCtorString = funcToString.call(Object2);
         var oldDash = root._;
-        var reIsNative = RegExp2("^" + funcToString.call(hasOwnProperty).replace(reRegExpChar, "\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, "$1.*?") + "$");
+        var reIsNative = RegExp2(
+          "^" + funcToString.call(hasOwnProperty).replace(reRegExpChar, "\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, "$1.*?") + "$"
+        );
         var Buffer2 = moduleExports ? context.Buffer : undefined2, Symbol2 = context.Symbol, Uint8Array2 = context.Uint8Array, allocUnsafe = Buffer2 ? Buffer2.allocUnsafe : undefined2, getPrototype = overArg(Object2.getPrototypeOf, Object2), objectCreate = Object2.create, propertyIsEnumerable = objectProto.propertyIsEnumerable, splice = arrayProto.splice, spreadableSymbol = Symbol2 ? Symbol2.isConcatSpreadable : undefined2, symIterator = Symbol2 ? Symbol2.iterator : undefined2, symToStringTag = Symbol2 ? Symbol2.toStringTag : undefined2;
         var defineProperty = function() {
           try {
@@ -53295,7 +53522,18 @@ var require_lodash = __commonJS({
             var holders = length < 3 && args[0] !== placeholder && args[length - 1] !== placeholder ? [] : replaceHolders(args, placeholder);
             length -= holders.length;
             if (length < arity) {
-              return createRecurry(func, bitmask, createHybrid, wrapper.placeholder, undefined2, args, holders, undefined2, undefined2, arity - length);
+              return createRecurry(
+                func,
+                bitmask,
+                createHybrid,
+                wrapper.placeholder,
+                undefined2,
+                args,
+                holders,
+                undefined2,
+                undefined2,
+                arity - length
+              );
             }
             var fn = this && this !== root && this instanceof wrapper ? Ctor : func;
             return apply(fn, this, args);
@@ -53373,7 +53611,18 @@ var require_lodash = __commonJS({
             length -= holdersCount;
             if (isCurried && length < arity) {
               var newHolders = replaceHolders(args, placeholder);
-              return createRecurry(func, bitmask, createHybrid, wrapper.placeholder, thisArg, args, newHolders, argPos, ary2, arity - length);
+              return createRecurry(
+                func,
+                bitmask,
+                createHybrid,
+                wrapper.placeholder,
+                thisArg,
+                args,
+                newHolders,
+                argPos,
+                ary2,
+                arity - length
+              );
             }
             var thisBinding = isBind ? thisArg : this, fn = isBindKey ? thisBinding[func] : func;
             length = args.length;
@@ -55693,7 +55942,10 @@ var require_lodash = __commonJS({
           options2 = assignInWith({}, options2, settings, customDefaultsAssignIn);
           var imports = assignInWith({}, options2.imports, settings.imports, customDefaultsAssignIn), importsKeys = keys(imports), importsValues = baseValues(imports, importsKeys);
           var isEscaping, isEvaluating, index = 0, interpolate = options2.interpolate || reNoMatch, source = "__p += '";
-          var reDelimiters = RegExp2((options2.escape || reNoMatch).source + "|" + interpolate.source + "|" + (interpolate === reInterpolate ? reEsTemplate : reNoMatch).source + "|" + (options2.evaluate || reNoMatch).source + "|$", "g");
+          var reDelimiters = RegExp2(
+            (options2.escape || reNoMatch).source + "|" + interpolate.source + "|" + (interpolate === reInterpolate ? reEsTemplate : reNoMatch).source + "|" + (options2.evaluate || reNoMatch).source + "|$",
+            "g"
+          );
           var sourceURL = "//# sourceURL=" + (hasOwnProperty.call(options2, "sourceURL") ? (options2.sourceURL + "").replace(/\s/g, " ") : "lodash.templateSources[" + ++templateCounter + "]") + "\n";
           string.replace(reDelimiters, function(match, escapeValue, interpolateValue, esTemplateValue, evaluateValue, offset) {
             interpolateValue || (interpolateValue = esTemplateValue);
@@ -57376,7 +57628,9 @@ var require_float = __commonJS({
     "use strict";
     var common = require_common3();
     var Type = require_type();
-    var YAML_FLOAT_PATTERN = new RegExp("^(?:[-+]?(?:0|[1-9][0-9_]*)(?:\\.[0-9_]*)?(?:[eE][-+]?[0-9]+)?|\\.[0-9_]+(?:[eE][-+]?[0-9]+)?|[-+]?[0-9][0-9_]*(?::[0-5]?[0-9])+\\.[0-9_]*|[-+]?\\.(?:inf|Inf|INF)|\\.(?:nan|NaN|NAN))$");
+    var YAML_FLOAT_PATTERN = new RegExp(
+      "^(?:[-+]?(?:0|[1-9][0-9_]*)(?:\\.[0-9_]*)?(?:[eE][-+]?[0-9]+)?|\\.[0-9_]+(?:[eE][-+]?[0-9]+)?|[-+]?[0-9][0-9_]*(?::[0-5]?[0-9])+\\.[0-9_]*|[-+]?\\.(?:inf|Inf|INF)|\\.(?:nan|NaN|NAN))$"
+    );
     function resolveYamlFloat(data) {
       if (data === null)
         return false;
@@ -57498,8 +57752,12 @@ var require_timestamp = __commonJS({
   "node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/timestamp.js"(exports2, module2) {
     "use strict";
     var Type = require_type();
-    var YAML_DATE_REGEXP = new RegExp("^([0-9][0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9])$");
-    var YAML_TIMESTAMP_REGEXP = new RegExp("^([0-9][0-9][0-9][0-9])-([0-9][0-9]?)-([0-9][0-9]?)(?:[Tt]|[ \\t]+)([0-9][0-9]?):([0-9][0-9]):([0-9][0-9])(?:\\.([0-9]*))?(?:[ \\t]*(Z|([-+])([0-9][0-9]?)(?::([0-9][0-9]))?))?$");
+    var YAML_DATE_REGEXP = new RegExp(
+      "^([0-9][0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9])$"
+    );
+    var YAML_TIMESTAMP_REGEXP = new RegExp(
+      "^([0-9][0-9][0-9][0-9])-([0-9][0-9]?)-([0-9][0-9]?)(?:[Tt]|[ \\t]+)([0-9][0-9]?):([0-9][0-9]):([0-9][0-9])(?:\\.([0-9]*))?(?:[ \\t]*(Z|([-+])([0-9][0-9]?)(?::([0-9][0-9]))?))?$"
+    );
     function resolveYamlTimestamp(data) {
       if (data === null)
         return false;
@@ -58034,7 +58292,10 @@ var require_loader = __commonJS({
       if (c <= 65535) {
         return String.fromCharCode(c);
       }
-      return String.fromCharCode((c - 65536 >> 10) + 55296, (c - 65536 & 1023) + 56320);
+      return String.fromCharCode(
+        (c - 65536 >> 10) + 55296,
+        (c - 65536 & 1023) + 56320
+      );
     }
     var simpleEscapeCheck = new Array(256);
     var simpleEscapeMap = new Array(256);
@@ -58061,7 +58322,10 @@ var require_loader = __commonJS({
       this.documents = [];
     }
     function generateError(state, message) {
-      return new YAMLException(message, new Mark(state.filename, state.input, state.position, state.line, state.position - state.lineStart));
+      return new YAMLException(
+        message,
+        new Mark(state.filename, state.input, state.position, state.line, state.position - state.lineStart)
+      );
     }
     function throwError(state, message) {
       throw generateError(state, message);
@@ -60984,7 +61248,9 @@ var require_reserve = __commonJS({
       const supplyUsageRatio = totalLiquidity.eq(0) ? "0" : (0, bignumber_1.valueToBigNumber)(totalDebt).dividedBy(totalLiquidity.plus(reserve.unbacked)).toFixed();
       const reserveLiquidationBonus = (0, bignumber_1.normalize)((0, bignumber_1.valueToBigNumber)(reserve.reserveLiquidationBonus).minus(__pow(10, index_1.LTV_PRECISION)), index_1.LTV_PRECISION);
       const eModeLiquidationBonus = (0, bignumber_1.normalize)((0, bignumber_1.valueToBigNumber)(reserve.eModeLiquidationBonus).minus(__pow(10, index_1.LTV_PRECISION)), index_1.LTV_PRECISION);
-      const availableLiquidity = reserve.borrowCap === "0" ? new bignumber_js_1.default(reserve.availableLiquidity) : bignumber_js_1.default.min(reserve.availableLiquidity, new bignumber_js_1.default(reserve.borrowCap).shiftedBy(reserve.decimals).minus(totalDebt.plus(1)));
+      const availableLiquidity = reserve.borrowCap === "0" ? new bignumber_js_1.default(reserve.availableLiquidity) : bignumber_js_1.default.min(reserve.availableLiquidity, new bignumber_js_1.default(reserve.borrowCap).shiftedBy(reserve.decimals).minus(
+        totalDebt.plus(1)
+      ));
       const supplyAPY = (0, index_1.rayPow)((0, bignumber_1.valueToZDBigNumber)(reserve.liquidityRate).dividedBy(constants_1.SECONDS_PER_YEAR).plus(index_1.RAY), constants_1.SECONDS_PER_YEAR).minus(index_1.RAY);
       const variableBorrowAPY = (0, index_1.rayPow)((0, bignumber_1.valueToZDBigNumber)(reserve.variableBorrowRate).dividedBy(constants_1.SECONDS_PER_YEAR).plus(index_1.RAY), constants_1.SECONDS_PER_YEAR).minus(index_1.RAY);
       const stableBorrowAPY = (0, index_1.rayPow)((0, bignumber_1.valueToZDBigNumber)(reserve.stableBorrowRate).dividedBy(constants_1.SECONDS_PER_YEAR).plus(index_1.RAY), constants_1.SECONDS_PER_YEAR).minus(index_1.RAY);
@@ -61250,9 +61516,7 @@ var marketsData = {
       collateralRepay: true,
       incentives: true
     },
-    rpcOnly: false,
-    cachingServerUrl: "https://cache-api-1.aave.com/graphql",
-    cachingWSServerUrl: "wss://cache-api-1.aave.com/graphql",
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: "0xB53C1a33016B2DC2fF3653530bfF1848a515c8c5".toLowerCase(),
       LENDING_POOL: "0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9",
@@ -61261,7 +61525,8 @@ var marketsData = {
       SWAP_COLLATERAL_ADAPTER: "0x135896DE8421be2ec868E0b811006171D9df802A",
       WALLET_BALANCE_PROVIDER: "0x8E8dAd5409E0263a51C0aB5055dA66Be28cFF922",
       UI_POOL_DATA_PROVIDER: "0x548e95Ce38B8cb1D91FD82A9F094F26295840277",
-      UI_INCENTIVE_DATA_PROVIDER: "0xD01ab9a6577E1D84F142e44D49380e23A340387d"
+      UI_INCENTIVE_DATA_PROVIDER: "0xD01ab9a6577E1D84F142e44D49380e23A340387d",
+      COLLECTOR: "0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c"
     },
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-track-your-health-factor",
@@ -61271,16 +61536,15 @@ var marketsData = {
   ["amm_mainnet" /* amm_mainnet */]: {
     marketTitle: "Ethereum AMM",
     chainId: import_contract_helpers2.ChainId.mainnet,
-    cachingServerUrl: "https://cache-api-1.aave.com/graphql",
-    cachingWSServerUrl: "wss://cache-api-1.aave.com/graphql",
-    rpcOnly: false,
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: "0xacc030ef66f9dfeae9cbb0cd1b25654b82cfa8d5".toLowerCase(),
       LENDING_POOL: "0x7937d4799803fbbe595ed57278bc4ca21f3bffcb",
       WETH_GATEWAY: "0xcc9a0B7c43DC2a5F023Bb9b738E45B0Ef6B06E04",
       WALLET_BALANCE_PROVIDER: "0x8E8dAd5409E0263a51C0aB5055dA66Be28cFF922",
       UI_POOL_DATA_PROVIDER: "0x548e95Ce38B8cb1D91FD82A9F094F26295840277",
-      UI_INCENTIVE_DATA_PROVIDER: "0xD01ab9a6577E1D84F142e44D49380e23A340387d"
+      UI_INCENTIVE_DATA_PROVIDER: "0xD01ab9a6577E1D84F142e44D49380e23A340387d",
+      COLLECTOR: "0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c"
     }
   },
   ["proto_mumbai" /* proto_mumbai */]: {
@@ -61319,7 +61583,8 @@ var marketsData = {
       REPAY_WITH_COLLATERAL_ADAPTER: "0xE84cF064a0a65290Ae5673b500699f3753063936",
       WALLET_BALANCE_PROVIDER: "0x34aa032bC416Cf2CdC45c0C8f065b1F19463D43e",
       UI_POOL_DATA_PROVIDER: "0x67acdB3469580185811E5769113509c6e8B6Cba5",
-      UI_INCENTIVE_DATA_PROVIDER: "0x645654D59A5226CBab969b1f5431aA47CBf64ab8"
+      UI_INCENTIVE_DATA_PROVIDER: "0x645654D59A5226CBab969b1f5431aA47CBf64ab8",
+      COLLECTOR: "0x7734280A4337F37Fbf4651073Db7c28C80B339e9"
     },
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-track-your-health-factor",
@@ -61362,7 +61627,8 @@ var marketsData = {
       REPAY_WITH_COLLATERAL_ADAPTER: "0x935b362EE3E1f342cc48118C528AAbee5118F6e6",
       WALLET_BALANCE_PROVIDER: "0x73e4898a1Bfa9f710B6A6AB516403A6299e01fc6",
       UI_POOL_DATA_PROVIDER: "0x88be7eC36719fadAbdE4307ec61EAB6fda788CEF",
-      UI_INCENTIVE_DATA_PROVIDER: "0x11979886A6dBAE27D7a72c49fCF3F23240D647bF"
+      UI_INCENTIVE_DATA_PROVIDER: "0x11979886A6dBAE27D7a72c49fCF3F23240D647bF",
+      COLLECTOR: "0x467b92aF281d14cB6809913AD016a607b5ba8A36"
     },
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-track-your-health-factor",
@@ -61370,7 +61636,7 @@ var marketsData = {
     }
   },
   ["proto_goerli_v3" /* proto_goerli_v3 */]: {
-    marketTitle: "Ethereum Goerli",
+    marketTitle: "Ethereum G\xF6rli",
     v3: true,
     chainId: import_contract_helpers2.ChainId.goerli,
     enabledFeatures: {
@@ -61405,6 +61671,7 @@ var marketsData = {
       UI_POOL_DATA_PROVIDER: "0x3f960bB91e85Ae2dB561BDd01B515C5A5c65802b",
       UI_INCENTIVE_DATA_PROVIDER: "0xEFdd7374551897B11a23Ec7b5694C713DFDa76f1",
       L2_ENCODER: "0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC",
+      COLLECTOR: "0x053D55f9B5AF8694c503EB288a1B7E552f590710",
       SWAP_COLLATERAL_ADAPTER: "0xAE9f94BD98eC2831a1330e0418bE0fDb5C95C2B9",
       REPAY_WITH_COLLATERAL_ADAPTER: "0x32FdC26aFFA1eB331263Bcdd59F2e46eCbCC2E24"
     },
@@ -61433,6 +61700,26 @@ var marketsData = {
       L2_ENCODER: "0x3d0d309DC8f999f34c4E7296dB38F0e65D3115DF"
     }
   },
+  ["proto_arbitrum_goerli_v3" /* proto_arbitrum_goerli_v3 */]: {
+    marketTitle: "Arbitrum G\xF6rli",
+    v3: true,
+    chainId: import_contract_helpers2.ChainId.arbitrum_goerli,
+    enabledFeatures: {
+      faucet: true,
+      incentives: true
+    },
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: "0xF8aa90E66B8BAe13f2e4aDe6104abAb8eeDaBfdc".toLowerCase(),
+      LENDING_POOL: "0x6Cbb4E8eC402E07fDF96DbbC6c752aCfB0eB6075",
+      WETH_GATEWAY: "0xBCca2fc5F30A65cE2155d739364f3fc8F57E6999",
+      FAUCET: "0x98256500C9f1CE77e4C925b7bbF1588515E34422",
+      WALLET_BALANCE_PROVIDER: "0xA0025bE90591971ad76D12F8c9CecA09f66db3D8",
+      UI_POOL_DATA_PROVIDER: "0xd5dE38432Ef93B574B5eAbeBaa8F92bB480dD14F",
+      UI_INCENTIVE_DATA_PROVIDER: "0x71af6535f74Ac34e61a0Df6221ec0442b512eBC1",
+      L2_ENCODER: "0xBFB521464727c3B31A6D9183413cc2B66f4F6686"
+    }
+  },
   ["proto_avalanche_v3" /* proto_avalanche_v3 */]: {
     marketTitle: "Avalanche",
     v3: true,
@@ -61451,7 +61738,8 @@ var marketsData = {
       SWAP_COLLATERAL_ADAPTER: "0xF7fC20D9D1D8DFE55F5F2c3180272a5747dD327F",
       WALLET_BALANCE_PROVIDER: "0xBc790382B3686abffE4be14A030A96aC6154023a",
       UI_POOL_DATA_PROVIDER: "0xdBbFaFC45983B4659E368a3025b81f69Ab6E5093",
-      UI_INCENTIVE_DATA_PROVIDER: "0x270f51cf3F681010B46f5c4Ee2aD5120Db33026F"
+      UI_INCENTIVE_DATA_PROVIDER: "0x270f51cf3F681010B46f5c4Ee2aD5120Db33026F",
+      COLLECTOR: "0x5ba7fd868c40c16f7aDfAe6CF87121E13FC2F7a0"
     },
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
@@ -61497,7 +61785,7 @@ var marketsData = {
     }
   },
   ["proto_optimism_goerli_v3" /* proto_optimism_goerli_v3 */]: {
-    marketTitle: "Optimism Goerli",
+    marketTitle: "Optimism G\xF6rli",
     v3: true,
     chainId: import_contract_helpers2.ChainId.optimism_goerli,
     enabledFeatures: {
@@ -61533,7 +61821,8 @@ var marketsData = {
       REPAY_WITH_COLLATERAL_ADAPTER: "0x1408401B2A7E28cB747b3e258D0831Fc926bAC51",
       WALLET_BALANCE_PROVIDER: "0xBc790382B3686abffE4be14A030A96aC6154023a",
       UI_POOL_DATA_PROVIDER: "0x1CCbfeC508da8D5242D5C1b368694Ab0066b39f1",
-      UI_INCENTIVE_DATA_PROVIDER: "0xbA14c06011f4AF5970cFDe4364ba6320E190BD4B"
+      UI_INCENTIVE_DATA_PROVIDER: "0xbA14c06011f4AF5970cFDe4364ba6320E190BD4B",
+      COLLECTOR: "0xBe85413851D195fC6341619cD68BfDc26a25b928"
     },
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
@@ -61573,7 +61862,8 @@ var marketsData = {
       WETH_GATEWAY: "0xe86B52cE2e4068AdE71510352807597408998a69",
       WALLET_BALANCE_PROVIDER: "0xBc790382B3686abffE4be14A030A96aC6154023a",
       UI_POOL_DATA_PROVIDER: "0xBC3c351349f6A919A419EE1e57F85f3e07E59dd1",
-      UI_INCENTIVE_DATA_PROVIDER: "0xC09e69E79106861dF5d289dA88349f10e2dc6b5C"
+      UI_INCENTIVE_DATA_PROVIDER: "0xC09e69E79106861dF5d289dA88349f10e2dc6b5C",
+      COLLECTOR: "0x8A020d92D6B119978582BE4d3EdFdC9F7b28BF31"
     }
   },
   ["proto_harmony_testnet_v3" /* proto_harmony_testnet_v3 */]: {
@@ -61610,7 +61900,8 @@ var marketsData = {
       WALLET_BALANCE_PROVIDER: "0xBc790382B3686abffE4be14A030A96aC6154023a",
       UI_POOL_DATA_PROVIDER: "0x64f558d4BFC1c03a8c8B2ff84976fF04c762b51f",
       UI_INCENTIVE_DATA_PROVIDER: "0x6dD4b295B457A26CC2646aAf2519436681afb5d4",
-      L2_ENCODER: "0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC"
+      L2_ENCODER: "0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC",
+      COLLECTOR: "0xB2289E329D2F85F1eD31Adbb30eA345278F21bcf"
     }
   },
   ["proto_polygon_v3" /* proto_polygon_v3 */]: {
@@ -61631,7 +61922,8 @@ var marketsData = {
       SWAP_COLLATERAL_ADAPTER: "0x301F221bc732907E2da2dbBFaA8F8F6847c170c3",
       WALLET_BALANCE_PROVIDER: "0xBc790382B3686abffE4be14A030A96aC6154023a",
       UI_POOL_DATA_PROVIDER: "0x8F1AD487C9413d7e81aB5B4E88B024Ae3b5637D0",
-      UI_INCENTIVE_DATA_PROVIDER: "0x05E309C97317d8abc0f7e78185FC966FfbD2CEC0"
+      UI_INCENTIVE_DATA_PROVIDER: "0x05E309C97317d8abc0f7e78185FC966FfbD2CEC0",
+      COLLECTOR: "0xe8599F3cc5D38a9aD6F3684cd5CEa72f10Dbc383"
     },
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
@@ -61674,7 +61966,7 @@ var networkConfigs = {
     networkLogoPath: "/icons/networks/ethereum.svg"
   },
   [import_contract_helpers3.ChainId.goerli]: {
-    name: "Ethereum Goerli",
+    name: "Ethereum G\xF6rli",
     publicJsonRPCUrl: ["https://eth-goerli.alchemyapi.io/v2/demo", "https://goerli.prylabs.net"],
     publicJsonRPCWSUrl: "wss://eth-goerli.alchemyapi.io/v2/demo",
     baseUniswapAdapter: "0x0",
@@ -61729,7 +62021,7 @@ var networkConfigs = {
     networkLogoPath: "/icons/networks/polygon.svg"
   },
   [import_contract_helpers3.ChainId.fuji]: {
-    name: "Fuji",
+    name: "Avalanche Fuji",
     publicJsonRPCUrl: ["https://api.avax-test.network/ext/bc/C/rpc"],
     publicJsonRPCWSUrl: "wss://api.avax-test.network/ext/bc/C/rpc",
     baseUniswapAdapter: "0x0",
@@ -61772,6 +62064,23 @@ var networkConfigs = {
     wrappedBaseAssetSymbol: "WETH",
     baseAssetDecimals: 18,
     explorerLink: "https://testnet.arbiscan.io",
+    isTestnet: true,
+    networkLogoPath: "/icons/networks/arbitrum.svg",
+    bridge: {
+      icon: "/icons/bridge/arbitrum.svg",
+      name: "Arbitrum Bridge",
+      url: "https://bridge.arbitrum.io"
+    }
+  },
+  [import_contract_helpers3.ChainId.arbitrum_goerli]: {
+    name: "Arbitrum G\xF6rli",
+    publicJsonRPCUrl: ["https://goerli-rollup.arbitrum.io/rpc"],
+    publicJsonRPCWSUrl: "wss://goerli-rollup.arbitrum.io/rpc",
+    baseUniswapAdapter: "0x0",
+    baseAssetSymbol: "ETH",
+    wrappedBaseAssetSymbol: "WETH",
+    baseAssetDecimals: 18,
+    explorerLink: "https://goerli-rollup-explorer.arbitrum.io",
     isTestnet: true,
     networkLogoPath: "/icons/networks/arbitrum.svg",
     bridge: {
@@ -61848,7 +62157,7 @@ var networkConfigs = {
     }
   },
   [import_contract_helpers3.ChainId.optimism_kovan]: {
-    name: "Optimism Testnet",
+    name: "Optimism Kovan",
     publicJsonRPCUrl: ["https://kovan.optimism.io"],
     publicJsonRPCWSUrl: "wss://ws-kovan.optimism.io",
     baseUniswapAdapter: "0x0",
@@ -61865,7 +62174,7 @@ var networkConfigs = {
     }
   },
   [import_contract_helpers3.ChainId.optimism_goerli]: {
-    name: "Optimism Testnet",
+    name: "Optimism G\xF6rli",
     publicJsonRPCUrl: ["https://goerli.optimism.io"],
     publicJsonRPCWSUrl: "wss://goerli.optimism.io",
     baseUniswapAdapter: "0x0",
@@ -61930,6 +62239,7 @@ var networkConfigs2 = Object.keys(networkConfigs).reduce((acc, value) => {
   acc[value] = networkConfigs[value];
   if (FORK_ENABLED && Number(value) === FORK_BASE_CHAIN_ID) {
     acc[FORK_CHAIN_ID] = __spreadProps(__spreadValues({}, networkConfigs[value]), {
+      name: `${networkConfigs[value].name} Fork`,
       isFork: true,
       privateJsonRPCUrl: FORK_RPC_URL,
       privateJsonRPCWSUrl: FORK_WS_RPC_URL,
@@ -61950,15 +62260,22 @@ var marketsData2 = Object.keys(marketsData).reduce((acc, value) => {
   return acc;
 }, {});
 function getSupportedChainIds() {
-  return Array.from(Object.keys(marketsData2).filter((value) => {
-    const isTestnet = networkConfigs2[marketsData2[value].chainId].isTestnet;
-    if (STAGING_ENV || ENABLE_TESTNET) {
-      return isTestnet;
-    }
-    return !isTestnet;
-  }).reduce((acc, value) => acc.add(marketsData2[value].chainId), /* @__PURE__ */ new Set()));
+  return Array.from(
+    Object.keys(marketsData2).filter((value) => {
+      const isTestnet = networkConfigs2[marketsData2[value].chainId].isTestnet;
+      if (STAGING_ENV || ENABLE_TESTNET) {
+        return isTestnet;
+      }
+      return !isTestnet;
+    }).reduce(
+      (acc, value) => acc.add(marketsData2[value].chainId),
+      /* @__PURE__ */ new Set()
+    )
+  );
 }
-var availableMarkets = Object.keys(marketsData2).filter((key) => getSupportedChainIds().includes(marketsData2[key].chainId));
+var availableMarkets = Object.keys(marketsData2).filter(
+  (key) => getSupportedChainIds().includes(marketsData2[key].chainId)
+);
 var linkBuilder = ({ baseUrl, addressPrefix = "address", txPrefix = "tx" }) => ({ tx, address }) => {
   if (tx) {
     return `${baseUrl}/${txPrefix}/${tx}`;
@@ -61992,10 +62309,12 @@ var getProvider = (chainId) => {
       });
     }
     if (config.publicJsonRPCUrl.length) {
-      config.publicJsonRPCUrl.map((rpc, ix) => chainProviders.push({
-        provider: new import_ethers.providers.StaticJsonRpcProvider(rpc, chainId),
-        priority: ix + 1
-      }));
+      config.publicJsonRPCUrl.map(
+        (rpc, ix) => chainProviders.push({
+          provider: new import_ethers.providers.StaticJsonRpcProvider(rpc, chainId),
+          priority: ix + 1
+        })
+      );
     }
     if (!chainProviders.length) {
       throw new Error(`${chainId} has no jsonRPCUrl configured`);
@@ -62247,12 +62566,22 @@ function getProposalMetadata(hash, gateway = "https://cloudflare-ipfs.com/ipfs")
     if (!ipfsResponse.ok) {
       throw Error("Fetch not working");
     }
-    const response = yield ipfsResponse.json();
-    const { content, data } = (0, import_gray_matter.default)(response.description);
-    MEMORIZE[ipfsHash] = __spreadValues(__spreadProps(__spreadValues({}, response), {
-      ipfsHash,
-      description: content
-    }), data);
+    const clone = yield ipfsResponse.clone();
+    try {
+      const response = yield ipfsResponse.json();
+      const { content, data } = (0, import_gray_matter.default)(response.description);
+      MEMORIZE[ipfsHash] = __spreadValues(__spreadProps(__spreadValues({}, response), {
+        ipfsHash,
+        description: content
+      }), data);
+    } catch (e) {
+      const text = yield clone.text();
+      const { content, data } = (0, import_gray_matter.default)(text);
+      MEMORIZE[ipfsHash] = __spreadProps(__spreadValues({}, data), {
+        ipfsHash,
+        description: content
+      });
+    }
     return MEMORIZE[ipfsHash];
   });
 }
@@ -62378,19 +62707,27 @@ var import_lodash3 = __toESM(require_lodash());
 var import_math_utils = __toESM(require_cjs2());
 var getVotes = (startBlock, endBlock, currentBlock) => __async(void 0, null, function* () {
   const latestBlock = currentBlock > endBlock ? endBlock : currentBlock;
-  const contract = governanceContract.getContractInstance(governanceConfig.addresses.AAVE_GOVERNANCE_V2);
-  const votes = yield contract.queryFilter(contract.filters.VoteEmitted(null, null, null, null), startBlock, latestBlock);
-  const formattedVotes = yield Promise.all(votes.map((vote) => __async(void 0, null, function* () {
-    return {
-      proposalId: vote.args.id.toNumber(),
-      voter: vote.args.voter,
-      support: vote.args.support,
-      votingPower: (0, import_math_utils.normalizeBN)(vote.args.votingPower.toString(), 18).toNumber(),
-      transactionHash: vote.transactionHash,
-      timestamp: (yield vote.getBlock()).timestamp,
-      blockNumber: vote.blockNumber
-    };
-  })));
+  const contract = governanceContract.getContractInstance(
+    governanceConfig.addresses.AAVE_GOVERNANCE_V2
+  );
+  const votes = yield contract.queryFilter(
+    contract.filters.VoteEmitted(null, null, null, null),
+    startBlock,
+    latestBlock
+  );
+  const formattedVotes = yield Promise.all(
+    votes.map((vote) => __async(void 0, null, function* () {
+      return {
+        proposalId: vote.args.id.toNumber(),
+        voter: vote.args.voter,
+        support: vote.args.support,
+        votingPower: (0, import_math_utils.normalizeBN)(vote.args.votingPower.toString(), 18).toNumber(),
+        transactionHash: vote.transactionHash,
+        timestamp: (yield vote.getBlock()).timestamp,
+        blockNumber: vote.blockNumber
+      };
+    }))
+  );
   return { votes: formattedVotes };
 });
 
@@ -62429,7 +62766,9 @@ var Vote = class {
       const { votes } = yield getVotes(startBlock, endBlock, currentBlock);
       votes.filter((v) => v.proposalId === proposalId).forEach((vote) => {
         var _a7;
-        const cache = isCached == null ? void 0 : isCached.votes.find((cacheVote) => vote.transactionHash === cacheVote.transactionHash);
+        const cache = isCached == null ? void 0 : isCached.votes.find(
+          (cacheVote) => vote.transactionHash === cacheVote.transactionHash
+        );
         if (!cache) {
           (_a7 = db3.data) == null ? void 0 : _a7[proposalId].votes.push(vote);
         }

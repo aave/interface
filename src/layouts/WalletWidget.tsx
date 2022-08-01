@@ -19,7 +19,6 @@ import {
   useTheme,
 } from '@mui/material';
 import makeBlockie from 'ethereum-blockies-base64';
-import stubTrue from 'lodash/stubTrue';
 import React, { useEffect, useState } from 'react';
 import { WalletModal } from 'src/components/WalletConnection/WalletModal';
 import { useWalletModalContext } from 'src/hooks/useWalletModal';
@@ -79,7 +78,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if (!connected) {
-      setWalletModalOpen(stubTrue);
+      setWalletModalOpen(true);
     } else {
       setOpen(true);
       setAnchorEl(event.currentTarget);
