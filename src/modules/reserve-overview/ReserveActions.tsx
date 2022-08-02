@@ -1,8 +1,6 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import {
-  Alert,
-  AlertColor,
   Box,
   Button,
   CircularProgress,
