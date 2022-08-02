@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
+import getAssetCapUsage from 'src/hooks/getAssetCapUsage';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
@@ -13,30 +13,33 @@ import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueRow } from '../ListValueRow';
 import { SupplyAssetsItem } from './types';
 
-export const SupplyAssetsListMobileItem = ({
-  symbol,
-  iconSymbol,
-  name,
-  walletBalance,
-  walletBalanceUSD,
-  supplyCap,
-  totalLiquidity,
-  supplyAPY,
-  supplyCapReached,
-  aIncentivesData,
-  isIsolated,
-  usageAsCollateralEnabledOnUser,
-  debtCeilingReached,
-  isActive,
-  isFreezed,
-  underlyingAsset,
-  detailsAddress,
-}: SupplyAssetsItem) => {
+export const SupplyAssetsListMobileItem = (props: SupplyAssetsItem) => {
+  const {
+    symbol,
+    iconSymbol,
+    name,
+    walletBalance,
+    walletBalanceUSD,
+    supplyCap,
+    totalLiquidity,
+    supplyAPY,
+    aIncentivesData,
+    isIsolated,
+    usageAsCollateralEnabledOnUser,
+    isActive,
+    isFreezed,
+    underlyingAsset,
+    detailsAddress,
+    reserve,
+  } = props;
   const { currentMarket } = useProtocolDataContext();
   const { openSupply } = useModalContext();
 
   // Hide the asset to prevent it from being supplied if supply cap has been reached
-  if (supplyCapReached) return null;
+  const {
+    supplyCap: { isMaxed },
+  } = getAssetCapUsage(reserve);
+  if (isMaxed) return null;
 
   return (
     <ListMobileItemWrapper
@@ -45,7 +48,6 @@ export const SupplyAssetsListMobileItem = ({
       name={name}
       underlyingAsset={underlyingAsset}
       currentMarket={currentMarket}
-      debtCeilingReached={debtCeilingReached}
     >
       <ListValueRow
         title={<Trans>Supply balance</Trans>}

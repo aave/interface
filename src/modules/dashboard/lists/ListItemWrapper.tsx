@@ -11,6 +11,8 @@ import { ListColumn } from '../../../components/lists/ListColumn';
 import { ListItem } from '../../../components/lists/ListItem';
 import { Link, ROUTES } from '../../../components/primitives/Link';
 import { TokenIcon } from '../../../components/primitives/TokenIcon';
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import getAssetCapUsage from 'src/hooks/getAssetCapUsage';
 
 interface ListItemWrapperProps {
   symbol: string;
@@ -23,21 +25,17 @@ interface ListItemWrapperProps {
   supplyCapReached?: boolean;
   borrowCapReached?: boolean;
   debtCeilingReached?: boolean;
+  reserve: ComputedReserveData;
 }
 
-export const ListItemWrapper = ({
-  symbol,
-  iconSymbol,
-  children,
-  name,
-  detailsAddress,
-  currentMarket,
-  frozen,
-  supplyCapReached = false,
-  borrowCapReached = false,
-  debtCeilingReached = false,
-  ...rest
-}: ListItemWrapperProps) => {
+export const ListItemWrapper = (props: ListItemWrapperProps) => {
+  const { symbol, iconSymbol, children, name, detailsAddress, currentMarket, frozen, ...rest } =
+    props;
+  const { supplyCap, borrowCap, debtCeiling } = getAssetCapUsage(props);
+  const supplyCapReached = supplyCap.isMaxed;
+  const borrowCapReached = borrowCap.isMaxed;
+  const debtCeilingReached = debtCeiling.isMaxed;
+
   return (
     <ListItem {...rest}>
       <ListColumn maxWidth={160} isRow>

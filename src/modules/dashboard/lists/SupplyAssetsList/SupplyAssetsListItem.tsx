@@ -1,8 +1,8 @@
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
+import getAssetCapUsage from 'src/hooks/getAssetCapUsage';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
 import { ListColumn } from '../../../../components/lists/ListColumn';
@@ -14,30 +14,33 @@ import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
 import { SupplyAssetsItem } from './types';
 
-export const SupplyAssetsListItem = ({
-  symbol,
-  iconSymbol,
-  name,
-  walletBalance,
-  walletBalanceUSD,
-  supplyCap,
-  totalLiquidity,
-  supplyAPY,
-  supplyCapReached,
-  aIncentivesData,
-  underlyingAsset,
-  isActive,
-  isFreezed,
-  isIsolated,
-  usageAsCollateralEnabledOnUser,
-  debtCeilingReached,
-  detailsAddress,
-}: SupplyAssetsItem) => {
+export const SupplyAssetsListItem = (props: SupplyAssetsItem) => {
+  const {
+    symbol,
+    iconSymbol,
+    name,
+    walletBalance,
+    walletBalanceUSD,
+    supplyCap,
+    totalLiquidity,
+    supplyAPY,
+    aIncentivesData,
+    underlyingAsset,
+    isActive,
+    isFreezed,
+    isIsolated,
+    usageAsCollateralEnabledOnUser,
+    detailsAddress,
+    reserve,
+  } = props;
   const { currentMarket } = useProtocolDataContext();
   const { openSupply } = useModalContext();
 
   // Hide the asset to prevent it from being supplied if supply cap has been reached
-  if (supplyCapReached) return null;
+  const {
+    supplyCap: { isMaxed },
+  } = getAssetCapUsage(reserve);
+  if (isMaxed) return null;
 
   return (
     <ListItemWrapper
@@ -47,7 +50,6 @@ export const SupplyAssetsListItem = ({
       detailsAddress={detailsAddress}
       data-cy={`dashboardSupplyListItem_${symbol.toUpperCase()}`}
       currentMarket={currentMarket}
-      debtCeilingReached={debtCeilingReached}
     >
       <ListValueColumn
         symbol={symbol}

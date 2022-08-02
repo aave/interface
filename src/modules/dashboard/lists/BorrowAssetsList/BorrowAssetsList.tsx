@@ -7,7 +7,10 @@ import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { CapType } from '../../../../components/caps/helper';
 import { AvailableTooltip } from '../../../../components/infoTooltips/AvailableTooltip';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
-import { useAppDataContext } from '../../../../hooks/app-data-provider/useAppDataProvider';
+import {
+  ComputedReserveData,
+  useAppDataContext,
+} from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import {
   assetCanBeBorrowedByUser,
@@ -31,15 +34,9 @@ export const BorrowAssetsList = () => {
 
   const { baseAssetSymbol } = currentNetworkConfig;
 
-  const tokensToBorrow: BorrowAssetsItem[] = reserves
+  const tokensToBorrow = reserves
     .filter((reserve) => assetCanBeBorrowedByUser(reserve, user))
-    .map<BorrowAssetsItem>((reserve) => {
-      // Determine if supply cap has been reached
-      const borrowCapUsage: number = reserve
-        ? valueToBigNumber(reserve.totalDebt).dividedBy(reserve.borrowCap).toNumber() * 100
-        : 0;
-      const borrowCapReached = borrowCapUsage !== Infinity && borrowCapUsage >= 99.99;
-
+    .map((reserve: ComputedReserveData) => {
       const availableBorrows = user
         ? getMaxAmountAvailableToBorrow(reserve, user, InterestRate.Variable).toNumber()
         : 0;
@@ -51,8 +48,7 @@ export const BorrowAssetsList = () => {
         .toFixed(2);
 
       return {
-        ...reserve,
-        borrowCapReached,
+        reserve,
         totalBorrows: reserve.totalDebt,
         availableBorrows,
         availableBorrowsInUSD,

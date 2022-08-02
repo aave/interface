@@ -1,3 +1,4 @@
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ReserveIncentiveResponse } from '../../../../hooks/app-data-provider/useIncentiveData';
 
 export type SupplyAssetsItem = {
@@ -10,8 +11,6 @@ export type SupplyAssetsItem = {
   availableToDeposit: string;
   availableToDepositUSD: string;
   supplyAPY: number | string;
-  supplyCapReached: boolean;
-  debtCeilingReached: boolean;
   aIncentivesData?: ReserveIncentiveResponse[];
   isFreezed?: boolean;
   isIsolated: boolean;
@@ -20,4 +19,5 @@ export type SupplyAssetsItem = {
   isActive?: boolean;
   usageAsCollateralEnabledOnUser: boolean;
   detailsAddress: string;
+  reserve: ComputedReserveData;
 };

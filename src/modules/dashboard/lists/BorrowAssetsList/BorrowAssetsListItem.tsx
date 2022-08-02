@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
+import getAssetCapUsage from 'src/hooks/getAssetCapUsage';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
@@ -12,28 +13,32 @@ import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
 import { BorrowAssetsItem } from './types';
 
-export const BorrowAssetsListItem = ({
-  symbol,
-  iconSymbol,
-  name,
-  availableBorrows,
-  availableBorrowsInUSD,
-  borrowCap,
-  totalBorrows,
-  variableBorrowRate,
-  stableBorrowRate,
-  borrowCapReached,
-  sIncentivesData,
-  vIncentivesData,
-  underlyingAsset,
-  isFreezed,
-}: BorrowAssetsItem) => {
+export const BorrowAssetsListItem = (props: BorrowAssetsItem) => {
+  const {
+    symbol,
+    iconSymbol,
+    name,
+    availableBorrows,
+    availableBorrowsInUSD,
+    borrowCap,
+    totalBorrows,
+    variableBorrowRate,
+    stableBorrowRate,
+    sIncentivesData,
+    vIncentivesData,
+    underlyingAsset,
+    isFreezed,
+    reserve,
+  } = props;
   const { openBorrow } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
   const borrowButtonDisable = isFreezed || Number(availableBorrows) <= 0;
 
   // Hide the asset to prevent it from being borrowed if borrow cap has been reached
-  if (borrowCapReached) return null;
+  const {
+    borrowCap: { isMaxed },
+  } = getAssetCapUsage(reserve);
+  if (isMaxed) return null;
 
   return (
     <ListItemWrapper

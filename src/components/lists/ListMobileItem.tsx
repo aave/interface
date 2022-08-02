@@ -4,9 +4,9 @@ import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { MaxSuppliedTooltip } from '../infoTooltips/MaxSuppliedTooltip';
 import { MaxBorrowedTooltip } from '../infoTooltips/MaxBorrowedTooltip';
 import { MaxDebtCeilingTooltip } from '../infoTooltips/MaxDebtCeilingTooltip';
-
 import { Link, ROUTES } from '../primitives/Link';
 import { TokenIcon } from '../primitives/TokenIcon';
+import getAssetCapUsage from 'src/hooks/getAssetCapUsage';
 
 interface ListMobileItemProps {
   warningComponent?: ReactNode;
@@ -17,24 +17,24 @@ interface ListMobileItemProps {
   underlyingAsset?: string;
   loading?: boolean;
   currentMarket?: CustomMarket;
-  supplyCapReached?: boolean;
-  borrowCapReached?: boolean;
-  debtCeilingReached?: boolean;
 }
 
-export const ListMobileItem = ({
-  children,
-  warningComponent,
-  symbol,
-  iconSymbol,
-  name,
-  underlyingAsset,
-  loading,
-  currentMarket,
-  supplyCapReached = false,
-  borrowCapReached = false,
-  debtCeilingReached = false,
-}: ListMobileItemProps) => {
+export const ListMobileItem = (props: ListMobileItemProps) => {
+  const {
+    children,
+    warningComponent,
+    symbol,
+    iconSymbol,
+    name,
+    underlyingAsset,
+    loading,
+    currentMarket,
+  } = props;
+  const { supplyCap, borrowCap, debtCeiling } = getAssetCapUsage(props);
+  const supplyCapReached = supplyCap.isMaxed;
+  const borrowCapReached = borrowCap.isMaxed;
+  const debtCeilingReached = debtCeiling.isMaxed;
+
   return (
     <Box>
       <Divider />

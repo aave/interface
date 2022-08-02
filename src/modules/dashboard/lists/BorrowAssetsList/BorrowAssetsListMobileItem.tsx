@@ -2,8 +2,8 @@ import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
+import getAssetCapUsage from 'src/hooks/getAssetCapUsage';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
@@ -14,28 +14,32 @@ import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueRow } from '../ListValueRow';
 import { BorrowAssetsItem } from './types';
 
-export const BorrowAssetsListMobileItem = ({
-  symbol,
-  iconSymbol,
-  name,
-  availableBorrows,
-  availableBorrowsInUSD,
-  borrowCap,
-  totalBorrows,
-  variableBorrowRate,
-  stableBorrowRate,
-  borrowCapReached,
-  sIncentivesData,
-  vIncentivesData,
-  underlyingAsset,
-  isFreezed,
-}: BorrowAssetsItem) => {
+export const BorrowAssetsListMobileItem = (props: BorrowAssetsItem) => {
+  const {
+    symbol,
+    iconSymbol,
+    name,
+    availableBorrows,
+    availableBorrowsInUSD,
+    borrowCap,
+    totalBorrows,
+    variableBorrowRate,
+    stableBorrowRate,
+    sIncentivesData,
+    vIncentivesData,
+    underlyingAsset,
+    isFreezed,
+    reserve,
+  } = props;
   const { openBorrow } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
   const borrowButtonDisable = isFreezed || Number(availableBorrows) <= 0;
 
   // Hide the asset to prevent it from being borrowed if borrow cap has been reached
-  if (borrowCapReached) return null;
+  const {
+    borrowCap: { isMaxed },
+  } = getAssetCapUsage(reserve);
+  if (isMaxed) return null;
 
   return (
     <ListMobileItemWrapper

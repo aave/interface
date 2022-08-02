@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
-
 import { AMPLWarning } from '../../../components/infoTooltips/AMPLWarning';
 import { FrozenWarning } from '../../../components/infoTooltips/FrozenWarning';
 import { ListMobileItem } from '../../../components/lists/ListMobileItem';
@@ -14,24 +14,21 @@ interface ListMobileItemWrapperProps {
   loading?: boolean;
   currentMarket?: CustomMarket;
   frozen?: boolean;
-  supplyCapReached?: boolean;
-  borrowCapReached?: boolean;
-  debtCeilingReached?: boolean;
+  reserve?: ComputedReserveData;
 }
 
-export const ListMobileItemWrapper = ({
-  symbol,
-  iconSymbol,
-  name,
-  children,
-  underlyingAsset,
-  loading,
-  currentMarket,
-  frozen,
-  supplyCapReached = false,
-  borrowCapReached = false,
-  debtCeilingReached = false,
-}: ListMobileItemWrapperProps) => {
+export const ListMobileItemWrapper = (props: ListMobileItemWrapperProps) => {
+  const {
+    symbol,
+    iconSymbol,
+    name,
+    children,
+    underlyingAsset,
+    loading,
+    currentMarket,
+    frozen,
+    ...rest
+  } = props;
   return (
     <ListMobileItem
       symbol={symbol}
@@ -43,9 +40,7 @@ export const ListMobileItemWrapper = ({
       }
       loading={loading}
       currentMarket={currentMarket}
-      supplyCapReached={supplyCapReached}
-      borrowCapReached={borrowCapReached}
-      debtCeilingReached={debtCeilingReached}
+      {...props}
     >
       {children}
     </ListMobileItem>
