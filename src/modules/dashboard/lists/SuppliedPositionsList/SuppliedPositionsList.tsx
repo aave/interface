@@ -26,23 +26,6 @@ export const SuppliedPositionsList = () => {
     user?.userReservesData
       .filter((userReserve) => userReserve.underlyingBalance !== '0')
       .map((userReserve) => {
-        // Determine if supply cap has been reached
-        const supplyCapUsage: number = userReserve.reserve
-          ? valueToBigNumber(userReserve.reserve.totalLiquidity)
-              .dividedBy(userReserve.reserve.supplyCap)
-              .toNumber() * 100
-          : 0;
-        const supplyCapReached = supplyCapUsage !== Infinity && supplyCapUsage >= 99.99;
-
-        // Determine if debt ceiling has been reached
-        // Note: Does an asset have to be isolated to have a debt ceiling?
-        const debtCeilingUsage: number = userReserve.reserve.isIsolated
-          ? valueToBigNumber(userReserve.reserve.isolationModeTotalDebt)
-              .dividedBy(userReserve.reserve.debtCeiling)
-              .toNumber() * 100
-          : 0;
-        const debtCeilingReached = debtCeilingUsage !== Infinity && debtCeilingUsage >= 99.99;
-
         return {
           ...userReserve,
           reserve: {
@@ -53,8 +36,6 @@ export const SuppliedPositionsList = () => {
                   underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
                 })
               : {}),
-            supplyCapReached,
-            debtCeilingReached,
           },
         };
       }) || [];

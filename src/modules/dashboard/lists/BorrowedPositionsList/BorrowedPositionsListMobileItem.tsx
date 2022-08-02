@@ -1,6 +1,7 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
+import getAssetCapUsage from 'src/hooks/getAssetCapUsage';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
@@ -33,18 +34,17 @@ export const BorrowedPositionsListMobileItem = ({
     vIncentivesData,
     variableBorrowAPY,
     underlyingAsset,
-    borrowCapReached,
   } = reserve;
 
   return (
     <ListMobileItemWrapper
+      reserve={reserve}
       symbol={symbol}
       iconSymbol={iconSymbol}
       name={name}
       underlyingAsset={reserve.underlyingAsset}
       currentMarket={currentMarket}
       frozen={reserve.isFrozen}
-      borrowCapReached={borrowCapReached}
     >
       <ListValueRow
         title={<Trans>Debt</Trans>}

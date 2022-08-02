@@ -1,6 +1,7 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
+import getAssetCapUsage from 'src/hooks/getAssetCapUsage';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
@@ -31,11 +32,11 @@ export const BorrowedPositionsListItem = ({
     sIncentivesData,
     vIncentivesData,
     variableBorrowAPY,
-    borrowCapReached,
   } = reserve;
 
   return (
     <ListItemWrapper
+      reserve={reserve}
       symbol={reserve.symbol}
       iconSymbol={reserve.iconSymbol}
       name={reserve.name}
@@ -43,7 +44,6 @@ export const BorrowedPositionsListItem = ({
       currentMarket={currentMarket}
       frozen={reserve.isFrozen}
       data-cy={`dashboardBorrowedListItem_${reserve.symbol.toUpperCase()}_${borrowRateMode}`}
-      borrowCapReached={borrowCapReached}
     >
       <ListValueColumn
         symbol={reserve.symbol}

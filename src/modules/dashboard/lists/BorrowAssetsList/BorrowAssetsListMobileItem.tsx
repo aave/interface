@@ -48,6 +48,7 @@ export const BorrowAssetsListMobileItem = (props: BorrowAssetsItem) => {
       name={name}
       underlyingAsset={underlyingAsset}
       currentMarket={currentMarket}
+      reserve={reserve}
     >
       <ListValueRow
         title={<Trans>Available to borrow</Trans>}

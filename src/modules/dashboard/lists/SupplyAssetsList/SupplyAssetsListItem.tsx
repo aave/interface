@@ -50,6 +50,7 @@ export const SupplyAssetsListItem = (props: SupplyAssetsItem) => {
       detailsAddress={detailsAddress}
       data-cy={`dashboardSupplyListItem_${symbol.toUpperCase()}`}
       currentMarket={currentMarket}
+      reserve={reserve}
     >
       <ListValueColumn
         symbol={symbol}

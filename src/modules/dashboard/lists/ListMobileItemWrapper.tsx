@@ -17,18 +17,17 @@ interface ListMobileItemWrapperProps {
   reserve?: ComputedReserveData;
 }
 
-export const ListMobileItemWrapper = (props: ListMobileItemWrapperProps) => {
-  const {
-    symbol,
-    iconSymbol,
-    name,
-    children,
-    underlyingAsset,
-    loading,
-    currentMarket,
-    frozen,
-    ...rest
-  } = props;
+export const ListMobileItemWrapper = ({
+  symbol,
+  iconSymbol,
+  name,
+  children,
+  underlyingAsset,
+  loading,
+  currentMarket,
+  frozen,
+  reserve,
+}: ListMobileItemWrapperProps) => {
   return (
     <ListMobileItem
       symbol={symbol}
@@ -40,7 +39,7 @@ export const ListMobileItemWrapper = (props: ListMobileItemWrapperProps) => {
       }
       loading={loading}
       currentMarket={currentMarket}
-      {...props}
+      reserve={reserve}
     >
       {children}
     </ListMobileItem>

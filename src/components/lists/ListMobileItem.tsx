@@ -7,6 +7,7 @@ import { MaxDebtCeilingTooltip } from '../infoTooltips/MaxDebtCeilingTooltip';
 import { Link, ROUTES } from '../primitives/Link';
 import { TokenIcon } from '../primitives/TokenIcon';
 import getAssetCapUsage from 'src/hooks/getAssetCapUsage';
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 interface ListMobileItemProps {
   warningComponent?: ReactNode;
@@ -17,23 +18,21 @@ interface ListMobileItemProps {
   underlyingAsset?: string;
   loading?: boolean;
   currentMarket?: CustomMarket;
+  reserve?: ComputedReserveData;
 }
 
-export const ListMobileItem = (props: ListMobileItemProps) => {
-  const {
-    children,
-    warningComponent,
-    symbol,
-    iconSymbol,
-    name,
-    underlyingAsset,
-    loading,
-    currentMarket,
-  } = props;
-  const { supplyCap, borrowCap, debtCeiling } = getAssetCapUsage(props);
-  const supplyCapReached = supplyCap.isMaxed;
-  const borrowCapReached = borrowCap.isMaxed;
-  const debtCeilingReached = debtCeiling.isMaxed;
+export const ListMobileItem = ({
+  children,
+  warningComponent,
+  symbol,
+  iconSymbol,
+  name,
+  underlyingAsset,
+  loading,
+  currentMarket,
+  reserve,
+}: ListMobileItemProps) => {
+  const { supplyCap, borrowCap, debtCeiling } = getAssetCapUsage(reserve);
 
   return (
     <Box>
@@ -65,9 +64,9 @@ export const ListMobileItem = (props: ListMobileItemProps) => {
                     {symbol}
                   </Typography>
                 </Box>
-                {supplyCapReached && <MaxSuppliedTooltip />}
-                {borrowCapReached && <MaxBorrowedTooltip />}
-                {debtCeilingReached && <MaxDebtCeilingTooltip />}
+                {supplyCap.isMaxed && <MaxSuppliedTooltip />}
+                {borrowCap.isMaxed && <MaxBorrowedTooltip />}
+                {debtCeiling.isMaxed && <MaxDebtCeilingTooltip />}
               </Link>
             )
           )}

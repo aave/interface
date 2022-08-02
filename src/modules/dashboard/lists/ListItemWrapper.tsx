@@ -25,16 +25,21 @@ interface ListItemWrapperProps {
   supplyCapReached?: boolean;
   borrowCapReached?: boolean;
   debtCeilingReached?: boolean;
-  reserve: ComputedReserveData;
+  reserve?: ComputedReserveData;
 }
 
-export const ListItemWrapper = (props: ListItemWrapperProps) => {
-  const { symbol, iconSymbol, children, name, detailsAddress, currentMarket, frozen, ...rest } =
-    props;
-  const { supplyCap, borrowCap, debtCeiling } = getAssetCapUsage(props);
-  const supplyCapReached = supplyCap.isMaxed;
-  const borrowCapReached = borrowCap.isMaxed;
-  const debtCeilingReached = debtCeiling.isMaxed;
+export const ListItemWrapper = ({
+  symbol,
+  iconSymbol,
+  children,
+  name,
+  detailsAddress,
+  currentMarket,
+  frozen,
+  reserve,
+  ...rest
+}: ListItemWrapperProps) => {
+  const { supplyCap, borrowCap, debtCeiling } = getAssetCapUsage(reserve);
 
   return (
     <ListItem {...rest}>
@@ -51,9 +56,9 @@ export const ListItemWrapper = (props: ListItemWrapperProps) => {
             </Typography>
           </Tooltip>
         </Link>
-        {supplyCapReached && <MaxSuppliedTooltip />}
-        {borrowCapReached && <MaxBorrowedTooltip />}
-        {debtCeilingReached && <MaxDebtCeilingTooltip />}
+        {supplyCap.isMaxed && <MaxSuppliedTooltip />}
+        {borrowCap.isMaxed && <MaxBorrowedTooltip />}
+        {debtCeiling.isMaxed && <MaxDebtCeilingTooltip />}
         {frozen && <FrozenWarning symbol={symbol} />}
         {!frozen && symbol === 'AMPL' && <AMPLWarning />}
       </ListColumn>

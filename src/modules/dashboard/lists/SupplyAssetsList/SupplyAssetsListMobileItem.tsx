@@ -48,6 +48,7 @@ export const SupplyAssetsListMobileItem = (props: SupplyAssetsItem) => {
       name={name}
       underlyingAsset={underlyingAsset}
       currentMarket={currentMarket}
+      reserve={reserve}
     >
       <ListValueRow
         title={<Trans>Supply balance</Trans>}
