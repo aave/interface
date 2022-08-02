@@ -7,25 +7,26 @@ import { FormattedNumber } from '../primitives/FormattedNumber';
 import type { Theme } from '@mui/material';
 import { DebtCeilingTooltip } from 'src/components/infoTooltips/DebtCeilingTooltip';
 import { Trans } from '@lingui/macro';
+import { AssetCapData } from 'src/hooks/getAssetCapUsage';
 
 type DebtCeilingTooltipProps = {
   debt: string;
   ceiling: string;
-  usage: number;
+  debtCeiling: AssetCapData;
 };
 
 export const DebtCeilingStatus = ({
   debt,
   ceiling,
-  usage,
+  debtCeiling,
 }: LinearProgressProps & DebtCeilingTooltipProps) => {
   // Protect when dividing by zero
-  if (usage === Infinity) return null;
+  if (debtCeiling.percentUsed === Infinity) return null;
 
   const determineColor = (theme: Theme): string => {
-    if (usage >= 99.99) {
+    if (debtCeiling.isMaxed || debtCeiling.percentUsed >= 99.99) {
       return theme.palette.error.main;
-    } else if (usage >= 98) {
+    } else if (debtCeiling.percentUsed >= 98) {
       return theme.palette.warning.main;
     } else {
       return theme.palette.success.main;
@@ -39,7 +40,7 @@ export const DebtCeilingStatus = ({
           <Typography color="text.secondary" component="span">
             <Trans>Debt Ceiling</Trans>
           </Typography>
-          <DebtCeilingTooltip />
+          <DebtCeilingTooltip debtCeiling={debtCeiling} />
         </Box>
         <Box>
           <FormattedNumber
@@ -82,7 +83,7 @@ export const DebtCeilingStatus = ({
           },
         }}
         // We show at minimum, 1% color to represent small values
-        value={usage <= 1 ? 1 : usage}
+        value={debtCeiling.percentUsed <= 1 ? 1 : debtCeiling.percentUsed}
       />
     </>
   );

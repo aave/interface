@@ -33,8 +33,14 @@ import { LiquidationThresholdTooltip } from 'src/components/infoTooltips/Liquida
 import { LiquidationPenaltyTooltip } from 'src/components/infoTooltips/LiquidationPenaltyTooltip';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { frozenProposalMap } from 'src/utils/marketsAndNetworksConfig';
-import { TotalSuppliedTooltip } from 'src/components/infoTooltips/TotalSuppliedTooltip';
-import { TotalBorrowedTooltip } from 'src/components/infoTooltips/TotalBorrowedTooltip';
+import {
+  SupplyCapTooltip,
+  TotalSuppliedTooltip,
+} from 'src/components/infoTooltips/SupplyCapTooltip';
+import {
+  BorrowCapTooltip,
+  TotalBorrowedTooltip,
+} from 'src/components/infoTooltips/BorrowCapTooltip';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { DebtCeilingStatus } from 'src/components/caps/DebtCeilingStatus';
 import { ReserveFactorOverview } from 'src/modules/reserve-overview/ReserveFactorOverview';
@@ -200,7 +206,9 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
               title={
                 <Box display="flex" alignItems="center">
                   <Trans>Total supplied</Trans>
-                  {reserve.supplyCap && reserve.supplyCap !== '0' && <TotalSuppliedTooltip />}
+                  {reserve.supplyCap && reserve.supplyCap !== '0' && (
+                    <SupplyCapTooltip supplyCap={supplyCap} />
+                  )}
                 </Box>
               }
             >
@@ -368,7 +376,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                   <DebtCeilingStatus
                     debt={reserve.isolationModeTotalDebt}
                     ceiling={reserve.debtCeiling}
-                    usage={debtCeiling.percentUsed}
+                    debtCeiling={debtCeiling}
                   />
                 </ReserveOverviewBox>
               )}
@@ -397,7 +405,9 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                   title={
                     <Box display="flex" alignItems="center">
                       <Trans>Total borrowed</Trans>
-                      {reserve.borrowCap && reserve.borrowCap !== '0' && <TotalBorrowedTooltip />}
+                      {reserve.borrowCap && reserve.borrowCap !== '0' && (
+                        <BorrowCapTooltip borrowCap={borrowCap} />
+                      )}
                     </Box>
                   }
                 >

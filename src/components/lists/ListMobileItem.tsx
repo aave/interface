@@ -1,13 +1,13 @@
 import { Box, Divider, Skeleton, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
-import { MaxSuppliedTooltip } from '../infoTooltips/MaxSuppliedTooltip';
-import { MaxBorrowedTooltip } from '../infoTooltips/MaxBorrowedTooltip';
-import { MaxDebtCeilingTooltip } from '../infoTooltips/MaxDebtCeilingTooltip';
 import { Link, ROUTES } from '../primitives/Link';
 import { TokenIcon } from '../primitives/TokenIcon';
 import getAssetCapUsage from 'src/hooks/getAssetCapUsage';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { SupplyCapTooltip } from '../infoTooltips/SupplyCapTooltip';
+import { BorrowCapTooltip } from '../infoTooltips/BorrowCapTooltip';
+import { DebtCeilingTooltip } from '../infoTooltips/DebtCeilingTooltip';
 
 interface ListMobileItemProps {
   warningComponent?: ReactNode;
@@ -37,7 +37,6 @@ export const ListMobileItem = ({
   return (
     <Box>
       <Divider />
-
       <Box sx={{ px: 4, pt: 4, pb: 6 }}>
         <Box sx={{ mb: 4, display: 'flex', alignItems: 'center' }}>
           {loading ? (
@@ -64,16 +63,14 @@ export const ListMobileItem = ({
                     {symbol}
                   </Typography>
                 </Box>
-                {supplyCap.isMaxed && <MaxSuppliedTooltip />}
-                {borrowCap.isMaxed && <MaxBorrowedTooltip />}
-                {debtCeiling.isMaxed && <MaxDebtCeilingTooltip />}
+                {supplyCap.isMaxed && <SupplyCapTooltip supplyCap={supplyCap} />}
+                {borrowCap.isMaxed && <BorrowCapTooltip borrowCap={borrowCap} />}
+                {debtCeiling.isMaxed && <DebtCeilingTooltip debtCeiling={debtCeiling} />}
               </Link>
             )
           )}
-
           {warningComponent}
         </Box>
-
         {children}
       </Box>
     </Box>
