@@ -49,7 +49,7 @@
     "@visx/grid": "^2.6.0",
     "@visx/legend": "^2.2.2",
     "@visx/mock-data": "^2.1.2",
-    "@visx/responsive": "^2.8.0",
+    "@visx/responsive": "^2.10.0",
     "@visx/scale": "^2.2.2",
     "@visx/shape": "^2.4.0",
     "@visx/tooltip": "^2.8.0",
