@@ -9,7 +9,6 @@ import {
 } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { valueToBigNumber } from '@aave/math-utils';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -39,17 +38,6 @@ export default function ReserveOverview() {
   ) as ComputedReserveData;
 
   const isOverview = mode === 'overview';
-
-  const supplyCapUsage: number = reserve
-    ? valueToBigNumber(reserve.totalLiquidity).dividedBy(reserve.supplyCap).toNumber() * 100
-    : 0;
-  const borrowCapUsage: number = reserve
-    ? valueToBigNumber(reserve.totalDebt).dividedBy(reserve.borrowCap).toNumber() * 100
-    : 0;
-  const debtCeilingUsage: number = reserve
-    ? valueToBigNumber(reserve.isolationModeTotalDebt).dividedBy(reserve.debtCeiling).toNumber() *
-      100
-    : 0;
 
   return (
     <>
@@ -92,14 +80,7 @@ export default function ReserveOverview() {
               mr: { xs: 0, lg: 4 },
             }}
           >
-            {reserve && (
-              <ReserveConfiguration
-                reserve={reserve}
-                supplyCapUsage={supplyCapUsage}
-                borrowCapUsage={borrowCapUsage}
-                debtCeilingUsage={debtCeilingUsage}
-              />
-            )}
+            {reserve && <ReserveConfiguration reserve={reserve} />}
           </Box>
 
           {/** Right panel with actions*/}
@@ -109,12 +90,7 @@ export default function ReserveOverview() {
               width: { xs: '100%', lg: '416px' },
             }}
           >
-            <ReserveActions
-              underlyingAsset={underlyingAsset}
-              supplyCapUsage={supplyCapUsage}
-              borrowCapUsage={borrowCapUsage}
-              debtCeilingUsage={debtCeilingUsage}
-            />
+            <ReserveActions reserve={reserve} underlyingAsset={underlyingAsset} />
           </Box>
         </Box>
       </ContentContainer>

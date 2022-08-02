@@ -38,6 +38,7 @@ import { TotalBorrowedTooltip } from 'src/components/infoTooltips/TotalBorrowedT
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { DebtCeilingStatus } from 'src/components/caps/DebtCeilingStatus';
 import { ReserveFactorOverview } from 'src/modules/reserve-overview/ReserveFactorOverview';
+import getAssetCapUsage from 'src/hooks/getAssetCapUsage';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
   <Box
@@ -133,17 +134,9 @@ const ChartContainer: React.FC<BoxProps> = (props) => (
 
 type ReserveConfigurationProps = {
   reserve: ComputedReserveData;
-  supplyCapUsage: number;
-  borrowCapUsage: number;
-  debtCeilingUsage: number;
 };
 
-export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({
-  reserve,
-  supplyCapUsage,
-  borrowCapUsage,
-  debtCeilingUsage,
-}) => {
+export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ reserve }) => {
   const { currentNetworkConfig, currentMarketData } = useProtocolDataContext();
   const renderCharts = !!currentNetworkConfig.ratesHistoryApiUrl;
   const { data, error } = useReserveRatesHistory(
@@ -151,6 +144,8 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({
       ? `${reserve.underlyingAsset}${currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER}`
       : ''
   ); // TODO: might make sense to move this to gql as well
+
+  const { supplyCap, borrowCap, debtCeiling } = getAssetCapUsage(reserve);
 
   return (
     <Paper sx={{ py: '16px', px: '24px' }}>
@@ -199,7 +194,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({
             }}
           >
             {reserve.supplyCap && reserve.supplyCap !== '0' && (
-              <CapsCircularStatus value={supplyCapUsage} />
+              <CapsCircularStatus value={supplyCap.percentUsed} />
             )}
             <PanelItem
               title={
@@ -373,7 +368,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({
                   <DebtCeilingStatus
                     debt={reserve.isolationModeTotalDebt}
                     ceiling={reserve.debtCeiling}
-                    usage={debtCeilingUsage}
+                    usage={debtCeiling.percentUsed}
                   />
                 </ReserveOverviewBox>
               )}
@@ -396,7 +391,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({
                 }}
               >
                 {reserve.borrowCap && reserve.borrowCap !== '0' && (
-                  <CapsCircularStatus value={borrowCapUsage} />
+                  <CapsCircularStatus value={borrowCap.percentUsed} />
                 )}
                 <PanelItem
                   title={

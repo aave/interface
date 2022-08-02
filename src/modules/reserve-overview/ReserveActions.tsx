@@ -38,6 +38,7 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { Warning } from 'src/components/primitives/Warning';
 import { HarmonyWarning } from 'src/components/transactions/Warnings/HarmonyWarning';
+import getAssetCapUsage from 'src/hooks/getAssetCapUsage';
 
 const PaperWrapper = ({ children }: { children: ReactNode }) => {
   return (
@@ -52,18 +53,11 @@ const PaperWrapper = ({ children }: { children: ReactNode }) => {
 };
 
 interface ReserveActionsProps {
+  reserve: ComputedReserveData;
   underlyingAsset: string;
-  supplyCapUsage: number;
-  borrowCapUsage: number;
-  debtCeilingUsage: number;
 }
 
-export const ReserveActions = ({
-  underlyingAsset,
-  supplyCapUsage,
-  borrowCapUsage,
-  debtCeilingUsage,
-}: ReserveActionsProps) => {
+export const ReserveActions = ({ reserve, underlyingAsset }: ReserveActionsProps) => {
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
@@ -98,26 +92,28 @@ export const ReserveActions = ({
   const eModeBorrowDisabled =
     user?.isInEmode && poolReserve.eModeCategoryId !== user.userEmodeCategoryId;
 
+  const { supplyCap, borrowCap, debtCeiling } = getAssetCapUsage(reserve);
+
   const displaySupplyCapAlert = (): JSX.Element | null => {
     // Don't show anything if under 98% usage or not applicable
     if (
-      supplyCapUsage < 98 ||
-      supplyCapUsage === Infinity ||
-      !supplyCapUsage ||
+      supplyCap.percentUsed < 98 ||
+      supplyCap.percentUsed === Infinity ||
+      !supplyCap.percentUsed ||
       maxAmountToSupply === '0'
     )
       return null;
 
     const determineText = (): JSX.Element => {
-      if (supplyCapUsage >= 99.99) {
+      if (supplyCap.percentUsed >= 99.99) {
         return (
           <Trans>Protocol supply cap is at 100% for this asset. Further supply unavailable.</Trans>
         );
-      } else if (supplyCapUsage >= 98) {
+      } else if (supplyCap.percentUsed >= 98) {
         return (
           <Trans>
             Maximum amount available to supply is limited because protocol supply cap is at{' '}
-            {supplyCapUsage.toFixed(2)}%.
+            {supplyCap.percentUsed.toFixed(2)}%.
           </Trans>
         );
       } else {
@@ -138,21 +134,21 @@ export const ReserveActions = ({
   const displayBorrowCapAlert = (): JSX.Element | null => {
     // Don't show anything if under 98% usage or not applicable
     if (
-      borrowCapUsage < 98 ||
-      borrowCapUsage === Infinity ||
-      !borrowCapUsage ||
+      borrowCap.percentUsed < 98 ||
+      borrowCap.percentUsed === Infinity ||
+      !borrowCap.percentUsed ||
       maxAmountToBorrow === '0'
     )
       return null;
 
     const determineText = (): JSX.Element => {
-      if (borrowCapUsage >= 99.99) {
+      if (borrowCap.percentUsed >= 99.99) {
         return (
           <Trans>
             Protocol borrow cap is at 100% for this asset. Further borrowing unavailable.
           </Trans>
         );
-      } else if (borrowCapUsage >= 98) {
+      } else if (borrowCap.percentUsed >= 98) {
         return (
           <Trans>
             Maximum amount available to borrow is limited because borrow cap is nearly reached.
@@ -175,12 +171,17 @@ export const ReserveActions = ({
 
   const displayDebtCeilingAlert = (): JSX.Element | null => {
     // Don't show anything if under 98% usage or not applicable
-    if (debtCeilingUsage < 98 || debtCeilingUsage === Infinity || !debtCeilingUsage) return null;
+    if (
+      debtCeiling.percentUsed < 98 ||
+      debtCeiling.percentUsed === Infinity ||
+      !debtCeiling.percentUsed
+    )
+      return null;
 
     const determineSeverity = (): AlertColor => {
-      if (debtCeilingUsage >= 99.99) {
+      if (debtCeiling.percentUsed >= 99.99) {
         return 'error';
-      } else if (debtCeilingUsage >= 98) {
+      } else if (debtCeiling.percentUsed >= 98) {
         return 'warning';
       } else {
         return 'success';
@@ -188,18 +189,18 @@ export const ReserveActions = ({
     };
 
     const determineText = (): JSX.Element => {
-      if (debtCeilingUsage >= 99.99) {
+      if (debtCeiling.percentUsed >= 99.99) {
         return (
           <Trans>
             Protocol debt ceiling is at 100% for this asset. Further borrowing against this asset is
             unavailable.
           </Trans>
         );
-      } else if (debtCeilingUsage >= 98) {
+      } else if (debtCeiling.percentUsed >= 98) {
         return (
           <Trans>
             Maximum amount available to borrow against this asset is limited because debt ceiling is
-            at {debtCeilingUsage.toFixed(2)}%.
+            at {debtCeiling.percentUsed.toFixed(2)}%.
           </Trans>
         );
       } else {
