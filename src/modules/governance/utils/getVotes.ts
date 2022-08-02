@@ -33,20 +33,13 @@ export const getVotes = async (
   const formattedVotes: VoteType[] = await Promise.all(
     // eslint-disable-next-line
     votes.map(async (vote: any) => {
-      let timestamp = 0;
-      try {
-        const block = await vote.getBlock();
-        timestamp = block.timestamp;
-      } catch (e) {
-        console.log(`Error fetch vote timestamp: ${e}`);
-      }
       return {
         proposalId: vote.args.id.toNumber(),
         voter: vote.args.voter,
         support: vote.args.support,
         votingPower: normalizeBN(vote.args.votingPower.toString(), 18).toNumber(),
         transactionHash: vote.transactionHash,
-        timestamp,
+        timestamp: (await vote.getBlock()).timestamp,
         blockNumber: vote.blockNumber,
       };
     })
