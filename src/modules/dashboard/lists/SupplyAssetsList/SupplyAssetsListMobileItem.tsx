@@ -43,12 +43,12 @@ export const SupplyAssetsListMobileItem = (props: SupplyAssetsItem) => {
 
   return (
     <ListMobileItemWrapper
+      reserve={reserve}
       symbol={symbol}
       iconSymbol={iconSymbol}
       name={name}
       underlyingAsset={underlyingAsset}
       currentMarket={currentMarket}
-      reserve={reserve}
     >
       <ListValueRow
         title={<Trans>Supply balance</Trans>}

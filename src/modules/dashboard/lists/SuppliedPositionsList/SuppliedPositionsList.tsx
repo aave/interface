@@ -25,20 +25,18 @@ export const SuppliedPositionsList = () => {
   const suppliedPosition =
     user?.userReservesData
       .filter((userReserve) => userReserve.underlyingBalance !== '0')
-      .map((userReserve) => {
-        return {
-          ...userReserve,
-          reserve: {
-            ...userReserve.reserve,
-            ...(userReserve.reserve.isWrappedBaseAsset
-              ? fetchIconSymbolAndName({
-                  symbol: currentNetworkConfig.baseAssetSymbol,
-                  underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
-                })
-              : {}),
-          },
-        };
-      }) || [];
+      .map((userReserve) => ({
+        ...userReserve,
+        reserve: {
+          ...userReserve.reserve,
+          ...(userReserve.reserve.isWrappedBaseAsset
+            ? fetchIconSymbolAndName({
+                symbol: currentNetworkConfig.baseAssetSymbol,
+                underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
+              })
+            : {}),
+        },
+      })) || [];
 
   const head = [
     <Trans key="Balance">Balance</Trans>,

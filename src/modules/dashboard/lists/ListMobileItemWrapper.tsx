@@ -30,6 +30,7 @@ export const ListMobileItemWrapper = ({
 }: ListMobileItemWrapperProps) => {
   return (
     <ListMobileItem
+      reserve={reserve}
       symbol={symbol}
       iconSymbol={iconSymbol}
       name={name}
@@ -39,7 +40,6 @@ export const ListMobileItemWrapper = ({
       }
       loading={loading}
       currentMarket={currentMarket}
-      reserve={reserve}
     >
       {children}
     </ListMobileItem>

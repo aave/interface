@@ -16,6 +16,7 @@ export const AssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
   const { currentMarket } = useProtocolDataContext();
   return (
     <ListMobileItemWrapper
+      reserve={reserve}
       symbol={reserve.symbol}
       iconSymbol={reserve.iconSymbol}
       name={reserve.name}

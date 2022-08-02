@@ -13,23 +13,22 @@ import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
 import { BorrowAssetsItem } from './types';
 
-export const BorrowAssetsListItem = (props: BorrowAssetsItem) => {
-  const {
-    symbol,
-    iconSymbol,
-    name,
-    availableBorrows,
-    availableBorrowsInUSD,
-    borrowCap,
-    totalBorrows,
-    variableBorrowRate,
-    stableBorrowRate,
-    sIncentivesData,
-    vIncentivesData,
-    underlyingAsset,
-    isFreezed,
-    reserve,
-  } = props;
+export const BorrowAssetsListItem = ({
+  symbol,
+  iconSymbol,
+  name,
+  availableBorrows,
+  availableBorrowsInUSD,
+  borrowCap,
+  totalBorrows,
+  variableBorrowRate,
+  stableBorrowRate,
+  sIncentivesData,
+  vIncentivesData,
+  underlyingAsset,
+  isFreezed,
+  reserve,
+}: BorrowAssetsItem) => {
   const { openBorrow } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
   const borrowButtonDisable = isFreezed || Number(availableBorrows) <= 0;
@@ -42,13 +41,13 @@ export const BorrowAssetsListItem = (props: BorrowAssetsItem) => {
 
   return (
     <ListItemWrapper
+      reserve={reserve}
       symbol={symbol}
       iconSymbol={iconSymbol}
       name={name}
       detailsAddress={underlyingAsset}
       data-cy={`dashboardBorrowListItem_${symbol.toUpperCase()}`}
       currentMarket={currentMarket}
-      reserve={reserve}
     >
       <ListValueColumn
         symbol={symbol}

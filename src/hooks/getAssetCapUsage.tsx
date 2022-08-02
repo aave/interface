@@ -22,7 +22,8 @@ type AssetLikeObject =
       borrowCap: string;
       isolationModeTotalDebt: string;
       debtCeiling: string;
-    });
+    })
+  | undefined;
 
 const getAssetCapUsage = (asset: AssetLikeObject): AssetCapUsageData => {
   // console.log({ asset });

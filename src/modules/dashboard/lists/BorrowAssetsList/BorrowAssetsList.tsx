@@ -48,8 +48,8 @@ export const BorrowAssetsList = () => {
         .toFixed(2);
 
       return {
-        reserve,
         ...reserve,
+        reserve,
         totalBorrows: reserve.totalDebt,
         availableBorrows,
         availableBorrowsInUSD,

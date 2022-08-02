@@ -14,25 +14,24 @@ import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
 import { SupplyAssetsItem } from './types';
 
-export const SupplyAssetsListItem = (props: SupplyAssetsItem) => {
-  const {
-    symbol,
-    iconSymbol,
-    name,
-    walletBalance,
-    walletBalanceUSD,
-    supplyCap,
-    totalLiquidity,
-    supplyAPY,
-    aIncentivesData,
-    underlyingAsset,
-    isActive,
-    isFreezed,
-    isIsolated,
-    usageAsCollateralEnabledOnUser,
-    detailsAddress,
-    reserve,
-  } = props;
+export const SupplyAssetsListItem = ({
+  symbol,
+  iconSymbol,
+  name,
+  walletBalance,
+  walletBalanceUSD,
+  supplyCap,
+  totalLiquidity,
+  supplyAPY,
+  aIncentivesData,
+  underlyingAsset,
+  isActive,
+  isFreezed,
+  isIsolated,
+  usageAsCollateralEnabledOnUser,
+  detailsAddress,
+  reserve,
+}: SupplyAssetsItem) => {
   const { currentMarket } = useProtocolDataContext();
   const { openSupply } = useModalContext();
 
@@ -44,13 +43,13 @@ export const SupplyAssetsListItem = (props: SupplyAssetsItem) => {
 
   return (
     <ListItemWrapper
+      reserve={reserve}
       symbol={symbol}
       iconSymbol={iconSymbol}
       name={name}
       detailsAddress={detailsAddress}
       data-cy={`dashboardSupplyListItem_${symbol.toUpperCase()}`}
       currentMarket={currentMarket}
-      reserve={reserve}
     >
       <ListValueColumn
         symbol={symbol}

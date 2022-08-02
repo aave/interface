@@ -14,23 +14,22 @@ import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueRow } from '../ListValueRow';
 import { BorrowAssetsItem } from './types';
 
-export const BorrowAssetsListMobileItem = (props: BorrowAssetsItem) => {
-  const {
-    symbol,
-    iconSymbol,
-    name,
-    availableBorrows,
-    availableBorrowsInUSD,
-    borrowCap,
-    totalBorrows,
-    variableBorrowRate,
-    stableBorrowRate,
-    sIncentivesData,
-    vIncentivesData,
-    underlyingAsset,
-    isFreezed,
-    reserve,
-  } = props;
+export const BorrowAssetsListMobileItem = ({
+  symbol,
+  iconSymbol,
+  name,
+  availableBorrows,
+  availableBorrowsInUSD,
+  borrowCap,
+  totalBorrows,
+  variableBorrowRate,
+  stableBorrowRate,
+  sIncentivesData,
+  vIncentivesData,
+  underlyingAsset,
+  isFreezed,
+  reserve,
+}: BorrowAssetsItem) => {
   const { openBorrow } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
   const borrowButtonDisable = isFreezed || Number(availableBorrows) <= 0;
@@ -43,12 +42,12 @@ export const BorrowAssetsListMobileItem = (props: BorrowAssetsItem) => {
 
   return (
     <ListMobileItemWrapper
+      reserve={reserve}
       symbol={symbol}
       iconSymbol={iconSymbol}
       name={name}
       underlyingAsset={underlyingAsset}
       currentMarket={currentMarket}
-      reserve={reserve}
     >
       <ListValueRow
         title={<Trans>Available to borrow</Trans>}

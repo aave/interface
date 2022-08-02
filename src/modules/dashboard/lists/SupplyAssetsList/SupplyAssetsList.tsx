@@ -87,8 +87,8 @@ export const SupplyAssetsList = () => {
           .toString();
         return [
           {
-            reserve,
             ...reserve,
+            reserve,
             underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
             ...fetchIconSymbolAndName({
               symbol: baseAssetSymbol,
@@ -103,8 +103,8 @@ export const SupplyAssetsList = () => {
             id: reserve.id + 'base',
           },
           {
-            reserve,
             ...reserve,
+            reserve,
             walletBalance,
             walletBalanceUSD,
             availableToDeposit:
@@ -118,8 +118,8 @@ export const SupplyAssetsList = () => {
       }
 
       return {
-        reserve,
         ...reserve,
+        reserve,
         walletBalance,
         walletBalanceUSD,
         availableToDeposit:

@@ -22,10 +22,7 @@ interface ListItemWrapperProps {
   children: ReactNode;
   currentMarket: CustomMarket;
   frozen?: boolean;
-  supplyCapReached?: boolean;
-  borrowCapReached?: boolean;
-  debtCeilingReached?: boolean;
-  reserve?: ComputedReserveData;
+  reserve: ComputedReserveData;
 }
 
 export const ListItemWrapper = ({
