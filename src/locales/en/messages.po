@@ -197,7 +197,7 @@ msgstr "Asset is not borrowable in isolation mode"
 msgid "Asset is not listed"
 msgstr "Asset is not listed"
 
-#: src/components/infoTooltips/TotalSuppliedTooltip.tsx
+#: src/components/infoTooltips/SupplyCapTooltip.tsx
 msgid "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 msgstr "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 
@@ -338,7 +338,7 @@ msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mod
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 
-#: src/components/infoTooltips/TotalBorrowedTooltip.tsx
+#: src/components/infoTooltips/BorrowCapTooltip.tsx
 msgid "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
 msgstr "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
 
@@ -872,12 +872,12 @@ msgstr "Isolated assets have limited borrowing power and other assets cannot be 
 msgid "Language"
 msgstr "Language"
 
+#: src/components/infoTooltips/BorrowCapTooltip.tsx
+#: src/components/infoTooltips/BorrowCapTooltip.tsx
 #: src/components/infoTooltips/DebtCeilingTooltip.tsx
-#: src/components/infoTooltips/MaxBorrowedTooltip.tsx
-#: src/components/infoTooltips/MaxDebtCeilingTooltip.tsx
-#: src/components/infoTooltips/MaxSuppliedTooltip.tsx
-#: src/components/infoTooltips/TotalBorrowedTooltip.tsx
-#: src/components/infoTooltips/TotalSuppliedTooltip.tsx
+#: src/components/infoTooltips/DebtCeilingTooltip.tsx
+#: src/components/infoTooltips/SupplyCapTooltip.tsx
+#: src/components/infoTooltips/SupplyCapTooltip.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/Warnings/BorrowCapWarning.tsx
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
@@ -1156,7 +1156,7 @@ msgstr "Proposals"
 msgid "Proposition power"
 msgstr "Proposition power"
 
-#: src/components/infoTooltips/MaxBorrowedTooltip.tsx
+#: src/components/infoTooltips/BorrowCapTooltip.tsx
 msgid "Protocol borrow cap at 100% for this asset. Further supply unavailable."
 msgstr "Protocol borrow cap at 100% for this asset. Further supply unavailable."
 
@@ -1168,11 +1168,11 @@ msgstr "Protocol borrow cap is at 100% for this asset. Further borrowing unavail
 msgid "Protocol debt ceiling is at 100% for this asset. Further borrowing against this asset is unavailable."
 msgstr "Protocol debt ceiling is at 100% for this asset. Further borrowing against this asset is unavailable."
 
-#: src/components/infoTooltips/MaxDebtCeilingTooltip.tsx
+#: src/components/infoTooltips/DebtCeilingTooltip.tsx
 msgid "Protocol debt ceiling is at 100% for this asset. Futher borrowing against this asset is unavailable."
 msgstr "Protocol debt ceiling is at 100% for this asset. Futher borrowing against this asset is unavailable."
 
-#: src/components/infoTooltips/MaxSuppliedTooltip.tsx
+#: src/components/infoTooltips/SupplyCapTooltip.tsx
 msgid "Protocol supply cap at 100% for this asset. Further supply unavailable."
 msgstr "Protocol supply cap at 100% for this asset. Further supply unavailable."
 
