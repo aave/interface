@@ -217,7 +217,7 @@ export const SupplyAssetsList = () => {
       }
     >
       <>
-        {!downToXSM && !!supplyReserves && <ListHeader head={head} />}
+        {!downToXSM && !!supplyReserves && !supplyDisabled && <ListHeader head={head} />}
         {supplyReserves.map((item) =>
           downToXSM ? (
             <SupplyAssetsListMobileItem {...item} key={item.id} />
