@@ -185,23 +185,26 @@ export const SupplyAssetsList = () => {
                   </Link>
                 </Trans>
               </Warning>
-            ) : filteredSupplyReserves.length === 0 && isTestnet ? (
-              <Warning severity="info">
-                <Trans>Your {networkName} wallet is empty. Get free test assets at </Trans>{' '}
-                <Link href={ROUTES.faucet} style={{ fontWeight: 400 }}>
-                  <Trans>{networkName} Faucet</Trans>
-                </Link>
-              </Warning>
             ) : (
-              <Warning severity="info">
-                <Trans>Your {networkName} wallet is empty. Purchase or transfer assets</Trans>{' '}
-                {bridge && (
-                  <Trans>
-                    or use {<Link href={bridge.url}>{bridge.name}</Link>} to transfer your ETH
-                    assets.
-                  </Trans>
-                )}
-              </Warning>
+              filteredSupplyReserves.length === 0 &&
+              (isTestnet ? (
+                <Warning severity="info">
+                  <Trans>Your {networkName} wallet is empty. Get free test assets at </Trans>{' '}
+                  <Link href={ROUTES.faucet} style={{ fontWeight: 400 }}>
+                    <Trans>{networkName} Faucet</Trans>
+                  </Link>
+                </Warning>
+              ) : (
+                <Warning severity="info">
+                  <Trans>Your {networkName} wallet is empty. Purchase or transfer assets</Trans>{' '}
+                  {bridge && (
+                    <Trans>
+                      or use {<Link href={bridge.url}>{bridge.name}</Link>} to transfer your ETH
+                      assets.
+                    </Trans>
+                  )}
+                </Warning>
+              ))
             )}
           </Box>
 
@@ -217,7 +220,7 @@ export const SupplyAssetsList = () => {
       }
     >
       <>
-        {!downToXSM && !!supplyReserves && <ListHeader head={head} />}
+        {!downToXSM && !!supplyReserves && !supplyDisabled && <ListHeader head={head} />}
         {supplyReserves.map((item) =>
           downToXSM ? (
             <SupplyAssetsListMobileItem {...item} key={item.id} />
