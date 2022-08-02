@@ -10,9 +10,9 @@ export const ApprovalInfoContent = () => {
       <Typography>
         <Trans>
           Before supplying, you need to approve its usage by the Aave protocol. You can learn more
-          in our
+          in our F
           <Link fontWeight={500} href={'https://docs.aave.com/faq/'}>
-            FAQ
+            AQ
           </Link>
         </Trans>
       </Typography>
