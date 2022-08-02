@@ -49,9 +49,10 @@ export const CollateralChangeModalContent = ({
     currentLiquidationThreshold: user.currentLiquidationThreshold,
   });
 
+  // ************** Warnings **********
   // debt ceiling warning
-  const showDebtCeilingWarning =
-    poolReserve.isIsolated && debtCeiling.percentUsed >= 98 && debtCeiling.percentUsed < 99.99;
+  // Note: Does an asset have to be isolated to have a debt ceiling?
+  const showDebtCeilingWarning = poolReserve.isIsolated && debtCeiling.percentUsed >= 98;
 
   // error handling
   let blockingError: ErrorType | undefined = undefined;
@@ -118,12 +119,7 @@ export const CollateralChangeModalContent = ({
         </Alert>
       )}
 
-      {showDebtCeilingWarning && (
-        <DebtCeilingWarning
-          debtCeilingUsage={debtCeiling.percentUsed}
-          debtCeilingReached={debtCeiling.isMaxed}
-        />
-      )}
+      {showDebtCeilingWarning && <DebtCeilingWarning debtCeiling={debtCeiling} />}
 
       <TxModalDetails gasLimit={gasLimit}>
         <DetailsNumberLine

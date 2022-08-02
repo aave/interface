@@ -152,10 +152,12 @@ export const BorrowModalContent = ({
   const usdValue = valueToBigNumber(amount).multipliedBy(poolReserve.priceInUSD);
 
   // ************** Warnings **********
-  const showBorrowCapWarning: boolean =
-    borrowCap.percentUsed >= 98 && borrowCap.percentUsed < 99.99;
-  const showDebtCeilingWarning =
-    poolReserve.isIsolated && debtCeiling.percentUsed >= 98 && debtCeiling.percentUsed < 99.99;
+  // supply cap warning
+  const showBorrowCapWarning: boolean = borrowCap.percentUsed >= 98;
+
+  // debt ceiling warning
+  // Note: Does an asset have to be isolated to have a debt ceiling?
+  const showDebtCeilingWarning = poolReserve.isIsolated && debtCeiling.percentUsed >= 98;
 
   // error types handling
   let blockingError: ErrorType | undefined = undefined;
@@ -226,12 +228,7 @@ export const BorrowModalContent = ({
   return (
     <>
       {showBorrowCapWarning && <BorrowCapWarning />}
-      {showDebtCeilingWarning && (
-        <DebtCeilingWarning
-          debtCeilingUsage={debtCeiling.percentUsed}
-          debtCeilingReached={debtCeiling.isMaxed}
-        />
-      )}
+      {showDebtCeilingWarning && <DebtCeilingWarning debtCeiling={debtCeiling} />}
 
       <AssetInput
         value={amount}

@@ -126,14 +126,13 @@ export const SupplyModalContent = ({
       ? userReserve.usageAsCollateralEnabledOnUser
       : true);
 
+  // supply cap warning
+  const showSupplyCapWarning: boolean = supplyCap.percentUsed >= 98;
+
   // debt ceiling warning
   // Note: Does an asset have to be isolated to have a debt ceiling?
-  const showDebtCeilingWarning =
-    poolReserve.isIsolated && debtCeiling.percentUsed >= 98 && debtCeiling.percentUsed < 99.99;
+  const showDebtCeilingWarning = poolReserve.isIsolated && debtCeiling.percentUsed >= 98;
 
-  // supply cap warning
-  const showSupplyCapWarning: boolean =
-    supplyCap.percentUsed >= 98 && supplyCap.percentUsed < 99.99;
   // TODO: check if calc is correct to see if cap reached
   const capReached =
     poolReserve.supplyCap !== '0' &&
@@ -220,13 +219,8 @@ export const SupplyModalContent = ({
   return (
     <>
       {showIsolationWarning && <IsolationModeWarning />}
-      {showSupplyCapWarning && <SupplyCapWarning supplyCapUsage={supplyCap.percentUsed} />}
-      {showDebtCeilingWarning && (
-        <DebtCeilingWarning
-          debtCeilingUsage={debtCeiling.percentUsed}
-          debtCeilingReached={debtCeiling.isMaxed}
-        />
-      )}
+      {showSupplyCapWarning && <SupplyCapWarning supplyCap={supplyCap} />}
+      {showDebtCeilingWarning && <DebtCeilingWarning debtCeiling={debtCeiling} />}
       {poolReserve.symbol === 'AMPL' && <AMPLWarning />}
       {process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true' &&
         poolReserve.symbol === 'AAVE' &&

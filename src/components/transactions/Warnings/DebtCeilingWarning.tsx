@@ -1,20 +1,17 @@
 import { Trans } from '@lingui/macro';
+import { AssetCapData } from 'src/hooks/getAssetCapUsage';
 import { Link } from '../../primitives/Link';
 import { Warning } from '../../primitives/Warning';
 
 type DebtCeilingWarningProps = {
-  debtCeilingUsage: number;
-  debtCeilingReached: boolean;
+  debtCeiling: AssetCapData;
 };
 
-export const DebtCeilingWarning = ({
-  debtCeilingUsage,
-  debtCeilingReached,
-}: DebtCeilingWarningProps) => {
-  const severity = debtCeilingReached ? 'error' : 'warning';
+export const DebtCeilingWarning = ({ debtCeiling }: DebtCeilingWarningProps) => {
+  const severity = debtCeiling.isMaxed ? 'error' : 'warning';
 
   const renderText = () => {
-    return debtCeilingReached ? (
+    return debtCeiling.isMaxed ? (
       <Trans>
         Protocol debt ceiling is at 100% for this asset. Further borrowing against this asset is
         unavailable.
@@ -22,7 +19,7 @@ export const DebtCeilingWarning = ({
     ) : (
       <Trans>
         Maximum amount available to borrow against this asset is limited because debt ceiling is at{' '}
-        {debtCeilingUsage.toFixed(2)}%.
+        {debtCeiling.percentUsed.toFixed(2)}%.
       </Trans>
     );
   };
