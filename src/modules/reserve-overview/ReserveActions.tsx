@@ -39,6 +39,9 @@ import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWall
 import { Warning } from 'src/components/primitives/Warning';
 import { HarmonyWarning } from 'src/components/transactions/Warnings/HarmonyWarning';
 import getAssetCapUsage from 'src/hooks/getAssetCapUsage';
+import { SupplyCapWarning } from 'src/components/transactions/Warnings/SupplyCapWarning';
+import { DebtCeilingWarning } from 'src/components/transactions/Warnings/DebtCeilingWarning';
+import { BorrowCapWarning } from 'src/components/transactions/Warnings/BorrowCapWarning';
 
 const PaperWrapper = ({ children }: { children: ReactNode }) => {
   return (
@@ -60,16 +63,14 @@ interface ReserveActionsProps {
 export const ReserveActions = ({ reserve, underlyingAsset }: ReserveActionsProps) => {
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
-
   const { openBorrow, openFaucet, openSupply } = useModalContext();
-
   const { currentAccount, loading: web3Loading } = useWeb3Context();
   const { user, reserves, loading: loadingReserves } = useAppDataContext();
   const { walletBalances, loading: loadingBalance } = useWalletBalances();
   const { isPermissionsLoading } = usePermissions();
-
   const { currentNetworkConfig } = useProtocolDataContext();
   const { bridge, name: networkName } = currentNetworkConfig;
+  const { supplyCap, borrowCap, debtCeiling } = getAssetCapUsage(reserve);
 
   const poolReserve = reserves.find(
     (reserve) => reserve.underlyingAsset === underlyingAsset
@@ -92,136 +93,10 @@ export const ReserveActions = ({ reserve, underlyingAsset }: ReserveActionsProps
   const eModeBorrowDisabled =
     user?.isInEmode && poolReserve.eModeCategoryId !== user.userEmodeCategoryId;
 
-  const { supplyCap, borrowCap, debtCeiling } = getAssetCapUsage(reserve);
-
-  const displaySupplyCapAlert = (): JSX.Element | null => {
-    // Don't show anything if under 98% usage or not applicable
-    if (
-      supplyCap.percentUsed < 98 ||
-      supplyCap.percentUsed === Infinity ||
-      !supplyCap.percentUsed ||
-      maxAmountToSupply === '0'
-    )
-      return null;
-
-    const determineText = (): JSX.Element => {
-      if (supplyCap.percentUsed >= 99.99) {
-        return (
-          <Trans>Protocol supply cap is at 100% for this asset. Further supply unavailable.</Trans>
-        );
-      } else if (supplyCap.percentUsed >= 98) {
-        return (
-          <Trans>
-            Maximum amount available to supply is limited because protocol supply cap is at{' '}
-            {supplyCap.percentUsed.toFixed(2)}%.
-          </Trans>
-        );
-      } else {
-        return <></>;
-      }
-    };
-
-    return (
-      <Alert severity="warning" icon={false} sx={{ mt: 4 }}>
-        {determineText()}
-        <Link href="#" target="_blank" rel="noopener" sx={{ ml: 1 }}>
-          <Trans>Learn more</Trans>
-        </Link>
-      </Alert>
-    );
-  };
-
-  const displayBorrowCapAlert = (): JSX.Element | null => {
-    // Don't show anything if under 98% usage or not applicable
-    if (
-      borrowCap.percentUsed < 98 ||
-      borrowCap.percentUsed === Infinity ||
-      !borrowCap.percentUsed ||
-      maxAmountToBorrow === '0'
-    )
-      return null;
-
-    const determineText = (): JSX.Element => {
-      if (borrowCap.percentUsed >= 99.99) {
-        return (
-          <Trans>
-            Protocol borrow cap is at 100% for this asset. Further borrowing unavailable.
-          </Trans>
-        );
-      } else if (borrowCap.percentUsed >= 98) {
-        return (
-          <Trans>
-            Maximum amount available to borrow is limited because borrow cap is nearly reached.
-          </Trans>
-        );
-      } else {
-        return <></>;
-      }
-    };
-
-    return (
-      <Alert severity="warning" icon={false} sx={{ mt: 4 }}>
-        {determineText()}
-        <Link href="#" target="_blank" rel="noopener" sx={{ ml: 1 }}>
-          <Trans>Learn more</Trans>
-        </Link>
-      </Alert>
-    );
-  };
-
-  const displayDebtCeilingAlert = (): JSX.Element | null => {
-    // Don't show anything if under 98% usage or not applicable
-    if (
-      debtCeiling.percentUsed < 98 ||
-      debtCeiling.percentUsed === Infinity ||
-      !debtCeiling.percentUsed
-    )
-      return null;
-
-    const determineSeverity = (): AlertColor => {
-      if (debtCeiling.percentUsed >= 99.99) {
-        return 'error';
-      } else if (debtCeiling.percentUsed >= 98) {
-        return 'warning';
-      } else {
-        return 'success';
-      }
-    };
-
-    const determineText = (): JSX.Element => {
-      if (debtCeiling.percentUsed >= 99.99) {
-        return (
-          <Trans>
-            Protocol debt ceiling is at 100% for this asset. Further borrowing against this asset is
-            unavailable.
-          </Trans>
-        );
-      } else if (debtCeiling.percentUsed >= 98) {
-        return (
-          <Trans>
-            Maximum amount available to borrow against this asset is limited because debt ceiling is
-            at {debtCeiling.percentUsed.toFixed(2)}%.
-          </Trans>
-        );
-      } else {
-        return <></>;
-      }
-    };
-
-    return (
-      <Alert severity={determineSeverity()} icon={false} sx={{ mt: 4 }}>
-        {determineText()}
-        <Link
-          href="https://docs.aave.com/faq/aave-v3-features#how-does-isolation-mode-affect-my-borrowing-power"
-          target="_blank"
-          rel="noopener"
-          sx={{ ml: 1 }}
-        >
-          <Trans>Learn more</Trans>
-        </Link>
-      </Alert>
-    );
-  };
+  // ************** Warnings **********
+  const showSupplyCapWarning = maxAmountToSupply === '0';
+  const showBorrowCapWarning = maxAmountToBorrow === '0';
+  const showDebtCeilingWarning = poolReserve.isIsolated;
 
   if (!currentAccount && !isPermissionsLoading)
     return (
@@ -468,9 +343,9 @@ export const ReserveActions = ({ reserve, underlyingAsset }: ReserveActionsProps
           <Trans>Borrow</Trans> {downToXSM && poolReserve.symbol}
         </Button>
       </Stack>
-      {displaySupplyCapAlert()}
-      {displayBorrowCapAlert()}
-      {displayDebtCeilingAlert()}
+      {showSupplyCapWarning && <SupplyCapWarning supplyCap={supplyCap} icon={false} />}
+      {showBorrowCapWarning && <BorrowCapWarning borrowCap={borrowCap} icon={false} />}
+      {showDebtCeilingWarning && <DebtCeilingWarning debtCeiling={debtCeiling} icon={false} />}
     </PaperWrapper>
   );
 };

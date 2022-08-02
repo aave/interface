@@ -227,7 +227,7 @@ export const BorrowModalContent = ({
       : poolReserve.vIncentivesData;
   return (
     <>
-      {showBorrowCapWarning && <BorrowCapWarning />}
+      {showBorrowCapWarning && <BorrowCapWarning borrowCap={borrowCap} />}
       {showDebtCeilingWarning && <DebtCeilingWarning debtCeiling={debtCeiling} />}
 
       <AssetInput
