@@ -12,6 +12,7 @@ import { BigNumber } from 'ethers/lib/ethers';
 import { formatEther } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { ContentContainer } from 'src/components/ContentContainer';
+import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import { GetABPToken } from 'src/modules/staking/GetABPToken';
 import { StakeModal } from 'src/components/transactions/Stake/StakeModal';
 import { StakeCooldownModal } from 'src/components/transactions/StakeCooldown/StakeCooldownModal';
@@ -116,6 +117,7 @@ export default function Staking() {
                   onCooldownAction={() => openStakeCooldown('aave')}
                   onUnstakeAction={() => openUnstake('aave', 'AAVE')}
                   onStakeRewardClaimAction={() => openStakeRewardsClaim('aave')}
+                  headerAction={<BuyWithFiat cryptoCode="AAVE" />}
                 />
               </Grid>
               <Grid

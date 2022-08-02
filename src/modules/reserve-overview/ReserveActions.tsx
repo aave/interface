@@ -26,6 +26,7 @@ import {
   getMaxAmountAvailableToBorrow,
 } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
+import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 
 import { CapType } from '../../components/caps/helper';
 import { AvailableTooltip } from '../../components/infoTooltips/AvailableTooltip';
@@ -222,6 +223,9 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
             symbolsColor="text.muted"
             symbol="USD"
           />
+          <Box mt={2}>
+            <BuyWithFiat cryptoCode={poolReserve.symbol} />
+          </Box>
         </Box>
       </Row>
 
