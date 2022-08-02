@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-07-28 00:19\n"
+"PO-Revision-Date: 2022-08-02 18:22\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -2083,7 +2083,7 @@ msgid "{0} Faucet"
 msgstr "{0} Βρύση"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "{0} is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
+msgid "{0} is frozen due to an Aave community decision. <0>More details</0>"
 msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
