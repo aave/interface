@@ -2,6 +2,7 @@ import { calculateHealthFactorFromBalancesBigUnits, valueToBigNumber } from '@aa
 import { Trans } from '@lingui/macro';
 import { Alert, Typography } from '@mui/material';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import getAssetCapUsage from 'src/hooks/getAssetCapUsage';
 import { useModalContext } from 'src/hooks/useModal';
 
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -30,6 +31,7 @@ export const CollateralChangeModalContent = ({
 }: ModalWrapperProps) => {
   const { gasLimit, mainTxState: collateralChangeTxState, txError } = useModalContext();
   const { user } = useAppDataContext();
+  const { debtCeiling } = getAssetCapUsage(poolReserve);
 
   // health factor Calcs
   const usageAsCollateralModeAfterSwitch = !userReserve.usageAsCollateralEnabledOnUser;
@@ -48,14 +50,8 @@ export const CollateralChangeModalContent = ({
   });
 
   // debt ceiling warning
-  // Note: Does an asset have to be isolated to have a debt ceiling?
-  const debtCeilingUsage: number = poolReserve.isIsolated
-    ? valueToBigNumber(poolReserve.isolationModeTotalDebt)
-        .dividedBy(poolReserve.debtCeiling)
-        .toNumber() * 100
-    : 0;
-  const debtCeilingReached = debtCeilingUsage !== Infinity && debtCeilingUsage >= 99.99;
-  const showDebtCeilingWarning = debtCeilingUsage >= 98 && debtCeilingUsage < 99.99;
+  const showDebtCeilingWarning =
+    poolReserve.isIsolated && debtCeiling.percentUsed >= 98 && debtCeiling.percentUsed < 99.99;
 
   // error handling
   let blockingError: ErrorType | undefined = undefined;
@@ -124,8 +120,8 @@ export const CollateralChangeModalContent = ({
 
       {showDebtCeilingWarning && (
         <DebtCeilingWarning
-          debtCeilingUsage={debtCeilingUsage}
-          debtCeilingReached={debtCeilingReached}
+          debtCeilingUsage={debtCeiling.percentUsed}
+          debtCeilingReached={debtCeiling.isMaxed}
         />
       )}
 

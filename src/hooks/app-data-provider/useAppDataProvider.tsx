@@ -34,9 +34,6 @@ export type ComputedReserveData = ReturnType<typeof formatReservesAndIncentives>
     iconSymbol: string;
     isEmodeEnabled: boolean;
     isWrappedBaseAsset: boolean;
-    supplyCapReached?: boolean;
-    borrowCapReached?: boolean;
-    debtCeilingReached?: boolean;
   };
 
 export type ComputedUserReserveData = ComputedUserReserve<ComputedReserveData>;

@@ -35,6 +35,7 @@ import { DebtCeilingWarning } from '../Warnings/DebtCeilingWarning';
 import { SNXWarning } from '../Warnings/SNXWarning';
 import { SupplyCapWarning } from '../Warnings/SupplyCapWarning';
 import { SupplyActions } from './SupplyActions';
+import getAssetCapUsage from 'src/hooks/getAssetCapUsage';
 
 export enum ErrorType {
   CAP_REACHED,
@@ -52,6 +53,7 @@ export const SupplyModalContent = ({
   const { marketReferencePriceInUsd, user } = useAppDataContext();
   const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
   const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
+  const { supplyCap, debtCeiling } = getAssetCapUsage(poolReserve);
 
   // states
   const [_amount, setAmount] = useState('');
@@ -126,19 +128,12 @@ export const SupplyModalContent = ({
 
   // debt ceiling warning
   // Note: Does an asset have to be isolated to have a debt ceiling?
-  const debtCeilingUsage: number = poolReserve.isIsolated
-    ? valueToBigNumber(poolReserve.isolationModeTotalDebt)
-        .dividedBy(poolReserve.debtCeiling)
-        .toNumber() * 100
-    : 0;
-  const debtCeilingReached = debtCeilingUsage !== Infinity && debtCeilingUsage >= 99.99;
-  const showDebtCeilingWarning = debtCeilingUsage >= 98 && debtCeilingUsage < 99.99;
+  const showDebtCeilingWarning =
+    poolReserve.isIsolated && debtCeiling.percentUsed >= 98 && debtCeiling.percentUsed < 99.99;
 
   // supply cap warning
-  const percentageOfCap =
-    valueToBigNumber(poolReserve.totalLiquidity).dividedBy(poolReserve.supplyCap).toNumber() * 100;
   const showSupplyCapWarning: boolean =
-    poolReserve.supplyCap !== '0' && percentageOfCap >= 98 && percentageOfCap < 100;
+    supplyCap.percentUsed >= 98 && supplyCap.percentUsed < 99.99;
   // TODO: check if calc is correct to see if cap reached
   const capReached =
     poolReserve.supplyCap !== '0' &&
@@ -179,7 +174,7 @@ export const SupplyModalContent = ({
 
   if (poolReserve.isIsolated) {
     // Note: is debt ceiling only used for isolated assets?
-    if (debtCeilingReached) {
+    if (debtCeiling.isMaxed) {
       willBeUsedAsCollateral = CollateralType.UNAVAILABLE;
     } else if (user.isInIsolationMode) {
       if (userHasSuppliedReserve) {
@@ -225,11 +220,11 @@ export const SupplyModalContent = ({
   return (
     <>
       {showIsolationWarning && <IsolationModeWarning />}
-      {showSupplyCapWarning && <SupplyCapWarning supplyCapUsage={percentageOfCap} />}
+      {showSupplyCapWarning && <SupplyCapWarning supplyCapUsage={supplyCap.percentUsed} />}
       {showDebtCeilingWarning && (
         <DebtCeilingWarning
-          debtCeilingUsage={debtCeilingUsage}
-          debtCeilingReached={debtCeilingReached}
+          debtCeilingUsage={debtCeiling.percentUsed}
+          debtCeilingReached={debtCeiling.isMaxed}
         />
       )}
       {poolReserve.symbol === 'AMPL' && <AMPLWarning />}

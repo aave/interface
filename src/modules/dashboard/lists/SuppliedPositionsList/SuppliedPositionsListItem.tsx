@@ -4,6 +4,7 @@ import {
   ComputedUserReserveData,
   ExtendedFormattedUser,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
+import getAssetCapUsage from 'src/hooks/getAssetCapUsage';
 import { useModalContext } from 'src/hooks/useModal';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
@@ -26,10 +27,11 @@ export const SuppliedPositionsListItem = ({
   const { isIsolated, aIncentivesData, isFrozen, isActive } = reserve;
   const { currentMarketData, currentMarket } = useProtocolDataContext();
   const { openSupply, openWithdraw, openCollateralChange, openSwap } = useModalContext();
+  const { debtCeiling } = getAssetCapUsage(reserve);
   const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
 
   const canBeEnabledAsCollateral =
-    // !debtCeilingReached &&
+    !debtCeiling.isMaxed &&
     reserve.usageAsCollateralEnabled &&
     ((!reserve.isIsolated && !user.isInIsolationMode) ||
       user.isolatedReserve?.underlyingAsset === reserve.underlyingAsset ||

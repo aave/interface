@@ -13,25 +13,24 @@ import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueRow } from '../ListValueRow';
 import { SupplyAssetsItem } from './types';
 
-export const SupplyAssetsListMobileItem = (props: SupplyAssetsItem) => {
-  const {
-    symbol,
-    iconSymbol,
-    name,
-    walletBalance,
-    walletBalanceUSD,
-    supplyCap,
-    totalLiquidity,
-    supplyAPY,
-    aIncentivesData,
-    isIsolated,
-    usageAsCollateralEnabledOnUser,
-    isActive,
-    isFreezed,
-    underlyingAsset,
-    detailsAddress,
-    reserve,
-  } = props;
+export const SupplyAssetsListMobileItem = ({
+  symbol,
+  iconSymbol,
+  name,
+  walletBalance,
+  walletBalanceUSD,
+  supplyCap,
+  totalLiquidity,
+  supplyAPY,
+  aIncentivesData,
+  isIsolated,
+  usageAsCollateralEnabledOnUser,
+  isActive,
+  isFreezed,
+  underlyingAsset,
+  detailsAddress,
+  reserve,
+}: SupplyAssetsItem) => {
   const { currentMarket } = useProtocolDataContext();
   const { openSupply } = useModalContext();
 

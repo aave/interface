@@ -11,6 +11,7 @@ import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import getAssetCapUsage from 'src/hooks/getAssetCapUsage';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
@@ -108,6 +109,7 @@ export const BorrowModalContent = ({
   const { mainTxState: borrowTxState, gasLimit, txError } = useModalContext();
   const { user, marketReferencePriceInUsd } = useAppDataContext();
   const { currentNetworkConfig } = useProtocolDataContext();
+  const { borrowCap, debtCeiling } = getAssetCapUsage(poolReserve);
 
   const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
   const [_amount, setAmount] = useState('');
@@ -150,21 +152,10 @@ export const BorrowModalContent = ({
   const usdValue = valueToBigNumber(amount).multipliedBy(poolReserve.priceInUSD);
 
   // ************** Warnings **********
-  // borrow cap warning
-  const percentageOfCap =
-    valueToBigNumber(poolReserve.totalDebt).dividedBy(poolReserve.borrowCap).toNumber() * 100;
   const showBorrowCapWarning: boolean =
-    poolReserve.borrowCap !== '0' && percentageOfCap >= 98 && percentageOfCap < 100;
-
-  // debt ceiling warning
-  // Note: Does an asset have to be isolated to have a debt ceiling?
-  const debtCeilingUsage: number = poolReserve.isIsolated
-    ? valueToBigNumber(poolReserve.isolationModeTotalDebt)
-        .dividedBy(poolReserve.debtCeiling)
-        .toNumber() * 100
-    : 0;
-  const debtCeilingReached = debtCeilingUsage !== Infinity && debtCeilingUsage >= 99.99;
-  const showDebtCeilingWarning = debtCeilingUsage >= 98 && debtCeilingUsage < 99.99;
+    borrowCap.percentUsed >= 98 && borrowCap.percentUsed < 99.99;
+  const showDebtCeilingWarning =
+    poolReserve.isIsolated && debtCeiling.percentUsed >= 98 && debtCeiling.percentUsed < 99.99;
 
   // error types handling
   let blockingError: ErrorType | undefined = undefined;
@@ -237,8 +228,8 @@ export const BorrowModalContent = ({
       {showBorrowCapWarning && <BorrowCapWarning />}
       {showDebtCeilingWarning && (
         <DebtCeilingWarning
-          debtCeilingUsage={debtCeilingUsage}
-          debtCeilingReached={debtCeilingReached}
+          debtCeilingUsage={debtCeiling.percentUsed}
+          debtCeilingReached={debtCeiling.isMaxed}
         />
       )}
 
