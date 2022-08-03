@@ -9,6 +9,7 @@ import {
 } from '@aave/contract-helpers';
 import { optimizedPath } from 'src/utils/utils';
 import { StateCreator } from 'zustand';
+import { produce } from 'immer';
 import { RootStore } from './root';
 
 // TODO: add chain/provider/account mapping
@@ -109,22 +110,18 @@ export const createPoolSlice: StateCreator<
               lendingPoolAddressProvider,
             })
             .then((reservesResponse) =>
-              set((state) => ({
-                reserves: {
-                  ...state.reserves,
-                  [currentChainId]: {
-                    ...state.reserves?.[currentChainId],
-                    [lendingPoolAddressProvider]: reservesResponse.reservesData,
-                  },
-                },
-                baseCurrencyData: {
-                  ...state.baseCurrencyData,
-                  [currentChainId]: {
-                    ...state.baseCurrencyData?.[currentChainId],
-                    [lendingPoolAddressProvider]: reservesResponse.baseCurrencyData,
-                  },
-                },
-              }))
+              set((state) =>
+                produce(state, (draft) => {
+                  if (draft.reserves) {
+                    draft.reserves[currentChainId][lendingPoolAddressProvider] =
+                      reservesResponse.reservesData;
+                  }
+                  if (draft.baseCurrencyData) {
+                    draft.baseCurrencyData[currentChainId][lendingPoolAddressProvider] =
+                      reservesResponse.baseCurrencyData;
+                  }
+                })
+              )
             )
         );
         if (account) {
