@@ -60,9 +60,9 @@ export const ListMobileItem = ({
                     {symbol}
                   </Typography>
                 </Box>
-                {supplyCap.isMaxed && supplyCap.determineTooltipDisplay({ supplyCap })}
-                {borrowCap.isMaxed && borrowCap.determineTooltipDisplay({ borrowCap })}
-                {debtCeiling.isMaxed && debtCeiling.determineTooltipDisplay({ debtCeiling })}
+                {supplyCap.determineTooltipDisplay({ supplyCap })}
+                {borrowCap.determineTooltipDisplay({ borrowCap })}
+                {debtCeiling.determineTooltipDisplay({ debtCeiling })}
               </Link>
             )
           )}

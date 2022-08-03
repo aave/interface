@@ -51,9 +51,9 @@ export const ListItemWrapper = ({
         </Link>
         {frozen && <FrozenWarning symbol={symbol} />}
         {!frozen && symbol === 'AMPL' && <AMPLWarning />}
-        {supplyCap.isMaxed && supplyCap.determineTooltipDisplay({ supplyCap })}
-        {borrowCap.isMaxed && borrowCap.determineTooltipDisplay({ borrowCap })}
-        {debtCeiling.isMaxed && debtCeiling.determineTooltipDisplay({ debtCeiling })}
+        {supplyCap.determineTooltipDisplay({ supplyCap })}
+        {borrowCap.determineTooltipDisplay({ borrowCap })}
+        {debtCeiling.determineTooltipDisplay({ debtCeiling })}
       </ListColumn>
       {children}
     </ListItem>

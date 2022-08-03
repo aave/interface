@@ -873,10 +873,7 @@ msgid "Language"
 msgstr "Language"
 
 #: src/components/infoTooltips/BorrowCapTooltip.tsx
-#: src/components/infoTooltips/BorrowCapTooltip.tsx
 #: src/components/infoTooltips/DebtCeilingTooltip.tsx
-#: src/components/infoTooltips/DebtCeilingTooltip.tsx
-#: src/components/infoTooltips/SupplyCapTooltip.tsx
 #: src/components/infoTooltips/SupplyCapTooltip.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/Warnings/BorrowCapWarning.tsx
