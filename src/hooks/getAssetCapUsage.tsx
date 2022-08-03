@@ -3,6 +3,9 @@ import { SupplyCapWarning } from 'src/components/transactions/Warnings/SupplyCap
 import { BorrowCapWarning } from 'src/components/transactions/Warnings/BorrowCapWarning';
 import { DebtCeilingWarning } from 'src/components/transactions/Warnings/DebtCeilingWarning';
 import { ComputedReserveData } from './app-data-provider/useAppDataProvider';
+import { SupplyCapTooltip } from 'src/components/infoTooltips/SupplyCapTooltip';
+import { BorrowCapTooltip } from 'src/components/infoTooltips/BorrowCapTooltip';
+import { DebtCeilingTooltip } from 'src/components/infoTooltips/DebtCeilingTooltip';
 
 type WarningDisplayProps = {
   supplyCap?: AssetCapData;
@@ -16,8 +19,9 @@ export type AssetCapData = {
   isMaxed: boolean;
 };
 
-type AssetCapHookData = AssetCapData & {
+export type AssetCapHookData = AssetCapData & {
   determineWarningDisplay: (props: WarningDisplayProps) => JSX.Element | null;
+  determineTooltipDisplay: (props: WarningDisplayProps) => JSX.Element | null;
 };
 
 export type AssetCapUsageData = {
@@ -82,21 +86,24 @@ const getAssetCapUsage = (asset: AssetLikeObject): AssetCapUsageData => {
       isMaxed: supplyCapReached,
       determineWarningDisplay: ({ supplyCap, icon }) =>
         supplyCap ? <SupplyCapWarning supplyCap={supplyCap} icon={icon} /> : null,
-      // displayTooltip: (data: AssetCapData, ...rest) => (
-      //   <SupplyCapTooltip supplyCap={data} {...rest} />
-      // ),
+      determineTooltipDisplay: ({ supplyCap }) =>
+        supplyCap ? <SupplyCapTooltip supplyCap={supplyCap} /> : null,
     },
     borrowCap: {
       percentUsed: borrowCapUsage,
       isMaxed: borrowCapReached,
       determineWarningDisplay: ({ borrowCap, icon }) =>
         borrowCap ? <BorrowCapWarning borrowCap={borrowCap} icon={icon} /> : null,
+      determineTooltipDisplay: ({ borrowCap }) =>
+        borrowCap ? <BorrowCapTooltip borrowCap={borrowCap} /> : null,
     },
     debtCeiling: {
       percentUsed: debtCeilingUsage,
       isMaxed: debtCeilingReached,
       determineWarningDisplay: ({ debtCeiling, icon }) =>
         debtCeiling ? <DebtCeilingWarning debtCeiling={debtCeiling} icon={icon} /> : null,
+      determineTooltipDisplay: ({ debtCeiling }) =>
+        debtCeiling ? <DebtCeilingTooltip debtCeiling={debtCeiling} /> : null,
     },
   };
 

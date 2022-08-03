@@ -5,14 +5,13 @@ import LinearProgress, {
 import { Box, Typography } from '@mui/material';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import type { Theme } from '@mui/material';
-import { DebtCeilingTooltip } from 'src/components/infoTooltips/DebtCeilingTooltip';
 import { Trans } from '@lingui/macro';
-import { AssetCapData } from 'src/hooks/getAssetCapUsage';
+import { AssetCapHookData } from 'src/hooks/getAssetCapUsage';
 
 type DebtCeilingTooltipProps = {
   debt: string;
   ceiling: string;
-  debtCeiling: AssetCapData;
+  debtCeiling: AssetCapHookData;
 };
 
 export const DebtCeilingStatus = ({
@@ -40,7 +39,7 @@ export const DebtCeilingStatus = ({
           <Typography color="text.secondary" component="span">
             <Trans>Debt Ceiling</Trans>
           </Typography>
-          <DebtCeilingTooltip debtCeiling={debtCeiling} />
+          {debtCeiling.determineTooltipDisplay({ debtCeiling })}
         </Box>
         <Box>
           <FormattedNumber

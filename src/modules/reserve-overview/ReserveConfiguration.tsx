@@ -200,9 +200,9 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
               title={
                 <Box display="flex" alignItems="center">
                   <Trans>Total supplied</Trans>
-                  {reserve.supplyCap && reserve.supplyCap !== '0' && (
-                    <SupplyCapTooltip supplyCap={supplyCap} />
-                  )}
+                  {reserve.supplyCap &&
+                    reserve.supplyCap !== '0' &&
+                    supplyCap.determineTooltipDisplay({ supplyCap })}
                 </Box>
               }
             >
@@ -399,9 +399,9 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                   title={
                     <Box display="flex" alignItems="center">
                       <Trans>Total borrowed</Trans>
-                      {reserve.borrowCap && reserve.borrowCap !== '0' && (
-                        <BorrowCapTooltip borrowCap={borrowCap} />
-                      )}
+                      {reserve.borrowCap &&
+                        reserve.borrowCap !== '0' &&
+                        borrowCap.determineTooltipDisplay({ borrowCap })}
                     </Box>
                   }
                 >

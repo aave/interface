@@ -9,9 +9,6 @@ import { Link, ROUTES } from '../../../components/primitives/Link';
 import { TokenIcon } from '../../../components/primitives/TokenIcon';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import getAssetCapUsage from 'src/hooks/getAssetCapUsage';
-import { SupplyCapTooltip } from 'src/components/infoTooltips/SupplyCapTooltip';
-import { BorrowCapTooltip } from 'src/components/infoTooltips/BorrowCapTooltip';
-import { DebtCeilingTooltip } from 'src/components/infoTooltips/DebtCeilingTooltip';
 
 interface ListItemWrapperProps {
   symbol: string;
@@ -52,11 +49,11 @@ export const ListItemWrapper = ({
             </Typography>
           </Tooltip>
         </Link>
-        {supplyCap.isMaxed && <SupplyCapTooltip supplyCap={supplyCap} />}
-        {borrowCap.isMaxed && <BorrowCapTooltip borrowCap={borrowCap} />}
-        {debtCeiling.isMaxed && <DebtCeilingTooltip debtCeiling={debtCeiling} />}
         {frozen && <FrozenWarning symbol={symbol} />}
         {!frozen && symbol === 'AMPL' && <AMPLWarning />}
+        {supplyCap.isMaxed && supplyCap.determineTooltipDisplay({ supplyCap })}
+        {borrowCap.isMaxed && borrowCap.determineTooltipDisplay({ borrowCap })}
+        {debtCeiling.isMaxed && debtCeiling.determineTooltipDisplay({ debtCeiling })}
       </ListColumn>
       {children}
     </ListItem>

@@ -5,9 +5,6 @@ import { Link, ROUTES } from '../primitives/Link';
 import { TokenIcon } from '../primitives/TokenIcon';
 import getAssetCapUsage from 'src/hooks/getAssetCapUsage';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { SupplyCapTooltip } from '../infoTooltips/SupplyCapTooltip';
-import { BorrowCapTooltip } from '../infoTooltips/BorrowCapTooltip';
-import { DebtCeilingTooltip } from '../infoTooltips/DebtCeilingTooltip';
 
 interface ListMobileItemProps {
   warningComponent?: ReactNode;
@@ -63,9 +60,9 @@ export const ListMobileItem = ({
                     {symbol}
                   </Typography>
                 </Box>
-                {supplyCap.isMaxed && <SupplyCapTooltip supplyCap={supplyCap} />}
-                {borrowCap.isMaxed && <BorrowCapTooltip borrowCap={borrowCap} />}
-                {debtCeiling.isMaxed && <DebtCeilingTooltip debtCeiling={debtCeiling} />}
+                {supplyCap.isMaxed && supplyCap.determineTooltipDisplay({ supplyCap })}
+                {borrowCap.isMaxed && borrowCap.determineTooltipDisplay({ borrowCap })}
+                {debtCeiling.isMaxed && debtCeiling.determineTooltipDisplay({ debtCeiling })}
               </Link>
             )
           )}

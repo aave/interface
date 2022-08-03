@@ -129,7 +129,6 @@ export const ReserveActions = ({ reserve, underlyingAsset }: ReserveActionsProps
     underlyingAsset
   ).toString();
 
-  console.log({ maxAmountToSupply, maxAmountToBorrow });
   const isolationModeBorrowDisabled = user?.isInIsolationMode && !poolReserve.borrowableInIsolation;
   const eModeBorrowDisabled =
     user?.isInEmode && poolReserve.eModeCategoryId !== user.userEmodeCategoryId;
