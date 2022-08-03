@@ -36,10 +36,8 @@ export const SupplyAssetsListItem = ({
   const { openSupply } = useModalContext();
 
   // Hide the asset to prevent it from being supplied if supply cap has been reached
-  const {
-    supplyCap: { isMaxed },
-  } = getAssetCapUsage(reserve);
-  if (isMaxed) return null;
+  const { supplyCap: supplyCapUsage } = getAssetCapUsage(reserve);
+  if (supplyCapUsage.isMaxed) return null;
 
   return (
     <ListItemWrapper

@@ -3,7 +3,6 @@ import { Button } from '@mui/material';
 import getAssetCapUsage from 'src/hooks/getAssetCapUsage';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
@@ -34,10 +33,8 @@ export const BorrowAssetsListItem = ({
   const borrowButtonDisable = isFreezed || Number(availableBorrows) <= 0;
 
   // Hide the asset to prevent it from being borrowed if borrow cap has been reached
-  const {
-    borrowCap: { isMaxed },
-  } = getAssetCapUsage(reserve);
-  if (isMaxed) return null;
+  const { borrowCap: borrowCapUsage } = getAssetCapUsage(reserve);
+  if (borrowCapUsage.isMaxed) return null;
 
   return (
     <ListItemWrapper

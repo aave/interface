@@ -66,28 +66,6 @@ export const ReserveActions = ({ reserve, underlyingAsset }: ReserveActionsProps
   const { bridge, name: networkName } = currentNetworkConfig;
   const { supplyCap, borrowCap, debtCeiling } = getAssetCapUsage(reserve);
 
-  const poolReserve = reserves.find(
-    (reserve) => reserve.underlyingAsset === underlyingAsset
-  ) as ComputedReserveData;
-
-  const balance = walletBalances[underlyingAsset];
-  const canBorrow = assetCanBeBorrowedByUser(poolReserve, user);
-  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(
-    poolReserve,
-    user,
-    InterestRate.Variable
-  ).toString();
-  const maxAmountToSupply = getMaxAmountAvailableToSupply(
-    balance.amount,
-    poolReserve,
-    underlyingAsset
-  ).toString();
-
-  console.log({ maxAmountToSupply, maxAmountToBorrow });
-  const isolationModeBorrowDisabled = user?.isInIsolationMode && !poolReserve.borrowableInIsolation;
-  const eModeBorrowDisabled =
-    user?.isInEmode && poolReserve.eModeCategoryId !== user.userEmodeCategoryId;
-
   if (!currentAccount && !isPermissionsLoading)
     return (
       <Paper sx={{ pt: 4, pb: { xs: 4, xsm: 6 }, px: { xs: 4, xsm: 6 } }}>
@@ -133,6 +111,28 @@ export const ReserveActions = ({ reserve, underlyingAsset }: ReserveActionsProps
         </Stack>
       </PaperWrapper>
     );
+
+  const poolReserve = reserves.find(
+    (reserve) => reserve.underlyingAsset === underlyingAsset
+  ) as ComputedReserveData;
+
+  const balance = walletBalances[underlyingAsset];
+  const canBorrow = assetCanBeBorrowedByUser(poolReserve, user);
+  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(
+    poolReserve,
+    user,
+    InterestRate.Variable
+  ).toString();
+  const maxAmountToSupply = getMaxAmountAvailableToSupply(
+    balance.amount,
+    poolReserve,
+    underlyingAsset
+  ).toString();
+
+  console.log({ maxAmountToSupply, maxAmountToBorrow });
+  const isolationModeBorrowDisabled = user?.isInIsolationMode && !poolReserve.borrowableInIsolation;
+  const eModeBorrowDisabled =
+    user?.isInEmode && poolReserve.eModeCategoryId !== user.userEmodeCategoryId;
 
   // Remove all supply/borrow elements and display warning message instead for frozen reserves
   if (poolReserve.isFrozen) {

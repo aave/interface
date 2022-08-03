@@ -14,13 +14,16 @@ type WarningDisplayProps = {
 export type AssetCapData = {
   percentUsed: number;
   isMaxed: boolean;
+};
+
+type AssetCapHookData = AssetCapData & {
   determineWarningDisplay: (props: WarningDisplayProps) => JSX.Element | null;
 };
 
 export type AssetCapUsageData = {
-  supplyCap: AssetCapData;
-  borrowCap: AssetCapData;
-  debtCeiling: AssetCapData;
+  supplyCap: AssetCapHookData;
+  borrowCap: AssetCapHookData;
+  debtCeiling: AssetCapHookData;
 };
 
 type AssetLikeObject =

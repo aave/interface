@@ -35,10 +35,8 @@ export const BorrowAssetsListMobileItem = ({
   const borrowButtonDisable = isFreezed || Number(availableBorrows) <= 0;
 
   // Hide the asset to prevent it from being borrowed if borrow cap has been reached
-  const {
-    borrowCap: { isMaxed },
-  } = getAssetCapUsage(reserve);
-  if (isMaxed) return null;
+  const { borrowCap: borrowCapUsage } = getAssetCapUsage(reserve);
+  if (borrowCapUsage.isMaxed) return null;
 
   return (
     <ListMobileItemWrapper
