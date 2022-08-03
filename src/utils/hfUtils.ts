@@ -124,9 +124,11 @@ export const calculateHFAfterRepay = ({
   )
     .multipliedBy(toAssetData.priceInUSD)
     .toString(10);
-  const debtLeftInMarketReference = valueToBigNumber(user.totalBorrowsUSD).minus(
+  let debtLeftInMarketReference = valueToBigNumber(user.totalBorrowsUSD).minus(
     fromAmountInMarketReferenceCurrency
   );
+
+  debtLeftInMarketReference = BigNumber.max(debtLeftInMarketReference, valueToBigNumber('0'));
 
   const hfAfterRepayBeforeWithdraw = calculateHealthFactorFromBalancesBigUnits({
     collateralBalanceMarketReferenceCurrency: user.totalCollateralUSD,

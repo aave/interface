@@ -9,7 +9,6 @@ var __getOwnPropSymbols = Object.getOwnPropertySymbols;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __propIsEnum = Object.prototype.propertyIsEnumerable;
-var __pow = Math.pow;
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __spreadValues = (a, b) => {
   for (var prop in b || (b = {}))
@@ -26682,10 +26681,10 @@ var require_node_gyp_build = __commonJS({
     function compareTuples(a, b) {
       return a.architectures.length - b.architectures.length;
     }
-    function parseTags(file4) {
-      var arr = file4.split(".");
+    function parseTags(file3) {
+      var arr = file3.split(".");
       var extension = arr.pop();
-      var tags = { file: file4, specificity: 0 };
+      var tags = { file: file3, specificity: 0 };
       if (extension !== "node")
         return;
       for (var i = 0; i < arr.length; i++) {
@@ -52057,7 +52056,7 @@ var require_lodash = __commonJS({
         var realNames = {};
         var dataViewCtorString = toSource(DataView), mapCtorString = toSource(Map2), promiseCtorString = toSource(Promise2), setCtorString = toSource(Set2), weakMapCtorString = toSource(WeakMap2);
         var symbolProto = Symbol2 ? Symbol2.prototype : undefined2, symbolValueOf = symbolProto ? symbolProto.valueOf : undefined2, symbolToString = symbolProto ? symbolProto.toString : undefined2;
-        function lodash4(value) {
+        function lodash3(value) {
           if (isObjectLike(value) && !isArray(value) && !(value instanceof LazyWrapper)) {
             if (value instanceof LodashWrapper) {
               return value;
@@ -52093,17 +52092,17 @@ var require_lodash = __commonJS({
           this.__index__ = 0;
           this.__values__ = undefined2;
         }
-        lodash4.templateSettings = {
+        lodash3.templateSettings = {
           "escape": reEscape,
           "evaluate": reEvaluate,
           "interpolate": reInterpolate,
           "variable": "",
           "imports": {
-            "_": lodash4
+            "_": lodash3
           }
         };
-        lodash4.prototype = baseLodash.prototype;
-        lodash4.prototype.constructor = lodash4;
+        lodash3.prototype = baseLodash.prototype;
+        lodash3.prototype.constructor = lodash3;
         LodashWrapper.prototype = baseCreate(baseLodash.prototype);
         LodashWrapper.prototype.constructor = LodashWrapper;
         function LazyWrapper(value) {
@@ -54010,11 +54009,11 @@ var require_lodash = __commonJS({
           return result2;
         }
         function getHolder(func) {
-          var object = hasOwnProperty.call(lodash4, "placeholder") ? lodash4 : func;
+          var object = hasOwnProperty.call(lodash3, "placeholder") ? lodash3 : func;
           return object.placeholder;
         }
         function getIteratee() {
-          var result2 = lodash4.iteratee || iteratee;
+          var result2 = lodash3.iteratee || iteratee;
           result2 = result2 === iteratee ? baseIteratee : result2;
           return arguments.length ? result2(arguments[0], arguments[1]) : result2;
         }
@@ -54217,7 +54216,7 @@ var require_lodash = __commonJS({
           return type == "string" || type == "number" || type == "symbol" || type == "boolean" ? value !== "__proto__" : value === null;
         }
         function isLaziable(func) {
-          var funcName = getFuncName(func), other = lodash4[funcName];
+          var funcName = getFuncName(func), other = lodash3[funcName];
           if (typeof other != "function" || !(funcName in LazyWrapper.prototype)) {
             return false;
           }
@@ -54598,7 +54597,7 @@ var require_lodash = __commonJS({
           }
           return mapped.length && mapped[0] === arrays[0] ? baseIntersection(mapped, undefined2, comparator) : [];
         });
-        function join4(array, separator) {
+        function join3(array, separator) {
           return array == null ? "" : nativeJoin.call(array, separator);
         }
         function last(array) {
@@ -54818,7 +54817,7 @@ var require_lodash = __commonJS({
           return unzipWith(arrays, iteratee2);
         });
         function chain(value) {
-          var result2 = lodash4(value);
+          var result2 = lodash3(value);
           result2.__chain__ = true;
           return result2;
         }
@@ -55934,7 +55933,7 @@ var require_lodash = __commonJS({
           return string.slice(position, position + target.length) == target;
         }
         function template(string, options2, guard) {
-          var settings = lodash4.templateSettings;
+          var settings = lodash3.templateSettings;
           if (guard && isIterateeCall(string, options2, guard)) {
             options2 = undefined2;
           }
@@ -56283,324 +56282,324 @@ var require_lodash = __commonJS({
         function sumBy(array, iteratee2) {
           return array && array.length ? baseSum(array, getIteratee(iteratee2, 2)) : 0;
         }
-        lodash4.after = after;
-        lodash4.ary = ary;
-        lodash4.assign = assign;
-        lodash4.assignIn = assignIn;
-        lodash4.assignInWith = assignInWith;
-        lodash4.assignWith = assignWith;
-        lodash4.at = at;
-        lodash4.before = before;
-        lodash4.bind = bind;
-        lodash4.bindAll = bindAll;
-        lodash4.bindKey = bindKey;
-        lodash4.castArray = castArray;
-        lodash4.chain = chain;
-        lodash4.chunk = chunk;
-        lodash4.compact = compact;
-        lodash4.concat = concat;
-        lodash4.cond = cond;
-        lodash4.conforms = conforms;
-        lodash4.constant = constant;
-        lodash4.countBy = countBy;
-        lodash4.create = create;
-        lodash4.curry = curry;
-        lodash4.curryRight = curryRight;
-        lodash4.debounce = debounce;
-        lodash4.defaults = defaults;
-        lodash4.defaultsDeep = defaultsDeep;
-        lodash4.defer = defer;
-        lodash4.delay = delay;
-        lodash4.difference = difference;
-        lodash4.differenceBy = differenceBy;
-        lodash4.differenceWith = differenceWith;
-        lodash4.drop = drop;
-        lodash4.dropRight = dropRight;
-        lodash4.dropRightWhile = dropRightWhile;
-        lodash4.dropWhile = dropWhile;
-        lodash4.fill = fill;
-        lodash4.filter = filter;
-        lodash4.flatMap = flatMap;
-        lodash4.flatMapDeep = flatMapDeep;
-        lodash4.flatMapDepth = flatMapDepth;
-        lodash4.flatten = flatten;
-        lodash4.flattenDeep = flattenDeep;
-        lodash4.flattenDepth = flattenDepth;
-        lodash4.flip = flip;
-        lodash4.flow = flow;
-        lodash4.flowRight = flowRight;
-        lodash4.fromPairs = fromPairs;
-        lodash4.functions = functions;
-        lodash4.functionsIn = functionsIn;
-        lodash4.groupBy = groupBy;
-        lodash4.initial = initial;
-        lodash4.intersection = intersection;
-        lodash4.intersectionBy = intersectionBy;
-        lodash4.intersectionWith = intersectionWith;
-        lodash4.invert = invert;
-        lodash4.invertBy = invertBy;
-        lodash4.invokeMap = invokeMap;
-        lodash4.iteratee = iteratee;
-        lodash4.keyBy = keyBy;
-        lodash4.keys = keys;
-        lodash4.keysIn = keysIn;
-        lodash4.map = map;
-        lodash4.mapKeys = mapKeys;
-        lodash4.mapValues = mapValues;
-        lodash4.matches = matches;
-        lodash4.matchesProperty = matchesProperty;
-        lodash4.memoize = memoize;
-        lodash4.merge = merge;
-        lodash4.mergeWith = mergeWith;
-        lodash4.method = method;
-        lodash4.methodOf = methodOf;
-        lodash4.mixin = mixin;
-        lodash4.negate = negate;
-        lodash4.nthArg = nthArg;
-        lodash4.omit = omit;
-        lodash4.omitBy = omitBy;
-        lodash4.once = once;
-        lodash4.orderBy = orderBy;
-        lodash4.over = over;
-        lodash4.overArgs = overArgs;
-        lodash4.overEvery = overEvery;
-        lodash4.overSome = overSome;
-        lodash4.partial = partial;
-        lodash4.partialRight = partialRight;
-        lodash4.partition = partition;
-        lodash4.pick = pick;
-        lodash4.pickBy = pickBy;
-        lodash4.property = property;
-        lodash4.propertyOf = propertyOf;
-        lodash4.pull = pull;
-        lodash4.pullAll = pullAll;
-        lodash4.pullAllBy = pullAllBy;
-        lodash4.pullAllWith = pullAllWith;
-        lodash4.pullAt = pullAt;
-        lodash4.range = range;
-        lodash4.rangeRight = rangeRight;
-        lodash4.rearg = rearg;
-        lodash4.reject = reject;
-        lodash4.remove = remove;
-        lodash4.rest = rest;
-        lodash4.reverse = reverse;
-        lodash4.sampleSize = sampleSize;
-        lodash4.set = set;
-        lodash4.setWith = setWith;
-        lodash4.shuffle = shuffle;
-        lodash4.slice = slice;
-        lodash4.sortBy = sortBy;
-        lodash4.sortedUniq = sortedUniq;
-        lodash4.sortedUniqBy = sortedUniqBy;
-        lodash4.split = split;
-        lodash4.spread = spread;
-        lodash4.tail = tail;
-        lodash4.take = take;
-        lodash4.takeRight = takeRight;
-        lodash4.takeRightWhile = takeRightWhile;
-        lodash4.takeWhile = takeWhile;
-        lodash4.tap = tap;
-        lodash4.throttle = throttle;
-        lodash4.thru = thru;
-        lodash4.toArray = toArray;
-        lodash4.toPairs = toPairs;
-        lodash4.toPairsIn = toPairsIn;
-        lodash4.toPath = toPath;
-        lodash4.toPlainObject = toPlainObject;
-        lodash4.transform = transform;
-        lodash4.unary = unary;
-        lodash4.union = union;
-        lodash4.unionBy = unionBy;
-        lodash4.unionWith = unionWith;
-        lodash4.uniq = uniq;
-        lodash4.uniqBy = uniqBy;
-        lodash4.uniqWith = uniqWith;
-        lodash4.unset = unset;
-        lodash4.unzip = unzip;
-        lodash4.unzipWith = unzipWith;
-        lodash4.update = update;
-        lodash4.updateWith = updateWith;
-        lodash4.values = values;
-        lodash4.valuesIn = valuesIn;
-        lodash4.without = without;
-        lodash4.words = words;
-        lodash4.wrap = wrap2;
-        lodash4.xor = xor;
-        lodash4.xorBy = xorBy;
-        lodash4.xorWith = xorWith;
-        lodash4.zip = zip;
-        lodash4.zipObject = zipObject;
-        lodash4.zipObjectDeep = zipObjectDeep;
-        lodash4.zipWith = zipWith;
-        lodash4.entries = toPairs;
-        lodash4.entriesIn = toPairsIn;
-        lodash4.extend = assignIn;
-        lodash4.extendWith = assignInWith;
-        mixin(lodash4, lodash4);
-        lodash4.add = add;
-        lodash4.attempt = attempt;
-        lodash4.camelCase = camelCase;
-        lodash4.capitalize = capitalize;
-        lodash4.ceil = ceil;
-        lodash4.clamp = clamp;
-        lodash4.clone = clone;
-        lodash4.cloneDeep = cloneDeep;
-        lodash4.cloneDeepWith = cloneDeepWith;
-        lodash4.cloneWith = cloneWith;
-        lodash4.conformsTo = conformsTo;
-        lodash4.deburr = deburr;
-        lodash4.defaultTo = defaultTo;
-        lodash4.divide = divide;
-        lodash4.endsWith = endsWith;
-        lodash4.eq = eq;
-        lodash4.escape = escape;
-        lodash4.escapeRegExp = escapeRegExp;
-        lodash4.every = every;
-        lodash4.find = find;
-        lodash4.findIndex = findIndex;
-        lodash4.findKey = findKey;
-        lodash4.findLast = findLast;
-        lodash4.findLastIndex = findLastIndex;
-        lodash4.findLastKey = findLastKey;
-        lodash4.floor = floor;
-        lodash4.forEach = forEach;
-        lodash4.forEachRight = forEachRight;
-        lodash4.forIn = forIn;
-        lodash4.forInRight = forInRight;
-        lodash4.forOwn = forOwn;
-        lodash4.forOwnRight = forOwnRight;
-        lodash4.get = get;
-        lodash4.gt = gt;
-        lodash4.gte = gte;
-        lodash4.has = has;
-        lodash4.hasIn = hasIn;
-        lodash4.head = head;
-        lodash4.identity = identity;
-        lodash4.includes = includes;
-        lodash4.indexOf = indexOf;
-        lodash4.inRange = inRange;
-        lodash4.invoke = invoke;
-        lodash4.isArguments = isArguments;
-        lodash4.isArray = isArray;
-        lodash4.isArrayBuffer = isArrayBuffer;
-        lodash4.isArrayLike = isArrayLike;
-        lodash4.isArrayLikeObject = isArrayLikeObject;
-        lodash4.isBoolean = isBoolean;
-        lodash4.isBuffer = isBuffer;
-        lodash4.isDate = isDate;
-        lodash4.isElement = isElement;
-        lodash4.isEmpty = isEmpty;
-        lodash4.isEqual = isEqual;
-        lodash4.isEqualWith = isEqualWith;
-        lodash4.isError = isError;
-        lodash4.isFinite = isFinite;
-        lodash4.isFunction = isFunction;
-        lodash4.isInteger = isInteger;
-        lodash4.isLength = isLength;
-        lodash4.isMap = isMap;
-        lodash4.isMatch = isMatch;
-        lodash4.isMatchWith = isMatchWith;
-        lodash4.isNaN = isNaN2;
-        lodash4.isNative = isNative;
-        lodash4.isNil = isNil;
-        lodash4.isNull = isNull;
-        lodash4.isNumber = isNumber;
-        lodash4.isObject = isObject;
-        lodash4.isObjectLike = isObjectLike;
-        lodash4.isPlainObject = isPlainObject;
-        lodash4.isRegExp = isRegExp;
-        lodash4.isSafeInteger = isSafeInteger;
-        lodash4.isSet = isSet;
-        lodash4.isString = isString;
-        lodash4.isSymbol = isSymbol;
-        lodash4.isTypedArray = isTypedArray;
-        lodash4.isUndefined = isUndefined;
-        lodash4.isWeakMap = isWeakMap;
-        lodash4.isWeakSet = isWeakSet;
-        lodash4.join = join4;
-        lodash4.kebabCase = kebabCase;
-        lodash4.last = last;
-        lodash4.lastIndexOf = lastIndexOf;
-        lodash4.lowerCase = lowerCase;
-        lodash4.lowerFirst = lowerFirst;
-        lodash4.lt = lt;
-        lodash4.lte = lte;
-        lodash4.max = max;
-        lodash4.maxBy = maxBy;
-        lodash4.mean = mean;
-        lodash4.meanBy = meanBy;
-        lodash4.min = min;
-        lodash4.minBy = minBy;
-        lodash4.stubArray = stubArray;
-        lodash4.stubFalse = stubFalse;
-        lodash4.stubObject = stubObject;
-        lodash4.stubString = stubString;
-        lodash4.stubTrue = stubTrue;
-        lodash4.multiply = multiply;
-        lodash4.nth = nth;
-        lodash4.noConflict = noConflict;
-        lodash4.noop = noop;
-        lodash4.now = now;
-        lodash4.pad = pad;
-        lodash4.padEnd = padEnd;
-        lodash4.padStart = padStart;
-        lodash4.parseInt = parseInt2;
-        lodash4.random = random;
-        lodash4.reduce = reduce;
-        lodash4.reduceRight = reduceRight;
-        lodash4.repeat = repeat;
-        lodash4.replace = replace;
-        lodash4.result = result;
-        lodash4.round = round;
-        lodash4.runInContext = runInContext2;
-        lodash4.sample = sample;
-        lodash4.size = size;
-        lodash4.snakeCase = snakeCase;
-        lodash4.some = some;
-        lodash4.sortedIndex = sortedIndex;
-        lodash4.sortedIndexBy = sortedIndexBy;
-        lodash4.sortedIndexOf = sortedIndexOf;
-        lodash4.sortedLastIndex = sortedLastIndex;
-        lodash4.sortedLastIndexBy = sortedLastIndexBy;
-        lodash4.sortedLastIndexOf = sortedLastIndexOf;
-        lodash4.startCase = startCase;
-        lodash4.startsWith = startsWith;
-        lodash4.subtract = subtract;
-        lodash4.sum = sum;
-        lodash4.sumBy = sumBy;
-        lodash4.template = template;
-        lodash4.times = times;
-        lodash4.toFinite = toFinite;
-        lodash4.toInteger = toInteger;
-        lodash4.toLength = toLength;
-        lodash4.toLower = toLower;
-        lodash4.toNumber = toNumber;
-        lodash4.toSafeInteger = toSafeInteger;
-        lodash4.toString = toString;
-        lodash4.toUpper = toUpper;
-        lodash4.trim = trim;
-        lodash4.trimEnd = trimEnd;
-        lodash4.trimStart = trimStart;
-        lodash4.truncate = truncate;
-        lodash4.unescape = unescape;
-        lodash4.uniqueId = uniqueId;
-        lodash4.upperCase = upperCase;
-        lodash4.upperFirst = upperFirst;
-        lodash4.each = forEach;
-        lodash4.eachRight = forEachRight;
-        lodash4.first = head;
-        mixin(lodash4, function() {
+        lodash3.after = after;
+        lodash3.ary = ary;
+        lodash3.assign = assign;
+        lodash3.assignIn = assignIn;
+        lodash3.assignInWith = assignInWith;
+        lodash3.assignWith = assignWith;
+        lodash3.at = at;
+        lodash3.before = before;
+        lodash3.bind = bind;
+        lodash3.bindAll = bindAll;
+        lodash3.bindKey = bindKey;
+        lodash3.castArray = castArray;
+        lodash3.chain = chain;
+        lodash3.chunk = chunk;
+        lodash3.compact = compact;
+        lodash3.concat = concat;
+        lodash3.cond = cond;
+        lodash3.conforms = conforms;
+        lodash3.constant = constant;
+        lodash3.countBy = countBy;
+        lodash3.create = create;
+        lodash3.curry = curry;
+        lodash3.curryRight = curryRight;
+        lodash3.debounce = debounce;
+        lodash3.defaults = defaults;
+        lodash3.defaultsDeep = defaultsDeep;
+        lodash3.defer = defer;
+        lodash3.delay = delay;
+        lodash3.difference = difference;
+        lodash3.differenceBy = differenceBy;
+        lodash3.differenceWith = differenceWith;
+        lodash3.drop = drop;
+        lodash3.dropRight = dropRight;
+        lodash3.dropRightWhile = dropRightWhile;
+        lodash3.dropWhile = dropWhile;
+        lodash3.fill = fill;
+        lodash3.filter = filter;
+        lodash3.flatMap = flatMap;
+        lodash3.flatMapDeep = flatMapDeep;
+        lodash3.flatMapDepth = flatMapDepth;
+        lodash3.flatten = flatten;
+        lodash3.flattenDeep = flattenDeep;
+        lodash3.flattenDepth = flattenDepth;
+        lodash3.flip = flip;
+        lodash3.flow = flow;
+        lodash3.flowRight = flowRight;
+        lodash3.fromPairs = fromPairs;
+        lodash3.functions = functions;
+        lodash3.functionsIn = functionsIn;
+        lodash3.groupBy = groupBy;
+        lodash3.initial = initial;
+        lodash3.intersection = intersection;
+        lodash3.intersectionBy = intersectionBy;
+        lodash3.intersectionWith = intersectionWith;
+        lodash3.invert = invert;
+        lodash3.invertBy = invertBy;
+        lodash3.invokeMap = invokeMap;
+        lodash3.iteratee = iteratee;
+        lodash3.keyBy = keyBy;
+        lodash3.keys = keys;
+        lodash3.keysIn = keysIn;
+        lodash3.map = map;
+        lodash3.mapKeys = mapKeys;
+        lodash3.mapValues = mapValues;
+        lodash3.matches = matches;
+        lodash3.matchesProperty = matchesProperty;
+        lodash3.memoize = memoize;
+        lodash3.merge = merge;
+        lodash3.mergeWith = mergeWith;
+        lodash3.method = method;
+        lodash3.methodOf = methodOf;
+        lodash3.mixin = mixin;
+        lodash3.negate = negate;
+        lodash3.nthArg = nthArg;
+        lodash3.omit = omit;
+        lodash3.omitBy = omitBy;
+        lodash3.once = once;
+        lodash3.orderBy = orderBy;
+        lodash3.over = over;
+        lodash3.overArgs = overArgs;
+        lodash3.overEvery = overEvery;
+        lodash3.overSome = overSome;
+        lodash3.partial = partial;
+        lodash3.partialRight = partialRight;
+        lodash3.partition = partition;
+        lodash3.pick = pick;
+        lodash3.pickBy = pickBy;
+        lodash3.property = property;
+        lodash3.propertyOf = propertyOf;
+        lodash3.pull = pull;
+        lodash3.pullAll = pullAll;
+        lodash3.pullAllBy = pullAllBy;
+        lodash3.pullAllWith = pullAllWith;
+        lodash3.pullAt = pullAt;
+        lodash3.range = range;
+        lodash3.rangeRight = rangeRight;
+        lodash3.rearg = rearg;
+        lodash3.reject = reject;
+        lodash3.remove = remove;
+        lodash3.rest = rest;
+        lodash3.reverse = reverse;
+        lodash3.sampleSize = sampleSize;
+        lodash3.set = set;
+        lodash3.setWith = setWith;
+        lodash3.shuffle = shuffle;
+        lodash3.slice = slice;
+        lodash3.sortBy = sortBy;
+        lodash3.sortedUniq = sortedUniq;
+        lodash3.sortedUniqBy = sortedUniqBy;
+        lodash3.split = split;
+        lodash3.spread = spread;
+        lodash3.tail = tail;
+        lodash3.take = take;
+        lodash3.takeRight = takeRight;
+        lodash3.takeRightWhile = takeRightWhile;
+        lodash3.takeWhile = takeWhile;
+        lodash3.tap = tap;
+        lodash3.throttle = throttle;
+        lodash3.thru = thru;
+        lodash3.toArray = toArray;
+        lodash3.toPairs = toPairs;
+        lodash3.toPairsIn = toPairsIn;
+        lodash3.toPath = toPath;
+        lodash3.toPlainObject = toPlainObject;
+        lodash3.transform = transform;
+        lodash3.unary = unary;
+        lodash3.union = union;
+        lodash3.unionBy = unionBy;
+        lodash3.unionWith = unionWith;
+        lodash3.uniq = uniq;
+        lodash3.uniqBy = uniqBy;
+        lodash3.uniqWith = uniqWith;
+        lodash3.unset = unset;
+        lodash3.unzip = unzip;
+        lodash3.unzipWith = unzipWith;
+        lodash3.update = update;
+        lodash3.updateWith = updateWith;
+        lodash3.values = values;
+        lodash3.valuesIn = valuesIn;
+        lodash3.without = without;
+        lodash3.words = words;
+        lodash3.wrap = wrap2;
+        lodash3.xor = xor;
+        lodash3.xorBy = xorBy;
+        lodash3.xorWith = xorWith;
+        lodash3.zip = zip;
+        lodash3.zipObject = zipObject;
+        lodash3.zipObjectDeep = zipObjectDeep;
+        lodash3.zipWith = zipWith;
+        lodash3.entries = toPairs;
+        lodash3.entriesIn = toPairsIn;
+        lodash3.extend = assignIn;
+        lodash3.extendWith = assignInWith;
+        mixin(lodash3, lodash3);
+        lodash3.add = add;
+        lodash3.attempt = attempt;
+        lodash3.camelCase = camelCase;
+        lodash3.capitalize = capitalize;
+        lodash3.ceil = ceil;
+        lodash3.clamp = clamp;
+        lodash3.clone = clone;
+        lodash3.cloneDeep = cloneDeep;
+        lodash3.cloneDeepWith = cloneDeepWith;
+        lodash3.cloneWith = cloneWith;
+        lodash3.conformsTo = conformsTo;
+        lodash3.deburr = deburr;
+        lodash3.defaultTo = defaultTo;
+        lodash3.divide = divide;
+        lodash3.endsWith = endsWith;
+        lodash3.eq = eq;
+        lodash3.escape = escape;
+        lodash3.escapeRegExp = escapeRegExp;
+        lodash3.every = every;
+        lodash3.find = find;
+        lodash3.findIndex = findIndex;
+        lodash3.findKey = findKey;
+        lodash3.findLast = findLast;
+        lodash3.findLastIndex = findLastIndex;
+        lodash3.findLastKey = findLastKey;
+        lodash3.floor = floor;
+        lodash3.forEach = forEach;
+        lodash3.forEachRight = forEachRight;
+        lodash3.forIn = forIn;
+        lodash3.forInRight = forInRight;
+        lodash3.forOwn = forOwn;
+        lodash3.forOwnRight = forOwnRight;
+        lodash3.get = get;
+        lodash3.gt = gt;
+        lodash3.gte = gte;
+        lodash3.has = has;
+        lodash3.hasIn = hasIn;
+        lodash3.head = head;
+        lodash3.identity = identity;
+        lodash3.includes = includes;
+        lodash3.indexOf = indexOf;
+        lodash3.inRange = inRange;
+        lodash3.invoke = invoke;
+        lodash3.isArguments = isArguments;
+        lodash3.isArray = isArray;
+        lodash3.isArrayBuffer = isArrayBuffer;
+        lodash3.isArrayLike = isArrayLike;
+        lodash3.isArrayLikeObject = isArrayLikeObject;
+        lodash3.isBoolean = isBoolean;
+        lodash3.isBuffer = isBuffer;
+        lodash3.isDate = isDate;
+        lodash3.isElement = isElement;
+        lodash3.isEmpty = isEmpty;
+        lodash3.isEqual = isEqual;
+        lodash3.isEqualWith = isEqualWith;
+        lodash3.isError = isError;
+        lodash3.isFinite = isFinite;
+        lodash3.isFunction = isFunction;
+        lodash3.isInteger = isInteger;
+        lodash3.isLength = isLength;
+        lodash3.isMap = isMap;
+        lodash3.isMatch = isMatch;
+        lodash3.isMatchWith = isMatchWith;
+        lodash3.isNaN = isNaN2;
+        lodash3.isNative = isNative;
+        lodash3.isNil = isNil;
+        lodash3.isNull = isNull;
+        lodash3.isNumber = isNumber;
+        lodash3.isObject = isObject;
+        lodash3.isObjectLike = isObjectLike;
+        lodash3.isPlainObject = isPlainObject;
+        lodash3.isRegExp = isRegExp;
+        lodash3.isSafeInteger = isSafeInteger;
+        lodash3.isSet = isSet;
+        lodash3.isString = isString;
+        lodash3.isSymbol = isSymbol;
+        lodash3.isTypedArray = isTypedArray;
+        lodash3.isUndefined = isUndefined;
+        lodash3.isWeakMap = isWeakMap;
+        lodash3.isWeakSet = isWeakSet;
+        lodash3.join = join3;
+        lodash3.kebabCase = kebabCase;
+        lodash3.last = last;
+        lodash3.lastIndexOf = lastIndexOf;
+        lodash3.lowerCase = lowerCase;
+        lodash3.lowerFirst = lowerFirst;
+        lodash3.lt = lt;
+        lodash3.lte = lte;
+        lodash3.max = max;
+        lodash3.maxBy = maxBy;
+        lodash3.mean = mean;
+        lodash3.meanBy = meanBy;
+        lodash3.min = min;
+        lodash3.minBy = minBy;
+        lodash3.stubArray = stubArray;
+        lodash3.stubFalse = stubFalse;
+        lodash3.stubObject = stubObject;
+        lodash3.stubString = stubString;
+        lodash3.stubTrue = stubTrue;
+        lodash3.multiply = multiply;
+        lodash3.nth = nth;
+        lodash3.noConflict = noConflict;
+        lodash3.noop = noop;
+        lodash3.now = now;
+        lodash3.pad = pad;
+        lodash3.padEnd = padEnd;
+        lodash3.padStart = padStart;
+        lodash3.parseInt = parseInt2;
+        lodash3.random = random;
+        lodash3.reduce = reduce;
+        lodash3.reduceRight = reduceRight;
+        lodash3.repeat = repeat;
+        lodash3.replace = replace;
+        lodash3.result = result;
+        lodash3.round = round;
+        lodash3.runInContext = runInContext2;
+        lodash3.sample = sample;
+        lodash3.size = size;
+        lodash3.snakeCase = snakeCase;
+        lodash3.some = some;
+        lodash3.sortedIndex = sortedIndex;
+        lodash3.sortedIndexBy = sortedIndexBy;
+        lodash3.sortedIndexOf = sortedIndexOf;
+        lodash3.sortedLastIndex = sortedLastIndex;
+        lodash3.sortedLastIndexBy = sortedLastIndexBy;
+        lodash3.sortedLastIndexOf = sortedLastIndexOf;
+        lodash3.startCase = startCase;
+        lodash3.startsWith = startsWith;
+        lodash3.subtract = subtract;
+        lodash3.sum = sum;
+        lodash3.sumBy = sumBy;
+        lodash3.template = template;
+        lodash3.times = times;
+        lodash3.toFinite = toFinite;
+        lodash3.toInteger = toInteger;
+        lodash3.toLength = toLength;
+        lodash3.toLower = toLower;
+        lodash3.toNumber = toNumber;
+        lodash3.toSafeInteger = toSafeInteger;
+        lodash3.toString = toString;
+        lodash3.toUpper = toUpper;
+        lodash3.trim = trim;
+        lodash3.trimEnd = trimEnd;
+        lodash3.trimStart = trimStart;
+        lodash3.truncate = truncate;
+        lodash3.unescape = unescape;
+        lodash3.uniqueId = uniqueId;
+        lodash3.upperCase = upperCase;
+        lodash3.upperFirst = upperFirst;
+        lodash3.each = forEach;
+        lodash3.eachRight = forEachRight;
+        lodash3.first = head;
+        mixin(lodash3, function() {
           var source = {};
-          baseForOwn(lodash4, function(func, methodName) {
-            if (!hasOwnProperty.call(lodash4.prototype, methodName)) {
+          baseForOwn(lodash3, function(func, methodName) {
+            if (!hasOwnProperty.call(lodash3.prototype, methodName)) {
               source[methodName] = func;
             }
           });
           return source;
         }(), { "chain": false });
-        lodash4.VERSION = VERSION;
+        lodash3.VERSION = VERSION;
         arrayEach(["bind", "bindKey", "curry", "curryRight", "partial", "partialRight"], function(methodName) {
-          lodash4[methodName].placeholder = lodash4;
+          lodash3[methodName].placeholder = lodash3;
         });
         arrayEach(["drop", "take"], function(methodName, index) {
           LazyWrapper.prototype[methodName] = function(n) {
@@ -56688,14 +56687,14 @@ var require_lodash = __commonJS({
           return this.take(MAX_ARRAY_LENGTH);
         };
         baseForOwn(LazyWrapper.prototype, function(func, methodName) {
-          var checkIteratee = /^(?:filter|find|map|reject)|While$/.test(methodName), isTaker = /^(?:head|last)$/.test(methodName), lodashFunc = lodash4[isTaker ? "take" + (methodName == "last" ? "Right" : "") : methodName], retUnwrapped = isTaker || /^find/.test(methodName);
+          var checkIteratee = /^(?:filter|find|map|reject)|While$/.test(methodName), isTaker = /^(?:head|last)$/.test(methodName), lodashFunc = lodash3[isTaker ? "take" + (methodName == "last" ? "Right" : "") : methodName], retUnwrapped = isTaker || /^find/.test(methodName);
           if (!lodashFunc) {
             return;
           }
-          lodash4.prototype[methodName] = function() {
+          lodash3.prototype[methodName] = function() {
             var value = this.__wrapped__, args = isTaker ? [1] : arguments, isLazy = value instanceof LazyWrapper, iteratee2 = args[0], useLazy = isLazy || isArray(value);
             var interceptor = function(value2) {
-              var result3 = lodashFunc.apply(lodash4, arrayPush([value2], args));
+              var result3 = lodashFunc.apply(lodash3, arrayPush([value2], args));
               return isTaker && chainAll ? result3[0] : result3;
             };
             if (useLazy && checkIteratee && typeof iteratee2 == "function" && iteratee2.length != 1) {
@@ -56717,7 +56716,7 @@ var require_lodash = __commonJS({
         });
         arrayEach(["pop", "push", "shift", "sort", "splice", "unshift"], function(methodName) {
           var func = arrayProto[methodName], chainName = /^(?:push|sort|unshift)$/.test(methodName) ? "tap" : "thru", retUnwrapped = /^(?:pop|shift)$/.test(methodName);
-          lodash4.prototype[methodName] = function() {
+          lodash3.prototype[methodName] = function() {
             var args = arguments;
             if (retUnwrapped && !this.__chain__) {
               var value = this.value();
@@ -56729,7 +56728,7 @@ var require_lodash = __commonJS({
           };
         });
         baseForOwn(LazyWrapper.prototype, function(func, methodName) {
-          var lodashFunc = lodash4[methodName];
+          var lodashFunc = lodash3[methodName];
           if (lodashFunc) {
             var key = lodashFunc.name + "";
             if (!hasOwnProperty.call(realNames, key)) {
@@ -56745,18 +56744,18 @@ var require_lodash = __commonJS({
         LazyWrapper.prototype.clone = lazyClone;
         LazyWrapper.prototype.reverse = lazyReverse;
         LazyWrapper.prototype.value = lazyValue;
-        lodash4.prototype.at = wrapperAt;
-        lodash4.prototype.chain = wrapperChain;
-        lodash4.prototype.commit = wrapperCommit;
-        lodash4.prototype.next = wrapperNext;
-        lodash4.prototype.plant = wrapperPlant;
-        lodash4.prototype.reverse = wrapperReverse;
-        lodash4.prototype.toJSON = lodash4.prototype.valueOf = lodash4.prototype.value = wrapperValue;
-        lodash4.prototype.first = lodash4.prototype.head;
+        lodash3.prototype.at = wrapperAt;
+        lodash3.prototype.chain = wrapperChain;
+        lodash3.prototype.commit = wrapperCommit;
+        lodash3.prototype.next = wrapperNext;
+        lodash3.prototype.plant = wrapperPlant;
+        lodash3.prototype.reverse = wrapperReverse;
+        lodash3.prototype.toJSON = lodash3.prototype.valueOf = lodash3.prototype.value = wrapperValue;
+        lodash3.prototype.first = lodash3.prototype.head;
         if (symIterator) {
-          lodash4.prototype[symIterator] = wrapperToIterator;
+          lodash3.prototype[symIterator] = wrapperToIterator;
         }
-        return lodash4;
+        return lodash3;
       };
       var _ = runInContext();
       if (typeof define == "function" && typeof define.amd == "object" && define.amd) {
@@ -56956,17 +56955,17 @@ var require_section_matter = __commonJS({
       if (typeof options2 === "function") {
         options2 = { parse: options2 };
       }
-      var file4 = toObject(input);
+      var file3 = toObject(input);
       var defaults = { section_delimiter: "---", parse: identity };
       var opts = extend({}, defaults, options2);
       var delim = opts.section_delimiter;
-      var lines = file4.content.split(/\r?\n/);
+      var lines = file3.content.split(/\r?\n/);
       var sections = null;
       var section = createSection();
       var content = [];
       var stack = [];
       function initSections(val) {
-        file4.content = val;
+        file3.content = val;
         sections = [];
         content = [];
       }
@@ -57012,8 +57011,8 @@ var require_section_matter = __commonJS({
       } else {
         closeSection(content.join("\n"));
       }
-      file4.sections = sections;
-      return file4;
+      file3.sections = sections;
+      return file3;
     };
     function isDelimiter(line, delim) {
       if (line.slice(0, delim.length) !== delim) {
@@ -60085,33 +60084,33 @@ var require_stringify = __commonJS({
     var typeOf = require_kind_of();
     var getEngine = require_engine();
     var defaults = require_defaults();
-    module2.exports = function(file4, data, options2) {
+    module2.exports = function(file3, data, options2) {
       if (data == null && options2 == null) {
-        switch (typeOf(file4)) {
+        switch (typeOf(file3)) {
           case "object":
-            data = file4.data;
+            data = file3.data;
             options2 = {};
             break;
           case "string":
-            return file4;
+            return file3;
           default: {
             throw new TypeError("expected file to be a string or object");
           }
         }
       }
-      const str2 = file4.content;
+      const str2 = file3.content;
       const opts = defaults(options2);
       if (data == null) {
         if (!opts.data)
-          return file4;
+          return file3;
         data = opts.data;
       }
-      const language = file4.language || opts.language;
+      const language = file3.language || opts.language;
       const engine = getEngine(language, opts);
       if (typeof engine.stringify !== "function") {
         throw new TypeError('expected "' + language + '.stringify" to be a function');
       }
-      data = Object.assign({}, file4.data, data);
+      data = Object.assign({}, file3.data, data);
       const open = opts.delimiters[0];
       const close = opts.delimiters[1];
       const matter2 = engine.stringify(data, options2).trim();
@@ -60119,9 +60118,9 @@ var require_stringify = __commonJS({
       if (matter2 !== "{}") {
         buf = newline(open) + newline(matter2) + newline(close);
       }
-      if (typeof file4.excerpt === "string" && file4.excerpt !== "") {
-        if (str2.indexOf(file4.excerpt.trim()) === -1) {
-          buf += newline(file4.excerpt) + newline(close);
+      if (typeof file3.excerpt === "string" && file3.excerpt !== "") {
+        if (str2.indexOf(file3.excerpt.trim()) === -1) {
+          buf += newline(file3.excerpt) + newline(close);
         }
       }
       return buf + newline(str2);
@@ -60137,24 +60136,24 @@ var require_excerpt = __commonJS({
   "node_modules/gray-matter/lib/excerpt.js"(exports2, module2) {
     "use strict";
     var defaults = require_defaults();
-    module2.exports = function(file4, options2) {
+    module2.exports = function(file3, options2) {
       const opts = defaults(options2);
-      if (file4.data == null) {
-        file4.data = {};
+      if (file3.data == null) {
+        file3.data = {};
       }
       if (typeof opts.excerpt === "function") {
-        return opts.excerpt(file4, opts);
+        return opts.excerpt(file3, opts);
       }
-      const sep = file4.data.excerpt_separator || opts.excerpt_separator;
+      const sep = file3.data.excerpt_separator || opts.excerpt_separator;
       if (sep == null && (opts.excerpt === false || opts.excerpt == null)) {
-        return file4;
+        return file3;
       }
       const delimiter = typeof opts.excerpt === "string" ? opts.excerpt : sep || opts.delimiters[0];
-      const idx = file4.content.indexOf(delimiter);
+      const idx = file3.content.indexOf(delimiter);
       if (idx !== -1) {
-        file4.excerpt = file4.content.slice(0, idx);
+        file3.excerpt = file3.content.slice(0, idx);
       }
-      return file4;
+      return file3;
     };
   }
 });
@@ -60166,29 +60165,29 @@ var require_to_file = __commonJS({
     var typeOf = require_kind_of();
     var stringify = require_stringify();
     var utils = require_utils8();
-    module2.exports = function(file4) {
-      if (typeOf(file4) !== "object") {
-        file4 = { content: file4 };
+    module2.exports = function(file3) {
+      if (typeOf(file3) !== "object") {
+        file3 = { content: file3 };
       }
-      if (typeOf(file4.data) !== "object") {
-        file4.data = {};
+      if (typeOf(file3.data) !== "object") {
+        file3.data = {};
       }
-      if (file4.contents && file4.content == null) {
-        file4.content = file4.contents;
+      if (file3.contents && file3.content == null) {
+        file3.content = file3.contents;
       }
-      utils.define(file4, "orig", utils.toBuffer(file4.content));
-      utils.define(file4, "language", file4.language || "");
-      utils.define(file4, "matter", file4.matter || "");
-      utils.define(file4, "stringify", function(data, options2) {
+      utils.define(file3, "orig", utils.toBuffer(file3.content));
+      utils.define(file3, "language", file3.language || "");
+      utils.define(file3, "matter", file3.matter || "");
+      utils.define(file3, "stringify", function(data, options2) {
         if (options2 && options2.language) {
-          file4.language = options2.language;
+          file3.language = options2.language;
         }
-        return stringify(file4, data, options2);
+        return stringify(file3, data, options2);
       });
-      file4.content = utils.toString(file4.content);
-      file4.isEmpty = false;
-      file4.excerpt = "";
-      return file4;
+      file3.content = utils.toString(file3.content);
+      file3.isEmpty = false;
+      file3.excerpt = "";
+      return file3;
     };
   }
 });
@@ -60227,82 +60226,82 @@ var require_gray_matter = __commonJS({
       if (input === "") {
         return { data: {}, content: input, excerpt: "", orig: input };
       }
-      let file4 = toFile(input);
-      const cached = matter2.cache[file4.content];
+      let file3 = toFile(input);
+      const cached = matter2.cache[file3.content];
       if (!options2) {
         if (cached) {
-          file4 = Object.assign({}, cached);
-          file4.orig = cached.orig;
-          return file4;
+          file3 = Object.assign({}, cached);
+          file3.orig = cached.orig;
+          return file3;
         }
-        matter2.cache[file4.content] = file4;
+        matter2.cache[file3.content] = file3;
       }
-      return parseMatter(file4, options2);
+      return parseMatter(file3, options2);
     }
-    function parseMatter(file4, options2) {
+    function parseMatter(file3, options2) {
       const opts = defaults(options2);
       const open = opts.delimiters[0];
       const close = "\n" + opts.delimiters[1];
-      let str2 = file4.content;
+      let str2 = file3.content;
       if (opts.language) {
-        file4.language = opts.language;
+        file3.language = opts.language;
       }
       const openLen = open.length;
       if (!utils.startsWith(str2, open, openLen)) {
-        excerpt(file4, opts);
-        return file4;
+        excerpt(file3, opts);
+        return file3;
       }
       if (str2.charAt(openLen) === open.slice(-1)) {
-        return file4;
+        return file3;
       }
       str2 = str2.slice(openLen);
       const len = str2.length;
       const language = matter2.language(str2, opts);
       if (language.name) {
-        file4.language = language.name;
+        file3.language = language.name;
         str2 = str2.slice(language.raw.length);
       }
       let closeIndex = str2.indexOf(close);
       if (closeIndex === -1) {
         closeIndex = len;
       }
-      file4.matter = str2.slice(0, closeIndex);
-      const block = file4.matter.replace(/^\s*#[^\n]+/gm, "").trim();
+      file3.matter = str2.slice(0, closeIndex);
+      const block = file3.matter.replace(/^\s*#[^\n]+/gm, "").trim();
       if (block === "") {
-        file4.isEmpty = true;
-        file4.empty = file4.content;
-        file4.data = {};
+        file3.isEmpty = true;
+        file3.empty = file3.content;
+        file3.data = {};
       } else {
-        file4.data = parse2(file4.language, file4.matter, opts);
+        file3.data = parse2(file3.language, file3.matter, opts);
       }
       if (closeIndex === len) {
-        file4.content = "";
+        file3.content = "";
       } else {
-        file4.content = str2.slice(closeIndex + close.length);
-        if (file4.content[0] === "\r") {
-          file4.content = file4.content.slice(1);
+        file3.content = str2.slice(closeIndex + close.length);
+        if (file3.content[0] === "\r") {
+          file3.content = file3.content.slice(1);
         }
-        if (file4.content[0] === "\n") {
-          file4.content = file4.content.slice(1);
+        if (file3.content[0] === "\n") {
+          file3.content = file3.content.slice(1);
         }
       }
-      excerpt(file4, opts);
+      excerpt(file3, opts);
       if (opts.sections === true || typeof opts.section === "function") {
-        sections(file4, opts.section);
+        sections(file3, opts.section);
       }
-      return file4;
+      return file3;
     }
     matter2.engines = engines2;
-    matter2.stringify = function(file4, data, options2) {
-      if (typeof file4 === "string")
-        file4 = matter2(file4, options2);
-      return stringify(file4, data, options2);
+    matter2.stringify = function(file3, data, options2) {
+      if (typeof file3 === "string")
+        file3 = matter2(file3, options2);
+      return stringify(file3, data, options2);
     };
     matter2.read = function(filepath, options2) {
       const str2 = fs3.readFileSync(filepath, "utf8");
-      const file4 = matter2(str2, options2);
-      file4.path = filepath;
-      return file4;
+      const file3 = matter2(str2, options2);
+      file3.path = filepath;
+      return file3;
     };
     matter2.test = function(str2, options2) {
       return utils.startsWith(str2, defaults(options2).delimiters[0]);
@@ -60324,1110 +60323,6 @@ var require_gray_matter = __commonJS({
       matter2.cache = {};
     };
     module2.exports = matter2;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/bignumber.js
-var require_bignumber3 = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/bignumber.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.normalizeBN = exports2.normalize = exports2.valueToZDBigNumber = exports2.valueToBigNumber = exports2.BigNumberZeroDecimal = void 0;
-    var bignumber_js_1 = require_bignumber2();
-    exports2.BigNumberZeroDecimal = bignumber_js_1.BigNumber.clone({
-      DECIMAL_PLACES: 0,
-      ROUNDING_MODE: bignumber_js_1.BigNumber.ROUND_DOWN
-    });
-    function valueToBigNumber(amount) {
-      if (amount instanceof bignumber_js_1.BigNumber) {
-        return amount;
-      }
-      return new bignumber_js_1.BigNumber(amount);
-    }
-    exports2.valueToBigNumber = valueToBigNumber;
-    function valueToZDBigNumber(amount) {
-      return new exports2.BigNumberZeroDecimal(amount);
-    }
-    exports2.valueToZDBigNumber = valueToZDBigNumber;
-    function normalize(n, decimals) {
-      return normalizeBN2(n, decimals).toString(10);
-    }
-    exports2.normalize = normalize;
-    function normalizeBN2(n, decimals) {
-      return valueToBigNumber(n).shiftedBy(decimals * -1);
-    }
-    exports2.normalizeBN = normalizeBN2;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/constants.js
-var require_constants2 = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/constants.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.LTV_PRECISION = exports2.RAY_DECIMALS = exports2.WEI_DECIMALS = exports2.USD_DECIMALS = exports2.SECONDS_PER_YEAR = void 0;
-    var bignumber_1 = require_bignumber3();
-    exports2.SECONDS_PER_YEAR = (0, bignumber_1.valueToBigNumber)("31536000");
-    exports2.USD_DECIMALS = 8;
-    exports2.WEI_DECIMALS = 18;
-    exports2.RAY_DECIMALS = 27;
-    exports2.LTV_PRECISION = 4;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/ray.math.js
-var require_ray_math = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/ray.math.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.binomialApproximatedRayPow = exports2.rayPow = exports2.wadToRay = exports2.rayToWad = exports2.rayDiv = exports2.rayMul = exports2.WAD_RAY_RATIO = exports2.HALF_RAY = exports2.RAY = exports2.HALF_WAD = exports2.WAD = void 0;
-    var bignumber_1 = require_bignumber3();
-    exports2.WAD = (0, bignumber_1.valueToZDBigNumber)(10).pow(18);
-    exports2.HALF_WAD = exports2.WAD.dividedBy(2);
-    exports2.RAY = (0, bignumber_1.valueToZDBigNumber)(10).pow(27);
-    exports2.HALF_RAY = exports2.RAY.dividedBy(2);
-    exports2.WAD_RAY_RATIO = (0, bignumber_1.valueToZDBigNumber)(10).pow(9);
-    function rayMul(a, b) {
-      return exports2.HALF_RAY.plus((0, bignumber_1.valueToZDBigNumber)(a).multipliedBy(b)).div(exports2.RAY);
-    }
-    exports2.rayMul = rayMul;
-    function rayDiv(a, b) {
-      const halfB = (0, bignumber_1.valueToZDBigNumber)(b).div(2);
-      return halfB.plus((0, bignumber_1.valueToZDBigNumber)(a).multipliedBy(exports2.RAY)).div(b);
-    }
-    exports2.rayDiv = rayDiv;
-    function rayToWad(a) {
-      const halfRatio = (0, bignumber_1.valueToZDBigNumber)(exports2.WAD_RAY_RATIO).div(2);
-      return halfRatio.plus(a).div(exports2.WAD_RAY_RATIO);
-    }
-    exports2.rayToWad = rayToWad;
-    function wadToRay(a) {
-      return (0, bignumber_1.valueToZDBigNumber)(a).multipliedBy(exports2.WAD_RAY_RATIO).decimalPlaces(0);
-    }
-    exports2.wadToRay = wadToRay;
-    function rayPow(a, p) {
-      let x = (0, bignumber_1.valueToZDBigNumber)(a);
-      let n = (0, bignumber_1.valueToZDBigNumber)(p);
-      let z = n.modulo(2).eq(0) ? (0, bignumber_1.valueToZDBigNumber)(exports2.RAY) : x;
-      for (n = n.div(2); !n.eq(0); n = n.div(2)) {
-        x = rayMul(x, x);
-        if (!n.modulo(2).eq(0)) {
-          z = rayMul(z, x);
-        }
-      }
-      return z;
-    }
-    exports2.rayPow = rayPow;
-    function binomialApproximatedRayPow(a, p) {
-      const base = (0, bignumber_1.valueToZDBigNumber)(a);
-      const exp = (0, bignumber_1.valueToZDBigNumber)(p);
-      if (exp.eq(0))
-        return exports2.RAY;
-      const expMinusOne = exp.minus(1);
-      const expMinusTwo = exp.gt(2) ? exp.minus(2) : 0;
-      const basePowerTwo = rayMul(base, base);
-      const basePowerThree = rayMul(basePowerTwo, base);
-      const firstTerm = exp.multipliedBy(base);
-      const secondTerm = exp.multipliedBy(expMinusOne).multipliedBy(basePowerTwo).div(2);
-      const thirdTerm = exp.multipliedBy(expMinusOne).multipliedBy(expMinusTwo).multipliedBy(basePowerThree).div(6);
-      return exports2.RAY.plus(firstTerm).plus(secondTerm).plus(thirdTerm);
-    }
-    exports2.binomialApproximatedRayPow = binomialApproximatedRayPow;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/pool-math.js
-var require_pool_math = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/pool-math.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.getMarketReferenceCurrencyAndUsdBalance = exports2.calculateAvailableBorrowsMarketReferenceCurrency = exports2.calculateHealthFactorFromBalancesBigUnits = exports2.calculateHealthFactorFromBalances = exports2.getCompoundedStableBalance = exports2.getLinearBalance = exports2.getReserveNormalizedIncome = exports2.calculateLinearInterest = exports2.getCompoundedBalance = exports2.calculateCompoundedInterest = void 0;
-    var tslib_1 = require_tslib();
-    var bignumber_js_1 = (0, tslib_1.__importDefault)(require_bignumber2());
-    var bignumber_1 = require_bignumber3();
-    var constants_1 = require_constants2();
-    var RayMath = (0, tslib_1.__importStar)(require_ray_math());
-    function calculateCompoundedInterest({ rate, currentTimestamp, lastUpdateTimestamp }) {
-      const timeDelta = (0, bignumber_1.valueToZDBigNumber)(currentTimestamp - lastUpdateTimestamp);
-      const ratePerSecond = (0, bignumber_1.valueToZDBigNumber)(rate).dividedBy(constants_1.SECONDS_PER_YEAR);
-      return RayMath.binomialApproximatedRayPow(ratePerSecond, timeDelta);
-    }
-    exports2.calculateCompoundedInterest = calculateCompoundedInterest;
-    function getCompoundedBalance({ principalBalance: _principalBalance, reserveIndex, reserveRate, lastUpdateTimestamp, currentTimestamp }) {
-      const principalBalance = (0, bignumber_1.valueToZDBigNumber)(_principalBalance);
-      if (principalBalance.eq("0")) {
-        return principalBalance;
-      }
-      const compoundedInterest = calculateCompoundedInterest({
-        rate: reserveRate,
-        currentTimestamp,
-        lastUpdateTimestamp
-      });
-      const cumulatedInterest = RayMath.rayMul(compoundedInterest, reserveIndex);
-      const principalBalanceRay = RayMath.wadToRay(principalBalance);
-      return RayMath.rayToWad(RayMath.rayMul(principalBalanceRay, cumulatedInterest));
-    }
-    exports2.getCompoundedBalance = getCompoundedBalance;
-    function calculateLinearInterest({ rate, currentTimestamp, lastUpdateTimestamp }) {
-      const timeDelta = RayMath.wadToRay((0, bignumber_1.valueToZDBigNumber)(currentTimestamp - lastUpdateTimestamp));
-      const timeDeltaInSeconds = RayMath.rayDiv(timeDelta, RayMath.wadToRay(constants_1.SECONDS_PER_YEAR));
-      const a = RayMath.rayMul(rate, timeDeltaInSeconds).plus(RayMath.RAY);
-      return a;
-    }
-    exports2.calculateLinearInterest = calculateLinearInterest;
-    function getReserveNormalizedIncome({ rate, index, lastUpdateTimestamp, currentTimestamp }) {
-      if ((0, bignumber_1.valueToZDBigNumber)(rate).eq("0")) {
-        return (0, bignumber_1.valueToZDBigNumber)(index);
-      }
-      const cumulatedInterest = calculateLinearInterest({
-        rate,
-        currentTimestamp,
-        lastUpdateTimestamp
-      });
-      return RayMath.rayMul(cumulatedInterest, index);
-    }
-    exports2.getReserveNormalizedIncome = getReserveNormalizedIncome;
-    function getLinearBalance({ balance, index, rate, lastUpdateTimestamp, currentTimestamp }) {
-      return RayMath.rayToWad(RayMath.rayMul(RayMath.wadToRay(balance), getReserveNormalizedIncome({
-        rate,
-        index,
-        lastUpdateTimestamp,
-        currentTimestamp
-      })));
-    }
-    exports2.getLinearBalance = getLinearBalance;
-    function getCompoundedStableBalance({ principalBalance: _principalBalance, userStableRate, lastUpdateTimestamp, currentTimestamp }) {
-      const principalBalance = (0, bignumber_1.valueToZDBigNumber)(_principalBalance);
-      if (principalBalance.eq("0")) {
-        return principalBalance;
-      }
-      const cumulatedInterest = calculateCompoundedInterest({
-        rate: userStableRate,
-        currentTimestamp,
-        lastUpdateTimestamp
-      });
-      const principalBalanceRay = RayMath.wadToRay(principalBalance);
-      return RayMath.rayToWad(RayMath.rayMul(principalBalanceRay, cumulatedInterest));
-    }
-    exports2.getCompoundedStableBalance = getCompoundedStableBalance;
-    function calculateHealthFactorFromBalances({ borrowBalanceMarketReferenceCurrency, collateralBalanceMarketReferenceCurrency, currentLiquidationThreshold }) {
-      if ((0, bignumber_1.valueToBigNumber)(borrowBalanceMarketReferenceCurrency).eq(0)) {
-        return (0, bignumber_1.valueToBigNumber)("-1");
-      }
-      return (0, bignumber_1.valueToBigNumber)(collateralBalanceMarketReferenceCurrency).multipliedBy(currentLiquidationThreshold).shiftedBy(constants_1.LTV_PRECISION * -1).div(borrowBalanceMarketReferenceCurrency);
-    }
-    exports2.calculateHealthFactorFromBalances = calculateHealthFactorFromBalances;
-    function calculateHealthFactorFromBalancesBigUnits({ collateralBalanceMarketReferenceCurrency, borrowBalanceMarketReferenceCurrency, currentLiquidationThreshold }) {
-      return calculateHealthFactorFromBalances({
-        collateralBalanceMarketReferenceCurrency,
-        borrowBalanceMarketReferenceCurrency,
-        currentLiquidationThreshold: (0, bignumber_1.valueToBigNumber)(currentLiquidationThreshold).shiftedBy(constants_1.LTV_PRECISION).decimalPlaces(0, bignumber_js_1.default.ROUND_DOWN)
-      });
-    }
-    exports2.calculateHealthFactorFromBalancesBigUnits = calculateHealthFactorFromBalancesBigUnits;
-    function calculateAvailableBorrowsMarketReferenceCurrency({ collateralBalanceMarketReferenceCurrency, borrowBalanceMarketReferenceCurrency, currentLtv }) {
-      if ((0, bignumber_1.valueToZDBigNumber)(currentLtv).eq(0)) {
-        return (0, bignumber_1.valueToZDBigNumber)("0");
-      }
-      const availableBorrowsMarketReferenceCurrency = (0, bignumber_1.valueToZDBigNumber)(collateralBalanceMarketReferenceCurrency).multipliedBy(currentLtv).shiftedBy(constants_1.LTV_PRECISION * -1).minus(borrowBalanceMarketReferenceCurrency);
-      return availableBorrowsMarketReferenceCurrency.gt("0") ? availableBorrowsMarketReferenceCurrency : (0, bignumber_1.valueToZDBigNumber)("0");
-    }
-    exports2.calculateAvailableBorrowsMarketReferenceCurrency = calculateAvailableBorrowsMarketReferenceCurrency;
-    function getMarketReferenceCurrencyAndUsdBalance({ balance, priceInMarketReferenceCurrency, marketReferenceCurrencyDecimals, decimals, marketReferencePriceInUsdNormalized }) {
-      const marketReferenceCurrencyBalance = (0, bignumber_1.valueToZDBigNumber)(balance).multipliedBy(priceInMarketReferenceCurrency).shiftedBy(decimals * -1);
-      const usdBalance = marketReferenceCurrencyBalance.multipliedBy(marketReferencePriceInUsdNormalized).shiftedBy(marketReferenceCurrencyDecimals * -1);
-      return { marketReferenceCurrencyBalance, usdBalance };
-    }
-    exports2.getMarketReferenceCurrencyAndUsdBalance = getMarketReferenceCurrencyAndUsdBalance;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/incentive/calculate-accrued-incentives.js
-var require_calculate_accrued_incentives = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/incentive/calculate-accrued-incentives.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.calculateAccruedIncentives = void 0;
-    var tslib_1 = require_tslib();
-    var bignumber_js_1 = (0, tslib_1.__importDefault)(require_bignumber2());
-    function calculateAccruedIncentives({ principalUserBalance, reserveIndex, userIndex, precision, reserveIndexTimestamp, emissionPerSecond, totalSupply, currentTimestamp, emissionEndTimestamp }) {
-      if (totalSupply.isEqualTo(new bignumber_js_1.default(0))) {
-        return new bignumber_js_1.default(0);
-      }
-      const actualCurrentTimestamp = currentTimestamp > emissionEndTimestamp ? emissionEndTimestamp : currentTimestamp;
-      const timeDelta = actualCurrentTimestamp - reserveIndexTimestamp;
-      let currentReserveIndex;
-      if (reserveIndexTimestamp >= Number(currentTimestamp) || reserveIndexTimestamp >= emissionEndTimestamp) {
-        currentReserveIndex = reserveIndex;
-      } else {
-        currentReserveIndex = emissionPerSecond.multipliedBy(timeDelta).shiftedBy(precision).dividedBy(totalSupply).plus(reserveIndex);
-      }
-      const reward = principalUserBalance.multipliedBy(currentReserveIndex.minus(userIndex)).shiftedBy(precision * -1);
-      return reward;
-    }
-    exports2.calculateAccruedIncentives = calculateAccruedIncentives;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/incentive/calculate-user-reserve-incentives.js
-var require_calculate_user_reserve_incentives = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/incentive/calculate-user-reserve-incentives.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.calculateUserReserveIncentives = void 0;
-    var tslib_1 = require_tslib();
-    var bignumber_js_1 = (0, tslib_1.__importDefault)(require_bignumber2());
-    var bignumber_1 = require_bignumber3();
-    var ray_math_1 = require_ray_math();
-    var calculate_accrued_incentives_1 = require_calculate_accrued_incentives();
-    function calculateUserReserveIncentives({ reserveIncentives, userIncentives, currentTimestamp, userReserveData }) {
-      const calculatedUserIncentives = [];
-      userIncentives.aTokenIncentivesUserData.userRewardsInformation.forEach((userReserveIncentive) => {
-        const reserveIncentive = reserveIncentives.aIncentiveData.rewardsTokenInformation.find((reward) => reward.rewardTokenAddress === userReserveIncentive.rewardTokenAddress);
-        if (reserveIncentive) {
-          const accruedRewards = userReserveData ? (0, calculate_accrued_incentives_1.calculateAccruedIncentives)({
-            principalUserBalance: new bignumber_js_1.default(userReserveData.scaledATokenBalance),
-            reserveIndex: new bignumber_js_1.default(reserveIncentive.tokenIncentivesIndex),
-            userIndex: new bignumber_js_1.default(userReserveIncentive.tokenIncentivesUserIndex),
-            precision: reserveIncentive.precision,
-            reserveIndexTimestamp: reserveIncentive.incentivesLastUpdateTimestamp,
-            emissionPerSecond: new bignumber_js_1.default(reserveIncentive.emissionPerSecond),
-            totalSupply: (0, ray_math_1.rayDiv)(new bignumber_js_1.default(userReserveData.reserve.totalLiquidity).shiftedBy(userReserveData.reserve.decimals), new bignumber_js_1.default(userReserveData.reserve.liquidityIndex)),
-            currentTimestamp,
-            emissionEndTimestamp: reserveIncentive.emissionEndTimestamp
-          }) : new bignumber_js_1.default("0");
-          calculatedUserIncentives.push({
-            tokenAddress: userIncentives.aTokenIncentivesUserData.tokenAddress,
-            incentiveController: userIncentives.aTokenIncentivesUserData.incentiveControllerAddress,
-            rewardTokenAddress: userReserveIncentive.rewardTokenAddress,
-            rewardTokenDecimals: userReserveIncentive.rewardTokenDecimals,
-            accruedRewards,
-            unclaimedRewards: new bignumber_js_1.default(userReserveIncentive.userUnclaimedRewards),
-            rewardPriceFeed: (0, bignumber_1.normalize)(userReserveIncentive.rewardPriceFeed, userReserveIncentive.priceFeedDecimals),
-            rewardTokenSymbol: userReserveIncentive.rewardTokenSymbol
-          });
-        }
-      });
-      userIncentives.vTokenIncentivesUserData.userRewardsInformation.forEach((userReserveIncentive) => {
-        const reserveIncentive = reserveIncentives.vIncentiveData.rewardsTokenInformation.find((reward) => reward.rewardTokenAddress === userReserveIncentive.rewardTokenAddress);
-        if (reserveIncentive) {
-          const accruedRewards = userReserveData ? (0, calculate_accrued_incentives_1.calculateAccruedIncentives)({
-            principalUserBalance: new bignumber_js_1.default(userReserveData.scaledVariableDebt),
-            reserveIndex: new bignumber_js_1.default(reserveIncentive.tokenIncentivesIndex),
-            userIndex: new bignumber_js_1.default(userReserveIncentive.tokenIncentivesUserIndex),
-            precision: reserveIncentive.precision,
-            reserveIndexTimestamp: reserveIncentive.incentivesLastUpdateTimestamp,
-            emissionPerSecond: new bignumber_js_1.default(reserveIncentive.emissionPerSecond),
-            totalSupply: new bignumber_js_1.default(userReserveData.reserve.totalScaledVariableDebt).shiftedBy(userReserveData.reserve.decimals),
-            currentTimestamp,
-            emissionEndTimestamp: reserveIncentive.emissionEndTimestamp
-          }) : new bignumber_js_1.default("0");
-          calculatedUserIncentives.push({
-            tokenAddress: userIncentives.vTokenIncentivesUserData.tokenAddress,
-            incentiveController: userIncentives.vTokenIncentivesUserData.incentiveControllerAddress,
-            rewardTokenAddress: userReserveIncentive.rewardTokenAddress,
-            rewardTokenDecimals: userReserveIncentive.rewardTokenDecimals,
-            accruedRewards,
-            unclaimedRewards: new bignumber_js_1.default(userReserveIncentive.userUnclaimedRewards),
-            rewardPriceFeed: (0, bignumber_1.normalize)(userReserveIncentive.rewardPriceFeed, userReserveIncentive.priceFeedDecimals),
-            rewardTokenSymbol: userReserveIncentive.rewardTokenSymbol
-          });
-        }
-      });
-      userIncentives.sTokenIncentivesUserData.userRewardsInformation.forEach((userReserveIncentive) => {
-        const reserveIncentive = reserveIncentives.sIncentiveData.rewardsTokenInformation.find((reward) => reward.rewardTokenAddress === userReserveIncentive.rewardTokenAddress);
-        if (reserveIncentive) {
-          const accruedRewards = userReserveData ? (0, calculate_accrued_incentives_1.calculateAccruedIncentives)({
-            principalUserBalance: new bignumber_js_1.default(userReserveData.principalStableDebt),
-            reserveIndex: new bignumber_js_1.default(reserveIncentive.tokenIncentivesIndex),
-            userIndex: new bignumber_js_1.default(userReserveIncentive.tokenIncentivesUserIndex),
-            precision: reserveIncentive.precision,
-            reserveIndexTimestamp: reserveIncentive.incentivesLastUpdateTimestamp,
-            emissionPerSecond: new bignumber_js_1.default(reserveIncentive.emissionPerSecond),
-            totalSupply: new bignumber_js_1.default(userReserveData.reserve.totalPrincipalStableDebt).shiftedBy(userReserveData.reserve.decimals),
-            currentTimestamp,
-            emissionEndTimestamp: reserveIncentive.emissionEndTimestamp
-          }) : new bignumber_js_1.default("0");
-          calculatedUserIncentives.push({
-            tokenAddress: userIncentives.sTokenIncentivesUserData.tokenAddress,
-            incentiveController: userIncentives.sTokenIncentivesUserData.incentiveControllerAddress,
-            rewardTokenAddress: userReserveIncentive.rewardTokenAddress,
-            rewardTokenDecimals: userReserveIncentive.rewardTokenDecimals,
-            accruedRewards,
-            unclaimedRewards: new bignumber_js_1.default(userReserveIncentive.userUnclaimedRewards),
-            rewardPriceFeed: (0, bignumber_1.normalize)(userReserveIncentive.rewardPriceFeed, userReserveIncentive.priceFeedDecimals),
-            rewardTokenSymbol: userReserveIncentive.rewardTokenSymbol
-          });
-        }
-      });
-      return calculatedUserIncentives;
-    }
-    exports2.calculateUserReserveIncentives = calculateUserReserveIncentives;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/incentive/calculate-all-user-incentives.js
-var require_calculate_all_user_incentives = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/incentive/calculate-all-user-incentives.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.calculateAllUserIncentives = void 0;
-    var calculate_user_reserve_incentives_1 = require_calculate_user_reserve_incentives();
-    function calculateAllUserIncentives({ reserveIncentives, userIncentives, userReserves, currentTimestamp }) {
-      const allRewards = userIncentives.map((userIncentive) => {
-        const reserve = reserveIncentives.find((reserve2) => reserve2.underlyingAsset === userIncentive.underlyingAsset);
-        const userReserve = userReserves.find((userReserve2) => userReserve2.reserve.underlyingAsset === userIncentive.underlyingAsset);
-        if (reserve) {
-          const reserveRewards = (0, calculate_user_reserve_incentives_1.calculateUserReserveIncentives)({
-            reserveIncentives: reserve,
-            userIncentives: userIncentive,
-            userReserveData: userReserve,
-            currentTimestamp
-          });
-          return reserveRewards;
-        }
-        return [];
-      }).flat();
-      const incentiveDict = {};
-      allRewards.forEach((reward) => {
-        if (!incentiveDict[reward.rewardTokenAddress]) {
-          incentiveDict[reward.rewardTokenAddress] = {
-            assets: [],
-            rewardTokenSymbol: reward.rewardTokenSymbol,
-            claimableRewards: reward.unclaimedRewards,
-            incentiveControllerAddress: reward.incentiveController,
-            rewardTokenDecimals: reward.rewardTokenDecimals,
-            rewardPriceFeed: reward.rewardPriceFeed
-          };
-        }
-        if (reward.accruedRewards.gt(0)) {
-          incentiveDict[reward.rewardTokenAddress].claimableRewards = incentiveDict[reward.rewardTokenAddress].claimableRewards.plus(reward.accruedRewards);
-          incentiveDict[reward.rewardTokenAddress].assets.push(reward.tokenAddress);
-        }
-      });
-      return incentiveDict;
-    }
-    exports2.calculateAllUserIncentives = calculateAllUserIncentives;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/incentive/calculate-incentive-apr.js
-var require_calculate_incentive_apr = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/incentive/calculate-incentive-apr.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.calculateIncentiveAPR = void 0;
-    var bignumber_1 = require_bignumber3();
-    var constants_1 = require_constants2();
-    function calculateIncentiveAPR({ emissionPerSecond, rewardTokenPriceInMarketReferenceCurrency, priceInMarketReferenceCurrency, totalTokenSupply, decimals }) {
-      const emissionPerSecondNormalized = (0, bignumber_1.normalizeBN)(emissionPerSecond, constants_1.WEI_DECIMALS).multipliedBy(rewardTokenPriceInMarketReferenceCurrency);
-      if (emissionPerSecondNormalized.eq(0)) {
-        return "0";
-      }
-      const emissionPerYear = emissionPerSecondNormalized.multipliedBy(constants_1.SECONDS_PER_YEAR);
-      const totalSupplyNormalized = (0, bignumber_1.valueToBigNumber)((0, bignumber_1.normalize)(totalTokenSupply, decimals)).multipliedBy(priceInMarketReferenceCurrency);
-      return emissionPerYear.dividedBy(totalSupplyNormalized).toFixed();
-    }
-    exports2.calculateIncentiveAPR = calculateIncentiveAPR;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/incentive/calculate-reserve-incentives.js
-var require_calculate_reserve_incentives = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/incentive/calculate-reserve-incentives.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.calculateReserveIncentives = exports2.calculateRewardTokenPrice = void 0;
-    var bignumber_1 = require_bignumber3();
-    var calculate_incentive_apr_1 = require_calculate_incentive_apr();
-    function calculateRewardTokenPrice(reserves, address, priceFeed, priceFeedDecimals) {
-      if (Number(priceFeed) > 0) {
-        return (0, bignumber_1.normalize)(priceFeed, priceFeedDecimals);
-      }
-      address = address.toLowerCase();
-      if (address.toLowerCase() === "0x4da27a545c0c5b758a6ba100e3a049001de870f5") {
-        address = "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9";
-      }
-      const rewardReserve = reserves.find((reserve) => reserve.underlyingAsset.toLowerCase() === address);
-      if (rewardReserve) {
-        return rewardReserve.formattedPriceInMarketReferenceCurrency;
-      }
-      return "0";
-    }
-    exports2.calculateRewardTokenPrice = calculateRewardTokenPrice;
-    var rewardEmissionActive = (reward) => {
-      if (reward.emissionEndTimestamp > reward.incentivesLastUpdateTimestamp) {
-        return true;
-      }
-      return false;
-    };
-    function calculateReserveIncentives({ reserves, reserveIncentiveData, totalLiquidity, totalVariableDebt, totalStableDebt, decimals, priceInMarketReferenceCurrency }) {
-      const aIncentivesData = reserveIncentiveData.aIncentiveData.rewardsTokenInformation.map((reward) => {
-        const aIncentivesAPR = rewardEmissionActive(reward) ? (0, calculate_incentive_apr_1.calculateIncentiveAPR)({
-          emissionPerSecond: reward.emissionPerSecond,
-          rewardTokenPriceInMarketReferenceCurrency: calculateRewardTokenPrice(reserves, reward.rewardTokenAddress, reward.rewardPriceFeed, reward.priceFeedDecimals),
-          priceInMarketReferenceCurrency,
-          totalTokenSupply: totalLiquidity,
-          decimals,
-          rewardTokenDecimals: reward.rewardTokenDecimals
-        }) : "0";
-        const aIncentiveData = {
-          incentiveAPR: aIncentivesAPR,
-          rewardTokenAddress: reward.rewardTokenAddress,
-          rewardTokenSymbol: reward.rewardTokenSymbol
-        };
-        return aIncentiveData;
-      });
-      const vIncentivesData = reserveIncentiveData.vIncentiveData.rewardsTokenInformation.map((reward) => {
-        const vIncentivesAPR = rewardEmissionActive(reward) ? (0, calculate_incentive_apr_1.calculateIncentiveAPR)({
-          emissionPerSecond: reward.emissionPerSecond,
-          rewardTokenPriceInMarketReferenceCurrency: calculateRewardTokenPrice(reserves, reward.rewardTokenAddress, reward.rewardPriceFeed, reward.priceFeedDecimals),
-          priceInMarketReferenceCurrency,
-          totalTokenSupply: totalVariableDebt,
-          decimals,
-          rewardTokenDecimals: reward.rewardTokenDecimals
-        }) : "0";
-        const vIncentiveData = {
-          incentiveAPR: vIncentivesAPR,
-          rewardTokenAddress: reward.rewardTokenAddress,
-          rewardTokenSymbol: reward.rewardTokenSymbol
-        };
-        return vIncentiveData;
-      });
-      const sIncentivesData = reserveIncentiveData.sIncentiveData.rewardsTokenInformation.map((reward) => {
-        const sIncentivesAPR = rewardEmissionActive(reward) ? (0, calculate_incentive_apr_1.calculateIncentiveAPR)({
-          emissionPerSecond: reward.emissionPerSecond,
-          rewardTokenPriceInMarketReferenceCurrency: calculateRewardTokenPrice(reserves, reward.rewardTokenAddress, reward.rewardPriceFeed, reward.priceFeedDecimals),
-          priceInMarketReferenceCurrency,
-          totalTokenSupply: totalStableDebt,
-          decimals,
-          rewardTokenDecimals: reward.rewardTokenDecimals
-        }) : "0";
-        const sIncentiveData = {
-          incentiveAPR: sIncentivesAPR,
-          rewardTokenAddress: reward.rewardTokenAddress,
-          rewardTokenSymbol: reward.rewardTokenSymbol
-        };
-        return sIncentiveData;
-      });
-      return {
-        underlyingAsset: reserveIncentiveData.underlyingAsset,
-        aIncentivesData,
-        vIncentivesData,
-        sIncentivesData
-      };
-    }
-    exports2.calculateReserveIncentives = calculateReserveIncentives;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/incentive/calculate-all-reserve-incentives.js
-var require_calculate_all_reserve_incentives = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/incentive/calculate-all-reserve-incentives.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.calculateAllReserveIncentives = void 0;
-    var calculate_reserve_incentives_1 = require_calculate_reserve_incentives();
-    function calculateAllReserveIncentives({ reserveIncentives, reserves, marketReferenceCurrencyDecimals }) {
-      const reserveDict = {};
-      reserveIncentives.forEach((reserveIncentive) => {
-        const reserve = reserves.find((reserve2) => reserve2.underlyingAsset.toLowerCase() === reserveIncentive.underlyingAsset.toLowerCase());
-        if (reserve) {
-          const calculatedReserveIncentives = (0, calculate_reserve_incentives_1.calculateReserveIncentives)({
-            reserves,
-            reserveIncentiveData: reserveIncentive,
-            totalLiquidity: reserve.totalLiquidity,
-            totalVariableDebt: reserve.totalVariableDebt,
-            totalStableDebt: reserve.totalStableDebt,
-            priceInMarketReferenceCurrency: reserve.formattedPriceInMarketReferenceCurrency,
-            decimals: reserve.decimals,
-            marketReferenceCurrencyDecimals
-          });
-          reserveDict[calculatedReserveIncentives.underlyingAsset] = {
-            aIncentives: calculatedReserveIncentives.aIncentivesData,
-            vIncentives: calculatedReserveIncentives.vIncentivesData,
-            sIncentives: calculatedReserveIncentives.sIncentivesData
-          };
-        }
-      });
-      return reserveDict;
-    }
-    exports2.calculateAllReserveIncentives = calculateAllReserveIncentives;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/incentive/types.js
-var require_types7 = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/incentive/types.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/incentive/index.js
-var require_incentive = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/incentive/index.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    var tslib_1 = require_tslib();
-    (0, tslib_1.__exportStar)(require_calculate_all_user_incentives(), exports2);
-    (0, tslib_1.__exportStar)(require_calculate_all_reserve_incentives(), exports2);
-    (0, tslib_1.__exportStar)(require_types7(), exports2);
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/user/format-user-reserve.js
-var require_format_user_reserve = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/user/format-user-reserve.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.formatUserReserve = void 0;
-    var bignumber_1 = require_bignumber3();
-    var constants_1 = require_constants2();
-    var ray_math_1 = require_ray_math();
-    function formatUserReserve({ reserve: _reserve, marketReferenceCurrencyDecimals }) {
-      const { userReserve } = _reserve;
-      const { reserve } = userReserve;
-      const reserveDecimals = reserve.decimals;
-      const normalizeWithReserve = (n) => (0, bignumber_1.normalize)(n, reserve.decimals);
-      const exactStableBorrowRate = (0, ray_math_1.rayPow)((0, bignumber_1.valueToZDBigNumber)(userReserve.stableBorrowRate).dividedBy(constants_1.SECONDS_PER_YEAR).plus(ray_math_1.RAY), constants_1.SECONDS_PER_YEAR).minus(ray_math_1.RAY);
-      return Object.assign(Object.assign({}, userReserve), { underlyingBalance: (0, bignumber_1.normalize)(_reserve.underlyingBalance, reserveDecimals), underlyingBalanceMarketReferenceCurrency: (0, bignumber_1.normalize)(_reserve.underlyingBalanceMarketReferenceCurrency, marketReferenceCurrencyDecimals), underlyingBalanceUSD: _reserve.underlyingBalanceUSD.toString(), stableBorrows: normalizeWithReserve(_reserve.stableBorrows), stableBorrowsMarketReferenceCurrency: (0, bignumber_1.normalize)(_reserve.stableBorrowsMarketReferenceCurrency, marketReferenceCurrencyDecimals), stableBorrowsUSD: _reserve.stableBorrowsUSD.toString(), variableBorrows: normalizeWithReserve(_reserve.variableBorrows), variableBorrowsMarketReferenceCurrency: (0, bignumber_1.normalize)(_reserve.variableBorrowsMarketReferenceCurrency, marketReferenceCurrencyDecimals), variableBorrowsUSD: _reserve.variableBorrowsUSD.toString(), totalBorrows: normalizeWithReserve(_reserve.totalBorrows), totalBorrowsMarketReferenceCurrency: (0, bignumber_1.normalize)(_reserve.totalBorrowsMarketReferenceCurrency, marketReferenceCurrencyDecimals), totalBorrowsUSD: _reserve.totalBorrowsUSD.toString(), stableBorrowAPR: (0, bignumber_1.normalize)(userReserve.stableBorrowRate, constants_1.RAY_DECIMALS), stableBorrowAPY: (0, bignumber_1.normalize)(exactStableBorrowRate, constants_1.RAY_DECIMALS) });
-    }
-    exports2.formatUserReserve = formatUserReserve;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/usd/normalized-to-usd.js
-var require_normalized_to_usd = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/usd/normalized-to-usd.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.normalizedToUsd = void 0;
-    function normalizedToUsd(value, marketReferencePriceInUsd, marketReferenceCurrencyDecimals) {
-      return value.multipliedBy(marketReferencePriceInUsd).shiftedBy(marketReferenceCurrencyDecimals * -1);
-    }
-    exports2.normalizedToUsd = normalizedToUsd;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/user/calculate-user-reserve-totals.js
-var require_calculate_user_reserve_totals = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/user/calculate-user-reserve-totals.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.calculateUserReserveTotals = void 0;
-    var bignumber_1 = require_bignumber3();
-    function calculateUserReserveTotals({ userReserves, userEmodeCategoryId }) {
-      let totalLiquidityMarketReferenceCurrency = (0, bignumber_1.valueToZDBigNumber)("0");
-      let totalCollateralMarketReferenceCurrency = (0, bignumber_1.valueToZDBigNumber)("0");
-      let totalBorrowsMarketReferenceCurrency = (0, bignumber_1.valueToZDBigNumber)("0");
-      let currentLtv = (0, bignumber_1.valueToBigNumber)("0");
-      let currentLiquidationThreshold = (0, bignumber_1.valueToBigNumber)("0");
-      let isInIsolationMode = false;
-      let isolatedReserve;
-      userReserves.forEach((userReserveSummary) => {
-        totalLiquidityMarketReferenceCurrency = totalLiquidityMarketReferenceCurrency.plus(userReserveSummary.underlyingBalanceMarketReferenceCurrency);
-        totalBorrowsMarketReferenceCurrency = totalBorrowsMarketReferenceCurrency.plus(userReserveSummary.variableBorrowsMarketReferenceCurrency).plus(userReserveSummary.stableBorrowsMarketReferenceCurrency);
-        if (userReserveSummary.userReserve.reserve.usageAsCollateralEnabled && userReserveSummary.userReserve.usageAsCollateralEnabledOnUser) {
-          if (userReserveSummary.userReserve.reserve.debtCeiling !== "0") {
-            isolatedReserve = userReserveSummary.userReserve.reserve;
-            isInIsolationMode = true;
-          }
-          totalCollateralMarketReferenceCurrency = totalCollateralMarketReferenceCurrency.plus(userReserveSummary.underlyingBalanceMarketReferenceCurrency);
-          if (userEmodeCategoryId && userEmodeCategoryId === userReserveSummary.userReserve.reserve.eModeCategoryId) {
-            currentLtv = currentLtv.plus((0, bignumber_1.valueToBigNumber)(userReserveSummary.underlyingBalanceMarketReferenceCurrency).multipliedBy(userReserveSummary.userReserve.reserve.eModeLtv));
-            currentLiquidationThreshold = currentLiquidationThreshold.plus((0, bignumber_1.valueToBigNumber)(userReserveSummary.underlyingBalanceMarketReferenceCurrency).multipliedBy(userReserveSummary.userReserve.reserve.eModeLiquidationThreshold));
-          } else {
-            currentLtv = currentLtv.plus((0, bignumber_1.valueToBigNumber)(userReserveSummary.underlyingBalanceMarketReferenceCurrency).multipliedBy(userReserveSummary.userReserve.reserve.baseLTVasCollateral));
-            currentLiquidationThreshold = currentLiquidationThreshold.plus((0, bignumber_1.valueToBigNumber)(userReserveSummary.underlyingBalanceMarketReferenceCurrency).multipliedBy(userReserveSummary.userReserve.reserve.reserveLiquidationThreshold));
-          }
-        }
-      });
-      if (currentLtv.gt(0)) {
-        currentLtv = (0, bignumber_1.valueToZDBigNumber)(currentLtv.div(totalCollateralMarketReferenceCurrency));
-      }
-      if (currentLiquidationThreshold.gt(0)) {
-        currentLiquidationThreshold = (0, bignumber_1.valueToZDBigNumber)(currentLiquidationThreshold.div(totalCollateralMarketReferenceCurrency));
-      }
-      return {
-        totalLiquidityMarketReferenceCurrency,
-        totalBorrowsMarketReferenceCurrency,
-        totalCollateralMarketReferenceCurrency,
-        currentLtv,
-        currentLiquidationThreshold,
-        isInIsolationMode,
-        isolatedReserve
-      };
-    }
-    exports2.calculateUserReserveTotals = calculateUserReserveTotals;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/user/generate-raw-user-summary.js
-var require_generate_raw_user_summary = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/user/generate-raw-user-summary.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.generateRawUserSummary = void 0;
-    var tslib_1 = require_tslib();
-    var bignumber_js_1 = (0, tslib_1.__importDefault)(require_bignumber2());
-    var bignumber_1 = require_bignumber3();
-    var pool_math_1 = require_pool_math();
-    var normalized_to_usd_1 = require_normalized_to_usd();
-    var calculate_user_reserve_totals_1 = require_calculate_user_reserve_totals();
-    function generateRawUserSummary({ userReserves, marketReferencePriceInUsd, marketReferenceCurrencyDecimals, userEmodeCategoryId }) {
-      const { totalLiquidityMarketReferenceCurrency, totalBorrowsMarketReferenceCurrency, totalCollateralMarketReferenceCurrency, currentLtv, currentLiquidationThreshold, isInIsolationMode, isolatedReserve } = (0, calculate_user_reserve_totals_1.calculateUserReserveTotals)({ userReserves, userEmodeCategoryId });
-      const _availableBorrowsMarketReferenceCurrency = (0, pool_math_1.calculateAvailableBorrowsMarketReferenceCurrency)({
-        collateralBalanceMarketReferenceCurrency: totalCollateralMarketReferenceCurrency,
-        borrowBalanceMarketReferenceCurrency: totalBorrowsMarketReferenceCurrency,
-        currentLtv
-      });
-      const availableBorrowsMarketReferenceCurrency = isInIsolationMode && isolatedReserve ? bignumber_js_1.default.min((0, bignumber_1.normalizeBN)(new bignumber_js_1.default(isolatedReserve.debtCeiling).minus(isolatedReserve.isolationModeTotalDebt), isolatedReserve.debtCeilingDecimals - marketReferenceCurrencyDecimals), _availableBorrowsMarketReferenceCurrency) : _availableBorrowsMarketReferenceCurrency;
-      return {
-        isInIsolationMode,
-        isolatedReserve,
-        totalLiquidityUSD: (0, normalized_to_usd_1.normalizedToUsd)(totalLiquidityMarketReferenceCurrency, marketReferencePriceInUsd, marketReferenceCurrencyDecimals),
-        totalCollateralUSD: (0, normalized_to_usd_1.normalizedToUsd)(totalCollateralMarketReferenceCurrency, marketReferencePriceInUsd, marketReferenceCurrencyDecimals),
-        totalBorrowsUSD: (0, normalized_to_usd_1.normalizedToUsd)(totalBorrowsMarketReferenceCurrency, marketReferencePriceInUsd, marketReferenceCurrencyDecimals),
-        totalLiquidityMarketReferenceCurrency,
-        totalCollateralMarketReferenceCurrency,
-        totalBorrowsMarketReferenceCurrency,
-        availableBorrowsMarketReferenceCurrency,
-        availableBorrowsUSD: (0, normalized_to_usd_1.normalizedToUsd)(availableBorrowsMarketReferenceCurrency, marketReferencePriceInUsd, marketReferenceCurrencyDecimals),
-        currentLoanToValue: currentLtv,
-        currentLiquidationThreshold,
-        healthFactor: (0, pool_math_1.calculateHealthFactorFromBalances)({
-          collateralBalanceMarketReferenceCurrency: totalCollateralMarketReferenceCurrency,
-          borrowBalanceMarketReferenceCurrency: totalBorrowsMarketReferenceCurrency,
-          currentLiquidationThreshold
-        })
-      };
-    }
-    exports2.generateRawUserSummary = generateRawUserSummary;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/user/generate-user-reserve-summary.js
-var require_generate_user_reserve_summary = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/user/generate-user-reserve-summary.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.generateUserReserveSummary = void 0;
-    var pool_math_1 = require_pool_math();
-    function generateUserReserveSummary({ userReserve, marketReferencePriceInUsdNormalized, marketReferenceCurrencyDecimals, currentTimestamp }) {
-      const poolReserve = userReserve.reserve;
-      const { priceInMarketReferenceCurrency, decimals } = poolReserve;
-      const underlyingBalance = (0, pool_math_1.getLinearBalance)({
-        balance: userReserve.scaledATokenBalance,
-        index: poolReserve.liquidityIndex,
-        rate: poolReserve.liquidityRate,
-        lastUpdateTimestamp: poolReserve.lastUpdateTimestamp,
-        currentTimestamp
-      });
-      const { marketReferenceCurrencyBalance: underlyingBalanceMarketReferenceCurrency, usdBalance: underlyingBalanceUSD } = (0, pool_math_1.getMarketReferenceCurrencyAndUsdBalance)({
-        balance: underlyingBalance,
-        priceInMarketReferenceCurrency,
-        marketReferenceCurrencyDecimals,
-        decimals,
-        marketReferencePriceInUsdNormalized
-      });
-      const variableBorrows = (0, pool_math_1.getCompoundedBalance)({
-        principalBalance: userReserve.scaledVariableDebt,
-        reserveIndex: poolReserve.variableBorrowIndex,
-        reserveRate: poolReserve.variableBorrowRate,
-        lastUpdateTimestamp: poolReserve.lastUpdateTimestamp,
-        currentTimestamp
-      });
-      const { marketReferenceCurrencyBalance: variableBorrowsMarketReferenceCurrency, usdBalance: variableBorrowsUSD } = (0, pool_math_1.getMarketReferenceCurrencyAndUsdBalance)({
-        balance: variableBorrows,
-        priceInMarketReferenceCurrency,
-        marketReferenceCurrencyDecimals,
-        decimals,
-        marketReferencePriceInUsdNormalized
-      });
-      const stableBorrows = (0, pool_math_1.getCompoundedStableBalance)({
-        principalBalance: userReserve.principalStableDebt,
-        userStableRate: userReserve.stableBorrowRate,
-        lastUpdateTimestamp: userReserve.stableBorrowLastUpdateTimestamp,
-        currentTimestamp
-      });
-      const { marketReferenceCurrencyBalance: stableBorrowsMarketReferenceCurrency, usdBalance: stableBorrowsUSD } = (0, pool_math_1.getMarketReferenceCurrencyAndUsdBalance)({
-        balance: stableBorrows,
-        priceInMarketReferenceCurrency,
-        marketReferenceCurrencyDecimals,
-        decimals,
-        marketReferencePriceInUsdNormalized
-      });
-      return {
-        userReserve,
-        underlyingBalance,
-        underlyingBalanceMarketReferenceCurrency,
-        underlyingBalanceUSD,
-        variableBorrows,
-        variableBorrowsMarketReferenceCurrency,
-        variableBorrowsUSD,
-        stableBorrows,
-        stableBorrowsMarketReferenceCurrency,
-        stableBorrowsUSD,
-        totalBorrows: variableBorrows.plus(stableBorrows),
-        totalBorrowsMarketReferenceCurrency: variableBorrowsMarketReferenceCurrency.plus(stableBorrowsMarketReferenceCurrency),
-        totalBorrowsUSD: variableBorrowsUSD.plus(stableBorrowsUSD)
-      };
-    }
-    exports2.generateUserReserveSummary = generateUserReserveSummary;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/user/index.js
-var require_user = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/user/index.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.formatUserSummaryAndIncentives = exports2.formatUserSummary = void 0;
-    var bignumber_1 = require_bignumber3();
-    var constants_1 = require_constants2();
-    var incentive_1 = require_incentive();
-    var format_user_reserve_1 = require_format_user_reserve();
-    var generate_raw_user_summary_1 = require_generate_raw_user_summary();
-    var generate_user_reserve_summary_1 = require_generate_user_reserve_summary();
-    function formatUserSummary({ currentTimestamp, marketReferencePriceInUsd, marketReferenceCurrencyDecimals, userReserves, formattedReserves, userEmodeCategoryId }) {
-      const normalizedMarketRefPriceInUsd = (0, bignumber_1.normalize)(marketReferencePriceInUsd, constants_1.USD_DECIMALS);
-      const combinedReserves = [];
-      userReserves.forEach((userReserve) => {
-        const reserve = formattedReserves.find((r) => r.underlyingAsset.toLowerCase() === userReserve.underlyingAsset.toLowerCase());
-        if (reserve) {
-          combinedReserves.push(Object.assign(Object.assign({}, userReserve), { reserve }));
-        }
-      });
-      const computedUserReserves = combinedReserves.map((userReserve) => (0, generate_user_reserve_summary_1.generateUserReserveSummary)({
-        userReserve,
-        marketReferencePriceInUsdNormalized: normalizedMarketRefPriceInUsd,
-        marketReferenceCurrencyDecimals,
-        currentTimestamp
-      }));
-      const formattedUserReserves = computedUserReserves.map((computedUserReserve) => (0, format_user_reserve_1.formatUserReserve)({
-        reserve: computedUserReserve,
-        marketReferenceCurrencyDecimals
-      }));
-      const userData = (0, generate_raw_user_summary_1.generateRawUserSummary)({
-        userReserves: computedUserReserves,
-        marketReferencePriceInUsd: normalizedMarketRefPriceInUsd,
-        marketReferenceCurrencyDecimals,
-        userEmodeCategoryId
-      });
-      return {
-        userReservesData: formattedUserReserves,
-        totalLiquidityMarketReferenceCurrency: (0, bignumber_1.normalize)(userData.totalLiquidityMarketReferenceCurrency, marketReferenceCurrencyDecimals),
-        totalLiquidityUSD: userData.totalLiquidityUSD.toString(),
-        totalCollateralMarketReferenceCurrency: (0, bignumber_1.normalize)(userData.totalCollateralMarketReferenceCurrency, marketReferenceCurrencyDecimals),
-        totalCollateralUSD: userData.totalCollateralUSD.toString(),
-        totalBorrowsMarketReferenceCurrency: (0, bignumber_1.normalize)(userData.totalBorrowsMarketReferenceCurrency, marketReferenceCurrencyDecimals),
-        totalBorrowsUSD: userData.totalBorrowsUSD.toString(),
-        netWorthUSD: userData.totalLiquidityUSD.minus(userData.totalBorrowsUSD).toString(),
-        availableBorrowsMarketReferenceCurrency: (0, bignumber_1.normalize)(userData.availableBorrowsMarketReferenceCurrency, marketReferenceCurrencyDecimals),
-        availableBorrowsUSD: userData.availableBorrowsUSD.toString(),
-        currentLoanToValue: (0, bignumber_1.normalize)(userData.currentLoanToValue, constants_1.LTV_PRECISION),
-        currentLiquidationThreshold: (0, bignumber_1.normalize)(userData.currentLiquidationThreshold, constants_1.LTV_PRECISION),
-        healthFactor: userData.healthFactor.toFixed(),
-        isInIsolationMode: userData.isInIsolationMode,
-        isolatedReserve: userData.isolatedReserve
-      };
-    }
-    exports2.formatUserSummary = formatUserSummary;
-    function formatUserSummaryAndIncentives({ currentTimestamp, marketReferencePriceInUsd, marketReferenceCurrencyDecimals, userReserves, formattedReserves, userEmodeCategoryId, reserveIncentives, userIncentives }) {
-      const formattedUserSummary = formatUserSummary({
-        currentTimestamp,
-        marketReferencePriceInUsd,
-        marketReferenceCurrencyDecimals,
-        userReserves,
-        formattedReserves,
-        userEmodeCategoryId
-      });
-      const calculatedUserIncentives = (0, incentive_1.calculateAllUserIncentives)({
-        reserveIncentives,
-        userIncentives,
-        userReserves: formattedUserSummary.userReservesData,
-        currentTimestamp
-      });
-      return Object.assign(Object.assign({}, formattedUserSummary), { calculatedUserIncentives });
-    }
-    exports2.formatUserSummaryAndIncentives = formatUserSummaryAndIncentives;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/usd/native-to-usd.js
-var require_native_to_usd = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/usd/native-to-usd.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.nativeToUSD = void 0;
-    var tslib_1 = require_tslib();
-    var bignumber_js_1 = (0, tslib_1.__importDefault)(require_bignumber2());
-    var bignumber_1 = require_bignumber3();
-    function nativeToUSD({ amount, currencyDecimals, priceInMarketReferenceCurrency, marketReferenceCurrencyDecimals, normalizedMarketReferencePriceInUsd }) {
-      return (0, bignumber_1.valueToBigNumber)(amount.toString()).multipliedBy(priceInMarketReferenceCurrency).multipliedBy(normalizedMarketReferencePriceInUsd).dividedBy(new bignumber_js_1.default(1).shiftedBy(currencyDecimals + marketReferenceCurrencyDecimals)).toString();
-    }
-    exports2.nativeToUSD = nativeToUSD;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/compounded-interest/calculate-compounded-interest.js
-var require_calculate_compounded_interest = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/compounded-interest/calculate-compounded-interest.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.calculateCompoundedInterest = void 0;
-    var bignumber_1 = require_bignumber3();
-    var constants_1 = require_constants2();
-    var ray_math_1 = require_ray_math();
-    function calculateCompoundedInterest({ rate, currentTimestamp, lastUpdateTimestamp }) {
-      const timeDelta = (0, bignumber_1.valueToZDBigNumber)(currentTimestamp - lastUpdateTimestamp);
-      const ratePerSecond = (0, bignumber_1.valueToZDBigNumber)(rate).dividedBy(constants_1.SECONDS_PER_YEAR);
-      return (0, ray_math_1.binomialApproximatedRayPow)(ratePerSecond, timeDelta);
-    }
-    exports2.calculateCompoundedInterest = calculateCompoundedInterest;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/reserve/calculate-reserve-debt.js
-var require_calculate_reserve_debt = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/reserve/calculate-reserve-debt.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.calculateReserveDebt = void 0;
-    var ray_math_1 = require_ray_math();
-    var calculate_compounded_interest_1 = require_calculate_compounded_interest();
-    function calculateReserveDebt(reserveDebt, currentTimestamp) {
-      const totalVariableDebt = getTotalVariableDebt(reserveDebt, currentTimestamp);
-      const totalStableDebt = getTotalStableDebt(reserveDebt, currentTimestamp);
-      const totalDebt = totalVariableDebt.plus(totalStableDebt);
-      const totalLiquidity = totalDebt.plus(reserveDebt.availableLiquidity);
-      return {
-        totalVariableDebt,
-        totalStableDebt,
-        totalDebt,
-        totalLiquidity
-      };
-    }
-    exports2.calculateReserveDebt = calculateReserveDebt;
-    function getTotalVariableDebt(reserveDebt, currentTimestamp) {
-      return (0, ray_math_1.rayMul)((0, ray_math_1.rayMul)(reserveDebt.totalScaledVariableDebt, reserveDebt.variableBorrowIndex), (0, calculate_compounded_interest_1.calculateCompoundedInterest)({
-        rate: reserveDebt.variableBorrowRate,
-        currentTimestamp,
-        lastUpdateTimestamp: reserveDebt.lastUpdateTimestamp
-      }));
-    }
-    function getTotalStableDebt(reserveDebt, currentTimestamp) {
-      return (0, ray_math_1.rayMul)(reserveDebt.totalPrincipalStableDebt, (0, calculate_compounded_interest_1.calculateCompoundedInterest)({
-        rate: reserveDebt.averageStableRate,
-        currentTimestamp,
-        lastUpdateTimestamp: reserveDebt.stableDebtLastUpdateTimestamp
-      }));
-    }
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/reserve/index.js
-var require_reserve = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/reserve/index.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.formatReservesAndIncentives = exports2.formatReserves = exports2.formatReserveUSD = exports2.formatReserve = void 0;
-    var tslib_1 = require_tslib();
-    var bignumber_js_1 = (0, tslib_1.__importDefault)(require_bignumber2());
-    var bignumber_1 = require_bignumber3();
-    var constants_1 = require_constants2();
-    var index_1 = require_cjs2();
-    var calculate_reserve_incentives_1 = require_calculate_reserve_incentives();
-    var native_to_usd_1 = require_native_to_usd();
-    var normalized_to_usd_1 = require_normalized_to_usd();
-    var calculate_reserve_debt_1 = require_calculate_reserve_debt();
-    function getComputedReserveFields({ reserve, currentTimestamp }) {
-      const { totalDebt, totalStableDebt, totalVariableDebt, totalLiquidity } = (0, calculate_reserve_debt_1.calculateReserveDebt)(reserve, currentTimestamp);
-      const borrowUsageRatio = totalLiquidity.eq(0) ? "0" : (0, bignumber_1.valueToBigNumber)(totalDebt).dividedBy(totalLiquidity).toFixed();
-      const supplyUsageRatio = totalLiquidity.eq(0) ? "0" : (0, bignumber_1.valueToBigNumber)(totalDebt).dividedBy(totalLiquidity.plus(reserve.unbacked)).toFixed();
-      const reserveLiquidationBonus = (0, bignumber_1.normalize)((0, bignumber_1.valueToBigNumber)(reserve.reserveLiquidationBonus).minus(__pow(10, index_1.LTV_PRECISION)), index_1.LTV_PRECISION);
-      const eModeLiquidationBonus = (0, bignumber_1.normalize)((0, bignumber_1.valueToBigNumber)(reserve.eModeLiquidationBonus).minus(__pow(10, index_1.LTV_PRECISION)), index_1.LTV_PRECISION);
-      const availableLiquidity = reserve.borrowCap === "0" ? new bignumber_js_1.default(reserve.availableLiquidity) : bignumber_js_1.default.min(reserve.availableLiquidity, new bignumber_js_1.default(reserve.borrowCap).shiftedBy(reserve.decimals).minus(
-        totalDebt.plus(1)
-      ));
-      const supplyAPY = (0, index_1.rayPow)((0, bignumber_1.valueToZDBigNumber)(reserve.liquidityRate).dividedBy(constants_1.SECONDS_PER_YEAR).plus(index_1.RAY), constants_1.SECONDS_PER_YEAR).minus(index_1.RAY);
-      const variableBorrowAPY = (0, index_1.rayPow)((0, bignumber_1.valueToZDBigNumber)(reserve.variableBorrowRate).dividedBy(constants_1.SECONDS_PER_YEAR).plus(index_1.RAY), constants_1.SECONDS_PER_YEAR).minus(index_1.RAY);
-      const stableBorrowAPY = (0, index_1.rayPow)((0, bignumber_1.valueToZDBigNumber)(reserve.stableBorrowRate).dividedBy(constants_1.SECONDS_PER_YEAR).plus(index_1.RAY), constants_1.SECONDS_PER_YEAR).minus(index_1.RAY);
-      return {
-        totalDebt,
-        totalStableDebt,
-        totalVariableDebt,
-        totalLiquidity,
-        borrowUsageRatio,
-        supplyUsageRatio,
-        formattedReserveLiquidationBonus: reserveLiquidationBonus,
-        formattedEModeLiquidationBonus: eModeLiquidationBonus,
-        formattedEModeLiquidationThreshold: reserve.eModeLiquidationThreshold.toString(),
-        formattedEModeLtv: reserve.eModeLtv.toString(),
-        supplyAPY,
-        variableBorrowAPY,
-        stableBorrowAPY,
-        formattedAvailableLiquidity: availableLiquidity,
-        unborrowedLiquidity: reserve.availableLiquidity
-      };
-    }
-    function formatEnhancedReserve({ reserve }) {
-      const normalizeWithReserve = (n) => (0, bignumber_1.normalize)(n, reserve.decimals);
-      const isIsolated = reserve.debtCeiling !== "0";
-      const availableDebtCeilingUSD = isIsolated ? (0, bignumber_1.normalize)((0, bignumber_1.valueToBigNumber)(reserve.debtCeiling).minus(reserve.isolationModeTotalDebt), reserve.debtCeilingDecimals) : "0";
-      return Object.assign(Object.assign({}, reserve), {
-        totalVariableDebt: normalizeWithReserve(reserve.totalVariableDebt),
-        totalStableDebt: normalizeWithReserve(reserve.totalStableDebt),
-        totalLiquidity: normalizeWithReserve(reserve.totalLiquidity),
-        formattedAvailableLiquidity: normalizeWithReserve(reserve.availableLiquidity),
-        unborrowedLiquidity: normalizeWithReserve(reserve.unborrowedLiquidity),
-        borrowUsageRatio: reserve.borrowUsageRatio,
-        supplyUsageRatio: reserve.supplyUsageRatio,
-        totalDebt: normalizeWithReserve(reserve.totalDebt),
-        formattedBaseLTVasCollateral: (0, bignumber_1.normalize)(reserve.baseLTVasCollateral, index_1.LTV_PRECISION),
-        formattedEModeLtv: (0, bignumber_1.normalize)(reserve.eModeLtv, index_1.LTV_PRECISION),
-        reserveFactor: (0, bignumber_1.normalize)(reserve.reserveFactor, index_1.LTV_PRECISION),
-        supplyAPY: (0, bignumber_1.normalize)(reserve.supplyAPY, constants_1.RAY_DECIMALS),
-        supplyAPR: (0, bignumber_1.normalize)(reserve.liquidityRate, constants_1.RAY_DECIMALS),
-        variableBorrowAPY: (0, bignumber_1.normalize)(reserve.variableBorrowAPY, constants_1.RAY_DECIMALS),
-        variableBorrowAPR: (0, bignumber_1.normalize)(reserve.variableBorrowRate, constants_1.RAY_DECIMALS),
-        stableBorrowAPY: (0, bignumber_1.normalize)(reserve.stableBorrowAPY, constants_1.RAY_DECIMALS),
-        stableBorrowAPR: (0, bignumber_1.normalize)(reserve.stableBorrowRate, constants_1.RAY_DECIMALS),
-        formattedReserveLiquidationThreshold: (0, bignumber_1.normalize)(reserve.reserveLiquidationThreshold, 4),
-        formattedEModeLiquidationThreshold: (0, bignumber_1.normalize)(reserve.eModeLiquidationThreshold, 4),
-        formattedReserveLiquidationBonus: (0, bignumber_1.normalize)((0, bignumber_1.valueToBigNumber)(reserve.reserveLiquidationBonus).minus(__pow(10, index_1.LTV_PRECISION)), 4),
-        formattedEModeLiquidationBonus: (0, bignumber_1.normalize)((0, bignumber_1.valueToBigNumber)(reserve.eModeLiquidationBonus).minus(__pow(10, index_1.LTV_PRECISION)), 4),
-        totalScaledVariableDebt: normalizeWithReserve(reserve.totalScaledVariableDebt),
-        totalPrincipalStableDebt: normalizeWithReserve(reserve.totalPrincipalStableDebt),
-        debtCeilingUSD: isIsolated ? (0, bignumber_1.normalize)(reserve.debtCeiling, reserve.debtCeilingDecimals) : "0",
-        isolationModeTotalDebtUSD: isIsolated ? (0, bignumber_1.normalize)(reserve.isolationModeTotalDebt, reserve.debtCeilingDecimals) : "0",
-        availableDebtCeilingUSD,
-        isIsolated
-      });
-    }
-    function formatReserve({ reserve, currentTimestamp }) {
-      const computedFields = getComputedReserveFields({
-        reserve,
-        currentTimestamp
-      });
-      return formatEnhancedReserve({ reserve: Object.assign(Object.assign({}, reserve), computedFields) });
-    }
-    exports2.formatReserve = formatReserve;
-    function formatReserveUSD({ reserve, currentTimestamp, marketReferencePriceInUsd, marketReferenceCurrencyDecimals }) {
-      const normalizedMarketReferencePriceInUsd = (0, bignumber_1.normalizeBN)(marketReferencePriceInUsd, constants_1.USD_DECIMALS);
-      const computedFields = getComputedReserveFields({
-        reserve,
-        currentTimestamp
-      });
-      const formattedReserve = formatEnhancedReserve({
-        reserve: Object.assign(Object.assign({}, reserve), computedFields)
-      });
-      return Object.assign(Object.assign({}, formattedReserve), {
-        totalLiquidityUSD: (0, native_to_usd_1.nativeToUSD)({
-          amount: computedFields.totalLiquidity,
-          currencyDecimals: reserve.decimals,
-          marketReferenceCurrencyDecimals,
-          priceInMarketReferenceCurrency: reserve.priceInMarketReferenceCurrency,
-          normalizedMarketReferencePriceInUsd
-        }),
-        availableLiquidityUSD: (0, native_to_usd_1.nativeToUSD)({
-          amount: computedFields.formattedAvailableLiquidity,
-          currencyDecimals: reserve.decimals,
-          marketReferenceCurrencyDecimals,
-          priceInMarketReferenceCurrency: reserve.priceInMarketReferenceCurrency,
-          normalizedMarketReferencePriceInUsd
-        }),
-        totalDebtUSD: (0, native_to_usd_1.nativeToUSD)({
-          amount: computedFields.totalDebt,
-          currencyDecimals: reserve.decimals,
-          marketReferenceCurrencyDecimals,
-          priceInMarketReferenceCurrency: reserve.priceInMarketReferenceCurrency,
-          normalizedMarketReferencePriceInUsd
-        }),
-        totalVariableDebtUSD: (0, native_to_usd_1.nativeToUSD)({
-          amount: computedFields.totalVariableDebt,
-          currencyDecimals: reserve.decimals,
-          marketReferenceCurrencyDecimals,
-          priceInMarketReferenceCurrency: reserve.priceInMarketReferenceCurrency,
-          normalizedMarketReferencePriceInUsd
-        }),
-        totalStableDebtUSD: (0, native_to_usd_1.nativeToUSD)({
-          amount: computedFields.totalStableDebt,
-          currencyDecimals: reserve.decimals,
-          marketReferenceCurrencyDecimals,
-          priceInMarketReferenceCurrency: reserve.priceInMarketReferenceCurrency,
-          normalizedMarketReferencePriceInUsd
-        }),
-        formattedPriceInMarketReferenceCurrency: (0, bignumber_1.normalize)(reserve.priceInMarketReferenceCurrency, marketReferenceCurrencyDecimals),
-        priceInMarketReferenceCurrency: reserve.priceInMarketReferenceCurrency,
-        priceInUSD: (0, native_to_usd_1.nativeToUSD)({
-          amount: new bignumber_js_1.default(1).shiftedBy(reserve.decimals),
-          currencyDecimals: reserve.decimals,
-          marketReferenceCurrencyDecimals,
-          priceInMarketReferenceCurrency: reserve.priceInMarketReferenceCurrency,
-          normalizedMarketReferencePriceInUsd
-        }),
-        borrowCapUSD: (0, normalized_to_usd_1.normalizedToUsd)(new bignumber_js_1.default(reserve.borrowCap), reserve.priceInMarketReferenceCurrency, marketReferenceCurrencyDecimals).toString(),
-        supplyCapUSD: (0, normalized_to_usd_1.normalizedToUsd)(new bignumber_js_1.default(reserve.supplyCap), reserve.priceInMarketReferenceCurrency, marketReferenceCurrencyDecimals).toString(),
-        unbackedUSD: (0, normalized_to_usd_1.normalizedToUsd)(new bignumber_js_1.default(reserve.unbacked), reserve.priceInMarketReferenceCurrency, marketReferenceCurrencyDecimals).toString()
-      });
-    }
-    exports2.formatReserveUSD = formatReserveUSD;
-    function formatReserves({ reserves, currentTimestamp, marketReferencePriceInUsd, marketReferenceCurrencyDecimals }) {
-      return reserves.map((reserve) => {
-        const formattedReserve = formatReserveUSD({
-          reserve,
-          currentTimestamp,
-          marketReferencePriceInUsd,
-          marketReferenceCurrencyDecimals
-        });
-        return Object.assign(Object.assign({}, reserve), formattedReserve);
-      });
-    }
-    exports2.formatReserves = formatReserves;
-    function formatReservesAndIncentives({ reserves, currentTimestamp, marketReferencePriceInUsd, marketReferenceCurrencyDecimals, reserveIncentives }) {
-      const formattedReserves = formatReserves({
-        reserves,
-        currentTimestamp,
-        marketReferenceCurrencyDecimals,
-        marketReferencePriceInUsd
-      });
-      return formattedReserves.map((reserve) => {
-        const reserveIncentive = reserveIncentives.find((reserveIncentive2) => reserveIncentive2.underlyingAsset === reserve.underlyingAsset);
-        if (!reserveIncentive)
-          return reserve;
-        const incentive = (0, calculate_reserve_incentives_1.calculateReserveIncentives)({
-          reserves: formattedReserves,
-          reserveIncentiveData: reserveIncentive,
-          totalLiquidity: (0, bignumber_1.normalize)(reserve.totalLiquidity, -reserve.decimals),
-          totalVariableDebt: (0, bignumber_1.normalize)(reserve.totalVariableDebt, -reserve.decimals),
-          totalStableDebt: (0, bignumber_1.normalize)(reserve.totalStableDebt, -reserve.decimals),
-          priceInMarketReferenceCurrency: reserve.formattedPriceInMarketReferenceCurrency,
-          decimals: reserve.decimals,
-          marketReferenceCurrencyDecimals
-        });
-        return Object.assign(Object.assign({}, reserve), incentive);
-      });
-    }
-    exports2.formatReservesAndIncentives = formatReservesAndIncentives;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/index.js
-var require_cjs2 = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/index.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    var tslib_1 = require_tslib();
-    (0, tslib_1.__exportStar)(require_bignumber3(), exports2);
-    (0, tslib_1.__exportStar)(require_constants2(), exports2);
-    (0, tslib_1.__exportStar)(require_ray_math(), exports2);
-    (0, tslib_1.__exportStar)(require_pool_math(), exports2);
-    (0, tslib_1.__exportStar)(require_user(), exports2);
-    (0, tslib_1.__exportStar)(require_reserve(), exports2);
-    (0, tslib_1.__exportStar)(require_incentive(), exports2);
-    (0, tslib_1.__exportStar)(require_native_to_usd(), exports2);
   }
 });
 
@@ -62513,7 +61408,7 @@ var MissingAdapterError = class extends Error {
 
 // node_modules/lowdb/lib/LowSync.js
 var LowSync = class {
-  constructor(adapter4) {
+  constructor(adapter3) {
     Object.defineProperty(this, "adapter", {
       enumerable: true,
       configurable: true,
@@ -62526,8 +61421,8 @@ var LowSync = class {
       writable: true,
       value: null
     });
-    if (adapter4) {
-      this.adapter = adapter4;
+    if (adapter3) {
+      this.adapter = adapter3;
     } else {
       throw new MissingAdapterError();
     }
@@ -62699,100 +61594,15 @@ var Proposal2 = class {
   }
 };
 
-// src/static-build/vote.ts
-var import_path4 = require("path");
-var import_lodash3 = __toESM(require_lodash());
-
-// src/modules/governance/utils/getVotes.ts
-var import_math_utils = __toESM(require_cjs2());
-var getVotes = (startBlock, endBlock, currentBlock) => __async(void 0, null, function* () {
-  const latestBlock = currentBlock > endBlock ? endBlock : currentBlock;
-  const contract = governanceContract.getContractInstance(
-    governanceConfig.addresses.AAVE_GOVERNANCE_V2
-  );
-  const votes = yield contract.queryFilter(
-    contract.filters.VoteEmitted(null, null, null, null),
-    startBlock,
-    latestBlock
-  );
-  const formattedVotes = yield Promise.all(
-    votes.map((vote) => __async(void 0, null, function* () {
-      return {
-        proposalId: vote.args.id.toNumber(),
-        voter: vote.args.voter,
-        support: vote.args.support,
-        votingPower: (0, import_math_utils.normalizeBN)(vote.args.votingPower.toString(), 18).toNumber(),
-        transactionHash: vote.transactionHash,
-        timestamp: (yield vote.getBlock()).timestamp,
-        blockNumber: vote.blockNumber
-      };
-    }))
-  );
-  return { votes: formattedVotes };
-});
-
-// src/static-build/vote.ts
-var LowWithLodash3 = class extends LowSync {
-  constructor() {
-    super(...arguments);
-    this.chain = import_lodash3.default.chain(this).get("data");
-  }
-};
-var file3 = (0, import_path4.join)(process.cwd(), "src/static-build", "votes.json");
-var adapter3 = new JSONFileSync(file3);
-var db3 = new LowWithLodash3(adapter3);
-db3.read();
-var Vote = class {
-  get(proposalId) {
-    return __async(this, null, function* () {
-      var _a7;
-      const cache = (_a7 = db3.data) == null ? void 0 : _a7[proposalId];
-      if (!cache)
-        throw new Error(`could not resolve votes cache for ${proposalId}`);
-      return cache;
-    });
-  }
-  populate(proposalId, startBlock, endBlock) {
-    return __async(this, null, function* () {
-      db3.data || (db3.data = []);
-      const isCached = db3.data[proposalId];
-      if (isCached && isCached.finished) {
-        return isCached;
-      } else if (!isCached) {
-        db3.data[proposalId] = { votes: [], finished: false };
-      }
-      const provider = getProvider(governanceConfig.chainId);
-      const currentBlock = yield provider.getBlockNumber();
-      const { votes } = yield getVotes(startBlock, endBlock, currentBlock);
-      votes.filter((v) => v.proposalId === proposalId).forEach((vote) => {
-        var _a7;
-        const cache = isCached == null ? void 0 : isCached.votes.find(
-          (cacheVote) => vote.transactionHash === cacheVote.transactionHash
-        );
-        if (!cache) {
-          (_a7 = db3.data) == null ? void 0 : _a7[proposalId].votes.push(vote);
-        }
-      });
-      if (endBlock < currentBlock) {
-        db3.data[proposalId].finished = true;
-      }
-      yield db3.write();
-      return votes;
-    });
-  }
-};
-
 // src/static-build/populateCache.ts
 function populateCache() {
   return __async(this, null, function* () {
     const count = yield governanceContract.getProposalsCount();
     const ipfsFetcher = new Ipfs();
     const proposalFetcher = new Proposal2();
-    const voteFetcher = new Vote();
     for (let i = 0; i < count; i++) {
       const proposal = yield proposalFetcher.populate(i);
       yield ipfsFetcher.populate(i, proposal);
-      yield voteFetcher.populate(i, proposal.startBlock, proposal.endBlock);
     }
   });
 }

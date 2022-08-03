@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-07-29 12:06\n"
+"PO-Revision-Date: 2022-08-03 18:23\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -450,11 +450,11 @@ msgstr "Colateralización"
 
 #: src/modules/reserve-overview/ReserveFactorOverview.tsx
 msgid "Collector Contract"
-msgstr ""
+msgstr "Collector Contract"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Collector Info"
-msgstr ""
+msgstr "Collector Info"
 
 #: src/components/WalletConnection/ConnectWalletButton.tsx
 #: src/layouts/WalletWidget.tsx
@@ -2082,8 +2082,8 @@ msgid "{0} Faucet"
 msgstr "{0} Faucet"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "{0} is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
-msgstr "{0} está congelado debido a una decisión del gobierno del protocolo Aave. <0>Más detalles</0>"
+msgid "{0} is frozen due to an Aave community decision. <0>More details</0>"
+msgstr "{0} está congelado debido a una decisión de la comunidad de Aave. <0>Más detalles</0>"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{d}d"
