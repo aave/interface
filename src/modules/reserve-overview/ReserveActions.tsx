@@ -26,7 +26,6 @@ import {
   getMaxAmountAvailableToBorrow,
 } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
-
 import { CapType } from '../../components/caps/helper';
 import { AvailableTooltip } from '../../components/infoTooltips/AvailableTooltip';
 import { Row } from '../../components/primitives/Row';
@@ -37,9 +36,6 @@ import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWall
 import { Warning } from 'src/components/primitives/Warning';
 import { HarmonyWarning } from 'src/components/transactions/Warnings/HarmonyWarning';
 import getAssetCapUsage from 'src/hooks/getAssetCapUsage';
-import { SupplyCapWarning } from 'src/components/transactions/Warnings/SupplyCapWarning';
-import { DebtCeilingWarning } from 'src/components/transactions/Warnings/DebtCeilingWarning';
-import { BorrowCapWarning } from 'src/components/transactions/Warnings/BorrowCapWarning';
 
 const PaperWrapper = ({ children }: { children: ReactNode }) => {
   return (
@@ -87,14 +83,10 @@ export const ReserveActions = ({ reserve, underlyingAsset }: ReserveActionsProps
     underlyingAsset
   ).toString();
 
+  console.log({ maxAmountToSupply, maxAmountToBorrow });
   const isolationModeBorrowDisabled = user?.isInIsolationMode && !poolReserve.borrowableInIsolation;
   const eModeBorrowDisabled =
     user?.isInEmode && poolReserve.eModeCategoryId !== user.userEmodeCategoryId;
-
-  // ************** Warnings **********
-  const showSupplyCapWarning = maxAmountToSupply === '0';
-  const showBorrowCapWarning = maxAmountToBorrow === '0';
-  const showDebtCeilingWarning = poolReserve.isIsolated;
 
   if (!currentAccount && !isPermissionsLoading)
     return (
@@ -323,7 +315,7 @@ export const ReserveActions = ({ reserve, underlyingAsset }: ReserveActionsProps
         </Row>
       )}
 
-      <Stack direction="row" spacing={2}>
+      <Stack direction="row" spacing={2} sx={{ mb: 4 }}>
         <Button
           variant="contained"
           disabled={balance?.amount === '0'}
@@ -341,9 +333,9 @@ export const ReserveActions = ({ reserve, underlyingAsset }: ReserveActionsProps
           <Trans>Borrow</Trans> {downToXSM && poolReserve.symbol}
         </Button>
       </Stack>
-      {showSupplyCapWarning && <SupplyCapWarning supplyCap={supplyCap} icon={false} />}
-      {showBorrowCapWarning && <BorrowCapWarning borrowCap={borrowCap} icon={false} />}
-      {showDebtCeilingWarning && <DebtCeilingWarning debtCeiling={debtCeiling} icon={false} />}
+      {maxAmountToSupply === '0' && supplyCap.determineWarningDisplay({ supplyCap, icon: false })}
+      {maxAmountToBorrow === '0' && borrowCap.determineWarningDisplay({ borrowCap, icon: false })}
+      {poolReserve.isIsolated && debtCeiling.determineWarningDisplay({ debtCeiling, icon: false })}
     </PaperWrapper>
   );
 };

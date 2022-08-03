@@ -27,8 +27,6 @@ import {
   DetailsUnwrapSwitch,
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
-import { BorrowCapWarning } from '../Warnings/BorrowCapWarning';
-import { DebtCeilingWarning } from '../Warnings/DebtCeilingWarning';
 import { BorrowActions } from './BorrowActions';
 
 export enum ErrorType {
@@ -151,14 +149,6 @@ export const BorrowModalContent = ({
   // calculating input usd value
   const usdValue = valueToBigNumber(amount).multipliedBy(poolReserve.priceInUSD);
 
-  // ************** Warnings **********
-  // supply cap warning
-  const showBorrowCapWarning: boolean = borrowCap.percentUsed >= 98;
-
-  // debt ceiling warning
-  // Note: Does an asset have to be isolated to have a debt ceiling?
-  const showDebtCeilingWarning = poolReserve.isIsolated && debtCeiling.percentUsed >= 98;
-
   // error types handling
   let blockingError: ErrorType | undefined = undefined;
   if (interestRateMode === InterestRate.Stable && !poolReserve.stableBorrowRateEnabled) {
@@ -227,8 +217,8 @@ export const BorrowModalContent = ({
       : poolReserve.vIncentivesData;
   return (
     <>
-      {showBorrowCapWarning && <BorrowCapWarning borrowCap={borrowCap} />}
-      {showDebtCeilingWarning && <DebtCeilingWarning debtCeiling={debtCeiling} />}
+      {borrowCap.determineWarningDisplay({ borrowCap })}
+      {poolReserve.isIsolated && debtCeiling.determineWarningDisplay({ debtCeiling })}
 
       <AssetInput
         value={amount}

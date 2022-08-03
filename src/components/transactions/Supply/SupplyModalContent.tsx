@@ -31,9 +31,7 @@ import { AAVEWarning } from '../Warnings/AAVEWarning';
 import { AMPLWarning } from '../Warnings/AMPLWarning';
 import { HarmonyWarning } from '../Warnings/HarmonyWarning';
 import { IsolationModeWarning } from '../Warnings/IsolationModeWarning';
-import { DebtCeilingWarning } from '../Warnings/DebtCeilingWarning';
 import { SNXWarning } from '../Warnings/SNXWarning';
-import { SupplyCapWarning } from '../Warnings/SupplyCapWarning';
 import { SupplyActions } from './SupplyActions';
 import getAssetCapUsage from 'src/hooks/getAssetCapUsage';
 
@@ -126,13 +124,6 @@ export const SupplyModalContent = ({
       ? userReserve.usageAsCollateralEnabledOnUser
       : true);
 
-  // supply cap warning
-  const showSupplyCapWarning: boolean = supplyCap.percentUsed >= 98;
-
-  // debt ceiling warning
-  // Note: Does an asset have to be isolated to have a debt ceiling?
-  const showDebtCeilingWarning = poolReserve.isIsolated && debtCeiling.percentUsed >= 98;
-
   // TODO: check if calc is correct to see if cap reached
   const capReached =
     poolReserve.supplyCap !== '0' &&
@@ -219,8 +210,8 @@ export const SupplyModalContent = ({
   return (
     <>
       {showIsolationWarning && <IsolationModeWarning />}
-      {showSupplyCapWarning && <SupplyCapWarning supplyCap={supplyCap} />}
-      {showDebtCeilingWarning && <DebtCeilingWarning debtCeiling={debtCeiling} />}
+      {supplyCap.determineWarningDisplay({ supplyCap })}
+      {debtCeiling.determineWarningDisplay({ debtCeiling })}
       {poolReserve.symbol === 'AMPL' && <AMPLWarning />}
       {process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true' &&
         poolReserve.symbol === 'AAVE' &&
