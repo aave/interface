@@ -85,12 +85,14 @@ const getAssetCapUsage = (asset: AssetLikeObject): AssetCapUsageData => {
     supplyCap: {
       percentUsed: supplyCapUsage,
       isMaxed: supplyCapReached,
-      // percentUsed: 99,
+      // percentUsed: 99.9,
       // isMaxed: false,
       determineWarningDisplay: ({ supplyCap, icon }) =>
         supplyCap ? <SupplyCapWarning supplyCap={supplyCap} icon={icon} /> : null,
-      determineTooltipDisplay: ({ supplyCap }) =>
-        supplyCap ? <SupplyCapTooltip supplyCap={supplyCap} /> : null,
+      determineTooltipDisplay: ({ supplyCap, useDefaultTooltip }) =>
+        supplyCap ? (
+          <SupplyCapTooltip supplyCap={supplyCap} useDefaultTooltip={useDefaultTooltip} />
+        ) : null,
     },
     borrowCap: {
       percentUsed: borrowCapUsage,
@@ -99,8 +101,10 @@ const getAssetCapUsage = (asset: AssetLikeObject): AssetCapUsageData => {
       // isMaxed: false,
       determineWarningDisplay: ({ borrowCap, icon }) =>
         borrowCap ? <BorrowCapWarning borrowCap={borrowCap} icon={icon} /> : null,
-      determineTooltipDisplay: ({ borrowCap }) =>
-        borrowCap ? <BorrowCapTooltip borrowCap={borrowCap} /> : null,
+      determineTooltipDisplay: ({ borrowCap, useDefaultTooltip }) =>
+        borrowCap ? (
+          <BorrowCapTooltip borrowCap={borrowCap} useDefaultTooltip={useDefaultTooltip} />
+        ) : null,
     },
     debtCeiling: {
       percentUsed: debtCeilingUsage,

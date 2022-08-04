@@ -7,9 +7,14 @@ import { Link } from '../primitives/Link';
 
 type BorrowCapTooltipProps = TextWithTooltipProps & {
   borrowCap: AssetCapData;
+  useDefaultTooltip?: boolean;
 };
 
-export const BorrowCapTooltip = ({ borrowCap, ...rest }: BorrowCapTooltipProps) => {
+export const BorrowCapTooltip = ({
+  borrowCap,
+  useDefaultTooltip = false,
+  ...rest
+}: BorrowCapTooltipProps) => {
   // Don't show a tooltip when less than 98% utilized
   if (borrowCap.percentUsed < 98) return null;
 
@@ -30,7 +35,7 @@ export const BorrowCapTooltip = ({ borrowCap, ...rest }: BorrowCapTooltipProps) 
     </>
   );
 
-  return borrowCap.isMaxed ? (
+  return borrowCap.isMaxed && !useDefaultTooltip ? (
     <Box sx={{ ml: 2 }}>
       <TextWithTooltip {...rest} icon={<ExclamationIcon />} color="warning.main" iconSize={18}>
         {renderTooltipContent()}

@@ -199,7 +199,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                   <Trans>Total supplied</Trans>
                   {reserve.supplyCap &&
                     reserve.supplyCap !== '0' &&
-                    supplyCap.determineTooltipDisplay({ supplyCap })}
+                    supplyCap.determineTooltipDisplay({ supplyCap, useDefaultTooltip: true })}
                 </Box>
               }
             >
@@ -398,7 +398,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                       <Trans>Total borrowed</Trans>
                       {reserve.borrowCap &&
                         reserve.borrowCap !== '0' &&
-                        borrowCap.determineTooltipDisplay({ borrowCap })}
+                        borrowCap.determineTooltipDisplay({ borrowCap, useDefaultTooltip: true })}
                     </Box>
                   }
                 >

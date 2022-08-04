@@ -7,9 +7,14 @@ import { Link } from '../primitives/Link';
 
 type SupplyCapTooltipProps = TextWithTooltipProps & {
   supplyCap: AssetCapData;
+  useDefaultTooltip?: boolean;
 };
 
-export const SupplyCapTooltip = ({ supplyCap, ...rest }: SupplyCapTooltipProps) => {
+export const SupplyCapTooltip = ({
+  supplyCap,
+  useDefaultTooltip = false,
+  ...rest
+}: SupplyCapTooltipProps) => {
   // Don't show a tooltip when less than 98% utilized
   if (supplyCap.percentUsed < 98) return null;
 
@@ -30,7 +35,7 @@ export const SupplyCapTooltip = ({ supplyCap, ...rest }: SupplyCapTooltipProps) 
     </>
   );
 
-  return supplyCap.isMaxed ? (
+  return supplyCap.isMaxed && !useDefaultTooltip ? (
     <Box sx={{ ml: 2 }}>
       <TextWithTooltip {...rest} icon={<ExclamationIcon />} color="warning.main" iconSize={18}>
         {renderTooltipContent()}
