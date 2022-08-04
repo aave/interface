@@ -19,6 +19,9 @@ interface ListItemWrapperProps {
   currentMarket: CustomMarket;
   frozen?: boolean;
   reserve: ComputedReserveData;
+  showSupplyCapTooltips?: boolean;
+  showBorrowCapTooltips?: boolean;
+  showDebtCeilingTooltips?: boolean;
 }
 
 export const ListItemWrapper = ({
@@ -30,6 +33,9 @@ export const ListItemWrapper = ({
   currentMarket,
   frozen,
   reserve,
+  showSupplyCapTooltips = false,
+  showBorrowCapTooltips = false,
+  showDebtCeilingTooltips = false,
   ...rest
 }: ListItemWrapperProps) => {
   const { supplyCap, borrowCap, debtCeiling } = getAssetCapUsage(reserve);
@@ -51,9 +57,15 @@ export const ListItemWrapper = ({
         </Link>
         {frozen && <FrozenWarning symbol={symbol} />}
         {!frozen && symbol === 'AMPL' && <AMPLWarning />}
-        {supplyCap.determineTooltipDisplay({ supplyCap })}
-        {borrowCap.determineTooltipDisplay({ borrowCap })}
-        {debtCeiling.determineTooltipDisplay({ debtCeiling })}
+        {showSupplyCapTooltips &&
+          supplyCap.isMaxed &&
+          supplyCap.determineTooltipDisplay({ supplyCap })}
+        {showBorrowCapTooltips &&
+          borrowCap.isMaxed &&
+          borrowCap.determineTooltipDisplay({ borrowCap })}
+        {showDebtCeilingTooltips &&
+          debtCeiling.isMaxed &&
+          debtCeiling.determineTooltipDisplay({ debtCeiling })}
       </ListColumn>
       {children}
     </ListItem>

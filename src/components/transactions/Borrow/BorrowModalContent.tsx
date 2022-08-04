@@ -218,6 +218,7 @@ export const BorrowModalContent = ({
   return (
     <>
       {borrowCap.determineWarningDisplay({ borrowCap })}
+      {debtCeiling.determineWarningDisplay({ debtCeiling })}
       {poolReserve.isIsolated && debtCeiling.determineWarningDisplay({ debtCeiling })}
 
       <AssetInput

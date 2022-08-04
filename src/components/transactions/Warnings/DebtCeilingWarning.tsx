@@ -10,7 +10,7 @@ type DebtCeilingWarningProps = {
 
 export const DebtCeilingWarning = ({ debtCeiling, icon = true }: DebtCeilingWarningProps) => {
   // Don't show a warning when less than 98% utilized
-  if (debtCeiling.percentUsed < 98) return null;
+  if (!debtCeiling.percentUsed || debtCeiling.percentUsed < 98) return null;
 
   const severity = debtCeiling.isMaxed ? 'error' : 'warning';
 

@@ -46,6 +46,7 @@ export const SupplyAssetsListMobileItem = ({
       name={name}
       underlyingAsset={underlyingAsset}
       currentMarket={currentMarket}
+      showDebtCeilingTooltips
     >
       <ListValueRow
         title={<Trans>Supply balance</Trans>}

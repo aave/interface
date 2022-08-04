@@ -33,8 +33,8 @@ export const BorrowAssetsListItem = ({
   const borrowButtonDisable = isFreezed || Number(availableBorrows) <= 0;
 
   // Hide the asset to prevent it from being borrowed if borrow cap has been reached
-  const { borrowCap: borrowCapUsage } = getAssetCapUsage(reserve);
-  if (borrowCapUsage.isMaxed) return null;
+  const { borrowCap: borrowCapUsage, debtCeiling } = getAssetCapUsage(reserve);
+  if (borrowCapUsage.isMaxed || debtCeiling.isMaxed) return null;
 
   return (
     <ListItemWrapper

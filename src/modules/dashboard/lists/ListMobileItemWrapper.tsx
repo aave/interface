@@ -15,6 +15,9 @@ interface ListMobileItemWrapperProps {
   currentMarket?: CustomMarket;
   frozen?: boolean;
   reserve?: ComputedReserveData;
+  showSupplyCapTooltips?: boolean;
+  showBorrowCapTooltips?: boolean;
+  showDebtCeilingTooltips?: boolean;
 }
 
 export const ListMobileItemWrapper = ({
@@ -27,6 +30,9 @@ export const ListMobileItemWrapper = ({
   currentMarket,
   frozen,
   reserve,
+  showSupplyCapTooltips = false,
+  showBorrowCapTooltips = false,
+  showDebtCeilingTooltips = false,
 }: ListMobileItemWrapperProps) => {
   return (
     <ListMobileItem
@@ -40,6 +46,9 @@ export const ListMobileItemWrapper = ({
       }
       loading={loading}
       currentMarket={currentMarket}
+      showSupplyCapTooltips={showSupplyCapTooltips}
+      showBorrowCapTooltips={showBorrowCapTooltips}
+      showDebtCeilingTooltips={showDebtCeilingTooltips}
     >
       {children}
     </ListMobileItem>

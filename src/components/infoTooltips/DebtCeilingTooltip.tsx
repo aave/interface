@@ -7,9 +7,14 @@ import { Link } from '../primitives/Link';
 
 type DebtCeilingTooltipProps = TextWithTooltipProps & {
   debtCeiling: AssetCapData;
+  useDefaultTooltip?: boolean;
 };
 
-export const DebtCeilingTooltip = ({ debtCeiling, ...rest }: DebtCeilingTooltipProps) => {
+export const DebtCeilingTooltip = ({
+  debtCeiling,
+  useDefaultTooltip = false,
+  ...rest
+}: DebtCeilingTooltipProps) => {
   // Don't show a tooltip when less than 98% utilized
   if (debtCeiling.percentUsed < 98) return null;
 
@@ -32,7 +37,7 @@ export const DebtCeilingTooltip = ({ debtCeiling, ...rest }: DebtCeilingTooltipP
     </>
   );
 
-  return debtCeiling.isMaxed ? (
+  return debtCeiling.isMaxed && !useDefaultTooltip ? (
     <Box sx={{ ml: 2 }}>
       <TextWithTooltip {...rest} icon={<ExclamationIcon />} color="error.main" iconSize={18}>
         {renderTooltipContent()}

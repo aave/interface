@@ -48,6 +48,7 @@ export const SupplyAssetsListItem = ({
       detailsAddress={detailsAddress}
       data-cy={`dashboardSupplyListItem_${symbol.toUpperCase()}`}
       currentMarket={currentMarket}
+      showDebtCeilingTooltips
     >
       <ListValueColumn
         symbol={symbol}

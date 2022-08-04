@@ -16,6 +16,9 @@ interface ListMobileItemProps {
   loading?: boolean;
   currentMarket?: CustomMarket;
   reserve?: ComputedReserveData;
+  showSupplyCapTooltips?: boolean;
+  showBorrowCapTooltips?: boolean;
+  showDebtCeilingTooltips?: boolean;
 }
 
 export const ListMobileItem = ({
@@ -28,6 +31,9 @@ export const ListMobileItem = ({
   loading,
   currentMarket,
   reserve,
+  showSupplyCapTooltips = false,
+  showBorrowCapTooltips = false,
+  showDebtCeilingTooltips = false,
 }: ListMobileItemProps) => {
   const { supplyCap, borrowCap, debtCeiling } = getAssetCapUsage(reserve);
 
@@ -60,9 +66,15 @@ export const ListMobileItem = ({
                     {symbol}
                   </Typography>
                 </Box>
-                {supplyCap.determineTooltipDisplay({ supplyCap })}
-                {borrowCap.determineTooltipDisplay({ borrowCap })}
-                {debtCeiling.determineTooltipDisplay({ debtCeiling })}
+                {showSupplyCapTooltips &&
+                  supplyCap.isMaxed &&
+                  supplyCap.determineTooltipDisplay({ supplyCap })}
+                {showBorrowCapTooltips &&
+                  borrowCap.isMaxed &&
+                  borrowCap.determineTooltipDisplay({ borrowCap })}
+                {showDebtCeilingTooltips &&
+                  debtCeiling.isMaxed &&
+                  debtCeiling.determineTooltipDisplay({ debtCeiling })}
               </Link>
             )
           )}

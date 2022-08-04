@@ -10,9 +10,9 @@ type BorrowCapWarningProps = {
 
 export const BorrowCapWarning = ({ borrowCap, icon = true }: BorrowCapWarningProps) => {
   // Don't show a warning when less than 98% utilized
-  if (borrowCap.percentUsed < 98) return null;
+  if (!borrowCap.percentUsed || borrowCap.percentUsed < 98) return null;
 
-  const severity = borrowCap.isMaxed ? 'error' : 'warning';
+  const severity = 'warning';
 
   const renderText = () => {
     return borrowCap.isMaxed ? (

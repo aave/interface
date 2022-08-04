@@ -39,7 +39,7 @@ export const DebtCeilingStatus = ({
           <Typography color="text.secondary" component="span">
             <Trans>Debt Ceiling</Trans>
           </Typography>
-          {debtCeiling.determineTooltipDisplay({ debtCeiling })}
+          {debtCeiling.determineTooltipDisplay({ debtCeiling, useDefaultTooltip: true })}
         </Box>
         <Box>
           <FormattedNumber

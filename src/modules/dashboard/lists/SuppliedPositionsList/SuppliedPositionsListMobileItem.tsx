@@ -46,6 +46,8 @@ export const SuppliedPositionsListMobileItem = ({
       underlyingAsset={underlyingAsset}
       currentMarket={currentMarket}
       frozen={reserve.isFrozen}
+      showSupplyCapTooltips
+      showDebtCeilingTooltips
     >
       <ListValueRow
         title={<Trans>Supply balance</Trans>}
