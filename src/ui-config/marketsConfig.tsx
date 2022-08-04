@@ -31,14 +31,9 @@ export type MarketDataType = {
     PERMISSION_MANAGER?: string;
     WALLET_BALANCE_PROVIDER: string;
     L2_ENCODER?: string;
-    /**
-     * UiPoolDataProvider currently requires a non-master version
-     * https://github.com/aave/protocol-v2/blob/feat/split-ui-dataprovider-logic/contracts/misc/UiPoolDataProvider.sol
-     * If you deploy a market with the non default oracle or incentive controller you have to redeploy the UiPoolDataProvider as well as currently the addresses are static.
-     * In the upcoming version this will no longer be needed.
-     */
     UI_POOL_DATA_PROVIDER: string;
     UI_INCENTIVE_DATA_PROVIDER?: string;
+    COLLECTOR?: string;
   };
   /**
    * https://www.hal.xyz/ has integrated aave for healtfactor warning notification
@@ -54,6 +49,7 @@ export type MarketDataType = {
 export enum CustomMarket {
   // v3 test networks
   proto_arbitrum_rinkeby_v3 = 'proto_arbitrum_rinkeby_v3',
+  proto_arbitrum_goerli_v3 = 'proto_arbitrum_goerli_v3',
   proto_mumbai_v3 = 'proto_mumbai_v3',
   proto_fantom_testnet_v3 = 'proto_fantom_testnet_v3',
   proto_harmony_testnet_v3 = 'proto_harmony_testnet_v3',
@@ -129,9 +125,7 @@ export const marketsData: {
       collateralRepay: true,
       incentives: true,
     },
-    rpcOnly: false,
-    cachingServerUrl: 'https://cache-api-1.aave.com/graphql',
-    cachingWSServerUrl: 'wss://cache-api-1.aave.com/graphql',
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xB53C1a33016B2DC2fF3653530bfF1848a515c8c5'.toLowerCase(),
       LENDING_POOL: '0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9',
@@ -141,6 +135,7 @@ export const marketsData: {
       WALLET_BALANCE_PROVIDER: '0x8E8dAd5409E0263a51C0aB5055dA66Be28cFF922',
       UI_POOL_DATA_PROVIDER: '0x548e95Ce38B8cb1D91FD82A9F094F26295840277',
       UI_INCENTIVE_DATA_PROVIDER: '0xD01ab9a6577E1D84F142e44D49380e23A340387d',
+      COLLECTOR: '0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
@@ -148,7 +143,7 @@ export const marketsData: {
     },
   },
   // [CustomMarket.proto_goerli]: {
-  //   marketTitle: 'Ethereum Goerli',
+  //   marketTitle: 'Ethereum Görli',
   //   chainId: ChainId.goerli,
   //   enabledFeatures: {
   //   faucet: true,
@@ -189,9 +184,7 @@ export const marketsData: {
   [CustomMarket.amm_mainnet]: {
     marketTitle: 'Ethereum AMM',
     chainId: ChainId.mainnet,
-    cachingServerUrl: 'https://cache-api-1.aave.com/graphql',
-    cachingWSServerUrl: 'wss://cache-api-1.aave.com/graphql',
-    rpcOnly: false,
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xacc030ef66f9dfeae9cbb0cd1b25654b82cfa8d5'.toLowerCase(),
       LENDING_POOL: '0x7937d4799803fbbe595ed57278bc4ca21f3bffcb',
@@ -199,6 +192,7 @@ export const marketsData: {
       WALLET_BALANCE_PROVIDER: '0x8E8dAd5409E0263a51C0aB5055dA66Be28cFF922',
       UI_POOL_DATA_PROVIDER: '0x548e95Ce38B8cb1D91FD82A9F094F26295840277',
       UI_INCENTIVE_DATA_PROVIDER: '0xD01ab9a6577E1D84F142e44D49380e23A340387d',
+      COLLECTOR: '0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c',
     },
   },
   [CustomMarket.proto_mumbai]: {
@@ -238,6 +232,7 @@ export const marketsData: {
       WALLET_BALANCE_PROVIDER: '0x34aa032bC416Cf2CdC45c0C8f065b1F19463D43e',
       UI_POOL_DATA_PROVIDER: '0x67acdB3469580185811E5769113509c6e8B6Cba5',
       UI_INCENTIVE_DATA_PROVIDER: '0x645654D59A5226CBab969b1f5431aA47CBf64ab8',
+      COLLECTOR: '0x7734280A4337F37Fbf4651073Db7c28C80B339e9',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
@@ -281,6 +276,7 @@ export const marketsData: {
       WALLET_BALANCE_PROVIDER: '0x73e4898a1Bfa9f710B6A6AB516403A6299e01fc6',
       UI_POOL_DATA_PROVIDER: '0x88be7eC36719fadAbdE4307ec61EAB6fda788CEF',
       UI_INCENTIVE_DATA_PROVIDER: '0x11979886A6dBAE27D7a72c49fCF3F23240D647bF',
+      COLLECTOR: '0x467b92aF281d14cB6809913AD016a607b5ba8A36',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
@@ -289,7 +285,7 @@ export const marketsData: {
   },
   // v3
   [CustomMarket.proto_goerli_v3]: {
-    marketTitle: 'Ethereum Goerli',
+    marketTitle: 'Ethereum Görli',
     v3: true,
     chainId: ChainId.goerli,
     enabledFeatures: {
@@ -328,6 +324,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: '0x3f960bB91e85Ae2dB561BDd01B515C5A5c65802b',
       UI_INCENTIVE_DATA_PROVIDER: '0xEFdd7374551897B11a23Ec7b5694C713DFDa76f1',
       L2_ENCODER: '0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC',
+      COLLECTOR: '0x053D55f9B5AF8694c503EB288a1B7E552f590710',
       SWAP_COLLATERAL_ADAPTER: '0xAE9f94BD98eC2831a1330e0418bE0fDb5C95C2B9',
       REPAY_WITH_COLLATERAL_ADAPTER: '0x32FdC26aFFA1eB331263Bcdd59F2e46eCbCC2E24',
     },
@@ -356,6 +353,26 @@ export const marketsData: {
       L2_ENCODER: '0x3d0d309DC8f999f34c4E7296dB38F0e65D3115DF',
     },
   },
+  [CustomMarket.proto_arbitrum_goerli_v3]: {
+    marketTitle: 'Arbitrum Görli',
+    v3: true,
+    chainId: ChainId.arbitrum_goerli,
+    enabledFeatures: {
+      faucet: true,
+      incentives: true,
+    },
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0xF8aa90E66B8BAe13f2e4aDe6104abAb8eeDaBfdc'.toLowerCase(),
+      LENDING_POOL: '0x6Cbb4E8eC402E07fDF96DbbC6c752aCfB0eB6075',
+      WETH_GATEWAY: '0xBCca2fc5F30A65cE2155d739364f3fc8F57E6999',
+      FAUCET: '0x98256500C9f1CE77e4C925b7bbF1588515E34422',
+      WALLET_BALANCE_PROVIDER: '0xA0025bE90591971ad76D12F8c9CecA09f66db3D8',
+      UI_POOL_DATA_PROVIDER: '0xd5dE38432Ef93B574B5eAbeBaa8F92bB480dD14F',
+      UI_INCENTIVE_DATA_PROVIDER: '0x71af6535f74Ac34e61a0Df6221ec0442b512eBC1',
+      L2_ENCODER: '0xBFB521464727c3B31A6D9183413cc2B66f4F6686',
+    },
+  },
   [CustomMarket.proto_avalanche_v3]: {
     marketTitle: 'Avalanche',
     v3: true,
@@ -375,6 +392,7 @@ export const marketsData: {
       WALLET_BALANCE_PROVIDER: '0xBc790382B3686abffE4be14A030A96aC6154023a',
       UI_POOL_DATA_PROVIDER: '0xdBbFaFC45983B4659E368a3025b81f69Ab6E5093',
       UI_INCENTIVE_DATA_PROVIDER: '0x270f51cf3F681010B46f5c4Ee2aD5120Db33026F',
+      COLLECTOR: '0x5ba7fd868c40c16f7aDfAe6CF87121E13FC2F7a0',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
@@ -420,7 +438,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_optimism_goerli_v3]: {
-    marketTitle: 'Optimism Goerli',
+    marketTitle: 'Optimism Görli',
     v3: true,
     chainId: ChainId.optimism_goerli,
     enabledFeatures: {
@@ -457,6 +475,7 @@ export const marketsData: {
       WALLET_BALANCE_PROVIDER: '0xBc790382B3686abffE4be14A030A96aC6154023a',
       UI_POOL_DATA_PROVIDER: '0x1CCbfeC508da8D5242D5C1b368694Ab0066b39f1',
       UI_INCENTIVE_DATA_PROVIDER: '0xbA14c06011f4AF5970cFDe4364ba6320E190BD4B',
+      COLLECTOR: '0xBe85413851D195fC6341619cD68BfDc26a25b928',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
@@ -497,6 +516,7 @@ export const marketsData: {
       WALLET_BALANCE_PROVIDER: '0xBc790382B3686abffE4be14A030A96aC6154023a',
       UI_POOL_DATA_PROVIDER: '0xBC3c351349f6A919A419EE1e57F85f3e07E59dd1',
       UI_INCENTIVE_DATA_PROVIDER: '0xC09e69E79106861dF5d289dA88349f10e2dc6b5C',
+      COLLECTOR: '0x8A020d92D6B119978582BE4d3EdFdC9F7b28BF31',
     },
   },
   [CustomMarket.proto_harmony_testnet_v3]: {
@@ -534,6 +554,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: '0x64f558d4BFC1c03a8c8B2ff84976fF04c762b51f',
       UI_INCENTIVE_DATA_PROVIDER: '0x6dD4b295B457A26CC2646aAf2519436681afb5d4',
       L2_ENCODER: '0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC',
+      COLLECTOR: '0xB2289E329D2F85F1eD31Adbb30eA345278F21bcf',
     },
   },
   [CustomMarket.proto_polygon_v3]: {
@@ -555,6 +576,7 @@ export const marketsData: {
       WALLET_BALANCE_PROVIDER: '0xBc790382B3686abffE4be14A030A96aC6154023a',
       UI_POOL_DATA_PROVIDER: '0x8F1AD487C9413d7e81aB5B4E88B024Ae3b5637D0',
       UI_INCENTIVE_DATA_PROVIDER: '0x05E309C97317d8abc0f7e78185FC966FfbD2CEC0',
+      COLLECTOR: '0xe8599F3cc5D38a9aD6F3684cd5CEa72f10Dbc383',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',

@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-07-15 18:04\n"
+"PO-Revision-Date: 2022-08-02 18:22\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -448,6 +448,14 @@ msgstr "L'utilisation de la garantie est limitée en raison du mode d'isolement.
 msgid "Collateralization"
 msgstr "Collatéralisation"
 
+#: src/modules/reserve-overview/ReserveFactorOverview.tsx
+msgid "Collector Contract"
+msgstr ""
+
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Collector Info"
+msgstr ""
+
 #: src/components/WalletConnection/ConnectWalletButton.tsx
 #: src/layouts/WalletWidget.tsx
 msgid "Connect wallet"
@@ -595,6 +603,10 @@ msgstr "Discord"
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Due to a precision bug in the stETH contract, this asset can not be used in flashloan transactions"
+msgstr ""
+
+#: src/components/transactions/Warnings/HarmonyWarning.tsx
+msgid "Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Aave V3 Harmony market. <0>{0}</0>"
 msgstr ""
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
@@ -1058,6 +1070,14 @@ msgstr "Participer à cette réserve {symbol} donne des récompenses annualisée
 msgid "Pending..."
 msgstr "En attente..."
 
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
+msgid "Per the community, borrowing in this market is currently disabled. <0>Learn More</0>"
+msgstr ""
+
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+msgid "Per the community, supplying in this market is currently disabled. <0>Learn More</0>"
+msgstr ""
+
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Please connect a wallet to view your personal information here."
 msgstr "Veuillez connecter un portefeuille pour afficher vos informations personnelles ici."
@@ -1162,6 +1182,14 @@ msgstr "Remboursement {symbole}"
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Reserve Size"
 msgstr "Taille de réserve"
+
+#: src/modules/reserve-overview/ReserveFactorOverview.tsx
+msgid "Reserve factor"
+msgstr ""
+
+#: src/components/infoTooltips/ReserveFactorTooltip.tsx
+msgid "Reserve factor is a percentage of interest which goes to a {0} that is controlled by Aave governance to promote ecosystem growth."
+msgstr ""
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Reserve status & configuration"
@@ -1727,8 +1755,8 @@ msgid "Variable debt supply is not zero"
 msgstr "L'offre de dette variable n'est pas nulle"
 
 #: src/components/infoTooltips/VariableAPYTooltip.tsx
-msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions. Recommended for short-term loans."
-msgstr "Le taux d'intérêt variable <0>fluctuera</0> en fonction des conditions du marché. Recommandé pour les prêts à court terme."
+msgid "Variable interest rate will <0>fluctuate</0> based on the market conditions. Recommended for short-term positions."
+msgstr ""
 
 #: src/components/MarketSwitcher.tsx
 msgid "Version 2"
@@ -1736,6 +1764,10 @@ msgstr ""
 
 #: src/components/MarketSwitcher.tsx
 msgid "Version 3"
+msgstr ""
+
+#: src/modules/reserve-overview/ReserveFactorOverview.tsx
+msgid "View contract"
 msgstr ""
 
 #: src/modules/markets/AssetsListMobileItem.tsx
@@ -2050,7 +2082,7 @@ msgid "{0} Faucet"
 msgstr "{0} Faucet"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "{0} is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
+msgid "{0} is frozen due to an Aave community decision. <0>More details</0>"
 msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
