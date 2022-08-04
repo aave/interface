@@ -37,6 +37,7 @@ export const DebtCeilingTooltip = ({
     </>
   );
 
+  // TODO: Have a fallback when < 98% usage
   return debtCeiling.isMaxed && !useDefaultTooltip ? (
     <Box sx={{ ml: 2 }}>
       <TextWithTooltip {...rest} icon={<ExclamationIcon />} color="error.main" iconSize={18}>
