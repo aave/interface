@@ -47,6 +47,8 @@ export const networkConfigs = Object.keys(_networkConfigs).reduce((acc, value) =
       isFork: true,
       privateJsonRPCUrl: FORK_RPC_URL,
       privateJsonRPCWSUrl: FORK_WS_RPC_URL,
+      publicJsonRPCUrl: [],
+      publicJsonRPCWSUrl: '',
       underlyingChainId: FORK_BASE_CHAIN_ID,
     };
   }
@@ -159,7 +161,7 @@ export const getProvider = (chainId: ChainId): ethersProviders.Provider => {
         weight: 2,
       });
     }
-    if (config.publicJsonRPCUrl.length && !config.isFork) {
+    if (config.publicJsonRPCUrl.length) {
       config.publicJsonRPCUrl.map((rpc, ix) =>
         chainProviders.push({
           provider: new ethersProviders.StaticJsonRpcProvider(rpc, chainId),
