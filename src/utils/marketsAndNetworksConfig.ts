@@ -158,7 +158,7 @@ export const getProvider = (chainId: ChainId): ethersProviders.Provider => {
         priority: 0,
       });
     }
-    if (config.publicJsonRPCUrl.length) {
+    if (config.publicJsonRPCUrl.length && !config.isFork) {
       config.publicJsonRPCUrl.map((rpc, ix) =>
         chainProviders.push({
           provider: new ethersProviders.StaticJsonRpcProvider(rpc, chainId),
