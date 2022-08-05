@@ -40,7 +40,7 @@ const testData = {
     },
     eModeAssets: [
       assets.avalancheV3Market.DAI,
-      assets.avalancheV3Market.USDT,
+      // assets.avalancheV3Market.USDT,
       assets.avalancheV3Market.USDC,
     ],
   },
