@@ -143,6 +143,12 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
   ); // TODO: might make sense to move this to gql as well
 
   const { supplyCap, borrowCap, debtCeiling } = getAssetCapUsage(reserve);
+  const showSupplyCapStatus = reserve.supplyCap && reserve.supplyCap !== '0';
+  const showBorrowCapStatus = reserve.borrowCap && reserve.borrowCap !== '0';
+  const renderSupplyCapTooltip = () =>
+    supplyCap.determineTooltipDisplay({ supplyCap, useDefaultTooltip: true });
+  const renderBorrowCapTooltip = () =>
+    borrowCap.determineTooltipDisplay({ borrowCap, useDefaultTooltip: true });
 
   return (
     <Paper sx={{ py: '16px', px: '24px' }}>
@@ -190,21 +196,18 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
               flexWrap: 'wrap',
             }}
           >
-            {reserve.supplyCap && reserve.supplyCap !== '0' && (
-              <CapsCircularStatus value={supplyCap.percentUsed} />
-            )}
-            <PanelItem
-              title={
-                <Box display="flex" alignItems="center">
-                  <Trans>Total supplied</Trans>
-                  {reserve.supplyCap &&
-                    reserve.supplyCap !== '0' &&
-                    supplyCap.determineTooltipDisplay({ supplyCap, useDefaultTooltip: true })}
-                </Box>
-              }
-            >
-              {reserve.supplyCap && reserve.supplyCap !== '0' ? (
-                <>
+            {showSupplyCapStatus ? (
+              // With supply cap
+              <>
+                <CapsCircularStatus value={supplyCap.percentUsed} />
+                <PanelItem
+                  title={
+                    <Box display="flex" alignItems="center">
+                      <Trans>Total supplied</Trans>
+                      {renderSupplyCapTooltip()}
+                    </Box>
+                  }
+                >
                   <Box>
                     <FormattedNumber value={reserve.totalLiquidity} variant="main16" compact />
                     <Typography
@@ -229,15 +232,21 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                     </Typography>
                     <ReserveSubheader value={reserve.supplyCapUSD} />
                   </Box>
-                </>
-              ) : (
-                <>
-                  <FormattedNumber value={reserve.totalLiquidity} variant="main16" compact />
-                  <ReserveSubheader value={reserve.totalLiquidityUSD} />
-                </>
-              )}
-            </PanelItem>
-
+                </PanelItem>
+              </>
+            ) : (
+              // Without supply cap
+              <PanelItem
+                title={
+                  <Box display="flex" alignItems="center">
+                    <Trans>Total supplied</Trans>
+                  </Box>
+                }
+              >
+                <FormattedNumber value={reserve.totalLiquidity} variant="main16" compact />
+                <ReserveSubheader value={reserve.totalLiquidityUSD} />
+              </PanelItem>
+            )}
             <PanelItem title={<Trans>APY</Trans>}>
               <FormattedNumber value={reserve.supplyAPY} percent variant="main16" />
               <IncentivesButton
@@ -389,21 +398,18 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                   flexWrap: 'wrap',
                 }}
               >
-                {reserve.borrowCap && reserve.borrowCap !== '0' && (
-                  <CapsCircularStatus value={borrowCap.percentUsed} />
-                )}
-                <PanelItem
-                  title={
-                    <Box display="flex" alignItems="center">
-                      <Trans>Total borrowed</Trans>
-                      {reserve.borrowCap &&
-                        reserve.borrowCap !== '0' &&
-                        borrowCap.determineTooltipDisplay({ borrowCap, useDefaultTooltip: true })}
-                    </Box>
-                  }
-                >
-                  {reserve.borrowCap && reserve.borrowCap !== '0' ? (
-                    <>
+                {showBorrowCapStatus ? (
+                  // With borrow cap
+                  <>
+                    <CapsCircularStatus value={borrowCap.percentUsed} />
+                    <PanelItem
+                      title={
+                        <Box display="flex" alignItems="center">
+                          <Trans>Total borrowed</Trans>
+                          {renderBorrowCapTooltip()}
+                        </Box>
+                      }
+                    >
                       <Box>
                         <FormattedNumber value={reserve.totalDebt} variant="main16" />
                         <Typography
@@ -428,14 +434,21 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                         </Typography>
                         <ReserveSubheader value={reserve.borrowCapUSD} />
                       </Box>
-                    </>
-                  ) : (
-                    <>
-                      <FormattedNumber value={reserve.totalDebt} variant="main16" />
-                      <ReserveSubheader value={reserve.totalDebtUSD} />
-                    </>
-                  )}
-                </PanelItem>
+                    </PanelItem>
+                  </>
+                ) : (
+                  // Without borrow cap
+                  <PanelItem
+                    title={
+                      <Box display="flex" alignItems="center">
+                        <Trans>Total borrowed</Trans>
+                      </Box>
+                    }
+                  >
+                    <FormattedNumber value={reserve.totalDebt} variant="main16" />
+                    <ReserveSubheader value={reserve.totalDebtUSD} />
+                  </PanelItem>
+                )}
                 <PanelItem
                   title={
                     <VariableAPYTooltip

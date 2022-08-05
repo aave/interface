@@ -16,17 +16,19 @@ export const SupplyCapTooltip = ({
   ...rest
 }: SupplyCapTooltipProps) => {
   // Don't show a tooltip when less than 98% utilized
-  if (supplyCap.percentUsed < 98) return null;
+  // if (supplyCap.percentUsed < 98) return null;
 
   const renderTooltipContent = () => (
     <>
       {supplyCap.isMaxed ? (
         <Trans>Protocol supply cap at 100% for this asset. Further supply unavailable.</Trans>
-      ) : (
+      ) : supplyCap.percentUsed > 98 ? (
         <Trans>
           Asset supply is limited to a certain amount to reduce protocol exposure to the asset and
           to help manage risks involved.
         </Trans>
+      ) : (
+        <Trans>Supply is in good health</Trans>
       )}
       <br />
       <Link href="https://docs.aave.com/developers/whats-new/supply-borrow-caps">

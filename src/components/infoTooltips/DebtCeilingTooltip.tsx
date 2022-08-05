@@ -16,7 +16,7 @@ export const DebtCeilingTooltip = ({
   ...rest
 }: DebtCeilingTooltipProps) => {
   // Don't show a tooltip when less than 98% utilized
-  if (debtCeiling.percentUsed < 98) return null;
+  // if (debtCeiling.percentUsed < 98) return null;
 
   const renderTooltipContent = () => (
     <>
@@ -25,10 +25,12 @@ export const DebtCeilingTooltip = ({
           Protocol debt ceiling is at 100% for this asset. Futher borrowing against this asset is
           unavailable.
         </Trans>
-      ) : (
+      ) : debtCeiling.percentUsed > 98 ? (
         <Trans>
           Debt ceiling limits the amount possible to borrow against this asset by protocol users.
         </Trans>
+      ) : (
+        <Trans>Debt ceiling is in good health</Trans>
       )}
       <br />
       <Link href="https://docs.aave.com/faq/aave-v3-features#how-does-isolation-mode-affect-my-borrowing-power">
