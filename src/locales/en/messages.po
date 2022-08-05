@@ -322,6 +322,10 @@ msgstr "Borrowed"
 msgid "Borrowing is currently unavailable for {0}."
 msgstr "Borrowing is currently unavailable for {0}."
 
+#: src/components/infoTooltips/BorrowCapTooltip.tsx
+msgid "Borrowing is in good health"
+msgstr "Borrowing is in good health"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Borrowing is not enabled"
 msgstr "Borrowing is not enabled"
@@ -534,6 +538,10 @@ msgstr "Debt amount to repay"
 #: src/ui-config/errorMapping.tsx
 msgid "Debt ceiling is exceeded"
 msgstr "Debt ceiling is exceeded"
+
+#: src/components/infoTooltips/DebtCeilingTooltip.tsx
+msgid "Debt ceiling is in good health"
+msgstr "Debt ceiling is in good health"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Debt ceiling is not zero"
@@ -1456,6 +1464,10 @@ msgstr "Supply cap is exceeded"
 msgid "Supply cap on target reserve reached. Try lowering the amount."
 msgstr "Supply cap on target reserve reached. Try lowering the amount."
 
+#: src/components/infoTooltips/SupplyCapTooltip.tsx
+msgid "Supply is in good health"
+msgstr "Supply is in good health"
+
 #: src/components/transactions/Supply/SupplyActions.tsx
 msgid "Supply {symbol}"
 msgstr "Supply {symbol}"
@@ -1675,6 +1687,7 @@ msgstr "Total available"
 #: src/modules/markets/AssetsList.tsx
 #: src/modules/markets/AssetsListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Total borrowed"
 msgstr "Total borrowed"
 
@@ -1692,6 +1705,7 @@ msgstr "Total market size"
 
 #: src/modules/markets/AssetsList.tsx
 #: src/modules/markets/AssetsListMobileItem.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Total supplied"
 msgstr "Total supplied"
