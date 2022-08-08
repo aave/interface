@@ -32,7 +32,10 @@ export const DebtCeilingWarning = ({ debtCeiling, icon = true }: DebtCeilingWarn
     <Warning severity={severity} icon={icon}>
       {renderText()}
       <br />
-      <Link href="https://docs.aave.com/faq/aave-v3-features#how-does-isolation-mode-affect-my-borrowing-power">
+      <Link
+        href="https://docs.aave.com/faq/aave-v3-features#how-does-isolation-mode-affect-my-borrowing-power"
+        underline="always"
+      >
         <Trans>Learn more</Trans>
       </Link>
     </Warning>

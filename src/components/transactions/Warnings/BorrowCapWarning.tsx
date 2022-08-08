@@ -28,7 +28,7 @@ export const BorrowCapWarning = ({ borrowCap, icon = true }: BorrowCapWarningPro
     <Warning severity={severity} icon={icon}>
       {renderText()}
       <br />
-      <Link href="https://docs.aave.com/developers/whats-new/supply-borrow-caps">
+      <Link href="https://docs.aave.com/developers/whats-new/supply-borrow-caps" underline="always">
         <Trans>Learn more</Trans>
       </Link>
     </Warning>
