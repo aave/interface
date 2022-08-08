@@ -60875,10 +60875,7 @@ var networkConfigs = {
   [import_contract_helpers3.ChainId.mainnet]: {
     name: "Ethereum",
     privateJsonRPCUrl: "https://eth-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca",
-    publicJsonRPCUrl: [
-      "https://cloudflare-eth.com",
-      "https://rpc.flashbots.net/"
-    ],
+    publicJsonRPCUrl: ["https://cloudflare-eth.com/v1/mainnet"],
     publicJsonRPCWSUrl: "wss://eth-mainnet.alchemyapi.io/v2/demo",
     baseUniswapAdapter: "0xc3efa200a60883a96ffe3d5b492b121d6e9a1f3f",
     baseAssetSymbol: "ETH",
@@ -61138,6 +61135,8 @@ var networkConfigs2 = Object.keys(networkConfigs).reduce((acc, value) => {
       isFork: true,
       privateJsonRPCUrl: FORK_RPC_URL,
       privateJsonRPCWSUrl: FORK_WS_RPC_URL,
+      publicJsonRPCUrl: [],
+      publicJsonRPCWSUrl: "",
       underlyingChainId: FORK_BASE_CHAIN_ID
     });
   }
