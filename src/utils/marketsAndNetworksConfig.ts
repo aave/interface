@@ -47,6 +47,8 @@ export const networkConfigs = Object.keys(_networkConfigs).reduce((acc, value) =
       isFork: true,
       privateJsonRPCUrl: FORK_RPC_URL,
       privateJsonRPCWSUrl: FORK_WS_RPC_URL,
+      publicJsonRPCUrl: [],
+      publicJsonRPCWSUrl: '',
       underlyingChainId: FORK_BASE_CHAIN_ID,
     };
   }
