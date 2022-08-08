@@ -15,6 +15,7 @@ export const DebtCeilingTooltip = ({
   useDefaultTooltip = false,
   ...rest
 }: DebtCeilingTooltipProps) => {
+  // TODO: remove after updating content on line 34
   // Don't show a tooltip when less than 98% utilized
   // if (debtCeiling.percentUsed < 98) return null;
 
@@ -33,7 +34,10 @@ export const DebtCeilingTooltip = ({
         <Trans>Debt ceiling is in good health</Trans>
       )}
       <br />
-      <Link href="https://docs.aave.com/faq/aave-v3-features#how-does-isolation-mode-affect-my-borrowing-power">
+      <Link
+        href="https://docs.aave.com/faq/aave-v3-features#how-does-isolation-mode-affect-my-borrowing-power"
+        underline="always"
+      >
         <Trans>Learn more</Trans>
       </Link>
     </>

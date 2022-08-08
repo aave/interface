@@ -15,6 +15,7 @@ export const SupplyCapTooltip = ({
   useDefaultTooltip = false,
   ...rest
 }: SupplyCapTooltipProps) => {
+  // TODO: remove after updating content on line 32
   // Don't show a tooltip when less than 98% utilized
   // if (supplyCap.percentUsed < 98) return null;
 
@@ -31,7 +32,7 @@ export const SupplyCapTooltip = ({
         <Trans>Supply is in good health</Trans>
       )}
       <br />
-      <Link href="https://docs.aave.com/developers/whats-new/supply-borrow-caps">
+      <Link href="https://docs.aave.com/developers/whats-new/supply-borrow-caps" underline="always">
         <Trans>Learn more</Trans>
       </Link>
     </>
