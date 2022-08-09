@@ -6,12 +6,12 @@
   ],
   "viewportWidth": 1200,
   "viewportHeight": 800,
-  "defaultCommandTimeout": 40000,
+  "defaultCommandTimeout": 50000,
   "pageLoadTimeout": 120000,
   "video": false,
   "scrollBehavior": "center",
   "retries": {
-    "runMode": 1,
+    "runMode": 2,
     "openMode": 0
   }
 }

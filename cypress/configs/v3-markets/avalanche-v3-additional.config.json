@@ -3,16 +3,17 @@
   "testFiles": [
     "swap.avalanche-v3.spec.ts",
     "e-mode.avalanche-v3.spec.ts",
-    "isolated-mode.avalanche-v3.spec.ts"
+    "isolated-mode.avalanche-v3.spec.ts",
+    "critical-conditions.avalanche-v3.spec.ts"
   ],
   "viewportWidth": 1200,
   "viewportHeight": 800,
-  "defaultCommandTimeout": 40000,
+  "defaultCommandTimeout": 50000,
   "pageLoadTimeout": 120000,
   "video": false,
   "scrollBehavior": "center",
   "retries": {
-    "runMode": 1,
+    "runMode": 2,
     "openMode": 0
   }
 }
