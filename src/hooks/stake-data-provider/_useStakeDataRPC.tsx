@@ -8,12 +8,11 @@ import {
   C_StakeUserUiDataDocument,
   C_StakeUserUiDataQuery,
 } from './graphql/hooks';
-import { getStakeConfig } from 'src/ui-config/stakeConfig';
+import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { useProtocolDataContext } from '../useProtocolDataContext';
 
 export function _useStakeDataRPC(currentAccount: string, chainId: number, skip = false) {
   const { cache } = useApolloClient();
-  const stakeConfig = getStakeConfig();
   const { currentNetworkConfig, jsonRpcProvider } = useProtocolDataContext();
 
   const isStakeFork =

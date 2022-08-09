@@ -24,6 +24,7 @@ export const GetABPToken = () => {
           variant="outlined"
           size="small"
           onClick={handleClick}
+          data-cy={`getAbp-token`}
           startIcon={
             <Box sx={{ mr: -1 }}>
               <TokenIcon symbol="BAL" sx={{ fontSize: '14px' }} />

@@ -47,7 +47,6 @@ export const ListWrapper = ({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          mb: noData || (collapsed && !topInfo) ? 0 : 4,
         }}
       >
         <Box
