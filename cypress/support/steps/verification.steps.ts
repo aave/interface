@@ -257,6 +257,7 @@ export const checkDashboardHealthFactor = (
                 valueTo,
               timeout: 60000,
               interval: 500,
+              log: true,
             }
           );
       });
