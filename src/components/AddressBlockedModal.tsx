@@ -8,7 +8,7 @@ export interface AddressBlockedProps {
   address: string;
 }
 
-export const AddressBlocked = ({ address }: AddressBlockedProps) => {
+export const AddressBlockedModal = ({ address }: AddressBlockedProps) => {
   // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
   const setOpen = (_value: boolean) => {}; // ignore, we want the modal to not be dismissable
 

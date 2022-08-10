@@ -8,7 +8,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { AddressBlocked } from 'src/components/AddressBlockedModal';
+import { AddressBlockedModal } from 'src/components/AddressBlockedModal';
 import { useAddressAllowed } from 'src/hooks/useAddressAllowed';
 import { usePermissions } from 'src/hooks/usePermissions';
 import { ConnectWalletPaper } from '../src/components/ConnectWalletPaper';
@@ -39,7 +39,7 @@ export default function Home() {
       <DashboardTopPanel />
 
       {!isAllowed && !isAddressAllowedLoading ? (
-        <AddressBlocked address={currentAccount} />
+        <AddressBlockedModal address={currentAccount} />
       ) : (
         <ContentContainer>
           {currentAccount && !isPermissionsLoading && (
