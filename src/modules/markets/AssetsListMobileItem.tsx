@@ -4,7 +4,6 @@ import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { Link, ROUTES } from '../../components/primitives/Link';
@@ -16,7 +15,6 @@ export const AssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
   const { currentMarket } = useProtocolDataContext();
   return (
     <ListMobileItemWrapper
-      reserve={reserve}
       symbol={reserve.symbol}
       iconSymbol={reserve.iconSymbol}
       name={reserve.name}

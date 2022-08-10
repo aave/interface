@@ -58,7 +58,7 @@ export const AssetCapsProvider = ({
       ? valueToBigNumber(asset.totalLiquidity).dividedBy(asset.supplyCap).toNumber() * 100
       : 0;
     supplyCapUsage = supplyCapUsage === Infinity ? 0 : supplyCapUsage;
-    const supplyCapReached = supplyCapUsage !== Infinity && supplyCapUsage >= 99.99;
+    const supplyCapReached = supplyCapUsage >= 99.99;
 
     /*
     Borrow Cap Data
@@ -69,7 +69,7 @@ export const AssetCapsProvider = ({
       ? valueToBigNumber(asset.totalDebt).dividedBy(asset.borrowCap).toNumber() * 100
       : 0;
     borrowCapUsage = borrowCapUsage === Infinity ? 0 : borrowCapUsage;
-    const borrowCapReached = borrowCapUsage !== Infinity && borrowCapUsage >= 99.99;
+    const borrowCapReached = borrowCapUsage >= 99.99;
 
     /*
       Debt Ceiling Data

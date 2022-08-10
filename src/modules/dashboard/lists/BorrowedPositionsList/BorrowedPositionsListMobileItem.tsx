@@ -2,7 +2,6 @@ import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
 import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
 import { Row } from '../../../../components/primitives/Row';
@@ -37,7 +36,6 @@ export const BorrowedPositionsListMobileItem = ({
 
   return (
     <ListMobileItemWrapper
-      reserve={reserve}
       symbol={symbol}
       iconSymbol={iconSymbol}
       name={name}

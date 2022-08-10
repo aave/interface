@@ -29,14 +29,12 @@ export const ListMobileItemWrapper = ({
   loading,
   currentMarket,
   frozen,
-  reserve,
   showSupplyCapTooltips = false,
   showBorrowCapTooltips = false,
   showDebtCeilingTooltips = false,
 }: ListMobileItemWrapperProps) => {
   return (
     <ListMobileItem
-      reserve={reserve}
       symbol={symbol}
       iconSymbol={iconSymbol}
       name={name}

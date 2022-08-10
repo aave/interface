@@ -166,7 +166,7 @@ export const BorrowAssetsList = () => {
     >
       <>
         {!downToXSM && !!borrowReserves.length && <ListHeader head={head} />}
-        {borrowReserves.map((item, index) => (
+        {borrowReserves.map((item) => (
           <Fragment key={item.underlyingAsset}>
             <AssetCapsProvider asset={item.reserve}>
               {downToXSM ? (
