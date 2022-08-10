@@ -7,8 +7,7 @@ import { ListColumn } from '../../../components/lists/ListColumn';
 import { ListItem } from '../../../components/lists/ListItem';
 import { Link, ROUTES } from '../../../components/primitives/Link';
 import { TokenIcon } from '../../../components/primitives/TokenIcon';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import getAssetCapUsage from 'src/hooks/getAssetCapUsage';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
 
 interface ListItemWrapperProps {
   symbol: string;
@@ -18,7 +17,6 @@ interface ListItemWrapperProps {
   children: ReactNode;
   currentMarket: CustomMarket;
   frozen?: boolean;
-  reserve: ComputedReserveData;
   showSupplyCapTooltips?: boolean;
   showBorrowCapTooltips?: boolean;
   showDebtCeilingTooltips?: boolean;
@@ -32,13 +30,12 @@ export const ListItemWrapper = ({
   detailsAddress,
   currentMarket,
   frozen,
-  reserve,
   showSupplyCapTooltips = false,
   showBorrowCapTooltips = false,
   showDebtCeilingTooltips = false,
   ...rest
 }: ListItemWrapperProps) => {
-  const { supplyCap, borrowCap, debtCeiling } = getAssetCapUsage(reserve);
+  const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
 
   return (
     <ListItem {...rest}>

@@ -35,7 +35,7 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { Warning } from 'src/components/primitives/Warning';
 import { HarmonyWarning } from 'src/components/transactions/Warnings/HarmonyWarning';
-import getAssetCapUsage from 'src/hooks/getAssetCapUsage';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
 
 const PaperWrapper = ({ children }: { children: ReactNode }) => {
   return (
@@ -50,11 +50,10 @@ const PaperWrapper = ({ children }: { children: ReactNode }) => {
 };
 
 interface ReserveActionsProps {
-  reserve: ComputedReserveData;
   underlyingAsset: string;
 }
 
-export const ReserveActions = ({ reserve, underlyingAsset }: ReserveActionsProps) => {
+export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const { openBorrow, openFaucet, openSupply } = useModalContext();
@@ -64,7 +63,7 @@ export const ReserveActions = ({ reserve, underlyingAsset }: ReserveActionsProps
   const { isPermissionsLoading } = usePermissions();
   const { currentNetworkConfig } = useProtocolDataContext();
   const { bridge, name: networkName } = currentNetworkConfig;
-  const { supplyCap, borrowCap, debtCeiling } = getAssetCapUsage(reserve);
+  const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
 
   if (!currentAccount && !isPermissionsLoading)
     return (

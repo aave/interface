@@ -1,7 +1,7 @@
 import { ExclamationIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box } from '@mui/material';
-import { AssetCapData } from 'src/hooks/getAssetCapUsage';
+import { AssetCapData } from 'src/hooks/useAssetCaps';
 import { TextWithTooltip, TextWithTooltipProps } from '../TextWithTooltip';
 import { Link } from '../primitives/Link';
 

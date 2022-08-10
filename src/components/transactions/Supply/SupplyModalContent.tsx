@@ -33,7 +33,7 @@ import { HarmonyWarning } from '../Warnings/HarmonyWarning';
 import { IsolationModeWarning } from '../Warnings/IsolationModeWarning';
 import { SNXWarning } from '../Warnings/SNXWarning';
 import { SupplyActions } from './SupplyActions';
-import getAssetCapUsage from 'src/hooks/getAssetCapUsage';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
 
 export enum ErrorType {
   CAP_REACHED,
@@ -51,7 +51,7 @@ export const SupplyModalContent = ({
   const { marketReferencePriceInUsd, user } = useAppDataContext();
   const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
   const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
-  const { supplyCap, debtCeiling } = getAssetCapUsage(poolReserve);
+  const { supplyCap, debtCeiling } = useAssetCaps();
 
   // states
   const [_amount, setAmount] = useState('');

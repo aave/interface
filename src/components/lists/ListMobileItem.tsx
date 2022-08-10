@@ -3,8 +3,7 @@ import { ReactNode } from 'react';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { Link, ROUTES } from '../primitives/Link';
 import { TokenIcon } from '../primitives/TokenIcon';
-import getAssetCapUsage from 'src/hooks/getAssetCapUsage';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
 
 interface ListMobileItemProps {
   warningComponent?: ReactNode;
@@ -15,7 +14,6 @@ interface ListMobileItemProps {
   underlyingAsset?: string;
   loading?: boolean;
   currentMarket?: CustomMarket;
-  reserve?: ComputedReserveData;
   showSupplyCapTooltips?: boolean;
   showBorrowCapTooltips?: boolean;
   showDebtCeilingTooltips?: boolean;
@@ -30,12 +28,11 @@ export const ListMobileItem = ({
   underlyingAsset,
   loading,
   currentMarket,
-  reserve,
   showSupplyCapTooltips = false,
   showBorrowCapTooltips = false,
   showDebtCeilingTooltips = false,
 }: ListMobileItemProps) => {
-  const { supplyCap, borrowCap, debtCeiling } = getAssetCapUsage(reserve);
+  const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
 
   return (
     <Box>

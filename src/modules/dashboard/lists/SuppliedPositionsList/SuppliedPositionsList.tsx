@@ -14,6 +14,8 @@ import { ListLoader } from '../ListLoader';
 import { ListTopInfoItem } from '../../../dashboard/lists/ListTopInfoItem';
 import { SuppliedPositionsListItem } from './SuppliedPositionsListItem';
 import { SuppliedPositionsListMobileItem } from './SuppliedPositionsListMobileItem';
+import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
+import { Fragment } from 'react';
 
 export const SuppliedPositionsList = () => {
   const { user, loading } = useAppDataContext();
@@ -81,13 +83,17 @@ export const SuppliedPositionsList = () => {
       {suppliedPosition.length ? (
         <>
           {!downToXSM && <ListHeader head={head} />}
-          {suppliedPosition.map((item) =>
-            downToXSM ? (
-              <SuppliedPositionsListMobileItem {...item} user={user} key={item.underlyingAsset} />
-            ) : (
-              <SuppliedPositionsListItem {...item} user={user} key={item.underlyingAsset} />
-            )
-          )}
+          {suppliedPosition.map((item) => (
+            <Fragment key={item.underlyingAsset}>
+              <AssetCapsProvider asset={item.reserve}>
+                {downToXSM ? (
+                  <SuppliedPositionsListMobileItem {...item} user={user} />
+                ) : (
+                  <SuppliedPositionsListItem {...item} user={user} />
+                )}
+              </AssetCapsProvider>
+            </Fragment>
+          ))}
         </>
       ) : (
         <DashboardContentNoData text={<Trans>Nothing supplied yet</Trans>} />

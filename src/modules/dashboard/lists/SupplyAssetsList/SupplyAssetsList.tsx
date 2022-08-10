@@ -3,7 +3,7 @@ import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import BigNumber from 'bignumber.js';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
@@ -20,6 +20,7 @@ import { SupplyAssetsListItem } from './SupplyAssetsListItem';
 import { SupplyAssetsListMobileItem } from './SupplyAssetsListMobileItem';
 import { Warning } from 'src/components/primitives/Warning';
 import { HarmonyWarning } from 'src/components/transactions/Warnings/HarmonyWarning';
+import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 
 export const SupplyAssetsList = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
@@ -223,13 +224,17 @@ export const SupplyAssetsList = () => {
     >
       <>
         {!downToXSM && !!supplyReserves && !supplyDisabled && <ListHeader head={head} />}
-        {supplyReserves.map((item) =>
-          downToXSM ? (
-            <SupplyAssetsListMobileItem {...item} key={item.id} />
-          ) : (
-            <SupplyAssetsListItem {...item} key={item.id} />
-          )
-        )}
+        {supplyReserves.map((item) => (
+          <Fragment key={item.underlyingAsset}>
+            <AssetCapsProvider asset={item.reserve}>
+              {downToXSM ? (
+                <SupplyAssetsListMobileItem {...item} key={item.id} />
+              ) : (
+                <SupplyAssetsListItem {...item} key={item.id} />
+              )}
+            </AssetCapsProvider>
+          </Fragment>
+        ))}
       </>
     </ListWrapper>
   );

@@ -1,9 +1,9 @@
+import { Fragment } from 'react';
 import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-
 import { CapType } from '../../../../components/caps/helper';
 import { AvailableTooltip } from '../../../../components/infoTooltips/AvailableTooltip';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
@@ -24,6 +24,7 @@ import { Link } from '../../../../components/primitives/Link';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { Warning } from 'src/components/primitives/Warning';
+import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 
 export const BorrowAssetsList = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
@@ -165,13 +166,17 @@ export const BorrowAssetsList = () => {
     >
       <>
         {!downToXSM && !!borrowReserves.length && <ListHeader head={head} />}
-        {borrowReserves.map((item, index) =>
-          downToXSM ? (
-            <BorrowAssetsListMobileItem {...item} key={index} />
-          ) : (
-            <BorrowAssetsListItem {...item} key={index} />
-          )
-        )}
+        {borrowReserves.map((item, index) => (
+          <Fragment key={item.underlyingAsset}>
+            <AssetCapsProvider asset={item.reserve}>
+              {downToXSM ? (
+                <BorrowAssetsListMobileItem {...item} />
+              ) : (
+                <BorrowAssetsListItem {...item} />
+              )}
+            </AssetCapsProvider>
+          </Fragment>
+        ))}
       </>
     </ListWrapper>
   );

@@ -2,9 +2,8 @@ import { calculateHealthFactorFromBalancesBigUnits, valueToBigNumber } from '@aa
 import { Trans } from '@lingui/macro';
 import { Alert, Typography } from '@mui/material';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
-import getAssetCapUsage from 'src/hooks/getAssetCapUsage';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
-
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -30,7 +29,7 @@ export const CollateralChangeModalContent = ({
 }: ModalWrapperProps) => {
   const { gasLimit, mainTxState: collateralChangeTxState, txError } = useModalContext();
   const { user } = useAppDataContext();
-  const { debtCeiling } = getAssetCapUsage(poolReserve);
+  const { debtCeiling } = useAssetCaps();
 
   // health factor Calcs
   const usageAsCollateralModeAfterSwitch = !userReserve.usageAsCollateralEnabledOnUser;

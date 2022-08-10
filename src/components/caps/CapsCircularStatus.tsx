@@ -7,8 +7,8 @@ type CapsCircularStatusProps = {
 };
 
 export const CapsCircularStatus = ({ value }: CapsCircularStatusProps) => {
-  // Protect when dividing by zero
-  if (value === Infinity) return null;
+  // If value is zero, don't show anything
+  if (value === 0) return null;
 
   const determineColor = (): 'error' | 'warning' | 'success' => {
     if (Math.round(value) >= 99.99) {

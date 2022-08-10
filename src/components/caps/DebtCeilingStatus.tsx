@@ -6,7 +6,7 @@ import { Box, Typography } from '@mui/material';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import type { Theme } from '@mui/material';
 import { Trans } from '@lingui/macro';
-import { AssetCapHookData } from 'src/hooks/getAssetCapUsage';
+import { AssetCapHookData } from 'src/hooks/useAssetCaps';
 
 type DebtCeilingTooltipProps = {
   debt: string;

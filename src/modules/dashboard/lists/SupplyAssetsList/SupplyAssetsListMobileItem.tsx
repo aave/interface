@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
-import getAssetCapUsage from 'src/hooks/getAssetCapUsage';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -29,18 +29,16 @@ export const SupplyAssetsListMobileItem = ({
   isFreezed,
   underlyingAsset,
   detailsAddress,
-  reserve,
 }: SupplyAssetsItem) => {
   const { currentMarket } = useProtocolDataContext();
   const { openSupply } = useModalContext();
 
   // Hide the asset to prevent it from being supplied if supply cap has been reached
-  const { supplyCap: supplyCapUsage } = getAssetCapUsage(reserve);
+  const { supplyCap: supplyCapUsage } = useAssetCaps();
   if (supplyCapUsage.isMaxed) return null;
 
   return (
     <ListMobileItemWrapper
-      reserve={reserve}
       symbol={symbol}
       iconSymbol={iconSymbol}
       name={name}

@@ -13,6 +13,7 @@ import {
   ComputedReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { ReserveActions } from 'src/modules/reserve-overview/ReserveActions';
 import { ReserveConfiguration } from 'src/modules/reserve-overview/ReserveConfiguration';
@@ -40,7 +41,7 @@ export default function ReserveOverview() {
   const isOverview = mode === 'overview';
 
   return (
-    <>
+    <AssetCapsProvider asset={reserve}>
       <ReserveTopDetails underlyingAsset={underlyingAsset} />
 
       <ContentContainer>
@@ -90,11 +91,11 @@ export default function ReserveOverview() {
               width: { xs: '100%', lg: '416px' },
             }}
           >
-            <ReserveActions reserve={reserve} underlyingAsset={underlyingAsset} />
+            <ReserveActions underlyingAsset={underlyingAsset} />
           </Box>
         </Box>
       </ContentContainer>
-    </>
+    </AssetCapsProvider>
   );
 }
 

@@ -35,7 +35,7 @@ import { frozenProposalMap } from 'src/utils/marketsAndNetworksConfig';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { DebtCeilingStatus } from 'src/components/caps/DebtCeilingStatus';
 import { ReserveFactorOverview } from 'src/modules/reserve-overview/ReserveFactorOverview';
-import getAssetCapUsage from 'src/hooks/getAssetCapUsage';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
   <Box
@@ -142,7 +142,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
       : ''
   ); // TODO: might make sense to move this to gql as well
 
-  const { supplyCap, borrowCap, debtCeiling } = getAssetCapUsage(reserve);
+  const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
   const showSupplyCapStatus = reserve.supplyCap && reserve.supplyCap !== '0';
   const showBorrowCapStatus = reserve.borrowCap && reserve.borrowCap !== '0';
   const renderSupplyCapTooltip = () =>

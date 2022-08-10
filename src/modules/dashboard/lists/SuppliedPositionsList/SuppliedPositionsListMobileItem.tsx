@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
-import getAssetCapUsage from 'src/hooks/getAssetCapUsage';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
 
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
 import { Row } from '../../../../components/primitives/Row';
@@ -27,7 +27,7 @@ export const SuppliedPositionsListMobileItem = ({
     reserve;
   const { currentMarketData, currentMarket } = useProtocolDataContext();
   const { openSupply, openWithdraw, openCollateralChange } = useModalContext();
-  const { debtCeiling } = getAssetCapUsage(reserve);
+  const { debtCeiling } = useAssetCaps();
   const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
 
   const canBeEnabledAsCollateral =
