@@ -21,7 +21,7 @@ export const useAddressAllowed = (): AddressAllowedResult => {
         setIsLoading(true);
         // TODO: pull url from the config
         const response = await fetch(
-          `http://localhost:3000/addresses/status?address=${walletAddress}`
+          `https://api-v2-feat-readd-wallet-screen-endpoint.aaw.fi/addresses/status?address=${walletAddress}`
         );
         const data: { addressAllowed: boolean } = await response.json();
         setIsAllowed(data.addressAllowed);
