@@ -5,7 +5,7 @@ import { useProtocolDataContext } from './useProtocolDataContext';
 
 export interface AddressAllowedResult {
   isAllowed: boolean;
-  isLoading: boolean;
+  loading: boolean;
 }
 
 export const useAddressAllowed = (): AddressAllowedResult => {
@@ -44,6 +44,6 @@ export const useAddressAllowed = (): AddressAllowedResult => {
 
   return {
     isAllowed,
-    isLoading,
+    loading: isLoading,
   };
 };
