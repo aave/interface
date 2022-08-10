@@ -209,7 +209,7 @@ export const SupplyModalContent = ({
 
   return (
     <>
-      {showIsolationWarning && <IsolationModeWarning />}
+      {showIsolationWarning && <IsolationModeWarning asset={poolReserve.symbol} />}
       {supplyCap.determineWarningDisplay({ supplyCap })}
       {debtCeiling.determineWarningDisplay({ debtCeiling })}
       {poolReserve.symbol === 'AMPL' && <AMPLWarning />}

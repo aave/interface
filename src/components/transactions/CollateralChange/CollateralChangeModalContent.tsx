@@ -105,7 +105,9 @@ export const CollateralChangeModalContent = ({
         </Alert>
       )}
 
-      {poolReserve.isIsolated && usageAsCollateralModeAfterSwitch && <IsolationModeWarning />}
+      {poolReserve.isIsolated && usageAsCollateralModeAfterSwitch && (
+        <IsolationModeWarning asset={poolReserve.symbol} />
+      )}
       {poolReserve.isIsolated && !usageAsCollateralModeAfterSwitch && (
         <Alert severity="info" icon={false}>
           <Trans>You will exit isolation mode and other tokens can now be used as collateral</Trans>

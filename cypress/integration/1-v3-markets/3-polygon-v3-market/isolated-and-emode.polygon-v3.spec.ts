@@ -1,14 +1,14 @@
 import { configEnvWithTenderlyPolygonFork } from '../../../support/steps/configuration.steps';
-import { supply, borrow, swap, repay, changeCollateral } from '../../../support/steps/main.steps';
+import { supply, borrow, swap, emodeActivating } from '../../../support/steps/main.steps';
 import { skipState } from '../../../support/steps/common';
 import assets from '../../../fixtures/assets.json';
 import constants from '../../../fixtures/constans.json';
 import {
   verifyCountOfBorrowAssets,
   dashboardAssetValuesVerification,
-  switchCollateralBlocked,
-  borrowsUnavailable,
   switchCollateralBlockedInModal,
+  checkDashboardHealthFactor,
+  borrowsAvailable,
 } from '../../../support/steps/verification.steps';
 
 const testData = {
@@ -31,33 +31,12 @@ const testData = {
       amount: 10,
       apyType: constants.borrowAPYType.default,
       hasApproval: true,
-      isRisk: false,
+      isMaxAmount: true,
+      isRisk: true,
     },
     checkBorrowTypeBlocked1: {
       asset: assets.polygonV3Market.USDT,
       isCollateralType: true,
-    },
-    checkBorrowTypeBlocked2: {
-      asset: assets.polygonV3Market.USDT,
-      isCollateralType: false,
-    },
-    repay: {
-      asset: assets.polygonV3Market.USDT,
-      apyType: constants.apyType.variable,
-      amount: 2,
-      isMaxAmount: true,
-      hasApproval: false,
-      repayOption: constants.repayType.default,
-    },
-    switchCollateralForUSDT: {
-      asset: assets.polygonV3Market.USDT,
-      isCollateralType: true,
-      hasApproval: true,
-    },
-    switchCollateralForMATIC: {
-      asset: assets.polygonV3Market.MATIC,
-      isCollateralType: true,
-      hasApproval: true,
     },
   },
   verifications: {
@@ -77,7 +56,7 @@ const testData = {
   ],
 };
 
-describe('ISOLATED MODE SPEC, POLYGON V3 MARKET', () => {
+describe('ISOLATED MODE with EMODE SPEC, POLYGON V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({ market: 'fork_proto_polygon_v3', v3: true });
   describe('Get isolated asset', () => {
@@ -91,12 +70,15 @@ describe('ISOLATED MODE SPEC, POLYGON V3 MARKET', () => {
   describe('Verify borrowing in isolated mode', () => {
     borrow(testData.testCases.borrow, skipTestState, true);
     switchCollateralBlockedInModal(testData.testCases.checkBorrowTypeBlocked1, skipTestState);
-    repay(testData.testCases.repay, skipTestState, false);
   });
-  describe('Switch off isolated mode', () => {
-    changeCollateral(testData.testCases.switchCollateralForUSDT, skipTestState, false);
-    borrowsUnavailable(skipTestState);
-    supply(testData.testCases.depositMATIC, skipTestState, true);
-    switchCollateralBlocked(testData.testCases.checkBorrowTypeBlocked2, skipTestState);
+  describe('Turn on E-Mode and verify increase of health factor', () => {
+    emodeActivating({ turnOn: true }, skipTestState, true);
+    checkDashboardHealthFactor({ valueFrom: 1.07, valueTo: 1000 }, skipTestState);
+    borrowsAvailable(skipTestState);
+    verifyCountOfBorrowAssets({ assets: testData.IsolatedModeAssets }, skipTestState);
+  });
+  describe('Verify additional borrowing with active e-mode', () => {
+    borrow(testData.testCases.borrow, skipTestState, true);
+    checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.07 }, skipTestState);
   });
 });
