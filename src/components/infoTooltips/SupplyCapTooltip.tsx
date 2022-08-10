@@ -38,7 +38,6 @@ export const SupplyCapTooltip = ({
     </>
   );
 
-  // TODO: Have a fallback when < 98% usage
   return supplyCap.isMaxed && !useDefaultTooltip ? (
     <Box sx={{ ml: 2 }}>
       <TextWithTooltip {...rest} icon={<ExclamationIcon />} color="warning.main" iconSize={18}>

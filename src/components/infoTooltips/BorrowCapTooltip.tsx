@@ -38,7 +38,6 @@ export const BorrowCapTooltip = ({
     </>
   );
 
-  // TODO: Have a fallback when < 98% usage
   return borrowCap.isMaxed && !useDefaultTooltip ? (
     <Box sx={{ ml: 2 }}>
       <TextWithTooltip {...rest} icon={<ExclamationIcon />} color="warning.main" iconSize={18}>

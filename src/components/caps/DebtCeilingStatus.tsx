@@ -11,25 +11,36 @@ import { AssetCapHookData } from 'src/hooks/useAssetCaps';
 type DebtCeilingTooltipProps = {
   debt: string;
   ceiling: string;
-  debtCeiling: AssetCapHookData;
+  usageData: AssetCapHookData;
 };
 
 export const DebtCeilingStatus = ({
   debt,
   ceiling,
-  debtCeiling,
+  usageData,
 }: LinearProgressProps & DebtCeilingTooltipProps) => {
-  // Protect when dividing by zero
-  if (debtCeiling.percentUsed === Infinity) return null;
-
   const determineColor = (theme: Theme): string => {
-    if (debtCeiling.isMaxed || debtCeiling.percentUsed >= 99.99) {
+    if (usageData.isMaxed || usageData.percentUsed >= 99.99) {
       return theme.palette.error.main;
-    } else if (debtCeiling.percentUsed >= 98) {
+    } else if (usageData.percentUsed >= 98) {
       return theme.palette.warning.main;
     } else {
       return theme.palette.success.main;
     }
+  };
+
+  const progressBarStyles = {
+    borderRadius: 5,
+    my: 2,
+    height: 5,
+    [`&.${linearProgressClasses.colorPrimary}`]: {
+      backgroundColor: (theme: Theme) =>
+        theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
+    },
+    [`& .${linearProgressClasses.bar}`]: {
+      borderRadius: 5,
+      backgroundColor: (theme: Theme) => determineColor(theme),
+    },
   };
 
   return (
@@ -39,7 +50,7 @@ export const DebtCeilingStatus = ({
           <Typography color="text.secondary" component="span">
             <Trans>Debt Ceiling</Trans>
           </Typography>
-          {debtCeiling.determineTooltipDisplay({ debtCeiling, useDefaultTooltip: true })}
+          {usageData.determineTooltipDisplay({ debtCeiling: usageData, useDefaultTooltip: true })}
         </Box>
         <Box>
           <FormattedNumber
@@ -67,22 +78,10 @@ export const DebtCeilingStatus = ({
         </Box>
       </Box>
       <LinearProgress
+        sx={progressBarStyles}
         variant="determinate"
-        sx={{
-          borderRadius: 5,
-          my: 2,
-          height: 5,
-          [`&.${linearProgressClasses.colorPrimary}`]: {
-            backgroundColor: (theme) =>
-              theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
-          },
-          [`& .${linearProgressClasses.bar}`]: {
-            borderRadius: 5,
-            backgroundColor: (theme) => determineColor(theme),
-          },
-        }}
         // We show at minimum, 1% color to represent small values
-        value={debtCeiling.percentUsed <= 1 ? 1 : debtCeiling.percentUsed}
+        value={usageData.percentUsed <= 1 ? 1 : usageData.percentUsed}
       />
     </>
   );

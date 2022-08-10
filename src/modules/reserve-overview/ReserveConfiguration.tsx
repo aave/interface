@@ -376,7 +376,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                   <DebtCeilingStatus
                     debt={reserve.isolationModeTotalDebtUSD}
                     ceiling={reserve.debtCeilingUSD}
-                    debtCeiling={debtCeiling}
+                    usageData={debtCeiling}
                   />
                 </ReserveOverviewBox>
               )}
