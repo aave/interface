@@ -35,6 +35,8 @@ export const SYMBOL_MAP: { [key: string]: string } = {
   'AAVE.e': 'AAVE',
   'USDT.e': 'USDT',
   'USDC.e': 'USDC',
+  // polygon
+  miMATIC: 'MAI',
 };
 
 /**
