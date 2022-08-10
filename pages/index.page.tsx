@@ -8,6 +8,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useAddressAllowed } from 'src/hooks/useAddressAllowed';
 import { usePermissions } from 'src/hooks/usePermissions';
 import { ConnectWalletPaper } from '../src/components/ConnectWalletPaper';
 import { ContentContainer } from '../src/components/ContentContainer';
@@ -23,6 +24,8 @@ export default function Home() {
   const { currentAccount, loading: web3Loading } = useWeb3Context();
   const { isPermissionsLoading } = usePermissions();
 
+  const { isAllowed, isLoading: isAddressAllowedLoading } = useAddressAllowed();
+
   const [mode, setMode] = useState<'supply' | 'borrow' | ''>('');
 
   useEffect(() => {
@@ -34,42 +37,49 @@ export default function Home() {
     <>
       <DashboardTopPanel />
 
-      <ContentContainer>
-        {currentAccount && !isPermissionsLoading && (
-          <Box
-            sx={{
-              display: { xs: 'flex', lg: 'none' },
-              justifyContent: { xs: 'center', xsm: 'flex-start' },
-              mb: { xs: 3, xsm: 4 },
-            }}
-          >
-            <ToggleButtonGroup
-              color="primary"
-              value={mode}
-              exclusive
-              onChange={(_, value) => setMode(value)}
-              sx={{ width: { xs: '100%', xsm: '359px' }, height: '44px' }}
+      {!isAllowed && !isAddressAllowedLoading ? (
+        <Box>
+          We are not allowed to serve you a ui to interact with the protocol, because your address
+          has been listed on ...
+        </Box>
+      ) : (
+        <ContentContainer>
+          {currentAccount && !isPermissionsLoading && (
+            <Box
+              sx={{
+                display: { xs: 'flex', lg: 'none' },
+                justifyContent: { xs: 'center', xsm: 'flex-start' },
+                mb: { xs: 3, xsm: 4 },
+              }}
             >
-              <ToggleButton value="supply" disabled={mode === 'supply'}>
-                <Typography variant="subheader1">
-                  <Trans>Supply</Trans>
-                </Typography>
-              </ToggleButton>
-              <ToggleButton value="borrow" disabled={mode === 'borrow'}>
-                <Typography variant="subheader1">
-                  <Trans>Borrow</Trans>
-                </Typography>
-              </ToggleButton>
-            </ToggleButtonGroup>
-          </Box>
-        )}
+              <ToggleButtonGroup
+                color="primary"
+                value={mode}
+                exclusive
+                onChange={(_, value) => setMode(value)}
+                sx={{ width: { xs: '100%', xsm: '359px' }, height: '44px' }}
+              >
+                <ToggleButton value="supply" disabled={mode === 'supply'}>
+                  <Typography variant="subheader1">
+                    <Trans>Supply</Trans>
+                  </Typography>
+                </ToggleButton>
+                <ToggleButton value="borrow" disabled={mode === 'borrow'}>
+                  <Typography variant="subheader1">
+                    <Trans>Borrow</Trans>
+                  </Typography>
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </Box>
+          )}
 
-        {currentAccount && !isPermissionsLoading ? (
-          <DashboardContentWrapper isBorrow={mode === 'borrow'} />
-        ) : (
-          <ConnectWalletPaper loading={web3Loading} />
-        )}
-      </ContentContainer>
+          {currentAccount && !isPermissionsLoading ? (
+            <DashboardContentWrapper isBorrow={mode === 'borrow'} />
+          ) : (
+            <ConnectWalletPaper loading={web3Loading} />
+          )}
+        </ContentContainer>
+      )}
     </>
   );
 }
