@@ -35,8 +35,6 @@ export const SYMBOL_MAP: { [key: string]: string } = {
   'AAVE.e': 'AAVE',
   'USDT.e': 'USDT',
   'USDC.e': 'USDC',
-  'FRAX.e': 'FRAX',
-  'MAI.e': 'MAI',
 };
 
 /**
