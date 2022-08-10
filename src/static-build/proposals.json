@@ -3899,8 +3899,8 @@
       "startBlock": 15310833,
       "endBlock": 15330033,
       "executionTime": 0,
-      "forVotes": "904359940466384418",
-      "againstVotes": "20327213990674663",
+      "forVotes": "1813866501503305841",
+      "againstVotes": "31127213990674663",
       "executed": false,
       "canceled": false,
       "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
@@ -3913,7 +3913,7 @@
       "ipfsHash": "0xfc2b36ceb45105fa1c53d81da3c4bd574c576fc13994a68484bab35cb35cd1a1",
       "startTimestamp": 1660086543,
       "creationTimestamp": 1660086543,
-      "expirationTimestamp": 1660354248
+      "expirationTimestamp": 1543991794
     }
   ]
 }
