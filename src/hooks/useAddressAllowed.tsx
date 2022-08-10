@@ -13,24 +13,20 @@ export const useAddressAllowed = (): AddressAllowedResult => {
   const { currentAccount: walletAddress } = useWeb3Context();
 
   const [isAllowed, setIsAllowed] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
-
-  // TODO: remove this
-  // for testing blocked accounts
-  const lazarus = '0x098B716B8Aaf21512996dC57EB0615e2383E2f96';
+  const [loading, setLoading] = useState(true);
 
   const screeningUrl = process.env.NEXT_PUBLIC_SCREENING_URL;
 
   useEffect(() => {
     const getIsAddressAllowed = async () => {
       try {
-        setIsLoading(true);
+        setLoading(true);
         const response = await fetch(`${screeningUrl}/addresses/status?address=${walletAddress}`);
         const data: { addressAllowed: boolean } = await response.json();
         setIsAllowed(data.addressAllowed);
-        setIsLoading(false);
+        setLoading(false);
       } catch (e) {
-        setIsLoading(false);
+        setLoading(false);
       }
     };
 
@@ -38,12 +34,12 @@ export const useAddressAllowed = (): AddressAllowedResult => {
       getIsAddressAllowed();
     } else {
       setIsAllowed(true);
-      setIsLoading(false);
+      setLoading(false);
     }
   }, [chainId, screeningUrl, walletAddress]);
 
   return {
     isAllowed,
-    loading: isLoading,
+    loading,
   };
 };
