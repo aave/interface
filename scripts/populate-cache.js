@@ -9,7 +9,6 @@ var __getOwnPropSymbols = Object.getOwnPropertySymbols;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __propIsEnum = Object.prototype.propertyIsEnumerable;
-var __pow = Math.pow;
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __spreadValues = (a, b) => {
   for (var prop in b || (b = {}))
@@ -50,7 +49,10 @@ var __copyProps = (to, from, except, desc) => {
   }
   return to;
 };
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target, mod));
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+  mod
+));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var __async = (__this, __arguments, generator) => {
   return new Promise((resolve, reject) => {
@@ -2996,7 +2998,11 @@ var require_bn = __commonJS({
         return num.imul(this.k);
       };
       function K256() {
-        MPrime.call(this, "k256", "ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff fffffffe fffffc2f");
+        MPrime.call(
+          this,
+          "k256",
+          "ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff fffffffe fffffc2f"
+        );
       }
       inherits(K256, MPrime);
       K256.prototype.split = function split(input, output) {
@@ -3046,15 +3052,27 @@ var require_bn = __commonJS({
         return num;
       };
       function P224() {
-        MPrime.call(this, "p224", "ffffffff ffffffff ffffffff ffffffff 00000000 00000000 00000001");
+        MPrime.call(
+          this,
+          "p224",
+          "ffffffff ffffffff ffffffff ffffffff 00000000 00000000 00000001"
+        );
       }
       inherits(P224, MPrime);
       function P192() {
-        MPrime.call(this, "p192", "ffffffff ffffffff ffffffff fffffffe ffffffff ffffffff");
+        MPrime.call(
+          this,
+          "p192",
+          "ffffffff ffffffff ffffffff fffffffe ffffffff ffffffff"
+        );
       }
       inherits(P192, MPrime);
       function P25519() {
-        MPrime.call(this, "25519", "7fffffffffffffff ffffffffffffffff ffffffffffffffff ffffffffffffffed");
+        MPrime.call(
+          this,
+          "25519",
+          "7fffffffffffffff ffffffffffffffff ffffffffffffffff ffffffffffffffed"
+        );
       }
       inherits(P25519, MPrime);
       P25519.prototype.imulK = function imulK(num) {
@@ -3106,7 +3124,10 @@ var require_bn = __commonJS({
       };
       Red.prototype._verify2 = function _verify2(a, b) {
         assert((a.negative | b.negative) === 0, "red works only with positives");
-        assert(a.red && a.red === b.red, "red works only with red numbers");
+        assert(
+          a.red && a.red === b.red,
+          "red works only with red numbers"
+        );
       };
       Red.prototype.imod = function imod(a) {
         if (this.prime)
@@ -10458,7 +10479,10 @@ var require_base = __commonJS({
           assert(bytes[bytes.length - 1] % 2 === 0);
         else if (bytes[0] === 7)
           assert(bytes[bytes.length - 1] % 2 === 1);
-        var res = this.point(bytes.slice(1, 1 + len), bytes.slice(1 + len, 1 + 2 * len));
+        var res = this.point(
+          bytes.slice(1, 1 + len),
+          bytes.slice(1 + len, 1 + 2 * len)
+        );
         return res;
       } else if ((bytes[0] === 2 || bytes[0] === 3) && bytes.length - 1 === len) {
         return this.pointFromX(bytes.slice(1, 1 + len), bytes[0] === 3);
@@ -11676,7 +11700,12 @@ var require_edwards = __commonJS({
       return this;
     };
     Point.prototype.neg = function neg() {
-      return this.curve.point(this.x.redNeg(), this.y, this.z, this.t && this.t.redNeg());
+      return this.curve.point(
+        this.x.redNeg(),
+        this.y,
+        this.z,
+        this.t && this.t.redNeg()
+      );
     };
     Point.prototype.getX = function getX() {
       this.normalize();
@@ -12576,8 +12605,26 @@ var require__4 = __commonJS({
         var c2_lo = g0_512_lo(W[i - 30], W[i - 29]);
         var c3_hi = W[i - 32];
         var c3_lo = W[i - 31];
-        W[i] = sum64_4_hi(c0_hi, c0_lo, c1_hi, c1_lo, c2_hi, c2_lo, c3_hi, c3_lo);
-        W[i + 1] = sum64_4_lo(c0_hi, c0_lo, c1_hi, c1_lo, c2_hi, c2_lo, c3_hi, c3_lo);
+        W[i] = sum64_4_hi(
+          c0_hi,
+          c0_lo,
+          c1_hi,
+          c1_lo,
+          c2_hi,
+          c2_lo,
+          c3_hi,
+          c3_lo
+        );
+        W[i + 1] = sum64_4_lo(
+          c0_hi,
+          c0_lo,
+          c1_hi,
+          c1_lo,
+          c2_hi,
+          c2_lo,
+          c3_hi,
+          c3_lo
+        );
       }
     };
     SHA512.prototype._update = function _update(msg, start) {
@@ -12611,8 +12658,30 @@ var require__4 = __commonJS({
         var c3_lo = this.k[i + 1];
         var c4_hi = W[i];
         var c4_lo = W[i + 1];
-        var T1_hi = sum64_5_hi(c0_hi, c0_lo, c1_hi, c1_lo, c2_hi, c2_lo, c3_hi, c3_lo, c4_hi, c4_lo);
-        var T1_lo = sum64_5_lo(c0_hi, c0_lo, c1_hi, c1_lo, c2_hi, c2_lo, c3_hi, c3_lo, c4_hi, c4_lo);
+        var T1_hi = sum64_5_hi(
+          c0_hi,
+          c0_lo,
+          c1_hi,
+          c1_lo,
+          c2_hi,
+          c2_lo,
+          c3_hi,
+          c3_lo,
+          c4_hi,
+          c4_lo
+        );
+        var T1_lo = sum64_5_lo(
+          c0_hi,
+          c0_lo,
+          c1_hi,
+          c1_lo,
+          c2_hi,
+          c2_lo,
+          c3_hi,
+          c3_lo,
+          c4_hi,
+          c4_lo
+        );
         c0_hi = s0_512_hi(ah, al);
         c0_lo = s0_512_lo(ah, al);
         c1_hi = maj64_hi(ah, al, bh, bl, ch, cl);
@@ -12842,13 +12911,25 @@ var require_ripemd = __commonJS({
       var Dh = D;
       var Eh = E;
       for (var j = 0; j < 80; j++) {
-        var T = sum32(rotl32(sum32_4(A, f(j, B, C, D), msg[r[j] + start], K(j)), s[j]), E);
+        var T = sum32(
+          rotl32(
+            sum32_4(A, f(j, B, C, D), msg[r[j] + start], K(j)),
+            s[j]
+          ),
+          E
+        );
         A = E;
         E = D;
         D = rotl32(C, 10);
         C = B;
         B = T;
-        T = sum32(rotl32(sum32_4(Ah, f(79 - j, Bh, Ch, Dh), msg[rh[j] + start], Kh(j)), sh[j]), Eh);
+        T = sum32(
+          rotl32(
+            sum32_4(Ah, f(79 - j, Bh, Ch, Dh), msg[rh[j] + start], Kh(j)),
+            sh[j]
+          ),
+          Eh
+        );
         Ah = Eh;
         Eh = Dh;
         Dh = rotl32(Ch, 10);
@@ -14274,7 +14355,10 @@ var require_hmac_drbg = __commonJS({
       var entropy = utils.toArray(options2.entropy, options2.entropyEnc || "hex");
       var nonce = utils.toArray(options2.nonce, options2.nonceEnc || "hex");
       var pers = utils.toArray(options2.pers, options2.persEnc || "hex");
-      assert(entropy.length >= this.minEntropy / 8, "Not enough entropy. Minimum is: " + this.minEntropy + " bits");
+      assert(
+        entropy.length >= this.minEntropy / 8,
+        "Not enough entropy. Minimum is: " + this.minEntropy + " bits"
+      );
       this._init(entropy, nonce, pers);
     }
     module2.exports = HmacDRBG;
@@ -14312,7 +14396,10 @@ var require_hmac_drbg = __commonJS({
       }
       entropy = utils.toArray(entropy, entropyEnc);
       add = utils.toArray(add, addEnc);
-      assert(entropy.length >= this.minEntropy / 8, "Not enough entropy. Minimum is: " + this.minEntropy + " bits");
+      assert(
+        entropy.length >= this.minEntropy / 8,
+        "Not enough entropy. Minimum is: " + this.minEntropy + " bits"
+      );
       this._update(entropy.concat(add || []));
       this._reseed = 1;
     };
@@ -14597,7 +14684,10 @@ var require_ec = __commonJS({
       if (!(this instanceof EC))
         return new EC(options2);
       if (typeof options2 === "string") {
-        assert(Object.prototype.hasOwnProperty.call(curves, options2), "Unknown curve " + options2);
+        assert(
+          Object.prototype.hasOwnProperty.call(curves, options2),
+          "Unknown curve " + options2
+        );
         options2 = curves[options2];
       }
       if (options2 instanceof curves.PresetCurve)
@@ -16849,7 +16939,9 @@ var require_aes_js = __commonJS({
       function convertToInt32(bytes) {
         var result = [];
         for (var i = 0; i < bytes.length; i += 4) {
-          result.push(bytes[i] << 24 | bytes[i + 1] << 16 | bytes[i + 2] << 8 | bytes[i + 3]);
+          result.push(
+            bytes[i] << 24 | bytes[i + 1] << 16 | bytes[i + 2] << 8 | bytes[i + 3]
+          );
         }
         return result;
       }
@@ -26589,10 +26681,10 @@ var require_node_gyp_build = __commonJS({
     function compareTuples(a, b) {
       return a.architectures.length - b.architectures.length;
     }
-    function parseTags(file4) {
-      var arr = file4.split(".");
+    function parseTags(file3) {
+      var arr = file3.split(".");
       var extension = arr.pop();
-      var tags = { file: file4, specificity: 0 };
+      var tags = { file: file3, specificity: 0 };
       if (extension !== "node")
         return;
       for (var i = 0; i < arr.length; i++) {
@@ -26883,7 +26975,11 @@ var require_permessage_deflate = __commonJS({
           this._deflate.close();
           this._deflate = null;
           if (callback) {
-            callback(new Error("The deflate stream was closed while data was being processed"));
+            callback(
+              new Error(
+                "The deflate stream was closed while data was being processed"
+              )
+            );
           }
         }
       }
@@ -26924,7 +27020,9 @@ var require_permessage_deflate = __commonJS({
             params.client_max_window_bits = this._options.clientMaxWindowBits;
           }
         } else if (this._options.clientMaxWindowBits === false || typeof this._options.clientMaxWindowBits === "number" && params.client_max_window_bits > this._options.clientMaxWindowBits) {
-          throw new Error('Unexpected or invalid parameter "client_max_window_bits"');
+          throw new Error(
+            'Unexpected or invalid parameter "client_max_window_bits"'
+          );
         }
         return params;
       }
@@ -26940,21 +27038,29 @@ var require_permessage_deflate = __commonJS({
               if (value !== true) {
                 const num = +value;
                 if (!Number.isInteger(num) || num < 8 || num > 15) {
-                  throw new TypeError(`Invalid value for parameter "${key}": ${value}`);
+                  throw new TypeError(
+                    `Invalid value for parameter "${key}": ${value}`
+                  );
                 }
                 value = num;
               } else if (!this._isServer) {
-                throw new TypeError(`Invalid value for parameter "${key}": ${value}`);
+                throw new TypeError(
+                  `Invalid value for parameter "${key}": ${value}`
+                );
               }
             } else if (key === "server_max_window_bits") {
               const num = +value;
               if (!Number.isInteger(num) || num < 8 || num > 15) {
-                throw new TypeError(`Invalid value for parameter "${key}": ${value}`);
+                throw new TypeError(
+                  `Invalid value for parameter "${key}": ${value}`
+                );
               }
               value = num;
             } else if (key === "client_no_context_takeover" || key === "server_no_context_takeover") {
               if (value !== true) {
-                throw new TypeError(`Invalid value for parameter "${key}": ${value}`);
+                throw new TypeError(
+                  `Invalid value for parameter "${key}": ${value}`
+                );
               }
             } else {
               throw new Error(`Unknown parameter "${key}"`);
@@ -27006,7 +27112,10 @@ var require_permessage_deflate = __commonJS({
             callback(err);
             return;
           }
-          const data2 = bufferUtil.concat(this._inflate[kBuffers], this._inflate[kTotalLength]);
+          const data2 = bufferUtil.concat(
+            this._inflate[kBuffers],
+            this._inflate[kTotalLength]
+          );
           if (this._inflate._readableState.endEmitted) {
             this._inflate.close();
             this._inflate = null;
@@ -27039,7 +27148,10 @@ var require_permessage_deflate = __commonJS({
           if (!this._deflate) {
             return;
           }
-          let data2 = bufferUtil.concat(this._deflate[kBuffers], this._deflate[kTotalLength]);
+          let data2 = bufferUtil.concat(
+            this._deflate[kBuffers],
+            this._deflate[kTotalLength]
+          );
           if (fin)
             data2 = data2.slice(0, data2.length - 4);
           this._deflate[kCallback] = null;
@@ -27322,7 +27434,12 @@ var require_receiver = __commonJS({
           }
           if (this._payloadLength > 125) {
             this._loop = false;
-            return error(RangeError, `invalid payload length ${this._payloadLength}`, true, 1002);
+            return error(
+              RangeError,
+              `invalid payload length ${this._payloadLength}`,
+              true,
+              1002
+            );
           }
         } else {
           this._loop = false;
@@ -27364,7 +27481,12 @@ var require_receiver = __commonJS({
         const num = buf.readUInt32BE(0);
         if (num > Math.pow(2, 53 - 32) - 1) {
           this._loop = false;
-          return error(RangeError, "Unsupported WebSocket frame: payload length > 2^53 - 1", false, 1009);
+          return error(
+            RangeError,
+            "Unsupported WebSocket frame: payload length > 2^53 - 1",
+            false,
+            1009
+          );
         }
         this._payloadLength = num * Math.pow(2, 32) + buf.readUInt32BE(4);
         return this.haveLength();
@@ -27422,7 +27544,9 @@ var require_receiver = __commonJS({
           if (buf.length) {
             this._messageLength += buf.length;
             if (this._messageLength > this._maxPayload && this._maxPayload > 0) {
-              return cb(error(RangeError, "Max payload size exceeded", false, 1009));
+              return cb(
+                error(RangeError, "Max payload size exceeded", false, 1009)
+              );
             }
             this._fragments.push(buf);
           }
@@ -27491,7 +27615,9 @@ var require_receiver = __commonJS({
     };
     module2.exports = Receiver;
     function error(ErrorCtor, message, prefix, statusCode) {
-      const err = new ErrorCtor(prefix ? `Invalid WebSocket frame: ${message}` : message);
+      const err = new ErrorCtor(
+        prefix ? `Invalid WebSocket frame: ${message}` : message
+      );
       Error.captureStackTrace(err, error);
       err[kStatusCode] = statusCode;
       return err;
@@ -27581,13 +27707,16 @@ var require_sender = __commonJS({
         }
       }
       doClose(data, mask2, cb) {
-        this.sendFrame(Sender.frame(data, {
-          fin: true,
-          rsv1: false,
-          opcode: 8,
-          mask: mask2,
-          readOnly: false
-        }), cb);
+        this.sendFrame(
+          Sender.frame(data, {
+            fin: true,
+            rsv1: false,
+            opcode: 8,
+            mask: mask2,
+            readOnly: false
+          }),
+          cb
+        );
       }
       ping(data, mask2, cb) {
         const buf = toBuffer(data);
@@ -27601,13 +27730,16 @@ var require_sender = __commonJS({
         }
       }
       doPing(data, mask2, readOnly, cb) {
-        this.sendFrame(Sender.frame(data, {
-          fin: true,
-          rsv1: false,
-          opcode: 9,
-          mask: mask2,
-          readOnly
-        }), cb);
+        this.sendFrame(
+          Sender.frame(data, {
+            fin: true,
+            rsv1: false,
+            opcode: 9,
+            mask: mask2,
+            readOnly
+          }),
+          cb
+        );
       }
       pong(data, mask2, cb) {
         const buf = toBuffer(data);
@@ -27621,13 +27753,16 @@ var require_sender = __commonJS({
         }
       }
       doPong(data, mask2, readOnly, cb) {
-        this.sendFrame(Sender.frame(data, {
-          fin: true,
-          rsv1: false,
-          opcode: 10,
-          mask: mask2,
-          readOnly
-        }), cb);
+        this.sendFrame(
+          Sender.frame(data, {
+            fin: true,
+            rsv1: false,
+            opcode: 10,
+            mask: mask2,
+            readOnly
+          }),
+          cb
+        );
       }
       send(data, options2, cb) {
         const buf = toBuffer(data);
@@ -27660,13 +27795,16 @@ var require_sender = __commonJS({
             this.dispatch(buf, this._compress, opts, cb);
           }
         } else {
-          this.sendFrame(Sender.frame(buf, {
-            fin: options2.fin,
-            rsv1: false,
-            opcode,
-            mask: options2.mask,
-            readOnly: toBuffer.readOnly
-          }), cb);
+          this.sendFrame(
+            Sender.frame(buf, {
+              fin: options2.fin,
+              rsv1: false,
+              opcode,
+              mask: options2.mask,
+              readOnly: toBuffer.readOnly
+            }),
+            cb
+          );
         }
       }
       dispatch(data, compress, options2, cb) {
@@ -27679,7 +27817,9 @@ var require_sender = __commonJS({
         this._deflating = true;
         perMessageDeflate.compress(data, options2.fin, (_, buf) => {
           if (this._socket.destroyed) {
-            const err = new Error("The socket was closed while data was being compressed");
+            const err = new Error(
+              "The socket was closed while data was being compressed"
+            );
             if (typeof cb === "function")
               cb(err);
             for (let i = 0; i < this._queue.length; i++) {
@@ -28089,12 +28229,14 @@ var require_extension = __commonJS({
         if (!Array.isArray(configurations))
           configurations = [configurations];
         return configurations.map((params) => {
-          return [extension].concat(Object.keys(params).map((k) => {
-            let values = params[k];
-            if (!Array.isArray(values))
-              values = [values];
-            return values.map((v) => v === true ? k : `${k}=${v}`).join("; ");
-          })).join("; ");
+          return [extension].concat(
+            Object.keys(params).map((k) => {
+              let values = params[k];
+              if (!Array.isArray(values))
+                values = [values];
+              return values.map((v) => v === true ? k : `${k}=${v}`).join("; ");
+            })
+          ).join("; ");
         }).join(", ");
       }).join(", ");
     }
@@ -28188,7 +28330,12 @@ var require_websocket = __commonJS({
         return this._url;
       }
       setSocket(socket, head, maxPayload) {
-        const receiver = new Receiver(this.binaryType, this._extensions, this._isServer, maxPayload);
+        const receiver = new Receiver(
+          this.binaryType,
+          this._extensions,
+          this._isServer,
+          maxPayload
+        );
         this._sender = new Sender(socket, this._extensions);
         this._receiver = receiver;
         this._socket = socket;
@@ -28244,7 +28391,10 @@ var require_websocket = __commonJS({
           if (this._closeFrameReceived)
             this._socket.end();
         });
-        this._closeTimer = setTimeout(this._socket.destroy.bind(this._socket), closeTimeout);
+        this._closeTimer = setTimeout(
+          this._socket.destroy.bind(this._socket),
+          closeTimeout
+        );
       }
       ping(data, mask, cb) {
         if (this.readyState === WebSocket.CONNECTING) {
@@ -28385,7 +28535,9 @@ var require_websocket = __commonJS({
         port: void 0
       });
       if (!protocolVersions.includes(opts.protocolVersion)) {
-        throw new RangeError(`Unsupported protocol version: ${opts.protocolVersion} (supported versions: ${protocolVersions.join(", ")})`);
+        throw new RangeError(
+          `Unsupported protocol version: ${opts.protocolVersion} (supported versions: ${protocolVersions.join(", ")})`
+        );
       }
       let parsedUrl;
       if (address instanceof URL) {
@@ -28417,7 +28569,11 @@ var require_websocket = __commonJS({
       opts.path = parsedUrl.pathname + parsedUrl.search;
       opts.timeout = opts.handshakeTimeout;
       if (opts.perMessageDeflate) {
-        perMessageDeflate = new PerMessageDeflate(opts.perMessageDeflate !== true ? opts.perMessageDeflate : {}, false, opts.maxPayload);
+        perMessageDeflate = new PerMessageDeflate(
+          opts.perMessageDeflate !== true ? opts.perMessageDeflate : {},
+          false,
+          opts.maxPayload
+        );
         opts.headers["Sec-WebSocket-Extensions"] = format({
           [PerMessageDeflate.extensionName]: perMessageDeflate.offer()
         });
@@ -28466,7 +28622,11 @@ var require_websocket = __commonJS({
           const addr = new URL(location, address);
           initAsClient(websocket, addr, protocols, options2);
         } else if (!websocket.emit("unexpected-response", req, res)) {
-          abortHandshake(websocket, req, `Unexpected server response: ${res.statusCode}`);
+          abortHandshake(
+            websocket,
+            req,
+            `Unexpected server response: ${res.statusCode}`
+          );
         }
       });
       req.on("upgrade", (res, socket, head) => {
@@ -28503,7 +28663,11 @@ var require_websocket = __commonJS({
               websocket._extensions[PerMessageDeflate.extensionName] = perMessageDeflate;
             }
           } catch (err) {
-            abortHandshake(websocket, socket, "Invalid Sec-WebSocket-Extensions header");
+            abortHandshake(
+              websocket,
+              socket,
+              "Invalid Sec-WebSocket-Extensions header"
+            );
             return;
           }
         }
@@ -28547,7 +28711,9 @@ var require_websocket = __commonJS({
           websocket._bufferedAmount += length;
       }
       if (cb) {
-        const err = new Error(`WebSocket is not open: readyState ${websocket.readyState} (${readyStates[websocket.readyState]})`);
+        const err = new Error(
+          `WebSocket is not open: readyState ${websocket.readyState} (${readyStates[websocket.readyState]})`
+        );
         cb(err);
       }
     }
@@ -28776,7 +28942,9 @@ var require_websocket_server = __commonJS({
           port: null
         }, options2);
         if (options2.port == null && !options2.server && !options2.noServer) {
-          throw new TypeError('One of the "port", "server", or "noServer" options must be specified');
+          throw new TypeError(
+            'One of the "port", "server", or "noServer" options must be specified'
+          );
         }
         if (options2.port != null) {
           this._server = createServer((req, res) => {
@@ -28787,7 +28955,12 @@ var require_websocket_server = __commonJS({
             });
             res.end(body);
           });
-          this._server.listen(options2.port, options2.host, options2.backlog, callback);
+          this._server.listen(
+            options2.port,
+            options2.host,
+            options2.backlog,
+            callback
+          );
         } else if (options2.server) {
           this._server = options2.server;
         }
@@ -28851,7 +29024,11 @@ var require_websocket_server = __commonJS({
           return abortHandshake(socket, 400);
         }
         if (this.options.perMessageDeflate) {
-          const perMessageDeflate = new PerMessageDeflate(this.options.perMessageDeflate, true, this.options.maxPayload);
+          const perMessageDeflate = new PerMessageDeflate(
+            this.options.perMessageDeflate,
+            true,
+            this.options.maxPayload
+          );
           try {
             const offers = parse2(req.headers["sec-websocket-extensions"]);
             if (offers[PerMessageDeflate.extensionName]) {
@@ -28886,7 +29063,9 @@ var require_websocket_server = __commonJS({
         if (!socket.readable || !socket.writable)
           return socket.destroy();
         if (socket[kWebSocket]) {
-          throw new Error("server.handleUpgrade() was called more than once with the same socket, possibly due to a misconfiguration");
+          throw new Error(
+            "server.handleUpgrade() was called more than once with the same socket, possibly due to a misconfiguration"
+          );
         }
         const digest = createHash("sha1").update(key + GUID).digest("base64");
         const headers = [
@@ -28952,8 +29131,10 @@ var require_websocket_server = __commonJS({
           "Content-Type": "text/html",
           "Content-Length": Buffer.byteLength(message)
         }, headers);
-        socket.write(`HTTP/1.1 ${code} ${STATUS_CODES[code]}\r
-` + Object.keys(headers).map((h) => `${h}: ${headers[h]}`).join("\r\n") + "\r\n\r\n" + message);
+        socket.write(
+          `HTTP/1.1 ${code} ${STATUS_CODES[code]}\r
+` + Object.keys(headers).map((h) => `${h}: ${headers[h]}`).join("\r\n") + "\r\n\r\n" + message
+        );
       }
       socket.removeListener("error", socketOnError);
       socket.destroy();
@@ -33064,7 +33245,12 @@ var require_bignumber2 = __commonJS({
               y = new BigNumber3(baseIn);
               x = y.pow(str2.length - i);
               POW_PRECISION = k;
-              y.c = toBaseOut(toFixedPoint(coeffToString(x.c), x.e, "0"), 10, baseOut, decimal);
+              y.c = toBaseOut(
+                toFixedPoint(coeffToString(x.c), x.e, "0"),
+                10,
+                baseOut,
+                decimal
+              );
               y.e = y.c.length;
             }
             xc = toBaseOut(str2, baseIn, baseOut, callerIsToString ? (alphabet = ALPHABET, decimal) : (alphabet = decimal, ALPHABET));
@@ -33153,7 +33339,9 @@ var require_bignumber2 = __commonJS({
           return function(x, y, dp, rm, base) {
             var cmp, e, i, more, n, prod, prodL, q, qc, rem, remL, rem0, xi, xL, yc0, yL, yz, s = x.s == y.s ? 1 : -1, xc = x.c, yc = y.c;
             if (!xc || !xc[0] || !yc || !yc[0]) {
-              return new BigNumber3(!x.s || !y.s || (xc ? yc && xc[0] == yc[0] : !yc) ? NaN : xc && xc[0] == 0 || !yc ? s * 0 : s / 0);
+              return new BigNumber3(
+                !x.s || !y.s || (xc ? yc && xc[0] == yc[0] : !yc) ? NaN : xc && xc[0] == 0 || !yc ? s * 0 : s / 0
+              );
             }
             q = new BigNumber3(s);
             qc = q.c = [];
@@ -33928,7 +34116,10 @@ var require_bignumber2 = __commonJS({
               if (isNeg)
                 intPart = "-" + intPart;
             }
-            str2 = fractionPart ? intPart + (format2.decimalSeparator || "") + ((g2 = +format2.fractionGroupSize) ? fractionPart.replace(new RegExp("\\d{" + g2 + "}\\B", "g"), "$&" + (format2.fractionGroupSeparator || "")) : fractionPart) : intPart;
+            str2 = fractionPart ? intPart + (format2.decimalSeparator || "") + ((g2 = +format2.fractionGroupSize) ? fractionPart.replace(
+              new RegExp("\\d{" + g2 + "}\\B", "g"),
+              "$&" + (format2.fractionGroupSeparator || "")
+            ) : fractionPart) : intPart;
           }
           return (format2.prefix || "") + str2 + (format2.suffix || "");
         };
@@ -33970,7 +34161,9 @@ var require_bignumber2 = __commonJS({
           d0 = d0.plus(d2.times(d1));
           n0.s = n1.s = x.s;
           e = e * 2;
-          r = div(n1, d1, e, ROUNDING_MODE).minus(x).abs().comparedTo(div(n0, d0, e, ROUNDING_MODE).minus(x).abs()) < 1 ? [n1, d1] : [n0, d0];
+          r = div(n1, d1, e, ROUNDING_MODE).minus(x).abs().comparedTo(
+            div(n0, d0, e, ROUNDING_MODE).minus(x).abs()
+          ) < 1 ? [n1, d1] : [n0, d0];
           MAX_EXP = exp;
           return r;
         };
@@ -34228,7 +34421,6 @@ var require_utils6 = __commonJS({
         case "0xb2f1e6db":
           return 68;
         case "0xb66bcbac":
-        case "0x35326910":
           return 164;
         default:
           throw new Error("Unrecognized function selector for Augustus");
@@ -35403,7 +35595,9 @@ var require_methodValidators = __commonJS({
       const method = descriptor.value;
       descriptor.value = function() {
         if (!ethers_1.utils.isAddress(this.l2PoolAddress) || !ethers_1.utils.isAddress(this.encoderAddress)) {
-          console.error(`[L2PoolValidator] You need to pass valid addresses: l2pool: ${this.l2PoolAddress} encoder: ${this.encoderAddress}`);
+          console.error(
+            `[L2PoolValidator] You need to pass valid addresses: l2pool: ${this.l2PoolAddress} encoder: ${this.encoderAddress}`
+          );
           return [];
         }
         (0, validations_1.isDeadline32BytesValidator)(target, propertyName, arguments);
@@ -41661,7 +41855,15 @@ var require_lendingPool_contract = __commonJS({
             const convertedAmountWithSurplus = (0, utils_1.valueToWei)(amountWithSurplus, tokenDecimals);
             const txCallback = this.generateTxCallback({
               rawTxMethod: () => __async(this, null, function* () {
-                return lendingPoolContract.populateTransaction.flashLoan(this.swapCollateralAddress, [fromAsset], swapAll ? [convertedAmountWithSurplus] : [convertedAmount], [0], onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user, params, referralCode !== null && referralCode !== void 0 ? referralCode : "0");
+                return lendingPoolContract.populateTransaction.flashLoan(
+                  this.swapCollateralAddress,
+                  [fromAsset],
+                  swapAll ? [convertedAmountWithSurplus] : [convertedAmount],
+                  [0],
+                  onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user,
+                  params,
+                  referralCode !== null && referralCode !== void 0 ? referralCode : "0"
+                );
               }),
               from: user
             });
@@ -41743,7 +41945,15 @@ var require_lendingPool_contract = __commonJS({
             const lendingPoolContract = this.getContractInstance(this.lendingPoolAddress);
             const txCallback = this.generateTxCallback({
               rawTxMethod: () => __async(this, null, function* () {
-                return lendingPoolContract.populateTransaction.flashLoan(this.repayWithCollateralAddress, [assetToRepay], [convertedRepayAmount], [0], onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user, params, referralCode !== null && referralCode !== void 0 ? referralCode : "0");
+                return lendingPoolContract.populateTransaction.flashLoan(
+                  this.repayWithCollateralAddress,
+                  [assetToRepay],
+                  [convertedRepayAmount],
+                  [0],
+                  onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user,
+                  params,
+                  referralCode !== null && referralCode !== void 0 ? referralCode : "0"
+                );
               }),
               from: user
             });
@@ -41828,7 +42038,15 @@ var require_lendingPool_contract = __commonJS({
             const poolContract = this.getContractInstance(this.lendingPoolAddress);
             const txCallback = this.generateTxCallback({
               rawTxMethod: () => __async(this, null, function* () {
-                return poolContract.populateTransaction.flashLoan(this.repayWithCollateralAddress, [fromAsset], repayAllDebt ? [convertedRepayWithAmountWithSurplus] : [convertedRepayWithAmount], [0], onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user, params, referralCode !== null && referralCode !== void 0 ? referralCode : "0");
+                return poolContract.populateTransaction.flashLoan(
+                  this.repayWithCollateralAddress,
+                  [fromAsset],
+                  repayAllDebt ? [convertedRepayWithAmountWithSurplus] : [convertedRepayWithAmount],
+                  [0],
+                  onBehalfOf !== null && onBehalfOf !== void 0 ? onBehalfOf : user,
+                  params,
+                  referralCode !== null && referralCode !== void 0 ? referralCode : "0"
+                );
               }),
               from: user
             });
@@ -50121,11 +50339,14 @@ var require_lib33 = __commonJS({
       blob() {
         let ct = this.headers && this.headers.get("content-type") || "";
         return consumeBody.call(this).then(function(buf) {
-          return Object.assign(new Blob2([], {
-            type: ct.toLowerCase()
-          }), {
-            [BUFFER]: buf
-          });
+          return Object.assign(
+            new Blob2([], {
+              type: ct.toLowerCase()
+            }),
+            {
+              [BUFFER]: buf
+            }
+          );
         });
       },
       json() {
@@ -51813,7 +52034,9 @@ var require_lodash = __commonJS({
         var nativeObjectToString = objectProto.toString;
         var objectCtorString = funcToString.call(Object2);
         var oldDash = root._;
-        var reIsNative = RegExp2("^" + funcToString.call(hasOwnProperty).replace(reRegExpChar, "\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, "$1.*?") + "$");
+        var reIsNative = RegExp2(
+          "^" + funcToString.call(hasOwnProperty).replace(reRegExpChar, "\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, "$1.*?") + "$"
+        );
         var Buffer2 = moduleExports ? context.Buffer : undefined2, Symbol2 = context.Symbol, Uint8Array2 = context.Uint8Array, allocUnsafe = Buffer2 ? Buffer2.allocUnsafe : undefined2, getPrototype = overArg(Object2.getPrototypeOf, Object2), objectCreate = Object2.create, propertyIsEnumerable = objectProto.propertyIsEnumerable, splice = arrayProto.splice, spreadableSymbol = Symbol2 ? Symbol2.isConcatSpreadable : undefined2, symIterator = Symbol2 ? Symbol2.iterator : undefined2, symToStringTag = Symbol2 ? Symbol2.toStringTag : undefined2;
         var defineProperty = function() {
           try {
@@ -51830,7 +52053,7 @@ var require_lodash = __commonJS({
         var realNames = {};
         var dataViewCtorString = toSource(DataView), mapCtorString = toSource(Map2), promiseCtorString = toSource(Promise2), setCtorString = toSource(Set2), weakMapCtorString = toSource(WeakMap2);
         var symbolProto = Symbol2 ? Symbol2.prototype : undefined2, symbolValueOf = symbolProto ? symbolProto.valueOf : undefined2, symbolToString = symbolProto ? symbolProto.toString : undefined2;
-        function lodash4(value) {
+        function lodash3(value) {
           if (isObjectLike(value) && !isArray(value) && !(value instanceof LazyWrapper)) {
             if (value instanceof LodashWrapper) {
               return value;
@@ -51866,17 +52089,17 @@ var require_lodash = __commonJS({
           this.__index__ = 0;
           this.__values__ = undefined2;
         }
-        lodash4.templateSettings = {
+        lodash3.templateSettings = {
           "escape": reEscape,
           "evaluate": reEvaluate,
           "interpolate": reInterpolate,
           "variable": "",
           "imports": {
-            "_": lodash4
+            "_": lodash3
           }
         };
-        lodash4.prototype = baseLodash.prototype;
-        lodash4.prototype.constructor = lodash4;
+        lodash3.prototype = baseLodash.prototype;
+        lodash3.prototype.constructor = lodash3;
         LodashWrapper.prototype = baseCreate(baseLodash.prototype);
         LodashWrapper.prototype.constructor = LodashWrapper;
         function LazyWrapper(value) {
@@ -53295,7 +53518,18 @@ var require_lodash = __commonJS({
             var holders = length < 3 && args[0] !== placeholder && args[length - 1] !== placeholder ? [] : replaceHolders(args, placeholder);
             length -= holders.length;
             if (length < arity) {
-              return createRecurry(func, bitmask, createHybrid, wrapper.placeholder, undefined2, args, holders, undefined2, undefined2, arity - length);
+              return createRecurry(
+                func,
+                bitmask,
+                createHybrid,
+                wrapper.placeholder,
+                undefined2,
+                args,
+                holders,
+                undefined2,
+                undefined2,
+                arity - length
+              );
             }
             var fn = this && this !== root && this instanceof wrapper ? Ctor : func;
             return apply(fn, this, args);
@@ -53373,7 +53607,18 @@ var require_lodash = __commonJS({
             length -= holdersCount;
             if (isCurried && length < arity) {
               var newHolders = replaceHolders(args, placeholder);
-              return createRecurry(func, bitmask, createHybrid, wrapper.placeholder, thisArg, args, newHolders, argPos, ary2, arity - length);
+              return createRecurry(
+                func,
+                bitmask,
+                createHybrid,
+                wrapper.placeholder,
+                thisArg,
+                args,
+                newHolders,
+                argPos,
+                ary2,
+                arity - length
+              );
             }
             var thisBinding = isBind ? thisArg : this, fn = isBindKey ? thisBinding[func] : func;
             length = args.length;
@@ -53761,11 +54006,11 @@ var require_lodash = __commonJS({
           return result2;
         }
         function getHolder(func) {
-          var object = hasOwnProperty.call(lodash4, "placeholder") ? lodash4 : func;
+          var object = hasOwnProperty.call(lodash3, "placeholder") ? lodash3 : func;
           return object.placeholder;
         }
         function getIteratee() {
-          var result2 = lodash4.iteratee || iteratee;
+          var result2 = lodash3.iteratee || iteratee;
           result2 = result2 === iteratee ? baseIteratee : result2;
           return arguments.length ? result2(arguments[0], arguments[1]) : result2;
         }
@@ -53968,7 +54213,7 @@ var require_lodash = __commonJS({
           return type == "string" || type == "number" || type == "symbol" || type == "boolean" ? value !== "__proto__" : value === null;
         }
         function isLaziable(func) {
-          var funcName = getFuncName(func), other = lodash4[funcName];
+          var funcName = getFuncName(func), other = lodash3[funcName];
           if (typeof other != "function" || !(funcName in LazyWrapper.prototype)) {
             return false;
           }
@@ -54349,7 +54594,7 @@ var require_lodash = __commonJS({
           }
           return mapped.length && mapped[0] === arrays[0] ? baseIntersection(mapped, undefined2, comparator) : [];
         });
-        function join4(array, separator) {
+        function join3(array, separator) {
           return array == null ? "" : nativeJoin.call(array, separator);
         }
         function last(array) {
@@ -54569,7 +54814,7 @@ var require_lodash = __commonJS({
           return unzipWith(arrays, iteratee2);
         });
         function chain(value) {
-          var result2 = lodash4(value);
+          var result2 = lodash3(value);
           result2.__chain__ = true;
           return result2;
         }
@@ -55685,7 +55930,7 @@ var require_lodash = __commonJS({
           return string.slice(position, position + target.length) == target;
         }
         function template(string, options2, guard) {
-          var settings = lodash4.templateSettings;
+          var settings = lodash3.templateSettings;
           if (guard && isIterateeCall(string, options2, guard)) {
             options2 = undefined2;
           }
@@ -55693,7 +55938,10 @@ var require_lodash = __commonJS({
           options2 = assignInWith({}, options2, settings, customDefaultsAssignIn);
           var imports = assignInWith({}, options2.imports, settings.imports, customDefaultsAssignIn), importsKeys = keys(imports), importsValues = baseValues(imports, importsKeys);
           var isEscaping, isEvaluating, index = 0, interpolate = options2.interpolate || reNoMatch, source = "__p += '";
-          var reDelimiters = RegExp2((options2.escape || reNoMatch).source + "|" + interpolate.source + "|" + (interpolate === reInterpolate ? reEsTemplate : reNoMatch).source + "|" + (options2.evaluate || reNoMatch).source + "|$", "g");
+          var reDelimiters = RegExp2(
+            (options2.escape || reNoMatch).source + "|" + interpolate.source + "|" + (interpolate === reInterpolate ? reEsTemplate : reNoMatch).source + "|" + (options2.evaluate || reNoMatch).source + "|$",
+            "g"
+          );
           var sourceURL = "//# sourceURL=" + (hasOwnProperty.call(options2, "sourceURL") ? (options2.sourceURL + "").replace(/\s/g, " ") : "lodash.templateSources[" + ++templateCounter + "]") + "\n";
           string.replace(reDelimiters, function(match, escapeValue, interpolateValue, esTemplateValue, evaluateValue, offset) {
             interpolateValue || (interpolateValue = esTemplateValue);
@@ -56031,324 +56279,324 @@ var require_lodash = __commonJS({
         function sumBy(array, iteratee2) {
           return array && array.length ? baseSum(array, getIteratee(iteratee2, 2)) : 0;
         }
-        lodash4.after = after;
-        lodash4.ary = ary;
-        lodash4.assign = assign;
-        lodash4.assignIn = assignIn;
-        lodash4.assignInWith = assignInWith;
-        lodash4.assignWith = assignWith;
-        lodash4.at = at;
-        lodash4.before = before;
-        lodash4.bind = bind;
-        lodash4.bindAll = bindAll;
-        lodash4.bindKey = bindKey;
-        lodash4.castArray = castArray;
-        lodash4.chain = chain;
-        lodash4.chunk = chunk;
-        lodash4.compact = compact;
-        lodash4.concat = concat;
-        lodash4.cond = cond;
-        lodash4.conforms = conforms;
-        lodash4.constant = constant;
-        lodash4.countBy = countBy;
-        lodash4.create = create;
-        lodash4.curry = curry;
-        lodash4.curryRight = curryRight;
-        lodash4.debounce = debounce;
-        lodash4.defaults = defaults;
-        lodash4.defaultsDeep = defaultsDeep;
-        lodash4.defer = defer;
-        lodash4.delay = delay;
-        lodash4.difference = difference;
-        lodash4.differenceBy = differenceBy;
-        lodash4.differenceWith = differenceWith;
-        lodash4.drop = drop;
-        lodash4.dropRight = dropRight;
-        lodash4.dropRightWhile = dropRightWhile;
-        lodash4.dropWhile = dropWhile;
-        lodash4.fill = fill;
-        lodash4.filter = filter;
-        lodash4.flatMap = flatMap;
-        lodash4.flatMapDeep = flatMapDeep;
-        lodash4.flatMapDepth = flatMapDepth;
-        lodash4.flatten = flatten;
-        lodash4.flattenDeep = flattenDeep;
-        lodash4.flattenDepth = flattenDepth;
-        lodash4.flip = flip;
-        lodash4.flow = flow;
-        lodash4.flowRight = flowRight;
-        lodash4.fromPairs = fromPairs;
-        lodash4.functions = functions;
-        lodash4.functionsIn = functionsIn;
-        lodash4.groupBy = groupBy;
-        lodash4.initial = initial;
-        lodash4.intersection = intersection;
-        lodash4.intersectionBy = intersectionBy;
-        lodash4.intersectionWith = intersectionWith;
-        lodash4.invert = invert;
-        lodash4.invertBy = invertBy;
-        lodash4.invokeMap = invokeMap;
-        lodash4.iteratee = iteratee;
-        lodash4.keyBy = keyBy;
-        lodash4.keys = keys;
-        lodash4.keysIn = keysIn;
-        lodash4.map = map;
-        lodash4.mapKeys = mapKeys;
-        lodash4.mapValues = mapValues;
-        lodash4.matches = matches;
-        lodash4.matchesProperty = matchesProperty;
-        lodash4.memoize = memoize;
-        lodash4.merge = merge;
-        lodash4.mergeWith = mergeWith;
-        lodash4.method = method;
-        lodash4.methodOf = methodOf;
-        lodash4.mixin = mixin;
-        lodash4.negate = negate;
-        lodash4.nthArg = nthArg;
-        lodash4.omit = omit;
-        lodash4.omitBy = omitBy;
-        lodash4.once = once;
-        lodash4.orderBy = orderBy;
-        lodash4.over = over;
-        lodash4.overArgs = overArgs;
-        lodash4.overEvery = overEvery;
-        lodash4.overSome = overSome;
-        lodash4.partial = partial;
-        lodash4.partialRight = partialRight;
-        lodash4.partition = partition;
-        lodash4.pick = pick;
-        lodash4.pickBy = pickBy;
-        lodash4.property = property;
-        lodash4.propertyOf = propertyOf;
-        lodash4.pull = pull;
-        lodash4.pullAll = pullAll;
-        lodash4.pullAllBy = pullAllBy;
-        lodash4.pullAllWith = pullAllWith;
-        lodash4.pullAt = pullAt;
-        lodash4.range = range;
-        lodash4.rangeRight = rangeRight;
-        lodash4.rearg = rearg;
-        lodash4.reject = reject;
-        lodash4.remove = remove;
-        lodash4.rest = rest;
-        lodash4.reverse = reverse;
-        lodash4.sampleSize = sampleSize;
-        lodash4.set = set;
-        lodash4.setWith = setWith;
-        lodash4.shuffle = shuffle;
-        lodash4.slice = slice;
-        lodash4.sortBy = sortBy;
-        lodash4.sortedUniq = sortedUniq;
-        lodash4.sortedUniqBy = sortedUniqBy;
-        lodash4.split = split;
-        lodash4.spread = spread;
-        lodash4.tail = tail;
-        lodash4.take = take;
-        lodash4.takeRight = takeRight;
-        lodash4.takeRightWhile = takeRightWhile;
-        lodash4.takeWhile = takeWhile;
-        lodash4.tap = tap;
-        lodash4.throttle = throttle;
-        lodash4.thru = thru;
-        lodash4.toArray = toArray;
-        lodash4.toPairs = toPairs;
-        lodash4.toPairsIn = toPairsIn;
-        lodash4.toPath = toPath;
-        lodash4.toPlainObject = toPlainObject;
-        lodash4.transform = transform;
-        lodash4.unary = unary;
-        lodash4.union = union;
-        lodash4.unionBy = unionBy;
-        lodash4.unionWith = unionWith;
-        lodash4.uniq = uniq;
-        lodash4.uniqBy = uniqBy;
-        lodash4.uniqWith = uniqWith;
-        lodash4.unset = unset;
-        lodash4.unzip = unzip;
-        lodash4.unzipWith = unzipWith;
-        lodash4.update = update;
-        lodash4.updateWith = updateWith;
-        lodash4.values = values;
-        lodash4.valuesIn = valuesIn;
-        lodash4.without = without;
-        lodash4.words = words;
-        lodash4.wrap = wrap2;
-        lodash4.xor = xor;
-        lodash4.xorBy = xorBy;
-        lodash4.xorWith = xorWith;
-        lodash4.zip = zip;
-        lodash4.zipObject = zipObject;
-        lodash4.zipObjectDeep = zipObjectDeep;
-        lodash4.zipWith = zipWith;
-        lodash4.entries = toPairs;
-        lodash4.entriesIn = toPairsIn;
-        lodash4.extend = assignIn;
-        lodash4.extendWith = assignInWith;
-        mixin(lodash4, lodash4);
-        lodash4.add = add;
-        lodash4.attempt = attempt;
-        lodash4.camelCase = camelCase;
-        lodash4.capitalize = capitalize;
-        lodash4.ceil = ceil;
-        lodash4.clamp = clamp;
-        lodash4.clone = clone;
-        lodash4.cloneDeep = cloneDeep;
-        lodash4.cloneDeepWith = cloneDeepWith;
-        lodash4.cloneWith = cloneWith;
-        lodash4.conformsTo = conformsTo;
-        lodash4.deburr = deburr;
-        lodash4.defaultTo = defaultTo;
-        lodash4.divide = divide;
-        lodash4.endsWith = endsWith;
-        lodash4.eq = eq;
-        lodash4.escape = escape;
-        lodash4.escapeRegExp = escapeRegExp;
-        lodash4.every = every;
-        lodash4.find = find;
-        lodash4.findIndex = findIndex;
-        lodash4.findKey = findKey;
-        lodash4.findLast = findLast;
-        lodash4.findLastIndex = findLastIndex;
-        lodash4.findLastKey = findLastKey;
-        lodash4.floor = floor;
-        lodash4.forEach = forEach;
-        lodash4.forEachRight = forEachRight;
-        lodash4.forIn = forIn;
-        lodash4.forInRight = forInRight;
-        lodash4.forOwn = forOwn;
-        lodash4.forOwnRight = forOwnRight;
-        lodash4.get = get;
-        lodash4.gt = gt;
-        lodash4.gte = gte;
-        lodash4.has = has;
-        lodash4.hasIn = hasIn;
-        lodash4.head = head;
-        lodash4.identity = identity;
-        lodash4.includes = includes;
-        lodash4.indexOf = indexOf;
-        lodash4.inRange = inRange;
-        lodash4.invoke = invoke;
-        lodash4.isArguments = isArguments;
-        lodash4.isArray = isArray;
-        lodash4.isArrayBuffer = isArrayBuffer;
-        lodash4.isArrayLike = isArrayLike;
-        lodash4.isArrayLikeObject = isArrayLikeObject;
-        lodash4.isBoolean = isBoolean;
-        lodash4.isBuffer = isBuffer;
-        lodash4.isDate = isDate;
-        lodash4.isElement = isElement;
-        lodash4.isEmpty = isEmpty;
-        lodash4.isEqual = isEqual;
-        lodash4.isEqualWith = isEqualWith;
-        lodash4.isError = isError;
-        lodash4.isFinite = isFinite;
-        lodash4.isFunction = isFunction;
-        lodash4.isInteger = isInteger;
-        lodash4.isLength = isLength;
-        lodash4.isMap = isMap;
-        lodash4.isMatch = isMatch;
-        lodash4.isMatchWith = isMatchWith;
-        lodash4.isNaN = isNaN2;
-        lodash4.isNative = isNative;
-        lodash4.isNil = isNil;
-        lodash4.isNull = isNull;
-        lodash4.isNumber = isNumber;
-        lodash4.isObject = isObject;
-        lodash4.isObjectLike = isObjectLike;
-        lodash4.isPlainObject = isPlainObject;
-        lodash4.isRegExp = isRegExp;
-        lodash4.isSafeInteger = isSafeInteger;
-        lodash4.isSet = isSet;
-        lodash4.isString = isString;
-        lodash4.isSymbol = isSymbol;
-        lodash4.isTypedArray = isTypedArray;
-        lodash4.isUndefined = isUndefined;
-        lodash4.isWeakMap = isWeakMap;
-        lodash4.isWeakSet = isWeakSet;
-        lodash4.join = join4;
-        lodash4.kebabCase = kebabCase;
-        lodash4.last = last;
-        lodash4.lastIndexOf = lastIndexOf;
-        lodash4.lowerCase = lowerCase;
-        lodash4.lowerFirst = lowerFirst;
-        lodash4.lt = lt;
-        lodash4.lte = lte;
-        lodash4.max = max;
-        lodash4.maxBy = maxBy;
-        lodash4.mean = mean;
-        lodash4.meanBy = meanBy;
-        lodash4.min = min;
-        lodash4.minBy = minBy;
-        lodash4.stubArray = stubArray;
-        lodash4.stubFalse = stubFalse;
-        lodash4.stubObject = stubObject;
-        lodash4.stubString = stubString;
-        lodash4.stubTrue = stubTrue;
-        lodash4.multiply = multiply;
-        lodash4.nth = nth;
-        lodash4.noConflict = noConflict;
-        lodash4.noop = noop;
-        lodash4.now = now;
-        lodash4.pad = pad;
-        lodash4.padEnd = padEnd;
-        lodash4.padStart = padStart;
-        lodash4.parseInt = parseInt2;
-        lodash4.random = random;
-        lodash4.reduce = reduce;
-        lodash4.reduceRight = reduceRight;
-        lodash4.repeat = repeat;
-        lodash4.replace = replace;
-        lodash4.result = result;
-        lodash4.round = round;
-        lodash4.runInContext = runInContext2;
-        lodash4.sample = sample;
-        lodash4.size = size;
-        lodash4.snakeCase = snakeCase;
-        lodash4.some = some;
-        lodash4.sortedIndex = sortedIndex;
-        lodash4.sortedIndexBy = sortedIndexBy;
-        lodash4.sortedIndexOf = sortedIndexOf;
-        lodash4.sortedLastIndex = sortedLastIndex;
-        lodash4.sortedLastIndexBy = sortedLastIndexBy;
-        lodash4.sortedLastIndexOf = sortedLastIndexOf;
-        lodash4.startCase = startCase;
-        lodash4.startsWith = startsWith;
-        lodash4.subtract = subtract;
-        lodash4.sum = sum;
-        lodash4.sumBy = sumBy;
-        lodash4.template = template;
-        lodash4.times = times;
-        lodash4.toFinite = toFinite;
-        lodash4.toInteger = toInteger;
-        lodash4.toLength = toLength;
-        lodash4.toLower = toLower;
-        lodash4.toNumber = toNumber;
-        lodash4.toSafeInteger = toSafeInteger;
-        lodash4.toString = toString;
-        lodash4.toUpper = toUpper;
-        lodash4.trim = trim;
-        lodash4.trimEnd = trimEnd;
-        lodash4.trimStart = trimStart;
-        lodash4.truncate = truncate;
-        lodash4.unescape = unescape;
-        lodash4.uniqueId = uniqueId;
-        lodash4.upperCase = upperCase;
-        lodash4.upperFirst = upperFirst;
-        lodash4.each = forEach;
-        lodash4.eachRight = forEachRight;
-        lodash4.first = head;
-        mixin(lodash4, function() {
+        lodash3.after = after;
+        lodash3.ary = ary;
+        lodash3.assign = assign;
+        lodash3.assignIn = assignIn;
+        lodash3.assignInWith = assignInWith;
+        lodash3.assignWith = assignWith;
+        lodash3.at = at;
+        lodash3.before = before;
+        lodash3.bind = bind;
+        lodash3.bindAll = bindAll;
+        lodash3.bindKey = bindKey;
+        lodash3.castArray = castArray;
+        lodash3.chain = chain;
+        lodash3.chunk = chunk;
+        lodash3.compact = compact;
+        lodash3.concat = concat;
+        lodash3.cond = cond;
+        lodash3.conforms = conforms;
+        lodash3.constant = constant;
+        lodash3.countBy = countBy;
+        lodash3.create = create;
+        lodash3.curry = curry;
+        lodash3.curryRight = curryRight;
+        lodash3.debounce = debounce;
+        lodash3.defaults = defaults;
+        lodash3.defaultsDeep = defaultsDeep;
+        lodash3.defer = defer;
+        lodash3.delay = delay;
+        lodash3.difference = difference;
+        lodash3.differenceBy = differenceBy;
+        lodash3.differenceWith = differenceWith;
+        lodash3.drop = drop;
+        lodash3.dropRight = dropRight;
+        lodash3.dropRightWhile = dropRightWhile;
+        lodash3.dropWhile = dropWhile;
+        lodash3.fill = fill;
+        lodash3.filter = filter;
+        lodash3.flatMap = flatMap;
+        lodash3.flatMapDeep = flatMapDeep;
+        lodash3.flatMapDepth = flatMapDepth;
+        lodash3.flatten = flatten;
+        lodash3.flattenDeep = flattenDeep;
+        lodash3.flattenDepth = flattenDepth;
+        lodash3.flip = flip;
+        lodash3.flow = flow;
+        lodash3.flowRight = flowRight;
+        lodash3.fromPairs = fromPairs;
+        lodash3.functions = functions;
+        lodash3.functionsIn = functionsIn;
+        lodash3.groupBy = groupBy;
+        lodash3.initial = initial;
+        lodash3.intersection = intersection;
+        lodash3.intersectionBy = intersectionBy;
+        lodash3.intersectionWith = intersectionWith;
+        lodash3.invert = invert;
+        lodash3.invertBy = invertBy;
+        lodash3.invokeMap = invokeMap;
+        lodash3.iteratee = iteratee;
+        lodash3.keyBy = keyBy;
+        lodash3.keys = keys;
+        lodash3.keysIn = keysIn;
+        lodash3.map = map;
+        lodash3.mapKeys = mapKeys;
+        lodash3.mapValues = mapValues;
+        lodash3.matches = matches;
+        lodash3.matchesProperty = matchesProperty;
+        lodash3.memoize = memoize;
+        lodash3.merge = merge;
+        lodash3.mergeWith = mergeWith;
+        lodash3.method = method;
+        lodash3.methodOf = methodOf;
+        lodash3.mixin = mixin;
+        lodash3.negate = negate;
+        lodash3.nthArg = nthArg;
+        lodash3.omit = omit;
+        lodash3.omitBy = omitBy;
+        lodash3.once = once;
+        lodash3.orderBy = orderBy;
+        lodash3.over = over;
+        lodash3.overArgs = overArgs;
+        lodash3.overEvery = overEvery;
+        lodash3.overSome = overSome;
+        lodash3.partial = partial;
+        lodash3.partialRight = partialRight;
+        lodash3.partition = partition;
+        lodash3.pick = pick;
+        lodash3.pickBy = pickBy;
+        lodash3.property = property;
+        lodash3.propertyOf = propertyOf;
+        lodash3.pull = pull;
+        lodash3.pullAll = pullAll;
+        lodash3.pullAllBy = pullAllBy;
+        lodash3.pullAllWith = pullAllWith;
+        lodash3.pullAt = pullAt;
+        lodash3.range = range;
+        lodash3.rangeRight = rangeRight;
+        lodash3.rearg = rearg;
+        lodash3.reject = reject;
+        lodash3.remove = remove;
+        lodash3.rest = rest;
+        lodash3.reverse = reverse;
+        lodash3.sampleSize = sampleSize;
+        lodash3.set = set;
+        lodash3.setWith = setWith;
+        lodash3.shuffle = shuffle;
+        lodash3.slice = slice;
+        lodash3.sortBy = sortBy;
+        lodash3.sortedUniq = sortedUniq;
+        lodash3.sortedUniqBy = sortedUniqBy;
+        lodash3.split = split;
+        lodash3.spread = spread;
+        lodash3.tail = tail;
+        lodash3.take = take;
+        lodash3.takeRight = takeRight;
+        lodash3.takeRightWhile = takeRightWhile;
+        lodash3.takeWhile = takeWhile;
+        lodash3.tap = tap;
+        lodash3.throttle = throttle;
+        lodash3.thru = thru;
+        lodash3.toArray = toArray;
+        lodash3.toPairs = toPairs;
+        lodash3.toPairsIn = toPairsIn;
+        lodash3.toPath = toPath;
+        lodash3.toPlainObject = toPlainObject;
+        lodash3.transform = transform;
+        lodash3.unary = unary;
+        lodash3.union = union;
+        lodash3.unionBy = unionBy;
+        lodash3.unionWith = unionWith;
+        lodash3.uniq = uniq;
+        lodash3.uniqBy = uniqBy;
+        lodash3.uniqWith = uniqWith;
+        lodash3.unset = unset;
+        lodash3.unzip = unzip;
+        lodash3.unzipWith = unzipWith;
+        lodash3.update = update;
+        lodash3.updateWith = updateWith;
+        lodash3.values = values;
+        lodash3.valuesIn = valuesIn;
+        lodash3.without = without;
+        lodash3.words = words;
+        lodash3.wrap = wrap2;
+        lodash3.xor = xor;
+        lodash3.xorBy = xorBy;
+        lodash3.xorWith = xorWith;
+        lodash3.zip = zip;
+        lodash3.zipObject = zipObject;
+        lodash3.zipObjectDeep = zipObjectDeep;
+        lodash3.zipWith = zipWith;
+        lodash3.entries = toPairs;
+        lodash3.entriesIn = toPairsIn;
+        lodash3.extend = assignIn;
+        lodash3.extendWith = assignInWith;
+        mixin(lodash3, lodash3);
+        lodash3.add = add;
+        lodash3.attempt = attempt;
+        lodash3.camelCase = camelCase;
+        lodash3.capitalize = capitalize;
+        lodash3.ceil = ceil;
+        lodash3.clamp = clamp;
+        lodash3.clone = clone;
+        lodash3.cloneDeep = cloneDeep;
+        lodash3.cloneDeepWith = cloneDeepWith;
+        lodash3.cloneWith = cloneWith;
+        lodash3.conformsTo = conformsTo;
+        lodash3.deburr = deburr;
+        lodash3.defaultTo = defaultTo;
+        lodash3.divide = divide;
+        lodash3.endsWith = endsWith;
+        lodash3.eq = eq;
+        lodash3.escape = escape;
+        lodash3.escapeRegExp = escapeRegExp;
+        lodash3.every = every;
+        lodash3.find = find;
+        lodash3.findIndex = findIndex;
+        lodash3.findKey = findKey;
+        lodash3.findLast = findLast;
+        lodash3.findLastIndex = findLastIndex;
+        lodash3.findLastKey = findLastKey;
+        lodash3.floor = floor;
+        lodash3.forEach = forEach;
+        lodash3.forEachRight = forEachRight;
+        lodash3.forIn = forIn;
+        lodash3.forInRight = forInRight;
+        lodash3.forOwn = forOwn;
+        lodash3.forOwnRight = forOwnRight;
+        lodash3.get = get;
+        lodash3.gt = gt;
+        lodash3.gte = gte;
+        lodash3.has = has;
+        lodash3.hasIn = hasIn;
+        lodash3.head = head;
+        lodash3.identity = identity;
+        lodash3.includes = includes;
+        lodash3.indexOf = indexOf;
+        lodash3.inRange = inRange;
+        lodash3.invoke = invoke;
+        lodash3.isArguments = isArguments;
+        lodash3.isArray = isArray;
+        lodash3.isArrayBuffer = isArrayBuffer;
+        lodash3.isArrayLike = isArrayLike;
+        lodash3.isArrayLikeObject = isArrayLikeObject;
+        lodash3.isBoolean = isBoolean;
+        lodash3.isBuffer = isBuffer;
+        lodash3.isDate = isDate;
+        lodash3.isElement = isElement;
+        lodash3.isEmpty = isEmpty;
+        lodash3.isEqual = isEqual;
+        lodash3.isEqualWith = isEqualWith;
+        lodash3.isError = isError;
+        lodash3.isFinite = isFinite;
+        lodash3.isFunction = isFunction;
+        lodash3.isInteger = isInteger;
+        lodash3.isLength = isLength;
+        lodash3.isMap = isMap;
+        lodash3.isMatch = isMatch;
+        lodash3.isMatchWith = isMatchWith;
+        lodash3.isNaN = isNaN2;
+        lodash3.isNative = isNative;
+        lodash3.isNil = isNil;
+        lodash3.isNull = isNull;
+        lodash3.isNumber = isNumber;
+        lodash3.isObject = isObject;
+        lodash3.isObjectLike = isObjectLike;
+        lodash3.isPlainObject = isPlainObject;
+        lodash3.isRegExp = isRegExp;
+        lodash3.isSafeInteger = isSafeInteger;
+        lodash3.isSet = isSet;
+        lodash3.isString = isString;
+        lodash3.isSymbol = isSymbol;
+        lodash3.isTypedArray = isTypedArray;
+        lodash3.isUndefined = isUndefined;
+        lodash3.isWeakMap = isWeakMap;
+        lodash3.isWeakSet = isWeakSet;
+        lodash3.join = join3;
+        lodash3.kebabCase = kebabCase;
+        lodash3.last = last;
+        lodash3.lastIndexOf = lastIndexOf;
+        lodash3.lowerCase = lowerCase;
+        lodash3.lowerFirst = lowerFirst;
+        lodash3.lt = lt;
+        lodash3.lte = lte;
+        lodash3.max = max;
+        lodash3.maxBy = maxBy;
+        lodash3.mean = mean;
+        lodash3.meanBy = meanBy;
+        lodash3.min = min;
+        lodash3.minBy = minBy;
+        lodash3.stubArray = stubArray;
+        lodash3.stubFalse = stubFalse;
+        lodash3.stubObject = stubObject;
+        lodash3.stubString = stubString;
+        lodash3.stubTrue = stubTrue;
+        lodash3.multiply = multiply;
+        lodash3.nth = nth;
+        lodash3.noConflict = noConflict;
+        lodash3.noop = noop;
+        lodash3.now = now;
+        lodash3.pad = pad;
+        lodash3.padEnd = padEnd;
+        lodash3.padStart = padStart;
+        lodash3.parseInt = parseInt2;
+        lodash3.random = random;
+        lodash3.reduce = reduce;
+        lodash3.reduceRight = reduceRight;
+        lodash3.repeat = repeat;
+        lodash3.replace = replace;
+        lodash3.result = result;
+        lodash3.round = round;
+        lodash3.runInContext = runInContext2;
+        lodash3.sample = sample;
+        lodash3.size = size;
+        lodash3.snakeCase = snakeCase;
+        lodash3.some = some;
+        lodash3.sortedIndex = sortedIndex;
+        lodash3.sortedIndexBy = sortedIndexBy;
+        lodash3.sortedIndexOf = sortedIndexOf;
+        lodash3.sortedLastIndex = sortedLastIndex;
+        lodash3.sortedLastIndexBy = sortedLastIndexBy;
+        lodash3.sortedLastIndexOf = sortedLastIndexOf;
+        lodash3.startCase = startCase;
+        lodash3.startsWith = startsWith;
+        lodash3.subtract = subtract;
+        lodash3.sum = sum;
+        lodash3.sumBy = sumBy;
+        lodash3.template = template;
+        lodash3.times = times;
+        lodash3.toFinite = toFinite;
+        lodash3.toInteger = toInteger;
+        lodash3.toLength = toLength;
+        lodash3.toLower = toLower;
+        lodash3.toNumber = toNumber;
+        lodash3.toSafeInteger = toSafeInteger;
+        lodash3.toString = toString;
+        lodash3.toUpper = toUpper;
+        lodash3.trim = trim;
+        lodash3.trimEnd = trimEnd;
+        lodash3.trimStart = trimStart;
+        lodash3.truncate = truncate;
+        lodash3.unescape = unescape;
+        lodash3.uniqueId = uniqueId;
+        lodash3.upperCase = upperCase;
+        lodash3.upperFirst = upperFirst;
+        lodash3.each = forEach;
+        lodash3.eachRight = forEachRight;
+        lodash3.first = head;
+        mixin(lodash3, function() {
           var source = {};
-          baseForOwn(lodash4, function(func, methodName) {
-            if (!hasOwnProperty.call(lodash4.prototype, methodName)) {
+          baseForOwn(lodash3, function(func, methodName) {
+            if (!hasOwnProperty.call(lodash3.prototype, methodName)) {
               source[methodName] = func;
             }
           });
           return source;
         }(), { "chain": false });
-        lodash4.VERSION = VERSION;
+        lodash3.VERSION = VERSION;
         arrayEach(["bind", "bindKey", "curry", "curryRight", "partial", "partialRight"], function(methodName) {
-          lodash4[methodName].placeholder = lodash4;
+          lodash3[methodName].placeholder = lodash3;
         });
         arrayEach(["drop", "take"], function(methodName, index) {
           LazyWrapper.prototype[methodName] = function(n) {
@@ -56436,14 +56684,14 @@ var require_lodash = __commonJS({
           return this.take(MAX_ARRAY_LENGTH);
         };
         baseForOwn(LazyWrapper.prototype, function(func, methodName) {
-          var checkIteratee = /^(?:filter|find|map|reject)|While$/.test(methodName), isTaker = /^(?:head|last)$/.test(methodName), lodashFunc = lodash4[isTaker ? "take" + (methodName == "last" ? "Right" : "") : methodName], retUnwrapped = isTaker || /^find/.test(methodName);
+          var checkIteratee = /^(?:filter|find|map|reject)|While$/.test(methodName), isTaker = /^(?:head|last)$/.test(methodName), lodashFunc = lodash3[isTaker ? "take" + (methodName == "last" ? "Right" : "") : methodName], retUnwrapped = isTaker || /^find/.test(methodName);
           if (!lodashFunc) {
             return;
           }
-          lodash4.prototype[methodName] = function() {
+          lodash3.prototype[methodName] = function() {
             var value = this.__wrapped__, args = isTaker ? [1] : arguments, isLazy = value instanceof LazyWrapper, iteratee2 = args[0], useLazy = isLazy || isArray(value);
             var interceptor = function(value2) {
-              var result3 = lodashFunc.apply(lodash4, arrayPush([value2], args));
+              var result3 = lodashFunc.apply(lodash3, arrayPush([value2], args));
               return isTaker && chainAll ? result3[0] : result3;
             };
             if (useLazy && checkIteratee && typeof iteratee2 == "function" && iteratee2.length != 1) {
@@ -56465,7 +56713,7 @@ var require_lodash = __commonJS({
         });
         arrayEach(["pop", "push", "shift", "sort", "splice", "unshift"], function(methodName) {
           var func = arrayProto[methodName], chainName = /^(?:push|sort|unshift)$/.test(methodName) ? "tap" : "thru", retUnwrapped = /^(?:pop|shift)$/.test(methodName);
-          lodash4.prototype[methodName] = function() {
+          lodash3.prototype[methodName] = function() {
             var args = arguments;
             if (retUnwrapped && !this.__chain__) {
               var value = this.value();
@@ -56477,7 +56725,7 @@ var require_lodash = __commonJS({
           };
         });
         baseForOwn(LazyWrapper.prototype, function(func, methodName) {
-          var lodashFunc = lodash4[methodName];
+          var lodashFunc = lodash3[methodName];
           if (lodashFunc) {
             var key = lodashFunc.name + "";
             if (!hasOwnProperty.call(realNames, key)) {
@@ -56493,18 +56741,18 @@ var require_lodash = __commonJS({
         LazyWrapper.prototype.clone = lazyClone;
         LazyWrapper.prototype.reverse = lazyReverse;
         LazyWrapper.prototype.value = lazyValue;
-        lodash4.prototype.at = wrapperAt;
-        lodash4.prototype.chain = wrapperChain;
-        lodash4.prototype.commit = wrapperCommit;
-        lodash4.prototype.next = wrapperNext;
-        lodash4.prototype.plant = wrapperPlant;
-        lodash4.prototype.reverse = wrapperReverse;
-        lodash4.prototype.toJSON = lodash4.prototype.valueOf = lodash4.prototype.value = wrapperValue;
-        lodash4.prototype.first = lodash4.prototype.head;
+        lodash3.prototype.at = wrapperAt;
+        lodash3.prototype.chain = wrapperChain;
+        lodash3.prototype.commit = wrapperCommit;
+        lodash3.prototype.next = wrapperNext;
+        lodash3.prototype.plant = wrapperPlant;
+        lodash3.prototype.reverse = wrapperReverse;
+        lodash3.prototype.toJSON = lodash3.prototype.valueOf = lodash3.prototype.value = wrapperValue;
+        lodash3.prototype.first = lodash3.prototype.head;
         if (symIterator) {
-          lodash4.prototype[symIterator] = wrapperToIterator;
+          lodash3.prototype[symIterator] = wrapperToIterator;
         }
-        return lodash4;
+        return lodash3;
       };
       var _ = runInContext();
       if (typeof define == "function" && typeof define.amd == "object" && define.amd) {
@@ -56704,17 +56952,17 @@ var require_section_matter = __commonJS({
       if (typeof options2 === "function") {
         options2 = { parse: options2 };
       }
-      var file4 = toObject(input);
+      var file3 = toObject(input);
       var defaults = { section_delimiter: "---", parse: identity };
       var opts = extend({}, defaults, options2);
       var delim = opts.section_delimiter;
-      var lines = file4.content.split(/\r?\n/);
+      var lines = file3.content.split(/\r?\n/);
       var sections = null;
       var section = createSection();
       var content = [];
       var stack = [];
       function initSections(val) {
-        file4.content = val;
+        file3.content = val;
         sections = [];
         content = [];
       }
@@ -56760,8 +57008,8 @@ var require_section_matter = __commonJS({
       } else {
         closeSection(content.join("\n"));
       }
-      file4.sections = sections;
-      return file4;
+      file3.sections = sections;
+      return file3;
     };
     function isDelimiter(line, delim) {
       if (line.slice(0, delim.length) !== delim) {
@@ -57376,7 +57624,9 @@ var require_float = __commonJS({
     "use strict";
     var common = require_common3();
     var Type = require_type();
-    var YAML_FLOAT_PATTERN = new RegExp("^(?:[-+]?(?:0|[1-9][0-9_]*)(?:\\.[0-9_]*)?(?:[eE][-+]?[0-9]+)?|\\.[0-9_]+(?:[eE][-+]?[0-9]+)?|[-+]?[0-9][0-9_]*(?::[0-5]?[0-9])+\\.[0-9_]*|[-+]?\\.(?:inf|Inf|INF)|\\.(?:nan|NaN|NAN))$");
+    var YAML_FLOAT_PATTERN = new RegExp(
+      "^(?:[-+]?(?:0|[1-9][0-9_]*)(?:\\.[0-9_]*)?(?:[eE][-+]?[0-9]+)?|\\.[0-9_]+(?:[eE][-+]?[0-9]+)?|[-+]?[0-9][0-9_]*(?::[0-5]?[0-9])+\\.[0-9_]*|[-+]?\\.(?:inf|Inf|INF)|\\.(?:nan|NaN|NAN))$"
+    );
     function resolveYamlFloat(data) {
       if (data === null)
         return false;
@@ -57498,8 +57748,12 @@ var require_timestamp = __commonJS({
   "node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/timestamp.js"(exports2, module2) {
     "use strict";
     var Type = require_type();
-    var YAML_DATE_REGEXP = new RegExp("^([0-9][0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9])$");
-    var YAML_TIMESTAMP_REGEXP = new RegExp("^([0-9][0-9][0-9][0-9])-([0-9][0-9]?)-([0-9][0-9]?)(?:[Tt]|[ \\t]+)([0-9][0-9]?):([0-9][0-9]):([0-9][0-9])(?:\\.([0-9]*))?(?:[ \\t]*(Z|([-+])([0-9][0-9]?)(?::([0-9][0-9]))?))?$");
+    var YAML_DATE_REGEXP = new RegExp(
+      "^([0-9][0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9])$"
+    );
+    var YAML_TIMESTAMP_REGEXP = new RegExp(
+      "^([0-9][0-9][0-9][0-9])-([0-9][0-9]?)-([0-9][0-9]?)(?:[Tt]|[ \\t]+)([0-9][0-9]?):([0-9][0-9]):([0-9][0-9])(?:\\.([0-9]*))?(?:[ \\t]*(Z|([-+])([0-9][0-9]?)(?::([0-9][0-9]))?))?$"
+    );
     function resolveYamlTimestamp(data) {
       if (data === null)
         return false;
@@ -58034,7 +58288,10 @@ var require_loader = __commonJS({
       if (c <= 65535) {
         return String.fromCharCode(c);
       }
-      return String.fromCharCode((c - 65536 >> 10) + 55296, (c - 65536 & 1023) + 56320);
+      return String.fromCharCode(
+        (c - 65536 >> 10) + 55296,
+        (c - 65536 & 1023) + 56320
+      );
     }
     var simpleEscapeCheck = new Array(256);
     var simpleEscapeMap = new Array(256);
@@ -58061,7 +58318,10 @@ var require_loader = __commonJS({
       this.documents = [];
     }
     function generateError(state, message) {
-      return new YAMLException(message, new Mark(state.filename, state.input, state.position, state.line, state.position - state.lineStart));
+      return new YAMLException(
+        message,
+        new Mark(state.filename, state.input, state.position, state.line, state.position - state.lineStart)
+      );
     }
     function throwError(state, message) {
       throw generateError(state, message);
@@ -59821,33 +60081,33 @@ var require_stringify = __commonJS({
     var typeOf = require_kind_of();
     var getEngine = require_engine();
     var defaults = require_defaults();
-    module2.exports = function(file4, data, options2) {
+    module2.exports = function(file3, data, options2) {
       if (data == null && options2 == null) {
-        switch (typeOf(file4)) {
+        switch (typeOf(file3)) {
           case "object":
-            data = file4.data;
+            data = file3.data;
             options2 = {};
             break;
           case "string":
-            return file4;
+            return file3;
           default: {
             throw new TypeError("expected file to be a string or object");
           }
         }
       }
-      const str2 = file4.content;
+      const str2 = file3.content;
       const opts = defaults(options2);
       if (data == null) {
         if (!opts.data)
-          return file4;
+          return file3;
         data = opts.data;
       }
-      const language = file4.language || opts.language;
+      const language = file3.language || opts.language;
       const engine = getEngine(language, opts);
       if (typeof engine.stringify !== "function") {
         throw new TypeError('expected "' + language + '.stringify" to be a function');
       }
-      data = Object.assign({}, file4.data, data);
+      data = Object.assign({}, file3.data, data);
       const open = opts.delimiters[0];
       const close = opts.delimiters[1];
       const matter2 = engine.stringify(data, options2).trim();
@@ -59855,9 +60115,9 @@ var require_stringify = __commonJS({
       if (matter2 !== "{}") {
         buf = newline(open) + newline(matter2) + newline(close);
       }
-      if (typeof file4.excerpt === "string" && file4.excerpt !== "") {
-        if (str2.indexOf(file4.excerpt.trim()) === -1) {
-          buf += newline(file4.excerpt) + newline(close);
+      if (typeof file3.excerpt === "string" && file3.excerpt !== "") {
+        if (str2.indexOf(file3.excerpt.trim()) === -1) {
+          buf += newline(file3.excerpt) + newline(close);
         }
       }
       return buf + newline(str2);
@@ -59873,24 +60133,24 @@ var require_excerpt = __commonJS({
   "node_modules/gray-matter/lib/excerpt.js"(exports2, module2) {
     "use strict";
     var defaults = require_defaults();
-    module2.exports = function(file4, options2) {
+    module2.exports = function(file3, options2) {
       const opts = defaults(options2);
-      if (file4.data == null) {
-        file4.data = {};
+      if (file3.data == null) {
+        file3.data = {};
       }
       if (typeof opts.excerpt === "function") {
-        return opts.excerpt(file4, opts);
+        return opts.excerpt(file3, opts);
       }
-      const sep = file4.data.excerpt_separator || opts.excerpt_separator;
+      const sep = file3.data.excerpt_separator || opts.excerpt_separator;
       if (sep == null && (opts.excerpt === false || opts.excerpt == null)) {
-        return file4;
+        return file3;
       }
       const delimiter = typeof opts.excerpt === "string" ? opts.excerpt : sep || opts.delimiters[0];
-      const idx = file4.content.indexOf(delimiter);
+      const idx = file3.content.indexOf(delimiter);
       if (idx !== -1) {
-        file4.excerpt = file4.content.slice(0, idx);
+        file3.excerpt = file3.content.slice(0, idx);
       }
-      return file4;
+      return file3;
     };
   }
 });
@@ -59902,29 +60162,29 @@ var require_to_file = __commonJS({
     var typeOf = require_kind_of();
     var stringify = require_stringify();
     var utils = require_utils8();
-    module2.exports = function(file4) {
-      if (typeOf(file4) !== "object") {
-        file4 = { content: file4 };
+    module2.exports = function(file3) {
+      if (typeOf(file3) !== "object") {
+        file3 = { content: file3 };
       }
-      if (typeOf(file4.data) !== "object") {
-        file4.data = {};
+      if (typeOf(file3.data) !== "object") {
+        file3.data = {};
       }
-      if (file4.contents && file4.content == null) {
-        file4.content = file4.contents;
+      if (file3.contents && file3.content == null) {
+        file3.content = file3.contents;
       }
-      utils.define(file4, "orig", utils.toBuffer(file4.content));
-      utils.define(file4, "language", file4.language || "");
-      utils.define(file4, "matter", file4.matter || "");
-      utils.define(file4, "stringify", function(data, options2) {
+      utils.define(file3, "orig", utils.toBuffer(file3.content));
+      utils.define(file3, "language", file3.language || "");
+      utils.define(file3, "matter", file3.matter || "");
+      utils.define(file3, "stringify", function(data, options2) {
         if (options2 && options2.language) {
-          file4.language = options2.language;
+          file3.language = options2.language;
         }
-        return stringify(file4, data, options2);
+        return stringify(file3, data, options2);
       });
-      file4.content = utils.toString(file4.content);
-      file4.isEmpty = false;
-      file4.excerpt = "";
-      return file4;
+      file3.content = utils.toString(file3.content);
+      file3.isEmpty = false;
+      file3.excerpt = "";
+      return file3;
     };
   }
 });
@@ -59963,82 +60223,82 @@ var require_gray_matter = __commonJS({
       if (input === "") {
         return { data: {}, content: input, excerpt: "", orig: input };
       }
-      let file4 = toFile(input);
-      const cached = matter2.cache[file4.content];
+      let file3 = toFile(input);
+      const cached = matter2.cache[file3.content];
       if (!options2) {
         if (cached) {
-          file4 = Object.assign({}, cached);
-          file4.orig = cached.orig;
-          return file4;
+          file3 = Object.assign({}, cached);
+          file3.orig = cached.orig;
+          return file3;
         }
-        matter2.cache[file4.content] = file4;
+        matter2.cache[file3.content] = file3;
       }
-      return parseMatter(file4, options2);
+      return parseMatter(file3, options2);
     }
-    function parseMatter(file4, options2) {
+    function parseMatter(file3, options2) {
       const opts = defaults(options2);
       const open = opts.delimiters[0];
       const close = "\n" + opts.delimiters[1];
-      let str2 = file4.content;
+      let str2 = file3.content;
       if (opts.language) {
-        file4.language = opts.language;
+        file3.language = opts.language;
       }
       const openLen = open.length;
       if (!utils.startsWith(str2, open, openLen)) {
-        excerpt(file4, opts);
-        return file4;
+        excerpt(file3, opts);
+        return file3;
       }
       if (str2.charAt(openLen) === open.slice(-1)) {
-        return file4;
+        return file3;
       }
       str2 = str2.slice(openLen);
       const len = str2.length;
       const language = matter2.language(str2, opts);
       if (language.name) {
-        file4.language = language.name;
+        file3.language = language.name;
         str2 = str2.slice(language.raw.length);
       }
       let closeIndex = str2.indexOf(close);
       if (closeIndex === -1) {
         closeIndex = len;
       }
-      file4.matter = str2.slice(0, closeIndex);
-      const block = file4.matter.replace(/^\s*#[^\n]+/gm, "").trim();
+      file3.matter = str2.slice(0, closeIndex);
+      const block = file3.matter.replace(/^\s*#[^\n]+/gm, "").trim();
       if (block === "") {
-        file4.isEmpty = true;
-        file4.empty = file4.content;
-        file4.data = {};
+        file3.isEmpty = true;
+        file3.empty = file3.content;
+        file3.data = {};
       } else {
-        file4.data = parse2(file4.language, file4.matter, opts);
+        file3.data = parse2(file3.language, file3.matter, opts);
       }
       if (closeIndex === len) {
-        file4.content = "";
+        file3.content = "";
       } else {
-        file4.content = str2.slice(closeIndex + close.length);
-        if (file4.content[0] === "\r") {
-          file4.content = file4.content.slice(1);
+        file3.content = str2.slice(closeIndex + close.length);
+        if (file3.content[0] === "\r") {
+          file3.content = file3.content.slice(1);
         }
-        if (file4.content[0] === "\n") {
-          file4.content = file4.content.slice(1);
+        if (file3.content[0] === "\n") {
+          file3.content = file3.content.slice(1);
         }
       }
-      excerpt(file4, opts);
+      excerpt(file3, opts);
       if (opts.sections === true || typeof opts.section === "function") {
-        sections(file4, opts.section);
+        sections(file3, opts.section);
       }
-      return file4;
+      return file3;
     }
     matter2.engines = engines2;
-    matter2.stringify = function(file4, data, options2) {
-      if (typeof file4 === "string")
-        file4 = matter2(file4, options2);
-      return stringify(file4, data, options2);
+    matter2.stringify = function(file3, data, options2) {
+      if (typeof file3 === "string")
+        file3 = matter2(file3, options2);
+      return stringify(file3, data, options2);
     };
     matter2.read = function(filepath, options2) {
       const str2 = fs3.readFileSync(filepath, "utf8");
-      const file4 = matter2(str2, options2);
-      file4.path = filepath;
-      return file4;
+      const file3 = matter2(str2, options2);
+      file3.path = filepath;
+      return file3;
     };
     matter2.test = function(str2, options2) {
       return utils.startsWith(str2, defaults(options2).delimiters[0]);
@@ -60060,1108 +60320,6 @@ var require_gray_matter = __commonJS({
       matter2.cache = {};
     };
     module2.exports = matter2;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/bignumber.js
-var require_bignumber3 = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/bignumber.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.normalizeBN = exports2.normalize = exports2.valueToZDBigNumber = exports2.valueToBigNumber = exports2.BigNumberZeroDecimal = void 0;
-    var bignumber_js_1 = require_bignumber2();
-    exports2.BigNumberZeroDecimal = bignumber_js_1.BigNumber.clone({
-      DECIMAL_PLACES: 0,
-      ROUNDING_MODE: bignumber_js_1.BigNumber.ROUND_DOWN
-    });
-    function valueToBigNumber(amount) {
-      if (amount instanceof bignumber_js_1.BigNumber) {
-        return amount;
-      }
-      return new bignumber_js_1.BigNumber(amount);
-    }
-    exports2.valueToBigNumber = valueToBigNumber;
-    function valueToZDBigNumber(amount) {
-      return new exports2.BigNumberZeroDecimal(amount);
-    }
-    exports2.valueToZDBigNumber = valueToZDBigNumber;
-    function normalize(n, decimals) {
-      return normalizeBN2(n, decimals).toString(10);
-    }
-    exports2.normalize = normalize;
-    function normalizeBN2(n, decimals) {
-      return valueToBigNumber(n).shiftedBy(decimals * -1);
-    }
-    exports2.normalizeBN = normalizeBN2;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/constants.js
-var require_constants2 = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/constants.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.LTV_PRECISION = exports2.RAY_DECIMALS = exports2.WEI_DECIMALS = exports2.USD_DECIMALS = exports2.SECONDS_PER_YEAR = void 0;
-    var bignumber_1 = require_bignumber3();
-    exports2.SECONDS_PER_YEAR = (0, bignumber_1.valueToBigNumber)("31536000");
-    exports2.USD_DECIMALS = 8;
-    exports2.WEI_DECIMALS = 18;
-    exports2.RAY_DECIMALS = 27;
-    exports2.LTV_PRECISION = 4;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/ray.math.js
-var require_ray_math = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/ray.math.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.binomialApproximatedRayPow = exports2.rayPow = exports2.wadToRay = exports2.rayToWad = exports2.rayDiv = exports2.rayMul = exports2.WAD_RAY_RATIO = exports2.HALF_RAY = exports2.RAY = exports2.HALF_WAD = exports2.WAD = void 0;
-    var bignumber_1 = require_bignumber3();
-    exports2.WAD = (0, bignumber_1.valueToZDBigNumber)(10).pow(18);
-    exports2.HALF_WAD = exports2.WAD.dividedBy(2);
-    exports2.RAY = (0, bignumber_1.valueToZDBigNumber)(10).pow(27);
-    exports2.HALF_RAY = exports2.RAY.dividedBy(2);
-    exports2.WAD_RAY_RATIO = (0, bignumber_1.valueToZDBigNumber)(10).pow(9);
-    function rayMul(a, b) {
-      return exports2.HALF_RAY.plus((0, bignumber_1.valueToZDBigNumber)(a).multipliedBy(b)).div(exports2.RAY);
-    }
-    exports2.rayMul = rayMul;
-    function rayDiv(a, b) {
-      const halfB = (0, bignumber_1.valueToZDBigNumber)(b).div(2);
-      return halfB.plus((0, bignumber_1.valueToZDBigNumber)(a).multipliedBy(exports2.RAY)).div(b);
-    }
-    exports2.rayDiv = rayDiv;
-    function rayToWad(a) {
-      const halfRatio = (0, bignumber_1.valueToZDBigNumber)(exports2.WAD_RAY_RATIO).div(2);
-      return halfRatio.plus(a).div(exports2.WAD_RAY_RATIO);
-    }
-    exports2.rayToWad = rayToWad;
-    function wadToRay(a) {
-      return (0, bignumber_1.valueToZDBigNumber)(a).multipliedBy(exports2.WAD_RAY_RATIO).decimalPlaces(0);
-    }
-    exports2.wadToRay = wadToRay;
-    function rayPow(a, p) {
-      let x = (0, bignumber_1.valueToZDBigNumber)(a);
-      let n = (0, bignumber_1.valueToZDBigNumber)(p);
-      let z = n.modulo(2).eq(0) ? (0, bignumber_1.valueToZDBigNumber)(exports2.RAY) : x;
-      for (n = n.div(2); !n.eq(0); n = n.div(2)) {
-        x = rayMul(x, x);
-        if (!n.modulo(2).eq(0)) {
-          z = rayMul(z, x);
-        }
-      }
-      return z;
-    }
-    exports2.rayPow = rayPow;
-    function binomialApproximatedRayPow(a, p) {
-      const base = (0, bignumber_1.valueToZDBigNumber)(a);
-      const exp = (0, bignumber_1.valueToZDBigNumber)(p);
-      if (exp.eq(0))
-        return exports2.RAY;
-      const expMinusOne = exp.minus(1);
-      const expMinusTwo = exp.gt(2) ? exp.minus(2) : 0;
-      const basePowerTwo = rayMul(base, base);
-      const basePowerThree = rayMul(basePowerTwo, base);
-      const firstTerm = exp.multipliedBy(base);
-      const secondTerm = exp.multipliedBy(expMinusOne).multipliedBy(basePowerTwo).div(2);
-      const thirdTerm = exp.multipliedBy(expMinusOne).multipliedBy(expMinusTwo).multipliedBy(basePowerThree).div(6);
-      return exports2.RAY.plus(firstTerm).plus(secondTerm).plus(thirdTerm);
-    }
-    exports2.binomialApproximatedRayPow = binomialApproximatedRayPow;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/pool-math.js
-var require_pool_math = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/pool-math.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.getMarketReferenceCurrencyAndUsdBalance = exports2.calculateAvailableBorrowsMarketReferenceCurrency = exports2.calculateHealthFactorFromBalancesBigUnits = exports2.calculateHealthFactorFromBalances = exports2.getCompoundedStableBalance = exports2.getLinearBalance = exports2.getReserveNormalizedIncome = exports2.calculateLinearInterest = exports2.getCompoundedBalance = exports2.calculateCompoundedInterest = void 0;
-    var tslib_1 = require_tslib();
-    var bignumber_js_1 = (0, tslib_1.__importDefault)(require_bignumber2());
-    var bignumber_1 = require_bignumber3();
-    var constants_1 = require_constants2();
-    var RayMath = (0, tslib_1.__importStar)(require_ray_math());
-    function calculateCompoundedInterest({ rate, currentTimestamp, lastUpdateTimestamp }) {
-      const timeDelta = (0, bignumber_1.valueToZDBigNumber)(currentTimestamp - lastUpdateTimestamp);
-      const ratePerSecond = (0, bignumber_1.valueToZDBigNumber)(rate).dividedBy(constants_1.SECONDS_PER_YEAR);
-      return RayMath.binomialApproximatedRayPow(ratePerSecond, timeDelta);
-    }
-    exports2.calculateCompoundedInterest = calculateCompoundedInterest;
-    function getCompoundedBalance({ principalBalance: _principalBalance, reserveIndex, reserveRate, lastUpdateTimestamp, currentTimestamp }) {
-      const principalBalance = (0, bignumber_1.valueToZDBigNumber)(_principalBalance);
-      if (principalBalance.eq("0")) {
-        return principalBalance;
-      }
-      const compoundedInterest = calculateCompoundedInterest({
-        rate: reserveRate,
-        currentTimestamp,
-        lastUpdateTimestamp
-      });
-      const cumulatedInterest = RayMath.rayMul(compoundedInterest, reserveIndex);
-      const principalBalanceRay = RayMath.wadToRay(principalBalance);
-      return RayMath.rayToWad(RayMath.rayMul(principalBalanceRay, cumulatedInterest));
-    }
-    exports2.getCompoundedBalance = getCompoundedBalance;
-    function calculateLinearInterest({ rate, currentTimestamp, lastUpdateTimestamp }) {
-      const timeDelta = RayMath.wadToRay((0, bignumber_1.valueToZDBigNumber)(currentTimestamp - lastUpdateTimestamp));
-      const timeDeltaInSeconds = RayMath.rayDiv(timeDelta, RayMath.wadToRay(constants_1.SECONDS_PER_YEAR));
-      const a = RayMath.rayMul(rate, timeDeltaInSeconds).plus(RayMath.RAY);
-      return a;
-    }
-    exports2.calculateLinearInterest = calculateLinearInterest;
-    function getReserveNormalizedIncome({ rate, index, lastUpdateTimestamp, currentTimestamp }) {
-      if ((0, bignumber_1.valueToZDBigNumber)(rate).eq("0")) {
-        return (0, bignumber_1.valueToZDBigNumber)(index);
-      }
-      const cumulatedInterest = calculateLinearInterest({
-        rate,
-        currentTimestamp,
-        lastUpdateTimestamp
-      });
-      return RayMath.rayMul(cumulatedInterest, index);
-    }
-    exports2.getReserveNormalizedIncome = getReserveNormalizedIncome;
-    function getLinearBalance({ balance, index, rate, lastUpdateTimestamp, currentTimestamp }) {
-      return RayMath.rayToWad(RayMath.rayMul(RayMath.wadToRay(balance), getReserveNormalizedIncome({
-        rate,
-        index,
-        lastUpdateTimestamp,
-        currentTimestamp
-      })));
-    }
-    exports2.getLinearBalance = getLinearBalance;
-    function getCompoundedStableBalance({ principalBalance: _principalBalance, userStableRate, lastUpdateTimestamp, currentTimestamp }) {
-      const principalBalance = (0, bignumber_1.valueToZDBigNumber)(_principalBalance);
-      if (principalBalance.eq("0")) {
-        return principalBalance;
-      }
-      const cumulatedInterest = calculateCompoundedInterest({
-        rate: userStableRate,
-        currentTimestamp,
-        lastUpdateTimestamp
-      });
-      const principalBalanceRay = RayMath.wadToRay(principalBalance);
-      return RayMath.rayToWad(RayMath.rayMul(principalBalanceRay, cumulatedInterest));
-    }
-    exports2.getCompoundedStableBalance = getCompoundedStableBalance;
-    function calculateHealthFactorFromBalances({ borrowBalanceMarketReferenceCurrency, collateralBalanceMarketReferenceCurrency, currentLiquidationThreshold }) {
-      if ((0, bignumber_1.valueToBigNumber)(borrowBalanceMarketReferenceCurrency).eq(0)) {
-        return (0, bignumber_1.valueToBigNumber)("-1");
-      }
-      return (0, bignumber_1.valueToBigNumber)(collateralBalanceMarketReferenceCurrency).multipliedBy(currentLiquidationThreshold).shiftedBy(constants_1.LTV_PRECISION * -1).div(borrowBalanceMarketReferenceCurrency);
-    }
-    exports2.calculateHealthFactorFromBalances = calculateHealthFactorFromBalances;
-    function calculateHealthFactorFromBalancesBigUnits({ collateralBalanceMarketReferenceCurrency, borrowBalanceMarketReferenceCurrency, currentLiquidationThreshold }) {
-      return calculateHealthFactorFromBalances({
-        collateralBalanceMarketReferenceCurrency,
-        borrowBalanceMarketReferenceCurrency,
-        currentLiquidationThreshold: (0, bignumber_1.valueToBigNumber)(currentLiquidationThreshold).shiftedBy(constants_1.LTV_PRECISION).decimalPlaces(0, bignumber_js_1.default.ROUND_DOWN)
-      });
-    }
-    exports2.calculateHealthFactorFromBalancesBigUnits = calculateHealthFactorFromBalancesBigUnits;
-    function calculateAvailableBorrowsMarketReferenceCurrency({ collateralBalanceMarketReferenceCurrency, borrowBalanceMarketReferenceCurrency, currentLtv }) {
-      if ((0, bignumber_1.valueToZDBigNumber)(currentLtv).eq(0)) {
-        return (0, bignumber_1.valueToZDBigNumber)("0");
-      }
-      const availableBorrowsMarketReferenceCurrency = (0, bignumber_1.valueToZDBigNumber)(collateralBalanceMarketReferenceCurrency).multipliedBy(currentLtv).shiftedBy(constants_1.LTV_PRECISION * -1).minus(borrowBalanceMarketReferenceCurrency);
-      return availableBorrowsMarketReferenceCurrency.gt("0") ? availableBorrowsMarketReferenceCurrency : (0, bignumber_1.valueToZDBigNumber)("0");
-    }
-    exports2.calculateAvailableBorrowsMarketReferenceCurrency = calculateAvailableBorrowsMarketReferenceCurrency;
-    function getMarketReferenceCurrencyAndUsdBalance({ balance, priceInMarketReferenceCurrency, marketReferenceCurrencyDecimals, decimals, marketReferencePriceInUsdNormalized }) {
-      const marketReferenceCurrencyBalance = (0, bignumber_1.valueToZDBigNumber)(balance).multipliedBy(priceInMarketReferenceCurrency).shiftedBy(decimals * -1);
-      const usdBalance = marketReferenceCurrencyBalance.multipliedBy(marketReferencePriceInUsdNormalized).shiftedBy(marketReferenceCurrencyDecimals * -1);
-      return { marketReferenceCurrencyBalance, usdBalance };
-    }
-    exports2.getMarketReferenceCurrencyAndUsdBalance = getMarketReferenceCurrencyAndUsdBalance;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/incentive/calculate-accrued-incentives.js
-var require_calculate_accrued_incentives = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/incentive/calculate-accrued-incentives.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.calculateAccruedIncentives = void 0;
-    var tslib_1 = require_tslib();
-    var bignumber_js_1 = (0, tslib_1.__importDefault)(require_bignumber2());
-    function calculateAccruedIncentives({ principalUserBalance, reserveIndex, userIndex, precision, reserveIndexTimestamp, emissionPerSecond, totalSupply, currentTimestamp, emissionEndTimestamp }) {
-      if (totalSupply.isEqualTo(new bignumber_js_1.default(0))) {
-        return new bignumber_js_1.default(0);
-      }
-      const actualCurrentTimestamp = currentTimestamp > emissionEndTimestamp ? emissionEndTimestamp : currentTimestamp;
-      const timeDelta = actualCurrentTimestamp - reserveIndexTimestamp;
-      let currentReserveIndex;
-      if (reserveIndexTimestamp >= Number(currentTimestamp) || reserveIndexTimestamp >= emissionEndTimestamp) {
-        currentReserveIndex = reserveIndex;
-      } else {
-        currentReserveIndex = emissionPerSecond.multipliedBy(timeDelta).shiftedBy(precision).dividedBy(totalSupply).plus(reserveIndex);
-      }
-      const reward = principalUserBalance.multipliedBy(currentReserveIndex.minus(userIndex)).shiftedBy(precision * -1);
-      return reward;
-    }
-    exports2.calculateAccruedIncentives = calculateAccruedIncentives;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/incentive/calculate-user-reserve-incentives.js
-var require_calculate_user_reserve_incentives = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/incentive/calculate-user-reserve-incentives.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.calculateUserReserveIncentives = void 0;
-    var tslib_1 = require_tslib();
-    var bignumber_js_1 = (0, tslib_1.__importDefault)(require_bignumber2());
-    var bignumber_1 = require_bignumber3();
-    var ray_math_1 = require_ray_math();
-    var calculate_accrued_incentives_1 = require_calculate_accrued_incentives();
-    function calculateUserReserveIncentives({ reserveIncentives, userIncentives, currentTimestamp, userReserveData }) {
-      const calculatedUserIncentives = [];
-      userIncentives.aTokenIncentivesUserData.userRewardsInformation.forEach((userReserveIncentive) => {
-        const reserveIncentive = reserveIncentives.aIncentiveData.rewardsTokenInformation.find((reward) => reward.rewardTokenAddress === userReserveIncentive.rewardTokenAddress);
-        if (reserveIncentive) {
-          const accruedRewards = userReserveData ? (0, calculate_accrued_incentives_1.calculateAccruedIncentives)({
-            principalUserBalance: new bignumber_js_1.default(userReserveData.scaledATokenBalance),
-            reserveIndex: new bignumber_js_1.default(reserveIncentive.tokenIncentivesIndex),
-            userIndex: new bignumber_js_1.default(userReserveIncentive.tokenIncentivesUserIndex),
-            precision: reserveIncentive.precision,
-            reserveIndexTimestamp: reserveIncentive.incentivesLastUpdateTimestamp,
-            emissionPerSecond: new bignumber_js_1.default(reserveIncentive.emissionPerSecond),
-            totalSupply: (0, ray_math_1.rayDiv)(new bignumber_js_1.default(userReserveData.reserve.totalLiquidity).shiftedBy(userReserveData.reserve.decimals), new bignumber_js_1.default(userReserveData.reserve.liquidityIndex)),
-            currentTimestamp,
-            emissionEndTimestamp: reserveIncentive.emissionEndTimestamp
-          }) : new bignumber_js_1.default("0");
-          calculatedUserIncentives.push({
-            tokenAddress: userIncentives.aTokenIncentivesUserData.tokenAddress,
-            incentiveController: userIncentives.aTokenIncentivesUserData.incentiveControllerAddress,
-            rewardTokenAddress: userReserveIncentive.rewardTokenAddress,
-            rewardTokenDecimals: userReserveIncentive.rewardTokenDecimals,
-            accruedRewards,
-            unclaimedRewards: new bignumber_js_1.default(userReserveIncentive.userUnclaimedRewards),
-            rewardPriceFeed: (0, bignumber_1.normalize)(userReserveIncentive.rewardPriceFeed, userReserveIncentive.priceFeedDecimals),
-            rewardTokenSymbol: userReserveIncentive.rewardTokenSymbol
-          });
-        }
-      });
-      userIncentives.vTokenIncentivesUserData.userRewardsInformation.forEach((userReserveIncentive) => {
-        const reserveIncentive = reserveIncentives.vIncentiveData.rewardsTokenInformation.find((reward) => reward.rewardTokenAddress === userReserveIncentive.rewardTokenAddress);
-        if (reserveIncentive) {
-          const accruedRewards = userReserveData ? (0, calculate_accrued_incentives_1.calculateAccruedIncentives)({
-            principalUserBalance: new bignumber_js_1.default(userReserveData.scaledVariableDebt),
-            reserveIndex: new bignumber_js_1.default(reserveIncentive.tokenIncentivesIndex),
-            userIndex: new bignumber_js_1.default(userReserveIncentive.tokenIncentivesUserIndex),
-            precision: reserveIncentive.precision,
-            reserveIndexTimestamp: reserveIncentive.incentivesLastUpdateTimestamp,
-            emissionPerSecond: new bignumber_js_1.default(reserveIncentive.emissionPerSecond),
-            totalSupply: new bignumber_js_1.default(userReserveData.reserve.totalScaledVariableDebt).shiftedBy(userReserveData.reserve.decimals),
-            currentTimestamp,
-            emissionEndTimestamp: reserveIncentive.emissionEndTimestamp
-          }) : new bignumber_js_1.default("0");
-          calculatedUserIncentives.push({
-            tokenAddress: userIncentives.vTokenIncentivesUserData.tokenAddress,
-            incentiveController: userIncentives.vTokenIncentivesUserData.incentiveControllerAddress,
-            rewardTokenAddress: userReserveIncentive.rewardTokenAddress,
-            rewardTokenDecimals: userReserveIncentive.rewardTokenDecimals,
-            accruedRewards,
-            unclaimedRewards: new bignumber_js_1.default(userReserveIncentive.userUnclaimedRewards),
-            rewardPriceFeed: (0, bignumber_1.normalize)(userReserveIncentive.rewardPriceFeed, userReserveIncentive.priceFeedDecimals),
-            rewardTokenSymbol: userReserveIncentive.rewardTokenSymbol
-          });
-        }
-      });
-      userIncentives.sTokenIncentivesUserData.userRewardsInformation.forEach((userReserveIncentive) => {
-        const reserveIncentive = reserveIncentives.sIncentiveData.rewardsTokenInformation.find((reward) => reward.rewardTokenAddress === userReserveIncentive.rewardTokenAddress);
-        if (reserveIncentive) {
-          const accruedRewards = userReserveData ? (0, calculate_accrued_incentives_1.calculateAccruedIncentives)({
-            principalUserBalance: new bignumber_js_1.default(userReserveData.principalStableDebt),
-            reserveIndex: new bignumber_js_1.default(reserveIncentive.tokenIncentivesIndex),
-            userIndex: new bignumber_js_1.default(userReserveIncentive.tokenIncentivesUserIndex),
-            precision: reserveIncentive.precision,
-            reserveIndexTimestamp: reserveIncentive.incentivesLastUpdateTimestamp,
-            emissionPerSecond: new bignumber_js_1.default(reserveIncentive.emissionPerSecond),
-            totalSupply: new bignumber_js_1.default(userReserveData.reserve.totalPrincipalStableDebt).shiftedBy(userReserveData.reserve.decimals),
-            currentTimestamp,
-            emissionEndTimestamp: reserveIncentive.emissionEndTimestamp
-          }) : new bignumber_js_1.default("0");
-          calculatedUserIncentives.push({
-            tokenAddress: userIncentives.sTokenIncentivesUserData.tokenAddress,
-            incentiveController: userIncentives.sTokenIncentivesUserData.incentiveControllerAddress,
-            rewardTokenAddress: userReserveIncentive.rewardTokenAddress,
-            rewardTokenDecimals: userReserveIncentive.rewardTokenDecimals,
-            accruedRewards,
-            unclaimedRewards: new bignumber_js_1.default(userReserveIncentive.userUnclaimedRewards),
-            rewardPriceFeed: (0, bignumber_1.normalize)(userReserveIncentive.rewardPriceFeed, userReserveIncentive.priceFeedDecimals),
-            rewardTokenSymbol: userReserveIncentive.rewardTokenSymbol
-          });
-        }
-      });
-      return calculatedUserIncentives;
-    }
-    exports2.calculateUserReserveIncentives = calculateUserReserveIncentives;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/incentive/calculate-all-user-incentives.js
-var require_calculate_all_user_incentives = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/incentive/calculate-all-user-incentives.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.calculateAllUserIncentives = void 0;
-    var calculate_user_reserve_incentives_1 = require_calculate_user_reserve_incentives();
-    function calculateAllUserIncentives({ reserveIncentives, userIncentives, userReserves, currentTimestamp }) {
-      const allRewards = userIncentives.map((userIncentive) => {
-        const reserve = reserveIncentives.find((reserve2) => reserve2.underlyingAsset === userIncentive.underlyingAsset);
-        const userReserve = userReserves.find((userReserve2) => userReserve2.reserve.underlyingAsset === userIncentive.underlyingAsset);
-        if (reserve) {
-          const reserveRewards = (0, calculate_user_reserve_incentives_1.calculateUserReserveIncentives)({
-            reserveIncentives: reserve,
-            userIncentives: userIncentive,
-            userReserveData: userReserve,
-            currentTimestamp
-          });
-          return reserveRewards;
-        }
-        return [];
-      }).flat();
-      const incentiveDict = {};
-      allRewards.forEach((reward) => {
-        if (!incentiveDict[reward.rewardTokenAddress]) {
-          incentiveDict[reward.rewardTokenAddress] = {
-            assets: [],
-            rewardTokenSymbol: reward.rewardTokenSymbol,
-            claimableRewards: reward.unclaimedRewards,
-            incentiveControllerAddress: reward.incentiveController,
-            rewardTokenDecimals: reward.rewardTokenDecimals,
-            rewardPriceFeed: reward.rewardPriceFeed
-          };
-        }
-        if (reward.accruedRewards.gt(0)) {
-          incentiveDict[reward.rewardTokenAddress].claimableRewards = incentiveDict[reward.rewardTokenAddress].claimableRewards.plus(reward.accruedRewards);
-          incentiveDict[reward.rewardTokenAddress].assets.push(reward.tokenAddress);
-        }
-      });
-      return incentiveDict;
-    }
-    exports2.calculateAllUserIncentives = calculateAllUserIncentives;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/incentive/calculate-incentive-apr.js
-var require_calculate_incentive_apr = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/incentive/calculate-incentive-apr.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.calculateIncentiveAPR = void 0;
-    var bignumber_1 = require_bignumber3();
-    var constants_1 = require_constants2();
-    function calculateIncentiveAPR({ emissionPerSecond, rewardTokenPriceInMarketReferenceCurrency, priceInMarketReferenceCurrency, totalTokenSupply, decimals }) {
-      const emissionPerSecondNormalized = (0, bignumber_1.normalizeBN)(emissionPerSecond, constants_1.WEI_DECIMALS).multipliedBy(rewardTokenPriceInMarketReferenceCurrency);
-      if (emissionPerSecondNormalized.eq(0)) {
-        return "0";
-      }
-      const emissionPerYear = emissionPerSecondNormalized.multipliedBy(constants_1.SECONDS_PER_YEAR);
-      const totalSupplyNormalized = (0, bignumber_1.valueToBigNumber)((0, bignumber_1.normalize)(totalTokenSupply, decimals)).multipliedBy(priceInMarketReferenceCurrency);
-      return emissionPerYear.dividedBy(totalSupplyNormalized).toFixed();
-    }
-    exports2.calculateIncentiveAPR = calculateIncentiveAPR;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/incentive/calculate-reserve-incentives.js
-var require_calculate_reserve_incentives = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/incentive/calculate-reserve-incentives.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.calculateReserveIncentives = exports2.calculateRewardTokenPrice = void 0;
-    var bignumber_1 = require_bignumber3();
-    var calculate_incentive_apr_1 = require_calculate_incentive_apr();
-    function calculateRewardTokenPrice(reserves, address, priceFeed, priceFeedDecimals) {
-      if (Number(priceFeed) > 0) {
-        return (0, bignumber_1.normalize)(priceFeed, priceFeedDecimals);
-      }
-      address = address.toLowerCase();
-      if (address.toLowerCase() === "0x4da27a545c0c5b758a6ba100e3a049001de870f5") {
-        address = "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9";
-      }
-      const rewardReserve = reserves.find((reserve) => reserve.underlyingAsset.toLowerCase() === address);
-      if (rewardReserve) {
-        return rewardReserve.formattedPriceInMarketReferenceCurrency;
-      }
-      return "0";
-    }
-    exports2.calculateRewardTokenPrice = calculateRewardTokenPrice;
-    var rewardEmissionActive = (reward) => {
-      if (reward.emissionEndTimestamp > reward.incentivesLastUpdateTimestamp) {
-        return true;
-      }
-      return false;
-    };
-    function calculateReserveIncentives({ reserves, reserveIncentiveData, totalLiquidity, totalVariableDebt, totalStableDebt, decimals, priceInMarketReferenceCurrency }) {
-      const aIncentivesData = reserveIncentiveData.aIncentiveData.rewardsTokenInformation.map((reward) => {
-        const aIncentivesAPR = rewardEmissionActive(reward) ? (0, calculate_incentive_apr_1.calculateIncentiveAPR)({
-          emissionPerSecond: reward.emissionPerSecond,
-          rewardTokenPriceInMarketReferenceCurrency: calculateRewardTokenPrice(reserves, reward.rewardTokenAddress, reward.rewardPriceFeed, reward.priceFeedDecimals),
-          priceInMarketReferenceCurrency,
-          totalTokenSupply: totalLiquidity,
-          decimals,
-          rewardTokenDecimals: reward.rewardTokenDecimals
-        }) : "0";
-        const aIncentiveData = {
-          incentiveAPR: aIncentivesAPR,
-          rewardTokenAddress: reward.rewardTokenAddress,
-          rewardTokenSymbol: reward.rewardTokenSymbol
-        };
-        return aIncentiveData;
-      });
-      const vIncentivesData = reserveIncentiveData.vIncentiveData.rewardsTokenInformation.map((reward) => {
-        const vIncentivesAPR = rewardEmissionActive(reward) ? (0, calculate_incentive_apr_1.calculateIncentiveAPR)({
-          emissionPerSecond: reward.emissionPerSecond,
-          rewardTokenPriceInMarketReferenceCurrency: calculateRewardTokenPrice(reserves, reward.rewardTokenAddress, reward.rewardPriceFeed, reward.priceFeedDecimals),
-          priceInMarketReferenceCurrency,
-          totalTokenSupply: totalVariableDebt,
-          decimals,
-          rewardTokenDecimals: reward.rewardTokenDecimals
-        }) : "0";
-        const vIncentiveData = {
-          incentiveAPR: vIncentivesAPR,
-          rewardTokenAddress: reward.rewardTokenAddress,
-          rewardTokenSymbol: reward.rewardTokenSymbol
-        };
-        return vIncentiveData;
-      });
-      const sIncentivesData = reserveIncentiveData.sIncentiveData.rewardsTokenInformation.map((reward) => {
-        const sIncentivesAPR = rewardEmissionActive(reward) ? (0, calculate_incentive_apr_1.calculateIncentiveAPR)({
-          emissionPerSecond: reward.emissionPerSecond,
-          rewardTokenPriceInMarketReferenceCurrency: calculateRewardTokenPrice(reserves, reward.rewardTokenAddress, reward.rewardPriceFeed, reward.priceFeedDecimals),
-          priceInMarketReferenceCurrency,
-          totalTokenSupply: totalStableDebt,
-          decimals,
-          rewardTokenDecimals: reward.rewardTokenDecimals
-        }) : "0";
-        const sIncentiveData = {
-          incentiveAPR: sIncentivesAPR,
-          rewardTokenAddress: reward.rewardTokenAddress,
-          rewardTokenSymbol: reward.rewardTokenSymbol
-        };
-        return sIncentiveData;
-      });
-      return {
-        underlyingAsset: reserveIncentiveData.underlyingAsset,
-        aIncentivesData,
-        vIncentivesData,
-        sIncentivesData
-      };
-    }
-    exports2.calculateReserveIncentives = calculateReserveIncentives;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/incentive/calculate-all-reserve-incentives.js
-var require_calculate_all_reserve_incentives = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/incentive/calculate-all-reserve-incentives.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.calculateAllReserveIncentives = void 0;
-    var calculate_reserve_incentives_1 = require_calculate_reserve_incentives();
-    function calculateAllReserveIncentives({ reserveIncentives, reserves, marketReferenceCurrencyDecimals }) {
-      const reserveDict = {};
-      reserveIncentives.forEach((reserveIncentive) => {
-        const reserve = reserves.find((reserve2) => reserve2.underlyingAsset.toLowerCase() === reserveIncentive.underlyingAsset.toLowerCase());
-        if (reserve) {
-          const calculatedReserveIncentives = (0, calculate_reserve_incentives_1.calculateReserveIncentives)({
-            reserves,
-            reserveIncentiveData: reserveIncentive,
-            totalLiquidity: reserve.totalLiquidity,
-            totalVariableDebt: reserve.totalVariableDebt,
-            totalStableDebt: reserve.totalStableDebt,
-            priceInMarketReferenceCurrency: reserve.formattedPriceInMarketReferenceCurrency,
-            decimals: reserve.decimals,
-            marketReferenceCurrencyDecimals
-          });
-          reserveDict[calculatedReserveIncentives.underlyingAsset] = {
-            aIncentives: calculatedReserveIncentives.aIncentivesData,
-            vIncentives: calculatedReserveIncentives.vIncentivesData,
-            sIncentives: calculatedReserveIncentives.sIncentivesData
-          };
-        }
-      });
-      return reserveDict;
-    }
-    exports2.calculateAllReserveIncentives = calculateAllReserveIncentives;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/incentive/types.js
-var require_types7 = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/incentive/types.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/incentive/index.js
-var require_incentive = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/incentive/index.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    var tslib_1 = require_tslib();
-    (0, tslib_1.__exportStar)(require_calculate_all_user_incentives(), exports2);
-    (0, tslib_1.__exportStar)(require_calculate_all_reserve_incentives(), exports2);
-    (0, tslib_1.__exportStar)(require_types7(), exports2);
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/user/format-user-reserve.js
-var require_format_user_reserve = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/user/format-user-reserve.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.formatUserReserve = void 0;
-    var bignumber_1 = require_bignumber3();
-    var constants_1 = require_constants2();
-    var ray_math_1 = require_ray_math();
-    function formatUserReserve({ reserve: _reserve, marketReferenceCurrencyDecimals }) {
-      const { userReserve } = _reserve;
-      const { reserve } = userReserve;
-      const reserveDecimals = reserve.decimals;
-      const normalizeWithReserve = (n) => (0, bignumber_1.normalize)(n, reserve.decimals);
-      const exactStableBorrowRate = (0, ray_math_1.rayPow)((0, bignumber_1.valueToZDBigNumber)(userReserve.stableBorrowRate).dividedBy(constants_1.SECONDS_PER_YEAR).plus(ray_math_1.RAY), constants_1.SECONDS_PER_YEAR).minus(ray_math_1.RAY);
-      return Object.assign(Object.assign({}, userReserve), { underlyingBalance: (0, bignumber_1.normalize)(_reserve.underlyingBalance, reserveDecimals), underlyingBalanceMarketReferenceCurrency: (0, bignumber_1.normalize)(_reserve.underlyingBalanceMarketReferenceCurrency, marketReferenceCurrencyDecimals), underlyingBalanceUSD: _reserve.underlyingBalanceUSD.toString(), stableBorrows: normalizeWithReserve(_reserve.stableBorrows), stableBorrowsMarketReferenceCurrency: (0, bignumber_1.normalize)(_reserve.stableBorrowsMarketReferenceCurrency, marketReferenceCurrencyDecimals), stableBorrowsUSD: _reserve.stableBorrowsUSD.toString(), variableBorrows: normalizeWithReserve(_reserve.variableBorrows), variableBorrowsMarketReferenceCurrency: (0, bignumber_1.normalize)(_reserve.variableBorrowsMarketReferenceCurrency, marketReferenceCurrencyDecimals), variableBorrowsUSD: _reserve.variableBorrowsUSD.toString(), totalBorrows: normalizeWithReserve(_reserve.totalBorrows), totalBorrowsMarketReferenceCurrency: (0, bignumber_1.normalize)(_reserve.totalBorrowsMarketReferenceCurrency, marketReferenceCurrencyDecimals), totalBorrowsUSD: _reserve.totalBorrowsUSD.toString(), stableBorrowAPR: (0, bignumber_1.normalize)(userReserve.stableBorrowRate, constants_1.RAY_DECIMALS), stableBorrowAPY: (0, bignumber_1.normalize)(exactStableBorrowRate, constants_1.RAY_DECIMALS) });
-    }
-    exports2.formatUserReserve = formatUserReserve;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/usd/normalized-to-usd.js
-var require_normalized_to_usd = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/usd/normalized-to-usd.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.normalizedToUsd = void 0;
-    function normalizedToUsd(value, marketReferencePriceInUsd, marketReferenceCurrencyDecimals) {
-      return value.multipliedBy(marketReferencePriceInUsd).shiftedBy(marketReferenceCurrencyDecimals * -1);
-    }
-    exports2.normalizedToUsd = normalizedToUsd;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/user/calculate-user-reserve-totals.js
-var require_calculate_user_reserve_totals = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/user/calculate-user-reserve-totals.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.calculateUserReserveTotals = void 0;
-    var bignumber_1 = require_bignumber3();
-    function calculateUserReserveTotals({ userReserves, userEmodeCategoryId }) {
-      let totalLiquidityMarketReferenceCurrency = (0, bignumber_1.valueToZDBigNumber)("0");
-      let totalCollateralMarketReferenceCurrency = (0, bignumber_1.valueToZDBigNumber)("0");
-      let totalBorrowsMarketReferenceCurrency = (0, bignumber_1.valueToZDBigNumber)("0");
-      let currentLtv = (0, bignumber_1.valueToBigNumber)("0");
-      let currentLiquidationThreshold = (0, bignumber_1.valueToBigNumber)("0");
-      let isInIsolationMode = false;
-      let isolatedReserve;
-      userReserves.forEach((userReserveSummary) => {
-        totalLiquidityMarketReferenceCurrency = totalLiquidityMarketReferenceCurrency.plus(userReserveSummary.underlyingBalanceMarketReferenceCurrency);
-        totalBorrowsMarketReferenceCurrency = totalBorrowsMarketReferenceCurrency.plus(userReserveSummary.variableBorrowsMarketReferenceCurrency).plus(userReserveSummary.stableBorrowsMarketReferenceCurrency);
-        if (userReserveSummary.userReserve.reserve.usageAsCollateralEnabled && userReserveSummary.userReserve.usageAsCollateralEnabledOnUser) {
-          if (userReserveSummary.userReserve.reserve.debtCeiling !== "0") {
-            isolatedReserve = userReserveSummary.userReserve.reserve;
-            isInIsolationMode = true;
-          }
-          totalCollateralMarketReferenceCurrency = totalCollateralMarketReferenceCurrency.plus(userReserveSummary.underlyingBalanceMarketReferenceCurrency);
-          if (userEmodeCategoryId && userEmodeCategoryId === userReserveSummary.userReserve.reserve.eModeCategoryId) {
-            currentLtv = currentLtv.plus((0, bignumber_1.valueToBigNumber)(userReserveSummary.underlyingBalanceMarketReferenceCurrency).multipliedBy(userReserveSummary.userReserve.reserve.eModeLtv));
-            currentLiquidationThreshold = currentLiquidationThreshold.plus((0, bignumber_1.valueToBigNumber)(userReserveSummary.underlyingBalanceMarketReferenceCurrency).multipliedBy(userReserveSummary.userReserve.reserve.eModeLiquidationThreshold));
-          } else {
-            currentLtv = currentLtv.plus((0, bignumber_1.valueToBigNumber)(userReserveSummary.underlyingBalanceMarketReferenceCurrency).multipliedBy(userReserveSummary.userReserve.reserve.baseLTVasCollateral));
-            currentLiquidationThreshold = currentLiquidationThreshold.plus((0, bignumber_1.valueToBigNumber)(userReserveSummary.underlyingBalanceMarketReferenceCurrency).multipliedBy(userReserveSummary.userReserve.reserve.reserveLiquidationThreshold));
-          }
-        }
-      });
-      if (currentLtv.gt(0)) {
-        currentLtv = (0, bignumber_1.valueToZDBigNumber)(currentLtv.div(totalCollateralMarketReferenceCurrency));
-      }
-      if (currentLiquidationThreshold.gt(0)) {
-        currentLiquidationThreshold = (0, bignumber_1.valueToZDBigNumber)(currentLiquidationThreshold.div(totalCollateralMarketReferenceCurrency));
-      }
-      return {
-        totalLiquidityMarketReferenceCurrency,
-        totalBorrowsMarketReferenceCurrency,
-        totalCollateralMarketReferenceCurrency,
-        currentLtv,
-        currentLiquidationThreshold,
-        isInIsolationMode,
-        isolatedReserve
-      };
-    }
-    exports2.calculateUserReserveTotals = calculateUserReserveTotals;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/user/generate-raw-user-summary.js
-var require_generate_raw_user_summary = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/user/generate-raw-user-summary.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.generateRawUserSummary = void 0;
-    var tslib_1 = require_tslib();
-    var bignumber_js_1 = (0, tslib_1.__importDefault)(require_bignumber2());
-    var bignumber_1 = require_bignumber3();
-    var pool_math_1 = require_pool_math();
-    var normalized_to_usd_1 = require_normalized_to_usd();
-    var calculate_user_reserve_totals_1 = require_calculate_user_reserve_totals();
-    function generateRawUserSummary({ userReserves, marketReferencePriceInUsd, marketReferenceCurrencyDecimals, userEmodeCategoryId }) {
-      const { totalLiquidityMarketReferenceCurrency, totalBorrowsMarketReferenceCurrency, totalCollateralMarketReferenceCurrency, currentLtv, currentLiquidationThreshold, isInIsolationMode, isolatedReserve } = (0, calculate_user_reserve_totals_1.calculateUserReserveTotals)({ userReserves, userEmodeCategoryId });
-      const _availableBorrowsMarketReferenceCurrency = (0, pool_math_1.calculateAvailableBorrowsMarketReferenceCurrency)({
-        collateralBalanceMarketReferenceCurrency: totalCollateralMarketReferenceCurrency,
-        borrowBalanceMarketReferenceCurrency: totalBorrowsMarketReferenceCurrency,
-        currentLtv
-      });
-      const availableBorrowsMarketReferenceCurrency = isInIsolationMode && isolatedReserve ? bignumber_js_1.default.min((0, bignumber_1.normalizeBN)(new bignumber_js_1.default(isolatedReserve.debtCeiling).minus(isolatedReserve.isolationModeTotalDebt), isolatedReserve.debtCeilingDecimals - marketReferenceCurrencyDecimals), _availableBorrowsMarketReferenceCurrency) : _availableBorrowsMarketReferenceCurrency;
-      return {
-        isInIsolationMode,
-        isolatedReserve,
-        totalLiquidityUSD: (0, normalized_to_usd_1.normalizedToUsd)(totalLiquidityMarketReferenceCurrency, marketReferencePriceInUsd, marketReferenceCurrencyDecimals),
-        totalCollateralUSD: (0, normalized_to_usd_1.normalizedToUsd)(totalCollateralMarketReferenceCurrency, marketReferencePriceInUsd, marketReferenceCurrencyDecimals),
-        totalBorrowsUSD: (0, normalized_to_usd_1.normalizedToUsd)(totalBorrowsMarketReferenceCurrency, marketReferencePriceInUsd, marketReferenceCurrencyDecimals),
-        totalLiquidityMarketReferenceCurrency,
-        totalCollateralMarketReferenceCurrency,
-        totalBorrowsMarketReferenceCurrency,
-        availableBorrowsMarketReferenceCurrency,
-        availableBorrowsUSD: (0, normalized_to_usd_1.normalizedToUsd)(availableBorrowsMarketReferenceCurrency, marketReferencePriceInUsd, marketReferenceCurrencyDecimals),
-        currentLoanToValue: currentLtv,
-        currentLiquidationThreshold,
-        healthFactor: (0, pool_math_1.calculateHealthFactorFromBalances)({
-          collateralBalanceMarketReferenceCurrency: totalCollateralMarketReferenceCurrency,
-          borrowBalanceMarketReferenceCurrency: totalBorrowsMarketReferenceCurrency,
-          currentLiquidationThreshold
-        })
-      };
-    }
-    exports2.generateRawUserSummary = generateRawUserSummary;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/user/generate-user-reserve-summary.js
-var require_generate_user_reserve_summary = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/user/generate-user-reserve-summary.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.generateUserReserveSummary = void 0;
-    var pool_math_1 = require_pool_math();
-    function generateUserReserveSummary({ userReserve, marketReferencePriceInUsdNormalized, marketReferenceCurrencyDecimals, currentTimestamp }) {
-      const poolReserve = userReserve.reserve;
-      const { priceInMarketReferenceCurrency, decimals } = poolReserve;
-      const underlyingBalance = (0, pool_math_1.getLinearBalance)({
-        balance: userReserve.scaledATokenBalance,
-        index: poolReserve.liquidityIndex,
-        rate: poolReserve.liquidityRate,
-        lastUpdateTimestamp: poolReserve.lastUpdateTimestamp,
-        currentTimestamp
-      });
-      const { marketReferenceCurrencyBalance: underlyingBalanceMarketReferenceCurrency, usdBalance: underlyingBalanceUSD } = (0, pool_math_1.getMarketReferenceCurrencyAndUsdBalance)({
-        balance: underlyingBalance,
-        priceInMarketReferenceCurrency,
-        marketReferenceCurrencyDecimals,
-        decimals,
-        marketReferencePriceInUsdNormalized
-      });
-      const variableBorrows = (0, pool_math_1.getCompoundedBalance)({
-        principalBalance: userReserve.scaledVariableDebt,
-        reserveIndex: poolReserve.variableBorrowIndex,
-        reserveRate: poolReserve.variableBorrowRate,
-        lastUpdateTimestamp: poolReserve.lastUpdateTimestamp,
-        currentTimestamp
-      });
-      const { marketReferenceCurrencyBalance: variableBorrowsMarketReferenceCurrency, usdBalance: variableBorrowsUSD } = (0, pool_math_1.getMarketReferenceCurrencyAndUsdBalance)({
-        balance: variableBorrows,
-        priceInMarketReferenceCurrency,
-        marketReferenceCurrencyDecimals,
-        decimals,
-        marketReferencePriceInUsdNormalized
-      });
-      const stableBorrows = (0, pool_math_1.getCompoundedStableBalance)({
-        principalBalance: userReserve.principalStableDebt,
-        userStableRate: userReserve.stableBorrowRate,
-        lastUpdateTimestamp: userReserve.stableBorrowLastUpdateTimestamp,
-        currentTimestamp
-      });
-      const { marketReferenceCurrencyBalance: stableBorrowsMarketReferenceCurrency, usdBalance: stableBorrowsUSD } = (0, pool_math_1.getMarketReferenceCurrencyAndUsdBalance)({
-        balance: stableBorrows,
-        priceInMarketReferenceCurrency,
-        marketReferenceCurrencyDecimals,
-        decimals,
-        marketReferencePriceInUsdNormalized
-      });
-      return {
-        userReserve,
-        underlyingBalance,
-        underlyingBalanceMarketReferenceCurrency,
-        underlyingBalanceUSD,
-        variableBorrows,
-        variableBorrowsMarketReferenceCurrency,
-        variableBorrowsUSD,
-        stableBorrows,
-        stableBorrowsMarketReferenceCurrency,
-        stableBorrowsUSD,
-        totalBorrows: variableBorrows.plus(stableBorrows),
-        totalBorrowsMarketReferenceCurrency: variableBorrowsMarketReferenceCurrency.plus(stableBorrowsMarketReferenceCurrency),
-        totalBorrowsUSD: variableBorrowsUSD.plus(stableBorrowsUSD)
-      };
-    }
-    exports2.generateUserReserveSummary = generateUserReserveSummary;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/user/index.js
-var require_user = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/user/index.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.formatUserSummaryAndIncentives = exports2.formatUserSummary = void 0;
-    var bignumber_1 = require_bignumber3();
-    var constants_1 = require_constants2();
-    var incentive_1 = require_incentive();
-    var format_user_reserve_1 = require_format_user_reserve();
-    var generate_raw_user_summary_1 = require_generate_raw_user_summary();
-    var generate_user_reserve_summary_1 = require_generate_user_reserve_summary();
-    function formatUserSummary({ currentTimestamp, marketReferencePriceInUsd, marketReferenceCurrencyDecimals, userReserves, formattedReserves, userEmodeCategoryId }) {
-      const normalizedMarketRefPriceInUsd = (0, bignumber_1.normalize)(marketReferencePriceInUsd, constants_1.USD_DECIMALS);
-      const combinedReserves = [];
-      userReserves.forEach((userReserve) => {
-        const reserve = formattedReserves.find((r) => r.underlyingAsset.toLowerCase() === userReserve.underlyingAsset.toLowerCase());
-        if (reserve) {
-          combinedReserves.push(Object.assign(Object.assign({}, userReserve), { reserve }));
-        }
-      });
-      const computedUserReserves = combinedReserves.map((userReserve) => (0, generate_user_reserve_summary_1.generateUserReserveSummary)({
-        userReserve,
-        marketReferencePriceInUsdNormalized: normalizedMarketRefPriceInUsd,
-        marketReferenceCurrencyDecimals,
-        currentTimestamp
-      }));
-      const formattedUserReserves = computedUserReserves.map((computedUserReserve) => (0, format_user_reserve_1.formatUserReserve)({
-        reserve: computedUserReserve,
-        marketReferenceCurrencyDecimals
-      }));
-      const userData = (0, generate_raw_user_summary_1.generateRawUserSummary)({
-        userReserves: computedUserReserves,
-        marketReferencePriceInUsd: normalizedMarketRefPriceInUsd,
-        marketReferenceCurrencyDecimals,
-        userEmodeCategoryId
-      });
-      return {
-        userReservesData: formattedUserReserves,
-        totalLiquidityMarketReferenceCurrency: (0, bignumber_1.normalize)(userData.totalLiquidityMarketReferenceCurrency, marketReferenceCurrencyDecimals),
-        totalLiquidityUSD: userData.totalLiquidityUSD.toString(),
-        totalCollateralMarketReferenceCurrency: (0, bignumber_1.normalize)(userData.totalCollateralMarketReferenceCurrency, marketReferenceCurrencyDecimals),
-        totalCollateralUSD: userData.totalCollateralUSD.toString(),
-        totalBorrowsMarketReferenceCurrency: (0, bignumber_1.normalize)(userData.totalBorrowsMarketReferenceCurrency, marketReferenceCurrencyDecimals),
-        totalBorrowsUSD: userData.totalBorrowsUSD.toString(),
-        netWorthUSD: userData.totalLiquidityUSD.minus(userData.totalBorrowsUSD).toString(),
-        availableBorrowsMarketReferenceCurrency: (0, bignumber_1.normalize)(userData.availableBorrowsMarketReferenceCurrency, marketReferenceCurrencyDecimals),
-        availableBorrowsUSD: userData.availableBorrowsUSD.toString(),
-        currentLoanToValue: (0, bignumber_1.normalize)(userData.currentLoanToValue, constants_1.LTV_PRECISION),
-        currentLiquidationThreshold: (0, bignumber_1.normalize)(userData.currentLiquidationThreshold, constants_1.LTV_PRECISION),
-        healthFactor: userData.healthFactor.toFixed(),
-        isInIsolationMode: userData.isInIsolationMode,
-        isolatedReserve: userData.isolatedReserve
-      };
-    }
-    exports2.formatUserSummary = formatUserSummary;
-    function formatUserSummaryAndIncentives({ currentTimestamp, marketReferencePriceInUsd, marketReferenceCurrencyDecimals, userReserves, formattedReserves, userEmodeCategoryId, reserveIncentives, userIncentives }) {
-      const formattedUserSummary = formatUserSummary({
-        currentTimestamp,
-        marketReferencePriceInUsd,
-        marketReferenceCurrencyDecimals,
-        userReserves,
-        formattedReserves,
-        userEmodeCategoryId
-      });
-      const calculatedUserIncentives = (0, incentive_1.calculateAllUserIncentives)({
-        reserveIncentives,
-        userIncentives,
-        userReserves: formattedUserSummary.userReservesData,
-        currentTimestamp
-      });
-      return Object.assign(Object.assign({}, formattedUserSummary), { calculatedUserIncentives });
-    }
-    exports2.formatUserSummaryAndIncentives = formatUserSummaryAndIncentives;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/usd/native-to-usd.js
-var require_native_to_usd = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/usd/native-to-usd.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.nativeToUSD = void 0;
-    var tslib_1 = require_tslib();
-    var bignumber_js_1 = (0, tslib_1.__importDefault)(require_bignumber2());
-    var bignumber_1 = require_bignumber3();
-    function nativeToUSD({ amount, currencyDecimals, priceInMarketReferenceCurrency, marketReferenceCurrencyDecimals, normalizedMarketReferencePriceInUsd }) {
-      return (0, bignumber_1.valueToBigNumber)(amount.toString()).multipliedBy(priceInMarketReferenceCurrency).multipliedBy(normalizedMarketReferencePriceInUsd).dividedBy(new bignumber_js_1.default(1).shiftedBy(currencyDecimals + marketReferenceCurrencyDecimals)).toString();
-    }
-    exports2.nativeToUSD = nativeToUSD;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/compounded-interest/calculate-compounded-interest.js
-var require_calculate_compounded_interest = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/compounded-interest/calculate-compounded-interest.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.calculateCompoundedInterest = void 0;
-    var bignumber_1 = require_bignumber3();
-    var constants_1 = require_constants2();
-    var ray_math_1 = require_ray_math();
-    function calculateCompoundedInterest({ rate, currentTimestamp, lastUpdateTimestamp }) {
-      const timeDelta = (0, bignumber_1.valueToZDBigNumber)(currentTimestamp - lastUpdateTimestamp);
-      const ratePerSecond = (0, bignumber_1.valueToZDBigNumber)(rate).dividedBy(constants_1.SECONDS_PER_YEAR);
-      return (0, ray_math_1.binomialApproximatedRayPow)(ratePerSecond, timeDelta);
-    }
-    exports2.calculateCompoundedInterest = calculateCompoundedInterest;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/reserve/calculate-reserve-debt.js
-var require_calculate_reserve_debt = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/reserve/calculate-reserve-debt.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.calculateReserveDebt = void 0;
-    var ray_math_1 = require_ray_math();
-    var calculate_compounded_interest_1 = require_calculate_compounded_interest();
-    function calculateReserveDebt(reserveDebt, currentTimestamp) {
-      const totalVariableDebt = getTotalVariableDebt(reserveDebt, currentTimestamp);
-      const totalStableDebt = getTotalStableDebt(reserveDebt, currentTimestamp);
-      const totalDebt = totalVariableDebt.plus(totalStableDebt);
-      const totalLiquidity = totalDebt.plus(reserveDebt.availableLiquidity);
-      return {
-        totalVariableDebt,
-        totalStableDebt,
-        totalDebt,
-        totalLiquidity
-      };
-    }
-    exports2.calculateReserveDebt = calculateReserveDebt;
-    function getTotalVariableDebt(reserveDebt, currentTimestamp) {
-      return (0, ray_math_1.rayMul)((0, ray_math_1.rayMul)(reserveDebt.totalScaledVariableDebt, reserveDebt.variableBorrowIndex), (0, calculate_compounded_interest_1.calculateCompoundedInterest)({
-        rate: reserveDebt.variableBorrowRate,
-        currentTimestamp,
-        lastUpdateTimestamp: reserveDebt.lastUpdateTimestamp
-      }));
-    }
-    function getTotalStableDebt(reserveDebt, currentTimestamp) {
-      return (0, ray_math_1.rayMul)(reserveDebt.totalPrincipalStableDebt, (0, calculate_compounded_interest_1.calculateCompoundedInterest)({
-        rate: reserveDebt.averageStableRate,
-        currentTimestamp,
-        lastUpdateTimestamp: reserveDebt.stableDebtLastUpdateTimestamp
-      }));
-    }
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/formatters/reserve/index.js
-var require_reserve = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/formatters/reserve/index.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.formatReservesAndIncentives = exports2.formatReserves = exports2.formatReserveUSD = exports2.formatReserve = void 0;
-    var tslib_1 = require_tslib();
-    var bignumber_js_1 = (0, tslib_1.__importDefault)(require_bignumber2());
-    var bignumber_1 = require_bignumber3();
-    var constants_1 = require_constants2();
-    var index_1 = require_cjs2();
-    var calculate_reserve_incentives_1 = require_calculate_reserve_incentives();
-    var native_to_usd_1 = require_native_to_usd();
-    var normalized_to_usd_1 = require_normalized_to_usd();
-    var calculate_reserve_debt_1 = require_calculate_reserve_debt();
-    function getComputedReserveFields({ reserve, currentTimestamp }) {
-      const { totalDebt, totalStableDebt, totalVariableDebt, totalLiquidity } = (0, calculate_reserve_debt_1.calculateReserveDebt)(reserve, currentTimestamp);
-      const borrowUsageRatio = totalLiquidity.eq(0) ? "0" : (0, bignumber_1.valueToBigNumber)(totalDebt).dividedBy(totalLiquidity).toFixed();
-      const supplyUsageRatio = totalLiquidity.eq(0) ? "0" : (0, bignumber_1.valueToBigNumber)(totalDebt).dividedBy(totalLiquidity.plus(reserve.unbacked)).toFixed();
-      const reserveLiquidationBonus = (0, bignumber_1.normalize)((0, bignumber_1.valueToBigNumber)(reserve.reserveLiquidationBonus).minus(__pow(10, index_1.LTV_PRECISION)), index_1.LTV_PRECISION);
-      const eModeLiquidationBonus = (0, bignumber_1.normalize)((0, bignumber_1.valueToBigNumber)(reserve.eModeLiquidationBonus).minus(__pow(10, index_1.LTV_PRECISION)), index_1.LTV_PRECISION);
-      const availableLiquidity = reserve.borrowCap === "0" ? new bignumber_js_1.default(reserve.availableLiquidity) : bignumber_js_1.default.min(reserve.availableLiquidity, new bignumber_js_1.default(reserve.borrowCap).shiftedBy(reserve.decimals).minus(totalDebt.plus(1)));
-      const supplyAPY = (0, index_1.rayPow)((0, bignumber_1.valueToZDBigNumber)(reserve.liquidityRate).dividedBy(constants_1.SECONDS_PER_YEAR).plus(index_1.RAY), constants_1.SECONDS_PER_YEAR).minus(index_1.RAY);
-      const variableBorrowAPY = (0, index_1.rayPow)((0, bignumber_1.valueToZDBigNumber)(reserve.variableBorrowRate).dividedBy(constants_1.SECONDS_PER_YEAR).plus(index_1.RAY), constants_1.SECONDS_PER_YEAR).minus(index_1.RAY);
-      const stableBorrowAPY = (0, index_1.rayPow)((0, bignumber_1.valueToZDBigNumber)(reserve.stableBorrowRate).dividedBy(constants_1.SECONDS_PER_YEAR).plus(index_1.RAY), constants_1.SECONDS_PER_YEAR).minus(index_1.RAY);
-      return {
-        totalDebt,
-        totalStableDebt,
-        totalVariableDebt,
-        totalLiquidity,
-        borrowUsageRatio,
-        supplyUsageRatio,
-        formattedReserveLiquidationBonus: reserveLiquidationBonus,
-        formattedEModeLiquidationBonus: eModeLiquidationBonus,
-        formattedEModeLiquidationThreshold: reserve.eModeLiquidationThreshold.toString(),
-        formattedEModeLtv: reserve.eModeLtv.toString(),
-        supplyAPY,
-        variableBorrowAPY,
-        stableBorrowAPY,
-        formattedAvailableLiquidity: availableLiquidity,
-        unborrowedLiquidity: reserve.availableLiquidity
-      };
-    }
-    function formatEnhancedReserve({ reserve }) {
-      const normalizeWithReserve = (n) => (0, bignumber_1.normalize)(n, reserve.decimals);
-      const isIsolated = reserve.debtCeiling !== "0";
-      const availableDebtCeilingUSD = isIsolated ? (0, bignumber_1.normalize)((0, bignumber_1.valueToBigNumber)(reserve.debtCeiling).minus(reserve.isolationModeTotalDebt), reserve.debtCeilingDecimals) : "0";
-      return Object.assign(Object.assign({}, reserve), {
-        totalVariableDebt: normalizeWithReserve(reserve.totalVariableDebt),
-        totalStableDebt: normalizeWithReserve(reserve.totalStableDebt),
-        totalLiquidity: normalizeWithReserve(reserve.totalLiquidity),
-        formattedAvailableLiquidity: normalizeWithReserve(reserve.availableLiquidity),
-        unborrowedLiquidity: normalizeWithReserve(reserve.unborrowedLiquidity),
-        borrowUsageRatio: reserve.borrowUsageRatio,
-        supplyUsageRatio: reserve.supplyUsageRatio,
-        totalDebt: normalizeWithReserve(reserve.totalDebt),
-        formattedBaseLTVasCollateral: (0, bignumber_1.normalize)(reserve.baseLTVasCollateral, index_1.LTV_PRECISION),
-        formattedEModeLtv: (0, bignumber_1.normalize)(reserve.eModeLtv, index_1.LTV_PRECISION),
-        reserveFactor: (0, bignumber_1.normalize)(reserve.reserveFactor, index_1.LTV_PRECISION),
-        supplyAPY: (0, bignumber_1.normalize)(reserve.supplyAPY, constants_1.RAY_DECIMALS),
-        supplyAPR: (0, bignumber_1.normalize)(reserve.liquidityRate, constants_1.RAY_DECIMALS),
-        variableBorrowAPY: (0, bignumber_1.normalize)(reserve.variableBorrowAPY, constants_1.RAY_DECIMALS),
-        variableBorrowAPR: (0, bignumber_1.normalize)(reserve.variableBorrowRate, constants_1.RAY_DECIMALS),
-        stableBorrowAPY: (0, bignumber_1.normalize)(reserve.stableBorrowAPY, constants_1.RAY_DECIMALS),
-        stableBorrowAPR: (0, bignumber_1.normalize)(reserve.stableBorrowRate, constants_1.RAY_DECIMALS),
-        formattedReserveLiquidationThreshold: (0, bignumber_1.normalize)(reserve.reserveLiquidationThreshold, 4),
-        formattedEModeLiquidationThreshold: (0, bignumber_1.normalize)(reserve.eModeLiquidationThreshold, 4),
-        formattedReserveLiquidationBonus: (0, bignumber_1.normalize)((0, bignumber_1.valueToBigNumber)(reserve.reserveLiquidationBonus).minus(__pow(10, index_1.LTV_PRECISION)), 4),
-        formattedEModeLiquidationBonus: (0, bignumber_1.normalize)((0, bignumber_1.valueToBigNumber)(reserve.eModeLiquidationBonus).minus(__pow(10, index_1.LTV_PRECISION)), 4),
-        totalScaledVariableDebt: normalizeWithReserve(reserve.totalScaledVariableDebt),
-        totalPrincipalStableDebt: normalizeWithReserve(reserve.totalPrincipalStableDebt),
-        debtCeilingUSD: isIsolated ? (0, bignumber_1.normalize)(reserve.debtCeiling, reserve.debtCeilingDecimals) : "0",
-        isolationModeTotalDebtUSD: isIsolated ? (0, bignumber_1.normalize)(reserve.isolationModeTotalDebt, reserve.debtCeilingDecimals) : "0",
-        availableDebtCeilingUSD,
-        isIsolated
-      });
-    }
-    function formatReserve({ reserve, currentTimestamp }) {
-      const computedFields = getComputedReserveFields({
-        reserve,
-        currentTimestamp
-      });
-      return formatEnhancedReserve({ reserve: Object.assign(Object.assign({}, reserve), computedFields) });
-    }
-    exports2.formatReserve = formatReserve;
-    function formatReserveUSD({ reserve, currentTimestamp, marketReferencePriceInUsd, marketReferenceCurrencyDecimals }) {
-      const normalizedMarketReferencePriceInUsd = (0, bignumber_1.normalizeBN)(marketReferencePriceInUsd, constants_1.USD_DECIMALS);
-      const computedFields = getComputedReserveFields({
-        reserve,
-        currentTimestamp
-      });
-      const formattedReserve = formatEnhancedReserve({
-        reserve: Object.assign(Object.assign({}, reserve), computedFields)
-      });
-      return Object.assign(Object.assign({}, formattedReserve), {
-        totalLiquidityUSD: (0, native_to_usd_1.nativeToUSD)({
-          amount: computedFields.totalLiquidity,
-          currencyDecimals: reserve.decimals,
-          marketReferenceCurrencyDecimals,
-          priceInMarketReferenceCurrency: reserve.priceInMarketReferenceCurrency,
-          normalizedMarketReferencePriceInUsd
-        }),
-        availableLiquidityUSD: (0, native_to_usd_1.nativeToUSD)({
-          amount: computedFields.formattedAvailableLiquidity,
-          currencyDecimals: reserve.decimals,
-          marketReferenceCurrencyDecimals,
-          priceInMarketReferenceCurrency: reserve.priceInMarketReferenceCurrency,
-          normalizedMarketReferencePriceInUsd
-        }),
-        totalDebtUSD: (0, native_to_usd_1.nativeToUSD)({
-          amount: computedFields.totalDebt,
-          currencyDecimals: reserve.decimals,
-          marketReferenceCurrencyDecimals,
-          priceInMarketReferenceCurrency: reserve.priceInMarketReferenceCurrency,
-          normalizedMarketReferencePriceInUsd
-        }),
-        totalVariableDebtUSD: (0, native_to_usd_1.nativeToUSD)({
-          amount: computedFields.totalVariableDebt,
-          currencyDecimals: reserve.decimals,
-          marketReferenceCurrencyDecimals,
-          priceInMarketReferenceCurrency: reserve.priceInMarketReferenceCurrency,
-          normalizedMarketReferencePriceInUsd
-        }),
-        totalStableDebtUSD: (0, native_to_usd_1.nativeToUSD)({
-          amount: computedFields.totalStableDebt,
-          currencyDecimals: reserve.decimals,
-          marketReferenceCurrencyDecimals,
-          priceInMarketReferenceCurrency: reserve.priceInMarketReferenceCurrency,
-          normalizedMarketReferencePriceInUsd
-        }),
-        formattedPriceInMarketReferenceCurrency: (0, bignumber_1.normalize)(reserve.priceInMarketReferenceCurrency, marketReferenceCurrencyDecimals),
-        priceInMarketReferenceCurrency: reserve.priceInMarketReferenceCurrency,
-        priceInUSD: (0, native_to_usd_1.nativeToUSD)({
-          amount: new bignumber_js_1.default(1).shiftedBy(reserve.decimals),
-          currencyDecimals: reserve.decimals,
-          marketReferenceCurrencyDecimals,
-          priceInMarketReferenceCurrency: reserve.priceInMarketReferenceCurrency,
-          normalizedMarketReferencePriceInUsd
-        }),
-        borrowCapUSD: (0, normalized_to_usd_1.normalizedToUsd)(new bignumber_js_1.default(reserve.borrowCap), reserve.priceInMarketReferenceCurrency, marketReferenceCurrencyDecimals).toString(),
-        supplyCapUSD: (0, normalized_to_usd_1.normalizedToUsd)(new bignumber_js_1.default(reserve.supplyCap), reserve.priceInMarketReferenceCurrency, marketReferenceCurrencyDecimals).toString(),
-        unbackedUSD: (0, normalized_to_usd_1.normalizedToUsd)(new bignumber_js_1.default(reserve.unbacked), reserve.priceInMarketReferenceCurrency, marketReferenceCurrencyDecimals).toString()
-      });
-    }
-    exports2.formatReserveUSD = formatReserveUSD;
-    function formatReserves({ reserves, currentTimestamp, marketReferencePriceInUsd, marketReferenceCurrencyDecimals }) {
-      return reserves.map((reserve) => {
-        const formattedReserve = formatReserveUSD({
-          reserve,
-          currentTimestamp,
-          marketReferencePriceInUsd,
-          marketReferenceCurrencyDecimals
-        });
-        return Object.assign(Object.assign({}, reserve), formattedReserve);
-      });
-    }
-    exports2.formatReserves = formatReserves;
-    function formatReservesAndIncentives({ reserves, currentTimestamp, marketReferencePriceInUsd, marketReferenceCurrencyDecimals, reserveIncentives }) {
-      const formattedReserves = formatReserves({
-        reserves,
-        currentTimestamp,
-        marketReferenceCurrencyDecimals,
-        marketReferencePriceInUsd
-      });
-      return formattedReserves.map((reserve) => {
-        const reserveIncentive = reserveIncentives.find((reserveIncentive2) => reserveIncentive2.underlyingAsset === reserve.underlyingAsset);
-        if (!reserveIncentive)
-          return reserve;
-        const incentive = (0, calculate_reserve_incentives_1.calculateReserveIncentives)({
-          reserves: formattedReserves,
-          reserveIncentiveData: reserveIncentive,
-          totalLiquidity: (0, bignumber_1.normalize)(reserve.totalLiquidity, -reserve.decimals),
-          totalVariableDebt: (0, bignumber_1.normalize)(reserve.totalVariableDebt, -reserve.decimals),
-          totalStableDebt: (0, bignumber_1.normalize)(reserve.totalStableDebt, -reserve.decimals),
-          priceInMarketReferenceCurrency: reserve.formattedPriceInMarketReferenceCurrency,
-          decimals: reserve.decimals,
-          marketReferenceCurrencyDecimals
-        });
-        return Object.assign(Object.assign({}, reserve), incentive);
-      });
-    }
-    exports2.formatReservesAndIncentives = formatReservesAndIncentives;
-  }
-});
-
-// node_modules/@aave/math-utils/dist/cjs/index.js
-var require_cjs2 = __commonJS({
-  "node_modules/@aave/math-utils/dist/cjs/index.js"(exports2) {
-    "use strict";
-    Object.defineProperty(exports2, "__esModule", { value: true });
-    var tslib_1 = require_tslib();
-    (0, tslib_1.__exportStar)(require_bignumber3(), exports2);
-    (0, tslib_1.__exportStar)(require_constants2(), exports2);
-    (0, tslib_1.__exportStar)(require_ray_math(), exports2);
-    (0, tslib_1.__exportStar)(require_pool_math(), exports2);
-    (0, tslib_1.__exportStar)(require_user(), exports2);
-    (0, tslib_1.__exportStar)(require_reserve(), exports2);
-    (0, tslib_1.__exportStar)(require_incentive(), exports2);
-    (0, tslib_1.__exportStar)(require_native_to_usd(), exports2);
   }
 });
 
@@ -61250,9 +60408,7 @@ var marketsData = {
       collateralRepay: true,
       incentives: true
     },
-    rpcOnly: false,
-    cachingServerUrl: "https://cache-api-1.aave.com/graphql",
-    cachingWSServerUrl: "wss://cache-api-1.aave.com/graphql",
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: "0xB53C1a33016B2DC2fF3653530bfF1848a515c8c5".toLowerCase(),
       LENDING_POOL: "0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9",
@@ -61261,40 +60417,26 @@ var marketsData = {
       SWAP_COLLATERAL_ADAPTER: "0x135896DE8421be2ec868E0b811006171D9df802A",
       WALLET_BALANCE_PROVIDER: "0x8E8dAd5409E0263a51C0aB5055dA66Be28cFF922",
       UI_POOL_DATA_PROVIDER: "0x548e95Ce38B8cb1D91FD82A9F094F26295840277",
-      UI_INCENTIVE_DATA_PROVIDER: "0xD01ab9a6577E1D84F142e44D49380e23A340387d"
+      UI_INCENTIVE_DATA_PROVIDER: "0xD01ab9a6577E1D84F142e44D49380e23A340387d",
+      COLLECTOR: "0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c"
     },
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-track-your-health-factor",
       marketName: "aavev2"
     }
   },
-  ["amm_kovan" /* amm_kovan */]: {
-    marketTitle: "Ethereum AMM Kovan",
-    chainId: import_contract_helpers2.ChainId.kovan,
-    rpcOnly: true,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: "0x67FB118A780fD740C8936511947cC4bE7bb7730c".toLowerCase(),
-      LENDING_POOL: "0x762E2a3BBe729240ea44D31D5a81EAB44d34ef01",
-      WETH_GATEWAY: "0xA61ca04DF33B72b235a8A28CfB535bb7A5271B70",
-      FAUCET: "0x600103d518cC5E8f3319D532eB4e5C268D32e604",
-      WALLET_BALANCE_PROVIDER: "0x07DC923859b68e9399d787bf52c4Aa9eBe3490aF",
-      UI_POOL_DATA_PROVIDER: "0x31fe1309B1169e7136AdAB01d4ba3882b5852d08",
-      UI_INCENTIVE_DATA_PROVIDER: "0x50e468e1AAF408a2EB4614e4b45f832700Cda7F4"
-    }
-  },
   ["amm_mainnet" /* amm_mainnet */]: {
     marketTitle: "Ethereum AMM",
     chainId: import_contract_helpers2.ChainId.mainnet,
-    cachingServerUrl: "https://cache-api-1.aave.com/graphql",
-    cachingWSServerUrl: "wss://cache-api-1.aave.com/graphql",
-    rpcOnly: false,
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: "0xacc030ef66f9dfeae9cbb0cd1b25654b82cfa8d5".toLowerCase(),
       LENDING_POOL: "0x7937d4799803fbbe595ed57278bc4ca21f3bffcb",
       WETH_GATEWAY: "0xcc9a0B7c43DC2a5F023Bb9b738E45B0Ef6B06E04",
       WALLET_BALANCE_PROVIDER: "0x8E8dAd5409E0263a51C0aB5055dA66Be28cFF922",
       UI_POOL_DATA_PROVIDER: "0x548e95Ce38B8cb1D91FD82A9F094F26295840277",
-      UI_INCENTIVE_DATA_PROVIDER: "0xD01ab9a6577E1D84F142e44D49380e23A340387d"
+      UI_INCENTIVE_DATA_PROVIDER: "0xD01ab9a6577E1D84F142e44D49380e23A340387d",
+      COLLECTOR: "0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c"
     }
   },
   ["proto_mumbai" /* proto_mumbai */]: {
@@ -61333,7 +60475,8 @@ var marketsData = {
       REPAY_WITH_COLLATERAL_ADAPTER: "0xE84cF064a0a65290Ae5673b500699f3753063936",
       WALLET_BALANCE_PROVIDER: "0x34aa032bC416Cf2CdC45c0C8f065b1F19463D43e",
       UI_POOL_DATA_PROVIDER: "0x67acdB3469580185811E5769113509c6e8B6Cba5",
-      UI_INCENTIVE_DATA_PROVIDER: "0x645654D59A5226CBab969b1f5431aA47CBf64ab8"
+      UI_INCENTIVE_DATA_PROVIDER: "0x645654D59A5226CBab969b1f5431aA47CBf64ab8",
+      COLLECTOR: "0x7734280A4337F37Fbf4651073Db7c28C80B339e9"
     },
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-track-your-health-factor",
@@ -61376,7 +60519,8 @@ var marketsData = {
       REPAY_WITH_COLLATERAL_ADAPTER: "0x935b362EE3E1f342cc48118C528AAbee5118F6e6",
       WALLET_BALANCE_PROVIDER: "0x73e4898a1Bfa9f710B6A6AB516403A6299e01fc6",
       UI_POOL_DATA_PROVIDER: "0x88be7eC36719fadAbdE4307ec61EAB6fda788CEF",
-      UI_INCENTIVE_DATA_PROVIDER: "0x11979886A6dBAE27D7a72c49fCF3F23240D647bF"
+      UI_INCENTIVE_DATA_PROVIDER: "0x11979886A6dBAE27D7a72c49fCF3F23240D647bF",
+      COLLECTOR: "0x467b92aF281d14cB6809913AD016a607b5ba8A36"
     },
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-track-your-health-factor",
@@ -61384,7 +60528,7 @@ var marketsData = {
     }
   },
   ["proto_goerli_v3" /* proto_goerli_v3 */]: {
-    marketTitle: "Ethereum Goerli",
+    marketTitle: "Ethereum G\xF6rli",
     v3: true,
     chainId: import_contract_helpers2.ChainId.goerli,
     enabledFeatures: {
@@ -61436,7 +60580,10 @@ var marketsData = {
       WALLET_BALANCE_PROVIDER: "0xBc790382B3686abffE4be14A030A96aC6154023a",
       UI_POOL_DATA_PROVIDER: "0x3f960bB91e85Ae2dB561BDd01B515C5A5c65802b",
       UI_INCENTIVE_DATA_PROVIDER: "0xEFdd7374551897B11a23Ec7b5694C713DFDa76f1",
-      L2_ENCODER: "0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC"
+      L2_ENCODER: "0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC",
+      COLLECTOR: "0x053D55f9B5AF8694c503EB288a1B7E552f590710",
+      SWAP_COLLATERAL_ADAPTER: "0xAE9f94BD98eC2831a1330e0418bE0fDb5C95C2B9",
+      REPAY_WITH_COLLATERAL_ADAPTER: "0x32FdC26aFFA1eB331263Bcdd59F2e46eCbCC2E24"
     },
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
@@ -61463,6 +60610,26 @@ var marketsData = {
       L2_ENCODER: "0x3d0d309DC8f999f34c4E7296dB38F0e65D3115DF"
     }
   },
+  ["proto_arbitrum_goerli_v3" /* proto_arbitrum_goerli_v3 */]: {
+    marketTitle: "Arbitrum G\xF6rli",
+    v3: true,
+    chainId: import_contract_helpers2.ChainId.arbitrum_goerli,
+    enabledFeatures: {
+      faucet: true,
+      incentives: true
+    },
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: "0xF8aa90E66B8BAe13f2e4aDe6104abAb8eeDaBfdc".toLowerCase(),
+      LENDING_POOL: "0x6Cbb4E8eC402E07fDF96DbbC6c752aCfB0eB6075",
+      WETH_GATEWAY: "0xBCca2fc5F30A65cE2155d739364f3fc8F57E6999",
+      FAUCET: "0x98256500C9f1CE77e4C925b7bbF1588515E34422",
+      WALLET_BALANCE_PROVIDER: "0xA0025bE90591971ad76D12F8c9CecA09f66db3D8",
+      UI_POOL_DATA_PROVIDER: "0xd5dE38432Ef93B574B5eAbeBaa8F92bB480dD14F",
+      UI_INCENTIVE_DATA_PROVIDER: "0x71af6535f74Ac34e61a0Df6221ec0442b512eBC1",
+      L2_ENCODER: "0xBFB521464727c3B31A6D9183413cc2B66f4F6686"
+    }
+  },
   ["proto_avalanche_v3" /* proto_avalanche_v3 */]: {
     marketTitle: "Avalanche",
     v3: true,
@@ -61481,7 +60648,8 @@ var marketsData = {
       SWAP_COLLATERAL_ADAPTER: "0xF7fC20D9D1D8DFE55F5F2c3180272a5747dD327F",
       WALLET_BALANCE_PROVIDER: "0xBc790382B3686abffE4be14A030A96aC6154023a",
       UI_POOL_DATA_PROVIDER: "0xdBbFaFC45983B4659E368a3025b81f69Ab6E5093",
-      UI_INCENTIVE_DATA_PROVIDER: "0x270f51cf3F681010B46f5c4Ee2aD5120Db33026F"
+      UI_INCENTIVE_DATA_PROVIDER: "0x270f51cf3F681010B46f5c4Ee2aD5120Db33026F",
+      COLLECTOR: "0x5ba7fd868c40c16f7aDfAe6CF87121E13FC2F7a0"
     },
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
@@ -61527,7 +60695,7 @@ var marketsData = {
     }
   },
   ["proto_optimism_goerli_v3" /* proto_optimism_goerli_v3 */]: {
-    marketTitle: "Optimism Goerli",
+    marketTitle: "Optimism G\xF6rli",
     v3: true,
     chainId: import_contract_helpers2.ChainId.optimism_goerli,
     enabledFeatures: {
@@ -61563,7 +60731,8 @@ var marketsData = {
       REPAY_WITH_COLLATERAL_ADAPTER: "0x1408401B2A7E28cB747b3e258D0831Fc926bAC51",
       WALLET_BALANCE_PROVIDER: "0xBc790382B3686abffE4be14A030A96aC6154023a",
       UI_POOL_DATA_PROVIDER: "0x1CCbfeC508da8D5242D5C1b368694Ab0066b39f1",
-      UI_INCENTIVE_DATA_PROVIDER: "0xbA14c06011f4AF5970cFDe4364ba6320E190BD4B"
+      UI_INCENTIVE_DATA_PROVIDER: "0xbA14c06011f4AF5970cFDe4364ba6320E190BD4B",
+      COLLECTOR: "0xBe85413851D195fC6341619cD68BfDc26a25b928"
     },
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
@@ -61603,7 +60772,8 @@ var marketsData = {
       WETH_GATEWAY: "0xe86B52cE2e4068AdE71510352807597408998a69",
       WALLET_BALANCE_PROVIDER: "0xBc790382B3686abffE4be14A030A96aC6154023a",
       UI_POOL_DATA_PROVIDER: "0xBC3c351349f6A919A419EE1e57F85f3e07E59dd1",
-      UI_INCENTIVE_DATA_PROVIDER: "0xC09e69E79106861dF5d289dA88349f10e2dc6b5C"
+      UI_INCENTIVE_DATA_PROVIDER: "0xC09e69E79106861dF5d289dA88349f10e2dc6b5C",
+      COLLECTOR: "0x8A020d92D6B119978582BE4d3EdFdC9F7b28BF31"
     }
   },
   ["proto_harmony_testnet_v3" /* proto_harmony_testnet_v3 */]: {
@@ -61640,7 +60810,8 @@ var marketsData = {
       WALLET_BALANCE_PROVIDER: "0xBc790382B3686abffE4be14A030A96aC6154023a",
       UI_POOL_DATA_PROVIDER: "0x64f558d4BFC1c03a8c8B2ff84976fF04c762b51f",
       UI_INCENTIVE_DATA_PROVIDER: "0x6dD4b295B457A26CC2646aAf2519436681afb5d4",
-      L2_ENCODER: "0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC"
+      L2_ENCODER: "0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC",
+      COLLECTOR: "0xB2289E329D2F85F1eD31Adbb30eA345278F21bcf"
     }
   },
   ["proto_polygon_v3" /* proto_polygon_v3 */]: {
@@ -61661,7 +60832,8 @@ var marketsData = {
       SWAP_COLLATERAL_ADAPTER: "0x301F221bc732907E2da2dbBFaA8F8F6847c170c3",
       WALLET_BALANCE_PROVIDER: "0xBc790382B3686abffE4be14A030A96aC6154023a",
       UI_POOL_DATA_PROVIDER: "0x8F1AD487C9413d7e81aB5B4E88B024Ae3b5637D0",
-      UI_INCENTIVE_DATA_PROVIDER: "0x05E309C97317d8abc0f7e78185FC966FfbD2CEC0"
+      UI_INCENTIVE_DATA_PROVIDER: "0x05E309C97317d8abc0f7e78185FC966FfbD2CEC0",
+      COLLECTOR: "0xe8599F3cc5D38a9aD6F3684cd5CEa72f10Dbc383"
     },
     halIntegration: {
       URL: "https://app.hal.xyz/recipes/aave-v3-track-health-factor",
@@ -61717,6 +60889,18 @@ var networkConfigs = {
     isTestnet: true,
     networkLogoPath: "/icons/networks/ethereum.svg"
   },
+  [import_contract_helpers3.ChainId.goerli]: {
+    name: "Ethereum G\xF6rli",
+    publicJsonRPCUrl: ["https://eth-goerli.alchemyapi.io/v2/demo", "https://goerli.prylabs.net"],
+    publicJsonRPCWSUrl: "wss://eth-goerli.alchemyapi.io/v2/demo",
+    baseUniswapAdapter: "0x0",
+    baseAssetSymbol: "ETH",
+    wrappedBaseAssetSymbol: "WETH",
+    baseAssetDecimals: 18,
+    explorerLink: "https://goerli.etherscan.io",
+    isTestnet: true,
+    networkLogoPath: "/icons/networks/ethereum.svg"
+  },
   [import_contract_helpers3.ChainId.ropsten]: {
     name: "Ethereum Ropsten",
     publicJsonRPCUrl: ["https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"],
@@ -61732,10 +60916,7 @@ var networkConfigs = {
   [import_contract_helpers3.ChainId.mainnet]: {
     name: "Ethereum",
     privateJsonRPCUrl: "https://eth-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca",
-    publicJsonRPCUrl: [
-      "https://cloudflare-eth.com",
-      "https://rpc.flashbots.net/"
-    ],
+    publicJsonRPCUrl: ["https://cloudflare-eth.com/v1/mainnet"],
     publicJsonRPCWSUrl: "wss://eth-mainnet.alchemyapi.io/v2/demo",
     baseUniswapAdapter: "0xc3efa200a60883a96ffe3d5b492b121d6e9a1f3f",
     baseAssetSymbol: "ETH",
@@ -61773,7 +60954,7 @@ var networkConfigs = {
     networkLogoPath: "/icons/networks/polygon.svg"
   },
   [import_contract_helpers3.ChainId.fuji]: {
-    name: "Fuji",
+    name: "Avalanche Fuji",
     publicJsonRPCUrl: ["https://api.avax-test.network/ext/bc/C/rpc"],
     publicJsonRPCWSUrl: "wss://api.avax-test.network/ext/bc/C/rpc",
     baseUniswapAdapter: "0x0",
@@ -61816,6 +60997,23 @@ var networkConfigs = {
     wrappedBaseAssetSymbol: "WETH",
     baseAssetDecimals: 18,
     explorerLink: "https://testnet.arbiscan.io",
+    isTestnet: true,
+    networkLogoPath: "/icons/networks/arbitrum.svg",
+    bridge: {
+      icon: "/icons/bridge/arbitrum.svg",
+      name: "Arbitrum Bridge",
+      url: "https://bridge.arbitrum.io"
+    }
+  },
+  [import_contract_helpers3.ChainId.arbitrum_goerli]: {
+    name: "Arbitrum G\xF6rli",
+    publicJsonRPCUrl: ["https://goerli-rollup.arbitrum.io/rpc"],
+    publicJsonRPCWSUrl: "wss://goerli-rollup.arbitrum.io/rpc",
+    baseUniswapAdapter: "0x0",
+    baseAssetSymbol: "ETH",
+    wrappedBaseAssetSymbol: "WETH",
+    baseAssetDecimals: 18,
+    explorerLink: "https://goerli-rollup-explorer.arbitrum.io",
     isTestnet: true,
     networkLogoPath: "/icons/networks/arbitrum.svg",
     bridge: {
@@ -61892,7 +61090,7 @@ var networkConfigs = {
     }
   },
   [import_contract_helpers3.ChainId.optimism_kovan]: {
-    name: "Optimism Testnet",
+    name: "Optimism Kovan",
     publicJsonRPCUrl: ["https://kovan.optimism.io"],
     publicJsonRPCWSUrl: "wss://ws-kovan.optimism.io",
     baseUniswapAdapter: "0x0",
@@ -61909,11 +61107,8 @@ var networkConfigs = {
     }
   },
   [import_contract_helpers3.ChainId.optimism_goerli]: {
-    name: "Optimism Testnet",
+    name: "Optimism G\xF6rli",
     publicJsonRPCUrl: ["https://goerli.optimism.io"],
-    publicJsonRPCWSUrl: "wss://goerli.optimism.io",
-    baseUniswapAdapter: "0x0",
-    baseAssetSymbol: "ETH",
     wrappedBaseAssetSymbol: "WETH",
     baseAssetDecimals: 18,
     explorerLink: "https://l2-explorer.surge.sh",
@@ -61974,9 +61169,12 @@ var networkConfigs2 = Object.keys(networkConfigs).reduce((acc, value) => {
   acc[value] = networkConfigs[value];
   if (FORK_ENABLED && Number(value) === FORK_BASE_CHAIN_ID) {
     acc[FORK_CHAIN_ID] = __spreadProps(__spreadValues({}, networkConfigs[value]), {
+      name: `${networkConfigs[value].name} Fork`,
       isFork: true,
       privateJsonRPCUrl: FORK_RPC_URL,
       privateJsonRPCWSUrl: FORK_WS_RPC_URL,
+      publicJsonRPCUrl: [],
+      publicJsonRPCWSUrl: "",
       underlyingChainId: FORK_BASE_CHAIN_ID
     });
   }
@@ -61994,15 +61192,22 @@ var marketsData2 = Object.keys(marketsData).reduce((acc, value) => {
   return acc;
 }, {});
 function getSupportedChainIds() {
-  return Array.from(Object.keys(marketsData2).filter((value) => {
-    const isTestnet = networkConfigs2[marketsData2[value].chainId].isTestnet;
-    if (STAGING_ENV || ENABLE_TESTNET) {
-      return isTestnet;
-    }
-    return !isTestnet;
-  }).reduce((acc, value) => acc.add(marketsData2[value].chainId), /* @__PURE__ */ new Set()));
+  return Array.from(
+    Object.keys(marketsData2).filter((value) => {
+      const isTestnet = networkConfigs2[marketsData2[value].chainId].isTestnet;
+      if (STAGING_ENV || ENABLE_TESTNET) {
+        return isTestnet;
+      }
+      return !isTestnet;
+    }).reduce(
+      (acc, value) => acc.add(marketsData2[value].chainId),
+      /* @__PURE__ */ new Set()
+    )
+  );
 }
-var availableMarkets = Object.keys(marketsData2).filter((key) => getSupportedChainIds().includes(marketsData2[key].chainId));
+var availableMarkets = Object.keys(marketsData2).filter(
+  (key) => getSupportedChainIds().includes(marketsData2[key].chainId)
+);
 var linkBuilder = ({ baseUrl, addressPrefix = "address", txPrefix = "tx" }) => ({ tx, address }) => {
   if (tx) {
     return `${baseUrl}/${txPrefix}/${tx}`;
@@ -62036,10 +61241,12 @@ var getProvider = (chainId) => {
       });
     }
     if (config.publicJsonRPCUrl.length) {
-      config.publicJsonRPCUrl.map((rpc, ix) => chainProviders.push({
-        provider: new import_ethers.providers.StaticJsonRpcProvider(rpc, chainId),
-        priority: ix + 1
-      }));
+      config.publicJsonRPCUrl.map(
+        (rpc, ix) => chainProviders.push({
+          provider: new import_ethers.providers.StaticJsonRpcProvider(rpc, chainId),
+          priority: ix + 1
+        })
+      );
     }
     if (!chainProviders.length) {
       throw new Error(`${chainId} has no jsonRPCUrl configured`);
@@ -62238,7 +61445,7 @@ var MissingAdapterError = class extends Error {
 
 // node_modules/lowdb/lib/LowSync.js
 var LowSync = class {
-  constructor(adapter4) {
+  constructor(adapter3) {
     Object.defineProperty(this, "adapter", {
       enumerable: true,
       configurable: true,
@@ -62251,8 +61458,8 @@ var LowSync = class {
       writable: true,
       value: null
     });
-    if (adapter4) {
-      this.adapter = adapter4;
+    if (adapter3) {
+      this.adapter = adapter3;
     } else {
       throw new MissingAdapterError();
     }
@@ -62291,12 +61498,22 @@ function getProposalMetadata(hash, gateway = "https://cloudflare-ipfs.com/ipfs")
     if (!ipfsResponse.ok) {
       throw Error("Fetch not working");
     }
-    const response = yield ipfsResponse.json();
-    const { content, data } = (0, import_gray_matter.default)(response.description);
-    MEMORIZE[ipfsHash] = __spreadValues(__spreadProps(__spreadValues({}, response), {
-      ipfsHash,
-      description: content
-    }), data);
+    const clone = yield ipfsResponse.clone();
+    try {
+      const response = yield ipfsResponse.json();
+      const { content, data } = (0, import_gray_matter.default)(response.description);
+      MEMORIZE[ipfsHash] = __spreadValues(__spreadProps(__spreadValues({}, response), {
+        ipfsHash,
+        description: content
+      }), data);
+    } catch (e) {
+      const text = yield clone.text();
+      const { content, data } = (0, import_gray_matter.default)(text);
+      MEMORIZE[ipfsHash] = __spreadProps(__spreadValues({}, data), {
+        ipfsHash,
+        description: content
+      });
+    }
     return MEMORIZE[ipfsHash];
   });
 }
@@ -62414,90 +61631,15 @@ var Proposal2 = class {
   }
 };
 
-// src/static-build/vote.ts
-var import_path4 = require("path");
-var import_lodash3 = __toESM(require_lodash());
-
-// src/modules/governance/utils/getVotes.ts
-var import_math_utils = __toESM(require_cjs2());
-var getVotes = (startBlock, endBlock, currentBlock) => __async(void 0, null, function* () {
-  const latestBlock = currentBlock > endBlock ? endBlock : currentBlock;
-  const contract = governanceContract.getContractInstance(governanceConfig.addresses.AAVE_GOVERNANCE_V2);
-  const votes = yield contract.queryFilter(contract.filters.VoteEmitted(null, null, null, null), startBlock, latestBlock);
-  const formattedVotes = yield Promise.all(votes.map((vote) => __async(void 0, null, function* () {
-    return {
-      proposalId: vote.args.id.toNumber(),
-      voter: vote.args.voter,
-      support: vote.args.support,
-      votingPower: (0, import_math_utils.normalizeBN)(vote.args.votingPower.toString(), 18).toNumber(),
-      transactionHash: vote.transactionHash,
-      timestamp: (yield vote.getBlock()).timestamp,
-      blockNumber: vote.blockNumber
-    };
-  })));
-  return { votes: formattedVotes };
-});
-
-// src/static-build/vote.ts
-var LowWithLodash3 = class extends LowSync {
-  constructor() {
-    super(...arguments);
-    this.chain = import_lodash3.default.chain(this).get("data");
-  }
-};
-var file3 = (0, import_path4.join)(process.cwd(), "src/static-build", "votes.json");
-var adapter3 = new JSONFileSync(file3);
-var db3 = new LowWithLodash3(adapter3);
-db3.read();
-var Vote = class {
-  get(proposalId) {
-    return __async(this, null, function* () {
-      var _a7;
-      const cache = (_a7 = db3.data) == null ? void 0 : _a7[proposalId];
-      if (!cache)
-        throw new Error(`could not resolve votes cache for ${proposalId}`);
-      return cache;
-    });
-  }
-  populate(proposalId, startBlock, endBlock) {
-    return __async(this, null, function* () {
-      db3.data || (db3.data = []);
-      const isCached = db3.data[proposalId];
-      if (isCached && isCached.finished) {
-        return isCached;
-      } else if (!isCached) {
-        db3.data[proposalId] = { votes: [], finished: false };
-      }
-      const provider = getProvider(governanceConfig.chainId);
-      const currentBlock = yield provider.getBlockNumber();
-      const { votes } = yield getVotes(startBlock, endBlock, currentBlock);
-      votes.filter((v) => v.proposalId === proposalId).forEach((vote) => {
-        var _a7;
-        const cache = isCached == null ? void 0 : isCached.votes.find((cacheVote) => vote.transactionHash === cacheVote.transactionHash);
-        if (!cache) {
-          (_a7 = db3.data) == null ? void 0 : _a7[proposalId].votes.push(vote);
-        }
-      });
-      if (endBlock < currentBlock) {
-        db3.data[proposalId].finished = true;
-      }
-      yield db3.write();
-      return votes;
-    });
-  }
-};
-
 // src/static-build/populateCache.ts
 function populateCache() {
   return __async(this, null, function* () {
     const count = yield governanceContract.getProposalsCount();
     const ipfsFetcher = new Ipfs();
     const proposalFetcher = new Proposal2();
-    const voteFetcher = new Vote();
     for (let i = 0; i < count; i++) {
       const proposal = yield proposalFetcher.populate(i);
       yield ipfsFetcher.populate(i, proposal);
-      yield voteFetcher.populate(i, proposal.startBlock, proposal.endBlock);
     }
   });
 }

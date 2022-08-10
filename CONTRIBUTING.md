@@ -6,8 +6,7 @@
 # potentially you can user other node versions, but it's only tested on what's currently listed in nvmrc
 nvm use
 yarn install
-# optional, but needed for running tests
-cp .env.example .env
+cp .env.example .env.local
 ```
 
 ## Running the interface
@@ -28,9 +27,9 @@ yarn build:static
 ### Environment
 
 ```sh
-# setting the environment to 'staging' will enable only testnet markets. Set to 'prod' to enable production markets
-NEXT_PUBLIC_ENV=staging
-# you can disable staking & governance by altering
+# setting the environment to 'staging' will enable testnet markets, disabling governance, staking, and production markets
+NEXT_PUBLIC_ENV=prod
+# you can also disable staking & governance by altering
 NEXT_PUBLIC_ENABLE_GOVERNANCE=true
 NEXT_PUBLIC_ENABLE_STAKING=true
 ```
