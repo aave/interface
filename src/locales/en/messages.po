@@ -1566,8 +1566,8 @@ msgid "These funds have been borrowed and are not available for withdrawal at th
 msgstr "These funds have been borrowed and are not available for withdrawal at this time."
 
 #: src/components/AddressBlockedModal.tsx
-msgid "This address is blocked on the interface because it is associated with one or more blocked activities."
-msgstr "This address is blocked on the interface because it is associated with one or more blocked activities."
+msgid "This address is blocked on app.aave.com because it is associated with one or more"
+msgstr "This address is blocked on app.aave.com because it is associated with one or more"
 
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has almost reached its borrow cap. There is only {messageValue} available to be borrowed from this market."
@@ -1999,6 +1999,10 @@ msgstr "Zero address not valid"
 #: src/modules/markets/AssetsList.tsx
 msgid "assets"
 msgstr "assets"
+
+#: src/components/AddressBlockedModal.tsx
+msgid "blocked activities"
+msgstr "blocked activities"
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "copy the error"
