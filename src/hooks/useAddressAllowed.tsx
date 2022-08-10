@@ -15,6 +15,8 @@ export const useAddressAllowed = (): AddressAllowedResult => {
   const [isAllowed, setIsAllowed] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
 
+  // for testing blocked accounts
+  const lazarus = '0x098B716B8Aaf21512996dC57EB0615e2383E2f96';
   useEffect(() => {
     const getIsAddressAllowed = async () => {
       try {

@@ -8,6 +8,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { AddressBlocked } from 'src/components/AddressBlockedModal';
 import { useAddressAllowed } from 'src/hooks/useAddressAllowed';
 import { usePermissions } from 'src/hooks/usePermissions';
 import { ConnectWalletPaper } from '../src/components/ConnectWalletPaper';
@@ -38,10 +39,7 @@ export default function Home() {
       <DashboardTopPanel />
 
       {!isAllowed && !isAddressAllowedLoading ? (
-        <Box>
-          We are not allowed to serve you a ui to interact with the protocol, because your address
-          has been listed on ...
-        </Box>
+        <AddressBlocked address={currentAccount} />
       ) : (
         <ContentContainer>
           {currentAccount && !isPermissionsLoading && (

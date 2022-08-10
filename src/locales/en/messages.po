@@ -266,6 +266,10 @@ msgstr "Before supplying"
 msgid "Before supplying, you need to approve its usage by the Aave protocol. You can learn more in our<0>FAQ</0>"
 msgstr "Before supplying, you need to approve its usage by the Aave protocol. You can learn more in our<0>FAQ</0>"
 
+#: src/components/AddressBlockedModal.tsx
+msgid "Blocked Address"
+msgstr "Blocked Address"
+
 #: pages/index.page.tsx
 #: src/components/transactions/Borrow/BorrowModal.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
@@ -1560,6 +1564,10 @@ msgstr "There was some error. Please try changing the parameters or <0><1>copy t
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
 msgstr "These funds have been borrowed and are not available for withdrawal at this time."
+
+#: src/components/AddressBlockedModal.tsx
+msgid "This address is blocked on the interface because it is associated with one or more blocked activities."
+msgstr "This address is blocked on the interface because it is associated with one or more blocked activities."
 
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has almost reached its borrow cap. There is only {messageValue} available to be borrowed from this market."
