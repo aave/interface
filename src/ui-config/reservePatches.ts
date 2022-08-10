@@ -35,6 +35,8 @@ export const SYMBOL_MAP: { [key: string]: string } = {
   'AAVE.e': 'AAVE',
   'USDT.e': 'USDT',
   'USDC.e': 'USDC',
+  // polygon
+  miMATIC: 'MAI',
 };
 
 /**
@@ -59,6 +61,7 @@ export const SYMBOL_NAME_MAP: { [key: string]: string } = {
   GUSD: 'Gemini Dollar',
   KNC: 'Kyber Legacy',
   LINK: 'ChainLink',
+  MAI: 'MIMATIC',
   MANA: 'Decentraland',
   MKR: 'Maker',
   PAX: 'Paxos Standard',
