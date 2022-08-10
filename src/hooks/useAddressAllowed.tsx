@@ -15,13 +15,15 @@ export const useAddressAllowed = (): AddressAllowedResult => {
   const [isAllowed, setIsAllowed] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
 
+  // TODO: remove this
   // for testing blocked accounts
   const lazarus = '0x098B716B8Aaf21512996dC57EB0615e2383E2f96';
+
   useEffect(() => {
     const getIsAddressAllowed = async () => {
       try {
         setIsLoading(true);
-        // TODO: pull url from the config
+        // TODO: update and pull url from the config
         const response = await fetch(
           `https://api-v2-feat-readd-wallet-screen-endpoint.aaw.fi/addresses/status?address=${walletAddress}`
         );
