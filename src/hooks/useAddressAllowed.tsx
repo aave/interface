@@ -19,14 +19,13 @@ export const useAddressAllowed = (): AddressAllowedResult => {
   // for testing blocked accounts
   const lazarus = '0x098B716B8Aaf21512996dC57EB0615e2383E2f96';
 
+  const screeningUrl = process.env.NEXT_PUBLIC_SCREENING_URL;
+
   useEffect(() => {
     const getIsAddressAllowed = async () => {
       try {
         setIsLoading(true);
-        // TODO: update and pull url from the config
-        const response = await fetch(
-          `https://api-v2-feat-readd-wallet-screen-endpoint.aaw.fi/addresses/status?address=${walletAddress}`
-        );
+        const response = await fetch(`${screeningUrl}/addresses/status?address=${walletAddress}`);
         const data: { addressAllowed: boolean } = await response.json();
         setIsAllowed(data.addressAllowed);
         setIsLoading(false);
@@ -35,13 +34,13 @@ export const useAddressAllowed = (): AddressAllowedResult => {
       }
     };
 
-    if (walletAddress && chainId === ChainId.mainnet) {
+    if (screeningUrl && walletAddress && chainId === ChainId.mainnet) {
       getIsAddressAllowed();
     } else {
       setIsAllowed(true);
       setIsLoading(false);
     }
-  }, [chainId, walletAddress]);
+  }, [chainId, screeningUrl, walletAddress]);
 
   return {
     isAllowed,
