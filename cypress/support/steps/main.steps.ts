@@ -265,6 +265,7 @@ export const withdraw = (
         .contains(`${forWrapped ? 'W' + _shortName : _shortName}`);
     });
     it(`Withdraw ${isMaxAmount ? 'MAX' : amount} amount for ${_shortName}`, () => {
+      if(isMaxAmount) cy.wait(2000)
       setAmount({
         amount,
         max: isMaxAmount,

@@ -43,5 +43,5 @@ describe('CRITICAL CONDITIONS SPEC, AVALANCHE V3 MARKET', () => {
   checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.07 }, skipTestState);
   supply(testData.testCases.deposit2, skipTestState, true);
   withdraw(testData.testCases.withdraw, skipTestState, false);
-  checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.07 }, skipTestState);
+  checkDashboardHealthFactor({ valueFrom: 2.0, valueTo: 2.07 }, skipTestState);
 });
