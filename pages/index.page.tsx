@@ -37,46 +37,42 @@ export default function Home() {
     <>
       <DashboardTopPanel />
 
-      {!isAllowed ? (
-        <AddressBlockedModal address={currentAccount} />
-      ) : (
-        <ContentContainer>
-          {currentAccount && !isPermissionsLoading && (
-            <Box
-              sx={{
-                display: { xs: 'flex', lg: 'none' },
-                justifyContent: { xs: 'center', xsm: 'flex-start' },
-                mb: { xs: 3, xsm: 4 },
-              }}
+      <ContentContainer>
+        {currentAccount && !isPermissionsLoading && (
+          <Box
+            sx={{
+              display: { xs: 'flex', lg: 'none' },
+              justifyContent: { xs: 'center', xsm: 'flex-start' },
+              mb: { xs: 3, xsm: 4 },
+            }}
+          >
+            <ToggleButtonGroup
+              color="primary"
+              value={mode}
+              exclusive
+              onChange={(_, value) => setMode(value)}
+              sx={{ width: { xs: '100%', xsm: '359px' }, height: '44px' }}
             >
-              <ToggleButtonGroup
-                color="primary"
-                value={mode}
-                exclusive
-                onChange={(_, value) => setMode(value)}
-                sx={{ width: { xs: '100%', xsm: '359px' }, height: '44px' }}
-              >
-                <ToggleButton value="supply" disabled={mode === 'supply'}>
-                  <Typography variant="subheader1">
-                    <Trans>Supply</Trans>
-                  </Typography>
-                </ToggleButton>
-                <ToggleButton value="borrow" disabled={mode === 'borrow'}>
-                  <Typography variant="subheader1">
-                    <Trans>Borrow</Trans>
-                  </Typography>
-                </ToggleButton>
-              </ToggleButtonGroup>
-            </Box>
-          )}
+              <ToggleButton value="supply" disabled={mode === 'supply'}>
+                <Typography variant="subheader1">
+                  <Trans>Supply</Trans>
+                </Typography>
+              </ToggleButton>
+              <ToggleButton value="borrow" disabled={mode === 'borrow'}>
+                <Typography variant="subheader1">
+                  <Trans>Borrow</Trans>
+                </Typography>
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Box>
+        )}
 
-          {currentAccount && !isPermissionsLoading ? (
-            <DashboardContentWrapper isBorrow={mode === 'borrow'} />
-          ) : (
-            <ConnectWalletPaper loading={web3Loading} />
-          )}
-        </ContentContainer>
-      )}
+        {currentAccount && !isPermissionsLoading ? (
+          <DashboardContentWrapper isBorrow={mode === 'borrow'} />
+        ) : (
+          <ConnectWalletPaper loading={web3Loading} />
+        )}
+      </ContentContainer>
     </>
   );
 }
