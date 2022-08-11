@@ -30,7 +30,7 @@ export const useAddressAllowed = (): AddressAllowedResult => {
       }
     };
 
-    if (screeningUrl && walletAddress && chainId === ChainId.mainnet) {
+    if (screeningUrl && walletAddress) {
       getIsAddressAllowed();
     } else {
       setIsAllowed(true);
