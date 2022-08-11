@@ -74,24 +74,3 @@ describe('VERIFY DETAILS PAGE INTEGRATION SPEC', () => {
     });
   });
 });
-
-// describe('VERIFY DETAILS PAGE INTEGRATION SPEC', () => {
-//   const skipTestState = skipState(false);
-//     configEnvWithTenderlyMainnetFork({});
-//     supply(testData.depositETH, skipTestState, true);
-//     borrow(testData.testCases.borrow, skipTestState, true);
-
-//   // //  it('Go to details page for the USDT', () => {
-//   cy.get('[data-cy="menuMarkets"]').click();
-//  });
-// });
-//   describe('Verifing collateral, e-mode and isolation strings on detail page USDT AAVE V2', () => {
-//   it('e-mode and isolation strings on Details page USDT AAVE V2', () => {
-//     cy.get('[data-cy="marketListItemListItem_USDT"]').click();
-//     cy.contains('Asset can only be used as collateral in isolation mode only.');
-//     cy.contains(
-//       'E-Mode increases your LTV for a selected category of assets, meaning that when E-mode is enabled, you will have higher borrowing power over assets of the same E-mode category which are defined by Aave Governance.'
-//     );
-//   });
-
-// });
