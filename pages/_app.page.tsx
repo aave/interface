@@ -29,7 +29,6 @@ import { ModalContextProvider } from 'src/hooks/useModal';
 import { PermissionProvider } from 'src/hooks/usePermissions';
 import { WalletModalContextProvider } from 'src/hooks/useWalletModal';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
-// import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3ContextProvider';
 import { TxBuilderProvider } from 'src/providers/TxBuilderProvider';
 import { apolloClient } from 'src/utils/apolloClient';
 
