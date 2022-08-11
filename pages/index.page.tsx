@@ -8,8 +8,6 @@ import {
   useTheme,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { AddressBlockedModal } from 'src/components/AddressBlockedModal';
-import { useAddressAllowed } from 'src/hooks/useAddressAllowed';
 import { usePermissions } from 'src/hooks/usePermissions';
 import { ConnectWalletPaper } from '../src/components/ConnectWalletPaper';
 import { ContentContainer } from '../src/components/ContentContainer';
@@ -24,7 +22,6 @@ export default function Home() {
 
   const { currentAccount, loading: web3Loading } = useWeb3Context();
   const { isPermissionsLoading } = usePermissions();
-  const { isAllowed } = useAddressAllowed();
 
   const [mode, setMode] = useState<'supply' | 'borrow' | ''>('');
 
