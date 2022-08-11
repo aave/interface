@@ -35,13 +35,11 @@ export const supply = (
     amount,
     hasApproval = true,
     isMaxAmount = false,
-    isDetailsPage = false,
   }: {
     asset: { shortName: string; fullName: string };
     amount: number;
     hasApproval: boolean;
     isMaxAmount?: boolean;
-    isDetailsPage?: boolean;
   },
   skip: SkipType,
   updateSkipStatus = false
@@ -51,20 +49,13 @@ export const supply = (
 
   return describe(`Supply process for ${_shortName}`, () => {
     skipSetup({ skip, updateSkipStatus });
-    if (!isDetailsPage) {
-      it(`Open ${_shortName} supply popup view`, () => {
-        doSwitchToDashboardSupplyView();
-        cy.get(`[data-cy='dashboardSupplyListItem_${_shortName.toUpperCase()}']`)
-          .find('button:contains("Supply")')
-          .click();
-        cy.get(`[data-cy=Modal] h2:contains("Supply ${_shortName}")`).should('be.visible');
-      });
-    } else {
-      it('Open via details page', () => {
-        cy.contains('Your info').click();
-        cy.contains('Supply').click();
-      });
-    }
+    it(`Open ${_shortName} supply popup view`, () => {
+      doSwitchToDashboardSupplyView();
+      cy.get(`[data-cy='dashboardSupplyListItem_${_shortName.toUpperCase()}']`)
+        .find('button:contains("Supply")')
+        .click();
+      cy.get(`[data-cy=Modal] h2:contains("Supply ${_shortName}")`).should('be.visible');
+    });
     it(`Supply ${isMaxAmount ? 'MAX' : amount} amount for ${_shortName}`, () => {
       setAmount({
         amount,
@@ -88,7 +79,6 @@ export const borrow = (
     hasApproval = true,
     isRisk = false,
     isMaxAmount = false,
-    isDetailsPage = false,
   }: {
     asset: { shortName: string; fullName: string };
     amount: number;
@@ -96,7 +86,6 @@ export const borrow = (
     hasApproval: boolean;
     isRisk?: boolean;
     isMaxAmount?: boolean;
-    isDetailsPage?: boolean;
   },
   skip: SkipType,
   updateSkipStatus = false
@@ -106,22 +95,15 @@ export const borrow = (
 
   return describe(`Borrow process for ${_shortName}`, () => {
     skipSetup({ skip, updateSkipStatus });
-    if (!isDetailsPage) {
-      it(`Open ${_shortName} borrow popup view`, () => {
-        doSwitchToDashboardBorrowView();
-        cy.wait(4000);
-        cy.get(`[data-cy='dashboardBorrowListItem_${_shortName.toUpperCase()}']`)
-          .contains('Borrow')
-          .should('not.be.disabled')
-          .click();
-        cy.get(`[data-cy=Modal] h2:contains("Borrow ${_shortName}")`).should('be.visible');
-      });
-    } else {
-      it('Open via details page', () => {
-        cy.contains('Your info').click();
-        cy.contains('Borrow').click();
-      });
-    }
+    it(`Open ${_shortName} borrow popup view`, () => {
+      doSwitchToDashboardBorrowView();
+      cy.wait(4000);
+      cy.get(`[data-cy='dashboardBorrowListItem_${_shortName.toUpperCase()}']`)
+        .contains('Borrow')
+        .should('not.be.disabled')
+        .click();
+      cy.get(`[data-cy=Modal] h2:contains("Borrow ${_shortName}")`).should('be.visible');
+    });
     it(`Choose ${apyType} borrow option`, () => {
       switch (apyType) {
         case constants.borrowAPYType.variable:

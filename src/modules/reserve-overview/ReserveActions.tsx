@@ -321,6 +321,7 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
           disabled={balance?.amount === '0'}
           onClick={() => openSupply(underlyingAsset)}
           fullWidth={downToXSM}
+          data-cy={'supplyButton'}
         >
           <Trans>Supply</Trans> {downToXSM && poolReserve.symbol}
         </Button>
@@ -329,6 +330,7 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
           variant="contained"
           onClick={() => openBorrow(underlyingAsset)}
           fullWidth={downToXSM}
+          data-cy={'borrowButton'}
         >
           <Trans>Borrow</Trans> {downToXSM && poolReserve.symbol}
         </Button>
