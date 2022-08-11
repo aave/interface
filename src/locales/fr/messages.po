@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-08-02 18:22\n"
+"PO-Revision-Date: 2022-08-10 01:40\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -806,8 +806,8 @@ msgid "In E-Mode some assets are not borrowable. Exit E-Mode to get access to al
 msgstr "En E-Mode, certains actifs ne sont pas empruntables. Quittez le E-mode pour accéder à tous les actifs"
 
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
-msgid "In Isolation mode, you cannot supply other assets as collateral. A global debt ceiling limits the borrowing power of the isolated asset. Read more in our <0>FAQ</0>"
-msgstr "En mode Isolation, vous ne pouvez pas fournir d'autres actifs en garantie. Un plafond d'endettement global limite la capacité d'emprunt de l'actif isolé. En savoir plus dans notre <0>FAQ</0>"
+msgid "In Isolation mode, you cannot supply other assets as collateral. A global debt ceiling limits the borrowing power of the isolated asset. To exit isolation mode disable {0} as collateral before borrowing another asset. Read more in our <0>FAQ</0>"
+msgstr ""
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "In order to change E-Mode from asset category{0}you will need to close your position in your current category. See our <0>FAQ</0> to learn more."
