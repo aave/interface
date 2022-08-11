@@ -18,7 +18,7 @@ export const useAddressAllowed = (): AddressAllowedResult => {
   const getIsAddressAllowed = async () => {
     if (screeningUrl && walletAddress) {
       try {
-        const response = await fetch(`${'screeningUrl'}/addresses/status?address=${walletAddress}`);
+        const response = await fetch(`${screeningUrl}/addresses/status?address=${walletAddress}`);
         const data: { addressAllowed: boolean } = await response.json();
         setIsAllowed(data.addressAllowed);
       } catch (e) {}
