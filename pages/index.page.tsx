@@ -24,8 +24,7 @@ export default function Home() {
 
   const { currentAccount, loading: web3Loading } = useWeb3Context();
   const { isPermissionsLoading } = usePermissions();
-
-  const { isAllowed, loading: addressAllowedLoading } = useAddressAllowed();
+  const { isAllowed } = useAddressAllowed();
 
   const [mode, setMode] = useState<'supply' | 'borrow' | ''>('');
 
@@ -38,7 +37,7 @@ export default function Home() {
     <>
       <DashboardTopPanel />
 
-      {!isAllowed && !addressAllowedLoading ? (
+      {!isAllowed ? (
         <AddressBlockedModal address={currentAccount} />
       ) : (
         <ContentContainer>

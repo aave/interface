@@ -1,44 +1,35 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { useProtocolDataContext } from './useProtocolDataContext';
+import { usePolling } from './usePolling';
 
 export interface AddressAllowedResult {
   isAllowed: boolean;
-  loading: boolean;
 }
 
+const TWO_MINUTES = 2 * 60 * 1000;
+
 export const useAddressAllowed = (): AddressAllowedResult => {
-  const { currentChainId: chainId } = useProtocolDataContext();
   const { currentAccount: walletAddress } = useWeb3Context();
 
   const [isAllowed, setIsAllowed] = useState(true);
-  const [loading, setLoading] = useState(true);
 
   const screeningUrl = process.env.NEXT_PUBLIC_SCREENING_URL;
 
-  useEffect(() => {
-    const getIsAddressAllowed = async () => {
+  const getIsAddressAllowed = async () => {
+    if (screeningUrl && walletAddress) {
       try {
-        setLoading(true);
-        const response = await fetch(`${screeningUrl}/addresses/status?address=${walletAddress}`);
+        const response = await fetch(`${'screeningUrl'}/addresses/status?address=${walletAddress}`);
         const data: { addressAllowed: boolean } = await response.json();
         setIsAllowed(data.addressAllowed);
-        setLoading(false);
-      } catch (e) {
-        setLoading(false);
-      }
-    };
-
-    if (screeningUrl && walletAddress) {
-      getIsAddressAllowed();
+      } catch (e) {}
     } else {
       setIsAllowed(true);
-      setLoading(false);
     }
-  }, [chainId, screeningUrl, walletAddress]);
+  };
+
+  usePolling(getIsAddressAllowed, TWO_MINUTES, !walletAddress, [walletAddress]);
 
   return {
     isAllowed,
-    loading,
   };
 };
