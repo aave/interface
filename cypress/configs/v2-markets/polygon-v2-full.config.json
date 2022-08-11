@@ -6,7 +6,8 @@
   "ignoreTestFiles": [
     "matic.polygon-v2.spec.ts",
     "usdt.polygon-v2.spec.ts",
-    "swap.polygon-v2.spec.ts"
+    "swap.polygon-v2.spec.ts",
+    "critical-conditions.polygon-v2.spec.ts"
   ],
   "viewportWidth": 1200,
   "viewportHeight": 800,

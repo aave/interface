@@ -8,7 +8,8 @@
     "dai.avalanche-v3.spec.ts",
     "swap.avalanche-v2.spec.ts",
     "e-mode.avalanche-v3.spec.ts",
-    "isolated-mode.avalanche-v3.spec.ts"
+    "isolated-mode.avalanche-v3.spec.ts",
+    "critical-conditions.avalanche-v2.spec.ts"
   ],
   "viewportWidth": 1200,
   "viewportHeight": 800,
