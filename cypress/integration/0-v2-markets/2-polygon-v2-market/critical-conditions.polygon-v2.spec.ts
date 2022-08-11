@@ -30,6 +30,7 @@ const testData = {
       amount: 9999,
       hasApproval: false,
       isRisk: true,
+      isMaxAmount: true,
     },
   },
 };
