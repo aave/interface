@@ -35,7 +35,7 @@ const testData = {
   },
 };
 
-describe('CRITICAL CONDITIONS SPEC, AMM V2 MARKET', () => {
+describe.skip('CRITICAL CONDITIONS SPEC, AMM V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyMainnetFork({
     market: 'fork_amm_mainnet',
