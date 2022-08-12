@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { usePolling } from './usePolling';
 
 export interface AddressAllowedResult {
@@ -8,17 +7,15 @@ export interface AddressAllowedResult {
 
 const TWO_MINUTES = 2 * 60 * 1000;
 
-export const useAddressAllowed = (): AddressAllowedResult => {
-  const { currentAccount: walletAddress } = useWeb3Context();
-
+export const useAddressAllowed = (address: string): AddressAllowedResult => {
   const [isAllowed, setIsAllowed] = useState(true);
 
   const screeningUrl = process.env.NEXT_PUBLIC_SCREENING_URL;
 
   const getIsAddressAllowed = async () => {
-    if (screeningUrl && walletAddress) {
+    if (screeningUrl && address) {
       try {
-        const response = await fetch(`${screeningUrl}/addresses/status?address=${walletAddress}`);
+        const response = await fetch(`${screeningUrl}/addresses/status?address=${address}`);
         const data: { addressAllowed: boolean } = await response.json();
         setIsAllowed(data.addressAllowed);
       } catch (e) {}
@@ -27,7 +24,7 @@ export const useAddressAllowed = (): AddressAllowedResult => {
     }
   };
 
-  usePolling(getIsAddressAllowed, TWO_MINUTES, !walletAddress, [walletAddress]);
+  usePolling(getIsAddressAllowed, TWO_MINUTES, false, [address]);
 
   return {
     isAllowed,

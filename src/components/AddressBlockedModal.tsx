@@ -1,14 +1,15 @@
-import { ExclamationCircleIcon } from '@heroicons/react/outline';
+import { ExclamationCircleIcon, LogoutIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, SvgIcon, Typography } from '@mui/material';
+import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import { BasicModal } from './primitives/BasicModal';
 import { Link } from './primitives/Link';
 
 export interface AddressBlockedProps {
   address: string;
+  onDisconnectWallet: () => void;
 }
 
-export const AddressBlockedModal = ({ address }: AddressBlockedProps) => {
+export const AddressBlockedModal = ({ address, onDisconnectWallet }: AddressBlockedProps) => {
   // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
   const setOpen = (_value: boolean) => {}; // ignore, we want the modal to not be dismissable
 
@@ -31,7 +32,7 @@ export const AddressBlockedModal = ({ address }: AddressBlockedProps) => {
         <Typography variant="helperText" sx={{ my: 4 }}>
           {address}
         </Typography>
-        <Typography variant="description" sx={{ textAlign: 'center' }}>
+        <Typography variant="description" sx={{ textAlign: 'center', mb: 4 }}>
           <Trans>
             This address is blocked on app.aave.com because it is associated with one or more
           </Trans>{' '}
@@ -39,6 +40,12 @@ export const AddressBlockedModal = ({ address }: AddressBlockedProps) => {
             <Trans>blocked activities</Trans>
           </Link>
         </Typography>
+        <Button variant="contained" onClick={onDisconnectWallet}>
+          <SvgIcon fontSize="small" sx={{ mx: 1 }}>
+            <LogoutIcon />
+          </SvgIcon>
+          <Trans>Disconnect Wallet</Trans>
+        </Button>
       </Box>
     </BasicModal>
   );
