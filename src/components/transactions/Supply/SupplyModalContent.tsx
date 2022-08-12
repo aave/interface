@@ -29,12 +29,11 @@ import {
 } from '../FlowCommons/TxModalDetails';
 import { AAVEWarning } from '../Warnings/AAVEWarning';
 import { AMPLWarning } from '../Warnings/AMPLWarning';
-import { HarmonyWarning } from '../Warnings/HarmonyWarning';
-import { FantomWarning } from '../Warnings/FantomWarning';
 import { IsolationModeWarning } from '../Warnings/IsolationModeWarning';
 import { SNXWarning } from '../Warnings/SNXWarning';
 import { SupplyCapWarning } from '../Warnings/SupplyCapWarning';
 import { SupplyActions } from './SupplyActions';
+import { MarketWarning } from '../Warnings/MarketWarning';
 
 export enum ErrorType {
   CAP_REACHED,
@@ -221,9 +220,15 @@ export const SupplyModalContent = ({
         poolReserve.symbol === 'AAVE' &&
         isFeatureEnabled.staking(currentMarketData) && <AAVEWarning />}
       {poolReserve.symbol === 'SNX' && !maxAmountToSupply.eq('0') && <SNXWarning />}
-      {currentNetworkConfig.name === 'Harmony' && <HarmonyWarning learnMore={true} />}
-      {currentNetworkConfig.name === 'Fantom' && <FantomWarning />}
-
+      {(currentNetworkConfig.name === 'Harmony' || currentNetworkConfig.name === 'Fantom') && (
+        <MarketWarning
+          learnMore={true}
+          warningMessage={''}
+          market={currentNetworkConfig.name}
+          warningType={'error'}
+        />
+      )}
+      =
       <AssetInput
         value={amount}
         onChange={handleChange}
@@ -243,13 +248,11 @@ export const SupplyModalContent = ({
         disabled={supplyTxState.loading}
         maxValue={maxAmountToSupply.toString(10)}
       />
-
       {blockingError !== undefined && (
         <Typography variant="helperText" color="error.main">
           {handleBlocked()}
         </Typography>
       )}
-
       <TxModalDetails gasLimit={gasLimit}>
         <DetailsNumberLine description={<Trans>Supply APY</Trans>} value={supplyApy} percent />
         <DetailsIncentivesLine
@@ -263,9 +266,7 @@ export const SupplyModalContent = ({
           futureHealthFactor={healthFactorAfterDeposit.toString(10)}
         />
       </TxModalDetails>
-
       {txError && <GasEstimationError txError={txError} />}
-
       <SupplyActions
         poolReserve={poolReserve}
         amountToSupply={amount}

@@ -1066,12 +1066,18 @@ msgid "Pending..."
 msgstr "Pending..."
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Per the community, borrowing in this market is currently disabled. <0>Learn More</0>"
 msgstr "Per the community, borrowing in this market is currently disabled. <0>Learn More</0>"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Per the community, supplying in this market is currently disabled. <0>Learn More</0>"
 msgstr "Per the community, supplying in this market is currently disabled. <0>Learn More</0>"
+
+#: src/components/transactions/Warnings/FantomWarning.tsx
+msgid "Per the community, the fantom market has been disabled.<0>Learn More</0>"
+msgstr "Per the community, the fantom market has been disabled.<0>Learn More</0>"
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Please connect a wallet to view your personal information here."

@@ -19,8 +19,7 @@ import { ListLoader } from '../ListLoader';
 import { SupplyAssetsListItem } from './SupplyAssetsListItem';
 import { SupplyAssetsListMobileItem } from './SupplyAssetsListMobileItem';
 import { Warning } from 'src/components/primitives/Warning';
-import { HarmonyWarning } from 'src/components/transactions/Warnings/HarmonyWarning';
-import { FantomWarning } from 'src/components/transactions/Warnings/FantomWarning';
+import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 
 export const SupplyAssetsList = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
@@ -154,6 +153,9 @@ export const SupplyAssetsList = () => {
     return <ListLoader title={<Trans>Assets to supply</Trans>} head={head} withTopMargin />;
 
   const supplyDisabled = !tokensToSupply.length;
+  const marketDisabledMessage =
+    'Per the community, supplying in this market is currently disabled.';
+
   return (
     <ListWrapper
       title={<Trans>Assets to supply</Trans>}
@@ -163,34 +165,14 @@ export const SupplyAssetsList = () => {
       subChildrenComponent={
         <>
           <Box sx={{ px: 6 }}>
-            {supplyDisabled && currentNetworkConfig.name === 'Harmony' ? (
-              <Warning severity="warning">
-                <Trans>
-                  Per the community, supplying in this market is currently disabled.{' '}
-                  <Link
-                    href="https://governance.aave.com/t/harmony-horizon-bridge-exploit-consequences-to-aave-v3-harmony/8614"
-                    target="_blank"
-                  >
-                    Learn More
-                  </Link>
-                </Trans>
-              </Warning>
-            ) : currentNetworkConfig.name === 'Harmony' ? (
-              <HarmonyWarning learnMore={true} />
-            ) : supplyDisabled && currentNetworkConfig.name === 'Fantom' ? (
-              <Warning severity="warning">
-                <Trans>
-                  Per the community, supplying in this market is currently disabled.{' '}
-                  <Link
-                    href="https://snapshot.org/#/aave.eth/proposal/0xeefcd76e523391a14cfd0a79b531ea0a3faf0eb4a058e255fac13a2d224cc647"
-                    target="_blank"
-                  >
-                    Learn More
-                  </Link>
-                </Trans>
-              </Warning>
-            ) : currentNetworkConfig.name === 'Fantom' ? (
-              <FantomWarning />
+            {currentNetworkConfig.name === 'Harmony' || currentNetworkConfig.name === 'Fantom' ? (
+              <MarketWarning
+                learnMore={true}
+                warningMessage={marketDisabledMessage}
+                linkHref={''}
+                warningType={'warning'}
+                market={currentNetworkConfig.name}
+              />
             ) : user?.isInIsolationMode ? (
               <Warning severity="warning">
                 <Trans>

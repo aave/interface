@@ -22,7 +22,7 @@ import { Link } from '../../../../components/primitives/Link';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { Warning } from 'src/components/primitives/Warning';
-import { FantomWarning } from 'src/components/transactions/Warnings/FantomWarning';
+import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 
 export const BorrowAssetsList = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
@@ -105,6 +105,9 @@ export const BorrowAssetsList = () => {
     return <ListLoader title={<Trans>Assets to borrow</Trans>} head={head} withTopMargin />;
 
   const borrowDisabled = !borrowReserves.length;
+  const marketDisabledMessage =
+    'Per the community, borrowing in this market is currently disabled.';
+
   return (
     <ListWrapper
       title={<Trans>Assets to borrow</Trans>}
@@ -113,32 +116,23 @@ export const BorrowAssetsList = () => {
       noData={borrowDisabled}
       subChildrenComponent={
         <Box sx={{ px: 6, mb: 4 }}>
-          {borrowDisabled && currentNetworkConfig.name === 'Harmony' ? (
-            <Warning severity="warning">
-              <Trans>
-                Per the community, borrowing in this market is currently disabled.{' '}
-                <Link
-                  href="https://governance.aave.com/t/harmony-horizon-bridge-exploit-consequences-to-aave-v3-harmony/8614"
-                  target="_blank"
-                >
-                  Learn More
-                </Link>
-              </Trans>
-            </Warning>
-          ) : borrowDisabled && currentNetworkConfig.name === 'Fantom' ? (
-            <Warning severity="warning">
-              <Trans>
-                Per the community, borrowing in this market is currently disabled.{' '}
-                <Link
-                  href="https://snapshot.org/#/aave.eth/proposal/0xeefcd76e523391a14cfd0a79b531ea0a3faf0eb4a058e255fac13a2d224cc647"
-                  target="_blank"
-                >
-                  Learn More
-                </Link>
-              </Trans>
-            </Warning>
-          ) : currentNetworkConfig.name === 'Fantom' ? (
-            <FantomWarning />
+          {borrowDisabled &&
+          (currentNetworkConfig.name === 'Harmony' || currentNetworkConfig.name === 'Fantom') ? (
+            <MarketWarning
+              learnMore={true}
+              warningMessage={marketDisabledMessage}
+              linkHref={''}
+              warningType={'warning'}
+              market={currentNetworkConfig.name}
+            />
+          ) : currentNetworkConfig.name === 'Harmony' || currentNetworkConfig.name === 'Fantom' ? (
+            <MarketWarning
+              learnMore={true}
+              warningMessage={marketDisabledMessage}
+              linkHref={''}
+              warningType={'warning'}
+              market={currentNetworkConfig.name}
+            />
           ) : (
             <>
               {+collateralUsagePercent >= 0.98 && (

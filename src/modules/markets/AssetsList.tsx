@@ -4,8 +4,7 @@ import { Box, useMediaQuery } from '@mui/material';
 import { useState } from 'react';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
-import { HarmonyWarning } from 'src/components/transactions/Warnings/HarmonyWarning';
-import { FantomWarning } from 'src/components/transactions/Warnings/FantomWarning';
+import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
@@ -106,16 +105,16 @@ export default function AssetsList() {
       }
       captionSize="h2"
     >
-      {currentNetworkConfig.name === 'Harmony' && (
+      {(currentNetworkConfig.name === 'Harmony' || currentNetworkConfig.name === 'Fantom') && (
         <Box sx={{ mx: '24px' }}>
-          <HarmonyWarning />
+          <MarketWarning
+            warningMessage={''}
+            warningType={'error'}
+            market={currentNetworkConfig.name}
+          />
         </Box>
       )}
-      {currentNetworkConfig.name === 'Fantom' && (
-        <Box sx={{ mx: '24px' }}>
-          <FantomWarning />
-        </Box>
-      )}
+
       {!isTableChangedToCards && (
         <ListHeaderWrapper px={6}>
           {header.map((col) => (
