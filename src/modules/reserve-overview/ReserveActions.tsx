@@ -309,14 +309,25 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
 
       <Row mb={3} />
 
-      {(currentNetworkConfig.name === 'Harmony' || currentNetworkConfig.name === 'Fantom') && (
+      {currentNetworkConfig.name === 'Harmony' && (
         <Row align="flex-start" mb={3}>
           <MarketWarning
             learnMore={true}
-            warningMessage={''}
-            linkHref={''}
+            linkHref={`https://governance.aave.com/t/harmony-horizon-bridge-exploit-consequences-to-aave-v3-harmony/8614`}
+            warningMessage={
+              'Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Aave V3 Harmony market.'
+            }
             warningType={'error'}
-            market={currentNetworkConfig.name}
+          />
+        </Row>
+      )}
+      {currentNetworkConfig.name === 'Fantom' && (
+        <Row align="flex-start" mb={3}>
+          <MarketWarning
+            linkHref={`https://snapshot.org/#/aave.eth/proposal/0xeefcd76e523391a14cfd0a79b531ea0a3faf0eb4a058e255fac13a2d224cc647`}
+            learnMore={true}
+            warningMessage={'Per the community, the fantom market has been disabled.'}
+            warningType={'error'}
           />
         </Row>
       )}

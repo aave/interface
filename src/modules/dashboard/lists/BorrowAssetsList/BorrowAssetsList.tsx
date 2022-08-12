@@ -116,24 +116,27 @@ export const BorrowAssetsList = () => {
       noData={borrowDisabled}
       subChildrenComponent={
         <Box sx={{ px: 6, mb: 4 }}>
-          {borrowDisabled &&
-          (currentNetworkConfig.name === 'Harmony' || currentNetworkConfig.name === 'Fantom') ? (
+          {borrowDisabled && currentNetworkConfig.name === 'Harmony' && (
             <MarketWarning
               learnMore={true}
-              warningMessage={marketDisabledMessage}
-              linkHref={''}
-              warningType={'warning'}
-              market={currentNetworkConfig.name}
+              linkHref={`https://governance.aave.com/t/harmony-horizon-bridge-exploit-consequences-to-aave-v3-harmony/8614`}
+              warningMessage={
+                'Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Aave V3 Harmony market.'
+              }
+              warningType={'error'}
             />
-          ) : currentNetworkConfig.name === 'Harmony' || currentNetworkConfig.name === 'Fantom' ? (
+          )}
+
+          {borrowDisabled && currentNetworkConfig.name === 'Fantom' && (
             <MarketWarning
+              linkHref={`https://snapshot.org/#/aave.eth/proposal/0xeefcd76e523391a14cfd0a79b531ea0a3faf0eb4a058e255fac13a2d224cc647`}
               learnMore={true}
-              warningMessage={marketDisabledMessage}
-              linkHref={''}
-              warningType={'warning'}
-              market={currentNetworkConfig.name}
+              warningMessage={'Per the community, the fantom market has been disabled.'}
+              warningType={'error'}
             />
-          ) : (
+          )}
+
+          {!borrowDisabled && (
             <>
               {+collateralUsagePercent >= 0.98 && (
                 <Warning severity="error">
