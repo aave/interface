@@ -326,7 +326,7 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
           <MarketWarning
             linkHref={`https://snapshot.org/#/aave.eth/proposal/0xeefcd76e523391a14cfd0a79b531ea0a3faf0eb4a058e255fac13a2d224cc647`}
             learnMore={true}
-            warningMessage={'Per the community, the fantom market has been disabled.'}
+            warningMessage={'Per the community, the fantom market has been frozen.'}
             warningType={'error'}
           />
         </Row>
