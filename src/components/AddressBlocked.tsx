@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { useAddressAllowed } from 'src/hooks/useAddressAllowed';
+import { MainLayout } from 'src/layouts/MainLayout';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { AddressBlockedModal } from './AddressBlockedModal';
 
@@ -8,7 +9,11 @@ export const AddressBlocked = ({ children }: { children: ReactNode }) => {
   const { isAllowed } = useAddressAllowed();
 
   if (!isAllowed) {
-    return <AddressBlockedModal address={currentAccount} />;
+    return (
+      <MainLayout>
+        <AddressBlockedModal address={currentAccount} />;
+      </MainLayout>
+    );
   }
 
   return <>{children}</>;
