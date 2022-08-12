@@ -20,6 +20,7 @@ import { SupplyAssetsListItem } from './SupplyAssetsListItem';
 import { SupplyAssetsListMobileItem } from './SupplyAssetsListMobileItem';
 import { Warning } from 'src/components/primitives/Warning';
 import { HarmonyWarning } from 'src/components/transactions/Warnings/HarmonyWarning';
+import { FantomWarning } from 'src/components/transactions/Warnings/FantomWarning';
 
 export const SupplyAssetsList = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
@@ -176,6 +177,20 @@ export const SupplyAssetsList = () => {
               </Warning>
             ) : currentNetworkConfig.name === 'Harmony' ? (
               <HarmonyWarning learnMore={true} />
+            ) : supplyDisabled && currentNetworkConfig.name === 'Fantom' ? (
+              <Warning severity="warning">
+                <Trans>
+                  Per the community, supplying in this market is currently disabled.{' '}
+                  <Link
+                    href="https://snapshot.org/#/aave.eth/proposal/0xeefcd76e523391a14cfd0a79b531ea0a3faf0eb4a058e255fac13a2d224cc647"
+                    target="_blank"
+                  >
+                    Learn More
+                  </Link>
+                </Trans>
+              </Warning>
+            ) : currentNetworkConfig.name === 'Fantom' ? (
+              <FantomWarning />
             ) : user?.isInIsolationMode ? (
               <Warning severity="warning">
                 <Trans>

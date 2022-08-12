@@ -36,6 +36,7 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { Warning } from 'src/components/primitives/Warning';
 import { HarmonyWarning } from 'src/components/transactions/Warnings/HarmonyWarning';
+import { FantomWarning } from 'src/components/transactions/Warnings/FantomWarning';
 
 const PaperWrapper = ({ children }: { children: ReactNode }) => {
   return (
@@ -314,7 +315,11 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
           <HarmonyWarning learnMore={true} />
         </Row>
       )}
-
+      {currentNetworkConfig.name === 'Fantom' && (
+        <Row align="flex-start" mb={3}>
+          <FantomWarning />
+        </Row>
+      )}
       <Stack direction="row" spacing={2}>
         <Button
           variant="contained"

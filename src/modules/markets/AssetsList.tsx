@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { HarmonyWarning } from 'src/components/transactions/Warnings/HarmonyWarning';
+import { FantomWarning } from 'src/components/transactions/Warnings/FantomWarning';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
@@ -108,6 +109,11 @@ export default function AssetsList() {
       {currentNetworkConfig.name === 'Harmony' && (
         <Box sx={{ mx: '24px' }}>
           <HarmonyWarning />
+        </Box>
+      )}
+      {currentNetworkConfig.name === 'Fantom' && (
+        <Box sx={{ mx: '24px' }}>
+          <FantomWarning />
         </Box>
       )}
       {!isTableChangedToCards && (

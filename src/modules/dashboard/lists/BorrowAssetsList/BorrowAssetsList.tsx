@@ -22,6 +22,7 @@ import { Link } from '../../../../components/primitives/Link';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { Warning } from 'src/components/primitives/Warning';
+import { FantomWarning } from 'src/components/transactions/Warnings/FantomWarning';
 
 export const BorrowAssetsList = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
@@ -124,6 +125,20 @@ export const BorrowAssetsList = () => {
                 </Link>
               </Trans>
             </Warning>
+          ) : borrowDisabled && currentNetworkConfig.name === 'Fantom' ? (
+            <Warning severity="warning">
+              <Trans>
+                Per the community, borrowing in this market is currently disabled.{' '}
+                <Link
+                  href="https://snapshot.org/#/aave.eth/proposal/0xeefcd76e523391a14cfd0a79b531ea0a3faf0eb4a058e255fac13a2d224cc647"
+                  target="_blank"
+                >
+                  Learn More
+                </Link>
+              </Trans>
+            </Warning>
+          ) : currentNetworkConfig.name === 'Fantom' ? (
+            <FantomWarning />
           ) : (
             <>
               {+collateralUsagePercent >= 0.98 && (
