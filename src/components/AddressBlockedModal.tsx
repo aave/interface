@@ -39,6 +39,7 @@ export const AddressBlockedModal = ({ address, onDisconnectWallet }: AddressBloc
           <Link href="https://docs.aave.com/faq/#address-screening" underline="always">
             <Trans>blocked activities</Trans>
           </Link>
+          {'.'}
         </Typography>
         <Button variant="contained" onClick={onDisconnectWallet}>
           <SvgIcon fontSize="small" sx={{ mx: 1 }}>
