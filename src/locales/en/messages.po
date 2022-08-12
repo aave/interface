@@ -591,6 +591,7 @@ msgstr "Disabling E-Mode"
 msgid "Disabling this asset as collateral affects your borrowing power and Health Factor."
 msgstr "Disabling this asset as collateral affects your borrowing power and Health Factor."
 
+#: src/components/AddressBlockedModal.tsx
 #: src/layouts/WalletWidget.tsx
 msgid "Disconnect Wallet"
 msgstr "Disconnect Wallet"
