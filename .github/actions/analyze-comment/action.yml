@@ -7,7 +7,7 @@ inputs:
     default: "0"
 runs:
   using: "composite"
-  steps:  
+  steps:
     - name: Download PR bundle stats
       if: github.event.workflow_run.id
       uses: dawidd6/action-download-artifact@575b1e4167df67acf7e692af784566618b23c71e # v2.17.0
