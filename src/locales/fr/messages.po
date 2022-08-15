@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-08-10 01:40\n"
+"PO-Revision-Date: 2022-08-12 18:22\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -270,6 +270,10 @@ msgstr "Avant de déposer"
 #: src/components/infoModalContents/ApprovalInfoContent.tsx
 msgid "Before supplying, you need to approve its usage by the Aave protocol. You can learn more in our<0>FAQ</0>"
 msgstr "Avant de déposer, vous devez approuver cet actif pour le protocole Aave. Vous pouvez en apprendre plus dans notre <0>FAQ</0>"
+
+#: src/components/AddressBlockedModal.tsx
+msgid "Blocked Address"
+msgstr ""
 
 #: pages/index.page.tsx
 #: src/components/transactions/Borrow/BorrowModal.tsx
@@ -592,6 +596,7 @@ msgstr "Désactiver le E-mode"
 msgid "Disabling this asset as collateral affects your borrowing power and Health Factor."
 msgstr "La désactivation de cet actif en tant que garantie affecte votre pouvoir d'emprunt et votre facteur de santé."
 
+#: src/components/AddressBlockedModal.tsx
 #: src/layouts/WalletWidget.tsx
 msgid "Disconnect Wallet"
 msgstr "Déconnecter le portefeuille"
@@ -1566,6 +1571,10 @@ msgstr "Il y a eu une erreur. Veuillez essayer de modifier les paramètres ou <0
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
 msgstr "Ces fonds ont été empruntés et ne peuvent pas être retirés pour le moment."
 
+#: src/components/AddressBlockedModal.tsx
+msgid "This address is blocked on app.aave.com because it is associated with one or more"
+msgstr ""
+
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has almost reached its borrow cap. There is only {messageValue} available to be borrowed from this market."
 msgstr "Cet actif a presque atteint son plafond d'emprunt. Il n'y a que {messageValue} disponible pour être emprunté sur ce marché."
@@ -1996,6 +2005,10 @@ msgstr "Adresse zéro non-valide"
 #: src/modules/markets/AssetsList.tsx
 msgid "assets"
 msgstr "actifs"
+
+#: src/components/AddressBlockedModal.tsx
+msgid "blocked activities"
+msgstr ""
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "copy the error"
