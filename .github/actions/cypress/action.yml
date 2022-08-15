@@ -15,7 +15,7 @@ inputs:
     required: true
 runs:
   using: "composite"
-  steps:  
+  steps:
     - uses: actions/setup-node@9ced9a43a244f3ac94f13bfd896db8c8f30da67a # v3.0.0
       with:
         node-version-file: '.nvmrc'
@@ -33,7 +33,7 @@ runs:
       with:
         name: out
         path: out
-    
+
     - name: Download static build
       if: github.event_name == 'workflow_run'
       uses: dawidd6/action-download-artifact@575b1e4167df67acf7e692af784566618b23c71e # v2.17.0

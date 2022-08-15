@@ -8,7 +8,7 @@ on:
         description: IPFS hash to pin and use in release description
         required: true
 
-jobs: 
+jobs:
   production:
     runs-on: ubuntu-latest
     environment:
@@ -37,7 +37,7 @@ jobs:
           CF_ZONE_ID: '${{ secrets.CF_ZONE_ID }}'
           HASH: '${{ inputs.PINATA_HASH }}'
           CF_DEPLOYMENT_DOMAIN: app.aave.com
-    
+
       - name: prepare release
         run: |
           cp .github/release-template.md ./release-notes.md

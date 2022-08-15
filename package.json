@@ -135,7 +135,7 @@
     "*.jsx": "eslint --cache --fix",
     "*.ts": "eslint --cache --fix",
     "*.tsx": "eslint --cache --fix",
-    "*.svg": "npx svgo"
+    "*.svg": "npx svgo --final-newline"
   },
   "nextBundleAnalysis": {
     "budget": null,
