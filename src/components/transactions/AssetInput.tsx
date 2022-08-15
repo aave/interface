@@ -10,6 +10,7 @@ import {
   SelectChangeEvent,
   Typography,
 } from '@mui/material';
+import CancelIcon from '@mui/icons-material/Cancel';
 import React, { ReactNode } from 'react';
 import NumberFormat, { NumberFormatProps } from 'react-number-format';
 
@@ -146,10 +147,22 @@ export const AssetInput = <T extends Asset = Asset>({
 
           {!onSelect || assets.length === 1 ? (
             <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+              {value !== '' && (
+                <Button
+                  size="small"
+                  sx={{ minWidth: 0, ml: '7px', p: 0 }}
+                  onClick={() => {
+                    onChange && onChange('');
+                  }}
+                  disabled={disabled || isMaxSelected}
+                >
+                  <CancelIcon sx={{ fontSize: 16, fill: 'silver' }} />
+                </Button>
+              )}
               <TokenIcon
                 aToken={asset.aToken}
                 symbol={asset.iconSymbol || asset.symbol}
-                sx={{ mr: 2, ml: 4 }}
+                sx={{ mr: 2, ml: 2 }}
               />
               <Typography variant="h3" sx={{ lineHeight: '28px' }} data-cy={'inputAsset'}>
                 {symbol}
