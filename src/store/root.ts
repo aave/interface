@@ -1,13 +1,16 @@
 import create from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-import { createSingletonSubscriber } from './utils/createSingletonSubscriber';
+import { enableMapSet } from 'immer';
 
+import { createSingletonSubscriber } from './utils/createSingletonSubscriber';
 import { StakeSlice, createStakeSlice } from './stakeSlice';
 import { ProtocolDataSlice, createProtocolDataSlice } from './protocolDataSlice';
 import { WalletSlice, createWalletSlice } from './walletSlice';
 import { PoolSlice, createPoolSlice } from './poolSlice';
 import { IncentiveSlice, createIncentiveSlice } from './incentiveSlice';
 import { GovernanceSlice, createGovernanceSlice } from './governanceSlice';
+
+enableMapSet();
 
 export type RootStore = StakeSlice &
   ProtocolDataSlice &
