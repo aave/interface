@@ -150,7 +150,7 @@ export const AssetInput = <T extends Asset = Asset>({
               {value !== '' && (
                 <Button
                   size="small"
-                  sx={{ minWidth: 0, ml: '7px', p: 0 }}
+                  sx={{ minWidth: 0, ml: '7px', p: 0, left: 8 }}
                   onClick={() => {
                     onChange && onChange('');
                   }}
@@ -162,7 +162,7 @@ export const AssetInput = <T extends Asset = Asset>({
               <TokenIcon
                 aToken={asset.aToken}
                 symbol={asset.iconSymbol || asset.symbol}
-                sx={{ mr: 2, ml: 2 }}
+                sx={{ mr: 2, ml: 4 }}
               />
               <Typography variant="h3" sx={{ lineHeight: '28px' }} data-cy={'inputAsset'}>
                 {symbol}
