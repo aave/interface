@@ -1,5 +1,5 @@
 import React, { ReactElement, useCallback, useEffect, useState } from 'react';
-import { Biconomy } from '@biconomy/mexa'
+import { Biconomy } from '@biconomy/mexa';
 import { hexToAscii } from 'src/utils/utils';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
@@ -273,12 +273,14 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   // If we used current account then the tx could get executed
   const sendTx = async (txData: transactionType): Promise<TransactionResponse> => {
     if (provider) {
+      console.log('here');
       const { from, ...data } = txData;
       const signer = provider.getSigner(from);
       const txResponse: TransactionResponse = await signer.sendTransaction({
         ...data,
         value: data.value ? BigNumber.from(data.value) : undefined,
       });
+      console.log('txResponse :>> ', txResponse);
       return txResponse;
     }
     throw new Error('Error sending transaction. Provider not found');
@@ -286,37 +288,33 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   const sendBiconomyTx = async (txData: transactionType): Promise<TransactionResponse> => {
     if (provider) {
-      txData.signatureType="EIP712_SIGN";
-      console.log("aa",txData)
-      const api = "I8c1XB-l6.ed819000-2f9a-43d0-8c76-583b9b77bb98";
-      let biconomy = new Biconomy(provider.provider,{
-      apiKey:api, 
-      debug: true,
-      
-    });
-    console.log("AbC")
-      
-    let a =new Promise<TransactionResponse>((resolve,reject)=>{
-      biconomy.onEvent(biconomy.READY, async () => {
-      // Initialize your dapp here like getting user accounts etc
-      let bprovidr = biconomy.getEthersProvider();
-      
-      let txResponse =  await bprovidr.send("eth_sendTransaction", [txData]);
-      console.log("Transaction hash : ", txResponse);
-      resolve(txResponse)
-
-    }).onEvent(biconomy.ERROR,(error:any)=>{
-      reject(new Error("FAIL"))
-      
-    })
-  });
-  const result= await a;
-  biconomy=undefined
-  return a;
-  }
-      throw new Error('Error sending transaction. Provider not found');
-    };
-
+      console.log('aa', txData);
+      txData.signatureType = 'EIP712_SIGN';
+      const api = 'I8c1XB-l6.ed819000-2f9a-43d0-8c76-583b9b77bb98';
+      let biconomy = new Biconomy(provider.provider, {
+        apiKey: api,
+        debug: true,
+      });
+      console.log('AbC');
+      const a = new Promise<TransactionResponse>((resolve, reject) => {
+        biconomy
+          .onEvent(biconomy.READY, async () => {
+            // Initialize your dapp here like getting user accounts etc
+            const bprovider = biconomy.getEthersProvider();
+            const txResponse: string = await bprovider.send('eth_sendTransaction', [txData]);
+            const result = provider.getTransaction(txResponse);
+            console.log('Transaction hash : ', result);
+            biconomy = undefined;
+            resolve(result);
+          })
+          .onEvent(biconomy.ERROR, (error: string) => {
+            reject(new Error(error));
+          });
+      });
+      return a;
+    }
+    throw new Error('Error sending transaction. Provider not found');
+  };
 
   // TODO: recheck that it works on all wallets
   const signTxData = async (unsignedData: string): Promise<SignatureLike> => {

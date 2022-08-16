@@ -1,4 +1,4 @@
-import { EthereumTransactionTypeExtended, GasType, Pool, AaveBiconomyForwarderService } from '@aave/contract-helpers';
+import { EthereumTransactionTypeExtended, GasType, Pool } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
 import { DependencyList, useEffect, useRef, useState } from 'react';
@@ -7,11 +7,8 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
-import AProxy from './AProxy.json'
-import ERC20 from './ERC20.json'
+
 export const MOCK_SIGNED_HASH = 'Signed correctly';
-import {ethers} from 'ethers';
-import { parseEther } from 'ethers/lib/utils';
 
 interface UseTransactionHandlerProps {
   handleGetTxns: () => Promise<EthereumTransactionTypeExtended[]>;
@@ -22,6 +19,7 @@ interface UseTransactionHandlerProps {
   tryPermit?: boolean;
   skip?: boolean;
   deps?: DependencyList;
+  useBiconomy?: boolean;
 }
 
 export const useTransactionHandler = ({
@@ -29,6 +27,7 @@ export const useTransactionHandler = ({
   handleGetPermitTxns,
   tryPermit = false,
   skip,
+  useBiconomy,
   deps = [],
 }: UseTransactionHandlerProps) => {
   const {
@@ -42,10 +41,10 @@ export const useTransactionHandler = ({
     setTxError,
     setRetryWithApproval,
   } = useModalContext();
-  const { signTxData, sendTx, sendBiconomyTx,getTxError, currentAccount } = useWeb3Context();
+  const { signTxData, sendTx, sendBiconomyTx, getTxError, currentAccount } = useWeb3Context();
   const { refetchWalletBalances, refetchPoolData, refechIncentiveData } =
     useBackgroundDataProvider();
-  const { lendingPool, BiconomyProxy } = useTxBuilderContext();
+  const { lendingPool } = useTxBuilderContext();
   const [usePermit, setUsePermit] = useState<boolean>(tryPermit);
   const [signature, setSignature] = useState<SignatureLike>();
   const [signatureDeadline, setSignatureDeadline] = useState<string>();
@@ -54,7 +53,7 @@ export const useTransactionHandler = ({
   const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const mounted = useRef(false);
 
-  const tokenAddress="0x9A753f0F7886C9fbF63cF59D0D4423C5eFaCE95B";
+  const tokenAddress = '0x9A753f0F7886C9fbF63cF59D0D4423C5eFaCE95B';
   useEffect(() => {
     mounted.current = true; // Will set it to true on mount ...
     return () => {
@@ -62,9 +61,7 @@ export const useTransactionHandler = ({
     }; // ... and to false on unmount
   }, []);
 
-
-
-  useEffect(() => {
+  /**  useEffect(() => {
 
     const bcp =async()=> {
       console.log("AAAAA",currentAccount)
@@ -90,6 +87,7 @@ export const useTransactionHandler = ({
     bcp();
     
   }, []);
+  */
   /**
    * Executes the transactions and handles loading & error states.
    * @param fn
@@ -269,7 +267,7 @@ export const useTransactionHandler = ({
         const params = await actionTx.tx();
         delete params.gasPrice;
         return processTx({
-          tx: () => sendTx(params),
+          tx: useBiconomy ? () => sendBiconomyTx(params) : () => sendTx(params),
           successCallback: (txnResponse: TransactionResponse) => {
             setMainTxState({
               txHash: txnResponse.hash,
