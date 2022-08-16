@@ -9,9 +9,6 @@ export const switchToTestNet = () => {
   cy.get('#settings-button').click();
   cy.contains('Testnet mode').click();
 };
-const checkLinkOfButtons = (name: string, link: string) => {
-  cy.contains(name).should('have.attr', 'href', `${link}`);
-};
 
 describe('Switch tabs in header', () => {
   const checkLinkOfButtons = (name: string, link: string) => {

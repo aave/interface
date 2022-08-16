@@ -7,7 +7,8 @@
     "avax.avalanche-v2.spec.ts",
     "usdt.avalanche-v2.spec.ts",
     "reward.avalanche-v2.spec.ts",
-    "swap.avalanche-v2.spec.ts"
+    "swap.avalanche-v2.spec.ts",
+    "critical-conditions.avalanche-v2.spec.ts"
   ],
   "viewportWidth": 1200,
   "viewportHeight": 800,
