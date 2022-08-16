@@ -60,7 +60,7 @@ yarn test:amm|main|polygon|avalanche
 You can run the ui against a forked network similar to what the tests do which allows you to play around on the ui without spending actual funds.
 To enable forks in the ui, you have to run the following commands in console.
 
-```
+```js
 localStorage.setItem('forkEnabled', 'true');
 localStorage.setItem('forkBaseChainId', 1); // the networkId you are forking
 localStorage.setItem('forkNetworkId', '3030'); // the networkId on the fork

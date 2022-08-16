@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-08-02 18:22\n"
+"PO-Revision-Date: 2022-08-12 18:22\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -270,6 +270,10 @@ msgstr "Πριν από την προμήθεια"
 #: src/components/infoModalContents/ApprovalInfoContent.tsx
 msgid "Before supplying, you need to approve its usage by the Aave protocol. You can learn more in our<0>FAQ</0>"
 msgstr "Πριν από την προμήθεια, πρέπει να εγκρίνετε τη χρήση του από το πρωτόκολλο Aave. Μπορείτε να μάθετε περισσότερα στις<0>Συχνές Ερωτήσεις</0> μας"
+
+#: src/components/AddressBlockedModal.tsx
+msgid "Blocked Address"
+msgstr ""
 
 #: pages/index.page.tsx
 #: src/components/transactions/Borrow/BorrowModal.tsx
@@ -592,6 +596,7 @@ msgstr "Απενεργοποίηση E-Mode"
 msgid "Disabling this asset as collateral affects your borrowing power and Health Factor."
 msgstr "Η απενεργοποίηση αυτού του περιουσιακού στοιχείου ως εγγύηση επηρεάζει τη δανειοληπτική σας ικανότητα και τον Συντελεστή Υγείας."
 
+#: src/components/AddressBlockedModal.tsx
 #: src/layouts/WalletWidget.tsx
 msgid "Disconnect Wallet"
 msgstr "Αποσυνδέστε το πορτοφόλι"
@@ -806,8 +811,8 @@ msgid "In E-Mode some assets are not borrowable. Exit E-Mode to get access to al
 msgstr "Στο E-Mode ορισμένα περιουσιακά στοιχεία δεν είναι δανείσιμα. Βγείτε από το E-Mode για να αποκτήσετε πρόσβαση σε όλα τα περιουσιακά στοιχεία"
 
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
-msgid "In Isolation mode, you cannot supply other assets as collateral. A global debt ceiling limits the borrowing power of the isolated asset. Read more in our <0>FAQ</0>"
-msgstr "Στη λειτουργία απομόνωσης, δεν μπορείτε να παρέχετε άλλα περιουσιακά στοιχεία ως εγγύηση. Ένα παγκόσμιο ανώτατο όριο χρέους περιορίζει τη δυνατότητα δανεισμού του απομονωμένου περιουσιακού στοιχείου. Διαβάστε περισσότερα στις <0>Συχνές Ερωτήσεις</0>"
+msgid "In Isolation mode, you cannot supply other assets as collateral. A global debt ceiling limits the borrowing power of the isolated asset. To exit isolation mode disable {0} as collateral before borrowing another asset. Read more in our <0>FAQ</0>"
+msgstr ""
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "In order to change E-Mode from asset category{0}you will need to close your position in your current category. See our <0>FAQ</0> to learn more."
@@ -1567,6 +1572,10 @@ msgstr "Υπήρξε κάποιο σφάλμα. Προσπαθήστε να αλ
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
 msgstr "Τα κεφάλαια αυτά έχουν δανειστεί και δεν είναι διαθέσιμα για ανάληψη αυτή τη στιγμή."
 
+#: src/components/AddressBlockedModal.tsx
+msgid "This address is blocked on app.aave.com because it is associated with one or more"
+msgstr ""
+
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has almost reached its borrow cap. There is only {messageValue} available to be borrowed from this market."
 msgstr "Αυτό το περιουσιακό στοιχείο έχει σχεδόν φτάσει στο όριο δανεισμού του. Υπάρχει μόνο {messageValue} διαθέσιμο για δανεισμό από αυτή την αγορά."
@@ -1997,6 +2006,10 @@ msgstr "Η μηδενική διεύθυνση δεν είναι έγκυρη"
 #: src/modules/markets/AssetsList.tsx
 msgid "assets"
 msgstr "περιουσιακά στοιχεία"
+
+#: src/components/AddressBlockedModal.tsx
+msgid "blocked activities"
+msgstr ""
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "copy the error"
