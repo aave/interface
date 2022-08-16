@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import {
   Box,
   Button,
+  IconButton,
   FormControl,
   InputBase,
   ListItemText,
@@ -9,8 +10,9 @@ import {
   Select,
   SelectChangeEvent,
   Typography,
+  useTheme,
 } from '@mui/material';
-import CancelIcon from '@mui/icons-material/Cancel';
+import { XCircleIcon } from '@heroicons/react/solid';
 import React, { ReactNode } from 'react';
 import NumberFormat, { NumberFormatProps } from 'react-number-format';
 
@@ -89,6 +91,7 @@ export const AssetInput = <T extends Asset = Asset>({
   inputTitle,
   isMaxSelected,
 }: AssetInputProps<T>) => {
+  const { palette } = useTheme();
   const handleSelect = (event: SelectChangeEvent) => {
     const newAsset = assets.find((asset) => asset.symbol === event.target.value) as T;
     onSelect && onSelect(newAsset);
@@ -148,16 +151,16 @@ export const AssetInput = <T extends Asset = Asset>({
           {!onSelect || assets.length === 1 ? (
             <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
               {value !== '' && (
-                <Button
+                <IconButton
                   size="small"
-                  sx={{ minWidth: 0, ml: '7px', p: 0, left: 8 }}
+                  sx={{ minWidth: 0, p: 0, left: 8 }}
                   onClick={() => {
                     onChange && onChange('');
                   }}
                   disabled={disabled || isMaxSelected}
                 >
-                  <CancelIcon sx={{ fontSize: 16, fill: 'silver' }} />
-                </Button>
+                  <XCircleIcon height={16} color={palette.grey[500]} />
+                </IconButton>
               )}
               <TokenIcon
                 aToken={asset.aToken}
