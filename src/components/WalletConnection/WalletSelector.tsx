@@ -62,6 +62,15 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
             alt={`browser wallet icon`}
           />
         );
+      case WalletType.UNSTOPPABLE_DOMAINS:
+        return (
+          <img
+            src={`/icons/wallets/unstoppableDomains.svg`}
+            width="24px"
+            height="24px"
+            alt={`browser wallet icon`}
+          />
+        );
       default:
         return null;
     }
@@ -146,6 +155,11 @@ export const WalletSelector = () => {
         key="walletlink_wallet"
         walletName="Coinbase"
         walletType={WalletType.WALLET_LINK}
+      />
+      <WalletRow
+        key="unstoppable_domains"
+        walletName="Unstoppable Domains"
+        walletType={WalletType.UNSTOPPABLE_DOMAINS}
       />
       <WalletRow key="torus_wallet" walletName="Torus" walletType={WalletType.TORUS} />
       <WalletRow key="frame_wallet" walletName="Frame" walletType={WalletType.FRAME} />

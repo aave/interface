@@ -24,12 +24,14 @@ import { WalletModal } from 'src/components/WalletConnection/WalletModal';
 import { useWalletModalContext } from 'src/hooks/useWalletModal';
 import useGetEns from 'src/libs/hooks/use-get-ens';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useWeb3React } from '@web3-react/core';
 
 import { Link } from '../components/primitives/Link';
 import { textCenterEllipsis } from '../helpers/text-center-ellipsis';
 import { ENABLE_TESTNET, getNetworkConfig, STAGING_ENV } from '../utils/marketsAndNetworksConfig';
 import { DrawerWrapper } from './components/DrawerWrapper';
 import { MobileCloseButton } from './components/MobileCloseButton';
+import { useUAuth } from '../hooks/useUAuth';
 
 interface WalletWidgetProps {
   open: boolean;
@@ -39,6 +41,7 @@ interface WalletWidgetProps {
 
 export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidgetProps) {
   const { disconnectWallet, currentAccount, connected, chainId, loading } = useWeb3Context();
+  const { connector } = useWeb3React();
 
   const { setWalletModalOpen } = useWalletModalContext();
 
@@ -46,11 +49,13 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
   const xsm = useMediaQuery(breakpoints.down('xsm'));
   const md = useMediaQuery(breakpoints.down('md'));
 
+  const { domain: udDomain } = useUAuth(connector);
   const { name: ensName, avatar: ensAvatar } = useGetEns(currentAccount);
-  const ensNameAbbreviated = ensName
-    ? ensName.length > 18
-      ? textCenterEllipsis(ensName, 12, 3)
-      : ensName
+  const domainName = udDomain || ensName;
+  const domainNameAbbreviated = domainName
+    ? domainName.length > 18
+      ? textCenterEllipsis(domainName, 12, 3)
+      : domainName
     : undefined;
 
   const [useBlockie, setUseBlockie] = useState(false);
@@ -125,7 +130,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
     if (hideWalletAccountText) {
       buttonContent = <Box sx={{ margin: '1px 0' }}>{accountAvatar}</Box>;
     } else {
-      buttonContent = <>{ensNameAbbreviated ?? textCenterEllipsis(currentAccount, 4, 4)}</>;
+      buttonContent = <>{domainNameAbbreviated ?? textCenterEllipsis(currentAccount, 4, 4)}</>;
     }
   } else {
     buttonContent = <Trans>Connect wallet</Trans>;
@@ -168,21 +173,21 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
             />
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            {ensNameAbbreviated && (
+            {domainNameAbbreviated && (
               <Typography variant="h4" color={{ xs: '#F1F1F3', md: 'text.primary' }}>
-                {ensNameAbbreviated}
+                {domainNameAbbreviated}
               </Typography>
             )}
 
             <Typography
-              variant={ensNameAbbreviated ? 'caption' : 'h4'}
+              variant={domainNameAbbreviated ? 'caption' : 'h4'}
               color={
-                ensNameAbbreviated
+                domainNameAbbreviated
                   ? { xs: '#A5A8B6', md: 'text.secondary' }
                   : { xs: '#F1F1F3', md: 'text.primary' }
               }
             >
-              {textCenterEllipsis(currentAccount, ensNameAbbreviated ? 12 : 7, 4)}
+              {textCenterEllipsis(currentAccount, domainNameAbbreviated ? 12 : 7, 4)}
             </Typography>
           </Box>
         </Box>

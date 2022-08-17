@@ -1,4 +1,5 @@
 import { ChainId } from '@aave/contract-helpers';
+import { UAuthConnector } from '@uauth/web3-react';
 import { AbstractConnector } from '@web3-react/abstract-connector';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
@@ -16,6 +17,7 @@ export enum WalletType {
   TORUS = 'torus',
   FRAME = 'frame',
   GNOSIS = 'gnosis',
+  UNSTOPPABLE_DOMAINS = 'unstoppable_domains',
 }
 
 const APP_NAME = 'Aave';
@@ -26,10 +28,21 @@ export const getWallet = (
   chainId: ChainId = ChainId.mainnet
 ): AbstractConnector => {
   const supportedChainIds = getSupportedChainIds();
+  const createInjectedConnector = () => new InjectedConnector({});
+  const createWalletConnectConnector = () =>
+    new WalletConnectConnector({
+      rpc: supportedChainIds.reduce((acc, network) => {
+        const config = getNetworkConfig(network);
+        acc[network] = config.privateJsonRPCUrl || config.publicJsonRPCUrl[0];
+        return acc;
+      }, {} as { [networkId: number]: string }),
+      bridge: 'https://aave.bridge.walletconnect.org',
+      qrcode: true,
+    });
 
   switch (wallet) {
     case WalletType.INJECTED:
-      return new InjectedConnector({});
+      return createInjectedConnector();
     case WalletType.WALLET_LINK:
       const networkConfig = getNetworkConfig(chainId);
       return new WalletLinkConnector({
@@ -38,15 +51,7 @@ export const getWallet = (
         url: networkConfig.privateJsonRPCUrl || networkConfig.publicJsonRPCUrl[0],
       });
     case WalletType.WALLET_CONNECT:
-      return new WalletConnectConnector({
-        rpc: supportedChainIds.reduce((acc, network) => {
-          const config = getNetworkConfig(network);
-          acc[network] = config.privateJsonRPCUrl || config.publicJsonRPCUrl[0];
-          return acc;
-        }, {} as { [networkId: number]: string }),
-        bridge: 'https://aave.bridge.walletconnect.org',
-        qrcode: true,
-      });
+      return createWalletConnectConnector();
     case WalletType.GNOSIS:
       if (window) {
         return new SafeAppConnector();
@@ -69,6 +74,17 @@ export const getWallet = (
         throw new UnsupportedChainIdError(chainId, [1]);
       }
       return new FrameConnector({ supportedChainIds: [1] });
+    }
+    case WalletType.UNSTOPPABLE_DOMAINS: {
+      return new UAuthConnector({
+        clientID: process.env.NEXT_PUBLIC_UNSTOPPABLE_DOMAINS_CLIENT_ID,
+        redirectUri: process.env.NEXT_PUBLIC_UNSTOPPABLE_DOMAINS_REDIRECT_URI,
+        scope: 'openid wallet',
+        connectors: {
+          injected: createInjectedConnector(),
+          walletconnect: createWalletConnectConnector(),
+        },
+      });
     }
     default: {
       throw new Error(`unsupported wallet`);
