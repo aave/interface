@@ -16,8 +16,10 @@ export const useAddressAllowed = (address: string): AddressAllowedResult => {
     if (screeningUrl && address) {
       try {
         const response = await fetch(`${screeningUrl}/addresses/status?address=${address}`);
-        const data: { addressAllowed: boolean } = await response.json();
-        setIsAllowed(data.addressAllowed);
+        if (response.ok) {
+          const data: { addressAllowed: boolean } = await response.json();
+          setIsAllowed(data.addressAllowed);
+        }
       } catch (e) {}
     } else {
       setIsAllowed(true);
