@@ -1,14 +1,14 @@
 {
-  "integrationFolder": "cypress/integration/0-v2-markets/3-avalanche-v2-market",
+  "integrationFolder": "cypress/e2e/0-v2-markets/3-avalanche-v2-market",
   "testFiles": [
     "**/*.*"
   ],
   "ignoreTestFiles": [
-    "avax.avalanche-v2.spec.ts",
-    "usdt.avalanche-v2.spec.ts",
-    "reward.avalanche-v2.spec.ts",
-    "swap.avalanche-v2.spec.ts",
-    "critical-conditions.avalanche-v2.spec.ts"
+    "avax.avalanche-v2.cy.ts",
+    "usdt.avalanche-v2.cy.ts",
+    "reward.avalanche-v2.cy.ts",
+    "swap.avalanche-v2.cy.ts",
+    "critical-conditions.avalanche-v2.cy.ts"
   ],
   "viewportWidth": 1200,
   "viewportHeight": 800,

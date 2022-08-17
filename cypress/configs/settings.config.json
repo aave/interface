@@ -1,5 +1,5 @@
 {
-  "integrationFolder": "cypress/integration/2-settings",
+  "integrationFolder": "cypress/e2e/2-settings",
   "testFiles": [
     "*.*"
   ],

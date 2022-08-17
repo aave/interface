@@ -1,7 +1,7 @@
 {
-  "integrationFolder": "cypress/integration/0-v2-markets/4-arc-v2-market",
+  "integrationFolder": "cypress/e2e/0-v2-markets/4-arc-v2-market",
   "testFiles": [
-    "accessibility.arc-v2.spec.ts"
+    "accessibility.arc-v2.cy.ts"
   ],
   "viewportWidth": 1200,
   "viewportHeight": 800,

@@ -1,8 +1,8 @@
 {
-  "integrationFolder": "cypress/integration/0-v2-markets/1-amm-v2-market",
+  "integrationFolder": "cypress/e2e/0-v2-markets/1-amm-v2-market",
   "testFiles": [
-    "0-assets/eth.amm-v2.spec.ts",
-    "0-assets/usdt.amm-v2.spec.ts"
+    "0-assets/eth.amm-v2.cy.ts",
+    "0-assets/usdt.amm-v2.cy.ts"
   ],
   "viewportWidth": 1200,
   "viewportHeight": 800,

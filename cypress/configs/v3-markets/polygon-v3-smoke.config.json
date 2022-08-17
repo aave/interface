@@ -1,8 +1,8 @@
 {
-  "integrationFolder": "cypress/integration/1-v3-markets/3-polygon-v3-market",
+  "integrationFolder": "cypress/e2e/1-v3-markets/3-polygon-v3-market",
   "testFiles": [
-    "0-assets/matic.polygon-v3.spec.ts",
-    "0-assets/eurs.polygon-v3.spec.ts"
+    "0-assets/matic.polygon-v3.cy.ts",
+    "0-assets/eurs.polygon-v3.cy.ts"
   ],
   "viewportWidth": 1200,
   "viewportHeight": 800,
