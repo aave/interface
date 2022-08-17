@@ -22,6 +22,7 @@ export interface SwapActionProps extends BoxProps {
   priceRoute: OptimalRate | null;
   isMaxSelected: boolean;
   useFlashLoan: boolean;
+  maxSlippage: number;
 }
 
 export const SwapActions = ({
@@ -34,6 +35,7 @@ export const SwapActions = ({
   priceRoute,
   isMaxSelected,
   useFlashLoan,
+  maxSlippage,
   ...props
 }: SwapActionProps) => {
   const { lendingPool } = useTxBuilderContext();
@@ -51,6 +53,7 @@ export const SwapActions = ({
           user: currentAccount,
           route: priceRoute as OptimalRate,
           chainId: currentNetworkConfig.underlyingChainId || chainId,
+          maxSlippage,
         });
         return lendingPool.swapCollateral({
           fromAsset: poolReserve.underlyingAsset,

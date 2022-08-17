@@ -6,7 +6,6 @@ import { CircleIcon } from 'src/components/CircleIcon';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ExternalLinkIcon } from '@heroicons/react/outline';
-import { Link } from 'src/components/primitives/Link';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 interface TokenLinkDropdownProps {
@@ -61,61 +60,57 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
           </Typography>
         </Box>
 
-        <MenuItem key="underlying" value="underlying">
-          <Link
-            href={currentNetworkConfig.explorerLinkBuilder({
-              address: poolReserve?.underlyingAsset,
-            })}
-            sx={{ display: 'flex' }}
-          >
-            <TokenIcon symbol={poolReserve.iconSymbol} sx={{ fontSize: '20px' }} />
-            <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
-              {poolReserve.symbol}
-            </Typography>
-          </Link>
+        <MenuItem
+          component="a"
+          href={currentNetworkConfig.explorerLinkBuilder({
+            address: poolReserve?.underlyingAsset,
+          })}
+          target="_blank"
+        >
+          <TokenIcon symbol={poolReserve.iconSymbol} sx={{ fontSize: '20px' }} />
+          <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
+            {poolReserve.symbol}
+          </Typography>
         </MenuItem>
 
-        <MenuItem key="aToken" value="aToken">
-          <Link
-            href={currentNetworkConfig.explorerLinkBuilder({
-              address: poolReserve?.aTokenAddress,
-            })}
-            sx={{ display: 'flex' }}
-          >
-            <TokenIcon symbol={poolReserve.iconSymbol} aToken={true} sx={{ fontSize: '20px' }} />
-            <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
-              {'a' + poolReserve.symbol}
-            </Typography>
-          </Link>
+        <MenuItem
+          component="a"
+          href={currentNetworkConfig.explorerLinkBuilder({
+            address: poolReserve?.aTokenAddress,
+          })}
+          target="_blank"
+        >
+          <TokenIcon symbol={poolReserve.iconSymbol} aToken={true} sx={{ fontSize: '20px' }} />
+          <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
+            {'a' + poolReserve.symbol}
+          </Typography>
         </MenuItem>
         {poolReserve.borrowingEnabled && (
-          <MenuItem key="varDebt" value="varDebt">
-            <Link
-              href={currentNetworkConfig.explorerLinkBuilder({
-                address: poolReserve?.variableDebtTokenAddress,
-              })}
-              sx={{ display: 'flex' }}
-            >
-              <TokenIcon symbol="default" sx={{ fontSize: '20px' }} />
-              <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
-                {'Variable debt ' + poolReserve.symbol}
-              </Typography>
-            </Link>
+          <MenuItem
+            component="a"
+            href={currentNetworkConfig.explorerLinkBuilder({
+              address: poolReserve?.variableDebtTokenAddress,
+            })}
+            target="_blank"
+          >
+            <TokenIcon symbol="default" sx={{ fontSize: '20px' }} />
+            <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
+              {'Variable debt ' + poolReserve.symbol}
+            </Typography>
           </MenuItem>
         )}
         {poolReserve.stableBorrowRateEnabled && (
-          <MenuItem key="stableDebt" value="stableDebt">
-            <Link
-              href={currentNetworkConfig.explorerLinkBuilder({
-                address: poolReserve?.stableDebtTokenAddress,
-              })}
-              sx={{ display: 'flex' }}
-            >
-              <TokenIcon symbol="default" sx={{ fontSize: '20px' }} />
-              <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
-                {'Stable debt ' + poolReserve.symbol}
-              </Typography>
-            </Link>
+          <MenuItem
+            component="a"
+            href={currentNetworkConfig.explorerLinkBuilder({
+              address: poolReserve?.stableDebtTokenAddress,
+            })}
+            target="_blank"
+          >
+            <TokenIcon symbol="default" sx={{ fontSize: '20px' }} />
+            <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
+              {'Stable debt ' + poolReserve.symbol}
+            </Typography>
           </MenuItem>
         )}
       </Menu>

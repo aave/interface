@@ -1,3 +1,7 @@
+/**
+ * Maps onchain symbols to different symbols.
+ * This is useful when you want to explode symbols via _ to render multiple symbols or when the symbol has a bridge prefix or suffix.
+ */
 export const SYMBOL_MAP: { [key: string]: string } = {
   BPTBALWETH: 'BPT_BAL_WETH',
   BPTWBTCWETH: 'BPT_WBTC_WETH',
@@ -15,9 +19,31 @@ export const SYMBOL_MAP: { [key: string]: string } = {
   UNIWBTCUSDC: 'UNI_WBTC_USDC',
   UNIWBTCWETH: 'UNI_WBTC_WETH',
   UNIYFIWETH: 'UNI_YFI_WETH',
+  fUSDT: 'USDT',
+  // harmony
+  '1DAI': 'DAI',
+  '1USDC': 'USDC',
+  '1USDT': 'USDT',
+  '1AAVE': 'AAVE',
+  '1ETH': 'ETH',
+  '1WBTC': 'WBTC',
+  // avalanche
+  'DAI.e': 'DAI',
+  'LINK.e': 'LINK',
+  'WBTC.e': 'WBTC',
+  'WETH.e': 'WETH',
+  'AAVE.e': 'AAVE',
+  'USDT.e': 'USDT',
+  'USDC.e': 'USDC',
+  // polygon
+  miMATIC: 'MAI',
 };
 
-export const NAME_MAP: { [key: string]: string } = {
+/**
+ * Maps (potentially altered via SYMBOL_MAP) symbols to a name
+ * With the next version of uipooldataprovider https://github.com/aave/aave-v3-periphery/pull/89 this list can be greatly reduced/removed.
+ */
+export const SYMBOL_NAME_MAP: { [key: string]: string } = {
   AMPL: 'Ampleforth',
   AVAX: 'Avalanche',
   BAL: 'Balancer',
@@ -35,6 +61,7 @@ export const NAME_MAP: { [key: string]: string } = {
   GUSD: 'Gemini Dollar',
   KNC: 'Kyber Legacy',
   LINK: 'ChainLink',
+  MAI: 'MIMATIC',
   MANA: 'Decentraland',
   MKR: 'Maker',
   PAX: 'Paxos Standard',
@@ -58,6 +85,7 @@ export const NAME_MAP: { [key: string]: string } = {
   WONE: 'Wrapped ONE',
   YFI: 'yearn.finance',
   ZRX: '0x Coin',
+  '1INCH': '1inch Network',
 };
 
 export function fetchIconSymbolAndName({
@@ -83,35 +111,11 @@ export function fetchIconSymbolAndName({
   ) {
     return { iconSymbol: 'UST', name: 'UST (Wormhole)', symbol };
   }
-  // avalanche symbols have .e extensions
-  if (/\.e$/.test(symbol)) {
-    const rawSymbol = symbol.replace('.e', '');
-    return {
-      iconSymbol: rawSymbol || symbol,
-      name: NAME_MAP[rawSymbol.toUpperCase()] || rawSymbol,
-      symbol,
-    };
-  }
-  if (/^1/.test(symbol)) {
-    const rawSymbol = symbol.replace('1', '');
-    return {
-      iconSymbol: rawSymbol || symbol,
-      name: NAME_MAP[rawSymbol.toUpperCase()] || rawSymbol,
-      symbol,
-    };
-  }
-  //for fantom usdt => fUSDT
-  if (/fUSDT/.test(symbol)) {
-    const rawSymbol = symbol.replace('f', '');
-    return {
-      iconSymbol: rawSymbol || symbol,
-      name: NAME_MAP[rawSymbol.toUpperCase()] || rawSymbol,
-      symbol,
-    };
-  }
+
+  const unifiedSymbol = SYMBOL_MAP[symbol] || symbol;
   return {
-    iconSymbol: SYMBOL_MAP[symbol] || symbol,
-    name: NAME_MAP[symbol.toUpperCase()] || symbol,
+    iconSymbol: unifiedSymbol,
+    name: SYMBOL_NAME_MAP[unifiedSymbol.toUpperCase()] || unifiedSymbol,
     symbol,
   };
 }

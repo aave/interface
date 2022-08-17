@@ -52,17 +52,18 @@ const averageBlockTime = 14;
 
 export async function enhanceProposalWithTimes(proposal: Omit<Proposal, 'values'>) {
   const provider = getProvider(ChainId.mainnet);
-  const { timestamp: startTimestamp } = await provider.getBlock(proposal.startBlock);
-  const { timestamp: creationTimestamp } = await provider.getBlock(proposal.proposalCreated);
+  const [{ timestamp: startTimestamp }, { timestamp: creationTimestamp }] = await Promise.all([
+    provider.getBlock(proposal.startBlock),
+    provider.getBlock(proposal.proposalCreated),
+  ]);
   if (proposal.state === ProposalState.Active) {
-    const currentBlockNumber = await provider.getBlockNumber();
-    const currentBlock = await provider.getBlock(currentBlockNumber);
+    const currentBlock = await provider.getBlock('latest');
     return {
       ...proposal,
       startTimestamp,
       creationTimestamp,
       expirationTimestamp:
-        currentBlock.timestamp + (proposal.endBlock - currentBlockNumber) * averageBlockTime,
+        currentBlock.timestamp + (proposal.endBlock - currentBlock.number) * averageBlockTime,
     };
   }
   const expirationTimestamp =

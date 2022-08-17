@@ -35,7 +35,7 @@ export const getMarketInfoById = (marketId: CustomMarket) => {
 };
 
 const getMarketHelpData = (marketName: string) => {
-  const testChains = ['Kovan', 'Rinkeby', 'Ropsten', 'Mumbai', 'Fuji', 'Testnet'];
+  const testChains = ['Görli', 'Ropsten', 'Mumbai', 'Fuji', 'Testnet', 'Kovan', 'Rinkeby'];
   const arrayName = marketName.split(' ');
   const testChainName = arrayName.filter((el) => testChains.indexOf(el) > -1);
   const marketTitle = arrayName.filter((el) => !testChainName.includes(el)).join(' ');
@@ -224,6 +224,7 @@ export const MarketSwitcher = () => {
           >
             <ToggleButton
               value={SelectedMarketVersion.V3}
+              data-cy={`markets_switch_button_v3`}
               sx={{
                 backgroundColor: theme.palette.mode === 'dark' ? '#EAEBEF' : '#383D51',
                 '&.Mui-selected, &.Mui-selected:hover': {
@@ -252,6 +253,7 @@ export const MarketSwitcher = () => {
             </ToggleButton>
             <ToggleButton
               value={SelectedMarketVersion.V2}
+              data-cy={`markets_switch_button_v2`}
               sx={{
                 backgroundColor: theme.palette.mode === 'dark' ? '#EAEBEF' : '#383D51',
                 '&.Mui-selected, &.Mui-selected:hover': {
