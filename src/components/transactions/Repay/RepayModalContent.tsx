@@ -162,7 +162,7 @@ export const RepayModalContent = ({
         balance: maxBalance.toString(10),
       });
     }
-    setAssets(repayTokens.sort((a, b) => Number(a.balance) - Number(b.balance)));
+    setAssets(repayTokens);
     setTokenToRepayWith(repayTokens[0]);
   }, []);
 
