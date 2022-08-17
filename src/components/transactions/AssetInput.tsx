@@ -156,7 +156,7 @@ export const AssetInput = <T extends Asset = Asset>({
                   onClick={() => {
                     onChange && onChange('');
                   }}
-                  disabled={disabled || isMaxSelected}
+                  disabled={disabled}
                 >
                   <XCircleIcon height={16} color={palette.grey[500]} />
                 </IconButton>
