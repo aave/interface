@@ -30,8 +30,7 @@ export const DebtCeilingWarning = ({ debtCeiling, icon = true }: DebtCeilingWarn
 
   return (
     <Warning severity={severity} icon={icon}>
-      {renderText()}
-      <br />
+      {renderText()}{' '}
       <Link
         href="https://docs.aave.com/faq/aave-v3-features#how-does-isolation-mode-affect-my-borrowing-power"
         underline="always"

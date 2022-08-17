@@ -29,9 +29,8 @@ export const BorrowCapTooltip = ({
           insolvency.
         </Trans>
       ) : (
-        <Trans>Borrowing is in good health</Trans>
-      )}
-      <br />
+        <Trans>Borrow cap is in good health.</Trans>
+      )}{' '}
       <Link href="https://docs.aave.com/developers/whats-new/supply-borrow-caps" underline="always">
         <Trans>Learn more</Trans>
       </Link>

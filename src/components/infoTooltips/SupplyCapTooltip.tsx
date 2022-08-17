@@ -29,9 +29,8 @@ export const SupplyCapTooltip = ({
           to help manage risks involved.
         </Trans>
       ) : (
-        <Trans>Supply is in good health</Trans>
-      )}
-      <br />
+        <Trans>Supply cap is in good health.</Trans>
+      )}{' '}
       <Link href="https://docs.aave.com/developers/whats-new/supply-borrow-caps" underline="always">
         <Trans>Learn more</Trans>
       </Link>

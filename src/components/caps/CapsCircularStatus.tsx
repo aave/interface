@@ -43,7 +43,7 @@ export const CapsCircularStatus = ({ value }: CapsCircularStatusProps) => {
           top: 1.25,
         }}
         size={77.5}
-        thickness={2.5}
+        thickness={2}
         value={100}
       />
       <CircularProgress
@@ -56,7 +56,7 @@ export const CapsCircularStatus = ({ value }: CapsCircularStatusProps) => {
           },
         }}
         size={80}
-        thickness={4}
+        thickness={3}
         // We show at minimum, 2% color to represent small values
         value={value <= 2 ? 2 : value}
       />

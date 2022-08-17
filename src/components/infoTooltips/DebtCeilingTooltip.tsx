@@ -31,9 +31,8 @@ export const DebtCeilingTooltip = ({
           Debt ceiling limits the amount possible to borrow against this asset by protocol users.
         </Trans>
       ) : (
-        <Trans>Debt ceiling is in good health</Trans>
-      )}
-      <br />
+        <Trans>Debt ceiling is in good health.</Trans>
+      )}{' '}
       <Link
         href="https://docs.aave.com/faq/aave-v3-features#how-does-isolation-mode-affect-my-borrowing-power"
         underline="always"
