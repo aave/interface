@@ -310,6 +310,10 @@ msgstr "Borrow cap"
 msgid "Borrow cap is exceeded"
 msgstr "Borrow cap is exceeded"
 
+#: src/components/infoTooltips/BorrowCapTooltip.tsx
+msgid "Borrow cap is in good health."
+msgstr "Borrow cap is in good health."
+
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Borrow power used"
 msgstr "Borrow power used"
@@ -325,10 +329,6 @@ msgstr "Borrowed"
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "Borrowing is currently unavailable for {0}."
 msgstr "Borrowing is currently unavailable for {0}."
-
-#: src/components/infoTooltips/BorrowCapTooltip.tsx
-msgid "Borrowing is in good health"
-msgstr "Borrowing is in good health"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Borrowing is not enabled"
@@ -544,8 +544,8 @@ msgid "Debt ceiling is exceeded"
 msgstr "Debt ceiling is exceeded"
 
 #: src/components/infoTooltips/DebtCeilingTooltip.tsx
-msgid "Debt ceiling is in good health"
-msgstr "Debt ceiling is in good health"
+msgid "Debt ceiling is in good health."
+msgstr "Debt ceiling is in good health."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Debt ceiling is not zero"
@@ -1465,13 +1465,13 @@ msgstr "Supply balance"
 msgid "Supply cap is exceeded"
 msgstr "Supply cap is exceeded"
 
+#: src/components/infoTooltips/SupplyCapTooltip.tsx
+msgid "Supply cap is in good health."
+msgstr "Supply cap is in good health."
+
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Supply cap on target reserve reached. Try lowering the amount."
 msgstr "Supply cap on target reserve reached. Try lowering the amount."
-
-#: src/components/infoTooltips/SupplyCapTooltip.tsx
-msgid "Supply is in good health"
-msgstr "Supply is in good health"
 
 #: src/components/transactions/Supply/SupplyActions.tsx
 msgid "Supply {symbol}"
