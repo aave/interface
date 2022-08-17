@@ -152,7 +152,6 @@ export const AssetInput = <T extends Asset = Asset>({
             <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
               {value !== '' && (
                 <IconButton
-                  size="small"
                   sx={{ minWidth: 0, p: 0, left: 8 }}
                   onClick={() => {
                     onChange && onChange('');
