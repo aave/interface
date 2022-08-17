@@ -498,18 +498,22 @@ export const emodeActivating = (
 ) => {
   return describe(`${turnOn ? 'Turn on E-mode' : 'Turn off E-mode'}`, () => {
     skipSetup({ skip, updateSkipStatus });
-    it('Open E-mode switcher modal', () => {
+    it(`Open e-mode switcher`, () => {
       doSwitchToDashboardBorrowView();
       cy.get('[data-cy=emode-open]').click();
-      if (turnOn) cy.get(`[data-cy="emode-enable"]`).click();
-      else cy.get(`[data-cy="emode-disable"]`).click();
-      if (!turnOn && multipleEmodes) {
-        // cy.get('[data-cy=EmodeSelect]').click();
-        // cy.get(`[data-cy="disableEmode"]`).click();
-        cy.get(`[data-cy="disableCheckboxEmode"]`).click();
-      }
     });
-    it(`${turnOn ? 'Turn on E-mode' : 'Turn off E-mode'}`, () => {
+    if (turnOn) {
+      it(`Turn on e-mode`, () => {
+        doSwitchToDashboardBorrowView();
+        cy.get(`[data-cy="emode-enable"]`).click();
+      });
+    } else {
+      it(`Turn off e-mode`, () => {
+        doSwitchToDashboardBorrowView();
+        cy.get(`[data-cy="emode-disable"]`).click();
+      });
+    }
+    it(`Sign ${turnOn ? 'Turn on E-mode' : 'Turn off E-mode'}`, () => {
       const actionName = turnOn ? 'Enable E-Mode' : 'Disable E-Mode';
       doConfirm({
         hasApproval: true,
