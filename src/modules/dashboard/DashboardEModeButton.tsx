@@ -1,9 +1,8 @@
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/outline';
-import { LightningBoltIcon } from '@heroicons/react/solid';
+import { LightningBoltIcon, CogIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import Menu from '@mui/material/Menu';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import LightningBoltGradient from '/public/lightningBoltGradient.svg';
 
@@ -11,21 +10,27 @@ import { Link } from '../../components/primitives/Link';
 import { Row } from '../../components/primitives/Row';
 import { TypographyGradient } from '../../components/primitives/TypographyGradient';
 import { getEmodeMessage } from '../../components/transactions/Emode/EmodeNaming';
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useModalContext } from 'src/hooks/useModal';
+import { EmodeModalType } from 'src/components/transactions/Emode/EmodeModalContent';
 
 interface DashboardEModeButtonProps {
   userEmodeCategoryId: number;
-  onClick: () => void;
   baseAssetSymbol: string;
+  reserves: ComputedReserveData[];
 }
 
 export const DashboardEModeButton = ({
-  onClick,
   userEmodeCategoryId,
   baseAssetSymbol,
+  reserves,
 }: DashboardEModeButtonProps) => {
+  const { openEmode } = useModalContext();
   const iconButtonSize = 12;
 
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
+  const [reservesLength, setReservesLength] = useState(0);
+  const [eModes, setEmodes] = useState<number[]>([]);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setAnchorEl(event.currentTarget);
@@ -40,6 +45,20 @@ export const DashboardEModeButton = ({
     <Trans>{getEmodeMessage(userEmodeCategoryId, baseAssetSymbol)}</Trans>
   );
 
+  useEffect(() => {
+    if (reserves.length !== reservesLength) {
+      console.log('UPDATING');
+      const eModes: number[] = [];
+      reserves.forEach((reserve: ComputedReserveData) => {
+        if (eModes.indexOf(reserve.eModeCategoryId) === -1) {
+          eModes.push(reserve.eModeCategoryId);
+        }
+      });
+      setEmodes(eModes);
+      setReservesLength(reserves.length);
+    }
+  }, [reservesLength, setReservesLength, reserves]);
+
   return (
     <Box
       sx={{ display: 'inline-flex', alignItems: 'center' }}
@@ -47,7 +66,7 @@ export const DashboardEModeButton = ({
         e.stopPropagation();
       }}
     >
-      <Typography mr={1} color="text.secondary">
+      <Typography mr={1} variant="description" color="text.secondary">
         <Trans>E-Mode</Trans>
       </Typography>
 
@@ -62,7 +81,6 @@ export const DashboardEModeButton = ({
         sx={(theme) => ({
           ml: 1,
           borderRadius: '4px',
-          color: open ? 'text.secondary' : 'text.muted',
           p: 0,
           '&:after': {
             content: "''",
@@ -82,7 +100,7 @@ export const DashboardEModeButton = ({
             alignItems: 'center',
             position: 'relative',
             zIndex: 1,
-            bgcolor: 'background.paper',
+            bgcolor: isEModeDisabled ? (open ? '#EAEBEF' : '#F7F7F9') : 'background.paper',
             px: 1.5,
             borderRadius: '4px',
           }}
@@ -90,7 +108,7 @@ export const DashboardEModeButton = ({
           <SvgIcon
             sx={{
               fontSize: iconButtonSize,
-              mr: 1,
+              mr: 1.5,
               color: isEModeDisabled ? 'text.muted' : 'text.primary',
             }}
           >
@@ -98,7 +116,9 @@ export const DashboardEModeButton = ({
           </SvgIcon>
 
           {isEModeDisabled ? (
-            <EModeLabelMessage />
+            <Typography variant="buttonS" color="text.secondary">
+              <EModeLabelMessage />
+            </Typography>
           ) : (
             <TypographyGradient variant="buttonS">
               <EModeLabelMessage />
@@ -108,11 +128,11 @@ export const DashboardEModeButton = ({
           <SvgIcon
             sx={{
               fontSize: iconButtonSize,
-              ml: 1,
-              color: open ? 'primary.main' : 'text.muted',
+              ml: 1.5,
+              color: 'primary.light',
             }}
           >
-            {open ? <ChevronUpIcon /> : <ChevronDownIcon />}
+            <CogIcon />
           </SvgIcon>
         </Box>
       </Button>
@@ -195,16 +215,46 @@ export const DashboardEModeButton = ({
             </Trans>
           </Typography>
 
-          <Button
-            variant={isEModeDisabled ? 'gradient' : 'outlined'}
-            onClick={() => {
-              onClick();
-              handleClose();
-            }}
-            data-cy={`${isEModeDisabled ? 'emode-enable' : 'emode-disable'}`}
-          >
-            {isEModeDisabled ? <Trans>Enable E-Mode</Trans> : <Trans>Modify E-Mode</Trans>}
-          </Button>
+          {isEModeDisabled ? (
+            <Button
+              sx={{ width: '100%' }}
+              variant={'gradient'}
+              onClick={() => {
+                openEmode(EmodeModalType.ENABLE);
+                handleClose();
+              }}
+              data-cy={'emode-enable'}
+            >
+              <Trans>Enable E-Mode</Trans>
+            </Button>
+          ) : (
+            <>
+              {eModes.length > 2 && (
+                <Button
+                  sx={{ width: '100%', mb: '6px' }}
+                  variant={'outlined'}
+                  onClick={() => {
+                    openEmode(EmodeModalType.SWITCH);
+                    handleClose();
+                  }}
+                  data-cy={'emode-switch'}
+                >
+                  <Trans>Switch E-Mode category</Trans>
+                </Button>
+              )}
+              <Button
+                sx={{ width: '100%' }}
+                variant={'outlined'}
+                onClick={() => {
+                  openEmode(EmodeModalType.DISABLE);
+                  handleClose();
+                }}
+                data-cy={'emode-disable'}
+              >
+                <Trans>Disable E-Mode</Trans>
+              </Button>
+            </>
+          )}
         </Box>
       </Menu>
     </Box>
