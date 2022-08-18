@@ -10,7 +10,6 @@ import {
   Select,
   SelectChangeEvent,
   Typography,
-  useTheme,
 } from '@mui/material';
 import { XCircleIcon } from '@heroicons/react/solid';
 import React, { ReactNode } from 'react';
@@ -91,7 +90,6 @@ export const AssetInput = <T extends Asset = Asset>({
   inputTitle,
   isMaxSelected,
 }: AssetInputProps<T>) => {
-  const { palette } = useTheme();
   const handleSelect = (event: SelectChangeEvent) => {
     const newAsset = assets.find((asset) => asset.symbol === event.target.value) as T;
     onSelect && onSelect(newAsset);
@@ -142,6 +140,9 @@ export const AssetInput = <T extends Asset = Asset>({
                 lineHeight: '28,01px',
                 padding: 0,
                 height: '28px',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
               },
             }}
             // eslint-disable-next-line
