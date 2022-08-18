@@ -24,6 +24,7 @@ export const AssetsListItem = ({ ...reserve }: ComputedReserveData) => {
       onClick={() => router.push(ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket))}
       sx={{ cursor: 'pointer' }}
       button
+      data-cy={`marketListItemListItem_${reserve.symbol.toUpperCase()}`}
     >
       <ListColumn isRow maxWidth={280}>
         <TokenIcon symbol={reserve.iconSymbol} fontSize="large" />
