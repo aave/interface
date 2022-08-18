@@ -4,16 +4,15 @@ import { SupplyCapWarning } from 'src/components/transactions/Warnings/SupplyCap
 import { BorrowCapWarning } from 'src/components/transactions/Warnings/BorrowCapWarning';
 import { DebtCeilingWarning } from 'src/components/transactions/Warnings/DebtCeilingWarning';
 import { ComputedReserveData } from './app-data-provider/useAppDataProvider';
-import { SupplyCapTooltip } from 'src/components/infoTooltips/SupplyCapTooltip';
-import { BorrowCapTooltip } from 'src/components/infoTooltips/BorrowCapTooltip';
-import { DebtCeilingTooltip } from 'src/components/infoTooltips/DebtCeilingTooltip';
+import { SupplyCapMaxedTooltip } from 'src/components/infoTooltips/SupplyCapMaxedTooltip';
+import { BorrowCapMaxedTooltip } from 'src/components/infoTooltips/BorrowCapMaxedTooltip';
+import { DebtCeilingMaxedTooltip } from 'src/components/infoTooltips/DebtCeilingMaxedTooltip';
 
 type WarningDisplayProps = {
   supplyCap?: AssetCapData;
   borrowCap?: AssetCapData;
   debtCeiling?: AssetCapData;
   icon?: boolean;
-  useDefaultTooltip?: boolean;
 };
 
 export type AssetCapData = {
@@ -23,7 +22,7 @@ export type AssetCapData = {
 
 export type AssetCapHookData = AssetCapData & {
   determineWarningDisplay: (props: WarningDisplayProps) => JSX.Element | null;
-  determineTooltipDisplay: (props: WarningDisplayProps) => JSX.Element | null;
+  displayMaxedTooltip: (props: WarningDisplayProps) => JSX.Element | null;
 };
 
 export type AssetCapUsageData = {
@@ -88,28 +87,24 @@ export const AssetCapsProvider = ({
     const assetCapUsageData: AssetCapUsageData = {
       reserve: asset,
       supplyCap: {
-        percentUsed: supplyCapUsage,
-        isMaxed: supplyCapReached,
-        // percentUsed: 99.9,
-        // isMaxed: false,
+        // percentUsed: supplyCapUsage,
+        // isMaxed: supplyCapReached,
+        percentUsed: 99.9,
+        isMaxed: true,
         determineWarningDisplay: ({ supplyCap, icon }) =>
           supplyCap ? <SupplyCapWarning supplyCap={supplyCap} icon={icon} /> : null,
-        determineTooltipDisplay: ({ supplyCap, useDefaultTooltip }) =>
-          supplyCap ? (
-            <SupplyCapTooltip supplyCap={supplyCap} useDefaultTooltip={useDefaultTooltip} />
-          ) : null,
+        displayMaxedTooltip: ({ supplyCap }) =>
+          supplyCap ? <SupplyCapMaxedTooltip supplyCap={supplyCap} /> : null,
       },
       borrowCap: {
-        percentUsed: borrowCapUsage,
-        isMaxed: borrowCapReached,
-        // percentUsed: 98.5,
-        // isMaxed: false,
+        // percentUsed: borrowCapUsage,
+        // isMaxed: borrowCapReached,
+        percentUsed: 98.5,
+        isMaxed: false,
         determineWarningDisplay: ({ borrowCap, icon }) =>
           borrowCap ? <BorrowCapWarning borrowCap={borrowCap} icon={icon} /> : null,
-        determineTooltipDisplay: ({ borrowCap, useDefaultTooltip }) =>
-          borrowCap ? (
-            <BorrowCapTooltip borrowCap={borrowCap} useDefaultTooltip={useDefaultTooltip} />
-          ) : null,
+        displayMaxedTooltip: ({ borrowCap }) =>
+          borrowCap ? <BorrowCapMaxedTooltip borrowCap={borrowCap} /> : null,
       },
       debtCeiling: {
         percentUsed: debtCeilingUsage,
@@ -118,10 +113,8 @@ export const AssetCapsProvider = ({
         // isMaxed: true,
         determineWarningDisplay: ({ debtCeiling, icon }) =>
           debtCeiling ? <DebtCeilingWarning debtCeiling={debtCeiling} icon={icon} /> : null,
-        determineTooltipDisplay: ({ debtCeiling, useDefaultTooltip }) =>
-          debtCeiling ? (
-            <DebtCeilingTooltip debtCeiling={debtCeiling} useDefaultTooltip={useDefaultTooltip} />
-          ) : null,
+        displayMaxedTooltip: ({ debtCeiling }) =>
+          debtCeiling ? <DebtCeilingMaxedTooltip debtCeiling={debtCeiling} /> : null,
       },
     };
 

@@ -7,6 +7,8 @@ import { FormattedNumber } from '../primitives/FormattedNumber';
 import type { Theme } from '@mui/material';
 import { Trans } from '@lingui/macro';
 import { AssetCapHookData } from 'src/hooks/useAssetCaps';
+import { TextWithTooltip } from '../TextWithTooltip';
+import { Link } from '../primitives/Link';
 
 type DebtCeilingTooltipProps = {
   debt: string;
@@ -50,7 +52,20 @@ export const DebtCeilingStatus = ({
           <Typography color="text.secondary" component="span">
             <Trans>Debt Ceiling</Trans>
           </Typography>
-          {usageData.determineTooltipDisplay({ debtCeiling: usageData, useDefaultTooltip: true })}
+          <TextWithTooltip>
+            <>
+              <Trans>
+                Debt ceiling limits the amount possible to borrow against this asset by protocol
+                users.
+              </Trans>{' '}
+              <Link
+                href="https://docs.aave.com/faq/aave-v3-features#how-does-isolation-mode-affect-my-borrowing-power"
+                underline="always"
+              >
+                <Trans>Learn more</Trans>
+              </Link>
+            </>
+          </TextWithTooltip>
         </Box>
         <Box>
           <FormattedNumber

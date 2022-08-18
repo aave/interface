@@ -36,6 +36,7 @@ import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { DebtCeilingStatus } from 'src/components/caps/DebtCeilingStatus';
 import { ReserveFactorOverview } from 'src/modules/reserve-overview/ReserveFactorOverview';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
+import { TextWithTooltip } from 'src/components/TextWithTooltip';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
   <Box
@@ -145,10 +146,6 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
   const showSupplyCapStatus = reserve.supplyCap && reserve.supplyCap !== '0';
   const showBorrowCapStatus = reserve.borrowCap && reserve.borrowCap !== '0';
-  const renderSupplyCapTooltip = () =>
-    supplyCap.determineTooltipDisplay({ supplyCap, useDefaultTooltip: true });
-  const renderBorrowCapTooltip = () =>
-    borrowCap.determineTooltipDisplay({ borrowCap, useDefaultTooltip: true });
 
   return (
     <Paper sx={{ py: '16px', px: '24px' }}>
@@ -204,7 +201,20 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                   title={
                     <Box display="flex" alignItems="center">
                       <Trans>Total supplied</Trans>
-                      {renderSupplyCapTooltip()}
+                      <TextWithTooltip>
+                        <>
+                          <Trans>
+                            Asset supply is limited to a certain amount to reduce protocol exposure
+                            to the asset and to help manage risks involved.
+                          </Trans>{' '}
+                          <Link
+                            href="https://docs.aave.com/developers/whats-new/supply-borrow-caps"
+                            underline="always"
+                          >
+                            <Trans>Learn more</Trans>
+                          </Link>
+                        </>
+                      </TextWithTooltip>
                     </Box>
                   }
                 >
@@ -399,14 +409,27 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                 }}
               >
                 {showBorrowCapStatus ? (
-                  // With borrow cap
+                  // With a borrow cap
                   <>
                     <CapsCircularStatus value={borrowCap.percentUsed} />
                     <PanelItem
                       title={
                         <Box display="flex" alignItems="center">
                           <Trans>Total borrowed</Trans>
-                          {renderBorrowCapTooltip()}
+                          <TextWithTooltip>
+                            <>
+                              <Trans>
+                                Borrowing of this asset is limited to a certain amount to minimize
+                                liquidity pool insolvency.
+                              </Trans>{' '}
+                              <Link
+                                href="https://docs.aave.com/developers/whats-new/supply-borrow-caps"
+                                underline="always"
+                              >
+                                <Trans>Learn more</Trans>
+                              </Link>
+                            </>
+                          </TextWithTooltip>
                         </Box>
                       }
                     >
@@ -437,7 +460,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                     </PanelItem>
                   </>
                 ) : (
-                  // Without borrow cap
+                  // Without a borrow cap
                   <PanelItem
                     title={
                       <Box display="flex" alignItems="center">
