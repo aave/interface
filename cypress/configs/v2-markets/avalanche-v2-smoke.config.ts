@@ -26,7 +26,7 @@ export default defineConfig({
   viewportHeight: 800,
   defaultCommandTimeout: 40000,
   pageLoadTimeout: 120000,
-  video: true,
+  video: false,
   watchForFileChanges: false,
   scrollBehavior: 'center',
   retries: {
