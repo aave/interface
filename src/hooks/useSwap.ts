@@ -88,7 +88,6 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }
       };
 
       if (max) {
-        options.excludeDEXS = 'Balanacer';
         options.excludeContractMethods = [excludedMethod];
       }
 
