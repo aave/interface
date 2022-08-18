@@ -187,7 +187,6 @@ export function CollateralRepayModalContent({
       />
     );
 
-  console.log('repay all debt: ', isMaxSelected);
   return (
     <>
       <AssetInput
