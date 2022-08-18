@@ -1,25 +1,6 @@
-// {
-//   "integrationFolder": "cypress/e2e/0-v2-markets/3-avalanche-v2-market",
-//   "testFiles": [
-//     "0-assets/avax.avalanche-v2.cy.ts",
-//     "0-assets/usdt.avalanche-v2.cy.ts",
-//     "reward.avalanche-v2.cy.ts"
-//   ],
-//   "viewportWidth": 1200,
-//   "viewportHeight": 800,
-//   "defaultCommandTimeout": 40000,
-//   "pageLoadTimeout": 120000,
-//   "video": false,
-//   "scrollBehavior": "center",
-//   "retries": {
-//     "runMode": 1,
-//     "openMode": 0
-//   }
-// }
-
 import { defineConfig } from 'cypress';
 
-const folder = `../cypress/e2e/0-v2-markets/3-avalanche-v2-market/`;
+const folder = `cypress/e2e/0-v2-markets/3-avalanche-v2-market/`;
 
 export default defineConfig({
   viewportWidth: 1200,
@@ -45,3 +26,17 @@ export default defineConfig({
     specPattern: [folder + '0-assets/avax.avalanche-v2.cy.ts'],
   },
 });
+
+//{
+//  "viewportWidth": 1200,
+//  "viewportHeight": 800,
+//  "defaultCommandTimeout": 40000,
+//  "pageLoadTimeout": 120000,
+//  "video": false,
+//  "watchForFileChanges": false,
+//  "scrollBehavior": "center",
+//  "retries": {
+//    "runMode": 2,
+//    "openMode": 0
+//  }
+//}

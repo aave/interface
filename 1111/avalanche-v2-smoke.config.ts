@@ -19,7 +19,7 @@
 
 import { defineConfig } from 'cypress';
 
-const folder = `../cypress/e2e/0-v2-markets/3-avalanche-v2-market/`;
+const folder = `./cypress/e2e/0-v2-markets/3-avalanche-v2-market/`;
 
 export default defineConfig({
   viewportWidth: 1200,
@@ -40,7 +40,7 @@ export default defineConfig({
       // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/ban-ts-comment
       // @ts-ignore
       // eslint-disable-next-line @typescript-eslint/no-var-requires
-      return require('../../plugins/index.js')(on, config);
+      return require('../cypress/plugins')(on, config);
     },
     specPattern: [folder + '0-assets/avax.avalanche-v2.cy.ts'],
   },
