@@ -37,6 +37,7 @@ import { DebtCeilingStatus } from 'src/components/caps/DebtCeilingStatus';
 import { ReserveFactorOverview } from 'src/modules/reserve-overview/ReserveFactorOverview';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
+import { valueToBigNumber } from '@aave/math-utils';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
   <Box
@@ -196,7 +197,33 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
             {showSupplyCapStatus ? (
               // With supply cap
               <>
-                <CapsCircularStatus value={supplyCap.percentUsed} />
+                <CapsCircularStatus
+                  value={supplyCap.percentUsed}
+                  tooltipContent={
+                    <>
+                      <Trans>
+                        Maximum amount available to supply is{' '}
+                        <FormattedNumber
+                          value={
+                            valueToBigNumber(reserve.supplyCap).toNumber() -
+                            valueToBigNumber(reserve.totalLiquidity).toNumber()
+                          }
+                          variant="secondary12"
+                        />{' '}
+                        {reserve.symbol} (
+                        <FormattedNumber
+                          value={
+                            valueToBigNumber(reserve.supplyCapUSD).toNumber() -
+                            valueToBigNumber(reserve.totalLiquidityUSD).toNumber()
+                          }
+                          variant="secondary12"
+                          symbol="USD"
+                        />
+                        ).
+                      </Trans>
+                    </>
+                  }
+                />
                 <PanelItem
                   title={
                     <Box display="flex" alignItems="center">
@@ -411,7 +438,33 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                 {showBorrowCapStatus ? (
                   // With a borrow cap
                   <>
-                    <CapsCircularStatus value={borrowCap.percentUsed} />
+                    <CapsCircularStatus
+                      value={borrowCap.percentUsed}
+                      tooltipContent={
+                        <>
+                          <Trans>
+                            Maximum amount available to supply is{' '}
+                            <FormattedNumber
+                              value={
+                                valueToBigNumber(reserve.borrowCap).toNumber() -
+                                valueToBigNumber(reserve.totalDebt).toNumber()
+                              }
+                              variant="secondary12"
+                            />{' '}
+                            {reserve.symbol} (
+                            <FormattedNumber
+                              value={
+                                valueToBigNumber(reserve.borrowCapUSD).toNumber() -
+                                valueToBigNumber(reserve.totalDebtUSD).toNumber()
+                              }
+                              variant="secondary12"
+                              symbol="USD"
+                            />
+                            ).
+                          </Trans>
+                        </>
+                      }
+                    />
                     <PanelItem
                       title={
                         <Box display="flex" alignItems="center">

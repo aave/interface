@@ -87,10 +87,10 @@ export const AssetCapsProvider = ({
     const assetCapUsageData: AssetCapUsageData = {
       reserve: asset,
       supplyCap: {
-        // percentUsed: supplyCapUsage,
-        // isMaxed: supplyCapReached,
-        percentUsed: 99.9,
-        isMaxed: true,
+        percentUsed: supplyCapUsage,
+        isMaxed: supplyCapReached,
+        // percentUsed: 99.9,
+        // isMaxed: true,
         determineWarningDisplay: ({ supplyCap, icon }) =>
           supplyCap ? <SupplyCapWarning supplyCap={supplyCap} icon={icon} /> : null,
         displayMaxedTooltip: ({ supplyCap }) =>
