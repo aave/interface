@@ -69,7 +69,6 @@ export function CollateralRepayModalContent({
 
   const [_amount, setAmount] = useState('');
   const [maxSlippage, setMaxSlippage] = useState('0.5');
-  const [maxSelected, setMaxSelected] = useState(false);
 
   const amountRef = useRef<string>('');
 
@@ -79,24 +78,9 @@ export function CollateralRepayModalContent({
       : userReserve?.variableBorrows || '0';
   const safeAmountToRepayAll = valueToBigNumber(debt).multipliedBy('1.0025');
 
-  const amount = maxSelected ? safeAmountToRepayAll.toString() : _amount;
+  const isMaxSelected = _amount === '-1';
+  const amount = isMaxSelected ? safeAmountToRepayAll.toString() : _amount;
   const usdValue = valueToBigNumber(amount).multipliedBy(poolReserve.priceInUSD);
-
-  // Calculations to get the max repayable debt depending on the balance and value of the
-  // selected collateral
-  const maxCollateral = valueToBigNumber(tokenToRepayWith?.balance || 0).multipliedBy(
-    fromAssetData.priceInUSD
-  );
-  const maxDebtThatCanBeRepaidWithSelectedCollateral = maxCollateral
-    .multipliedBy(100 - Number(maxSlippage))
-    .dividedBy(100)
-    .dividedBy(poolReserve.priceInUSD);
-  const maxRepayableDebt = BigNumber.min(
-    maxDebtThatCanBeRepaidWithSelectedCollateral,
-    safeAmountToRepayAll
-  );
-
-  const repayAllDebt = maxSelected && maxRepayableDebt.gte(safeAmountToRepayAll);
 
   const { priceRoute, inputAmountUSD, inputAmount, outputAmount, outputAmountUSD } = useSwap({
     chainId: currentNetworkConfig.underlyingChainId || currentChainId,
@@ -104,17 +88,27 @@ export function CollateralRepayModalContent({
     variant: 'exactOut',
     swapIn: { ...fromAssetData, amount: '0' },
     swapOut: { ...poolReserve, amount: amountRef.current },
-    max: repayAllDebt,
+    max: isMaxSelected,
     skip: mainTxState.loading,
   });
 
+  // Calculations to get the max repayable debt depending on the balance and value of the
+  // selected collateral
+  const maxCollateral = valueToBigNumber(tokenToRepayWith?.balance || 0).multipliedBy(
+    fromAssetData.priceInUSD
+  );
+  const maxDebtThatCanBeRepaidWithSelectedCollateral = maxCollateral.dividedBy(
+    poolReserve.priceInUSD
+  );
+  const maxRepayableDebt = BigNumber.min(
+    maxDebtThatCanBeRepaidWithSelectedCollateral,
+    safeAmountToRepayAll
+  );
   const handleChange = (value: string) => {
-    const isMaxSelected = value === '-1';
-    amountRef.current = isMaxSelected ? maxRepayableDebt.toString(10) : value;
+    const maxSelected = value === '-1';
+    amountRef.current = maxSelected ? maxRepayableDebt.toString(10) : value;
     setAmount(value);
-    setMaxSelected(isMaxSelected);
   };
-
   // for v3 we need hf after withdraw collateral, because when removing collateral to repay
   // debt, hf could go under 1 then it would fail. If that is the case then we need
   // to use flashloan path
@@ -163,8 +157,7 @@ export function CollateralRepayModalContent({
     fromAssetData.priceInUSD
   );
   if (Number(usdValue) > Number(tokenToRepayWithUsdValue.toString(10))) {
-    // TODO: commenting this out to get it to work for now
-    // blockingError = ErrorType.NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH;
+    blockingError = ErrorType.NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH;
   } else if (disableFlashLoan) {
     blockingError = ErrorType.FLASH_LOAN_NOT_AVAILABLE;
   }
@@ -194,6 +187,7 @@ export function CollateralRepayModalContent({
       />
     );
 
+  console.log('repay all debt: ', isMaxSelected);
   return (
     <>
       <AssetInput
@@ -209,7 +203,7 @@ export function CollateralRepayModalContent({
             balance: debt,
           },
         ]}
-        isMaxSelected={maxSelected}
+        isMaxSelected={isMaxSelected}
         maxValue={debt}
         inputTitle={<Trans>Expected amount to repay</Trans>}
         balanceText="Borrow balance"
@@ -281,7 +275,7 @@ export function CollateralRepayModalContent({
         fromAssetData={fromAssetData}
         repayAmount={outputAmount}
         repayWithAmount={inputAmount}
-        repayAllDebt={repayAllDebt}
+        repayAllDebt={isMaxSelected}
         useFlashLoan={shouldUseFlashloan}
         isWrongNetwork={isWrongNetwork}
         symbol={symbol}
