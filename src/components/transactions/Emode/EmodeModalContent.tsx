@@ -196,9 +196,9 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
       )}
 
-      {user.userEmodeCategoryId === 0 && selectedEmode && (
+      {user.userEmodeCategoryId === 0 && (
         <Warning severity="warning">
-          <Typography>
+          <Typography variant="caption">
             <Trans>
               Enabling E-Mode only allows you to borrow assets belonging to the selected category.
               Please visit our{' '}
@@ -242,34 +242,91 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
 
       <TxModalDetails gasLimit={gasLimit}>
         {!showModal && (
-          <Row caption={<Trans>New E-Mode category</Trans>} captionVariant="description" mb={4}>
-            <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-              <SvgIcon sx={{ fontSize: '12px', mr: 0.5 }}>
-                <LightningBoltGradient />
-              </SvgIcon>
-              <Typography variant="subheader1">
-                {selectedEmode && selectedEmode.id !== 0 ? (
-                  getEmodeMessage(selectedEmode.id, currentNetworkConfig.baseAssetSymbol)
+          <Row caption={<Trans>E-Mode category</Trans>} captionVariant="description" mb={4}>
+            <Box sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
+              <Box sx={{ display: 'inline-flex', alignItems: 'center', mx: 1 }}>
+                {user.userEmodeCategoryId !== 0 ? (
+                  <>
+                    <SvgIcon sx={{ fontSize: '12px' }}>
+                      <LightningBoltGradient />
+                    </SvgIcon>
+                    <Typography variant="subheader1">
+                      {getEmodeMessage(
+                        user.userEmodeCategoryId,
+                        currentNetworkConfig.baseAssetSymbol
+                      )}
+                    </Typography>
+                  </>
                 ) : (
-                  <Trans>None</Trans>
+                  <Typography variant="subheader1">
+                    <Trans>None</Trans>
+                  </Typography>
                 )}
-              </Typography>
+              </Box>
+              {selectedEmode && (
+                <>
+                  <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+                    <ArrowNarrowRightIcon />
+                  </SvgIcon>
+                  <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                    {selectedEmode.id !== 0 ? (
+                      <>
+                        <SvgIcon sx={{ fontSize: '12px', mr: 0.5 }}>
+                          <LightningBoltGradient />
+                        </SvgIcon>
+                        <Typography variant="subheader1">
+                          {getEmodeMessage(selectedEmode.id, currentNetworkConfig.baseAssetSymbol)}
+                        </Typography>
+                      </>
+                    ) : (
+                      <Typography variant="subheader1">
+                        <Trans>None</Trans>
+                      </Typography>
+                    )}
+                  </Box>
+                </>
+              )}
             </Box>
           </Row>
         )}
 
-        <Row caption={<Trans>Available assets</Trans>} captionVariant="description" mb={4}>
-          {!selectedEmode ? (
-            <Typography color="text.primary" variant="description">
-              ⎯
-            </Typography>
-          ) : selectedEmode.id !== 0 ? (
-            <Typography>{selectedEmode.assets.join(', ')}</Typography>
-          ) : (
-            <Typography>
-              <Trans>All</Trans>
-            </Typography>
-          )}
+        <Row
+          caption={<Trans>Available assets</Trans>}
+          captionVariant="description"
+          mb={4}
+          sx={{ alignContent: 'flex-end' }}
+        >
+          <Box sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
+            {emodeCategories[user.userEmodeCategoryId] && (
+              <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                {user.userEmodeCategoryId !== 0 ? (
+                  <Typography sx={{ textAlign: 'end' }}>
+                    {emodeCategories[user.userEmodeCategoryId].assets.join(', ')}
+                  </Typography>
+                ) : (
+                  <Typography>
+                    <Trans>All Assets</Trans>
+                  </Typography>
+                )}
+              </Box>
+            )}
+            {selectedEmode && (
+              <>
+                <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+                  <ArrowNarrowRightIcon />
+                </SvgIcon>
+                <Box sx={{ display: 'inline-flex', alignItems: 'center', textAlign: 'end' }}>
+                  {selectedEmode?.id !== 0 ? (
+                    <Typography>{selectedEmode.assets.join(', ')}</Typography>
+                  ) : (
+                    <Typography>
+                      <Trans>All Assets</Trans>
+                    </Typography>
+                  )}
+                </Box>
+              </>
+            )}
+          </Box>
         </Row>
         <DetailsHFLine
           visibleHfChange={!!selectedEmode}
@@ -278,90 +335,42 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
         />
 
         {user.currentLoanToValue !== '0' && (
-          <>
-            <Row caption={<Trans>Current loan to value</Trans>} captionVariant="description" mb={4}>
-              <FormattedNumber
-                value={Number(user.totalBorrowsUSD) / Number(user.totalCollateralUSD)}
-                compact
-                visibleDecimals={2}
-                percent
-                sx={{ color: 'text.primary' }}
-                variant="secondary14"
-              />
-            </Row>
-            <Row
-              caption={<Trans>Maximum loan to value</Trans>}
-              captionVariant="description"
-              mb={4}
-              align="flex-start"
-            >
-              <Box sx={{ textAlign: 'right' }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-                  <FormattedNumber
-                    value={user.currentLoanToValue}
-                    sx={{ color: 'text.primary' }}
-                    visibleDecimals={2}
-                    compact
-                    percent
-                    variant="secondary14"
-                  />
+          <Row
+            caption={<Trans>Maximum loan to value</Trans>}
+            captionVariant="description"
+            mb={4}
+            align="flex-start"
+          >
+            <Box sx={{ textAlign: 'right' }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+                <FormattedNumber
+                  value={user.currentLoanToValue}
+                  sx={{ color: 'text.primary' }}
+                  visibleDecimals={2}
+                  compact
+                  percent
+                  variant="secondary14"
+                />
 
-                  {selectedEmode !== undefined && (
-                    <>
-                      <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-                        <ArrowNarrowRightIcon />
-                      </SvgIcon>
+                {selectedEmode !== undefined && (
+                  <>
+                    <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+                      <ArrowNarrowRightIcon />
+                    </SvgIcon>
 
-                      <FormattedNumber
-                        value={newSummary.currentLoanToValue}
-                        sx={{ color: 'text.primary' }}
-                        visibleDecimals={2}
-                        compact
-                        percent
-                        variant="secondary14"
-                      />
-                    </>
-                  )}
-                </Box>
+                    <FormattedNumber
+                      value={newSummary.currentLoanToValue}
+                      sx={{ color: 'text.primary' }}
+                      visibleDecimals={2}
+                      compact
+                      percent
+                      variant="secondary14"
+                    />
+                  </>
+                )}
               </Box>
-            </Row>
-            <Row
-              caption={<Trans>Liquidation threshold</Trans>}
-              captionVariant="description"
-              mb={4}
-              align="flex-start"
-            >
-              <Box sx={{ textAlign: 'right' }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-                  <FormattedNumber
-                    value={user.currentLiquidationThreshold}
-                    sx={{ color: 'text.primary' }}
-                    visibleDecimals={2}
-                    compact
-                    percent
-                    variant="secondary14"
-                  />
-
-                  {selectedEmode !== undefined && (
-                    <>
-                      <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-                        <ArrowNarrowRightIcon />
-                      </SvgIcon>
-
-                      <FormattedNumber
-                        value={newSummary.currentLiquidationThreshold}
-                        sx={{ color: 'text.primary' }}
-                        visibleDecimals={2}
-                        compact
-                        percent
-                        variant="secondary14"
-                      />
-                    </>
-                  )}
-                </Box>
-              </Box>
-            </Row>
-          </>
+            </Box>
+          </Row>
         )}
       </TxModalDetails>
 
@@ -371,7 +380,7 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
 
       <EmodeActions
         isWrongNetwork={isWrongNetwork}
-        blocked={blockingError !== undefined}
+        blocked={blockingError !== undefined || !selectedEmode}
         selectedEmode={selectedEmode?.id || 0}
         activeEmode={user.userEmodeCategoryId}
       />

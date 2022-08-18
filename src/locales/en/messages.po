@@ -105,8 +105,9 @@ msgid "Address is not a contract"
 msgstr "Address is not a contract"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
-msgid "All"
-msgstr "All"
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+msgid "All Assets"
+msgstr "All Assets"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "All done!"
@@ -504,10 +505,6 @@ msgstr "Current LTV"
 msgid "Current differential"
 msgstr "Current differential"
 
-#: src/components/transactions/Emode/EmodeModalContent.tsx
-msgid "Current loan to value"
-msgstr "Current loan to value"
-
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Current votes"
 msgstr "Current votes"
@@ -623,6 +620,10 @@ msgstr "E-Mode"
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "E-Mode Category"
 msgstr "E-Mode Category"
+
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+msgid "E-Mode category"
+msgstr "E-Mode category"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode increases your LTV for a selected category of assets up to 97%. <0>Learn more</0>"
@@ -902,7 +903,6 @@ msgstr "Liquidation risk"
 msgid "Liquidation risk parameters"
 msgstr "Liquidation risk parameters"
 
-#: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Liquidation threshold"
@@ -1000,10 +1000,6 @@ msgstr "Network not supported for this wallet"
 msgid "New APY"
 msgstr "New APY"
 
-#: src/components/transactions/Emode/EmodeModalContent.tsx
-msgid "New E-Mode category"
-msgstr "New E-Mode category"
-
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 msgid "No rewards to claim"
 msgstr "No rewards to claim"
@@ -1012,6 +1008,7 @@ msgstr "No rewards to claim"
 msgid "No voting power"
 msgstr "No voting power"
 
+#: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "None"
 msgstr "None"
