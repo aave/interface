@@ -97,10 +97,10 @@ export const AssetCapsProvider = ({
           supplyCap ? <SupplyCapMaxedTooltip supplyCap={supplyCap} /> : null,
       },
       borrowCap: {
-        // percentUsed: borrowCapUsage,
-        // isMaxed: borrowCapReached,
-        percentUsed: 98.5,
-        isMaxed: false,
+        percentUsed: borrowCapUsage,
+        isMaxed: borrowCapReached,
+        // percentUsed: 98.5,
+        // isMaxed: false,
         determineWarningDisplay: ({ borrowCap, icon }) =>
           borrowCap ? <BorrowCapWarning borrowCap={borrowCap} icon={icon} /> : null,
         displayMaxedTooltip: ({ borrowCap }) =>

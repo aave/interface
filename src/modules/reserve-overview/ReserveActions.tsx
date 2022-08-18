@@ -334,7 +334,10 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
       {maxAmountToSupply === '0' && supplyCap.determineWarningDisplay({ supplyCap, icon: false })}
       {maxAmountToBorrow === '0' && borrowCap.determineWarningDisplay({ borrowCap, icon: false })}
       {/* Show if the user has anything up for collateral, show.  If user has nothing of this asset up for collateral, hide it, even if at 100% */}
-      {poolReserve.isIsolated && debtCeiling.determineWarningDisplay({ debtCeiling, icon: false })}
+      {poolReserve.isIsolated &&
+        balance?.amount !== '0' &&
+        user?.totalCollateralMarketReferenceCurrency !== '0' &&
+        debtCeiling.determineWarningDisplay({ debtCeiling, icon: false })}
     </PaperWrapper>
   );
 };
