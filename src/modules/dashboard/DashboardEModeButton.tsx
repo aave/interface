@@ -47,7 +47,6 @@ export const DashboardEModeButton = ({
 
   useEffect(() => {
     if (reserves.length !== reservesLength) {
-      console.log('UPDATING');
       const eModes: number[] = [];
       reserves.forEach((reserve: ComputedReserveData) => {
         if (eModes.indexOf(reserve.eModeCategoryId) === -1) {
@@ -101,14 +100,14 @@ export const DashboardEModeButton = ({
             position: 'relative',
             zIndex: 1,
             bgcolor: isEModeDisabled ? (open ? '#EAEBEF' : '#F7F7F9') : 'background.paper',
-            px: 1.5,
+            px: '4px',
             borderRadius: '4px',
           }}
         >
           <SvgIcon
             sx={{
               fontSize: iconButtonSize,
-              mr: 1.5,
+              mr: '4px',
               color: isEModeDisabled ? 'text.muted' : 'text.primary',
             }}
           >
@@ -128,7 +127,7 @@ export const DashboardEModeButton = ({
           <SvgIcon
             sx={{
               fontSize: iconButtonSize,
-              ml: 1.5,
+              ml: '4px',
               color: 'primary.light',
             }}
           >
