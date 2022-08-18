@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-08-18 12:06\n"
+"PO-Revision-Date: 2022-08-18 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -103,7 +103,7 @@ msgstr "Añadir a la cartera"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add {0} to wallet to track your balance."
-msgstr "Añade {0} a tu cartera para hacer un seguimiento de tu balance."
+msgstr "Añade {0} a tu cartera para hacer un seguimiento del balance."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Address is not a contract"
