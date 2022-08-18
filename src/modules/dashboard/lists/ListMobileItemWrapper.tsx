@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { AMPLWarning } from '../../../components/infoTooltips/AMPLWarning';
 import { FrozenWarning } from '../../../components/infoTooltips/FrozenWarning';
@@ -14,7 +13,6 @@ interface ListMobileItemWrapperProps {
   loading?: boolean;
   currentMarket?: CustomMarket;
   frozen?: boolean;
-  reserve?: ComputedReserveData;
   showSupplyCapTooltips?: boolean;
   showBorrowCapTooltips?: boolean;
   showDebtCeilingTooltips?: boolean;

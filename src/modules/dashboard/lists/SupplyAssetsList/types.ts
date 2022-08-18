@@ -1,4 +1,3 @@
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ReserveIncentiveResponse } from '../../../../hooks/app-data-provider/useIncentiveData';
 
 export type SupplyAssetsItem = {
@@ -19,5 +18,4 @@ export type SupplyAssetsItem = {
   isActive?: boolean;
   usageAsCollateralEnabledOnUser: boolean;
   detailsAddress: string;
-  reserve: ComputedReserveData;
 };

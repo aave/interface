@@ -335,7 +335,7 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
       {maxAmountToBorrow === '0' && borrowCap.determineWarningDisplay({ borrowCap, icon: false })}
       {poolReserve.isIsolated &&
         balance?.amount !== '0' &&
-        user?.totalCollateralMarketReferenceCurrency !== '0' &&
+        user?.totalCollateralUSD !== '0' &&
         debtCeiling.determineWarningDisplay({ debtCeiling, icon: false })}
     </PaperWrapper>
   );

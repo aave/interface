@@ -1,4 +1,3 @@
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ReserveIncentiveResponse } from '../../../../hooks/app-data-provider/useIncentiveData';
 
 export type BorrowAssetsItem = {
@@ -23,5 +22,4 @@ export type BorrowAssetsItem = {
   borrowingEnabled: boolean;
   isActive: boolean;
   eModeCategoryId: number;
-  reserve: ComputedReserveData;
 };
