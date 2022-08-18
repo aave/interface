@@ -49,6 +49,7 @@ export const BorrowAssetsList = () => {
 
       return {
         ...reserve,
+        reserve,
         totalBorrows: reserve.totalDebt,
         availableBorrows,
         availableBorrowsInUSD,
