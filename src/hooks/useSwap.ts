@@ -10,6 +10,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { ComputedReserveData } from './app-data-provider/useAppDataProvider';
 import { ChainId } from '@aave/contract-helpers';
 import { BigNumberZeroDecimal, normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
+import { RateOptions } from '@paraswap/sdk/dist/rates';
 
 const ParaSwap = (chainId: number) => {
   const fetcher = constructFetchFetcher(fetch); // alternatively constructFetchFetcher
@@ -81,6 +82,16 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }
     try {
       const excludedMethod =
         variant === 'exactIn' ? ContractMethod.simpleSwap : ContractMethod.simpleBuy;
+
+      const options: RateOptions = {
+        partner: 'aave',
+      };
+
+      if (max) {
+        options.excludeDEXS = 'Balanacer';
+        options.excludeContractMethods = [excludedMethod];
+      }
+
       const response = await paraSwap.getRate({
         amount: amount.toFixed(0),
         srcToken: swapIn.underlyingAsset,
@@ -89,18 +100,7 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }
         destDecimals: swapOut.decimals,
         userAddress: userId,
         side: variant === 'exactIn' ? SwapSide.SELL : SwapSide.BUY,
-        options: {
-          partner: 'aave',
-          excludeDEXS:
-            'ParaSwapPool,ParaSwapPool2,ParaSwapPool3,ParaSwapPool4,ParaSwapPool5,ParaSwapPool6,ParaSwapPool7,ParaSwapPool8,ParaSwapPool9,ParaSwapPool10',
-          ...(max
-            ? {
-                excludeDEXS:
-                  'Balancer,ParaSwapPool,ParaSwapPool2,ParaSwapPool3,ParaSwapPool4,ParaSwapPool5,ParaSwapPool6,ParaSwapPool7,ParaSwapPool8,ParaSwapPool9,ParaSwapPool10',
-                excludeContractMethods: [excludedMethod],
-              }
-            : {}),
-        },
+        options,
       });
 
       setError('');
