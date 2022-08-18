@@ -152,13 +152,21 @@ export const AssetInput = <T extends Asset = Asset>({
             <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
               {value !== '' && (
                 <IconButton
-                  sx={{ minWidth: 0, p: 0, left: 8 }}
+                  sx={{
+                    minWidth: 0,
+                    p: 0,
+                    left: 8,
+                    color: 'text.muted',
+                    '&:hover': {
+                      color: 'text.secondary',
+                    },
+                  }}
                   onClick={() => {
                     onChange && onChange('');
                   }}
                   disabled={disabled}
                 >
-                  <XCircleIcon height={16} color={palette.grey[500]} />
+                  <XCircleIcon height={16} />
                 </IconButton>
               )}
               <TokenIcon
