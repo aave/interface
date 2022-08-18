@@ -19,7 +19,7 @@
 
 import { defineConfig } from 'cypress';
 
-const folder = `../cypress/e2e/0-v2-markets/3-avalanche-v2-market/`;
+const folder = `./cypress/e2e/0-v2-markets/3-avalanche-v2-market/`;
 
 export default defineConfig({
   viewportWidth: 1200,
