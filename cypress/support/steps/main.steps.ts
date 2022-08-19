@@ -489,9 +489,11 @@ export const emodeActivating = (
   {
     turnOn,
     multipleEmodes,
+    emodeOption,
   }: {
     turnOn: boolean;
     multipleEmodes?: boolean;
+    emodeOption?: string;
   },
   skip: SkipType,
   updateSkipStatus = false
@@ -511,6 +513,15 @@ export const emodeActivating = (
       it(`Turn off e-mode`, () => {
         doSwitchToDashboardBorrowView();
         cy.get(`[data-cy="emode-disable"]`).click();
+      });
+    }
+    if (multipleEmodes && turnOn && emodeOption) {
+      it(`Chose "${emodeOption}" option`, () => {
+        cy.get(`[data-cy="EmodeSelect"]`).click();
+        cy.get(`[role="presentation"]`)
+          .find(`ul[role="listbox"]`)
+          .contains(`${emodeOption}`)
+          .click();
       });
     }
     it(`Sign ${turnOn ? 'Turn on E-mode' : 'Turn off E-mode'}`, () => {
