@@ -58,7 +58,7 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
 
   const networkConfig = getNetworkConfig(currentChainId);
 
-  // get all emodes
+  // Create object of available emodes
   useEffect(() => {
     const emodeCategoriesArray: EmodeCategory[] = [];
     reserves.forEach((reserve) => {
@@ -98,15 +98,15 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
     const selectedEmode =
       mode === EmodeModalType.ENABLE
         ? emodeCategoriesArray.length >= 3
-          ? undefined
-          : emodeCategoriesArray[1]
+          ? undefined // Leave select blank
+          : emodeCategoriesArray[1] // Only one option to enable
         : mode === EmodeModalType.SWITCH
         ? emodeCategoriesArray.length >= 4
-          ? undefined
+          ? undefined // Leave select blank
           : user.userEmodeCategoryId === 1
-          ? emodeCategoriesArray[2]
-          : emodeCategoriesArray[1]
-        : emodeCategoriesArray[0]; // DISABLE
+          ? emodeCategoriesArray[2] // Only one option to switch to
+          : emodeCategoriesArray[1] // Only one option to switch to
+        : emodeCategoriesArray[0]; // Disabled
 
     setSelectedEmode(selectedEmode);
     setEmodeCategories(emodeCategories);
@@ -184,6 +184,12 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
 
   // is Network mismatched
   const isWrongNetwork = currentChainId !== connectedChainId;
+
+  const ArrowRight: React.FC = () => (
+    <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+      <ArrowNarrowRightIcon />
+    </SvgIcon>
+  );
 
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
@@ -265,9 +271,7 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
               </Box>
               {selectedEmode && (
                 <>
-                  <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-                    <ArrowNarrowRightIcon />
-                  </SvgIcon>
+                  <ArrowRight />
                   <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
                     {selectedEmode.id !== 0 ? (
                       <>
@@ -298,7 +302,13 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
         >
           <Box sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
             {emodeCategories[user.userEmodeCategoryId] && (
-              <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  textAlign: 'end',
+                }}
+              >
                 {user.userEmodeCategoryId !== 0 ? (
                   <Typography sx={{ textAlign: 'end' }}>
                     {emodeCategories[user.userEmodeCategoryId].assets.join(', ')}
@@ -312,12 +322,18 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
             )}
             {selectedEmode && (
               <>
-                <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-                  <ArrowNarrowRightIcon />
-                </SvgIcon>
-                <Box sx={{ display: 'inline-flex', alignItems: 'center', textAlign: 'end' }}>
+                <ArrowRight />
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    textAlign: 'end',
+                  }}
+                >
                   {selectedEmode?.id !== 0 ? (
-                    <Typography>{selectedEmode.assets.join(', ')}</Typography>
+                    <Typography sx={{ textAlign: 'end' }}>
+                      {selectedEmode.assets.join(', ')}
+                    </Typography>
                   ) : (
                     <Typography>
                       <Trans>All Assets</Trans>
@@ -354,10 +370,7 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
 
                 {selectedEmode !== undefined && (
                   <>
-                    <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-                      <ArrowNarrowRightIcon />
-                    </SvgIcon>
-
+                    <ArrowRight />
                     <FormattedNumber
                       value={newSummary.currentLoanToValue}
                       sx={{ color: 'text.primary' }}
