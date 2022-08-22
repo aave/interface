@@ -16,7 +16,7 @@ export const BorrowCapMaxedTooltip = ({ borrowCap, ...rest }: BorrowCapMaxedTool
     <Box sx={{ ml: 2 }}>
       <TextWithTooltip {...rest} icon={<ExclamationIcon />} color="warning.main" iconSize={18}>
         <>
-          <Trans>Protocol borrow cap at 100% for this asset. Further supply unavailable.</Trans>{' '}
+          <Trans>Protocol borrow cap at 100% for this asset. Further borrowing unavailable.</Trans>{' '}
           <Link
             href="https://docs.aave.com/developers/whats-new/supply-borrow-caps"
             underline="always"
