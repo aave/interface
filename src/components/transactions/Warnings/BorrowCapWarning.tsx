@@ -3,24 +3,23 @@ import { AssetCapData } from 'src/hooks/useAssetCaps';
 import { Link } from '../../primitives/Link';
 import { Warning } from '../../primitives/Warning';
 
-type SupplyCapWarningProps = {
-  supplyCap: AssetCapData;
+type BorrowCapWarningProps = {
+  borrowCap: AssetCapData;
   icon?: boolean;
 };
 
-export const SupplyCapWarning = ({ supplyCap, icon = true }: SupplyCapWarningProps) => {
+export const BorrowCapWarning = ({ borrowCap, icon = true }: BorrowCapWarningProps) => {
   // Don't show a warning when less than 98% utilized
-  if (!supplyCap.percentUsed || supplyCap.percentUsed < 98) return null;
+  if (!borrowCap.percentUsed || borrowCap.percentUsed < 98) return null;
 
   const severity = 'warning';
 
   const renderText = () => {
-    return supplyCap.isMaxed ? (
-      <Trans>Protocol supply cap is at 100% for this asset. Further supply unavailable.</Trans>
+    return borrowCap.isMaxed ? (
+      <Trans>Protocol borrow cap is at 100% for this asset. Further borrowing unavailable.</Trans>
     ) : (
       <Trans>
-        Maximum amount available to supply is limited because protocol supply cap is at{' '}
-        {supplyCap.percentUsed.toFixed(2)}%.
+        Maximum amount available to borrow is limited because protocol borrow cap is nearly reached.
       </Trans>
     );
   };
