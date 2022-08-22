@@ -2,6 +2,7 @@
 import { providers } from 'ethers';
 import { useRouter } from 'next/router';
 import React, { PropsWithChildren, useContext, useEffect, useState } from 'react';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 import {
   availableMarkets,
@@ -71,6 +72,8 @@ export interface ProtocolContextData {
   currentChainId: number;
   currentNetworkConfig: NetworkConfig;
   jsonRpcProvider: providers.Provider;
+  useWalletRPC: boolean;
+  setUseWalletRPC: (value: boolean) => void;
 }
 
 const PoolDataContext = React.createContext({} as ProtocolContextData);
@@ -88,12 +91,22 @@ export function ProtocolDataProvider({ children }: PropsWithChildren<{}>) {
   const [currentMarket, setCurrentMarket] = useState<CustomMarket>(availableMarkets[0]);
   const currentMarketData = marketsData[currentMarket];
 
+  const [useWalletRPC, setUseWalletRPC] = useState(false);
+  const { provider, chainId } = useWeb3Context();
+
   const handleSetMarket = (market: CustomMarket) => {
     if (market === currentMarket) return;
     localStorage.setItem(LS_KEY, market);
     setCurrentMarket(market);
     push(pathname, { query: { ...query, marketName: market } }, { shallow: true });
   };
+
+  // If the market changes or the users selected network changes, default back to using our RPC
+  useEffect(() => {
+    if (currentMarketData.chainId !== chainId) {
+      setUseWalletRPC(false);
+    }
+  }, [currentMarketData.chainId, chainId]);
 
   // set the last selected market onload
   useEffect(() => {
@@ -116,6 +129,11 @@ export function ProtocolDataProvider({ children }: PropsWithChildren<{}>) {
   //   }
   // }, []);
 
+  let jsonRpcProvider = getProvider(currentMarketData.chainId);
+  if (useWalletRPC && provider && currentMarketData.chainId === chainId) {
+    jsonRpcProvider = provider;
+  }
+
   return (
     <PoolDataContext.Provider
       value={{
@@ -124,7 +142,9 @@ export function ProtocolDataProvider({ children }: PropsWithChildren<{}>) {
         setCurrentMarket: handleSetMarket,
         currentMarketData: currentMarketData,
         currentNetworkConfig: getNetworkConfig(currentMarketData.chainId),
-        jsonRpcProvider: getProvider(currentMarketData.chainId),
+        jsonRpcProvider,
+        useWalletRPC,
+        setUseWalletRPC,
       }}
     >
       {children}

@@ -6,9 +6,9 @@ import {
 } from '@aave/contract-helpers';
 import { useApolloClient } from '@apollo/client';
 import { useState } from 'react';
-import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 import { usePolling } from '../usePolling';
+import { useProtocolDataContext } from '../useProtocolDataContext';
 import {
   C_ProtocolDataDocument,
   C_ProtocolDataQuery,
@@ -43,10 +43,11 @@ export function usePoolDataRPC(
   const [errorReserves, setErrorReserves] = useState<boolean>(false);
   const [loadingUserReserves, setLoadingUserReserves] = useState<boolean>(false);
   const [errorUserReserves, setErrorUserReserves] = useState<boolean>(false);
+  const { jsonRpcProvider: provider } = useProtocolDataContext();
 
   // Fetch and format reserve incentive data from UiIncentiveDataProvider contract
   const fetchReserves = async () => {
-    const provider = getProvider(chainId);
+    // const provider = getProvider(chainId);
 
     try {
       setLoadingReserves(true);
@@ -87,8 +88,8 @@ export function usePoolDataRPC(
   // Fetch and format user incentive data from UiIncentiveDataProvider
   const fetchUserReserves = async () => {
     if (!currentAccount) return;
-    const provider = getProvider(chainId);
-
+    // const provider = getProvider(chainId);
+    console.log('fetchUserReserves');
     try {
       const poolDataProviderContract = new UiPoolDataProvider({
         uiPoolDataProviderAddress: poolDataProviderAddress,
@@ -126,8 +127,14 @@ export function usePoolDataRPC(
     setLoadingUserReserves(false);
   };
 
-  usePolling(fetchReserves, POLLING_INTERVAL, skip, [skip, poolDataProviderAddress, chainId]);
+  usePolling(fetchReserves, POLLING_INTERVAL, skip, [
+    provider,
+    skip,
+    poolDataProviderAddress,
+    chainId,
+  ]);
   usePolling(fetchUserReserves, POLLING_INTERVAL, skip, [
+    provider,
     skip,
     poolDataProviderAddress,
     chainId,

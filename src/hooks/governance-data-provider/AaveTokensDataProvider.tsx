@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { WalletBalanceProvider } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
-import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { useProtocolDataContext } from '../useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { usePolling } from '../usePolling';
@@ -32,7 +31,7 @@ export const AaveTokensBalanceProvider: React.FC = ({ children }) => {
   const isGovernanceFork =
     currentNetworkConfig.isFork &&
     currentNetworkConfig.underlyingChainId === governanceConfig.chainId;
-  const rpcProvider = isGovernanceFork ? jsonRpcProvider : getProvider(governanceConfig.chainId);
+  const rpcProvider = isGovernanceFork ? jsonRpcProvider : jsonRpcProvider; // TODO
 
   const fetchAaveTokenBalances = async () => {
     setAaveTokensLoading(true);

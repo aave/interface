@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   Divider,
+  FormControlLabel,
   List,
   ListItem,
   ListItemIcon,
@@ -14,6 +15,7 @@ import {
   MenuList,
   Skeleton,
   SvgIcon,
+  Switch,
   Typography,
   useMediaQuery,
   useTheme,
@@ -21,6 +23,7 @@ import {
 import makeBlockie from 'ethereum-blockies-base64';
 import React, { useEffect, useState } from 'react';
 import { WalletModal } from 'src/components/WalletConnection/WalletModal';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWalletModalContext } from 'src/hooks/useWalletModal';
 import useGetEns from 'src/libs/hooks/use-get-ens';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -41,6 +44,10 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
   const { disconnectWallet, currentAccount, connected, chainId, loading } = useWeb3Context();
 
   const { setWalletModalOpen } = useWalletModalContext();
+
+  const { useWalletRPC, setUseWalletRPC, currentChainId } = useProtocolDataContext();
+
+  const toggleDisabled = !useWalletRPC && chainId !== currentChainId;
 
   const { breakpoints } = useTheme();
   const xsm = useMediaQuery(breakpoints.down('xsm'));
@@ -131,6 +138,10 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
     buttonContent = <Trans>Connect wallet</Trans>;
   }
 
+  const onToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUseWalletRPC(event.target.checked);
+  };
+
   const Content = ({ component = ListItem }: { component?: typeof MenuItem | typeof ListItem }) => (
     <>
       <Typography
@@ -219,6 +230,26 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
             </Typography>
           </Box>
         </Box>
+      </Box>
+      <Box component={component} sx={{ color: { xs: '#F1F1F3', md: 'text.primary' } }}>
+        <ListItemText>
+          <Trans>Use Provider RPC</Trans>
+        </ListItemText>
+        <FormControlLabel
+          sx={{ mr: 0 }}
+          value="testnetsMode"
+          control={
+            <Switch
+              checked={useWalletRPC}
+              onChange={onToggleChange}
+              disabled={toggleDisabled}
+              disableRipple
+              sx={{ '.MuiSwitch-track': { bgcolor: { xs: '#FFFFFF1F', md: 'primary.light' } } }}
+            />
+          }
+          label={true ? 'On' : 'Off'}
+          labelPlacement="start"
+        />
       </Box>
       <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
 

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { PermissionManager, PERMISSION } from '@aave/contract-helpers';
 
 import { useProtocolDataContext } from './useProtocolDataContext';
-import { getProvider, isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
+import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 type PermissionsContext = {
@@ -16,7 +16,7 @@ const Context = React.createContext<PermissionsContext>({
 });
 
 export const PermissionProvider: React.FC = ({ children }) => {
-  const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
+  const { currentMarketData, jsonRpcProvider } = useProtocolDataContext();
   const { currentAccount: walletAddress } = useWeb3Context();
   const [isPermissionsLoading, setIsPermissionsLoading] = useState<boolean>(true);
   const [permissions, setPermissions] = useState<PERMISSION[]>([]);
@@ -24,7 +24,7 @@ export const PermissionProvider: React.FC = ({ children }) => {
   async function getPermissionData(permissionManagerAddress: string) {
     try {
       const instance = new PermissionManager({
-        provider: getProvider(chainId),
+        provider: jsonRpcProvider,
         permissionManagerAddress: permissionManagerAddress,
       });
       const permissions = await instance.getHumanizedUserPermissions(walletAddress);

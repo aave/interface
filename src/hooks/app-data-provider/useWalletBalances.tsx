@@ -117,34 +117,45 @@ export const useUpdateWalletBalances = () => {
 
   const fetchWalletData = useCallback(async () => {
     if (!currentAccount) return;
-    const contract = new WalletBalanceProvider({
-      walletBalanceProviderAddress: currentMarketData.addresses.WALLET_BALANCE_PROVIDER,
-      provider: jsonRpcProvider,
-    });
-    const { 0: tokenAddresses, 1: balances } =
-      await contract.getUserWalletBalancesForLendingPoolProvider(
-        currentAccount,
-        currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER
-      );
-    cache.writeQuery({
-      query: WalletBalancesQuery,
-      data: {
-        __typename: 'WalletBalances',
-        walletBalances: tokenAddresses.map((address, ix) => ({
-          __typename: 'WalletBalance',
-          id: `${currentChainId}_${address.toLowerCase()}`,
-          address: address.toLowerCase(),
-          amount: balances[ix].toString(),
-        })) as WalletBalance[],
-      },
-      variables: {
-        currentAccount,
-        chainId: currentChainId,
-      },
-    });
-  }, [currentChainId, currentAccount, currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER]);
+
+    try {
+      const contract = new WalletBalanceProvider({
+        walletBalanceProviderAddress: currentMarketData.addresses.WALLET_BALANCE_PROVIDER,
+        provider: jsonRpcProvider,
+      });
+      const { 0: tokenAddresses, 1: balances } =
+        await contract.getUserWalletBalancesForLendingPoolProvider(
+          currentAccount,
+          currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER
+        );
+      cache.writeQuery({
+        query: WalletBalancesQuery,
+        data: {
+          __typename: 'WalletBalances',
+          walletBalances: tokenAddresses.map((address, ix) => ({
+            __typename: 'WalletBalance',
+            id: `${currentChainId}_${address.toLowerCase()}`,
+            address: address.toLowerCase(),
+            amount: balances[ix].toString(),
+          })) as WalletBalance[],
+        },
+        variables: {
+          currentAccount,
+          chainId: currentChainId,
+        },
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  }, [
+    jsonRpcProvider,
+    currentChainId,
+    currentAccount,
+    currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
+  ]);
 
   usePolling(fetchWalletData, 30000, !currentAccount, [
+    jsonRpcProvider,
     currentAccount,
     currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
     currentChainId,

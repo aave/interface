@@ -1707,6 +1707,10 @@ msgstr "Unstake now"
 msgid "Unstake window"
 msgstr "Unstake window"
 
+#: src/layouts/WalletWidget.tsx
+msgid "Use Provider RPC"
+msgstr "Use Provider RPC"
+
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Used as collateral"
 msgstr "Used as collateral"

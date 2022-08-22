@@ -1,7 +1,6 @@
 import { UiStakeDataProvider } from '@aave/contract-helpers';
 import { usePolling } from '../usePolling';
 import { useApolloClient } from '@apollo/client';
-import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import {
   C_StakeGeneralUiDataDocument,
   C_StakeGeneralUiDataQuery,
@@ -17,7 +16,7 @@ export function _useStakeDataRPC(currentAccount: string, chainId: number, skip =
 
   const isStakeFork =
     currentNetworkConfig.isFork && currentNetworkConfig.underlyingChainId === stakeConfig?.chainId;
-  const rpcProvider = isStakeFork ? jsonRpcProvider : getProvider(stakeConfig.chainId);
+  const rpcProvider = isStakeFork ? jsonRpcProvider : jsonRpcProvider; // TODO
   const uiStakeDataProvider = new UiStakeDataProvider({
     provider: rpcProvider,
     uiStakeDataProvider: stakeConfig.stakeDataProvider,

@@ -6,9 +6,9 @@ import {
 } from '@aave/contract-helpers';
 import { useApolloClient } from '@apollo/client';
 import { useState } from 'react';
-import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 import { usePolling } from '../usePolling';
+import { useProtocolDataContext } from '../useProtocolDataContext';
 import {
   C_ReservesIncentivesDocument,
   C_ReservesIncentivesQuery,
@@ -42,12 +42,13 @@ export function useIncentivesDataRPC(
   const [errorReserveIncentives, setErrorReserveIncentives] = useState<boolean>(false);
   const [loadingUserIncentives, setLoadingUserIncentives] = useState<boolean>(false);
   const [errorUserIncentives, setErrorUserIncentives] = useState<boolean>(false);
+  const { jsonRpcProvider: provider } = useProtocolDataContext();
 
   // Fetch and format reserve incentive data from UiIncentiveDataProvider contract
   const fetchReserveIncentiveData = async () => {
-    if (!incentiveDataProviderAddress) return;
+    if (!incentiveDataProviderAddress || !provider) return;
     setLoadingReserveIncentives(true);
-    const provider = getProvider(chainId);
+    // const provider = getProvider(chainId);
 
     try {
       const incentiveDataProviderContract = new UiIncentiveDataProvider({
@@ -85,7 +86,7 @@ export function useIncentivesDataRPC(
   const fetchUserIncentiveData = async () => {
     if (!incentiveDataProviderAddress || !currentAccount) return;
     setLoadingUserIncentives(true);
-    const provider = getProvider(chainId);
+    // const provider = getProvider(chainId);
 
     try {
       const incentiveDataProviderContract = new UiIncentiveDataProvider({
@@ -130,6 +131,7 @@ export function useIncentivesDataRPC(
   };
 
   usePolling(fetchReserveIncentiveData, POOLING_INTERVAL, skip || !incentiveDataProviderAddress, [
+    provider,
     lendingPoolAddressProvider,
     incentiveDataProviderAddress,
   ]);
@@ -138,7 +140,7 @@ export function useIncentivesDataRPC(
     fetchUserIncentiveData,
     POOLING_INTERVAL,
     skip || !currentAccount || !incentiveDataProviderAddress,
-    [lendingPoolAddressProvider, incentiveDataProviderAddress, currentAccount]
+    [provider, lendingPoolAddressProvider, incentiveDataProviderAddress, currentAccount]
   );
 
   const loading = loadingReserveIncentives || loadingUserIncentives;
