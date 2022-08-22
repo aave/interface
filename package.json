@@ -88,7 +88,7 @@
     "@commitlint/cli": "^17.0.3",
     "@commitlint/config-conventional": "^17.0.3",
     "@ethersproject/experimental": "^5.5.0",
-    "@ethersproject/providers": "^5.5.3",
+    "@ethersproject/providers": "^5.7.0",
     "@lingui/cli": "^3.13.2",
     "@lingui/macro": "^3.13.2",
     "@next/bundle-analyzer": "^12.1.0",
