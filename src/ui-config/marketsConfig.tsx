@@ -71,7 +71,7 @@ export enum CustomMarket {
   proto_polygon = 'proto_polygon',
   proto_mumbai = 'proto_mumbai',
   amm_mainnet = 'amm_mainnet',
-  //proto_goerli = 'proto_goerli',
+  proto_goerli = 'proto_goerli',
   proto_kovan = 'proto_kovan',
   amm_kovan = 'amm_kovan',
   // external
@@ -142,22 +142,23 @@ export const marketsData: {
       marketName: 'aavev2',
     },
   },
-  // [CustomMarket.proto_goerli]: {
-  //   marketTitle: 'Ethereum Görli',
-  //   chainId: ChainId.goerli,
-  //   enabledFeatures: {
-  //   faucet: true,
-  //   },
-  //   rpcOnly: true,
-  //   addresses: {
-  //     LENDING_POOL_ADDRESS_PROVIDER: ''.toLowerCase(),
-  //     LENDING_POOL: '',
-  //     WETH_GATEWAY: '',
-  //     WALLET_BALANCE_PROVIDER: '',
-  //     UI_POOL_DATA_PROVIDER: '',
-  //     UI_INCENTIVE_DATA_PROVIDER: '',
-  //  },
-  // },
+  [CustomMarket.proto_goerli]: {
+    marketTitle: 'Ethereum Görli',
+    chainId: ChainId.goerli,
+    enabledFeatures: {
+      faucet: true,
+    },
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0xa012e274b15B68abf26086591Cc0d2BB676c77C3'.toLowerCase(),
+      LENDING_POOL: '0x082307fbdee3967141e96f9db16c4ea1f206f5a2',
+      WETH_GATEWAY: '0x15271C7821219C58BD59c5Fe9ba8F70bE5c04F6b',
+      WALLET_BALANCE_PROVIDER: '0xdb4e0FaAFfDB00DA6edc8E8fc7f458Ca244F57AC',
+      UI_POOL_DATA_PROVIDER: '0x9e2b8bE39CcC5840D6Ae3450c3ad9f2ddE130d47',
+      UI_INCENTIVE_DATA_PROVIDER: '0xA2E05bE2090b3658A264bdf1C39387f5Dba367Ec',
+      FAUCET: '0x681860075529352da2C94082Eb66c59dF958e89C',
+    },
+  },
   // [CustomMarket.permissioned_market]: {
   //   marketTitle: 'Ethereum Permissioned Market example',
   //   chainId: ChainId.mainnet,
