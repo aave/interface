@@ -2,6 +2,7 @@ import { DuplicateIcon, LogoutIcon } from '@heroicons/react/outline';
 import { ChevronDownIcon, ChevronUpIcon, ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
+  Alert,
   Box,
   Button,
   Divider,
@@ -146,45 +147,50 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
       </Typography>
 
       <Box component={component} disabled>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Box
-            sx={{
-              width: 40,
-              height: 40,
-              borderRadius: '50%',
-              border: '1px solid #FAFBFC1F',
-              mr: 3,
-              img: { width: '100%', height: '100%', borderRadius: '50%' },
-            }}
-          >
-            <img
-              src={
-                useBlockie
-                  ? makeBlockie(currentAccount !== '' ? currentAccount : 'default')
-                  : ensAvatar
-              }
-              alt=""
-              onError={() => setUseBlockie(true)}
-            />
-          </Box>
-          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            {ensNameAbbreviated && (
-              <Typography variant="h4" color={{ xs: '#F1F1F3', md: 'text.primary' }}>
-                {ensNameAbbreviated}
-              </Typography>
-            )}
-
-            <Typography
-              variant={ensNameAbbreviated ? 'caption' : 'h4'}
-              color={
-                ensNameAbbreviated
-                  ? { xs: '#A5A8B6', md: 'text.secondary' }
-                  : { xs: '#F1F1F3', md: 'text.primary' }
-              }
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box
+              sx={{
+                width: 40,
+                height: 40,
+                borderRadius: '50%',
+                border: '1px solid #FAFBFC1F',
+                mr: 3,
+                img: { width: '100%', height: '100%', borderRadius: '50%' },
+              }}
             >
-              {textCenterEllipsis(currentAccount, ensNameAbbreviated ? 12 : 7, 4)}
-            </Typography>
+              <img
+                src={
+                  useBlockie
+                    ? makeBlockie(currentAccount !== '' ? currentAccount : 'default')
+                    : ensAvatar
+                }
+                alt=""
+                onError={() => setUseBlockie(true)}
+              />
+            </Box>
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+              {ensNameAbbreviated && (
+                <Typography variant="h4" color={{ xs: '#F1F1F3', md: 'text.primary' }}>
+                  {ensNameAbbreviated}
+                </Typography>
+              )}
+
+              <Typography
+                variant={ensNameAbbreviated ? 'caption' : 'h4'}
+                color={
+                  ensNameAbbreviated
+                    ? { xs: '#A5A8B6', md: 'text.secondary' }
+                    : { xs: '#F1F1F3', md: 'text.primary' }
+                }
+              >
+                {textCenterEllipsis(currentAccount, ensNameAbbreviated ? 12 : 7, 4)}
+              </Typography>
+            </Box>
           </Box>
+          <Alert severity="warning" sx={{ my: '10px' }}>
+            <Trans>Watch-only mode.</Trans>
+          </Alert>
         </Box>
       </Box>
       <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
