@@ -2,7 +2,7 @@ import { LightningBoltIcon, CogIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import Menu from '@mui/material/Menu';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import LightningBoltGradient from '/public/lightningBoltGradient.svg';
 
@@ -29,8 +29,6 @@ export const DashboardEModeButton = ({
   const iconButtonSize = 12;
 
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
-  const [reservesLength, setReservesLength] = useState(0);
-  const [eModes, setEmodes] = useState<number[]>([]);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setAnchorEl(event.currentTarget);
@@ -45,18 +43,12 @@ export const DashboardEModeButton = ({
     <Trans>{getEmodeMessage(userEmodeCategoryId, baseAssetSymbol)}</Trans>
   );
 
-  useEffect(() => {
-    if (reserves.length !== reservesLength) {
-      const eModes: number[] = [];
-      reserves.forEach((reserve: ComputedReserveData) => {
-        if (eModes.indexOf(reserve.eModeCategoryId) === -1) {
-          eModes.push(reserve.eModeCategoryId);
-        }
-      });
-      setEmodes(eModes);
-      setReservesLength(reserves.length);
+  const eModes: number[] = [];
+  reserves.forEach((reserve: ComputedReserveData) => {
+    if (eModes.indexOf(reserve.eModeCategoryId) === -1) {
+      eModes.push(reserve.eModeCategoryId);
     }
-  }, [reservesLength, setReservesLength, reserves]);
+  });
 
   return (
     <Box
