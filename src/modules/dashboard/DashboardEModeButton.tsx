@@ -86,15 +86,19 @@ export const DashboardEModeButton = ({
         })}
       >
         <Box
-          sx={{
+          sx={(theme) => ({
             display: 'inline-flex',
             alignItems: 'center',
             position: 'relative',
             zIndex: 1,
-            bgcolor: isEModeDisabled ? (open ? '#EAEBEF' : '#F7F7F9') : 'background.paper',
+            bgcolor: isEModeDisabled
+              ? open
+                ? theme.palette.background.disabled
+                : theme.palette.background.surface
+              : theme.palette.background.paper,
             px: '4px',
             borderRadius: '4px',
-          }}
+          })}
         >
           <SvgIcon
             sx={{
