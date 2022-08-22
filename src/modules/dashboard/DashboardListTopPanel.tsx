@@ -40,7 +40,7 @@ export const DashboardListTopPanel = ({
       />
 
       {(STAGING_ENV || ENABLE_TESTNET) && <FaucetButton />}
-      {!ENABLE_TESTNET && <BridgeButton bridge={bridge} variant="outlined" />}
+      {!ENABLE_TESTNET && <BridgeButton bridge={bridge} />}
     </Box>
   );
 };
