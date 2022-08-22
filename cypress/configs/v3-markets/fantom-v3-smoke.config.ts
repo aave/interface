@@ -1,7 +1,7 @@
 import { defineConfig } from 'cypress';
 import { defaultConfig } from '../base.cypress';
 
-const folder = `./cypress/e2e/0-v2-markets/3-avalanche-v2-market/`;
+const folder = `./cypress/e2e/1-v3-markets/5-fantom-v3-market/`;
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -9,9 +9,8 @@ export default defineConfig({
   ...defaultConfig,
   e2e: {
     specPattern: [
-      folder + '0-assets/avax.avalanche-v2.cy.ts',
-      folder + '0-assets/usdt.avalanche-v2.cy.ts',
-      folder + 'reward.avalanche-v2.cy.ts',
+      folder + "0-assets/ftm.fantom-v3.cy.ts",
+      folder + "0-assets/usdt.fantom-v3.cy.ts",
     ],
   },
 });
