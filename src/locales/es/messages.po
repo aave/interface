@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-08-12 18:22\n"
+"PO-Revision-Date: 2022-08-18 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -103,7 +103,7 @@ msgstr "Añadir a la cartera"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add {0} to wallet to track your balance."
-msgstr "Añade {0} a tu cartera para hacer un seguimiento de tu balance."
+msgstr "Añade {0} a tu cartera para hacer un seguimiento del balance."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Address is not a contract"
@@ -149,7 +149,7 @@ msgstr "La cantidad debe ser mayor que 0"
 
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "Ampleforth FAQ"
-msgstr "Ampleforth FAQ"
+msgstr "Preguntas frecuentes Ampleforth"
 
 #: src/components/infoModalContents/ApprovalInfoContent.tsx
 msgid "Approval"
@@ -273,7 +273,7 @@ msgstr "Antes de suministrar, necesitas aprobar tu uso por el protocolo Aave. Pu
 
 #: src/components/AddressBlockedModal.tsx
 msgid "Blocked Address"
-msgstr ""
+msgstr "Dirección bloqueada"
 
 #: pages/index.page.tsx
 #: src/components/transactions/Borrow/BorrowModal.tsx
@@ -530,11 +530,11 @@ msgstr "Cantidad de deuda a reembolsar"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Debt ceiling is exceeded"
-msgstr "El techo de deuda está sobrepasado"
+msgstr "El límite de deuda está sobrepasado"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Debt ceiling is not zero"
-msgstr "El techo de deuda no es cero"
+msgstr "El límite de deuda no es cero"
 
 #: src/components/infoModalContents/RetryWithApprovalInfoContent.tsx
 msgid "Define Retry with Approval text"
@@ -698,7 +698,7 @@ msgstr "Caduca"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "FAQ"
-msgstr "FAQ"
+msgstr "Preguntas frecuentes"
 
 #: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
@@ -812,7 +812,7 @@ msgstr "En E-Mode algunos activos no se pueden pedir prestados. Sal del E-Mode p
 
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "In Isolation mode, you cannot supply other assets as collateral. A global debt ceiling limits the borrowing power of the isolated asset. To exit isolation mode disable {0} as collateral before borrowing another asset. Read more in our <0>FAQ</0>"
-msgstr ""
+msgstr "En el Isolation mode, no puedes suministrar otros activos como garantía. Un límite de deuda global limita la capacidad de deuda del activo aislado. Para salir del Isolation mode, deshabilita {0} como garantía antes de tomar prestado otro activo. Lee más en nuestras <0>preguntas frecuentes </0>"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "In order to change E-Mode from asset category{0}you will need to close your position in your current category. See our <0>FAQ</0> to learn more."
@@ -877,7 +877,7 @@ msgstr "Más información sobre los riesgos involucrados"
 
 #: src/components/isolationMode/IsolatedTooltip.tsx
 msgid "Learn more in our <0>FAQ guide</0>"
-msgstr "Más información en nuestra guía <0>FAQ</0>"
+msgstr "Más información en nuestra guía <0>Preguntas frecuentes</0>"
 
 #: src/layouts/MobileMenu.tsx
 msgid "Links"
@@ -1573,7 +1573,7 @@ msgstr "Estos fondos han sido prestados y no están disponibles para su retirada
 
 #: src/components/AddressBlockedModal.tsx
 msgid "This address is blocked on app.aave.com because it is associated with one or more"
-msgstr ""
+msgstr "Esta dirección está bloqueada en app.aave.com porque está asociada con una o más"
 
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has almost reached its borrow cap. There is only {messageValue} available to be borrowed from this market."
@@ -2008,7 +2008,7 @@ msgstr "activos"
 
 #: src/components/AddressBlockedModal.tsx
 msgid "blocked activities"
-msgstr ""
+msgstr "actividades bloqueadas"
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "copy the error"
