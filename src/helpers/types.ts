@@ -33,4 +33,5 @@ export enum CollateralType {
   ISOLATED_ENABLED,
   DISABLED,
   ISOLATED_DISABLED,
+  UNAVAILABLE,
 }
