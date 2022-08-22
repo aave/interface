@@ -197,7 +197,12 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
     !!selectedEmode &&
     selectedEmode.id === 0 &&
     blockingError === undefined &&
-    Number(newSummary.healthFactor).toFixed(2) < Number(user.healthFactor).toFixed(2); // Comparing without rounding causes stuttering, HFs update asyncronously
+    Number(newSummary.healthFactor).toFixed(3) < Number(user.healthFactor).toFixed(3); // Comparing without rounding causes stuttering, HFs update asyncronously
+
+  // Shown only if the user has a collateral asset which is changing in LTV
+  const showMaxLTVRow =
+    user.currentLoanToValue !== '0' &&
+    Number(newSummary.currentLoanToValue).toFixed(3) != Number(user.currentLoanToValue).toFixed(3); // Comparing without rounding causes stuttering, LTVs update asyncronously
 
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
@@ -358,7 +363,7 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
           futureHealthFactor={newSummary.healthFactor}
         />
 
-        {user.currentLoanToValue !== '0' && (
+        {showMaxLTVRow && (
           <Row
             caption={<Trans>Maximum loan to value</Trans>}
             captionVariant="description"
