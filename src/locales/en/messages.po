@@ -1167,8 +1167,8 @@ msgid "Proposition power"
 msgstr "Proposition power"
 
 #: src/components/infoTooltips/BorrowCapMaxedTooltip.tsx
-msgid "Protocol borrow cap at 100% for this asset. Further supply unavailable."
-msgstr "Protocol borrow cap at 100% for this asset. Further supply unavailable."
+msgid "Protocol borrow cap at 100% for this asset. Further borrowing unavailable."
+msgstr "Protocol borrow cap at 100% for this asset. Further borrowing unavailable."
 
 #: src/components/transactions/Warnings/BorrowCapWarning.tsx
 msgid "Protocol borrow cap is at 100% for this asset. Further borrowing unavailable."
