@@ -23,6 +23,7 @@ import makeBlockie from 'ethereum-blockies-base64';
 import React, { useEffect, useState } from 'react';
 import { WalletModal } from 'src/components/WalletConnection/WalletModal';
 import { useWalletModalContext } from 'src/hooks/useWalletModal';
+import { useMockWalletAddressContext } from 'src/hooks/useMockWalletAddressContext';
 import useGetEns from 'src/libs/hooks/use-get-ens';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
@@ -42,6 +43,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
   const { disconnectWallet, currentAccount, connected, chainId, loading } = useWeb3Context();
 
   const { setWalletModalOpen } = useWalletModalContext();
+  const { mockWalletAddress } = useMockWalletAddressContext();
 
   const { breakpoints } = useTheme();
   const xsm = useMediaQuery(breakpoints.down('xsm'));
@@ -188,9 +190,11 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
               </Typography>
             </Box>
           </Box>
-          <Alert severity="warning" sx={{ my: '10px' }}>
-            <Trans>Watch-only mode.</Trans>
-          </Alert>
+          {mockWalletAddress && (
+            <Alert severity="warning" sx={{ my: '10px' }}>
+              <Trans>Watch-only mode.</Trans>
+            </Alert>
+          )}
         </Box>
       </Box>
       <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />

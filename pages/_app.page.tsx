@@ -33,6 +33,7 @@ import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
 import { Web3ReactProvider } from '@web3-react/core';
 import { providers } from 'ethers';
 import { WalletModalContextProvider } from 'src/hooks/useWalletModal';
+import { MockWalletAddressProvider } from 'src/hooks/useMockWalletAddressContext';
 import { PermissionProvider } from 'src/hooks/usePermissions';
 import AaveMetaImage from 'public/aaveMetaLogo.png';
 import { FaucetModal } from 'src/components/transactions/Faucet/FaucetModal';
@@ -86,19 +87,21 @@ export default function MyApp(props: MyAppProps) {
                             <AppDataProvider>
                               <TxBuilderProvider>
                                 <WalletModalContextProvider>
-                                  <GasStationProvider>
-                                    {getLayout(<Component {...pageProps} />)}
-                                    <SupplyModal />
-                                    <WithdrawModal />
-                                    <BorrowModal />
-                                    <RepayModal />
-                                    <CollateralChangeModal />
-                                    <RateSwitchModal />
-                                    <ClaimRewardsModal />
-                                    <EmodeModal />
-                                    <SwapModal />
-                                    <FaucetModal />
-                                  </GasStationProvider>
+                                  <MockWalletAddressProvider>
+                                    <GasStationProvider>
+                                      {getLayout(<Component {...pageProps} />)}
+                                      <SupplyModal />
+                                      <WithdrawModal />
+                                      <BorrowModal />
+                                      <RepayModal />
+                                      <CollateralChangeModal />
+                                      <RateSwitchModal />
+                                      <ClaimRewardsModal />
+                                      <EmodeModal />
+                                      <SwapModal />
+                                      <FaucetModal />
+                                    </GasStationProvider>
+                                  </MockWalletAddressProvider>
                                 </WalletModalContextProvider>
                               </TxBuilderProvider>
                             </AppDataProvider>
