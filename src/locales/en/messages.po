@@ -263,8 +263,8 @@ msgid "Before supplying"
 msgstr "Before supplying"
 
 #: src/components/infoModalContents/ApprovalInfoContent.tsx
-msgid "Before supplying, you need to approve its usage by the Aave protocol. You can learn more in our<0>FAQ</0>"
-msgstr "Before supplying, you need to approve its usage by the Aave protocol. You can learn more in our<0>FAQ</0>"
+msgid "Before supplying, you need to approve its usage by the Aave protocol. You can learn more in our <0>FAQ</0>"
+msgstr "Before supplying, you need to approve its usage by the Aave protocol. You can learn more in our <0>FAQ</0>"
 
 #: src/components/AddressBlockedModal.tsx
 msgid "Blocked Address"

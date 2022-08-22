@@ -5,14 +5,16 @@ import {
   doSwitchToDashboardSupplyView,
 } from '../../../support/steps/actions.steps';
 
+//for execute need to add wallet values
 const HALF_WALLET = {
-  address: `0x0681abf40a5cebda94fcaadccad9ae5e0cad1bc4`,
-  privateKey: `57bc64f070aeb5ed6f69398ef933e55b74de7a7ec3ebe40f5f009a31a3eff151`,
+  address: ``,
+  privateKey: ``,
 };
 
+//for execute need to add wallet values
 const FULL_WALLET = {
-  address: `0x008c8395eaba2553cde019af1be19a89630e031f`,
-  privateKey: `57bc64f070aeb5ed6f69398ef933e55b74de7a7ec3ebe40f5f009a31a3eff151`,
+  address: ``,
+  privateKey: ``,
 };
 
 const ERROR_MESSAGE = 'Allowance required action';
