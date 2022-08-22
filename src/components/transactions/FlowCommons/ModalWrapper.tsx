@@ -7,6 +7,7 @@ import {
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
+import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { usePermissions } from 'src/hooks/usePermissions';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -89,7 +90,7 @@ export const ModalWrapper: React.FC<{
       : poolReserve.symbol;
 
   return (
-    <>
+    <AssetCapsProvider asset={poolReserve}>
       {!mainTxState.success && (
         <TxModalTitle title={title} symbol={hideTitleSymbol ? undefined : symbol} />
       )}
@@ -108,6 +109,6 @@ export const ModalWrapper: React.FC<{
         underlyingAsset,
         userReserve,
       })}
-    </>
+    </AssetCapsProvider>
   );
 };

@@ -1,10 +1,10 @@
+import { Fragment } from 'react';
 import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-
 import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
 import { BorrowPowerTooltip } from '../../../../components/infoTooltips/BorrowPowerTooltip';
 import { TotalBorrowAPYTooltip } from '../../../../components/infoTooltips/TotalBorrowAPYTooltip';
@@ -20,6 +20,7 @@ import { ListLoader } from '../ListLoader';
 import { ListTopInfoItem } from '../ListTopInfoItem';
 import { BorrowedPositionsListItem } from './BorrowedPositionsListItem';
 import { BorrowedPositionsListMobileItem } from './BorrowedPositionsListMobileItem';
+import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 
 export const BorrowedPositionsList = () => {
   const { user, loading, reserves } = useAppDataContext();
@@ -117,19 +118,20 @@ export const BorrowedPositionsList = () => {
       {borrowPositions.length ? (
         <>
           {!downToXSM && <ListHeader head={head} />}
-          {borrowPositions.map((item) =>
-            downToXSM ? (
-              <BorrowedPositionsListMobileItem
-                {...item}
-                key={item.underlyingAsset + item.borrowRateMode}
-              />
-            ) : (
-              <BorrowedPositionsListItem
-                {...item}
-                key={item.underlyingAsset + item.borrowRateMode}
-              />
-            )
-          )}
+          {borrowPositions.map((item) => (
+            <Fragment key={item.underlyingAsset + item.borrowRateMode}>
+              <AssetCapsProvider asset={item.reserve}>
+                {downToXSM ? (
+                  <BorrowedPositionsListMobileItem {...item} />
+                ) : (
+                  <BorrowedPositionsListItem
+                    {...item}
+                    key={item.underlyingAsset + item.borrowRateMode}
+                  />
+                )}
+              </AssetCapsProvider>
+            </Fragment>
+          ))}
         </>
       ) : (
         <DashboardContentNoData text={<Trans>Nothing borrowed yet</Trans>} />
