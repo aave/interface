@@ -178,18 +178,26 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
   };
 
   // The selector only shows if there are 2 options for the user, which happens when there are 3 emodeCategories (including disable) for mode.enable, and 4 emodeCategories in mode.switch
-  const showModal =
+  const showModal: boolean =
     (Object.keys(emodeCategories).length >= 3 && mode === EmodeModalType.ENABLE) ||
     (Object.keys(emodeCategories).length >= 4 && mode === EmodeModalType.SWITCH);
 
   // is Network mismatched
-  const isWrongNetwork = currentChainId !== connectedChainId;
+  const isWrongNetwork: boolean = currentChainId !== connectedChainId;
 
   const ArrowRight: React.FC = () => (
     <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
       <ArrowNarrowRightIcon />
     </SvgIcon>
   );
+
+  // Shown only if the user is disabling eMode, is not blocked from disabling, and has a health factor that is decreasing
+  // HF will never decrease on enable or switch because all borrow positions must initially be in the eMode category
+  const showLiquidationRiskWarning: boolean =
+    !!selectedEmode &&
+    selectedEmode.id === 0 &&
+    blockingError === undefined &&
+    Number(newSummary.healthFactor).toFixed(2) < Number(user.healthFactor).toFixed(2); // Comparing without rounding causes stuttering, HFs update asyncronously
 
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
@@ -232,7 +240,7 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
       )}
 
       {blockingError === ErrorType.EMODE_DISABLED_LIQUIDATION && <Blocked />}
-      {blockingError === undefined && selectedEmode && selectedEmode.id === 0 && (
+      {showLiquidationRiskWarning && (
         <Warning severity="error" sx={{ mt: 6, alignItems: 'center' }}>
           <Typography variant="subheader1" color="#4F1919">
             <Trans>Liquidation risk</Trans>
