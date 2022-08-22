@@ -208,7 +208,7 @@ export const DashboardEModeButton = ({
 
           {isEModeDisabled ? (
             <Button
-              sx={{ width: '100%' }}
+              fullWidth
               variant={'gradient'}
               onClick={() => {
                 openEmode(EmodeModalType.ENABLE);
@@ -222,7 +222,8 @@ export const DashboardEModeButton = ({
             <>
               {eModes.length > 2 && (
                 <Button
-                  sx={{ width: '100%', mb: '6px' }}
+                  fullWidth
+                  sx={{ mb: '6px' }}
                   variant={'outlined'}
                   onClick={() => {
                     openEmode(EmodeModalType.SWITCH);
@@ -234,7 +235,7 @@ export const DashboardEModeButton = ({
                 </Button>
               )}
               <Button
-                sx={{ width: '100%' }}
+                fullWidth
                 variant={'outlined'}
                 onClick={() => {
                   openEmode(EmodeModalType.DISABLE);
