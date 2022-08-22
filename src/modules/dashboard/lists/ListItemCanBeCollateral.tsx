@@ -1,6 +1,5 @@
 import { CheckIcon, ExclamationCircleIcon } from '@heroicons/react/outline';
 import { Box, SvgIcon } from '@mui/material';
-
 import { NoData } from '../../../components/primitives/NoData';
 import { ListItemIsolationBadge } from './ListItemIsolationBadge';
 

@@ -101,7 +101,8 @@ const testData = {
   },
 };
 
-describe('USDT INTEGRATION SPEC, OPTIMISM V3 MARKET', () => {
+//Debt Ceiling max
+describe.skip('USDT INTEGRATION SPEC, OPTIMISM V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyOptimismFork({ v3: true });
 

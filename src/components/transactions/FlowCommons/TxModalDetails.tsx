@@ -1,4 +1,4 @@
-import { CheckIcon } from '@heroicons/react/outline';
+import { CheckIcon, ExclamationIcon } from '@heroicons/react/outline';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, FormControlLabel, SvgIcon, Switch, Typography } from '@mui/material';
@@ -147,6 +147,16 @@ export const DetailsCollateralLine = ({ collateralType }: DetailsCollateralLine)
   return (
     <Row caption={<Trans>Collateralization</Trans>} captionVariant="description" mb={4}>
       <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+        {collateralType === CollateralType.UNAVAILABLE && (
+          <>
+            <SvgIcon sx={{ color: 'error.main', fontSize: 16, mr: '2px' }}>
+              <ExclamationIcon />
+            </SvgIcon>
+            <Typography variant="description" color="error.main">
+              <Trans>Unavailable</Trans>
+            </Typography>
+          </>
+        )}
         {collateralType === CollateralType.ENABLED && (
           <>
             <SvgIcon sx={{ color: 'success.main', fontSize: 16, mr: '2px' }}>

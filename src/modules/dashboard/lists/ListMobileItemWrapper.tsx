@@ -1,6 +1,5 @@
 import { ReactNode } from 'react';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
-
 import { AMPLWarning } from '../../../components/infoTooltips/AMPLWarning';
 import { FrozenWarning } from '../../../components/infoTooltips/FrozenWarning';
 import { ListMobileItem } from '../../../components/lists/ListMobileItem';
@@ -14,6 +13,9 @@ interface ListMobileItemWrapperProps {
   loading?: boolean;
   currentMarket?: CustomMarket;
   frozen?: boolean;
+  showSupplyCapTooltips?: boolean;
+  showBorrowCapTooltips?: boolean;
+  showDebtCeilingTooltips?: boolean;
 }
 
 export const ListMobileItemWrapper = ({
@@ -25,6 +27,9 @@ export const ListMobileItemWrapper = ({
   loading,
   currentMarket,
   frozen,
+  showSupplyCapTooltips = false,
+  showBorrowCapTooltips = false,
+  showDebtCeilingTooltips = false,
 }: ListMobileItemWrapperProps) => {
   return (
     <ListMobileItem
@@ -37,6 +42,9 @@ export const ListMobileItemWrapper = ({
       }
       loading={loading}
       currentMarket={currentMarket}
+      showSupplyCapTooltips={showSupplyCapTooltips}
+      showBorrowCapTooltips={showBorrowCapTooltips}
+      showDebtCeilingTooltips={showDebtCeilingTooltips}
     >
       {children}
     </ListMobileItem>

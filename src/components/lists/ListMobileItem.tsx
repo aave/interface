@@ -1,9 +1,9 @@
 import { Box, Divider, Skeleton, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
-
 import { Link, ROUTES } from '../primitives/Link';
 import { TokenIcon } from '../primitives/TokenIcon';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
 
 interface ListMobileItemProps {
   warningComponent?: ReactNode;
@@ -14,6 +14,9 @@ interface ListMobileItemProps {
   underlyingAsset?: string;
   loading?: boolean;
   currentMarket?: CustomMarket;
+  showSupplyCapTooltips?: boolean;
+  showBorrowCapTooltips?: boolean;
+  showDebtCeilingTooltips?: boolean;
 }
 
 export const ListMobileItem = ({
@@ -25,11 +28,15 @@ export const ListMobileItem = ({
   underlyingAsset,
   loading,
   currentMarket,
+  showSupplyCapTooltips = false,
+  showBorrowCapTooltips = false,
+  showDebtCeilingTooltips = false,
 }: ListMobileItemProps) => {
+  const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
+
   return (
     <Box>
       <Divider />
-
       <Box sx={{ px: 4, pt: 4, pb: 6 }}>
         <Box sx={{ mb: 4, display: 'flex', alignItems: 'center' }}>
           {loading ? (
@@ -56,13 +63,14 @@ export const ListMobileItem = ({
                     {symbol}
                   </Typography>
                 </Box>
+                {showSupplyCapTooltips && supplyCap.displayMaxedTooltip({ supplyCap })}
+                {showBorrowCapTooltips && borrowCap.displayMaxedTooltip({ borrowCap })}
+                {showDebtCeilingTooltips && debtCeiling.displayMaxedTooltip({ debtCeiling })}
               </Link>
             )
           )}
-
           {warningComponent}
         </Box>
-
         {children}
       </Box>
     </Box>

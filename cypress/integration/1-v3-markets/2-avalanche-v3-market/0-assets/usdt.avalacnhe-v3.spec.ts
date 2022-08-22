@@ -100,8 +100,8 @@ const testData = {
     ],
   },
 };
-
-describe('USDT INTEGRATION SPEC, AVALANCHE V3 MARKET', () => {
+//limit
+describe.skip('USDT INTEGRATION SPEC, AVALANCHE V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyAvalancheFork({ market: 'fork_proto_avalanche_v3', v3: true });
 
