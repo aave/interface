@@ -127,8 +127,7 @@ export const RepayModalContent = ({
     // set possible repay tokens
     // if wrapped reserve push both wrapped / native
     if (poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol) {
-      // we substract a bit so user can still pay for the tx
-      const nativeTokenWalletBalance = valueToBigNumber(nativeBalance).minus('0.004');
+      const nativeTokenWalletBalance = valueToBigNumber(nativeBalance);
       const maxNativeToken = BigNumber.max(
         nativeTokenWalletBalance,
         BigNumber.min(nativeTokenWalletBalance, debt)
