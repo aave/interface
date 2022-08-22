@@ -52,19 +52,6 @@ export type NetworkConfig = {
 export type BaseNetworkConfig = Omit<NetworkConfig, 'explorerLinkBuilder'>;
 
 export const networkConfigs: Record<string, BaseNetworkConfig> = {
-  [ChainId.kovan]: {
-    name: 'Ethereum Kovan',
-    publicJsonRPCUrl: ['https://eth-kovan.alchemyapi.io/v2/demo', 'https://kovan.poa.network'],
-    // protocolDataUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2-kovan',
-    baseUniswapAdapter: '0xf86Be05f535EC2d217E4c6116B3fa147ee5C05A1',
-    baseAssetSymbol: 'ETH',
-    wrappedBaseAssetSymbol: 'WETH',
-    baseAssetDecimals: 18,
-    explorerLink: 'https://kovan.etherscan.io',
-    // rpcOnly: true,
-    isTestnet: true,
-    networkLogoPath: '/icons/networks/ethereum.svg',
-  },
   [ChainId.goerli]: {
     name: 'Ethereum Görli',
     publicJsonRPCUrl: ['https://eth-goerli.alchemyapi.io/v2/demo', 'https://goerli.prylabs.net'],
@@ -286,26 +273,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://optimistic.etherscan.io',
     // rpcOnly: true,
     // usdMarket: true,
-    networkLogoPath: '/icons/networks/optimism.svg',
-    bridge: {
-      icon: '/icons/bridge/optimism.svg',
-      name: 'Optimism Bridge',
-      url: 'https://app.optimism.io/bridge',
-    },
-  },
-  [ChainId.optimism_kovan]: {
-    name: 'Optimism Kovan',
-    publicJsonRPCUrl: ['https://kovan.optimism.io'],
-    publicJsonRPCWSUrl: 'wss://ws-kovan.optimism.io',
-    // protocolDataUrl: '',
-    baseUniswapAdapter: '0x0',
-    baseAssetSymbol: 'ETH', // KOR
-    wrappedBaseAssetSymbol: 'WETH',
-    baseAssetDecimals: 18,
-    explorerLink: 'https://kovan-optimistic.etherscan.io',
-    // rpcOnly: true,
-    // usdMarket: true,
-    isTestnet: true,
     networkLogoPath: '/icons/networks/optimism.svg',
     bridge: {
       icon: '/icons/bridge/optimism.svg',
