@@ -1,17 +1,18 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { JsonRpcProvider } from '@ethersproject/providers';
 import axios from 'axios';
-import { getDefaultProvider, Contract, utils } from 'ethers';
+import { getDefaultProvider, Contract, utils, Wallet } from 'ethers';
 import ERC20_ABI from '../../fixtures/erc20_abi.json';
 import POOL_CONFIG_ABI from '../../fixtures/poolConfig.json';
 
 const TENDERLY_KEY = Cypress.env('TENDERLY_KEY');
 const TENDERLY_ACCOUNT = Cypress.env('TENDERLY_ACCOUNT');
 const TENDERLY_PROJECT = Cypress.env('TENDERLY_PROJECT');
+const WALLET = Wallet.createRandom();
 
 export const DEFAULT_TEST_ACCOUNT = {
-  privateKey: '5de4111afa1a4b94908f83103eb1f1706367c2e68ca870fc3fb9a804cdab365a',
-  address: '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC'.toLowerCase(),
+  privateKey: WALLET.privateKey,
+  address: WALLET.address.toLowerCase(),
 };
 
 const tenderly = axios.create({
