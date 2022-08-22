@@ -8,7 +8,7 @@ const folder = `./cypress/e2e/0-v2-markets/3-avalanche-v2-market/`;
 export default defineConfig({
   ...defaultConfig,
   e2e: {
-    specPattern: [folder + '**.cy.ts'],
+    specPattern: [folder + "**/*.*"],
     excludeSpecPattern: [
       'avax.avalanche-v2.cy.ts',
       'usdt.avalanche-v2.cy.ts',
