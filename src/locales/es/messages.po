@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-08-23 00:22\n"
+"PO-Revision-Date: 2022-08-23 06:13\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -110,8 +110,9 @@ msgid "Address is not a contract"
 msgstr "La dirección no es un contrato"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
-msgid "All"
-msgstr "Todo"
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+msgid "All Assets"
+msgstr ""
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "All done!"
@@ -188,7 +189,6 @@ msgstr "El activo solo puede usarse como garantía en el Isolation mode únicame
 msgid "Asset cannot be used as collateral."
 msgstr "El activo no puede usarse como garantía."
 
-#: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeSelect.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Asset category"
@@ -384,6 +384,10 @@ msgstr "Puede ser garantía"
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "Can be executed"
 msgstr "Puede ser ejecutado"
+
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+msgid "Cannot disable E-Mode"
+msgstr ""
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Cap reached. Lower supply amount"
@@ -638,6 +642,10 @@ msgstr "E-Mode"
 msgid "E-Mode Category"
 msgstr "Categoría E-Mode"
 
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+msgid "E-Mode category"
+msgstr ""
+
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode increases your LTV for a selected category of assets up to 97%. <0>Learn more</0>"
 msgstr "El E-Mode incrementa tu LTV hasta el 97% para una categoría seleccionada de activos. <0>Aprende más</0>"
@@ -681,8 +689,8 @@ msgid "Enabling E-Mode"
 msgstr "Habilitar E-Mode"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
-msgid "Enabling E-Mode only allows you to borrow assets belonging to the selected category Stablecoins. Please visit our <0>FAQ guide</0> to learn more about how it works and the applied restrictions."
-msgstr "Activar el modo E-mode te permite solo pedir prestado activos que pertenezcan a la categoría seleccionada de Stablecoins. Por favor visita nuestra <0>guía de Preguntas Frecuentes</0> para aprender más sobre cómo funciona y las restricciones que se aplican."
+msgid "Enabling E-Mode only allows you to borrow assets belonging to the selected category. Please visit our <0>FAQ guide</0> to learn more about how it works and the applied restrictions."
+msgstr ""
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "Enabling this asset as collateral increases your borrowing power and Health Factor. However, it can get liquidated if your health factor drops below 1."
@@ -830,10 +838,6 @@ msgstr "En E-Mode algunos activos no se pueden pedir prestados. Sal del E-Mode p
 msgid "In Isolation mode, you cannot supply other assets as collateral. A global debt ceiling limits the borrowing power of the isolated asset. To exit isolation mode disable {0} as collateral before borrowing another asset. Read more in our <0>FAQ</0>"
 msgstr "En el Isolation mode, no puedes suministrar otros activos como garantía. Un límite de deuda global limita la capacidad de deuda del activo aislado. Para salir del Isolation mode, deshabilita {0} como garantía antes de tomar prestado otro activo. Lee más en nuestras <0>preguntas frecuentes </0>"
 
-#: src/components/transactions/Emode/EmodeModalContent.tsx
-msgid "In order to change E-Mode from asset category{0}you will need to close your position in your current category. See our <0>FAQ</0> to learn more."
-msgstr "Para cambiar el E-Mode de la categoría de activos{0}, necesitarás cerrar tu posición en tu categoría actual. Mira nuestras <0>Preguntas Frecuentes</0> para aprender más."
-
 #: src/ui-config/errorMapping.tsx
 msgid "Inconsistent flashloan parameters"
 msgstr "Parámetros inconsistentes del préstamo flash"
@@ -921,6 +925,10 @@ msgstr "Liquidación en"
 msgid "Liquidation penalty"
 msgstr "Penalización de liquidación"
 
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+msgid "Liquidation risk"
+msgstr ""
+
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Liquidation risk parameters"
 msgstr "Parámetros de riesgo de liquidación"
@@ -986,6 +994,10 @@ msgstr ""
 msgid "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
 msgstr ""
 
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+msgid "Maximum loan to value"
+msgstr ""
+
 #: src/layouts/MobileMenu.tsx
 msgid "Menu"
 msgstr "Menú"
@@ -1043,6 +1055,7 @@ msgstr "No hay recompensas para reclamar"
 msgid "No voting power"
 msgstr "Sin poder de voto"
 
+#: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "None"
 msgstr "Ninguno"
@@ -1318,6 +1331,10 @@ msgstr "Reporte de seatbelt"
 msgid "Seems like we can't switch the network automatically. Please check if you can change it from the wallet."
 msgstr "Parece que no podemos cambiar la red automáticamente. Por favor, compruebe si puede cambiarla desde la billetera."
 
+#: src/components/transactions/Emode/EmodeSelect.tsx
+msgid "Select"
+msgstr ""
+
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
 msgid "Select APY type to switch"
 msgstr "Seleccione el tipo APY para cambiar"
@@ -1505,6 +1522,14 @@ msgstr "Intercambiando"
 msgid "Switch APY type"
 msgstr "Cambiar el tipo de APY"
 
+#: src/components/transactions/Emode/EmodeActions.tsx
+msgid "Switch E-Mode"
+msgstr ""
+
+#: src/modules/dashboard/DashboardEModeButton.tsx
+msgid "Switch E-Mode category"
+msgstr ""
+
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Switch Network"
 msgstr "Cambiar de red"
@@ -1516,6 +1541,10 @@ msgstr "Tasa de cambio"
 #: src/ui-config/menu-items/index.tsx
 msgid "Switch to Aave Classic"
 msgstr "Cambiar a Aave Classic"
+
+#: src/components/transactions/Emode/EmodeActions.tsx
+msgid "Switching E-Mode"
+msgstr ""
 
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switching rate"
@@ -1625,6 +1654,10 @@ msgstr "Hubo un error. Por favor intenta cambiar los parámetros o <0><1>copiar 
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
 msgstr "Estos fondos han sido prestados y no están disponibles para su retirada en este momento."
 
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+msgid "This action will reduce your health factor. Please be mindful of the increased risk of collateral liquidation."
+msgstr ""
+
 #: src/components/AddressBlockedModal.tsx
 msgid "This address is blocked on app.aave.com because it is associated with one or more"
 msgstr "Esta dirección está bloqueada en app.aave.com porque está asociada con una o más"
@@ -1681,6 +1714,10 @@ msgstr "Tiempo restante hasta que se cierre la ventana de retiro."
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "To borrow you need to supply any asset to be used as collateral."
 msgstr "Para tomar prestado, necesitas proporcionar cualquier activo para ser utilizado como garantía."
+
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+msgid "To enable E-mode for the {0} category, all borrow positions outside of this cateogry must be closed."
+msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "To repay on behalf of a user an explicit amount to repay is needed"
@@ -1985,10 +2022,6 @@ msgstr "No tienes suficientes fondos en tu cartera para pagar la cantidad total.
 msgid "You have not borrow yet using this currency"
 msgstr "Aún no has tomado prestado usando este activo"
 
-#: src/components/transactions/Emode/EmodeModalContent.tsx
-msgid "You need to change E-Mode to continue."
-msgstr "Necesitas cambiar el E-Mode para continuar."
-
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You switched to {0} rate"
 msgstr "Has cambiado a tasa {0}"
@@ -2070,11 +2103,6 @@ msgstr "actividades bloqueadas"
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "copy the error"
 msgstr "copiar el error"
-
-#: src/components/transactions/Emode/EmodeSelect.tsx
-#: src/components/transactions/Emode/EmodeSelect.tsx
-msgid "disabled"
-msgstr "deshabilitado"
 
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "documentation"
