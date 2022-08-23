@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-08-12 18:22\n"
+"PO-Revision-Date: 2022-08-23 00:22\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -202,6 +202,10 @@ msgstr "Το περιουσιακό στοιχείο δεν είναι δανε�
 msgid "Asset is not listed"
 msgstr "Το περιουσιακό στοιχείο δεν περιλαμβάνεται στον κατάλογο"
 
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
+msgstr ""
+
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Asset to delegate"
 msgstr "Περιουσιακό στοιχείο προς εκχώρηση"
@@ -268,8 +272,8 @@ msgid "Before supplying"
 msgstr "Πριν από την προμήθεια"
 
 #: src/components/infoModalContents/ApprovalInfoContent.tsx
-msgid "Before supplying, you need to approve its usage by the Aave protocol. You can learn more in our<0>FAQ</0>"
-msgstr "Πριν από την προμήθεια, πρέπει να εγκρίνετε τη χρήση του από το πρωτόκολλο Aave. Μπορείτε να μάθετε περισσότερα στις<0>Συχνές Ερωτήσεις</0> μας"
+msgid "Before supplying, you need to approve its usage by the Aave protocol. You can learn more in our <0>FAQ</0>"
+msgstr ""
 
 #: src/components/AddressBlockedModal.tsx
 msgid "Blocked Address"
@@ -342,6 +346,10 @@ msgstr "Ο δανεισμός δεν είναι διαθέσιμος επειδ�
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 msgstr "Ο δανεισμός δεν είναι διαθέσιμος επειδή έχετε ενεργοποιήσει τη λειτουργία Αποδοτικότητας (E-Mode) για την κατηγορία {0}. Για να διαχειριστείτε τις κατηγορίες E-Mode επισκεφθείτε τον <0>Πίνακα ελέγχου</0>."
+
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
+msgstr ""
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Borrowing power and assets are limited due to Isolation mode."
@@ -524,6 +532,10 @@ msgstr "Ταμπλό"
 msgid "Debt"
 msgstr "Χρέος"
 
+#: src/components/caps/DebtCeilingStatus.tsx
+msgid "Debt Ceiling"
+msgstr ""
+
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Debt amount to repay"
 msgstr "Ποσό χρέους προς αποπληρωμή"
@@ -535,6 +547,10 @@ msgstr "Υπέρβαση του ανώτατου ορίου χρέους"
 #: src/ui-config/errorMapping.tsx
 msgid "Debt ceiling is not zero"
 msgstr "Το ανώτατο όριο χρέους δεν είναι μηδενικό"
+
+#: src/components/caps/DebtCeilingStatus.tsx
+msgid "Debt ceiling limits the amount possible to borrow against this asset by protocol users."
+msgstr ""
 
 #: src/components/infoModalContents/RetryWithApprovalInfoContent.tsx
 msgid "Define Retry with Approval text"
@@ -866,8 +882,17 @@ msgstr "Τα απομονωμένα περιουσιακά στοιχεία έχ
 msgid "Language"
 msgstr "Γλώσσα"
 
+#: src/components/caps/DebtCeilingStatus.tsx
+#: src/components/infoTooltips/BorrowCapMaxedTooltip.tsx
+#: src/components/infoTooltips/DebtCeilingMaxedTooltip.tsx
+#: src/components/infoTooltips/SupplyCapMaxedTooltip.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+#: src/components/transactions/Warnings/BorrowCapWarning.tsx
+#: src/components/transactions/Warnings/DebtCeilingWarning.tsx
+#: src/components/transactions/Warnings/SupplyCapWarning.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Learn more"
 msgstr "Μάθετε περισσότερα"
 
@@ -943,6 +968,23 @@ msgstr "Μέγιστη περικοπή"
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Max slippage rate"
 msgstr "Μέγιστο ποσοστό ολίσθησης"
+
+#: src/components/transactions/Warnings/DebtCeilingWarning.tsx
+msgid "Maximum amount available to borrow against this asset is limited because debt ceiling is at {0}%."
+msgstr ""
+
+#: src/components/transactions/Warnings/BorrowCapWarning.tsx
+msgid "Maximum amount available to borrow is limited because protocol borrow cap is nearly reached."
+msgstr ""
+
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Maximum amount available to supply is <0/> {0} (<1/>)."
+msgstr ""
+
+#: src/components/transactions/Warnings/SupplyCapWarning.tsx
+msgid "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
+msgstr ""
 
 #: src/layouts/MobileMenu.tsx
 msgid "Menu"
@@ -1128,6 +1170,30 @@ msgstr "Προτάσεις"
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Proposition power"
 msgstr "Ισχύς πρότασης"
+
+#: src/components/infoTooltips/BorrowCapMaxedTooltip.tsx
+msgid "Protocol borrow cap at 100% for this asset. Further borrowing unavailable."
+msgstr ""
+
+#: src/components/transactions/Warnings/BorrowCapWarning.tsx
+msgid "Protocol borrow cap is at 100% for this asset. Further borrowing unavailable."
+msgstr ""
+
+#: src/components/transactions/Warnings/DebtCeilingWarning.tsx
+msgid "Protocol debt ceiling is at 100% for this asset. Further borrowing against this asset is unavailable."
+msgstr ""
+
+#: src/components/infoTooltips/DebtCeilingMaxedTooltip.tsx
+msgid "Protocol debt ceiling is at 100% for this asset. Futher borrowing against this asset is unavailable."
+msgstr ""
+
+#: src/components/infoTooltips/SupplyCapMaxedTooltip.tsx
+msgid "Protocol supply cap at 100% for this asset. Further supply unavailable."
+msgstr ""
+
+#: src/components/transactions/Warnings/SupplyCapWarning.tsx
+msgid "Protocol supply cap is at 100% for this asset. Further supply unavailable."
+msgstr ""
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 #: src/modules/governance/ProposalListItem.tsx
@@ -1390,10 +1456,6 @@ msgstr "Προσφορά"
 msgid "Supply APY"
 msgstr "Προσφορά APY"
 
-#: src/components/transactions/Warnings/SupplyCapWarning.tsx
-msgid "Supply amount is limited due to Supply Cap"
-msgstr "Η ποσότητα εφοδιασμού είναι περιορισμένη λόγω του Ανώτατου Ορίου Εφοδιασμού"
-
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Supply apy"
 msgstr "Προσφορά apy"
@@ -1404,10 +1466,6 @@ msgstr "Προσφορά apy"
 msgid "Supply balance"
 msgstr "Υπόλοιπο προσφοράς"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "Supply cap"
-msgstr "Ανώτατο όριο προσφοράς"
-
 #: src/ui-config/errorMapping.tsx
 msgid "Supply cap is exceeded"
 msgstr "Υπέρβαση του ανώτατου ορίου προσφοράς"
@@ -1416,10 +1474,6 @@ msgstr "Υπέρβαση του ανώτατου ορίου προσφοράς"
 msgid "Supply cap on target reserve reached. Try lowering the amount."
 msgstr "Επίτευξη του ανώτατου ορίου εφοδιασμού στο αποθεματικό-στόχο. Δοκιμάστε να \n"
 "μειώσετε την ποσότητα."
-
-#: src/components/transactions/Warnings/SupplyCapWarning.tsx
-msgid "Supply caps limit the amount of a certain asset that can be supplied to the Aave protocol. This helps reducing exposure to the asset and mitigate attacks like infinite minting or price oracle manipulation.<0>FAQ guide</0>."
-msgstr "Τα ανώτατα όρια προσφοράς περιορίζουν την ποσότητα ενός συγκεκριμένου περιουσιακού στοιχείου που μπορεί να παρασχεθεί στο πρωτόκολλο Aave. Αυτό συμβάλλει στη μείωση της έκθεσης στο περιουσιακό στοιχείο και στον μετριασμό επιθέσεων όπως η άπειρη νομισματοκοπία ή η χειραγώγηση του oracle τιμών.<0>Οδηγός Συχνών Ερωτήσεων</0>."
 
 #: src/components/transactions/Supply/SupplyActions.tsx
 msgid "Supply {symbol}"
@@ -1644,6 +1698,7 @@ msgstr "Σύνολο διαθέσιμων"
 #: src/modules/markets/AssetsList.tsx
 #: src/modules/markets/AssetsListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Total borrowed"
 msgstr "Σύνολο δανεικών"
 
@@ -1661,6 +1716,7 @@ msgstr "Συνολικό μέγεθος της αγοράς"
 
 #: src/modules/markets/AssetsList.tsx
 #: src/modules/markets/AssetsListMobileItem.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Total supplied"
 msgstr "Σύνολο παρεχόμενων"
@@ -1693,6 +1749,7 @@ msgstr "ΞΕΚΛΕΙΔΩΜΑ {symbol}"
 msgid "UNSTAKING {symbol}"
 msgstr "ΞΕΚΛΕΙΔΩΜΑ {symbol}"
 
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Unavailable"
 msgstr "Μη διαθέσιμο"
@@ -2035,6 +2092,14 @@ msgstr "εδώ."
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "is an asset affected by rebasing. Visit the"
 msgstr "είναι ένα περιουσιακό στοιχείο που επηρεάζεται από την αναπροσαρμογή. Επισκεφθείτε το"
+
+#: src/components/caps/DebtCeilingStatus.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "of"
+msgstr ""
 
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "on"
