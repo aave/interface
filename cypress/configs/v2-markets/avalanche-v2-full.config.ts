@@ -10,11 +10,11 @@ export default defineConfig({
   e2e: {
     specPattern: [folder + "**/*.*"],
     excludeSpecPattern: [
-      'avax.avalanche-v2.cy.ts',
-      'usdt.avalanche-v2.cy.ts',
-      'reward.avalanche-v2.cy.ts',
-      'swap.avalanche-v2.cy.ts',
-      'critical-conditions.avalanche-v2.cy.ts',
+      'assets/avax.avalanche-v2.cy.ts',
+      'assets/usdt.avalanche-v2.cy.ts',
+      './reward.avalanche-v2.cy.ts',
+      './swap.avalanche-v2.cy.ts',
+      './critical-conditions.avalanche-v2.cy.ts',
     ],
   },
 });
