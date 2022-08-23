@@ -675,6 +675,10 @@ msgstr "English"
 msgid "Enter ETH address"
 msgstr "Enter ETH address"
 
+#: src/components/WalletConnection/WalletSelector.tsx
+msgid "Enter an address to track in watch-only mode"
+msgstr "Enter an address to track in watch-only mode"
+
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Enter an amount"
 msgstr "Enter an amount"

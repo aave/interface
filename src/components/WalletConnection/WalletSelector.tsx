@@ -3,7 +3,7 @@ import { Alert, Box, Button, InputBase, Link, Typography } from '@mui/material';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { WalletType } from 'src/libs/web3-data-provider/WalletOptions';
 import { useMockWalletAddressContext } from 'src/hooks/useMockWalletAddressContext';
-import { GasTooltip } from 'src/components/infoTooltips/GasTooltip';
+import { WatchOnlyModeToolTip } from 'src/components/infoTooltips/WatchOnlyModeTooltip';
 import { TxModalTitle } from '../transactions/FlowCommons/TxModalTitle';
 import { Trans } from '@lingui/macro';
 import { UnsupportedChainIdError } from '@web3-react/core';
@@ -154,11 +154,11 @@ export const WalletSelector = () => {
       />
       <WalletRow key="torus_wallet" walletName="Torus" walletType={WalletType.TORUS} />
       <WalletRow key="frame_wallet" walletName="Frame" walletType={WalletType.FRAME} />
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, padding: '10px 0' }}>
         <Typography variant="subheader1" color="text.secondary">
           <Trans>Enter an address to track in watch-only mode</Trans>
         </Typography>
-        <GasTooltip />
+        <WatchOnlyModeToolTip />
       </Box>
       <Box
         sx={(theme) => ({
@@ -169,8 +169,8 @@ export const WalletSelector = () => {
         })}
       >
         <InputBase
-          sx={{ flex: 1 }}
-          placeholder="Paste ethereum address..."
+          sx={{ flex: 1, overflow: 'show' }}
+          placeholder="Paste ethereum address"
           autoFocus
           value={inputMockWalletAddress}
           onChange={(e) => {
@@ -179,10 +179,7 @@ export const WalletSelector = () => {
           inputProps={{
             'aria-label': 'amount input',
             style: {
-              fontSize: '16px',
-              lineHeight: '20,01px',
               padding: 0,
-              height: '20px',
             },
           }}
         />
