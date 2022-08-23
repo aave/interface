@@ -44,6 +44,8 @@ export type Web3Data = {
   error: Error | undefined;
   switchNetworkError: Error | undefined;
   setSwitchNetworkError: (err: Error | undefined) => void;
+  setMockWalletAddress: (mockWalletAddress: string) => void;
+  mockAddress: string | undefined;
 };
 
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
@@ -115,6 +117,11 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       localStorage.removeItem('mockWalletAddress');
     }
   }, [provider, connector]);
+
+  const setMockWalletAddress = (mockWalletAddress: string) => {
+    setMockAddress(mockWalletAddress);
+    localStorage.setItem('mockWalletAddress', mockWalletAddress);
+  };
 
   // connect to the wallet specified by wallet type
   const connectWallet = useCallback(
@@ -403,6 +410,8 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           error,
           switchNetworkError,
           setSwitchNetworkError,
+          setMockWalletAddress,
+          mockAddress,
         },
       }}
     >

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Alert, Box, Button, InputBase, Link, Typography } from '@mui/material';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { WalletType } from 'src/libs/web3-data-provider/WalletOptions';
-import { useMockWalletAddressContext } from 'src/hooks/useMockWalletAddressContext';
 import { WatchOnlyModeToolTip } from 'src/components/infoTooltips/WatchOnlyModeTooltip';
 import { TxModalTitle } from '../transactions/FlowCommons/TxModalTitle';
 import { Trans } from '@lingui/macro';
@@ -97,8 +96,7 @@ export enum ErrorType {
 }
 
 export const WalletSelector = () => {
-  const { setMockWalletAddress } = useMockWalletAddressContext();
-  const { error } = useWeb3Context();
+  const { error, setMockWalletAddress } = useWeb3Context();
   const [inputMockWalletAddress, setInputMockWalletAddress] = useState('');
 
   let blockingError: ErrorType | undefined = undefined;
@@ -169,7 +167,7 @@ export const WalletSelector = () => {
         })}
       >
         <InputBase
-          sx={{ flex: 1, overflow: 'show' }}
+          sx={{ flex: 1, overflow: 'show', width: '100%' }}
           placeholder="Paste ethereum address"
           autoFocus
           value={inputMockWalletAddress}

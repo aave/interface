@@ -23,7 +23,6 @@ import makeBlockie from 'ethereum-blockies-base64';
 import React, { useEffect, useState } from 'react';
 import { WalletModal } from 'src/components/WalletConnection/WalletModal';
 import { useWalletModalContext } from 'src/hooks/useWalletModal';
-import { useMockWalletAddressContext } from 'src/hooks/useMockWalletAddressContext';
 import useGetEns from 'src/libs/hooks/use-get-ens';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
@@ -40,10 +39,10 @@ interface WalletWidgetProps {
 }
 
 export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidgetProps) {
-  const { disconnectWallet, currentAccount, connected, chainId, loading } = useWeb3Context();
+  const { disconnectWallet, currentAccount, connected, chainId, loading, mockAddress } =
+    useWeb3Context();
 
   const { setWalletModalOpen } = useWalletModalContext();
-  const { mockWalletAddress } = useMockWalletAddressContext();
 
   const { breakpoints } = useTheme();
   const xsm = useMediaQuery(breakpoints.down('xsm'));
@@ -80,7 +79,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
   };
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    if (!connected) {
+    if (!connected && !mockAddress) {
       setWalletModalOpen(true);
     } else {
       setOpen(true);
@@ -89,7 +88,8 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
   };
 
   const handleDisconnect = () => {
-    if (connected) {
+    if (connected || mockAddress) {
+      console.log('disconnect');
       disconnectWallet();
       handleClose();
       localStorage.removeItem('mockWalletAddress');
@@ -190,7 +190,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
               </Typography>
             </Box>
           </Box>
-          {mockWalletAddress && (
+          {mockAddress && (
             <Alert severity="warning" sx={{ my: '10px' }}>
               <Trans>Watch-only mode.</Trans>
             </Alert>
@@ -313,7 +313,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
         <Skeleton height={36} width={126} sx={{ background: '#383D51' }} />
       ) : (
         <Button
-          variant={connected ? 'surface' : 'gradient'}
+          variant={connected || mockAddress ? 'surface' : 'gradient'}
           aria-label="wallet"
           id="wallet-button"
           aria-controls={open ? 'wallet-button' : undefined}
@@ -321,12 +321,12 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           aria-haspopup="true"
           onClick={handleClick}
           sx={{
-            p: connected ? '5px 8px' : undefined,
+            p: connected || mockAddress ? '5px 8px' : undefined,
             minWidth: hideWalletAccountText ? 'unset' : undefined,
           }}
-          startIcon={connected && !hideWalletAccountText && accountAvatar}
+          startIcon={(connected || mockAddress) && !hideWalletAccountText && accountAvatar}
           endIcon={
-            connected &&
+            (connected || mockAddress) &&
             !hideWalletAccountText && (
               <SvgIcon
                 sx={{
