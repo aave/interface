@@ -1,23 +1,9 @@
-import React, { ReactNode } from 'react';
 import { Trans } from '@lingui/macro';
-import {
-  Alert,
-  Box,
-  BoxProps,
-  Divider,
-  SvgIcon,
-  Typography,
-  TypographyProps,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { Alert, Box, Divider, SvgIcon, Typography } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { useReserveRatesHistory } from 'src/hooks/useReservesHistory';
-import { ParentSize } from '@visx/responsive';
-import { ApyChart } from '../reserve-overview/ApyChart';
-import { InterestRateModelChart } from '../reserve-overview/InterestRateModelChart';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
@@ -38,98 +24,9 @@ import { ReserveFactorOverview } from 'src/modules/reserve-overview/ReserveFacto
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { valueToBigNumber } from '@aave/math-utils';
-
-export const PanelRow: React.FC<BoxProps> = (props) => (
-  <Box
-    {...props}
-    sx={{
-      position: 'relative',
-      display: { xs: 'block', md: 'flex' },
-      margin: '0 auto',
-      ...props.sx,
-    }}
-  />
-);
-export const PanelTitle: React.FC<TypographyProps> = (props) => (
-  <Typography
-    {...props}
-    variant="subheader1"
-    sx={{ minWidth: { xs: '170px' }, mr: 4, mb: { xs: 6, md: 0 }, ...props.sx }}
-  />
-);
-
-interface PanelColumnProps {
-  children?: ReactNode;
-}
-
-export const PanelColumn = ({ children }: PanelColumnProps) => {
-  return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        justifyContent: 'flex-end',
-        flex: 1,
-        overflow: 'hidden',
-        py: 1,
-      }}
-    >
-      {children}
-    </Box>
-  );
-};
-
-interface PanelItemProps {
-  title: ReactNode;
-}
-
-export const PanelItem: React.FC<PanelItemProps> = ({ title, children }) => {
-  const theme = useTheme();
-  const mdUp = useMediaQuery(theme.breakpoints.up('md'));
-
-  return (
-    <Box
-      sx={{
-        position: 'relative',
-        '&:not(:last-child)': {
-          pr: 4,
-          mr: 4,
-        },
-        ...(mdUp
-          ? {
-              '&:not(:last-child)::after': {
-                content: '""',
-                height: '32px',
-                position: 'absolute',
-                right: 4,
-                top: 'calc(50% - 17px)',
-                borderRight: (theme) => `1px solid ${theme.palette.divider}`,
-              },
-            }
-          : {}),
-      }}
-    >
-      <Typography color="text.secondary">{title}</Typography>
-      <PanelColumn>{children}</PanelColumn>
-    </Box>
-  );
-};
-
-const ChartContainer: React.FC<BoxProps> = (props) => (
-  <Box
-    {...props}
-    sx={{
-      minWidth: 0,
-      width: '100%',
-      maxWidth: '100%',
-      height: 300,
-      marginLeft: 0,
-      flexGrow: 1,
-      ...props.sx,
-    }}
-  />
-);
+import { ApyGraphContainer } from './graphs/ApyGraphContainer';
+import { InteresetRateModelGraphContainer } from './graphs/InterestRateModelGraphContainer';
+import { PanelRow, PanelTitle, PanelItem } from './ReservePanels';
 
 type ReserveConfigurationProps = {
   reserve: ComputedReserveData;
@@ -300,18 +197,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
             )}
           </Box>
           {renderCharts && !error && reserve.borrowingEnabled && (
-            <ChartContainer sx={{ mt: 4, pb: 8 }}>
-              <ParentSize>
-                {(parent) => (
-                  <ApyChart
-                    width={parent.width}
-                    height={parent.height}
-                    data={data}
-                    fields={[{ name: 'liquidityRate', color: '#2EBAC6', text: 'Supply APR' }]}
-                  />
-                )}
-              </ParentSize>
-            </ChartContainer>
+            <ApyGraphContainer graphKey="supply" reserve={reserve} historicalData={data} />
           )}
           <div>
             {reserve.isIsolated ? (
@@ -567,33 +453,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                 )}
               </Box>
               {renderCharts && !error && (
-                <ChartContainer sx={{ mt: 8 }}>
-                  <ParentSize>
-                    {(parent) => (
-                      <ApyChart
-                        width={parent.width}
-                        height={parent.height}
-                        data={data}
-                        fields={[
-                          ...(reserve.stableBorrowRateEnabled
-                            ? ([
-                                {
-                                  name: 'stableBorrowRate',
-                                  color: '#0062D2',
-                                  text: 'Borrow APR, stable',
-                                },
-                              ] as const)
-                            : []),
-                          {
-                            name: 'variableBorrowRate',
-                            color: '#B6509E',
-                            text: 'Borrow APR, variable',
-                          },
-                        ]}
-                      />
-                    )}
-                  </ParentSize>
-                </ChartContainer>
+                <ApyGraphContainer graphKey="borrow" reserve={reserve} historicalData={data} />
               )}
               <Box
                 sx={{ display: 'inline-flex', alignItems: 'center', pt: '42px', pb: '12px' }}
@@ -727,27 +587,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
 
           <PanelRow>
             <PanelTitle>Interest rate model</PanelTitle>
-            <ChartContainer>
-              <ParentSize>
-                {(parent) => (
-                  <InterestRateModelChart
-                    width={parent.width}
-                    height={parent.height}
-                    reserve={{
-                      baseStableBorrowRate: reserve.baseStableBorrowRate,
-                      baseVariableBorrowRate: reserve.baseVariableBorrowRate,
-                      optimalUsageRatio: reserve.optimalUsageRatio,
-                      stableRateSlope1: reserve.stableRateSlope1,
-                      stableRateSlope2: reserve.stableRateSlope2,
-                      utilizationRate: reserve.borrowUsageRatio,
-                      variableRateSlope1: reserve.variableRateSlope1,
-                      variableRateSlope2: reserve.variableRateSlope2,
-                      stableBorrowRateEnabled: reserve.stableBorrowRateEnabled,
-                    }}
-                  />
-                )}
-              </ParentSize>
-            </ChartContainer>
+            <InteresetRateModelGraphContainer reserve={reserve} />
           </PanelRow>
         </>
       )}

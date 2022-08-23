@@ -54,7 +54,6 @@ export const CapsCircularStatus = ({ value, tooltipContent }: CapsCircularStatus
         />
         <CircularProgress
           variant="determinate"
-          disableShrink
           color={determineColor()}
           sx={{
             [`& .${circularProgressClasses.circle}`]: {

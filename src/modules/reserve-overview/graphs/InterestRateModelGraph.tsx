@@ -12,7 +12,7 @@ import { useTheme } from '@mui/material';
 import { normalizeBN, RAY, rayDiv, rayMul } from '@aave/math-utils';
 import { BigNumber } from 'bignumber.js';
 import { Text } from '@visx/text';
-import { ChartLegend } from './ChartLegend';
+import { GraphLegend } from './GraphLegend';
 
 type TooltipData = Rate;
 
@@ -129,7 +129,7 @@ export type AreaProps = {
   reserve: InterestRateModelType;
 };
 
-export const InterestRateModelChart = withTooltip<AreaProps, TooltipData>(
+export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
   ({
     width,
     height,
@@ -209,15 +209,6 @@ export const InterestRateModelChart = withTooltip<AreaProps, TooltipData>(
 
     return (
       <>
-        <ChartLegend
-          labels={[
-            { text: 'Utilization rate', color: utilizationColor },
-            { text: 'Borrow APR, variable', color: '#B6509E' },
-            ...(reserve.stableBorrowRateEnabled
-              ? ([{ text: 'Borrow APR, stable', color: '#0062D2' }] as const)
-              : []),
-          ]}
-        />
         <svg width={width} height={height}>
           <Group left={margin.left} top={margin.top}>
             {reserve.stableBorrowRateEnabled && (

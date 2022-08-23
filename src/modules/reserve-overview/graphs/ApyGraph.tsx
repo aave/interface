@@ -12,7 +12,6 @@ import { timeFormat } from 'd3-time-format';
 import { Group } from '@visx/group';
 import { FormattedReserveHistoryItem } from 'src/hooks/useReservesHistory';
 import { useTheme, lighten } from '@mui/material';
-import { ChartLegend } from './ChartLegend';
 import { GridRows } from '@visx/grid';
 
 type TooltipData = FormattedReserveHistoryItem;
@@ -44,7 +43,7 @@ export type AreaProps = {
   fields: { name: Field; color: string; text: string }[];
 };
 
-export const ApyChart = withTooltip<AreaProps, TooltipData>(
+export const ApyGraph = withTooltip<AreaProps, TooltipData>(
   ({
     width,
     height,
@@ -106,7 +105,6 @@ export const ApyChart = withTooltip<AreaProps, TooltipData>(
 
     return (
       <>
-        <ChartLegend labels={fields} />
         <svg width={width} height={height}>
           <Group left={margin.left} top={margin.top}>
             <GridRows
