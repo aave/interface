@@ -89,7 +89,6 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
 
   const handleDisconnect = () => {
     if (connected || mockAddress) {
-      console.log('disconnect');
       disconnectWallet();
       handleClose();
       localStorage.removeItem('mockWalletAddress');
