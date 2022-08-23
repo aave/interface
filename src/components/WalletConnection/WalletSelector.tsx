@@ -1,6 +1,9 @@
-import { Alert, Box, Button, Link, Typography } from '@mui/material';
+import { useState } from 'react';
+import { Alert, Box, Button, InputBase, Link, Typography } from '@mui/material';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { WalletType } from 'src/libs/web3-data-provider/WalletOptions';
+import { useMockWalletAddressContext } from 'src/hooks/useMockWalletAddressContext';
+import { GasTooltip } from 'src/components/infoTooltips/GasTooltip';
 import { TxModalTitle } from '../transactions/FlowCommons/TxModalTitle';
 import { Trans } from '@lingui/macro';
 import { UnsupportedChainIdError } from '@web3-react/core';
@@ -94,7 +97,9 @@ export enum ErrorType {
 }
 
 export const WalletSelector = () => {
+  const { setMockWalletAddress } = useMockWalletAddressContext();
   const { error } = useWeb3Context();
+  const [inputMockWalletAddress, setInputMockWalletAddress] = useState('');
 
   let blockingError: ErrorType | undefined = undefined;
   if (error) {
@@ -149,6 +154,53 @@ export const WalletSelector = () => {
       />
       <WalletRow key="torus_wallet" walletName="Torus" walletType={WalletType.TORUS} />
       <WalletRow key="frame_wallet" walletName="Frame" walletType={WalletType.FRAME} />
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+        <Typography variant="subheader1" color="text.secondary">
+          <Trans>Enter an address to track in watch-only mode</Trans>
+        </Typography>
+        <GasTooltip />
+      </Box>
+      <Box
+        sx={(theme) => ({
+          p: '8px 12px',
+          border: `1px solid ${theme.palette.divider}`,
+          borderRadius: '6px',
+          mb: 1,
+        })}
+      >
+        <InputBase
+          sx={{ flex: 1 }}
+          placeholder="Paste ethereum address..."
+          autoFocus
+          value={inputMockWalletAddress}
+          onChange={(e) => {
+            setInputMockWalletAddress(e.target.value);
+          }}
+          inputProps={{
+            'aria-label': 'amount input',
+            style: {
+              fontSize: '16px',
+              lineHeight: '20,01px',
+              padding: 0,
+              height: '20px',
+            },
+          }}
+        />
+      </Box>
+      <Button
+        variant="outlined"
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          width: '100%',
+          mb: '8px',
+        }}
+        size="large"
+        onClick={() => setMockWalletAddress(inputMockWalletAddress)}
+      >
+        Watch address
+      </Button>
       <Typography variant="description" sx={{ mt: '22px', mb: '30px', alignSelf: 'center' }}>
         <Trans>
           Need help connecting a wallet?{' '}
