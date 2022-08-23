@@ -42,6 +42,7 @@ runs:
         tar -czf app.tar.gz './${{ inputs.BUILD_PATH }}'
         kubectl -n ipfs-cluster cp -c ipfs ./app.tar.gz ${POD_NAME}:/root/
 
+        echo "Uploading build..."
         IPFS_HASH="$(kubectl -n ipfs-cluster exec -i ${POD_NAME} -c ipfs -- sh -c \
           'cd /root/ && tar -zxf app.tar.gz && \
           ipfs add -rQ --cid-version=1 --pin=false ./${{ inputs.BUILD_PATH }}/ && \
@@ -50,9 +51,10 @@ runs:
         test "${IPFS_HASH}" = '${{ inputs.PINATA_HASH }}' || \
           { echo -e "Hashes differ, aborting pinning\nPINATA: ${{ inputs.PINATA_HASH }}\nLOCAL: ${IPFS_HASH}" && exit 1; }
 
+        echo "Pinning to cluster..."
         kubectl -n ipfs-cluster exec -i ${POD_NAME} -c ipfs-cluster -- \
           ipfs-cluster-ctl pin rm '/ipns/${{ inputs.DOMAIN }}' || true
         kubectl -n ipfs-cluster exec -i ${POD_NAME} -c ipfs-cluster -- \
-          ipfs-cluster-ctl pin add --wait --wait-timeout=120s \
+          ipfs-cluster-ctl pin add --wait --wait-timeout=180s \
           --replication-min=3 --name='app-aave-${{ github.ref }}' --expire-in=72h \
           "${IPFS_HASH}"
