@@ -1,8 +1,11 @@
 import { formatUserSummary } from '@aave/math-utils';
+import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Alert, Box, Button, Link, SvgIcon, Typography } from '@mui/material';
+import { Box, Link, SvgIcon, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
+import { Warning } from 'src/components/primitives/Warning';
 import { EmodeCategory } from 'src/helpers/types';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
@@ -25,11 +28,19 @@ import LightningBoltGradient from '/public/lightningBoltGradient.svg';
 export enum ErrorType {
   EMODE_DISABLED_LIQUIDATION,
   CLOSE_POSITIONS_BEFORE_SWITCHING,
-  SAME_EMODE,
 }
 
-// TODO: need add Current Loan to Value
-export const EmodeModalContent = () => {
+export enum EmodeModalType {
+  ENABLE = 'Enable',
+  DISABLE = 'Disable',
+  SWITCH = 'Switch',
+}
+
+export interface EmodeModalContentProps {
+  mode: EmodeModalType;
+}
+
+export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
   const {
     user,
     reserves,
@@ -42,12 +53,12 @@ export const EmodeModalContent = () => {
   const currentTimestamp = useCurrentTimestamp(1);
   const { gasLimit, mainTxState: emodeTxState, txError } = useModalContext();
 
-  const [selectedEmode, setSelectedEmode] = useState<EmodeCategory>();
+  const [selectedEmode, setSelectedEmode] = useState<EmodeCategory | undefined>(undefined);
   const [emodeCategories, setEmodeCategories] = useState<Record<number, EmodeCategory>>({});
 
   const networkConfig = getNetworkConfig(currentChainId);
 
-  // get all emodes
+  // Create object of available emodes
   useEffect(() => {
     const emodeCategoriesArray: EmodeCategory[] = [];
     reserves.forEach((reserve) => {
@@ -81,12 +92,21 @@ export const EmodeModalContent = () => {
       emodeCategories[category.id] = category;
     });
 
+    emodeCategoriesArray.sort((a, b) => a.id - b.id);
+
+    // Default values selected based on mode (enable, switch, disable), currently active eMode, and number of available modes
     const selectedEmode =
-      Object.keys(emodeCategories).length > 2 && user.userEmodeCategoryId !== 0
-        ? emodeCategories[user.userEmodeCategoryId]
-        : user.userEmodeCategoryId === 0
-        ? emodeCategories[1]
-        : emodeCategories[0];
+      mode === EmodeModalType.ENABLE
+        ? emodeCategoriesArray.length >= 3
+          ? undefined // Leave select blank
+          : emodeCategoriesArray[1] // Only one option to enable
+        : mode === EmodeModalType.SWITCH
+        ? emodeCategoriesArray.length >= 4
+          ? undefined // Leave select blank
+          : user.userEmodeCategoryId === 1
+          ? emodeCategoriesArray[2] // Only one option to switch to
+          : emodeCategoriesArray[1] // Only one option to switch to
+        : emodeCategoriesArray[0]; // Disabled
 
     setSelectedEmode(selectedEmode);
     setEmodeCategories(emodeCategories);
@@ -109,7 +129,7 @@ export const EmodeModalContent = () => {
     if (Number(newSummary.healthFactor) < 1.01 && newSummary.healthFactor !== '-1') {
       blockingError = ErrorType.EMODE_DISABLED_LIQUIDATION; // intl.formatMessage(messages.eModeDisabledLiquidation);
     }
-  } else if (user.userEmodeCategoryId !== selectedEmode?.id) {
+  } else if (selectedEmode && user.userEmodeCategoryId !== selectedEmode?.id) {
     // check if user has open positions different than future emode
     const hasIncompatiblePositions = user.userReservesData.some(
       (userReserve) =>
@@ -117,130 +137,278 @@ export const EmodeModalContent = () => {
           Number(userReserve.principalStableDebt) > 0) &&
         userReserve.reserve.eModeCategoryId !== selectedEmode?.id
     );
-
     if (hasIncompatiblePositions) {
       blockingError = ErrorType.CLOSE_POSITIONS_BEFORE_SWITCHING;
     }
-  } else if (selectedEmode.id === user.userEmodeCategoryId) {
-    blockingError = ErrorType.SAME_EMODE;
   }
-
   // render error messages
-  const handleBlocked = () => {
+  const Blocked: React.FC = () => {
     switch (blockingError) {
       case ErrorType.CLOSE_POSITIONS_BEFORE_SWITCHING:
         return (
-          <Trans>
-            In order to change E-Mode from asset category
-            {getEmodeMessage(user.userEmodeCategoryId, currentNetworkConfig.baseAssetSymbol)}
-            you will need to close your position in your current category. See our{' '}
-            <Button
-              variant="text"
-              component={Link}
-              href="https://docs.aave.com/faq/aave-v3-features#high-efficiency-mode-e-mode"
-              target="_blank"
-              rel="noopener"
-            >
-              FAQ
-            </Button>{' '}
-            to learn more.
-          </Trans>
+          <Warning severity="info" sx={{ mt: 6, alignItems: 'center' }}>
+            <Typography variant="caption">
+              <Trans>
+                To enable E-mode for the{' '}
+                {selectedEmode &&
+                  getEmodeMessage(selectedEmode.id, currentNetworkConfig.baseAssetSymbol)}{' '}
+                category, all borrow positions outside of this cateogry must be closed.
+              </Trans>
+            </Typography>
+          </Warning>
         );
       case ErrorType.EMODE_DISABLED_LIQUIDATION:
         return (
-          <Trans>
-            You can not disable E-Mode as your current collateralization level is above 80%,
-            disabling E-Mode can cause liquidation. To exit E-Mode supply or repay borrowed
-            positions.
-          </Trans>
+          <Warning severity="error" sx={{ mt: 6, alignItems: 'center' }}>
+            <Typography variant="subheader1" color="#4F1919">
+              <Trans>Cannot disable E-Mode</Trans>
+            </Typography>
+            <Typography variant="caption">
+              <Trans>
+                You can not disable E-Mode as your current collateralization level is above 80%,
+                disabling E-Mode can cause liquidation. To exit E-Mode supply or repay borrowed
+                positions.
+              </Trans>
+            </Typography>
+          </Warning>
         );
-      case ErrorType.SAME_EMODE:
-        return <Trans>You need to change E-Mode to continue.</Trans>;
       default:
         return null;
     }
   };
 
+  // The selector only shows if there are 2 options for the user, which happens when there are 3 emodeCategories (including disable) for mode.enable, and 4 emodeCategories in mode.switch
+  const showModal: boolean =
+    (Object.keys(emodeCategories).length >= 3 && mode === EmodeModalType.ENABLE) ||
+    (Object.keys(emodeCategories).length >= 4 && mode === EmodeModalType.SWITCH);
+
   // is Network mismatched
-  const isWrongNetwork = currentChainId !== connectedChainId;
+  const isWrongNetwork: boolean = currentChainId !== connectedChainId;
+
+  const ArrowRight: React.FC = () => (
+    <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+      <ArrowNarrowRightIcon />
+    </SvgIcon>
+  );
+
+  // Shown only if the user is disabling eMode, is not blocked from disabling, and has a health factor that is decreasing
+  // HF will never decrease on enable or switch because all borrow positions must initially be in the eMode category
+  const showLiquidationRiskWarning: boolean =
+    !!selectedEmode &&
+    selectedEmode.id === 0 &&
+    blockingError === undefined &&
+    Number(newSummary.healthFactor).toFixed(3) < Number(user.healthFactor).toFixed(3); // Comparing without rounding causes stuttering, HFs update asyncronously
+
+  // Shown only if the user has a collateral asset which is changing in LTV
+  const showMaxLTVRow =
+    user.currentLoanToValue !== '0' &&
+    Number(newSummary.currentLoanToValue).toFixed(3) != Number(user.currentLoanToValue).toFixed(3); // Comparing without rounding causes stuttering, LTVs update asyncronously
 
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
   }
   if (emodeTxState.success) return <TxSuccessView action={<Trans>Emode</Trans>} />;
-
   return (
     <>
-      <TxModalTitle title="Efficiency mode (E-Mode)" />
+      <TxModalTitle title={`${mode} E-Mode`} />
       {isWrongNetwork && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={currentChainId} />
       )}
 
-      {selectedEmode && selectedEmode.id !== 0 && (
-        <Alert severity="warning" sx={{ mb: 6 }}>
-          <Trans>
-            Enabling E-Mode only allows you to borrow assets belonging to the selected category
-            Stablecoins. Please visit our{' '}
-            <Link
-              href="https://docs.aave.com/faq/aave-v3-features#high-efficiency-mode-e-mode"
-              target="_blank"
-              rel="noopener"
-            >
-              FAQ guide
-            </Link>{' '}
-            to learn more about how it works and the applied restrictions.
-          </Trans>
-        </Alert>
+      {user.userEmodeCategoryId === 0 && (
+        <Warning severity="warning">
+          <Typography variant="caption">
+            <Trans>
+              Enabling E-Mode only allows you to borrow assets belonging to the selected category.
+              Please visit our{' '}
+              <Link
+                href="https://docs.aave.com/faq/aave-v3-features#high-efficiency-mode-e-mode"
+                target="_blank"
+                rel="noopener"
+              >
+                FAQ guide
+              </Link>{' '}
+              to learn more about how it works and the applied restrictions.
+            </Trans>
+          </Typography>
+        </Warning>
       )}
 
-      {Object.keys(emodeCategories).length > 2 && (
+      {showModal && (
         <EmodeSelect
           emodeCategories={emodeCategories}
-          selectedEmode={selectedEmode?.id || 0}
+          selectedEmode={selectedEmode?.id}
           setSelectedEmode={setSelectedEmode}
           baseAssetSymbol={currentNetworkConfig.baseAssetSymbol}
+          userEmode={user.userEmodeCategoryId}
         />
       )}
 
-      {blockingError !== undefined && <Alert severity="error">{handleBlocked()}</Alert>}
+      {blockingError === ErrorType.EMODE_DISABLED_LIQUIDATION && <Blocked />}
+      {showLiquidationRiskWarning && (
+        <Warning severity="error" sx={{ mt: 6, alignItems: 'center' }}>
+          <Typography variant="subheader1" color="#4F1919">
+            <Trans>Liquidation risk</Trans>
+          </Typography>
+          <Typography variant="caption">
+            <Trans>
+              This action will reduce your health factor. Please be mindful of the increased risk of
+              collateral liquidation.{' '}
+            </Trans>
+          </Typography>
+        </Warning>
+      )}
 
       <TxModalDetails gasLimit={gasLimit}>
-        <Row caption={<Trans>Asset category</Trans>} captionVariant="description" mb={4}>
-          <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-            <SvgIcon sx={{ fontSize: '12px', mr: 0.5 }}>
-              <LightningBoltGradient />
-            </SvgIcon>
-            <Typography variant="subheader1">
-              {selectedEmode && selectedEmode.id !== 0 ? (
-                getEmodeMessage(selectedEmode.id, currentNetworkConfig.baseAssetSymbol)
-              ) : (
-                <Trans>None</Trans>
+        {!showModal && (
+          <Row caption={<Trans>E-Mode category</Trans>} captionVariant="description" mb={4}>
+            <Box sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
+              <Box sx={{ display: 'inline-flex', alignItems: 'center', mx: 1 }}>
+                {user.userEmodeCategoryId !== 0 ? (
+                  <>
+                    <SvgIcon sx={{ fontSize: '12px' }}>
+                      <LightningBoltGradient />
+                    </SvgIcon>
+                    <Typography variant="subheader1">
+                      {getEmodeMessage(
+                        user.userEmodeCategoryId,
+                        currentNetworkConfig.baseAssetSymbol
+                      )}
+                    </Typography>
+                  </>
+                ) : (
+                  <Typography variant="subheader1">
+                    <Trans>None</Trans>
+                  </Typography>
+                )}
+              </Box>
+              {selectedEmode && (
+                <>
+                  <ArrowRight />
+                  <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                    {selectedEmode.id !== 0 ? (
+                      <>
+                        <SvgIcon sx={{ fontSize: '12px', mr: 0.5 }}>
+                          <LightningBoltGradient />
+                        </SvgIcon>
+                        <Typography variant="subheader1">
+                          {getEmodeMessage(selectedEmode.id, currentNetworkConfig.baseAssetSymbol)}
+                        </Typography>
+                      </>
+                    ) : (
+                      <Typography variant="subheader1">
+                        <Trans>None</Trans>
+                      </Typography>
+                    )}
+                  </Box>
+                </>
               )}
-            </Typography>
+            </Box>
+          </Row>
+        )}
+
+        <Row
+          caption={<Trans>Available assets</Trans>}
+          captionVariant="description"
+          mb={4}
+          sx={{ alignContent: 'flex-end' }}
+        >
+          <Box sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
+            {emodeCategories[user.userEmodeCategoryId] && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  textAlign: 'end',
+                }}
+              >
+                {user.userEmodeCategoryId !== 0 ? (
+                  <Typography sx={{ textAlign: 'end' }}>
+                    {emodeCategories[user.userEmodeCategoryId].assets.join(', ')}
+                  </Typography>
+                ) : (
+                  <Typography>
+                    <Trans>All Assets</Trans>
+                  </Typography>
+                )}
+              </Box>
+            )}
+            {selectedEmode && (
+              <>
+                <ArrowRight />
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    textAlign: 'end',
+                  }}
+                >
+                  {selectedEmode?.id !== 0 ? (
+                    <Typography sx={{ textAlign: 'end' }}>
+                      {selectedEmode.assets.join(', ')}
+                    </Typography>
+                  ) : (
+                    <Typography>
+                      <Trans>All Assets</Trans>
+                    </Typography>
+                  )}
+                </Box>
+              </>
+            )}
           </Box>
-        </Row>
-        <Row caption={<Trans>Available assets</Trans>} captionVariant="description" mb={4}>
-          {selectedEmode && selectedEmode.id !== 0 ? (
-            <Typography>{selectedEmode.assets.join(', ')}</Typography>
-          ) : (
-            <Typography>
-              <Trans>All</Trans>
-            </Typography>
-          )}
         </Row>
         <DetailsHFLine
           visibleHfChange={!!selectedEmode}
           healthFactor={user.healthFactor}
           futureHealthFactor={newSummary.healthFactor}
         />
+
+        {showMaxLTVRow && (
+          <Row
+            caption={<Trans>Maximum loan to value</Trans>}
+            captionVariant="description"
+            mb={4}
+            align="flex-start"
+          >
+            <Box sx={{ textAlign: 'right' }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+                <FormattedNumber
+                  value={user.currentLoanToValue}
+                  sx={{ color: 'text.primary' }}
+                  visibleDecimals={2}
+                  compact
+                  percent
+                  variant="secondary14"
+                />
+
+                {selectedEmode !== undefined && (
+                  <>
+                    <ArrowRight />
+                    <FormattedNumber
+                      value={newSummary.currentLoanToValue}
+                      sx={{ color: 'text.primary' }}
+                      visibleDecimals={2}
+                      compact
+                      percent
+                      variant="secondary14"
+                    />
+                  </>
+                )}
+              </Box>
+            </Box>
+          </Row>
+        )}
       </TxModalDetails>
+
+      {blockingError === ErrorType.CLOSE_POSITIONS_BEFORE_SWITCHING && <Blocked />}
 
       {txError && <GasEstimationError txError={txError} />}
 
       <EmodeActions
         isWrongNetwork={isWrongNetwork}
-        blocked={blockingError !== undefined}
+        blocked={blockingError !== undefined || !selectedEmode}
         selectedEmode={selectedEmode?.id || 0}
+        activeEmode={user.userEmodeCategoryId}
       />
     </>
   );
