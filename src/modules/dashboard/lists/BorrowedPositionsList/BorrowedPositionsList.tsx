@@ -3,7 +3,6 @@ import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { useMediaQuery, useTheme } from '@mui/material';
-import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
@@ -24,9 +23,8 @@ import { BorrowedPositionsListMobileItem } from './BorrowedPositionsListMobileIt
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 
 export const BorrowedPositionsList = () => {
-  const { user, loading } = useAppDataContext();
+  const { user, loading, reserves } = useAppDataContext();
   const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
-  const { openEmode } = useModalContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
@@ -89,8 +87,8 @@ export const BorrowedPositionsList = () => {
         currentMarketData.v3 ? (
           <DashboardEModeButton
             userEmodeCategoryId={user.userEmodeCategoryId}
-            onClick={() => openEmode()}
             baseAssetSymbol={currentNetworkConfig.baseAssetSymbol}
+            reserves={reserves}
           />
         ) : undefined
       }
