@@ -148,7 +148,7 @@ export const AssetInput = <T extends Asset = Asset>({
             // eslint-disable-next-line
             inputComponent={NumberFormatCustom as any}
           />
-          {value !== '' && !disabled && (
+          {value !== '' && !disableInput && (
             <IconButton
               sx={{
                 minWidth: 0,
