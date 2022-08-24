@@ -4,7 +4,7 @@ import {
   useAppDataContext,
 } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { SwapActions } from './SwapActions';
-import { ToggleButton, ToggleButtonGroup, Typography, Box } from '@mui/material';
+import { Typography, Box } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -26,6 +26,8 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { calculateHFAfterSwap } from 'src/utils/hfUtils';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { ErrorType, flashLoanNotAvailable, useFlashloan } from '../utils';
+import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
+import StyledToggleButton from 'src/components/StyledToggleButton';
 
 export type SupplyProps = {
   underlyingAsset: string;
@@ -218,22 +220,22 @@ export const SwapModalContent = ({
         <Typography variant="description" sx={{ mt: 4 }}>
           <Trans>Max slippage rate</Trans>
         </Typography>
-        <ToggleButtonGroup
+        <StyledToggleButtonGroup
           sx={{ mt: 2 }}
           value={maxSlippage}
           onChange={(_e, value) => setMaxSlippage(value)}
           exclusive
         >
-          <ToggleButton value="0.1" sx={{ minWidth: '74px' }}>
+          <StyledToggleButton value="0.1" sx={{ minWidth: '74px' }}>
             <Typography variant="secondary14">0.1%</Typography>
-          </ToggleButton>
-          <ToggleButton value="0.5" sx={{ minWidth: '74px' }}>
+          </StyledToggleButton>
+          <StyledToggleButton value="0.5" sx={{ minWidth: '74px' }}>
             <Typography variant="secondary14">0.5%</Typography>
-          </ToggleButton>
-          <ToggleButton value="1" sx={{ minWidth: '74px' }}>
+          </StyledToggleButton>
+          <StyledToggleButton value="1" sx={{ minWidth: '74px' }}>
             <Typography variant="secondary14">1%</Typography>
-          </ToggleButton>
-        </ToggleButtonGroup>
+          </StyledToggleButton>
+        </StyledToggleButtonGroup>
       </Box>
       {blockingError !== undefined && (
         <Typography variant="helperText" color="error.main">

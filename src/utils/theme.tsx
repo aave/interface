@@ -790,48 +790,6 @@ export function getThemedComponents(theme: Theme) {
           },
         },
       },
-      MuiToggleButtonGroup: {
-        styleOverrides: {
-          root: {
-            backgroundColor: '#383D51',
-            border: '1px solid rgba(235, 235, 237, 0.12)',
-            padding: '4px',
-          },
-        },
-      },
-      MuiToggleButton: {
-        styleOverrides: {
-          root: {
-            border: '0px',
-            flex: 1,
-            backgroundColor: '#383D51',
-            borderRadius: '4px',
-
-            '&.Mui-selected, &.Mui-selected:hover': {
-              backgroundColor: '#FFFFFF',
-              borderRadius: '4px !important',
-            },
-
-            '&.Mui-selected, &.Mui-disabled': {
-              zIndex: 100,
-              height: '100%',
-              display: 'flex',
-              justifyContent: 'center',
-
-              '.MuiTypography-subheader1': {
-                background: theme.palette.gradients.aaveGradient,
-                backgroundClip: 'text',
-                textFillColor: 'transparent',
-              },
-              '.MuiTypography-secondary14': {
-                background: theme.palette.gradients.aaveGradient,
-                backgroundClip: 'text',
-                textFillColor: 'transparent',
-              },
-            },
-          },
-        },
-      },
       MuiSelect: {
         defaultProps: {
           IconComponent: (props) => (
