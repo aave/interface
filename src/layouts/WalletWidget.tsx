@@ -1,5 +1,10 @@
 import { DuplicateIcon, LogoutIcon } from '@heroicons/react/outline';
-import { ChevronDownIcon, ChevronUpIcon, ExternalLinkIcon } from '@heroicons/react/solid';
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  ExternalLinkIcon,
+  ExclamationIcon,
+} from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
   Alert,
@@ -160,6 +165,20 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
                 img: { width: '100%', height: '100%', borderRadius: '50%' },
               }}
             >
+              <SvgIcon
+                color="warning"
+                sx={{
+                  width: 20,
+                  height: 20,
+                  position: 'absolute',
+                  top: '35px',
+                  left: '40px',
+                  borderRadius: '50%',
+                  background: 'white',
+                }}
+              >
+                <ExclamationIcon />
+              </SvgIcon>
               <img
                 src={
                   useBlockie
@@ -190,7 +209,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
             </Box>
           </Box>
           {mockAddress && (
-            <Alert severity="warning" sx={{ my: '10px' }}>
+            <Alert icon={false} severity="warning" sx={{ my: '10px' }}>
               <Trans>Watch-only mode.</Trans>
             </Alert>
           )}
