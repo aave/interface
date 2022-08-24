@@ -3,11 +3,17 @@ import { useState } from 'react';
 
 const intervals = ['1m', '6m', '1y', 'Max'];
 
-export const GraphTimeRangeSelector = () => {
-  const [interval, setInterval] = useState('1m');
+// export interface Interval {
+//   [key: string]: {
+//     fromDays: number;
+//     resolutionInHours: number;
+//   };
+// }
 
   const handleChange = (_event: React.MouseEvent<HTMLElement>, newInterval: string) => {
-    setInterval(newInterval);
+    if (newInterval !== null) {
+      setInterval(newInterval);
+    }
   };
 
   return (
