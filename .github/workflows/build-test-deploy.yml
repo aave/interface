@@ -144,6 +144,13 @@ jobs:
           BUILD_LOCATION: './out'
           CID_VERSION: 1
 
+      - uses: aave/cloudflare-update-action@8b9720cbb79a5b824e8e2e618df8955dd9c3a93c
+        with:
+          CF_API_TOKEN: '${{ secrets.CF_API_TOKEN }}'
+          CF_ZONE_ID: '${{ secrets.CF_ZONE_ID }}'
+          HASH: '${{ steps.pinata.outputs.hash }}'
+          CF_DEPLOYMENT_DOMAIN: staging-ipns.aave.com
+
   cypress_full_v2:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[skip cypress]')"
