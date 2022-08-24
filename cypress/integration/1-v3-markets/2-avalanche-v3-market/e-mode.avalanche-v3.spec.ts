@@ -40,7 +40,7 @@ const testData = {
     },
     eModeAssets: [
       assets.avalancheV3Market.DAI,
-      assets.avalancheV3Market.USDT,
+      // assets.avalancheV3Market.USDT,
       assets.avalancheV3Market.USDC,
     ],
   },
@@ -57,7 +57,11 @@ describe('E-MODE SPEC, AVALANCHE V3 MARKET', () => {
     checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.07 }, skipTestState);
   });
   describe('Turn on E-Mode and verify increase of health factor', () => {
-    emodeActivating({ turnOn: true }, skipTestState, true);
+    emodeActivating(
+      { turnOn: true, multipleEmodes: true, emodeOption: 'Stablecoin' },
+      skipTestState,
+      true
+    );
     checkDashboardHealthFactor({ valueFrom: 1.07, valueTo: 1000 }, skipTestState);
     borrowsAvailable(skipTestState);
     verifyCountOfBorrowAssets({ assets: testData.testCases.eModeAssets }, skipTestState);
@@ -67,7 +71,11 @@ describe('E-MODE SPEC, AVALANCHE V3 MARKET', () => {
     checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.07 }, skipTestState);
   });
   describe('Turn off E-mode blocked with low health factor', () => {
-    emodeActivating({ turnOn: true }, skipTestState, true);
+    emodeActivating(
+      { turnOn: true, multipleEmodes: true, emodeOption: 'Stablecoin' },
+      skipTestState,
+      true
+    );
     borrow(testData.testCases.borrow, skipTestState, true);
     checkEmodeActivatingDisabled({ turnOn: false }, skipTestState);
   });
