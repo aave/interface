@@ -1,9 +1,10 @@
 import type { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { Box, Button, ButtonGroup } from '@mui/material';
+import { Box } from '@mui/material';
 import { ParentSize } from '@visx/responsive';
 import { ApyGraph } from './ApyGraph';
 import { GraphLegend } from './GraphLegend';
 import { FormattedReserveHistoryItem } from 'src/hooks/useReservesHistory';
+import { GraphTimeRangeSelector } from './GraphTimeRangeSelector';
 
 type Field = 'liquidityRate' | 'stableBorrowRate' | 'variableBorrowRate';
 
@@ -62,13 +63,7 @@ export const ApyGraphContainer = ({
         }}
       >
         <GraphLegend labels={fields} />
-        {/* TODO: Update with a GraphZoom or GraphZoomButtonGroup component */}
-        <ButtonGroup>
-          <Button>1m</Button>
-          <Button>6m</Button>
-          <Button>12m</Button>
-          <Button>Max</Button>
-        </ButtonGroup>
+        <GraphTimeRangeSelector />
       </Box>
       <ParentSize>
         {({ width }) => (

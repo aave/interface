@@ -4,6 +4,7 @@ import { ParentSize } from '@visx/responsive';
 import { GraphMetaHeaderItem } from './GraphMetaHeaderItem';
 import { GraphLegend } from './GraphLegend';
 import { InterestRateModelGraph } from './InterestRateModelGraph';
+import { GraphTimeRangeSelector } from './GraphTimeRangeSelector';
 
 type InteresetRateModelGraphContainerProps = {
   reserve: ComputedReserveData;
@@ -35,13 +36,7 @@ export const InteresetRateModelGraphContainer = ({
               : []),
           ]}
         />
-        {/* TODO: Update with a GraphZoom or GraphZoomButtonGroup component */}
-        <ButtonGroup>
-          <Button>1m</Button>
-          <Button>6m</Button>
-          <Button>12m</Button>
-          <Button>Max</Button>
-        </ButtonGroup>
+        <GraphTimeRangeSelector />
       </Box>
       <ParentSize>
         {({ width }) => (
