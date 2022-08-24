@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-08-23 06:13\n"
+"PO-Revision-Date: 2022-08-24 12:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -538,7 +538,7 @@ msgstr "Deuda"
 
 #: src/components/caps/DebtCeilingStatus.tsx
 msgid "Debt Ceiling"
-msgstr ""
+msgstr "Límite de deuda"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Debt amount to repay"
@@ -554,7 +554,7 @@ msgstr "El límite de deuda no es cero"
 
 #: src/components/caps/DebtCeilingStatus.tsx
 msgid "Debt ceiling limits the amount possible to borrow against this asset by protocol users."
-msgstr ""
+msgstr "El límite de deuda limita la cantidad posible para tomar prestada contra este activo por usuarios del protocolo."
 
 #: src/components/infoModalContents/RetryWithApprovalInfoContent.tsx
 msgid "Define Retry with Approval text"
@@ -927,7 +927,7 @@ msgstr "Penalización de liquidación"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Liquidation risk"
-msgstr ""
+msgstr "Riesgo de liquidación"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Liquidation risk parameters"
@@ -979,7 +979,7 @@ msgstr "Tasa de deslizamiento máxima"
 
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 msgid "Maximum amount available to borrow against this asset is limited because debt ceiling is at {0}%."
-msgstr ""
+msgstr "La cantidad máxima disponible para tomar prestado contra este activo está limitada porque el límite de deuda está al {0}%."
 
 #: src/components/transactions/Warnings/BorrowCapWarning.tsx
 msgid "Maximum amount available to borrow is limited because protocol borrow cap is nearly reached."
@@ -1194,7 +1194,7 @@ msgstr ""
 
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 msgid "Protocol debt ceiling is at 100% for this asset. Further borrowing against this asset is unavailable."
-msgstr ""
+msgstr "El límite de deuda del protocolo es del 100% para este activo. No es posible tomar más prestado usando este activo como garantía."
 
 #: src/components/infoTooltips/DebtCeilingMaxedTooltip.tsx
 msgid "Protocol debt ceiling is at 100% for this asset. Futher borrowing against this asset is unavailable."
@@ -1485,11 +1485,11 @@ msgstr "Balance de suministro"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Supply cap is exceeded"
-msgstr "El límite de depósito se ha sobrepasado"
+msgstr "El límite de suministro se ha sobrepasado"
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Supply cap on target reserve reached. Try lowering the amount."
-msgstr "Se ha alcanzado el límite de depósito en la reserva especificada. Prueba reduciendo la cantidad."
+msgstr "Se ha alcanzado el límite de suministro en la reserva especificada. Prueba reduciendo la cantidad."
 
 #: src/components/transactions/Supply/SupplyActions.tsx
 msgid "Supply {symbol}"
@@ -2126,7 +2126,7 @@ msgstr "es un activo afectado por el rebase. Visita el"
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "of"
-msgstr ""
+msgstr "de"
 
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "on"
