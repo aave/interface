@@ -9,9 +9,15 @@ export type EmodeActionsProps = {
   isWrongNetwork: boolean;
   blocked: boolean;
   selectedEmode: number;
+  activeEmode: number;
 };
 
-export const EmodeActions = ({ isWrongNetwork, blocked, selectedEmode }: EmodeActionsProps) => {
+export const EmodeActions = ({
+  isWrongNetwork,
+  blocked,
+  selectedEmode,
+  activeEmode,
+}: EmodeActionsProps) => {
   const { lendingPool } = useTxBuilderContext();
   const { currentAccount } = useWeb3Context();
 
@@ -36,10 +42,22 @@ export const EmodeActions = ({ isWrongNetwork, blocked, selectedEmode }: EmodeAc
       preparingTransactions={loadingTxns}
       handleAction={action}
       actionText={
-        selectedEmode !== 0 ? <Trans>Enable E-Mode</Trans> : <Trans>Disable E-Mode</Trans>
+        activeEmode === 0 ? (
+          <Trans>Enable E-Mode</Trans>
+        ) : selectedEmode !== 0 ? (
+          <Trans>Switch E-Mode</Trans>
+        ) : (
+          <Trans>Disable E-Mode</Trans>
+        )
       }
       actionInProgressText={
-        selectedEmode !== 0 ? <Trans>Enabling E-Mode</Trans> : <Trans>Disabling E-Mode</Trans>
+        activeEmode === 0 ? (
+          <Trans>Enabling E-Mode</Trans>
+        ) : selectedEmode !== 0 ? (
+          <Trans>Switching E-Mode</Trans>
+        ) : (
+          <Trans>Disabling E-Mode</Trans>
+        )
       }
       isWrongNetwork={isWrongNetwork}
     />

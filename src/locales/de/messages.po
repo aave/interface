@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-08-02 18:22\n"
+"PO-Revision-Date: 2022-08-23 06:13\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -110,7 +110,8 @@ msgid "Address is not a contract"
 msgstr ""
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
-msgid "All"
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+msgid "All Assets"
 msgstr ""
 
 #: src/components/transactions/FlowCommons/Success.tsx
@@ -188,7 +189,6 @@ msgstr ""
 msgid "Asset cannot be used as collateral."
 msgstr ""
 
-#: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeSelect.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Asset category"
@@ -200,6 +200,10 @@ msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "Asset is not listed"
+msgstr ""
+
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 msgstr ""
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
@@ -268,7 +272,11 @@ msgid "Before supplying"
 msgstr ""
 
 #: src/components/infoModalContents/ApprovalInfoContent.tsx
-msgid "Before supplying, you need to approve its usage by the Aave protocol. You can learn more in our<0>FAQ</0>"
+msgid "Before supplying, you need to approve its usage by the Aave protocol. You can learn more in our <0>FAQ</0>"
+msgstr ""
+
+#: src/components/AddressBlockedModal.tsx
+msgid "Blocked Address"
 msgstr ""
 
 #: pages/index.page.tsx
@@ -339,6 +347,10 @@ msgstr ""
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 msgstr ""
 
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
+msgstr ""
+
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Borrowing power and assets are limited due to Isolation mode."
 msgstr ""
@@ -371,6 +383,10 @@ msgstr ""
 
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "Can be executed"
+msgstr ""
+
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+msgid "Cannot disable E-Mode"
 msgstr ""
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
@@ -520,6 +536,10 @@ msgstr ""
 msgid "Debt"
 msgstr ""
 
+#: src/components/caps/DebtCeilingStatus.tsx
+msgid "Debt Ceiling"
+msgstr ""
+
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Debt amount to repay"
 msgstr ""
@@ -530,6 +550,10 @@ msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "Debt ceiling is not zero"
+msgstr ""
+
+#: src/components/caps/DebtCeilingStatus.tsx
+msgid "Debt ceiling limits the amount possible to borrow against this asset by protocol users."
 msgstr ""
 
 #: src/components/infoModalContents/RetryWithApprovalInfoContent.tsx
@@ -592,6 +616,7 @@ msgstr ""
 msgid "Disabling this asset as collateral affects your borrowing power and Health Factor."
 msgstr ""
 
+#: src/components/AddressBlockedModal.tsx
 #: src/layouts/WalletWidget.tsx
 msgid "Disconnect Wallet"
 msgstr ""
@@ -615,6 +640,10 @@ msgstr ""
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "E-Mode Category"
+msgstr ""
+
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+msgid "E-Mode category"
 msgstr ""
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
@@ -660,7 +689,7 @@ msgid "Enabling E-Mode"
 msgstr ""
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
-msgid "Enabling E-Mode only allows you to borrow assets belonging to the selected category Stablecoins. Please visit our <0>FAQ guide</0> to learn more about how it works and the applied restrictions."
+msgid "Enabling E-Mode only allows you to borrow assets belonging to the selected category. Please visit our <0>FAQ guide</0> to learn more about how it works and the applied restrictions."
 msgstr ""
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
@@ -806,11 +835,7 @@ msgid "In E-Mode some assets are not borrowable. Exit E-Mode to get access to al
 msgstr ""
 
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
-msgid "In Isolation mode, you cannot supply other assets as collateral. A global debt ceiling limits the borrowing power of the isolated asset. Read more in our <0>FAQ</0>"
-msgstr ""
-
-#: src/components/transactions/Emode/EmodeModalContent.tsx
-msgid "In order to change E-Mode from asset category{0}you will need to close your position in your current category. See our <0>FAQ</0> to learn more."
+msgid "In Isolation mode, you cannot supply other assets as collateral. A global debt ceiling limits the borrowing power of the isolated asset. To exit isolation mode disable {0} as collateral before borrowing another asset. Read more in our <0>FAQ</0>"
 msgstr ""
 
 #: src/ui-config/errorMapping.tsx
@@ -861,8 +886,17 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
+#: src/components/caps/DebtCeilingStatus.tsx
+#: src/components/infoTooltips/BorrowCapMaxedTooltip.tsx
+#: src/components/infoTooltips/DebtCeilingMaxedTooltip.tsx
+#: src/components/infoTooltips/SupplyCapMaxedTooltip.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+#: src/components/transactions/Warnings/BorrowCapWarning.tsx
+#: src/components/transactions/Warnings/DebtCeilingWarning.tsx
+#: src/components/transactions/Warnings/SupplyCapWarning.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Learn more"
 msgstr ""
 
@@ -889,6 +923,10 @@ msgstr ""
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Liquidation penalty"
+msgstr ""
+
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+msgid "Liquidation risk"
 msgstr ""
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
@@ -937,6 +975,27 @@ msgstr ""
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Max slippage rate"
+msgstr ""
+
+#: src/components/transactions/Warnings/DebtCeilingWarning.tsx
+msgid "Maximum amount available to borrow against this asset is limited because debt ceiling is at {0}%."
+msgstr ""
+
+#: src/components/transactions/Warnings/BorrowCapWarning.tsx
+msgid "Maximum amount available to borrow is limited because protocol borrow cap is nearly reached."
+msgstr ""
+
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Maximum amount available to supply is <0/> {0} (<1/>)."
+msgstr ""
+
+#: src/components/transactions/Warnings/SupplyCapWarning.tsx
+msgid "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
+msgstr ""
+
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+msgid "Maximum loan to value"
 msgstr ""
 
 #: src/layouts/MobileMenu.tsx
@@ -996,6 +1055,7 @@ msgstr ""
 msgid "No voting power"
 msgstr ""
 
+#: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "None"
 msgstr ""
@@ -1124,6 +1184,30 @@ msgstr ""
 msgid "Proposition power"
 msgstr ""
 
+#: src/components/infoTooltips/BorrowCapMaxedTooltip.tsx
+msgid "Protocol borrow cap at 100% for this asset. Further borrowing unavailable."
+msgstr ""
+
+#: src/components/transactions/Warnings/BorrowCapWarning.tsx
+msgid "Protocol borrow cap is at 100% for this asset. Further borrowing unavailable."
+msgstr ""
+
+#: src/components/transactions/Warnings/DebtCeilingWarning.tsx
+msgid "Protocol debt ceiling is at 100% for this asset. Further borrowing against this asset is unavailable."
+msgstr ""
+
+#: src/components/infoTooltips/DebtCeilingMaxedTooltip.tsx
+msgid "Protocol debt ceiling is at 100% for this asset. Futher borrowing against this asset is unavailable."
+msgstr ""
+
+#: src/components/infoTooltips/SupplyCapMaxedTooltip.tsx
+msgid "Protocol supply cap at 100% for this asset. Further supply unavailable."
+msgstr ""
+
+#: src/components/transactions/Warnings/SupplyCapWarning.tsx
+msgid "Protocol supply cap is at 100% for this asset. Further supply unavailable."
+msgstr ""
+
 #: pages/governance/proposal/[proposalId].governance.tsx
 #: src/modules/governance/ProposalListItem.tsx
 msgid "Quorum"
@@ -1245,6 +1329,10 @@ msgstr ""
 
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Seems like we can't switch the network automatically. Please check if you can change it from the wallet."
+msgstr ""
+
+#: src/components/transactions/Emode/EmodeSelect.tsx
+msgid "Select"
 msgstr ""
 
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
@@ -1385,10 +1473,6 @@ msgstr ""
 msgid "Supply APY"
 msgstr ""
 
-#: src/components/transactions/Warnings/SupplyCapWarning.tsx
-msgid "Supply amount is limited due to Supply Cap"
-msgstr ""
-
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Supply apy"
 msgstr ""
@@ -1399,20 +1483,12 @@ msgstr ""
 msgid "Supply balance"
 msgstr ""
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "Supply cap"
-msgstr ""
-
 #: src/ui-config/errorMapping.tsx
 msgid "Supply cap is exceeded"
 msgstr ""
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Supply cap on target reserve reached. Try lowering the amount."
-msgstr ""
-
-#: src/components/transactions/Warnings/SupplyCapWarning.tsx
-msgid "Supply caps limit the amount of a certain asset that can be supplied to the Aave protocol. This helps reducing exposure to the asset and mitigate attacks like infinite minting or price oracle manipulation.<0>FAQ guide</0>."
 msgstr ""
 
 #: src/components/transactions/Supply/SupplyActions.tsx
@@ -1446,6 +1522,14 @@ msgstr ""
 msgid "Switch APY type"
 msgstr ""
 
+#: src/components/transactions/Emode/EmodeActions.tsx
+msgid "Switch E-Mode"
+msgstr ""
+
+#: src/modules/dashboard/DashboardEModeButton.tsx
+msgid "Switch E-Mode category"
+msgstr ""
+
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Switch Network"
 msgstr ""
@@ -1456,6 +1540,10 @@ msgstr ""
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Switch to Aave Classic"
+msgstr ""
+
+#: src/components/transactions/Emode/EmodeActions.tsx
+msgid "Switching E-Mode"
 msgstr ""
 
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
@@ -1566,6 +1654,14 @@ msgstr ""
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
 msgstr ""
 
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+msgid "This action will reduce your health factor. Please be mindful of the increased risk of collateral liquidation."
+msgstr ""
+
+#: src/components/AddressBlockedModal.tsx
+msgid "This address is blocked on app.aave.com because it is associated with one or more"
+msgstr ""
+
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has almost reached its borrow cap. There is only {messageValue} available to be borrowed from this market."
 msgstr ""
@@ -1619,6 +1715,10 @@ msgstr ""
 msgid "To borrow you need to supply any asset to be used as collateral."
 msgstr ""
 
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+msgid "To enable E-mode for the {0} category, all borrow positions outside of this cateogry must be closed."
+msgstr ""
+
 #: src/ui-config/errorMapping.tsx
 msgid "To repay on behalf of a user an explicit amount to repay is needed"
 msgstr ""
@@ -1633,6 +1733,7 @@ msgstr ""
 
 #: src/modules/markets/AssetsList.tsx
 #: src/modules/markets/AssetsListMobileItem.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Total borrowed"
 msgstr ""
@@ -1651,6 +1752,7 @@ msgstr ""
 
 #: src/modules/markets/AssetsList.tsx
 #: src/modules/markets/AssetsListMobileItem.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Total supplied"
 msgstr ""
@@ -1683,6 +1785,7 @@ msgstr ""
 msgid "UNSTAKING {symbol}"
 msgstr ""
 
+#: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Unavailable"
 msgstr ""
@@ -1919,10 +2022,6 @@ msgstr ""
 msgid "You have not borrow yet using this currency"
 msgstr ""
 
-#: src/components/transactions/Emode/EmodeModalContent.tsx
-msgid "You need to change E-Mode to continue."
-msgstr ""
-
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You switched to {0} rate"
 msgstr ""
@@ -1997,13 +2096,12 @@ msgstr ""
 msgid "assets"
 msgstr ""
 
-#: src/components/transactions/FlowCommons/GasEstimationError.tsx
-msgid "copy the error"
+#: src/components/AddressBlockedModal.tsx
+msgid "blocked activities"
 msgstr ""
 
-#: src/components/transactions/Emode/EmodeSelect.tsx
-#: src/components/transactions/Emode/EmodeSelect.tsx
-msgid "disabled"
+#: src/components/transactions/FlowCommons/GasEstimationError.tsx
+msgid "copy the error"
 msgstr ""
 
 #: src/components/transactions/Warnings/AMPLWarning.tsx
@@ -2020,6 +2118,14 @@ msgstr ""
 
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "is an asset affected by rebasing. Visit the"
+msgstr ""
+
+#: src/components/caps/DebtCeilingStatus.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "of"
 msgstr ""
 
 #: src/modules/governance/FormattedProposalTime.tsx

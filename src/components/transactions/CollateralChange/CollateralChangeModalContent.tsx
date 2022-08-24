@@ -2,8 +2,8 @@ import { calculateHealthFactorFromBalancesBigUnits, valueToBigNumber } from '@aa
 import { Trans } from '@lingui/macro';
 import { Alert, Typography } from '@mui/material';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
-
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -29,6 +29,7 @@ export const CollateralChangeModalContent = ({
 }: ModalWrapperProps) => {
   const { gasLimit, mainTxState: collateralChangeTxState, txError } = useModalContext();
   const { user } = useAppDataContext();
+  const { debtCeiling } = useAssetCaps();
 
   // health factor Calcs
   const usageAsCollateralModeAfterSwitch = !userReserve.usageAsCollateralEnabledOnUser;
@@ -104,12 +105,16 @@ export const CollateralChangeModalContent = ({
         </Alert>
       )}
 
-      {poolReserve.isIsolated && usageAsCollateralModeAfterSwitch && <IsolationModeWarning />}
+      {poolReserve.isIsolated && usageAsCollateralModeAfterSwitch && (
+        <IsolationModeWarning asset={poolReserve.symbol} />
+      )}
       {poolReserve.isIsolated && !usageAsCollateralModeAfterSwitch && (
         <Alert severity="info" icon={false}>
           <Trans>You will exit isolation mode and other tokens can now be used as collateral</Trans>
         </Alert>
       )}
+
+      {poolReserve.isIsolated && debtCeiling.determineWarningDisplay({ debtCeiling })}
 
       <TxModalDetails gasLimit={gasLimit}>
         <DetailsNumberLine
