@@ -1,18 +1,19 @@
 import { ToggleButtonGroup, ToggleButton, Typography } from '@mui/material';
-
-const timeRangeOptions = ['1m', '6m', '1y', 'Max'] as const;
-export type TimeRange = typeof timeRangeOptions[number];
+import { ReserveRateTimeRange, reserveRateTimeRangeOptions } from 'src/hooks/useReservesHistory';
 
 export interface GraphTimeRangeSelectorProps {
-  timeRange: TimeRange;
-  handleTimeRangeChanged: (value: TimeRange) => void;
+  timeRange: ReserveRateTimeRange;
+  handleTimeRangeChanged: (value: ReserveRateTimeRange) => void;
 }
 
 export const GraphTimeRangeSelector = ({
   timeRange,
   handleTimeRangeChanged,
 }: GraphTimeRangeSelectorProps) => {
-  const handleChange = (_event: React.MouseEvent<HTMLElement>, newInterval: TimeRange) => {
+  const handleChange = (
+    _event: React.MouseEvent<HTMLElement>,
+    newInterval: ReserveRateTimeRange
+  ) => {
     if (newInterval !== null) {
       handleTimeRangeChanged(newInterval);
     }
@@ -31,7 +32,7 @@ export const GraphTimeRangeSelector = ({
         },
       }}
     >
-      {timeRangeOptions.map((interval) => {
+      {reserveRateTimeRangeOptions.map((interval) => {
         return (
           <ToggleButton
             key={interval}

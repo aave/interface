@@ -3,6 +3,9 @@ import { useEffect, useState } from 'react';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { makeCancelable } from 'src/utils/utils';
 
+export const reserveRateTimeRangeOptions = ['1m', '6m', '1y', 'Max'] as const;
+export type ReserveRateTimeRange = typeof reserveRateTimeRangeOptions[number];
+
 type APIResponse = {
   liquidityRate_avg: number;
   variableBorrowRate_avg: number;
@@ -11,16 +14,49 @@ type APIResponse = {
   x: { year: number; month: number; date: number; hours: number };
 };
 
-const fetchStats = async (address: string, endpointURL: string) => {
-  const thirtyDaysAgo = dayjs().subtract(45, 'day').unix();
+const fetchStats = async (
+  address: string,
+  timeRange: ReserveRateTimeRange,
+  endpointURL: string
+) => {
+  const { from, resolutionInHours } = resolutionForTimeRange(timeRange);
   try {
     const result = await fetch(
-      `${endpointURL}?reserveId=${address}&from=${thirtyDaysAgo}&resolutionInHours=6`
+      `${endpointURL}?reserveId=${address}&from=${from}&resolutionInHours=${resolutionInHours}`
     );
     const json = await result.json();
     return json;
   } catch (e) {
     return [];
+  }
+};
+
+// TODO: Just threw in some initial values, need to evaluate and test what good
+// resolution values are for the selected time range.
+// Also, not sure how we can determine a good resolution when the max
+// is selected, because we don't know how much data there is up front.
+const resolutionForTimeRange = (timeRange: ReserveRateTimeRange) => {
+  switch (timeRange) {
+    case '1m':
+      return {
+        from: dayjs().subtract(30, 'day').unix(),
+        resolutionInHours: 24,
+      };
+    case '6m':
+      return {
+        from: dayjs().subtract(6, 'month').unix(),
+        resolutionInHours: 24,
+      };
+    case '1y':
+      return {
+        from: dayjs().subtract(1, 'year').unix(),
+        resolutionInHours: 168, // 1 week
+      };
+    case 'Max':
+      return {
+        from: dayjs().subtract(10, 'year').unix(),
+        resolutionInHours: 168,
+      };
   }
 };
 
@@ -38,7 +74,7 @@ const BROKEN_ASSETS = [
 ];
 
 // TODO: api need to be altered to expect chainId underlying asset and poolConfig
-export function useReserveRatesHistory(reserveAddress: string) {
+export function useReserveRatesHistory(reserveAddress: string, timeRange: ReserveRateTimeRange) {
   const { currentNetworkConfig } = useProtocolDataContext();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<FormattedReserveHistoryItem[]>([]);
@@ -49,8 +85,9 @@ export function useReserveRatesHistory(reserveAddress: string) {
       currentNetworkConfig.ratesHistoryApiUrl &&
       !BROKEN_ASSETS.includes(reserveAddress)
     ) {
+      setLoading(true);
       const cancelable = makeCancelable(
-        fetchStats(reserveAddress, currentNetworkConfig.ratesHistoryApiUrl)
+        fetchStats(reserveAddress, timeRange, currentNetworkConfig.ratesHistoryApiUrl)
       );
       cancelable.promise
         .then((data: APIResponse[]) => {
@@ -70,7 +107,7 @@ export function useReserveRatesHistory(reserveAddress: string) {
     } else {
       setLoading(false);
     }
-  }, [reserveAddress, currentNetworkConfig]);
+  }, [reserveAddress, timeRange, currentNetworkConfig]);
 
   return {
     loading,
