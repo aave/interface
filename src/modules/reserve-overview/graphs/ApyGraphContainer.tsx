@@ -3,7 +3,7 @@ import { Box } from '@mui/material';
 import { ParentSize } from '@visx/responsive';
 import { ApyGraph } from './ApyGraph';
 import { GraphLegend } from './GraphLegend';
-import { FormattedReserveHistoryItem } from 'src/hooks/useReservesHistory';
+import { FormattedReserveHistoryItem, useReserveRatesHistory } from 'src/hooks/useReservesHistory';
 import { GraphTimeRangeSelector } from './GraphTimeRangeSelector';
 
 type Field = 'liquidityRate' | 'stableBorrowRate' | 'variableBorrowRate';
@@ -15,7 +15,7 @@ type ApyGraphContainerKey = 'supply' | 'borrow';
 type ApyGraphContainerProps = {
   graphKey: ApyGraphContainerKey;
   reserve: ComputedReserveData;
-  historicalData: FormattedReserveHistoryItem[];
+  lendingPoolAddressProvider: string;
 };
 
 /**
@@ -27,8 +27,12 @@ type ApyGraphContainerProps = {
 export const ApyGraphContainer = ({
   graphKey,
   reserve,
-  historicalData,
+  lendingPoolAddressProvider,
 }: ApyGraphContainerProps): JSX.Element => {
+  const { data, loading, error } = useReserveRatesHistory(
+    reserve ? `${reserve.underlyingAsset}${lendingPoolAddressProvider}` : ''
+  );
+
   // Supply fields
   const supplyFields: Fields = [{ name: 'liquidityRate', color: '#2EBAC6', text: 'Supply APR' }];
 
@@ -66,9 +70,7 @@ export const ApyGraphContainer = ({
         <GraphTimeRangeSelector />
       </Box>
       <ParentSize>
-        {({ width }) => (
-          <ApyGraph width={width} height={300} data={historicalData} fields={fields} />
-        )}
+        {({ width }) => <ApyGraph width={width} height={300} data={data} fields={fields} />}
       </ParentSize>
     </Box>
   );

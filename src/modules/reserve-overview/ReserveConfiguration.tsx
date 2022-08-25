@@ -3,7 +3,6 @@ import { Alert, Box, Divider, SvgIcon, Typography } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
-import { useReserveRatesHistory } from 'src/hooks/useReservesHistory';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
@@ -35,11 +34,6 @@ type ReserveConfigurationProps = {
 export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ reserve }) => {
   const { currentNetworkConfig, currentMarketData } = useProtocolDataContext();
   const renderCharts = !!currentNetworkConfig.ratesHistoryApiUrl;
-  const { data, error } = useReserveRatesHistory(
-    reserve
-      ? `${reserve.underlyingAsset}${currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER}`
-      : ''
-  ); // TODO: might make sense to move this to gql as well
 
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
   const showSupplyCapStatus = reserve.supplyCap && reserve.supplyCap !== '0';
@@ -196,8 +190,12 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
               </PanelItem>
             )}
           </Box>
-          {renderCharts && !error && reserve.borrowingEnabled && (
-            <ApyGraphContainer graphKey="supply" reserve={reserve} historicalData={data} />
+          {renderCharts && reserve.borrowingEnabled && (
+            <ApyGraphContainer
+              graphKey="supply"
+              reserve={reserve}
+              lendingPoolAddressProvider={currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER}
+            />
           )}
           <div>
             {reserve.isIsolated ? (
@@ -452,8 +450,14 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                   </PanelItem>
                 )}
               </Box>
-              {renderCharts && !error && (
-                <ApyGraphContainer graphKey="borrow" reserve={reserve} historicalData={data} />
+              {renderCharts && (
+                <ApyGraphContainer
+                  graphKey="borrow"
+                  reserve={reserve}
+                  lendingPoolAddressProvider={
+                    currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER
+                  }
+                />
               )}
               <Box
                 sx={{ display: 'inline-flex', alignItems: 'center', pt: '42px', pb: '12px' }}
