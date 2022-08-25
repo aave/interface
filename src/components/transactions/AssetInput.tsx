@@ -148,28 +148,28 @@ export const AssetInput = <T extends Asset = Asset>({
             // eslint-disable-next-line
             inputComponent={NumberFormatCustom as any}
           />
-
+          {value !== '' && !disableInput && (
+            <IconButton
+              sx={{
+                minWidth: 0,
+                p: 0,
+                left: 8,
+                zIndex: 1,
+                color: 'text.muted',
+                '&:hover': {
+                  color: 'text.secondary',
+                },
+              }}
+              onClick={() => {
+                onChange && onChange('');
+              }}
+              disabled={disabled}
+            >
+              <XCircleIcon height={16} />
+            </IconButton>
+          )}
           {!onSelect || assets.length === 1 ? (
             <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-              {value !== '' && (
-                <IconButton
-                  sx={{
-                    minWidth: 0,
-                    p: 0,
-                    left: 8,
-                    color: 'text.muted',
-                    '&:hover': {
-                      color: 'text.secondary',
-                    },
-                  }}
-                  onClick={() => {
-                    onChange && onChange('');
-                  }}
-                  disabled={disabled}
-                >
-                  <XCircleIcon height={16} />
-                </IconButton>
-              )}
               <TokenIcon
                 aToken={asset.aToken}
                 symbol={asset.iconSymbol || asset.symbol}
