@@ -34,18 +34,18 @@ const intervals = ['1m', '6m', '1y', 'Max'];
           <ToggleButton
             key={interval}
             value={interval}
-            sx={{
+            sx={(theme) => ({
               '&.MuiToggleButtonGroup-grouped:not(.Mui-selected)': {
                 borderRadius: '4px',
                 border: '0.5px solid transparent',
               },
               '&.MuiToggleButtonGroup-grouped&.Mui-selected': {
                 borderRadius: '4px',
-                border: '0.5px solid rgba(56, 61, 81, 0.12)',
+                border: `0.5px solid ${theme.palette.divider}`,
                 boxShadow: '0px 2px 1px rgba(0, 0, 0, 0.05), 0px 0px 1px rgba(0, 0, 0, 0.25)',
-                backgroundColor: '#FFFFFF',
+                backgroundColor: 'background.paper',
               },
-            }}
+            })}
           >
             <Typography variant="buttonM">{interval}</Typography>
           </ToggleButton>
