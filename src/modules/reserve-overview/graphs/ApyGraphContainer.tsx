@@ -4,7 +4,8 @@ import { ParentSize } from '@visx/responsive';
 import { ApyGraph } from './ApyGraph';
 import { GraphLegend } from './GraphLegend';
 import { FormattedReserveHistoryItem, useReserveRatesHistory } from 'src/hooks/useReservesHistory';
-import { GraphTimeRangeSelector } from './GraphTimeRangeSelector';
+import { GraphTimeRangeSelector, TimeRange } from './GraphTimeRangeSelector';
+import { useState } from 'react';
 
 type Field = 'liquidityRate' | 'stableBorrowRate' | 'variableBorrowRate';
 
@@ -29,6 +30,8 @@ export const ApyGraphContainer = ({
   reserve,
   lendingPoolAddressProvider,
 }: ApyGraphContainerProps): JSX.Element => {
+  const [selectedTimeRange, setSelectedTimeRange] = useState<TimeRange>('1m');
+
   const { data, loading, error } = useReserveRatesHistory(
     reserve ? `${reserve.underlyingAsset}${lendingPoolAddressProvider}` : ''
   );
@@ -67,7 +70,10 @@ export const ApyGraphContainer = ({
         }}
       >
         <GraphLegend labels={fields} />
-        <GraphTimeRangeSelector />
+        <GraphTimeRangeSelector
+          timeRange={selectedTimeRange}
+          handleTimeRangeChanged={setSelectedTimeRange}
+        />
       </Box>
       <ParentSize>
         {({ width }) => <ApyGraph width={width} height={300} data={data} fields={fields} />}

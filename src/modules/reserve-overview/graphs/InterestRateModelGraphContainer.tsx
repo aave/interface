@@ -36,7 +36,8 @@ export const InteresetRateModelGraphContainer = ({
               : []),
           ]}
         />
-        <GraphTimeRangeSelector />
+        {/* TODO: does it make sense to have the selector here? */}
+        {/* <GraphTimeRangeSelector /> */}
       </Box>
       <ParentSize>
         {({ width }) => (

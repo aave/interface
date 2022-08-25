@@ -1,20 +1,26 @@
 import { ToggleButtonGroup, ToggleButton, Typography } from '@mui/material';
-import { useState } from 'react';
 
-const intervals = ['1m', '6m', '1y', 'Max'];
+const timeRangeOptions = ['1m', '6m', '1y', 'Max'] as const;
+export type TimeRange = typeof timeRangeOptions[number];
 
-export const GraphTimeRangeSelector = () => {
-  const [interval, setInterval] = useState('1m');
+export interface GraphTimeRangeSelectorProps {
+  timeRange: TimeRange;
+  handleTimeRangeChanged: (value: TimeRange) => void;
+}
 
-  const handleChange = (_event: React.MouseEvent<HTMLElement>, newInterval: string) => {
+export const GraphTimeRangeSelector = ({
+  timeRange,
+  handleTimeRangeChanged,
+}: GraphTimeRangeSelectorProps) => {
+  const handleChange = (_event: React.MouseEvent<HTMLElement>, newInterval: TimeRange) => {
     if (newInterval !== null) {
-      setInterval(newInterval);
+      handleTimeRangeChanged(newInterval);
     }
   };
 
   return (
     <ToggleButtonGroup
-      value={interval}
+      value={timeRange}
       exclusive
       onChange={handleChange}
       aria-label="Date range"
@@ -25,7 +31,7 @@ export const GraphTimeRangeSelector = () => {
         },
       }}
     >
-      {intervals.map((interval) => {
+      {timeRangeOptions.map((interval) => {
         return (
           <ToggleButton
             key={interval}
