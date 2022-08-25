@@ -86,6 +86,7 @@ export const SYMBOL_NAME_MAP: { [key: string]: string } = {
   YFI: 'yearn.finance',
   ZRX: '0x Coin',
   '1INCH': '1inch Network',
+  LUSD: 'LUSD Stablecoin',
 };
 
 export function fetchIconSymbolAndName({
