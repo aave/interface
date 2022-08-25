@@ -60785,7 +60785,9 @@ var marketsData = {
     v3: true,
     chainId: import_contract_helpers2.ChainId.optimism,
     enabledFeatures: {
-      incentives: true
+      incentives: true,
+      collateralRepay: true,
+      liquiditySwap: true
     },
     rpcOnly: true,
     addresses: {
@@ -60796,7 +60798,9 @@ var marketsData = {
       UI_POOL_DATA_PROVIDER: "0x64f558d4BFC1c03a8c8B2ff84976fF04c762b51f",
       UI_INCENTIVE_DATA_PROVIDER: "0x6dD4b295B457A26CC2646aAf2519436681afb5d4",
       L2_ENCODER: "0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC",
-      COLLECTOR: "0xB2289E329D2F85F1eD31Adbb30eA345278F21bcf"
+      COLLECTOR: "0xB2289E329D2F85F1eD31Adbb30eA345278F21bcf",
+      SWAP_COLLATERAL_ADAPTER: "0xC7524B08101dBe695d7ad671a332760b5d967Cbd",
+      REPAY_WITH_COLLATERAL_ADAPTER: "0x70371a494f73A8Df658C5cd29E2C1601787e1009"
     }
   },
   ["proto_polygon_v3" /* proto_polygon_v3 */]: {
@@ -61034,8 +61038,8 @@ var networkConfigs = {
   [import_contract_helpers3.ChainId.optimism]: {
     name: "Optimism",
     privateJsonRPCUrl: "https://optimism-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca",
-    publicJsonRPCUrl: ["https://mainnet.optimism.io"],
-    publicJsonRPCWSUrl: "wss://ws-mainnet.optimism.io",
+    publicJsonRPCUrl: ["https://optimism-mainnet.public.blastapi.io"],
+    publicJsonRPCWSUrl: "wss://optimism-mainnet.public.blastapi.io",
     baseUniswapAdapter: "0x0",
     baseAssetSymbol: "ETH",
     wrappedBaseAssetSymbol: "WETH",

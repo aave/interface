@@ -358,10 +358,6 @@ msgstr "Borrowing this amount will reduce your health factor and increase risk o
 msgid "Borrowing {symbol}"
 msgstr "Borrowing {symbol}"
 
-#: src/components/BridgeButton.tsx
-msgid "Bridge"
-msgstr "Bridge"
-
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
 msgid "CLAIM {symbol}"
 msgstr "CLAIM {symbol}"
