@@ -276,8 +276,8 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     name: 'Optimism',
     privateJsonRPCUrl:
       'https://optimism-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
-    publicJsonRPCUrl: ['https://mainnet.optimism.io'],
-    publicJsonRPCWSUrl: 'wss://ws-mainnet.optimism.io',
+    publicJsonRPCUrl: ['https://optimism-mainnet.public.blastapi.io'],
+    publicJsonRPCWSUrl: 'wss://optimism-mainnet.public.blastapi.io',
     // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH', // OETH
