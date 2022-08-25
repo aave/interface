@@ -112,7 +112,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     setLoading(false);
     setDeactivated(true);
     setSwitchNetworkError(undefined);
-    if (mockAddress) {
+    if (mockAddress || localStorage.getItem('mockWalletAddress')) {
       setMockAddress(undefined);
       localStorage.removeItem('mockWalletAddress');
     }

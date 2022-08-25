@@ -11,15 +11,15 @@ export const WalletModalContext = createContext<WalletModalContextType>(
 );
 
 export const WalletModalContextProvider: React.FC = ({ children }) => {
-  const { connected } = useWeb3Context();
+  const { connected, mockAddress } = useWeb3Context();
 
   const [isWalletModalOpen, setWalletModalOpen] = useState(false);
 
   useEffect(() => {
-    if (connected) {
+    if (connected || mockAddress) {
       setWalletModalOpen(false);
     }
-  }, [connected]);
+  }, [connected, mockAddress]);
 
   return (
     <WalletModalContext.Provider
