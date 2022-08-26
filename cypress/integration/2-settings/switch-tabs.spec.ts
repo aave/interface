@@ -36,6 +36,5 @@ describe('Switch tabs in header', () => {
     checkLinkOfButtons('FAQ', 'https://docs.aave.com/faq/governance');
     checkLinkOfButtons('Developers', 'https://docs.aave.com/portal/');
     checkLinkOfButtons('Github', 'https://github.com/aave/interface');
-    checkLinkOfButtons('Switch to Aave Classic', 'https://classic.aave.com');
   });
 });

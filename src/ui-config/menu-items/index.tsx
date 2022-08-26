@@ -78,11 +78,6 @@ const moreMenuItems: MoreMenuItem[] = [
     title: t`Github`,
     icon: <GithubIcon />,
   },
-  {
-    link: 'https://classic.aave.com',
-    title: t`Switch to Aave Classic`,
-    icon: <AaveClassic />,
-  },
 ];
 
 export const moreMenuExtraItems: MoreMenuItem[] = [];
