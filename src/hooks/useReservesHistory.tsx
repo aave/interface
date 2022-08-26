@@ -3,8 +3,13 @@ import { useEffect, useState } from 'react';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { makeCancelable } from 'src/utils/utils';
 
-export const reserveRateTimeRangeOptions = ['1m', '6m', '1y', 'Max'] as const;
+export const reserveRateTimeRangeOptions = ['1m', '6m', '1y'] as const;
 export type ReserveRateTimeRange = typeof reserveRateTimeRangeOptions[number];
+
+type RatesHistoryParams = {
+  from: number;
+  resolutionInHours: number;
+};
 
 type APIResponse = {
   liquidityRate_avg: number;
@@ -31,16 +36,14 @@ const fetchStats = async (
   }
 };
 
-// TODO: Just threw in some initial values, need to evaluate and test what good
-// resolution values are for the selected time range.
-// Also, not sure how we can determine a good resolution when the max
-// is selected, because we don't know how much data there is up front.
-const resolutionForTimeRange = (timeRange: ReserveRateTimeRange) => {
+// TODO: This might end up moving, or refactor how how we handle a given time range
+// and the corresponding parameters that go along with it.
+const resolutionForTimeRange = (timeRange: ReserveRateTimeRange): RatesHistoryParams => {
   switch (timeRange) {
     case '1m':
       return {
         from: dayjs().subtract(30, 'day').unix(),
-        resolutionInHours: 24,
+        resolutionInHours: 6,
       };
     case '6m':
       return {
@@ -50,12 +53,7 @@ const resolutionForTimeRange = (timeRange: ReserveRateTimeRange) => {
     case '1y':
       return {
         from: dayjs().subtract(1, 'year').unix(),
-        resolutionInHours: 168, // 1 week
-      };
-    case 'Max':
-      return {
-        from: dayjs().subtract(10, 'year').unix(),
-        resolutionInHours: 168,
+        resolutionInHours: 24,
       };
   }
 };
