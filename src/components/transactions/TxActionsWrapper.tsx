@@ -1,7 +1,8 @@
 import { Trans } from '@lingui/macro';
-import { Box, BoxProps, Button, CircularProgress } from '@mui/material';
+import { Box, BoxProps, Button, CircularProgress, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 import { TxStateType, useModalContext } from 'src/hooks/useModal';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import isEmpty from 'lodash/isEmpty';
 import { LeftHelperText } from './FlowCommons/LeftHelperText';
 import { RightHelperText } from './FlowCommons/RightHelperText';
@@ -41,6 +42,7 @@ export const TxActionsWrapper = ({
   ...rest
 }: TxActionsWrapperProps) => {
   const { txError, retryWithApproval } = useModalContext();
+  const { mockAddress } = useWeb3Context();
 
   const hasApprovalError =
     requiresApproval && txError && txError.txAction === TxAction.APPROVAL && txError.actionBlocked;
@@ -120,6 +122,11 @@ export const TxActionsWrapper = ({
         {loading && <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />}
         {content}
       </Button>
+      {mockAddress && (
+        <Typography variant="helperText" sx={{ color: 'warning.main', textAlign: 'center', mt: 2 }}>
+          <Trans>Watch-only mode. Connect to a wallet to perform transactions.</Trans>
+        </Typography>
+      )}
     </Box>
   );
 };

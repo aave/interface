@@ -49,7 +49,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
 
   const { setWalletModalOpen } = useWalletModalContext();
 
-  const { breakpoints } = useTheme();
+  const { breakpoints, palette } = useTheme();
   const xsm = useMediaQuery(breakpoints.down('xsm'));
   const md = useMediaQuery(breakpoints.down('md'));
 
@@ -124,6 +124,22 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
         alt=""
         onError={() => setUseBlockie(true)}
       />
+      {mockAddress && (
+        <SvgIcon
+          color="warning"
+          sx={{
+            width: 15,
+            height: 15,
+            position: 'absolute',
+            top: '20px',
+            left: '20px',
+            borderRadius: '50%',
+            background: palette.primary.main,
+          }}
+        >
+          <ExclamationIcon />
+        </SvgIcon>
+      )}
     </Box>
   );
 
@@ -165,20 +181,22 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
                 img: { width: '100%', height: '100%', borderRadius: '50%' },
               }}
             >
-              <SvgIcon
-                color="warning"
-                sx={{
-                  width: 20,
-                  height: 20,
-                  position: 'absolute',
-                  top: '35px',
-                  left: '40px',
-                  borderRadius: '50%',
-                  background: 'white',
-                }}
-              >
-                <ExclamationIcon />
-              </SvgIcon>
+              {mockAddress && (
+                <SvgIcon
+                  color="warning"
+                  sx={{
+                    width: 20,
+                    height: 20,
+                    position: 'absolute',
+                    top: '35px',
+                    left: '40px',
+                    borderRadius: '50%',
+                    background: palette.background.paper,
+                  }}
+                >
+                  <ExclamationIcon />
+                </SvgIcon>
+              )}
               <img
                 src={
                   useBlockie
