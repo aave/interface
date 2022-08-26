@@ -152,7 +152,7 @@ export const marketsData: {
       // collateralRepay: true,
       // incentives: true,
       permissions: true,
-      // faucet: true,
+      faucet: true,
     },
     rpcOnly: true,
     permissionComponent: <PermissionView />,
@@ -163,10 +163,10 @@ export const marketsData: {
       // REPAY_WITH_COLLATERAL_ADAPTER: '<address here>',
       // SWAP_COLLATERAL_ADAPTER: '<address here>',
       WALLET_BALANCE_PROVIDER: '0x6Bc5f4e5b97a3a160f2521f200842ceE4bDC8fEa', // WalletBalanceProvider
-      UI_POOL_DATA_PROVIDER: '0x8320bEF3A9fa6a7256EE3B6e87CCB72523D554A9', //  // '0x0D410Ce47834798028c9CD894A29A4b12A9d5624'// 0xCF4c9A9f5c23029e7438caB8293899759AB7A8d9,
+      UI_POOL_DATA_PROVIDER: '0x2bd8bfcfa19D4c9982d86d7CEf71e3A2e1bcf2cD', //  // '0x0D410Ce47834798028c9CD894A29A4b12A9d5624'// 0xCF4c9A9f5c23029e7438caB8293899759AB7A8d9,
       UI_INCENTIVE_DATA_PROVIDER: '0xA2E05bE2090b3658A264bdf1C39387f5Dba367Ec',
       PERMISSION_MANAGER: '0x6ff4DE6185E08164D9c84aFcf11Eab9AC68ceCF9', // PermissionManager
-      // FAUCET: '0x600103d518cC5E8f3319D532eB4e5C268D32e604',
+      FAUCET: '0x681860075529352da2C94082Eb66c59dF958e89C',
     },
   }, // Does exist a version of UIdataprovider contract that works for arc market and v3 interface
   [CustomMarket.amm_kovan]: {
