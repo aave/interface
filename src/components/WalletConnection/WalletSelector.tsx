@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { utils } from 'ethers';
 import { Alert, Box, Button, InputBase, Link, Typography } from '@mui/material';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { WalletType } from 'src/libs/web3-data-provider/WalletOptions';
@@ -127,6 +128,13 @@ export const WalletSelector = () => {
     }
   };
 
+  const handleWatchAddress = (inputMockWalletAddress: string): void => {
+    if (!utils.isAddress(inputMockWalletAddress)) {
+      return console.log(`${inputMockWalletAddress} is not a valid address!`);
+    }
+    setMockWalletAddress(inputMockWalletAddress);
+  };
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
       <TxModalTitle title="Connect a wallet" />
@@ -192,7 +200,8 @@ export const WalletSelector = () => {
           mb: '8px',
         }}
         size="large"
-        onClick={() => setMockWalletAddress(inputMockWalletAddress)}
+        disabled={!utils.isAddress(inputMockWalletAddress)}
+        onClick={() => handleWatchAddress(inputMockWalletAddress)}
       >
         Watch address
       </Button>
