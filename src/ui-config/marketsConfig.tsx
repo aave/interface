@@ -48,7 +48,6 @@ export type MarketDataType = {
 
 export enum CustomMarket {
   // v3 test networks
-  proto_arbitrum_rinkeby_v3 = 'proto_arbitrum_rinkeby_v3',
   proto_arbitrum_goerli_v3 = 'proto_arbitrum_goerli_v3',
   proto_mumbai_v3 = 'proto_mumbai_v3',
   proto_fantom_testnet_v3 = 'proto_fantom_testnet_v3',
@@ -294,26 +293,6 @@ export const marketsData: {
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
       marketName: 'arbitrum',
-    },
-  },
-  [CustomMarket.proto_arbitrum_rinkeby_v3]: {
-    marketTitle: 'Arbitrum Rinkeby',
-    v3: true,
-    chainId: ChainId.arbitrum_rinkeby,
-    enabledFeatures: {
-      faucet: true,
-      incentives: true,
-    },
-    rpcOnly: true,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0xF7158D1412Bdc8EAfc6BF97DB4e2178379c9521c'.toLowerCase(),
-      LENDING_POOL: '0x9C55a3C34de5fd46004Fa44a55490108f7cE388F',
-      WETH_GATEWAY: '0xF1C72f4e230289970d60046915c79c4A7A94aae5',
-      FAUCET: '0x3BE25d21ee1C417462E97CEF1D53da9011149384',
-      WALLET_BALANCE_PROVIDER: '0xA1B434CC7B9Cf70BE99f19B3721904919CaA5227',
-      UI_POOL_DATA_PROVIDER: '0xa3D26e300df5Aa91713fB5963A6A6C48777243Aa',
-      UI_INCENTIVE_DATA_PROVIDER: '0x8E90a6524931E097DefB662B3DEa33809D410E6c',
-      L2_ENCODER: '0x3d0d309DC8f999f34c4E7296dB38F0e65D3115DF',
     },
   },
   [CustomMarket.proto_arbitrum_goerli_v3]: {
