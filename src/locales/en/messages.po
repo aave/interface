@@ -1923,6 +1923,10 @@ msgstr "Watch-only mode allows to see address positions in Aave, but you won't b
 msgid "Watch-only mode."
 msgstr "Watch-only mode."
 
+#: src/components/transactions/TxActionsWrapper.tsx
+msgid "Watch-only mode. Connect to a wallet to perform transactions."
+msgstr "Watch-only mode. Connect to a wallet to perform transactions."
+
 #: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake."
 msgstr "We couldn’t detect a wallet. Connect a wallet to stake."
