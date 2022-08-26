@@ -1,13 +1,12 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Alert, Box, useMediaQuery, useTheme } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import BigNumber from 'bignumber.js';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
-import { Link } from '../../../../components/primitives/Link';
+import { Link, ROUTES } from '../../../../components/primitives/Link';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -15,11 +14,13 @@ import {
 import { useWalletBalances } from '../../../../hooks/app-data-provider/useWalletBalances';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import { DashboardListTopPanel } from '../../DashboardListTopPanel';
-import { ListBottomText } from '../ListBottomText';
 import { ListHeader } from '../ListHeader';
 import { ListLoader } from '../ListLoader';
 import { SupplyAssetsListItem } from './SupplyAssetsListItem';
 import { SupplyAssetsListMobileItem } from './SupplyAssetsListMobileItem';
+import { Warning } from 'src/components/primitives/Warning';
+import { HarmonyWarning } from 'src/components/transactions/Warnings/HarmonyWarning';
+import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 
 export const SupplyAssetsList = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
@@ -45,7 +46,6 @@ export const SupplyAssetsList = () => {
     .map((reserve: ComputedReserveData) => {
       const walletBalance = walletBalances[reserve.underlyingAsset]?.amount;
       const walletBalanceUSD = walletBalances[reserve.underlyingAsset]?.amountUSD;
-
       let availableToDeposit = valueToBigNumber(walletBalance);
       if (reserve.supplyCap !== '0') {
         availableToDeposit = BigNumber.min(
@@ -89,6 +89,7 @@ export const SupplyAssetsList = () => {
         return [
           {
             ...reserve,
+            reserve,
             underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
             ...fetchIconSymbolAndName({
               symbol: baseAssetSymbol,
@@ -104,6 +105,7 @@ export const SupplyAssetsList = () => {
           },
           {
             ...reserve,
+            reserve,
             walletBalance,
             walletBalanceUSD,
             availableToDeposit:
@@ -118,6 +120,7 @@ export const SupplyAssetsList = () => {
 
       return {
         ...reserve,
+        reserve,
         walletBalance,
         walletBalanceUSD,
         availableToDeposit:
@@ -152,35 +155,59 @@ export const SupplyAssetsList = () => {
   if (loadingReserves || loading)
     return <ListLoader title={<Trans>Assets to supply</Trans>} head={head} withTopMargin />;
 
+  const supplyDisabled = !tokensToSupply.length;
   return (
     <ListWrapper
       title={<Trans>Assets to supply</Trans>}
       localStorageName="supplyAssetsDashboardTableCollapse"
-      bottomComponent={isTestnet ? <ListBottomText /> : undefined}
       withTopMargin
+      noData={supplyDisabled}
       subChildrenComponent={
         <>
           <Box sx={{ px: 6 }}>
-            {user?.isInIsolationMode && (
-              <Alert severity="warning">
+            {supplyDisabled && currentNetworkConfig.name === 'Harmony' ? (
+              <Warning severity="warning">
                 <Trans>
-                  Collateral usage is limited because of isolation mode.{' '}
-                  <Link href="https://docs.aave.com/faq/" target="_blank">
+                  Per the community, supplying in this market is currently disabled.{' '}
+                  <Link
+                    href="https://governance.aave.com/t/harmony-horizon-bridge-exploit-consequences-to-aave-v3-harmony/8614"
+                    target="_blank"
+                  >
                     Learn More
                   </Link>
                 </Trans>
-              </Alert>
-            )}
-            {filteredSupplyReserves.length === 0 && (
-              <Alert severity="info">
-                <Trans>Your {networkName} wallet is empty. Purchase or transfer assets</Trans>{' '}
-                {bridge && (
-                  <Trans>
-                    or use {<Link href={bridge.url}>{bridge.name}</Link>} to transfer your ETH
-                    assets.
-                  </Trans>
-                )}
-              </Alert>
+              </Warning>
+            ) : currentNetworkConfig.name === 'Harmony' ? (
+              <HarmonyWarning learnMore={true} />
+            ) : user?.isInIsolationMode ? (
+              <Warning severity="warning">
+                <Trans>
+                  Collateral usage is limited because of isolation mode.{' '}
+                  <Link href="https://docs.aave.com/faq/" target="_blank" rel="noopener">
+                    Learn More
+                  </Link>
+                </Trans>
+              </Warning>
+            ) : (
+              filteredSupplyReserves.length === 0 &&
+              (isTestnet ? (
+                <Warning severity="info">
+                  <Trans>Your {networkName} wallet is empty. Get free test assets at </Trans>{' '}
+                  <Link href={ROUTES.faucet} style={{ fontWeight: 400 }}>
+                    <Trans>{networkName} Faucet</Trans>
+                  </Link>
+                </Warning>
+              ) : (
+                <Warning severity="info">
+                  <Trans>Your {networkName} wallet is empty. Purchase or transfer assets</Trans>{' '}
+                  {bridge && (
+                    <Trans>
+                      or use {<Link href={bridge.url}>{bridge.name}</Link>} to transfer your ETH
+                      assets.
+                    </Trans>
+                  )}
+                </Warning>
+              ))
             )}
           </Box>
 
@@ -196,14 +223,18 @@ export const SupplyAssetsList = () => {
       }
     >
       <>
-        {!downToXSM && <ListHeader head={head} />}
-        {supplyReserves.map((item) =>
-          downToXSM ? (
-            <SupplyAssetsListMobileItem {...item} key={item.id} />
-          ) : (
-            <SupplyAssetsListItem {...item} key={item.id} />
-          )
-        )}
+        {!downToXSM && !!supplyReserves && !supplyDisabled && <ListHeader head={head} />}
+        {supplyReserves.map((item) => (
+          <Fragment key={item.underlyingAsset}>
+            <AssetCapsProvider asset={item.reserve}>
+              {downToXSM ? (
+                <SupplyAssetsListMobileItem {...item} key={item.id} />
+              ) : (
+                <SupplyAssetsListItem {...item} key={item.id} />
+              )}
+            </AssetCapsProvider>
+          </Fragment>
+        ))}
       </>
     </ListWrapper>
   );

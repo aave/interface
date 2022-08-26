@@ -74,6 +74,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link
           href={href}
           ref={ref}
           target="_blank"
+          rel="noopener"
           underline="none"
           {...other}
         />
@@ -86,6 +87,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link
         href={href}
         ref={ref}
         target="_blank"
+        rel="noopener"
         underline="none"
         {...other}
       />
@@ -116,6 +118,7 @@ export const ROUTES = {
   markets: '/markets',
   staking: '/staking',
   governance: '/governance',
+  faucet: '/faucet',
   prerenderedProposal: (proposalId: number) => `/governance/proposal/${proposalId}`,
   dynamicRenderedProposal: (proposalId: number) => `/governance/proposal?proposalId=${proposalId}`,
   reserveOverview: (underlyingAsset: string, marketName: CustomMarket) =>

@@ -1,7 +1,19 @@
-import { Slide, useMediaQuery, useScrollTrigger, useTheme } from '@mui/material';
+import { InformationCircleIcon } from '@heroicons/react/outline';
+import { Trans } from '@lingui/macro';
+import {
+  Button,
+  Slide,
+  SvgIcon,
+  Typography,
+  useMediaQuery,
+  useScrollTrigger,
+  useTheme,
+} from '@mui/material';
 import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
+import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
+import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
 
 import { Link } from '../components/primitives/Link';
 import { uiConfig } from '../uiConfig';
@@ -27,6 +39,7 @@ function HideOnScroll({ children }: Props) {
 export function AppHeader() {
   const { breakpoints } = useTheme();
   const md = useMediaQuery(breakpoints.down('md'));
+  const sm = useMediaQuery(breakpoints.down('sm'));
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [walletWidgetOpen, setWalletWidgetOpen] = useState(false);
@@ -42,6 +55,32 @@ export function AppHeader() {
   }, [md]);
 
   const headerHeight = 48;
+
+  const disableTestnet = () => {
+    localStorage.setItem('testnetsEnabled', 'false');
+    // Set window.location to trigger a page reload when navigating to the the dashboard
+    window.location.href = '/';
+  };
+
+  const testnetTooltip = (
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', gap: 1 }}>
+      <Typography variant="subheader1">
+        <Trans>Testnet mode is ON</Trans>
+      </Typography>
+      <Typography variant="description">
+        <Trans>The app is running in testnet mode. Learn how it works in</Trans>{' '}
+        <Link
+          href="https://docs.aave.com/faq/testing-aave"
+          style={{ fontSize: '14px', fontWeight: 400, textDecoration: 'underline' }}
+        >
+          FAQ.
+        </Link>
+      </Typography>
+      <Button variant="outlined" sx={{ mt: '12px' }} onClick={disableTestnet}>
+        <Trans>Disable testnet</Trans>
+      </Button>
+    </Box>
+  );
 
   return (
     <HideOnScroll>
@@ -70,10 +109,35 @@ export function AppHeader() {
           component={Link}
           href="/"
           aria-label="Go to homepage"
-          sx={{ lineHeight: 0, mr: 7, transition: '0.3s ease all', '&:hover': { opacity: 0.7 } }}
+          sx={{
+            lineHeight: 0,
+            mr: 3,
+            transition: '0.3s ease all',
+            '&:hover': { opacity: 0.7 },
+          }}
           onClick={() => setMobileMenuOpen(false)}
         >
           <img src={uiConfig.appLogo} alt="An SVG of an eye" height={20} />
+        </Box>
+        <Box sx={{ mr: sm ? 1 : 3 }}>
+          {ENABLE_TESTNET && (
+            <ContentWithTooltip tooltipContent={testnetTooltip} offset={[0, -4]} withoutHover>
+              <Button
+                variant="surface"
+                size="small"
+                color="primary"
+                sx={{
+                  backgroundColor: '#B6509E',
+                  '&:hover, &.Mui-focusVisible': { backgroundColor: 'rgba(182, 80, 158, 0.7)' },
+                }}
+              >
+                TESTNET
+                <SvgIcon sx={{ marginLeft: '2px', fontSize: '16px' }}>
+                  <InformationCircleIcon />
+                </SvgIcon>
+              </Button>
+            </ContentWithTooltip>
+          )}
         </Box>
 
         <Box sx={{ display: { xs: 'none', md: 'block' } }}>
@@ -87,7 +151,6 @@ export function AppHeader() {
             open={walletWidgetOpen}
             setOpen={setWalletWidgetOpen}
             headerHeight={headerHeight}
-            md={md}
           />
         )}
 

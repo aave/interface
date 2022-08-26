@@ -12,7 +12,7 @@ export function ReserveSubheader({ value, rightAlign }: ReserveSubheaderProps) {
     <Box
       sx={{
         p: rightAlign ? { xs: '0', xsm: '2px 0' } : { xs: '0', xsm: '3.625px 0px' },
-        display: 'flex',
+        display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',
       }}

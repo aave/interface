@@ -29,12 +29,13 @@ const testData = {
       isCollateral: true,
       amount: 9999,
       hasApproval: false,
+      isMaxAmount: true,
       isRisk: true,
     },
   },
 };
 
-describe.skip('CRITICAL CONDITIONS SPEC, FANTOM V3 MARKET', () => {
+describe('CRITICAL CONDITIONS SPEC, FANTOM V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyFantomFork({ v3: true });
 

@@ -15,9 +15,10 @@ import {
   Skeleton,
   SvgIcon,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import makeBlockie from 'ethereum-blockies-base64';
-import stubTrue from 'lodash/stubTrue';
 import React, { useEffect, useState } from 'react';
 import { WalletModal } from 'src/components/WalletConnection/WalletModal';
 import { useWalletModalContext } from 'src/hooks/useWalletModal';
@@ -26,7 +27,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 import { Link } from '../components/primitives/Link';
 import { textCenterEllipsis } from '../helpers/text-center-ellipsis';
-import { getNetworkConfig } from '../utils/marketsAndNetworksConfig';
+import { ENABLE_TESTNET, getNetworkConfig, STAGING_ENV } from '../utils/marketsAndNetworksConfig';
 import { DrawerWrapper } from './components/DrawerWrapper';
 import { MobileCloseButton } from './components/MobileCloseButton';
 
@@ -34,13 +35,16 @@ interface WalletWidgetProps {
   open: boolean;
   setOpen: (value: boolean) => void;
   headerHeight: number;
-  md: boolean;
 }
 
-export default function WalletWidget({ open, setOpen, headerHeight, md }: WalletWidgetProps) {
+export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidgetProps) {
   const { disconnectWallet, currentAccount, connected, chainId, loading } = useWeb3Context();
 
   const { setWalletModalOpen } = useWalletModalContext();
+
+  const { breakpoints } = useTheme();
+  const xsm = useMediaQuery(breakpoints.down('xsm'));
+  const md = useMediaQuery(breakpoints.down('md'));
 
   const { name: ensName, avatar: ensAvatar } = useGetEns(currentAccount);
   const ensNameAbbreviated = ensName
@@ -74,7 +78,7 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if (!connected) {
-      setWalletModalOpen(stubTrue);
+      setWalletModalOpen(true);
     } else {
       setOpen(true);
       setAnchorEl(event.currentTarget);
@@ -94,15 +98,38 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
     handleClose();
   };
 
-  const buttonContent = currentAccount ? (
-    ensNameAbbreviated ? (
-      ensNameAbbreviated
-    ) : (
-      textCenterEllipsis(currentAccount, 4, 4)
-    )
-  ) : (
-    <Trans>Connect wallet</Trans>
+  const hideWalletAccountText = xsm && (ENABLE_TESTNET || STAGING_ENV);
+
+  const accountAvatar = (
+    <Box
+      sx={{
+        width: 22,
+        height: 22,
+        borderRadius: '50%',
+        border: '1px solid #FAFBFC1F',
+        img: { width: '100%', height: '100%', borderRadius: '50%' },
+      }}
+    >
+      <img
+        src={
+          useBlockie ? makeBlockie(currentAccount !== '' ? currentAccount : 'default') : ensAvatar
+        }
+        alt=""
+        onError={() => setUseBlockie(true)}
+      />
+    </Box>
   );
+
+  let buttonContent = <></>;
+  if (currentAccount) {
+    if (hideWalletAccountText) {
+      buttonContent = <Box sx={{ margin: '1px 0' }}>{accountAvatar}</Box>;
+    } else {
+      buttonContent = <>{ensNameAbbreviated ?? textCenterEllipsis(currentAccount, 4, 4)}</>;
+    }
+  } else {
+    buttonContent = <Trans>Connect wallet</Trans>;
+  }
 
   const Content = ({ component = ListItem }: { component?: typeof MenuItem | typeof ListItem }) => (
     <>
@@ -283,32 +310,14 @@ export default function WalletWidget({ open, setOpen, headerHeight, md }: Wallet
           aria-expanded={open ? 'true' : undefined}
           aria-haspopup="true"
           onClick={handleClick}
-          sx={{ p: connected ? '5px 8px' : undefined }}
-          startIcon={
-            connected && (
-              <Box
-                sx={{
-                  width: 22,
-                  height: 22,
-                  borderRadius: '50%',
-                  border: '1px solid #FAFBFC1F',
-                  img: { width: '100%', height: '100%', borderRadius: '50%' },
-                }}
-              >
-                <img
-                  src={
-                    useBlockie
-                      ? makeBlockie(currentAccount !== '' ? currentAccount : 'default')
-                      : ensAvatar
-                  }
-                  alt=""
-                  onError={() => setUseBlockie(true)}
-                />
-              </Box>
-            )
-          }
+          sx={{
+            p: connected ? '5px 8px' : undefined,
+            minWidth: hideWalletAccountText ? 'unset' : undefined,
+          }}
+          startIcon={connected && !hideWalletAccountText && accountAvatar}
           endIcon={
-            connected && (
+            connected &&
+            !hideWalletAccountText && (
               <SvgIcon
                 sx={{
                   display: { xs: 'none', md: 'block' },

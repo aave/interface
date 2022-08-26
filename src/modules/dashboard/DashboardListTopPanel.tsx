@@ -1,5 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Box, Checkbox, FormControlLabel } from '@mui/material';
+import { FaucetButton } from 'src/components/FaucetButton';
+import { ENABLE_TESTNET, STAGING_ENV } from 'src/utils/marketsAndNetworksConfig';
 
 import { BridgeButton } from '../../components/BridgeButton';
 import { toggleLocalStorageClick } from '../../helpers/toggle-local-storage-click';
@@ -37,7 +39,8 @@ export const DashboardListTopPanel = ({
         label={<Trans>Show assets with 0 balance</Trans>}
       />
 
-      <BridgeButton bridge={bridge} variant="outlined" />
+      {(STAGING_ENV || ENABLE_TESTNET) && <FaucetButton />}
+      {!ENABLE_TESTNET && <BridgeButton bridge={bridge} />}
     </Box>
   );
 };

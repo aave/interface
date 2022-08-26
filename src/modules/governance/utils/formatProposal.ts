@@ -3,6 +3,8 @@ import { normalizeBN } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
+// The implementation replicates the validation in https://github.com/aave/governance-v2/blob/master/contracts/governance/ProposalValidator.sol#L17
+// 10000 in % calculations corresponds to 100 with 2 decimals precision
 export function formatProposal(proposal: Omit<Proposal, 'values'>) {
   const allVotes = new BigNumber(proposal.forVotes).plus(proposal.againstVotes);
   const yaePercent = allVotes.gt(0)
@@ -24,7 +26,10 @@ export function formatProposal(proposal: Omit<Proposal, 'values'>) {
 
   const diff = new BigNumber(proposal.forVotes).minus(proposal.againstVotes);
   const voteSum = new BigNumber(proposal.forVotes).plus(proposal.againstVotes);
-  const requiredDiff = voteSum.multipliedBy(new BigNumber(proposal.minimumDiff).dividedBy(100));
+
+  const requiredDiff = new BigNumber(proposal.totalVotingSupply)
+    .multipliedBy(proposal.minimumDiff)
+    .dividedBy(10000);
 
   // Differential reached if difference between yea and nay votes exceeds min threshold, and proposal has at least one voter
   const diffReached = requiredDiff.lte(diff) && !voteSum.eq(0);
@@ -47,17 +52,18 @@ const averageBlockTime = 14;
 
 export async function enhanceProposalWithTimes(proposal: Omit<Proposal, 'values'>) {
   const provider = getProvider(ChainId.mainnet);
-  const { timestamp: startTimestamp } = await provider.getBlock(proposal.startBlock);
-  const { timestamp: creationTimestamp } = await provider.getBlock(proposal.proposalCreated);
+  const [{ timestamp: startTimestamp }, { timestamp: creationTimestamp }] = await Promise.all([
+    provider.getBlock(proposal.startBlock),
+    provider.getBlock(proposal.proposalCreated),
+  ]);
   if (proposal.state === ProposalState.Active) {
-    const currentBlockNumber = await provider.getBlockNumber();
-    const currentBlock = await provider.getBlock(currentBlockNumber);
+    const currentBlock = await provider.getBlock('latest');
     return {
       ...proposal,
       startTimestamp,
       creationTimestamp,
       expirationTimestamp:
-        currentBlock.timestamp + (proposal.endBlock - currentBlockNumber) * averageBlockTime,
+        currentBlock.timestamp + (proposal.endBlock - currentBlock.number) * averageBlockTime,
     };
   }
   const expirationTimestamp =

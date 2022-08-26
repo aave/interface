@@ -244,17 +244,22 @@ export const checkDashboardHealthFactor = (
       doSwitchToDashboardSupplyView();
     });
     it('Check value', () => {
-      cy.wait(8000);
       cy.get(`[data-cy=HealthFactorTopPannel]`).then(($health) => {
-        const _health = parseFloat($health.text());
-        if (value) {
-          expect(_health).to.be.equal(value);
-        }
-        if (valueFrom && valueTo) {
-          expect(_health).to.be.within(valueFrom, valueTo);
-        }
+        if (valueFrom && valueTo)
+          cy.waitUntil(
+            () => parseFloat($health.text()) >= valueFrom && parseFloat($health.text()) <= valueTo,
+            {
+              errorMsg:
+                parseFloat($health.text()) +
+                ' value not in range from ' +
+                valueFrom +
+                ' till ' +
+                valueTo,
+              timeout: 60000,
+              interval: 500,
+            }
+          );
       });
-      cy.get(`[data-cy=HealthFactorTopPannel]`);
     });
   });
 };

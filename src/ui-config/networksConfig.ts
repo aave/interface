@@ -53,7 +53,7 @@ export type BaseNetworkConfig = Omit<NetworkConfig, 'explorerLinkBuilder'>;
 
 export const networkConfigs: Record<string, BaseNetworkConfig> = {
   [ChainId.kovan]: {
-    name: 'Kovan',
+    name: 'Ethereum Kovan',
     publicJsonRPCUrl: ['https://eth-kovan.alchemyapi.io/v2/demo', 'https://kovan.poa.network'],
     // protocolDataUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2-kovan',
     baseUniswapAdapter: '0xf86Be05f535EC2d217E4c6116B3fa147ee5C05A1',
@@ -65,33 +65,16 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     isTestnet: true,
     networkLogoPath: '/icons/networks/ethereum.svg',
   },
-  [ChainId.rinkeby]: {
-    name: 'Rinkeby',
-    publicJsonRPCUrl: [
-      // 'https://eth-rinkeby.alchemyapi.io/v2/demo',
-      'https://rinkeby-light.eth.linkpool.io/',
-    ],
-    // protocolDataUrl: '',
-    baseUniswapAdapter: '',
-    baseAssetSymbol: 'ETH',
-    wrappedBaseAssetSymbol: 'WETH',
-    baseAssetDecimals: 18,
-    explorerLink: 'https://rinkeby.etherscan.io/',
-    // rpcOnly: true,
-    isTestnet: true,
-    networkLogoPath: '/icons/networks/ethereum.svg',
-  },
-  [ChainId.ropsten]: {
-    name: 'Ropsten Testnet',
-    // Public RPC found at https://rpc.info/
-    publicJsonRPCUrl: ['https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'],
-    publicJsonRPCWSUrl: '',
+  [ChainId.goerli]: {
+    name: 'Ethereum Görli',
+    publicJsonRPCUrl: ['https://eth-goerli.alchemyapi.io/v2/demo', 'https://goerli.prylabs.net'],
+    publicJsonRPCWSUrl: 'wss://eth-goerli.alchemyapi.io/v2/demo',
     // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
-    explorerLink: 'https://ropsten.etherscan.io',
+    explorerLink: 'https://goerli.etherscan.io',
     // rpcOnly: true,
     // usdMarket: true,
     isTestnet: true,
@@ -99,11 +82,8 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.mainnet]: {
     name: 'Ethereum',
-    publicJsonRPCUrl: [
-      'https://cloudflare-eth.com',
-      'https://rpc.flashbots.net/',
-      // 'https://eth-mainnet.alchemyapi.io/v2/demo',
-    ],
+    privateJsonRPCUrl: 'https://eth-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
+    publicJsonRPCUrl: ['https://cloudflare-eth.com/v1/mainnet'],
     publicJsonRPCWSUrl: 'wss://eth-mainnet.alchemyapi.io/v2/demo',
     // cachingServerUrl: 'https://cache-api-1.aave.com/graphql',
     // cachingWSServerUrl: 'wss://cache-api-1.aave.com/graphql',
@@ -119,8 +99,9 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.polygon]: {
     name: 'Polygon POS',
-    publicJsonRPCUrl: ['https://polygon-rpc.com'],
-    publicJsonRPCWSUrl: 'wss://polygon-rpc.com',
+    privateJsonRPCUrl: 'https://poly-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
+    publicJsonRPCUrl: [], // 'https://polygon-rpc.com'
+    // publicJsonRPCWSUrl: 'wss://polygon-rpc.com',
     // cachingServerUrl: 'https://cache-api-137.aave.com/graphql',
     // cachingWSServerUrl: 'wss://cache-api-137.aave.com/graphql',
     // protocolDataUrl: 'https://api.thegraph.com/subgraphs/name/aave/aave-v2-matic',
@@ -150,7 +131,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     networkLogoPath: '/icons/networks/polygon.svg',
   },
   [ChainId.fuji]: {
-    name: 'Fuji',
+    name: 'Avalanche Fuji',
     publicJsonRPCUrl: ['https://api.avax-test.network/ext/bc/C/rpc'],
     publicJsonRPCWSUrl: 'wss://api.avax-test.network/ext/bc/C/rpc',
     // protocolDataUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2-fuji',
@@ -171,6 +152,8 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.avalanche]: {
     name: 'Avalanche',
+    privateJsonRPCUrl:
+      'https://avax-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca/ext/bc/C/rpc',
     publicJsonRPCUrl: ['https://api.avax.network/ext/bc/C/rpc'],
     publicJsonRPCWSUrl: 'wss://api.avax.network/ext/bc/C/rpc',
     // protocolDataUrl: 'https://api.thegraph.com/subgraphs/name/aave/protocol-v2-avalanche',
@@ -211,6 +194,25 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       url: 'https://bridge.arbitrum.io',
     },
   },
+  [ChainId.arbitrum_goerli]: {
+    name: 'Arbitrum Görli',
+    publicJsonRPCUrl: ['https://goerli-rollup.arbitrum.io/rpc'],
+    publicJsonRPCWSUrl: 'wss://goerli-rollup.arbitrum.io/rpc',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://goerli-rollup-explorer.arbitrum.io',
+    // rpcOnly: true,
+    // usdMarket: true,
+    isTestnet: true,
+    networkLogoPath: '/icons/networks/arbitrum.svg',
+    bridge: {
+      icon: '/icons/bridge/arbitrum.svg',
+      name: 'Arbitrum Bridge',
+      url: 'https://bridge.arbitrum.io',
+    },
+  },
   [ChainId.arbitrum_one]: {
     name: 'Arbitrum',
     publicJsonRPCUrl: ['https://arb1.arbitrum.io/rpc'],
@@ -232,6 +234,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.harmony]: {
     name: 'Harmony',
+    privateJsonRPCUrl: 'https://harmony-0.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: ['https://api.s0.t.hmny.io', 'https://api.harmony.one'],
     publicJsonRPCWSUrl: 'wss://ws.s0.t.hmny.io',
     // protocolDataUrl: '',
@@ -271,6 +274,8 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.optimism]: {
     name: 'Optimism',
+    privateJsonRPCUrl:
+      'https://optimism-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
     publicJsonRPCUrl: ['https://mainnet.optimism.io'],
     publicJsonRPCWSUrl: 'wss://ws-mainnet.optimism.io',
     // protocolDataUrl: '',
@@ -289,7 +294,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     },
   },
   [ChainId.optimism_kovan]: {
-    name: 'Optimism Testnet',
+    name: 'Optimism Kovan',
     publicJsonRPCUrl: ['https://kovan.optimism.io'],
     publicJsonRPCWSUrl: 'wss://ws-kovan.optimism.io',
     // protocolDataUrl: '',
@@ -308,10 +313,31 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       url: 'https://app.optimism.io/bridge',
     },
   },
+  [ChainId.optimism_goerli]: {
+    name: 'Optimism Görli',
+    publicJsonRPCUrl: ['https://goerli.optimism.io'],
+    publicJsonRPCWSUrl: 'wss://goerli.optimism.io',
+    // protocolDataUrl: '',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://l2-explorer.surge.sh',
+    // rpcOnly: true,
+    // usdMarket: true,
+    isTestnet: true,
+    networkLogoPath: '/icons/networks/optimism.svg',
+    // bridge: {
+    //   icon: '/icons/bridge/optimism.svg',
+    //   name: 'Optimism Bridge',
+    //   url: 'https://app.optimism.io/bridge',
+    // },
+  },
   [ChainId.fantom]: {
     name: 'Fantom',
-    publicJsonRPCUrl: ['https://rpc.ftm.tools'],
-    publicJsonRPCWSUrl: 'wss://wsapi.fantom.network',
+    privateJsonRPCUrl: 'https://fantom-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
+    publicJsonRPCUrl: [], // 'https://rpc.ftm.tools' compromised
+    // publicJsonRPCWSUrl: 'wss://wsapi.fantom.network',
     // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'FTM',

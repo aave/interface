@@ -1,13 +1,16 @@
+import { Fragment } from 'react';
 import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Alert, Box, useMediaQuery, useTheme } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-
 import { CapType } from '../../../../components/caps/helper';
 import { AvailableTooltip } from '../../../../components/infoTooltips/AvailableTooltip';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
-import { useAppDataContext } from '../../../../hooks/app-data-provider/useAppDataProvider';
+import {
+  ComputedReserveData,
+  useAppDataContext,
+} from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import {
   assetCanBeBorrowedByUser,
@@ -17,10 +20,11 @@ import { ListHeader } from '../ListHeader';
 import { ListLoader } from '../ListLoader';
 import { BorrowAssetsListItem } from './BorrowAssetsListItem';
 import { BorrowAssetsListMobileItem } from './BorrowAssetsListMobileItem';
-import { BorrowAssetsItem } from './types';
 import { Link } from '../../../../components/primitives/Link';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
+import { Warning } from 'src/components/primitives/Warning';
+import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 
 export const BorrowAssetsList = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
@@ -30,9 +34,9 @@ export const BorrowAssetsList = () => {
 
   const { baseAssetSymbol } = currentNetworkConfig;
 
-  const tokensToBorrow: BorrowAssetsItem[] = reserves
+  const tokensToBorrow = reserves
     .filter((reserve) => assetCanBeBorrowedByUser(reserve, user))
-    .map<BorrowAssetsItem>((reserve) => {
+    .map((reserve: ComputedReserveData) => {
       const availableBorrows = user
         ? getMaxAmountAvailableToBorrow(reserve, user, InterestRate.Variable).toNumber()
         : 0;
@@ -45,6 +49,7 @@ export const BorrowAssetsList = () => {
 
       return {
         ...reserve,
+        reserve,
         totalBorrows: reserve.totalDebt,
         availableBorrows,
         availableBorrowsInUSD,
@@ -102,59 +107,77 @@ export const BorrowAssetsList = () => {
   if (loading)
     return <ListLoader title={<Trans>Assets to borrow</Trans>} head={head} withTopMargin />;
 
+  const borrowDisabled = !borrowReserves.length;
   return (
-    <>
-      {!!tokensToBorrow.length && (
-        <ListWrapper
-          title={<Trans>Assets to borrow</Trans>}
-          localStorageName="borrowAssetsDashboardTableCollapse"
-          withTopMargin
-          subChildrenComponent={
-            <Box sx={{ px: 6, mb: 4 }}>
+    <ListWrapper
+      title={<Trans>Assets to borrow</Trans>}
+      localStorageName="borrowAssetsDashboardTableCollapse"
+      withTopMargin
+      noData={borrowDisabled}
+      subChildrenComponent={
+        <Box sx={{ px: 6, mb: 4 }}>
+          {borrowDisabled && currentNetworkConfig.name === 'Harmony' ? (
+            <Warning severity="warning">
+              <Trans>
+                Per the community, borrowing in this market is currently disabled.{' '}
+                <Link
+                  href="https://governance.aave.com/t/harmony-horizon-bridge-exploit-consequences-to-aave-v3-harmony/8614"
+                  target="_blank"
+                >
+                  Learn More
+                </Link>
+              </Trans>
+            </Warning>
+          ) : (
+            <>
               {+collateralUsagePercent >= 0.98 && (
-                <Alert sx={{ mb: '12px' }} severity="error">
+                <Warning severity="error">
                   <Trans>
                     Be careful - You are very close to liquidation. Consider depositing more
                     collateral or paying down some of your borrowed positions
                   </Trans>
-                </Alert>
+                </Warning>
               )}
               {user?.isInIsolationMode && (
-                <Alert sx={{ mb: '12px' }} severity="warning">
+                <Warning severity="warning">
                   <Trans>Borrowing power and assets are limited due to Isolation mode. </Trans>
-                  <Link href="https://docs.aave.com/faq/" target="_blank">
+                  <Link href="https://docs.aave.com/faq/" target="_blank" rel="noopener">
                     Learn More
                   </Link>
-                </Alert>
+                </Warning>
               )}
               {user?.isInEmode && (
-                <Alert sx={{ mb: '12px' }} severity="warning">
+                <Warning severity="warning">
                   <Trans>
                     In E-Mode some assets are not borrowable. Exit E-Mode to get access to all
                     assets
                   </Trans>
-                </Alert>
+                </Warning>
               )}
               {user?.totalCollateralMarketReferenceCurrency === '0' && (
-                <Alert severity="info">
+                <Warning severity="info">
                   <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
-                </Alert>
+                </Warning>
               )}
-            </Box>
-          }
-        >
-          <>
-            {!downToXSM && <ListHeader head={head} />}
-            {borrowReserves.map((item, index) =>
-              downToXSM ? (
-                <BorrowAssetsListMobileItem {...item} key={index} />
+            </>
+          )}
+        </Box>
+      }
+    >
+      <>
+        {!downToXSM && !!borrowReserves.length && <ListHeader head={head} />}
+        {borrowReserves.map((item) => (
+          <Fragment key={item.underlyingAsset}>
+            <AssetCapsProvider asset={item.reserve}>
+              {downToXSM ? (
+                <BorrowAssetsListMobileItem {...item} />
               ) : (
-                <BorrowAssetsListItem {...item} key={index} />
-              )
-            )}
-          </>
-        </ListWrapper>
-      )}
-    </>
+                <BorrowAssetsListItem {...item} />
+              )}
+            </AssetCapsProvider>
+          </Fragment>
+        ))}
+      </>
+    </ListWrapper>
   );
 };

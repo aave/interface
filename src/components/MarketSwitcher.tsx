@@ -1,28 +1,30 @@
-import { CheckIcon, ChevronDownIcon } from '@heroicons/react/outline';
+import { ChevronDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
   Box,
-  Divider,
-  ListItemIcon,
   ListItemText,
   MenuItem,
   SvgIcon,
   TextField,
+  ToggleButton,
+  ToggleButtonGroup,
   Tooltip,
   Typography,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 
 import { useProtocolDataContext } from '../hooks/useProtocolDataContext';
 import {
   availableMarkets,
   CustomMarket,
+  ENABLE_TESTNET,
   MarketDataType,
   marketsData,
   networkConfigs,
+  STAGING_ENV,
 } from '../utils/marketsAndNetworksConfig';
 
 export const getMarketInfoById = (marketId: CustomMarket) => {
@@ -33,13 +35,12 @@ export const getMarketInfoById = (marketId: CustomMarket) => {
 };
 
 const getMarketHelpData = (marketName: string) => {
-  const testChains = ['Kovan', 'Rinkeby', 'Mumbai', 'Fuji', 'Testnet'];
+  const testChains = ['Görli', 'Ropsten', 'Mumbai', 'Fuji', 'Testnet', 'Kovan', 'Rinkeby'];
   const arrayName = marketName.split(' ');
   const testChainName = arrayName.filter((el) => testChains.indexOf(el) > -1);
-  const formattedMarketTittle = arrayName.filter((el) => !testChainName.includes(el));
-
+  const marketTitle = arrayName.filter((el) => !testChainName.includes(el)).join(' ');
   return {
-    name: formattedMarketTittle.join(' '),
+    name: marketTitle,
     testChainName: testChainName[0],
   };
 };
@@ -89,8 +90,15 @@ export const MarketLogo = ({ size, logo, testChainName }: MarketLogoProps) => {
   );
 };
 
+enum SelectedMarketVersion {
+  V2,
+  V3,
+}
 export const MarketSwitcher = () => {
   const { currentMarket, setCurrentMarket } = useProtocolDataContext();
+  const [selectedMarketVersion, setSelectedMarketVersion] = useState<SelectedMarketVersion>(
+    SelectedMarketVersion.V3
+  );
   const theme = useTheme();
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
@@ -184,85 +192,128 @@ export const MarketSwitcher = () => {
       }}
     >
       <Box>
-        <Typography variant="subheader2" color="text.secondary" sx={{ px: 4, py: 2 }}>
-          <Trans>Select Aave Market</Trans>
+        <Typography variant="subheader2" color="text.secondary" sx={{ px: 4, pt: 2 }}>
+          <Trans>
+            {ENABLE_TESTNET || STAGING_ENV ? 'Select Aave Testnet Market' : 'Select Aave Market'}
+          </Trans>
         </Typography>
-        <Divider />
       </Box>
 
       {isV3MarketsAvailable && (
-        <Typography variant="subheader2" color="text.secondary" sx={{ px: 4, py: 2 }}>
-          <Trans>v3 markets</Trans>
-        </Typography>
+        <Box sx={{ mx: '18px', display: 'flex', justifyContent: 'center' }}>
+          <ToggleButtonGroup
+            value={selectedMarketVersion}
+            exclusive
+            onChange={(_, value) => {
+              if (value !== null) {
+                setSelectedMarketVersion(value);
+              }
+            }}
+            sx={{
+              width: '100%',
+              height: '36px',
+              background: theme.palette.primary.main,
+              border: `1px solid ${
+                theme.palette.mode === 'dark' ? 'rgba(235, 235, 237, 0.12)' : '#1B2030'
+              }`,
+              borderRadius: '6px',
+              marginTop: '16px',
+              marginBottom: '12px',
+              padding: '2px',
+            }}
+          >
+            <ToggleButton
+              value={SelectedMarketVersion.V3}
+              data-cy={`markets_switch_button_v3`}
+              sx={{
+                backgroundColor: theme.palette.mode === 'dark' ? '#EAEBEF' : '#383D51',
+                '&.Mui-selected, &.Mui-selected:hover': {
+                  backgroundColor: theme.palette.mode === 'dark' ? '#292E41' : '#FFFFFF',
+                  boxShadow: '0px 1px 0px rgba(0, 0, 0, 0.05)',
+                },
+                borderRadius: '4px',
+              }}
+            >
+              <Typography
+                variant="buttonM"
+                sx={
+                  selectedMarketVersion === SelectedMarketVersion.V3
+                    ? {
+                        backgroundImage: (theme) => theme.palette.gradients.aaveGradient,
+                        backgroundClip: 'text',
+                        color: 'transparent',
+                      }
+                    : {
+                        color: theme.palette.mode === 'dark' ? '#0F121D' : '#FFFFFF',
+                      }
+                }
+              >
+                <Trans>Version 3</Trans>
+              </Typography>
+            </ToggleButton>
+            <ToggleButton
+              value={SelectedMarketVersion.V2}
+              data-cy={`markets_switch_button_v2`}
+              sx={{
+                backgroundColor: theme.palette.mode === 'dark' ? '#EAEBEF' : '#383D51',
+                '&.Mui-selected, &.Mui-selected:hover': {
+                  backgroundColor: theme.palette.mode === 'dark' ? '#292E41' : '#FFFFFF',
+                  boxShadow: '0px 1px 0px rgba(0, 0, 0, 0.05)',
+                },
+                borderRadius: '4px',
+              }}
+            >
+              <Typography
+                variant="buttonM"
+                sx={
+                  selectedMarketVersion === SelectedMarketVersion.V2
+                    ? {
+                        backgroundImage: (theme) => theme.palette.gradients.aaveGradient,
+                        backgroundClip: 'text',
+                        color: 'transparent',
+                      }
+                    : {
+                        color: theme.palette.mode === 'dark' ? '#0F121D' : '#FFFFFF',
+                      }
+                }
+              >
+                <Trans>Version 2</Trans>
+              </Typography>
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Box>
       )}
       {availableMarkets.map((marketId: CustomMarket) => {
         const { market, network } = getMarketInfoById(marketId);
-
+        const marketNaming = getMarketHelpData(market.marketTitle);
         return (
-          market.v3 && (
-            <MenuItem
-              key={marketId}
-              data-cy={`marketSelector_${marketId}`}
-              value={marketId}
-              sx={{ '.MuiListItemIcon-root': { minWidth: 'unset' } }}
-            >
-              <MarketLogo
-                size={32}
-                logo={network.networkLogoPath}
-                testChainName={getMarketHelpData(market.marketTitle).testChainName}
-              />
-              <ListItemText sx={{ mr: 3 }}>
-                {getMarketHelpData(market.marketTitle).name} {market.isFork ? 'Fork' : ''}
-              </ListItemText>
-
-              {currentMarket === marketId && (
-                <ListItemIcon sx={{ m: 0 }}>
-                  <SvgIcon>
-                    <CheckIcon />
-                  </SvgIcon>
-                </ListItemIcon>
-              )}
-            </MenuItem>
-          )
-        );
-      })}
-
-      {isV3MarketsAvailable && <Divider />}
-
-      {isV3MarketsAvailable && (
-        <Typography variant="subheader2" color="text.secondary" sx={{ px: 4, py: 2 }}>
-          <Trans>v2 markets</Trans>
-        </Typography>
-      )}
-      {availableMarkets.map((marketId: CustomMarket) => {
-        const { market, network } = getMarketInfoById(marketId);
-
-        return (
-          !market.v3 && (
-            <MenuItem
-              key={marketId}
-              data-cy={`marketSelector_${marketId}`}
-              value={marketId}
-              sx={{ '.MuiListItemIcon-root': { minWidth: 'unset' } }}
-            >
-              <MarketLogo
-                size={32}
-                logo={network.networkLogoPath}
-                testChainName={getMarketHelpData(market.marketTitle).testChainName}
-              />
-              <ListItemText sx={{ mr: 3 }}>
-                {getMarketHelpData(market.marketTitle).name} {market.isFork ? 'Fork' : ''}
-              </ListItemText>
-
-              {currentMarket === marketId && (
-                <ListItemIcon sx={{ m: 0 }}>
-                  <SvgIcon>
-                    <CheckIcon />
-                  </SvgIcon>
-                </ListItemIcon>
-              )}
-            </MenuItem>
-          )
+          <MenuItem
+            key={marketId}
+            data-cy={`marketSelector_${marketId}`}
+            value={marketId}
+            sx={{
+              '.MuiListItemIcon-root': { minWidth: 'unset' },
+              display:
+                (market.v3 && selectedMarketVersion === SelectedMarketVersion.V2) ||
+                (!market.v3 && selectedMarketVersion === SelectedMarketVersion.V3)
+                  ? 'none'
+                  : 'flex',
+            }}
+          >
+            <MarketLogo
+              size={32}
+              logo={network.networkLogoPath}
+              testChainName={marketNaming.testChainName}
+            />
+            <ListItemText sx={{ mr: 0 }}>
+              {marketNaming.name} {market.isFork ? 'Fork' : ''}
+            </ListItemText>
+            <ListItemText sx={{ textAlign: 'right' }}>
+              <Typography color="text.muted" variant="description">
+                {marketNaming.testChainName}
+              </Typography>
+            </ListItemText>
+          </MenuItem>
         );
       })}
     </TextField>

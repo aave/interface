@@ -15,7 +15,7 @@ const testData = {
   testCases: {
     depositMATIC: {
       asset: assets.polygonV3Market.MATIC,
-      amount: 1000,
+      amount: 5000,
       hasApproval: true,
     },
     swapMATIC: {
@@ -82,7 +82,7 @@ describe('ISOLATED MODE SPEC, POLYGON V3 MARKET', () => {
   configEnvWithTenderlyPolygonFork({ market: 'fork_proto_polygon_v3', v3: true });
   describe('Get isolated asset', () => {
     supply(testData.testCases.depositMATIC, skipTestState, true);
-    swap(testData.testCases.swapMATIC, skipTestState, true);
+    swap(testData.testCases.swapMATIC, skipTestState, true); //swap don't work
   });
   describe('Verify isolated mode property', () => {
     dashboardAssetValuesVerification(testData.verifications.finalDashboard, skipTestState);

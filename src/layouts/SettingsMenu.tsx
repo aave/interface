@@ -2,6 +2,7 @@ import { CogIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Button, Menu, MenuItem, SvgIcon, Typography } from '@mui/material';
 import React, { useState } from 'react';
+import { PROD_ENV } from 'src/utils/marketsAndNetworksConfig';
 
 import { DarkModeSwitcher } from './components/DarkModeSwitcher';
 import { LanguageListItem, LanguagesList } from './components/LanguageSwitcher';
@@ -69,7 +70,7 @@ export function SettingsMenu() {
         </MenuItem>
 
         <DarkModeSwitcher component={MenuItem} />
-        <TestNetModeSwitcher component={MenuItem} />
+        {PROD_ENV && <TestNetModeSwitcher />}
         <LanguageListItem onClick={handleLanguageClick} component={MenuItem} />
       </Menu>
 

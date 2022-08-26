@@ -265,6 +265,7 @@ export const withdraw = (
         .contains(`${forWrapped ? 'W' + _shortName : _shortName}`);
     });
     it(`Withdraw ${isMaxAmount ? 'MAX' : amount} amount for ${_shortName}`, () => {
+      if (isMaxAmount) cy.wait(2000);
       setAmount({
         amount,
         max: isMaxAmount,
@@ -487,21 +488,43 @@ export const changeCollateralNegative = (
 export const emodeActivating = (
   {
     turnOn,
+    multipleEmodes,
+    emodeOption,
   }: {
     turnOn: boolean;
+    multipleEmodes?: boolean;
+    emodeOption?: string;
   },
   skip: SkipType,
   updateSkipStatus = false
 ) => {
   return describe(`${turnOn ? 'Turn on E-mode' : 'Turn off E-mode'}`, () => {
     skipSetup({ skip, updateSkipStatus });
-    it('Open E-mode switcher modal', () => {
+    it(`Open e-mode switcher`, () => {
       doSwitchToDashboardBorrowView();
       cy.get('[data-cy=emode-open]').click();
-      if (turnOn) cy.get(`[data-cy="emode-enable"]`).click();
-      else cy.get(`[data-cy="emode-disable"]`).click();
     });
-    it(`${turnOn ? 'Turn on E-mode' : 'Turn off E-mode'}`, () => {
+    if (turnOn) {
+      it(`Turn on e-mode`, () => {
+        doSwitchToDashboardBorrowView();
+        cy.get(`[data-cy="emode-enable"]`).click();
+      });
+    } else {
+      it(`Turn off e-mode`, () => {
+        doSwitchToDashboardBorrowView();
+        cy.get(`[data-cy="emode-disable"]`).click();
+      });
+    }
+    if (multipleEmodes && turnOn && emodeOption) {
+      it(`Chose "${emodeOption}" option`, () => {
+        cy.get(`[data-cy="EmodeSelect"]`).click();
+        cy.get(`[role="presentation"]`)
+          .find(`ul[role="listbox"]`)
+          .contains(`${emodeOption}`)
+          .click();
+      });
+    }
+    it(`Sign ${turnOn ? 'Turn on E-mode' : 'Turn off E-mode'}`, () => {
       const actionName = turnOn ? 'Enable E-Mode' : 'Disable E-Mode';
       doConfirm({
         hasApproval: true,

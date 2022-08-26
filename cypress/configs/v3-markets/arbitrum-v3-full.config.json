@@ -5,7 +5,9 @@
   ],
   "ignoreTestFiles": [
     "eth.arbitrum-v3.spec.ts",
-    "usdt.arbitrum-v3.spec.ts"
+    "usdt.arbitrum-v3.spec.ts",
+    "e-mode.arbitrum-v3.spec.ts",
+    "critical-conditions.arbitrum-v3.spec.ts"
   ],
   "viewportWidth": 1200,
   "viewportHeight": 800,

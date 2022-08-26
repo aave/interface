@@ -4,18 +4,16 @@ export const permitByChainAndToken: {
   [chainId: number]: Record<string, boolean>;
 } = {
   [ChainId.mainnet]: {},
-  [ChainId.ropsten]: {},
-  [ChainId.rinkeby]: {
-    '0xA3a8697C4C6A7D9ccF9238cb567b122d53012ac9': true,
-    '0x58Cd851c28dF05Edc7F018B533C0257DE57673f7': true,
-    '0x8017B7FC5473d05e67E617072fB237D24Add550b': true,
-    '0xFfaDa869df79320120dfFd6eeE8cF664Dba43146': true,
-    '0xa982Aef90A37675C0E321e3e2f3aDC959fB89351': true,
-    '0x8D01d567AFdE8601C6BA784CF0da7Da12b3BFd66': true,
-    '0xaE4A267987f640AE1b0Dd757854Af00651cf2EC7': true,
-    '0xF1bE881Ee7034ebC0CD47E1af1bA94EC30DF3583': true,
+  [ChainId.goerli]: {
+    '0xdf1742fe5b0bfc12331d8eaec6b478dfdbd31464': true,
+    '0xaa63e0c86b531e2edfe9f91f6436df20c301963d': true,
+    '0xa2025b15a1757311bfd68cb14eaefcc237af5b43': true,
+    '0xc2c527c0cacf457746bd31b2a698fe89de2b6d49': true,
+    '0x63242b9bd3c22f18706d5c4e627b4735973f1f07': true,
+    '0x07c725d58437504ca5f814ae406e70e21c5e8e9e': true,
+    '0x8869dfd060c682675c2a8ae5b21f2cf738a0e3ce': true,
+    '0x2e3a2fb8473316a02b8a297b982498e661e1f6f5': true,
   },
-  [ChainId.kovan]: {},
   [ChainId.arbitrum_one]: {
     '0xf97f4df75117a78c1A5a0DBb814Af92458539FB4': true,
     '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8': true,
@@ -34,6 +32,16 @@ export const permitByChainAndToken: {
     '0x7c53810c756C636cEF076c92D5D7C04555694E76': true,
     '0x31f909C64E93f764dc90d78DCBB38a6A6D1D48dE': true,
     '0xaB874B1862938704Cf44Fb81E33c59B67c6BeC07': true,
+  },
+  [ChainId.arbitrum_goerli]: {
+    '0x805aC2a202e3E217B0C9fe53908ea5e36856fD29': true,
+    '0x7e752bC77eBE2225B327e6ebF09fAD7801873931': true,
+    '0x569275a32682aBD8dE2eD68Dc7443724a8aD8660': true,
+    '0xD0fbc05a6B234b2a6a9D65389C2ffd93Fef0527e': true,
+    '0x6775842AE82BF2F0f987b10526768Ad89d79536E': true,
+    '0xbAc565f93f3192D35E9106E67B9d5c9348bD9389': true,
+    '0x2Df743730160059c50c6bA9E87b30876FA6Db720': true,
+    '0xCDa739D69067333974cD73A722aB92E5e0ad8a4F': true,
   },
   [ChainId.fantom]: {
     '0x8D11eC38a3EB5E956B052f67Da8Bdc9bef8Abf3E': true,
@@ -96,6 +104,15 @@ export const permitByChainAndToken: {
   },
   [ChainId.optimism]: {
     '0x76FB31fb4af56892A25e32cFC43De717950c9278': false, // AAVE
+  },
+  [ChainId.optimism_goerli]: {
+    ['0xdf1742fe5b0bfc12331d8eaec6b478dfdbd31464']: true,
+    ['0xaA63E0C86b531E2eDFE9F91F6436dF20C301963D']: true,
+    ['0xA2025B15a1757311bfD68cb14eaeFCc237AF5b43']: true,
+    ['0xC2C527C0CACF457746Bd31B2a698Fe89de2b6d49']: true,
+    ['0x63242B9Bd3C22f18706d5c4E627B4735973f1f07']: true,
+    ['0x07C725d58437504CA5f814AE406e70E21C5e8e9e']: true,
+    ['0x2e3A2fb8473316A02b8A297B982498E661E1f6f5']: true,
   },
   [ChainId.optimism_kovan]: {
     '0xb532118d86765Eb544958e47df77bb8bDDe2F096': true,

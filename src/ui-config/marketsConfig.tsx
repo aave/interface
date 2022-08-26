@@ -31,14 +31,9 @@ export type MarketDataType = {
     PERMISSION_MANAGER?: string;
     WALLET_BALANCE_PROVIDER: string;
     L2_ENCODER?: string;
-    /**
-     * UiPoolDataProvider currently requires a non-master version
-     * https://github.com/aave/protocol-v2/blob/feat/split-ui-dataprovider-logic/contracts/misc/UiPoolDataProvider.sol
-     * If you deploy a market with the non default oracle or incentive controller you have to redeploy the UiPoolDataProvider as well as currently the addresses are static.
-     * In the upcoming version this will no longer be needed.
-     */
     UI_POOL_DATA_PROVIDER: string;
     UI_INCENTIVE_DATA_PROVIDER?: string;
+    COLLECTOR?: string;
   };
   /**
    * https://www.hal.xyz/ has integrated aave for healtfactor warning notification
@@ -53,14 +48,15 @@ export type MarketDataType = {
 
 export enum CustomMarket {
   // v3 test networks
-  // proto_kovan_v3 = 'proto_kovan_v3',
   proto_arbitrum_rinkeby_v3 = 'proto_arbitrum_rinkeby_v3',
+  proto_arbitrum_goerli_v3 = 'proto_arbitrum_goerli_v3',
   proto_mumbai_v3 = 'proto_mumbai_v3',
-  proto_eth_rinkeby_v3 = 'proto_eth_rinkeby_v3',
   proto_fantom_testnet_v3 = 'proto_fantom_testnet_v3',
   proto_harmony_testnet_v3 = 'proto_harmony_testnet_v3',
   proto_fuji_v3 = 'proto_fuji_v3',
+  proto_goerli_v3 = 'proto_goerli_v3',
   proto_optimism_kovan_v3 = 'proto_optimism_kovan_v3',
+  proto_optimism_goerli_v3 = 'proto_optimism_goerli_v3',
   // v3 mainnets
   proto_optimism_v3 = 'proto_optimism_v3',
   proto_fantom_v3 = 'proto_fantom_v3',
@@ -68,20 +64,21 @@ export enum CustomMarket {
   proto_avalanche_v3 = 'proto_avalanche_v3',
   proto_polygon_v3 = 'proto_polygon_v3',
   proto_arbitrum_v3 = 'proto_arbitrum_v3',
-  proto_ropsten_v3 = 'proto_ropsten_v3',
-
   // v2
-  proto_kovan = 'proto_kovan',
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
   proto_fuji = 'proto_fuji',
   proto_polygon = 'proto_polygon',
   proto_mumbai = 'proto_mumbai',
-  amm_kovan = 'amm_kovan',
   amm_mainnet = 'amm_mainnet',
+  //proto_goerli = 'proto_goerli',
+  proto_kovan = 'proto_kovan',
+  amm_kovan = 'amm_kovan',
   // external
   permissioned_market = 'permissioned_market',
 }
+
+console.log('chainId', ChainId);
 
 export const marketsData: {
   [key in keyof typeof CustomMarket]: MarketDataType;
@@ -106,6 +103,20 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: '0x50e468e1AAF408a2EB4614e4b45f832700Cda7F4',
     },
   },
+  [CustomMarket.amm_kovan]: {
+    marketTitle: 'Ethereum AMM Kovan',
+    chainId: ChainId.kovan,
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0x67FB118A780fD740C8936511947cC4bE7bb7730c'.toLowerCase(),
+      LENDING_POOL: '0x762E2a3BBe729240ea44D31D5a81EAB44d34ef01',
+      WETH_GATEWAY: '0xA61ca04DF33B72b235a8A28CfB535bb7A5271B70',
+      FAUCET: '0x600103d518cC5E8f3319D532eB4e5C268D32e604',
+      WALLET_BALANCE_PROVIDER: '0x07DC923859b68e9399d787bf52c4Aa9eBe3490aF',
+      UI_POOL_DATA_PROVIDER: '0x31fe1309B1169e7136AdAB01d4ba3882b5852d08',
+      UI_INCENTIVE_DATA_PROVIDER: '0x50e468e1AAF408a2EB4614e4b45f832700Cda7F4',
+    },
+  },
   [CustomMarket.proto_mainnet]: {
     marketTitle: 'Ethereum',
     chainId: ChainId.mainnet,
@@ -116,9 +127,7 @@ export const marketsData: {
       collateralRepay: true,
       incentives: true,
     },
-    rpcOnly: false,
-    cachingServerUrl: 'https://cache-api-1.aave.com/graphql',
-    cachingWSServerUrl: 'wss://cache-api-1.aave.com/graphql',
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xB53C1a33016B2DC2fF3653530bfF1848a515c8c5'.toLowerCase(),
       LENDING_POOL: '0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9',
@@ -128,6 +137,7 @@ export const marketsData: {
       WALLET_BALANCE_PROVIDER: '0x8E8dAd5409E0263a51C0aB5055dA66Be28cFF922',
       UI_POOL_DATA_PROVIDER: '0x548e95Ce38B8cb1D91FD82A9F094F26295840277',
       UI_INCENTIVE_DATA_PROVIDER: '0xD01ab9a6577E1D84F142e44D49380e23A340387d',
+      COLLECTOR: '0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
@@ -135,28 +145,28 @@ export const marketsData: {
     },
   },
   [CustomMarket.permissioned_market]: {
-    marketTitle: 'Ethereum Permissioned Market example',
-    chainId: ChainId.kovan,
+    marketTitle: 'Ethereum Permissioned Market Goerli',
+    chainId: ChainId.goerli,
     enabledFeatures: {
       // liquiditySwap: true,
       // collateralRepay: true,
       // incentives: true,
       permissions: true,
-      faucet: true,
+      // faucet: true,
     },
     rpcOnly: true,
     permissionComponent: <PermissionView />,
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0x0dC896E7d8f4BF74665Fb8fB57186B563a439d50'.toLowerCase(),
-      LENDING_POOL: '0x10bB197612856C1dcE4Ff835Ab478C7Fafc76425',
-      WETH_GATEWAY: '0x9dAd54A03f54340eE9B297ed94927261555344d7',
+      LENDING_POOL_ADDRESS_PROVIDER: '0x065B418fF4EdBA0c913029156f6f257884e92D82'.toLowerCase(), // LendingPoolAddressesProvider
+      LENDING_POOL: '0x32a25857d533bcee38E6D3f8A6942dBd302f136D', // lending pool
+      WETH_GATEWAY: '0x5Ba8170647BD2Bd9E01eA95C9ffed24f7bd37aeB', // PermissionedWETHGateway
       // REPAY_WITH_COLLATERAL_ADAPTER: '<address here>',
       // SWAP_COLLATERAL_ADAPTER: '<address here>',
-      WALLET_BALANCE_PROVIDER: '0x0C028d1f4f911462b33DC8e68008D9A2CD2e3572',
-      UI_POOL_DATA_PROVIDER: '0x0D410Ce47834798028c9CD894A29A4b12A9d5624', // '0x0D410Ce47834798028c9CD894A29A4b12A9d5624'// 0xCF4c9A9f5c23029e7438caB8293899759AB7A8d9,
-      // UI_INCENTIVE_DATA_PROVIDER: '<address here>',
-      PERMISSION_MANAGER: '0x2fD64233d566C7D1db1F3a580709abF461917424',
-      FAUCET: '0x600103d518cC5E8f3319D532eB4e5C268D32e604',
+      WALLET_BALANCE_PROVIDER: '0x6Bc5f4e5b97a3a160f2521f200842ceE4bDC8fEa', // WalletBalanceProvider
+      UI_POOL_DATA_PROVIDER: '0x8320bEF3A9fa6a7256EE3B6e87CCB72523D554A9', //  // '0x0D410Ce47834798028c9CD894A29A4b12A9d5624'// 0xCF4c9A9f5c23029e7438caB8293899759AB7A8d9,
+      UI_INCENTIVE_DATA_PROVIDER: '0xA2E05bE2090b3658A264bdf1C39387f5Dba367Ec',
+      PERMISSION_MANAGER: '0x6ff4DE6185E08164D9c84aFcf11Eab9AC68ceCF9', // PermissionManager
+      // FAUCET: '0x600103d518cC5E8f3319D532eB4e5C268D32e604',
     },
   }, // Does exist a version of UIdataprovider contract that works for arc market and v3 interface
   [CustomMarket.amm_kovan]: {
@@ -173,12 +183,49 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: '0x50e468e1AAF408a2EB4614e4b45f832700Cda7F4',
     },
   },
+  // [CustomMarket.proto_goerli]: {
+  //   marketTitle: 'Ethereum Görli',
+  //   chainId: ChainId.goerli,
+  //   enabledFeatures: {
+  //   faucet: true,
+  //   },
+  //   rpcOnly: true,
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: ''.toLowerCase(),
+  //     LENDING_POOL: '',
+  //     WETH_GATEWAY: '',
+  //     WALLET_BALANCE_PROVIDER: '',
+  //     UI_POOL_DATA_PROVIDER: '',
+  //     UI_INCENTIVE_DATA_PROVIDER: '',
+  //  },
+  // },
+  // [CustomMarket.permissioned_market]: {
+  //   marketTitle: 'Ethereum Permissioned Market example',
+  //   chainId: ChainId.mainnet,
+  //   enabledFeatures: {
+  //     // liquiditySwap: true,
+  //     // collateralRepay: true,
+  //     // incentives: true,
+  //     permissions: true,
+  //   },
+  //   rpcOnly: true,
+  //   permissionComponent: <PermissionView />,
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: '<address here>'.toLowerCase(),
+  //     LENDING_POOL: '<address here>',
+  //     WETH_GATEWAY: '<address here>',
+  //     // REPAY_WITH_COLLATERAL_ADAPTER: '<address here>',
+  //     // SWAP_COLLATERAL_ADAPTER: '<address here>',
+  //     WALLET_BALANCE_PROVIDER: '<address here>',
+  //     UI_POOL_DATA_PROVIDER: '<address here>',
+  //     // UI_INCENTIVE_DATA_PROVIDER: '<address here>',
+  //     PERMISSION_MANAGER: '<address here>',
+  //   },
+  // },
   [CustomMarket.amm_mainnet]: {
     marketTitle: 'Ethereum AMM',
     chainId: ChainId.mainnet,
-    cachingServerUrl: 'https://cache-api-1.aave.com/graphql',
-    cachingWSServerUrl: 'wss://cache-api-1.aave.com/graphql',
-    rpcOnly: false,
+    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xacc030ef66f9dfeae9cbb0cd1b25654b82cfa8d5'.toLowerCase(),
       LENDING_POOL: '0x7937d4799803fbbe595ed57278bc4ca21f3bffcb',
@@ -186,6 +233,7 @@ export const marketsData: {
       WALLET_BALANCE_PROVIDER: '0x8E8dAd5409E0263a51C0aB5055dA66Be28cFF922',
       UI_POOL_DATA_PROVIDER: '0x548e95Ce38B8cb1D91FD82A9F094F26295840277',
       UI_INCENTIVE_DATA_PROVIDER: '0xD01ab9a6577E1D84F142e44D49380e23A340387d',
+      COLLECTOR: '0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c',
     },
   },
   [CustomMarket.proto_mumbai]: {
@@ -225,6 +273,7 @@ export const marketsData: {
       WALLET_BALANCE_PROVIDER: '0x34aa032bC416Cf2CdC45c0C8f065b1F19463D43e',
       UI_POOL_DATA_PROVIDER: '0x67acdB3469580185811E5769113509c6e8B6Cba5',
       UI_INCENTIVE_DATA_PROVIDER: '0x645654D59A5226CBab969b1f5431aA47CBf64ab8',
+      COLLECTOR: '0x7734280A4337F37Fbf4651073Db7c28C80B339e9',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
@@ -268,6 +317,7 @@ export const marketsData: {
       WALLET_BALANCE_PROVIDER: '0x73e4898a1Bfa9f710B6A6AB516403A6299e01fc6',
       UI_POOL_DATA_PROVIDER: '0x88be7eC36719fadAbdE4307ec61EAB6fda788CEF',
       UI_INCENTIVE_DATA_PROVIDER: '0x11979886A6dBAE27D7a72c49fCF3F23240D647bF',
+      COLLECTOR: '0x467b92aF281d14cB6809913AD016a607b5ba8A36',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
@@ -275,25 +325,26 @@ export const marketsData: {
     },
   },
   // v3
-  [CustomMarket.proto_eth_rinkeby_v3]: {
+  [CustomMarket.proto_goerli_v3]: {
+    marketTitle: 'Ethereum Görli',
     v3: true,
-    marketTitle: 'Ethereum Rinkeby',
-    chainId: ChainId.rinkeby,
+    chainId: ChainId.goerli,
     enabledFeatures: {
+      // Note: We should remove this based on the addresses that you provide in the addresses below
       faucet: true,
-      governance: false,
-      staking: false,
-      incentives: false,
+      // governance: true,
+      // staking: true,
+      // incentives: true,
     },
     rpcOnly: true,
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0xBA6378f1c1D046e9EB0F538560BA7558546edF3C'.toLowerCase(),
-      LENDING_POOL: '0xE039BdF1d874d27338e09B55CB09879Dedca52D8',
-      WETH_GATEWAY: '0xD1DECc6502cc690Bc85fAf618Da487d886E54Abe',
-      FAUCET: '0x88138CA1e9E485A1E688b030F85Bb79d63f156BA',
-      WALLET_BALANCE_PROVIDER: '0x116674C3Efe4e31F192d855284619DEd6fE2a1b9',
-      UI_POOL_DATA_PROVIDER: '0x550f9764d56291B5B793b6dD1623af3346128BD2',
-      UI_INCENTIVE_DATA_PROVIDER: '0x2c9f31b1F9838Bb8781bb61a0d0a4615f6530207',
+      LENDING_POOL_ADDRESS_PROVIDER: '0xc4dCB5126a3AfEd129BC3668Ea19285A9f56D15D'.toLowerCase(),
+      LENDING_POOL: '0x368EedF3f56ad10b9bC57eed4Dac65B26Bb667f6',
+      WETH_GATEWAY: '0xd5B55D3Ed89FDa19124ceB5baB620328287b915d',
+      FAUCET: '0x1ca525Cd5Cb77DB5Fa9cBbA02A0824e283469DBe',
+      WALLET_BALANCE_PROVIDER: '0x75CC0f0E3764be7594772D08EEBc322970CbB3a9',
+      UI_POOL_DATA_PROVIDER: '0x851F44e30C469b9E4Bf9591309611c28eAb85fAb',
+      UI_INCENTIVE_DATA_PROVIDER: '0x2A15b87783b9d590a6c528E7b1Df71ee73540F5A',
     },
   },
   [CustomMarket.proto_arbitrum_v3]: {
@@ -302,6 +353,8 @@ export const marketsData: {
     chainId: ChainId.arbitrum_one,
     enabledFeatures: {
       incentives: true,
+      liquiditySwap: true,
+      collateralRepay: true,
     },
     rpcOnly: true,
     addresses: {
@@ -312,6 +365,9 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: '0x3f960bB91e85Ae2dB561BDd01B515C5A5c65802b',
       UI_INCENTIVE_DATA_PROVIDER: '0xEFdd7374551897B11a23Ec7b5694C713DFDa76f1',
       L2_ENCODER: '0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC',
+      COLLECTOR: '0x053D55f9B5AF8694c503EB288a1B7E552f590710',
+      SWAP_COLLATERAL_ADAPTER: '0xAE9f94BD98eC2831a1330e0418bE0fDb5C95C2B9',
+      REPAY_WITH_COLLATERAL_ADAPTER: '0x32FdC26aFFA1eB331263Bcdd59F2e46eCbCC2E24',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
@@ -338,6 +394,26 @@ export const marketsData: {
       L2_ENCODER: '0x3d0d309DC8f999f34c4E7296dB38F0e65D3115DF',
     },
   },
+  [CustomMarket.proto_arbitrum_goerli_v3]: {
+    marketTitle: 'Arbitrum Görli',
+    v3: true,
+    chainId: ChainId.arbitrum_goerli,
+    enabledFeatures: {
+      faucet: true,
+      incentives: true,
+    },
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0xF8aa90E66B8BAe13f2e4aDe6104abAb8eeDaBfdc'.toLowerCase(),
+      LENDING_POOL: '0x6Cbb4E8eC402E07fDF96DbbC6c752aCfB0eB6075',
+      WETH_GATEWAY: '0xBCca2fc5F30A65cE2155d739364f3fc8F57E6999',
+      FAUCET: '0x98256500C9f1CE77e4C925b7bbF1588515E34422',
+      WALLET_BALANCE_PROVIDER: '0xA0025bE90591971ad76D12F8c9CecA09f66db3D8',
+      UI_POOL_DATA_PROVIDER: '0xd5dE38432Ef93B574B5eAbeBaa8F92bB480dD14F',
+      UI_INCENTIVE_DATA_PROVIDER: '0x71af6535f74Ac34e61a0Df6221ec0442b512eBC1',
+      L2_ENCODER: '0xBFB521464727c3B31A6D9183413cc2B66f4F6686',
+    },
+  },
   [CustomMarket.proto_avalanche_v3]: {
     marketTitle: 'Avalanche',
     v3: true,
@@ -352,37 +428,16 @@ export const marketsData: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb'.toLowerCase(),
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
       WETH_GATEWAY: '0xa938d8536aEed1Bd48f548380394Ab30Aa11B00E',
-      REPAY_WITH_COLLATERAL_ADAPTER: '0xA911965AbBE61460cB91f8259a8dF8509D877EBc',
-      SWAP_COLLATERAL_ADAPTER: '0xAe02ECA9445ec43B53118DD41658DB17eaB55987',
+      REPAY_WITH_COLLATERAL_ADAPTER: '0x8a743090e9759E758d15a4CFd18408fb6332c625',
+      SWAP_COLLATERAL_ADAPTER: '0xF7fC20D9D1D8DFE55F5F2c3180272a5747dD327F',
       WALLET_BALANCE_PROVIDER: '0xBc790382B3686abffE4be14A030A96aC6154023a',
       UI_POOL_DATA_PROVIDER: '0xdBbFaFC45983B4659E368a3025b81f69Ab6E5093',
       UI_INCENTIVE_DATA_PROVIDER: '0x270f51cf3F681010B46f5c4Ee2aD5120Db33026F',
+      COLLECTOR: '0x5ba7fd868c40c16f7aDfAe6CF87121E13FC2F7a0',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
       marketName: 'avalanche',
-    },
-  },
-  [CustomMarket.proto_ropsten_v3]: {
-    marketTitle: 'Ethereum Ropsten',
-    v3: true,
-    chainId: ChainId.ropsten,
-    enabledFeatures: {
-      // Note: We should remove this based on the addresses that you provide in the addresses below
-      faucet: true,
-      // governance: true,
-      // staking: true,
-      // incentives: true,
-    },
-    rpcOnly: true,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0x303a4B174663A6201Da77782413B4b54EFa3E97e'.toLowerCase(),
-      LENDING_POOL: '0x23a85024f54A19e243bA7a74E339a5C80998c7a4',
-      WETH_GATEWAY: '0x96A4fd1f289888cCa772298f7BDCF41C02122c01',
-      FAUCET: '0xb7263ADfB7C094aa24b91A51b297A278e105584a',
-      WALLET_BALANCE_PROVIDER: '0xEEac3ad1b3f4c43A782a951348c5387506B9AB06',
-      UI_POOL_DATA_PROVIDER: '0xb815B9EE078Dab098965D8e52dD5C747d70bb481',
-      UI_INCENTIVE_DATA_PROVIDER: '0x2526D407F722C0D1e0326eC1840A235bf173b9Ca',
     },
   },
   [CustomMarket.proto_fuji_v3]: {
@@ -404,6 +459,44 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: '0x036dDd300B57F6a8A6A55e2ede8b50b517A5094f',
     },
   },
+  [CustomMarket.proto_optimism_kovan_v3]: {
+    marketTitle: 'Optimism Kovan',
+    v3: true,
+    chainId: ChainId.optimism_kovan,
+    enabledFeatures: {
+      faucet: true,
+      incentives: true,
+    },
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0xD15d36975A0200D11B8a8964F4F267982D2a1cFe'.toLowerCase(),
+      LENDING_POOL: '0x139d8F557f70D1903787e929D7C42165c4667229',
+      WETH_GATEWAY: '0x698851Fc324Ff9572289Dd72dfC102DB778b52f1',
+      FAUCET: '0xed97140B58B97FaF70b70Ae26714Aa59705c74aE',
+      WALLET_BALANCE_PROVIDER: '0xA8751C0e2383cE144a95386A2E30f7E2BD78236C',
+      UI_POOL_DATA_PROVIDER: '0xBCb61ecc7997cc736E4802de2D5ce76D0908C97c',
+      UI_INCENTIVE_DATA_PROVIDER: '0xe2E3a30E77469397dc3CF74f1Fa35f39493207C2',
+    },
+  },
+  [CustomMarket.proto_optimism_goerli_v3]: {
+    marketTitle: 'Optimism Görli',
+    v3: true,
+    chainId: ChainId.optimism_goerli,
+    enabledFeatures: {
+      faucet: true,
+      incentives: true,
+    },
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0x74a328ED938160D702378Daeb7aB2504714B4E4b'.toLowerCase(),
+      LENDING_POOL: '0x4b529A5d8268d74B687aC3dbb00e1b85bF4BF0d4',
+      WETH_GATEWAY: '0x6f7f2440006221F893c587b88f01afc42B6F8d2e',
+      FAUCET: '0xC52eA1F19C22E5a3725105BC0cf4988614e84D98',
+      WALLET_BALANCE_PROVIDER: '0xAEe1FD5CB505aa48E49c01DdE732956eDef8b42f',
+      UI_POOL_DATA_PROVIDER: '0x4D8201fB7a3367AB3e4Ba257F7462C81306799d6',
+      UI_INCENTIVE_DATA_PROVIDER: '0x596b5804E1f541baC5f265aF7C4bcc5077522876',
+    },
+  },
   [CustomMarket.proto_fantom_v3]: {
     marketTitle: 'Fantom',
     v3: true,
@@ -418,11 +511,12 @@ export const marketsData: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb'.toLowerCase(),
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
       WETH_GATEWAY: '0x17d013C19FE25cf4D911CE85eD5f40FE8880F46f',
-      SWAP_COLLATERAL_ADAPTER: '0x35DDe5599318112829d97A29f4E8f4C49aAfc47C',
+      SWAP_COLLATERAL_ADAPTER: '0xe387c6053ce8ec9f8c3fa5ce085af73114a695d3',
+      REPAY_WITH_COLLATERAL_ADAPTER: '0x1408401B2A7E28cB747b3e258D0831Fc926bAC51',
       WALLET_BALANCE_PROVIDER: '0xBc790382B3686abffE4be14A030A96aC6154023a',
       UI_POOL_DATA_PROVIDER: '0x1CCbfeC508da8D5242D5C1b368694Ab0066b39f1',
       UI_INCENTIVE_DATA_PROVIDER: '0xbA14c06011f4AF5970cFDe4364ba6320E190BD4B',
-      REPAY_WITH_COLLATERAL_ADAPTER: '0x85272bf6DdCCBDea45Cf0535ea5C65bf91B480c4',
+      COLLECTOR: '0xBe85413851D195fC6341619cD68BfDc26a25b928',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',
@@ -463,6 +557,7 @@ export const marketsData: {
       WALLET_BALANCE_PROVIDER: '0xBc790382B3686abffE4be14A030A96aC6154023a',
       UI_POOL_DATA_PROVIDER: '0xBC3c351349f6A919A419EE1e57F85f3e07E59dd1',
       UI_INCENTIVE_DATA_PROVIDER: '0xC09e69E79106861dF5d289dA88349f10e2dc6b5C',
+      COLLECTOR: '0x8A020d92D6B119978582BE4d3EdFdC9F7b28BF31',
     },
   },
   [CustomMarket.proto_harmony_testnet_v3]: {
@@ -500,25 +595,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: '0x64f558d4BFC1c03a8c8B2ff84976fF04c762b51f',
       UI_INCENTIVE_DATA_PROVIDER: '0x6dD4b295B457A26CC2646aAf2519436681afb5d4',
       L2_ENCODER: '0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC',
-    },
-  },
-  [CustomMarket.proto_optimism_kovan_v3]: {
-    marketTitle: 'Optimism Kovan',
-    v3: true,
-    chainId: ChainId.optimism_kovan,
-    enabledFeatures: {
-      faucet: true,
-      incentives: true,
-    },
-    rpcOnly: true,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0xD15d36975A0200D11B8a8964F4F267982D2a1cFe'.toLowerCase(),
-      LENDING_POOL: '0x139d8F557f70D1903787e929D7C42165c4667229',
-      WETH_GATEWAY: '0x698851Fc324Ff9572289Dd72dfC102DB778b52f1',
-      FAUCET: '0xed97140B58B97FaF70b70Ae26714Aa59705c74aE',
-      WALLET_BALANCE_PROVIDER: '0xA8751C0e2383cE144a95386A2E30f7E2BD78236C',
-      UI_POOL_DATA_PROVIDER: '0xBCb61ecc7997cc736E4802de2D5ce76D0908C97c',
-      UI_INCENTIVE_DATA_PROVIDER: '0xe2E3a30E77469397dc3CF74f1Fa35f39493207C2',
+      COLLECTOR: '0xB2289E329D2F85F1eD31Adbb30eA345278F21bcf',
     },
   },
   [CustomMarket.proto_polygon_v3]: {
@@ -535,11 +612,12 @@ export const marketsData: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb'.toLowerCase(),
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
       WETH_GATEWAY: '0x9BdB5fcc80A49640c7872ac089Cc0e00A98451B6',
-      REPAY_WITH_COLLATERAL_ADAPTER: '0xD0E8f168d297DfA0f3EE1711c538BcC0663320aF',
-      SWAP_COLLATERAL_ADAPTER: '0x00d48554f570B6f1c474EBe56116159c3B1D625f',
+      REPAY_WITH_COLLATERAL_ADAPTER: '0xA125561fca253f19eA93970534Bb0364ea74187a',
+      SWAP_COLLATERAL_ADAPTER: '0x301F221bc732907E2da2dbBFaA8F8F6847c170c3',
       WALLET_BALANCE_PROVIDER: '0xBc790382B3686abffE4be14A030A96aC6154023a',
       UI_POOL_DATA_PROVIDER: '0x8F1AD487C9413d7e81aB5B4E88B024Ae3b5637D0',
       UI_INCENTIVE_DATA_PROVIDER: '0x05E309C97317d8abc0f7e78185FC966FfbD2CEC0',
+      COLLECTOR: '0xe8599F3cc5D38a9aD6F3684cd5CEa72f10Dbc383',
     },
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-v3-track-health-factor',

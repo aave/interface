@@ -6,8 +6,7 @@
 # potentially you can user other node versions, but it's only tested on what's currently listed in nvmrc
 nvm use
 yarn install
-# optional, but needed for running tests
-cp .env.example .env
+cp .env.example .env.local
 ```
 
 ## Running the interface
@@ -28,9 +27,9 @@ yarn build:static
 ### Environment
 
 ```sh
-# you can default enable testnets by setting the following environment variable
-NEXT_PUBLIC_ENABLE_TESTNET=true
-# you can disable staking & governance by altering
+# setting the environment to 'staging' will enable testnet markets, disabling governance, staking, and production markets
+NEXT_PUBLIC_ENV=prod
+# you can also disable staking & governance by altering
 NEXT_PUBLIC_ENABLE_GOVERNANCE=true
 NEXT_PUBLIC_ENABLE_STAKING=true
 ```
@@ -60,14 +59,16 @@ yarn test:amm|main|polygon|avalanche
 
 You can run the ui against a forked network similar to what the tests do which allows you to play around on the ui without spending actual funds.
 To enable forks in the ui, you have to run the following commands in console.
-```
+
+```js
 localStorage.setItem('forkEnabled', 'true');
 localStorage.setItem('forkBaseChainId', 1); // the networkId you are forking
 localStorage.setItem('forkNetworkId', '3030'); // the networkId on the fork
 localStorage.setItem('forkRPCUrl', <rpcurl>);
 ```
+
 As localeStorage is not observed you need to **reload** after setting the parameters.
-Not the market selection should show forked markets for all the markets that run on `forkBaseChainId`.
+Now the market selection should show forked markets for all the markets that run on `forkBaseChainId`.
 To do actual transactions on the fork you need to setup your wallet to use the same `rpcurl` you provided as `forkRPCUrl`.
 
 ## Token addition

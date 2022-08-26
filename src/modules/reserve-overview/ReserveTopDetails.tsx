@@ -1,7 +1,16 @@
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackOutlined';
-import { Box, Button, Skeleton, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
+import {
+  Box,
+  Button,
+  Divider,
+  Skeleton,
+  SvgIcon,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { useRouter } from 'next/router';
 import { getMarketInfoById, MarketLogo } from 'src/components/MarketSwitcher';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -15,10 +24,10 @@ import {
   useAppDataContext,
 } from '../../hooks/app-data-provider/useAppDataProvider';
 
-import CubeIcon from '../../../public/icons/markets/cube-icon.svg';
-import PieIcon from '../../../public/icons/markets/pie-icon.svg';
-import UptrendIcon from '../../../public/icons/markets/uptrend-icon.svg';
-import DollarIcon from '../../../public/icons/markets/dollar-icon.svg';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { CircleIcon } from 'src/components/CircleIcon';
+import { AddTokenDropdown } from './AddTokenDropdown';
+import { TokenLinkDropdown } from './TokenLinkDropdown';
 
 interface ReserveTopDetailsProps {
   underlyingAsset: string;
@@ -27,8 +36,9 @@ interface ReserveTopDetailsProps {
 export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) => {
   const router = useRouter();
   const { reserves, loading } = useAppDataContext();
-  const { currentMarket, currentNetworkConfig } = useProtocolDataContext();
+  const { currentMarket, currentNetworkConfig, currentChainId } = useProtocolDataContext();
   const { market, network } = getMarketInfoById(currentMarket);
+  const { addERC20Token, switchNetwork, chainId: connectedChainId, connected } = useWeb3Context();
 
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -55,6 +65,14 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
         )}
       </Box>
     );
+  };
+
+  const iconStyling = {
+    display: 'inline-flex',
+    alignItems: 'center',
+    color: '#A5A8B6',
+    '&:hover': { color: '#F1F1F3' },
+    cursor: 'pointer',
   };
 
   const ReserveName = () => {
@@ -128,21 +146,24 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
                     {poolReserve.symbol}
                   </Typography>
                 )}
-                <Box sx={{ display: 'inline-flex' }}>
+                <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
                   <ReserveName />
                   {loading ? (
                     <Skeleton width={16} height={16} sx={{ ml: 1, background: '#383D51' }} />
                   ) : (
-                    <Link
-                      href={currentNetworkConfig.explorerLinkBuilder({
-                        address: poolReserve?.underlyingAsset,
-                      })}
-                      sx={{ display: 'inline-flex', alignItems: 'center', ml: 1, color: '#A5A8B6' }}
-                    >
-                      <SvgIcon sx={{ fontSize: '16px' }}>
-                        <ExternalLinkIcon />
-                      </SvgIcon>
-                    </Link>
+                    <Box sx={{ display: 'flex' }}>
+                      <TokenLinkDropdown poolReserve={poolReserve} downToSM={downToSM} />
+                      {connected && (
+                        <AddTokenDropdown
+                          poolReserve={poolReserve}
+                          downToSM={downToSM}
+                          switchNetwork={switchNetwork}
+                          addERC20Token={addERC20Token}
+                          currentChainId={currentChainId}
+                          connectedChainId={connectedChainId}
+                        />
+                      )}
+                    </Box>
                   )}
                 </Box>
               </Box>
@@ -152,33 +173,42 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
       }
     >
       {!downToSM && (
-        <TopInfoPanelItem
-          title={!loading && <Trans>{poolReserve.symbol}</Trans>}
-          withoutIconWrapper
-          icon={<ReserveIcon />}
-          loading={loading}
-        >
-          <Box sx={{ display: 'inline-flex' }}>
-            <ReserveName />
-            {loading ? (
-              <Skeleton width={16} height={16} sx={{ ml: 1, background: '#383D51' }} />
-            ) : (
-              <Link
-                href={currentNetworkConfig.explorerLinkBuilder({
-                  address: poolReserve?.underlyingAsset,
-                })}
-                sx={{ display: 'inline-flex', alignItems: 'center', ml: 1, color: '#A5A8B6' }}
-              >
-                <SvgIcon sx={{ fontSize: '16px' }}>
-                  <ExternalLinkIcon />
-                </SvgIcon>
-              </Link>
-            )}
-          </Box>
-        </TopInfoPanelItem>
+        <>
+          <TopInfoPanelItem
+            title={!loading && <Trans>{poolReserve.symbol}</Trans>}
+            withoutIconWrapper
+            icon={<ReserveIcon />}
+            loading={loading}
+          >
+            <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+              <ReserveName />
+              {loading ? (
+                <Skeleton width={16} height={16} sx={{ ml: 1, background: '#383D51' }} />
+              ) : (
+                <Box sx={{ display: 'flex' }}>
+                  <TokenLinkDropdown poolReserve={poolReserve} downToSM={downToSM} />
+                  {connected && (
+                    <AddTokenDropdown
+                      poolReserve={poolReserve}
+                      downToSM={downToSM}
+                      switchNetwork={switchNetwork}
+                      addERC20Token={addERC20Token}
+                      currentChainId={currentChainId}
+                      connectedChainId={connectedChainId}
+                    />
+                  )}
+                </Box>
+              )}
+            </Box>
+          </TopInfoPanelItem>
+          <Divider
+            orientation="vertical"
+            flexItem
+            sx={{ my: 1, borderColor: 'rgba(235, 235, 239, 0.08)' }}
+          />
+        </>
       )}
-
-      <TopInfoPanelItem icon={<CubeIcon />} title={<Trans>Reserve Size</Trans>} loading={loading}>
+      <TopInfoPanelItem title={<Trans>Reserve Size</Trans>} loading={loading} hideIcon>
         <FormattedNumber
           value={poolReserve?.totalLiquidityUSD}
           symbol="USD"
@@ -188,11 +218,7 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
         />
       </TopInfoPanelItem>
 
-      <TopInfoPanelItem
-        icon={<PieIcon />}
-        title={<Trans>Available liquidity</Trans>}
-        loading={loading}
-      >
+      <TopInfoPanelItem title={<Trans>Available liquidity</Trans>} loading={loading} hideIcon>
         <FormattedNumber
           value={poolReserve?.availableLiquidityUSD}
           symbol="USD"
@@ -202,11 +228,7 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
         />
       </TopInfoPanelItem>
 
-      <TopInfoPanelItem
-        icon={<UptrendIcon />}
-        title={<Trans>Utilization Rate</Trans>}
-        loading={loading}
-      >
+      <TopInfoPanelItem title={<Trans>Utilization Rate</Trans>} loading={loading} hideIcon>
         <FormattedNumber
           value={poolReserve?.borrowUsageRatio}
           percent
@@ -216,8 +238,8 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
         />
       </TopInfoPanelItem>
 
-      <TopInfoPanelItem icon={<DollarIcon />} title={<Trans>Oracle price</Trans>} loading={loading}>
-        <Box sx={{ display: 'inline-flex' }}>
+      <TopInfoPanelItem title={<Trans>Oracle price</Trans>} loading={loading} hideIcon>
+        <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
           <FormattedNumber
             value={poolReserve?.priceInUSD}
             symbol="USD"
@@ -228,14 +250,18 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
           {loading ? (
             <Skeleton width={16} height={16} sx={{ ml: 1, background: '#383D51' }} />
           ) : (
-            <Link
-              href={currentNetworkConfig.explorerLinkBuilder({ address: poolReserve?.priceOracle })}
-              sx={{ display: 'inline-flex', alignItems: 'center', ml: 1, color: '#A5A8B6' }}
-            >
-              <SvgIcon sx={{ fontSize: '16px' }}>
-                <ExternalLinkIcon />
-              </SvgIcon>
-            </Link>
+            <CircleIcon tooltipText="View oracle contract" downToSM={downToSM}>
+              <Link
+                href={currentNetworkConfig.explorerLinkBuilder({
+                  address: poolReserve?.priceOracle,
+                })}
+                sx={iconStyling}
+              >
+                <SvgIcon sx={{ fontSize: downToSM ? '12px' : '14px' }}>
+                  <ExternalLinkIcon />
+                </SvgIcon>
+              </Link>
+            </CircleIcon>
           )}
         </Box>
       </TopInfoPanelItem>

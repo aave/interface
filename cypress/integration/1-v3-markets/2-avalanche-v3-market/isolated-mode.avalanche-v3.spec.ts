@@ -43,10 +43,11 @@ const testData = {
     },
     repay: {
       asset: assets.avalancheV3Market.USDT,
+      repayableAsset: assets.avalancheV3Market.aUSDT,
       apyType: constants.apyType.variable,
       amount: 2,
       isMaxAmount: true,
-      hasApproval: false,
+      hasApproval: true,
       repayOption: constants.repayType.default,
     },
     switchCollateralForUSDT: {
@@ -76,8 +77,8 @@ const testData = {
     assets.avalancheV3Market.USDC,
   ],
 };
-
-describe('ISOLATED MODE SPEC, AVALANCHE V3 MARKET', () => {
+//limit
+describe.skip('ISOLATED MODE SPEC, AVALANCHE V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyAvalancheFork({ market: 'fork_proto_avalanche_v3', v3: true });
   describe('Get isolated asset', () => {

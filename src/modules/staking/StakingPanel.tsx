@@ -56,6 +56,7 @@ export interface StakingPanelProps {
   stakeData?: StakeGeneralData;
   stakeUserData?: StakeUserData;
   description?: React.ReactNode;
+  headerAction?: React.ReactNode;
   ethUsdPrice?: string;
   stakeTitle: string;
   stakedToken: string;
@@ -71,6 +72,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   stakeTitle,
   stakedToken,
   description,
+  headerAction,
   icon,
   stakeData,
   stakeUserData,
@@ -122,9 +124,18 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
 
   return (
     <Paper sx={{ p: { xs: 4, xsm: 6 }, pt: 4, height: '100%' }}>
-      <Typography variant="h3" mb={8} sx={{ display: { xs: 'none', xsm: 'block' } }}>
-        <Trans>Stake</Trans> {stakeTitle}
-      </Typography>
+      <Box
+        sx={{
+          display: { xs: 'none', xsm: 'flex' },
+          alignItems: 'center',
+          mb: 8,
+        }}
+      >
+        <Typography variant="h3">
+          <Trans>Stake</Trans> {stakeTitle}
+        </Typography>
+        {headerAction && <Box sx={{ ml: 3 }}>{headerAction}</Box>}
+      </Box>
 
       <Box
         sx={(theme) => ({
@@ -152,11 +163,24 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           },
         })}
       >
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: { xs: 4, xsm: 0 } }}>
+        <Box
+          sx={{
+            display: 'flex',
+            width: { xs: '100%', xsm: 'unset' },
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            mb: { xs: 4, xsm: 0 },
+          }}
+        >
           <TokenIcon symbol={icon} sx={{ fontSize: { xs: '40px', xsm: '32px' } }} />
           <Typography variant={xsm ? 'subheader1' : 'h4'} ml={2}>
             {stakedToken}
           </Typography>
+          {headerAction && (
+            <Box sx={{ display: { xs: 'block', xsm: 'none' }, textAlign: 'right', flexGrow: 1 }}>
+              {headerAction}
+            </Box>
+          )}
         </Box>
 
         <Box
@@ -206,6 +230,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           onClick={onStakeAction}
           disabled={+availableToStake === 0}
           fullWidth={!xsm}
+          data-cy={`stakeBtn_${stakedToken.toUpperCase()}`}
         >
           <Trans>Stake</Trans>
         </Button>
@@ -221,6 +246,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           }
           value={formatEther(stakeUserData?.stakeTokenUserBalance || '0')}
           valueUSD={stakedUSD}
+          dataCy={`stakedBox_${stakedToken}`}
           // TODO: need fix text
           bottomLineTitle={
             <TextWithTooltip
@@ -271,13 +297,23 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           gradientBorder={isUnstakeWindowActive}
         >
           {isUnstakeWindowActive && (
-            <Button variant="gradient" fullWidth onClick={onUnstakeAction}>
+            <Button
+              variant="gradient"
+              fullWidth
+              onClick={onUnstakeAction}
+              data-cy={`unstakeBtn_${stakedToken}`}
+            >
               <Trans>Unstake now</Trans>
             </Button>
           )}
 
           {isCooldownActive && !isUnstakeWindowActive && (
-            <Button variant="outlined" fullWidth disabled>
+            <Button
+              variant="outlined"
+              fullWidth
+              disabled
+              data-cy={`awaitCoolDownBtn_${stakedToken}`}
+            >
               <Trans>Cooling down...</Trans>
             </Button>
           )}
@@ -288,6 +324,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
               fullWidth
               onClick={onCooldownAction}
               disabled={stakeUserData?.stakeTokenUserBalance === '0'}
+              data-cy={`coolDownBtn_${stakedToken}`}
             >
               <Trans>Cooldown to unstake</Trans>
             </Button>
@@ -299,6 +336,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           value={formatEther(stakeUserData?.userIncentivesToClaim || '0')}
           valueUSD={claimableUSD}
           bottomLineTitle={<Trans>Aave per month</Trans>}
+          dataCy={`rewardBox_${stakedToken}`}
           bottomLineComponent={
             <FormattedNumber
               value={aavePerMonth}
@@ -313,6 +351,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             onClick={onStakeRewardClaimAction}
             fullWidth
             disabled={stakeUserData?.userIncentivesToClaim === '0'}
+            data-cy={`claimBtn_${stakedToken}`}
           >
             <Trans>Claim AAVE</Trans>
           </Button>
