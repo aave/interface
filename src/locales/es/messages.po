@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-08-24 18:12\n"
+"PO-Revision-Date: 2022-08-25 06:13\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -362,10 +362,6 @@ msgstr "Tomar prestado esta cantidad reducirá tu factor de salud y aumentará e
 #: src/components/transactions/Borrow/BorrowActions.tsx
 msgid "Borrowing {symbol}"
 msgstr "Tomando prestado {symbol}"
-
-#: src/components/BridgeButton.tsx
-msgid "Bridge"
-msgstr "Puente"
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
 msgid "CLAIM {symbol}"

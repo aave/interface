@@ -585,6 +585,8 @@ export const marketsData: {
     chainId: ChainId.optimism,
     enabledFeatures: {
       incentives: true,
+      collateralRepay: true,
+      liquiditySwap: true,
     },
     rpcOnly: true,
     addresses: {
@@ -596,6 +598,8 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: '0x6dD4b295B457A26CC2646aAf2519436681afb5d4',
       L2_ENCODER: '0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC',
       COLLECTOR: '0xB2289E329D2F85F1eD31Adbb30eA345278F21bcf',
+      SWAP_COLLATERAL_ADAPTER: '0xC7524B08101dBe695d7ad671a332760b5d967Cbd',
+      REPAY_WITH_COLLATERAL_ADAPTER: '0x70371a494f73A8Df658C5cd29E2C1601787e1009',
     },
   },
   [CustomMarket.proto_polygon_v3]: {
