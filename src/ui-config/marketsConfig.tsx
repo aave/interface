@@ -48,14 +48,12 @@ export type MarketDataType = {
 
 export enum CustomMarket {
   // v3 test networks
-  proto_arbitrum_rinkeby_v3 = 'proto_arbitrum_rinkeby_v3',
   proto_arbitrum_goerli_v3 = 'proto_arbitrum_goerli_v3',
   proto_mumbai_v3 = 'proto_mumbai_v3',
   proto_fantom_testnet_v3 = 'proto_fantom_testnet_v3',
   proto_harmony_testnet_v3 = 'proto_harmony_testnet_v3',
   proto_fuji_v3 = 'proto_fuji_v3',
   proto_goerli_v3 = 'proto_goerli_v3',
-  proto_optimism_kovan_v3 = 'proto_optimism_kovan_v3',
   proto_optimism_goerli_v3 = 'proto_optimism_goerli_v3',
   // v3 mainnets
   proto_optimism_v3 = 'proto_optimism_v3',
@@ -72,8 +70,6 @@ export enum CustomMarket {
   proto_mumbai = 'proto_mumbai',
   amm_mainnet = 'amm_mainnet',
   proto_goerli = 'proto_goerli',
-  proto_kovan = 'proto_kovan',
-  amm_kovan = 'amm_kovan',
   // external
   // permissioned_market = 'permissioned_market',
 }
@@ -81,40 +77,6 @@ export enum CustomMarket {
 export const marketsData: {
   [key in keyof typeof CustomMarket]: MarketDataType;
 } = {
-  [CustomMarket.proto_kovan]: {
-    marketTitle: 'Ethereum Kovan',
-    chainId: ChainId.kovan,
-    enabledFeatures: {
-      faucet: true,
-      governance: true,
-      staking: true,
-      incentives: true,
-    },
-    rpcOnly: true,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0x88757f2f99175387ab4c6a4b3067c77a695b0349'.toLowerCase(),
-      LENDING_POOL: '0xE0fBa4Fc209b4948668006B2bE61711b7f465bAe',
-      WETH_GATEWAY: '0xA61ca04DF33B72b235a8A28CfB535bb7A5271B70',
-      FAUCET: '0x600103d518cC5E8f3319D532eB4e5C268D32e604',
-      WALLET_BALANCE_PROVIDER: '0x07DC923859b68e9399d787bf52c4Aa9eBe3490aF',
-      UI_POOL_DATA_PROVIDER: '0x0D410Ce47834798028c9CD894A29A4b12A9d5624',
-      UI_INCENTIVE_DATA_PROVIDER: '0x50e468e1AAF408a2EB4614e4b45f832700Cda7F4',
-    },
-  },
-  [CustomMarket.amm_kovan]: {
-    marketTitle: 'Ethereum AMM Kovan',
-    chainId: ChainId.kovan,
-    rpcOnly: true,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0x67FB118A780fD740C8936511947cC4bE7bb7730c'.toLowerCase(),
-      LENDING_POOL: '0x762E2a3BBe729240ea44D31D5a81EAB44d34ef01',
-      WETH_GATEWAY: '0xA61ca04DF33B72b235a8A28CfB535bb7A5271B70',
-      FAUCET: '0x600103d518cC5E8f3319D532eB4e5C268D32e604',
-      WALLET_BALANCE_PROVIDER: '0x07DC923859b68e9399d787bf52c4Aa9eBe3490aF',
-      UI_POOL_DATA_PROVIDER: '0x31fe1309B1169e7136AdAB01d4ba3882b5852d08',
-      UI_INCENTIVE_DATA_PROVIDER: '0x50e468e1AAF408a2EB4614e4b45f832700Cda7F4',
-    },
-  },
   [CustomMarket.proto_mainnet]: {
     marketTitle: 'Ethereum',
     chainId: ChainId.mainnet,
@@ -334,26 +296,6 @@ export const marketsData: {
       marketName: 'arbitrum',
     },
   },
-  [CustomMarket.proto_arbitrum_rinkeby_v3]: {
-    marketTitle: 'Arbitrum Rinkeby',
-    v3: true,
-    chainId: ChainId.arbitrum_rinkeby,
-    enabledFeatures: {
-      faucet: true,
-      incentives: true,
-    },
-    rpcOnly: true,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0xF7158D1412Bdc8EAfc6BF97DB4e2178379c9521c'.toLowerCase(),
-      LENDING_POOL: '0x9C55a3C34de5fd46004Fa44a55490108f7cE388F',
-      WETH_GATEWAY: '0xF1C72f4e230289970d60046915c79c4A7A94aae5',
-      FAUCET: '0x3BE25d21ee1C417462E97CEF1D53da9011149384',
-      WALLET_BALANCE_PROVIDER: '0xA1B434CC7B9Cf70BE99f19B3721904919CaA5227',
-      UI_POOL_DATA_PROVIDER: '0x4Cfed366cfD75Ec739e0d763f557680Bc656a965',
-      UI_INCENTIVE_DATA_PROVIDER: '0xfd7dF17EF5Baa6460204D95B4F00e355e5B77544',
-      L2_ENCODER: '0x3d0d309DC8f999f34c4E7296dB38F0e65D3115DF',
-    },
-  },
   [CustomMarket.proto_arbitrum_goerli_v3]: {
     marketTitle: 'Arbitrum Görli',
     v3: true,
@@ -417,25 +359,6 @@ export const marketsData: {
       WALLET_BALANCE_PROVIDER: '0xd19443202328A66875a51560c28276868B8C61C2',
       UI_POOL_DATA_PROVIDER: '0x88138CA1e9E485A1E688b030F85Bb79d63f156BA',
       UI_INCENTIVE_DATA_PROVIDER: '0x7eEB186F13538e6795a0823e2D7283FEeD2738f5',
-    },
-  },
-  [CustomMarket.proto_optimism_kovan_v3]: {
-    marketTitle: 'Optimism Kovan',
-    v3: true,
-    chainId: ChainId.optimism_kovan,
-    enabledFeatures: {
-      faucet: true,
-      incentives: true,
-    },
-    rpcOnly: true,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0xD15d36975A0200D11B8a8964F4F267982D2a1cFe'.toLowerCase(),
-      LENDING_POOL: '0x139d8F557f70D1903787e929D7C42165c4667229',
-      WETH_GATEWAY: '0x698851Fc324Ff9572289Dd72dfC102DB778b52f1',
-      FAUCET: '0xed97140B58B97FaF70b70Ae26714Aa59705c74aE',
-      WALLET_BALANCE_PROVIDER: '0xA8751C0e2383cE144a95386A2E30f7E2BD78236C',
-      UI_POOL_DATA_PROVIDER: '0xBCb61ecc7997cc736E4802de2D5ce76D0908C97c',
-      UI_INCENTIVE_DATA_PROVIDER: '0xe2E3a30E77469397dc3CF74f1Fa35f39493207C2',
     },
   },
   [CustomMarket.proto_optimism_goerli_v3]: {
