@@ -113,7 +113,7 @@ export const TxActionsWrapper = ({
 
       <Button
         variant="contained"
-        disabled={disabled || blocked}
+        disabled={disabled || blocked || mockAddress !== undefined}
         onClick={handleClick}
         size="large"
         sx={{ minHeight: '44px', ...(approvalParams ? { mt: 2 } : {}) }}
