@@ -219,26 +219,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       url: 'https://bridge.harmony.one',
     },
   },
-  [ChainId.harmony_testnet]: {
-    name: 'Harmony Testnet',
-    publicJsonRPCUrl: ['https://api.s0.b.hmny.io', 'https://api.s0.pops.one'],
-    publicJsonRPCWSUrl: 'wss://ws.s0.pops.one',
-    // protocolDataUrl: '',
-    baseUniswapAdapter: '0x0',
-    baseAssetSymbol: 'ONE',
-    wrappedBaseAssetSymbol: 'WONE',
-    baseAssetDecimals: 18,
-    explorerLink: 'https://explorer.pops.one',
-    // rpcOnly: true,
-    // usdMarket: true,
-    isTestnet: true,
-    networkLogoPath: '/icons/networks/harmony.svg',
-    bridge: {
-      icon: '/icons/bridge/harmony.svg',
-      name: 'Harmony Bridge',
-      url: 'https://bridge.harmony.one',
-    },
-  },
   [ChainId.optimism]: {
     name: 'Optimism',
     privateJsonRPCUrl:

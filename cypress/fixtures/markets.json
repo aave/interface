@@ -72,11 +72,6 @@
       "version": "v3",
       "dataCy": "marketSelector_proto_fantom_testnet_v3"
     },
-    "HarmonyTestNetV3Market": {
-      "name": "Harmony",
-      "version": "v3",
-      "dataCy": "marketSelector_proto_harmony_testnet_v3"
-    },
     "OptimismGoerliV3Market": {
       "name": "Optimism",
       "version": "v3",

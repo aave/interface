@@ -51,7 +51,6 @@ export enum CustomMarket {
   proto_arbitrum_goerli_v3 = 'proto_arbitrum_goerli_v3',
   proto_mumbai_v3 = 'proto_mumbai_v3',
   proto_fantom_testnet_v3 = 'proto_fantom_testnet_v3',
-  proto_harmony_testnet_v3 = 'proto_harmony_testnet_v3',
   proto_fuji_v3 = 'proto_fuji_v3',
   proto_goerli_v3 = 'proto_goerli_v3',
   proto_optimism_goerli_v3 = 'proto_optimism_goerli_v3',
@@ -388,25 +387,6 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: '0xf952959c0F7FBed55786749219FECd8cd0ec8441',
       UI_INCENTIVE_DATA_PROVIDER: '0x027f58ea3B4c81c1ceeFAdE9c56375545a6E75F4',
       COLLECTOR: '0x8A020d92D6B119978582BE4d3EdFdC9F7b28BF31',
-    },
-  },
-  [CustomMarket.proto_harmony_testnet_v3]: {
-    marketTitle: 'Harmony Testnet',
-    v3: true,
-    chainId: ChainId.harmony_testnet,
-    enabledFeatures: {
-      faucet: true,
-      incentives: true,
-    },
-    rpcOnly: true,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0xd19443202328A66875a51560c28276868B8C61C2'.toLowerCase(),
-      LENDING_POOL: '0x85C1F3f1bB439180f7Bfda9DFD61De82e10bD554',
-      WETH_GATEWAY: '0xdDc3C9B8614092e6188A86450c8D597509893E20',
-      FAUCET: '0x8f57153F18b7273f9A814b93b31Cb3f9b035e7C2',
-      WALLET_BALANCE_PROVIDER: '0x8AaF462990dD5CC574c94C8266208996426A47e7',
-      UI_POOL_DATA_PROVIDER: '0x56e0507A53Ee252947a1E55D84Dc4032F914DD98',
-      UI_INCENTIVE_DATA_PROVIDER: '0xE3981f4840843D67aF50026d34DA0f7e56A02D69',
     },
   },
   [CustomMarket.proto_optimism_v3]: {
