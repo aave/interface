@@ -104,23 +104,6 @@ export const marketsData: {
       marketName: 'aavev2',
     },
   },
-  [CustomMarket.proto_goerli]: {
-    marketTitle: 'Ethereum Görli',
-    chainId: ChainId.goerli,
-    enabledFeatures: {
-      faucet: true,
-    },
-    rpcOnly: true,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0xa012e274b15B68abf26086591Cc0d2BB676c77C3'.toLowerCase(),
-      LENDING_POOL: '0x082307fbdee3967141e96f9db16c4ea1f206f5a2',
-      WETH_GATEWAY: '0x15271C7821219C58BD59c5Fe9ba8F70bE5c04F6b',
-      WALLET_BALANCE_PROVIDER: '0xdb4e0FaAFfDB00DA6edc8E8fc7f458Ca244F57AC',
-      UI_POOL_DATA_PROVIDER: '0x6cac3dADaAdd7f2e98eAbc7347fE9d64eCeC2Cdd',
-      UI_INCENTIVE_DATA_PROVIDER: '0xA2E05bE2090b3658A264bdf1C39387f5Dba367Ec',
-      FAUCET: '0x681860075529352da2C94082Eb66c59dF958e89C',
-    },
-  },
   // [CustomMarket.permissioned_market]: {
   //   marketTitle: 'Ethereum Permissioned Market example',
   //   chainId: ChainId.mainnet,
@@ -158,24 +141,6 @@ export const marketsData: {
       COLLECTOR: '0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c',
     },
   },
-  [CustomMarket.proto_mumbai]: {
-    marketTitle: 'Polygon Mumbai',
-    chainId: ChainId.mumbai,
-    enabledFeatures: {
-      incentives: true,
-      faucet: true,
-    },
-    rpcOnly: true,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0x178113104fEcbcD7fF8669a0150721e231F0FD4B'.toLowerCase(),
-      LENDING_POOL: '0x9198F13B08E299d85E096929fA9781A1E3d5d827',
-      WETH_GATEWAY: '0xee9eE614Ad26963bEc1Bec0D2c92879ae1F209fA',
-      FAUCET: '0x0b3C23243106A69449e79C14c58BB49E358f9B10',
-      WALLET_BALANCE_PROVIDER: '0xEe7c0172c200e12AFEa3C34837052ec52F3f367A',
-      UI_POOL_DATA_PROVIDER: '0x71ABaeBCA33Dac8CbF99790DF3c72b42908b8E43',
-      UI_INCENTIVE_DATA_PROVIDER: '0x070a7D8F4d7A7A87452C5BaBaB3158e08411907E',
-    },
-  },
   [CustomMarket.proto_polygon]: {
     marketTitle: 'Polygon',
     chainId: ChainId.polygon,
@@ -200,24 +165,6 @@ export const marketsData: {
     halIntegration: {
       URL: 'https://app.hal.xyz/recipes/aave-track-your-health-factor',
       marketName: 'aavepolygon',
-    },
-  },
-  [CustomMarket.proto_fuji]: {
-    marketTitle: 'Avalanche Fuji',
-    chainId: ChainId.fuji,
-    enabledFeatures: {
-      faucet: true,
-      incentives: true,
-    },
-    rpcOnly: true,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0x7fdC1FdF79BE3309bf82f4abdAD9f111A6590C0f'.toLowerCase(),
-      LENDING_POOL: '0x76cc67FF2CC77821A70ED14321111Ce381C2594D',
-      WETH_GATEWAY: '0x1648C14DbB6ccdd5846969cE23DeEC4C66a03335',
-      FAUCET: '0x90E5BAc5A98fff59617080848959f44eACB4Cd7B',
-      WALLET_BALANCE_PROVIDER: '0x3f5A507B33260a3869878B31FB90F04F451d28e3',
-      UI_POOL_DATA_PROVIDER: '0xBA6378f1c1D046e9EB0F538560BA7558546edF3C',
-      UI_INCENTIVE_DATA_PROVIDER: '0x9842E5B7b7C6cEDfB1952a388e050582Ff95645b',
     },
   },
   [CustomMarket.proto_avalanche]: {
@@ -525,5 +472,58 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: '0x26C3249723F2b98be57F49a1a31A9243a4B2cd88',
     },
     v3: true,
+  },
+  [CustomMarket.proto_goerli]: {
+    marketTitle: 'Ethereum Görli',
+    chainId: ChainId.goerli,
+    enabledFeatures: {
+      faucet: true,
+    },
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0xa012e274b15B68abf26086591Cc0d2BB676c77C3'.toLowerCase(),
+      LENDING_POOL: '0x082307fbdee3967141e96f9db16c4ea1f206f5a2',
+      WETH_GATEWAY: '0x15271C7821219C58BD59c5Fe9ba8F70bE5c04F6b',
+      WALLET_BALANCE_PROVIDER: '0xdb4e0FaAFfDB00DA6edc8E8fc7f458Ca244F57AC',
+      UI_POOL_DATA_PROVIDER: '0x6cac3dADaAdd7f2e98eAbc7347fE9d64eCeC2Cdd',
+      UI_INCENTIVE_DATA_PROVIDER: '0xA2E05bE2090b3658A264bdf1C39387f5Dba367Ec',
+      FAUCET: '0x681860075529352da2C94082Eb66c59dF958e89C',
+    },
+  },
+  [CustomMarket.proto_mumbai]: {
+    marketTitle: 'Polygon Mumbai',
+    chainId: ChainId.mumbai,
+    enabledFeatures: {
+      incentives: true,
+      faucet: true,
+    },
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0x178113104fEcbcD7fF8669a0150721e231F0FD4B'.toLowerCase(),
+      LENDING_POOL: '0x9198F13B08E299d85E096929fA9781A1E3d5d827',
+      WETH_GATEWAY: '0xee9eE614Ad26963bEc1Bec0D2c92879ae1F209fA',
+      FAUCET: '0x0b3C23243106A69449e79C14c58BB49E358f9B10',
+      WALLET_BALANCE_PROVIDER: '0xEe7c0172c200e12AFEa3C34837052ec52F3f367A',
+      UI_POOL_DATA_PROVIDER: '0x71ABaeBCA33Dac8CbF99790DF3c72b42908b8E43',
+      UI_INCENTIVE_DATA_PROVIDER: '0x070a7D8F4d7A7A87452C5BaBaB3158e08411907E',
+    },
+  },
+  [CustomMarket.proto_fuji]: {
+    marketTitle: 'Avalanche Fuji',
+    chainId: ChainId.fuji,
+    enabledFeatures: {
+      faucet: true,
+      incentives: true,
+    },
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0x7fdC1FdF79BE3309bf82f4abdAD9f111A6590C0f'.toLowerCase(),
+      LENDING_POOL: '0x76cc67FF2CC77821A70ED14321111Ce381C2594D',
+      WETH_GATEWAY: '0x1648C14DbB6ccdd5846969cE23DeEC4C66a03335',
+      FAUCET: '0x90E5BAc5A98fff59617080848959f44eACB4Cd7B',
+      WALLET_BALANCE_PROVIDER: '0x3f5A507B33260a3869878B31FB90F04F451d28e3',
+      UI_POOL_DATA_PROVIDER: '0xBA6378f1c1D046e9EB0F538560BA7558546edF3C',
+      UI_INCENTIVE_DATA_PROVIDER: '0x9842E5B7b7C6cEDfB1952a388e050582Ff95645b',
+    },
   },
 } as const;
