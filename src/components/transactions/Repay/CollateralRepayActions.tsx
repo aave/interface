@@ -91,7 +91,7 @@ export const CollateralRepayActions = ({
   return (
     <TxActionsWrapper
       preparingTransactions={loadingTxns}
-      symbol={poolReserve.symbol}
+      symbol={fromAssetData.symbol}
       mainTxState={mainTxState}
       approvalTxState={approvalTxState}
       requiresAmount
