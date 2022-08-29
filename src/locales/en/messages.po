@@ -542,10 +542,6 @@ msgstr "Debt"
 msgid "Debt Ceiling"
 msgstr "Debt Ceiling"
 
-#: src/components/transactions/Repay/CollateralRepayModalContent.tsx
-msgid "Debt amount to repay"
-msgstr "Debt amount to repay"
-
 #: src/ui-config/errorMapping.tsx
 msgid "Debt ceiling is exceeded"
 msgstr "Debt ceiling is exceeded"
