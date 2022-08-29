@@ -19,7 +19,7 @@ jobs:
       pr_number: '${{ steps.get_pr_number.outputs.pr_number }}'
     steps:
       - name: Download PR info
-        uses: dawidd6/action-download-artifact@575b1e4167df67acf7e692af784566618b23c71e # v2.17.0
+        uses: dawidd6/action-download-artifact@ea71f332a90fd52416b1629b933dcf7e0ccd421d # v2.22.0
         with:
           workflow: build-fork.yml
           run_id: "${{ github.event.workflow_run.id }}"
@@ -34,7 +34,7 @@ jobs:
           echo "::set-output name=pr_number::$(cat NUM | tr -dc '[:digit:]')"
 
       - name: Link this CI run to PR
-        uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e # v6.0.0
+        uses: actions/github-script@d50f485531ba88479582bc2da03ff424389af5c1 # v6.1.1
         with:
           script: |
             await github.rest.issues.createComment({
@@ -50,7 +50,7 @@ jobs:
     env:
       PR_NUMBER: ${{ needs.prepare_jobs.outputs.pr_number }}
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
         with:
           persist-credentials: false
 
@@ -70,7 +70,7 @@ jobs:
           - polygon
           - avalanche
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: Run tests
         uses: ./.github/actions/cypress
@@ -92,7 +92,7 @@ jobs:
           - avalanche
           - optimism
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: Run tests
         uses: ./.github/actions/cypress
@@ -111,12 +111,12 @@ jobs:
     env:
       PR_NUMBER: ${{ needs.prepare_jobs.outputs.pr_number }}
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
         with:
           persist-credentials: false
 
       - name: Download static build
-        uses: dawidd6/action-download-artifact@575b1e4167df67acf7e692af784566618b23c71e # v2.17.0
+        uses: dawidd6/action-download-artifact@ea71f332a90fd52416b1629b933dcf7e0ccd421d # v2.22.0
         with:
           workflow: build-fork.yml
           run_id: ${{ github.event.workflow_run.id }}
@@ -135,7 +135,7 @@ jobs:
           CID_VERSION: 1
 
       - name: 'Comment on PR'
-        uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e # v6.0.0
+        uses: actions/github-script@d50f485531ba88479582bc2da03ff424389af5c1 # v6.1.1
         with:
           script: |
             await github.rest.issues.createComment({
@@ -157,7 +157,7 @@ jobs:
           - polygon
           - avalanche
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: Run tests
         uses: ./.github/actions/cypress
@@ -179,7 +179,7 @@ jobs:
           - avalanche
           - optimism
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: Run tests
         uses: ./.github/actions/cypress
@@ -200,7 +200,7 @@ jobs:
           - polygon
           - avalanche
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: Run tests
         uses: ./.github/actions/cypress
@@ -222,7 +222,7 @@ jobs:
           - avalanche
           - optimism
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: Run tests
         uses: ./.github/actions/cypress
@@ -241,7 +241,7 @@ jobs:
         scoupe:
           - settings
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: Run tests
         uses: ./.github/actions/cypress
@@ -264,7 +264,7 @@ jobs:
     env:
       PR_NUMBER: ${{ needs.prepare_jobs.outputs.pr_number }}
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: Comment
         uses: ./.github/actions/fork-result-comment
@@ -286,7 +286,7 @@ jobs:
     env:
       PR_NUMBER: ${{ needs.prepare_jobs.outputs.pr_number }}
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: Comment
         uses: ./.github/actions/fork-result-comment
