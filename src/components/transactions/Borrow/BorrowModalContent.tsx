@@ -11,11 +11,11 @@ import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
-
 import { CapType } from '../../caps/helper';
 import { AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -107,6 +107,7 @@ export const BorrowModalContent = ({
   const { mainTxState: borrowTxState, gasLimit, txError } = useModalContext();
   const { user, marketReferencePriceInUsd } = useAppDataContext();
   const { currentNetworkConfig } = useProtocolDataContext();
+  const { borrowCap, debtCeiling } = useAssetCaps();
 
   const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
   const [_amount, setAmount] = useState('');
@@ -120,7 +121,7 @@ export const BorrowModalContent = ({
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToBorrow.toString(10) : _amount;
 
-  // We set this in a useEffect, so it doesnt constantly change when
+  // We set this in a useEffect, so it doesn't constantly change when
   // max amount selected
   const handleChange = (_value: string) => {
     const maxSelected = _value === '-1';
@@ -216,6 +217,10 @@ export const BorrowModalContent = ({
       : poolReserve.vIncentivesData;
   return (
     <>
+      {borrowCap.determineWarningDisplay({ borrowCap })}
+      {debtCeiling.determineWarningDisplay({ debtCeiling })}
+      {poolReserve.isIsolated && debtCeiling.determineWarningDisplay({ debtCeiling })}
+
       <AssetInput
         value={amount}
         onChange={handleChange}

@@ -1,8 +1,8 @@
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
@@ -30,6 +30,10 @@ export const BorrowAssetsListItem = ({
   const { openBorrow } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
   const borrowButtonDisable = isFreezed || Number(availableBorrows) <= 0;
+
+  // Hide the asset to prevent it from being borrowed if borrow cap has been reached
+  const { borrowCap: borrowCapUsage, debtCeiling } = useAssetCaps();
+  if (borrowCapUsage.isMaxed || debtCeiling.isMaxed) return null;
 
   return (
     <ListItemWrapper

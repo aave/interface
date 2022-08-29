@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import {
   Box,
   Button,
+  IconButton,
   FormControl,
   InputBase,
   ListItemText,
@@ -10,6 +11,7 @@ import {
   SelectChangeEvent,
   Typography,
 } from '@mui/material';
+import { XCircleIcon } from '@heroicons/react/solid';
 import React, { ReactNode } from 'react';
 import NumberFormat, { NumberFormatProps } from 'react-number-format';
 
@@ -140,12 +142,34 @@ export const AssetInput = <T extends Asset = Asset>({
                 lineHeight: '28,01px',
                 padding: 0,
                 height: '28px',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
               },
             }}
             // eslint-disable-next-line
             inputComponent={NumberFormatCustom as any}
           />
-
+          {value !== '' && !disableInput && (
+            <IconButton
+              sx={{
+                minWidth: 0,
+                p: 0,
+                left: 8,
+                zIndex: 1,
+                color: 'text.muted',
+                '&:hover': {
+                  color: 'text.secondary',
+                },
+              }}
+              onClick={() => {
+                onChange && onChange('');
+              }}
+              disabled={disabled}
+            >
+              <XCircleIcon height={16} />
+            </IconButton>
+          )}
           {!onSelect || assets.length === 1 ? (
             <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
               <TokenIcon
