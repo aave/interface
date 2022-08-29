@@ -61,7 +61,7 @@ export const SYMBOL_NAME_MAP: { [key: string]: string } = {
   GUSD: 'Gemini Dollar',
   KNC: 'Kyber Legacy',
   LINK: 'ChainLink',
-  MAI: 'MIMATIC',
+  MAI: 'MAI (mimatic)',
   MANA: 'Decentraland',
   MKR: 'Maker',
   PAX: 'Paxos Standard',
