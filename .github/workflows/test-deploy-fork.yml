@@ -8,7 +8,6 @@ on:
   workflow_run:
     workflows: ["Build PR From Fork"]
     types: ["completed"]
-    branches-ignore: ["main"]
 
 jobs:
   prepare_jobs:
