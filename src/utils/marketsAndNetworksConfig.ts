@@ -1,5 +1,6 @@
 import { ChainId, ChainIdToNetwork } from '@aave/contract-helpers';
 import { providers as ethersProviders } from 'ethers';
+import { defineReadOnly } from 'ethers/lib/utils';
 
 import {
   CustomMarket,
@@ -143,6 +144,32 @@ export const isFeatureEnabled = {
   permissions: (data: MarketDataType) => data.enabledFeatures?.permissions,
 };
 
+class CustomFallbackProvider extends ethersProviders.StaticJsonRpcProvider {
+  private urls: string[];
+
+  constructor(urls: string[], chainId: number) {
+    super(urls[0], chainId);
+    this.urls = urls;
+  }
+
+  private getNextUrl() {
+    const index = this.urls.indexOf(this.connection.url);
+    if (index === this.urls.length - 1) return this.urls[0];
+    return this.urls[index + 1];
+  }
+
+  // eslint-disable-next-line
+  send(method: string, params: Array<any>): Promise<any> {
+    try {
+      return super.send(method, params);
+    } catch (e) {
+      // better error check
+      defineReadOnly(this, 'connection', Object.freeze({ url: this.getNextUrl() }));
+      return this.send(method, params);
+    }
+  }
+}
+
 const providers: { [network: string]: ethersProviders.Provider } = {};
 
 /**
@@ -153,28 +180,20 @@ const providers: { [network: string]: ethersProviders.Provider } = {};
 export const getProvider = (chainId: ChainId): ethersProviders.Provider => {
   if (!providers[chainId]) {
     const config = getNetworkConfig(chainId);
-    const chainProviders: ethersProviders.FallbackProviderConfig[] = [];
+    const chainProviders: string[] = [];
     if (config.privateJsonRPCUrl) {
-      chainProviders.push({
-        provider: new ethersProviders.StaticJsonRpcProvider(config.privateJsonRPCUrl, chainId),
-        priority: 0,
-      });
+      chainProviders.push(config.privateJsonRPCUrl);
     }
     if (config.publicJsonRPCUrl.length) {
-      config.publicJsonRPCUrl.map((rpc, ix) =>
-        chainProviders.push({
-          provider: new ethersProviders.StaticJsonRpcProvider(rpc, chainId),
-          priority: ix + 1,
-        })
-      );
+      config.publicJsonRPCUrl.map((rpc) => chainProviders.push(rpc));
     }
     if (!chainProviders.length) {
       throw new Error(`${chainId} has no jsonRPCUrl configured`);
     }
     if (chainProviders.length === 1) {
-      providers[chainId] = chainProviders[0].provider;
+      providers[chainId] = new ethersProviders.StaticJsonRpcProvider(chainProviders[0], chainId);
     } else {
-      providers[chainId] = new ethersProviders.FallbackProvider(chainProviders, 1);
+      providers[chainId] = new CustomFallbackProvider(chainProviders, chainId);
     }
   }
   return providers[chainId];
