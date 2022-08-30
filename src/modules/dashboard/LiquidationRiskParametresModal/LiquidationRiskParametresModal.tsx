@@ -27,9 +27,10 @@ export const LiquidationRiskParametresInfoModal = ({
   currentLiquidationThreshold,
 }: LiquidationRiskParametresInfoModalProps) => {
   let healthFactorColor: AlertColor = 'success';
-  if (+healthFactor <= 3 && +healthFactor > 1.1) {
+  const hf = Number(healthFactor);
+  if (hf > 1.1 && hf <= 3) {
     healthFactorColor = 'warning';
-  } else if (+healthFactor <= 1.1) {
+  } else if (hf <= 1.1) {
     healthFactorColor = 'error';
   }
 
@@ -37,13 +38,10 @@ export const LiquidationRiskParametresInfoModal = ({
   const ltvPercent = Number(loanToValue) * 100;
   const currentLtvPercent = Number(currentLoanToValue) * 100;
   const liquidationThresholdPercent = Number(currentLiquidationThreshold) * 100;
-  if (
-    (ltvPercent > currentLtvPercent / 2 && ltvPercent <= currentLtvPercent) ||
-    (ltvPercent > currentLtvPercent && ltvPercent < liquidationThresholdPercent)
-  ) {
-    ltvColor = 'warning';
-  } else if (ltvPercent >= liquidationThresholdPercent) {
+  if (ltvPercent >= Math.min(currentLtvPercent, liquidationThresholdPercent)) {
     ltvColor = 'error';
+  } else if (ltvPercent > currentLtvPercent / 2 && ltvPercent < currentLtvPercent) {
+    ltvColor = 'warning';
   }
 
   return (
