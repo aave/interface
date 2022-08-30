@@ -26,6 +26,26 @@ export const LiquidationRiskParametresInfoModal = ({
   currentLoanToValue,
   currentLiquidationThreshold,
 }: LiquidationRiskParametresInfoModalProps) => {
+  let healthFactorColor: 'error' | 'warning' | 'success' = 'success';
+  if (+healthFactor <= 3 && +healthFactor > 1.1) {
+    healthFactorColor = 'warning';
+  } else if (+healthFactor <= 1.1) {
+    healthFactorColor = 'error';
+  }
+
+  let ltvColor: 'error' | 'warning' | 'success' = 'success';
+  const ltvPercent = Number(loanToValue) * 100;
+  const currentLtvPercent = Number(currentLoanToValue) * 100;
+  const liquidationThresholdPercent = Number(currentLiquidationThreshold) * 100;
+  if (
+    (ltvPercent > currentLtvPercent / 2 && ltvPercent <= currentLtvPercent) ||
+    (ltvPercent > currentLtvPercent && ltvPercent < liquidationThresholdPercent)
+  ) {
+    ltvColor = 'warning';
+  } else if (ltvPercent >= liquidationThresholdPercent) {
+    ltvColor = 'error';
+  }
+
   return (
     <BasicModal open={open} setOpen={setOpen}>
       <Typography variant="h2" mb={6}>
@@ -67,8 +87,7 @@ export const LiquidationRiskParametresInfoModal = ({
             triggered.
           </Trans>
         }
-        isWarning={+healthFactor <= 3 && +healthFactor > 1.1}
-        isError={+healthFactor <= 1.1}
+        color={healthFactorColor}
       >
         <HFContent healthFactor={healthFactor} />
       </InfoWrapper>
@@ -93,16 +112,13 @@ export const LiquidationRiskParametresInfoModal = ({
             be liquidated.
           </Trans>
         }
-        isWarning={
-          +loanToValue * 100 < +currentLoanToValue * 100 &&
-          +loanToValue * 100 > +currentLoanToValue * 100 - (+currentLoanToValue * 100) / 2
-        }
-        isError={+loanToValue * 100 > +currentLiquidationThreshold * 100}
+        color={ltvColor}
       >
         <LTVContent
           loanToValue={loanToValue}
           currentLoanToValue={currentLoanToValue}
           currentLiquidationThreshold={currentLiquidationThreshold}
+          color={ltvColor}
         />
       </InfoWrapper>
     </BasicModal>

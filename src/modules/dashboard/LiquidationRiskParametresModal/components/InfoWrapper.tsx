@@ -7,8 +7,7 @@ interface InfoWrapperProps {
   topDescription: ReactNode;
   children: ReactNode;
   bottomText: ReactNode;
-  isWarning?: boolean;
-  isError?: boolean;
+  color: 'error' | 'warning' | 'success';
 }
 
 export const InfoWrapper = ({
@@ -17,8 +16,7 @@ export const InfoWrapper = ({
   topDescription,
   children,
   bottomText,
-  isWarning,
-  isError,
+  color,
 }: InfoWrapperProps) => {
   return (
     <Box
@@ -52,7 +50,7 @@ export const InfoWrapper = ({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            bgcolor: isError ? 'error.main' : isWarning ? 'warning.main' : 'success.main',
+            bgcolor: `${color}.main`,
           }}
         >
           {topValue}
