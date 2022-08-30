@@ -1,6 +1,6 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Typography, useTheme } from '@mui/material';
+import { AlertColor, Box, Typography, useTheme } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -10,12 +10,14 @@ interface LTVContentProps {
   loanToValue: string;
   currentLoanToValue: string;
   currentLiquidationThreshold: string;
+  color: AlertColor;
 }
 
 export const LTVContent = ({
   loanToValue,
   currentLoanToValue,
   currentLiquidationThreshold,
+  color,
 }: LTVContentProps) => {
   const { palette } = useTheme();
 
@@ -34,15 +36,7 @@ export const LTVContent = ({
     .precision(20, BigNumber.ROUND_UP)
     .toNumber();
 
-  let LTVLineColor = palette.success.main;
-  if (
-    +loanToValue * 100 < +currentLoanToValue * 100 &&
-    +loanToValue * 100 > +currentLoanToValue * 100 - (+currentLoanToValue * 100) / 2
-  ) {
-    LTVLineColor = palette.warning.main;
-  } else if (+loanToValue * 100 > +currentLiquidationThreshold * 100) {
-    LTVLineColor = palette.error.main;
-  }
+  const liquidationThresholdPercent = Number(currentLiquidationThreshold) * 100;
 
   return (
     <Box sx={{ position: 'relative', margin: '45px 0 55px' }}>
@@ -65,10 +59,9 @@ export const LTVContent = ({
             '&:after': {
               content: "''",
               position: 'absolute',
-              left: +currentLiquidationThreshold * 100 > 75 ? 'auto' : '50%',
-              transform:
-                +currentLiquidationThreshold * 100 > 75 ? 'translateX(0)' : 'translateX(-50%)',
-              right: +currentLiquidationThreshold * 100 > 75 ? 0 : 'auto',
+              left: liquidationThresholdPercent > 75 ? 'auto' : '50%',
+              transform: liquidationThresholdPercent > 75 ? 'translateX(0)' : 'translateX(-50%)',
+              right: liquidationThresholdPercent > 75 ? 0 : 'auto',
               bottom: '100%',
               height: '10px',
               width: '2px',
@@ -80,13 +73,12 @@ export const LTVContent = ({
             sx={{
               display: 'flex',
               position: 'absolute',
-              left: +currentLiquidationThreshold * 100 > 75 ? 'auto' : '50%',
-              transform:
-                +currentLiquidationThreshold * 100 > 75 ? 'translateX(0)' : 'translateX(-50%)',
-              right: +currentLiquidationThreshold * 100 > 75 ? 0 : 'auto',
+              left: liquidationThresholdPercent > 75 ? 'auto' : '50%',
+              transform: liquidationThresholdPercent > 75 ? 'translateX(0)' : 'translateX(-50%)',
+              right: liquidationThresholdPercent > 75 ? 0 : 'auto',
               flexDirection: 'column',
-              alignItems: +currentLiquidationThreshold * 100 > 75 ? 'flex-end' : 'center',
-              textAlign: +currentLiquidationThreshold * 100 > 75 ? 'right' : 'center',
+              alignItems: liquidationThresholdPercent > 75 ? 'flex-end' : 'center',
+              textAlign: liquidationThresholdPercent > 75 ? 'right' : 'center',
             }}
           >
             <FormattedNumber
@@ -187,22 +179,24 @@ export const LTVContent = ({
             borderRadius: '1px',
             width: `${LTVLineWidth > 100 ? 100 : LTVLineWidth}%`,
             maxWidth: '100%',
-            background: LTVLineColor,
+            bgcolor: `${color}.main`,
             zIndex: 2,
           }}
         />
 
-        <Box
-          sx={{
-            position: 'absolute',
-            left: 0,
-            height: '4px',
-            borderRadius: '1px',
-            width: `${CurrentLTVLineWidth > 100 ? 100 : CurrentLTVLineWidth}%`,
-            maxWidth: '100%',
-            background: `repeating-linear-gradient(-45deg, ${palette.divider}, ${palette.divider} 4px, ${LTVLineColor} 4px, ${LTVLineColor} 7px)`,
-          }}
-        />
+        {LTVLineWidth < CurrentLTVLineWidth && (
+          <Box
+            sx={{
+              position: 'absolute',
+              left: 0,
+              height: '4px',
+              borderRadius: '1px',
+              width: `${CurrentLTVLineWidth > 100 ? 100 : CurrentLTVLineWidth}%`,
+              maxWidth: '100%',
+              background: `repeating-linear-gradient(-45deg, ${palette.divider}, ${palette.divider} 4px, ${palette[color].main} 4px, ${palette[color].main} 7px)`,
+            }}
+          />
+        )}
       </Box>
     </Box>
   );
