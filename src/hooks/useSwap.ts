@@ -49,6 +49,7 @@ type UseSwapProps = {
   userId?: string;
   chainId: ChainId;
   skip?: boolean;
+  maxSlippage: number;
 };
 
 const MESSAGE_MAP = {
@@ -57,6 +58,242 @@ const MESSAGE_MAP = {
   'No routes found with enough liquidity': 'No routes found with enough liquidity',
 };
 
+export const useCollateralRepaySwap = ({
+  swapIn,
+  swapOut,
+  variant,
+  userId,
+  max,
+  chainId,
+  skip,
+  maxSlippage,
+}: UseSwapProps) => {
+  const paraSwap = getParaswap(chainId);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [priceRoute, setPriceRoute] = useState<OptimalRate | null>(null);
+  const [swapCallData, setSwapCallData] = useState<string>('');
+  const [augustus, setAugustus] = useState<string>('');
+  const [repayAmount, setRepayAmount] = useState<string>('');
+  const [repayWithAmount, setRepayWithAmount] = useState<string>('');
+
+  const fetchSellRoute = useCallback(async () => {
+    if (!swapIn.underlyingAsset || !swapOut.underlyingAsset || !userId) return;
+
+    console.log('fetchSellRoute');
+    console.log('variant', variant);
+    setLoading(true);
+
+    let _amount = valueToBigNumber(swapIn.amount);
+    if (max && swapIn.supplyAPY !== '0') {
+      _amount = _amount.plus(_amount.multipliedBy(swapIn.supplyAPY).dividedBy(360 * 24));
+    }
+    const amount = normalizeBN(_amount, swapIn.decimals * -1);
+
+    try {
+      const excludedMethod = ContractMethod.simpleSwap;
+
+      const options: RateOptions = {
+        partner: 'aave',
+      };
+
+      if (max) {
+        options.excludeContractMethods = [excludedMethod];
+      }
+
+      const response = await paraSwap.getRate({
+        amount: amount.toFixed(0),
+        srcToken: swapIn.underlyingAsset,
+        srcDecimals: swapIn.decimals,
+        destToken: swapOut.underlyingAsset,
+        destDecimals: swapOut.decimals,
+        userAddress: userId,
+        side: SwapSide.SELL,
+        options,
+      });
+
+      setError('');
+      setPriceRoute(response);
+
+      const { swapCallData, augustus, destAmountWithSlippage } = await getSwapCallData({
+        srcToken: swapIn.underlyingAsset,
+        srcDecimals: swapIn.decimals,
+        destToken: swapOut.underlyingAsset,
+        destDecimals: swapOut.decimals,
+        user: userId,
+        route: response as OptimalRate,
+        chainId: chainId,
+        maxSlippage,
+      });
+      setSwapCallData(swapCallData);
+      setAugustus(augustus);
+      setRepayWithAmount(response.srcAmount);
+      setRepayAmount(normalize(destAmountWithSlippage, swapOut.decimals));
+      console.log('repayAmount', repayAmount);
+      console.log('repayWithAmount', repayWithAmount);
+    } catch (e) {
+      console.log(e);
+      console.log(e.message);
+      const message = (MESSAGE_MAP as { [key: string]: string })[e.message];
+      setError(message || 'There was an issue fetching data from Paraswap');
+    }
+    setLoading(false);
+  }, [
+    chainId,
+    max,
+    maxSlippage,
+    paraSwap,
+    repayAmount,
+    repayWithAmount,
+    swapIn.amount,
+    swapIn.decimals,
+    swapIn.supplyAPY,
+    swapIn.underlyingAsset,
+    swapOut.decimals,
+    swapOut.underlyingAsset,
+    userId,
+    variant,
+  ]);
+
+  const fetchBuyRoute = useCallback(async () => {
+    if (!swapIn.underlyingAsset || !swapOut.underlyingAsset || !userId) return;
+
+    console.log('fetchBuyRoute');
+    setLoading(true);
+
+    let _amount = valueToBigNumber(swapOut.amount);
+    if (max) {
+      // variableBorrowAPY in most cases should be higher than stableRate so while this is slightly inaccurate it should be enough
+      _amount = _amount.plus(_amount.multipliedBy(swapIn.variableBorrowAPY).dividedBy(360 * 24));
+    }
+    const amount = normalizeBN(_amount, swapOut.decimals * -1);
+
+    try {
+      const excludedMethod = ContractMethod.simpleBuy;
+
+      const options: RateOptions = {
+        partner: 'aave',
+      };
+
+      if (max) {
+        options.excludeContractMethods = [excludedMethod];
+      }
+
+      const response = await paraSwap.getRate({
+        amount: amount.toFixed(0),
+        srcToken: swapIn.underlyingAsset,
+        srcDecimals: swapIn.decimals,
+        destToken: swapOut.underlyingAsset,
+        destDecimals: swapOut.decimals,
+        userAddress: userId,
+        side: SwapSide.BUY,
+        options,
+      });
+
+      setError('');
+      setPriceRoute(response);
+
+      const { swapCallData, augustus, srcAmountWithSlippage } = await getRepayCallData({
+        srcToken: swapIn.underlyingAsset,
+        srcDecimals: swapIn.decimals,
+        destToken: swapOut.underlyingAsset,
+        destDecimals: swapOut.decimals,
+        user: userId,
+        route: response as OptimalRate,
+        chainId: chainId,
+        maxSlippage,
+      });
+
+      setSwapCallData(swapCallData);
+      setAugustus(augustus);
+      setRepayWithAmount(normalize(srcAmountWithSlippage, swapIn.decimals));
+      setRepayAmount(response.destAmount);
+    } catch (e) {
+      console.log(e);
+      console.log(e.message);
+      const message = (MESSAGE_MAP as { [key: string]: string })[e.message];
+      setError(message || 'There was an issue fetching data from Paraswap');
+    }
+    setLoading(false);
+  }, [
+    chainId,
+    max,
+    maxSlippage,
+    paraSwap,
+    swapIn.decimals,
+    swapIn.underlyingAsset,
+    swapIn.variableBorrowAPY,
+    swapOut.amount,
+    swapOut.decimals,
+    swapOut.underlyingAsset,
+    userId,
+  ]);
+
+  // updates the route on input change
+  useEffect(() => {
+    if (skip) return;
+    setPriceRoute(null);
+    const timeout = setTimeout(() => {
+      if (variant === 'exactIn') {
+        fetchSellRoute();
+      } else {
+        fetchBuyRoute();
+      }
+    }, 400);
+    return () => clearTimeout(timeout);
+  }, [fetchBuyRoute, fetchSellRoute, skip, variant]);
+
+  // updates the route based on on interval
+  useEffect(() => {
+    if (skip) return;
+    const interval = setInterval(
+      () => {
+        if (variant === 'exactIn') {
+          fetchSellRoute();
+        } else {
+          fetchBuyRoute();
+        }
+      },
+      error ? 3000 : 15000
+    );
+    return () => clearInterval(interval);
+  }, [fetchBuyRoute, fetchSellRoute, error, skip, variant]);
+
+  if (priceRoute) {
+    return {
+      // full object needed for building the tx
+      outputAmount: normalize(
+        priceRoute.destAmount ?? '0',
+        variant === 'exactIn' ? swapOut.decimals : swapOut.decimals
+      ),
+      outputAmountUSD: priceRoute.destUSD ?? '0',
+      inputAmount: normalize(
+        priceRoute.srcAmount ?? '0',
+        variant === 'exactIn' ? swapIn.decimals : swapIn.decimals
+      ),
+      inputAmountUSD: priceRoute.srcUSD ?? '0',
+      swapCallData,
+      augustus,
+      repayAmount,
+      repayWithAmount,
+      loading: loading,
+      error: error,
+    };
+  }
+  return {
+    // full object needed for building the tx
+    outputAmount: '0',
+    outputAmountUSD: '0',
+    inputAmount: '0',
+    inputAmountUSD: '0',
+    loading: loading,
+    error: error,
+    augustus,
+    repayAmount,
+    repayWithAmount,
+    swapCallData,
+  };
+};
 export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }: UseSwapProps) => {
   const paraSwap = getParaswap(chainId);
   const [loading, setLoading] = useState(false);
@@ -84,15 +321,6 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }
     try {
       const excludedMethod =
         variant === 'exactIn' ? ContractMethod.simpleSwap : ContractMethod.simpleBuy;
-
-      const options: RateOptions = {
-        partner: 'aave',
-      };
-
-      if (max) {
-        options.excludeContractMethods = [excludedMethod];
-      }
-
       const response = await paraSwap.getRate({
         amount: amount.toFixed(0),
         srcToken: swapIn.underlyingAsset,
@@ -101,7 +329,18 @@ export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }
         destDecimals: swapOut.decimals,
         userAddress: userId,
         side: variant === 'exactIn' ? SwapSide.SELL : SwapSide.BUY,
-        options,
+        options: {
+          partner: 'aave',
+          excludeDEXS:
+            'ParaSwapPool,ParaSwapPool2,ParaSwapPool3,ParaSwapPool4,ParaSwapPool5,ParaSwapPool6,ParaSwapPool7,ParaSwapPool8,ParaSwapPool9,ParaSwapPool10',
+          ...(max
+            ? {
+                excludeDEXS:
+                  'Balancer,ParaSwapPool,ParaSwapPool2,ParaSwapPool3,ParaSwapPool4,ParaSwapPool5,ParaSwapPool6,ParaSwapPool7,ParaSwapPool8,ParaSwapPool9,ParaSwapPool10',
+                excludeContractMethods: [excludedMethod],
+              }
+            : {}),
+        },
       });
 
       setError('');
@@ -230,6 +469,7 @@ export const getSwapCallData = async ({
     return {
       swapCallData: (params as TransactionParams).data,
       augustus: (params as TransactionParams).to,
+      destAmountWithSlippage,
     };
   } catch (e) {
     console.log(e);

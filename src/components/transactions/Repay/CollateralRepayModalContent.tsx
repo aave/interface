@@ -9,7 +9,7 @@ import {
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useSwap } from 'src/hooks/useSwap';
+import { useCollateralRepaySwap, useSwap } from 'src/hooks/useSwap';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { Asset, AssetInput } from '../AssetInput';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
@@ -82,14 +82,38 @@ export function CollateralRepayModalContent({
   const amount = isMaxSelected ? safeAmountToRepayAll.toString() : _amount;
   const usdValue = valueToBigNumber(amount).multipliedBy(poolReserve.priceInUSD);
 
-  const { priceRoute, inputAmountUSD, inputAmount, outputAmount, outputAmountUSD } = useSwap({
+  const collateralAmountRequiredToCoverDebt = safeAmountToRepayAll
+    .multipliedBy(100 + Number(maxSlippage))
+    .dividedBy(100)
+    .dividedBy(fromAssetData.priceInUSD);
+
+  let variant: 'exactIn' | 'exactOut' = 'exactOut';
+  const swapIn = { ...fromAssetData, amount: '0' };
+  const swapOut = { ...poolReserve, amount: amountRef.current };
+  if (valueToBigNumber(tokenToRepayWith?.balance || '0').lt(collateralAmountRequiredToCoverDebt)) {
+    variant = 'exactIn';
+    swapIn.amount = tokenToRepayWith?.balance || '0';
+    swapOut.amount = '0';
+  }
+
+  const {
+    inputAmountUSD,
+    inputAmount,
+    outputAmount,
+    outputAmountUSD,
+    swapCallData,
+    augustus,
+    repayAmount,
+    repayWithAmount,
+  } = useCollateralRepaySwap({
     chainId: currentNetworkConfig.underlyingChainId || currentChainId,
     userId: currentAccount,
-    variant: 'exactOut',
-    swapIn: { ...fromAssetData, amount: '0' },
-    swapOut: { ...poolReserve, amount: amountRef.current },
-    max: isMaxSelected,
+    variant,
+    swapIn,
+    swapOut,
+    max: false,
     skip: mainTxState.loading,
+    maxSlippage: Number(maxSlippage),
   });
 
   // Calculations to get the max repayable debt depending on the balance and value of the
@@ -100,6 +124,11 @@ export function CollateralRepayModalContent({
   const maxDebtThatCanBeRepaidWithSelectedCollateral = maxCollateral.dividedBy(
     poolReserve.priceInUSD
   );
+  // console.log('maxCollateral', maxCollateral.toString());
+  // console.log(
+  //   'maxDebtThatCanBeRepaidWithSelectedCollateral',
+  //   maxDebtThatCanBeRepaidWithSelectedCollateral.toString()
+  // );
   const maxRepayableDebt = BigNumber.min(
     maxDebtThatCanBeRepaidWithSelectedCollateral,
     safeAmountToRepayAll
@@ -109,6 +138,20 @@ export function CollateralRepayModalContent({
     amountRef.current = maxSelected ? maxRepayableDebt.toString(10) : value;
     setAmount(value);
   };
+  // We first factor in slippage on the input side to see if there is enough to cover
+  // const collateralAmountNeededWithSlippage = maxCollateral
+  //   .multipliedBy(100 + Number(maxSlippage))
+  //   .dividedBy(100);
+  // console.log(maxSlippage);
+  // console.log(collateralAmountNeededWithSlippage.toString());
+  // const collateralAmountRequiredToCoverDebt = safeAmountToRepayAll
+  //   .multipliedBy(100 + Number(maxSlippage))
+  //   .dividedBy(100)
+  //   .dividedBy(fromAssetData.priceInUSD);
+
+  // if (valueToBigNumber(tokenToRepayWith?.balance || '0').lt(collateralAmountRequiredToCoverDebt)) {
+  //   console.log('not enough collateral, need to use exactIn');
+  // }
   // for v3 we need hf after withdraw collateral, because when removing collateral to repay
   // debt, hf could go under 1 then it would fail. If that is the case then we need
   // to use flashloan path
@@ -186,7 +229,6 @@ export function CollateralRepayModalContent({
         symbol={poolReserve.symbol}
       />
     );
-
   return (
     <>
       <AssetInput
@@ -272,16 +314,16 @@ export function CollateralRepayModalContent({
       <CollateralRepayActions
         poolReserve={poolReserve}
         fromAssetData={fromAssetData}
-        repayAmount={outputAmount}
-        repayWithAmount={inputAmount}
-        repayAllDebt={isMaxSelected}
-        useFlashLoan={shouldUseFlashloan}
+        repayAmount={repayAmount}
+        repayWithAmount={repayWithAmount}
+        repayAllDebt={false}
+        useFlashLoan={false}
         isWrongNetwork={isWrongNetwork}
         symbol={symbol}
         rateMode={debtType}
-        priceRoute={priceRoute}
         blocked={blockingError !== undefined}
-        maxSlippage={Number(maxSlippage)}
+        swapCallData={swapCallData}
+        augustus={augustus}
       />
     </>
   );

@@ -45,6 +45,7 @@ export const SwapActions = ({
   const { approval, action, requiresApproval, approvalTxState, mainTxState, loadingTxns } =
     useTransactionHandler({
       handleGetTxns: async () => {
+        console.log('handleGetTxns');
         const { swapCallData, augustus } = await getSwapCallData({
           srcToken: poolReserve.underlyingAsset,
           srcDecimals: poolReserve.decimals,
