@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
+import { AlertColor, Typography } from '@mui/material';
 
 import { HealthFactorNumber } from '../../../components/HealthFactorNumber';
 import { BasicModal } from '../../../components/primitives/BasicModal';
@@ -26,6 +26,24 @@ export const LiquidationRiskParametresInfoModal = ({
   currentLoanToValue,
   currentLiquidationThreshold,
 }: LiquidationRiskParametresInfoModalProps) => {
+  let healthFactorColor: AlertColor = 'success';
+  const hf = Number(healthFactor);
+  if (hf > 1.1 && hf <= 3) {
+    healthFactorColor = 'warning';
+  } else if (hf <= 1.1) {
+    healthFactorColor = 'error';
+  }
+
+  let ltvColor: AlertColor = 'success';
+  const ltvPercent = Number(loanToValue) * 100;
+  const currentLtvPercent = Number(currentLoanToValue) * 100;
+  const liquidationThresholdPercent = Number(currentLiquidationThreshold) * 100;
+  if (ltvPercent >= Math.min(currentLtvPercent, liquidationThresholdPercent)) {
+    ltvColor = 'error';
+  } else if (ltvPercent > currentLtvPercent / 2 && ltvPercent < currentLtvPercent) {
+    ltvColor = 'warning';
+  }
+
   return (
     <BasicModal open={open} setOpen={setOpen}>
       <Typography variant="h2" mb={6}>
@@ -67,8 +85,7 @@ export const LiquidationRiskParametresInfoModal = ({
             triggered.
           </Trans>
         }
-        isWarning={+healthFactor <= 3 && +healthFactor > 1.1}
-        isError={+healthFactor <= 1.1}
+        color={healthFactorColor}
       >
         <HFContent healthFactor={healthFactor} />
       </InfoWrapper>
@@ -93,16 +110,13 @@ export const LiquidationRiskParametresInfoModal = ({
             be liquidated.
           </Trans>
         }
-        isWarning={
-          +loanToValue * 100 < +currentLoanToValue * 100 &&
-          +loanToValue * 100 > +currentLoanToValue * 100 - (+currentLoanToValue * 100) / 2
-        }
-        isError={+loanToValue * 100 > +currentLiquidationThreshold * 100}
+        color={ltvColor}
       >
         <LTVContent
           loanToValue={loanToValue}
           currentLoanToValue={currentLoanToValue}
           currentLiquidationThreshold={currentLiquidationThreshold}
+          color={ltvColor}
         />
       </InfoWrapper>
     </BasicModal>
