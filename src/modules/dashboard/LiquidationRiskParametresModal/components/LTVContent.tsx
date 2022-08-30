@@ -1,6 +1,6 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Typography, useTheme } from '@mui/material';
+import { AlertColor, Box, Typography, useTheme } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -10,7 +10,7 @@ interface LTVContentProps {
   loanToValue: string;
   currentLoanToValue: string;
   currentLiquidationThreshold: string;
-  color: 'error' | 'warning' | 'success';
+  color: AlertColor;
 }
 
 export const LTVContent = ({

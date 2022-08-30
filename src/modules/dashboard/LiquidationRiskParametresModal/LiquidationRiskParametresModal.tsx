@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
+import { AlertColor, Typography } from '@mui/material';
 
 import { HealthFactorNumber } from '../../../components/HealthFactorNumber';
 import { BasicModal } from '../../../components/primitives/BasicModal';
@@ -26,14 +26,14 @@ export const LiquidationRiskParametresInfoModal = ({
   currentLoanToValue,
   currentLiquidationThreshold,
 }: LiquidationRiskParametresInfoModalProps) => {
-  let healthFactorColor: 'error' | 'warning' | 'success' = 'success';
+  let healthFactorColor: AlertColor = 'success';
   if (+healthFactor <= 3 && +healthFactor > 1.1) {
     healthFactorColor = 'warning';
   } else if (+healthFactor <= 1.1) {
     healthFactorColor = 'error';
   }
 
-  let ltvColor: 'error' | 'warning' | 'success' = 'success';
+  let ltvColor: AlertColor = 'success';
   const ltvPercent = Number(loanToValue) * 100;
   const currentLtvPercent = Number(currentLoanToValue) * 100;
   const liquidationThresholdPercent = Number(currentLiquidationThreshold) * 100;

@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { AlertColor, Box, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 
 interface InfoWrapperProps {
@@ -7,7 +7,7 @@ interface InfoWrapperProps {
   topDescription: ReactNode;
   children: ReactNode;
   bottomText: ReactNode;
-  color: 'error' | 'warning' | 'success';
+  color: AlertColor;
 }
 
 export const InfoWrapper = ({
