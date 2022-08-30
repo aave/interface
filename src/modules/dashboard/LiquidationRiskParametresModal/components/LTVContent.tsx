@@ -179,7 +179,7 @@ export const LTVContent = ({
             borderRadius: '1px',
             width: `${LTVLineWidth > 100 ? 100 : LTVLineWidth}%`,
             maxWidth: '100%',
-            background: `${color}.main`,
+            background: `${palette[color].main}`,
             zIndex: 2,
           }}
         />
@@ -192,7 +192,7 @@ export const LTVContent = ({
             borderRadius: '1px',
             width: `${CurrentLTVLineWidth > 100 ? 100 : CurrentLTVLineWidth}%`,
             maxWidth: '100%',
-            background: `repeating-linear-gradient(-45deg, ${palette.divider}, ${palette.divider} 4px, ${color}.main 4px, ${color}.main 7px)`,
+            background: `repeating-linear-gradient(-45deg, ${palette.divider}, ${palette.divider} 4px, ${palette[color].main} 4px, ${palette[color].main} 7px)`,
           }}
         />
       </Box>
