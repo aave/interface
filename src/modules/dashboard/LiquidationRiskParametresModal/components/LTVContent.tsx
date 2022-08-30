@@ -179,22 +179,24 @@ export const LTVContent = ({
             borderRadius: '1px',
             width: `${LTVLineWidth > 100 ? 100 : LTVLineWidth}%`,
             maxWidth: '100%',
-            background: `${palette[color].main}`,
+            bgcolor: `${color}.main`,
             zIndex: 2,
           }}
         />
 
-        <Box
-          sx={{
-            position: 'absolute',
-            left: 0,
-            height: '4px',
-            borderRadius: '1px',
-            width: `${CurrentLTVLineWidth > 100 ? 100 : CurrentLTVLineWidth}%`,
-            maxWidth: '100%',
-            background: `repeating-linear-gradient(-45deg, ${palette.divider}, ${palette.divider} 4px, ${palette[color].main} 4px, ${palette[color].main} 7px)`,
-          }}
-        />
+        {LTVLineWidth < CurrentLTVLineWidth && (
+          <Box
+            sx={{
+              position: 'absolute',
+              left: 0,
+              height: '4px',
+              borderRadius: '1px',
+              width: `${CurrentLTVLineWidth > 100 ? 100 : CurrentLTVLineWidth}%`,
+              maxWidth: '100%',
+              background: `repeating-linear-gradient(-45deg, ${palette.divider}, ${palette.divider} 4px, ${palette[color].main} 4px, ${palette[color].main} 7px)`,
+            }}
+          />
+        )}
       </Box>
     </Box>
   );
