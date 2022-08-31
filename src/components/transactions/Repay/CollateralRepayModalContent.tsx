@@ -88,12 +88,12 @@ export function CollateralRepayModalContent({
     .dividedBy(fromAssetData.priceInUSD);
 
   let variant: 'exactIn' | 'exactOut' = 'exactOut';
-  const swapIn = { ...fromAssetData, amount: '0' };
+  const swapIn = { ...fromAssetData, amount: tokenToRepayWith?.balance || '0' };
   const swapOut = { ...poolReserve, amount: amountRef.current };
   if (valueToBigNumber(tokenToRepayWith?.balance || '0').lt(collateralAmountRequiredToCoverDebt)) {
     // TODO: I was seeing some intermittent errors when trying to use 100% of the collateral
-    const inAmount = valueToBigNumber(tokenToRepayWith?.balance || '0').multipliedBy('0.9999');
-    console.log(tokenToRepayWith?.balance);
+    const inAmount = valueToBigNumber(tokenToRepayWith?.balance || '0').multipliedBy('1');
+    // console.log(tokenToRepayWith?.balance);
     variant = 'exactIn';
     swapIn.amount = inAmount.toString();
     swapOut.amount = '0';
@@ -156,6 +156,7 @@ export function CollateralRepayModalContent({
       currentNetworkConfig.underlyingChainId || currentChainId
     );
 
+  console.log('useFlashloan', shouldUseFlashloan);
   // we need to get the min as minimumReceived can be greater than debt as we are swapping
   // a safe amount to repay all. When this happens amountAfterRepay would be < 0 and
   // this would show as certain amount left to repay when we are actually repaying all debt

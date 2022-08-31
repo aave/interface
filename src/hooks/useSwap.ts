@@ -84,10 +84,14 @@ export const useCollateralRepaySwap = ({
 
     setLoading(true);
     console.log('fetchSellroute');
+
     let _amount = valueToBigNumber(swapIn.amount);
+
+    // TODO: this shouldn't be needed if we are just passing in the aToken balance (tokenToRepayWith.balance)
     if (swapIn.supplyAPY !== '0') {
       _amount = _amount.plus(_amount.multipliedBy(swapIn.supplyAPY).dividedBy(360 * 24));
     }
+
     const amount = normalizeBN(_amount, swapIn.decimals * -1);
 
     try {
@@ -125,15 +129,7 @@ export const useCollateralRepaySwap = ({
       });
       setSwapCallData(swapCallData);
       setAugustus(augustus);
-      if (
-        valueToBigNumber(normalize(response.srcAmount, swapIn.decimals)).lt(
-          valueToBigNumber(swapIn.amount)
-        )
-      ) {
-        setInputAmount(swapIn.amount);
-      } else {
-        setInputAmount(normalize(response.srcAmount, swapIn.decimals));
-      }
+      setInputAmount(swapIn.amount);
       setOutputAmount(normalize(destAmountWithSlippage, swapOut.decimals));
     } catch (e) {
       console.log(e);
@@ -206,7 +202,6 @@ export const useCollateralRepaySwap = ({
         maxSlippage,
       });
 
-      console.log('fetched swapCallData');
       setSwapCallData(swapCallData);
       setAugustus(augustus);
       setInputAmount(normalize(srcAmountWithSlippage, swapIn.decimals));
@@ -232,59 +227,38 @@ export const useCollateralRepaySwap = ({
     userId,
   ]);
 
-  // updates the route on input change
   useEffect(() => {
     if (skip) return;
-    setPriceRoute(null);
-    const timeout = setTimeout(() => {
+
+    const fetchRoute = () => {
       if (variant === 'exactIn') {
         fetchSellRoute();
       } else {
         fetchBuyRoute();
       }
-    }, 400);
-    return () => clearTimeout(timeout);
-  }, [fetchBuyRoute, fetchSellRoute, skip, variant]);
+    };
 
-  // updates the route based on on interval
-  useEffect(() => {
-    if (skip) return;
     const interval = setInterval(
       () => {
-        if (variant === 'exactIn') {
-          fetchSellRoute();
-        } else {
-          fetchBuyRoute();
-        }
+        fetchRoute();
       },
       error ? 3000 : 15000
     );
-    return () => clearInterval(interval);
-  }, [fetchBuyRoute, fetchSellRoute, error, skip, variant]);
 
-  if (priceRoute) {
-    return {
-      // full object needed for building the tx
-      outputAmount,
-      outputAmountUSD: priceRoute.destUSD ?? '0',
-      inputAmount,
-      inputAmountUSD: priceRoute.srcUSD ?? '0',
-      swapCallData,
-      augustus,
-      loading: loading,
-      error: error,
-    };
-  }
+    fetchRoute();
+
+    return () => clearInterval(interval);
+  }, [error, fetchBuyRoute, fetchSellRoute, skip, variant]);
+
   return {
-    // full object needed for building the tx
-    outputAmount: '0',
-    outputAmountUSD: '0',
-    inputAmount: '0',
-    inputAmountUSD: '0',
+    outputAmount,
+    outputAmountUSD: priceRoute?.destUSD ?? '0',
+    inputAmount,
+    inputAmountUSD: priceRoute?.srcUSD ?? '0',
+    swapCallData,
+    augustus,
     loading: loading,
     error: error,
-    augustus,
-    swapCallData,
   };
 };
 export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }: UseSwapProps) => {
