@@ -5,7 +5,6 @@ export const defaultConfig = {
   pageLoadTimeout: 120000,
   video: false,
   watchForFileChanges: false,
-  scrollBehavior: 'center',
   retries: {
     runMode: 1,
     openMode: 0,

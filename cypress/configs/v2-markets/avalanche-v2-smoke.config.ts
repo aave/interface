@@ -3,8 +3,7 @@ import { defaultConfig } from '../base.cypress';
 
 const folder = `./cypress/e2e/0-v2-markets/3-avalanche-v2-market/`;
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+
 export default defineConfig({
   ...defaultConfig,
   e2e: {
