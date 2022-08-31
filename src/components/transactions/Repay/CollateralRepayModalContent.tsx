@@ -91,30 +91,29 @@ export function CollateralRepayModalContent({
   const swapIn = { ...fromAssetData, amount: '0' };
   const swapOut = { ...poolReserve, amount: amountRef.current };
   if (valueToBigNumber(tokenToRepayWith?.balance || '0').lt(collateralAmountRequiredToCoverDebt)) {
+    // TODO: I was seeing some intermittent errors when trying to use 100% of the collateral
+    const inAmount = valueToBigNumber(tokenToRepayWith?.balance || '0').multipliedBy('0.9999');
+    console.log(tokenToRepayWith?.balance);
     variant = 'exactIn';
-    swapIn.amount = tokenToRepayWith?.balance || '0';
+    swapIn.amount = inAmount.toString();
     swapOut.amount = '0';
   }
 
-  const {
-    inputAmountUSD,
-    inputAmount,
-    outputAmount,
-    outputAmountUSD,
-    swapCallData,
-    augustus,
-    repayAmount,
-    repayWithAmount,
-  } = useCollateralRepaySwap({
-    chainId: currentNetworkConfig.underlyingChainId || currentChainId,
-    userId: currentAccount,
-    variant,
-    swapIn,
-    swapOut,
-    max: false,
-    skip: mainTxState.loading,
-    maxSlippage: Number(maxSlippage),
-  });
+  const repayAllDebt = valueToBigNumber(tokenToRepayWith?.balance || '0').gte(
+    collateralAmountRequiredToCoverDebt
+  );
+
+  const { inputAmountUSD, inputAmount, outputAmount, outputAmountUSD, swapCallData, augustus } =
+    useCollateralRepaySwap({
+      chainId: currentNetworkConfig.underlyingChainId || currentChainId,
+      userId: currentAccount,
+      variant,
+      swapIn,
+      swapOut,
+      max: repayAllDebt,
+      skip: mainTxState.loading,
+      maxSlippage: Number(maxSlippage),
+    });
 
   // Calculations to get the max repayable debt depending on the balance and value of the
   // selected collateral
@@ -124,11 +123,7 @@ export function CollateralRepayModalContent({
   const maxDebtThatCanBeRepaidWithSelectedCollateral = maxCollateral.dividedBy(
     poolReserve.priceInUSD
   );
-  // console.log('maxCollateral', maxCollateral.toString());
-  // console.log(
-  //   'maxDebtThatCanBeRepaidWithSelectedCollateral',
-  //   maxDebtThatCanBeRepaidWithSelectedCollateral.toString()
-  // );
+
   const maxRepayableDebt = BigNumber.min(
     maxDebtThatCanBeRepaidWithSelectedCollateral,
     safeAmountToRepayAll
@@ -138,20 +133,7 @@ export function CollateralRepayModalContent({
     amountRef.current = maxSelected ? maxRepayableDebt.toString(10) : value;
     setAmount(value);
   };
-  // We first factor in slippage on the input side to see if there is enough to cover
-  // const collateralAmountNeededWithSlippage = maxCollateral
-  //   .multipliedBy(100 + Number(maxSlippage))
-  //   .dividedBy(100);
-  // console.log(maxSlippage);
-  // console.log(collateralAmountNeededWithSlippage.toString());
-  // const collateralAmountRequiredToCoverDebt = safeAmountToRepayAll
-  //   .multipliedBy(100 + Number(maxSlippage))
-  //   .dividedBy(100)
-  //   .dividedBy(fromAssetData.priceInUSD);
 
-  // if (valueToBigNumber(tokenToRepayWith?.balance || '0').lt(collateralAmountRequiredToCoverDebt)) {
-  //   console.log('not enough collateral, need to use exactIn');
-  // }
   // for v3 we need hf after withdraw collateral, because when removing collateral to repay
   // debt, hf could go under 1 then it would fail. If that is the case then we need
   // to use flashloan path
@@ -232,7 +214,7 @@ export function CollateralRepayModalContent({
   return (
     <>
       <AssetInput
-        value={amount}
+        value={variant === 'exactIn' ? outputAmount : amount}
         onChange={handleChange}
         usdValue={usdValue.toString()}
         symbol={poolReserve.symbol}
@@ -314,9 +296,9 @@ export function CollateralRepayModalContent({
       <CollateralRepayActions
         poolReserve={poolReserve}
         fromAssetData={fromAssetData}
-        repayAmount={repayAmount}
-        repayWithAmount={repayWithAmount}
-        repayAllDebt={false}
+        repayAmount={outputAmount}
+        repayWithAmount={inputAmount}
+        repayAllDebt={repayAllDebt}
         useFlashLoan={false}
         isWrongNetwork={isWrongNetwork}
         symbol={symbol}

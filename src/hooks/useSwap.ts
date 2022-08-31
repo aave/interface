@@ -12,6 +12,8 @@ import { ChainId } from '@aave/contract-helpers';
 import { BigNumberZeroDecimal, normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import { RateOptions } from '@paraswap/sdk/dist/rates';
 
+export type SwapVariant = 'exactIn' | 'exactOut';
+
 const ParaSwap = (chainId: number) => {
   const fetcher = constructFetchFetcher(fetch); // alternatively constructFetchFetcher
   return constructPartialSDK(
@@ -45,7 +47,7 @@ type UseSwapProps = {
   max?: boolean;
   swapIn: ComputedReserveData & { amount: string };
   swapOut: ComputedReserveData & { amount: string };
-  variant: 'exactIn' | 'exactOut';
+  variant: SwapVariant;
   userId?: string;
   chainId: ChainId;
   skip?: boolean;
@@ -74,31 +76,27 @@ export const useCollateralRepaySwap = ({
   const [priceRoute, setPriceRoute] = useState<OptimalRate | null>(null);
   const [swapCallData, setSwapCallData] = useState<string>('');
   const [augustus, setAugustus] = useState<string>('');
-  const [repayAmount, setRepayAmount] = useState<string>('');
-  const [repayWithAmount, setRepayWithAmount] = useState<string>('');
+  const [inputAmount, setInputAmount] = useState<string>('');
+  const [outputAmount, setOutputAmount] = useState<string>('');
 
   const fetchSellRoute = useCallback(async () => {
     if (!swapIn.underlyingAsset || !swapOut.underlyingAsset || !userId) return;
 
-    console.log('fetchSellRoute');
-    console.log('variant', variant);
     setLoading(true);
-
+    console.log('fetchSellroute');
     let _amount = valueToBigNumber(swapIn.amount);
-    if (max && swapIn.supplyAPY !== '0') {
+    if (swapIn.supplyAPY !== '0') {
       _amount = _amount.plus(_amount.multipliedBy(swapIn.supplyAPY).dividedBy(360 * 24));
     }
     const amount = normalizeBN(_amount, swapIn.decimals * -1);
 
     try {
-      const excludedMethod = ContractMethod.simpleSwap;
-
       const options: RateOptions = {
         partner: 'aave',
       };
 
       if (max) {
-        options.excludeContractMethods = [excludedMethod];
+        options.excludeContractMethods = [ContractMethod.simpleSwap];
       }
 
       const response = await paraSwap.getRate({
@@ -127,10 +125,16 @@ export const useCollateralRepaySwap = ({
       });
       setSwapCallData(swapCallData);
       setAugustus(augustus);
-      setRepayWithAmount(response.srcAmount);
-      setRepayAmount(normalize(destAmountWithSlippage, swapOut.decimals));
-      console.log('repayAmount', repayAmount);
-      console.log('repayWithAmount', repayWithAmount);
+      if (
+        valueToBigNumber(normalize(response.srcAmount, swapIn.decimals)).lt(
+          valueToBigNumber(swapIn.amount)
+        )
+      ) {
+        setInputAmount(swapIn.amount);
+      } else {
+        setInputAmount(normalize(response.srcAmount, swapIn.decimals));
+      }
+      setOutputAmount(normalize(destAmountWithSlippage, swapOut.decimals));
     } catch (e) {
       console.log(e);
       console.log(e.message);
@@ -143,8 +147,6 @@ export const useCollateralRepaySwap = ({
     max,
     maxSlippage,
     paraSwap,
-    repayAmount,
-    repayWithAmount,
     swapIn.amount,
     swapIn.decimals,
     swapIn.supplyAPY,
@@ -152,10 +154,10 @@ export const useCollateralRepaySwap = ({
     swapOut.decimals,
     swapOut.underlyingAsset,
     userId,
-    variant,
   ]);
 
   const fetchBuyRoute = useCallback(async () => {
+    if (!swapOut.amount) return;
     if (!swapIn.underlyingAsset || !swapOut.underlyingAsset || !userId) return;
 
     console.log('fetchBuyRoute');
@@ -179,7 +181,7 @@ export const useCollateralRepaySwap = ({
         options.excludeContractMethods = [excludedMethod];
       }
 
-      const response = await paraSwap.getRate({
+      const route = await paraSwap.getRate({
         amount: amount.toFixed(0),
         srcToken: swapIn.underlyingAsset,
         srcDecimals: swapIn.decimals,
@@ -191,7 +193,7 @@ export const useCollateralRepaySwap = ({
       });
 
       setError('');
-      setPriceRoute(response);
+      setPriceRoute(route);
 
       const { swapCallData, augustus, srcAmountWithSlippage } = await getRepayCallData({
         srcToken: swapIn.underlyingAsset,
@@ -199,15 +201,16 @@ export const useCollateralRepaySwap = ({
         destToken: swapOut.underlyingAsset,
         destDecimals: swapOut.decimals,
         user: userId,
-        route: response as OptimalRate,
+        route: route as OptimalRate,
         chainId: chainId,
         maxSlippage,
       });
 
+      console.log('fetched swapCallData');
       setSwapCallData(swapCallData);
       setAugustus(augustus);
-      setRepayWithAmount(normalize(srcAmountWithSlippage, swapIn.decimals));
-      setRepayAmount(response.destAmount);
+      setInputAmount(normalize(srcAmountWithSlippage, swapIn.decimals));
+      setOutputAmount(normalize(route.destAmount, swapOut.decimals));
     } catch (e) {
       console.log(e);
       console.log(e.message);
@@ -262,20 +265,12 @@ export const useCollateralRepaySwap = ({
   if (priceRoute) {
     return {
       // full object needed for building the tx
-      outputAmount: normalize(
-        priceRoute.destAmount ?? '0',
-        variant === 'exactIn' ? swapOut.decimals : swapOut.decimals
-      ),
+      outputAmount,
       outputAmountUSD: priceRoute.destUSD ?? '0',
-      inputAmount: normalize(
-        priceRoute.srcAmount ?? '0',
-        variant === 'exactIn' ? swapIn.decimals : swapIn.decimals
-      ),
+      inputAmount,
       inputAmountUSD: priceRoute.srcUSD ?? '0',
       swapCallData,
       augustus,
-      repayAmount,
-      repayWithAmount,
       loading: loading,
       error: error,
     };
@@ -289,8 +284,6 @@ export const useCollateralRepaySwap = ({
     loading: loading,
     error: error,
     augustus,
-    repayAmount,
-    repayWithAmount,
     swapCallData,
   };
 };

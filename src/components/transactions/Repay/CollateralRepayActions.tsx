@@ -46,8 +46,6 @@ export const CollateralRepayActions = ({
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({
       handleGetTxns: async () => {
-        console.log('handleGetTxns', repayAmount);
-        console.log('handleGetTxns', repayWithAmount);
         return lendingPool.paraswapRepayWithCollateral({
           user: currentAccount,
           fromAsset: fromAssetData.underlyingAsset,
@@ -55,9 +53,9 @@ export const CollateralRepayActions = ({
           assetToRepay: poolReserve.underlyingAsset,
           repayWithAmount,
           repayAmount,
-          repayAllDebt: false,
+          repayAllDebt,
           rateMode,
-          flash: false,
+          flash: useFlashLoan,
           swapAndRepayCallData: swapCallData,
           augustus,
         });
