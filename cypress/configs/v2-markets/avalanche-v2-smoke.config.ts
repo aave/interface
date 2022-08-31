@@ -3,7 +3,6 @@ import { defaultConfig } from '../base.cypress';
 
 const folder = `./cypress/e2e/0-v2-markets/3-avalanche-v2-market/`;
 
-
 export default defineConfig({
   ...defaultConfig,
   defaultCommandTimeout: defaultConfig.defaultCommandTimeout,
