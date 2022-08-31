@@ -1,7 +1,7 @@
 export const defaultConfig = {
   viewportWidth: 1200,
   viewportHeight: 800,
-  defaultCommandTimeout: 40000,
+  defaultCommandTimeout: 60000,
   pageLoadTimeout: 120000,
   video: false,
   watchForFileChanges: false,
