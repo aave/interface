@@ -44,6 +44,11 @@ TENDERLY_ACCOUNT=<account name>
 TENDERLY_PROJECT=<project name>
 ```
 
+For setup env with staking page (to get positive result for staking test coverage), need to execute:
+```
+cp .env.example .env.local
+```
+
 For running the integration test suite you need to run the app. You can either run again `yarn dev` which will be a bit more resource intensive as the app will be build on the fly or run against a static build via `yarn build:static` & `yarn serve:static`.
 
 ```sh
@@ -51,8 +56,6 @@ For running the integration test suite you need to run the app. You can either r
 yarn test:open
 # run all tests in headless mode
 yarn test:headless
-# test a selected markets in headless mode
-yarn test:amm|main|polygon|avalanche
 ```
 
 ## Run on a fork
