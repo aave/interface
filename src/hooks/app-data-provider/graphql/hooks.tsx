@@ -566,6 +566,7 @@ export type C_ProtocolDataQuery = {
       baseVariableBorrowRate: string;
       optimalUsageRatio: string;
       priceOracle: string;
+      isSiloedBorrowing: boolean;
     }>;
     baseCurrencyData: {
       __typename?: 'BaseCurrencyData';
@@ -641,6 +642,7 @@ export type C_ProtocolDataUpdateSubscription = {
       baseVariableBorrowRate: string;
       optimalUsageRatio: string;
       priceOracle: string;
+      isSiloedBorrowing: boolean;
     }>;
     baseCurrencyData: {
       __typename?: 'BaseCurrencyData';
