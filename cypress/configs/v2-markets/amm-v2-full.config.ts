@@ -8,9 +8,8 @@ export default defineConfig({
   e2e: {
     specPattern: [folder + "**/*.*"],
     excludeSpecPattern: [
-      folder + "/0-assets/eth.amm-v2.cy.ts",
-      "usdt.amm-v2.cy.ts",
-      "usdс.amm-v2.cy.ts",
+      "/**/eth.amm-v2.cy.ts",
+      "/**/usdt.amm-v2.cy.ts",
     ],
   },
 });

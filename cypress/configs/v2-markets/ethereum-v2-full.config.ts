@@ -8,12 +8,12 @@ export default defineConfig({
   e2e: {
     specPattern: [folder + "**/*.*"],
     excludeSpecPattern: [
-      "./assets/eth.aave-v2.cy.ts",
-      "*/dai.aave-v2.cy.ts",
-      "./swap.aave-v2.cy.ts",
-      "*/stake.aave-v2.cy.ts",
-      "./reward.aave-v2.cy.ts",
-      "./critical-conditions.aave-v2.cy.ts",
+      "/**/eth.aave-v2.cy.ts",
+      "/**/dai.aave-v2.cy.ts",
+      "/**/swap.aave-v2.cy.ts",
+      "/**/stake.aave-v2.cy.ts",
+      "/**/reward.aave-v2.cy.ts",
+      "/**/critical-conditions.aave-v2.cy.ts",
     ],
   },
 });

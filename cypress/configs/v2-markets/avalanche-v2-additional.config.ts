@@ -7,9 +7,8 @@ export default defineConfig({
   ...defaultConfig,
   e2e: {
     specPattern: [
-      folder + '0-assets/avax.avalanche-v2.cy.ts',
-      folder + '0-assets/usdt.avalanche-v2.cy.ts',
-      folder + 'reward.avalanche-v2.cy.ts',
+      folder + 'swap.avalanche-v2.spec.ts',
+      folder + 'critical-conditions.avalanche-v2.spec.ts',
     ],
   },
 });
