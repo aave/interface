@@ -23,7 +23,7 @@ const defaultConfig2 = {
       // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/ban-ts-comment
       // @ts-ignore
       // eslint-disable-next-line @typescript-eslint/no-var-requires
-      return require('../plugins/index.js')(on, config);
+      return require('../../plugins/index.js')(on, config);
     },
   },
 };
