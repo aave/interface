@@ -1556,10 +1556,6 @@ msgstr "Switch Network"
 msgid "Switch rate"
 msgstr "Switch rate"
 
-#: src/ui-config/menu-items/index.tsx
-msgid "Switch to Aave Classic"
-msgstr "Switch to Aave Classic"
-
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Switching E-Mode"
 msgstr "Switching E-Mode"
