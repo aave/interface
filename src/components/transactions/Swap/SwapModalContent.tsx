@@ -73,12 +73,13 @@ export const SwapModalContent = ({
   const { priceRoute, inputAmountUSD, inputAmount, outputAmount, outputAmountUSD, error } = useSwap(
     {
       chainId: currentNetworkConfig.underlyingChainId || currentChainId,
-      userId: currentAccount,
+      userAddress: currentAccount,
       variant: 'exactIn',
       swapIn: { ...poolReserve, amount: amountRef.current },
       swapOut: { ...swapTarget, amount: '0' },
       max: isMaxSelected,
       skip: supplyTxState.loading,
+      maxSlippage: 0,
     }
   );
 

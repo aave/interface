@@ -48,7 +48,7 @@ type UseSwapProps = {
   swapIn: ComputedReserveData & { amount: string };
   swapOut: ComputedReserveData & { amount: string };
   variant: SwapVariant;
-  userId?: string;
+  userAddress: string;
   chainId: ChainId;
   skip?: boolean;
   maxSlippage: number;
@@ -64,7 +64,7 @@ export const useCollateralRepaySwap = ({
   swapIn,
   swapOut,
   variant,
-  userId,
+  userAddress,
   max,
   chainId,
   skip,
@@ -73,25 +73,20 @@ export const useCollateralRepaySwap = ({
   const paraSwap = getParaswap(chainId);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [priceRoute, setPriceRoute] = useState<OptimalRate | null>(null);
   const [swapCallData, setSwapCallData] = useState<string>('');
   const [augustus, setAugustus] = useState<string>('');
   const [inputAmount, setInputAmount] = useState<string>('');
   const [outputAmount, setOutputAmount] = useState<string>('');
+  const [outputAmountUSD, setOutputAmountUSD] = useState<string>('');
+  const [inputAmountUSD, setInputAmountUSD] = useState<string>('');
 
   const fetchSellRoute = useCallback(async () => {
-    if (!swapIn.underlyingAsset || !swapOut.underlyingAsset || !userId) return;
+    // The 'Sell' route will take the input token and amount, and try to swap for the specified
+    // output token minus the maximum slippage. This should be used when the user is trying
+    // repay with collateral and the collateral amount is less than the debt amount.
+    if (!swapIn.amount || swapIn.amount === '0') return;
 
-    setLoading(true);
-    console.log('fetchSellroute');
-
-    let _amount = valueToBigNumber(swapIn.amount);
-
-    // TODO: this shouldn't be needed if we are just passing in the aToken balance (tokenToRepayWith.balance)
-    if (swapIn.supplyAPY !== '0') {
-      _amount = _amount.plus(_amount.multipliedBy(swapIn.supplyAPY).dividedBy(360 * 24));
-    }
-
+    const _amount = valueToBigNumber(swapIn.amount);
     const amount = normalizeBN(_amount, swapIn.decimals * -1);
 
     try {
@@ -99,31 +94,26 @@ export const useCollateralRepaySwap = ({
         partner: 'aave',
       };
 
-      if (max) {
-        options.excludeContractMethods = [ContractMethod.simpleSwap];
-      }
-
-      const response = await paraSwap.getRate({
+      const route = await paraSwap.getRate({
         amount: amount.toFixed(0),
         srcToken: swapIn.underlyingAsset,
         srcDecimals: swapIn.decimals,
         destToken: swapOut.underlyingAsset,
         destDecimals: swapOut.decimals,
-        userAddress: userId,
+        userAddress,
         side: SwapSide.SELL,
         options,
       });
 
       setError('');
-      setPriceRoute(response);
 
       const { swapCallData, augustus, destAmountWithSlippage } = await getSwapCallData({
         srcToken: swapIn.underlyingAsset,
         srcDecimals: swapIn.decimals,
         destToken: swapOut.underlyingAsset,
         destDecimals: swapOut.decimals,
-        user: userId,
-        route: response as OptimalRate,
+        user: userAddress,
+        route: route as OptimalRate,
         chainId: chainId,
         maxSlippage,
       });
@@ -131,33 +121,31 @@ export const useCollateralRepaySwap = ({
       setAugustus(augustus);
       setInputAmount(swapIn.amount);
       setOutputAmount(normalize(destAmountWithSlippage, swapOut.decimals));
+      setInputAmountUSD(route.srcUSD);
+      setOutputAmountUSD(route.destUSD);
     } catch (e) {
       console.log(e);
       console.log(e.message);
       const message = (MESSAGE_MAP as { [key: string]: string })[e.message];
       setError(message || 'There was an issue fetching data from Paraswap');
     }
-    setLoading(false);
   }, [
     chainId,
-    max,
     maxSlippage,
     paraSwap,
     swapIn.amount,
     swapIn.decimals,
-    swapIn.supplyAPY,
     swapIn.underlyingAsset,
     swapOut.decimals,
     swapOut.underlyingAsset,
-    userId,
+    userAddress,
   ]);
 
   const fetchBuyRoute = useCallback(async () => {
-    if (!swapOut.amount) return;
-    if (!swapIn.underlyingAsset || !swapOut.underlyingAsset || !userId) return;
-
-    console.log('fetchBuyRoute');
-    setLoading(true);
+    // The 'Buy' route will try to swap the input token and apply positive slippage to the amount
+    // in order to get the exact output amount. This should be used when the user is trying to
+    // repay with collateral and the collateral amount is greater than the debt amount.
+    if (!swapOut.amount || swapOut.amount === '0') return;
 
     let _amount = valueToBigNumber(swapOut.amount);
     if (max) {
@@ -167,36 +155,34 @@ export const useCollateralRepaySwap = ({
     const amount = normalizeBN(_amount, swapOut.decimals * -1);
 
     try {
-      const excludedMethod = ContractMethod.simpleBuy;
-
       const options: RateOptions = {
         partner: 'aave',
       };
 
       if (max) {
-        options.excludeContractMethods = [excludedMethod];
+        options.excludeContractMethods = [ContractMethod.simpleBuy];
       }
 
+      console.log('amount', amount.toFixed(0));
       const route = await paraSwap.getRate({
         amount: amount.toFixed(0),
         srcToken: swapIn.underlyingAsset,
         srcDecimals: swapIn.decimals,
         destToken: swapOut.underlyingAsset,
         destDecimals: swapOut.decimals,
-        userAddress: userId,
+        userAddress,
         side: SwapSide.BUY,
         options,
       });
 
       setError('');
-      setPriceRoute(route);
 
       const { swapCallData, augustus, srcAmountWithSlippage } = await getRepayCallData({
         srcToken: swapIn.underlyingAsset,
         srcDecimals: swapIn.decimals,
         destToken: swapOut.underlyingAsset,
         destDecimals: swapOut.decimals,
-        user: userId,
+        user: userAddress,
         route: route as OptimalRate,
         chainId: chainId,
         maxSlippage,
@@ -206,13 +192,15 @@ export const useCollateralRepaySwap = ({
       setAugustus(augustus);
       setInputAmount(normalize(srcAmountWithSlippage, swapIn.decimals));
       setOutputAmount(normalize(route.destAmount, swapOut.decimals));
+      setInputAmountUSD(route.srcUSD);
+      setOutputAmountUSD(route.destUSD);
+      console.log(normalize(srcAmountWithSlippage, swapIn.decimals));
     } catch (e) {
       console.log(e);
       console.log(e.message);
       const message = (MESSAGE_MAP as { [key: string]: string })[e.message];
       setError(message || 'There was an issue fetching data from Paraswap');
     }
-    setLoading(false);
   }, [
     chainId,
     max,
@@ -224,18 +212,22 @@ export const useCollateralRepaySwap = ({
     swapOut.amount,
     swapOut.decimals,
     swapOut.underlyingAsset,
-    userId,
+    userAddress,
   ]);
 
   useEffect(() => {
     if (skip) return;
 
-    const fetchRoute = () => {
+    const fetchRoute = async () => {
+      if (!swapIn.underlyingAsset || !swapOut.underlyingAsset) return;
+
+      setLoading(true);
       if (variant === 'exactIn') {
-        fetchSellRoute();
+        await fetchSellRoute();
       } else {
-        fetchBuyRoute();
+        await fetchBuyRoute();
       }
+      setLoading(false);
     };
 
     const interval = setInterval(
@@ -248,20 +240,37 @@ export const useCollateralRepaySwap = ({
     fetchRoute();
 
     return () => clearInterval(interval);
-  }, [error, fetchBuyRoute, fetchSellRoute, skip, variant]);
+  }, [
+    error,
+    fetchBuyRoute,
+    fetchSellRoute,
+    skip,
+    swapIn.underlyingAsset,
+    swapOut.underlyingAsset,
+    variant,
+  ]);
 
   return {
     outputAmount,
-    outputAmountUSD: priceRoute?.destUSD ?? '0',
+    outputAmountUSD,
     inputAmount,
-    inputAmountUSD: priceRoute?.srcUSD ?? '0',
+    inputAmountUSD,
     swapCallData,
     augustus,
-    loading: loading,
-    error: error,
+    loading,
+    error,
   };
 };
-export const useSwap = ({ swapIn, swapOut, variant, userId, max, chainId, skip }: UseSwapProps) => {
+
+export const useSwap = ({
+  swapIn,
+  swapOut,
+  variant,
+  userAddress: userId,
+  max,
+  chainId,
+  skip,
+}: UseSwapProps) => {
   const paraSwap = getParaswap(chainId);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');

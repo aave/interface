@@ -9,7 +9,7 @@ import {
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useCollateralRepaySwap, useSwap } from 'src/hooks/useSwap';
+import { SwapVariant, useCollateralRepaySwap } from 'src/hooks/useSwap';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { Asset, AssetInput } from '../AssetInput';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
@@ -58,19 +58,17 @@ export function CollateralRepayModalContent({
     }))
     .sort((a, b) => Number(b.balanceUSD) - Number(a.balanceUSD));
   const [tokenToRepayWith, setTokenToRepayWith] = useState<Asset>(repayTokens[0]);
+  const tokenToRepayWithBalance = tokenToRepayWith.balance || '0';
 
-  const fromAssetData = reserves.find(
-    (reserve) => reserve.underlyingAsset === tokenToRepayWith.address
-  ) as ComputedReserveData;
-
-  const repayWithUserReserve = userReserves.find(
-    (userReserve) => userReserve.underlyingAsset === tokenToRepayWith.address
-  ) as ComputedUserReserveData;
-
-  const [_amount, setAmount] = useState('');
+  const [swapVariant, setSwapVariant] = useState<SwapVariant>('exactOut');
+  const [amount, setAmount] = useState('');
   const [maxSlippage, setMaxSlippage] = useState('0.5');
 
   const amountRef = useRef<string>('');
+
+  const collateralReserveData = reserves.find(
+    (reserve) => reserve.underlyingAsset === tokenToRepayWith.address
+  ) as ComputedReserveData;
 
   const debt =
     debtType === InterestRate.Stable
@@ -78,36 +76,32 @@ export function CollateralRepayModalContent({
       : userReserve?.variableBorrows || '0';
   const safeAmountToRepayAll = valueToBigNumber(debt).multipliedBy('1.0025');
 
-  const isMaxSelected = _amount === '-1';
-  const amount = isMaxSelected ? safeAmountToRepayAll.toString() : _amount;
-  const usdValue = valueToBigNumber(amount).multipliedBy(poolReserve.priceInUSD);
+  const isMaxSelected = amount === '-1';
+  const repayAmount = isMaxSelected ? safeAmountToRepayAll.toString() : amount;
+  const usdValue = valueToBigNumber(repayAmount).multipliedBy(poolReserve.priceInUSD);
 
+  // The slippage is factored into the collateral amount because when we swap for 'exactOut', positive slippage is applied on the collateral amount.
   const collateralAmountRequiredToCoverDebt = safeAmountToRepayAll
     .multipliedBy(100 + Number(maxSlippage))
     .dividedBy(100)
-    .dividedBy(fromAssetData.priceInUSD);
+    .dividedBy(collateralReserveData.priceInUSD);
 
-  let variant: 'exactIn' | 'exactOut' = 'exactOut';
-  const swapIn = { ...fromAssetData, amount: tokenToRepayWith?.balance || '0' };
+  const swapIn = { ...collateralReserveData, amount: tokenToRepayWithBalance };
   const swapOut = { ...poolReserve, amount: amountRef.current };
-  if (valueToBigNumber(tokenToRepayWith?.balance || '0').lt(collateralAmountRequiredToCoverDebt)) {
-    // TODO: I was seeing some intermittent errors when trying to use 100% of the collateral
-    const inAmount = valueToBigNumber(tokenToRepayWith?.balance || '0').multipliedBy('1');
-    // console.log(tokenToRepayWith?.balance);
-    variant = 'exactIn';
-    swapIn.amount = inAmount.toString();
+  if (swapVariant === 'exactIn') {
+    swapIn.amount = tokenToRepayWithBalance;
     swapOut.amount = '0';
   }
 
-  const repayAllDebt = valueToBigNumber(tokenToRepayWith?.balance || '0').gte(
-    collateralAmountRequiredToCoverDebt
-  );
+  const repayAllDebt =
+    isMaxSelected &&
+    valueToBigNumber(tokenToRepayWithBalance).gte(collateralAmountRequiredToCoverDebt);
 
   const { inputAmountUSD, inputAmount, outputAmount, outputAmountUSD, swapCallData, augustus } =
     useCollateralRepaySwap({
       chainId: currentNetworkConfig.underlyingChainId || currentChainId,
-      userId: currentAccount,
-      variant,
+      userAddress: currentAccount,
+      variant: swapVariant,
       swapIn,
       swapOut,
       max: repayAllDebt,
@@ -115,32 +109,35 @@ export function CollateralRepayModalContent({
       maxSlippage: Number(maxSlippage),
     });
 
-  // Calculations to get the max repayable debt depending on the balance and value of the
-  // selected collateral
-  const maxCollateral = valueToBigNumber(tokenToRepayWith?.balance || 0).multipliedBy(
-    fromAssetData.priceInUSD
-  );
-  const maxDebtThatCanBeRepaidWithSelectedCollateral = maxCollateral.dividedBy(
-    poolReserve.priceInUSD
-  );
-
-  const maxRepayableDebt = BigNumber.min(
-    maxDebtThatCanBeRepaidWithSelectedCollateral,
-    safeAmountToRepayAll
-  );
-  const handleChange = (value: string) => {
+  const handleRepayAmountChange = (value: string) => {
     const maxSelected = value === '-1';
-    amountRef.current = maxSelected ? maxRepayableDebt.toString(10) : value;
-    setAmount(value);
+
+    if (
+      maxSelected &&
+      valueToBigNumber(tokenToRepayWithBalance).lt(collateralAmountRequiredToCoverDebt)
+    ) {
+      // The selected collateral amount is not enough to pay the full debt. We'll try to do a swap using the exact amount of collateral.
+      // The amount won't be known until we fetch the swap data, so we'll clear it out. Once the swap data is fetched, we'll set the amount.
+      amountRef.current = '';
+      setAmount('');
+      setSwapVariant('exactIn');
+    } else {
+      amountRef.current = maxSelected ? safeAmountToRepayAll.toString(10) : value;
+      setAmount(value);
+      setSwapVariant('exactOut');
+    }
   };
 
   // for v3 we need hf after withdraw collateral, because when removing collateral to repay
   // debt, hf could go under 1 then it would fail. If that is the case then we need
   // to use flashloan path
+  const repayWithUserReserve = userReserves.find(
+    (userReserve) => userReserve.underlyingAsset === tokenToRepayWith.address
+  ) as ComputedUserReserveData;
   const { hfAfterSwap, hfEffectOfFromAmount } = calculateHFAfterRepay({
     amountToReceiveAfterSwap: outputAmount,
     amountToSwap: inputAmount,
-    fromAssetData,
+    fromAssetData: collateralReserveData,
     user,
     toAssetData: poolReserve,
     repayWithUserReserve,
@@ -156,17 +153,16 @@ export function CollateralRepayModalContent({
       currentNetworkConfig.underlyingChainId || currentChainId
     );
 
-  console.log('useFlashloan', shouldUseFlashloan);
   // we need to get the min as minimumReceived can be greater than debt as we are swapping
   // a safe amount to repay all. When this happens amountAfterRepay would be < 0 and
   // this would show as certain amount left to repay when we are actually repaying all debt
   const amountAfterRepay = valueToBigNumber(debt).minus(BigNumber.min(outputAmount, debt));
   const displayAmountAfterRepayInUsd = amountAfterRepay.multipliedBy(poolReserve.priceInUSD);
-  const collateralAmountAfterRepay = tokenToRepayWith.balance
-    ? valueToBigNumber(tokenToRepayWith.balance).minus(inputAmount)
+  const collateralAmountAfterRepay = tokenToRepayWithBalance
+    ? valueToBigNumber(tokenToRepayWithBalance).minus(inputAmount)
     : valueToBigNumber('0');
   const collateralAmountAfterRepayUSD = collateralAmountAfterRepay.multipliedBy(
-    fromAssetData.priceInUSD
+    collateralReserveData.priceInUSD
   );
 
   // calculate impact based on $ difference
@@ -179,8 +175,8 @@ export function CollateralRepayModalContent({
   }
 
   let blockingError: ErrorType | undefined = undefined;
-  const tokenToRepayWithUsdValue = valueToBigNumber(tokenToRepayWith?.balance || '0').multipliedBy(
-    fromAssetData.priceInUSD
+  const tokenToRepayWithUsdValue = valueToBigNumber(tokenToRepayWithBalance).multipliedBy(
+    collateralReserveData.priceInUSD
   );
   if (Number(usdValue) > Number(tokenToRepayWithUsdValue.toString(10))) {
     blockingError = ErrorType.NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH;
@@ -215,8 +211,8 @@ export function CollateralRepayModalContent({
   return (
     <>
       <AssetInput
-        value={variant === 'exactIn' ? outputAmount : amount}
-        onChange={handleChange}
+        value={swapVariant === 'exactIn' ? outputAmount : repayAmount}
+        onChange={handleRepayAmountChange}
         usdValue={usdValue.toString()}
         symbol={poolReserve.symbol}
         assets={[
@@ -253,9 +249,9 @@ export function CollateralRepayModalContent({
         symbol={tokenToRepayWith.symbol}
         assets={repayTokens}
         onSelect={setTokenToRepayWith}
-        onChange={handleChange}
+        onChange={() => console.log('changed')} // TODO: we don't need a change handler here, but removing it also removes the balance and usd value from the component, we should fix that
         inputTitle={<Trans>Collateral to repay with</Trans>}
-        maxValue={tokenToRepayWith.balance ? tokenToRepayWith.balance : '0'}
+        maxValue={tokenToRepayWithBalance}
         disableInput
         balanceText="Collateral balance"
       />
@@ -272,7 +268,7 @@ export function CollateralRepayModalContent({
         }
       >
         <DetailsHFLine
-          visibleHfChange={!!_amount}
+          visibleHfChange={!!amount}
           healthFactor={user?.healthFactor}
           futureHealthFactor={hfAfterSwap.toString(10)}
         />
@@ -296,7 +292,7 @@ export function CollateralRepayModalContent({
 
       <CollateralRepayActions
         poolReserve={poolReserve}
-        fromAssetData={fromAssetData}
+        fromAssetData={collateralReserveData}
         repayAmount={outputAmount}
         repayWithAmount={inputAmount}
         repayAllDebt={repayAllDebt}
