@@ -1,6 +1,7 @@
 import { ChainId, ChainIdToNetwork } from '@aave/contract-helpers';
-import { providers as ethersProviders } from 'ethers';
-import { defineReadOnly } from 'ethers/lib/utils';
+import { Network } from '@ethersproject/providers';
+import { ethers, providers as ethersProviders } from 'ethers';
+import { ConnectionInfo, defineReadOnly } from 'ethers/lib/utils';
 
 import {
   CustomMarket,
@@ -144,28 +145,73 @@ export const isFeatureEnabled = {
   permissions: (data: MarketDataType) => data.enabledFeatures?.permissions,
 };
 
-class CustomFallbackProvider extends ethersProviders.StaticJsonRpcProvider {
-  private urls: string[];
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+/**
+ * The provider will rotate rpcs on error.
+ */
+class RotationProvider extends ethersProviders.BaseProvider {
+  readonly providers: ethersProviders.StaticJsonRpcProvider[];
+  private currentProviderIndex = 0;
+  private lastRotation = 0;
 
   constructor(urls: string[], chainId: number) {
-    super(urls[0], chainId);
-    this.urls = urls;
+    super(chainId);
+    this.providers = urls.map((url) => new ethersProviders.StaticJsonRpcProvider(url, chainId));
   }
 
-  private getNextUrl() {
-    const index = this.urls.indexOf(this.connection.url);
-    if (index === this.urls.length - 1) return this.urls[0];
-    return this.urls[index + 1];
+  /**
+   * Add a delay for frequent rotations, so we don't ddos a provider
+   */
+  async delayRotation() {
+    const now = new Date().getTime();
+    const diff = now - this.lastRotation;
+    if (diff < 5000) sleep(5000 - diff);
+  }
+
+  private async rotateUrl(prevIndex: number) {
+    await this.delayRotation();
+    // don't rotate when another rotation was already triggered
+    if (prevIndex !== this.currentProviderIndex) return;
+    if (this.currentProviderIndex === this.providers.length - 1) this.currentProviderIndex = 0;
+    else this.currentProviderIndex += 1;
+    this.lastRotation = new Date().getTime();
+  }
+
+  async detectNetwork(): Promise<Network> {
+    const index = this.currentProviderIndex;
+    try {
+      return await this.providers[index].detectNetwork();
+    } catch (e) {
+      console.log(e.message);
+      await this.rotateUrl(index);
+      return this.detectNetwork();
+    }
   }
 
   // eslint-disable-next-line
-  send(method: string, params: Array<any>): Promise<any> {
+  async send(method: string, params: Array<any>): Promise<any> {
+    const index = this.currentProviderIndex;
     try {
-      return super.send(method, params);
+      return await this.providers[index].send(method, params);
     } catch (e) {
-      // better error check
-      defineReadOnly(this, 'connection', Object.freeze({ url: this.getNextUrl() }));
+      console.log(e.message);
+      await this.rotateUrl(index);
       return this.send(method, params);
+    }
+  }
+
+  // eslint-disable-next-line
+  async perform(method: string, params: any): Promise<any> {
+    const index = this.currentProviderIndex;
+    try {
+      return await this.providers[index].perform(method, params);
+    } catch (e) {
+      console.log(e.message);
+      await this.rotateUrl(index);
+      return await this.perform(method, params);
     }
   }
 }
@@ -193,7 +239,7 @@ export const getProvider = (chainId: ChainId): ethersProviders.Provider => {
     if (chainProviders.length === 1) {
       providers[chainId] = new ethersProviders.StaticJsonRpcProvider(chainProviders[0], chainId);
     } else {
-      providers[chainId] = new CustomFallbackProvider(chainProviders, chainId);
+      providers[chainId] = new RotationProvider(chainProviders, chainId);
     }
   }
   return providers[chainId];
