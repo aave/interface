@@ -51,16 +51,16 @@
       "dataCy": "marketSelector_proto_avalanche"
     }
   },
-  "testnet":{
-    "ETHRinkebyeV3Market": {
+  "testnet": {
+    "ETHGoerliV3Market": {
       "name": "Ethereum",
       "version": "v3",
       "dataCy": "marketSelector_proto_goerli_v3"
     },
-    "ArbitrumV3Market": {
+    "ArbitrumGoerliV3Market": {
       "name": "Arbitrum",
       "version": "v3",
-      "dataCy": "marketSelector_proto_arbitrum_rinkeby_v3"
+      "dataCy": "marketSelector_proto_arbitrum_goerli_v3"
     },
     "AvalancheFujiV3Market": {
       "name": "Avalanche",
@@ -72,16 +72,6 @@
       "version": "v3",
       "dataCy": "marketSelector_proto_fantom_testnet_v3"
     },
-    "HarmonyTestNetV3Market": {
-      "name": "Harmony",
-      "version": "v3",
-      "dataCy": "marketSelector_proto_harmony_testnet_v3"
-    },
-    "OptimismKovanV3Market": {
-      "name": "Optimism",
-      "version": "v3",
-      "dataCy": "marketSelector_proto_optimism_kovan_v3"
-    },
     "OptimismGoerliV3Market": {
       "name": "Optimism",
       "version": "v3",
@@ -92,15 +82,10 @@
       "version": "v3",
       "dataCy": "marketSelector_proto_mumbai_v3"
     },
-    "EthereumKovanV2Market": {
+    "ETHGoerliV2Market": {
       "name": "Ethereum",
       "version": "v2",
-      "dataCy": "marketSelector_proto_kovan"
-    },
-    "EthereumAmmKovanV2Market": {
-      "name": "Ethereum AMM",
-      "version": "v2",
-      "dataCy": "marketSelector_amm_kovan"
+      "dataCy": "marketSelector_proto_goerli"
     },
     "PolygonMumbaiV2Market": {
       "name": "Polygon",

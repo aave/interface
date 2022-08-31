@@ -28,8 +28,8 @@
     "test:ci": "jest --ci"
   },
   "dependencies": {
-    "@aave/contract-helpers": "1.5.0",
-    "@aave/math-utils": "1.5.0",
+    "@aave/contract-helpers": "1.5.1",
+    "@aave/math-utils": "1.5.1",
     "@apollo/client": "^3.5.10",
     "@emotion/cache": "11.9.3",
     "@emotion/react": "11.9.3",
