@@ -125,6 +125,7 @@ jobs:
       - build
     outputs:
       pinata_hash: '${{ steps.pinata.outputs.hash }}'
+      pin4everland_hash: '${{ steps.pin4everland.outputs.hash }}'
     steps:
       - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
@@ -143,6 +144,14 @@ jobs:
           PIN_ALIAS: 'app-aave-${{ github.head_ref || github.ref }}'
           BUILD_LOCATION: './out'
           CID_VERSION: 1
+      
+      - name: pin4everland
+        id: pin4everland
+        uses: 4everland/pin4everland-action@main
+        with:
+          EVER_TOKEN: ${{ secrets.EVER_TOKEN }}
+          EVER_PROJECT_ID: ${{ secrets.EVER_PROJECT_ID }}
+          BUILD_LOCATION: './out'
 
   cypress_full_v2:
     runs-on: ubuntu-latest
