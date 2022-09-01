@@ -44,18 +44,17 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
   const {
     user,
     reserves,
+    eModes,
     marketReferenceCurrencyDecimals,
     marketReferencePriceInUsd,
     userReserves,
   } = useAppDataContext();
-  const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
+  const { currentChainId } = useProtocolDataContext();
   const { chainId: connectedChainId } = useWeb3Context();
   const currentTimestamp = useCurrentTimestamp(1);
   const { gasLimit, mainTxState: emodeTxState, txError } = useModalContext();
 
   const [selectedEmode, setSelectedEmode] = useState<EmodeCategory | undefined>(undefined);
-  const [emodeCategories, setEmodeCategories] = useState<Record<number, EmodeCategory>>({});
-
   const networkConfig = getNetworkConfig(currentChainId);
 
   // Create object of available emodes
@@ -87,11 +86,6 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
       }
     });
 
-    const emodeCategories: Record<number, EmodeCategory> = {};
-    emodeCategoriesArray.forEach((category) => {
-      emodeCategories[category.id] = category;
-    });
-
     emodeCategoriesArray.sort((a, b) => a.id - b.id);
 
     // Default values selected based on mode (enable, switch, disable), currently active eMode, and number of available modes
@@ -109,7 +103,6 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
         : emodeCategoriesArray[0]; // Disabled
 
     setSelectedEmode(selectedEmode);
-    setEmodeCategories(emodeCategories);
   }, []);
 
   // calcs
@@ -149,9 +142,7 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
           <Warning severity="info" sx={{ mt: 6, alignItems: 'center' }}>
             <Typography variant="caption">
               <Trans>
-                To enable E-mode for the{' '}
-                {selectedEmode &&
-                  getEmodeMessage(selectedEmode.id, currentNetworkConfig.baseAssetSymbol)}{' '}
+                To enable E-mode for the {selectedEmode && getEmodeMessage(selectedEmode.label)}{' '}
                 category, all borrow positions outside of this cateogry must be closed.
               </Trans>
             </Typography>
@@ -179,8 +170,8 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
 
   // The selector only shows if there are 2 options for the user, which happens when there are 3 emodeCategories (including disable) for mode.enable, and 4 emodeCategories in mode.switch
   const showModal: boolean =
-    (Object.keys(emodeCategories).length >= 3 && mode === EmodeModalType.ENABLE) ||
-    (Object.keys(emodeCategories).length >= 4 && mode === EmodeModalType.SWITCH);
+    (Object.keys(eModes).length >= 3 && mode === EmodeModalType.ENABLE) ||
+    (Object.keys(eModes).length >= 4 && mode === EmodeModalType.SWITCH);
 
   // is Network mismatched
   const isWrongNetwork: boolean = currentChainId !== connectedChainId;
@@ -236,10 +227,9 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
 
       {showModal && (
         <EmodeSelect
-          emodeCategories={emodeCategories}
+          emodeCategories={eModes}
           selectedEmode={selectedEmode?.id}
           setSelectedEmode={setSelectedEmode}
-          baseAssetSymbol={currentNetworkConfig.baseAssetSymbol}
           userEmode={user.userEmodeCategoryId}
         />
       )}
@@ -270,10 +260,7 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
                       <LightningBoltGradient />
                     </SvgIcon>
                     <Typography variant="subheader1">
-                      {getEmodeMessage(
-                        user.userEmodeCategoryId,
-                        currentNetworkConfig.baseAssetSymbol
-                      )}
+                      {getEmodeMessage(eModes[user.userEmodeCategoryId].label)}
                     </Typography>
                   </>
                 ) : (
@@ -292,7 +279,7 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
                           <LightningBoltGradient />
                         </SvgIcon>
                         <Typography variant="subheader1">
-                          {getEmodeMessage(selectedEmode.id, currentNetworkConfig.baseAssetSymbol)}
+                          {getEmodeMessage(eModes[selectedEmode.id].label)}
                         </Typography>
                       </>
                     ) : (
@@ -314,7 +301,7 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
           sx={{ alignContent: 'flex-end' }}
         >
           <Box sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
-            {emodeCategories[user.userEmodeCategoryId] && (
+            {eModes[user.userEmodeCategoryId] && (
               <Box
                 sx={{
                   display: 'flex',
@@ -324,7 +311,7 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
               >
                 {user.userEmodeCategoryId !== 0 ? (
                   <Typography sx={{ textAlign: 'end' }}>
-                    {emodeCategories[user.userEmodeCategoryId].assets.join(', ')}
+                    {eModes[user.userEmodeCategoryId].assets.join(', ')}
                   </Typography>
                 ) : (
                   <Typography>
