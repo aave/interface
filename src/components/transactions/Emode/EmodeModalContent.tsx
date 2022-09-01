@@ -2,12 +2,15 @@ import { formatUserSummary } from '@aave/math-utils';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Link, SvgIcon, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
 import { EmodeCategory } from 'src/helpers/types';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import {
+  AppDataContextType,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -40,6 +43,24 @@ export interface EmodeModalContentProps {
   mode: EmodeModalType;
 }
 
+function getInitialEmode(
+  mode: EmodeModalType,
+  eModes: AppDataContextType['eModes'],
+  currentEmode: number
+) {
+  const eModesNumber = Object.keys(eModes).length;
+  if (mode === EmodeModalType.ENABLE) {
+    if (eModesNumber > 2) return undefined;
+    return eModes[1];
+  }
+  if (mode === EmodeModalType.SWITCH) {
+    if (eModesNumber > 3) return undefined;
+    if (currentEmode === 1) return eModes[2];
+    return eModes[1];
+  }
+  return eModes[0];
+}
+
 export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
   const {
     user,
@@ -54,56 +75,10 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
   const currentTimestamp = useCurrentTimestamp(1);
   const { gasLimit, mainTxState: emodeTxState, txError } = useModalContext();
 
-  const [selectedEmode, setSelectedEmode] = useState<EmodeCategory | undefined>(undefined);
+  const [selectedEmode, setSelectedEmode] = useState<EmodeCategory | undefined>(
+    getInitialEmode(mode, eModes, user.userEmodeCategoryId)
+  );
   const networkConfig = getNetworkConfig(currentChainId);
-
-  // Create object of available emodes
-  useEffect(() => {
-    const emodeCategoriesArray: EmodeCategory[] = [];
-    reserves.forEach((reserve) => {
-      const emodeFound = emodeCategoriesArray.find(
-        (category) => category.id === reserve.eModeCategoryId
-      );
-      if (!emodeFound) {
-        const emodeParams: EmodeCategory = {
-          id: reserve.eModeCategoryId,
-          ltv: reserve.eModeLtv,
-          liquidationThreshold: reserve.eModeLiquidationThreshold,
-          liquidationBonus: reserve.eModeLiquidationBonus,
-          priceSource: reserve.eModePriceSource,
-          label: reserve.eModeLabel,
-          assets: [],
-        };
-
-        // get all emode asets
-        reserves.forEach((eReserve) => {
-          if (eReserve.eModeCategoryId === reserve.eModeCategoryId) {
-            emodeParams.assets.push(eReserve.symbol);
-          }
-        });
-
-        emodeCategoriesArray.push(emodeParams);
-      }
-    });
-
-    emodeCategoriesArray.sort((a, b) => a.id - b.id);
-
-    // Default values selected based on mode (enable, switch, disable), currently active eMode, and number of available modes
-    const selectedEmode =
-      mode === EmodeModalType.ENABLE
-        ? emodeCategoriesArray.length >= 3
-          ? undefined // Leave select blank
-          : emodeCategoriesArray[1] // Only one option to enable
-        : mode === EmodeModalType.SWITCH
-        ? emodeCategoriesArray.length >= 4
-          ? undefined // Leave select blank
-          : user.userEmodeCategoryId === 1
-          ? emodeCategoriesArray[2] // Only one option to switch to
-          : emodeCategoriesArray[1] // Only one option to switch to
-        : emodeCategoriesArray[0]; // Disabled
-
-    setSelectedEmode(selectedEmode);
-  }, []);
 
   // calcs
   const newSummary = formatUserSummary({
