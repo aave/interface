@@ -8,12 +8,12 @@ export default defineConfig({
   e2e: {
     specPattern: [folder + "**/*.*"],
     excludeSpecPattern: [
-      "/**/ftm.fantom-v3.spec.ts",
-      "/**/usdt.fantom-v3.spec.ts",
-      "/**/swap.fantom-v3.spec.ts",
-      "/**/e-mode.fantom-v3.spec.ts",
-      "/**/isolated-mode.fantom-v3.spec.ts",
-      "/**/critical-conditions.fantom-v3.spec.ts",
+      "/**/ftm.fantom-v3.cy.ts",
+      "/**/usdt.fantom-v3.cy.ts",
+      "/**/swap.fantom-v3.cy.ts",
+      "/**/e-mode.fantom-v3.cy.ts",
+      "/**/isolated-mode.fantom-v3.cy.ts",
+      "/**/critical-conditions.fantom-v3.cy.ts",
     ],
   },
 });

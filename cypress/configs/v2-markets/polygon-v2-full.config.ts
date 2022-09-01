@@ -8,10 +8,10 @@ export default defineConfig({
   e2e: {
     specPattern: [folder + "**/*.*"],
     excludeSpecPattern: [
-      "/**/matic.polygon-v2.spec.ts",
-      "/**/usdt.polygon-v2.spec.ts",
-      "/**/swap.polygon-v2.spec.ts",
-      "/**/critical-conditions.polygon-v2.spec.ts",
+      "/**/matic.polygon-v2.cy.ts",
+      "/**/usdt.polygon-v2.cy.ts",
+      "/**/swap.polygon-v2.cy.ts",
+      "/**/critical-conditions.polygon-v2.cy.ts",
     ],
   },
 });

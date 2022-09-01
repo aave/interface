@@ -10,13 +10,13 @@ export default defineConfig({
   e2e: {
     specPattern: [folder + "**/*.*"],
     excludeSpecPattern: [
-      "/**/matic.polygon-v3.spec.ts",
-      "/**/eurs.polygon-v3.spec.ts",
-      "/**/swap.polygon-v3.spec.ts",
-      "/**/e-mode.polygon-v3.spec.ts",
-      "/**/isolated-mode.polygon-v3.spec.ts",
-      "/**/isolated-and-emode.polygon-v3.spec.ts",
-      "/**/critical-conditions.polygon-v3.spec.ts",
+      "/**/matic.polygon-v3.cy.ts",
+      "/**/eurs.polygon-v3.cy.ts",
+      "/**/swap.polygon-v3.cy.ts",
+      "/**/e-mode.polygon-v3.cy.ts",
+      "/**/isolated-mode.polygon-v3.cy.ts",
+      "/**/isolated-and-emode.polygon-v3.cy.ts",
+      "/**/critical-conditions.polygon-v3.cy.ts",
     ],
   },
 });

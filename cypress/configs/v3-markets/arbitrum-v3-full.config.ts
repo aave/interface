@@ -8,10 +8,10 @@ export default defineConfig({
   e2e: {
     specPattern: [folder + "**/*.*"],
     excludeSpecPattern: [
-      "/**/eth.arbitrum-v3.spec.ts",
-      "/**/usdt.arbitrum-v3.spec.ts",
-      "/**/e-mode.arbitrum-v3.spec.ts",
-      "/**/critical-conditions.arbitrum-v3.spec.ts",
+      "/**/eth.arbitrum-v3.cy.ts",
+      "/**/usdt.arbitrum-v3.cy.ts",
+      "/**/e-mode.arbitrum-v3.cy.ts",
+      "/**/critical-conditions.arbitrum-v3.cy.ts",
     ],
   },
 });

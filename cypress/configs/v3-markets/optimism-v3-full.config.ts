@@ -8,10 +8,10 @@ export default defineConfig({
   e2e: {
     specPattern: [folder + "**/*.*"],
     excludeSpecPattern: [
-      "/**/eth.optimism-v3.spec.ts",
-      "/**/usdt.optimism-v3.spec.ts",
-      "/**/critical-conditions.optimism-v3.spec.ts",
-      "/**/e-mode.optimism-v3.spec.ts",
+      "/**/eth.optimism-v3.cy.ts",
+      "/**/usdt.optimism-v3.cy.ts",
+      "/**/critical-conditions.optimism-v3.cy.ts",
+      "/**/e-mode.optimism-v3.cy.ts",
     ],
   },
 });
