@@ -659,6 +659,12 @@
       "collateral": false,
       "wrapped": false
     },
+    "miMATIC": {
+      "fullName": "miMATIC",
+      "shortName": "miMATIC",
+      "collateral": false,
+      "wrapped": false
+    },
     "WBTC": {
       "fullName": "WBTC Coin",
       "shortName": "WBTC",
