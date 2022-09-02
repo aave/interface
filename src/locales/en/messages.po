@@ -881,10 +881,6 @@ msgstr "Isolated assets have limited borrowing power and other assets cannot be 
 msgid "Language"
 msgstr "Language"
 
-#: src/layouts/AppHeader.tsx
-msgid "Learn More"
-msgstr "Learn More"
-
 #: src/components/caps/DebtCeilingStatus.tsx
 #: src/components/infoTooltips/BorrowCapMaxedTooltip.tsx
 #: src/components/infoTooltips/DebtCeilingMaxedTooltip.tsx
@@ -893,6 +889,7 @@ msgstr "Learn More"
 #: src/components/transactions/Warnings/BorrowCapWarning.tsx
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
+#: src/layouts/AppHeader.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
