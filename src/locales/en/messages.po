@@ -104,6 +104,10 @@ msgstr "Add {0} to wallet to track your balance."
 msgid "Address is not a contract"
 msgstr "Address is not a contract"
 
+#: src/layouts/AppHeader.tsx
+msgid "Ahead of the merge, borrowing ETH in V2 Ethereum market will be temporarily paused."
+msgstr "Ahead of the merge, borrowing ETH in V2 Ethereum market will be temporarily paused."
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "All Assets"
@@ -876,6 +880,10 @@ msgstr "Isolated assets have limited borrowing power and other assets cannot be 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Language"
 msgstr "Language"
+
+#: src/layouts/AppHeader.tsx
+msgid "Learn More"
+msgstr "Learn More"
 
 #: src/components/caps/DebtCeilingStatus.tsx
 #: src/components/infoTooltips/BorrowCapMaxedTooltip.tsx
