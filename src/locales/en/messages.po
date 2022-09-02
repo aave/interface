@@ -104,6 +104,11 @@ msgstr "Add {0} to wallet to track your balance."
 msgid "Address is not a contract"
 msgstr "Address is not a contract"
 
+#: src/components/transactions/Warnings/ETHBorrowWarning.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Ahead of the merge, ETH borrowing has been temporarily paused to mitigate liquidity risk. <0>Learn more</0>."
+msgstr "Ahead of the merge, ETH borrowing has been temporarily paused to mitigate liquidity risk. <0>Learn more</0>."
+
 #: src/layouts/AppHeader.tsx
 msgid "Ahead of the merge, borrowing ETH in V2 Ethereum market will be temporarily paused."
 msgstr "Ahead of the merge, borrowing ETH in V2 Ethereum market will be temporarily paused."
