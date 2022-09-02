@@ -25,9 +25,10 @@ import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYToolt
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { Warning } from 'src/components/primitives/Warning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 export const BorrowAssetsList = () => {
-  const { currentNetworkConfig } = useProtocolDataContext();
+  const { currentNetworkConfig, currentMarket } = useProtocolDataContext();
   const { user, reserves, marketReferencePriceInUsd, loading } = useAppDataContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
@@ -35,6 +36,7 @@ export const BorrowAssetsList = () => {
   const { baseAssetSymbol } = currentNetworkConfig;
 
   const tokensToBorrow = reserves
+    .filter((reserve) => currentMarket !== CustomMarket.proto_mainnet || reserve.symbol !== 'WETH')
     .filter((reserve) => assetCanBeBorrowedByUser(reserve, user))
     .map((reserve: ComputedReserveData) => {
       const availableBorrows = user
