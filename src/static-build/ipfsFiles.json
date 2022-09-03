@@ -1412,6 +1412,21 @@
       "ipfsHash": "QmXRZUjx2nYJvm1Evfjzc8GTFzNkuwGGBx4LLczLKzAgix",
       "originalHash": "0x86fb2c1c7056f55ddfebe82b634419b2170c5cb5b981df6a0d19523dba959575",
       "id": 96
+    },
+    {
+      "aip": 97,
+      "title": "Pause ETH Borrowing",
+      "status": "Proposed",
+      "author": "Paul Lei, Jonathan Reem, Nick Cannon, Watson Fu, Tony Salvatore, Sarah Chen",
+      "shortDescription": "Risk Parameter Updates",
+      "discussions": "https://governance.aave.com/t/arc-aave-ethpow-fork-risk-mitigation-plan/9438/3",
+      "created": "2022-09-02T00:00:00.000Z",
+      "preview": "## Simple Summary\n\n A proposal to pause ETH borrowing in the period leading up to the Ethereum merge …",
+      "basename": "AIP-97",
+      "description": "## Simple Summary\n\nA proposal to pause ETH borrowing in the period leading up to the Ethereum Merge. \n\nIn addition, this AIP also transfers a one-time payment of 60 AAVE from the Aave treasury to the MakerDAO pause proxy in connection to the [proposal](https://governance.aave.com/t/arc-aave-ethpow-fork-risk-mitigation-plan/9438#:~:text=103%25%20to%201%2C000%25.-,AAVE%20Payment,-If%20this%20proposal). \n\n## Abstract\n\nAhead of the Ethereum Merge, the Aave protocol faces the risk of high utilization in the ETH market. Temporarily pausing ETH borrowing will mitigate this risk of high utilization.\n\n## Motivation\n\nFull details are provided in the original [forum post](https://governance.aave.com/t/arc-aave-ethpow-fork-risk-mitigation-plan/9438).\n\nThe risk of high utilization in the ETH market is driven by users potentially benefiting from the forked PoW ETH (ETHW) by borrowing ETH before the merge. High utilization interferes with liquidation transactions, thus increasing the chances of insolvency for the protocol. In addition, a high ETH borrow rate can make stETH/ETH recursive positions unprofitable, increasing the chances that users unwind their positions and drive the stETH/ETH price deviation further, causing additional liquidations and insolvency.\n\n\n## Specification\n\n* Calling `disableBorrowingOnReserve` to disable ETH borrowing.\n* Sending 60 AAVE to the MakerDAO pause proxy located at `0xBE8E3e3618f7474F8cB1d074A26afFef007E98FB` from the ecosystem reserve.\n\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n\n*By approving this proposal, you agree that any services provided by Gauntlet shall be governed by the terms of service available at gauntlet.network/tos.*\n",
+      "ipfsHash": "QmQHs2D7BUtT1LKf3SiTKGuQ1qn9KLcjBJSTVB62Zy5Etd",
+      "originalHash": "0x1d008d832f4a2aef5eb81bf1ff8becbd6bc67e6405ec3921b984569389852b66",
+      "id": 97
     }
   ]
 }
