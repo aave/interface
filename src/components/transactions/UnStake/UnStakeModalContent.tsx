@@ -32,7 +32,7 @@ type StakingType = 'aave' | 'bpt';
 export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   const data = useStakeData();
   const stakeData = data.stakeGeneralResult?.stakeGeneralUIData[stakeAssetName as StakingType];
-  const { chainId: connectedChainId } = useWeb3Context();
+  const { chainId: connectedChainId, mockAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
 
@@ -96,7 +96,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   return (
     <>
       <TxModalTitle title="Unstake" symbol={icon} />
-      {isWrongNetwork && (
+      {isWrongNetwork && !mockAddress && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
       )}
       <AssetInput
