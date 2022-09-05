@@ -65,8 +65,7 @@ export function getMaxAmountAvailableToBorrow(
         .multipliedBy('0.99')
         .lt(user.availableBorrowsUSD));
 
-  // return shouldAddMargin ? maxUserAmountToBorrow.multipliedBy('0.99') : maxUserAmountToBorrow;
-  return new BigNumber(1000);
+  return shouldAddMargin ? maxUserAmountToBorrow.multipliedBy('0.99') : maxUserAmountToBorrow;
 }
 
 export function assetCanBeBorrowedByUser(
