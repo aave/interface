@@ -11,7 +11,7 @@ export const ETHBorrowWarning = () => {
         <Box>
           <Trans>
             As per the community vote, ETH borrowing on the Ethereum Market has been paused ahead of
-            the merge to mitigate liquidity risk. risk.{' '}
+            the merge to mitigate liquidity risk.{' '}
             <Link
               href="https://snapshot.org/#/aave.eth/proposal/0xa121311c67b7a5bbe5b8b5fe1911663a0ab94ed339a6a4b0e1b9443f670a0e97"
               underline="always"

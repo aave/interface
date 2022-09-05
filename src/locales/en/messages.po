@@ -104,15 +104,6 @@ msgstr "Add {0} to wallet to track your balance."
 msgid "Address is not a contract"
 msgstr "Address is not a contract"
 
-#: src/components/transactions/Warnings/ETHBorrowWarning.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "Ahead of the merge, ETH borrowing has been temporarily paused to mitigate liquidity risk. <0>Learn more</0>."
-msgstr "Ahead of the merge, ETH borrowing has been temporarily paused to mitigate liquidity risk. <0>Learn more</0>."
-
-#: src/layouts/AppHeader.tsx
-msgid "Ahead of the merge, borrowing ETH in V2 Ethereum market will be temporarily paused."
-msgstr "Ahead of the merge, borrowing ETH in V2 Ethereum market will be temporarily paused."
-
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "All Assets"
@@ -179,6 +170,15 @@ msgstr "Approving {symbol}..."
 #: src/ui-config/errorMapping.tsx
 msgid "Array parameters that should be equal length are not"
 msgstr "Array parameters that should be equal length are not"
+
+#: src/layouts/AppHeader.tsx
+msgid "As per the community vote, ETH borrowing on the Ethereum Market has been paused ahead of the merge to mitigate liquidity risk."
+msgstr "As per the community vote, ETH borrowing on the Ethereum Market has been paused ahead of the merge to mitigate liquidity risk."
+
+#: src/components/transactions/Warnings/ETHBorrowWarning.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "As per the community vote, ETH borrowing on the Ethereum Market has been paused ahead of the merge to mitigate liquidity risk. risk. <0>Learn more</0>."
+msgstr "As per the community vote, ETH borrowing on the Ethereum Market has been paused ahead of the merge to mitigate liquidity risk. risk. <0>Learn more</0>."
 
 #: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/markets/AssetsList.tsx
