@@ -16,7 +16,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/setup-node@9ced9a43a244f3ac94f13bfd896db8c8f30da67a # v3.0.0
+    - uses: actions/setup-node@2fddd8803e2f5c9604345a0b591c3020ee971a93 # v3.4.1
       with:
         node-version-file: '.nvmrc'
         cache: 'yarn'
@@ -36,7 +36,7 @@ runs:
 
     - name: Download static build
       if: github.event_name == 'workflow_run'
-      uses: dawidd6/action-download-artifact@575b1e4167df67acf7e692af784566618b23c71e # v2.17.0
+      uses: dawidd6/action-download-artifact@ea71f332a90fd52416b1629b933dcf7e0ccd421d # v2.22.0
       with:
         workflow: build-fork.yml
         run_id: ${{ github.event.workflow_run.id }}

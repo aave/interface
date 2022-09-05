@@ -1398,6 +1398,35 @@
       "ipfsHash": "Qmdk14jipZU47iSW24R5ke6kBcgMby6t8EmMW3dPnUDA12",
       "originalHash": "0xe4daadc3e2908d80c1f613d8c9afd20531f47163444bde175732556d3d3b5575",
       "id": 95
+    },
+    {
+      "title": "FEI Risk Parameter Updates for Ethereum Aave v2 Market",
+      "status": "Proposed",
+      "author": "Llama (@llama), Matthew_Graham (@Matthew_Graham_), defijesus.eth (@eldefijesus)",
+      "shortDescription": "FEI Risk Parameter Updates for Ethereum Aave v2 Market",
+      "discussions": "https://governance.aave.com/t/arc-risk-parameter-updates-for-ethereum-aave-v2-market/9393",
+      "created": "2022-08-29T00:00:00.000Z",
+      "preview": "# Simple Summary\n\nIn response to Tribe DAO’s proposal to enter a …",
+      "basename": "194D8F0A7E11-AIP-FEI-RISK-PARAMETER-UPDATE-AAVE-V2",
+      "description": "\n\n# Simple Summary\n\nIn response to Tribe DAO’s proposal to enter a terminal state, this ARC proposes disabling Deposits, disabling Borrowing and route 100% of the interest paid by FEI borrowers to the Reserve Factor.\n\n# Abstract\n\nTribe DAO is dissolving the DAO’s assets and TRIBE governance token. As a result, FEI will become backed 1:1 with DAI and redeemable 1FEI:1DAI. With Tribe DAO transitioning into a terminal state, the FEI stablecoin will overtime be redeemed for DAI.\n\nAs FEI is redeemed for DAI, over time FEI’s circulating supply and liquidity will fall away. Without sufficient liquidity, liquidations can not be performed efficiently which creates a risk for the Ethereum Aave v2 market.\n\nIn response, this ARC proposes freezing the FEI market which will Disabling Deposits, Disabling Borrowing and increase the Reserve Factor from 20% to 100%. Users will still be able to redeem aFEI and repay debt. \n\n# Motivation\n\nWith the emergence of news that Tribe DAO intends to dissolve FEI and the Protocol Controlled Value (PCV) backing the stablecoin, there is a need to amend the FEI reserve in preparation of the risks to emerge with transition Tribe DAO to a terminal state.\n\nThe details around how Tribe DAO will transition from current state to terminal state can be found [here](https://tribe.fei.money/t/tip-121-proposal-for-the-future-of-the-tribe-dao/4475).\n\nSnapshot found [here](https://snapshot.org/#/aave.eth/proposal/0x19df23070be999efbb7caf6cd35c320eb74dd119bcb15d003dc2e82c2bbd0d94). \n\n## Specification\n\nThe proposal will freeze the FEI reserve on the pool, stopping supply of liquidity and borrowing.\n\nBorrowing Enabled → Disable \nDeposits Enabled → Disable \n\nAlso,\n\nReserve Factor 20% → 100%\n\n## Test Cases\n\nThis proposal has been tested and peer reviewed by [Bored Ghost Developing](https://twitter.com/bgdlabs).\n\nTest cases can be found: [Here](https://github.com/llama-community/aave-risk-param-updates-fei/blob/main/src/test/ValidationFeiRiskParamsUpdate.sol)\n\n## Implementation\n\nDeployment of the proposal payload can be found [here](https://etherscan.io/address/0xb8fe2a2104afb975240d3d32a7823a01cb74639f#code)\n\nThe repository of the payload can be found [here](https://github.com/llama-community/aave-risk-param-updates-fei)\n \nThe proposal calls freezeReserve on the LendingPoolConfigurator (0x311Bb771e4F8952E6Da169b425E7e92d6Ac45756) targeting FEI (0x956F47F50A910163D8BF957Cf5846D573E7f87CA).\n\nThe proposal calls the setReserveFactor function on the LendingPoolConfigurator (0x311Bb771e4F8952E6Da169b425E7e92d6Ac45756) for the FEI (0x956F47F50A910163D8BF957Cf5846D573E7f87CA) market with the new reserve Factor set to 10000 (100%).\n\n# Copyright\n\nCopyright and related rights waived via CC0.\n",
+      "ipfsHash": "QmXRZUjx2nYJvm1Evfjzc8GTFzNkuwGGBx4LLczLKzAgix",
+      "originalHash": "0x86fb2c1c7056f55ddfebe82b634419b2170c5cb5b981df6a0d19523dba959575",
+      "id": 96
+    },
+    {
+      "aip": 97,
+      "title": "Pause ETH Borrowing",
+      "status": "Proposed",
+      "author": "Paul Lei, Jonathan Reem, Nick Cannon, Watson Fu, Tony Salvatore, Sarah Chen",
+      "shortDescription": "Risk Parameter Updates",
+      "discussions": "https://governance.aave.com/t/arc-aave-ethpow-fork-risk-mitigation-plan/9438/3",
+      "created": "2022-09-02T00:00:00.000Z",
+      "preview": "## Simple Summary\n\n A proposal to pause ETH borrowing in the period leading up to the Ethereum merge …",
+      "basename": "AIP-97",
+      "description": "## Simple Summary\n\nA proposal to pause ETH borrowing in the period leading up to the Ethereum Merge. \n\nIn addition, this AIP also transfers a one-time payment of 60 AAVE from the Aave treasury to the MakerDAO pause proxy in connection to the [proposal](https://governance.aave.com/t/arc-aave-ethpow-fork-risk-mitigation-plan/9438#:~:text=103%25%20to%201%2C000%25.-,AAVE%20Payment,-If%20this%20proposal). \n\n## Abstract\n\nAhead of the Ethereum Merge, the Aave protocol faces the risk of high utilization in the ETH market. Temporarily pausing ETH borrowing will mitigate this risk of high utilization.\n\n## Motivation\n\nFull details are provided in the original [forum post](https://governance.aave.com/t/arc-aave-ethpow-fork-risk-mitigation-plan/9438).\n\nThe risk of high utilization in the ETH market is driven by users potentially benefiting from the forked PoW ETH (ETHW) by borrowing ETH before the merge. High utilization interferes with liquidation transactions, thus increasing the chances of insolvency for the protocol. In addition, a high ETH borrow rate can make stETH/ETH recursive positions unprofitable, increasing the chances that users unwind their positions and drive the stETH/ETH price deviation further, causing additional liquidations and insolvency.\n\n\n## Specification\n\n* Calling `disableBorrowingOnReserve` to disable ETH borrowing.\n* Sending 60 AAVE to the MakerDAO pause proxy located at `0xBE8E3e3618f7474F8cB1d074A26afFef007E98FB` from the ecosystem reserve.\n\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n\n*By approving this proposal, you agree that any services provided by Gauntlet shall be governed by the terms of service available at gauntlet.network/tos.*\n",
+      "ipfsHash": "QmQHs2D7BUtT1LKf3SiTKGuQ1qn9KLcjBJSTVB62Zy5Etd",
+      "originalHash": "0x1d008d832f4a2aef5eb81bf1ff8becbd6bc67e6405ec3921b984569389852b66",
+      "id": 97
     }
   ]
 }
