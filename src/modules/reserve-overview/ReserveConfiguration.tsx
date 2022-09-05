@@ -38,6 +38,7 @@ import { ReserveFactorOverview } from 'src/modules/reserve-overview/ReserveFacto
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { valueToBigNumber } from '@aave/math-utils';
+import { ChainId } from '@aave/contract-helpers';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
   <Box
@@ -164,12 +165,12 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
         </Typography>
       </Box>
 
-      {reserve.symbol === 'WETH' && (
+      {reserve.symbol === 'WETH' && currentMarketData.chainId == ChainId.mainnet && (
         <Box sx={{ mb: 10 }}>
           <Alert severity="warning">
             <Trans>
-              Ahead of the merge, ETH borrowing has been temporarily paused to mitigate liquidity
-              risk.{' '}
+              As per the community vote, ETH borrowing on the Ethereum Market has been paused ahead
+              of the merge to mitigate liquidity risk. risk.{' '}
               <Link
                 href="https://snapshot.org/#/aave.eth/proposal/0xa121311c67b7a5bbe5b8b5fe1911663a0ab94ed339a6a4b0e1b9443f670a0e97"
                 underline="always"

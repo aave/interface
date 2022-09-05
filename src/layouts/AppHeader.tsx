@@ -98,7 +98,8 @@ export function AppHeader() {
         >
           <Typography sx={{ textAlign: 'center', color: 'white' }} variant="caption">
             <Trans>
-              Ahead of the merge, borrowing ETH in V2 Ethereum market will be temporarily paused.
+              As per the community vote, ETH borrowing on the Ethereum Market has been paused ahead
+              of the merge to mitigate liquidity risk.
             </Trans>
           </Typography>
           <Button
