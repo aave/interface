@@ -342,25 +342,6 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           </Box>
         </Link>
       )}
-
-      <Box
-        component={component}
-        sx={{ color: { xs: '#F1F1F3', md: 'text.primary' } }}
-        onClick={handleDisconnect}
-      >
-        <ListItemIcon
-          sx={{
-            color: { xs: '#F1F1F3', md: 'primary.light', minWidth: 'unset', marginRight: 12 },
-          }}
-        >
-          <SvgIcon fontSize="small">
-            <LogoutIcon />
-          </SvgIcon>
-        </ListItemIcon>
-        <ListItemText>
-          <Trans>Disconnect Wallet</Trans>
-        </ListItemText>
-      </Box>
     </>
   );
 
