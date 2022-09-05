@@ -227,7 +227,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
             </Box>
           </Box>
           {mockAddress && (
-            <Alert icon={false} severity="warning" sx={{ my: '10px' }}>
+            <Alert icon={false} severity="warning" sx={{ mt: '10px' }}>
               <Trans>Watch-only mode.</Trans>
             </Alert>
           )}
