@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-08-23 06:12\n"
+"PO-Revision-Date: 2022-08-29 18:05\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -362,10 +362,6 @@ msgstr "Emprunter ce montant réduira votre facteur santé et augmentera le risq
 #: src/components/transactions/Borrow/BorrowActions.tsx
 msgid "Borrowing {symbol}"
 msgstr "Emprunter {symbole}"
-
-#: src/components/BridgeButton.tsx
-msgid "Bridge"
-msgstr "Bridge"
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
 msgid "CLAIM {symbol}"
@@ -1537,10 +1533,6 @@ msgstr "Changer de réseau"
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switch rate"
 msgstr "Taux de changement"
-
-#: src/ui-config/menu-items/index.tsx
-msgid "Switch to Aave Classic"
-msgstr "Passer à Aave Classic"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Switching E-Mode"

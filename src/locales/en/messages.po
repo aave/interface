@@ -358,10 +358,6 @@ msgstr "Borrowing this amount will reduce your health factor and increase risk o
 msgid "Borrowing {symbol}"
 msgstr "Borrowing {symbol}"
 
-#: src/components/BridgeButton.tsx
-msgid "Bridge"
-msgstr "Bridge"
-
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
 msgid "CLAIM {symbol}"
 msgstr "CLAIM {symbol}"
@@ -1532,10 +1528,6 @@ msgstr "Switch Network"
 #: src/components/transactions/RateSwitch/RateSwitchActions.tsx
 msgid "Switch rate"
 msgstr "Switch rate"
-
-#: src/ui-config/menu-items/index.tsx
-msgid "Switch to Aave Classic"
-msgstr "Switch to Aave Classic"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Switching E-Mode"

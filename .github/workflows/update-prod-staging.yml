@@ -15,7 +15,7 @@ jobs:
       name: Production
       url: 'https://app.aave.com'
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: download build
         uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
@@ -70,7 +70,7 @@ jobs:
       name: Staging
       url: 'https://staging.aave.com'
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: download build
         uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
@@ -99,7 +99,7 @@ jobs:
           BUILD_PATH: 'out_staging'
           PINATA_HASH: '${{ steps.pinata.outputs.hash }}'
 
-      - uses: aave/cloudflare-update-action@ca32db9938b08e0e1814f57d098a7dcc733e12db
+      - uses: aave/cloudflare-update-action@8b9720cbb79a5b824e8e2e618df8955dd9c3a93c
         with:
           CF_API_TOKEN: '${{ secrets.CF_API_TOKEN }}'
           CF_ZONE_ID: '${{ secrets.CF_ZONE_ID }}'
