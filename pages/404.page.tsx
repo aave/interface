@@ -1,7 +1,6 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { Trans } from '@lingui/macro';
-import { Button, Paper, Typography, useTheme } from '@mui/material';
+import { Box, Button, Paper, Typography, useTheme } from '@mui/material';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { ContentContainer } from 'src/components/ContentContainer';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
@@ -25,13 +24,14 @@ export default function Aave404Page() {
             backgroundColor: theme.palette.mode === 'dark' ? 'transparent' : '',
           }}
         >
-          <Image
-            priority
-            width={444}
-            height={180}
-            src="/404/StatusCode404.svg"
-            alt="404 - Page not found"
-          />
+          <Box sx={{ maxWidth: 444, m: '0 auto' }}>
+            <img
+              width="100%"
+              height="auto"
+              src="/404/StatusCode404.svg"
+              alt="404 - Page not found"
+            />
+          </Box>
           <Typography variant="display1" sx={{ mt: 8, mb: 3 }}>
             <Trans>Page not found</Trans>
           </Typography>
