@@ -31,14 +31,13 @@ import { MaxLTVTooltip } from 'src/components/infoTooltips/MaxLTVTooltip';
 import { LiquidationThresholdTooltip } from 'src/components/infoTooltips/LiquidationThresholdTooltip';
 import { LiquidationPenaltyTooltip } from 'src/components/infoTooltips/LiquidationPenaltyTooltip';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
-import { frozenProposalMap } from 'src/utils/marketsAndNetworksConfig';
+import { CustomMarket, frozenProposalMap } from 'src/utils/marketsAndNetworksConfig';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { DebtCeilingStatus } from 'src/components/caps/DebtCeilingStatus';
 import { ReserveFactorOverview } from 'src/modules/reserve-overview/ReserveFactorOverview';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { valueToBigNumber } from '@aave/math-utils';
-import { ChainId } from '@aave/contract-helpers';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
   <Box
@@ -137,7 +136,7 @@ type ReserveConfigurationProps = {
 };
 
 export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ reserve }) => {
-  const { currentNetworkConfig, currentMarketData } = useProtocolDataContext();
+  const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
   const renderCharts = !!currentNetworkConfig.ratesHistoryApiUrl;
   const { data, error } = useReserveRatesHistory(
     reserve
@@ -165,7 +164,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
         </Typography>
       </Box>
 
-      {reserve.symbol === 'WETH' && currentMarketData.chainId == ChainId.mainnet && (
+      {reserve.symbol === 'WETH' && currentMarket === CustomMarket.proto_mainnet && (
         <Box sx={{ mb: 10 }}>
           <Alert severity="warning">
             <Trans>
