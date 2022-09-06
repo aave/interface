@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { Trans } from '@lingui/macro';
 import { MainLayout } from 'src/layouts/MainLayout';
@@ -25,13 +24,6 @@ export default function Aave500Page() {
             backgroundColor: theme.palette.mode === 'dark' ? 'transparent' : '',
           }}
         >
-          <Image
-            priority
-            width={444}
-            height={180}
-            src="/404/StatusCode404.svg" // TODO: update to use a 500 image
-            alt="500 - Something went wrong"
-          />
           <Typography variant="display1" sx={{ mt: 8, mb: 3 }}>
             <Trans>Something went wrong...</Trans>
           </Typography>
