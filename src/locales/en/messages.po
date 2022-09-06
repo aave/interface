@@ -250,6 +250,10 @@ msgstr "Available to borrow"
 msgid "Available to supply"
 msgstr "Available to supply"
 
+#: pages/404.page.tsx
+msgid "Back to Dashboard"
+msgstr "Back to Dashboard"
+
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
@@ -1112,6 +1116,10 @@ msgstr "Oracle price"
 msgid "Overview"
 msgstr "Overview"
 
+#: pages/404.page.tsx
+msgid "Page not found"
+msgstr "Page not found"
+
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Participating in this {symbol} reserve gives annualized rewards."
 msgstr "Participating in this {symbol} reserve gives annualized rewards."
@@ -1365,6 +1373,10 @@ msgstr "Since this asset is frozen, the only available actions are withdraw and 
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
 msgstr "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
+
+#: pages/404.page.tsx
+msgid "Sorry, we couldn't find the page you were looking for."
+msgstr "Sorry, we couldn't find the page you were looking for."
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Spanish"
@@ -1910,6 +1922,10 @@ msgstr "Wallets are provided by External Providers and by selecting you agree to
 #: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake."
 msgstr "We couldn’t detect a wallet. Connect a wallet to stake."
+
+#: pages/404.page.tsx
+msgid "We suggest you back to the Dashboard."
+msgstr "We suggest you back to the Dashboard."
 
 #: src/components/infoTooltips/LiquidationPenaltyTooltip.tsx
 msgid "When a liquidation occurs, liquidators repay up to 50% of the outstanding borrowed amount on behalf of the borrower. In return, they can buy the collateral at a discount and keep the difference (liquidation penalty) as a bonus."
