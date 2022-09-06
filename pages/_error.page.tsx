@@ -6,17 +6,13 @@ type ErrorPageProps = {
 };
 
 function ErrorPage({ statusCode }: ErrorPageProps) {
-  // return (
-  //   <p>
-  //     {statusCode ? `An error ${statusCode} occurred on server` : 'An error occurred on client'}
-  //   </p>
-  // );
   return <Error statusCode={statusCode} />;
 }
 
 ErrorPage.getInitialProps = (ctx: NextPageContext) => {
   const { res, err } = ctx;
-  // Generalized, defaults to 404
+  // Inspect the status code and show the given template based off of it
+  // Default to 404 page
   const statusCode = res ? res.statusCode : err ? err.statusCode : 404;
   return { statusCode };
 };
