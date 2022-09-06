@@ -157,15 +157,15 @@ export const marketsData: {
     rpcOnly: true,
     permissionComponent: <PermissionView />,
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0x065B418fF4EdBA0c913029156f6f257884e92D82'.toLowerCase(), // LendingPoolAddressesProvider
-      LENDING_POOL: '0x32a25857d533bcee38E6D3f8A6942dBd302f136D', // lending pool
-      WETH_GATEWAY: '0x5Ba8170647BD2Bd9E01eA95C9ffed24f7bd37aeB', // PermissionedWETHGateway
+      LENDING_POOL_ADDRESS_PROVIDER: '0x76661FC0AC3fD4AB29107414F9BEbb2B92D6Ca6e'.toLowerCase(), // LendingPoolAddressesProvider
+      LENDING_POOL: '0x96A65BF28588718471C415A87D32F97DE00fDC80', // lending pool
+      WETH_GATEWAY: '0x11f986607f38A4c69237961ca5ca77D330dd2D0f', // PermissionedWETHGateway
       // REPAY_WITH_COLLATERAL_ADAPTER: '<address here>',
       // SWAP_COLLATERAL_ADAPTER: '<address here>',
-      WALLET_BALANCE_PROVIDER: '0x6Bc5f4e5b97a3a160f2521f200842ceE4bDC8fEa', // WalletBalanceProvider
+      WALLET_BALANCE_PROVIDER: '0x71DA9d081687e0c97896CC964c8C8c119e064b5D', // WalletBalanceProvider
       UI_POOL_DATA_PROVIDER: '0x2bd8bfcfa19D4c9982d86d7CEf71e3A2e1bcf2cD', //  // '0x0D410Ce47834798028c9CD894A29A4b12A9d5624'// 0xCF4c9A9f5c23029e7438caB8293899759AB7A8d9,
       UI_INCENTIVE_DATA_PROVIDER: '0xA2E05bE2090b3658A264bdf1C39387f5Dba367Ec',
-      PERMISSION_MANAGER: '0x6ff4DE6185E08164D9c84aFcf11Eab9AC68ceCF9', // PermissionManager
+      PERMISSION_MANAGER: '0xEC9019733939Fa99D612101622d8ab4bF012855e', // PermissionManager
       FAUCET: '0x681860075529352da2C94082Eb66c59dF958e89C',
     },
   }, // Does exist a version of UIdataprovider contract that works for arc market and v3 interface
