@@ -1,3 +1,56 @@
-export default function Custom500() {
-  return <h1>500 - Server-side error occurred</h1>;
+import Image from 'next/image';
+import Link from 'next/link';
+import { Trans } from '@lingui/macro';
+import { MainLayout } from 'src/layouts/MainLayout';
+import { ContentContainer } from 'src/components/ContentContainer';
+import { Button, Paper, Typography, useTheme } from '@mui/material';
+import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
+
+export default function Aave500Page() {
+  const theme = useTheme();
+
+  return (
+    <>
+      <TopInfoPanel />
+      <ContentContainer>
+        <Paper
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            textAlign: 'center',
+            p: 4,
+            flex: 1,
+            backgroundColor: theme.palette.mode === 'dark' ? 'transparent' : '',
+          }}
+        >
+          <Image
+            priority
+            width={444}
+            height={180}
+            src="/404/StatusCode404.svg" // TODO: update to use a 500 image
+            alt="500 - Something went wrong"
+          />
+          <Typography variant="display1" sx={{ mt: 8, mb: 3 }}>
+            <Trans>Something went wrong...</Trans>
+          </Typography>
+          <Typography sx={{ mt: 2, mb: 5 }}>
+            <Trans>Sorry, we couldn&apos;t find the page you were looking for.</Trans>
+            <br />
+            <Trans>We suggest you back to the Dashboard.</Trans>
+          </Typography>
+          <Link href="/" passHref>
+            <Button variant="outlined" color="primary">
+              <Trans>Back to Dashboard</Trans>
+            </Button>
+          </Link>
+        </Paper>
+      </ContentContainer>
+    </>
+  );
 }
+
+Aave500Page.getLayout = function getLayout(page: React.ReactElement) {
+  return <MainLayout>{page}</MainLayout>;
+};

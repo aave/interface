@@ -1,12 +1,10 @@
+import Image from 'next/image';
+import Link from 'next/link';
 import { Trans } from '@lingui/macro';
+import { Button, Paper, Typography, useTheme } from '@mui/material';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { ContentContainer } from 'src/components/ContentContainer';
-import { Button, Paper, Typography, useTheme } from '@mui/material';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
-import Link from 'next/link';
-
-import StatusCode from '/public/404/StatusCode404.svg';
-import Image from 'next/image';
 
 export default function Aave404Page() {
   const theme = useTheme();
@@ -27,10 +25,13 @@ export default function Aave404Page() {
             backgroundColor: theme.palette.mode === 'dark' ? 'transparent' : '',
           }}
         >
-          {/* <Box sx={{ maxWidth: '100px', mb: 8 }}>
-            <Image width={300} height={100} src="/404/StatusCode404.svg" layout="intrinsic" />
-          </Box> */}
-          <StatusCode />
+          <Image
+            priority
+            width={444}
+            height={180}
+            src="/404/StatusCode404.svg"
+            alt="404 - Page not found"
+          />
           <Typography variant="display1" sx={{ mt: 8, mb: 3 }}>
             <Trans>Page not found</Trans>
           </Typography>
