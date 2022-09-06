@@ -171,14 +171,10 @@ msgstr "Approving {symbol}..."
 msgid "Array parameters that should be equal length are not"
 msgstr "Array parameters that should be equal length are not"
 
-#: src/layouts/AppHeader.tsx
-msgid "As per the community vote, ETH borrowing on the Ethereum Market has been paused ahead of the merge to mitigate liquidity risk."
-msgstr "As per the community vote, ETH borrowing on the Ethereum Market has been paused ahead of the merge to mitigate liquidity risk."
-
 #: src/components/transactions/Warnings/ETHBorrowWarning.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "As per the community vote, ETH borrowing on the Ethereum Market has been paused ahead of the merge to mitigate liquidity risk. risk. <0>Learn more</0>."
-msgstr "As per the community vote, ETH borrowing on the Ethereum Market has been paused ahead of the merge to mitigate liquidity risk. risk. <0>Learn more</0>."
+msgid "As per the community vote, ETH borrowing on the Ethereum Market has been paused ahead of the merge to mitigate liquidity risk. <0>Learn more</0>."
+msgstr "As per the community vote, ETH borrowing on the Ethereum Market has been paused ahead of the merge to mitigate liquidity risk. <0>Learn more</0>."
 
 #: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/markets/AssetsList.tsx
@@ -885,10 +881,6 @@ msgstr "Isolated assets have limited borrowing power and other assets cannot be 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Language"
 msgstr "Language"
-
-#: src/layouts/AppHeader.tsx
-msgid "Learn More"
-msgstr "Learn More"
 
 #: src/components/caps/DebtCeilingStatus.tsx
 #: src/components/infoTooltips/BorrowCapMaxedTooltip.tsx
