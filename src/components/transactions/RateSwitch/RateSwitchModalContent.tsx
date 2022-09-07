@@ -55,7 +55,7 @@ export const RateSwitchModalContent = ({
     currentRateMode === InterestRate.Variable &&
     userReserve.usageAsCollateralEnabledOnUser &&
     poolReserve.usageAsCollateralEnabled &&
-    valueToBigNumber(userReserve.totalBorrows).lt(userReserve.underlyingBalance)
+    valueToBigNumber(userReserve.totalBorrows).gt(userReserve.underlyingBalance)
   ) {
     blockingError = ErrorType.YOU_CANT_BORROW_STABLE_NOW;
   } else if (InterestRate.Variable === currentRateMode && !poolReserve.stableBorrowRateEnabled) {
