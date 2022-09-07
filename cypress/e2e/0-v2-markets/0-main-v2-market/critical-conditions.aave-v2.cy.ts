@@ -13,10 +13,10 @@ const testData = {
       hasApproval: true,
     },
     borrow: {
-      asset: assets.aaveMarket.ETH,
+      asset: assets.aaveMarket.USDC,
       amount: 1,
       apyType: constants.borrowAPYType.variable,
-      hasApproval: false,
+      hasApproval: true,
       isRisk: true,
     },
     deposit2: {
