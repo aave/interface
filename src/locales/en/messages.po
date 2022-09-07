@@ -838,6 +838,10 @@ msgstr "In E-Mode some assets are not borrowable. Exit E-Mode to get access to a
 msgid "In Isolation mode, you cannot supply other assets as collateral. A global debt ceiling limits the borrowing power of the isolated asset. To exit isolation mode disable {0} as collateral before borrowing another asset. Read more in our <0>FAQ</0>"
 msgstr "In Isolation mode, you cannot supply other assets as collateral. A global debt ceiling limits the borrowing power of the isolated asset. To exit isolation mode disable {0} as collateral before borrowing another asset. Read more in our <0>FAQ</0>"
 
+#: pages/500.page.tsx
+msgid "In the meantime, you may retry again, or go back to the dashboard."
+msgstr "In the meantime, you may retry again, or go back to the dashboard."
+
 #: src/ui-config/errorMapping.tsx
 msgid "Inconsistent flashloan parameters"
 msgstr "Inconsistent flashloan parameters"
@@ -1388,8 +1392,8 @@ msgid "Something Went Wrong"
 msgstr "Something Went Wrong"
 
 #: pages/500.page.tsx
-msgid "Sorry, an unexpected error has occurred. We know about the problem and are working to fix it. In the meantime, you may retry again, or go back to the dashboard."
-msgstr "Sorry, an unexpected error has occurred. We know about the problem and are working to fix it. In the meantime, you may retry again, or go back to the dashboard."
+msgid "Sorry, an unexpected error has occurred. We know about the problem and are working to fix it."
+msgstr "Sorry, an unexpected error has occurred. We know about the problem and are working to fix it."
 
 #: pages/404.page.tsx
 msgid "Sorry, we couldn't find the page you were looking for."

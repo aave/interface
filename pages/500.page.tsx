@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Trans } from '@lingui/macro';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { ContentContainer } from 'src/components/ContentContainer';
-import { Button, Paper, SvgIcon, Typography, useTheme } from '@mui/material';
+import { Box, Button, Paper, SvgIcon, Typography, useTheme } from '@mui/material';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 import { DuplicateIcon, RefreshIcon } from '@heroicons/react/outline';
 
@@ -35,27 +35,9 @@ export default function Aave500Page() {
           <Typography sx={{ mt: 2, mb: 5, maxWidth: 480 }}>
             <Trans>
               Sorry, an unexpected error has occurred. We know about the problem and are working to
-              fix it. In the meantime, you may retry again, or go back to the dashboard.
+              fix it.
             </Trans>
           </Typography>
-          <Button
-            variant="outlined"
-            color="primary"
-            endIcon={
-              <SvgIcon>
-                <RefreshIcon />
-              </SvgIcon>
-            }
-            onClick={() => window.location.reload()}
-            sx={{ mb: 4 }}
-          >
-            <Trans>Reload</Trans>
-          </Button>
-          <Link href="/" passHref>
-            <Button variant="outlined" color="primary" sx={{ mb: 4 }}>
-              <Trans>Back to Dashboard</Trans>
-            </Button>
-          </Link>
           <Button
             color="primary"
             startIcon={
@@ -67,6 +49,29 @@ export default function Aave500Page() {
           >
             <Trans>Copy Error</Trans>
           </Button>
+          <Typography sx={{ mt: 7, mb: 5, maxWidth: 480 }}>
+            <Trans>In the meantime, you may retry again, or go back to the dashboard.</Trans>
+          </Typography>
+          <Box display="flex" alignItems="center">
+            <Button
+              variant="outlined"
+              color="primary"
+              endIcon={
+                <SvgIcon>
+                  <RefreshIcon />
+                </SvgIcon>
+              }
+              onClick={() => window.location.reload()}
+              sx={{ mb: 4, mr: 4 }}
+            >
+              <Trans>Reload</Trans>
+            </Button>
+            <Link href="/" passHref>
+              <Button variant="contained" color="primary" sx={{ mb: 4 }}>
+                <Trans>Back to Dashboard</Trans>
+              </Button>
+            </Link>
+          </Box>
         </Paper>
       </ContentContainer>
     </>
