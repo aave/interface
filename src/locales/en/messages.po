@@ -251,6 +251,7 @@ msgid "Available to supply"
 msgstr "Available to supply"
 
 #: pages/404.page.tsx
+#: pages/500.page.tsx
 msgid "Back to Dashboard"
 msgstr "Back to Dashboard"
 
@@ -492,6 +493,10 @@ msgstr "Cooldown to unstake"
 #: src/modules/staking/StakingPanel.tsx
 msgid "Cooling down..."
 msgstr "Cooling down..."
+
+#: pages/500.page.tsx
+msgid "Copy Error"
+msgstr "Copy Error"
 
 #: src/layouts/WalletWidget.tsx
 msgid "Copy address"
@@ -1153,10 +1158,6 @@ msgstr "Please connect your wallet to see your supplies, borrowings, and open po
 msgid "Please switch to {networkName}."
 msgstr "Please switch to {networkName}."
 
-#: pages/500.page.tsx
-msgid "Please try reloading the page."
-msgstr "Please try reloading the page."
-
 #: src/components/ConnectWalletPaper.tsx
 msgid "Please, connect your wallet"
 msgstr "Please, connect your wallet"
@@ -1383,12 +1384,12 @@ msgid "Since this is a test network, you can get any of the assets if you have E
 msgstr "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
 
 #: pages/500.page.tsx
-msgid "Something Went Wrong..."
-msgstr "Something Went Wrong..."
+msgid "Something Went Wrong"
+msgstr "Something Went Wrong"
 
 #: pages/500.page.tsx
-msgid "Sorry, an internal server error has occurred."
-msgstr "Sorry, an internal server error has occurred."
+msgid "Sorry, an unexpected error has occurred. We know about the problem and are working to fix it. In the meantime, you may retry again, or go back to the dashboard."
+msgstr "Sorry, an unexpected error has occurred. We know about the problem and are working to fix it. In the meantime, you may retry again, or go back to the dashboard."
 
 #: pages/404.page.tsx
 msgid "Sorry, we couldn't find the page you were looking for."
