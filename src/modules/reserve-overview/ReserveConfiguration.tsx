@@ -317,7 +317,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
               </PanelItem>
             )}
           </Box>
-          {renderCharts && !error && reserve.borrowingEnabled && (
+          {renderCharts && !error && (reserve.borrowingEnabled || Number(reserve.totalDebt) > 0) && (
             <ChartContainer sx={{ mt: 4, pb: 8 }}>
               <ParentSize>
                 {(parent) => (
@@ -440,7 +440,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
         </Box>
       </PanelRow>
 
-      {reserve.borrowingEnabled && (
+      {(reserve.borrowingEnabled || Number(reserve.totalDebt) > 0) && (
         <>
           <Divider sx={{ my: '40px' }} />
           <PanelRow>
@@ -739,7 +739,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
         </>
       )}
 
-      {reserve.borrowingEnabled && (
+      {(reserve.borrowingEnabled || Number(reserve.totalDebt) > 0) && (
         <>
           <Divider sx={{ my: '40px' }} />
 
