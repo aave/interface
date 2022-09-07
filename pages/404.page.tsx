@@ -28,17 +28,17 @@ export default function Aave404Page() {
             <img
               width="100%"
               height="auto"
-              src="/404/StatusCode404.svg"
+              src={theme.palette.mode === 'dark' ? `/404/404DarkMode.svg` : `/404/404LightMode.svg`}
               alt="404 - Page not found"
             />
           </Box>
           <Typography variant="display1" sx={{ mt: 8, mb: 3 }}>
-            <Trans>Page not found</Trans>
+            <Trans>Page Not Found</Trans>
           </Typography>
           <Typography sx={{ mt: 2, mb: 5 }}>
             <Trans>Sorry, we couldn&apos;t find the page you were looking for.</Trans>
             <br />
-            <Trans>We suggest you back to the Dashboard.</Trans>
+            <Trans>We suggest you go back to the Dashboard.</Trans>
           </Typography>
           <Link href="/" passHref>
             <Button variant="outlined" color="primary">

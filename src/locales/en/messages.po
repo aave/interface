@@ -251,7 +251,6 @@ msgid "Available to supply"
 msgstr "Available to supply"
 
 #: pages/404.page.tsx
-#: pages/500.page.tsx
 msgid "Back to Dashboard"
 msgstr "Back to Dashboard"
 
@@ -1118,8 +1117,8 @@ msgid "Overview"
 msgstr "Overview"
 
 #: pages/404.page.tsx
-msgid "Page not found"
-msgstr "Page not found"
+msgid "Page Not Found"
+msgstr "Page Not Found"
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Participating in this {symbol} reserve gives annualized rewards."
@@ -1153,6 +1152,10 @@ msgstr "Please connect your wallet to see your supplies, borrowings, and open po
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Please switch to {networkName}."
 msgstr "Please switch to {networkName}."
+
+#: pages/500.page.tsx
+msgid "Please try reloading the page."
+msgstr "Please try reloading the page."
 
 #: src/components/ConnectWalletPaper.tsx
 msgid "Please, connect your wallet"
@@ -1233,6 +1236,10 @@ msgstr "Recipient address"
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Rejected connection request"
 msgstr "Rejected connection request"
+
+#: pages/500.page.tsx
+msgid "Reload"
+msgstr "Reload"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Repay/RepayModalContent.tsx
@@ -1376,11 +1383,14 @@ msgid "Since this is a test network, you can get any of the assets if you have E
 msgstr "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
 
 #: pages/500.page.tsx
-msgid "Something went wrong..."
-msgstr "Something went wrong..."
+msgid "Something Went Wrong..."
+msgstr "Something Went Wrong..."
+
+#: pages/500.page.tsx
+msgid "Sorry, an internal server error has occurred."
+msgstr "Sorry, an internal server error has occurred."
 
 #: pages/404.page.tsx
-#: pages/500.page.tsx
 msgid "Sorry, we couldn't find the page you were looking for."
 msgstr "Sorry, we couldn't find the page you were looking for."
 
@@ -1930,9 +1940,8 @@ msgid "We couldn’t detect a wallet. Connect a wallet to stake."
 msgstr "We couldn’t detect a wallet. Connect a wallet to stake."
 
 #: pages/404.page.tsx
-#: pages/500.page.tsx
-msgid "We suggest you back to the Dashboard."
-msgstr "We suggest you back to the Dashboard."
+msgid "We suggest you go back to the Dashboard."
+msgstr "We suggest you go back to the Dashboard."
 
 #: src/components/infoTooltips/LiquidationPenaltyTooltip.tsx
 msgid "When a liquidation occurs, liquidators repay up to 50% of the outstanding borrowed amount on behalf of the borrower. In return, they can buy the collateral at a discount and keep the difference (liquidation penalty) as a bonus."

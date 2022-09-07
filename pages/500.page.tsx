@@ -2,8 +2,9 @@ import Link from 'next/link';
 import { Trans } from '@lingui/macro';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { ContentContainer } from 'src/components/ContentContainer';
-import { Button, Paper, Typography, useTheme } from '@mui/material';
+import { Button, Paper, SvgIcon, Typography, useTheme } from '@mui/material';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
+import { RefreshIcon } from '@heroicons/react/outline';
 
 export default function Aave500Page() {
   const theme = useTheme();
@@ -25,18 +26,25 @@ export default function Aave500Page() {
           }}
         >
           <Typography variant="display1" sx={{ mt: 8, mb: 3 }}>
-            <Trans>Something went wrong...</Trans>
+            <Trans>Something Went Wrong...</Trans>
           </Typography>
           <Typography sx={{ mt: 2, mb: 5 }}>
-            <Trans>Sorry, we couldn&apos;t find the page you were looking for.</Trans>
+            <Trans>Sorry, an internal server error has occurred.</Trans>
             <br />
-            <Trans>We suggest you back to the Dashboard.</Trans>
+            <Trans>Please try reloading the page.</Trans>
           </Typography>
-          <Link href="/" passHref>
-            <Button variant="outlined" color="primary">
-              <Trans>Back to Dashboard</Trans>
-            </Button>
-          </Link>
+          <Button
+            variant="outlined"
+            color="primary"
+            endIcon={
+              <SvgIcon>
+                <RefreshIcon />
+              </SvgIcon>
+            }
+            onClick={() => window.location.reload()}
+          >
+            <Trans>Reload</Trans>
+          </Button>
         </Paper>
       </ContentContainer>
     </>
