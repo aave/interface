@@ -275,6 +275,13 @@ jobs:
             ❌ CI run has failed!
             Please see logs at ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
 
+      - name: Teag
+        uses: ./.github/actions/fork-result-tag
+        with:
+          PULL_REQUEST_NUMBER: '${{ env.PR_NUMBER }}'
+          COMMENT_BODY: |
+            ❌ CI run has failed!
+
   notify_success:
     runs-on: ubuntu-latest
     if: success()
@@ -296,3 +303,10 @@ jobs:
           COMMENT_BODY: |
               ✅ CI run has succeded!
               You can find tests and deployment logs at ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+
+      - name: Teag
+        uses: ./.github/actions/fork-result-tag
+        with:
+          PULL_REQUEST_NUMBER: '${{ env.PR_NUMBER }}'
+          COMMENT_BODY: |
+            ✅ CI run has succeded!
