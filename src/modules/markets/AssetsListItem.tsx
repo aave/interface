@@ -72,7 +72,11 @@ export const AssetsListItem = ({ ...reserve }: ComputedReserveData) => {
 
       <ListColumn>
         <IncentivesCard
-          value={reserve.borrowingEnabled ? reserve.variableBorrowAPY : '-1'}
+          value={
+            reserve.borrowingEnabled || Number(reserve.totalVariableDebtUSD) > 0
+              ? reserve.variableBorrowAPY
+              : '-1'
+          }
           incentives={reserve.vIncentivesData || []}
           symbol={reserve.symbol}
           variant="main16"
@@ -82,7 +86,11 @@ export const AssetsListItem = ({ ...reserve }: ComputedReserveData) => {
 
       <ListColumn>
         <IncentivesCard
-          value={reserve.stableBorrowRateEnabled ? reserve.stableBorrowAPY : -1}
+          value={
+            reserve.stableBorrowRateEnabled || Number(reserve.totalStableDebtUSD) > 0
+              ? reserve.stableBorrowAPY
+              : -1
+          }
           incentives={reserve.sIncentivesData || []}
           symbol={reserve.symbol}
           variant="main16"
