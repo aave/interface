@@ -61,7 +61,7 @@ export const SYMBOL_NAME_MAP: { [key: string]: string } = {
   GUSD: 'Gemini Dollar',
   KNC: 'Kyber Legacy',
   LINK: 'ChainLink',
-  MAI: 'MIMATIC',
+  MAI: 'MAI (mimatic)',
   MANA: 'Decentraland',
   MKR: 'Maker',
   PAX: 'Paxos Standard',
@@ -120,3 +120,25 @@ export function fetchIconSymbolAndName({
     symbol,
   };
 }
+
+// tokens flagged stable will be sorted on top when no other sorting is selected
+export const STABLE_ASSETS = [
+  'DAI',
+  'TUSD',
+  'BUSD',
+  'GUSD',
+  'USDC',
+  'USDT',
+  'EUROS',
+  'FEI',
+  'FRAX',
+  'PAX',
+  'USDP',
+  'SUSD',
+  'UST',
+  'EURS',
+  'JEUR',
+  'AGEUR',
+  'LUSD',
+  'MAI',
+];
