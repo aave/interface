@@ -4,6 +4,7 @@ import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { Link, ROUTES } from '../primitives/Link';
 import { TokenIcon } from '../primitives/TokenIcon';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
+import { ETHBorrowWarning } from '../transactions/Warnings/ETHBorrowWarning';
 
 interface ListMobileItemProps {
   warningComponent?: ReactNode;
@@ -17,6 +18,7 @@ interface ListMobileItemProps {
   showSupplyCapTooltips?: boolean;
   showBorrowCapTooltips?: boolean;
   showDebtCeilingTooltips?: boolean;
+  showETHBorrowWarning?: boolean;
 }
 
 export const ListMobileItem = ({
@@ -31,6 +33,7 @@ export const ListMobileItem = ({
   showSupplyCapTooltips = false,
   showBorrowCapTooltips = false,
   showDebtCeilingTooltips = false,
+  showETHBorrowWarning = false,
 }: ListMobileItemProps) => {
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
 
@@ -63,9 +66,15 @@ export const ListMobileItem = ({
                     {symbol}
                   </Typography>
                 </Box>
-                {showSupplyCapTooltips && supplyCap.displayMaxedTooltip({ supplyCap })}
-                {showBorrowCapTooltips && borrowCap.displayMaxedTooltip({ borrowCap })}
-                {showDebtCeilingTooltips && debtCeiling.displayMaxedTooltip({ debtCeiling })}
+                {showETHBorrowWarning ? (
+                  <ETHBorrowWarning />
+                ) : (
+                  <>
+                    {showSupplyCapTooltips && supplyCap.displayMaxedTooltip({ supplyCap })}
+                    {showBorrowCapTooltips && borrowCap.displayMaxedTooltip({ borrowCap })}
+                    {showDebtCeilingTooltips && debtCeiling.displayMaxedTooltip({ debtCeiling })}
+                  </>
+                )}
               </Link>
             )
           )}

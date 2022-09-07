@@ -16,6 +16,7 @@ interface ListMobileItemWrapperProps {
   showSupplyCapTooltips?: boolean;
   showBorrowCapTooltips?: boolean;
   showDebtCeilingTooltips?: boolean;
+  showETHBorrowWarning?: boolean;
 }
 
 export const ListMobileItemWrapper = ({
@@ -30,6 +31,7 @@ export const ListMobileItemWrapper = ({
   showSupplyCapTooltips = false,
   showBorrowCapTooltips = false,
   showDebtCeilingTooltips = false,
+  showETHBorrowWarning = false,
 }: ListMobileItemWrapperProps) => {
   return (
     <ListMobileItem
@@ -45,6 +47,7 @@ export const ListMobileItemWrapper = ({
       showSupplyCapTooltips={showSupplyCapTooltips}
       showBorrowCapTooltips={showBorrowCapTooltips}
       showDebtCeilingTooltips={showDebtCeilingTooltips}
+      showETHBorrowWarning={showETHBorrowWarning}
     >
       {children}
     </ListMobileItem>
