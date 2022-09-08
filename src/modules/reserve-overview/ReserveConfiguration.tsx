@@ -31,7 +31,7 @@ import { MaxLTVTooltip } from 'src/components/infoTooltips/MaxLTVTooltip';
 import { LiquidationThresholdTooltip } from 'src/components/infoTooltips/LiquidationThresholdTooltip';
 import { LiquidationPenaltyTooltip } from 'src/components/infoTooltips/LiquidationPenaltyTooltip';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
-import { frozenProposalMap } from 'src/utils/marketsAndNetworksConfig';
+import { CustomMarket, frozenProposalMap } from 'src/utils/marketsAndNetworksConfig';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { DebtCeilingStatus } from 'src/components/caps/DebtCeilingStatus';
 import { ReserveFactorOverview } from 'src/modules/reserve-overview/ReserveFactorOverview';
@@ -136,7 +136,7 @@ type ReserveConfigurationProps = {
 };
 
 export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ reserve }) => {
-  const { currentNetworkConfig, currentMarketData } = useProtocolDataContext();
+  const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
   const renderCharts = !!currentNetworkConfig.ratesHistoryApiUrl;
   const { data, error } = useReserveRatesHistory(
     reserve
@@ -163,6 +163,24 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
           <Trans>Reserve status &#38; configuration</Trans>
         </Typography>
       </Box>
+
+      {reserve.symbol === 'WETH' && currentMarket === CustomMarket.proto_mainnet && (
+        <Box sx={{ mb: 10 }}>
+          <Alert severity="warning">
+            <Trans>
+              As per the community vote, ETH borrowing on the Ethereum Market has been paused ahead
+              of the merge to mitigate liquidity risk.{' '}
+              <Link
+                href="https://snapshot.org/#/aave.eth/proposal/0xa121311c67b7a5bbe5b8b5fe1911663a0ab94ed339a6a4b0e1b9443f670a0e97"
+                underline="always"
+              >
+                <Trans>Learn more</Trans>
+              </Link>
+              {'.'}
+            </Trans>
+          </Alert>
+        </Box>
+      )}
 
       {reserve.isFrozen && (
         <Box>
@@ -299,7 +317,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
               </PanelItem>
             )}
           </Box>
-          {renderCharts && !error && reserve.borrowingEnabled && (
+          {renderCharts && !error && (reserve.borrowingEnabled || Number(reserve.totalDebt) > 0) && (
             <ChartContainer sx={{ mt: 4, pb: 8 }}>
               <ParentSize>
                 {(parent) => (
@@ -422,7 +440,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
         </Box>
       </PanelRow>
 
-      {reserve.borrowingEnabled && (
+      {(reserve.borrowingEnabled || Number(reserve.totalDebt) > 0) && (
         <>
           <Divider sx={{ my: '40px' }} />
           <PanelRow>
@@ -721,7 +739,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
         </>
       )}
 
-      {reserve.borrowingEnabled && (
+      {(reserve.borrowingEnabled || Number(reserve.totalDebt) > 0) && (
         <>
           <Divider sx={{ my: '40px' }} />
 
