@@ -130,20 +130,20 @@ export const marketsData: {
       FAUCET: '0x681860075529352da2C94082Eb66c59dF958e89C',
     },
   }, // Does exist a version of UIdataprovider contract that works for arc market and v3 interface
-  [CustomMarket.amm_kovan]: {
-    marketTitle: 'Ethereum AMM Kovan',
-    chainId: ChainId.kovan,
-    rpcOnly: true,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0x67FB118A780fD740C8936511947cC4bE7bb7730c'.toLowerCase(),
-      LENDING_POOL: '0x762E2a3BBe729240ea44D31D5a81EAB44d34ef01',
-      WETH_GATEWAY: '0xA61ca04DF33B72b235a8A28CfB535bb7A5271B70',
-      FAUCET: '0x600103d518cC5E8f3319D532eB4e5C268D32e604',
-      WALLET_BALANCE_PROVIDER: '0x07DC923859b68e9399d787bf52c4Aa9eBe3490aF',
-      UI_POOL_DATA_PROVIDER: '0x31fe1309B1169e7136AdAB01d4ba3882b5852d08',
-      UI_INCENTIVE_DATA_PROVIDER: '0x50e468e1AAF408a2EB4614e4b45f832700Cda7F4',
-    },
-  },
+  // [CustomMarket.amm_kovan]: {
+  //   marketTitle: 'Ethereum AMM Kovan',
+  //   chainId: ChainId.kovan,
+  //   rpcOnly: true,
+  //   addresses: {
+  //     LENDING_POOL_ADDRESS_PROVIDER: '0x67FB118A780fD740C8936511947cC4bE7bb7730c'.toLowerCase(),
+  //     LENDING_POOL: '0x762E2a3BBe729240ea44D31D5a81EAB44d34ef01',
+  //     WETH_GATEWAY: '0xA61ca04DF33B72b235a8A28CfB535bb7A5271B70',
+  //     FAUCET: '0x600103d518cC5E8f3319D532eB4e5C268D32e604',
+  //     WALLET_BALANCE_PROVIDER: '0x07DC923859b68e9399d787bf52c4Aa9eBe3490aF',
+  //     UI_POOL_DATA_PROVIDER: '0x31fe1309B1169e7136AdAB01d4ba3882b5852d08',
+  //     UI_INCENTIVE_DATA_PROVIDER: '0x50e468e1AAF408a2EB4614e4b45f832700Cda7F4',
+  //   },
+  // },
   // [CustomMarket.proto_goerli]: {
   //   marketTitle: 'Ethereum Görli',
   //   chainId: ChainId.goerli,
