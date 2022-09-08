@@ -1,18 +1,24 @@
-import type { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { Box, Button, ButtonGroup, useTheme } from '@mui/material';
+import { useState } from 'react';
+import { Box, useTheme } from '@mui/material';
 import { ParentSize } from '@visx/responsive';
+import type { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { GraphMetaHeaderItem } from './GraphMetaHeaderItem';
+import { ReserveRateTimeRange } from 'src/hooks/useReservesHistory';
 import { GraphLegend } from './GraphLegend';
-import { InterestRateModelGraph } from './InterestRateModelGraph';
 import { GraphTimeRangeSelector } from './GraphTimeRangeSelector';
+import { InterestRateModelGraph } from './InterestRateModelGraph';
 
 type InteresetRateModelGraphContainerProps = {
   reserve: ComputedReserveData;
 };
 
+// This graph takes in its data via props, thus having no loading/error states
 export const InteresetRateModelGraphContainer = ({
   reserve,
 }: InteresetRateModelGraphContainerProps): JSX.Element => {
+  const [selectedTimeRange, setSelectedTimeRange] = useState<ReserveRateTimeRange>('1m');
+
+  const CHART_HEIGHT = 300;
   const theme = useTheme();
   const utilizationColor = theme.palette.mode === 'dark' ? '#fff' : '#000';
 
@@ -36,14 +42,16 @@ export const InteresetRateModelGraphContainer = ({
               : []),
           ]}
         />
-        {/* TODO: does it make sense to have the selector here? */}
-        {/* <GraphTimeRangeSelector /> */}
+        <GraphTimeRangeSelector
+          timeRange={selectedTimeRange}
+          handleTimeRangeChanged={setSelectedTimeRange}
+        />
       </Box>
       <ParentSize>
         {({ width }) => (
           <InterestRateModelGraph
             width={width}
-            height={300}
+            height={CHART_HEIGHT}
             reserve={{
               baseStableBorrowRate: reserve.baseStableBorrowRate,
               baseVariableBorrowRate: reserve.baseVariableBorrowRate,

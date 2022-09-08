@@ -527,6 +527,10 @@ msgstr "Dark mode"
 msgid "Dashboard"
 msgstr "Dashboard"
 
+#: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
+msgid "Data couldn't be fetched, please reload graph."
+msgstr "Data couldn't be fetched, please reload graph."
+
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 msgid "Debt"
@@ -938,6 +942,10 @@ msgstr "Liquidation threshold"
 msgid "Liquidation value"
 msgstr "Liquidation value"
 
+#: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
+msgid "Loading data..."
+msgstr "Loading data..."
+
 #: src/ui-config/errorMapping.tsx
 msgid "Ltv validation failed"
 msgstr "Ltv validation failed"
@@ -1230,6 +1238,10 @@ msgstr "Recipient address"
 msgid "Rejected connection request"
 msgstr "Rejected connection request"
 
+#: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
+msgid "Reload"
+msgstr "Reload"
+
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Repay/RepayModalContent.tsx
 msgid "Remaining debt"
@@ -1370,6 +1382,10 @@ msgstr "Since this asset is frozen, the only available actions are withdraw and 
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
 msgstr "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
+
+#: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
+msgid "Something went wrong"
+msgstr "Something went wrong"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Spanish"

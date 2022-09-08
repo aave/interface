@@ -1,5 +1,9 @@
+/**
+ * This hook is used for getting historical reserve data, and it is primarily used with charts.
+ * In particular, this hook is used in the ApyGraph.
+ */
 import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { makeCancelable } from 'src/utils/utils';
 
@@ -75,18 +79,24 @@ const BROKEN_ASSETS = [
 export function useReserveRatesHistory(reserveAddress: string, timeRange: ReserveRateTimeRange) {
   const { currentNetworkConfig } = useProtocolDataContext();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [data, setData] = useState<FormattedReserveHistoryItem[]>([]);
 
-  useEffect(() => {
+  const refetchData = useCallback<() => () => void>(() => {
+    // reset
+    setLoading(true);
+    setError(false);
+    setData([]);
+
     if (
       reserveAddress &&
       currentNetworkConfig.ratesHistoryApiUrl &&
       !BROKEN_ASSETS.includes(reserveAddress)
     ) {
-      setLoading(true);
       const cancelable = makeCancelable(
         fetchStats(reserveAddress, timeRange, currentNetworkConfig.ratesHistoryApiUrl)
       );
+
       cancelable.promise
         .then((data: APIResponse[]) => {
           setData(
@@ -100,16 +110,28 @@ export function useReserveRatesHistory(reserveAddress: string, timeRange: Reserv
           );
           setLoading(false);
         })
-        .catch((e) => console.log('error fetching result', e));
+        .catch((e) => {
+          console.error('useReservesHistory(): Failed to fetch historical reserve data.', e);
+          setError(true);
+          setLoading(false);
+        });
+
       return cancelable.cancel;
-    } else {
-      setLoading(false);
     }
+
+    setLoading(false);
+    return () => null;
   }, [reserveAddress, timeRange, currentNetworkConfig]);
+
+  useEffect(() => {
+    const cancel = refetchData();
+    return () => cancel();
+  }, [refetchData]);
 
   return {
     loading,
     data,
-    error: BROKEN_ASSETS.includes(reserveAddress) || (!loading && data.length === 0),
+    error: error || BROKEN_ASSETS.includes(reserveAddress) || (!loading && data.length === 0),
+    refetch: refetchData,
   };
 }
