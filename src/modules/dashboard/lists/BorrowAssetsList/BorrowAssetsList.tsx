@@ -33,7 +33,6 @@ export const BorrowAssetsList = () => {
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const { baseAssetSymbol } = currentNetworkConfig;
-
   const tokensToBorrow = reserves
     .filter((reserve) => assetCanBeBorrowedByUser(reserve, user))
     .map((reserve: ComputedReserveData) => {
@@ -77,13 +76,13 @@ export const BorrowAssetsList = () => {
         .div(maxBorrowAmount)
         .toFixed();
 
-  const borrowReserves =
-    user?.totalCollateralMarketReferenceCurrency === '0' || +collateralUsagePercent >= 0.98
-      ? tokensToBorrow
-      : tokensToBorrow.filter(
-          ({ availableBorrowsInUSD, totalLiquidityUSD }) =>
-            availableBorrowsInUSD !== '0.00' && totalLiquidityUSD !== '0'
-        );
+  const borrowReserves = tokensToBorrow;
+  // user?.totalCollateralMarketReferenceCurrency === '0' || +collateralUsagePercent >= 0.98
+  //   ? tokensToBorrow
+  //   : tokensToBorrow.filter(
+  //       ({ availableBorrowsInUSD, totalLiquidityUSD }) =>
+  //         availableBorrowsInUSD !== '0.00' && totalLiquidityUSD !== '0'
+  //     );
 
   const head = [
     <AvailableTooltip
