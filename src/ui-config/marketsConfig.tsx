@@ -73,8 +73,6 @@ export enum CustomMarket {
   permissioned_market = 'permissioned_market',
 }
 
-console.log('chainId', ChainId);
-
 export const marketsData: {
   [key in keyof typeof CustomMarket]: MarketDataType;
 } = {
@@ -124,7 +122,7 @@ export const marketsData: {
       // REPAY_WITH_COLLATERAL_ADAPTER: '<address here>',
       // SWAP_COLLATERAL_ADAPTER: '<address here>',
       WALLET_BALANCE_PROVIDER: '0x71DA9d081687e0c97896CC964c8C8c119e064b5D', // WalletBalanceProvider
-      UI_POOL_DATA_PROVIDER: '0x2bd8bfcfa19D4c9982d86d7CEf71e3A2e1bcf2cD', //  // '0x0D410Ce47834798028c9CD894A29A4b12A9d5624'// 0xCF4c9A9f5c23029e7438caB8293899759AB7A8d9,
+      UI_POOL_DATA_PROVIDER: '0xcCb7a1B6B5D72c4AA633B114537cD20612fDccbB', //  // '0x0D410Ce47834798028c9CD894A29A4b12A9d5624'// 0xCF4c9A9f5c23029e7438caB8293899759AB7A8d9,
       UI_INCENTIVE_DATA_PROVIDER: '0xA2E05bE2090b3658A264bdf1C39387f5Dba367Ec',
       PERMISSION_MANAGER: '0xEC9019733939Fa99D612101622d8ab4bF012855e', // PermissionManager
       FAUCET: '0x681860075529352da2C94082Eb66c59dF958e89C',
