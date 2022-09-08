@@ -95,7 +95,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
 
       <PanelRow>
         <PanelTitle>Supply Info</PanelTitle>
-        <Box sx={{ minWidth: 0, maxWidth: '100%', width: '100%' }}>
+        <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
           <Box
             sx={{
               display: 'flex',
@@ -609,7 +609,25 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
 
           <PanelRow>
             <PanelTitle>Interest rate model</PanelTitle>
-            <InteresetRateModelGraphContainer reserve={reserve} />
+            <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  flexWrap: 'wrap',
+                }}
+              >
+                <PanelItem title={<Trans>Utilization Rate</Trans>}>
+                  <FormattedNumber
+                    value={reserve.borrowUsageRatio}
+                    percent
+                    variant="main16"
+                    compact
+                  />
+                </PanelItem>
+              </Box>
+              <InteresetRateModelGraphContainer reserve={reserve} />
+            </Box>
           </PanelRow>
         </>
       )}

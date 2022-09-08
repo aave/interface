@@ -50,7 +50,7 @@ export const ApyGraphContainer = ({
       ? ([
           {
             name: 'stableBorrowRate',
-            color: '#0062D2',
+            color: '#E7C6DF',
             text: 'Borrow APR, stable',
           },
         ] as const)

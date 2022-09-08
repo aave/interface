@@ -1,32 +1,34 @@
 import React, { useMemo, useCallback, Fragment } from 'react';
-import { AreaClosed, Line, Bar, LinePath } from '@visx/shape';
+import { Box, Typography, useTheme } from '@mui/material';
+import { Line, Bar, LinePath } from '@visx/shape';
+import { AxisLeft, AxisBottom } from '@visx/axis';
 import { curveMonotoneX } from '@visx/curve';
+import { localPoint } from '@visx/event';
+import { Group } from '@visx/group';
+import { GridRows } from '@visx/grid';
 import { scaleTime, scaleLinear } from '@visx/scale';
 import { withTooltip, defaultStyles, TooltipWithBounds } from '@visx/tooltip';
 import { WithTooltipProvidedProps } from '@visx/tooltip/lib/enhancers/withTooltip';
-import { localPoint } from '@visx/event';
-import { LinearGradient } from '@visx/gradient';
-import { AxisLeft, AxisBottom } from '@visx/axis';
 import { max, extent, bisector } from 'd3-array';
 import { timeFormat } from 'd3-time-format';
-import { Group } from '@visx/group';
 import { FormattedReserveHistoryItem } from 'src/hooks/useReservesHistory';
-import { useTheme, lighten } from '@mui/material';
-import { GridRows } from '@visx/grid';
 
 type TooltipData = FormattedReserveHistoryItem;
 
-const background = '#3b6978';
-const accentColorDark = '#75daad';
+const accentColorDark = '#383D511F';
 const tooltipStyles = {
   ...defaultStyles,
-  background,
-  border: '1px solid white',
-  color: 'white',
+  padding: '8px 12px',
+  boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
+  borderRadius: '4px',
+  color: '#62677B',
+  fontSize: '12px',
+  lineHeight: '16px',
+  letterSpacing: '0.15px',
 };
 
 // util
-const formatDate = timeFormat("%b %d, '%y");
+const formatDate = timeFormat('%b %d, %H:%M UTC%Z');
 
 // accessors
 const getDate = (d: FormattedReserveHistoryItem) => new Date(d.date);
@@ -107,42 +109,30 @@ export const ApyGraph = withTooltip<AreaProps, TooltipData>(
       <>
         <svg width={width} height={height}>
           <Group left={margin.left} top={margin.top}>
+            {/* Horizontal Background Lines */}
             <GridRows
               scale={yValueScale}
               width={innerWidth}
               strokeDasharray="3,3"
               stroke={theme.palette.divider}
               pointerEvents="none"
-              numTicks={5}
+              numTicks={3}
             />
+
+            {/* Data Value Lines */}
             {fields.map((field) => (
-              <Fragment key={field.name}>
-                <LinearGradient
-                  id={`area-gradient-${field.name}`}
-                  from={lighten(field.color, 0.4)}
-                  to={lighten(field.color, 0.9)}
-                  toOpacity={0}
-                />
-                <AreaClosed<FormattedReserveHistoryItem>
-                  data={data}
-                  x={(d) => dateScale(getDate(d)) ?? 0}
-                  y={(d) => yValueScale(getData(d, field.name)) ?? 0}
-                  yScale={yValueScale}
-                  strokeWidth={0}
-                  fill={`url(#area-gradient-${field.name})`}
-                  curve={curveMonotoneX}
-                />
-                <LinePath
-                  stroke={field.color}
-                  strokeWidth={2}
-                  data={data}
-                  x={(d) => dateScale(getDate(d)) ?? 0}
-                  y={(d) => yValueScale(getData(d, field.name)) ?? 0}
-                  curve={curveMonotoneX}
-                />
-              </Fragment>
+              <LinePath
+                key={field.name}
+                stroke={field.color}
+                strokeWidth={2}
+                data={data}
+                x={(d) => dateScale(getDate(d)) ?? 0}
+                y={(d) => yValueScale(getData(d, field.name)) ?? 0}
+                curve={curveMonotoneX}
+              />
             ))}
 
+            {/* X Axis */}
             <AxisBottom
               top={innerHeight - margin.bottom / 4}
               scale={dateScale}
@@ -154,6 +144,8 @@ export const ApyGraph = withTooltip<AreaProps, TooltipData>(
                 dx: -8,
               })}
             />
+
+            {/* Y Axis */}
             <AxisLeft
               left={0}
               scale={yValueScale}
@@ -166,6 +158,8 @@ export const ApyGraph = withTooltip<AreaProps, TooltipData>(
               numTicks={5}
               tickFormat={(value) => `${(value as number).toFixed(2)} %`}
             />
+
+            {/* Background */}
             <Bar
               width={innerWidth}
               height={innerHeight}
@@ -176,6 +170,7 @@ export const ApyGraph = withTooltip<AreaProps, TooltipData>(
               onMouseLeave={() => hideTooltip()}
             />
 
+            {/* Tooltip */}
             {tooltipData && (
               <g>
                 <Line
@@ -216,13 +211,28 @@ export const ApyGraph = withTooltip<AreaProps, TooltipData>(
             )}
           </Group>
         </svg>
+
+        {/* Tooltip Info */}
         {tooltipData && (
           <div>
             <TooltipWithBounds top={20} left={tooltipLeft + 12} style={tooltipStyles}>
-              {formatDate(getDate(tooltipData))}
-              <br />
+              <Typography variant="secondary12" sx={{ mb: 2, mr: 2, fontWeight: 400 }}>
+                {formatDate(getDate(tooltipData))}
+              </Typography>
               {fields.map((field) => (
-                <div key={field.name}>{getData(tooltipData, field.name).toFixed(2)} %</div>
+                <Box
+                  key={field.name}
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
+                  <Typography variant="caption" color="text.secondary" sx={{ mr: 2 }}>
+                    {field.text}
+                  </Typography>
+                  <Typography variant="main12" color="text.primary">
+                    {getData(tooltipData, field.name).toFixed(2)}%
+                  </Typography>
+                </Box>
               ))}
             </TooltipWithBounds>
           </div>
