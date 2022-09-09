@@ -150,11 +150,11 @@ const providers: { [network: string]: ethersProviders.Provider } = {};
  * @param chainId
  * @returns provider or fallbackprovider in case multiple rpcs are configured
  */
-export const getProvider = (chainId: ChainId, ens?: boolean): ethersProviders.Provider => {
+export const getProvider = (chainId: ChainId): ethersProviders.Provider => {
   if (!providers[chainId]) {
     const config = getNetworkConfig(chainId);
     const chainProviders: ethersProviders.FallbackProviderConfig[] = [];
-    if (config.privateJsonRPCUrl && !ens) {
+    if (config.privateJsonRPCUrl) {
       chainProviders.push({
         provider: new ethersProviders.StaticJsonRpcProvider(config.privateJsonRPCUrl, chainId),
         priority: 0,
@@ -178,6 +178,12 @@ export const getProvider = (chainId: ChainId, ens?: boolean): ethersProviders.Pr
     }
   }
   return providers[chainId];
+};
+
+export const getENSProvider = () => {
+  const chainId = 1;
+  const config = getNetworkConfig(chainId);
+  return new ethersProviders.StaticJsonRpcProvider(config.publicJsonRPCUrl[0], chainId);
 };
 
 const ammDisableProposal = 'https://app.aave.com/governance/proposal/?proposalId=44';
