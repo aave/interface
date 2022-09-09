@@ -34,43 +34,48 @@ export default function Aave500Page() {
           </Typography>
           <Typography sx={{ mt: 2, mb: 5, maxWidth: 480 }}>
             <Trans>
-              Sorry, an unexpected error has occurred. We know about the problem and are working to
-              fix it.
+              Sorry, an unexpected error happened. In the meantime you may try reloading the page,
+              or come back later.
             </Trans>
           </Typography>
           <Button
+            variant="outlined"
             color="primary"
             startIcon={
               <SvgIcon>
-                <DuplicateIcon />
+                <RefreshIcon />
               </SvgIcon>
             }
-            onClick={handleCopyError}
+            onClick={() => window.location.reload()}
+            sx={{ mb: 10 }}
           >
-            <Trans>Copy Error</Trans>
+            <Trans>Reload the page</Trans>
           </Button>
-          <Typography sx={{ mt: 7, mb: 5, maxWidth: 480 }}>
-            <Trans>In the meantime, you may retry again, or go back to the dashboard.</Trans>
-          </Typography>
-          <Box display="flex" alignItems="center">
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            flexDirection="column"
+            mt={10}
+          >
+            <Typography sx={{ mb: 4 }}>
+              <Trans>
+                If the error continues to happen,
+                <br /> you may report it to our support team in <Link href="/">Discord</Link>
+              </Trans>
+              .
+            </Typography>
             <Button
-              variant="outlined"
               color="primary"
-              endIcon={
+              startIcon={
                 <SvgIcon>
-                  <RefreshIcon />
+                  <DuplicateIcon />
                 </SvgIcon>
               }
-              onClick={() => window.location.reload()}
-              sx={{ mb: 4, mr: 4 }}
+              onClick={handleCopyError}
             >
-              <Trans>Reload</Trans>
+              <Trans>Copy error message</Trans>
             </Button>
-            <Link href="/" passHref>
-              <Button variant="contained" color="primary" sx={{ mb: 4 }}>
-                <Trans>Back to Dashboard</Trans>
-              </Button>
-            </Link>
           </Box>
         </Paper>
       </ContentContainer>

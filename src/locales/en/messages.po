@@ -251,7 +251,6 @@ msgid "Available to supply"
 msgstr "Available to supply"
 
 #: pages/404.page.tsx
-#: pages/500.page.tsx
 msgid "Back to Dashboard"
 msgstr "Back to Dashboard"
 
@@ -494,13 +493,13 @@ msgstr "Cooldown to unstake"
 msgid "Cooling down..."
 msgstr "Cooling down..."
 
-#: pages/500.page.tsx
-msgid "Copy Error"
-msgstr "Copy Error"
-
 #: src/layouts/WalletWidget.tsx
 msgid "Copy address"
 msgstr "Copy address"
+
+#: pages/500.page.tsx
+msgid "Copy error message"
+msgstr "Copy error message"
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Copy error text"
@@ -818,6 +817,10 @@ msgstr "I acknowledge the risks involved."
 msgid "I understand how cooldown ({0}) and unstaking ({1}) work"
 msgstr "I understand how cooldown ({0}) and unstaking ({1}) work"
 
+#: pages/500.page.tsx
+msgid "If the error continues to happen,<0/> you may report it to our support team in <1>Discord</1>"
+msgstr "If the error continues to happen,<0/> you may report it to our support team in <1>Discord</1>"
+
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "If the health factor goes below 1, the liquidation of your collateral might be triggered."
 msgstr "If the health factor goes below 1, the liquidation of your collateral might be triggered."
@@ -837,10 +840,6 @@ msgstr "In E-Mode some assets are not borrowable. Exit E-Mode to get access to a
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "In Isolation mode, you cannot supply other assets as collateral. A global debt ceiling limits the borrowing power of the isolated asset. To exit isolation mode disable {0} as collateral before borrowing another asset. Read more in our <0>FAQ</0>"
 msgstr "In Isolation mode, you cannot supply other assets as collateral. A global debt ceiling limits the borrowing power of the isolated asset. To exit isolation mode disable {0} as collateral before borrowing another asset. Read more in our <0>FAQ</0>"
-
-#: pages/500.page.tsx
-msgid "In the meantime, you may retry again, or go back to the dashboard."
-msgstr "In the meantime, you may retry again, or go back to the dashboard."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Inconsistent flashloan parameters"
@@ -1243,8 +1242,8 @@ msgid "Rejected connection request"
 msgstr "Rejected connection request"
 
 #: pages/500.page.tsx
-msgid "Reload"
-msgstr "Reload"
+msgid "Reload the page"
+msgstr "Reload the page"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Repay/RepayModalContent.tsx
@@ -1392,8 +1391,8 @@ msgid "Something Went Wrong"
 msgstr "Something Went Wrong"
 
 #: pages/500.page.tsx
-msgid "Sorry, an unexpected error has occurred. We know about the problem and are working to fix it."
-msgstr "Sorry, an unexpected error has occurred. We know about the problem and are working to fix it."
+msgid "Sorry, an unexpected error happened. In the meantime you may try reloading the page, or come back later."
+msgstr "Sorry, an unexpected error happened. In the meantime you may try reloading the page, or come back later."
 
 #: pages/404.page.tsx
 msgid "Sorry, we couldn't find the page you were looking for."
