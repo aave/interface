@@ -9,7 +9,7 @@ import {
 import BigNumber from 'bignumber.js';
 import React, { useContext } from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { fetchIconSymbolAndName, STABLE_ASSETS } from 'src/ui-config/reservePatches';
 
 import { useCurrentTimestamp } from '../useCurrentTimestamp';
 import { useProtocolDataContext } from '../useProtocolDataContext';
@@ -240,29 +240,9 @@ export const AppDataProvider: React.FC = ({ children }) => {
 
 export const useAppDataContext = () => useContext(AppDataContext);
 
-// tokens flagged stable will be sorted on top when no other sorting is selected
-const stable = [
-  'DAI',
-  'TUSD',
-  'BUSD',
-  'GUSD',
-  'USDC',
-  'USDT',
-  'EUROS',
-  'FEI',
-  'FRAX',
-  'PAX',
-  'USDP',
-  'SUSD',
-  'UST',
-  'EURS',
-  'JEUR',
-  'AGEUR',
-];
-
 const reserveSortFn = (a: { iconSymbol: string }, b: { iconSymbol: string }) => {
-  const aIsStable = stable.includes(a.iconSymbol.toUpperCase());
-  const bIsStable = stable.includes(b.iconSymbol.toUpperCase());
+  const aIsStable = STABLE_ASSETS.includes(a.iconSymbol.toUpperCase());
+  const bIsStable = STABLE_ASSETS.includes(b.iconSymbol.toUpperCase());
   if (aIsStable && !bIsStable) return -1;
   if (!aIsStable && bIsStable) return 1;
   return a.iconSymbol.toUpperCase() > b.iconSymbol.toUpperCase() ? 1 : -1;

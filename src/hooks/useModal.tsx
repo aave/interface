@@ -1,5 +1,6 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { createContext, useContext, useState } from 'react';
+import { EmodeModalType } from 'src/components/transactions/Emode/EmodeModalContent';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { TxErrorType } from 'src/ui-config/errorMapping';
 
@@ -31,6 +32,7 @@ export interface ModalArgsType {
   stakeAssetName?: string;
   currentRateMode?: InterestRate;
   isFrozen?: boolean;
+  emode?: EmodeModalType;
 }
 
 export type TxStateType = {
@@ -52,7 +54,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   openStakeCooldown: (stakeAssetName: string) => void;
   openStakeRewardsClaim: (stakeAssetName: string) => void;
   openClaimRewards: () => void;
-  openEmode: () => void;
+  openEmode: (mode: EmodeModalType) => void;
   openFaucet: (underlyingAsset: string) => void;
   openSwap: (underlyingAsset: string) => void;
   openGovDelegation: () => void;
@@ -137,8 +139,9 @@ export const ModalContextProvider: React.FC = ({ children }) => {
         openClaimRewards: () => {
           setType(ModalType.ClaimRewards);
         },
-        openEmode: () => {
+        openEmode: (mode) => {
           setType(ModalType.Emode);
+          setArgs({ emode: mode });
         },
         openFaucet: (underlyingAsset) => {
           setType(ModalType.Faucet);
