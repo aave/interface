@@ -4,7 +4,7 @@ import { utils } from 'ethers';
 import { useEffect, useState } from 'react';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
-const mainnetProvider = getProvider(ChainId.mainnet);
+const mainnetProvider = getProvider(ChainId.mainnet, true);
 
 interface EnsResponse {
   name?: string;

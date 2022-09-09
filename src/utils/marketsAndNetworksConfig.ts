@@ -150,11 +150,11 @@ const providers: { [network: string]: ethersProviders.Provider } = {};
  * @param chainId
  * @returns provider or fallbackprovider in case multiple rpcs are configured
  */
-export const getProvider = (chainId: ChainId): ethersProviders.Provider => {
+export const getProvider = (chainId: ChainId, ens?: boolean): ethersProviders.Provider => {
   if (!providers[chainId]) {
     const config = getNetworkConfig(chainId);
     const chainProviders: ethersProviders.FallbackProviderConfig[] = [];
-    if (config.privateJsonRPCUrl) {
+    if (config.privateJsonRPCUrl && !ens) {
       chainProviders.push({
         provider: new ethersProviders.StaticJsonRpcProvider(config.privateJsonRPCUrl, chainId),
         priority: 0,
