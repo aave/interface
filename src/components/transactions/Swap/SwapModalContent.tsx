@@ -4,7 +4,7 @@ import {
   useAppDataContext,
 } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { SwapActions } from './SwapActions';
-import { ToggleButton, ToggleButtonGroup, Typography, Box, SvgIcon } from '@mui/material';
+import { Typography, Box, SvgIcon } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -12,16 +12,10 @@ import { Trans } from '@lingui/macro';
 import { remainingCap } from 'src/utils/getMaxAmountAvailableToSupply';
 import { useSwap } from 'src/hooks/useSwap';
 import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
-import {
-  DetailsHFLine,
-  DetailsIncentivesLine,
-  DetailsNumberLine,
-  TxModalDetails,
-} from 'src/components/transactions/FlowCommons/TxModalDetails';
+import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { GasEstimationError } from 'src/components/transactions/FlowCommons/GasEstimationError';
 import { useModalContext } from 'src/hooks/useModal';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { Row } from 'src/components/primitives/Row';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { calculateHFAfterSwap } from 'src/utils/hfUtils';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
@@ -29,6 +23,7 @@ import { ErrorType, flashLoanNotAvailable, useFlashloan } from '../utils';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
+import { SwapModalDetails } from './SwapModalDetails';
 
 export type SupplyProps = {
   underlyingAsset: string;
@@ -165,9 +160,7 @@ export const SwapModalContent = ({
   // calculate impact based on $ difference
   const priceImpact =
     outputAmountUSD && outputAmountUSD !== '0'
-      ? new BigNumber(1)
-          .minus(new BigNumber(inputAmountUSD).dividedBy(outputAmountUSD))
-          .toString(10)
+      ? new BigNumber(1).minus(new BigNumber(inputAmountUSD).dividedBy(outputAmountUSD)).toFixed(2)
       : '0';
 
   return (
@@ -228,36 +221,18 @@ export const SwapModalContent = ({
           {error}
         </Typography>
       )}
-      <TxModalDetails gasLimit={gasLimit}>
-        <DetailsNumberLine
-          description={<Trans>Supply apy</Trans>}
-          value={poolReserve.supplyAPY}
-          futureValue={swapTarget.supplyAPY}
-          percent
-        />
-        <DetailsNumberLine
-          description={<Trans>Can be collateral</Trans>}
-          value={poolReserve.supplyAPY}
-          futureValue={swapTarget.supplyAPY}
-          percent
-        />
-        <DetailsIncentivesLine
-          incentives={poolReserve.aIncentivesData}
-          symbol={poolReserve.symbol}
-          futureIncentives={swapTarget.aIncentivesData}
-          futureSymbol={swapTarget.symbol}
-        />
-        <DetailsNumberLine
-          description={<Trans>Liquidation threshold</Trans>}
-          value={poolReserve.supplyAPY}
-          futureValue={swapTarget.supplyAPY}
-          percent
-        />
-        <DetailsNumberLine
-          description={<Trans>Supply balance after swap</Trans>}
-          value={poolReserve.supplyAPY}
-          futureValue={swapTarget.supplyAPY}
-          percent
+      <TxModalDetails
+        gasLimit={gasLimit}
+        slippageSelector={
+          <ListSlippageButton selectedSlippage={maxSlippage} setSlippage={setMaxSlippage} />
+        }
+      >
+        <SwapModalDetails
+          showHealthFactor={showHealthFactor}
+          healthFactor={user?.healthFactor}
+          healthFactorAfterSwap={hfAfterSwap.toString(10)}
+          swapSource={poolReserve}
+          swapTarget={swapTarget}
         />
       </TxModalDetails>
 
