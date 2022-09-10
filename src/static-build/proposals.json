@@ -4165,7 +4165,7 @@
       "executed": false,
       "canceled": false,
       "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
-      "state": "Active",
+      "state": "Succeeded",
       "minimumQuorum": "200",
       "minimumDiff": "50",
       "executionTimeWithGracePeriod": 0,
@@ -4174,7 +4174,7 @@
       "ipfsHash": "0x344d3181f08b3186228b93bac0005a3a961238164b8b06cbb5f0428a9180b8a7",
       "startTimestamp": 1662493679,
       "creationTimestamp": 1662493679,
-      "expirationTimestamp": 1662761313
+      "expirationTimestamp": 1662762479
     }
   ]
 }
