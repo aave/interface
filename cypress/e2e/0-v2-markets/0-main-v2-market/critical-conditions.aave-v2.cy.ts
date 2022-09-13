@@ -14,7 +14,7 @@ const testData = {
     },
     borrow: {
       asset: assets.aaveMarket.USDC,
-      amount: 1,
+      amount: 2,
       apyType: constants.borrowAPYType.variable,
       hasApproval: true,
       isRisk: true,
