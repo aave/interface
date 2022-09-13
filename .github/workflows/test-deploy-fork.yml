@@ -275,6 +275,13 @@ jobs:
             ❌ CI run has failed!
             Please see logs at ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
 
+      - name: Label
+        uses: ./.github/actions/fork-result-label
+        continue-on-error: true
+        with:
+          SUCCESS: 'false'
+          PULL_REQUEST_NUMBER: ${{ env.PR_NUMBER }}
+
   notify_success:
     runs-on: ubuntu-latest
     if: success()
@@ -296,3 +303,10 @@ jobs:
           COMMENT_BODY: |
               ✅ CI run has succeded!
               You can find tests and deployment logs at ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+
+      - name: Label
+        uses: ./.github/actions/fork-result-label
+        continue-on-error: true
+        with:
+          SUCCESS: 'true'
+          PULL_REQUEST_NUMBER: ${{ env.PR_NUMBER }}
