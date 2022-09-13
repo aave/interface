@@ -53,6 +53,7 @@ export const InteresetRateModelGraphContainer = ({
             height={CHART_HEIGHT}
             fields={fields}
             reserve={{
+              reserveFactor: reserve.reserveFactor,
               supplyAPR: reserve.supplyAPR,
               baseStableBorrowRate: reserve.baseStableBorrowRate,
               baseVariableBorrowRate: reserve.baseVariableBorrowRate,

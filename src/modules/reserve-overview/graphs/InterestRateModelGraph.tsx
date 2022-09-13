@@ -31,6 +31,7 @@ const tooltipStyles = {
 };
 
 type InterestRateModelType = {
+  reserveFactor: string;
   supplyAPR: string;
   variableRateSlope1: string;
   variableRateSlope2: string;
@@ -47,13 +48,16 @@ type Rate = {
   stableRate: number;
   variableRate: number;
   utilization: number;
-  supplyRate?: number;
+  supplyRate: number;
 };
 
 // accessors
 const getDate = (d: Rate) => d.utilization;
 const bisectDate = bisector<Rate, number>((d) => d.utilization).center;
-const getSupplyRate = (d: Rate) => d.supplyRate ?? 0 * 100;
+const getSupplyRate = (d: Rate) => {
+  console.log(d.supplyRate);
+  return d.supplyRate ?? 0 * 100;
+};
 const getVariableBorrowRate = (d: Rate) => d.variableRate * 100;
 const getStableBorrowRate = (d: Rate) => d.stableRate * 100;
 const tooltipValueAccessors = {
@@ -71,29 +75,32 @@ const step = 100 / resolution;
 //   );
 
 function getRates({
+  supplyAPR,
+  reserveFactor,
   variableRateSlope1,
   variableRateSlope2,
   stableRateSlope1,
   stableRateSlope2,
-  supplyAPR,
   optimalUsageRatio,
   baseVariableBorrowRate,
   baseStableBorrowRate,
 }: InterestRateModelType): Rate[] {
   const rates: Rate[] = [];
-  const formattedOptimalUtilisationRate = normalizeBN(optimalUsageRatio, 25).toNumber();
-  const supplyRate = parseFloat(supplyAPR);
+  const formattedOptimalUtilizationRate = normalizeBN(optimalUsageRatio, 25).toNumber();
 
   for (let i = 0; i <= resolution; i++) {
     const utilization = i * step;
+    // When zero
     if (utilization === 0) {
       rates.push({
-        supplyRate,
+        supplyRate: 0,
         stableRate: 0,
         variableRate: 0,
         utilization,
       });
-    } else if (utilization < formattedOptimalUtilisationRate) {
+    }
+    // When hovering below optimal utilization rate, actual data
+    else if (utilization < formattedOptimalUtilizationRate) {
       const theoreticalStableAPY = normalizeBN(
         new BigNumber(baseStableBorrowRate).plus(
           rayDiv(rayMul(stableRateSlope1, normalizeBN(utilization, -25)), optimalUsageRatio)
@@ -107,12 +114,14 @@ function getRates({
         27
       ).toNumber();
       rates.push({
-        supplyRate,
+        supplyRate: parseFloat(supplyAPR),
         stableRate: theoreticalStableAPY,
         variableRate: theoreticalVariableAPY,
         utilization,
       });
-    } else {
+    }
+    // When hovering above optimal utilization rate, hypothetical predictions
+    else {
       const excess = rayDiv(
         normalizeBN(utilization, -25).minus(optimalUsageRatio),
         RAY.minus(optimalUsageRatio)
@@ -129,8 +138,10 @@ function getRates({
           .plus(rayMul(variableRateSlope2, excess)),
         27
       ).toNumber();
+      // Calculate the supply APR based off of the hypothetical variable borrow rate
+      const theoreticalSupplyAPR = theoreticalVariableAPY * 100 - parseFloat(reserveFactor);
       rates.push({
-        supplyRate,
+        supplyRate: theoreticalSupplyAPR,
         stableRate: theoreticalStableAPY,
         variableRate: theoreticalVariableAPY,
         utilization,
