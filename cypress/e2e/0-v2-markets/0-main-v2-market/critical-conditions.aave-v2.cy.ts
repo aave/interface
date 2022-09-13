@@ -18,12 +18,12 @@ const testData = {
       apyType: constants.borrowAPYType.variable,
       hasApproval: true,
       isRisk: true,
+      isMaxAmount: true,
     },
     deposit2: {
       asset: assets.aaveMarket.ETH,
       amount: 1,
       hasApproval: true,
-      isMaxAmount: true,
     },
     withdraw: {
       asset: assets.aaveMarket.ETH,
