@@ -318,6 +318,7 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
             {/* Tooltip */}
             {tooltipData && (
               <g>
+                {/* Vertical line */}
                 <Line
                   from={{ x: tooltipLeft, y: margin.top }}
                   to={{ x: tooltipLeft, y: innerHeight + margin.top }}
@@ -326,6 +327,7 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
                   pointerEvents="none"
                   strokeDasharray="5,2"
                 />
+                {/* Variable borrow rate circle */}
                 <circle
                   cx={tooltipLeft}
                   cy={yValueScale(getVariableBorrowRate(tooltipData)) + 1}
@@ -346,6 +348,28 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
                   strokeWidth={2}
                   pointerEvents="none"
                 />
+                {/* Supply rate circle */}
+                <circle
+                  cx={tooltipLeft}
+                  cy={yValueScale(getSupplyRate(tooltipData)) + 1}
+                  r={4}
+                  fill="black"
+                  fillOpacity={0.1}
+                  stroke="black"
+                  strokeOpacity={0.1}
+                  strokeWidth={2}
+                  pointerEvents="none"
+                />
+                <circle
+                  cx={tooltipLeft}
+                  cy={yValueScale(getSupplyRate(tooltipData))}
+                  r={4}
+                  fill={accentColorDark}
+                  stroke="white"
+                  strokeWidth={2}
+                  pointerEvents="none"
+                />
+                {/* Stable borrow rate circle */}
                 {reserve.stableBorrowRateEnabled && (
                   <Fragment key={'stable'}>
                     <circle
