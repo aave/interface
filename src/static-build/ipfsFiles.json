@@ -1455,6 +1455,35 @@
       "ipfsHash": "QmRrpBPvmhdmpCBRLhGcUZ56e82Ad8F7syVCMJXM6kP5kS",
       "originalHash": "0x344d3181f08b3186228b93bac0005a3a961238164b8b06cbb5f0428a9180b8a7",
       "id": 99
+    },
+    {
+      "title": "Add MaticX to Aave v3 Polygon Pool",
+      "status": "Proposed",
+      "author": "Llama, Matthew Graham, Rajath Alex",
+      "shortDescription": "Add MaticX to Aave v3 Polygon Pool",
+      "discussions": "https://governance.aave.com/t/proposal-to-add-maticx-to-aave-v3-polygon-market/7995",
+      "created": "2022-09-12T00:00:00.000Z",
+      "preview": "# Simple Summary\n\nLlama proposes listing MaticX on the Aave v3 …",
+      "basename": "226BEDACF8B7-AIP-ADD-MATICX-TO-AAVE-V3-POLYGON",
+      "description": "\n\n# Simple Summary\n\nLlama proposes listing MaticX on the Aave v3 Polygon Pool. MaticX is an ERC20 receipt token which represents staked MATIC and a portion of the staking rewards.\n\n# Abstract\n\nStader is building a native staking smart contract platform spanning multiple networks that enables users to develop staking-related applications. The MaticX product selects validators based upon performance, safety, decentralisation and the commission terms to ensure users receive the best user experience in supporting the Polygon Network. \n\nMaticX allows users to stake their MATIC tokens on the Ethereum mainnet or Polygon and immediately get the representation of their share in the form of MaticX token without maintaining staking infrastructure. Users will receive staking rewards whilst being able to utilise their MaticX tokens in secondary markets on Ethereum mainnet and Polygon.\n\nMaticX will be added as collateral and Users will be able to borrow against their MaticX deposits. A SupplyCap of $6M will be implemented, borrowing disabled and Matrix will be added to the 'Matic correlated' eMode. \n\n# Motivation\n\nListing MaticX on the Aave v3 Polygon Pool will allow Aave DAO to benefit from the first mover advantage and provide an alternative to Lido’s stMATIC. \n\nIn addition to being able to stake on Ethereum mainnet, MaticX allows users to stake Matic directly on Polygon through a unique instant pool mechanism while remaining on Polygon throughout. This is expected to drive staking penetration higher for MATIC with Users being able to enjoy the cheaper, faster transactions on Polygon to stake.\n\nMaticX offers users a maximum 50 hours withdrawal period, which is shorter than alternatives and is expected to support a tighter secondary spot market price relative to the fundamental value of the receipt token’s claim.\n\nWith the introduction of eMode on Aave v3, there exists the potential for users to recursive loop MaticX and wMATIC to create a significant source of yield provided borrowing rates remain accommodative. \n\n## Specification\n\nIn supporting the MaticX asset listing, this proposal creates a liquidity pool that reflects the characteristics shown below and connect the Chainlink oracle price source to AaveOracle.\n\n## Test Cases\n\nAll the components involved in this proposal (tokens' implementations, interest rate strategy, oracle feed, proposal payload) have been tested and reviewed, including simulations on mainnet of the whole proposal lifecycle.\n\nThis proposal has been tested and peer reviewed by [Bored Ghost Developing](https://twitter.com/bgdlabs).\n\nLink to Test Cases: [Here](https://github.com/llama-community/aave-v3-crosschain-maticx-listing/blob/master/src/test/PolygonMaticXE2E.t.sol)\n\n## Implementation\n\nThis proposal presents the following parameter configuration upon listing MaticX.\n\nRisk Parameters:\n\nCollateral: Yes\nBorrowing: No\nLTV: 50%\nLiquidation Threshold: 65%\nLiquidation Bonus: 10%\nReserve Factor: 20%\nChainlink Oracle: [0x5d37E4b374E6907de8Fc7fb33EE3b0af403C7403](https://polygonscan.com/address/0x5d37E4b374E6907de8Fc7fb33EE3b0af403C7403)\n\nVariable Interest Rate Parameters:\n\nUOptimal: 45%\nR_0: 0%\nR_s1: 7%\nR_s2: 300%\n\n'MATIC correlated' eMode Parameters:\n\nLTV: 92.5%\nLiquidation Threshold: 95%\nLiquidation Bonus: 1%\n \nSupply / Borrow Caps:\n\nNewSupplyCap: $6m MaticX\n\nThe governance forum proposal discussing Add MaticX on Aave v3 Polygon pool can be found [here](https://governance.aave.com/t/proposal-to-add-maticx-to-aave-v3-polygon-market/7995) and the snapshot vote can be found [here](https://snapshot.org/#/aave.eth/proposal/0x88e896a245ffeda703e0b8f5494f3e66628be6e32a7243e3341b545c2972857f). \n\nLink to Payload Implementation: [Here](https://github.com/llama-community/aave-v3-crosschain-maticx-listing/blob/master/src/contracts/polygon/MaticXPayload.sol)\n\n**Deployed Contracts**\nProposalPayload = [0xD417d07c20e31F6e129fa68182054B641FbEC8Bd](https://polygonscan.com/address/0xD417d07c20e31F6e129fa68182054B641FbEC8Bd)\n\n# Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n",
+      "ipfsHash": "QmP2YkhVbpXcTmWwPB93eSEpgPuA3TNSim2XcLubHELdhG",
+      "originalHash": "0x0a387fa966f5616423bea53801a843496b1eac5cab5e6bc9426c0958e6496e77",
+      "id": 100
+    },
+    {
+      "aip": 100,
+      "title": "Re-enable ETH Borrowing",
+      "status": "Proposed",
+      "author": "Paul Lei, Sandeep Gupta, Jonathan Reem, Nick Cannon, Watson Fu, Tony Salvatore, Sarah Chen",
+      "shortDescription": "Re-enable ETH Borrowing",
+      "discussions": "https://governance.aave.com/t/arc-re-enabling-eth-borrowing-post-merge/9657",
+      "created": "2021-09-13T00:00:00.000Z",
+      "preview": "## Simple Summary\n\nAIP-97 paused ETH borrowing on the Aave …",
+      "basename": "AIP-100",
+      "description": "## Simple Summary\n\nRe-enable ETH borrowing in the Aave V2 Ethereum market.  \n\n## Abstract\n\nAIP-97 paused ETH borrowing on the Aave V2 Ethereum market to mitigate the risk of high utilization ahead of the Ethereum Merge. Now that the Ethereum Merge has passed, this proposal re-enables ETH borrowing to revert the market back to normal conditions.  \n\n## Motivation\n\nFull details are provided in the original [forum post](https://governance.aave.com/t/arc-re-enabling-eth-borrowing-post-merge/9657).\n\nGiven the timing of the Merge, this proposal allows for a few days of monitoring post-Merge before this proposal can be executed. Should conditions turn undesirable, voters should vote No, and this proposal should be canceled. \n\n\n## Specification\n\n* The proposal calls `enableBorrowingOnReserve` with the parameters `address` = `0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2` (WETH address on mainnet) and `stableBorrowRateEnabled` as `true`.\n\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n\n*By approving this proposal, you agree that any services provided by Gauntlet shall be governed by the terms of service available at gauntlet.network/tos.*\n",
+      "ipfsHash": "QmQ9QmhRr8A7agxofKckXVN9CDgGE5tfLdYsAaf64BW8KD",
+      "originalHash": "0x1ad639a0fe12d46fdce998b69b9f9d9d13108baf13d35fea601f1017c3723364",
+      "id": 101
     }
   ]
 }
