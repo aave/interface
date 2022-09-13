@@ -265,7 +265,7 @@ jobs:
     env:
       PR_NUMBER: ${{ needs.prepare_jobs.outputs.pr_number }}
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: Comment
         uses: ./.github/actions/fork-result-comment
@@ -274,6 +274,13 @@ jobs:
           COMMENT_BODY: |
             ❌ CI run has failed!
             Please see logs at ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+
+      - name: Label
+        uses: ./.github/actions/fork-result-label
+        continue-on-error: true
+        with:
+          SUCCESS: 'false'
+          PULL_REQUEST_NUMBER: ${{ env.PR_NUMBER }}
 
   notify_success:
     runs-on: ubuntu-latest
@@ -287,7 +294,7 @@ jobs:
     env:
       PR_NUMBER: ${{ needs.prepare_jobs.outputs.pr_number }}
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: Comment
         uses: ./.github/actions/fork-result-comment
@@ -296,3 +303,10 @@ jobs:
           COMMENT_BODY: |
               ✅ CI run has succeded!
               You can find tests and deployment logs at ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+
+      - name: Label
+        uses: ./.github/actions/fork-result-label
+        continue-on-error: true
+        with:
+          SUCCESS: 'true'
+          PULL_REQUEST_NUMBER: ${{ env.PR_NUMBER }}
