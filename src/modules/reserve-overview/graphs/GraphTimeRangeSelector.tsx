@@ -2,11 +2,13 @@ import { ToggleButtonGroup, ToggleButton, Typography } from '@mui/material';
 import { ReserveRateTimeRange, reserveRateTimeRangeOptions } from 'src/hooks/useReservesHistory';
 
 export interface GraphTimeRangeSelectorProps {
+  loading?: boolean;
   timeRange: ReserveRateTimeRange;
   handleTimeRangeChanged: (value: ReserveRateTimeRange) => void;
 }
 
 export const GraphTimeRangeSelector = ({
+  loading = false,
   timeRange,
   handleTimeRangeChanged,
 }: GraphTimeRangeSelectorProps) => {
@@ -21,6 +23,7 @@ export const GraphTimeRangeSelector = ({
 
   return (
     <ToggleButtonGroup
+      disabled={loading}
       value={timeRange}
       exclusive
       onChange={handleChange}

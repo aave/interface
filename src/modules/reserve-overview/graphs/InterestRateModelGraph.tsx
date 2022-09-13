@@ -55,7 +55,6 @@ type Rate = {
 const getDate = (d: Rate) => d.utilization;
 const bisectDate = bisector<Rate, number>((d) => d.utilization).center;
 const getSupplyRate = (d: Rate) => {
-  console.log(d.supplyRate);
   return d.supplyRate ?? 0 * 100;
 };
 const getVariableBorrowRate = (d: Rate) => d.variableRate * 100;

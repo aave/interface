@@ -103,9 +103,6 @@ export const ApyGraphContainer = ({
     </Box>
   );
 
-  if (loading) return <GraphLoading />;
-  if (error) return <GraphError />;
-
   return (
     <Box sx={{ mt: 10, mb: 4 }}>
       <Box
@@ -118,15 +115,20 @@ export const ApyGraphContainer = ({
       >
         <GraphLegend labels={fields} />
         <GraphTimeRangeSelector
+          loading={loading}
           timeRange={selectedTimeRange}
           handleTimeRangeChanged={setSelectedTimeRange}
         />
       </Box>
-      <ParentSize>
-        {({ width }) => (
-          <ApyGraph width={width} height={CHART_HEIGHT} data={data} fields={fields} />
-        )}
-      </ParentSize>
+      {loading && <GraphLoading />}
+      {error && <GraphError />}
+      {!loading && !error && (
+        <ParentSize>
+          {({ width }) => (
+            <ApyGraph width={width} height={CHART_HEIGHT} data={data} fields={fields} />
+          )}
+        </ParentSize>
+      )}
     </Box>
   );
 };
