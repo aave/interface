@@ -75,17 +75,20 @@ function getRates({
   variableRateSlope2,
   stableRateSlope1,
   stableRateSlope2,
+  supplyAPR,
   optimalUsageRatio,
   baseVariableBorrowRate,
   baseStableBorrowRate,
 }: InterestRateModelType): Rate[] {
   const rates: Rate[] = [];
   const formattedOptimalUtilisationRate = normalizeBN(optimalUsageRatio, 25).toNumber();
+  const supplyRate = parseFloat(supplyAPR);
 
   for (let i = 0; i <= resolution; i++) {
     const utilization = i * step;
     if (utilization === 0) {
       rates.push({
+        supplyRate,
         stableRate: 0,
         variableRate: 0,
         utilization,
@@ -104,6 +107,7 @@ function getRates({
         27
       ).toNumber();
       rates.push({
+        supplyRate,
         stableRate: theoreticalStableAPY,
         variableRate: theoreticalVariableAPY,
         utilization,
@@ -126,6 +130,7 @@ function getRates({
         27
       ).toNumber();
       rates.push({
+        supplyRate,
         stableRate: theoreticalStableAPY,
         variableRate: theoreticalVariableAPY,
         utilization,
@@ -159,6 +164,7 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
     const theme = useTheme();
 
     const data = useMemo(() => getRates(reserve), [JSON.stringify(reserve)]);
+    console.log({ data });
 
     // bounds
     const innerWidth = width - margin.left - margin.right;
@@ -240,7 +246,7 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
               strokeWidth={2}
               data={data}
               x={(d) => dateScale(getDate(d)) ?? 0}
-              y={(d) => yValueScale(getVariableBorrowRate(d)) ?? 0}
+              y={(d) => yValueScale(getSupplyRate(d)) ?? 0}
               curve={curveMonotoneX}
             />
 
