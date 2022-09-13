@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import {
   ComputedReserveData,
+  ComputedUserReserveData,
   useAppDataContext,
 } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { SwapActions } from './SwapActions';
@@ -53,9 +54,9 @@ export const SwapModalContent = ({
   const [targetReserve, setTargetReserve] = useState<Asset>(swapTargets[0]);
   const [maxSlippage, setMaxSlippage] = useState('0.1');
 
-  const swapTarget = reserves.find(
+  const swapTarget = user.userReservesData.find(
     (r) => r.underlyingAsset === targetReserve.address
-  ) as ComputedReserveData;
+  ) as ComputedUserReserveData;
 
   // a user can never swap more then 100% of available as the txn would fail on withdraw step
   const maxAmountToSwap = BigNumber.min(
@@ -63,7 +64,7 @@ export const SwapModalContent = ({
     new BigNumber(poolReserve.availableLiquidity).multipliedBy(0.99)
   ).toString(10);
 
-  const remainingCapBn = remainingCap(swapTarget);
+  const remainingCapBn = remainingCap(swapTarget.reserve);
 
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToSwap : _amount;
@@ -74,7 +75,7 @@ export const SwapModalContent = ({
       userId: currentAccount,
       variant: 'exactIn',
       swapIn: { ...poolReserve, amount: amountRef.current },
-      swapOut: { ...swapTarget, amount: '0' },
+      swapOut: { ...swapTarget.reserve, amount: '0' },
       max: isMaxSelected,
       skip: supplyTxState.loading,
     }
@@ -96,7 +97,7 @@ export const SwapModalContent = ({
     fromAssetUserData: userReserve,
     user,
     toAmountAfterSlippage: minimumReceived,
-    toAssetData: swapTarget,
+    toAssetData: swapTarget.reserve,
   });
 
   // if the hf would drop below 1 from the hf effect a flashloan should be used to mitigate liquidation
@@ -231,8 +232,10 @@ export const SwapModalContent = ({
           showHealthFactor={showHealthFactor}
           healthFactor={user?.healthFactor}
           healthFactorAfterSwap={hfAfterSwap.toString(10)}
-          swapSource={poolReserve}
+          swapSource={userReserve}
           swapTarget={swapTarget}
+          toAmount={minimumReceived}
+          fromAmount={amount}
         />
       </TxModalDetails>
 
@@ -244,7 +247,7 @@ export const SwapModalContent = ({
         amountToSwap={inputAmount}
         amountToReceive={minimumReceived}
         isWrongNetwork={isWrongNetwork}
-        targetReserve={swapTarget}
+        targetReserve={swapTarget.reserve}
         symbol={poolReserve.symbol}
         blocked={blockingError !== undefined}
         priceRoute={priceRoute}
