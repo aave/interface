@@ -87,7 +87,8 @@ export const AssetsListItem = ({ ...reserve }: ComputedReserveData) => {
       <ListColumn>
         <IncentivesCard
           value={
-            reserve.stableBorrowRateEnabled || Number(reserve.totalStableDebtUSD) > 0
+            (reserve.borrowingEnabled && reserve.stableBorrowRateEnabled) ||
+            Number(reserve.totalStableDebtUSD) > 0
               ? reserve.stableBorrowAPY
               : -1
           }
