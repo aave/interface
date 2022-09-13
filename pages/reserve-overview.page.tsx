@@ -30,6 +30,7 @@ export default function ReserveOverview() {
   const [mode, setMode] = useState<'overview' | 'actions' | ''>('');
 
   useEffect(() => {
+    throw new Error('woah');
     if (!mode) setMode('overview');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lg]);
