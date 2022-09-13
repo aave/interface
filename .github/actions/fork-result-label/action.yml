@@ -14,22 +14,22 @@ runs:
     - name: delete success label
       uses: actions-ecosystem/action-remove-labels@v1
       with:
-          labels: "CI run has succeded!"
+          labels: "CI Passed"
           number: ${{ inputs.PULL_REQUEST_NUMBER }}
     - name: delete fail label
       uses: actions-ecosystem/action-remove-labels@v1
       with:
-          labels: "CI run has failed!"
+          labels: "CI Failed"
           number: ${{ inputs.PULL_REQUEST_NUMBER }}
     - name: adding success label
       uses: actions-ecosystem/action-add-labels@v1
       if: ${{ inputs.SUCCESS == 'true' }}
       with:
-          labels: "CI run has succeded!"
+          labels: "CI Passed"
           number: ${{ inputs.PULL_REQUEST_NUMBER }}
     - name: adding fail label
       uses: actions-ecosystem/action-add-labels@v1
       if: ${{ inputs.SUCCESS == 'false' }}
       with:
-          labels: "CI run has failed!"
+          labels: "CI Failed"
           number: ${{ inputs.PULL_REQUEST_NUMBER }}
