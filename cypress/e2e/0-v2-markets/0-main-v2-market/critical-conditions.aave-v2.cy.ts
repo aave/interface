@@ -18,6 +18,7 @@ const testData = {
       apyType: constants.borrowAPYType.variable,
       hasApproval: true,
       isRisk: true,
+      isMaxAmount: true,
     },
     deposit2: {
       asset: assets.aaveMarket.ETH,
