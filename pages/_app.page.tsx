@@ -34,7 +34,7 @@ import { Web3ReactProvider } from '@web3-react/core';
 import { providers } from 'ethers';
 import { WalletModalContextProvider } from 'src/hooks/useWalletModal';
 import { PermissionProvider } from 'src/hooks/usePermissions';
-import AaveMetaImage from 'public/aaveMetaLogo.png';
+import AaveMetaImage from 'public/aaveMetaLogo-min.jpg';
 import { FaucetModal } from 'src/components/transactions/Faucet/FaucetModal';
 import { AddressBlocked } from 'src/components/AddressBlocked';
 
