@@ -16,7 +16,7 @@ export type Fields = { name: Field; color: string; text: string }[];
 export const InteresetRateModelGraphContainer = ({
   reserve,
 }: InteresetRateModelGraphContainerProps): JSX.Element => {
-  const CHART_HEIGHT = 160;
+  const CHART_HEIGHT = 155;
   const fields: Fields = [
     { name: 'liquidityRate', text: 'Supply APR', color: '#2EBAC6' },
     { name: 'variableBorrowRate', text: 'Borrow APR, variable', color: '#B6509E' },

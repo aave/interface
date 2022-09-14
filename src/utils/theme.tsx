@@ -23,6 +23,10 @@ const FONT = 'Inter, Arial';
 declare module '@mui/material/styles/createPalette' {
   interface PaletteColor extends ColorPartial {}
 
+  interface TypeText {
+    muted: string;
+  }
+
   interface TypeBackground {
     default: string;
     paper: string;

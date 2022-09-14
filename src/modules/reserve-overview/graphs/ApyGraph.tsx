@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback, Fragment } from 'react';
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Line, Bar, LinePath } from '@visx/shape';
 import { AxisLeft, AxisBottom } from '@visx/axis';
 import { curveMonotoneX } from '@visx/curve';
@@ -11,7 +11,7 @@ import { withTooltip, defaultStyles, TooltipWithBounds } from '@visx/tooltip';
 import { WithTooltipProvidedProps } from '@visx/tooltip/lib/enhancers/withTooltip';
 import { max, extent, bisector } from 'd3-array';
 import { timeFormat } from 'd3-time-format';
-import { FormattedReserveHistoryItem } from 'src/hooks/useReservesHistory';
+import { FormattedReserveHistoryItem, ReserveRateTimeRange } from 'src/hooks/useReservesHistory';
 
 type TooltipData = FormattedReserveHistoryItem;
 
@@ -43,6 +43,7 @@ export type AreaProps = {
   margin?: { top: number; right: number; bottom: number; left: number };
   data: FormattedReserveHistoryItem[];
   fields: { name: Field; color: string; text: string }[];
+  selectedTimeRange: ReserveRateTimeRange;
 };
 
 export const ApyGraph = withTooltip<AreaProps, TooltipData>(
@@ -56,15 +57,18 @@ export const ApyGraph = withTooltip<AreaProps, TooltipData>(
     tooltipLeft = 0,
     data,
     fields,
+    selectedTimeRange,
   }: AreaProps & WithTooltipProvidedProps<TooltipData>) => {
     if (width < 10) return null;
     const theme = useTheme();
+    const isXsm = useMediaQuery(theme.breakpoints.down('xsm'));
 
     // bounds
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
     // scales
+    const xAxisNumTicks = selectedTimeRange !== '6m' || isXsm ? 3 : 4;
     const dateScale = useMemo(
       () =>
         scaleTime({
@@ -137,11 +141,13 @@ export const ApyGraph = withTooltip<AreaProps, TooltipData>(
               top={innerHeight - margin.bottom / 4}
               scale={dateScale}
               strokeWidth={0}
+              numTicks={xAxisNumTicks}
               tickStroke={theme.palette.text.secondary}
               tickLabelProps={() => ({
-                fill: theme.palette.text.secondary,
-                fontSize: 8,
+                fill: theme.palette.text.muted,
+                fontSize: 10,
                 dx: -8,
+                dy: 4,
               })}
             />
 
@@ -150,13 +156,13 @@ export const ApyGraph = withTooltip<AreaProps, TooltipData>(
               left={0}
               scale={yValueScale}
               strokeWidth={0}
-              tickLabelProps={() => ({
-                fill: theme.palette.text.secondary,
-                fontSize: 8,
-                dx: -margin.left + 8,
-              })}
               numTicks={3}
-              tickFormat={(value) => `${(value as number).toFixed(2)} %`}
+              tickFormat={(value) => `${value}%`}
+              tickLabelProps={() => ({
+                fill: theme.palette.text.muted,
+                fontSize: 10,
+                dx: -margin.left + 10,
+              })}
             />
 
             {/* Background */}
@@ -188,10 +194,10 @@ export const ApyGraph = withTooltip<AreaProps, TooltipData>(
                         cx={tooltipLeft}
                         cy={yValueScale(getData(tooltipData, field.name)) + 1}
                         r={4}
-                        fill="black"
-                        fillOpacity={0.1}
-                        stroke="black"
-                        strokeOpacity={0.1}
+                        fill={field.color}
+                        // fillOpacity={0.1}
+                        stroke={field.color}
+                        // strokeOpacity={0.1}
                         strokeWidth={2}
                         pointerEvents="none"
                       />

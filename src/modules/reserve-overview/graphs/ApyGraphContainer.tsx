@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import { ParentSize } from '@visx/responsive';
 import type { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ReserveRateTimeRange, useReserveRatesHistory } from 'src/hooks/useReservesHistory';
@@ -34,7 +34,7 @@ export const ApyGraphContainer = ({
 }: ApyGraphContainerProps): JSX.Element => {
   const [selectedTimeRange, setSelectedTimeRange] = useState<ReserveRateTimeRange>('1m');
 
-  const CHART_HEIGHT = 160;
+  const CHART_HEIGHT = 155;
   const reserveAddress = reserve ? `${reserve.underlyingAsset}${lendingPoolAddressProvider}` : '';
   const { data, loading, error, refetch } = useReserveRatesHistory(
     reserveAddress,
@@ -70,12 +70,14 @@ export const ApyGraphContainer = ({
         height: CHART_HEIGHT,
         width: 'auto',
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
       }}
     >
+      <CircularProgress size={20} color="primary" sx={{ mb: 2 }} />
       <Typography variant="subheader1" color="text.muted">
-        <Trans>Loading data...</Trans>
+        <Trans>Loading data</Trans>
       </Typography>
     </Box>
   );
@@ -103,7 +105,6 @@ export const ApyGraphContainer = ({
     </Box>
   );
 
-  console.log({ data });
   return (
     <Box sx={{ mt: 10, mb: 4 }}>
       <Box
@@ -126,7 +127,13 @@ export const ApyGraphContainer = ({
       {!loading && !error && data.length > 0 && (
         <ParentSize>
           {({ width }) => (
-            <ApyGraph width={width} height={CHART_HEIGHT} data={data} fields={fields} />
+            <ApyGraph
+              width={width}
+              height={CHART_HEIGHT}
+              data={data}
+              fields={fields}
+              selectedTimeRange={selectedTimeRange}
+            />
           )}
         </ParentSize>
       )}

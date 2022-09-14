@@ -286,9 +286,9 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
               scale={yValueScale}
               strokeWidth={0}
               tickLabelProps={() => ({
-                fill: theme.palette.text.secondary,
+                fill: theme.palette.text.muted,
                 fontSize: 8,
-                dx: -margin.left + 8,
+                dx: -margin.left + 6,
               })}
               numTicks={2}
               tickFormat={(value) => `${(value as number).toFixed(2)} %`}
