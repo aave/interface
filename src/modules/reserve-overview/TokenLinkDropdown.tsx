@@ -99,7 +99,7 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
             </Typography>
           </MenuItem>
         )}
-        {poolReserve.stableBorrowRateEnabled && (
+        {poolReserve.borrowingEnabled && poolReserve.stableBorrowRateEnabled && (
           <MenuItem
             component="a"
             href={currentNetworkConfig.explorerLinkBuilder({
@@ -113,6 +113,18 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
             </Typography>
           </MenuItem>
         )}
+        <MenuItem
+          component="a"
+          href={currentNetworkConfig.explorerLinkBuilder({
+            address: poolReserve?.interestRateStrategyAddress,
+          })}
+          target="_blank"
+        >
+          <TokenIcon symbol="default" sx={{ fontSize: '20px' }} />
+          <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
+            Interest rate strategy
+          </Typography>
+        </MenuItem>
       </Menu>
     </>
   );
