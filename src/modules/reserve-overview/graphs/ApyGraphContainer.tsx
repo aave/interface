@@ -123,11 +123,12 @@ export const ApyGraphContainer = ({
       {loading && <GraphLoading />}
       {error && <GraphError />}
       {!loading && !error && (
-        <ParentSize>
-          {({ width }) => (
-            <ApyGraph width={width} height={CHART_HEIGHT} data={data} fields={fields} />
-          )}
-        </ParentSize>
+        <GraphError />
+        // <ParentSize>
+        //   {({ width }) => (
+        //     <ApyGraph width={width} height={CHART_HEIGHT} data={data} fields={fields} />
+        //   )}
+        // </ParentSize>
       )}
     </Box>
   );

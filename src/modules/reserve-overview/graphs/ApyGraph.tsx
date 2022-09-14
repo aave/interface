@@ -155,7 +155,7 @@ export const ApyGraph = withTooltip<AreaProps, TooltipData>(
                 fontSize: 8,
                 dx: -margin.left + 8,
               })}
-              numTicks={5}
+              numTicks={3}
               tickFormat={(value) => `${(value as number).toFixed(2)} %`}
             />
 
