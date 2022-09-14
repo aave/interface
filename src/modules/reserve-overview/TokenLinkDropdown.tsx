@@ -56,7 +56,7 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
       >
         <Box sx={{ px: '16px', py: '12px', width: '240px' }}>
           <Typography variant="secondary12" color="text.secondary">
-            <Trans>Select token to view in block explorer</Trans>
+            <Trans>Select address to view in block explorer</Trans>
           </Typography>
         </Box>
 
