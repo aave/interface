@@ -1392,6 +1392,10 @@ msgstr "Stable borrowing is enabled"
 msgid "Stable borrowing is not enabled"
 msgstr "Stable borrowing is not enabled"
 
+#: src/modules/reserve-overview/TokenLinkDropdown.tsx
+msgid "Stable debt"
+msgstr "Stable debt"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Stable debt supply is not zero"
 msgstr "Stable debt supply is not zero"
@@ -1845,6 +1849,10 @@ msgstr "VOTE YAE"
 msgid "Variable"
 msgstr "Variable"
 
+#: src/modules/reserve-overview/TokenLinkDropdown.tsx
+msgid "Variable debt"
+msgstr "Variable debt"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Variable debt supply is not zero"
 msgstr "Variable debt supply is not zero"
@@ -2107,6 +2115,10 @@ msgstr "ends"
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "here."
 msgstr "here."
+
+#: src/modules/reserve-overview/TokenLinkDropdown.tsx
+msgid "interest rate strategy"
+msgstr "interest rate strategy"
 
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "is an asset affected by rebasing. Visit the"

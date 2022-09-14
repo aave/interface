@@ -95,7 +95,8 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
           >
             <TokenIcon symbol="default" sx={{ fontSize: '20px' }} />
             <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
-              {'Variable debt ' + poolReserve.symbol}
+              <Trans>Variable debt</Trans>
+              {' ' + poolReserve.symbol}
             </Typography>
           </MenuItem>
         )}
@@ -109,7 +110,8 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
           >
             <TokenIcon symbol="default" sx={{ fontSize: '20px' }} />
             <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
-              {'Stable debt ' + poolReserve.symbol}
+              <Trans>Stable debt</Trans>
+              {' ' + poolReserve.symbol}
             </Typography>
           </MenuItem>
         )}
@@ -122,7 +124,8 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
         >
           <TokenIcon symbol="default" sx={{ fontSize: '20px' }} />
           <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
-            Interest rate strategy
+            {poolReserve.symbol + ' '}
+            <Trans>interest rate strategy</Trans>
           </Typography>
         </MenuItem>
       </Menu>
