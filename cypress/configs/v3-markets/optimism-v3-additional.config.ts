@@ -7,8 +7,8 @@ export default defineConfig({
   ...defaultConfig,
   e2e: {
     specPattern: [
-      folder + "critical-conditions.optimism-v3.cy.ts",
-      folder + "e-mode.optimism-v3.cy.ts",
+      folder + 'critical-conditions.optimism-v3.cy.ts',
+      folder + 'e-mode.optimism-v3.cy.ts',
     ],
   },
 });
