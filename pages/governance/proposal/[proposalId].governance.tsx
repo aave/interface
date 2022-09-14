@@ -15,16 +15,20 @@ import {
   useTheme,
 } from '@mui/material';
 import dayjs from 'dayjs';
+import AaveMetaImage from 'public/aaveMetaLogo-min.jpg';
 import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Meta } from 'src/components/Meta';
 import { CheckBadge } from 'src/components/primitives/CheckBadge';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
+import { GovVoteModal } from 'src/components/transactions/GovVote/GovVoteModal';
 import { GovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
 import { usePolling } from 'src/hooks/usePolling';
 import { MainLayout } from 'src/layouts/MainLayout';
+import { FormattedProposalTime } from 'src/modules/governance/FormattedProposalTime';
 import { ProposalTopPanel } from 'src/modules/governance/proposal/ProposalTopPanel';
 import { VoteInfo } from 'src/modules/governance/proposal/VoteInfo';
 import { StateBadge } from 'src/modules/governance/StateBadge';
@@ -38,12 +42,8 @@ import { VoteBar } from 'src/modules/governance/VoteBar';
 import { Ipfs, IpfsType } from 'src/static-build/ipfs';
 import { CustomProposalType, Proposal } from 'src/static-build/proposal';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
-import { Link } from 'src/components/primitives/Link';
-import AaveMetaImage from 'public/aaveMetaLogo-min.jpg';
 
 import { ContentContainer } from '../../../src/components/ContentContainer';
-import { GovVoteModal } from 'src/components/transactions/GovVote/GovVoteModal';
-import { FormattedProposalTime } from 'src/modules/governance/FormattedProposalTime';
 // import { Vote } from 'src/static-build/vote';
 
 export async function getStaticPaths() {

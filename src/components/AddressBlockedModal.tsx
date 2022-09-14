@@ -1,6 +1,7 @@
 import { ExclamationCircleIcon, LogoutIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Button, SvgIcon, Typography } from '@mui/material';
+
 import { BasicModal } from './primitives/BasicModal';
 import { Link } from './primitives/Link';
 

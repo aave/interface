@@ -2,9 +2,9 @@ import { ExclamationIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, SvgIcon } from '@mui/material';
 
+import { frozenProposalMap } from '../../utils/marketsAndNetworksConfig';
 import { ContentWithTooltip } from '../ContentWithTooltip';
 import { Link } from '../primitives/Link';
-import { frozenProposalMap } from '../../utils/marketsAndNetworksConfig';
 
 interface FrozenWarningProps {
   symbol?: string;

@@ -1,6 +1,6 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Typography, Box, Button, useTheme } from '@mui/material';
+import { Box, Button, Typography, useTheme } from '@mui/material';
 import { TypographyProps } from '@mui/material/Typography';
 import BigNumber from 'bignumber.js';
 

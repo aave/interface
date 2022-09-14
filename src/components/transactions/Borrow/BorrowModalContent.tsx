@@ -16,6 +16,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
+
 import { CapType } from '../../caps/helper';
 import { AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
