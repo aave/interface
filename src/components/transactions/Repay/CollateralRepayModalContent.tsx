@@ -249,7 +249,7 @@ export function CollateralRepayModalContent({
         symbol={tokenToRepayWith.symbol}
         assets={repayTokens}
         onSelect={setTokenToRepayWith}
-        onChange={() => console.log('changed')} // TODO: we don't need a change handler here, but removing it also removes the balance and usd value from the component, we should fix that
+        onChange={handleRepayAmountChange}
         inputTitle={<Trans>Collateral to repay with</Trans>}
         maxValue={tokenToRepayWithBalance}
         disableInput
