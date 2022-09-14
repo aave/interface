@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography } from '@mui/material';
-import { ParentSize } from '@visx/responsive';
+// import { ParentSize } from '@visx/responsive';
 import type { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ReserveRateTimeRange, useReserveRatesHistory } from 'src/hooks/useReservesHistory';
-import { ApyGraph } from './ApyGraph';
+// import { ApyGraph } from './ApyGraph';
 import { GraphLegend } from './GraphLegend';
 import { GraphTimeRangeSelector } from './GraphTimeRangeSelector';
 
@@ -36,7 +36,7 @@ export const ApyGraphContainer = ({
 
   const CHART_HEIGHT = 160;
   const reserveAddress = reserve ? `${reserve.underlyingAsset}${lendingPoolAddressProvider}` : '';
-  const { data, loading, error, refetch } = useReserveRatesHistory(
+  const { /*data, */ loading, error, refetch } = useReserveRatesHistory(
     reserveAddress,
     selectedTimeRange
   );
