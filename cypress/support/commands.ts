@@ -1,28 +1,51 @@
-import 'cypress-wait-until';
-
-// import { ChainId } from '@aave/contract-helpers';
-// import { MARKETS } from './steps/common';
-// import { configEnvWithTenderly } from './steps/configuration.steps';
-
-// https://github.com/quasarframework/quasar/issues/2233
-const resizeObserverLoopErrRe = /^[^(ResizeObserver loop limit exceeded)]/;
-Cypress.on('uncaught:exception', (err) => {
-  /* returning false here prevents Cypress from failing the test */
-  if (resizeObserverLoopErrRe.test(err.message)) {
-    return false;
+declare global {
+  namespace Cypress {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    interface Chainable {
+      /**
+       * This will set amount in Modal
+       * @param amount number
+       * @param max boolean optional
+       * @example cy.setAmount('137')
+       */
+      setAmount(amount: number, max?: boolean): void
+      doConfirm(hasApproval:boolean, actionName?:string, assetName?:string):void
+    }
   }
-});
+}
 
-// Cypress.Commands.add('initFork', (market, tokens = []) => {
-//   if (!Object.keys(MARKETS).includes(market)) throw new Error(`not sure how to setup ${market}`);
-//   if (market === MARKETS.fork_proto_mainnet)
-//     configEnvWithTenderly({ chainId: ChainId.mainnet, market, tokens });
-//   if (market === MARKETS.fork_amm_mainnet)
-//     configEnvWithTenderly({ chainId: ChainId.mainnet, market, tokens });
-//   if (market === MARKETS.fork_proto_avalanche)
-//     configEnvWithTenderly({ chainId: ChainId.avalanche, market, tokens });
-//   if (market === MARKETS.fork_proto_matic)
-//     configEnvWithTenderly({ chainId: ChainId.polygon, market, tokens });
-// });
+Cypress.Commands.add('setAmount', (amount:number, max?:boolean) => {
+  cy.get('[data-cy=Modal]').find('button:contains("Enter an amount")').should('be.disabled');
+  if (max) {
+    cy.get('[data-cy=Modal]').find('button:contains("Max")').click();
+  } else {
+    cy.get('[data-cy=Modal] input').first().type(amount.toString());
+  }
+})
+
+Cypress.Commands.add('doConfirm', (hasApproval:boolean, actionName?:string, assetName?:string) => {
+  cy.log(`${hasApproval ? 'One step process' : 'Two step process'}`)
+  if (!hasApproval) {
+    cy.get(`[data-cy=approvalButton]`, { timeout: 20000 })
+      .should('not.be.disabled')
+      // .wait(1000)
+      .click();
+  }
+  cy.get('[data-cy=actionButton]', { timeout: 30000 })
+    .should('not.be.disabled')
+    .then(($btn) => {
+      if (assetName && actionName) {
+        expect($btn.first()).to.contain(`${actionName} ${assetName}`);
+      }
+      if (assetName && !actionName) {
+        expect($btn.first()).to.contain(`${actionName}`);
+      }
+    })
+    // .wait(3000)
+    .click();
+  cy.get("[data-cy=Modal] h2:contains('All done!')").should('be.visible');
+})
+
+
 
 export {};

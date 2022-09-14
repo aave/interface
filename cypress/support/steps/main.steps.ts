@@ -1,7 +1,5 @@
 /// <reference types="cypress" />
 import {
-  setAmount,
-  doConfirm,
   getDashBoardBorrowRow,
   getDashBoardDepositRow,
   doCloseModal,
@@ -57,15 +55,8 @@ export const supply = (
       cy.get(`[data-cy=Modal] h2:contains("Supply ${_shortName}")`).should('be.visible');
     });
     it(`Supply ${isMaxAmount ? 'MAX' : amount} amount for ${_shortName}`, () => {
-      setAmount({
-        amount,
-        max: isMaxAmount,
-      });
-      doConfirm({
-        hasApproval,
-        actionName: _actionName,
-        assetName: _shortName,
-      });
+      cy.setAmount(amount, isMaxAmount)
+      cy.doConfirm(hasApproval, _actionName, _shortName)
     });
     doCloseModal();
   });
@@ -97,7 +88,6 @@ export const borrow = (
     skipSetup({ skip, updateSkipStatus });
     it(`Open ${_shortName} borrow popup view`, () => {
       doSwitchToDashboardBorrowView();
-      cy.wait(4000);
       cy.get(`[data-cy='dashboardBorrowListItem_${_shortName.toUpperCase()}']`)
         .contains('Borrow')
         .should('not.be.disabled')
@@ -119,10 +109,7 @@ export const borrow = (
       }
     });
     it(`Borrow ${isMaxAmount ? 'MAX' : amount} amount for ${_shortName}`, () => {
-      setAmount({
-        amount,
-        max: isMaxAmount,
-      });
+      cy.setAmount(amount, isMaxAmount );
     });
     if (isRisk) {
       it(`Click risk checkbox`, () => {
@@ -130,11 +117,7 @@ export const borrow = (
       });
     }
     it(`Confirmation process`, () => {
-      doConfirm({
-        hasApproval,
-        actionName: _actionName,
-        assetName: _shortName,
-      });
+      cy.doConfirm(hasApproval, _actionName, _shortName);
     });
     doCloseModal();
   });
@@ -209,15 +192,8 @@ export const repay = (
     it(`Repay ${
       isMaxAmount ? 'MAX' : amount
     } amount for ${_shortName}, with ${repayOption} repay option`, () => {
-      setAmount({
-        amount,
-        max: isMaxAmount,
-      });
-      doConfirm({
-        hasApproval,
-        actionName: _actionName,
-        assetName: _shortName,
-      });
+      cy.setAmount(amount, isMaxAmount);
+      cy.doConfirm(hasApproval, _actionName, _shortName);
     });
     doCloseModal();
   });
@@ -266,10 +242,7 @@ export const withdraw = (
     });
     it(`Withdraw ${isMaxAmount ? 'MAX' : amount} amount for ${_shortName}`, () => {
       if (isMaxAmount) cy.wait(2000);
-      setAmount({
-        amount,
-        max: isMaxAmount,
-      });
+      cy.setAmount(amount, isMaxAmount)
     });
     if (isRisk) {
       it(`Click risk checkbox`, () => {
@@ -277,11 +250,7 @@ export const withdraw = (
       });
     }
     it(`Confirmation process`, () => {
-      doConfirm({
-        hasApproval,
-        actionName: _actionName,
-        assetName: forWrapped ? 'W' + _shortName : _shortName,
-      });
+      cy.doConfirm(hasApproval, _actionName, forWrapped ? 'W' + _shortName : _shortName)
     });
     doCloseModal();
   });
@@ -317,10 +286,7 @@ export const changeBorrowType = (
       cy.get(`[data-cy="apyMenu_${apyType}"]`).contains(`APY, ${newAPY.toLowerCase()}`).click();
     });
     it(`Make approve for ${_shortName}, on confirmation page`, () => {
-      doConfirm({
-        hasApproval,
-        actionName: _actionName,
-      });
+      cy.doConfirm(hasApproval, _actionName)
     });
     doCloseModal();
   });
@@ -369,14 +335,8 @@ export const swap = (
       }).should('be.visible', { timeout: 10000 });
     });
     it(`Make approve for ${isMaxAmount ? 'MAX' : amount} amount`, () => {
-      setAmount({
-        amount,
-        max: isMaxAmount,
-      });
-      doConfirm({
-        hasApproval,
-        actionName: _actionName,
-      });
+      cy.setAmount(amount, isMaxAmount);
+      cy.doConfirm(hasApproval, _actionName);
     });
     doCloseModal();
   });
@@ -443,11 +403,7 @@ export const claimReward = (
       cy.get('[data-cy=Dashboard_Claim_Button]').click();
     });
     it('Confirm claim', () => {
-      doConfirm({
-        hasApproval: true,
-        actionName: 'Claim',
-        assetName: asset.shortName,
-      });
+      cy.doConfirm(true, 'Claim', asset.shortName)
     });
     doCloseModal();
   });
@@ -526,10 +482,7 @@ export const emodeActivating = (
     }
     it(`Sign ${turnOn ? 'Turn on E-mode' : 'Turn off E-mode'}`, () => {
       const actionName = turnOn ? 'Enable E-Mode' : 'Disable E-Mode';
-      doConfirm({
-        hasApproval: true,
-        actionName,
-      });
+      cy.doConfirm(true, actionName)
     });
     doCloseModal();
     it(`Check that E-mode was ${turnOn ? 'on' : 'off'}`, () => {
