@@ -842,6 +842,10 @@ msgstr "Inconsistent flashloan parameters"
 msgid "Interest rate rebalance conditions were not met"
 msgstr "Interest rate rebalance conditions were not met"
 
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Interest rate strategy"
+msgstr "Interest rate strategy"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid amount to burn"
 msgstr "Invalid amount to burn"

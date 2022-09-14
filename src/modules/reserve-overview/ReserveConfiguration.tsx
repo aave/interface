@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Alert, Box, Divider, SvgIcon, Typography } from '@mui/material';
+import { Alert, Box, Button, Divider, SvgIcon, Typography } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
@@ -26,6 +26,7 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { ApyGraphContainer } from './graphs/ApyGraphContainer';
 import { InteresetRateModelGraphContainer } from './graphs/InterestRateModelGraphContainer';
 import { PanelRow, PanelTitle, PanelItem } from './ReservePanels';
+import { ExternalLinkIcon } from '@heroicons/react/solid';
 
 type ReserveConfigurationProps = {
   reserve: ComputedReserveData;
@@ -613,6 +614,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                   display: 'flex',
                   alignItems: 'center',
                   flexWrap: 'wrap',
+                  justifyContent: 'space-between',
                 }}
               >
                 <PanelItem title={<Trans>Utilization Rate</Trans>}>
@@ -623,6 +625,24 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                     compact
                   />
                 </PanelItem>
+                <Button
+                  href={currentNetworkConfig.explorerLinkBuilder({
+                    address: reserve.interestRateStrategyAddress,
+                  })}
+                  endIcon={
+                    <SvgIcon sx={{ width: 14, height: 14 }}>
+                      <ExternalLinkIcon />
+                    </SvgIcon>
+                  }
+                  component={Link}
+                  size="small"
+                  variant="outlined"
+                  sx={{ verticalAlign: 'top' }}
+                >
+                  <Typography variant="buttonS">
+                    <Trans>Interest rate strategy</Trans>
+                  </Typography>
+                </Button>
               </Box>
               <InteresetRateModelGraphContainer reserve={reserve} />
             </Box>
