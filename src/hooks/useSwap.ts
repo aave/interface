@@ -55,9 +55,10 @@ type UseSwapProps = {
 };
 
 const MESSAGE_MAP = {
-  ESTIMATED_LOSS_GREATER_THAN_MAX_IMPACT: 'Price impact to high',
+  ESTIMATED_LOSS_GREATER_THAN_MAX_IMPACT:
+    'Price impact too high. Please try a different amount or asset pair.',
   // not sure why this error-code is not upper-cased
-  'No routes found with enough liquidity': 'No routes found with enough liquidity',
+  'No routes found with enough liquidity': 'No routes found with enough liquidity.',
 };
 
 export const useCollateralRepaySwap = ({

@@ -219,15 +219,17 @@ export const DetailsIncentivesLine = ({
   if (!incentives || incentives.filter((i) => i.incentiveAPR !== '0').length === 0) return null;
   return (
     <Row caption={<Trans>Rewards APR</Trans>} captionVariant="description" mb={4} minHeight={24}>
-      <IncentivesButton incentives={incentives} symbol={symbol} />
-      {futureSymbol && (
-        <>
-          <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-            <ArrowNarrowRightIcon />
-          </SvgIcon>
-          <IncentivesButton incentives={futureIncentives} symbol={futureSymbol} />
-        </>
-      )}
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <IncentivesButton incentives={incentives} symbol={symbol} />
+        {futureSymbol && (
+          <>
+            <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+              <ArrowNarrowRightIcon />
+            </SvgIcon>
+            <IncentivesButton incentives={futureIncentives} symbol={futureSymbol} />
+          </>
+        )}
+      </Box>
     </Row>
   );
 };

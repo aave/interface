@@ -378,6 +378,7 @@ msgstr "CLAIM {symbol}"
 msgid "CLAIMING {symbol}"
 msgstr "CLAIMING {symbol}"
 
+#: src/components/transactions/Swap/SwapModalDetails.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
@@ -542,6 +543,10 @@ msgstr "Dashboard"
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 msgid "Debt"
 msgstr "Debt"
+
+#: src/components/caps/DebtCeilingStatus.tsx
+msgid "Debt Ceiling"
+msgstr "Debt Ceiling"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Debt ceiling is exceeded"
@@ -940,6 +945,7 @@ msgstr "Liquidation risk"
 msgid "Liquidation risk parameters"
 msgstr "Liquidation risk parameters"
 
+#: src/components/transactions/Swap/SwapModalDetails.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Liquidation threshold"
@@ -979,10 +985,6 @@ msgstr "Max LTV"
 msgid "Max slashing"
 msgstr "Max slashing"
 
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "Max slippage rate"
-msgstr "Max slippage rate"
-
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 msgid "Maximum amount available to borrow against this asset is limited because debt ceiling is at {0}%."
 msgstr "Maximum amount available to borrow against this asset is limited because debt ceiling is at {0}%."
@@ -1007,10 +1009,6 @@ msgstr "Maximum loan to value"
 #: src/layouts/MobileMenu.tsx
 msgid "Menu"
 msgstr "Menu"
-
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "Minimum received"
-msgstr "Minimum received"
 
 #: src/layouts/MoreMenu.tsx
 msgid "More"
@@ -1051,6 +1049,10 @@ msgstr "Network not supported for this wallet"
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "New APY"
 msgstr "New APY"
+
+#: src/components/transactions/Swap/SwapModalDetails.tsx
+msgid "No"
+msgstr "No"
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 msgid "No rewards to claim"
@@ -1171,11 +1173,8 @@ msgstr "Pool addresses provider is not registered"
 msgid "Powered by"
 msgstr "Powered by"
 
-#: src/components/transactions/Swap/SwapModalContent.tsx
-msgid "Price impact"
-msgstr "Price impact"
-
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+#: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Price impact <0/>%"
 msgstr "Price impact <0/>%"
 
@@ -1478,6 +1477,10 @@ msgstr "State"
 msgid "Supplied"
 msgstr "Supplied"
 
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Supplied asset amount"
+msgstr "Supplied asset amount"
+
 #: pages/index.page.tsx
 #: src/components/transactions/Supply/SupplyModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
@@ -1496,7 +1499,7 @@ msgstr "Supply"
 msgid "Supply APY"
 msgstr "Supply APY"
 
-#: src/components/transactions/Swap/SwapModalContent.tsx
+#: src/components/transactions/Swap/SwapModalDetails.tsx
 msgid "Supply apy"
 msgstr "Supply apy"
 
@@ -1505,6 +1508,10 @@ msgstr "Supply apy"
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 msgid "Supply balance"
 msgstr "Supply balance"
+
+#: src/components/transactions/Swap/SwapModalDetails.tsx
+msgid "Supply balance after swap"
+msgstr "Supply balance after swap"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Supply cap is exceeded"
@@ -1532,6 +1539,10 @@ msgstr "Supplying {symbol}"
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Swap"
 msgstr "Swap"
+
+#: src/components/transactions/Swap/SwapModalContent.tsx
+msgid "Swap to"
+msgstr "Swap to"
 
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Swapped"
@@ -1984,6 +1995,10 @@ msgstr "Wrong Network"
 #: src/modules/governance/VoteBar.tsx
 msgid "YAE"
 msgstr "YAE"
+
+#: src/components/transactions/Swap/SwapModalDetails.tsx
+msgid "Yes"
+msgstr "Yes"
 
 #: src/components/transactions/Warnings/IsolationModeWarning.tsx
 msgid "You are entering Isolation mode"
