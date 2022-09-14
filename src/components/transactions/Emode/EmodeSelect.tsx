@@ -11,7 +11,6 @@ export type EmodeSelectProps = {
   emodeCategories: Record<number, EmodeCategory>;
   selectedEmode: number | undefined;
   setSelectedEmode: React.Dispatch<React.SetStateAction<EmodeCategory | undefined>>;
-  baseAssetSymbol: string;
   userEmode: number;
 };
 
@@ -19,7 +18,6 @@ export const EmodeSelect = ({
   emodeCategories,
   selectedEmode,
   setSelectedEmode,
-  baseAssetSymbol,
   userEmode,
 }: EmodeSelectProps) => {
   return (
@@ -62,7 +60,7 @@ export const EmodeSelect = ({
           if (emode !== 0) {
             return (
               <Typography color="text.primary">
-                {getEmodeMessage(emodeCategories[emode].id, baseAssetSymbol)}
+                {getEmodeMessage(emodeCategories[emode].label)}
               </Typography>
             );
           } else {
@@ -83,7 +81,7 @@ export const EmodeSelect = ({
               >
                 {
                   <Typography color="text.primary">
-                    {getEmodeMessage(emodeCategories[Number(categoryKey)].id, baseAssetSymbol)}
+                    {getEmodeMessage(emodeCategories[Number(categoryKey)].label)}
                   </Typography>
                 }
               </MenuItem>

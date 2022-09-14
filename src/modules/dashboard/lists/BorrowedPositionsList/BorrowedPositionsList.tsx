@@ -23,7 +23,7 @@ import { BorrowedPositionsListMobileItem } from './BorrowedPositionsListMobileIt
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 
 export const BorrowedPositionsList = () => {
-  const { user, loading, reserves } = useAppDataContext();
+  const { user, loading } = useAppDataContext();
   const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
@@ -85,11 +85,7 @@ export const BorrowedPositionsList = () => {
       localStorageName="borrowedAssetsDashboardTableCollapse"
       subTitleComponent={
         currentMarketData.v3 ? (
-          <DashboardEModeButton
-            userEmodeCategoryId={user.userEmodeCategoryId}
-            baseAssetSymbol={currentNetworkConfig.baseAssetSymbol}
-            reserves={reserves}
-          />
+          <DashboardEModeButton userEmodeCategoryId={user.userEmodeCategoryId} />
         ) : undefined
       }
       noData={!borrowPositions.length}
