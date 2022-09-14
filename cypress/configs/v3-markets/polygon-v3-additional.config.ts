@@ -9,11 +9,11 @@ export default defineConfig({
   ...defaultConfig,
   e2e: {
     specPattern: [
-      folder + "swap.polygon-v3.cy.ts",
-      folder + "e-mode.polygon-v3.cy.ts",
-      folder + "isolated-mode.polygon-v3.cy.ts",
-      folder + "isolated-and-emode.polygon-v3.cy.ts",
-      folder + "critical-conditions.polygon-v3.cy.ts",
+      folder + 'swap.polygon-v3.cy.ts',
+      folder + 'e-mode.polygon-v3.cy.ts',
+      folder + 'isolated-mode.polygon-v3.cy.ts',
+      folder + 'isolated-and-emode.polygon-v3.cy.ts',
+      folder + 'critical-conditions.polygon-v3.cy.ts',
     ],
   },
 });

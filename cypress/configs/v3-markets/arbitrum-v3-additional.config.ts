@@ -7,8 +7,8 @@ export default defineConfig({
   ...defaultConfig,
   e2e: {
     specPattern: [
-      folder + "e-mode.arbitrum-v3.cy.ts",
-      folder + "critical-conditions.arbitrum-v3.cy.ts",
+      folder + 'e-mode.arbitrum-v3.cy.ts',
+      folder + 'critical-conditions.arbitrum-v3.cy.ts',
     ],
   },
 });

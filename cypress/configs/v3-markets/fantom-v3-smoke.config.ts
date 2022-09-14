@@ -7,8 +7,8 @@ export default defineConfig({
   ...defaultConfig,
   e2e: {
     specPattern: [
-      folder + "0-assets/ftm.fantom-v3.cy.ts",
-      folder + "0-assets/usdt.fantom-v3.cy.ts",
+      folder + '0-assets/ftm.fantom-v3.cy.ts',
+      folder + '0-assets/usdt.fantom-v3.cy.ts',
     ],
   },
 });

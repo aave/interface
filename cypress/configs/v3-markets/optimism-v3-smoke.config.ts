@@ -7,8 +7,8 @@ export default defineConfig({
   ...defaultConfig,
   e2e: {
     specPattern: [
-      folder + "0-assets/eth.optimism-v3.cy.ts",
-      folder + "0-assets/usdt.optimism-v3.cy.ts",
+      folder + '0-assets/eth.optimism-v3.cy.ts',
+      folder + '0-assets/usdt.optimism-v3.cy.ts',
     ],
   },
 });

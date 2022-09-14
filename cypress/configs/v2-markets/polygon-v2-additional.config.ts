@@ -7,8 +7,8 @@ export default defineConfig({
   ...defaultConfig,
   e2e: {
     specPattern: [
-      folder + "swap.polygon-v2.cy.ts",
-      folder + "critical-conditions.polygon-v2.cy.ts",
+      folder + 'swap.polygon-v2.cy.ts',
+      folder + 'critical-conditions.polygon-v2.cy.ts',
     ],
   },
 });
