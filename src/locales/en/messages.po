@@ -943,8 +943,8 @@ msgid "Liquidation value"
 msgstr "Liquidation value"
 
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
-msgid "Loading data..."
-msgstr "Loading data..."
+msgid "Loading data"
+msgstr "Loading data"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Ltv validation failed"
