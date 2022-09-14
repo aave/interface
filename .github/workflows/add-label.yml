@@ -16,6 +16,15 @@ jobs:
     outputs:
       pr_number: '${{ steps.get_pr_number.outputs.pr_number }}'
     steps:
+      - name: Download PR info
+        uses: dawidd6/action-download-artifact@ea71f332a90fd52416b1629b933dcf7e0ccd421d # v2.22.0
+        with:
+          workflow: build-fork.yml
+          run_id: "${{ github.event.workflow_run.id }}"
+          workflow_conclusion: ""
+          name: pr
+          path: ./
+          
       - name: Get PR number
         shell: sh
         id: get_pr_number
