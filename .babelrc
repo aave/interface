@@ -1,5 +1,4 @@
 {
   "presets": ["next/babel"],
-    
   "plugins": ["macros", "@babel/plugin-proposal-class-properties"]
 }
