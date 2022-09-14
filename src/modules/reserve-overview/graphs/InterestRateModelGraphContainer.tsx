@@ -1,10 +1,7 @@
-import { useState } from 'react';
 import { Box } from '@mui/material';
 import { ParentSize } from '@visx/responsive';
 import type { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { ReserveRateTimeRange } from 'src/hooks/useReservesHistory';
 import { GraphLegend } from './GraphLegend';
-import { GraphTimeRangeSelector } from './GraphTimeRangeSelector';
 import { InterestRateModelGraph } from './InterestRateModelGraph';
 
 type InteresetRateModelGraphContainerProps = {
@@ -19,8 +16,6 @@ export type Fields = { name: Field; color: string; text: string }[];
 export const InteresetRateModelGraphContainer = ({
   reserve,
 }: InteresetRateModelGraphContainerProps): JSX.Element => {
-  const [selectedTimeRange, setSelectedTimeRange] = useState<ReserveRateTimeRange>('1m');
-
   const CHART_HEIGHT = 160;
   const fields: Fields = [
     { name: 'liquidityRate', text: 'Supply APR', color: '#2EBAC6' },
@@ -41,10 +36,6 @@ export const InteresetRateModelGraphContainer = ({
         }}
       >
         <GraphLegend labels={fields} />
-        <GraphTimeRangeSelector
-          timeRange={selectedTimeRange}
-          handleTimeRangeChanged={setSelectedTimeRange}
-        />
       </Box>
       <ParentSize>
         {({ width }) => (
