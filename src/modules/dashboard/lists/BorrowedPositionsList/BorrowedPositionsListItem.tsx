@@ -3,6 +3,7 @@ import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { ListColumn } from '../../../../components/lists/ListColumn';
 import { ComputedUserReserveData } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { ListAPRColumn } from '../ListAPRColumn';
@@ -42,6 +43,9 @@ export const BorrowedPositionsListItem = ({
       frozen={reserve.isFrozen}
       data-cy={`dashboardBorrowedListItem_${reserve.symbol.toUpperCase()}_${borrowRateMode}`}
       showBorrowCapTooltips
+      showETHBorrowWarning={
+        currentMarket === CustomMarket.proto_mainnet && reserve.symbol === 'ETH'
+      }
     >
       <ListValueColumn
         symbol={reserve.symbol}
