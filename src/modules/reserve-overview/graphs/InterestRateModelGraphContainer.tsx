@@ -21,7 +21,7 @@ export const InteresetRateModelGraphContainer = ({
 }: InteresetRateModelGraphContainerProps): JSX.Element => {
   const [selectedTimeRange, setSelectedTimeRange] = useState<ReserveRateTimeRange>('1m');
 
-  const CHART_HEIGHT = 300;
+  const CHART_HEIGHT = 160;
   const fields: Fields = [
     { name: 'liquidityRate', text: 'Supply APR', color: '#2EBAC6' },
     { name: 'variableBorrowRate', text: 'Borrow APR, variable', color: '#B6509E' },

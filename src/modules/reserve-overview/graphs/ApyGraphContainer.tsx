@@ -34,7 +34,7 @@ export const ApyGraphContainer = ({
 }: ApyGraphContainerProps): JSX.Element => {
   const [selectedTimeRange, setSelectedTimeRange] = useState<ReserveRateTimeRange>('1m');
 
-  const CHART_HEIGHT = 300;
+  const CHART_HEIGHT = 160;
   const reserveAddress = reserve ? `${reserve.underlyingAsset}${lendingPoolAddressProvider}` : '';
   const { data, loading, error, refetch } = useReserveRatesHistory(
     reserveAddress,
