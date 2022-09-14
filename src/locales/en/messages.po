@@ -536,10 +536,6 @@ msgstr "Data couldn't be fetched, please reload graph."
 msgid "Debt"
 msgstr "Debt"
 
-#: src/components/caps/DebtCeilingStatus.tsx
-msgid "Debt Ceiling"
-msgstr "Debt Ceiling"
-
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Debt amount to repay"
 msgstr "Debt amount to repay"
@@ -553,8 +549,8 @@ msgid "Debt ceiling is not zero"
 msgstr "Debt ceiling is not zero"
 
 #: src/components/caps/DebtCeilingStatus.tsx
-msgid "Debt ceiling limits the amount possible to borrow against this asset by protocol users."
-msgstr "Debt ceiling limits the amount possible to borrow against this asset by protocol users."
+msgid "Debt limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
+msgstr "Debt limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
 
 #: src/components/infoModalContents/RetryWithApprovalInfoContent.tsx
 msgid "Define Retry with Approval text"
@@ -877,6 +873,10 @@ msgstr "Invalid signature"
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Isolated"
 msgstr "Isolated"
+
+#: src/components/caps/DebtCeilingStatus.tsx
+msgid "Isolated Debt Ceiling"
+msgstr "Isolated Debt Ceiling"
 
 #: src/components/isolationMode/IsolatedTooltip.tsx
 msgid "Isolated assets have limited borrowing power and other assets cannot be used as collateral."

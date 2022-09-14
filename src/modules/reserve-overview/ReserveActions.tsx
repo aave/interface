@@ -58,7 +58,7 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const { openBorrow, openFaucet, openSupply } = useModalContext();
   const { currentAccount, loading: web3Loading } = useWeb3Context();
-  const { user, reserves, loading: loadingReserves } = useAppDataContext();
+  const { user, reserves, loading: loadingReserves, eModes } = useAppDataContext();
   const { walletBalances, loading: loadingBalance } = useWalletBalances();
   const { isPermissionsLoading } = usePermissions();
   const { currentNetworkConfig } = useProtocolDataContext();
@@ -289,9 +289,8 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
         <Warning sx={{ mb: '12px' }} severity="info" icon={false}>
           <Trans>
             Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for{' '}
-            {getEmodeMessage(user.userEmodeCategoryId, currentNetworkConfig.baseAssetSymbol)}{' '}
-            category. To manage E-Mode categories visit your{' '}
-            <Link href={ROUTES.dashboard}>Dashboard</Link>.
+            {getEmodeMessage(eModes[user.userEmodeCategoryId].label)} category. To manage E-Mode
+            categories visit your <Link href={ROUTES.dashboard}>Dashboard</Link>.
           </Trans>
         </Warning>
       )}
