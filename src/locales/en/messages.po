@@ -544,10 +544,6 @@ msgstr "Dashboard"
 msgid "Debt"
 msgstr "Debt"
 
-#: src/components/caps/DebtCeilingStatus.tsx
-msgid "Debt Ceiling"
-msgstr "Debt Ceiling"
-
 #: src/ui-config/errorMapping.tsx
 msgid "Debt ceiling is exceeded"
 msgstr "Debt ceiling is exceeded"
