@@ -85,7 +85,15 @@ export const useCollateralRepaySwap = ({
     // The 'Sell' route will take the input token and amount, and try to swap for the specified
     // output token minus the maximum slippage. This should be used when the user is trying
     // repay with collateral and the collateral amount is less than the debt amount.
-    if (!swapIn.amount || swapIn.amount === '0') return;
+    if (!swapIn.amount || swapIn.amount === '0') {
+      setSwapCallData('');
+      setAugustus('');
+      setInputAmount('0');
+      setOutputAmount('0');
+      setInputAmountUSD('0');
+      setOutputAmountUSD('0');
+      return;
+    }
 
     const _amount = valueToBigNumber(swapIn.amount);
     const amount = normalizeBN(_amount, swapIn.decimals * -1);
@@ -146,7 +154,15 @@ export const useCollateralRepaySwap = ({
     // The 'Buy' route will try to swap the input token and apply positive slippage to the amount
     // in order to get the exact output amount. This should be used when the user is trying to
     // repay with collateral and the collateral amount is greater than the debt amount.
-    if (!swapOut.amount || swapOut.amount === '0') return;
+    if (!swapOut.amount || swapOut.amount === '0') {
+      setSwapCallData('');
+      setAugustus('');
+      setInputAmount('0');
+      setOutputAmount('0');
+      setInputAmountUSD('0');
+      setOutputAmountUSD('0');
+      return;
+    }
 
     let _amount = valueToBigNumber(swapOut.amount);
     if (max) {
