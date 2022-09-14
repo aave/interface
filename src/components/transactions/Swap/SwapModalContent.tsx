@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
 import {
-  ComputedReserveData,
   ComputedUserReserveData,
   useAppDataContext,
 } from '../../../hooks/app-data-provider/useAppDataProvider';
@@ -211,17 +210,17 @@ export const SwapModalContent = ({
         inputTitle={<Trans>Swap to</Trans>}
         disableInput
       />
-
-      {blockingError !== undefined && (
-        <Typography variant="helperText" color="error.main">
-          {handleBlocked()}
-        </Typography>
-      )}
       {error && (
         <Typography variant="helperText" color="error.main">
           {error}
         </Typography>
       )}
+      {!error && blockingError !== undefined && (
+        <Typography variant="helperText" color="error.main">
+          {handleBlocked()}
+        </Typography>
+      )}
+
       <TxModalDetails
         gasLimit={gasLimit}
         slippageSelector={
@@ -235,7 +234,7 @@ export const SwapModalContent = ({
           swapSource={userReserve}
           swapTarget={swapTarget}
           toAmount={minimumReceived}
-          fromAmount={amount}
+          fromAmount={amount === '' ? '0' : amount}
         />
       </TxModalDetails>
 
