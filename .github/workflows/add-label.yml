@@ -16,20 +16,19 @@ jobs:
     outputs:
       pr_number: '${{ steps.get_pr_number.outputs.pr_number }}'
     steps:
-      - name: Download PR info
-        uses: dawidd6/action-download-artifact@ea71f332a90fd52416b1629b933dcf7e0ccd421d # v2.22.0
-        with:
-          workflow: build-fork.yml
-          run_id: "${{ github.event.workflow_run.id }}"
-          workflow_conclusion: ""
-          name: pr
-          path: ./
+      - uses: 8BitJonny/gh-get-current-pr@2.1.1
+        id: PR
+      - run: echo "Your PR number is ${{ steps.PR.outputs.number }} and its JSON is ${{ steps.PR.outputs.pr }}"
+          
+      - name: Get PR number
+        shell: sh
+        run:  echo "${{ steps.PR.outputs.number }}"
           
       - name: Get PR number
         shell: sh
         id: get_pr_number
         run: |
-          echo "::set-output name=pr_number::$(cat NUM | tr -dc '[:digit:]')"
+          echo "::set-output name=pr_number::${{ steps.PR.outputs.number }}"
   notify_failure:
     runs-on: ubuntu-latest
     needs: ["prepare_jobs"]
