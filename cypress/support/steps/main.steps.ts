@@ -5,13 +5,15 @@ type SkipType = {
   get: () => boolean;
 };
 
+/**
+ * This skip all test steps if previous one was failed
+ */
 const skipSetup = ({ skip, updateSkipStatus }: { skip: SkipType; updateSkipStatus: boolean }) => {
   before(function () {
     if (skip.get()) {
       this.skip();
     }
   });
-
   afterEach(function onAfterEach() {
     if ((this.currentTest as Mocha.Test).state === 'failed' && updateSkipStatus) {
       skip.set(true);
@@ -19,6 +21,21 @@ const skipSetup = ({ skip, updateSkipStatus }: { skip: SkipType; updateSkipStatu
   });
 };
 
+/**
+ * This full step for supply any available asset from Dashboard view
+ * @example
+ *```
+ * // Supply ETH
+ * supply({
+ *   asset:{shortName:'ETH', fullName:'Ethereum'},
+ *   amount:10,
+ *   hasApproval:true
+ *  },
+ *  skipTestState,
+ *  false
+ * )
+ * ```
+ */
 export const supply = (
   {
     asset,
@@ -54,6 +71,22 @@ export const supply = (
   });
 };
 
+/**
+ * This full step for borrow any available asset from Dashboard view
+ * @example
+ *```
+ * // Borrow ETH
+ * // apyType options: Variable, Stable, Default
+ * borrow({
+ *   asset:{shortName:'ETH', fullName:'Ethereum'},
+ *   amount:10,
+ *   hasApproval:true
+ *  },
+ *  skipTestState,
+ *  false
+ * )
+ * ```
+ */
 export const borrow = (
   {
     asset,
@@ -65,8 +98,8 @@ export const borrow = (
   }: {
     asset: { shortName: string; fullName: string };
     amount: number;
-    apyType?: string;
     hasApproval: boolean;
+    apyType?: string;
     isRisk?: boolean;
     isMaxAmount?: boolean;
   },
@@ -115,22 +148,42 @@ export const borrow = (
   });
 };
 
+/**
+ * This full step for repay one asset by another asset
+ * @example
+ *```
+ * // Repay ETH by USDC
+ * // apyType options: Variable, Stable, Default
+ * // repayOption options: collateral, wallet, default
+ * repay({
+ *   asset:{shortName:'ETH', fullName:'Ethereum'},
+ *   apyType:'Variable',
+ *   amount:10,
+ *   repayOption:'collateral',
+ *   hasApproval:true,
+ *   repayableAsset:{shortName:'USDC'}
+ *  },
+ *  skipTestState,
+ *  false
+ * )
+ * ```
+ */
 export const repay = (
   {
     asset,
     apyType,
     amount,
     repayOption,
-    repayableAsset,
     hasApproval = false,
+    repayableAsset,
     isMaxAmount = false,
   }: {
     asset: { shortName: string; fullName: string };
     apyType: string;
     amount: number;
     repayOption: string;
-    repayableAsset?: { shortName: string };
     hasApproval: boolean;
+    repayableAsset?: { shortName: string };
     isMaxAmount?: boolean;
   },
   skip: SkipType,
@@ -189,6 +242,23 @@ export const repay = (
   });
 };
 
+/**
+ * This full step for withdraw any availble assets
+ * @example
+ *```
+ * // Withdraw ETH
+ * // apyType options: Variable, Stable, Default
+ * withdraw({
+ *   asset:{shortName:'ETH', fullName:'Ethereum'},
+ *   isCollateral:true,
+ *   amount: 10,
+ *   hasApproval:true
+ *  },
+ *  skipTestState,
+ *  false
+ * )
+ * ```
+ */
 export const withdraw = (
   {
     asset,
@@ -246,6 +316,23 @@ export const withdraw = (
   });
 };
 
+/**
+ * This full step to change borrow apy from Dashboard view
+ * @example
+ *```
+ * // Change borrow type for ETH from Stable to Variable
+ * // apyType options: Variable, Stable
+ * changeBorrowType({
+ *   asset:{shortName:'ETH', fullName:'Ethereum'},
+ *   apyType:'Stable',
+ *   newAPY:'Variable',
+ *   hasApproval:true
+ *  },
+ *  skipTestState,
+ *  false
+ * )
+ * ```
+ */
 export const changeBorrowType = (
   {
     asset,
@@ -282,6 +369,24 @@ export const changeBorrowType = (
   });
 };
 
+/**
+ * This full step to swap assets from Dashboard view
+ * @example
+ *```
+ * // Swap from ETH to USDC
+ * // apyType options: Variable, Stable
+ * swap({
+ *   fromAsset:{shortName:'ETH', fullName:'Ethereum'},
+ *   toAsset:{shortName:'USDC', fullName:'USDC'},
+ *   isCollateralFromAsset: false,
+ *   amount: 1.137,
+ *   hasApproval: true
+ *  },
+ *  skipTestState,
+ *  false
+ * )
+ * ```
+ */
 export const swap = (
   {
     fromAsset,
@@ -332,6 +437,20 @@ export const swap = (
   });
 };
 
+/**
+ * This full step to change collateral for any assets from Dashboard view with positive result
+ * @example
+ *```
+ * // Change collateral status for ETH
+ * changeCollateral ({
+ *   asset:{shortName:'ETH', fullName:'Ethereum'},
+ *   isCollateralFromAsset: false,
+ *  },
+ *  skipTestState,
+ *  false
+ * )
+ * ```
+ */
 export const changeCollateral = (
   {
     asset,
@@ -372,6 +491,19 @@ export const changeCollateral = (
   });
 };
 
+/**
+ * This full step to claim reward  from Dashboard
+ * @example
+ *```
+ * // Claim reward of Matic
+ * claimReward ({
+ *   asset:{shortName:'MATIC', fullName:'Matic'},
+ *  },
+ *  skipTestState,
+ *  false
+ * )
+ * ```
+ */
 export const claimReward = (
   {
     asset,
@@ -397,6 +529,20 @@ export const claimReward = (
   });
 };
 
+/**
+ * This full step to change collateral with negative result from Dashboard
+ * @example
+ *```
+ * // Change collateral have to blocked for Matic
+ * changeCollateralNegative ({
+ *   asset:{shortName:'MATIC', fullName:'Matic'},
+ *   isCollateralType
+ *  },
+ *  skipTestState,
+ *  false
+ * )
+ * ```
+ */
 export const changeCollateralNegative = (
   {
     asset,
@@ -427,6 +573,19 @@ export const changeCollateralNegative = (
   });
 };
 
+/**
+ * This full step to activate emode from Dashboard
+ * @example
+ *```
+ * // Turn on e-mode
+ * emodeActivating ({
+ *   turnOn: true
+ *  },
+ *  skipTestState,
+ *  false
+ * )
+ * ```
+ */
 export const emodeActivating = (
   {
     turnOn,
@@ -477,8 +636,9 @@ export const emodeActivating = (
   });
 };
 
-//steps
-
+/**
+ * This step to close any modal
+ */
 export const doCloseModal = () => {
   return it(`Close modal popup`, () => {
     cy.get('[data-cy=CloseModalIcon]').should('not.be.disabled').click();

@@ -13,12 +13,29 @@ const skipSetup = (skip: any) => {
   });
 };
 
+/**
+ * This full step to verification any values from Dashboard, for supplied assets and for borrowed assets
+ * @example
+ *```
+ * // Verify ETH supplied asset with amount = 10
+ * // type can be 'deposit' or 'borrow'
+ * dashboardAssetValuesVerification ([{
+ *   type: 'deposit',
+ *   assetName: 'ETH',
+ *   isCollateral: true
+ *   amount: 10
+ *  }],
+ *  skipTestState,
+ *  false
+ * )
+ * ```
+ */
 export const dashboardAssetValuesVerification = (
   estimatedCases: {
-    apyType?: string;
-    assetName: string;
-    isCollateral?: boolean;
     type: string;
+    assetName: string;
+    apyType?: string;
+    isCollateral?: boolean;
     amount?: number;
     collateralType?: string;
   }[],
@@ -69,6 +86,10 @@ export const dashboardAssetValuesVerification = (
   });
 };
 
+/**
+ * This full step to verification that borrowing unavailable
+ * @example borrowsUnavailable(skipTestState)
+ */
 export const borrowsUnavailable = (skip: SkipType) => {
   return describe('Check that borrowing unavailable', () => {
     skipSetup(skip);
@@ -84,6 +105,10 @@ export const borrowsUnavailable = (skip: SkipType) => {
   });
 };
 
+/**
+ * This full step to verification that borrowing unavailable
+ * @example borrowsAvailable(skipTestState)
+ */
 export const borrowsAvailable = (skip: SkipType) => {
   return describe('Check that borrowing available', () => {
     skipSetup(skip);
@@ -99,6 +124,10 @@ export const borrowsAvailable = (skip: SkipType) => {
   });
 };
 
+/**
+ * This full step to verification that reward on dashboard not available
+ * @example rewardIsNotAvailable(skipTestState)
+ */
 export const rewardIsNotAvailable = (skip: SkipType) => {
   return describe('Check that reward not available', () => {
     skipSetup(skip);
@@ -109,6 +138,10 @@ export const rewardIsNotAvailable = (skip: SkipType) => {
   });
 };
 
+/**
+ * This full step to verification that switch collateral blocked
+ * @example switchCollateralBlocked({{ shortName: 'ETH'; fullName: 'Ethereum' }}, skipTestState)
+ */
 export const switchCollateralBlocked = (
   {
     asset,
@@ -127,6 +160,10 @@ export const switchCollateralBlocked = (
   });
 };
 
+/**
+ * This full step to verification that switch collateral blocked in Modal view
+ * @example switchCollateralBlockedInModal({{ shortName: 'ETH'; fullName: 'Ethereum' }, true}, skipTestState)
+ */
 export const switchCollateralBlockedInModal = (
   {
     asset,
@@ -152,6 +189,10 @@ export const switchCollateralBlockedInModal = (
   });
 };
 
+/**
+ * This full step to verification that switch apy blocked blocked
+ * @example switchApyBlocked({{ shortName: 'ETH'; fullName: 'Ethereum' }, apyType:'Variable'}, skipTestState)
+ */
 export const switchApyBlocked = (
   {
     asset,
@@ -177,6 +218,10 @@ export const switchApyBlocked = (
   });
 };
 
+/**
+ * This full step to verification that switch apy blocked blocked
+ * @example changeBorrowTypeBlocked({{ shortName: 'ETH'; fullName: 'Ethereum' }, isCollateralType: true}, skipTestState)
+ */
 export const changeBorrowTypeBlocked = (
   {
     asset,
@@ -202,6 +247,15 @@ export const changeBorrowTypeBlocked = (
   });
 };
 
+/**
+ * This full step to verification dashboard health factor
+ *
+ * Could be use one value by 'value' - varibale
+ *
+ * Could be use range by valueFrom and valueTo
+ *
+ * @example checkDashboardHealthFactor({value: 10.2, isCollateralType: true}, skipTestState)
+ */
 export const checkDashboardHealthFactor = (
   {
     value,
@@ -242,6 +296,10 @@ export const checkDashboardHealthFactor = (
   });
 };
 
+/**
+ * This full step to verification that e-mode activating disabled
+ * @example checkEmodeActivatingDisabled({turnOn: true}, skipTestState)
+ */
 export const checkEmodeActivatingDisabled = (
   {
     turnOn,
@@ -262,6 +320,10 @@ export const checkEmodeActivatingDisabled = (
   });
 };
 
+/**
+ * This full step to verification available to borrow assets, usable with e-mode tests
+ * @example verifyCountOfBorrowAssets([{ shortName: 'ETH'; fullName: 'Ethereum' }, { shortName: 'USDC'; fullName: 'Usdc' }], skipTestState)
+ */
 export const verifyCountOfBorrowAssets = (
   {
     assets,
