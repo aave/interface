@@ -1,11 +1,3 @@
-/// <reference types="cypress" />
-import {
-  getDashBoardBorrowRow,
-  getDashBoardDepositRow,
-  doCloseModal,
-  doSwitchToDashboardBorrowView,
-  doSwitchToDashboardSupplyView,
-} from './actions.steps';
 import constants from '../../fixtures/constans.json';
 
 type SkipType = {
@@ -48,7 +40,7 @@ export const supply = (
   return describe(`Supply process for ${_shortName}`, () => {
     skipSetup({ skip, updateSkipStatus });
     it(`Open ${_shortName} supply popup view`, () => {
-      doSwitchToDashboardSupplyView();
+      cy.doSwitchToDashboardSupplyView();
       cy.get(`[data-cy='dashboardSupplyListItem_${_shortName.toUpperCase()}']`)
         .find('button:contains("Supply")')
         .click();
@@ -87,7 +79,7 @@ export const borrow = (
   return describe(`Borrow process for ${_shortName}`, () => {
     skipSetup({ skip, updateSkipStatus });
     it(`Open ${_shortName} borrow popup view`, () => {
-      doSwitchToDashboardBorrowView();
+      cy.doSwitchToDashboardBorrowView();
       cy.get(`[data-cy='dashboardBorrowListItem_${_shortName.toUpperCase()}']`)
         .contains('Borrow')
         .should('not.be.disabled')
@@ -152,8 +144,8 @@ export const repay = (
   }`, () => {
     skipSetup({ skip, updateSkipStatus });
     it(`Open ${_shortName} repay popup view`, () => {
-      doSwitchToDashboardBorrowView();
-      getDashBoardBorrowRow({ assetName: _shortName, apyType })
+      cy.doSwitchToDashboardBorrowView();
+      cy.getDashBoardBorrowedRow(_shortName, apyType)
         .find(`button:contains("Repay")`)
         .click();
       cy.get(`[data-cy=Modal] h2:contains("Repay ${_shortName}")`).should('be.visible');
@@ -226,8 +218,8 @@ export const withdraw = (
   return describe(`Withdraw process for ${_shortName}`, () => {
     skipSetup({ skip, updateSkipStatus });
     it(`Open ${_shortName} Withdraw popup view`, () => {
-      doSwitchToDashboardSupplyView();
-      getDashBoardDepositRow({ assetName: _shortName, isCollateralType: isCollateral })
+      cy.doSwitchToDashboardSupplyView();
+      cy.getDashBoardSuppliedRow(_shortName, isCollateral)
         .find(`button:contains("Withdraw")`)
         .click();
       cy.get(`[data-cy=Modal] h2:contains("Withdraw ${_shortName}")`).should('be.visible');
@@ -277,8 +269,8 @@ export const changeBorrowType = (
   describe('Change APY of borrowing', () => {
     skipSetup({ skip, updateSkipStatus });
     it(`Open change apy popup`, () => {
-      doSwitchToDashboardBorrowView();
-      getDashBoardBorrowRow({ assetName: _shortName, apyType })
+      cy.doSwitchToDashboardBorrowView();
+      cy.getDashBoardBorrowedRow(_shortName, apyType )
         .find(`[data-cy="apyButton_${apyType}"]`)
         .click();
     });
@@ -318,8 +310,8 @@ export const swap = (
   describe(`Swap ${amount} ${_shortNameFrom} to ${_shortNameTo}`, () => {
     skipSetup({ skip, updateSkipStatus });
     it(`Open Swap modal for ${_shortNameFrom}`, () => {
-      doSwitchToDashboardSupplyView();
-      getDashBoardDepositRow({ assetName: _shortNameFrom, isCollateralType: isCollateralFromAsset })
+      cy.doSwitchToDashboardSupplyView();
+      cy.getDashBoardSuppliedRow(_shortNameFrom, isCollateralFromAsset)
         .find(`[data-cy=swapButton]`)
         .click();
       cy.get(`[data-cy=Modal] h2:contains("Swap ${_shortNameFrom}")`).should('be.visible');
@@ -357,10 +349,10 @@ export const changeCollateral = (
   return describe(`Switch collateral type from ${isCollateralType}`, () => {
     skipSetup({ skip, updateSkipStatus });
     it('Open dashboard', () => {
-      doSwitchToDashboardSupplyView();
+      cy.doSwitchToDashboardSupplyView();
     });
     it('Open Switch type Modal', () => {
-      getDashBoardDepositRow({ assetName: _shortName, isCollateralType })
+      cy.getDashBoardSuppliedRow(_shortName, isCollateralType)
         .find('.MuiSwitch-input ')
         .click();
       cy.get('[data-cy=Modal]').should('be.visible');
@@ -396,7 +388,7 @@ export const claimReward = (
   return describe(`Claim reward`, () => {
     skipSetup({ skip, updateSkipStatus });
     it(`Open dashboard`, () => {
-      doSwitchToDashboardSupplyView();
+      cy.doSwitchToDashboardSupplyView();
     });
     it(`Open claim modal`, () => {
       cy.get('[data-cy=Claim_Box]').should('be.visible');
@@ -424,8 +416,8 @@ export const changeCollateralNegative = (
   return describe(`Switch collateral type negative`, () => {
     skipSetup({ skip, updateSkipStatus });
     it('Switch type', () => {
-      doSwitchToDashboardSupplyView();
-      getDashBoardDepositRow({ assetName: _shortName, isCollateralType })
+      cy.doSwitchToDashboardSupplyView();
+      cy.getDashBoardSuppliedRow(_shortName, isCollateralType)
         .find('.MuiSwitch-input ')
         .click();
     });
@@ -457,17 +449,17 @@ export const emodeActivating = (
   return describe(`${turnOn ? 'Turn on E-mode' : 'Turn off E-mode'}`, () => {
     skipSetup({ skip, updateSkipStatus });
     it(`Open e-mode switcher`, () => {
-      doSwitchToDashboardBorrowView();
+      cy.doSwitchToDashboardBorrowView();
       cy.get('[data-cy=emode-open]').click();
     });
     if (turnOn) {
       it(`Turn on e-mode`, () => {
-        doSwitchToDashboardBorrowView();
+        cy.doSwitchToDashboardBorrowView();
         cy.get(`[data-cy="emode-enable"]`).click();
       });
     } else {
       it(`Turn off e-mode`, () => {
-        doSwitchToDashboardBorrowView();
+        cy.doSwitchToDashboardBorrowView();
         cy.get(`[data-cy="emode-disable"]`).click();
       });
     }
@@ -488,5 +480,14 @@ export const emodeActivating = (
     it(`Check that E-mode was ${turnOn ? 'on' : 'off'}`, () => {
       cy.get(`[data-cy="emode-open"]`).should('have.text', turnOn ? 'Stablecoins' : 'Disabled');
     });
+  });
+};
+
+//steps
+
+export const doCloseModal = () => {
+  return it(`Close modal popup`, () => {
+    cy.get('[data-cy=CloseModalIcon]').should('not.be.disabled').click();
+    cy.get('[data-cy=Modal]').should('not.exist');
   });
 };

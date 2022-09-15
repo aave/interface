@@ -48,27 +48,27 @@ export const doCloseModal = () => {
   });
 };
 
-function doChooseSwapToOption(assetName: string) {
-  cy.get('.AssetSelect__reverse .AssetSelect__button').click();
-  cy.get('.AssetSelect__reverse .TokenIcon__name').contains(assetName).click();
-}
-
-type SwapForRepayAction = {
-  amount: number;
-  assetName?: string;
-};
-
-export const doSwapForRepay = ({ amount, assetName }: SwapForRepayAction) => {
-  cy.log('assetName,' + assetName);
-  cy.get(':nth-child(1) > .AmountFieldWithSelect__field-inner  [data-cy=amountInput]').type(
-    amount.toString(),
-    { delay: 0 }
-  );
-  if (assetName) {
-    doChooseSwapToOption(assetName);
-  }
-  cy.get('.Button').contains('Continue').parents('.Button').should('not.be.disabled').click();
-};
+// function doChooseSwapToOption(assetName: string) {
+//   cy.get('.AssetSelect__reverse .AssetSelect__button').click();
+//   cy.get('.AssetSelect__reverse .TokenIcon__name').contains(assetName).click();
+// }
+//
+// type SwapForRepayAction = {
+//   amount: number;
+//   assetName?: string;
+// };
+//
+// export const doSwapForRepay = ({ amount, assetName }: SwapForRepayAction) => {
+//   cy.log('assetName,' + assetName);
+//   cy.get(':nth-child(1) > .AmountFieldWithSelect__field-inner  [data-cy=amountInput]').type(
+//     amount.toString(),
+//     { delay: 0 }
+//   );
+//   if (assetName) {
+//     doChooseSwapToOption(assetName);
+//   }
+//   cy.get('.Button').contains('Continue').parents('.Button').should('not.be.disabled').click();
+// };
 
 type GetDashBoardBorrowRow = {
   assetName: string;
