@@ -72,7 +72,6 @@ export const SwapModalContent = ({
     {
       chainId: currentNetworkConfig.underlyingChainId || currentChainId,
       userAddress: currentAccount,
-      variant: 'exactIn',
       swapIn: { ...poolReserve, amount: amountRef.current },
       swapOut: { ...swapTarget.reserve, amount: '0' },
       max: isMaxSelected,

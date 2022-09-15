@@ -78,7 +78,9 @@ export function CollateralRepayModalContent({
 
   const isMaxSelected = amount === '-1';
   const repayAmount = isMaxSelected ? safeAmountToRepayAll.toString() : amount;
-  const usdValue = valueToBigNumber(repayAmount).multipliedBy(poolReserve.priceInUSD);
+  const repayAmountUsdValue = valueToBigNumber(repayAmount)
+    .multipliedBy(poolReserve.priceInUSD)
+    .toString();
 
   // The slippage is factored into the collateral amount because when we swap for 'exactOut', positive slippage is applied on the collateral amount.
   const collateralAmountRequiredToCoverDebt = safeAmountToRepayAll
@@ -175,10 +177,8 @@ export function CollateralRepayModalContent({
   }
 
   let blockingError: ErrorType | undefined = undefined;
-  const tokenToRepayWithUsdValue = valueToBigNumber(tokenToRepayWithBalance).multipliedBy(
-    collateralReserveData.priceInUSD
-  );
-  if (Number(usdValue) > Number(tokenToRepayWithUsdValue.toString(10))) {
+
+  if (valueToBigNumber(tokenToRepayWithBalance).lt(collateralAmountRequiredToCoverDebt)) {
     blockingError = ErrorType.NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH;
   } else if (disableFlashLoan) {
     blockingError = ErrorType.FLASH_LOAN_NOT_AVAILABLE;
@@ -213,7 +213,7 @@ export function CollateralRepayModalContent({
       <AssetInput
         value={swapVariant === 'exactIn' ? outputAmount : repayAmount}
         onChange={handleRepayAmountChange}
-        usdValue={usdValue.toString()}
+        usdValue={repayAmountUsdValue}
         symbol={poolReserve.symbol}
         assets={[
           {

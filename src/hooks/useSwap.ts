@@ -12,8 +12,6 @@ import { ChainId } from '@aave/contract-helpers';
 import { BigNumberZeroDecimal, normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import { RateOptions } from '@paraswap/sdk/dist/rates';
 
-export type SwapVariant = 'exactIn' | 'exactOut';
-
 const ParaSwap = (chainId: number) => {
   const fetcher = constructFetchFetcher(fetch); // alternatively constructFetchFetcher
   return constructPartialSDK(
@@ -44,14 +42,19 @@ const getParaswap = (chainId: ChainId) => {
 };
 
 type UseSwapProps = {
-  max?: boolean;
+  chainId: ChainId;
+  max: boolean;
+  maxSlippage: number;
   swapIn: ComputedReserveData & { amount: string };
   swapOut: ComputedReserveData & { amount: string };
-  variant: SwapVariant;
   userAddress: string;
-  chainId: ChainId;
   skip?: boolean;
-  maxSlippage: number;
+};
+
+export type SwapVariant = 'exactIn' | 'exactOut';
+
+type UseRepayWithCollateralProps = UseSwapProps & {
+  variant: SwapVariant;
 };
 
 const MESSAGE_MAP = {
@@ -62,15 +65,15 @@ const MESSAGE_MAP = {
 };
 
 export const useCollateralRepaySwap = ({
+  chainId,
+  max,
+  maxSlippage,
+  skip,
   swapIn,
   swapOut,
-  variant,
   userAddress,
-  max,
-  chainId,
-  skip,
-  maxSlippage,
-}: UseSwapProps) => {
+  variant,
+}: UseRepayWithCollateralProps) => {
   const paraSwap = getParaswap(chainId);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -180,7 +183,6 @@ export const useCollateralRepaySwap = ({
         options.excludeContractMethods = [ContractMethod.simpleBuy];
       }
 
-      console.log('amount', amount.toFixed(0));
       const route = await paraSwap.getRate({
         amount: amount.toFixed(0),
         srcToken: swapIn.underlyingAsset,
@@ -282,7 +284,6 @@ export const useCollateralRepaySwap = ({
 export const useSwap = ({
   swapIn,
   swapOut,
-  variant,
   userAddress: userId,
   max,
   chainId,
@@ -295,25 +296,23 @@ export const useSwap = ({
 
   const fetchRoute = useCallback(async () => {
     if (!swapIn.underlyingAsset || !swapOut.underlyingAsset || !userId) return;
-    if (variant === 'exactIn' && (!swapIn.amount || swapIn.amount === '0')) return;
-    if (variant === 'exactOut' && (!swapOut.amount || swapOut.amount === '0')) return;
+    if (!swapIn.amount || swapIn.amount === '0') return;
     setLoading(true);
-    let _amount = valueToBigNumber(variant === 'exactIn' ? swapIn.amount : swapOut.amount);
-    if (variant === 'exactIn' && max && swapIn.supplyAPY !== '0') {
+    let _amount = valueToBigNumber(swapIn.amount);
+    if (max && swapIn.supplyAPY !== '0') {
       _amount = _amount.plus(_amount.multipliedBy(swapIn.supplyAPY).dividedBy(360 * 24));
     }
-    if (variant === 'exactOut' && max) {
-      // variableBorrowAPY in most cases should be higher than stableRate so while this is slightly inaccurate it should be enough
-      _amount = _amount.plus(_amount.multipliedBy(swapIn.variableBorrowAPY).dividedBy(360 * 24));
-    }
-    const amount = normalizeBN(
-      _amount,
-      (variant === 'exactIn' ? swapIn.decimals : swapOut.decimals) * -1
-    );
+    const amount = normalizeBN(_amount, swapIn.decimals * -1);
 
     try {
-      const excludedMethod =
-        variant === 'exactIn' ? ContractMethod.simpleSwap : ContractMethod.simpleBuy;
+      const options: RateOptions = {
+        partner: 'aave',
+      };
+
+      if (max) {
+        options.excludeContractMethods = [ContractMethod.simpleSwap];
+      }
+
       const response = await paraSwap.getRate({
         amount: amount.toFixed(0),
         srcToken: swapIn.underlyingAsset,
@@ -321,19 +320,8 @@ export const useSwap = ({
         destToken: swapOut.underlyingAsset,
         destDecimals: swapOut.decimals,
         userAddress: userId,
-        side: variant === 'exactIn' ? SwapSide.SELL : SwapSide.BUY,
-        options: {
-          partner: 'aave',
-          excludeDEXS:
-            'ParaSwapPool,ParaSwapPool2,ParaSwapPool3,ParaSwapPool4,ParaSwapPool5,ParaSwapPool6,ParaSwapPool7,ParaSwapPool8,ParaSwapPool9,ParaSwapPool10',
-          ...(max
-            ? {
-                excludeDEXS:
-                  'Balancer,ParaSwapPool,ParaSwapPool2,ParaSwapPool3,ParaSwapPool4,ParaSwapPool5,ParaSwapPool6,ParaSwapPool7,ParaSwapPool8,ParaSwapPool9,ParaSwapPool10',
-                excludeContractMethods: [excludedMethod],
-              }
-            : {}),
-        },
+        side: SwapSide.SELL,
+        options,
       });
 
       setError('');
@@ -346,16 +334,15 @@ export const useSwap = ({
     }
     setLoading(false);
   }, [
-    swapIn.amount,
     swapIn.underlyingAsset,
+    swapIn.amount,
+    swapIn.supplyAPY,
     swapIn.decimals,
-    swapOut.amount,
     swapOut.underlyingAsset,
     swapOut.decimals,
     userId,
-    variant,
     max,
-    chainId,
+    paraSwap,
   ]);
 
   // updates the route on input change
@@ -377,15 +364,9 @@ export const useSwap = ({
     return {
       // full object needed for building the tx
       priceRoute: priceRoute,
-      outputAmount: normalize(
-        priceRoute.destAmount ?? '0',
-        variant === 'exactIn' ? swapOut.decimals : swapOut.decimals
-      ),
+      outputAmount: normalize(priceRoute.destAmount ?? '0', swapOut.decimals),
       outputAmountUSD: priceRoute.destUSD ?? '0',
-      inputAmount: normalize(
-        priceRoute.srcAmount ?? '0',
-        variant === 'exactIn' ? swapIn.decimals : swapIn.decimals
-      ),
+      inputAmount: normalize(priceRoute.srcAmount ?? '0', swapIn.decimals),
       inputAmountUSD: priceRoute.srcUSD ?? '0',
       loading: loading,
       error: error,
