@@ -288,10 +288,10 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
               tickLabelProps={() => ({
                 fill: theme.palette.text.muted,
                 fontSize: 8,
-                dx: -margin.left + 6,
+                dx: -margin.left + 10,
               })}
               numTicks={2}
-              tickFormat={(value) => `${(value as number).toFixed(2)} %`}
+              tickFormat={(value) => `${value}%`}
             />
 
             {/* Background */}
@@ -435,6 +435,13 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
             </TooltipWithBounds>
           </div>
         )}
+        <Typography
+          variant="secondary12"
+          color="text.muted"
+          sx={{ textAlign: 'center', mt: 4, pt: 4, borderTop: '1px solid #d0d0d0' }}
+        >
+          <Trans>Utilization Rate</Trans> %
+        </Typography>
       </>
     );
   }

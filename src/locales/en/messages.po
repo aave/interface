@@ -943,8 +943,8 @@ msgid "Liquidation value"
 msgstr "Liquidation value"
 
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
-msgid "Loading data"
-msgstr "Loading data"
+msgid "Loading data..."
+msgstr "Loading data..."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Ltv validation failed"
@@ -1844,6 +1844,7 @@ msgstr "User is trying to borrow multiple assets including a siloed one"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
+#: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
 #: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
 msgid "Utilization Rate"
 msgstr "Utilization Rate"

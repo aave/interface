@@ -35,6 +35,7 @@ export const ApyGraphContainer = ({
   const [selectedTimeRange, setSelectedTimeRange] = useState<ReserveRateTimeRange>('1m');
 
   const CHART_HEIGHT = 155;
+  const CHART_HEIGHT_LOADING_FIX = 3.5;
   const reserveAddress = reserve ? `${reserve.underlyingAsset}${lendingPoolAddressProvider}` : '';
   const { data, loading, error, refetch } = useReserveRatesHistory(
     reserveAddress,
@@ -67,7 +68,7 @@ export const ApyGraphContainer = ({
   const GraphLoading = () => (
     <Box
       sx={{
-        height: CHART_HEIGHT,
+        height: CHART_HEIGHT + CHART_HEIGHT_LOADING_FIX,
         width: 'auto',
         display: 'flex',
         flexDirection: 'column',
@@ -75,9 +76,9 @@ export const ApyGraphContainer = ({
         justifyContent: 'center',
       }}
     >
-      <CircularProgress size={20} color="primary" sx={{ mb: 2 }} />
+      <CircularProgress size={20} sx={{ mb: 2, opacity: 0.5 }} />
       <Typography variant="subheader1" color="text.muted">
-        <Trans>Loading data</Trans>
+        <Trans>Loading data...</Trans>
       </Typography>
     </Box>
   );
@@ -85,7 +86,7 @@ export const ApyGraphContainer = ({
   const GraphError = () => (
     <Box
       sx={{
-        height: CHART_HEIGHT,
+        height: CHART_HEIGHT + CHART_HEIGHT_LOADING_FIX,
         width: 'auto',
         display: 'flex',
         flexDirection: 'column',
