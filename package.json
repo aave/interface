@@ -139,10 +139,10 @@
     "Diego Prudencio diego@aave.com"
   ],
   "lint-staged": {
-    "*.js": "eslint --cache --fix",
-    "*.jsx": "eslint --cache --fix",
-    "*.ts": "eslint --cache --fix",
-    "*.tsx": "eslint --cache --fix",
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --cache --fix",
+      "prettier --write"
+    ],
     "*.svg": "npx svgo --final-newline"
   },
   "nextBundleAnalysis": {
