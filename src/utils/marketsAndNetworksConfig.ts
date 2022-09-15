@@ -1,5 +1,7 @@
 import { ChainId, ChainIdToNetwork } from '@aave/contract-helpers';
-import { providers as ethersProviders } from 'ethers';
+import { Network } from '@ethersproject/providers';
+import { ethers, logger, providers as ethersProviders } from 'ethers';
+import { ConnectionInfo, defineReadOnly, Logger } from 'ethers/lib/utils';
 
 import {
   CustomMarket,
@@ -143,6 +145,99 @@ export const isFeatureEnabled = {
   permissions: (data: MarketDataType) => data.enabledFeatures?.permissions,
 };
 
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+class StaticJsonRpcBatchProvider extends ethersProviders.JsonRpcBatchProvider {
+  async detectNetwork(): Promise<Network> {
+    let network = this.network;
+    if (network == null) {
+      network = await super.detectNetwork();
+
+      if (!network) {
+        logger.throwError('no network detected', Logger.errors.UNKNOWN_ERROR, {});
+      }
+
+      // If still not set, set it
+      if (this._network == null) {
+        // A static network does not support "any"
+        defineReadOnly(this, '_network', network);
+
+        this.emit('network', network, null);
+      }
+    }
+    return network;
+  }
+}
+
+/**
+ * The provider will rotate rpcs on error.
+ */
+class RotationProvider extends ethersProviders.BaseProvider {
+  readonly providers: StaticJsonRpcBatchProvider[];
+  private currentProviderIndex = 0;
+  private lastRotation = 0;
+
+  constructor(urls: string[], chainId: number) {
+    super(chainId);
+    this.providers = urls.map((url) => new StaticJsonRpcBatchProvider(url, chainId));
+  }
+
+  /**
+   * Add a delay for frequent rotations, so we don't ddos a provider
+   */
+  async delayRotation() {
+    const now = new Date().getTime();
+    const diff = now - this.lastRotation;
+    if (diff < 5000) sleep(5000 - diff);
+  }
+
+  private async rotateUrl(prevIndex: number) {
+    await this.delayRotation();
+    // don't rotate when another rotation was already triggered
+    if (prevIndex !== this.currentProviderIndex) return;
+    if (this.currentProviderIndex === this.providers.length - 1) this.currentProviderIndex = 0;
+    else this.currentProviderIndex += 1;
+    this.lastRotation = new Date().getTime();
+  }
+
+  async detectNetwork(): Promise<Network> {
+    const index = this.currentProviderIndex;
+    try {
+      return await this.providers[index].detectNetwork();
+    } catch (e) {
+      console.log(e.message);
+      await this.rotateUrl(index);
+      return this.detectNetwork();
+    }
+  }
+
+  // eslint-disable-next-line
+  async send(method: string, params: Array<any>): Promise<any> {
+    const index = this.currentProviderIndex;
+    try {
+      return await this.providers[index].send(method, params);
+    } catch (e) {
+      console.log(e.message);
+      await this.rotateUrl(index);
+      return this.send(method, params);
+    }
+  }
+
+  // eslint-disable-next-line
+  async perform(method: string, params: any): Promise<any> {
+    const index = this.currentProviderIndex;
+    try {
+      return await this.providers[index].perform(method, params);
+    } catch (e) {
+      console.log(e.message);
+      await this.rotateUrl(index);
+      return await this.perform(method, params);
+    }
+  }
+}
+
 const providers: { [network: string]: ethersProviders.Provider } = {};
 
 /**
@@ -153,28 +248,20 @@ const providers: { [network: string]: ethersProviders.Provider } = {};
 export const getProvider = (chainId: ChainId): ethersProviders.Provider => {
   if (!providers[chainId]) {
     const config = getNetworkConfig(chainId);
-    const chainProviders: ethersProviders.FallbackProviderConfig[] = [];
+    const chainProviders: string[] = [];
     if (config.privateJsonRPCUrl) {
-      chainProviders.push({
-        provider: new ethersProviders.StaticJsonRpcProvider(config.privateJsonRPCUrl, chainId),
-        priority: 0,
-      });
+      chainProviders.push(config.privateJsonRPCUrl);
     }
     if (config.publicJsonRPCUrl.length) {
-      config.publicJsonRPCUrl.map((rpc, ix) =>
-        chainProviders.push({
-          provider: new ethersProviders.StaticJsonRpcProvider(rpc, chainId),
-          priority: ix + 1,
-        })
-      );
+      config.publicJsonRPCUrl.map((rpc) => chainProviders.push(rpc));
     }
     if (!chainProviders.length) {
       throw new Error(`${chainId} has no jsonRPCUrl configured`);
     }
     if (chainProviders.length === 1) {
-      providers[chainId] = chainProviders[0].provider;
+      providers[chainId] = new ethersProviders.StaticJsonRpcProvider(chainProviders[0], chainId);
     } else {
-      providers[chainId] = new ethersProviders.FallbackProvider(chainProviders, 1);
+      providers[chainId] = new RotationProvider(chainProviders, chainId);
     }
   }
   return providers[chainId];
