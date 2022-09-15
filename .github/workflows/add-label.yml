@@ -11,27 +11,8 @@ on:
     branches-ignore: ["main"]
 
 jobs:
-  prepare_jobs:
-    runs-on: ubuntu-latest
-    outputs:
-      pr_number: '${{ steps.get_pr_number.outputs.pr_number }}'
-    steps:
-      - uses: 8BitJonny/gh-get-current-pr@2.1.1
-        id: PR
-      - run: echo "Your PR number is ${{ steps.PR.outputs.number }} and its JSON is ${{ steps.PR.outputs.pr }}"
-          
-      - name: Get PR number
-        shell: sh
-        run:  echo "${{ steps.PR.outputs.number }}"
-          
-      - name: Get PR number
-        shell: sh
-        id: get_pr_number
-        run: |
-          echo "::set-output name=pr_number::${{ steps.PR.outputs.number }}"
   notify_failure:
     runs-on: ubuntu-latest
-    needs: ["prepare_jobs"]
     env:
       PR_NUMBER: ${{ needs.prepare_jobs.outputs.pr_number }}
     steps:
@@ -45,11 +26,10 @@ jobs:
         continue-on-error: true
         with:
           SUCCESS: 'false'
-          PULL_REQUEST_NUMBER: ${{ env.PR_NUMBER }}
+          PULL_REQUEST_NUMBER: 8
 
   notify_success:
     runs-on: ubuntu-latest
-    needs: ["prepare_jobs"]
     env:
       PR_NUMBER: ${{ needs.prepare_jobs.outputs.pr_number }}
     steps:
@@ -63,4 +43,4 @@ jobs:
         continue-on-error: true
         with:
           SUCCESS: 'true'
-          PULL_REQUEST_NUMBER: ${{ env.PR_NUMBER }}
+          PULL_REQUEST_NUMBER: 7
