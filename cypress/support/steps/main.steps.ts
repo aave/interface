@@ -47,8 +47,8 @@ export const supply = (
       cy.get(`[data-cy=Modal] h2:contains("Supply ${_shortName}")`).should('be.visible');
     });
     it(`Supply ${isMaxAmount ? 'MAX' : amount} amount for ${_shortName}`, () => {
-      cy.setAmount(amount, isMaxAmount)
-      cy.doConfirm(hasApproval, _actionName, _shortName)
+      cy.setAmount(amount, isMaxAmount);
+      cy.doConfirm(hasApproval, _actionName, _shortName);
     });
     doCloseModal();
   });
@@ -101,7 +101,7 @@ export const borrow = (
       }
     });
     it(`Borrow ${isMaxAmount ? 'MAX' : amount} amount for ${_shortName}`, () => {
-      cy.setAmount(amount, isMaxAmount );
+      cy.setAmount(amount, isMaxAmount);
     });
     if (isRisk) {
       it(`Click risk checkbox`, () => {
@@ -145,9 +145,7 @@ export const repay = (
     skipSetup({ skip, updateSkipStatus });
     it(`Open ${_shortName} repay popup view`, () => {
       cy.doSwitchToDashboardBorrowView();
-      cy.getDashBoardBorrowedRow(_shortName, apyType)
-        .find(`button:contains("Repay")`)
-        .click();
+      cy.getDashBoardBorrowedRow(_shortName, apyType).find(`button:contains("Repay")`).click();
       cy.get(`[data-cy=Modal] h2:contains("Repay ${_shortName}")`).should('be.visible');
     });
     it(`Choose ${repayOption} repay option`, () => {
@@ -234,7 +232,7 @@ export const withdraw = (
     });
     it(`Withdraw ${isMaxAmount ? 'MAX' : amount} amount for ${_shortName}`, () => {
       if (isMaxAmount) cy.wait(2000);
-      cy.setAmount(amount, isMaxAmount)
+      cy.setAmount(amount, isMaxAmount);
     });
     if (isRisk) {
       it(`Click risk checkbox`, () => {
@@ -242,7 +240,7 @@ export const withdraw = (
       });
     }
     it(`Confirmation process`, () => {
-      cy.doConfirm(hasApproval, _actionName, forWrapped ? 'W' + _shortName : _shortName)
+      cy.doConfirm(hasApproval, _actionName, forWrapped ? 'W' + _shortName : _shortName);
     });
     doCloseModal();
   });
@@ -270,7 +268,7 @@ export const changeBorrowType = (
     skipSetup({ skip, updateSkipStatus });
     it(`Open change apy popup`, () => {
       cy.doSwitchToDashboardBorrowView();
-      cy.getDashBoardBorrowedRow(_shortName, apyType )
+      cy.getDashBoardBorrowedRow(_shortName, apyType)
         .find(`[data-cy="apyButton_${apyType}"]`)
         .click();
     });
@@ -278,7 +276,7 @@ export const changeBorrowType = (
       cy.get(`[data-cy="apyMenu_${apyType}"]`).contains(`APY, ${newAPY.toLowerCase()}`).click();
     });
     it(`Make approve for ${_shortName}, on confirmation page`, () => {
-      cy.doConfirm(hasApproval, _actionName)
+      cy.doConfirm(hasApproval, _actionName);
     });
     doCloseModal();
   });
@@ -352,9 +350,7 @@ export const changeCollateral = (
       cy.doSwitchToDashboardSupplyView();
     });
     it('Open Switch type Modal', () => {
-      cy.getDashBoardSuppliedRow(_shortName, isCollateralType)
-        .find('.MuiSwitch-input ')
-        .click();
+      cy.getDashBoardSuppliedRow(_shortName, isCollateralType).find('.MuiSwitch-input ').click();
       cy.get('[data-cy=Modal]').should('be.visible');
       cy.get(`[data-cy=Modal] h2:contains('Review tx ${_shortName}')`).should('be.visible');
     });
@@ -395,7 +391,7 @@ export const claimReward = (
       cy.get('[data-cy=Dashboard_Claim_Button]').click();
     });
     it('Confirm claim', () => {
-      cy.doConfirm(true, 'Claim', asset.shortName)
+      cy.doConfirm(true, 'Claim', asset.shortName);
     });
     doCloseModal();
   });
@@ -417,9 +413,7 @@ export const changeCollateralNegative = (
     skipSetup({ skip, updateSkipStatus });
     it('Switch type', () => {
       cy.doSwitchToDashboardSupplyView();
-      cy.getDashBoardSuppliedRow(_shortName, isCollateralType)
-        .find('.MuiSwitch-input ')
-        .click();
+      cy.getDashBoardSuppliedRow(_shortName, isCollateralType).find('.MuiSwitch-input ').click();
     });
     it(`Check that switch type unavailable`, () => {
       cy.get('[data-cy=Modal]').contains(
@@ -474,7 +468,7 @@ export const emodeActivating = (
     }
     it(`Sign ${turnOn ? 'Turn on E-mode' : 'Turn off E-mode'}`, () => {
       const actionName = turnOn ? 'Enable E-Mode' : 'Disable E-Mode';
-      cy.doConfirm(true, actionName)
+      cy.doConfirm(true, actionName);
     });
     doCloseModal();
     it(`Check that E-mode was ${turnOn ? 'on' : 'off'}`, () => {

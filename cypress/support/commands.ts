@@ -9,7 +9,7 @@ declare global {
        * @param max boolean optional
        * @example cy.setAmount('137')
        */
-      setAmount(amount: number, max?: boolean): void
+      setAmount(amount: number, max?: boolean): void;
       /**
        * This will make confirmation in Modal
        * @param hasApproval boolean
@@ -17,34 +17,40 @@ declare global {
        * @param assetName string optional, verification asset name
        * @example cy.doConfirm(true)
        */
-      doConfirm(hasApproval:boolean, actionName?:string, assetName?:string): void
+      doConfirm(hasApproval: boolean, actionName?: string, assetName?: string): void;
       /**
        * This will return borrowed asset row from Dashboard
        * @param assetName string
        * @param apyType string
        * @example cy.getDashBoardBorrowRow('ETH',constants.borrowAPYType.default)
        */
-      getDashBoardBorrowedRow(assetName:string, apyType:string): Chainable<JQuery<HTMLElement>>
+      getDashBoardBorrowedRow(
+        assetName: string,
+        apyType: string
+      ): Cypress.Chainable<JQuery<HTMLElement>>;
       /**
        * This will return supplied asset row from Dashboard
        * @param assetName string
        * @param isCollateralType boolean optional
        * @example cy.getDashBoardSuppliedRow('ETH')
        */
-      getDashBoardSuppliedRow(assetName:string, isCollateralType?:boolean): Chainable<JQuery<HTMLElement>>
+      getDashBoardSuppliedRow(
+        assetName: string,
+        isCollateralType?: boolean
+      ): Cypress.Chainable<JQuery<HTMLElement>>;
       /**
        * This will switch dashboard view to Borrow
        */
-      doSwitchToDashboardBorrowView():void
+      doSwitchToDashboardBorrowView(): void;
       /**
        * This will switch dashboard view to Supply
        */
-      doSwitchToDashboardSupplyView():void
+      doSwitchToDashboardSupplyView(): void;
     }
   }
 }
 
-Cypress.Commands.add('setAmount', (amount:number, max?:boolean) => {
+Cypress.Commands.add('setAmount', (amount: number, max?: boolean) => {
   cy.get('[data-cy=Modal]').find('button:contains("Enter an amount")').should('be.disabled');
   if (max) {
     cy.get('[data-cy=Modal]').find('button:contains("Max")').click();
@@ -53,34 +59,35 @@ Cypress.Commands.add('setAmount', (amount:number, max?:boolean) => {
   }
 });
 
-Cypress.Commands.add('doConfirm', (hasApproval:boolean, actionName?:string, assetName?:string) => {
-  cy.log(`${hasApproval ? 'One step process' : 'Two step process'}`)
-  if (!hasApproval) {
-    cy.get(`[data-cy=approvalButton]`, { timeout: 20000 })
+Cypress.Commands.add(
+  'doConfirm',
+  (hasApproval: boolean, actionName?: string, assetName?: string) => {
+    cy.log(`${hasApproval ? 'One step process' : 'Two step process'}`);
+    if (!hasApproval) {
+      cy.get(`[data-cy=approvalButton]`, { timeout: 20000 }).should('not.be.disabled').click();
+    }
+    cy.get('[data-cy=actionButton]', { timeout: 30000 })
       .should('not.be.disabled')
+      .then(($btn) => {
+        if (assetName && actionName) {
+          expect($btn.first()).to.contain(`${actionName} ${assetName}`);
+        }
+        if (assetName && !actionName) {
+          expect($btn.first()).to.contain(`${actionName}`);
+        }
+      })
       .click();
+    cy.get("[data-cy=Modal] h2:contains('All done!')").should('be.visible');
   }
-  cy.get('[data-cy=actionButton]', { timeout: 30000 })
-    .should('not.be.disabled')
-    .then(($btn) => {
-      if (assetName && actionName) {
-        expect($btn.first()).to.contain(`${actionName} ${assetName}`);
-      }
-      if (assetName && !actionName) {
-        expect($btn.first()).to.contain(`${actionName}`);
-      }
-    })
-    .click();
-  cy.get("[data-cy=Modal] h2:contains('All done!')").should('be.visible');
-});
+);
 
-Cypress.Commands.add('getDashBoardBorrowedRow', (assetName:string, apyType:string) => {
+Cypress.Commands.add('getDashBoardBorrowedRow', (assetName: string, apyType: string) => {
   return cy
     .get(`[data-cy='dashboardBorrowedListItem_${assetName.toUpperCase()}_${apyType}']`)
     .first();
 });
 
-Cypress.Commands.add('getDashBoardSuppliedRow', (assetName:string, isCollateralType?:boolean) => {
+Cypress.Commands.add('getDashBoardSuppliedRow', (assetName: string, isCollateralType?: boolean) => {
   if (isCollateralType) {
     return cy
       .get(`[data-cy='dashboardSuppliedListItem_${assetName.toUpperCase()}_Collateral']`)
@@ -90,7 +97,7 @@ Cypress.Commands.add('getDashBoardSuppliedRow', (assetName:string, isCollateralT
   }
 });
 
-const switchDashboardView = (value:string) =>{
+const switchDashboardView = (value: string, dashboardTitle: string) => {
   cy.get('[role=group]')
     .contains(value)
     .then(($btn) => {
@@ -98,16 +105,15 @@ const switchDashboardView = (value:string) =>{
         $btn.click();
       }
     });
-  cy.get(`*:contains("Your ${value.toLowerCase()}")`).should('be.visible');
-}
+  cy.get(`*:contains("Your ${dashboardTitle.toLowerCase()}")`).should('be.visible');
+};
 
 Cypress.Commands.add('doSwitchToDashboardBorrowView', () => {
-  switchDashboardView('Borrow');
+  switchDashboardView('Borrow', 'borrows');
 });
 
 Cypress.Commands.add('doSwitchToDashboardSupplyView', () => {
-  switchDashboardView('Supply');
+  switchDashboardView('Supply', 'supplies');
 });
-
 
 export {};

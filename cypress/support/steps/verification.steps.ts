@@ -1,11 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/// <reference types="cypress" />
-import {
-  doSwitchToDashboardBorrowView,
-  doSwitchToDashboardSupplyView,
-  getDashBoardBorrowRow,
-  getDashBoardDepositRow,
-} from './actions.steps';
 import constants from '../../fixtures/constans.json';
 
 type SkipType = {
@@ -42,10 +34,7 @@ export const dashboardAssetValuesVerification = (
             it(`Check that asset name is ${estimatedCase.assetName},
             with collateral type ${estimatedCase.collateralType}
             ${estimatedCase.amount ? ' and amount ' + estimatedCase.amount : ''}`, () => {
-              getDashBoardDepositRow({
-                assetName: _assetName,
-                isCollateralType: estimatedCase.isCollateral,
-              }).within(($row) => {
+              cy.getDashBoardSuppliedRow(_assetName, estimatedCase.isCollateral).within(($row) => {
                 expect($row.find(`[data-cy="assetName"]`)).to.contain(estimatedCase.assetName);
                 if (estimatedCase.isCollateral) {
                   expect($row.find('.MuiSwitch-input')).to.have.attr('checked');
@@ -62,12 +51,8 @@ export const dashboardAssetValuesVerification = (
             it(`Check that asset name is ${estimatedCase.assetName},
             with apy type ${estimatedCase.apyType}
             ${estimatedCase.amount ? ' and amount ' + estimatedCase.amount : ''}`, () => {
-              getDashBoardBorrowRow({
-                assetName: _assetName,
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                apyType: estimatedCase.apyType,
-              }).within(($row) => {
+              // @ts-ignore
+              cy.getDashBoardBorrowedRow(_assetName, estimatedCase.apyType).within(($row) => {
                 expect($row.find(`[data-cy="assetName"]`)).to.contain(estimatedCase.assetName);
                 expect($row.find(`[data-cy="apyButton_${estimatedCase.apyType}"]`)).to.exist;
                 if (estimatedCase.amount) {
@@ -88,7 +73,7 @@ export const borrowsUnavailable = (skip: SkipType) => {
   return describe('Check that borrowing unavailable', () => {
     skipSetup(skip);
     it('Open Dashboard', () => {
-      doSwitchToDashboardBorrowView();
+      cy.doSwitchToDashboardBorrowView();
     });
     it('Check that Borrow unavailable', () => {
       cy.get('[data-cy^="dashboardBorrowListItem_"]')
@@ -103,7 +88,7 @@ export const borrowsAvailable = (skip: SkipType) => {
   return describe('Check that borrowing available', () => {
     skipSetup(skip);
     it('Open Dashboard', () => {
-      doSwitchToDashboardBorrowView();
+      cy.doSwitchToDashboardBorrowView();
     });
     it('Check that Borrow available', () => {
       cy.get('[data-cy^="dashboardBorrowListItem_"]')
@@ -118,7 +103,7 @@ export const rewardIsNotAvailable = (skip: SkipType) => {
   return describe('Check that reward not available', () => {
     skipSetup(skip);
     it('Check that reward not exist on dashboard page', () => {
-      doSwitchToDashboardSupplyView();
+      cy.doSwitchToDashboardSupplyView();
       cy.get('[data-cy=Claim_Box]').should('not.exist');
     });
   });
@@ -136,12 +121,8 @@ export const switchCollateralBlocked = (
   return describe('Check that collateral switcher disabled', () => {
     skipSetup(skip);
     it(`Check that collateral switcher for ${_shortName} disabled`, () => {
-      doSwitchToDashboardSupplyView();
-      getDashBoardDepositRow({
-        assetName: _shortName,
-      })
-        .find('input[type="checkbox"]')
-        .should('be.disabled');
+      cy.doSwitchToDashboardSupplyView();
+      cy.getDashBoardSuppliedRow(_shortName).find('input[type="checkbox"]').should('be.disabled');
     });
   });
 };
@@ -160,11 +141,8 @@ export const switchCollateralBlockedInModal = (
   return describe('Check that collateral switcher disabled', () => {
     skipSetup(skip);
     it(`Check that collateral switching blocked in popup`, () => {
-      doSwitchToDashboardSupplyView();
-      getDashBoardDepositRow({
-        assetName: _shortName,
-        isCollateralType,
-      })
+      cy.doSwitchToDashboardSupplyView();
+      cy.getDashBoardSuppliedRow(_shortName, isCollateralType)
         .find('input[type="checkbox"]')
         .should('be.enabled')
         .click();
@@ -188,10 +166,10 @@ export const switchApyBlocked = (
   return describe('Check that apy switcher disabled', () => {
     skipSetup(skip);
     it(`Open dashboard`, () => {
-      doSwitchToDashboardBorrowView();
+      cy.doSwitchToDashboardBorrowView();
     });
     it(`Verify that switching button disabled with APY ${apyType}`, () => {
-      getDashBoardBorrowRow({ assetName: _shortName, apyType })
+      cy.getDashBoardBorrowedRow(_shortName, apyType)
         .find(`[data-cy='apyButton_${apyType}']`)
         .should('be.disabled')
         .should('have.text', `${apyType}`);
@@ -214,10 +192,10 @@ export const changeBorrowTypeBlocked = (
   return describe(`Verify that Switch borrow is unavailable`, () => {
     skipSetup(skip);
     it('Open dashboard page', () => {
-      doSwitchToDashboardSupplyView();
+      cy.doSwitchToDashboardSupplyView();
     });
     it('Try to change apy type', () => {
-      getDashBoardDepositRow({ assetName: _shortName, isCollateralType })
+      cy.getDashBoardSuppliedRow(_shortName, isCollateralType)
         .find('.MuiSwitch-input ')
         .should('be.disabled');
     });
@@ -241,7 +219,7 @@ export const checkDashboardHealthFactor = (
   }`, () => {
     skipSetup(skip);
     it('Open dashboard page', () => {
-      doSwitchToDashboardSupplyView();
+      cy.doSwitchToDashboardSupplyView();
     });
     it('Check value', () => {
       cy.get(`[data-cy=HealthFactorTopPannel]`).then(($health) => {
@@ -275,7 +253,7 @@ export const checkEmodeActivatingDisabled = (
   return describe(`${turnOn ? 'Turn on E-mode' : 'Turn off E-mode'}`, () => {
     skipSetup(skip);
     it('Open E-mode switcher modal', () => {
-      doSwitchToDashboardBorrowView();
+      cy.doSwitchToDashboardBorrowView();
       cy.get('[data-cy=emode-open]').click();
       if (turnOn)
         cy.get(`[data-cy="emode-enable"]`).should('have.class', 'MuiButton-disableElevation');
@@ -295,7 +273,7 @@ export const verifyCountOfBorrowAssets = (
   return describe(`Verify that count available borrowed assets is ${assets.length}`, () => {
     skipSetup(skip);
     it(`Open Borrow dashboard part`, () => {
-      doSwitchToDashboardBorrowView();
+      cy.doSwitchToDashboardBorrowView();
     });
     assets.forEach(($asset) => {
       it(`Verifying that ${$asset.shortName} is exist`, () => {
@@ -305,7 +283,7 @@ export const verifyCountOfBorrowAssets = (
       });
     });
     it('Verifying length', () => {
-      doSwitchToDashboardBorrowView();
+      cy.doSwitchToDashboardBorrowView();
       cy.get('[data-cy*=dashboardBorrowListItem_]').should('have.length', assets.length);
     });
   });
