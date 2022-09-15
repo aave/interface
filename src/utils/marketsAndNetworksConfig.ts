@@ -178,6 +178,7 @@ class RotationProvider extends ethersProviders.BaseProvider {
   readonly providers: StaticJsonRpcBatchProvider[];
   private currentProviderIndex = 0;
   private lastRotation = 0;
+  private retriedFirst = false;
 
   constructor(urls: string[], chainId: number) {
     super(chainId);
@@ -185,7 +186,7 @@ class RotationProvider extends ethersProviders.BaseProvider {
   }
 
   /**
-   * Add a delay for frequent rotations, so we don't ddos a provider
+   * Add a delay after completing a rotation, so we don't ddos a provider
    */
   async delayRotation() {
     const now = new Date().getTime();
@@ -193,13 +194,23 @@ class RotationProvider extends ethersProviders.BaseProvider {
     if (diff < 5000) sleep(5000 - diff);
   }
 
-  private async rotateUrl(prevIndex: number) {
-    await this.delayRotation();
-    // don't rotate when another rotation was already triggered
-    if (prevIndex !== this.currentProviderIndex) return;
-    if (this.currentProviderIndex === this.providers.length - 1) this.currentProviderIndex = 0;
-    else this.currentProviderIndex += 1;
-    this.lastRotation = new Date().getTime();
+  // To prioritize private endpoints and reduce the splitting of queries, the first RPC is tried twice
+  // If all RPCs fail, then delay and loop again
+  private async rotateUrl() {
+    if (this.currentProviderIndex === 0) {
+      if (this.retriedFirst) {
+        this.currentProviderIndex += 1;
+      } else {
+        this.retriedFirst = true;
+      }
+    } else if (this.currentProviderIndex === this.providers.length - 1) {
+      await this.delayRotation();
+      this.currentProviderIndex = 0;
+      this.retriedFirst = false;
+      this.lastRotation = new Date().getTime();
+    } else {
+      this.currentProviderIndex += 1;
+    }
   }
 
   async detectNetwork(): Promise<Network> {
@@ -208,7 +219,7 @@ class RotationProvider extends ethersProviders.BaseProvider {
       return await this.providers[index].detectNetwork();
     } catch (e) {
       console.log(e.message);
-      await this.rotateUrl(index);
+      await this.rotateUrl();
       return this.detectNetwork();
     }
   }
@@ -220,7 +231,7 @@ class RotationProvider extends ethersProviders.BaseProvider {
       return await this.providers[index].send(method, params);
     } catch (e) {
       console.log(e.message);
-      await this.rotateUrl(index);
+      await this.rotateUrl();
       return this.send(method, params);
     }
   }
@@ -232,7 +243,7 @@ class RotationProvider extends ethersProviders.BaseProvider {
       return await this.providers[index].perform(method, params);
     } catch (e) {
       console.log(e.message);
-      await this.rotateUrl(index);
+      await this.rotateUrl();
       return await this.perform(method, params);
     }
   }
