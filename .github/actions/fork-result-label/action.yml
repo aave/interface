@@ -2,7 +2,10 @@ name: Add label to PR with CI results
 description: Add label to PR with CI results
 inputs:
   SUCCESS:
-    description: Text of the comment
+    description: Boolean to know the content of the label to add
+    required: true
+  TOKEN:
+    description: Github token
     required: true
   PULL_REQUEST_NUMBER:
     description: Pull request id
@@ -27,9 +30,11 @@ runs:
       with:
           labels: "CI Passed"
           number: ${{ inputs.PULL_REQUEST_NUMBER }}
+          github_token: ${{ inputs.TOKEN }}
     - name: adding fail label
       uses: actions-ecosystem/action-add-labels@bd52874380e3909a1ac983768df6976535ece7f8
       if: ${{ inputs.SUCCESS == 'false' }}
       with:
           labels: "CI Failed"
           number: ${{ inputs.PULL_REQUEST_NUMBER }}
+          github_token: ${{ inputs.TOKEN }}
