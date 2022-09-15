@@ -15,18 +15,6 @@ import { FormattedReserveHistoryItem, ReserveRateTimeRange } from 'src/hooks/use
 
 type TooltipData = FormattedReserveHistoryItem;
 
-const accentColorDark = '#383D511F';
-const tooltipStyles = {
-  ...defaultStyles,
-  padding: '8px 12px',
-  boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
-  borderRadius: '4px',
-  color: '#62677B',
-  fontSize: '12px',
-  lineHeight: '16px',
-  letterSpacing: '0.15px',
-};
-
 // util
 const formatDate = (d: Date) => {
   const formatted = timeFormat('%b %d, %H:%M UTC%Z');
@@ -71,6 +59,22 @@ export const ApyGraph = withTooltip<AreaProps, TooltipData>(
     if (width < 10) return null;
     const theme = useTheme();
     const isXsm = useMediaQuery(theme.breakpoints.down('xsm'));
+
+    // Tooltip Styles
+    const accentColorDark = theme.palette.mode === 'light' ? '#383D511F' : '#a5a8b647';
+    const tooltipStyles = {
+      ...defaultStyles,
+      padding: '8px 12px',
+      boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
+      borderRadius: '4px',
+      fontSize: '12px',
+      lineHeight: '16px',
+      letterSpacing: '0.15px',
+    };
+    const tooltipStylesDark = {
+      ...tooltipStyles,
+      background: theme.palette.background.default,
+    };
 
     // bounds
     const innerWidth = width - margin.left - margin.right;
@@ -203,10 +207,8 @@ export const ApyGraph = withTooltip<AreaProps, TooltipData>(
                         cx={tooltipLeft}
                         cy={yValueScale(getData(tooltipData, field.name)) + 1}
                         r={4}
-                        fill={field.color}
-                        // fillOpacity={0.1}
-                        stroke={field.color}
-                        // strokeOpacity={0.1}
+                        fillOpacity={0.1}
+                        strokeOpacity={0.1}
                         strokeWidth={2}
                         pointerEvents="none"
                       />
@@ -230,8 +232,16 @@ export const ApyGraph = withTooltip<AreaProps, TooltipData>(
         {/* Tooltip Info */}
         {tooltipData && (
           <div>
-            <TooltipWithBounds top={20} left={tooltipLeft + 12} style={tooltipStyles}>
-              <Typography variant="secondary12" sx={{ mb: 2, mr: 2, fontWeight: 400 }}>
+            <TooltipWithBounds
+              top={20}
+              left={tooltipLeft + 12}
+              style={theme.palette.mode === 'light' ? tooltipStyles : tooltipStylesDark}
+            >
+              <Typography
+                variant="secondary12"
+                color="text.secondary"
+                sx={{ mb: 2, mr: 2, fontWeight: 400 }}
+              >
                 {formatDate(getDate(tooltipData))}
               </Typography>
               {fields.map((field) => (

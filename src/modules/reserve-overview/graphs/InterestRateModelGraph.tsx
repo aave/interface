@@ -18,18 +18,6 @@ import { Trans } from '@lingui/macro';
 
 type TooltipData = Rate;
 
-const accentColorDark = '#383D511F';
-const tooltipStyles = {
-  ...defaultStyles,
-  padding: '8px 12px',
-  boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
-  borderRadius: '4px',
-  color: '#62677B',
-  fontSize: '12px',
-  lineHeight: '16px',
-  letterSpacing: '0.15px',
-};
-
 type InterestRateModelType = {
   reserveFactor: string;
   supplyAPR: string;
@@ -173,6 +161,23 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
     if (width < 10) return null;
     const theme = useTheme();
 
+    // Tooltip Styles
+    const accentColorDark = theme.palette.mode === 'light' ? '#383D511F' : '#a5a8b647';
+    const tooltipStyles = {
+      ...defaultStyles,
+      padding: '8px 12px',
+      boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
+      borderRadius: '4px',
+      color: '#62677B',
+      fontSize: '12px',
+      lineHeight: '16px',
+      letterSpacing: '0.15px',
+    };
+    const tooltipStylesDark = {
+      ...tooltipStyles,
+      background: theme.palette.background.default,
+    };
+
     const data = useMemo(() => getRates(reserve), [JSON.stringify(reserve)]);
 
     // bounds
@@ -305,7 +310,7 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
               onMouseLeave={() => hideTooltip()}
             />
 
-            {/* Optimal Utilization Tick */}
+            {/* Optimal Utilization Line */}
             <Line
               from={{ x: dateScale(ticks[0].value), y: margin.top + 8 }}
               to={{ x: dateScale(ticks[0].value), y: innerHeight + margin.top }}
@@ -413,7 +418,11 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
         {/* Tooltip Info */}
         {tooltipData && (
           <div>
-            <TooltipWithBounds top={20} left={tooltipLeft + 12} style={tooltipStyles}>
+            <TooltipWithBounds
+              top={20}
+              left={tooltipLeft + 12}
+              style={theme.palette.mode === 'light' ? tooltipStyles : tooltipStylesDark}
+            >
               <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
                 <Typography variant="main12" color="primary" sx={{ mr: 2 }}>
                   <Trans>Utilization Rate</Trans>
@@ -435,10 +444,18 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
             </TooltipWithBounds>
           </div>
         )}
+
+        {/* X Axis Label */}
         <Typography
           variant="secondary12"
           color="text.muted"
-          sx={{ textAlign: 'center', mt: 4, pt: 4, borderTop: '1px solid #d0d0d0' }}
+          sx={{
+            textAlign: 'center',
+            mt: 4,
+            pt: 4,
+            borderTop: '1px solid #d0d0d0',
+            borderColor: 'divider',
+          }}
         >
           <Trans>Utilization Rate</Trans> %
         </Typography>
