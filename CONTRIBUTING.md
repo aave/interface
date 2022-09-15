@@ -1,5 +1,56 @@
 # Contributing
 
+## Objective of the Aave Interface
+
+The Aave interface is managed by the Aave Companies. It is hosted on IPFS and can be accessed at [app.aave.com](app.aave.com). It is an open source project that allows users to interact with the decentralized liquidity protocol, Aave. The interface allows users to
+
+- Manage and monitor their positions on the Aave protocol
+- Manage and monitor their positions on the Aave Safety module
+- Participate in Aave Governance
+
+Our aim is to be as open and transparent as possible, and we welcome contributions from all community members. This document and our guidelines are a work in progress, but we hope to provide you with enough information to make the process as smooth as possible.
+
+## Maintainers Responsitibility on the Aave Interface
+
+- Review all PRs that get created on any repositories that fall under Aave Interface
+  - [aave/interface](https://github.com/aave/interface)
+  - [aave/utilities](https://github.com/aave/aave-utilities)
+- Determine the roadmap of features that will be included on the AI
+- Maintaining the security, usability, and style of the codebase, including any integrations with third party services
+
+## Reporting New Features, Improvements & Bugs
+
+We use the Issues list in GitHub to keep track of all work going on in the project. If you would like to report a new bug or an improvement, please use the existing templates after making sure your bug or request doesn’t already exist. To report a new issue, follow these steps:
+
+1. Go to [https://github.com/aave/interface/issues/new/choose](https://github.com/aave/interface/issues/new/choose)
+2. Choose the category for the issue - Bug Report or Feature Request
+3. If reporting a bug, include as much information as possible in your PR, and follow the steps in the template, as they are pretty self-explanatory
+4. If reporting a new feature, do the same
+5. Once the issue is created, it will get a “New Issue” label. This is an indication for the Aave Interface Team to triage the new request.
+
+## Picking up an Issue for Work
+
+Whether you’re a first time or existing contributor to the project, you may do so by picking up any issue that has the label “Looking for Help”, as this will be the right place to start. These issues will have been triaged already by the Aave Interface Team.
+
+Follow these steps once you’ve identified an issue you want to pick up:
+
+1. Comment on the issue expressing interest. A member of the Aave Interface Team will assign it to you.
+
+> 💡 **In order to mitigate issues from becoming stale, we may reassign or un-assign an issue after an extended period of time if we see that no commits are occurring on it. We will reach out to the original assignee in these instances**
+
+2. Fork the repo if you haven’t done so already.
+3. Create a branch for the issue by clicking `Create a branch` in the Development section on the Issue page. We follow Conventional Commits and follow the branch naming convention of `[verb]/[issue number]-[branch name]`. Some examples are:
+   1. `fix/123-squashed-bug`
+   2. `feat/321-my-new-feature`
+4. Please add a comment on the issue so other people know it is being worked on.
+5. Commit work using conventional commit formatting. There is a pre-commit hook with Husky that will enforce this. See the Running the UI Locally section for how to get the project running locally.
+6. Create a pull request by using the single PR template. Fill out the list of major changes that are happening in the codebase. These bullet points should be a high-level overview / at-a-glance of the major changes to ease reviews. Go over the `Author Checklist` items in the template, and ensure all of them have been met before opening for review.
+7. Code review. We might request you to make changes and iterate until we feel the code is ready.
+8. QA and design review. If anything comes up during testing, or if there are any UI/UX items that need to be addressed, we’ll let you know.
+9. Once there is two approvals, the Pull Request can be merged.
+
+# Running the Interface Locally
+
 ## Initial setup
 
 ```sh
@@ -8,8 +59,6 @@ nvm use
 yarn install
 cp .env.example .env.local
 ```
-
-## Running the interface
 
 ```sh
 yarn dev
@@ -45,6 +94,7 @@ TENDERLY_PROJECT=<project name>
 ```
 
 For setup env with staking page (to get positive result for staking test coverage), need to execute:
+
 ```
 cp .env.example .env.local
 ```
