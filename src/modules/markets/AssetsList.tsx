@@ -4,6 +4,7 @@ import { Box, useMediaQuery } from '@mui/material';
 import { useState } from 'react';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
+import { SearchBar } from 'src/components/SearchBar';
 import { HarmonyWarning } from 'src/components/transactions/Warnings/HarmonyWarning';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
@@ -22,10 +23,17 @@ export default function AssetsList() {
   const { reserves, loading } = useAppDataContext();
   const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
 
+  const [sortName, setSortName] = useState('');
+  const [sortDesc, setSortDesc] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+
   const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
 
   const filteredData = reserves
     .filter((res) => res.isActive)
+    .filter((res) => {
+      return !searchTerm || res.name.toLowerCase().includes(searchTerm.toLowerCase().trim());
+    })
     .map((reserve) => ({
       ...reserve,
       ...(reserve.isWrappedBaseAsset
@@ -35,9 +43,6 @@ export default function AssetsList() {
           })
         : {}),
     }));
-
-  const [sortName, setSortName] = useState('');
-  const [sortDesc, setSortDesc] = useState(false);
 
   if (sortDesc) {
     if (sortName === 'symbol') {
@@ -56,6 +61,10 @@ export default function AssetsList() {
       filteredData.sort((a, b) => b[sortName] - a[sortName]);
     }
   }
+
+  const onSearchChange = (value: string) => {
+    setSearchTerm(value);
+  };
 
   const header = [
     {
@@ -101,6 +110,7 @@ export default function AssetsList() {
       title={
         <>
           {currentMarketData.marketTitle} <Trans>assets</Trans>
+          <SearchBar value={searchTerm} onChange={onSearchChange} />
         </>
       }
       captionSize="h2"
