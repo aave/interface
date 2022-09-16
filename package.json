@@ -143,10 +143,7 @@
     "Diego Prudencio diego@aave.com"
   ],
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --cache --fix",
-      "prettier --write"
-    ],
+    "*": "yarn lint:fix",
     "*.svg": "npx svgo --final-newline"
   },
   "nextBundleAnalysis": {
