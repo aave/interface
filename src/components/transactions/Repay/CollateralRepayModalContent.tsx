@@ -178,7 +178,7 @@ export function CollateralRepayModalContent({
 
   let blockingError: ErrorType | undefined = undefined;
 
-  if (valueToBigNumber(tokenToRepayWithBalance).lt(collateralAmountRequiredToCoverDebt)) {
+  if (valueToBigNumber(tokenToRepayWithBalance).lt(inputAmount)) {
     blockingError = ErrorType.NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH;
   } else if (disableFlashLoan) {
     blockingError = ErrorType.FLASH_LOAN_NOT_AVAILABLE;
