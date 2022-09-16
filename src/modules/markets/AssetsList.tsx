@@ -113,7 +113,10 @@ export default function AssetsList() {
             learnMore={true}
             linkHref={`https://governance.aave.com/t/harmony-horizon-bridge-exploit-consequences-to-aave-v3-harmony/8614`}
             warningMessage={
-              'Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Aave V3 Harmony market.'
+              <Trans>
+                Due to the Horizon bridge exploit, certain assets on the Harmony network are not at
+                parity with Ethereum, which affects the Aave V3 Harmony market.
+              </Trans>
             }
             warningType={'error'}
           />
@@ -125,7 +128,7 @@ export default function AssetsList() {
           <MarketWarning
             linkHref={`https://snapshot.org/#/aave.eth/proposal/0xeefcd76e523391a14cfd0a79b531ea0a3faf0eb4a058e255fac13a2d224cc647`}
             learnMore={true}
-            warningMessage={'Per the community, the Fantom market has been frozen.'}
+            warningMessage={<Trans>Per the community, the Fantom market has been frozen.</Trans>}
             warningType={'error'}
           />
         </Box>

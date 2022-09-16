@@ -1,11 +1,12 @@
 import { Trans } from '@lingui/macro';
 import { Link, Typography, AlertColor } from '@mui/material';
+import { ReactNode } from 'react';
 
 import { Warning } from '../../primitives/Warning';
 
 interface MarketWarningProps {
   learnMore?: boolean; // Modify wording on link text,
-  warningMessage: string;
+  warningMessage: ReactNode;
   linkHref?: string;
   warningType: AlertColor;
 }
@@ -19,12 +20,10 @@ export const MarketWarning = ({
   return (
     <Warning severity={warningType}>
       <Typography variant="caption">
-        <Trans>
-          {warningMessage}{' '}
-          <Link href={linkHref} target="_blank">
-            {learnMore ? 'Learn More' : 'Join the community discussion'}
-          </Link>
-        </Trans>
+        {warningMessage}{' '}
+        <Link href={linkHref} target="_blank">
+          {learnMore ? <Trans>Learn More</Trans> : <Trans>Join the community discussion</Trans>}
+        </Link>
       </Typography>
     </Warning>
   );

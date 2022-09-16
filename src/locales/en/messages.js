@@ -175,6 +175,8 @@
     Discord: 'Discord',
     'Due to a precision bug in the stETH contract, this asset can not be used in flashloan transactions':
       'Due to a precision bug in the stETH contract, this asset can not be used in flashloan transactions',
+    'Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Aave V3 Harmony market.':
+      'Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Aave V3 Harmony market.',
     'E-Mode': 'E-Mode',
     'E-Mode Category': 'E-Mode Category',
     'E-Mode category': 'E-Mode category',
@@ -264,7 +266,9 @@
     'Isolated Debt Ceiling': 'Isolated Debt Ceiling',
     'Isolated assets have limited borrowing power and other assets cannot be used as collateral.':
       'Isolated assets have limited borrowing power and other assets cannot be used as collateral.',
+    'Join the community discussion': 'Join the community discussion',
     Language: 'Language',
+    'Learn More': 'Learn More',
     'Learn more': 'Learn more',
     'Learn more about risks involved': 'Learn more about risks involved',
     'Learn more in our <0>FAQ guide</0>': 'Learn more in our <0>FAQ guide</0>',
@@ -343,6 +347,8 @@
       ' reserve gives annualized rewards.',
     ],
     'Pending...': 'Pending...',
+    'Per the community, the Fantom market has been frozen.':
+      'Per the community, the Fantom market has been frozen.',
     'Please connect a wallet to view your personal information here.':
       'Please connect a wallet to view your personal information here.',
     'Please connect your wallet to get free testnet assets.':
@@ -719,6 +725,5 @@
     '{networkName} Faucet': [['networkName'], ' Faucet'],
     '{s}s': [['s'], 's'],
     '{tooltipText}': [['tooltipText']],
-    '{warningMessage} <0>{0}</0>': [['warningMessage'], ' <0>', ['0'], '</0>'],
   },
 };
