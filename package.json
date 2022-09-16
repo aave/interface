@@ -2,6 +2,7 @@
   "name": "aave-ui",
   "version": "1.0.0",
   "private": true,
+  "license": "BSD-3-Clause",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -13,8 +14,12 @@
     "serve:static": "npx serve out",
     "export": "next export",
     "start": "next start",
-    "lint": "next lint",
-    "lint:fix": "next lint --fix",
+    "lint:code": "next lint",
+    "lint:code:fix": "next lint --fix",
+    "lint:formatting": "prettier src pages scripts cypress . --check",
+		"lint:formatting:fix": "prettier src pages scripts cypress . --write",
+    "lint": "yarn lint:code && yarn lint:formatting",
+    "lint:fix": "yarn lint:code:fix && yarn lint:formatting:fix",
     "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest",
     "i18n:extract": "NODE_ENV=development lingui extract --clean --overwrite --locale en",
     "i18n:compile": "lingui compile",
@@ -70,7 +75,7 @@
     "ethereum-blockies-base64": "^1.0.2",
     "ethers": "^5.5.4",
     "graphql": "^16.2.0",
-    "graphql-ws": "^5.6.2",
+    "graphql-ws": "^5.11.0",
     "gray-matter": "^4.0.3",
     "lowdb": "^3.0.0",
     "next": "12.1.0",
@@ -128,21 +133,22 @@
     "@web3-react/walletlink-connector/@coinbase/wallet-sdk": "3.1.0"
   },
   "contributors": [
-    "Pol Sendra <pol@aave.com>",
-    "Lukas Strassel <lukas@aave.com>",
-    "Oleksandr Tkach <oleksandr@aave.com>",
-    "David Racero <david.k@aave.com>",
+    "Anastasia Khovaeva <anastasia@aave.com>",
     "Andrew Schmidt <andrew@aave.com>",
+    "Bojan Kopunovic Legetin <bojan@aave.com>",
+    "David Racero <david.k@aave.com>",
+    "Diego Prudencio <diego@aave.com>",
+    "Drew Cook <drew.c@aave.com>",
+    "Lukas Strassel <lukas@aave.com>",
+    "Mark Grothe <mark.g@aave.com",
     "Mark Hinschberger <mark@aave.com>",
     "Nikita Bokarev <nikita@aave.com>",
-    "Anastasia Khovaeva <anastasia@aave.com>",
-    "Diego Prudencio diego@aave.com"
+    "Oleksandr Tkach <oleksandr@aave.com>",
+    "Pol Sendra <pol@aave.com>",
+    "Vladimir Konstantinovich Yumatov <vladimir@aave.com>"
   ],
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --cache --fix",
-      "prettier --write"
-    ],
+    "*": "yarn lint:fix",
     "*.svg": "npx svgo --final-newline"
   },
   "nextBundleAnalysis": {
