@@ -1,7 +1,7 @@
 import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
 import { Box, CircularProgress } from '@mui/material';
-import { BigNumber } from 'ethers/lib/ethers';
-import { formatUnits, parseUnits } from 'ethers/lib/utils';
+import { BigNumber } from '@ethersproject/bignumber';
+import { formatUnits, parseUnits } from '@ethersproject/units';
 import React from 'react';
 import { GasTooltip } from 'src/components/infoTooltips/GasTooltip';
 import { useGasStation } from 'src/hooks/useGasStation';

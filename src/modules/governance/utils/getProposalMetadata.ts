@@ -1,5 +1,5 @@
 import { ProposalMetadata } from '@aave/contract-helpers';
-import { base58 } from 'ethers/lib/utils';
+import { Base58 } from '@ethersproject/basex';
 import fetch from 'isomorphic-unfetch';
 import matter from 'gray-matter';
 
@@ -15,7 +15,7 @@ export async function getProposalMetadata(
   gateway = 'https://cloudflare-ipfs.com/ipfs'
 ): Promise<ProposalMetadata> {
   const ipfsHash = hash.startsWith('0x')
-    ? base58.encode(Buffer.from(`1220${hash.slice(2)}`, 'hex'))
+    ? Base58.encode(Buffer.from(`1220${hash.slice(2)}`, 'hex'))
     : hash;
   if (MEMORIZE[ipfsHash]) return MEMORIZE[ipfsHash];
   const ipfsResponse: Response = await fetch(getLink(ipfsHash, gateway), {

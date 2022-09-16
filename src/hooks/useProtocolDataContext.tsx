@@ -1,5 +1,5 @@
 // import { BaseNetworkConfig } from "../ui-config/networksConfig";
-import { providers } from 'ethers';
+import { Provider } from '@ethersproject/providers';
 import { useRouter } from 'next/router';
 import React, { PropsWithChildren, useContext, useEffect, useState } from 'react';
 
@@ -70,7 +70,7 @@ export interface ProtocolContextData {
   // currently selected one
   currentChainId: number;
   currentNetworkConfig: NetworkConfig;
-  jsonRpcProvider: providers.Provider;
+  jsonRpcProvider: Provider;
 }
 
 const PoolDataContext = React.createContext({} as ProtocolContextData);

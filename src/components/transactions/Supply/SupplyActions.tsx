@@ -1,7 +1,7 @@
 import { Pool } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
-import { utils } from 'ethers';
+import { getAddress } from '@ethersproject/address';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
@@ -37,8 +37,7 @@ export const SupplyActions = ({
 
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({
-      tryPermit:
-        currentMarketData.v3 && permitByChainAndToken[chainId]?.[utils.getAddress(poolAddress)],
+      tryPermit: currentMarketData.v3 && permitByChainAndToken[chainId]?.[getAddress(poolAddress)],
       handleGetTxns: async () => {
         if (currentMarketData.v3) {
           // TO-DO: No need for this cast once a single Pool type is used in use-tx-builder-context

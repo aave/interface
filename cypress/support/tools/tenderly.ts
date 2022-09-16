@@ -7,6 +7,7 @@ import POOL_CONFIG_ABI from '../../fixtures/poolConfig.json';
 
 const TENDERLY_KEY = Cypress.env('TENDERLY_KEY');
 const TENDERLY_ACCOUNT = Cypress.env('TENDERLY_ACCOUNT');
+s;
 const TENDERLY_PROJECT = Cypress.env('TENDERLY_PROJECT');
 const WALLET = Wallet.createRandom();
 

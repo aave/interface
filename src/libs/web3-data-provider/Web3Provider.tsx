@@ -6,13 +6,9 @@ import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { Web3Context } from '../hooks/useWeb3Context';
 import { getWallet, WalletType } from './WalletOptions';
 import { AbstractConnector } from '@web3-react/abstract-connector';
-import {
-  JsonRpcProvider,
-  TransactionResponse,
-  // Web3Provider,
-} from '@ethersproject/providers';
+import { JsonRpcProvider, TransactionResponse, Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { BigNumber, providers } from 'ethers';
+import { BigNumber } from '@ethersproject/bignumber';
 import { SignatureLike } from '@ethersproject/bytes';
 import { API_ETH_MOCK_ADDRESS, transactionType } from '@aave/contract-helpers';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
@@ -56,7 +52,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     error,
     deactivate,
     setError,
-  } = useWeb3React<providers.Web3Provider>();
+  } = useWeb3React<Web3Provider>();
 
   // const [provider, setProvider] = useState<JsonRpcProvider>();
   const [mockAddress, setMockAddress] = useState<string>();

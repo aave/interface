@@ -1,8 +1,8 @@
 import { canBeEnsAddress } from '@aave/contract-helpers';
 import { Trans, t } from '@lingui/macro';
 import { FormControl, TextField, Typography } from '@mui/material';
-import { utils } from 'ethers';
-import { parseUnits } from 'ethers/lib/utils';
+import { isAddress } from '@ethersproject/address';
+import { parseUnits } from '@ethersproject/units';
 import { useState } from 'react';
 import { DelegationType } from 'src/helpers/types';
 import { useAaveTokensProviderContext } from 'src/hooks/governance-data-provider/AaveTokensDataProvider';
@@ -67,7 +67,7 @@ export const GovDelegationModalContent = () => {
 
   // handle delegate address errors
   let delegateAddressBlockingError: ErrorType | undefined = undefined;
-  if (delegate !== '' && !utils.isAddress(delegate) && !canBeEnsAddress(delegate)) {
+  if (delegate !== '' && !isAddress(delegate) && !canBeEnsAddress(delegate)) {
     delegateAddressBlockingError = ErrorType.NOT_AN_ADDRESS;
   }
 

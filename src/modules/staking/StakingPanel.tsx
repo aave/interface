@@ -1,8 +1,8 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Paper, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { BigNumber } from 'ethers';
-import { formatEther } from 'ethers/lib/utils';
+import { BigNumber } from '@ethersproject/bignumber';
+import { formatEther } from '@ethersproject/units';
 import React from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';

@@ -14,7 +14,7 @@ import { useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { UnStakeActions } from './UnStakeActions';
 import { GasStation } from '../GasStation/GasStation';
-import { parseUnits } from 'ethers/lib/utils';
+import { parseUnits } from '@ethersproject/units';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 

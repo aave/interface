@@ -1,7 +1,7 @@
 import { InterestRate, Pool } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
-import { utils } from 'ethers';
+import { getAddress } from '@ethersproject/address';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -41,8 +41,7 @@ export const RepayActions = ({
 
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({
-      tryPermit:
-        currentMarketData.v3 && permitByChainAndToken[chainId]?.[utils.getAddress(poolAddress)],
+      tryPermit: currentMarketData.v3 && permitByChainAndToken[chainId]?.[getAddress(poolAddress)],
       handleGetTxns: async () => {
         if (currentMarketData.v3) {
           const newPool: Pool = lendingPool as Pool;

@@ -1,5 +1,10 @@
 import { ChainId, ChainIdToNetwork } from '@aave/contract-helpers';
-import { providers as ethersProviders } from 'ethers';
+import {
+  FallbackProvider,
+  FallbackProviderConfig,
+  Provider,
+  StaticJsonRpcProvider,
+} from '@ethersproject/providers';
 
 import {
   CustomMarket,
@@ -143,27 +148,27 @@ export const isFeatureEnabled = {
   permissions: (data: MarketDataType) => data.enabledFeatures?.permissions,
 };
 
-const providers: { [network: string]: ethersProviders.Provider } = {};
+const providers: { [network: string]: Provider } = {};
 
 /**
  * Created a fallback rpc provider in which providers are prioritized from private to public and in case there are multiple public ones, from top to bottom.
  * @param chainId
  * @returns provider or fallbackprovider in case multiple rpcs are configured
  */
-export const getProvider = (chainId: ChainId): ethersProviders.Provider => {
+export const getProvider = (chainId: ChainId): Provider => {
   if (!providers[chainId]) {
     const config = getNetworkConfig(chainId);
-    const chainProviders: ethersProviders.FallbackProviderConfig[] = [];
+    const chainProviders: FallbackProviderConfig[] = [];
     if (config.privateJsonRPCUrl) {
       chainProviders.push({
-        provider: new ethersProviders.StaticJsonRpcProvider(config.privateJsonRPCUrl, chainId),
+        provider: new StaticJsonRpcProvider(config.privateJsonRPCUrl, chainId),
         priority: 0,
       });
     }
     if (config.publicJsonRPCUrl.length) {
       config.publicJsonRPCUrl.map((rpc, ix) =>
         chainProviders.push({
-          provider: new ethersProviders.StaticJsonRpcProvider(rpc, chainId),
+          provider: new StaticJsonRpcProvider(rpc, chainId),
           priority: ix + 1,
         })
       );
@@ -174,7 +179,7 @@ export const getProvider = (chainId: ChainId): ethersProviders.Provider => {
     if (chainProviders.length === 1) {
       providers[chainId] = chainProviders[0].provider;
     } else {
-      providers[chainId] = new ethersProviders.FallbackProvider(chainProviders, 1);
+      providers[chainId] = new FallbackProvider(chainProviders, 1);
     }
   }
   return providers[chainId];
@@ -183,7 +188,7 @@ export const getProvider = (chainId: ChainId): ethersProviders.Provider => {
 export const getENSProvider = () => {
   const chainId = 1;
   const config = getNetworkConfig(chainId);
-  return new ethersProviders.StaticJsonRpcProvider(config.publicJsonRPCUrl[0], chainId);
+  return new StaticJsonRpcProvider(config.publicJsonRPCUrl[0], chainId);
 };
 
 const ammDisableProposal = 'https://app.aave.com/governance/proposal/?proposalId=44';

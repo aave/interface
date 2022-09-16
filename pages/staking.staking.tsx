@@ -8,8 +8,8 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { BigNumber } from 'ethers/lib/ethers';
-import { formatEther } from 'ethers/lib/utils';
+import { BigNumber } from '@ethersproject/bignumber';
+import { formatEther } from '@ethersproject/units';
 import { useEffect, useState } from 'react';
 import { ContentContainer } from 'src/components/ContentContainer';
 import { GetABPToken } from 'src/modules/staking/GetABPToken';

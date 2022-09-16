@@ -20,7 +20,6 @@ import { BackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDa
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ConnectionStatusProvider } from 'src/hooks/useConnectionStatusContext';
 import { ModalContextProvider } from 'src/hooks/useModal';
-// import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3ContextProvider';
 import { TxBuilderProvider } from 'src/providers/TxBuilderProvider';
 import { apolloClient } from 'src/utils/apolloClient';
 
@@ -31,7 +30,7 @@ import { LanguageProvider } from '../src/libs/LanguageProvider';
 import { SwapModal } from 'src/components/transactions/Swap/SwapModal';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
 import { Web3ReactProvider } from '@web3-react/core';
-import { providers } from 'ethers';
+import { Web3Provider } from '@ethersproject/providers';
 import { WalletModalContextProvider } from 'src/hooks/useWalletModal';
 import { PermissionProvider } from 'src/hooks/usePermissions';
 import AaveMetaImage from 'public/aaveMetaLogo-min.jpg';
@@ -46,8 +45,8 @@ type NextPageWithLayout = NextPage & {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function getWeb3Library(provider: any): providers.Web3Provider {
-  const library = new providers.Web3Provider(provider);
+function getWeb3Library(provider: any): Web3Provider {
+  const library = new Web3Provider(provider);
   library.pollingInterval = 12000;
   return library;
 }

@@ -1,5 +1,5 @@
 import { Skeleton, ToggleButton, ToggleButtonProps, Typography } from '@mui/material';
-import { formatUnits } from 'ethers/lib/utils';
+import { formatUnits } from '@ethersproject/units';
 import React from 'react';
 
 import { GasOption } from './GasStationProvider';
