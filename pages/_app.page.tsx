@@ -37,7 +37,6 @@ import { PermissionProvider } from 'src/hooks/usePermissions';
 import AaveMetaImage from 'public/aaveMetaLogo.png';
 import { FaucetModal } from 'src/components/transactions/Faucet/FaucetModal';
 import { AddressBlocked } from 'src/components/AddressBlocked';
-import { ErrorBoundary } from '../src/components/ErrorBoundary';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -61,61 +60,59 @@ export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const getLayout = Component.getLayout ?? ((page: React.ReactNode) => page);
   return (
-    <ErrorBoundary>
-      <CacheProvider value={emotionCache}>
-        <Head>
-          <meta name="viewport" content="initial-scale=1, width=device-width" />
-        </Head>
-        <Meta
-          title={'Open Source Liquidity Protocol'}
-          description={
-            'Aave is an Open Source Protocol to create Non-Custodial Liquidity Markets to earn interest on supplying and borrowing assets with a variable or stable interest rate. The protocol is designed for easy integration into your products and services.'
-          }
-          imageUrl={AaveMetaImage.src}
-        />
+    <CacheProvider value={emotionCache}>
+      <Head>
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
+      </Head>
+      <Meta
+        title={'Open Source Liquidity Protocol'}
+        description={
+          'Aave is an Open Source Protocol to create Non-Custodial Liquidity Markets to earn interest on supplying and borrowing assets with a variable or stable interest rate. The protocol is designed for easy integration into your products and services.'
+        }
+        imageUrl={AaveMetaImage.src}
+      />
 
-        <ApolloProvider client={apolloClient}>
-          <LanguageProvider>
-            <Web3ReactProvider getLibrary={getWeb3Library}>
-              <Web3ContextProvider>
-                <ProtocolDataProvider>
-                  <ConnectionStatusProvider>
-                    <AppGlobalStyles>
-                      <AddressBlocked>
-                        <PermissionProvider>
-                          <ModalContextProvider>
-                            <BackgroundDataProvider>
-                              <AppDataProvider>
-                                <TxBuilderProvider>
-                                  <WalletModalContextProvider>
-                                    <GasStationProvider>
-                                      {getLayout(<Component {...pageProps} />)}
-                                      <SupplyModal />
-                                      <WithdrawModal />
-                                      <BorrowModal />
-                                      <RepayModal />
-                                      <CollateralChangeModal />
-                                      <RateSwitchModal />
-                                      <ClaimRewardsModal />
-                                      <EmodeModal />
-                                      <SwapModal />
-                                      <FaucetModal />
-                                    </GasStationProvider>
-                                  </WalletModalContextProvider>
-                                </TxBuilderProvider>
-                              </AppDataProvider>
-                            </BackgroundDataProvider>
-                          </ModalContextProvider>
-                        </PermissionProvider>
-                      </AddressBlocked>
-                    </AppGlobalStyles>
-                  </ConnectionStatusProvider>
-                </ProtocolDataProvider>
-              </Web3ContextProvider>
-            </Web3ReactProvider>
-          </LanguageProvider>
-        </ApolloProvider>
-      </CacheProvider>
-    </ErrorBoundary>
+      <ApolloProvider client={apolloClient}>
+        <LanguageProvider>
+          <Web3ReactProvider getLibrary={getWeb3Library}>
+            <Web3ContextProvider>
+              <ProtocolDataProvider>
+                <ConnectionStatusProvider>
+                  <AppGlobalStyles>
+                    <AddressBlocked>
+                      <PermissionProvider>
+                        <ModalContextProvider>
+                          <BackgroundDataProvider>
+                            <AppDataProvider>
+                              <TxBuilderProvider>
+                                <WalletModalContextProvider>
+                                  <GasStationProvider>
+                                    {getLayout(<Component {...pageProps} />)}
+                                    <SupplyModal />
+                                    <WithdrawModal />
+                                    <BorrowModal />
+                                    <RepayModal />
+                                    <CollateralChangeModal />
+                                    <RateSwitchModal />
+                                    <ClaimRewardsModal />
+                                    <EmodeModal />
+                                    <SwapModal />
+                                    <FaucetModal />
+                                  </GasStationProvider>
+                                </WalletModalContextProvider>
+                              </TxBuilderProvider>
+                            </AppDataProvider>
+                          </BackgroundDataProvider>
+                        </ModalContextProvider>
+                      </PermissionProvider>
+                    </AddressBlocked>
+                  </AppGlobalStyles>
+                </ConnectionStatusProvider>
+              </ProtocolDataProvider>
+            </Web3ContextProvider>
+          </Web3ReactProvider>
+        </LanguageProvider>
+      </ApolloProvider>
+    </CacheProvider>
   );
 }
