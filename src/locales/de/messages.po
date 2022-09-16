@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-09-07 12:06\n"
+"PO-Revision-Date: 2022-09-14 12:07\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -537,10 +537,6 @@ msgstr ""
 msgid "Debt"
 msgstr ""
 
-#: src/components/caps/DebtCeilingStatus.tsx
-msgid "Debt Ceiling"
-msgstr ""
-
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Debt amount to repay"
 msgstr ""
@@ -554,7 +550,7 @@ msgid "Debt ceiling is not zero"
 msgstr ""
 
 #: src/components/caps/DebtCeilingStatus.tsx
-msgid "Debt ceiling limits the amount possible to borrow against this asset by protocol users."
+msgid "Debt limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
 msgstr ""
 
 #: src/components/infoModalContents/RetryWithApprovalInfoContent.tsx
@@ -877,6 +873,10 @@ msgstr ""
 
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Isolated"
+msgstr ""
+
+#: src/components/caps/DebtCeilingStatus.tsx
+msgid "Isolated Debt Ceiling"
 msgstr ""
 
 #: src/components/isolationMode/IsolatedTooltip.tsx
