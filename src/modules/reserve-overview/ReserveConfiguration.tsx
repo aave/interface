@@ -639,9 +639,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                   variant="outlined"
                   sx={{ verticalAlign: 'top' }}
                 >
-                  <Typography variant="buttonS">
-                    <Trans>Interest rate strategy</Trans>
-                  </Typography>
+                  <Trans>Interest rate strategy</Trans>
                 </Button>
               </Box>
               <InteresetRateModelGraphContainer reserve={reserve} />
