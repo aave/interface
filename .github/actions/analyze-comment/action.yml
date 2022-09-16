@@ -4,9 +4,9 @@ inputs:
   PULL_REQUEST_NUMBER:
     description: Pull request id in case it does not exist in the context by default
     required: false
-    default: "0"
+    default: '0'
 runs:
-  using: "composite"
+  using: 'composite'
   steps:
     - name: Download PR bundle stats
       if: github.event.workflow_run.id

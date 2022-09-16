@@ -84,7 +84,7 @@ jobs:
         with:
           PINATA_API_KEY: '${{ secrets.PINATA_API_KEY }}'
           PINATA_SECRET_KEY: '${{ secrets.PINATA_SECRET_KEY }}'
-          PIN_ALIAS: "app-aave-staging"
+          PIN_ALIAS: 'app-aave-staging'
           BUILD_LOCATION: './out_staging'
           CID_VERSION: 1
 

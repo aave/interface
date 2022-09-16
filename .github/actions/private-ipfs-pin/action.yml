@@ -1,8 +1,8 @@
 name: Pin to private cluster
-description: Upload build to ipfs nodes runnning in GKE
+description: Upload build to ipfs nodes running in GKE
 inputs:
   DOMAIN:
-    description: Domain to unpin 
+    description: Domain to unpin
     required: true
   GCP_SA_KEY:
     description: ''
@@ -16,7 +16,7 @@ inputs:
   BUILD_PATH:
     description: path to the build directory
     required: true
-  PINATA_HASH: 
+  PINATA_HASH:
     description: ''
     required: true
 runs:

@@ -14,7 +14,7 @@ inputs:
     description: yarn command to run test
     required: true
 runs:
-  using: "composite"
+  using: 'composite'
   steps:
     - uses: actions/setup-node@2fddd8803e2f5c9604345a0b591c3020ee971a93 # v3.4.1
       with:
