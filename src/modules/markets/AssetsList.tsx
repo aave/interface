@@ -4,7 +4,7 @@ import { Box, useMediaQuery } from '@mui/material';
 import { useState } from 'react';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
-import { HarmonyWarning } from 'src/components/transactions/Warnings/HarmonyWarning';
+import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
@@ -96,6 +96,8 @@ export default function AssetsList() {
     },
   ];
 
+  const marketFrozen = !reserves.some((reserve) => !reserve.isFrozen);
+
   return (
     <ListWrapper
       title={
@@ -105,11 +107,30 @@ export default function AssetsList() {
       }
       captionSize="h2"
     >
-      {currentNetworkConfig.name === 'Harmony' && (
+      {marketFrozen && currentNetworkConfig.name === 'Harmony' && (
         <Box sx={{ mx: '24px' }}>
-          <HarmonyWarning />
+          <MarketWarning
+            learnMore={true}
+            linkHref={`https://governance.aave.com/t/harmony-horizon-bridge-exploit-consequences-to-aave-v3-harmony/8614`}
+            warningMessage={
+              'Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Aave V3 Harmony market.'
+            }
+            warningType={'error'}
+          />
         </Box>
       )}
+
+      {marketFrozen && currentNetworkConfig.name === 'Fantom' && (
+        <Box sx={{ mx: '24px' }}>
+          <MarketWarning
+            linkHref={`https://snapshot.org/#/aave.eth/proposal/0xeefcd76e523391a14cfd0a79b531ea0a3faf0eb4a058e255fac13a2d224cc647`}
+            learnMore={true}
+            warningMessage={'Per the community, the Fantom market has been frozen.'}
+            warningType={'error'}
+          />
+        </Box>
+      )}
+
       {!isTableChangedToCards && (
         <ListHeaderWrapper px={6}>
           {header.map((col) => (

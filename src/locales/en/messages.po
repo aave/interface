@@ -622,10 +622,6 @@ msgstr "Discord"
 msgid "Due to a precision bug in the stETH contract, this asset can not be used in flashloan transactions"
 msgstr "Due to a precision bug in the stETH contract, this asset can not be used in flashloan transactions"
 
-#: src/components/transactions/Warnings/HarmonyWarning.tsx
-msgid "Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Aave V3 Harmony market. <0>{0}</0>"
-msgstr "Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Aave V3 Harmony market. <0>{0}</0>"
-
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode"
 msgstr "E-Mode"
@@ -1125,14 +1121,6 @@ msgstr "Participating in this {symbol} reserve gives annualized rewards."
 #: src/components/transactions/Faucet/FaucetActions.tsx
 msgid "Pending..."
 msgstr "Pending..."
-
-#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
-msgid "Per the community, borrowing in this market is currently disabled. <0>Learn More</0>"
-msgstr "Per the community, borrowing in this market is currently disabled. <0>Learn More</0>"
-
-#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
-msgid "Per the community, supplying in this market is currently disabled. <0>Learn More</0>"
-msgstr "Per the community, supplying in this market is currently disabled. <0>Learn More</0>"
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Please connect a wallet to view your personal information here."
@@ -1670,6 +1658,14 @@ msgstr "This asset has reached its borrow cap. Nothing is available to be borrow
 msgid "This asset has reached its supply cap. Nothing is available to be supplied from this market."
 msgstr "This asset has reached its supply cap. Nothing is available to be supplied from this market."
 
+#: src/components/infoTooltips/FrozenTooltip.tsx
+msgid "This asset is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
+msgstr "This asset is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
+
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "This asset is frozen due to an Aave community decision. <0>More details</0>"
+msgstr "This asset is frozen due to an Aave community decision. <0>More details</0>"
+
 #: src/components/infoTooltips/GasTooltip.tsx
 msgid "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
 msgstr "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
@@ -2179,10 +2175,6 @@ msgstr "{0} Balance"
 msgid "{0} Faucet"
 msgstr "{0} Faucet"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "{0} is frozen due to an Aave community decision. <0>More details</0>"
-msgstr "{0} is frozen due to an Aave community decision. <0>More details</0>"
-
 #: src/modules/staking/StakingPanel.tsx
 msgid "{d}d"
 msgstr "{d}d"
@@ -2200,10 +2192,6 @@ msgstr "{m}m"
 msgid "{networkName} Faucet"
 msgstr "{networkName} Faucet"
 
-#: src/components/infoTooltips/FrozenWarning.tsx
-msgid "{symbol} is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
-msgstr "{symbol} is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
-
 #: src/modules/staking/StakingPanel.tsx
 msgid "{s}s"
 msgstr "{s}s"
@@ -2211,3 +2199,7 @@ msgstr "{s}s"
 #: src/components/CircleIcon.tsx
 msgid "{tooltipText}"
 msgstr "{tooltipText}"
+
+#: src/components/transactions/Warnings/MarketWarning.tsx
+msgid "{warningMessage} <0>{0}</0>"
+msgstr "{warningMessage} <0>{0}</0>"
