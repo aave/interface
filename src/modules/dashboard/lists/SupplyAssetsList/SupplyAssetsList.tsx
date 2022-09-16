@@ -19,8 +19,8 @@ import { ListLoader } from '../ListLoader';
 import { SupplyAssetsListItem } from './SupplyAssetsListItem';
 import { SupplyAssetsListMobileItem } from './SupplyAssetsListMobileItem';
 import { Warning } from 'src/components/primitives/Warning';
-import { HarmonyWarning } from 'src/components/transactions/Warnings/HarmonyWarning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
+import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 
 export const SupplyAssetsList = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
@@ -166,19 +166,9 @@ export const SupplyAssetsList = () => {
         <>
           <Box sx={{ px: 6 }}>
             {supplyDisabled && currentNetworkConfig.name === 'Harmony' ? (
-              <Warning severity="warning">
-                <Trans>
-                  Per the community, supplying in this market is currently disabled.{' '}
-                  <Link
-                    href="https://governance.aave.com/t/harmony-horizon-bridge-exploit-consequences-to-aave-v3-harmony/8614"
-                    target="_blank"
-                  >
-                    Learn More
-                  </Link>
-                </Trans>
-              </Warning>
-            ) : currentNetworkConfig.name === 'Harmony' ? (
-              <HarmonyWarning learnMore={true} />
+              <MarketWarning marketName="Harmony" />
+            ) : supplyDisabled && currentNetworkConfig.name === 'Fantom' ? (
+              <MarketWarning marketName="Fantom" />
             ) : user?.isInIsolationMode ? (
               <Warning severity="warning">
                 <Trans>
