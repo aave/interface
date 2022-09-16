@@ -6,11 +6,11 @@ inputs:
     required: false
     default: out
   PR_INFO:
-    description: shoud this artifact be uploaded
+    description: should this artifact be uploaded
     required: false
     default: 'true'
   NEXTJS_BUILD:
-    description: shoud this artifact be uploaded
+    description: should this artifact be uploaded
     required: false
     default: 'true'
 runs:
