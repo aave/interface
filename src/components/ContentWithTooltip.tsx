@@ -67,6 +67,9 @@ export const ContentWithTooltip = ({
               },
             },
           ],
+          onClick: (e) => {
+            e.stopPropagation();
+          },
         },
       }}
       title={

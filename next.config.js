@@ -13,7 +13,16 @@ module.exports = withBundleAnalyzer({
     config.module.rules.push({
       test: /\.svg$/i,
       issuer: /\.[jt]sx?$/,
-      use: ['@svgr/webpack'],
+      use: [
+        {
+          loader: '@svgr/webpack',
+          options: {
+            svgoConfig: {
+              plugins: ['prefixIds'],
+            },
+          },
+        },
+      ],
     });
     config.experiments = { topLevelAwait: true };
     return config;

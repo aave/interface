@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-08-29 18:05\n"
+"PO-Revision-Date: 2022-09-14 12:07\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -176,6 +176,11 @@ msgstr "Aprobando {symbol}..."
 msgid "Array parameters that should be equal length are not"
 msgstr "Los parámetros del array que deberían ser iguales en longitud no lo son"
 
+#: src/components/transactions/Warnings/ETHBorrowWarning.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "As per the community vote, ETH borrowing on the Ethereum Market has been paused ahead of the merge to mitigate liquidity risk. <0>Learn more</0>."
+msgstr ""
+
 #: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/markets/AssetsList.tsx
 msgid "Asset"
@@ -204,7 +209,7 @@ msgstr "El activo no está listado"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
-msgstr "El suministro de activos está limitado a una cierta cantidad para reducir la exposición del protocolo a este activo y ayudar a manejar los riesgos involucrados."
+msgstr "El suministro de activos está limitado a una cierta cantidad para reducir la exposición del protocolo a este activo y ayudar a manejar los riesgos implicados."
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Asset to delegate"
@@ -532,10 +537,6 @@ msgstr "Panel"
 msgid "Debt"
 msgstr "Deuda"
 
-#: src/components/caps/DebtCeilingStatus.tsx
-msgid "Debt Ceiling"
-msgstr "Límite de deuda"
-
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Debt amount to repay"
 msgstr "Cantidad de deuda a reembolsar"
@@ -549,8 +550,8 @@ msgid "Debt ceiling is not zero"
 msgstr "El límite de deuda no es cero"
 
 #: src/components/caps/DebtCeilingStatus.tsx
-msgid "Debt ceiling limits the amount possible to borrow against this asset by protocol users."
-msgstr "El límite de deuda limita la cantidad posible para tomar prestada contra este activo por usuarios del protocolo."
+msgid "Debt limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
+msgstr ""
 
 #: src/components/infoModalContents/RetryWithApprovalInfoContent.tsx
 msgid "Define Retry with Approval text"
@@ -873,6 +874,10 @@ msgstr "Firma inválida"
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Isolated"
 msgstr "Aislado"
+
+#: src/components/caps/DebtCeilingStatus.tsx
+msgid "Isolated Debt Ceiling"
+msgstr ""
 
 #: src/components/isolationMode/IsolatedTooltip.tsx
 msgid "Isolated assets have limited borrowing power and other assets cannot be used as collateral."

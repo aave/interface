@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-08-29 18:05\n"
+"PO-Revision-Date: 2022-09-14 12:07\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -174,6 +174,11 @@ msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "Array parameters that should be equal length are not"
+msgstr ""
+
+#: src/components/transactions/Warnings/ETHBorrowWarning.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "As per the community vote, ETH borrowing on the Ethereum Market has been paused ahead of the merge to mitigate liquidity risk. <0>Learn more</0>."
 msgstr ""
 
 #: src/modules/faucet/FaucetAssetsList.tsx
@@ -532,10 +537,6 @@ msgstr ""
 msgid "Debt"
 msgstr ""
 
-#: src/components/caps/DebtCeilingStatus.tsx
-msgid "Debt Ceiling"
-msgstr ""
-
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Debt amount to repay"
 msgstr ""
@@ -549,7 +550,7 @@ msgid "Debt ceiling is not zero"
 msgstr ""
 
 #: src/components/caps/DebtCeilingStatus.tsx
-msgid "Debt ceiling limits the amount possible to borrow against this asset by protocol users."
+msgid "Debt limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
 msgstr ""
 
 #: src/components/infoModalContents/RetryWithApprovalInfoContent.tsx
@@ -872,6 +873,10 @@ msgstr ""
 
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Isolated"
+msgstr ""
+
+#: src/components/caps/DebtCeilingStatus.tsx
+msgid "Isolated Debt Ceiling"
 msgstr ""
 
 #: src/components/isolationMode/IsolatedTooltip.tsx

@@ -10,7 +10,7 @@ there is command for development/debuging/local executing tests:
 
 - `yarn run test:open` - it's open visual window with all test and manual executing
 
-*steps:*
+_steps:_
 
 1. install dependencies `yarn`
 2. add .env.local file to the root folder with:

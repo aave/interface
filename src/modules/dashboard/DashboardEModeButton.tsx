@@ -10,22 +10,17 @@ import { Link } from '../../components/primitives/Link';
 import { Row } from '../../components/primitives/Row';
 import { TypographyGradient } from '../../components/primitives/TypographyGradient';
 import { getEmodeMessage } from '../../components/transactions/Emode/EmodeNaming';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { EmodeModalType } from 'src/components/transactions/Emode/EmodeModalContent';
 
 interface DashboardEModeButtonProps {
   userEmodeCategoryId: number;
-  baseAssetSymbol: string;
-  reserves: ComputedReserveData[];
 }
 
-export const DashboardEModeButton = ({
-  userEmodeCategoryId,
-  baseAssetSymbol,
-  reserves,
-}: DashboardEModeButtonProps) => {
+export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButtonProps) => {
   const { openEmode } = useModalContext();
+  const { eModes: _eModes } = useAppDataContext();
   const iconButtonSize = 12;
 
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
@@ -40,15 +35,10 @@ export const DashboardEModeButton = ({
   const isEModeDisabled = userEmodeCategoryId === 0;
 
   const EModeLabelMessage = () => (
-    <Trans>{getEmodeMessage(userEmodeCategoryId, baseAssetSymbol)}</Trans>
+    <Trans>{getEmodeMessage(_eModes[userEmodeCategoryId].label)}</Trans>
   );
 
-  const eModes: number[] = [];
-  reserves.forEach((reserve: ComputedReserveData) => {
-    if (eModes.indexOf(reserve.eModeCategoryId) === -1) {
-      eModes.push(reserve.eModeCategoryId);
-    }
-  });
+  const eModes = Object.keys(_eModes).length;
 
   return (
     <Box
@@ -224,7 +214,7 @@ export const DashboardEModeButton = ({
             </Button>
           ) : (
             <>
-              {eModes.length > 2 && (
+              {eModes > 2 && (
                 <Button
                   fullWidth
                   sx={{ mb: '6px' }}

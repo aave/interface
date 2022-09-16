@@ -39,6 +39,7 @@ import { Ipfs, IpfsType } from 'src/static-build/ipfs';
 import { CustomProposalType, Proposal } from 'src/static-build/proposal';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { Link } from 'src/components/primitives/Link';
+import AaveMetaImage from 'public/aaveMetaLogo-min.jpg';
 
 import { ContentContainer } from '../../../src/components/ContentContainer';
 import { GovVoteModal } from 'src/components/transactions/GovVote/GovVoteModal';
@@ -147,7 +148,9 @@ export default function ProposalPage({
       };
   return (
     <>
-      {ipfs && <Meta title={ipfs.title} description={ipfs.shortDescription} />}
+      {ipfs && (
+        <Meta imageUrl={AaveMetaImage.src} title={ipfs.title} description={ipfs.shortDescription} />
+      )}
       <ProposalTopPanel />
 
       <ContentContainer>
