@@ -148,7 +148,7 @@
     "Vladimir Konstantinovich Yumatov <vladimir@aave.com>"
   ],
   "lint-staged": {
-    "*": "yarn lint:fix",
+    "*.*": "yarn lint:fix",
     "*.svg": "npx svgo --final-newline"
   },
   "nextBundleAnalysis": {
