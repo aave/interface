@@ -15,6 +15,8 @@
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
+    "lint:formatting": "prettier src pages scripts cypress . --check",
+		"lint:formatting:fix": "prettier src pages scripts cypress . --write",
     "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest",
     "i18n:extract": "NODE_ENV=development lingui extract --clean --overwrite --locale en",
     "i18n:compile": "lingui compile",

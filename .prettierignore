@@ -2,11 +2,13 @@
 .gitignore
 .eslintcache
 .eslintignore
-node_modules
+node_modules/
+public/
 
 # Artifacts
-.next
-out
+.next/
+out/
+src/locales/
 
 # IDE
 .vscode
