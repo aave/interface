@@ -87,7 +87,6 @@ jobs:
       fail-fast: false
       matrix:
         market:
-          - fantom
           - polygon
           - avalanche
           - optimism
@@ -174,7 +173,6 @@ jobs:
       fail-fast: false
       matrix:
         market:
-          - fantom
           - polygon
           - avalanche
           - optimism
@@ -217,7 +215,6 @@ jobs:
       fail-fast: false
       matrix:
         market:
-          - fantom
           - polygon
           - avalanche
           - optimism

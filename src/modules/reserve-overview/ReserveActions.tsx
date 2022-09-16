@@ -34,8 +34,8 @@ import { getEmodeMessage } from '../../components/transactions/Emode/EmodeNaming
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { Warning } from 'src/components/primitives/Warning';
-import { HarmonyWarning } from 'src/components/transactions/Warnings/HarmonyWarning';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
+import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 
 const PaperWrapper = ({ children }: { children: ReactNode }) => {
   return (
@@ -306,9 +306,14 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
 
       <Row mb={3} />
 
-      {currentNetworkConfig.name === 'Harmony' && (
+      {poolReserve.isFrozen && currentNetworkConfig.name === 'Harmony' && (
         <Row align="flex-start" mb={3}>
-          <HarmonyWarning learnMore={true} />
+          <MarketWarning marketName="Harmony" />
+        </Row>
+      )}
+      {poolReserve.isFrozen && currentNetworkConfig.name === 'Fantom' && (
+        <Row align="flex-start" mb={3}>
+          <MarketWarning marketName="Fantom" />
         </Row>
       )}
 

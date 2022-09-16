@@ -31,13 +31,14 @@ import { MaxLTVTooltip } from 'src/components/infoTooltips/MaxLTVTooltip';
 import { LiquidationThresholdTooltip } from 'src/components/infoTooltips/LiquidationThresholdTooltip';
 import { LiquidationPenaltyTooltip } from 'src/components/infoTooltips/LiquidationPenaltyTooltip';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
-import { CustomMarket, frozenProposalMap } from 'src/utils/marketsAndNetworksConfig';
+import { CustomMarket } from 'src/utils/marketsAndNetworksConfig';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { DebtCeilingStatus } from 'src/components/caps/DebtCeilingStatus';
 import { ReserveFactorOverview } from 'src/modules/reserve-overview/ReserveFactorOverview';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { valueToBigNumber } from '@aave/math-utils';
+import { getFrozenProposalLink } from 'src/components/infoTooltips/FrozenTooltip';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
   <Box
@@ -186,13 +187,9 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
         <Box>
           <Alert sx={{ mt: '16px', mb: '40px' }} severity="error">
             <Trans>
-              {reserve.symbol} is frozen due to an Aave community decision.{' '}
+              This asset is frozen due to an Aave community decision.{' '}
               <Link
-                href={
-                  frozenProposalMap[reserve.symbol]
-                    ? frozenProposalMap[reserve.symbol]
-                    : 'https://app.aave.com/governance'
-                }
+                href={getFrozenProposalLink(reserve.symbol, currentMarket)}
                 sx={{ textDecoration: 'underline' }}
               >
                 <Trans>More details</Trans>
