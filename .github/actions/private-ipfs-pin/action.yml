@@ -1,5 +1,5 @@
 name: Pin to private cluster
-description: Upload build to ipfs nodes runnning in GKE
+description: Upload build to ipfs nodes running in GKE
 inputs:
   DOMAIN:
     description: Domain to unpin
