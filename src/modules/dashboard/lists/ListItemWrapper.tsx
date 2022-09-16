@@ -1,13 +1,14 @@
 import { Tooltip, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
-
 import { AMPLWarning } from '../../../components/infoTooltips/AMPLWarning';
 import { FrozenWarning } from '../../../components/infoTooltips/FrozenWarning';
 import { ListColumn } from '../../../components/lists/ListColumn';
 import { ListItem } from '../../../components/lists/ListItem';
 import { Link, ROUTES } from '../../../components/primitives/Link';
 import { TokenIcon } from '../../../components/primitives/TokenIcon';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
+import { ETHBorrowWarning } from 'src/components/transactions/Warnings/ETHBorrowWarning';
 
 interface ListItemWrapperProps {
   symbol: string;
@@ -17,6 +18,10 @@ interface ListItemWrapperProps {
   children: ReactNode;
   currentMarket: CustomMarket;
   frozen?: boolean;
+  showSupplyCapTooltips?: boolean;
+  showBorrowCapTooltips?: boolean;
+  showDebtCeilingTooltips?: boolean;
+  showETHBorrowWarning?: boolean;
 }
 
 export const ListItemWrapper = ({
@@ -27,8 +32,14 @@ export const ListItemWrapper = ({
   detailsAddress,
   currentMarket,
   frozen,
+  showSupplyCapTooltips = false,
+  showBorrowCapTooltips = false,
+  showDebtCeilingTooltips = false,
+  showETHBorrowWarning = false,
   ...rest
 }: ListItemWrapperProps) => {
+  const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
+
   return (
     <ListItem {...rest}>
       <ListColumn maxWidth={160} isRow>
@@ -44,10 +55,18 @@ export const ListItemWrapper = ({
             </Typography>
           </Tooltip>
         </Link>
-        {frozen && <FrozenWarning symbol={symbol} />}
-        {!frozen && symbol === 'AMPL' && <AMPLWarning />}
+        {showETHBorrowWarning ? (
+          <ETHBorrowWarning />
+        ) : (
+          <>
+            {frozen && <FrozenWarning symbol={symbol} />}
+            {!frozen && symbol === 'AMPL' && <AMPLWarning />}
+            {showSupplyCapTooltips && supplyCap.displayMaxedTooltip({ supplyCap })}
+            {showBorrowCapTooltips && borrowCap.displayMaxedTooltip({ borrowCap })}
+            {showDebtCeilingTooltips && debtCeiling.displayMaxedTooltip({ debtCeiling })}
+          </>
+        )}
       </ListColumn>
-
       {children}
     </ListItem>
   );

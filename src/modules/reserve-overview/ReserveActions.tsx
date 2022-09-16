@@ -26,7 +26,6 @@ import {
   getMaxAmountAvailableToBorrow,
 } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
-
 import { CapType } from '../../components/caps/helper';
 import { AvailableTooltip } from '../../components/infoTooltips/AvailableTooltip';
 import { Row } from '../../components/primitives/Row';
@@ -36,6 +35,7 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { Warning } from 'src/components/primitives/Warning';
 import { HarmonyWarning } from 'src/components/transactions/Warnings/HarmonyWarning';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
 
 const PaperWrapper = ({ children }: { children: ReactNode }) => {
   return (
@@ -56,16 +56,14 @@ interface ReserveActionsProps {
 export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
-
   const { openBorrow, openFaucet, openSupply } = useModalContext();
-
   const { currentAccount, loading: web3Loading } = useWeb3Context();
-  const { user, reserves, loading: loadingReserves } = useAppDataContext();
+  const { user, reserves, loading: loadingReserves, eModes } = useAppDataContext();
   const { walletBalances, loading: loadingBalance } = useWalletBalances();
   const { isPermissionsLoading } = usePermissions();
-
   const { currentNetworkConfig } = useProtocolDataContext();
   const { bridge, name: networkName } = currentNetworkConfig;
+  const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
 
   if (!currentAccount && !isPermissionsLoading)
     return (
@@ -291,9 +289,8 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
         <Warning sx={{ mb: '12px' }} severity="info" icon={false}>
           <Trans>
             Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for{' '}
-            {getEmodeMessage(user.userEmodeCategoryId, currentNetworkConfig.baseAssetSymbol)}{' '}
-            category. To manage E-Mode categories visit your{' '}
-            <Link href={ROUTES.dashboard}>Dashboard</Link>.
+            {getEmodeMessage(eModes[user.userEmodeCategoryId].label)} category. To manage E-Mode
+            categories visit your <Link href={ROUTES.dashboard}>Dashboard</Link>.
           </Trans>
         </Warning>
       )}
@@ -315,12 +312,13 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
         </Row>
       )}
 
-      <Stack direction="row" spacing={2}>
+      <Stack direction="row" spacing={2} sx={{ mb: 4 }}>
         <Button
           variant="contained"
           disabled={balance?.amount === '0'}
           onClick={() => openSupply(underlyingAsset)}
           fullWidth={downToXSM}
+          data-cy={'supplyButton'}
         >
           <Trans>Supply</Trans> {downToXSM && poolReserve.symbol}
         </Button>
@@ -329,10 +327,17 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
           variant="contained"
           onClick={() => openBorrow(underlyingAsset)}
           fullWidth={downToXSM}
+          data-cy={'borrowButton'}
         >
           <Trans>Borrow</Trans> {downToXSM && poolReserve.symbol}
         </Button>
       </Stack>
+      {maxAmountToSupply === '0' && supplyCap.determineWarningDisplay({ supplyCap, icon: false })}
+      {maxAmountToBorrow === '0' && borrowCap.determineWarningDisplay({ borrowCap, icon: false })}
+      {poolReserve.isIsolated &&
+        balance?.amount !== '0' &&
+        user?.totalCollateralUSD !== '0' &&
+        debtCeiling.determineWarningDisplay({ debtCeiling, icon: false })}
     </PaperWrapper>
   );
 };

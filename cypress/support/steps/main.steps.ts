@@ -1,13 +1,3 @@
-/// <reference types="cypress" />
-import {
-  setAmount,
-  doConfirm,
-  getDashBoardBorrowRow,
-  getDashBoardDepositRow,
-  doCloseModal,
-  doSwitchToDashboardBorrowView,
-  doSwitchToDashboardSupplyView,
-} from './actions.steps';
 import constants from '../../fixtures/constans.json';
 
 type SkipType = {
@@ -15,13 +5,15 @@ type SkipType = {
   get: () => boolean;
 };
 
+/**
+ * This skip all test steps if previous one was failed
+ */
 const skipSetup = ({ skip, updateSkipStatus }: { skip: SkipType; updateSkipStatus: boolean }) => {
   before(function () {
     if (skip.get()) {
       this.skip();
     }
   });
-
   afterEach(function onAfterEach() {
     if ((this.currentTest as Mocha.Test).state === 'failed' && updateSkipStatus) {
       skip.set(true);
@@ -29,6 +21,21 @@ const skipSetup = ({ skip, updateSkipStatus }: { skip: SkipType; updateSkipStatu
   });
 };
 
+/**
+ * This full step for supply any available asset from Dashboard view
+ * @example
+ *```
+ * // Supply ETH
+ * supply({
+ *   asset:{shortName:'ETH', fullName:'Ethereum'},
+ *   amount:10,
+ *   hasApproval:true
+ *  },
+ *  skipTestState,
+ *  false
+ * )
+ * ```
+ */
 export const supply = (
   {
     asset,
@@ -50,27 +57,36 @@ export const supply = (
   return describe(`Supply process for ${_shortName}`, () => {
     skipSetup({ skip, updateSkipStatus });
     it(`Open ${_shortName} supply popup view`, () => {
-      doSwitchToDashboardSupplyView();
+      cy.doSwitchToDashboardSupplyView();
       cy.get(`[data-cy='dashboardSupplyListItem_${_shortName.toUpperCase()}']`)
         .find('button:contains("Supply")')
         .click();
       cy.get(`[data-cy=Modal] h2:contains("Supply ${_shortName}")`).should('be.visible');
     });
     it(`Supply ${isMaxAmount ? 'MAX' : amount} amount for ${_shortName}`, () => {
-      setAmount({
-        amount,
-        max: isMaxAmount,
-      });
-      doConfirm({
-        hasApproval,
-        actionName: _actionName,
-        assetName: _shortName,
-      });
+      cy.setAmount(amount, isMaxAmount);
+      cy.doConfirm(hasApproval, _actionName, _shortName);
     });
     doCloseModal();
   });
 };
 
+/**
+ * This full step for borrow any available asset from Dashboard view
+ * @example
+ *```
+ * // Borrow ETH
+ * // apyType options: Variable, Stable, Default
+ * borrow({
+ *   asset:{shortName:'ETH', fullName:'Ethereum'},
+ *   amount:10,
+ *   hasApproval:true
+ *  },
+ *  skipTestState,
+ *  false
+ * )
+ * ```
+ */
 export const borrow = (
   {
     asset,
@@ -82,8 +98,8 @@ export const borrow = (
   }: {
     asset: { shortName: string; fullName: string };
     amount: number;
-    apyType?: string;
     hasApproval: boolean;
+    apyType?: string;
     isRisk?: boolean;
     isMaxAmount?: boolean;
   },
@@ -96,8 +112,7 @@ export const borrow = (
   return describe(`Borrow process for ${_shortName}`, () => {
     skipSetup({ skip, updateSkipStatus });
     it(`Open ${_shortName} borrow popup view`, () => {
-      doSwitchToDashboardBorrowView();
-      cy.wait(4000);
+      cy.doSwitchToDashboardBorrowView();
       cy.get(`[data-cy='dashboardBorrowListItem_${_shortName.toUpperCase()}']`)
         .contains('Borrow')
         .should('not.be.disabled')
@@ -119,10 +134,7 @@ export const borrow = (
       }
     });
     it(`Borrow ${isMaxAmount ? 'MAX' : amount} amount for ${_shortName}`, () => {
-      setAmount({
-        amount,
-        max: isMaxAmount,
-      });
+      cy.setAmount(amount, isMaxAmount);
     });
     if (isRisk) {
       it(`Click risk checkbox`, () => {
@@ -130,32 +142,48 @@ export const borrow = (
       });
     }
     it(`Confirmation process`, () => {
-      doConfirm({
-        hasApproval,
-        actionName: _actionName,
-        assetName: _shortName,
-      });
+      cy.doConfirm(hasApproval, _actionName, _shortName);
     });
     doCloseModal();
   });
 };
 
+/**
+ * This full step for repay one asset by another asset
+ * @example
+ *```
+ * // Repay ETH by USDC
+ * // apyType options: Variable, Stable, Default
+ * // repayOption options: collateral, wallet, default
+ * repay({
+ *   asset:{shortName:'ETH', fullName:'Ethereum'},
+ *   apyType:'Variable',
+ *   amount:10,
+ *   repayOption:'collateral',
+ *   hasApproval:true,
+ *   repayableAsset:{shortName:'USDC'}
+ *  },
+ *  skipTestState,
+ *  false
+ * )
+ * ```
+ */
 export const repay = (
   {
     asset,
     apyType,
     amount,
     repayOption,
-    repayableAsset,
     hasApproval = false,
+    repayableAsset,
     isMaxAmount = false,
   }: {
     asset: { shortName: string; fullName: string };
     apyType: string;
     amount: number;
     repayOption: string;
-    repayableAsset?: { shortName: string };
     hasApproval: boolean;
+    repayableAsset?: { shortName: string };
     isMaxAmount?: boolean;
   },
   skip: SkipType,
@@ -169,10 +197,8 @@ export const repay = (
   }`, () => {
     skipSetup({ skip, updateSkipStatus });
     it(`Open ${_shortName} repay popup view`, () => {
-      doSwitchToDashboardBorrowView();
-      getDashBoardBorrowRow({ assetName: _shortName, apyType })
-        .find(`button:contains("Repay")`)
-        .click();
+      cy.doSwitchToDashboardBorrowView();
+      cy.getDashBoardBorrowedRow(_shortName, apyType).find(`button:contains("Repay")`).click();
       cy.get(`[data-cy=Modal] h2:contains("Repay ${_shortName}")`).should('be.visible');
     });
     it(`Choose ${repayOption} repay option`, () => {
@@ -209,20 +235,30 @@ export const repay = (
     it(`Repay ${
       isMaxAmount ? 'MAX' : amount
     } amount for ${_shortName}, with ${repayOption} repay option`, () => {
-      setAmount({
-        amount,
-        max: isMaxAmount,
-      });
-      doConfirm({
-        hasApproval,
-        actionName: _actionName,
-        assetName: _shortName,
-      });
+      cy.setAmount(amount, isMaxAmount);
+      cy.doConfirm(hasApproval, _actionName, _shortName);
     });
     doCloseModal();
   });
 };
 
+/**
+ * This full step for withdraw any availble assets
+ * @example
+ *```
+ * // Withdraw ETH
+ * // apyType options: Variable, Stable, Default
+ * withdraw({
+ *   asset:{shortName:'ETH', fullName:'Ethereum'},
+ *   isCollateral:true,
+ *   amount: 10,
+ *   hasApproval:true
+ *  },
+ *  skipTestState,
+ *  false
+ * )
+ * ```
+ */
 export const withdraw = (
   {
     asset,
@@ -250,8 +286,8 @@ export const withdraw = (
   return describe(`Withdraw process for ${_shortName}`, () => {
     skipSetup({ skip, updateSkipStatus });
     it(`Open ${_shortName} Withdraw popup view`, () => {
-      doSwitchToDashboardSupplyView();
-      getDashBoardDepositRow({ assetName: _shortName, isCollateralType: isCollateral })
+      cy.doSwitchToDashboardSupplyView();
+      cy.getDashBoardSuppliedRow(_shortName, isCollateral)
         .find(`button:contains("Withdraw")`)
         .click();
       cy.get(`[data-cy=Modal] h2:contains("Withdraw ${_shortName}")`).should('be.visible');
@@ -265,11 +301,8 @@ export const withdraw = (
         .contains(`${forWrapped ? 'W' + _shortName : _shortName}`);
     });
     it(`Withdraw ${isMaxAmount ? 'MAX' : amount} amount for ${_shortName}`, () => {
-      if(isMaxAmount) cy.wait(2000)
-      setAmount({
-        amount,
-        max: isMaxAmount,
-      });
+      if (isMaxAmount) cy.wait(2000);
+      cy.setAmount(amount, isMaxAmount);
     });
     if (isRisk) {
       it(`Click risk checkbox`, () => {
@@ -277,16 +310,29 @@ export const withdraw = (
       });
     }
     it(`Confirmation process`, () => {
-      doConfirm({
-        hasApproval,
-        actionName: _actionName,
-        assetName: forWrapped ? 'W' + _shortName : _shortName,
-      });
+      cy.doConfirm(hasApproval, _actionName, forWrapped ? 'W' + _shortName : _shortName);
     });
     doCloseModal();
   });
 };
 
+/**
+ * This full step to change borrow apy from Dashboard view
+ * @example
+ *```
+ * // Change borrow type for ETH from Stable to Variable
+ * // apyType options: Variable, Stable
+ * changeBorrowType({
+ *   asset:{shortName:'ETH', fullName:'Ethereum'},
+ *   apyType:'Stable',
+ *   newAPY:'Variable',
+ *   hasApproval:true
+ *  },
+ *  skipTestState,
+ *  false
+ * )
+ * ```
+ */
 export const changeBorrowType = (
   {
     asset,
@@ -308,8 +354,8 @@ export const changeBorrowType = (
   describe('Change APY of borrowing', () => {
     skipSetup({ skip, updateSkipStatus });
     it(`Open change apy popup`, () => {
-      doSwitchToDashboardBorrowView();
-      getDashBoardBorrowRow({ assetName: _shortName, apyType })
+      cy.doSwitchToDashboardBorrowView();
+      cy.getDashBoardBorrowedRow(_shortName, apyType)
         .find(`[data-cy="apyButton_${apyType}"]`)
         .click();
     });
@@ -317,15 +363,30 @@ export const changeBorrowType = (
       cy.get(`[data-cy="apyMenu_${apyType}"]`).contains(`APY, ${newAPY.toLowerCase()}`).click();
     });
     it(`Make approve for ${_shortName}, on confirmation page`, () => {
-      doConfirm({
-        hasApproval,
-        actionName: _actionName,
-      });
+      cy.doConfirm(hasApproval, _actionName);
     });
     doCloseModal();
   });
 };
 
+/**
+ * This full step to swap assets from Dashboard view
+ * @example
+ *```
+ * // Swap from ETH to USDC
+ * // apyType options: Variable, Stable
+ * swap({
+ *   fromAsset:{shortName:'ETH', fullName:'Ethereum'},
+ *   toAsset:{shortName:'USDC', fullName:'USDC'},
+ *   isCollateralFromAsset: false,
+ *   amount: 1.137,
+ *   hasApproval: true
+ *  },
+ *  skipTestState,
+ *  false
+ * )
+ * ```
+ */
 export const swap = (
   {
     fromAsset,
@@ -352,8 +413,8 @@ export const swap = (
   describe(`Swap ${amount} ${_shortNameFrom} to ${_shortNameTo}`, () => {
     skipSetup({ skip, updateSkipStatus });
     it(`Open Swap modal for ${_shortNameFrom}`, () => {
-      doSwitchToDashboardSupplyView();
-      getDashBoardDepositRow({ assetName: _shortNameFrom, isCollateralType: isCollateralFromAsset })
+      cy.doSwitchToDashboardSupplyView();
+      cy.getDashBoardSuppliedRow(_shortNameFrom, isCollateralFromAsset)
         .find(`[data-cy=swapButton]`)
         .click();
       cy.get(`[data-cy=Modal] h2:contains("Swap ${_shortNameFrom}")`).should('be.visible');
@@ -369,19 +430,27 @@ export const swap = (
       }).should('be.visible', { timeout: 10000 });
     });
     it(`Make approve for ${isMaxAmount ? 'MAX' : amount} amount`, () => {
-      setAmount({
-        amount,
-        max: isMaxAmount,
-      });
-      doConfirm({
-        hasApproval,
-        actionName: _actionName,
-      });
+      cy.setAmount(amount, isMaxAmount);
+      cy.doConfirm(hasApproval, _actionName);
     });
     doCloseModal();
   });
 };
 
+/**
+ * This full step to change collateral for any assets from Dashboard view with positive result
+ * @example
+ *```
+ * // Change collateral status for ETH
+ * changeCollateral ({
+ *   asset:{shortName:'ETH', fullName:'Ethereum'},
+ *   isCollateralFromAsset: false,
+ *  },
+ *  skipTestState,
+ *  false
+ * )
+ * ```
+ */
 export const changeCollateral = (
   {
     asset,
@@ -397,12 +466,10 @@ export const changeCollateral = (
   return describe(`Switch collateral type from ${isCollateralType}`, () => {
     skipSetup({ skip, updateSkipStatus });
     it('Open dashboard', () => {
-      doSwitchToDashboardSupplyView();
+      cy.doSwitchToDashboardSupplyView();
     });
     it('Open Switch type Modal', () => {
-      getDashBoardDepositRow({ assetName: _shortName, isCollateralType })
-        .find('.MuiSwitch-input ')
-        .click();
+      cy.getDashBoardSuppliedRow(_shortName, isCollateralType).find('.MuiSwitch-input ').click();
       cy.get('[data-cy=Modal]').should('be.visible');
       cy.get(`[data-cy=Modal] h2:contains('Review tx ${_shortName}')`).should('be.visible');
     });
@@ -424,6 +491,19 @@ export const changeCollateral = (
   });
 };
 
+/**
+ * This full step to claim reward  from Dashboard
+ * @example
+ *```
+ * // Claim reward of Matic
+ * claimReward ({
+ *   asset:{shortName:'MATIC', fullName:'Matic'},
+ *  },
+ *  skipTestState,
+ *  false
+ * )
+ * ```
+ */
 export const claimReward = (
   {
     asset,
@@ -436,23 +516,33 @@ export const claimReward = (
   return describe(`Claim reward`, () => {
     skipSetup({ skip, updateSkipStatus });
     it(`Open dashboard`, () => {
-      doSwitchToDashboardSupplyView();
+      cy.doSwitchToDashboardSupplyView();
     });
     it(`Open claim modal`, () => {
       cy.get('[data-cy=Claim_Box]').should('be.visible');
       cy.get('[data-cy=Dashboard_Claim_Button]').click();
     });
     it('Confirm claim', () => {
-      doConfirm({
-        hasApproval: true,
-        actionName: 'Claim',
-        assetName: asset.shortName,
-      });
+      cy.doConfirm(true, 'Claim', asset.shortName);
     });
     doCloseModal();
   });
 };
 
+/**
+ * This full step to change collateral with negative result from Dashboard
+ * @example
+ *```
+ * // Change collateral have to blocked for Matic
+ * changeCollateralNegative ({
+ *   asset:{shortName:'MATIC', fullName:'Matic'},
+ *   isCollateralType
+ *  },
+ *  skipTestState,
+ *  false
+ * )
+ * ```
+ */
 export const changeCollateralNegative = (
   {
     asset,
@@ -468,10 +558,8 @@ export const changeCollateralNegative = (
   return describe(`Switch collateral type negative`, () => {
     skipSetup({ skip, updateSkipStatus });
     it('Switch type', () => {
-      doSwitchToDashboardSupplyView();
-      getDashBoardDepositRow({ assetName: _shortName, isCollateralType })
-        .find('.MuiSwitch-input ')
-        .click();
+      cy.doSwitchToDashboardSupplyView();
+      cy.getDashBoardSuppliedRow(_shortName, isCollateralType).find('.MuiSwitch-input ').click();
     });
     it(`Check that switch type unavailable`, () => {
       cy.get('[data-cy=Modal]').contains(
@@ -485,40 +573,75 @@ export const changeCollateralNegative = (
   });
 };
 
+/**
+ * This full step to activate emode from Dashboard
+ * @example
+ *```
+ * // Turn on e-mode
+ * emodeActivating ({
+ *   turnOn: true
+ *  },
+ *  skipTestState,
+ *  false
+ * )
+ * ```
+ */
 export const emodeActivating = (
   {
     turnOn,
     multipleEmodes,
+    emodeOption,
   }: {
     turnOn: boolean;
     multipleEmodes?: boolean;
+    emodeOption?: string;
   },
   skip: SkipType,
   updateSkipStatus = false
 ) => {
   return describe(`${turnOn ? 'Turn on E-mode' : 'Turn off E-mode'}`, () => {
     skipSetup({ skip, updateSkipStatus });
-    it('Open E-mode switcher modal', () => {
-      doSwitchToDashboardBorrowView();
+    it(`Open e-mode switcher`, () => {
+      cy.doSwitchToDashboardBorrowView();
       cy.get('[data-cy=emode-open]').click();
-      if (turnOn) cy.get(`[data-cy="emode-enable"]`).click();
-      else cy.get(`[data-cy="emode-disable"]`).click();
-
-      if (!turnOn && multipleEmodes) {
-        cy.get('[data-cy=EmodeSelect]').click();
-        cy.get(`[data-cy="disableEmode"]`).click();
-      }
     });
-    it(`${turnOn ? 'Turn on E-mode' : 'Turn off E-mode'}`, () => {
-      const actionName = turnOn ? 'Enable E-Mode' : 'Disable E-Mode';
-      doConfirm({
-        hasApproval: true,
-        actionName,
+    if (turnOn) {
+      it(`Turn on e-mode`, () => {
+        cy.doSwitchToDashboardBorrowView();
+        cy.get(`[data-cy="emode-enable"]`).click();
       });
+    } else {
+      it(`Turn off e-mode`, () => {
+        cy.doSwitchToDashboardBorrowView();
+        cy.get(`[data-cy="emode-disable"]`).click();
+      });
+    }
+    if (multipleEmodes && turnOn && emodeOption) {
+      it(`Chose "${emodeOption}" option`, () => {
+        cy.get(`[data-cy="EmodeSelect"]`).click();
+        cy.get(`[role="presentation"]`)
+          .find(`ul[role="listbox"]`)
+          .contains(`${emodeOption}`)
+          .click();
+      });
+    }
+    it(`Sign ${turnOn ? 'Turn on E-mode' : 'Turn off E-mode'}`, () => {
+      const actionName = turnOn ? 'Enable E-Mode' : 'Disable E-Mode';
+      cy.doConfirm(true, actionName);
     });
     doCloseModal();
     it(`Check that E-mode was ${turnOn ? 'on' : 'off'}`, () => {
       cy.get(`[data-cy="emode-open"]`).should('have.text', turnOn ? 'Stablecoins' : 'Disabled');
     });
+  });
+};
+
+/**
+ * This step to close any modal
+ */
+export const doCloseModal = () => {
+  return it(`Close modal popup`, () => {
+    cy.get('[data-cy=CloseModalIcon]').should('not.be.disabled').click();
+    cy.get('[data-cy=Modal]').should('not.exist');
   });
 };

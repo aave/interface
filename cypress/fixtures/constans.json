@@ -1,5 +1,5 @@
 {
-  "repayType":{
+  "repayType": {
     "collateral": "collateral",
     "wallet": "wallet",
     "default": "default"
