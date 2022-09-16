@@ -6,8 +6,8 @@ concurrency:
 
 on:
   workflow_run:
-    workflows: ["Build PR From Fork"]
-    types: ["completed"]
+    workflows: ['Build PR From Fork']
+    types: ['completed']
 
 jobs:
   prepare_jobs:
@@ -22,7 +22,7 @@ jobs:
         uses: dawidd6/action-download-artifact@ea71f332a90fd52416b1629b933dcf7e0ccd421d # v2.22.0
         with:
           workflow: build-fork.yml
-          run_id: "${{ github.event.workflow_run.id }}"
+          run_id: '${{ github.event.workflow_run.id }}'
           workflow_conclusion: success
           name: pr
           path: ./
@@ -46,7 +46,7 @@ jobs:
 
   next_js_analyze:
     runs-on: ubuntu-latest
-    needs: ["prepare_jobs"]
+    needs: ['prepare_jobs']
     env:
       PR_NUMBER: ${{ needs.prepare_jobs.outputs.pr_number }}
     steps:
@@ -56,11 +56,11 @@ jobs:
 
       - uses: ./.github/actions/analyze-comment
         with:
-          PULL_REQUEST_NUMBER: "${{ env.PR_NUMBER }}"
+          PULL_REQUEST_NUMBER: '${{ env.PR_NUMBER }}'
 
   cypress_smoke_v2:
     runs-on: ubuntu-latest
-    needs: ["prepare_jobs"]
+    needs: ['prepare_jobs']
     strategy:
       fail-fast: false
       matrix:
@@ -82,7 +82,7 @@ jobs:
 
   cypress_smoke_v3:
     runs-on: ubuntu-latest
-    needs: ["prepare_jobs"]
+    needs: ['prepare_jobs']
     strategy:
       fail-fast: false
       matrix:
@@ -147,7 +147,7 @@ jobs:
 
   cypress_full_v2:
     runs-on: ubuntu-latest
-    needs: ["deploy_fork"]
+    needs: ['deploy_fork']
     strategy:
       fail-fast: false
       matrix:
@@ -169,7 +169,7 @@ jobs:
 
   cypress_full_v3:
     runs-on: ubuntu-latest
-    needs: ["deploy_fork"]
+    needs: ['deploy_fork']
     strategy:
       fail-fast: false
       matrix:
@@ -191,7 +191,7 @@ jobs:
 
   cypress_additional_v2:
     runs-on: ubuntu-latest
-    needs: ["deploy_fork"]
+    needs: ['deploy_fork']
     strategy:
       fail-fast: false
       matrix:
@@ -212,7 +212,7 @@ jobs:
 
   cypress_additional_v3:
     runs-on: ubuntu-latest
-    needs: ["deploy_fork"]
+    needs: ['deploy_fork']
     strategy:
       fail-fast: false
       matrix:
@@ -234,7 +234,7 @@ jobs:
 
   cypress_app_functionality:
     runs-on: ubuntu-latest
-    needs: ["deploy_fork"]
+    needs: ['deploy_fork']
     strategy:
       fail-fast: false
       matrix:
@@ -250,7 +250,6 @@ jobs:
           CYPRESS_TENDERLY_KEY: ${{ secrets.TENDERLY_KEY }}
           CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
           YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/${{ matrix.scoupe }}.config.ts
-
 
   notify_failure:
     runs-on: ubuntu-latest
@@ -293,5 +292,5 @@ jobs:
         with:
           PULL_REQUEST_NUMBER: '${{ env.PR_NUMBER }}'
           COMMENT_BODY: |
-              ✅ CI run has succeded!
-              You can find tests and deployment logs at ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+            ✅ CI run has succeded!
+            You can find tests and deployment logs at ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
