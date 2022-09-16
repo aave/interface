@@ -8,13 +8,13 @@ inputs:
   PR_INFO:
     description: shoud this artifact be uploaded
     required: false
-    default: "true"
+    default: 'true'
   NEXTJS_BUILD:
     description: shoud this artifact be uploaded
     required: false
-    default: "true"
+    default: 'true'
 runs:
-  using: "composite"
+  using: 'composite'
   steps:
     - name: Save PR number
       if: github.event.number && inputs.PR_INFO == 'true'
