@@ -72,7 +72,11 @@ describe('ISOLATED MODE with EMODE SPEC, POLYGON V3 MARKET', () => {
     switchCollateralBlockedInModal(testData.testCases.checkBorrowTypeBlocked1, skipTestState);
   });
   describe('Turn on E-Mode and verify increase of health factor', () => {
-    emodeActivating({ turnOn: true }, skipTestState, true);
+    emodeActivating(
+      { turnOn: true, multipleEmodes: true, emodeOption: 'Stablecoin' },
+      skipTestState,
+      true
+    );
     checkDashboardHealthFactor({ valueFrom: 1.07, valueTo: 1000 }, skipTestState);
     borrowsAvailable(skipTestState);
     verifyCountOfBorrowAssets({ assets: testData.IsolatedModeAssets }, skipTestState);
