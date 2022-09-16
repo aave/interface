@@ -118,26 +118,11 @@ export const BorrowAssetsList = () => {
       subChildrenComponent={
         <Box sx={{ px: 6, mb: 4 }}>
           {borrowDisabled && currentNetworkConfig.name === 'Harmony' && (
-            <MarketWarning
-              learnMore={true}
-              linkHref={`https://governance.aave.com/t/harmony-horizon-bridge-exploit-consequences-to-aave-v3-harmony/8614`}
-              warningMessage={
-                <Trans>
-                  Due to the Horizon bridge exploit, certain assets on the Harmony network are not
-                  at parity with Ethereum, which affects the Aave V3 Harmony market.
-                </Trans>
-              }
-              warningType={'error'}
-            />
+            <MarketWarning marketName="Harmony" />
           )}
 
           {borrowDisabled && currentNetworkConfig.name === 'Fantom' && (
-            <MarketWarning
-              linkHref={`https://snapshot.org/#/aave.eth/proposal/0xeefcd76e523391a14cfd0a79b531ea0a3faf0eb4a058e255fac13a2d224cc647`}
-              learnMore={true}
-              warningMessage={<Trans>Per the community, the Fantom market has been frozen.</Trans>}
-              warningType={'error'}
-            />
+            <MarketWarning marketName="Fantom" />
           )}
 
           {+collateralUsagePercent >= 0.98 && (

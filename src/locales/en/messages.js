@@ -268,7 +268,6 @@
       'Isolated assets have limited borrowing power and other assets cannot be used as collateral.',
     'Join the community discussion': 'Join the community discussion',
     Language: 'Language',
-    'Learn More': 'Learn More',
     'Learn more': 'Learn more',
     'Learn more about risks involved': 'Learn more about risks involved',
     'Learn more in our <0>FAQ guide</0>': 'Learn more in our <0>FAQ guide</0>',
