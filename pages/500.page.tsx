@@ -1,8 +1,7 @@
-import Link from 'next/link';
 import { Trans } from '@lingui/macro';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { ContentContainer } from 'src/components/ContentContainer';
-import { Box, Button, Paper, SvgIcon, Typography, useTheme } from '@mui/material';
+import { Box, Button, Link, Paper, SvgIcon, Typography, useTheme } from '@mui/material';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 import { DuplicateIcon, RefreshIcon } from '@heroicons/react/outline';
 
@@ -30,7 +29,7 @@ export default function Aave500Page() {
           }}
         >
           <Typography variant="display1" sx={{ mt: 8, mb: 3 }}>
-            <Trans>Something Went Wrong</Trans>
+            <Trans>Something went wrong</Trans>
           </Typography>
           <Typography sx={{ mt: 2, mb: 5, maxWidth: 480 }}>
             <Trans>
@@ -61,8 +60,11 @@ export default function Aave500Page() {
             <Typography sx={{ mb: 4 }}>
               <Trans>
                 If the error continues to happen,
-                <br /> you may report it to our support team in <Link href="/">Discord</Link>
-              </Trans>
+                <br /> you may report it to our
+              </Trans>{' '}
+              <Link href="https://discord.com/invite/7kHKnkDEUf" color="inherit" target="_blank">
+                <Trans>Discord channel</Trans>
+              </Link>
               .
             </Typography>
             <Button

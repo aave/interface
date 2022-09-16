@@ -624,6 +624,10 @@ msgstr "Disconnect Wallet"
 msgid "Discord"
 msgstr "Discord"
 
+#: pages/500.page.tsx
+msgid "Discord channel"
+msgstr "Discord channel"
+
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Due to a precision bug in the stETH contract, this asset can not be used in flashloan transactions"
@@ -818,8 +822,8 @@ msgid "I understand how cooldown ({0}) and unstaking ({1}) work"
 msgstr "I understand how cooldown ({0}) and unstaking ({1}) work"
 
 #: pages/500.page.tsx
-msgid "If the error continues to happen,<0/> you may report it to our support team in <1>Discord</1>"
-msgstr "If the error continues to happen,<0/> you may report it to our support team in <1>Discord</1>"
+msgid "If the error continues to happen,<0/> you may report it to our"
+msgstr "If the error continues to happen,<0/> you may report it to our"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "If the health factor goes below 1, the liquidation of your collateral might be triggered."
@@ -1125,8 +1129,8 @@ msgid "Overview"
 msgstr "Overview"
 
 #: pages/404.page.tsx
-msgid "Page Not Found"
-msgstr "Page Not Found"
+msgid "Page not found"
+msgstr "Page not found"
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Participating in this {symbol} reserve gives annualized rewards."
@@ -1387,8 +1391,8 @@ msgid "Since this is a test network, you can get any of the assets if you have E
 msgstr "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
 
 #: pages/500.page.tsx
-msgid "Something Went Wrong"
-msgstr "Something Went Wrong"
+msgid "Something went wrong"
+msgstr "Something went wrong"
 
 #: pages/500.page.tsx
 msgid "Sorry, an unexpected error happened. In the meantime you may try reloading the page, or come back later."

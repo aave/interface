@@ -32,10 +32,10 @@ export default function Aave404Page() {
               alt="404 - Page not found"
             />
           </Box>
-          <Typography variant="display1" sx={{ mt: 8, mb: 3 }}>
-            <Trans>Page Not Found</Trans>
+          <Typography variant="display1" sx={{ mt: 2 }}>
+            <Trans>Page not found</Trans>
           </Typography>
-          <Typography sx={{ mt: 2, mb: 5, maxWidth: 480 }}>
+          <Typography sx={{ mt: 3, mb: 5, maxWidth: 480 }}>
             <Trans>Sorry, we couldn&apos;t find the page you were looking for.</Trans>
             <br />
             <Trans>We suggest you go back to the Dashboard.</Trans>
