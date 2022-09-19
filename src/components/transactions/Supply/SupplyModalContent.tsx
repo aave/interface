@@ -29,7 +29,6 @@ import {
 } from '../FlowCommons/TxModalDetails';
 import { AAVEWarning } from '../Warnings/AAVEWarning';
 import { AMPLWarning } from '../Warnings/AMPLWarning';
-import { HarmonyWarning } from '../Warnings/HarmonyWarning';
 import { IsolationModeWarning } from '../Warnings/IsolationModeWarning';
 import { SNXWarning } from '../Warnings/SNXWarning';
 import { SupplyActions } from './SupplyActions';
@@ -217,7 +216,6 @@ export const SupplyModalContent = ({
         poolReserve.symbol === 'AAVE' &&
         isFeatureEnabled.staking(currentMarketData) && <AAVEWarning />}
       {poolReserve.symbol === 'SNX' && !maxAmountToSupply.eq('0') && <SNXWarning />}
-      {currentNetworkConfig.name === 'Harmony' && <HarmonyWarning learnMore={true} />}
 
       <AssetInput
         value={amount}
