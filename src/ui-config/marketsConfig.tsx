@@ -462,6 +462,7 @@ export const marketsData: {
     chainId: ChainId.goerli,
     enabledFeatures: {
       faucet: true,
+      staking: true,
     },
     rpcOnly: true,
     addresses: {

@@ -13,17 +13,34 @@ export interface StakeConfig {
 }
 
 export const stakeConfig: StakeConfig = {
-  chainId: ChainId.mainnet,
-  stakeDataProvider: '0xc57450af527d10Fe182521AB39C1AD23c1e1BaDE',
+  chainId: ChainId.goerli,
+  stakeDataProvider: '0x0001eD7aba42a23E352fC0b45f1C0B9fe486fcD7',
   tokens: {
     [Stake.aave]: {
-      TOKEN_STAKING: '0x4da27a545c0c5b758a6ba100e3a049001de870f5',
-      STAKING_REWARD_TOKEN: '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9',
-      STAKING_HELPER: '0xce0424653fb2fd48ed1b621bdbd60db16b2e388a',
+      TOKEN_STAKING: '0x2D77b7172f61baE7D23116015Dd2eCeDA0e5bCf1',
+      STAKING_REWARD_TOKEN: '0x0000000000000000000000000000000000000000',
+      STAKING_HELPER: '0x9A30A2A94C06963d598c017A55e3e9eB990890D9',
+      // STAKING_HELPER: '0xce0424653fb2fd48ed1b621bdbd60db16b2e388a',
     },
-    [Stake.bpt]: {
-      TOKEN_STAKING: '0xa1116930326D21fB917d5A27F1E9943A9595fb47',
-      STAKING_REWARD_TOKEN: '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9',
-    },
+    // [Stake.bpt]: {
+    //   TOKEN_STAKING: '0xa1116930326D21fB917d5A27F1E9943A9595fb47',
+    //   STAKING_REWARD_TOKEN: '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9',
+    // },
   },
 };
+
+// export const stakeConfig: StakeConfig = {
+//   chainId: ChainId.mainnet,
+//   stakeDataProvider: '0xc57450af527d10Fe182521AB39C1AD23c1e1BaDE',
+//   tokens: {
+//     [Stake.aave]: {
+//       TOKEN_STAKING: '0x4da27a545c0c5b758a6ba100e3a049001de870f5',
+//       STAKING_REWARD_TOKEN: '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9',
+//       STAKING_HELPER: '0xce0424653fb2fd48ed1b621bdbd60db16b2e388a',
+//     },
+//     [Stake.bpt]: {
+//       TOKEN_STAKING: '0xa1116930326D21fB917d5A27F1E9943A9595fb47',
+//       STAKING_REWARD_TOKEN: '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9',
+//     },
+//   },
+// };

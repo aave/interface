@@ -124,6 +124,8 @@ export default function Staking() {
                 lg={6}
                 sx={{ display: { xs: isStakeAAVE ? 'none' : 'block', lg: 'block' } }}
               >
+                {/* 
+                NOTE: Disabling staking balancer pools
                 <StakingPanel
                   stakeTitle="ABPT"
                   stakedToken="ABPT"
@@ -137,7 +139,8 @@ export default function Staking() {
                   onUnstakeAction={() => openUnstake('bpt', 'stkBPT')}
                   onStakeRewardClaimAction={() => openStakeRewardsClaim('bpt')}
                   headerAction={<GetABPToken />}
-                />
+                  
+                /> */}
               </Grid>
             </Grid>
           </>
