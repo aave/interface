@@ -2,12 +2,15 @@ import { formatUserSummary } from '@aave/math-utils';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Link, SvgIcon, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
 import { EmodeCategory } from 'src/helpers/types';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import {
+  AppDataContextType,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -40,77 +43,42 @@ export interface EmodeModalContentProps {
   mode: EmodeModalType;
 }
 
+function getInitialEmode(
+  mode: EmodeModalType,
+  eModes: AppDataContextType['eModes'],
+  currentEmode: number
+) {
+  const eModesNumber = Object.keys(eModes).length;
+  if (mode === EmodeModalType.ENABLE) {
+    if (eModesNumber > 2) return undefined;
+    return eModes[1];
+  }
+  if (mode === EmodeModalType.SWITCH) {
+    if (eModesNumber > 3) return undefined;
+    if (currentEmode === 1) return eModes[2];
+    return eModes[1];
+  }
+  return eModes[0];
+}
+
 export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
   const {
     user,
     reserves,
+    eModes,
     marketReferenceCurrencyDecimals,
     marketReferencePriceInUsd,
     userReserves,
   } = useAppDataContext();
-  const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
+  const { currentChainId } = useProtocolDataContext();
   const { chainId: connectedChainId, mockAddress } = useWeb3Context();
   const currentTimestamp = useCurrentTimestamp(1);
   const { gasLimit, mainTxState: emodeTxState, txError } = useModalContext();
 
-  const [selectedEmode, setSelectedEmode] = useState<EmodeCategory | undefined>(undefined);
-  const [emodeCategories, setEmodeCategories] = useState<Record<number, EmodeCategory>>({});
-
+  const [selectedEmode, setSelectedEmode] = useState<EmodeCategory | undefined>(
+    getInitialEmode(mode, eModes, user.userEmodeCategoryId)
+  );
   const networkConfig = getNetworkConfig(currentChainId);
-
-  // Create object of available emodes
-  useEffect(() => {
-    const emodeCategoriesArray: EmodeCategory[] = [];
-    reserves.forEach((reserve) => {
-      const emodeFound = emodeCategoriesArray.find(
-        (category) => category.id === reserve.eModeCategoryId
-      );
-      if (!emodeFound) {
-        const emodeParams: EmodeCategory = {
-          id: reserve.eModeCategoryId,
-          ltv: reserve.eModeLtv,
-          liquidationThreshold: reserve.eModeLiquidationThreshold,
-          liquidationBonus: reserve.eModeLiquidationBonus,
-          priceSource: reserve.eModePriceSource,
-          label: reserve.eModeLabel,
-          assets: [],
-        };
-
-        // get all emode asets
-        reserves.forEach((eReserve) => {
-          if (eReserve.eModeCategoryId === reserve.eModeCategoryId) {
-            emodeParams.assets.push(eReserve.symbol);
-          }
-        });
-
-        emodeCategoriesArray.push(emodeParams);
-      }
-    });
-
-    const emodeCategories: Record<number, EmodeCategory> = {};
-    emodeCategoriesArray.forEach((category) => {
-      emodeCategories[category.id] = category;
-    });
-
-    emodeCategoriesArray.sort((a, b) => a.id - b.id);
-
-    // Default values selected based on mode (enable, switch, disable), currently active eMode, and number of available modes
-    const selectedEmode =
-      mode === EmodeModalType.ENABLE
-        ? emodeCategoriesArray.length >= 3
-          ? undefined // Leave select blank
-          : emodeCategoriesArray[1] // Only one option to enable
-        : mode === EmodeModalType.SWITCH
-        ? emodeCategoriesArray.length >= 4
-          ? undefined // Leave select blank
-          : user.userEmodeCategoryId === 1
-          ? emodeCategoriesArray[2] // Only one option to switch to
-          : emodeCategoriesArray[1] // Only one option to switch to
-        : emodeCategoriesArray[0]; // Disabled
-
-    setSelectedEmode(selectedEmode);
-    setEmodeCategories(emodeCategories);
-  }, []);
 
   // calcs
   const newSummary = formatUserSummary({
@@ -149,9 +117,7 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
           <Warning severity="info" sx={{ mt: 6, alignItems: 'center' }}>
             <Typography variant="caption">
               <Trans>
-                To enable E-mode for the{' '}
-                {selectedEmode &&
-                  getEmodeMessage(selectedEmode.id, currentNetworkConfig.baseAssetSymbol)}{' '}
+                To enable E-mode for the {selectedEmode && getEmodeMessage(selectedEmode.label)}{' '}
                 category, all borrow positions outside of this cateogry must be closed.
               </Trans>
             </Typography>
@@ -179,8 +145,8 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
 
   // The selector only shows if there are 2 options for the user, which happens when there are 3 emodeCategories (including disable) for mode.enable, and 4 emodeCategories in mode.switch
   const showModal: boolean =
-    (Object.keys(emodeCategories).length >= 3 && mode === EmodeModalType.ENABLE) ||
-    (Object.keys(emodeCategories).length >= 4 && mode === EmodeModalType.SWITCH);
+    (Object.keys(eModes).length >= 3 && mode === EmodeModalType.ENABLE) ||
+    (Object.keys(eModes).length >= 4 && mode === EmodeModalType.SWITCH);
 
   // is Network mismatched
   const isWrongNetwork: boolean = currentChainId !== connectedChainId;
@@ -236,10 +202,9 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
 
       {showModal && (
         <EmodeSelect
-          emodeCategories={emodeCategories}
+          emodeCategories={eModes}
           selectedEmode={selectedEmode?.id}
           setSelectedEmode={setSelectedEmode}
-          baseAssetSymbol={currentNetworkConfig.baseAssetSymbol}
           userEmode={user.userEmodeCategoryId}
         />
       )}
@@ -270,10 +235,7 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
                       <LightningBoltGradient />
                     </SvgIcon>
                     <Typography variant="subheader1">
-                      {getEmodeMessage(
-                        user.userEmodeCategoryId,
-                        currentNetworkConfig.baseAssetSymbol
-                      )}
+                      {getEmodeMessage(eModes[user.userEmodeCategoryId].label)}
                     </Typography>
                   </>
                 ) : (
@@ -292,7 +254,7 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
                           <LightningBoltGradient />
                         </SvgIcon>
                         <Typography variant="subheader1">
-                          {getEmodeMessage(selectedEmode.id, currentNetworkConfig.baseAssetSymbol)}
+                          {getEmodeMessage(eModes[selectedEmode.id].label)}
                         </Typography>
                       </>
                     ) : (
@@ -314,7 +276,7 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
           sx={{ alignContent: 'flex-end' }}
         >
           <Box sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
-            {emodeCategories[user.userEmodeCategoryId] && (
+            {eModes[user.userEmodeCategoryId] && (
               <Box
                 sx={{
                   display: 'flex',
@@ -324,7 +286,7 @@ export const EmodeModalContent = ({ mode }: EmodeModalContentProps) => {
               >
                 {user.userEmodeCategoryId !== 0 ? (
                   <Typography sx={{ textAlign: 'end' }}>
-                    {emodeCategories[user.userEmodeCategoryId].assets.join(', ')}
+                    {eModes[user.userEmodeCategoryId].assets.join(', ')}
                   </Typography>
                 ) : (
                   <Typography>

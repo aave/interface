@@ -2,9 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Button, Typography, Box } from '@mui/material';
 import { useRouter } from 'next/router';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
-import { ETHBorrowWarning } from 'src/components/transactions/Warnings/ETHBorrowWarning';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { AMPLWarning } from '../../components/infoTooltips/AMPLWarning';
@@ -45,9 +43,6 @@ export const AssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           </Box>
         </Box>
         {reserve.symbol === 'AMPL' && <AMPLWarning />}
-        {reserve.symbol === 'ETH' && currentMarket === CustomMarket.proto_mainnet && (
-          <ETHBorrowWarning />
-        )}
       </ListColumn>
 
       <ListColumn>
@@ -87,7 +82,8 @@ export const AssetsListItem = ({ ...reserve }: ComputedReserveData) => {
       <ListColumn>
         <IncentivesCard
           value={
-            reserve.stableBorrowRateEnabled || Number(reserve.totalStableDebtUSD) > 0
+            (reserve.borrowingEnabled && reserve.stableBorrowRateEnabled) ||
+            Number(reserve.totalStableDebtUSD) > 0
               ? reserve.stableBorrowAPY
               : -1
           }

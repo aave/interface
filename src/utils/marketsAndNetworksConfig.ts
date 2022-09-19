@@ -180,9 +180,13 @@ export const getProvider = (chainId: ChainId): ethersProviders.Provider => {
   return providers[chainId];
 };
 
+export const getENSProvider = () => {
+  const chainId = 1;
+  const config = getNetworkConfig(chainId);
+  return new ethersProviders.StaticJsonRpcProvider(config.publicJsonRPCUrl[0], chainId);
+};
+
 const ammDisableProposal = 'https://app.aave.com/governance/proposal/?proposalId=44';
-const harmonyDisableSnapshot =
-  'https://snapshot.org/#/aave.eth/proposal/0x81a78109941e5e0ac6cb5ebf82597c839c20ad6821a8c3ff063dba39032533d4';
 
 export const frozenProposalMap: Record<string, string> = {
   ['UST']: 'https://app.aave.com/governance/proposal/?proposalId=75',
@@ -203,14 +207,6 @@ export const frozenProposalMap: Record<string, string> = {
   ['UNIYFIWETH']: ammDisableProposal,
   ['BPTWBTCWETH']: ammDisableProposal,
   ['BPTBALWETH']: ammDisableProposal,
-  ['1DAI']: harmonyDisableSnapshot,
-  ['1USDC']: harmonyDisableSnapshot,
-  ['1USDT']: harmonyDisableSnapshot,
-  ['1AAVE']: harmonyDisableSnapshot,
-  ['1ETH']: harmonyDisableSnapshot,
-  ['LINK']: harmonyDisableSnapshot,
-  ['1WBTC']: harmonyDisableSnapshot,
-  ['WONE']: harmonyDisableSnapshot,
 };
 
 // reexport so we can forbit config import

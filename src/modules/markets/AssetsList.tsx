@@ -4,7 +4,7 @@ import { Box, useMediaQuery } from '@mui/material';
 import { useState } from 'react';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
-import { HarmonyWarning } from 'src/components/transactions/Warnings/HarmonyWarning';
+import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
@@ -96,6 +96,8 @@ export default function AssetsList() {
     },
   ];
 
+  const marketFrozen = !reserves.some((reserve) => !reserve.isFrozen);
+
   return (
     <ListWrapper
       title={
@@ -105,11 +107,18 @@ export default function AssetsList() {
       }
       captionSize="h2"
     >
-      {currentNetworkConfig.name === 'Harmony' && (
+      {marketFrozen && currentNetworkConfig.name === 'Harmony' && (
         <Box sx={{ mx: '24px' }}>
-          <HarmonyWarning />
+          <MarketWarning marketName="Harmony" forum={true} />
         </Box>
       )}
+
+      {marketFrozen && currentNetworkConfig.name === 'Fantom' && (
+        <Box sx={{ mx: '24px' }}>
+          <MarketWarning marketName="Fantom" forum={true} />
+        </Box>
+      )}
+
       {!isTableChangedToCards && (
         <ListHeaderWrapper px={6}>
           {header.map((col) => (
