@@ -1,7 +1,9 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
+import { SearchIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, useMediaQuery } from '@mui/material';
+import { Box, Button, IconButton, SvgIcon, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
+import { AssetSearch } from 'src/components/AssetSearch';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
@@ -13,6 +15,7 @@ import { ListHeaderTitle } from '../../components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from '../../components/lists/ListHeaderWrapper';
 import { ListWrapper } from '../../components/lists/ListWrapper';
 import { useProtocolDataContext } from '../../hooks/useProtocolDataContext';
+import { AssetListTitle } from './AssetListTitle';
 import { AssetsListItem } from './AssetsListItem';
 import { AssetsListItemLoader } from './AssetsListItemLoader';
 import { AssetsListMobileItem } from './AssetsListMobileItem';
@@ -23,6 +26,9 @@ export default function AssetsList() {
   const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
 
   const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
+
+  const { breakpoints } = useTheme();
+  const sm = useMediaQuery(breakpoints.down('sm'));
 
   const filteredData = reserves
     .filter((res) => res.isActive)
@@ -38,6 +44,7 @@ export default function AssetsList() {
 
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
   if (sortDesc) {
     if (sortName === 'symbol') {
@@ -98,12 +105,13 @@ export default function AssetsList() {
 
   const marketFrozen = !reserves.some((reserve) => !reserve.isFrozen);
 
+  const [showSearchBar, setShowSearchBar] = useState(false);
   return (
     <ListWrapper
       title={
-        <>
-          {currentMarketData.marketTitle} <Trans>assets</Trans>
-        </>
+        <Box sx={{ width: '100%' }}>
+          <AssetListTitle marketTitle={currentMarketData.marketTitle} />
+        </Box>
       }
       captionSize="h2"
     >
