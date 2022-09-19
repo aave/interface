@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-09-17 00:20\n"
+"PO-Revision-Date: 2022-09-19 18:06\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -176,11 +176,6 @@ msgstr "Approuver {symbol}..."
 msgid "Array parameters that should be equal length are not"
 msgstr "Les paramètres de tableau devraient être de même longueur ne sont pas"
 
-#: src/components/transactions/Warnings/ETHBorrowWarning.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "As per the community vote, ETH borrowing on the Ethereum Market has been paused ahead of the merge to mitigate liquidity risk. <0>Learn more</0>."
-msgstr ""
-
 #: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/markets/AssetsList.tsx
 msgid "Asset"
@@ -259,6 +254,10 @@ msgstr "Disponible à emprunter"
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Available to supply"
 msgstr "Disponible au dépôt"
+
+#: pages/404.page.tsx
+msgid "Back to Dashboard"
+msgstr ""
 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
@@ -503,6 +502,10 @@ msgstr "Refroidissement..."
 msgid "Copy address"
 msgstr "Copier l'adresse"
 
+#: pages/500.page.tsx
+msgid "Copy error message"
+msgstr ""
+
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Copy error text"
 msgstr "Copier le texte d'erreur"
@@ -621,6 +624,10 @@ msgstr "Déconnecter le portefeuille"
 #: src/ui-config/menu-items/index.tsx
 msgid "Discord"
 msgstr "Discord"
+
+#: pages/500.page.tsx
+msgid "Discord channel"
+msgstr ""
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
@@ -814,6 +821,10 @@ msgstr "Je reconnais les risques encourus."
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "I understand how cooldown ({0}) and unstaking ({1}) work"
 msgstr "Je comprends comment fonctionnent le temps de recharge ({0}) et le retrait ({1})"
+
+#: pages/500.page.tsx
+msgid "If the error continues to happen,<0/> you may report it to this"
+msgstr ""
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "If the health factor goes below 1, the liquidation of your collateral might be triggered."
@@ -1127,6 +1138,10 @@ msgstr "Prix Oracle"
 msgid "Overview"
 msgstr "Aperçu"
 
+#: pages/404.page.tsx
+msgid "Page not found"
+msgstr ""
+
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Participating in this {symbol} reserve gives annualized rewards."
 msgstr "Participer à cette réserve {symbol} donne des récompenses annualisées."
@@ -1235,6 +1250,10 @@ msgstr "Adresse du destinataire"
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Rejected connection request"
 msgstr "Demande de connexion rejetée"
+
+#: pages/500.page.tsx
+msgid "Reload the page"
+msgstr ""
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Repay/RepayModalContent.tsx
@@ -1376,6 +1395,18 @@ msgstr ""
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
 msgstr "Comme il s'agit d'un réseau de test, vous pouvez obtenir n'importe lequel des actifs si vous avez ETH dans votre portefeuille"
+
+#: pages/500.page.tsx
+msgid "Something went wrong"
+msgstr ""
+
+#: pages/500.page.tsx
+msgid "Sorry, an unexpected error happened. In the meantime you may try reloading the page, or come back later."
+msgstr ""
+
+#: pages/404.page.tsx
+msgid "Sorry, we couldn't find the page you were looking for."
+msgstr ""
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Spanish"
@@ -1929,6 +1960,10 @@ msgstr "Les portefeuilles sont fournis par des fournisseurs externes et en séle
 #: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake."
 msgstr "Nous n'avons pas pu détecter de portefeuille. Connectez un portefeuille pour miser."
+
+#: pages/404.page.tsx
+msgid "We suggest you go back to the Dashboard."
+msgstr ""
 
 #: src/components/infoTooltips/LiquidationPenaltyTooltip.tsx
 msgid "When a liquidation occurs, liquidators repay up to 50% of the outstanding borrowed amount on behalf of the borrower. In return, they can buy the collateral at a discount and keep the difference (liquidation penalty) as a bonus."
