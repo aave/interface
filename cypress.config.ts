@@ -1,6 +1,5 @@
 import { defineConfig } from 'cypress';
 
-/* eslint-disable */
 export default defineConfig({
   viewportWidth: 1200,
   viewportHeight: 800,
