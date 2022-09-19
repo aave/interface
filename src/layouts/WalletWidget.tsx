@@ -241,7 +241,10 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
             marginRight: '10px',
           }}
           size="small"
-          onClick={() => setWalletModalOpen(true)}
+          onClick={() => {
+            setWalletModalOpen(true);
+            handleClose();
+          }}
         >
           Switch Wallet
         </Button>
