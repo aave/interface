@@ -136,7 +136,7 @@ type ReserveConfigurationProps = {
 };
 
 export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ reserve }) => {
-  const { currentNetworkConfig, currentMarketData } = useProtocolDataContext();
+  const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
   const renderCharts = !!currentNetworkConfig.ratesHistoryApiUrl;
   const { data, error } = useReserveRatesHistory(
     reserve
