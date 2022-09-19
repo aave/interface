@@ -1,5 +1,12 @@
 import { configEnvWithTenderlyMainnetFork } from '../../../../support/steps/configuration.steps';
-import { supply, withdraw, changeCollateral } from '../../../../support/steps/main.steps';
+import {
+  supply,
+  withdraw,
+  changeCollateral,
+  borrow,
+  changeCollateralNegative,
+  repay,
+} from '../../../../support/steps/main.steps';
 import {
   borrowsUnavailable,
   dashboardAssetValuesVerification,
@@ -70,14 +77,13 @@ const testData = {
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
       },
-      // SKIP while eth borrow blocked
-      // {
-      //   type: constants.dashboardTypes.borrow,
-      //   assetName: assets.aaveMarket.ETH.shortName,
-      //   wrapped: assets.aaveMarket.ETH.wrapped,
-      //   amount: 0.03,
-      //   apyType: constants.borrowAPYType.variable,
-      // },
+      {
+        type: constants.dashboardTypes.borrow,
+        assetName: assets.aaveMarket.ETH.shortName,
+        wrapped: assets.aaveMarket.ETH.wrapped,
+        amount: 0.03,
+        apyType: constants.borrowAPYType.variable,
+      },
     ],
   },
 };
@@ -92,10 +98,9 @@ describe('ETH INTEGRATION SPEC, AAVE V2 MARKET', () => {
     borrowsUnavailable(skipTestState);
     changeCollateral(testData.testCases.collateral.switchOn, skipTestState, false);
   });
-  // SKIP, while eth borrow blocked
-  // borrow(testData.testCases.borrow, skipTestState, true);
-  // changeCollateralNegative(testData.testCases.collateral.switchNegative, skipTestState, false);
-  // repay(testData.testCases.repay, skipTestState, false);
+  borrow(testData.testCases.borrow, skipTestState, true);
+  changeCollateralNegative(testData.testCases.collateral.switchNegative, skipTestState, false);
+  repay(testData.testCases.repay, skipTestState, false);
   testData.testCases.withdraw.forEach((withdrawCase) => {
     withdraw(withdrawCase, skipTestState, false);
   });
