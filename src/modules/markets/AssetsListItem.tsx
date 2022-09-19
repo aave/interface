@@ -2,7 +2,6 @@ import { Trans } from '@lingui/macro';
 import { Button, Typography, Box } from '@mui/material';
 import { useRouter } from 'next/router';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
-import { ETHBorrowWarning } from 'src/components/transactions/Warnings/ETHBorrowWarning';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
@@ -45,9 +44,6 @@ export const AssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           </Box>
         </Box>
         {reserve.symbol === 'AMPL' && <AMPLWarning />}
-        {reserve.symbol === 'ETH' && currentMarket === CustomMarket.proto_mainnet && (
-          <ETHBorrowWarning />
-        )}
       </ListColumn>
 
       <ListColumn>

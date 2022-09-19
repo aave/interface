@@ -20,7 +20,6 @@ interface ListItemWrapperProps {
   showSupplyCapTooltips?: boolean;
   showBorrowCapTooltips?: boolean;
   showDebtCeilingTooltips?: boolean;
-  showETHBorrowWarning?: boolean;
 }
 
 export const ListItemWrapper = ({
@@ -34,7 +33,6 @@ export const ListItemWrapper = ({
   showSupplyCapTooltips = false,
   showBorrowCapTooltips = false,
   showDebtCeilingTooltips = false,
-  showETHBorrowWarning = false,
   ...rest
 }: ListItemWrapperProps) => {
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
