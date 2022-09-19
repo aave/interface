@@ -8,7 +8,6 @@ import { ListItem } from '../../../components/lists/ListItem';
 import { Link, ROUTES } from '../../../components/primitives/Link';
 import { TokenIcon } from '../../../components/primitives/TokenIcon';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
-import { ETHBorrowWarning } from 'src/components/transactions/Warnings/ETHBorrowWarning';
 
 interface ListItemWrapperProps {
   symbol: string;
@@ -55,17 +54,11 @@ export const ListItemWrapper = ({
             </Typography>
           </Tooltip>
         </Link>
-        {showETHBorrowWarning ? (
-          <ETHBorrowWarning />
-        ) : (
-          <>
-            {frozen && <FrozenWarning symbol={symbol} />}
-            {!frozen && symbol === 'AMPL' && <AMPLWarning />}
-            {showSupplyCapTooltips && supplyCap.displayMaxedTooltip({ supplyCap })}
-            {showBorrowCapTooltips && borrowCap.displayMaxedTooltip({ borrowCap })}
-            {showDebtCeilingTooltips && debtCeiling.displayMaxedTooltip({ debtCeiling })}
-          </>
-        )}
+        {frozen && <FrozenTooltip symbol={symbol} />}
+        {!frozen && symbol === 'AMPL' && <AMPLWarning />}
+        {showSupplyCapTooltips && supplyCap.displayMaxedTooltip({ supplyCap })}
+        {showBorrowCapTooltips && borrowCap.displayMaxedTooltip({ borrowCap })}
+        {showDebtCeilingTooltips && debtCeiling.displayMaxedTooltip({ debtCeiling })}
       </ListColumn>
       {children}
     </ListItem>
