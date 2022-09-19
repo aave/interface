@@ -127,6 +127,10 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const connectWallet = useCallback(
     async (wallet: WalletType) => {
       setLoading(true);
+      if (mockAddress || localStorage.getItem('mockWalletAddress')) {
+        setMockAddress(undefined);
+        localStorage.removeItem('mockWalletAddress');
+      }
       try {
         const connector: AbstractConnector = getWallet(wallet, chainId);
 
