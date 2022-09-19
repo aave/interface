@@ -3,7 +3,6 @@ import { Button, Typography, Box } from '@mui/material';
 import { useRouter } from 'next/router';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { AMPLWarning } from '../../components/infoTooltips/AMPLWarning';

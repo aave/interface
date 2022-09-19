@@ -52,7 +52,7 @@ export const ListItemWrapper = ({
             </Typography>
           </Tooltip>
         </Link>
-        {frozen && <FrozenTooltip symbol={symbol} />}
+        {frozen && <FrozenTooltip symbol={symbol} currentMarket={currentMarket} />}
         {!frozen && symbol === 'AMPL' && <AMPLWarning />}
         {showSupplyCapTooltips && supplyCap.displayMaxedTooltip({ supplyCap })}
         {showBorrowCapTooltips && borrowCap.displayMaxedTooltip({ borrowCap })}
