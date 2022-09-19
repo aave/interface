@@ -116,7 +116,7 @@ localStorage.setItem('forkNetworkId', '3030'); // the ID of the new forked netwo
 localStorage.setItem('forkRPCUrl', <rpcUrl>);
 ```
 
-Since `localeStorage` changes are not not observed, _you’ll need to reload after setting the parameters_. After reloading, the market selection should show forked markets for all the markets that run on `forkBaseChainId`. To make actual transactions on the fork, you’ll need to setup your wallet to use the same `rpcUrl` you provided as `forkRPCUrl`. This will require you to setup your wallet by adding in the new fork network and connecting to the app with it.
+Since `localStorage` changes are not not observed, _you’ll need to reload after setting the parameters_. After reloading, the market selection should show forked markets for all the markets that run on `forkBaseChainId`. To make actual transactions on the fork, you’ll need to setup your wallet to use the same `rpcUrl` you provided as `forkRPCUrl`. This will require you to setup your wallet by adding in the new fork network and connecting to the app with it.
 
 ## Token Additions
 
