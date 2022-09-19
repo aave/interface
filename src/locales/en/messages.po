@@ -2093,7 +2093,7 @@ msgstr "Your {networkName} wallet is empty. Purchase or transfer assets"
 msgid "Zero address not valid"
 msgstr "Zero address not valid"
 
-#: src/modules/markets/AssetsList.tsx
+#: src/modules/markets/AssetListTitle.tsx
 msgid "assets"
 msgstr "assets"
 
