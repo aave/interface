@@ -24,7 +24,7 @@ Add any notes here that may be helpful for reviewers.
 
 ## Reviewer Checklist
 
-- [ ]  End-to-end tests tests are passing without any errors
+- [ ]  End-to-end tests are passing without any errors
 - [ ]  Code style generally follows existing patterns
 - [ ]  New third-party packages, if any, do not introduce potential security threats
 - [ ]  There are no CI changes, or they have been OK’d by the devops team
