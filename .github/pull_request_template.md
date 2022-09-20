@@ -1,9 +1,3 @@
----
-name: "Default"
-title: "[type]: update this "
-labels: "New Pull Request"
----
-
 ## General Changes
 
 - Fixes XYZ bug
