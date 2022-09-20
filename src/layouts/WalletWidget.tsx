@@ -237,32 +237,34 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           )}
         </Box>
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row', padding: '0 16px 10px' }}>
-        <Button
-          variant="outlined"
-          sx={{
-            padding: '0 5px',
-            marginRight: '10px',
-          }}
-          size="small"
-          onClick={() => {
-            setWalletModalOpen(true);
-            handleClose();
-          }}
-        >
-          Switch Wallet
-        </Button>
-        <Button
-          variant="outlined"
-          sx={{
-            padding: '0 5px',
-          }}
-          size="small"
-          onClick={handleDisconnect}
-        >
-          Disconnect
-        </Button>
-      </Box>
+      {!md && (
+        <Box sx={{ display: 'flex', flexDirection: 'row', padding: '0 16px 10px' }}>
+          <Button
+            variant="outlined"
+            sx={{
+              padding: '0 5px',
+              marginRight: '10px',
+            }}
+            size="small"
+            onClick={() => {
+              setWalletModalOpen(true);
+              handleClose();
+            }}
+          >
+            Switch Wallet
+          </Button>
+          <Button
+            variant="outlined"
+            sx={{
+              padding: '0 5px',
+            }}
+            size="small"
+            onClick={handleDisconnect}
+          >
+            Disconnect
+          </Button>
+        </Box>
+      )}
       <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
 
       <Box component={component} disabled>
@@ -348,6 +350,34 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
             </ListItemText>
           </Box>
         </Link>
+      )}
+      {md && (
+        <Box sx={{ padding: '0 16px 10px' }}>
+          <Button
+            variant="outlined"
+            sx={{
+              marginBottom: '12px',
+              width: '100%',
+            }}
+            size="medium"
+            onClick={() => {
+              setWalletModalOpen(true);
+              handleClose();
+            }}
+          >
+            Switch Wallet
+          </Button>
+          <Button
+            variant="outlined"
+            sx={{
+              width: '100%',
+            }}
+            size="medium"
+            onClick={handleDisconnect}
+          >
+            Disconnect
+          </Button>
+        </Box>
       )}
     </>
   );
