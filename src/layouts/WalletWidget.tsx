@@ -354,10 +354,11 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
       {md && (
         <Box sx={{ padding: '0 16px 10px' }}>
           <Button
-            variant="outlined"
             sx={{
               marginBottom: '12px',
               width: '100%',
+              background: '#383D51',
+              color: '#F1F1F3',
             }}
             size="medium"
             onClick={() => {
@@ -368,9 +369,10 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
             Switch Wallet
           </Button>
           <Button
-            variant="outlined"
             sx={{
               width: '100%',
+              background: '#383D51',
+              color: '#F1F1F3'
             }}
             size="medium"
             onClick={handleDisconnect}
