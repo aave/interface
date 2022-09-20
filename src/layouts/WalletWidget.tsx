@@ -350,7 +350,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
 
   return (
     <>
-      {md && connected && open ? (
+      {md && (connected || mockAddress) && open ? (
         <MobileCloseButton setOpen={setOpen} />
       ) : loading ? (
         <Skeleton height={36} width={126} sx={{ background: '#383D51' }} />
