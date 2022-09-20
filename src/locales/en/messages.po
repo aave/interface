@@ -17,6 +17,10 @@ msgstr ""
 msgid "<0>Ampleforth</0> is an asset affected by rebasing. Visit the <1>documentation</1> or <2>Ampleforth's FAQ</2> to learn more."
 msgstr "<0>Ampleforth</0> is an asset affected by rebasing. Visit the <1>documentation</1> or <2>Ampleforth's FAQ</2> to learn more."
 
+#: src/components/transactions/Borrow/BorrowModalContent.tsx
+msgid "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
+msgstr "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
+
 #: src/modules/staking/StakingHeader.tsx
 msgid "AAVE holders can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
 msgstr "AAVE holders can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
@@ -249,6 +253,10 @@ msgstr "Available to borrow"
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Available to supply"
 msgstr "Available to supply"
+
+#: pages/404.page.tsx
+msgid "Back to Dashboard"
+msgstr "Back to Dashboard"
 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
@@ -493,6 +501,10 @@ msgstr "Cooling down..."
 msgid "Copy address"
 msgstr "Copy address"
 
+#: pages/500.page.tsx
+msgid "Copy error message"
+msgstr "Copy error message"
+
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Copy error text"
 msgstr "Copy error text"
@@ -610,6 +622,10 @@ msgstr "Disconnect Wallet"
 #: src/ui-config/menu-items/index.tsx
 msgid "Discord"
 msgstr "Discord"
+
+#: pages/500.page.tsx
+msgid "Discord channel"
+msgstr "Discord channel"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
@@ -807,6 +823,10 @@ msgstr "I acknowledge the risks involved."
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "I understand how cooldown ({0}) and unstaking ({1}) work"
 msgstr "I understand how cooldown ({0}) and unstaking ({1}) work"
+
+#: pages/500.page.tsx
+msgid "If the error continues to happen,<0/> you may report it to this"
+msgstr "If the error continues to happen,<0/> you may report it to this"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "If the health factor goes below 1, the liquidation of your collateral might be triggered."
@@ -1120,6 +1140,10 @@ msgstr "Oracle price"
 msgid "Overview"
 msgstr "Overview"
 
+#: pages/404.page.tsx
+msgid "Page not found"
+msgstr "Page not found"
+
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Participating in this {symbol} reserve gives annualized rewards."
 msgstr "Participating in this {symbol} reserve gives annualized rewards."
@@ -1228,6 +1252,10 @@ msgstr "Recipient address"
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Rejected connection request"
 msgstr "Rejected connection request"
+
+#: pages/500.page.tsx
+msgid "Reload the page"
+msgstr "Reload the page"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Repay/RepayModalContent.tsx
@@ -1369,6 +1397,18 @@ msgstr "Since this asset is frozen, the only available actions are withdraw and 
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
 msgstr "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
+
+#: pages/500.page.tsx
+msgid "Something went wrong"
+msgstr "Something went wrong"
+
+#: pages/500.page.tsx
+msgid "Sorry, an unexpected error happened. In the meantime you may try reloading the page, or come back later."
+msgstr "Sorry, an unexpected error happened. In the meantime you may try reloading the page, or come back later."
+
+#: pages/404.page.tsx
+msgid "Sorry, we couldn't find the page you were looking for."
+msgstr "Sorry, we couldn't find the page you were looking for."
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Spanish"
@@ -1934,6 +1974,10 @@ msgstr "Watch-only mode. Connect to a wallet to perform transactions."
 #: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake."
 msgstr "We couldn’t detect a wallet. Connect a wallet to stake."
+
+#: pages/404.page.tsx
+msgid "We suggest you go back to the Dashboard."
+msgstr "We suggest you go back to the Dashboard."
 
 #: src/components/infoTooltips/LiquidationPenaltyTooltip.tsx
 msgid "When a liquidation occurs, liquidators repay up to 50% of the outstanding borrowed amount on behalf of the borrower. In return, they can buy the collateral at a discount and keep the difference (liquidation penalty) as a bonus."
