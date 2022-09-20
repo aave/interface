@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-09-20 00:24\n"
+"PO-Revision-Date: 2022-09-20 12:07\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -24,7 +24,7 @@ msgstr "<0>Ampleforth</0> es un activo afectado por el rebase. Visita la <1>docu
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
-msgstr ""
+msgstr "<0>Atención:</0> Los cambios de parámetros a través de la gobernanza pueden alterar el factor de salud de tu cuenta y el riesgo de liquidación. Sigue el <1>foro de gobierno de Aave</1> para mantenerte actualizado."
 
 #: src/modules/staking/StakingHeader.tsx
 msgid "AAVE holders can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
@@ -261,7 +261,7 @@ msgstr "Disponible para suministrar"
 
 #: pages/404.page.tsx
 msgid "Back to Dashboard"
-msgstr ""
+msgstr "Volver al panel de control"
 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
@@ -508,7 +508,7 @@ msgstr "Copiar dirección"
 
 #: pages/500.page.tsx
 msgid "Copy error message"
-msgstr ""
+msgstr "Copiar mensaje de error"
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Copy error text"
@@ -631,7 +631,7 @@ msgstr "Discord"
 
 #: pages/500.page.tsx
 msgid "Discord channel"
-msgstr ""
+msgstr "Canal de Discord"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
@@ -828,7 +828,7 @@ msgstr "Entiendo como el cooldown ({0}) y el proceso de unstaking ({1}) funciona
 
 #: pages/500.page.tsx
 msgid "If the error continues to happen,<0/> you may report it to this"
-msgstr ""
+msgstr "Si el error persiste, <0/> podrías reportarlo a esto"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "If the health factor goes below 1, the liquidation of your collateral might be triggered."
@@ -1144,7 +1144,7 @@ msgstr "Resumen"
 
 #: pages/404.page.tsx
 msgid "Page not found"
-msgstr ""
+msgstr "Página no encontrada"
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Participating in this {symbol} reserve gives annualized rewards."
@@ -1257,7 +1257,7 @@ msgstr "Solicitud de conexión rechazada"
 
 #: pages/500.page.tsx
 msgid "Reload the page"
-msgstr ""
+msgstr "Recarga la página"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Repay/RepayModalContent.tsx
@@ -1402,15 +1402,15 @@ msgstr "Puesto que esta es una red de pruebas, puedes obtener cualquiera de los 
 
 #: pages/500.page.tsx
 msgid "Something went wrong"
-msgstr ""
+msgstr "Se produjo un error"
 
 #: pages/500.page.tsx
 msgid "Sorry, an unexpected error happened. In the meantime you may try reloading the page, or come back later."
-msgstr ""
+msgstr "Lo sentimos, se produjo un error imprevisto. Mientras tanto, puedes intentar recargar la página, o volver después."
 
 #: pages/404.page.tsx
 msgid "Sorry, we couldn't find the page you were looking for."
-msgstr ""
+msgstr "Lo sentimos, no hemos podido encontrar la página que estabas buscando."
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Spanish"
@@ -1967,7 +1967,7 @@ msgstr "No podemos detectar una cartera. Conecta una cartera para invertir."
 
 #: pages/404.page.tsx
 msgid "We suggest you go back to the Dashboard."
-msgstr ""
+msgstr "Te sugerimos volver al Panel de control."
 
 #: src/components/infoTooltips/LiquidationPenaltyTooltip.tsx
 msgid "When a liquidation occurs, liquidators repay up to 50% of the outstanding borrowed amount on behalf of the borrower. In return, they can buy the collateral at a discount and keep the difference (liquidation penalty) as a bonus."
