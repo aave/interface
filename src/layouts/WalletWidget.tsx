@@ -169,7 +169,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
       </Typography>
 
       <Box component={component} disabled>
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Box
               sx={{
@@ -227,7 +227,11 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
             </Box>
           </Box>
           {mockAddress && (
-            <Alert icon={false} severity="warning" sx={{ mt: '10px' }}>
+            <Alert
+              icon={false}
+              severity="warning"
+              sx={!md ? { mt: '10px' } : { mt: '15px', background: '#301E04', color: '#FFDCA8' }}
+            >
               <Trans>Watch-only mode.</Trans>
             </Alert>
           )}
