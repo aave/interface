@@ -88,14 +88,14 @@ export const TxActionsWrapper = ({
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12, ...sx }} {...rest}>
-      {requiresApproval && (
+      {requiresApproval && !mockAddress && (
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
           <LeftHelperText amount={amount} approvalHash={approvalTxState?.txHash} />
           <RightHelperText approvalHash={approvalTxState?.txHash} />
         </Box>
       )}
 
-      {approvalParams && (
+      {approvalParams && !mockAddress && (
         <Button
           variant="contained"
           disabled={approvalParams.disabled || blocked}
