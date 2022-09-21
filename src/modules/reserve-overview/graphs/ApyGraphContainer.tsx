@@ -118,7 +118,7 @@ export const ApyGraphContainer = ({
       >
         <GraphLegend labels={fields} />
         <GraphTimeRangeSelector
-          loading={loading}
+          disabled={loading || error}
           timeRange={selectedTimeRange}
           handleTimeRangeChanged={setSelectedTimeRange}
         />

@@ -23,7 +23,7 @@ import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { valueToBigNumber } from '@aave/math-utils';
 import { ApyGraphContainer } from './graphs/ApyGraphContainer';
-import { InteresetRateModelGraphContainer } from './graphs/InterestRateModelGraphContainer';
+import { InterestRateModelGraphContainer } from './graphs/InterestRateModelGraphContainer';
 import { PanelRow, PanelTitle, PanelItem } from './ReservePanels';
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { getFrozenProposalLink } from 'src/components/infoTooltips/FrozenTooltip';
@@ -620,7 +620,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                   <Trans>Interest rate strategy</Trans>
                 </Button>
               </Box>
-              <InteresetRateModelGraphContainer reserve={reserve} />
+              <InterestRateModelGraphContainer reserve={reserve} />
             </Box>
           </PanelRow>
         </>

@@ -47,7 +47,7 @@ export const ApyGraph = withTooltip<AreaProps, TooltipData>(
   ({
     width,
     height,
-    margin = { top: 0, right: 10, bottom: 20, left: 40 },
+    margin = { top: 20, right: 10, bottom: 20, left: 40 },
     showTooltip,
     hideTooltip,
     tooltipData,
@@ -159,7 +159,7 @@ export const ApyGraph = withTooltip<AreaProps, TooltipData>(
               tickLabelProps={() => ({
                 fill: theme.palette.text.muted,
                 fontSize: 10,
-                dx: -8,
+                textAnchor: 'middle',
                 dy: 4,
               })}
             />
@@ -194,9 +194,9 @@ export const ApyGraph = withTooltip<AreaProps, TooltipData>(
               <g>
                 <Line
                   from={{ x: tooltipLeft, y: margin.top }}
-                  to={{ x: tooltipLeft, y: innerHeight + margin.top }}
+                  to={{ x: tooltipLeft, y: innerHeight }}
                   stroke={accentColorDark}
-                  strokeWidth={2}
+                  strokeWidth={1}
                   pointerEvents="none"
                   strokeDasharray="5,2"
                 />
@@ -234,7 +234,7 @@ export const ApyGraph = withTooltip<AreaProps, TooltipData>(
           <div>
             <TooltipWithBounds
               top={20}
-              left={tooltipLeft + 12}
+              left={tooltipLeft + 40}
               style={theme.palette.mode === 'light' ? tooltipStyles : tooltipStylesDark}
             >
               <Typography

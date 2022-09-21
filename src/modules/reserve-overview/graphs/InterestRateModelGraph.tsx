@@ -2,7 +2,7 @@ import React, { useMemo, useCallback, Fragment } from 'react';
 import { normalizeBN, RAY, rayDiv, rayMul } from '@aave/math-utils';
 import { Box, Typography, useTheme } from '@mui/material';
 import { Line, Bar, LinePath } from '@visx/shape';
-import { AxisLeft } from '@visx/axis';
+import { AxisBottom, AxisLeft } from '@visx/axis';
 import { curveMonotoneX } from '@visx/curve';
 import { localPoint } from '@visx/event';
 import { GridRows } from '@visx/grid';
@@ -51,6 +51,7 @@ const tooltipValueAccessors = {
   liquidityRate: getSupplyRate,
   stableBorrowRate: getStableBorrowRate,
   variableBorrowRate: getVariableBorrowRate,
+  utilizationRate: () => 38,
 };
 
 const resolution = 200;
@@ -150,7 +151,7 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
   ({
     width,
     height,
-    margin = { top: 20 /** needed for absolute labels on top */, right: 10, bottom: 0, left: 40 },
+    margin = { top: 20, right: 10, bottom: 20, left: 40 },
     showTooltip,
     hideTooltip,
     tooltipData,
@@ -160,6 +161,10 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
   }: AreaProps & WithTooltipProvidedProps<TooltipData>) => {
     if (width < 10) return null;
     const theme = useTheme();
+
+    // Formatting
+    const formattedCurrentUtilizationRate = (parseFloat(reserve.utilizationRate) * 100).toFixed(2);
+    const formattedOptimalUtilizationRate = normalizeBN(reserve.optimalUsageRatio, 25).toNumber();
 
     // Tooltip Styles
     const accentColorDark = theme.palette.mode === 'light' ? '#383D511F' : '#a5a8b647';
@@ -286,6 +291,20 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
               />
             )}
 
+            {/* X Axis */}
+            <AxisBottom
+              top={innerHeight}
+              scale={dateScale}
+              tickValues={[0, 25, 50, 75, 100]}
+              strokeWidth={0}
+              tickStroke={theme.palette.text.secondary}
+              tickLabelProps={() => ({
+                fill: theme.palette.text.muted,
+                fontSize: 10,
+                textAnchor: 'middle',
+              })}
+            />
+
             {/* Y Axis */}
             <AxisLeft
               scale={yValueScale}
@@ -310,12 +329,33 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
               onMouseLeave={() => hideTooltip()}
             />
 
+            {/* Current Utilization Line */}
+            <Line
+              from={{ x: dateScale(ticks[1].value), y: margin.top + 24 }}
+              to={{ x: dateScale(ticks[1].value), y: innerHeight }}
+              stroke="#0062D2"
+              strokeWidth={1}
+              pointerEvents="none"
+              strokeDasharray="5,2"
+            />
+            <Text
+              x={dateScale(ticks[1].value)}
+              y={margin.top + 16}
+              width={360}
+              textAnchor="middle"
+              verticalAnchor="middle"
+              fontSize="10px"
+              fill="#62677B"
+            >
+              {`Current ${formattedCurrentUtilizationRate}%`}
+            </Text>
+
             {/* Optimal Utilization Line */}
             <Line
               from={{ x: dateScale(ticks[0].value), y: margin.top + 8 }}
-              to={{ x: dateScale(ticks[0].value), y: innerHeight + margin.top }}
-              stroke={accentColorDark}
-              strokeWidth={2}
+              to={{ x: dateScale(ticks[0].value), y: innerHeight }}
+              stroke="#0062D2"
+              strokeWidth={1}
               pointerEvents="none"
               strokeDasharray="5,2"
             />
@@ -326,9 +366,9 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
               textAnchor="middle"
               verticalAnchor="middle"
               fontSize="10px"
-              fill="#A5A8B6"
+              fill="#62677B"
             >
-              Optimal
+              {`Optimal ${formattedOptimalUtilizationRate}%`}
             </Text>
 
             {/* Tooltip */}
@@ -337,9 +377,9 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
                 {/* Vertical line */}
                 <Line
                   from={{ x: tooltipLeft, y: margin.top }}
-                  to={{ x: tooltipLeft, y: innerHeight + margin.top }}
+                  to={{ x: tooltipLeft, y: innerHeight }}
                   stroke={accentColorDark}
-                  strokeWidth={2}
+                  strokeWidth={1}
                   pointerEvents="none"
                   strokeDasharray="5,2"
                 />
@@ -420,7 +460,7 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
           <div>
             <TooltipWithBounds
               top={20}
-              left={tooltipLeft + 12}
+              left={tooltipLeft + 40}
               style={theme.palette.mode === 'light' ? tooltipStyles : tooltipStylesDark}
             >
               <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
@@ -444,21 +484,6 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
             </TooltipWithBounds>
           </div>
         )}
-
-        {/* X Axis Label */}
-        <Typography
-          variant="secondary12"
-          color="text.muted"
-          sx={{
-            textAlign: 'center',
-            mt: 4,
-            pt: 4,
-            borderTop: '1px solid #d0d0d0',
-            borderColor: 'divider',
-          }}
-        >
-          <Trans>Utilization Rate</Trans> %
-        </Typography>
       </>
     );
   }

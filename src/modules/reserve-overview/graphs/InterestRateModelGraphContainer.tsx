@@ -8,12 +8,12 @@ type InteresetRateModelGraphContainerProps = {
   reserve: ComputedReserveData;
 };
 
-export type Field = 'liquidityRate' | 'stableBorrowRate' | 'variableBorrowRate';
+export type Field = 'liquidityRate' | 'stableBorrowRate' | 'variableBorrowRate' | 'utilizationRate';
 
 export type Fields = { name: Field; color: string; text: string }[];
 
 // This graph takes in its data via props, thus having no loading/error states
-export const InteresetRateModelGraphContainer = ({
+export const InterestRateModelGraphContainer = ({
   reserve,
 }: InteresetRateModelGraphContainerProps): JSX.Element => {
   const CHART_HEIGHT = 155;
@@ -35,7 +35,7 @@ export const InteresetRateModelGraphContainer = ({
           mb: 4,
         }}
       >
-        <GraphLegend labels={fields} />
+        <GraphLegend labels={[...fields, { text: 'Utilization Rate', color: '#0062D2' }]} />
       </Box>
       <ParentSize>
         {({ width }) => (
