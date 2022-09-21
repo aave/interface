@@ -42,6 +42,8 @@ const testData = {
       assets.avalancheV3Market.DAI,
       // assets.avalancheV3Market.USDT,
       assets.avalancheV3Market.USDC,
+      assets.avalancheV3Market.FRAX,
+      assets.avalancheV3Market.MAI,
     ],
   },
 };
