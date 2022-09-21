@@ -28,7 +28,7 @@ const FORK_ENABLED = global?.window?.localStorage.getItem('forkEnabled') === 'tr
 // specifies which network was forked
 const FORK_BASE_CHAIN_ID = Number(global?.window?.localStorage.getItem('forkBaseChainId') || 1);
 // specifies on which chainId the fork is running
-const FORK_CHAIN_ID = Number(global?.window?.localStorage.getItem('forkChainId') || 3030);
+const FORK_CHAIN_ID = Number(global?.window?.localStorage.getItem('forkNetworkId') || 3030);
 const FORK_RPC_URL = global?.window?.localStorage.getItem('forkRPCUrl') || 'http://127.0.0.1:8545';
 const FORK_WS_RPC_URL =
   global?.window?.localStorage.getItem('forkWsRPCUrl') || 'ws://127.0.0.1:8545';
