@@ -40,8 +40,6 @@ const fetchStats = async (
   }
 };
 
-// TODO: This might end up moving, or refactor how how we handle a given time range
-// and the corresponding parameters that go along with it.
 const resolutionForTimeRange = (timeRange: ReserveRateTimeRange): RatesHistoryParams => {
   switch (timeRange) {
     case '1m':
