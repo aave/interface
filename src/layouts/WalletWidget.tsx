@@ -191,7 +191,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
                     top: '35px',
                     left: '40px',
                     borderRadius: '50%',
-                    background: palette.background.paper,
+                    background: md ? palette.primary.main : palette.background.paper,
                   }}
                 >
                   <ExclamationIcon />
