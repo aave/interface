@@ -20,7 +20,6 @@ const formatDate = (d: Date) => {
   const formatted = timeFormat('%b %d, %H:%M UTC%Z');
   const date = formatted(d);
   const time = date.toString().split('+');
-  // console.log({ time });
   const hours = time[1].split('').slice(0, 2).join('');
   const mins = time[1].split('').slice(2, 4).join('');
   const formattedTime = `${hours}:${mins}`;
