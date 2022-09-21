@@ -1262,6 +1262,10 @@ msgstr "Recipient address"
 msgid "Rejected connection request"
 msgstr "Rejected connection request"
 
+#: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
+msgid "Reload"
+msgstr "Reload"
+
 #: pages/500.page.tsx
 msgid "Reload the page"
 msgstr "Reload the page"
@@ -1408,6 +1412,7 @@ msgid "Since this is a test network, you can get any of the assets if you have E
 msgstr "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
 
 #: pages/500.page.tsx
+#: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 msgid "Something went wrong"
 msgstr "Something went wrong"
 
