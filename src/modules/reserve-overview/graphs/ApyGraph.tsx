@@ -15,15 +15,36 @@ import { FormattedReserveHistoryItem, ReserveRateTimeRange } from 'src/hooks/use
 
 type TooltipData = FormattedReserveHistoryItem;
 
-// util
-const formatDate = (d: Date) => {
-  const formatted = timeFormat('%b %d, %H:%M UTC%Z');
-  const date = formatted(d);
-  const time = date.toString().split('+');
-  const hours = time[1].split('').slice(0, 2).join('');
-  const mins = time[1].split('').slice(2, 4).join('');
-  const formattedTime = `${hours}:${mins}`;
-  return `${time[0]}+${formattedTime}`;
+/**
+ * Formats the given date for the specified time range to display in the tooltip.
+ *
+ * If the provided timeRange is '1m', the date will be formatted as 'MM DD, HH:MM UTC'.
+ * For example, a date of `Wed Sep 21 2022 18:00:00 GMT-0500 (Central Daylight Time)` will be formatted as `Sep 21, 18:00 UTC-05:00`
+ *
+ * If the provided timeRange is '6m' or '1y', the date will be formatted as 'MM DD, YYYY'.
+ * For example, a date of `Wed Sep 21 2022 18:00:00 GMT-0500 (Central Daylight Time)` will be formatted as `Sep 21, 2022`
+ *
+ * @param {Date} d - The date to format
+ * @param {ReserveRateTimeRange} timeRange - The time range of the graph
+ *
+ */
+const formatDate = (d: Date, timeRange: ReserveRateTimeRange) => {
+  console.log('d', d);
+  if (timeRange === '1m') {
+    const formatted = timeFormat('%b %d, %H:%M UTC%Z');
+    const date = formatted(d);
+    const offsetSign = date.toString().split('UTC')[1].split('')[0];
+    const time = date.toString().split(offsetSign);
+    const hours = time[1].split('').slice(0, 2).join('');
+    const mins = time[1].split('').slice(2, 4).join('');
+    const formattedTime = `${hours}:${mins}`;
+    console.log(`${time[0]}${offsetSign}${formattedTime}`);
+    return `${time[0]}${offsetSign}${formattedTime}`;
+  } else {
+    const formatted = timeFormat('%b %d, %Y');
+    console.log(formatted(d));
+    return formatted(d);
+  }
 };
 
 // accessors
@@ -241,7 +262,7 @@ export const ApyGraph = withTooltip<AreaProps, TooltipData>(
                 color="text.secondary"
                 sx={{ mb: 2, mr: 2, fontWeight: 400 }}
               >
-                {formatDate(getDate(tooltipData))}
+                {formatDate(getDate(tooltipData), selectedTimeRange)}
               </Typography>
               {fields.map((field) => (
                 <Box
