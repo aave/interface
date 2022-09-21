@@ -29,7 +29,6 @@ type TooltipData = FormattedReserveHistoryItem;
  *
  */
 const formatDate = (d: Date, timeRange: ReserveRateTimeRange) => {
-  console.log('d', d);
   if (timeRange === '1m') {
     const formatted = timeFormat('%b %d, %H:%M UTC%Z');
     const date = formatted(d);
@@ -42,7 +41,6 @@ const formatDate = (d: Date, timeRange: ReserveRateTimeRange) => {
     return `${time[0]}${offsetSign}${formattedTime}`;
   } else {
     const formatted = timeFormat('%b %d, %Y');
-    console.log(formatted(d));
     return formatted(d);
   }
 };
