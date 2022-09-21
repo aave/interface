@@ -51,6 +51,7 @@ export const ListWrapper = ({
       >
         <Box
           sx={{
+            width: '100%',
             display: 'flex',
             alignItems: { xs: 'flex-start', xsm: 'center' },
             py: '3.6px',

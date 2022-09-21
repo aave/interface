@@ -105,14 +105,9 @@ export default function AssetsList() {
 
   const marketFrozen = !reserves.some((reserve) => !reserve.isFrozen);
 
-  const [showSearchBar, setShowSearchBar] = useState(false);
   return (
     <ListWrapper
-      title={
-        <Box sx={{ width: '100%' }}>
-          <AssetListTitle marketTitle={currentMarketData.marketTitle} />
-        </Box>
-      }
+      title={<AssetListTitle marketTitle={currentMarketData.marketTitle} />}
       captionSize="h2"
     >
       {marketFrozen && currentNetworkConfig.name === 'Harmony' && (

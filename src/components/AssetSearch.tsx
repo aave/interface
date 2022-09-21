@@ -16,7 +16,7 @@ export const AssetSearch = ({ searchTerm, onSearchTermChange }: AssetSearchProps
   };
 
   return (
-    <Box>
+    <Box sx={{ display: 'flex', alignItems: 'center', border: '1px solid black' }}>
       <SvgIcon>
         <SearchIcon />
       </SvgIcon>
