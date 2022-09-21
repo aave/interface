@@ -35,6 +35,7 @@ export const SYMBOL_MAP: { [key: string]: string } = {
   'AAVE.e': 'AAVE',
   'USDT.e': 'USDT',
   'USDC.e': 'USDC',
+  'BTC.b': 'BTC',
   // polygon
   miMATIC: 'MAI',
 };
@@ -44,16 +45,7 @@ export const SYMBOL_MAP: { [key: string]: string } = {
  * With the next version of uipooldataprovider https://github.com/aave/aave-v3-periphery/pull/89 this list can be greatly reduced/removed.
  */
 export const SYMBOL_NAME_MAP: { [key: string]: string } = {
-  AMPL: 'Ampleforth',
   AVAX: 'Avalanche',
-  BAL: 'Balancer',
-  BAT: 'Basic Attention Token',
-  BUSD: 'Binance USD',
-  CRV: 'Curve DAO Token',
-  CVX: 'Convex Token',
-  DPI: 'DeFi Pulse Index',
-  ENJ: 'EnjinCoin',
-  ENS: 'Ethereum Name Service',
   ETH: 'Ethereum',
   EUROS: 'STASIS EURO',
   FAI: 'Fei USD',
@@ -74,8 +66,6 @@ export const SYMBOL_NAME_MAP: { [key: string]: string } = {
   UNI: 'Uniswap',
   UNIDAIWETH: 'UNI DAI/WETH',
   UNIWBTCUSDC: 'UNI WBTC/USDC',
-  USDC: 'USD Coin',
-  USDP: 'Pax Dollar',
   USDT: 'Tether',
   WAVAX: 'Wrapped Avalanche',
   WBTC: 'Wrapped BTC',
@@ -92,9 +82,11 @@ export const SYMBOL_NAME_MAP: { [key: string]: string } = {
 export function fetchIconSymbolAndName({
   underlyingAsset,
   symbol,
+  name,
 }: {
   underlyingAsset: string;
   symbol: string;
+  name?: string;
 }) {
   // guni symbols are just broken (G-UNI for all tokens)
   if (
@@ -116,7 +108,7 @@ export function fetchIconSymbolAndName({
   const unifiedSymbol = SYMBOL_MAP[symbol] || symbol;
   return {
     iconSymbol: unifiedSymbol,
-    name: SYMBOL_NAME_MAP[unifiedSymbol.toUpperCase()] || unifiedSymbol,
+    name: SYMBOL_NAME_MAP[unifiedSymbol.toUpperCase()] || name || unifiedSymbol,
     symbol,
   };
 }
