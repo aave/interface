@@ -147,7 +147,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
   if (currentAccount) {
     if (hideWalletAccountText) {
       buttonContent = <Box sx={{ margin: '1px 0' }}>{accountAvatar}</Box>;
-    } else {
+    } else if (!md) {
       buttonContent = <>{ensNameAbbreviated ?? textCenterEllipsis(currentAccount, 4, 4)}</>;
     }
   } else {
@@ -372,7 +372,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
             sx={{
               width: '100%',
               background: '#383D51',
-              color: '#F1F1F3'
+              color: '#F1F1F3',
             }}
             size="medium"
             onClick={handleDisconnect}
@@ -400,13 +400,17 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           aria-haspopup="true"
           onClick={handleClick}
           sx={{
-            p: connected || mockAddress ? '5px 8px' : undefined,
-            minWidth: hideWalletAccountText ? 'unset' : undefined,
+            p: connected || mockAddress ? (md ? '6px 2px 6px 10px' : '5px 8px') : undefined,
+            minWidth: md ? '0px' : hideWalletAccountText ? 'unset' : undefined,
+            '& .MuiButton-startIcon': {
+              mr: md ? '4px' : '8px',
+            },
           }}
           startIcon={(connected || mockAddress) && !hideWalletAccountText && accountAvatar}
           endIcon={
             (connected || mockAddress) &&
-            !hideWalletAccountText && (
+            !hideWalletAccountText &&
+            !md && (
               <SvgIcon
                 sx={{
                   display: { xs: 'none', md: 'block' },
