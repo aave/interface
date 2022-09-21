@@ -105,7 +105,7 @@ NEXT_PUBLIC_ENABLE_STAKING=true
 
 You can run the UI locally against a forked chain network, similar to what the tests do with Tenderly. This will allow you to build and interact with the UI without spending actual funds. This is very useful for testing many protocol scenarios.
 
-First, you’ll need to create a fork. This can be done with a few different tools. We have set up a repo to help out with this [here](https://github.com/aave/tenderly-fork).
+First, you’ll need to create a fork of a network, which can be done with a few different tools. We suggest using the one created by Bored Ghost Labs, where you can follow the steps and get set up [here](https://github.com/bgd-labs/aave-tenderly-cli).
 
 Second, you’ll need to tell the local application which fork to run against. The easiest way to do this is to copy/paste the following statements. With the application running locally, open up the console in the browser and copy/paste the following with the appropriate values.
 
