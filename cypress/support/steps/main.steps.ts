@@ -431,6 +431,7 @@ export const swap = (
     });
     it(`Make approve for ${isMaxAmount ? 'MAX' : amount} amount`, () => {
       cy.setAmount(amount, isMaxAmount);
+      cy.wait(2000);
       cy.doConfirm(hasApproval, _actionName);
     });
     doCloseModal();

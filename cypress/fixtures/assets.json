@@ -881,6 +881,18 @@
       "shortName": "aWETH.e",
       "collateral": true,
       "wrapped": false
+    },
+    "MAI": {
+      "fullName": "MAI",
+      "shortName": "MAI",
+      "collateral": true,
+      "wrapped": false
+    },
+    "FRAX": {
+      "fullName": "FRAX",
+      "shortName": "FRAX",
+      "collateral": true,
+      "wrapped": false
     }
   }
 }
