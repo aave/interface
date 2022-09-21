@@ -19,8 +19,6 @@ import { Trans } from '@lingui/macro';
 type TooltipData = Rate;
 
 type InterestRateModelType = {
-  reserveFactor: string;
-  supplyAPR: string;
   variableRateSlope1: string;
   variableRateSlope2: string;
   stableRateSlope1: string;
@@ -36,19 +34,14 @@ type Rate = {
   stableRate: number;
   variableRate: number;
   utilization: number;
-  supplyRate: number;
 };
 
 // accessors
 const getDate = (d: Rate) => d.utilization;
 const bisectDate = bisector<Rate, number>((d) => d.utilization).center;
-const getSupplyRate = (d: Rate) => {
-  return d.supplyRate ?? 0 * 100;
-};
 const getVariableBorrowRate = (d: Rate) => d.variableRate * 100;
 const getStableBorrowRate = (d: Rate) => d.stableRate * 100;
 const tooltipValueAccessors = {
-  liquidityRate: getSupplyRate,
   stableBorrowRate: getStableBorrowRate,
   variableBorrowRate: getVariableBorrowRate,
   utilizationRate: () => 38,
@@ -63,8 +56,6 @@ const step = 100 / resolution;
 //   );
 
 function getRates({
-  supplyAPR,
-  reserveFactor,
   variableRateSlope1,
   variableRateSlope2,
   stableRateSlope1,
@@ -81,7 +72,6 @@ function getRates({
     // When zero
     if (utilization === 0) {
       rates.push({
-        supplyRate: 0,
         stableRate: 0,
         variableRate: 0,
         utilization,
@@ -102,7 +92,6 @@ function getRates({
         27
       ).toNumber();
       rates.push({
-        supplyRate: parseFloat(supplyAPR),
         stableRate: theoreticalStableAPY,
         variableRate: theoreticalVariableAPY,
         utilization,
@@ -126,10 +115,7 @@ function getRates({
           .plus(rayMul(variableRateSlope2, excess)),
         27
       ).toNumber();
-      // Calculate the supply APR based off of the hypothetical variable borrow rate
-      const theoreticalSupplyAPR = theoreticalVariableAPY * 100 - parseFloat(reserveFactor);
       rates.push({
-        supplyRate: theoreticalSupplyAPR,
         stableRate: theoreticalStableAPY,
         variableRate: theoreticalVariableAPY,
         utilization,
@@ -257,16 +243,6 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
               stroke={theme.palette.divider}
               pointerEvents="none"
               numTicks={3}
-            />
-
-            {/* Supply APR Line */}
-            <LinePath
-              stroke="#2EBAC6"
-              strokeWidth={2}
-              data={data}
-              x={(d) => dateScale(getDate(d)) ?? 0}
-              y={(d) => yValueScale(getSupplyRate(d)) ?? 0}
-              curve={curveMonotoneX}
             />
 
             {/* Variable Borrow APR Line */}
@@ -398,27 +374,6 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
                 <circle
                   cx={tooltipLeft}
                   cy={yValueScale(getVariableBorrowRate(tooltipData))}
-                  r={4}
-                  fill={accentColorDark}
-                  stroke="white"
-                  strokeWidth={2}
-                  pointerEvents="none"
-                />
-                {/* Supply rate circle */}
-                <circle
-                  cx={tooltipLeft}
-                  cy={yValueScale(getSupplyRate(tooltipData)) + 1}
-                  r={4}
-                  fill="black"
-                  fillOpacity={0.1}
-                  stroke="black"
-                  strokeOpacity={0.1}
-                  strokeWidth={2}
-                  pointerEvents="none"
-                />
-                <circle
-                  cx={tooltipLeft}
-                  cy={yValueScale(getSupplyRate(tooltipData))}
                   r={4}
                   fill={accentColorDark}
                   stroke="white"
