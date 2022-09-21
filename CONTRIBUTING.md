@@ -109,7 +109,7 @@ First, you’ll need to create a fork of a network, which can be done with a few
 
 Second, you’ll need to tell the local application which fork to run against. The easiest way to do this is to copy/paste the following statements. With the application running locally, open up the console in the browser and copy/paste the following with the appropriate values.
 
-```jsx
+```js
 localStorage.setItem('forkEnabled', 'true');
 localStorage.setItem('forkBaseChainId', <chainId>); // the ID for the chain you are forking, in numeric format
 localStorage.setItem('forkNetworkId', '3030'); // the ID of the new forked network
