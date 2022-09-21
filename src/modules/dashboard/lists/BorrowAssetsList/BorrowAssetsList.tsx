@@ -25,6 +25,7 @@ import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYToolt
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { Warning } from 'src/components/primitives/Warning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
+import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 
 export const BorrowAssetsList = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
@@ -116,28 +117,25 @@ export const BorrowAssetsList = () => {
       noData={borrowDisabled}
       subChildrenComponent={
         <Box sx={{ px: 6, mb: 4 }}>
-          {borrowDisabled && currentNetworkConfig.name === 'Harmony' ? (
-            <Warning severity="warning">
+          {borrowDisabled && currentNetworkConfig.name === 'Harmony' && (
+            <MarketWarning marketName="Harmony" />
+          )}
+
+          {borrowDisabled && currentNetworkConfig.name === 'Fantom' && (
+            <MarketWarning marketName="Fantom" />
+          )}
+
+          {+collateralUsagePercent >= 0.98 && (
+            <Warning severity="error">
               <Trans>
-                Per the community, borrowing in this market is currently disabled.{' '}
-                <Link
-                  href="https://governance.aave.com/t/harmony-horizon-bridge-exploit-consequences-to-aave-v3-harmony/8614"
-                  target="_blank"
-                >
-                  Learn More
-                </Link>
+                Be careful - You are very close to liquidation. Consider depositing more collateral
+                or paying down some of your borrowed positions
               </Trans>
             </Warning>
-          ) : (
+          )}
+
+          {!borrowDisabled && (
             <>
-              {+collateralUsagePercent >= 0.98 && (
-                <Warning severity="error">
-                  <Trans>
-                    Be careful - You are very close to liquidation. Consider depositing more
-                    collateral or paying down some of your borrowed positions
-                  </Trans>
-                </Warning>
-              )}
               {user?.isInIsolationMode && (
                 <Warning severity="warning">
                   <Trans>Borrowing power and assets are limited due to Isolation mode. </Trans>

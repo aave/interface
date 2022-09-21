@@ -16,7 +16,6 @@ import { MaxLTVTooltip } from 'src/components/infoTooltips/MaxLTVTooltip';
 import { LiquidationThresholdTooltip } from 'src/components/infoTooltips/LiquidationThresholdTooltip';
 import { LiquidationPenaltyTooltip } from 'src/components/infoTooltips/LiquidationPenaltyTooltip';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
-import { CustomMarket, frozenProposalMap } from 'src/utils/marketsAndNetworksConfig';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { DebtCeilingStatus } from 'src/components/caps/DebtCeilingStatus';
 import { ReserveFactorOverview } from 'src/modules/reserve-overview/ReserveFactorOverview';
@@ -27,6 +26,7 @@ import { ApyGraphContainer } from './graphs/ApyGraphContainer';
 import { InteresetRateModelGraphContainer } from './graphs/InterestRateModelGraphContainer';
 import { PanelRow, PanelTitle, PanelItem } from './ReservePanels';
 import { ExternalLinkIcon } from '@heroicons/react/solid';
+import { getFrozenProposalLink } from 'src/components/infoTooltips/FrozenTooltip';
 
 type ReserveConfigurationProps = {
   reserve: ComputedReserveData;
@@ -56,35 +56,13 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
         </Typography>
       </Box>
 
-      {reserve.symbol === 'WETH' && currentMarket === CustomMarket.proto_mainnet && (
-        <Box sx={{ mb: 10 }}>
-          <Alert severity="warning">
-            <Trans>
-              As per the community vote, ETH borrowing on the Ethereum Market has been paused ahead
-              of the merge to mitigate liquidity risk.{' '}
-              <Link
-                href="https://snapshot.org/#/aave.eth/proposal/0xa121311c67b7a5bbe5b8b5fe1911663a0ab94ed339a6a4b0e1b9443f670a0e97"
-                underline="always"
-              >
-                <Trans>Learn more</Trans>
-              </Link>
-              {'.'}
-            </Trans>
-          </Alert>
-        </Box>
-      )}
-
       {reserve.isFrozen && (
         <Box>
           <Alert sx={{ mt: '16px', mb: '40px' }} severity="error">
             <Trans>
-              {reserve.symbol} is frozen due to an Aave community decision.{' '}
+              This asset is frozen due to an Aave community decision.{' '}
               <Link
-                href={
-                  frozenProposalMap[reserve.symbol]
-                    ? frozenProposalMap[reserve.symbol]
-                    : 'https://app.aave.com/governance'
-                }
+                href={getFrozenProposalLink(reserve.symbol, currentMarket)}
                 sx={{ textDecoration: 'underline' }}
               >
                 <Trans>More details</Trans>

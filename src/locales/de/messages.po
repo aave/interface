@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-09-07 12:06\n"
+"PO-Revision-Date: 2022-09-20 00:24\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -20,6 +20,10 @@ msgstr ""
 
 #: src/components/infoTooltips/AMPLWarning.tsx
 msgid "<0>Ampleforth</0> is an asset affected by rebasing. Visit the <1>documentation</1> or <2>Ampleforth's FAQ</2> to learn more."
+msgstr ""
+
+#: src/components/transactions/Borrow/BorrowModalContent.tsx
+msgid "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
 msgstr ""
 
 #: src/modules/staking/StakingHeader.tsx
@@ -176,11 +180,6 @@ msgstr ""
 msgid "Array parameters that should be equal length are not"
 msgstr ""
 
-#: src/components/transactions/Warnings/ETHBorrowWarning.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "As per the community vote, ETH borrowing on the Ethereum Market has been paused ahead of the merge to mitigate liquidity risk. <0>Learn more</0>."
-msgstr ""
-
 #: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/markets/AssetsList.tsx
 msgid "Asset"
@@ -258,6 +257,10 @@ msgstr ""
 #: src/components/caps/CapsHint.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Available to supply"
+msgstr ""
+
+#: pages/404.page.tsx
+msgid "Back to Dashboard"
 msgstr ""
 
 #: src/components/transactions/AssetInput.tsx
@@ -503,6 +506,10 @@ msgstr ""
 msgid "Copy address"
 msgstr ""
 
+#: pages/500.page.tsx
+msgid "Copy error message"
+msgstr ""
+
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Copy error text"
 msgstr ""
@@ -537,10 +544,6 @@ msgstr ""
 msgid "Debt"
 msgstr ""
 
-#: src/components/caps/DebtCeilingStatus.tsx
-msgid "Debt Ceiling"
-msgstr ""
-
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Debt amount to repay"
 msgstr ""
@@ -554,7 +557,7 @@ msgid "Debt ceiling is not zero"
 msgstr ""
 
 #: src/components/caps/DebtCeilingStatus.tsx
-msgid "Debt ceiling limits the amount possible to borrow against this asset by protocol users."
+msgid "Debt limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
 msgstr ""
 
 #: src/components/infoModalContents/RetryWithApprovalInfoContent.tsx
@@ -626,13 +629,17 @@ msgstr ""
 msgid "Discord"
 msgstr ""
 
+#: pages/500.page.tsx
+msgid "Discord channel"
+msgstr ""
+
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Due to a precision bug in the stETH contract, this asset can not be used in flashloan transactions"
 msgstr ""
 
-#: src/components/transactions/Warnings/HarmonyWarning.tsx
-msgid "Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Aave V3 Harmony market. <0>{0}</0>"
+#: src/components/transactions/Warnings/MarketWarning.tsx
+msgid "Due to the Horizon bridge exploit, certain assets on the Harmony network are not at parity with Ethereum, which affects the Aave V3 Harmony market."
 msgstr ""
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
@@ -819,6 +826,10 @@ msgstr ""
 msgid "I understand how cooldown ({0}) and unstaking ({1}) work"
 msgstr ""
 
+#: pages/500.page.tsx
+msgid "If the error continues to happen,<0/> you may report it to this"
+msgstr ""
+
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "If the health factor goes below 1, the liquidation of your collateral might be triggered."
 msgstr ""
@@ -879,8 +890,16 @@ msgstr ""
 msgid "Isolated"
 msgstr ""
 
+#: src/components/caps/DebtCeilingStatus.tsx
+msgid "Isolated Debt Ceiling"
+msgstr ""
+
 #: src/components/isolationMode/IsolatedTooltip.tsx
 msgid "Isolated assets have limited borrowing power and other assets cannot be used as collateral."
+msgstr ""
+
+#: src/components/transactions/Warnings/MarketWarning.tsx
+msgid "Join the community discussion"
 msgstr ""
 
 #: src/layouts/components/LanguageSwitcher.tsx
@@ -894,6 +913,7 @@ msgstr ""
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/Warnings/BorrowCapWarning.tsx
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
+#: src/components/transactions/Warnings/MarketWarning.tsx
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
@@ -1122,6 +1142,10 @@ msgstr ""
 msgid "Overview"
 msgstr ""
 
+#: pages/404.page.tsx
+msgid "Page not found"
+msgstr ""
+
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Participating in this {symbol} reserve gives annualized rewards."
 msgstr ""
@@ -1131,12 +1155,8 @@ msgstr ""
 msgid "Pending..."
 msgstr ""
 
-#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
-msgid "Per the community, borrowing in this market is currently disabled. <0>Learn More</0>"
-msgstr ""
-
-#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
-msgid "Per the community, supplying in this market is currently disabled. <0>Learn More</0>"
+#: src/components/transactions/Warnings/MarketWarning.tsx
+msgid "Per the community, the Fantom market has been frozen."
 msgstr ""
 
 #: src/modules/reserve-overview/ReserveActions.tsx
@@ -1233,6 +1253,10 @@ msgstr ""
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Rejected connection request"
+msgstr ""
+
+#: pages/500.page.tsx
+msgid "Reload the page"
 msgstr ""
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
@@ -1374,6 +1398,18 @@ msgstr ""
 
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
+msgstr ""
+
+#: pages/500.page.tsx
+msgid "Something went wrong"
+msgstr ""
+
+#: pages/500.page.tsx
+msgid "Sorry, an unexpected error happened. In the meantime you may try reloading the page, or come back later."
+msgstr ""
+
+#: pages/404.page.tsx
+msgid "Sorry, we couldn't find the page you were looking for."
 msgstr ""
 
 #: src/layouts/components/LanguageSwitcher.tsx
@@ -1675,6 +1711,14 @@ msgstr ""
 msgid "This asset has reached its supply cap. Nothing is available to be supplied from this market."
 msgstr ""
 
+#: src/components/infoTooltips/FrozenTooltip.tsx
+msgid "This asset is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
+msgstr ""
+
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "This asset is frozen due to an Aave community decision. <0>More details</0>"
+msgstr ""
+
 #: src/components/infoTooltips/GasTooltip.tsx
 msgid "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
 msgstr ""
@@ -1919,6 +1963,10 @@ msgstr ""
 
 #: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake."
+msgstr ""
+
+#: pages/404.page.tsx
+msgid "We suggest you go back to the Dashboard."
 msgstr ""
 
 #: src/components/infoTooltips/LiquidationPenaltyTooltip.tsx
@@ -2184,10 +2232,6 @@ msgstr ""
 msgid "{0} Faucet"
 msgstr ""
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "{0} is frozen due to an Aave community decision. <0>More details</0>"
-msgstr ""
-
 #: src/modules/staking/StakingPanel.tsx
 msgid "{d}d"
 msgstr ""
@@ -2203,10 +2247,6 @@ msgstr ""
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "{networkName} Faucet"
-msgstr ""
-
-#: src/components/infoTooltips/FrozenWarning.tsx
-msgid "{symbol} is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
 msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx

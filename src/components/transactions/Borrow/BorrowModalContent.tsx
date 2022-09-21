@@ -12,6 +12,7 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
+import { Warning } from 'src/components/primitives/Warning';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
@@ -306,6 +307,14 @@ export const BorrowModalContent = ({
           </Box>
         </>
       )}
+
+      <Warning sx={{ my: '24px' }}>
+        <Trans>
+          <b>Attention:</b> Parameter changes via governance can alter your account health factor
+          and risk of liquidation. Follow the{' '}
+          <a href="https://governance.aave.com/">Aave governance forum</a> for updates.
+        </Trans>
+      </Warning>
 
       <BorrowActions
         poolReserve={poolReserve}
