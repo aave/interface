@@ -5,6 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import * as React from 'react';
 import { EmodeCategory } from 'src/helpers/types';
+
 import { getEmodeMessage } from './EmodeNaming';
 
 export type EmodeSelectProps = {

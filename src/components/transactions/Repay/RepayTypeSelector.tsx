@@ -1,5 +1,5 @@
-import { Box, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import { Trans } from '@lingui/macro';
+import { Box, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 export enum RepayType {

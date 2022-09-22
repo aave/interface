@@ -75887,7 +75887,7 @@ var _a4;
 var FORK_CHAIN_ID = Number(
   ((_a4 = global == null ? void 0 : global.window) == null
     ? void 0
-    : _a4.localStorage.getItem('forkChainId')) || 3030
+    : _a4.localStorage.getItem('forkNetworkId')) || 3030
 );
 var _a5;
 var FORK_RPC_URL =
@@ -76361,7 +76361,7 @@ var import_path3 = require('path');
 // src/modules/governance/utils/formatProposal.ts
 var import_contract_helpers6 = __toESM(require_cjs());
 var import_bignumber = __toESM(require_bignumber2());
-var averageBlockTime = 14;
+var averageBlockTime = 12;
 function enhanceProposalWithTimes(proposal) {
   return __async(this, null, function* () {
     const provider = getProvider(import_contract_helpers6.ChainId.mainnet);

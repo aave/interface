@@ -17,6 +17,8 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
+import LightningBoltGradient from '/public/lightningBoltGradient.svg';
+
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -26,7 +28,6 @@ import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { EmodeActions } from './EmodeActions';
 import { getEmodeMessage } from './EmodeNaming';
 import { EmodeSelect } from './EmodeSelect';
-import LightningBoltGradient from '/public/lightningBoltGradient.svg';
 
 export enum ErrorType {
   EMODE_DISABLED_LIQUIDATION,
