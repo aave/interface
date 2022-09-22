@@ -66,7 +66,7 @@ export const ApyGraphContainer = ({
 
   const fields = graphKey === 'supply' ? supplyFields : borrowFields;
 
-  const GraphLoading = () => (
+  const graphLoading = (
     <Box
       sx={{
         height: CHART_HEIGHT + CHART_HEIGHT_LOADING_FIX,
@@ -84,7 +84,7 @@ export const ApyGraphContainer = ({
     </Box>
   );
 
-  const GraphError = () => (
+  const graphError = (
     <Box
       sx={{
         height: CHART_HEIGHT + CHART_HEIGHT_LOADING_FIX,
@@ -124,8 +124,8 @@ export const ApyGraphContainer = ({
           handleTimeRangeChanged={setSelectedTimeRange}
         />
       </Box>
-      {loading && <GraphLoading />}
-      {error && <GraphError />}
+      {loading && graphLoading}
+      {error && graphError}
       {!loading && !error && data.length > 0 && (
         <ParentSize>
           {({ width }) => (
