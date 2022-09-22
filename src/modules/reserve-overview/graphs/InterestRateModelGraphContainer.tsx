@@ -8,7 +8,7 @@ type InteresetRateModelGraphContainerProps = {
   reserve: ComputedReserveData;
 };
 
-export type Field = 'liquidityRate' | 'stableBorrowRate' | 'variableBorrowRate' | 'utilizationRate';
+export type Field = 'stableBorrowRate' | 'variableBorrowRate' | 'utilizationRate';
 
 export type Fields = { name: Field; color: string; text: string }[];
 
@@ -18,7 +18,6 @@ export const InterestRateModelGraphContainer = ({
 }: InteresetRateModelGraphContainerProps): JSX.Element => {
   const CHART_HEIGHT = 155;
   const fields: Fields = [
-    { name: 'liquidityRate', text: 'Supply APR', color: '#2EBAC6' },
     { name: 'variableBorrowRate', text: 'Borrow APR, variable', color: '#B6509E' },
     ...(reserve.stableBorrowRateEnabled
       ? ([{ name: 'stableBorrowRate', text: 'Borrow APR, stable', color: '#E7C6DF' }] as const)
@@ -44,8 +43,6 @@ export const InterestRateModelGraphContainer = ({
             height={CHART_HEIGHT}
             fields={fields}
             reserve={{
-              reserveFactor: reserve.reserveFactor,
-              supplyAPR: reserve.supplyAPR,
               baseStableBorrowRate: reserve.baseStableBorrowRate,
               baseVariableBorrowRate: reserve.baseVariableBorrowRate,
               optimalUsageRatio: reserve.optimalUsageRatio,
