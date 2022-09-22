@@ -1,20 +1,21 @@
-import React, { useMemo, useCallback, Fragment } from 'react';
 import { normalizeBN, RAY, rayDiv, rayMul } from '@aave/math-utils';
+import { Trans } from '@lingui/macro';
 import { Box, Typography, useTheme } from '@mui/material';
-import { Line, Bar, LinePath } from '@visx/shape';
 import { AxisBottom, AxisLeft } from '@visx/axis';
 import { curveMonotoneX } from '@visx/curve';
 import { localPoint } from '@visx/event';
 import { GridRows } from '@visx/grid';
 import { Group } from '@visx/group';
 import { scaleLinear } from '@visx/scale';
+import { Bar, Line, LinePath } from '@visx/shape';
 import { Text } from '@visx/text';
-import { withTooltip, defaultStyles, TooltipWithBounds } from '@visx/tooltip';
+import { defaultStyles, TooltipWithBounds, withTooltip } from '@visx/tooltip';
 import { WithTooltipProvidedProps } from '@visx/tooltip/lib/enhancers/withTooltip';
 import { BigNumber } from 'bignumber.js';
-import { max, bisector } from 'd3-array';
+import { bisector, max } from 'd3-array';
+import React, { Fragment, useCallback, useMemo } from 'react';
+
 import type { Fields } from './InterestRateModelGraphContainer';
-import { Trans } from '@lingui/macro';
 
 type TooltipData = Rate;
 

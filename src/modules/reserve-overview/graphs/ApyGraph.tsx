@@ -1,16 +1,16 @@
-import React, { useMemo, useCallback, Fragment } from 'react';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { Line, Bar, LinePath } from '@visx/shape';
-import { AxisLeft, AxisBottom } from '@visx/axis';
+import { AxisBottom, AxisLeft } from '@visx/axis';
 import { curveMonotoneX } from '@visx/curve';
 import { localPoint } from '@visx/event';
-import { Group } from '@visx/group';
 import { GridRows } from '@visx/grid';
-import { scaleTime, scaleLinear } from '@visx/scale';
-import { withTooltip, defaultStyles, TooltipWithBounds } from '@visx/tooltip';
+import { Group } from '@visx/group';
+import { scaleLinear, scaleTime } from '@visx/scale';
+import { Bar, Line, LinePath } from '@visx/shape';
+import { defaultStyles, TooltipWithBounds, withTooltip } from '@visx/tooltip';
 import { WithTooltipProvidedProps } from '@visx/tooltip/lib/enhancers/withTooltip';
-import { max, extent, bisector } from 'd3-array';
+import { bisector, extent, max } from 'd3-array';
 import { timeFormat } from 'd3-time-format';
+import React, { Fragment, useCallback, useMemo } from 'react';
 import { FormattedReserveHistoryItem, ReserveRateTimeRange } from 'src/hooks/useReservesHistory';
 
 type TooltipData = FormattedReserveHistoryItem;

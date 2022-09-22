@@ -1,6 +1,7 @@
 import { Box } from '@mui/material';
 import { ParentSize } from '@visx/responsive';
 import type { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+
 import { GraphLegend } from './GraphLegend';
 import { InterestRateModelGraph } from './InterestRateModelGraph';
 

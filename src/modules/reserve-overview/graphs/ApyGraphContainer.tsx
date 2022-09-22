@@ -1,9 +1,10 @@
-import { useState } from 'react';
 import { Trans } from '@lingui/macro';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import { ParentSize } from '@visx/responsive';
+import { useState } from 'react';
 import type { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ReserveRateTimeRange, useReserveRatesHistory } from 'src/hooks/useReservesHistory';
+
 import { ApyGraph } from './ApyGraph';
 import { GraphLegend } from './GraphLegend';
 import { GraphTimeRangeSelector } from './GraphTimeRangeSelector';

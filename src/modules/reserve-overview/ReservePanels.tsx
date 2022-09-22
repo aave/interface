@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react';
 import { Box, BoxProps, Typography, TypographyProps, useMediaQuery, useTheme } from '@mui/material';
+import type { ReactNode } from 'react';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
   <Box
@@ -22,9 +22,10 @@ export const PanelTitle: React.FC<TypographyProps> = (props) => (
 
 interface PanelItemProps {
   title: ReactNode;
+  className?: string;
 }
 
-export const PanelItem: React.FC<PanelItemProps> = ({ title, children }) => {
+export const PanelItem: React.FC<PanelItemProps> = ({ title, children, className }) => {
   const theme = useTheme();
   const mdUp = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -38,7 +39,7 @@ export const PanelItem: React.FC<PanelItemProps> = ({ title, children }) => {
         },
         ...(mdUp
           ? {
-              '&:not(:last-child)::after': {
+              '&:not(:last-child):not(.borderless)::after': {
                 content: '""',
                 height: '32px',
                 position: 'absolute',
@@ -49,6 +50,7 @@ export const PanelItem: React.FC<PanelItemProps> = ({ title, children }) => {
             }
           : {}),
       }}
+      className={className}
     >
       <Typography color="text.secondary" component="span">
         {title}

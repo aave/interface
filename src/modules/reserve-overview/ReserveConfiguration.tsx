@@ -1,32 +1,34 @@
+import { valueToBigNumber } from '@aave/math-utils';
+import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { Alert, Box, Button, Divider, SvgIcon, Typography } from '@mui/material';
 import Paper from '@mui/material/Paper';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
-import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
-import { IncentivesButton } from 'src/components/incentives/IncentivesButton';
-import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
-import { getEmodeMessage } from 'src/components/transactions/Emode/EmodeNaming';
-import LightningBoltGradient from '/public/lightningBoltGradient.svg';
-import { Link, ROUTES } from 'src/components/primitives/Link';
-import { MaxLTVTooltip } from 'src/components/infoTooltips/MaxLTVTooltip';
-import { LiquidationThresholdTooltip } from 'src/components/infoTooltips/LiquidationThresholdTooltip';
-import { LiquidationPenaltyTooltip } from 'src/components/infoTooltips/LiquidationPenaltyTooltip';
-import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { DebtCeilingStatus } from 'src/components/caps/DebtCeilingStatus';
-import { ReserveFactorOverview } from 'src/modules/reserve-overview/ReserveFactorOverview';
-import { useAssetCaps } from 'src/hooks/useAssetCaps';
+import { IncentivesButton } from 'src/components/incentives/IncentivesButton';
+import { getFrozenProposalLink } from 'src/components/infoTooltips/FrozenTooltip';
+import { LiquidationPenaltyTooltip } from 'src/components/infoTooltips/LiquidationPenaltyTooltip';
+import { LiquidationThresholdTooltip } from 'src/components/infoTooltips/LiquidationThresholdTooltip';
+import { MaxLTVTooltip } from 'src/components/infoTooltips/MaxLTVTooltip';
+import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
+import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Link, ROUTES } from 'src/components/primitives/Link';
+import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
+import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
-import { valueToBigNumber } from '@aave/math-utils';
+import { getEmodeMessage } from 'src/components/transactions/Emode/EmodeNaming';
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { ReserveFactorOverview } from 'src/modules/reserve-overview/ReserveFactorOverview';
+
+import LightningBoltGradient from '/public/lightningBoltGradient.svg';
+
 import { ApyGraphContainer } from './graphs/ApyGraphContainer';
 import { InterestRateModelGraphContainer } from './graphs/InterestRateModelGraphContainer';
-import { PanelRow, PanelTitle, PanelItem } from './ReservePanels';
-import { ExternalLinkIcon } from '@heroicons/react/solid';
-import { getFrozenProposalLink } from 'src/components/infoTooltips/FrozenTooltip';
+import { PanelItem, PanelRow, PanelTitle } from './ReservePanels';
 
 type ReserveConfigurationProps = {
   reserve: ComputedReserveData;
@@ -595,7 +597,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                   justifyContent: 'space-between',
                 }}
               >
-                <PanelItem title={<Trans>Utilization Rate</Trans>}>
+                <PanelItem title={<Trans>Utilization Rate</Trans>} className="borderless">
                   <FormattedNumber
                     value={reserve.borrowUsageRatio}
                     percent
