@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { usePermissions } from 'src/hooks/usePermissions';
+
 import { ConnectWalletPaper } from '../src/components/ConnectWalletPaper';
 import { ContentContainer } from '../src/components/ContentContainer';
 import { MainLayout } from '../src/layouts/MainLayout';

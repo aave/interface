@@ -1,5 +1,5 @@
 import { canBeEnsAddress } from '@aave/contract-helpers';
-import { Trans, t } from '@lingui/macro';
+import { t, Trans } from '@lingui/macro';
 import { FormControl, TextField, Typography } from '@mui/material';
 import { utils } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
@@ -18,7 +18,7 @@ import { TxSuccessView } from '../FlowCommons/Success';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { GasStation } from '../GasStation/GasStation';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
-import { DelegationTokenSelector, DelegationToken } from './DelegationTokenSelector';
+import { DelegationToken, DelegationTokenSelector } from './DelegationTokenSelector';
 import { DelegationTypeSelector } from './DelegationTypeSelector';
 import { GovDelegationActions } from './GovDelegationActions';
 
