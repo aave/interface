@@ -1,8 +1,8 @@
-import { Box, Typography } from '@mui/material';
 import { Trans } from '@lingui/macro';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
+import { Box, Typography } from '@mui/material';
 import StyledToggleButton from 'src/components/StyledToggleButton';
+import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 export enum RepayType {
   BALANCE,
