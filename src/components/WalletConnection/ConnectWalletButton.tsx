@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
 import { useWalletModalContext } from 'src/hooks/useWalletModal';
+
 import { WalletModal } from './WalletModal';
 
 export const ConnectWalletButton = () => {
