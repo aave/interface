@@ -1,4 +1,4 @@
-import { DuplicateIcon, LogoutIcon } from '@heroicons/react/outline';
+import { DuplicateIcon } from '@heroicons/react/outline';
 import {
   ChevronDownIcon,
   ChevronUpIcon,
