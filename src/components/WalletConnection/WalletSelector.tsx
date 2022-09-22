@@ -1,14 +1,15 @@
-import { useState } from 'react';
-import { utils } from 'ethers';
+import { Trans } from '@lingui/macro';
 import { Alert, Box, Button, InputBase, Link, Typography } from '@mui/material';
+import { UnsupportedChainIdError } from '@web3-react/core';
+import { NoEthereumProviderError } from '@web3-react/injected-connector';
+import { UserRejectedRequestError } from '@web3-react/walletconnect-connector';
+import { utils } from 'ethers';
+import { useState } from 'react';
+import { WatchOnlyModeToolTip } from 'src/components/infoTooltips/WatchOnlyModeTooltip';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { WalletType } from 'src/libs/web3-data-provider/WalletOptions';
-import { WatchOnlyModeToolTip } from 'src/components/infoTooltips/WatchOnlyModeTooltip';
+
 import { TxModalTitle } from '../transactions/FlowCommons/TxModalTitle';
-import { Trans } from '@lingui/macro';
-import { UnsupportedChainIdError } from '@web3-react/core';
-import { UserRejectedRequestError } from '@web3-react/walletconnect-connector';
-import { NoEthereumProviderError } from '@web3-react/injected-connector';
 
 export type WalletRowProps = {
   walletName: string;

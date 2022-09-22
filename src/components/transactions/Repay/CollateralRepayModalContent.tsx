@@ -1,7 +1,11 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
+import { Box, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import BigNumber from 'bignumber.js';
 import { useRef, useState } from 'react';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Row } from 'src/components/primitives/Row';
 import {
   ComputedReserveData,
   ComputedUserReserveData,
@@ -11,22 +15,19 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useSwap } from 'src/hooks/useSwap';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { calculateHFAfterRepay } from 'src/utils/hfUtils';
+
 import { Asset, AssetInput } from '../AssetInput';
+import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
+import { TxSuccessView } from '../FlowCommons/Success';
 import {
   DetailsHFLine,
   DetailsNumberLineWithSub,
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
-import { CollateralRepayActions } from './CollateralRepayActions';
-import BigNumber from 'bignumber.js';
-import { calculateHFAfterRepay } from 'src/utils/hfUtils';
-import { Box, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
-import { Row } from 'src/components/primitives/Row';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { GasEstimationError } from '../FlowCommons/GasEstimationError';
-import { TxSuccessView } from '../FlowCommons/Success';
 import { ErrorType, flashLoanNotAvailable, useFlashloan } from '../utils';
+import { CollateralRepayActions } from './CollateralRepayActions';
 
 export function CollateralRepayModalContent({
   poolReserve,

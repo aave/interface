@@ -1,12 +1,13 @@
 import { Trans } from '@lingui/macro';
 import { Box, BoxProps, Button, CircularProgress, Typography } from '@mui/material';
+import isEmpty from 'lodash/isEmpty';
 import { ReactNode } from 'react';
 import { TxStateType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import isEmpty from 'lodash/isEmpty';
+import { TxAction } from 'src/ui-config/errorMapping';
+
 import { LeftHelperText } from './FlowCommons/LeftHelperText';
 import { RightHelperText } from './FlowCommons/RightHelperText';
-import { TxAction } from 'src/ui-config/errorMapping';
 
 interface TxActionsWrapperProps extends BoxProps {
   actionInProgressText: ReactNode;

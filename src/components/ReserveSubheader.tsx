@@ -1,5 +1,6 @@
-import React from 'react';
 import Box from '@mui/material/Box';
+import React from 'react';
+
 import { FormattedNumber } from './primitives/FormattedNumber';
 
 type ReserveSubheaderProps = {
