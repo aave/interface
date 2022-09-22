@@ -6,6 +6,7 @@ import { MainLayout } from 'src/layouts/MainLayout';
 import { getProposalMetadata } from 'src/modules/governance/utils/getProposalMetadata';
 import { IpfsType } from 'src/static-build/ipfs';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
+
 import ProposalPage from './proposal/[proposalId].governance';
 
 export default function IpfsPreview() {

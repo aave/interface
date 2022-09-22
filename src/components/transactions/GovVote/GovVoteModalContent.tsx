@@ -5,6 +5,7 @@ import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';

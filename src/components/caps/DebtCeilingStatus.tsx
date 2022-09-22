@@ -1,14 +1,15 @@
+import { Trans } from '@lingui/macro';
+import type { Theme } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import LinearProgress, {
   linearProgressClasses,
   LinearProgressProps,
 } from '@mui/material/LinearProgress';
-import { Box, Typography } from '@mui/material';
-import { FormattedNumber } from '../primitives/FormattedNumber';
-import type { Theme } from '@mui/material';
-import { Trans } from '@lingui/macro';
 import { AssetCapHookData } from 'src/hooks/useAssetCaps';
-import { TextWithTooltip } from '../TextWithTooltip';
+
+import { FormattedNumber } from '../primitives/FormattedNumber';
 import { Link } from '../primitives/Link';
+import { TextWithTooltip } from '../TextWithTooltip';
 
 type DebtCeilingTooltipProps = {
   debt: string;

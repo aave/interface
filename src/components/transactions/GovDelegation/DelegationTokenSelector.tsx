@@ -4,6 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
 import * as React from 'react';
+
 import { TokenIcon } from '../../primitives/TokenIcon';
 
 const ITEM_HEIGHT = 48;

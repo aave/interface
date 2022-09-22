@@ -1,7 +1,8 @@
-import { ReactNode, useState } from 'react';
+import Box from '@mui/material/Box';
 import CircularProgress, { circularProgressClasses } from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import { ReactNode, useState } from 'react';
+
 import { ContentWithTooltip } from '../ContentWithTooltip';
 
 type CapsCircularStatusProps = {

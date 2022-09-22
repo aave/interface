@@ -1,9 +1,9 @@
-import Link from 'next/link';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Paper, Typography, useTheme } from '@mui/material';
-import { MainLayout } from 'src/layouts/MainLayout';
+import Link from 'next/link';
 import { ContentContainer } from 'src/components/ContentContainer';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
+import { MainLayout } from 'src/layouts/MainLayout';
 
 export default function Aave404Page() {
   const theme = useTheme();

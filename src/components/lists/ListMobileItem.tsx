@@ -1,9 +1,10 @@
 import { Box, Divider, Skeleton, Typography } from '@mui/material';
 import { ReactNode } from 'react';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
+
 import { Link, ROUTES } from '../primitives/Link';
 import { TokenIcon } from '../primitives/TokenIcon';
-import { useAssetCaps } from 'src/hooks/useAssetCaps';
 
 interface ListMobileItemProps {
   warningComponent?: ReactNode;

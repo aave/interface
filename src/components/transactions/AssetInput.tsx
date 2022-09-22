@@ -1,9 +1,10 @@
+import { XCircleIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
   Box,
   Button,
-  IconButton,
   FormControl,
+  IconButton,
   InputBase,
   ListItemText,
   MenuItem,
@@ -11,7 +12,6 @@ import {
   SelectChangeEvent,
   Typography,
 } from '@mui/material';
-import { XCircleIcon } from '@heroicons/react/solid';
 import React, { ReactNode } from 'react';
 import NumberFormat, { NumberFormatProps } from 'react-number-format';
 

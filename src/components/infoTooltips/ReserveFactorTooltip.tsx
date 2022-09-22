@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro';
-import { Link } from '../primitives/Link';
 
+import { Link } from '../primitives/Link';
 import { TextWithTooltip, TextWithTooltipProps } from '../TextWithTooltip';
 
 interface ReserveFactorTooltipProps extends TextWithTooltipProps {

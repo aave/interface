@@ -5,6 +5,7 @@ import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvide
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
+
 import { BasicModal } from '../../primitives/BasicModal';
 import { ModalWrapper } from '../FlowCommons/ModalWrapper';
 import { CollateralRepayModalContent } from './CollateralRepayModalContent';

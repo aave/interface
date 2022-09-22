@@ -16,6 +16,7 @@ import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvide
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+
 import { Asset, AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';

@@ -1,8 +1,9 @@
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
 import { useStakeTxBuilderContext } from 'src/hooks/useStakeTxBuilder';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+
+import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
 export interface StakeRewardClaimActionProps extends BoxProps {
