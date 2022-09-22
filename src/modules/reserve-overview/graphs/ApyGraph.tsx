@@ -37,8 +37,8 @@ const formatDate = (d: Date, timeRange: ReserveRateTimeRange) => {
     const hours = time[1].split('').slice(0, 2).join('');
     const mins = time[1].split('').slice(2, 4).join('');
     const formattedTime = `${hours}:${mins}`;
-    console.log(`${time[0]}${offsetSign}${formattedTime}`);
-    return `${time[0]}${offsetSign}${formattedTime}`;
+    const formattedDate = `${time[0]}${offsetSign}${formattedTime}`;
+    return formattedDate;
   } else {
     const formatted = timeFormat('%b %d, %Y');
     return formatted(d);
