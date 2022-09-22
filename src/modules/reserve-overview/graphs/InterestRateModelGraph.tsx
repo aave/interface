@@ -279,6 +279,7 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
                 fontSize: 10,
                 textAnchor: 'middle',
               })}
+              tickFormat={(n) => `${n}%`}
             />
 
             {/* Y Axis */}
