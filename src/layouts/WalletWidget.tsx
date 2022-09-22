@@ -134,7 +134,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
             top: '20px',
             left: '20px',
             borderRadius: '50%',
-            background: palette.primary.main,
+            background: '#383D51',
           }}
         >
           <ExclamationIcon />
@@ -191,7 +191,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
                     top: '35px',
                     left: '40px',
                     borderRadius: '50%',
-                    background: md ? palette.primary.main : palette.background.paper,
+                    background: md ? '#383D51' : palette.background.paper,
                   }}
                 >
                   <ExclamationIcon />
