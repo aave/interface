@@ -118,6 +118,19 @@ localStorage.setItem('forkRPCUrl', <rpcUrl>);
 
 Since `localStorage` changes are not not observed, _you’ll need to reload after setting the parameters_. After reloading, the market selection should show forked markets for all the markets that run on `forkBaseChainId`. To make actual transactions on the fork, you’ll need to setup your wallet to use the same `rpcUrl` you provided as `forkRPCUrl`. This will require you to setup your wallet by adding in the new fork network and connecting to the app with it.
 
+If you are using MetaMask, make sure to configure the Tenderly fork RPC URL into a new network configuration. Give it a network name, and you'll want to use the same values that you copied into `localStorage` for the other fields. See below as an example:
+
+![MetaMask Forked Network Setup](/public/fork-config-example.png)
+
+Once you have both copied over the values into `localStorage` and have saved the new network configuration in MetaMask (or any other browser wallet), switch to the network in your wallet.
+
+Next, reload the page. The new forked network should appear in the dropdown list for markets in the application.
+
+Finally, switch to the market pertaining to the fork in the dropdown list. Now you are able to interact with the Aave Protocol via the UI without spending any real funds!
+
+__NOTE:__ _Always double check the selected network in your wallet provider to make sure transactions are executed only on the fork network_.
+
+
 ## Token Additions
 
 To add a new token to the app, the process is pretty simple. All you’ll need to do is add a new token icon SVG to the `public/icons/tokens` directory. The only requirement is that the name of the SVG file is equal to the asset’s `symbol` in all lowercase. If you want a custom name to appear alongside the icon, you can alter `src/ui-config/reservePatches.ts` accordingly.
