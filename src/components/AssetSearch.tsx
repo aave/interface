@@ -46,7 +46,53 @@ export const AssetSearch = ({ searchTerm, onSearchTermChange }: AssetSearchProps
           handleChange(e.target.value);
         }}
       />
-      <IconButton sx={{ p: 0, mr: 2 }} onClick={() => handleChange('')}>
+      <IconButton
+        sx={{ p: 0, mr: 2, visibility: searchTerm ? 'visible' : 'hidden' }}
+        onClick={() => handleChange('')}
+      >
+        <XCircleIcon height={16} />
+      </IconButton>
+    </Box>
+  );
+};
+
+export const AssetSearchMobile = ({ searchTerm, onSearchTermChange }: AssetSearchProps) => {
+  const handleChange = (value: string) => {
+    onSearchTermChange(value);
+  };
+
+  // const debouncedHandleChange = useMemo(() => debounce(handleChange, 300), [handleChange]);
+
+  const placeHolder = 'Search asset';
+
+  return (
+    <Box
+      sx={(theme) => ({
+        display: 'flex',
+        alignItems: 'center',
+        flexGrow: 1,
+        gap: 2,
+        border: `1px solid ${theme.palette.divider}`,
+        borderRadius: '6px',
+        height: '36px',
+      })}
+    >
+      <Box sx={{ ml: 2, mt: 1 }}>
+        <SearchIcon height={16} />
+      </Box>
+      <InputBase
+        autoFocus
+        sx={{ flexGrow: 1 }}
+        placeholder={placeHolder}
+        value={searchTerm}
+        onChange={(e) => {
+          handleChange(e.target.value);
+        }}
+      />
+      <IconButton
+        sx={{ p: 0, mr: 2, visibility: searchTerm ? 'visible' : 'hidden' }}
+        onClick={() => handleChange('')}
+      >
         <XCircleIcon height={16} />
       </IconButton>
     </Box>
