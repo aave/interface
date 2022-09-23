@@ -1,6 +1,6 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Box, useMediaQuery } from '@mui/material';
+import { Box, Typography, useMediaQuery } from '@mui/material';
 import { useState } from 'react';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
@@ -178,6 +178,34 @@ export default function AssetsList() {
             <AssetsListItem {...reserve} key={reserve.id} />
           )
         )
+      )}
+      {!loading && filteredData?.length === 0 && (
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 1,
+            pt: 15,
+            pb: 40,
+            px: 4,
+            overflow: 'hidden',
+          }}
+        >
+          <Typography sx={{ textAlign: 'center' }} variant="h2">
+            <Trans>No search results for</Trans> &apos;{searchTerm}&apos;
+          </Typography>
+          <Typography
+            sx={{ width: '280px', textAlign: 'center' }}
+            variant="description"
+            color="text.secondary"
+          >
+            <Trans>
+              We couldn&apos;t find any asset matching your search. Try again with a different asset
+              name, symbol, or address.
+            </Trans>
+          </Typography>
+        </Box>
       )}
     </ListWrapper>
   );
