@@ -25,14 +25,28 @@ export const AssetListTitle = ({ marketTitle }: AssetListTitleProps) => {
 
   return (
     <Box
-      sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+      sx={{
+        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      }}
     >
       {(!showSearchBar || !sm) && (
         <Typography component="div" variant="h3" sx={{ mr: 4 }}>
           {marketTitle} <Trans>assets</Trans>
         </Typography>
       )}
-      <Box sx={{ position: 'relative', display: 'flex', justifyContent: 'space-between' }}>
+      <Box
+        sx={{
+          height: '40px',
+          width: showSearchBar && sm ? '100%' : 'unset',
+          position: 'relative',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
         {sm && !showSearchBar && (
           <IconButton onClick={() => setShowSearchBar(true)}>
             <SvgIcon>
@@ -41,9 +55,15 @@ export const AssetListTitle = ({ marketTitle }: AssetListTitleProps) => {
           </IconButton>
         )}
         {(showSearchBar || !sm) && (
-          <Box>
+          <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
             <AssetSearch searchTerm={searchTerm} onSearchTermChange={setSearchTerm} />
-            {sm && <Button onClick={() => setShowSearchBar(false)}>Cancel</Button>}
+            {sm && (
+              <Button sx={{ ml: 2 }} onClick={() => setShowSearchBar(false)}>
+                <Typography variant="buttonM">
+                  <Trans>Cancel</Trans>
+                </Typography>
+              </Button>
+            )}
           </Box>
         )}
       </Box>

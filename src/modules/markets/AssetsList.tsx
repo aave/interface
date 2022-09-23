@@ -1,9 +1,7 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
-import { SearchIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, IconButton, SvgIcon, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
-import { AssetSearch } from 'src/components/AssetSearch';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
