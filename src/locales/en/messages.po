@@ -384,6 +384,10 @@ msgstr "Can be collateral"
 msgid "Can be executed"
 msgstr "Can be executed"
 
+#: src/modules/markets/AssetListTitle.tsx
+msgid "Cancel"
+msgstr "Cancel"
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Cannot disable E-Mode"
 msgstr "Cannot disable E-Mode"
