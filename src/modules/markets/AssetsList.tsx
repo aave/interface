@@ -1,6 +1,6 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Box, useMediaQuery, useTheme } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
 import { useState } from 'react';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
@@ -24,8 +24,6 @@ export default function AssetsList() {
   const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
 
   const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
-
-  const { breakpoints } = useTheme();
 
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);

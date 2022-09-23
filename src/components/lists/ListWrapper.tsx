@@ -25,7 +25,6 @@ export const ListWrapper = ({
   topInfo,
   withTopMargin,
   noData,
-  captionSize = 'h3',
 }: ListWrapperProps) => {
   const [isCollapse, setIsCollapse] = useState(
     localStorageName ? localStorage.getItem(localStorageName) === 'true' : false
