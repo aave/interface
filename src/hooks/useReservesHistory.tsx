@@ -96,8 +96,6 @@ export function useReserveRatesHistory(reserveAddress: string, timeRange: Reserv
         fetchStats(reserveAddress, timeRange, currentNetworkConfig.ratesHistoryApiUrl)
       );
 
-      console.log(currentNetworkConfig.ratesHistoryApiUrl);
-
       cancelable.promise
         .then((data: APIResponse[]) => {
           setData(
