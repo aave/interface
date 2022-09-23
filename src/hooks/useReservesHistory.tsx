@@ -30,9 +30,8 @@ const fetchStats = async (
 ) => {
   const { from, resolutionInHours } = resolutionForTimeRange(timeRange);
   try {
-    const result = await fetch(
-      `${endpointURL}?reserveId=${address}&from=${from}&resolutionInHours=${resolutionInHours}`
-    );
+    const url = `${endpointURL}?reserveId=${address}&from=${from}&resolutionInHours=${resolutionInHours}`;
+    const result = await fetch(url);
     const json = await result.json();
     return json;
   } catch (e) {
@@ -40,6 +39,8 @@ const fetchStats = async (
   }
 };
 
+// TODO: there is possibly a bug here, as Polygon and Avalanche v2 data is coming through empty and erroring in our hook
+// The same asset without the 'from' field comes through just fine.
 const resolutionForTimeRange = (timeRange: ReserveRateTimeRange): RatesHistoryParams => {
   switch (timeRange) {
     case '1m':
@@ -94,6 +95,8 @@ export function useReserveRatesHistory(reserveAddress: string, timeRange: Reserv
       const cancelable = makeCancelable(
         fetchStats(reserveAddress, timeRange, currentNetworkConfig.ratesHistoryApiUrl)
       );
+
+      console.log(currentNetworkConfig.ratesHistoryApiUrl);
 
       cancelable.promise
         .then((data: APIResponse[]) => {

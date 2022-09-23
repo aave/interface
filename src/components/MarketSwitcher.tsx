@@ -94,6 +94,7 @@ enum SelectedMarketVersion {
   V2,
   V3,
 }
+
 export const MarketSwitcher = () => {
   const { currentMarket, setCurrentMarket } = useProtocolDataContext();
   const [selectedMarketVersion, setSelectedMarketVersion] = useState<SelectedMarketVersion>(

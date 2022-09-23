@@ -26,6 +26,7 @@ import { ReserveFactorOverview } from 'src/modules/reserve-overview/ReserveFacto
 
 import LightningBoltGradient from '/public/lightningBoltGradient.svg';
 
+import { CustomMarket, marketsData } from '../../utils/marketsAndNetworksConfig';
 import { ApyGraphContainer } from './graphs/ApyGraphContainer';
 import { InterestRateModelGraphContainer } from './graphs/InterestRateModelGraphContainer';
 import { PanelItem, PanelRow, PanelTitle } from './ReservePanels';
@@ -36,8 +37,8 @@ type ReserveConfigurationProps = {
 
 export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ reserve }) => {
   const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
-  const renderCharts = !!currentNetworkConfig.ratesHistoryApiUrl;
-
+  const { v3 } = marketsData[currentMarket as CustomMarket];
+  const renderCharts = !v3 && !!currentNetworkConfig.ratesHistoryApiUrl;
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
   const showSupplyCapStatus = reserve.supplyCap && reserve.supplyCap !== '0';
   const showBorrowCapStatus = reserve.borrowCap && reserve.borrowCap !== '0';
