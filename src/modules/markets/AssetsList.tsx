@@ -1,6 +1,6 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Box, Button, IconButton, SvgIcon, useMediaQuery, useTheme } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
@@ -26,10 +26,22 @@ export default function AssetsList() {
   const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
 
   const { breakpoints } = useTheme();
-  const sm = useMediaQuery(breakpoints.down('sm'));
+
+  const [sortName, setSortName] = useState('');
+  const [sortDesc, setSortDesc] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const filteredData = reserves
     .filter((res) => res.isActive)
+    .filter((res) => {
+      if (searchTerm) {
+        return (
+          res.symbol.toLowerCase().includes(searchTerm.toLowerCase().trim()) ||
+          res.name.toLowerCase().includes(searchTerm.toLowerCase().trim())
+        );
+      }
+      return true;
+    })
     .map((reserve) => ({
       ...reserve,
       ...(reserve.isWrappedBaseAsset
@@ -39,10 +51,6 @@ export default function AssetsList() {
           })
         : {}),
     }));
-
-  const [sortName, setSortName] = useState('');
-  const [sortDesc, setSortDesc] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
 
   if (sortDesc) {
     if (sortName === 'symbol') {
@@ -105,7 +113,13 @@ export default function AssetsList() {
 
   return (
     <ListWrapper
-      title={<AssetListTitle marketTitle={currentMarketData.marketTitle} />}
+      title={
+        <AssetListTitle
+          searchTerm={searchTerm}
+          onSearchTermChange={setSearchTerm}
+          marketTitle={currentMarketData.marketTitle}
+        />
+      }
       captionSize="h2"
     >
       {marketFrozen && currentNetworkConfig.name === 'Harmony' && (

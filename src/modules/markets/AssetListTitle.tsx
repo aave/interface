@@ -14,11 +14,16 @@ import { AssetSearch } from 'src/components/AssetSearch';
 
 export interface AssetListTitleProps {
   marketTitle: string;
+  searchTerm: string;
+  onSearchTermChange: (value: string) => void;
 }
 
-export const AssetListTitle = ({ marketTitle }: AssetListTitleProps) => {
+export const AssetListTitle = ({
+  marketTitle,
+  searchTerm,
+  onSearchTermChange,
+}: AssetListTitleProps) => {
   const [showSearchBar, setShowSearchBar] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
 
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down('sm'));
@@ -56,7 +61,7 @@ export const AssetListTitle = ({ marketTitle }: AssetListTitleProps) => {
         )}
         {(showSearchBar || !sm) && (
           <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-            <AssetSearch searchTerm={searchTerm} onSearchTermChange={setSearchTerm} />
+            <AssetSearch searchTerm={searchTerm} onSearchTermChange={onSearchTermChange} />
             {sm && (
               <Button sx={{ ml: 2 }} onClick={() => setShowSearchBar(false)}>
                 <Typography variant="buttonM">

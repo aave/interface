@@ -1,6 +1,6 @@
 import { SearchIcon } from '@heroicons/react/outline';
 import { XCircleIcon } from '@heroicons/react/solid';
-import { Box, IconButton, InputBase, SvgIcon, useMediaQuery, useTheme } from '@mui/material';
+import { Box, IconButton, InputBase, useMediaQuery, useTheme } from '@mui/material';
 
 export interface AssetSearchProps {
   searchTerm: string;
@@ -8,12 +8,15 @@ export interface AssetSearchProps {
 }
 
 export const AssetSearch = ({ searchTerm, onSearchTermChange }: AssetSearchProps) => {
+  // const [searchTerm, setSearchTerm] = useState('');
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down('sm'));
 
   const handleChange = (value: string) => {
     onSearchTermChange(value);
   };
+
+  // const debouncedHandleChange = useMemo(() => debounce(handleChange, 300), [handleChange]);
 
   let placeHolder = 'Search asset name, symbol, or address';
   if (sm) {
@@ -39,7 +42,9 @@ export const AssetSearch = ({ searchTerm, onSearchTermChange }: AssetSearchProps
         sx={{ flexGrow: sm ? 1 : 0, width: sm ? 'unset' : '275px' }}
         placeholder={placeHolder}
         value={searchTerm}
-        onChange={(e) => handleChange(e.target.value)}
+        onChange={(e) => {
+          handleChange(e.target.value);
+        }}
       />
       <IconButton sx={{ p: 0, mr: 2 }} onClick={() => handleChange('')}>
         <XCircleIcon height={16} />
