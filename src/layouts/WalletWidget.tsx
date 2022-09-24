@@ -352,36 +352,39 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
         </Link>
       )}
       {md && (
-        <Box sx={{ padding: '16px 16px 10px' }}>
-          <Button
-            sx={{
-              marginBottom: '16px',
-              background: '#383D51',
-              color: '#F1F1F3',
-            }}
-            fullWidth
-            size="large"
-            variant={palette.mode === 'dark' ? 'outlined' : 'text'}
-            onClick={() => {
-              setWalletModalOpen(true);
-              handleClose();
-            }}
-          >
-            Switch Wallet
-          </Button>
-          <Button
-            sx={{
-              background: '#383D51',
-              color: '#F1F1F3',
-            }}
-            fullWidth
-            size="large"
-            variant={palette.mode === 'dark' ? 'outlined' : 'text'}
-            onClick={handleDisconnect}
-          >
-            Disconnect
-          </Button>
-        </Box>
+        <>
+          <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
+          <Box sx={{ padding: '16px 16px 10px' }}>
+            <Button
+              sx={{
+                marginBottom: '16px',
+                background: '#383D51',
+                color: '#F1F1F3',
+              }}
+              fullWidth
+              size="large"
+              variant={palette.mode === 'dark' ? 'outlined' : 'text'}
+              onClick={() => {
+                setWalletModalOpen(true);
+                handleClose();
+              }}
+            >
+              Switch Wallet
+            </Button>
+            <Button
+              sx={{
+                background: '#383D51',
+                color: '#F1F1F3',
+              }}
+              fullWidth
+              size="large"
+              variant={palette.mode === 'dark' ? 'outlined' : 'text'}
+              onClick={handleDisconnect}
+            >
+              Disconnect
+            </Button>
+          </Box>
+        </>
       )}
     </>
   );
