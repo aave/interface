@@ -251,7 +251,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
               handleClose();
             }}
           >
-            Switch Wallet
+            Switch wallet
           </Button>
           <Button
             variant="outlined"
@@ -369,7 +369,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
                 handleClose();
               }}
             >
-              Switch Wallet
+              Switch wallet
             </Button>
             <Button
               sx={{
