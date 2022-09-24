@@ -352,15 +352,16 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
         </Link>
       )}
       {md && (
-        <Box sx={{ padding: '0 16px 10px' }}>
+        <Box sx={{ padding: '16px 16px 10px' }}>
           <Button
             sx={{
-              marginBottom: '12px',
-              width: '100%',
+              marginBottom: '16px',
               background: '#383D51',
               color: '#F1F1F3',
             }}
-            size="medium"
+            fullWidth
+            size="large"
+            variant={palette.mode === 'dark' ? 'outlined' : 'text'}
             onClick={() => {
               setWalletModalOpen(true);
               handleClose();
@@ -370,11 +371,12 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           </Button>
           <Button
             sx={{
-              width: '100%',
               background: '#383D51',
               color: '#F1F1F3',
             }}
-            size="medium"
+            fullWidth
+            size="large"
+            variant={palette.mode === 'dark' ? 'outlined' : 'text'}
             onClick={handleDisconnect}
           >
             Disconnect
