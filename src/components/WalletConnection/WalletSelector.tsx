@@ -176,8 +176,9 @@ export const WalletSelector = () => {
         })}
       >
         <InputBase
-          sx={{ flex: 1, overflow: 'show', width: '100%' }}
+          sx={{ flex: 1, overflow: 'show' }}
           placeholder="Paste ethereum address"
+          fullWidth
           autoFocus
           value={inputMockWalletAddress}
           onChange={(e) => {
