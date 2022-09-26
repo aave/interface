@@ -38,7 +38,9 @@ type ReserveConfigurationProps = {
 export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ reserve }) => {
   const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
   const { v3 } = marketsData[currentMarket as CustomMarket];
-  const renderCharts = !v3 && !!currentNetworkConfig.ratesHistoryApiUrl;
+  // V3 and V2 Polygon will be enabled once support is added to API
+  const renderCharts =
+    !v3 && !!currentNetworkConfig.ratesHistoryApiUrl && currentMarket !== 'proto_polygon';
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
   const showSupplyCapStatus = reserve.supplyCap && reserve.supplyCap !== '0';
   const showBorrowCapStatus = reserve.borrowCap && reserve.borrowCap !== '0';
