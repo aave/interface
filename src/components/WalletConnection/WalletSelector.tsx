@@ -100,6 +100,7 @@ export enum ErrorType {
 export const WalletSelector = () => {
   const { error, setMockWalletAddress } = useWeb3Context();
   const [inputMockWalletAddress, setInputMockWalletAddress] = useState('');
+  const [validAddressError, setValidAddressError] = useState<boolean>(false);
 
   let blockingError: ErrorType | undefined = undefined;
   if (error) {
@@ -130,9 +131,8 @@ export const WalletSelector = () => {
   };
 
   const handleWatchAddress = (inputMockWalletAddress: string): void => {
-    if (!utils.isAddress(inputMockWalletAddress)) {
-      return console.log(`${inputMockWalletAddress} is not a valid address!`);
-    }
+    if (validAddressError) setValidAddressError(false);
+    if (!utils.isAddress(inputMockWalletAddress)) return setValidAddressError(true);
     setMockWalletAddress(inputMockWalletAddress);
   };
 
@@ -207,6 +207,11 @@ export const WalletSelector = () => {
       >
         Watch address
       </Button>
+      {validAddressError && (
+        <Typography variant="helperText" color="error.main">
+          <Trans>Please enter a valid wallet address.</Trans>
+        </Typography>
+      )}
       <Typography variant="description" sx={{ mt: '22px', mb: '30px', alignSelf: 'center' }}>
         <Trans>
           Need help connecting a wallet?{' '}
