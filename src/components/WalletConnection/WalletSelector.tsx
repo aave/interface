@@ -197,10 +197,10 @@ export const WalletSelector = () => {
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'center',
-          width: '100%',
           mb: '8px',
         }}
         size="large"
+        fullWidth
         disabled={!utils.isAddress(inputMockWalletAddress)}
         onClick={() => handleWatchAddress(inputMockWalletAddress)}
       >
