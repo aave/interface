@@ -1,13 +1,14 @@
 import { Tooltip, Typography } from '@mui/material';
 import { ReactNode } from 'react';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
+
 import { AMPLWarning } from '../../../components/infoTooltips/AMPLWarning';
 import { FrozenTooltip } from '../../../components/infoTooltips/FrozenTooltip';
 import { ListColumn } from '../../../components/lists/ListColumn';
 import { ListItem } from '../../../components/lists/ListItem';
 import { Link, ROUTES } from '../../../components/primitives/Link';
 import { TokenIcon } from '../../../components/primitives/TokenIcon';
-import { useAssetCaps } from 'src/hooks/useAssetCaps';
 
 interface ListItemWrapperProps {
   symbol: string;

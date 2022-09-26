@@ -1,17 +1,18 @@
-import React, { useMemo, useCallback, Fragment } from 'react';
-import { Line, Bar, LinePath } from '@visx/shape';
-import { curveMonotoneX } from '@visx/curve';
-import { scaleLinear } from '@visx/scale';
-import { withTooltip, defaultStyles, TooltipWithBounds } from '@visx/tooltip';
-import { WithTooltipProvidedProps } from '@visx/tooltip/lib/enhancers/withTooltip';
-import { localPoint } from '@visx/event';
-import { AxisLeft } from '@visx/axis';
-import { max, bisector } from 'd3-array';
-import { Group } from '@visx/group';
-import { useTheme } from '@mui/material';
 import { normalizeBN, RAY, rayDiv, rayMul } from '@aave/math-utils';
-import { BigNumber } from 'bignumber.js';
+import { useTheme } from '@mui/material';
+import { AxisLeft } from '@visx/axis';
+import { curveMonotoneX } from '@visx/curve';
+import { localPoint } from '@visx/event';
+import { Group } from '@visx/group';
+import { scaleLinear } from '@visx/scale';
+import { Bar, Line, LinePath } from '@visx/shape';
 import { Text } from '@visx/text';
+import { defaultStyles, TooltipWithBounds, withTooltip } from '@visx/tooltip';
+import { WithTooltipProvidedProps } from '@visx/tooltip/lib/enhancers/withTooltip';
+import { BigNumber } from 'bignumber.js';
+import { bisector, max } from 'd3-array';
+import React, { Fragment, useCallback, useMemo } from 'react';
+
 import { ChartLegend } from './ChartLegend';
 
 type TooltipData = Rate;

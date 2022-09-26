@@ -1,19 +1,20 @@
-import React, { useMemo, useCallback, Fragment } from 'react';
-import { AreaClosed, Line, Bar, LinePath } from '@visx/shape';
+import { lighten, useTheme } from '@mui/material';
+import { AxisBottom, AxisLeft } from '@visx/axis';
 import { curveMonotoneX } from '@visx/curve';
-import { scaleTime, scaleLinear } from '@visx/scale';
-import { withTooltip, defaultStyles, TooltipWithBounds } from '@visx/tooltip';
-import { WithTooltipProvidedProps } from '@visx/tooltip/lib/enhancers/withTooltip';
 import { localPoint } from '@visx/event';
 import { LinearGradient } from '@visx/gradient';
-import { AxisLeft, AxisBottom } from '@visx/axis';
-import { max, extent, bisector } from 'd3-array';
-import { timeFormat } from 'd3-time-format';
-import { Group } from '@visx/group';
-import { FormattedReserveHistoryItem } from 'src/hooks/useReservesHistory';
-import { useTheme, lighten } from '@mui/material';
-import { ChartLegend } from './ChartLegend';
 import { GridRows } from '@visx/grid';
+import { Group } from '@visx/group';
+import { scaleLinear, scaleTime } from '@visx/scale';
+import { AreaClosed, Bar, Line, LinePath } from '@visx/shape';
+import { defaultStyles, TooltipWithBounds, withTooltip } from '@visx/tooltip';
+import { WithTooltipProvidedProps } from '@visx/tooltip/lib/enhancers/withTooltip';
+import { bisector, extent, max } from 'd3-array';
+import { timeFormat } from 'd3-time-format';
+import React, { Fragment, useCallback, useMemo } from 'react';
+import { FormattedReserveHistoryItem } from 'src/hooks/useReservesHistory';
+
+import { ChartLegend } from './ChartLegend';
 
 type TooltipData = FormattedReserveHistoryItem;
 

@@ -13,29 +13,30 @@ import {
 } from '@mui/material';
 import React, { ReactNode } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Warning } from 'src/components/primitives/Warning';
+import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
+import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import {
   ComputedReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { usePermissions } from 'src/hooks/usePermissions';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import {
   assetCanBeBorrowedByUser,
   getMaxAmountAvailableToBorrow,
 } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
+
 import { CapType } from '../../components/caps/helper';
 import { AvailableTooltip } from '../../components/infoTooltips/AvailableTooltip';
-import { Row } from '../../components/primitives/Row';
 import { Link, ROUTES } from '../../components/primitives/Link';
+import { Row } from '../../components/primitives/Row';
 import { getEmodeMessage } from '../../components/transactions/Emode/EmodeNaming';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
-import { Warning } from 'src/components/primitives/Warning';
-import { useAssetCaps } from 'src/hooks/useAssetCaps';
-import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 
 const PaperWrapper = ({ children }: { children: ReactNode }) => {
   return (

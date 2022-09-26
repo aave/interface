@@ -1,8 +1,9 @@
-import { TenderlyFork, DEFAULT_TEST_ACCOUNT } from '../tools/tenderly';
+import { ChainId } from '@aave/contract-helpers';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { Wallet } from '@ethersproject/wallet';
+
 import { CustomizedBridge } from '../tools/bridge';
-import { ChainId } from '@aave/contract-helpers';
+import { DEFAULT_TEST_ACCOUNT, TenderlyFork } from '../tools/tenderly';
 
 const URL = Cypress.env('URL');
 const PERSIST_FORK_AFTER_RUN = Cypress.env('PERSIST_FORK_AFTER_RUN') || false;

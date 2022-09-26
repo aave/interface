@@ -1,13 +1,13 @@
 import { ChainId } from '@aave/contract-helpers';
+import { SafeAppConnector } from '@gnosis.pm/safe-apps-web3-react';
 import { AbstractConnector } from '@web3-react/abstract-connector';
+import { UnsupportedChainIdError } from '@web3-react/core';
+import { FrameConnector } from '@web3-react/frame-connector';
 import { InjectedConnector } from '@web3-react/injected-connector';
+import { TorusConnector } from '@web3-react/torus-connector';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
-import { TorusConnector } from '@web3-react/torus-connector';
-import { FrameConnector } from '@web3-react/frame-connector';
 import { getNetworkConfig, getSupportedChainIds } from 'src/utils/marketsAndNetworksConfig';
-import { UnsupportedChainIdError } from '@web3-react/core';
-import { SafeAppConnector } from '@gnosis.pm/safe-apps-web3-react';
 
 export enum WalletType {
   INJECTED = 'injected',

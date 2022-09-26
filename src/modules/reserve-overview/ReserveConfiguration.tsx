@@ -1,5 +1,6 @@
-import React, { ReactNode } from 'react';
+import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import {
   Alert,
   Box,
@@ -12,32 +13,33 @@ import {
   useTheme,
 } from '@mui/material';
 import Paper from '@mui/material/Paper';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
-import { useReserveRatesHistory } from 'src/hooks/useReservesHistory';
 import { ParentSize } from '@visx/responsive';
-import { ApyChart } from '../reserve-overview/ApyChart';
-import { InterestRateModelChart } from '../reserve-overview/InterestRateModelChart';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
-import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
-import { IncentivesButton } from 'src/components/incentives/IncentivesButton';
-import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
-import { getEmodeMessage } from 'src/components/transactions/Emode/EmodeNaming';
-import LightningBoltGradient from '/public/lightningBoltGradient.svg';
-import { Link, ROUTES } from 'src/components/primitives/Link';
-import { MaxLTVTooltip } from 'src/components/infoTooltips/MaxLTVTooltip';
-import { LiquidationThresholdTooltip } from 'src/components/infoTooltips/LiquidationThresholdTooltip';
-import { LiquidationPenaltyTooltip } from 'src/components/infoTooltips/LiquidationPenaltyTooltip';
-import { ReserveSubheader } from 'src/components/ReserveSubheader';
+import React, { ReactNode } from 'react';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { DebtCeilingStatus } from 'src/components/caps/DebtCeilingStatus';
-import { ReserveFactorOverview } from 'src/modules/reserve-overview/ReserveFactorOverview';
-import { useAssetCaps } from 'src/hooks/useAssetCaps';
-import { TextWithTooltip } from 'src/components/TextWithTooltip';
-import { valueToBigNumber } from '@aave/math-utils';
+import { IncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { getFrozenProposalLink } from 'src/components/infoTooltips/FrozenTooltip';
+import { LiquidationPenaltyTooltip } from 'src/components/infoTooltips/LiquidationPenaltyTooltip';
+import { LiquidationThresholdTooltip } from 'src/components/infoTooltips/LiquidationThresholdTooltip';
+import { MaxLTVTooltip } from 'src/components/infoTooltips/MaxLTVTooltip';
+import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
+import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Link, ROUTES } from 'src/components/primitives/Link';
+import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
+import { ReserveSubheader } from 'src/components/ReserveSubheader';
+import { TextWithTooltip } from 'src/components/TextWithTooltip';
+import { getEmodeMessage } from 'src/components/transactions/Emode/EmodeNaming';
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useReserveRatesHistory } from 'src/hooks/useReservesHistory';
+import { ReserveFactorOverview } from 'src/modules/reserve-overview/ReserveFactorOverview';
+
+import LightningBoltGradient from '/public/lightningBoltGradient.svg';
+
+import { ApyChart } from '../reserve-overview/ApyChart';
+import { InterestRateModelChart } from '../reserve-overview/InterestRateModelChart';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
   <Box

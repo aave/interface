@@ -1,8 +1,9 @@
-import { join } from 'path';
-import { LowSync, JSONFileSync } from 'lowdb';
 import lodash from 'lodash';
-import { CustomProposalType } from './proposal';
+import { JSONFileSync, LowSync } from 'lowdb';
+import { join } from 'path';
 import { getProposalMetadata } from 'src/modules/governance/utils/getProposalMetadata';
+
+import { CustomProposalType } from './proposal';
 
 export interface IpfsType {
   id: number;

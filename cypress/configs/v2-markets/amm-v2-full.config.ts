@@ -1,4 +1,5 @@
 import { defineConfig } from 'cypress';
+
 import { defaultConfig } from '../base.cypress';
 
 const folder = `./cypress/e2e/0-v2-markets/1-amm-v2-market/`;
