@@ -10,14 +10,16 @@ type WalletEmptyInfoProps = Pick<NetworkConfig, 'bridge' | 'name'> & {
 };
 
 export function WalletEmptyInfo({ bridge, name, chainId, icon }: WalletEmptyInfoProps) {
-  const assets = [ChainId.avalanche].includes(chainId) ? 'Ethereum & Bitcoin' : 'Ethereum';
+  const network = [ChainId.avalanche].includes(chainId) ? 'Ethereum & Bitcoin' : 'Ethereum';
   return (
     <Warning severity="info" icon={icon}>
-      <Trans>Your {name} wallet is empty. Purchase or transfer assets</Trans>{' '}
-      {bridge && (
+      {bridge ? (
         <Trans>
-          or use {<Link href={bridge.url}>{bridge.name}</Link>} to transfer your {assets} assets.
+          Your {name} wallet is empty. Purchase or transfer assets or use{' '}
+          {<Link href={bridge.url}>{bridge.name}</Link>} to transfer your {network} assets.
         </Trans>
+      ) : (
+        <Trans>Your {name} wallet is empty. Purchase or transfer assets.</Trans>
       )}
     </Warning>
   );
