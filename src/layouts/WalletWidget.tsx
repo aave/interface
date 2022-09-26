@@ -105,6 +105,11 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
     handleClose();
   };
 
+  const handleSwitchWallet = (): void => {
+    setWalletModalOpen(true);
+    handleClose();
+  };
+
   const hideWalletAccountText = xsm && (ENABLE_TESTNET || STAGING_ENV || mockAddress);
 
   const accountAvatar = (
@@ -246,10 +251,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
               marginRight: '10px',
             }}
             size="small"
-            onClick={() => {
-              setWalletModalOpen(true);
-              handleClose();
-            }}
+            onClick={handleSwitchWallet}
           >
             Switch wallet
           </Button>
