@@ -5,7 +5,7 @@ import { NoEthereumProviderError } from '@web3-react/injected-connector';
 import { UserRejectedRequestError } from '@web3-react/walletconnect-connector';
 import { utils } from 'ethers';
 import { useState } from 'react';
-import { WatchOnlyModeToolTip } from 'src/components/infoTooltips/WatchOnlyModeTooltip';
+import { WatchOnlyModeTooltip } from 'src/components/infoTooltips/WatchOnlyModeTooltip';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { WalletType } from 'src/libs/web3-data-provider/WalletOptions';
 
@@ -165,7 +165,7 @@ export const WalletSelector = () => {
         <Typography variant="subheader1" color="text.secondary">
           <Trans>Enter an address to track in watch-only mode</Trans>
         </Typography>
-        <WatchOnlyModeToolTip />
+        <WatchOnlyModeTooltip />
       </Box>
       <Box
         sx={(theme) => ({
