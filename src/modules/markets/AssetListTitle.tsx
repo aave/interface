@@ -10,7 +10,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { useState } from 'react';
-import { AssetSearch, AssetSearchMobile } from 'src/components/AssetSearch';
+import { AssetSearchInput, AssetSearchInputMobile } from 'src/components/AssetSearchInput';
 
 export interface AssetListTitleProps {
   marketTitle: string;
@@ -63,7 +63,7 @@ export const AssetListTitle = ({
           <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
             {sm ? (
               <>
-                <AssetSearchMobile
+                <AssetSearchInputMobile
                   searchTerm={searchTerm}
                   onSearchTermChange={onSearchTermChange}
                 />
@@ -80,7 +80,7 @@ export const AssetListTitle = ({
                 </Button>
               </>
             ) : (
-              <AssetSearch searchTerm={searchTerm} onSearchTermChange={onSearchTermChange} />
+              <AssetSearchInput searchTerm={searchTerm} onSearchTermChange={onSearchTermChange} />
             )}
           </Box>
         )}
