@@ -24,5 +24,6 @@ Add any notes here that may be helpful for reviewers.
 - [ ]  New third-party packages, if any, do not introduce potential security threats
 - [ ]  There are no CI changes, or they have been OK’d by the devops team
 - [ ]  Code changes have been quality checked in the ephemeral URL
+- [ ]  QA verification has been completed
 - [ ]  There are two or more approvals from the core team
 - [ ]  Squash and merge has been checked
