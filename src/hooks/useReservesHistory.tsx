@@ -1,7 +1,19 @@
+/**
+ * This hook is used for getting historical reserve data, and it is primarily used with charts.
+ * In particular, this hook is used in the ApyGraph.
+ */
 import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { makeCancelable } from 'src/utils/utils';
+
+export const reserveRateTimeRangeOptions = ['1m', '6m', '1y'] as const;
+export type ReserveRateTimeRange = typeof reserveRateTimeRangeOptions[number];
+
+type RatesHistoryParams = {
+  from: number;
+  resolutionInHours: number;
+};
 
 type APIResponse = {
   liquidityRate_avg: number;
@@ -11,16 +23,41 @@ type APIResponse = {
   x: { year: number; month: number; date: number; hours: number };
 };
 
-const fetchStats = async (address: string, endpointURL: string) => {
-  const thirtyDaysAgo = dayjs().subtract(45, 'day').unix();
+const fetchStats = async (
+  address: string,
+  timeRange: ReserveRateTimeRange,
+  endpointURL: string
+) => {
+  const { from, resolutionInHours } = resolutionForTimeRange(timeRange);
   try {
-    const result = await fetch(
-      `${endpointURL}?reserveId=${address}&from=${thirtyDaysAgo}&resolutionInHours=6`
-    );
+    const url = `${endpointURL}?reserveId=${address}&from=${from}&resolutionInHours=${resolutionInHours}`;
+    const result = await fetch(url);
     const json = await result.json();
     return json;
   } catch (e) {
     return [];
+  }
+};
+
+// TODO: there is possibly a bug here, as Polygon and Avalanche v2 data is coming through empty and erroring in our hook
+// The same asset without the 'from' field comes through just fine.
+const resolutionForTimeRange = (timeRange: ReserveRateTimeRange): RatesHistoryParams => {
+  switch (timeRange) {
+    case '1m':
+      return {
+        from: dayjs().subtract(30, 'day').unix(),
+        resolutionInHours: 6,
+      };
+    case '6m':
+      return {
+        from: dayjs().subtract(6, 'month').unix(),
+        resolutionInHours: 24,
+      };
+    case '1y':
+      return {
+        from: dayjs().subtract(1, 'year').unix(),
+        resolutionInHours: 24,
+      };
   }
 };
 
@@ -38,20 +75,27 @@ const BROKEN_ASSETS = [
 ];
 
 // TODO: api need to be altered to expect chainId underlying asset and poolConfig
-export function useReserveRatesHistory(reserveAddress: string) {
+export function useReserveRatesHistory(reserveAddress: string, timeRange: ReserveRateTimeRange) {
   const { currentNetworkConfig } = useProtocolDataContext();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [data, setData] = useState<FormattedReserveHistoryItem[]>([]);
 
-  useEffect(() => {
+  const refetchData = useCallback<() => () => void>(() => {
+    // reset
+    setLoading(true);
+    setError(false);
+    setData([]);
+
     if (
       reserveAddress &&
       currentNetworkConfig.ratesHistoryApiUrl &&
       !BROKEN_ASSETS.includes(reserveAddress)
     ) {
       const cancelable = makeCancelable(
-        fetchStats(reserveAddress, currentNetworkConfig.ratesHistoryApiUrl)
+        fetchStats(reserveAddress, timeRange, currentNetworkConfig.ratesHistoryApiUrl)
       );
+
       cancelable.promise
         .then((data: APIResponse[]) => {
           setData(
@@ -65,16 +109,28 @@ export function useReserveRatesHistory(reserveAddress: string) {
           );
           setLoading(false);
         })
-        .catch((e) => console.log('error fetching result', e));
+        .catch((e) => {
+          console.error('useReservesHistory(): Failed to fetch historical reserve data.', e);
+          setError(true);
+          setLoading(false);
+        });
+
       return cancelable.cancel;
-    } else {
-      setLoading(false);
     }
-  }, [reserveAddress, currentNetworkConfig]);
+
+    setLoading(false);
+    return () => null;
+  }, [reserveAddress, timeRange, currentNetworkConfig]);
+
+  useEffect(() => {
+    const cancel = refetchData();
+    return () => cancel();
+  }, [refetchData]);
 
   return {
     loading,
     data,
-    error: BROKEN_ASSETS.includes(reserveAddress) || (!loading && data.length === 0),
+    error: error || BROKEN_ASSETS.includes(reserveAddress) || (!loading && data.length === 0),
+    refetch: refetchData,
   };
 }
