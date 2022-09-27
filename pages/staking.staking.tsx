@@ -1,17 +1,11 @@
 import { Trans } from '@lingui/macro';
-import {
-  Box,
-  Grid,
-  ToggleButton,
-  ToggleButtonGroup,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { Box, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { BigNumber } from 'ethers/lib/ethers';
 import { formatEther } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { ContentContainer } from 'src/components/ContentContainer';
+import StyledToggleButton from 'src/components/StyledToggleButton';
+import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { StakeModal } from 'src/components/transactions/Stake/StakeModal';
 import { StakeCooldownModal } from 'src/components/transactions/StakeCooldown/StakeCooldownModal';
 import { StakeRewardClaimModal } from 'src/components/transactions/StakeRewardClaim/StakeRewardClaimModal';
@@ -77,24 +71,24 @@ export default function Staking() {
                 mb: { xs: 3, xsm: 4 },
               }}
             >
-              <ToggleButtonGroup
+              <StyledToggleButtonGroup
                 color="primary"
                 value={mode}
                 exclusive
                 onChange={(_, value) => setMode(value)}
                 sx={{ width: { xs: '100%', xsm: '359px' } }}
               >
-                <ToggleButton value="aave" disabled={mode === 'aave'}>
+                <StyledToggleButton value="aave" disabled={mode === 'aave'}>
                   <Typography variant="subheader1">
                     <Trans>Stake AAVE</Trans>
                   </Typography>
-                </ToggleButton>
-                <ToggleButton value="bpt" disabled={mode === 'bpt'}>
+                </StyledToggleButton>
+                <StyledToggleButton value="bpt" disabled={mode === 'bpt'}>
                   <Typography variant="subheader1">
                     <Trans>Stake ABPT</Trans>
                   </Typography>
-                </ToggleButton>
-              </ToggleButtonGroup>
+                </StyledToggleButton>
+              </StyledToggleButtonGroup>
             </Box>
 
             <Grid container spacing={4}>
