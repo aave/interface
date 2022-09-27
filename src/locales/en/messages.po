@@ -1072,6 +1072,7 @@ msgid "No rewards to claim"
 msgstr "No rewards to claim"
 
 #: src/modules/markets/AssetsList.tsx
+#: src/modules/markets/AssetsList.tsx
 msgid "No search results for"
 msgstr "No search results for"
 
