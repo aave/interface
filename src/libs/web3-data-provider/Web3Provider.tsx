@@ -44,7 +44,7 @@ export type Web3Data = {
   error: Error | undefined;
   switchNetworkError: Error | undefined;
   setSwitchNetworkError: (err: Error | undefined) => void;
-  setMockWalletAddress: (mockWalletAddress: string) => void;
+  setWatchModeOnlyAddress: (mockWalletAddress: string) => void;
   mockAddress: string | undefined;
 };
 
@@ -118,7 +118,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     }
   }, [provider, connector]);
 
-  const setMockWalletAddress = (mockWalletAddress: string) => {
+  const setWatchModeOnlyAddress = (mockWalletAddress: string) => {
     setMockAddress(mockWalletAddress);
     localStorage.setItem('mockWalletAddress', mockWalletAddress);
   };
@@ -414,7 +414,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           error,
           switchNetworkError,
           setSwitchNetworkError,
-          setMockWalletAddress,
+          setWatchModeOnlyAddress,
           mockAddress,
         },
       }}
