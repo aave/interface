@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-09-20 00:24\n"
+"PO-Revision-Date: 2022-09-27 18:08\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -539,6 +539,10 @@ msgstr "Mode Sombre"
 msgid "Dashboard"
 msgstr "Tableau de bord"
 
+#: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
+msgid "Data couldn't be fetched, please reload graph."
+msgstr ""
+
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 msgid "Debt"
@@ -858,6 +862,10 @@ msgstr "Paramètres de prêt flash incohérents"
 msgid "Interest rate rebalance conditions were not met"
 msgstr "Les conditions de rééquilibrage des taux d'intérêt n'ont pas été remplies"
 
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Interest rate strategy"
+msgstr ""
+
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid amount to burn"
 msgstr "Montant non valide à brûler"
@@ -962,6 +970,10 @@ msgstr "Seuil de liquidation"
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/HFContent.tsx
 msgid "Liquidation value"
 msgstr "Valeur de liquidation"
+
+#: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
+msgid "Loading data..."
+msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "Ltv validation failed"
@@ -1255,6 +1267,10 @@ msgstr "Adresse du destinataire"
 msgid "Rejected connection request"
 msgstr "Demande de connexion rejetée"
 
+#: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
+msgid "Reload"
+msgstr ""
+
 #: pages/500.page.tsx
 msgid "Reload the page"
 msgstr ""
@@ -1401,6 +1417,7 @@ msgid "Since this is a test network, you can get any of the assets if you have E
 msgstr "Comme il s'agit d'un réseau de test, vous pouvez obtenir n'importe lequel des actifs si vous avez ETH dans votre portefeuille"
 
 #: pages/500.page.tsx
+#: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 msgid "Something went wrong"
 msgstr ""
 
@@ -1875,7 +1892,9 @@ msgstr "L'utilisateur est en mode d'isolement"
 msgid "User is trying to borrow multiple assets including a siloed one"
 msgstr "L'utilisateur essaie d'emprunter plusieurs actifs, y compris un en silo"
 
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
+#: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
 msgid "Utilization Rate"
 msgstr "Taux d'utilisation"
 

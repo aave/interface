@@ -1,19 +1,9 @@
 import { valueToBigNumber } from '@aave/math-utils';
+import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
-import {
-  Box,
-  BoxProps,
-  Divider,
-  SvgIcon,
-  Typography,
-  TypographyProps,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { Box, Button, Divider, SvgIcon, Typography } from '@mui/material';
 import Paper from '@mui/material/Paper';
-import { ParentSize } from '@visx/responsive';
-import React, { ReactNode } from 'react';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { DebtCeilingStatus } from 'src/components/caps/DebtCeilingStatus';
 import { IncentivesButton } from 'src/components/incentives/IncentivesButton';
@@ -33,105 +23,14 @@ import { getEmodeMessage } from 'src/components/transactions/Emode/EmodeNaming';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useReserveRatesHistory } from 'src/hooks/useReservesHistory';
 import { ReserveFactorOverview } from 'src/modules/reserve-overview/ReserveFactorOverview';
 
 import LightningBoltGradient from '/public/lightningBoltGradient.svg';
 
-import { ApyChart } from '../reserve-overview/ApyChart';
-import { InterestRateModelChart } from '../reserve-overview/InterestRateModelChart';
-
-export const PanelRow: React.FC<BoxProps> = (props) => (
-  <Box
-    {...props}
-    sx={{
-      position: 'relative',
-      display: { xs: 'block', md: 'flex' },
-      margin: '0 auto',
-      ...props.sx,
-    }}
-  />
-);
-export const PanelTitle: React.FC<TypographyProps> = (props) => (
-  <Typography
-    {...props}
-    variant="subheader1"
-    sx={{ minWidth: { xs: '170px' }, mr: 4, mb: { xs: 6, md: 0 }, ...props.sx }}
-  />
-);
-
-interface PanelColumnProps {
-  children?: ReactNode;
-}
-
-export const PanelColumn = ({ children }: PanelColumnProps) => {
-  return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        justifyContent: 'flex-end',
-        flex: 1,
-        overflow: 'hidden',
-        py: 1,
-      }}
-    >
-      {children}
-    </Box>
-  );
-};
-
-interface PanelItemProps {
-  title: ReactNode;
-}
-
-export const PanelItem: React.FC<PanelItemProps> = ({ title, children }) => {
-  const theme = useTheme();
-  const mdUp = useMediaQuery(theme.breakpoints.up('md'));
-
-  return (
-    <Box
-      sx={{
-        position: 'relative',
-        '&:not(:last-child)': {
-          pr: 4,
-          mr: 4,
-        },
-        ...(mdUp
-          ? {
-              '&:not(:last-child)::after': {
-                content: '""',
-                height: '32px',
-                position: 'absolute',
-                right: 4,
-                top: 'calc(50% - 17px)',
-                borderRight: (theme) => `1px solid ${theme.palette.divider}`,
-              },
-            }
-          : {}),
-      }}
-    >
-      <Typography color="text.secondary">{title}</Typography>
-      <PanelColumn>{children}</PanelColumn>
-    </Box>
-  );
-};
-
-const ChartContainer: React.FC<BoxProps> = (props) => (
-  <Box
-    {...props}
-    sx={{
-      minWidth: 0,
-      width: '100%',
-      maxWidth: '100%',
-      height: 300,
-      marginLeft: 0,
-      flexGrow: 1,
-      ...props.sx,
-    }}
-  />
-);
+import { CustomMarket, marketsData } from '../../utils/marketsAndNetworksConfig';
+import { ApyGraphContainer } from './graphs/ApyGraphContainer';
+import { InterestRateModelGraphContainer } from './graphs/InterestRateModelGraphContainer';
+import { PanelItem, PanelRow, PanelTitle } from './ReservePanels';
 
 type ReserveConfigurationProps = {
   reserve: ComputedReserveData;
@@ -139,13 +38,10 @@ type ReserveConfigurationProps = {
 
 export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ reserve }) => {
   const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
-  const renderCharts = !!currentNetworkConfig.ratesHistoryApiUrl;
-  const { data, error } = useReserveRatesHistory(
-    reserve
-      ? `${reserve.underlyingAsset}${currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER}`
-      : ''
-  ); // TODO: might make sense to move this to gql as well
-
+  const { v3 } = marketsData[currentMarket as CustomMarket];
+  // V3 and V2 Polygon will be enabled once support is added to API
+  const renderCharts =
+    !v3 && !!currentNetworkConfig.ratesHistoryApiUrl && currentMarket !== 'proto_polygon';
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
   const showSupplyCapStatus = reserve.supplyCap && reserve.supplyCap !== '0';
   const showBorrowCapStatus = reserve.borrowCap && reserve.borrowCap !== '0';
@@ -184,7 +80,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
 
       <PanelRow>
         <PanelTitle>Supply Info</PanelTitle>
-        <Box sx={{ minWidth: 0, maxWidth: '100%', width: '100%' }}>
+        <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
           <Box
             sx={{
               display: 'flex',
@@ -297,19 +193,12 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
               </PanelItem>
             )}
           </Box>
-          {renderCharts && !error && (reserve.borrowingEnabled || Number(reserve.totalDebt) > 0) && (
-            <ChartContainer sx={{ mt: 4, pb: 8 }}>
-              <ParentSize>
-                {(parent) => (
-                  <ApyChart
-                    width={parent.width}
-                    height={parent.height}
-                    data={data}
-                    fields={[{ name: 'liquidityRate', color: '#2EBAC6', text: 'Supply APR' }]}
-                  />
-                )}
-              </ParentSize>
-            </ChartContainer>
+          {renderCharts && (reserve.borrowingEnabled || Number(reserve.totalDebt) > 0) && (
+            <ApyGraphContainer
+              graphKey="supply"
+              reserve={reserve}
+              lendingPoolAddressProvider={currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER}
+            />
           )}
           <div>
             {reserve.isIsolated ? (
@@ -564,34 +453,14 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                   </PanelItem>
                 )}
               </Box>
-              {renderCharts && !error && (
-                <ChartContainer sx={{ mt: 8 }}>
-                  <ParentSize>
-                    {(parent) => (
-                      <ApyChart
-                        width={parent.width}
-                        height={parent.height}
-                        data={data}
-                        fields={[
-                          ...(reserve.stableBorrowRateEnabled
-                            ? ([
-                                {
-                                  name: 'stableBorrowRate',
-                                  color: '#0062D2',
-                                  text: 'Borrow APR, stable',
-                                },
-                              ] as const)
-                            : []),
-                          {
-                            name: 'variableBorrowRate',
-                            color: '#B6509E',
-                            text: 'Borrow APR, variable',
-                          },
-                        ]}
-                      />
-                    )}
-                  </ParentSize>
-                </ChartContainer>
+              {renderCharts && (
+                <ApyGraphContainer
+                  graphKey="borrow"
+                  reserve={reserve}
+                  lendingPoolAddressProvider={
+                    currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER
+                  }
+                />
               )}
               <Box
                 sx={{ display: 'inline-flex', alignItems: 'center', pt: '42px', pb: '12px' }}
@@ -723,27 +592,42 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
 
           <PanelRow>
             <PanelTitle>Interest rate model</PanelTitle>
-            <ChartContainer>
-              <ParentSize>
-                {(parent) => (
-                  <InterestRateModelChart
-                    width={parent.width}
-                    height={parent.height}
-                    reserve={{
-                      baseStableBorrowRate: reserve.baseStableBorrowRate,
-                      baseVariableBorrowRate: reserve.baseVariableBorrowRate,
-                      optimalUsageRatio: reserve.optimalUsageRatio,
-                      stableRateSlope1: reserve.stableRateSlope1,
-                      stableRateSlope2: reserve.stableRateSlope2,
-                      utilizationRate: reserve.borrowUsageRatio,
-                      variableRateSlope1: reserve.variableRateSlope1,
-                      variableRateSlope2: reserve.variableRateSlope2,
-                      stableBorrowRateEnabled: reserve.stableBorrowRateEnabled,
-                    }}
+            <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  flexWrap: 'wrap',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <PanelItem title={<Trans>Utilization Rate</Trans>} className="borderless">
+                  <FormattedNumber
+                    value={reserve.borrowUsageRatio}
+                    percent
+                    variant="main16"
+                    compact
                   />
-                )}
-              </ParentSize>
-            </ChartContainer>
+                </PanelItem>
+                <Button
+                  href={currentNetworkConfig.explorerLinkBuilder({
+                    address: reserve.interestRateStrategyAddress,
+                  })}
+                  endIcon={
+                    <SvgIcon sx={{ width: 14, height: 14 }}>
+                      <ExternalLinkIcon />
+                    </SvgIcon>
+                  }
+                  component={Link}
+                  size="small"
+                  variant="outlined"
+                  sx={{ verticalAlign: 'top' }}
+                >
+                  <Trans>Interest rate strategy</Trans>
+                </Button>
+              </Box>
+              <InterestRateModelGraphContainer reserve={reserve} />
+            </Box>
           </PanelRow>
         </>
       )}

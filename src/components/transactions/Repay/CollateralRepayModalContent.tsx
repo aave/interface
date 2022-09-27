@@ -1,11 +1,13 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { useRef, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
+import StyledToggleButton from 'src/components/StyledToggleButton';
+import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import {
   ComputedReserveData,
   ComputedUserReserveData,
@@ -231,22 +233,22 @@ export function CollateralRepayModalContent({
         <Typography variant="description" sx={{ mt: 4 }}>
           <Trans>Max slippage rate</Trans>
         </Typography>
-        <ToggleButtonGroup
+        <StyledToggleButtonGroup
           sx={{ mt: 2 }}
           value={maxSlippage}
           onChange={(_e, value) => setMaxSlippage(value)}
           exclusive
         >
-          <ToggleButton value="0.1" sx={{ minWidth: '74px' }}>
+          <StyledToggleButton value="0.1" sx={{ minWidth: '74px' }}>
             <Typography variant="secondary14">0.1%</Typography>
-          </ToggleButton>
-          <ToggleButton value="0.5" sx={{ minWidth: '74px' }}>
+          </StyledToggleButton>
+          <StyledToggleButton value="0.5" sx={{ minWidth: '74px' }}>
             <Typography variant="secondary14">0.5%</Typography>
-          </ToggleButton>
-          <ToggleButton value="1" sx={{ minWidth: '74px' }}>
+          </StyledToggleButton>
+          <StyledToggleButton value="1" sx={{ minWidth: '74px' }}>
             <Typography variant="secondary14">1%</Typography>
-          </ToggleButton>
-        </ToggleButtonGroup>
+          </StyledToggleButton>
+        </StyledToggleButtonGroup>
       </Box>
       <TxModalDetails gasLimit={gasLimit}>
         <DetailsNumberLineWithSub

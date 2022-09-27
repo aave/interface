@@ -41,7 +41,6 @@ msgstr "APR"
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "APY"
 msgstr "APY"
 
@@ -53,14 +52,12 @@ msgstr "APY type"
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "APY, stable"
 msgstr "APY, stable"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "APY, variable"
 msgstr "APY, variable"
 
@@ -180,14 +177,6 @@ msgstr "Array parameters that should be equal length are not"
 msgid "Asset"
 msgstr "Asset"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "Asset can only be used as collateral in isolation mode only."
-msgstr "Asset can only be used as collateral in isolation mode only."
-
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "Asset cannot be used as collateral."
-msgstr "Asset cannot be used as collateral."
-
 #: src/components/transactions/Emode/EmodeSelect.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Asset category"
@@ -200,10 +189,6 @@ msgstr "Asset is not borrowable in isolation mode"
 #: src/ui-config/errorMapping.tsx
 msgid "Asset is not listed"
 msgstr "Asset is not listed"
-
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
-msgstr "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Asset to delegate"
@@ -310,10 +295,6 @@ msgstr "Borrow APY, variable"
 msgid "Borrow and repay in same block is not allowed"
 msgstr "Borrow and repay in same block is not allowed"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "Borrow cap"
-msgstr "Borrow cap"
-
 #: src/ui-config/errorMapping.tsx
 msgid "Borrow cap is exceeded"
 msgstr "Borrow cap is exceeded"
@@ -350,10 +331,6 @@ msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mod
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
-msgstr "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
-
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Borrowing power and assets are limited due to Isolation mode."
 msgstr "Borrowing power and assets are limited due to Isolation mode."
@@ -376,7 +353,6 @@ msgstr "CLAIMING {symbol}"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Can be collateral"
 msgstr "Can be collateral"
 
@@ -445,12 +421,6 @@ msgstr "Collateral amount to repay with"
 msgid "Collateral is (mostly) the same currency that is being borrowed"
 msgstr "Collateral is (mostly) the same currency that is being borrowed"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "Collateral usage"
-msgstr "Collateral usage"
-
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Collateral usage is limited because of Isolation mode."
 msgstr "Collateral usage is limited because of Isolation mode."
@@ -466,10 +436,6 @@ msgstr "Collateralization"
 #: src/modules/reserve-overview/ReserveFactorOverview.tsx
 msgid "Collector Contract"
 msgstr "Collector Contract"
-
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "Collector Info"
-msgstr "Collector Info"
 
 #: src/components/WalletConnection/ConnectWalletButton.tsx
 #: src/layouts/WalletWidget.tsx
@@ -533,6 +499,10 @@ msgstr "Dark mode"
 #: src/ui-config/menu-items/index.tsx
 msgid "Dashboard"
 msgstr "Dashboard"
+
+#: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
+msgid "Data couldn't be fetched, please reload graph."
+msgstr "Data couldn't be fetched, please reload graph."
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
@@ -641,10 +611,6 @@ msgstr "Due to the Horizon bridge exploit, certain assets on the Harmony network
 msgid "E-Mode"
 msgstr "E-Mode"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "E-Mode Category"
-msgstr "E-Mode Category"
-
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "E-Mode category"
 msgstr "E-Mode category"
@@ -656,10 +622,6 @@ msgstr "E-Mode increases your LTV for a selected category of assets up to 97%. <
 #: src/components/infoTooltips/EModeTooltip.tsx
 msgid "E-Mode increases your LTV for a selected category of assets up to<0/>. <1>Learn more</1>"
 msgstr "E-Mode increases your LTV for a selected category of assets up to<0/>. <1>Learn more</1>"
-
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "E-Mode increases your LTV for a selected category of assets, meaning that when E-mode is enabled, you will have higher borrowing power over assets of the same E-mode category which are defined by Aave Governance. You can enter E-Mode from your <0>Dashboard</0>. To learn more about E-Mode and applied restrictions in <1>FAQ</1> or <2>Aave V3 Technical Paper</2>."
-msgstr "E-Mode increases your LTV for a selected category of assets, meaning that when E-mode is enabled, you will have higher borrowing power over assets of the same E-mode category which are defined by Aave Governance. You can enter E-Mode from your <0>Dashboard</0>. To learn more about E-Mode and applied restrictions in <1>FAQ</1> or <2>Aave V3 Technical Paper</2>."
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Efficiency mode (E-Mode)"
@@ -911,8 +873,6 @@ msgstr "Language"
 #: src/components/transactions/Warnings/MarketWarning.tsx
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Learn more"
 msgstr "Learn more"
 
@@ -936,11 +896,6 @@ msgstr "Liquidation <0/> threshold"
 msgid "Liquidation at"
 msgstr "Liquidation at"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "Liquidation penalty"
-msgstr "Liquidation penalty"
-
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Liquidation risk"
 msgstr "Liquidation risk"
@@ -949,14 +904,13 @@ msgstr "Liquidation risk"
 msgid "Liquidation risk parameters"
 msgstr "Liquidation risk parameters"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "Liquidation threshold"
-msgstr "Liquidation threshold"
-
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/HFContent.tsx
 msgid "Liquidation value"
 msgstr "Liquidation value"
+
+#: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
+msgid "Loading data..."
+msgstr "Loading data..."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Ltv validation failed"
@@ -979,11 +933,6 @@ msgstr "Markets"
 msgid "Max"
 msgstr "Max"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "Max LTV"
-msgstr "Max LTV"
-
 #: src/modules/staking/StakingPanel.tsx
 msgid "Max slashing"
 msgstr "Max slashing"
@@ -1000,11 +949,6 @@ msgstr "Maximum amount available to borrow against this asset is limited because
 #: src/components/transactions/Warnings/BorrowCapWarning.tsx
 msgid "Maximum amount available to borrow is limited because protocol borrow cap is nearly reached."
 msgstr "Maximum amount available to borrow is limited because protocol borrow cap is nearly reached."
-
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "Maximum amount available to supply is <0/> {0} (<1/>)."
-msgstr "Maximum amount available to supply is <0/> {0} (<1/>)."
 
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 msgid "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
@@ -1250,6 +1194,10 @@ msgstr "Recipient address"
 msgid "Rejected connection request"
 msgstr "Rejected connection request"
 
+#: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
+msgid "Reload"
+msgstr "Reload"
+
 #: pages/500.page.tsx
 msgid "Reload the page"
 msgstr "Reload the page"
@@ -1294,10 +1242,6 @@ msgstr "Reserve factor"
 #: src/components/infoTooltips/ReserveFactorTooltip.tsx
 msgid "Reserve factor is a percentage of interest which goes to a {0} that is controlled by Aave governance to promote ecosystem growth."
 msgstr "Reserve factor is a percentage of interest which goes to a {0} that is controlled by Aave governance to promote ecosystem growth."
-
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "Reserve status & configuration"
-msgstr "Reserve status & configuration"
 
 #: src/components/transactions/FlowCommons/LeftHelperText.tsx
 msgid "Retry What?"
@@ -1396,6 +1340,7 @@ msgid "Since this is a test network, you can get any of the assets if you have E
 msgstr "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
 
 #: pages/500.page.tsx
+#: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 msgid "Something went wrong"
 msgstr "Something went wrong"
 
@@ -1710,10 +1655,6 @@ msgstr "This asset has reached its supply cap. Nothing is available to be suppli
 msgid "This asset is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
 msgstr "This asset is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "This asset is frozen due to an Aave community decision. <0>More details</0>"
-msgstr "This asset is frozen due to an Aave community decision. <0>More details</0>"
-
 #: src/components/infoTooltips/GasTooltip.tsx
 msgid "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
 msgstr "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
@@ -1769,8 +1710,6 @@ msgstr "Total available"
 
 #: src/modules/markets/AssetsList.tsx
 #: src/modules/markets/AssetsListMobileItem.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Total borrowed"
 msgstr "Total borrowed"
 
@@ -1788,8 +1727,6 @@ msgstr "Total market size"
 
 #: src/modules/markets/AssetsList.tsx
 #: src/modules/markets/AssetsListMobileItem.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Total supplied"
 msgstr "Total supplied"
 
@@ -1825,10 +1762,6 @@ msgstr "UNSTAKING {symbol}"
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Unavailable"
 msgstr "Unavailable"
-
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "Unbacked"
-msgstr "Unbacked"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Unbacked mint cap is exceeded"
@@ -1871,6 +1804,7 @@ msgid "User is trying to borrow multiple assets including a siloed one"
 msgstr "User is trying to borrow multiple assets including a siloed one"
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
+#: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
 msgid "Utilization Rate"
 msgstr "Utilization Rate"
 
@@ -2161,10 +2095,6 @@ msgid "is an asset affected by rebasing. Visit the"
 msgstr "is an asset affected by rebasing. Visit the"
 
 #: src/components/caps/DebtCeilingStatus.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "of"
 msgstr "of"
 
