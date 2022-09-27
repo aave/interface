@@ -28,6 +28,14 @@ export const AssetListTitle = ({
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down('sm'));
 
+  const showSearchIcon = sm && !showSearchBar;
+  const showMarketTitle = !sm || !showSearchBar;
+
+  const handleCancelClick = () => {
+    setShowSearchBar(false);
+    onSearchTermChange('');
+  };
+
   return (
     <Box
       sx={{
@@ -37,7 +45,7 @@ export const AssetListTitle = ({
         justifyContent: 'space-between',
       }}
     >
-      {(!showSearchBar || !sm) && (
+      {showMarketTitle && (
         <Typography component="div" variant="h2" sx={{ mr: 4 }}>
           {marketTitle} <Trans>assets</Trans>
         </Typography>
@@ -52,7 +60,7 @@ export const AssetListTitle = ({
           justifyContent: 'space-between',
         }}
       >
-        {sm && !showSearchBar && (
+        {showSearchIcon && (
           <IconButton onClick={() => setShowSearchBar(true)}>
             <SvgIcon>
               <SearchIcon />
@@ -67,13 +75,7 @@ export const AssetListTitle = ({
                   searchTerm={searchTerm}
                   onSearchTermChange={onSearchTermChange}
                 />
-                <Button
-                  sx={{ ml: 2 }}
-                  onClick={() => {
-                    setShowSearchBar(false);
-                    onSearchTermChange('');
-                  }}
-                >
+                <Button sx={{ ml: 2 }} onClick={() => handleCancelClick()}>
                   <Typography variant="buttonM">
                     <Trans>Cancel</Trans>
                   </Typography>

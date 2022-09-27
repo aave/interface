@@ -1,6 +1,6 @@
 import { SearchIcon } from '@heroicons/react/outline';
 import { XCircleIcon } from '@heroicons/react/solid';
-import { Box, IconButton, InputBase, useMediaQuery, useTheme } from '@mui/material';
+import { Box, IconButton, InputBase } from '@mui/material';
 import { useRef } from 'react';
 
 export interface AssetSearchInputProps {
@@ -12,7 +12,7 @@ export const AssetSearchInput = ({ searchTerm, onSearchTermChange }: AssetSearch
   const inputEl = useRef<HTMLInputElement>(null);
 
   const handleChange = (value: string) => {
-    onSearchTermChange(value.trim());
+    onSearchTermChange(value);
   };
 
   const handleClear = () => {
