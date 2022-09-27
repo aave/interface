@@ -13,7 +13,6 @@ interface ListWrapperProps {
   children: ReactNode;
   withTopMargin?: boolean;
   noData?: boolean;
-  captionSize?: 'h2' | 'h3';
 }
 
 export const ListWrapper = ({

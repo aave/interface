@@ -1,23 +1,24 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Button, Typography, useMediaQuery, useTheme, Box } from '@mui/material';
+import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import * as React from 'react';
-import { useModalContext } from 'src/hooks/useModal';
+import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { ListItem } from 'src/components/lists/ListItem';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Link, ROUTES } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
+import { useModalContext } from 'src/hooks/useModal';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+
 import { FaucetItemLoader } from './FaucetItemLoader';
 import { FaucetMobileItemLoader } from './FaucetMobileItemLoader';
-import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { Link, ROUTES } from 'src/components/primitives/Link';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 export default function FaucetAssetsList() {
   const { reserves, loading } = useAppDataContext();
@@ -51,7 +52,13 @@ export default function FaucetAssetsList() {
   }
 
   return (
-    <ListWrapper title={<Trans>Test Assets</Trans>} captionSize="h2">
+    <ListWrapper
+      title={
+        <Typography component="div" variant="h2" sx={{ mr: 4 }}>
+          <Trans>Test Assets</Trans>
+        </Typography>
+      }
+    >
       <ListHeaderWrapper px={downToXSM ? 4 : 6}>
         <ListColumn isRow maxWidth={280}>
           <ListHeaderTitle>

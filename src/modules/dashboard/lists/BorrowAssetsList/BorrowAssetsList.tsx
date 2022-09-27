@@ -1,12 +1,19 @@
-import { Fragment } from 'react';
 import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Fragment } from 'react';
+import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
+import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
+import { Warning } from 'src/components/primitives/Warning';
+import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
+import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+
 import { CapType } from '../../../../components/caps/helper';
 import { AvailableTooltip } from '../../../../components/infoTooltips/AvailableTooltip';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
+import { Link } from '../../../../components/primitives/Link';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -20,12 +27,6 @@ import { ListHeader } from '../ListHeader';
 import { ListLoader } from '../ListLoader';
 import { BorrowAssetsListItem } from './BorrowAssetsListItem';
 import { BorrowAssetsListMobileItem } from './BorrowAssetsListMobileItem';
-import { Link } from '../../../../components/primitives/Link';
-import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
-import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
-import { Warning } from 'src/components/primitives/Warning';
-import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
-import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 
 export const BorrowAssetsList = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
@@ -111,7 +112,11 @@ export const BorrowAssetsList = () => {
   const borrowDisabled = !borrowReserves.length;
   return (
     <ListWrapper
-      title={<Trans>Assets to borrow</Trans>}
+      title={
+        <Typography component="div" variant="h3" sx={{ mr: 4 }}>
+          <Trans>Assets to borrow</Trans>
+        </Typography>
+      }
       localStorageName="borrowAssetsDashboardTableCollapse"
       withTopMargin
       noData={borrowDisabled}

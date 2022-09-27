@@ -1,10 +1,14 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { Fragment, useState } from 'react';
+import { Warning } from 'src/components/primitives/Warning';
+import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
+import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
 import {
@@ -18,9 +22,6 @@ import { ListHeader } from '../ListHeader';
 import { ListLoader } from '../ListLoader';
 import { SupplyAssetsListItem } from './SupplyAssetsListItem';
 import { SupplyAssetsListMobileItem } from './SupplyAssetsListMobileItem';
-import { Warning } from 'src/components/primitives/Warning';
-import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
-import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 
 export const SupplyAssetsList = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
@@ -158,7 +159,11 @@ export const SupplyAssetsList = () => {
   const supplyDisabled = !tokensToSupply.length;
   return (
     <ListWrapper
-      title={<Trans>Assets to supply</Trans>}
+      title={
+        <Typography component="div" variant="h3" sx={{ mr: 4 }}>
+          <Trans>Assets to supply</Trans>
+        </Typography>
+      }
       localStorageName="supplyAssetsDashboardTableCollapse"
       withTopMargin
       noData={supplyDisabled}

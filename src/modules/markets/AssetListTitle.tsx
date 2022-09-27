@@ -38,7 +38,7 @@ export const AssetListTitle = ({
       }}
     >
       {(!showSearchBar || !sm) && (
-        <Typography component="div" variant="h3" sx={{ mr: 4 }}>
+        <Typography component="div" variant="h2" sx={{ mr: 4 }}>
           {marketTitle} <Trans>assets</Trans>
         </Typography>
       )}

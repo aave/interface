@@ -1,21 +1,22 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { useMediaQuery, useTheme } from '@mui/material';
+import { Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Fragment } from 'react';
+import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+
 import { CollateralSwitchTooltip } from '../../../../components/infoTooltips/CollateralSwitchTooltip';
 import { CollateralTooltip } from '../../../../components/infoTooltips/CollateralTooltip';
 import { TotalSupplyAPYTooltip } from '../../../../components/infoTooltips/TotalSupplyAPYTooltip';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { useAppDataContext } from '../../../../hooks/app-data-provider/useAppDataProvider';
+import { ListTopInfoItem } from '../../../dashboard/lists/ListTopInfoItem';
 import { DashboardContentNoData } from '../../DashboardContentNoData';
 import { ListHeader } from '../ListHeader';
 import { ListLoader } from '../ListLoader';
-import { ListTopInfoItem } from '../../../dashboard/lists/ListTopInfoItem';
 import { SuppliedPositionsListItem } from './SuppliedPositionsListItem';
 import { SuppliedPositionsListMobileItem } from './SuppliedPositionsListMobileItem';
-import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
-import { Fragment } from 'react';
 
 export const SuppliedPositionsList = () => {
   const { user, loading } = useAppDataContext();
@@ -53,7 +54,11 @@ export const SuppliedPositionsList = () => {
 
   return (
     <ListWrapper
-      title={<Trans>Your supplies</Trans>}
+      title={
+        <Typography component="div" variant="h3" sx={{ mr: 4 }}>
+          <Trans>Your supplies</Trans>
+        </Typography>
+      }
       localStorageName="suppliedAssetsDashboardTableCollapse"
       noData={!suppliedPosition.length}
       topInfo={

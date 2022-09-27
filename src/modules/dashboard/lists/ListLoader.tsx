@@ -1,4 +1,4 @@
-import { useMediaQuery, useTheme } from '@mui/material';
+import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 
 import { ListWrapper } from '../../../components/lists/ListWrapper';
@@ -17,7 +17,14 @@ export const ListLoader = ({ title, withTopMargin, head }: ListLoaderProps) => {
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   return (
-    <ListWrapper title={title} withTopMargin={withTopMargin}>
+    <ListWrapper
+      title={
+        <Typography component="div" variant="h3" sx={{ mr: 4 }}>
+          {title}
+        </Typography>
+      }
+      withTopMargin={withTopMargin}
+    >
       <>
         {!downToXSM && <ListHeader head={head} />}
         {!downToXSM ? (

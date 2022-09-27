@@ -117,7 +117,6 @@ export default function AssetsList() {
           marketTitle={currentMarketData.marketTitle}
         />
       }
-      captionSize="h2"
     >
       {marketFrozen && currentNetworkConfig.name === 'Harmony' && (
         <Box sx={{ mx: '24px' }}>
