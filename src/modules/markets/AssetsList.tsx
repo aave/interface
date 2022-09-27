@@ -1,6 +1,6 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Box, Typography, useMediaQuery } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
@@ -24,6 +24,8 @@ export default function AssetsList() {
   const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
 
   const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
+  const { breakpoints } = useTheme();
+  const sm = useMediaQuery(breakpoints.down('sm'));
 
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
@@ -189,12 +191,25 @@ export default function AssetsList() {
             pt: 15,
             pb: 40,
             px: 4,
-            overflow: 'hidden',
           }}
         >
-          <Typography sx={{ textAlign: 'center' }} variant="h2">
-            <Trans>No search results for</Trans> &apos;{searchTerm}&apos;
-          </Typography>
+          {sm ? (
+            <Box sx={{ textAlign: 'center', maxWidth: '300px' }}>
+              <Typography variant="h2">
+                <Trans>No search results for</Trans>
+              </Typography>
+              <Typography sx={{ overflowWrap: 'anywhere' }} variant="h2">
+                &apos;{searchTerm}&apos;
+              </Typography>
+            </Box>
+          ) : (
+            <Typography
+              sx={{ textAlign: 'center', maxWidth: '480px', overflowWrap: 'anywhere' }}
+              variant="h2"
+            >
+              <Trans>No search results for</Trans> &apos;{searchTerm}&apos;
+            </Typography>
+          )}
           <Typography
             sx={{ width: '280px', textAlign: 'center' }}
             variant="description"
