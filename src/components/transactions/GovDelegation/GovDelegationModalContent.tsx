@@ -35,7 +35,7 @@ export enum ErrorType {
 }
 
 export const GovDelegationModalContent = () => {
-  const { chainId: connectedChainId, mockAddress } = useWeb3Context();
+  const { chainId: connectedChainId, watchModeOnlyAddress } = useWeb3Context();
   const {
     daveTokens: { aave, stkAave },
   } = useAaveTokensProviderContext();
@@ -101,7 +101,7 @@ export const GovDelegationModalContent = () => {
   return (
     <>
       <TxModalTitle title="Delegate your power" />
-      {isWrongNetwork && !mockAddress && (
+      {isWrongNetwork && !watchModeOnlyAddress && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={govChain} />
       )}
       <Typography variant="description">

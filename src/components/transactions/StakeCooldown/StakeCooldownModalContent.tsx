@@ -34,7 +34,7 @@ type StakingType = 'aave' | 'bpt';
 
 export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps) => {
   const { stakeUserResult, stakeGeneralResult } = useStakeData();
-  const { chainId: connectedChainId, mockAddress } = useWeb3Context();
+  const { chainId: connectedChainId, watchModeOnlyAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
 
@@ -108,7 +108,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
   return (
     <>
       <TxModalTitle title="Cooldown to unstake" />
-      {isWrongNetwork && !mockAddress && (
+      {isWrongNetwork && !watchModeOnlyAddress && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
       )}
       <Typography variant="description" sx={{ mb: 6 }}>

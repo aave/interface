@@ -30,7 +30,7 @@ type StakingType = 'aave' | 'bpt';
 export const StakeRewardClaimModalContent = ({ stakeAssetName }: StakeRewardClaimProps) => {
   const data = useStakeData();
   const stakeData = data.stakeGeneralResult?.stakeGeneralUIData[stakeAssetName as StakingType];
-  const { chainId: connectedChainId, mockAddress } = useWeb3Context();
+  const { chainId: connectedChainId, watchModeOnlyAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
 
@@ -89,7 +89,7 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName }: StakeRewardClai
   return (
     <>
       <TxModalTitle title="Claim" symbol={rewardsSymbol} />
-      {isWrongNetwork && !mockAddress && (
+      {isWrongNetwork && !watchModeOnlyAddress && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
       )}
       {blockingError !== undefined && (

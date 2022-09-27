@@ -36,7 +36,7 @@ export const GovVoteModalContent = ({
   support,
   power: votingPower,
 }: GovVoteModalContentProps) => {
-  const { chainId: connectedChainId, mockAddress } = useWeb3Context();
+  const { chainId: connectedChainId, watchModeOnlyAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
 
@@ -78,7 +78,7 @@ export const GovVoteModalContent = ({
   return (
     <>
       <TxModalTitle title="Governance vote" />
-      {isWrongNetwork && !mockAddress && (
+      {isWrongNetwork && !watchModeOnlyAddress && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={govChain} />
       )}
       {blockingError !== undefined && (

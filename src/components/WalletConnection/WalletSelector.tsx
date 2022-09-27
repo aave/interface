@@ -98,7 +98,7 @@ export enum ErrorType {
 }
 
 export const WalletSelector = () => {
-  const { error, setMockWalletAddress } = useWeb3Context();
+  const { error, updateWatchModeOnlyAddress } = useWeb3Context();
   const [inputMockWalletAddress, setInputMockWalletAddress] = useState('');
   const [validAddressError, setValidAddressError] = useState<boolean>(false);
 
@@ -133,7 +133,7 @@ export const WalletSelector = () => {
   const handleWatchAddress = (inputMockWalletAddress: string): void => {
     if (validAddressError) setValidAddressError(false);
     if (!utils.isAddress(inputMockWalletAddress)) return setValidAddressError(true);
-    setMockWalletAddress(inputMockWalletAddress);
+    updateWatchModeOnlyAddress(inputMockWalletAddress);
   };
 
   return (

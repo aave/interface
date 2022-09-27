@@ -43,7 +43,7 @@ export const TxActionsWrapper = ({
   ...rest
 }: TxActionsWrapperProps) => {
   const { txError, retryWithApproval } = useModalContext();
-  const { mockAddress } = useWeb3Context();
+  const { watchModeOnlyAddress } = useWeb3Context();
 
   const hasApprovalError =
     requiresApproval && txError && txError.txAction === TxAction.APPROVAL && txError.actionBlocked;
@@ -89,14 +89,14 @@ export const TxActionsWrapper = ({
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12, ...sx }} {...rest}>
-      {requiresApproval && !mockAddress && (
+      {requiresApproval && !watchModeOnlyAddress && (
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
           <LeftHelperText amount={amount} approvalHash={approvalTxState?.txHash} />
           <RightHelperText approvalHash={approvalTxState?.txHash} />
         </Box>
       )}
 
-      {approvalParams && !mockAddress && (
+      {approvalParams && !watchModeOnlyAddress && (
         <Button
           variant="contained"
           disabled={approvalParams.disabled || blocked}
@@ -114,7 +114,7 @@ export const TxActionsWrapper = ({
 
       <Button
         variant="contained"
-        disabled={disabled || blocked || mockAddress !== undefined}
+        disabled={disabled || blocked || watchModeOnlyAddress !== undefined}
         onClick={handleClick}
         size="large"
         sx={{ minHeight: '44px', ...(approvalParams ? { mt: 2 } : {}) }}
@@ -123,8 +123,8 @@ export const TxActionsWrapper = ({
         {loading && <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />}
         {content}
       </Button>
-      {mockAddress && (
-        <Typography variant="helperText" sx={{ color: 'warning.main', textAlign: 'center', mt: 2 }}>
+      {watchModeOnlyAddress && (
+        <Typography variant="helperText" color="warning.main" sx={{ textAlign: 'center', mt: 2 }}>
           <Trans>Watch-only mode. Connect to a wallet to perform transactions.</Trans>
         </Typography>
       )}
