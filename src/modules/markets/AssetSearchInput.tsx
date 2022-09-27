@@ -80,7 +80,7 @@ export const AssetSearchInputMobile = ({
       <InputBase
         ref={inputEl}
         autoFocus
-        sx={{ flexGrow: 1 }}
+        sx={{ flexGrow: 1, fontSize: 16 }}
         placeholder="Search asset"
         value={searchTerm}
         onChange={(e) => {
