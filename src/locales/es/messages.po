@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-09-20 12:07\n"
+"PO-Revision-Date: 2022-09-27 18:08\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -539,6 +539,10 @@ msgstr "Modo oscuro"
 msgid "Dashboard"
 msgstr "Panel"
 
+#: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
+msgid "Data couldn't be fetched, please reload graph."
+msgstr "No se pudieron recuperar los datos, por favor recarga el gráfico."
+
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 msgid "Debt"
@@ -858,6 +862,10 @@ msgstr "Parámetros inconsistentes del préstamo flash"
 msgid "Interest rate rebalance conditions were not met"
 msgstr "No se cumplieron las condiciones de ajuste de tasas de interés"
 
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Interest rate strategy"
+msgstr "Estrategia de tasa de interés"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid amount to burn"
 msgstr "Cantidad inválida para quemar"
@@ -962,6 +970,10 @@ msgstr "Umbral de liquidación"
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/HFContent.tsx
 msgid "Liquidation value"
 msgstr "Valor de liquidación"
+
+#: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
+msgid "Loading data..."
+msgstr "Cargando datos..."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Ltv validation failed"
@@ -1255,6 +1267,10 @@ msgstr "Dirección del destinatario"
 msgid "Rejected connection request"
 msgstr "Solicitud de conexión rechazada"
 
+#: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
+msgid "Reload"
+msgstr "Recargar"
+
 #: pages/500.page.tsx
 msgid "Reload the page"
 msgstr "Recarga la página"
@@ -1401,6 +1417,7 @@ msgid "Since this is a test network, you can get any of the assets if you have E
 msgstr "Puesto que esta es una red de pruebas, puedes obtener cualquiera de los activos si tienes ETH en tu cartera"
 
 #: pages/500.page.tsx
+#: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 msgid "Something went wrong"
 msgstr "Se produjo un error"
 
@@ -1875,7 +1892,9 @@ msgstr "El usuario está en Isolation mode"
 msgid "User is trying to borrow multiple assets including a siloed one"
 msgstr "El usuario está intentando tomar prestado múltiples activos incluido uno aislado"
 
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
+#: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
 msgid "Utilization Rate"
 msgstr "Tasa de uso"
 

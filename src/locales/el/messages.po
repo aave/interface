@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-09-20 00:24\n"
+"PO-Revision-Date: 2022-09-27 18:08\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -539,6 +539,10 @@ msgstr "Σκοτεινή λειτουργία"
 msgid "Dashboard"
 msgstr "Ταμπλό"
 
+#: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
+msgid "Data couldn't be fetched, please reload graph."
+msgstr ""
+
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
 msgid "Debt"
@@ -858,6 +862,10 @@ msgstr "Ασυνεπείς παράμετροι flashloan"
 msgid "Interest rate rebalance conditions were not met"
 msgstr "Δεν τηρήθηκαν οι όροι επανεξισορρόπησης των επιτοκίων"
 
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Interest rate strategy"
+msgstr ""
+
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid amount to burn"
 msgstr "Μη έγκυρη ποσότητα προς καύση"
@@ -962,6 +970,10 @@ msgstr "Κατώτατο όριο ρευστοποίησης"
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/HFContent.tsx
 msgid "Liquidation value"
 msgstr "Αξία ρευστοποίησης"
+
+#: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
+msgid "Loading data..."
+msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "Ltv validation failed"
@@ -1255,6 +1267,10 @@ msgstr "Διεύθυνση παραλήπτη"
 msgid "Rejected connection request"
 msgstr "Απόρριψη αιτήματος σύνδεσης"
 
+#: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
+msgid "Reload"
+msgstr ""
+
 #: pages/500.page.tsx
 msgid "Reload the page"
 msgstr ""
@@ -1401,6 +1417,7 @@ msgid "Since this is a test network, you can get any of the assets if you have E
 msgstr "Δεδομένου ότι πρόκειται για ένα δοκιμαστικό δίκτυο, μπορείτε να αποκτήσετε οποιοδήποτε από τα περιουσιακά στοιχεία αν έχετε ETH στο πορτοφόλι σας"
 
 #: pages/500.page.tsx
+#: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 msgid "Something went wrong"
 msgstr ""
 
@@ -1876,7 +1893,9 @@ msgstr "Ο χρήστης βρίσκεται σε λειτουργία απομ�
 msgid "User is trying to borrow multiple assets including a siloed one"
 msgstr "Ο χρήστης προσπαθεί να δανειστεί πολλαπλά περιουσιακά στοιχεία, συμπεριλαμβανομένου ενός απομονωμένου περιουσιακού στοιχείου"
 
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
+#: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
 msgid "Utilization Rate"
 msgstr "Ποσοστό χρησιμοποίησης"
 
