@@ -1,6 +1,7 @@
 import { SearchIcon } from '@heroicons/react/outline';
 import { XCircleIcon } from '@heroicons/react/solid';
 import { Box, IconButton, InputBase, useMediaQuery, useTheme } from '@mui/material';
+import { useRef } from 'react';
 
 export interface AssetSearchProps {
   searchTerm: string;
@@ -9,6 +10,7 @@ export interface AssetSearchProps {
 
 export const AssetSearch = ({ searchTerm, onSearchTermChange }: AssetSearchProps) => {
   // const [searchTerm, setSearchTerm] = useState('');
+  const inputEl = useRef<HTMLInputElement>(null);
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down('sm'));
 
@@ -39,6 +41,7 @@ export const AssetSearch = ({ searchTerm, onSearchTermChange }: AssetSearchProps
         <SearchIcon height={16} />
       </Box>
       <InputBase
+        inputRef={inputEl}
         sx={{ flexGrow: sm ? 1 : 0, width: sm ? 'unset' : '275px' }}
         placeholder={placeHolder}
         value={searchTerm}
@@ -48,7 +51,10 @@ export const AssetSearch = ({ searchTerm, onSearchTermChange }: AssetSearchProps
       />
       <IconButton
         sx={{ p: 0, mr: 2, visibility: searchTerm ? 'visible' : 'hidden' }}
-        onClick={() => handleChange('')}
+        onClick={() => {
+          handleChange('');
+          inputEl.current?.focus();
+        }}
       >
         <XCircleIcon height={16} />
       </IconButton>
@@ -57,6 +63,7 @@ export const AssetSearch = ({ searchTerm, onSearchTermChange }: AssetSearchProps
 };
 
 export const AssetSearchMobile = ({ searchTerm, onSearchTermChange }: AssetSearchProps) => {
+  const inputEl = useRef<HTMLInputElement>(null);
   const handleChange = (value: string) => {
     onSearchTermChange(value);
   };
@@ -81,6 +88,7 @@ export const AssetSearchMobile = ({ searchTerm, onSearchTermChange }: AssetSearc
         <SearchIcon height={16} />
       </Box>
       <InputBase
+        ref={inputEl}
         autoFocus
         sx={{ flexGrow: 1 }}
         placeholder={placeHolder}
@@ -91,7 +99,10 @@ export const AssetSearchMobile = ({ searchTerm, onSearchTermChange }: AssetSearc
       />
       <IconButton
         sx={{ p: 0, mr: 2, visibility: searchTerm ? 'visible' : 'hidden' }}
-        onClick={() => handleChange('')}
+        onClick={() => {
+          handleChange('');
+          inputEl.current?.focus();
+        }}
       >
         <XCircleIcon height={16} />
       </IconButton>
