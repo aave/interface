@@ -58,8 +58,14 @@ export const AssetSearchInputMobile = ({
   onSearchTermChange,
 }: AssetSearchInputProps) => {
   const inputEl = useRef<HTMLInputElement>(null);
+
   const handleChange = (value: string) => {
     onSearchTermChange(value);
+  };
+
+  const handleClear = () => {
+    handleChange('');
+    inputEl.current?.focus();
   };
 
   return (
@@ -78,8 +84,8 @@ export const AssetSearchInputMobile = ({
         <SearchIcon height={16} />
       </Box>
       <InputBase
-        ref={inputEl}
         autoFocus
+        inputRef={inputEl}
         sx={{ flexGrow: 1, fontSize: 16 }}
         placeholder="Search asset"
         value={searchTerm}
@@ -89,10 +95,7 @@ export const AssetSearchInputMobile = ({
       />
       <IconButton
         sx={{ p: 0, mr: 2, visibility: searchTerm ? 'visible' : 'hidden' }}
-        onClick={() => {
-          handleChange('');
-          inputEl.current?.focus();
-        }}
+        onClick={() => handleClear()}
       >
         <XCircleIcon height={16} />
       </IconButton>
