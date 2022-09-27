@@ -10,7 +10,8 @@ import {
   useTheme,
 } from '@mui/material';
 import { useState } from 'react';
-import { AssetSearchInput, AssetSearchInputMobile } from 'src/components/AssetSearchInput';
+
+import { AssetSearchInput, AssetSearchInputMobile } from './AssetSearchInput';
 
 export interface AssetListTitleProps {
   marketTitle: string;

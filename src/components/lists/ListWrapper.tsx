@@ -56,8 +56,6 @@ export const ListWrapper = ({
             flexDirection: { xs: 'column', xsm: 'row' },
           }}
         >
-          {/* <Typography component="div" variant={captionSize} sx={{ mr: 4 }}>
-          </Typography> */}
           {title}
           {subTitleComponent}
         </Box>
