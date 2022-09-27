@@ -1,6 +1,6 @@
 import { ChainId } from '@aave/contract-helpers';
 import { ReactNode } from 'react';
-// import { PermissionView } from 'src/components/transactions/FlowCommons/PermissionView';
+import { PermissionView } from 'src/components/transactions/FlowCommons/PermissionView';
 
 export type MarketDataType = {
   v3?: boolean;
@@ -70,7 +70,7 @@ export enum CustomMarket {
   amm_mainnet = 'amm_mainnet',
   proto_goerli = 'proto_goerli',
   // external
-  // permissioned_market = 'permissioned_market',
+  permissioned_market = 'permissioned_market',
 }
 
 export const marketsData: {
@@ -103,29 +103,30 @@ export const marketsData: {
       marketName: 'aavev2',
     },
   },
-  // [CustomMarket.permissioned_market]: {
-  //   marketTitle: 'Ethereum Permissioned Market example',
-  //   chainId: ChainId.mainnet,
-  //   enabledFeatures: {
-  //     // liquiditySwap: true,
-  //     // collateralRepay: true,
-  //     // incentives: true,
-  //     permissions: true,
-  //   },
-  //   rpcOnly: true,
-  //   permissionComponent: <PermissionView />,
-  //   addresses: {
-  //     LENDING_POOL_ADDRESS_PROVIDER: '<address here>'.toLowerCase(),
-  //     LENDING_POOL: '<address here>',
-  //     WETH_GATEWAY: '<address here>',
-  //     // REPAY_WITH_COLLATERAL_ADAPTER: '<address here>',
-  //     // SWAP_COLLATERAL_ADAPTER: '<address here>',
-  //     WALLET_BALANCE_PROVIDER: '<address here>',
-  //     UI_POOL_DATA_PROVIDER: '<address here>',
-  //     // UI_INCENTIVE_DATA_PROVIDER: '<address here>',
-  //     PERMISSION_MANAGER: '<address here>',
-  //   },
-  // },
+  [CustomMarket.permissioned_market]: {
+    marketTitle: 'Mumbai Permissioned Market example',
+    chainId: ChainId.mumbai,
+    enabledFeatures: {
+      // liquiditySwap: true,
+      // collateralRepay: true,
+      // incentives: true,
+      permissions: true,
+      faucet: true,
+    },
+    rpcOnly: true,
+    permissionComponent: <PermissionView />,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0xAcaa8F77345FDbc3B089CfFcB16a8BCC545602e4'.toLowerCase(),
+      LENDING_POOL: '0x4F3e30e9e4c1b21E7C6Ff0596c976bb70885ac78',
+      WETH_GATEWAY: '0xa1C50DD18eaD50810d783Dc630f16aA3d4ba89Fa',
+      // REPAY_WITH_COLLATERAL_ADAPTER: '<address here>',
+      // SWAP_COLLATERAL_ADAPTER: '<address here>',
+      WALLET_BALANCE_PROVIDER: '0xB2055E944415b35C05eA9d28E2d6dD08B4A3ed39',
+      UI_POOL_DATA_PROVIDER: '0x71ABaeBCA33Dac8CbF99790DF3c72b42908b8E43',
+      // UI_INCENTIVE_DATA_PROVIDER: '<address here>',
+      PERMISSION_MANAGER: '0x36170C30229510ff9f61515191559eAb2Fd0457e ',
+    },
+  },
   [CustomMarket.amm_mainnet]: {
     marketTitle: 'Ethereum AMM',
     chainId: ChainId.mainnet,
