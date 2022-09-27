@@ -33,10 +33,11 @@ export default function AssetsList() {
     .filter((res) => res.isActive)
     .filter((res) => {
       if (!searchTerm) return true;
+      const term = searchTerm.toLowerCase().trim();
       return (
-        res.symbol.toLowerCase().includes(searchTerm.toLowerCase().trim()) ||
-        res.name.toLowerCase().includes(searchTerm.toLowerCase().trim()) ||
-        res.underlyingAsset.toLowerCase().includes(searchTerm.toLowerCase().trim())
+        res.symbol.toLowerCase().includes(term) ||
+        res.name.toLowerCase().includes(term) ||
+        res.underlyingAsset.toLowerCase().includes(term)
       );
     })
     .map((reserve) => ({
