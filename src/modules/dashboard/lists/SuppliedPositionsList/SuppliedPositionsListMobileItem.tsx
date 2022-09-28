@@ -26,7 +26,7 @@ export const SuppliedPositionsListMobileItem = ({
   const { symbol, iconSymbol, name, supplyAPY, isIsolated, aIncentivesData, isFrozen, isActive } =
     reserve;
   const { currentMarketData, currentMarket } = useProtocolDataContext();
-  const { openSupply, openWithdraw, openCollateralChange } = useModalContext();
+  const { openSupply, openSwap, openWithdraw, openCollateralChange } = useModalContext();
   const { debtCeiling } = useAssetCaps();
   const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
 
@@ -98,7 +98,7 @@ export const SuppliedPositionsListMobileItem = ({
           <Button
             disabled={!isActive || isFrozen}
             variant="outlined"
-            onClick={() => console.log('TODO: should be swap modal')}
+            onClick={() => openSwap(underlyingAsset)}
             fullWidth
           >
             <Trans>Swap</Trans>
