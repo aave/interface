@@ -36,6 +36,7 @@ import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWall
 import { Warning } from 'src/components/primitives/Warning';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
+import { WalletEmptyInfo } from '../dashboard/lists/SupplyAssetsList/WalletEmptyInfo';
 
 const PaperWrapper = ({ children }: { children: ReactNode }) => {
   return (
@@ -61,7 +62,7 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   const { user, reserves, loading: loadingReserves, eModes } = useAppDataContext();
   const { walletBalances, loading: loadingBalance } = useWalletBalances();
   const { isPermissionsLoading } = usePermissions();
-  const { currentNetworkConfig } = useProtocolDataContext();
+  const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
   const { bridge, name: networkName } = currentNetworkConfig;
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
 
@@ -190,14 +191,12 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
               </Button>
             </Warning>
           ) : (
-            <Warning severity="info" icon={false}>
-              <Trans>Your {networkName} wallet is empty. Purchase or transfer assets</Trans>{' '}
-              {bridge && (
-                <Trans>
-                  or use {<Link href={bridge.url}>{bridge.name}</Link>} to transfer your ETH assets.
-                </Trans>
-              )}
-            </Warning>
+            <WalletEmptyInfo
+              name={networkName}
+              bridge={bridge}
+              icon={false}
+              chainId={currentChainId}
+            />
           )}
         </Row>
       )}
