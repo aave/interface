@@ -112,7 +112,7 @@ export const BorrowAssetsList = () => {
   const borrowDisabled = !borrowReserves.length;
   return (
     <ListWrapper
-      title={
+      titleComponent={
         <Typography component="div" variant="h3" sx={{ mr: 4 }}>
           <Trans>Assets to borrow</Trans>
         </Typography>

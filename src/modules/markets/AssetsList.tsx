@@ -113,7 +113,7 @@ export default function AssetsList() {
 
   return (
     <ListWrapper
-      title={
+      titleComponent={
         <AssetListTitle
           searchTerm={searchTerm}
           onSearchTermChange={setSearchTerm}

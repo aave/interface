@@ -5,7 +5,7 @@ import { ReactNode, useState } from 'react';
 import { toggleLocalStorageClick } from '../../helpers/toggle-local-storage-click';
 
 interface ListWrapperProps {
-  title: ReactNode;
+  titleComponent: ReactNode;
   localStorageName?: string;
   subTitleComponent?: ReactNode;
   subChildrenComponent?: ReactNode;
@@ -18,7 +18,7 @@ interface ListWrapperProps {
 export const ListWrapper = ({
   children,
   localStorageName,
-  title,
+  titleComponent,
   subTitleComponent,
   subChildrenComponent,
   topInfo,
@@ -56,7 +56,7 @@ export const ListWrapper = ({
             flexDirection: { xs: 'column', xsm: 'row' },
           }}
         >
-          {title}
+          {titleComponent}
           {subTitleComponent}
         </Box>
 

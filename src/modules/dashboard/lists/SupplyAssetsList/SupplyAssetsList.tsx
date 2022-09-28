@@ -159,7 +159,7 @@ export const SupplyAssetsList = () => {
   const supplyDisabled = !tokensToSupply.length;
   return (
     <ListWrapper
-      title={
+      titleComponent={
         <Typography component="div" variant="h3" sx={{ mr: 4 }}>
           <Trans>Assets to supply</Trans>
         </Typography>
