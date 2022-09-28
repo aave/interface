@@ -22,9 +22,6 @@ import { ListHeader } from '../ListHeader';
 import { ListLoader } from '../ListLoader';
 import { SupplyAssetsListItem } from './SupplyAssetsListItem';
 import { SupplyAssetsListMobileItem } from './SupplyAssetsListMobileItem';
-import { Warning } from 'src/components/primitives/Warning';
-import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
-import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { WalletEmptyInfo } from './WalletEmptyInfo';
 
 export const SupplyAssetsList = () => {
