@@ -18,6 +18,7 @@ import { API_ETH_MOCK_ADDRESS, transactionType } from '@aave/contract-helpers';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { TorusConnector } from '@web3-react/torus-connector';
+import { isLedgerDappBrowserProvider } from 'web3-ledgerhq-frame-connector';
 
 export type ERC20TokenType = {
   address: string;
@@ -64,9 +65,10 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [loading, setLoading] = useState(false);
   const [tried, setTried] = useState(false);
   const [deactivated, setDeactivated] = useState(false);
-  const [triedSafe, setTriedSafe] = useState(false);
-  const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
+  const [triedGnosisSafe, setTriedGnosisSafe] = useState(false);
   const [triedCoinbase, setTriedCoinbase] = useState(false);
+  const [triedLedger, setTriedLedger] = useState(false);
+  const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
 
   // for now we use network changed as it returns the chain string instead of hex
   // const handleChainChanged = (chainId: number) => {
@@ -175,11 +177,24 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     return false;
   };
 
+  // third, try connecting to ledger
+  useEffect(() => {
+    if (!triedLedger && triedGnosisSafe && triedCoinbase) {
+      // check if the DApp is hosted within Ledger iframe
+      const canConnectToLedger = isLedgerDappBrowserProvider();
+      if (canConnectToLedger) {
+        connectWallet(WalletType.LEDGER).finally(() => setTriedLedger(true));
+      } else {
+        setTriedLedger(true);
+      }
+    }
+  }, [connectWallet, triedGnosisSafe, triedCoinbase, triedLedger, setTriedLedger]);
+
   // second, try connecting to coinbase
   useEffect(() => {
     if (!triedCoinbase) {
       // do check if condition applies to try and connect directly to coinbase
-      if (triedSafe) {
+      if (triedGnosisSafe) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const injectedProvider = (window as any)?.ethereum;
         if (injectedProvider?.isCoinbaseBrowser) {
@@ -208,34 +223,34 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         }
       }
     }
-  }, [connectWallet, triedSafe, setTriedCoinbase, triedCoinbase]);
+  }, [connectWallet, triedGnosisSafe, setTriedCoinbase, triedCoinbase]);
 
   // first, try connecting to a gnosis safe
   useEffect(() => {
-    if (!triedSafe) {
+    if (!triedGnosisSafe) {
       const gnosisConnector = getWallet(WalletType.GNOSIS);
       // @ts-expect-error isSafeApp not in abstract connector type
       gnosisConnector.isSafeApp().then((loadedInSafe) => {
         if (loadedInSafe) {
           connectWallet(WalletType.GNOSIS)
             .then(() => {
-              setTriedSafe(true);
+              setTriedGnosisSafe(true);
             })
             .catch(() => {
-              setTriedSafe(true);
+              setTriedGnosisSafe(true);
             });
         } else {
-          setTriedSafe(true);
+          setTriedGnosisSafe(true);
         }
       });
     }
-  }, [connectWallet, setTriedSafe, triedSafe]);
+  }, [connectWallet, setTriedGnosisSafe, triedGnosisSafe]);
 
   // handle logic to eagerly connect to the injected ethereum provider,
   // if it exists and has granted access already
   useEffect(() => {
     const lastWalletProvider = localStorage.getItem('walletProvider');
-    if (!active && !deactivated && triedSafe && triedCoinbase) {
+    if (!active && !deactivated && triedGnosisSafe && triedCoinbase && triedLedger) {
       if (!!lastWalletProvider) {
         connectWallet(lastWalletProvider as WalletType).catch(() => {
           setTried(true);
@@ -257,7 +272,16 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         // });
       }
     }
-  }, [activate, setTried, active, connectWallet, deactivated, triedSafe, triedCoinbase]);
+  }, [
+    activate,
+    setTried,
+    active,
+    connectWallet,
+    deactivated,
+    triedGnosisSafe,
+    triedCoinbase,
+    triedLedger,
+  ]);
 
   // if the connection worked, wait until we get confirmation of that to flip the flag
   useEffect(() => {

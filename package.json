@@ -17,7 +17,7 @@
     "lint:code": "next lint",
     "lint:code:fix": "next lint --fix",
     "lint:formatting": "prettier src pages scripts cypress . --check",
-		"lint:formatting:fix": "prettier src pages scripts cypress . --write",
+    "lint:formatting:fix": "prettier src pages scripts cypress . --write",
     "lint": "yarn lint:code && yarn lint:formatting",
     "lint:fix": "yarn lint:code:fix && yarn lint:formatting:fix",
     "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest",
@@ -86,7 +86,8 @@
     "react-number-format": "^4.9.1",
     "reflect-metadata": "^0.1.13",
     "remark-gfm": "^3.0.1",
-    "subscriptions-transport-ws": "^0.11.0"
+    "subscriptions-transport-ws": "^0.11.0",
+    "web3-ledgerhq-frame-connector": "^1.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.18.9",
