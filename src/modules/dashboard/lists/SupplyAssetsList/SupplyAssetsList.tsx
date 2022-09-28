@@ -22,9 +22,10 @@ import { ListHeader } from '../ListHeader';
 import { ListLoader } from '../ListLoader';
 import { SupplyAssetsListItem } from './SupplyAssetsListItem';
 import { SupplyAssetsListMobileItem } from './SupplyAssetsListMobileItem';
+import { WalletEmptyInfo } from './WalletEmptyInfo';
 
 export const SupplyAssetsList = () => {
-  const { currentNetworkConfig } = useProtocolDataContext();
+  const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
   const {
     user,
     reserves,
@@ -193,15 +194,7 @@ export const SupplyAssetsList = () => {
                   </Link>
                 </Warning>
               ) : (
-                <Warning severity="info">
-                  <Trans>Your {networkName} wallet is empty. Purchase or transfer assets</Trans>{' '}
-                  {bridge && (
-                    <Trans>
-                      or use {<Link href={bridge.url}>{bridge.name}</Link>} to transfer your ETH
-                      assets.
-                    </Trans>
-                  )}
-                </Warning>
+                <WalletEmptyInfo name={networkName} bridge={bridge} chainId={currentChainId} />
               ))
             )}
           </Box>
