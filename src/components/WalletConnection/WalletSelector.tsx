@@ -1,5 +1,14 @@
 import { Trans } from '@lingui/macro';
-import { Alert, Box, Button, InputBase, Link, Typography } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  InputBase,
+  Link,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { UnsupportedChainIdError } from '@web3-react/core';
 import { NoEthereumProviderError } from '@web3-react/injected-connector';
 import { UserRejectedRequestError } from '@web3-react/walletconnect-connector';
@@ -101,6 +110,8 @@ export const WalletSelector = () => {
   const { error, updateWatchModeOnlyAddress } = useWeb3Context();
   const [inputMockWalletAddress, setInputMockWalletAddress] = useState('');
   const [validAddressError, setValidAddressError] = useState<boolean>(false);
+  const { breakpoints } = useTheme();
+  const sm = useMediaQuery(breakpoints.down('sm'));
 
   let blockingError: ErrorType | undefined = undefined;
   if (error) {
@@ -176,7 +187,7 @@ export const WalletSelector = () => {
         })}
       >
         <InputBase
-          sx={{ flex: 1, overflow: 'show' }}
+          sx={{ flex: 1, overflow: 'show', fontSize: sm ? '16px' : '14px' }}
           placeholder="Paste ethereum address"
           fullWidth
           autoFocus
