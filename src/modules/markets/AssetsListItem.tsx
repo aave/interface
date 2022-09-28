@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Button, Typography, Box } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';

@@ -1,6 +1,6 @@
+import assets from '../../../fixtures/assets.json';
 import { configEnvWithTenderlyMainnetFork } from '../../../support/steps/configuration.steps';
 import { doCloseModal } from '../../../support/steps/main.steps';
-import assets from '../../../fixtures/assets.json';
 
 const testCases = [
   {

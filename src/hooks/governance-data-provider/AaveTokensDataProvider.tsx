@@ -1,11 +1,12 @@
-import React, { useContext } from 'react';
 import { WalletBalanceProvider } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
+import React, { useContext } from 'react';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
-import { useProtocolDataContext } from '../useProtocolDataContext';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+
 import { usePolling } from '../usePolling';
+import { useProtocolDataContext } from '../useProtocolDataContext';
 
 type WalletBalanceProviderContext = {
   daveTokens: { aave: string; aAave: string; stkAave: string };

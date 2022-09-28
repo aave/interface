@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';

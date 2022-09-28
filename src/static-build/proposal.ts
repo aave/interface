@@ -2,6 +2,7 @@ import { Proposal as ProposalType } from '@aave/contract-helpers';
 import lodash from 'lodash';
 import { JSONFileSync, LowSync } from 'lowdb';
 import { join } from 'path';
+
 import { enhanceProposalWithTimes } from '../modules/governance/utils/formatProposal';
 import { governanceContract } from '../modules/governance/utils/governanceProvider';
 import { isProposalStateImmutable } from '../modules/governance/utils/immutableStates';

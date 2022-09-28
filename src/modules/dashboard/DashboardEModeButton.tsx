@@ -1,8 +1,11 @@
-import { LightningBoltIcon, CogIcon } from '@heroicons/react/solid';
+import { CogIcon, LightningBoltIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import React, { useState } from 'react';
+import { EmodeModalType } from 'src/components/transactions/Emode/EmodeModalContent';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useModalContext } from 'src/hooks/useModal';
 
 import LightningBoltGradient from '/public/lightningBoltGradient.svg';
 
@@ -10,9 +13,6 @@ import { Link } from '../../components/primitives/Link';
 import { Row } from '../../components/primitives/Row';
 import { TypographyGradient } from '../../components/primitives/TypographyGradient';
 import { getEmodeMessage } from '../../components/transactions/Emode/EmodeNaming';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useModalContext } from 'src/hooks/useModal';
-import { EmodeModalType } from 'src/components/transactions/Emode/EmodeModalContent';
 
 interface DashboardEModeButtonProps {
   userEmodeCategoryId: number;

@@ -1,11 +1,11 @@
+import assets from '../../fixtures/assets.json';
+import constants from '../../fixtures/constans.json';
+import { skipState } from '../../support/steps/common';
 import {
   configEnvWithTenderlyMainnetFork,
   configEnvWithTenderlyOptimismFork,
 } from '../../support/steps/configuration.steps';
-import { skipState } from '../../support/steps/common';
-import { supply, borrow } from '../../support/steps/main.steps';
-import constants from '../../fixtures/constans.json';
-import assets from '../../fixtures/assets.json';
+import { borrow, supply } from '../../support/steps/main.steps';
 
 const testData = {
   depositETH: {

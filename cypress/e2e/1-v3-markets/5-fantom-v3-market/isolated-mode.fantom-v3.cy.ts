@@ -1,14 +1,14 @@
-import { configEnvWithTenderlyFantomFork } from '../../../support/steps/configuration.steps';
-import { supply, borrow, swap, repay, changeCollateral } from '../../../support/steps/main.steps';
-import { skipState } from '../../../support/steps/common';
 import assets from '../../../fixtures/assets.json';
 import constants from '../../../fixtures/constans.json';
+import { skipState } from '../../../support/steps/common';
+import { configEnvWithTenderlyFantomFork } from '../../../support/steps/configuration.steps';
+import { borrow, changeCollateral, repay, supply, swap } from '../../../support/steps/main.steps';
 import {
-  verifyCountOfBorrowAssets,
+  borrowsUnavailable,
   dashboardAssetValuesVerification,
   switchCollateralBlocked,
-  borrowsUnavailable,
   switchCollateralBlockedInModal,
+  verifyCountOfBorrowAssets,
 } from '../../../support/steps/verification.steps';
 
 const testData = {

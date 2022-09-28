@@ -1,9 +1,10 @@
-import { join } from 'path';
-import { LowSync, JSONFileSync } from 'lowdb';
 import lodash from 'lodash';
+import { JSONFileSync, LowSync } from 'lowdb';
+import { join } from 'path';
+
 import { getVotes, VoteType } from '../modules/governance/utils/getVotes';
-import { getProvider } from '../utils/marketsAndNetworksConfig';
 import { governanceConfig } from '../ui-config/governanceConfig';
+import { getProvider } from '../utils/marketsAndNetworksConfig';
 
 class LowWithLodash<T> extends LowSync<T> {
   chain: lodash.ExpChain<this['data']> = lodash.chain(this).get('data');

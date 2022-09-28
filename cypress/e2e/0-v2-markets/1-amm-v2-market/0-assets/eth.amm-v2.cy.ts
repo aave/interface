@@ -1,19 +1,19 @@
+import assets from '../../../../fixtures/assets.json';
+import constants from '../../../../fixtures/constans.json';
+import { skipState } from '../../../../support/steps/common';
 import { configEnvWithTenderlyMainnetFork } from '../../../../support/steps/configuration.steps';
 import {
-  supply,
-  withdraw,
-  changeCollateral,
   borrow,
+  changeCollateral,
   changeCollateralNegative,
   repay,
+  supply,
+  withdraw,
 } from '../../../../support/steps/main.steps';
 import {
   borrowsUnavailable,
   dashboardAssetValuesVerification,
 } from '../../../../support/steps/verification.steps';
-import { skipState } from '../../../../support/steps/common';
-import assets from '../../../../fixtures/assets.json';
-import constants from '../../../../fixtures/constans.json';
 
 const testData = {
   testCases: {

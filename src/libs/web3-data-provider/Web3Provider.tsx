@@ -1,24 +1,23 @@
-import React, { ReactElement, useCallback, useEffect, useState } from 'react';
-
-import { hexToAscii } from 'src/utils/utils';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
-
-import { Web3Context } from '../hooks/useWeb3Context';
-import { getWallet, WalletType } from './WalletOptions';
-import { AbstractConnector } from '@web3-react/abstract-connector';
+import { API_ETH_MOCK_ADDRESS, transactionType } from '@aave/contract-helpers';
+import { SignatureLike } from '@ethersproject/bytes';
 import {
   JsonRpcProvider,
   TransactionResponse,
   // Web3Provider,
 } from '@ethersproject/providers';
+import { AbstractConnector } from '@web3-react/abstract-connector';
 import { useWeb3React } from '@web3-react/core';
-import { BigNumber, providers } from 'ethers';
-import { SignatureLike } from '@ethersproject/bytes';
-import { API_ETH_MOCK_ADDRESS, transactionType } from '@aave/contract-helpers';
+import { TorusConnector } from '@web3-react/torus-connector';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
-import { TorusConnector } from '@web3-react/torus-connector';
+import { BigNumber, providers } from 'ethers';
+import React, { ReactElement, useCallback, useEffect, useState } from 'react';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { hexToAscii } from 'src/utils/utils';
 import { isLedgerDappBrowserProvider } from 'web3-ledgerhq-frame-connector';
+
+import { Web3Context } from '../hooks/useWeb3Context';
+import { getWallet, WalletType } from './WalletOptions';
 
 export type ERC20TokenType = {
   address: string;

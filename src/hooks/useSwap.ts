@@ -1,15 +1,16 @@
-import {
-  constructPartialSDK,
-  constructFetchFetcher,
-  constructGetRate,
-  constructBuildTx,
-  TransactionParams,
-} from '@paraswap/sdk';
-import { OptimalRate, SwapSide, ContractMethod } from 'paraswap-core';
-import { useCallback, useEffect, useState } from 'react';
-import { ComputedReserveData } from './app-data-provider/useAppDataProvider';
 import { ChainId } from '@aave/contract-helpers';
 import { BigNumberZeroDecimal, normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
+import {
+  constructBuildTx,
+  constructFetchFetcher,
+  constructGetRate,
+  constructPartialSDK,
+  TransactionParams,
+} from '@paraswap/sdk';
+import { ContractMethod, OptimalRate, SwapSide } from 'paraswap-core';
+import { useCallback, useEffect, useState } from 'react';
+
+import { ComputedReserveData } from './app-data-provider/useAppDataProvider';
 
 const ParaSwap = (chainId: number) => {
   const fetcher = constructFetchFetcher(fetch); // alternatively constructFetchFetcher

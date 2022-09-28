@@ -1,18 +1,18 @@
+import assets from '../../../../fixtures/assets.json';
+import constants from '../../../../fixtures/constans.json';
+import { skipState } from '../../../../support/steps/common';
 import { configEnvWithTenderlyArbitrumFork } from '../../../../support/steps/configuration.steps';
 import {
-  supply,
   borrow,
-  repay,
-  withdraw,
   changeBorrowType,
+  repay,
+  supply,
+  withdraw,
 } from '../../../../support/steps/main.steps';
 import {
   dashboardAssetValuesVerification,
   switchCollateralBlocked,
 } from '../../../../support/steps/verification.steps';
-import { skipState } from '../../../../support/steps/common';
-import assets from '../../../../fixtures/assets.json';
-import constants from '../../../../fixtures/constans.json';
 
 const testData = {
   depositBaseAmount: {

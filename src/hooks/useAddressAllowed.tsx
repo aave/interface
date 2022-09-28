@@ -1,4 +1,5 @@
 import { useState } from 'react';
+
 import { usePolling } from './usePolling';
 
 export interface AddressAllowedResult {

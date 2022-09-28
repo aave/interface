@@ -4,6 +4,7 @@ import { NoData } from 'src/components/primitives/NoData';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
 import { ListColumn } from '../../../../components/lists/ListColumn';

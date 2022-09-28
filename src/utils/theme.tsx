@@ -1,12 +1,11 @@
 import {
   CheckCircleIcon,
+  ChevronDownIcon,
   ExclamationCircleIcon,
   ExclamationIcon,
   InformationCircleIcon,
-  ChevronDownIcon,
 } from '@heroicons/react/outline';
 import { SvgIcon, Theme, ThemeOptions } from '@mui/material';
-
 import { createTheme } from '@mui/material/styles';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore

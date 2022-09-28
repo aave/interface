@@ -3,10 +3,15 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
 import * as React from 'react';
 import { useState } from 'react';
+import { NetAPYTooltip } from 'src/components/infoTooltips/NetAPYTooltip';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
+import ClaimGiftIcon from '../../../public/icons/markets/claim-gift-icon.svg';
+import EmptyHeartIcon from '../../../public/icons/markets/empty-heart-icon.svg';
+import NetAPYIcon from '../../../public/icons/markets/net-apy-icon.svg';
+import WalletIcon from '../../../public/icons/markets/wallet-icon.svg';
 // TODO: need change icon
 // import HfEmpty from '/public/icons/healthFactor/hfEmpty.svg';
 // import HfFull from '/public/icons/healthFactor/hfFull.svg';
@@ -20,12 +25,6 @@ import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvider';
 import { LiquidationRiskParametresInfoModal } from './LiquidationRiskParametresModal/LiquidationRiskParametresModal';
-
-import WalletIcon from '../../../public/icons/markets/wallet-icon.svg';
-import NetAPYIcon from '../../../public/icons/markets/net-apy-icon.svg';
-import EmptyHeartIcon from '../../../public/icons/markets/empty-heart-icon.svg';
-import ClaimGiftIcon from '../../../public/icons/markets/claim-gift-icon.svg';
-import { NetAPYTooltip } from 'src/components/infoTooltips/NetAPYTooltip';
 
 export const DashboardTopPanel = () => {
   const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
