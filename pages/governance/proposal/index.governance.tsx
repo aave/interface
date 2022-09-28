@@ -47,7 +47,7 @@ export default function DynamicProposal() {
         return;
       } else {
         const fallback = governanceConfig.fallbackIpfsGateway;
-        console.groupCollapsed('Fetching proposal metadata from IPFS,,,');
+        console.groupCollapsed('Fetching proposal metadata from IPFS...');
         console.info('failed with', _ipfsGateway);
         console.info('retrying with', fallback);
         console.error(e);
