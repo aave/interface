@@ -1,4 +1,5 @@
 import { defineConfig } from 'cypress';
+
 import { defaultConfig } from '../base.cypress';
 
 const folder = `./cypress/e2e/1-v3-markets/3-polygon-v3-market/`;

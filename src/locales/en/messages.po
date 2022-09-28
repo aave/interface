@@ -384,6 +384,10 @@ msgstr "Can be collateral"
 msgid "Can be executed"
 msgstr "Can be executed"
 
+#: src/modules/markets/AssetListTitle.tsx
+msgid "Cancel"
+msgstr "Cancel"
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Cannot disable E-Mode"
 msgstr "Cannot disable E-Mode"
@@ -556,8 +560,8 @@ msgid "Debt ceiling is not zero"
 msgstr "Debt ceiling is not zero"
 
 #: src/components/caps/DebtCeilingStatus.tsx
-msgid "Debt limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
-msgstr "Debt limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
+msgid "Debt ceiling limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
+msgstr "Debt ceiling limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
 
 #: src/components/infoModalContents/RetryWithApprovalInfoContent.tsx
 msgid "Define Retry with Approval text"
@@ -1081,6 +1085,11 @@ msgstr "New APY"
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 msgid "No rewards to claim"
 msgstr "No rewards to claim"
+
+#: src/modules/markets/AssetsList.tsx
+#: src/modules/markets/AssetsList.tsx
+msgid "No search results for"
+msgstr "No search results for"
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "No voting power"
@@ -1994,6 +2003,10 @@ msgstr "Watch-only mode."
 msgid "Watch-only mode. Connect to a wallet to perform transactions."
 msgstr "Watch-only mode. Connect to a wallet to perform transactions."
 
+#: src/modules/markets/AssetsList.tsx
+msgid "We couldn't find any asset matching your search. Try again with a different asset name, symbol, or address."
+msgstr "We couldn't find any asset matching your search. Try again with a different asset name, symbol, or address."
+
 #: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake."
 msgstr "We couldn’t detect a wallet. Connect a wallet to stake."
@@ -2153,6 +2166,14 @@ msgstr "Your supplies"
 msgid "Your voting info"
 msgstr "Your voting info"
 
+#: src/modules/dashboard/lists/SupplyAssetsList/WalletEmptyInfo.tsx
+msgid "Your {name} wallet is empty. Purchase or transfer assets or use <0>{0}</0> to transfer your {network} assets."
+msgstr "Your {name} wallet is empty. Purchase or transfer assets or use <0>{0}</0> to transfer your {network} assets."
+
+#: src/modules/dashboard/lists/SupplyAssetsList/WalletEmptyInfo.tsx
+msgid "Your {name} wallet is empty. Purchase or transfer assets."
+msgstr "Your {name} wallet is empty. Purchase or transfer assets."
+
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Your {networkName} wallet is empty. Get free test assets at"
 msgstr "Your {networkName} wallet is empty. Get free test assets at"
@@ -2161,16 +2182,11 @@ msgstr "Your {networkName} wallet is empty. Get free test assets at"
 msgid "Your {networkName} wallet is empty. Get free test {0} at"
 msgstr "Your {networkName} wallet is empty. Get free test {0} at"
 
-#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
-msgid "Your {networkName} wallet is empty. Purchase or transfer assets"
-msgstr "Your {networkName} wallet is empty. Purchase or transfer assets"
-
 #: src/ui-config/errorMapping.tsx
 msgid "Zero address not valid"
 msgstr "Zero address not valid"
 
-#: src/modules/markets/AssetsList.tsx
+#: src/modules/markets/AssetListTitle.tsx
 msgid "assets"
 msgstr "assets"
 
@@ -2213,11 +2229,6 @@ msgstr "on"
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "or"
 msgstr "or"
-
-#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
-msgid "or use <0>{0}</0> to transfer your ETH assets."
-msgstr "or use <0>{0}</0> to transfer your ETH assets."
 
 #: src/components/transactions/Warnings/SNXWarning.tsx
 msgid "please check that the amount you want to supply is not currently being used for staking. If it is being used for staking, your transaction might fail."

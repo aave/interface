@@ -1,12 +1,12 @@
+import assets from '../../../../fixtures/assets.json';
+import constants from '../../../../fixtures/constans.json';
+import { skipState } from '../../../../support/steps/common';
 import { configEnvWithTenderlyFantomFork } from '../../../../support/steps/configuration.steps';
-import { supply, borrow, repay, withdraw } from '../../../../support/steps/main.steps';
+import { borrow, repay, supply, withdraw } from '../../../../support/steps/main.steps';
 import {
   dashboardAssetValuesVerification,
   switchApyBlocked,
 } from '../../../../support/steps/verification.steps';
-import { skipState } from '../../../../support/steps/common';
-import assets from '../../../../fixtures/assets.json';
-import constants from '../../../../fixtures/constans.json';
 
 const testData = {
   depositBaseAmount: {

@@ -1,5 +1,6 @@
 import { normalizeBN } from '@aave/math-utils';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
+
 import { governanceContract } from './governanceProvider';
 
 export type VoteType = {
