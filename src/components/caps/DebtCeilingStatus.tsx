@@ -56,8 +56,8 @@ export const DebtCeilingStatus = ({
           <TextWithTooltip>
             <>
               <Trans>
-                Debt limits the amount possible to borrow against this asset by protocol users. Debt
-                ceiling is specific to assets in isolation mode and is denoted in USD.
+                Debt ceiling limits the amount possible to borrow against this asset by protocol
+                users. Debt ceiling is specific to assets in isolation mode and is denoted in USD.
               </Trans>{' '}
               <Link
                 href="https://docs.aave.com/faq/aave-v3-features#how-does-isolation-mode-affect-my-borrowing-power"

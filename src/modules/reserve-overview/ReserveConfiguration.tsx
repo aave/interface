@@ -2,7 +2,7 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
-import { Alert, Box, Button, Divider, SvgIcon, Typography } from '@mui/material';
+import { Box, Button, Divider, SvgIcon, Typography } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { DebtCeilingStatus } from 'src/components/caps/DebtCeilingStatus';
@@ -15,6 +15,7 @@ import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
+import { Warning } from 'src/components/primitives/Warning';
 import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
@@ -63,7 +64,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
 
       {reserve.isFrozen && (
         <Box>
-          <Alert sx={{ mt: '16px', mb: '40px' }} severity="error">
+          <Warning sx={{ mt: '16px', mb: '40px' }} severity="error">
             <Trans>
               This asset is frozen due to an Aave community decision.{' '}
               <Link
@@ -73,7 +74,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                 <Trans>More details</Trans>
               </Link>
             </Trans>
-          </Alert>
+          </Warning>
         </Box>
       )}
 
@@ -205,7 +206,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                 <Typography variant="subheader1" color="text.main" paddingBottom={'12px'}>
                   <Trans>Collateral usage</Trans>
                 </Typography>
-                <Alert severity="warning">
+                <Warning severity="warning">
                   <Typography variant="subheader1">
                     <Trans>Asset can only be used as collateral in isolation mode only.</Trans>
                   </Typography>
@@ -217,7 +218,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                       Learn more
                     </Link>
                   </Typography>
-                </Alert>
+                </Warning>
               </Box>
             ) : reserve.usageAsCollateralEnabled ? (
               <Box
@@ -237,9 +238,9 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                 <Typography variant="subheader1" color="text.main">
                   <Trans>Collateral usage</Trans>
                 </Typography>
-                <Alert sx={{ my: '12px' }} severity="warning">
+                <Warning sx={{ my: '12px' }} severity="warning">
                   <Trans>Asset cannot be used as collateral.</Trans>
-                </Alert>
+                </Warning>
               </Box>
             )}
           </div>
