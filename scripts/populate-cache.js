@@ -76008,7 +76008,7 @@ var governanceContract = new import_contract_helpers5.AaveGovernanceService(
 );
 
 // src/static-build/ipfs.ts
-var import_path2 = require('path');
+var import_lodash = __toESM(require_lodash());
 
 // node_modules/steno/lib/index.js
 var import_fs = __toESM(require('fs'), 1);
@@ -76273,12 +76273,12 @@ var LowSync = class {
 };
 
 // src/static-build/ipfs.ts
-var import_lodash = __toESM(require_lodash());
+var import_path2 = require('path');
 
 // src/modules/governance/utils/getProposalMetadata.ts
 var import_utils = __toESM(require_utils5());
-var import_isomorphic_unfetch = __toESM(require_isomorphic_unfetch());
 var import_gray_matter = __toESM(require_gray_matter());
+var import_isomorphic_unfetch = __toESM(require_isomorphic_unfetch());
 function getLink(hash, gateway) {
   return `${gateway}/${hash}`;
 }
