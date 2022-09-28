@@ -59,7 +59,6 @@ export const configEnvWithTenderly = ({
         win.localStorage.setItem('selectedAccount', walletAddress.toLowerCase());
         win.localStorage.setItem('selectedMarket', market);
         win.localStorage.setItem('testnetsEnabled', enableTestnet.toString());
-        win.localStorage.setItem('watchModeOnlyAddress', walletAddress.toLowerCase());
       },
     });
   });
