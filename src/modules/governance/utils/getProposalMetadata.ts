@@ -1,7 +1,7 @@
 import { ProposalMetadata } from '@aave/contract-helpers';
 import { base58 } from 'ethers/lib/utils';
-import fetch from 'isomorphic-unfetch';
 import matter from 'gray-matter';
+import fetch from 'isomorphic-unfetch';
 
 export function getLink(hash: string, gateway: string): string {
   return `${gateway}/${hash}`;
