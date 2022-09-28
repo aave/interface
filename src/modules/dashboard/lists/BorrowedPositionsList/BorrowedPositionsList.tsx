@@ -1,10 +1,12 @@
-import { Fragment } from 'react';
 import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { useMediaQuery, useTheme } from '@mui/material';
+import { Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Fragment } from 'react';
+import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+
 import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
 import { BorrowPowerTooltip } from '../../../../components/infoTooltips/BorrowPowerTooltip';
 import { TotalBorrowAPYTooltip } from '../../../../components/infoTooltips/TotalBorrowAPYTooltip';
@@ -20,7 +22,6 @@ import { ListLoader } from '../ListLoader';
 import { ListTopInfoItem } from '../ListTopInfoItem';
 import { BorrowedPositionsListItem } from './BorrowedPositionsListItem';
 import { BorrowedPositionsListMobileItem } from './BorrowedPositionsListMobileItem';
-import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 
 export const BorrowedPositionsList = () => {
   const { user, loading } = useAppDataContext();
@@ -81,7 +82,11 @@ export const BorrowedPositionsList = () => {
 
   return (
     <ListWrapper
-      title={<Trans>Your borrows</Trans>}
+      titleComponent={
+        <Typography component="div" variant="h3" sx={{ mr: 4 }}>
+          <Trans>Your borrows</Trans>
+        </Typography>
+      }
       localStorageName="borrowedAssetsDashboardTableCollapse"
       subTitleComponent={
         currentMarketData.v3 ? (
