@@ -17,8 +17,9 @@ describe('Manipulation on the wallet connect', () => {
     const walletButton = '#wallet-button';
 
     it('step1:Disconnect wallet', () => {
+      cy.wait(1000);
       cy.get(walletButton).click();
-      cy.contains('Disconnect Wallet').click();
+      cy.contains('Disconnect').click();
       cy.contains('Please, connect your wallet').should('be.visible');
     });
 
