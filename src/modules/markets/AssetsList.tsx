@@ -115,7 +115,6 @@ export default function AssetsList() {
     <ListWrapper
       titleComponent={
         <AssetListTitle
-          searchTerm={searchTerm}
           onSearchTermChange={setSearchTerm}
           marketTitle={currentMarketData.marketTitle}
         />

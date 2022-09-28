@@ -11,19 +11,14 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 
-import { AssetSearchInput, AssetSearchInputMobile } from './AssetSearchInput';
+import { AssetSearchInput } from './AssetSearchInput';
 
 export interface AssetListTitleProps {
   marketTitle: string;
-  searchTerm: string;
   onSearchTermChange: (value: string) => void;
 }
 
-export const AssetListTitle = ({
-  marketTitle,
-  searchTerm,
-  onSearchTermChange,
-}: AssetListTitleProps) => {
+export const AssetListTitle = ({ marketTitle, onSearchTermChange }: AssetListTitleProps) => {
   const [showSearchBar, setShowSearchBar] = useState(false);
 
   const { breakpoints } = useTheme();
@@ -70,20 +65,13 @@ export const AssetListTitle = ({
         )}
         {(showSearchBar || !sm) && (
           <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-            {sm ? (
-              <>
-                <AssetSearchInputMobile
-                  searchTerm={searchTerm}
-                  onSearchTermChange={onSearchTermChange}
-                />
-                <Button sx={{ ml: 2 }} onClick={() => handleCancelClick()}>
-                  <Typography variant="buttonM">
-                    <Trans>Cancel</Trans>
-                  </Typography>
-                </Button>
-              </>
-            ) : (
-              <AssetSearchInput searchTerm={searchTerm} onSearchTermChange={onSearchTermChange} />
+            <AssetSearchInput onSearchTermChange={onSearchTermChange} />
+            {sm && (
+              <Button sx={{ ml: 2 }} onClick={() => handleCancelClick()}>
+                <Typography variant="buttonM">
+                  <Trans>Cancel</Trans>
+                </Typography>
+              </Button>
             )}
           </Box>
         )}
