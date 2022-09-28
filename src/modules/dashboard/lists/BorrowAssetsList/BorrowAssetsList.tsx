@@ -1,7 +1,7 @@
 import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Fragment } from 'react';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
@@ -112,7 +112,11 @@ export const BorrowAssetsList = () => {
   const borrowDisabled = !borrowReserves.length;
   return (
     <ListWrapper
-      title={<Trans>Assets to borrow</Trans>}
+      titleComponent={
+        <Typography component="div" variant="h3" sx={{ mr: 4 }}>
+          <Trans>Assets to borrow</Trans>
+        </Typography>
+      }
       localStorageName="borrowAssetsDashboardTableCollapse"
       withTopMargin
       noData={borrowDisabled}

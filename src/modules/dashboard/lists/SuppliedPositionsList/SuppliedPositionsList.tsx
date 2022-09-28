@@ -1,6 +1,6 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { useMediaQuery, useTheme } from '@mui/material';
+import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Fragment } from 'react';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -54,7 +54,11 @@ export const SuppliedPositionsList = () => {
 
   return (
     <ListWrapper
-      title={<Trans>Your supplies</Trans>}
+      titleComponent={
+        <Typography component="div" variant="h3" sx={{ mr: 4 }}>
+          <Trans>Your supplies</Trans>
+        </Typography>
+      }
       localStorageName="suppliedAssetsDashboardTableCollapse"
       noData={!suppliedPosition.length}
       topInfo={

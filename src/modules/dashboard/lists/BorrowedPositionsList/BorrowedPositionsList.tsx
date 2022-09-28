@@ -1,7 +1,7 @@
 import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { useMediaQuery, useTheme } from '@mui/material';
+import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Fragment } from 'react';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -82,7 +82,11 @@ export const BorrowedPositionsList = () => {
 
   return (
     <ListWrapper
-      title={<Trans>Your borrows</Trans>}
+      titleComponent={
+        <Typography component="div" variant="h3" sx={{ mr: 4 }}>
+          <Trans>Your borrows</Trans>
+        </Typography>
+      }
       localStorageName="borrowedAssetsDashboardTableCollapse"
       subTitleComponent={
         currentMarketData.v3 ? (

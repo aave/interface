@@ -8,6 +8,7 @@ import { TorusConnector } from '@web3-react/torus-connector';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { getNetworkConfig, getSupportedChainIds } from 'src/utils/marketsAndNetworksConfig';
+import { LedgerHQFrameConnector } from 'web3-ledgerhq-frame-connector';
 
 export enum WalletType {
   INJECTED = 'injected',
@@ -16,6 +17,7 @@ export enum WalletType {
   TORUS = 'torus',
   FRAME = 'frame',
   GNOSIS = 'gnosis',
+  LEDGER = 'ledger',
 }
 
 const APP_NAME = 'Aave';
@@ -28,6 +30,8 @@ export const getWallet = (
   const supportedChainIds = getSupportedChainIds();
 
   switch (wallet) {
+    case WalletType.LEDGER:
+      return new LedgerHQFrameConnector({});
     case WalletType.INJECTED:
       return new InjectedConnector({});
     case WalletType.WALLET_LINK:

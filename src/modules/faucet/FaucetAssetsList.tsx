@@ -52,7 +52,13 @@ export default function FaucetAssetsList() {
   }
 
   return (
-    <ListWrapper title={<Trans>Test Assets</Trans>} captionSize="h2">
+    <ListWrapper
+      titleComponent={
+        <Typography component="div" variant="h2" sx={{ mr: 4 }}>
+          <Trans>Test Assets</Trans>
+        </Typography>
+      }
+    >
       <ListHeaderWrapper px={downToXSM ? 4 : 6}>
         <ListColumn isRow maxWidth={280}>
           <ListHeaderTitle>
