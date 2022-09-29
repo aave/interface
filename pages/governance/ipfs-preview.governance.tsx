@@ -18,7 +18,7 @@ export default function IpfsPreview() {
     const newIpfs = {
       id: -1,
       originalHash: ipfsHash,
-      ...(await getProposalMetadata(ipfsHash, governanceConfig?.ipfsGateway)),
+      ...(await getProposalMetadata(ipfsHash, governanceConfig.ipfsGateway)),
     };
     setIpfs(newIpfs);
   }
