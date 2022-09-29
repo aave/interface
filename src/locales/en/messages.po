@@ -151,6 +151,10 @@ msgstr "Amount must be greater than 0"
 msgid "Ampleforth FAQ"
 msgstr "Ampleforth FAQ"
 
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "An error has occurred fetching the proposal metadata from IPFS."
+msgstr "An error has occurred fetching the proposal metadata from IPFS."
+
 #: src/components/infoModalContents/ApprovalInfoContent.tsx
 msgid "Approval"
 msgstr "Approval"
