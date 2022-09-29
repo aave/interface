@@ -143,8 +143,16 @@ export const WalletSelector = () => {
 
   const handleWatchAddress = (inputMockWalletAddress: string): void => {
     if (validAddressError) setValidAddressError(false);
-    if (!utils.isAddress(inputMockWalletAddress)) return setValidAddressError(true);
-    updateWatchModeOnlyAddress(inputMockWalletAddress);
+    if (utils.isAddress(inputMockWalletAddress)) {
+      updateWatchModeOnlyAddress(inputMockWalletAddress);
+    } else {
+      setValidAddressError(true);
+    }
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+    event.preventDefault();
+    handleWatchAddress(inputMockWalletAddress);
   };
 
   return (
@@ -186,22 +194,24 @@ export const WalletSelector = () => {
           mb: 1,
         })}
       >
-        <InputBase
-          sx={{ flex: 1, overflow: 'show', fontSize: sm ? '16px' : '14px' }}
-          placeholder="Paste ethereum address"
-          fullWidth
-          autoFocus
-          value={inputMockWalletAddress}
-          onChange={(e) => {
-            setInputMockWalletAddress(e.target.value);
-          }}
-          inputProps={{
-            'aria-label': 'amount input',
-            style: {
-              padding: 0,
-            },
-          }}
-        />
+        <form onSubmit={handleSubmit}>
+          <InputBase
+            sx={{ flex: 1, overflow: 'show', fontSize: sm ? '16px' : '14px' }}
+            placeholder="Paste ethereum address"
+            fullWidth
+            autoFocus
+            value={inputMockWalletAddress}
+            onChange={(e) => {
+              setInputMockWalletAddress(e.target.value);
+            }}
+            inputProps={{
+              'aria-label': 'amount input',
+              style: {
+                padding: 0,
+              },
+            }}
+          />
+        </form>
       </Box>
       <Button
         variant="outlined"
