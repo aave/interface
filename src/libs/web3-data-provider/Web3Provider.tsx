@@ -44,6 +44,8 @@ export type Web3Data = {
   error: Error | undefined;
   switchNetworkError: Error | undefined;
   setSwitchNetworkError: (err: Error | undefined) => void;
+  updateWatchModeOnlyAddress: (walletAddress: string) => void;
+  watchModeOnlyAddress: string | undefined;
 };
 
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
@@ -59,7 +61,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   } = useWeb3React<providers.Web3Provider>();
 
   // const [provider, setProvider] = useState<JsonRpcProvider>();
-  const [mockAddress, setMockAddress] = useState<string>();
+  const [watchModeOnlyAddress, setWatchModeOnlyAddress] = useState<string>();
   const [connector, setConnector] = useState<AbstractConnector>();
   const [loading, setLoading] = useState(false);
   const [tried, setTried] = useState(false);
@@ -111,16 +113,25 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     setLoading(false);
     setDeactivated(true);
     setSwitchNetworkError(undefined);
-    if (mockAddress) {
-      setMockAddress(undefined);
-      localStorage.removeItem('mockWalletAddress');
+    if (watchModeOnlyAddress || localStorage.getItem('watchModeOnlyAddress')) {
+      setWatchModeOnlyAddress(undefined);
+      localStorage.removeItem('watchModeOnlyAddress');
     }
   }, [provider, connector]);
+
+  const updateWatchModeOnlyAddress = (walletAddress: string) => {
+    setWatchModeOnlyAddress(walletAddress);
+    localStorage.setItem('watchModeOnlyAddress', walletAddress);
+  };
 
   // connect to the wallet specified by wallet type
   const connectWallet = useCallback(
     async (wallet: WalletType) => {
       setLoading(true);
+      if (watchModeOnlyAddress || localStorage.getItem('watchModeOnlyAddress')) {
+        setWatchModeOnlyAddress(undefined);
+        localStorage.removeItem('watchModeOnlyAddress');
+      }
       try {
         const connector: AbstractConnector = getWallet(wallet, chainId);
 
@@ -145,7 +156,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   );
 
   const activateInjectedProvider = (providerName: string | 'MetaMask' | 'CoinBase') => {
-    //@ts-expect-error ethereum doesnt necessarly exist
+    // @ts-expect-error ethereum doesn't necessarily exist
     const { ethereum } = window;
 
     if (!ethereum?.providers) {
@@ -404,7 +415,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   };
 
   useEffect(() => {
-    setMockAddress(localStorage.getItem('mockWalletAddress')?.toLowerCase());
+    setWatchModeOnlyAddress(localStorage.getItem('watchModeOnlyAddress')?.toLowerCase());
   }, []);
 
   return (
@@ -421,11 +432,13 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           getTxError,
           sendTx,
           signTxData,
-          currentAccount: mockAddress || account?.toLowerCase() || '',
+          currentAccount: watchModeOnlyAddress || account?.toLowerCase() || '',
           addERC20Token,
           error,
           switchNetworkError,
           setSwitchNetworkError,
+          updateWatchModeOnlyAddress,
+          watchModeOnlyAddress,
         },
       }}
     >

@@ -628,7 +628,6 @@ msgid "Disabling this asset as collateral affects your borrowing power and Healt
 msgstr "Disabling this asset as collateral affects your borrowing power and Health Factor."
 
 #: src/components/AddressBlockedModal.tsx
-#: src/layouts/WalletWidget.tsx
 msgid "Disconnect Wallet"
 msgstr "Disconnect Wallet"
 
@@ -718,6 +717,10 @@ msgstr "English"
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Enter ETH address"
 msgstr "Enter ETH address"
+
+#: src/components/WalletConnection/WalletSelector.tsx
+msgid "Enter an address to track in watch-only mode"
+msgstr "Enter an address to track in watch-only mode"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Enter an amount"
@@ -1190,6 +1193,10 @@ msgstr "Please connect your wallet to get free testnet assets."
 #: src/components/ConnectWalletPaper.tsx
 msgid "Please connect your wallet to see your supplies, borrowings, and open positions."
 msgstr "Please connect your wallet to see your supplies, borrowings, and open positions."
+
+#: src/components/WalletConnection/WalletSelector.tsx
+msgid "Please enter a valid wallet address."
+msgstr "Please enter a valid wallet address."
 
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Please switch to {networkName}."
@@ -1987,6 +1994,18 @@ msgstr "Wallet not detected. Connect or install wallet and retry"
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 msgstr "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
+
+#: src/components/infoTooltips/WatchOnlyModeTooltip.tsx
+msgid "Watch-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
+msgstr "Watch-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
+
+#: src/layouts/WalletWidget.tsx
+msgid "Watch-only mode."
+msgstr "Watch-only mode."
+
+#: src/components/transactions/TxActionsWrapper.tsx
+msgid "Watch-only mode. Connect to a wallet to perform transactions."
+msgstr "Watch-only mode. Connect to a wallet to perform transactions."
 
 #: src/modules/markets/AssetsList.tsx
 msgid "We couldn't find any asset matching your search. Try again with a different asset name, symbol, or address."
