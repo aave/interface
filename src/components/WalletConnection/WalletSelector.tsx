@@ -199,50 +199,48 @@ export const WalletSelector = () => {
         </Typography>
         <WatchOnlyModeTooltip />
       </Box>
-      <Box
-        sx={(theme) => ({
-          p: '8px 12px',
-          border: `1px solid ${theme.palette.divider}`,
-          borderRadius: '6px',
-          mb: 1,
-        })}
-      >
-        <form onSubmit={handleSubmit}>
-          <InputBase
-            sx={{ flex: 1, overflow: 'show', fontSize: sm ? '16px' : '14px' }}
-            placeholder="Enter ethereum address or ENS name"
-            fullWidth
-            autoFocus
-            value={inputMockWalletAddress}
-            onChange={(e) => {
-              setInputMockWalletAddress(e.target.value);
-            }}
-            inputProps={{
-              'aria-label': 'amount input',
-              style: {
-                padding: 0,
-              },
-            }}
-          />
-        </form>
-      </Box>
-      <Button
-        variant="outlined"
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          mb: '8px',
-        }}
-        size="large"
-        fullWidth
-        disabled={
-          !utils.isAddress(inputMockWalletAddress) && inputMockWalletAddress.slice(-4) !== '.eth'
-        }
-        onClick={() => handleWatchAddress(inputMockWalletAddress)}
-      >
-        Watch address
-      </Button>
+      <form onSubmit={handleSubmit}>
+        <InputBase
+          sx={(theme) => ({
+            p: '8px 12px',
+            border: `1px solid ${theme.palette.divider}`,
+            borderRadius: '6px',
+            mb: 1,
+            flex: 1,
+            overflow: 'show',
+            fontSize: sm ? '16px' : '14px',
+          })}
+          placeholder="Enter ethereum address or ENS name"
+          fullWidth
+          autoFocus
+          value={inputMockWalletAddress}
+          onChange={(e) => setInputMockWalletAddress(e.target.value)}
+          inputProps={{
+            'aria-label': 'watch mode only address',
+            style: {
+              padding: 0,
+            },
+          }}
+        />
+        <Button
+          type="submit"
+          variant="outlined"
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            mb: '8px',
+          }}
+          size="large"
+          fullWidth
+          disabled={
+            !utils.isAddress(inputMockWalletAddress) && inputMockWalletAddress.slice(-4) !== '.eth'
+          }
+          aria-label="watch mode only address"
+        >
+          Watch address
+        </Button>
+      </form>
       {validAddressError && (
         <Typography variant="helperText" color="error.main">
           <Trans>Please enter a valid wallet address.</Trans>
