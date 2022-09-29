@@ -6,8 +6,6 @@ import { governanceConfig } from 'src/ui-config/governanceConfig';
 
 import { CustomProposalType } from './proposal';
 
-import { CustomProposalType } from './proposal';
-
 export interface IpfsType {
   id: number;
   aip: number;
