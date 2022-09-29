@@ -75240,6 +75240,7 @@ var governanceConfig = {
     AAVE_GOVERNANCE_V2_HELPER: '0x16ff7583ea21055bf5f929ec4b896d997ff35847',
   },
   ipfsGateway: 'https://gateway.pinata.cloud/ipfs',
+  fallbackIpfsGateway: 'https://cloudflare-ipfs.com/ipfs',
 };
 
 // src/utils/marketsAndNetworksConfig.ts
@@ -76283,7 +76284,7 @@ function getLink(hash, gateway) {
   return `${gateway}/${hash}`;
 }
 var MEMORIZE = {};
-function getProposalMetadata(hash, gateway = 'https://cloudflare-ipfs.com/ipfs') {
+function getProposalMetadata(hash, gateway) {
   return __async(this, null, function* () {
     const ipfsHash = hash.startsWith('0x')
       ? import_utils.base58.encode(Buffer.from(`1220${hash.slice(2)}`, 'hex'))
@@ -76343,7 +76344,7 @@ var Ipfs = class {
       const value = db.chain.get('ipfs').find({ id }).value();
       if (value) return;
       if (!proposal) throw new Error(`error populating proposal ${id}`);
-      const ipfs = yield getProposalMetadata(proposal.ipfsHash);
+      const ipfs = yield getProposalMetadata(proposal.ipfsHash, governanceConfig.ipfsGateway);
       const newIpfs = __spreadProps(__spreadValues({}, ipfs), {
         originalHash: proposal.ipfsHash,
         id,
