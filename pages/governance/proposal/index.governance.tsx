@@ -19,12 +19,12 @@ export default function DynamicProposal() {
   const [ipfs, setIpfs] = useState<IpfsType>();
   const [fetchMetadataError, setFetchMetadataError] = useState(false);
 
-  // TODO: Abstract out this recursive try/fallback approach so it may be used in other places where we fetch the proposal metadata and may have errors from the initial gateway
   async function initialize(_ipfsGateway: string, _useFallback: boolean) {
+    const { values, ...rest } = await governanceContract.getProposal({ proposalId: id });
+    const proposal = await enhanceProposalWithTimes(rest);
+    setProposal(proposal);
+
     try {
-      const { values, ...rest } = await governanceContract.getProposal({ proposalId: id });
-      const proposal = await enhanceProposalWithTimes(rest);
-      setProposal(proposal);
       const ipfsMetadata = await getProposalMetadata(proposal.ipfsHash, _ipfsGateway);
       const newIpfs = {
         id,
@@ -33,27 +33,7 @@ export default function DynamicProposal() {
       };
       setIpfs(newIpfs);
     } catch (e) {
-      // Recursion - Try again once with our fallback API
-      // Base case: If we are retrying with our fallback and it fails, return
-      // Rescursive case: If we haven't retried with our fallback yet, try it once
-      if (_useFallback) {
-        console.groupCollapsed('Fetching proposal metadata from IPFS...');
-        console.info('failed with', _ipfsGateway);
-        console.info('exiting');
-        console.error(e);
-        console.groupEnd();
-        // To prevent continually adding onto the callstack with failed requests, return and show an error message in the UI
-        setFetchMetadataError(true);
-        return;
-      } else {
-        const fallback = governanceConfig.fallbackIpfsGateway;
-        console.groupCollapsed('Fetching proposal metadata from IPFS...');
-        console.info('failed with', _ipfsGateway);
-        console.info('retrying with', fallback);
-        console.error(e);
-        console.groupEnd();
-        initialize(fallback, true);
-      }
+      setFetchMetadataError(true);
     }
   }
 
