@@ -19,7 +19,7 @@ export default function DynamicProposal() {
   const [ipfs, setIpfs] = useState<IpfsType>();
   const [fetchMetadataError, setFetchMetadataError] = useState(false);
 
-  async function initialize(_ipfsGateway: string, _useFallback: boolean) {
+  async function initialize(_ipfsGateway: string) {
     const { values, ...rest } = await governanceContract.getProposal({ proposalId: id });
     const proposal = await enhanceProposalWithTimes(rest);
     setProposal(proposal);
@@ -38,7 +38,7 @@ export default function DynamicProposal() {
   }
 
   useEffect(() => {
-    id && initialize(governanceConfig.ipfsGateway, false);
+    id && initialize(governanceConfig.ipfsGateway);
   }, [id]);
 
   return <ProposalPage ipfs={ipfs} proposal={proposal} metadataError={fetchMetadataError} />;
