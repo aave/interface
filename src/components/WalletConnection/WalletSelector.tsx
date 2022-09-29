@@ -202,11 +202,11 @@ export const WalletSelector = () => {
       <form onSubmit={handleSubmit}>
         <InputBase
           sx={(theme) => ({
-            p: '8px 12px',
+            py: 1,
+            px: 3,
             border: `1px solid ${theme.palette.divider}`,
             borderRadius: '6px',
             mb: 1,
-            flex: 1,
             overflow: 'show',
             fontSize: sm ? '16px' : '14px',
           })}
@@ -217,9 +217,6 @@ export const WalletSelector = () => {
           onChange={(e) => setInputMockWalletAddress(e.target.value)}
           inputProps={{
             'aria-label': 'watch mode only address',
-            style: {
-              padding: 0,
-            },
           }}
         />
         <Button
