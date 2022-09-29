@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-09-27 18:08\n"
+"PO-Revision-Date: 2022-09-28 18:09\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -389,6 +389,10 @@ msgstr "Peut être collatéral"
 msgid "Can be executed"
 msgstr "Peut être exécuté"
 
+#: src/modules/markets/AssetListTitle.tsx
+msgid "Cancel"
+msgstr ""
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Cannot disable E-Mode"
 msgstr ""
@@ -561,7 +565,7 @@ msgid "Debt ceiling is not zero"
 msgstr "Le plafond de la dette n'est pas nul"
 
 #: src/components/caps/DebtCeilingStatus.tsx
-msgid "Debt limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
+msgid "Debt ceiling limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
 msgstr ""
 
 #: src/components/infoModalContents/RetryWithApprovalInfoContent.tsx
@@ -1083,6 +1087,11 @@ msgstr "Nouveau APY"
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 msgid "No rewards to claim"
 msgstr "Aucune récompense à réclamer"
+
+#: src/modules/markets/AssetsList.tsx
+#: src/modules/markets/AssetsList.tsx
+msgid "No search results for"
+msgstr ""
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "No voting power"
@@ -1980,6 +1989,10 @@ msgstr "Portefeuille non détecté. Connectez ou installez le portefeuille et r�
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 msgstr "Les portefeuilles sont fournis par des fournisseurs externes et en sélectionnant, vous acceptez les conditions de ces fournisseurs. Votre accès au portefeuille peut dépendre du fonctionnement du fournisseur externe."
 
+#: src/modules/markets/AssetsList.tsx
+msgid "We couldn't find any asset matching your search. Try again with a different asset name, symbol, or address."
+msgstr ""
+
 #: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake."
 msgstr "Nous n'avons pas pu détecter de portefeuille. Connectez un portefeuille pour miser."
@@ -2139,6 +2152,14 @@ msgstr "Vos ressources"
 msgid "Your voting info"
 msgstr "Vos informations de vote"
 
+#: src/modules/dashboard/lists/SupplyAssetsList/WalletEmptyInfo.tsx
+msgid "Your {name} wallet is empty. Purchase or transfer assets or use <0>{0}</0> to transfer your {network} assets."
+msgstr ""
+
+#: src/modules/dashboard/lists/SupplyAssetsList/WalletEmptyInfo.tsx
+msgid "Your {name} wallet is empty. Purchase or transfer assets."
+msgstr ""
+
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Your {networkName} wallet is empty. Get free test assets at"
 msgstr ""
@@ -2147,16 +2168,11 @@ msgstr ""
 msgid "Your {networkName} wallet is empty. Get free test {0} at"
 msgstr ""
 
-#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
-msgid "Your {networkName} wallet is empty. Purchase or transfer assets"
-msgstr "Votre portefeuille {networkName} est vide. Acheter ou transférer des actifs"
-
 #: src/ui-config/errorMapping.tsx
 msgid "Zero address not valid"
 msgstr "Adresse zéro non-valide"
 
-#: src/modules/markets/AssetsList.tsx
+#: src/modules/markets/AssetListTitle.tsx
 msgid "assets"
 msgstr "actifs"
 
@@ -2199,11 +2215,6 @@ msgstr "sur"
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "or"
 msgstr "ou"
-
-#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
-msgid "or use <0>{0}</0> to transfer your ETH assets."
-msgstr "ou utilisez <0>{0}</0> pour transférer vos actifs ETH."
 
 #: src/components/transactions/Warnings/SNXWarning.tsx
 msgid "please check that the amount you want to supply is not currently being used for staking. If it is being used for staking, your transaction might fail."

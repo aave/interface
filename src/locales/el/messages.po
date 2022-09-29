@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-09-27 18:08\n"
+"PO-Revision-Date: 2022-09-28 18:09\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -389,6 +389,10 @@ msgstr "Μπορεί να αποτελέσει εγγύηση"
 msgid "Can be executed"
 msgstr "Μπορεί να εκτελεστεί"
 
+#: src/modules/markets/AssetListTitle.tsx
+msgid "Cancel"
+msgstr ""
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Cannot disable E-Mode"
 msgstr ""
@@ -561,7 +565,7 @@ msgid "Debt ceiling is not zero"
 msgstr "Το ανώτατο όριο χρέους δεν είναι μηδενικό"
 
 #: src/components/caps/DebtCeilingStatus.tsx
-msgid "Debt limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
+msgid "Debt ceiling limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
 msgstr ""
 
 #: src/components/infoModalContents/RetryWithApprovalInfoContent.tsx
@@ -1083,6 +1087,11 @@ msgstr "Νέο APY"
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 msgid "No rewards to claim"
 msgstr "Δεν υπάρχουν ανταμοιβές για διεκδίκηση"
+
+#: src/modules/markets/AssetsList.tsx
+#: src/modules/markets/AssetsList.tsx
+msgid "No search results for"
+msgstr ""
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "No voting power"
@@ -1981,6 +1990,10 @@ msgstr "Το πορτοφόλι δεν εντοπίστηκε. Συνδέστε 
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 msgstr "Τα πορτοφόλια παρέχονται από Εξωτερικούς Παρόχους και επιλέγοντας τα συμφωνείτε με τους Όρους των εν λόγω Παρόχων. Η πρόσβασή σας στο πορτοφόλι ενδέχεται να εξαρτάται από τη λειτουργία του Εξωτερικού Παρόχου."
 
+#: src/modules/markets/AssetsList.tsx
+msgid "We couldn't find any asset matching your search. Try again with a different asset name, symbol, or address."
+msgstr ""
+
 #: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake."
 msgstr "Δεν μπορέσαμε να εντοπίσουμε πορτοφόλι. Συνδέστε ένα πορτοφόλι για να κλειδώσετε."
@@ -2140,6 +2153,14 @@ msgstr "Οι προμήθειές σας"
 msgid "Your voting info"
 msgstr "Οι πληροφορίες ψήφου σας"
 
+#: src/modules/dashboard/lists/SupplyAssetsList/WalletEmptyInfo.tsx
+msgid "Your {name} wallet is empty. Purchase or transfer assets or use <0>{0}</0> to transfer your {network} assets."
+msgstr ""
+
+#: src/modules/dashboard/lists/SupplyAssetsList/WalletEmptyInfo.tsx
+msgid "Your {name} wallet is empty. Purchase or transfer assets."
+msgstr ""
+
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Your {networkName} wallet is empty. Get free test assets at"
 msgstr ""
@@ -2148,16 +2169,11 @@ msgstr ""
 msgid "Your {networkName} wallet is empty. Get free test {0} at"
 msgstr ""
 
-#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
-msgid "Your {networkName} wallet is empty. Purchase or transfer assets"
-msgstr "Το πορτοφόλι σας {networkName} είναι άδειο. Αγοράστε ή μεταφέρετε περιουσιακά στοιχεία"
-
 #: src/ui-config/errorMapping.tsx
 msgid "Zero address not valid"
 msgstr "Η μηδενική διεύθυνση δεν είναι έγκυρη"
 
-#: src/modules/markets/AssetsList.tsx
+#: src/modules/markets/AssetListTitle.tsx
 msgid "assets"
 msgstr "περιουσιακά στοιχεία"
 
@@ -2200,11 +2216,6 @@ msgstr "ενεργοποίηση"
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "or"
 msgstr "ή"
-
-#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
-msgid "or use <0>{0}</0> to transfer your ETH assets."
-msgstr "ή χρησιμοποιήστε <0>{0}</0> για να μεταφέρετε τα περιουσιακά σας στοιχεία ETH."
 
 #: src/components/transactions/Warnings/SNXWarning.tsx
 msgid "please check that the amount you want to supply is not currently being used for staking. If it is being used for staking, your transaction might fail."
