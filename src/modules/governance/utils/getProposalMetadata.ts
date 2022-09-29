@@ -12,7 +12,7 @@ const MEMORIZE: MemorizeMetadata = {};
 
 export async function getProposalMetadata(
   hash: string,
-  gateway = 'https://cloudflare-ipfs.com/ipfs'
+  gateway: string
 ): Promise<ProposalMetadata> {
   const ipfsHash = hash.startsWith('0x')
     ? base58.encode(Buffer.from(`1220${hash.slice(2)}`, 'hex'))
@@ -29,9 +29,7 @@ export async function getProposalMetadata(
   const clone = await ipfsResponse.clone();
   try {
     const response: ProposalMetadata = await ipfsResponse.json();
-
     const { content, data } = matter(response.description);
-
     MEMORIZE[ipfsHash] = {
       ...response,
       ipfsHash,
