@@ -43,5 +43,5 @@ export const governanceConfig: GovernanceConfig = {
     AAVE_GOVERNANCE_V2_HELPER: '0x16ff7583ea21055bf5f929ec4b896d997ff35847',
   },
   ipfsGateway: 'https://cloudflare-ipfs.com/ipfs',
-  fallbackIpfsGateway: 'https://gateway.pinata.cloud/ipfs',
+  fallbackIpfsGateway: 'https://ipfs.io/ipfs',
 };

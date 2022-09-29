@@ -18,11 +18,7 @@ export async function getProposalMetadata(
     ? base58.encode(Buffer.from(`1220${hash.slice(2)}`, 'hex'))
     : hash;
   if (MEMORIZE[ipfsHash]) return MEMORIZE[ipfsHash];
-  const ipfsResponse: Response = await fetch(getLink(ipfsHash, gateway), {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+  const ipfsResponse: Response = await fetch(getLink(ipfsHash, gateway));
   if (!ipfsResponse.ok) {
     throw Error('Fetch not working');
   }
