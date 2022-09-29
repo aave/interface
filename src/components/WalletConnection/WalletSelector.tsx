@@ -17,6 +17,7 @@ import { useState } from 'react';
 import { WatchOnlyModeTooltip } from 'src/components/infoTooltips/WatchOnlyModeTooltip';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { WalletType } from 'src/libs/web3-data-provider/WalletOptions';
+import { getENSProvider } from 'src/utils/marketsAndNetworksConfig';
 
 import { TxModalTitle } from '../transactions/FlowCommons/TxModalTitle';
 
@@ -112,6 +113,7 @@ export const WalletSelector = () => {
   const [validAddressError, setValidAddressError] = useState<boolean>(false);
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down('sm'));
+  const mainnetProvider = getENSProvider();
 
   let blockingError: ErrorType | undefined = undefined;
   if (error) {
@@ -141,12 +143,23 @@ export const WalletSelector = () => {
     }
   };
 
-  const handleWatchAddress = (inputMockWalletAddress: string): void => {
+  const handleWatchAddress = async (inputMockWalletAddress: string): Promise<void> => {
     if (validAddressError) setValidAddressError(false);
     if (utils.isAddress(inputMockWalletAddress)) {
       updateWatchModeOnlyAddress(inputMockWalletAddress);
     } else {
-      setValidAddressError(true);
+      // Check if address could be valid ENS before trying to resolve
+      if (inputMockWalletAddress.slice(-4) !== '.eth') {
+        setValidAddressError(true);
+      } else {
+        // Attempt to resolve ENS name and use resolved address if valid
+        const resolvedAddress = await mainnetProvider.resolveName(inputMockWalletAddress);
+        if (resolvedAddress && utils.isAddress(resolvedAddress)) {
+          updateWatchModeOnlyAddress(resolvedAddress);
+        } else {
+          setValidAddressError(true);
+        }
+      }
     }
   };
 
