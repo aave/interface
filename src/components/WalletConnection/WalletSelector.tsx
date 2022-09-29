@@ -210,7 +210,7 @@ export const WalletSelector = () => {
         <form onSubmit={handleSubmit}>
           <InputBase
             sx={{ flex: 1, overflow: 'show', fontSize: sm ? '16px' : '14px' }}
-            placeholder="Paste ethereum address"
+            placeholder="Enter ethereum address or ENS name"
             fullWidth
             autoFocus
             value={inputMockWalletAddress}
