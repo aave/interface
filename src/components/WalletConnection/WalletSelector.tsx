@@ -236,7 +236,9 @@ export const WalletSelector = () => {
         }}
         size="large"
         fullWidth
-        disabled={!utils.isAddress(inputMockWalletAddress)}
+        disabled={
+          !utils.isAddress(inputMockWalletAddress) && inputMockWalletAddress.slice(-4) !== '.eth'
+        }
         onClick={() => handleWatchAddress(inputMockWalletAddress)}
       >
         Watch address
