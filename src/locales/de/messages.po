@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-09-28 18:09\n"
+"PO-Revision-Date: 2022-09-29 18:07\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -154,6 +154,10 @@ msgstr ""
 
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "Ampleforth FAQ"
+msgstr ""
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "An error has occurred fetching the proposal metadata from IPFS."
 msgstr ""
 
 #: src/components/infoModalContents/ApprovalInfoContent.tsx
@@ -629,7 +633,6 @@ msgid "Disabling this asset as collateral affects your borrowing power and Healt
 msgstr ""
 
 #: src/components/AddressBlockedModal.tsx
-#: src/layouts/WalletWidget.tsx
 msgid "Disconnect Wallet"
 msgstr ""
 
@@ -718,6 +721,10 @@ msgstr ""
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Enter ETH address"
+msgstr ""
+
+#: src/components/WalletConnection/WalletSelector.tsx
+msgid "Enter an address to track in watch-only mode"
 msgstr ""
 
 #: src/components/transactions/TxActionsWrapper.tsx
@@ -1190,6 +1197,10 @@ msgstr ""
 
 #: src/components/ConnectWalletPaper.tsx
 msgid "Please connect your wallet to see your supplies, borrowings, and open positions."
+msgstr ""
+
+#: src/components/WalletConnection/WalletSelector.tsx
+msgid "Please enter a valid wallet address."
 msgstr ""
 
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
@@ -1987,6 +1998,18 @@ msgstr ""
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
+msgstr ""
+
+#: src/components/infoTooltips/WatchOnlyModeTooltip.tsx
+msgid "Watch-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
+msgstr ""
+
+#: src/layouts/WalletWidget.tsx
+msgid "Watch-only mode."
+msgstr ""
+
+#: src/components/transactions/TxActionsWrapper.tsx
+msgid "Watch-only mode. Connect to a wallet to perform transactions."
 msgstr ""
 
 #: src/modules/markets/AssetsList.tsx
