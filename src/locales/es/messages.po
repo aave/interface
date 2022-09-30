@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-09-28 18:09\n"
+"PO-Revision-Date: 2022-09-29 18:07\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -156,6 +156,10 @@ msgstr "La cantidad debe ser mayor que 0"
 msgid "Ampleforth FAQ"
 msgstr "Preguntas frecuentes Ampleforth"
 
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "An error has occurred fetching the proposal metadata from IPFS."
+msgstr "Se ha producido un error al buscar los metadatos de la propuesta de IPFS."
+
 #: src/components/infoModalContents/ApprovalInfoContent.tsx
 msgid "Approval"
 msgstr "Aprobación"
@@ -221,7 +225,7 @@ msgstr "Activos"
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Assets to borrow"
-msgstr "Activos a pedir prestado"
+msgstr "Activos a tomar prestado"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
@@ -391,7 +395,7 @@ msgstr "Puede ser ejecutado"
 
 #: src/modules/markets/AssetListTitle.tsx
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Cannot disable E-Mode"
@@ -566,7 +570,7 @@ msgstr "El límite de deuda no es cero"
 
 #: src/components/caps/DebtCeilingStatus.tsx
 msgid "Debt ceiling limits the amount possible to borrow against this asset by protocol users. Debt ceiling is specific to assets in isolation mode and is denoted in USD."
-msgstr ""
+msgstr "El límite de deuda limita la cantidad posible que los usuarios del protocolo pueden tomar prestado contra este activo. El límite de deuda es específico para los activos en isolation mode y se indica en USD."
 
 #: src/components/infoModalContents/RetryWithApprovalInfoContent.tsx
 msgid "Define Retry with Approval text"
@@ -629,7 +633,6 @@ msgid "Disabling this asset as collateral affects your borrowing power and Healt
 msgstr "Deshabilitar este activo como garantía afecta tu poder de préstamo y Factor de Salud."
 
 #: src/components/AddressBlockedModal.tsx
-#: src/layouts/WalletWidget.tsx
 msgid "Disconnect Wallet"
 msgstr "Desconectar cartera"
 
@@ -719,6 +722,10 @@ msgstr "Inglés"
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Enter ETH address"
 msgstr "Introduzca la dirección ETH"
+
+#: src/components/WalletConnection/WalletSelector.tsx
+msgid "Enter an address to track in watch-only mode"
+msgstr "Introduce una dirección para rastrear en modo de solo lectura"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Enter an amount"
@@ -1091,7 +1098,7 @@ msgstr "No hay recompensas para reclamar"
 #: src/modules/markets/AssetsList.tsx
 #: src/modules/markets/AssetsList.tsx
 msgid "No search results for"
-msgstr ""
+msgstr "No hay resultados de búsqueda para"
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "No voting power"
@@ -1129,7 +1136,7 @@ msgstr "No alcanzado"
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Nothing borrowed yet"
-msgstr "Nada prestado aún"
+msgstr "Nada tomado prestado aún"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Nothing staked"
@@ -1192,9 +1199,13 @@ msgstr "Por favor conecta tu cartera para obtener activos testnet gratis."
 msgid "Please connect your wallet to see your supplies, borrowings, and open positions."
 msgstr "Por favor, conecte su billetera para ver sus suministros, préstamos y posiciones abiertas."
 
+#: src/components/WalletConnection/WalletSelector.tsx
+msgid "Please enter a valid wallet address."
+msgstr "Por favor introduce una dirección de cartera válida."
+
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Please switch to {networkName}."
-msgstr "Por favor, cambie a {networkName}."
+msgstr "Por favor, cambia a {networkName}."
 
 #: src/components/ConnectWalletPaper.tsx
 msgid "Please, connect your wallet"
@@ -1379,7 +1390,7 @@ msgstr "Reporte de seatbelt"
 
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Seems like we can't switch the network automatically. Please check if you can change it from the wallet."
-msgstr "Parece que no podemos cambiar la red automáticamente. Por favor, compruebe si puede cambiarla desde la billetera."
+msgstr "Parece que no podemos cambiar la red automáticamente. Por favor, comprueba si puedes cambiarla desde la cartera."
 
 #: src/components/transactions/Emode/EmodeSelect.tsx
 msgid "Select"
@@ -1989,9 +2000,21 @@ msgstr "Cartera no detectada. Conecta o instala el monedero y vuelve a intentarl
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 msgstr "Las carteras son proporcionadas por proveedores externos y al seleccionarla, aceptas los términos de dichos proveedores. Tu acceso a la cartera podría depender de que el proveedor externo esté operativo."
 
+#: src/components/infoTooltips/WatchOnlyModeTooltip.tsx
+msgid "Watch-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
+msgstr "El modo de solo lectura permite ver las posiciones de las direcciones en Aave, pero no podrás realizar transacciones."
+
+#: src/layouts/WalletWidget.tsx
+msgid "Watch-only mode."
+msgstr "Modo de solo lectura."
+
+#: src/components/transactions/TxActionsWrapper.tsx
+msgid "Watch-only mode. Connect to a wallet to perform transactions."
+msgstr "Modo de solo lectura. Conéctate a tu cartera para realizar transacciones."
+
 #: src/modules/markets/AssetsList.tsx
 msgid "We couldn't find any asset matching your search. Try again with a different asset name, symbol, or address."
-msgstr ""
+msgstr "No hemos podido encontrar ningun activo que coincida con tu búsqueda. Vuelve a intentarlo con un nombre, simbolo, o dirección de activo diferente."
 
 #: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake."
@@ -2154,19 +2177,19 @@ msgstr "Tu información de voto"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/WalletEmptyInfo.tsx
 msgid "Your {name} wallet is empty. Purchase or transfer assets or use <0>{0}</0> to transfer your {network} assets."
-msgstr ""
+msgstr "Tu cartera de {name} está vacía. Compra o transfiere activos o usa <0>{0}</0> para transferir tus activos de {network}."
 
 #: src/modules/dashboard/lists/SupplyAssetsList/WalletEmptyInfo.tsx
 msgid "Your {name} wallet is empty. Purchase or transfer assets."
-msgstr ""
+msgstr "Tu cartera de {name} está vacía. Compra o transfiere activos."
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Your {networkName} wallet is empty. Get free test assets at"
-msgstr "Tu cartera {networkName} está vacía. Consigue activos de prueba gratis en"
+msgstr "Tu cartera de {networkName} está vacía. Consigue activos de prueba gratis en"
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Your {networkName} wallet is empty. Get free test {0} at"
-msgstr "Tu cartera {networkName} está vacía. Consigue {0} de prueba gratis en"
+msgstr "Tu cartera de {networkName} está vacía. Consigue {0} de prueba gratis en"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Zero address not valid"

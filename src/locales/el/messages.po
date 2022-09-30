@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-09-28 18:09\n"
+"PO-Revision-Date: 2022-09-29 18:07\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -155,6 +155,10 @@ msgstr "Το ποσό πρέπει να είναι μεγαλύτερο από 0
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "Ampleforth FAQ"
 msgstr "Συχνές ερωτήσεις του Ampleforth"
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "An error has occurred fetching the proposal metadata from IPFS."
+msgstr ""
 
 #: src/components/infoModalContents/ApprovalInfoContent.tsx
 msgid "Approval"
@@ -629,7 +633,6 @@ msgid "Disabling this asset as collateral affects your borrowing power and Healt
 msgstr "Η απενεργοποίηση αυτού του περιουσιακού στοιχείου ως εγγύηση επηρεάζει τη δανειοληπτική σας ικανότητα και τον Συντελεστή Υγείας."
 
 #: src/components/AddressBlockedModal.tsx
-#: src/layouts/WalletWidget.tsx
 msgid "Disconnect Wallet"
 msgstr "Αποσυνδέστε το πορτοφόλι"
 
@@ -719,6 +722,10 @@ msgstr "Αγγλικά"
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Enter ETH address"
 msgstr "Εισάγετε διεύθυνση ETH"
+
+#: src/components/WalletConnection/WalletSelector.tsx
+msgid "Enter an address to track in watch-only mode"
+msgstr ""
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Enter an amount"
@@ -1191,6 +1198,10 @@ msgstr ""
 #: src/components/ConnectWalletPaper.tsx
 msgid "Please connect your wallet to see your supplies, borrowings, and open positions."
 msgstr "Συνδέστε το πορτοφόλι σας για να δείτε τις προμήθειες, τα δάνεια και τις ανοιχτές θέσεις σας."
+
+#: src/components/WalletConnection/WalletSelector.tsx
+msgid "Please enter a valid wallet address."
+msgstr ""
 
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Please switch to {networkName}."
@@ -1989,6 +2000,18 @@ msgstr "Το πορτοφόλι δεν εντοπίστηκε. Συνδέστε 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 msgstr "Τα πορτοφόλια παρέχονται από Εξωτερικούς Παρόχους και επιλέγοντας τα συμφωνείτε με τους Όρους των εν λόγω Παρόχων. Η πρόσβασή σας στο πορτοφόλι ενδέχεται να εξαρτάται από τη λειτουργία του Εξωτερικού Παρόχου."
+
+#: src/components/infoTooltips/WatchOnlyModeTooltip.tsx
+msgid "Watch-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
+msgstr ""
+
+#: src/layouts/WalletWidget.tsx
+msgid "Watch-only mode."
+msgstr ""
+
+#: src/components/transactions/TxActionsWrapper.tsx
+msgid "Watch-only mode. Connect to a wallet to perform transactions."
+msgstr ""
 
 #: src/modules/markets/AssetsList.tsx
 msgid "We couldn't find any asset matching your search. Try again with a different asset name, symbol, or address."
