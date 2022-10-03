@@ -39,11 +39,15 @@ export function ProposalsList({ proposals: initialProposals }: GovernancePagePro
         for (let i = proposals.length; i < count; i++) {
           const { values, ...rest } = await governanceContract.getProposal({ proposalId: i });
           const proposal = await enhanceProposalWithTimes(rest);
+          const proposalMetadata = await getProposalMetadata(
+            proposal.ipfsHash,
+            governanceConfig.ipfsGateway
+          );
           nextProposals.push({
             ipfs: {
               id: i,
               originalHash: proposal.ipfsHash,
-              ...(await getProposalMetadata(proposal.ipfsHash, governanceConfig.ipfsGateway)),
+              ...proposalMetadata,
             },
             proposal: proposal,
             prerendered: false,
