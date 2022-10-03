@@ -1,18 +1,18 @@
-import React from 'react';
-import { ComputedUserReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
-import { Typography, Box, SvgIcon, useTheme } from '@mui/material';
+import { valueToBigNumber } from '@aave/math-utils';
+import { ArrowNarrowRightIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-
+import { Box, SvgIcon, Typography, useTheme } from '@mui/material';
+import React from 'react';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Row } from 'src/components/primitives/Row';
+import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import {
   DetailsHFLine,
   DetailsIncentivesLine,
   DetailsNumberLine,
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
-import { Row } from 'src/components/primitives/Row';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { ArrowNarrowRightIcon } from '@heroicons/react/outline';
-import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { valueToBigNumber } from '@aave/math-utils';
+
+import { ComputedUserReserveData } from '../../../hooks/app-data-provider/useAppDataProvider';
 
 export type SupplyModalDetailsProps = {
   showHealthFactor: boolean;
