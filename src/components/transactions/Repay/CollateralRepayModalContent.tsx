@@ -245,7 +245,7 @@ export function CollateralRepayModalContent({
         />
       </Box>
       <AssetInput
-        value={inputAmount}
+        value={swapVariant === 'exactOut' ? inputAmount : tokenToRepayWithBalance}
         usdValue={inputAmountUSD}
         symbol={tokenToRepayWith.symbol}
         assets={repayTokens}
@@ -269,7 +269,7 @@ export function CollateralRepayModalContent({
         }
       >
         <DetailsHFLine
-          visibleHfChange={!!amount}
+          visibleHfChange={swapVariant === 'exactOut' ? !!amount : !!inputAmount}
           healthFactor={user?.healthFactor}
           futureHealthFactor={hfAfterSwap.toString(10)}
         />
