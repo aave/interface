@@ -4,6 +4,7 @@ import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';

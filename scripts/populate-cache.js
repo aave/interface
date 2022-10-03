@@ -75240,6 +75240,7 @@ var governanceConfig = {
     AAVE_GOVERNANCE_V2_HELPER: '0x16ff7583ea21055bf5f929ec4b896d997ff35847',
   },
   ipfsGateway: 'https://gateway.pinata.cloud/ipfs',
+  fallbackIpfsGateway: 'https://cloudflare-ipfs.com/ipfs',
 };
 
 // src/utils/marketsAndNetworksConfig.ts
@@ -75887,7 +75888,7 @@ var _a4;
 var FORK_CHAIN_ID = Number(
   ((_a4 = global == null ? void 0 : global.window) == null
     ? void 0
-    : _a4.localStorage.getItem('forkChainId')) || 3030
+    : _a4.localStorage.getItem('forkNetworkId')) || 3030
 );
 var _a5;
 var FORK_RPC_URL =
@@ -76008,7 +76009,7 @@ var governanceContract = new import_contract_helpers5.AaveGovernanceService(
 );
 
 // src/static-build/ipfs.ts
-var import_path2 = require('path');
+var import_lodash = __toESM(require_lodash());
 
 // node_modules/steno/lib/index.js
 var import_fs = __toESM(require('fs'), 1);
@@ -76273,17 +76274,17 @@ var LowSync = class {
 };
 
 // src/static-build/ipfs.ts
-var import_lodash = __toESM(require_lodash());
+var import_path2 = require('path');
 
 // src/modules/governance/utils/getProposalMetadata.ts
 var import_utils = __toESM(require_utils5());
-var import_isomorphic_unfetch = __toESM(require_isomorphic_unfetch());
 var import_gray_matter = __toESM(require_gray_matter());
+var import_isomorphic_unfetch = __toESM(require_isomorphic_unfetch());
 function getLink(hash, gateway) {
   return `${gateway}/${hash}`;
 }
 var MEMORIZE = {};
-function getProposalMetadata(hash, gateway = 'https://cloudflare-ipfs.com/ipfs') {
+function getProposalMetadata(hash, gateway) {
   return __async(this, null, function* () {
     const ipfsHash = hash.startsWith('0x')
       ? import_utils.base58.encode(Buffer.from(`1220${hash.slice(2)}`, 'hex'))
@@ -76343,7 +76344,7 @@ var Ipfs = class {
       const value = db.chain.get('ipfs').find({ id }).value();
       if (value) return;
       if (!proposal) throw new Error(`error populating proposal ${id}`);
-      const ipfs = yield getProposalMetadata(proposal.ipfsHash);
+      const ipfs = yield getProposalMetadata(proposal.ipfsHash, governanceConfig.ipfsGateway);
       const newIpfs = __spreadProps(__spreadValues({}, ipfs), {
         originalHash: proposal.ipfsHash,
         id,
@@ -76361,7 +76362,7 @@ var import_path3 = require('path');
 // src/modules/governance/utils/formatProposal.ts
 var import_contract_helpers6 = __toESM(require_cjs());
 var import_bignumber = __toESM(require_bignumber2());
-var averageBlockTime = 14;
+var averageBlockTime = 12;
 function enhanceProposalWithTimes(proposal) {
   return __async(this, null, function* () {
     const provider = getProvider(import_contract_helpers6.ChainId.mainnet);

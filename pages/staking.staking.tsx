@@ -1,18 +1,11 @@
 import { Trans } from '@lingui/macro';
-import {
-  Box,
-  Grid,
-  ToggleButton,
-  ToggleButtonGroup,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { Box, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { BigNumber } from 'ethers/lib/ethers';
 import { formatEther } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { ContentContainer } from 'src/components/ContentContainer';
-import { GetABPToken } from 'src/modules/staking/GetABPToken';
+import StyledToggleButton from 'src/components/StyledToggleButton';
+import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { StakeModal } from 'src/components/transactions/Stake/StakeModal';
 import { StakeCooldownModal } from 'src/components/transactions/StakeCooldown/StakeCooldownModal';
 import { StakeRewardClaimModal } from 'src/components/transactions/StakeRewardClaim/StakeRewardClaimModal';
@@ -20,6 +13,7 @@ import { UnStakeModal } from 'src/components/transactions/UnStake/UnStakeModal';
 import { StakeDataProvider, useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
+import { GetABPToken } from 'src/modules/staking/GetABPToken';
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
 import { StakeTxBuilderProvider } from 'src/providers/StakeTxBuilderProvider';
@@ -77,24 +71,24 @@ export default function Staking() {
                 mb: { xs: 3, xsm: 4 },
               }}
             >
-              <ToggleButtonGroup
+              <StyledToggleButtonGroup
                 color="primary"
                 value={mode}
                 exclusive
                 onChange={(_, value) => setMode(value)}
                 sx={{ width: { xs: '100%', xsm: '359px' } }}
               >
-                <ToggleButton value="aave" disabled={mode === 'aave'}>
+                <StyledToggleButton value="aave" disabled={mode === 'aave'}>
                   <Typography variant="subheader1">
                     <Trans>Stake AAVE</Trans>
                   </Typography>
-                </ToggleButton>
-                <ToggleButton value="bpt" disabled={mode === 'bpt'}>
+                </StyledToggleButton>
+                <StyledToggleButton value="bpt" disabled={mode === 'bpt'}>
                   <Typography variant="subheader1">
                     <Trans>Stake ABPT</Trans>
                   </Typography>
-                </ToggleButton>
-              </ToggleButtonGroup>
+                </StyledToggleButton>
+              </StyledToggleButtonGroup>
             </Box>
 
             <Grid container spacing={4}>

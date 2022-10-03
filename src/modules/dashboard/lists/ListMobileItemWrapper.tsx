@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
+
 import { AMPLWarning } from '../../../components/infoTooltips/AMPLWarning';
-import { FrozenWarning } from '../../../components/infoTooltips/FrozenWarning';
+import { FrozenTooltip } from '../../../components/infoTooltips/FrozenTooltip';
 import { ListMobileItem } from '../../../components/lists/ListMobileItem';
 
 interface ListMobileItemWrapperProps {
@@ -16,7 +17,6 @@ interface ListMobileItemWrapperProps {
   showSupplyCapTooltips?: boolean;
   showBorrowCapTooltips?: boolean;
   showDebtCeilingTooltips?: boolean;
-  showETHBorrowWarning?: boolean;
 }
 
 export const ListMobileItemWrapper = ({
@@ -31,7 +31,6 @@ export const ListMobileItemWrapper = ({
   showSupplyCapTooltips = false,
   showBorrowCapTooltips = false,
   showDebtCeilingTooltips = false,
-  showETHBorrowWarning = false,
 }: ListMobileItemWrapperProps) => {
   return (
     <ListMobileItem
@@ -40,14 +39,17 @@ export const ListMobileItemWrapper = ({
       name={name}
       underlyingAsset={underlyingAsset}
       warningComponent={
-        frozen ? <FrozenWarning symbol={symbol} /> : symbol === 'AMPL' ? <AMPLWarning /> : undefined
+        frozen ? (
+          <FrozenTooltip symbol={symbol} currentMarket={currentMarket} />
+        ) : symbol === 'AMPL' ? (
+          <AMPLWarning />
+        ) : undefined
       }
       loading={loading}
       currentMarket={currentMarket}
       showSupplyCapTooltips={showSupplyCapTooltips}
       showBorrowCapTooltips={showBorrowCapTooltips}
       showDebtCeilingTooltips={showDebtCeilingTooltips}
-      showETHBorrowWarning={showETHBorrowWarning}
     >
       {children}
     </ListMobileItem>

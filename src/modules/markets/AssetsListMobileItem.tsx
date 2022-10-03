@@ -1,10 +1,10 @@
 import { Trans } from '@lingui/macro';
-import { Button, Divider, Box } from '@mui/material';
+import { Box, Button, Divider } from '@mui/material';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { CustomMarket } from 'src/ui-config/marketsConfig';
+
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { Link, ROUTES } from '../../components/primitives/Link';
@@ -21,9 +21,6 @@ export const AssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
       name={reserve.name}
       underlyingAsset={reserve.underlyingAsset}
       currentMarket={currentMarket}
-      showETHBorrowWarning={
-        currentMarket === CustomMarket.proto_mainnet && reserve.symbol === 'ETH'
-      }
     >
       <Row caption={<Trans>Total supplied</Trans>} captionVariant="description" mb={3}>
         <Box

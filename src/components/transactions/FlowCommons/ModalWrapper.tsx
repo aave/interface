@@ -13,6 +13,7 @@ import { usePermissions } from 'src/hooks/usePermissions';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getNetworkConfig, isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
+
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { TxErrorView } from './Error';
@@ -45,7 +46,7 @@ export const ModalWrapper: React.FC<{
   requiredPermission,
   keepWrappedSymbol,
 }) => {
-  const { chainId: connectedChainId } = useWeb3Context();
+  const { chainId: connectedChainId, watchModeOnlyAddress } = useWeb3Context();
   const { walletBalances } = useWalletBalances();
   const {
     currentChainId: marketChainId,
@@ -94,7 +95,7 @@ export const ModalWrapper: React.FC<{
       {!mainTxState.success && (
         <TxModalTitle title={title} symbol={hideTitleSymbol ? undefined : symbol} />
       )}
-      {isWrongNetwork && (
+      {isWrongNetwork && !watchModeOnlyAddress && (
         <ChangeNetworkWarning
           networkName={getNetworkConfig(requiredChainId).name}
           chainId={requiredChainId}

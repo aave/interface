@@ -1,13 +1,13 @@
-import { configEnvWithTenderlyPolygonFork } from '../../../support/steps/configuration.steps';
-import { supply, borrow, emodeActivating } from '../../../support/steps/main.steps';
-import { skipState } from '../../../support/steps/common';
 import assets from '../../../fixtures/assets.json';
 import constants from '../../../fixtures/constans.json';
+import { skipState } from '../../../support/steps/common';
+import { configEnvWithTenderlyPolygonFork } from '../../../support/steps/configuration.steps';
+import { borrow, emodeActivating, supply } from '../../../support/steps/main.steps';
 import {
-  checkDashboardHealthFactor,
   borrowsAvailable,
-  verifyCountOfBorrowAssets,
+  checkDashboardHealthFactor,
   checkEmodeActivatingDisabled,
+  verifyCountOfBorrowAssets,
 } from '../../../support/steps/verification.steps';
 
 const testData = {
@@ -61,17 +61,25 @@ describe('E-MODE SPEC, POLYGON V3 MARKET', () => {
     checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.07 }, skipTestState);
   });
   describe('Turn on E-Mode and verify increase of health factor', () => {
-    emodeActivating({ turnOn: true }, skipTestState, true);
+    emodeActivating(
+      { turnOn: true, multipleEmodes: true, emodeOption: 'Stablecoin' },
+      skipTestState,
+      true
+    );
     checkDashboardHealthFactor({ valueFrom: 1.07, valueTo: 1000 }, skipTestState);
     borrowsAvailable(skipTestState);
     verifyCountOfBorrowAssets({ assets: testData.testCases.eModeAssets }, skipTestState);
   });
   describe('Turn off E-mode and verify decrease of health factor', () => {
-    emodeActivating({ turnOn: false }, skipTestState, true);
+    emodeActivating({ turnOn: false, multipleEmodes: true }, skipTestState, true);
     checkDashboardHealthFactor({ valueFrom: 1.0, valueTo: 1.07 }, skipTestState);
   });
   describe('Turn off E-mode blocked with low health factor', () => {
-    emodeActivating({ turnOn: true }, skipTestState, true);
+    emodeActivating(
+      { turnOn: true, multipleEmodes: true, emodeOption: 'Stablecoin' },
+      skipTestState,
+      true
+    );
     borrow(testData.testCases.borrow, skipTestState, true);
     checkEmodeActivatingDisabled({ turnOn: false }, skipTestState);
   });

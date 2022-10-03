@@ -1,4 +1,4 @@
-import { CheckCircleIcon, XCircleIcon, QuestionMarkCircleIcon } from '@heroicons/react/solid';
+import { CheckCircleIcon, QuestionMarkCircleIcon, XCircleIcon } from '@heroicons/react/solid';
 import { Box, BoxProps, Typography, TypographyProps, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 

@@ -1,7 +1,12 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
+import { ArrowDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
+import { Box, SvgIcon, Typography } from '@mui/material';
+import BigNumber from 'bignumber.js';
 import { useRef, useState } from 'react';
+import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import {
   ComputedReserveData,
   ComputedUserReserveData,
@@ -11,24 +16,20 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { SwapVariant, useCollateralRepaySwap } from 'src/hooks/useSwap';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
+import { calculateHFAfterRepay } from 'src/utils/hfUtils';
+
 import { Asset, AssetInput } from '../AssetInput';
+import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
+import { TxSuccessView } from '../FlowCommons/Success';
 import {
   DetailsHFLine,
   DetailsNumberLineWithSub,
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
-import { CollateralRepayActions } from './CollateralRepayActions';
-import BigNumber from 'bignumber.js';
-import { calculateHFAfterRepay } from 'src/utils/hfUtils';
-import { Box, Typography, SvgIcon } from '@mui/material';
-import { GasEstimationError } from '../FlowCommons/GasEstimationError';
-import { TxSuccessView } from '../FlowCommons/Success';
-import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
-import { ArrowDownIcon } from '@heroicons/react/outline';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
 import { ErrorType, flashLoanNotAvailable, useFlashloan } from '../utils';
+import { CollateralRepayActions } from './CollateralRepayActions';
 
 export function CollateralRepayModalContent({
   poolReserve,

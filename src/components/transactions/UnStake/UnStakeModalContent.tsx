@@ -1,22 +1,23 @@
-import React, { useRef, useState } from 'react';
-import { Typography } from '@mui/material';
-import { AssetInput } from '../AssetInput';
 import { normalize, valueToBigNumber } from '@aave/math-utils';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
-import { TxErrorView } from '../FlowCommons/Error';
-import { TxSuccessView } from '../FlowCommons/Success';
-import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
-import { TxModalTitle } from '../FlowCommons/TxModalTitle';
-import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { Trans } from '@lingui/macro';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
-import { stakeConfig } from 'src/ui-config/stakeConfig';
-import { UnStakeActions } from './UnStakeActions';
-import { GasStation } from '../GasStation/GasStation';
+import { Typography } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
+import React, { useRef, useState } from 'react';
+import { useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { stakeConfig } from 'src/ui-config/stakeConfig';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+
+import { AssetInput } from '../AssetInput';
+import { TxErrorView } from '../FlowCommons/Error';
+import { GasEstimationError } from '../FlowCommons/GasEstimationError';
+import { TxSuccessView } from '../FlowCommons/Success';
+import { TxModalTitle } from '../FlowCommons/TxModalTitle';
+import { GasStation } from '../GasStation/GasStation';
+import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
+import { UnStakeActions } from './UnStakeActions';
 
 export type UnStakeProps = {
   stakeAssetName: string;
@@ -32,7 +33,7 @@ type StakingType = 'aave' | 'bpt';
 export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   const data = useStakeData();
   const stakeData = data.stakeGeneralResult?.stakeGeneralUIData[stakeAssetName as StakingType];
-  const { chainId: connectedChainId } = useWeb3Context();
+  const { chainId: connectedChainId, watchModeOnlyAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
 
@@ -96,7 +97,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
   return (
     <>
       <TxModalTitle title="Unstake" symbol={icon} />
-      {isWrongNetwork && (
+      {isWrongNetwork && !watchModeOnlyAddress && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
       )}
       <AssetInput

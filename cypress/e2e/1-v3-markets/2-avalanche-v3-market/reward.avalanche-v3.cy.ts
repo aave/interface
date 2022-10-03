@@ -1,8 +1,8 @@
+import assets from '../../../fixtures/assets.json';
 import { skipState } from '../../../support/steps/common';
 import { configEnvWithTenderlyAvalancheFork } from '../../../support/steps/configuration.steps';
 import { claimReward, supply, withdraw } from '../../../support/steps/main.steps';
 import { rewardIsNotAvailable } from '../../../support/steps/verification.steps';
-import assets from '../../../fixtures/assets.json';
 
 const testData = {
   deposit: {

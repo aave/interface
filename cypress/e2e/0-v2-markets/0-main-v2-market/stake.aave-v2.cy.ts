@@ -1,6 +1,6 @@
-import { configEnvWithTenderlyMainnetFork } from '../../../support/steps/configuration.steps';
-import { doCloseModal, doConfirm, setAmount } from '../../../support/steps/actions.steps';
 import assets from '../../../fixtures/assets.json';
+import { configEnvWithTenderlyMainnetFork } from '../../../support/steps/configuration.steps';
+import { doCloseModal } from '../../../support/steps/main.steps';
 
 const testCases = [
   {
@@ -46,14 +46,8 @@ testCases.forEach(
             .click();
         });
         it(`Set amount`, () => {
-          setAmount({
-            amount: testCase.amount,
-            max: false,
-          });
-          doConfirm({
-            hasApproval: false,
-            actionName: 'Stake',
-          });
+          cy.setAmount(testCase.amount, false);
+          cy.doConfirm(false, 'Stake');
         });
         doCloseModal();
         it(`Check staked amount`, () => {
@@ -77,10 +71,7 @@ testCases.forEach(
           cy.get(`[data-cy="claimBtn_${testCase.assetName.shortName}"]`).click();
         });
         it(`Confirm`, () => {
-          doConfirm({
-            hasApproval: true,
-            actionName: `STAKE ${testCase.assetName.shortName}`,
-          });
+          cy.doConfirm(true, `STAKE ${testCase.assetName.shortName}`);
         });
         doCloseModal();
       });
@@ -90,10 +81,7 @@ testCases.forEach(
         });
         it(`Confirm`, () => {
           cy.get(`[data-cy="cooldownAcceptCheckbox"]`).click();
-          doConfirm({
-            hasApproval: true,
-            actionName: 'Cooldown to unstake',
-          });
+          cy.doConfirm(true, 'Cooldown to unstake');
         });
         doCloseModal();
         it(`Check cooldown activation`, () => {

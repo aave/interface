@@ -1,4 +1,4 @@
-import { Box, ClickAwayListener, Popper, styled, Tooltip, experimental_sx } from '@mui/material';
+import { Box, ClickAwayListener, experimental_sx, Popper, styled, Tooltip } from '@mui/material';
 import { JSXElementConstructor, ReactElement, ReactNode, useState } from 'react';
 
 interface ContentWithTooltipProps {

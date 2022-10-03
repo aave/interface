@@ -1,14 +1,15 @@
+import { Trans } from '@lingui/macro';
+import type { Theme } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import LinearProgress, {
   linearProgressClasses,
   LinearProgressProps,
 } from '@mui/material/LinearProgress';
-import { Box, Typography } from '@mui/material';
-import { FormattedNumber } from '../primitives/FormattedNumber';
-import type { Theme } from '@mui/material';
-import { Trans } from '@lingui/macro';
 import { AssetCapHookData } from 'src/hooks/useAssetCaps';
-import { TextWithTooltip } from '../TextWithTooltip';
+
+import { FormattedNumber } from '../primitives/FormattedNumber';
 import { Link } from '../primitives/Link';
+import { TextWithTooltip } from '../TextWithTooltip';
 
 type DebtCeilingTooltipProps = {
   debt: string;
@@ -55,8 +56,8 @@ export const DebtCeilingStatus = ({
           <TextWithTooltip>
             <>
               <Trans>
-                Debt limits the amount possible to borrow against this asset by protocol users. Debt
-                ceiling is specific to assets in isolation mode and is denoted in USD.
+                Debt ceiling limits the amount possible to borrow against this asset by protocol
+                users. Debt ceiling is specific to assets in isolation mode and is denoted in USD.
               </Trans>{' '}
               <Link
                 href="https://docs.aave.com/faq/aave-v3-features#how-does-isolation-mode-affect-my-borrowing-power"

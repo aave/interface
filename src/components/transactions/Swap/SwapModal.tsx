@@ -2,8 +2,8 @@ import { Trans } from '@lingui/macro';
 import React from 'react';
 import { BasicModal } from 'src/components/primitives/BasicModal';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
-import { ModalWrapper } from '../FlowCommons/ModalWrapper';
 
+import { ModalWrapper } from '../FlowCommons/ModalWrapper';
 import { SwapModalContent } from './SwapModalContent';
 
 export const SwapModal = () => {
