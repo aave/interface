@@ -2,6 +2,7 @@ import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Button, SvgIcon, Typography } from '@mui/material';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+
 import { DarkTooltip } from './infoTooltips/DarkTooltip';
 import { Link, ROUTES } from './primitives/Link';
 

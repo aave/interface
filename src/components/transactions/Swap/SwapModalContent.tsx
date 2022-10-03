@@ -1,28 +1,29 @@
+import { SwitchVerticalIcon } from '@heroicons/react/outline';
+import { Trans } from '@lingui/macro';
+import { Box, SvgIcon, Typography } from '@mui/material';
+import BigNumber from 'bignumber.js';
 import React, { useRef, useState } from 'react';
+import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
+import { GasEstimationError } from 'src/components/transactions/FlowCommons/GasEstimationError';
+import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
+import { useModalContext } from 'src/hooks/useModal';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useSwap } from 'src/hooks/useSwap';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
+import { remainingCap } from 'src/utils/getMaxAmountAvailableToSupply';
+import { calculateHFAfterSwap } from 'src/utils/hfUtils';
+
 import {
   ComputedUserReserveData,
   useAppDataContext,
 } from '../../../hooks/app-data-provider/useAppDataProvider';
-import { SwapActions } from './SwapActions';
-import { Typography, Box, SvgIcon } from '@mui/material';
-import BigNumber from 'bignumber.js';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { Trans } from '@lingui/macro';
-import { remainingCap } from 'src/utils/getMaxAmountAvailableToSupply';
-import { useSwap } from 'src/hooks/useSwap';
-import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
-import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
-import { GasEstimationError } from 'src/components/transactions/FlowCommons/GasEstimationError';
-import { useModalContext } from 'src/hooks/useModal';
-import { TxSuccessView } from '../FlowCommons/Success';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { calculateHFAfterSwap } from 'src/utils/hfUtils';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
+import { TxSuccessView } from '../FlowCommons/Success';
 import { ErrorType, flashLoanNotAvailable, useFlashloan } from '../utils';
-import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
-import { SwitchVerticalIcon } from '@heroicons/react/outline';
-import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
+import { SwapActions } from './SwapActions';
 import { SwapModalDetails } from './SwapModalDetails';
 
 export type SupplyProps = {

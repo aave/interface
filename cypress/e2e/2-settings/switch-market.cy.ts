@@ -1,5 +1,5 @@
-import { configEnvWithTenderlyMainnetFork } from '../../support/steps/configuration.steps';
 import markets from '../../fixtures/markets.json';
+import { configEnvWithTenderlyMainnetFork } from '../../support/steps/configuration.steps';
 
 const switchToTestNet = () => {
   cy.get('#settings-button').click();

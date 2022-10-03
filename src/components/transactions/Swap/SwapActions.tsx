@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
+import { OptimalRate } from 'paraswap-core';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { getSwapCallData } from 'src/hooks/useSwap';
@@ -8,7 +9,6 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
 import { TxActionsWrapper } from '../TxActionsWrapper';
-import { OptimalRate } from 'paraswap-core';
 
 export interface SwapActionProps extends BoxProps {
   amountToSwap: string;
