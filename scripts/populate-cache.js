@@ -75239,8 +75239,8 @@ var governanceConfig = {
     AAVE_GOVERNANCE_V2_EXECUTOR_LONG: '0xEE56e2B3D491590B5b31738cC34d5232F378a8D5',
     AAVE_GOVERNANCE_V2_HELPER: '0x16ff7583ea21055bf5f929ec4b896d997ff35847',
   },
-  ipfsGateway: 'https://gateway.pinata.cloud/ipfs',
-  fallbackIpfsGateway: 'https://cloudflare-ipfs.com/ipfs',
+  ipfsGateway: 'https://cloudflare-ipfs.com/ipfs',
+  fallbackIpfsGateway: 'https://ipfs.io/ipfs',
 };
 
 // src/utils/marketsAndNetworksConfig.ts
@@ -76280,24 +76280,38 @@ var import_path2 = require('path');
 var import_utils = __toESM(require_utils5());
 var import_gray_matter = __toESM(require_gray_matter());
 var import_isomorphic_unfetch = __toESM(require_isomorphic_unfetch());
+var MEMORIZE = {};
 function getLink(hash, gateway) {
   return `${gateway}/${hash}`;
 }
-var MEMORIZE = {};
 function getProposalMetadata(hash, gateway) {
+  return __async(this, null, function* () {
+    try {
+      return yield fetchFromIpfs(hash, gateway);
+    } catch (e) {
+      console.groupCollapsed('Fetching proposal metadata from IPFS...');
+      console.info('failed with', gateway);
+      if (gateway === governanceConfig.ipfsGateway) {
+        console.info('retrying with', governanceConfig.fallbackIpfsGateway);
+        console.error(e);
+        console.groupEnd();
+        return getProposalMetadata(hash, governanceConfig.fallbackIpfsGateway);
+      }
+      console.info('exiting');
+      console.error(e);
+      console.groupEnd();
+      throw e;
+    }
+  });
+}
+function fetchFromIpfs(hash, gateway) {
   return __async(this, null, function* () {
     const ipfsHash = hash.startsWith('0x')
       ? import_utils.base58.encode(Buffer.from(`1220${hash.slice(2)}`, 'hex'))
       : hash;
     if (MEMORIZE[ipfsHash]) return MEMORIZE[ipfsHash];
-    const ipfsResponse = yield (0, import_isomorphic_unfetch.default)(getLink(ipfsHash, gateway), {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    if (!ipfsResponse.ok) {
-      throw Error('Fetch not working');
-    }
+    const ipfsResponse = yield (0, import_isomorphic_unfetch.default)(getLink(ipfsHash, gateway));
+    if (!ipfsResponse.ok) throw Error('Fetch not working');
     const clone = yield ipfsResponse.clone();
     try {
       const response = yield ipfsResponse.json();
