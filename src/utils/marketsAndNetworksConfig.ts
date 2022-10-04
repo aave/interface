@@ -197,7 +197,9 @@ class RotationProvider extends ethersProviders.BaseProvider {
   async delayRotation() {
     const now = new Date().getTime();
     const diff = now - this.lastFullRotationTimestamp;
-    if (diff < this.ROTATION_DELAY) sleep(this.ROTATION_DELAY - diff);
+    if (diff < this.ROTATION_DELAY) {
+      await sleep(this.ROTATION_DELAY - diff);
+    }
   }
 
   /**
@@ -206,8 +208,10 @@ class RotationProvider extends ethersProviders.BaseProvider {
   async fallForwardRotation() {
     const now = new Date().getTime();
     const diff = now - this.firstRotationTimestamp;
-    if (diff < this.FALL_FORWARD_DELAY) sleep(this.FALL_FORWARD_DELAY - diff);
-    this.currentProviderIndex = 0;
+    if (diff < this.FALL_FORWARD_DELAY) {
+      await sleep(this.FALL_FORWARD_DELAY - diff);
+      this.currentProviderIndex = 0;
+    }
   }
 
   /**
