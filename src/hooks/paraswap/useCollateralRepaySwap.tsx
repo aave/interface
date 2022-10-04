@@ -104,6 +104,12 @@ export const useCollateralRepaySwap = ({
       }
     };
 
+    // Update the transaction on any dependency change
+    const timeout = setTimeout(() => {
+      fetchRoute();
+    }, 400);
+
+    // If there are no dependency changes, refresh every 15 seconds
     const interval = setInterval(
       () => {
         fetchRoute();
@@ -111,9 +117,10 @@ export const useCollateralRepaySwap = ({
       error ? 3000 : 15000
     );
 
-    fetchRoute();
-
-    return () => clearInterval(interval);
+    return () => {
+      clearTimeout(timeout);
+      clearInterval(interval);
+    };
   }, [
     exactInTx,
     exactOutTx,

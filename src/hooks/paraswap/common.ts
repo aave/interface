@@ -114,7 +114,7 @@ export async function fetchExactInTxParams(
   maxSlippage: number,
   max?: boolean
 ): Promise<SwapTransactionParams> {
-  if (!swapIn.amount || swapIn.amount === '0') {
+  if (!swapIn.amount || swapIn.amount === '0' || isNaN(+swapIn.amount)) {
     return {
       swapCallData: '',
       augustus: '',
@@ -188,7 +188,7 @@ export async function fetchExactOutTxParams(
   maxSlippage: number,
   max: boolean
 ): Promise<SwapTransactionParams> {
-  if (!swapOut.amount || swapOut.amount === '0') {
+  if (!swapOut.amount || swapOut.amount === '0' || isNaN(+swapOut.amount)) {
     return {
       swapCallData: '',
       augustus: '',

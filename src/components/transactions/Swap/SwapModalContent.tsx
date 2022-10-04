@@ -84,7 +84,7 @@ export const SwapModalContent = ({
     swapOut: { ...swapTarget.reserve, amount: '0' },
     max: isMaxSelected,
     skip: supplyTxState.loading,
-    maxSlippage: 0,
+    maxSlippage: Number(maxSlippage),
   });
 
   const minimumReceived = new BigNumber(outputAmount || '0')
