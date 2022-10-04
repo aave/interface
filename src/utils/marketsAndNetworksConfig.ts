@@ -173,6 +173,8 @@ class StaticJsonRpcBatchProvider extends ethersProviders.JsonRpcBatchProvider {
 
 /**
  * The provider will rotate rpcs on error.
+ * If provider rotates away from the first RPC, rotate back after a set interval to prioritize using most reliable RPC.
+ * If provider rotates through all rpcs, delay to avoid spamming rpcs with requests.
  */
 class RotationProvider extends ethersProviders.BaseProvider {
   readonly providers: StaticJsonRpcBatchProvider[];
@@ -190,7 +192,7 @@ class RotationProvider extends ethersProviders.BaseProvider {
   }
 
   /**
-   * Add a delay for frequent rotations, so we don't ddos a provider
+   * If provider rotates through all rpcs, delay to avoid spamming rpcs with requests
    */
   async delayRotation() {
     const now = new Date().getTime();
@@ -208,16 +210,21 @@ class RotationProvider extends ethersProviders.BaseProvider {
     this.currentProviderIndex = 0;
   }
 
+  /**
+   * If rpc fails, rotate to next available and trigger rotation or fall forward delay where applicable
+   * @param prevIndex last updated index, checked to avoid having multiple active rotations
+   */
   private async rotateUrl(prevIndex: number) {
     // don't rotate when another rotation was already triggered
     if (prevIndex !== this.currentProviderIndex) return;
+    // if we have rotated through all rpcs
     if (this.currentProviderIndex === this.providers.length - 1) {
-      await this.delayRotation(); // delay if we have completed a full rotation
+      await this.delayRotation(); // wait for ROTATION_DELAY after completing a full rotation
       this.currentProviderIndex = 0;
       this.lastFullRotationTimestamp = new Date().getTime();
     } else {
       this.currentProviderIndex += 1;
-      // return to first rpc after set interval
+      // switch back to first rpc after FALL_FORWARD_DELAY
       this.firstRotationTimestamp = new Date().getTime();
       await this.fallForwardRotation();
     }
