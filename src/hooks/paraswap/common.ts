@@ -93,6 +93,19 @@ export const getParaswap = (chainId: ChainId) => {
   throw new Error('chain not supported');
 };
 
+/**
+ * Uses the Paraswap SDK to fetch the transaction parameters for a 'Sell', or 'Exact In' swap.
+ * This means that swap in amount is fixed, and the slippage will be applied to the amount received.
+ * There are two steps in fetching the transaction parameters. First an optimal route is determined
+ * using the Paraswap SDK. Then the transaction parameters are fetched using the optimal route.
+ * @param {SwapData} swapIn
+ * @param {SwapData} swapOut
+ * @param {ChainId} chainId
+ * @param {string} userAddress
+ * @param {number} maxSlippage
+ * @param {boolean} [max]
+ * @returns {Promise<SwapTransactionParams>}
+ */
 export async function fetchExactInTxParams(
   swapIn: SwapData,
   swapOut: SwapData,
@@ -101,10 +114,6 @@ export async function fetchExactInTxParams(
   maxSlippage: number,
   max?: boolean
 ): Promise<SwapTransactionParams> {
-  console.log('fetchExactIn');
-  // The 'Sell' route will take the input token and amount, and try to swap for the specified
-  // output token minus the maximum slippage. This should be used when the user is trying
-  // repay with collateral and the collateral amount is less than the debt amount.
   if (!swapIn.amount || swapIn.amount === '0') {
     return {
       swapCallData: '',
@@ -158,6 +167,19 @@ export async function fetchExactInTxParams(
   };
 }
 
+/**
+ * Uses the Paraswap SDK to fetch the transaction parameters for a 'Buy', or 'Exact Out' swap.
+ * This means that amount received is fixed, and positive slippage will be applied to the input amount.
+ * There are two steps in fetching the transaction parameters. First an optimal route is determined
+ * using the Paraswap SDK. Then the transaction parameters are fetched using the optimal route.
+ * @param {SwapData} swapIn
+ * @param {SwapData} swapOut
+ * @param {ChainId} chainId
+ * @param {string} userAddress
+ * @param {number} maxSlippage
+ * @param {boolean} max
+ * @returns {Promise<SwapTransactionParams>}
+ */
 export async function fetchExactOutTxParams(
   swapIn: SwapData,
   swapOut: SwapData,
@@ -165,10 +187,7 @@ export async function fetchExactOutTxParams(
   userAddress: string,
   maxSlippage: number,
   max: boolean
-) {
-  // The 'Buy' route will try to swap the input token and apply positive slippage to the amount
-  // in order to get the exact output amount. This should be used when the user is trying to
-  // repay with collateral and the collateral amount is greater than the debt amount.
+): Promise<SwapTransactionParams> {
   if (!swapOut.amount || swapOut.amount === '0') {
     return {
       swapCallData: '',
@@ -355,7 +374,7 @@ const ExactOutSwapper = (chainId: ChainId) => {
   };
 };
 
-export const getSwapCallData = async ({
+const getSwapCallData = async ({
   srcToken,
   srcDecimals,
   destToken,
