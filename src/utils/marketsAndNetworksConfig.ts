@@ -179,6 +179,10 @@ class RotationProvider extends ethersProviders.BaseProvider {
   private currentProviderIndex = 0;
   private lastFullRotationTimestamp = 0;
   private firstRotationTimestamp = 0;
+  // after completing a full rotation of the RotationProvider, delay to avoid spamming rpcs with requests
+  private ROTATION_DELAY = 5000;
+  // if we rotate away from first rpc, return back after this delay
+  private FALL_FORWARD_DELAY = 60000;
 
   constructor(urls: string[], chainId: number) {
     super(chainId);
@@ -191,7 +195,7 @@ class RotationProvider extends ethersProviders.BaseProvider {
   async delayRotation() {
     const now = new Date().getTime();
     const diff = now - this.lastFullRotationTimestamp;
-    if (diff < 5000) sleep(5000 - diff);
+    if (diff < this.ROTATION_DELAY) sleep(this.ROTATION_DELAY - diff);
   }
 
   /**
@@ -200,7 +204,7 @@ class RotationProvider extends ethersProviders.BaseProvider {
   async fallForwardRotation() {
     const now = new Date().getTime();
     const diff = now - this.firstRotationTimestamp;
-    if (diff < 60000) sleep(60000 - diff);
+    if (diff < this.FALL_FORWARD_DELAY) sleep(this.FALL_FORWARD_DELAY - diff);
     this.currentProviderIndex = 0;
   }
 
