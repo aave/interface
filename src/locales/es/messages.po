@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-09-29 18:07\n"
+"PO-Revision-Date: 2022-10-04 18:10\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -256,7 +256,7 @@ msgstr "Recompensas disponibles"
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Available to borrow"
-msgstr "Disponible para pedir prestado"
+msgstr "Disponible para tomar prestado"
 
 #: src/components/caps/CapsHint.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
@@ -721,7 +721,7 @@ msgstr "Inglés"
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Enter ETH address"
-msgstr "Introduzca la dirección ETH"
+msgstr "Introduce la dirección ETH"
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Enter an address to track in watch-only mode"
@@ -729,7 +729,7 @@ msgstr "Introduce una dirección para rastrear en modo de solo lectura"
 
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Enter an amount"
-msgstr "Ingrese una cantidad"
+msgstr "Ingresa una cantidad"
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Error connecting. Try refreshing the page."
@@ -847,7 +847,7 @@ msgstr "Si el error persiste, <0/> podrías reportarlo a esto"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "If the health factor goes below 1, the liquidation of your collateral might be triggered."
-msgstr "Si el factor de salud se encuentra por debajo de 1, la liquidación de su colateral puede ser activada."
+msgstr "Si el factor de salud se encuentra por debajo de 1, la liquidación de tu colateral puede ser activada."
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "If you DO NOT unstake within {0} of unstake window, you will need to activate cooldown process again."
