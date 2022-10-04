@@ -118,7 +118,7 @@ export const CollateralChangeModalContent = ({
       {showEnterIsolationModeMsg && <IsolationModeWarning asset={poolReserve.symbol} />}
 
       {showExitIsolationModeMsg && (
-        <Warning severity="info" icon={false} sx={{ mb: 0 }}>
+        <Warning severity="info" icon={false} sx={{ mb: 3 }}>
           <Trans>You will exit isolation mode and other tokens can now be used as collateral</Trans>
         </Warning>
       )}
