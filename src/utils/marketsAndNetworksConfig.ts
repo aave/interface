@@ -270,7 +270,7 @@ export const getProvider = (chainId: ChainId): ethersProviders.Provider => {
       throw new Error(`${chainId} has no jsonRPCUrl configured`);
     }
     if (chainProviders.length === 1) {
-      providers[chainId] = new ethersProviders.StaticJsonRpcProvider(chainProviders[0], chainId);
+      providers[chainId] = new StaticJsonRpcBatchProvider(chainProviders[0], chainId);
     } else {
       providers[chainId] = new RotationProvider(chainProviders, chainId);
     }
@@ -281,7 +281,7 @@ export const getProvider = (chainId: ChainId): ethersProviders.Provider => {
 export const getENSProvider = () => {
   const chainId = 1;
   const config = getNetworkConfig(chainId);
-  return new ethersProviders.StaticJsonRpcProvider(config.publicJsonRPCUrl[0], chainId);
+  return new StaticJsonRpcBatchProvider(config.publicJsonRPCUrl[0], chainId);
 };
 
 const ammDisableProposal = 'https://app.aave.com/governance/proposal/?proposalId=44';
