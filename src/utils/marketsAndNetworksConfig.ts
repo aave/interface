@@ -194,11 +194,12 @@ class RotationProvider extends ethersProviders.BaseProvider {
   }
 
   private async rotateUrl(prevIndex: number) {
-    await this.delayRotation();
     // don't rotate when another rotation was already triggered
     if (prevIndex !== this.currentProviderIndex) return;
-    if (this.currentProviderIndex === this.providers.length - 1) this.currentProviderIndex = 0;
-    else this.currentProviderIndex += 1;
+    if (this.currentProviderIndex === this.providers.length - 1) {
+      await this.delayRotation(); // delay if we have completed a full rotation
+      this.currentProviderIndex = 0;
+    } else this.currentProviderIndex += 1;
     this.lastRotation = new Date().getTime();
   }
 
