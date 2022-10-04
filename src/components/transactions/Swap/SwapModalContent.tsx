@@ -8,9 +8,9 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
 import { GasEstimationError } from 'src/components/transactions/FlowCommons/GasEstimationError';
 import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
+import { useCollateralSwap } from 'src/hooks/paraswap/useCollateralSwap';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useSwap } from 'src/hooks/useSwap';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ListSlippageButton } from 'src/modules/dashboard/lists/SlippageList';
 import { remainingCap } from 'src/utils/getMaxAmountAvailableToSupply';
@@ -69,17 +69,23 @@ export const SwapModalContent = ({
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToSwap : _amount;
 
-  const { priceRoute, inputAmountUSD, inputAmount, outputAmount, outputAmountUSD, error } = useSwap(
-    {
-      chainId: currentNetworkConfig.underlyingChainId || currentChainId,
-      userAddress: currentAccount,
-      swapIn: { ...poolReserve, amount: amountRef.current },
-      swapOut: { ...swapTarget.reserve, amount: '0' },
-      max: isMaxSelected,
-      skip: supplyTxState.loading,
-      maxSlippage: 0,
-    }
-  );
+  const {
+    inputAmountUSD,
+    inputAmount,
+    outputAmount,
+    outputAmountUSD,
+    error,
+    augustus,
+    swapCallData,
+  } = useCollateralSwap({
+    chainId: currentNetworkConfig.underlyingChainId || currentChainId,
+    userAddress: currentAccount,
+    swapIn: { ...poolReserve, amount: amountRef.current },
+    swapOut: { ...swapTarget.reserve, amount: '0' },
+    max: isMaxSelected,
+    skip: supplyTxState.loading,
+    maxSlippage: 0,
+  });
 
   const minimumReceived = new BigNumber(outputAmount || '0')
     .multipliedBy(new BigNumber(100).minus(maxSlippage).dividedBy(100))
@@ -250,9 +256,10 @@ export const SwapModalContent = ({
         targetReserve={swapTarget.reserve}
         symbol={poolReserve.symbol}
         blocked={blockingError !== undefined}
-        priceRoute={priceRoute}
         useFlashLoan={shouldUseFlashloan}
         maxSlippage={Number(maxSlippage)}
+        augustus={augustus}
+        swapCallData={swapCallData}
       />
     </>
   );
