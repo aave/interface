@@ -177,7 +177,8 @@ class StaticJsonRpcBatchProvider extends ethersProviders.JsonRpcBatchProvider {
 class RotationProvider extends ethersProviders.BaseProvider {
   readonly providers: StaticJsonRpcBatchProvider[];
   private currentProviderIndex = 0;
-  private lastRotation = 0;
+  private lastFullRotationTimestamp = 0;
+  private firstRotationTimestamp = 0;
 
   constructor(urls: string[], chainId: number) {
     super(chainId);
@@ -189,8 +190,18 @@ class RotationProvider extends ethersProviders.BaseProvider {
    */
   async delayRotation() {
     const now = new Date().getTime();
-    const diff = now - this.lastRotation;
+    const diff = now - this.lastFullRotationTimestamp;
     if (diff < 5000) sleep(5000 - diff);
+  }
+
+  /**
+   * If we rotate away from the first RPC, rotate back after a set interval to prioritize using most reliable RPC
+   */
+  async fallForwardRotation() {
+    const now = new Date().getTime();
+    const diff = now - this.firstRotationTimestamp;
+    if (diff < 60000) sleep(60000 - diff);
+    this.currentProviderIndex = 0;
   }
 
   private async rotateUrl(prevIndex: number) {
@@ -199,8 +210,13 @@ class RotationProvider extends ethersProviders.BaseProvider {
     if (this.currentProviderIndex === this.providers.length - 1) {
       await this.delayRotation(); // delay if we have completed a full rotation
       this.currentProviderIndex = 0;
-    } else this.currentProviderIndex += 1;
-    this.lastRotation = new Date().getTime();
+      this.lastFullRotationTimestamp = new Date().getTime();
+    } else {
+      this.currentProviderIndex += 1;
+      // return to first rpc after set interval
+      this.firstRotationTimestamp = new Date().getTime();
+      await this.fallForwardRotation();
+    }
   }
 
   async detectNetwork(): Promise<Network> {
