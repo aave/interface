@@ -1,14 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { fetchExactInTxParams, SwapData, UseSwapProps } from './common';
-
-// TODO
-const MESSAGE_MAP = {
-  ESTIMATED_LOSS_GREATER_THAN_MAX_IMPACT:
-    'Price impact too high. Please try a different amount or asset pair.',
-  // not sure why this error-code is not upper-cased
-  'No routes found with enough liquidity': 'No routes found with enough liquidity.',
-};
+import { fetchExactInTxParams, MESSAGE_MAP, SwapData, UseSwapProps } from './common';
 
 export const useCollateralSwap = ({
   swapIn,
@@ -85,8 +77,9 @@ export const useCollateralSwap = ({
         setInputAmountUSD(route.inputAmountUSD);
         setOutputAmountUSD(route.outputAmountUSD);
       } catch (e) {
-        // TODO: setError
         console.error(e);
+        const message = MESSAGE_MAP[e.message] || 'There was an issue fetching data from Paraswap';
+        setError(message);
       } finally {
         setLoading(false);
       }

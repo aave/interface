@@ -93,6 +93,13 @@ export const getParaswap = (chainId: ChainId) => {
   throw new Error('chain not supported');
 };
 
+export const MESSAGE_MAP: { [key: string]: string } = {
+  ESTIMATED_LOSS_GREATER_THAN_MAX_IMPACT:
+    'Price impact too high. Please try a different amount or asset pair.',
+  // not sure why this error-code is not upper-cased
+  'No routes found with enough liquidity': 'No routes found with enough liquidity.',
+};
+
 /**
  * Uses the Paraswap SDK to fetch the transaction parameters for a 'Sell', or 'Exact In' swap.
  * This means that swap in amount is fixed, and the slippage will be applied to the amount received.
@@ -271,10 +278,6 @@ const ExactInSwapper = (chainId: ChainId) => {
       options,
     });
 
-    if ('message' in priceRoute) {
-      // throw new Error((priceRoute as any).message);
-    }
-
     return priceRoute;
   };
 
@@ -333,10 +336,6 @@ const ExactOutSwapper = (chainId: ChainId) => {
       side: SwapSide.BUY,
       options,
     });
-
-    if ('message' in priceRoute) {
-      // throw new Error((priceRoute as any).message);
-    }
 
     return priceRoute;
   };

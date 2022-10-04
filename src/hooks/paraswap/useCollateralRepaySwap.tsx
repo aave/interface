@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   fetchExactInTxParams,
   fetchExactOutTxParams,
+  MESSAGE_MAP,
   SwapData,
   SwapVariant,
   UseSwapProps,
@@ -97,8 +98,9 @@ export const useCollateralRepaySwap = ({
         setInputAmountUSD(route.inputAmountUSD);
         setOutputAmountUSD(route.outputAmountUSD);
       } catch (e) {
-        // TODO: setError
         console.error(e);
+        const message = MESSAGE_MAP[e.message] || 'There was an issue fetching data from Paraswap';
+        setError(message);
       } finally {
         setLoading(false);
       }
