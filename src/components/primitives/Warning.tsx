@@ -1,8 +1,10 @@
 import { Alert, AlertProps } from '@mui/material';
 
-export const Warning = ({ children, ...rest }: AlertProps) => {
+export const Warning = ({ children, sx, ...rest }: AlertProps) => {
+  const styles = { mb: 6, alignItems: 'center', width: '100%', ...sx };
+
   return (
-    <Alert sx={{ mb: 6, alignItems: 'center', width: '100%' }} {...rest}>
+    <Alert sx={styles} {...rest}>
       {children}
     </Alert>
   );

@@ -5,7 +5,7 @@ import {
   valueToBigNumber,
 } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Alert, Box, Checkbox, Typography } from '@mui/material';
+import { Box, Checkbox, Typography } from '@mui/material';
 import { useRef, useState } from 'react';
 import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -280,11 +280,11 @@ export const BorrowModalContent = ({
 
       {displayRiskCheckbox && (
         <>
-          <Alert severity="error" sx={{ my: '24px' }}>
+          <Warning severity="error" sx={{ my: 6 }}>
             <Trans>
               Borrowing this amount will reduce your health factor and increase risk of liquidation.
             </Trans>
-          </Alert>
+          </Warning>
           <Box
             sx={{
               display: 'flex',
@@ -308,7 +308,7 @@ export const BorrowModalContent = ({
         </>
       )}
 
-      <Warning sx={{ my: '24px' }}>
+      <Warning severity="info" sx={{ my: 6 }}>
         <Trans>
           <b>Attention:</b> Parameter changes via governance can alter your account health factor
           and risk of liquidation. Follow the{' '}

@@ -3,19 +3,15 @@ import { configEnvWithTenderlyMainnetFork } from '../../support/steps/configurat
 describe('Checking ABPT token modal on Staking page', () => {
   describe('CASE1:Open Stake page', () => {
     configEnvWithTenderlyMainnetFork({});
-
-    it('step1:Open Stake page', () => {
+    it('Open Stake page', () => {
+      cy.wait(2000);
       cy.get('[data-cy="menuStake"]').click();
     });
-  });
-
-  describe('CASE2:GET ABP Token', () => {
-    it('step2:Get ABP Token', () => {
+    it('Get ABP Token', () => {
       cy.contains('Stake ABPT').click();
       cy.get('[data-cy="getAbp-token"]').first().click();
     });
-
-    it('step3:Verify does Get ABP Token modal is opened', () => {
+    it('Verify does Get ABP Token modal is opened', () => {
       cy.contains('Go to Balancer Pool').should(
         'have.attr',
         'href',

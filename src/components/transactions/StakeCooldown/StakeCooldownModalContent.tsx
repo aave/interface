@@ -1,9 +1,10 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { ArrowDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Alert, Box, Checkbox, FormControlLabel, SvgIcon, Typography } from '@mui/material';
+import { Box, Checkbox, FormControlLabel, SvgIcon, Typography } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { useState } from 'react';
+import { Warning } from 'src/components/primitives/Warning';
 import { useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -220,14 +221,14 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
         </Typography>
       )}
 
-      <Alert severity="error" sx={{ mb: 6 }}>
+      <Warning severity="error">
         <Typography variant="caption">
           <Trans>
             If you DO NOT unstake within {timeMessage(stakeUnstakeWindow)} of unstake window, you
             will need to activate cooldown process again.
           </Trans>
         </Typography>
-      </Alert>
+      </Warning>
 
       <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} />
 

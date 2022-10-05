@@ -1,10 +1,11 @@
 import { Trans } from '@lingui/macro';
-import { Alert, Button, Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
+import { Warning } from 'src/components/primitives/Warning';
 import { TxErrorType } from 'src/ui-config/errorMapping';
 
 export const GasEstimationError = ({ txError }: { txError: TxErrorType }) => {
   return (
-    <Alert severity="error" sx={{ mt: 4 }}>
+    <Warning severity="error" sx={{ mt: 4, mb: 0 }}>
       <Typography variant="description">
         {txError.error ? (
           <>
@@ -31,6 +32,6 @@ export const GasEstimationError = ({ txError }: { txError: TxErrorType }) => {
           </Trans>
         )}
       </Typography>
-    </Alert>
+    </Warning>
   );
 };

@@ -1,9 +1,10 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { calculateHealthFactorFromBalancesBigUnits, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Alert, Box, Checkbox, Typography } from '@mui/material';
+import { Box, Checkbox, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { useRef, useState } from 'react';
+import { Warning } from 'src/components/primitives/Warning';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -219,12 +220,12 @@ export const WithdrawModalContent = ({
 
       {displayRiskCheckbox && (
         <>
-          <Alert severity="error" sx={{ my: '24px' }}>
+          <Warning severity="error" sx={{ my: 6 }}>
             <Trans>
               Withdrawing this amount will reduce your health factor and increase risk of
               liquidation.
             </Trans>
-          </Alert>
+          </Warning>
           <Box
             sx={{
               display: 'flex',
