@@ -3,8 +3,8 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Alert } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
-import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 
+import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
 import {

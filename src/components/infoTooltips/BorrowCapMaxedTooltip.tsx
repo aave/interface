@@ -2,8 +2,9 @@ import { ExclamationIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box } from '@mui/material';
 import { AssetCapData } from 'src/hooks/useAssetCaps';
-import { TextWithTooltip, TextWithTooltipProps } from '../TextWithTooltip';
+
 import { Link } from '../primitives/Link';
+import { TextWithTooltip, TextWithTooltipProps } from '../TextWithTooltip';
 
 type BorrowCapMaxedTooltipProps = TextWithTooltipProps & {
   borrowCap: AssetCapData;

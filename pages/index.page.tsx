@@ -1,14 +1,10 @@
 import { Trans } from '@lingui/macro';
-import {
-  Box,
-  ToggleButton,
-  ToggleButtonGroup,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
+import StyledToggleButton from 'src/components/StyledToggleButton';
+import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { usePermissions } from 'src/hooks/usePermissions';
+
 import { ConnectWalletPaper } from '../src/components/ConnectWalletPaper';
 import { ContentContainer } from '../src/components/ContentContainer';
 import { MainLayout } from '../src/layouts/MainLayout';
@@ -43,24 +39,24 @@ export default function Home() {
               mb: { xs: 3, xsm: 4 },
             }}
           >
-            <ToggleButtonGroup
+            <StyledToggleButtonGroup
               color="primary"
               value={mode}
               exclusive
               onChange={(_, value) => setMode(value)}
               sx={{ width: { xs: '100%', xsm: '359px' }, height: '44px' }}
             >
-              <ToggleButton value="supply" disabled={mode === 'supply'}>
+              <StyledToggleButton value="supply" disabled={mode === 'supply'}>
                 <Typography variant="subheader1">
                   <Trans>Supply</Trans>
                 </Typography>
-              </ToggleButton>
-              <ToggleButton value="borrow" disabled={mode === 'borrow'}>
+              </StyledToggleButton>
+              <StyledToggleButton value="borrow" disabled={mode === 'borrow'}>
                 <Typography variant="subheader1">
                   <Trans>Borrow</Trans>
                 </Typography>
-              </ToggleButton>
-            </ToggleButtonGroup>
+              </StyledToggleButton>
+            </StyledToggleButtonGroup>
           </Box>
         )}
 

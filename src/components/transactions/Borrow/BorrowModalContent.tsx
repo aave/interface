@@ -5,17 +5,21 @@ import {
   valueToBigNumber,
 } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Alert, Box, Checkbox, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import { Alert, Box, Checkbox, Typography } from '@mui/material';
 import { useRef, useState } from 'react';
 import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
+import { Warning } from 'src/components/primitives/Warning';
+import StyledToggleButton from 'src/components/StyledToggleButton';
+import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
+
 import { CapType } from '../../caps/helper';
 import { AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -65,14 +69,14 @@ const BorrowModeSwitch = ({
       align="flex-start"
       captionColor="text.secondary"
     >
-      <ToggleButtonGroup
+      <StyledToggleButtonGroup
         color="primary"
         value={interestRateMode}
         exclusive
         onChange={(_, value) => setInterestRateMode(value)}
         sx={{ width: '100%', mt: 0.5 }}
       >
-        <ToggleButton
+        <StyledToggleButton
           value={InterestRate.Variable}
           disabled={interestRateMode === InterestRate.Variable}
         >
@@ -80,8 +84,8 @@ const BorrowModeSwitch = ({
             <Trans>Variable</Trans>
           </Typography>
           <FormattedNumber value={variableRate} percent variant="secondary14" />
-        </ToggleButton>
-        <ToggleButton
+        </StyledToggleButton>
+        <StyledToggleButton
           value={InterestRate.Stable}
           disabled={interestRateMode === InterestRate.Stable}
         >
@@ -89,8 +93,8 @@ const BorrowModeSwitch = ({
             <Trans>Stable</Trans>
           </Typography>
           <FormattedNumber value={stableRate} percent variant="secondary14" />
-        </ToggleButton>
-      </ToggleButtonGroup>
+        </StyledToggleButton>
+      </StyledToggleButtonGroup>
     </Row>
   );
 };
@@ -218,7 +222,6 @@ export const BorrowModalContent = ({
   return (
     <>
       {borrowCap.determineWarningDisplay({ borrowCap })}
-      {debtCeiling.determineWarningDisplay({ debtCeiling })}
       {poolReserve.isIsolated && debtCeiling.determineWarningDisplay({ debtCeiling })}
 
       <AssetInput
@@ -304,6 +307,14 @@ export const BorrowModalContent = ({
           </Box>
         </>
       )}
+
+      <Warning sx={{ my: '24px' }}>
+        <Trans>
+          <b>Attention:</b> Parameter changes via governance can alter your account health factor
+          and risk of liquidation. Follow the{' '}
+          <a href="https://governance.aave.com/">Aave governance forum</a> for updates.
+        </Trans>
+      </Warning>
 
       <BorrowActions
         poolReserve={poolReserve}

@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro';
+
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { Link } from '../primitives/Link';
-
 import { TextWithTooltip, TextWithTooltipProps } from '../TextWithTooltip';
 
 export const EModeTooltip = ({

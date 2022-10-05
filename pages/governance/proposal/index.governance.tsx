@@ -9,6 +9,7 @@ import { governanceContract } from 'src/modules/governance/utils/governanceProvi
 import { IpfsType } from 'src/static-build/ipfs';
 import { CustomProposalType } from 'src/static-build/proposal';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
+
 import ProposalPage from './[proposalId].governance';
 
 export default function DynamicProposal() {
@@ -16,29 +17,31 @@ export default function DynamicProposal() {
   const id = Number(router.query.proposalId);
   const [proposal, setProposal] = useState<CustomProposalType>();
   const [ipfs, setIpfs] = useState<IpfsType>();
+  const [fetchMetadataError, setFetchMetadataError] = useState(false);
 
-  async function initialize() {
+  async function initialize(_ipfsGateway: string) {
+    const { values, ...rest } = await governanceContract.getProposal({ proposalId: id });
+    const proposal = await enhanceProposalWithTimes(rest);
+    setProposal(proposal);
+
     try {
-      const { values, ...rest } = await governanceContract.getProposal({ proposalId: id });
-      const proposal = await enhanceProposalWithTimes(rest);
-      setProposal(proposal);
+      const ipfsMetadata = await getProposalMetadata(proposal.ipfsHash, _ipfsGateway);
       const newIpfs = {
         id,
         originalHash: proposal.ipfsHash,
-        ...(await getProposalMetadata(proposal.ipfsHash, governanceConfig?.ipfsGateway)),
+        ...ipfsMetadata,
       };
       setIpfs(newIpfs);
     } catch (e) {
-      console.log(e);
-      setTimeout(initialize, 5000);
+      setFetchMetadataError(true);
     }
   }
 
   useEffect(() => {
-    id && initialize();
+    id && initialize(governanceConfig.ipfsGateway);
   }, [id]);
 
-  return <ProposalPage ipfs={ipfs} proposal={proposal} />;
+  return <ProposalPage ipfs={ipfs} proposal={proposal} metadataError={fetchMetadataError} />;
 }
 
 DynamicProposal.getLayout = function getLayout(page: React.ReactElement) {

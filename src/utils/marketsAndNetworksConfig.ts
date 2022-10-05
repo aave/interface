@@ -30,7 +30,7 @@ const FORK_ENABLED = global?.window?.localStorage.getItem('forkEnabled') === 'tr
 // specifies which network was forked
 const FORK_BASE_CHAIN_ID = Number(global?.window?.localStorage.getItem('forkBaseChainId') || 1);
 // specifies on which chainId the fork is running
-const FORK_CHAIN_ID = Number(global?.window?.localStorage.getItem('forkChainId') || 3030);
+const FORK_CHAIN_ID = Number(global?.window?.localStorage.getItem('forkNetworkId') || 3030);
 const FORK_RPC_URL = global?.window?.localStorage.getItem('forkRPCUrl') || 'http://127.0.0.1:8545';
 const FORK_WS_RPC_URL =
   global?.window?.localStorage.getItem('forkWsRPCUrl') || 'ws://127.0.0.1:8545';
@@ -306,8 +306,6 @@ export const getENSProvider = () => {
 };
 
 const ammDisableProposal = 'https://app.aave.com/governance/proposal/?proposalId=44';
-const harmonyDisableSnapshot =
-  'https://snapshot.org/#/aave.eth/proposal/0x81a78109941e5e0ac6cb5ebf82597c839c20ad6821a8c3ff063dba39032533d4';
 
 export const frozenProposalMap: Record<string, string> = {
   ['UST']: 'https://app.aave.com/governance/proposal/?proposalId=75',
@@ -328,14 +326,6 @@ export const frozenProposalMap: Record<string, string> = {
   ['UNIYFIWETH']: ammDisableProposal,
   ['BPTWBTCWETH']: ammDisableProposal,
   ['BPTBALWETH']: ammDisableProposal,
-  ['1DAI']: harmonyDisableSnapshot,
-  ['1USDC']: harmonyDisableSnapshot,
-  ['1USDT']: harmonyDisableSnapshot,
-  ['1AAVE']: harmonyDisableSnapshot,
-  ['1ETH']: harmonyDisableSnapshot,
-  ['LINK']: harmonyDisableSnapshot,
-  ['1WBTC']: harmonyDisableSnapshot,
-  ['WONE']: harmonyDisableSnapshot,
 };
 
 // reexport so we can forbit config import
