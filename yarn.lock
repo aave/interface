@@ -7310,16 +7310,16 @@ eth-json-rpc-middleware@^6.0.0:
     pify "^3.0.0"
     safe-event-emitter "^1.0.1"
 
-eth-provider@^0.10.0:
-  version "0.10.0"
-  resolved "https://registry.npmjs.org/eth-provider/-/eth-provider-0.10.0.tgz"
-  integrity sha512-i0EfmETblt80AeAdJYIrXwqCHtRmgyCK+tdeQT3+gzvELurZfvZk+v6gpjF0YL0wZkipZP7hdOzIU2u7IXWUug==
+eth-provider@^0.13.4:
+  version "0.13.4"
+  resolved "https://registry.yarnpkg.com/eth-provider/-/eth-provider-0.13.4.tgz#9c5a76dfd7383302250ed1aa9190d287b955a4b4"
+  integrity sha512-GQmas3ecIklCI1G+r1gKmv0ekokn3if5YOu856k4IVoAbmOUGF1CeIPJj+m5zWp6lLPj4glDlz5ZrTcTEfdRmg==
   dependencies:
-    ethereum-provider "0.5.0"
+    ethereum-provider "0.7.6"
     events "3.3.0"
     oboe "2.1.5"
-    uuid "8.3.2"
-    ws "8.4.0"
+    uuid "9.0.0"
+    ws "8.9.0"
     xhr2-cookies "1.1.0"
 
 eth-provider@^0.2.5:
@@ -7410,10 +7410,10 @@ ethereum-provider@0.0.6:
   resolved "https://registry.yarnpkg.com/ethereum-provider/-/ethereum-provider-0.0.6.tgz#6f5a0427c34872339667d9904a8692e8992e6bf5"
   integrity sha512-DqtdXNHGi/QtOjEovNOegVVQTd8/NnH9rP27R5SU3j2LKECZbcLGIZ3Z9Ln1SDaeUC5YJGJFYQCUUjfIi7NNyQ==
 
-ethereum-provider@0.5.0:
-  version "0.5.0"
-  resolved "https://registry.npmjs.org/ethereum-provider/-/ethereum-provider-0.5.0.tgz"
-  integrity sha512-RBWQ9rfd8ssb7l1E17N/uZPAVSYs44XqqtB9CQ8ibY6bxCmJnR00NGFnUk0dcHrexUVbwOsRc9aQTjjX9dCiJA==
+ethereum-provider@0.7.6:
+  version "0.7.6"
+  resolved "https://registry.yarnpkg.com/ethereum-provider/-/ethereum-provider-0.7.6.tgz#9be1a64ab36f1de102123ace957dd15afcf8ef79"
+  integrity sha512-abkAv46v5dfkWrPVqBJUX1uW80rULxHFXZA+q7x7R/9+0m82dwYO/0sCKrvzArnOH0xAGeqGtp1Rqi2sqSRDlA==
   dependencies:
     events "3.3.0"
 
@@ -13104,7 +13104,12 @@ uuid@3.3.2:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
   integrity sha512-yXJmeNaw3DnnKAOKJE51sL/ZaYfWJRl1pK9dr19YFCu0ObS231AB1/LbqTKRAQ5kw8A90rA6fr4riOUpTZvQZA==
 
-uuid@8.3.2, uuid@^8.3.2:
+uuid@9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-9.0.0.tgz#592f550650024a38ceb0c562f2f6aa435761efb5"
+  integrity sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==
+
+uuid@^8.3.2:
   version "8.3.2"
   resolved "https://registry.npmjs.org/uuid/-/uuid-8.3.2.tgz"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
@@ -13518,25 +13523,15 @@ ws@7.5.3:
   resolved "https://registry.npmjs.org/ws/-/ws-7.5.3.tgz"
   integrity sha512-kQ/dHIzuLrS6Je9+uv81ueZomEwH0qVYstcAQ4/Z93K8zeko9gtAbttJWzoC5ukqXY1PpoouV3+VSOqEAFt5wg==
 
-ws@8.4.0:
-  version "8.4.0"
-  resolved "https://registry.npmjs.org/ws/-/ws-8.4.0.tgz"
-  integrity sha512-IHVsKe2pjajSUIl4KYMQOdlyliovpEPquKkqbwswulszzI7r0SfQrxnXdWAEqOlDCLrVSJzo+O1hAwdog2sKSQ==
+ws@8.9.0, ws@^8.3.0, ws@^8.9.0:
+  version "8.9.0"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-8.9.0.tgz#2a994bb67144be1b53fe2d23c53c028adeb7f45e"
+  integrity sha512-Ja7nszREasGaYUYCI2k4lCKIRTt+y7XuqVoHR44YpI49TtryyqbqvDMn5eqfW7e6HzTukDRIsXqzVHScqRcafg==
 
 "ws@^5.2.0 || ^6.0.0 || ^7.0.0", ws@^7.3.1, ws@^7.4.0:
   version "7.5.7"
   resolved "https://registry.npmjs.org/ws/-/ws-7.5.7.tgz"
   integrity sha512-KMvVuFzpKBuiIXW3E4u3mySRO2/mCHSyZDJQM5NQ9Q9KHWHWh0NHgfbRMLLrceUK5qAL4ytALJbpRMjixFZh8A==
-
-ws@^8.3.0:
-  version "8.5.0"
-  resolved "https://registry.npmjs.org/ws/-/ws-8.5.0.tgz"
-  integrity sha512-BWX0SWVgLPzYwF8lTzEy1egjhS4S4OEAHfsO8o65WOVsrnSRGaSiUaa9e0ggGlkMTtBlmOpEXiie9RUcBO86qg==
-
-ws@^8.9.0:
-  version "8.9.0"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-8.9.0.tgz#2a994bb67144be1b53fe2d23c53c028adeb7f45e"
-  integrity sha512-Ja7nszREasGaYUYCI2k4lCKIRTt+y7XuqVoHR44YpI49TtryyqbqvDMn5eqfW7e6HzTukDRIsXqzVHScqRcafg==
 
 xhr2-cookies@1.1.0:
   version "1.1.0"
