@@ -22,8 +22,8 @@ msgid "<0>Attention:</0> Parameter changes via governance can alter your account
 msgstr "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
 
 #: src/modules/staking/StakingHeader.tsx
-msgid "AAVE holders can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
-msgstr "AAVE holders can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
+msgid "AAVE holders can stake their AAVE in the Safety Module (Ethereum Network only) to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
+msgstr "AAVE holders can stake their AAVE in the Safety Module (Ethereum Network only) to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
 
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
