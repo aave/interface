@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-10-05 12:07\n"
+"PO-Revision-Date: 2022-10-05 18:12\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1770,7 +1770,7 @@ msgstr "Esta es la cantidad total disponible que puedes tomar prestada. Puedes t
 
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount that you are able to supply to in this reserve. You are able to supply your wallet balance up until the supply cap is reached."
-msgstr "Esta es la cantidad total a la que puede suministrar en esta reserva. Puede proporcionar el saldo de su billetera hasta que se alcance el límite de suministro."
+msgstr "Esta es la cantidad total que puedes suministrar en esta reserva. Puedes suministrar el saldo de tu cartera hasta que se alcance el límite de suministro."
 
 #: src/components/infoTooltips/LiquidationThresholdTooltip.tsx
 msgid "This represents the threshold at which a borrow position will be considered undercollateralized and subject to liquidation for each collateral. For example, if a collateral has a liquidation threshold of 80%, it means that the position will be liquidated when the debt value is worth 80% of the collateral value."
@@ -1791,7 +1791,7 @@ msgstr "Tiempo restante hasta que se cierre la ventana de retiro."
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "To borrow you need to supply any asset to be used as collateral."
-msgstr "Para tomar prestado, necesitas proporcionar cualquier activo para ser utilizado como garantía."
+msgstr "Para tomar prestado, necesitas suministrar cualquier activo para ser utilizado como garantía."
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "To enable E-mode for the {0} category, all borrow positions outside of this cateogry must be closed."
@@ -1994,7 +1994,7 @@ msgstr "Saldo de la cartera"
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Wallet not detected. Connect or install wallet and retry"
-msgstr "Cartera no detectada. Conecta o instala el monedero y vuelve a intentarlo"
+msgstr "Cartera no detectada. Conecta o instala la cartera y vuelve a intentarlo"
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
@@ -2262,7 +2262,7 @@ msgstr "tokens no es lo mismo que stakearlos. Si deseas stakearlos"
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "tokens, please go to the"
-msgstr "tokens, por favor vaya al"
+msgstr "tokens, por favor ve al"
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "withdrew"
