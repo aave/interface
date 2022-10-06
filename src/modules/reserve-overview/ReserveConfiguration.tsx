@@ -37,10 +37,7 @@ type ReserveConfigurationProps = {
 
 export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ reserve }) => {
   const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
-  const { v3 } = marketsData[currentMarket as CustomMarket];
-  // V3 and V2 Polygon will be enabled once support is added to API
-  const renderCharts =
-    !v3 && !!currentNetworkConfig.ratesHistoryApiUrl && currentMarket !== 'proto_polygon';
+  const renderCharts = !!currentNetworkConfig.ratesHistoryApiUrl;
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
   const showSupplyCapStatus = reserve.supplyCap && reserve.supplyCap !== '0';
   const showBorrowCapStatus = reserve.borrowCap && reserve.borrowCap !== '0';
@@ -196,7 +193,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
             <ApyGraphContainer
               graphKey="supply"
               reserve={reserve}
-              lendingPoolAddressProvider={currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER}
+              currentMarketData={currentMarketData}
             />
           )}
           <div>
@@ -456,9 +453,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                 <ApyGraphContainer
                   graphKey="borrow"
                   reserve={reserve}
-                  lendingPoolAddressProvider={
-                    currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER
-                  }
+                  currentMarketData={currentMarketData}
                 />
               )}
               <Box
