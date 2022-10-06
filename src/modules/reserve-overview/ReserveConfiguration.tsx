@@ -26,7 +26,6 @@ import { ReserveFactorOverview } from 'src/modules/reserve-overview/ReserveFacto
 
 import LightningBoltGradient from '/public/lightningBoltGradient.svg';
 
-import { CustomMarket, marketsData } from '../../utils/marketsAndNetworksConfig';
 import { ApyGraphContainer } from './graphs/ApyGraphContainer';
 import { InterestRateModelGraphContainer } from './graphs/InterestRateModelGraphContainer';
 import { PanelItem, PanelRow, PanelTitle } from './ReservePanels';
