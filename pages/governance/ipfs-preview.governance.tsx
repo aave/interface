@@ -15,10 +15,11 @@ export default function IpfsPreview() {
   const [ipfs, setIpfs] = useState<IpfsType>();
 
   async function fetchIpfs() {
+    const proposalMetadata = await getProposalMetadata(ipfsHash, governanceConfig.ipfsGateway);
     const newIpfs = {
       id: -1,
       originalHash: ipfsHash,
-      ...(await getProposalMetadata(ipfsHash, governanceConfig?.ipfsGateway)),
+      ...proposalMetadata,
     };
     setIpfs(newIpfs);
   }

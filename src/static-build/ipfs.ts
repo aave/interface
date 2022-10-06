@@ -1,7 +1,9 @@
-import lodash from 'lodash';
+import type { ExpChain } from 'lodash';
+import { chain } from 'lodash';
 import { JSONFileSync, LowSync } from 'lowdb';
 import { join } from 'path';
 import { getProposalMetadata } from 'src/modules/governance/utils/getProposalMetadata';
+import { governanceConfig } from 'src/ui-config/governanceConfig';
 
 import { CustomProposalType } from './proposal';
 
@@ -18,7 +20,7 @@ export interface IpfsType {
 }
 
 class LowWithLodash<T> extends LowSync<T> {
-  chain: lodash.ExpChain<this['data']> = lodash.chain(this).get('data');
+  chain: ExpChain<this['data']> = chain(this).get('data');
 }
 
 // Use JSON file for storage
@@ -41,7 +43,7 @@ export class Ipfs {
     const value = db.chain.get('ipfs').find({ id }).value();
     if (value) return;
     if (!proposal) throw new Error(`error populating proposal ${id}`);
-    const ipfs = await getProposalMetadata(proposal.ipfsHash);
+    const ipfs = await getProposalMetadata(proposal.ipfsHash, governanceConfig.ipfsGateway);
     const newIpfs = { ...ipfs, originalHash: proposal.ipfsHash, id };
     db.data.ipfs.push(newIpfs);
     return db.write();
