@@ -61,7 +61,6 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   } = useWeb3React<providers.Web3Provider>();
 
   // const [provider, setProvider] = useState<JsonRpcProvider>();
-  const [watchModeOnlyAddress, setWatchModeOnlyAddress] = useState<string>();
   const [connector, setConnector] = useState<AbstractConnector>();
   const [loading, setLoading] = useState(false);
   const [tried, setTried] = useState(false);

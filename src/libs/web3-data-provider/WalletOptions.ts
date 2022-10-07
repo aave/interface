@@ -28,6 +28,12 @@ const APP_LOGO_URL = 'https://aave.com/favicon.ico';
 const mockProvider = {
   request: Promise.resolve(null),
 };
+
+/**
+ *  This is a connector to be used in watch mode only.
+ *  On activate, the connector expects a local storage item called `watchModeOnlyAddress` to be set, otherwise an error is thrown.
+ *  When the connector is deactivated (i.e. on disconnect, switching wallets), the local storage item is removed.
+ */
 export class WatchModeOnlyConnector extends AbstractConnector {
   watchAddress = '';
 
