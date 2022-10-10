@@ -100,7 +100,7 @@ export enum ErrorType {
 }
 
 export const WalletSelector = () => {
-  const { error, updateWatchModeOnlyAddress } = useWeb3Context();
+  const { error, connectWatchModeOnly } = useWeb3Context();
   const [inputMockWalletAddress, setInputMockWalletAddress] = useState('');
   const [validAddressError, setValidAddressError] = useState<boolean>(false);
   const { breakpoints } = useTheme();
@@ -138,7 +138,7 @@ export const WalletSelector = () => {
   const handleWatchAddress = async (inputMockWalletAddress: string): Promise<void> => {
     if (validAddressError) setValidAddressError(false);
     if (utils.isAddress(inputMockWalletAddress)) {
-      updateWatchModeOnlyAddress(inputMockWalletAddress);
+      connectWatchModeOnly(inputMockWalletAddress);
     } else {
       // Check if address could be valid ENS before trying to resolve
       if (inputMockWalletAddress.slice(-4) !== '.eth') {
@@ -147,7 +147,7 @@ export const WalletSelector = () => {
         // Attempt to resolve ENS name and use resolved address if valid
         const resolvedAddress = await mainnetProvider.resolveName(inputMockWalletAddress);
         if (resolvedAddress && utils.isAddress(resolvedAddress)) {
-          updateWatchModeOnlyAddress(resolvedAddress);
+          connectWatchModeOnly(resolvedAddress);
         } else {
           setValidAddressError(true);
         }
