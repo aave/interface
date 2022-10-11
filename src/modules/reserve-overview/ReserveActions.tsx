@@ -16,6 +16,7 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
+import { getMarketInfoById } from 'src/components/MarketSwitcher';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -31,6 +32,7 @@ import {
   getMaxAmountAvailableToBorrow,
 } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
+import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 
 import { CapType } from '../../components/caps/helper';
 import { AvailableTooltip } from '../../components/infoTooltips/AvailableTooltip';
@@ -63,8 +65,11 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   const { user, reserves, loading: loadingReserves, eModes } = useAppDataContext();
   const { walletBalances, loading: loadingBalance } = useWalletBalances();
   const { isPermissionsLoading } = usePermissions();
-  const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
+  const { currentNetworkConfig, currentChainId, currentMarket } = useProtocolDataContext();
   const { bridge, name: networkName } = currentNetworkConfig;
+  const {
+    market: { marketTitle: networkMarketName },
+  } = getMarketInfoById(currentMarket);
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
 
   if (!currentAccount && !isPermissionsLoading)
@@ -220,6 +225,9 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
             symbolsColor="text.muted"
             symbol="USD"
           />
+          <Box mt={2}>
+            <BuyWithFiat cryptoSymbol={poolReserve.symbol} networkMarketName={networkMarketName} />
+          </Box>
         </Box>
       </Row>
 
