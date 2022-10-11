@@ -44,4 +44,4 @@ runs:
         NEXT_PUBLIC_ENV: '${{ inputs.NEXT_PUBLIC_ENV }}'
         NEXT_PUBLIC_ENABLE_GOVERNANCE: 'true'
         NEXT_PUBLIC_ENABLE_STAKING: 'true'
-        NEXT_PUBLIC_SCREENING_URL: 'https://aave-api-v2.aave.com'
+        NEXT_PUBLIC_API_BASEURL: 'https://aave-api-v2.aave.com'
