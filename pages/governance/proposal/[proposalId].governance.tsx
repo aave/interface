@@ -26,6 +26,7 @@ import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
 import { GovVoteModal } from 'src/components/transactions/GovVote/GovVoteModal';
+import { daysFromSeconds } from 'src/helpers/timeHelper';
 import { GovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
 import { usePolling } from 'src/hooks/usePolling';
 import { MainLayout } from 'src/layouts/MainLayout';
@@ -447,6 +448,54 @@ export default function ProposalPage({
                       </Typography>
                     </Box>
                   </Row>
+                  {dayjs() > dayjs.unix(proposal.expirationTimestamp) && (
+                    <Row
+                      caption={
+                        <>
+                          <Trans>Ended</Trans>
+                          <Typography variant="caption" color="text.muted">
+                            Block
+                          </Typography>
+                        </>
+                      }
+                      sx={{ height: 48 }}
+                      captionVariant="description"
+                    >
+                      <Box sx={{ textAlign: 'right' }}>
+                        <Typography>
+                          ~{' '}
+                          {dayjs.unix(proposal.expirationTimestamp).format('DD MMM YYYY, hh:mm a')}
+                        </Typography>
+                        <Typography variant="caption" color="text.muted">
+                          {proposal.endBlock}
+                        </Typography>
+                      </Box>
+                    </Row>
+                  )}
+                  {dayjs() < dayjs.unix(proposal.expirationTimestamp) && (
+                    <Row
+                      caption={
+                        <>
+                          <Trans>Ends</Trans>
+                          <Typography variant="caption" color="text.muted">
+                            Block
+                          </Typography>
+                        </>
+                      }
+                      sx={{ height: 48 }}
+                      captionVariant="description"
+                    >
+                      <Box sx={{ textAlign: 'right' }}>
+                        <Typography>
+                          ~{' '}
+                          {dayjs.unix(proposal.expirationTimestamp).format('DD MMM YYYY, hh:mm a')}
+                        </Typography>
+                        <Typography variant="caption" color="text.muted">
+                          {proposal.endBlock}
+                        </Typography>
+                      </Box>
+                    </Row>
+                  )}
                   {proposal.executed && (
                     <Row
                       caption={<Trans>Executed</Trans>}
