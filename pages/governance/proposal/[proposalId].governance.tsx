@@ -424,9 +424,7 @@ export default function ProposalPage({
                     captionVariant="description"
                   >
                     <Box sx={{ textAlign: 'right' }}>
-                      <Typography>
-                        <Typography>{formatTime(proposal.creationTimestamp)}</Typography>
-                      </Typography>
+                      <Typography>{formatTime(proposal.creationTimestamp)}</Typography>
                       <Typography variant="caption" color="text.muted">
                         {proposal.proposalCreated}
                       </Typography>
@@ -465,16 +463,14 @@ export default function ProposalPage({
                       captionVariant="description"
                     >
                       <Box sx={{ textAlign: 'right' }}>
-                        <Typography>
-                          <Typography>{formatTime(proposal.expirationTimestamp)}</Typography>
-                        </Typography>
+                        <Typography>{formatTime(proposal.expirationTimestamp)}</Typography>
                         <Typography variant="caption" color="text.muted">
                           {proposal.endBlock}
                         </Typography>
                       </Box>
                     </Row>
                   )}
-                  {proposalHasExpired && (
+                  {proposalHasExpired ? (
                     <Row
                       caption={
                         <>
@@ -488,24 +484,19 @@ export default function ProposalPage({
                       captionVariant="description"
                     >
                       <Box sx={{ textAlign: 'right' }}>
-                        <Typography>
-                          <Typography>{formatTime(proposal.expirationTimestamp)}</Typography>
-                        </Typography>
+                        <Typography>{formatTime(proposal.expirationTimestamp)}</Typography>
                         <Typography variant="caption" color="text.muted">
                           {proposal.endBlock}
                         </Typography>
                       </Box>
                     </Row>
-                  )}
-                  {proposal.executed && (
+                  ) : (
                     <Row
                       caption={<Trans>Executed</Trans>}
                       sx={{ height: 48 }}
                       captionVariant="description"
                     >
-                      <Typography>
-                        <Typography>{formatTime(proposal.executionTime)}</Typography>
-                      </Typography>
+                      <Typography>{formatTime(proposal.executionTime)}</Typography>
                     </Row>
                   )}
                   {ipfs?.author && (
