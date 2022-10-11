@@ -8,7 +8,11 @@
 
 Add any notes here that may be helpful for reviewers.
 
+---
+
 ## Author Checklist
+
+Please ensure you, the author, have gone through this checklist to ensure there is an efficient workflow for the reviewers.
 
 - [ ]  The base branch is set to `main`
 - [ ]  The title is using [Conventional Commit](https://www.conventionalcommits.org/en/v1.0.0/) formatting
@@ -22,6 +26,8 @@ Add any notes here that may be helpful for reviewers.
 - [ ]  The `Ready for Dev Review` label has been added
 
 ## Reviewer Checklist
+
+Please ensure you, as the reviewer(s), have gone through this checklist to ensure that the code changes are ready to ship safely and to help mitigate any downstream issues that may occur.
 
 - [ ]  End-to-end tests are passing without any errors
 - [ ]  Code style generally follows existing patterns
