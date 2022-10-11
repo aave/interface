@@ -13,16 +13,18 @@ import { UnStakeModal } from 'src/components/transactions/UnStake/UnStakeModal';
 import { StakeDataProvider, useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
+import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import { GetABPToken } from 'src/modules/staking/GetABPToken';
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
 import { StakeTxBuilderProvider } from 'src/providers/StakeTxBuilderProvider';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { ConnectWalletPaper } from '../src/components/ConnectWalletPaper';
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 
 export default function Staking() {
-  const { currentAccount, loading } = useWeb3Context();
+  const { currentAccount, loading, chainId } = useWeb3Context();
   const data = useStakeData();
   const { openStake, openStakeCooldown, openUnstake, openStakeRewardsClaim } = useModalContext();
 
@@ -30,6 +32,8 @@ export default function Staking() {
   const lg = useMediaQuery(breakpoints.up('lg'));
 
   const [mode, setMode] = useState<'aave' | 'bpt' | ''>('');
+
+  const { name: network } = getNetworkConfig(chainId);
 
   useEffect(() => {
     if (!mode) setMode('aave');
@@ -110,6 +114,7 @@ export default function Staking() {
                   onCooldownAction={() => openStakeCooldown('aave')}
                   onUnstakeAction={() => openUnstake('aave', 'AAVE')}
                   onStakeRewardClaimAction={() => openStakeRewardsClaim('aave')}
+                  headerAction={<BuyWithFiat cryptoSymbol="AAVE" networkMarketName={network} />}
                 />
               </Grid>
               <Grid

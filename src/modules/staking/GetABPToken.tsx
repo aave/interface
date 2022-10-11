@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 
-import { GetAPBTokenModal } from './GetABPTokenModal';
+import { GetABPTokenModal } from './GetABPTokenModal';
 
 export const GetABPToken = () => {
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
@@ -35,7 +35,7 @@ export const GetABPToken = () => {
           <Trans>Get ABP Token</Trans>
         </Button>
       </DarkTooltip>
-      <GetAPBTokenModal open={open} close={handleClose} />
+      <GetABPTokenModal open={open} close={handleClose} />
     </>
   );
 };
