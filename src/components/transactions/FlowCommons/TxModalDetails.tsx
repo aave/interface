@@ -227,6 +227,11 @@ export const DetailsIncentivesLine = ({
               <ArrowNarrowRightIcon />
             </SvgIcon>
             <IncentivesButton incentives={futureIncentives} symbol={futureSymbol} />
+            {futureIncentives && futureIncentives.length === 0 && (
+              <Typography variant="secondary14">
+                <Trans>None</Trans>
+              </Typography>
+            )}
           </>
         )}
       </Box>
