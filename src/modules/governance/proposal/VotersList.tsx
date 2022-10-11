@@ -46,6 +46,8 @@ export const VotersList = (props: VotersListProps): JSX.Element => {
 
   useEffect(() => {
     const getVoterInfo = async () => {
+      if (error) setError(null);
+
       try {
         const resp = await fetch(votersUrl + queryParams);
         if (resp.ok) {
@@ -56,17 +58,16 @@ export const VotersList = (props: VotersListProps): JSX.Element => {
           };
           setVoters(votersData);
         } else {
-          throw new Error('Failed to get proposal top voters');
+          setError('Failed to get proposal top voters');
         }
-        setLoading(false);
       } catch (e: unknown) {
         console.error(e);
         setError('Failed to get proposal top voters');
-        setLoading(false);
       }
+      setLoading(false);
     };
     getVoterInfo();
-  }, []);
+  }, [proposal]); /* eslint-disable-line react-hooks/exhaustive-deps */
 
   console.log({ voters });
 
