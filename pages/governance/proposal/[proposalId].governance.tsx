@@ -420,7 +420,7 @@ export default function ProposalPage({
                   >
                     <Box sx={{ textAlign: 'right' }}>
                       <Typography>
-                        ~ {dayjs.unix(proposal.creationTimestamp).format('DD MMM YYYY, hh:mm a')}
+                        {dayjs.unix(proposal.creationTimestamp).format('D MMM YYYY, HH:mm UTC Z')}
                       </Typography>
                       <Typography variant="caption" color="text.muted">
                         {proposal.proposalCreated}
@@ -441,7 +441,7 @@ export default function ProposalPage({
                   >
                     <Box sx={{ textAlign: 'right' }}>
                       <Typography>
-                        ~ {dayjs.unix(proposal.startTimestamp).format('DD MMM YYYY, hh:mm a')}
+                        {dayjs.unix(proposal.startTimestamp).format('D MMM YYYY, HH:mm UTC Z')}
                       </Typography>
                       <Typography variant="caption" color="text.muted">
                         {proposal.startBlock}
@@ -463,8 +463,9 @@ export default function ProposalPage({
                     >
                       <Box sx={{ textAlign: 'right' }}>
                         <Typography>
-                          ~{' '}
-                          {dayjs.unix(proposal.expirationTimestamp).format('DD MMM YYYY, hh:mm a')}
+                          {dayjs
+                            .unix(proposal.expirationTimestamp)
+                            .format('D MMM YYYY, HH:mm UTC Z')}
                         </Typography>
                         <Typography variant="caption" color="text.muted">
                           {proposal.endBlock}
@@ -487,8 +488,9 @@ export default function ProposalPage({
                     >
                       <Box sx={{ textAlign: 'right' }}>
                         <Typography>
-                          ~{' '}
-                          {dayjs.unix(proposal.expirationTimestamp).format('DD MMM YYYY, hh:mm a')}
+                          {dayjs
+                            .unix(proposal.expirationTimestamp)
+                            .format('D MMM YYYY, HH:mm UTC Z')}
                         </Typography>
                         <Typography variant="caption" color="text.muted">
                           {proposal.endBlock}
@@ -503,7 +505,7 @@ export default function ProposalPage({
                       captionVariant="description"
                     >
                       <Typography>
-                        {dayjs.unix(proposal.executionTime).format('DD MMM YYYY, hh:mm a')}
+                        {dayjs.unix(proposal.executionTime).format('D MMM YYYY, HH:mm UTC Z')}
                       </Typography>
                     </Row>
                   )}
