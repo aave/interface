@@ -948,6 +948,7 @@ msgstr "Language"
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Learn more"
 msgstr "Learn more"
 
@@ -1527,6 +1528,10 @@ msgstr "Staking"
 #: src/modules/staking/StakingPanel.tsx
 msgid "Staking APR"
 msgstr "Staking APR"
+
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Staking Rewards"
+msgstr "Staking Rewards"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Started"
@@ -2258,6 +2263,10 @@ msgstr "please check that the amount you want to supply is not currently being u
 #: src/components/transactions/Repay/RepayModalContent.tsx
 msgid "repaid"
 msgstr "repaid"
+
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "stETH supplied as collateral will continue to accrue staking rewards provided by daily rebases."
+msgstr "stETH supplied as collateral will continue to accrue staking rewards provided by daily rebases."
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "staking view"
