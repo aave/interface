@@ -1,9 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
-import { OptimalRate } from 'paraswap-core';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { getSwapCallData } from 'src/hooks/useSwap';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
@@ -19,9 +16,11 @@ export interface SwapActionProps extends BoxProps {
   customGasPrice?: string;
   symbol: string;
   blocked: boolean;
-  priceRoute: OptimalRate | null;
   isMaxSelected: boolean;
   useFlashLoan: boolean;
+  maxSlippage: number;
+  swapCallData: string;
+  augustus: string;
 }
 
 export const SwapActions = ({
@@ -31,27 +30,19 @@ export const SwapActions = ({
   sx,
   poolReserve,
   targetReserve,
-  priceRoute,
   isMaxSelected,
   useFlashLoan,
+  maxSlippage,
+  swapCallData,
+  augustus,
   ...props
 }: SwapActionProps) => {
   const { lendingPool } = useTxBuilderContext();
-  const { currentChainId: chainId, currentNetworkConfig } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
 
   const { approval, action, requiresApproval, approvalTxState, mainTxState, loadingTxns } =
     useTransactionHandler({
       handleGetTxns: async () => {
-        const { swapCallData, augustus } = await getSwapCallData({
-          srcToken: poolReserve.underlyingAsset,
-          srcDecimals: poolReserve.decimals,
-          destToken: targetReserve.underlyingAsset,
-          destDecimals: targetReserve.decimals,
-          user: currentAccount,
-          route: priceRoute as OptimalRate,
-          chainId: currentNetworkConfig.underlyingChainId || chainId,
-        });
         return lendingPool.swapCollateral({
           fromAsset: poolReserve.underlyingAsset,
           toAsset: targetReserve.underlyingAsset,
@@ -65,11 +56,10 @@ export const SwapActions = ({
           swapCallData,
         });
       },
-      skip: !priceRoute || !amountToSwap || parseFloat(amountToSwap) === 0 || !currentAccount,
+      skip: !amountToSwap || parseFloat(amountToSwap) === 0 || !currentAccount,
       deps: [
         amountToSwap,
         amountToReceive,
-        priceRoute,
         poolReserve.underlyingAsset,
         targetReserve.underlyingAsset,
         isMaxSelected,

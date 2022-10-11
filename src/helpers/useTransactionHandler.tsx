@@ -110,6 +110,7 @@ export const useTransactionHandler = ({
           const newPool: Pool = lendingPool as Pool;
           // deadline is an hour after signature
           const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
+          console.log('ERC20Approval', amount);
           const unsingedPayload = await newPool.signERC20Approval({
             user: currentAccount,
             reserve: underlyingAsset,

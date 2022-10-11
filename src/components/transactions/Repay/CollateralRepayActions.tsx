@@ -1,12 +1,8 @@
 import { InterestRate } from '@aave/contract-helpers';
-import { normalize } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
-import { OptimalRate } from 'paraswap-core';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { getRepayCallData } from 'src/hooks/useSwap';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
@@ -21,11 +17,11 @@ export interface RepayActionProps extends BoxProps {
   isWrongNetwork: boolean;
   customGasPrice?: string;
   symbol: string;
-  priceRoute: OptimalRate | null;
   repayAllDebt: boolean;
   useFlashLoan: boolean;
   blocked: boolean;
-  maxSlippage: number;
+  swapCallData: string;
+  augustus: string;
 }
 
 export const CollateralRepayActions = ({
@@ -37,36 +33,25 @@ export const CollateralRepayActions = ({
   sx,
   symbol,
   rateMode,
-  priceRoute,
   repayAllDebt,
   useFlashLoan,
   blocked,
-  maxSlippage,
+  swapCallData,
+  augustus,
   ...props
 }: RepayActionProps) => {
   const { lendingPool } = useTxBuilderContext();
-  const { currentChainId: chainId, currentNetworkConfig } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
 
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({
       handleGetTxns: async () => {
-        const { swapCallData, augustus, srcAmountWithSlippage } = await getRepayCallData({
-          srcToken: fromAssetData.underlyingAsset,
-          srcDecimals: fromAssetData.decimals,
-          destToken: poolReserve.underlyingAsset,
-          destDecimals: poolReserve.decimals,
-          user: currentAccount,
-          route: priceRoute as OptimalRate,
-          chainId: currentNetworkConfig.underlyingChainId || chainId,
-          maxSlippage,
-        });
         return lendingPool.paraswapRepayWithCollateral({
           user: currentAccount,
           fromAsset: fromAssetData.underlyingAsset,
           fromAToken: fromAssetData.aTokenAddress,
           assetToRepay: poolReserve.underlyingAsset,
-          repayWithAmount: normalize(srcAmountWithSlippage, fromAssetData.decimals),
+          repayWithAmount,
           repayAmount,
           repayAllDebt,
           rateMode,
@@ -79,7 +64,6 @@ export const CollateralRepayActions = ({
       deps: [
         repayWithAmount,
         repayAmount,
-        priceRoute,
         poolReserve.underlyingAsset,
         fromAssetData.underlyingAsset,
         repayAllDebt,
@@ -91,7 +75,7 @@ export const CollateralRepayActions = ({
   return (
     <TxActionsWrapper
       preparingTransactions={loadingTxns}
-      symbol={poolReserve.symbol}
+      symbol={fromAssetData.symbol}
       mainTxState={mainTxState}
       approvalTxState={approvalTxState}
       requiresAmount
