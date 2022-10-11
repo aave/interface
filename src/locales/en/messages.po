@@ -1513,6 +1513,10 @@ msgstr "Staking"
 msgid "Staking APR"
 msgstr "Staking APR"
 
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Staking Rewards"
+msgstr "Staking Rewards"
+
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Started"
 msgstr "Started"

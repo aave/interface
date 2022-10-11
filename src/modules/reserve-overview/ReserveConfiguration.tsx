@@ -308,7 +308,9 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
           {reserve.symbol == 'stETH' && (
             <Box>
               <Warning severity="info">
-                <AlertTitle>Staking Rewards</AlertTitle>
+                <AlertTitle>
+                  <Trans>Staking Rewards</Trans>
+                </AlertTitle>
                 <Trans>
                   stETH supplied as collateral will continue to accrue staking rewards provided by
                   daily rebases.
