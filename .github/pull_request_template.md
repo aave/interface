@@ -26,7 +26,7 @@ Add any notes here that may be helpful for reviewers.
 - [ ]  End-to-end tests are passing without any errors
 - [ ]  Code style generally follows existing patterns
 - [ ]  Code changes do not significantly increase the application bundle size
-- [ ]  New third-party packages, if any, do not introduce potential security threats
+- [ ]  If there are new 3rd-party packages, they do not introduce potential security threats
 - [ ]  If there are new environment variables being added, they have been added to the `.env.example` file as well as the pertinant `.github/actions/*` files
 - [ ]  There are no CI changes, or they have been approved by the DevOps and Engineering team(s)
 - [ ]  Code changes have been quality checked in the ephemeral URL
