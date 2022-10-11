@@ -93,7 +93,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
   };
 
   const handleDisconnect = () => {
-    if (connected || watchModeOnlyAddress) {
+    if (connected) {
       disconnectWallet();
       handleClose();
     }
