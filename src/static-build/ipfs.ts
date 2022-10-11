@@ -1,4 +1,5 @@
-import lodash from 'lodash';
+import type { ExpChain } from 'lodash';
+import { chain } from 'lodash';
 import { JSONFileSync, LowSync } from 'lowdb';
 import { join } from 'path';
 import { getProposalMetadata } from 'src/modules/governance/utils/getProposalMetadata';
@@ -19,7 +20,7 @@ export interface IpfsType {
 }
 
 class LowWithLodash<T> extends LowSync<T> {
-  chain: lodash.ExpChain<this['data']> = lodash.chain(this).get('data');
+  chain: ExpChain<this['data']> = chain(this).get('data');
 }
 
 // Use JSON file for storage

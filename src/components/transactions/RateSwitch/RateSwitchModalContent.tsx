@@ -1,7 +1,7 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Alert } from '@mui/material';
+import { Warning } from 'src/components/primitives/Warning';
 import { useModalContext } from 'src/hooks/useModal';
 
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -85,7 +85,11 @@ export const RateSwitchModalContent = ({
 
   return (
     <>
-      {blockingError !== undefined && <Alert severity="error">{handleBlocked()}</Alert>}
+      {blockingError !== undefined && (
+        <Warning severity="error" sx={{ mb: 0 }}>
+          {handleBlocked()}
+        </Warning>
+      )}
       <TxModalDetails gasLimit={gasLimit}>
         <DetailsNumberLine
           description={<Trans>New APY</Trans>}

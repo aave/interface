@@ -1,14 +1,5 @@
 import { Trans } from '@lingui/macro';
-import {
-  Alert,
-  Box,
-  Button,
-  InputBase,
-  Link,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { Box, Button, InputBase, Link, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { UnsupportedChainIdError } from '@web3-react/core';
 import { NoEthereumProviderError } from '@web3-react/injected-connector';
 import { UserRejectedRequestError } from '@web3-react/walletconnect-connector';
@@ -19,6 +10,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { WalletType } from 'src/libs/web3-data-provider/WalletOptions';
 import { getENSProvider } from 'src/utils/marketsAndNetworksConfig';
 
+import { Warning } from '../primitives/Warning';
 import { TxModalTitle } from '../transactions/FlowCommons/TxModalTitle';
 
 export type WalletRowProps = {
@@ -108,7 +100,7 @@ export enum ErrorType {
 }
 
 export const WalletSelector = () => {
-  const { error, updateWatchModeOnlyAddress } = useWeb3Context();
+  const { error, connectWatchModeOnly } = useWeb3Context();
   const [inputMockWalletAddress, setInputMockWalletAddress] = useState('');
   const [validAddressError, setValidAddressError] = useState<boolean>(false);
   const { breakpoints } = useTheme();
@@ -146,7 +138,7 @@ export const WalletSelector = () => {
   const handleWatchAddress = async (inputMockWalletAddress: string): Promise<void> => {
     if (validAddressError) setValidAddressError(false);
     if (utils.isAddress(inputMockWalletAddress)) {
-      updateWatchModeOnlyAddress(inputMockWalletAddress);
+      connectWatchModeOnly(inputMockWalletAddress);
     } else {
       // Check if address could be valid ENS before trying to resolve
       if (inputMockWalletAddress.slice(-4) !== '.eth') {
@@ -155,7 +147,7 @@ export const WalletSelector = () => {
         // Attempt to resolve ENS name and use resolved address if valid
         const resolvedAddress = await mainnetProvider.resolveName(inputMockWalletAddress);
         if (resolvedAddress && utils.isAddress(resolvedAddress)) {
-          updateWatchModeOnlyAddress(resolvedAddress);
+          connectWatchModeOnly(resolvedAddress);
         } else {
           setValidAddressError(true);
         }
@@ -171,11 +163,7 @@ export const WalletSelector = () => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
       <TxModalTitle title="Connect a wallet" />
-      {error && (
-        <Alert severity="error" sx={{ mb: '24px' }}>
-          {handleBlocking()}
-        </Alert>
-      )}
+      {error && <Warning severity="error">{handleBlocking()}</Warning>}
       <WalletRow
         key="browser_wallet"
         walletName="Browser wallet"

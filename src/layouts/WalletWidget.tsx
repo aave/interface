@@ -7,7 +7,6 @@ import {
 } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
-  Alert,
   Box,
   Button,
   Divider,
@@ -26,6 +25,7 @@ import {
 } from '@mui/material';
 import makeBlockie from 'ethereum-blockies-base64';
 import React, { useEffect, useState } from 'react';
+import { Warning } from 'src/components/primitives/Warning';
 import { WalletModal } from 'src/components/WalletConnection/WalletModal';
 import { useWalletModalContext } from 'src/hooks/useWalletModal';
 import useGetEns from 'src/libs/hooks/use-get-ens';
@@ -96,7 +96,6 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
     if (connected || watchModeOnlyAddress) {
       disconnectWallet();
       handleClose();
-      localStorage.removeItem('watchModeOnlyAddress');
     }
   };
 
@@ -232,13 +231,13 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
             </Box>
           </Box>
           {watchModeOnlyAddress && (
-            <Alert
+            <Warning
               icon={false}
               severity="warning"
-              sx={!md ? { mt: '10px' } : { mt: '15px', background: '#301E04', color: '#FFDCA8' }}
+              sx={{ mt: 3, mb: 0, ...(md ? { background: '#301E04', color: '#FFDCA8' } : {}) }}
             >
               <Trans>Watch-only mode.</Trans>
-            </Alert>
+            </Warning>
           )}
         </Box>
       </Box>
