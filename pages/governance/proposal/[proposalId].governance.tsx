@@ -32,6 +32,7 @@ import { MainLayout } from 'src/layouts/MainLayout';
 import { FormattedProposalTime } from 'src/modules/governance/FormattedProposalTime';
 import { ProposalTopPanel } from 'src/modules/governance/proposal/ProposalTopPanel';
 import { VoteInfo } from 'src/modules/governance/proposal/VoteInfo';
+import { VotersList } from 'src/modules/governance/proposal/VotersList';
 import { StateBadge } from 'src/modules/governance/StateBadge';
 import {
   enhanceProposalWithTimes,
@@ -283,9 +284,10 @@ export default function ProposalPage({
                     loading={loading}
                   />
                   <VoteBar percent={nayPercent} votes={nayVotes} sx={{ mt: 3 }} loading={loading} />
+                  <VotersList proposal={proposal} />
                   <Row
                     caption={<Trans>State</Trans>}
-                    sx={{ height: 48, mt: 10 }}
+                    sx={{ height: 48 }}
                     captionVariant="description"
                   >
                     <Box
@@ -296,7 +298,7 @@ export default function ProposalPage({
                       }}
                     >
                       <StateBadge state={proposal.state} loading={loading} />
-                      <Box sx={{ mt: '2px' }}>
+                      <Box sx={{ mt: 0.5 }}>
                         <FormattedProposalTime
                           state={proposal.state}
                           executionTime={proposal.executionTime}
