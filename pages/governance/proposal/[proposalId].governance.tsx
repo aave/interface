@@ -26,7 +26,6 @@ import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
 import { GovVoteModal } from 'src/components/transactions/GovVote/GovVoteModal';
-import { daysFromSeconds } from 'src/helpers/timeHelper';
 import { GovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
 import { usePolling } from 'src/hooks/usePolling';
 import { MainLayout } from 'src/layouts/MainLayout';
@@ -90,6 +89,9 @@ const CenterAlignedImage = styled('img')({
   maxWidth: '100%',
 });
 
+const formatTime = (timestamp: number): string =>
+  dayjs.unix(timestamp).format('D MMM YYYY, HH:mm UTC Z');
+
 const StyledLink = styled('a')({
   color: 'inherit',
 });
@@ -105,7 +107,6 @@ export default function ProposalPage({
   const [loading, setLoading] = useState(!proposal || !isProposalStateImmutable(proposal));
   const { breakpoints } = useTheme();
   const xsmUp = useMediaQuery(breakpoints.up('xsm'));
-
   const mightBeStale = !proposal || !isProposalStateImmutable(proposal);
 
   async function updateProposal() {
@@ -150,6 +151,10 @@ export default function ProposalPage({
         requiredDiff: 0,
         diff: 0,
       };
+
+  const proposalHasExpired: boolean = proposal
+    ? dayjs() < dayjs.unix(proposal.expirationTimestamp)
+    : false;
 
   return (
     <>
@@ -420,7 +425,7 @@ export default function ProposalPage({
                   >
                     <Box sx={{ textAlign: 'right' }}>
                       <Typography>
-                        {dayjs.unix(proposal.creationTimestamp).format('D MMM YYYY, HH:mm UTC Z')}
+                        <Typography>{formatTime(proposal.creationTimestamp)}</Typography>
                       </Typography>
                       <Typography variant="caption" color="text.muted">
                         {proposal.proposalCreated}
@@ -440,15 +445,13 @@ export default function ProposalPage({
                     captionVariant="description"
                   >
                     <Box sx={{ textAlign: 'right' }}>
-                      <Typography>
-                        {dayjs.unix(proposal.startTimestamp).format('D MMM YYYY, HH:mm UTC Z')}
-                      </Typography>
+                      <Typography>{formatTime(proposal.startTimestamp)}</Typography>
                       <Typography variant="caption" color="text.muted">
                         {proposal.startBlock}
                       </Typography>
                     </Box>
                   </Row>
-                  {dayjs() > dayjs.unix(proposal.expirationTimestamp) && (
+                  {!proposalHasExpired && (
                     <Row
                       caption={
                         <>
@@ -463,9 +466,7 @@ export default function ProposalPage({
                     >
                       <Box sx={{ textAlign: 'right' }}>
                         <Typography>
-                          {dayjs
-                            .unix(proposal.expirationTimestamp)
-                            .format('D MMM YYYY, HH:mm UTC Z')}
+                          <Typography>{formatTime(proposal.expirationTimestamp)}</Typography>
                         </Typography>
                         <Typography variant="caption" color="text.muted">
                           {proposal.endBlock}
@@ -473,7 +474,7 @@ export default function ProposalPage({
                       </Box>
                     </Row>
                   )}
-                  {dayjs() < dayjs.unix(proposal.expirationTimestamp) && (
+                  {proposalHasExpired && (
                     <Row
                       caption={
                         <>
@@ -488,9 +489,7 @@ export default function ProposalPage({
                     >
                       <Box sx={{ textAlign: 'right' }}>
                         <Typography>
-                          {dayjs
-                            .unix(proposal.expirationTimestamp)
-                            .format('D MMM YYYY, HH:mm UTC Z')}
+                          <Typography>{formatTime(proposal.expirationTimestamp)}</Typography>
                         </Typography>
                         <Typography variant="caption" color="text.muted">
                           {proposal.endBlock}
@@ -505,7 +504,7 @@ export default function ProposalPage({
                       captionVariant="description"
                     >
                       <Typography>
-                        {dayjs.unix(proposal.executionTime).format('D MMM YYYY, HH:mm UTC Z')}
+                        <Typography>{formatTime(proposal.executionTime)}</Typography>
                       </Typography>
                     </Row>
                   )}
