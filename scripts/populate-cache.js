@@ -64822,7 +64822,6 @@ var require_cjs = __commonJS({
     (0, tslib_1.__exportStar)(require_governance_power_delegation_contract(), exports2);
     (0, tslib_1.__exportStar)(require_v3_pool_contract(), exports2);
     (0, tslib_1.__exportStar)(require_synthetix_contract(), exports2);
-    (0, tslib_1.__exportStar)(require_baseDebtToken_contract(), exports2);
     (0, tslib_1.__exportStar)(require_types2(), exports2);
     (0, tslib_1.__exportStar)(require_ipfs(), exports2);
     (0, tslib_1.__exportStar)(require_utils6(), exports2);
