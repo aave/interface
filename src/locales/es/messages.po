@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-10-05 18:12\n"
+"PO-Revision-Date: 2022-10-12 00:29\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -375,6 +375,18 @@ msgstr "Tomar prestado esta cantidad reducirá tu factor de salud y aumentará e
 msgid "Borrowing {symbol}"
 msgstr "Tomando prestado {symbol}"
 
+#: src/ui-config/menu-items/index.tsx
+msgid "Buy Crypto With Fiat"
+msgstr ""
+
+#: src/modules/staking/BuyWithFiatModal.tsx
+msgid "Buy Crypto with Fiat"
+msgstr ""
+
+#: src/modules/staking/BuyWithFiat.tsx
+msgid "Buy {cryptoSymbol} with Fiat"
+msgstr ""
+
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
 msgid "CLAIM {symbol}"
 msgstr "RECLAMAR {symbol}"
@@ -404,6 +416,10 @@ msgstr "No se puede deshabilitar E-Mode"
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Cap reached. Lower supply amount"
 msgstr "Límite alcanzado. Menos cantidad de suministro"
+
+#: src/modules/staking/BuyWithFiatModal.tsx
+msgid "Choose one of the on-ramp services"
+msgstr ""
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Claim"
@@ -935,6 +951,7 @@ msgstr "Idioma"
 #: src/components/transactions/Warnings/MarketWarning.tsx
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Learn more"
@@ -1516,6 +1533,10 @@ msgstr "Staking"
 #: src/modules/staking/StakingPanel.tsx
 msgid "Staking APR"
 msgstr "Staking APR"
+
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Staking Rewards"
+msgstr ""
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Started"
@@ -2248,6 +2269,10 @@ msgstr "por favor comprueba que la cantidad que deseas depositar no está siendo
 msgid "repaid"
 msgstr "reembolsado"
 
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "stETH supplied as collateral will continue to accrue staking rewards provided by daily rebases."
+msgstr ""
+
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "staking view"
 msgstr "vista de stakeo"
@@ -2284,6 +2309,14 @@ msgstr "Saldo {0}"
 #: src/modules/faucet/FaucetTopPanel.tsx
 msgid "{0} Faucet"
 msgstr "{0} Faucet"
+
+#: src/modules/staking/BuyWithFiatModal.tsx
+msgid "{0} on-ramp service is provided by External Provider and by selecting you agree to Terms of the Provider. Your access to the service might be reliant on the External Provider being operational."
+msgstr ""
+
+#: src/modules/staking/BuyWithFiatModal.tsx
+msgid "{0}{name}"
+msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{d}d"
