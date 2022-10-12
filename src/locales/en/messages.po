@@ -726,6 +726,14 @@ msgstr "Enabling E-Mode only allows you to borrow assets belonging to the select
 msgid "Enabling this asset as collateral increases your borrowing power and Health Factor. However, it can get liquidated if your health factor drops below 1."
 msgstr "Enabling this asset as collateral increases your borrowing power and Health Factor. However, it can get liquidated if your health factor drops below 1."
 
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Ended"
+msgstr "Ended"
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Ends"
+msgstr "Ends"
+
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "English"
 msgstr "English"
