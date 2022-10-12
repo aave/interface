@@ -2,7 +2,7 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
-import { Box, Button, Divider, Paper, SvgIcon, Typography } from '@mui/material';
+import { AlertTitle, Box, Button, Divider, Paper, SvgIcon, Typography } from '@mui/material';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { DebtCeilingStatus } from 'src/components/caps/DebtCeilingStatus';
 import { IncentivesButton } from 'src/components/incentives/IncentivesButton';
@@ -299,6 +299,25 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                   />
                 </ReserveOverviewBox>
               )}
+            </Box>
+          )}
+          {reserve.symbol == 'stETH' && (
+            <Box>
+              <Warning severity="info">
+                <AlertTitle>
+                  <Trans>Staking Rewards</Trans>
+                </AlertTitle>
+                <Trans>
+                  stETH supplied as collateral will continue to accrue staking rewards provided by
+                  daily rebases.
+                </Trans>{' '}
+                <Link
+                  href="https://blog.lido.fi/aave-integrates-lidos-steth-as-collateral/"
+                  underline="always"
+                >
+                  <Trans>Learn more</Trans>
+                </Link>
+              </Warning>
             </Box>
           )}
         </Box>
