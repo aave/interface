@@ -1,0 +1,15 @@
+# https://editorconfig.org
+root = true
+
+# Base ruleset for all files
+[*]
+indent_style = space
+indent_size = 2
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# Allow colons at end of line in markdown files
+[.md]
+trim_trailing_whitespace = false

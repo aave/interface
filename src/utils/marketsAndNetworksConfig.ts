@@ -28,7 +28,7 @@ const FORK_ENABLED = global?.window?.localStorage.getItem('forkEnabled') === 'tr
 // specifies which network was forked
 const FORK_BASE_CHAIN_ID = Number(global?.window?.localStorage.getItem('forkBaseChainId') || 1);
 // specifies on which chainId the fork is running
-const FORK_CHAIN_ID = Number(global?.window?.localStorage.getItem('forkChainId') || 3030);
+const FORK_CHAIN_ID = Number(global?.window?.localStorage.getItem('forkNetworkId') || 3030);
 const FORK_RPC_URL = global?.window?.localStorage.getItem('forkRPCUrl') || 'http://127.0.0.1:8545';
 const FORK_WS_RPC_URL =
   global?.window?.localStorage.getItem('forkWsRPCUrl') || 'ws://127.0.0.1:8545';
@@ -43,9 +43,12 @@ export const networkConfigs = Object.keys(_networkConfigs).reduce((acc, value) =
     acc[FORK_CHAIN_ID] = {
       ..._networkConfigs[value],
       // rpcOnly: true,
+      name: `${_networkConfigs[value].name} Fork`,
       isFork: true,
       privateJsonRPCUrl: FORK_RPC_URL,
       privateJsonRPCWSUrl: FORK_WS_RPC_URL,
+      publicJsonRPCUrl: [],
+      publicJsonRPCWSUrl: '',
       underlyingChainId: FORK_BASE_CHAIN_ID,
     };
   }
@@ -175,6 +178,12 @@ export const getProvider = (chainId: ChainId): ethersProviders.Provider => {
     }
   }
   return providers[chainId];
+};
+
+export const getENSProvider = () => {
+  const chainId = 1;
+  const config = getNetworkConfig(chainId);
+  return new ethersProviders.StaticJsonRpcProvider(config.publicJsonRPCUrl[0], chainId);
 };
 
 const ammDisableProposal = 'https://app.aave.com/governance/proposal/?proposalId=44';

@@ -10,16 +10,16 @@ import { getEmodeMessage } from './EmodeNaming';
 
 export type EmodeSelectProps = {
   emodeCategories: Record<number, EmodeCategory>;
-  selectedEmode: number;
+  selectedEmode: number | undefined;
   setSelectedEmode: React.Dispatch<React.SetStateAction<EmodeCategory | undefined>>;
-  baseAssetSymbol: string;
+  userEmode: number;
 };
 
 export const EmodeSelect = ({
   emodeCategories,
   selectedEmode,
   setSelectedEmode,
-  baseAssetSymbol,
+  userEmode,
 }: EmodeSelectProps) => {
   return (
     <FormControl sx={{ mb: 1, width: '100%' }}>
@@ -28,8 +28,11 @@ export const EmodeSelect = ({
       </FormLabel>
 
       <Select
+        defaultValue={0}
         value={selectedEmode}
-        onChange={(e) => setSelectedEmode(emodeCategories[Number(e.target.value)])}
+        onChange={(e) => {
+          setSelectedEmode(emodeCategories[Number(e.target.value)]);
+        }}
         className="EmodeSelect"
         data-cy="EmodeSelect"
         sx={{
@@ -55,41 +58,37 @@ export const EmodeSelect = ({
         }}
         native={false}
         renderValue={(emode) => {
-          if (emode === 0) {
+          if (emode !== 0) {
             return (
               <Typography color="text.primary">
-                E-Mode <Trans>disabled</Trans>
+                {getEmodeMessage(emodeCategories[emode].label)}
+              </Typography>
+            );
+          } else {
+            return (
+              <Typography color="text.muted">
+                <Trans>Select</Trans>
               </Typography>
             );
           }
-
-          return (
-            <Typography color="text.primary">
-              {getEmodeMessage(emodeCategories[selectedEmode].id, baseAssetSymbol)}
-            </Typography>
-          );
         }}
       >
-        {Object.keys(emodeCategories).map((categoryKey) => (
-          <MenuItem
-            key={`emode-${emodeCategories[Number(categoryKey)].id}`}
-            value={emodeCategories[Number(categoryKey)].id}
-            sx={{
-              display:
-                emodeCategories[Number(categoryKey)].id === selectedEmode ? 'none' : undefined,
-            }}
-          >
-            {emodeCategories[Number(categoryKey)].id === 0 ? (
-              <Typography color="text.primary" data-cy="disableEmode">
-                E-Mode <Trans>disabled</Trans>
-              </Typography>
-            ) : (
-              <Typography color="text.primary">
-                {getEmodeMessage(emodeCategories[Number(categoryKey)].id, baseAssetSymbol)}
-              </Typography>
-            )}
-          </MenuItem>
-        ))}
+        {Object.keys(emodeCategories).map((categoryKey) => {
+          if (userEmode !== Number(categoryKey) && Number(categoryKey) !== 0) {
+            return (
+              <MenuItem
+                key={`emode-${emodeCategories[Number(categoryKey)].id}`}
+                value={emodeCategories[Number(categoryKey)].id}
+              >
+                {
+                  <Typography color="text.primary">
+                    {getEmodeMessage(emodeCategories[Number(categoryKey)].label)}
+                  </Typography>
+                }
+              </MenuItem>
+            );
+          }
+        })}
       </Select>
     </FormControl>
   );

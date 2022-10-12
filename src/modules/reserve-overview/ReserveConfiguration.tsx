@@ -1,140 +1,50 @@
-import React, { ReactNode } from 'react';
+import { valueToBigNumber } from '@aave/math-utils';
+import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import {
-  Alert,
-  Box,
-  BoxProps,
-  Divider,
-  Link,
-  SvgIcon,
-  Typography,
-  TypographyProps,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
-import Paper from '@mui/material/Paper';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
-import { useReserveRatesHistory } from 'src/hooks/useReservesHistory';
-import { ParentSize } from '@visx/responsive';
-import { ApyChart } from '../reserve-overview/ApyChart';
-import { InterestRateModelChart } from '../reserve-overview/InterestRateModelChart';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { AlertTitle, Box, Button, Divider, Paper, SvgIcon, Typography } from '@mui/material';
+import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
+import { DebtCeilingStatus } from 'src/components/caps/DebtCeilingStatus';
+import { IncentivesButton } from 'src/components/incentives/IncentivesButton';
+import { getFrozenProposalLink } from 'src/components/infoTooltips/FrozenTooltip';
+import { LiquidationPenaltyTooltip } from 'src/components/infoTooltips/LiquidationPenaltyTooltip';
+import { LiquidationThresholdTooltip } from 'src/components/infoTooltips/LiquidationThresholdTooltip';
+import { MaxLTVTooltip } from 'src/components/infoTooltips/MaxLTVTooltip';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
-import { IncentivesButton } from 'src/components/incentives/IncentivesButton';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Link, ROUTES } from 'src/components/primitives/Link';
+import { Warning } from 'src/components/primitives/Warning';
 import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
-import { getEmodeMessage } from 'src/components/transactions/Emode/EmodeNaming';
-import LightningBoltGradient from '/public/lightningBoltGradient.svg';
-import { ROUTES } from 'src/components/primitives/Link';
-import { MaxLTVTooltip } from 'src/components/infoTooltips/MaxLTVTooltip';
-import { LiquidationThresholdTooltip } from 'src/components/infoTooltips/LiquidationThresholdTooltip';
-import { LiquidationPenaltyTooltip } from 'src/components/infoTooltips/LiquidationPenaltyTooltip';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
-import { frozenProposalMap } from 'src/utils/marketsAndNetworksConfig';
+import { TextWithTooltip } from 'src/components/TextWithTooltip';
+import { getEmodeMessage } from 'src/components/transactions/Emode/EmodeNaming';
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { ReserveFactorOverview } from 'src/modules/reserve-overview/ReserveFactorOverview';
 
-export const PanelRow: React.FC<BoxProps> = (props) => (
-  <Box
-    {...props}
-    sx={{
-      position: 'relative',
-      display: { xs: 'block', md: 'flex' },
-      margin: '0 auto',
-      ...props.sx,
-    }}
-  />
-);
-export const PanelTitle: React.FC<TypographyProps> = (props) => (
-  <Typography
-    {...props}
-    variant="subheader1"
-    sx={{ minWidth: { xs: '170px' }, mr: 4, mb: { xs: 6, md: 0 }, ...props.sx }}
-  />
-);
+import LightningBoltGradient from '/public/lightningBoltGradient.svg';
 
-interface PanelColumnProps {
-  children?: ReactNode;
-}
+import { CustomMarket, marketsData } from '../../utils/marketsAndNetworksConfig';
+import { ApyGraphContainer } from './graphs/ApyGraphContainer';
+import { InterestRateModelGraphContainer } from './graphs/InterestRateModelGraphContainer';
+import { PanelItem, PanelRow, PanelTitle } from './ReservePanels';
 
-export const PanelColumn = ({ children }: PanelColumnProps) => {
-  return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        justifyContent: 'flex-end',
-        flex: 1,
-        overflow: 'hidden',
-        py: 1,
-      }}
-    >
-      {children}
-    </Box>
-  );
+type ReserveConfigurationProps = {
+  reserve: ComputedReserveData;
 };
 
-interface PanelItemProps {
-  title: ReactNode;
-}
+export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ reserve }) => {
+  const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
+  const { v3 } = marketsData[currentMarket as CustomMarket];
+  // V3 and V2 Polygon will be enabled once support is added to API
+  const renderCharts =
+    !v3 && !!currentNetworkConfig.ratesHistoryApiUrl && currentMarket !== 'proto_polygon';
+  const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
+  const showSupplyCapStatus = reserve.supplyCap && reserve.supplyCap !== '0';
+  const showBorrowCapStatus = reserve.borrowCap && reserve.borrowCap !== '0';
 
-export const PanelItem: React.FC<PanelItemProps> = ({ title, children }) => {
-  const theme = useTheme();
-  const mdUp = useMediaQuery(theme.breakpoints.up('md'));
-
-  return (
-    <Box
-      sx={{
-        position: 'relative',
-        mb: 4,
-        '&:not(:last-child)': {
-          pr: 4,
-          mr: 4,
-        },
-        ...(mdUp
-          ? {
-              '&:not(:last-child)::after': {
-                content: '""',
-                height: '32px',
-                position: 'absolute',
-                right: 4,
-                top: 'calc(50% - 17px)',
-                borderRight: (theme) => `1px solid ${theme.palette.divider}`,
-              },
-            }
-          : {}),
-      }}
-    >
-      <Typography color="text.secondary">{title}</Typography>
-      <PanelColumn>{children}</PanelColumn>
-    </Box>
-  );
-};
-
-const ChartContainer: React.FC<BoxProps> = (props) => (
-  <Box
-    {...props}
-    sx={{
-      minWidth: 0,
-      width: '100%',
-      maxWidth: '100%',
-      height: 300,
-      marginLeft: 0,
-      flexGrow: 1,
-      ...props.sx,
-    }}
-  />
-);
-
-export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = ({ reserve }) => {
-  const { currentNetworkConfig, currentMarketData } = useProtocolDataContext();
-  const renderCharts = !!currentNetworkConfig.ratesHistoryApiUrl;
-  const { data, error } = useReserveRatesHistory(
-    reserve
-      ? `${reserve.underlyingAsset}${currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER}`
-      : ''
-  ); // TODO: might make sense to move this to gql as well
   return (
     <Paper sx={{ py: '16px', px: '24px' }}>
       <Box
@@ -153,27 +63,23 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
 
       {reserve.isFrozen && (
         <Box>
-          <Alert sx={{ mt: '16px', mb: '40px' }} severity="error">
+          <Warning sx={{ mt: '16px', mb: '40px' }} severity="error">
             <Trans>
-              {reserve.symbol} is frozen due to an Aave Protocol Governance decision.{' '}
+              This asset is frozen due to an Aave community decision.{' '}
               <Link
-                href={
-                  frozenProposalMap[reserve.symbol]
-                    ? frozenProposalMap[reserve.symbol]
-                    : 'https://app.aave.com/governance'
-                }
+                href={getFrozenProposalLink(reserve.symbol, currentMarket)}
                 sx={{ textDecoration: 'underline' }}
               >
                 <Trans>More details</Trans>
               </Link>
             </Trans>
-          </Alert>
+          </Warning>
         </Box>
       )}
 
       <PanelRow>
         <PanelTitle>Supply Info</PanelTitle>
-        <Box sx={{ minWidth: 0, maxWidth: '100%', width: '100%' }}>
+        <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
           <Box
             sx={{
               display: 'flex',
@@ -181,10 +87,96 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
               flexWrap: 'wrap',
             }}
           >
-            <PanelItem title={<Trans>Total supplied</Trans>}>
-              <FormattedNumber value={reserve.totalLiquidity} variant="main16" compact />
-              <ReserveSubheader value={reserve.totalLiquidityUSD} />
-            </PanelItem>
+            {showSupplyCapStatus ? (
+              // With supply cap
+              <>
+                <CapsCircularStatus
+                  value={supplyCap.percentUsed}
+                  tooltipContent={
+                    <>
+                      <Trans>
+                        Maximum amount available to supply is{' '}
+                        <FormattedNumber
+                          value={
+                            valueToBigNumber(reserve.supplyCap).toNumber() -
+                            valueToBigNumber(reserve.totalLiquidity).toNumber()
+                          }
+                          variant="secondary12"
+                        />{' '}
+                        {reserve.symbol} (
+                        <FormattedNumber
+                          value={
+                            valueToBigNumber(reserve.supplyCapUSD).toNumber() -
+                            valueToBigNumber(reserve.totalLiquidityUSD).toNumber()
+                          }
+                          variant="secondary12"
+                          symbol="USD"
+                        />
+                        ).
+                      </Trans>
+                    </>
+                  }
+                />
+                <PanelItem
+                  title={
+                    <Box display="flex" alignItems="center">
+                      <Trans>Total supplied</Trans>
+                      <TextWithTooltip>
+                        <>
+                          <Trans>
+                            Asset supply is limited to a certain amount to reduce protocol exposure
+                            to the asset and to help manage risks involved.
+                          </Trans>{' '}
+                          <Link
+                            href="https://docs.aave.com/developers/whats-new/supply-borrow-caps"
+                            underline="always"
+                          >
+                            <Trans>Learn more</Trans>
+                          </Link>
+                        </>
+                      </TextWithTooltip>
+                    </Box>
+                  }
+                >
+                  <Box>
+                    <FormattedNumber value={reserve.totalLiquidity} variant="main16" compact />
+                    <Typography
+                      component="span"
+                      color="text.primary"
+                      variant="secondary16"
+                      sx={{ display: 'inline-block', mx: 1 }}
+                    >
+                      <Trans>of</Trans>
+                    </Typography>
+                    <FormattedNumber value={reserve.supplyCap} variant="main16" />
+                  </Box>
+                  <Box>
+                    <ReserveSubheader value={reserve.totalLiquidityUSD} />
+                    <Typography
+                      component="span"
+                      color="text.secondary"
+                      variant="secondary12"
+                      sx={{ display: 'inline-block', mx: 1 }}
+                    >
+                      <Trans>of</Trans>
+                    </Typography>
+                    <ReserveSubheader value={reserve.supplyCapUSD} />
+                  </Box>
+                </PanelItem>
+              </>
+            ) : (
+              // Without supply cap
+              <PanelItem
+                title={
+                  <Box display="flex" alignItems="center">
+                    <Trans>Total supplied</Trans>
+                  </Box>
+                }
+              >
+                <FormattedNumber value={reserve.totalLiquidity} variant="main16" compact />
+                <ReserveSubheader value={reserve.totalLiquidityUSD} />
+              </PanelItem>
+            )}
             <PanelItem title={<Trans>APY</Trans>}>
               <FormattedNumber value={reserve.supplyAPY} percent variant="main16" />
               <IncentivesButton
@@ -193,42 +185,27 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                 displayBlank={true}
               />
             </PanelItem>
-            {reserve.supplyCapUSD !== '0' && (
-              <PanelItem title={<Trans>Supply cap</Trans>}>
-                <FormattedNumber value={reserve.supplyCap} variant="main16" />
-                <ReserveSubheader value={reserve.supplyCapUSD} />
-              </PanelItem>
-            )}
-            {reserve.unbacked !== '0' && (
+            {reserve.unbacked && reserve.unbacked !== '0' && (
               <PanelItem title={<Trans>Unbacked</Trans>}>
                 <FormattedNumber value={reserve.unbacked} variant="main16" symbol={reserve.name} />
                 <ReserveSubheader value={reserve.unbackedUSD} />
               </PanelItem>
             )}
           </Box>
-
-          {renderCharts && !error && reserve.borrowingEnabled && (
-            <ChartContainer sx={{ mt: 4, pb: 8 }}>
-              <ParentSize>
-                {(parent) => (
-                  <ApyChart
-                    width={parent.width}
-                    height={parent.height}
-                    data={data}
-                    fields={[{ name: 'liquidityRate', color: '#2EBAC6', text: 'Supply APR' }]}
-                  />
-                )}
-              </ParentSize>
-            </ChartContainer>
+          {renderCharts && (reserve.borrowingEnabled || Number(reserve.totalDebt) > 0) && (
+            <ApyGraphContainer
+              graphKey="supply"
+              reserve={reserve}
+              lendingPoolAddressProvider={currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER}
+            />
           )}
-
           <div>
             {reserve.isIsolated ? (
               <Box sx={{ pt: '42px', pb: '12px' }}>
-                <Typography variant="secondary14" color="text.secondary" paddingBottom={'12px'}>
+                <Typography variant="subheader1" color="text.main" paddingBottom={'12px'}>
                   <Trans>Collateral usage</Trans>
                 </Typography>
-                <Alert severity="warning">
+                <Warning severity="warning">
                   <Typography variant="subheader1">
                     <Trans>Asset can only be used as collateral in isolation mode only.</Trans>
                   </Typography>
@@ -240,14 +217,14 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                       Learn more
                     </Link>
                   </Typography>
-                </Alert>
+                </Warning>
               </Box>
             ) : reserve.usageAsCollateralEnabled ? (
               <Box
                 sx={{ display: 'inline-flex', alignItems: 'center', pt: '42px', pb: '12px' }}
                 paddingTop={'42px'}
               >
-                <Typography variant="secondary14" color="text.secondary">
+                <Typography variant="subheader1" color="text.main">
                   <Trans>Collateral usage</Trans>
                 </Typography>
                 <CheckRoundedIcon fontSize="small" color="success" sx={{ ml: 2 }} />
@@ -257,16 +234,15 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
               </Box>
             ) : (
               <Box sx={{ pt: '42px', pb: '12px' }}>
-                <Typography variant="secondary14" color="text.secondary">
+                <Typography variant="subheader1" color="text.main">
                   <Trans>Collateral usage</Trans>
                 </Typography>
-                <Alert sx={{ my: '12px' }} severity="warning">
+                <Warning sx={{ my: '12px' }} severity="warning">
                   <Trans>Asset cannot be used as collateral.</Trans>
-                </Alert>
+                </Warning>
               </Box>
             )}
           </div>
-
           {reserve.usageAsCollateralEnabled && (
             <Box
               sx={{
@@ -319,32 +295,39 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
               </ReserveOverviewBox>
 
               {reserve.isIsolated && (
-                <ReserveOverviewBox title="Debt ceiling">
-                  <Box sx={{ display: { sm: 'inline-flex', xs: 'block' } }}>
-                    <FormattedNumber
-                      value={reserve.isolationModeTotalDebtUSD}
-                      variant="secondary14"
-                      symbol="USD"
-                      symbolsVariant="secondary14"
-                      visibleDecimals={2}
-                    />
-                    &nbsp;of&nbsp;
-                    <FormattedNumber
-                      value={reserve.debtCeilingUSD}
-                      variant="secondary14"
-                      symbol="USD"
-                      symbolsVariant="secondary14"
-                      visibleDecimals={2}
-                    />
-                  </Box>
+                <ReserveOverviewBox fullWidth>
+                  <DebtCeilingStatus
+                    debt={reserve.isolationModeTotalDebtUSD}
+                    ceiling={reserve.debtCeilingUSD}
+                    usageData={debtCeiling}
+                  />
                 </ReserveOverviewBox>
               )}
+            </Box>
+          )}
+          {reserve.symbol == 'stETH' && (
+            <Box>
+              <Warning severity="info">
+                <AlertTitle>
+                  <Trans>Staking Rewards</Trans>
+                </AlertTitle>
+                <Trans>
+                  stETH supplied as collateral will continue to accrue staking rewards provided by
+                  daily rebases.
+                </Trans>{' '}
+                <Link
+                  href="https://blog.lido.fi/aave-integrates-lidos-steth-as-collateral/"
+                  underline="always"
+                >
+                  <Trans>Learn more</Trans>
+                </Link>
+              </Warning>
             </Box>
           )}
         </Box>
       </PanelRow>
 
-      {reserve.borrowingEnabled && (
+      {(reserve.borrowingEnabled || Number(reserve.totalDebt) > 0) && (
         <>
           <Divider sx={{ my: '40px' }} />
           <PanelRow>
@@ -357,10 +340,96 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                   flexWrap: 'wrap',
                 }}
               >
-                <PanelItem title={<Trans>Total borrowed</Trans>}>
-                  <FormattedNumber value={reserve.totalDebt} variant="main16" />
-                  <ReserveSubheader value={reserve.totalDebtUSD} />
-                </PanelItem>
+                {showBorrowCapStatus ? (
+                  // With a borrow cap
+                  <>
+                    <CapsCircularStatus
+                      value={borrowCap.percentUsed}
+                      tooltipContent={
+                        <>
+                          <Trans>
+                            Maximum amount available to supply is{' '}
+                            <FormattedNumber
+                              value={
+                                valueToBigNumber(reserve.borrowCap).toNumber() -
+                                valueToBigNumber(reserve.totalDebt).toNumber()
+                              }
+                              variant="secondary12"
+                            />{' '}
+                            {reserve.symbol} (
+                            <FormattedNumber
+                              value={
+                                valueToBigNumber(reserve.borrowCapUSD).toNumber() -
+                                valueToBigNumber(reserve.totalDebtUSD).toNumber()
+                              }
+                              variant="secondary12"
+                              symbol="USD"
+                            />
+                            ).
+                          </Trans>
+                        </>
+                      }
+                    />
+                    <PanelItem
+                      title={
+                        <Box display="flex" alignItems="center">
+                          <Trans>Total borrowed</Trans>
+                          <TextWithTooltip>
+                            <>
+                              <Trans>
+                                Borrowing of this asset is limited to a certain amount to minimize
+                                liquidity pool insolvency.
+                              </Trans>{' '}
+                              <Link
+                                href="https://docs.aave.com/developers/whats-new/supply-borrow-caps"
+                                underline="always"
+                              >
+                                <Trans>Learn more</Trans>
+                              </Link>
+                            </>
+                          </TextWithTooltip>
+                        </Box>
+                      }
+                    >
+                      <Box>
+                        <FormattedNumber value={reserve.totalDebt} variant="main16" />
+                        <Typography
+                          component="span"
+                          color="text.primary"
+                          variant="secondary16"
+                          sx={{ display: 'inline-block', mx: 1 }}
+                        >
+                          <Trans>of</Trans>
+                        </Typography>
+                        <FormattedNumber value={reserve.borrowCap} variant="main16" />
+                      </Box>
+                      <Box>
+                        <ReserveSubheader value={reserve.totalDebtUSD} />
+                        <Typography
+                          component="span"
+                          color="text.primary"
+                          variant="secondary16"
+                          sx={{ display: 'inline-block', mx: 1 }}
+                        >
+                          <Trans>of</Trans>
+                        </Typography>
+                        <ReserveSubheader value={reserve.borrowCapUSD} />
+                      </Box>
+                    </PanelItem>
+                  </>
+                ) : (
+                  // Without a borrow cap
+                  <PanelItem
+                    title={
+                      <Box display="flex" alignItems="center">
+                        <Trans>Total borrowed</Trans>
+                      </Box>
+                    }
+                  >
+                    <FormattedNumber value={reserve.totalDebt} variant="main16" />
+                    <ReserveSubheader value={reserve.totalDebtUSD} />
+                  </PanelItem>
+                )}
                 <PanelItem
                   title={
                     <VariableAPYTooltip
@@ -395,41 +464,36 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                     />
                   </PanelItem>
                 )}
-                {reserve.borrowCapUSD !== '0' && (
+                {reserve.borrowCapUSD && reserve.borrowCapUSD !== '0' && (
                   <PanelItem title={<Trans>Borrow cap</Trans>}>
                     <FormattedNumber value={reserve.borrowCap} variant="main16" />
                     <ReserveSubheader value={reserve.borrowCapUSD} />
                   </PanelItem>
                 )}
               </Box>
-              {renderCharts && !error && (
-                <ChartContainer sx={{ mt: 8 }}>
-                  <ParentSize>
-                    {(parent) => (
-                      <ApyChart
-                        width={parent.width}
-                        height={parent.height}
-                        data={data}
-                        fields={[
-                          ...(reserve.stableBorrowRateEnabled
-                            ? ([
-                                {
-                                  name: 'stableBorrowRate',
-                                  color: '#0062D2',
-                                  text: 'Borrow APR, stable',
-                                },
-                              ] as const)
-                            : []),
-                          {
-                            name: 'variableBorrowRate',
-                            color: '#B6509E',
-                            text: 'Borrow APR, variable',
-                          },
-                        ]}
-                      />
-                    )}
-                  </ParentSize>
-                </ChartContainer>
+              {renderCharts && (
+                <ApyGraphContainer
+                  graphKey="borrow"
+                  reserve={reserve}
+                  lendingPoolAddressProvider={
+                    currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER
+                  }
+                />
+              )}
+              <Box
+                sx={{ display: 'inline-flex', alignItems: 'center', pt: '42px', pb: '12px' }}
+                paddingTop={'42px'}
+              >
+                <Typography variant="subheader1" color="text.main">
+                  <Trans>Collector Info</Trans>
+                </Typography>
+              </Box>
+              {currentMarketData.addresses.COLLECTOR && (
+                <ReserveFactorOverview
+                  collectorContract={currentMarketData.addresses.COLLECTOR}
+                  explorerLinkBuilder={currentNetworkConfig.explorerLinkBuilder}
+                  reserveFactor={reserve.reserveFactor}
+                />
               )}
             </Box>
           </PanelRow>
@@ -449,9 +513,7 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
                 <SvgIcon sx={{ fontSize: '14px', mr: 0.5, ml: 2 }}>
                   <LightningBoltGradient />
                 </SvgIcon>
-                <Typography variant="subheader1">
-                  {getEmodeMessage(reserve.eModeCategoryId, currentNetworkConfig.baseAssetSymbol)}
-                </Typography>
+                <Typography variant="subheader1">{getEmodeMessage(reserve.eModeLabel)}</Typography>
               </Box>
               <Box
                 sx={{
@@ -542,33 +604,48 @@ export const ReserveConfiguration: React.FC<{ reserve: ComputedReserveData }> = 
         </>
       )}
 
-      {reserve.borrowingEnabled && (
+      {(reserve.borrowingEnabled || Number(reserve.totalDebt) > 0) && (
         <>
           <Divider sx={{ my: '40px' }} />
 
           <PanelRow>
             <PanelTitle>Interest rate model</PanelTitle>
-            <ChartContainer>
-              <ParentSize>
-                {(parent) => (
-                  <InterestRateModelChart
-                    width={parent.width}
-                    height={parent.height}
-                    reserve={{
-                      baseStableBorrowRate: reserve.baseStableBorrowRate,
-                      baseVariableBorrowRate: reserve.baseVariableBorrowRate,
-                      optimalUsageRatio: reserve.optimalUsageRatio,
-                      stableRateSlope1: reserve.stableRateSlope1,
-                      stableRateSlope2: reserve.stableRateSlope2,
-                      utilizationRate: reserve.borrowUsageRatio,
-                      variableRateSlope1: reserve.variableRateSlope1,
-                      variableRateSlope2: reserve.variableRateSlope2,
-                      stableBorrowRateEnabled: reserve.stableBorrowRateEnabled,
-                    }}
+            <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  flexWrap: 'wrap',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <PanelItem title={<Trans>Utilization Rate</Trans>} className="borderless">
+                  <FormattedNumber
+                    value={reserve.borrowUsageRatio}
+                    percent
+                    variant="main16"
+                    compact
                   />
-                )}
-              </ParentSize>
-            </ChartContainer>
+                </PanelItem>
+                <Button
+                  href={currentNetworkConfig.explorerLinkBuilder({
+                    address: reserve.interestRateStrategyAddress,
+                  })}
+                  endIcon={
+                    <SvgIcon sx={{ width: 14, height: 14 }}>
+                      <ExternalLinkIcon />
+                    </SvgIcon>
+                  }
+                  component={Link}
+                  size="small"
+                  variant="outlined"
+                  sx={{ verticalAlign: 'top' }}
+                >
+                  <Trans>Interest rate strategy</Trans>
+                </Button>
+              </Box>
+              <InterestRateModelGraphContainer reserve={reserve} />
+            </Box>
           </PanelRow>
         </>
       )}

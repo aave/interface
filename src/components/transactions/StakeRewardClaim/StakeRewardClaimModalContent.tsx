@@ -1,20 +1,21 @@
-import React from 'react';
-import { Typography } from '@mui/material';
 import { normalize } from '@aave/math-utils';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
-import { TxErrorView } from '../FlowCommons/Error';
-import { TxSuccessView } from '../FlowCommons/Success';
-import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
-import { TxModalTitle } from '../FlowCommons/TxModalTitle';
-import { DetailsNumberLineWithSub, TxModalDetails } from '../FlowCommons/TxModalDetails';
-import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { Trans } from '@lingui/macro';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { Typography } from '@mui/material';
+import React from 'react';
 import { useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
-import { getStakeConfig } from 'src/ui-config/stakeConfig';
-import { StakeRewardClaimActions } from './StakeRewardClaimActions';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { stakeConfig } from 'src/ui-config/stakeConfig';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+
+import { TxErrorView } from '../FlowCommons/Error';
+import { GasEstimationError } from '../FlowCommons/GasEstimationError';
+import { TxSuccessView } from '../FlowCommons/Success';
+import { DetailsNumberLineWithSub, TxModalDetails } from '../FlowCommons/TxModalDetails';
+import { TxModalTitle } from '../FlowCommons/TxModalTitle';
+import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
+import { StakeRewardClaimActions } from './StakeRewardClaimActions';
 
 export type StakeRewardClaimProps = {
   stakeAssetName: string;
@@ -29,10 +30,9 @@ type StakingType = 'aave' | 'bpt';
 export const StakeRewardClaimModalContent = ({ stakeAssetName }: StakeRewardClaimProps) => {
   const data = useStakeData();
   const stakeData = data.stakeGeneralResult?.stakeGeneralUIData[stakeAssetName as StakingType];
-  const { chainId: connectedChainId } = useWeb3Context();
-  const stakeConfig = getStakeConfig();
+  const { chainId: connectedChainId, watchModeOnlyAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
-  const { currentNetworkConfig } = useProtocolDataContext();
+  const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
 
   // hardcoded as all rewards will be in aave token
   const rewardsSymbol = 'AAVE';
@@ -66,10 +66,11 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName }: StakeRewardClai
   };
 
   // is Network mismatched
-  const stakingChain = stakeConfig.chainId;
-  const isStakeFork =
-    currentNetworkConfig.isFork && currentNetworkConfig.underlyingChainId === stakingChain;
-  const isWrongNetwork = !isStakeFork && connectedChainId !== stakingChain;
+  const stakingChain =
+    currentNetworkConfig.isFork && currentNetworkConfig.underlyingChainId === stakeConfig.chainId
+      ? currentChainId
+      : stakeConfig.chainId;
+  const isWrongNetwork = connectedChainId !== stakingChain;
 
   const networkConfig = getNetworkConfig(stakingChain);
 
@@ -88,7 +89,7 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName }: StakeRewardClai
   return (
     <>
       <TxModalTitle title="Claim" symbol={rewardsSymbol} />
-      {isWrongNetwork && (
+      {isWrongNetwork && !watchModeOnlyAddress && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
       )}
       {blockingError !== undefined && (

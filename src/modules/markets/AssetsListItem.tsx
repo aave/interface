@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Button, Typography, Box } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -24,6 +24,7 @@ export const AssetsListItem = ({ ...reserve }: ComputedReserveData) => {
       onClick={() => router.push(ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket))}
       sx={{ cursor: 'pointer' }}
       button
+      data-cy={`marketListItemListItem_${reserve.symbol.toUpperCase()}`}
     >
       <ListColumn isRow maxWidth={280}>
         <TokenIcon symbol={reserve.iconSymbol} fontSize="large" />
@@ -66,7 +67,11 @@ export const AssetsListItem = ({ ...reserve }: ComputedReserveData) => {
 
       <ListColumn>
         <IncentivesCard
-          value={reserve.borrowingEnabled ? reserve.variableBorrowAPY : '-1'}
+          value={
+            reserve.borrowingEnabled || Number(reserve.totalVariableDebtUSD) > 0
+              ? reserve.variableBorrowAPY
+              : '-1'
+          }
           incentives={reserve.vIncentivesData || []}
           symbol={reserve.symbol}
           variant="main16"
@@ -76,7 +81,12 @@ export const AssetsListItem = ({ ...reserve }: ComputedReserveData) => {
 
       <ListColumn>
         <IncentivesCard
-          value={reserve.stableBorrowRateEnabled ? reserve.stableBorrowAPY : -1}
+          value={
+            (reserve.borrowingEnabled && reserve.stableBorrowRateEnabled) ||
+            Number(reserve.totalStableDebtUSD) > 0
+              ? reserve.stableBorrowAPY
+              : -1
+          }
           incentives={reserve.sIncentivesData || []}
           symbol={reserve.symbol}
           variant="main16"

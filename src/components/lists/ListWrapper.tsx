@@ -5,7 +5,7 @@ import { ReactNode, useState } from 'react';
 import { toggleLocalStorageClick } from '../../helpers/toggle-local-storage-click';
 
 interface ListWrapperProps {
-  title: ReactNode;
+  titleComponent: ReactNode;
   localStorageName?: string;
   subTitleComponent?: ReactNode;
   subChildrenComponent?: ReactNode;
@@ -13,19 +13,17 @@ interface ListWrapperProps {
   children: ReactNode;
   withTopMargin?: boolean;
   noData?: boolean;
-  captionSize?: 'h2' | 'h3';
 }
 
 export const ListWrapper = ({
   children,
   localStorageName,
-  title,
+  titleComponent,
   subTitleComponent,
   subChildrenComponent,
   topInfo,
   withTopMargin,
   noData,
-  captionSize = 'h3',
 }: ListWrapperProps) => {
   const [isCollapse, setIsCollapse] = useState(
     localStorageName ? localStorage.getItem(localStorageName) === 'true' : false
@@ -47,20 +45,18 @@ export const ListWrapper = ({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          mb: noData || (collapsed && !topInfo) ? 0 : 4,
         }}
       >
         <Box
           sx={{
+            width: '100%',
             display: 'flex',
             alignItems: { xs: 'flex-start', xsm: 'center' },
             py: '3.6px',
             flexDirection: { xs: 'column', xsm: 'row' },
           }}
         >
-          <Typography component="div" variant={captionSize} sx={{ mr: 4 }}>
-            {title}
-          </Typography>
+          {titleComponent}
           {subTitleComponent}
         </Box>
 

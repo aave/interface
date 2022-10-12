@@ -1,3 +1,7 @@
+/**
+ * Maps onchain symbols to different symbols.
+ * This is useful when you want to explode symbols via _ to render multiple symbols or when the symbol has a bridge prefix or suffix.
+ */
 export const SYMBOL_MAP: { [key: string]: string } = {
   BPTBALWETH: 'BPT_BAL_WETH',
   BPTWBTCWETH: 'BPT_WBTC_WETH',
@@ -16,19 +20,32 @@ export const SYMBOL_MAP: { [key: string]: string } = {
   UNIWBTCWETH: 'UNI_WBTC_WETH',
   UNIYFIWETH: 'UNI_YFI_WETH',
   fUSDT: 'USDT',
+  // harmony
+  '1DAI': 'DAI',
+  '1USDC': 'USDC',
+  '1USDT': 'USDT',
+  '1AAVE': 'AAVE',
+  '1ETH': 'ETH',
+  '1WBTC': 'WBTC',
+  // avalanche
+  'DAI.e': 'DAI',
+  'LINK.e': 'LINK',
+  'WBTC.e': 'WBTC',
+  'WETH.e': 'WETH',
+  'AAVE.e': 'AAVE',
+  'USDT.e': 'USDT',
+  'USDC.e': 'USDC',
+  'BTC.b': 'BTC',
+  // polygon
+  miMATIC: 'MAI',
 };
 
-export const NAME_MAP: { [key: string]: string } = {
-  AMPL: 'Ampleforth',
+/**
+ * Maps (potentially altered via SYMBOL_MAP) symbols to a name
+ * With the next version of uipooldataprovider https://github.com/aave/aave-v3-periphery/pull/89 this list can be greatly reduced/removed.
+ */
+export const SYMBOL_NAME_MAP: { [key: string]: string } = {
   AVAX: 'Avalanche',
-  BAL: 'Balancer',
-  BAT: 'Basic Attention Token',
-  BUSD: 'Binance USD',
-  CRV: 'Curve DAO Token',
-  CVX: 'Convex Token',
-  DPI: 'DeFi Pulse Index',
-  ENJ: 'EnjinCoin',
-  ENS: 'Ethereum Name Service',
   ETH: 'Ethereum',
   EUROS: 'STASIS EURO',
   FAI: 'Fei USD',
@@ -36,6 +53,7 @@ export const NAME_MAP: { [key: string]: string } = {
   GUSD: 'Gemini Dollar',
   KNC: 'Kyber Legacy',
   LINK: 'ChainLink',
+  MAI: 'MAI (mimatic)',
   MANA: 'Decentraland',
   MKR: 'Maker',
   PAX: 'Paxos Standard',
@@ -48,8 +66,6 @@ export const NAME_MAP: { [key: string]: string } = {
   UNI: 'Uniswap',
   UNIDAIWETH: 'UNI DAI/WETH',
   UNIWBTCUSDC: 'UNI WBTC/USDC',
-  USDC: 'USD Coin',
-  USDP: 'Pax Dollar',
   USDT: 'Tether',
   WAVAX: 'Wrapped Avalanche',
   WBTC: 'Wrapped BTC',
@@ -59,14 +75,18 @@ export const NAME_MAP: { [key: string]: string } = {
   WONE: 'Wrapped ONE',
   YFI: 'yearn.finance',
   ZRX: '0x Coin',
+  '1INCH': '1inch Network',
+  LUSD: 'LUSD Stablecoin',
 };
 
 export function fetchIconSymbolAndName({
   underlyingAsset,
   symbol,
+  name,
 }: {
   underlyingAsset: string;
   symbol: string;
+  name?: string;
 }) {
   // guni symbols are just broken (G-UNI for all tokens)
   if (
@@ -84,26 +104,33 @@ export function fetchIconSymbolAndName({
   ) {
     return { iconSymbol: 'UST', name: 'UST (Wormhole)', symbol };
   }
-  // avalanche symbols have .e extensions
-  if (/\.e$/.test(symbol)) {
-    const rawSymbol = symbol.replace('.e', '');
-    return {
-      iconSymbol: rawSymbol || symbol,
-      name: NAME_MAP[rawSymbol.toUpperCase()] || rawSymbol,
-      symbol,
-    };
-  }
-  if (/^1/.test(symbol)) {
-    const rawSymbol = symbol.replace('1', '');
-    return {
-      iconSymbol: rawSymbol || symbol,
-      name: NAME_MAP[rawSymbol.toUpperCase()] || rawSymbol,
-      symbol,
-    };
-  }
+
+  const unifiedSymbol = SYMBOL_MAP[symbol] || symbol;
   return {
-    iconSymbol: SYMBOL_MAP[symbol] || symbol,
-    name: NAME_MAP[symbol.toUpperCase()] || symbol,
+    iconSymbol: unifiedSymbol,
+    name: SYMBOL_NAME_MAP[unifiedSymbol.toUpperCase()] || name || unifiedSymbol,
     symbol,
   };
 }
+
+// tokens flagged stable will be sorted on top when no other sorting is selected
+export const STABLE_ASSETS = [
+  'DAI',
+  'TUSD',
+  'BUSD',
+  'GUSD',
+  'USDC',
+  'USDT',
+  'EUROS',
+  'FEI',
+  'FRAX',
+  'PAX',
+  'USDP',
+  'SUSD',
+  'UST',
+  'EURS',
+  'JEUR',
+  'AGEUR',
+  'LUSD',
+  'MAI',
+];

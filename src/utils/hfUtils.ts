@@ -1,14 +1,14 @@
 import {
-  ComputedUserReserve,
-  calculateHealthFactorFromBalancesBigUnits,
-  valueToBigNumber,
   BigNumberValue,
+  calculateHealthFactorFromBalancesBigUnits,
+  ComputedUserReserve,
+  valueToBigNumber,
 } from '@aave/math-utils';
+import BigNumber from 'bignumber.js';
 import {
   ComputedReserveData,
   ExtendedFormattedUser,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
-import BigNumber from 'bignumber.js';
 
 interface CalculateHFAfterSwapProps {
   fromAmount: BigNumberValue;
@@ -124,9 +124,11 @@ export const calculateHFAfterRepay = ({
   )
     .multipliedBy(toAssetData.priceInUSD)
     .toString(10);
-  const debtLeftInMarketReference = valueToBigNumber(user.totalBorrowsUSD).minus(
+  let debtLeftInMarketReference = valueToBigNumber(user.totalBorrowsUSD).minus(
     fromAmountInMarketReferenceCurrency
   );
+
+  debtLeftInMarketReference = BigNumber.max(debtLeftInMarketReference, valueToBigNumber('0'));
 
   const hfAfterRepayBeforeWithdraw = calculateHealthFactorFromBalancesBigUnits({
     collateralBalanceMarketReferenceCurrency: user.totalCollateralUSD,

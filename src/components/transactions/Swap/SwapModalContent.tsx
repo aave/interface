@@ -1,31 +1,34 @@
-import React, { useRef, useState } from 'react';
-import {
-  ComputedReserveData,
-  useAppDataContext,
-} from '../../../hooks/app-data-provider/useAppDataProvider';
-import { SwapActions } from './SwapActions';
-import { ToggleButton, ToggleButtonGroup, Typography, Box } from '@mui/material';
-import BigNumber from 'bignumber.js';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { Trans } from '@lingui/macro';
-import { remainingCap } from 'src/utils/getMaxAmountAvailableToSupply';
-import { useSwap } from 'src/hooks/useSwap';
+import { Box, Typography } from '@mui/material';
+import BigNumber from 'bignumber.js';
+import React, { useRef, useState } from 'react';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Row } from 'src/components/primitives/Row';
+import StyledToggleButton from 'src/components/StyledToggleButton';
+import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
+import { GasEstimationError } from 'src/components/transactions/FlowCommons/GasEstimationError';
 import {
   DetailsHFLine,
   DetailsIncentivesLine,
   DetailsNumberLine,
   TxModalDetails,
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
-import { GasEstimationError } from 'src/components/transactions/FlowCommons/GasEstimationError';
 import { useModalContext } from 'src/hooks/useModal';
-import { TxSuccessView } from '../FlowCommons/Success';
-import { Row } from 'src/components/primitives/Row';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useSwap } from 'src/hooks/useSwap';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { remainingCap } from 'src/utils/getMaxAmountAvailableToSupply';
 import { calculateHFAfterSwap } from 'src/utils/hfUtils';
+
+import {
+  ComputedReserveData,
+  useAppDataContext,
+} from '../../../hooks/app-data-provider/useAppDataProvider';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
+import { TxSuccessView } from '../FlowCommons/Success';
 import { ErrorType, flashLoanNotAvailable, useFlashloan } from '../utils';
+import { SwapActions } from './SwapActions';
 
 export type SupplyProps = {
   underlyingAsset: string;
@@ -218,22 +221,22 @@ export const SwapModalContent = ({
         <Typography variant="description" sx={{ mt: 4 }}>
           <Trans>Max slippage rate</Trans>
         </Typography>
-        <ToggleButtonGroup
+        <StyledToggleButtonGroup
           sx={{ mt: 2 }}
           value={maxSlippage}
           onChange={(_e, value) => setMaxSlippage(value)}
           exclusive
         >
-          <ToggleButton value="0.1" sx={{ minWidth: '74px' }}>
+          <StyledToggleButton value="0.1" sx={{ minWidth: '74px' }}>
             <Typography variant="secondary14">0.1%</Typography>
-          </ToggleButton>
-          <ToggleButton value="0.5" sx={{ minWidth: '74px' }}>
+          </StyledToggleButton>
+          <StyledToggleButton value="0.5" sx={{ minWidth: '74px' }}>
             <Typography variant="secondary14">0.5%</Typography>
-          </ToggleButton>
-          <ToggleButton value="1" sx={{ minWidth: '74px' }}>
+          </StyledToggleButton>
+          <StyledToggleButton value="1" sx={{ minWidth: '74px' }}>
             <Typography variant="secondary14">1%</Typography>
-          </ToggleButton>
-        </ToggleButtonGroup>
+          </StyledToggleButton>
+        </StyledToggleButtonGroup>
       </Box>
       {blockingError !== undefined && (
         <Typography variant="helperText" color="error.main">

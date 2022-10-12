@@ -6,8 +6,6 @@ import {
   MenuItem,
   SvgIcon,
   TextField,
-  ToggleButton,
-  ToggleButtonGroup,
   Tooltip,
   Typography,
   useMediaQuery,
@@ -26,6 +24,8 @@ import {
   networkConfigs,
   STAGING_ENV,
 } from '../utils/marketsAndNetworksConfig';
+import StyledToggleButton from './StyledToggleButton';
+import StyledToggleButtonGroup from './StyledToggleButtonGroup';
 
 export const getMarketInfoById = (marketId: CustomMarket) => {
   const market: MarketDataType = marketsData[marketId as CustomMarket];
@@ -35,7 +35,7 @@ export const getMarketInfoById = (marketId: CustomMarket) => {
 };
 
 const getMarketHelpData = (marketName: string) => {
-  const testChains = ['Goerli', 'Ropsten', 'Mumbai', 'Fuji', 'Testnet', 'Kovan', 'Rinkeby'];
+  const testChains = ['Görli', 'Ropsten', 'Mumbai', 'Fuji', 'Testnet', 'Kovan', 'Rinkeby'];
   const arrayName = marketName.split(' ');
   const testChainName = arrayName.filter((el) => testChains.indexOf(el) > -1);
   const marketTitle = arrayName.filter((el) => !testChainName.includes(el)).join(' ');
@@ -94,6 +94,7 @@ enum SelectedMarketVersion {
   V2,
   V3,
 }
+
 export const MarketSwitcher = () => {
   const { currentMarket, setCurrentMarket } = useProtocolDataContext();
   const [selectedMarketVersion, setSelectedMarketVersion] = useState<SelectedMarketVersion>(
@@ -201,7 +202,7 @@ export const MarketSwitcher = () => {
 
       {isV3MarketsAvailable && (
         <Box sx={{ mx: '18px', display: 'flex', justifyContent: 'center' }}>
-          <ToggleButtonGroup
+          <StyledToggleButtonGroup
             value={selectedMarketVersion}
             exclusive
             onChange={(_, value) => {
@@ -222,7 +223,7 @@ export const MarketSwitcher = () => {
               padding: '2px',
             }}
           >
-            <ToggleButton
+            <StyledToggleButton
               value={SelectedMarketVersion.V3}
               data-cy={`markets_switch_button_v3`}
               sx={{
@@ -250,8 +251,8 @@ export const MarketSwitcher = () => {
               >
                 <Trans>Version 3</Trans>
               </Typography>
-            </ToggleButton>
-            <ToggleButton
+            </StyledToggleButton>
+            <StyledToggleButton
               value={SelectedMarketVersion.V2}
               data-cy={`markets_switch_button_v2`}
               sx={{
@@ -279,8 +280,8 @@ export const MarketSwitcher = () => {
               >
                 <Trans>Version 2</Trans>
               </Typography>
-            </ToggleButton>
-          </ToggleButtonGroup>
+            </StyledToggleButton>
+          </StyledToggleButtonGroup>
         </Box>
       )}
       {availableMarkets.map((marketId: CustomMarket) => {

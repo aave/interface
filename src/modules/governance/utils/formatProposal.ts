@@ -48,7 +48,7 @@ export function formatProposal(proposal: Omit<Proposal, 'values'>) {
   };
 }
 
-const averageBlockTime = 14;
+const averageBlockTime = 12;
 
 export async function enhanceProposalWithTimes(proposal: Omit<Proposal, 'values'>) {
   const provider = getProvider(ChainId.mainnet);

@@ -1,9 +1,11 @@
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -34,8 +36,9 @@ export const GovVoteModalContent = ({
   support,
   power: votingPower,
 }: GovVoteModalContentProps) => {
-  const { chainId: connectedChainId } = useWeb3Context();
+  const { chainId: connectedChainId, watchModeOnlyAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
+  const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
 
   // handle delegate address errors
   let blockingError: ErrorType | undefined = undefined;
@@ -58,9 +61,14 @@ export const GovVoteModalContent = ({
   };
 
   // is Network mismatched
-  const govChain = governanceConfig.chainId;
-  const networkConfig = getNetworkConfig(govChain);
+  const govChain =
+    currentNetworkConfig.isFork &&
+    currentNetworkConfig.underlyingChainId === governanceConfig.chainId
+      ? currentChainId
+      : governanceConfig.chainId;
   const isWrongNetwork = connectedChainId !== govChain;
+
+  const networkConfig = getNetworkConfig(govChain);
 
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
@@ -70,7 +78,7 @@ export const GovVoteModalContent = ({
   return (
     <>
       <TxModalTitle title="Governance vote" />
-      {isWrongNetwork && (
+      {isWrongNetwork && !watchModeOnlyAddress && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={govChain} />
       )}
       {blockingError !== undefined && (

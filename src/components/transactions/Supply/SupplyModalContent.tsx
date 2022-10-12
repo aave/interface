@@ -9,11 +9,13 @@ import { Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import React, { useRef, useState } from 'react';
 import { CollateralType } from 'src/helpers/types';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
+
 import { useAppDataContext } from '../../../hooks/app-data-provider/useAppDataProvider';
 import { CapType } from '../../caps/helper';
 import { AssetInput } from '../AssetInput';
@@ -31,7 +33,6 @@ import { AAVEWarning } from '../Warnings/AAVEWarning';
 import { AMPLWarning } from '../Warnings/AMPLWarning';
 import { IsolationModeWarning } from '../Warnings/IsolationModeWarning';
 import { SNXWarning } from '../Warnings/SNXWarning';
-import { SupplyCapWarning } from '../Warnings/SupplyCapWarning';
 import { SupplyActions } from './SupplyActions';
 
 export enum ErrorType {
@@ -50,6 +51,7 @@ export const SupplyModalContent = ({
   const { marketReferencePriceInUsd, user } = useAppDataContext();
   const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
   const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
+  const { supplyCap, debtCeiling } = useAssetCaps();
 
   // states
   const [_amount, setAmount] = useState('');
@@ -110,13 +112,6 @@ export const SupplyModalContent = ({
   }
 
   // ************** Warnings **********
-  // supply cap warning
-  const percentageOfCap = valueToBigNumber(poolReserve.totalLiquidity)
-    .dividedBy(poolReserve.supplyCap)
-    .toNumber();
-  const showSupplyCapWarning: boolean =
-    poolReserve.supplyCap !== '0' && percentageOfCap >= 0.99 && percentageOfCap < 1;
-
   // isolation warning
   const hasDifferentCollateral = user.userReservesData.find(
     (reserve) => reserve.usageAsCollateralEnabledOnUser && reserve.reserve.id !== poolReserve.id
@@ -136,14 +131,13 @@ export const SupplyModalContent = ({
       new BigNumber(poolReserve.supplyCap).minus(poolReserve.totalLiquidity)
     );
 
-  // error handler
+  // handle error for supply cap reached
   let blockingError: ErrorType | undefined = undefined;
   if (!supplyTxState.success) {
     if (capReached) {
       blockingError = ErrorType.CAP_REACHED;
     }
   }
-
   const handleBlocked = () => {
     switch (blockingError) {
       case ErrorType.CAP_REACHED:
@@ -169,7 +163,10 @@ export const SupplyModalContent = ({
   const userHasCollateral = user.totalCollateralUSD !== '0';
 
   if (poolReserve.isIsolated) {
-    if (user.isInIsolationMode) {
+    // Note: is debt ceiling only used for isolated assets?
+    if (debtCeiling.isMaxed) {
+      willBeUsedAsCollateral = CollateralType.UNAVAILABLE;
+    } else if (user.isInIsolationMode) {
       if (userHasSuppliedReserve) {
         willBeUsedAsCollateral = userReserve.usageAsCollateralEnabledOnUser
           ? CollateralType.ISOLATED_ENABLED
@@ -212,8 +209,9 @@ export const SupplyModalContent = ({
 
   return (
     <>
-      {showIsolationWarning && <IsolationModeWarning />}
-      {showSupplyCapWarning && <SupplyCapWarning />}
+      {showIsolationWarning && <IsolationModeWarning asset={poolReserve.symbol} />}
+      {supplyCap.determineWarningDisplay({ supplyCap })}
+      {debtCeiling.determineWarningDisplay({ debtCeiling })}
       {poolReserve.symbol === 'AMPL' && <AMPLWarning />}
       {process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true' &&
         poolReserve.symbol === 'AAVE' &&

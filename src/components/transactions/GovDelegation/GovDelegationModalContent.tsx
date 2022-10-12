@@ -1,5 +1,5 @@
 import { canBeEnsAddress } from '@aave/contract-helpers';
-import { Trans, t } from '@lingui/macro';
+import { t, Trans } from '@lingui/macro';
 import { FormControl, TextField, Typography } from '@mui/material';
 import { utils } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { DelegationType } from 'src/helpers/types';
 import { useAaveTokensProviderContext } from 'src/hooks/governance-data-provider/AaveTokensDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
@@ -17,7 +18,7 @@ import { TxSuccessView } from '../FlowCommons/Success';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { GasStation } from '../GasStation/GasStation';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
-import { DelegationTokenSelector, DelegationToken } from './DelegationTokenSelector';
+import { DelegationToken, DelegationTokenSelector } from './DelegationTokenSelector';
 import { DelegationTypeSelector } from './DelegationTypeSelector';
 import { GovDelegationActions } from './GovDelegationActions';
 
@@ -34,12 +35,12 @@ export enum ErrorType {
 }
 
 export const GovDelegationModalContent = () => {
-  const { chainId: connectedChainId } = useWeb3Context();
+  const { chainId: connectedChainId, watchModeOnlyAddress } = useWeb3Context();
   const {
     daveTokens: { aave, stkAave },
   } = useAaveTokensProviderContext();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
-
+  const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
   // error states
 
   // selector states
@@ -84,9 +85,14 @@ export const GovDelegationModalContent = () => {
   };
 
   // is Network mismatched
-  const govChain = governanceConfig.chainId;
-  const networkConfig = getNetworkConfig(govChain);
+  const govChain =
+    currentNetworkConfig.isFork &&
+    currentNetworkConfig.underlyingChainId === governanceConfig.chainId
+      ? currentChainId
+      : governanceConfig.chainId;
   const isWrongNetwork = connectedChainId !== govChain;
+
+  const networkConfig = getNetworkConfig(govChain);
 
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
@@ -95,7 +101,7 @@ export const GovDelegationModalContent = () => {
   return (
     <>
       <TxModalTitle title="Delegate your power" />
-      {isWrongNetwork && (
+      {isWrongNetwork && !watchModeOnlyAddress && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={govChain} />
       )}
       <Typography variant="description">

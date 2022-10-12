@@ -1,19 +1,19 @@
 import { UiStakeDataProvider } from '@aave/contract-helpers';
-import { usePolling } from '../usePolling';
 import { useApolloClient } from '@apollo/client';
+import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
+
+import { usePolling } from '../usePolling';
+import { useProtocolDataContext } from '../useProtocolDataContext';
 import {
   C_StakeGeneralUiDataDocument,
   C_StakeGeneralUiDataQuery,
   C_StakeUserUiDataDocument,
   C_StakeUserUiDataQuery,
 } from './graphql/hooks';
-import { getStakeConfig } from 'src/ui-config/stakeConfig';
-import { useProtocolDataContext } from '../useProtocolDataContext';
 
 export function _useStakeDataRPC(currentAccount: string, chainId: number, skip = false) {
   const { cache } = useApolloClient();
-  const stakeConfig = getStakeConfig();
   const { currentNetworkConfig, jsonRpcProvider } = useProtocolDataContext();
 
   const isStakeFork =
