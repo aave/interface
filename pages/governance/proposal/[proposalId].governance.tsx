@@ -449,7 +449,7 @@ export default function ProposalPage({
                       </Typography>
                     </Box>
                   </Row>
-                  {proposalHasExpired && (
+                  {proposalHasExpired ? (
                     <Row
                       caption={
                         <>
@@ -469,8 +469,7 @@ export default function ProposalPage({
                         </Typography>
                       </Box>
                     </Row>
-                  )}
-                  {!proposalHasExpired ? (
+                  ) : (
                     <Row
                       caption={
                         <>
@@ -490,7 +489,8 @@ export default function ProposalPage({
                         </Typography>
                       </Box>
                     </Row>
-                  ) : (
+                  )}
+                  {proposal.executed && (
                     <Row
                       caption={<Trans>Executed</Trans>}
                       sx={{ height: 48 }}
