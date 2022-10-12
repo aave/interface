@@ -46,7 +46,7 @@ export const ConnectWalletPaperStaking = ({
               )}
             </Typography>
             <ConnectWalletButton />
-            <Grid container spacing={1} pt={6} sx={{ width: '543px', textAlign: 'right' }}>
+            <Grid container spacing={1} pt={6} sx={{ maxWidth: '543px', textAlign: 'right' }}>
               <Grid item xs={12} sm={6}>
                 <StakingPanelNoWallet stakedToken={'AAVE'} icon={'aave'} />
               </Grid>
