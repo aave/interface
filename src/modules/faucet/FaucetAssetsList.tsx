@@ -1,3 +1,4 @@
+import { mintAmountsPerToken } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
@@ -31,7 +32,12 @@ export default function FaucetAssetsList() {
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const listData = reserves
-    .filter((reserve) => !reserve.isWrappedBaseAsset && !reserve.isFrozen)
+    .filter(
+      (reserve) =>
+        !reserve.isWrappedBaseAsset &&
+        !reserve.isFrozen &&
+        mintAmountsPerToken[reserve.symbol.toUpperCase()]
+    )
     .map((reserve) => {
       const walletBalance = valueToBigNumber(
         walletBalances[reserve.underlyingAsset]?.amount || '0'
