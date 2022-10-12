@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import React from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -16,8 +16,6 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
   stakedToken,
   icon,
 }) => {
-  const { breakpoints } = useTheme();
-  const xsm = useMediaQuery(breakpoints.up('xsm'));
   const data = useStakeData();
   let stakingAPY = '';
 
@@ -29,19 +27,15 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
     <Box
       sx={(theme) => ({
         display: 'flex',
-        mt: 5,
         justifyContent: 'space-between',
-        alignItems: { xs: 'flex-start', xsm: 'center' },
-        flexDirection: { xs: 'column', xsm: 'row' },
-        gap: { xs: 0, xsm: 2 },
-        borderRadius: { xs: 0, xsm: '6px' },
-        border: { xs: 'unset', xsm: `1px solid ${theme.palette.divider}` },
-        p: { xs: 0, xsm: 4 },
-        background: {
-          xs: 'unset',
-          xsm: theme.palette.background.paper,
-        },
-        width: '30%',
+        alignItems: 'center',
+        flexDirection: 'row',
+        borderRadius: '6px',
+        border: `1px solid ${theme.palette.divider}`,
+        p: 4,
+        background: theme.palette.background.paper,
+        width: '263px',
+        height: '68px',
         margin: '0 auto',
         position: 'relative',
         '&:after': {
@@ -51,37 +45,31 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
           left: '0px',
           width: 'calc(100% + 32px)',
           height: '1px',
-          bgcolor: { xs: 'divider', xsm: 'transparent' },
+          bgcolor: 'transparent',
         },
       })}
     >
       <Box
         sx={{
           display: 'flex',
-          width: { xs: '100%', xsm: 'unset' },
           justifyContent: 'space-between',
           alignItems: 'center',
-          mb: { xs: 3, xsm: 0 },
         }}
       >
-        <TokenIcon symbol={icon} sx={{ fontSize: { xs: '40px', xsm: '32px' } }} />
-        <Typography variant={xsm ? 'subheader1' : 'h4'} ml={2}>
+        <TokenIcon symbol={icon} />
+        <Typography variant={'subheader1'} ml={2}>
           {stakedToken}
         </Typography>
       </Box>
       <Box
         sx={{
-          display: { xs: 'flex', xsm: 'block' },
+          display: 'block',
           width: { xs: '100%', xsm: 'unset' },
           justifyContent: 'space-between',
           alignItems: 'center',
-          mb: { xs: 3, xsm: 0 },
         }}
       >
-        <Typography
-          variant={xsm ? 'subheader2' : 'description'}
-          color={xsm ? 'text.secondary' : 'text.primary'}
-        >
+        <Typography variant={'description'} color={'text.primary'}>
           <Trans>Staking APR</Trans>
         </Typography>
 
