@@ -659,6 +659,12 @@
       "collateral": false,
       "wrapped": false
     },
+    "miMATIC": {
+      "fullName": "miMATIC",
+      "shortName": "miMATIC",
+      "collateral": false,
+      "wrapped": false
+    },
     "WBTC": {
       "fullName": "WBTC Coin",
       "shortName": "WBTC",
@@ -873,6 +879,18 @@
     "aWETH": {
       "fullName": "Wrapped ETH (WETH.e)",
       "shortName": "aWETH.e",
+      "collateral": true,
+      "wrapped": false
+    },
+    "MAI": {
+      "fullName": "MAI",
+      "shortName": "MAI",
+      "collateral": true,
+      "wrapped": false
+    },
+    "FRAX": {
+      "fullName": "FRAX",
+      "shortName": "FRAX",
       "collateral": true,
       "wrapped": false
     }

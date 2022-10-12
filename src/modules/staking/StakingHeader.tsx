@@ -3,10 +3,10 @@ import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 
-import { Link } from '../../components/primitives/Link';
-import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 import EmissionIcon from '../../../public/icons/staking/emission-staking-icon.svg';
 import TrustIcon from '../../../public/icons/staking/trust-staking-icon.svg';
+import { Link } from '../../components/primitives/Link';
+import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 
 interface StakingHeaderProps {
   tvl: string;
@@ -39,10 +39,10 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
 
           <Typography sx={{ color: '#8E92A3', maxWidth: '824px' }}>
             <Trans>
-              AAVE holders can stake their AAVE in the Safety Module to add more security to the
-              protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of
-              your stake can be slashed to cover the deficit, providing an additional layer of
-              protection for the protocol.
+              AAVE holders can stake their AAVE in the Safety Module (Ethereum Network only) to add
+              more security to the protocol and earn Safety Incentives. In the case of a shortfall
+              event, up to 30% of your stake can be slashed to cover the deficit, providing an
+              additional layer of protection for the protocol.
             </Trans>{' '}
             <Link
               href="https://docs.aave.com/faq/migration-and-staking"

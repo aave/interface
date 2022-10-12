@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { JsonRpcProvider } from '@ethersproject/providers';
 import axios from 'axios';
-import { getDefaultProvider, Contract, utils } from 'ethers';
+import { Contract, getDefaultProvider, utils, Wallet } from 'ethers';
+
 import ERC20_ABI from '../../fixtures/erc20_abi.json';
 import POOL_CONFIG_ABI from '../../fixtures/poolConfig.json';
 

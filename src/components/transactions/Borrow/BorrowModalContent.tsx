@@ -7,20 +7,14 @@ import {
 import { ArrowSmRightIcon } from '@heroicons/react/outline';
 import { BadgeCheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import {
-  Alert,
-  Box,
-  Checkbox,
-  Link,
-  SvgIcon,
-  ToggleButton,
-  ToggleButtonGroup,
-  Typography,
-} from '@mui/material';
+import { Box, Checkbox, Typography } from '@mui/material';
 import { useRef, useState } from 'react';
 import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
+import { Warning } from 'src/components/primitives/Warning';
+import StyledToggleButton from 'src/components/StyledToggleButton';
+import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -76,14 +70,14 @@ const BorrowModeSwitch = ({
       align="flex-start"
       captionColor="text.secondary"
     >
-      <ToggleButtonGroup
+      <StyledToggleButtonGroup
         color="primary"
         value={interestRateMode}
         exclusive
         onChange={(_, value) => setInterestRateMode(value)}
         sx={{ width: '100%', mt: 0.5 }}
       >
-        <ToggleButton
+        <StyledToggleButton
           value={InterestRate.Variable}
           disabled={interestRateMode === InterestRate.Variable}
         >
@@ -91,8 +85,8 @@ const BorrowModeSwitch = ({
             <Trans>Variable</Trans>
           </Typography>
           <FormattedNumber value={variableRate} percent variant="secondary14" />
-        </ToggleButton>
-        <ToggleButton
+        </StyledToggleButton>
+        <StyledToggleButton
           value={InterestRate.Stable}
           disabled={interestRateMode === InterestRate.Stable}
         >
@@ -100,8 +94,8 @@ const BorrowModeSwitch = ({
             <Trans>Stable</Trans>
           </Typography>
           <FormattedNumber value={stableRate} percent variant="secondary14" />
-        </ToggleButton>
-      </ToggleButtonGroup>
+        </StyledToggleButton>
+      </StyledToggleButtonGroup>
     </Row>
   );
 };
@@ -227,33 +221,9 @@ export const BorrowModalContent = ({
       : poolReserve.vIncentivesData;
   return (
     <>
-      {symbol === 'GHO' && ( // TODO: Use token when available rather than hardcoded
-        <Alert
-          severity="success"
-          icon={
-            <SvgIcon color="success">
-              <BadgeCheckIcon />
-            </SvgIcon>
-          }
-          sx={{ mb: 6 }}
-        >
-          <Typography variant="subheader1" gutterBottom>
-            <Trans>Get discounted borrow APY — 1.6%</Trans>
-          </Typography>
-          <Typography variant="caption">
-            <Trans>
-              Users who stake their AAVE in Safety Module get discounted borrow rate 1.6% for each
-              100 GHO per 1 staked AAVE.
-            </Trans>
-          </Typography>
-          <Link href="/" sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
-            <Trans>Learn More</Trans>{' '}
-            <SvgIcon fontSize="small">
-              <ArrowSmRightIcon />
-            </SvgIcon>
-          </Link>
-        </Alert>
-      )}
+      {borrowCap.determineWarningDisplay({ borrowCap })}
+      {poolReserve.isIsolated && debtCeiling.determineWarningDisplay({ debtCeiling })}
+
       <AssetInput
         value={amount}
         onChange={handleChange}
@@ -310,11 +280,11 @@ export const BorrowModalContent = ({
 
       {displayRiskCheckbox && (
         <>
-          <Alert severity="error" sx={{ my: '24px' }}>
+          <Warning severity="error" sx={{ my: 6 }}>
             <Trans>
               Borrowing this amount will reduce your health factor and increase risk of liquidation.
             </Trans>
-          </Alert>
+          </Warning>
           <Box
             sx={{
               display: 'flex',
@@ -337,6 +307,14 @@ export const BorrowModalContent = ({
           </Box>
         </>
       )}
+
+      <Warning severity="info" sx={{ my: 6 }}>
+        <Trans>
+          <b>Attention:</b> Parameter changes via governance can alter your account health factor
+          and risk of liquidation. Follow the{' '}
+          <a href="https://governance.aave.com/">Aave governance forum</a> for updates.
+        </Trans>
+      </Warning>
 
       <BorrowActions
         poolReserve={poolReserve}

@@ -44,3 +44,7 @@ runs:
         NEXT_PUBLIC_ENV: '${{ inputs.NEXT_PUBLIC_ENV }}'
         NEXT_PUBLIC_ENABLE_GOVERNANCE: 'true'
         NEXT_PUBLIC_ENABLE_STAKING: 'true'
+        NEXT_PUBLIC_SCREENING_URL: 'https://aave-api-v2.aave.com'
+        NEXT_PUBLIC_TRANSAK_APP_URL: 'https://global.transak.com'
+        NEXT_PUBLIC_TRANSAK_API_URL: 'https://api.transak.com'
+        NEXT_PUBLIC_TRANSAK_API_KEY: '799087ea-c2be-44b8-a0fe-56d96b37ee3c'

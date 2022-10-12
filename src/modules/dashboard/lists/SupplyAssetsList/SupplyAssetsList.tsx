@@ -1,10 +1,14 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import BigNumber from 'bignumber.js';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
+import { Warning } from 'src/components/primitives/Warning';
+import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
+import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
 import {
@@ -18,11 +22,10 @@ import { ListHeader } from '../ListHeader';
 import { ListLoader } from '../ListLoader';
 import { SupplyAssetsListItem } from './SupplyAssetsListItem';
 import { SupplyAssetsListMobileItem } from './SupplyAssetsListMobileItem';
-import { Warning } from 'src/components/primitives/Warning';
-import { HarmonyWarning } from 'src/components/transactions/Warnings/HarmonyWarning';
+import { WalletEmptyInfo } from './WalletEmptyInfo';
 
 export const SupplyAssetsList = () => {
-  const { currentNetworkConfig } = useProtocolDataContext();
+  const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
   const {
     user,
     reserves,
@@ -155,7 +158,11 @@ export const SupplyAssetsList = () => {
   const supplyDisabled = !tokensToSupply.length;
   return (
     <ListWrapper
-      title={<Trans>Assets to supply</Trans>}
+      titleComponent={
+        <Typography component="div" variant="h3" sx={{ mr: 4 }}>
+          <Trans>Assets to supply</Trans>
+        </Typography>
+      }
       localStorageName="supplyAssetsDashboardTableCollapse"
       withTopMargin
       noData={supplyDisabled}
@@ -163,19 +170,9 @@ export const SupplyAssetsList = () => {
         <>
           <Box sx={{ px: 6 }}>
             {supplyDisabled && currentNetworkConfig.name === 'Harmony' ? (
-              <Warning severity="warning">
-                <Trans>
-                  Per the community, supplying in this market is currently disabled.{' '}
-                  <Link
-                    href="https://governance.aave.com/t/harmony-horizon-bridge-exploit-consequences-to-aave-v3-harmony/8614"
-                    target="_blank"
-                  >
-                    Learn More
-                  </Link>
-                </Trans>
-              </Warning>
-            ) : currentNetworkConfig.name === 'Harmony' ? (
-              <HarmonyWarning learnMore={true} />
+              <MarketWarning marketName="Harmony" />
+            ) : supplyDisabled && currentNetworkConfig.name === 'Fantom' ? (
+              <MarketWarning marketName="Fantom" />
             ) : user?.isInIsolationMode ? (
               <Warning severity="warning">
                 <Trans>
@@ -195,15 +192,7 @@ export const SupplyAssetsList = () => {
                   </Link>
                 </Warning>
               ) : (
-                <Warning severity="info">
-                  <Trans>Your {networkName} wallet is empty. Purchase or transfer assets</Trans>{' '}
-                  {bridge && (
-                    <Trans>
-                      or use {<Link href={bridge.url}>{bridge.name}</Link>} to transfer your ETH
-                      assets.
-                    </Trans>
-                  )}
-                </Warning>
+                <WalletEmptyInfo name={networkName} bridge={bridge} chainId={currentChainId} />
               ))
             )}
           </Box>

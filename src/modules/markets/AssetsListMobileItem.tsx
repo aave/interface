@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Button, Divider, Box } from '@mui/material';
+import { Box, Button, Divider } from '@mui/material';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';

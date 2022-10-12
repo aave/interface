@@ -18,7 +18,6 @@ export const ListItemIsolationBadge = ({ children }: ListItemIsolationBadgeProps
       }}
     >
       {children}
-
       <IsolatedBadge />
     </Box>
   );

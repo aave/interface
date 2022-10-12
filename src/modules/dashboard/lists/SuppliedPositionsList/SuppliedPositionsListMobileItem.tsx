@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
 
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
 import { Row } from '../../../../components/primitives/Row';
@@ -25,10 +26,12 @@ export const SuppliedPositionsListMobileItem = ({
   const { symbol, iconSymbol, name, supplyAPY, isIsolated, aIncentivesData, isFrozen, isActive } =
     reserve;
   const { currentMarketData, currentMarket } = useProtocolDataContext();
-  const { openSupply, openWithdraw, openCollateralChange } = useModalContext();
+  const { openSupply, openSwap, openWithdraw, openCollateralChange } = useModalContext();
+  const { debtCeiling } = useAssetCaps();
   const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
 
   const canBeEnabledAsCollateral =
+    !debtCeiling.isMaxed &&
     reserve.usageAsCollateralEnabled &&
     ((!reserve.isIsolated && !user.isInIsolationMode) ||
       user.isolatedReserve?.underlyingAsset === reserve.underlyingAsset ||
@@ -42,6 +45,8 @@ export const SuppliedPositionsListMobileItem = ({
       underlyingAsset={underlyingAsset}
       currentMarket={currentMarket}
       frozen={reserve.isFrozen}
+      showSupplyCapTooltips
+      showDebtCeilingTooltips
     >
       <ListValueRow
         title={<Trans>Supply balance</Trans>}
@@ -93,7 +98,7 @@ export const SuppliedPositionsListMobileItem = ({
           <Button
             disabled={!isActive || isFrozen}
             variant="outlined"
-            onClick={() => console.log('TODO: should be swap modal')}
+            onClick={() => openSwap(underlyingAsset)}
             fullWidth
           >
             <Trans>Swap</Trans>

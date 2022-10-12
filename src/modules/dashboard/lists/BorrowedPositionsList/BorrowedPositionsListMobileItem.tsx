@@ -43,6 +43,7 @@ export const BorrowedPositionsListMobileItem = ({
       underlyingAsset={reserve.underlyingAsset}
       currentMarket={currentMarket}
       frozen={reserve.isFrozen}
+      showBorrowCapTooltips
     >
       <ListValueRow
         title={<Trans>Debt</Trans>}

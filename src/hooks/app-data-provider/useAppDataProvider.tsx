@@ -8,8 +8,9 @@ import {
 } from '@aave/math-utils';
 import BigNumber from 'bignumber.js';
 import React, { useContext } from 'react';
+import { EmodeCategory } from 'src/helpers/types';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { fetchIconSymbolAndName, STABLE_ASSETS } from 'src/ui-config/reservePatches';
 
 import { useCurrentTimestamp } from '../useCurrentTimestamp';
 import { useProtocolDataContext } from '../useProtocolDataContext';
@@ -49,6 +50,7 @@ export type ExtendedFormattedUser = FormatUserSummaryAndIncentivesResponse<Compu
 export interface AppDataContextType {
   loading: boolean;
   reserves: ComputedReserveData[];
+  eModes: Record<number, EmodeCategory>;
   // refreshPoolData?: () => Promise<void[]>;
   isUserHasDeposits: boolean;
   user: ExtendedFormattedUser;
@@ -89,6 +91,21 @@ export const AppDataProvider: React.FC = ({ children }) => {
   });
 
   const reserves: ReserveDataHumanized[] = reservesData?.protocolData.reserves || [];
+  const eModes = reserves?.reduce((acc, r) => {
+    if (!acc[r.eModeCategoryId])
+      acc[r.eModeCategoryId] = {
+        liquidationBonus: r.eModeLiquidationBonus,
+        id: r.eModeCategoryId,
+        label: r.eModeLabel,
+        liquidationThreshold: r.eModeLiquidationThreshold,
+        ltv: r.eModeLtv,
+        priceSource: r.eModePriceSource,
+        assets: [r.symbol],
+      };
+    else acc[r.eModeCategoryId].assets.push(r.symbol);
+    return acc;
+  }, {} as Record<number, EmodeCategory>);
+
   const baseCurrencyData = reservesData?.protocolData.baseCurrencyData || {
     marketReferenceCurrencyDecimals: 0,
     marketReferenceCurrencyPriceInUsd: '0',
@@ -216,6 +233,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
           !reserves.length ||
           (!!currentAccount && userReservesData?.userData.userReserves === undefined),
         reserves: formattedPoolReserves,
+        eModes,
         user: {
           ...user,
           userEmodeCategoryId,
@@ -240,29 +258,9 @@ export const AppDataProvider: React.FC = ({ children }) => {
 
 export const useAppDataContext = () => useContext(AppDataContext);
 
-// tokens flagged stable will be sorted on top when no other sorting is selected
-const stable = [
-  'DAI',
-  'TUSD',
-  'BUSD',
-  'GUSD',
-  'USDC',
-  'USDT',
-  'EUROS',
-  'FEI',
-  'FRAX',
-  'PAX',
-  'USDP',
-  'SUSD',
-  'UST',
-  'EURS',
-  'JEUR',
-  'AGEUR',
-];
-
 const reserveSortFn = (a: { iconSymbol: string }, b: { iconSymbol: string }) => {
-  const aIsStable = stable.includes(a.iconSymbol.toUpperCase());
-  const bIsStable = stable.includes(b.iconSymbol.toUpperCase());
+  const aIsStable = STABLE_ASSETS.includes(a.iconSymbol.toUpperCase());
+  const bIsStable = STABLE_ASSETS.includes(b.iconSymbol.toUpperCase());
   if (aIsStable && !bIsStable) return -1;
   if (!aIsStable && bIsStable) return 1;
   return a.iconSymbol.toUpperCase() > b.iconSymbol.toUpperCase() ? 1 : -1;

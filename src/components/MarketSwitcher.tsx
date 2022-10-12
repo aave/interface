@@ -6,8 +6,6 @@ import {
   MenuItem,
   SvgIcon,
   TextField,
-  ToggleButton,
-  ToggleButtonGroup,
   Tooltip,
   Typography,
   useMediaQuery,
@@ -26,6 +24,8 @@ import {
   networkConfigs,
   STAGING_ENV,
 } from '../utils/marketsAndNetworksConfig';
+import StyledToggleButton from './StyledToggleButton';
+import StyledToggleButtonGroup from './StyledToggleButtonGroup';
 
 export const getMarketInfoById = (marketId: CustomMarket) => {
   const market: MarketDataType = marketsData[marketId as CustomMarket];
@@ -94,6 +94,7 @@ enum SelectedMarketVersion {
   V2,
   V3,
 }
+
 export const MarketSwitcher = () => {
   const { currentMarket, setCurrentMarket } = useProtocolDataContext();
   const [selectedMarketVersion, setSelectedMarketVersion] = useState<SelectedMarketVersion>(
@@ -201,7 +202,7 @@ export const MarketSwitcher = () => {
 
       {isV3MarketsAvailable && (
         <Box sx={{ mx: '18px', display: 'flex', justifyContent: 'center' }}>
-          <ToggleButtonGroup
+          <StyledToggleButtonGroup
             value={selectedMarketVersion}
             exclusive
             onChange={(_, value) => {
@@ -222,7 +223,7 @@ export const MarketSwitcher = () => {
               padding: '2px',
             }}
           >
-            <ToggleButton
+            <StyledToggleButton
               value={SelectedMarketVersion.V3}
               sx={{
                 backgroundColor: theme.palette.mode === 'dark' ? '#EAEBEF' : '#383D51',
@@ -249,8 +250,8 @@ export const MarketSwitcher = () => {
               >
                 <Trans>Version 3</Trans>
               </Typography>
-            </ToggleButton>
-            <ToggleButton
+            </StyledToggleButton>
+            <StyledToggleButton
               value={SelectedMarketVersion.V2}
               sx={{
                 backgroundColor: theme.palette.mode === 'dark' ? '#EAEBEF' : '#383D51',
@@ -277,8 +278,8 @@ export const MarketSwitcher = () => {
               >
                 <Trans>Version 2</Trans>
               </Typography>
-            </ToggleButton>
-          </ToggleButtonGroup>
+            </StyledToggleButton>
+          </StyledToggleButtonGroup>
         </Box>
       )}
       {availableMarkets.map((marketId: CustomMarket) => {

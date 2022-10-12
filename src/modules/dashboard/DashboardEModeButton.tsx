@@ -1,9 +1,11 @@
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/outline';
-import { LightningBoltIcon } from '@heroicons/react/solid';
+import { CogIcon, LightningBoltIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import React, { useState } from 'react';
+import { EmodeModalType } from 'src/components/transactions/Emode/EmodeModalContent';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useModalContext } from 'src/hooks/useModal';
 
 import LightningBoltGradient from '/public/lightningBoltGradient.svg';
 
@@ -14,15 +16,11 @@ import { getEmodeMessage } from '../../components/transactions/Emode/EmodeNaming
 
 interface DashboardEModeButtonProps {
   userEmodeCategoryId: number;
-  onClick: () => void;
-  baseAssetSymbol: string;
 }
 
-export const DashboardEModeButton = ({
-  onClick,
-  userEmodeCategoryId,
-  baseAssetSymbol,
-}: DashboardEModeButtonProps) => {
+export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButtonProps) => {
+  const { openEmode } = useModalContext();
+  const { eModes: _eModes } = useAppDataContext();
   const iconButtonSize = 12;
 
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
@@ -37,8 +35,10 @@ export const DashboardEModeButton = ({
   const isEModeDisabled = userEmodeCategoryId === 0;
 
   const EModeLabelMessage = () => (
-    <Trans>{getEmodeMessage(userEmodeCategoryId, baseAssetSymbol)}</Trans>
+    <Trans>{getEmodeMessage(_eModes[userEmodeCategoryId].label)}</Trans>
   );
+
+  const eModes = Object.keys(_eModes).length;
 
   return (
     <Box
@@ -195,16 +195,47 @@ export const DashboardEModeButton = ({
             </Trans>
           </Typography>
 
-          <Button
-            variant={isEModeDisabled ? 'gradient' : 'outlined'}
-            onClick={() => {
-              onClick();
-              handleClose();
-            }}
-            data-cy={`${isEModeDisabled ? 'emode-enable' : 'emode-disable'}`}
-          >
-            {isEModeDisabled ? <Trans>Enable E-Mode</Trans> : <Trans>Disable E-Mode</Trans>}
-          </Button>
+          {isEModeDisabled ? (
+            <Button
+              fullWidth
+              variant={'gradient'}
+              onClick={() => {
+                openEmode(EmodeModalType.ENABLE);
+                handleClose();
+              }}
+              data-cy={'emode-enable'}
+            >
+              <Trans>Enable E-Mode</Trans>
+            </Button>
+          ) : (
+            <>
+              {eModes > 2 && (
+                <Button
+                  fullWidth
+                  sx={{ mb: '6px' }}
+                  variant={'outlined'}
+                  onClick={() => {
+                    openEmode(EmodeModalType.SWITCH);
+                    handleClose();
+                  }}
+                  data-cy={'emode-switch'}
+                >
+                  <Trans>Switch E-Mode category</Trans>
+                </Button>
+              )}
+              <Button
+                fullWidth
+                variant={'outlined'}
+                onClick={() => {
+                  openEmode(EmodeModalType.DISABLE);
+                  handleClose();
+                }}
+                data-cy={'emode-disable'}
+              >
+                <Trans>Disable E-Mode</Trans>
+              </Button>
+            </>
+          )}
         </Box>
       </Menu>
     </Box>

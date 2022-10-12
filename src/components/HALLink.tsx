@@ -1,15 +1,15 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import {
+  Button,
+  experimental_sx,
+  Link,
   Popper,
+  Stack,
   styled,
   SvgIcon,
   Tooltip,
   Typography,
-  experimental_sx,
-  Button,
-  Link,
-  Stack,
 } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { useMemo } from 'react';

@@ -1,9 +1,10 @@
-import { useState } from 'react';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
+import { useState } from 'react';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
-import { GetAPBTokenModal } from './GetABPTokenModal';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+
+import { GetABPTokenModal } from './GetABPTokenModal';
 
 export const GetABPToken = () => {
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
@@ -34,7 +35,7 @@ export const GetABPToken = () => {
           <Trans>Get ABP Token</Trans>
         </Button>
       </DarkTooltip>
-      <GetAPBTokenModal open={open} close={handleClose} />
+      <GetABPTokenModal open={open} close={handleClose} />
     </>
   );
 };
