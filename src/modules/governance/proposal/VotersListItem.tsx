@@ -28,14 +28,32 @@ export const VotersListItem = ({ voter }: VotersListItemProps): JSX.Element => {
   const displayAvatar = avatar ?? useBlockie ? blockie : ensAvatar;
 
   return (
-    <Box sx={{ my: 3, display: 'flex', alignItems: 'center' }}>
-      <Avatar
-        src={displayAvatar}
-        sx={{ width: 22, height: 22 }}
-        onError={() => setUseBlockie(true)}
-      />
-      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <Typography variant="h4">{displayName}</Typography>
+    <Box sx={{ my: 6, '&:first-child': { mt: 0 }, '&:last-child': { mb: 0 } }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
+          <Avatar
+            src={displayAvatar}
+            sx={{ width: 24, height: 24, mr: 2 }}
+            onError={() => setUseBlockie(true)}
+          />
+          <Typography variant="subheader1" color="primary">
+            {displayName}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <Typography variant="subheader1" color={voter.vote ? 'success.main' : 'error.main'}>
+            {voter.vote ? 'YAE' : 'NAY'}
+          </Typography>
+          <Typography variant="subheader1" color="primary">
+            {voter.votingPower}
+          </Typography>
+        </Box>
       </Box>
     </Box>
   );

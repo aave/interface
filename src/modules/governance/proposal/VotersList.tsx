@@ -1,10 +1,11 @@
-import { Box, CircularProgress, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import fetch from 'isomorphic-unfetch';
 import { Fragment, useEffect, useState } from 'react';
 import { Row } from 'src/components/primitives/Row';
 import { CustomProposalType } from 'src/static-build/proposal';
 
 import { VotersListItem } from './VotersListItem';
+import { VotersListModal } from './VotersListModal';
 
 type VotersListProps = {
   proposal: CustomProposalType;
@@ -27,19 +28,24 @@ export type GovernanceVoter = {
   stkAaveBalance: number; //0
   stkAavePropositionDelegate: string; //"0x8298a996a00835eedcc75763038b731fe617fd0d"
   stkAaveVotingDelegate: string; //"0x8298a996a00835eedcc75763038b731fe617fd0d"
+  vote: 0 | 1; // 0 for nay, 1 for yae
   votingHistory: unknown[]; //(2) [{…}, {…}]
-  votingPower: number; //2.6209877046554566
-  votingWeight: number; //1.6381173154096605e-7
+  votingPower: number; // the amount of voting power the user has - 2.6209877046554566
+  votingWeight: number; // the % that a single user contributes to the total - 1.6381173154096605e-7
   _id: string; //mongodb objectid
 };
 
-type VotersData = { yays: GovernanceVoter[]; nays: GovernanceVoter[] } | undefined;
+type VotersData =
+  | { yaes: GovernanceVoter[]; nays: GovernanceVoter[]; combined: GovernanceVoter[] }
+  | undefined;
 
 export const VotersList = (props: VotersListProps): JSX.Element => {
   const { proposal } = props;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<null | string>(null);
   const [voters, setVoters] = useState<VotersData>();
+  const [votersModalOpen, setVotersModalOpen] = useState(false);
+  const isMobile = false;
 
   const votersUrl = `${process.env.NEXT_PUBLIC_API_BASEURL}/data/proposal-top-voters`;
   const queryParams = `?proposal=${proposal.id}`;
@@ -51,10 +57,15 @@ export const VotersList = (props: VotersListProps): JSX.Element => {
       try {
         const resp = await fetch(votersUrl + queryParams);
         if (resp.ok) {
-          const data = await resp.json();
+          const [yaes, nays] = await resp.json();
+          const yesVoters = yaes.map((v: GovernanceVoter) => ({ ...v, vote: 1 }));
+          const noVoters = nays.map((v: GovernanceVoter) => ({ ...v, vote: 0 }));
           const votersData = {
-            yays: data[0],
-            nays: data[1],
+            yaes: yesVoters,
+            nays: noVoters,
+            combined: yesVoters.concat(noVoters).sort((a: GovernanceVoter, b: GovernanceVoter) => {
+              return a.votingPower < b.votingPower ? 1 : a.votingPower > b.votingPower ? -1 : 0;
+            }),
           };
           setVoters(votersData);
         } else {
@@ -71,11 +82,19 @@ export const VotersList = (props: VotersListProps): JSX.Element => {
 
   console.log({ voters });
 
+  const handleOpenAllVotes = () => {
+    setVotersModalOpen(true);
+  };
+
   return (
-    <Box sx={{ mt: 8, mb: 3 }}>
-      <Row>
-        <Typography>Top 10 addresses</Typography>
-        <Typography>Votes</Typography>
+    <Box sx={{ mt: 8, mb: 12 }}>
+      <Row sx={{ mb: 3 }}>
+        <Typography variant="subheader2" color="text.secondary">
+          Top 10 addresses
+        </Typography>
+        <Typography variant="subheader2" color="text.secondary">
+          Votes
+        </Typography>
       </Row>
       <Box>
         {loading && (
@@ -90,21 +109,33 @@ export const VotersList = (props: VotersListProps): JSX.Element => {
         )}
         {voters && (
           <>
-            <Typography>YAYS</Typography>
-            {voters.yays.map((voter) => (
-              <Fragment key={voter._id}>
-                <VotersListItem voter={voter} />
-              </Fragment>
-            ))}
-            <Typography>NAYS</Typography>
-            {voters.nays.map((voter) => (
-              <Fragment key={voter._id}>
-                <VotersListItem voter={voter} />
-              </Fragment>
-            ))}
+            <Box sx={{ mb: 4, maxHeight: 230, overflow: 'hidden', overflowY: 'scroll' }}>
+              {!isMobile &&
+                voters.combined.slice(0, 10).map((voter) => (
+                  <Fragment key={voter._id}>
+                    <VotersListItem voter={voter} />
+                  </Fragment>
+                ))}
+              {isMobile &&
+                voters.yaes.map((voter) => (
+                  <Fragment key={voter._id}>
+                    <VotersListItem voter={voter} />
+                  </Fragment>
+                ))}
+              {isMobile &&
+                voters.nays.map((voter) => (
+                  <Fragment key={voter._id}>
+                    <VotersListItem voter={voter} />
+                  </Fragment>
+                ))}
+            </Box>
+            <Button variant="outlined" fullWidth onClick={handleOpenAllVotes}>
+              View all votes
+            </Button>
           </>
         )}
       </Box>
+      {votersModalOpen && <VotersListModal />}
     </Box>
   );
 };
