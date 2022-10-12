@@ -81,7 +81,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     baseAssetDecimals: 18,
     explorerLink: 'https://etherscan.io',
     // rpcOnly: false,
-    ratesHistoryApiUrl: 'https://api-v2-feat-v3-rate-history-clean.aaw.fi/data/rates-history',
+    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
     networkLogoPath: '/icons/networks/ethereum.svg',
   },
   [ChainId.polygon]: {
@@ -102,7 +102,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Polygon PoS Bridge',
       url: 'https://wallet.matic.network/bridge/',
     },
-    ratesHistoryApiUrl: 'https://api-v2-feat-v3-rate-history-clean.aaw.fi/data/rates-history',
+    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
   [ChainId.mumbai]: {
     name: 'Mumbai',
@@ -159,7 +159,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Avalanche Bridge',
       url: 'https://bridge.avax.network/',
     },
-    ratesHistoryApiUrl: 'https://api-v2-feat-v3-rate-history-clean.aaw.fi/data/rates-history',
+    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
   [ChainId.arbitrum_goerli]: {
     name: 'Arbitrum Görli',
@@ -198,7 +198,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Arbitrum Bridge',
       url: 'https://bridge.arbitrum.io',
     },
-    ratesHistoryApiUrl: 'https://api-v2-feat-v3-rate-history-clean.aaw.fi/data/rates-history',
+    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
   [ChainId.harmony]: {
     name: 'Harmony',
@@ -219,7 +219,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Harmony Bridge',
       url: 'https://bridge.harmony.one',
     },
-    ratesHistoryApiUrl: 'https://api-v2-feat-v3-rate-history-clean.aaw.fi/data/rates-history',
+    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
   [ChainId.optimism]: {
     name: 'Optimism',
@@ -241,7 +241,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Optimism Bridge',
       url: 'https://app.optimism.io/bridge',
     },
-    ratesHistoryApiUrl: 'https://api-v2-feat-v3-rate-history-clean.aaw.fi/data/rates-history',
+    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
   [ChainId.optimism_goerli]: {
     name: 'Optimism Görli',
@@ -282,7 +282,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Fantom Bridge',
       url: 'https://app.multichain.org/#/router',
     },
-    ratesHistoryApiUrl: 'https://api-v2-feat-v3-rate-history-clean.aaw.fi/data/rates-history',
+    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
   [ChainId.fantom_testnet]: {
     name: 'Fantom Testnet',
