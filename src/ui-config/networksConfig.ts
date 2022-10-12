@@ -300,4 +300,16 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       url: 'https://app.multichain.org/#/router',
     },
   },
+  [ChainId.zkevm_testnet]: {
+    name: 'Polygon zkEVM Testnet',
+    publicJsonRPCUrl: ['https://public.zkevm-test.net:2083'],
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://public.zkevm-test.net:8443',
+    // rpcOnly: true,
+    // usdMarket: true,
+    isTestnet: true,
+    networkLogoPath: '/icons/networks/polygon.svg',
+  },
 } as const;

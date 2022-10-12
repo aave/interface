@@ -69,6 +69,7 @@ export enum CustomMarket {
   proto_mumbai = 'proto_mumbai',
   amm_mainnet = 'amm_mainnet',
   proto_goerli = 'proto_goerli',
+  proto_zkevm_testnet = 'proto_zkevm_testnet',
   // external
   // permissioned_market = 'permissioned_market',
 }
@@ -508,6 +509,24 @@ export const marketsData: {
       WALLET_BALANCE_PROVIDER: '0x3f5A507B33260a3869878B31FB90F04F451d28e3',
       UI_POOL_DATA_PROVIDER: '0xBA6378f1c1D046e9EB0F538560BA7558546edF3C',
       UI_INCENTIVE_DATA_PROVIDER: '0x9842E5B7b7C6cEDfB1952a388e050582Ff95645b',
+    },
+  },
+  [CustomMarket.proto_zkevm_testnet]: {
+    marketTitle: 'Polygon zkEVM Testnet',
+    chainId: ChainId.zkevm_testnet,
+    enabledFeatures: {
+      faucet: true,
+      incentives: true,
+    },
+    rpcOnly: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0xb18d016cDD2d9439A19f15633005A6b2cd6Aa774'.toLowerCase(),
+      LENDING_POOL: '0xFb11d704EF73973f9c8aEB1f0B14205a95bB7D3F',
+      WETH_GATEWAY: '0x086b7D9d45952bEE21bAcAE396Ad9714c24DEfFc',
+      FAUCET: '', // NA
+      WALLET_BALANCE_PROVIDER: '0x17e7097C6Db59B13Da3f894A28946a3ec23502E0',
+      UI_POOL_DATA_PROVIDER: '0x1aDe1619d4448D05812e0F53E7bA6A7D88d3D5C2',
+      UI_INCENTIVE_DATA_PROVIDER: '0xF7844Dc72031Bd9E6aCE18b09509792401D8c9c5',
     },
   },
 } as const;
