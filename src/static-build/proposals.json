@@ -4417,7 +4417,7 @@
       "startBlock": 15696386,
       "endBlock": 15760386,
       "executionTime": 0,
-      "forVotes": "2309492971352078361285347",
+      "forVotes": "2309493255456913818679752",
       "againstVotes": "100403607165941170",
       "executed": false,
       "canceled": false,
@@ -4431,7 +4431,7 @@
       "ipfsHash": "0x4bd95ce6e9a0d76c0dd3154da423f01ee010ea9491bb5ddf5a151e6ef22b674c",
       "startTimestamp": 1665147647,
       "creationTimestamp": 1665147647,
-      "expirationTimestamp": 1665917759
+      "expirationTimestamp": 1665917795
     },
     {
       "id": 107,
@@ -4467,6 +4467,45 @@
       "startTimestamp": 1665147647,
       "creationTimestamp": 1665147647,
       "expirationTimestamp": 1665378047
+    },
+    {
+      "id": 108,
+      "creator": "0x683a4F9915D6216f73d6Df50151725036bD26C02",
+      "executor": "0xEE56e2B3D491590B5b31738cC34d5232F378a8D5",
+      "targets": [
+        "0x311Bb771e4F8952E6Da169b425E7e92d6Ac45756",
+        "0x311Bb771e4F8952E6Da169b425E7e92d6Ac45756"
+      ],
+      "signatures": [
+        "",
+        ""
+      ],
+      "calldatas": [
+        "0x7c4e560b000000000000000000000000ae7ab96520de3a18e5e111b5eaab095312d7fe840000000000000000000000000000000000000000000000000000000000001c20000000000000000000000000000000000000000000000000000000000000206c00000000000000000000000000000000000000000000000000000000000029cc",
+        "0x7c4e560b0000000000000000000000002260fac5e5542a773aa44fbcfedf7c193bc2c5990000000000000000000000000000000000000000000000000000000000001c2000000000000000000000000000000000000000000000000000000000000020080000000000000000000000000000000000000000000000000000000000002904"
+      ],
+      "withDelegatecalls": [
+        false,
+        false
+      ],
+      "startBlock": 15729255,
+      "endBlock": 15748455,
+      "executionTime": 0,
+      "forVotes": "0",
+      "againstVotes": "0",
+      "executed": false,
+      "canceled": false,
+      "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
+      "state": "Active",
+      "minimumQuorum": "200",
+      "minimumDiff": "50",
+      "executionTimeWithGracePeriod": 0,
+      "proposalCreated": 15729255,
+      "totalVotingSupply": "16000000000000000000000000",
+      "ipfsHash": "0x395aff2bbd4c0f988d0aff6de287ddff2c1c5eb847795c9f31618b2261fc34a0",
+      "startTimestamp": 1665544223,
+      "creationTimestamp": 1665544223,
+      "expirationTimestamp": 1665774623
     }
   ]
 }
