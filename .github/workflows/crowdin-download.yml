@@ -20,13 +20,13 @@ jobs:
         with:
           token: ${{ secrets.BOT_TOKEN }}
 
-      - uses: actions/setup-node@2fddd8803e2f5c9604345a0b591c3020ee971a93 # v3.4.1
+      - uses: actions/setup-node@969bd2663942d722d85b6a8626225850c2f7be4b # v3.4.1
         with:
           node-version-file: '.nvmrc'
           cache: 'yarn'
 
       - name: crowdin action
-        uses: crowdin/github-action@6259628693db7fdaec0770d57d414ca0d64cfde8 # v1.4.12
+        uses: crowdin/github-action@97aa99cbebfe99b964e3521e6421c1518146d4b9 # v1.4.12
         with:
           project_id: 502668
           token: ${{ secrets.CROWDIN_TOKEN }}
