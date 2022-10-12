@@ -14,6 +14,12 @@ import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 import { useCurrentTimestamp } from '../useCurrentTimestamp';
 import { useProtocolDataContext } from '../useProtocolDataContext';
+import {
+  selectCurrentBaseCurrencyData,
+  selectCurrentReserves,
+  selectCurrentUserEmodeCategoryId,
+  selectCurrentUserReserves,
+} from '../../store/poolSelectors';
 
 /**
  * removes the marketPrefix from a symbol
@@ -73,10 +79,10 @@ export const AppDataProvider: React.FC = ({ children }) => {
     reserveIncentiveData,
     userIncentiveData,
   ] = useRootStore((state) => [
-    state.computed.currentReserves,
-    state.computed.currentBaseCurrencyData,
-    state.computed.currentUserReserves,
-    state.computed.currentUserEmodeCategoryId,
+    selectCurrentReserves(state),
+    selectCurrentBaseCurrencyData(state),
+    selectCurrentUserReserves(state),
+    selectCurrentUserEmodeCategoryId(state),
     state.reserveIncentiveData,
     state.userIncentiveData,
   ]);
