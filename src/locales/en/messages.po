@@ -22,8 +22,8 @@ msgid "<0>Attention:</0> Parameter changes via governance can alter your account
 msgstr "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
 
 #: src/modules/staking/StakingHeader.tsx
-msgid "AAVE holders can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
-msgstr "AAVE holders can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
+msgid "AAVE holders can stake their AAVE in the Safety Module (Ethereum Network only) to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
+msgstr "AAVE holders can stake their AAVE in the Safety Module (Ethereum Network only) to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
 
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
@@ -73,8 +73,8 @@ msgid "Aave Governance"
 msgstr "Aave Governance"
 
 #: src/modules/governance/GovernanceTopPanel.tsx
-msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance documentation"
-msgstr "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance documentation"
+msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance documentation"
+msgstr "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance documentation"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Aave per month"
@@ -1208,6 +1208,7 @@ msgid "Please connect your wallet to get free testnet assets."
 msgstr "Please connect your wallet to get free testnet assets."
 
 #: src/components/ConnectWalletPaper.tsx
+#: src/components/ConnectWalletPaperStaking.tsx
 msgid "Please connect your wallet to see your supplies, borrowings, and open positions."
 msgstr "Please connect your wallet to see your supplies, borrowings, and open positions."
 
@@ -1220,6 +1221,7 @@ msgid "Please switch to {networkName}."
 msgstr "Please switch to {networkName}."
 
 #: src/components/ConnectWalletPaper.tsx
+#: src/components/ConnectWalletPaperStaking.tsx
 msgid "Please, connect your wallet"
 msgstr "Please, connect your wallet"
 
@@ -1526,6 +1528,7 @@ msgstr "Staking"
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
+#: src/modules/staking/StakingPanelNoWallet.tsx
 msgid "Staking APR"
 msgstr "Staking APR"
 
@@ -2000,6 +2003,10 @@ msgstr "Voting power"
 msgid "Voting results"
 msgstr "Voting results"
 
+#: src/modules/staking/StakingPanel.tsx
+msgid "Wallet Balance"
+msgstr "Wallet Balance"
+
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
@@ -2033,8 +2040,8 @@ msgid "We couldn't find any asset matching your search. Try again with a differe
 msgstr "We couldn't find any asset matching your search. Try again with a different asset name, symbol, or address."
 
 #: pages/staking.staking.tsx
-msgid "We couldn’t detect a wallet. Connect a wallet to stake."
-msgstr "We couldn’t detect a wallet. Connect a wallet to stake."
+msgid "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
+msgstr "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
 
 #: pages/404.page.tsx
 msgid "We suggest you go back to the Dashboard."

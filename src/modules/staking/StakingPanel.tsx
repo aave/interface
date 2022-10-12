@@ -98,8 +98,6 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   // Others
   const availableToStake = formatEther(
     BigNumber.from(stakeUserData?.underlyingTokenUserBalance || '0')
-      .mul(stakeData?.stakeTokenPriceEth || '0')
-      .div(ethUsdPrice || '1')
   );
 
   const stakedUSD = formatEther(
@@ -169,7 +167,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             width: { xs: '100%', xsm: 'unset' },
             justifyContent: 'space-between',
             alignItems: 'center',
-            mb: { xs: 4, xsm: 0 },
+            mb: { xs: 3, xsm: 0 },
           }}
         >
           <TokenIcon symbol={icon} sx={{ fontSize: { xs: '40px', xsm: '32px' } }} />
@@ -189,7 +187,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             width: { xs: '100%', xsm: 'unset' },
             justifyContent: 'space-between',
             alignItems: 'center',
-            mb: { xs: 4, xsm: 0 },
+            mb: { xs: 3, xsm: 0 },
           }}
         >
           <Typography
@@ -204,14 +202,13 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             variant="secondary14"
           />
         </Box>
-
         <Box
           sx={{
             display: { xs: 'flex', xsm: 'block' },
             width: { xs: '100%', xsm: 'unset' },
             justifyContent: 'space-between',
             alignItems: 'center',
-            mb: { xs: 4, xsm: 0 },
+            mb: { xs: 3, xsm: 0 },
           }}
         >
           <Typography
@@ -221,6 +218,23 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             <Trans>Max slashing</Trans>
           </Typography>
           <FormattedNumber value={maxSlash} percent variant="secondary14" />
+        </Box>
+        <Box
+          sx={{
+            display: { xs: 'flex', xsm: 'block' },
+            width: { xs: '100%', xsm: 'unset' },
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            mb: { xs: 3, xsm: 0 },
+          }}
+        >
+          <Typography
+            variant={xsm ? 'subheader2' : 'description'}
+            color={xsm ? 'text.secondary' : 'text.primary'}
+          >
+            <Trans>Wallet Balance</Trans>
+          </Typography>
+          <FormattedNumber value={availableToStake.toString()} />
         </Box>
 
         {/**Stake action */}
