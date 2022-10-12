@@ -57,7 +57,7 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
         }}
       >
         <TokenIcon symbol={icon} />
-        <Typography variant={'subheader1'} ml={2}>
+        <Typography variant="subheader1" color="text.primary" ml={2}>
           {stakedToken}
         </Typography>
       </Box>
@@ -69,7 +69,7 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
           alignItems: 'center',
         }}
       >
-        <Typography variant={'description'} color={'text.primary'}>
+        <Typography variant="subheader2" color="text.secondary">
           <Trans>Staking APR</Trans>
         </Typography>
 
@@ -77,6 +77,7 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
           value={parseFloat(stakingAPY || '0') / 10000}
           percent
           variant="secondary14"
+          color="text.primary"
         />
       </Box>
     </Box>
