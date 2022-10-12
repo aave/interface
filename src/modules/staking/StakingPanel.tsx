@@ -1,4 +1,4 @@
-import { normalize, valueToBigNumber } from '@aave/math-utils';
+import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Paper, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { BigNumber } from 'ethers';
