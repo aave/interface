@@ -19,7 +19,7 @@ jobs:
       pr_number: '${{ steps.get_pr_number.outputs.pr_number }}'
     steps:
       - name: Download PR info
-        uses: dawidd6/action-download-artifact@ea71f332a90fd52416b1629b933dcf7e0ccd421d # v2.22.0
+        uses: dawidd6/action-download-artifact@7847792dd435a50521b8e3bd3576dae7459d1fa8 # v2.22.0
         with:
           workflow: build-fork.yml
           run_id: '${{ github.event.workflow_run.id }}'
@@ -34,7 +34,7 @@ jobs:
           echo "::set-output name=pr_number::$(cat NUM | tr -dc '[:digit:]')"
 
       - name: Link this CI run to PR
-        uses: actions/github-script@d50f485531ba88479582bc2da03ff424389af5c1 # v6.1.1
+        uses: actions/github-script@100527700e8b29ca817ac0e0dfbfc5e8ff38edda # v6.1.1
         with:
           script: |
             await github.rest.issues.createComment({
@@ -115,7 +115,7 @@ jobs:
           persist-credentials: false
 
       - name: Download static build
-        uses: dawidd6/action-download-artifact@ea71f332a90fd52416b1629b933dcf7e0ccd421d # v2.22.0
+        uses: dawidd6/action-download-artifact@7847792dd435a50521b8e3bd3576dae7459d1fa8 # v2.22.0
         with:
           workflow: build-fork.yml
           run_id: ${{ github.event.workflow_run.id }}
@@ -134,7 +134,7 @@ jobs:
           CID_VERSION: 1
 
       - name: 'Comment on PR'
-        uses: actions/github-script@d50f485531ba88479582bc2da03ff424389af5c1 # v6.1.1
+        uses: actions/github-script@100527700e8b29ca817ac0e0dfbfc5e8ff38edda # v6.1.1
         with:
           script: |
             await github.rest.issues.createComment({

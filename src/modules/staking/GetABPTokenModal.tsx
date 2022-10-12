@@ -4,12 +4,12 @@ import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import { BasicModal } from 'src/components/primitives/BasicModal';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 
-type GetAPBTokenModalProps = {
+type GetABPTokenModalProps = {
   open: boolean;
   close: () => void;
 };
 
-export const GetAPBTokenModal = ({ open, close }: GetAPBTokenModalProps) => (
+export const GetABPTokenModal = ({ open, close }: GetABPTokenModalProps) => (
   <BasicModal open={open} setOpen={close}>
     <Typography variant="h2">
       <Trans>Get ABP Token</Trans>

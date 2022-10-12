@@ -26,8 +26,8 @@ msgid "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
 msgstr "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
 
 #: src/modules/staking/StakingHeader.tsx
-msgid "AAVE holders can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
-msgstr "AAVE holders can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
+msgid "AAVE holders can stake their AAVE in the Safety Module (Ethereum Network only) to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
+msgstr "AAVE holders can stake their AAVE in the Safety Module (Ethereum Network only) to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
 
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
@@ -77,8 +77,8 @@ msgid "Aave Governance"
 msgstr "Aave Governance"
 
 #: src/modules/governance/GovernanceTopPanel.tsx
-msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance documentation"
-msgstr "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance documentation"
+msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance documentation"
+msgstr "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance documentation"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Aave per month"
@@ -377,6 +377,18 @@ msgstr "Borrowing this amount will reduce your health factor and increase risk o
 msgid "Borrowing {symbol}"
 msgstr "Borrowing {symbol}"
 
+#: src/ui-config/menu-items/index.tsx
+msgid "Buy Crypto With Fiat"
+msgstr "Buy Crypto With Fiat"
+
+#: src/modules/staking/BuyWithFiatModal.tsx
+msgid "Buy Crypto with Fiat"
+msgstr "Buy Crypto with Fiat"
+
+#: src/modules/staking/BuyWithFiat.tsx
+msgid "Buy {cryptoSymbol} with Fiat"
+msgstr "Buy {cryptoSymbol} with Fiat"
+
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
 msgid "CLAIM {symbol}"
 msgstr "CLAIM {symbol}"
@@ -407,6 +419,10 @@ msgstr "Cannot disable E-Mode"
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Cap reached. Lower supply amount"
 msgstr "Cap reached. Lower supply amount"
+
+#: src/modules/staking/BuyWithFiatModal.tsx
+msgid "Choose one of the on-ramp services"
+msgstr "Choose one of the on-ramp services"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Claim"
@@ -944,6 +960,7 @@ msgstr "Language"
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Learn more"
 msgstr "Learn more"
 
@@ -1199,6 +1216,7 @@ msgid "Please connect your wallet to get free testnet assets."
 msgstr "Please connect your wallet to get free testnet assets."
 
 #: src/components/ConnectWalletPaper.tsx
+#: src/components/ConnectWalletPaperStaking.tsx
 msgid "Please connect your wallet to see your supplies, borrowings, and open positions."
 msgstr "Please connect your wallet to see your supplies, borrowings, and open positions."
 
@@ -1211,6 +1229,7 @@ msgid "Please switch to {networkName}."
 msgstr "Please switch to {networkName}."
 
 #: src/components/ConnectWalletPaper.tsx
+#: src/components/ConnectWalletPaperStaking.tsx
 msgid "Please, connect your wallet"
 msgstr "Please, connect your wallet"
 
@@ -1532,8 +1551,13 @@ msgstr "Staking"
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
+#: src/modules/staking/StakingPanelNoWallet.tsx
 msgid "Staking APR"
 msgstr "Staking APR"
+
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Staking Rewards"
+msgstr "Staking Rewards"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Started"
@@ -2014,6 +2038,10 @@ msgstr "Voting power"
 msgid "Voting results"
 msgstr "Voting results"
 
+#: src/modules/staking/StakingPanel.tsx
+msgid "Wallet Balance"
+msgstr "Wallet Balance"
+
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
@@ -2047,8 +2075,8 @@ msgid "We couldn't find any asset matching your search. Try again with a differe
 msgstr "We couldn't find any asset matching your search. Try again with a different asset name, symbol, or address."
 
 #: pages/staking.staking.tsx
-msgid "We couldn’t detect a wallet. Connect a wallet to stake."
-msgstr "We couldn’t detect a wallet. Connect a wallet to stake."
+msgid "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
+msgstr "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
 
 #: pages/404.page.tsx
 msgid "We suggest you go back to the Dashboard."
@@ -2282,6 +2310,10 @@ msgstr "please check that the amount you want to supply is not currently being u
 msgid "repaid"
 msgstr "repaid"
 
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "stETH supplied as collateral will continue to accrue staking rewards provided by daily rebases."
+msgstr "stETH supplied as collateral will continue to accrue staking rewards provided by daily rebases."
+
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "staking view"
 msgstr "staking view"
@@ -2319,6 +2351,14 @@ msgstr "{0} Balance"
 #: src/modules/faucet/FaucetTopPanel.tsx
 msgid "{0} Faucet"
 msgstr "{0} Faucet"
+
+#: src/modules/staking/BuyWithFiatModal.tsx
+msgid "{0} on-ramp service is provided by External Provider and by selecting you agree to Terms of the Provider. Your access to the service might be reliant on the External Provider being operational."
+msgstr "{0} on-ramp service is provided by External Provider and by selecting you agree to Terms of the Provider. Your access to the service might be reliant on the External Provider being operational."
+
+#: src/modules/staking/BuyWithFiatModal.tsx
+msgid "{0}{name}"
+msgstr "{0}{name}"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{d}d"
