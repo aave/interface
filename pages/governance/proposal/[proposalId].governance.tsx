@@ -153,7 +153,7 @@ export default function ProposalPage({
       };
 
   const proposalHasExpired: boolean = proposal
-    ? dayjs() < dayjs.unix(proposal.expirationTimestamp)
+    ? dayjs() > dayjs.unix(proposal.expirationTimestamp)
     : false;
 
   return (
@@ -449,7 +449,7 @@ export default function ProposalPage({
                       </Typography>
                     </Box>
                   </Row>
-                  {!proposalHasExpired && (
+                  {proposalHasExpired && (
                     <Row
                       caption={
                         <>
@@ -470,7 +470,7 @@ export default function ProposalPage({
                       </Box>
                     </Row>
                   )}
-                  {proposalHasExpired ? (
+                  {!proposalHasExpired ? (
                     <Row
                       caption={
                         <>
