@@ -90,6 +90,9 @@ const CenterAlignedImage = styled('img')({
   maxWidth: '100%',
 });
 
+const formatTime = (timestamp: number): string =>
+  dayjs.unix(timestamp).format('D MMM YYYY, HH:mm UTC Z');
+
 const StyledLink = styled('a')({
   color: 'inherit',
 });
@@ -105,7 +108,6 @@ export default function ProposalPage({
   const [loading, setLoading] = useState(!proposal || !isProposalStateImmutable(proposal));
   const { breakpoints } = useTheme();
   const xsmUp = useMediaQuery(breakpoints.up('xsm'));
-
   const mightBeStale = !proposal || !isProposalStateImmutable(proposal);
 
   async function updateProposal() {
@@ -150,6 +152,10 @@ export default function ProposalPage({
         requiredDiff: 0,
         diff: 0,
       };
+
+  const proposalHasExpired: boolean = proposal
+    ? dayjs() > dayjs.unix(proposal.expirationTimestamp)
+    : false;
 
   return (
     <>
@@ -420,9 +426,7 @@ export default function ProposalPage({
                     captionVariant="description"
                   >
                     <Box sx={{ textAlign: 'right' }}>
-                      <Typography>
-                        ~ {dayjs.unix(proposal.creationTimestamp).format('DD MMM YYYY, hh:mm a')}
-                      </Typography>
+                      <Typography>{formatTime(proposal.creationTimestamp)}</Typography>
                       <Typography variant="caption" color="text.muted">
                         {proposal.proposalCreated}
                       </Typography>
@@ -441,23 +445,60 @@ export default function ProposalPage({
                     captionVariant="description"
                   >
                     <Box sx={{ textAlign: 'right' }}>
-                      <Typography>
-                        ~ {dayjs.unix(proposal.startTimestamp).format('DD MMM YYYY, hh:mm a')}
-                      </Typography>
+                      <Typography>{formatTime(proposal.startTimestamp)}</Typography>
                       <Typography variant="caption" color="text.muted">
                         {proposal.startBlock}
                       </Typography>
                     </Box>
                   </Row>
+                  {proposalHasExpired ? (
+                    <Row
+                      caption={
+                        <>
+                          <Trans>Ended</Trans>
+                          <Typography variant="caption" color="text.muted">
+                            Block
+                          </Typography>
+                        </>
+                      }
+                      sx={{ height: 48 }}
+                      captionVariant="description"
+                    >
+                      <Box sx={{ textAlign: 'right' }}>
+                        <Typography>{formatTime(proposal.expirationTimestamp)}</Typography>
+                        <Typography variant="caption" color="text.muted">
+                          {proposal.endBlock}
+                        </Typography>
+                      </Box>
+                    </Row>
+                  ) : (
+                    <Row
+                      caption={
+                        <>
+                          <Trans>Ends</Trans>
+                          <Typography variant="caption" color="text.muted">
+                            Block
+                          </Typography>
+                        </>
+                      }
+                      sx={{ height: 48 }}
+                      captionVariant="description"
+                    >
+                      <Box sx={{ textAlign: 'right' }}>
+                        <Typography>{formatTime(proposal.expirationTimestamp)}</Typography>
+                        <Typography variant="caption" color="text.muted">
+                          {proposal.endBlock}
+                        </Typography>
+                      </Box>
+                    </Row>
+                  )}
                   {proposal.executed && (
                     <Row
                       caption={<Trans>Executed</Trans>}
                       sx={{ height: 48 }}
                       captionVariant="description"
                     >
-                      <Typography>
-                        {dayjs.unix(proposal.executionTime).format('DD MMM YYYY, hh:mm a')}
-                      </Typography>
+                      <Typography>{formatTime(proposal.executionTime)}</Typography>
                     </Row>
                   )}
                   {ipfs?.author && (
