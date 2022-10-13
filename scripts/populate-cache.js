@@ -35756,6 +35756,7 @@ var require_types2 = __commonJS({
       ChainId7[(ChainId7['optimism_goerli'] = 420)] = 'optimism_goerli';
       ChainId7[(ChainId7['harmony'] = 16666e5)] = 'harmony';
       ChainId7[(ChainId7['harmony_testnet'] = 16667e5)] = 'harmony_testnet';
+      ChainId7[(ChainId7['zkevm_testnet'] = 1402)] = 'zkevm_testnet';
     })((ChainId6 = exports2.ChainId || (exports2.ChainId = {})));
     var eEthereumTxType;
     (function (eEthereumTxType2) {
@@ -64822,6 +64823,7 @@ var require_cjs = __commonJS({
     (0, tslib_1.__exportStar)(require_governance_power_delegation_contract(), exports2);
     (0, tslib_1.__exportStar)(require_v3_pool_contract(), exports2);
     (0, tslib_1.__exportStar)(require_synthetix_contract(), exports2);
+    (0, tslib_1.__exportStar)(require_baseDebtToken_contract(), exports2);
     (0, tslib_1.__exportStar)(require_types2(), exports2);
     (0, tslib_1.__exportStar)(require_ipfs(), exports2);
     (0, tslib_1.__exportStar)(require_utils6(), exports2);
@@ -75781,6 +75783,7 @@ var networkConfigs = {
       name: 'Arbitrum Bridge',
       url: 'https://bridge.arbitrum.io',
     },
+    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
   [import_contract_helpers3.ChainId.harmony]: {
     name: 'Harmony',
@@ -75798,6 +75801,7 @@ var networkConfigs = {
       name: 'Harmony Bridge',
       url: 'https://bridge.harmony.one',
     },
+    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
   [import_contract_helpers3.ChainId.optimism]: {
     name: 'Optimism',
@@ -75816,6 +75820,7 @@ var networkConfigs = {
       name: 'Optimism Bridge',
       url: 'https://app.optimism.io/bridge',
     },
+    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
   [import_contract_helpers3.ChainId.optimism_goerli]: {
     name: 'Optimism G\xF6rli',
@@ -75844,6 +75849,7 @@ var networkConfigs = {
       name: 'Fantom Bridge',
       url: 'https://app.multichain.org/#/router',
     },
+    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
   [import_contract_helpers3.ChainId.fantom_testnet]: {
     name: 'Fantom Testnet',
