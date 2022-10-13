@@ -232,16 +232,17 @@ class RotationProvider extends ethersProviders.BaseProvider {
   private async rotateUrl(prevIndex: number) {
     // don't rotate when another rotation was already triggered
     if (prevIndex !== this.currentProviderIndex) return;
-    // if we have rotated through all rpcs
-    if (this.currentProviderIndex === this.providers.length - 1) {
+    // if we rotate away from the first url, switch back after FALL_FORWARD_DELAY
+    if (this.currentProviderIndex === 0) {
+      this.currentProviderIndex += 1;
+      this.firstRotationTimestamp = new Date().getTime();
+      this.fallForwardRotation();
+    } else if (this.currentProviderIndex === this.providers.length - 1) {
       await this.delayRotation(); // wait for ROTATION_DELAY after completing a full rotation
       this.currentProviderIndex = 0;
       this.lastFullRotationTimestamp = new Date().getTime();
     } else {
       this.currentProviderIndex += 1;
-      // switch back to first rpc after FALL_FORWARD_DELAY
-      this.firstRotationTimestamp = new Date().getTime();
-      await this.fallForwardRotation();
     }
   }
 
