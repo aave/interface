@@ -48,7 +48,6 @@ export const SupplyAssetsList = () => {
     .map((reserve: ComputedReserveData) => {
       const walletBalance = walletBalances[reserve.underlyingAsset]?.amount;
       const walletBalanceUSD = walletBalances[reserve.underlyingAsset]?.amountUSD;
-
       let availableToDeposit = valueToBigNumber(walletBalance);
       if (reserve.supplyCap !== '0') {
         availableToDeposit = BigNumber.min(
@@ -92,6 +91,7 @@ export const SupplyAssetsList = () => {
         return [
           {
             ...reserve,
+            reserve,
             underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
             ...fetchIconSymbolAndName({
               symbol: baseAssetSymbol,
@@ -107,6 +107,7 @@ export const SupplyAssetsList = () => {
           },
           {
             ...reserve,
+            reserve,
             walletBalance,
             walletBalanceUSD,
             availableToDeposit:
@@ -121,6 +122,7 @@ export const SupplyAssetsList = () => {
 
       return {
         ...reserve,
+        reserve,
         walletBalance,
         walletBalanceUSD,
         availableToDeposit:
@@ -210,13 +212,17 @@ export const SupplyAssetsList = () => {
     >
       <>
         {!downToXSM && !!supplyReserves && !supplyDisabled && <ListHeader head={head} />}
-        {supplyReserves.map((item) =>
-          downToXSM ? (
-            <SupplyAssetsListMobileItem {...item} key={item.id} />
-          ) : (
-            <SupplyAssetsListItem {...item} key={item.id} />
-          )
-        )}
+        {supplyReserves.map((item) => (
+          <Fragment key={item.underlyingAsset}>
+            <AssetCapsProvider asset={item.reserve}>
+              {downToXSM ? (
+                <SupplyAssetsListMobileItem {...item} key={item.id} />
+              ) : (
+                <SupplyAssetsListItem {...item} key={item.id} />
+              )}
+            </AssetCapsProvider>
+          </Fragment>
+        ))}
       </>
     </ListWrapper>
   );

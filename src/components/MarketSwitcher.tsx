@@ -225,6 +225,7 @@ export const MarketSwitcher = () => {
           >
             <StyledToggleButton
               value={SelectedMarketVersion.V3}
+              data-cy={`markets_switch_button_v3`}
               sx={{
                 backgroundColor: theme.palette.mode === 'dark' ? '#EAEBEF' : '#383D51',
                 '&.Mui-selected, &.Mui-selected:hover': {
@@ -253,6 +254,7 @@ export const MarketSwitcher = () => {
             </StyledToggleButton>
             <StyledToggleButton
               value={SelectedMarketVersion.V2}
+              data-cy={`markets_switch_button_v2`}
               sx={{
                 backgroundColor: theme.palette.mode === 'dark' ? '#EAEBEF' : '#383D51',
                 '&.Mui-selected, &.Mui-selected:hover': {

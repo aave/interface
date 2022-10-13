@@ -67,22 +67,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     isTestnet: true,
     networkLogoPath: '/icons/networks/ethereum.svg',
   },
-  [ChainId.ropsten]: {
-    name: 'Ethereum Ropsten',
-    // Public RPC found at https://rpc.info/
-    publicJsonRPCUrl: ['https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'],
-    publicJsonRPCWSUrl: '',
-    // protocolDataUrl: '',
-    baseUniswapAdapter: '0x0',
-    baseAssetSymbol: 'ETH',
-    wrappedBaseAssetSymbol: 'WETH',
-    baseAssetDecimals: 18,
-    explorerLink: 'https://ropsten.etherscan.io',
-    // rpcOnly: true,
-    // usdMarket: true,
-    isTestnet: true,
-    networkLogoPath: '/icons/networks/ethereum.svg',
-  },
   [ChainId.mainnet]: {
     name: 'Ethereum',
     privateJsonRPCUrl: 'https://eth-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
@@ -214,6 +198,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Arbitrum Bridge',
       url: 'https://bridge.arbitrum.io',
     },
+    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
   [ChainId.harmony]: {
     name: 'Harmony',
@@ -234,13 +219,14 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Harmony Bridge',
       url: 'https://bridge.harmony.one',
     },
+    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
   [ChainId.optimism]: {
     name: 'Optimism',
     privateJsonRPCUrl:
       'https://optimism-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
-    publicJsonRPCUrl: ['https://mainnet.optimism.io'],
-    publicJsonRPCWSUrl: 'wss://ws-mainnet.optimism.io',
+    publicJsonRPCUrl: ['https://optimism-mainnet.public.blastapi.io'],
+    publicJsonRPCWSUrl: 'wss://optimism-mainnet.public.blastapi.io',
     // protocolDataUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH', // OETH
@@ -255,6 +241,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Optimism Bridge',
       url: 'https://app.optimism.io/bridge',
     },
+    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
   [ChainId.optimism_goerli]: {
     name: 'Optimism Görli',
@@ -295,6 +282,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Fantom Bridge',
       url: 'https://app.multichain.org/#/router',
     },
+    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
   [ChainId.fantom_testnet]: {
     name: 'Fantom Testnet',

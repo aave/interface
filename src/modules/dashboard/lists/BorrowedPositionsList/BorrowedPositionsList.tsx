@@ -26,7 +26,6 @@ import { BorrowedPositionsListMobileItem } from './BorrowedPositionsListMobileIt
 export const BorrowedPositionsList = () => {
   const { user, loading } = useAppDataContext();
   const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
-  const { openEmode } = useModalContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
@@ -120,19 +119,20 @@ export const BorrowedPositionsList = () => {
       {borrowPositions.length ? (
         <>
           {!downToXSM && <ListHeader head={head} />}
-          {borrowPositions.map((item) =>
-            downToXSM ? (
-              <BorrowedPositionsListMobileItem
-                {...item}
-                key={item.underlyingAsset + item.borrowRateMode}
-              />
-            ) : (
-              <BorrowedPositionsListItem
-                {...item}
-                key={item.underlyingAsset + item.borrowRateMode}
-              />
-            )
-          )}
+          {borrowPositions.map((item) => (
+            <Fragment key={item.underlyingAsset + item.borrowRateMode}>
+              <AssetCapsProvider asset={item.reserve}>
+                {downToXSM ? (
+                  <BorrowedPositionsListMobileItem {...item} />
+                ) : (
+                  <BorrowedPositionsListItem
+                    {...item}
+                    key={item.underlyingAsset + item.borrowRateMode}
+                  />
+                )}
+              </AssetCapsProvider>
+            </Fragment>
+          ))}
         </>
       ) : (
         <DashboardContentNoData text={<Trans>Nothing borrowed yet</Trans>} />

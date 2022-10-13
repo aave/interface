@@ -47,7 +47,7 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
         e.stopPropagation();
       }}
     >
-      <Typography mr={1} color="text.secondary">
+      <Typography mr={1} variant="description" color="text.secondary">
         <Trans>E-Mode</Trans>
       </Typography>
 
@@ -62,7 +62,6 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
         sx={(theme) => ({
           ml: 1,
           borderRadius: '4px',
-          color: open ? 'text.secondary' : 'text.muted',
           p: 0,
           '&:after': {
             content: "''",
@@ -77,20 +76,24 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
         })}
       >
         <Box
-          sx={{
+          sx={(theme) => ({
             display: 'inline-flex',
             alignItems: 'center',
             position: 'relative',
             zIndex: 1,
-            bgcolor: 'background.paper',
-            px: 1.5,
+            bgcolor: isEModeDisabled
+              ? open
+                ? theme.palette.background.disabled
+                : theme.palette.background.surface
+              : theme.palette.background.paper,
+            px: '4px',
             borderRadius: '4px',
-          }}
+          })}
         >
           <SvgIcon
             sx={{
               fontSize: iconButtonSize,
-              mr: 1,
+              mr: '4px',
               color: isEModeDisabled ? 'text.muted' : 'text.primary',
             }}
           >
@@ -98,7 +101,9 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
           </SvgIcon>
 
           {isEModeDisabled ? (
-            <EModeLabelMessage />
+            <Typography variant="buttonS" color="text.secondary">
+              <EModeLabelMessage />
+            </Typography>
           ) : (
             <TypographyGradient variant="buttonS">
               <EModeLabelMessage />
@@ -108,11 +113,11 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
           <SvgIcon
             sx={{
               fontSize: iconButtonSize,
-              ml: 1,
-              color: open ? 'primary.main' : 'text.muted',
+              ml: '4px',
+              color: 'primary.light',
             }}
           >
-            {open ? <ChevronUpIcon /> : <ChevronDownIcon />}
+            <CogIcon />
           </SvgIcon>
         </Box>
       </Button>

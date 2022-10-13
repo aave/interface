@@ -10,7 +10,7 @@ import { getEmodeMessage } from './EmodeNaming';
 
 export type EmodeSelectProps = {
   emodeCategories: Record<number, EmodeCategory>;
-  selectedEmode: number;
+  selectedEmode: number | undefined;
   setSelectedEmode: React.Dispatch<React.SetStateAction<EmodeCategory | undefined>>;
   userEmode: number;
 };
@@ -28,8 +28,11 @@ export const EmodeSelect = ({
       </FormLabel>
 
       <Select
+        defaultValue={0}
         value={selectedEmode}
-        onChange={(e) => setSelectedEmode(emodeCategories[Number(e.target.value)])}
+        onChange={(e) => {
+          setSelectedEmode(emodeCategories[Number(e.target.value)]);
+        }}
         className="EmodeSelect"
         data-cy="EmodeSelect"
         sx={{
@@ -55,7 +58,7 @@ export const EmodeSelect = ({
         }}
         native={false}
         renderValue={(emode) => {
-          if (emode === 0) {
+          if (emode !== 0) {
             return (
               <Typography color="text.primary">
                 {getEmodeMessage(emodeCategories[emode].label)}
@@ -68,12 +71,6 @@ export const EmodeSelect = ({
               </Typography>
             );
           }
-
-          return (
-            <Typography color="text.primary">
-              {getEmodeMessage(emodeCategories[selectedEmode].id, baseAssetSymbol)}
-            </Typography>
-          );
         }}
       >
         {Object.keys(emodeCategories).map((categoryKey) => {

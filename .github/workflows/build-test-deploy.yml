@@ -18,7 +18,7 @@ jobs:
       (github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name &&
       !contains(github.head_ref, 'dependabot'))
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
         with:
           persist-credentials: false
 
@@ -37,7 +37,7 @@ jobs:
     if: |
       github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
         with:
           persist-credentials: false
 
@@ -66,7 +66,7 @@ jobs:
           - polygon
           - avalanche
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: Run tests
         uses: ./.github/actions/cypress
@@ -88,7 +88,7 @@ jobs:
           - avalanche
           - optimism
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: Run tests
         uses: ./.github/actions/cypress
@@ -102,7 +102,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: download build
         uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
@@ -125,7 +125,7 @@ jobs:
     outputs:
       pinata_hash: '${{ steps.pinata.outputs.hash }}'
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: download build
         uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
@@ -159,7 +159,7 @@ jobs:
           - polygon
           - avalanche
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: Run tests
         uses: ./.github/actions/cypress
@@ -184,7 +184,7 @@ jobs:
           - avalanche
           - optimism
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: Run tests
         uses: ./.github/actions/cypress
@@ -209,7 +209,7 @@ jobs:
           - polygon
           - avalanche
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: Run tests
         uses: ./.github/actions/cypress
@@ -234,7 +234,7 @@ jobs:
           - avalanche
           - optimism
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: Run tests
         uses: ./.github/actions/cypress
@@ -257,7 +257,7 @@ jobs:
         scoupe:
           - settings
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: Run tests
         uses: ./.github/actions/cypress

@@ -36,9 +36,9 @@ export const BorrowAssetsList = () => {
 
   const { baseAssetSymbol } = currentNetworkConfig;
 
-  const tokensToBorrow: BorrowAssetsItem[] = reserves
+  const tokensToBorrow = reserves
     .filter((reserve) => assetCanBeBorrowedByUser(reserve, user))
-    .map<BorrowAssetsItem>((reserve) => {
+    .map((reserve: ComputedReserveData) => {
       const availableBorrows = user
         ? getMaxAmountAvailableToBorrow(reserve, user, InterestRate.Variable).toNumber()
         : 0;
@@ -51,6 +51,7 @@ export const BorrowAssetsList = () => {
 
       return {
         ...reserve,
+        reserve,
         totalBorrows: reserve.totalDebt,
         availableBorrows,
         availableBorrowsInUSD,
@@ -168,13 +169,17 @@ export const BorrowAssetsList = () => {
     >
       <>
         {!downToXSM && !!borrowReserves.length && <ListHeader head={head} />}
-        {borrowReserves.map((item, index) =>
-          downToXSM ? (
-            <BorrowAssetsListMobileItem {...item} key={index} />
-          ) : (
-            <BorrowAssetsListItem {...item} key={index} />
-          )
-        )}
+        {borrowReserves.map((item) => (
+          <Fragment key={item.underlyingAsset}>
+            <AssetCapsProvider asset={item.reserve}>
+              {downToXSM ? (
+                <BorrowAssetsListMobileItem {...item} />
+              ) : (
+                <BorrowAssetsListItem {...item} />
+              )}
+            </AssetCapsProvider>
+          </Fragment>
+        ))}
       </>
     </ListWrapper>
   );

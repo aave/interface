@@ -1,24 +1,36 @@
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Button, SvgIcon, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 import { DarkTooltip } from './infoTooltips/DarkTooltip';
-import { ROUTES } from './primitives/Link';
+import { Link, ROUTES } from './primitives/Link';
 
 export const FaucetButton = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
-  const router = useRouter();
 
   return (
     <DarkTooltip title="Get free assets to test the Aave Protocol">
-      <Button variant="outlined" size="small" onClick={() => router.push(ROUTES.faucet)}>
-        <Typography sx={{ display: 'inline-flex', alignItems: 'center' }} variant="buttonS">
-          <Trans>{currentNetworkConfig.name} Faucet</Trans>
-          <SvgIcon sx={{ fontSize: '14px', mx: '2px' }}>
+      <Button
+        startIcon={
+          <img
+            src={currentNetworkConfig.networkLogoPath}
+            alt={currentNetworkConfig.name}
+            style={{ width: 14, height: 14 }}
+          />
+        }
+        endIcon={
+          <SvgIcon sx={{ width: 14, height: 14 }}>
             <ExternalLinkIcon />
           </SvgIcon>
+        }
+        component={Link}
+        href={ROUTES.faucet}
+        variant="outlined"
+        size="small"
+      >
+        <Typography variant="buttonS">
+          <Trans>{currentNetworkConfig.name} Faucet</Trans>
         </Typography>
       </Button>
     </DarkTooltip>

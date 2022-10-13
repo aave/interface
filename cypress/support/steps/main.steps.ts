@@ -591,9 +591,11 @@ export const emodeActivating = (
   {
     turnOn,
     multipleEmodes,
+    emodeOption,
   }: {
     turnOn: boolean;
     multipleEmodes?: boolean;
+    emodeOption?: string;
   },
   skip: SkipType,
   updateSkipStatus = false
@@ -603,13 +605,6 @@ export const emodeActivating = (
     it(`Open e-mode switcher`, () => {
       cy.doSwitchToDashboardBorrowView();
       cy.get('[data-cy=emode-open]').click();
-      if (turnOn) cy.get(`[data-cy="emode-enable"]`).click();
-      else cy.get(`[data-cy="emode-disable"]`).click();
-
-      if (!turnOn && multipleEmodes) {
-        cy.get('[data-cy=EmodeSelect]').click();
-        cy.get(`[data-cy="disableEmode"]`).click();
-      }
     });
     if (turnOn) {
       it(`Turn on e-mode`, () => {

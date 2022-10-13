@@ -54,7 +54,7 @@ export enum CustomMarket {
   proto_fuji_v3 = 'proto_fuji_v3',
   proto_goerli_v3 = 'proto_goerli_v3',
   proto_optimism_goerli_v3 = 'proto_optimism_goerli_v3',
-  proto_ropsten_v3 = 'proto_ropsten_v3',
+  proto_goerli_gho_v3 = 'proto_goerli_gho_v3',
   // v3 mainnets
   proto_optimism_v3 = 'proto_optimism_v3',
   proto_fantom_v3 = 'proto_fantom_v3',
@@ -216,10 +216,10 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: '0xACFd610B51ac6B70F030B277EA8A2A8D2143dC7A',
     },
   },
-  [CustomMarket.proto_ropsten_v3]: {
-    marketTitle: 'Ethereum Ropsten',
+  [CustomMarket.proto_goerli_gho_v3]: {
+    marketTitle: 'Ethereum Görli GHO',
     v3: true,
-    chainId: ChainId.ropsten,
+    chainId: ChainId.goerli,
     enabledFeatures: {
       // Note: We should remove this based on the addresses that you provide in the addresses below
       faucet: true,
@@ -229,13 +229,13 @@ export const marketsData: {
     },
     rpcOnly: true,
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0x303a4B174663A6201Da77782413B4b54EFa3E97e'.toLowerCase(),
-      LENDING_POOL: '0x23a85024f54A19e243bA7a74E339a5C80998c7a4',
-      WETH_GATEWAY: '0x96A4fd1f289888cCa772298f7BDCF41C02122c01',
-      FAUCET: '0xb7263ADfB7C094aa24b91A51b297A278e105584a',
-      WALLET_BALANCE_PROVIDER: '0xEEac3ad1b3f4c43A782a951348c5387506B9AB06',
-      UI_POOL_DATA_PROVIDER: '0xb815B9EE078Dab098965D8e52dD5C747d70bb481',
-      UI_INCENTIVE_DATA_PROVIDER: '0x2526D407F722C0D1e0326eC1840A235bf173b9Ca',
+      LENDING_POOL_ADDRESS_PROVIDER: '0x3c1095AC5c30042453a07414bAFB2501dE30A8fe'.toLowerCase(),
+      LENDING_POOL: '0xd84f166e81f53eDd9B689779B6f4022cF73A2BdF',
+      WETH_GATEWAY: '0xaba1AC875611E6BEF8a9F6e9166C35C07A56E90b',
+      FAUCET: '0xD7974dCc0a0Bd2d4eeBF00B270634E40b9f8f967',
+      WALLET_BALANCE_PROVIDER: '0x11De99932D5B08E8A680B80e4eC7Bd68851fD64b',
+      UI_POOL_DATA_PROVIDER: '0xC576539371a2f425545B7BF4eb2a14Eee1944a1C',
+      UI_INCENTIVE_DATA_PROVIDER: '0xACFd610B51ac6B70F030B277EA8A2A8D2143dC7A',
     },
   },
   [CustomMarket.proto_arbitrum_v3]: {
@@ -418,6 +418,8 @@ export const marketsData: {
     chainId: ChainId.optimism,
     enabledFeatures: {
       incentives: true,
+      collateralRepay: true,
+      liquiditySwap: true,
     },
     rpcOnly: true,
     addresses: {
@@ -429,6 +431,8 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: '0x44b864b92043a960313F3C94BD6DB4dA202814F6',
       L2_ENCODER: '0x9abADECD08572e0eA5aF4d47A9C7984a5AA503dC',
       COLLECTOR: '0xB2289E329D2F85F1eD31Adbb30eA345278F21bcf',
+      SWAP_COLLATERAL_ADAPTER: '0xC7524B08101dBe695d7ad671a332760b5d967Cbd',
+      REPAY_WITH_COLLATERAL_ADAPTER: '0x70371a494f73A8Df658C5cd29E2C1601787e1009',
     },
   },
   [CustomMarket.proto_polygon_v3]: {

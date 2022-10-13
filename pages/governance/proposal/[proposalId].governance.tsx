@@ -89,6 +89,9 @@ const CenterAlignedImage = styled('img')({
   maxWidth: '100%',
 });
 
+const formatTime = (timestamp: number): string =>
+  dayjs.unix(timestamp).format('D MMM YYYY, HH:mm UTC Z');
+
 const StyledLink = styled('a')({
   color: 'inherit',
 });
@@ -104,7 +107,6 @@ export default function ProposalPage({
   const [loading, setLoading] = useState(!proposal || !isProposalStateImmutable(proposal));
   const { breakpoints } = useTheme();
   const xsmUp = useMediaQuery(breakpoints.up('xsm'));
-
   const mightBeStale = !proposal || !isProposalStateImmutable(proposal);
 
   async function updateProposal() {
@@ -114,11 +116,12 @@ export default function ProposalPage({
     setLoading(false);
   }
 
-  usePolling(updateProposal, 10000, !mightBeStale, []);
+  usePolling(updateProposal, loading ? 5000 : 30000, !mightBeStale, []);
 
   // seed when no ssg
   useEffect(() => {
     if (!proposal && initialProposal) setProposal(initialProposal);
+    setLoading(false);
   }, [initialProposal]);
 
   useEffect(() => {
@@ -148,6 +151,10 @@ export default function ProposalPage({
         requiredDiff: 0,
         diff: 0,
       };
+
+  const proposalHasExpired: boolean = proposal
+    ? dayjs() > dayjs.unix(proposal.expirationTimestamp)
+    : false;
 
   return (
     <>
@@ -417,9 +424,7 @@ export default function ProposalPage({
                     captionVariant="description"
                   >
                     <Box sx={{ textAlign: 'right' }}>
-                      <Typography>
-                        ~ {dayjs.unix(proposal.creationTimestamp).format('DD MMM YYYY, hh:mm a')}
-                      </Typography>
+                      <Typography>{formatTime(proposal.creationTimestamp)}</Typography>
                       <Typography variant="caption" color="text.muted">
                         {proposal.proposalCreated}
                       </Typography>
@@ -438,23 +443,60 @@ export default function ProposalPage({
                     captionVariant="description"
                   >
                     <Box sx={{ textAlign: 'right' }}>
-                      <Typography>
-                        ~ {dayjs.unix(proposal.startTimestamp).format('DD MMM YYYY, hh:mm a')}
-                      </Typography>
+                      <Typography>{formatTime(proposal.startTimestamp)}</Typography>
                       <Typography variant="caption" color="text.muted">
                         {proposal.startBlock}
                       </Typography>
                     </Box>
                   </Row>
+                  {proposalHasExpired ? (
+                    <Row
+                      caption={
+                        <>
+                          <Trans>Ended</Trans>
+                          <Typography variant="caption" color="text.muted">
+                            Block
+                          </Typography>
+                        </>
+                      }
+                      sx={{ height: 48 }}
+                      captionVariant="description"
+                    >
+                      <Box sx={{ textAlign: 'right' }}>
+                        <Typography>{formatTime(proposal.expirationTimestamp)}</Typography>
+                        <Typography variant="caption" color="text.muted">
+                          {proposal.endBlock}
+                        </Typography>
+                      </Box>
+                    </Row>
+                  ) : (
+                    <Row
+                      caption={
+                        <>
+                          <Trans>Ends</Trans>
+                          <Typography variant="caption" color="text.muted">
+                            Block
+                          </Typography>
+                        </>
+                      }
+                      sx={{ height: 48 }}
+                      captionVariant="description"
+                    >
+                      <Box sx={{ textAlign: 'right' }}>
+                        <Typography>{formatTime(proposal.expirationTimestamp)}</Typography>
+                        <Typography variant="caption" color="text.muted">
+                          {proposal.endBlock}
+                        </Typography>
+                      </Box>
+                    </Row>
+                  )}
                   {proposal.executed && (
                     <Row
                       caption={<Trans>Executed</Trans>}
                       sx={{ height: 48 }}
                       captionVariant="description"
                     >
-                      <Typography>
-                        {dayjs.unix(proposal.executionTime).format('DD MMM YYYY, hh:mm a')}
-                      </Typography>
+                      <Typography>{formatTime(proposal.executionTime)}</Typography>
                     </Row>
                   )}
                   {ipfs?.author && (
@@ -475,6 +517,7 @@ export default function ProposalPage({
                       <Button
                         component={Link}
                         target="_blank"
+                        rel="noopener"
                         href={ipfs.discussions}
                         variant="outlined"
                         endIcon={
@@ -490,6 +533,7 @@ export default function ProposalPage({
                       <Button
                         component={Link}
                         target="_blank"
+                        rel="noopener"
                         href={`https://github.com/bgd-labs/seatbelt-for-ghosts/tree/master/reports/Aave/0xEC568fffba86c094cf06b22134B23074DFE2252c/${String(
                           proposal.id
                         ).padStart(3, '0')}.md`}

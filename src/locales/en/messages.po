@@ -205,6 +205,10 @@ msgstr "Asset is not borrowable in isolation mode"
 msgid "Asset is not listed"
 msgstr "Asset is not listed"
 
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
+msgstr "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
+
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Asset to delegate"
 msgstr "Asset to delegate"
@@ -349,6 +353,10 @@ msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mod
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
+
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
+msgstr "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Borrowing power and assets are limited due to Isolation mode."
@@ -718,6 +726,14 @@ msgstr "Enabling E-Mode only allows you to borrow assets belonging to the select
 msgid "Enabling this asset as collateral increases your borrowing power and Health Factor. However, it can get liquidated if your health factor drops below 1."
 msgstr "Enabling this asset as collateral increases your borrowing power and Health Factor. However, it can get liquidated if your health factor drops below 1."
 
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Ended"
+msgstr "Ended"
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Ends"
+msgstr "Ends"
+
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "English"
 msgstr "English"
@@ -787,6 +803,10 @@ msgstr "Funds in the Safety Module"
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "Get ABP Token"
 msgstr "Get ABP Token"
+
+#: src/components/transactions/Borrow/BorrowModalContent.tsx
+msgid "Get discounted borrow APY — 1.6%"
+msgstr "Get discounted borrow APY — 1.6%"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Github"
@@ -928,6 +948,10 @@ msgstr "Join the community discussion"
 msgid "Language"
 msgstr "Language"
 
+#: src/components/transactions/Borrow/BorrowModalContent.tsx
+msgid "Learn More"
+msgstr "Learn More"
+
 #: src/components/caps/DebtCeilingStatus.tsx
 #: src/components/infoTooltips/BorrowCapMaxedTooltip.tsx
 #: src/components/infoTooltips/DebtCeilingMaxedTooltip.tsx
@@ -938,6 +962,8 @@ msgstr "Language"
 #: src/components/transactions/Warnings/MarketWarning.tsx
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Learn more"
 msgstr "Learn more"
@@ -1030,6 +1056,11 @@ msgstr "Maximum amount available to borrow against this asset is limited because
 #: src/components/transactions/Warnings/BorrowCapWarning.tsx
 msgid "Maximum amount available to borrow is limited because protocol borrow cap is nearly reached."
 msgstr "Maximum amount available to borrow is limited because protocol borrow cap is nearly reached."
+
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Maximum amount available to supply is <0/> {0} (<1/>)."
+msgstr "Maximum amount available to supply is <0/> {0} (<1/>)."
 
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 msgid "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
@@ -1561,10 +1592,6 @@ msgstr "Supply apy"
 msgid "Supply balance"
 msgstr "Supply balance"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "Supply cap"
-msgstr "Supply cap"
-
 #: src/ui-config/errorMapping.tsx
 msgid "Supply cap is exceeded"
 msgstr "Supply cap is exceeded"
@@ -1820,6 +1847,7 @@ msgstr "Total available"
 #: src/modules/markets/AssetsList.tsx
 #: src/modules/markets/AssetsListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Total borrowed"
 msgstr "Total borrowed"
 
@@ -1837,6 +1865,7 @@ msgstr "Total market size"
 
 #: src/modules/markets/AssetsList.tsx
 #: src/modules/markets/AssetsListMobileItem.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Total supplied"
 msgstr "Total supplied"
@@ -1917,6 +1946,10 @@ msgstr "User is in isolation mode"
 #: src/ui-config/errorMapping.tsx
 msgid "User is trying to borrow multiple assets including a siloed one"
 msgstr "User is trying to borrow multiple assets including a siloed one"
+
+#: src/components/transactions/Borrow/BorrowModalContent.tsx
+msgid "Users who stake their AAVE in Safety Module get discounted borrow rate 1.6% for each 100 GHO per 1 staked AAVE."
+msgstr "Users who stake their AAVE in Safety Module get discounted borrow rate 1.6% for each 100 GHO per 1 staked AAVE."
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
@@ -2234,6 +2267,10 @@ msgid "is an asset affected by rebasing. Visit the"
 msgstr "is an asset affected by rebasing. Visit the"
 
 #: src/components/caps/DebtCeilingStatus.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "of"
 msgstr "of"
 

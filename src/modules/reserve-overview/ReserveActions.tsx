@@ -60,9 +60,7 @@ interface ReserveActionsProps {
 export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
-
   const { openBorrow, openFaucet, openSupply } = useModalContext();
-
   const { currentAccount, loading: web3Loading } = useWeb3Context();
   const { user, reserves, loading: loadingReserves, eModes } = useAppDataContext();
   const { walletBalances, loading: loadingBalance } = useWalletBalances();
@@ -327,12 +325,13 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
         </Row>
       )}
 
-      <Stack direction="row" spacing={2}>
+      <Stack direction="row" spacing={2} sx={{ mb: 4 }}>
         <Button
           variant="contained"
           disabled={balance?.amount === '0'}
           onClick={() => openSupply(underlyingAsset)}
           fullWidth={downToXSM}
+          data-cy={'supplyButton'}
         >
           <Trans>Supply</Trans> {downToXSM && poolReserve.symbol}
         </Button>
@@ -341,10 +340,17 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
           variant="contained"
           onClick={() => openBorrow(underlyingAsset)}
           fullWidth={downToXSM}
+          data-cy={'borrowButton'}
         >
           <Trans>Borrow</Trans> {downToXSM && poolReserve.symbol}
         </Button>
       </Stack>
+      {maxAmountToSupply === '0' && supplyCap.determineWarningDisplay({ supplyCap, icon: false })}
+      {maxAmountToBorrow === '0' && borrowCap.determineWarningDisplay({ borrowCap, icon: false })}
+      {poolReserve.isIsolated &&
+        balance?.amount !== '0' &&
+        user?.totalCollateralUSD !== '0' &&
+        debtCeiling.determineWarningDisplay({ debtCeiling, icon: false })}
     </PaperWrapper>
   );
 };

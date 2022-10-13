@@ -9,10 +9,11 @@ import POOL_CONFIG_ABI from '../../fixtures/poolConfig.json';
 const TENDERLY_KEY = Cypress.env('TENDERLY_KEY');
 const TENDERLY_ACCOUNT = Cypress.env('TENDERLY_ACCOUNT');
 const TENDERLY_PROJECT = Cypress.env('TENDERLY_PROJECT');
+const WALLET = Wallet.createRandom();
 
 export const DEFAULT_TEST_ACCOUNT = {
-  privateKey: '2ab22efc6bc85a9cd2d6281416500d8523ba57206d94cb333cbd09977ca75479',
-  address: '0x38F217d0762F28c806BD32cFEC5984385Fed97cB'.toLowerCase(),
+  privateKey: WALLET.privateKey,
+  address: WALLET.address.toLowerCase(),
 };
 
 const tenderly = axios.create({

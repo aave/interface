@@ -29,6 +29,7 @@ const testData = {
       isCollateral: true,
       amount: 9999,
       hasApproval: false,
+      isMaxAmount: true,
       isRisk: true,
     },
   },

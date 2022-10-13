@@ -26,7 +26,6 @@ import { ReserveFactorOverview } from 'src/modules/reserve-overview/ReserveFacto
 
 import LightningBoltGradient from '/public/lightningBoltGradient.svg';
 
-import { CustomMarket, marketsData } from '../../utils/marketsAndNetworksConfig';
 import { ApyGraphContainer } from './graphs/ApyGraphContainer';
 import { InterestRateModelGraphContainer } from './graphs/InterestRateModelGraphContainer';
 import { PanelItem, PanelRow, PanelTitle } from './ReservePanels';
@@ -37,10 +36,7 @@ type ReserveConfigurationProps = {
 
 export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ reserve }) => {
   const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
-  const { v3 } = marketsData[currentMarket as CustomMarket];
-  // V3 and V2 Polygon will be enabled once support is added to API
-  const renderCharts =
-    !v3 && !!currentNetworkConfig.ratesHistoryApiUrl && currentMarket !== 'proto_polygon';
+  const renderCharts = !!currentNetworkConfig.ratesHistoryApiUrl;
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
   const showSupplyCapStatus = reserve.supplyCap && reserve.supplyCap !== '0';
   const showBorrowCapStatus = reserve.borrowCap && reserve.borrowCap !== '0';
@@ -87,10 +83,96 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
               flexWrap: 'wrap',
             }}
           >
-            <PanelItem title={<Trans>Total supplied</Trans>}>
-              <FormattedNumber value={reserve.totalLiquidity} variant="main16" compact />
-              <ReserveSubheader value={reserve.totalLiquidityUSD} />
-            </PanelItem>
+            {showSupplyCapStatus ? (
+              // With supply cap
+              <>
+                <CapsCircularStatus
+                  value={supplyCap.percentUsed}
+                  tooltipContent={
+                    <>
+                      <Trans>
+                        Maximum amount available to supply is{' '}
+                        <FormattedNumber
+                          value={
+                            valueToBigNumber(reserve.supplyCap).toNumber() -
+                            valueToBigNumber(reserve.totalLiquidity).toNumber()
+                          }
+                          variant="secondary12"
+                        />{' '}
+                        {reserve.symbol} (
+                        <FormattedNumber
+                          value={
+                            valueToBigNumber(reserve.supplyCapUSD).toNumber() -
+                            valueToBigNumber(reserve.totalLiquidityUSD).toNumber()
+                          }
+                          variant="secondary12"
+                          symbol="USD"
+                        />
+                        ).
+                      </Trans>
+                    </>
+                  }
+                />
+                <PanelItem
+                  title={
+                    <Box display="flex" alignItems="center">
+                      <Trans>Total supplied</Trans>
+                      <TextWithTooltip>
+                        <>
+                          <Trans>
+                            Asset supply is limited to a certain amount to reduce protocol exposure
+                            to the asset and to help manage risks involved.
+                          </Trans>{' '}
+                          <Link
+                            href="https://docs.aave.com/developers/whats-new/supply-borrow-caps"
+                            underline="always"
+                          >
+                            <Trans>Learn more</Trans>
+                          </Link>
+                        </>
+                      </TextWithTooltip>
+                    </Box>
+                  }
+                >
+                  <Box>
+                    <FormattedNumber value={reserve.totalLiquidity} variant="main16" compact />
+                    <Typography
+                      component="span"
+                      color="text.primary"
+                      variant="secondary16"
+                      sx={{ display: 'inline-block', mx: 1 }}
+                    >
+                      <Trans>of</Trans>
+                    </Typography>
+                    <FormattedNumber value={reserve.supplyCap} variant="main16" />
+                  </Box>
+                  <Box>
+                    <ReserveSubheader value={reserve.totalLiquidityUSD} />
+                    <Typography
+                      component="span"
+                      color="text.secondary"
+                      variant="secondary12"
+                      sx={{ display: 'inline-block', mx: 1 }}
+                    >
+                      <Trans>of</Trans>
+                    </Typography>
+                    <ReserveSubheader value={reserve.supplyCapUSD} />
+                  </Box>
+                </PanelItem>
+              </>
+            ) : (
+              // Without supply cap
+              <PanelItem
+                title={
+                  <Box display="flex" alignItems="center">
+                    <Trans>Total supplied</Trans>
+                  </Box>
+                }
+              >
+                <FormattedNumber value={reserve.totalLiquidity} variant="main16" compact />
+                <ReserveSubheader value={reserve.totalLiquidityUSD} />
+              </PanelItem>
+            )}
             <PanelItem title={<Trans>APY</Trans>}>
               <FormattedNumber value={reserve.supplyAPY} percent variant="main16" />
               <IncentivesButton
@@ -99,13 +181,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                 displayBlank={true}
               />
             </PanelItem>
-            {reserve.supplyCapUSD !== '0' && (
-              <PanelItem title={<Trans>Supply cap</Trans>}>
-                <FormattedNumber value={reserve.supplyCap} variant="main16" />
-                <ReserveSubheader value={reserve.supplyCapUSD} />
-              </PanelItem>
-            )}
-            {reserve.unbacked !== '0' && (
+            {reserve.unbacked && reserve.unbacked !== '0' && (
               <PanelItem title={<Trans>Unbacked</Trans>}>
                 <FormattedNumber value={reserve.unbacked} variant="main16" symbol={reserve.name} />
                 <ReserveSubheader value={reserve.unbackedUSD} />
@@ -116,10 +192,9 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
             <ApyGraphContainer
               graphKey="supply"
               reserve={reserve}
-              lendingPoolAddressProvider={currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER}
+              currentMarketData={currentMarketData}
             />
           )}
-
           <div>
             {reserve.isIsolated ? (
               <Box sx={{ pt: '42px', pb: '12px' }}>
@@ -164,7 +239,6 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
               </Box>
             )}
           </div>
-
           {reserve.usageAsCollateralEnabled && (
             <Box
               sx={{
@@ -217,24 +291,12 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
               </ReserveOverviewBox>
 
               {reserve.isIsolated && (
-                <ReserveOverviewBox title="Debt ceiling">
-                  <Box sx={{ display: { sm: 'inline-flex', xs: 'block' } }}>
-                    <FormattedNumber
-                      value={reserve.isolationModeTotalDebtUSD}
-                      variant="secondary14"
-                      symbol="USD"
-                      symbolsVariant="secondary14"
-                      visibleDecimals={2}
-                    />
-                    &nbsp;of&nbsp;
-                    <FormattedNumber
-                      value={reserve.debtCeilingUSD}
-                      variant="secondary14"
-                      symbol="USD"
-                      symbolsVariant="secondary14"
-                      visibleDecimals={2}
-                    />
-                  </Box>
+                <ReserveOverviewBox fullWidth>
+                  <DebtCeilingStatus
+                    debt={reserve.isolationModeTotalDebtUSD}
+                    ceiling={reserve.debtCeilingUSD}
+                    usageData={debtCeiling}
+                  />
                 </ReserveOverviewBox>
               )}
             </Box>
@@ -274,10 +336,96 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                   flexWrap: 'wrap',
                 }}
               >
-                <PanelItem title={<Trans>Total borrowed</Trans>}>
-                  <FormattedNumber value={reserve.totalDebt} variant="main16" />
-                  <ReserveSubheader value={reserve.totalDebtUSD} />
-                </PanelItem>
+                {showBorrowCapStatus ? (
+                  // With a borrow cap
+                  <>
+                    <CapsCircularStatus
+                      value={borrowCap.percentUsed}
+                      tooltipContent={
+                        <>
+                          <Trans>
+                            Maximum amount available to supply is{' '}
+                            <FormattedNumber
+                              value={
+                                valueToBigNumber(reserve.borrowCap).toNumber() -
+                                valueToBigNumber(reserve.totalDebt).toNumber()
+                              }
+                              variant="secondary12"
+                            />{' '}
+                            {reserve.symbol} (
+                            <FormattedNumber
+                              value={
+                                valueToBigNumber(reserve.borrowCapUSD).toNumber() -
+                                valueToBigNumber(reserve.totalDebtUSD).toNumber()
+                              }
+                              variant="secondary12"
+                              symbol="USD"
+                            />
+                            ).
+                          </Trans>
+                        </>
+                      }
+                    />
+                    <PanelItem
+                      title={
+                        <Box display="flex" alignItems="center">
+                          <Trans>Total borrowed</Trans>
+                          <TextWithTooltip>
+                            <>
+                              <Trans>
+                                Borrowing of this asset is limited to a certain amount to minimize
+                                liquidity pool insolvency.
+                              </Trans>{' '}
+                              <Link
+                                href="https://docs.aave.com/developers/whats-new/supply-borrow-caps"
+                                underline="always"
+                              >
+                                <Trans>Learn more</Trans>
+                              </Link>
+                            </>
+                          </TextWithTooltip>
+                        </Box>
+                      }
+                    >
+                      <Box>
+                        <FormattedNumber value={reserve.totalDebt} variant="main16" />
+                        <Typography
+                          component="span"
+                          color="text.primary"
+                          variant="secondary16"
+                          sx={{ display: 'inline-block', mx: 1 }}
+                        >
+                          <Trans>of</Trans>
+                        </Typography>
+                        <FormattedNumber value={reserve.borrowCap} variant="main16" />
+                      </Box>
+                      <Box>
+                        <ReserveSubheader value={reserve.totalDebtUSD} />
+                        <Typography
+                          component="span"
+                          color="text.primary"
+                          variant="secondary16"
+                          sx={{ display: 'inline-block', mx: 1 }}
+                        >
+                          <Trans>of</Trans>
+                        </Typography>
+                        <ReserveSubheader value={reserve.borrowCapUSD} />
+                      </Box>
+                    </PanelItem>
+                  </>
+                ) : (
+                  // Without a borrow cap
+                  <PanelItem
+                    title={
+                      <Box display="flex" alignItems="center">
+                        <Trans>Total borrowed</Trans>
+                      </Box>
+                    }
+                  >
+                    <FormattedNumber value={reserve.totalDebt} variant="main16" />
+                    <ReserveSubheader value={reserve.totalDebtUSD} />
+                  </PanelItem>
+                )}
                 <PanelItem
                   title={
                     <VariableAPYTooltip
@@ -312,7 +460,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                     />
                   </PanelItem>
                 )}
-                {reserve.borrowCapUSD !== '0' && (
+                {reserve.borrowCapUSD && reserve.borrowCapUSD !== '0' && (
                   <PanelItem title={<Trans>Borrow cap</Trans>}>
                     <FormattedNumber value={reserve.borrowCap} variant="main16" />
                     <ReserveSubheader value={reserve.borrowCapUSD} />
@@ -323,9 +471,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                 <ApyGraphContainer
                   graphKey="borrow"
                   reserve={reserve}
-                  lendingPoolAddressProvider={
-                    currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER
-                  }
+                  currentMarketData={currentMarketData}
                 />
               )}
               <Box

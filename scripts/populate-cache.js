@@ -53459,7 +53459,7 @@ var require_unfetch = __commonJS({
   },
 });
 
-// node_modules/webidl-conversions/lib/index.js
+// node_modules/node-fetch/node_modules/webidl-conversions/lib/index.js
 var require_lib32 = __commonJS({
   'node_modules/node-fetch/node_modules/webidl-conversions/lib/index.js'(exports2, module2) {
     'use strict';
@@ -53619,7 +53619,7 @@ var require_lib32 = __commonJS({
   },
 });
 
-// node_modules/whatwg-url/lib/utils.js
+// node_modules/node-fetch/node_modules/whatwg-url/lib/utils.js
 var require_utils7 = __commonJS({
   'node_modules/node-fetch/node_modules/whatwg-url/lib/utils.js'(exports2, module2) {
     'use strict';
@@ -53640,7 +53640,7 @@ var require_utils7 = __commonJS({
   },
 });
 
-// node_modules/tr46/lib/mappingTable.json
+// node_modules/node-fetch/node_modules/tr46/lib/mappingTable.json
 var require_mappingTable = __commonJS({
   'node_modules/node-fetch/node_modules/tr46/lib/mappingTable.json'(exports2, module2) {
     module2.exports = [
@@ -61834,7 +61834,7 @@ var require_mappingTable = __commonJS({
   },
 });
 
-// node_modules/tr46/index.js
+// node_modules/node-fetch/node_modules/tr46/index.js
 var require_tr46 = __commonJS({
   'node_modules/node-fetch/node_modules/tr46/index.js'(exports2, module2) {
     'use strict';
@@ -62011,7 +62011,7 @@ var require_tr46 = __commonJS({
   },
 });
 
-// node_modules/whatwg-url/lib/url-state-machine.js
+// node_modules/node-fetch/node_modules/whatwg-url/lib/url-state-machine.js
 var require_url_state_machine = __commonJS({
   'node_modules/node-fetch/node_modules/whatwg-url/lib/url-state-machine.js'(exports2, module2) {
     'use strict';
@@ -63166,7 +63166,7 @@ var require_url_state_machine = __commonJS({
   },
 });
 
-// node_modules/whatwg-url/lib/URL-impl.js
+// node_modules/node-fetch/node_modules/whatwg-url/lib/URL-impl.js
 var require_URL_impl = __commonJS({
   'node_modules/node-fetch/node_modules/whatwg-url/lib/URL-impl.js'(exports2) {
     'use strict';
@@ -63323,7 +63323,7 @@ var require_URL_impl = __commonJS({
   },
 });
 
-// node_modules/whatwg-url/lib/URL.js
+// node_modules/node-fetch/node_modules/whatwg-url/lib/URL.js
 var require_URL = __commonJS({
   'node_modules/node-fetch/node_modules/whatwg-url/lib/URL.js'(exports2, module2) {
     'use strict';
@@ -63511,7 +63511,7 @@ var require_URL = __commonJS({
   },
 });
 
-// node_modules/whatwg-url/lib/public-api.js
+// node_modules/node-fetch/node_modules/whatwg-url/lib/public-api.js
 var require_public_api = __commonJS({
   'node_modules/node-fetch/node_modules/whatwg-url/lib/public-api.js'(exports2) {
     'use strict';
@@ -75670,18 +75670,6 @@ var networkConfigs = {
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
     explorerLink: 'https://goerli.etherscan.io',
-    isTestnet: true,
-    networkLogoPath: '/icons/networks/ethereum.svg',
-  },
-  [import_contract_helpers3.ChainId.ropsten]: {
-    name: 'Ethereum Ropsten',
-    publicJsonRPCUrl: ['https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'],
-    publicJsonRPCWSUrl: '',
-    baseUniswapAdapter: '0x0',
-    baseAssetSymbol: 'ETH',
-    wrappedBaseAssetSymbol: 'WETH',
-    baseAssetDecimals: 18,
-    explorerLink: 'https://ropsten.etherscan.io',
     isTestnet: true,
     networkLogoPath: '/icons/networks/ethereum.svg',
   },

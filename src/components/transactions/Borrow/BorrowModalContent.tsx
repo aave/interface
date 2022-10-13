@@ -7,7 +7,7 @@ import {
 import { ArrowSmRightIcon } from '@heroicons/react/outline';
 import { BadgeCheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Checkbox, Typography } from '@mui/material';
+import { Box, Checkbox, Link, SvgIcon, Typography } from '@mui/material';
 import { useRef, useState } from 'react';
 import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -16,6 +16,7 @@ import { Warning } from 'src/components/primitives/Warning';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
@@ -112,6 +113,7 @@ export const BorrowModalContent = ({
   const { mainTxState: borrowTxState, gasLimit, txError } = useModalContext();
   const { user, marketReferencePriceInUsd } = useAppDataContext();
   const { currentNetworkConfig } = useProtocolDataContext();
+  const { borrowCap, debtCeiling } = useAssetCaps();
 
   const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
   const [_amount, setAmount] = useState('');
@@ -125,7 +127,7 @@ export const BorrowModalContent = ({
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToBorrow.toString(10) : _amount;
 
-  // We set this in a useEffect, so it doesnt constantly change when
+  // We set this in a useEffect, so it doesn't constantly change when
   // max amount selected
   const handleChange = (_value: string) => {
     const maxSelected = _value === '-1';
@@ -223,7 +225,33 @@ export const BorrowModalContent = ({
     <>
       {borrowCap.determineWarningDisplay({ borrowCap })}
       {poolReserve.isIsolated && debtCeiling.determineWarningDisplay({ debtCeiling })}
-
+      {symbol === 'GHO' && ( // TODO: Use token when available rather than hardcoded
+        <Warning
+          severity="success"
+          icon={
+            <SvgIcon color="success">
+              <BadgeCheckIcon />
+            </SvgIcon>
+          }
+          sx={{ mb: 6 }}
+        >
+          <Typography variant="subheader1" gutterBottom>
+            <Trans>Get discounted borrow APY — 1.6%</Trans>
+          </Typography>
+          <Typography variant="caption">
+            <Trans>
+              Users who stake their AAVE in Safety Module get discounted borrow rate 1.6% for each
+              100 GHO per 1 staked AAVE.
+            </Trans>
+          </Typography>
+          <Link href="/" sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
+            <Trans>Learn More</Trans>{' '}
+            <SvgIcon fontSize="small">
+              <ArrowSmRightIcon />
+            </SvgIcon>
+          </Link>
+        </Warning>
+      )}
       <AssetInput
         value={amount}
         onChange={handleChange}

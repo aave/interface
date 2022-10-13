@@ -42,6 +42,6 @@ package-lock.json
 
 .eslintcache
 
-# IDE Specific
-.vscode
+# IDE specific
 .idea
+.vscode
