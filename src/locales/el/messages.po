@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-10-12 00:29\n"
+"PO-Revision-Date: 2022-10-13 00:25\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -27,8 +27,8 @@ msgid "<0>Attention:</0> Parameter changes via governance can alter your account
 msgstr ""
 
 #: src/modules/staking/StakingHeader.tsx
-msgid "AAVE holders can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
-msgstr "Οι κάτοχοι AAVE μπορούν να κλειδώσουν το AAVE τους στην Μονάδα Ασφάλειας για να προσθέσουν περισσότερη ασφάλεια στο πρωτόκολλο και να κερδίσουν κίνητρα ασφάλειας. Σε περίπτωση εκδήλωσης ελλείμματος, έως και το 30% του κλειδώματος σας μπορεί να μειωθεί για να καλυφθεί το έλλειμμα, παρέχοντας ένα επιπλέον επίπεδο προστασίας για το πρωτόκολλο."
+msgid "AAVE holders can stake their AAVE in the Safety Module (Ethereum Network only) to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
+msgstr ""
 
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
@@ -78,8 +78,8 @@ msgid "Aave Governance"
 msgstr "Διακυβέρνηση Aave"
 
 #: src/modules/governance/GovernanceTopPanel.tsx
-msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance documentation"
-msgstr "Το Aave είναι ένα πλήρως αποκεντρωμένο πρωτόκολλο, το οποίο ελέγχεται από την κοινότητα των κατόχων του token του AAVE. Οι κάτοχοι των token του AAVE συζητούν, προτείνουν και ψηφίζουν συλλογικά για τις αναβαθμίσεις του πρωτοκόλλου. Οι κάτοχοι των token του AAVE μπορούν είτε να ψηφίσουν οι ίδιοι για νέες προτάσεις είτε να μεταβιβαστούν σε μια διεύθυνση της επιλογής τους. Για να μάθετε περισσότερα δείτε την τεκμηρίωση Διακυβέρνησης"
+msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance documentation"
+msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Aave per month"
@@ -731,6 +731,14 @@ msgstr ""
 msgid "Enabling this asset as collateral increases your borrowing power and Health Factor. However, it can get liquidated if your health factor drops below 1."
 msgstr "Η ενεργοποίηση αυτού του περιουσιακού στοιχείου ως εγγύηση αυξάνει τη δανειοληπτική σας ικανότητα και τον Συντελεστή Υγείας. Ωστόσο, μπορεί να ρευστοποιηθεί εάν ο συντελεστής υγείας σας πέσει κάτω από το 1."
 
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Ended"
+msgstr ""
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Ends"
+msgstr ""
+
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "English"
 msgstr "Αγγλικά"
@@ -1213,6 +1221,7 @@ msgid "Please connect your wallet to get free testnet assets."
 msgstr ""
 
 #: src/components/ConnectWalletPaper.tsx
+#: src/components/ConnectWalletPaperStaking.tsx
 msgid "Please connect your wallet to see your supplies, borrowings, and open positions."
 msgstr "Συνδέστε το πορτοφόλι σας για να δείτε τις προμήθειες, τα δάνεια και τις ανοιχτές θέσεις σας."
 
@@ -1225,6 +1234,7 @@ msgid "Please switch to {networkName}."
 msgstr "Παρακαλώ μεταβείτε στο {networkName}."
 
 #: src/components/ConnectWalletPaper.tsx
+#: src/components/ConnectWalletPaperStaking.tsx
 msgid "Please, connect your wallet"
 msgstr "Παρακαλώ, συνδέστε το πορτοφόλι σας"
 
@@ -1531,6 +1541,7 @@ msgstr "Κλείδωμα"
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
+#: src/modules/staking/StakingPanelNoWallet.tsx
 msgid "Staking APR"
 msgstr "Κλείδωμα APR"
 
@@ -2006,6 +2017,10 @@ msgstr "Δύναμη ψήφου"
 msgid "Voting results"
 msgstr "Αποτελέσματα ψηφοφορίας"
 
+#: src/modules/staking/StakingPanel.tsx
+msgid "Wallet Balance"
+msgstr ""
+
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
@@ -2039,8 +2054,8 @@ msgid "We couldn't find any asset matching your search. Try again with a differe
 msgstr ""
 
 #: pages/staking.staking.tsx
-msgid "We couldn’t detect a wallet. Connect a wallet to stake."
-msgstr "Δεν μπορέσαμε να εντοπίσουμε πορτοφόλι. Συνδέστε ένα πορτοφόλι για να κλειδώσετε."
+msgid "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
+msgstr ""
 
 #: pages/404.page.tsx
 msgid "We suggest you go back to the Dashboard."

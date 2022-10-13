@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-10-12 00:29\n"
+"PO-Revision-Date: 2022-10-13 00:25\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -27,7 +27,7 @@ msgid "<0>Attention:</0> Parameter changes via governance can alter your account
 msgstr ""
 
 #: src/modules/staking/StakingHeader.tsx
-msgid "AAVE holders can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
+msgid "AAVE holders can stake their AAVE in the Safety Module (Ethereum Network only) to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
 msgstr ""
 
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
@@ -78,7 +78,7 @@ msgid "Aave Governance"
 msgstr ""
 
 #: src/modules/governance/GovernanceTopPanel.tsx
-msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance documentation"
+msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance documentation"
 msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
@@ -731,6 +731,14 @@ msgstr ""
 msgid "Enabling this asset as collateral increases your borrowing power and Health Factor. However, it can get liquidated if your health factor drops below 1."
 msgstr ""
 
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Ended"
+msgstr ""
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Ends"
+msgstr ""
+
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "English"
 msgstr ""
@@ -1213,6 +1221,7 @@ msgid "Please connect your wallet to get free testnet assets."
 msgstr ""
 
 #: src/components/ConnectWalletPaper.tsx
+#: src/components/ConnectWalletPaperStaking.tsx
 msgid "Please connect your wallet to see your supplies, borrowings, and open positions."
 msgstr ""
 
@@ -1225,6 +1234,7 @@ msgid "Please switch to {networkName}."
 msgstr ""
 
 #: src/components/ConnectWalletPaper.tsx
+#: src/components/ConnectWalletPaperStaking.tsx
 msgid "Please, connect your wallet"
 msgstr ""
 
@@ -1531,6 +1541,7 @@ msgstr ""
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
+#: src/modules/staking/StakingPanelNoWallet.tsx
 msgid "Staking APR"
 msgstr ""
 
@@ -2005,6 +2016,10 @@ msgstr ""
 msgid "Voting results"
 msgstr ""
 
+#: src/modules/staking/StakingPanel.tsx
+msgid "Wallet Balance"
+msgstr ""
+
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
@@ -2038,7 +2053,7 @@ msgid "We couldn't find any asset matching your search. Try again with a differe
 msgstr ""
 
 #: pages/staking.staking.tsx
-msgid "We couldn’t detect a wallet. Connect a wallet to stake."
+msgid "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
 msgstr ""
 
 #: pages/404.page.tsx
