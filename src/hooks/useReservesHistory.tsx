@@ -81,20 +81,16 @@ export function useReserveRatesHistory(reserveAddress: string, timeRange: Reserv
   const [error, setError] = useState(false);
   const [data, setData] = useState<FormattedReserveHistoryItem[]>([]);
 
+  const ratesHistoryApiUrl = currentNetworkConfig?.ratesHistoryApiUrl;
+
   const refetchData = useCallback<() => () => void>(() => {
     // reset
     setLoading(true);
     setError(false);
     setData([]);
 
-    if (
-      reserveAddress &&
-      currentNetworkConfig.ratesHistoryApiUrl &&
-      !BROKEN_ASSETS.includes(reserveAddress)
-    ) {
-      const cancelable = makeCancelable(
-        fetchStats(reserveAddress, timeRange, currentNetworkConfig.ratesHistoryApiUrl)
-      );
+    if (reserveAddress && ratesHistoryApiUrl && !BROKEN_ASSETS.includes(reserveAddress)) {
+      const cancelable = makeCancelable(fetchStats(reserveAddress, timeRange, ratesHistoryApiUrl));
 
       cancelable.promise
         .then((data: APIResponse[]) => {
@@ -120,7 +116,7 @@ export function useReserveRatesHistory(reserveAddress: string, timeRange: Reserv
 
     setLoading(false);
     return () => null;
-  }, [reserveAddress, timeRange, currentNetworkConfig]);
+  }, [reserveAddress, timeRange, ratesHistoryApiUrl]);
 
   useEffect(() => {
     const cancel = refetchData();
