@@ -1,3 +1,4 @@
+import { EmodeCategory } from 'src/helpers/types';
 import { RootStore } from './root';
 
 export const selectCurrentUserLendingPoolData = (state: RootStore) => {
@@ -27,4 +28,25 @@ export const selectCurrentBaseCurrencyData = (state: RootStore) => {
       networkBaseTokenPriceDecimals: 0,
     }
   );
+};
+
+export const selectEmodes = (state: RootStore) => {
+  const reserves = selectCurrentReserves(state);
+
+  const eModes = reserves?.reduce((acc, r) => {
+    if (!acc[r.eModeCategoryId])
+      acc[r.eModeCategoryId] = {
+        liquidationBonus: r.eModeLiquidationBonus,
+        id: r.eModeCategoryId,
+        label: r.eModeLabel,
+        liquidationThreshold: r.eModeLiquidationThreshold,
+        ltv: r.eModeLtv,
+        priceSource: r.eModePriceSource,
+        assets: [r.symbol],
+      };
+    else acc[r.eModeCategoryId].assets.push(r.symbol);
+    return acc;
+  }, {} as Record<number, EmodeCategory>);
+
+  return eModes;
 };

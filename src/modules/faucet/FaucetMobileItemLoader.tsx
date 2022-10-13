@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Skeleton, Button } from '@mui/material';
+import { Box, Button, Skeleton } from '@mui/material';
 
 import { ListColumn } from '../../components/lists/ListColumn';
 import { ListItem } from '../../components/lists/ListItem';

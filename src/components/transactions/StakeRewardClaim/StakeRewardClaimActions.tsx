@@ -1,9 +1,10 @@
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
+
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
 import { TxActionsWrapper } from '../TxActionsWrapper';
-import { useRootStore } from 'src/store/root';
 
 export interface StakeRewardClaimActionProps extends BoxProps {
   amountToClaim: string;

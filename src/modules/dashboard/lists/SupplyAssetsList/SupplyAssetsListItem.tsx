@@ -1,5 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
+import { NoData } from 'src/components/primitives/NoData';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
@@ -33,6 +35,11 @@ export const SupplyAssetsListItem = ({
 }: SupplyAssetsItem) => {
   const { currentMarket } = useProtocolDataContext();
   const { openSupply } = useModalContext();
+
+  // Hide the asset to prevent it from being supplied if supply cap has been reached
+  const { supplyCap: supplyCapUsage, debtCeiling } = useAssetCaps();
+  if (supplyCapUsage.isMaxed) return null;
+
   return (
     <ListItemWrapper
       symbol={symbol}
@@ -41,6 +48,7 @@ export const SupplyAssetsListItem = ({
       detailsAddress={detailsAddress}
       data-cy={`dashboardSupplyListItem_${symbol.toUpperCase()}`}
       currentMarket={currentMarket}
+      showDebtCeilingTooltips
     >
       <ListValueColumn
         symbol={symbol}
@@ -61,10 +69,14 @@ export const SupplyAssetsListItem = ({
       <ListAPRColumn value={Number(supplyAPY)} incentives={aIncentivesData} symbol={symbol} />
 
       <ListColumn>
-        <ListItemCanBeCollateral
-          isIsolated={isIsolated}
-          usageAsCollateralEnabled={usageAsCollateralEnabledOnUser}
-        />
+        {debtCeiling.isMaxed ? (
+          <NoData variant="main14" color="text.secondary" />
+        ) : (
+          <ListItemCanBeCollateral
+            isIsolated={isIsolated}
+            usageAsCollateralEnabled={usageAsCollateralEnabledOnUser}
+          />
+        )}
       </ListColumn>
 
       <ListButtonsColumn>

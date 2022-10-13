@@ -1,14 +1,14 @@
 import {
-  ComputedUserReserve,
-  calculateHealthFactorFromBalancesBigUnits,
-  valueToBigNumber,
   BigNumberValue,
+  calculateHealthFactorFromBalancesBigUnits,
+  ComputedUserReserve,
+  valueToBigNumber,
 } from '@aave/math-utils';
+import BigNumber from 'bignumber.js';
 import {
   ComputedReserveData,
   ExtendedFormattedUser,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
-import BigNumber from 'bignumber.js';
 
 interface CalculateHFAfterSwapProps {
   fromAmount: BigNumberValue;

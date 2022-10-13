@@ -4,13 +4,13 @@ inputs:
   PULL_REQUEST_NUMBER:
     description: Pull request id
     required: false
-    default: "0"
+    default: '0'
   COMMENT_BODY:
     description: Text of the comment
     required: true
 runs:
-  using: "composite"
-  steps:  
+  using: 'composite'
+  steps:
     - name: Find Comment
       uses: peter-evans/find-comment@1769778a0c5bd330272d749d12c036d65e70d39d # v2.0.0
       id: fc

@@ -5,12 +5,16 @@ import {
   valueToBigNumber,
 } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Alert, Box, Checkbox, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import { Box, Checkbox, Typography } from '@mui/material';
 import { useRef, useState } from 'react';
 import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
+import { Warning } from 'src/components/primitives/Warning';
+import StyledToggleButton from 'src/components/StyledToggleButton';
+import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
@@ -65,14 +69,14 @@ const BorrowModeSwitch = ({
       align="flex-start"
       captionColor="text.secondary"
     >
-      <ToggleButtonGroup
+      <StyledToggleButtonGroup
         color="primary"
         value={interestRateMode}
         exclusive
         onChange={(_, value) => setInterestRateMode(value)}
         sx={{ width: '100%', mt: 0.5 }}
       >
-        <ToggleButton
+        <StyledToggleButton
           value={InterestRate.Variable}
           disabled={interestRateMode === InterestRate.Variable}
         >
@@ -80,8 +84,8 @@ const BorrowModeSwitch = ({
             <Trans>Variable</Trans>
           </Typography>
           <FormattedNumber value={variableRate} percent variant="secondary14" />
-        </ToggleButton>
-        <ToggleButton
+        </StyledToggleButton>
+        <StyledToggleButton
           value={InterestRate.Stable}
           disabled={interestRateMode === InterestRate.Stable}
         >
@@ -89,8 +93,8 @@ const BorrowModeSwitch = ({
             <Trans>Stable</Trans>
           </Typography>
           <FormattedNumber value={stableRate} percent variant="secondary14" />
-        </ToggleButton>
-      </ToggleButtonGroup>
+        </StyledToggleButton>
+      </StyledToggleButtonGroup>
     </Row>
   );
 };
@@ -107,6 +111,7 @@ export const BorrowModalContent = ({
   const { mainTxState: borrowTxState, gasLimit, txError } = useModalContext();
   const { user, marketReferencePriceInUsd } = useAppDataContext();
   const { currentNetworkConfig } = useProtocolDataContext();
+  const { borrowCap, debtCeiling } = useAssetCaps();
 
   const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
   const [_amount, setAmount] = useState('');
@@ -120,7 +125,7 @@ export const BorrowModalContent = ({
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToBorrow.toString(10) : _amount;
 
-  // We set this in a useEffect, so it doesnt constantly change when
+  // We set this in a useEffect, so it doesn't constantly change when
   // max amount selected
   const handleChange = (_value: string) => {
     const maxSelected = _value === '-1';
@@ -216,6 +221,9 @@ export const BorrowModalContent = ({
       : poolReserve.vIncentivesData;
   return (
     <>
+      {borrowCap.determineWarningDisplay({ borrowCap })}
+      {poolReserve.isIsolated && debtCeiling.determineWarningDisplay({ debtCeiling })}
+
       <AssetInput
         value={amount}
         onChange={handleChange}
@@ -272,11 +280,11 @@ export const BorrowModalContent = ({
 
       {displayRiskCheckbox && (
         <>
-          <Alert severity="error" sx={{ my: '24px' }}>
+          <Warning severity="error" sx={{ my: 6 }}>
             <Trans>
               Borrowing this amount will reduce your health factor and increase risk of liquidation.
             </Trans>
-          </Alert>
+          </Warning>
           <Box
             sx={{
               display: 'flex',
@@ -299,6 +307,14 @@ export const BorrowModalContent = ({
           </Box>
         </>
       )}
+
+      <Warning severity="info" sx={{ my: 6 }}>
+        <Trans>
+          <b>Attention:</b> Parameter changes via governance can alter your account health factor
+          and risk of liquidation. Follow the{' '}
+          <a href="https://governance.aave.com/">Aave governance forum</a> for updates.
+        </Trans>
+      </Warning>
 
       <BorrowActions
         poolReserve={poolReserve}
