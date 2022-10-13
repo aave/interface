@@ -12,11 +12,15 @@ import { getENSProvider } from 'src/utils/marketsAndNetworksConfig';
 
 import { Warning } from '../primitives/Warning';
 import { TxModalTitle } from '../transactions/FlowCommons/TxModalTitle';
+import { Resolution } from '@unstoppabledomains/resolution';
+const tldResolverKeys = require('@unstoppabledomains/tldsresolverkeys');
 
 export type WalletRowProps = {
   walletName: string;
   walletType: WalletType;
 };
+
+const resolution = new Resolution()
 
 const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
   const { connectWallet } = useWeb3Context();
@@ -135,6 +139,7 @@ export const WalletSelector = () => {
     }
   };
 
+  /*
   const handleWatchAddress = async (inputMockWalletAddress: string): Promise<void> => {
     if (validAddressError) setValidAddressError(false);
     if (utils.isAddress(inputMockWalletAddress)) {
@@ -153,7 +158,37 @@ export const WalletSelector = () => {
         }
       }
     }
+  };*/
+
+  const handleWatchAddress = async (inputMockWalletAddress: string): Promise<void> => {
+    if (validAddressError) setValidAddressError(false);
+    if (utils.isAddress(inputMockWalletAddress)) {
+      connectWatchModeOnly(inputMockWalletAddress);
+    } else {
+      // Check if address could be valid ENS before trying to resolve
+      if (inputMockWalletAddress.slice(-4) === '.eth') {
+        // Attempt to resolve ENS name and use resolved address if valid
+        const resolvedAddress = await mainnetProvider.resolveName(inputMockWalletAddress);
+        if (resolvedAddress && utils.isAddress(resolvedAddress)) {
+          connectWatchModeOnly(resolvedAddress);
+        } else {
+          setValidAddressError(true);
+        }
+      } else if (await resolution.isSupportedDomain(inputMockWalletAddress)){
+        // Handle UNS names
+        const resolvedAddress = await resolution.owner(inputMockWalletAddress);
+        if (resolvedAddress && utils.isAddress(resolvedAddress)) {
+          connectWatchModeOnly(resolvedAddress);
+        } else {
+          setValidAddressError(true);
+        }
+      }else{
+        setValidAddressError(true);
+      }
+    }
   };
+
+
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
@@ -198,7 +233,7 @@ export const WalletSelector = () => {
             overflow: 'show',
             fontSize: sm ? '16px' : '14px',
           })}
-          placeholder="Enter ethereum address or ENS name"
+          placeholder="Enter ethereum address or NFT Domain"
           fullWidth
           autoFocus
           value={inputMockWalletAddress}
@@ -219,7 +254,7 @@ export const WalletSelector = () => {
           size="large"
           fullWidth
           disabled={
-            !utils.isAddress(inputMockWalletAddress) && inputMockWalletAddress.slice(-4) !== '.eth'
+            !utils.isAddress(inputMockWalletAddress) && inputMockWalletAddress.slice(-4) !== '.eth' && !tldResolverKeys.udTlds.includes(inputMockWalletAddress.split(".").pop())
           }
           aria-label="watch mode only address"
         >
