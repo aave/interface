@@ -1,10 +1,11 @@
 import { Avatar, Box, Typography } from '@mui/material';
 import makeBlockie from 'ethereum-blockies-base64';
 import { useState } from 'react';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import useGetEns from 'src/libs/hooks/use-get-ens';
 
 import { textCenterEllipsis } from '../../../helpers/text-center-ellipsis';
-import type { GovernanceVoter } from './VotersList';
+import type { GovernanceVoter } from './VotersListContainer';
 
 type VotersListItemProps = {
   voter: GovernanceVoter;
@@ -43,15 +44,17 @@ export const VotersListItem = ({ voter }: VotersListItemProps): JSX.Element => {
         <Box
           sx={{
             display: 'flex',
+            flexGrow: 1,
             justifyContent: 'space-between',
             alignItems: 'center',
+            maxWidth: 90,
           }}
         >
           <Typography variant="subheader1" color={voter.vote ? 'success.main' : 'error.main'}>
             {voter.vote ? 'YAE' : 'NAY'}
           </Typography>
           <Typography variant="subheader1" color="primary">
-            {voter.votingPower}
+            <FormattedNumber value={voter.votingPower} visibleDecimals={0} />
           </Typography>
         </Box>
       </Box>

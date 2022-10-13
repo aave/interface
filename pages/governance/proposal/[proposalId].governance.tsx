@@ -32,7 +32,7 @@ import { MainLayout } from 'src/layouts/MainLayout';
 import { FormattedProposalTime } from 'src/modules/governance/FormattedProposalTime';
 import { ProposalTopPanel } from 'src/modules/governance/proposal/ProposalTopPanel';
 import { VoteInfo } from 'src/modules/governance/proposal/VoteInfo';
-import { VotersList } from 'src/modules/governance/proposal/VotersList';
+import { VotersListContainer } from 'src/modules/governance/proposal/VotersListContainer';
 import { StateBadge } from 'src/modules/governance/StateBadge';
 import {
   enhanceProposalWithTimes,
@@ -46,7 +46,6 @@ import { CustomProposalType, Proposal } from 'src/static-build/proposal';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 
 import { ContentContainer } from '../../../src/components/ContentContainer';
-// import { Vote } from 'src/static-build/vote';
 
 export async function getStaticPaths() {
   const ProposalFetcher = new Proposal();
@@ -290,7 +289,7 @@ export default function ProposalPage({
                     loading={loading}
                   />
                   <VoteBar percent={nayPercent} votes={nayVotes} sx={{ mt: 3 }} loading={loading} />
-                  <VotersList proposal={proposal} />
+                  <VotersListContainer proposal={proposal} />
                   <Row
                     caption={<Trans>State</Trans>}
                     sx={{ height: 48 }}
