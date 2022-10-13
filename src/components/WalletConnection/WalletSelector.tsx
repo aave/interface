@@ -155,7 +155,8 @@ export const WalletSelector = () => {
         }
       } else if (await resolution.isSupportedDomain(inputMockWalletAddress)){
         // Handle UNS names
-        const resolvedAddress = await resolution.owner(inputMockWalletAddress);
+        let resolvedAddress = null;
+        try{resolvedAddress = await resolution.owner(inputMockWalletAddress);}catch(e){}
         if (resolvedAddress && utils.isAddress(resolvedAddress)) {
           connectWatchModeOnly(resolvedAddress);
         } else {
