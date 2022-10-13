@@ -149,7 +149,7 @@
     "Vladimir Konstantinovich Yumatov <vladimir@aave.com>"
   ],
   "lint-staged": {
-    "!(.prettierignore|.env.*)*.*": "yarn lint:fix",
+    "!(.prettierignore)*.*": "yarn lint:fix",
     "*.svg": "npx svgo --final-newline"
   },
   "nextBundleAnalysis": {
