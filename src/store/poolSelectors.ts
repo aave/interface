@@ -1,4 +1,5 @@
 import { EmodeCategory } from 'src/helpers/types';
+
 import { RootStore } from './root';
 
 export const selectCurrentUserLendingPoolData = (state: RootStore) => {
