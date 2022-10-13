@@ -13,29 +13,33 @@ import {
 } from '@mui/material';
 import React, { ReactNode } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Warning } from 'src/components/primitives/Warning';
+import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
+import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
+import { getMarketInfoById } from 'src/components/MarketSwitcher';
 import {
   ComputedReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { usePermissions } from 'src/hooks/usePermissions';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import {
   assetCanBeBorrowedByUser,
   getMaxAmountAvailableToBorrow,
 } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
+import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 
 import { CapType } from '../../components/caps/helper';
 import { AvailableTooltip } from '../../components/infoTooltips/AvailableTooltip';
-import { Row } from '../../components/primitives/Row';
 import { Link, ROUTES } from '../../components/primitives/Link';
+import { Row } from '../../components/primitives/Row';
 import { getEmodeMessage } from '../../components/transactions/Emode/EmodeNaming';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
-import { Warning } from 'src/components/primitives/Warning';
-import { HarmonyWarning } from 'src/components/transactions/Warnings/HarmonyWarning';
+import { WalletEmptyInfo } from '../dashboard/lists/SupplyAssetsList/WalletEmptyInfo';
 
 const PaperWrapper = ({ children }: { children: ReactNode }) => {
   return (
@@ -56,16 +60,17 @@ interface ReserveActionsProps {
 export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
-
   const { openBorrow, openFaucet, openSupply } = useModalContext();
-
   const { currentAccount, loading: web3Loading } = useWeb3Context();
-  const { user, reserves, loading: loadingReserves } = useAppDataContext();
+  const { user, reserves, loading: loadingReserves, eModes } = useAppDataContext();
   const { walletBalances, loading: loadingBalance } = useWalletBalances();
   const { isPermissionsLoading } = usePermissions();
-
-  const { currentNetworkConfig } = useProtocolDataContext();
+  const { currentNetworkConfig, currentChainId, currentMarket } = useProtocolDataContext();
   const { bridge, name: networkName } = currentNetworkConfig;
+  const {
+    market: { marketTitle: networkMarketName },
+  } = getMarketInfoById(currentMarket);
+  const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
 
   if (!currentAccount && !isPermissionsLoading)
     return (
@@ -192,14 +197,12 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
               </Button>
             </Warning>
           ) : (
-            <Warning severity="info" icon={false}>
-              <Trans>Your {networkName} wallet is empty. Purchase or transfer assets</Trans>{' '}
-              {bridge && (
-                <Trans>
-                  or use {<Link href={bridge.url}>{bridge.name}</Link>} to transfer your ETH assets.
-                </Trans>
-              )}
-            </Warning>
+            <WalletEmptyInfo
+              name={networkName}
+              bridge={bridge}
+              icon={false}
+              chainId={currentChainId}
+            />
           )}
         </Row>
       )}
@@ -222,6 +225,9 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
             symbolsColor="text.muted"
             symbol="USD"
           />
+          <Box mt={2}>
+            <BuyWithFiat cryptoSymbol={poolReserve.symbol} networkMarketName={networkMarketName} />
+          </Box>
         </Box>
       </Row>
 
@@ -291,9 +297,8 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
         <Warning sx={{ mb: '12px' }} severity="info" icon={false}>
           <Trans>
             Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for{' '}
-            {getEmodeMessage(user.userEmodeCategoryId, currentNetworkConfig.baseAssetSymbol)}{' '}
-            category. To manage E-Mode categories visit your{' '}
-            <Link href={ROUTES.dashboard}>Dashboard</Link>.
+            {getEmodeMessage(eModes[user.userEmodeCategoryId].label)} category. To manage E-Mode
+            categories visit your <Link href={ROUTES.dashboard}>Dashboard</Link>.
           </Trans>
         </Warning>
       )}
@@ -309,18 +314,24 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
 
       <Row mb={3} />
 
-      {currentNetworkConfig.name === 'Harmony' && (
+      {poolReserve.isFrozen && currentNetworkConfig.name === 'Harmony' && (
         <Row align="flex-start" mb={3}>
-          <HarmonyWarning learnMore={true} />
+          <MarketWarning marketName="Harmony" />
+        </Row>
+      )}
+      {poolReserve.isFrozen && currentNetworkConfig.name === 'Fantom' && (
+        <Row align="flex-start" mb={3}>
+          <MarketWarning marketName="Fantom" />
         </Row>
       )}
 
-      <Stack direction="row" spacing={2}>
+      <Stack direction="row" spacing={2} sx={{ mb: 4 }}>
         <Button
           variant="contained"
           disabled={balance?.amount === '0'}
           onClick={() => openSupply(underlyingAsset)}
           fullWidth={downToXSM}
+          data-cy={'supplyButton'}
         >
           <Trans>Supply</Trans> {downToXSM && poolReserve.symbol}
         </Button>
@@ -329,10 +340,17 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
           variant="contained"
           onClick={() => openBorrow(underlyingAsset)}
           fullWidth={downToXSM}
+          data-cy={'borrowButton'}
         >
           <Trans>Borrow</Trans> {downToXSM && poolReserve.symbol}
         </Button>
       </Stack>
+      {maxAmountToSupply === '0' && supplyCap.determineWarningDisplay({ supplyCap, icon: false })}
+      {maxAmountToBorrow === '0' && borrowCap.determineWarningDisplay({ borrowCap, icon: false })}
+      {poolReserve.isIsolated &&
+        balance?.amount !== '0' &&
+        user?.totalCollateralUSD !== '0' &&
+        debtCeiling.determineWarningDisplay({ debtCeiling, icon: false })}
     </PaperWrapper>
   );
 };

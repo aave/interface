@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
 export type GovVoteActionsProps = {

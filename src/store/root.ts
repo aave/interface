@@ -19,17 +19,6 @@ export type RootStore = StakeSlice &
   IncentiveSlice &
   GovernanceSlice;
 
-function mergeGetters<A, B>(a: A, b: B): A & B {
-  const result = Object.defineProperties(
-    {},
-    {
-      ...Object.getOwnPropertyDescriptors(a),
-      ...Object.getOwnPropertyDescriptors(b),
-    }
-  );
-  return result as A & B;
-}
-
 export const useRootStore = create<RootStore>()(
   devtools(
     persist(
@@ -41,10 +30,6 @@ export const useRootStore = create<RootStore>()(
           ...createPoolSlice(...args),
           ...createIncentiveSlice(...args),
           ...createGovernanceSlice(...args),
-          computed: mergeGetters(
-            createWalletSlice(...args).computed,
-            createPoolSlice(...args).computed
-          ),
           // ...createStakeSlice(...args),
           // ...createProtocolDataSlice(...args),
           // ...createWalletSlice(...args),

@@ -1,11 +1,17 @@
-import { Alert, Box, Button, Link, Typography } from '@mui/material';
+import { Trans } from '@lingui/macro';
+import { Box, Button, InputBase, Link, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { UnsupportedChainIdError } from '@web3-react/core';
+import { NoEthereumProviderError } from '@web3-react/injected-connector';
+import { UserRejectedRequestError } from '@web3-react/walletconnect-connector';
+import { utils } from 'ethers';
+import { useState } from 'react';
+import { WatchOnlyModeTooltip } from 'src/components/infoTooltips/WatchOnlyModeTooltip';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { WalletType } from 'src/libs/web3-data-provider/WalletOptions';
+import { getENSProvider } from 'src/utils/marketsAndNetworksConfig';
+
+import { Warning } from '../primitives/Warning';
 import { TxModalTitle } from '../transactions/FlowCommons/TxModalTitle';
-import { Trans } from '@lingui/macro';
-import { UnsupportedChainIdError } from '@web3-react/core';
-import { UserRejectedRequestError } from '@web3-react/walletconnect-connector';
-import { NoEthereumProviderError } from '@web3-react/injected-connector';
 
 export type WalletRowProps = {
   walletName: string;
@@ -94,7 +100,12 @@ export enum ErrorType {
 }
 
 export const WalletSelector = () => {
-  const { error } = useWeb3Context();
+  const { error, connectWatchModeOnly } = useWeb3Context();
+  const [inputMockWalletAddress, setInputMockWalletAddress] = useState('');
+  const [validAddressError, setValidAddressError] = useState<boolean>(false);
+  const { breakpoints } = useTheme();
+  const sm = useMediaQuery(breakpoints.down('sm'));
+  const mainnetProvider = getENSProvider();
 
   let blockingError: ErrorType | undefined = undefined;
   if (error) {
@@ -124,14 +135,35 @@ export const WalletSelector = () => {
     }
   };
 
+  const handleWatchAddress = async (inputMockWalletAddress: string): Promise<void> => {
+    if (validAddressError) setValidAddressError(false);
+    if (utils.isAddress(inputMockWalletAddress)) {
+      connectWatchModeOnly(inputMockWalletAddress);
+    } else {
+      // Check if address could be valid ENS before trying to resolve
+      if (inputMockWalletAddress.slice(-4) !== '.eth') {
+        setValidAddressError(true);
+      } else {
+        // Attempt to resolve ENS name and use resolved address if valid
+        const resolvedAddress = await mainnetProvider.resolveName(inputMockWalletAddress);
+        if (resolvedAddress && utils.isAddress(resolvedAddress)) {
+          connectWatchModeOnly(resolvedAddress);
+        } else {
+          setValidAddressError(true);
+        }
+      }
+    }
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+    event.preventDefault();
+    handleWatchAddress(inputMockWalletAddress);
+  };
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
       <TxModalTitle title="Connect a wallet" />
-      {error && (
-        <Alert severity="error" sx={{ mb: '24px' }}>
-          {handleBlocking()}
-        </Alert>
-      )}
+      {error && <Warning severity="error">{handleBlocking()}</Warning>}
       <WalletRow
         key="browser_wallet"
         walletName="Browser wallet"
@@ -149,6 +181,56 @@ export const WalletSelector = () => {
       />
       <WalletRow key="torus_wallet" walletName="Torus" walletType={WalletType.TORUS} />
       <WalletRow key="frame_wallet" walletName="Frame" walletType={WalletType.FRAME} />
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, padding: '10px 0' }}>
+        <Typography variant="subheader1" color="text.secondary">
+          <Trans>Enter an address to track in watch-only mode</Trans>
+        </Typography>
+        <WatchOnlyModeTooltip />
+      </Box>
+      <form onSubmit={handleSubmit}>
+        <InputBase
+          sx={(theme) => ({
+            py: 1,
+            px: 3,
+            border: `1px solid ${theme.palette.divider}`,
+            borderRadius: '6px',
+            mb: 1,
+            overflow: 'show',
+            fontSize: sm ? '16px' : '14px',
+          })}
+          placeholder="Enter ethereum address or ENS name"
+          fullWidth
+          autoFocus
+          value={inputMockWalletAddress}
+          onChange={(e) => setInputMockWalletAddress(e.target.value)}
+          inputProps={{
+            'aria-label': 'watch mode only address',
+          }}
+        />
+        <Button
+          type="submit"
+          variant="outlined"
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            mb: '8px',
+          }}
+          size="large"
+          fullWidth
+          disabled={
+            !utils.isAddress(inputMockWalletAddress) && inputMockWalletAddress.slice(-4) !== '.eth'
+          }
+          aria-label="watch mode only address"
+        >
+          Watch address
+        </Button>
+      </form>
+      {validAddressError && (
+        <Typography variant="helperText" color="error.main">
+          <Trans>Please enter a valid wallet address.</Trans>
+        </Typography>
+      )}
       <Typography variant="description" sx={{ mt: '22px', mb: '30px', alignSelf: 'center' }}>
         <Trans>
           Need help connecting a wallet?{' '}

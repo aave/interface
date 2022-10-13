@@ -5,8 +5,8 @@ import React, { useRef, useState } from 'react';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { useRootStore } from 'src/store/root';
+import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { CooldownWarning } from '../../Warnings/CooldownWarning';
@@ -36,7 +36,7 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
     state.stakeUserResult,
   ]);
   const stakeData = stakeGeneralResult?.[stakeAssetName as StakingType];
-  const { chainId: connectedChainId } = useWeb3Context();
+  const { chainId: connectedChainId, watchModeOnlyAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
 
@@ -99,7 +99,7 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
   return (
     <>
       <TxModalTitle title="Stake" symbol={icon} />
-      {isWrongNetwork && (
+      {isWrongNetwork && !watchModeOnlyAddress && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
       )}
 

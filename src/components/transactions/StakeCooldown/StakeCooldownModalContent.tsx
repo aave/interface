@@ -1,14 +1,15 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { ArrowDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Alert, Box, Checkbox, FormControlLabel, SvgIcon, Typography } from '@mui/material';
+import { Box, Checkbox, FormControlLabel, SvgIcon, Typography } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { useState } from 'react';
+import { Warning } from 'src/components/primitives/Warning';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { useRootStore } from 'src/store/root';
+import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { formattedTime, timeText } from '../../../helpers/timeHelper';
@@ -37,7 +38,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
     state.stakeUserResult,
     state.stakeGeneralResult,
   ]);
-  const { chainId: connectedChainId } = useWeb3Context();
+  const { chainId: connectedChainId, watchModeOnlyAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
 
@@ -110,7 +111,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
   return (
     <>
       <TxModalTitle title="Cooldown to unstake" />
-      {isWrongNetwork && (
+      {isWrongNetwork && !watchModeOnlyAddress && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
       )}
       <Typography variant="description" sx={{ mb: 6 }}>
@@ -222,14 +223,14 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
         </Typography>
       )}
 
-      <Alert severity="error" sx={{ mb: 6 }}>
+      <Warning severity="error">
         <Typography variant="caption">
           <Trans>
             If you DO NOT unstake within {timeMessage(stakeUnstakeWindow)} of unstake window, you
             will need to activate cooldown process again.
           </Trans>
         </Typography>
-      </Alert>
+      </Warning>
 
       <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} />
 

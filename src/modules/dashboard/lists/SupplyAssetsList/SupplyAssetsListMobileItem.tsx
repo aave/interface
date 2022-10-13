@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
@@ -33,6 +34,10 @@ export const SupplyAssetsListMobileItem = ({
   const { currentMarket } = useProtocolDataContext();
   const { openSupply } = useModalContext();
 
+  // Hide the asset to prevent it from being supplied if supply cap has been reached
+  const { supplyCap: supplyCapUsage } = useAssetCaps();
+  if (supplyCapUsage.isMaxed) return null;
+
   return (
     <ListMobileItemWrapper
       symbol={symbol}
@@ -40,6 +45,7 @@ export const SupplyAssetsListMobileItem = ({
       name={name}
       underlyingAsset={underlyingAsset}
       currentMarket={currentMarket}
+      showDebtCeilingTooltips
     >
       <ListValueRow
         title={<Trans>Supply balance</Trans>}

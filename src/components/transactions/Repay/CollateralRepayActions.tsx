@@ -1,16 +1,16 @@
 import { InterestRate } from '@aave/contract-helpers';
+import { normalize } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
+import { OptimalRate } from 'paraswap-core';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { getRepayCallData } from 'src/hooks/useSwap';
 import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
-import { OptimalRate } from 'paraswap-core';
-import { getRepayCallData } from 'src/hooks/useSwap';
-import { normalize } from '@aave/math-utils';
 
 export interface RepayActionProps extends BoxProps {
   rateMode: InterestRate;

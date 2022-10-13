@@ -23,16 +23,6 @@ export const permitByChainAndToken: {
     '0xba5DdD1f9d7F570dc94a51479a000E3BCE967196': true,
     '0xD22a58f79e9481D1a88e00c343885A588b34b68B': false, // eurs
   },
-  [ChainId.arbitrum_rinkeby]: {
-    '0x5eb35Fe1f1074Ae8d6D23Bf771705846Cc812c09': true,
-    '0x200c2386A02cbA50563b7b64615B43Ab1874a06e': true,
-    '0x403052a80d33A79Bef4645c0D8Ff00FA03f424c7': true,
-    '0x774382EF196781400a335AF0c4219eEd684ED713': true,
-    '0x1F7dC0B961950c69584d0F9cE290A918124d32CD': true,
-    '0x7c53810c756C636cEF076c92D5D7C04555694E76': true,
-    '0x31f909C64E93f764dc90d78DCBB38a6A6D1D48dE': true,
-    '0xaB874B1862938704Cf44Fb81E33c59B67c6BeC07': true,
-  },
   [ChainId.arbitrum_goerli]: {
     '0x805aC2a202e3E217B0C9fe53908ea5e36856fD29': true,
     '0x7e752bC77eBE2225B327e6ebF09fAD7801873931': true,
@@ -88,7 +78,6 @@ export const permitByChainAndToken: {
     '0xb685400156cF3CBE8725958DeAA61436727A30c3': false, // WMATIC dont have permit
   },
   [ChainId.harmony]: {},
-  [ChainId.harmony_testnet]: {},
   [ChainId.avalanche]: {
     '0x9702230A8Ea53601f5cD2dc00fDBc13d4dF4A8c7': true,
   },
@@ -113,15 +102,5 @@ export const permitByChainAndToken: {
     ['0x63242B9Bd3C22f18706d5c4E627B4735973f1f07']: true,
     ['0x07C725d58437504CA5f814AE406e70E21C5e8e9e']: true,
     ['0x2e3A2fb8473316A02b8A297B982498E661E1f6f5']: true,
-  },
-  [ChainId.optimism_kovan]: {
-    '0xb532118d86765Eb544958e47df77bb8bDDe2F096': true,
-    '0xd6B095c27bDf158C462AaB8Cb947BdA9351C0e1d': true,
-    '0xFbBCcCCA95b5F676D8f044Ec75e7eA5899280efF': true,
-    '0x6883D765088f90bAE62048dE45f2202D72985B01': true,
-    '0x9cCc44Aa7C301b6655ec9891BdaD20fa6eb2b552': true,
-    '0xeE6b5ad81c7d88a632b24Bcdac055D6f5F469495': true,
-    '0xfF5b900f020d663719EEE1731C21778632e6C424': true,
-    '0x46e213C62d4734C64986879af00eEc5128395776': true,
   },
 };

@@ -1,11 +1,13 @@
 import { Trans } from '@lingui/macro';
-import { Box, BoxProps, Button, CircularProgress } from '@mui/material';
+import { Box, BoxProps, Button, CircularProgress, Typography } from '@mui/material';
+import isEmpty from 'lodash/isEmpty';
 import { ReactNode } from 'react';
 import { TxStateType, useModalContext } from 'src/hooks/useModal';
-import isEmpty from 'lodash/isEmpty';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { TxAction } from 'src/ui-config/errorMapping';
+
 import { LeftHelperText } from './FlowCommons/LeftHelperText';
 import { RightHelperText } from './FlowCommons/RightHelperText';
-import { TxAction } from 'src/ui-config/errorMapping';
 
 interface TxActionsWrapperProps extends BoxProps {
   actionInProgressText: ReactNode;
@@ -41,6 +43,7 @@ export const TxActionsWrapper = ({
   ...rest
 }: TxActionsWrapperProps) => {
   const { txError, retryWithApproval } = useModalContext();
+  const { watchModeOnlyAddress } = useWeb3Context();
 
   const hasApprovalError =
     requiresApproval && txError && txError.txAction === TxAction.APPROVAL && txError.actionBlocked;
@@ -86,14 +89,14 @@ export const TxActionsWrapper = ({
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12, ...sx }} {...rest}>
-      {requiresApproval && (
+      {requiresApproval && !watchModeOnlyAddress && (
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
           <LeftHelperText amount={amount} approvalHash={approvalTxState?.txHash} />
           <RightHelperText approvalHash={approvalTxState?.txHash} />
         </Box>
       )}
 
-      {approvalParams && (
+      {approvalParams && !watchModeOnlyAddress && (
         <Button
           variant="contained"
           disabled={approvalParams.disabled || blocked}
@@ -111,7 +114,7 @@ export const TxActionsWrapper = ({
 
       <Button
         variant="contained"
-        disabled={disabled || blocked}
+        disabled={disabled || blocked || watchModeOnlyAddress !== undefined}
         onClick={handleClick}
         size="large"
         sx={{ minHeight: '44px', ...(approvalParams ? { mt: 2 } : {}) }}
@@ -120,6 +123,11 @@ export const TxActionsWrapper = ({
         {loading && <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />}
         {content}
       </Button>
+      {watchModeOnlyAddress && (
+        <Typography variant="helperText" color="warning.main" sx={{ textAlign: 'center', mt: 2 }}>
+          <Trans>Watch-only mode. Connect to a wallet to perform transactions.</Trans>
+        </Typography>
+      )}
     </Box>
   );
 };

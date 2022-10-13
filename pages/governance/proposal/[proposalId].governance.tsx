@@ -15,16 +15,21 @@ import {
   useTheme,
 } from '@mui/material';
 import dayjs from 'dayjs';
+import AaveMetaImage from 'public/aaveMetaLogo-min.jpg';
 import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Meta } from 'src/components/Meta';
 import { CheckBadge } from 'src/components/primitives/CheckBadge';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
+import { Warning } from 'src/components/primitives/Warning';
+import { GovVoteModal } from 'src/components/transactions/GovVote/GovVoteModal';
 import { GovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
 import { usePolling } from 'src/hooks/usePolling';
 import { MainLayout } from 'src/layouts/MainLayout';
+import { FormattedProposalTime } from 'src/modules/governance/FormattedProposalTime';
 import { ProposalTopPanel } from 'src/modules/governance/proposal/ProposalTopPanel';
 import { VoteInfo } from 'src/modules/governance/proposal/VoteInfo';
 import { StateBadge } from 'src/modules/governance/StateBadge';
@@ -38,11 +43,8 @@ import { VoteBar } from 'src/modules/governance/VoteBar';
 import { Ipfs, IpfsType } from 'src/static-build/ipfs';
 import { CustomProposalType, Proposal } from 'src/static-build/proposal';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
-import { Link } from 'src/components/primitives/Link';
 
 import { ContentContainer } from '../../../src/components/ContentContainer';
-import { GovVoteModal } from 'src/components/transactions/GovVote/GovVoteModal';
-import { FormattedProposalTime } from 'src/modules/governance/FormattedProposalTime';
 // import { Vote } from 'src/static-build/vote';
 
 export async function getStaticPaths() {
@@ -78,6 +80,7 @@ interface ProposalPageProps {
   ipfs?: IpfsType;
   proposal?: CustomProposalType;
   prerendered?: boolean;
+  metadataError?: boolean;
 }
 
 const CenterAlignedImage = styled('img')({
@@ -94,6 +97,7 @@ export default function ProposalPage({
   proposal: initialProposal,
   ipfs,
   prerendered,
+  metadataError = false,
 }: ProposalPageProps) {
   const [url, setUrl] = useState('');
   const [proposal, setProposal] = useState(initialProposal);
@@ -110,11 +114,12 @@ export default function ProposalPage({
     setLoading(false);
   }
 
-  usePolling(updateProposal, 10000, !mightBeStale, []);
+  usePolling(updateProposal, loading ? 5000 : 30000, !mightBeStale, []);
 
   // seed when no ssg
   useEffect(() => {
     if (!proposal && initialProposal) setProposal(initialProposal);
+    setLoading(false);
   }, [initialProposal]);
 
   useEffect(() => {
@@ -144,9 +149,12 @@ export default function ProposalPage({
         requiredDiff: 0,
         diff: 0,
       };
+
   return (
     <>
-      {ipfs && <Meta title={ipfs.title} description={ipfs.shortDescription} />}
+      {ipfs && (
+        <Meta imageUrl={AaveMetaImage.src} title={ipfs.title} description={ipfs.shortDescription} />
+      )}
       <ProposalTopPanel />
 
       <ContentContainer>
@@ -156,94 +164,107 @@ export default function ProposalPage({
               <Typography variant="h3">
                 <Trans>Proposal overview</Trans>
               </Typography>
-              <Box sx={{ px: { md: 18 }, pt: 8 }}>
-                <Typography variant="h2" sx={{ mb: 6 }}>
-                  {ipfs?.title || <Skeleton />}
-                </Typography>
-                {proposal && ipfs ? (
-                  <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        flexWrap: 'wrap',
-                        alignItems: 'center',
+              {metadataError ? (
+                <Box sx={{ px: { md: 18 }, pt: 8 }}>
+                  <Warning severity="error">
+                    <Trans>An error has occurred fetching the proposal metadata from IPFS.</Trans>
+                  </Warning>
+                </Box>
+              ) : (
+                <Box sx={{ px: { md: 18 }, pt: 8 }}>
+                  <Typography variant="h2" sx={{ mb: 6 }}>
+                    {ipfs?.title || <Skeleton />}
+                  </Typography>
+                  {proposal && ipfs ? (
+                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          flexWrap: 'wrap',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Box sx={{ mr: '24px', mb: { xs: '2px', sm: 0 } }}>
+                          <StateBadge state={proposal.state} loading={loading} />
+                        </Box>
+                        {!loading && (
+                          <FormattedProposalTime
+                            state={proposal.state}
+                            executionTime={proposal.executionTime}
+                            executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
+                            expirationTimestamp={proposal.expirationTimestamp}
+                          />
+                        )}
+                      </Box>
+                      <Box sx={{ flexGrow: 1 }} />
+                      <Button
+                        component="a"
+                        target="_blank"
+                        rel="noopener"
+                        href={`${governanceConfig.ipfsGateway}/${ipfs.ipfsHash}`}
+                        startIcon={
+                          <SvgIcon sx={{ '& path': { strokeWidth: '1' } }}>
+                            <DownloadIcon />
+                          </SvgIcon>
+                        }
+                      >
+                        {xsmUp && <Trans>Raw-Ipfs</Trans>}
+                      </Button>
+                      <Button
+                        component="a"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                          ipfs.title
+                        )}&url=${url}`}
+                        startIcon={<Twitter />}
+                      >
+                        {xsmUp && <Trans>Share on twitter</Trans>}
+                      </Button>
+                    </Box>
+                  ) : (
+                    <Typography variant="buttonL">
+                      <Skeleton />
+                    </Typography>
+                  )}
+                  {ipfs ? (
+                    <ReactMarkdown
+                      remarkPlugins={[remarkGfm]}
+                      components={{
+                        img({ src, alt }) {
+                          return <CenterAlignedImage src={src} alt={alt} />;
+                        },
+                        a({ node, ...rest }) {
+                          return <StyledLink {...rest} />;
+                        },
+                        h2({ node, ...rest }) {
+                          return (
+                            <Typography
+                              variant="subheader1"
+                              sx={{ mt: 6 }}
+                              gutterBottom
+                              {...rest}
+                            />
+                          );
+                        },
+                        p({ node, ...rest }) {
+                          return <Typography variant="description" {...rest} />;
+                        },
                       }}
                     >
-                      <Box sx={{ mr: '24px', mb: { xs: '2px', sm: 0 } }}>
-                        <StateBadge state={proposal.state} loading={loading} />
-                      </Box>
-                      {!loading && (
-                        <FormattedProposalTime
-                          state={proposal.state}
-                          executionTime={proposal.executionTime}
-                          executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
-                          expirationTimestamp={proposal.expirationTimestamp}
-                        />
-                      )}
-                    </Box>
-                    <Box sx={{ flexGrow: 1 }} />
-                    <Button
-                      component="a"
-                      target="_blank"
-                      rel="noopener"
-                      href={`${governanceConfig.ipfsGateway}/${ipfs.ipfsHash}`}
-                      startIcon={
-                        <SvgIcon sx={{ '& path': { strokeWidth: '1' } }}>
-                          <DownloadIcon />
-                        </SvgIcon>
-                      }
-                    >
-                      {xsmUp && <Trans>Raw-Ipfs</Trans>}
-                    </Button>
-                    <Button
-                      component="a"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                        ipfs.title
-                      )}&url=${url}`}
-                      startIcon={<Twitter />}
-                    >
-                      {xsmUp && <Trans>Share on twitter</Trans>}
-                    </Button>
-                  </Box>
-                ) : (
-                  <Typography variant="buttonL">
-                    <Skeleton />
-                  </Typography>
-                )}
-                {ipfs ? (
-                  <ReactMarkdown
-                    remarkPlugins={[remarkGfm]}
-                    components={{
-                      img({ src, alt }) {
-                        return <CenterAlignedImage src={src} alt={alt} />;
-                      },
-                      a({ node, ...rest }) {
-                        return <StyledLink {...rest} />;
-                      },
-                      h2({ node, ...rest }) {
-                        return (
-                          <Typography variant="subheader1" sx={{ mt: 6 }} gutterBottom {...rest} />
-                        );
-                      },
-                      p({ node, ...rest }) {
-                        return <Typography variant="description" {...rest} />;
-                      },
-                    }}
-                  >
-                    {ipfs.description}
-                  </ReactMarkdown>
-                ) : (
-                  <>
-                    <Skeleton variant="text" sx={{ my: 4 }} />
-                    <Skeleton variant="rectangular" height={200} sx={{ my: 4 }} />
-                    <Skeleton variant="text" sx={{ my: 4 }} />
-                    <Skeleton variant="rectangular" height={400} sx={{ my: 4 }} />
-                  </>
-                )}
-              </Box>
+                      {ipfs.description}
+                    </ReactMarkdown>
+                  ) : (
+                    <>
+                      <Skeleton variant="text" sx={{ my: 4 }} />
+                      <Skeleton variant="rectangular" height={200} sx={{ my: 4 }} />
+                      <Skeleton variant="text" sx={{ my: 4 }} />
+                      <Skeleton variant="rectangular" height={400} sx={{ my: 4 }} />
+                    </>
+                  )}
+                </Box>
+              )}
             </Paper>
           </Grid>
           <Grid item xs={12} md={4}>

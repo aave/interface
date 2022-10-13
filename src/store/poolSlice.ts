@@ -27,12 +27,6 @@ export interface PoolSlice {
     >
   >;
   refreshPoolData: () => Promise<void>;
-  computed: {
-    get currentUserReserves(): UserReserveDataHumanized[];
-    get currentUserEmodeCategoryId(): number;
-    get currentReserves(): ReserveDataHumanized[];
-    get currentBaseCurrencyData(): PoolBaseCurrencyHumanized;
-  };
   // methods
   mint: FaucetService['mint'];
   withdraw: LendingPool['withdraw'];
@@ -65,44 +59,6 @@ export const createPoolSlice: StateCreator<
     }
   }
   return {
-    computed: {
-      get currentUserEmodeCategoryId() {
-        return (
-          get()
-            ?.data.get(get().currentChainId)
-            ?.get(get().currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER)
-            ?.userEmodeCategoryId || 0
-        );
-      },
-      get currentUserReserves() {
-        return (
-          get()
-            ?.data.get(get().currentChainId)
-            ?.get(get().currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER)?.userReserves ||
-          []
-        );
-      },
-      get currentReserves() {
-        return (
-          get()
-            ?.data.get(get().currentChainId)
-            ?.get(get().currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER)?.reserves || []
-        );
-      },
-      get currentBaseCurrencyData() {
-        return (
-          get()
-            .data.get(get().currentChainId)
-            ?.get(get().currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER)
-            ?.baseCurrencyData || {
-            marketReferenceCurrencyDecimals: 0,
-            marketReferenceCurrencyPriceInUsd: '0',
-            networkBaseTokenPriceInUsd: '0',
-            networkBaseTokenPriceDecimals: 0,
-          }
-        );
-      },
-    },
     data: new Map(),
     refreshPoolData: async () => {
       const account = get().account;

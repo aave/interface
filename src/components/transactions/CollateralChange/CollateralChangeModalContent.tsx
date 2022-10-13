@@ -1,7 +1,9 @@
 import { calculateHealthFactorFromBalancesBigUnits, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Alert, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
+import { Warning } from 'src/components/primitives/Warning';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -29,12 +31,19 @@ export const CollateralChangeModalContent = ({
 }: ModalWrapperProps) => {
   const { gasLimit, mainTxState: collateralChangeTxState, txError } = useModalContext();
   const { user } = useAppDataContext();
+  const { debtCeiling } = useAssetCaps();
 
-  // health factor Calcs
+  // Health factor calculations
   const usageAsCollateralModeAfterSwitch = !userReserve.usageAsCollateralEnabledOnUser;
   const currenttotalCollateralMarketReferenceCurrency = valueToBigNumber(
     user.totalCollateralMarketReferenceCurrency
   );
+
+  // Messages
+  const showEnableIsolationModeMsg = !poolReserve.isIsolated && usageAsCollateralModeAfterSwitch;
+  const showDisableIsolationModeMsg = !poolReserve.isIsolated && !usageAsCollateralModeAfterSwitch;
+  const showEnterIsolationModeMsg = poolReserve.isIsolated && usageAsCollateralModeAfterSwitch;
+  const showExitIsolationModeMsg = poolReserve.isIsolated && !usageAsCollateralModeAfterSwitch;
 
   const totalCollateralAfterSwitchETH = currenttotalCollateralMarketReferenceCurrency[
     usageAsCollateralModeAfterSwitch ? 'plus' : 'minus'
@@ -89,29 +98,32 @@ export const CollateralChangeModalContent = ({
 
   return (
     <>
-      {usageAsCollateralModeAfterSwitch ? (
-        <Alert severity="warning" icon={false} sx={{ mb: 3 }}>
+      {showEnableIsolationModeMsg && (
+        <Warning severity="warning" icon={false} sx={{ mb: 3 }}>
           <Trans>
             Enabling this asset as collateral increases your borrowing power and Health Factor.
             However, it can get liquidated if your health factor drops below 1.
           </Trans>
-        </Alert>
-      ) : (
-        <Alert severity="warning" icon={false} sx={{ mb: 3 }}>
+        </Warning>
+      )}
+
+      {showDisableIsolationModeMsg && (
+        <Warning severity="warning" icon={false} sx={{ mb: 3 }}>
           <Trans>
             Disabling this asset as collateral affects your borrowing power and Health Factor.
           </Trans>
-        </Alert>
+        </Warning>
       )}
 
-      {poolReserve.isIsolated && usageAsCollateralModeAfterSwitch && (
-        <IsolationModeWarning asset={poolReserve.symbol} />
-      )}
-      {poolReserve.isIsolated && !usageAsCollateralModeAfterSwitch && (
-        <Alert severity="info" icon={false}>
+      {showEnterIsolationModeMsg && <IsolationModeWarning asset={poolReserve.symbol} />}
+
+      {showExitIsolationModeMsg && (
+        <Warning severity="info" icon={false} sx={{ mb: 3 }}>
           <Trans>You will exit isolation mode and other tokens can now be used as collateral</Trans>
-        </Alert>
+        </Warning>
       )}
+
+      {poolReserve.isIsolated && debtCeiling.determineWarningDisplay({ debtCeiling })}
 
       <TxModalDetails gasLimit={gasLimit}>
         <DetailsNumberLine

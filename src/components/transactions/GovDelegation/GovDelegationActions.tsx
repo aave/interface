@@ -1,10 +1,11 @@
-import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { Trans } from '@lingui/macro';
 import { DelegationType } from 'src/helpers/types';
+import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
+
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { DelegationToken } from './DelegationTokenSelector';
-import { useRootStore } from 'src/store/root';
 
 export type GovDelegationActionsProps = {
   isWrongNetwork: boolean;

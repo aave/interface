@@ -15,9 +15,6 @@ export interface WalletSlice {
     };
   };
   refetchWalletBalances: () => Promise<void>;
-  computed: {
-    get currentWalletBalances(): WalletBalance[];
-  };
 }
 
 export const createWalletSlice: StateCreator<
@@ -33,15 +30,6 @@ export const createWalletSlice: StateCreator<
   isWalletModalOpen: false,
   setWalletModalOpen(open) {
     set({ isWalletModalOpen: open });
-  },
-  computed: {
-    get currentWalletBalances() {
-      return (
-        get()?.walletBalances?.[get().account]?.[get().currentChainId]?.[
-          get().currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER
-        ] || []
-      );
-    },
   },
   refetchWalletBalances: async () => {
     const account = get().account;

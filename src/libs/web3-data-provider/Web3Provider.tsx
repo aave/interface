@@ -1,25 +1,25 @@
-import React, { ReactElement, useCallback, useEffect, useState } from 'react';
-
-import { hexToAscii } from 'src/utils/utils';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
-
-import { Web3Context } from '../hooks/useWeb3Context';
-import { getWallet, WalletType } from './WalletOptions';
-import { AbstractConnector } from '@web3-react/abstract-connector';
+import { API_ETH_MOCK_ADDRESS, transactionType } from '@aave/contract-helpers';
+import { SignatureLike } from '@ethersproject/bytes';
 import {
   JsonRpcProvider,
   TransactionResponse,
   // Web3Provider,
 } from '@ethersproject/providers';
+import { AbstractConnector } from '@web3-react/abstract-connector';
 import { useWeb3React } from '@web3-react/core';
-import { BigNumber, providers } from 'ethers';
-import { SignatureLike } from '@ethersproject/bytes';
-import { API_ETH_MOCK_ADDRESS, transactionType } from '@aave/contract-helpers';
+import { TorusConnector } from '@web3-react/torus-connector';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
-import { TorusConnector } from '@web3-react/torus-connector';
+import { BigNumber, providers } from 'ethers';
+import { ReactElement, useCallback, useEffect, useState } from 'react';
 import { useWalletModalContext } from 'src/hooks/useWalletModal';
 import { useRootStore } from 'src/store/root';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { hexToAscii } from 'src/utils/utils';
+import { isLedgerDappBrowserProvider } from 'web3-ledgerhq-frame-connector';
+
+import { Web3Context } from '../hooks/useWeb3Context';
+import { getWallet, WalletType, WatchModeOnlyConnector } from './WalletOptions';
 
 export type ERC20TokenType = {
   address: string;
@@ -31,6 +31,7 @@ export type ERC20TokenType = {
 
 export type Web3Data = {
   connectWallet: (wallet: WalletType) => Promise<void>;
+  connectWatchModeOnly: (address: string) => Promise<void>;
   disconnectWallet: () => void;
   currentAccount: string;
   connected: boolean;
@@ -46,6 +47,7 @@ export type Web3Data = {
   error: Error | undefined;
   switchNetworkError: Error | undefined;
   setSwitchNetworkError: (err: Error | undefined) => void;
+  watchModeOnlyAddress: string | undefined;
 };
 
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
@@ -60,16 +62,16 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     setError,
   } = useWeb3React<providers.Web3Provider>();
 
-  // const [provider, setProvider] = useState<JsonRpcProvider>();
   const [mockAddress, setMockAddress] = useState<string>();
   const [connector, setConnector] = useState<AbstractConnector>();
   const [loading, setLoading] = useState(false);
   const [tried, setTried] = useState(false);
   const [deactivated, setDeactivated] = useState(false);
-  const [triedSafe, setTriedSafe] = useState(false);
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
   const [triedCoinbase, setTriedCoinbase] = useState(false);
   const setAccount = useRootStore((store) => store.setAccount);
+  const [triedLedger, setTriedLedger] = useState(false);
+  const [triedGnosisSafe, setTriedGnosisSafe] = useState(false);
 
   const { setWalletModalOpen } = useWalletModalContext();
 
@@ -121,11 +123,12 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     setLoading(false);
     setDeactivated(true);
     setSwitchNetworkError(undefined);
-    if (mockAddress) {
-      setMockAddress(undefined);
-      localStorage.removeItem('mockWalletAddress');
-    }
   }, [provider, connector]);
+
+  const connectWatchModeOnly = (address: string): Promise<void> => {
+    localStorage.setItem('watchModeOnlyAddress', address);
+    return connectWallet(WalletType.WATCH_MODE_ONLY);
+  };
 
   // connect to the wallet specified by wallet type
   const connectWallet = useCallback(
@@ -155,7 +158,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   );
 
   const activateInjectedProvider = (providerName: string | 'MetaMask' | 'CoinBase') => {
-    //@ts-expect-error ethereum doesnt necessarly exist
+    // @ts-expect-error ethereum doesn't necessarily exist
     const { ethereum } = window;
 
     if (!ethereum?.providers) {
@@ -186,11 +189,24 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     return false;
   };
 
+  // third, try connecting to ledger
+  useEffect(() => {
+    if (!triedLedger && triedGnosisSafe && triedCoinbase) {
+      // check if the DApp is hosted within Ledger iframe
+      const canConnectToLedger = isLedgerDappBrowserProvider();
+      if (canConnectToLedger) {
+        connectWallet(WalletType.LEDGER).finally(() => setTriedLedger(true));
+      } else {
+        setTriedLedger(true);
+      }
+    }
+  }, [connectWallet, triedGnosisSafe, triedCoinbase, triedLedger, setTriedLedger]);
+
   // second, try connecting to coinbase
   useEffect(() => {
     if (!triedCoinbase) {
       // do check if condition applies to try and connect directly to coinbase
-      if (triedSafe) {
+      if (triedGnosisSafe) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const injectedProvider = (window as any)?.ethereum;
         if (injectedProvider?.isCoinbaseBrowser) {
@@ -219,34 +235,34 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         }
       }
     }
-  }, [connectWallet, triedSafe, setTriedCoinbase, triedCoinbase]);
+  }, [connectWallet, triedGnosisSafe, setTriedCoinbase, triedCoinbase]);
 
   // first, try connecting to a gnosis safe
   useEffect(() => {
-    if (!triedSafe) {
+    if (!triedGnosisSafe) {
       const gnosisConnector = getWallet(WalletType.GNOSIS);
       // @ts-expect-error isSafeApp not in abstract connector type
       gnosisConnector.isSafeApp().then((loadedInSafe) => {
         if (loadedInSafe) {
           connectWallet(WalletType.GNOSIS)
             .then(() => {
-              setTriedSafe(true);
+              setTriedGnosisSafe(true);
             })
             .catch(() => {
-              setTriedSafe(true);
+              setTriedGnosisSafe(true);
             });
         } else {
-          setTriedSafe(true);
+          setTriedGnosisSafe(true);
         }
       });
     }
-  }, [connectWallet, setTriedSafe, triedSafe]);
+  }, [connectWallet, setTriedGnosisSafe, triedGnosisSafe]);
 
   // handle logic to eagerly connect to the injected ethereum provider,
   // if it exists and has granted access already
   useEffect(() => {
     const lastWalletProvider = localStorage.getItem('walletProvider');
-    if (!active && !deactivated && triedSafe && triedCoinbase) {
+    if (!active && !deactivated && triedGnosisSafe && triedCoinbase && triedLedger) {
       if (!!lastWalletProvider) {
         connectWallet(lastWalletProvider as WalletType).catch(() => {
           setTried(true);
@@ -268,7 +284,16 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         // });
       }
     }
-  }, [activate, setTried, active, connectWallet, deactivated, triedSafe, triedCoinbase]);
+  }, [
+    activate,
+    setTried,
+    active,
+    connectWallet,
+    deactivated,
+    triedGnosisSafe,
+    triedCoinbase,
+    triedLedger,
+  ]);
 
   // if the connection worked, wait until we get confirmation of that to flip the flag
   useEffect(() => {
@@ -404,6 +429,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
       value={{
         web3ProviderData: {
           connectWallet,
+          connectWatchModeOnly,
           disconnectWallet,
           provider,
           connected: active,
@@ -413,11 +439,13 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
           getTxError,
           sendTx,
           signTxData,
-          currentAccount: mockAddress || account?.toLowerCase() || '',
+          currentAccount: account?.toLowerCase() || '',
           addERC20Token,
           error,
           switchNetworkError,
           setSwitchNetworkError,
+          watchModeOnlyAddress:
+            connector instanceof WatchModeOnlyConnector ? account?.toLowerCase() : undefined,
         },
       }}
     >

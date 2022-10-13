@@ -6,9 +6,8 @@ concurrency:
 
 on:
   workflow_run:
-    workflows: ["Build PR From Fork"]
-    types: ["completed"]
-    branches-ignore: ["main"]
+    workflows: ['Build PR From Fork']
+    types: ['completed']
 
 jobs:
   prepare_jobs:
@@ -20,10 +19,10 @@ jobs:
       pr_number: '${{ steps.get_pr_number.outputs.pr_number }}'
     steps:
       - name: Download PR info
-        uses: dawidd6/action-download-artifact@575b1e4167df67acf7e692af784566618b23c71e # v2.17.0
+        uses: dawidd6/action-download-artifact@ea71f332a90fd52416b1629b933dcf7e0ccd421d # v2.22.0
         with:
           workflow: build-fork.yml
-          run_id: "${{ github.event.workflow_run.id }}"
+          run_id: '${{ github.event.workflow_run.id }}'
           workflow_conclusion: success
           name: pr
           path: ./
@@ -35,7 +34,7 @@ jobs:
           echo "::set-output name=pr_number::$(cat NUM | tr -dc '[:digit:]')"
 
       - name: Link this CI run to PR
-        uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e # v6.0.0
+        uses: actions/github-script@7dff1a87643417cf3b95bb10b29f4c4bc60d8ebd # v6.1.1
         with:
           script: |
             await github.rest.issues.createComment({
@@ -47,21 +46,21 @@ jobs:
 
   next_js_analyze:
     runs-on: ubuntu-latest
-    needs: ["prepare_jobs"]
+    needs: ['prepare_jobs']
     env:
       PR_NUMBER: ${{ needs.prepare_jobs.outputs.pr_number }}
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
         with:
           persist-credentials: false
 
       - uses: ./.github/actions/analyze-comment
         with:
-          PULL_REQUEST_NUMBER: "${{ env.PR_NUMBER }}"
+          PULL_REQUEST_NUMBER: '${{ env.PR_NUMBER }}'
 
   cypress_smoke_v2:
     runs-on: ubuntu-latest
-    needs: ["prepare_jobs"]
+    needs: ['prepare_jobs']
     strategy:
       fail-fast: false
       matrix:
@@ -71,7 +70,7 @@ jobs:
           - polygon
           - avalanche
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: Run tests
         uses: ./.github/actions/cypress
@@ -79,21 +78,20 @@ jobs:
           CYPRESS_TENDERLY_ACCOUNT: '${{ secrets.TENDERLY_ACCOUNT }}'
           CYPRESS_TENDERLY_KEY: '${{ secrets.TENDERLY_KEY }}'
           CYPRESS_TENDERLY_PROJECT: '${{ secrets.TENDERLY_PROJECT }}'
-          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v2-markets/${{ matrix.market }}-v2-smoke.config.json
+          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v2-markets/${{ matrix.market }}-v2-smoke.config.ts
 
   cypress_smoke_v3:
     runs-on: ubuntu-latest
-    needs: ["prepare_jobs"]
+    needs: ['prepare_jobs']
     strategy:
       fail-fast: false
       matrix:
         market:
-          - fantom
           - polygon
           - avalanche
           - optimism
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: Run tests
         uses: ./.github/actions/cypress
@@ -101,7 +99,7 @@ jobs:
           CYPRESS_TENDERLY_ACCOUNT: '${{ secrets.TENDERLY_ACCOUNT }}'
           CYPRESS_TENDERLY_KEY: '${{ secrets.TENDERLY_KEY }}'
           CYPRESS_TENDERLY_PROJECT: '${{ secrets.TENDERLY_PROJECT }}'
-          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v3-markets/${{ matrix.market }}-v3-smoke.config.json
+          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v3-markets/${{ matrix.market }}-v3-smoke.config.ts
 
   deploy_fork:
     runs-on: ubuntu-latest
@@ -112,12 +110,12 @@ jobs:
     env:
       PR_NUMBER: ${{ needs.prepare_jobs.outputs.pr_number }}
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
         with:
           persist-credentials: false
 
       - name: Download static build
-        uses: dawidd6/action-download-artifact@575b1e4167df67acf7e692af784566618b23c71e # v2.17.0
+        uses: dawidd6/action-download-artifact@ea71f332a90fd52416b1629b933dcf7e0ccd421d # v2.22.0
         with:
           workflow: build-fork.yml
           run_id: ${{ github.event.workflow_run.id }}
@@ -136,7 +134,7 @@ jobs:
           CID_VERSION: 1
 
       - name: 'Comment on PR'
-        uses: actions/github-script@9ac08808f993958e9de277fe43a64532a609130e # v6.0.0
+        uses: actions/github-script@7dff1a87643417cf3b95bb10b29f4c4bc60d8ebd # v6.1.1
         with:
           script: |
             await github.rest.issues.createComment({
@@ -148,7 +146,7 @@ jobs:
 
   cypress_full_v2:
     runs-on: ubuntu-latest
-    needs: ["deploy_fork"]
+    needs: ['deploy_fork']
     strategy:
       fail-fast: false
       matrix:
@@ -158,7 +156,7 @@ jobs:
           - polygon
           - avalanche
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: Run tests
         uses: ./.github/actions/cypress
@@ -166,21 +164,20 @@ jobs:
           CYPRESS_TENDERLY_ACCOUNT: '${{ secrets.TENDERLY_ACCOUNT }}'
           CYPRESS_TENDERLY_KEY: '${{ secrets.TENDERLY_KEY }}'
           CYPRESS_TENDERLY_PROJECT: '${{ secrets.TENDERLY_PROJECT }}'
-          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v2-markets/${{ matrix.market }}-v2-full.config.json
+          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v2-markets/${{ matrix.market }}-v2-full.config.ts
 
   cypress_full_v3:
     runs-on: ubuntu-latest
-    needs: ["deploy_fork"]
+    needs: ['deploy_fork']
     strategy:
       fail-fast: false
       matrix:
         market:
-          - fantom
           - polygon
           - avalanche
           - optimism
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: Run tests
         uses: ./.github/actions/cypress
@@ -188,11 +185,11 @@ jobs:
           CYPRESS_TENDERLY_ACCOUNT: '${{ secrets.TENDERLY_ACCOUNT }}'
           CYPRESS_TENDERLY_KEY: '${{ secrets.TENDERLY_KEY }}'
           CYPRESS_TENDERLY_PROJECT: '${{ secrets.TENDERLY_PROJECT }}'
-          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v3-markets/${{ matrix.market }}-v3-full.config.json
+          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v3-markets/${{ matrix.market }}-v3-full.config.ts
 
   cypress_additional_v2:
     runs-on: ubuntu-latest
-    needs: ["deploy_fork"]
+    needs: ['deploy_fork']
     strategy:
       fail-fast: false
       matrix:
@@ -201,7 +198,7 @@ jobs:
           - polygon
           - avalanche
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: Run tests
         uses: ./.github/actions/cypress
@@ -209,21 +206,20 @@ jobs:
           CYPRESS_TENDERLY_ACCOUNT: '${{ secrets.TENDERLY_ACCOUNT }}'
           CYPRESS_TENDERLY_KEY: '${{ secrets.TENDERLY_KEY }}'
           CYPRESS_TENDERLY_PROJECT: '${{ secrets.TENDERLY_PROJECT }}'
-          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v2-markets/${{ matrix.market }}-v2-additional.config.json
+          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v2-markets/${{ matrix.market }}-v2-additional.config.ts
 
   cypress_additional_v3:
     runs-on: ubuntu-latest
-    needs: ["deploy_fork"]
+    needs: ['deploy_fork']
     strategy:
       fail-fast: false
       matrix:
         market:
-          - fantom
           - polygon
           - avalanche
           - optimism
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: Run tests
         uses: ./.github/actions/cypress
@@ -231,18 +227,18 @@ jobs:
           CYPRESS_TENDERLY_ACCOUNT: '${{ secrets.TENDERLY_ACCOUNT }}'
           CYPRESS_TENDERLY_KEY: '${{ secrets.TENDERLY_KEY }}'
           CYPRESS_TENDERLY_PROJECT: '${{ secrets.TENDERLY_PROJECT }}'
-          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v3-markets/${{ matrix.market }}-v3-additional.config.json
+          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v3-markets/${{ matrix.market }}-v3-additional.config.ts
 
   cypress_app_functionality:
     runs-on: ubuntu-latest
-    needs: ["deploy_fork"]
+    needs: ['deploy_fork']
     strategy:
       fail-fast: false
       matrix:
         scoupe:
           - settings
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: Run tests
         uses: ./.github/actions/cypress
@@ -250,8 +246,7 @@ jobs:
           CYPRESS_TENDERLY_ACCOUNT: ${{ secrets.TENDERLY_ACCOUNT }}
           CYPRESS_TENDERLY_KEY: ${{ secrets.TENDERLY_KEY }}
           CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
-          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/${{ matrix.scoupe }}.config.json
-
+          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/${{ matrix.scoupe }}.config.ts
 
   notify_failure:
     runs-on: ubuntu-latest
@@ -265,7 +260,7 @@ jobs:
     env:
       PR_NUMBER: ${{ needs.prepare_jobs.outputs.pr_number }}
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: Comment
         uses: ./.github/actions/fork-result-comment
@@ -287,12 +282,12 @@ jobs:
     env:
       PR_NUMBER: ${{ needs.prepare_jobs.outputs.pr_number }}
     steps:
-      - uses: actions/checkout@a12a3943b4bdde767164f792f33f40b04645d846 # v3.0.0
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
 
       - name: Comment
         uses: ./.github/actions/fork-result-comment
         with:
           PULL_REQUEST_NUMBER: '${{ env.PR_NUMBER }}'
           COMMENT_BODY: |
-              ✅ CI run has succeded!
-              You can find tests and deployment logs at ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+            ✅ CI run has succeded!
+            You can find tests and deployment logs at ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'

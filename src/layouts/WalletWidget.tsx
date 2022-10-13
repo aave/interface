@@ -1,5 +1,10 @@
-import { DuplicateIcon, LogoutIcon } from '@heroicons/react/outline';
-import { ChevronDownIcon, ChevronUpIcon, ExternalLinkIcon } from '@heroicons/react/solid';
+import { DuplicateIcon } from '@heroicons/react/outline';
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  ExclamationIcon,
+  ExternalLinkIcon,
+} from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -20,6 +25,7 @@ import {
 } from '@mui/material';
 import makeBlockie from 'ethereum-blockies-base64';
 import React, { useEffect, useState } from 'react';
+import { Warning } from 'src/components/primitives/Warning';
 import { WalletModal } from 'src/components/WalletConnection/WalletModal';
 import { useWalletModalContext } from 'src/hooks/useWalletModal';
 import useGetEns from 'src/libs/hooks/use-get-ens';
@@ -38,11 +44,12 @@ interface WalletWidgetProps {
 }
 
 export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidgetProps) {
-  const { disconnectWallet, currentAccount, connected, chainId, loading } = useWeb3Context();
+  const { disconnectWallet, currentAccount, connected, chainId, loading, watchModeOnlyAddress } =
+    useWeb3Context();
 
   const { setWalletModalOpen } = useWalletModalContext();
 
-  const { breakpoints } = useTheme();
+  const { breakpoints, palette } = useTheme();
   const xsm = useMediaQuery(breakpoints.down('xsm'));
   const md = useMediaQuery(breakpoints.down('md'));
 
@@ -77,7 +84,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
   };
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    if (!connected) {
+    if (!connected && !watchModeOnlyAddress) {
       setWalletModalOpen(true);
     } else {
       setOpen(true);
@@ -89,7 +96,6 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
     if (connected) {
       disconnectWallet();
       handleClose();
-      localStorage.removeItem('mockWalletAddress');
     }
   };
 
@@ -98,7 +104,12 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
     handleClose();
   };
 
-  const hideWalletAccountText = xsm && (ENABLE_TESTNET || STAGING_ENV);
+  const handleSwitchWallet = (): void => {
+    setWalletModalOpen(true);
+    handleClose();
+  };
+
+  const hideWalletAccountText = xsm && (ENABLE_TESTNET || STAGING_ENV || watchModeOnlyAddress);
 
   const accountAvatar = (
     <Box
@@ -117,6 +128,22 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
         alt=""
         onError={() => setUseBlockie(true)}
       />
+      {watchModeOnlyAddress && (
+        <SvgIcon
+          color="warning"
+          sx={{
+            width: 15,
+            height: 15,
+            position: 'absolute',
+            top: '20px',
+            left: '20px',
+            borderRadius: '50%',
+            background: '#383D51',
+          }}
+        >
+          <ExclamationIcon />
+        </SvgIcon>
+      )}
     </Box>
   );
 
@@ -146,47 +173,99 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
       </Typography>
 
       <Box component={component} disabled>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Box
-            sx={{
-              width: 40,
-              height: 40,
-              borderRadius: '50%',
-              border: '1px solid #FAFBFC1F',
-              mr: 3,
-              img: { width: '100%', height: '100%', borderRadius: '50%' },
-            }}
-          >
-            <img
-              src={
-                useBlockie
-                  ? makeBlockie(currentAccount !== '' ? currentAccount : 'default')
-                  : ensAvatar
-              }
-              alt=""
-              onError={() => setUseBlockie(true)}
-            />
-          </Box>
-          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            {ensNameAbbreviated && (
-              <Typography variant="h4" color={{ xs: '#F1F1F3', md: 'text.primary' }}>
-                {ensNameAbbreviated}
-              </Typography>
-            )}
-
-            <Typography
-              variant={ensNameAbbreviated ? 'caption' : 'h4'}
-              color={
-                ensNameAbbreviated
-                  ? { xs: '#A5A8B6', md: 'text.secondary' }
-                  : { xs: '#F1F1F3', md: 'text.primary' }
-              }
+        <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box
+              sx={{
+                width: 40,
+                height: 40,
+                borderRadius: '50%',
+                border: '1px solid #FAFBFC1F',
+                mr: 3,
+                img: { width: '100%', height: '100%', borderRadius: '50%' },
+              }}
             >
-              {textCenterEllipsis(currentAccount, ensNameAbbreviated ? 12 : 7, 4)}
-            </Typography>
+              {watchModeOnlyAddress && (
+                <SvgIcon
+                  color="warning"
+                  sx={{
+                    width: 20,
+                    height: 20,
+                    position: 'absolute',
+                    top: '35px',
+                    left: '40px',
+                    borderRadius: '50%',
+                    background: md ? '#383D51' : palette.background.paper,
+                  }}
+                >
+                  <ExclamationIcon />
+                </SvgIcon>
+              )}
+              <img
+                src={
+                  useBlockie
+                    ? makeBlockie(currentAccount !== '' ? currentAccount : 'default')
+                    : ensAvatar
+                }
+                alt=""
+                onError={() => setUseBlockie(true)}
+              />
+            </Box>
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+              {ensNameAbbreviated && (
+                <Typography variant="h4" color={{ xs: '#F1F1F3', md: 'text.primary' }}>
+                  {ensNameAbbreviated}
+                </Typography>
+              )}
+
+              <Typography
+                variant={ensNameAbbreviated ? 'caption' : 'h4'}
+                color={
+                  ensNameAbbreviated
+                    ? { xs: '#A5A8B6', md: 'text.secondary' }
+                    : { xs: '#F1F1F3', md: 'text.primary' }
+                }
+              >
+                {textCenterEllipsis(currentAccount, ensNameAbbreviated ? 12 : 7, 4)}
+              </Typography>
+            </Box>
           </Box>
+          {watchModeOnlyAddress && (
+            <Warning
+              icon={false}
+              severity="warning"
+              sx={{ mt: 3, mb: 0, ...(md ? { background: '#301E04', color: '#FFDCA8' } : {}) }}
+            >
+              <Trans>Watch-only mode.</Trans>
+            </Warning>
+          )}
         </Box>
       </Box>
+      {!md && (
+        <Box sx={{ display: 'flex', flexDirection: 'row', padding: '0 16px 10px' }}>
+          <Button
+            variant="outlined"
+            sx={{
+              padding: '0 5px',
+              marginRight: '10px',
+            }}
+            size="small"
+            onClick={handleSwitchWallet}
+          >
+            Switch wallet
+          </Button>
+          <Button
+            variant="outlined"
+            sx={{
+              padding: '0 5px',
+            }}
+            size="small"
+            onClick={handleDisconnect}
+          >
+            Disconnect
+          </Button>
+        </Box>
+      )}
       <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
 
       <Box component={component} disabled>
@@ -273,37 +352,50 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           </Box>
         </Link>
       )}
-
-      <Box
-        component={component}
-        sx={{ color: { xs: '#F1F1F3', md: 'text.primary' } }}
-        onClick={handleDisconnect}
-      >
-        <ListItemIcon
-          sx={{
-            color: { xs: '#F1F1F3', md: 'primary.light', minWidth: 'unset', marginRight: 12 },
-          }}
-        >
-          <SvgIcon fontSize="small">
-            <LogoutIcon />
-          </SvgIcon>
-        </ListItemIcon>
-        <ListItemText>
-          <Trans>Disconnect Wallet</Trans>
-        </ListItemText>
-      </Box>
+      {md && (
+        <>
+          <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
+          <Box sx={{ padding: '16px 16px 10px' }}>
+            <Button
+              sx={{
+                marginBottom: '16px',
+                background: '#383D51',
+                color: '#F1F1F3',
+              }}
+              fullWidth
+              size="large"
+              variant={palette.mode === 'dark' ? 'outlined' : 'text'}
+              onClick={handleSwitchWallet}
+            >
+              Switch wallet
+            </Button>
+            <Button
+              sx={{
+                background: '#383D51',
+                color: '#F1F1F3',
+              }}
+              fullWidth
+              size="large"
+              variant={palette.mode === 'dark' ? 'outlined' : 'text'}
+              onClick={handleDisconnect}
+            >
+              Disconnect
+            </Button>
+          </Box>
+        </>
+      )}
     </>
   );
 
   return (
     <>
-      {md && connected && open ? (
+      {md && (connected || watchModeOnlyAddress) && open ? (
         <MobileCloseButton setOpen={setOpen} />
       ) : loading ? (
         <Skeleton height={36} width={126} sx={{ background: '#383D51' }} />
       ) : (
         <Button
-          variant={connected ? 'surface' : 'gradient'}
+          variant={connected || watchModeOnlyAddress ? 'surface' : 'gradient'}
           aria-label="wallet"
           id="wallet-button"
           aria-controls={open ? 'wallet-button' : undefined}
@@ -311,13 +403,14 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           aria-haspopup="true"
           onClick={handleClick}
           sx={{
-            p: connected ? '5px 8px' : undefined,
+            p: connected || watchModeOnlyAddress ? '5px 8px' : undefined,
             minWidth: hideWalletAccountText ? 'unset' : undefined,
           }}
-          startIcon={connected && !hideWalletAccountText && accountAvatar}
+          startIcon={(connected || watchModeOnlyAddress) && !hideWalletAccountText && accountAvatar}
           endIcon={
-            connected &&
-            !hideWalletAccountText && (
+            (connected || watchModeOnlyAddress) &&
+            !hideWalletAccountText &&
+            !md && (
               <SvgIcon
                 sx={{
                   display: { xs: 'none', md: 'block' },

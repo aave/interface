@@ -1,8 +1,9 @@
 import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { useMediaQuery, useTheme } from '@mui/material';
-import { useModalContext } from 'src/hooks/useModal';
+import { Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Fragment } from 'react';
+import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
@@ -25,7 +26,6 @@ import { BorrowedPositionsListMobileItem } from './BorrowedPositionsListMobileIt
 export const BorrowedPositionsList = () => {
   const { user, loading } = useAppDataContext();
   const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
-  const { openEmode } = useModalContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
@@ -82,15 +82,15 @@ export const BorrowedPositionsList = () => {
 
   return (
     <ListWrapper
-      title={<Trans>Your borrows</Trans>}
+      titleComponent={
+        <Typography component="div" variant="h3" sx={{ mr: 4 }}>
+          <Trans>Your borrows</Trans>
+        </Typography>
+      }
       localStorageName="borrowedAssetsDashboardTableCollapse"
       subTitleComponent={
         currentMarketData.v3 ? (
-          <DashboardEModeButton
-            userEmodeCategoryId={user.userEmodeCategoryId}
-            onClick={() => openEmode()}
-            baseAssetSymbol={currentNetworkConfig.baseAssetSymbol}
-          />
+          <DashboardEModeButton userEmodeCategoryId={user.userEmodeCategoryId} />
         ) : undefined
       }
       noData={!borrowPositions.length}
@@ -119,19 +119,20 @@ export const BorrowedPositionsList = () => {
       {borrowPositions.length ? (
         <>
           {!downToXSM && <ListHeader head={head} />}
-          {borrowPositions.map((item) =>
-            downToXSM ? (
-              <BorrowedPositionsListMobileItem
-                {...item}
-                key={item.underlyingAsset + item.borrowRateMode}
-              />
-            ) : (
-              <BorrowedPositionsListItem
-                {...item}
-                key={item.underlyingAsset + item.borrowRateMode}
-              />
-            )
-          )}
+          {borrowPositions.map((item) => (
+            <Fragment key={item.underlyingAsset + item.borrowRateMode}>
+              <AssetCapsProvider asset={item.reserve}>
+                {downToXSM ? (
+                  <BorrowedPositionsListMobileItem {...item} />
+                ) : (
+                  <BorrowedPositionsListItem
+                    {...item}
+                    key={item.underlyingAsset + item.borrowRateMode}
+                  />
+                )}
+              </AssetCapsProvider>
+            </Fragment>
+          ))}
         </>
       ) : (
         <DashboardContentNoData text={<Trans>Nothing borrowed yet</Trans>} />

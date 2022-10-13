@@ -4,6 +4,8 @@ import { BigNumber } from 'bignumber.js';
 import { useRootStore } from 'src/store/root';
 
 import { useProtocolDataContext } from '../useProtocolDataContext';
+import { selectCurrentWalletBalances } from '../../store/walletSelectors';
+import { selectCurrentBaseCurrencyData, selectCurrentReserves } from '../../store/poolSelectors';
 
 export interface WalletBalance {
   address: string;
@@ -13,9 +15,9 @@ export interface WalletBalance {
 export const useWalletBalances = () => {
   const { currentNetworkConfig } = useProtocolDataContext();
   const [balances, reserves, baseCurrencyData] = useRootStore((state) => [
-    state.computed.currentWalletBalances,
-    state.computed.currentReserves,
-    state.computed.currentBaseCurrencyData,
+    selectCurrentWalletBalances(state),
+    selectCurrentReserves(state),
+    selectCurrentBaseCurrencyData(state),
   ]);
 
   // process data

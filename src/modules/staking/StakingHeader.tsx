@@ -3,10 +3,10 @@ import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 
-import { Link } from '../../components/primitives/Link';
-import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 import EmissionIcon from '../../../public/icons/staking/emission-staking-icon.svg';
 import TrustIcon from '../../../public/icons/staking/trust-staking-icon.svg';
+import { Link } from '../../components/primitives/Link';
+import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 
 interface StakingHeaderProps {
   tvl: string;

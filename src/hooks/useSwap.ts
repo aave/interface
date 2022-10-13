@@ -1,15 +1,16 @@
-import {
-  constructPartialSDK,
-  constructFetchFetcher,
-  constructGetRate,
-  constructBuildTx,
-  TransactionParams,
-} from '@paraswap/sdk';
-import { OptimalRate, SwapSide, ContractMethod } from 'paraswap-core';
-import { useCallback, useEffect, useState } from 'react';
-import { ComputedReserveData } from './app-data-provider/useAppDataProvider';
 import { ChainId } from '@aave/contract-helpers';
 import { BigNumberZeroDecimal, normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
+import {
+  constructBuildTx,
+  constructFetchFetcher,
+  constructGetRate,
+  constructPartialSDK,
+  TransactionParams,
+} from '@paraswap/sdk';
+import { ContractMethod, OptimalRate, SwapSide } from 'paraswap-core';
+import { useCallback, useEffect, useState } from 'react';
+
+import { ComputedReserveData } from './app-data-provider/useAppDataProvider';
 
 const ParaSwap = (chainId: number) => {
   const fetcher = constructFetchFetcher(fetch); // alternatively constructFetchFetcher
@@ -28,6 +29,7 @@ const polygonParaswap = ParaSwap(ChainId.polygon);
 const avalancheParaswap = ParaSwap(ChainId.avalanche);
 const fantomParaswap = ParaSwap(ChainId.fantom);
 const arbitrumParaswap = ParaSwap(ChainId.arbitrum_one);
+const optimismParaswap = ParaSwap(ChainId.optimism);
 
 const getParaswap = (chainId: ChainId) => {
   if (ChainId.mainnet === chainId) return mainnetParaswap;
@@ -35,6 +37,7 @@ const getParaswap = (chainId: ChainId) => {
   if (ChainId.avalanche === chainId) return avalancheParaswap;
   if (ChainId.fantom === chainId) return fantomParaswap;
   if (ChainId.arbitrum_one === chainId) return arbitrumParaswap;
+  if (ChainId.optimism === chainId) return optimismParaswap;
   throw new Error('chain not supported');
 };
 
