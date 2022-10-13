@@ -1,5 +1,5 @@
 import { ChainId, ChainIdToNetwork } from '@aave/contract-helpers';
-import { Network } from '@ethersproject/providers';
+import { Network, StaticJsonRpcProvider } from '@ethersproject/providers';
 import { logger, providers as ethersProviders } from 'ethers';
 import { defineReadOnly, Logger } from 'ethers/lib/utils';
 
@@ -172,12 +172,23 @@ class StaticJsonRpcBatchProvider extends ethersProviders.JsonRpcBatchProvider {
 }
 
 /**
+ * Tenderly rpcs do not work with batch providers, so create provider accordingly
+ */
+const createStaticProvider = (url: string, chainId: number): StaticJsonRpcProvider => {
+  if (FORK_ENABLED) {
+    return new StaticJsonRpcProvider(url, chainId);
+  } else {
+    return new StaticJsonRpcBatchProvider(url, chainId);
+  }
+};
+
+/**
  * The provider will rotate rpcs on error.
  * If provider rotates away from the first RPC, rotate back after a set interval to prioritize using most reliable RPC.
  * If provider rotates through all rpcs, delay to avoid spamming rpcs with requests.
  */
 class RotationProvider extends ethersProviders.BaseProvider {
-  readonly providers: StaticJsonRpcBatchProvider[];
+  readonly providers: StaticJsonRpcProvider[];
   private currentProviderIndex = 0;
   private lastFullRotationTimestamp = 0;
   private firstRotationTimestamp = 0;
@@ -188,7 +199,7 @@ class RotationProvider extends ethersProviders.BaseProvider {
 
   constructor(urls: string[], chainId: number) {
     super(chainId);
-    this.providers = urls.map((url) => new StaticJsonRpcBatchProvider(url, chainId));
+    this.providers = urls.map((url) => createStaticProvider(url, chainId));
   }
 
   /**
@@ -291,7 +302,7 @@ export const getProvider = (chainId: ChainId): ethersProviders.Provider => {
       throw new Error(`${chainId} has no jsonRPCUrl configured`);
     }
     if (chainProviders.length === 1) {
-      providers[chainId] = new StaticJsonRpcBatchProvider(chainProviders[0], chainId);
+      providers[chainId] = createStaticProvider(chainProviders[0], chainId);
     } else {
       providers[chainId] = new RotationProvider(chainProviders, chainId);
     }
@@ -302,7 +313,7 @@ export const getProvider = (chainId: ChainId): ethersProviders.Provider => {
 export const getENSProvider = () => {
   const chainId = 1;
   const config = getNetworkConfig(chainId);
-  return new StaticJsonRpcBatchProvider(config.publicJsonRPCUrl[0], chainId);
+  return createStaticProvider(config.publicJsonRPCUrl[0], chainId);
 };
 
 const ammDisableProposal = 'https://app.aave.com/governance/proposal/?proposalId=44';
