@@ -25,7 +25,6 @@ jobs:
 
       - name: Pin to sefl-hosted cluster
         uses: ./.github/actions/private-ipfs-pin
-        continue-on-error: true
         with:
           DOMAIN: app.aave.com
           GCP_SA_KEY: '${{ secrets.GCP_SA_KEY }}'
