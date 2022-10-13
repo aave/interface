@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-10-12 00:29\n"
+"PO-Revision-Date: 2022-10-13 00:25\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -27,8 +27,8 @@ msgid "<0>Attention:</0> Parameter changes via governance can alter your account
 msgstr "<0>Atención:</0> Los cambios de parámetros a través de la gobernanza pueden alterar el factor de salud de tu cuenta y el riesgo de liquidación. Sigue el <1>foro de gobierno de Aave</1> para mantenerte actualizado."
 
 #: src/modules/staking/StakingHeader.tsx
-msgid "AAVE holders can stake their AAVE in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
-msgstr "Los poseedores de AAVE pueden stakear su AAVE en el Módulo de Seguridad para añadir más seguridad al protocolo y ganar Incentivos de Seguridad. En el caso de un evento de déficit, hasta un 30% de tu apuesta puede ser slasheada para cubrir el déficit, proporcionando una capa adicional de protección para el protocolo."
+msgid "AAVE holders can stake their AAVE in the Safety Module (Ethereum Network only) to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
+msgstr ""
 
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
@@ -78,8 +78,8 @@ msgid "Aave Governance"
 msgstr "Gobierno de Aave"
 
 #: src/modules/governance/GovernanceTopPanel.tsx
-msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance documentation"
-msgstr "Aave es un protocolo completamente descentralizado y gobernado por la comunidad de los dueños de AAVE token. Los dueños de token AAVE pueden votar por nuevas propuestas o delegar los votos a una dirección de su elección. Para aprender más revisa la documentación de Gobierno"
+msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance documentation"
+msgstr ""
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Aave per month"
@@ -377,15 +377,15 @@ msgstr "Tomando prestado {symbol}"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Buy Crypto With Fiat"
-msgstr ""
+msgstr "Comprar Crypto con Fiat"
 
 #: src/modules/staking/BuyWithFiatModal.tsx
 msgid "Buy Crypto with Fiat"
-msgstr ""
+msgstr "Comprar Crypto con Fiat"
 
 #: src/modules/staking/BuyWithFiat.tsx
 msgid "Buy {cryptoSymbol} with Fiat"
-msgstr ""
+msgstr "Comprar {cryptoSymbol} con Fiat"
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
 msgid "CLAIM {symbol}"
@@ -419,7 +419,7 @@ msgstr "Límite alcanzado. Menos cantidad de suministro"
 
 #: src/modules/staking/BuyWithFiatModal.tsx
 msgid "Choose one of the on-ramp services"
-msgstr ""
+msgstr "Elige uno de los servicios on-ramp"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Claim"
@@ -730,6 +730,14 @@ msgstr "Habilitar el E-Mode solo te permite tomar prestado activos que pertenezc
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "Enabling this asset as collateral increases your borrowing power and Health Factor. However, it can get liquidated if your health factor drops below 1."
 msgstr "Habilitar este activo como garantía aumenta tu poder préstamo y el factor de salud. Sin embargo, puede ser liquidado si tu factor de salud cae por debajo de 1."
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Ended"
+msgstr ""
+
+#: pages/governance/proposal/[proposalId].governance.tsx
+msgid "Ends"
+msgstr ""
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "English"
@@ -1221,6 +1229,7 @@ msgid "Please connect your wallet to get free testnet assets."
 msgstr "Por favor conecta tu cartera para obtener activos testnet gratis."
 
 #: src/components/ConnectWalletPaper.tsx
+#: src/components/ConnectWalletPaperStaking.tsx
 msgid "Please connect your wallet to see your supplies, borrowings, and open positions."
 msgstr "Por favor, conecta tu cartera para ver tus suministros, préstamos y posiciones abiertas."
 
@@ -1237,6 +1246,7 @@ msgid "Please switch to {networkName}."
 msgstr "Por favor, cambia a {networkName}."
 
 #: src/components/ConnectWalletPaper.tsx
+#: src/components/ConnectWalletPaperStaking.tsx
 msgid "Please, connect your wallet"
 msgstr "Por favor, conecta tu cartera"
 
@@ -1543,12 +1553,13 @@ msgstr "Staking"
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
+#: src/modules/staking/StakingPanelNoWallet.tsx
 msgid "Staking APR"
 msgstr "Staking APR"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Staking Rewards"
-msgstr ""
+msgstr "Recompensas de Staking"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Started"
@@ -1570,7 +1581,7 @@ msgstr "Suministrado"
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Supply"
-msgstr "Suministro"
+msgstr "Suministrar"
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
@@ -2017,6 +2028,10 @@ msgstr "Poder de votación"
 msgid "Voting results"
 msgstr "Resultados de la votación"
 
+#: src/modules/staking/StakingPanel.tsx
+msgid "Wallet Balance"
+msgstr ""
+
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
@@ -2050,8 +2065,8 @@ msgid "We couldn't find any asset matching your search. Try again with a differe
 msgstr "No hemos podido encontrar ningun activo que coincida con tu búsqueda. Vuelve a intentarlo con un nombre, simbolo, o dirección de activo diferente."
 
 #: pages/staking.staking.tsx
-msgid "We couldn’t detect a wallet. Connect a wallet to stake."
-msgstr "No podemos detectar una cartera. Conecta una cartera para invertir."
+msgid "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
+msgstr ""
 
 #: pages/404.page.tsx
 msgid "We suggest you go back to the Dashboard."
@@ -2283,7 +2298,7 @@ msgstr "reembolsado"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "stETH supplied as collateral will continue to accrue staking rewards provided by daily rebases."
-msgstr ""
+msgstr "stETH suministrado como garantía continuará acumulando recompensas de staking proporcionadas por rebases diarios."
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "staking view"
@@ -2324,11 +2339,11 @@ msgstr "{0} Faucet"
 
 #: src/modules/staking/BuyWithFiatModal.tsx
 msgid "{0} on-ramp service is provided by External Provider and by selecting you agree to Terms of the Provider. Your access to the service might be reliant on the External Provider being operational."
-msgstr ""
+msgstr "{0} el servicio on-ramp es proporcionado por proveedores externos y al seleccionarlo, estás aceptando los términos de dichos proveedores. Tu acceso al servicio podría depender de que el proveedor externo esté operativo."
 
 #: src/modules/staking/BuyWithFiatModal.tsx
 msgid "{0}{name}"
-msgstr ""
+msgstr "{0}{name}"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "{d}d"
