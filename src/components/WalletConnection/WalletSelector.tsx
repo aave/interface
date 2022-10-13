@@ -139,27 +139,6 @@ export const WalletSelector = () => {
     }
   };
 
-  /*
-  const handleWatchAddress = async (inputMockWalletAddress: string): Promise<void> => {
-    if (validAddressError) setValidAddressError(false);
-    if (utils.isAddress(inputMockWalletAddress)) {
-      connectWatchModeOnly(inputMockWalletAddress);
-    } else {
-      // Check if address could be valid ENS before trying to resolve
-      if (inputMockWalletAddress.slice(-4) !== '.eth') {
-        setValidAddressError(true);
-      } else {
-        // Attempt to resolve ENS name and use resolved address if valid
-        const resolvedAddress = await mainnetProvider.resolveName(inputMockWalletAddress);
-        if (resolvedAddress && utils.isAddress(resolvedAddress)) {
-          connectWatchModeOnly(resolvedAddress);
-        } else {
-          setValidAddressError(true);
-        }
-      }
-    }
-  };*/
-
   const handleWatchAddress = async (inputMockWalletAddress: string): Promise<void> => {
     if (validAddressError) setValidAddressError(false);
     if (utils.isAddress(inputMockWalletAddress)) {
