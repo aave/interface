@@ -241,7 +241,7 @@ class RotationProvider extends ethersProviders.BaseProvider {
     try {
       return await this.providers[index].detectNetwork();
     } catch (e) {
-      console.log(e.message);
+      console.error(e.message);
       await this.rotateUrl(index);
       return this.detectNetwork();
     }
@@ -253,7 +253,7 @@ class RotationProvider extends ethersProviders.BaseProvider {
     try {
       return await this.providers[index].send(method, params);
     } catch (e) {
-      console.log(e.message);
+      console.error(e.message);
       await this.rotateUrl(index);
       return this.send(method, params);
     }
@@ -265,7 +265,7 @@ class RotationProvider extends ethersProviders.BaseProvider {
     try {
       return await this.providers[index].perform(method, params);
     } catch (e) {
-      console.log(e.message);
+      console.error(e.message);
       await this.rotateUrl(index);
       return await this.perform(method, params);
     }
