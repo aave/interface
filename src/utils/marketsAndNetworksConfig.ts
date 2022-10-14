@@ -1,7 +1,6 @@
 import { ChainId, ChainIdToNetwork } from '@aave/contract-helpers';
 import { Network, StaticJsonRpcProvider } from '@ethersproject/providers';
-import { logger, providers as ethersProviders } from 'ethers';
-import { defineReadOnly, Logger } from 'ethers/lib/utils';
+import { providers as ethersProviders } from 'ethers';
 
 import {
   CustomMarket,
