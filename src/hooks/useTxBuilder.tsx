@@ -1,13 +1,10 @@
 import {
   IncentivesControllerInterface,
   IncentivesControllerV2Interface,
-  LendingPool,
-  PoolInterface,
 } from '@aave/contract-helpers';
 import React, { useContext } from 'react';
 
 export interface TxBuilderContextInterface {
-  lendingPool: LendingPool | PoolInterface;
   incentivesTxBuilder: IncentivesControllerInterface;
   incentivesTxBuilderV2: IncentivesControllerV2Interface;
 }

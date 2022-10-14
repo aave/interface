@@ -1,5 +1,7 @@
 import {
+  EthereumTransactionTypeExtended,
   FaucetService,
+  InterestRate,
   LendingPool,
   Pool,
   PoolBaseCurrencyHumanized,
@@ -7,9 +9,27 @@ import {
   UiPoolDataProvider,
   UserReserveDataHumanized,
 } from '@aave/contract-helpers';
+import {
+  LPBorrowParamsType,
+  LPSetUsageAsCollateral,
+  LPSwapBorrowRateMode,
+} from '@aave/contract-helpers/dist/esm/lendingPool-contract/lendingPoolTypes';
+import {
+  LPSignERC20ApprovalType,
+  LPSupplyWithPermitType,
+} from '@aave/contract-helpers/dist/esm/v3-pool-contract/lendingPoolTypes';
+import { normalize } from '@aave/math-utils';
+import { SignatureLike } from '@ethersproject/bytes';
+import { produce } from 'immer';
+import { OptimalRate } from 'paraswap-core';
+import { RepayActionProps as ParaswapRepayActionProps } from 'src/components/transactions/Repay/CollateralRepayActions';
+import { RepayActionProps } from 'src/components/transactions/Repay/RepayActions';
+import { SupplyActionProps } from 'src/components/transactions/Supply/SupplyActions';
+import { SwapActionProps } from 'src/components/transactions/Swap/SwapActions';
+import { getRepayCallData, getSwapCallData } from 'src/hooks/useSwap';
 import { optimizedPath } from 'src/utils/utils';
 import { StateCreator } from 'zustand';
-import { produce } from 'immer';
+
 import { RootStore } from './root';
 
 // TODO: add chain/provider/account mapping
@@ -28,8 +48,36 @@ export interface PoolSlice {
   >;
   refreshPoolData: () => Promise<void>;
   // methods
+  useOptimizedPath: () => boolean | undefined;
   mint: FaucetService['mint'];
   withdraw: LendingPool['withdraw'];
+  borrow: (args: Omit<LPBorrowParamsType, 'user'>) => Promise<EthereumTransactionTypeExtended[]>;
+  setUsageAsCollateral: (
+    args: Omit<LPSetUsageAsCollateral, 'user'>
+  ) => Promise<EthereumTransactionTypeExtended[]>;
+  swapBorrowRateMode: (
+    args: Omit<LPSwapBorrowRateMode, 'user'>
+  ) => Promise<EthereumTransactionTypeExtended[]>;
+  paraswapRepayWithCollateral: (
+    args: ParaswapRepayActionProps
+  ) => Promise<EthereumTransactionTypeExtended[]>;
+  supplyWithPermit: (
+    args: Omit<LPSupplyWithPermitType, 'user'>
+  ) => Promise<EthereumTransactionTypeExtended[]>;
+  setUserEMode: (categoryId: number) => Promise<EthereumTransactionTypeExtended[]>;
+  signERC20Approval: (args: Omit<LPSignERC20ApprovalType, 'user'>) => Promise<string>;
+  // TODO: optimize types to use only neccessary properties
+  swapCollateral: (args: SwapActionProps) => Promise<EthereumTransactionTypeExtended[]>;
+  repay: (args: RepayActionProps) => Promise<EthereumTransactionTypeExtended[]>;
+  repayWithPermit: (
+    args: RepayActionProps & {
+      signature: SignatureLike;
+      deadline: string;
+    }
+  ) => Promise<EthereumTransactionTypeExtended[]>;
+  supply: (
+    args: Omit<SupplyActionProps, 'poolReserve'>
+  ) => Promise<EthereumTransactionTypeExtended[]>;
 }
 
 export const createPoolSlice: StateCreator<
@@ -147,5 +195,183 @@ export const createPoolSlice: StateCreator<
       const pool = getCorrectPool();
       return pool.withdraw({ ...args, useOptimizedPath: optimizedPath(get().currentChainId) });
     },
+    borrow: async (args) => {
+      const pool = getCorrectPool();
+      const user = get().account;
+      return pool.borrow({ ...args, user, useOptimizedPath: get().useOptimizedPath() });
+    },
+    setUsageAsCollateral: async (args) => {
+      const pool = getCorrectPool();
+      const user = get().account;
+      return pool.setUsageAsCollateral({
+        ...args,
+        user,
+        useOptimizedPath: get().useOptimizedPath(),
+      });
+    },
+    swapBorrowRateMode: async (args) => {
+      const pool = getCorrectPool();
+      const user = get().account;
+      return pool.swapBorrowRateMode({ ...args, user, useOptimizedPath: get().useOptimizedPath() });
+    },
+    paraswapRepayWithCollateral: async ({
+      fromAssetData,
+      poolReserve,
+      priceRoute,
+      maxSlippage,
+      repayAmount,
+      repayAllDebt,
+      useFlashLoan,
+      rateMode,
+    }) => {
+      const user = get().account;
+      const pool = getCorrectPool();
+      const chainId = get().currentChainId;
+
+      const { swapCallData, augustus, srcAmountWithSlippage } = await getRepayCallData({
+        srcToken: fromAssetData.underlyingAsset,
+        srcDecimals: fromAssetData.decimals,
+        destToken: poolReserve.underlyingAsset,
+        destDecimals: poolReserve.decimals,
+        user,
+        route: priceRoute as OptimalRate,
+        chainId,
+        maxSlippage,
+      });
+
+      return pool.paraswapRepayWithCollateral({
+        user,
+        fromAsset: fromAssetData.underlyingAsset,
+        fromAToken: fromAssetData.aTokenAddress,
+        assetToRepay: poolReserve.underlyingAsset,
+        repayWithAmount: normalize(srcAmountWithSlippage, fromAssetData.decimals),
+        repayAmount,
+        repayAllDebt,
+        rateMode,
+        flash: useFlashLoan,
+        swapAndRepayCallData: swapCallData,
+        augustus,
+      });
+    },
+    repay: ({ repayWithATokens, amountToRepay, poolAddress, debtType }) => {
+      const pool = getCorrectPool();
+      const currentAccount = get().account;
+      if (pool instanceof Pool && repayWithATokens) {
+        return pool.repayWithATokens({
+          user: currentAccount,
+          reserve: poolAddress,
+          amount: amountToRepay,
+          rateMode: debtType as InterestRate,
+          useOptimizedPath: get().useOptimizedPath(),
+        });
+      } else {
+        return pool.repay({
+          user: currentAccount,
+          reserve: poolAddress,
+          amount: amountToRepay,
+          interestRateMode: debtType,
+          useOptimizedPath: get().useOptimizedPath(),
+        });
+      }
+    },
+    repayWithPermit: ({ poolAddress, amountToRepay, debtType, deadline, signature }) => {
+      // Better to get rid of direct assert
+      const pool = getCorrectPool() as Pool;
+      const currentAccount = get().account;
+      return pool.repayWithPermit({
+        user: currentAccount,
+        reserve: poolAddress,
+        amount: amountToRepay, // amountToRepay.toString(),
+        interestRateMode: debtType,
+        signature,
+        useOptimizedPath: get().useOptimizedPath(),
+        deadline,
+      });
+    },
+    supply: ({ poolAddress, amountToSupply }) => {
+      const pool = getCorrectPool() as Pool;
+      const currentAccount = get().account;
+      if (pool instanceof Pool) {
+        return pool.supply({
+          user: currentAccount,
+          reserve: poolAddress,
+          amount: amountToSupply,
+          useOptimizedPath: get().useOptimizedPath(),
+        });
+      } else {
+        const lendingPool = pool as LendingPool;
+        return lendingPool.deposit({
+          user: currentAccount,
+          reserve: poolAddress,
+          amount: amountToSupply,
+        });
+      }
+    },
+    supplyWithPermit: (args) => {
+      const pool = getCorrectPool() as Pool;
+      const user = get().account;
+      return pool.supplyWithPermit({
+        ...args,
+        user,
+        useOptimizedPath: get().useOptimizedPath(),
+      });
+    },
+    swapCollateral: async ({
+      poolReserve,
+      targetReserve,
+      priceRoute,
+      isMaxSelected,
+      amountToSwap,
+      amountToReceive,
+      useFlashLoan,
+    }) => {
+      const pool = getCorrectPool();
+      const user = get().account;
+      const chainId = get().currentChainId;
+
+      const { swapCallData, augustus } = await getSwapCallData({
+        srcToken: poolReserve.underlyingAsset,
+        srcDecimals: poolReserve.decimals,
+        destToken: targetReserve.underlyingAsset,
+        destDecimals: targetReserve.decimals,
+        user,
+        route: priceRoute as OptimalRate,
+        chainId,
+      });
+
+      return pool.swapCollateral({
+        fromAsset: poolReserve.underlyingAsset,
+        toAsset: targetReserve.underlyingAsset,
+        swapAll: isMaxSelected,
+        fromAToken: poolReserve.aTokenAddress,
+        fromAmount: amountToSwap,
+        minToAmount: amountToReceive,
+        user,
+        flash: useFlashLoan,
+        augustus,
+        swapCallData,
+      });
+    },
+    setUserEMode: async (categoryId) => {
+      const pool = getCorrectPool() as Pool;
+      const user = get().account;
+      return pool.setUserEMode({
+        user,
+        categoryId,
+      });
+    },
+    signERC20Approval: async (args) => {
+      const pool = getCorrectPool() as Pool;
+      const user = get().account;
+      return pool.signERC20Approval({
+        ...args,
+        user,
+      });
+    },
+    useOptimizedPath: () => {
+      return get().currentMarketData.v3 && optimizedPath(get().currentChainId);
+    },
   };
 };
+
+// TODO: move somewhere else
