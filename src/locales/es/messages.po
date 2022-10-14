@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-10-13 00:25\n"
+"PO-Revision-Date: 2022-10-13 12:07\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -28,7 +28,7 @@ msgstr "<0>Atención:</0> Los cambios de parámetros a través de la gobernanza 
 
 #: src/modules/staking/StakingHeader.tsx
 msgid "AAVE holders can stake their AAVE in the Safety Module (Ethereum Network only) to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, up to 30% of your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
-msgstr ""
+msgstr "Los poseedores de AAVE pueden stakear su AAVE en el Módulo de Seguridad (solo en la red Ethereum) para añadir más seguridad al protocolo y ganar Incentivos de Seguridad. En el caso de un evento de shortfall se puede recortar hasta el 30 % de tu stakeo para cubrir el déficit, proporcionando una capa adicional de protección para el protocolo."
 
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
@@ -79,7 +79,7 @@ msgstr "Gobierno de Aave"
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance documentation"
-msgstr ""
+msgstr "Aave es un protocolo completamente descentralizado, gobernado por la comunidad de los poseedores de token AAVE. Los poseedores de token AAVE discuten, proponen y votan colectivamente sobre las actualizaciones del protocolo. Los poseedores de token AAVE (solo en la red Ethereum) pueden votar ellos mismos en nuevas propuestas o delegar su voto a una dirección de su elección. Para obtener más información, consulta la documentación de Gobierno"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Aave per month"
@@ -733,11 +733,11 @@ msgstr "Habilitar este activo como garantía aumenta tu poder préstamo y el fac
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Ended"
-msgstr ""
+msgstr "Finalizado"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "Ends"
-msgstr ""
+msgstr "Finaliza"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "English"
@@ -836,7 +836,7 @@ msgstr "Ir al pool de Balancer"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
-msgstr "Gobernanza"
+msgstr "Gobierno"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Greek"
@@ -1148,7 +1148,7 @@ msgstr "Dirección no válida"
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
 msgid "Not enough balance on your wallet"
-msgstr "No hay suficiente saldo en tu cartera"
+msgstr "No hay suficiente balance en tu cartera"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Not enough collateral to repay this amount of debt with"
@@ -1156,7 +1156,7 @@ msgstr "No hay suficiente garantía para pagar esta cantidad de deuda con"
 
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Not enough staked balance"
-msgstr "No hay suficiente saldo stakeado"
+msgstr "No hay suficiente balance stakeado"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Not enough voting power to participate in this proposal"
@@ -1465,7 +1465,7 @@ msgstr "Mostrar"
 
 #: src/modules/dashboard/DashboardListTopPanel.tsx
 msgid "Show assets with 0 balance"
-msgstr "Mostrar activos con 0 saldo"
+msgstr "Mostrar activos con 0 balance"
 
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Since this asset is frozen, the only available actions are withdraw and repay which can be accessed from the <0>Dashboard</0>"
@@ -1814,7 +1814,7 @@ msgstr "Esta es la cantidad total disponible que puedes tomar prestada. Puedes t
 
 #: src/components/infoTooltips/AvailableTooltip.tsx
 msgid "This is the total amount that you are able to supply to in this reserve. You are able to supply your wallet balance up until the supply cap is reached."
-msgstr "Esta es la cantidad total que puedes suministrar en esta reserva. Puedes suministrar el saldo de tu cartera hasta que se alcance el límite de suministro."
+msgstr "Esta es la cantidad total que puedes suministrar en esta reserva. Puedes suministrar el balance de tu cartera hasta que se alcance el límite de suministro."
 
 #: src/components/infoTooltips/LiquidationThresholdTooltip.tsx
 msgid "This represents the threshold at which a borrow position will be considered undercollateralized and subject to liquidation for each collateral. For example, if a collateral has a liquidation threshold of 80%, it means that the position will be liquidated when the debt value is worth 80% of the collateral value."
@@ -2030,7 +2030,7 @@ msgstr "Resultados de la votación"
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Wallet Balance"
-msgstr ""
+msgstr "Balance de la cartera"
 
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
@@ -2038,7 +2038,7 @@ msgstr ""
 #: src/modules/reserve-overview/ReserveActions.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Wallet balance"
-msgstr "Saldo de la cartera"
+msgstr "Balance de la cartera"
 
 #: src/components/WalletConnection/WalletSelector.tsx
 msgid "Wallet not detected. Connect or install wallet and retry"
@@ -2066,7 +2066,7 @@ msgstr "No hemos podido encontrar ningun activo que coincida con tu búsqueda. V
 
 #: pages/staking.staking.tsx
 msgid "We couldn’t detect a wallet. Connect a wallet to stake and view your balance."
-msgstr ""
+msgstr "No podemos detectar una cartera. Conecta una cartera para stakear y ver tu balance."
 
 #: pages/404.page.tsx
 msgid "We suggest you go back to the Dashboard."
@@ -2212,7 +2212,7 @@ msgstr "Tu información"
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "Your reward balance is 0"
-msgstr "Su saldo de recompensa es 0"
+msgstr "Tu balance de recompensa es 0"
 
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
@@ -2330,7 +2330,7 @@ msgstr "{0}"
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "{0} Balance"
-msgstr "Saldo {0}"
+msgstr "Balance {0}"
 
 #: src/components/FaucetButton.tsx
 #: src/modules/faucet/FaucetTopPanel.tsx
