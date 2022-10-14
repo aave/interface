@@ -108,6 +108,11 @@ msgstr "Add {0} to wallet to track your balance."
 msgid "Address is not a contract"
 msgstr "Address is not a contract"
 
+#: src/modules/governance/proposal/VotersListModal.tsx
+#: src/modules/governance/proposal/VotersListModal.tsx
+msgid "Addresses ({0})"
+msgstr "Addresses ({0})"
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "All Assets"
@@ -2008,7 +2013,17 @@ msgstr "Vote NAY"
 msgid "Vote YAE"
 msgstr "Vote YAE"
 
+#: src/modules/governance/proposal/VotersListModal.tsx
+msgid "Voted NAY"
+msgstr "Voted NAY"
+
+#: src/modules/governance/proposal/VotersListModal.tsx
+msgid "Voted YAE"
+msgstr "Voted YAE"
+
 #: src/modules/governance/proposal/VotersListContainer.tsx
+#: src/modules/governance/proposal/VotersListModal.tsx
+#: src/modules/governance/proposal/VotersListModal.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
 msgid "Votes"
 msgstr "Votes"

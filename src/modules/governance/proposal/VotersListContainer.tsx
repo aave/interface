@@ -41,101 +41,6 @@ export type VotersData =
   | { yaes: GovernanceVoter[]; nays: GovernanceVoter[]; combined: GovernanceVoter[] }
   | undefined;
 
-/**
- * MOCK DATA
- */
-// const mockVoter = (id: number): GovernanceVoter => ({
-//   _id: id.toString(),
-//   address: '0x6addaa208ea7c6e413f0c514dc1ba7510390c500',
-//   aaveBalance: 0,
-//   aavePropositionDelegate: '0x6addaa208ea7c6e413f0c514dc1ba7510390c500',
-//   aaveVotingDelegate: '0x6addaa208ea7c6e413f0c514dc1ba7510390c500',
-//   avatar: null,
-//   handle: null,
-//   isVerified: false,
-//   lastUpdateTimestamp: 1661177618,
-//   name: null,
-//   proposalHistory: [],
-//   propositionPower: 0.100085,
-//   propositionWeight: 6.2553125e-9,
-//   stkAaveBalance: 0.100085,
-//   stkAavePropositionDelegate: '0x6addaa208ea7c6e413f0c514dc1ba7510390c500',
-//   stkAaveVotingDelegate: '0x6addaa208ea7c6e413f0c514dc1ba7510390c500',
-//   votingHistory: [
-//     {
-//       proposal: {
-//         id: '103',
-//         title: 'Ethereum v2 Reserve Factor - aFEI Holding Update',
-//         ipfsHash: 'QmQvuQ2Z4Go9AKEWtuokyD682poSqpg4WWNJGbRHzHBTvY',
-//       },
-//       id: '0x6addaa208ea7c6e413f0c514dc1ba7510390c500:103',
-//       support: true,
-//       votingPower: 100085000000000000,
-//       timestamp: 1664643287,
-//     },
-//     {
-//       proposal: {
-//         id: '106',
-//         title: 'Adjust Aave Governance Level 2 requirements',
-//         ipfsHash: 'QmTSjXL3Ynh8D7NP2mhLULGAbdSvYX74GtTWwmS1qmwx4s',
-//       },
-//       id: '0x6addaa208ea7c6e413f0c514dc1ba7510390c500:106',
-//       support: true,
-//       votingPower: 100085000000000000,
-//       timestamp: 1665237935,
-//     },
-//     {
-//       proposal: {
-//         id: '107',
-//         title:
-//           'Use AAVE Ecosystem Reserve to vote YES on proposal to adjust Level 2 Governance requirements',
-//         ipfsHash: 'QmYrcwDvzYmWTJjsxJ8zLyYS2YYK4ByQBs28gcs9Am4xFK',
-//       },
-//       id: '0x6addaa208ea7c6e413f0c514dc1ba7510390c500:107',
-//       support: true,
-//       votingPower: 100085000000000000,
-//       timestamp: 1665237971,
-//     },
-//     {
-//       proposal: {
-//         id: '99',
-//         title: 'Add stMATIC to Aave v3 pool on Polygon',
-//         ipfsHash: 'QmRrpBPvmhdmpCBRLhGcUZ56e82Ad8F7syVCMJXM6kP5kS',
-//       },
-//       id: '0x6addaa208ea7c6e413f0c514dc1ba7510390c500:99',
-//       support: true,
-//       votingPower: 100085000000000000,
-//       timestamp: 1662722604,
-//     },
-//   ],
-//   votingPower: 0.100085,
-//   votingWeight: 6.2553125e-9,
-//   vote: 1,
-// });
-// /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
-// // @ts-ignore
-// const mockYesVoters: GovernanceVoter[] = Array.from(Array(25), (x, i) => mockVoter(i)).map(
-//   (v: GovernanceVoter) => ({
-//     ...v,
-//     vote: 1,
-//   })
-// );
-// /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
-// // @ts-ignore
-// const mockNoVoters: GovernanceVoter[] = Array.from(Array(25), (x, i) => mockVoter(i + 25)).map(
-//   (v: GovernanceVoter) => ({
-//     ...v,
-//     vote: 0,
-//   })
-// );
-// const mockVoters: VotersData = {
-//   yaes: mockYesVoters,
-//   nays: mockNoVoters,
-//   combined: mockYesVoters.concat(mockNoVoters).sort((a: GovernanceVoter, b: GovernanceVoter) => {
-//     return a.votingPower < b.votingPower ? 1 : a.votingPower > b.votingPower ? -1 : 0;
-//   }),
-// };
-
 export const VotersListContainer = (props: VotersListProps): JSX.Element => {
   const { proposal } = props;
   const [loading, setLoading] = useState(true);
@@ -209,24 +114,11 @@ export const VotersListContainer = (props: VotersListProps): JSX.Element => {
         {voters && (
           <>
             <Box sx={{ mb: 4, maxHeight: 230, overflow: 'hidden', overflowY: 'scroll' }}>
-              {!isMobile &&
-                voters.combined.slice(0, 10).map((voter) => (
-                  <Fragment key={voter._id}>
-                    <VotersListItem voter={voter} />
-                  </Fragment>
-                ))}
-              {isMobile &&
-                voters.yaes.map((voter) => (
-                  <Fragment key={voter._id}>
-                    <VotersListItem voter={voter} />
-                  </Fragment>
-                ))}
-              {isMobile &&
-                voters.nays.map((voter) => (
-                  <Fragment key={voter._id}>
-                    <VotersListItem voter={voter} />
-                  </Fragment>
-                ))}
+              {voters.combined.slice(0, 10).map((voter) => (
+                <Fragment key={voter._id}>
+                  <VotersListItem voter={voter} />
+                </Fragment>
+              ))}
             </Box>
             <Button variant="outlined" fullWidth onClick={handleOpenAllVotes}>
               <Trans>View all votes</Trans>

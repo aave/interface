@@ -1,6 +1,9 @@
 import { Trans } from '@lingui/macro';
-import { Grid, Typography } from '@mui/material';
-import React from 'react';
+import { Box, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { useState } from 'react';
+import { Row } from 'src/components/primitives/Row';
+import StyledToggleButton from 'src/components/StyledToggleButton';
+import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 
 import { BasicModal } from '../../../components/primitives/BasicModal';
 import { FormattedProposal } from '../utils/formatProposal';
@@ -21,66 +24,132 @@ export const VotersListModal = ({
   proposal,
   voters,
 }: VotersListModalProps): JSX.Element | null => {
+  const { breakpoints } = useTheme();
+  const mdUp = useMediaQuery(breakpoints.up('md'));
+  const [voteView, setVoteView] = useState<'yaes' | 'nays'>('yaes');
+  const borderBaseStyle = {
+    border: '1px solid',
+    borderColor: 'divider',
+    borderRadius: 1,
+  };
+
   if (!proposal || !voters) return null;
 
+  const yesVotesUI = (
+    <>
+      <VoteBar
+        yae
+        percent={proposal.yaePercent}
+        votes={proposal.yaeVotes}
+        sx={{
+          ...borderBaseStyle,
+          px: 4,
+          py: 2,
+        }}
+      />
+      <Box sx={{ ...borderBaseStyle, mt: 3 }}>
+        <Row
+          sx={{
+            px: 4,
+            py: 2,
+            borderBottom: '1px solid',
+            borderColor: 'divider',
+          }}
+        >
+          <Typography variant="subheader2" color="text.secondary">
+            <Trans>Addresses ({voters.yaes.length})</Trans>
+          </Typography>
+          <Typography variant="subheader2" color="text.secondary">
+            <Trans>Votes</Trans>
+          </Typography>
+        </Row>
+        <VotersList
+          voters={voters.yaes}
+          sx={{
+            p: 4,
+            mb: 0,
+          }}
+        />
+      </Box>
+    </>
+  );
+
+  const noVotesUI = (
+    <>
+      <VoteBar
+        percent={proposal.nayPercent}
+        votes={proposal.nayVotes}
+        sx={{
+          ...borderBaseStyle,
+          px: 4,
+          py: 2,
+        }}
+      />
+      <Box sx={{ ...borderBaseStyle, mt: 3 }}>
+        <Row
+          sx={{
+            px: 4,
+            py: 2,
+            borderBottom: '1px solid',
+            borderColor: 'divider',
+          }}
+        >
+          <Typography variant="subheader2" color="text.secondary">
+            <Trans>Addresses ({voters.nays.length})</Trans>
+          </Typography>
+          <Typography variant="subheader2" color="text.secondary">
+            <Trans>Votes</Trans>
+          </Typography>
+        </Row>
+        <VotersList
+          voters={voters.nays}
+          sx={{
+            p: 4,
+            mb: 0,
+          }}
+        />
+      </Box>
+    </>
+  );
+
   return (
-    <BasicModal open={open} setOpen={close} contentMaxWidth={800}>
+    <BasicModal open={open} setOpen={close} contentMaxWidth={mdUp ? 800 : 360}>
       <Typography variant="h2">
         <Trans>Votes</Trans>
       </Typography>
-      <Grid container spacing={4} sx={{ mt: 4 }}>
-        <Grid item xs={6}>
-          <VoteBar
-            yae
-            percent={proposal.yaePercent}
-            votes={proposal.yaeVotes}
-            sx={{
-              borderWidth: 1,
-              borderStyle: 'solid',
-              borderColor: 'divider',
-              borderRadius: 1,
-              px: 4,
-              py: 2,
-            }}
-          />
-          <VotersList
-            voters={voters.yaes}
-            sx={{
-              borderWidth: 1,
-              borderStyle: 'solid',
-              borderColor: 'divider',
-              borderRadius: 1,
-              p: 4,
-              mt: 3,
-            }}
-          />
+      {mdUp ? (
+        <Grid container spacing={4} sx={{ mt: 4 }}>
+          <Grid item xs={6}>
+            {yesVotesUI}
+          </Grid>
+          <Grid item xs={6}>
+            {noVotesUI}
+          </Grid>
         </Grid>
-        <Grid item xs={6}>
-          <VoteBar
-            percent={proposal.nayPercent}
-            votes={proposal.nayVotes}
-            sx={{
-              borderWidth: 1,
-              borderStyle: 'solid',
-              borderColor: 'divider',
-              borderRadius: 1,
-              px: 4,
-              py: 2,
-            }}
-          />
-          <VotersList
-            voters={voters.nays}
-            sx={{
-              borderWidth: 1,
-              borderStyle: 'solid',
-              borderColor: 'divider',
-              borderRadius: 1,
-              p: 4,
-              mt: 3,
-            }}
-          />
-        </Grid>
-      </Grid>
+      ) : (
+        <>
+          <StyledToggleButtonGroup
+            color="primary"
+            value={voteView}
+            exclusive
+            onChange={(_, value) => setVoteView(value)}
+            sx={{ width: '100%', height: '44px', mt: 8, mb: 6 }}
+          >
+            <StyledToggleButton value="yaes" disabled={voteView === 'yaes'}>
+              <Typography variant="subheader1">
+                <Trans>Voted YAE</Trans>
+              </Typography>
+            </StyledToggleButton>
+            <StyledToggleButton value="nays" disabled={voteView === 'nays'}>
+              <Typography variant="subheader1">
+                <Trans>Voted NAY</Trans>
+              </Typography>
+            </StyledToggleButton>
+          </StyledToggleButtonGroup>
+          {voteView === 'yaes' && yesVotesUI}
+          {voteView === 'nays' && noVotesUI}
+        </>
+      )}
     </BasicModal>
   );
 };

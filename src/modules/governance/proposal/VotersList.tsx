@@ -11,28 +11,17 @@ type VotersListProps = {
 };
 
 export const VotersList = ({ voters, sx }: VotersListProps): JSX.Element => {
-  const isMobile = false;
-
   return (
     <Box sx={{ mb: 4, maxHeight: 230, overflow: 'hidden', overflowY: 'scroll', ...sx }}>
-      {!isMobile &&
+      {voters.length === 0 ? (
+        <Box sx={{ color: 'text.secondary' }}>—</Box>
+      ) : (
         voters.map((voter) => (
           <Fragment key={voter._id}>
             <VotersListItem voter={voter} />
           </Fragment>
-        ))}
-      {isMobile &&
-        voters.map((voter) => (
-          <Fragment key={voter._id}>
-            <VotersListItem voter={voter} />
-          </Fragment>
-        ))}
-      {isMobile &&
-        voters.map((voter) => (
-          <Fragment key={voter._id}>
-            <VotersListItem voter={voter} />
-          </Fragment>
-        ))}
+        ))
+      )}
     </Box>
   );
 };
