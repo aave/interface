@@ -1,3 +1,4 @@
+import { ChainId } from '@aave/contract-helpers';
 import { normalize, UserIncentiveData, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
@@ -27,7 +28,7 @@ import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvi
 import { LiquidationRiskParametresInfoModal } from './LiquidationRiskParametresModal/LiquidationRiskParametresModal';
 
 export const DashboardTopPanel = () => {
-  const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
+  const { currentNetworkConfig, currentMarketData } = useProtocolDataContext();
   const { user, reserves, loading } = useAppDataContext();
   const { currentAccount } = useWeb3Context();
   const [open, setOpen] = useState(false);
@@ -44,7 +45,7 @@ export const DashboardTopPanel = () => {
       let tokenPrice = 0;
       // getting price from reserves for the native rewards for v2 markets
       if (!currentMarketData.v3 && Number(rewardBalance) > 0) {
-        if (currentMarket === 'proto_mainnet') {
+        if (currentMarketData.chainId === ChainId.mainnet) {
           const aave = reserves.find((reserve) => reserve.symbol === 'AAVE');
           tokenPrice = aave ? Number(aave.priceInUSD) : 0;
         } else {
