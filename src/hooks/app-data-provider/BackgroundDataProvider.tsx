@@ -16,7 +16,7 @@ const BackgroundDataProviderContext = React.createContext<BackgroundDataProvider
 );
 
 /**
- * Naive provider that subscribes to different data sources to update the apollo cache.
+ * Naive provider that subscribes to different data sources.
  * @param param0
  * @returns
  */
