@@ -1,24 +1,13 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useGovernanceDataSubscription } from 'src/store/root';
 
-interface GovernanceDataProviderContextType {}
-
-const GovernanceDataProviderContext = React.createContext<GovernanceDataProviderContextType>(
-  {} as GovernanceDataProviderContextType
-);
-
 /**
- * Naive provider that subscribes to different data sources to update the apollo cache.
+ * Naive provider that subscribes to governance data.
+ * Once next.js supports layouts this should go to the layouts section.
  * @param param0
  * @returns
  */
-export const GovernanceDataProvider: React.FC = ({ children }) => {
+export const GovernanceDataProvider: React.FC = () => {
   useGovernanceDataSubscription();
-  return (
-    <GovernanceDataProviderContext.Provider value={{}}>
-      {children}
-    </GovernanceDataProviderContext.Provider>
-  );
+  return null;
 };
-
-export const useGovernanceDataProvider = () => useContext(GovernanceDataProviderContext);
