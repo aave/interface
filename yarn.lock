@@ -2,20 +2,20 @@
 # yarn lockfile v1
 
 
-"@aave/contract-helpers@1.7.1":
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.7.1.tgz#30e3a2f9e1cd4369aff25ea6f13df30d66ca92f8"
-  integrity sha512-I4+TcnVrL9aaAIr9xTwU2DAdqYVvm4MJFlSKh0Nv9yMEBqGD3fwG5/lCCD2NbY1Ib+uMe+UBkTqgCAguHZjT1A==
+"@aave/contract-helpers@1.8.0":
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.8.0.tgz#24b8f490c6e759392f7cd6ab2a8e90c07d0ba42c"
+  integrity sha512-fvRj39ewJUasJ3xHMa5yW3N45ptZwNabTg9h67drlHlkkWLsNYil55dMywnv72RKNtAaF26K2abtt9m2pj/dVQ==
   dependencies:
     isomorphic-unfetch "^3.1.0"
 
-"@aave/math-utils@1.5.1":
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.5.1.tgz#87ceff77b33300d073f37628c145f3736e8c459c"
-  integrity sha512-0f5LIUgtkoW6EGrxDjJ7WG6vUgUyzG9IZdbzInrdQv3cQF0T5YkXCnSQ6ec6AXpZsg4T7Gy3u50JrE3vMDmRsQ==
+"@aave/math-utils@1.8.0":
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.8.0.tgz#c875724a73bc77fed3a75e894df621e2bfc7c38d"
+  integrity sha512-MncM6+Ajo7a2KUa69xwl0doRhsxqVPu13viFoE6PkitGVDAO2CtubHMNZUd3U42ivu6b+3QFARzhkTyrLRWslg==
   dependencies:
     bignumber.js "^9.0.1"
-    tslib "^2.3.1"
+    tslib "^2.4.0"
 
 "@adobe/css-tools@^4.0.1":
   version "4.0.1"
@@ -12708,7 +12708,7 @@ tslib@^1.8.1, tslib@^1.9.0:
   resolved "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
 
-tslib@^2, tslib@^2.0.0, tslib@^2.0.3, tslib@^2.1.0, tslib@^2.3.0, tslib@^2.3.1:
+tslib@^2, tslib@^2.0.0, tslib@^2.0.3, tslib@^2.1.0, tslib@^2.3.0:
   version "2.3.1"
   resolved "https://registry.npmjs.org/tslib/-/tslib-2.3.1.tgz"
   integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==
