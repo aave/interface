@@ -149,6 +149,8 @@ function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+/*
+// Unused for now, need to debug why batch providers are incompatible with tenderly rpcs for fork/testing usage
 class StaticJsonRpcBatchProvider extends ethersProviders.JsonRpcBatchProvider {
   async detectNetwork(): Promise<Network> {
     let network = this.network;
@@ -169,18 +171,7 @@ class StaticJsonRpcBatchProvider extends ethersProviders.JsonRpcBatchProvider {
     }
     return network;
   }
-}
-
-/**
- * Tenderly rpcs do not work with batch providers, so create provider accordingly
- */
-const createStaticProvider = (url: string, chainId: number): StaticJsonRpcProvider => {
-  if (FORK_ENABLED) {
-    return new StaticJsonRpcProvider(url, chainId);
-  } else {
-    return new StaticJsonRpcBatchProvider(url, chainId);
-  }
-};
+} */
 
 /**
  * The provider will rotate rpcs on error.
@@ -199,7 +190,7 @@ class RotationProvider extends ethersProviders.BaseProvider {
 
   constructor(urls: string[], chainId: number) {
     super(chainId);
-    this.providers = urls.map((url) => createStaticProvider(url, chainId));
+    this.providers = urls.map((url) => new StaticJsonRpcProvider(url, chainId));
   }
 
   /**
@@ -303,7 +294,7 @@ export const getProvider = (chainId: ChainId): ethersProviders.Provider => {
       throw new Error(`${chainId} has no jsonRPCUrl configured`);
     }
     if (chainProviders.length === 1) {
-      providers[chainId] = createStaticProvider(chainProviders[0], chainId);
+      providers[chainId] = new StaticJsonRpcProvider(chainProviders[0], chainId);
     } else {
       providers[chainId] = new RotationProvider(chainProviders, chainId);
     }
@@ -314,7 +305,7 @@ export const getProvider = (chainId: ChainId): ethersProviders.Provider => {
 export const getENSProvider = () => {
   const chainId = 1;
   const config = getNetworkConfig(chainId);
-  return createStaticProvider(config.publicJsonRPCUrl[0], chainId);
+  return new StaticJsonRpcProvider(config.publicJsonRPCUrl[0], chainId);
 };
 
 const ammDisableProposal = 'https://app.aave.com/governance/proposal/?proposalId=44';
