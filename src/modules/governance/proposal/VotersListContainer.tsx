@@ -41,29 +41,31 @@ export type VotersData =
   | { yaes: GovernanceVoter[]; nays: GovernanceVoter[]; combined: GovernanceVoter[] }
   | undefined;
 
+const sortByVotingPower = (a: GovernanceVoter, b: GovernanceVoter) => {
+  return a.votingPower < b.votingPower ? 1 : a.votingPower > b.votingPower ? -1 : 0;
+};
+
 export const VotersListContainer = (props: VotersListProps): JSX.Element => {
   const { proposal } = props;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<null | string>(null);
   const [voters, setVoters] = useState<VotersData>();
   const [votersModalOpen, setVotersModalOpen] = useState(false);
-  const isMobile = false;
 
   const votersUrl = `${process.env.NEXT_PUBLIC_API_BASEURL}/data/proposal-top-voters`;
   const queryParams = `?proposal=${proposal.id}`;
-
-  const sortByVotingPower = (a: GovernanceVoter, b: GovernanceVoter) => {
-    return a.votingPower < b.votingPower ? 1 : a.votingPower > b.votingPower ? -1 : 0;
-  };
 
   useEffect(() => {
     const getVoterInfo = async () => {
       if (error) setError(null);
 
       try {
+        // Get proposal voters data
         const resp = await fetch(votersUrl + queryParams);
+
         if (resp.ok) {
           const [yaes, nays] = await resp.json();
+          // Transform data for UI, sort by highest voting power
           const yesVoters = yaes.map((v: GovernanceVoter) => ({ ...v, vote: 1 }));
           const noVoters = nays.map((v: GovernanceVoter) => ({ ...v, vote: 0 }));
           const votersData = {
