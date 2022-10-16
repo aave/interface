@@ -115,16 +115,19 @@ export const VotersListContainer = (props: VotersListProps): JSX.Element => {
         )}
         {voters && (
           <>
-            <Box sx={{ mb: 4, maxHeight: 230, overflow: 'hidden', overflowY: 'scroll' }}>
+            {/* TODO: use <VotersList/> component */}
+            <Box sx={{ maxHeight: 230, overflow: 'hidden', overflowY: 'scroll' }}>
               {voters.combined.slice(0, 10).map((voter) => (
                 <Fragment key={voter._id}>
                   <VotersListItem voter={voter} />
                 </Fragment>
               ))}
             </Box>
-            <Button variant="outlined" fullWidth onClick={handleOpenAllVotes}>
-              <Trans>View all votes</Trans>
-            </Button>
+            {voters.combined.length > 10 && (
+              <Button variant="outlined" fullWidth onClick={handleOpenAllVotes} sx={{ mt: 4 }}>
+                <Trans>View all votes</Trans>
+              </Button>
+            )}
           </>
         )}
       </Box>
