@@ -24,7 +24,6 @@
     "isolatedModules": true,
     "incremental": true,
     "useUnknownInCatchVariables": false,
-    "types": ["cypress", "cypress-wait-until"],
   },
   "exclude": [
     "dist",
@@ -38,7 +37,6 @@
     "**/*.test.ts",
     "**/*.test.tsx",
     "coverage",
-    "cypress",
   ],
   "include": ["custom.d.ts", "next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }
