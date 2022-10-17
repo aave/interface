@@ -38,6 +38,7 @@
     "**/*.test.ts",
     "**/*.test.tsx",
     "coverage",
+    "cypress",
   ],
   "include": ["custom.d.ts", "next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }
