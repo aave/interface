@@ -1,40 +1,41 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import fetch from 'isomorphic-unfetch';
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Row } from 'src/components/primitives/Row';
 import { CustomProposalType } from 'src/static-build/proposal';
 
 import { formatProposal } from '../utils/formatProposal';
-import { VotersListItem } from './VotersListItem';
+import { VotersList } from './VotersList';
 import { VotersListModal } from './VotersListModal';
 
 type VotersListProps = {
   proposal: CustomProposalType;
 };
 
-// Possibly omit unnecessary values with lodash: proposalHistory, lastUpdateTimestamp, stkAave fields, votingHistory
 export type GovernanceVoter = {
+  _id: string; //mongodb objectid
   aaveBalance: number; //2.6209877046554566
   aavePropositionDelegate: string; //"0x8298a996a00835eedcc75763038b731fe617fd0d"
   aaveVotingDelegate: string; //"0x8298a996a00835eedcc75763038b731fe617fd0d"
   address: string; //"0x8298a996a00835eedcc75763038b731fe617fd0d"
-  avatar: string | null; //null
-  handle: string | null; //null
-  isVerified: boolean; //false
+  ensAvatar: string | null; //null
+  ensName: string | null; //null
+  isSybilVerified: boolean;
   lastUpdateTimestamp: number; //1601928545
-  name: string | null; //null
   proposalHistory: unknown[]; //[]
   propositionPower: number; //2.6209877046554566
   propositionWeight: number; //1.6381173154096605e-7
   stkAaveBalance: number; //0
   stkAavePropositionDelegate: string; //"0x8298a996a00835eedcc75763038b731fe617fd0d"
   stkAaveVotingDelegate: string; //"0x8298a996a00835eedcc75763038b731fe617fd0d"
+  twitterAvatar: string | null;
+  twitterHandle: string | null;
+  twitterName: string | null;
   vote: 0 | 1; // 0 for nay, 1 for yae
   votingHistory: unknown[]; //(2) [{…}, {…}]
   votingPower: number; // the amount of voting power the user has - 2.6209877046554566
   votingWeight: number; // the % that a single user contributes to the total - 1.6381173154096605e-7
-  _id: string; //mongodb objectid
 };
 
 export type VotersData =
@@ -48,7 +49,7 @@ const sortByVotingPower = (a: GovernanceVoter, b: GovernanceVoter) => {
 export const VotersListContainer = (props: VotersListProps): JSX.Element => {
   const { proposal } = props;
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<null | string>(null);
+  const [error, setError] = useState<boolean>(false);
   const [voters, setVoters] = useState<VotersData>();
   const [votersModalOpen, setVotersModalOpen] = useState(false);
 
@@ -57,7 +58,7 @@ export const VotersListContainer = (props: VotersListProps): JSX.Element => {
 
   useEffect(() => {
     const getVoterInfo = async () => {
-      if (error) setError(null);
+      if (error) setError(false);
 
       try {
         // Get proposal voters data
@@ -75,11 +76,11 @@ export const VotersListContainer = (props: VotersListProps): JSX.Element => {
           };
           setVoters(votersData);
         } else {
-          setError('Failed to get proposal top voters');
+          setError(true);
         }
       } catch (e: unknown) {
         console.error(e);
-        setError('Failed to get proposal top voters');
+        setError(true);
       }
       setLoading(false);
     };
@@ -102,35 +103,28 @@ export const VotersListContainer = (props: VotersListProps): JSX.Element => {
           <Trans>Votes</Trans>
         </Typography>
       </Row>
-      <Box>
-        {loading && (
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <CircularProgress size={30} sx={{ my: 4 }} />
-          </Box>
-        )}
-        {error && (
-          <Typography variant="subheader1" color="error.main">
-            {error}
+      {loading && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <CircularProgress size={24} sx={{ my: 4 }} />
+        </Box>
+      )}
+      {error && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 8 }}>
+          <Typography variant="helperText" color="error.main">
+            <Trans>Failed to get proposal top voters</Trans>
           </Typography>
-        )}
-        {voters && (
-          <>
-            {/* TODO: use <VotersList/> component */}
-            <Box sx={{ maxHeight: 230, overflow: 'hidden', overflowY: 'scroll' }}>
-              {voters.combined.slice(0, 10).map((voter) => (
-                <Fragment key={voter._id}>
-                  <VotersListItem voter={voter} />
-                </Fragment>
-              ))}
-            </Box>
-            {voters.combined.length > 10 && (
-              <Button variant="outlined" fullWidth onClick={handleOpenAllVotes} sx={{ mt: 4 }}>
-                <Trans>View all votes</Trans>
-              </Button>
-            )}
-          </>
-        )}
-      </Box>
+        </Box>
+      )}
+      {voters && (
+        <>
+          <VotersList voters={voters.combined.slice(0, 10)} />
+          {voters.combined.length > 10 && (
+            <Button variant="outlined" fullWidth onClick={handleOpenAllVotes} sx={{ mt: 4 }}>
+              <Trans>View all votes</Trans>
+            </Button>
+          )}
+        </>
+      )}
       {votersModalOpen && (
         <VotersListModal
           open={votersModalOpen}

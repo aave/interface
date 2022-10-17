@@ -1,10 +1,8 @@
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Avatar, Box, SvgIcon, Typography } from '@mui/material';
 import makeBlockie from 'ethereum-blockies-base64';
-import { useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
-import useGetEns from 'src/libs/hooks/use-get-ens';
 
 import { textCenterEllipsis } from '../../../helpers/text-center-ellipsis';
 import type { GovernanceVoter } from './VotersListContainer';
@@ -14,23 +12,17 @@ type VotersListItemProps = {
 };
 
 export const VotersListItem = ({ voter }: VotersListItemProps): JSX.Element | null => {
-  const { address, avatar } = voter;
-  // TODO: ENS name should come back from the API after a backend change is merged
-  const { name: ensName, avatar: ensAvatar } = useGetEns(address);
-  // TODO: Blockie fallback should happen at the container level
-  const [useBlockie, setUseBlockie] = useState(true);
+  const { address, ensAvatar, ensName, twitterAvatar } = voter;
 
-  const ensNameAbbreviated = ensName
+  // If voter has an ENS name, show it, otherwise, show address. Both will be abbreviated, except short ENS names.
+  const displayName = ensName
     ? ensName.length > 18
       ? textCenterEllipsis(ensName, 12, 3)
       : ensName
-    : undefined;
+    : textCenterEllipsis(address, 8, 3);
 
-  const displayName =
-    ensNameAbbreviated ?? textCenterEllipsis(address, ensNameAbbreviated ? 12 : 7, 4);
-
-  const blockie = makeBlockie(address !== '' ? address : 'default');
-  const displayAvatar = avatar ?? useBlockie ? blockie : ensAvatar;
+  // For avatars, the order of precedence is Twitter, then ENS, then default Blockie
+  const displayAvatar = twitterAvatar ?? ensAvatar ?? makeBlockie(address);
 
   // Don't show any results that come back with zero or negative voting power
   if (voter.votingPower <= 0) return null;
@@ -39,11 +31,7 @@ export const VotersListItem = ({ voter }: VotersListItemProps): JSX.Element | nu
     <Box sx={{ my: 6, '&:first-child': { mt: 0 }, '&:last-child': { mb: 0 } }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
-          <Avatar
-            src={displayAvatar}
-            sx={{ width: 24, height: 24, mr: 2 }}
-            onError={() => setUseBlockie(true)}
-          />
+          <Avatar src={displayAvatar} sx={{ width: 24, height: 24, mr: 2 }} />
           <Link href={`https://etherscan.io/address/${address}`}>
             <Typography
               variant="subheader1"

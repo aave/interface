@@ -771,6 +771,10 @@ msgstr "Expires"
 msgid "FAQ"
 msgstr "FAQ"
 
+#: src/modules/governance/proposal/VotersListContainer.tsx
+msgid "Failed to get proposal top voters"
+msgstr "Failed to get proposal top voters"
+
 #: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
