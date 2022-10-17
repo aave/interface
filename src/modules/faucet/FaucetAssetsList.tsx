@@ -1,4 +1,3 @@
-import { mintAmountsPerToken } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
