@@ -25,14 +25,14 @@ it('rotates through providers on error', async () => {
 
 it('waits for the rotation delay time after all providers have failed', (done) => {
   const badUrls = ['http://some-fake-url-1', 'http://some-fake-url-2', 'http://some-fake-url-3'];
-  const rotationProvider = new RotationProvider(badUrls, ChainId.mainnet);
+  const rotationProvider = new RotationProvider(badUrls, ChainId.mainnet, { rotationDelay: 1000 });
 
   const errors: string[] = [];
   let start: number;
   rotationProvider.on('debug', (error: { action: string; provider: StaticJsonRpcProvider }) => {
     errors.push(error.provider.connection.url);
     if (start) {
-      expect(Date.now() - start).toBeGreaterThan(5000);
+      expect(Date.now() - start).toBeGreaterThan(1000);
       done();
     }
 
@@ -44,4 +44,4 @@ it('waits for the rotation delay time after all providers have failed', (done) =
 
   // We don't care about the result, we just need to kick off a request
   rotationProvider.getBlock(15741825);
-}, 6000);
+});

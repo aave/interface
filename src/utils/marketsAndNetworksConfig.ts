@@ -172,24 +172,34 @@ class StaticJsonRpcBatchProvider extends ethersProviders.JsonRpcBatchProvider {
   }
 } */
 
+interface RotationProviderConfig {
+  rotationDelay?: number;
+  fallFowardDelay?: number;
+}
 /**
  * The provider will rotate rpcs on error.
  * If provider rotates away from the first RPC, rotate back after a set interval to prioritize using most reliable RPC.
  * If provider rotates through all rpcs, delay to avoid spamming rpcs with requests.
  */
 
+const DEFAULT_ROTATION_DELAY = 5000;
+const DEFAULT_FALL_FORWARD_DELAY = 60000;
+
 export class RotationProvider extends ethersProviders.BaseProvider {
   readonly providers: StaticJsonRpcProvider[];
   private currentProviderIndex = 0;
   private firstRotationTimestamp = 0;
   // after completing a full rotation of the RotationProvider, delay to avoid spamming rpcs with requests
-  private ROTATION_DELAY = 5000;
+  private rotationDelay: number;
   // if we rotate away from first rpc, return back after this delay
-  private FALL_FORWARD_DELAY = 60000;
+  private fallForwardDelay: number;
 
-  constructor(urls: string[], chainId: number) {
+  constructor(urls: string[], chainId: number, config?: RotationProviderConfig) {
     super(chainId);
     this.providers = urls.map((url) => new StaticJsonRpcProvider(url, chainId));
+
+    this.rotationDelay = config?.rotationDelay || DEFAULT_ROTATION_DELAY;
+    this.fallForwardDelay = config?.fallFowardDelay || DEFAULT_FALL_FORWARD_DELAY;
   }
 
   /**
@@ -198,8 +208,8 @@ export class RotationProvider extends ethersProviders.BaseProvider {
   async fallForwardRotation() {
     const now = new Date().getTime();
     const diff = now - this.firstRotationTimestamp;
-    if (diff < this.FALL_FORWARD_DELAY) {
-      await sleep(this.FALL_FORWARD_DELAY - diff);
+    if (diff < this.fallForwardDelay) {
+      await sleep(this.fallForwardDelay - diff);
       this.currentProviderIndex = 0;
     }
   }
@@ -217,7 +227,7 @@ export class RotationProvider extends ethersProviders.BaseProvider {
       this.firstRotationTimestamp = new Date().getTime();
       this.fallForwardRotation();
     } else if (this.currentProviderIndex === this.providers.length - 1) {
-      await sleep(this.ROTATION_DELAY);
+      await sleep(this.rotationDelay);
       this.currentProviderIndex = 0;
     } else {
       this.currentProviderIndex += 1;
