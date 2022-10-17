@@ -772,8 +772,8 @@ msgid "FAQ"
 msgstr "FAQ"
 
 #: src/modules/governance/proposal/VotersListContainer.tsx
-msgid "Failed to get proposal top voters"
-msgstr "Failed to get proposal top voters"
+msgid "Failed to load proposal voters. Please refresh the page."
+msgstr "Failed to load proposal voters. Please refresh the page."
 
 #: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx

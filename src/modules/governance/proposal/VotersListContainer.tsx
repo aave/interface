@@ -93,37 +93,49 @@ export const VotersListContainer = (props: VotersListProps): JSX.Element => {
     setVotersModalOpen(true);
   };
 
-  return (
-    <Box sx={{ mt: 8, mb: 12 }}>
-      <Row sx={{ mb: 3 }}>
-        <Typography variant="subheader2" color="text.secondary">
-          <Trans>Top 10 addresses</Trans>
-        </Typography>
-        <Typography variant="subheader2" color="text.secondary">
-          <Trans>Votes</Trans>
-        </Typography>
-      </Row>
-      {loading && (
+  const listHeaderComponent = (
+    <Row sx={{ mb: 3 }}>
+      <Typography variant="subheader2" color="text.secondary">
+        <Trans>Top 10 addresses</Trans>
+      </Typography>
+      <Typography variant="subheader2" color="text.secondary">
+        <Trans>Votes</Trans>
+      </Typography>
+    </Row>
+  );
+
+  if (loading)
+    return (
+      <Box sx={{ mt: 8, mb: 12 }}>
+        {listHeaderComponent}
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <CircularProgress size={24} sx={{ my: 4 }} />
         </Box>
-      )}
-      {error && (
+      </Box>
+    );
+
+  if (error)
+    return (
+      <Box sx={{ mt: 8, mb: 12 }}>
+        {listHeaderComponent}
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 8 }}>
           <Typography variant="helperText" color="error.main">
-            <Trans>Failed to get proposal top voters</Trans>
+            <Trans>Failed to load proposal voters. Please refresh the page.</Trans>
           </Typography>
         </Box>
-      )}
-      {voters && (
-        <>
-          <VotersList voters={voters.combined.slice(0, 10)} />
-          {voters.combined.length > 10 && (
-            <Button variant="outlined" fullWidth onClick={handleOpenAllVotes} sx={{ mt: 4 }}>
-              <Trans>View all votes</Trans>
-            </Button>
-          )}
-        </>
+      </Box>
+    );
+
+  if (!voters || voters.combined.length === 0) return <Box sx={{ mt: 8 }} />;
+
+  return (
+    <Box sx={{ mt: 8, mb: 12 }}>
+      {listHeaderComponent}
+      <VotersList voters={voters.combined.slice(0, 10)} />
+      {voters.combined.length > 10 && (
+        <Button variant="outlined" fullWidth onClick={handleOpenAllVotes} sx={{ mt: 4 }}>
+          <Trans>View all votes</Trans>
+        </Button>
       )}
       {votersModalOpen && (
         <VotersListModal
