@@ -1,6 +1,7 @@
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Avatar, Box, SvgIcon, Typography } from '@mui/material';
 import makeBlockie from 'ethereum-blockies-base64';
+import { useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 
@@ -13,6 +14,7 @@ type VotersListItemProps = {
 
 export const VotersListItem = ({ voter }: VotersListItemProps): JSX.Element | null => {
   const { address, ensAvatar, ensName, twitterAvatar } = voter;
+  const [useBlockie, setUseBlockie] = useState(false);
 
   // If voter has an ENS name, show it, otherwise, show address. Both will be abbreviated, except short ENS names.
   const displayName = ensName
@@ -22,7 +24,10 @@ export const VotersListItem = ({ voter }: VotersListItemProps): JSX.Element | nu
     : textCenterEllipsis(address, 8, 3);
 
   // For avatars, the order of precedence is Twitter, then ENS, then default Blockie
-  const displayAvatar = twitterAvatar ?? ensAvatar ?? makeBlockie(address);
+  // If ENS avatar does not exist, then use Blockie
+  const displayAvatar = useBlockie
+    ? makeBlockie(address)
+    : twitterAvatar ?? ensAvatar ?? makeBlockie(address);
 
   // Don't show any results that come back with zero or negative voting power
   if (voter.votingPower <= 0) return null;
@@ -31,7 +36,11 @@ export const VotersListItem = ({ voter }: VotersListItemProps): JSX.Element | nu
     <Box sx={{ my: 6, '&:first-child': { mt: 0 }, '&:last-child': { mb: 0 } }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
-          <Avatar src={displayAvatar} sx={{ width: 24, height: 24, mr: 2 }} />
+          <Avatar
+            src={displayAvatar}
+            sx={{ width: 24, height: 24, mr: 2 }}
+            onError={() => setUseBlockie(true)}
+          />
           <Link href={`https://etherscan.io/address/${address}`}>
             <Typography
               variant="subheader1"
