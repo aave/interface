@@ -1,5 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, InputBase, Link, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Resolution } from '@unstoppabledomains/resolution';
+import { tldResolverKeys } from '@unstoppabledomains/tldsresolverkeys';
 import { UnsupportedChainIdError } from '@web3-react/core';
 import { NoEthereumProviderError } from '@web3-react/injected-connector';
 import { UserRejectedRequestError } from '@web3-react/walletconnect-connector';
@@ -12,15 +14,13 @@ import { getENSProvider } from 'src/utils/marketsAndNetworksConfig';
 
 import { Warning } from '../primitives/Warning';
 import { TxModalTitle } from '../transactions/FlowCommons/TxModalTitle';
-import { Resolution } from '@unstoppabledomains/resolution';
-const tldResolverKeys = require('@unstoppabledomains/tldsresolverkeys');
 
 export type WalletRowProps = {
   walletName: string;
   walletType: WalletType;
 };
 
-const resolution = new Resolution()
+const resolution = new Resolution();
 
 const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
   const { connectWallet } = useWeb3Context();
@@ -153,22 +153,22 @@ export const WalletSelector = () => {
         } else {
           setValidAddressError(true);
         }
-      } else if (await resolution.isSupportedDomain(inputMockWalletAddress)){
+      } else if (await resolution.isSupportedDomain(inputMockWalletAddress)) {
         // Handle UNS names
         let resolvedAddress = null;
-        try{resolvedAddress = await resolution.owner(inputMockWalletAddress);}catch(e){}
+        try {
+          resolvedAddress = await resolution.owner(inputMockWalletAddress);
+        } catch (e) { }
         if (resolvedAddress && utils.isAddress(resolvedAddress)) {
           connectWatchModeOnly(resolvedAddress);
         } else {
           setValidAddressError(true);
         }
-      }else{
+      } else {
         setValidAddressError(true);
       }
     }
   };
-
-
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
@@ -234,7 +234,9 @@ export const WalletSelector = () => {
           size="large"
           fullWidth
           disabled={
-            !utils.isAddress(inputMockWalletAddress) && inputMockWalletAddress.slice(-4) !== '.eth' && !tldResolverKeys.udTlds.includes(inputMockWalletAddress.split(".").pop())
+            !utils.isAddress(inputMockWalletAddress) &&
+            inputMockWalletAddress.slice(-4) !== '.eth' &&
+            !tldResolverKeys.udTlds.includes(inputMockWalletAddress.split('.').pop())
           }
           aria-label="watch mode only address"
         >
