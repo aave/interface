@@ -261,7 +261,6 @@ export class RotationProvider extends ethersProviders.BaseProvider {
   async perform(method: string, params: any): Promise<any> {
     const index = this.currentProviderIndex;
     try {
-      console.log(`calling perform on provider ${index}`);
       return await this.providers[index].perform(method, params);
     } catch (e) {
       console.error(e.message);
