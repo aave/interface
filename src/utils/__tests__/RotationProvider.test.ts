@@ -47,7 +47,7 @@ it('waits for the rotation delay time after all providers have failed', (done) =
   rotationProvider.getBlock(15741825);
 });
 
-fit('rotates back to first provider after delay', (done) => {
+it('rotates back to first provider after delay', (done) => {
   const badUrl = 'http://some-fake-url-1';
   const mainnetProvider = getNetworkConfig(ChainId.mainnet);
   const rotationProvider = new RotationProvider(
@@ -59,34 +59,31 @@ fit('rotates back to first provider after delay', (done) => {
   let errorCount = 0;
   let start: number;
   let firstErrorHandled = false;
-  rotationProvider.on(
-    'debug',
-    (error: { action: string; provider: StaticJsonRpcProvider; error: any }) => {
-      errorCount++;
-      const url = error.provider.connection.url;
-      expect(url).toBe('http://some-fake-url-1');
-      if (!firstErrorHandled) {
-        firstErrorHandled = true;
-        start = Date.now();
+  rotationProvider.on('debug', (error: { action: string; provider: StaticJsonRpcProvider }) => {
+    errorCount++;
+    const url = error.provider.connection.url;
+    expect(url).toBe('http://some-fake-url-1');
+    if (!firstErrorHandled) {
+      firstErrorHandled = true;
+      start = Date.now();
 
-        // Fire off another request after a delay, it shouldn't fail because
-        // we've rotated to the second provider, which is the mainnet provider.
-        setTimeout(() => {
-          rotationProvider.getBlock(15741825);
-        }, 1000);
+      // Fire off another request after a delay, it shouldn't fail because
+      // we've rotated to the second provider, which is the mainnet provider.
+      setTimeout(() => {
+        rotationProvider.getBlock(15741825);
+      }, 1000);
 
-        // Wait for the fall forward delay to expire, then fire off another request.
-        // This should fail because we've rotated back to the first provider
-        setTimeout(() => {
-          rotationProvider.getBlock(15741825);
-        }, 5500);
-      } else {
-        expect(Date.now() - start).toBeGreaterThan(5000);
-        expect(errorCount).toBe(2);
-        done();
-      }
+      // Wait for the fall forward delay to expire, then fire off another request.
+      // This should fail because we've rotated back to the first provider
+      setTimeout(() => {
+        rotationProvider.getBlock(15741825);
+      }, 5500);
+    } else {
+      expect(Date.now() - start).toBeGreaterThan(5000);
+      expect(errorCount).toBe(2);
+      done();
     }
-  );
+  });
 
   // We don't care about the result, we just need to kick off a request
   rotationProvider.getBlock(15741825);
