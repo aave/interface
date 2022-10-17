@@ -177,10 +177,10 @@ class StaticJsonRpcBatchProvider extends ethersProviders.JsonRpcBatchProvider {
  * If provider rotates away from the first RPC, rotate back after a set interval to prioritize using most reliable RPC.
  * If provider rotates through all rpcs, delay to avoid spamming rpcs with requests.
  */
-class RotationProvider extends ethersProviders.BaseProvider {
+
+export class RotationProvider extends ethersProviders.BaseProvider {
   readonly providers: StaticJsonRpcProvider[];
   private currentProviderIndex = 0;
-  private lastFullRotationTimestamp = 0;
   private firstRotationTimestamp = 0;
   // after completing a full rotation of the RotationProvider, delay to avoid spamming rpcs with requests
   private ROTATION_DELAY = 5000;
@@ -190,17 +190,6 @@ class RotationProvider extends ethersProviders.BaseProvider {
   constructor(urls: string[], chainId: number) {
     super(chainId);
     this.providers = urls.map((url) => new StaticJsonRpcProvider(url, chainId));
-  }
-
-  /**
-   * If provider rotates through all rpcs, delay to avoid spamming rpcs with requests
-   */
-  async delayRotation() {
-    const now = new Date().getTime();
-    const diff = now - this.lastFullRotationTimestamp;
-    if (diff < this.ROTATION_DELAY) {
-      await sleep(this.ROTATION_DELAY - diff);
-    }
   }
 
   /**
@@ -228,9 +217,8 @@ class RotationProvider extends ethersProviders.BaseProvider {
       this.firstRotationTimestamp = new Date().getTime();
       this.fallForwardRotation();
     } else if (this.currentProviderIndex === this.providers.length - 1) {
-      await this.delayRotation(); // wait for ROTATION_DELAY after completing a full rotation
+      await sleep(this.ROTATION_DELAY);
       this.currentProviderIndex = 0;
-      this.lastFullRotationTimestamp = new Date().getTime();
     } else {
       this.currentProviderIndex += 1;
     }
@@ -263,9 +251,15 @@ class RotationProvider extends ethersProviders.BaseProvider {
   async perform(method: string, params: any): Promise<any> {
     const index = this.currentProviderIndex;
     try {
+      console.log(`calling perform on provider ${index}`);
       return await this.providers[index].perform(method, params);
     } catch (e) {
       console.error(e.message);
+      this.emit('debug', {
+        action: 'perform',
+        provider: this.providers[index],
+        error: e,
+      });
       await this.rotateUrl(index);
       return await this.perform(method, params);
     }
