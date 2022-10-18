@@ -132,7 +132,13 @@ export async function fetchExactInTxParams(
     };
   }
 
-  const swapInAmount = valueToBigNumber(swapIn.amount);
+  let swapInAmount = valueToBigNumber(swapIn.amount);
+  if (max && swapIn.supplyAPY !== '0') {
+    swapInAmount = swapInAmount.plus(
+      swapInAmount.multipliedBy(swapIn.supplyAPY).dividedBy(360 * 24)
+    );
+  }
+
   const amount = normalizeBN(swapInAmount, swapIn.decimals * -1);
 
   const options: RateOptions = {
@@ -167,7 +173,7 @@ export async function fetchExactInTxParams(
   return {
     swapCallData,
     augustus,
-    inputAmount: swapIn.amount,
+    inputAmount: normalize(route.srcAmount, swapIn.decimals),
     outputAmount: normalize(destAmountWithSlippage, swapOut.decimals),
     inputAmountUSD: route.srcUSD,
     outputAmountUSD: route.destUSD,
