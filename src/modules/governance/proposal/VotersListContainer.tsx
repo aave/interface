@@ -67,9 +67,12 @@ export const VotersListContainer = (props: VotersListProps): JSX.Element => {
         if (resp.ok) {
           const [yaes, nays] = await resp.json();
           // Transform data for UI, sort by highest voting power
-          const yesVoters = yaes.map((v: GovernanceVoter) => ({ ...v, vote: 1 }));
-          const noVoters = nays.map((v: GovernanceVoter) => ({ ...v, vote: 0 }));
-          const votersData = {
+          const yesVoters: GovernanceVoter[] = yaes.map((v: GovernanceVoter) => ({
+            ...v,
+            vote: 1,
+          }));
+          const noVoters: GovernanceVoter[] = nays.map((v: GovernanceVoter) => ({ ...v, vote: 0 }));
+          const votersData: VotersData = {
             yaes: yesVoters.sort(sortByVotingPower),
             nays: noVoters.sort(sortByVotingPower),
             combined: yesVoters.concat(noVoters).sort(sortByVotingPower),
