@@ -1,7 +1,7 @@
 import { CheckIcon, ExclamationIcon } from '@heroicons/react/outline';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, FormControlLabel, SvgIcon, Switch, Typography } from '@mui/material';
+import { Box, FormControlLabel, Skeleton, SvgIcon, Switch, Typography } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { ReactNode } from 'react';
 import { CollateralType } from 'src/helpers/types';
@@ -56,6 +56,7 @@ interface DetailsNumberLineProps extends FormattedNumberProps {
   futureValue?: FormattedNumberProps['value'];
   numberPrefix?: ReactNode;
   iconSymbol?: string;
+  loading?: boolean;
 }
 
 export const DetailsNumberLine = ({
@@ -64,20 +65,27 @@ export const DetailsNumberLine = ({
   futureValue,
   numberPrefix,
   iconSymbol,
+  loading = false,
   ...rest
 }: DetailsNumberLineProps) => {
   return (
     <Row caption={description} captionVariant="description" mb={4}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        {iconSymbol && <TokenIcon symbol={iconSymbol} sx={{ mr: 1, fontSize: '16px' }} />}
-        {numberPrefix && <Typography sx={{ mr: 1 }}>{numberPrefix}</Typography>}
-        <FormattedNumber value={value} variant="secondary14" {...rest} />
-        {futureValue && (
+        {loading ? (
+          <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
+        ) : (
           <>
-            <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-              <ArrowNarrowRightIcon />
-            </SvgIcon>
-            <FormattedNumber value={futureValue} variant="secondary14" {...rest} />
+            {iconSymbol && <TokenIcon symbol={iconSymbol} sx={{ mr: 1, fontSize: '16px' }} />}
+            {numberPrefix && <Typography sx={{ mr: 1 }}>{numberPrefix}</Typography>}
+            <FormattedNumber value={value} variant="secondary14" {...rest} />
+            {futureValue && (
+              <>
+                <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+                  <ArrowNarrowRightIcon />
+                </SvgIcon>
+                <FormattedNumber value={futureValue} variant="secondary14" {...rest} />
+              </>
+            )}
           </>
         )}
       </Box>
@@ -95,6 +103,7 @@ interface DetailsNumberLineWithSubProps {
   hideSymbolSuffix?: boolean;
   color?: string;
   tokenIcon?: string;
+  loading?: boolean;
 }
 
 export const DetailsNumberLineWithSub = ({
@@ -107,43 +116,57 @@ export const DetailsNumberLineWithSub = ({
   hideSymbolSuffix,
   color,
   tokenIcon,
+  loading = false,
 }: DetailsNumberLineWithSubProps) => {
   return (
     <Row caption={description} captionVariant="description" mb={4} align="flex-start">
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {value && (
-            <>
-              <FormattedNumber value={value} variant="secondary14" color={color} />
-              {!hideSymbolSuffix && (
-                <Typography ml={1} variant="secondary14">
-                  {symbol}
-                </Typography>
-              )}
-              <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-                <ArrowNarrowRightIcon />
-              </SvgIcon>
-            </>
-          )}
-          {tokenIcon && <TokenIcon symbol={tokenIcon} sx={{ mr: 1, fontSize: '14px' }} />}
-          <FormattedNumber value={futureValue} variant="secondary14" color={color} />
-          {!hideSymbolSuffix && (
-            <Typography ml={1} variant="secondary14">
-              {symbol}
-            </Typography>
-          )}
-        </Box>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {valueUSD && (
-            <>
-              <FormattedNumber value={valueUSD} variant="helperText" compact symbol="USD" />
-              <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-                <ArrowNarrowRightIcon />
-              </SvgIcon>
-            </>
-          )}
-          <FormattedNumber value={futureValueUSD} variant="helperText" compact symbol="USD" />
-        </Box>
+        {loading ? (
+          <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
+        ) : (
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            {value && (
+              <>
+                <FormattedNumber value={value} variant="secondary14" color={color} />
+                {!hideSymbolSuffix && (
+                  <Typography ml={1} variant="secondary14">
+                    {symbol}
+                  </Typography>
+                )}
+                <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+                  <ArrowNarrowRightIcon />
+                </SvgIcon>
+              </>
+            )}
+            {tokenIcon && <TokenIcon symbol={tokenIcon} sx={{ mr: 1, fontSize: '14px' }} />}
+            <FormattedNumber value={futureValue} variant="secondary14" color={color} />
+            {!hideSymbolSuffix && (
+              <Typography ml={1} variant="secondary14">
+                {symbol}
+              </Typography>
+            )}
+          </Box>
+        )}
+        {loading ? (
+          <Skeleton
+            variant="rectangular"
+            height={15}
+            width={80}
+            sx={{ borderRadius: '4px', marginTop: '4px' }}
+          />
+        ) : (
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            {valueUSD && (
+              <>
+                <FormattedNumber value={valueUSD} variant="helperText" compact symbol="USD" />
+                <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+                  <ArrowNarrowRightIcon />
+                </SvgIcon>
+              </>
+            )}
+            <FormattedNumber value={futureValueUSD} variant="helperText" compact symbol="USD" />
+          </Box>
+        )}
       </Box>
     </Row>
   );
@@ -208,6 +231,7 @@ interface DetailsIncentivesLineProps {
   incentives?: ReserveIncentiveResponse[];
   // the token yielding the incentive, not the incentive itself
   symbol: string;
+  loading?: boolean;
 }
 
 export const DetailsIncentivesLine = ({
@@ -215,22 +239,29 @@ export const DetailsIncentivesLine = ({
   symbol,
   futureIncentives,
   futureSymbol,
+  loading = false,
 }: DetailsIncentivesLineProps) => {
   if (!incentives || incentives.filter((i) => i.incentiveAPR !== '0').length === 0) return null;
   return (
     <Row caption={<Trans>Rewards APR</Trans>} captionVariant="description" mb={4} minHeight={24}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <IncentivesButton incentives={incentives} symbol={symbol} />
-        {futureSymbol && (
+        {loading ? (
+          <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
+        ) : (
           <>
-            <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-              <ArrowNarrowRightIcon />
-            </SvgIcon>
-            <IncentivesButton incentives={futureIncentives} symbol={futureSymbol} />
-            {futureIncentives && futureIncentives.length === 0 && (
-              <Typography variant="secondary14">
-                <Trans>None</Trans>
-              </Typography>
+            <IncentivesButton incentives={incentives} symbol={symbol} />
+            {futureSymbol && (
+              <>
+                <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+                  <ArrowNarrowRightIcon />
+                </SvgIcon>
+                <IncentivesButton incentives={futureIncentives} symbol={futureSymbol} />
+                {futureIncentives && futureIncentives.length === 0 && (
+                  <Typography variant="secondary14">
+                    <Trans>None</Trans>
+                  </Typography>
+                )}
+              </>
             )}
           </>
         )}
@@ -243,12 +274,14 @@ export interface DetailsHFLineProps {
   healthFactor: string;
   futureHealthFactor: string;
   visibleHfChange: boolean;
+  loading?: boolean;
 }
 
 export const DetailsHFLine = ({
   healthFactor,
   futureHealthFactor,
   visibleHfChange,
+  loading = false,
 }: DetailsHFLineProps) => {
   if (healthFactor === '-1' && futureHealthFactor === '-1') return null;
   return (
@@ -260,18 +293,24 @@ export const DetailsHFLine = ({
     >
       <Box sx={{ textAlign: 'right' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-          <HealthFactorNumber value={healthFactor} variant="secondary14" />
-
-          {visibleHfChange && (
+          {loading ? (
+            <Skeleton variant="rectangular" height={20} width={80} sx={{ borderRadius: '4px' }} />
+          ) : (
             <>
-              <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-                <ArrowNarrowRightIcon />
-              </SvgIcon>
+              <HealthFactorNumber value={healthFactor} variant="secondary14" />
 
-              <HealthFactorNumber
-                value={Number(futureHealthFactor) ? futureHealthFactor : healthFactor}
-                variant="secondary14"
-              />
+              {visibleHfChange && (
+                <>
+                  <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+                    <ArrowNarrowRightIcon />
+                  </SvgIcon>
+
+                  <HealthFactorNumber
+                    value={Number(futureHealthFactor) ? futureHealthFactor : healthFactor}
+                    variant="secondary14"
+                  />
+                </>
+              )}
             </>
           )}
         </Box>
