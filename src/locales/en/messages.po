@@ -1546,7 +1546,6 @@ msgid "Stake cooldown activated"
 msgstr "Stake cooldown activated"
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
-#: src/components/transactions/UnStake/UnStakeModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "Staked"
 msgstr "Staked"
@@ -1944,6 +1943,10 @@ msgstr "Unstake now"
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Unstake window"
 msgstr "Unstake window"
+
+#: src/components/transactions/UnStake/UnStakeModalContent.tsx
+msgid "Unstaked"
+msgstr "Unstaked"
 
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Used as collateral"
