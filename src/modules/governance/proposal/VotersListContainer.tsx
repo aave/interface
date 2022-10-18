@@ -71,7 +71,10 @@ export const VotersListContainer = (props: VotersListProps): JSX.Element => {
             ...v,
             vote: 1,
           }));
-          const noVoters: GovernanceVoter[] = nays.map((v: GovernanceVoter) => ({ ...v, vote: 0 }));
+          const noVoters: GovernanceVoter[] = nays.map((v: GovernanceVoter) => ({
+            ...v,
+            vote: 0,
+          }));
           const votersData: VotersData = {
             yaes: yesVoters.sort(sortByVotingPower),
             nays: noVoters.sort(sortByVotingPower),
