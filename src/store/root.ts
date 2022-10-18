@@ -1,14 +1,16 @@
-import create from 'zustand';
-import { devtools, persist } from 'zustand/middleware';
 import { enableMapSet } from 'immer';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
+import create from 'zustand';
+import { devtools } from 'zustand/middleware';
 
+import { createGovernanceSlice, GovernanceSlice } from './governanceSlice';
+import { createIncentiveSlice, IncentiveSlice } from './incentiveSlice';
+import { createPoolSlice, PoolSlice } from './poolSlice';
+import { createProtocolDataSlice, ProtocolDataSlice } from './protocolDataSlice';
+import { createStakeSlice, StakeSlice } from './stakeSlice';
 import { createSingletonSubscriber } from './utils/createSingletonSubscriber';
-import { StakeSlice, createStakeSlice } from './stakeSlice';
-import { ProtocolDataSlice, createProtocolDataSlice } from './protocolDataSlice';
-import { WalletSlice, createWalletSlice } from './walletSlice';
-import { PoolSlice, createPoolSlice } from './poolSlice';
-import { IncentiveSlice, createIncentiveSlice } from './incentiveSlice';
-import { GovernanceSlice, createGovernanceSlice } from './governanceSlice';
+import { getQueryParameter } from './utils/queryParams';
+import { createWalletSlice, WalletSlice } from './walletSlice';
 
 enableMapSet();
 
@@ -20,36 +22,28 @@ export type RootStore = StakeSlice &
   GovernanceSlice;
 
 export const useRootStore = create<RootStore>()(
-  devtools(
-    persist(
-      (...args) => {
-        return {
-          ...createStakeSlice(...args),
-          ...createProtocolDataSlice(...args),
-          ...createWalletSlice(...args),
-          ...createPoolSlice(...args),
-          ...createIncentiveSlice(...args),
-          ...createGovernanceSlice(...args),
-          // ...createStakeSlice(...args),
-          // ...createProtocolDataSlice(...args),
-          // ...createWalletSlice(...args),
-          // ...createIncentiveSlice(...args),
-          // ...createGovernanceSlice(...args),
-        };
-      },
-      {
-        name: 'session-storage',
-        partialize: () => ({
-          // TODO: decide what to store, some values might be problematic as they rely on context
-          // currentMarket: state.currentMarket,
-          // account: state.account,
-          // currentMarketData: state.currentMarketData,
-          // currentChainId: state.currentChainId,
-        }),
-      }
-    )
-  )
+  devtools((...args) => {
+    return {
+      ...createStakeSlice(...args),
+      ...createProtocolDataSlice(...args),
+      ...createWalletSlice(...args),
+      ...createPoolSlice(...args),
+      ...createIncentiveSlice(...args),
+      ...createGovernanceSlice(...args),
+    };
+  })
 );
+
+// hydrate state from localeStorage to not break on ssr issues
+if (typeof document !== 'undefined') {
+  document.onreadystatechange = function () {
+    if (document.readyState == 'complete') {
+      const selectedMarket = getQueryParameter('marketName') || localStorage.getItem('marketName');
+      const setCurrentMarket = useRootStore.getState().setCurrentMarket;
+      setCurrentMarket(selectedMarket as CustomMarket);
+    }
+  };
+}
 
 export const useStakeDataSubscription = createSingletonSubscriber(() => {
   return useRootStore.getState().refetchStakeData();

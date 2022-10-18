@@ -26,7 +26,6 @@ import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider'
 import { ModalContextProvider } from 'src/hooks/useModal';
 import { PermissionProvider } from 'src/hooks/usePermissions';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
-import { TxBuilderProvider } from 'src/providers/TxBuilderProvider';
 
 import createEmotionCache from '../src/createEmotionCache';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
@@ -74,21 +73,19 @@ export default function MyApp(props: MyAppProps) {
                   <ModalContextProvider>
                     <BackgroundDataProvider>
                       <AppDataProvider>
-                        <TxBuilderProvider>
-                          <GasStationProvider>
-                            {getLayout(<Component {...pageProps} />)}
-                            <SupplyModal />
-                            <WithdrawModal />
-                            <BorrowModal />
-                            <RepayModal />
-                            <CollateralChangeModal />
-                            <RateSwitchModal />
-                            <ClaimRewardsModal />
-                            <EmodeModal />
-                            <SwapModal />
-                            <FaucetModal />
-                          </GasStationProvider>
-                        </TxBuilderProvider>
+                        <GasStationProvider>
+                          {getLayout(<Component {...pageProps} />)}
+                          <SupplyModal />
+                          <WithdrawModal />
+                          <BorrowModal />
+                          <RepayModal />
+                          <CollateralChangeModal />
+                          <RateSwitchModal />
+                          <ClaimRewardsModal />
+                          <EmodeModal />
+                          <SwapModal />
+                          <FaucetModal />
+                        </GasStationProvider>
                       </AppDataProvider>
                     </BackgroundDataProvider>
                   </ModalContextProvider>

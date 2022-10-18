@@ -11,8 +11,7 @@ import { TorusConnector } from '@web3-react/torus-connector';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { BigNumber, providers } from 'ethers';
-import { ReactElement, useCallback, useEffect, useState } from 'react';
-import { useWalletModalContext } from 'src/hooks/useWalletModal';
+import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 import { useRootStore } from 'src/store/root';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { hexToAscii } from 'src/utils/utils';
@@ -62,24 +61,16 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     setError,
   } = useWeb3React<providers.Web3Provider>();
 
-  const [mockAddress, setMockAddress] = useState<string>();
+  // const [provider, setProvider] = useState<JsonRpcProvider>();
   const [connector, setConnector] = useState<AbstractConnector>();
   const [loading, setLoading] = useState(false);
   const [tried, setTried] = useState(false);
   const [deactivated, setDeactivated] = useState(false);
-  const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
-  const [triedCoinbase, setTriedCoinbase] = useState(false);
-  const setAccount = useRootStore((store) => store.setAccount);
-  const [triedLedger, setTriedLedger] = useState(false);
   const [triedGnosisSafe, setTriedGnosisSafe] = useState(false);
-
-  const { setWalletModalOpen } = useWalletModalContext();
-
-  useEffect(() => {
-    if (active) {
-      setWalletModalOpen(false);
-    }
-  }, [active]);
+  const [triedCoinbase, setTriedCoinbase] = useState(false);
+  const [triedLedger, setTriedLedger] = useState(false);
+  const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
+  const setAccount = useRootStore((store) => store.setAccount);
 
   // for now we use network changed as it returns the chain string instead of hex
   // const handleChainChanged = (chainId: number) => {
@@ -416,13 +407,10 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     return false;
   };
 
+  // inject account into zustand as long as aave itnerface is using old web3 providers
   useEffect(() => {
-    setMockAddress(localStorage.getItem('mockWalletAddress')?.toLowerCase());
-  }, []);
-
-  useEffect(() => {
-    setAccount(mockAddress || account?.toLowerCase());
-  }, [account, mockAddress]);
+    setAccount(account?.toLowerCase());
+  }, [account]);
 
   return (
     <Web3Context.Provider

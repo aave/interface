@@ -2,6 +2,7 @@ import { StakingService, UiStakeDataProvider } from '@aave/contract-helpers';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { StateCreator } from 'zustand';
+
 import { RootStore } from './root';
 
 export type StakeGeneralUiData = {
@@ -53,13 +54,13 @@ export interface StakeSlice {
   stakeGeneralResult?: StakeGeneralUiData;
   stake: (token: string) => StakingService['stake'];
   cooldown: (token: string) => StakingService['cooldown'];
-  claimRewards: (token: string) => StakingService['claimRewards'];
+  claimStakeRewards: (token: string) => StakingService['claimRewards'];
   redeem: (token: string) => StakingService['redeem'];
 }
 
 export const createStakeSlice: StateCreator<
   RootStore,
-  [['zustand/devtools', never], ['zustand/persist', unknown]],
+  [['zustand/devtools', never]],
   [],
   StakeSlice
 > = (set, get) => {
@@ -113,7 +114,7 @@ export const createStakeSlice: StateCreator<
       });
       return (...args) => service.cooldown(...args);
     },
-    claimRewards(tokenName) {
+    claimStakeRewards(tokenName) {
       const provider = getCorrectProvider();
       const service = new StakingService(provider, {
         TOKEN_STAKING_ADDRESS: stakeConfig.tokens[tokenName].TOKEN_STAKING,

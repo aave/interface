@@ -15,7 +15,7 @@ export interface IncentiveSlice {
 
 export const createIncentiveSlice: StateCreator<
   RootStore,
-  [['zustand/devtools', never], ['zustand/persist', unknown]],
+  [['zustand/devtools', never]],
   [],
   IncentiveSlice
 > = (set, get) => ({

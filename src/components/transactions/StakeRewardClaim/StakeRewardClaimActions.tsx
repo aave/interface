@@ -25,12 +25,12 @@ export const StakeRewardClaimActions = ({
   ...props
 }: StakeRewardClaimActionProps) => {
   const { currentAccount } = useWeb3Context();
-  const claimRewards = useRootStore((state) => state.claimRewards);
+  const claimStakeRewards = useRootStore((state) => state.claimStakeRewards);
 
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     tryPermit: false,
     handleGetTxns: async () => {
-      return claimRewards(selectedToken)(currentAccount, amountToClaim);
+      return claimStakeRewards(selectedToken)(currentAccount, amountToClaim);
     },
     skip: blocked,
     deps: [],

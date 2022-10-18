@@ -1,4 +1,6 @@
+import { formatReservesAndIncentives } from '@aave/math-utils';
 import { EmodeCategory } from 'src/helpers/types';
+import { fetchIconSymbolAndName, STABLE_ASSETS } from 'src/ui-config/reservePatches';
 
 import { RootStore } from './root';
 
@@ -29,6 +31,41 @@ export const selectCurrentBaseCurrencyData = (state: RootStore) => {
       networkBaseTokenPriceDecimals: 0,
     }
   );
+};
+
+export const reserveSortFn = (a: { iconSymbol: string }, b: { iconSymbol: string }) => {
+  const aIsStable = STABLE_ASSETS.includes(a.iconSymbol.toUpperCase());
+  const bIsStable = STABLE_ASSETS.includes(b.iconSymbol.toUpperCase());
+  if (aIsStable && !bIsStable) return -1;
+  if (!aIsStable && bIsStable) return 1;
+  return a.iconSymbol.toUpperCase() > b.iconSymbol.toUpperCase() ? 1 : -1;
+};
+
+// TODO move formatUserSummaryAndIncentives
+// export const selectSortedCurrentUserReservesData = (state: RootStore) => {};
+
+export const selectFormattedReserves = (state: RootStore, currentTimestamp: number) => {
+  const reserves = selectCurrentReserves(state);
+  const baseCurrencyData = selectCurrentBaseCurrencyData(state);
+  const currentNetworkConfig = state.currentNetworkConfig;
+
+  const formattedPoolReserves = formatReservesAndIncentives({
+    reserves,
+    currentTimestamp,
+    marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
+    marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
+    reserveIncentives: state.reserveIncentiveData || [],
+  })
+    .map((r) => ({
+      ...r,
+      ...fetchIconSymbolAndName(r),
+      isEmodeEnabled: r.eModeCategoryId !== 0,
+      isWrappedBaseAsset:
+        r.symbol.toLowerCase() === currentNetworkConfig.wrappedBaseAssetSymbol?.toLowerCase(),
+    }))
+    .sort(reserveSortFn);
+
+  return formattedPoolReserves;
 };
 
 export const selectEmodes = (state: RootStore) => {

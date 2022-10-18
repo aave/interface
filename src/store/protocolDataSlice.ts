@@ -10,7 +10,7 @@ import { StateCreator } from 'zustand';
 import { CustomMarket, MarketDataType } from '../ui-config/marketsConfig';
 import { NetworkConfig } from '../ui-config/networksConfig';
 import { RootStore } from './root';
-import { getQueryParameter, setQueryParameter } from './utils/queryParams';
+import { setQueryParameter } from './utils/queryParams';
 
 export interface ProtocolDataSlice {
   currentMarket: CustomMarket;
@@ -21,26 +21,32 @@ export interface ProtocolDataSlice {
   setCurrentMarket: (market: CustomMarket) => void;
 }
 
+const getCurrentMarket = (): CustomMarket => {
+  const preselectedMarket = availableMarkets[0];
+
+  return availableMarkets.includes(preselectedMarket as CustomMarket)
+    ? (preselectedMarket as CustomMarket)
+    : (availableMarkets[0] as CustomMarket);
+};
+
 export const createProtocolDataSlice: StateCreator<
   RootStore,
-  [['zustand/devtools', never], ['zustand/persist', unknown]],
+  [['zustand/devtools', never]],
   [],
   ProtocolDataSlice
 > = (set, get) => {
-  const preselectedMarket = getQueryParameter('marketName') as CustomMarket;
-  const initialMarket = availableMarkets.includes(preselectedMarket)
-    ? preselectedMarket
-    : availableMarkets[0]; // currently seeded with localStorage, but might not be necessary with persist
+  const initialMarket = getCurrentMarket();
   const initialMarketData = marketsData[initialMarket];
   return {
     currentMarket: initialMarket,
-    currentMarketData: initialMarketData,
+    currentMarketData: marketsData[initialMarket],
     currentChainId: initialMarketData.chainId,
     currentNetworkConfig: getNetworkConfig(initialMarketData.chainId),
     jsonRpcProvider: () => getProvider(get().currentChainId),
     setCurrentMarket: (market) => {
       const nextMarketData = marketsData[market];
       setQueryParameter('marketName', market);
+      localStorage.setItem('marketName', market);
       set({
         currentMarket: market,
         currentMarketData: nextMarketData,

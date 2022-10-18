@@ -11,9 +11,10 @@ import React, { useContext } from 'react';
 import { EmodeCategory } from 'src/helpers/types';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { fetchIconSymbolAndName, STABLE_ASSETS } from 'src/ui-config/reservePatches';
+import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 import {
+  reserveSortFn,
   selectCurrentBaseCurrencyData,
   selectCurrentReserves,
   selectCurrentUserEmodeCategoryId,
@@ -215,11 +216,3 @@ export const AppDataProvider: React.FC = ({ children }) => {
 };
 
 export const useAppDataContext = () => useContext(AppDataContext);
-
-const reserveSortFn = (a: { iconSymbol: string }, b: { iconSymbol: string }) => {
-  const aIsStable = STABLE_ASSETS.includes(a.iconSymbol.toUpperCase());
-  const bIsStable = STABLE_ASSETS.includes(b.iconSymbol.toUpperCase());
-  if (aIsStable && !bIsStable) return -1;
-  if (!aIsStable && bIsStable) return 1;
-  return a.iconSymbol.toUpperCase() > b.iconSymbol.toUpperCase() ? 1 : -1;
-};

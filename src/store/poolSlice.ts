@@ -1,6 +1,9 @@
 import {
   EthereumTransactionTypeExtended,
   FaucetService,
+  IncentivesController,
+  IncentivesControllerV2,
+  IncentivesControllerV2Interface,
   InterestRate,
   LendingPool,
   Pool,
@@ -20,8 +23,10 @@ import {
 } from '@aave/contract-helpers/dist/esm/v3-pool-contract/lendingPoolTypes';
 import { normalize } from '@aave/math-utils';
 import { SignatureLike } from '@ethersproject/bytes';
-import { produce } from 'immer';
+import dayjs from 'dayjs';
+import produce from 'immer';
 import { OptimalRate } from 'paraswap-core';
+import { ClaimRewardsActionsProps } from 'src/components/transactions/ClaimRewards/ClaimRewardsActions';
 import { RepayActionProps as ParaswapRepayActionProps } from 'src/components/transactions/Repay/CollateralRepayActions';
 import { RepayActionProps } from 'src/components/transactions/Repay/RepayActions';
 import { SupplyActionProps } from 'src/components/transactions/Supply/SupplyActions';
@@ -30,6 +35,7 @@ import { getRepayCallData, getSwapCallData } from 'src/hooks/useSwap';
 import { optimizedPath } from 'src/utils/utils';
 import { StateCreator } from 'zustand';
 
+import { selectFormattedReserves } from './poolSelectors';
 import { RootStore } from './root';
 
 // TODO: add chain/provider/account mapping
@@ -66,6 +72,7 @@ export interface PoolSlice {
   ) => Promise<EthereumTransactionTypeExtended[]>;
   setUserEMode: (categoryId: number) => Promise<EthereumTransactionTypeExtended[]>;
   signERC20Approval: (args: Omit<LPSignERC20ApprovalType, 'user'>) => Promise<string>;
+  claimRewards: (args: ClaimRewardsActionsProps) => Promise<EthereumTransactionTypeExtended[]>;
   // TODO: optimize types to use only neccessary properties
   swapCollateral: (args: SwapActionProps) => Promise<EthereumTransactionTypeExtended[]>;
   repay: (args: RepayActionProps) => Promise<EthereumTransactionTypeExtended[]>;
@@ -82,7 +89,7 @@ export interface PoolSlice {
 
 export const createPoolSlice: StateCreator<
   RootStore,
-  [['zustand/devtools', never], ['zustand/persist', unknown]],
+  [['zustand/devtools', never]],
   [],
   PoolSlice
 > = (set, get) => {
@@ -289,7 +296,7 @@ export const createPoolSlice: StateCreator<
       });
     },
     supply: ({ poolAddress, amountToSupply }) => {
-      const pool = getCorrectPool() as Pool;
+      const pool = getCorrectPool();
       const currentAccount = get().account;
       if (pool instanceof Pool) {
         return pool.supply({
@@ -367,6 +374,56 @@ export const createPoolSlice: StateCreator<
         ...args,
         user,
       });
+    },
+    claimRewards: async ({ selectedReward }) => {
+      // TODO: think about moving timestamp from hook to EventEmitter
+      const timestamp = dayjs().unix();
+      const reserves = selectFormattedReserves(get(), timestamp);
+      const currentAccount = get().account;
+
+      const allReserves: string[] = [];
+      reserves.forEach((reserve) => {
+        if (reserve.aIncentivesData && reserve.aIncentivesData.length > 0) {
+          allReserves.push(reserve.aTokenAddress);
+        }
+        if (reserve.vIncentivesData && reserve.vIncentivesData.length > 0) {
+          allReserves.push(reserve.variableDebtTokenAddress);
+        }
+        if (reserve.sIncentivesData && reserve.sIncentivesData.length > 0) {
+          allReserves.push(reserve.stableDebtTokenAddress);
+        }
+      });
+
+      const incentivesTxBuilder = new IncentivesController(get().jsonRpcProvider());
+      const incentivesTxBuilderV2: IncentivesControllerV2Interface = new IncentivesControllerV2(
+        get().jsonRpcProvider()
+      );
+
+      if (get().currentMarketData.v3) {
+        if (selectedReward.symbol === 'all') {
+          return incentivesTxBuilderV2.claimAllRewards({
+            user: currentAccount,
+            assets: allReserves,
+            to: currentAccount,
+            incentivesControllerAddress: selectedReward.incentiveControllerAddress,
+          });
+        } else {
+          return incentivesTxBuilderV2.claimRewards({
+            user: currentAccount,
+            assets: allReserves,
+            to: currentAccount,
+            incentivesControllerAddress: selectedReward.incentiveControllerAddress,
+            reward: selectedReward.rewardTokenAddress,
+          });
+        }
+      } else {
+        return incentivesTxBuilder.claimRewards({
+          user: currentAccount,
+          assets: selectedReward.assets,
+          to: currentAccount,
+          incentivesControllerAddress: selectedReward.incentiveControllerAddress,
+        });
+      }
     },
     useOptimizedPath: () => {
       return get().currentMarketData.v3 && optimizedPath(get().currentChainId);
