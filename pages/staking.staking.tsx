@@ -3,6 +3,7 @@ import { Box, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { BigNumber } from 'ethers/lib/ethers';
 import { formatEther } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
+import { ConnectWalletPaperStaking } from 'src/components/ConnectWalletPaperStaking';
 import { ContentContainer } from 'src/components/ContentContainer';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
@@ -19,7 +20,6 @@ import { StakingPanel } from 'src/modules/staking/StakingPanel';
 import { useRootStore, useStakeDataSubscription } from 'src/store/root';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
-import { ConnectWalletPaper } from '../src/components/ConnectWalletPaper';
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 
 export default function Staking() {
@@ -145,8 +145,12 @@ export default function Staking() {
             </Grid>
           </>
         ) : (
-          <ConnectWalletPaper
-            description={<Trans>We couldn’t detect a wallet. Connect a wallet to stake.</Trans>}
+          <ConnectWalletPaperStaking
+            description={
+              <Trans>
+                We couldn’t detect a wallet. Connect a wallet to stake and view your balance.
+              </Trans>
+            }
             loading={loading}
           />
         )}

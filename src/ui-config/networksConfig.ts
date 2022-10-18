@@ -190,6 +190,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Arbitrum Bridge',
       url: 'https://bridge.arbitrum.io',
     },
+    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
   [ChainId.harmony]: {
     name: 'Harmony',
@@ -209,6 +210,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Harmony Bridge',
       url: 'https://bridge.harmony.one',
     },
+    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
   [ChainId.optimism]: {
     name: 'Optimism',
@@ -229,6 +231,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Optimism Bridge',
       url: 'https://app.optimism.io/bridge',
     },
+    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
   [ChainId.optimism_goerli]: {
     name: 'Optimism Görli',
@@ -267,6 +270,7 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       name: 'Fantom Bridge',
       url: 'https://app.multichain.org/#/router',
     },
+    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
   [ChainId.fantom_testnet]: {
     name: 'Fantom Testnet',
