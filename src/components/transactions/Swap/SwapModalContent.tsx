@@ -4,7 +4,6 @@ import { Box, SvgIcon, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import React, { useRef, useState } from 'react';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Asset, AssetInput } from 'src/components/transactions/AssetInput';
 import { GasEstimationError } from 'src/components/transactions/FlowCommons/GasEstimationError';
 import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
@@ -77,6 +76,7 @@ export const SwapModalContent = ({
     error,
     augustus,
     swapCallData,
+    loading,
   } = useCollateralSwap({
     chainId: currentNetworkConfig.underlyingChainId || currentChainId,
     userAddress: currentAccount,
@@ -86,6 +86,8 @@ export const SwapModalContent = ({
     skip: supplyTxState.loading,
     maxSlippage: Number(maxSlippage),
   });
+
+  const loadingSkeleton = loading && outputAmountUSD === '0';
 
   const minimumReceived = new BigNumber(outputAmount || '0')
     .multipliedBy(new BigNumber(100).minus(maxSlippage).dividedBy(100))
@@ -198,15 +200,7 @@ export const SwapModalContent = ({
           <SwitchVerticalIcon />
         </SvgIcon>
 
-        <PriceImpactTooltip
-          text={
-            <Trans>
-              Price impact{' '}
-              <FormattedNumber value={priceImpact} variant="secondary12" color="text.secondary" />%
-            </Trans>
-          }
-          variant="secondary14"
-        />
+        <PriceImpactTooltip loading={loadingSkeleton} priceImpact={priceImpact} />
       </Box>
       <AssetInput
         value={outputAmount}
@@ -216,13 +210,14 @@ export const SwapModalContent = ({
         assets={swapTargets}
         inputTitle={<Trans>Swap to</Trans>}
         disableInput
+        loading={loadingSkeleton}
       />
-      {error && (
+      {error && !loadingSkeleton && (
         <Typography variant="helperText" color="error.main">
           {error}
         </Typography>
       )}
-      {!error && blockingError !== undefined && (
+      {!error && blockingError !== undefined && !loadingSkeleton && (
         <Typography variant="helperText" color="error.main">
           {handleBlocked()}
         </Typography>
@@ -242,6 +237,7 @@ export const SwapModalContent = ({
           swapTarget={swapTarget}
           toAmount={minimumReceived}
           fromAmount={amount === '' ? '0' : amount}
+          loading={loadingSkeleton}
         />
       </TxModalDetails>
 
