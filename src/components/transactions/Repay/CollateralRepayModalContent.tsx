@@ -6,7 +6,6 @@ import { Box, SvgIcon, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import { useRef, useState } from 'react';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import {
   ComputedReserveData,
   ComputedUserReserveData,
@@ -101,17 +100,26 @@ export function CollateralRepayModalContent({
     isMaxSelected &&
     valueToBigNumber(tokenToRepayWithBalance).gte(collateralAmountRequiredToCoverDebt);
 
-  const { inputAmountUSD, inputAmount, outputAmount, outputAmountUSD, swapCallData, augustus } =
-    useCollateralRepaySwap({
-      chainId: currentNetworkConfig.underlyingChainId || currentChainId,
-      userAddress: currentAccount,
-      variant: swapVariant,
-      swapIn,
-      swapOut,
-      max: repayAllDebt,
-      skip: mainTxState.loading,
-      maxSlippage: Number(maxSlippage),
-    });
+  const {
+    inputAmountUSD,
+    inputAmount,
+    outputAmount,
+    outputAmountUSD,
+    swapCallData,
+    augustus,
+    loading,
+  } = useCollateralRepaySwap({
+    chainId: currentNetworkConfig.underlyingChainId || currentChainId,
+    userAddress: currentAccount,
+    variant: swapVariant,
+    swapIn,
+    swapOut,
+    max: repayAllDebt,
+    skip: mainTxState.loading,
+    maxSlippage: Number(maxSlippage),
+  });
+
+  const loadingSkeleton = loading && inputAmountUSD === '0';
 
   const handleRepayAmountChange = (value: string) => {
     const maxSelected = value === '-1';
@@ -235,15 +243,7 @@ export function CollateralRepayModalContent({
           <ArrowDownIcon />
         </SvgIcon>
 
-        <PriceImpactTooltip
-          text={
-            <Trans>
-              Price impact{' '}
-              <FormattedNumber value={priceImpact} variant="secondary12" color="text.secondary" />%
-            </Trans>
-          }
-          variant="secondary14"
-        />
+        <PriceImpactTooltip loading={loadingSkeleton} priceImpact={priceImpact} />
       </Box>
       <AssetInput
         value={swapVariant === 'exactOut' ? inputAmount : tokenToRepayWithBalance}
@@ -256,6 +256,7 @@ export function CollateralRepayModalContent({
         maxValue={tokenToRepayWithBalance}
         disableInput
         balanceText="Collateral balance"
+        loading={loadingSkeleton}
       />
       {blockingError !== undefined && (
         <Typography variant="helperText" color="error.main">
@@ -273,6 +274,7 @@ export function CollateralRepayModalContent({
           visibleHfChange={swapVariant === 'exactOut' ? !!amount : !!inputAmount}
           healthFactor={user?.healthFactor}
           futureHealthFactor={hfAfterSwap.toString(10)}
+          loading={loadingSkeleton}
         />
         <DetailsNumberLineWithSub
           description={<Trans>Borrow balance after repay</Trans>}
@@ -280,6 +282,7 @@ export function CollateralRepayModalContent({
           futureValueUSD={displayAmountAfterRepayInUsd.toString()}
           symbol={symbol}
           tokenIcon={poolReserve.iconSymbol}
+          loading={loadingSkeleton}
         />
         <DetailsNumberLineWithSub
           description={<Trans>Collateral balance after repay</Trans>}
@@ -287,6 +290,7 @@ export function CollateralRepayModalContent({
           futureValueUSD={collateralAmountAfterRepayUSD.toString()}
           symbol={tokenToRepayWith.symbol}
           tokenIcon={tokenToRepayWith.iconSymbol}
+          loading={loadingSkeleton}
         />
       </TxModalDetails>
 
