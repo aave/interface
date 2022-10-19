@@ -1,4 +1,3 @@
-import { normalize } from '@aave/math-utils';
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Avatar, Box, SvgIcon, Typography } from '@mui/material';
 import makeBlockie from 'ethereum-blockies-base64';
@@ -31,16 +30,14 @@ export const VotersListItem = ({ voter }: VotersListItemProps): JSX.Element | nu
 
   // Voting power - convert the bignumber for displaying. Adjust decimals based off of large and small values.
   // Zero decimals for 1000<n. Two for 1<n<1000. Four for 0<n<1.
-  const displayVotingPower = normalize(proposalVotingPower, 18);
-  const proposalVotingPowerDecimal = proposalVotingPower / 10 ** 18;
-  const displayVotingPowerDecimals =
-    proposalVotingPowerDecimal < 1 ? 4 : proposalVotingPowerDecimal < 1000 ? 2 : 0;
+  const displayVotingPower = proposalVotingPower / 10 ** 18;
+  const displayVotingPowerDecimals = displayVotingPower < 1 ? 4 : displayVotingPower < 1000 ? 2 : 0;
 
   // Don't show any results that come back with zero or negative voting power
   if (voter.proposalVotingPower <= 0) return null;
 
   return (
-    <Box sx={{ my: 6, '&:first-child': { mt: 0 }, '&:last-child': { mb: 0 } }}>
+    <Box sx={{ my: 6, '&:first-of-type': { mt: 0 }, '&:last-of-type': { mb: 0 } }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
           <Avatar
@@ -73,12 +70,12 @@ export const VotersListItem = ({ voter }: VotersListItemProps): JSX.Element | nu
           <Typography variant="subheader1" color={voter.vote ? 'success.main' : 'error.main'}>
             {voter.vote ? 'YAE' : 'NAY'}
           </Typography>
-          <Typography variant="subheader1" color="primary">
-            <FormattedNumber
-              value={displayVotingPower}
-              visibleDecimals={displayVotingPowerDecimals}
-            />
-          </Typography>
+          <FormattedNumber
+            variant="subheader1"
+            color="primary"
+            value={displayVotingPower}
+            visibleDecimals={displayVotingPowerDecimals}
+          />
         </Box>
       </Box>
     </Box>
