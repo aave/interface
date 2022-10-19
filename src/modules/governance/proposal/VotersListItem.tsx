@@ -30,7 +30,7 @@ export const VotersListItem = ({ voter }: VotersListItemProps): JSX.Element | nu
     : twitterAvatar ?? ensAvatar ?? makeBlockie(address);
 
   // Don't show any results that come back with zero or negative voting power
-  if (voter.votingPower <= 0) return null;
+  if (voter.proposalVotingPower <= 0) return null;
 
   return (
     <Box sx={{ my: 6, '&:first-child': { mt: 0 }, '&:last-child': { mb: 0 } }}>
@@ -68,8 +68,10 @@ export const VotersListItem = ({ voter }: VotersListItemProps): JSX.Element | nu
           </Typography>
           <Typography variant="subheader1" color="primary">
             <FormattedNumber
-              value={voter.votingPower}
-              visibleDecimals={voter.votingPower < 1 ? 4 : voter.votingPower < 1000 ? 2 : 0}
+              value={voter.proposalVotingPower}
+              visibleDecimals={
+                voter.proposalVotingPower < 1 ? 4 : voter.proposalVotingPower < 1000 ? 2 : 0
+              }
             />
           </Typography>
         </Box>

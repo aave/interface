@@ -13,6 +13,20 @@ type VotersListProps = {
   proposal: CustomProposalType;
 };
 
+type VoterVoteHistoryProposalItem = {
+  id: string;
+  ipfsHash: string;
+  title: string;
+};
+
+type VoterVoteHistoryItem = {
+  id: string;
+  proposal: VoterVoteHistoryProposalItem;
+  support: boolean;
+  timestamp: number;
+  votingPower: number;
+};
+
 export type GovernanceVoter = {
   _id: string; //mongodb objectid
   aaveBalance: number; //2.6209877046554566
@@ -24,6 +38,7 @@ export type GovernanceVoter = {
   isSybilVerified: boolean;
   lastUpdateTimestamp: number; //1601928545
   proposalHistory: unknown[]; //[]
+  proposalVotingPower: number;
   propositionPower: number; //2.6209877046554566
   propositionWeight: number; //1.6381173154096605e-7
   stkAaveBalance: number; //0
@@ -33,14 +48,18 @@ export type GovernanceVoter = {
   twitterHandle: string | null;
   twitterName: string | null;
   vote: 0 | 1; // 0 for nay, 1 for yae
-  votingHistory: unknown[]; //(2) [{…}, {…}]
+  votingHistory: VoterVoteHistoryItem[]; //(2) [{…}, {…}]
   votingPower: number; // the amount of voting power the user has - 2.6209877046554566
   votingWeight: number; // the % that a single user contributes to the total - 1.6381173154096605e-7
 };
 
-export type VotersData =
-  | { yaes: GovernanceVoter[]; nays: GovernanceVoter[]; combined: GovernanceVoter[] }
-  | undefined;
+type GovernanceProposalTopVotersResponse = [GovernanceVoter[], GovernanceVoter[]];
+
+export type VotersData = {
+  yaes: GovernanceVoter[];
+  nays: GovernanceVoter[];
+  combined: GovernanceVoter[];
+};
 
 const sortByVotingPower = (a: GovernanceVoter, b: GovernanceVoter) => {
   return a.votingPower < b.votingPower ? 1 : a.votingPower > b.votingPower ? -1 : 0;
@@ -65,16 +84,28 @@ export const VotersListContainer = (props: VotersListProps): JSX.Element => {
         const resp = await fetch(votersUrl + queryParams);
 
         if (resp.ok) {
-          const [yaes, nays] = await resp.json();
+          const [yaes, nays]: GovernanceProposalTopVotersResponse = await resp.json();
           // Transform data for UI, sort by highest voting power
-          const yesVoters: GovernanceVoter[] = yaes.map((v: GovernanceVoter) => ({
-            ...v,
-            vote: 1,
-          }));
-          const noVoters: GovernanceVoter[] = nays.map((v: GovernanceVoter) => ({
-            ...v,
-            vote: 0,
-          }));
+          const yesVoters: GovernanceVoter[] = yaes.map((v: GovernanceVoter) => {
+            const proposalVote = v.votingHistory.find(
+              (h) => h.proposal.id === proposal.id.toString()
+            );
+            return {
+              ...v,
+              vote: 1,
+              proposalVotingPower: proposalVote?.votingPower ?? 0,
+            };
+          });
+          const noVoters: GovernanceVoter[] = nays.map((v: GovernanceVoter) => {
+            const proposalVote = v.votingHistory.find(
+              (h) => h.proposal.id === proposal.id.toString()
+            );
+            return {
+              ...v,
+              vote: 0,
+              proposalVotingPower: proposalVote?.votingPower ?? 0,
+            };
+          });
           const votersData: VotersData = {
             yaes: yesVoters.sort(sortByVotingPower),
             nays: noVoters.sort(sortByVotingPower),
