@@ -243,7 +243,7 @@ export const createPoolSlice: StateCreator<
     }) => {
       const user = get().account;
       const pool = getCorrectPool();
-      const chainId = get().currentChainId;
+      const chainId = get().currentNetworkConfig.underlyingChainId || get().currentChainId;
 
       const { swapCallData, augustus, srcAmountWithSlippage } = await getRepayCallData({
         srcToken: fromAssetData.underlyingAsset,
@@ -344,7 +344,7 @@ export const createPoolSlice: StateCreator<
     }) => {
       const pool = getCorrectPool();
       const user = get().account;
-      const chainId = get().currentChainId;
+      const chainId = get().currentNetworkConfig.underlyingChainId || get().currentChainId;
 
       const { swapCallData, augustus } = await getSwapCallData({
         srcToken: poolReserve.underlyingAsset,
