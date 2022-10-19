@@ -64,7 +64,7 @@ const testData = {
         apyType: constants.apyType.stable,
         amount: 2,
         hasApproval: true,
-        repayOption: constants.repayType.default,
+        repayOption: constants.repayType.wallet,
       },
       {
         asset: assets.avalancheV3Market.USDC,
