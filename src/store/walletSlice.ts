@@ -1,5 +1,6 @@
 import { WalletBalanceProvider } from '@aave/contract-helpers';
 import { StateCreator } from 'zustand';
+
 import { RootStore } from './root';
 
 type WalletBalance = { address: string; amount: string };
@@ -25,7 +26,7 @@ export const createWalletSlice: StateCreator<
 > = (set, get) => ({
   account: '',
   setAccount(account) {
-    set({ account: account || '' });
+    set({ account: account || '', isWalletModalOpen: false });
   },
   isWalletModalOpen: false,
   setWalletModalOpen(open) {
