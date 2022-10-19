@@ -39,7 +39,7 @@ export const createProtocolDataSlice: StateCreator<
       if (!availableMarkets.includes(market as CustomMarket)) return;
       const nextMarketData = marketsData[market];
       setQueryParameter('marketName', market);
-      localStorage.setItem('marketName', market);
+      localStorage.setItem('selectedMarket', market);
       set({
         currentMarket: market,
         currentMarketData: nextMarketData,
