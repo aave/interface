@@ -1,5 +1,7 @@
 import {
   AaveGovernanceService,
+  EthereumTransactionTypeExtended,
+  GovDelegateByType,
   GovernancePowerDelegationTokenService,
   Power,
   tEthereumAddress,
@@ -22,7 +24,9 @@ export interface GovernanceSlice {
     aaveTokenPower: Power;
     stkAaveTokenPower: Power;
   };
-  delegateByType: GovernancePowerDelegationTokenService['delegateByType'];
+  delegateByType: (
+    args: Omit<GovDelegateByType, 'user'>
+  ) => Promise<EthereumTransactionTypeExtended[]>;
   submitVote: AaveGovernanceService['submitVote'];
   getVoteOnProposal: AaveGovernanceService['getVoteOnProposal'];
   getVotingPowerAt: AaveGovernanceService['getVotingPowerAt'];
@@ -48,7 +52,8 @@ export const createGovernanceSlice: StateCreator<
   return {
     delegateByType: (args) => {
       const service = new GovernancePowerDelegationTokenService(getCorrectProvider());
-      return service.delegateByType(args);
+      const user = get().account;
+      return service.delegateByType({ ...args, user });
     },
     submitVote: (args) => {
       const governanceService = new AaveGovernanceService(getCorrectProvider(), {

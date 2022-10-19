@@ -2,7 +2,6 @@ import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { OptimalRate } from 'paraswap-core';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';

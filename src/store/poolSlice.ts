@@ -26,7 +26,7 @@ import {
 import { normalize } from '@aave/math-utils';
 import { SignatureLike } from '@ethersproject/bytes';
 import dayjs from 'dayjs';
-import produce from 'immer';
+import { produce } from 'immer';
 import { OptimalRate } from 'paraswap-core';
 import { ClaimRewardsActionsProps } from 'src/components/transactions/ClaimRewards/ClaimRewardsActions';
 import { RepayActionProps as ParaswapRepayActionProps } from 'src/components/transactions/Repay/CollateralRepayActions';
