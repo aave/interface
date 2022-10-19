@@ -23,13 +23,11 @@ export const GovDelegationActions = ({
   delegate,
 }: GovDelegationActionsProps) => {
   const delegateByType = useRootStore((state) => state.delegateByType);
-  const { currentAccount } = useWeb3Context();
 
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     tryPermit: false,
     handleGetTxns: async () => {
       return delegateByType({
-        user: currentAccount,
         delegatee: delegate,
         delegationType,
         governanceToken: (delegationToken as DelegationToken).address,

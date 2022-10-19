@@ -40,7 +40,7 @@ if (typeof document !== 'undefined') {
     if (document.readyState == 'complete') {
       const selectedMarket =
         getQueryParameter('marketName') || localStorage.getItem('selectedMarket');
-      console.log('running', selectedMarket);
+
       const setCurrentMarket = useRootStore.getState().setCurrentMarket;
       if (selectedMarket) setCurrentMarket(selectedMarket as CustomMarket);
     }

@@ -40,8 +40,6 @@ export const CollateralRepayActions = ({
   maxSlippage,
   ...props
 }: RepayActionProps) => {
-  // do we need currentAccount in deps?
-  const currentAccount = useRootStore((state) => state.account);
   const paraswapRepayWithCollateral = useRootStore((state) => state.paraswapRepayWithCollateral);
 
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
@@ -70,7 +68,6 @@ export const CollateralRepayActions = ({
         poolReserve.underlyingAsset,
         fromAssetData.underlyingAsset,
         repayAllDebt,
-        currentAccount,
         useFlashLoan,
       ],
     });

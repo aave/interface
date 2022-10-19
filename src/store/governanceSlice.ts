@@ -4,11 +4,12 @@ import {
   Power,
   tEthereumAddress,
 } from '@aave/contract-helpers';
-import { StateCreator } from 'zustand';
-import { RootStore } from './root';
+import { normalize, valueToBigNumber } from '@aave/math-utils';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
-import { normalize, valueToBigNumber } from '@aave/math-utils';
+import { StateCreator } from 'zustand';
+
+import { RootStore } from './root';
 
 export interface GovernanceSlice {
   powers?: {

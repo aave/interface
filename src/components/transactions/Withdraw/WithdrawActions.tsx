@@ -25,7 +25,6 @@ export const WithdrawActions = ({
   blocked,
   sx,
 }: WithdrawActionsProps) => {
-  const { currentAccount } = useWeb3Context();
   const withdraw = useRootStore((state) => state.withdraw);
 
   const { action, loadingTxns, mainTxState, approvalTxState, approval, requiresApproval } =
@@ -33,7 +32,6 @@ export const WithdrawActions = ({
       tryPermit: false,
       handleGetTxns: async () =>
         withdraw({
-          user: currentAccount,
           reserve: poolAddress,
           amount: amountToWithdraw,
           aTokenAddress: poolReserve.aTokenAddress,

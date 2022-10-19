@@ -36,7 +36,6 @@ export const SwapActions = ({
   blocked,
   ...props
 }: SwapActionProps) => {
-  const { currentAccount } = useWeb3Context();
   const swapCollateral = useRootStore((state) => state.swapCollateral);
 
   const { approval, action, requiresApproval, approvalTxState, mainTxState, loadingTxns } =
@@ -55,7 +54,7 @@ export const SwapActions = ({
           useFlashLoan,
         });
       },
-      skip: !priceRoute || !amountToSwap || parseFloat(amountToSwap) === 0 || !currentAccount,
+      skip: !priceRoute || !amountToSwap || parseFloat(amountToSwap) === 0,
       deps: [
         amountToSwap,
         amountToReceive,
@@ -63,7 +62,6 @@ export const SwapActions = ({
         poolReserve.underlyingAsset,
         targetReserve.underlyingAsset,
         isMaxSelected,
-        currentAccount,
         useFlashLoan,
       ],
     });

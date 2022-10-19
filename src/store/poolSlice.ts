@@ -1,5 +1,6 @@
 import {
   EthereumTransactionTypeExtended,
+  FaucetParamsType,
   FaucetService,
   IncentivesController,
   IncentivesControllerV2,
@@ -16,6 +17,7 @@ import {
   LPBorrowParamsType,
   LPSetUsageAsCollateral,
   LPSwapBorrowRateMode,
+  LPWithdrawParamsType,
 } from '@aave/contract-helpers/dist/esm/lendingPool-contract/lendingPoolTypes';
 import {
   LPSignERC20ApprovalType,
@@ -55,8 +57,10 @@ export interface PoolSlice {
   refreshPoolData: () => Promise<void>;
   // methods
   useOptimizedPath: () => boolean | undefined;
-  mint: FaucetService['mint'];
-  withdraw: LendingPool['withdraw'];
+  mint: (args: Omit<FaucetParamsType, 'userAddress'>) => Promise<EthereumTransactionTypeExtended[]>;
+  withdraw: (
+    args: Omit<LPWithdrawParamsType, 'user'>
+  ) => Promise<EthereumTransactionTypeExtended[]>;
   borrow: (args: Omit<LPBorrowParamsType, 'user'>) => Promise<EthereumTransactionTypeExtended[]>;
   setUsageAsCollateral: (
     args: Omit<LPSetUsageAsCollateral, 'user'>
@@ -189,18 +193,24 @@ export const createPoolSlice: StateCreator<
         console.log('error fetching pool data', e);
       }
     },
-    mint: (...args) => {
+    mint: async (args) => {
       if (!get().currentMarketData.addresses.FAUCET)
         throw Error('currently selected market does not have a faucet attached');
+      const userAddress = get().account;
       const service = new FaucetService(
         get().jsonRpcProvider(),
         get().currentMarketData.addresses.FAUCET
       );
-      return service.mint(...args);
+      return service.mint({ ...args, userAddress });
     },
     withdraw: (args) => {
       const pool = getCorrectPool();
-      return pool.withdraw({ ...args, useOptimizedPath: optimizedPath(get().currentChainId) });
+      const user = get().account;
+      return pool.withdraw({
+        ...args,
+        user,
+        useOptimizedPath: optimizedPath(get().currentChainId),
+      });
     },
     borrow: async (args) => {
       const pool = getCorrectPool();
