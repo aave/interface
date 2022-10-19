@@ -21,6 +21,7 @@ export interface SwapActionProps extends BoxProps {
   maxSlippage: number;
   swapCallData: string;
   augustus: string;
+  loading: boolean;
 }
 
 export const SwapActions = ({
@@ -35,6 +36,7 @@ export const SwapActions = ({
   maxSlippage,
   swapCallData,
   augustus,
+  loading,
   ...props
 }: SwapActionProps) => {
   const { lendingPool } = useTxBuilderContext();
@@ -82,6 +84,7 @@ export const SwapActions = ({
       actionText={<Trans>Swap</Trans>}
       actionInProgressText={<Trans>Swapping</Trans>}
       sx={sx}
+      fetchingData={loading}
       {...props}
     />
   );

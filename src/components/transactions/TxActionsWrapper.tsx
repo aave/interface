@@ -23,6 +23,7 @@ interface TxActionsWrapperProps extends BoxProps {
   requiresApproval: boolean;
   symbol?: string;
   blocked?: boolean;
+  fetchingData?: boolean;
 }
 
 export const TxActionsWrapper = ({
@@ -40,6 +41,7 @@ export const TxActionsWrapper = ({
   sx,
   symbol,
   blocked,
+  fetchingData = false,
   ...rest
 }: TxActionsWrapperProps) => {
   const { txError, retryWithApproval } = useModalContext();
@@ -56,6 +58,7 @@ export const TxActionsWrapper = ({
     if (txError && txError.txAction === TxAction.MAIN_ACTION && txError.actionBlocked)
       return { loading: false, disabled: true, content: actionText };
     if (isWrongNetwork) return { disabled: true, content: <Trans>Wrong Network</Trans> };
+    if (fetchingData) return { disabled: true, content: <Trans>Fetching data...</Trans> };
     if (isAmountMissing) return { disabled: true, content: <Trans>Enter an amount</Trans> };
     if (preparingTransactions || isEmpty(mainTxState)) return { disabled: true, loading: true };
     // if (hasApprovalError && handleRetry)

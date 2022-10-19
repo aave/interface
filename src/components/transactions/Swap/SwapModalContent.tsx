@@ -256,6 +256,7 @@ export const SwapModalContent = ({
         maxSlippage={Number(maxSlippage)}
         augustus={augustus}
         swapCallData={swapCallData}
+        loading={loadingSkeleton}
       />
     </>
   );

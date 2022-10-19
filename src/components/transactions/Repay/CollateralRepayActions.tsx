@@ -22,6 +22,7 @@ export interface RepayActionProps extends BoxProps {
   blocked: boolean;
   swapCallData: string;
   augustus: string;
+  loading: boolean;
 }
 
 export const CollateralRepayActions = ({
@@ -38,6 +39,7 @@ export const CollateralRepayActions = ({
   blocked,
   swapCallData,
   augustus,
+  loading,
   ...props
 }: RepayActionProps) => {
   const { lendingPool } = useTxBuilderContext();
@@ -88,6 +90,7 @@ export const CollateralRepayActions = ({
       handleApproval={() => approval()}
       actionText={<Trans>Repay {symbol}</Trans>}
       actionInProgressText={<Trans>Repaying {symbol}</Trans>}
+      fetchingData={loading}
     />
   );
 };

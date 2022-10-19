@@ -309,6 +309,7 @@ export function CollateralRepayModalContent({
         blocked={blockingError !== undefined}
         swapCallData={swapCallData}
         augustus={augustus}
+        loading={loadingSkeleton}
       />
     </>
   );

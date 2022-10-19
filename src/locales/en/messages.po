@@ -791,6 +791,10 @@ msgstr "Faucet"
 msgid "Faucet {0}"
 msgstr "Faucet {0}"
 
+#: src/components/transactions/TxActionsWrapper.tsx
+msgid "Fetching data..."
+msgstr "Fetching data..."
+
 #: src/modules/governance/ProposalsList.tsx
 msgid "Filter"
 msgstr "Filter"
