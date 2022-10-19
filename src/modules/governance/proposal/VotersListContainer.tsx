@@ -62,18 +62,23 @@ export type VotersData = {
 };
 
 const sortByVotingPower = (a: GovernanceVoter, b: GovernanceVoter) => {
-  return a.votingPower < b.votingPower ? 1 : a.votingPower > b.votingPower ? -1 : 0;
+  return a.proposalVotingPower < b.proposalVotingPower
+    ? 1
+    : a.proposalVotingPower > b.proposalVotingPower
+    ? -1
+    : 0;
 };
 
 export const VotersListContainer = (props: VotersListProps): JSX.Element => {
   const { proposal } = props;
+  const proposalId = proposal.id;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<boolean>(false);
   const [voters, setVoters] = useState<VotersData>();
   const [votersModalOpen, setVotersModalOpen] = useState(false);
 
   const votersUrl = `${process.env.NEXT_PUBLIC_API_BASEURL}/data/proposal-top-voters`;
-  const queryParams = `?proposal=${proposal.id}`;
+  const queryParams = `?proposal=${proposalId}`;
 
   useEffect(() => {
     const getVoterInfo = async () => {
@@ -88,7 +93,7 @@ export const VotersListContainer = (props: VotersListProps): JSX.Element => {
           // Transform data for UI, sort by highest voting power
           const yesVoters: GovernanceVoter[] = yaes.map((v: GovernanceVoter) => {
             const proposalVote = v.votingHistory.find(
-              (h) => h.proposal.id === proposal.id.toString()
+              (h) => h.proposal.id === proposalId.toString()
             );
             return {
               ...v,
@@ -98,7 +103,7 @@ export const VotersListContainer = (props: VotersListProps): JSX.Element => {
           });
           const noVoters: GovernanceVoter[] = nays.map((v: GovernanceVoter) => {
             const proposalVote = v.votingHistory.find(
-              (h) => h.proposal.id === proposal.id.toString()
+              (h) => h.proposal.id === proposalId.toString()
             );
             return {
               ...v,
@@ -122,9 +127,7 @@ export const VotersListContainer = (props: VotersListProps): JSX.Element => {
       setLoading(false);
     };
     getVoterInfo();
-  }, [proposal]); /* eslint-disable-line react-hooks/exhaustive-deps */
-
-  console.log({ voters });
+  }, [proposalId]); /* eslint-disable-line react-hooks/exhaustive-deps */
 
   const handleOpenAllVotes = () => {
     setVotersModalOpen(true);
@@ -166,11 +169,11 @@ export const VotersListContainer = (props: VotersListProps): JSX.Element => {
   if (!voters || voters.combined.length === 0) return <Box sx={{ mt: 8 }} />;
 
   return (
-    <Box sx={{ mt: 8, mb: 12 }}>
+    <Box sx={{ my: 8 }}>
       {listHeaderComponent}
-      <VotersList voters={voters.combined.slice(0, 10)} />
+      <VotersList voters={voters.combined.slice(0, 10)} sx={{ my: 4 }} />
       {voters.combined.length > 10 && (
-        <Button variant="outlined" fullWidth onClick={handleOpenAllVotes} sx={{ mt: 4 }}>
+        <Button variant="outlined" fullWidth onClick={handleOpenAllVotes}>
           <Trans>View all votes</Trans>
         </Button>
       )}

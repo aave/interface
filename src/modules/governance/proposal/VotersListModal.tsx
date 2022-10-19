@@ -68,6 +68,7 @@ export const VotersListModal = ({
           sx={{
             p: 4,
             mb: 0,
+            maxHeight: 318,
           }}
         />
       </Box>
@@ -106,6 +107,7 @@ export const VotersListModal = ({
           sx={{
             p: 4,
             mb: 0,
+            maxHeight: 318,
           }}
         />
       </Box>

@@ -12,7 +12,7 @@ type VotersListProps = {
 
 export const VotersList = ({ voters, sx }: VotersListProps): JSX.Element => {
   return (
-    <Box sx={{ mb: 4, maxHeight: 230, overflow: 'hidden', overflowY: 'scroll', ...sx }}>
+    <Box sx={{ maxHeight: 205, overflow: 'hidden', overflowY: 'scroll', ...sx }}>
       {voters.length === 0 ? (
         <Box sx={{ color: 'text.secondary' }}>—</Box>
       ) : (
