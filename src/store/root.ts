@@ -40,7 +40,7 @@ if (typeof document !== 'undefined') {
     if (document.readyState == 'complete') {
       const selectedMarket = getQueryParameter('marketName') || localStorage.getItem('marketName');
       const setCurrentMarket = useRootStore.getState().setCurrentMarket;
-      setCurrentMarket(selectedMarket as CustomMarket);
+      if (selectedMarket) setCurrentMarket(selectedMarket as CustomMarket);
     }
   };
 }

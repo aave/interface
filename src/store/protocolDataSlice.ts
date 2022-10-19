@@ -21,21 +21,13 @@ export interface ProtocolDataSlice {
   setCurrentMarket: (market: CustomMarket) => void;
 }
 
-const getCurrentMarket = (): CustomMarket => {
-  const preselectedMarket = availableMarkets[0];
-
-  return availableMarkets.includes(preselectedMarket as CustomMarket)
-    ? (preselectedMarket as CustomMarket)
-    : (availableMarkets[0] as CustomMarket);
-};
-
 export const createProtocolDataSlice: StateCreator<
   RootStore,
   [['zustand/devtools', never]],
   [],
   ProtocolDataSlice
 > = (set, get) => {
-  const initialMarket = getCurrentMarket();
+  const initialMarket = availableMarkets[0];
   const initialMarketData = marketsData[initialMarket];
   return {
     currentMarket: initialMarket,
@@ -44,6 +36,7 @@ export const createProtocolDataSlice: StateCreator<
     currentNetworkConfig: getNetworkConfig(initialMarketData.chainId),
     jsonRpcProvider: () => getProvider(get().currentChainId),
     setCurrentMarket: (market) => {
+      if (!availableMarkets.includes(market as CustomMarket)) return;
       const nextMarketData = marketsData[market];
       setQueryParameter('marketName', market);
       localStorage.setItem('marketName', market);
