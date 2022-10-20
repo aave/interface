@@ -176,7 +176,7 @@ export const WalletSelector = () => {
       />
       <WalletRow
         key="walletlink_wallet"
-        walletName="Coinbase"
+        walletName="Coinbase Wallet"
         walletType={WalletType.WALLET_LINK}
       />
       <WalletRow key="torus_wallet" walletName="Torus" walletType={WalletType.TORUS} />
