@@ -69,7 +69,7 @@ export type FormattedReserveHistoryItem = {
   variableBorrowRate: number;
 };
 
-const BROKEN_ASSETS = [
+export const BROKEN_ASSETS = [
   // ampl https://governance.aave.com/t/arc-fix-ui-bugs-in-reserve-overview-for-ampl/5885/5?u=sakulstra
   '0xd46ba6d942050d489dbd938a2c909a5d5039a1610xb53c1a33016b2dc2ff3653530bff1848a515c8c5',
 ];
@@ -81,20 +81,16 @@ export function useReserveRatesHistory(reserveAddress: string, timeRange: Reserv
   const [error, setError] = useState(false);
   const [data, setData] = useState<FormattedReserveHistoryItem[]>([]);
 
+  const ratesHistoryApiUrl = currentNetworkConfig?.ratesHistoryApiUrl;
+
   const refetchData = useCallback<() => () => void>(() => {
     // reset
     setLoading(true);
     setError(false);
     setData([]);
 
-    if (
-      reserveAddress &&
-      currentNetworkConfig.ratesHistoryApiUrl &&
-      !BROKEN_ASSETS.includes(reserveAddress)
-    ) {
-      const cancelable = makeCancelable(
-        fetchStats(reserveAddress, timeRange, currentNetworkConfig.ratesHistoryApiUrl)
-      );
+    if (reserveAddress && ratesHistoryApiUrl && !BROKEN_ASSETS.includes(reserveAddress)) {
+      const cancelable = makeCancelable(fetchStats(reserveAddress, timeRange, ratesHistoryApiUrl));
 
       cancelable.promise
         .then((data: APIResponse[]) => {
@@ -120,7 +116,7 @@ export function useReserveRatesHistory(reserveAddress: string, timeRange: Reserv
 
     setLoading(false);
     return () => null;
-  }, [reserveAddress, timeRange, currentNetworkConfig]);
+  }, [reserveAddress, timeRange, ratesHistoryApiUrl]);
 
   useEffect(() => {
     const cancel = refetchData();
