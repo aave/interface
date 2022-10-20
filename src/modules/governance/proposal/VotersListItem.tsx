@@ -1,6 +1,7 @@
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Avatar, Box, SvgIcon, Typography } from '@mui/material';
 import makeBlockie from 'ethereum-blockies-base64';
+import Image from 'next/image';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 
@@ -59,9 +60,26 @@ export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Ele
 
   return (
     <Box sx={{ my: 6, '&:first-of-type': { mt: 0 }, '&:last-of-type': { mb: 0 } }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          overflow: 'hidden',
+        }}
+      >
         <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
-          <Avatar src={twitterAvatar ?? blockieAvatar} sx={{ width: 24, height: 24, mr: 2 }} />
+          <Box
+            sx={{ borderRadius: '100%', overflow: 'hidden', width: '24px', height: '24px', mr: 2 }}
+          >
+            <Image
+              alt=""
+              src={twitterAvatar ?? blockieAvatar}
+              loading="lazy"
+              width={24}
+              height={24}
+            />
+          </Box>
           <Link href={`https://etherscan.io/address/${address}`}>
             <Typography
               variant="subheader1"
