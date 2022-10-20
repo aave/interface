@@ -4,7 +4,7 @@ import { UnsupportedChainIdError } from '@web3-react/core';
 import { NoEthereumProviderError } from '@web3-react/injected-connector';
 import { UserRejectedRequestError } from '@web3-react/walletconnect-connector';
 import { utils } from 'ethers';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { WatchOnlyModeTooltip } from 'src/components/infoTooltips/WatchOnlyModeTooltip';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { WalletType } from 'src/libs/web3-data-provider/WalletOptions';
@@ -110,6 +110,7 @@ export const WalletSelector = () => {
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down('sm'));
   const mainnetProvider = getENSProvider();
+  const [unsTlds, setUnsTlds] = useState([]);
 
   let blockingError: ErrorType | undefined = undefined;
   if (error) {
@@ -124,6 +125,14 @@ export const WalletSelector = () => {
     }
     // TODO: add other errors
   }
+
+  // Get UNS Tlds. Grabbing this fron an endpoint since Unstoppable adds new TLDs frequently, so this wills tay updated
+  useEffect(async () => {
+    const url = 'https://resolve.unstoppabledomains.com/supported_tlds';
+    const response = await fetch(url);
+    const data = await response.json();
+    setUnsTlds(data['tlds']);
+  }, []);
 
   const handleBlocking = () => {
     switch (blockingError) {
@@ -153,16 +162,24 @@ export const WalletSelector = () => {
         } else {
           setValidAddressError(true);
         }
-      } /*else if (await resolution.isSupportedDomain(inputMockWalletAddress)){
+      } else if (unsTlds.includes(inputMockWalletAddress.split('.').pop())) {
         // Handle UNS names
-        let resolvedAddress = null;
-        try{resolvedAddress = await resolution.owner(inputMockWalletAddress);}catch(e){}
+        const url = 'https://resolve.unstoppabledomains.com/domains/' + inputMockWalletAddress;
+        const options = {
+          method: 'GET',
+          headers: {
+            Authorization: 'Bearer 01f60ca8-2dc3-457d-b12e-95ac2a7fb517',
+          },
+        };
+        const response = await fetch(url, options);
+        const data = await response.json();
+        const resolvedAddress = data['meta']['owner'];
         if (resolvedAddress && utils.isAddress(resolvedAddress)) {
           connectWatchModeOnly(resolvedAddress);
         } else {
           setValidAddressError(true);
         }
-      }*/ else {
+      } else {
         setValidAddressError(true);
       }
     }
@@ -211,7 +228,7 @@ export const WalletSelector = () => {
             overflow: 'show',
             fontSize: sm ? '16px' : '14px',
           })}
-          placeholder="Enter ethereum address or NFT Domain"
+          placeholder="Enter ethereum address or Web3 Domain"
           fullWidth
           autoFocus
           value={inputMockWalletAddress}
@@ -232,7 +249,9 @@ export const WalletSelector = () => {
           size="large"
           fullWidth
           disabled={
-            !utils.isAddress(inputMockWalletAddress) && inputMockWalletAddress.slice(-4) !== '.eth' //&& !tldResolverKeys.udTlds.includes(inputMockWalletAddress.split(".").pop())
+            !utils.isAddress(inputMockWalletAddress) &&
+            inputMockWalletAddress.slice(-4) !== '.eth' &&
+            !unsTlds.includes(inputMockWalletAddress.split('.').pop())
           }
           aria-label="watch mode only address"
         >
