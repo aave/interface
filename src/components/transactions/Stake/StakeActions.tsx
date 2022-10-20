@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
@@ -24,14 +23,16 @@ export const StakeActions = ({
   selectedToken,
   ...props
 }: StakeActionProps) => {
-  const { currentAccount } = useWeb3Context();
   const stake = useRootStore((state) => state.stake);
 
   const { action, approval, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({
       tryPermit: false,
       handleGetTxns: async () => {
-        return stake(selectedToken)(currentAccount, amountToStake.toString());
+        return stake({
+          token: selectedToken,
+          amount: amountToStake.toString(),
+        });
       },
       skip: !amountToStake || parseFloat(amountToStake) === 0 || blocked,
       deps: [amountToStake, selectedToken],

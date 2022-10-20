@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
@@ -24,13 +23,12 @@ export const UnStakeActions = ({
   selectedToken,
   ...props
 }: UnStakeActionProps) => {
-  const { currentAccount } = useWeb3Context();
   const redeem = useRootStore((state) => state.redeem);
 
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     tryPermit: false,
     handleGetTxns: async () => {
-      return redeem(selectedToken)(currentAccount, amountToUnStake.toString());
+      return redeem(selectedToken)(amountToUnStake.toString());
     },
     skip: !amountToUnStake || parseFloat(amountToUnStake) === 0 || blocked,
     deps: [amountToUnStake],

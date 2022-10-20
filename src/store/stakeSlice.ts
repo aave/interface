@@ -1,4 +1,8 @@
-import { StakingService, UiStakeDataProvider } from '@aave/contract-helpers';
+import {
+  EthereumTransactionTypeExtended,
+  StakingService,
+  UiStakeDataProvider,
+} from '@aave/contract-helpers';
 import { stakeConfig } from 'src/ui-config/stakeConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { StateCreator } from 'zustand';
@@ -52,10 +56,17 @@ export interface StakeSlice {
   stakeDataLoading: boolean;
   stakeUserResult?: StakeUserUiData;
   stakeGeneralResult?: StakeGeneralUiData;
-  stake: (token: string) => StakingService['stake'];
-  cooldown: (token: string) => StakingService['cooldown'];
-  claimStakeRewards: (token: string) => StakingService['claimRewards'];
-  redeem: (token: string) => StakingService['redeem'];
+  stake: (args: {
+    token: string;
+    amount: string;
+    onBehalfOf?: string;
+  }) => Promise<EthereumTransactionTypeExtended[]>;
+  cooldown: (token: string) => Promise<EthereumTransactionTypeExtended[]>;
+  claimStakeRewards: (args: {
+    token: string;
+    amount: string;
+  }) => Promise<EthereumTransactionTypeExtended[]>;
+  redeem: (token: string) => (amount: string) => Promise<EthereumTransactionTypeExtended[]>;
 }
 
 export const createStakeSlice: StateCreator<
@@ -100,33 +111,37 @@ export const createStakeSlice: StateCreator<
       }
       set({ stakeDataLoading: false });
     },
-    stake(tokenName) {
+    stake({ token, amount, onBehalfOf }) {
       const provider = getCorrectProvider();
       const service = new StakingService(provider, {
-        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[tokenName].TOKEN_STAKING,
+        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[token].TOKEN_STAKING,
       });
-      return (...args) => service.stake(...args);
+      const currentUser = get().account;
+      return service.stake(currentUser, amount, onBehalfOf);
     },
-    cooldown(tokenName) {
+    async cooldown(tokenName) {
       const provider = getCorrectProvider();
+      const currentAccount = get().account;
       const service = new StakingService(provider, {
         TOKEN_STAKING_ADDRESS: stakeConfig.tokens[tokenName].TOKEN_STAKING,
       });
-      return (...args) => service.cooldown(...args);
+      return service.cooldown(currentAccount);
     },
-    claimStakeRewards(tokenName) {
+    claimStakeRewards({ token, amount }) {
+      const currentAccount = get().account;
       const provider = getCorrectProvider();
       const service = new StakingService(provider, {
-        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[tokenName].TOKEN_STAKING,
+        TOKEN_STAKING_ADDRESS: stakeConfig.tokens[token].TOKEN_STAKING,
       });
-      return (...args) => service.claimRewards(...args);
+      return service.claimRewards(currentAccount, amount);
     },
     redeem(tokenName) {
       const provider = getCorrectProvider();
+      const currentAccount = get().account;
       const service = new StakingService(provider, {
         TOKEN_STAKING_ADDRESS: stakeConfig.tokens[tokenName].TOKEN_STAKING,
       });
-      return (...args) => service.redeem(...args);
+      return (amount) => service.redeem(currentAccount, amount);
     },
   };
 };

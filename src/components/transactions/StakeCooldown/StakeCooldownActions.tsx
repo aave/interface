@@ -20,13 +20,12 @@ export const StakeCooldownActions = ({
   selectedToken,
   ...props
 }: StakeCooldownActionsProps) => {
-  const { currentAccount } = useWeb3Context();
   const cooldown = useRootStore((state) => state.cooldown);
 
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     tryPermit: false,
     handleGetTxns: async () => {
-      return cooldown(selectedToken)(currentAccount);
+      return cooldown(selectedToken);
     },
     skip: blocked,
     deps: [],
