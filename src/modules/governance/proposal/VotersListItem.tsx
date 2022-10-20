@@ -1,7 +1,6 @@
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Avatar, Box, SvgIcon, Typography } from '@mui/material';
 import makeBlockie from 'ethereum-blockies-base64';
-import Image from 'next/image';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 
