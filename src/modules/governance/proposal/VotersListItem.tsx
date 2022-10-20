@@ -10,10 +10,11 @@ import { textCenterEllipsis } from '../../../helpers/text-center-ellipsis';
 import type { GovernanceVoter } from './VotersListContainer';
 
 type VotersListItemProps = {
+  compact: boolean;
   voter: GovernanceVoter;
 };
 
-export const VotersListItem = ({ voter }: VotersListItemProps): JSX.Element | null => {
+export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Element | null => {
   const { address, ensAvatar, ensName, proposalVotingPower, twitterAvatar } = voter;
   const blockieAvatar = makeBlockie(address !== '' ? address : 'default');
 
@@ -32,12 +33,24 @@ export const VotersListItem = ({ voter }: VotersListItemProps): JSX.Element | nu
     if (!prevAvatarErrored && avatarErrored) setDisplayAvatar(blockieAvatar);
   }, [avatarErrored]); /* eslint-disable-line react-hooks/exhaustive-deps */
 
-  // If voter has an ENS name, show it, otherwise, show address. Both will be abbreviated, except short ENS names.
-  const displayName = ensName
-    ? ensName.length > 18
-      ? textCenterEllipsis(ensName, 12, 3)
-      : ensName
-    : textCenterEllipsis(address, 8, 3);
+  // This function helps determine how to display either the address or ENS name, in a way where the list looks good and names are about equal length. This takes into account if the list should be compact or not.
+  const displayName = (name: string) => {
+    if (compact) {
+      // Addresses when compact
+      if (name === address) {
+        return textCenterEllipsis(name, 3, 3);
+      }
+      // ENS names when compact
+      const compactName = name.length <= 10 ? name : textCenterEllipsis(name, 4, 3);
+      return compactName;
+    }
+    // Addresses
+    if (name === address) {
+      return textCenterEllipsis(name, 9, 3);
+    }
+    // ENS names
+    return name.length < 16 ? name : textCenterEllipsis(name, 12, 3);
+  };
 
   // Voting power - convert the bignumber for displaying. Adjust decimals based off of large and small values.
   // Decimals increase in precision as values become lower:
@@ -50,12 +63,12 @@ export const VotersListItem = ({ voter }: VotersListItemProps): JSX.Element | nu
     displayVotingPower < 1
       ? 4
       : displayVotingPower < 10
-        ? 3
-        : displayVotingPower < 1000 || displayVotingPower > 1000000
-          ? 2
-          : displayVotingPower > 100000
-            ? 1
-            : 0;
+      ? 3
+      : displayVotingPower < 1000 || displayVotingPower > 1000000
+      ? 2
+      : displayVotingPower > 100000
+      ? 1
+      : 0;
 
   // Don't show any results that come back with zero or negative voting power
   if (voter.proposalVotingPower <= 0) return null;
@@ -75,7 +88,7 @@ export const VotersListItem = ({ voter }: VotersListItemProps): JSX.Element | nu
               color="primary"
               sx={{ display: 'flex', alignItems: 'center' }}
             >
-              {displayName}
+              {displayName(ensName ?? address)}
               <SvgIcon sx={{ width: 14, height: 14, ml: 0.5 }}>
                 <ExternalLinkIcon />
               </SvgIcon>
@@ -88,7 +101,7 @@ export const VotersListItem = ({ voter }: VotersListItemProps): JSX.Element | nu
             flexGrow: 1,
             justifyContent: 'space-between',
             alignItems: 'center',
-            maxWidth: 94,
+            maxWidth: compact ? 82 : 96,
           }}
         >
           <Typography variant="subheader1" color={voter.vote ? 'success.main' : 'error.main'}>

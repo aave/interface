@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, CircularProgress, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Typography, useMediaQuery, useTheme } from '@mui/material';
 import fetch from 'isomorphic-unfetch';
 import { useEffect, useState } from 'react';
 import { Row } from 'src/components/primitives/Row';
@@ -76,6 +76,8 @@ export const VotersListContainer = (props: VotersListProps): JSX.Element => {
   const [error, setError] = useState<boolean>(false);
   const [voters, setVoters] = useState<VotersData>();
   const [votersModalOpen, setVotersModalOpen] = useState(false);
+  const { breakpoints } = useTheme();
+  const mdScreen = useMediaQuery(breakpoints.only('md'));
 
   const votersUrl = `${process.env.NEXT_PUBLIC_API_BASEURL}/data/proposal-top-voters`;
   const queryParams = `?proposal=${proposalId}`;
@@ -168,7 +170,7 @@ export const VotersListContainer = (props: VotersListProps): JSX.Element => {
   return (
     <Box sx={{ my: 8 }}>
       {listHeaderComponent}
-      <VotersList voters={voters.combined.slice(0, 10)} sx={{ my: 4 }} />
+      <VotersList compact={mdScreen} voters={voters.combined.slice(0, 10)} sx={{ my: 4 }} />
       {voters.combined.length > 10 && (
         <Button variant="outlined" fullWidth onClick={handleOpenAllVotes}>
           <Trans>View all votes</Trans>
