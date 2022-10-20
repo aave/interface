@@ -139,8 +139,8 @@ export default function ProposalPage({
     minQuorumVotes,
     diff,
   } = proposal
-    ? formatProposal(proposal)
-    : {
+      ? formatProposal(proposal)
+      : {
         yaeVotes: 0,
         yaePercent: 0,
         nayPercent: 0,
@@ -342,12 +342,14 @@ export default function ProposalPage({
                       <FormattedNumber
                         value={yaeVotes}
                         visibleDecimals={2}
+                        roundDown
                         sx={{ display: 'block' }}
                       />
                       <FormattedNumber
                         variant="caption"
                         value={minQuorumVotes}
                         visibleDecimals={2}
+                        roundDown
                         color="text.muted"
                       />
                     </Box>
@@ -378,11 +380,17 @@ export default function ProposalPage({
                     captionVariant="description"
                   >
                     <Box sx={{ textAlign: 'right' }}>
-                      <FormattedNumber value={diff} visibleDecimals={2} sx={{ display: 'block' }} />
+                      <FormattedNumber
+                        value={diff}
+                        visibleDecimals={2}
+                        roundDown
+                        sx={{ display: 'block' }}
+                      />
                       <FormattedNumber
                         variant="caption"
                         value={requiredDiff}
                         visibleDecimals={2}
+                        roundDown
                         color="text.muted"
                       />
                     </Box>
