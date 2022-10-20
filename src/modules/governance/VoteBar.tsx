@@ -54,6 +54,7 @@ export function VoteBar({ percent, yae, votes, loading, ...rest }: VoteBarProps)
               visibleDecimals={1}
               sx={{ mr: 1 }}
               variant="secondary14"
+              roundDown={true}
             />
             <Typography variant="description" component="span" color="text.secondary">
               AAVE

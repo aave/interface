@@ -342,12 +342,14 @@ export default function ProposalPage({
                       <FormattedNumber
                         value={yaeVotes}
                         visibleDecimals={2}
+                        roundDown={true}
                         sx={{ display: 'block' }}
                       />
                       <FormattedNumber
                         variant="caption"
                         value={minQuorumVotes}
                         visibleDecimals={2}
+                        roundDown={true}
                         color="text.muted"
                       />
                     </Box>
@@ -378,11 +380,17 @@ export default function ProposalPage({
                     captionVariant="description"
                   >
                     <Box sx={{ textAlign: 'right' }}>
-                      <FormattedNumber value={diff} visibleDecimals={2} sx={{ display: 'block' }} />
+                      <FormattedNumber
+                        value={diff}
+                        visibleDecimals={2}
+                        roundDown={true}
+                        sx={{ display: 'block' }}
+                      />
                       <FormattedNumber
                         variant="caption"
                         value={requiredDiff}
                         visibleDecimals={2}
+                        roundDown={true}
                         color="text.muted"
                       />
                     </Box>
