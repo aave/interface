@@ -67,7 +67,7 @@ export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Ele
             <Typography
               variant="subheader1"
               color="primary"
-              sx={{ display: 'flex', alignItems: 'center', ml: 2 }}
+              sx={{ display: 'flex', alignItems: 'center' }}
             >
               {displayName(ensName ?? address)}
               <SvgIcon sx={{ width: 14, height: 14, ml: 0.5 }}>

@@ -31,7 +31,4 @@ module.exports = withBundleAnalyzer({
   // assetPrefix: "./",
   trailingSlash: true,
   pageExtensions,
-  images: {
-    domains: ['pbs.twimg.com'],
-  },
 });
