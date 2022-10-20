@@ -139,8 +139,8 @@ export default function ProposalPage({
     minQuorumVotes,
     diff,
   } = proposal
-      ? formatProposal(proposal)
-      : {
+    ? formatProposal(proposal)
+    : {
         yaeVotes: 0,
         yaePercent: 0,
         nayPercent: 0,
