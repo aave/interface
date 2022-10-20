@@ -1,9 +1,10 @@
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Avatar, Box, SvgIcon, Typography } from '@mui/material';
 import makeBlockie from 'ethereum-blockies-base64';
-import { useState } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
+import usePreviousState from 'src/hooks/usePreviousState';
 
 import { textCenterEllipsis } from '../../../helpers/text-center-ellipsis';
 import type { GovernanceVoter } from './VotersListContainer';
@@ -14,12 +15,22 @@ type VotersListItemProps = {
 
 export const VotersListItem = ({ voter }: VotersListItemProps): JSX.Element | null => {
   const { address, ensAvatar, ensName, proposalVotingPower, twitterAvatar } = voter;
+  const blockieAvatar = makeBlockie(address !== '' ? address : 'default');
 
   // For avatars, the order of precedence is Twitter, then ENS, then default Blockie
   // If ENS avatar does not exist, then use Blockie
   const [displayAvatar, setDisplayAvatar] = useState<string>(
-    twitterAvatar ?? ensAvatar ?? makeBlockie(address)
+    twitterAvatar ?? ensAvatar ?? blockieAvatar
   );
+  const [avatarErrored, setAvatarErrored] = useState<boolean>(false);
+  const prevAvatarErrored = usePreviousState<boolean>(avatarErrored);
+  const handleAvatarError = (e: SyntheticEvent) => {
+    e.preventDefault();
+    setAvatarErrored(true);
+  };
+  useEffect(() => {
+    if (!prevAvatarErrored && avatarErrored) setDisplayAvatar(blockieAvatar);
+  }, [avatarErrored]); /* eslint-disable-line react-hooks/exhaustive-deps */
 
   // If voter has an ENS name, show it, otherwise, show address. Both will be abbreviated, except short ENS names.
   const displayName = ensName
@@ -29,9 +40,14 @@ export const VotersListItem = ({ voter }: VotersListItemProps): JSX.Element | nu
     : textCenterEllipsis(address, 8, 3);
 
   // Voting power - convert the bignumber for displaying. Adjust decimals based off of large and small values.
-  // Zero decimals for 1000<n. Two for 1<n<1000. Four for 0<n<1.
+  // Decimals increase in precision as values become lower:
+  // Four for 0<n<1.
+  // Three for 1<=n<10.
+  // Two for 10<=n<1000.
+  // Zero decimals for 1000<=n<Infinity.
   const displayVotingPower = proposalVotingPower / 10 ** 18;
-  const displayVotingPowerDecimals = displayVotingPower < 1 ? 4 : displayVotingPower < 1000 ? 2 : 0;
+  const displayVotingPowerDecimals =
+    displayVotingPower < 1 ? 4 : displayVotingPower < 10 ? 3 : displayVotingPower < 1000 ? 2 : 0;
 
   // Don't show any results that come back with zero or negative voting power
   if (voter.proposalVotingPower <= 0) return null;
@@ -43,7 +59,7 @@ export const VotersListItem = ({ voter }: VotersListItemProps): JSX.Element | nu
           <Avatar
             src={displayAvatar}
             sx={{ width: 24, height: 24, mr: 2 }}
-            onError={() => setDisplayAvatar(makeBlockie(address))}
+            onError={handleAvatarError}
           />
           <Link href={`https://etherscan.io/address/${address}`}>
             <Typography
@@ -64,7 +80,7 @@ export const VotersListItem = ({ voter }: VotersListItemProps): JSX.Element | nu
             flexGrow: 1,
             justifyContent: 'space-between',
             alignItems: 'center',
-            maxWidth: 90,
+            maxWidth: 94,
           }}
         >
           <Typography variant="subheader1" color={voter.vote ? 'success.main' : 'error.main'}>

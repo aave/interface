@@ -71,7 +71,7 @@ const sortByVotingPower = (a: GovernanceVoter, b: GovernanceVoter) => {
 
 export const VotersListContainer = (props: VotersListProps): JSX.Element => {
   const { proposal } = props;
-  const proposalId = proposal.id;
+  const { id: proposalId, forVotes, againstVotes } = proposal;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<boolean>(false);
   const [voters, setVoters] = useState<VotersData>();
@@ -80,54 +80,51 @@ export const VotersListContainer = (props: VotersListProps): JSX.Element => {
   const votersUrl = `${process.env.NEXT_PUBLIC_API_BASEURL}/data/proposal-top-voters`;
   const queryParams = `?proposal=${proposalId}`;
 
-  useEffect(() => {
-    const getVoterInfo = async () => {
-      if (error) setError(false);
+  const getVoterInfo = async () => {
+    if (error) setError(false);
 
-      try {
-        // Get proposal voters data
-        const resp = await fetch(votersUrl + queryParams);
+    try {
+      // Get proposal voters data
+      const resp = await fetch(votersUrl + queryParams);
 
-        if (resp.ok) {
-          const [yaes, nays]: GovernanceProposalTopVotersResponse = await resp.json();
-          // Transform data for UI, sort by highest voting power
-          const yesVoters: GovernanceVoter[] = yaes.map((v: GovernanceVoter) => {
-            const proposalVote = v.votingHistory.find(
-              (h) => h.proposal.id === proposalId.toString()
-            );
-            return {
-              ...v,
-              vote: 1,
-              proposalVotingPower: proposalVote?.votingPower ?? 0,
-            };
-          });
-          const noVoters: GovernanceVoter[] = nays.map((v: GovernanceVoter) => {
-            const proposalVote = v.votingHistory.find(
-              (h) => h.proposal.id === proposalId.toString()
-            );
-            return {
-              ...v,
-              vote: 0,
-              proposalVotingPower: proposalVote?.votingPower ?? 0,
-            };
-          });
-          const votersData: VotersData = {
-            yaes: yesVoters.sort(sortByVotingPower),
-            nays: noVoters.sort(sortByVotingPower),
-            combined: yesVoters.concat(noVoters).sort(sortByVotingPower),
+      if (resp.ok) {
+        const [yaes, nays]: GovernanceProposalTopVotersResponse = await resp.json();
+        // Transform data for UI, sort by highest voting power
+        const yesVoters: GovernanceVoter[] = yaes.map((v: GovernanceVoter) => {
+          const proposalVote = v.votingHistory.find((h) => h.proposal.id === proposalId.toString());
+          return {
+            ...v,
+            vote: 1,
+            proposalVotingPower: proposalVote?.votingPower ?? 0,
           };
-          setVoters(votersData);
-        } else {
-          setError(true);
-        }
-      } catch (e: unknown) {
-        console.error(e);
+        });
+        const noVoters: GovernanceVoter[] = nays.map((v: GovernanceVoter) => {
+          const proposalVote = v.votingHistory.find((h) => h.proposal.id === proposalId.toString());
+          return {
+            ...v,
+            vote: 0,
+            proposalVotingPower: proposalVote?.votingPower ?? 0,
+          };
+        });
+        const votersData: VotersData = {
+          yaes: yesVoters.sort(sortByVotingPower),
+          nays: noVoters.sort(sortByVotingPower),
+          combined: yesVoters.concat(noVoters).sort(sortByVotingPower),
+        };
+        setVoters(votersData);
+      } else {
         setError(true);
       }
-      setLoading(false);
-    };
+    } catch (e: unknown) {
+      console.error(e);
+      setError(true);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
     getVoterInfo();
-  }, [proposalId]); /* eslint-disable-line react-hooks/exhaustive-deps */
+  }, [forVotes, againstVotes]); /* eslint-disable-line react-hooks/exhaustive-deps */
 
   const handleOpenAllVotes = () => {
     setVotersModalOpen(true);
