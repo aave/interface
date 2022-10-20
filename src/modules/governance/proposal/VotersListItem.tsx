@@ -16,7 +16,8 @@ export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Ele
   const { address, ensName, proposalVotingPower, twitterAvatar } = voter;
   const blockieAvatar = makeBlockie(address !== '' ? address : 'default');
 
-  // This function helps determine how to display either the address or ENS name, in a way where the list looks good and names are about equal length. This takes into account if the list should be compact or not.
+  // This function helps determine how to display either the address or ENS name, in a way where the list looks good and names are about equal length.
+  // This takes into account if the list should be compact or not, and adjusts accordingly to keep items of about equal length.
   const displayName = (name: string) => {
     if (compact) {
       // Addresses when compact
