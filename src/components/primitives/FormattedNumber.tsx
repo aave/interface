@@ -24,6 +24,7 @@ function CompactNumber({ value, visibleDecimals = 2, roundDown }: CompactNumberP
   const postfix = POSTFIXES[significantDigitsGroup];
   let formattedValue = normalizeBN(bnValue, 3 * significantDigitsGroup).toNumber();
   if (roundDown) {
+    // Truncates decimals after the visible decimal point, i.e. 10.237 with 2 decimals becomes 10.23
     formattedValue =
       Math.trunc(Number(formattedValue) * 10 ** visibleDecimals) / 10 ** visibleDecimals;
   }
@@ -64,7 +65,7 @@ export function FormattedNumber({
 }: FormattedNumberProps) {
   const number = percent ? Number(value) * 100 : Number(value);
 
-  let decimals: number = visibleDecimals ? visibleDecimals : 0;
+  let decimals: number = visibleDecimals ?? 0;
   if (number === 0) {
     decimals = 0;
   } else if (visibleDecimals === undefined) {

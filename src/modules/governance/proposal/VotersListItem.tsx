@@ -50,12 +50,12 @@ export const VotersListItem = ({ voter }: VotersListItemProps): JSX.Element | nu
     displayVotingPower < 1
       ? 4
       : displayVotingPower < 10
-      ? 3
-      : displayVotingPower < 1000 || displayVotingPower > 1000000
-      ? 2
-      : displayVotingPower > 100000
-      ? 1
-      : 0;
+        ? 3
+        : displayVotingPower < 1000 || displayVotingPower > 1000000
+          ? 2
+          : displayVotingPower > 100000
+            ? 1
+            : 0;
 
   // Don't show any results that come back with zero or negative voting power
   if (voter.proposalVotingPower <= 0) return null;
@@ -99,7 +99,7 @@ export const VotersListItem = ({ voter }: VotersListItemProps): JSX.Element | nu
             color="primary"
             value={displayVotingPower}
             visibleDecimals={displayVotingPowerDecimals}
-            roundDown={true}
+            roundDown
           />
         </Box>
       </Box>
