@@ -51,8 +51,10 @@ export const VotersListItem = ({ voter }: VotersListItemProps): JSX.Element | nu
       ? 4
       : displayVotingPower < 10
       ? 3
-      : displayVotingPower < 1000 || displayVotingPower > 100000
+      : displayVotingPower < 1000 || displayVotingPower > 1000000
       ? 2
+      : displayVotingPower > 100000
+      ? 1
       : 0;
 
   // Don't show any results that come back with zero or negative voting power
