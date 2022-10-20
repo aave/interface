@@ -12,8 +12,6 @@ import { getENSProvider } from 'src/utils/marketsAndNetworksConfig';
 
 import { Warning } from '../primitives/Warning';
 import { TxModalTitle } from '../transactions/FlowCommons/TxModalTitle';
-// import { Resolution } from '@unstoppabledomains/resolution';
-// const tldResolverKeys = require('@unstoppabledomains/tldsresolverkeys');
 
 export type WalletRowProps = {
   walletName: string;
@@ -167,9 +165,7 @@ export const WalletSelector = () => {
         const url = 'https://resolve.unstoppabledomains.com/domains/' + inputMockWalletAddress;
         const options = {
           method: 'GET',
-          headers: {
-            Authorization: 'Bearer 01f60ca8-2dc3-457d-b12e-95ac2a7fb517',
-          },
+          headers: {Authorization: 'Bearer 01f60ca8-2dc3-457d-b12e-95ac2a7fb517'},
         };
         const response = await fetch(url, options);
         const data = await response.json();
