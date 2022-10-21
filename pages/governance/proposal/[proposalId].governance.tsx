@@ -177,7 +177,7 @@ export default function ProposalPage({
                   </Warning>
                 </Box>
               ) : (
-                <Box sx={{ px: { md: 18 }, pt: 8 }}>
+                <Box sx={{ px: { md: 18 }, pt: 8, wordBreak: 'break-word' }}>
                   <Typography variant="h2" sx={{ mb: 6 }}>
                     {ipfs?.title || <Skeleton />}
                   </Typography>
