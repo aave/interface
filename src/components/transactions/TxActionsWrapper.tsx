@@ -95,12 +95,9 @@ export const TxActionsWrapper = ({
       {requiresApproval && !watchModeOnlyAddress && (
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
           <LeftHelperText amount={amount} approvalHash={approvalTxState?.txHash} />
-          <ToggleApprovePermit
-            tryPermit={tryPermit}
-            setUseApproval={setUseApproval}
-            approvalTxState={approvalTxState}
-            useApproval={useApproval}
-          />
+          {tryPermit && !approvalTxState?.txHash && (
+            <ToggleApprovePermit setUseApproval={setUseApproval} useApproval={useApproval} />
+          )}
           <RightHelperText approvalHash={approvalTxState?.txHash} />
         </Box>
       )}
