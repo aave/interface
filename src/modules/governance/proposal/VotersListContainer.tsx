@@ -170,7 +170,11 @@ export const VotersListContainer = (props: VotersListProps): JSX.Element => {
   return (
     <Box sx={{ my: 8 }}>
       {listHeaderComponent}
-      <VotersList compact={mdScreen} voters={voters.combined.slice(0, 10)} sx={{ my: 4 }} />
+      <VotersList
+        compact={mdScreen}
+        voters={voters.combined.slice(0, 10)}
+        sx={{ my: 4, pr: 2.25 }}
+      />
       {voters.combined.length > 10 && (
         <Button variant="outlined" fullWidth onClick={handleOpenAllVotes}>
           <Trans>View all votes</Trans>
