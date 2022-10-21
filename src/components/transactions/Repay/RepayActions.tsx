@@ -40,7 +40,8 @@ export const RepayActions = ({
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
   const tryPermit =
-    currentMarketData.v3 && permitByChainAndToken[chainId]?.[utils.getAddress(poolAddress)];
+    currentMarketData.v3 &&
+    permitByChainAndToken[chainId]?.[utils.getAddress(poolAddress).toLowerCase()];
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({
       tryPermit,
