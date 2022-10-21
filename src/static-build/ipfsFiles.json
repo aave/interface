@@ -1611,6 +1611,21 @@
       "ipfsHash": "Qmd5hWb84efdHABHaFXyXW5DSKN5PasZfDrU8ccrFnoZUF",
       "originalHash": "0xdb0ac263eceb481e437f455dd309d42d1313489ce25c27e39cfae9a5b513672c",
       "id": 110
+    },
+    {
+      "aip": 110,
+      "title": "Risk Parameter Updates for Aave V2 ETH (2022-10-21)",
+      "status": "Proposed",
+      "author": "Paul Lei, Jonathan Reem, Nick Cannon, Nathan Lord, Watson Fu, Tony Salvatore, Sarah Chen",
+      "shortDescription": "Risk Parameter Updates",
+      "discussions": "https://governance.aave.com/t/arc-price-manipulation-implications-on-aave-october-2022/10262",
+      "created": "2022-10-21T00:00:00.000Z",
+      "preview": "## Simple Summary\n\n A proposal to take precautionary measures on the …",
+      "basename": "AIP-110",
+      "description": "# Parameter Changes for Aave V2 Ethereum Market\n\n## Summary\nA proposal to take precautionary measures on the Aave V2 Ethereum market, including parameter changes on six (6) assets on Aave V2. \n\n## Specification\n\n![](https://i.imgur.com/hYUgF80.png)\n\n\n## Implementation\n\nThe proposal disables borrowing by calling `disableBorrowingOnReserve` on the `LendingPoolConfigurator` using the address and parameters specific to each token.\n\nThe proposal sets the liquidation bonus, LTV and liquidation threshold ratios by calling `configureReserveAsCollateral` on the `LendingPoolConfigurator` using the address and parameters specific to each token.\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n\n*By approving this proposal, you agree that any services provided by Gauntlet shall be governed by the terms of service available at gauntlet.network/tos. This message is for informational purposes only and does not constitute an offer to sell, a solicitation to buy, or a recommendation for any security, nor does it constitute an offer to provide investment advisory or other services by Gauntlet Networks Inc. No reference to any specific security constitutes a recommendation to buy, sell or hold that security or any other security. Nothing in this report shall be considered a solicitation or offer to buy or sell any security, future, option or other financial instrument or to offer or provide any investment advice or service to any person in any jurisdiction. Nothing contained in this report constitutes investment advice or offers any opinion with respect to the suitability of any security, and the views expressed in this report should not be taken as advice to buy, sell or hold any security. The information in this report should not be relied upon for the purpose of investing. In preparing the information contained in this report, we have not taken into account the investment needs, objectives and financial circumstances of any particular investor. This information has no regard to the specific investment objectives, financial situation and particular needs of any specific recipient of this information and investments discussed may not be suitable for all investors. Any views expressed in this report by us were prepared based upon the information available to us at the time such views were written. Changed or additional information could cause such views to change. All information is subject to possible correction. Information may quickly become unreliable for various reasons, including changes in market conditions or economic circumstances*\n",
+      "ipfsHash": "Qmakb412fkQZVCpqy4Ca6fc7Ci7HeoqXLbBVjzJ9oy7vDX",
+      "originalHash": "0xb86e0c2d284903bb3fa3fc989dc249fc12f93609c0851d6a9a1b7738bee477fa",
+      "id": 111
     }
   ]
 }
