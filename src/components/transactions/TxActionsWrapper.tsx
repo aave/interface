@@ -8,6 +8,7 @@ import { TxAction } from 'src/ui-config/errorMapping';
 
 import { LeftHelperText } from './FlowCommons/LeftHelperText';
 import { RightHelperText } from './FlowCommons/RightHelperText';
+import { ToggleApprovePermit } from './FlowCommons/ToggleApprovePermit';
 
 interface TxActionsWrapperProps extends BoxProps {
   actionInProgressText: ReactNode;
@@ -23,6 +24,7 @@ interface TxActionsWrapperProps extends BoxProps {
   requiresApproval: boolean;
   symbol?: string;
   blocked?: boolean;
+  tryPermit?: boolean;
 }
 
 export const TxActionsWrapper = ({
@@ -40,9 +42,10 @@ export const TxActionsWrapper = ({
   sx,
   symbol,
   blocked,
+  tryPermit,
   ...rest
 }: TxActionsWrapperProps) => {
-  const { txError, retryWithApproval } = useModalContext();
+  const { txError, useApproval, setUseApproval } = useModalContext();
   const { watchModeOnlyAddress } = useWeb3Context();
 
   const hasApprovalError =
@@ -79,8 +82,8 @@ export const TxActionsWrapper = ({
     if (approvalTxState?.loading)
       return { loading: true, disabled: true, content: <Trans>Approving {symbol}...</Trans> };
     if (approvalTxState?.success) return { disabled: true, content: <Trans>Approved</Trans> };
-    if (retryWithApproval)
-      return { content: <Trans>Retry with approval</Trans>, handleClick: handleApproval };
+    if (tryPermit && !useApproval)
+      return { content: <Trans>Sign to continue</Trans>, handleClick: handleApproval };
     return { content: <Trans>Approve to continue</Trans>, handleClick: handleApproval };
   }
 
@@ -92,6 +95,12 @@ export const TxActionsWrapper = ({
       {requiresApproval && !watchModeOnlyAddress && (
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
           <LeftHelperText amount={amount} approvalHash={approvalTxState?.txHash} />
+          <ToggleApprovePermit
+            tryPermit={tryPermit}
+            setUseApproval={setUseApproval}
+            approvalTxState={approvalTxState}
+            useApproval={useApproval}
+          />
           <RightHelperText approvalHash={approvalTxState?.txHash} />
         </Box>
       )}

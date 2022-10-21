@@ -39,11 +39,11 @@ export const RepayActions = ({
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
-
+  const tryPermit =
+    currentMarketData.v3 && permitByChainAndToken[chainId]?.[utils.getAddress(poolAddress)];
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({
-      tryPermit:
-        currentMarketData.v3 && permitByChainAndToken[chainId]?.[utils.getAddress(poolAddress)],
+      tryPermit,
       handleGetTxns: async () => {
         if (currentMarketData.v3) {
           const newPool: Pool = lendingPool as Pool;
@@ -106,6 +106,7 @@ export const RepayActions = ({
       handleApproval={() => approval(amountToRepay, poolAddress)}
       actionText={<Trans>Repay {symbol}</Trans>}
       actionInProgressText={<Trans>Repaying {symbol}</Trans>}
+      tryPermit={tryPermit}
     />
   );
 };

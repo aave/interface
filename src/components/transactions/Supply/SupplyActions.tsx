@@ -34,11 +34,11 @@ export const SupplyActions = ({
   const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
-
+  const tryPermit =
+    currentMarketData.v3 && permitByChainAndToken[chainId]?.[utils.getAddress(poolAddress)];
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({
-      tryPermit:
-        currentMarketData.v3 && permitByChainAndToken[chainId]?.[utils.getAddress(poolAddress)],
+      tryPermit,
       handleGetTxns: async () => {
         if (currentMarketData.v3) {
           // TO-DO: No need for this cast once a single Pool type is used in use-tx-builder-context
@@ -87,6 +87,7 @@ export const SupplyActions = ({
       handleAction={action}
       requiresApproval={requiresApproval}
       sx={sx}
+      tryPermit={tryPermit}
       {...props}
     />
   );

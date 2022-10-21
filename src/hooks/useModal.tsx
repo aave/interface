@@ -71,8 +71,8 @@ export interface ModalContextType<T extends ModalArgsType> {
   setLoadingTxns: (loading: boolean) => void;
   txError: TxErrorType | undefined;
   setTxError: (error: TxErrorType | undefined) => void;
-  retryWithApproval: boolean;
-  setRetryWithApproval: (permit: boolean) => void;
+  useApproval: boolean;
+  setUseApproval: (permit: boolean) => void;
 }
 
 export const ModalContext = createContext<ModalContextType<ModalArgsType>>(
@@ -86,7 +86,7 @@ export const ModalContextProvider: React.FC = ({ children }) => {
   // contains arbitrary key-value pairs as a modal context
   const [args, setArgs] = useState<ModalArgsType>({});
   const [approvalTxState, setApprovalTxState] = useState<TxStateType>({});
-  const [retryWithApproval, setRetryWithApproval] = useState<boolean>(false);
+  const [useApproval, setUseApproval] = useState<boolean>(false);
   const [mainTxState, setMainTxState] = useState<TxStateType>({});
   const [gasLimit, setGasLimit] = useState<string>('');
   const [loadingTxns, setLoadingTxns] = useState(false);
@@ -165,7 +165,7 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setGasLimit('');
           setTxError(undefined);
           setSwitchNetworkError(undefined);
-          setRetryWithApproval(false);
+          setUseApproval(false);
         },
         type,
         args,
@@ -179,8 +179,8 @@ export const ModalContextProvider: React.FC = ({ children }) => {
         setLoadingTxns,
         txError,
         setTxError,
-        retryWithApproval,
-        setRetryWithApproval,
+        useApproval,
+        setUseApproval,
       }}
     >
       {children}
