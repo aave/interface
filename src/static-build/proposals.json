@@ -4575,7 +4575,7 @@
       "ipfsHash": "0xdb0ac263eceb481e437f455dd309d42d1313489ce25c27e39cfae9a5b513672c",
       "startTimestamp": 1666203011,
       "creationTimestamp": 1666203011,
-      "expirationTimestamp": 1666434359
+      "expirationTimestamp": 1666434407
     },
     {
       "id": 111,
@@ -4628,7 +4628,7 @@
       "startBlock": 15798685,
       "endBlock": 15817885,
       "executionTime": 0,
-      "forVotes": "0",
+      "forVotes": "157137471912797053542587",
       "againstVotes": "0",
       "executed": false,
       "canceled": false,
@@ -4642,7 +4642,46 @@
       "ipfsHash": "0xb86e0c2d284903bb3fa3fc989dc249fc12f93609c0851d6a9a1b7738bee477fa",
       "startTimestamp": 1666381895,
       "creationTimestamp": 1666381895,
-      "expirationTimestamp": 1666612343
+      "expirationTimestamp": 1666612391
+    },
+    {
+      "id": 112,
+      "creator": "0x683a4F9915D6216f73d6Df50151725036bD26C02",
+      "executor": "0xEE56e2B3D491590B5b31738cC34d5232F378a8D5",
+      "targets": [
+        "0x158a6bC04F0828318821baE797f50B0A1299d45b",
+        "0x158a6bC04F0828318821baE797f50B0A1299d45b"
+      ],
+      "signatures": [
+        "execute(address)",
+        "execute(address)"
+      ],
+      "calldatas": [
+        "0x00000000000000000000000003232b5ee80369a88620615f8328beec1884b731",
+        "0x0000000000000000000000004393277b02ef3ca293990a772b7160a8c76f2443"
+      ],
+      "withDelegatecalls": [
+        true,
+        true
+      ],
+      "startBlock": 15799327,
+      "endBlock": 15818527,
+      "executionTime": 0,
+      "forVotes": "157137471912797053542587",
+      "againstVotes": "0",
+      "executed": false,
+      "canceled": false,
+      "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
+      "state": "Active",
+      "minimumQuorum": "200",
+      "minimumDiff": "50",
+      "executionTimeWithGracePeriod": 0,
+      "proposalCreated": 15799327,
+      "totalVotingSupply": "16000000000000000000000000",
+      "ipfsHash": "0x854fbd7bfa7e8d059e2b805396e4b92342b49612062ef5e214b170f396fd9cab",
+      "startTimestamp": 1666389659,
+      "creationTimestamp": 1666389659,
+      "expirationTimestamp": 1666620095
     }
   ]
 }

@@ -1626,6 +1626,21 @@
       "ipfsHash": "Qmakb412fkQZVCpqy4Ca6fc7Ci7HeoqXLbBVjzJ9oy7vDX",
       "originalHash": "0xb86e0c2d284903bb3fa3fc989dc249fc12f93609c0851d6a9a1b7738bee477fa",
       "id": 111
+    },
+    {
+      "aip": 112,
+      "title": "Risk Parameter Updates for Aave Polygon Markets (2022-10-21)",
+      "status": "Proposed",
+      "author": "Paul Lei, Jonathan Reem, Nick Cannon, Nathan Lord, Watson Fu, Tony Salvatore, Sarah Chen",
+      "shortDescription": "Risk Parameter Updates",
+      "discussions": "https://governance.aave.com/t/arc-price-manipulation-implications-on-aave-october-2022/10262",
+      "created": "2022-10-21T00:00:00.000Z",
+      "preview": "## Simple Summary\n\n A proposal to take precautionary measures on the …",
+      "basename": "AIP-112",
+      "description": "# Parameter Changes for Aave Polygon Markets\n\n## Summary\nA proposal to take precautionary measures on the Aave Polygon markets.\n\n## Specification\nThe parameter recommendations are provided by Gauntlet. The payload for this AIP has been prepared by Bored Ghosts Developing, and reviewed and submitted by Gauntlet.\n\n![](https://i.imgur.com/mCbOwKv.png)\n\n## Implementation\n\nThe proposal enacts changes by using the `CrosschainForwarderPolygon` located at `0x158a6bC04F0828318821baE797f50B0A1299d45b` in order to call the `execute()` method on each of the following payloads, which enact changes on Aave V2 on Polygon and Aave V3 on Polygon respectively:\n  - `0x03232b5ee80369A88620615f8328BeEC1884b731`\n  - `0x4393277B02ef3cA293990A772B7160a8c76F2443`\n\n\n## Special Thanks\nSpecial thanks to Bored Ghosts Developing and many other Aave DAO participants for their contributions to this proposal. \n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n\n*By approving this proposal, you agree that any services provided by Gauntlet shall be governed by the terms of service available at gauntlet.network/tos. This message is for informational purposes only and does not constitute an offer to sell, a solicitation to buy, or a recommendation for any security, nor does it constitute an offer to provide investment advisory or other services by Gauntlet Networks Inc. No reference to any specific security constitutes a recommendation to buy, sell or hold that security or any other security. Nothing in this report shall be considered a solicitation or offer to buy or sell any security, future, option or other financial instrument or to offer or provide any investment advice or service to any person in any jurisdiction. Nothing contained in this report constitutes investment advice or offers any opinion with respect to the suitability of any security, and the views expressed in this report should not be taken as advice to buy, sell or hold any security. The information in this report should not be relied upon for the purpose of investing. In preparing the information contained in this report, we have not taken into account the investment needs, objectives and financial circumstances of any particular investor. This information has no regard to the specific investment objectives, financial situation and particular needs of any specific recipient of this information and investments discussed may not be suitable for all investors. Any views expressed in this report by us were prepared based upon the information available to us at the time such views were written. Changed or additional information could cause such views to change. All information is subject to possible correction. Information may quickly become unreliable for various reasons, including changes in market conditions or economic circumstances.*\n",
+      "ipfsHash": "QmXK3TQ5cRtLsxisd4aBEV9K6waK2TQQCeLJZA3QzZcHog",
+      "originalHash": "0x854fbd7bfa7e8d059e2b805396e4b92342b49612062ef5e214b170f396fd9cab",
+      "id": 112
     }
   ]
 }
