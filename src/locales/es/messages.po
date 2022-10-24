@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-10-13 12:07\n"
+"PO-Revision-Date: 2022-10-18 18:10\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1541,7 +1541,6 @@ msgid "Stake cooldown activated"
 msgstr "Cooldown de stakeo activado"
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
-#: src/components/transactions/UnStake/UnStakeModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "Staked"
 msgstr "Stakeado"
@@ -1927,6 +1926,10 @@ msgstr "Unstakea ahora"
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 msgid "Unstake window"
 msgstr "Ventana de unstakeo"
+
+#: src/components/transactions/UnStake/UnStakeModalContent.tsx
+msgid "Unstaked"
+msgstr ""
 
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Used as collateral"
