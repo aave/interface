@@ -4628,7 +4628,7 @@
       "startBlock": 15798685,
       "endBlock": 15817885,
       "executionTime": 0,
-      "forVotes": "507214547067370691827465",
+      "forVotes": "507215250257372970989086",
       "againstVotes": "440339594454207004",
       "executed": false,
       "canceled": false,
@@ -4642,7 +4642,7 @@
       "ipfsHash": "0xb86e0c2d284903bb3fa3fc989dc249fc12f93609c0851d6a9a1b7738bee477fa",
       "startTimestamp": 1666381895,
       "creationTimestamp": 1666295123,
-      "expirationTimestamp": 1666613243
+      "expirationTimestamp": 1666613351
     },
     {
       "id": 112,
@@ -4667,7 +4667,7 @@
       "startBlock": 15799327,
       "endBlock": 15818527,
       "executionTime": 0,
-      "forVotes": "507327645775550403333362",
+      "forVotes": "507328557907113416208174",
       "againstVotes": "831832515308975340",
       "executed": false,
       "canceled": false,
@@ -4681,7 +4681,7 @@
       "ipfsHash": "0x854fbd7bfa7e8d059e2b805396e4b92342b49612062ef5e214b170f396fd9cab",
       "startTimestamp": 1666389659,
       "creationTimestamp": 1666302875,
-      "expirationTimestamp": 1666620947
+      "expirationTimestamp": 1666621055
     }
   ]
 }
