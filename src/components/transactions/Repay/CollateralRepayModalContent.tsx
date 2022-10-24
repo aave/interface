@@ -85,6 +85,7 @@ export function CollateralRepayModalContent({
 
   // The slippage is factored into the collateral amount because when we swap for 'exactOut', positive slippage is applied on the collateral amount.
   const collateralAmountRequiredToCoverDebt = safeAmountToRepayAll
+    .multipliedBy(poolReserve.priceInUSD)
     .multipliedBy(100 + Number(maxSlippage))
     .dividedBy(100)
     .dividedBy(collateralReserveData.priceInUSD);
