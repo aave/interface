@@ -32,6 +32,7 @@ import { MainLayout } from 'src/layouts/MainLayout';
 import { FormattedProposalTime } from 'src/modules/governance/FormattedProposalTime';
 import { ProposalTopPanel } from 'src/modules/governance/proposal/ProposalTopPanel';
 import { VoteInfo } from 'src/modules/governance/proposal/VoteInfo';
+import { VotersListContainer } from 'src/modules/governance/proposal/VotersListContainer';
 import { StateBadge } from 'src/modules/governance/StateBadge';
 import {
   enhanceProposalWithTimes,
@@ -45,7 +46,6 @@ import { CustomProposalType, Proposal } from 'src/static-build/proposal';
 import { governanceConfig } from 'src/ui-config/governanceConfig';
 
 import { ContentContainer } from '../../../src/components/ContentContainer';
-// import { Vote } from 'src/static-build/vote';
 
 export async function getStaticPaths() {
   const ProposalFetcher = new Proposal();
@@ -177,7 +177,7 @@ export default function ProposalPage({
                   </Warning>
                 </Box>
               ) : (
-                <Box sx={{ px: { md: 18 }, pt: 8 }}>
+                <Box sx={{ px: { md: 18 }, pt: 8, wordBreak: 'break-word' }}>
                   <Typography variant="h2" sx={{ mb: 6 }}>
                     {ipfs?.title || <Skeleton />}
                   </Typography>
@@ -289,9 +289,10 @@ export default function ProposalPage({
                     loading={loading}
                   />
                   <VoteBar percent={nayPercent} votes={nayVotes} sx={{ mt: 3 }} loading={loading} />
+                  <VotersListContainer proposal={proposal} />
                   <Row
                     caption={<Trans>State</Trans>}
-                    sx={{ height: 48, mt: 10 }}
+                    sx={{ height: 48 }}
                     captionVariant="description"
                   >
                     <Box
@@ -302,7 +303,7 @@ export default function ProposalPage({
                       }}
                     >
                       <StateBadge state={proposal.state} loading={loading} />
-                      <Box sx={{ mt: '2px' }}>
+                      <Box sx={{ mt: 0.5 }}>
                         <FormattedProposalTime
                           state={proposal.state}
                           executionTime={proposal.executionTime}
@@ -341,12 +342,14 @@ export default function ProposalPage({
                       <FormattedNumber
                         value={yaeVotes}
                         visibleDecimals={2}
+                        roundDown
                         sx={{ display: 'block' }}
                       />
                       <FormattedNumber
                         variant="caption"
                         value={minQuorumVotes}
                         visibleDecimals={2}
+                        roundDown
                         color="text.muted"
                       />
                     </Box>
@@ -377,11 +380,17 @@ export default function ProposalPage({
                     captionVariant="description"
                   >
                     <Box sx={{ textAlign: 'right' }}>
-                      <FormattedNumber value={diff} visibleDecimals={2} sx={{ display: 'block' }} />
+                      <FormattedNumber
+                        value={diff}
+                        visibleDecimals={2}
+                        roundDown
+                        sx={{ display: 'block' }}
+                      />
                       <FormattedNumber
                         variant="caption"
                         value={requiredDiff}
                         visibleDecimals={2}
+                        roundDown
                         color="text.muted"
                       />
                     </Box>

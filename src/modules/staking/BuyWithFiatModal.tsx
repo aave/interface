@@ -46,7 +46,7 @@ export const BuyWithFiatModal = ({ cryptoSymbol, open, close }: BuyWithFiatModal
               </SvgIcon>
             }
             fullWidth
-            sx={{ px: 4, '&:not(:first-child)': { mt: 4 } }}
+            sx={{ px: 4, '&:not(:first-of-type)': { mt: 4 } }}
             href={makeLink({ cryptoSymbol, network, walletAddress })}
             target="_blank"
             rel="noopener"

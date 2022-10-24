@@ -78,7 +78,7 @@ export function usePoolDataRPC(
       });
       setErrorReserves(false);
     } catch (e) {
-      console.log('e', e);
+      console.error(e);
       setErrorReserves(e.message);
     }
     setLoadingReserves(false);
@@ -120,7 +120,7 @@ export function usePoolDataRPC(
 
       setErrorUserReserves(false);
     } catch (e) {
-      console.log('e', e);
+      console.error(e);
       setErrorUserReserves(e.message);
     }
     setLoadingUserReserves(false);

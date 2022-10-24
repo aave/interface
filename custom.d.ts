@@ -8,6 +8,6 @@ namespace NodeJS {
     NEXT_PUBLIC_ENABLE_GOVERNANCE: string;
     NEXT_PUBLIC_ENABLE_STAKING: string;
     NEXT_PUBLIC_ENV: string;
-    NEXT_PUBLIC_SCREENING_URL: string;
+    NEXT_PUBLIC_API_BASEURL: string;
   }
 }

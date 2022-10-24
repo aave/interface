@@ -8,11 +8,12 @@ import { OverridableStringUnion } from '@mui/types';
 interface CompactNumberProps {
   value: string | number;
   visibleDecimals?: number;
+  roundDown?: boolean;
 }
 
 const POSTFIXES = ['', 'K', 'M', 'B', 'T', 'P', 'E', 'Z', 'Y'];
 
-function CompactNumber({ value, visibleDecimals = 2 }: CompactNumberProps) {
+function CompactNumber({ value, visibleDecimals = 2, roundDown }: CompactNumberProps) {
   const bnValue = valueToBigNumber(value);
 
   const integerPlaces = bnValue.toFixed(0).length;
@@ -21,14 +22,20 @@ function CompactNumber({ value, visibleDecimals = 2 }: CompactNumberProps) {
     POSTFIXES.length - 1
   );
   const postfix = POSTFIXES[significantDigitsGroup];
-  const formattedValue = normalizeBN(bnValue, 3 * significantDigitsGroup).toNumber();
+  let formattedValue = normalizeBN(bnValue, 3 * significantDigitsGroup).toNumber();
+  if (roundDown) {
+    // Truncates decimals after the visible decimal point, i.e. 10.237 with 2 decimals becomes 10.23
+    formattedValue =
+      Math.trunc(Number(formattedValue) * 10 ** visibleDecimals) / 10 ** visibleDecimals;
+  }
+  const prefix = new Intl.NumberFormat('en-US', {
+    maximumFractionDigits: visibleDecimals,
+    minimumFractionDigits: visibleDecimals,
+  }).format(formattedValue);
 
   return (
     <>
-      {new Intl.NumberFormat('en-US', {
-        maximumFractionDigits: visibleDecimals,
-        minimumFractionDigits: visibleDecimals,
-      }).format(formattedValue)}
+      {prefix}
       {postfix}
     </>
   );
@@ -42,6 +49,7 @@ export interface FormattedNumberProps extends TypographyProps {
   percent?: boolean;
   symbolsColor?: string;
   symbolsVariant?: OverridableStringUnion<Variant | 'inherit', TypographyPropsVariantOverrides>;
+  roundDown?: boolean;
 }
 
 export function FormattedNumber({
@@ -52,11 +60,12 @@ export function FormattedNumber({
   percent,
   symbolsVariant,
   symbolsColor,
+  roundDown,
   ...rest
 }: FormattedNumberProps) {
   const number = percent ? Number(value) * 100 : Number(value);
 
-  let decimals = visibleDecimals;
+  let decimals: number = visibleDecimals ?? 0;
   if (number === 0) {
     decimals = 0;
   } else if (visibleDecimals === undefined) {
@@ -69,9 +78,13 @@ export function FormattedNumber({
 
   const minValue = 10 ** -(decimals as number);
   const isSmallerThanMin = number !== 0 && Math.abs(number) < Math.abs(minValue);
-  const formattedNumber = isSmallerThanMin ? minValue : number;
-
+  let formattedNumber = isSmallerThanMin ? minValue : number;
   const forceCompact = compact !== false && (compact || number > 99_999);
+
+  // rounding occurs inside of CompactNumber as the prefix, not base number is rounded
+  if (roundDown && !forceCompact) {
+    formattedNumber = Math.trunc(Number(formattedNumber) * 10 ** decimals) / 10 ** decimals;
+  }
 
   return (
     <Typography
@@ -112,7 +125,7 @@ export function FormattedNumber({
           minimumFractionDigits: decimals,
         }).format(formattedNumber)
       ) : (
-        <CompactNumber value={formattedNumber} visibleDecimals={decimals} />
+        <CompactNumber value={formattedNumber} visibleDecimals={decimals} roundDown={roundDown} />
       )}
 
       {percent && (
