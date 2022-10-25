@@ -1,7 +1,8 @@
 import { ChainId } from '@aave/contract-helpers';
 import { Network, StaticJsonRpcProvider } from '@ethersproject/providers/src.ts';
 
-import { checkNetworks, getNetworkConfig, RotationProvider } from '../marketsAndNetworksConfig';
+import { getNetworkConfig } from '../marketsAndNetworksConfig';
+import { checkNetworks, RotationProvider } from '../rotationProvider';
 
 it('rotates through providers on error', async () => {
   const badUrls = ['http://some-fake-url-1', 'http://some-fake-url-2'];
@@ -142,6 +143,7 @@ it('should throw an error when there is not a network defined in the list', () =
     chainId: 1,
   };
 
-  const check = () => checkNetworks([network_1, network_2, null]);
+  // eslint-disable-next-line
+  const check = () => checkNetworks([network_1, network_2, null as any]);
   expect(check).toThrow('network not defined');
 });
