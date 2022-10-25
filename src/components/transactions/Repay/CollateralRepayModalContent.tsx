@@ -224,7 +224,7 @@ export function CollateralRepayModalContent({
       <AssetInput
         value={swapVariant === 'exactIn' ? outputAmount : repayAmount}
         onChange={handleRepayAmountChange}
-        usdValue={repayAmountUsdValue}
+        usdValue={swapVariant === 'exactIn' ? outputAmountUSD : repayAmountUsdValue}
         symbol={poolReserve.symbol}
         assets={[
           {
