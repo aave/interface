@@ -177,7 +177,7 @@ class StaticJsonRpcBatchProvider extends ethersProviders.JsonRpcBatchProvider {
  * @param networks the list of networks to verify
  * @returns Network
  */
-function checkNetworks(networks: Network[]): Network {
+export function checkNetworks(networks: Network[]): Network {
   if (networks.length === 0) {
     logger.throwArgumentError('no networks provided', 'networks', networks);
   }

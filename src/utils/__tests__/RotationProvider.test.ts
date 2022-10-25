@@ -1,7 +1,7 @@
 import { ChainId } from '@aave/contract-helpers';
-import { StaticJsonRpcProvider } from '@ethersproject/providers/src.ts';
+import { Network, StaticJsonRpcProvider } from '@ethersproject/providers/src.ts';
 
-import { getNetworkConfig, RotationProvider } from '../marketsAndNetworksConfig';
+import { checkNetworks, getNetworkConfig, RotationProvider } from '../marketsAndNetworksConfig';
 
 it('rotates through providers on error', async () => {
   const badUrls = ['http://some-fake-url-1', 'http://some-fake-url-2'];
@@ -88,3 +88,60 @@ it('rotates back to first provider after delay', (done) => {
   // We don't care about the result, we just need to kick off a request
   rotationProvider.getBlock(15741825);
 }, 6000);
+
+it('should return a valid network when all networks match', () => {
+  const network_1: Network = {
+    name: 'test',
+    chainId: 1,
+  };
+  const network_2: Network = {
+    name: 'test',
+    chainId: 1,
+  };
+
+  const network = checkNetworks([network_1, network_2]);
+  expect(network.name).toBe('test');
+  expect(network.chainId).toBe(1);
+});
+
+it('should throw an error when trying to configure networks with different chain ids', () => {
+  const network_1: Network = {
+    name: 'test',
+    chainId: 1,
+  };
+  const network_2: Network = {
+    name: 'test',
+    chainId: 2,
+  };
+
+  const check = () => checkNetworks([network_1, network_2]);
+  expect(check).toThrow('provider mismatch');
+});
+
+it('should throw an error when trying to configure networks with different names', () => {
+  const network_1: Network = {
+    name: 'test',
+    chainId: 1,
+  };
+  const network_2: Network = {
+    name: 'not a test',
+    chainId: 1,
+  };
+
+  const check = () => checkNetworks([network_1, network_2]);
+  expect(check).toThrow('provider mismatch');
+});
+
+it('should throw an error when there is not a network defined in the list', () => {
+  const network_1: Network = {
+    name: 'test',
+    chainId: 1,
+  };
+  const network_2: Network = {
+    name: 'test',
+    chainId: 1,
+  };
+
+  const check = () => checkNetworks([network_1, network_2, null]);
+  expect(check).toThrow('network not defined');
+});
