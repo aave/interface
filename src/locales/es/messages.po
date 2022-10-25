@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-10-24 18:10\n"
+"PO-Revision-Date: 2022-10-25 12:08\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -116,7 +116,7 @@ msgstr "La dirección no es un contrato"
 #: src/modules/governance/proposal/VotersListModal.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
 msgid "Addresses ({0})"
-msgstr ""
+msgstr "Direcciones ({0})"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
@@ -778,7 +778,7 @@ msgstr "Preguntas frecuentes"
 
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "Failed to load proposal voters. Please refresh the page."
-msgstr ""
+msgstr "Error al cargar los votantes de la propuesta. Por favor actualiza la página."
 
 #: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
@@ -1847,7 +1847,7 @@ msgstr "Para solicitar acceso a este mercado, porfavor visita: <0>Nombre del pro
 
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "Top 10 addresses"
-msgstr ""
+msgstr "Top 10 direcciones"
 
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total available"
@@ -1999,7 +1999,7 @@ msgstr "Versión 3"
 
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "View all votes"
-msgstr ""
+msgstr "Ver todos los votos"
 
 #: src/modules/reserve-overview/ReserveFactorOverview.tsx
 msgid "View contract"
@@ -2027,18 +2027,18 @@ msgstr "Votar SI"
 
 #: src/modules/governance/proposal/VotersListModal.tsx
 msgid "Voted NAY"
-msgstr ""
+msgstr "Votó NAY"
 
 #: src/modules/governance/proposal/VotersListModal.tsx
 msgid "Voted YAE"
-msgstr ""
+msgstr "Votó YAE"
 
 #: src/modules/governance/proposal/VotersListContainer.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
 msgid "Votes"
-msgstr ""
+msgstr "Votos"
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
