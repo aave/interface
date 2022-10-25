@@ -18,6 +18,21 @@ import { AssetsListItem } from './AssetsListItem';
 import { AssetsListItemLoader } from './AssetsListItemLoader';
 import { AssetsListMobileItem } from './AssetsListMobileItem';
 import { AssetsListMobileItemLoader } from './AssetsListMobileItemLoader';
+import { GhoAssetItem } from './Gho/GhoAssetItem';
+import { GhoAssetMobileItem } from './Gho/GhoAssetMobileItem';
+
+const shouldDisplayGHO = (marketTitle: string, searchTerm: string): boolean => {
+  if (marketTitle !== 'Ethereum Görli GHO') {
+    return false;
+  }
+
+  if (!searchTerm) {
+    return true;
+  }
+
+  const normalizedSearchTerm = searchTerm.toLowerCase().trim();
+  return normalizedSearchTerm.length <= 3 && 'gho'.includes(searchTerm);
+};
 
 export default function AssetsList() {
   const { reserves, loading } = useAppDataContext();
@@ -33,6 +48,7 @@ export default function AssetsList() {
 
   const filteredData = reserves
     .filter((res) => res.isActive)
+    .filter((res) => res.symbol !== 'GHO')
     .filter((res) => {
       if (!searchTerm) return true;
       const term = searchTerm.toLowerCase().trim();
@@ -110,6 +126,9 @@ export default function AssetsList() {
   ];
 
   const marketFrozen = !reserves.some((reserve) => !reserve.isFrozen);
+  const displayGHO = shouldDisplayGHO(currentMarketData.marketTitle, searchTerm);
+  const hideTableHeader = !loading && displayGHO && filteredData.length === 0;
+  const showNoResults = !loading && !displayGHO && filteredData.length === 0;
 
   return (
     <ListWrapper
@@ -132,7 +151,13 @@ export default function AssetsList() {
         </Box>
       )}
 
-      {!isTableChangedToCards && (
+      {displayGHO && (
+        <Box sx={{ mb: hideTableHeader ? 62 : 0 }}>
+          {isTableChangedToCards ? <GhoAssetMobileItem /> : <GhoAssetItem />}
+        </Box>
+      )}
+
+      {!isTableChangedToCards && !hideTableHeader && (
         <ListHeaderWrapper px={6}>
           {header.map((col) => (
             <ListColumn
@@ -155,72 +180,90 @@ export default function AssetsList() {
         </ListHeaderWrapper>
       )}
 
-      {loading ? (
-        isTableChangedToCards ? (
-          <>
-            <AssetsListMobileItemLoader />
-            <AssetsListMobileItemLoader />
-            <AssetsListMobileItemLoader />
-          </>
-        ) : (
-          <>
-            <AssetsListItemLoader />
-            <AssetsListItemLoader />
-            <AssetsListItemLoader />
-            <AssetsListItemLoader />
-            <AssetsListItemLoader />
-          </>
-        )
-      ) : (
+      {loading && <TableSkeleton isTableChangedToCards={isTableChangedToCards} />}
+      {!loading &&
         filteredData.map((reserve) =>
           isTableChangedToCards ? (
             <AssetsListMobileItem {...reserve} key={reserve.id} />
           ) : (
             <AssetsListItem {...reserve} key={reserve.id} />
           )
-        )
-      )}
-      {!loading && filteredData?.length === 0 && (
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: 1,
-            pt: 15,
-            pb: 40,
-            px: 4,
-          }}
-        >
-          {sm ? (
-            <Box sx={{ textAlign: 'center', maxWidth: '300px' }}>
-              <Typography variant="h2">
-                <Trans>No search results for</Trans>
-              </Typography>
-              <Typography sx={{ overflowWrap: 'anywhere' }} variant="h2">
-                &apos;{searchTerm}&apos;
-              </Typography>
-            </Box>
-          ) : (
-            <Typography
-              sx={{ textAlign: 'center', maxWidth: '480px', overflowWrap: 'anywhere' }}
-              variant="h2"
-            >
-              <Trans>No search results for</Trans> &apos;{searchTerm}&apos;
-            </Typography>
-          )}
-          <Typography
-            sx={{ width: '280px', textAlign: 'center' }}
-            variant="description"
-            color="text.secondary"
-          >
-            <Trans>
-              We couldn&apos;t find any asset matching your search. Try again with a different asset
-              name, symbol, or address.
-            </Trans>
-          </Typography>
-        </Box>
-      )}
+        )}
+      {showNoResults && <NoSearchResults searchTerm={searchTerm} sm={sm} />}
     </ListWrapper>
   );
 }
+
+interface TableSkeletonProps {
+  isTableChangedToCards: boolean;
+}
+const TableSkeleton = ({ isTableChangedToCards }: TableSkeletonProps) => {
+  if (isTableChangedToCards) {
+    return (
+      <>
+        <AssetsListMobileItemLoader />
+        <AssetsListMobileItemLoader />
+        <AssetsListMobileItemLoader />
+      </>
+    );
+  } else {
+    return (
+      <>
+        <AssetsListItemLoader />
+        <AssetsListItemLoader />
+        <AssetsListItemLoader />
+        <AssetsListItemLoader />
+        <AssetsListItemLoader />
+      </>
+    );
+  }
+};
+
+interface NoSearchResultsProps {
+  searchTerm: string;
+  sm: boolean;
+}
+
+const NoSearchResults = ({ searchTerm, sm }: NoSearchResultsProps) => {
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: 1,
+        pt: 15,
+        pb: 40,
+        px: 4,
+      }}
+    >
+      {sm ? (
+        <Box sx={{ textAlign: 'center', maxWidth: '300px' }}>
+          <Typography variant="h2">
+            <Trans>No search results for</Trans>
+          </Typography>
+          <Typography sx={{ overflowWrap: 'anywhere' }} variant="h2">
+            &apos;{searchTerm}&apos;
+          </Typography>
+        </Box>
+      ) : (
+        <Typography
+          sx={{ textAlign: 'center', maxWidth: '480px', overflowWrap: 'anywhere' }}
+          variant="h2"
+        >
+          <Trans>No search results for</Trans> &apos;{searchTerm}&apos;
+        </Typography>
+      )}
+      <Typography
+        sx={{ width: '280px', textAlign: 'center' }}
+        variant="description"
+        color="text.secondary"
+      >
+        <Trans>
+          We couldn&apos;t find any asset matching your search. Try again with a different asset
+          name, symbol, or address.
+        </Trans>
+      </Typography>
+    </Box>
+  );
+};

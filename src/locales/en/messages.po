@@ -72,6 +72,11 @@ msgstr "AToken supply is not zero"
 msgid "Aave Governance"
 msgstr "Aave Governance"
 
+#: src/modules/markets/Gho/GhoAssetItem.tsx
+#: src/modules/markets/Gho/GhoAssetMobileItem.tsx
+msgid "Aave Protocol native asset"
+msgstr "Aave Protocol native asset"
+
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance documentation"
 msgstr "Aave is a fully decentralized, community governed protocol by the AAVE token-holders. AAVE token-holders collectively discuss, propose, and vote on upgrades to the protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new proposals or delagate to an address of choice. To learn more check out the Governance documentation"
@@ -296,9 +301,17 @@ msgstr "Blocked Address"
 msgid "Borrow"
 msgstr "Borrow"
 
+#: src/modules/markets/Gho/GhoAssetMobileItem.tsx
+msgid "Borrow APY"
+msgstr "Borrow APY"
+
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "Borrow APY rate"
 msgstr "Borrow APY rate"
+
+#: src/modules/markets/Gho/GhoAssetMobileItem.tsx
+msgid "Borrow APY with max discount"
+msgstr "Borrow APY with max discount"
 
 #: src/modules/markets/AssetsList.tsx
 #: src/modules/markets/AssetsListMobileItem.tsx
@@ -605,6 +618,7 @@ msgstr "Delegation"
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/markets/AssetsListItem.tsx
+#: src/modules/markets/Gho/GhoAssetItem.tsx
 msgid "Details"
 msgstr "Details"
 
@@ -1245,6 +1259,10 @@ msgstr "Please, connect your wallet"
 msgid "Pool addresses provider is not registered"
 msgstr "Pool addresses provider is not registered"
 
+#: src/modules/markets/Gho/GhoAssetMobileItem.tsx
+msgid "Price"
+msgstr "Price"
+
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Price impact"
@@ -1846,6 +1864,7 @@ msgstr "Total available"
 
 #: src/modules/markets/AssetsList.tsx
 #: src/modules/markets/AssetsListMobileItem.tsx
+#: src/modules/markets/Gho/GhoAssetMobileItem.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Total borrowed"
@@ -1993,6 +2012,7 @@ msgid "View contract"
 msgstr "View contract"
 
 #: src/modules/markets/AssetsListMobileItem.tsx
+#: src/modules/markets/Gho/GhoAssetMobileItem.tsx
 msgid "View details"
 msgstr "View details"
 
