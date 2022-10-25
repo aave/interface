@@ -246,18 +246,6 @@ export class RotationProvider extends ethersProviders.BaseProvider {
   }
 
   // eslint-disable-next-line
-  async send(method: string, params: Array<any>): Promise<any> {
-    const index = this.currentProviderIndex;
-    try {
-      return await this.providers[index].send(method, params);
-    } catch (e) {
-      console.error(e.message);
-      await this.rotateUrl(index);
-      return this.send(method, params);
-    }
-  }
-
-  // eslint-disable-next-line
   async perform(method: string, params: any): Promise<any> {
     const index = this.currentProviderIndex;
     try {
