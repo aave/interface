@@ -13,6 +13,9 @@ src/locales/
 # IDE
 .vscode
 
+# Env
+.env.*
+
 # Specific Ignores
 *.svg
 *.ico
