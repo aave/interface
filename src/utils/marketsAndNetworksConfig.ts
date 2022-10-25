@@ -1,6 +1,6 @@
 import { ChainId, ChainIdToNetwork } from '@aave/contract-helpers';
 import { Network, StaticJsonRpcProvider } from '@ethersproject/providers';
-import { providers as ethersProviders } from 'ethers';
+import { logger, providers as ethersProviders } from 'ethers';
 
 import {
   CustomMarket,
@@ -172,6 +172,50 @@ class StaticJsonRpcBatchProvider extends ethersProviders.JsonRpcBatchProvider {
   }
 } */
 
+/**
+ * Returns the network as long as all agree. Throws an error if any two networks do not match
+ * @param networks the list of networks to verify
+ * @returns Network
+ */
+function checkNetworks(networks: Network[]): Network {
+  if (networks.length === 0) {
+    logger.throwArgumentError('no networks provided', 'networks', networks);
+  }
+
+  let result: Network | undefined;
+
+  for (let i = 0; i < networks.length; i++) {
+    const network = networks[i];
+
+    if (!network) {
+      logger.throwArgumentError('network not defined', 'networks', networks);
+    }
+
+    if (!result) {
+      result = network;
+      continue;
+    }
+
+    // Make sure the network matches the previous networks
+    if (
+      !(
+        result.name === network.name &&
+        result.chainId === network.chainId &&
+        (result.ensAddress === network.ensAddress ||
+          (result.ensAddress == null && network.ensAddress == null))
+      )
+    ) {
+      logger.throwArgumentError('provider mismatch', 'networks', networks);
+    }
+  }
+
+  if (!result) {
+    logger.throwArgumentError('no networks defined', 'networks', networks);
+  }
+
+  return result;
+}
+
 interface RotationProviderConfig {
   rotationDelay?: number;
   fallFowardDelay?: number;
@@ -235,21 +279,14 @@ export class RotationProvider extends ethersProviders.BaseProvider {
   }
 
   async detectNetwork(): Promise<Network> {
-    const index = this.currentProviderIndex;
-    try {
-      return await this.providers[index].detectNetwork();
-    } catch (e) {
-      console.error(e.message);
-      await this.rotateUrl(index);
-      return this.detectNetwork();
-    }
+    const networks = await Promise.all(this.providers.map((c) => c.getNetwork()));
+    return checkNetworks(networks);
   }
 
   // eslint-disable-next-line
   async perform(method: string, params: any): Promise<any> {
     const index = this.currentProviderIndex;
     try {
-      console.log(`perf called on ${this.providers[index].connection.url}`);
       return await this.providers[index].perform(method, params);
     } catch (e) {
       console.error(e.message);
