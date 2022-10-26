@@ -40,9 +40,9 @@ export function checkNetworks(networks: Network[]): Network {
     // Make sure the network matches the previous networks
     if (
       !(
-        result.name === network.name &&
+        result.name.toLowerCase() === network.name.toLowerCase() &&
         result.chainId === network.chainId &&
-        (result.ensAddress === network.ensAddress ||
+        (result.ensAddress?.toLowerCase() === network.ensAddress?.toLowerCase() ||
           (result.ensAddress == null && network.ensAddress == null))
       )
     ) {
