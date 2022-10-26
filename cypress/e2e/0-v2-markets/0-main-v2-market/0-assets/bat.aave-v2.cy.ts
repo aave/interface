@@ -87,8 +87,8 @@ const testData = {
     ],
   },
 };
-
-describe('BAT INTEGRATION SPEC, AAVE V2 MARKET', () => {
+//skipped because it was disabled on ETH V2 Market
+describe.skip('BAT INTEGRATION SPEC, AAVE V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyMainnetFork({});
   supply(testData.depositETH, skipTestState, true);
