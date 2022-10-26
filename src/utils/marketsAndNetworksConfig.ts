@@ -1,4 +1,5 @@
 import { ChainId, ChainIdToNetwork } from '@aave/contract-helpers';
+import { StaticJsonRpcProvider } from '@ethersproject/providers';
 import { providers as ethersProviders } from 'ethers';
 
 import {
@@ -13,6 +14,7 @@ import {
   NetworkConfig,
   networkConfigs as _networkConfigs,
 } from '../ui-config/networksConfig';
+import { RotationProvider } from './rotationProvider';
 
 export type Pool = {
   address: string;
@@ -153,28 +155,20 @@ const providers: { [network: string]: ethersProviders.Provider } = {};
 export const getProvider = (chainId: ChainId): ethersProviders.Provider => {
   if (!providers[chainId]) {
     const config = getNetworkConfig(chainId);
-    const chainProviders: ethersProviders.FallbackProviderConfig[] = [];
+    const chainProviders: string[] = [];
     if (config.privateJsonRPCUrl) {
-      chainProviders.push({
-        provider: new ethersProviders.StaticJsonRpcProvider(config.privateJsonRPCUrl, chainId),
-        priority: 0,
-      });
+      chainProviders.push(config.privateJsonRPCUrl);
     }
     if (config.publicJsonRPCUrl.length) {
-      config.publicJsonRPCUrl.map((rpc, ix) =>
-        chainProviders.push({
-          provider: new ethersProviders.StaticJsonRpcProvider(rpc, chainId),
-          priority: ix + 1,
-        })
-      );
+      config.publicJsonRPCUrl.map((rpc) => chainProviders.push(rpc));
     }
     if (!chainProviders.length) {
       throw new Error(`${chainId} has no jsonRPCUrl configured`);
     }
     if (chainProviders.length === 1) {
-      providers[chainId] = chainProviders[0].provider;
+      providers[chainId] = new StaticJsonRpcProvider(chainProviders[0], chainId);
     } else {
-      providers[chainId] = new ethersProviders.FallbackProvider(chainProviders, 1);
+      providers[chainId] = new RotationProvider(chainProviders, chainId);
     }
   }
   return providers[chainId];
@@ -183,7 +177,7 @@ export const getProvider = (chainId: ChainId): ethersProviders.Provider => {
 export const getENSProvider = () => {
   const chainId = 1;
   const config = getNetworkConfig(chainId);
-  return new ethersProviders.StaticJsonRpcProvider(config.publicJsonRPCUrl[0], chainId);
+  return new StaticJsonRpcProvider(config.publicJsonRPCUrl[0], chainId);
 };
 
 const ammDisableProposal = 'https://app.aave.com/governance/proposal/?proposalId=44';
