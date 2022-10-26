@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import {
+  useIncentiveDataSubscription,
   usePoolDataSubscription,
   useWalletBalancesSubscription,
-  useIncentiveDataSubscription,
 } from 'src/store/root';
 
 interface BackgroundDataProviderContextType {

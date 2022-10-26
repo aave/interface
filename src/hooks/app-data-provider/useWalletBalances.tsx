@@ -3,9 +3,9 @@ import { nativeToUSD, normalize, USD_DECIMALS } from '@aave/math-utils';
 import { BigNumber } from 'bignumber.js';
 import { useRootStore } from 'src/store/root';
 
-import { useProtocolDataContext } from '../useProtocolDataContext';
-import { selectCurrentWalletBalances } from '../../store/walletSelectors';
 import { selectCurrentBaseCurrencyData, selectCurrentReserves } from '../../store/poolSelectors';
+import { selectCurrentWalletBalances } from '../../store/walletSelectors';
+import { useProtocolDataContext } from '../useProtocolDataContext';
 
 export interface WalletBalance {
   address: string;
