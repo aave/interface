@@ -19,6 +19,7 @@ export enum WalletType {
   FRAME = 'frame',
   GNOSIS = 'gnosis',
   LEDGER = 'ledger',
+  COIN98 = 'coin98',
   WATCH_MODE_ONLY = 'watch_mode_only',
 }
 
@@ -83,6 +84,8 @@ export const getWallet = (
     case WalletType.LEDGER:
       return new LedgerHQFrameConnector({});
     case WalletType.INJECTED:
+      return new InjectedConnector({});
+    case WalletType.COIN98:
       return new InjectedConnector({});
     case WalletType.WALLET_LINK:
       const networkConfig = getNetworkConfig(chainId);
