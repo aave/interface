@@ -53,14 +53,14 @@ msgstr "APY type"
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "APY, stable"
 msgstr "APY, stable"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "APY, variable"
 msgstr "APY, variable"
 
@@ -319,7 +319,7 @@ msgstr "Borrow APY, variable"
 msgid "Borrow and repay in same block is not allowed"
 msgstr "Borrow and repay in same block is not allowed"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Borrow cap"
 msgstr "Borrow cap"
 
@@ -343,6 +343,10 @@ msgstr "Borrowed"
 msgid "Borrowing is currently unavailable for {0}."
 msgstr "Borrowing is currently unavailable for {0}."
 
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Borrowing is disabled due to an Aave community decision. <0>More details</0>"
+msgstr "Borrowing is disabled due to an Aave community decision. <0>More details</0>"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Borrowing is not enabled"
 msgstr "Borrowing is not enabled"
@@ -359,7 +363,7 @@ msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mod
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
 msgstr "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
 
@@ -496,7 +500,7 @@ msgstr "Collateralization"
 msgid "Collector Contract"
 msgstr "Collector Contract"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Collector Info"
 msgstr "Collector Info"
 
@@ -960,7 +964,7 @@ msgstr "Language"
 #: src/components/transactions/Warnings/MarketWarning.tsx
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Learn more"
@@ -1055,7 +1059,7 @@ msgstr "Maximum amount available to borrow against this asset is limited because
 msgid "Maximum amount available to borrow is limited because protocol borrow cap is nearly reached."
 msgstr "Maximum amount available to borrow is limited because protocol borrow cap is nearly reached."
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Maximum amount available to supply is <0/> {0} (<1/>)."
 msgstr "Maximum amount available to supply is <0/> {0} (<1/>)."
@@ -1847,8 +1851,8 @@ msgstr "Total available"
 
 #: src/modules/markets/AssetsList.tsx
 #: src/modules/markets/AssetsListMobileItem.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Total borrowed"
 msgstr "Total borrowed"
 
@@ -2287,8 +2291,8 @@ msgid "is an asset affected by rebasing. Visit the"
 msgstr "is an asset affected by rebasing. Visit the"
 
 #: src/components/caps/DebtCeilingStatus.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "of"
