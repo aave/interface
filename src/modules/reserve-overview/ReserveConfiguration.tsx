@@ -54,7 +54,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
           alignItems: 'center',
           gap: 6,
           flexWrap: 'wrap',
-          mb: reserve.isFrozen ? '0px' : '36px',
+          mb: reserve.isFrozen || reserve.symbol == 'AMPL' ? '0px' : '36px',
         }}
       >
         <Typography variant="h3">
@@ -62,8 +62,8 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
         </Typography>
       </Box>
 
-      {reserve.isFrozen && (
-        <Box>
+      <Box>
+        {reserve.isFrozen ? (
           <Warning sx={{ mt: '16px', mb: '40px' }} severity="error">
             <Trans>
               This asset is frozen due to an Aave community decision.{' '}
@@ -75,15 +75,14 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
               </Link>
             </Trans>
           </Warning>
-        </Box>
-      )}
-      {reserve.symbol == 'AMPL' && (
-        <Box>
-          <Warning sx={{ mt: '16px', mb: '40px' }} severity="warning">
-            <AMPLWarning />
-          </Warning>
-        </Box>
-      )}
+        ) : (
+          reserve.symbol == 'AMPL' && (
+            <Warning sx={{ mt: '16px', mb: '40px' }} severity="warning">
+              <AMPLWarning />
+            </Warning>
+          )
+        )}
+      </Box>
 
       <PanelRow>
         <PanelTitle>Supply Info</PanelTitle>
