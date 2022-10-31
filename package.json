@@ -42,7 +42,7 @@
     "@gnosis.pm/safe-apps-web3-react": "^1.2.0",
     "@graphql-codegen/add": "^3.2.1",
     "@graphql-codegen/cli": "^2.13.2",
-    "@graphql-codegen/typescript-operations": "^2.5.3",
+    "@graphql-codegen/typescript-operations": "^2.5.5",
     "@graphql-codegen/typescript-react-apollo": "^3.3.3",
     "@heroicons/react": "^1.0.6",
     "@lingui/react": "^3.14.0",
