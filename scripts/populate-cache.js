@@ -75683,8 +75683,12 @@ var import_contract_helpers3 = __toESM(require_cjs());
 var networkConfigs = {
   [import_contract_helpers3.ChainId.goerli]: {
     name: 'Ethereum G\xF6rli',
-    publicJsonRPCUrl: ['https://eth-goerli.alchemyapi.io/v2/demo', 'https://goerli.prylabs.net'],
-    publicJsonRPCWSUrl: 'wss://eth-goerli.alchemyapi.io/v2/demo',
+    publicJsonRPCUrl: [
+      'https://eth-goerli.public.blastapi.io',
+      'https://rpc.ankr.com/eth_goerli',
+      'https://goerli.prylabs.net',
+    ],
+    publicJsonRPCWSUrl: 'wss://eth-goerli.public.blastapi.io',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
@@ -75696,7 +75700,12 @@ var networkConfigs = {
   [import_contract_helpers3.ChainId.mainnet]: {
     name: 'Ethereum',
     privateJsonRPCUrl: 'https://eth-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
-    publicJsonRPCUrl: ['https://cloudflare-eth.com/v1/mainnet'],
+    publicJsonRPCUrl: [
+      'https://rpc.ankr.com/eth',
+      'https://rpc.flashbots.net',
+      'https://eth-mainnet.public.blastapi.io',
+      'https://cloudflare-eth.com/v1/mainnet',
+    ],
     publicJsonRPCWSUrl: 'wss://eth-mainnet.alchemyapi.io/v2/demo',
     baseUniswapAdapter: '0xc3efa200a60883a96ffe3d5b492b121d6e9a1f3f',
     baseAssetSymbol: 'ETH',
@@ -75709,7 +75718,12 @@ var networkConfigs = {
   [import_contract_helpers3.ChainId.polygon]: {
     name: 'Polygon POS',
     privateJsonRPCUrl: 'https://poly-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
-    publicJsonRPCUrl: [],
+    publicJsonRPCUrl: [
+      'https://polygon-rpc.com',
+      'https://polygon-mainnet.public.blastapi.io',
+      'https://rpc-mainnet.matic.quiknode.pro',
+    ],
+    publicJsonRPCWSUrl: 'wss://polygon-rpc.com',
     baseAssetSymbol: 'MATIC',
     wrappedBaseAssetSymbol: 'WMATIC',
     baseAssetDecimals: 18,
@@ -75724,7 +75738,12 @@ var networkConfigs = {
   },
   [import_contract_helpers3.ChainId.mumbai]: {
     name: 'Mumbai',
-    publicJsonRPCUrl: ['https://polygon-mumbai.g.alchemy.com/v2/demo'],
+    publicJsonRPCUrl: [
+      'https://rpc.ankr.com/polygon_mumbai',
+      'https://rpc-mumbai.maticvigil.com',
+      'https://polygon-testnet.public.blastapi.io',
+      'https://polygon-mumbai.g.alchemy.com/v2/demo',
+    ],
     publicJsonRPCWSUrl: 'wss://polygon-mumbai.g.alchemy.com/v2/demo',
     baseAssetSymbol: 'MATIC',
     wrappedBaseAssetSymbol: 'WMATIC',
@@ -75735,7 +75754,11 @@ var networkConfigs = {
   },
   [import_contract_helpers3.ChainId.fuji]: {
     name: 'Avalanche Fuji',
-    publicJsonRPCUrl: ['https://api.avax-test.network/ext/bc/C/rpc'],
+    publicJsonRPCUrl: [
+      'https://api.avax-test.network/ext/bc/C/rpc',
+      'https://rpc.ankr.com/avalanche_fuji',
+      'https://ava-testnet.public.blastapi.io/ext/bc/C/rpc',
+    ],
     publicJsonRPCWSUrl: 'wss://api.avax-test.network/ext/bc/C/rpc',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'AVAX',
@@ -75754,7 +75777,11 @@ var networkConfigs = {
     name: 'Avalanche',
     privateJsonRPCUrl:
       'https://avax-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca/ext/bc/C/rpc',
-    publicJsonRPCUrl: ['https://api.avax.network/ext/bc/C/rpc'],
+    publicJsonRPCUrl: [
+      'https://api.avax.network/ext/bc/C/rpc',
+      'https://ava-mainnet.public.blastapi.io/ext/bc/C/rpc',
+      'https://rpc.ankr.com/avalanche',
+    ],
     publicJsonRPCWSUrl: 'wss://api.avax.network/ext/bc/C/rpc',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'AVAX',
@@ -75771,7 +75798,10 @@ var networkConfigs = {
   },
   [import_contract_helpers3.ChainId.arbitrum_goerli]: {
     name: 'Arbitrum G\xF6rli',
-    publicJsonRPCUrl: ['https://goerli-rollup.arbitrum.io/rpc'],
+    publicJsonRPCUrl: [
+      'https://goerli-rollup.arbitrum.io/rpc',
+      'https://arb-goerli.g.alchemy.com/v2/demo',
+    ],
     publicJsonRPCWSUrl: 'wss://goerli-rollup.arbitrum.io/rpc',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
@@ -75788,7 +75818,11 @@ var networkConfigs = {
   },
   [import_contract_helpers3.ChainId.arbitrum_one]: {
     name: 'Arbitrum',
-    publicJsonRPCUrl: ['https://arb1.arbitrum.io/rpc'],
+    publicJsonRPCUrl: [
+      'https://arb1.arbitrum.io/rpc',
+      'https://rpc.ankr.com/arbitrum',
+      'https://1rpc.io/arb',
+    ],
     publicJsonRPCWSUrl: 'wss://arb1.arbitrum.io/rpc',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
@@ -75806,7 +75840,11 @@ var networkConfigs = {
   [import_contract_helpers3.ChainId.harmony]: {
     name: 'Harmony',
     privateJsonRPCUrl: 'https://harmony-0.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
-    publicJsonRPCUrl: ['https://api.s0.t.hmny.io', 'https://api.harmony.one'],
+    publicJsonRPCUrl: [
+      'https://api.s0.t.hmny.io',
+      'https://api.harmony.one',
+      'https://rpc.ankr.com/harmony',
+    ],
     publicJsonRPCWSUrl: 'wss://ws.s0.t.hmny.io',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ONE',
@@ -75825,7 +75863,11 @@ var networkConfigs = {
     name: 'Optimism',
     privateJsonRPCUrl:
       'https://optimism-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
-    publicJsonRPCUrl: ['https://optimism-mainnet.public.blastapi.io'],
+    publicJsonRPCUrl: [
+      'https://optimism-mainnet.public.blastapi.io',
+      'https://1rpc.io/op',
+      'https://rpc.ankr.com/optimism',
+    ],
     publicJsonRPCWSUrl: 'wss://optimism-mainnet.public.blastapi.io',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
@@ -75842,7 +75884,7 @@ var networkConfigs = {
   },
   [import_contract_helpers3.ChainId.optimism_goerli]: {
     name: 'Optimism G\xF6rli',
-    publicJsonRPCUrl: ['https://goerli.optimism.io'],
+    publicJsonRPCUrl: ['https://goerli.optimism.io', 'https://opt-goerli.g.alchemy.com/v2/demo'],
     publicJsonRPCWSUrl: 'wss://goerli.optimism.io',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
@@ -75855,7 +75897,11 @@ var networkConfigs = {
   [import_contract_helpers3.ChainId.fantom]: {
     name: 'Fantom',
     privateJsonRPCUrl: 'https://fantom-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
-    publicJsonRPCUrl: [],
+    publicJsonRPCUrl: [
+      'https://rpc.fantom.network',
+      'https://rpc.ankr.com/fantom',
+      'https://fantom-mainnet.public.blastapi.io',
+    ],
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'FTM',
     wrappedBaseAssetSymbol: 'WFTM',
@@ -75871,7 +75917,11 @@ var networkConfigs = {
   },
   [import_contract_helpers3.ChainId.fantom_testnet]: {
     name: 'Fantom Testnet',
-    publicJsonRPCUrl: ['https://rpc.testnet.fantom.network'],
+    publicJsonRPCUrl: [
+      'https://rpc.testnet.fantom.network',
+      'https://fantom-testnet.public.blastapi.io',
+      'https://rpc.ankr.com/fantom_testnet',
+    ],
     publicJsonRPCWSUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'FTM',
@@ -76492,6 +76542,17 @@ var averageBlockTime = 12;
 function enhanceProposalWithTimes(proposal) {
   return __async(this, null, function* () {
     const provider = getProvider(import_contract_helpers6.ChainId.mainnet);
+    if (proposal.state === import_contract_helpers6.ProposalState.Pending) {
+      const { timestamp: creationTimestamp2 } = yield provider.getBlock(proposal.proposalCreated);
+      const currentBlock = yield provider.getBlock('latest');
+      return __spreadProps(__spreadValues({}, proposal), {
+        creationTimestamp: creationTimestamp2,
+        startTimestamp:
+          currentBlock.timestamp + (proposal.startBlock - currentBlock.number) * averageBlockTime,
+        expirationTimestamp:
+          currentBlock.timestamp + (proposal.endBlock - currentBlock.number) * averageBlockTime,
+      });
+    }
     const [{ timestamp: startTimestamp }, { timestamp: creationTimestamp }] = yield Promise.all([
       provider.getBlock(proposal.startBlock),
       provider.getBlock(proposal.proposalCreated),
