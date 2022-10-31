@@ -180,27 +180,35 @@ export const getENSProvider = () => {
   return new StaticJsonRpcProvider(config.publicJsonRPCUrl[0], chainId);
 };
 
-const ammDisableProposal = 'https://app.aave.com/governance/proposal/?proposalId=44';
+const ammDisableProposal = 'https://app.aave.com/governance/proposal/44';
 
 export const frozenProposalMap: Record<string, string> = {
-  ['UST']: 'https://app.aave.com/governance/proposal/?proposalId=75',
-  ['KNC']: 'https://app.aave.com/governance/proposal/?proposalId=69',
-  ['UNIDAIUSDC']: ammDisableProposal,
-  ['UNIWBTCUSDC']: ammDisableProposal,
-  ['UNIDAIWETH']: ammDisableProposal,
-  ['UNIUSDCWETH']: ammDisableProposal,
-  ['UNIAAVEWETH']: ammDisableProposal,
-  ['UNIBATWETH']: ammDisableProposal,
-  ['UNICRVWETH']: ammDisableProposal,
-  ['UNILINKWETH']: ammDisableProposal,
-  ['UNIMKRWETH']: ammDisableProposal,
-  ['UNIRENWETH']: ammDisableProposal,
-  ['UNISNXWETH']: ammDisableProposal,
-  ['UNIUNIWETH']: ammDisableProposal,
-  ['UNIWBTCWETH']: ammDisableProposal,
-  ['UNIYFIWETH']: ammDisableProposal,
-  ['BPTWBTCWETH']: ammDisableProposal,
-  ['BPTBALWETH']: ammDisableProposal,
+  ['UST' + CustomMarket.proto_mainnet]: 'https://app.aave.com/governance/proposal/75',
+  ['KNC' + CustomMarket.proto_mainnet]: 'https://app.aave.com/governance/proposal/69',
+  ['UNIDAIUSDC' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['UNIWBTCUSDC' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['UNIDAIWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['UNIUSDCWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['UNIAAVEWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['UNIBATWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['UNICRVWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['UNILINKWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['UNIMKRWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['UNIRENWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['UNISNXWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['UNIUNIWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['UNIWBTCWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['UNIYFIWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['BPTWBTCWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['BPTBALWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['GHST' + CustomMarket.proto_polygon]: 'https://app.aave.com/governance/proposal/112',
+  ['DPI' + CustomMarket.proto_polygon]: 'https://app.aave.com/governance/proposal/112',
+  ['BAL' + CustomMarket.proto_mainnet]: 'https://app.aave.com/governance/proposal/111',
+  ['BAT' + CustomMarket.proto_mainnet]: 'https://app.aave.com/governance/proposal/111',
+  ['CVX' + CustomMarket.proto_mainnet]: 'https://app.aave.com/governance/proposal/111',
+  ['DPI' + CustomMarket.proto_mainnet]: 'https://app.aave.com/governance/proposal/111',
+  ['REN' + CustomMarket.proto_mainnet]: 'https://app.aave.com/governance/proposal/111',
+  ['ZRX' + CustomMarket.proto_mainnet]: 'https://app.aave.com/governance/proposal/111',
 };
 
 // reexport so we can forbit config import
