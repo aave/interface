@@ -40,7 +40,7 @@ const testData = {
     },
     eModeAssets: [
       assets.optimismMarket.DAI,
-      // assets.optimismMarket.USDT,
+      assets.optimismMarket.USDT,
       assets.optimismMarket.USDC,
       assets.optimismMarket.sUSD,
     ],

@@ -57,7 +57,8 @@ const testData = {
   },
 };
 
-describe('GHST INTEGRATION SPEC, POLYGON V2 MARKET', () => {
+//temporary borrow unavailable
+describe.skip('GHST INTEGRATION SPEC, POLYGON V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({});
 
