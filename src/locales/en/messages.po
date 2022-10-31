@@ -2323,6 +2323,10 @@ msgstr "stETH supplied as collateral will continue to accrue staking rewards pro
 msgid "staking view"
 msgstr "staking view"
 
+#: src/modules/governance/FormattedProposalTime.tsx
+msgid "starts"
+msgstr "starts"
+
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "to learn more."
 msgstr "to learn more."
