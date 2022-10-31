@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
-import { AMPLWarning } from '../../../components/infoTooltips/AMPLWarning';
+import { AMPLWarning } from '../../../components/infoTooltips/AMPLToolTip';
 import { FrozenTooltip } from '../../../components/infoTooltips/FrozenTooltip';
 import { ListColumn } from '../../../components/lists/ListColumn';
 import { ListItem } from '../../../components/lists/ListItem';

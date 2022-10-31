@@ -5,7 +5,7 @@ import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
-import { AMPLWarning } from '../../components/infoTooltips/AMPLWarning';
+import { AMPLToolTip } from '../../components/infoTooltips/AMPLToolTip';
 import { ListColumn } from '../../components/lists/ListColumn';
 import { ListItem } from '../../components/lists/ListItem';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
@@ -42,7 +42,7 @@ export const AssetsListItem = ({ ...reserve }: ComputedReserveData) => {
             </Typography>
           </Box>
         </Box>
-        {reserve.symbol === 'AMPL' && <AMPLWarning />}
+        {reserve.symbol === 'AMPL' && <AMPLToolTip />}
       </ListColumn>
 
       <ListColumn>

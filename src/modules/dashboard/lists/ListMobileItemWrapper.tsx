@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
-import { AMPLWarning } from '../../../components/infoTooltips/AMPLWarning';
+import { AMPLWarning } from '../../../components/infoTooltips/AMPLToolTip';
 import { FrozenTooltip } from '../../../components/infoTooltips/FrozenTooltip';
 import { ListMobileItem } from '../../../components/lists/ListMobileItem';
 

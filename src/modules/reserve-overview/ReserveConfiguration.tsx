@@ -19,6 +19,7 @@ import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { getEmodeMessage } from 'src/components/transactions/Emode/EmodeNaming';
+import { AMPLWarning } from 'src/components/Warnings/AMPLWarning';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -73,6 +74,13 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                 <Trans>More details</Trans>
               </Link>
             </Trans>
+          </Warning>
+        </Box>
+      )}
+      {reserve.symbol == 'AMPL' && (
+        <Box>
+          <Warning sx={{ mt: '16px', mb: '40px' }} severity="warning">
+            <AMPLWarning />
           </Warning>
         </Box>
       )}
