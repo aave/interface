@@ -51,10 +51,11 @@ export function VoteBar({ percent, yae, votes, loading, ...rest }: VoteBarProps)
           <Box component="span" sx={{ flexGrow: 1 }}>
             <FormattedNumber
               value={votes}
-              visibleDecimals={1}
+              visibleDecimals={0}
               sx={{ mr: 1 }}
               variant="secondary14"
               roundDown
+              compact={false}
             />
             <Typography variant="description" component="span" color="text.secondary">
               AAVE
