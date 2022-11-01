@@ -1,8 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { DelegationType } from 'src/helpers/types';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
-import { useGovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { DelegationToken } from './DelegationTokenSelector';
@@ -22,14 +21,12 @@ export const GovDelegationActions = ({
   delegationToken,
   delegate,
 }: GovDelegationActionsProps) => {
-  const { governanceDelegationService } = useGovernanceDataProvider();
-  const { currentAccount } = useWeb3Context();
+  const delegateByType = useRootStore((state) => state.delegateByType);
 
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     tryPermit: false,
     handleGetTxns: async () => {
-      return governanceDelegationService.delegateByType({
-        user: currentAccount,
+      return delegateByType({
         delegatee: delegate,
         delegationType,
         governanceToken: (delegationToken as DelegationToken).address,
