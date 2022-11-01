@@ -1148,8 +1148,6 @@ msgstr "No rewards to claim"
 
 #: src/modules/markets/AssetsList.tsx
 #: src/modules/markets/AssetsList.tsx
-#: src/modules/markets/AssetsList.tsx
-#: src/modules/markets/AssetsList.tsx
 msgid "No search results for"
 msgstr "No search results for"
 
@@ -2112,7 +2110,6 @@ msgstr "Watch-only mode."
 msgid "Watch-only mode. Connect to a wallet to perform transactions."
 msgstr "Watch-only mode. Connect to a wallet to perform transactions."
 
-#: src/modules/markets/AssetsList.tsx
 #: src/modules/markets/AssetsList.tsx
 msgid "We couldn't find any asset matching your search. Try again with a different asset name, symbol, or address."
 msgstr "We couldn't find any asset matching your search. Try again with a different asset name, symbol, or address."
