@@ -110,7 +110,6 @@ var require_tslib = __commonJS({
     var __importDefault;
     var __classPrivateFieldGet4;
     var __classPrivateFieldSet4;
-    var __classPrivateFieldIn;
     var __createBinding;
     (function (factory) {
       var root =
@@ -342,16 +341,12 @@ var require_tslib = __commonJS({
       __createBinding = Object.create
         ? function (o, m, k, k2) {
             if (k2 === void 0) k2 = k;
-            var desc = Object.getOwnPropertyDescriptor(m, k);
-            if (!desc || ('get' in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-              desc = {
-                enumerable: true,
-                get: function () {
-                  return m[k];
-                },
-              };
-            }
-            Object.defineProperty(o, k2, desc);
+            Object.defineProperty(o, k2, {
+              enumerable: true,
+              get: function () {
+                return m[k];
+              },
+            });
           }
         : function (o, m, k, k2) {
             if (k2 === void 0) k2 = k;
@@ -572,11 +567,6 @@ var require_tslib = __commonJS({
           value
         );
       };
-      __classPrivateFieldIn = function (state, receiver) {
-        if (receiver === null || (typeof receiver !== 'object' && typeof receiver !== 'function'))
-          throw new TypeError("Cannot use 'in' operator on non-object");
-        return typeof state === 'function' ? receiver === state : state.has(receiver);
-      };
       exporter('__extends', __extends);
       exporter('__assign', __assign);
       exporter('__rest', __rest);
@@ -601,7 +591,6 @@ var require_tslib = __commonJS({
       exporter('__importDefault', __importDefault);
       exporter('__classPrivateFieldGet', __classPrivateFieldGet4);
       exporter('__classPrivateFieldSet', __classPrivateFieldSet4);
-      exporter('__classPrivateFieldIn', __classPrivateFieldIn);
     });
   },
 });
@@ -71601,9 +71590,9 @@ var require_section_matter = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/common.js
+// node_modules/js-yaml/lib/js-yaml/common.js
 var require_common3 = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/common.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/common.js'(exports2, module2) {
     'use strict';
     function isNothing(subject) {
       return typeof subject === 'undefined' || subject === null;
@@ -71647,9 +71636,9 @@ var require_common3 = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/exception.js
+// node_modules/js-yaml/lib/js-yaml/exception.js
 var require_exception = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/exception.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/exception.js'(exports2, module2) {
     'use strict';
     function YAMLException(reason, mark) {
       Error.call(this);
@@ -71678,9 +71667,9 @@ var require_exception = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/mark.js
+// node_modules/js-yaml/lib/js-yaml/mark.js
 var require_mark = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/mark.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/mark.js'(exports2, module2) {
     'use strict';
     var common = require_common3();
     function Mark(name2, buffer, position, line, column) {
@@ -71748,9 +71737,9 @@ var require_mark = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type.js
+// node_modules/js-yaml/lib/js-yaml/type.js
 var require_type = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/type.js'(exports2, module2) {
     'use strict';
     var YAMLException = require_exception();
     var TYPE_CONSTRUCTOR_OPTIONS = [
@@ -71811,9 +71800,9 @@ var require_type = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/schema.js
+// node_modules/js-yaml/lib/js-yaml/schema.js
 var require_schema = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/schema.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/schema.js'(exports2, module2) {
     'use strict';
     var common = require_common3();
     var YAMLException = require_exception();
@@ -71911,9 +71900,9 @@ var require_schema = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/str.js
+// node_modules/js-yaml/lib/js-yaml/type/str.js
 var require_str = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/str.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/type/str.js'(exports2, module2) {
     'use strict';
     var Type = require_type();
     module2.exports = new Type('tag:yaml.org,2002:str', {
@@ -71925,9 +71914,9 @@ var require_str = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/seq.js
+// node_modules/js-yaml/lib/js-yaml/type/seq.js
 var require_seq = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/seq.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/type/seq.js'(exports2, module2) {
     'use strict';
     var Type = require_type();
     module2.exports = new Type('tag:yaml.org,2002:seq', {
@@ -71939,9 +71928,9 @@ var require_seq = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/map.js
+// node_modules/js-yaml/lib/js-yaml/type/map.js
 var require_map = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/map.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/type/map.js'(exports2, module2) {
     'use strict';
     var Type = require_type();
     module2.exports = new Type('tag:yaml.org,2002:map', {
@@ -71953,12 +71942,9 @@ var require_map = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/schema/failsafe.js
+// node_modules/js-yaml/lib/js-yaml/schema/failsafe.js
 var require_failsafe = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/schema/failsafe.js'(
-    exports2,
-    module2
-  ) {
+  'node_modules/js-yaml/lib/js-yaml/schema/failsafe.js'(exports2, module2) {
     'use strict';
     var Schema = require_schema();
     module2.exports = new Schema({
@@ -71967,9 +71953,9 @@ var require_failsafe = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/null.js
+// node_modules/js-yaml/lib/js-yaml/type/null.js
 var require_null2 = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/null.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/type/null.js'(exports2, module2) {
     'use strict';
     var Type = require_type();
     function resolveYamlNull(data) {
@@ -72010,9 +71996,9 @@ var require_null2 = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/bool.js
+// node_modules/js-yaml/lib/js-yaml/type/bool.js
 var require_bool = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/bool.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/type/bool.js'(exports2, module2) {
     'use strict';
     var Type = require_type();
     function resolveYamlBoolean(data) {
@@ -72050,9 +72036,9 @@ var require_bool = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/int.js
+// node_modules/js-yaml/lib/js-yaml/type/int.js
 var require_int = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/int.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/type/int.js'(exports2, module2) {
     'use strict';
     var common = require_common3();
     var Type = require_type();
@@ -72195,9 +72181,9 @@ var require_int = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/float.js
+// node_modules/js-yaml/lib/js-yaml/type/float.js
 var require_float = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/float.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/type/float.js'(exports2, module2) {
     'use strict';
     var common = require_common3();
     var Type = require_type();
@@ -72290,9 +72276,9 @@ var require_float = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/schema/json.js
+// node_modules/js-yaml/lib/js-yaml/schema/json.js
 var require_json = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/schema/json.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/schema/json.js'(exports2, module2) {
     'use strict';
     var Schema = require_schema();
     module2.exports = new Schema({
@@ -72302,9 +72288,9 @@ var require_json = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/schema/core.js
+// node_modules/js-yaml/lib/js-yaml/schema/core.js
 var require_core = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/schema/core.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/schema/core.js'(exports2, module2) {
     'use strict';
     var Schema = require_schema();
     module2.exports = new Schema({
@@ -72313,9 +72299,9 @@ var require_core = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/timestamp.js
+// node_modules/js-yaml/lib/js-yaml/type/timestamp.js
 var require_timestamp = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/timestamp.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/type/timestamp.js'(exports2, module2) {
     'use strict';
     var Type = require_type();
     var YAML_DATE_REGEXP = new RegExp('^([0-9][0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9])$');
@@ -72383,9 +72369,9 @@ var require_timestamp = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/merge.js
+// node_modules/js-yaml/lib/js-yaml/type/merge.js
 var require_merge = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/merge.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/type/merge.js'(exports2, module2) {
     'use strict';
     var Type = require_type();
     function resolveYamlMerge(data) {
@@ -72398,9 +72384,9 @@ var require_merge = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/binary.js
+// node_modules/js-yaml/lib/js-yaml/type/binary.js
 var require_binary = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/binary.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/type/binary.js'(exports2, module2) {
     'use strict';
     var NodeBuffer;
     try {
@@ -72505,9 +72491,9 @@ var require_binary = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/omap.js
+// node_modules/js-yaml/lib/js-yaml/type/omap.js
 var require_omap = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/omap.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/type/omap.js'(exports2, module2) {
     'use strict';
     var Type = require_type();
     var _hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -72548,9 +72534,9 @@ var require_omap = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/pairs.js
+// node_modules/js-yaml/lib/js-yaml/type/pairs.js
 var require_pairs = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/pairs.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/type/pairs.js'(exports2, module2) {
     'use strict';
     var Type = require_type();
     var _toString = Object.prototype.toString;
@@ -72596,9 +72582,9 @@ var require_pairs = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/set.js
+// node_modules/js-yaml/lib/js-yaml/type/set.js
 var require_set = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/set.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/type/set.js'(exports2, module2) {
     'use strict';
     var Type = require_type();
     var _hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -72624,12 +72610,9 @@ var require_set = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/schema/default_safe.js
+// node_modules/js-yaml/lib/js-yaml/schema/default_safe.js
 var require_default_safe = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/schema/default_safe.js'(
-    exports2,
-    module2
-  ) {
+  'node_modules/js-yaml/lib/js-yaml/schema/default_safe.js'(exports2, module2) {
     'use strict';
     var Schema = require_schema();
     module2.exports = new Schema({
@@ -72640,12 +72623,9 @@ var require_default_safe = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/js/undefined.js
+// node_modules/js-yaml/lib/js-yaml/type/js/undefined.js
 var require_undefined = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/js/undefined.js'(
-    exports2,
-    module2
-  ) {
+  'node_modules/js-yaml/lib/js-yaml/type/js/undefined.js'(exports2, module2) {
     'use strict';
     var Type = require_type();
     function resolveJavascriptUndefined() {
@@ -72670,9 +72650,9 @@ var require_undefined = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/js/regexp.js
+// node_modules/js-yaml/lib/js-yaml/type/js/regexp.js
 var require_regexp = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/js/regexp.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/type/js/regexp.js'(exports2, module2) {
     'use strict';
     var Type = require_type();
     function resolveJavascriptRegExp(data) {
@@ -72718,12 +72698,9 @@ var require_regexp = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/js/function.js
+// node_modules/js-yaml/lib/js-yaml/type/js/function.js
 var require_function = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/js/function.js'(
-    exports2,
-    module2
-  ) {
+  'node_modules/js-yaml/lib/js-yaml/type/js/function.js'(exports2, module2) {
     'use strict';
     var esprima;
     try {
@@ -72792,12 +72769,9 @@ var require_function = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/schema/default_full.js
+// node_modules/js-yaml/lib/js-yaml/schema/default_full.js
 var require_default_full = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/schema/default_full.js'(
-    exports2,
-    module2
-  ) {
+  'node_modules/js-yaml/lib/js-yaml/schema/default_full.js'(exports2, module2) {
     'use strict';
     var Schema = require_schema();
     module2.exports = Schema.DEFAULT = new Schema({
@@ -72807,9 +72781,9 @@ var require_default_full = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/loader.js
+// node_modules/js-yaml/lib/js-yaml/loader.js
 var require_loader = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/loader.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/loader.js'(exports2, module2) {
     'use strict';
     var common = require_common3();
     var YAMLException = require_exception();
@@ -74126,9 +74100,9 @@ var require_loader = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/dumper.js
+// node_modules/js-yaml/lib/js-yaml/dumper.js
 var require_dumper = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/dumper.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/dumper.js'(exports2, module2) {
     'use strict';
     var common = require_common3();
     var YAMLException = require_exception();
@@ -74793,9 +74767,9 @@ var require_dumper = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml.js
+// node_modules/js-yaml/lib/js-yaml.js
 var require_js_yaml = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml.js'(exports2, module2) {
     'use strict';
     var loader = require_loader();
     var dumper = require_dumper();
@@ -74828,9 +74802,9 @@ var require_js_yaml = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/index.js
+// node_modules/js-yaml/index.js
 var require_js_yaml2 = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/index.js'(exports2, module2) {
+  'node_modules/js-yaml/index.js'(exports2, module2) {
     'use strict';
     var yaml2 = require_js_yaml();
     module2.exports = yaml2;
@@ -75280,7 +75254,6 @@ var marketsData = {
       collateralRepay: true,
       incentives: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xB53C1a33016B2DC2fF3653530bfF1848a515c8c5'.toLowerCase(),
       LENDING_POOL: '0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9',
@@ -75300,7 +75273,6 @@ var marketsData = {
   ['amm_mainnet' /* amm_mainnet */]: {
     marketTitle: 'Ethereum AMM',
     chainId: import_contract_helpers2.ChainId.mainnet,
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xacc030ef66f9dfeae9cbb0cd1b25654b82cfa8d5'.toLowerCase(),
       LENDING_POOL: '0x7937d4799803fbbe595ed57278bc4ca21f3bffcb',
@@ -75319,8 +75291,6 @@ var marketsData = {
       incentives: true,
       collateralRepay: true,
     },
-    cachingServerUrl: 'https://cache-api-137.aave.com/graphql',
-    cachingWSServerUrl: 'wss://cache-api-137.aave.com/graphql',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xd05e3E715d945B59290df0ae8eF85c1BdB684744'.toLowerCase(),
       LENDING_POOL: '0x8dFf5E27EA6b7AC08EbFdf9eB090F32ee9a30fcf',
@@ -75345,8 +75315,6 @@ var marketsData = {
       incentives: true,
       collateralRepay: true,
     },
-    cachingServerUrl: 'https://cache-api-43114.aave.com/graphql',
-    cachingWSServerUrl: 'wss://cache-api-43114.aave.com/graphql',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xb6A86025F0FE1862B372cb0ca18CE3EDe02A318f'.toLowerCase(),
       LENDING_POOL: '0x4F01AeD16D97E3aB5ab2B501154DC9bb0F1A5A2C',
@@ -75370,7 +75338,6 @@ var marketsData = {
     enabledFeatures: {
       faucet: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xc4dCB5126a3AfEd129BC3668Ea19285A9f56D15D'.toLowerCase(),
       LENDING_POOL: '0x368EedF3f56ad10b9bC57eed4Dac65B26Bb667f6',
@@ -75390,7 +75357,6 @@ var marketsData = {
       liquiditySwap: true,
       collateralRepay: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb'.toLowerCase(),
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
@@ -75416,7 +75382,6 @@ var marketsData = {
       faucet: true,
       incentives: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xF8aa90E66B8BAe13f2e4aDe6104abAb8eeDaBfdc'.toLowerCase(),
       LENDING_POOL: '0x6Cbb4E8eC402E07fDF96DbbC6c752aCfB0eB6075',
@@ -75437,7 +75402,6 @@ var marketsData = {
       incentives: true,
       collateralRepay: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb'.toLowerCase(),
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
@@ -75462,7 +75426,6 @@ var marketsData = {
       faucet: true,
       incentives: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0x1775ECC8362dB6CaB0c7A9C0957cF656A5276c29'.toLowerCase(),
       LENDING_POOL: '0xb47673b7a73D78743AFF1487AF69dBB5763F00cA',
@@ -75481,7 +75444,6 @@ var marketsData = {
       faucet: true,
       incentives: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0x74a328ED938160D702378Daeb7aB2504714B4E4b'.toLowerCase(),
       LENDING_POOL: '0x4b529A5d8268d74B687aC3dbb00e1b85bF4BF0d4',
@@ -75501,7 +75463,6 @@ var marketsData = {
       collateralRepay: true,
       liquiditySwap: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb'.toLowerCase(),
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
@@ -75526,7 +75487,6 @@ var marketsData = {
       faucet: true,
       incentives: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xE339D30cBa24C70dCCb82B234589E3C83249e658'.toLowerCase(),
       LENDING_POOL: '0x771A45a19cE333a19356694C5fc80c76fe9bc741',
@@ -75544,7 +75504,6 @@ var marketsData = {
     enabledFeatures: {
       incentives: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb'.toLowerCase(),
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
@@ -75564,7 +75523,6 @@ var marketsData = {
       collateralRepay: true,
       liquiditySwap: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb'.toLowerCase(),
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
@@ -75587,7 +75545,6 @@ var marketsData = {
       incentives: true,
       collateralRepay: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb'.toLowerCase(),
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
@@ -75611,7 +75568,6 @@ var marketsData = {
       incentives: true,
       faucet: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0x5343b5bA672Ae99d627A1C87866b8E53F47Db2E6'.toLowerCase(),
       LENDING_POOL: '0x6C9fB0D5bD9429eb9Cd96B85B81d872281771E6B',
@@ -75629,7 +75585,6 @@ var marketsData = {
     enabledFeatures: {
       faucet: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0x5E52dEc931FFb32f609681B8438A51c675cc232d'.toLowerCase(),
       LENDING_POOL: '0x4bd5643ac6f66a5237E18bfA7d47cF22f1c9F210',
@@ -75647,7 +75602,6 @@ var marketsData = {
       incentives: true,
       faucet: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0x178113104fEcbcD7fF8669a0150721e231F0FD4B'.toLowerCase(),
       LENDING_POOL: '0x9198F13B08E299d85E096929fA9781A1E3d5d827',
@@ -75665,7 +75619,6 @@ var marketsData = {
       faucet: true,
       incentives: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0x7fdC1FdF79BE3309bf82f4abdAD9f111A6590C0f'.toLowerCase(),
       LENDING_POOL: '0x76cc67FF2CC77821A70ED14321111Ce381C2594D',
@@ -76093,7 +76046,6 @@ var marketsData2 = Object.keys(marketsData).reduce((acc, value) => {
   if (FORK_ENABLED && marketsData[value].chainId === FORK_BASE_CHAIN_ID) {
     acc[`fork_${value}`] = __spreadProps(__spreadValues({}, marketsData[value]), {
       chainId: FORK_CHAIN_ID,
-      rpcOnly: true,
       isFork: true,
     });
   }
@@ -76673,6 +76625,20 @@ MERCHANTABLITY OR NON-INFRINGEMENT.
 
 See the Apache Version 2.0 License for specific language governing permissions
 and limitations under the License.
+***************************************************************************** */
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
 /**
  * @license
