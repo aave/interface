@@ -1,13 +1,10 @@
-import { Pool } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { utils } from 'ethers';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 import { permitByChainAndToken } from 'src/ui-config/permitConfig';
-import { optimizedPath } from 'src/utils/utils';
 
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
 import { TxActionsWrapper } from '../TxActionsWrapper';
@@ -31,40 +28,29 @@ export const SupplyActions = ({
   blocked,
   ...props
 }: SupplyActionProps) => {
-  const { lendingPool } = useTxBuilderContext();
   const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
-  const { currentAccount } = useWeb3Context();
+  const supply = useRootStore((state) => state.supply);
+  const supplyWithPermit = useRootStore((state) => state.supplyWithPermit);
 
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({
+      // TODO: move tryPermit
       tryPermit:
         currentMarketData.v3 && permitByChainAndToken[chainId]?.[utils.getAddress(poolAddress)],
       handleGetTxns: async () => {
-        if (currentMarketData.v3) {
-          // TO-DO: No need for this cast once a single Pool type is used in use-tx-builder-context
-          const newPool: Pool = lendingPool as Pool;
-          return newPool.supply({
-            user: currentAccount,
-            reserve: poolAddress,
-            amount: amountToSupply,
-            useOptimizedPath: optimizedPath(chainId),
-          });
-        } else {
-          return lendingPool.deposit({
-            user: currentAccount,
-            reserve: poolAddress,
-            amount: amountToSupply,
-          });
-        }
+        return supply({
+          amountToSupply,
+          isWrongNetwork,
+          poolAddress,
+          symbol,
+          blocked,
+        });
       },
       handleGetPermitTxns: async (signature, deadline) => {
-        const newPool: Pool = lendingPool as Pool;
-        return newPool.supplyWithPermit({
-          user: currentAccount,
+        return supplyWithPermit({
           reserve: poolAddress,
           amount: amountToSupply,
           signature,
-          useOptimizedPath: optimizedPath(chainId),
           deadline,
         });
       },

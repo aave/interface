@@ -33,7 +33,7 @@ export const AaveTokensBalanceProvider: React.FC = ({ children }) => {
   const isGovernanceFork =
     currentNetworkConfig.isFork &&
     currentNetworkConfig.underlyingChainId === governanceConfig.chainId;
-  const rpcProvider = isGovernanceFork ? jsonRpcProvider : getProvider(governanceConfig.chainId);
+  const rpcProvider = isGovernanceFork ? jsonRpcProvider() : getProvider(governanceConfig.chainId);
 
   const fetchAaveTokenBalances = async () => {
     setAaveTokensLoading(true);

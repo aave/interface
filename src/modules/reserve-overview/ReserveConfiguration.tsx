@@ -22,6 +22,7 @@ import { getEmodeMessage } from 'src/components/transactions/Emode/EmodeNaming';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { BROKEN_ASSETS } from 'src/hooks/useReservesHistory';
 import { ReserveFactorOverview } from 'src/modules/reserve-overview/ReserveFactorOverview';
 
 import LightningBoltGradient from '/public/lightningBoltGradient.svg';
@@ -36,7 +37,10 @@ type ReserveConfigurationProps = {
 
 export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ reserve }) => {
   const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
-  const renderCharts = !!currentNetworkConfig.ratesHistoryApiUrl;
+  const reserveId =
+    reserve.underlyingAsset + currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER;
+  const renderCharts =
+    !!currentNetworkConfig.ratesHistoryApiUrl && !BROKEN_ASSETS.includes(reserveId);
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
   const showSupplyCapStatus = reserve.supplyCap && reserve.supplyCap !== '0';
   const showBorrowCapStatus = reserve.borrowCap && reserve.borrowCap !== '0';

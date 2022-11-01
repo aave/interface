@@ -9,6 +9,7 @@ dayjs.extend(relativeTime);
 
 interface FormattedProposalTimeProps {
   state: ProposalState;
+  startTimestamp: number;
   executionTime: number;
   expirationTimestamp: number;
   executionTimeWithGracePeriod: number;
@@ -17,12 +18,29 @@ interface FormattedProposalTimeProps {
 export function FormattedProposalTime({
   state,
   executionTime,
+  startTimestamp,
   expirationTimestamp,
   executionTimeWithGracePeriod,
 }: FormattedProposalTimeProps) {
   const timestamp = useCurrentTimestamp(30);
 
-  if ([ProposalState.Active, ProposalState.Pending].includes(state)) {
+  if ([ProposalState.Pending].includes(state)) {
+    return (
+      <Typography component="span" variant="caption">
+        <Typography
+          variant="caption"
+          color="text.secondary"
+          sx={{ display: { xs: 'none', md: 'inline' } }}
+        >
+          {state}&nbsp;
+          <Trans>starts</Trans>
+          &nbsp;
+        </Typography>
+        {dayjs.unix(startTimestamp).fromNow()}
+      </Typography>
+    );
+  }
+  if ([ProposalState.Active].includes(state)) {
     return (
       <Typography component="span" variant="caption">
         <Typography
