@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-10-27 18:05\n"
+"PO-Revision-Date: 2022-11-01 00:24\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -2326,6 +2326,10 @@ msgstr "stETH suministrado como garantía continuará acumulando recompensas de 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "staking view"
 msgstr "vista de stakeo"
+
+#: src/modules/governance/FormattedProposalTime.tsx
+msgid "starts"
+msgstr ""
 
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "to learn more."
