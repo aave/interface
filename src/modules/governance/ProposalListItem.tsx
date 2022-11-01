@@ -53,6 +53,7 @@ export function ProposalListItem({
           <StateBadge state={proposal.state} loading={mightBeStale} />
           <FormattedProposalTime
             state={proposal.state}
+            startTimestamp={proposal.startTimestamp}
             executionTime={proposal.executionTime}
             expirationTimestamp={proposal.expirationTimestamp}
             executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}

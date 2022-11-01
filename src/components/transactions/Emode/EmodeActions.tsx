@@ -1,8 +1,6 @@
-import { PoolInterface } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
-import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
@@ -19,17 +17,12 @@ export const EmodeActions = ({
   selectedEmode,
   activeEmode,
 }: EmodeActionsProps) => {
-  const { lendingPool } = useTxBuilderContext();
-  const { currentAccount } = useWeb3Context();
+  const setUserEMode = useRootStore((state) => state.setUserEMode);
 
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     tryPermit: false,
     handleGetTxns: async () => {
-      const newPool: PoolInterface = lendingPool as PoolInterface;
-      return newPool.setUserEMode({
-        user: currentAccount,
-        categoryId: selectedEmode,
-      });
+      return setUserEMode(selectedEmode);
     },
     skip: blocked,
     deps: [selectedEmode],

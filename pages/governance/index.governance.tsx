@@ -16,7 +16,6 @@ export const getStaticProps = async () => {
   const ProposalFetcher = new Proposal();
 
   const proposals = [...Array(ProposalFetcher.count()).keys()].map((id) => {
-    // TODO: only pass required ipfs data
     const ipfs = IpfsFetcher.get(id);
     const proposal = ProposalFetcher.get(id);
     return {
@@ -63,12 +62,11 @@ export default function Governance(props: GovernancePageProps) {
 Governance.getLayout = function getLayout(page: React.ReactElement) {
   return (
     <MainLayout>
-      <GovernanceDataProvider>
-        <AaveTokensBalanceProvider>
-          {page}
-          <GovDelegationModal />
-        </AaveTokensBalanceProvider>
-      </GovernanceDataProvider>
+      <GovernanceDataProvider />
+      <AaveTokensBalanceProvider>
+        {page}
+        <GovDelegationModal />
+      </AaveTokensBalanceProvider>
     </MainLayout>
   );
 };

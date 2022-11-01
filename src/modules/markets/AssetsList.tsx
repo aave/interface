@@ -190,6 +190,47 @@ export default function AssetsList() {
           )
         )}
       {showNoResults && <NoSearchResults searchTerm={searchTerm} sm={sm} />}
+      {!loading && filteredData?.length === 0 && (
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 1,
+            pt: 15,
+            pb: 40,
+            px: 4,
+          }}
+        >
+          {sm ? (
+            <Box sx={{ textAlign: 'center', maxWidth: '300px' }}>
+              <Typography variant="h2">
+                <Trans>No search results for</Trans>
+              </Typography>
+              <Typography sx={{ overflowWrap: 'anywhere' }} variant="h2">
+                &apos;{searchTerm}&apos;
+              </Typography>
+            </Box>
+          ) : (
+            <Typography
+              sx={{ textAlign: 'center', maxWidth: '480px', overflowWrap: 'anywhere' }}
+              variant="h2"
+            >
+              <Trans>No search results for</Trans> &apos;{searchTerm}&apos;
+            </Typography>
+          )}
+          <Typography
+            sx={{ width: '280px', textAlign: 'center' }}
+            variant="description"
+            color="text.secondary"
+          >
+            <Trans>
+              We couldn&apos;t find any asset matching your search. Try again with a different asset
+              name, symbol, or address.
+            </Trans>
+          </Typography>
+        </Box>
+      )}
     </ListWrapper>
   );
 }

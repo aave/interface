@@ -184,7 +184,7 @@ type GetSwapCallDataProps = {
   chainId: ChainId;
 };
 
-type GetSwapAndRepayCallDataProps = {
+export type GetSwapAndRepayCallDataProps = {
   srcToken: string;
   srcDecimals: number;
   destToken: string;

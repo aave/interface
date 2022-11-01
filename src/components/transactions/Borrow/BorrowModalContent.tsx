@@ -7,10 +7,11 @@ import {
 import { ArrowSmRightIcon } from '@heroicons/react/outline';
 import { BadgeCheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Checkbox, Link, SvgIcon, Typography } from '@mui/material';
+import { Box, Checkbox, SvgIcon, Typography } from '@mui/material';
 import { useRef, useState } from 'react';
 import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
 import StyledToggleButton from 'src/components/StyledToggleButton';

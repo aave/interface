@@ -3654,7 +3654,7 @@ var require_lib2 = __commonJS({
         void 0;
     var logger_1 = require_lib();
     var _version_1 = require_version2();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     function isHexable(value) {
       return !!value.toHexString;
     }
@@ -3702,7 +3702,7 @@ var require_lib2 = __commonJS({
         options2 = {};
       }
       if (typeof value === 'number') {
-        logger.checkSafeUint53(value, 'invalid arrayify value');
+        logger2.checkSafeUint53(value, 'invalid arrayify value');
         var result = [];
         while (value) {
           result.unshift(value & 255);
@@ -3731,7 +3731,7 @@ var require_lib2 = __commonJS({
           } else if (options2.hexPad === 'right') {
             hex += '0';
           } else {
-            logger.throwArgumentError('hex data is odd-length', 'value', value);
+            logger2.throwArgumentError('hex data is odd-length', 'value', value);
           }
         }
         var result = [];
@@ -3743,7 +3743,7 @@ var require_lib2 = __commonJS({
       if (isBytes(value)) {
         return addSlice(new Uint8Array(value));
       }
-      return logger.throwArgumentError('invalid arrayify value', 'value', value);
+      return logger2.throwArgumentError('invalid arrayify value', 'value', value);
     }
     exports2.arrayify = arrayify;
     function concat(items) {
@@ -3779,7 +3779,7 @@ var require_lib2 = __commonJS({
     function zeroPad(value, length) {
       value = arrayify(value);
       if (value.length > length) {
-        logger.throwArgumentError('value out of range', 'value', arguments[0]);
+        logger2.throwArgumentError('value out of range', 'value', arguments[0]);
       }
       var result = new Uint8Array(length);
       result.set(value, length - value.length);
@@ -3802,7 +3802,7 @@ var require_lib2 = __commonJS({
         options2 = {};
       }
       if (typeof value === 'number') {
-        logger.checkSafeUint53(value, 'invalid hexlify value');
+        logger2.checkSafeUint53(value, 'invalid hexlify value');
         var hex = '';
         while (value) {
           hex = HexCharacters[value & 15] + hex;
@@ -3840,7 +3840,7 @@ var require_lib2 = __commonJS({
           } else if (options2.hexPad === 'right') {
             value += '0';
           } else {
-            logger.throwArgumentError('hex data is odd-length', 'value', value);
+            logger2.throwArgumentError('hex data is odd-length', 'value', value);
           }
         }
         return value.toLowerCase();
@@ -3853,7 +3853,7 @@ var require_lib2 = __commonJS({
         }
         return result;
       }
-      return logger.throwArgumentError('invalid hexlify value', 'value', value);
+      return logger2.throwArgumentError('invalid hexlify value', 'value', value);
     }
     exports2.hexlify = hexlify;
     function hexDataLength(data) {
@@ -3869,7 +3869,7 @@ var require_lib2 = __commonJS({
       if (typeof data !== 'string') {
         data = hexlify(data);
       } else if (!isHexString(data) || data.length % 2) {
-        logger.throwArgumentError('invalid hexData', 'value', data);
+        logger2.throwArgumentError('invalid hexData', 'value', data);
       }
       offset = 2 + 2 * offset;
       if (endOffset != null) {
@@ -3899,7 +3899,7 @@ var require_lib2 = __commonJS({
         value = hexlify(value);
       }
       if (!isHexString(value)) {
-        logger.throwArgumentError('invalid hex string', 'value', value);
+        logger2.throwArgumentError('invalid hex string', 'value', value);
       }
       value = value.substring(2);
       var offset = 0;
@@ -3913,10 +3913,10 @@ var require_lib2 = __commonJS({
       if (typeof value !== 'string') {
         value = hexlify(value);
       } else if (!isHexString(value)) {
-        logger.throwArgumentError('invalid hex string', 'value', value);
+        logger2.throwArgumentError('invalid hex string', 'value', value);
       }
       if (value.length > 2 * length + 2) {
-        logger.throwArgumentError('value out of range', 'value', arguments[1]);
+        logger2.throwArgumentError('value out of range', 'value', arguments[1]);
       }
       while (value.length < 2 * length + 2) {
         value = '0x0' + value.substring(2);
@@ -3935,7 +3935,7 @@ var require_lib2 = __commonJS({
       if (isBytesLike(signature)) {
         var bytes = arrayify(signature);
         if (bytes.length !== 65) {
-          logger.throwArgumentError(
+          logger2.throwArgumentError(
             'invalid signature string; must be 65 bytes',
             'signature',
             signature
@@ -3948,7 +3948,7 @@ var require_lib2 = __commonJS({
           if (result.v === 0 || result.v === 1) {
             result.v += 27;
           } else {
-            logger.throwArgumentError('signature invalid v byte', 'signature', signature);
+            logger2.throwArgumentError('signature invalid v byte', 'signature', signature);
           }
         }
         result.recoveryParam = 1 - (result.v % 2);
@@ -3969,7 +3969,7 @@ var require_lib2 = __commonJS({
           if (result.recoveryParam == null) {
             result.recoveryParam = recoveryParam;
           } else if (result.recoveryParam !== recoveryParam) {
-            logger.throwArgumentError(
+            logger2.throwArgumentError(
               'signature recoveryParam mismatch _vs',
               'signature',
               signature
@@ -3980,12 +3980,12 @@ var require_lib2 = __commonJS({
           if (result.s == null) {
             result.s = s;
           } else if (result.s !== s) {
-            logger.throwArgumentError('signature v mismatch _vs', 'signature', signature);
+            logger2.throwArgumentError('signature v mismatch _vs', 'signature', signature);
           }
         }
         if (result.recoveryParam == null) {
           if (result.v == null) {
-            logger.throwArgumentError(
+            logger2.throwArgumentError(
               'signature missing v and recoveryParam',
               'signature',
               signature
@@ -4001,7 +4001,7 @@ var require_lib2 = __commonJS({
           } else {
             var recId = result.v === 0 || result.v === 1 ? result.v : 1 - (result.v % 2);
             if (result.recoveryParam !== recId) {
-              logger.throwArgumentError(
+              logger2.throwArgumentError(
                 'signature recoveryParam mismatch v',
                 'signature',
                 signature
@@ -4010,18 +4010,18 @@ var require_lib2 = __commonJS({
           }
         }
         if (result.r == null || !isHexString(result.r)) {
-          logger.throwArgumentError('signature missing or invalid r', 'signature', signature);
+          logger2.throwArgumentError('signature missing or invalid r', 'signature', signature);
         } else {
           result.r = hexZeroPad(result.r, 32);
         }
         if (result.s == null || !isHexString(result.s)) {
-          logger.throwArgumentError('signature missing or invalid s', 'signature', signature);
+          logger2.throwArgumentError('signature missing or invalid s', 'signature', signature);
         } else {
           result.s = hexZeroPad(result.s, 32);
         }
         var vs = arrayify(result.s);
         if (vs[0] >= 128) {
-          logger.throwArgumentError('signature s out of range', 'signature', signature);
+          logger2.throwArgumentError('signature s out of range', 'signature', signature);
         }
         if (result.recoveryParam) {
           vs[0] |= 128;
@@ -4029,14 +4029,14 @@ var require_lib2 = __commonJS({
         var _vs = hexlify(vs);
         if (result._vs) {
           if (!isHexString(result._vs)) {
-            logger.throwArgumentError('signature invalid _vs', 'signature', signature);
+            logger2.throwArgumentError('signature invalid _vs', 'signature', signature);
           }
           result._vs = hexZeroPad(result._vs, 32);
         }
         if (result._vs == null) {
           result._vs = _vs;
         } else if (result._vs !== _vs) {
-          logger.throwArgumentError('signature _vs mismatch v and s', 'signature', signature);
+          logger2.throwArgumentError('signature _vs mismatch v and s', 'signature', signature);
         }
       }
       return result;
@@ -4080,7 +4080,7 @@ var require_bignumber = __commonJS({
     var bytes_1 = require_lib2();
     var logger_1 = require_lib();
     var _version_1 = require_version3();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     var _constructorGuard = {};
     var MAX_SAFE = 9007199254740991;
     function isBigNumberish(value) {
@@ -4099,9 +4099,9 @@ var require_bignumber = __commonJS({
     var BigNumber2 = (function () {
       function BigNumber3(constructorGuard, hex) {
         var _newTarget = this.constructor;
-        logger.checkNew(_newTarget, BigNumber3);
+        logger2.checkNew(_newTarget, BigNumber3);
         if (constructorGuard !== _constructorGuard) {
-          logger.throwError(
+          logger2.throwError(
             'cannot call constructor directly; use BigNumber.from',
             logger_1.Logger.errors.UNSUPPORTED_OPERATION,
             {
@@ -4227,7 +4227,7 @@ var require_bignumber = __commonJS({
         try {
           return BigInt(this.toString());
         } catch (e) {}
-        return logger.throwError(
+        return logger2.throwError(
           'this platform does not support BigInt',
           logger_1.Logger.errors.UNSUPPORTED_OPERATION,
           {
@@ -4240,16 +4240,16 @@ var require_bignumber = __commonJS({
           if (arguments[0] === 10) {
             if (!_warnedToStringRadix) {
               _warnedToStringRadix = true;
-              logger.warn('BigNumber.toString does not accept any parameters; base-10 is assumed');
+              logger2.warn('BigNumber.toString does not accept any parameters; base-10 is assumed');
             }
           } else if (arguments[0] === 16) {
-            logger.throwError(
+            logger2.throwError(
               'BigNumber.toString does not accept any parameters; use bigNumber.toHexString()',
               logger_1.Logger.errors.UNEXPECTED_ARGUMENT,
               {}
             );
           } else {
-            logger.throwError(
+            logger2.throwError(
               'BigNumber.toString does not accept parameters',
               logger_1.Logger.errors.UNEXPECTED_ARGUMENT,
               {}
@@ -4275,7 +4275,7 @@ var require_bignumber = __commonJS({
           if (value.match(/^-?[0-9]+$/)) {
             return new BigNumber3(_constructorGuard, toHex(new BN(value)));
           }
-          return logger.throwArgumentError('invalid BigNumber string', 'value', value);
+          return logger2.throwArgumentError('invalid BigNumber string', 'value', value);
         }
         if (typeof value === 'number') {
           if (value % 1) {
@@ -4314,7 +4314,7 @@ var require_bignumber = __commonJS({
             }
           }
         }
-        return logger.throwArgumentError('invalid BigNumber value', 'value', value);
+        return logger2.throwArgumentError('invalid BigNumber value', 'value', value);
       };
       BigNumber3.isBigNumber = function (value) {
         return !!(value && value._isBigNumber);
@@ -4329,7 +4329,7 @@ var require_bignumber = __commonJS({
       if (value[0] === '-') {
         value = value.substring(1);
         if (value[0] === '-') {
-          logger.throwArgumentError('invalid hex', 'value', value);
+          logger2.throwArgumentError('invalid hex', 'value', value);
         }
         value = toHex(value);
         if (value === '0x00') {
@@ -4366,7 +4366,7 @@ var require_bignumber = __commonJS({
       if (value != null) {
         params.value = value;
       }
-      return logger.throwError(fault, logger_1.Logger.errors.NUMERIC_FAULT, params);
+      return logger2.throwError(fault, logger_1.Logger.errors.NUMERIC_FAULT, params);
     }
     function _base36To16(value) {
       return new BN(value, 36).toString(16);
@@ -4392,7 +4392,7 @@ var require_fixednumber = __commonJS({
     var bytes_1 = require_lib2();
     var logger_1 = require_lib();
     var _version_1 = require_version3();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     var bignumber_1 = require_bignumber();
     var _constructorGuard = {};
     var Zero = bignumber_1.BigNumber.from(0);
@@ -4402,7 +4402,7 @@ var require_fixednumber = __commonJS({
       if (value !== void 0) {
         params.value = value;
       }
-      return logger.throwError(message, logger_1.Logger.errors.NUMERIC_FAULT, params);
+      return logger2.throwError(message, logger_1.Logger.errors.NUMERIC_FAULT, params);
     }
     var zeros = '0';
     while (zeros.length < 256) {
@@ -4417,7 +4417,7 @@ var require_fixednumber = __commonJS({
       if (typeof decimals === 'number' && decimals >= 0 && decimals <= 256 && !(decimals % 1)) {
         return '1' + zeros.substring(0, decimals);
       }
-      return logger.throwArgumentError('invalid decimal size', 'decimals', decimals);
+      return logger2.throwArgumentError('invalid decimal size', 'decimals', decimals);
     }
     function formatFixed(value, decimals) {
       if (decimals == null) {
@@ -4452,18 +4452,18 @@ var require_fixednumber = __commonJS({
       }
       var multiplier = getMultiplier(decimals);
       if (typeof value !== 'string' || !value.match(/^-?[0-9.]+$/)) {
-        logger.throwArgumentError('invalid decimal value', 'value', value);
+        logger2.throwArgumentError('invalid decimal value', 'value', value);
       }
       var negative = value.substring(0, 1) === '-';
       if (negative) {
         value = value.substring(1);
       }
       if (value === '.') {
-        logger.throwArgumentError('missing value', 'value', value);
+        logger2.throwArgumentError('missing value', 'value', value);
       }
       var comps = value.split('.');
       if (comps.length > 2) {
-        logger.throwArgumentError('too many decimal points', 'value', value);
+        logger2.throwArgumentError('too many decimal points', 'value', value);
       }
       var whole = comps[0],
         fraction = comps[1];
@@ -4497,7 +4497,7 @@ var require_fixednumber = __commonJS({
     var FixedFormat = (function () {
       function FixedFormat2(constructorGuard, signed, width, decimals) {
         if (constructorGuard !== _constructorGuard) {
-          logger.throwError(
+          logger2.throwError(
             'cannot use FixedFormat constructor; use FixedFormat.from',
             logger_1.Logger.errors.UNSUPPORTED_OPERATION,
             {
@@ -4529,7 +4529,7 @@ var require_fixednumber = __commonJS({
           } else {
             var match = value.match(/^(u?)fixed([0-9]+)x([0-9]+)$/);
             if (!match) {
-              logger.throwArgumentError('invalid fixed format', 'format', value);
+              logger2.throwArgumentError('invalid fixed format', 'format', value);
             }
             signed = match[1] !== 'u';
             width = parseInt(match[2]);
@@ -4541,7 +4541,7 @@ var require_fixednumber = __commonJS({
               return defaultValue;
             }
             if (typeof value[key] !== type) {
-              logger.throwArgumentError(
+              logger2.throwArgumentError(
                 'invalid fixed format (' + key + ' not ' + type + ')',
                 'format.' + key,
                 value[key]
@@ -4554,14 +4554,14 @@ var require_fixednumber = __commonJS({
           decimals = check('decimals', 'number', decimals);
         }
         if (width % 8) {
-          logger.throwArgumentError(
+          logger2.throwArgumentError(
             'invalid fixed format width (not byte aligned)',
             'format.width',
             width
           );
         }
         if (decimals > 80) {
-          logger.throwArgumentError(
+          logger2.throwArgumentError(
             'invalid fixed format (decimals too large)',
             'format.decimals',
             decimals
@@ -4575,9 +4575,9 @@ var require_fixednumber = __commonJS({
     var FixedNumber = (function () {
       function FixedNumber2(constructorGuard, hex, value, format) {
         var _newTarget = this.constructor;
-        logger.checkNew(_newTarget, FixedNumber2);
+        logger2.checkNew(_newTarget, FixedNumber2);
         if (constructorGuard !== _constructorGuard) {
-          logger.throwError(
+          logger2.throwError(
             'cannot use FixedNumber constructor; use FixedNumber.from',
             logger_1.Logger.errors.UNSUPPORTED_OPERATION,
             {
@@ -4593,7 +4593,7 @@ var require_fixednumber = __commonJS({
       }
       FixedNumber2.prototype._checkFormat = function (other) {
         if (this.format.name !== other.format.name) {
-          logger.throwArgumentError(
+          logger2.throwArgumentError(
             'incompatible format; use fixedNumber.toFormat',
             'other',
             other
@@ -4665,7 +4665,7 @@ var require_fixednumber = __commonJS({
           comps.push('0');
         }
         if (decimals < 0 || decimals > 80 || decimals % 1) {
-          logger.throwArgumentError('invalid decimal count', 'decimals', decimals);
+          logger2.throwArgumentError('invalid decimal count', 'decimals', decimals);
         }
         if (comps[1].length <= decimals) {
           return this;
@@ -4688,7 +4688,7 @@ var require_fixednumber = __commonJS({
           return this._hex;
         }
         if (width % 8) {
-          logger.throwArgumentError('invalid byte width', 'width', width);
+          logger2.throwArgumentError('invalid byte width', 'width', width);
         }
         var hex = bignumber_1.BigNumber.from(this._hex)
           .fromTwos(this.format.width)
@@ -4764,7 +4764,7 @@ var require_fixednumber = __commonJS({
             throw error;
           }
         }
-        return logger.throwArgumentError('invalid FixedNumber value', 'value', value);
+        return logger2.throwArgumentError('invalid FixedNumber value', 'value', value);
       };
       FixedNumber2.isFixedNumber = function (value) {
         return !!(value && value._isFixedNumber);
@@ -4994,7 +4994,7 @@ var require_lib4 = __commonJS({
         void 0;
     var logger_1 = require_lib();
     var _version_1 = require_version4();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     function defineReadOnly(object, name2, value) {
       Object.defineProperty(object, name2, {
         enumerable: true,
@@ -5045,11 +5045,11 @@ var require_lib4 = __commonJS({
     exports2.resolveProperties = resolveProperties;
     function checkProperties(object, properties) {
       if (!object || typeof object !== 'object') {
-        logger.throwArgumentError('invalid object', 'object', object);
+        logger2.throwArgumentError('invalid object', 'object', object);
       }
       Object.keys(object).forEach(function (key) {
         if (!properties[key]) {
-          logger.throwArgumentError('invalid object key - ' + key, 'transaction:' + key, object);
+          logger2.throwArgumentError('invalid object key - ' + key, 'transaction:' + key, object);
         }
       });
     }
@@ -5085,7 +5085,7 @@ var require_lib4 = __commonJS({
         }
         return true;
       }
-      return logger.throwArgumentError('Cannot deepCopy ' + typeof object, 'object', object);
+      return logger2.throwArgumentError('Cannot deepCopy ' + typeof object, 'object', object);
     }
     function _deepCopy(object) {
       if (_isFrozen(object)) {
@@ -5109,7 +5109,7 @@ var require_lib4 = __commonJS({
         }
         return result;
       }
-      return logger.throwArgumentError('Cannot deepCopy ' + typeof object, 'object', object);
+      return logger2.throwArgumentError('Cannot deepCopy ' + typeof object, 'object', object);
     }
     function deepCopy(object) {
       return _deepCopy(object);
@@ -5181,7 +5181,7 @@ var require_fragments = __commonJS({
     var properties_1 = require_lib4();
     var logger_1 = require_lib();
     var _version_1 = require_version5();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     var _constructorGuard = {};
     var ModifiersBytes = { calldata: true, memory: true, storage: true };
     var ModifiersNest = { calldata: true, memory: true };
@@ -5200,14 +5200,14 @@ var require_fragments = __commonJS({
         }
       }
       if (ModifiersBytes[name2] || name2 === 'payable') {
-        logger.throwArgumentError('invalid modifier', 'name', name2);
+        logger2.throwArgumentError('invalid modifier', 'name', name2);
       }
       return false;
     }
     function parseParamType(param, allowIndexed) {
       var originalParam = param;
       function throwError(i2) {
-        logger.throwArgumentError('unexpected character at position ' + i2, 'param', param);
+        logger2.throwArgumentError('unexpected character at position ' + i2, 'param', param);
       }
       param = param.replace(/\s/g, ' ');
       function newNode(parent2) {
@@ -5336,7 +5336,7 @@ var require_fragments = __commonJS({
         }
       }
       if (node.parent) {
-        logger.throwArgumentError('unexpected eof', 'param', param);
+        logger2.throwArgumentError('unexpected eof', 'param', param);
       }
       delete parent.state;
       if (node.name === 'indexed') {
@@ -5369,7 +5369,7 @@ var require_fragments = __commonJS({
     var ParamType = (function () {
       function ParamType2(constructorGuard, params) {
         if (constructorGuard !== _constructorGuard) {
-          logger.throwError('use fromString', logger_1.Logger.errors.UNSUPPORTED_OPERATION, {
+          logger2.throwError('use fromString', logger_1.Logger.errors.UNSUPPORTED_OPERATION, {
             operation: 'new ParamType()',
           });
         }
@@ -5399,7 +5399,7 @@ var require_fragments = __commonJS({
           format = exports2.FormatTypes.sighash;
         }
         if (!exports2.FormatTypes[format]) {
-          logger.throwArgumentError('invalid format type', 'format', format);
+          logger2.throwArgumentError('invalid format type', 'format', format);
         }
         if (format === exports2.FormatTypes.json) {
           var result_1 = {
@@ -5489,7 +5489,7 @@ var require_fragments = __commonJS({
     var Fragment = (function () {
       function Fragment2(constructorGuard, params) {
         if (constructorGuard !== _constructorGuard) {
-          logger.throwError(
+          logger2.throwError(
             'use a static from method',
             logger_1.Logger.errors.UNSUPPORTED_OPERATION,
             {
@@ -5527,7 +5527,7 @@ var require_fragments = __commonJS({
           case 'receive':
             return null;
         }
-        return logger.throwArgumentError('invalid fragment object', 'value', value);
+        return logger2.throwArgumentError('invalid fragment object', 'value', value);
       };
       Fragment2.fromString = function (value) {
         value = value.replace(/\s/g, ' ');
@@ -5542,7 +5542,7 @@ var require_fragments = __commonJS({
         } else if (value.split(' ')[0] === 'error') {
           return ErrorFragment.fromString(value.substring(5).trim());
         }
-        return logger.throwArgumentError('unsupported fragment', 'value', value);
+        return logger2.throwArgumentError('unsupported fragment', 'value', value);
       };
       Fragment2.isFragment = function (value) {
         return !!(value && value._isFragment);
@@ -5560,7 +5560,7 @@ var require_fragments = __commonJS({
           format = exports2.FormatTypes.sighash;
         }
         if (!exports2.FormatTypes[format]) {
-          logger.throwArgumentError('invalid format type', 'format', format);
+          logger2.throwArgumentError('invalid format type', 'format', format);
         }
         if (format === exports2.FormatTypes.json) {
           return JSON.stringify({
@@ -5603,7 +5603,7 @@ var require_fragments = __commonJS({
           return value;
         }
         if (value.type !== 'event') {
-          logger.throwArgumentError('invalid event object', 'value', value);
+          logger2.throwArgumentError('invalid event object', 'value', value);
         }
         var params = {
           name: verifyIdentifier(value.name),
@@ -5616,7 +5616,7 @@ var require_fragments = __commonJS({
       EventFragment2.fromString = function (value) {
         var match = value.match(regexParen);
         if (!match) {
-          logger.throwArgumentError('invalid event string', 'value', value);
+          logger2.throwArgumentError('invalid event string', 'value', value);
         }
         var anonymous = false;
         match[3].split(' ').forEach(function (modifier) {
@@ -5627,7 +5627,7 @@ var require_fragments = __commonJS({
             case '':
               break;
             default:
-              logger.warn('unknown modifier: ' + modifier);
+              logger2.warn('unknown modifier: ' + modifier);
           }
         });
         return EventFragment2.fromObject({
@@ -5648,10 +5648,10 @@ var require_fragments = __commonJS({
       var comps = value.split('@');
       if (comps.length !== 1) {
         if (comps.length > 2) {
-          logger.throwArgumentError('invalid human-readable ABI signature', 'value', value);
+          logger2.throwArgumentError('invalid human-readable ABI signature', 'value', value);
         }
         if (!comps[1].match(/^[0-9]+$/)) {
-          logger.throwArgumentError('invalid human-readable ABI signature gas', 'value', value);
+          logger2.throwArgumentError('invalid human-readable ABI signature gas', 'value', value);
         }
         params.gas = bignumber_1.BigNumber.from(comps[1]);
         return comps[0];
@@ -5703,7 +5703,7 @@ var require_fragments = __commonJS({
         result.constant = result.stateMutability === 'view' || result.stateMutability === 'pure';
         if (value.constant != null) {
           if (!!value.constant !== result.constant) {
-            logger.throwArgumentError(
+            logger2.throwArgumentError(
               'cannot have constant function with mutability ' + result.stateMutability,
               'value',
               value
@@ -5713,7 +5713,7 @@ var require_fragments = __commonJS({
         result.payable = result.stateMutability === 'payable';
         if (value.payable != null) {
           if (!!value.payable !== result.payable) {
-            logger.throwArgumentError(
+            logger2.throwArgumentError(
               'cannot have payable function with mutability ' + result.stateMutability,
               'value',
               value
@@ -5723,7 +5723,7 @@ var require_fragments = __commonJS({
       } else if (value.payable != null) {
         result.payable = !!value.payable;
         if (value.constant == null && !result.payable && value.type !== 'constructor') {
-          logger.throwArgumentError('unable to determine stateMutability', 'value', value);
+          logger2.throwArgumentError('unable to determine stateMutability', 'value', value);
         }
         result.constant = !!value.constant;
         if (result.constant) {
@@ -5732,14 +5732,14 @@ var require_fragments = __commonJS({
           result.stateMutability = result.payable ? 'payable' : 'nonpayable';
         }
         if (result.payable && result.constant) {
-          logger.throwArgumentError('cannot have constant payable function', 'value', value);
+          logger2.throwArgumentError('cannot have constant payable function', 'value', value);
         }
       } else if (value.constant != null) {
         result.constant = !!value.constant;
         result.payable = !result.constant;
         result.stateMutability = result.constant ? 'view' : 'payable';
       } else if (value.type !== 'constructor') {
-        logger.throwArgumentError('unable to determine stateMutability', 'value', value);
+        logger2.throwArgumentError('unable to determine stateMutability', 'value', value);
       }
       return result;
     }
@@ -5753,7 +5753,7 @@ var require_fragments = __commonJS({
           format = exports2.FormatTypes.sighash;
         }
         if (!exports2.FormatTypes[format]) {
-          logger.throwArgumentError('invalid format type', 'format', format);
+          logger2.throwArgumentError('invalid format type', 'format', format);
         }
         if (format === exports2.FormatTypes.json) {
           return JSON.stringify({
@@ -5767,7 +5767,7 @@ var require_fragments = __commonJS({
           });
         }
         if (format === exports2.FormatTypes.sighash) {
-          logger.throwError(
+          logger2.throwError(
             'cannot format a constructor for sighash',
             logger_1.Logger.errors.UNSUPPORTED_OPERATION,
             {
@@ -5799,11 +5799,11 @@ var require_fragments = __commonJS({
           return value;
         }
         if (value.type !== 'constructor') {
-          logger.throwArgumentError('invalid constructor object', 'value', value);
+          logger2.throwArgumentError('invalid constructor object', 'value', value);
         }
         var state = verifyState(value);
         if (state.constant) {
-          logger.throwArgumentError('constructor cannot be constant', 'value', value);
+          logger2.throwArgumentError('constructor cannot be constant', 'value', value);
         }
         var params = {
           name: null,
@@ -5820,7 +5820,7 @@ var require_fragments = __commonJS({
         value = parseGas(value, params);
         var parens = value.match(regexParen);
         if (!parens || parens[1].trim() !== 'constructor') {
-          logger.throwArgumentError('invalid constructor string', 'value', value);
+          logger2.throwArgumentError('invalid constructor string', 'value', value);
         }
         params.inputs = parseParams(parens[2].trim(), false);
         parseModifiers(parens[3].trim(), params);
@@ -5842,7 +5842,7 @@ var require_fragments = __commonJS({
           format = exports2.FormatTypes.sighash;
         }
         if (!exports2.FormatTypes[format]) {
-          logger.throwArgumentError('invalid format type', 'format', format);
+          logger2.throwArgumentError('invalid format type', 'format', format);
         }
         if (format === exports2.FormatTypes.json) {
           return JSON.stringify({
@@ -5908,7 +5908,7 @@ var require_fragments = __commonJS({
           return value;
         }
         if (value.type !== 'function') {
-          logger.throwArgumentError('invalid function object', 'value', value);
+          logger2.throwArgumentError('invalid function object', 'value', value);
         }
         var state = verifyState(value);
         var params = {
@@ -5928,11 +5928,11 @@ var require_fragments = __commonJS({
         value = parseGas(value, params);
         var comps = value.split(' returns ');
         if (comps.length > 2) {
-          logger.throwArgumentError('invalid function string', 'value', value);
+          logger2.throwArgumentError('invalid function string', 'value', value);
         }
         var parens = comps[0].match(regexParen);
         if (!parens) {
-          logger.throwArgumentError('invalid function signature', 'value', value);
+          logger2.throwArgumentError('invalid function signature', 'value', value);
         }
         params.name = parens[1].trim();
         if (params.name) {
@@ -5943,7 +5943,7 @@ var require_fragments = __commonJS({
         if (comps.length > 1) {
           var returns = comps[1].match(regexParen);
           if (returns[1].trim() != '' || returns[3].trim() != '') {
-            logger.throwArgumentError('unexpected tokens', 'value', value);
+            logger2.throwArgumentError('unexpected tokens', 'value', value);
           }
           params.outputs = parseParams(returns[2], false);
         } else {
@@ -5960,7 +5960,7 @@ var require_fragments = __commonJS({
     function checkForbidden(fragment) {
       var sig = fragment.format();
       if (sig === 'Error(string)' || sig === 'Panic(uint256)') {
-        logger.throwArgumentError(
+        logger2.throwArgumentError(
           'cannot specify user defined ' + sig + ' error',
           'fragment',
           fragment
@@ -5978,7 +5978,7 @@ var require_fragments = __commonJS({
           format = exports2.FormatTypes.sighash;
         }
         if (!exports2.FormatTypes[format]) {
-          logger.throwArgumentError('invalid format type', 'format', format);
+          logger2.throwArgumentError('invalid format type', 'format', format);
         }
         if (format === exports2.FormatTypes.json) {
           return JSON.stringify({
@@ -6015,7 +6015,7 @@ var require_fragments = __commonJS({
           return value;
         }
         if (value.type !== 'error') {
-          logger.throwArgumentError('invalid error object', 'value', value);
+          logger2.throwArgumentError('invalid error object', 'value', value);
         }
         var params = {
           type: value.type,
@@ -6028,7 +6028,7 @@ var require_fragments = __commonJS({
         var params = { type: 'error' };
         var parens = value.match(regexParen);
         if (!parens) {
-          logger.throwArgumentError('invalid error signature', 'value', value);
+          logger2.throwArgumentError('invalid error signature', 'value', value);
         }
         params.name = parens[1].trim();
         if (params.name) {
@@ -6054,7 +6054,7 @@ var require_fragments = __commonJS({
     var regexIdentifier = new RegExp('^[a-zA-Z$_][a-zA-Z0-9$_]*$');
     function verifyIdentifier(value) {
       if (!value || !value.match(regexIdentifier)) {
-        logger.throwArgumentError('invalid identifier "' + value + '"', 'value', value);
+        logger2.throwArgumentError('invalid identifier "' + value + '"', 'value', value);
       }
       return value;
     }
@@ -6076,7 +6076,7 @@ var require_fragments = __commonJS({
           } else if (c === ')') {
             depth--;
             if (depth === -1) {
-              logger.throwArgumentError('unbalanced parenthesis', 'value', value);
+              logger2.throwArgumentError('unbalanced parenthesis', 'value', value);
             }
           }
         }
@@ -6100,7 +6100,7 @@ var require_abstract_coder = __commonJS({
     var properties_1 = require_lib4();
     var logger_1 = require_lib();
     var _version_1 = require_version5();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     function checkResultErrors(result) {
       var errors = [];
       var checkErrors = function (path2, object) {
@@ -6129,7 +6129,7 @@ var require_abstract_coder = __commonJS({
         this.dynamic = dynamic;
       }
       Coder2.prototype._throwError = function (message, value) {
-        logger.throwArgumentError(message, this.localName, value);
+        logger2.throwArgumentError(message, this.localName, value);
       };
       return Coder2;
     })();
@@ -6174,7 +6174,7 @@ var require_abstract_coder = __commonJS({
       Writer3.prototype._getValue = function (value) {
         var bytes = (0, bytes_1.arrayify)(bignumber_1.BigNumber.from(value));
         if (bytes.length > this.wordSize) {
-          logger.throwError('value out-of-bounds', logger_1.Logger.errors.BUFFER_OVERRUN, {
+          logger2.throwError('value out-of-bounds', logger_1.Logger.errors.BUFFER_OVERRUN, {
             length: this.wordSize,
             offset: bytes.length,
           });
@@ -6240,7 +6240,7 @@ var require_abstract_coder = __commonJS({
           if (this.allowLoose && loose && this._offset + length <= this._data.length) {
             alignedLength = length;
           } else {
-            logger.throwError('data out-of-bounds', logger_1.Logger.errors.BUFFER_OVERRUN, {
+            logger2.throwError('data out-of-bounds', logger_1.Logger.errors.BUFFER_OVERRUN, {
               length: this._data.length,
               offset: this._offset + alignedLength,
             });
@@ -7032,7 +7032,7 @@ var require_lib6 = __commonJS({
     var bytes_1 = require_lib2();
     var logger_1 = require_lib();
     var _version_1 = require_version6();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     function arrayifyInteger(value) {
       var result = [];
       while (value) {
@@ -7063,7 +7063,7 @@ var require_lib6 = __commonJS({
         return length_1.concat(payload_1);
       }
       if (!(0, bytes_1.isBytesLike)(object)) {
-        logger.throwArgumentError('RLP object must be BytesLike', 'object', object);
+        logger2.throwArgumentError('RLP object must be BytesLike', 'object', object);
       }
       var data = Array.prototype.slice.call((0, bytes_1.arrayify)(object));
       if (data.length === 1 && data[0] <= 127) {
@@ -7087,19 +7087,19 @@ var require_lib6 = __commonJS({
         result.push(decoded.result);
         childOffset += decoded.consumed;
         if (childOffset > offset + 1 + length) {
-          logger.throwError('child data too short', logger_1.Logger.errors.BUFFER_OVERRUN, {});
+          logger2.throwError('child data too short', logger_1.Logger.errors.BUFFER_OVERRUN, {});
         }
       }
       return { consumed: 1 + length, result };
     }
     function _decode(data, offset) {
       if (data.length === 0) {
-        logger.throwError('data too short', logger_1.Logger.errors.BUFFER_OVERRUN, {});
+        logger2.throwError('data too short', logger_1.Logger.errors.BUFFER_OVERRUN, {});
       }
       if (data[offset] >= 248) {
         var lengthLength = data[offset] - 247;
         if (offset + 1 + lengthLength > data.length) {
-          logger.throwError(
+          logger2.throwError(
             'data short segment too short',
             logger_1.Logger.errors.BUFFER_OVERRUN,
             {}
@@ -7107,7 +7107,7 @@ var require_lib6 = __commonJS({
         }
         var length_2 = unarrayifyInteger(data, offset + 1, lengthLength);
         if (offset + 1 + lengthLength + length_2 > data.length) {
-          logger.throwError(
+          logger2.throwError(
             'data long segment too short',
             logger_1.Logger.errors.BUFFER_OVERRUN,
             {}
@@ -7117,17 +7117,17 @@ var require_lib6 = __commonJS({
       } else if (data[offset] >= 192) {
         var length_3 = data[offset] - 192;
         if (offset + 1 + length_3 > data.length) {
-          logger.throwError('data array too short', logger_1.Logger.errors.BUFFER_OVERRUN, {});
+          logger2.throwError('data array too short', logger_1.Logger.errors.BUFFER_OVERRUN, {});
         }
         return _decodeChildren(data, offset, offset + 1, length_3);
       } else if (data[offset] >= 184) {
         var lengthLength = data[offset] - 183;
         if (offset + 1 + lengthLength > data.length) {
-          logger.throwError('data array too short', logger_1.Logger.errors.BUFFER_OVERRUN, {});
+          logger2.throwError('data array too short', logger_1.Logger.errors.BUFFER_OVERRUN, {});
         }
         var length_4 = unarrayifyInteger(data, offset + 1, lengthLength);
         if (offset + 1 + lengthLength + length_4 > data.length) {
-          logger.throwError('data array too short', logger_1.Logger.errors.BUFFER_OVERRUN, {});
+          logger2.throwError('data array too short', logger_1.Logger.errors.BUFFER_OVERRUN, {});
         }
         var result = (0, bytes_1.hexlify)(
           data.slice(offset + 1 + lengthLength, offset + 1 + lengthLength + length_4)
@@ -7136,7 +7136,7 @@ var require_lib6 = __commonJS({
       } else if (data[offset] >= 128) {
         var length_5 = data[offset] - 128;
         if (offset + 1 + length_5 > data.length) {
-          logger.throwError('data too short', logger_1.Logger.errors.BUFFER_OVERRUN, {});
+          logger2.throwError('data too short', logger_1.Logger.errors.BUFFER_OVERRUN, {});
         }
         var result = (0, bytes_1.hexlify)(data.slice(offset + 1, offset + 1 + length_5));
         return { consumed: 1 + length_5, result };
@@ -7147,7 +7147,7 @@ var require_lib6 = __commonJS({
       var bytes = (0, bytes_1.arrayify)(data);
       var decoded = _decode(bytes, 0);
       if (decoded.consumed !== bytes.length) {
-        logger.throwArgumentError('invalid rlp data', 'data', data);
+        logger2.throwArgumentError('invalid rlp data', 'data', data);
       }
       return decoded.result;
     }
@@ -7182,10 +7182,10 @@ var require_lib7 = __commonJS({
     var rlp_1 = require_lib6();
     var logger_1 = require_lib();
     var _version_1 = require_version7();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     function getChecksumAddress(address) {
       if (!(0, bytes_1.isHexString)(address, 20)) {
-        logger.throwArgumentError('invalid address', 'address', address);
+        logger2.throwArgumentError('invalid address', 'address', address);
       }
       address = address.toLowerCase();
       var chars = address.substring(2).split('');
@@ -7243,7 +7243,7 @@ var require_lib7 = __commonJS({
     function getAddress(address) {
       var result = null;
       if (typeof address !== 'string') {
-        logger.throwArgumentError('invalid address', 'address', address);
+        logger2.throwArgumentError('invalid address', 'address', address);
       }
       if (address.match(/^(0x)?[0-9a-fA-F]{40}$/)) {
         if (address.substring(0, 2) !== '0x') {
@@ -7251,11 +7251,11 @@ var require_lib7 = __commonJS({
         }
         result = getChecksumAddress(address);
         if (address.match(/([A-F].*[a-f])|([a-f].*[A-F])/) && result !== address) {
-          logger.throwArgumentError('bad address checksum', 'address', address);
+          logger2.throwArgumentError('bad address checksum', 'address', address);
         }
       } else if (address.match(/^XE[0-9]{2}[0-9A-Za-z]{30,31}$/)) {
         if (address.substring(2, 4) !== ibanChecksum(address)) {
-          logger.throwArgumentError('bad icap checksum', 'address', address);
+          logger2.throwArgumentError('bad icap checksum', 'address', address);
         }
         result = (0, bignumber_1._base36To16)(address.substring(4));
         while (result.length < 40) {
@@ -7263,7 +7263,7 @@ var require_lib7 = __commonJS({
         }
         result = getChecksumAddress('0x' + result);
       } else {
-        logger.throwArgumentError('invalid address', 'address', address);
+        logger2.throwArgumentError('invalid address', 'address', address);
       }
       return result;
     }
@@ -7289,7 +7289,7 @@ var require_lib7 = __commonJS({
       try {
         from = getAddress(transaction.from);
       } catch (error) {
-        logger.throwArgumentError('missing from address', 'transaction', transaction);
+        logger2.throwArgumentError('missing from address', 'transaction', transaction);
       }
       var nonce = (0, bytes_1.stripZeros)(
         (0, bytes_1.arrayify)(bignumber_1.BigNumber.from(transaction.nonce).toHexString())
@@ -7301,10 +7301,10 @@ var require_lib7 = __commonJS({
     exports2.getContractAddress = getContractAddress;
     function getCreate2Address(from, salt, initCodeHash) {
       if ((0, bytes_1.hexDataLength)(salt) !== 32) {
-        logger.throwArgumentError('salt must be 32 bytes', 'salt', salt);
+        logger2.throwArgumentError('salt must be 32 bytes', 'salt', salt);
       }
       if ((0, bytes_1.hexDataLength)(initCodeHash) !== 32) {
-        logger.throwArgumentError('initCodeHash must be 32 bytes', 'initCodeHash', initCodeHash);
+        logger2.throwArgumentError('initCodeHash must be 32 bytes', 'initCodeHash', initCodeHash);
       }
       return getAddress(
         (0, bytes_1.hexDataSlice)(
@@ -7473,7 +7473,7 @@ var require_array = __commonJS({
     exports2.ArrayCoder = exports2.unpack = exports2.pack = void 0;
     var logger_1 = require_lib();
     var _version_1 = require_version5();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     var abstract_coder_1 = require_abstract_coder();
     var anonymous_1 = require_anonymous();
     function pack(writer, coders, values) {
@@ -7485,7 +7485,7 @@ var require_array = __commonJS({
         arrayValues = coders.map(function (coder) {
           var name2 = coder.localName;
           if (!name2) {
-            logger.throwError(
+            logger2.throwError(
               'cannot encode object for signature with missing names',
               logger_1.Logger.errors.INVALID_ARGUMENT,
               {
@@ -7496,7 +7496,7 @@ var require_array = __commonJS({
             );
           }
           if (unique_1[name2]) {
-            logger.throwError(
+            logger2.throwError(
               'cannot encode object for signature with duplicate names',
               logger_1.Logger.errors.INVALID_ARGUMENT,
               {
@@ -7510,10 +7510,10 @@ var require_array = __commonJS({
           return values[name2];
         });
       } else {
-        logger.throwArgumentError('invalid tuple value', 'tuple', values);
+        logger2.throwArgumentError('invalid tuple value', 'tuple', values);
       }
       if (coders.length !== arrayValues.length) {
-        logger.throwArgumentError('types/value length mismatch', 'tuple', values);
+        logger2.throwArgumentError('types/value length mismatch', 'tuple', values);
       }
       var staticWriter = new abstract_coder_1.Writer(writer.wordSize);
       var dynamicWriter = new abstract_coder_1.Writer(writer.wordSize);
@@ -7653,7 +7653,7 @@ var require_array = __commonJS({
           count = value.length;
           writer.writeValue(value.length);
         }
-        logger.checkArgumentCount(
+        logger2.checkArgumentCount(
           value.length,
           count,
           'coder array' + (this.localName ? ' ' + this.localName : '')
@@ -7669,7 +7669,7 @@ var require_array = __commonJS({
         if (count === -1) {
           count = reader.readValue().toNumber();
           if (count * 32 > reader._data.length) {
-            logger.throwError('insufficient data length', logger_1.Logger.errors.BUFFER_OVERRUN, {
+            logger2.throwError('insufficient data length', logger_1.Logger.errors.BUFFER_OVERRUN, {
               length: reader._data.length,
               count,
             });
@@ -8203,7 +8203,7 @@ var require_utf8 = __commonJS({
     var bytes_1 = require_lib2();
     var logger_1 = require_lib();
     var _version_1 = require_version8();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     var UnicodeNormalizationForm;
     (function (UnicodeNormalizationForm2) {
       UnicodeNormalizationForm2['current'] = '';
@@ -8226,7 +8226,7 @@ var require_utf8 = __commonJS({
       Utf8ErrorReason2['OVERLONG'] = 'overlong representation';
     })((Utf8ErrorReason = exports2.Utf8ErrorReason || (exports2.Utf8ErrorReason = {})));
     function errorFunc(reason, offset, bytes, output, badCodepoint) {
-      return logger.throwArgumentError(
+      return logger2.throwArgumentError(
         'invalid codepoint at offset ' + offset + '; ' + reason,
         'bytes',
         bytes
@@ -8332,7 +8332,7 @@ var require_utf8 = __commonJS({
         form = UnicodeNormalizationForm.current;
       }
       if (form != UnicodeNormalizationForm.current) {
-        logger.checkNormalize();
+        logger2.checkNormalize();
         str2 = str2.normalize(form);
       }
       var result = [];
@@ -8926,7 +8926,7 @@ var require_abi_coder = __commonJS({
     var properties_1 = require_lib4();
     var logger_1 = require_lib();
     var _version_1 = require_version5();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     var abstract_coder_1 = require_abstract_coder();
     var address_1 = require_address();
     var array_1 = require_array();
@@ -8943,7 +8943,7 @@ var require_abi_coder = __commonJS({
     var AbiCoder = (function () {
       function AbiCoder2(coerceFunc) {
         var _newTarget = this.constructor;
-        logger.checkNew(_newTarget, AbiCoder2);
+        logger2.checkNew(_newTarget, AbiCoder2);
         (0, properties_1.defineReadOnly)(this, 'coerceFunc', coerceFunc || null);
       }
       AbiCoder2.prototype._getCoder = function (param) {
@@ -8977,7 +8977,7 @@ var require_abi_coder = __commonJS({
         if (match) {
           var size = parseInt(match[2] || '256');
           if (size === 0 || size > 256 || size % 8 !== 0) {
-            logger.throwArgumentError('invalid ' + match[1] + ' bit length', 'param', param);
+            logger2.throwArgumentError('invalid ' + match[1] + ' bit length', 'param', param);
           }
           return new number_1.NumberCoder(size / 8, match[1] === 'int', param.name);
         }
@@ -8985,11 +8985,11 @@ var require_abi_coder = __commonJS({
         if (match) {
           var size = parseInt(match[1]);
           if (size === 0 || size > 32) {
-            logger.throwArgumentError('invalid bytes length', 'param', param);
+            logger2.throwArgumentError('invalid bytes length', 'param', param);
           }
           return new fixed_bytes_1.FixedBytesCoder(size, param.name);
         }
-        return logger.throwArgumentError('invalid type', 'type', param.type);
+        return logger2.throwArgumentError('invalid type', 'type', param.type);
       };
       AbiCoder2.prototype._getWordSize = function () {
         return 32;
@@ -9011,7 +9011,7 @@ var require_abi_coder = __commonJS({
       AbiCoder2.prototype.encode = function (types, values) {
         var _this = this;
         if (types.length !== values.length) {
-          logger.throwError(
+          logger2.throwError(
             'types/values length mismatch',
             logger_1.Logger.errors.INVALID_ARGUMENT,
             {
@@ -9079,7 +9079,7 @@ var require_namehash = __commonJS({
     var keccak256_1 = require_lib5();
     var logger_1 = require_lib();
     var _version_1 = require_version9();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     var Zeros = new Uint8Array(32);
     Zeros.fill(0);
     var Partition = new RegExp('^((.*)\\.)?([^.]+)$');
@@ -9098,14 +9098,14 @@ var require_namehash = __commonJS({
     exports2.isValidName = isValidName;
     function namehash(name2) {
       if (typeof name2 !== 'string') {
-        logger.throwArgumentError('invalid ENS name; not a string', 'name', name2);
+        logger2.throwArgumentError('invalid ENS name; not a string', 'name', name2);
       }
       var current = name2;
       var result = Zeros;
       while (current.length) {
         var partition = current.match(Partition);
         if (partition == null || partition[2] === '') {
-          logger.throwArgumentError('invalid ENS address; missing component', 'name', name2);
+          logger2.throwArgumentError('invalid ENS address; missing component', 'name', name2);
         }
         var label = (0, strings_1.toUtf8Bytes)((0, strings_1.nameprep)(partition[3]));
         result = (0, keccak256_1.keccak256)(
@@ -9289,7 +9289,7 @@ var require_typed_data = __commonJS({
     var properties_1 = require_lib4();
     var logger_1 = require_lib();
     var _version_1 = require_version9();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     var id_1 = require_id();
     var padding = new Uint8Array(32);
     padding.fill(0);
@@ -9320,7 +9320,7 @@ var require_typed_data = __commonJS({
     function checkString(key) {
       return function (value) {
         if (typeof value !== 'string') {
-          logger.throwArgumentError(
+          logger2.throwArgumentError(
             'invalid domain value for ' + JSON.stringify(key),
             'domain.' + key,
             value
@@ -9336,7 +9336,7 @@ var require_typed_data = __commonJS({
         try {
           return bignumber_1.BigNumber.from(value).toString();
         } catch (error) {}
-        return logger.throwArgumentError(
+        return logger2.throwArgumentError(
           'invalid domain value for "chainId"',
           'domain.chainId',
           value
@@ -9346,7 +9346,7 @@ var require_typed_data = __commonJS({
         try {
           return (0, address_1.getAddress)(value).toLowerCase();
         } catch (error) {}
-        return logger.throwArgumentError(
+        return logger2.throwArgumentError(
           'invalid domain value "verifyingContract"',
           'domain.verifyingContract',
           value
@@ -9360,7 +9360,7 @@ var require_typed_data = __commonJS({
           }
           return (0, bytes_1.hexlify)(bytes);
         } catch (error) {}
-        return logger.throwArgumentError('invalid domain value "salt"', 'domain.salt', value);
+        return logger2.throwArgumentError('invalid domain value "salt"', 'domain.salt', value);
       },
     };
     function getBaseEncoder(type) {
@@ -9370,14 +9370,14 @@ var require_typed_data = __commonJS({
           var signed = match[1] === '';
           var width = parseInt(match[2] || '256');
           if (width % 8 !== 0 || width > 256 || (match[2] && match[2] !== String(width))) {
-            logger.throwArgumentError('invalid numeric width', 'type', type);
+            logger2.throwArgumentError('invalid numeric width', 'type', type);
           }
           var boundsUpper_1 = MaxUint256.mask(signed ? width - 1 : width);
           var boundsLower_1 = signed ? boundsUpper_1.add(One).mul(NegativeOne) : Zero;
           return function (value) {
             var v = bignumber_1.BigNumber.from(value);
             if (v.lt(boundsLower_1) || v.gt(boundsUpper_1)) {
-              logger.throwArgumentError('value out-of-bounds for ' + type, 'value', value);
+              logger2.throwArgumentError('value out-of-bounds for ' + type, 'value', value);
             }
             return (0, bytes_1.hexZeroPad)(v.toTwos(256).toHexString(), 32);
           };
@@ -9388,12 +9388,12 @@ var require_typed_data = __commonJS({
         if (match) {
           var width_1 = parseInt(match[1]);
           if (width_1 === 0 || width_1 > 32 || match[1] !== String(width_1)) {
-            logger.throwArgumentError('invalid bytes width', 'type', type);
+            logger2.throwArgumentError('invalid bytes width', 'type', type);
           }
           return function (value) {
             var bytes = (0, bytes_1.arrayify)(value);
             if (bytes.length !== width_1) {
-              logger.throwArgumentError('invalid length for ' + type, 'value', value);
+              logger2.throwArgumentError('invalid length for ' + type, 'value', value);
             }
             return hexPadRight(value);
           };
@@ -9454,7 +9454,7 @@ var require_typed_data = __commonJS({
           var uniqueNames = {};
           types[name_12].forEach(function (field) {
             if (uniqueNames[field.name]) {
-              logger.throwArgumentError(
+              logger2.throwArgumentError(
                 'duplicate variable name ' +
                   JSON.stringify(field.name) +
                   ' in ' +
@@ -9466,7 +9466,7 @@ var require_typed_data = __commonJS({
             uniqueNames[field.name] = true;
             var baseType = field.type.match(/^([^\x5b]*)(\x5b|$)/)[1];
             if (baseType === name_12) {
-              logger.throwArgumentError(
+              logger2.throwArgumentError(
                 'circular type reference to ' + JSON.stringify(baseType),
                 'types',
                 types
@@ -9477,7 +9477,11 @@ var require_typed_data = __commonJS({
               return;
             }
             if (!parents[baseType]) {
-              logger.throwArgumentError('unknown type ' + JSON.stringify(baseType), 'types', types);
+              logger2.throwArgumentError(
+                'unknown type ' + JSON.stringify(baseType),
+                'types',
+                types
+              );
             }
             parents[baseType].push(name_12);
             links[name_12][baseType] = true;
@@ -9490,9 +9494,9 @@ var require_typed_data = __commonJS({
           return parents[n].length === 0;
         });
         if (primaryTypes.length === 0) {
-          logger.throwArgumentError('missing primary type', 'types', types);
+          logger2.throwArgumentError('missing primary type', 'types', types);
         } else if (primaryTypes.length > 1) {
-          logger.throwArgumentError(
+          logger2.throwArgumentError(
             'ambiguous primary types or unused types: ' +
               primaryTypes
                 .map(function (t) {
@@ -9506,7 +9510,7 @@ var require_typed_data = __commonJS({
         (0, properties_1.defineReadOnly)(this, 'primaryType', primaryTypes[0]);
         function checkCircular(type, found) {
           if (found[type]) {
-            logger.throwArgumentError(
+            logger2.throwArgumentError(
               'circular type reference to ' + JSON.stringify(type),
               'types',
               types
@@ -9559,7 +9563,7 @@ var require_typed_data = __commonJS({
           var length_1 = parseInt(match[3]);
           return function (value) {
             if (length_1 >= 0 && value.length !== length_1) {
-              logger.throwArgumentError(
+              logger2.throwArgumentError(
                 'array length mismatch; expected length ${ arrayLength }',
                 'value',
                 value
@@ -9589,12 +9593,12 @@ var require_typed_data = __commonJS({
             return (0, bytes_1.hexConcat)(values);
           };
         }
-        return logger.throwArgumentError('unknown type: ' + type, 'type', type);
+        return logger2.throwArgumentError('unknown type: ' + type, 'type', type);
       };
       TypedDataEncoder2.prototype.encodeType = function (name2) {
         var result = this._types[name2];
         if (!result) {
-          logger.throwArgumentError('unknown type: ' + JSON.stringify(name2), 'name', name2);
+          logger2.throwArgumentError('unknown type: ' + JSON.stringify(name2), 'name', name2);
         }
         return result;
       };
@@ -9623,7 +9627,7 @@ var require_typed_data = __commonJS({
           var subtype_2 = match[1];
           var length_2 = parseInt(match[3]);
           if (length_2 >= 0 && value.length !== length_2) {
-            logger.throwArgumentError(
+            logger2.throwArgumentError(
               'array length mismatch; expected length ${ arrayLength }',
               'value',
               value
@@ -9642,7 +9646,7 @@ var require_typed_data = __commonJS({
             return accum;
           }, {});
         }
-        return logger.throwArgumentError('unknown type: ' + type, 'type', type);
+        return logger2.throwArgumentError('unknown type: ' + type, 'type', type);
       };
       TypedDataEncoder2.prototype.visit = function (value, callback) {
         return this._visit(this.primaryType, value, callback);
@@ -9661,7 +9665,7 @@ var require_typed_data = __commonJS({
         for (var name_3 in domain) {
           var type = domainFieldTypes[name_3];
           if (!type) {
-            logger.throwArgumentError(
+            logger2.throwArgumentError(
               'invalid typed-data domain key: ' + JSON.stringify(name_3),
               'domain',
               domain
@@ -9751,7 +9755,7 @@ var require_typed_data = __commonJS({
         var encoder = TypedDataEncoder2.from(types);
         var typesWithDomain = (0, properties_1.shallowCopy)(types);
         if (typesWithDomain.EIP712Domain) {
-          logger.throwArgumentError(
+          logger2.throwArgumentError(
             'types must not contain EIP712Domain type',
             'types.EIP712Domain',
             types
@@ -9778,11 +9782,11 @@ var require_typed_data = __commonJS({
                 return !!value2;
               case 'string':
                 if (typeof value2 !== 'string') {
-                  logger.throwArgumentError('invalid string', 'value', value2);
+                  logger2.throwArgumentError('invalid string', 'value', value2);
                 }
                 return value2;
             }
-            return logger.throwArgumentError('unsupported type', 'type', type);
+            return logger2.throwArgumentError('unsupported type', 'type', type);
           }),
         };
       };
@@ -9903,7 +9907,7 @@ var require_interface = __commonJS({
     var fragments_1 = require_fragments();
     var logger_1 = require_lib();
     var _version_1 = require_version5();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     var LogDescription = (function (_super) {
       __extends(LogDescription2, _super);
       function LogDescription2() {
@@ -9952,7 +9956,7 @@ var require_interface = __commonJS({
       function Interface2(fragments) {
         var _newTarget = this.constructor;
         var _this = this;
-        logger.checkNew(_newTarget, Interface2);
+        logger2.checkNew(_newTarget, Interface2);
         var abi = [];
         if (typeof fragments === 'string') {
           abi = JSON.parse(fragments);
@@ -9984,7 +9988,7 @@ var require_interface = __commonJS({
           switch (fragment.type) {
             case 'constructor':
               if (_this.deploy) {
-                logger.warn('duplicate definition - constructor');
+                logger2.warn('duplicate definition - constructor');
                 return;
               }
               (0, properties_1.defineReadOnly)(_this, 'deploy', fragment);
@@ -10003,7 +10007,7 @@ var require_interface = __commonJS({
           }
           var signature = fragment.format();
           if (bucket[signature]) {
-            logger.warn('duplicate definition - ' + signature);
+            logger2.warn('duplicate definition - ' + signature);
             return;
           }
           bucket[signature] = fragment;
@@ -10025,7 +10029,7 @@ var require_interface = __commonJS({
           format = fragments_1.FormatTypes.full;
         }
         if (format === fragments_1.FormatTypes.sighash) {
-          logger.throwArgumentError(
+          logger2.throwArgumentError(
             'interface does not support formatting sighash',
             'format',
             format
@@ -10062,7 +10066,7 @@ var require_interface = __commonJS({
               return this.functions[name_1];
             }
           }
-          logger.throwArgumentError('no matching function', 'sighash', nameOrSignatureOrSighash);
+          logger2.throwArgumentError('no matching function', 'sighash', nameOrSignatureOrSighash);
         }
         if (nameOrSignatureOrSighash.indexOf('(') === -1) {
           var name_2 = nameOrSignatureOrSighash.trim();
@@ -10070,9 +10074,9 @@ var require_interface = __commonJS({
             return f.split('(')[0] === name_2;
           });
           if (matching.length === 0) {
-            logger.throwArgumentError('no matching function', 'name', name_2);
+            logger2.throwArgumentError('no matching function', 'name', name_2);
           } else if (matching.length > 1) {
-            logger.throwArgumentError('multiple matching functions', 'name', name_2);
+            logger2.throwArgumentError('multiple matching functions', 'name', name_2);
           }
           return this.functions[matching[0]];
         }
@@ -10081,7 +10085,7 @@ var require_interface = __commonJS({
             fragments_1.FunctionFragment.fromString(nameOrSignatureOrSighash).format()
           ];
         if (!result) {
-          logger.throwArgumentError('no matching function', 'signature', nameOrSignatureOrSighash);
+          logger2.throwArgumentError('no matching function', 'signature', nameOrSignatureOrSighash);
         }
         return result;
       };
@@ -10093,7 +10097,7 @@ var require_interface = __commonJS({
               return this.events[name_3];
             }
           }
-          logger.throwArgumentError('no matching event', 'topichash', topichash);
+          logger2.throwArgumentError('no matching event', 'topichash', topichash);
         }
         if (nameOrSignatureOrTopic.indexOf('(') === -1) {
           var name_4 = nameOrSignatureOrTopic.trim();
@@ -10101,16 +10105,16 @@ var require_interface = __commonJS({
             return f.split('(')[0] === name_4;
           });
           if (matching.length === 0) {
-            logger.throwArgumentError('no matching event', 'name', name_4);
+            logger2.throwArgumentError('no matching event', 'name', name_4);
           } else if (matching.length > 1) {
-            logger.throwArgumentError('multiple matching events', 'name', name_4);
+            logger2.throwArgumentError('multiple matching events', 'name', name_4);
           }
           return this.events[matching[0]];
         }
         var result =
           this.events[fragments_1.EventFragment.fromString(nameOrSignatureOrTopic).format()];
         if (!result) {
-          logger.throwArgumentError('no matching event', 'signature', nameOrSignatureOrTopic);
+          logger2.throwArgumentError('no matching event', 'signature', nameOrSignatureOrTopic);
         }
         return result;
       };
@@ -10123,7 +10127,7 @@ var require_interface = __commonJS({
               return this.errors[name_5];
             }
           }
-          logger.throwArgumentError('no matching error', 'sighash', nameOrSignatureOrSighash);
+          logger2.throwArgumentError('no matching error', 'sighash', nameOrSignatureOrSighash);
         }
         if (nameOrSignatureOrSighash.indexOf('(') === -1) {
           var name_6 = nameOrSignatureOrSighash.trim();
@@ -10131,16 +10135,16 @@ var require_interface = __commonJS({
             return f.split('(')[0] === name_6;
           });
           if (matching.length === 0) {
-            logger.throwArgumentError('no matching error', 'name', name_6);
+            logger2.throwArgumentError('no matching error', 'name', name_6);
           } else if (matching.length > 1) {
-            logger.throwArgumentError('multiple matching errors', 'name', name_6);
+            logger2.throwArgumentError('multiple matching errors', 'name', name_6);
           }
           return this.errors[matching[0]];
         }
         var result =
           this.errors[fragments_1.FunctionFragment.fromString(nameOrSignatureOrSighash).format()];
         if (!result) {
-          logger.throwArgumentError('no matching error', 'signature', nameOrSignatureOrSighash);
+          logger2.throwArgumentError('no matching error', 'signature', nameOrSignatureOrSighash);
         }
         return result;
       };
@@ -10179,7 +10183,7 @@ var require_interface = __commonJS({
         }
         var bytes = (0, bytes_1.arrayify)(data);
         if ((0, bytes_1.hexlify)(bytes.slice(0, 4)) !== this.getSighash(fragment)) {
-          logger.throwArgumentError(
+          logger2.throwArgumentError(
             'data signature does not match error ' + fragment.name + '.',
             'data',
             (0, bytes_1.hexlify)(bytes)
@@ -10204,7 +10208,7 @@ var require_interface = __commonJS({
         }
         var bytes = (0, bytes_1.arrayify)(data);
         if ((0, bytes_1.hexlify)(bytes.slice(0, 4)) !== this.getSighash(functionFragment)) {
-          logger.throwArgumentError(
+          logger2.throwArgumentError(
             'data signature does not match function ' + functionFragment.name + '.',
             'data',
             (0, bytes_1.hexlify)(bytes)
@@ -10261,7 +10265,7 @@ var require_interface = __commonJS({
             break;
           }
         }
-        return logger.throwError('call revert exception', logger_1.Logger.errors.CALL_EXCEPTION, {
+        return logger2.throwError('call revert exception', logger_1.Logger.errors.CALL_EXCEPTION, {
           method: functionFragment.format(),
           errorArgs,
           errorName,
@@ -10281,7 +10285,7 @@ var require_interface = __commonJS({
           eventFragment = this.getEvent(eventFragment);
         }
         if (values.length > eventFragment.inputs.length) {
-          logger.throwError(
+          logger2.throwError(
             'too many arguments for ' + eventFragment.format(),
             logger_1.Logger.errors.UNEXPECTED_ARGUMENT,
             {
@@ -10309,7 +10313,7 @@ var require_interface = __commonJS({
           var param = eventFragment.inputs[index];
           if (!param.indexed) {
             if (value != null) {
-              logger.throwArgumentError(
+              logger2.throwArgumentError(
                 'cannot filter non-indexed parameters; must be null',
                 'contract.' + param.name,
                 value
@@ -10320,7 +10324,7 @@ var require_interface = __commonJS({
           if (value == null) {
             topics.push(null);
           } else if (param.baseType === 'array' || param.baseType === 'tuple') {
-            logger.throwArgumentError(
+            logger2.throwArgumentError(
               'filtering with tuples or arrays not supported',
               'contract.' + param.name,
               value
@@ -10352,7 +10356,7 @@ var require_interface = __commonJS({
           topics.push(this.getEventTopic(eventFragment));
         }
         if (values.length !== eventFragment.inputs.length) {
-          logger.throwArgumentError('event arguments/values mismatch', 'values', values);
+          logger2.throwArgumentError('event arguments/values mismatch', 'values', values);
         }
         eventFragment.inputs.forEach(function (param, index) {
           var value = values[index];
@@ -10383,7 +10387,7 @@ var require_interface = __commonJS({
         if (topics != null && !eventFragment.anonymous) {
           var topicHash = this.getEventTopic(eventFragment);
           if (!(0, bytes_1.isHexString)(topics[0], 32) || topics[0].toLowerCase() !== topicHash) {
-            logger.throwError('fragment/topic mismatch', logger_1.Logger.errors.INVALID_ARGUMENT, {
+            logger2.throwError('fragment/topic mismatch', logger_1.Logger.errors.INVALID_ARGUMENT, {
               argument: 'topics[0]',
               expected: topicHash,
               value: topics[0],
@@ -15088,7 +15092,7 @@ var require_lib15 = __commonJS({
     var properties_1 = require_lib4();
     var logger_1 = require_lib();
     var _version_1 = require_version10();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     var _curve = null;
     function getCurve() {
       if (!_curve) {
@@ -15118,7 +15122,7 @@ var require_lib15 = __commonJS({
         var keyPair = getCurve().keyFromPrivate((0, bytes_1.arrayify)(this.privateKey));
         var digestBytes = (0, bytes_1.arrayify)(digest);
         if (digestBytes.length !== 32) {
-          logger.throwArgumentError('bad digest length', 'digest', digest);
+          logger2.throwArgumentError('bad digest length', 'digest', digest);
         }
         var signature = keyPair.sign(digestBytes, { canonical: true });
         return (0, bytes_1.splitSignature)({
@@ -15173,7 +15177,7 @@ var require_lib15 = __commonJS({
         }
         return '0x' + getCurve().keyFromPublic(bytes).getPublic(true, 'hex');
       }
-      return logger.throwArgumentError('invalid public or private key', 'key', '[REDACTED]');
+      return logger2.throwArgumentError('invalid public or private key', 'key', '[REDACTED]');
     }
     exports2.computePublicKey = computePublicKey;
   },
@@ -15214,7 +15218,7 @@ var require_sha2 = __commonJS({
     var types_1 = require_types();
     var logger_1 = require_lib();
     var _version_1 = require_version11();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     function ripemd160(data) {
       return (
         '0x' +
@@ -15244,7 +15248,7 @@ var require_sha2 = __commonJS({
     exports2.sha512 = sha512;
     function computeHmac(algorithm, key, data) {
       if (!types_1.SupportedAlgorithm[algorithm]) {
-        logger.throwError(
+        logger2.throwError(
           'unsupported algorithm - ' + algorithm,
           logger_1.Logger.errors.UNSUPPORTED_OPERATION,
           {
@@ -15380,7 +15384,7 @@ var require_lib17 = __commonJS({
     var signing_key_1 = require_lib15();
     var logger_1 = require_lib();
     var _version_1 = require_version12();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     var TransactionTypes;
     (function (TransactionTypes2) {
       TransactionTypes2[(TransactionTypes2['legacy'] = 0)] = 'legacy';
@@ -15436,7 +15440,7 @@ var require_lib17 = __commonJS({
     function formatNumber(value, name2) {
       var result = (0, bytes_1.stripZeros)(bignumber_1.BigNumber.from(value).toHexString());
       if (result.length > 32) {
-        logger.throwArgumentError('invalid length for ' + name2, 'transaction:' + name2, value);
+        logger2.throwArgumentError('invalid length for ' + name2, 'transaction:' + name2, value);
       }
       return result;
     }
@@ -15445,7 +15449,7 @@ var require_lib17 = __commonJS({
         address: (0, address_1.getAddress)(addr),
         storageKeys: (storageKeys || []).map(function (storageKey, index) {
           if ((0, bytes_1.hexDataLength)(storageKey) !== 32) {
-            logger.throwArgumentError(
+            logger2.throwArgumentError(
               'invalid access list storageKey',
               'accessList[' + addr + ':' + index + ']',
               storageKey
@@ -15460,7 +15464,7 @@ var require_lib17 = __commonJS({
         return value.map(function (set, index) {
           if (Array.isArray(set)) {
             if (set.length > 2) {
-              logger.throwArgumentError(
+              logger2.throwArgumentError(
                 'access list expected to be [ address, storageKeys[] ]',
                 'value[' + index + ']',
                 set
@@ -15494,7 +15498,7 @@ var require_lib17 = __commonJS({
         var gasPrice = bignumber_1.BigNumber.from(transaction.gasPrice);
         var maxFeePerGas = bignumber_1.BigNumber.from(transaction.maxFeePerGas || 0);
         if (!gasPrice.eq(maxFeePerGas)) {
-          logger.throwArgumentError('mismatch EIP-1559 gasPrice != maxFeePerGas', 'tx', {
+          logger2.throwArgumentError('mismatch EIP-1559 gasPrice != maxFeePerGas', 'tx', {
             gasPrice,
             maxFeePerGas,
           });
@@ -15549,7 +15553,7 @@ var require_lib17 = __commonJS({
         }
         value = (0, bytes_1.arrayify)((0, bytes_1.hexlify)(value, options2));
         if (fieldInfo.length && value.length !== fieldInfo.length && value.length > 0) {
-          logger.throwArgumentError(
+          logger2.throwArgumentError(
             'invalid length for ' + fieldInfo.name,
             'transaction:' + fieldInfo.name,
             value
@@ -15558,7 +15562,7 @@ var require_lib17 = __commonJS({
         if (fieldInfo.maxLength) {
           value = (0, bytes_1.stripZeros)(value);
           if (value.length > fieldInfo.maxLength) {
-            logger.throwArgumentError(
+            logger2.throwArgumentError(
               'invalid length for ' + fieldInfo.name,
               'transaction:' + fieldInfo.name,
               value
@@ -15571,7 +15575,7 @@ var require_lib17 = __commonJS({
       if (transaction.chainId != null) {
         chainId = transaction.chainId;
         if (typeof chainId !== 'number') {
-          logger.throwArgumentError('invalid transaction.chainId', 'transaction', transaction);
+          logger2.throwArgumentError('invalid transaction.chainId', 'transaction', transaction);
         }
       } else if (signature && !(0, bytes_1.isBytesLike)(signature) && signature.v > 28) {
         chainId = Math.floor((signature.v - 35) / 2);
@@ -15592,14 +15596,14 @@ var require_lib17 = __commonJS({
         raw.pop();
         v += chainId * 2 + 8;
         if (sig.v > 28 && sig.v !== v) {
-          logger.throwArgumentError(
+          logger2.throwArgumentError(
             'transaction.chainId/signature.v mismatch',
             'signature',
             signature
           );
         }
       } else if (sig.v !== v) {
-        logger.throwArgumentError(
+        logger2.throwArgumentError(
           'transaction.chainId/signature.v mismatch',
           'signature',
           signature
@@ -15613,7 +15617,7 @@ var require_lib17 = __commonJS({
     function serialize(transaction, signature) {
       if (transaction.type == null || transaction.type === 0) {
         if (transaction.accessList != null) {
-          logger.throwArgumentError(
+          logger2.throwArgumentError(
             'untyped transactions do not support accessList; include type: 1',
             'transaction',
             transaction
@@ -15629,7 +15633,7 @@ var require_lib17 = __commonJS({
         default:
           break;
       }
-      return logger.throwError(
+      return logger2.throwError(
         'unsupported transaction type: ' + transaction.type,
         logger_1.Logger.errors.UNSUPPORTED_OPERATION,
         {
@@ -15647,7 +15651,7 @@ var require_lib17 = __commonJS({
         }
         tx.v = recid;
       } catch (error) {
-        logger.throwArgumentError('invalid v for transaction type: 1', 'v', fields[0]);
+        logger2.throwArgumentError('invalid v for transaction type: 1', 'v', fields[0]);
       }
       tx.r = (0, bytes_1.hexZeroPad)(fields[1], 32);
       tx.s = (0, bytes_1.hexZeroPad)(fields[2], 32);
@@ -15661,7 +15665,7 @@ var require_lib17 = __commonJS({
     function _parseEip1559(payload) {
       var transaction = RLP.decode(payload.slice(1));
       if (transaction.length !== 9 && transaction.length !== 12) {
-        logger.throwArgumentError(
+        logger2.throwArgumentError(
           'invalid component count for transaction type: 2',
           'payload',
           (0, bytes_1.hexlify)(payload)
@@ -15692,7 +15696,7 @@ var require_lib17 = __commonJS({
     function _parseEip2930(payload) {
       var transaction = RLP.decode(payload.slice(1));
       if (transaction.length !== 8 && transaction.length !== 11) {
-        logger.throwArgumentError(
+        logger2.throwArgumentError(
           'invalid component count for transaction type: 1',
           'payload',
           (0, bytes_1.hexlify)(payload)
@@ -15719,7 +15723,7 @@ var require_lib17 = __commonJS({
     function _parse(rawTransaction) {
       var transaction = RLP.decode(rawTransaction);
       if (transaction.length !== 9 && transaction.length !== 6) {
-        logger.throwArgumentError('invalid raw transaction', 'rawTransaction', rawTransaction);
+        logger2.throwArgumentError('invalid raw transaction', 'rawTransaction', rawTransaction);
       }
       var tx = {
         nonce: handleNumber(transaction[0]).toNumber(),
@@ -15785,7 +15789,7 @@ var require_lib17 = __commonJS({
         default:
           break;
       }
-      return logger.throwError(
+      return logger2.throwError(
         'unsupported transaction type: ' + payload[0],
         logger_1.Logger.errors.UNSUPPORTED_OPERATION,
         {
@@ -16759,7 +16763,7 @@ var require_lib19 = __commonJS({
     var wordlists_1 = require_lib18();
     var logger_1 = require_lib();
     var _version_1 = require_version14();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     var N = bignumber_1.BigNumber.from(
       '0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141'
     );
@@ -16789,7 +16793,7 @@ var require_lib19 = __commonJS({
       if (typeof wordlist === 'string') {
         var words = wordlists_1.wordlists[wordlist];
         if (words == null) {
-          logger.throwArgumentError('unknown locale', 'wordlist', wordlist);
+          logger2.throwArgumentError('unknown locale', 'wordlist', wordlist);
         }
         return words;
       }
@@ -16809,7 +16813,7 @@ var require_lib19 = __commonJS({
         mnemonicOrPath
       ) {
         var _newTarget = this.constructor;
-        logger.checkNew(_newTarget, HDNode2);
+        logger2.checkNew(_newTarget, HDNode2);
         if (constructorGuard !== _constructorGuard) {
           throw new Error('HDNode constructor cannot be called directly');
         }
@@ -16998,7 +17002,7 @@ var require_lib19 = __commonJS({
       HDNode2.fromExtendedKey = function (extendedKey) {
         var bytes = basex_1.Base58.decode(extendedKey);
         if (bytes.length !== 82 || base58check(bytes.slice(0, 78)) !== extendedKey) {
-          logger.throwArgumentError('invalid extended key', 'extendedKey', '[REDACTED]');
+          logger2.throwArgumentError('invalid extended key', 'extendedKey', '[REDACTED]');
         }
         var depth = bytes[4];
         var parentFingerprint = (0, bytes_1.hexlify)(bytes.slice(5, 9));
@@ -17034,7 +17038,7 @@ var require_lib19 = __commonJS({
               null
             );
         }
-        return logger.throwArgumentError('invalid extended key', 'extendedKey', '[REDACTED]');
+        return logger2.throwArgumentError('invalid extended key', 'extendedKey', '[REDACTED]');
       };
       return HDNode2;
     })();
@@ -17058,7 +17062,7 @@ var require_lib19 = __commonJS({
     exports2.mnemonicToSeed = mnemonicToSeed;
     function mnemonicToEntropy(mnemonic, wordlist) {
       wordlist = getWordlist(wordlist);
-      logger.checkNormalize();
+      logger2.checkNormalize();
       var words = wordlist.split(mnemonic);
       if (words.length % 3 !== 0) {
         throw new Error('invalid mnemonic');
@@ -17131,7 +17135,7 @@ var require_lib19 = __commonJS({
     exports2.isValidMnemonic = isValidMnemonic;
     function getAccountPath(index) {
       if (typeof index !== 'number' || index < 0 || index >= HardenedBit || index % 1) {
-        logger.throwArgumentError('invalid account index', 'index', index);
+        logger2.throwArgumentError('invalid account index', 'index', index);
       }
       return "m/44'/60'/" + index + "'/0/0";
     }
@@ -18321,7 +18325,7 @@ var require_crowdsale = __commonJS({
     var properties_1 = require_lib4();
     var logger_1 = require_lib();
     var _version_1 = require_version15();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     var utils_1 = require_utils4();
     var CrowdsaleAccount = (function (_super) {
       __extends(CrowdsaleAccount2, _super);
@@ -18340,7 +18344,7 @@ var require_crowdsale = __commonJS({
       var ethaddr = (0, address_1.getAddress)((0, utils_1.searchPath)(data, 'ethaddr'));
       var encseed = (0, utils_1.looseArrayify)((0, utils_1.searchPath)(data, 'encseed'));
       if (!encseed || encseed.length % 16 !== 0) {
-        logger.throwArgumentError('invalid encseed', 'json', json);
+        logger2.throwArgumentError('invalid encseed', 'json', json);
       }
       var key = (0, bytes_1.arrayify)(
         (0, pbkdf2_1.pbkdf2)(password, password, 2e3, 32, 'sha256')
@@ -19121,7 +19125,7 @@ var require_keystore = __commonJS({
     var utils_1 = require_utils4();
     var logger_1 = require_lib();
     var _version_1 = require_version15();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     function hasMnemonic(value) {
       return value != null && value.mnemonic && value.mnemonic.phrase;
     }
@@ -19160,7 +19164,7 @@ var require_keystore = __commonJS({
       }
       var privateKey = _decrypt(data, key.slice(0, 16), ciphertext);
       if (!privateKey) {
-        logger.throwError('unsupported cipher', logger_1.Logger.errors.UNSUPPORTED_OPERATION, {
+        logger2.throwError('unsupported cipher', logger_1.Logger.errors.UNSUPPORTED_OPERATION, {
           operation: 'decrypt',
         });
       }
@@ -19223,7 +19227,7 @@ var require_keystore = __commonJS({
       var kdf = (0, utils_1.searchPath)(data, 'crypto/kdf');
       if (kdf && typeof kdf === 'string') {
         var throwError = function (name2, value) {
-          return logger.throwArgumentError(
+          return logger2.throwArgumentError(
             'invalid key-derivation function parameters',
             name2,
             value
@@ -19268,7 +19272,7 @@ var require_keystore = __commonJS({
           return pbkdf2Func(passwordBytes, salt, count, dkLen, prfFunc);
         }
       }
-      return logger.throwArgumentError('unsupported key-derivation function', 'kdf', kdf);
+      return logger2.throwArgumentError('unsupported key-derivation function', 'kdf', kdf);
     }
     function decryptSync(json, password) {
       var data = JSON.parse(json);
@@ -19573,7 +19577,7 @@ var require_lib22 = __commonJS({
     var Zeros = '0000000000000000000000000000000000000000000000000000000000000000';
     var logger_1 = require_lib();
     var _version_1 = require_version16();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     function _pack(type, value, isArray) {
       switch (type) {
         case 'address':
@@ -19596,7 +19600,7 @@ var require_lib22 = __commonJS({
       if (match) {
         var size = parseInt(match[2] || '256');
         if ((match[2] && String(size) !== match[2]) || size % 8 !== 0 || size === 0 || size > 256) {
-          logger.throwArgumentError('invalid number type', 'type', type);
+          logger2.throwArgumentError('invalid number type', 'type', type);
         }
         if (isArray) {
           size = 256;
@@ -19608,10 +19612,10 @@ var require_lib22 = __commonJS({
       if (match) {
         var size = parseInt(match[1]);
         if (String(size) !== match[1] || size === 0 || size > 32) {
-          logger.throwArgumentError('invalid bytes type', 'type', type);
+          logger2.throwArgumentError('invalid bytes type', 'type', type);
         }
         if ((0, bytes_1.arrayify)(value).byteLength !== size) {
-          logger.throwArgumentError('invalid value for ' + type, 'value', value);
+          logger2.throwArgumentError('invalid value for ' + type, 'value', value);
         }
         if (isArray) {
           return (0, bytes_1.arrayify)((value + Zeros).substring(0, 66));
@@ -19623,7 +19627,7 @@ var require_lib22 = __commonJS({
         var baseType_1 = match[1];
         var count = parseInt(match[2] || String(value.length));
         if (count != value.length) {
-          logger.throwArgumentError('invalid array length for ' + type, 'value', value);
+          logger2.throwArgumentError('invalid array length for ' + type, 'value', value);
         }
         var result_1 = [];
         value.forEach(function (value2) {
@@ -19631,11 +19635,11 @@ var require_lib22 = __commonJS({
         });
         return (0, bytes_1.concat)(result_1);
       }
-      return logger.throwArgumentError('invalid type', 'type', type);
+      return logger2.throwArgumentError('invalid type', 'type', type);
     }
     function pack(types, values) {
       if (types.length != values.length) {
-        logger.throwArgumentError(
+        logger2.throwArgumentError(
           'wrong number of values; expected ${ types.length }',
           'values',
           values
@@ -19683,7 +19687,7 @@ var require_lib23 = __commonJS({
     var bignumber_1 = require_lib3();
     var logger_1 = require_lib();
     var _version_1 = require_version17();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     var names = ['wei', 'kwei', 'mwei', 'gwei', 'szabo', 'finney', 'ether'];
     function commify(value) {
       var comps = String(value).split('.');
@@ -19694,7 +19698,7 @@ var require_lib23 = __commonJS({
         value === '.' ||
         value === '-.'
       ) {
-        logger.throwArgumentError('invalid value', 'value', value);
+        logger2.throwArgumentError('invalid value', 'value', value);
       }
       var whole = comps[0];
       var negative = '';
@@ -19741,7 +19745,7 @@ var require_lib23 = __commonJS({
     exports2.formatUnits = formatUnits;
     function parseUnits(value, unitName) {
       if (typeof value !== 'string') {
-        logger.throwArgumentError('value must be a string', 'value', value);
+        logger2.throwArgumentError('value must be a string', 'value', value);
       }
       if (typeof unitName === 'string') {
         var index = names.indexOf(unitName);
@@ -19947,7 +19951,7 @@ var require_lib24 = __commonJS({
     var properties_1 = require_lib4();
     var logger_1 = require_lib();
     var _version_1 = require_version18();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     var ForkEvent = (function (_super) {
       __extends(ForkEvent2, _super);
       function ForkEvent2() {
@@ -19964,7 +19968,7 @@ var require_lib24 = __commonJS({
       function BlockForkEvent2(blockHash, expiry) {
         var _this = this;
         if (!(0, bytes_1.isHexString)(blockHash, 32)) {
-          logger.throwArgumentError('invalid blockHash', 'blockHash', blockHash);
+          logger2.throwArgumentError('invalid blockHash', 'blockHash', blockHash);
         }
         _this =
           _super.call(this, {
@@ -19983,7 +19987,7 @@ var require_lib24 = __commonJS({
       function TransactionForkEvent2(hash, expiry) {
         var _this = this;
         if (!(0, bytes_1.isHexString)(hash, 32)) {
-          logger.throwArgumentError('invalid transaction hash', 'hash', hash);
+          logger2.throwArgumentError('invalid transaction hash', 'hash', hash);
         }
         _this =
           _super.call(this, {
@@ -20002,10 +20006,10 @@ var require_lib24 = __commonJS({
       function TransactionOrderForkEvent2(beforeHash, afterHash, expiry) {
         var _this = this;
         if (!(0, bytes_1.isHexString)(beforeHash, 32)) {
-          logger.throwArgumentError('invalid transaction hash', 'beforeHash', beforeHash);
+          logger2.throwArgumentError('invalid transaction hash', 'beforeHash', beforeHash);
         }
         if (!(0, bytes_1.isHexString)(afterHash, 32)) {
-          logger.throwArgumentError('invalid transaction hash', 'afterHash', afterHash);
+          logger2.throwArgumentError('invalid transaction hash', 'afterHash', afterHash);
         }
         _this =
           _super.call(this, {
@@ -20023,7 +20027,7 @@ var require_lib24 = __commonJS({
     var Provider = (function () {
       function Provider2() {
         var _newTarget = this.constructor;
-        logger.checkAbstract(_newTarget, Provider2);
+        logger2.checkAbstract(_newTarget, Provider2);
         (0, properties_1.defineReadOnly)(this, '_isProvider', true);
       }
       Provider2.prototype.getFeeData = function () {
@@ -20245,7 +20249,7 @@ var require_lib25 = __commonJS({
     var properties_1 = require_lib4();
     var logger_1 = require_lib();
     var _version_1 = require_version19();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     var allowedTransactionKeys = [
       'accessList',
       'chainId',
@@ -20269,7 +20273,7 @@ var require_lib25 = __commonJS({
     var Signer = (function () {
       function Signer2() {
         var _newTarget = this.constructor;
-        logger.checkAbstract(_newTarget, Signer2);
+        logger2.checkAbstract(_newTarget, Signer2);
         (0, properties_1.defineReadOnly)(this, '_isSigner', true);
       }
       Signer2.prototype.getBalance = function (blockTag) {
@@ -20409,7 +20413,7 @@ var require_lib25 = __commonJS({
       Signer2.prototype.checkTransaction = function (transaction) {
         for (var key in transaction) {
           if (allowedTransactionKeys.indexOf(key) === -1) {
-            logger.throwArgumentError(
+            logger2.throwArgumentError(
               'invalid transaction key: ' + key,
               'transaction',
               transaction
@@ -20424,7 +20428,7 @@ var require_lib25 = __commonJS({
             result
           ) {
             if (result[0].toLowerCase() !== result[1].toLowerCase()) {
-              logger.throwArgumentError('from address mismatch', 'transaction', transaction);
+              logger2.throwArgumentError('from address mismatch', 'transaction', transaction);
             }
             return result[0];
           });
@@ -20455,7 +20459,7 @@ var require_lib25 = __commonJS({
                           case 1:
                             address = _a8.sent();
                             if (address == null) {
-                              logger.throwArgumentError(
+                              logger2.throwArgumentError(
                                 'provided ENS name resolves to null',
                                 'tx.to',
                                 to
@@ -20470,13 +20474,13 @@ var require_lib25 = __commonJS({
                 }
                 hasEip1559 = tx.maxFeePerGas != null || tx.maxPriorityFeePerGas != null;
                 if (tx.gasPrice != null && (tx.type === 2 || hasEip1559)) {
-                  logger.throwArgumentError(
+                  logger2.throwArgumentError(
                     'eip-1559 transaction do not support gasPrice',
                     'transaction',
                     transaction
                   );
                 } else if ((tx.type === 0 || tx.type === 1) && hasEip1559) {
-                  logger.throwArgumentError(
+                  logger2.throwArgumentError(
                     'pre-eip-1559 transaction do not support maxFeePerGas/maxPriorityFeePerGas',
                     'transaction',
                     transaction
@@ -20520,7 +20524,7 @@ var require_lib25 = __commonJS({
                     }
                   } else if (feeData.gasPrice != null) {
                     if (hasEip1559) {
-                      logger.throwError(
+                      logger2.throwError(
                         'network does not support EIP-1559',
                         logger_1.Logger.errors.UNSUPPORTED_OPERATION,
                         {
@@ -20533,7 +20537,7 @@ var require_lib25 = __commonJS({
                     }
                     tx.type = 0;
                   } else {
-                    logger.throwError(
+                    logger2.throwError(
                       'failed to get consistent fee data',
                       logger_1.Logger.errors.UNSUPPORTED_OPERATION,
                       {
@@ -20559,7 +20563,7 @@ var require_lib25 = __commonJS({
                     if (forwardErrors.indexOf(error.code) >= 0) {
                       throw error;
                     }
-                    return logger.throwError(
+                    return logger2.throwError(
                       'cannot estimate gas; transaction may fail or may require manual gas limit',
                       logger_1.Logger.errors.UNPREDICTABLE_GAS_LIMIT,
                       {
@@ -20575,7 +20579,7 @@ var require_lib25 = __commonJS({
                   tx.chainId = Promise.all([Promise.resolve(tx.chainId), this.getChainId()]).then(
                     function (results) {
                       if (results[1] !== 0 && results[0] !== results[1]) {
-                        logger.throwArgumentError(
+                        logger2.throwArgumentError(
                           'chainId address mismatch',
                           'transaction',
                           transaction
@@ -20594,7 +20598,7 @@ var require_lib25 = __commonJS({
       };
       Signer2.prototype._checkProvider = function (operation) {
         if (!this.provider) {
-          logger.throwError('missing provider', logger_1.Logger.errors.UNSUPPORTED_OPERATION, {
+          logger2.throwError('missing provider', logger_1.Logger.errors.UNSUPPORTED_OPERATION, {
             operation: operation || '_checkProvider',
           });
         }
@@ -20610,7 +20614,7 @@ var require_lib25 = __commonJS({
       function VoidSigner2(address, provider) {
         var _newTarget = this.constructor;
         var _this = this;
-        logger.checkNew(_newTarget, VoidSigner2);
+        logger2.checkNew(_newTarget, VoidSigner2);
         _this = _super.call(this) || this;
         (0, properties_1.defineReadOnly)(_this, 'address', address);
         (0, properties_1.defineReadOnly)(_this, 'provider', provider || null);
@@ -20621,7 +20625,7 @@ var require_lib25 = __commonJS({
       };
       VoidSigner2.prototype._fail = function (message, operation) {
         return Promise.resolve().then(function () {
-          logger.throwError(message, logger_1.Logger.errors.UNSUPPORTED_OPERATION, { operation });
+          logger2.throwError(message, logger_1.Logger.errors.UNSUPPORTED_OPERATION, { operation });
         });
       };
       VoidSigner2.prototype.signMessage = function (message) {
@@ -20830,7 +20834,7 @@ var require_lib26 = __commonJS({
     var transactions_1 = require_lib17();
     var logger_1 = require_lib();
     var _version_1 = require_version20();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     function isAccount(value) {
       return (
         value != null && (0, bytes_1.isHexString)(value.privateKey, 32) && value.address != null
@@ -20845,7 +20849,7 @@ var require_lib26 = __commonJS({
       function Wallet2(privateKey, provider) {
         var _newTarget = this.constructor;
         var _this = this;
-        logger.checkNew(_newTarget, Wallet2);
+        logger2.checkNew(_newTarget, Wallet2);
         _this = _super.call(this) || this;
         if (isAccount(privateKey)) {
           var signingKey_1 = new signing_key_1.SigningKey(privateKey.privateKey);
@@ -20858,7 +20862,7 @@ var require_lib26 = __commonJS({
             (0, transactions_1.computeAddress)(_this.publicKey)
           );
           if (_this.address !== (0, address_1.getAddress)(privateKey.address)) {
-            logger.throwArgumentError('privateKey/address mismatch', 'privateKey', '[REDACTED]');
+            logger2.throwArgumentError('privateKey/address mismatch', 'privateKey', '[REDACTED]');
           }
           if (hasMnemonic(privateKey)) {
             var srcMnemonic_1 = privateKey.mnemonic;
@@ -20876,7 +20880,7 @@ var require_lib26 = __commonJS({
               mnemonic.locale
             ).derivePath(mnemonic.path);
             if ((0, transactions_1.computeAddress)(node.privateKey) !== _this.address) {
-              logger.throwArgumentError('mnemonic/address mismatch', 'privateKey', '[REDACTED]');
+              logger2.throwArgumentError('mnemonic/address mismatch', 'privateKey', '[REDACTED]');
             }
           } else {
             (0, properties_1.defineReadOnly)(_this, '_mnemonic', function () {
@@ -20886,7 +20890,7 @@ var require_lib26 = __commonJS({
         } else {
           if (signing_key_1.SigningKey.isSigningKey(privateKey)) {
             if (privateKey.curve !== 'secp256k1') {
-              logger.throwArgumentError(
+              logger2.throwArgumentError(
                 'unsupported curve; must be secp256k1',
                 'privateKey',
                 '[REDACTED]'
@@ -20916,7 +20920,7 @@ var require_lib26 = __commonJS({
           );
         }
         if (provider && !abstract_provider_1.Provider.isProvider(provider)) {
-          logger.throwArgumentError('invalid provider', 'provider', provider);
+          logger2.throwArgumentError('invalid provider', 'provider', provider);
         }
         (0, properties_1.defineReadOnly)(_this, 'provider', provider || null);
         return _this;
@@ -20953,7 +20957,7 @@ var require_lib26 = __commonJS({
         return (0, properties_1.resolveProperties)(transaction).then(function (tx) {
           if (tx.from != null) {
             if ((0, address_1.getAddress)(tx.from) !== _this.address) {
-              logger.throwArgumentError(
+              logger2.throwArgumentError(
                 'transaction from address mismatch',
                 'transaction.from',
                 transaction.from
@@ -20990,7 +20994,7 @@ var require_lib26 = __commonJS({
                   4,
                   hash_1._TypedDataEncoder.resolveNames(domain, types, value, function (name2) {
                     if (_this.provider == null) {
-                      logger.throwError(
+                      logger2.throwError(
                         'cannot resolve ENS names without a provider',
                         logger_1.Logger.errors.UNSUPPORTED_OPERATION,
                         {
@@ -21241,7 +21245,7 @@ var require_geturl = __commonJS({
     var properties_1 = require_lib4();
     var logger_1 = require_lib();
     var _version_1 = require_version21();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     function getResponse(request) {
       return new Promise(function (resolve, reject) {
         request.once('response', function (resp) {
@@ -21316,7 +21320,7 @@ var require_geturl = __commonJS({
                   req = https_1.default.request(request);
                   break;
                 default:
-                  logger.throwError(
+                  logger2.throwError(
                     'unsupported protocol ' + url.protocol,
                     logger_1.Logger.errors.UNSUPPORTED_OPERATION,
                     {
@@ -21484,7 +21488,7 @@ var require_lib27 = __commonJS({
     var strings_1 = require_lib9();
     var logger_1 = require_lib();
     var _version_1 = require_version21();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     var geturl_1 = require_geturl();
     function staller(duration) {
       return new Promise(function (resolve) {
@@ -21516,7 +21520,7 @@ var require_lib27 = __commonJS({
         typeof connection === 'object' && connection.throttleLimit != null
           ? connection.throttleLimit
           : 12;
-      logger.assertArgument(
+      logger2.assertArgument(
         attemptLimit > 0 && attemptLimit % 1 === 0,
         'invalid connection throttle limit',
         'connection.throttleLimit',
@@ -21527,7 +21531,7 @@ var require_lib27 = __commonJS({
         typeof connection === 'object' && typeof connection.throttleSlotInterval === 'number'
           ? connection.throttleSlotInterval
           : 100;
-      logger.assertArgument(
+      logger2.assertArgument(
         throttleSlotInterval > 0 && throttleSlotInterval % 1 === 0,
         'invalid connection throttle slot interval',
         'connection.throttleSlotInterval',
@@ -21544,7 +21548,7 @@ var require_lib27 = __commonJS({
         url = connection;
       } else if (typeof connection === 'object') {
         if (connection == null || connection.url == null) {
-          logger.throwArgumentError('missing URL', 'connection.url', connection);
+          logger2.throwArgumentError('missing URL', 'connection.url', connection);
         }
         url = connection.url;
         if (typeof connection.timeout === 'number' && connection.timeout > 0) {
@@ -21561,7 +21565,7 @@ var require_lib27 = __commonJS({
         options2.allowGzip = !!connection.allowGzip;
         if (connection.user != null && connection.password != null) {
           if (url.substring(0, 6) !== 'https:' && connection.allowInsecureAuthentication !== true) {
-            logger.throwError(
+            logger2.throwError(
               'basic authentication requires a secure https url',
               logger_1.Logger.errors.INVALID_ARGUMENT,
               { argument: 'url', url, user: connection.user, password: '[REDACTED]' }
@@ -21590,7 +21594,7 @@ var require_lib27 = __commonJS({
           }
           return Promise.resolve(result);
         } catch (error) {
-          logger.throwError('processing response error', logger_1.Logger.errors.SERVER_ERROR, {
+          logger2.throwError('processing response error', logger_1.Logger.errors.SERVER_ERROR, {
             body: bodyify(dataMatch[1], dataMatch[2]),
             error,
             requestBody: null,
@@ -21625,7 +21629,7 @@ var require_lib27 = __commonJS({
               }
               timer = null;
               reject(
-                logger.makeError('timeout', logger_1.Logger.errors.TIMEOUT, {
+                logger2.makeError('timeout', logger_1.Logger.errors.TIMEOUT, {
                   requestBody: bodyify(options2.body, flatHeaders['content-type']),
                   requestMethod: options2.method,
                   timeout,
@@ -21709,7 +21713,7 @@ var require_lib27 = __commonJS({
                 response2 = error_1.response;
                 if (response2 == null) {
                   runningTimeout.cancel();
-                  logger.throwError('missing response', logger_1.Logger.errors.SERVER_ERROR, {
+                  logger2.throwError('missing response', logger_1.Logger.errors.SERVER_ERROR, {
                     requestBody: bodyify(options2.body, flatHeaders['content-type']),
                     requestMethod: options2.method,
                     serverError: error_1,
@@ -21723,7 +21727,7 @@ var require_lib27 = __commonJS({
                   body_1 = null;
                 } else if (response2.statusCode < 200 || response2.statusCode >= 300) {
                   runningTimeout.cancel();
-                  logger.throwError('bad response', logger_1.Logger.errors.SERVER_ERROR, {
+                  logger2.throwError('bad response', logger_1.Logger.errors.SERVER_ERROR, {
                     status: response2.statusCode,
                     headers: response2.headers,
                     body: bodyify(
@@ -21763,7 +21767,7 @@ var require_lib27 = __commonJS({
                 return [3, 19];
               case 17:
                 runningTimeout.cancel();
-                logger.throwError(
+                logger2.throwError(
                   'processing response error',
                   logger_1.Logger.errors.SERVER_ERROR,
                   {
@@ -21787,7 +21791,7 @@ var require_lib27 = __commonJS({
               case 20:
                 return [
                   2,
-                  logger.throwError('failed response', logger_1.Logger.errors.SERVER_ERROR, {
+                  logger2.throwError('failed response', logger_1.Logger.errors.SERVER_ERROR, {
                     requestBody: bodyify(options2.body, flatHeaders['content-type']),
                     requestMethod: options2.method,
                     url,
@@ -21807,7 +21811,7 @@ var require_lib27 = __commonJS({
           try {
             result = JSON.parse((0, strings_1.toUtf8String)(value));
           } catch (error) {
-            logger.throwError('invalid JSON', logger_1.Logger.errors.SERVER_ERROR, {
+            logger2.throwError('invalid JSON', logger_1.Logger.errors.SERVER_ERROR, {
               body: value,
               error,
             });
@@ -22866,7 +22870,7 @@ var require_lib28 = __commonJS({
     var transactions_1 = require_lib17();
     var logger_1 = require_lib();
     var _version_1 = require_version22();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     var allowedTransactionKeys = {
       chainId: true,
       data: true,
@@ -22892,13 +22896,13 @@ var require_lib28 = __commonJS({
             case 1:
               name2 = _a7.sent();
               if (typeof name2 !== 'string') {
-                logger.throwArgumentError('invalid address or ENS name', 'name', name2);
+                logger2.throwArgumentError('invalid address or ENS name', 'name', name2);
               }
               try {
                 return [2, (0, address_1.getAddress)(name2)];
               } catch (error) {}
               if (!resolver) {
-                logger.throwError(
+                logger2.throwError(
                   'a provider or signer is needed to resolve ENS names',
                   logger_1.Logger.errors.UNSUPPORTED_OPERATION,
                   {
@@ -22910,7 +22914,7 @@ var require_lib28 = __commonJS({
             case 2:
               address = _a7.sent();
               if (address == null) {
-                logger.throwArgumentError(
+                logger2.throwArgumentError(
                   'resolver or addr is not configured for ENS name',
                   'name',
                   name2
@@ -22957,7 +22961,7 @@ var require_lib28 = __commonJS({
                 return [
                   2,
                   Promise.reject(
-                    logger.makeError(
+                    logger2.makeError(
                       'invalid value for array',
                       logger_1.Logger.errors.INVALID_ARGUMENT,
                       {
@@ -22998,7 +23002,7 @@ var require_lib28 = __commonJS({
               ) {
                 overrides = (0, properties_1.shallowCopy)(args.pop());
               }
-              logger.checkArgumentCount(args.length, fragment.inputs.length, 'passed to contract');
+              logger2.checkArgumentCount(args.length, fragment.inputs.length, 'passed to contract');
               if (contract.signer) {
                 if (overrides.from) {
                   overrides.from = (0, properties_1.resolveProperties)({
@@ -23008,7 +23012,7 @@ var require_lib28 = __commonJS({
                     return __awaiter(_this, void 0, void 0, function () {
                       return __generator(this, function (_a8) {
                         if ((0, address_1.getAddress)(check.signer) !== check.override) {
-                          logger.throwError(
+                          logger2.throwError(
                             'Contract with a Signer cannot override from',
                             logger_1.Logger.errors.UNSUPPORTED_OPERATION,
                             {
@@ -23084,7 +23088,7 @@ var require_lib28 = __commonJS({
               if (ro.value) {
                 roValue = bignumber_1.BigNumber.from(ro.value);
                 if (!roValue.isZero() && !fragment.payable) {
-                  logger.throwError(
+                  logger2.throwError(
                     'non-payable method cannot override value',
                     logger_1.Logger.errors.UNSUPPORTED_OPERATION,
                     {
@@ -23112,7 +23116,7 @@ var require_lib28 = __commonJS({
                 return overrides[key] != null;
               });
               if (leftovers.length) {
-                logger.throwError(
+                logger2.throwError(
                   'cannot override ' +
                     leftovers
                       .map(function (l) {
@@ -23153,7 +23157,7 @@ var require_lib28 = __commonJS({
             switch (_a7.label) {
               case 0:
                 if (!signerOrProvider) {
-                  logger.throwError(
+                  logger2.throwError(
                     'estimate require a provider or signer',
                     logger_1.Logger.errors.UNSUPPORTED_OPERATION,
                     {
@@ -23283,7 +23287,7 @@ var require_lib28 = __commonJS({
             switch (_a7.label) {
               case 0:
                 if (!contract.signer) {
-                  logger.throwError(
+                  logger2.throwError(
                     'sending a transaction requires a signer',
                     logger_1.Logger.errors.UNSUPPORTED_OPERATION,
                     {
@@ -23400,7 +23404,7 @@ var require_lib28 = __commonJS({
         var topic = contractInterface.getEventTopic(fragment);
         if (topics) {
           if (topic !== topics[0]) {
-            logger.throwArgumentError('topic mismatch', 'topics', topics);
+            logger2.throwArgumentError('topic mismatch', 'topics', topics);
           }
           filter.topics = topics.slice();
         } else {
@@ -23465,7 +23469,7 @@ var require_lib28 = __commonJS({
       function BaseContract2(addressOrName, contractInterface, signerOrProvider) {
         var _newTarget = this.constructor;
         var _this = this;
-        logger.checkNew(_newTarget, Contract);
+        logger2.checkNew(_newTarget, Contract);
         (0, properties_1.defineReadOnly)(
           this,
           'interface',
@@ -23481,7 +23485,7 @@ var require_lib28 = __commonJS({
           (0, properties_1.defineReadOnly)(this, 'provider', signerOrProvider);
           (0, properties_1.defineReadOnly)(this, 'signer', null);
         } else {
-          logger.throwArgumentError(
+          logger2.throwArgumentError(
             'invalid signer or provider',
             'signerOrProvider',
             signerOrProvider
@@ -23516,14 +23520,14 @@ var require_lib28 = __commonJS({
             if (filters.length === 1) {
               (0, properties_1.defineReadOnly)(_this.filters, name2, _this.filters[filters[0]]);
             } else {
-              logger.warn('Duplicate definition of ' + name2 + ' (' + filters.join(', ') + ')');
+              logger2.warn('Duplicate definition of ' + name2 + ' (' + filters.join(', ') + ')');
             }
           });
         }
         (0, properties_1.defineReadOnly)(this, '_runningEvents', {});
         (0, properties_1.defineReadOnly)(this, '_wrappedEmits', {});
         if (addressOrName == null) {
-          logger.throwArgumentError(
+          logger2.throwArgumentError(
             'invalid contract address or ENS name',
             'addressOrName',
             addressOrName
@@ -23544,7 +23548,7 @@ var require_lib28 = __commonJS({
               Promise.resolve((0, address_1.getAddress)(addressOrName))
             );
           } catch (error) {
-            logger.throwError(
+            logger2.throwError(
               'provider is required to use ENS name as contract address',
               logger_1.Logger.errors.UNSUPPORTED_OPERATION,
               {
@@ -23558,7 +23562,7 @@ var require_lib28 = __commonJS({
         Object.keys(this.interface.functions).forEach(function (signature) {
           var fragment = _this.interface.functions[signature];
           if (uniqueSignatures[signature]) {
-            logger.warn('Duplicate ABI entry for ' + JSON.stringify(signature));
+            logger2.warn('Duplicate ABI entry for ' + JSON.stringify(signature));
             return;
           }
           uniqueSignatures[signature] = true;
@@ -23659,7 +23663,7 @@ var require_lib28 = __commonJS({
               .getCode(this.address, blockTag)
               .then(function (code) {
                 if (code === '0x') {
-                  logger.throwError(
+                  logger2.throwError(
                     'contract not deployed',
                     logger_1.Logger.errors.UNSUPPORTED_OPERATION,
                     {
@@ -23677,7 +23681,7 @@ var require_lib28 = __commonJS({
       BaseContract2.prototype.fallback = function (overrides) {
         var _this = this;
         if (!this.signer) {
-          logger.throwError(
+          logger2.throwError(
             'sending a transactions require a signer',
             logger_1.Logger.errors.UNSUPPORTED_OPERATION,
             { operation: 'sendTransaction(fallback)' }
@@ -23688,7 +23692,7 @@ var require_lib28 = __commonJS({
           if (tx[key] == null) {
             return;
           }
-          logger.throwError(
+          logger2.throwError(
             'cannot override ' + key,
             logger_1.Logger.errors.UNSUPPORTED_OPERATION,
             { operation: key }
@@ -23793,7 +23797,7 @@ var require_lib28 = __commonJS({
       BaseContract2.prototype._addEventListener = function (runningEvent, listener, once) {
         var _this = this;
         if (!this.provider) {
-          logger.throwError(
+          logger2.throwError(
             'events require a provider or a signer with a provider',
             logger_1.Logger.errors.UNSUPPORTED_OPERATION,
             { operation: 'once' }
@@ -23834,7 +23838,7 @@ var require_lib28 = __commonJS({
           (0, bytes_1.isHexString)(fromBlockOrBlockhash, 32)
         ) {
           if (toBlock != null) {
-            logger.throwArgumentError('cannot specify toBlock with blockhash', 'toBlock', toBlock);
+            logger2.throwArgumentError('cannot specify toBlock with blockhash', 'toBlock', toBlock);
           }
           filter.blockHash = fromBlockOrBlockhash;
         } else {
@@ -23952,10 +23956,10 @@ var require_lib28 = __commonJS({
           bytecodeHex = '0x' + bytecodeHex;
         }
         if (!(0, bytes_1.isHexString)(bytecodeHex) || bytecodeHex.length % 2) {
-          logger.throwArgumentError('invalid bytecode', 'bytecode', bytecode);
+          logger2.throwArgumentError('invalid bytecode', 'bytecode', bytecode);
         }
         if (signer && !abstract_signer_1.Signer.isSigner(signer)) {
-          logger.throwArgumentError('invalid signer', 'signer', signer);
+          logger2.throwArgumentError('invalid signer', 'signer', signer);
         }
         (0, properties_1.defineReadOnly)(this, 'bytecode', bytecodeHex);
         (0, properties_1.defineReadOnly)(
@@ -23986,7 +23990,7 @@ var require_lib28 = __commonJS({
           if (tx[key2] == null) {
             return;
           }
-          logger.throwError(
+          logger2.throwError(
             'cannot override ' + key2,
             logger_1.Logger.errors.UNSUPPORTED_OPERATION,
             { operation: key2 }
@@ -23995,7 +23999,7 @@ var require_lib28 = __commonJS({
         if (tx.value) {
           var value = bignumber_1.BigNumber.from(tx.value);
           if (!value.isZero() && !this.interface.deploy.payable) {
-            logger.throwError(
+            logger2.throwError(
               'non-payable constructor cannot override value',
               logger_1.Logger.errors.UNSUPPORTED_OPERATION,
               {
@@ -24005,7 +24009,7 @@ var require_lib28 = __commonJS({
             );
           }
         }
-        logger.checkArgumentCount(
+        logger2.checkArgumentCount(
           args.length,
           this.interface.deploy.inputs.length,
           ' in Contract constructor'
@@ -24029,7 +24033,7 @@ var require_lib28 = __commonJS({
                 if (args.length === this.interface.deploy.inputs.length + 1) {
                   overrides = args.pop();
                 }
-                logger.checkArgumentCount(
+                logger2.checkArgumentCount(
                   args.length,
                   this.interface.deploy.inputs.length,
                   ' in Contract constructor'
@@ -24063,7 +24067,7 @@ var require_lib28 = __commonJS({
       };
       ContractFactory2.fromSolidity = function (compilerOutput, signer) {
         if (compilerOutput == null) {
-          logger.throwError('missing compiler output', logger_1.Logger.errors.MISSING_ARGUMENT, {
+          logger2.throwError('missing compiler output', logger_1.Logger.errors.MISSING_ARGUMENT, {
             argument: 'compilerOutput',
           });
         }
@@ -24473,7 +24477,7 @@ var require_lib29 = __commonJS({
     exports2.getNetwork = void 0;
     var logger_1 = require_lib();
     var _version_1 = require_version23();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     function isRenetworkable(value) {
       return value && typeof value.renetwork === 'function';
     }
@@ -24645,12 +24649,12 @@ var require_lib29 = __commonJS({
       var standard = networks[network.name];
       if (!standard) {
         if (typeof network.chainId !== 'number') {
-          logger.throwArgumentError('invalid network chainId', 'network', network);
+          logger2.throwArgumentError('invalid network chainId', 'network', network);
         }
         return network;
       }
       if (network.chainId !== 0 && network.chainId !== standard.chainId) {
-        logger.throwArgumentError('network chainId mismatch', 'network', network);
+        logger2.throwArgumentError('network chainId mismatch', 'network', network);
       }
       var defaultProvider = network._defaultProvider || null;
       if (defaultProvider == null && standard._defaultProvider) {
@@ -24850,11 +24854,11 @@ var require_formatter = __commonJS({
     var transactions_1 = require_lib17();
     var logger_1 = require_lib();
     var _version_1 = require_version24();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     var Formatter = (function () {
       function Formatter2() {
         var _newTarget = this.constructor;
-        logger.checkNew(_newTarget, Formatter2);
+        logger2.checkNew(_newTarget, Formatter2);
         this.formats = this.getDefaultFormats();
       }
       Formatter2.prototype.getDefaultFormats = function () {
@@ -25015,7 +25019,7 @@ var require_formatter = __commonJS({
             return value.toLowerCase();
           }
         }
-        return logger.throwArgumentError('invalid hash', 'value', value);
+        return logger2.throwArgumentError('invalid hash', 'value', value);
       };
       Formatter2.prototype.data = function (value, strict) {
         var result = this.hex(value, strict);
@@ -25055,7 +25059,7 @@ var require_formatter = __commonJS({
       Formatter2.prototype.hash = function (value, strict) {
         var result = this.hex(value, strict);
         if ((0, bytes_1.hexDataLength)(result) !== 32) {
-          return logger.throwArgumentError('invalid hash', 'value', value);
+          return logger2.throwArgumentError('invalid hash', 'value', value);
         }
         return result;
       };
@@ -25154,7 +25158,7 @@ var require_formatter = __commonJS({
             var value_1 = bignumber_1.BigNumber.from(result.root).toNumber();
             if (value_1 === 0 || value_1 === 1) {
               if (result.status != null && result.status !== value_1) {
-                logger.throwArgumentError('alt-root-status/status mismatch', 'value', {
+                logger2.throwArgumentError('alt-root-status/status mismatch', 'value', {
                   root: result.root,
                   status: result.status,
                 });
@@ -25162,10 +25166,10 @@ var require_formatter = __commonJS({
               result.status = value_1;
               delete result.root;
             } else {
-              logger.throwArgumentError('invalid alt-root-status', 'value.root', result.root);
+              logger2.throwArgumentError('invalid alt-root-status', 'value.root', result.root);
             }
           } else if (result.root.length !== 66) {
-            logger.throwArgumentError('invalid root hash', 'value.root', result.root);
+            logger2.throwArgumentError('invalid root hash', 'value.root', result.root);
           }
         }
         if (result.status != null) {
@@ -25451,14 +25455,14 @@ var require_base_provider = __commonJS({
     var bech32_1 = __importDefault(require_bech32());
     var logger_1 = require_lib();
     var _version_1 = require_version24();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     var formatter_1 = require_formatter();
     function checkTopic(topic) {
       if (topic == null) {
         return 'null';
       }
       if ((0, bytes_1.hexDataLength)(topic) !== 32) {
-        logger.throwArgumentError('invalid topic', 'topic', topic);
+        logger2.throwArgumentError('invalid topic', 'topic', topic);
       }
       return topic.toLowerCase();
     }
@@ -25509,7 +25513,7 @@ var require_base_provider = __commonJS({
       } else if (Array.isArray(eventName)) {
         return 'filter:*:' + serializeTopics(eventName);
       } else if (abstract_provider_1.ForkEvent.isForkEvent(eventName)) {
-        logger.warn('not implemented');
+        logger2.warn('not implemented');
         throw new Error('not implemented');
       } else if (eventName && typeof eventName === 'object') {
         return (
@@ -25638,7 +25642,7 @@ var require_base_provider = __commonJS({
       } else if (link.match(/^ipfs:\/\//i)) {
         link = link.substring(7);
       } else {
-        logger.throwArgumentError('unsupported IPFS format', 'link', link);
+        logger2.throwArgumentError('unsupported IPFS format', 'link', link);
       }
       return 'https://gateway.ipfs.io/ipfs/' + link;
     }
@@ -25685,7 +25689,7 @@ var require_base_provider = __commonJS({
       Resolver2.prototype._getAddress = function (coinType, hexBytes) {
         var coinInfo = coinInfos[String(coinType)];
         if (coinInfo == null) {
-          logger.throwError(
+          logger2.throwError(
             'unsupported coin type: ' + coinType,
             logger_1.Logger.errors.UNSUPPORTED_OPERATION,
             {
@@ -25772,7 +25776,7 @@ var require_base_provider = __commonJS({
                 }
                 address = this._getAddress(coinType, hexBytes);
                 if (address == null) {
-                  logger.throwError(
+                  logger2.throwError(
                     'invalid or unsupported coin data',
                     logger_1.Logger.errors.UNSUPPORTED_OPERATION,
                     {
@@ -26004,7 +26008,7 @@ var require_base_provider = __commonJS({
                 }
                 return [
                   2,
-                  logger.throwError(
+                  logger2.throwError(
                     'invalid or unsupported content hash data',
                     logger_1.Logger.errors.UNSUPPORTED_OPERATION,
                     {
@@ -26051,12 +26055,12 @@ var require_base_provider = __commonJS({
     exports2.Resolver = Resolver;
     var defaultFormatter = null;
     var nextPollId = 1;
-    var BaseProvider = (function (_super) {
-      __extends(BaseProvider2, _super);
-      function BaseProvider2(network) {
+    var BaseProvider2 = (function (_super) {
+      __extends(BaseProvider3, _super);
+      function BaseProvider3(network) {
         var _newTarget = this.constructor;
         var _this = this;
-        logger.checkNew(_newTarget, abstract_provider_1.Provider);
+        logger2.checkNew(_newTarget, abstract_provider_1.Provider);
         _this = _super.call(this) || this;
         _this._events = [];
         _this._emitted = { block: -2 };
@@ -26075,7 +26079,7 @@ var require_base_provider = __commonJS({
             (0, properties_1.defineReadOnly)(_this, '_network', knownNetwork);
             _this.emit('network', knownNetwork, null);
           } else {
-            logger.throwArgumentError('invalid network', 'network', network);
+            logger2.throwArgumentError('invalid network', 'network', network);
           }
         }
         _this._maxInternalBlockNumber = -1024;
@@ -26084,7 +26088,7 @@ var require_base_provider = __commonJS({
         _this._fastQueryDate = 0;
         return _this;
       }
-      BaseProvider2.prototype._ready = function () {
+      BaseProvider3.prototype._ready = function () {
         return __awaiter(this, void 0, void 0, function () {
           var network, error_4;
           return __generator(this, function (_a7) {
@@ -26111,7 +26115,7 @@ var require_base_provider = __commonJS({
                 _a7.label = 6;
               case 6:
                 if (!network) {
-                  logger.throwError(
+                  logger2.throwError(
                     'no network detected',
                     logger_1.Logger.errors.UNKNOWN_ERROR,
                     {}
@@ -26132,7 +26136,7 @@ var require_base_provider = __commonJS({
           });
         });
       };
-      Object.defineProperty(BaseProvider2.prototype, 'ready', {
+      Object.defineProperty(BaseProvider3.prototype, 'ready', {
         get: function () {
           var _this = this;
           return (0, web_1.poll)(function () {
@@ -26155,16 +26159,16 @@ var require_base_provider = __commonJS({
         enumerable: false,
         configurable: true,
       });
-      BaseProvider2.getFormatter = function () {
+      BaseProvider3.getFormatter = function () {
         if (defaultFormatter == null) {
           defaultFormatter = new formatter_1.Formatter();
         }
         return defaultFormatter;
       };
-      BaseProvider2.getNetwork = function (network) {
+      BaseProvider3.getNetwork = function (network) {
         return (0, networks_1.getNetwork)(network == null ? 'homestead' : network);
       };
-      BaseProvider2.prototype._getInternalBlockNumber = function (maxAge) {
+      BaseProvider3.prototype._getInternalBlockNumber = function (maxAge) {
         return __awaiter(this, void 0, void 0, function () {
           var internalBlockNumber, result, error_5, reqTime, checkInternalBlockNumber;
           var _this = this;
@@ -26240,7 +26244,7 @@ var require_base_provider = __commonJS({
           });
         });
       };
-      BaseProvider2.prototype.poll = function () {
+      BaseProvider3.prototype.poll = function () {
         return __awaiter(this, void 0, void 0, function () {
           var pollId, runners, blockNumber, error_6, i;
           var _this = this;
@@ -26272,7 +26276,7 @@ var require_base_provider = __commonJS({
                   this._emitted.block = blockNumber - 1;
                 }
                 if (Math.abs(this._emitted.block - blockNumber) > 1e3) {
-                  logger.warn(
+                  logger2.warn(
                     'network block skew detected; skipping block events (emitted=' +
                       this._emitted.block +
                       ' blockNumber' +
@@ -26281,7 +26285,7 @@ var require_base_provider = __commonJS({
                   );
                   this.emit(
                     'error',
-                    logger.makeError(
+                    logger2.makeError(
                       'network block skew detected',
                       logger_1.Logger.errors.NETWORK_ERROR,
                       {
@@ -26372,25 +26376,25 @@ var require_base_provider = __commonJS({
           });
         });
       };
-      BaseProvider2.prototype.resetEventsBlock = function (blockNumber) {
+      BaseProvider3.prototype.resetEventsBlock = function (blockNumber) {
         this._lastBlockNumber = blockNumber - 1;
         if (this.polling) {
           this.poll();
         }
       };
-      Object.defineProperty(BaseProvider2.prototype, 'network', {
+      Object.defineProperty(BaseProvider3.prototype, 'network', {
         get: function () {
           return this._network;
         },
         enumerable: false,
         configurable: true,
       });
-      BaseProvider2.prototype.detectNetwork = function () {
+      BaseProvider3.prototype.detectNetwork = function () {
         return __awaiter(this, void 0, void 0, function () {
           return __generator(this, function (_a7) {
             return [
               2,
-              logger.throwError(
+              logger2.throwError(
                 'provider does not support network detection',
                 logger_1.Logger.errors.UNSUPPORTED_OPERATION,
                 {
@@ -26401,7 +26405,7 @@ var require_base_provider = __commonJS({
           });
         });
       };
-      BaseProvider2.prototype.getNetwork = function () {
+      BaseProvider3.prototype.getNetwork = function () {
         return __awaiter(this, void 0, void 0, function () {
           var network, currentNetwork, error;
           return __generator(this, function (_a7) {
@@ -26429,7 +26433,7 @@ var require_base_provider = __commonJS({
                 _a7.sent();
                 return [2, this._network];
               case 4:
-                error = logger.makeError(
+                error = logger2.makeError(
                   'underlying network changed',
                   logger_1.Logger.errors.NETWORK_ERROR,
                   {
@@ -26446,7 +26450,7 @@ var require_base_provider = __commonJS({
           });
         });
       };
-      Object.defineProperty(BaseProvider2.prototype, 'blockNumber', {
+      Object.defineProperty(BaseProvider3.prototype, 'blockNumber', {
         get: function () {
           var _this = this;
           this._getInternalBlockNumber(100 + this.pollingInterval / 2).then(
@@ -26460,7 +26464,7 @@ var require_base_provider = __commonJS({
         enumerable: false,
         configurable: true,
       });
-      Object.defineProperty(BaseProvider2.prototype, 'polling', {
+      Object.defineProperty(BaseProvider3.prototype, 'polling', {
         get: function () {
           return this._poller != null;
         },
@@ -26489,7 +26493,7 @@ var require_base_provider = __commonJS({
         enumerable: false,
         configurable: true,
       });
-      Object.defineProperty(BaseProvider2.prototype, 'pollingInterval', {
+      Object.defineProperty(BaseProvider3.prototype, 'pollingInterval', {
         get: function () {
           return this._pollingInterval;
         },
@@ -26509,7 +26513,7 @@ var require_base_provider = __commonJS({
         enumerable: false,
         configurable: true,
       });
-      BaseProvider2.prototype._getFastBlockNumber = function () {
+      BaseProvider3.prototype._getFastBlockNumber = function () {
         var _this = this;
         var now = getTime();
         if (now - this._fastQueryDate > 2 * this._pollingInterval) {
@@ -26523,7 +26527,7 @@ var require_base_provider = __commonJS({
         }
         return this._fastBlockNumberPromise;
       };
-      BaseProvider2.prototype._setFastBlockNumber = function (blockNumber) {
+      BaseProvider3.prototype._setFastBlockNumber = function (blockNumber) {
         if (this._fastBlockNumber != null && blockNumber < this._fastBlockNumber) {
           return;
         }
@@ -26533,7 +26537,7 @@ var require_base_provider = __commonJS({
           this._fastBlockNumberPromise = Promise.resolve(blockNumber);
         }
       };
-      BaseProvider2.prototype.waitForTransaction = function (
+      BaseProvider3.prototype.waitForTransaction = function (
         transactionHash,
         confirmations,
         timeout
@@ -26552,7 +26556,7 @@ var require_base_provider = __commonJS({
           });
         });
       };
-      BaseProvider2.prototype._waitForTransaction = function (
+      BaseProvider3.prototype._waitForTransaction = function (
         transactionHash,
         confirmations,
         timeout,
@@ -26693,7 +26697,7 @@ var require_base_provider = __commonJS({
                                               reason = 'cancelled';
                                             }
                                             reject(
-                                              logger.makeError(
+                                              logger2.makeError(
                                                 'transaction was replaced',
                                                 logger_1.Logger.errors.TRANSACTION_REPLACED,
                                                 {
@@ -26749,7 +26753,7 @@ var require_base_provider = __commonJS({
                           return;
                         }
                         reject(
-                          logger.makeError('timeout exceeded', logger_1.Logger.errors.TIMEOUT, {
+                          logger2.makeError('timeout exceeded', logger_1.Logger.errors.TIMEOUT, {
                             timeout,
                           })
                         );
@@ -26767,14 +26771,14 @@ var require_base_provider = __commonJS({
           });
         });
       };
-      BaseProvider2.prototype.getBlockNumber = function () {
+      BaseProvider3.prototype.getBlockNumber = function () {
         return __awaiter(this, void 0, void 0, function () {
           return __generator(this, function (_a7) {
             return [2, this._getInternalBlockNumber(0)];
           });
         });
       };
-      BaseProvider2.prototype.getGasPrice = function () {
+      BaseProvider3.prototype.getGasPrice = function () {
         return __awaiter(this, void 0, void 0, function () {
           var result;
           return __generator(this, function (_a7) {
@@ -26791,7 +26795,7 @@ var require_base_provider = __commonJS({
                 } catch (error) {
                   return [
                     2,
-                    logger.throwError(
+                    logger2.throwError(
                       'bad result from backend',
                       logger_1.Logger.errors.SERVER_ERROR,
                       {
@@ -26807,7 +26811,7 @@ var require_base_provider = __commonJS({
           });
         });
       };
-      BaseProvider2.prototype.getBalance = function (addressOrName, blockTag) {
+      BaseProvider3.prototype.getBalance = function (addressOrName, blockTag) {
         return __awaiter(this, void 0, void 0, function () {
           var params, result;
           return __generator(this, function (_a7) {
@@ -26833,7 +26837,7 @@ var require_base_provider = __commonJS({
                 } catch (error) {
                   return [
                     2,
-                    logger.throwError(
+                    logger2.throwError(
                       'bad result from backend',
                       logger_1.Logger.errors.SERVER_ERROR,
                       {
@@ -26850,7 +26854,7 @@ var require_base_provider = __commonJS({
           });
         });
       };
-      BaseProvider2.prototype.getTransactionCount = function (addressOrName, blockTag) {
+      BaseProvider3.prototype.getTransactionCount = function (addressOrName, blockTag) {
         return __awaiter(this, void 0, void 0, function () {
           var params, result;
           return __generator(this, function (_a7) {
@@ -26876,7 +26880,7 @@ var require_base_provider = __commonJS({
                 } catch (error) {
                   return [
                     2,
-                    logger.throwError(
+                    logger2.throwError(
                       'bad result from backend',
                       logger_1.Logger.errors.SERVER_ERROR,
                       {
@@ -26893,7 +26897,7 @@ var require_base_provider = __commonJS({
           });
         });
       };
-      BaseProvider2.prototype.getCode = function (addressOrName, blockTag) {
+      BaseProvider3.prototype.getCode = function (addressOrName, blockTag) {
         return __awaiter(this, void 0, void 0, function () {
           var params, result;
           return __generator(this, function (_a7) {
@@ -26919,7 +26923,7 @@ var require_base_provider = __commonJS({
                 } catch (error) {
                   return [
                     2,
-                    logger.throwError(
+                    logger2.throwError(
                       'bad result from backend',
                       logger_1.Logger.errors.SERVER_ERROR,
                       {
@@ -26936,7 +26940,7 @@ var require_base_provider = __commonJS({
           });
         });
       };
-      BaseProvider2.prototype.getStorageAt = function (addressOrName, position, blockTag) {
+      BaseProvider3.prototype.getStorageAt = function (addressOrName, position, blockTag) {
         return __awaiter(this, void 0, void 0, function () {
           var params, result;
           return __generator(this, function (_a7) {
@@ -26965,7 +26969,7 @@ var require_base_provider = __commonJS({
                 } catch (error) {
                   return [
                     2,
-                    logger.throwError(
+                    logger2.throwError(
                       'bad result from backend',
                       logger_1.Logger.errors.SERVER_ERROR,
                       {
@@ -26982,14 +26986,14 @@ var require_base_provider = __commonJS({
           });
         });
       };
-      BaseProvider2.prototype._wrapTransaction = function (tx, hash, startBlock) {
+      BaseProvider3.prototype._wrapTransaction = function (tx, hash, startBlock) {
         var _this = this;
         if (hash != null && (0, bytes_1.hexDataLength)(hash) !== 32) {
           throw new Error('invalid response - sendTransaction');
         }
         var result = tx;
         if (hash != null && tx.hash !== hash) {
-          logger.throwError(
+          logger2.throwError(
             'Transaction hash mismatch from Provider.sendTransaction.',
             logger_1.Logger.errors.UNKNOWN_ERROR,
             { expectedHash: tx.hash, returnedHash: hash }
@@ -27026,11 +27030,15 @@ var require_base_provider = __commonJS({
                   }
                   this._emitted['t:' + tx.hash] = receipt.blockNumber;
                   if (receipt.status === 0) {
-                    logger.throwError('transaction failed', logger_1.Logger.errors.CALL_EXCEPTION, {
-                      transactionHash: tx.hash,
-                      transaction: tx,
-                      receipt,
-                    });
+                    logger2.throwError(
+                      'transaction failed',
+                      logger_1.Logger.errors.CALL_EXCEPTION,
+                      {
+                        transactionHash: tx.hash,
+                        transaction: tx,
+                        receipt,
+                      }
+                    );
                   }
                   return [2, receipt];
               }
@@ -27039,7 +27047,7 @@ var require_base_provider = __commonJS({
         };
         return result;
       };
-      BaseProvider2.prototype.sendTransaction = function (signedTransaction) {
+      BaseProvider3.prototype.sendTransaction = function (signedTransaction) {
         return __awaiter(this, void 0, void 0, function () {
           var hexTx, tx, blockNumber, hash, error_7;
           return __generator(this, function (_a7) {
@@ -27081,7 +27089,7 @@ var require_base_provider = __commonJS({
           });
         });
       };
-      BaseProvider2.prototype._getTransactionRequest = function (transaction) {
+      BaseProvider3.prototype._getTransactionRequest = function (transaction) {
         return __awaiter(this, void 0, void 0, function () {
           var values, tx, _a7, _b;
           var _this = this;
@@ -27137,7 +27145,7 @@ var require_base_provider = __commonJS({
           });
         });
       };
-      BaseProvider2.prototype._getFilter = function (filter) {
+      BaseProvider3.prototype._getFilter = function (filter) {
         return __awaiter(this, void 0, void 0, function () {
           var result, _a7, _b;
           var _this = this;
@@ -27171,7 +27179,7 @@ var require_base_provider = __commonJS({
           });
         });
       };
-      BaseProvider2.prototype.call = function (transaction, blockTag) {
+      BaseProvider3.prototype.call = function (transaction, blockTag) {
         return __awaiter(this, void 0, void 0, function () {
           var params, result;
           return __generator(this, function (_a7) {
@@ -27197,7 +27205,7 @@ var require_base_provider = __commonJS({
                 } catch (error) {
                   return [
                     2,
-                    logger.throwError(
+                    logger2.throwError(
                       'bad result from backend',
                       logger_1.Logger.errors.SERVER_ERROR,
                       {
@@ -27214,7 +27222,7 @@ var require_base_provider = __commonJS({
           });
         });
       };
-      BaseProvider2.prototype.estimateGas = function (transaction) {
+      BaseProvider3.prototype.estimateGas = function (transaction) {
         return __awaiter(this, void 0, void 0, function () {
           var params, result;
           return __generator(this, function (_a7) {
@@ -27239,7 +27247,7 @@ var require_base_provider = __commonJS({
                 } catch (error) {
                   return [
                     2,
-                    logger.throwError(
+                    logger2.throwError(
                       'bad result from backend',
                       logger_1.Logger.errors.SERVER_ERROR,
                       {
@@ -27256,7 +27264,7 @@ var require_base_provider = __commonJS({
           });
         });
       };
-      BaseProvider2.prototype._getAddress = function (addressOrName) {
+      BaseProvider3.prototype._getAddress = function (addressOrName) {
         return __awaiter(this, void 0, void 0, function () {
           var address;
           return __generator(this, function (_a7) {
@@ -27266,13 +27274,13 @@ var require_base_provider = __commonJS({
               case 1:
                 addressOrName = _a7.sent();
                 if (typeof addressOrName !== 'string') {
-                  logger.throwArgumentError('invalid address or ENS name', 'name', addressOrName);
+                  logger2.throwArgumentError('invalid address or ENS name', 'name', addressOrName);
                 }
                 return [4, this.resolveName(addressOrName)];
               case 2:
                 address = _a7.sent();
                 if (address == null) {
-                  logger.throwError(
+                  logger2.throwError(
                     'ENS name not configured',
                     logger_1.Logger.errors.UNSUPPORTED_OPERATION,
                     {
@@ -27285,7 +27293,7 @@ var require_base_provider = __commonJS({
           });
         });
       };
-      BaseProvider2.prototype._getBlock = function (blockHashOrBlockTag, includeTransactions) {
+      BaseProvider3.prototype._getBlock = function (blockHashOrBlockTag, includeTransactions) {
         return __awaiter(this, void 0, void 0, function () {
           var blockNumber, params, _a7, error_8;
           var _this = this;
@@ -27317,7 +27325,7 @@ var require_base_provider = __commonJS({
                 return [3, 6];
               case 5:
                 error_8 = _b.sent();
-                logger.throwArgumentError(
+                logger2.throwArgumentError(
                   'invalid block hash or block tag',
                   'blockHashOrBlockTag',
                   blockHashOrBlockTag
@@ -27401,13 +27409,13 @@ var require_base_provider = __commonJS({
           });
         });
       };
-      BaseProvider2.prototype.getBlock = function (blockHashOrBlockTag) {
+      BaseProvider3.prototype.getBlock = function (blockHashOrBlockTag) {
         return this._getBlock(blockHashOrBlockTag, false);
       };
-      BaseProvider2.prototype.getBlockWithTransactions = function (blockHashOrBlockTag) {
+      BaseProvider3.prototype.getBlockWithTransactions = function (blockHashOrBlockTag) {
         return this._getBlock(blockHashOrBlockTag, true);
       };
-      BaseProvider2.prototype.getTransaction = function (transactionHash) {
+      BaseProvider3.prototype.getTransaction = function (transactionHash) {
         return __awaiter(this, void 0, void 0, function () {
           var params;
           var _this = this;
@@ -27470,7 +27478,7 @@ var require_base_provider = __commonJS({
           });
         });
       };
-      BaseProvider2.prototype.getTransactionReceipt = function (transactionHash) {
+      BaseProvider3.prototype.getTransactionReceipt = function (transactionHash) {
         return __awaiter(this, void 0, void 0, function () {
           var params;
           var _this = this;
@@ -27536,7 +27544,7 @@ var require_base_provider = __commonJS({
           });
         });
       };
-      BaseProvider2.prototype.getLogs = function (filter) {
+      BaseProvider3.prototype.getLogs = function (filter) {
         return __awaiter(this, void 0, void 0, function () {
           var params, logs;
           return __generator(this, function (_a7) {
@@ -27569,7 +27577,7 @@ var require_base_provider = __commonJS({
           });
         });
       };
-      BaseProvider2.prototype.getEtherPrice = function () {
+      BaseProvider3.prototype.getEtherPrice = function () {
         return __awaiter(this, void 0, void 0, function () {
           return __generator(this, function (_a7) {
             switch (_a7.label) {
@@ -27582,7 +27590,7 @@ var require_base_provider = __commonJS({
           });
         });
       };
-      BaseProvider2.prototype._getBlockTag = function (blockTag) {
+      BaseProvider3.prototype._getBlockTag = function (blockTag) {
         return __awaiter(this, void 0, void 0, function () {
           var blockNumber;
           return __generator(this, function (_a7) {
@@ -27593,7 +27601,7 @@ var require_base_provider = __commonJS({
                 blockTag = _a7.sent();
                 if (!(typeof blockTag === 'number' && blockTag < 0)) return [3, 3];
                 if (blockTag % 1) {
-                  logger.throwArgumentError('invalid BlockTag', 'blockTag', blockTag);
+                  logger2.throwArgumentError('invalid BlockTag', 'blockTag', blockTag);
                 }
                 return [4, this._getInternalBlockNumber(100 + 2 * this.pollingInterval)];
               case 2:
@@ -27609,7 +27617,7 @@ var require_base_provider = __commonJS({
           });
         });
       };
-      BaseProvider2.prototype.getResolver = function (name2) {
+      BaseProvider3.prototype.getResolver = function (name2) {
         return __awaiter(this, void 0, void 0, function () {
           var address, error_9;
           return __generator(this, function (_a7) {
@@ -27635,7 +27643,7 @@ var require_base_provider = __commonJS({
           });
         });
       };
-      BaseProvider2.prototype._getResolver = function (name2) {
+      BaseProvider3.prototype._getResolver = function (name2) {
         return __awaiter(this, void 0, void 0, function () {
           var network, transaction, _a7, _b, error_10;
           return __generator(this, function (_c) {
@@ -27645,7 +27653,7 @@ var require_base_provider = __commonJS({
               case 1:
                 network = _c.sent();
                 if (!network.ensAddress) {
-                  logger.throwError(
+                  logger2.throwError(
                     'network does not support ENS',
                     logger_1.Logger.errors.UNSUPPORTED_OPERATION,
                     { operation: 'ENS', network: network.name }
@@ -27674,7 +27682,7 @@ var require_base_provider = __commonJS({
           });
         });
       };
-      BaseProvider2.prototype.resolveName = function (name2) {
+      BaseProvider3.prototype.resolveName = function (name2) {
         return __awaiter(this, void 0, void 0, function () {
           var resolver;
           return __generator(this, function (_a7) {
@@ -27691,7 +27699,7 @@ var require_base_provider = __commonJS({
                   }
                 }
                 if (typeof name2 !== 'string') {
-                  logger.throwArgumentError('invalid ENS name', 'name', name2);
+                  logger2.throwArgumentError('invalid ENS name', 'name', name2);
                 }
                 return [4, this.getResolver(name2)];
               case 2:
@@ -27706,7 +27714,7 @@ var require_base_provider = __commonJS({
           });
         });
       };
-      BaseProvider2.prototype.lookupAddress = function (address) {
+      BaseProvider3.prototype.lookupAddress = function (address) {
         return __awaiter(this, void 0, void 0, function () {
           var reverseName, resolverAddress, bytes, _a7, length, name2, addr;
           return __generator(this, function (_b) {
@@ -27757,7 +27765,7 @@ var require_base_provider = __commonJS({
           });
         });
       };
-      BaseProvider2.prototype.getAvatar = function (nameOrAddress) {
+      BaseProvider3.prototype.getAvatar = function (nameOrAddress) {
         return __awaiter(this, void 0, void 0, function () {
           var resolver, address, reverseName, resolverAddress, avatar;
           return __generator(this, function (_a7) {
@@ -27795,38 +27803,38 @@ var require_base_provider = __commonJS({
           });
         });
       };
-      BaseProvider2.prototype.perform = function (method, params) {
-        return logger.throwError(
+      BaseProvider3.prototype.perform = function (method, params) {
+        return logger2.throwError(
           method + ' not implemented',
           logger_1.Logger.errors.NOT_IMPLEMENTED,
           { operation: method }
         );
       };
-      BaseProvider2.prototype._startEvent = function (event) {
+      BaseProvider3.prototype._startEvent = function (event) {
         this.polling =
           this._events.filter(function (e) {
             return e.pollable();
           }).length > 0;
       };
-      BaseProvider2.prototype._stopEvent = function (event) {
+      BaseProvider3.prototype._stopEvent = function (event) {
         this.polling =
           this._events.filter(function (e) {
             return e.pollable();
           }).length > 0;
       };
-      BaseProvider2.prototype._addEventListener = function (eventName, listener, once) {
+      BaseProvider3.prototype._addEventListener = function (eventName, listener, once) {
         var event = new Event(getEventTag(eventName), listener, once);
         this._events.push(event);
         this._startEvent(event);
         return this;
       };
-      BaseProvider2.prototype.on = function (eventName, listener) {
+      BaseProvider3.prototype.on = function (eventName, listener) {
         return this._addEventListener(eventName, listener, false);
       };
-      BaseProvider2.prototype.once = function (eventName, listener) {
+      BaseProvider3.prototype.once = function (eventName, listener) {
         return this._addEventListener(eventName, listener, true);
       };
-      BaseProvider2.prototype.emit = function (eventName) {
+      BaseProvider3.prototype.emit = function (eventName) {
         var _this = this;
         var args = [];
         for (var _i = 1; _i < arguments.length; _i++) {
@@ -27854,7 +27862,7 @@ var require_base_provider = __commonJS({
         });
         return result;
       };
-      BaseProvider2.prototype.listenerCount = function (eventName) {
+      BaseProvider3.prototype.listenerCount = function (eventName) {
         if (!eventName) {
           return this._events.length;
         }
@@ -27863,7 +27871,7 @@ var require_base_provider = __commonJS({
           return event.tag === eventTag;
         }).length;
       };
-      BaseProvider2.prototype.listeners = function (eventName) {
+      BaseProvider3.prototype.listeners = function (eventName) {
         if (eventName == null) {
           return this._events.map(function (event) {
             return event.listener;
@@ -27878,7 +27886,7 @@ var require_base_provider = __commonJS({
             return event.listener;
           });
       };
-      BaseProvider2.prototype.off = function (eventName, listener) {
+      BaseProvider3.prototype.off = function (eventName, listener) {
         var _this = this;
         if (listener == null) {
           return this.removeAllListeners(eventName);
@@ -27902,7 +27910,7 @@ var require_base_provider = __commonJS({
         });
         return this;
       };
-      BaseProvider2.prototype.removeAllListeners = function (eventName) {
+      BaseProvider3.prototype.removeAllListeners = function (eventName) {
         var _this = this;
         var stopped = [];
         if (eventName == null) {
@@ -27923,9 +27931,9 @@ var require_base_provider = __commonJS({
         });
         return this;
       };
-      return BaseProvider2;
+      return BaseProvider3;
     })(abstract_provider_1.Provider);
-    exports2.BaseProvider = BaseProvider;
+    exports2.BaseProvider = BaseProvider2;
   },
 });
 
@@ -28103,7 +28111,7 @@ var require_json_rpc_provider = __commonJS({
     var web_1 = require_lib27();
     var logger_1 = require_lib();
     var _version_1 = require_version24();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     var base_provider_1 = require_base_provider();
     var errorGas = ['call', 'estimateGas'];
     function checkError(method, error, params) {
@@ -28112,7 +28120,7 @@ var require_json_rpc_provider = __commonJS({
         if (e && e.message.match('reverted') && (0, bytes_1.isHexString)(e.data)) {
           return e.data;
         }
-        logger.throwError(
+        logger2.throwError(
           'missing revert data in call exception',
           logger_1.Logger.errors.CALL_EXCEPTION,
           {
@@ -28136,7 +28144,7 @@ var require_json_rpc_provider = __commonJS({
       message = (message || '').toLowerCase();
       var transaction = params.transaction || params.signedTransaction;
       if (message.match(/insufficient funds|base fee exceeds gas limit/)) {
-        logger.throwError(
+        logger2.throwError(
           'insufficient funds for intrinsic transaction cost',
           logger_1.Logger.errors.INSUFFICIENT_FUNDS,
           {
@@ -28147,14 +28155,14 @@ var require_json_rpc_provider = __commonJS({
         );
       }
       if (message.match(/nonce too low/)) {
-        logger.throwError('nonce has already been used', logger_1.Logger.errors.NONCE_EXPIRED, {
+        logger2.throwError('nonce has already been used', logger_1.Logger.errors.NONCE_EXPIRED, {
           error,
           method,
           transaction,
         });
       }
       if (message.match(/replacement transaction underpriced/)) {
-        logger.throwError(
+        logger2.throwError(
           'replacement fee too low',
           logger_1.Logger.errors.REPLACEMENT_UNDERPRICED,
           {
@@ -28165,7 +28173,7 @@ var require_json_rpc_provider = __commonJS({
         );
       }
       if (message.match(/only replay-protected/)) {
-        logger.throwError(
+        logger2.throwError(
           'legacy pre-eip-155 transactions not supported',
           logger_1.Logger.errors.UNSUPPORTED_OPERATION,
           {
@@ -28181,7 +28189,7 @@ var require_json_rpc_provider = __commonJS({
           /gas required exceeds allowance|always failing transaction|execution reverted/
         )
       ) {
-        logger.throwError(
+        logger2.throwError(
           'cannot estimate gas; transaction may fail or may require manual gas limit',
           logger_1.Logger.errors.UNPREDICTABLE_GAS_LIMIT,
           {
@@ -28219,7 +28227,7 @@ var require_json_rpc_provider = __commonJS({
       function JsonRpcSigner2(constructorGuard, provider, addressOrIndex) {
         var _newTarget = this.constructor;
         var _this = this;
-        logger.checkNew(_newTarget, JsonRpcSigner2);
+        logger2.checkNew(_newTarget, JsonRpcSigner2);
         _this = _super.call(this) || this;
         if (constructorGuard !== _constructorGuard) {
           throw new Error(
@@ -28241,12 +28249,12 @@ var require_json_rpc_provider = __commonJS({
           (0, properties_1.defineReadOnly)(_this, '_index', addressOrIndex);
           (0, properties_1.defineReadOnly)(_this, '_address', null);
         } else {
-          logger.throwArgumentError('invalid address or index', 'addressOrIndex', addressOrIndex);
+          logger2.throwArgumentError('invalid address or index', 'addressOrIndex', addressOrIndex);
         }
         return _this;
       }
       JsonRpcSigner2.prototype.connect = function (provider) {
-        return logger.throwError(
+        return logger2.throwError(
           'cannot alter JSON-RPC Signer connection',
           logger_1.Logger.errors.UNSUPPORTED_OPERATION,
           {
@@ -28268,7 +28276,7 @@ var require_json_rpc_provider = __commonJS({
         }
         return this.provider.send('eth_accounts', []).then(function (accounts) {
           if (accounts.length <= _this._index) {
-            logger.throwError(
+            logger2.throwError(
               'unknown account #' + _this._index,
               logger_1.Logger.errors.UNSUPPORTED_OPERATION,
               {
@@ -28307,7 +28315,7 @@ var require_json_rpc_provider = __commonJS({
                   case 1:
                     address = _a7.sent();
                     if (address == null) {
-                      logger.throwArgumentError('provided ENS name resolves to null', 'tx.to', to);
+                      logger2.throwArgumentError('provided ENS name resolves to null', 'tx.to', to);
                     }
                     return [2, address];
                 }
@@ -28323,7 +28331,7 @@ var require_json_rpc_provider = __commonJS({
             sender = _a7.sender;
           if (tx.from != null) {
             if (tx.from.toLowerCase() !== sender) {
-              logger.throwArgumentError('from address mismatch', 'transaction', transaction);
+              logger2.throwArgumentError('from address mismatch', 'transaction', transaction);
             }
           } else {
             tx.from = sender;
@@ -28340,7 +28348,7 @@ var require_json_rpc_provider = __commonJS({
         });
       };
       JsonRpcSigner2.prototype.signTransaction = function (transaction) {
-        return logger.throwError(
+        return logger2.throwError(
           'signing transactions is unsupported',
           logger_1.Logger.errors.UNSUPPORTED_OPERATION,
           {
@@ -28546,7 +28554,7 @@ var require_json_rpc_provider = __commonJS({
       function JsonRpcProvider2(url, network) {
         var _newTarget = this.constructor;
         var _this = this;
-        logger.checkNew(_newTarget, JsonRpcProvider2);
+        logger2.checkNew(_newTarget, JsonRpcProvider2);
         var networkOrReady = network;
         if (networkOrReady == null) {
           networkOrReady = new Promise(function (resolve, reject) {
@@ -28646,7 +28654,7 @@ var require_json_rpc_provider = __commonJS({
                   } catch (error) {
                     return [
                       2,
-                      logger.throwError(
+                      logger2.throwError(
                         'could not detect network',
                         logger_1.Logger.errors.NETWORK_ERROR,
                         {
@@ -28660,7 +28668,7 @@ var require_json_rpc_provider = __commonJS({
                 }
                 return [
                   2,
-                  logger.throwError(
+                  logger2.throwError(
                     'could not detect network',
                     logger_1.Logger.errors.NETWORK_ERROR,
                     {
@@ -28811,7 +28819,7 @@ var require_json_rpc_provider = __commonJS({
               case 2:
                 args = this.prepareRequest(method, params);
                 if (args == null) {
-                  logger.throwError(
+                  logger2.throwError(
                     method + ' not implemented',
                     logger_1.Logger.errors.NOT_IMPLEMENTED,
                     { operation: method }
@@ -31551,14 +31559,14 @@ var require_websocket_provider = __commonJS({
     var ws_1 = require_ws2();
     var logger_1 = require_lib();
     var _version_1 = require_version24();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     var NextId = 1;
     var WebSocketProvider = (function (_super) {
       __extends(WebSocketProvider2, _super);
       function WebSocketProvider2(url, network) {
         var _this = this;
         if (network === 'any') {
-          logger.throwError(
+          logger2.throwError(
             "WebSocketProvider does not support 'any' network yet",
             logger_1.Logger.errors.UNSUPPORTED_OPERATION,
             {
@@ -31645,7 +31653,7 @@ var require_websocket_provider = __commonJS({
           return 0;
         },
         set: function (value) {
-          logger.throwError(
+          logger2.throwError(
             'cannot set polling interval on WebSocketProvider',
             logger_1.Logger.errors.UNSUPPORTED_OPERATION,
             {
@@ -31657,7 +31665,7 @@ var require_websocket_provider = __commonJS({
         configurable: true,
       });
       WebSocketProvider2.prototype.resetEventsBlock = function (blockNumber) {
-        logger.throwError(
+        logger2.throwError(
           'cannot reset events block on WebSocketProvider',
           logger_1.Logger.errors.UNSUPPORTED_OPERATION,
           {
@@ -31677,7 +31685,7 @@ var require_websocket_provider = __commonJS({
           if (!value) {
             return;
           }
-          logger.throwError(
+          logger2.throwError(
             'cannot set polling on WebSocketProvider',
             logger_1.Logger.errors.UNSUPPORTED_OPERATION,
             {
@@ -32024,14 +32032,14 @@ var require_url_json_rpc_provider = __commonJS({
     var properties_1 = require_lib4();
     var logger_1 = require_lib();
     var _version_1 = require_version24();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     var json_rpc_provider_1 = require_json_rpc_provider();
-    var StaticJsonRpcProvider = (function (_super) {
-      __extends(StaticJsonRpcProvider2, _super);
-      function StaticJsonRpcProvider2() {
+    var StaticJsonRpcProvider3 = (function (_super) {
+      __extends(StaticJsonRpcProvider4, _super);
+      function StaticJsonRpcProvider4() {
         return (_super !== null && _super.apply(this, arguments)) || this;
       }
-      StaticJsonRpcProvider2.prototype.detectNetwork = function () {
+      StaticJsonRpcProvider4.prototype.detectNetwork = function () {
         return __awaiter(this, void 0, void 0, function () {
           var network;
           return __generator(this, function (_a7) {
@@ -32043,7 +32051,7 @@ var require_url_json_rpc_provider = __commonJS({
               case 1:
                 network = _a7.sent();
                 if (!network) {
-                  logger.throwError(
+                  logger2.throwError(
                     'no network detected',
                     logger_1.Logger.errors.UNKNOWN_ERROR,
                     {}
@@ -32060,15 +32068,15 @@ var require_url_json_rpc_provider = __commonJS({
           });
         });
       };
-      return StaticJsonRpcProvider2;
+      return StaticJsonRpcProvider4;
     })(json_rpc_provider_1.JsonRpcProvider);
-    exports2.StaticJsonRpcProvider = StaticJsonRpcProvider;
+    exports2.StaticJsonRpcProvider = StaticJsonRpcProvider3;
     var UrlJsonRpcProvider = (function (_super) {
       __extends(UrlJsonRpcProvider2, _super);
       function UrlJsonRpcProvider2(network, apiKey) {
         var _newTarget = this.constructor;
         var _this = this;
-        logger.checkAbstract(_newTarget, UrlJsonRpcProvider2);
+        logger2.checkAbstract(_newTarget, UrlJsonRpcProvider2);
         network = (0, properties_1.getStatic)(_newTarget, 'getNetwork')(network);
         apiKey = (0, properties_1.getStatic)(_newTarget, 'getApiKey')(apiKey);
         var connection = (0, properties_1.getStatic)(_newTarget, 'getUrl')(network, apiKey);
@@ -32083,13 +32091,13 @@ var require_url_json_rpc_provider = __commonJS({
         return _this;
       }
       UrlJsonRpcProvider2.prototype._startPending = function () {
-        logger.warn('WARNING: API provider does not support pending filters');
+        logger2.warn('WARNING: API provider does not support pending filters');
       };
       UrlJsonRpcProvider2.prototype.isCommunityResource = function () {
         return false;
       };
       UrlJsonRpcProvider2.prototype.getSigner = function (address) {
-        return logger.throwError(
+        return logger2.throwError(
           'API provider does not support signing',
           logger_1.Logger.errors.UNSUPPORTED_OPERATION,
           { operation: 'getSigner' }
@@ -32102,7 +32110,7 @@ var require_url_json_rpc_provider = __commonJS({
         return apiKey;
       };
       UrlJsonRpcProvider2.getUrl = function (network, apiKey) {
-        return logger.throwError(
+        return logger2.throwError(
           'not implemented; sub-classes must override getUrl',
           logger_1.Logger.errors.NOT_IMPLEMENTED,
           {
@@ -32111,7 +32119,7 @@ var require_url_json_rpc_provider = __commonJS({
         );
       };
       return UrlJsonRpcProvider2;
-    })(StaticJsonRpcProvider);
+    })(StaticJsonRpcProvider3);
     exports2.UrlJsonRpcProvider = UrlJsonRpcProvider;
   },
 });
@@ -32154,7 +32162,7 @@ var require_alchemy_provider = __commonJS({
     var websocket_provider_1 = require_websocket_provider();
     var logger_1 = require_lib();
     var _version_1 = require_version24();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     var url_json_rpc_provider_1 = require_url_json_rpc_provider();
     var defaultApiKey = '_gg7wSSi0KMBsdKnGVfHDueq6xMB9EkC';
     var AlchemyWebSocketProvider = (function (_super) {
@@ -32188,7 +32196,7 @@ var require_alchemy_provider = __commonJS({
           return defaultApiKey;
         }
         if (apiKey && typeof apiKey !== 'string') {
-          logger.throwArgumentError('invalid apiKey', 'apiKey', apiKey);
+          logger2.throwArgumentError('invalid apiKey', 'apiKey', apiKey);
         }
         return apiKey;
       };
@@ -32229,7 +32237,7 @@ var require_alchemy_provider = __commonJS({
             host = 'opt-kovan.g.alchemy.com/v2/';
             break;
           default:
-            logger.throwArgumentError('unsupported network', 'network', arguments[0]);
+            logger2.throwArgumentError('unsupported network', 'network', arguments[0]);
         }
         return {
           allowGzip: true,
@@ -32418,7 +32426,7 @@ var require_cloudflare_provider = __commonJS({
     var url_json_rpc_provider_1 = require_url_json_rpc_provider();
     var logger_1 = require_lib();
     var _version_1 = require_version24();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     var CloudflareProvider = (function (_super) {
       __extends(CloudflareProvider2, _super);
       function CloudflareProvider2() {
@@ -32426,7 +32434,7 @@ var require_cloudflare_provider = __commonJS({
       }
       CloudflareProvider2.getApiKey = function (apiKey) {
         if (apiKey != null) {
-          logger.throwArgumentError('apiKey not supported for cloudflare', 'apiKey', apiKey);
+          logger2.throwArgumentError('apiKey not supported for cloudflare', 'apiKey', apiKey);
         }
         return null;
       };
@@ -32437,7 +32445,7 @@ var require_cloudflare_provider = __commonJS({
             host = 'https://cloudflare-eth.com/';
             break;
           default:
-            logger.throwArgumentError('unsupported network', 'network', arguments[0]);
+            logger2.throwArgumentError('unsupported network', 'network', arguments[0]);
         }
         return host;
       };
@@ -32635,7 +32643,7 @@ var require_etherscan_provider = __commonJS({
     var formatter_1 = require_formatter();
     var logger_1 = require_lib();
     var _version_1 = require_version24();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     var base_provider_1 = require_base_provider();
     function getTransactionPostData(transaction) {
       var result = {};
@@ -32748,7 +32756,7 @@ var require_etherscan_provider = __commonJS({
           if ((0, bytes_1.isHexString)(data)) {
             return data;
           }
-          logger.throwError(
+          logger2.throwError(
             'missing revert data in call exception',
             logger_1.Logger.errors.CALL_EXCEPTION,
             {
@@ -32770,7 +32778,7 @@ var require_etherscan_provider = __commonJS({
       }
       message = (message || '').toLowerCase();
       if (message.match(/insufficient funds/)) {
-        logger.throwError(
+        logger2.throwError(
           'insufficient funds for intrinsic transaction cost',
           logger_1.Logger.errors.INSUFFICIENT_FUNDS,
           {
@@ -32783,14 +32791,14 @@ var require_etherscan_provider = __commonJS({
       if (
         message.match(/same hash was already imported|transaction nonce is too low|nonce too low/)
       ) {
-        logger.throwError('nonce has already been used', logger_1.Logger.errors.NONCE_EXPIRED, {
+        logger2.throwError('nonce has already been used', logger_1.Logger.errors.NONCE_EXPIRED, {
           error,
           method,
           transaction,
         });
       }
       if (message.match(/another transaction with same nonce/)) {
-        logger.throwError(
+        logger2.throwError(
           'replacement fee too low',
           logger_1.Logger.errors.REPLACEMENT_UNDERPRICED,
           {
@@ -32801,7 +32809,7 @@ var require_etherscan_provider = __commonJS({
         );
       }
       if (message.match(/execution failed due to an exception|execution reverted/)) {
-        logger.throwError(
+        logger2.throwError(
           'cannot estimate gas; transaction may fail or may require manual gas limit',
           logger_1.Logger.errors.UNPREDICTABLE_GAS_LIMIT,
           {
@@ -32818,7 +32826,7 @@ var require_etherscan_provider = __commonJS({
       function EtherscanProvider2(network, apiKey) {
         var _newTarget = this.constructor;
         var _this = this;
-        logger.checkNew(_newTarget, EtherscanProvider2);
+        logger2.checkNew(_newTarget, EtherscanProvider2);
         _this = _super.call(this, network) || this;
         (0, properties_1.defineReadOnly)(_this, 'baseUrl', _this.getBaseUrl());
         (0, properties_1.defineReadOnly)(_this, 'apiKey', apiKey || defaultApiKey);
@@ -32838,7 +32846,7 @@ var require_etherscan_provider = __commonJS({
             return 'https://api-goerli.etherscan.io';
           default:
         }
-        return logger.throwArgumentError('unsupported network', 'network', name);
+        return logger2.throwArgumentError('unsupported network', 'network', name);
       };
       EtherscanProvider2.prototype.getUrl = function (module3, params) {
         var query = Object.keys(params).reduce(function (accum, key) {
@@ -33091,7 +33099,7 @@ var require_etherscan_provider = __commonJS({
                 }
                 if (params.filter.topics && params.filter.topics.length > 0) {
                   if (params.filter.topics.length > 1) {
-                    logger.throwError(
+                    logger2.throwError(
                       'unsupported topic count',
                       logger_1.Logger.errors.UNSUPPORTED_OPERATION,
                       { topics: params.filter.topics }
@@ -33100,7 +33108,7 @@ var require_etherscan_provider = __commonJS({
                   if (params.filter.topics.length === 1) {
                     topic0 = params.filter.topics[0];
                     if (typeof topic0 !== 'string' || topic0.length !== 66) {
-                      logger.throwError(
+                      logger2.throwError(
                         'unsupported topic format',
                         logger_1.Logger.errors.UNSUPPORTED_OPERATION,
                         { topic0 }
@@ -33380,11 +33388,11 @@ var require_fallback_provider = __commonJS({
     var formatter_1 = require_formatter();
     var logger_1 = require_lib();
     var _version_1 = require_version24();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     function now() {
       return new Date().getTime();
     }
-    function checkNetworks(networks) {
+    function checkNetworks2(networks) {
       var result = null;
       for (var i = 0; i < networks.length; i++) {
         var network = networks[i];
@@ -33400,7 +33408,7 @@ var require_fallback_provider = __commonJS({
                 (result.ensAddress == null && network.ensAddress == null))
             )
           ) {
-            logger.throwArgumentError('provider mismatch', 'networks', networks);
+            logger2.throwArgumentError('provider mismatch', 'networks', networks);
           }
         } else {
           result = network;
@@ -33765,7 +33773,7 @@ var require_fallback_provider = __commonJS({
             case 19:
               return [
                 2,
-                logger.throwError('unknown method error', logger_1.Logger.errors.UNKNOWN_ERROR, {
+                logger2.throwError('unknown method error', logger_1.Logger.errors.UNKNOWN_ERROR, {
                   method,
                   params,
                 }),
@@ -33779,9 +33787,9 @@ var require_fallback_provider = __commonJS({
       function FallbackProvider2(providers2, quorum) {
         var _newTarget = this.constructor;
         var _this = this;
-        logger.checkNew(_newTarget, FallbackProvider2);
+        logger2.checkNew(_newTarget, FallbackProvider2);
         if (providers2.length === 0) {
-          logger.throwArgumentError('missing providers', 'providers', providers2);
+          logger2.throwArgumentError('missing providers', 'providers', providers2);
         }
         var providerConfigs = providers2.map(function (configOrProvider, index) {
           if (abstract_provider_1.Provider.isProvider(configOrProvider)) {
@@ -33803,7 +33811,7 @@ var require_fallback_provider = __commonJS({
           }
           var weight = config.weight;
           if (weight % 1 || weight > 512 || weight < 1) {
-            logger.throwArgumentError(
+            logger2.throwArgumentError(
               'invalid weight; must be integer in [1, 512]',
               'providers[' + index + '].weight',
               weight
@@ -33817,13 +33825,13 @@ var require_fallback_provider = __commonJS({
         if (quorum == null) {
           quorum = total / 2;
         } else if (quorum > total) {
-          logger.throwArgumentError(
+          logger2.throwArgumentError(
             'quorum will always fail; larger than total weight',
             'quorum',
             quorum
           );
         }
-        var networkOrReady = checkNetworks(
+        var networkOrReady = checkNetworks2(
           providerConfigs.map(function (c) {
             return c.provider.network;
           })
@@ -33857,7 +33865,7 @@ var require_fallback_provider = __commonJS({
                 ];
               case 1:
                 networks = _a7.sent();
-                return [2, checkNetworks(networks)];
+                return [2, checkNetworks2(networks)];
             }
           });
         });
@@ -34061,7 +34069,7 @@ var require_fallback_provider = __commonJS({
                             }
                             props[name2] = e[name2];
                           });
-                          logger.throwError(e.reason || e.message, errorCode, props);
+                          logger2.throwError(e.reason || e.message, errorCode, props);
                         });
                         if (
                           configs.filter(function (c) {
@@ -34093,7 +34101,7 @@ var require_fallback_provider = __commonJS({
                 });
                 return [
                   2,
-                  logger.throwError('failed to meet quorum', logger_1.Logger.errors.SERVER_ERROR, {
+                  logger2.throwError('failed to meet quorum', logger_1.Logger.errors.SERVER_ERROR, {
                     method,
                     params,
                     results: configs.map(function (c) {
@@ -34149,16 +34157,16 @@ var require_ipc_provider = __commonJS({
     var properties_1 = require_lib4();
     var logger_1 = require_lib();
     var _version_1 = require_version24();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     var json_rpc_provider_1 = require_json_rpc_provider();
     var IpcProvider = (function (_super) {
       __extends(IpcProvider2, _super);
       function IpcProvider2(path2, network) {
         var _newTarget = this.constructor;
         var _this = this;
-        logger.checkNew(_newTarget, IpcProvider2);
+        logger2.checkNew(_newTarget, IpcProvider2);
         if (path2 == null) {
-          logger.throwError('missing path', logger_1.Logger.errors.MISSING_ARGUMENT, {
+          logger2.throwError('missing path', logger_1.Logger.errors.MISSING_ARGUMENT, {
             arg: 'path',
           });
         }
@@ -34241,7 +34249,7 @@ var require_infura_provider = __commonJS({
     var formatter_1 = require_formatter();
     var logger_1 = require_lib();
     var _version_1 = require_version24();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     var url_json_rpc_provider_1 = require_url_json_rpc_provider();
     var defaultProjectId = '84842078b09946638c03157f83405213';
     var InfuraWebSocketProvider = (function (_super) {
@@ -34251,7 +34259,7 @@ var require_infura_provider = __commonJS({
         var provider = new InfuraProvider(network, apiKey);
         var connection = provider.connection;
         if (connection.password) {
-          logger.throwError(
+          logger2.throwError(
             'INFURA WebSocket project secrets unsupported',
             logger_1.Logger.errors.UNSUPPORTED_OPERATION,
             {
@@ -34292,13 +34300,13 @@ var require_infura_provider = __commonJS({
         if (typeof apiKey === 'string') {
           apiKeyObj.projectId = apiKey;
         } else if (apiKey.projectSecret != null) {
-          logger.assertArgument(
+          logger2.assertArgument(
             typeof apiKey.projectId === 'string',
             'projectSecret requires a projectId',
             'projectId',
             apiKey.projectId
           );
-          logger.assertArgument(
+          logger2.assertArgument(
             typeof apiKey.projectSecret === 'string',
             'invalid projectSecret',
             'projectSecret',
@@ -34349,7 +34357,7 @@ var require_infura_provider = __commonJS({
             host = 'arbitrum-rinkeby.infura.io';
             break;
           default:
-            logger.throwError('unsupported network', logger_1.Logger.errors.INVALID_ARGUMENT, {
+            logger2.throwError('unsupported network', logger_1.Logger.errors.INVALID_ARGUMENT, {
               argument: 'network',
               value: network,
             });
@@ -34528,7 +34536,7 @@ var require_nodesmith_provider = __commonJS({
     var url_json_rpc_provider_1 = require_url_json_rpc_provider();
     var logger_1 = require_lib();
     var _version_1 = require_version24();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     var defaultApiKey = 'ETHERS_JS_SHARED';
     var NodesmithProvider = (function (_super) {
       __extends(NodesmithProvider2, _super);
@@ -34537,12 +34545,12 @@ var require_nodesmith_provider = __commonJS({
       }
       NodesmithProvider2.getApiKey = function (apiKey) {
         if (apiKey && typeof apiKey !== 'string') {
-          logger.throwArgumentError('invalid apiKey', 'apiKey', apiKey);
+          logger2.throwArgumentError('invalid apiKey', 'apiKey', apiKey);
         }
         return apiKey || defaultApiKey;
       };
       NodesmithProvider2.getUrl = function (network, apiKey) {
-        logger.warn(
+        logger2.warn(
           'NodeSmith will be discontinued on 2019-12-20; please migrate to another platform.'
         );
         var host = null;
@@ -34563,7 +34571,7 @@ var require_nodesmith_provider = __commonJS({
             host = 'https://ethereum.api.nodesmith.io/v1/kovan/jsonrpc';
             break;
           default:
-            logger.throwArgumentError('unsupported network', 'network', arguments[0]);
+            logger2.throwArgumentError('unsupported network', 'network', arguments[0]);
         }
         return host + '?apiKey=' + apiKey;
       };
@@ -34609,7 +34617,7 @@ var require_pocket_provider = __commonJS({
     var properties_1 = require_lib4();
     var logger_1 = require_lib();
     var _version_1 = require_version24();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     var url_json_rpc_provider_1 = require_url_json_rpc_provider();
     var defaultApplicationIds = {
       homestead: '6004bcd10040261633ade990',
@@ -34634,7 +34642,7 @@ var require_pocket_provider = __commonJS({
             }
           }
           if (apiKey == null) {
-            logger.throwError('unsupported network', logger_1.Logger.errors.INVALID_ARGUMENT, {
+            logger2.throwError('unsupported network', logger_1.Logger.errors.INVALID_ARGUMENT, {
               argument: 'network',
               value: network,
             });
@@ -34645,7 +34653,7 @@ var require_pocket_provider = __commonJS({
       }
       PocketProvider2.getApiKey = function (apiKey) {
         if (apiKey == null) {
-          logger.throwArgumentError(
+          logger2.throwArgumentError(
             'PocketProvider.getApiKey does not support null apiKey',
             'apiKey',
             apiKey
@@ -34659,13 +34667,13 @@ var require_pocket_provider = __commonJS({
         if (typeof apiKey === 'string') {
           apiKeyObj.applicationId = apiKey;
         } else if (apiKey.applicationSecretKey != null) {
-          logger.assertArgument(
+          logger2.assertArgument(
             typeof apiKey.applicationId === 'string',
             'applicationSecretKey requires an applicationId',
             'applicationId',
             apiKey.applicationId
           );
-          logger.assertArgument(
+          logger2.assertArgument(
             typeof apiKey.applicationSecretKey === 'string',
             'invalid applicationSecretKey',
             'applicationSecretKey',
@@ -34675,7 +34683,7 @@ var require_pocket_provider = __commonJS({
           apiKeyObj.applicationSecretKey = apiKey.applicationSecretKey;
           apiKeyObj.loadBalancer = !!apiKey.loadBalancer;
         } else if (apiKey.applicationId) {
-          logger.assertArgument(
+          logger2.assertArgument(
             typeof apiKey.applicationId === 'string',
             'apiKey.applicationId must be a string',
             'apiKey.applicationId',
@@ -34684,7 +34692,7 @@ var require_pocket_provider = __commonJS({
           apiKeyObj.applicationId = apiKey.applicationId;
           apiKeyObj.loadBalancer = !!apiKey.loadBalancer;
         } else {
-          logger.throwArgumentError('unsupported PocketProvider apiKey', 'apiKey', apiKey);
+          logger2.throwArgumentError('unsupported PocketProvider apiKey', 'apiKey', apiKey);
         }
         return apiKeyObj;
       };
@@ -34704,7 +34712,7 @@ var require_pocket_provider = __commonJS({
             host = 'eth-goerli.gateway.pokt.network';
             break;
           default:
-            logger.throwError('unsupported network', logger_1.Logger.errors.INVALID_ARGUMENT, {
+            logger2.throwError('unsupported network', logger_1.Logger.errors.INVALID_ARGUMENT, {
               argument: 'network',
               value: network,
             });
@@ -34768,7 +34776,7 @@ var require_web3_provider = __commonJS({
     var properties_1 = require_lib4();
     var logger_1 = require_lib();
     var _version_1 = require_version24();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     var json_rpc_provider_1 = require_json_rpc_provider();
     var _nextId = 1;
     function buildWeb3LegacyFetcher(provider, sendFunc) {
@@ -34859,9 +34867,9 @@ var require_web3_provider = __commonJS({
       function Web3Provider2(provider, network) {
         var _newTarget = this.constructor;
         var _this = this;
-        logger.checkNew(_newTarget, Web3Provider2);
+        logger2.checkNew(_newTarget, Web3Provider2);
         if (provider == null) {
-          logger.throwArgumentError('missing provider', 'provider', provider);
+          logger2.throwArgumentError('missing provider', 'provider', provider);
         }
         var path2 = null;
         var jsonRpcFetchFunc = null;
@@ -34885,7 +34893,7 @@ var require_web3_provider = __commonJS({
           } else if (provider.send) {
             jsonRpcFetchFunc = buildWeb3LegacyFetcher(provider, provider.send.bind(provider));
           } else {
-            logger.throwArgumentError('unsupported provider', 'provider', provider);
+            logger2.throwArgumentError('unsupported provider', 'provider', provider);
           }
           if (!path2) {
             path2 = 'unknown:';
@@ -35106,7 +35114,7 @@ var require_lib30 = __commonJS({
     });
     var logger_1 = require_lib();
     var _version_1 = require_version24();
-    var logger = new logger_1.Logger(_version_1.version);
+    var logger2 = new logger_1.Logger(_version_1.version);
     function getDefaultProvider(network, options2) {
       if (network == null) {
         network = 'homestead';
@@ -35120,13 +35128,13 @@ var require_lib30 = __commonJS({
             case 'ws':
               return new websocket_provider_1.WebSocketProvider(network);
             default:
-              logger.throwArgumentError('unsupported URL scheme', 'network', network);
+              logger2.throwArgumentError('unsupported URL scheme', 'network', network);
           }
         }
       }
       var n = (0, networks_1.getNetwork)(network);
       if (!n || !n._defaultProvider) {
-        logger.throwError(
+        logger2.throwError(
           'unsupported getDefaultProvider network',
           logger_1.Logger.errors.NETWORK_ERROR,
           {
@@ -35318,8 +35326,8 @@ var require_ethers = __commonJS({
         return _version_1.version;
       },
     });
-    var logger = new logger_1.Logger(_version_1.version);
-    exports2.logger = logger;
+    var logger2 = new logger_1.Logger(_version_1.version);
+    exports2.logger = logger2;
   },
 });
 
@@ -35646,7 +35654,7 @@ var require_cl_feed_registry = __commonJS({
     var utils_1 = require_utils5();
     var FeedRegistryInterface__factory_1 = require_FeedRegistryInterface_factory();
     var ChainlinkFeedsRegistryTypes_1 = require_ChainlinkFeedsRegistryTypes();
-    (0, tslib_1.__exportStar)(require_ChainlinkFeedsRegistryTypes(), exports2);
+    tslib_1.__exportStar(require_ChainlinkFeedsRegistryTypes(), exports2);
     var ChainlinkFeedsRegistry = class {
       constructor({ provider, chainlinkFeedsRegistry }) {
         this.latestRoundData = (tokenAddress, quote) =>
@@ -35756,6 +35764,7 @@ var require_types2 = __commonJS({
       ChainId7[(ChainId7['optimism_goerli'] = 420)] = 'optimism_goerli';
       ChainId7[(ChainId7['harmony'] = 16666e5)] = 'harmony';
       ChainId7[(ChainId7['harmony_testnet'] = 16667e5)] = 'harmony_testnet';
+      ChainId7[(ChainId7['zkevm_testnet'] = 1402)] = 'zkevm_testnet';
     })((ChainId6 = exports2.ChainId || (exports2.ChainId = {})));
     var eEthereumTxType;
     (function (eEthereumTxType2) {
@@ -40203,11 +40212,11 @@ var require_v3_UiIncentiveDataProvider_contract = __commonJS({
     var utils_1 = require_utils5();
     var index_1 = require_cl_feed_registry();
     var ChainlinkFeedsRegistryTypes_1 = require_ChainlinkFeedsRegistryTypes();
-    var BaseService_1 = (0, tslib_1.__importDefault)(require_BaseService());
+    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
     var methodValidators_1 = require_methodValidators();
     var paramValidators_1 = require_paramValidators();
     var IUiIncentiveDataProviderV3__factory_1 = require_IUiIncentiveDataProviderV3_factory();
-    (0, tslib_1.__exportStar)(require_types3(), exports2);
+    tslib_1.__exportStar(require_types3(), exports2);
     var UiIncentiveDataProvider = class extends BaseService_1.default {
       constructor({ provider, uiIncentiveDataProviderAddress, chainId }) {
         super(provider, IUiIncentiveDataProviderV3__factory_1.IUiIncentiveDataProviderV3__factory);
@@ -40415,77 +40424,77 @@ var require_v3_UiIncentiveDataProvider_contract = __commonJS({
         };
       }
     };
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.UiIncentiveDataProviderValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('lendingPoolAddressProvider')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('lendingPoolAddressProvider')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       UiIncentiveDataProvider.prototype,
       'getFullReservesIncentiveData',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.UiIncentiveDataProviderValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('lendingPoolAddressProvider')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('lendingPoolAddressProvider')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       UiIncentiveDataProvider.prototype,
       'getReservesIncentivesData',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.UiIncentiveDataProviderValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('lendingPoolAddressProvider')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('lendingPoolAddressProvider')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       UiIncentiveDataProvider.prototype,
       'getUserReservesIncentivesData',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.UiIncentiveDataProviderValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('lendingPoolAddressProvider')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('lendingPoolAddressProvider')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       UiIncentiveDataProvider.prototype,
       'getReservesIncentivesDataHumanized',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.UiIncentiveDataProviderValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('lendingPoolAddressProvider')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('lendingPoolAddressProvider')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       UiIncentiveDataProvider.prototype,
       'getUserReservesIncentivesDataHumanized',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.UiIncentiveDataProviderValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('lendingPoolAddressProvider')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('chainlinkFeedsRegistry')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('lendingPoolAddressProvider')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('chainlinkFeedsRegistry')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       UiIncentiveDataProvider.prototype,
       'getIncentivesDataWithPriceLegacy',
@@ -40934,7 +40943,7 @@ var require_v3_UiPoolDataProvider_contract = __commonJS({
     var tslib_1 = require_tslib();
     var utils_1 = require_utils5();
     var IUiPoolDataProviderV3__factory_1 = require_IUiPoolDataProviderV3_factory();
-    (0, tslib_1.__exportStar)(require_types4(), exports2);
+    tslib_1.__exportStar(require_types4(), exports2);
     var ammSymbolMap = {
       '0xae461ca67b15dc8dc81ce7615e0320da1a9ab8d5': 'UNIDAIUSDC',
       '0x004375dff511095cc5a197a54140a24efef3a416': 'UNIWBTCUSDC',
@@ -41220,7 +41229,7 @@ var require_wallet_balance_provider = __commonJS({
     var tslib_1 = require_tslib();
     var utils_1 = require_utils5();
     var WalletBalanceProviderFactory_1 = require_WalletBalanceProviderFactory();
-    (0, tslib_1.__exportStar)(require_WalletBalanceProviderTypes(), exports2);
+    tslib_1.__exportStar(require_WalletBalanceProviderTypes(), exports2);
     var WalletBalanceProvider = class {
       constructor(context) {
         this._contract = WalletBalanceProviderFactory_1.WalletBalanceProviderFactory.connect(
@@ -42206,7 +42215,7 @@ var require_uiStakeDataProvider_contract = __commonJS({
     var methodValidators_1 = require_methodValidators();
     var paramValidators_1 = require_paramValidators();
     var StakeUiHelperFactory_1 = require_StakeUiHelperFactory();
-    (0, tslib_1.__exportStar)(require_types5(), exports2);
+    tslib_1.__exportStar(require_types5(), exports2);
     var UiStakeDataProvider = class {
       constructor(context) {
         this._contract = StakeUiHelperFactory_1.StakeUiHelperFactory.connect(
@@ -42275,25 +42284,25 @@ var require_uiStakeDataProvider_contract = __commonJS({
         });
       }
     };
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.StackeUiDataProviderValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       UiStakeDataProvider.prototype,
       'getUserStakeUIData',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.StackeUiDataProviderValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       UiStakeDataProvider.prototype,
       'getUserStakeUIDataHumanized',
@@ -42360,7 +42369,7 @@ var require_incentive_controller = __commonJS({
     exports2.IncentivesController = void 0;
     var tslib_1 = require_tslib();
     var ethers_1 = require_lib31();
-    var BaseService_1 = (0, tslib_1.__importDefault)(require_BaseService());
+    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
     var types_1 = require_types2();
     var methodValidators_1 = require_methodValidators();
     var paramValidators_1 = require_paramValidators();
@@ -42391,16 +42400,16 @@ var require_incentive_controller = __commonJS({
         ];
       }
     };
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.IncentivesValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('incentivesControllerAddress')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('to')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddressArray)('assets')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Array),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('incentivesControllerAddress')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('to')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddressArray)('assets')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Array),
       ],
       IncentivesController.prototype,
       'claimRewards',
@@ -43273,7 +43282,7 @@ var require_incentive_controller_v2 = __commonJS({
     exports2.IncentivesControllerV2 = void 0;
     var tslib_1 = require_tslib();
     var ethers_1 = require_lib31();
-    var BaseService_1 = (0, tslib_1.__importDefault)(require_BaseService());
+    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
     var types_1 = require_types2();
     var methodValidators_1 = require_methodValidators();
     var paramValidators_1 = require_paramValidators();
@@ -43328,32 +43337,32 @@ var require_incentive_controller_v2 = __commonJS({
         ];
       }
     };
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.IncentivesValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('incentivesControllerAddress')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('to')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('reward')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddressArray)('assets')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Array),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('incentivesControllerAddress')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('to')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('reward')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddressArray)('assets')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Array),
       ],
       IncentivesControllerV2.prototype,
       'claimRewards',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.IncentivesValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('incentivesControllerAddress')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('to')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddressArray)('assets')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Array),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('incentivesControllerAddress')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('to')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddressArray)('assets')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Array),
       ],
       IncentivesControllerV2.prototype,
       'claimAllRewards',
@@ -43478,7 +43487,7 @@ var require_erc20_contract = __commonJS({
     exports2.ERC20Service = void 0;
     var tslib_1 = require_tslib();
     var ethers_1 = require_lib31();
-    var BaseService_1 = (0, tslib_1.__importDefault)(require_BaseService());
+    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
     var types_1 = require_types2();
     var utils_1 = require_utils6();
     var methodValidators_1 = require_methodValidators();
@@ -43568,55 +43577,55 @@ var require_erc20_contract = __commonJS({
         });
       }
     };
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.ERC20Validator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('token')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('spender')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('amount')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Object),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('token')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('spender')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('amount')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Object),
       ],
       ERC20Service.prototype,
       'approve',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.ERC20Validator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('token')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('spender')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveOrMinusOneAmount)('amount')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('token')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('spender')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveOrMinusOneAmount)('amount')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       ERC20Service.prototype,
       'isApproved',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.ERC20Validator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)()),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [String]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)()),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [String]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       ERC20Service.prototype,
       'decimalsOf',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.ERC20Validator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)()),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [String]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)()),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [String]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       ERC20Service.prototype,
       'getTokenData',
@@ -43730,7 +43739,7 @@ var require_paraswap_liquiditySwapAdapter_contract = __commonJS({
     Object.defineProperty(exports2, '__esModule', { value: true });
     exports2.LiquiditySwapAdapterService = exports2.augustusFromAmountOffsetFromCalldata = void 0;
     var tslib_1 = require_tslib();
-    var BaseService_1 = (0, tslib_1.__importDefault)(require_BaseService());
+    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
     var types_1 = require_types2();
     var methodValidators_1 = require_methodValidators();
     var paramValidators_1 = require_paramValidators();
@@ -43818,18 +43827,18 @@ var require_paraswap_liquiditySwapAdapter_contract = __commonJS({
         };
       }
     };
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.LiquiditySwapValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('assetToSwapFrom')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('assetToSwapTo')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('augustus')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('amountToSwap')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('minAmountToReceive')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object, Array]),
-        (0, tslib_1.__metadata)('design:returntype', Object),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('assetToSwapFrom')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('assetToSwapTo')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('augustus')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('amountToSwap')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('minAmountToReceive')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object, Array]),
+        tslib_1.__metadata('design:returntype', Object),
       ],
       LiquiditySwapAdapterService.prototype,
       'swapAndDeposit',
@@ -44213,7 +44222,7 @@ var require_paraswap_repayWithCollateralAdapter_contract = __commonJS({
     exports2.ParaswapRepayWithCollateral = void 0;
     var tslib_1 = require_tslib();
     var ethers_1 = require_lib31();
-    var BaseService_1 = (0, tslib_1.__importDefault)(require_BaseService());
+    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
     var types_1 = require_types2();
     var utils_1 = require_utils6();
     var methodValidators_1 = require_methodValidators();
@@ -44278,18 +44287,18 @@ var require_paraswap_repayWithCollateralAdapter_contract = __commonJS({
         };
       }
     };
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.RepayWithCollateralValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('collateralAsset')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('debtAsset')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('collateralAmount')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('debtRepayAmount')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('augustus')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object, Array]),
-        (0, tslib_1.__metadata)('design:returntype', Object),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('collateralAsset')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('debtAsset')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('collateralAmount')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('debtRepayAmount')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('augustus')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object, Array]),
+        tslib_1.__metadata('design:returntype', Object),
       ],
       ParaswapRepayWithCollateral.prototype,
       'swapAndRepay',
@@ -44398,7 +44407,7 @@ var require_repayWithCollateralAdapter_contract = __commonJS({
     Object.defineProperty(exports2, '__esModule', { value: true });
     exports2.RepayWithCollateralAdapterService = void 0;
     var tslib_1 = require_tslib();
-    var BaseService_1 = (0, tslib_1.__importDefault)(require_BaseService());
+    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
     var types_1 = require_types2();
     var methodValidators_1 = require_methodValidators();
     var paramValidators_1 = require_paramValidators();
@@ -44455,17 +44464,17 @@ var require_repayWithCollateralAdapter_contract = __commonJS({
         };
       }
     };
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.RepayWithCollateralValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('collateralAsset')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('debtAsset')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('collateralAmount')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('debtRepayAmount')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object, Array]),
-        (0, tslib_1.__metadata)('design:returntype', Object),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('collateralAsset')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('debtAsset')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('collateralAmount')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('debtRepayAmount')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object, Array]),
+        tslib_1.__metadata('design:returntype', Object),
       ],
       RepayWithCollateralAdapterService.prototype,
       'swapAndRepay',
@@ -44522,7 +44531,7 @@ var require_synthetix_contract = __commonJS({
     exports2.SynthetixService = exports2.synthetixProxyByChainId = void 0;
     var tslib_1 = require_tslib();
     var ethers_1 = require_lib31();
-    var BaseService_1 = (0, tslib_1.__importDefault)(require_BaseService());
+    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
     var types_1 = require_types2();
     var methodValidators_1 = require_methodValidators();
     var paramValidators_1 = require_paramValidators();
@@ -44552,15 +44561,15 @@ var require_synthetix_contract = __commonJS({
         });
       }
     };
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.SynthetixValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('reserve')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('amount')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('reserve')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('amount')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       SynthetixService.prototype,
       'synthetixValidation',
@@ -44640,7 +44649,7 @@ var require_baseDebtToken_contract = __commonJS({
     exports2.BaseDebtToken = void 0;
     var tslib_1 = require_tslib();
     var ethers_1 = require_lib31();
-    var BaseService_1 = (0, tslib_1.__importDefault)(require_BaseService());
+    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
     var types_1 = require_types2();
     var utils_1 = require_utils6();
     var methodValidators_1 = require_methodValidators();
@@ -44685,31 +44694,31 @@ var require_baseDebtToken_contract = __commonJS({
         );
       }
     };
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.DebtTokenValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('delegatee')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('debtTokenAddress')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('amount')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Object),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('delegatee')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('debtTokenAddress')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('amount')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Object),
       ],
       BaseDebtToken.prototype,
       'approveDelegation',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.DebtTokenValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('debtTokenAddress')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('allowanceGiver')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('allowanceReceiver')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('amount')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('debtTokenAddress')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('allowanceGiver')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('allowanceReceiver')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('amount')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       BaseDebtToken.prototype,
       'isDelegationApproved',
@@ -44850,7 +44859,7 @@ var require_wethgateway_contract = __commonJS({
     var tslib_1 = require_tslib();
     var ethers_1 = require_lib31();
     var baseDebtToken_contract_1 = require_baseDebtToken_contract();
-    var BaseService_1 = (0, tslib_1.__importDefault)(require_BaseService());
+    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
     var types_1 = require_types2();
     var utils_1 = require_utils6();
     var methodValidators_1 = require_methodValidators();
@@ -45028,64 +45037,64 @@ var require_wethgateway_contract = __commonJS({
         ];
       }
     };
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.WETHValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('lendingPool')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('amount')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.is0OrPositiveAmount)('referralCode')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Array),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('lendingPool')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('amount')),
+        tslib_1.__param(0, (0, paramValidators_1.is0OrPositiveAmount)('referralCode')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Array),
       ],
       WETHGatewayService.prototype,
       'depositETH',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.WETHValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('lendingPool')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('amount')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('debtTokenAddress')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.is0OrPositiveAmount)('referralCode')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('lendingPool')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('amount')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('debtTokenAddress')),
+        tslib_1.__param(0, (0, paramValidators_1.is0OrPositiveAmount)('referralCode')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       WETHGatewayService.prototype,
       'borrowETH',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.WETHValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('lendingPool')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveOrMinusOneAmount)('amount')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('aTokenAddress')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('lendingPool')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveOrMinusOneAmount)('amount')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('aTokenAddress')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       WETHGatewayService.prototype,
       'withdrawETH',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.WETHValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('lendingPool')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('amount')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Array),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('lendingPool')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('amount')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Array),
       ],
       WETHGatewayService.prototype,
       'repayETH',
@@ -45360,7 +45369,7 @@ var require_lendingPool_contract = __commonJS({
     exports2.LendingPool = void 0;
     var tslib_1 = require_tslib();
     var ethers_1 = require_lib31();
-    var BaseService_1 = (0, tslib_1.__importDefault)(require_BaseService());
+    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
     var types_1 = require_types2();
     var utils_1 = require_utils6();
     var methodValidators_1 = require_methodValidators();
@@ -46249,177 +46258,177 @@ var require_lendingPool_contract = __commonJS({
         );
       }
     };
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.LPValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('reserve')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('amount')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('reserve')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('amount')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       LendingPool.prototype,
       'deposit',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.LPValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('reserve')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveOrMinusOneAmount)('amount')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('aTokenAddress')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('reserve')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveOrMinusOneAmount)('amount')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('aTokenAddress')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       LendingPool.prototype,
       'withdraw',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.LPValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('reserve')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('amount')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('debtTokenAddress')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('reserve')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('amount')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('debtTokenAddress')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       LendingPool.prototype,
       'borrow',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.LPValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('reserve')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveOrMinusOneAmount)('amount')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('reserve')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveOrMinusOneAmount)('amount')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       LendingPool.prototype,
       'repay',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.LPValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('reserve')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Array),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('reserve')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Array),
       ],
       LendingPool.prototype,
       'swapBorrowRateMode',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.LPValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('reserve')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Array),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('reserve')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Array),
       ],
       LendingPool.prototype,
       'setUsageAsCollateral',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.LPValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('liquidator')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('liquidatedUser')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('debtReserve')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('collateralReserve')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('purchaseAmount')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('liquidator')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('liquidatedUser')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('debtReserve')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('collateralReserve')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('purchaseAmount')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       LendingPool.prototype,
       'liquidationCall',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.LPSwapCollateralValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('fromAsset')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('fromAToken')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('toAsset')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('augustus')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('fromAmount')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('minToAmount')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('fromAsset')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('fromAToken')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('toAsset')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('augustus')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('fromAmount')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('minToAmount')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       LendingPool.prototype,
       'swapCollateral',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.LPRepayWithCollateralValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('fromAsset')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('fromAToken')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('assetToRepay')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('repayWithAmount')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('repayAmount')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('fromAsset')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('fromAToken')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('assetToRepay')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('repayWithAmount')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('repayAmount')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       LendingPool.prototype,
       'repayWithCollateral',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.LPRepayWithCollateralValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('fromAsset')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('fromAToken')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('assetToRepay')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('repayWithAmount')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('repayAmount')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('augustus')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('fromAsset')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('fromAToken')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('assetToRepay')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('repayWithAmount')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('repayAmount')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('augustus')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       LendingPool.prototype,
       'paraswapRepayWithCollateral',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.LPFlashLiquidationValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('collateralAsset')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('borrowedAsset')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('debtTokenCover')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('initiator')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('collateralAsset')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('borrowedAsset')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('debtTokenCover')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('initiator')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       LendingPool.prototype,
       'flashLiquidation',
@@ -46499,7 +46508,7 @@ var require_faucet_contract = __commonJS({
     Object.defineProperty(exports2, '__esModule', { value: true });
     exports2.FaucetService = void 0;
     var tslib_1 = require_tslib();
-    var BaseService_1 = (0, tslib_1.__importDefault)(require_BaseService());
+    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
     var types_1 = require_types2();
     var utils_1 = require_utils6();
     var methodValidators_1 = require_methodValidators();
@@ -46512,11 +46521,10 @@ var require_faucet_contract = __commonJS({
           faucetAddress !== null && faucetAddress !== void 0 ? faucetAddress : '';
       }
       mint({ userAddress, reserve, tokenSymbol }) {
-        const amount = utils_1.mintAmountsPerToken[tokenSymbol];
-        if (!amount) {
-          console.log(`No amount predefined for minting for token : ${tokenSymbol}`);
-          return [];
-        }
+        const defaultAmount = (0, utils_1.valueToWei)('1000', 18);
+        const amount = utils_1.mintAmountsPerToken[tokenSymbol]
+          ? utils_1.mintAmountsPerToken[tokenSymbol]
+          : defaultAmount;
         const faucetContract = this.getContractInstance(this.faucetAddress);
         const txCallback = this.generateTxCallback({
           rawTxMethod: () =>
@@ -46535,14 +46543,14 @@ var require_faucet_contract = __commonJS({
         ];
       }
     };
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.FaucetValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('userAddress')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('reserve')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Array),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('userAddress')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('reserve')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Array),
       ],
       FaucetService.prototype,
       'mint',
@@ -46720,7 +46728,7 @@ var require_staking_contract = __commonJS({
     exports2.StakingService = void 0;
     var tslib_1 = require_tslib();
     var ethers_1 = require_lib31();
-    var BaseService_1 = (0, tslib_1.__importDefault)(require_BaseService());
+    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
     var types_1 = require_types2();
     var utils_1 = require_utils6();
     var methodValidators_1 = require_methodValidators();
@@ -46934,80 +46942,80 @@ var require_staking_contract = __commonJS({
         });
       }
     };
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.SignStakingValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)()),
-        (0, tslib_1.__param)(1, (0, paramValidators_1.isPositiveAmount)()),
-        (0, tslib_1.__param)(2, (0, paramValidators_1.is0OrPositiveAmount)()),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [String, String, String]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)()),
+        tslib_1.__param(1, (0, paramValidators_1.isPositiveAmount)()),
+        tslib_1.__param(2, (0, paramValidators_1.is0OrPositiveAmount)()),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [String, String, String]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       StakingService.prototype,
       'signStaking',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.SignStakingValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)()),
-        (0, tslib_1.__param)(1, (0, paramValidators_1.isPositiveAmount)()),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [String, String, Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)()),
+        tslib_1.__param(1, (0, paramValidators_1.isPositiveAmount)()),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [String, String, Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       StakingService.prototype,
       'stakeWithPermit',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.StakingValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)()),
-        (0, tslib_1.__param)(1, (0, paramValidators_1.isPositiveAmount)()),
-        (0, tslib_1.__param)(2, (0, paramValidators_1.isEthAddress)()),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [String, String, String]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)()),
+        tslib_1.__param(1, (0, paramValidators_1.isPositiveAmount)()),
+        tslib_1.__param(2, (0, paramValidators_1.isEthAddress)()),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [String, String, String]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       StakingService.prototype,
       'stake',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.StakingValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)()),
-        (0, tslib_1.__param)(1, (0, paramValidators_1.isPositiveOrMinusOneAmount)()),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [String, String]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)()),
+        tslib_1.__param(1, (0, paramValidators_1.isPositiveOrMinusOneAmount)()),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [String, String]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       StakingService.prototype,
       'redeem',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.StakingValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)()),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [String]),
-        (0, tslib_1.__metadata)('design:returntype', Array),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)()),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [String]),
+        tslib_1.__metadata('design:returntype', Array),
       ],
       StakingService.prototype,
       'cooldown',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.StakingValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)()),
-        (0, tslib_1.__param)(1, (0, paramValidators_1.isPositiveOrMinusOneAmount)()),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [String, String]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)()),
+        tslib_1.__param(1, (0, paramValidators_1.isPositiveOrMinusOneAmount)()),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [String, String]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       StakingService.prototype,
       'claimRewards',
@@ -48216,7 +48224,7 @@ var require_governance_contract = __commonJS({
     exports2.AaveGovernanceService = exports2.humanizeProposal = void 0;
     var tslib_1 = require_tslib();
     var utils_1 = require_utils5();
-    var BaseService_1 = (0, tslib_1.__importDefault)(require_BaseService());
+    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
     var types_1 = require_types2();
     var methodValidators_1 = require_methodValidators();
     var paramValidators_1 = require_paramValidators();
@@ -48334,86 +48342,86 @@ var require_governance_contract = __commonJS({
         });
       }
     };
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.GovValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.is0OrPositiveAmount)('proposalId')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Array),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.is0OrPositiveAmount)('proposalId')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Array),
       ],
       AaveGovernanceService2.prototype,
       'submitVote',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.GovHelperValidator,
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       AaveGovernanceService2.prototype,
       'getProposals',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.GovHelperValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.is0OrPositiveAmount)('proposalId')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.is0OrPositiveAmount)('proposalId')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       AaveGovernanceService2.prototype,
       'getProposal',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.GovValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       AaveGovernanceService2.prototype,
       'getVotingPowerAt',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.GovHelperValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddressArray)('tokens')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddressArray)('tokens')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       AaveGovernanceService2.prototype,
       'getTokensPower',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.GovValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.is0OrPositiveAmount)('proposalId')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.is0OrPositiveAmount)('proposalId')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       AaveGovernanceService2.prototype,
       'getVoteOnProposal',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.GovValidator,
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', []),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', []),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       AaveGovernanceService2.prototype,
       'getProposalsCount',
@@ -48730,7 +48738,7 @@ var require_governance_power_delegation_contract = __commonJS({
     exports2.GovernancePowerDelegationTokenService = void 0;
     var tslib_1 = require_tslib();
     var bytes_1 = require_lib2();
-    var BaseService_1 = (0, tslib_1.__importDefault)(require_BaseService());
+    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
     var types_1 = require_types2();
     var utils_1 = require_utils6();
     var methodValidators_1 = require_methodValidators();
@@ -48976,138 +48984,138 @@ var require_governance_power_delegation_contract = __commonJS({
         });
       }
     };
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.GovDelegationValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddressOrENS)('delegatee')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('governanceToken')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddressOrENS)('delegatee')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('governanceToken')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       GovernancePowerDelegationTokenService.prototype,
       'delegate',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.GovDelegationValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddressOrENS)('delegatee')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('governanceToken')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddressOrENS)('delegatee')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('governanceToken')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       GovernancePowerDelegationTokenService.prototype,
       'delegateByType',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.GovDelegationValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddressOrENS)('delegatee')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('governanceToken')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddressOrENS)('delegatee')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('governanceToken')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       GovernancePowerDelegationTokenService.prototype,
       'delegateBySig',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.GovDelegationValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddressOrENS)('delegatee')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('governanceToken')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddressOrENS)('delegatee')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('governanceToken')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       GovernancePowerDelegationTokenService.prototype,
       'delegateByTypeBySig',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.GovDelegationValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddressOrENS)('delegatee')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('governanceToken')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.is0OrPositiveAmount)('nonce')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddressOrENS)('delegatee')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('governanceToken')),
+        tslib_1.__param(0, (0, paramValidators_1.is0OrPositiveAmount)('nonce')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       GovernancePowerDelegationTokenService.prototype,
       'prepareDelegateSignature',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.GovDelegationValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddressOrENS)('delegatee')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('governanceToken')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.is0OrPositiveAmount)('nonce')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddressOrENS)('delegatee')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('governanceToken')),
+        tslib_1.__param(0, (0, paramValidators_1.is0OrPositiveAmount)('nonce')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       GovernancePowerDelegationTokenService.prototype,
       'prepareDelegateByTypeSignature',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.GovDelegationValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('delegator')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('governanceToken')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('delegator')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('governanceToken')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       GovernancePowerDelegationTokenService.prototype,
       'getDelegateeByType',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.GovDelegationValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('governanceToken')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('governanceToken')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       GovernancePowerDelegationTokenService.prototype,
       'getPowerCurrent',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.GovDelegationValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('governanceToken')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('blockNumber')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('governanceToken')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('blockNumber')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       GovernancePowerDelegationTokenService.prototype,
       'getPowerAtBlock',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.GovDelegationValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('governanceToken')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('governanceToken')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       GovernancePowerDelegationTokenService.prototype,
       'getNonce',
@@ -49186,7 +49194,7 @@ var require_erc20_2612 = __commonJS({
     Object.defineProperty(exports2, '__esModule', { value: true });
     exports2.ERC20_2612Service = void 0;
     var tslib_1 = require_tslib();
-    var BaseService_1 = (0, tslib_1.__importDefault)(require_BaseService());
+    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
     var methodValidators_1 = require_methodValidators();
     var paramValidators_1 = require_paramValidators();
     var IERC202612__factory_1 = require_IERC202612_factory();
@@ -49213,14 +49221,14 @@ var require_erc20_2612 = __commonJS({
         });
       }
     };
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.ERC20Validator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('token')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('owner')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('token')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('owner')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       ERC20_2612Service.prototype,
       'getNonce',
@@ -49896,7 +49904,7 @@ var require_v3_pool_rollups = __commonJS({
     Object.defineProperty(exports2, '__esModule', { value: true });
     exports2.L2Pool = void 0;
     var tslib_1 = require_tslib();
-    var BaseService_1 = (0, tslib_1.__importDefault)(require_BaseService());
+    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
     var types_1 = require_types2();
     var utils_1 = require_utils6();
     var methodValidators_1 = require_methodValidators();
@@ -50221,113 +50229,113 @@ var require_v3_pool_rollups = __commonJS({
         return this.encoderContract;
       }
     };
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.L2PValidator,
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object, Array]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object, Array]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       L2Pool.prototype,
       'supply',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.L2PValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isDeadline32Bytes)('deadline')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object, Array]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isDeadline32Bytes)('deadline')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object, Array]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       L2Pool.prototype,
       'supplyWithPermit',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.L2PValidator,
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       L2Pool.prototype,
       'withdraw',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.L2PValidator,
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       L2Pool.prototype,
       'borrow',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.L2PValidator,
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object, Array]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object, Array]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       L2Pool.prototype,
       'repay',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.L2PValidator,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isDeadline32Bytes)('deadline')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object, Array]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isDeadline32Bytes)('deadline')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object, Array]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       L2Pool.prototype,
       'repayWithPermit',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.L2PValidator,
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object, Array]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object, Array]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       L2Pool.prototype,
       'repayWithATokens',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.L2PValidator,
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       L2Pool.prototype,
       'swapBorrowRateMode',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.L2PValidator,
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       L2Pool.prototype,
       'setUserUseReserveAsCollateral',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.L2PValidator,
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object, Array]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object, Array]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       L2Pool.prototype,
       'liquidationCall',
@@ -51984,7 +51992,7 @@ var require_v3_pool_contract = __commonJS({
     var tslib_1 = require_tslib();
     var bytes_1 = require_lib2();
     var ethers_1 = require_lib31();
-    var BaseService_1 = (0, tslib_1.__importDefault)(require_BaseService());
+    var BaseService_1 = tslib_1.__importDefault(require_BaseService());
     var types_1 = require_types2();
     var utils_1 = require_utils6();
     var methodValidators_1 = require_methodValidators();
@@ -53147,244 +53155,244 @@ var require_v3_pool_contract = __commonJS({
         ];
       }
     };
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.LPValidatorV3,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('reserve')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('amount')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('reserve')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('amount')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       Pool.prototype,
       'deposit',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.LPValidatorV3,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('reserve')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('amount')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('reserve')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('amount')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       Pool.prototype,
       'supply',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.LPValidatorV3,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('reserve')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveOrMinusOneAmount)('amount')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('reserve')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveOrMinusOneAmount)('amount')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       Pool.prototype,
       'signERC20Approval',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.LPValidatorV3,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('reserve')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('amount')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('referralCode')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('reserve')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('amount')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('referralCode')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       Pool.prototype,
       'supplyWithPermit',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.LPValidatorV3,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('reserve')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveOrMinusOneAmount)('amount')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('aTokenAddress')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('reserve')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveOrMinusOneAmount)('amount')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('aTokenAddress')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       Pool.prototype,
       'withdraw',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.LPValidatorV3,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('reserve')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('amount')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('debtTokenAddress')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('reserve')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('amount')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('debtTokenAddress')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       Pool.prototype,
       'borrow',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.LPValidatorV3,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('reserve')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveOrMinusOneAmount)('amount')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('reserve')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveOrMinusOneAmount)('amount')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       Pool.prototype,
       'repay',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.LPValidatorV3,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('reserve')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveOrMinusOneAmount)('amount')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('reserve')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveOrMinusOneAmount)('amount')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('onBehalfOf')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       Pool.prototype,
       'repayWithPermit',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.LPValidatorV3,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('reserve')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('reserve')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       Pool.prototype,
       'swapBorrowRateMode',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.LPValidatorV3,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('reserve')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('reserve')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       Pool.prototype,
       'setUsageAsCollateral',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.LPValidatorV3,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('liquidator')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('liquidatedUser')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('debtReserve')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('collateralReserve')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('purchaseAmount')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('liquidator')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('liquidatedUser')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('debtReserve')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('collateralReserve')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('purchaseAmount')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       Pool.prototype,
       'liquidationCall',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.LPSwapCollateralValidatorV3,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('fromAsset')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('fromAToken')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('toAsset')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('augustus')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('fromAmount')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('minToAmount')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('fromAsset')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('fromAToken')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('toAsset')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('augustus')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('fromAmount')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('minToAmount')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       Pool.prototype,
       'swapCollateral',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.LPRepayWithCollateralValidatorV3,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('fromAsset')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('fromAToken')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('assetToRepay')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('repayWithAmount')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('repayAmount')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('augustus')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('fromAsset')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('fromAToken')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('assetToRepay')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('repayWithAmount')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('repayAmount')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('augustus')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       Pool.prototype,
       'paraswapRepayWithCollateral',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.LPFlashLiquidationValidatorV3,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('collateralAsset')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('borrowedAsset')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveAmount)('debtTokenCover')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('initiator')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('collateralAsset')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('borrowedAsset')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveAmount)('debtTokenCover')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('initiator')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       Pool.prototype,
       'flashLiquidation',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.LPValidatorV3,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('reserve')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isPositiveOrMinusOneAmount)('amount')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Promise),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('reserve')),
+        tslib_1.__param(0, (0, paramValidators_1.isPositiveOrMinusOneAmount)('amount')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Promise),
       ],
       Pool.prototype,
       'repayWithATokens',
       null
     );
-    (0, tslib_1.__decorate)(
+    tslib_1.__decorate(
       [
         methodValidators_1.LPValidatorV3,
-        (0, tslib_1.__param)(0, (0, paramValidators_1.isEthAddress)('user')),
-        (0, tslib_1.__param)(0, (0, paramValidators_1.is0OrPositiveAmount)('categoryId')),
-        (0, tslib_1.__metadata)('design:type', Function),
-        (0, tslib_1.__metadata)('design:paramtypes', [Object]),
-        (0, tslib_1.__metadata)('design:returntype', Array),
+        tslib_1.__param(0, (0, paramValidators_1.isEthAddress)('user')),
+        tslib_1.__param(0, (0, paramValidators_1.is0OrPositiveAmount)('categoryId')),
+        tslib_1.__metadata('design:type', Function),
+        tslib_1.__metadata('design:paramtypes', [Object]),
+        tslib_1.__metadata('design:returntype', Array),
       ],
       Pool.prototype,
       'setUserEMode',
@@ -64738,7 +64746,7 @@ var require_ipfs = __commonJS({
     exports2.getProposalMetadata = exports2.getLink = void 0;
     var tslib_1 = require_tslib();
     var utils_1 = require_utils5();
-    var isomorphic_unfetch_1 = (0, tslib_1.__importDefault)(require_isomorphic_unfetch());
+    var isomorphic_unfetch_1 = tslib_1.__importDefault(require_isomorphic_unfetch());
     function getLink2(hash, gateway) {
       return `${gateway}/${hash}`;
     }
@@ -64792,7 +64800,7 @@ var require_cjs = __commonJS({
     Object.defineProperty(exports2, '__esModule', { value: true });
     exports2.PERMISSION_MAP = exports2.PERMISSION = void 0;
     var tslib_1 = require_tslib();
-    (0, tslib_1.__exportStar)(require_permissions_manager(), exports2);
+    tslib_1.__exportStar(require_permissions_manager(), exports2);
     var PermissionManagerTypes_1 = require_PermissionManagerTypes();
     Object.defineProperty(exports2, 'PERMISSION', {
       enumerable: true,
@@ -64806,25 +64814,26 @@ var require_cjs = __commonJS({
         return PermissionManagerTypes_1.PERMISSION_MAP;
       },
     });
-    (0, tslib_1.__exportStar)(require_v3_UiIncentiveDataProvider_contract(), exports2);
-    (0, tslib_1.__exportStar)(require_v3_UiPoolDataProvider_contract(), exports2);
-    (0, tslib_1.__exportStar)(require_wallet_balance_provider(), exports2);
-    (0, tslib_1.__exportStar)(require_cl_feed_registry(), exports2);
-    (0, tslib_1.__exportStar)(require_uiStakeDataProvider_contract(), exports2);
-    (0, tslib_1.__exportStar)(require_incentive_controller(), exports2);
-    (0, tslib_1.__exportStar)(require_incentive_controller_v2(), exports2);
-    (0, tslib_1.__exportStar)(require_erc20_contract(), exports2);
-    (0, tslib_1.__exportStar)(require_lendingPool_contract(), exports2);
-    (0, tslib_1.__exportStar)(require_faucet_contract(), exports2);
-    (0, tslib_1.__exportStar)(require_staking_contract(), exports2);
-    (0, tslib_1.__exportStar)(require_governance_contract(), exports2);
-    (0, tslib_1.__exportStar)(require_types6(), exports2);
-    (0, tslib_1.__exportStar)(require_governance_power_delegation_contract(), exports2);
-    (0, tslib_1.__exportStar)(require_v3_pool_contract(), exports2);
-    (0, tslib_1.__exportStar)(require_synthetix_contract(), exports2);
-    (0, tslib_1.__exportStar)(require_types2(), exports2);
-    (0, tslib_1.__exportStar)(require_ipfs(), exports2);
-    (0, tslib_1.__exportStar)(require_utils6(), exports2);
+    tslib_1.__exportStar(require_v3_UiIncentiveDataProvider_contract(), exports2);
+    tslib_1.__exportStar(require_v3_UiPoolDataProvider_contract(), exports2);
+    tslib_1.__exportStar(require_wallet_balance_provider(), exports2);
+    tslib_1.__exportStar(require_cl_feed_registry(), exports2);
+    tslib_1.__exportStar(require_uiStakeDataProvider_contract(), exports2);
+    tslib_1.__exportStar(require_incentive_controller(), exports2);
+    tslib_1.__exportStar(require_incentive_controller_v2(), exports2);
+    tslib_1.__exportStar(require_erc20_contract(), exports2);
+    tslib_1.__exportStar(require_lendingPool_contract(), exports2);
+    tslib_1.__exportStar(require_faucet_contract(), exports2);
+    tslib_1.__exportStar(require_staking_contract(), exports2);
+    tslib_1.__exportStar(require_governance_contract(), exports2);
+    tslib_1.__exportStar(require_types6(), exports2);
+    tslib_1.__exportStar(require_governance_power_delegation_contract(), exports2);
+    tslib_1.__exportStar(require_v3_pool_contract(), exports2);
+    tslib_1.__exportStar(require_synthetix_contract(), exports2);
+    tslib_1.__exportStar(require_baseDebtToken_contract(), exports2);
+    tslib_1.__exportStar(require_types2(), exports2);
+    tslib_1.__exportStar(require_ipfs(), exports2);
+    tslib_1.__exportStar(require_utils6(), exports2);
   },
 });
 
@@ -71581,9 +71590,9 @@ var require_section_matter = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/common.js
+// node_modules/js-yaml/lib/js-yaml/common.js
 var require_common3 = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/common.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/common.js'(exports2, module2) {
     'use strict';
     function isNothing(subject) {
       return typeof subject === 'undefined' || subject === null;
@@ -71627,9 +71636,9 @@ var require_common3 = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/exception.js
+// node_modules/js-yaml/lib/js-yaml/exception.js
 var require_exception = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/exception.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/exception.js'(exports2, module2) {
     'use strict';
     function YAMLException(reason, mark) {
       Error.call(this);
@@ -71658,9 +71667,9 @@ var require_exception = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/mark.js
+// node_modules/js-yaml/lib/js-yaml/mark.js
 var require_mark = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/mark.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/mark.js'(exports2, module2) {
     'use strict';
     var common = require_common3();
     function Mark(name2, buffer, position, line, column) {
@@ -71728,9 +71737,9 @@ var require_mark = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type.js
+// node_modules/js-yaml/lib/js-yaml/type.js
 var require_type = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/type.js'(exports2, module2) {
     'use strict';
     var YAMLException = require_exception();
     var TYPE_CONSTRUCTOR_OPTIONS = [
@@ -71791,9 +71800,9 @@ var require_type = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/schema.js
+// node_modules/js-yaml/lib/js-yaml/schema.js
 var require_schema = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/schema.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/schema.js'(exports2, module2) {
     'use strict';
     var common = require_common3();
     var YAMLException = require_exception();
@@ -71891,9 +71900,9 @@ var require_schema = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/str.js
+// node_modules/js-yaml/lib/js-yaml/type/str.js
 var require_str = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/str.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/type/str.js'(exports2, module2) {
     'use strict';
     var Type = require_type();
     module2.exports = new Type('tag:yaml.org,2002:str', {
@@ -71905,9 +71914,9 @@ var require_str = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/seq.js
+// node_modules/js-yaml/lib/js-yaml/type/seq.js
 var require_seq = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/seq.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/type/seq.js'(exports2, module2) {
     'use strict';
     var Type = require_type();
     module2.exports = new Type('tag:yaml.org,2002:seq', {
@@ -71919,9 +71928,9 @@ var require_seq = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/map.js
+// node_modules/js-yaml/lib/js-yaml/type/map.js
 var require_map = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/map.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/type/map.js'(exports2, module2) {
     'use strict';
     var Type = require_type();
     module2.exports = new Type('tag:yaml.org,2002:map', {
@@ -71933,12 +71942,9 @@ var require_map = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/schema/failsafe.js
+// node_modules/js-yaml/lib/js-yaml/schema/failsafe.js
 var require_failsafe = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/schema/failsafe.js'(
-    exports2,
-    module2
-  ) {
+  'node_modules/js-yaml/lib/js-yaml/schema/failsafe.js'(exports2, module2) {
     'use strict';
     var Schema = require_schema();
     module2.exports = new Schema({
@@ -71947,9 +71953,9 @@ var require_failsafe = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/null.js
+// node_modules/js-yaml/lib/js-yaml/type/null.js
 var require_null2 = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/null.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/type/null.js'(exports2, module2) {
     'use strict';
     var Type = require_type();
     function resolveYamlNull(data) {
@@ -71990,9 +71996,9 @@ var require_null2 = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/bool.js
+// node_modules/js-yaml/lib/js-yaml/type/bool.js
 var require_bool = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/bool.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/type/bool.js'(exports2, module2) {
     'use strict';
     var Type = require_type();
     function resolveYamlBoolean(data) {
@@ -72030,9 +72036,9 @@ var require_bool = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/int.js
+// node_modules/js-yaml/lib/js-yaml/type/int.js
 var require_int = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/int.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/type/int.js'(exports2, module2) {
     'use strict';
     var common = require_common3();
     var Type = require_type();
@@ -72175,9 +72181,9 @@ var require_int = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/float.js
+// node_modules/js-yaml/lib/js-yaml/type/float.js
 var require_float = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/float.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/type/float.js'(exports2, module2) {
     'use strict';
     var common = require_common3();
     var Type = require_type();
@@ -72270,9 +72276,9 @@ var require_float = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/schema/json.js
+// node_modules/js-yaml/lib/js-yaml/schema/json.js
 var require_json = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/schema/json.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/schema/json.js'(exports2, module2) {
     'use strict';
     var Schema = require_schema();
     module2.exports = new Schema({
@@ -72282,9 +72288,9 @@ var require_json = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/schema/core.js
+// node_modules/js-yaml/lib/js-yaml/schema/core.js
 var require_core = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/schema/core.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/schema/core.js'(exports2, module2) {
     'use strict';
     var Schema = require_schema();
     module2.exports = new Schema({
@@ -72293,9 +72299,9 @@ var require_core = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/timestamp.js
+// node_modules/js-yaml/lib/js-yaml/type/timestamp.js
 var require_timestamp = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/timestamp.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/type/timestamp.js'(exports2, module2) {
     'use strict';
     var Type = require_type();
     var YAML_DATE_REGEXP = new RegExp('^([0-9][0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9])$');
@@ -72363,9 +72369,9 @@ var require_timestamp = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/merge.js
+// node_modules/js-yaml/lib/js-yaml/type/merge.js
 var require_merge = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/merge.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/type/merge.js'(exports2, module2) {
     'use strict';
     var Type = require_type();
     function resolveYamlMerge(data) {
@@ -72378,9 +72384,9 @@ var require_merge = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/binary.js
+// node_modules/js-yaml/lib/js-yaml/type/binary.js
 var require_binary = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/binary.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/type/binary.js'(exports2, module2) {
     'use strict';
     var NodeBuffer;
     try {
@@ -72485,9 +72491,9 @@ var require_binary = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/omap.js
+// node_modules/js-yaml/lib/js-yaml/type/omap.js
 var require_omap = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/omap.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/type/omap.js'(exports2, module2) {
     'use strict';
     var Type = require_type();
     var _hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -72528,9 +72534,9 @@ var require_omap = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/pairs.js
+// node_modules/js-yaml/lib/js-yaml/type/pairs.js
 var require_pairs = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/pairs.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/type/pairs.js'(exports2, module2) {
     'use strict';
     var Type = require_type();
     var _toString = Object.prototype.toString;
@@ -72576,9 +72582,9 @@ var require_pairs = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/set.js
+// node_modules/js-yaml/lib/js-yaml/type/set.js
 var require_set = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/set.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/type/set.js'(exports2, module2) {
     'use strict';
     var Type = require_type();
     var _hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -72604,12 +72610,9 @@ var require_set = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/schema/default_safe.js
+// node_modules/js-yaml/lib/js-yaml/schema/default_safe.js
 var require_default_safe = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/schema/default_safe.js'(
-    exports2,
-    module2
-  ) {
+  'node_modules/js-yaml/lib/js-yaml/schema/default_safe.js'(exports2, module2) {
     'use strict';
     var Schema = require_schema();
     module2.exports = new Schema({
@@ -72620,12 +72623,9 @@ var require_default_safe = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/js/undefined.js
+// node_modules/js-yaml/lib/js-yaml/type/js/undefined.js
 var require_undefined = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/js/undefined.js'(
-    exports2,
-    module2
-  ) {
+  'node_modules/js-yaml/lib/js-yaml/type/js/undefined.js'(exports2, module2) {
     'use strict';
     var Type = require_type();
     function resolveJavascriptUndefined() {
@@ -72650,9 +72650,9 @@ var require_undefined = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/js/regexp.js
+// node_modules/js-yaml/lib/js-yaml/type/js/regexp.js
 var require_regexp = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/js/regexp.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/type/js/regexp.js'(exports2, module2) {
     'use strict';
     var Type = require_type();
     function resolveJavascriptRegExp(data) {
@@ -72698,12 +72698,9 @@ var require_regexp = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/js/function.js
+// node_modules/js-yaml/lib/js-yaml/type/js/function.js
 var require_function = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/type/js/function.js'(
-    exports2,
-    module2
-  ) {
+  'node_modules/js-yaml/lib/js-yaml/type/js/function.js'(exports2, module2) {
     'use strict';
     var esprima;
     try {
@@ -72772,12 +72769,9 @@ var require_function = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/schema/default_full.js
+// node_modules/js-yaml/lib/js-yaml/schema/default_full.js
 var require_default_full = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/schema/default_full.js'(
-    exports2,
-    module2
-  ) {
+  'node_modules/js-yaml/lib/js-yaml/schema/default_full.js'(exports2, module2) {
     'use strict';
     var Schema = require_schema();
     module2.exports = Schema.DEFAULT = new Schema({
@@ -72787,9 +72781,9 @@ var require_default_full = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/loader.js
+// node_modules/js-yaml/lib/js-yaml/loader.js
 var require_loader = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/loader.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/loader.js'(exports2, module2) {
     'use strict';
     var common = require_common3();
     var YAMLException = require_exception();
@@ -74106,9 +74100,9 @@ var require_loader = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/dumper.js
+// node_modules/js-yaml/lib/js-yaml/dumper.js
 var require_dumper = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml/dumper.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml/dumper.js'(exports2, module2) {
     'use strict';
     var common = require_common3();
     var YAMLException = require_exception();
@@ -74773,9 +74767,9 @@ var require_dumper = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml.js
+// node_modules/js-yaml/lib/js-yaml.js
 var require_js_yaml = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/lib/js-yaml.js'(exports2, module2) {
+  'node_modules/js-yaml/lib/js-yaml.js'(exports2, module2) {
     'use strict';
     var loader = require_loader();
     var dumper = require_dumper();
@@ -74808,9 +74802,9 @@ var require_js_yaml = __commonJS({
   },
 });
 
-// node_modules/gray-matter/node_modules/js-yaml/index.js
+// node_modules/js-yaml/index.js
 var require_js_yaml2 = __commonJS({
-  'node_modules/gray-matter/node_modules/js-yaml/index.js'(exports2, module2) {
+  'node_modules/js-yaml/index.js'(exports2, module2) {
     'use strict';
     var yaml2 = require_js_yaml();
     module2.exports = yaml2;
@@ -75245,7 +75239,7 @@ var governanceConfig = {
 
 // src/utils/marketsAndNetworksConfig.ts
 var import_contract_helpers4 = __toESM(require_cjs());
-var import_ethers = __toESM(require_lib31());
+var import_providers2 = __toESM(require_lib30());
 
 // src/ui-config/marketsConfig.tsx
 var import_contract_helpers2 = __toESM(require_cjs());
@@ -75260,7 +75254,6 @@ var marketsData = {
       collateralRepay: true,
       incentives: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xB53C1a33016B2DC2fF3653530bfF1848a515c8c5'.toLowerCase(),
       LENDING_POOL: '0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9',
@@ -75280,7 +75273,6 @@ var marketsData = {
   ['amm_mainnet' /* amm_mainnet */]: {
     marketTitle: 'Ethereum AMM',
     chainId: import_contract_helpers2.ChainId.mainnet,
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xacc030ef66f9dfeae9cbb0cd1b25654b82cfa8d5'.toLowerCase(),
       LENDING_POOL: '0x7937d4799803fbbe595ed57278bc4ca21f3bffcb',
@@ -75299,8 +75291,6 @@ var marketsData = {
       incentives: true,
       collateralRepay: true,
     },
-    cachingServerUrl: 'https://cache-api-137.aave.com/graphql',
-    cachingWSServerUrl: 'wss://cache-api-137.aave.com/graphql',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xd05e3E715d945B59290df0ae8eF85c1BdB684744'.toLowerCase(),
       LENDING_POOL: '0x8dFf5E27EA6b7AC08EbFdf9eB090F32ee9a30fcf',
@@ -75325,8 +75315,6 @@ var marketsData = {
       incentives: true,
       collateralRepay: true,
     },
-    cachingServerUrl: 'https://cache-api-43114.aave.com/graphql',
-    cachingWSServerUrl: 'wss://cache-api-43114.aave.com/graphql',
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xb6A86025F0FE1862B372cb0ca18CE3EDe02A318f'.toLowerCase(),
       LENDING_POOL: '0x4F01AeD16D97E3aB5ab2B501154DC9bb0F1A5A2C',
@@ -75343,6 +75331,23 @@ var marketsData = {
       marketName: 'aaveavalanche',
     },
   },
+  ['proto_goerli_gho_v3' /* proto_goerli_gho_v3 */]: {
+    marketTitle: 'Ethereum G\xF6rli GHO',
+    v3: true,
+    chainId: import_contract_helpers2.ChainId.goerli,
+    enabledFeatures: {
+      faucet: true,
+    },
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: '0x3c1095AC5c30042453a07414bAFB2501dE30A8fe'.toLowerCase(),
+      LENDING_POOL: '0xd84f166e81f53eDd9B689779B6f4022cF73A2BdF',
+      WETH_GATEWAY: '0xaba1AC875611E6BEF8a9F6e9166C35C07A56E90b',
+      FAUCET: '0xD7974dCc0a0Bd2d4eeBF00B270634E40b9f8f967',
+      WALLET_BALANCE_PROVIDER: '0x11De99932D5B08E8A680B80e4eC7Bd68851fD64b',
+      UI_POOL_DATA_PROVIDER: '0xC576539371a2f425545B7BF4eb2a14Eee1944a1C',
+      UI_INCENTIVE_DATA_PROVIDER: '0xACFd610B51ac6B70F030B277EA8A2A8D2143dC7A',
+    },
+  },
   ['proto_goerli_v3' /* proto_goerli_v3 */]: {
     marketTitle: 'Ethereum G\xF6rli',
     v3: true,
@@ -75350,7 +75355,6 @@ var marketsData = {
     enabledFeatures: {
       faucet: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xc4dCB5126a3AfEd129BC3668Ea19285A9f56D15D'.toLowerCase(),
       LENDING_POOL: '0x368EedF3f56ad10b9bC57eed4Dac65B26Bb667f6',
@@ -75370,7 +75374,6 @@ var marketsData = {
       liquiditySwap: true,
       collateralRepay: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb'.toLowerCase(),
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
@@ -75396,7 +75399,6 @@ var marketsData = {
       faucet: true,
       incentives: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xF8aa90E66B8BAe13f2e4aDe6104abAb8eeDaBfdc'.toLowerCase(),
       LENDING_POOL: '0x6Cbb4E8eC402E07fDF96DbbC6c752aCfB0eB6075',
@@ -75417,7 +75419,6 @@ var marketsData = {
       incentives: true,
       collateralRepay: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb'.toLowerCase(),
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
@@ -75442,7 +75443,6 @@ var marketsData = {
       faucet: true,
       incentives: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0x1775ECC8362dB6CaB0c7A9C0957cF656A5276c29'.toLowerCase(),
       LENDING_POOL: '0xb47673b7a73D78743AFF1487AF69dBB5763F00cA',
@@ -75461,7 +75461,6 @@ var marketsData = {
       faucet: true,
       incentives: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0x74a328ED938160D702378Daeb7aB2504714B4E4b'.toLowerCase(),
       LENDING_POOL: '0x4b529A5d8268d74B687aC3dbb00e1b85bF4BF0d4',
@@ -75481,7 +75480,6 @@ var marketsData = {
       collateralRepay: true,
       liquiditySwap: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb'.toLowerCase(),
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
@@ -75506,7 +75504,6 @@ var marketsData = {
       faucet: true,
       incentives: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xE339D30cBa24C70dCCb82B234589E3C83249e658'.toLowerCase(),
       LENDING_POOL: '0x771A45a19cE333a19356694C5fc80c76fe9bc741',
@@ -75524,7 +75521,6 @@ var marketsData = {
     enabledFeatures: {
       incentives: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb'.toLowerCase(),
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
@@ -75544,7 +75540,6 @@ var marketsData = {
       collateralRepay: true,
       liquiditySwap: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb'.toLowerCase(),
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
@@ -75567,7 +75562,6 @@ var marketsData = {
       incentives: true,
       collateralRepay: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb'.toLowerCase(),
       LENDING_POOL: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
@@ -75591,7 +75585,6 @@ var marketsData = {
       incentives: true,
       faucet: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0x5343b5bA672Ae99d627A1C87866b8E53F47Db2E6'.toLowerCase(),
       LENDING_POOL: '0x6C9fB0D5bD9429eb9Cd96B85B81d872281771E6B',
@@ -75609,7 +75602,6 @@ var marketsData = {
     enabledFeatures: {
       faucet: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0x5E52dEc931FFb32f609681B8438A51c675cc232d'.toLowerCase(),
       LENDING_POOL: '0x4bd5643ac6f66a5237E18bfA7d47cF22f1c9F210',
@@ -75627,7 +75619,6 @@ var marketsData = {
       incentives: true,
       faucet: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0x178113104fEcbcD7fF8669a0150721e231F0FD4B'.toLowerCase(),
       LENDING_POOL: '0x9198F13B08E299d85E096929fA9781A1E3d5d827',
@@ -75645,7 +75636,6 @@ var marketsData = {
       faucet: true,
       incentives: true,
     },
-    rpcOnly: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0x7fdC1FdF79BE3309bf82f4abdAD9f111A6590C0f'.toLowerCase(),
       LENDING_POOL: '0x76cc67FF2CC77821A70ED14321111Ce381C2594D',
@@ -75663,8 +75653,12 @@ var import_contract_helpers3 = __toESM(require_cjs());
 var networkConfigs = {
   [import_contract_helpers3.ChainId.goerli]: {
     name: 'Ethereum G\xF6rli',
-    publicJsonRPCUrl: ['https://eth-goerli.alchemyapi.io/v2/demo', 'https://goerli.prylabs.net'],
-    publicJsonRPCWSUrl: 'wss://eth-goerli.alchemyapi.io/v2/demo',
+    publicJsonRPCUrl: [
+      'https://eth-goerli.public.blastapi.io',
+      'https://rpc.ankr.com/eth_goerli',
+      'https://goerli.prylabs.net',
+    ],
+    publicJsonRPCWSUrl: 'wss://eth-goerli.public.blastapi.io',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
@@ -75676,7 +75670,12 @@ var networkConfigs = {
   [import_contract_helpers3.ChainId.mainnet]: {
     name: 'Ethereum',
     privateJsonRPCUrl: 'https://eth-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
-    publicJsonRPCUrl: ['https://cloudflare-eth.com/v1/mainnet'],
+    publicJsonRPCUrl: [
+      'https://rpc.ankr.com/eth',
+      'https://rpc.flashbots.net',
+      'https://eth-mainnet.public.blastapi.io',
+      'https://cloudflare-eth.com/v1/mainnet',
+    ],
     publicJsonRPCWSUrl: 'wss://eth-mainnet.alchemyapi.io/v2/demo',
     baseUniswapAdapter: '0xc3efa200a60883a96ffe3d5b492b121d6e9a1f3f',
     baseAssetSymbol: 'ETH',
@@ -75689,7 +75688,12 @@ var networkConfigs = {
   [import_contract_helpers3.ChainId.polygon]: {
     name: 'Polygon POS',
     privateJsonRPCUrl: 'https://poly-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
-    publicJsonRPCUrl: [],
+    publicJsonRPCUrl: [
+      'https://polygon-rpc.com',
+      'https://polygon-mainnet.public.blastapi.io',
+      'https://rpc-mainnet.matic.quiknode.pro',
+    ],
+    publicJsonRPCWSUrl: 'wss://polygon-rpc.com',
     baseAssetSymbol: 'MATIC',
     wrappedBaseAssetSymbol: 'WMATIC',
     baseAssetDecimals: 18,
@@ -75704,7 +75708,12 @@ var networkConfigs = {
   },
   [import_contract_helpers3.ChainId.mumbai]: {
     name: 'Mumbai',
-    publicJsonRPCUrl: ['https://polygon-mumbai.g.alchemy.com/v2/demo'],
+    publicJsonRPCUrl: [
+      'https://rpc.ankr.com/polygon_mumbai',
+      'https://rpc-mumbai.maticvigil.com',
+      'https://polygon-testnet.public.blastapi.io',
+      'https://polygon-mumbai.g.alchemy.com/v2/demo',
+    ],
     publicJsonRPCWSUrl: 'wss://polygon-mumbai.g.alchemy.com/v2/demo',
     baseAssetSymbol: 'MATIC',
     wrappedBaseAssetSymbol: 'WMATIC',
@@ -75715,7 +75724,11 @@ var networkConfigs = {
   },
   [import_contract_helpers3.ChainId.fuji]: {
     name: 'Avalanche Fuji',
-    publicJsonRPCUrl: ['https://api.avax-test.network/ext/bc/C/rpc'],
+    publicJsonRPCUrl: [
+      'https://api.avax-test.network/ext/bc/C/rpc',
+      'https://rpc.ankr.com/avalanche_fuji',
+      'https://ava-testnet.public.blastapi.io/ext/bc/C/rpc',
+    ],
     publicJsonRPCWSUrl: 'wss://api.avax-test.network/ext/bc/C/rpc',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'AVAX',
@@ -75734,7 +75747,11 @@ var networkConfigs = {
     name: 'Avalanche',
     privateJsonRPCUrl:
       'https://avax-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca/ext/bc/C/rpc',
-    publicJsonRPCUrl: ['https://api.avax.network/ext/bc/C/rpc'],
+    publicJsonRPCUrl: [
+      'https://api.avax.network/ext/bc/C/rpc',
+      'https://ava-mainnet.public.blastapi.io/ext/bc/C/rpc',
+      'https://rpc.ankr.com/avalanche',
+    ],
     publicJsonRPCWSUrl: 'wss://api.avax.network/ext/bc/C/rpc',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'AVAX',
@@ -75751,7 +75768,10 @@ var networkConfigs = {
   },
   [import_contract_helpers3.ChainId.arbitrum_goerli]: {
     name: 'Arbitrum G\xF6rli',
-    publicJsonRPCUrl: ['https://goerli-rollup.arbitrum.io/rpc'],
+    publicJsonRPCUrl: [
+      'https://goerli-rollup.arbitrum.io/rpc',
+      'https://arb-goerli.g.alchemy.com/v2/demo',
+    ],
     publicJsonRPCWSUrl: 'wss://goerli-rollup.arbitrum.io/rpc',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
@@ -75768,7 +75788,11 @@ var networkConfigs = {
   },
   [import_contract_helpers3.ChainId.arbitrum_one]: {
     name: 'Arbitrum',
-    publicJsonRPCUrl: ['https://arb1.arbitrum.io/rpc'],
+    publicJsonRPCUrl: [
+      'https://arb1.arbitrum.io/rpc',
+      'https://rpc.ankr.com/arbitrum',
+      'https://1rpc.io/arb',
+    ],
     publicJsonRPCWSUrl: 'wss://arb1.arbitrum.io/rpc',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
@@ -75781,11 +75805,16 @@ var networkConfigs = {
       name: 'Arbitrum Bridge',
       url: 'https://bridge.arbitrum.io',
     },
+    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
   [import_contract_helpers3.ChainId.harmony]: {
     name: 'Harmony',
     privateJsonRPCUrl: 'https://harmony-0.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
-    publicJsonRPCUrl: ['https://api.s0.t.hmny.io', 'https://api.harmony.one'],
+    publicJsonRPCUrl: [
+      'https://api.s0.t.hmny.io',
+      'https://api.harmony.one',
+      'https://rpc.ankr.com/harmony',
+    ],
     publicJsonRPCWSUrl: 'wss://ws.s0.t.hmny.io',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ONE',
@@ -75798,12 +75827,17 @@ var networkConfigs = {
       name: 'Harmony Bridge',
       url: 'https://bridge.harmony.one',
     },
+    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
   [import_contract_helpers3.ChainId.optimism]: {
     name: 'Optimism',
     privateJsonRPCUrl:
       'https://optimism-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
-    publicJsonRPCUrl: ['https://optimism-mainnet.public.blastapi.io'],
+    publicJsonRPCUrl: [
+      'https://optimism-mainnet.public.blastapi.io',
+      'https://1rpc.io/op',
+      'https://rpc.ankr.com/optimism',
+    ],
     publicJsonRPCWSUrl: 'wss://optimism-mainnet.public.blastapi.io',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
@@ -75816,10 +75850,11 @@ var networkConfigs = {
       name: 'Optimism Bridge',
       url: 'https://app.optimism.io/bridge',
     },
+    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
   [import_contract_helpers3.ChainId.optimism_goerli]: {
     name: 'Optimism G\xF6rli',
-    publicJsonRPCUrl: ['https://goerli.optimism.io'],
+    publicJsonRPCUrl: ['https://goerli.optimism.io', 'https://opt-goerli.g.alchemy.com/v2/demo'],
     publicJsonRPCWSUrl: 'wss://goerli.optimism.io',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
@@ -75832,7 +75867,11 @@ var networkConfigs = {
   [import_contract_helpers3.ChainId.fantom]: {
     name: 'Fantom',
     privateJsonRPCUrl: 'https://fantom-mainnet.gateway.pokt.network/v1/lb/62b3314e123e6f00397f19ca',
-    publicJsonRPCUrl: [],
+    publicJsonRPCUrl: [
+      'https://rpc.fantom.network',
+      'https://rpc.ankr.com/fantom',
+      'https://fantom-mainnet.public.blastapi.io',
+    ],
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'FTM',
     wrappedBaseAssetSymbol: 'WFTM',
@@ -75844,10 +75883,15 @@ var networkConfigs = {
       name: 'Fantom Bridge',
       url: 'https://app.multichain.org/#/router',
     },
+    ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
   },
   [import_contract_helpers3.ChainId.fantom_testnet]: {
     name: 'Fantom Testnet',
-    publicJsonRPCUrl: ['https://rpc.testnet.fantom.network'],
+    publicJsonRPCUrl: [
+      'https://rpc.testnet.fantom.network',
+      'https://fantom-testnet.public.blastapi.io',
+      'https://rpc.ankr.com/fantom_testnet',
+    ],
     publicJsonRPCWSUrl: '',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'FTM',
@@ -75862,6 +75906,105 @@ var networkConfigs = {
       url: 'https://app.multichain.org/#/router',
     },
   },
+};
+
+// src/utils/rotationProvider.ts
+var import_providers = __toESM(require_lib30());
+var import_ethers = __toESM(require_lib31());
+var DEFAULT_ROTATION_DELAY = 5e3;
+var DEFAULT_FALL_FORWARD_DELAY = 6e4;
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+function checkNetworks(networks) {
+  var _a7, _b;
+  if (networks.length === 0) {
+    import_ethers.logger.throwArgumentError('no networks provided', 'networks', networks);
+  }
+  let result;
+  for (let i = 0; i < networks.length; i++) {
+    const network = networks[i];
+    if (!network) {
+      import_ethers.logger.throwArgumentError('network not defined', 'networks', networks);
+    }
+    if (!result) {
+      result = network;
+      continue;
+    }
+    if (
+      !(
+        result.name.toLowerCase() === network.name.toLowerCase() &&
+        result.chainId === network.chainId &&
+        (((_a7 = result.ensAddress) == null ? void 0 : _a7.toLowerCase()) ===
+          ((_b = network.ensAddress) == null ? void 0 : _b.toLowerCase()) ||
+          (result.ensAddress == null && network.ensAddress == null))
+      )
+    ) {
+      import_ethers.logger.throwArgumentError('provider mismatch', 'networks', networks);
+    }
+  }
+  if (!result) {
+    import_ethers.logger.throwArgumentError('no networks defined', 'networks', networks);
+  }
+  return result;
+}
+var RotationProvider = class extends import_providers.BaseProvider {
+  constructor(urls, chainId, config) {
+    super(chainId);
+    this.currentProviderIndex = 0;
+    this.firstRotationTimestamp = 0;
+    this.providers = urls.map((url) => new import_providers.StaticJsonRpcProvider(url, chainId));
+    this.rotationDelay = (config == null ? void 0 : config.rotationDelay) || DEFAULT_ROTATION_DELAY;
+    this.fallForwardDelay =
+      (config == null ? void 0 : config.fallFowardDelay) || DEFAULT_FALL_FORWARD_DELAY;
+  }
+  fallForwardRotation() {
+    return __async(this, null, function* () {
+      const now = new Date().getTime();
+      const diff = now - this.firstRotationTimestamp;
+      if (diff < this.fallForwardDelay) {
+        yield sleep(this.fallForwardDelay - diff);
+        this.currentProviderIndex = 0;
+      }
+    });
+  }
+  rotateUrl(prevIndex) {
+    return __async(this, null, function* () {
+      if (prevIndex !== this.currentProviderIndex) return;
+      if (this.currentProviderIndex === 0) {
+        this.currentProviderIndex += 1;
+        this.firstRotationTimestamp = new Date().getTime();
+        this.fallForwardRotation();
+      } else if (this.currentProviderIndex === this.providers.length - 1) {
+        yield sleep(this.rotationDelay);
+        this.currentProviderIndex = 0;
+      } else {
+        this.currentProviderIndex += 1;
+      }
+    });
+  }
+  detectNetwork() {
+    return __async(this, null, function* () {
+      const networks = yield Promise.all(this.providers.map((c) => c.getNetwork()));
+      return checkNetworks(networks);
+    });
+  }
+  perform(method, params) {
+    return __async(this, null, function* () {
+      const index = this.currentProviderIndex;
+      try {
+        return yield this.providers[index].perform(method, params);
+      } catch (e) {
+        console.error(e.message);
+        this.emit('debug', {
+          action: 'perform',
+          provider: this.providers[index],
+        });
+        yield this.rotateUrl(index);
+        return yield this.perform(method, params);
+      }
+    });
+  }
 };
 
 // src/utils/marketsAndNetworksConfig.ts
@@ -75920,7 +76063,6 @@ var marketsData2 = Object.keys(marketsData).reduce((acc, value) => {
   if (FORK_ENABLED && marketsData[value].chainId === FORK_BASE_CHAIN_ID) {
     acc[`fork_${value}`] = __spreadProps(__spreadValues({}, marketsData[value]), {
       chainId: FORK_CHAIN_ID,
-      rpcOnly: true,
       isFork: true,
     });
   }
@@ -75971,29 +76113,18 @@ var getProvider = (chainId) => {
     const config = getNetworkConfig(chainId);
     const chainProviders = [];
     if (config.privateJsonRPCUrl) {
-      chainProviders.push({
-        provider: new import_ethers.providers.StaticJsonRpcProvider(
-          config.privateJsonRPCUrl,
-          chainId
-        ),
-        priority: 0,
-      });
+      chainProviders.push(config.privateJsonRPCUrl);
     }
     if (config.publicJsonRPCUrl.length) {
-      config.publicJsonRPCUrl.map((rpc, ix) =>
-        chainProviders.push({
-          provider: new import_ethers.providers.StaticJsonRpcProvider(rpc, chainId),
-          priority: ix + 1,
-        })
-      );
+      config.publicJsonRPCUrl.map((rpc) => chainProviders.push(rpc));
     }
     if (!chainProviders.length) {
       throw new Error(`${chainId} has no jsonRPCUrl configured`);
     }
     if (chainProviders.length === 1) {
-      providers[chainId] = chainProviders[0].provider;
+      providers[chainId] = new import_providers2.StaticJsonRpcProvider(chainProviders[0], chainId);
     } else {
-      providers[chainId] = new import_ethers.providers.FallbackProvider(chainProviders, 1);
+      providers[chainId] = new RotationProvider(chainProviders, chainId);
     }
   }
   return providers[chainId];
@@ -76380,6 +76511,17 @@ var averageBlockTime = 12;
 function enhanceProposalWithTimes(proposal) {
   return __async(this, null, function* () {
     const provider = getProvider(import_contract_helpers6.ChainId.mainnet);
+    if (proposal.state === import_contract_helpers6.ProposalState.Pending) {
+      const { timestamp: creationTimestamp2 } = yield provider.getBlock(proposal.proposalCreated);
+      const currentBlock = yield provider.getBlock('latest');
+      return __spreadProps(__spreadValues({}, proposal), {
+        creationTimestamp: creationTimestamp2,
+        startTimestamp:
+          currentBlock.timestamp + (proposal.startBlock - currentBlock.number) * averageBlockTime,
+        expirationTimestamp:
+          currentBlock.timestamp + (proposal.endBlock - currentBlock.number) * averageBlockTime,
+      });
+    }
     const [{ timestamp: startTimestamp }, { timestamp: creationTimestamp }] = yield Promise.all([
       provider.getBlock(proposal.startBlock),
       provider.getBlock(proposal.proposalCreated),
