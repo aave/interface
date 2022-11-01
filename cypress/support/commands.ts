@@ -46,6 +46,7 @@ declare global {
        * This will switch dashboard view to Supply
        */
       doSwitchToDashboardSupplyView(): void;
+      doFindMobileMenuElement(value: string): Cypress.Chainable<JQuery<HTMLElement>>;
     }
   }
 }
@@ -115,6 +116,10 @@ Cypress.Commands.add('doSwitchToDashboardBorrowView', () => {
 
 Cypress.Commands.add('doSwitchToDashboardSupplyView', () => {
   switchDashboardView('Supply', 'supplies');
+});
+
+Cypress.Commands.add('doFindMobileMenuElement', (value: string) => {
+  return cy.get('menu').find(value).click();
 });
 
 export {};
