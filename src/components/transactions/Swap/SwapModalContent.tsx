@@ -85,6 +85,7 @@ export const SwapModalContent = ({
     max: isMaxSelected,
     skip: supplyTxState.loading,
     maxSlippage: Number(maxSlippage),
+    routeVariant: 'rate',
   });
 
   const loadingSkeleton = loading && outputAmountUSD === '0';

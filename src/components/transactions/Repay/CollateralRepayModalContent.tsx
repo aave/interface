@@ -112,7 +112,8 @@ export function CollateralRepayModalContent({
   } = useCollateralRepaySwap({
     chainId: currentNetworkConfig.underlyingChainId || currentChainId,
     userAddress: currentAccount,
-    variant: swapVariant,
+    swapVariant: swapVariant,
+    routeVariant: 'rate',
     swapIn,
     swapOut,
     max: repayAllDebt,
