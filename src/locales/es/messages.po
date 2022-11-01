@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-10-18 18:10\n"
+"PO-Revision-Date: 2022-11-01 00:24\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -112,6 +112,11 @@ msgstr "Añade {0} a tu cartera para hacer un seguimiento del balance."
 #: src/ui-config/errorMapping.tsx
 msgid "Address is not a contract"
 msgstr "La dirección no es un contrato"
+
+#: src/modules/governance/proposal/VotersListModal.tsx
+#: src/modules/governance/proposal/VotersListModal.tsx
+msgid "Addresses ({0})"
+msgstr "Direcciones ({0})"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
@@ -774,6 +779,10 @@ msgstr "Caduca"
 #: src/ui-config/menu-items/index.tsx
 msgid "FAQ"
 msgstr "Preguntas frecuentes"
+
+#: src/modules/governance/proposal/VotersListContainer.tsx
+msgid "Failed to load proposal voters. Please refresh the page."
+msgstr "Error al cargar los votantes de la propuesta. Por favor actualiza la página."
 
 #: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
@@ -1848,6 +1857,10 @@ msgstr "Para pagar en nombre de un usuario, se necesita una cantidad explícita 
 msgid "To request access for this permissioned market, please visit: <0>Acces Provider Name</0>"
 msgstr "Para solicitar acceso a este mercado, porfavor visita: <0>Nombre del proveedor de acceso</0>"
 
+#: src/modules/governance/proposal/VotersListContainer.tsx
+msgid "Top 10 addresses"
+msgstr "Top 10 direcciones"
+
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total available"
 msgstr "Total disponible"
@@ -1929,7 +1942,7 @@ msgstr "Ventana de unstakeo"
 
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Unstaked"
-msgstr ""
+msgstr "Unstakeado"
 
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Used as collateral"
@@ -1996,6 +2009,10 @@ msgstr "Versión 2"
 msgid "Version 3"
 msgstr "Versión 3"
 
+#: src/modules/governance/proposal/VotersListContainer.tsx
+msgid "View all votes"
+msgstr "Ver todos los votos"
+
 #: src/modules/reserve-overview/ReserveFactorOverview.tsx
 msgid "View contract"
 msgstr "Ver contrato"
@@ -2019,6 +2036,21 @@ msgstr "Votar NO"
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Vote YAE"
 msgstr "Votar SI"
+
+#: src/modules/governance/proposal/VotersListModal.tsx
+msgid "Voted NAY"
+msgstr "Votó NAY"
+
+#: src/modules/governance/proposal/VotersListModal.tsx
+msgid "Voted YAE"
+msgstr "Votó YAE"
+
+#: src/modules/governance/proposal/VotersListContainer.tsx
+#: src/modules/governance/proposal/VotersListModal.tsx
+#: src/modules/governance/proposal/VotersListModal.tsx
+#: src/modules/governance/proposal/VotersListModal.tsx
+msgid "Votes"
+msgstr "Votos"
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
@@ -2306,6 +2338,10 @@ msgstr "stETH suministrado como garantía continuará acumulando recompensas de 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "staking view"
 msgstr "vista de stakeo"
+
+#: src/modules/governance/FormattedProposalTime.tsx
+msgid "starts"
+msgstr ""
 
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "to learn more."

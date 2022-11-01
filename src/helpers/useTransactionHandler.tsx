@@ -1,11 +1,11 @@
-import { EthereumTransactionTypeExtended, GasType, Pool } from '@aave/contract-helpers';
+import { EthereumTransactionTypeExtended, GasType } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
 import { DependencyList, useEffect, useRef, useState } from 'react';
 import { useBackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
-import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 
 export const MOCK_SIGNED_HASH = 'Signed correctly';
@@ -39,13 +39,13 @@ export const useTransactionHandler = ({
     setTxError,
     setRetryWithApproval,
   } = useModalContext();
-  const { signTxData, sendTx, getTxError, currentAccount } = useWeb3Context();
-  const { refetchWalletBalances, refetchPoolData, refechIncentiveData } =
+  const { signTxData, sendTx, getTxError } = useWeb3Context();
+  const { refetchWalletBalances, refetchPoolData, refetchIncentiveData } =
     useBackgroundDataProvider();
-  const { lendingPool } = useTxBuilderContext();
   const [usePermit, setUsePermit] = useState<boolean>(tryPermit);
   const [signature, setSignature] = useState<SignatureLike>();
   const [signatureDeadline, setSignatureDeadline] = useState<string>();
+  const signERC20Approval = useRootStore((state) => state.signERC20Approval);
 
   const [approvalTx, setApprovalTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
@@ -82,7 +82,7 @@ export const useTransactionHandler = ({
 
         refetchWalletBalances();
         refetchPoolData && refetchPoolData();
-        refechIncentiveData && refechIncentiveData();
+        refetchIncentiveData && refetchIncentiveData();
       } catch (e) {
         // TODO: what to do with this error?
         try {
@@ -107,12 +107,9 @@ export const useTransactionHandler = ({
       if (usePermit && amount && underlyingAsset) {
         setApprovalTxState({ ...approvalTxState, loading: true });
         try {
-          const newPool: Pool = lendingPool as Pool;
           // deadline is an hour after signature
           const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
-          console.log('ERC20Approval', amount);
-          const unsingedPayload = await newPool.signERC20Approval({
-            user: currentAccount,
+          const unsingedPayload = await signERC20Approval({
             reserve: underlyingAsset,
             amount,
             deadline,
