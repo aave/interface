@@ -1,7 +1,7 @@
+import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
 
-import { ReserveIncentiveResponse } from '../../hooks/app-data-provider/useIncentiveData';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { Row } from '../primitives/Row';
 import { TokenIcon } from '../primitives/TokenIcon';

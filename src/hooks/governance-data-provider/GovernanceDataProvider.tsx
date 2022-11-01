@@ -1,34 +1,13 @@
-import { AaveGovernanceService, GovernancePowerDelegationToken } from '@aave/contract-helpers';
-import React, { useContext } from 'react';
-import { governanceConfig } from 'src/ui-config/governanceConfig';
-
-import { _useGovernanceDataRPC } from './_useGovernanceDataRPC';
-
-interface GovernanceDataProviderContextType {
-  governanceService: AaveGovernanceService;
-  governanceDelegationService: GovernancePowerDelegationToken;
-}
-
-const GovernanceDataProviderContext = React.createContext<GovernanceDataProviderContextType>(
-  {} as GovernanceDataProviderContextType
-);
+import React from 'react';
+import { useGovernanceDataSubscription } from 'src/store/root';
 
 /**
- * Naive provider that subscribes to different data sources to update the apollo cache.
+ * Naive provider that subscribes to governance data.
+ * Once next.js supports layouts this should go to the layouts section.
  * @param param0
  * @returns
  */
-export const GovernanceDataProvider: React.FC = ({ children }) => {
-  const { governanceService, governanceDelegationService } = _useGovernanceDataRPC({
-    governanceConfig,
-  });
-  return (
-    <GovernanceDataProviderContext.Provider
-      value={{ governanceService, governanceDelegationService }}
-    >
-      {children}
-    </GovernanceDataProviderContext.Provider>
-  );
+export const GovernanceDataProvider: React.FC = () => {
+  useGovernanceDataSubscription();
+  return null;
 };
-
-export const useGovernanceDataProvider = () => useContext(GovernanceDataProviderContext);

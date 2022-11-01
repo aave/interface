@@ -34,7 +34,6 @@ export type NetworkConfig = {
   // function returning a link to etherscan et al
   explorerLink: string;
   explorerLinkBuilder: (props: ExplorerLinkBuilderProps) => string;
-  // rpcOnly?: boolean;
   // set this to show faucets and similar
   isTestnet?: boolean;
   // get's automatically populated on fork networks
@@ -66,7 +65,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
     explorerLink: 'https://goerli.etherscan.io',
-    // rpcOnly: true,
     // usdMarket: true,
     isTestnet: true,
     networkLogoPath: '/icons/networks/ethereum.svg',
@@ -89,7 +87,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
     explorerLink: 'https://etherscan.io',
-    // rpcOnly: false,
     ratesHistoryApiUrl: 'https://aave-api-v2.aave.com/data/rates-history',
     networkLogoPath: '/icons/networks/ethereum.svg',
   },
@@ -131,7 +128,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     wrappedBaseAssetSymbol: 'WMATIC',
     baseAssetDecimals: 18,
     explorerLink: 'https://explorer-mumbai.maticvigil.com',
-    // rpcOnly: true,
     isTestnet: true,
     networkLogoPath: '/icons/networks/polygon.svg',
   },
@@ -149,7 +145,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     wrappedBaseAssetSymbol: 'WAVAX',
     baseAssetDecimals: 18,
     explorerLink: 'https://cchain.explorer.avax-test.network',
-    // rpcOnly: true,
     // usdMarket: true,
     isTestnet: true,
     networkLogoPath: '/icons/networks/avalanche.svg',
@@ -177,7 +172,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     wrappedBaseAssetSymbol: 'WAVAX',
     baseAssetDecimals: 18,
     explorerLink: 'https://cchain.explorer.avax.network',
-    // rpcOnly: false,
     // usdMarket: true,
     networkLogoPath: '/icons/networks/avalanche.svg',
     bridge: {
@@ -199,7 +193,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
     explorerLink: 'https://goerli-rollup-explorer.arbitrum.io',
-    // rpcOnly: true,
     // usdMarket: true,
     isTestnet: true,
     networkLogoPath: '/icons/networks/arbitrum.svg',
@@ -223,7 +216,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
     explorerLink: 'https://arbiscan.io',
-    // rpcOnly: true,
     // usdMarket: true,
     networkLogoPath: '/icons/networks/arbitrum.svg',
     bridge: {
@@ -248,7 +240,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     wrappedBaseAssetSymbol: 'WONE',
     baseAssetDecimals: 18,
     explorerLink: 'https://explorer.harmony.one',
-    // rpcOnly: true,
     // usdMarket: true,
     networkLogoPath: '/icons/networks/harmony.svg',
     bridge: {
@@ -274,7 +265,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
     explorerLink: 'https://optimistic.etherscan.io',
-    // rpcOnly: true,
     // usdMarket: true,
     networkLogoPath: '/icons/networks/optimism.svg',
     bridge: {
@@ -294,7 +284,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
     explorerLink: 'https://l2-explorer.surge.sh',
-    // rpcOnly: true,
     // usdMarket: true,
     isTestnet: true,
     networkLogoPath: '/icons/networks/optimism.svg',
@@ -319,7 +308,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     wrappedBaseAssetSymbol: 'WFTM',
     baseAssetDecimals: 18,
     explorerLink: 'https://ftmscan.com',
-    // rpcOnly: true,
     // usdMarket: true,
     networkLogoPath: '/icons/networks/fantom.svg',
     bridge: {
@@ -343,7 +331,6 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
     wrappedBaseAssetSymbol: 'WFTM',
     baseAssetDecimals: 18,
     explorerLink: 'https://testnet.ftmscan.com',
-    // rpcOnly: true,
     // usdMarket: true,
     isTestnet: true,
     networkLogoPath: '/icons/networks/fantom.svg',

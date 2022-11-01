@@ -1,12 +1,13 @@
 import React, { useContext } from 'react';
-
-import { useIncentiveData } from './useIncentiveData';
-import { usePoolData } from './usePoolData';
-import { useUpdateWalletBalances } from './useWalletBalances';
+import {
+  useIncentiveDataSubscription,
+  usePoolDataSubscription,
+  useWalletBalancesSubscription,
+} from 'src/store/root';
 
 interface BackgroundDataProviderContextType {
   refetchWalletBalances: () => Promise<void>;
-  refechIncentiveData?: () => Promise<void>;
+  refetchIncentiveData?: () => Promise<void>;
   refetchPoolData?: () => Promise<void> | Promise<void[]>;
 }
 
@@ -15,17 +16,17 @@ const BackgroundDataProviderContext = React.createContext<BackgroundDataProvider
 );
 
 /**
- * Naive provider that subscribes to different data sources to update the apollo cache.
+ * Naive provider that subscribes to different data sources.
  * @param param0
  * @returns
  */
 export const BackgroundDataProvider: React.FC = ({ children }) => {
-  const { refresh: refechIncentiveData } = useIncentiveData();
-  const { refresh: refetchPoolData } = usePoolData();
-  const { refetch: refetchWalletBalances } = useUpdateWalletBalances();
+  const refetchWalletBalances = useWalletBalancesSubscription();
+  const refetchPoolData = usePoolDataSubscription();
+  const refetchIncentiveData = useIncentiveDataSubscription();
   return (
     <BackgroundDataProviderContext.Provider
-      value={{ refetchWalletBalances, refechIncentiveData, refetchPoolData }}
+      value={{ refetchWalletBalances, refetchIncentiveData, refetchPoolData }}
     >
       {children}
     </BackgroundDataProviderContext.Provider>

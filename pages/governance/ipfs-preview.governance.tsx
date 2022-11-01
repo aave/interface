@@ -34,10 +34,9 @@ export default function IpfsPreview() {
 IpfsPreview.getLayout = function getLayout(page: React.ReactElement) {
   return (
     <MainLayout>
-      <GovernanceDataProvider>
-        {page}
-        <GovVoteModal />
-      </GovernanceDataProvider>
+      <GovernanceDataProvider />
+      {page}
+      <GovVoteModal />
     </MainLayout>
   );
 };

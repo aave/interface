@@ -1,8 +1,9 @@
-import { NetworkConfig } from 'src/ui-config/networksConfig';
-import { Warning } from 'src/components/primitives/Warning';
-import { Link } from '../../../../components/primitives/Link';
-import { Trans } from '@lingui/macro';
 import { ChainId } from '@aave/contract-helpers';
+import { Trans } from '@lingui/macro';
+import { Warning } from 'src/components/primitives/Warning';
+import { NetworkConfig } from 'src/ui-config/networksConfig';
+
+import { Link } from '../../../../components/primitives/Link';
 
 type WalletEmptyInfoProps = Pick<NetworkConfig, 'bridge' | 'name'> & {
   chainId: number;

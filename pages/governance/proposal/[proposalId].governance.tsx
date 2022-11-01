@@ -576,10 +576,9 @@ export default function ProposalPage({
 ProposalPage.getLayout = function getLayout(page: React.ReactElement) {
   return (
     <MainLayout>
-      <GovernanceDataProvider>
-        {page}
-        <GovVoteModal />
-      </GovernanceDataProvider>
+      <GovernanceDataProvider />
+      {page}
+      <GovVoteModal />
     </MainLayout>
   );
 };

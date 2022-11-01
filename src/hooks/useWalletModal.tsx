@@ -1,44 +1,9 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 
-export type WalletModalContextType = {
-  isWalletModalOpen: boolean;
-  setWalletModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-export const WalletModalContext = createContext<WalletModalContextType>(
-  {} as WalletModalContextType
-);
-
-export const WalletModalContextProvider: React.FC = ({ children }) => {
-  const { connected, watchModeOnlyAddress } = useWeb3Context();
-
-  const [isWalletModalOpen, setWalletModalOpen] = useState(false);
-
-  useEffect(() => {
-    if (connected || watchModeOnlyAddress) {
-      setWalletModalOpen(false);
-    }
-  }, [connected, watchModeOnlyAddress]);
-
-  return (
-    <WalletModalContext.Provider
-      value={{
-        isWalletModalOpen,
-        setWalletModalOpen,
-      }}
-    >
-      {children}
-    </WalletModalContext.Provider>
-  );
-};
-
-export const useWalletModalContext = () => {
-  const context = useContext(WalletModalContext);
-
-  if (context === undefined) {
-    throw new Error('useWalletModalContext must be used within a WalletModalProvider');
-  }
-
-  return context;
-};
+// TODO: remove this
+// currently this reexport is a workaround so i don't have to alter and potentially create conflicts in 200 files
+export const useWalletModalContext = () =>
+  useRootStore((state) => ({
+    isWalletModalOpen: state.isWalletModalOpen,
+    setWalletModalOpen: state.setWalletModalOpen,
+  }));

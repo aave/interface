@@ -19,6 +19,7 @@ describe('Manipulation on the wallet connect', () => {
     it('step1:Disconnect wallet', () => {
       cy.wait(1000);
       cy.get(walletButton).click();
+      cy.wait(6000);
       cy.contains('Disconnect').click();
       cy.contains('Please, connect your wallet').should('be.visible');
     });

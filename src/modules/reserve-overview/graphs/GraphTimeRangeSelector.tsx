@@ -1,4 +1,4 @@
-import { ToggleButtonGroup, ToggleButton, Typography } from '@mui/material';
+import { ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import { ReserveRateTimeRange, reserveRateTimeRangeOptions } from 'src/hooks/useReservesHistory';
 
 export interface GraphTimeRangeSelectorProps {

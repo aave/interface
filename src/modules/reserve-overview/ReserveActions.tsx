@@ -12,11 +12,11 @@ import {
   useTheme,
 } from '@mui/material';
 import React, { ReactNode } from 'react';
+import { getMarketInfoById } from 'src/components/MarketSwitcher';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
-import { getMarketInfoById } from 'src/components/MarketSwitcher';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -27,12 +27,12 @@ import { useModalContext } from 'src/hooks/useModal';
 import { usePermissions } from 'src/hooks/usePermissions';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import {
   assetCanBeBorrowedByUser,
   getMaxAmountAvailableToBorrow,
 } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
-import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 
 import { CapType } from '../../components/caps/helper';
 import { AvailableTooltip } from '../../components/infoTooltips/AvailableTooltip';

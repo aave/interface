@@ -1,10 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { optimizedPath } from 'src/utils/utils';
+import { useRootStore } from 'src/store/root';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
@@ -23,27 +20,15 @@ export const CollateralChangeActions = ({
   blocked,
   symbol,
 }: CollateralChangeActionsProps) => {
-  const { lendingPool } = useTxBuilderContext();
-  const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
-  const { currentAccount } = useWeb3Context();
+  const setUsageAsCollateral = useRootStore((state) => state.setUsageAsCollateral);
 
   const { action, loadingTxns, mainTxState, requiresApproval } = useTransactionHandler({
     tryPermit: false,
     handleGetTxns: async () => {
-      if (currentMarketData.v3) {
-        return lendingPool.setUsageAsCollateral({
-          user: currentAccount,
-          reserve: poolReserve.underlyingAsset,
-          usageAsCollateral,
-          useOptimizedPath: optimizedPath(chainId),
-        });
-      } else {
-        return lendingPool.setUsageAsCollateral({
-          user: currentAccount,
-          reserve: poolReserve.underlyingAsset,
-          usageAsCollateral,
-        });
-      }
+      return setUsageAsCollateral({
+        reserve: poolReserve.underlyingAsset,
+        usageAsCollateral,
+      });
     },
     skip: blocked,
   });
