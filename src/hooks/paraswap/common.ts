@@ -29,15 +29,20 @@ export type SwapData = Pick<
   'amount' | 'underlyingAsset' | 'decimals' | 'supplyAPY' | 'variableBorrowAPY'
 >;
 
+export type RouteVariant = 'rate' | 'transaction';
+
 export type SwapVariant = 'exactIn' | 'exactOut';
 
-type SwapTransactionParams = {
-  swapCallData: string;
-  augustus: string;
+type SwapRateParams = {
   inputAmount: string;
   outputAmount: string;
   inputAmountUSD: string;
   outputAmountUSD: string;
+};
+
+type SwapTransactionParams = SwapRateParams & {
+  swapCallData: string;
+  augustus: string;
 };
 
 type GetSwapCallDataProps = {
@@ -181,6 +186,73 @@ export async function fetchExactInTxParams(
 }
 
 /**
+ * Uses the Paraswap SDK to fetch the swap rate for a 'Sell', or 'Exact In' swap.
+ * This means that swap in amount is fixed, and the slippage will be applied to the amount received.
+ * @param {SwapData} swapIn
+ * @param {SwapData} swapOut
+ * @param {ChainId} chainId
+ * @param {string} userAddress
+ * @param {number} maxSlippage
+ * @param {boolean} [max]
+ * @returns {Promise<SwapRateParams>}
+ */
+export async function fetchExactInRate(
+  swapIn: SwapData,
+  swapOut: SwapData,
+  chainId: ChainId,
+  userAddress: string,
+  maxSlippage: number,
+  max?: boolean
+): Promise<SwapRateParams> {
+  if (!swapIn.amount || swapIn.amount === '0' || isNaN(+swapIn.amount)) {
+    return {
+      inputAmount: '0',
+      outputAmount: '0',
+      inputAmountUSD: '0',
+      outputAmountUSD: '0',
+    };
+  }
+
+  let swapInAmount = valueToBigNumber(swapIn.amount);
+  if (max && swapIn.supplyAPY !== '0') {
+    swapInAmount = swapInAmount.plus(
+      swapInAmount.multipliedBy(swapIn.supplyAPY).dividedBy(360 * 24)
+    );
+  }
+
+  const amount = normalizeBN(swapInAmount, swapIn.decimals * -1);
+
+  const options: RateOptions = {
+    partner: 'aave',
+  };
+
+  if (max) {
+    options.excludeContractMethods = [ContractMethod.simpleSwap];
+  }
+
+  const swapper = ExactInSwapper(chainId);
+  const route = await swapper.getRate(
+    amount.toFixed(0),
+    swapIn.underlyingAsset,
+    swapIn.decimals,
+    swapOut.underlyingAsset,
+    swapOut.decimals,
+    userAddress,
+    options
+  );
+
+  let destAmount = Number(route.destAmount) / 10 ** swapOut.decimals;
+  destAmount = destAmount - destAmount * (Number(maxSlippage) / 100);
+
+  return {
+    inputAmount: normalize(route.srcAmount, swapIn.decimals),
+    outputAmount: destAmount.toString(),
+    inputAmountUSD: route.srcUSD,
+    outputAmountUSD: route.destUSD,
+  };
+}
+
+/**
  * Uses the Paraswap SDK to fetch the transaction parameters for a 'Buy', or 'Exact Out' swap.
  * This means that amount received is fixed, and positive slippage will be applied to the input amount.
  * There are two steps in fetching the transaction parameters. First an optimal route is determined
@@ -255,6 +327,74 @@ export async function fetchExactOutTxParams(
     swapCallData,
     augustus,
     inputAmount: normalize(srcAmountWithSlippage, swapIn.decimals),
+    outputAmount: normalize(route.destAmount, swapOut.decimals),
+    inputAmountUSD: route.srcUSD,
+    outputAmountUSD: route.destUSD,
+  };
+}
+
+/**
+ * Uses the Paraswap SDK to fetch the swap rate for a 'Buy', or 'Exact Out' swap.
+ * This means that amount received is fixed, and positive slippage will be applied to the input amount.
+ * @param {SwapData} swapIn
+ * @param {SwapData} swapOut
+ * @param {ChainId} chainId
+ * @param {string} userAddress
+ * @param {number} maxSlippage
+ * @param {boolean} max
+ * @returns {Promise<SwapRateParams>}
+ */
+export async function fetchExactOutRate(
+  swapIn: SwapData,
+  swapOut: SwapData,
+  chainId: ChainId,
+  userAddress: string,
+  maxSlippage: number,
+  max: boolean
+): Promise<SwapRateParams> {
+  if (!swapOut.amount || swapOut.amount === '0' || isNaN(+swapOut.amount)) {
+    return {
+      inputAmount: '0',
+      outputAmount: '0',
+      inputAmountUSD: '0',
+      outputAmountUSD: '0',
+    };
+  }
+
+  let swapOutAmount = valueToBigNumber(swapOut.amount);
+  if (max) {
+    // variableBorrowAPY in most cases should be higher than stableRate so while this is slightly inaccurate it should be enough
+    swapOutAmount = swapOutAmount.plus(
+      swapOutAmount.multipliedBy(swapIn.variableBorrowAPY).dividedBy(360 * 24)
+    );
+  }
+  const amount = normalizeBN(swapOutAmount, swapOut.decimals * -1);
+
+  const options: RateOptions = {
+    partner: 'aave',
+  };
+
+  if (max) {
+    options.excludeContractMethods = [ContractMethod.simpleBuy];
+  }
+
+  const swapper = ExactOutSwapper(chainId);
+
+  const route = await swapper.getRate(
+    amount.toFixed(0),
+    swapIn.underlyingAsset,
+    swapIn.decimals,
+    swapOut.underlyingAsset,
+    swapOut.decimals,
+    userAddress,
+    options
+  );
+
+  let srcAmount = Number(route.srcAmount) / 10 ** swapOut.decimals;
+  srcAmount = srcAmount + srcAmount * (Number(maxSlippage) / 100);
+
+  return {
+    inputAmount: srcAmount.toString(),
     outputAmount: normalize(route.destAmount, swapOut.decimals),
     inputAmountUSD: route.srcUSD,
     outputAmountUSD: route.destUSD,

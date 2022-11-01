@@ -1,16 +1,20 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
+  fetchExactInRate,
   fetchExactInTxParams,
+  fetchExactOutRate,
   fetchExactOutTxParams,
   MESSAGE_MAP,
+  RouteVariant,
   SwapData,
   SwapVariant,
   UseSwapProps,
 } from './common';
 
 type UseRepayWithCollateralProps = UseSwapProps & {
-  variant: SwapVariant;
+  swapVariant: SwapVariant;
+  routeVariant: RouteVariant;
 };
 
 export const useCollateralRepaySwap = ({
@@ -21,7 +25,8 @@ export const useCollateralRepaySwap = ({
   swapIn,
   swapOut,
   userAddress,
-  variant,
+  swapVariant,
+  routeVariant,
 }: UseRepayWithCollateralProps) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -75,6 +80,15 @@ export const useCollateralRepaySwap = ({
     [chainId, max, maxSlippage, swapInData, swapOutData, userAddress]
   );
 
+  const exactInRate = useCallback(() => {
+    return fetchExactInRate(swapInData, swapOutData, chainId, userAddress, maxSlippage);
+  }, [chainId, maxSlippage, swapInData, swapOutData, userAddress]);
+
+  const exactOutRate = useCallback(
+    () => fetchExactOutRate(swapInData, swapOutData, chainId, userAddress, maxSlippage, max),
+    [chainId, max, maxSlippage, swapInData, swapOutData, userAddress]
+  );
+
   useEffect(() => {
     if (skip) return;
 
@@ -85,14 +99,24 @@ export const useCollateralRepaySwap = ({
 
       try {
         let route;
-        if (variant === 'exactIn') {
-          route = await exactInTx();
+        if (swapVariant === 'exactIn') {
+          if (routeVariant === 'transaction') {
+            route = await exactInTx();
+            setAugustus(route.augustus);
+            setSwapCallData(route.swapCallData);
+          } else {
+            route = await exactInRate();
+          }
         } else {
-          route = await exactOutTx();
+          if (routeVariant === 'rate') {
+            route = await exactOutTx();
+            setAugustus(route.augustus);
+            setSwapCallData(route.swapCallData);
+          } else {
+            route = await exactOutRate();
+          }
         }
         setError('');
-        setSwapCallData(route.swapCallData);
-        setAugustus(route.augustus);
         setInputAmount(route.inputAmount);
         setOutputAmount(route.outputAmount);
         setInputAmountUSD(route.inputAmountUSD);
@@ -128,9 +152,12 @@ export const useCollateralRepaySwap = ({
     exactOutTx,
     error,
     skip,
-    variant,
+    swapVariant,
+    routeVariant,
     swapInData.underlyingAsset,
     swapOutData.underlyingAsset,
+    exactInRate,
+    exactOutRate,
   ]);
 
   return {

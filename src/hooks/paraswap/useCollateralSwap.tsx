@@ -1,6 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { fetchExactInTxParams, MESSAGE_MAP, SwapData, UseSwapProps } from './common';
+import {
+  fetchExactInRate,
+  fetchExactInTxParams,
+  MESSAGE_MAP,
+  RouteVariant,
+  SwapData,
+  UseSwapProps,
+} from './common';
 
 export const useCollateralSwap = ({
   swapIn,
@@ -10,7 +17,8 @@ export const useCollateralSwap = ({
   chainId,
   skip,
   maxSlippage,
-}: UseSwapProps) => {
+  routeVariant,
+}: UseSwapProps & { routeVariant: RouteVariant }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [swapCallData, setSwapCallData] = useState<string>('');
@@ -58,6 +66,10 @@ export const useCollateralSwap = ({
     return fetchExactInTxParams(swapInData, swapOutData, chainId, userAddress, maxSlippage, max);
   }, [chainId, maxSlippage, swapInData, swapOutData, userAddress, max]);
 
+  const exactInRate = useCallback(() => {
+    return fetchExactInRate(swapInData, swapOutData, chainId, userAddress, maxSlippage, max);
+  }, [chainId, maxSlippage, swapInData, swapOutData, userAddress, max]);
+
   useEffect(() => {
     if (skip) return;
 
@@ -67,11 +79,16 @@ export const useCollateralSwap = ({
       setLoading(true);
 
       try {
-        const route = await exactInTx();
+        let route;
+        if (routeVariant === 'transaction') {
+          route = await exactInTx();
+          setSwapCallData(route.swapCallData);
+          setAugustus(route.augustus);
+        } else {
+          route = await exactInRate();
+        }
 
         setError('');
-        setSwapCallData(route.swapCallData);
-        setAugustus(route.augustus);
         setInputAmount(route.inputAmount);
         setOutputAmount(route.outputAmount);
         setInputAmountUSD(route.inputAmountUSD);
@@ -102,7 +119,15 @@ export const useCollateralSwap = ({
       clearTimeout(timeout);
       clearInterval(interval);
     };
-  }, [exactInTx, error, skip, swapInData.underlyingAsset, swapOutData.underlyingAsset]);
+  }, [
+    exactInTx,
+    error,
+    skip,
+    swapInData.underlyingAsset,
+    swapOutData.underlyingAsset,
+    routeVariant,
+    exactInRate,
+  ]);
 
   return {
     outputAmount,
