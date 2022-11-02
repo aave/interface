@@ -337,8 +337,8 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
           <Divider sx={{ my: '40px' }} />
           <PanelRow>
             <PanelTitle>Borrow info</PanelTitle>
-            {!reserve.borrowingEnabled ? (
-              <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
+            <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
+              {!reserve.borrowingEnabled && (
                 <Warning sx={{ mb: '40px' }} severity="error">
                   <Trans>
                     Borrowing is disabled due to an Aave community decision.{' '}
@@ -350,16 +350,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                     </Link>
                   </Trans>
                 </Warning>
-                <BorrowInfo
-                  reserve={reserve}
-                  currentMarketData={currentMarketData}
-                  currentNetworkConfig={currentNetworkConfig}
-                  renderCharts={renderCharts}
-                  showBorrowCapStatus={showBorrowCapStatus}
-                  borrowCap={borrowCap}
-                />
-              </Box>
-            ) : (
+              )}
               <BorrowInfo
                 reserve={reserve}
                 currentMarketData={currentMarketData}
@@ -368,7 +359,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                 showBorrowCapStatus={showBorrowCapStatus}
                 borrowCap={borrowCap}
               />
-            )}
+            </Box>
           </PanelRow>
         </>
       )}
