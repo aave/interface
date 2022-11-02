@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
-import { AMPLWarning } from '../../../components/infoTooltips/AMPLWarning';
+import { AMPLToolTip } from '../../../components/infoTooltips/AMPLToolTip';
 import { FrozenTooltip } from '../../../components/infoTooltips/FrozenTooltip';
 import { ListMobileItem } from '../../../components/lists/ListMobileItem';
 
@@ -42,7 +42,7 @@ export const ListMobileItemWrapper = ({
         frozen ? (
           <FrozenTooltip symbol={symbol} currentMarket={currentMarket} />
         ) : symbol === 'AMPL' ? (
-          <AMPLWarning />
+          <AMPLToolTip />
         ) : undefined
       }
       loading={loading}

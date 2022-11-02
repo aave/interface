@@ -19,6 +19,7 @@ import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { getEmodeMessage } from 'src/components/transactions/Emode/EmodeNaming';
+import { AMPLWarning } from 'src/components/Warnings/AMPLWarning';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -53,7 +54,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
           alignItems: 'center',
           gap: 6,
           flexWrap: 'wrap',
-          mb: reserve.isFrozen ? '0px' : '36px',
+          mb: reserve.isFrozen || reserve.symbol == 'AMPL' ? '0px' : '36px',
         }}
       >
         <Typography variant="h3">
@@ -61,8 +62,8 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
         </Typography>
       </Box>
 
-      {reserve.isFrozen && (
-        <Box>
+      <Box>
+        {reserve.isFrozen ? (
           <Warning sx={{ mt: '16px', mb: '40px' }} severity="error">
             <Trans>
               This asset is frozen due to an Aave community decision.{' '}
@@ -74,8 +75,14 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
               </Link>
             </Trans>
           </Warning>
-        </Box>
-      )}
+        ) : (
+          reserve.symbol == 'AMPL' && (
+            <Warning sx={{ mt: '16px', mb: '40px' }} severity="warning">
+              <AMPLWarning />
+            </Warning>
+          )
+        )}
+      </Box>
 
       <PanelRow>
         <PanelTitle>Supply Info</PanelTitle>

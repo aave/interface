@@ -22,7 +22,7 @@ export const ProposalTopPanel = () => {
             </SvgIcon>
           }
         >
-          <Trans>Go back</Trans>
+          <Trans>Go Back</Trans>
         </Button>
       </Box>
     </TopInfoPanel>

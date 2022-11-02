@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
-import { AMPLWarning } from '../../../components/infoTooltips/AMPLWarning';
+import { AMPLToolTip } from '../../../components/infoTooltips/AMPLToolTip';
 import { FrozenTooltip } from '../../../components/infoTooltips/FrozenTooltip';
 import { ListColumn } from '../../../components/lists/ListColumn';
 import { ListItem } from '../../../components/lists/ListItem';
@@ -54,7 +54,7 @@ export const ListItemWrapper = ({
           </Tooltip>
         </Link>
         {frozen && <FrozenTooltip symbol={symbol} currentMarket={currentMarket} />}
-        {!frozen && symbol === 'AMPL' && <AMPLWarning />}
+        {!frozen && symbol === 'AMPL' && <AMPLToolTip />}
         {showSupplyCapTooltips && supplyCap.displayMaxedTooltip({ supplyCap })}
         {showBorrowCapTooltips && borrowCap.displayMaxedTooltip({ borrowCap })}
         {showDebtCeilingTooltips && debtCeiling.displayMaxedTooltip({ debtCeiling })}
