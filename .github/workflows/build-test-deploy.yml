@@ -142,6 +142,14 @@ jobs:
           PIN_ALIAS: 'app-aave-${{ github.head_ref || github.ref }}'
           BUILD_LOCATION: './out'
           CID_VERSION: 1
+          
+      - name: pin4everland
+        id: pin4everland
+        uses: 4everland/pin-action@main
+        with:
+          EVER_TOKEN: ${{secrets.EVER_TOKEN}}
+          EVER_PROJECT_NAME: 'aave-interface'
+          BUILD_LOCATION: './out'
 
   cypress_full_v2:
     runs-on: ubuntu-latest
