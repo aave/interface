@@ -41,8 +41,8 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
   const renderCharts =
     !!currentNetworkConfig.ratesHistoryApiUrl && !BROKEN_ASSETS.includes(reserveId);
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
-  const showSupplyCapStatus = reserve.supplyCap && reserve.supplyCap !== '0' ? true : false;
-  const showBorrowCapStatus = reserve.borrowCap && reserve.borrowCap !== '0' ? true : false;
+  const showSupplyCapStatus: boolean = reserve.supplyCap !== '0';
+  const showBorrowCapStatus: boolean = reserve.borrowCap !== '0';
 
   return (
     <Paper sx={{ py: '16px', px: '24px' }}>
