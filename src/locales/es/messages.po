@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-11-01 00:24\n"
+"PO-Revision-Date: 2022-11-01 12:07\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -2329,7 +2329,7 @@ msgstr "vista de stakeo"
 
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "starts"
-msgstr ""
+msgstr "empieza"
 
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "to learn more."
