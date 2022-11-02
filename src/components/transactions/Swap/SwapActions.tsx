@@ -1,8 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 
 import { useTransactionHandler } from '../../../helpers/useTransactionHandler';
 import { TxActionsWrapper } from '../TxActionsWrapper';
@@ -18,10 +17,9 @@ export interface SwapActionProps extends BoxProps {
   blocked: boolean;
   isMaxSelected: boolean;
   useFlashLoan: boolean;
-  maxSlippage: number;
   swapCallData: string;
   augustus: string;
-  loading: boolean;
+  loading?: boolean;
 }
 
 export const SwapActions = ({
@@ -33,39 +31,39 @@ export const SwapActions = ({
   targetReserve,
   isMaxSelected,
   useFlashLoan,
-  maxSlippage,
   swapCallData,
   augustus,
   loading,
+  symbol,
+  blocked,
   ...props
 }: SwapActionProps) => {
-  const { lendingPool } = useTxBuilderContext();
-  const { currentAccount } = useWeb3Context();
+  const swapCollateral = useRootStore((state) => state.swapCollateral);
 
   const { approval, action, requiresApproval, approvalTxState, mainTxState, loadingTxns } =
     useTransactionHandler({
       handleGetTxns: async () => {
-        return lendingPool.swapCollateral({
-          fromAsset: poolReserve.underlyingAsset,
-          toAsset: targetReserve.underlyingAsset,
-          swapAll: isMaxSelected,
-          fromAToken: poolReserve.aTokenAddress,
-          fromAmount: amountToSwap,
-          minToAmount: amountToReceive,
-          user: currentAccount,
-          flash: useFlashLoan,
-          augustus,
+        return swapCollateral({
+          amountToSwap,
+          amountToReceive,
+          poolReserve,
+          targetReserve,
+          isWrongNetwork,
+          symbol,
+          blocked,
+          isMaxSelected,
+          useFlashLoan,
           swapCallData,
+          augustus,
         });
       },
-      skip: !amountToSwap || parseFloat(amountToSwap) === 0 || !currentAccount,
+      skip: !amountToSwap || parseFloat(amountToSwap) === 0,
       deps: [
         amountToSwap,
         amountToReceive,
         poolReserve.underlyingAsset,
         targetReserve.underlyingAsset,
         isMaxSelected,
-        currentAccount,
         useFlashLoan,
       ],
     });

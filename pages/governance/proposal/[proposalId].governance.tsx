@@ -198,6 +198,7 @@ export default function ProposalPage({
                           <FormattedProposalTime
                             state={proposal.state}
                             executionTime={proposal.executionTime}
+                            startTimestamp={proposal.startTimestamp}
                             executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
                             expirationTimestamp={proposal.expirationTimestamp}
                           />
@@ -306,6 +307,7 @@ export default function ProposalPage({
                       <Box sx={{ mt: 0.5 }}>
                         <FormattedProposalTime
                           state={proposal.state}
+                          startTimestamp={proposal.startTimestamp}
                           executionTime={proposal.executionTime}
                           expirationTimestamp={proposal.expirationTimestamp}
                           executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
@@ -574,10 +576,9 @@ export default function ProposalPage({
 ProposalPage.getLayout = function getLayout(page: React.ReactElement) {
   return (
     <MainLayout>
-      <GovernanceDataProvider>
-        {page}
-        <GovVoteModal />
-      </GovernanceDataProvider>
+      <GovernanceDataProvider />
+      {page}
+      <GovVoteModal />
     </MainLayout>
   );
 };

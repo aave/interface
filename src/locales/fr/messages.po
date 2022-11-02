@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-10-18 18:10\n"
+"PO-Revision-Date: 2022-11-01 00:24\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -112,6 +112,11 @@ msgstr ""
 #: src/ui-config/errorMapping.tsx
 msgid "Address is not a contract"
 msgstr "L'adresse n'est pas un contrat"
+
+#: src/modules/governance/proposal/VotersListModal.tsx
+#: src/modules/governance/proposal/VotersListModal.tsx
+msgid "Addresses ({0})"
+msgstr ""
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
@@ -770,6 +775,10 @@ msgstr "Expire"
 #: src/ui-config/menu-items/index.tsx
 msgid "FAQ"
 msgstr "FAQ"
+
+#: src/modules/governance/proposal/VotersListContainer.tsx
+msgid "Failed to load proposal voters. Please refresh the page."
+msgstr ""
 
 #: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
@@ -1836,6 +1845,10 @@ msgstr "Pour rembourser au nom d'un utilisateur, un montant explicite à rembour
 msgid "To request access for this permissioned market, please visit: <0>Acces Provider Name</0>"
 msgstr "Pour demander l'accès à ce marché autorisé, veuillez consulter : <0>Nom du fournisseur d'accès</0>"
 
+#: src/modules/governance/proposal/VotersListContainer.tsx
+msgid "Top 10 addresses"
+msgstr ""
+
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total available"
 msgstr "Total disponible"
@@ -1984,6 +1997,10 @@ msgstr ""
 msgid "Version 3"
 msgstr ""
 
+#: src/modules/governance/proposal/VotersListContainer.tsx
+msgid "View all votes"
+msgstr ""
+
 #: src/modules/reserve-overview/ReserveFactorOverview.tsx
 msgid "View contract"
 msgstr ""
@@ -2007,6 +2024,21 @@ msgstr "Vote NAY"
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Vote YAE"
 msgstr "Vote YAE"
+
+#: src/modules/governance/proposal/VotersListModal.tsx
+msgid "Voted NAY"
+msgstr ""
+
+#: src/modules/governance/proposal/VotersListModal.tsx
+msgid "Voted YAE"
+msgstr ""
+
+#: src/modules/governance/proposal/VotersListContainer.tsx
+#: src/modules/governance/proposal/VotersListModal.tsx
+#: src/modules/governance/proposal/VotersListModal.tsx
+#: src/modules/governance/proposal/VotersListModal.tsx
+msgid "Votes"
+msgstr ""
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
@@ -2294,6 +2326,10 @@ msgstr ""
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "staking view"
 msgstr "vue de staking"
+
+#: src/modules/governance/FormattedProposalTime.tsx
+msgid "starts"
+msgstr ""
 
 #: src/components/transactions/Warnings/AMPLWarning.tsx
 msgid "to learn more."

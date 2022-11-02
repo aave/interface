@@ -254,7 +254,6 @@ export const SwapModalContent = ({
         symbol={poolReserve.symbol}
         blocked={blockingError !== undefined}
         useFlashLoan={shouldUseFlashloan}
-        maxSlippage={Number(maxSlippage)}
         augustus={augustus}
         swapCallData={swapCallData}
         loading={loadingSkeleton}

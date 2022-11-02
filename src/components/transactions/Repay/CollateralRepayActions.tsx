@@ -3,8 +3,7 @@ import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
@@ -22,7 +21,7 @@ export interface RepayActionProps extends BoxProps {
   blocked: boolean;
   swapCallData: string;
   augustus: string;
-  loading: boolean;
+  loading?: boolean;
 }
 
 export const CollateralRepayActions = ({
@@ -42,23 +41,23 @@ export const CollateralRepayActions = ({
   loading,
   ...props
 }: RepayActionProps) => {
-  const { lendingPool } = useTxBuilderContext();
-  const { currentAccount } = useWeb3Context();
+  const paraswapRepayWithCollateral = useRootStore((state) => state.paraswapRepayWithCollateral);
 
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({
       handleGetTxns: async () => {
-        return lendingPool.paraswapRepayWithCollateral({
-          user: currentAccount,
-          fromAsset: fromAssetData.underlyingAsset,
-          fromAToken: fromAssetData.aTokenAddress,
-          assetToRepay: poolReserve.underlyingAsset,
-          repayWithAmount,
-          repayAmount,
+        return paraswapRepayWithCollateral({
           repayAllDebt,
+          repayAmount,
           rateMode,
-          flash: useFlashLoan,
-          swapAndRepayCallData: swapCallData,
+          repayWithAmount,
+          fromAssetData,
+          poolReserve,
+          isWrongNetwork,
+          symbol,
+          useFlashLoan,
+          blocked,
+          swapCallData,
           augustus,
         });
       },
@@ -69,7 +68,6 @@ export const CollateralRepayActions = ({
         poolReserve.underlyingAsset,
         fromAssetData.underlyingAsset,
         repayAllDebt,
-        currentAccount,
         useFlashLoan,
       ],
     });
