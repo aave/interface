@@ -12,6 +12,7 @@ import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 import { BigNumber, providers } from 'ethers';
 import React, { ReactElement, useCallback, useEffect, useState } from 'react';
+import { useRootStore } from 'src/store/root';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { hexToAscii } from 'src/utils/utils';
 import { isLedgerDappBrowserProvider } from 'web3-ledgerhq-frame-connector';
@@ -69,6 +70,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   const [triedCoinbase, setTriedCoinbase] = useState(false);
   const [triedLedger, setTriedLedger] = useState(false);
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
+  const setAccount = useRootStore((store) => store.setAccount);
 
   // for now we use network changed as it returns the chain string instead of hex
   // const handleChainChanged = (chainId: number) => {
@@ -404,6 +406,11 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     }
     return false;
   };
+
+  // inject account into zustand as long as aave itnerface is using old web3 providers
+  useEffect(() => {
+    setAccount(account?.toLowerCase());
+  }, [account]);
 
   return (
     <Web3Context.Provider

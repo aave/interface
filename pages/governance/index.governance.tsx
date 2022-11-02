@@ -62,12 +62,11 @@ export default function Governance(props: GovernancePageProps) {
 Governance.getLayout = function getLayout(page: React.ReactElement) {
   return (
     <MainLayout>
-      <GovernanceDataProvider>
-        <AaveTokensBalanceProvider>
-          {page}
-          <GovDelegationModal />
-        </AaveTokensBalanceProvider>
-      </GovernanceDataProvider>
+      <GovernanceDataProvider />
+      <AaveTokensBalanceProvider>
+        {page}
+        <GovDelegationModal />
+      </AaveTokensBalanceProvider>
     </MainLayout>
   );
 };
