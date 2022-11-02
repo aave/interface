@@ -181,10 +181,14 @@ export const getENSProvider = () => {
 };
 
 const ammDisableProposal = 'https://app.aave.com/governance/proposal/44';
+const ustDisableProposal = 'https://app.aave.com/governance/proposal/75';
+const kncDisableProposal = 'https://app.aave.com/governance/proposal/69';
+const v2PolygonDisableProposal = 'https://app.aave.com/governance/proposal/112';
+const v2MainnetDisableProposal = 'https://app.aave.com/governance/proposal/111';
 
 export const frozenProposalMap: Record<string, string> = {
-  ['UST' + CustomMarket.proto_mainnet]: 'https://app.aave.com/governance/proposal/75',
-  ['KNC' + CustomMarket.proto_mainnet]: 'https://app.aave.com/governance/proposal/69',
+  ['UST' + CustomMarket.proto_mainnet]: ustDisableProposal,
+  ['KNC' + CustomMarket.proto_mainnet]: kncDisableProposal,
   ['UNIDAIUSDC' + CustomMarket.proto_mainnet]: ammDisableProposal,
   ['UNIWBTCUSDC' + CustomMarket.proto_mainnet]: ammDisableProposal,
   ['UNIDAIWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
@@ -201,14 +205,14 @@ export const frozenProposalMap: Record<string, string> = {
   ['UNIYFIWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
   ['BPTWBTCWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
   ['BPTBALWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
-  ['GHST' + CustomMarket.proto_polygon]: 'https://app.aave.com/governance/proposal/112',
-  ['DPI' + CustomMarket.proto_polygon]: 'https://app.aave.com/governance/proposal/112',
-  ['BAL' + CustomMarket.proto_mainnet]: 'https://app.aave.com/governance/proposal/111',
-  ['BAT' + CustomMarket.proto_mainnet]: 'https://app.aave.com/governance/proposal/111',
-  ['CVX' + CustomMarket.proto_mainnet]: 'https://app.aave.com/governance/proposal/111',
-  ['DPI' + CustomMarket.proto_mainnet]: 'https://app.aave.com/governance/proposal/111',
-  ['REN' + CustomMarket.proto_mainnet]: 'https://app.aave.com/governance/proposal/111',
-  ['ZRX' + CustomMarket.proto_mainnet]: 'https://app.aave.com/governance/proposal/111',
+  ['GHST' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
+  ['DPI' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
+  ['BAL' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal,
+  ['BAT' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal,
+  ['CVX' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal,
+  ['DPI' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal,
+  ['REN' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal,
+  ['ZRX' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal,
 };
 
 // reexport so we can forbit config import
