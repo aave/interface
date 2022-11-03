@@ -65,20 +65,3 @@ jobs:
         with:
           name: out_staging
           path: out_staging
-
-      - name: pinata
-        id: pinata
-        uses: aave/pinata-action@b03be403ea86f79077ea9cc0b835c3295faa12dd
-        with:
-          PINATA_API_KEY: '${{ secrets.PINATA_API_KEY }}'
-          PINATA_SECRET_KEY: '${{ secrets.PINATA_SECRET_KEY }}'
-          PIN_ALIAS: 'app-aave-staging'
-          BUILD_LOCATION: './out_staging'
-          CID_VERSION: 1
-
-      - uses: aave/cloudflare-update-action@5c1b528c9c6e0aed18a7dbdd7f957e0b8815a75e
-        with:
-          CF_API_TOKEN: '${{ secrets.CF_API_TOKEN }}'
-          CF_ZONE_ID: '${{ secrets.CF_ZONE_ID }}'
-          HASH: '${{ steps.pinata.outputs.hash }}'
-          CF_DEPLOYMENT_DOMAIN: staging.aave.com

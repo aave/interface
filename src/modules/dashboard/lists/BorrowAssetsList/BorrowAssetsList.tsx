@@ -9,6 +9,7 @@ import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { ghoMintingAvailable } from 'src/utils/ghoUtilities';
 
 import { CapType } from '../../../../components/caps/helper';
 import { AvailableTooltip } from '../../../../components/infoTooltips/AvailableTooltip';
@@ -27,9 +28,11 @@ import { ListHeader } from '../ListHeader';
 import { ListLoader } from '../ListLoader';
 import { BorrowAssetsListItem } from './BorrowAssetsListItem';
 import { BorrowAssetsListMobileItem } from './BorrowAssetsListMobileItem';
+import { GHOBorrowAssetsListItem } from './GHOBorrowAssetsListItem';
+import { GHOBorrowAssetsListMobileItem } from './GHOBorrowAssetsListMobileItem';
 
 export const BorrowAssetsList = () => {
-  const { currentNetworkConfig } = useProtocolDataContext();
+  const { currentNetworkConfig, currentMarket } = useProtocolDataContext();
   const { user, reserves, marketReferencePriceInUsd, loading } = useAppDataContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
@@ -63,9 +66,9 @@ export const BorrowAssetsList = () => {
         iconSymbol: reserve.iconSymbol,
         ...(reserve.isWrappedBaseAsset
           ? fetchIconSymbolAndName({
-              symbol: baseAssetSymbol,
-              underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
-            })
+            symbol: baseAssetSymbol,
+            underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
+          })
           : {}),
       };
     });
@@ -76,16 +79,26 @@ export const BorrowAssetsList = () => {
   const collateralUsagePercent = maxBorrowAmount.eq(0)
     ? '0'
     : valueToBigNumber(user?.totalBorrowsMarketReferenceCurrency || '0')
-        .div(maxBorrowAmount)
-        .toFixed();
-
-  const borrowReserves =
+      .div(maxBorrowAmount)
+      .toFixed();
+  let borrowReserves =
     user?.totalCollateralMarketReferenceCurrency === '0' || +collateralUsagePercent >= 0.98
       ? tokensToBorrow
       : tokensToBorrow.filter(
-          ({ availableBorrowsInUSD, totalLiquidityUSD }) =>
-            availableBorrowsInUSD !== '0.00' && totalLiquidityUSD !== '0'
-        );
+        ({ availableBorrowsInUSD, totalLiquidityUSD, symbol }) =>
+          (availableBorrowsInUSD !== '0.00' && totalLiquidityUSD !== '0') ||
+          ghoMintingAvailable({
+            symbol,
+            currentMarket,
+          })
+      );
+
+  // Move GHO to top of assets to borrow list
+  const GHO = borrowReserves.filter((reserve) => reserve.symbol === 'GHO');
+  if (GHO.length > 0) {
+    borrowReserves = borrowReserves.filter((reserve) => reserve.symbol !== 'GHO');
+    borrowReserves.unshift(GHO[0]);
+  }
 
   const head = [
     <AvailableTooltip
@@ -173,7 +186,25 @@ export const BorrowAssetsList = () => {
           <Fragment key={item.underlyingAsset}>
             <AssetCapsProvider asset={item.reserve}>
               {downToXSM ? (
-                <BorrowAssetsListMobileItem {...item} />
+                ghoMintingAvailable({
+                  symbol: item.symbol,
+                  currentMarket,
+                }) ? (
+                  <GHOBorrowAssetsListMobileItem
+                    {...item}
+                    userAvailableBorrows={maxBorrowAmount.toString()}
+                  />
+                ) : (
+                  <BorrowAssetsListMobileItem {...item} />
+                )
+              ) : ghoMintingAvailable({
+                symbol: item.symbol,
+                currentMarket,
+              }) ? (
+                <GHOBorrowAssetsListItem
+                  {...item}
+                  userAvailableBorrows={maxBorrowAmount.toString()}
+                />
               ) : (
                 <BorrowAssetsListItem {...item} />
               )}

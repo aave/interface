@@ -15,6 +15,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { ghoMintingAvailable } from 'src/utils/ghoUtilities';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { Asset, AssetInput } from '../AssetInput';
@@ -43,7 +44,7 @@ export const RepayModalContent = ({
 }: ModalWrapperProps & { debtType: InterestRate }) => {
   const { gasLimit, mainTxState: repayTxState, txError } = useModalContext();
   const { marketReferencePriceInUsd, user } = useAppDataContext();
-  const { currentChainId, currentMarketData } = useProtocolDataContext();
+  const { currentChainId, currentMarketData, currentMarket } = useProtocolDataContext();
 
   // states
   const [tokenToRepayWith, setTokenToRepayWith] = useState<RepayAsset>({
@@ -100,7 +101,7 @@ export const RepayModalContent = ({
         tokenToRepayWith.address === API_ETH_MOCK_ADDRESS.toLowerCase() ||
         (synthetixProxyByChainId[currentChainId] &&
           synthetixProxyByChainId[currentChainId].toLowerCase() ===
-            reserve.underlyingAsset.toLowerCase())
+          reserve.underlyingAsset.toLowerCase())
       ) {
         // for native token and synthetix (only mainnet) we can't send -1 as
         // contract does not accept max unit256
@@ -149,7 +150,10 @@ export const RepayModalContent = ({
       balance: maxReserveTokenForRepay.toString(10),
     });
     // push reserve atoken
-    if (currentMarketData.v3) {
+    if (
+      currentMarketData.v3 &&
+      !ghoMintingAvailable({ symbol: poolReserve.symbol, currentMarket })
+    ) {
       const aTokenBalance = valueToBigNumber(underlyingBalance);
       const maxBalance = BigNumber.max(
         aTokenBalance,
@@ -183,17 +187,17 @@ export const RepayModalContent = ({
   // we use usd values instead of MarketreferenceCurrency so it has same precision
   const newHF = amount
     ? calculateHealthFactorFromBalancesBigUnits({
-        collateralBalanceMarketReferenceCurrency:
-          repayWithATokens && usageAsCollateralEnabledOnUser
-            ? valueToBigNumber(user?.totalCollateralUSD || '0').minus(
-                valueToBigNumber(reserve.priceInUSD).multipliedBy(amount)
-              )
-            : user?.totalCollateralUSD || '0',
-        borrowBalanceMarketReferenceCurrency: valueToBigNumber(user?.totalBorrowsUSD || '0').minus(
-          valueToBigNumber(reserve.priceInUSD).multipliedBy(amount)
-        ),
-        currentLiquidationThreshold: user?.currentLiquidationThreshold || '0',
-      }).toString(10)
+      collateralBalanceMarketReferenceCurrency:
+        repayWithATokens && usageAsCollateralEnabledOnUser
+          ? valueToBigNumber(user?.totalCollateralUSD || '0').minus(
+            valueToBigNumber(reserve.priceInUSD).multipliedBy(amount)
+          )
+          : user?.totalCollateralUSD || '0',
+      borrowBalanceMarketReferenceCurrency: valueToBigNumber(user?.totalBorrowsUSD || '0').minus(
+        valueToBigNumber(reserve.priceInUSD).multipliedBy(amount)
+      ),
+      currentLiquidationThreshold: user?.currentLiquidationThreshold || '0',
+    }).toString(10)
     : user?.healthFactor;
 
   // calculating input usd value

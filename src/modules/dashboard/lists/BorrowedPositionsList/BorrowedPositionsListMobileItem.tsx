@@ -1,7 +1,10 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
+import { GHODiscountButton } from 'src/components/gho/GHODiscountButton';
+import { GHOBorrowRateTooltip } from 'src/components/infoTooltips/GHOBorrowRateTooltip';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { ghoMintingAvailable } from 'src/utils/ghoUtilities';
 
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
 import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
@@ -31,10 +34,14 @@ export const BorrowedPositionsListMobileItem = ({
     stableBorrowRateEnabled,
     sIncentivesData,
     vIncentivesData,
+    baseVariableBorrowRate,
     variableBorrowAPY,
     underlyingAsset,
   } = reserve;
-
+  const ghoMinting = ghoMintingAvailable({ symbol, currentMarket });
+  const variableBorrowAPYDisplay = ghoMinting
+    ? Number(baseVariableBorrowRate) / 10 ** 27
+    : variableBorrowAPY;
   return (
     <ListMobileItemWrapper
       symbol={symbol}
@@ -55,11 +62,12 @@ export const BorrowedPositionsListMobileItem = ({
       <Row caption={<Trans>APY</Trans>} align="flex-start" captionVariant="description" mb={2}>
         <IncentivesCard
           value={Number(
-            borrowRateMode === InterestRate.Variable ? variableBorrowAPY : stableBorrowAPY
+            borrowRateMode === InterestRate.Variable ? variableBorrowAPYDisplay : stableBorrowAPY
           )}
           incentives={borrowRateMode === InterestRate.Variable ? vIncentivesData : sIncentivesData}
           symbol={symbol}
           variant="secondary14"
+          tooltip={ghoMinting && <GHOBorrowRateTooltip />}
         />
       </Row>
 
@@ -81,6 +89,8 @@ export const BorrowedPositionsListMobileItem = ({
           currentMarket={currentMarket}
         />
       </Row>
+
+      {ghoMinting && <GHODiscountButton />}
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
         <Button

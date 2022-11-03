@@ -8,6 +8,7 @@ import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { ghoMintingAvailable } from 'src/utils/ghoUtilities';
 
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
@@ -25,7 +26,7 @@ import { SupplyAssetsListMobileItem } from './SupplyAssetsListMobileItem';
 import { WalletEmptyInfo } from './WalletEmptyInfo';
 
 export const SupplyAssetsList = () => {
-  const { currentNetworkConfig, currentChainId } = useProtocolDataContext();
+  const { currentNetworkConfig, currentChainId, currentMarket } = useProtocolDataContext();
   const {
     user,
     reserves,
@@ -44,7 +45,10 @@ export const SupplyAssetsList = () => {
   );
 
   const tokensToSupply = reserves
-    .filter((reserve: ComputedReserveData) => !reserve.isFrozen)
+    .filter(
+      (reserve: ComputedReserveData) =>
+        !reserve.isFrozen && !ghoMintingAvailable({ symbol: reserve.symbol, currentMarket })
+    )
     .map((reserve: ComputedReserveData) => {
       const walletBalance = walletBalances[reserve.underlyingAsset]?.amount;
       const walletBalanceUSD = walletBalances[reserve.underlyingAsset]?.amountUSD;
@@ -68,10 +72,10 @@ export const SupplyAssetsList = () => {
 
       const usageAsCollateralEnabledOnUser = !user?.isInIsolationMode
         ? reserve.usageAsCollateralEnabled &&
-          (!isIsolated || (isIsolated && !hasDifferentCollateral))
+        (!isIsolated || (isIsolated && !hasDifferentCollateral))
         : !isIsolated
-        ? false
-        : !hasDifferentCollateral;
+          ? false
+          : !hasDifferentCollateral;
 
       if (reserve.isWrappedBaseAsset) {
         let baseAvailableToDeposit = valueToBigNumber(
@@ -145,8 +149,8 @@ export const SupplyAssetsList = () => {
   const supplyReserves = isShowZeroAssets
     ? sortedSupplyReserves
     : filteredSupplyReserves.length >= 1
-    ? filteredSupplyReserves
-    : sortedSupplyReserves;
+      ? filteredSupplyReserves
+      : sortedSupplyReserves;
 
   const head = [
     <Trans key="Wallet balance">Wallet balance</Trans>,

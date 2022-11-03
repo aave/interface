@@ -1,8 +1,11 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
+import { GHODiscountButton } from 'src/components/gho/GHODiscountButton';
+import { GHOBorrowRateTooltip } from 'src/components/infoTooltips/GHOBorrowRateTooltip';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { ghoMintingAvailable } from 'src/utils/ghoUtilities';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
 import { ComputedUserReserveData } from '../../../../hooks/app-data-provider/useAppDataProvider';
@@ -24,6 +27,7 @@ export const BorrowedPositionsListItem = ({
   const { openBorrow, openRepay, openRateSwitch } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
   const {
+    symbol,
     isActive,
     isFrozen,
     borrowingEnabled,
@@ -31,8 +35,12 @@ export const BorrowedPositionsListItem = ({
     sIncentivesData,
     vIncentivesData,
     variableBorrowAPY,
+    baseVariableBorrowRate,
   } = reserve;
-
+  const ghoMinting = ghoMintingAvailable({ symbol, currentMarket });
+  const variableBorrowAPYDisplay = ghoMinting
+    ? Number(baseVariableBorrowRate) / 10 ** 27
+    : variableBorrowAPY;
   return (
     <ListItemWrapper
       symbol={reserve.symbol}
@@ -43,6 +51,7 @@ export const BorrowedPositionsListItem = ({
       frozen={reserve.isFrozen}
       data-cy={`dashboardBorrowedListItem_${reserve.symbol.toUpperCase()}_${borrowRateMode}`}
       showBorrowCapTooltips
+      footerButton={<GHODiscountButton />}
     >
       <ListValueColumn
         symbol={reserve.symbol}
@@ -54,10 +63,11 @@ export const BorrowedPositionsListItem = ({
 
       <ListAPRColumn
         value={Number(
-          borrowRateMode === InterestRate.Variable ? variableBorrowAPY : stableBorrowAPY
+          borrowRateMode === InterestRate.Variable ? variableBorrowAPYDisplay : stableBorrowAPY
         )}
         incentives={borrowRateMode === InterestRate.Variable ? vIncentivesData : sIncentivesData}
         symbol={reserve.symbol}
+        tooltip={ghoMinting && <GHOBorrowRateTooltip />}
       />
 
       <ListColumn>
@@ -66,8 +76,8 @@ export const BorrowedPositionsListItem = ({
           borrowRateMode={borrowRateMode}
           disabled={!stableBorrowRateEnabled || isFrozen || !isActive}
           onClick={() => openRateSwitch(reserve.underlyingAsset, borrowRateMode)}
-          stableBorrowAPY={reserve.stableBorrowAPY}
-          variableBorrowAPY={reserve.variableBorrowAPY}
+          stableBorrowAPY={stableBorrowAPY}
+          variableBorrowAPY={variableBorrowAPY}
           underlyingAsset={reserve.underlyingAsset}
           currentMarket={currentMarket}
         />

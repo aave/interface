@@ -23,3 +23,16 @@ export type BorrowAssetsItem = {
   isActive: boolean;
   eModeCategoryId: number;
 };
+
+export type GHOBorrowAssetsItem = {
+  symbol: string;
+  name: string;
+  underlyingAsset: string;
+  iconSymbol: string;
+  baseVariableBorrowRate: number | string;
+  availableBorrows: number | string;
+  isFreezed?: boolean;
+  aIncentivesData?: ReserveIncentiveResponse[];
+  vIncentivesData?: ReserveIncentiveResponse[];
+  userAvailableBorrows: string;
+};

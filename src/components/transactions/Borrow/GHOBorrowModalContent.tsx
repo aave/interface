@@ -1,11 +1,13 @@
-import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
+import { InterestRate } from '@aave/contract-helpers';
 import {
   calculateHealthFactorFromBalancesBigUnits,
   USD_DECIMALS,
   valueToBigNumber,
 } from '@aave/math-utils';
+import { ArrowSmRightIcon } from '@heroicons/react/outline';
+import { BadgeCheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Checkbox, Typography } from '@mui/material';
+import { Box, Checkbox, Link, SvgIcon, Typography } from '@mui/material';
 import { useRef, useState } from 'react';
 import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -16,9 +18,8 @@ import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
-import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
+import { getMaxGHOMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
 
 import { CapType } from '../../caps/helper';
 import { AssetInput } from '../AssetInput';
@@ -28,16 +29,12 @@ import { TxSuccessView } from '../FlowCommons/Success';
 import {
   DetailsHFLine,
   DetailsIncentivesLine,
-  DetailsUnwrapSwitch,
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
 import { BorrowActions } from './BorrowActions';
 
 export enum ErrorType {
-  STABLE_RATE_NOT_ENABLED,
-  NOT_ENOUGH_LIQUIDITY,
   BORROWING_NOT_AVAILABLE,
-  NOT_ENOUGH_BORROWED,
 }
 
 interface BorrowModeSwitchProps {
@@ -99,18 +96,14 @@ const BorrowModeSwitch = ({
   );
 };
 
-export const BorrowModalContent = ({
+export const GHOBorrowModalContent = ({
   underlyingAsset,
   isWrongNetwork,
   poolReserve,
-  userReserve,
-  unwrap: borrowUnWrapped,
-  setUnwrap: setBorrowUnWrapped,
   symbol,
-}: ModalWrapperProps & { unwrap: boolean; setUnwrap: (unwrap: boolean) => void }) => {
+}: ModalWrapperProps) => {
   const { mainTxState: borrowTxState, gasLimit, txError } = useModalContext();
   const { user, marketReferencePriceInUsd } = useAppDataContext();
-  const { currentNetworkConfig } = useProtocolDataContext();
   const { borrowCap, debtCeiling } = useAssetCaps();
 
   const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
@@ -119,7 +112,7 @@ export const BorrowModalContent = ({
   const amountRef = useRef<string>();
 
   // amount calculations
-  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user, interestRateMode);
+  const maxAmountToBorrow = getMaxGHOMintAmount(user);
   const formattedMaxAmountToBorrow = maxAmountToBorrow.toString(10);
 
   const isMaxSelected = _amount === '-1';
@@ -155,17 +148,7 @@ export const BorrowModalContent = ({
 
   // error types handling
   let blockingError: ErrorType | undefined = undefined;
-  if (interestRateMode === InterestRate.Stable && !poolReserve.stableBorrowRateEnabled) {
-    blockingError = ErrorType.STABLE_RATE_NOT_ENABLED;
-  } else if (
-    interestRateMode === InterestRate.Stable &&
-    userReserve?.usageAsCollateralEnabledOnUser &&
-    valueToBigNumber(amount).lt(userReserve?.underlyingBalance || 0)
-  ) {
-    blockingError = ErrorType.NOT_ENOUGH_BORROWED;
-  } else if (valueToBigNumber(amount).gt(poolReserve.formattedAvailableLiquidity)) {
-    blockingError = ErrorType.NOT_ENOUGH_LIQUIDITY;
-  } else if (!poolReserve.borrowingEnabled) {
+  if (!poolReserve.borrowingEnabled) {
     blockingError = ErrorType.BORROWING_NOT_AVAILABLE;
   }
 
@@ -174,25 +157,6 @@ export const BorrowModalContent = ({
     switch (blockingError) {
       case ErrorType.BORROWING_NOT_AVAILABLE:
         return <Trans>Borrowing is currently unavailable for {poolReserve.symbol}.</Trans>;
-      case ErrorType.NOT_ENOUGH_BORROWED:
-        return (
-          <Trans>
-            You can borrow this asset with a stable rate only if you borrow more than the amount you
-            are supplying as collateral.
-          </Trans>
-        );
-      case ErrorType.NOT_ENOUGH_LIQUIDITY:
-        return (
-          <>
-            <Trans>
-              There are not enough funds in the
-              {poolReserve.symbol}
-              reserve to borrow
-            </Trans>
-          </>
-        );
-      case ErrorType.STABLE_RATE_NOT_ENABLED:
-        return <Trans>The Stable Rate is not enabled for this currency</Trans>;
       default:
         return null;
     }
@@ -223,6 +187,33 @@ export const BorrowModalContent = ({
     <>
       {borrowCap.determineWarningDisplay({ borrowCap })}
       {poolReserve.isIsolated && debtCeiling.determineWarningDisplay({ debtCeiling })}
+
+      <Warning
+        severity="success"
+        icon={
+          <SvgIcon color="success">
+            <BadgeCheckIcon />
+          </SvgIcon>
+        }
+        sx={{ mb: 6 }}
+      >
+        <Typography variant="subheader1" gutterBottom>
+          <Trans>Get discounted borrow APY — 1.6%</Trans>
+        </Typography>
+        <Typography variant="caption">
+          <Trans>
+            Users who stake their AAVE in Safety Module get discounted borrow rate 1.6% for each 100
+            GHO per 1 staked AAVE.
+          </Trans>
+        </Typography>
+        <Link href="/" sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
+          <Trans>Learn More</Trans>{' '}
+          <SvgIcon fontSize="small">
+            <ArrowSmRightIcon />
+          </SvgIcon>
+        </Link>
+      </Warning>
+
       <AssetInput
         value={amount}
         onChange={handleChange}
@@ -231,10 +222,7 @@ export const BorrowModalContent = ({
           {
             balance: formattedMaxAmountToBorrow,
             symbol: symbol,
-            iconSymbol:
-              borrowUnWrapped && poolReserve.isWrappedBaseAsset
-                ? currentNetworkConfig.baseAssetSymbol
-                : poolReserve.iconSymbol,
+            iconSymbol: poolReserve.iconSymbol,
           },
         ]}
         symbol={symbol}
@@ -259,14 +247,6 @@ export const BorrowModalContent = ({
       )}
 
       <TxModalDetails gasLimit={gasLimit}>
-        {poolReserve.isWrappedBaseAsset && (
-          <DetailsUnwrapSwitch
-            unwrapped={borrowUnWrapped}
-            setUnWrapped={setBorrowUnWrapped}
-            symbol={poolReserve.symbol}
-            unwrappedSymbol={currentNetworkConfig.baseAssetSymbol}
-          />
-        )}
         <DetailsIncentivesLine incentives={incentive} symbol={poolReserve.symbol} />
         <DetailsHFLine
           visibleHfChange={!!_amount}
@@ -318,11 +298,7 @@ export const BorrowModalContent = ({
       <BorrowActions
         poolReserve={poolReserve}
         amountToBorrow={amount}
-        poolAddress={
-          borrowUnWrapped && poolReserve.isWrappedBaseAsset
-            ? API_ETH_MOCK_ADDRESS
-            : poolReserve.underlyingAsset
-        }
+        poolAddress={poolReserve.underlyingAsset}
         interestRateMode={interestRateMode}
         isWrongNetwork={isWrongNetwork}
         symbol={symbol}

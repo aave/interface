@@ -1,4 +1,4 @@
-import { Tooltip, Typography } from '@mui/material';
+import { Box, Tooltip, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
@@ -21,6 +21,7 @@ interface ListItemWrapperProps {
   showSupplyCapTooltips?: boolean;
   showBorrowCapTooltips?: boolean;
   showDebtCeilingTooltips?: boolean;
+  footerButton?: ReactNode;
 }
 
 export const ListItemWrapper = ({
@@ -34,32 +35,40 @@ export const ListItemWrapper = ({
   showSupplyCapTooltips = false,
   showBorrowCapTooltips = false,
   showDebtCeilingTooltips = false,
+  footerButton,
   ...rest
 }: ListItemWrapperProps) => {
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
 
   return (
-    <ListItem {...rest}>
-      <ListColumn maxWidth={160} isRow>
-        <Link
-          href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
-          noWrap
-          sx={{ display: 'inline-flex', alignItems: 'center' }}
-        >
-          <TokenIcon symbol={iconSymbol} fontSize="large" />
-          <Tooltip title={`${name} (${symbol})`} arrow placement="top">
-            <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
-              {symbol}
-            </Typography>
-          </Tooltip>
-        </Link>
-        {frozen && <FrozenTooltip symbol={symbol} currentMarket={currentMarket} />}
-        {!frozen && symbol === 'AMPL' && <AMPLWarning />}
-        {showSupplyCapTooltips && supplyCap.displayMaxedTooltip({ supplyCap })}
-        {showBorrowCapTooltips && borrowCap.displayMaxedTooltip({ borrowCap })}
-        {showDebtCeilingTooltips && debtCeiling.displayMaxedTooltip({ debtCeiling })}
-      </ListColumn>
-      {children}
-    </ListItem>
+    <>
+      <ListItem {...rest} hideBorder={footerButton ? true : false}>
+        <ListColumn maxWidth={160} isRow>
+          <Link
+            href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
+            noWrap
+            sx={{ display: 'inline-flex', alignItems: 'center' }}
+          >
+            <TokenIcon symbol={iconSymbol} fontSize="large" />
+            <Tooltip title={`${name} (${symbol})`} arrow placement="top">
+              <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
+                {symbol}
+              </Typography>
+            </Tooltip>
+          </Link>
+          {frozen && <FrozenTooltip symbol={symbol} currentMarket={currentMarket} />}
+          {!frozen && symbol === 'AMPL' && <AMPLWarning />}
+          {showSupplyCapTooltips && supplyCap.displayMaxedTooltip({ supplyCap })}
+          {showBorrowCapTooltips && borrowCap.displayMaxedTooltip({ borrowCap })}
+          {showDebtCeilingTooltips && debtCeiling.displayMaxedTooltip({ debtCeiling })}
+        </ListColumn>
+        {children}
+      </ListItem>
+      {footerButton && (
+        <Box sx={{ width: '100%', borderBottom: '1px solid', borderColor: 'divider', pb: 4 }}>
+          {footerButton}
+        </Box>
+      )}
+    </>
   );
 };

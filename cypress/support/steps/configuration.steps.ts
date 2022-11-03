@@ -204,3 +204,21 @@ export const configEnvWithTenderlyArbitrumFork = ({
 }) => {
   configEnvWithTenderly({ chainId: ChainId.arbitrum_one, market, tokens, unpause: v3 });
 };
+
+export const configEnvWithTenderlyGoerliGhoFork = ({
+  market = `fork_proto_goerli_gho_v3`,
+  tokens,
+  v3,
+}: {
+  market?: string;
+  tokens?: { address: string }[];
+  v3?: boolean;
+}) => {
+  configEnvWithTenderly({
+    chainId: ChainId.goerli,
+    market,
+    tokens,
+    unpause: v3,
+    enableTestnet: true,
+  });
+};
