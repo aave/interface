@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-11-01 00:24\n"
+"PO-Revision-Date: 2022-11-03 00:21\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -18,9 +18,9 @@ msgstr ""
 "X-Crowdin-File: /src/locales/en/messages.po\n"
 "X-Crowdin-File-ID: 46\n"
 
-#: src/components/infoTooltips/AMPLWarning.tsx
-msgid "<0>Ampleforth</0> is an asset affected by rebasing. Visit the <1>documentation</1> or <2>Ampleforth's FAQ</2> to learn more."
-msgstr "Το<0>Ampleforth</0> είναι ένα περιουσιακό στοιχείο που επηρεάζεται από την αναπροσαρμογή. Επισκεφθείτε την <1>τεκμηρίωση</1> ή τις <2>Συχνές Ερωτήσεις του Ampleforth </2> για να μάθετε περισσότερα."
+#: src/components/Warnings/AMPLWarning.tsx
+msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
+msgstr ""
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
@@ -156,10 +156,6 @@ msgstr "Ποσό"
 #: src/ui-config/errorMapping.tsx
 msgid "Amount must be greater than 0"
 msgstr "Το ποσό πρέπει να είναι μεγαλύτερο από 0"
-
-#: src/components/transactions/Warnings/AMPLWarning.tsx
-msgid "Ampleforth FAQ"
-msgstr "Συχνές ερωτήσεις του Ampleforth"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "An error has occurred fetching the proposal metadata from IPFS."
@@ -827,13 +823,10 @@ msgstr "Github"
 msgid "Global settings"
 msgstr "Γενικές ρυθμίσεις"
 
+#: src/modules/governance/proposal/ProposalTopPanel.tsx
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Go Back"
 msgstr "Πηγαίνετε Πίσω"
-
-#: src/modules/governance/proposal/ProposalTopPanel.tsx
-msgid "Go back"
-msgstr ""
 
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "Go to Balancer Pool"
@@ -2279,10 +2272,6 @@ msgstr ""
 msgid "copy the error"
 msgstr "αντιγράψτε το σφάλμα"
 
-#: src/components/transactions/Warnings/AMPLWarning.tsx
-msgid "documentation"
-msgstr "τεκμηρίωση"
-
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "ends"
 msgstr "τελειώνει"
@@ -2290,10 +2279,6 @@ msgstr "τελειώνει"
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "here."
 msgstr "εδώ."
-
-#: src/components/transactions/Warnings/AMPLWarning.tsx
-msgid "is an asset affected by rebasing. Visit the"
-msgstr "είναι ένα περιουσιακό στοιχείο που επηρεάζεται από την αναπροσαρμογή. Επισκεφθείτε το"
 
 #: src/components/caps/DebtCeilingStatus.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
@@ -2306,10 +2291,6 @@ msgstr ""
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "on"
 msgstr "ενεργοποίηση"
-
-#: src/components/transactions/Warnings/AMPLWarning.tsx
-msgid "or"
-msgstr "ή"
 
 #: src/components/transactions/Warnings/SNXWarning.tsx
 msgid "please check that the amount you want to supply is not currently being used for staking. If it is being used for staking, your transaction might fail."
@@ -2331,10 +2312,6 @@ msgstr "προβολή κλειδώματος"
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "starts"
 msgstr ""
-
-#: src/components/transactions/Warnings/AMPLWarning.tsx
-msgid "to learn more."
-msgstr "για να μάθετε περισσότερα."
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "tokens is not the same as staking them. If you wish to stake your"

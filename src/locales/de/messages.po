@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-11-01 00:24\n"
+"PO-Revision-Date: 2022-11-03 00:21\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -18,8 +18,8 @@ msgstr ""
 "X-Crowdin-File: /src/locales/en/messages.po\n"
 "X-Crowdin-File-ID: 46\n"
 
-#: src/components/infoTooltips/AMPLWarning.tsx
-msgid "<0>Ampleforth</0> is an asset affected by rebasing. Visit the <1>documentation</1> or <2>Ampleforth's FAQ</2> to learn more."
+#: src/components/Warnings/AMPLWarning.tsx
+msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
 msgstr ""
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
@@ -155,10 +155,6 @@ msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "Amount must be greater than 0"
-msgstr ""
-
-#: src/components/transactions/Warnings/AMPLWarning.tsx
-msgid "Ampleforth FAQ"
 msgstr ""
 
 #: pages/governance/proposal/[proposalId].governance.tsx
@@ -827,12 +823,9 @@ msgstr ""
 msgid "Global settings"
 msgstr ""
 
+#: src/modules/governance/proposal/ProposalTopPanel.tsx
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Go Back"
-msgstr ""
-
-#: src/modules/governance/proposal/ProposalTopPanel.tsx
-msgid "Go back"
 msgstr ""
 
 #: src/modules/staking/GetABPTokenModal.tsx
@@ -2278,20 +2271,12 @@ msgstr ""
 msgid "copy the error"
 msgstr ""
 
-#: src/components/transactions/Warnings/AMPLWarning.tsx
-msgid "documentation"
-msgstr ""
-
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "ends"
 msgstr ""
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "here."
-msgstr ""
-
-#: src/components/transactions/Warnings/AMPLWarning.tsx
-msgid "is an asset affected by rebasing. Visit the"
 msgstr ""
 
 #: src/components/caps/DebtCeilingStatus.tsx
@@ -2304,10 +2289,6 @@ msgstr ""
 
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "on"
-msgstr ""
-
-#: src/components/transactions/Warnings/AMPLWarning.tsx
-msgid "or"
 msgstr ""
 
 #: src/components/transactions/Warnings/SNXWarning.tsx
@@ -2329,10 +2310,6 @@ msgstr ""
 
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "starts"
-msgstr ""
-
-#: src/components/transactions/Warnings/AMPLWarning.tsx
-msgid "to learn more."
 msgstr ""
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
