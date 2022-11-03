@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-11-01 00:24\n"
+"PO-Revision-Date: 2022-11-03 00:21\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -18,9 +18,9 @@ msgstr ""
 "X-Crowdin-File: /src/locales/en/messages.po\n"
 "X-Crowdin-File-ID: 46\n"
 
-#: src/components/infoTooltips/AMPLWarning.tsx
-msgid "<0>Ampleforth</0> is an asset affected by rebasing. Visit the <1>documentation</1> or <2>Ampleforth's FAQ</2> to learn more."
-msgstr "<0>Ampleforth</0> est un actif affecté par le rebasing. Visitez la <1>documentation</1> ou la <2>FAQ d'Ampleforth</2> pour en savoir plus."
+#: src/components/Warnings/AMPLWarning.tsx
+msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
+msgstr ""
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
@@ -156,10 +156,6 @@ msgstr "Montant"
 #: src/ui-config/errorMapping.tsx
 msgid "Amount must be greater than 0"
 msgstr "Le montant doit être supérieur à 0"
-
-#: src/components/transactions/Warnings/AMPLWarning.tsx
-msgid "Ampleforth FAQ"
-msgstr "FAQ d'Ampleforth"
 
 #: pages/governance/proposal/[proposalId].governance.tsx
 msgid "An error has occurred fetching the proposal metadata from IPFS."
@@ -827,13 +823,10 @@ msgstr "Github"
 msgid "Global settings"
 msgstr "Paramètres globaux"
 
+#: src/modules/governance/proposal/ProposalTopPanel.tsx
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Go Back"
 msgstr "Retourner"
-
-#: src/modules/governance/proposal/ProposalTopPanel.tsx
-msgid "Go back"
-msgstr ""
 
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "Go to Balancer Pool"
@@ -2278,10 +2271,6 @@ msgstr ""
 msgid "copy the error"
 msgstr "copier l'erreur"
 
-#: src/components/transactions/Warnings/AMPLWarning.tsx
-msgid "documentation"
-msgstr "documentation"
-
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "ends"
 msgstr "Prend fin"
@@ -2289,10 +2278,6 @@ msgstr "Prend fin"
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "here."
 msgstr "ici."
-
-#: src/components/transactions/Warnings/AMPLWarning.tsx
-msgid "is an asset affected by rebasing. Visit the"
-msgstr "est un actif affecté par le rebasage. Visiter le"
 
 #: src/components/caps/DebtCeilingStatus.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
@@ -2305,10 +2290,6 @@ msgstr ""
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "on"
 msgstr "sur"
-
-#: src/components/transactions/Warnings/AMPLWarning.tsx
-msgid "or"
-msgstr "ou"
 
 #: src/components/transactions/Warnings/SNXWarning.tsx
 msgid "please check that the amount you want to supply is not currently being used for staking. If it is being used for staking, your transaction might fail."
@@ -2330,10 +2311,6 @@ msgstr "vue de staking"
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "starts"
 msgstr ""
-
-#: src/components/transactions/Warnings/AMPLWarning.tsx
-msgid "to learn more."
-msgstr "pour apprendre plus."
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "tokens is not the same as staking them. If you wish to stake your"
