@@ -3,6 +3,7 @@ import { CustomMarket } from 'src/ui-config/marketsConfig';
 import create from 'zustand';
 import { devtools } from 'zustand/middleware';
 
+import { createGhoSlice, GhoSlice } from './ghoSlice';
 import { createGovernanceSlice, GovernanceSlice } from './governanceSlice';
 import { createIncentiveSlice, IncentiveSlice } from './incentiveSlice';
 import { createPoolSlice, PoolSlice } from './poolSlice';
@@ -19,7 +20,8 @@ export type RootStore = StakeSlice &
   WalletSlice &
   PoolSlice &
   IncentiveSlice &
-  GovernanceSlice;
+  GovernanceSlice &
+  GhoSlice;
 
 export const useRootStore = create<RootStore>()(
   devtools((...args) => {
@@ -30,6 +32,7 @@ export const useRootStore = create<RootStore>()(
       ...createPoolSlice(...args),
       ...createIncentiveSlice(...args),
       ...createGovernanceSlice(...args),
+      ...createGhoSlice(...args),
     };
   })
 );
@@ -65,4 +68,8 @@ export const useIncentiveDataSubscription = createSingletonSubscriber(() => {
 
 export const useGovernanceDataSubscription = createSingletonSubscriber(() => {
   return useRootStore.getState().refreshGovernanceData();
+}, 60000);
+
+export const useGhoDataSubscription = createSingletonSubscriber(() => {
+  return useRootStore.getState().refreshGhoData();
 }, 60000);
