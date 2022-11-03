@@ -41,7 +41,7 @@ msgstr "APR"
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "APY"
 msgstr "APY"
 
@@ -53,14 +53,14 @@ msgstr "APY type"
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "APY, stable"
 msgstr "APY, stable"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "APY, variable"
 msgstr "APY, variable"
 
@@ -185,11 +185,11 @@ msgstr "Array parameters that should be equal length are not"
 msgid "Asset"
 msgstr "Asset"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Asset can only be used as collateral in isolation mode only."
 msgstr "Asset can only be used as collateral in isolation mode only."
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Asset cannot be used as collateral."
 msgstr "Asset cannot be used as collateral."
 
@@ -206,7 +206,7 @@ msgstr "Asset is not borrowable in isolation mode"
 msgid "Asset is not listed"
 msgstr "Asset is not listed"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 msgstr "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 
@@ -315,7 +315,7 @@ msgstr "Borrow APY, variable"
 msgid "Borrow and repay in same block is not allowed"
 msgstr "Borrow and repay in same block is not allowed"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Borrow cap"
 msgstr "Borrow cap"
 
@@ -339,6 +339,10 @@ msgstr "Borrowed"
 msgid "Borrowing is currently unavailable for {0}."
 msgstr "Borrowing is currently unavailable for {0}."
 
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "Borrowing is disabled due to an Aave community decision. <0>More details</0>"
+msgstr "Borrowing is disabled due to an Aave community decision. <0>More details</0>"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Borrowing is not enabled"
 msgstr "Borrowing is not enabled"
@@ -355,7 +359,7 @@ msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mod
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
 msgstr "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
 
@@ -393,7 +397,7 @@ msgstr "CLAIMING {symbol}"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Can be collateral"
 msgstr "Can be collateral"
 
@@ -470,9 +474,9 @@ msgstr "Collateral amount to repay with"
 msgid "Collateral is (mostly) the same currency that is being borrowed"
 msgstr "Collateral is (mostly) the same currency that is being borrowed"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Collateral usage"
 msgstr "Collateral usage"
 
@@ -492,7 +496,7 @@ msgstr "Collateralization"
 msgid "Collector Contract"
 msgstr "Collector Contract"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Collector Info"
 msgstr "Collector Info"
 
@@ -956,9 +960,9 @@ msgstr "Language"
 #: src/components/transactions/Warnings/MarketWarning.tsx
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Learn more"
 msgstr "Learn more"
 
@@ -983,7 +987,7 @@ msgid "Liquidation at"
 msgstr "Liquidation at"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Liquidation penalty"
 msgstr "Liquidation penalty"
 
@@ -996,7 +1000,7 @@ msgid "Liquidation risk parameters"
 msgstr "Liquidation risk parameters"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Liquidation threshold"
 msgstr "Liquidation threshold"
 
@@ -1030,7 +1034,7 @@ msgid "Max"
 msgstr "Max"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Max LTV"
 msgstr "Max LTV"
 
@@ -1051,8 +1055,8 @@ msgstr "Maximum amount available to borrow against this asset is limited because
 msgid "Maximum amount available to borrow is limited because protocol borrow cap is nearly reached."
 msgstr "Maximum amount available to borrow is limited because protocol borrow cap is nearly reached."
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Maximum amount available to supply is <0/> {0} (<1/>)."
 msgstr "Maximum amount available to supply is <0/> {0} (<1/>)."
 
@@ -1541,7 +1545,7 @@ msgstr "Staking"
 msgid "Staking APR"
 msgstr "Staking APR"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Staking Rewards"
 msgstr "Staking Rewards"
 
@@ -1843,8 +1847,8 @@ msgstr "Total available"
 
 #: src/modules/markets/AssetsList.tsx
 #: src/modules/markets/AssetsListMobileItem.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Total borrowed"
 msgstr "Total borrowed"
 
@@ -1862,8 +1866,8 @@ msgstr "Total market size"
 
 #: src/modules/markets/AssetsList.tsx
 #: src/modules/markets/AssetsListMobileItem.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Total supplied"
 msgstr "Total supplied"
 
@@ -1900,7 +1904,7 @@ msgstr "UNSTAKING {symbol}"
 msgid "Unavailable"
 msgstr "Unavailable"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Unbacked"
 msgstr "Unbacked"
 
@@ -2275,10 +2279,10 @@ msgid "here."
 msgstr "here."
 
 #: src/components/caps/DebtCeilingStatus.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "of"
 msgstr "of"
 
@@ -2295,7 +2299,7 @@ msgstr "please check that the amount you want to supply is not currently being u
 msgid "repaid"
 msgstr "repaid"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "stETH supplied as collateral will continue to accrue staking rewards provided by daily rebases."
 msgstr "stETH supplied as collateral will continue to accrue staking rewards provided by daily rebases."
 
