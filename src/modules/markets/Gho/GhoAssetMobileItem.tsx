@@ -1,11 +1,18 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider, Typography, useTheme } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Link, ROUTES } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
-export const GhoAssetMobileItem = () => {
+interface GhoAssetMobileItemProps {
+  underlyingAsset: string;
+}
+
+export const GhoAssetMobileItem = ({ underlyingAsset }: GhoAssetMobileItemProps) => {
+  const { currentMarket } = useProtocolDataContext();
   const theme = useTheme();
   return (
     <Box>
@@ -82,7 +89,12 @@ export const GhoAssetMobileItem = () => {
             </Box>
           </Box>
         </Row>
-        <Button variant="outlined" fullWidth>
+        <Button
+          variant="outlined"
+          component={Link}
+          href={ROUTES.reserveOverview(underlyingAsset, currentMarket)}
+          fullWidth
+        >
           <Trans>View details</Trans>
         </Button>
       </Box>

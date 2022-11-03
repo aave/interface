@@ -25,6 +25,10 @@ export const TokenLinkDropdown = ({ poolReserve, downToSM }: TokenLinkDropdownPr
     setAnchorEl(null);
   };
 
+  if (!poolReserve) {
+    return null;
+  }
+
   return (
     <>
       <Box onClick={handleClick}>

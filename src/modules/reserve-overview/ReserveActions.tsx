@@ -345,8 +345,8 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
           <Trans>Borrow</Trans> {downToXSM && poolReserve.symbol}
         </Button>
       </Stack>
-      {maxAmountToSupply === '0' && supplyCap.determineWarningDisplay({ supplyCap, icon: false })}
-      {maxAmountToBorrow === '0' && borrowCap.determineWarningDisplay({ borrowCap, icon: false })}
+      {maxAmountToSupply === '0' && supplyCap?.determineWarningDisplay({ supplyCap, icon: false })}
+      {maxAmountToBorrow === '0' && borrowCap?.determineWarningDisplay({ borrowCap, icon: false })}
       {poolReserve.isIsolated &&
         balance?.amount !== '0' &&
         user?.totalCollateralUSD !== '0' &&

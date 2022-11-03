@@ -46,6 +46,9 @@ export default function AssetsList() {
   const [sortDesc, setSortDesc] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
+  // TODO: get this from a helper functin or the global store once added
+  const ghoReserve = reserves.find((r) => r.symbol === 'GHO');
+
   const filteredData = reserves
     .filter((res) => res.isActive)
     .filter((res) => res.symbol !== 'GHO')
@@ -153,7 +156,11 @@ export default function AssetsList() {
 
       {displayGHO && (
         <Box sx={{ mb: hideTableHeader ? 62 : 0 }}>
-          {isTableChangedToCards ? <GhoAssetMobileItem /> : <GhoAssetItem />}
+          {isTableChangedToCards ? (
+            <GhoAssetMobileItem underlyingAsset={ghoReserve?.underlyingAsset ?? ''} />
+          ) : (
+            <GhoAssetItem underlyingAsset={ghoReserve?.underlyingAsset ?? ''} />
+          )}
         </Box>
       )}
 

@@ -1,9 +1,11 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, Link, styled, Typography } from '@mui/material';
+import { Box, Button, styled, Typography } from '@mui/material';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Link, ROUTES } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
 const FieldSet = styled('fieldset')(({ theme }) => ({
   height: '103px',
@@ -22,7 +24,13 @@ const Legend = styled('legend')(({ theme }) => ({
   ...theme.typography.subheader2,
 }));
 
-export const GhoAssetItem = () => {
+interface GhoAssetItemProps {
+  underlyingAsset: string;
+}
+
+export const GhoAssetItem = ({ underlyingAsset }: GhoAssetItemProps) => {
+  const { currentMarket } = useProtocolDataContext();
+
   return (
     <Box sx={{ px: 6, mt: 1, mb: 6 }}>
       <FieldSet>
@@ -90,7 +98,11 @@ export const GhoAssetItem = () => {
           </ListColumn>
           <ListColumn /> {/* empty column for spacing */}
           <ListColumn maxWidth={95} minWidth={95} align="right">
-            <Button variant="outlined" component={Link} disabled>
+            <Button
+              variant="outlined"
+              component={Link}
+              href={ROUTES.reserveOverview(underlyingAsset, currentMarket)}
+            >
               <Trans>Details</Trans>
             </Button>
           </ListColumn>

@@ -85,6 +85,10 @@ msgstr "Aave is a fully decentralized, community governed protocol by the AAVE t
 msgid "Aave per month"
 msgstr "Aave per month"
 
+#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
+msgid "About GHO"
+msgstr "About GHO"
+
 #: src/layouts/WalletWidget.tsx
 msgid "Account"
 msgstr "Account"
@@ -263,6 +267,10 @@ msgstr "Available rewards"
 msgid "Available to borrow"
 msgstr "Available to borrow"
 
+#: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
+msgid "Available to mint"
+msgstr "Available to mint"
+
 #: src/components/caps/CapsHint.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Available to supply"
@@ -339,6 +347,10 @@ msgstr "Borrow cap"
 #: src/ui-config/errorMapping.tsx
 msgid "Borrow cap is exceeded"
 msgstr "Borrow cap is exceeded"
+
+#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
+msgid "Borrow info"
+msgstr "Borrow info"
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Borrow power used"
@@ -674,6 +686,10 @@ msgstr "Discord"
 msgid "Discord channel"
 msgstr "Discord channel"
 
+#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
+msgid "Discount program"
+msgstr "Discount program"
+
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 #: src/components/transactions/Swap/SwapModalContent.tsx
 msgid "Due to a precision bug in the stETH contract, this asset can not be used in flashloan transactions"
@@ -706,6 +722,10 @@ msgstr "E-Mode increases your LTV for a selected category of assets up to<0/>. <
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "E-Mode increases your LTV for a selected category of assets, meaning that when E-mode is enabled, you will have higher borrowing power over assets of the same E-mode category which are defined by Aave Governance. You can enter E-Mode from your <0>Dashboard</0>. To learn more about E-Mode and applied restrictions in <1>FAQ</1> or <2>Aave V3 Technical Paper</2>."
 msgstr "E-Mode increases your LTV for a selected category of assets, meaning that when E-mode is enabled, you will have higher borrowing power over assets of the same E-mode category which are defined by Aave Governance. You can enter E-Mode from your <0>Dashboard</0>. To learn more about E-Mode and applied restrictions in <1>FAQ</1> or <2>Aave V3 Technical Paper</2>."
+
+#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
+msgid "E-Mode info"
+msgstr "E-Mode info"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Efficiency mode (E-Mode)"
@@ -781,6 +801,7 @@ msgstr "Executed"
 msgid "Expires"
 msgstr "Expires"
 
+#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 #: src/ui-config/menu-items/index.tsx
 msgid "FAQ"
 msgstr "FAQ"
@@ -822,6 +843,14 @@ msgstr "French"
 msgid "Funds in the Safety Module"
 msgstr "Funds in the Safety Module"
 
+#: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
+msgid "GHO"
+msgstr "GHO"
+
+#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
+msgid "GHO is a native decentralized, collateral-backed stablecoin pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user’s GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury. Also, Safety Module participants (stkAAVE holders) can access a discount on the GHO borrow interest rate."
+msgstr "GHO is a native decentralized, collateral-backed stablecoin pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user’s GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury. Also, Safety Module participants (stkAAVE holders) can access a discount on the GHO borrow interest rate."
+
 #: src/modules/staking/GetABPToken.tsx
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "Get ABP Token"
@@ -840,6 +869,7 @@ msgstr "Github"
 msgid "Global settings"
 msgstr "Global settings"
 
+#: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Go Back"
 msgstr "Go Back"
@@ -1045,9 +1075,14 @@ msgstr "Ltv validation failed"
 msgid "MAX"
 msgstr "MAX"
 
+#: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Market"
 msgstr "Market"
+
+#: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
+msgid "Market Cap"
+msgstr "Market Cap"
 
 #: src/modules/markets/MarketsTopPanel.tsx
 #: src/ui-config/menu-items/index.tsx
@@ -1213,11 +1248,13 @@ msgstr "Ok, I got it"
 msgid "Operation not supported"
 msgstr "Operation not supported"
 
+#: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Oracle price"
 msgstr "Oracle price"
 
-#: pages/reserve-overview.page.tsx
+#: src/modules/reserve-overview/Gho/GhoReserveOverview.tsx
+#: src/modules/reserve-overview/ReserveOverview.tsx
 msgid "Overview"
 msgstr "Overview"
 
@@ -1393,6 +1430,7 @@ msgstr "Reserve factor"
 msgid "Reserve factor is a percentage of interest which goes to a {0} that is controlled by Aave governance to promote ecosystem growth."
 msgstr "Reserve factor is a percentage of interest which goes to a {0} that is controlled by Aave governance to promote ecosystem growth."
 
+#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Reserve status & configuration"
 msgstr "Reserve status & configuration"
@@ -2122,9 +2160,17 @@ msgstr "We couldn’t detect a wallet. Connect a wallet to stake and view your b
 msgid "We suggest you go back to the Dashboard."
 msgstr "We suggest you go back to the Dashboard."
 
+#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
+msgid "Website"
+msgstr "Website"
+
 #: src/components/infoTooltips/LiquidationPenaltyTooltip.tsx
 msgid "When a liquidation occurs, liquidators repay up to 50% of the outstanding borrowed amount on behalf of the borrower. In return, they can buy the collateral at a discount and keep the difference (liquidation penalty) as a bonus."
 msgstr "When a liquidation occurs, liquidators repay up to 50% of the outstanding borrowed amount on behalf of the borrower. In return, they can buy the collateral at a discount and keep the difference (liquidation penalty) as a bonus."
+
+#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
+msgid "Whitepaper"
+msgstr "Whitepaper"
 
 #: src/components/transactions/FlowCommons/LeftHelperText.tsx
 msgid "Why do I need to approve?"
@@ -2253,10 +2299,11 @@ msgstr "Your current loan to value based on your collateral supplied."
 msgid "Your health factor and loan to value determine the assurance of your collateral. To avoid liquidations you can supply more collateral or repay borrow positions."
 msgstr "Your health factor and loan to value determine the assurance of your collateral. To avoid liquidations you can supply more collateral or repay borrow positions."
 
-#: pages/reserve-overview.page.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
+#: src/modules/reserve-overview/Gho/GhoReserveOverview.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
+#: src/modules/reserve-overview/ReserveOverview.tsx
 msgid "Your info"
 msgstr "Your info"
 

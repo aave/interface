@@ -52,12 +52,16 @@ export const AddTokenDropdown = ({
     connectedChainId,
     changingNetwork,
     addERC20Token,
-    poolReserve.underlyingAsset,
-    poolReserve.decimals,
-    poolReserve.symbol,
-    poolReserve.iconSymbol,
+    poolReserve?.underlyingAsset,
+    poolReserve?.decimals,
+    poolReserve?.symbol,
+    poolReserve?.iconSymbol,
     underlyingBase64,
   ]);
+
+  if (!poolReserve) {
+    return null;
+  }
 
   return (
     <>
