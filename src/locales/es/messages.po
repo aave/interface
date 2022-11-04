@@ -8,7 +8,7 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-11-03 18:05\n"
+"PO-Revision-Date: 2022-11-04 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -346,7 +346,7 @@ msgstr "Tomar prestado no está disponible actualmente para {0}."
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Borrowing is disabled due to an Aave community decision. <0>More details</0>"
-msgstr ""
+msgstr "Tomar prestado está deshabilitado debido a una decisión de la comunidad de Aave. <0>Más información</0>"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Borrowing is not enabled"
