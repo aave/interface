@@ -18,6 +18,7 @@ export const GhoAssetMobileItem = ({ reserve }: GhoAssetMobileItemProps) => {
   const { currentMarket } = useProtocolDataContext();
   const theme = useTheme();
 
+  const totalBorrowed = useRootStore((state) => state.ghoFacilitatorBucketLevel);
   const ghoDiscountRate = useRootStore((state) => state.ghoDiscountRatePercent);
   const borrowAPRWithMaxDiscount = ghoBorrowAPRWithMaxDiscount(
     ghoDiscountRate,
@@ -63,8 +64,13 @@ export const GhoAssetMobileItem = ({ reserve }: GhoAssetMobileItemProps) => {
               textAlign: 'center',
             }}
           >
-            <FormattedNumber compact value="7500000" variant="secondary14" />
-            <ReserveSubheader value="7500000" rightAlign={true} />
+            <FormattedNumber
+              compact
+              value={totalBorrowed.toString()}
+              visibleDecimals={2}
+              variant="secondary14"
+            />
+            <ReserveSubheader value={totalBorrowed.toString()} rightAlign={true} />
           </Box>
         </Row>
         <Row sx={{ mb: 3 }} caption={<Trans>Borrow APY</Trans>} captionVariant="description">

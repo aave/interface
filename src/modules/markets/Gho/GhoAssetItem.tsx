@@ -34,6 +34,7 @@ interface GhoAssetItemProps {
 export const GhoAssetItem = ({ reserve }: GhoAssetItemProps) => {
   const { currentMarket } = useProtocolDataContext();
 
+  const totalBorrowed = useRootStore((state) => state.ghoFacilitatorBucketLevel);
   const ghoDiscountRate = useRootStore((state) => state.ghoDiscountRatePercent);
   const borrowAPRWithMaxDiscount = ghoBorrowAPRWithMaxDiscount(
     ghoDiscountRate,
@@ -63,8 +64,8 @@ export const GhoAssetItem = ({ reserve }: GhoAssetItemProps) => {
             <FormattedNumber
               compact
               symbol="usd"
-              value="7500000"
-              visibleDecimals={1}
+              value={totalBorrowed.toString()}
+              visibleDecimals={2}
               variant="h3"
             />
             <Typography variant="secondary12" color="text.secondary">
