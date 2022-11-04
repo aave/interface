@@ -78,7 +78,7 @@ export const createGhoSlice: StateCreator<
       set({
         ghoDiscountableAmount: ghoDiscountedPerToken.mul(stakedAaveBalance),
         ghoDiscountedPerToken,
-        ghoDiscountRatePercent: ghoDiscountRate.toNumber() * 0.0001,
+        ghoDiscountRatePercent: ghoDiscountRate.toNumber() * 0.0001, // discount rate is in bps, convert to percentage
       });
     },
   };
