@@ -17,3 +17,7 @@ export const ghoMintingAvailable = ({
     return false;
   }
 };
+
+export const ghoBorrowAPRWithMaxDiscount = (ghoDiscountRate: number, variableBorrowAPR: string) => {
+  return Number(variableBorrowAPR) * (1 - ghoDiscountRate);
+};
