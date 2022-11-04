@@ -2,7 +2,6 @@ import Router from 'next/router';
 
 export const setQueryParameter = (key: string, value: string) => {
   if (typeof window !== 'undefined') {
-    console.log('here');
     Router.push({ query: { ...getAllQueryParameters(), [key]: value } }, undefined, {
       shallow: true,
     });
