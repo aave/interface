@@ -121,6 +121,7 @@ export default function Staking() {
                   onUnstakeAction={() => openUnstake('aave', 'AAVE')}
                   onStakeRewardClaimAction={() => openStakeRewardsClaim('aave')}
                   headerAction={<BuyWithFiat cryptoSymbol="AAVE" networkMarketName={network} />}
+                  hasDiscountProgram
                 />
               </Grid>
               {!ENABLE_TESTNET && (
