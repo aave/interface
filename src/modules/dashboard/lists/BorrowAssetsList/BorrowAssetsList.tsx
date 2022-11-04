@@ -66,9 +66,9 @@ export const BorrowAssetsList = () => {
         iconSymbol: reserve.iconSymbol,
         ...(reserve.isWrappedBaseAsset
           ? fetchIconSymbolAndName({
-            symbol: baseAssetSymbol,
-            underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
-          })
+              symbol: baseAssetSymbol,
+              underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
+            })
           : {}),
       };
     });
@@ -79,19 +79,19 @@ export const BorrowAssetsList = () => {
   const collateralUsagePercent = maxBorrowAmount.eq(0)
     ? '0'
     : valueToBigNumber(user?.totalBorrowsMarketReferenceCurrency || '0')
-      .div(maxBorrowAmount)
-      .toFixed();
+        .div(maxBorrowAmount)
+        .toFixed();
   let borrowReserves =
     user?.totalCollateralMarketReferenceCurrency === '0' || +collateralUsagePercent >= 0.98
       ? tokensToBorrow
       : tokensToBorrow.filter(
-        ({ availableBorrowsInUSD, totalLiquidityUSD, symbol }) =>
-          (availableBorrowsInUSD !== '0.00' && totalLiquidityUSD !== '0') ||
-          ghoMintingAvailable({
-            symbol,
-            currentMarket,
-          })
-      );
+          ({ availableBorrowsInUSD, totalLiquidityUSD, symbol }) =>
+            (availableBorrowsInUSD !== '0.00' && totalLiquidityUSD !== '0') ||
+            ghoMintingAvailable({
+              symbol,
+              currentMarket,
+            })
+        );
 
   // Move GHO to top of assets to borrow list
   const GHO = borrowReserves.filter((reserve) => reserve.symbol === 'GHO');
@@ -198,9 +198,9 @@ export const BorrowAssetsList = () => {
                   <BorrowAssetsListMobileItem {...item} />
                 )
               ) : ghoMintingAvailable({
-                symbol: item.symbol,
-                currentMarket,
-              }) ? (
+                  symbol: item.symbol,
+                  currentMarket,
+                }) ? (
                 <GHOBorrowAssetsListItem
                   {...item}
                   userAvailableBorrows={maxBorrowAmount.toString()}

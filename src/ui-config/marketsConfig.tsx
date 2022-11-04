@@ -192,7 +192,7 @@ export const marketsData: {
       // Note: We should remove this based on the addresses that you provide in the addresses below
       faucet: true,
       // governance: true,
-      // staking: true,
+      staking: true,
       // incentives: true,
     },
     addresses: {
