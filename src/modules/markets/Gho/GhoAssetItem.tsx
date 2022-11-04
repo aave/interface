@@ -5,7 +5,10 @@ import { ListItem } from 'src/components/lists/ListItem';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
+import { ghoBorrowAPRWithMaxDiscount } from 'src/utils/ghoUtilities';
 
 const FieldSet = styled('fieldset')(({ theme }) => ({
   height: '103px',
@@ -25,11 +28,18 @@ const Legend = styled('legend')(({ theme }) => ({
 }));
 
 interface GhoAssetItemProps {
-  underlyingAsset: string;
+  reserve: ComputedReserveData;
 }
 
-export const GhoAssetItem = ({ underlyingAsset }: GhoAssetItemProps) => {
+export const GhoAssetItem = ({ reserve }: GhoAssetItemProps) => {
   const { currentMarket } = useProtocolDataContext();
+
+  const totalBorrowed = useRootStore((state) => state.ghoFacilitatorBucketLevel);
+  const ghoDiscountRate = useRootStore((state) => state.ghoDiscountRatePercent);
+  const borrowAPRWithMaxDiscount = ghoBorrowAPRWithMaxDiscount(
+    ghoDiscountRate,
+    reserve.variableBorrowAPR
+  );
 
   return (
     <Box sx={{ px: 6, mt: 1, mb: 6 }}>
@@ -54,8 +64,8 @@ export const GhoAssetItem = ({ underlyingAsset }: GhoAssetItemProps) => {
             <FormattedNumber
               compact
               symbol="usd"
-              value="7500000"
-              visibleDecimals={1}
+              value={totalBorrowed.toString()}
+              visibleDecimals={2}
               variant="h3"
             />
             <Typography variant="secondary12" color="text.secondary">
@@ -63,14 +73,26 @@ export const GhoAssetItem = ({ underlyingAsset }: GhoAssetItemProps) => {
             </Typography>
           </ListColumn>
           <ListColumn>
-            <FormattedNumber compact percent value=".02" visibleDecimals={2} variant="h3" />
+            <FormattedNumber
+              compact
+              percent
+              value={reserve.variableBorrowAPR}
+              visibleDecimals={2}
+              variant="h3"
+            />
             <Typography variant="secondary12" color="text.secondary">
               Borrow APY
             </Typography>
           </ListColumn>
           <ListColumn minWidth={195}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <FormattedNumber compact percent value=".016" visibleDecimals={1} variant="h3" />
+              <FormattedNumber
+                compact
+                percent
+                value={borrowAPRWithMaxDiscount}
+                visibleDecimals={1}
+                variant="h3"
+              />
               <Box
                 sx={{
                   color: '#fff',
@@ -85,7 +107,7 @@ export const GhoAssetItem = ({ underlyingAsset }: GhoAssetItemProps) => {
                 <FormattedNumber
                   compact
                   percent
-                  value="-.20"
+                  value={ghoDiscountRate * -1}
                   visibleDecimals={0}
                   variant="main12"
                   symbolsColor="white"
@@ -101,7 +123,7 @@ export const GhoAssetItem = ({ underlyingAsset }: GhoAssetItemProps) => {
             <Button
               variant="outlined"
               component={Link}
-              href={ROUTES.reserveOverview(underlyingAsset, currentMarket)}
+              href={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket)}
             >
               <Trans>Details</Trans>
             </Button>

@@ -7,6 +7,7 @@ import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYToolt
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { getGhoReserve, ghoMintingMarkets } from 'src/utils/ghoUtilities';
 
 import { ListColumn } from '../../components/lists/ListColumn';
 import { ListHeaderTitle } from '../../components/lists/ListHeaderTitle';
@@ -22,7 +23,7 @@ import { GhoAssetItem } from './Gho/GhoAssetItem';
 import { GhoAssetMobileItem } from './Gho/GhoAssetMobileItem';
 
 const shouldDisplayGHO = (marketTitle: string, searchTerm: string): boolean => {
-  if (marketTitle !== 'Ethereum Görli GHO') {
+  if (!ghoMintingMarkets.includes(marketTitle)) {
     return false;
   }
 
@@ -36,7 +37,7 @@ const shouldDisplayGHO = (marketTitle: string, searchTerm: string): boolean => {
 
 export default function AssetsList() {
   const { reserves, loading } = useAppDataContext();
-  const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
+  const { currentMarket, currentMarketData, currentNetworkConfig } = useProtocolDataContext();
 
   const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
   const { breakpoints } = useTheme();
@@ -46,12 +47,11 @@ export default function AssetsList() {
   const [sortDesc, setSortDesc] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
-  // TODO: get this from a helper functin or the global store once added
-  const ghoReserve = reserves.find((r) => r.symbol === 'GHO');
+  const ghoReserve = getGhoReserve(reserves);
 
   const filteredData = reserves
     .filter((res) => res.isActive)
-    .filter((res) => res.symbol !== 'GHO')
+    .filter((res) => res !== ghoReserve)
     .filter((res) => {
       if (!searchTerm) return true;
       const term = searchTerm.toLowerCase().trim();
@@ -129,7 +129,7 @@ export default function AssetsList() {
   ];
 
   const marketFrozen = !reserves.some((reserve) => !reserve.isFrozen);
-  const displayGHO = shouldDisplayGHO(currentMarketData.marketTitle, searchTerm);
+  const displayGHO = shouldDisplayGHO(currentMarket, searchTerm);
   const hideTableHeader = !loading && displayGHO && filteredData.length === 0;
   const showNoResults = !loading && !displayGHO && filteredData.length === 0;
 
@@ -154,12 +154,12 @@ export default function AssetsList() {
         </Box>
       )}
 
-      {displayGHO && (
+      {ghoReserve && displayGHO && (
         <Box sx={{ mb: hideTableHeader ? 62 : 0 }}>
           {isTableChangedToCards ? (
-            <GhoAssetMobileItem underlyingAsset={ghoReserve?.underlyingAsset ?? ''} />
+            <GhoAssetMobileItem reserve={ghoReserve} />
           ) : (
-            <GhoAssetItem underlyingAsset={ghoReserve?.underlyingAsset ?? ''} />
+            <GhoAssetItem reserve={ghoReserve} />
           )}
         </Box>
       )}

@@ -5,15 +5,26 @@ import { Link, ROUTES } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
+import { ghoBorrowAPRWithMaxDiscount } from 'src/utils/ghoUtilities';
 
 interface GhoAssetMobileItemProps {
-  underlyingAsset: string;
+  reserve: ComputedReserveData;
 }
 
-export const GhoAssetMobileItem = ({ underlyingAsset }: GhoAssetMobileItemProps) => {
+export const GhoAssetMobileItem = ({ reserve }: GhoAssetMobileItemProps) => {
   const { currentMarket } = useProtocolDataContext();
   const theme = useTheme();
+
+  const totalBorrowed = useRootStore((state) => state.ghoFacilitatorBucketLevel);
+  const ghoDiscountRate = useRootStore((state) => state.ghoDiscountRatePercent);
+  const borrowAPRWithMaxDiscount = ghoBorrowAPRWithMaxDiscount(
+    ghoDiscountRate,
+    reserve.variableBorrowAPR
+  );
+
   return (
     <Box>
       <Divider />
@@ -53,12 +64,22 @@ export const GhoAssetMobileItem = ({ underlyingAsset }: GhoAssetMobileItemProps)
               textAlign: 'center',
             }}
           >
-            <FormattedNumber compact value="7500000" variant="secondary14" />
-            <ReserveSubheader value="7500000" rightAlign={true} />
+            <FormattedNumber
+              compact
+              value={totalBorrowed.toString()}
+              visibleDecimals={2}
+              variant="secondary14"
+            />
+            <ReserveSubheader value={totalBorrowed.toString()} rightAlign={true} />
           </Box>
         </Row>
         <Row sx={{ mb: 3 }} caption={<Trans>Borrow APY</Trans>} captionVariant="description">
-          <FormattedNumber compact percent value={0.01} variant="secondary14" />
+          <FormattedNumber
+            compact
+            percent
+            value={reserve.variableBorrowAPR}
+            variant="secondary14"
+          />
         </Row>
         <Row
           sx={{ mb: 4 }}
@@ -66,7 +87,12 @@ export const GhoAssetMobileItem = ({ underlyingAsset }: GhoAssetMobileItemProps)
           captionVariant="description"
         >
           <Box>
-            <FormattedNumber compact percent value={0.006} variant="secondary14" />
+            <FormattedNumber
+              compact
+              percent
+              value={borrowAPRWithMaxDiscount}
+              variant="secondary14"
+            />
             <Box
               sx={{
                 color: '#fff',
@@ -81,7 +107,7 @@ export const GhoAssetMobileItem = ({ underlyingAsset }: GhoAssetMobileItemProps)
               <FormattedNumber
                 compact
                 percent
-                value="-.20"
+                value={ghoDiscountRate * -1}
                 visibleDecimals={0}
                 variant="main12"
                 symbolsColor="white"
@@ -92,7 +118,7 @@ export const GhoAssetMobileItem = ({ underlyingAsset }: GhoAssetMobileItemProps)
         <Button
           variant="outlined"
           component={Link}
-          href={ROUTES.reserveOverview(underlyingAsset, currentMarket)}
+          href={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket)}
           fullWidth
         >
           <Trans>View details</Trans>
