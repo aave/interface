@@ -72,10 +72,10 @@ export const SupplyAssetsList = () => {
 
       const usageAsCollateralEnabledOnUser = !user?.isInIsolationMode
         ? reserve.usageAsCollateralEnabled &&
-        (!isIsolated || (isIsolated && !hasDifferentCollateral))
+          (!isIsolated || (isIsolated && !hasDifferentCollateral))
         : !isIsolated
-          ? false
-          : !hasDifferentCollateral;
+        ? false
+        : !hasDifferentCollateral;
 
       if (reserve.isWrappedBaseAsset) {
         let baseAvailableToDeposit = valueToBigNumber(
@@ -149,8 +149,8 @@ export const SupplyAssetsList = () => {
   const supplyReserves = isShowZeroAssets
     ? sortedSupplyReserves
     : filteredSupplyReserves.length >= 1
-      ? filteredSupplyReserves
-      : sortedSupplyReserves;
+    ? filteredSupplyReserves
+    : sortedSupplyReserves;
 
   const head = [
     <Trans key="Wallet balance">Wallet balance</Trans>,
