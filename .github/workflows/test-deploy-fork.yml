@@ -132,6 +132,14 @@ jobs:
           PIN_ALIAS: 'pull_request_${{ env.PR_NUMBER }}'
           BUILD_LOCATION: './out'
           CID_VERSION: 1
+          
+      - name: pin4everland
+        id: pin4everland
+        uses: 4everland/pin-action@v1.0
+        with:
+          EVER_TOKEN: '${{ secrets.EVER_TOKEN }}'
+          EVER_PROJECT_NAME: 'aave-interface'
+          BUILD_LOCATION: './out'
 
       - name: 'Comment on PR'
         uses: actions/github-script@100527700e8b29ca817ac0e0dfbfc5e8ff38edda # v6.1.1
