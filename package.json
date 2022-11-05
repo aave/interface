@@ -31,8 +31,8 @@
     "test:ci": "jest --ci"
   },
   "dependencies": {
-    "@aave/contract-helpers": "1.9.1-9beb0aed1cadb4139d63a2e19b7c3e0fc4bf1b2e.0",
-    "@aave/math-utils": "1.9.1-9beb0aed1cadb4139d63a2e19b7c3e0fc4bf1b2e.0",
+    "@aave/contract-helpers": "1.9.1-b66aded1aa7d255ca5b8c8a5234bf47c28f8caac.0",
+    "@aave/math-utils": "1.9.1-b66aded1aa7d255ca5b8c8a5234bf47c28f8caac.0",
     "@emotion/cache": "11.10.3",
     "@emotion/react": "11.10.4",
     "@emotion/server": "latest",
