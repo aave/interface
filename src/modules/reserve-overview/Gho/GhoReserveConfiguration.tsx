@@ -5,6 +5,7 @@ import { Link } from 'src/components/primitives/Link';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 import { PanelRow, PanelTitle } from '../ReservePanels';
+import { GhoDiscountCalculator } from './GhoDiscountCalculator';
 
 type GhoReserveConfigurationProps = {
   reserve: ComputedReserveData;
@@ -109,6 +110,9 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
         <PanelTitle>
           <Trans>Discount program</Trans>
         </PanelTitle>
+        <Box sx={{ width: '100%' }}>
+          <GhoDiscountCalculator baseVariableBorrowRate={reserve.baseVariableBorrowRate} />
+        </Box>
       </PanelRow>
       <Divider sx={{ my: '40px' }} />
       <PanelRow>
