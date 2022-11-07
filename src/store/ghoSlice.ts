@@ -39,7 +39,7 @@ export const createGhoSlice: StateCreator<
   return {
     ghoFacilitators: [],
     ghoDiscountedPerToken: BigNumber.from(0),
-    ghoVariableDebtTokenAddress: '0xc7fB08a5C343d293609Ee68c6E1a5226aC1a17F2', // TODO: get this from the pool reserve data instead
+    ghoVariableDebtTokenAddress: '0x2A379e5d2871123F301b2c73463cE011EcB217e6',
     ghoUserDiscountRate: BigNumber.from(0),
     ghoDiscountRatePercent: 0,
     ghoFacilitatorBucketLevel: '0',
