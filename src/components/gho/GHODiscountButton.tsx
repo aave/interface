@@ -11,7 +11,6 @@ import {
   useTheme,
 } from '@mui/material';
 import dayjs from 'dayjs';
-import { BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { useRootStore } from 'src/store/root';
 
