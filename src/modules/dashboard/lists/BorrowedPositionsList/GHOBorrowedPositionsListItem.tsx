@@ -47,9 +47,8 @@ export const GHOBorrowedPositionsListItem = ({
   const stkAaveBalance = stakeUserResult ? stakeUserResult.aave.stakeTokenUserBalance : '0';
 
   // Amount of GHO that can be borrowed at a discounted rate given a users stkAave balance
-  const discountableAmount = Number(
-    formatUnits(BigNumber.from(stkAaveBalance).mul(ghoDiscountedPerToken), 36)
-  );
+  const discountableAmount =
+    Number(formatUnits(stkAaveBalance, 18)) * Number(ghoDiscountedPerToken);
 
   const normalizedBaseVariableBorrowRate = Number(baseVariableBorrowRate) / 10 ** 27;
   let borrowRateAfterDiscount =

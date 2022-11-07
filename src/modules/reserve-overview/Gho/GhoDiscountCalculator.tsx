@@ -87,7 +87,7 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
     ghoMinDebtTokenBalanceForEligibleDiscount.toString(),
     18
   ).toNumber();
-  const discountedPerToken = normalizeBN(ghoDiscountedPerToken.toString(), 18).toNumber();
+  const discountedPerToken = Number(ghoDiscountedPerToken);
 
   /**
    * This function recreates the logic that happens in GhoDiscountRateStrategy.sol to determine a user's discount rate for borrowing GHO based off of the amount of stkAAVE a user holds.

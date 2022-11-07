@@ -15,7 +15,7 @@ const facilitatorAddress = '0x12cA83Bd0d5887865b7a43B73bbF586D7C087943';
 export interface GhoSlice {
   ghoVariableDebtTokenAddress: string;
   ghoUserDiscountRate: BigNumber;
-  ghoDiscountedPerToken: BigNumber;
+  ghoDiscountedPerToken: string;
   ghoDiscountRatePercent: number;
   ghoFacilitators: string[];
   ghoFacilitatorBucketLevel: string;
@@ -38,7 +38,7 @@ export const createGhoSlice: StateCreator<
 > = (set, get) => {
   return {
     ghoFacilitators: [],
-    ghoDiscountedPerToken: BigNumber.from(0),
+    ghoDiscountedPerToken: '0',
     ghoVariableDebtTokenAddress: '0x2A379e5d2871123F301b2c73463cE011EcB217e6',
     ghoUserDiscountRate: BigNumber.from(0),
     ghoDiscountRatePercent: 0,
@@ -96,7 +96,7 @@ export const createGhoSlice: StateCreator<
       set({
         ghoFacilitatorBucketLevel: formatUnits(bucketLevel, 18),
         ghoFacilitatorBucketCapacity: formatUnits(maxCapacity, 18),
-        ghoDiscountedPerToken,
+        ghoDiscountedPerToken: formatUnits(ghoDiscountedPerToken, 18),
         ghoDiscountRatePercent: ghoDiscountRate.toNumber() * 0.0001, // discount rate is in bps, convert to percentage
         ghoMinDebtTokenBalanceForEligibleDiscount,
         ghoMinDiscountTokenBalanceForEligibleDiscount,
