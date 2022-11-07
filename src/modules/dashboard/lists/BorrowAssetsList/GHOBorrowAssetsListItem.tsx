@@ -1,9 +1,12 @@
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
+import { BigNumber } from 'ethers';
+import { formatUnits } from 'ethers/lib/utils';
 import { GHODiscountButton } from 'src/components/gho/GHODiscountButton';
 import { GHOBorrowRateTooltip } from 'src/components/infoTooltips/GHOBorrowRateTooltip';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
 
 import { Link, ROUTES } from '../../../../components/primitives/Link';
 import { ListAPRColumn } from '../ListAPRColumn';
@@ -24,8 +27,42 @@ export const GHOBorrowAssetsListItem = ({
 }: GHOBorrowAssetsItem) => {
   const { openBorrow } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
-  const borrowButtonDisable = isFreezed || Number(userAvailableBorrows) <= 0; // TO-DO: Factor in facilitator cap
-  const availableBorrows = Number(userAvailableBorrows);
+  const [
+    stakeUserResult,
+    ghoDiscountedPerToken,
+    ghoDiscountRatePercent,
+    ghoFacilitatorBucketLevel,
+    ghoFacilitatorBucketCapacity,
+  ] = useRootStore((state) => [
+    state.stakeUserResult,
+    state.ghoDiscountedPerToken,
+    state.ghoDiscountRatePercent,
+    state.ghoFacilitatorBucketLevel,
+    state.ghoFacilitatorBucketCapacity,
+  ]);
+  // Available borrows is min of user avaiable borrows and remaining facilitator capacity
+  const remainingBucketCapacity =
+    Number(ghoFacilitatorBucketCapacity) - Number(ghoFacilitatorBucketLevel);
+
+  const availableBorrows = Math.min(Number(userAvailableBorrows), Number(remainingBucketCapacity));
+  const borrowButtonDisable = isFreezed || availableBorrows <= 0;
+
+  const stkAaveBalance = stakeUserResult ? stakeUserResult.aave.stakeTokenUserBalance : '0';
+
+  // Amount of GHO that can be borrowed at a discounted rate given a users stkAave balance
+  const discountableAmount = Number(
+    formatUnits(BigNumber.from(stkAaveBalance).mul(ghoDiscountedPerToken), 36)
+  );
+  const normalizedBaseVariableBorrowRate = Number(baseVariableBorrowRate) / 10 ** 27;
+  let borrowRateAfterDiscount =
+    normalizedBaseVariableBorrowRate - normalizedBaseVariableBorrowRate * ghoDiscountRatePercent;
+  if (discountableAmount < availableBorrows) {
+    // Calculate weighted discount rate aftr max borrow
+    borrowRateAfterDiscount =
+      (normalizedBaseVariableBorrowRate * (availableBorrows - discountableAmount) +
+        borrowRateAfterDiscount * discountableAmount) /
+      availableBorrows;
+  }
 
   return (
     <ListItemWrapper
@@ -35,7 +72,7 @@ export const GHOBorrowAssetsListItem = ({
       detailsAddress={underlyingAsset}
       data-cy={`dashboardBorrowListItem_${symbol.toUpperCase()}`}
       currentMarket={currentMarket}
-      footerButton={<GHODiscountButton />}
+      footerButton={<GHODiscountButton baseRate={baseVariableBorrowRate} />}
     >
       <ListValueColumn
         symbol={symbol}
@@ -46,7 +83,7 @@ export const GHOBorrowAssetsListItem = ({
       />
 
       <ListAPRColumn
-        value={Number(baseVariableBorrowRate) / 10 ** 27} // TO-DO: Net APY factoring in discount
+        value={borrowRateAfterDiscount}
         incentives={vIncentivesData}
         symbol={symbol}
         tooltip={<GHOBorrowRateTooltip />}
