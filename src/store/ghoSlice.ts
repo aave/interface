@@ -22,6 +22,8 @@ export interface GhoSlice {
   ghoFacilitators: string[];
   ghoFacilitatorBucketLevel: string;
   ghoFacilitatorBucketCapacity: string;
+  ghoMinDebtTokenBalanceForEligibleDiscount: BigNumber;
+  ghoMinDiscountTokenBalanceForEligibleDiscount: BigNumber;
   ghoUpdateDiscountRate: () => Promise<void>;
   ghoCalculateDiscountRate: (
     ghoDebtTokenBalance: BigNumberish,
@@ -46,6 +48,8 @@ export const createGhoSlice: StateCreator<
     ghoDiscountRatePercent: 0,
     ghoFacilitatorBucketLevel: '0',
     ghoFacilitatorBucketCapacity: '0',
+    ghoMinDebtTokenBalanceForEligibleDiscount: BigNumber.from(1),
+    ghoMinDiscountTokenBalanceForEligibleDiscount: BigNumber.from(1),
     ghoCalculateDiscountRate: async (
       ghoDebtTokenBalance: BigNumberish,
       stakedAaveBalance: BigNumberish
@@ -75,10 +79,18 @@ export const createGhoSlice: StateCreator<
       const ghoDiscountRateService = new GhoDiscountRateStrategyService(provider, address);
       const ghoTokenService = new GhoTokenService(provider, ghoTokenAddress);
 
-      const [ghoDiscountedPerToken, ghoDiscountRate, facilitatorInfo] = await Promise.all([
+      const [
+        ghoDiscountedPerToken,
+        ghoDiscountRate,
+        facilitatorInfo,
+        ghoMinDebtTokenBalanceForEligibleDiscount,
+        ghoMinDiscountTokenBalanceForEligibleDiscount,
+      ] = await Promise.all([
         ghoDiscountRateService.getGhoDiscountedPerDiscountToken(),
         ghoDiscountRateService.getGhoDiscountRate(),
         ghoTokenService.getFacilitatorBucket(facilitatorAddress),
+        ghoDiscountRateService.getGhoMinDebtTokenBalance(),
+        ghoDiscountRateService.getGhoMinDiscountTokenBalance(),
         get().ghoUpdateDiscountRate(),
       ]);
 
@@ -95,6 +107,8 @@ export const createGhoSlice: StateCreator<
         ghoDiscountableAmount: ghoDiscountedPerToken.mul(stakedAaveBalance),
         ghoDiscountedPerToken,
         ghoDiscountRatePercent: ghoDiscountRate.toNumber() * 0.0001, // discount rate is in bps, convert to percentage
+        ghoMinDebtTokenBalanceForEligibleDiscount,
+        ghoMinDiscountTokenBalanceForEligibleDiscount,
       });
     },
   };

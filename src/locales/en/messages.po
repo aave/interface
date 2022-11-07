@@ -432,6 +432,10 @@ msgstr "CLAIM {symbol}"
 msgid "CLAIMING {symbol}"
 msgstr "CLAIMING {symbol}"
 
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "Calculate GHO borrow interest rate with discount"
+msgstr "Calculate GHO borrow interest rate with discount"
+
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
@@ -701,6 +705,10 @@ msgstr "Discord"
 #: pages/500.page.tsx
 msgid "Discord channel"
 msgstr "Discord channel"
+
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "Discount and discountable amount are determined by AaveDao and may be changed over time. Participate in Governance to vote."
+msgstr "Discount and discountable amount are determined by AaveDao and may be changed over time. Participate in Governance to vote."
 
 #: src/components/gho/GHODiscountButton.tsx
 msgid "Discount is available. Learn more"
@@ -1046,6 +1054,7 @@ msgstr "Learn More"
 #: src/components/transactions/Warnings/MarketWarning.tsx
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
@@ -1506,6 +1515,7 @@ msgstr "Risk details"
 msgid "SEE CHARTS"
 msgstr "SEE CHARTS"
 
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
 msgid "Safety Module participants receive a discount on the GHO borrow interest rate."
 msgstr "Safety Module participants receive a discount on the GHO borrow interest rate."
@@ -1911,6 +1921,12 @@ msgstr "This is the total amount that you are able to supply to in this reserve.
 msgid "This represents the threshold at which a borrow position will be considered undercollateralized and subject to liquidation for each collateral. For example, if a collateral has a liquidation threshold of 80%, it means that the position will be liquidated when the debt value is worth 80% of the collateral value."
 msgstr "This represents the threshold at which a borrow position will be considered undercollateralized and subject to liquidation for each collateral. For example, if a collateral has a liquidation threshold of 80%, it means that the position will be liquidated when the debt value is worth 80% of the collateral value."
 
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "This tooltip text will be updated"
+msgstr "This tooltip text will be updated"
+
 #: src/modules/staking/StakingPanel.tsx
 msgid "Time left to be able to withdraw your staked asset."
 msgstr "Time left to be able to withdraw your staked asset."
@@ -1939,6 +1955,11 @@ msgstr "To repay on behalf of a user an explicit amount to repay is needed"
 #: src/components/transactions/FlowCommons/PermissionView.tsx
 msgid "To request access for this permissioned market, please visit: <0>Acces Provider Name</0>"
 msgstr "To request access for this permissioned market, please visit: <0>Acces Provider Name</0>"
+
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "Tooltip text will go here"
+msgstr "Tooltip text will go here"
 
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "Top 10 addresses"
@@ -2251,6 +2272,10 @@ msgstr "YAE"
 msgid "You are entering Isolation mode"
 msgstr "You are entering Isolation mode"
 
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "You borrow"
+msgstr "You borrow"
+
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "You can borrow this asset with a stable rate only if you borrow more than the amount you are supplying as collateral."
 msgstr "You can borrow this asset with a stable rate only if you borrow more than the amount you are supplying as collateral."
@@ -2302,6 +2327,10 @@ msgstr "You don’t have enough funds in your wallet to repay the full amount. I
 #: src/components/transactions/RateSwitch/RateSwitchModalContent.tsx
 msgid "You have not borrow yet using this currency"
 msgstr "You have not borrow yet using this currency"
+
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "You stake"
+msgstr "You stake"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You switched to {0} rate"
@@ -2385,6 +2414,10 @@ msgstr "assets"
 msgid "blocked activities"
 msgstr "blocked activities"
 
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "borrow APY"
+msgstr "borrow APY"
+
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "copy the error"
 msgstr "copy the error"
@@ -2459,9 +2492,17 @@ msgstr "tokens is not the same as staking them. If you wish to stake your"
 msgid "tokens, please go to the"
 msgstr "tokens, please go to the"
 
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "with discount"
+msgstr "with discount"
+
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "withdrew"
 msgstr "withdrew"
+
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "without discount"
+msgstr "without discount"
 
 #: src/components/MarketSwitcher.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
