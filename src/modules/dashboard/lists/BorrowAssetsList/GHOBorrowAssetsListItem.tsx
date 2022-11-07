@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
-import { BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { GHODiscountButton } from 'src/components/gho/GHODiscountButton';
 import { GHOBorrowRateTooltip } from 'src/components/infoTooltips/GHOBorrowRateTooltip';
