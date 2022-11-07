@@ -61,9 +61,6 @@ export const GHOBorrowedPositionsListItem = ({
         borrowRateAfterDiscount * discountableAmount) /
       Number(variableBorrows);
   }
-  console.log(
-    `${variableBorrows} ${discountableAmount} ${normalizedBaseVariableBorrowRate} ${ghoDiscountRatePercent}`
-  );
 
   return (
     <ListItemWrapper
