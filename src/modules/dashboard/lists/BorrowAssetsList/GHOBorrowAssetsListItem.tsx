@@ -76,7 +76,7 @@ export const GHOBorrowAssetsListItem = ({
     >
       <ListValueColumn
         symbol={symbol}
-        value={availableBorrows} // TO-DO: Factor in facilitator cap
+        value={availableBorrows}
         subValue={availableBorrows}
         disabled={availableBorrows === 0}
         withTooltip

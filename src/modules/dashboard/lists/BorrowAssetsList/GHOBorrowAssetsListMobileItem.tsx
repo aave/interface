@@ -75,7 +75,7 @@ export const GHOBorrowAssetsListMobileItem = ({
     >
       <ListValueRow
         title={<Trans>Available to borrow</Trans>}
-        value={availableBorrows} // TO-DO: Factor in facilitator cap
+        value={availableBorrows}
         subValue={availableBorrows}
         disabled={availableBorrows === 0}
       />
