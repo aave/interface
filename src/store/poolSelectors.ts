@@ -22,6 +22,10 @@ export const selectCurrentReserves = (state: RootStore) => {
   return selectCurrentUserLendingPoolData(state)?.reserves || [];
 };
 
+export const selectGhoReserve = (state: RootStore) => {
+  return selectCurrentReserves(state).find((r) => r.symbol === 'GHO');
+};
+
 export const selectCurrentBaseCurrencyData = (state: RootStore) => {
   return (
     selectCurrentUserLendingPoolData(state)?.baseCurrencyData || {

@@ -6,7 +6,13 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
-import { TextWithTooltip } from 'src/components/TextWithTooltip';
+import { selectGhoReserve } from 'src/store/poolSelectors';
+import { useRootStore } from 'src/store/root';
+import {
+  ghoBorrowAPRWithMaxDiscount,
+  ghoDiscountableAmount,
+  normalizeBaseVariableBorrowRate,
+} from 'src/utils/ghoUtilities';
 
 const FieldSet = styled('fieldset')(({ theme }) => ({
   border: `1px solid ${theme.palette.divider}`,
@@ -27,6 +33,20 @@ const Legend = styled('legend')(({ theme }) => ({
 export const GhoDiscountProgram = () => {
   const { breakpoints } = useTheme();
   const downToXsm = useMediaQuery(breakpoints.down('xsm'));
+  const [ghoDiscountRatePercent, ghoDiscountedPerToken, stakedAave, ghoReserve] = useRootStore(
+    (state) => [
+      state.ghoDiscountRatePercent,
+      state.ghoDiscountedPerToken,
+      state.stakeUserResult?.aave.stakeTokenUserBalance || '0',
+      selectGhoReserve(state),
+    ]
+  );
+
+  const discountableAmount = ghoDiscountableAmount(stakedAave, ghoDiscountedPerToken);
+  const variableBorrowRate = normalizeBaseVariableBorrowRate(
+    ghoReserve?.baseVariableBorrowRate || 0
+  );
+  const aprWithDiscount = ghoBorrowAPRWithMaxDiscount(ghoDiscountRatePercent, variableBorrowRate);
 
   return (
     <Box sx={{ mt: 5 }}>
@@ -42,79 +62,118 @@ export const GhoDiscountProgram = () => {
           </Warning>
         </Box>
         {downToXsm ? (
-          <GhoDiscountProgramMobile />
+          <GhoDiscountProgramMobile
+            discountableAmount={discountableAmount}
+            aprWithDiscount={aprWithDiscount}
+            ghoDiscountRatePercent={ghoDiscountRatePercent}
+          />
         ) : (
-          <ListItem sx={{ px: 0, minHeight: 'unset' }}>
-            <ListColumn isRow minWidth={120} maxWidth={200}>
-              <TokenIcon sx={{ fontSize: '32px' }} symbol="GHO" fontSize="inherit" />
-              <Box sx={{ px: 3 }}>
-                <Typography variant="h4">GHO</Typography>
-              </Box>
-            </ListColumn>
-            <ListColumn minWidth={150}>
-              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                <Typography variant="subheader2" color="text.secondary">
-                  <Trans>Discountable amount</Trans>
-                </Typography>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <TokenIcon sx={{ fontSize: '16px' }} symbol="GHO" fontSize="inherit" />
-                  <FormattedNumber value={100} visibleDecimals={0} variant="main14" />
-                  <Typography>
-                    <Trans>to</Trans>
-                  </Typography>
-                  <TokenIcon sx={{ fontSize: '16px' }} symbol="AAVE" fontSize="inherit" />
-                  <FormattedNumber value={1} visibleDecimals={0} variant="main14" />
-                </Box>
-              </Box>
-            </ListColumn>
-            <ListColumn minWidth={150}>
-              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                <Typography variant="subheader2" color="text.secondary">
-                  <Trans>Borrow APY</Trans>
-                </Typography>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                  <FormattedNumber
-                    compact
-                    percent
-                    value=".016"
-                    visibleDecimals={1}
-                    variant="main14"
-                  />
-                  <Box
-                    sx={{
-                      color: '#fff',
-                      borderRadius: '4px',
-                      height: '20px',
-                      display: 'flex',
-                      p: 1,
-                      background: (theme) => theme.palette.gradients.aaveGradient,
-                    }}
-                  >
-                    <FormattedNumber
-                      compact
-                      percent
-                      value="-.20"
-                      visibleDecimals={0}
-                      variant="main12"
-                      symbolsColor="white"
-                    />
-                  </Box>
-                </Box>
-              </Box>
-            </ListColumn>
-            <ListColumn align="right">
-              <Button variant="outlined" disabled>
-                <Trans>Details</Trans>
-              </Button>
-            </ListColumn>
-          </ListItem>
+          <GhoDiscountProgramDesktop
+            discountableAmount={discountableAmount}
+            aprWithDiscount={aprWithDiscount}
+            ghoDiscountRatePercent={ghoDiscountRatePercent}
+          />
         )}
       </FieldSet>
     </Box>
   );
 };
 
-const GhoDiscountProgramMobile = () => {
+interface GhoDiscountProgramProps {
+  discountableAmount: number;
+  aprWithDiscount: number;
+  ghoDiscountRatePercent: number;
+}
+
+const GhoDiscountProgramDesktop = ({
+  discountableAmount,
+  aprWithDiscount,
+  ghoDiscountRatePercent,
+}: GhoDiscountProgramProps) => {
+  return (
+    <ListItem sx={{ px: 0, minHeight: 'unset' }}>
+      <ListColumn isRow minWidth={120} maxWidth={200}>
+        <TokenIcon sx={{ fontSize: '32px' }} symbol="GHO" fontSize="inherit" />
+        <Box sx={{ px: 3 }}>
+          <Typography variant="h4">GHO</Typography>
+        </Box>
+      </ListColumn>
+      <ListColumn minWidth={150}>
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Typography variant="subheader2" color="text.secondary">
+            <Trans>Discountable amount</Trans>
+          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            {discountableAmount > 0 ? (
+              <FormattedNumber
+                compact
+                value={discountableAmount}
+                visibleDecimals={1}
+                variant="main14"
+              />
+            ) : (
+              <>
+                <TokenIcon sx={{ fontSize: '16px' }} symbol="GHO" fontSize="inherit" />
+                <FormattedNumber value={100} visibleDecimals={0} variant="main14" />
+                <Typography>
+                  <Trans>to</Trans>
+                </Typography>
+                <TokenIcon sx={{ fontSize: '16px' }} symbol="AAVE" fontSize="inherit" />
+                <FormattedNumber value={1} visibleDecimals={0} variant="main14" />
+              </>
+            )}
+          </Box>
+        </Box>
+      </ListColumn>
+      <ListColumn minWidth={150}>
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Typography variant="subheader2" color="text.secondary">
+            <Trans>Borrow APY</Trans>
+          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <FormattedNumber
+              compact
+              percent
+              value={aprWithDiscount}
+              visibleDecimals={1}
+              variant="main14"
+            />
+            <Box
+              sx={{
+                color: '#fff',
+                borderRadius: '4px',
+                height: '20px',
+                display: 'flex',
+                p: 1,
+                background: (theme) => theme.palette.gradients.aaveGradient,
+              }}
+            >
+              <FormattedNumber
+                compact
+                percent
+                value={ghoDiscountRatePercent * -1}
+                visibleDecimals={0}
+                variant="main12"
+                symbolsColor="white"
+              />
+            </Box>
+          </Box>
+        </Box>
+      </ListColumn>
+      <ListColumn align="right">
+        <Button variant="outlined" disabled>
+          <Trans>Details</Trans>
+        </Button>
+      </ListColumn>
+    </ListItem>
+  );
+};
+
+const GhoDiscountProgramMobile = ({
+  discountableAmount,
+  aprWithDiscount,
+  ghoDiscountRatePercent,
+}: GhoDiscountProgramProps) => {
   return (
     <Box>
       <Box sx={{ display: 'flex', alignItems: 'center', my: 4 }}>
@@ -126,25 +185,30 @@ const GhoDiscountProgramMobile = () => {
       <Row
         sx={{ mb: 2 }}
         caption={
-          <TextWithTooltip
-            text={
-              <Typography variant="subheader2" color="text.secondary">
-                <Trans>Discountable amount</Trans>
-              </Typography>
-            }
-          >
-            <Box>Something in here about discountable amount</Box>
-          </TextWithTooltip>
+          <Typography variant="subheader2" color="text.secondary">
+            <Trans>Discountable amount</Trans>
+          </Typography>
         }
       >
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <TokenIcon sx={{ fontSize: '16px' }} symbol="GHO" fontSize="inherit" />
-          <FormattedNumber value={100} visibleDecimals={0} variant="main14" />
-          <Typography>
-            <Trans>to</Trans>
-          </Typography>
-          <TokenIcon sx={{ fontSize: '16px' }} symbol="AAVE" fontSize="inherit" />
-          <FormattedNumber value={1} visibleDecimals={0} variant="main14" />
+          {discountableAmount > 0 ? (
+            <FormattedNumber
+              compact
+              value={discountableAmount}
+              visibleDecimals={1}
+              variant="main14"
+            />
+          ) : (
+            <>
+              <TokenIcon sx={{ fontSize: '16px' }} symbol="GHO" fontSize="inherit" />
+              <FormattedNumber value={100} visibleDecimals={0} variant="main14" />
+              <Typography>
+                <Trans>to</Trans>
+              </Typography>
+              <TokenIcon sx={{ fontSize: '16px' }} symbol="AAVE" fontSize="inherit" />
+              <FormattedNumber value={1} visibleDecimals={0} variant="main14" />
+            </>
+          )}
         </Box>
       </Row>
       <Row
@@ -163,7 +227,13 @@ const GhoDiscountProgramMobile = () => {
             justifyContent: 'center',
           }}
         >
-          <FormattedNumber compact percent value=".016" visibleDecimals={1} variant="main14" />
+          <FormattedNumber
+            compact
+            percent
+            value={aprWithDiscount}
+            visibleDecimals={1}
+            variant="main14"
+          />
           <Box
             sx={{
               color: '#fff',
@@ -177,7 +247,7 @@ const GhoDiscountProgramMobile = () => {
             <FormattedNumber
               compact
               percent
-              value="-.20"
+              value={ghoDiscountRatePercent * -1}
               visibleDecimals={0}
               variant="main12"
               symbolsColor="white"

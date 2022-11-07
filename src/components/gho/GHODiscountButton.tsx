@@ -11,8 +11,8 @@ import {
   useTheme,
 } from '@mui/material';
 import dayjs from 'dayjs';
-import { formatUnits } from 'ethers/lib/utils';
 import { useRootStore } from 'src/store/root';
+import { ghoDiscountableAmount, normalizeBaseVariableBorrowRate } from 'src/utils/ghoUtilities';
 
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { Link } from '../primitives/Link';
@@ -39,14 +39,13 @@ export const GHODiscountButton = ({ baseRate }: { baseRate: string | number }) =
     width: downToXSM ? '100%' : 'auto',
   };
 
-  const normalizedBaseRate = Number(baseRate) / 10 ** 27;
+  const normalizedBaseRate = normalizeBaseVariableBorrowRate(baseRate);
+
   const discountRate = normalizedBaseRate - normalizedBaseRate * ghoDiscountRatePercent;
 
   const stkAaveBalance = stakeUserResult ? stakeUserResult.aave.stakeTokenUserBalance : '0';
 
-  // Amount of GHO that can be borrowed at a discounted rate given a users stkAave balance
-  const discountableAmount =
-    Number(formatUnits(stkAaveBalance, 18)) * Number(ghoDiscountedPerToken);
+  const discountableAmount = ghoDiscountableAmount(stkAaveBalance, ghoDiscountedPerToken);
 
   // TO-DO: fetch timestamp from GHO store
   const lockPeriod = dayjs.unix(1683292439).format('D MMM YYYY');
