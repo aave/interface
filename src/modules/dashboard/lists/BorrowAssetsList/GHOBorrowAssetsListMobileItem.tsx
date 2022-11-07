@@ -8,6 +8,7 @@ import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
+import { getAvailableBorrows } from 'src/utils/ghoUtilities';
 
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
@@ -43,9 +44,11 @@ export const GHOBorrowAssetsListMobileItem = ({
     state.ghoFacilitatorBucketCapacity,
   ]);
   // Available borrows is min of user avaiable borrows and remaining facilitator capacity
-  const remainingBucketCapacity =
-    Number(ghoFacilitatorBucketCapacity) - Number(ghoFacilitatorBucketLevel);
-  const availableBorrows = Math.min(Number(userAvailableBorrows), Number(remainingBucketCapacity));
+  const availableBorrows = getAvailableBorrows(
+    Number(userAvailableBorrows),
+    Number(ghoFacilitatorBucketCapacity),
+    Number(ghoFacilitatorBucketLevel)
+  );
   const borrowButtonDisable = isFreezed || availableBorrows <= 0;
 
   const stkAaveBalance = stakeUserResult ? stakeUserResult.aave.stakeTokenUserBalance : '0';

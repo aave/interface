@@ -7,6 +7,7 @@ import { GHOBorrowRateTooltip } from 'src/components/infoTooltips/GHOBorrowRateT
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
+import { getAvailableBorrows } from 'src/utils/ghoUtilities';
 
 import { Link, ROUTES } from '../../../../components/primitives/Link';
 import { ListAPRColumn } from '../ListAPRColumn';
@@ -41,10 +42,11 @@ export const GHOBorrowAssetsListItem = ({
     state.ghoFacilitatorBucketCapacity,
   ]);
   // Available borrows is min of user avaiable borrows and remaining facilitator capacity
-  const remainingBucketCapacity =
-    Number(ghoFacilitatorBucketCapacity) - Number(ghoFacilitatorBucketLevel);
-
-  const availableBorrows = Math.min(Number(userAvailableBorrows), Number(remainingBucketCapacity));
+  const availableBorrows = getAvailableBorrows(
+    Number(userAvailableBorrows),
+    Number(ghoFacilitatorBucketCapacity),
+    Number(ghoFacilitatorBucketLevel)
+  );
   const borrowButtonDisable = isFreezed || availableBorrows <= 0;
 
   const stkAaveBalance = stakeUserResult ? stakeUserResult.aave.stakeTokenUserBalance : '0';
