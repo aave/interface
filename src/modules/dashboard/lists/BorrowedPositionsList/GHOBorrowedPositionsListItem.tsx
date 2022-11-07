@@ -58,9 +58,12 @@ export const GHOBorrowedPositionsListItem = ({
     // Calculate weighted discount rate aftr max borrow
     borrowRateAfterDiscount =
       (normalizedBaseVariableBorrowRate * (Number(variableBorrows) - discountableAmount) +
-        ghoDiscountRatePercent * discountableAmount) /
+        borrowRateAfterDiscount * discountableAmount) /
       Number(variableBorrows);
   }
+  console.log(
+    `${variableBorrows} ${discountableAmount} ${normalizedBaseVariableBorrowRate} ${ghoDiscountRatePercent}`
+  );
 
   return (
     <ListItemWrapper
