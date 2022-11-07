@@ -1,5 +1,5 @@
 import { ChainId, Stake } from '@aave/contract-helpers';
-import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
+import { STAGING_ENV } from 'src/utils/marketsAndNetworksConfig';
 
 export interface StakeConfig {
   chainId: ChainId;
@@ -47,7 +47,7 @@ export const goerliStakeConfig: StakeConfig = {
 };
 
 const getStakeConfig = (): StakeConfig => {
-  if (ENABLE_TESTNET) {
+  if (STAGING_ENV) {
     // goerli staking
     return goerliStakeConfig;
   } else {

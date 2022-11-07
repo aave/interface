@@ -3,8 +3,8 @@ import {
   GhoTokenService,
   GhoVariableDebtTokenService,
 } from '@aave/contract-helpers';
-import { normalizeBN } from '@aave/math-utils';
 import { BigNumber, BigNumberish } from 'ethers';
+import { formatUnits } from 'ethers/lib/utils';
 import { StateCreator } from 'zustand';
 
 import { RootStore } from './root';
@@ -17,7 +17,6 @@ export interface GhoSlice {
   ghoVariableDebtTokenAddress: string;
   ghoUserDiscountRate: BigNumber;
   ghoDiscountedPerToken: BigNumber;
-  ghoDiscountableAmount: BigNumber;
   ghoDiscountRatePercent: number;
   ghoFacilitators: string[];
   ghoFacilitatorBucketLevel: string;
@@ -40,7 +39,6 @@ export const createGhoSlice: StateCreator<
 > = (set, get) => {
   return {
     ghoFacilitators: [],
-    ghoDiscountableAmount: BigNumber.from(0),
     ghoDiscountedPerToken: BigNumber.from(0),
     ghoVariableDebtTokenAddress: '0xc7fB08a5C343d293609Ee68c6E1a5226aC1a17F2', // TODO: get this from the pool reserve data instead
     ghoDiscountRateStrategyAddress: '0x91A534290666B817D986Ef70089f8Cc5bc241C34', // TODO: remove this once utils is updated to only take debt token contract
@@ -94,17 +92,12 @@ export const createGhoSlice: StateCreator<
         get().ghoUpdateDiscountRate(),
       ]);
 
-      const stakedAaveBalance = BigNumber.from(
-        get().stakeUserResult?.aave.stakeTokenUserBalance || '0'
-      );
-
       const bucketLevel = facilitatorInfo.level as BigNumber; // TODO: typings aren't being pulled through here from utils
       const maxCapacity = facilitatorInfo.maxCapacity as BigNumber; // TODO: typings aren't being pulled through here from utils
 
       set({
-        ghoFacilitatorBucketLevel: normalizeBN(bucketLevel.toString(), 18).toString(),
-        ghoFacilitatorBucketCapacity: normalizeBN(maxCapacity.toString(), 18).toString(),
-        ghoDiscountableAmount: ghoDiscountedPerToken.mul(stakedAaveBalance),
+        ghoFacilitatorBucketLevel: formatUnits(bucketLevel, 18),
+        ghoFacilitatorBucketCapacity: formatUnits(maxCapacity, 18),
         ghoDiscountedPerToken,
         ghoDiscountRatePercent: ghoDiscountRate.toNumber() * 0.0001, // discount rate is in bps, convert to percentage
         ghoMinDebtTokenBalanceForEligibleDiscount,

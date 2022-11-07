@@ -1,7 +1,12 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
+import { BigNumber } from 'ethers';
+import { formatUnits } from 'ethers/lib/utils';
+import { GHODiscountButton } from 'src/components/gho/GHODiscountButton';
+import { GHOBorrowRateTooltip } from 'src/components/infoTooltips/GHOBorrowRateTooltip';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
 
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
 import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
@@ -12,12 +17,13 @@ import { ListItemAPYButton } from '../ListItemAPYButton';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueRow } from '../ListValueRow';
 
-export const BorrowedPositionsListMobileItem = ({
+export const GHOBorrowedPositionsListMobileItem = ({
   reserve,
   totalBorrows,
   totalBorrowsUSD,
   borrowRateMode,
   stableBorrowAPY,
+  variableBorrows,
 }: ComputedUserReserveData & { borrowRateMode: InterestRate }) => {
   const { currentMarket } = useProtocolDataContext();
   const { openBorrow, openRepay, openRateSwitch } = useModalContext();
@@ -33,7 +39,31 @@ export const BorrowedPositionsListMobileItem = ({
     vIncentivesData,
     variableBorrowAPY,
     underlyingAsset,
+    baseVariableBorrowRate,
   } = reserve;
+  const [stakeUserResult, ghoDiscountedPerToken, ghoDiscountRatePercent] = useRootStore((state) => [
+    state.stakeUserResult,
+    state.ghoDiscountedPerToken,
+    state.ghoDiscountRatePercent,
+  ]);
+
+  const stkAaveBalance = stakeUserResult ? stakeUserResult.aave.stakeTokenUserBalance : '0';
+
+  // Amount of GHO that can be borrowed at a discounted rate given a users stkAave balance
+  const discountableAmount = Number(
+    formatUnits(BigNumber.from(stkAaveBalance).mul(ghoDiscountedPerToken), 36)
+  );
+
+  const normalizedBaseVariableBorrowRate = Number(baseVariableBorrowRate) / 10 ** 27;
+  let borrowRateAfterDiscount =
+    normalizedBaseVariableBorrowRate - normalizedBaseVariableBorrowRate * ghoDiscountRatePercent;
+  if (discountableAmount < Number(variableBorrows)) {
+    // Calculate weighted discount rate aftr max borrow
+    borrowRateAfterDiscount =
+      (normalizedBaseVariableBorrowRate * (Number(variableBorrows) - discountableAmount) +
+        borrowRateAfterDiscount * discountableAmount) /
+      Number(variableBorrows);
+  }
 
   return (
     <ListMobileItemWrapper
@@ -55,11 +85,12 @@ export const BorrowedPositionsListMobileItem = ({
       <Row caption={<Trans>APY</Trans>} align="flex-start" captionVariant="description" mb={2}>
         <IncentivesCard
           value={Number(
-            borrowRateMode === InterestRate.Variable ? variableBorrowAPY : stableBorrowAPY
+            borrowRateMode === InterestRate.Variable ? borrowRateAfterDiscount : stableBorrowAPY
           )}
           incentives={borrowRateMode === InterestRate.Variable ? vIncentivesData : sIncentivesData}
           symbol={symbol}
           variant="secondary14"
+          tooltip={<GHOBorrowRateTooltip />}
         />
       </Row>
 
@@ -80,6 +111,8 @@ export const BorrowedPositionsListMobileItem = ({
           underlyingAsset={underlyingAsset}
           currentMarket={currentMarket}
         />
+
+        <GHODiscountButton baseRate={baseVariableBorrowRate} />
       </Row>
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
