@@ -28,3 +28,16 @@ export const ghoBorrowAPRWithMaxDiscount = (ghoDiscountRate: number, variableBor
 export const getGhoReserve = (reserves: ComputedReserveData[]) => {
   return reserves.find((reserve) => reserve.symbol === 'GHO');
 };
+
+export const getAvailableBorrows = (
+  userAvailableBorrows: number,
+  ghoFacilitatorCapacity: number,
+  ghoFacilitatorLevel: number
+): number => {
+  // Available borrows is min of user avaiable borrows and remaining facilitator capacity
+  const remainingBucketCapacity = ghoFacilitatorCapacity - ghoFacilitatorLevel;
+
+  const availableBorrows = Math.min(userAvailableBorrows, remainingBucketCapacity);
+
+  return availableBorrows;
+};

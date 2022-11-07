@@ -6,6 +6,7 @@ import { Fragment } from 'react';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { ghoMintingAvailable } from 'src/utils/ghoUtilities';
 
 import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
 import { BorrowPowerTooltip } from '../../../../components/infoTooltips/BorrowPowerTooltip';
@@ -22,10 +23,12 @@ import { ListLoader } from '../ListLoader';
 import { ListTopInfoItem } from '../ListTopInfoItem';
 import { BorrowedPositionsListItem } from './BorrowedPositionsListItem';
 import { BorrowedPositionsListMobileItem } from './BorrowedPositionsListMobileItem';
+import { GHOBorrowedPositionsListItem } from './GHOBorrowedPositionsListItem';
+import { GHOBorrowedPositionsListMobileItem } from './GHOBorrowedPositionsListMobileItem';
 
 export const BorrowedPositionsList = () => {
   const { user, loading } = useAppDataContext();
-  const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
+  const { currentMarketData, currentNetworkConfig, currentMarket } = useProtocolDataContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
@@ -79,7 +82,6 @@ export const BorrowedPositionsList = () => {
   ];
 
   if (loading) return <ListLoader title={<Trans>Your borrows</Trans>} head={head} />;
-
   return (
     <ListWrapper
       titleComponent={
@@ -123,7 +125,22 @@ export const BorrowedPositionsList = () => {
             <Fragment key={item.underlyingAsset + item.borrowRateMode}>
               <AssetCapsProvider asset={item.reserve}>
                 {downToXSM ? (
-                  <BorrowedPositionsListMobileItem {...item} />
+                  ghoMintingAvailable({ symbol: item.reserve.symbol, currentMarket }) ? (
+                    <GHOBorrowedPositionsListMobileItem
+                      {...item}
+                      key={item.underlyingAsset + item.borrowRateMode}
+                    />
+                  ) : (
+                    <BorrowedPositionsListMobileItem
+                      {...item}
+                      key={item.underlyingAsset + item.borrowRateMode}
+                    />
+                  )
+                ) : ghoMintingAvailable({ symbol: item.reserve.symbol, currentMarket }) ? (
+                  <GHOBorrowedPositionsListItem
+                    {...item}
+                    key={item.underlyingAsset + item.borrowRateMode}
+                  />
                 ) : (
                   <BorrowedPositionsListItem
                     {...item}

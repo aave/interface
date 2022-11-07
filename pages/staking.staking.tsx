@@ -18,7 +18,7 @@ import { GetABPToken } from 'src/modules/staking/GetABPToken';
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
 import { useRootStore, useStakeDataSubscription } from 'src/store/root';
-import { ENABLE_TESTNET, getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { getNetworkConfig, STAGING_ENV } from 'src/utils/marketsAndNetworksConfig';
 
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 
@@ -103,7 +103,7 @@ export default function Staking() {
               <Grid
                 item
                 xs={12}
-                lg={ENABLE_TESTNET ? 12 : 6}
+                lg={STAGING_ENV ? 12 : 6}
                 sx={{
                   display: { xs: !isStakeAAVE ? 'none' : 'block', lg: 'block' },
                 }}
@@ -124,7 +124,7 @@ export default function Staking() {
                   hasDiscountProgram
                 />
               </Grid>
-              {!ENABLE_TESTNET && (
+              {!STAGING_ENV && (
                 <Grid
                   item
                   xs={12}
