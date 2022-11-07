@@ -3,6 +3,7 @@ import {
   useGhoDataSubscription,
   useIncentiveDataSubscription,
   usePoolDataSubscription,
+  useStakeDataSubscription,
   useWalletBalancesSubscription,
 } from 'src/store/root';
 
@@ -11,6 +12,7 @@ interface BackgroundDataProviderContextType {
   refetchWalletBalances: () => Promise<void>;
   refetchIncentiveData?: () => Promise<void>;
   refetchPoolData?: () => Promise<void> | Promise<void[]>;
+  refetchStakeData: () => Promise<void>;
 }
 
 const BackgroundDataProviderContext = React.createContext<BackgroundDataProviderContextType>(
@@ -28,9 +30,16 @@ export const BackgroundDataProvider: React.FC = ({ children }) => {
   const refetchPoolData = usePoolDataSubscription();
   const refetchIncentiveData = useIncentiveDataSubscription();
   const refetchGhoData = useGhoDataSubscription();
+  const refetchStakeData = useStakeDataSubscription();
   return (
     <BackgroundDataProviderContext.Provider
-      value={{ refetchWalletBalances, refetchIncentiveData, refetchPoolData, refetchGhoData }}
+      value={{
+        refetchWalletBalances,
+        refetchIncentiveData,
+        refetchPoolData,
+        refetchGhoData,
+        refetchStakeData,
+      }}
     >
       {children}
     </BackgroundDataProviderContext.Provider>

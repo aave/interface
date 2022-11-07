@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
-import { BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { GHODiscountButton } from 'src/components/gho/GHODiscountButton';
 import { GHOBorrowRateTooltip } from 'src/components/infoTooltips/GHOBorrowRateTooltip';
@@ -54,9 +53,8 @@ export const GHOBorrowAssetsListMobileItem = ({
   const stkAaveBalance = stakeUserResult ? stakeUserResult.aave.stakeTokenUserBalance : '0';
 
   // Amount of GHO that can be borrowed at a discounted rate given a users stkAave balance
-  const discountableAmount = Number(
-    formatUnits(BigNumber.from(stkAaveBalance).mul(ghoDiscountedPerToken), 36)
-  );
+  const discountableAmount =
+    Number(formatUnits(stkAaveBalance, 18)) * Number(ghoDiscountedPerToken);
 
   const normalizedBaseVariableBorrowRate = Number(baseVariableBorrowRate) / 10 ** 27;
   let borrowRateAfterDiscount =

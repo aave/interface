@@ -13,10 +13,9 @@ const ghoTokenAddress = '0xA48DdCca78A09c37b4070B3E210D6e0234911549';
 const facilitatorAddress = '0x12cA83Bd0d5887865b7a43B73bbF586D7C087943';
 
 export interface GhoSlice {
-  ghoDiscountRateStrategyAddress: string;
   ghoVariableDebtTokenAddress: string;
   ghoUserDiscountRate: BigNumber;
-  ghoDiscountedPerToken: BigNumber;
+  ghoDiscountedPerToken: string;
   ghoDiscountRatePercent: number;
   ghoFacilitators: string[];
   ghoFacilitatorBucketLevel: string;
@@ -39,9 +38,8 @@ export const createGhoSlice: StateCreator<
 > = (set, get) => {
   return {
     ghoFacilitators: [],
-    ghoDiscountedPerToken: BigNumber.from(0),
-    ghoVariableDebtTokenAddress: '0xc7fB08a5C343d293609Ee68c6E1a5226aC1a17F2', // TODO: get this from the pool reserve data instead
-    ghoDiscountRateStrategyAddress: '0x91A534290666B817D986Ef70089f8Cc5bc241C34', // TODO: remove this once utils is updated to only take debt token contract
+    ghoDiscountedPerToken: '0',
+    ghoVariableDebtTokenAddress: '0x2A379e5d2871123F301b2c73463cE011EcB217e6',
     ghoUserDiscountRate: BigNumber.from(0),
     ghoDiscountRatePercent: 0,
     ghoFacilitatorBucketLevel: '0',
@@ -53,7 +51,7 @@ export const createGhoSlice: StateCreator<
       stakedAaveBalance: BigNumberish
     ) => {
       const provider = get().jsonRpcProvider();
-      const address = get().ghoDiscountRateStrategyAddress;
+      const address = get().ghoVariableDebtTokenAddress;
       const ghoDiscountRateService = new GhoDiscountRateStrategyService(provider, address);
       return await ghoDiscountRateService.calculateDiscountRate(
         ghoDebtTokenBalance,
@@ -73,7 +71,7 @@ export const createGhoSlice: StateCreator<
       if (!account || !currentMarketData) return;
 
       const provider = get().jsonRpcProvider();
-      const address = get().ghoDiscountRateStrategyAddress;
+      const address = get().ghoVariableDebtTokenAddress;
       const ghoDiscountRateService = new GhoDiscountRateStrategyService(provider, address);
       const ghoTokenService = new GhoTokenService(provider, ghoTokenAddress);
 
@@ -98,7 +96,7 @@ export const createGhoSlice: StateCreator<
       set({
         ghoFacilitatorBucketLevel: formatUnits(bucketLevel, 18),
         ghoFacilitatorBucketCapacity: formatUnits(maxCapacity, 18),
-        ghoDiscountedPerToken,
+        ghoDiscountedPerToken: formatUnits(ghoDiscountedPerToken, 18),
         ghoDiscountRatePercent: ghoDiscountRate.toNumber() * 0.0001, // discount rate is in bps, convert to percentage
         ghoMinDebtTokenBalanceForEligibleDiscount,
         ghoMinDiscountTokenBalanceForEligibleDiscount,
