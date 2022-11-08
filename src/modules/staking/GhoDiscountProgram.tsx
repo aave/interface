@@ -6,13 +6,8 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
-import { selectGhoReserve } from 'src/store/poolSelectors';
 import { useRootStore } from 'src/store/root';
-import {
-  ghoBorrowAPRWithMaxDiscount,
-  ghoDiscountableAmount,
-  normalizeBaseVariableBorrowRate,
-} from 'src/utils/ghoUtilities';
+import { ghoBorrowAPRWithMaxDiscount, ghoDiscountableAmount } from 'src/utils/ghoUtilities';
 
 const FieldSet = styled('fieldset')(({ theme }) => ({
   border: `1px solid ${theme.palette.divider}`,
@@ -33,20 +28,17 @@ const Legend = styled('legend')(({ theme }) => ({
 export const GhoDiscountProgram = () => {
   const { breakpoints } = useTheme();
   const downToXsm = useMediaQuery(breakpoints.down('xsm'));
-  const [ghoDiscountRatePercent, ghoDiscountedPerToken, stakedAave, ghoReserve] = useRootStore(
+  const [ghoDiscountRatePercent, ghoDiscountedPerToken, stakedAave, ghoBorrowAPR] = useRootStore(
     (state) => [
       state.ghoDiscountRatePercent,
       state.ghoDiscountedPerToken,
       state.stakeUserResult?.aave.stakeTokenUserBalance || '0',
-      selectGhoReserve(state),
+      state.ghoBorrowAPR,
     ]
   );
 
   const discountableAmount = ghoDiscountableAmount(stakedAave, ghoDiscountedPerToken);
-  const variableBorrowRate = normalizeBaseVariableBorrowRate(
-    ghoReserve?.baseVariableBorrowRate || 0
-  );
-  const aprWithDiscount = ghoBorrowAPRWithMaxDiscount(ghoDiscountRatePercent, variableBorrowRate);
+  const aprWithDiscount = ghoBorrowAPRWithMaxDiscount(ghoDiscountRatePercent, ghoBorrowAPR);
 
   return (
     <Box sx={{ mt: 5 }}>

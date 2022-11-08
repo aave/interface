@@ -22,7 +22,7 @@ export const GhoAssetMobileItem = ({ reserve }: GhoAssetMobileItemProps) => {
   const ghoDiscountRate = useRootStore((state) => state.ghoDiscountRatePercent);
   const borrowAPRWithMaxDiscount = ghoBorrowAPRWithMaxDiscount(
     ghoDiscountRate,
-    reserve.variableBorrowAPR
+    Number(reserve.variableBorrowAPR)
   );
 
   return (
