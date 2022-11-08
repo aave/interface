@@ -1,8 +1,8 @@
 import { defineConfig } from 'cypress';
 
 export default defineConfig({
-  viewportWidth: 400,
-  viewportHeight: 750,
+  viewportWidth: 375,
+  viewportHeight: 812,
   defaultCommandTimeout: 40000,
   pageLoadTimeout: 120000,
   video: true,
