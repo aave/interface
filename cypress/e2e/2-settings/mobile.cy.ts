@@ -1,7 +1,7 @@
 import { configEnvWithTenderlyMainnetFork } from '../../support/steps/configuration.steps';
 
-export const checkWidthOfText = (title: string, width: string) => {
-  cy.contains(title).should('have.css', 'width', `${width}`);
+export const checkWidthOfText = () => {
+  cy.get('[data-cy="vote-info-body"]').invoke('width').should('be.lt', 369);
 };
 
 describe('MOBILE RESOLUTION SPEC, AAVE V2 MARKET', () => {
@@ -18,13 +18,18 @@ describe('MOBILE RESOLUTION SPEC, AAVE V2 MARKET', () => {
     });
     it('step2:Open proposal page and verify width of body', () => {
       cy.doFindMobileMenuElement('[data-cy="menuGovernance"]');
-      cy.contains('Whitelist Balancer’s Liquidity Mining Claim').click();
+      cy.get('a[href*="/governance/proposal/109/"]')
+        .contains('Whitelist Balancer’s Liquidity Mining Claim')
+        .click();
       cy.contains('Proposal overview');
-      checkWidthOfText(
-        'Balancer DAO seeks to retrieve around 1,500 stkAAVE from several Linear Pools.',
-        '336px'
-      );
-      checkWidthOfText('It transfers the stkAAVE rewards to the Balancer Multisig', '296px');
+      checkWidthOfText();
+    });
+    it('step3:Open the latest proposal page and verify width of body', () => {
+      cy.contains('Go Back').click();
+      cy.get('a[href*="/governance/proposal/113/"]')
+        .contains('Chaos Labs Risk Platform Proposal')
+        .click();
+      checkWidthOfText();
     });
   });
 });
