@@ -8,7 +8,8 @@ import { ghoMintingAvailable } from 'src/utils/ghoUtilities';
 import { BasicModal } from '../../primitives/BasicModal';
 import { ModalWrapper } from '../FlowCommons/ModalWrapper';
 import { BorrowModalContent } from './BorrowModalContent';
-import { GHOBorrowModalContent } from './GHOBorrowModalContent';
+import { GhoBorrowModalContent } from './GhoBorrowModalContent';
+// import { GhoBorrowModalContent } from './GhoBorrowModalContent';
 
 export const BorrowModal = () => {
   const { type, close, args } = useModalContext() as ModalContextType<{
@@ -30,7 +31,7 @@ export const BorrowModal = () => {
             symbol: params.symbol,
             currentMarket,
           }) ? (
-            <GHOBorrowModalContent {...params} />
+            <GhoBorrowModalContent {...params} currentMarket={currentMarket} />
           ) : (
             <BorrowModalContent
               {...params}

@@ -1,6 +1,16 @@
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 
-export const ghoMintingMarkets = [
+/**
+ * Determines if GHO is available for borrowing (minting) on the provided network, also based off the token symbol being borrowed
+ * @param {GhoUtilMintingAvailableParams} - The reserve symbol and current market name
+ * @returns {bool} - If the GHO token is available for minting
+ */
+type GhoUtilMintingAvailableParams = {
+  symbol: string;
+  currentMarket: string;
+};
+
+export const GHO_SUPPORTED_MARKETS = [
   'proto_goerli_gho_v3',
   'fork_proto_goerli_gho_v3',
   'proto_mainnet_v3',
@@ -10,11 +20,8 @@ export const ghoMintingMarkets = [
 export const ghoMintingAvailable = ({
   symbol,
   currentMarket,
-}: {
-  symbol: string;
-  currentMarket: string;
-}): boolean => {
-  if (symbol === 'GHO' && ghoMintingMarkets.includes(currentMarket)) {
+}: GhoUtilMintingAvailableParams): boolean => {
+  if (symbol === 'GHO' && GHO_SUPPORTED_MARKETS.includes(currentMarket)) {
     return true;
   } else {
     return false;
@@ -34,7 +41,7 @@ export const getAvailableBorrows = (
   ghoFacilitatorCapacity: number,
   ghoFacilitatorLevel: number
 ): number => {
-  // Available borrows is min of user avaiable borrows and remaining facilitator capacity
+  // Available borrows is min of user available borrows and remaining facilitator capacity
   const remainingBucketCapacity = ghoFacilitatorCapacity - ghoFacilitatorLevel;
 
   const availableBorrows = Math.min(userAvailableBorrows, remainingBucketCapacity);

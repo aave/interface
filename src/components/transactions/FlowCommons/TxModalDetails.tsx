@@ -5,6 +5,8 @@ import { Trans } from '@lingui/macro';
 import { Box, FormControlLabel, SvgIcon, Switch, Typography } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { ReactNode } from 'react';
+import { NoData } from 'src/components/primitives/NoData';
+import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { CollateralType } from 'src/helpers/types';
 
 import { HealthFactorNumber } from '../../HealthFactorNumber';
@@ -297,6 +299,57 @@ export const DetailsUnwrapSwitch = ({
         label={''}
       />
       <Typography>{`Unwrap ${symbol} (to withdraw ${unwrappedSymbol})`}</Typography>
+    </Row>
+  );
+};
+
+export interface DetailsGhoApyLineProps {
+  hasGhoBorrowPositions: boolean;
+  borrowApy: number;
+  futureBorrowApy?: number;
+  showApyDifference: boolean;
+}
+
+export const DetailsGhoApyLine: React.FC<DetailsGhoApyLineProps> = ({
+  hasGhoBorrowPositions,
+  borrowApy,
+  futureBorrowApy,
+  showApyDifference,
+}) => {
+  return (
+    <Row
+      caption={
+        <Box>
+          <TextWithTooltip text={<Trans>Borrow APY</Trans>}>
+            <Trans>Tooltip test TBD</Trans>
+          </TextWithTooltip>
+          <Typography variant="helperText" color="text.secondary">
+            <Trans>Includes discount</Trans>
+          </Typography>
+        </Box>
+      }
+      captionVariant="description"
+      mb={4}
+      align="flex-start"
+    >
+      <Box sx={{ textAlign: 'right' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+          {!hasGhoBorrowPositions && <NoData variant="secondary14" color="text.muted" />}
+          {hasGhoBorrowPositions && (
+            <>
+              <FormattedNumber value={borrowApy} percent />
+              {showApyDifference && (
+                <>
+                  <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+                    <ArrowNarrowRightIcon />
+                  </SvgIcon>
+                  <FormattedNumber value={Number(futureBorrowApy)} percent />
+                </>
+              )}
+            </>
+          )}
+        </Box>
+      </Box>
     </Row>
   );
 };

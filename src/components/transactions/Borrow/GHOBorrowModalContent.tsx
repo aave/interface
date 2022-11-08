@@ -1,138 +1,75 @@
 import { InterestRate } from '@aave/contract-helpers';
 import {
   calculateHealthFactorFromBalancesBigUnits,
+  normalizeBN,
   USD_DECIMALS,
   valueToBigNumber,
 } from '@aave/math-utils';
-import { ArrowSmRightIcon } from '@heroicons/react/outline';
-import { BadgeCheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Checkbox, Link, SvgIcon, Typography } from '@mui/material';
-import { useRef, useState } from 'react';
-import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { Row } from 'src/components/primitives/Row';
+import { Box, Checkbox, Link, Typography } from '@mui/material';
+import { useEffect, useRef, useState } from 'react';
+import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
-import StyledToggleButton from 'src/components/StyledToggleButton';
-import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
+import usePreviousState from 'src/hooks/usePreviousState';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
+import { useRootStore } from 'src/store/root';
 import { getMaxGHOMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
 
-import { CapType } from '../../caps/helper';
 import { AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
-import {
-  DetailsHFLine,
-  DetailsIncentivesLine,
-  TxModalDetails,
-} from '../FlowCommons/TxModalDetails';
+import { DetailsGhoApyLine, DetailsHFLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { BorrowActions } from './BorrowActions';
 
 export enum ErrorType {
   BORROWING_NOT_AVAILABLE,
 }
 
-interface BorrowModeSwitchProps {
-  interestRateMode: InterestRate;
-  setInterestRateMode: (value: InterestRate) => void;
-  variableRate: string;
-  stableRate: string;
-}
+type GhoBorrowModalContentProps = ModalWrapperProps & { currentMarket: string };
 
-const BorrowModeSwitch = ({
-  setInterestRateMode,
-  interestRateMode,
-  variableRate,
-  stableRate,
-}: BorrowModeSwitchProps) => {
-  return (
-    <Row
-      caption={
-        <APYTypeTooltip
-          text={<Trans>Borrow APY rate</Trans>}
-          key="APY type_modal"
-          variant="description"
-        />
-      }
-      captionVariant="description"
-      mb={1}
-      pt={5}
-      flexDirection="column"
-      align="flex-start"
-      captionColor="text.secondary"
-    >
-      <StyledToggleButtonGroup
-        color="primary"
-        value={interestRateMode}
-        exclusive
-        onChange={(_, value) => setInterestRateMode(value)}
-        sx={{ width: '100%', mt: 0.5 }}
-      >
-        <StyledToggleButton
-          value={InterestRate.Variable}
-          disabled={interestRateMode === InterestRate.Variable}
-        >
-          <Typography variant="subheader1" sx={{ mr: 1 }}>
-            <Trans>Variable</Trans>
-          </Typography>
-          <FormattedNumber value={variableRate} percent variant="secondary14" />
-        </StyledToggleButton>
-        <StyledToggleButton
-          value={InterestRate.Stable}
-          disabled={interestRateMode === InterestRate.Stable}
-        >
-          <Typography variant="subheader1" sx={{ mr: 1 }}>
-            <Trans>Stable</Trans>
-          </Typography>
-          <FormattedNumber value={stableRate} percent variant="secondary14" />
-        </StyledToggleButton>
-      </StyledToggleButtonGroup>
-    </Row>
-  );
-};
-
-export const GHOBorrowModalContent = ({
+export const GhoBorrowModalContent = ({
   underlyingAsset,
   isWrongNetwork,
   poolReserve,
   symbol,
-}: ModalWrapperProps) => {
+  currentMarket,
+  userReserve,
+}: GhoBorrowModalContentProps) => {
   const { mainTxState: borrowTxState, gasLimit, txError } = useModalContext();
   const { user, marketReferencePriceInUsd } = useAppDataContext();
-  const { borrowCap, debtCeiling } = useAssetCaps();
+  const {
+    stakeUserResult,
+    ghoDiscountRatePercent,
+    ghoDiscountedPerToken,
+    ghoMinDebtTokenBalanceForEligibleDiscount,
+    ghoMinDiscountTokenBalanceForEligibleDiscount,
+  } = useRootStore();
 
-  const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
+  // Amount calculations on input changes
   const [_amount, setAmount] = useState('');
-  const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
+  const prevAmount = usePreviousState(_amount);
   const amountRef = useRef<string>();
-
-  // amount calculations
   const maxAmountToBorrow = getMaxGHOMintAmount(user);
   const formattedMaxAmountToBorrow = maxAmountToBorrow.toString(10);
-
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToBorrow.toString(10) : _amount;
-
-  // We set this in a useEffect, so it doesn't constantly change when
-  // max amount selected
-  const handleChange = (_value: string) => {
+  const amountUsd = valueToBigNumber(amount).multipliedBy(poolReserve.priceInUSD);
+  const handleAmountChange = (_value: string) => {
     const maxSelected = _value === '-1';
     const value = maxSelected ? maxAmountToBorrow.toString() : _value;
     amountRef.current = value;
     setAmount(value);
   };
 
-  // health factor calculations
+  // Health factor calculations
+  const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
   const amountToBorrowInUsd = valueToBigNumber(amount)
     .multipliedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
     .multipliedBy(marketReferencePriceInUsd)
     .shiftedBy(-USD_DECIMALS);
-
   const newHealthFactor = calculateHealthFactorFromBalancesBigUnits({
     collateralBalanceMarketReferenceCurrency: user.totalCollateralUSD,
     borrowBalanceMarketReferenceCurrency: valueToBigNumber(user.totalBorrowsUSD).plus(
@@ -143,31 +80,91 @@ export const GHOBorrowModalContent = ({
   const displayRiskCheckbox =
     newHealthFactor.toNumber() < 1.5 && newHealthFactor.toString() !== '-1';
 
-  // calculating input usd value
-  const usdValue = valueToBigNumber(amount).multipliedBy(poolReserve.priceInUSD);
-
-  // error types handling
-  let blockingError: ErrorType | undefined = undefined;
-  if (!poolReserve.borrowingEnabled) {
-    blockingError = ErrorType.BORROWING_NOT_AVAILABLE;
-  }
-
-  // error render handling
-  const handleBlocked = () => {
-    switch (blockingError) {
-      case ErrorType.BORROWING_NOT_AVAILABLE:
-        return <Trans>Borrowing is currently unavailable for {poolReserve.symbol}.</Trans>;
-      default:
-        return null;
-    }
-  };
-
   // token info to add to wallet
   const addToken: ERC20TokenType = {
     address: underlyingAsset,
     symbol: poolReserve.iconSymbol,
     decimals: poolReserve.decimals,
   };
+
+  // Check if user has any open borrow positions on GHO
+  // Check if user can borrow at a discount
+  const hasGhoBorrowPositions = userReserve.totalBorrows !== '0';
+  const userStakedAaveBalance: string = stakeUserResult?.aave.stakeTokenUserBalance ?? '0';
+  const discountAvailable = userStakedAaveBalance !== '0';
+  // Get contract values
+  const baseBorrowRate = normalizeBN(poolReserve.baseVariableBorrowRate, 27).toNumber(); // 0.02 or 2%
+  const minStkAave = normalizeBN(
+    ghoMinDiscountTokenBalanceForEligibleDiscount.toString(),
+    18
+  ).toNumber();
+  const minGhoBorrowed = normalizeBN(
+    ghoMinDebtTokenBalanceForEligibleDiscount.toString(),
+    18
+  ).toNumber();
+  const discountedPerToken = Number(ghoDiscountedPerToken);
+
+  // Calculate new borrow APY based on borrow amounts
+  const [calculatedBorrowAPY, setCalculatedBorrowAPY] = useState<number>(0);
+  const [calculatedFutureBorrowAPY, setCalculatedFutureBorrowAPY] = useState<number>(0);
+  const [apyDiffers, setApyDiffers] = useState(false);
+  const [discountableGhoAmount, setDiscountableGhoAmount] = useState<number>(0);
+  /**
+   * This function recreates the logic that happens in GhoDiscountRateStrategy.sol to determine a user's discount rate for borrowing GHO based off of the amount of stkAAVE a user holds.
+   * This is repeated here so that we don't bombard the RPC with HTTP requests to do this calculation and read from on-chain logic.
+   * NOTE: if the discount rate strategy changes on-chain, then this creates a maintenance issue and we'll have to update this.
+   * @param stakedAave - The hypothectical amount of stkAAVE
+   * @param borrowedGho - The hypothetical amount of GHO
+   */
+  const calculateDiscountRate = async (borrowingAmount: string) => {
+    let newRate: number;
+    let borrowedGho: number;
+    const stakedAave = Number(userStakedAaveBalance);
+
+    // Calculate helper
+    const calculationHelper = (borrowableAmount: number): number => {
+      if (stakedAave < minStkAave || borrowableAmount < minGhoBorrowed) {
+        newRate = 0;
+      } else {
+        const discountableAmount = stakedAave * discountedPerToken;
+        if (discountableAmount >= borrowableAmount) {
+          newRate = ghoDiscountRatePercent;
+        } else {
+          newRate = (discountableAmount * ghoDiscountRatePercent) / borrowableAmount;
+        }
+        setDiscountableGhoAmount(discountableAmount);
+      }
+
+      // Calculate the new borrow APY - Takes the total discount as a fraction of the existing borrow rate
+      return baseBorrowRate - baseBorrowRate * newRate;
+    };
+
+    // Input is cleared, use initial values
+    if (borrowingAmount === '') {
+      borrowedGho = Number(userReserve.totalBorrows);
+      const newRate = calculationHelper(borrowedGho);
+      setCalculatedBorrowAPY(newRate);
+      setCalculatedFutureBorrowAPY(0);
+      setApyDiffers(false);
+    } else {
+      // Calculate new rates and check if they differ
+      borrowedGho = Number(userReserve.totalBorrows) + Number(borrowingAmount);
+      const oldRate = calculationHelper(Number(userReserve.totalBorrows));
+      const newRate = calculationHelper(borrowedGho);
+      if (oldRate !== newRate) {
+        console.log('rates are different', { oldRate, newRate });
+        setApyDiffers(true);
+      }
+      setCalculatedBorrowAPY(oldRate);
+      setCalculatedFutureBorrowAPY(newRate);
+    }
+  };
+
+  useEffect(() => {
+    if (prevAmount !== _amount) {
+      calculateDiscountRate(_amount);
+    }
+  }, [_amount]);
 
   if (borrowTxState.success)
     return (
@@ -179,45 +176,32 @@ export const GHOBorrowModalContent = ({
       />
     );
 
-  const incentive =
-    interestRateMode === InterestRate.Stable
-      ? poolReserve.sIncentivesData
-      : poolReserve.vIncentivesData;
   return (
     <>
-      {borrowCap.determineWarningDisplay({ borrowCap })}
-      {poolReserve.isIsolated && debtCeiling.determineWarningDisplay({ debtCeiling })}
-
-      <Warning
-        severity="success"
-        icon={
-          <SvgIcon color="success">
-            <BadgeCheckIcon />
-          </SvgIcon>
-        }
-        sx={{ mb: 6 }}
-      >
-        <Typography variant="subheader1" gutterBottom>
-          <Trans>Get discounted borrow APY — 1.6%</Trans>
-        </Typography>
-        <Typography variant="caption">
-          <Trans>
-            Users who stake their AAVE in Safety Module get discounted borrow rate 1.6% for each 100
-            GHO per 1 staked AAVE.
-          </Trans>
-        </Typography>
-        <Link href="/" sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
-          <Trans>Learn More</Trans>{' '}
-          <SvgIcon fontSize="small">
-            <ArrowSmRightIcon />
-          </SvgIcon>
-        </Link>
-      </Warning>
+      {!discountAvailable && !hasGhoBorrowPositions && (
+        <Warning severity="info" sx={{ mb: 6 }}>
+          <Typography variant="subheader1" gutterBottom>
+            <Trans>GHO discount program</Trans>
+          </Typography>
+          <Typography variant="caption">
+            <Trans>
+              Safety Module participants (i.e., stkAAVE holders) receive 20% discount on the GHO
+              borrow interest rate.{' '}
+              <Link
+                href={`/reserve-overview/?underlyingAsset=${underlyingAsset}&marketName=${currentMarket}`}
+                underline="always"
+              >
+                Learn details
+              </Link>
+            </Trans>
+          </Typography>
+        </Warning>
+      )}
 
       <AssetInput
         value={amount}
-        onChange={handleChange}
-        usdValue={usdValue.toString(10)}
+        onChange={handleAmountChange}
+        usdValue={amountUsd.toString(10)}
         assets={[
           {
             balance: formattedMaxAmountToBorrow,
@@ -225,34 +209,34 @@ export const GHOBorrowModalContent = ({
             iconSymbol: poolReserve.iconSymbol,
           },
         ]}
-        symbol={symbol}
-        capType={CapType.borrowCap}
+        symbol="GHO"
         isMaxSelected={isMaxSelected}
         maxValue={maxAmountToBorrow.toString(10)}
       />
 
-      {blockingError !== undefined && (
-        <Typography variant="helperText" color="error.main">
-          {handleBlocked()}
-        </Typography>
-      )}
-
-      {poolReserve.stableBorrowRateEnabled && (
-        <BorrowModeSwitch
-          interestRateMode={interestRateMode}
-          setInterestRateMode={setInterestRateMode}
-          variableRate={poolReserve.variableBorrowAPY}
-          stableRate={poolReserve.stableBorrowAPY}
-        />
+      {discountAvailable && !hasGhoBorrowPositions && (
+        <Box>
+          <Typography>
+            Discount <TokenIcon symbol="GHO" fontSize="small" />
+          </Typography>
+        </Box>
       )}
 
       <TxModalDetails gasLimit={gasLimit}>
-        <DetailsIncentivesLine incentives={incentive} symbol={poolReserve.symbol} />
         <DetailsHFLine
           visibleHfChange={!!_amount}
           healthFactor={user.healthFactor}
           futureHealthFactor={newHealthFactor.toString(10)}
         />
+        {discountAvailable && (
+          <DetailsGhoApyLine
+            hasGhoBorrowPositions={hasGhoBorrowPositions}
+            borrowApy={calculatedBorrowAPY}
+            futureBorrowApy={calculatedFutureBorrowAPY}
+            showApyDifference={apyDiffers}
+          />
+        )}
+        {/* TODO: show amounts for total borrowed and how much is being discountable */}
       </TxModalDetails>
 
       {txError && <GasEstimationError txError={txError} />}
@@ -287,22 +271,14 @@ export const GHOBorrowModalContent = ({
         </>
       )}
 
-      <Warning severity="info" sx={{ my: 6 }}>
-        <Trans>
-          <b>Attention:</b> Parameter changes via governance can alter your account health factor
-          and risk of liquidation. Follow the{' '}
-          <a href="https://governance.aave.com/">Aave governance forum</a> for updates.
-        </Trans>
-      </Warning>
-
       <BorrowActions
         poolReserve={poolReserve}
         amountToBorrow={amount}
         poolAddress={poolReserve.underlyingAsset}
-        interestRateMode={interestRateMode}
+        interestRateMode={InterestRate.Variable}
         isWrongNetwork={isWrongNetwork}
         symbol={symbol}
-        blocked={blockingError !== undefined || (displayRiskCheckbox && !riskCheckboxAccepted)}
+        blocked={displayRiskCheckbox && !riskCheckboxAccepted}
         sx={displayRiskCheckbox ? { mt: 0 } : {}}
       />
     </>
