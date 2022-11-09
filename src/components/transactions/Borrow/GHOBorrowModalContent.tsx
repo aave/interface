@@ -16,7 +16,7 @@ import usePreviousState from 'src/hooks/usePreviousState';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
 import { getMaxGHOMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
-import { formatGhoDiscountLockPeriod } from 'src/utils/ghoUtilities';
+import { formatGhoDiscountLockPeriodExpiryDate } from 'src/utils/ghoUtilities';
 
 import { AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -117,6 +117,7 @@ export const GhoBorrowModalContent = ({
   const [apyDiffers, setApyDiffers] = useState(false);
   const [discountableGhoAmount, setDiscountableGhoAmount] = useState<number>(0);
   const [totalBorrowedGho, setTotalBorrowedGho] = useState<number>(0);
+  // TODO: const [borrowAmountDiffers, setBorrowAmountDiffers] = useState(false)
   /**
    * This function recreates the logic that happens in GhoDiscountRateStrategy.sol to determine a user's discount rate for borrowing GHO based off of the amount of stkAAVE a user holds.
    * This is repeated here so that we don't bombard the RPC with HTTP requests to do this calculation and read from on-chain logic.
@@ -155,9 +156,11 @@ export const GhoBorrowModalContent = ({
       setCalculatedBorrowAPY(newRate);
       setCalculatedFutureBorrowAPY(0);
       setApyDiffers(false);
+      // TODO: setBorrowAmountDiffers(false)
     } else {
       // Calculate new rates and check if they differ
       borrowedGho = Number(userReserve.totalBorrows) + Number(borrowingAmount);
+      // TODO: setBorrowAmountDiffers(true)
       const oldRate = calculationHelper(Number(userReserve.totalBorrows));
       const newRate = calculationHelper(borrowedGho);
       if (oldRate !== newRate) {
@@ -166,7 +169,10 @@ export const GhoBorrowModalContent = ({
       setCalculatedBorrowAPY(oldRate);
       setCalculatedFutureBorrowAPY(newRate);
     }
+
     setTotalBorrowedGho(borrowedGho);
+
+    // TODO: Calculate new discountable vs non-discountable amounts
   };
 
   useEffect(() => {
@@ -259,6 +265,7 @@ export const GhoBorrowModalContent = ({
           ghoAmount={
             discountableGhoAmount >= totalBorrowedGho ? totalBorrowedGho : discountableGhoAmount
           }
+          // ghoAmountDiffers={borrowAmountDiffers}
           tooltipText={<Trans>This is tooltip text</Trans>}
         />
         <DiscountDetailsGhoLine
@@ -267,12 +274,16 @@ export const GhoBorrowModalContent = ({
           ghoAmount={
             discountableGhoAmount >= totalBorrowedGho ? 0 : totalBorrowedGho - discountableGhoAmount
           }
+          // ghoAmountDiffers={borrowAmountDiffers}
           tooltipText={<Trans>This is tooltip text</Trans>}
         />
         <DiscountDetailsGhoLine
           title={<Trans>Discount lock period</Trans>}
           tooltipText={<Trans>This is tooltip text</Trans>}
-          discountLockPeriod={formatGhoDiscountLockPeriod(ghoDiscountLockPeriod)}
+          discountLockPeriod={formatGhoDiscountLockPeriodExpiryDate(
+            new Date(),
+            ghoDiscountLockPeriod
+          )}
         />
       </TxModalDetails>
 

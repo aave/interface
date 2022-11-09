@@ -52,12 +52,20 @@ export const getAvailableBorrows = (
 };
 
 /**
- * Formats the GHO discount lock period from uint256 to a human-readable date
+ * Formats the expiry for a provided date tied with the GHO discount lock period in a human-readable way
  * @param discountLockPeriod - The BigNumber of the discount lock period returned from the GhoVariableDebtToken.sol contract
- * @returns - A formatted date as a string
+ * @returns - A formatted date as a string representing when the lock period will expiry for the given date
  */
-export const formatGhoDiscountLockPeriod = (discountLockPeriod: BigNumber): string => {
-  const date = new Date(discountLockPeriod.toNumber());
+export const formatGhoDiscountLockPeriodExpiryDate = (
+  timeOfBorrow: Date,
+  discountLockPeriod: BigNumber
+): string => {
+  const periodInMilliseconds = discountLockPeriod.toNumber();
+  const periodInDays = periodInMilliseconds / 86400;
+  // Calculate the date of the time passed in + the expiry in days
+  const lockPeriodExpiryDate = new Date(
+    timeOfBorrow.setDate(timeOfBorrow.getDate() + periodInDays)
+  );
   const formatter = timeFormat('%d %B %Y');
-  return formatter(date);
+  return formatter(lockPeriodExpiryDate);
 };
