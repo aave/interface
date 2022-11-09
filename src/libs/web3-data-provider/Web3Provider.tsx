@@ -8,8 +8,8 @@ import {
 import { AbstractConnector } from '@web3-react/abstract-connector';
 import { useWeb3React } from '@web3-react/core';
 import { TorusConnector } from '@web3-react/torus-connector';
-import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
+import { WalletConnectConnector } from 'ds-web3-react-walletconnect';
 import { BigNumber, providers } from 'ethers';
 import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 import { useRootStore } from 'src/store/root';

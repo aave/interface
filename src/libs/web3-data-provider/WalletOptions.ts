@@ -6,8 +6,8 @@ import { FrameConnector } from '@web3-react/frame-connector';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { TorusConnector } from '@web3-react/torus-connector';
 import { ConnectorUpdate } from '@web3-react/types';
-import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { WalletLinkConnector } from '@web3-react/walletlink-connector';
+import { WalletConnectConnector } from 'ds-web3-react-walletconnect';
 import { getNetworkConfig, getSupportedChainIds } from 'src/utils/marketsAndNetworksConfig';
 import { LedgerHQFrameConnector } from 'web3-ledgerhq-frame-connector';
 

@@ -2,7 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, InputBase, Link, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { UnsupportedChainIdError } from '@web3-react/core';
 import { NoEthereumProviderError } from '@web3-react/injected-connector';
-import { UserRejectedRequestError } from '@web3-react/walletconnect-connector';
+import { UserRejectedRequestError } from 'ds-web3-react-walletconnect';
 import { utils } from 'ethers';
 import { useState } from 'react';
 import { WatchOnlyModeTooltip } from 'src/components/infoTooltips/WatchOnlyModeTooltip';
