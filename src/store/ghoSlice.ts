@@ -6,11 +6,12 @@ import {
 } from '@aave/contract-helpers';
 import { BigNumber, BigNumberish } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import { normalizeBaseVariableBorrowRate } from 'src/utils/ghoUtilities';
+import { ghoMintingMarkets, normalizeBaseVariableBorrowRate } from 'src/utils/ghoUtilities';
 import {
   CustomMarket,
   ENABLE_TESTNET,
   getProvider,
+  MarketDataType,
   marketsData,
   STAGING_ENV,
 } from 'src/utils/marketsAndNetworksConfig';
@@ -18,19 +19,23 @@ import { StateCreator } from 'zustand';
 
 import { RootStore } from './root';
 
-const ghoTokenAddress = '0xa48ddcca78a09c37b4070b3e210d6e0234911549';
-const facilitatorAddress = '0x12cA83Bd0d5887865b7a43B73bbF586D7C087943';
+interface GhoMarketConfig {
+  market: MarketDataType;
+  ghoTokenAddress: string;
+  ghoVariableDebtTokenAddress: string;
+  facilitatorAddress: string;
+}
 
-// const goerliGhoConfig = {
-//   market: marketsData[CustomMarket.proto_goerli_gho_v3],
-//   ghoTokenAddress: '0xa48ddcca78a09c37b4070b3e210d6e0234911549',
-//   facilitatorAddress: '0x12cA83Bd0d5887865b7a43B73bbF586D7C087943',
-//   ghoVariableDebtTokenAddress: '0x2A379e5d2871123F301b2c73463cE011EcB217e6',
-// };
+const goerliGhoConfig: GhoMarketConfig = {
+  market: marketsData[CustomMarket.proto_goerli_gho_v3],
+  ghoTokenAddress: '0xa48ddcca78a09c37b4070b3e210d6e0234911549',
+  facilitatorAddress: '0x12cA83Bd0d5887865b7a43B73bbF586D7C087943',
+  ghoVariableDebtTokenAddress: '0x2A379e5d2871123F301b2c73463cE011EcB217e6',
+};
 
-const getGhoMarket = () => {
+const getGhoMarketConfig = () => {
   if (STAGING_ENV || ENABLE_TESTNET) {
-    return marketsData[CustomMarket.proto_goerli_gho_v3];
+    return goerliGhoConfig;
   } else {
     // TODO: once v3 is on mainnet update this.
     // return marketsData[CustomMarket.proto_mainnet];
@@ -106,14 +111,17 @@ export const createGhoSlice: StateCreator<
     refreshGhoData: async () => {
       get().fetchGhoMarketData();
 
+      const ghoConfig = getGhoMarketConfig();
+      if (!ghoConfig) return;
+
       const account = get().account;
-      const currentMarketData = get().currentMarketData;
-      if (!account || !currentMarketData) return;
+      const currentMarket = get().currentMarket;
+      if (!account || !currentMarket || !ghoMintingMarkets.includes(currentMarket)) return;
 
       const provider = get().jsonRpcProvider();
       const address = get().ghoVariableDebtTokenAddress;
       const ghoDiscountRateService = new GhoDiscountRateStrategyService(provider, address);
-      const ghoTokenService = new GhoTokenService(provider, ghoTokenAddress);
+      const ghoTokenService = new GhoTokenService(provider, ghoConfig.ghoTokenAddress);
 
       const [
         ghoDiscountedPerToken,
@@ -124,7 +132,7 @@ export const createGhoSlice: StateCreator<
       ] = await Promise.all([
         ghoDiscountRateService.getGhoDiscountedPerDiscountToken(),
         ghoDiscountRateService.getGhoDiscountRate(),
-        ghoTokenService.getFacilitatorBucket(facilitatorAddress),
+        ghoTokenService.getFacilitatorBucket(ghoConfig.facilitatorAddress),
         ghoDiscountRateService.getGhoMinDebtTokenBalance(),
         ghoDiscountRateService.getGhoMinDiscountTokenBalance(),
         get().ghoUpdateDiscountRate(),
@@ -143,14 +151,16 @@ export const createGhoSlice: StateCreator<
       });
     },
     fetchGhoMarketData: async () => {
-      const marketData = getGhoMarket();
-      if (!marketData) return;
+      // Fetch gho data regardless of which market the user has selected so it can be displayed on the staking page
+      // We assume there is only one testnet market with gho, and one mainnet market for gho.
+      const config = getGhoMarketConfig();
+      if (!config) return;
 
-      const poolContract = new Pool(getProvider(marketData.chainId), {
-        POOL: marketData.addresses.LENDING_POOL,
+      const poolContract = new Pool(getProvider(config.market.chainId), {
+        POOL: config.market.addresses.LENDING_POOL,
       });
 
-      const reserve = await poolContract.getReserveData(ghoTokenAddress);
+      const reserve = await poolContract.getReserveData(config.ghoTokenAddress);
       set({
         ghoBorrowAPR: normalizeBaseVariableBorrowRate(reserve.currentVariableBorrowRate.toString()),
       });
