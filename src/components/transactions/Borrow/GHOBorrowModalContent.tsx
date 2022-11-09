@@ -6,8 +6,9 @@ import {
   valueToBigNumber,
 } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Checkbox, Divider, Link, Typography } from '@mui/material';
+import { Box, Button, Checkbox, Divider, Link, Typography } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -171,15 +172,21 @@ export const GhoBorrowModalContent = ({
     }
 
     setTotalBorrowedGho(borrowedGho);
-
-    // TODO: Calculate new discountable vs non-discountable amounts
   };
 
+  // Calculate the APYs and other information based off of each input change
   useEffect(() => {
     if (prevAmount !== _amount) {
       calculateDiscountRate(_amount);
     }
   }, [_amount]);
+
+  // Calculate discountable amount up-front on mount
+  useEffect(() => {
+    const discountableAmount = Number(userStakedAaveBalance) * discountedPerToken;
+    const normalizedDiscountable = normalizeBN(discountableAmount.toString(), 18).toNumber();
+    setDiscountableGhoAmount(normalizedDiscountable);
+  }, []);
 
   if (borrowTxState.success)
     return (
@@ -230,10 +237,15 @@ export const GhoBorrowModalContent = ({
       />
 
       {discountAvailable && !hasGhoBorrowPositions && (
-        <Box>
-          <Typography>
-            Discount <TokenIcon symbol="GHO" fontSize="small" />
-          </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Typography sx={{ mr: 1 }}>Discount</Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
+            <TokenIcon symbol="GHO" fontSize="small" sx={{ mr: 1 }} />
+            <FormattedNumber value={discountableGhoAmount} visibleDecimals={0} compact />
+            <Typography sx={{ ml: 1 }} component="div">
+              @ <FormattedNumber value={calculatedBorrowAPY} percent /> APY
+            </Typography>
+          </Box>
         </Box>
       )}
 
@@ -246,45 +258,55 @@ export const GhoBorrowModalContent = ({
         {discountAvailable && (
           <DetailsGhoApyLine
             hasGhoBorrowPositions={hasGhoBorrowPositions}
+            inputAmount={amount}
             borrowApy={calculatedBorrowAPY}
             futureBorrowApy={calculatedFutureBorrowAPY}
             showApyDifference={apyDiffers}
           />
         )}
-        {/* TODO: show amounts for total borrowed and how much is being discountable */}
-        <Divider sx={{ mb: 7 }}>Discount details</Divider>
-        <DiscountDetailsGhoLine
-          title={<Trans>Total borrow balance</Trans>}
-          subtitle={<Trans>After transaction</Trans>}
-          ghoAmount={totalBorrowedGho}
-          ghoAmountUsd={totalBorrowedGho}
-        />
-        <DiscountDetailsGhoLine
-          title={<Trans>Discountable amount</Trans>}
-          subtitle={<Trans>Borrow @ 1.60% APY</Trans>}
-          ghoAmount={
-            discountableGhoAmount >= totalBorrowedGho ? totalBorrowedGho : discountableGhoAmount
-          }
-          // ghoAmountDiffers={borrowAmountDiffers}
-          tooltipText={<Trans>This is tooltip text</Trans>}
-        />
-        <DiscountDetailsGhoLine
-          title={<Trans>Non-discountable amount</Trans>}
-          subtitle={<Trans>Borrow @ 2.00% APY</Trans>}
-          ghoAmount={
-            discountableGhoAmount >= totalBorrowedGho ? 0 : totalBorrowedGho - discountableGhoAmount
-          }
-          // ghoAmountDiffers={borrowAmountDiffers}
-          tooltipText={<Trans>This is tooltip text</Trans>}
-        />
-        <DiscountDetailsGhoLine
-          title={<Trans>Discount lock period</Trans>}
-          tooltipText={<Trans>This is tooltip text</Trans>}
-          discountLockPeriod={formatGhoDiscountLockPeriodExpiryDate(
-            new Date(),
-            ghoDiscountLockPeriod
-          )}
-        />
+
+        {(discountAvailable && hasGhoBorrowPositions) ||
+          (discountAvailable && !hasGhoBorrowPositions && amount !== '' && (
+            <>
+              <Divider sx={{ mb: 7 }}>Discount details</Divider>
+              <DiscountDetailsGhoLine
+                title={<Trans>Total borrow balance</Trans>}
+                subtitle={<Trans>After transaction</Trans>}
+                ghoAmount={totalBorrowedGho}
+                ghoAmountUsd={totalBorrowedGho}
+              />
+              <DiscountDetailsGhoLine
+                title={<Trans>Discountable amount</Trans>}
+                subtitle={<Trans>Borrow @ 1.60% APY</Trans>}
+                ghoAmount={
+                  discountableGhoAmount >= totalBorrowedGho
+                    ? totalBorrowedGho
+                    : discountableGhoAmount
+                }
+                // ghoAmountDiffers={borrowAmountDiffers}
+                tooltipText={<Trans>This is tooltip text</Trans>}
+              />
+              <DiscountDetailsGhoLine
+                title={<Trans>Non-discountable amount</Trans>}
+                subtitle={<Trans>Borrow @ 2.00% APY</Trans>}
+                ghoAmount={
+                  discountableGhoAmount >= totalBorrowedGho
+                    ? 0
+                    : totalBorrowedGho - discountableGhoAmount
+                }
+                // ghoAmountDiffers={borrowAmountDiffers}
+                tooltipText={<Trans>This is tooltip text</Trans>}
+              />
+              <DiscountDetailsGhoLine
+                title={<Trans>Discount lock period</Trans>}
+                tooltipText={<Trans>This is tooltip text</Trans>}
+                discountLockPeriod={formatGhoDiscountLockPeriodExpiryDate(
+                  new Date(),
+                  ghoDiscountLockPeriod
+                )}
+              />
+            </>
+          ))}
       </TxModalDetails>
 
       {txError && <GasEstimationError txError={txError} />}

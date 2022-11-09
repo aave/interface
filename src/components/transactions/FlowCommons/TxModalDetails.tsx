@@ -306,6 +306,7 @@ export const DetailsUnwrapSwitch = ({
 
 export interface DetailsGhoApyLineProps {
   hasGhoBorrowPositions: boolean;
+  inputAmount: string;
   borrowApy: number;
   futureBorrowApy?: number;
   showApyDifference: boolean;
@@ -313,30 +314,33 @@ export interface DetailsGhoApyLineProps {
 
 export const DetailsGhoApyLine: React.FC<DetailsGhoApyLineProps> = ({
   hasGhoBorrowPositions,
+  inputAmount,
   borrowApy,
   futureBorrowApy,
   showApyDifference,
-}) => {
-  return (
-    <Row
-      caption={
-        <Box>
-          <TextWithTooltip text={<Trans>Borrow APY</Trans>}>
-            <Trans>Tooltip test TBD</Trans>
-          </TextWithTooltip>
-          <Typography variant="helperText" color="text.secondary">
-            <Trans>Includes discount</Trans>
-          </Typography>
-        </Box>
-      }
-      captionVariant="description"
-      mb={4}
-      align="flex-start"
-    >
-      <Box sx={{ textAlign: 'right' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-          {!hasGhoBorrowPositions && <NoData variant="secondary14" color="text.muted" />}
-          {hasGhoBorrowPositions && (
+}) => (
+  <Row
+    caption={
+      <Box>
+        <TextWithTooltip text={<Trans>Borrow APY</Trans>}>
+          <Trans>Tooltip test TBD</Trans>
+        </TextWithTooltip>
+        <Typography variant="helperText" color="text.secondary">
+          <Trans>Includes discount</Trans>
+        </Typography>
+      </Box>
+    }
+    captionVariant="description"
+    mb={4}
+    align="flex-start"
+  >
+    <Box sx={{ textAlign: 'right' }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+        {!hasGhoBorrowPositions && inputAmount === '' && (
+          <NoData variant="secondary14" color="text.muted" />
+        )}
+        {hasGhoBorrowPositions ||
+          (!hasGhoBorrowPositions && inputAmount !== '' && (
             <>
               <FormattedNumber value={borrowApy} percent />
               {showApyDifference && (
@@ -348,12 +352,11 @@ export const DetailsGhoApyLine: React.FC<DetailsGhoApyLineProps> = ({
                 </>
               )}
             </>
-          )}
-        </Box>
+          ))}
       </Box>
-    </Row>
-  );
-};
+    </Box>
+  </Row>
+);
 
 type DiscountDetailsGhoLineProps = {
   title: ReactNode;
