@@ -17,6 +17,7 @@ export interface GhoSlice {
   ghoUserDiscountRate: BigNumber;
   ghoDiscountedPerToken: string;
   ghoDiscountRatePercent: number;
+  ghoDiscountLockPeriod: BigNumber;
   ghoFacilitators: string[];
   ghoFacilitatorBucketLevel: string;
   ghoFacilitatorBucketCapacity: string;
@@ -42,6 +43,7 @@ export const createGhoSlice: StateCreator<
     ghoVariableDebtTokenAddress: '0x2A379e5d2871123F301b2c73463cE011EcB217e6',
     ghoUserDiscountRate: BigNumber.from(0),
     ghoDiscountRatePercent: 0,
+    ghoDiscountLockPeriod: BigNumber.from(0),
     ghoFacilitatorBucketLevel: '0',
     ghoFacilitatorBucketCapacity: '0',
     ghoMinDebtTokenBalanceForEligibleDiscount: BigNumber.from(1),
@@ -74,16 +76,19 @@ export const createGhoSlice: StateCreator<
       const address = get().ghoVariableDebtTokenAddress;
       const ghoDiscountRateService = new GhoDiscountRateStrategyService(provider, address);
       const ghoTokenService = new GhoTokenService(provider, ghoTokenAddress);
+      const ghoVariableDebtTokenService = new GhoVariableDebtTokenService(provider, address);
 
       const [
         ghoDiscountedPerToken,
         ghoDiscountRate,
+        ghoDiscountLockPeriod,
         facilitatorInfo,
         ghoMinDebtTokenBalanceForEligibleDiscount,
         ghoMinDiscountTokenBalanceForEligibleDiscount,
       ] = await Promise.all([
         ghoDiscountRateService.getGhoDiscountedPerDiscountToken(),
         ghoDiscountRateService.getGhoDiscountRate(),
+        ghoVariableDebtTokenService.getDiscountLockPeriod(),
         ghoTokenService.getFacilitatorBucket(facilitatorAddress),
         ghoDiscountRateService.getGhoMinDebtTokenBalance(),
         ghoDiscountRateService.getGhoMinDiscountTokenBalance(),
@@ -98,6 +103,7 @@ export const createGhoSlice: StateCreator<
         ghoFacilitatorBucketCapacity: formatUnits(maxCapacity, 18),
         ghoDiscountedPerToken: formatUnits(ghoDiscountedPerToken, 18),
         ghoDiscountRatePercent: ghoDiscountRate.toNumber() * 0.0001, // discount rate is in bps, convert to percentage
+        ghoDiscountLockPeriod,
         ghoMinDebtTokenBalanceForEligibleDiscount,
         ghoMinDiscountTokenBalanceForEligibleDiscount,
       });

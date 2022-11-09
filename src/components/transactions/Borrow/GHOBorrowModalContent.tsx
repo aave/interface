@@ -6,7 +6,7 @@ import {
   valueToBigNumber,
 } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Checkbox, Link, Typography } from '@mui/material';
+import { Box, Checkbox, Divider, Link, Typography } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
@@ -16,12 +16,18 @@ import usePreviousState from 'src/hooks/usePreviousState';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
 import { getMaxGHOMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
+import { formatGhoDiscountLockPeriod } from 'src/utils/ghoUtilities';
 
 import { AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { DetailsGhoApyLine, DetailsHFLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
+import {
+  DetailsGhoApyLine,
+  DetailsHFLine,
+  DiscountDetailsGhoLine,
+  TxModalDetails,
+} from '../FlowCommons/TxModalDetails';
 import { BorrowActions } from './BorrowActions';
 
 export enum ErrorType {
@@ -43,6 +49,7 @@ export const GhoBorrowModalContent = ({
   const {
     stakeUserResult,
     ghoDiscountRatePercent,
+    ghoDiscountLockPeriod,
     ghoDiscountedPerToken,
     ghoMinDebtTokenBalanceForEligibleDiscount,
     ghoMinDiscountTokenBalanceForEligibleDiscount,
@@ -109,6 +116,7 @@ export const GhoBorrowModalContent = ({
   const [calculatedFutureBorrowAPY, setCalculatedFutureBorrowAPY] = useState<number>(0);
   const [apyDiffers, setApyDiffers] = useState(false);
   const [discountableGhoAmount, setDiscountableGhoAmount] = useState<number>(0);
+  const [totalBorrowedGho, setTotalBorrowedGho] = useState<number>(0);
   /**
    * This function recreates the logic that happens in GhoDiscountRateStrategy.sol to determine a user's discount rate for borrowing GHO based off of the amount of stkAAVE a user holds.
    * This is repeated here so that we don't bombard the RPC with HTTP requests to do this calculation and read from on-chain logic.
@@ -132,7 +140,8 @@ export const GhoBorrowModalContent = ({
         } else {
           newRate = (discountableAmount * ghoDiscountRatePercent) / borrowableAmount;
         }
-        setDiscountableGhoAmount(discountableAmount);
+        const normalizedDiscountable = normalizeBN(discountableAmount.toString(), 18).toNumber();
+        setDiscountableGhoAmount(normalizedDiscountable);
       }
 
       // Calculate the new borrow APY - Takes the total discount as a fraction of the existing borrow rate
@@ -152,12 +161,12 @@ export const GhoBorrowModalContent = ({
       const oldRate = calculationHelper(Number(userReserve.totalBorrows));
       const newRate = calculationHelper(borrowedGho);
       if (oldRate !== newRate) {
-        console.log('rates are different', { oldRate, newRate });
         setApyDiffers(true);
       }
       setCalculatedBorrowAPY(oldRate);
       setCalculatedFutureBorrowAPY(newRate);
     }
+    setTotalBorrowedGho(borrowedGho);
   };
 
   useEffect(() => {
@@ -237,6 +246,34 @@ export const GhoBorrowModalContent = ({
           />
         )}
         {/* TODO: show amounts for total borrowed and how much is being discountable */}
+        <Divider sx={{ mb: 7 }}>Discount details</Divider>
+        <DiscountDetailsGhoLine
+          title={<Trans>Total borrow balance</Trans>}
+          subtitle={<Trans>After transaction</Trans>}
+          ghoAmount={totalBorrowedGho}
+          ghoAmountUsd={totalBorrowedGho}
+        />
+        <DiscountDetailsGhoLine
+          title={<Trans>Discountable amount</Trans>}
+          subtitle={<Trans>Borrow @ 1.60% APY</Trans>}
+          ghoAmount={
+            discountableGhoAmount >= totalBorrowedGho ? totalBorrowedGho : discountableGhoAmount
+          }
+          tooltipText={<Trans>This is tooltip text</Trans>}
+        />
+        <DiscountDetailsGhoLine
+          title={<Trans>Non-discountable amount</Trans>}
+          subtitle={<Trans>Borrow @ 2.00% APY</Trans>}
+          ghoAmount={
+            discountableGhoAmount >= totalBorrowedGho ? 0 : totalBorrowedGho - discountableGhoAmount
+          }
+          tooltipText={<Trans>This is tooltip text</Trans>}
+        />
+        <DiscountDetailsGhoLine
+          title={<Trans>Discount lock period</Trans>}
+          tooltipText={<Trans>This is tooltip text</Trans>}
+          discountLockPeriod={formatGhoDiscountLockPeriod(ghoDiscountLockPeriod)}
+        />
       </TxModalDetails>
 
       {txError && <GasEstimationError txError={txError} />}

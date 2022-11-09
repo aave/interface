@@ -126,6 +126,10 @@ msgstr "Address is not a contract"
 msgid "Addresses ({0})"
 msgstr "Addresses ({0})"
 
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
+msgid "After transaction"
+msgstr "After transaction"
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "All Assets"
@@ -322,6 +326,14 @@ msgstr "Blocked Address"
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrow"
 msgstr "Borrow"
+
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
+msgid "Borrow @ 1.60% APY"
+msgstr "Borrow @ 1.60% APY"
+
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
+msgid "Borrow @ 2.00% APY"
+msgstr "Borrow @ 2.00% APY"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/markets/Gho/GhoAssetMobileItem.tsx
@@ -717,11 +729,16 @@ msgstr "Discount and discountable amount are determined by AaveDao and may be ch
 msgid "Discount is available. Learn more"
 msgstr "Discount is available. Learn more"
 
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
+msgid "Discount lock period"
+msgstr "Discount lock period"
+
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
 msgid "Discount program"
 msgstr "Discount program"
 
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
 msgid "Discountable amount"
@@ -1236,6 +1253,10 @@ msgstr "No search results for"
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 msgid "No voting power"
 msgstr "No voting power"
+
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
+msgid "Non-discountable amount"
+msgstr "Non-discountable amount"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
@@ -1929,6 +1950,12 @@ msgstr "This is the total amount available for you to borrow. You can borrow bas
 msgid "This is the total amount that you are able to supply to in this reserve. You are able to supply your wallet balance up until the supply cap is reached."
 msgstr "This is the total amount that you are able to supply to in this reserve. You are able to supply your wallet balance up until the supply cap is reached."
 
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
+msgid "This is tooltip text"
+msgstr "This is tooltip text"
+
 #: src/components/infoTooltips/LiquidationThresholdTooltip.tsx
 msgid "This represents the threshold at which a borrow position will be considered undercollateralized and subject to liquidation for each collateral. For example, if a collateral has a liquidation threshold of 80%, it means that the position will be liquidated when the debt value is worth 80% of the collateral value."
 msgstr "This represents the threshold at which a borrow position will be considered undercollateralized and subject to liquidation for each collateral. For example, if a collateral has a liquidation threshold of 80%, it means that the position will be liquidated when the debt value is worth 80% of the collateral value."
@@ -1984,6 +2011,10 @@ msgstr "Top 10 addresses"
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total available"
 msgstr "Total available"
+
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
+msgid "Total borrow balance"
+msgstr "Total borrow balance"
 
 #: src/modules/markets/AssetsList.tsx
 #: src/modules/markets/AssetsListMobileItem.tsx

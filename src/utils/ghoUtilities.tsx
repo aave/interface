@@ -1,3 +1,5 @@
+import { timeFormat } from 'd3-time-format';
+import { BigNumber } from 'ethers';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 /**
@@ -47,4 +49,15 @@ export const getAvailableBorrows = (
   const availableBorrows = Math.min(userAvailableBorrows, remainingBucketCapacity);
 
   return availableBorrows;
+};
+
+/**
+ * Formats the GHO discount lock period from uint256 to a human-readable date
+ * @param discountLockPeriod - The BigNumber of the discount lock period returned from the GhoVariableDebtToken.sol contract
+ * @returns - A formatted date as a string
+ */
+export const formatGhoDiscountLockPeriod = (discountLockPeriod: BigNumber): string => {
+  const date = new Date(discountLockPeriod.toNumber());
+  const formatter = timeFormat('%d %B %Y');
+  return formatter(date);
 };

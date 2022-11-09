@@ -3,8 +3,9 @@ import { CheckIcon, ExclamationIcon } from '@heroicons/react/outline';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, FormControlLabel, SvgIcon, Switch, Typography } from '@mui/material';
+import { timeFormat } from 'd3-time-format';
 import { parseUnits } from 'ethers/lib/utils';
-import React, { ReactNode } from 'react';
+import React, { JSXElementConstructor, ReactElement, ReactNode } from 'react';
 import { NoData } from 'src/components/primitives/NoData';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { CollateralType } from 'src/helpers/types';
@@ -349,6 +350,72 @@ export const DetailsGhoApyLine: React.FC<DetailsGhoApyLineProps> = ({
             </>
           )}
         </Box>
+      </Box>
+    </Row>
+  );
+};
+
+type DiscountDetailsGhoLineProps = {
+  title: ReactNode;
+  subtitle?: ReactNode;
+  ghoAmount?: number;
+  ghoAmountUsd?: number;
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+  tooltipText?: ReactElement<any, string | JSXElementConstructor<any>> | undefined;
+  discountLockPeriod?: string;
+};
+
+export const DiscountDetailsGhoLine: React.FC<DiscountDetailsGhoLineProps> = ({
+  title,
+  subtitle,
+  ghoAmount,
+  ghoAmountUsd,
+  tooltipText,
+  discountLockPeriod,
+}) => {
+  const formatLockPeriodDate = timeFormat('%b %d, %Y');
+  return (
+    <Row
+      caption={
+        <Box>
+          {tooltipText ? (
+            <TextWithTooltip text={title}>{tooltipText}</TextWithTooltip>
+          ) : (
+            <Typography>{title}</Typography>
+          )}
+          {subtitle && (
+            <Typography variant="helperText" color="text.secondary">
+              {subtitle}
+            </Typography>
+          )}
+        </Box>
+      }
+      captionVariant="description"
+      mb={4}
+      align="flex-start"
+    >
+      <Box sx={{ textAlign: 'right' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+          {ghoAmount && (
+            <>
+              <TokenIcon symbol="GHO" fontSize="small" sx={{ mr: 1 }} />{' '}
+              <FormattedNumber value={ghoAmount} visibleDecimals={2} />
+            </>
+          )}
+          {discountLockPeriod && (
+            <Typography>{formatLockPeriodDate(new Date(discountLockPeriod))}</Typography>
+          )}
+        </Box>
+        {ghoAmountUsd && (
+          <FormattedNumber
+            value={ghoAmountUsd}
+            symbol="USD"
+            visibleDecimals={2}
+            variant="helperText"
+            color="text.secondary"
+            compact
+          />
+        )}
       </Box>
     </Row>
   );
