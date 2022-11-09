@@ -21,6 +21,13 @@ import { RootStore } from './root';
 const ghoTokenAddress = '0xa48ddcca78a09c37b4070b3e210d6e0234911549';
 const facilitatorAddress = '0x12cA83Bd0d5887865b7a43B73bbF586D7C087943';
 
+// const goerliGhoConfig = {
+//   market: marketsData[CustomMarket.proto_goerli_gho_v3],
+//   ghoTokenAddress: '0xa48ddcca78a09c37b4070b3e210d6e0234911549',
+//   facilitatorAddress: '0x12cA83Bd0d5887865b7a43B73bbF586D7C087943',
+//   ghoVariableDebtTokenAddress: '0x2A379e5d2871123F301b2c73463cE011EcB217e6',
+// };
+
 const getGhoMarket = () => {
   if (STAGING_ENV || ENABLE_TESTNET) {
     return marketsData[CustomMarket.proto_goerli_gho_v3];
@@ -41,6 +48,9 @@ export interface GhoSlice {
   ghoMinDebtTokenBalanceForEligibleDiscount: BigNumber;
   ghoMinDiscountTokenBalanceForEligibleDiscount: BigNumber;
   ghoBorrowAPR: number;
+  ghoComputed: {
+    borrowAPRWithMaxDiscount: () => number;
+  };
   ghoUpdateDiscountRate: () => Promise<void>;
   ghoCalculateDiscountRate: (
     ghoDebtTokenBalance: BigNumberish,
@@ -57,6 +67,13 @@ export const createGhoSlice: StateCreator<
   GhoSlice
 > = (set, get) => {
   return {
+    ghoComputed: {
+      borrowAPRWithMaxDiscount: () => {
+        const borrowAPR = get().ghoBorrowAPR;
+        const discountRate = get().ghoDiscountRatePercent;
+        return borrowAPR * (1 - discountRate);
+      },
+    },
     ghoFacilitators: [],
     ghoDiscountedPerToken: '0',
     ghoVariableDebtTokenAddress: '0x2A379e5d2871123F301b2c73463cE011EcB217e6',

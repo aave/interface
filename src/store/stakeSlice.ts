@@ -67,6 +67,9 @@ export interface StakeSlice {
     amount: string;
   }) => Promise<EthereumTransactionTypeExtended[]>;
   redeem: (token: string) => (amount: string) => Promise<EthereumTransactionTypeExtended[]>;
+  computed: {
+    isStakeFork: () => boolean;
+  };
 }
 
 export const createStakeSlice: StateCreator<
@@ -76,13 +79,17 @@ export const createStakeSlice: StateCreator<
   StakeSlice
 > = (set, get) => {
   function getCorrectProvider() {
-    const currentNetworkConfig = get().currentNetworkConfig;
-    const isStakeFork =
-      currentNetworkConfig.isFork &&
-      currentNetworkConfig.underlyingChainId === stakeConfig?.chainId;
+    const isStakeFork = get().computed.isStakeFork();
     return isStakeFork ? get().jsonRpcProvider() : getProvider(stakeConfig.chainId);
   }
   return {
+    computed: {
+      isStakeFork: () => {
+        const currentNetworkConfig = get().currentNetworkConfig;
+        if (!currentNetworkConfig.isFork) return false;
+        return currentNetworkConfig.underlyingChainId === stakeConfig.chainId;
+      },
+    },
     stakeDataLoading: true,
     refetchStakeData: async () => {
       const uiStakeDataProvider = new UiStakeDataProvider({

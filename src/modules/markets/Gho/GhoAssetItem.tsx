@@ -8,7 +8,6 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
-import { ghoBorrowAPRWithMaxDiscount } from 'src/utils/ghoUtilities';
 
 const FieldSet = styled('fieldset')(({ theme }) => ({
   height: '103px',
@@ -34,12 +33,9 @@ interface GhoAssetItemProps {
 export const GhoAssetItem = ({ reserve }: GhoAssetItemProps) => {
   const { currentMarket } = useProtocolDataContext();
 
+  const getBorrowAPR = useRootStore((state) => state.ghoComputed.borrowAPRWithMaxDiscount);
   const totalBorrowed = useRootStore((state) => state.ghoFacilitatorBucketLevel);
   const ghoDiscountRate = useRootStore((state) => state.ghoDiscountRatePercent);
-  const borrowAPRWithMaxDiscount = ghoBorrowAPRWithMaxDiscount(
-    ghoDiscountRate,
-    Number(reserve.variableBorrowAPR)
-  );
 
   return (
     <Box sx={{ px: 6, mt: 1, mb: 6 }}>
@@ -89,7 +85,7 @@ export const GhoAssetItem = ({ reserve }: GhoAssetItemProps) => {
               <FormattedNumber
                 compact
                 percent
-                value={borrowAPRWithMaxDiscount}
+                value={getBorrowAPR()}
                 visibleDecimals={1}
                 variant="h3"
               />

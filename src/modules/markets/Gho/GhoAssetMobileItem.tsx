@@ -8,7 +8,6 @@ import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
-import { ghoBorrowAPRWithMaxDiscount } from 'src/utils/ghoUtilities';
 
 interface GhoAssetMobileItemProps {
   reserve: ComputedReserveData;
@@ -18,12 +17,11 @@ export const GhoAssetMobileItem = ({ reserve }: GhoAssetMobileItemProps) => {
   const { currentMarket } = useProtocolDataContext();
   const theme = useTheme();
 
-  const totalBorrowed = useRootStore((state) => state.ghoFacilitatorBucketLevel);
-  const ghoDiscountRate = useRootStore((state) => state.ghoDiscountRatePercent);
-  const borrowAPRWithMaxDiscount = ghoBorrowAPRWithMaxDiscount(
-    ghoDiscountRate,
-    Number(reserve.variableBorrowAPR)
-  );
+  const [totalBorrowed, ghoDiscountRate, getBorrowAPR] = useRootStore((state) => [
+    state.ghoFacilitatorBucketLevel,
+    state.ghoDiscountRatePercent,
+    state.ghoComputed.borrowAPRWithMaxDiscount,
+  ]);
 
   return (
     <Box>
@@ -87,12 +85,7 @@ export const GhoAssetMobileItem = ({ reserve }: GhoAssetMobileItemProps) => {
           captionVariant="description"
         >
           <Box>
-            <FormattedNumber
-              compact
-              percent
-              value={borrowAPRWithMaxDiscount}
-              variant="secondary14"
-            />
+            <FormattedNumber compact percent value={getBorrowAPR()} variant="secondary14" />
             <Box
               sx={{
                 color: '#fff',

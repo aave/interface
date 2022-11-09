@@ -23,10 +23,6 @@ export const ghoMintingAvailable = ({
   }
 };
 
-export const ghoBorrowAPRWithMaxDiscount = (ghoDiscountRate: number, variableBorrowAPR: number) => {
-  return Number(variableBorrowAPR) * (1 - ghoDiscountRate);
-};
-
 export const getGhoReserve = (reserves: ComputedReserveData[]) => {
   return reserves.find((reserve) => reserve.symbol === 'GHO');
 };
