@@ -1,5 +1,7 @@
+import { generateOnRampURL } from '@coinbase/cbpay-js';
 import { BookOpenIcon, CreditCardIcon, QuestionMarkCircleIcon } from '@heroicons/react/outline';
 import { t } from '@lingui/macro';
+import CoinbaseLogo from 'public/icons/onRampServices/coinbase_coin_pay_blue.svg';
 import { ReactNode } from 'react';
 import { ROUTES } from 'src/components/primitives/Link';
 import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
@@ -84,6 +86,24 @@ const moreMenuItems: MoreMenuItem[] = [
       `${process.env.NEXT_PUBLIC_TRANSAK_APP_URL}/?apiKey=${process.env.NEXT_PUBLIC_TRANSAK_API_KEY}&walletAddress=${walletAddress}&disableWalletAddressForm=true`,
     title: t`Buy Crypto With Fiat`,
     icon: <CreditCardIcon />,
+  },
+  {
+    link: 'https://pay.coinbase.com',
+    makeLink: (walletAddress) => {
+      if (!process.env.NEXT_PUBLIC_COINBASE_API_KEY || !walletAddress)
+        return 'https://coinbase.com';
+      return generateOnRampURL({
+        appId: process.env.NEXT_PUBLIC_COINBASE_API_KEY,
+        destinationWallets: [
+          {
+            address: walletAddress,
+            blockchains: ['ethereum'],
+          },
+        ],
+      });
+    },
+    title: t`Buy Crypto With Fiat`,
+    icon: <CoinbaseLogo />,
   },
 ];
 

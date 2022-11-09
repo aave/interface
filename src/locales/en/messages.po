@@ -376,6 +376,7 @@ msgid "Borrowing {symbol}"
 msgstr "Borrowing {symbol}"
 
 #: src/ui-config/menu-items/index.tsx
+#: src/ui-config/menu-items/index.tsx
 msgid "Buy Crypto With Fiat"
 msgstr "Buy Crypto With Fiat"
 

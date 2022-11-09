@@ -33,6 +33,7 @@
   "dependencies": {
     "@aave/contract-helpers": "1.9.0",
     "@aave/math-utils": "1.9.0",
+    "@coinbase/cbpay-js": "^1.6.0",
     "@emotion/cache": "11.10.3",
     "@emotion/react": "11.10.4",
     "@emotion/server": "latest",
