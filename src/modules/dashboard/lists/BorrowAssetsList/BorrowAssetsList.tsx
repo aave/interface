@@ -28,8 +28,8 @@ import { ListHeader } from '../ListHeader';
 import { ListLoader } from '../ListLoader';
 import { BorrowAssetsListItem } from './BorrowAssetsListItem';
 import { BorrowAssetsListMobileItem } from './BorrowAssetsListMobileItem';
-import { GHOBorrowAssetsListItem } from './GHOBorrowAssetsListItem';
-import { GHOBorrowAssetsListMobileItem } from './GHOBorrowAssetsListMobileItem';
+import { GhoBorrowAssetsListItem } from './GhoBorrowAssetsListItem';
+import { GhoBorrowAssetsListMobileItem } from './GhoBorrowAssetsListMobileItem';
 
 export const BorrowAssetsList = () => {
   const { currentNetworkConfig, currentMarket } = useProtocolDataContext();
@@ -190,7 +190,7 @@ export const BorrowAssetsList = () => {
                   symbol: item.symbol,
                   currentMarket,
                 }) ? (
-                  <GHOBorrowAssetsListMobileItem
+                  <GhoBorrowAssetsListMobileItem
                     {...item}
                     userAvailableBorrows={maxBorrowAmount.toString()}
                   />
@@ -201,7 +201,7 @@ export const BorrowAssetsList = () => {
                   symbol: item.symbol,
                   currentMarket,
                 }) ? (
-                <GHOBorrowAssetsListItem
+                <GhoBorrowAssetsListItem
                   {...item}
                   userAvailableBorrows={maxBorrowAmount.toString()}
                 />

@@ -14,11 +14,11 @@ import dayjs from 'dayjs';
 import { formatUnits } from 'ethers/lib/utils';
 import { useRootStore } from 'src/store/root';
 
-import { FormattedNumber } from '../primitives/FormattedNumber';
-import { Link } from '../primitives/Link';
-import { TokenIcon } from '../primitives/TokenIcon';
+import { FormattedNumber } from './primitives/FormattedNumber';
+import { Link } from './primitives/Link';
+import { TokenIcon } from './primitives/TokenIcon';
 
-export const GHODiscountButton = ({ baseRate }: { baseRate: string | number }) => {
+export const GhoDiscountButton = ({ baseRate }: { baseRate: string | number }) => {
   const theme = useTheme();
   const [stakeUserResult, ghoDiscountedPerToken, ghoDiscountRatePercent] = useRootStore((state) => [
     state.stakeUserResult,

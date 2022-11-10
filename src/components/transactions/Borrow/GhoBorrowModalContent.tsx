@@ -16,7 +16,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import usePreviousState from 'src/hooks/usePreviousState';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
-import { getMaxGHOMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
+import { getMaxGhoMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { formatGhoDiscountLockPeriodExpiryDate } from 'src/utils/ghoUtilities';
 
 import { AssetInput } from '../AssetInput';
@@ -60,7 +60,9 @@ export const GhoBorrowModalContent = ({
   const [_amount, setAmount] = useState('');
   const prevAmount = usePreviousState(_amount);
   const amountRef = useRef<string>();
-  const maxAmountToBorrow = getMaxGHOMintAmount(user);
+
+  // amount calculations
+  const maxAmountToBorrow = getMaxGhoMintAmount(user);
   const formattedMaxAmountToBorrow = maxAmountToBorrow.toString(10);
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? maxAmountToBorrow.toString(10) : _amount;

@@ -38,7 +38,7 @@ msgstr "APR"
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
-#: src/modules/dashboard/lists/BorrowedPositionsList/GHOBorrowedPositionsListMobileItem.tsx
+#: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
@@ -48,13 +48,13 @@ msgstr "APY"
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
-#: src/modules/dashboard/lists/BorrowedPositionsList/GHOBorrowedPositionsListMobileItem.tsx
+#: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListMobileItem.tsx
 msgid "APY type"
 msgstr "APY type"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
-#: src/modules/dashboard/lists/BorrowAssetsList/GHOBorrowAssetsListMobileItem.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "APY, stable"
@@ -62,7 +62,7 @@ msgstr "APY, stable"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
-#: src/modules/dashboard/lists/BorrowAssetsList/GHOBorrowAssetsListMobileItem.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/ListItemAPYButton.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "APY, variable"
@@ -126,7 +126,7 @@ msgstr "Address is not a contract"
 msgid "Addresses ({0})"
 msgstr "Addresses ({0})"
 
-#: src/components/transactions/Borrow/GHOBorrowModalContent.tsx
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 msgid "After transaction"
 msgstr "After transaction"
 
@@ -271,7 +271,7 @@ msgstr "Available rewards"
 
 #: src/components/caps/CapsHint.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
-#: src/modules/dashboard/lists/BorrowAssetsList/GHOBorrowAssetsListMobileItem.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Available to borrow"
 msgstr "Available to borrow"
@@ -317,21 +317,21 @@ msgstr "Blocked Address"
 #: src/components/transactions/Borrow/BorrowModal.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
-#: src/modules/dashboard/lists/BorrowAssetsList/GHOBorrowAssetsListItem.tsx
-#: src/modules/dashboard/lists/BorrowAssetsList/GHOBorrowAssetsListMobileItem.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
-#: src/modules/dashboard/lists/BorrowedPositionsList/GHOBorrowedPositionsListItem.tsx
-#: src/modules/dashboard/lists/BorrowedPositionsList/GHOBorrowedPositionsListMobileItem.tsx
+#: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListItem.tsx
+#: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrow"
 msgstr "Borrow"
 
-#: src/components/transactions/Borrow/GHOBorrowModalContent.tsx
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 msgid "Borrow @ 1.60% APY"
 msgstr "Borrow @ 1.60% APY"
 
-#: src/components/transactions/Borrow/GHOBorrowModalContent.tsx
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 msgid "Borrow @ 2.00% APY"
 msgstr "Borrow @ 2.00% APY"
 
@@ -385,7 +385,7 @@ msgid "Borrow {symbol}"
 msgstr "Borrow {symbol}"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
-#: src/components/transactions/Borrow/GHOBorrowModalContent.tsx
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 msgid "Borrowed"
 msgstr "Borrowed"
 
@@ -418,7 +418,7 @@ msgid "Borrowing power and assets are limited due to Isolation mode."
 msgstr "Borrowing power and assets are limited due to Isolation mode."
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
-#: src/components/transactions/Borrow/GHOBorrowModalContent.tsx
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 msgid "Borrowing this amount will reduce your health factor and increase risk of liquidation."
 msgstr "Borrowing this amount will reduce your health factor and increase risk of liquidation."
 
@@ -624,7 +624,7 @@ msgstr "Data couldn't be fetched, please reload graph."
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
-#: src/modules/dashboard/lists/BorrowedPositionsList/GHOBorrowedPositionsListMobileItem.tsx
+#: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListMobileItem.tsx
 msgid "Debt"
 msgstr "Debt"
 
@@ -663,8 +663,8 @@ msgstr "Delegation"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
-#: src/modules/dashboard/lists/BorrowAssetsList/GHOBorrowAssetsListItem.tsx
-#: src/modules/dashboard/lists/BorrowAssetsList/GHOBorrowAssetsListMobileItem.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
+#: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/markets/AssetsListItem.tsx
@@ -725,11 +725,11 @@ msgstr "Discord channel"
 msgid "Discount and discountable amount are determined by AaveDao and may be changed over time. Participate in Governance to vote."
 msgstr "Discount and discountable amount are determined by AaveDao and may be changed over time. Participate in Governance to vote."
 
-#: src/components/gho/GHODiscountButton.tsx
+#: src/components/GhoDiscountButton.tsx
 msgid "Discount is available. Learn more"
 msgstr "Discount is available. Learn more"
 
-#: src/components/transactions/Borrow/GHOBorrowModalContent.tsx
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 msgid "Discount lock period"
 msgstr "Discount lock period"
 
@@ -738,7 +738,7 @@ msgstr "Discount lock period"
 msgid "Discount program"
 msgstr "Discount program"
 
-#: src/components/transactions/Borrow/GHOBorrowModalContent.tsx
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
 msgid "Discountable amount"
@@ -901,11 +901,11 @@ msgstr "Funds in the Safety Module"
 msgid "GHO"
 msgstr "GHO"
 
-#: src/components/infoTooltips/GHOBorrowRateTooltip.tsx
+#: src/components/infoTooltips/GhoBorrowRateTooltip.tsx
 msgid "GHO borrow rate can be discounted by holding stkAave."
 msgstr "GHO borrow rate can be discounted by holding stkAave."
 
-#: src/components/transactions/Borrow/GHOBorrowModalContent.tsx
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 msgid "GHO discount program"
 msgstr "GHO discount program"
 
@@ -967,7 +967,7 @@ msgid "Hide"
 msgstr "Hide"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
-#: src/components/transactions/Borrow/GHOBorrowModalContent.tsx
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "I acknowledge the risks involved."
 msgstr "I acknowledge the risks involved."
@@ -1127,7 +1127,7 @@ msgstr "Liquidation value"
 msgid "Loading data..."
 msgstr "Loading data..."
 
-#: src/components/gho/GHODiscountButton.tsx
+#: src/components/GhoDiscountButton.tsx
 msgid "Lock period"
 msgstr "Lock period"
 
@@ -1254,7 +1254,7 @@ msgstr "No search results for"
 msgid "No voting power"
 msgstr "No voting power"
 
-#: src/components/transactions/Borrow/GHOBorrowModalContent.tsx
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 msgid "Non-discountable amount"
 msgstr "Non-discountable amount"
 
@@ -1469,8 +1469,8 @@ msgstr "Remaining supply"
 #: src/components/transactions/Repay/RepayModal.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
-#: src/modules/dashboard/lists/BorrowedPositionsList/GHOBorrowedPositionsListItem.tsx
-#: src/modules/dashboard/lists/BorrowedPositionsList/GHOBorrowedPositionsListMobileItem.tsx
+#: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListItem.tsx
+#: src/modules/dashboard/lists/BorrowedPositionsList/GhoBorrowedPositionsListMobileItem.tsx
 msgid "Repay"
 msgstr "Repay"
 
@@ -1545,7 +1545,7 @@ msgstr "Risk details"
 msgid "SEE CHARTS"
 msgstr "SEE CHARTS"
 
-#: src/components/transactions/Borrow/GHOBorrowModalContent.tsx
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 msgid "Safety Module participants (i.e., stkAAVE holders) receive 20% discount on the GHO borrow interest rate. <0>Learn details</0>"
 msgstr "Safety Module participants (i.e., stkAAVE holders) receive 20% discount on the GHO borrow interest rate. <0>Learn details</0>"
 
@@ -1950,9 +1950,9 @@ msgstr "This is the total amount available for you to borrow. You can borrow bas
 msgid "This is the total amount that you are able to supply to in this reserve. You are able to supply your wallet balance up until the supply cap is reached."
 msgstr "This is the total amount that you are able to supply to in this reserve. You are able to supply your wallet balance up until the supply cap is reached."
 
-#: src/components/transactions/Borrow/GHOBorrowModalContent.tsx
-#: src/components/transactions/Borrow/GHOBorrowModalContent.tsx
-#: src/components/transactions/Borrow/GHOBorrowModalContent.tsx
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 msgid "This is tooltip text"
 msgstr "This is tooltip text"
 
@@ -2012,7 +2012,7 @@ msgstr "Top 10 addresses"
 msgid "Total available"
 msgstr "Total available"
 
-#: src/components/transactions/Borrow/GHOBorrowModalContent.tsx
+#: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 msgid "Total borrow balance"
 msgstr "Total borrow balance"
 
