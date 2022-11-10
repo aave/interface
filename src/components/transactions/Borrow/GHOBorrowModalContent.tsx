@@ -6,7 +6,7 @@ import {
   valueToBigNumber,
 } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Checkbox, Divider, Link, Typography } from '@mui/material';
+import { Box, Checkbox, Divider, Link, Typography } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
