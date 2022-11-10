@@ -126,7 +126,7 @@ msgstr "Address is not a contract"
 msgid "Addresses ({0})"
 msgstr "Addresses ({0})"
 
-#: src/components/transactions/Borrow/old.tsx
+#: src/components/transactions/Borrow/GHOBorrowModalContent.tsx
 msgid "After transaction"
 msgstr "After transaction"
 
@@ -327,11 +327,11 @@ msgstr "Blocked Address"
 msgid "Borrow"
 msgstr "Borrow"
 
-#: src/components/transactions/Borrow/old.tsx
+#: src/components/transactions/Borrow/GHOBorrowModalContent.tsx
 msgid "Borrow @ 1.60% APY"
 msgstr "Borrow @ 1.60% APY"
 
-#: src/components/transactions/Borrow/old.tsx
+#: src/components/transactions/Borrow/GHOBorrowModalContent.tsx
 msgid "Borrow @ 2.00% APY"
 msgstr "Borrow @ 2.00% APY"
 
@@ -385,7 +385,7 @@ msgid "Borrow {symbol}"
 msgstr "Borrow {symbol}"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
-#: src/components/transactions/Borrow/old.tsx
+#: src/components/transactions/Borrow/GHOBorrowModalContent.tsx
 msgid "Borrowed"
 msgstr "Borrowed"
 
@@ -418,7 +418,7 @@ msgid "Borrowing power and assets are limited due to Isolation mode."
 msgstr "Borrowing power and assets are limited due to Isolation mode."
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
-#: src/components/transactions/Borrow/old.tsx
+#: src/components/transactions/Borrow/GHOBorrowModalContent.tsx
 msgid "Borrowing this amount will reduce your health factor and increase risk of liquidation."
 msgstr "Borrowing this amount will reduce your health factor and increase risk of liquidation."
 
@@ -729,7 +729,7 @@ msgstr "Discount and discountable amount are determined by AaveDao and may be ch
 msgid "Discount is available. Learn more"
 msgstr "Discount is available. Learn more"
 
-#: src/components/transactions/Borrow/old.tsx
+#: src/components/transactions/Borrow/GHOBorrowModalContent.tsx
 msgid "Discount lock period"
 msgstr "Discount lock period"
 
@@ -738,7 +738,7 @@ msgstr "Discount lock period"
 msgid "Discount program"
 msgstr "Discount program"
 
-#: src/components/transactions/Borrow/old.tsx
+#: src/components/transactions/Borrow/GHOBorrowModalContent.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
 msgid "Discountable amount"
@@ -905,7 +905,7 @@ msgstr "GHO"
 msgid "GHO borrow rate can be discounted by holding stkAave."
 msgstr "GHO borrow rate can be discounted by holding stkAave."
 
-#: src/components/transactions/Borrow/old.tsx
+#: src/components/transactions/Borrow/GHOBorrowModalContent.tsx
 msgid "GHO discount program"
 msgstr "GHO discount program"
 
@@ -967,7 +967,7 @@ msgid "Hide"
 msgstr "Hide"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
-#: src/components/transactions/Borrow/old.tsx
+#: src/components/transactions/Borrow/GHOBorrowModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "I acknowledge the risks involved."
 msgstr "I acknowledge the risks involved."
@@ -1254,7 +1254,7 @@ msgstr "No search results for"
 msgid "No voting power"
 msgstr "No voting power"
 
-#: src/components/transactions/Borrow/old.tsx
+#: src/components/transactions/Borrow/GHOBorrowModalContent.tsx
 msgid "Non-discountable amount"
 msgstr "Non-discountable amount"
 
@@ -1545,7 +1545,7 @@ msgstr "Risk details"
 msgid "SEE CHARTS"
 msgstr "SEE CHARTS"
 
-#: src/components/transactions/Borrow/old.tsx
+#: src/components/transactions/Borrow/GHOBorrowModalContent.tsx
 msgid "Safety Module participants (i.e., stkAAVE holders) receive 20% discount on the GHO borrow interest rate. <0>Learn details</0>"
 msgstr "Safety Module participants (i.e., stkAAVE holders) receive 20% discount on the GHO borrow interest rate. <0>Learn details</0>"
 
@@ -1950,9 +1950,9 @@ msgstr "This is the total amount available for you to borrow. You can borrow bas
 msgid "This is the total amount that you are able to supply to in this reserve. You are able to supply your wallet balance up until the supply cap is reached."
 msgstr "This is the total amount that you are able to supply to in this reserve. You are able to supply your wallet balance up until the supply cap is reached."
 
-#: src/components/transactions/Borrow/old.tsx
-#: src/components/transactions/Borrow/old.tsx
-#: src/components/transactions/Borrow/old.tsx
+#: src/components/transactions/Borrow/GHOBorrowModalContent.tsx
+#: src/components/transactions/Borrow/GHOBorrowModalContent.tsx
+#: src/components/transactions/Borrow/GHOBorrowModalContent.tsx
 msgid "This is tooltip text"
 msgstr "This is tooltip text"
 
@@ -2012,7 +2012,7 @@ msgstr "Top 10 addresses"
 msgid "Total available"
 msgstr "Total available"
 
-#: src/components/transactions/Borrow/old.tsx
+#: src/components/transactions/Borrow/GHOBorrowModalContent.tsx
 msgid "Total borrow balance"
 msgstr "Total borrow balance"
 
