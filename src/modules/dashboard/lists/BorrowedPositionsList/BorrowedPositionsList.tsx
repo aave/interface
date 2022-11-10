@@ -23,8 +23,8 @@ import { ListLoader } from '../ListLoader';
 import { ListTopInfoItem } from '../ListTopInfoItem';
 import { BorrowedPositionsListItem } from './BorrowedPositionsListItem';
 import { BorrowedPositionsListMobileItem } from './BorrowedPositionsListMobileItem';
-import { GHOBorrowedPositionsListItem } from './GHOBorrowedPositionsListItem';
-import { GHOBorrowedPositionsListMobileItem } from './GHOBorrowedPositionsListMobileItem';
+import { GhoBorrowedPositionsListItem } from './GhoBorrowedPositionsListItem';
+import { GhoBorrowedPositionsListMobileItem } from './GhoBorrowedPositionsListMobileItem';
 
 export const BorrowedPositionsList = () => {
   const { user, loading } = useAppDataContext();
@@ -42,9 +42,9 @@ export const BorrowedPositionsList = () => {
             ...userReserve.reserve,
             ...(userReserve.reserve.isWrappedBaseAsset
               ? fetchIconSymbolAndName({
-                  symbol: currentNetworkConfig.baseAssetSymbol,
-                  underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
-                })
+                symbol: currentNetworkConfig.baseAssetSymbol,
+                underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
+              })
               : {}),
           },
         });
@@ -57,9 +57,9 @@ export const BorrowedPositionsList = () => {
             ...userReserve.reserve,
             ...(userReserve.reserve.isWrappedBaseAsset
               ? fetchIconSymbolAndName({
-                  symbol: currentNetworkConfig.baseAssetSymbol,
-                  underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
-                })
+                symbol: currentNetworkConfig.baseAssetSymbol,
+                underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
+              })
               : {}),
           },
         });
@@ -72,8 +72,8 @@ export const BorrowedPositionsList = () => {
   const collateralUsagePercent = maxBorrowAmount.eq(0)
     ? '0'
     : valueToBigNumber(user?.totalBorrowsMarketReferenceCurrency || '0')
-        .div(maxBorrowAmount)
-        .toFixed();
+      .div(maxBorrowAmount)
+      .toFixed();
 
   const head = [
     <Trans key="Debt">Debt</Trans>,
@@ -126,7 +126,7 @@ export const BorrowedPositionsList = () => {
               <AssetCapsProvider asset={item.reserve}>
                 {downToXSM ? (
                   ghoMintingAvailable({ symbol: item.reserve.symbol, currentMarket }) ? (
-                    <GHOBorrowedPositionsListMobileItem
+                    <GhoBorrowedPositionsListMobileItem
                       {...item}
                       key={item.underlyingAsset + item.borrowRateMode}
                     />
@@ -137,7 +137,7 @@ export const BorrowedPositionsList = () => {
                     />
                   )
                 ) : ghoMintingAvailable({ symbol: item.reserve.symbol, currentMarket }) ? (
-                  <GHOBorrowedPositionsListItem
+                  <GhoBorrowedPositionsListItem
                     {...item}
                     key={item.underlyingAsset + item.borrowRateMode}
                   />

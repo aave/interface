@@ -19,7 +19,7 @@ import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvide
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
-import { getMaxGHOMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
+import { getMaxGhoMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
 
 import { CapType } from '../../caps/helper';
 import { AssetInput } from '../AssetInput';
@@ -96,7 +96,7 @@ const BorrowModeSwitch = ({
   );
 };
 
-export const GHOBorrowModalContent = ({
+export const GhoBorrowModalContent = ({
   underlyingAsset,
   isWrongNetwork,
   poolReserve,
@@ -112,7 +112,7 @@ export const GHOBorrowModalContent = ({
   const amountRef = useRef<string>();
 
   // amount calculations
-  const maxAmountToBorrow = getMaxGHOMintAmount(user);
+  const maxAmountToBorrow = getMaxGhoMintAmount(user);
   const formattedMaxAmountToBorrow = maxAmountToBorrow.toString(10);
 
   const isMaxSelected = _amount === '-1';

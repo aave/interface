@@ -22,7 +22,7 @@ import { AssetsListMobileItemLoader } from './AssetsListMobileItemLoader';
 import { GhoAssetItem } from './Gho/GhoAssetItem';
 import { GhoAssetMobileItem } from './Gho/GhoAssetMobileItem';
 
-const shouldDisplayGHO = (marketTitle: string, searchTerm: string): boolean => {
+const shouldDisplayGho = (marketTitle: string, searchTerm: string): boolean => {
   if (!ghoMintingMarkets.includes(marketTitle)) {
     return false;
   }
@@ -129,9 +129,9 @@ export default function AssetsList() {
   ];
 
   const marketFrozen = !reserves.some((reserve) => !reserve.isFrozen);
-  const displayGHO = shouldDisplayGHO(currentMarket, searchTerm);
-  const hideTableHeader = !loading && displayGHO && filteredData.length === 0;
-  const showNoResults = !loading && !displayGHO && filteredData.length === 0;
+  const displayGho = shouldDisplayGho(currentMarket, searchTerm);
+  const hideTableHeader = !loading && displayGho && filteredData.length === 0;
+  const showNoResults = !loading && !displayGho && filteredData.length === 0;
 
   return (
     <ListWrapper
@@ -154,7 +154,7 @@ export default function AssetsList() {
         </Box>
       )}
 
-      {ghoReserve && displayGHO && (
+      {ghoReserve && displayGho && (
         <Box sx={{ mb: hideTableHeader ? 62 : 0 }}>
           {isTableChangedToCards ? (
             <GhoAssetMobileItem reserve={ghoReserve} />

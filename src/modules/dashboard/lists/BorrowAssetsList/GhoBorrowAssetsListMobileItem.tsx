@@ -1,21 +1,23 @@
 import { Trans } from '@lingui/macro';
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { formatUnits } from 'ethers/lib/utils';
-import { GHODiscountButton } from 'src/components/gho/GHODiscountButton';
-import { GHOBorrowRateTooltip } from 'src/components/infoTooltips/GHOBorrowRateTooltip';
-import { useModalContext } from 'src/hooks/useModal';
+import { GhoDiscountButton } from 'src/components/GhoDiscountButton';
+import { GhoBorrowRateTooltip } from 'src/components/infoTooltips/GhoBorrowRateTooltip';
+import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
+import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { getAvailableBorrows } from 'src/utils/ghoUtilities';
 
+import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
-import { ListAPRColumn } from '../ListAPRColumn';
-import { ListButtonsColumn } from '../ListButtonsColumn';
-import { ListItemWrapper } from '../ListItemWrapper';
-import { ListValueColumn } from '../ListValueColumn';
-import { GHOBorrowAssetsItem } from './types';
+import { Row } from '../../../../components/primitives/Row';
+import { useModalContext } from '../../../../hooks/useModal';
+import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
+import { ListValueRow } from '../ListValueRow';
+import { GhoBorrowAssetsItem } from './types';
 
-export const GHOBorrowAssetsListItem = ({
+export const GhoBorrowAssetsListMobileItem = ({
   symbol,
   iconSymbol,
   name,
@@ -24,7 +26,7 @@ export const GHOBorrowAssetsListItem = ({
   underlyingAsset,
   isFreezed,
   userAvailableBorrows,
-}: GHOBorrowAssetsItem) => {
+}: GhoBorrowAssetsItem) => {
   const { openBorrow } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
   const [
@@ -64,38 +66,66 @@ export const GHOBorrowAssetsListItem = ({
         borrowRateAfterDiscount * discountableAmount) /
       availableBorrows;
   }
-
   return (
-    <ListItemWrapper
+    <ListMobileItemWrapper
       symbol={symbol}
       iconSymbol={iconSymbol}
       name={name}
-      detailsAddress={underlyingAsset}
-      data-cy={`dashboardBorrowListItem_${symbol.toUpperCase()}`}
+      underlyingAsset={underlyingAsset}
       currentMarket={currentMarket}
-      footerButton={<GHODiscountButton baseRate={baseVariableBorrowRate} />}
     >
-      <ListValueColumn
-        symbol={symbol}
+      <ListValueRow
+        title={<Trans>Available to borrow</Trans>}
         value={availableBorrows}
         subValue={availableBorrows}
         disabled={availableBorrows === 0}
-        withTooltip
       />
 
-      <ListAPRColumn
-        value={borrowRateAfterDiscount}
-        incentives={vIncentivesData}
-        symbol={symbol}
-        tooltip={<GHOBorrowRateTooltip />}
-      />
-      <ListAPRColumn value={0} incentives={[]} symbol={symbol} />
+      <Row
+        caption={
+          <VariableAPYTooltip
+            text={<Trans>APY, variable</Trans>}
+            key="APY_dash_mob_variable_ type"
+            variant="description"
+          />
+        }
+        align="flex-start"
+        captionVariant="description"
+        mb={2}
+      >
+        <IncentivesCard
+          value={borrowRateAfterDiscount}
+          incentives={vIncentivesData}
+          symbol={symbol}
+          variant="secondary14"
+          tooltip={<GhoBorrowRateTooltip />}
+        />
+      </Row>
 
-      <ListButtonsColumn>
+      <Row
+        caption={
+          <StableAPYTooltip
+            text={<Trans>APY, stable</Trans>}
+            key="APY_dash_mob_stable_ type"
+            variant="description"
+          />
+        }
+        align="flex-start"
+        captionVariant="description"
+        mb={2}
+      >
+        <IncentivesCard value={0} incentives={[]} symbol={symbol} variant="secondary14" />
+      </Row>
+
+      <GhoDiscountButton baseRate={baseVariableBorrowRate} />
+
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
         <Button
           disabled={borrowButtonDisable}
           variant="contained"
           onClick={() => openBorrow(underlyingAsset)}
+          sx={{ mr: 1.5 }}
+          fullWidth
         >
           <Trans>Borrow</Trans>
         </Button>
@@ -103,10 +133,11 @@ export const GHOBorrowAssetsListItem = ({
           variant="outlined"
           component={Link}
           href={ROUTES.reserveOverview(underlyingAsset, currentMarket)}
+          fullWidth
         >
           <Trans>Details</Trans>
         </Button>
-      </ListButtonsColumn>
-    </ListItemWrapper>
+      </Box>
+    </ListMobileItemWrapper>
   );
 };

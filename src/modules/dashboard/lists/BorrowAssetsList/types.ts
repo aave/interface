@@ -24,7 +24,7 @@ export type BorrowAssetsItem = {
   eModeCategoryId: number;
 };
 
-export type GHOBorrowAssetsItem = {
+export type GhoBorrowAssetsItem = {
   symbol: string;
   name: string;
   underlyingAsset: string;

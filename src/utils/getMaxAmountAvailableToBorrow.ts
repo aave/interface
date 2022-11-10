@@ -72,7 +72,7 @@ export function getMaxAmountAvailableToBorrow(
  * Calculates the maximum amount of GHO a user can mint
  * @param user
  */
-export function getMaxGHOMintAmount(user: FormatUserSummaryAndIncentivesResponse) {
+export function getMaxGhoMintAmount(user: FormatUserSummaryAndIncentivesResponse) {
   // TO-DO: Factor in facilitator cap
   const maxUserAmountToMint = valueToBigNumber(user?.availableBorrowsMarketReferenceCurrency || 0);
 
