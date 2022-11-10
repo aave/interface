@@ -54,7 +54,7 @@ export const RepayActions = ({
           symbol,
         });
       },
-      handleGetPermitTxns: async (signature, deadline) => {
+      handleGetPermitTxns: async (signatures, deadline) => {
         return repayWithPermit({
           amountToRepay,
           poolReserve,
@@ -63,7 +63,7 @@ export const RepayActions = ({
           symbol,
           debtType,
           repayWithATokens,
-          signature,
+          signature: signatures[0],
           deadline,
         });
       },
@@ -85,7 +85,7 @@ export const RepayActions = ({
       sx={sx}
       {...props}
       handleAction={action}
-      handleApproval={() => approval(amountToRepay, poolAddress)}
+      handleApproval={() => approval([{ amount: amountToRepay, underlyingAsset: poolAddress }])}
       actionText={<Trans>Repay {symbol}</Trans>}
       actionInProgressText={<Trans>Repaying {symbol}</Trans>}
     />
