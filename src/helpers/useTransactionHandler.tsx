@@ -102,9 +102,9 @@ export const useTransactionHandler = ({
     }
   };
 
-  const approval = async (approvals: { amount: string; underlyingAsset: string }[]) => {
+  const approval = async (approvals?: { amount: string; underlyingAsset: string }[]) => {
     if (approvalTx) {
-      if (usePermit && approvals.length !== 0) {
+      if (usePermit && approvals && approvals?.length > 0) {
         setApprovalTxState({ ...approvalTxState, loading: true });
         try {
           // deadline is an hour after signature

@@ -85,6 +85,7 @@ export const CollateralRepayActions = ({
       sx={sx}
       {...props}
       handleAction={action}
+      handleApproval={approval}
       actionText={<Trans>Repay {symbol}</Trans>}
       actionInProgressText={<Trans>Repaying {symbol}</Trans>}
     />
