@@ -8,7 +8,7 @@ import { ghoMintingAvailable } from 'src/utils/ghoUtilities';
 import { BasicModal } from '../../primitives/BasicModal';
 import { ModalWrapper } from '../FlowCommons/ModalWrapper';
 import { BorrowModalContent } from './BorrowModalContent';
-import { GhoBorrowModalContent } from './GhoBorrowModalContent';
+import { GhoBorrowModalContent } from './old';
 // import { GhoBorrowModalContent } from './GhoBorrowModalContent';
 
 export const BorrowModal = () => {
