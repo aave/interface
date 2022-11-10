@@ -200,6 +200,8 @@ export const GhoBorrowModalContent = ({
       />
     );
 
+  console.log({ hasGhoBorrowPositions, discountAvailable });
+
   return (
     <>
       {!discountAvailable && !hasGhoBorrowPositions && (
@@ -267,48 +269,45 @@ export const GhoBorrowModalContent = ({
           />
         )}
 
-        {(discountAvailable && hasGhoBorrowPositions) ||
-          (discountAvailable && !hasGhoBorrowPositions && amount !== '' && (
-            <>
-              <Divider sx={{ mb: 7 }}>Discount details</Divider>
-              <DiscountDetailsGhoLine
-                title={<Trans>Total borrow balance</Trans>}
-                subtitle={<Trans>After transaction</Trans>}
-                ghoAmount={totalBorrowedGho}
-                ghoAmountUsd={totalBorrowedGho}
-              />
-              <DiscountDetailsGhoLine
-                title={<Trans>Discountable amount</Trans>}
-                subtitle={<Trans>Borrow @ 1.60% APY</Trans>}
-                ghoAmount={
-                  discountableGhoAmount >= totalBorrowedGho
-                    ? totalBorrowedGho
-                    : discountableGhoAmount
-                }
-                // ghoAmountDiffers={borrowAmountDiffers}
-                tooltipText={<Trans>This is tooltip text</Trans>}
-              />
-              <DiscountDetailsGhoLine
-                title={<Trans>Non-discountable amount</Trans>}
-                subtitle={<Trans>Borrow @ 2.00% APY</Trans>}
-                ghoAmount={
-                  discountableGhoAmount >= totalBorrowedGho
-                    ? 0
-                    : totalBorrowedGho - discountableGhoAmount
-                }
-                // ghoAmountDiffers={borrowAmountDiffers}
-                tooltipText={<Trans>This is tooltip text</Trans>}
-              />
-              <DiscountDetailsGhoLine
-                title={<Trans>Discount lock period</Trans>}
-                tooltipText={<Trans>This is tooltip text</Trans>}
-                discountLockPeriod={formatGhoDiscountLockPeriodExpiryDate(
-                  new Date(),
-                  ghoDiscountLockPeriod
-                )}
-              />
-            </>
-          ))}
+        {discountAvailable && (hasGhoBorrowPositions || (!hasGhoBorrowPositions && amount !== '')) && (
+          <>
+            <Divider sx={{ mb: 7 }}>Discount details</Divider>
+            <DiscountDetailsGhoLine
+              title={<Trans>Total borrow balance</Trans>}
+              subtitle={<Trans>After transaction</Trans>}
+              ghoAmount={totalBorrowedGho}
+              ghoAmountUsd={totalBorrowedGho}
+            />
+            <DiscountDetailsGhoLine
+              title={<Trans>Discountable amount</Trans>}
+              subtitle={<Trans>Borrow @ 1.60% APY</Trans>}
+              ghoAmount={
+                discountableGhoAmount >= totalBorrowedGho ? totalBorrowedGho : discountableGhoAmount
+              }
+              // ghoAmountDiffers={borrowAmountDiffers}
+              tooltipText={<Trans>This is tooltip text</Trans>}
+            />
+            <DiscountDetailsGhoLine
+              title={<Trans>Non-discountable amount</Trans>}
+              subtitle={<Trans>Borrow @ 2.00% APY</Trans>}
+              ghoAmount={
+                discountableGhoAmount >= totalBorrowedGho
+                  ? 0
+                  : totalBorrowedGho - discountableGhoAmount
+              }
+              // ghoAmountDiffers={borrowAmountDiffers}
+              tooltipText={<Trans>This is tooltip text</Trans>}
+            />
+            <DiscountDetailsGhoLine
+              title={<Trans>Discount lock period</Trans>}
+              tooltipText={<Trans>This is tooltip text</Trans>}
+              discountLockPeriod={formatGhoDiscountLockPeriodExpiryDate(
+                new Date(),
+                ghoDiscountLockPeriod
+              )}
+            />
+          </>
+        )}
       </TxModalDetails>
 
       {txError && <GasEstimationError txError={txError} />}
