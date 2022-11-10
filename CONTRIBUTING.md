@@ -2,13 +2,13 @@
 
 We use Github issues for tracking new features, bug fixes, and enhancements related to the Aave Interface. We are currently working on a UI/UX Integrations framework for integrating third-party services and entities within the Aave Interface. Please stay tuned for new information around this.
 
-## Pre-Requisites
+## Prerequisites
 
 ### Install Node
 
 We are using a Next.js application, which relies on Node. You must have Node installed and set to use the specified version in `.nvmrc`. You can potentially use other versions, but we don’t recommend differing here.
 
-You can download from the [NodeJS website](https://nodejs.org/en/download/), but we recommend installing nvm and running the following command at root, after cloning or downloading the repo.
+You can download it from the [NodeJS website](https://nodejs.org/en/download/), but we recommend installing nvm and running the following command at root, after cloning or downloading the repo.
 
 ```bash
 nvm use
@@ -32,7 +32,7 @@ cp .env.example .env.local
 
 ## Get Up & Running Locally
 
-Once you’ve completed the pre-requisites above, you should be able to start running the interface locally. There are several variations of running locally.
+Once you’ve completed the prerequisites above, you should be able to start running the interface locally. There are several variations of running locally.
 
 ### Development Mode
 
@@ -90,7 +90,7 @@ yarn test:headless
 
 ## Environment Variables
 
-Some environment variables can be adjusted to suite your needs during development, depending on the scenarios you want to test or build in.
+Some environment variables can be adjusted to suit your needs during development, depending on the scenarios you want to test or build in.
 
 ```bash
 # setting the environment to 'staging' will enable testnet markets, disabling governance, staking, and production markets
@@ -116,7 +116,7 @@ localStorage.setItem('forkNetworkId', '3030'); // the ID of the new forked netwo
 localStorage.setItem('forkRPCUrl', <rpcUrl>);
 ```
 
-Since `localStorage` changes are not not observed, _you’ll need to reload after setting the parameters_. After reloading, the market selection should show forked markets for all the markets that run on `forkBaseChainId`. To make actual transactions on the fork, you’ll need to setup your wallet to use the same `rpcUrl` you provided as `forkRPCUrl`. This will require you to setup your wallet by adding in the new fork network and connecting to the app with it.
+Since `localStorage` changes are not observed, _you’ll need to reload after setting the parameters_. After reloading, the market selection should show forked markets for all the markets that run on `forkBaseChainId`. To make actual transactions on the fork, you’ll need to setup your wallet to use the same `rpcUrl` you provided as `forkRPCUrl`. This will require you to setup your wallet by adding in the new fork network and connecting to the app with it.
 
 If you are using MetaMask, make sure to configure the Tenderly fork RPC URL into a new network configuration. Give it a network name, and you'll want to use the same values that you copied into `localStorage` for the other fields. See below as an example:
 
@@ -128,7 +128,7 @@ Next, reload the page. The new forked network should appear in the dropdown list
 
 Finally, switch to the market pertaining to the fork in the dropdown list. Now you are able to interact with the Aave Protocol via the UI without spending any real funds!
 
-__NOTE:__ _Always double check the selected network in your wallet provider to make sure transactions are executed only on the fork network_.
+__NOTE:__ _Always double-check the selected network in your wallet provider to make sure transactions are executed only on the fork network_.
 
 
 ## Token Additions
