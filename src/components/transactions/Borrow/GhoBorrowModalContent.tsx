@@ -6,7 +6,7 @@ import {
   valueToBigNumber,
 } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Checkbox, Divider, Link, Typography } from '@mui/material';
+import { Box, Button, Checkbox, Divider, Link, Typography } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -163,9 +163,9 @@ export const GhoBorrowModalContent = ({
     } else {
       // Calculate new rates and check if they differ
       borrowedGho = Number(userReserve.totalBorrows) + Number(borrowingAmount);
+      const newRate = calculationHelper(borrowedGho);
       // TODO: setBorrowAmountDiffers(true)
       const oldRate = calculationHelper(Number(userReserve.totalBorrows));
-      const newRate = calculationHelper(borrowedGho);
       if (oldRate !== newRate) {
         setApyDiffers(true);
       }
@@ -176,6 +176,17 @@ export const GhoBorrowModalContent = ({
     setTotalBorrowedGho(borrowedGho);
   };
 
+  const handleApplyMaxDiscount = () => {
+    console.log(discountableGhoAmount);
+    setAmount(discountableGhoAmount.toString());
+  };
+
+  const calculateAPYBasedOffOfMaxDiscountableEntered = (amt: number) => {
+    // Ugh, this is basically calling similar stuff just with a different amount
+    console.log({ amt });
+    calculateDiscountRate(amt.toString());
+  };
+
   // Calculate the APYs and other information based off of each input change
   useEffect(() => {
     if (prevAmount !== _amount) {
@@ -183,11 +194,18 @@ export const GhoBorrowModalContent = ({
     }
   }, [_amount]);
 
-  // Calculate discountable amount up-front on mount
   useEffect(() => {
+    console.log({ discountableGhoAmount });
+    // Calculate discountable amount up-front on mount
     const discountableAmount = Number(userStakedAaveBalance) * discountedPerToken;
-    const normalizedDiscountable = normalizeBN(discountableAmount.toString(), 18).toNumber();
+    const normalizedDiscountable: number = normalizeBN(
+      discountableAmount.toString(),
+      18
+    ).toNumber();
     setDiscountableGhoAmount(normalizedDiscountable);
+    // Calculate the discount rate for the maximum discount on mount as well
+    // Because state isn't updated yet... pass in the amount
+    calculateAPYBasedOffOfMaxDiscountableEntered(discountableAmount);
   }, []);
 
   if (borrowTxState.success)
@@ -200,7 +218,7 @@ export const GhoBorrowModalContent = ({
       />
     );
 
-  console.log({ hasGhoBorrowPositions, discountAvailable });
+  console.log({ calculatedBorrowAPY, calculatedFutureBorrowAPY, discountableGhoAmount });
 
   return (
     <>
@@ -245,10 +263,23 @@ export const GhoBorrowModalContent = ({
           <Typography sx={{ mr: 1 }}>Discount</Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
             <TokenIcon symbol="GHO" fontSize="small" sx={{ mr: 1 }} />
-            <FormattedNumber value={discountableGhoAmount} visibleDecimals={0} compact />
-            <Typography sx={{ ml: 1 }} component="div">
-              @ <FormattedNumber value={calculatedBorrowAPY} percent /> APY
+            <FormattedNumber
+              value={discountableGhoAmount}
+              visibleDecimals={0}
+              compact
+              variant="secondary12"
+            />
+            <Typography variant="secondary12" sx={{ ml: 1 }} component="div">
+              @ <FormattedNumber value={calculatedBorrowAPY} percent variant="secondary12" /> APY
             </Typography>
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={handleApplyMaxDiscount}
+              sx={{ ml: 1, minWidth: 0 }}
+            >
+              Apply
+            </Button>
           </Box>
         </Box>
       )}
