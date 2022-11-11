@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { StakeModal } from 'src/components/transactions/Stake/StakeModal';
 import { StakeCooldownModal } from 'src/components/transactions/StakeCooldown/StakeCooldownModal';
 import { StakeRewardClaimModal } from 'src/components/transactions/StakeRewardClaim/StakeRewardClaimModal';

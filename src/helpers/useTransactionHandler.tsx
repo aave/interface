@@ -21,6 +21,12 @@ interface UseTransactionHandlerProps {
   deps?: DependencyList;
 }
 
+export type Approval = {
+  amount: string;
+  underlyingAsset: string;
+  permitType?: 'POOL' | 'MIGRATOR';
+};
+
 export const useTransactionHandler = ({
   handleGetTxns,
   handleGetPermitTxns,
@@ -45,7 +51,10 @@ export const useTransactionHandler = ({
   const [usePermit, setUsePermit] = useState<boolean>(tryPermit);
   const [signatures, setSignatures] = useState<SignatureLike[]>([]);
   const [signatureDeadline, setSignatureDeadline] = useState<string>();
-  const signERC20Approval = useRootStore((state) => state.signERC20Approval);
+  const signPoolERC20Approval = useRootStore((state) => state.signERC20Approval);
+  const generatePermitPayloadForMigrationAsset = useRootStore(
+    (state) => state.generatePermitPayloadForMigrationAsset
+  );
 
   const [approvalTx, setApprovalTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
@@ -102,7 +111,7 @@ export const useTransactionHandler = ({
     }
   };
 
-  const approval = async (approvals?: { amount: string; underlyingAsset: string }[]) => {
+  const approval = async (approvals?: Approval[]) => {
     if (approvalTx) {
       if (usePermit && approvals && approvals?.length > 0) {
         setApprovalTxState({ ...approvalTxState, loading: true });
@@ -111,13 +120,19 @@ export const useTransactionHandler = ({
           const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
           const unsignedPayloads: string[] = [];
           for (const approval of approvals) {
-            unsignedPayloads.push(
-              await signERC20Approval({
-                reserve: approval.underlyingAsset,
-                amount: approval.amount,
-                deadline,
-              })
-            );
+            if (!approval.permitType || approval.permitType == 'POOL') {
+              unsignedPayloads.push(
+                await signPoolERC20Approval({
+                  reserve: approval.underlyingAsset,
+                  amount: approval.amount,
+                  deadline,
+                })
+              );
+            } else {
+              unsignedPayloads.push(
+                await generatePermitPayloadForMigrationAsset({ ...approval, deadline })
+              );
+            }
           }
           try {
             const signatures: SignatureLike[] = [];

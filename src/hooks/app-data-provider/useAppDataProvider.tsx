@@ -2,7 +2,6 @@ import { ReserveDataHumanized } from '@aave/contract-helpers';
 import {
   ComputedUserReserve,
   formatReservesAndIncentives,
-  formatUserSummaryAndIncentives,
   FormatUserSummaryAndIncentivesResponse,
   UserReserveData,
 } from '@aave/math-utils';
@@ -11,7 +10,6 @@ import React, { useContext } from 'react';
 import { EmodeCategory } from 'src/helpers/types';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 import {
   reserveSortFn,
@@ -24,7 +22,6 @@ import {
   selectUserSummaryAndIncentives,
 } from '../../store/poolSelectors';
 import { useCurrentTimestamp } from '../useCurrentTimestamp';
-import { useProtocolDataContext } from '../useProtocolDataContext';
 
 /**
  * removes the marketPrefix from a symbol

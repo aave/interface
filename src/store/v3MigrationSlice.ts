@@ -1,17 +1,25 @@
+import { ERC20_2612Service, ERC20Service, valueToWei } from '@aave/contract-helpers';
 import dayjs from 'dayjs';
 import { produce } from 'immer';
+import { Approval } from 'src/helpers/useTransactionHandler';
 import { StateCreator } from 'zustand';
 
-import { selectUserNonEmtpySummaryAndIncentive } from './poolSelectors';
 import { RootStore } from './root';
+import { selectedUserReservesForMigration } from './v3MigrationSelectors';
 
 export type V3MigrationSlice = {
   //STATE
   selectedMigrationAssets: Record<string, boolean>;
   // ACTIONS
-  signPermitForSelectedAssets: () => void;
+  generatePermitPayloadForMigrationAsset: (
+    approval: Approval & {
+      deadline: string;
+    }
+  ) => Promise<string>;
+  getApprovePermitsForSelectedAssets: () => Approval[];
   toggleMigrationSelectedAsset: (assetName: string) => void;
-  migrateSelectedPositions: () => void;
+  getMigratorAddress: () => string;
+  // migrateSelectedPositions: () => void;
 };
 
 export const createV3MigrationSlice: StateCreator<
@@ -22,23 +30,52 @@ export const createV3MigrationSlice: StateCreator<
 > = (set, get) => {
   return {
     selectedMigrationAssets: {},
-    signPermitForSelectedAssets: async () => {
-      const timestamp = dayjs().unix();
-      const account = get().account;
-      const user = selectUserNonEmtpySummaryAndIncentive(get(), timestamp);
-      const selectedUserReserves = user.userReservesData.filter(
-        (userReserve) => get().selectedMigrationAssets[userReserve.underlyingAsset]
-      );
-      if (selectedUserReserves.length > 0) {
-        const nonces = selectedUserReserves.map((userReserve) => {
-          const provider = get().jsonRpcProvider();
-          // new ERC20_2612Service(provider).getNonce({
-          //   token: userReserve.reserve.aTokenAddress,
-          //   owner: account,
-          // });
-        });
-        const noncesValues = await Promise.all(nonces);
-      }
+    generatePermitPayloadForMigrationAsset: async ({ amount, underlyingAsset, deadline }) => {
+      const user = get().account;
+      const { getTokenData } = new ERC20Service(get().jsonRpcProvider());
+      const { name, decimals } = await getTokenData(underlyingAsset);
+      const convertedAmount = valueToWei(amount, decimals);
+      const chainId = get().currentChainId;
+
+      const erc20_2612Service = new ERC20_2612Service(get().jsonRpcProvider());
+
+      const nonce = await erc20_2612Service.getNonce({
+        token: underlyingAsset,
+        owner: user,
+      });
+
+      const typeData = {
+        types: {
+          EIP712Domain: [
+            { name: 'name', type: 'string' },
+            { name: 'version', type: 'string' },
+            { name: 'chainId', type: 'uint256' },
+            { name: 'verifyingContract', type: 'address' },
+          ],
+          Permit: [
+            { name: 'owner', type: 'address' },
+            { name: 'spender', type: 'address' },
+            { name: 'value', type: 'uint256' },
+            { name: 'nonce', type: 'uint256' },
+            { name: 'deadline', type: 'uint256' },
+          ],
+        },
+        primaryType: 'Permit',
+        domain: {
+          name,
+          version: '1',
+          chainId,
+          verifyingContract: underlyingAsset,
+        },
+        message: {
+          owner: user,
+          spender: get().getMigratorAddress(),
+          value: convertedAmount,
+          nonce,
+          deadline,
+        },
+      };
+      return JSON.stringify(typeData);
     },
     toggleMigrationSelectedAsset: (assetName: string) => {
       set((state) =>
@@ -51,8 +88,20 @@ export const createV3MigrationSlice: StateCreator<
         })
       );
     },
-    migrateSelectedPositions: async () => {
-      await get().signPermitForSelectedAssets();
+    getApprovePermitsForSelectedAssets: () => {
+      const timestamp = dayjs().unix();
+      return selectedUserReservesForMigration(get(), timestamp).map(({ reserve }): Approval => {
+        reserve.name;
+        return {
+          amount: reserve.totalLiquidity,
+          underlyingAsset: reserve.aTokenAddress,
+          permitType: 'MIGRATOR',
+        };
+      });
+    },
+    getMigratorAddress: () => {
+      // TODO: map migrator addresses for each chain after deployment
+      return '0x0000000000';
     },
   };
 };
