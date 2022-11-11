@@ -1,3 +1,5 @@
+import { BigNumberish } from 'ethers';
+import { formatUnits } from 'ethers/lib/utils';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 export const ghoMintingMarkets = [
@@ -21,10 +23,6 @@ export const ghoMintingAvailable = ({
   }
 };
 
-export const ghoBorrowAPRWithMaxDiscount = (ghoDiscountRate: number, variableBorrowAPR: string) => {
-  return Number(variableBorrowAPR) * (1 - ghoDiscountRate);
-};
-
 export const getGhoReserve = (reserves: ComputedReserveData[]) => {
   return reserves.find((reserve) => reserve.symbol === 'GHO');
 };
@@ -40,4 +38,19 @@ export const getAvailableBorrows = (
   const availableBorrows = Math.min(userAvailableBorrows, remainingBucketCapacity);
 
   return availableBorrows;
+};
+
+/**
+ * Amount of GHO that can be borrowed at a discounted rate given a users stkAave balance
+ */
+export const ghoDiscountableAmount = (
+  stakedAaveBalance: BigNumberish,
+  ghoDiscountedPerToken: string
+) => {
+  return Number(formatUnits(stakedAaveBalance, 18)) * Number(ghoDiscountedPerToken);
+};
+
+// Not gho specific, but we should look at doing this logic in math-helpers
+export const normalizeBaseVariableBorrowRate = (baseVariableBorrowRate: string | number) => {
+  return Number(baseVariableBorrowRate) / 10 ** 27;
 };

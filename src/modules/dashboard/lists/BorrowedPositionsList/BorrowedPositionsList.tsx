@@ -42,9 +42,9 @@ export const BorrowedPositionsList = () => {
             ...userReserve.reserve,
             ...(userReserve.reserve.isWrappedBaseAsset
               ? fetchIconSymbolAndName({
-                symbol: currentNetworkConfig.baseAssetSymbol,
-                underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
-              })
+                  symbol: currentNetworkConfig.baseAssetSymbol,
+                  underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
+                })
               : {}),
           },
         });
@@ -57,9 +57,9 @@ export const BorrowedPositionsList = () => {
             ...userReserve.reserve,
             ...(userReserve.reserve.isWrappedBaseAsset
               ? fetchIconSymbolAndName({
-                symbol: currentNetworkConfig.baseAssetSymbol,
-                underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
-              })
+                  symbol: currentNetworkConfig.baseAssetSymbol,
+                  underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
+                })
               : {}),
           },
         });
@@ -72,8 +72,8 @@ export const BorrowedPositionsList = () => {
   const collateralUsagePercent = maxBorrowAmount.eq(0)
     ? '0'
     : valueToBigNumber(user?.totalBorrowsMarketReferenceCurrency || '0')
-      .div(maxBorrowAmount)
-      .toFixed();
+        .div(maxBorrowAmount)
+        .toFixed();
 
   const head = [
     <Trans key="Debt">Debt</Trans>,

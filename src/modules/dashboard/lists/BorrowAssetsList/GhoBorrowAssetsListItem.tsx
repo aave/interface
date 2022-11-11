@@ -1,12 +1,15 @@
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
-import { formatUnits } from 'ethers/lib/utils';
 import { GhoDiscountButton } from 'src/components/GhoDiscountButton';
 import { GhoBorrowRateTooltip } from 'src/components/infoTooltips/GhoBorrowRateTooltip';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
-import { getAvailableBorrows } from 'src/utils/ghoUtilities';
+import {
+  getAvailableBorrows,
+  ghoDiscountableAmount,
+  normalizeBaseVariableBorrowRate,
+} from 'src/utils/ghoUtilities';
 
 import { Link, ROUTES } from '../../../../components/primitives/Link';
 import { ListAPRColumn } from '../ListAPRColumn';
@@ -50,11 +53,9 @@ export const GhoBorrowAssetsListItem = ({
 
   const stkAaveBalance = stakeUserResult ? stakeUserResult.aave.stakeTokenUserBalance : '0';
 
-  // Amount of GHO that can be borrowed at a discounted rate given a users stkAave balance
-  const discountableAmount =
-    Number(formatUnits(stkAaveBalance, 18)) * Number(ghoDiscountedPerToken);
+  const discountableAmount = ghoDiscountableAmount(stkAaveBalance, ghoDiscountedPerToken);
 
-  const normalizedBaseVariableBorrowRate = Number(baseVariableBorrowRate) / 10 ** 27;
+  const normalizedBaseVariableBorrowRate = normalizeBaseVariableBorrowRate(baseVariableBorrowRate);
   let borrowRateAfterDiscount =
     normalizedBaseVariableBorrowRate - normalizedBaseVariableBorrowRate * ghoDiscountRatePercent;
   if (discountableAmount < availableBorrows) {
