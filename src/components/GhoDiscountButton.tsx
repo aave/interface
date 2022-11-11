@@ -14,11 +14,11 @@ import dayjs from 'dayjs';
 import { useRootStore } from 'src/store/root';
 import { ghoDiscountableAmount, normalizeBaseVariableBorrowRate } from 'src/utils/ghoUtilities';
 
-import { FormattedNumber } from '../primitives/FormattedNumber';
-import { Link } from '../primitives/Link';
-import { TokenIcon } from '../primitives/TokenIcon';
+import { FormattedNumber } from './primitives/FormattedNumber';
+import { Link } from './primitives/Link';
+import { TokenIcon } from './primitives/TokenIcon';
 
-export const GHODiscountButton = ({ baseRate }: { baseRate: string | number }) => {
+export const GhoDiscountButton = ({ baseRate }: { baseRate: string | number }) => {
   const theme = useTheme();
   const [stakeUserResult, ghoDiscountedPerToken, ghoDiscountRatePercent] = useRootStore((state) => [
     state.stakeUserResult,

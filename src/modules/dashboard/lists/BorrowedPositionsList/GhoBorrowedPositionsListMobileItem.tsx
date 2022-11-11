@@ -1,33 +1,35 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Button } from '@mui/material';
-import { GHODiscountButton } from 'src/components/gho/GHODiscountButton';
-import { GHOBorrowRateTooltip } from 'src/components/infoTooltips/GHOBorrowRateTooltip';
-import { useModalContext } from 'src/hooks/useModal';
+import { Box, Button } from '@mui/material';
+import { GhoDiscountButton } from 'src/components/GhoDiscountButton';
+import { GhoBorrowRateTooltip } from 'src/components/infoTooltips/GhoBorrowRateTooltip';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { ghoDiscountableAmount, normalizeBaseVariableBorrowRate } from 'src/utils/ghoUtilities';
 
-import { ListColumn } from '../../../../components/lists/ListColumn';
+import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
+import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
+import { Row } from '../../../../components/primitives/Row';
 import { ComputedUserReserveData } from '../../../../hooks/app-data-provider/useAppDataProvider';
-import { ListAPRColumn } from '../ListAPRColumn';
-import { ListButtonsColumn } from '../ListButtonsColumn';
+import { useModalContext } from '../../../../hooks/useModal';
 import { ListItemAPYButton } from '../ListItemAPYButton';
-import { ListItemWrapper } from '../ListItemWrapper';
-import { ListValueColumn } from '../ListValueColumn';
+import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
+import { ListValueRow } from '../ListValueRow';
 
-export const GHOBorrowedPositionsListItem = ({
+export const GhoBorrowedPositionsListMobileItem = ({
   reserve,
-  variableBorrows,
-  variableBorrowsUSD,
-  stableBorrows,
-  stableBorrowsUSD,
+  totalBorrows,
+  totalBorrowsUSD,
   borrowRateMode,
   stableBorrowAPY,
+  variableBorrows,
 }: ComputedUserReserveData & { borrowRateMode: InterestRate }) => {
-  const { openBorrow, openRepay, openRateSwitch } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
+  const { openBorrow, openRepay, openRateSwitch } = useModalContext();
   const {
+    symbol,
+    iconSymbol,
+    name,
     isActive,
     isFrozen,
     borrowingEnabled,
@@ -35,6 +37,7 @@ export const GHOBorrowedPositionsListItem = ({
     sIncentivesData,
     vIncentivesData,
     variableBorrowAPY,
+    underlyingAsset,
     baseVariableBorrowRate,
   } = reserve;
   const [stakeUserResult, ghoDiscountedPerToken, ghoDiscountRatePercent] = useRootStore((state) => [
@@ -59,63 +62,74 @@ export const GHOBorrowedPositionsListItem = ({
   }
 
   return (
-    <ListItemWrapper
-      symbol={reserve.symbol}
-      iconSymbol={reserve.iconSymbol}
-      name={reserve.name}
-      detailsAddress={reserve.underlyingAsset}
+    <ListMobileItemWrapper
+      symbol={symbol}
+      iconSymbol={iconSymbol}
+      name={name}
+      underlyingAsset={reserve.underlyingAsset}
       currentMarket={currentMarket}
       frozen={reserve.isFrozen}
-      data-cy={`dashboardBorrowedListItem_${reserve.symbol.toUpperCase()}_${borrowRateMode}`}
       showBorrowCapTooltips
-      footerButton={<GHODiscountButton baseRate={baseVariableBorrowRate} />}
     >
-      <ListValueColumn
-        symbol={reserve.symbol}
-        value={Number(borrowRateMode === InterestRate.Variable ? variableBorrows : stableBorrows)}
-        subValue={Number(
-          borrowRateMode === InterestRate.Variable ? variableBorrowsUSD : stableBorrowsUSD
-        )}
+      <ListValueRow
+        title={<Trans>Debt</Trans>}
+        value={Number(totalBorrows)}
+        subValue={Number(totalBorrowsUSD)}
+        disabled={Number(totalBorrows) === 0}
       />
 
-      <ListAPRColumn
-        value={Number(
-          borrowRateMode === InterestRate.Variable ? borrowRateAfterDiscount : stableBorrowAPY
-        )}
-        incentives={borrowRateMode === InterestRate.Variable ? vIncentivesData : sIncentivesData}
-        symbol={reserve.symbol}
-        tooltip={<GHOBorrowRateTooltip />}
-      />
+      <Row caption={<Trans>APY</Trans>} align="flex-start" captionVariant="description" mb={2}>
+        <IncentivesCard
+          value={Number(
+            borrowRateMode === InterestRate.Variable ? borrowRateAfterDiscount : stableBorrowAPY
+          )}
+          incentives={borrowRateMode === InterestRate.Variable ? vIncentivesData : sIncentivesData}
+          symbol={symbol}
+          variant="secondary14"
+          tooltip={<GhoBorrowRateTooltip />}
+        />
+      </Row>
 
-      <ListColumn>
+      <Row
+        caption={
+          <APYTypeTooltip text={<Trans>APY type</Trans>} key="APY type" variant="description" />
+        }
+        captionVariant="description"
+        mb={2}
+      >
         <ListItemAPYButton
           stableBorrowRateEnabled={stableBorrowRateEnabled}
           borrowRateMode={borrowRateMode}
           disabled={!stableBorrowRateEnabled || isFrozen || !isActive}
-          onClick={() => openRateSwitch(reserve.underlyingAsset, borrowRateMode)}
+          onClick={() => openRateSwitch(underlyingAsset, borrowRateMode)}
           stableBorrowAPY={stableBorrowAPY}
           variableBorrowAPY={variableBorrowAPY}
-          underlyingAsset={reserve.underlyingAsset}
+          underlyingAsset={underlyingAsset}
           currentMarket={currentMarket}
         />
-      </ListColumn>
 
-      <ListButtonsColumn>
+        <GhoDiscountButton baseRate={baseVariableBorrowRate} />
+      </Row>
+
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
         <Button
           disabled={!isActive}
           variant="contained"
-          onClick={() => openRepay(reserve.underlyingAsset, borrowRateMode)}
+          onClick={() => openRepay(underlyingAsset, borrowRateMode)}
+          sx={{ mr: 1.5 }}
+          fullWidth
         >
           <Trans>Repay</Trans>
         </Button>
         <Button
           disabled={!isActive || !borrowingEnabled || isFrozen}
           variant="outlined"
-          onClick={() => openBorrow(reserve.underlyingAsset)}
+          onClick={() => openBorrow(underlyingAsset)}
+          fullWidth
         >
           <Trans>Borrow</Trans>
         </Button>
-      </ListButtonsColumn>
-    </ListItemWrapper>
+      </Box>
+    </ListMobileItemWrapper>
   );
 };
