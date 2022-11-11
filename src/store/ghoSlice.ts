@@ -55,7 +55,7 @@ export interface GhoSlice {
   ghoMinDiscountTokenBalanceForEligibleDiscount: BigNumber;
   ghoBorrowAPR: number;
   ghoComputed: {
-    borrowAPRWithMaxDiscount: () => number;
+    borrowAPRWithMaxDiscount: number;
   };
   ghoUpdateDiscountRate: () => Promise<void>;
   ghoCalculateDiscountRate: (
@@ -74,7 +74,7 @@ export const createGhoSlice: StateCreator<
 > = (set, get) => {
   return {
     ghoComputed: {
-      borrowAPRWithMaxDiscount: () => {
+      get borrowAPRWithMaxDiscount() {
         const borrowAPR = get().ghoBorrowAPR;
         const discountRate = get().ghoDiscountRatePercent;
         return borrowAPR * (1 - discountRate);

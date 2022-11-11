@@ -85,7 +85,7 @@ export const GhoAssetMobileItem = ({ reserve }: GhoAssetMobileItemProps) => {
           captionVariant="description"
         >
           <Box>
-            <FormattedNumber compact percent value={getBorrowAPR()} variant="secondary14" />
+            <FormattedNumber compact percent value={getBorrowAPR} variant="secondary14" />
             <Box
               sx={{
                 color: '#fff',

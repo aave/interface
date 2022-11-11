@@ -85,7 +85,7 @@ export const GhoAssetItem = ({ reserve }: GhoAssetItemProps) => {
               <FormattedNumber
                 compact
                 percent
-                value={getBorrowAPR()}
+                value={getBorrowAPR}
                 visibleDecimals={1}
                 variant="h3"
               />

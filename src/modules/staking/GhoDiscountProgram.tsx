@@ -55,13 +55,13 @@ export const GhoDiscountProgram = () => {
         {downToXsm ? (
           <GhoDiscountProgramMobile
             discountableAmount={discountableAmount}
-            aprWithDiscount={getBorrowAPR()}
+            aprWithDiscount={getBorrowAPR}
             ghoDiscountRatePercent={ghoDiscountRatePercent}
           />
         ) : (
           <GhoDiscountProgramDesktop
             discountableAmount={discountableAmount}
-            aprWithDiscount={getBorrowAPR()}
+            aprWithDiscount={getBorrowAPR}
             ghoDiscountRatePercent={ghoDiscountRatePercent}
           />
         )}
