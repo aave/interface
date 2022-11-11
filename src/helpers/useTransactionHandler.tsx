@@ -13,7 +13,7 @@ export const MOCK_SIGNED_HASH = 'Signed correctly';
 interface UseTransactionHandlerProps {
   handleGetTxns: () => Promise<EthereumTransactionTypeExtended[]>;
   handleGetPermitTxns?: (
-    signature: SignatureLike,
+    signatures: SignatureLike[],
     deadline: string
   ) => Promise<EthereumTransactionTypeExtended[]>;
   tryPermit?: boolean;
@@ -43,7 +43,7 @@ export const useTransactionHandler = ({
   const { refetchWalletBalances, refetchPoolData, refetchIncentiveData } =
     useBackgroundDataProvider();
   const [usePermit, setUsePermit] = useState<boolean>(tryPermit);
-  const [signature, setSignature] = useState<SignatureLike>();
+  const [signatures, setSignatures] = useState<SignatureLike[]>([]);
   const [signatureDeadline, setSignatureDeadline] = useState<string>();
   const signERC20Approval = useRootStore((state) => state.signERC20Approval);
 
@@ -102,22 +102,30 @@ export const useTransactionHandler = ({
     }
   };
 
-  const approval = async (amount?: string, underlyingAsset?: string) => {
+  const approval = async (approvals?: { amount: string; underlyingAsset: string }[]) => {
     if (approvalTx) {
-      if (usePermit && amount && underlyingAsset) {
+      if (usePermit && approvals && approvals?.length > 0) {
         setApprovalTxState({ ...approvalTxState, loading: true });
         try {
           // deadline is an hour after signature
           const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
-          const unsingedPayload = await signERC20Approval({
-            reserve: underlyingAsset,
-            amount,
-            deadline,
-          });
+          const unsignedPayloads: string[] = [];
+          for (const approval of approvals) {
+            unsignedPayloads.push(
+              await signERC20Approval({
+                reserve: approval.underlyingAsset,
+                amount: approval.amount,
+                deadline,
+              })
+            );
+          }
           try {
-            const signature = await signTxData(unsingedPayload);
+            const signatures: SignatureLike[] = [];
+            for (const unsignedPayload of unsignedPayloads) {
+              signatures.push(await signTxData(unsignedPayload));
+            }
             if (!mounted.current) return;
-            setSignature(signature);
+            setSignatures(signatures);
             setSignatureDeadline(deadline);
             setApprovalTxState({
               txHash: MOCK_SIGNED_HASH,
@@ -193,10 +201,10 @@ export const useTransactionHandler = ({
 
   const action = async () => {
     if (approvalTx && usePermit && handleGetPermitTxns) {
-      if (!signature || !signatureDeadline) throw new Error('signature needed');
+      if (!signatures.length || !signatureDeadline) throw new Error('signature needed');
       try {
         setMainTxState({ ...mainTxState, loading: true });
-        const txns = await handleGetPermitTxns(signature, signatureDeadline);
+        const txns = await handleGetPermitTxns(signatures, signatureDeadline);
         const params = await txns[0].tx();
         delete params.gasPrice;
         return processTx({
