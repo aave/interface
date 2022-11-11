@@ -1,4 +1,4 @@
-import { formatReservesAndIncentives } from '@aave/math-utils';
+import { formatReservesAndIncentives, formatUserSummaryAndIncentives } from '@aave/math-utils';
 import { EmodeCategory } from 'src/helpers/types';
 import { fetchIconSymbolAndName, STABLE_ASSETS } from 'src/ui-config/reservePatches';
 
@@ -66,6 +66,48 @@ export const selectFormattedReserves = (state: RootStore, currentTimestamp: numb
     .sort(reserveSortFn);
 
   return formattedPoolReserves;
+};
+
+export const selectUserSummaryAndIncentives = (state: RootStore, currentTimestamp: number) => {
+  const baseCurrencyData = selectCurrentBaseCurrencyData(state);
+  const userReserves = selectCurrentUserReserves(state);
+  const formattedPoolReserves = selectFormattedReserves(state, currentTimestamp);
+  const userEmodeCategoryId = selectCurrentUserEmodeCategoryId(state);
+  const reserveIncentiveData = state.reserveIncentiveData;
+  const userIncentiveData = state.userIncentiveData;
+
+  return formatUserSummaryAndIncentives({
+    currentTimestamp,
+    marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
+    marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
+    userReserves,
+    formattedReserves: formattedPoolReserves,
+    userEmodeCategoryId: userEmodeCategoryId,
+    reserveIncentives: reserveIncentiveData || [],
+    userIncentives: userIncentiveData || [],
+  });
+};
+
+export const selectUserNonEmtpySummaryAndIncentive = (
+  state: RootStore,
+  currentTimestamp: number
+) => {
+  const user = selectUserSummaryAndIncentives(state, currentTimestamp);
+  const userReservesData = user.userReservesData.filter(
+    (userReserve) => userReserve.underlyingBalance !== '0'
+  );
+  return {
+    ...user,
+    userReservesData,
+  };
+};
+
+export const selectUserBorrowPositions = (state: RootStore, currentTimestamp: number) => {
+  const user = selectUserNonEmtpySummaryAndIncentive(state, currentTimestamp);
+  const borrowedPositions = user.userReservesData.filter(
+    (reserve) => reserve.variableBorrows != '0' || reserve.stableBorrows != '0'
+  );
+  return borrowedPositions;
 };
 
 export const selectEmodes = (state: RootStore) => {
