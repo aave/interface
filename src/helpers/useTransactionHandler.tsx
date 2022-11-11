@@ -102,7 +102,7 @@ export const useTransactionHandler = ({
     }
   };
 
-  const approval = async (approvals?: { amount: string; underlyingAsset: string }[]) => {
+  const approval = async (approvals?: { amount: string; asset: string }[]) => {
     if (approvalTx) {
       if (usePermit && approvals && approvals?.length > 0) {
         setApprovalTxState({ ...approvalTxState, loading: true });
@@ -113,7 +113,7 @@ export const useTransactionHandler = ({
           for (const approval of approvals) {
             unsignedPayloads.push(
               await signERC20Approval({
-                reserve: approval.underlyingAsset,
+                reserve: approval.asset,
                 amount: approval.amount,
                 deadline,
               })

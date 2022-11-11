@@ -69,7 +69,7 @@ export const SupplyActions = ({
       preparingTransactions={loadingTxns}
       actionText={<Trans>Supply {symbol}</Trans>}
       actionInProgressText={<Trans>Supplying {symbol}</Trans>}
-      handleApproval={() => approval([{ amount: amountToSupply, underlyingAsset: poolAddress }])}
+      handleApproval={() => approval([{ amount: amountToSupply, asset: poolAddress }])}
       handleAction={action}
       requiresApproval={requiresApproval}
       sx={sx}

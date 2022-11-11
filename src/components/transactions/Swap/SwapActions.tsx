@@ -74,9 +74,7 @@ export const SwapActions = ({
       handleAction={action}
       requiresAmount
       amount={amountToSwap}
-      handleApproval={() =>
-        approval([{ amount: amountToSwap, underlyingAsset: poolReserve.aTokenAddress }])
-      }
+      handleApproval={() => approval([{ amount: amountToSwap, asset: poolReserve.aTokenAddress }])}
       requiresApproval={requiresApproval}
       actionText={<Trans>Swap</Trans>}
       actionInProgressText={<Trans>Swapping</Trans>}

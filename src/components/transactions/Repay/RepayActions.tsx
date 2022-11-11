@@ -85,7 +85,7 @@ export const RepayActions = ({
       sx={sx}
       {...props}
       handleAction={action}
-      handleApproval={() => approval([{ amount: amountToRepay, underlyingAsset: poolAddress }])}
+      handleApproval={() => approval([{ amount: amountToRepay, asset: poolAddress }])}
       actionText={<Trans>Repay {symbol}</Trans>}
       actionInProgressText={<Trans>Repaying {symbol}</Trans>}
     />
