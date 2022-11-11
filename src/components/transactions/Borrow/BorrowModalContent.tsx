@@ -319,7 +319,7 @@ export const BorrowModalContent = ({
       <BorrowActions
         poolReserve={poolReserve}
         amountToBorrow={amount}
-        poolAddress={
+        asset={
           borrowUnWrapped && poolReserve.isWrappedBaseAsset
             ? API_ETH_MOCK_ADDRESS
             : poolReserve.underlyingAsset

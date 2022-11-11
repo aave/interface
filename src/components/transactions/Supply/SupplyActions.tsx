@@ -14,14 +14,14 @@ export interface SupplyActionProps extends BoxProps {
   poolReserve: ComputedReserveData;
   isWrongNetwork: boolean;
   customGasPrice?: string;
-  poolAddress: string;
+  asset: string;
   symbol: string;
   blocked: boolean;
 }
 
 export const SupplyActions = ({
   amountToSupply,
-  poolAddress,
+  asset,
   isWrongNetwork,
   sx,
   symbol,
@@ -35,27 +35,26 @@ export const SupplyActions = ({
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({
       // TODO: move tryPermit
-      tryPermit:
-        currentMarketData.v3 && permitByChainAndToken[chainId]?.[utils.getAddress(poolAddress)],
+      tryPermit: currentMarketData.v3 && permitByChainAndToken[chainId]?.[utils.getAddress(asset)],
       handleGetTxns: async () => {
         return supply({
           amountToSupply,
           isWrongNetwork,
-          poolAddress,
+          asset,
           symbol,
           blocked,
         });
       },
       handleGetPermitTxns: async (signatures, deadline) => {
         return supplyWithPermit({
-          reserve: poolAddress,
+          reserve: asset,
           amount: amountToSupply,
           signature: signatures[0],
           deadline,
         });
       },
       skip: !amountToSupply || parseFloat(amountToSupply) === 0,
-      deps: [amountToSupply, poolAddress],
+      deps: [amountToSupply, asset],
     });
 
   return (
@@ -69,7 +68,7 @@ export const SupplyActions = ({
       preparingTransactions={loadingTxns}
       actionText={<Trans>Supply {symbol}</Trans>}
       actionInProgressText={<Trans>Supplying {symbol}</Trans>}
-      handleApproval={() => approval([{ amount: amountToSupply, asset: poolAddress }])}
+      handleApproval={() => approval([{ amount: amountToSupply, asset }])}
       handleAction={action}
       requiresApproval={requiresApproval}
       sx={sx}

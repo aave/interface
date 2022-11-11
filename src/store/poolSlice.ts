@@ -270,13 +270,13 @@ export const createPoolSlice: StateCreator<
         augustus,
       });
     },
-    repay: ({ repayWithATokens, amountToRepay, poolAddress, debtType }) => {
+    repay: ({ repayWithATokens, amountToRepay, asset, debtType }) => {
       const pool = getCorrectPool();
       const currentAccount = get().account;
       if (pool instanceof Pool && repayWithATokens) {
         return pool.repayWithATokens({
           user: currentAccount,
-          reserve: poolAddress,
+          reserve: asset,
           amount: amountToRepay,
           rateMode: debtType as InterestRate,
           useOptimizedPath: get().useOptimizedPath(),
@@ -284,20 +284,20 @@ export const createPoolSlice: StateCreator<
       } else {
         return pool.repay({
           user: currentAccount,
-          reserve: poolAddress,
+          reserve: asset,
           amount: amountToRepay,
           interestRateMode: debtType,
           useOptimizedPath: get().useOptimizedPath(),
         });
       }
     },
-    repayWithPermit: ({ poolAddress, amountToRepay, debtType, deadline, signature }) => {
+    repayWithPermit: ({ asset, amountToRepay, debtType, deadline, signature }) => {
       // Better to get rid of direct assert
       const pool = getCorrectPool() as Pool;
       const currentAccount = get().account;
       return pool.repayWithPermit({
         user: currentAccount,
-        reserve: poolAddress,
+        reserve: asset,
         amount: amountToRepay, // amountToRepay.toString(),
         interestRateMode: debtType,
         signature,
@@ -305,13 +305,13 @@ export const createPoolSlice: StateCreator<
         deadline,
       });
     },
-    supply: ({ poolAddress, amountToSupply }) => {
+    supply: ({ asset, amountToSupply }) => {
       const pool = getCorrectPool();
       const currentAccount = get().account;
       if (pool instanceof Pool) {
         return pool.supply({
           user: currentAccount,
-          reserve: poolAddress,
+          reserve: asset,
           amount: amountToSupply,
           useOptimizedPath: get().useOptimizedPath(),
         });
@@ -319,7 +319,7 @@ export const createPoolSlice: StateCreator<
         const lendingPool = pool as LendingPool;
         return lendingPool.deposit({
           user: currentAccount,
-          reserve: poolAddress,
+          reserve: asset,
           amount: amountToSupply,
         });
       }

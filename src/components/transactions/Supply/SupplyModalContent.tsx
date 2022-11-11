@@ -269,7 +269,7 @@ export const SupplyModalContent = ({
         poolReserve={poolReserve}
         amountToSupply={amount}
         isWrongNetwork={isWrongNetwork}
-        poolAddress={supplyUnWrapped ? API_ETH_MOCK_ADDRESS : poolReserve.underlyingAsset}
+        asset={supplyUnWrapped ? API_ETH_MOCK_ADDRESS : poolReserve.underlyingAsset}
         symbol={symbol}
         blocked={blockingError !== undefined}
       />

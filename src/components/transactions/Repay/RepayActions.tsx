@@ -15,7 +15,7 @@ export interface RepayActionProps extends BoxProps {
   poolReserve: ComputedReserveData;
   isWrongNetwork: boolean;
   customGasPrice?: string;
-  poolAddress: string;
+  asset: string;
   symbol: string;
   debtType: InterestRate;
   repayWithATokens: boolean;
@@ -25,7 +25,7 @@ export interface RepayActionProps extends BoxProps {
 export const RepayActions = ({
   amountToRepay,
   poolReserve,
-  poolAddress,
+  asset,
   isWrongNetwork,
   sx,
   symbol,
@@ -41,12 +41,11 @@ export const RepayActions = ({
   const { approval, action, requiresApproval, loadingTxns, approvalTxState, mainTxState } =
     useTransactionHandler({
       // move tryPermit to store
-      tryPermit:
-        currentMarketData.v3 && permitByChainAndToken[chainId]?.[utils.getAddress(poolAddress)],
+      tryPermit: currentMarketData.v3 && permitByChainAndToken[chainId]?.[utils.getAddress(asset)],
       handleGetTxns: async () => {
         return repay({
           amountToRepay,
-          poolAddress,
+          asset,
           repayWithATokens,
           debtType,
           poolReserve,
@@ -59,7 +58,7 @@ export const RepayActions = ({
           amountToRepay,
           poolReserve,
           isWrongNetwork,
-          poolAddress,
+          asset,
           symbol,
           debtType,
           repayWithATokens,
@@ -68,7 +67,7 @@ export const RepayActions = ({
         });
       },
       skip: !amountToRepay || parseFloat(amountToRepay) === 0 || blocked,
-      deps: [amountToRepay, poolAddress, repayWithATokens],
+      deps: [amountToRepay, asset, repayWithATokens],
     });
 
   return (
@@ -85,7 +84,7 @@ export const RepayActions = ({
       sx={sx}
       {...props}
       handleAction={action}
-      handleApproval={() => approval([{ amount: amountToRepay, asset: poolAddress }])}
+      handleApproval={() => approval([{ amount: amountToRepay, asset }])}
       actionText={<Trans>Repay {symbol}</Trans>}
       actionInProgressText={<Trans>Repaying {symbol}</Trans>}
     />

@@ -9,7 +9,7 @@ import { TxActionsWrapper } from '../TxActionsWrapper';
 export interface WithdrawActionsProps extends BoxProps {
   poolReserve: ComputedReserveData;
   amountToWithdraw: string;
-  poolAddress: string;
+  asset: string;
   isWrongNetwork: boolean;
   symbol: string;
   blocked: boolean;
@@ -18,7 +18,7 @@ export interface WithdrawActionsProps extends BoxProps {
 export const WithdrawActions = ({
   poolReserve,
   amountToWithdraw,
-  poolAddress,
+  asset,
   isWrongNetwork,
   symbol,
   blocked,
@@ -31,12 +31,12 @@ export const WithdrawActions = ({
       tryPermit: false,
       handleGetTxns: async () =>
         withdraw({
-          reserve: poolAddress,
+          reserve: asset,
           amount: amountToWithdraw,
           aTokenAddress: poolReserve.aTokenAddress,
         }),
       skip: !amountToWithdraw || parseFloat(amountToWithdraw) === 0 || blocked,
-      deps: [amountToWithdraw, poolAddress],
+      deps: [amountToWithdraw, asset],
     });
 
   return (
@@ -51,7 +51,7 @@ export const WithdrawActions = ({
       actionInProgressText={<Trans>Withdrawing {symbol}</Trans>}
       actionText={<Trans>Withdraw {symbol}</Trans>}
       handleAction={action}
-      handleApproval={() => approval([{ amount: amountToWithdraw, asset: poolAddress }])}
+      handleApproval={() => approval([{ amount: amountToWithdraw, asset }])}
       requiresApproval={requiresApproval}
       sx={sx}
     />

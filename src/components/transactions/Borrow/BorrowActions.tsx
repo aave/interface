@@ -10,7 +10,7 @@ import { TxActionsWrapper } from '../TxActionsWrapper';
 export interface BorrowActionsProps extends BoxProps {
   poolReserve: ComputedReserveData;
   amountToBorrow: string;
-  poolAddress: string;
+  asset: string;
   interestRateMode: InterestRate;
   isWrongNetwork: boolean;
   symbol: string;
@@ -21,7 +21,7 @@ export const BorrowActions = ({
   symbol,
   poolReserve,
   amountToBorrow,
-  poolAddress,
+  asset,
   interestRateMode,
   isWrongNetwork,
   blocked,
@@ -35,7 +35,7 @@ export const BorrowActions = ({
         return borrow({
           interestRateMode,
           amount: amountToBorrow,
-          reserve: poolAddress,
+          reserve: asset,
           debtTokenAddress:
             interestRateMode === InterestRate.Variable
               ? poolReserve.variableDebtTokenAddress
@@ -57,7 +57,7 @@ export const BorrowActions = ({
       handleAction={action}
       actionText={<Trans>Borrow {symbol}</Trans>}
       actionInProgressText={<Trans>Borrowing {symbol}</Trans>}
-      handleApproval={() => approval([{ amount: amountToBorrow, asset: poolAddress }])}
+      handleApproval={() => approval([{ amount: amountToBorrow, asset }])}
       requiresApproval={requiresApproval}
       preparingTransactions={loadingTxns}
       sx={sx}

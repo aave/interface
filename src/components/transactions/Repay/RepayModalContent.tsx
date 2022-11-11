@@ -256,9 +256,7 @@ export const RepayModalContent = ({
       <RepayActions
         poolReserve={poolReserve}
         amountToRepay={isMaxSelected ? repayMax : amount}
-        poolAddress={
-          repayWithATokens ? poolReserve.underlyingAsset : tokenToRepayWith.address ?? ''
-        }
+        asset={repayWithATokens ? poolReserve.underlyingAsset : tokenToRepayWith.address ?? ''}
         isWrongNetwork={isWrongNetwork}
         symbol={modalSymbol}
         debtType={debtType}
