@@ -1,5 +1,6 @@
 import { timeFormat } from 'd3-time-format';
-import { BigNumber } from 'ethers';
+import { BigNumber, BigNumberish } from 'ethers';
+import { formatUnits } from 'ethers/lib/utils';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 /**
@@ -28,10 +29,6 @@ export const ghoMintingAvailable = ({
   } else {
     return false;
   }
-};
-
-export const ghoBorrowAPRWithMaxDiscount = (ghoDiscountRate: number, variableBorrowAPR: string) => {
-  return Number(variableBorrowAPR) * (1 - ghoDiscountRate);
 };
 
 export const getGhoReserve = (reserves: ComputedReserveData[]) => {
@@ -68,4 +65,19 @@ export const formatGhoDiscountLockPeriodExpiryDate = (
   );
   const formatter = timeFormat('%d %B %Y');
   return formatter(lockPeriodExpiryDate);
+};
+
+/**
+ * Amount of GHO that can be borrowed at a discounted rate given a users stkAave balance
+ */
+export const ghoDiscountableAmount = (
+  stakedAaveBalance: BigNumberish,
+  ghoDiscountedPerToken: string
+) => {
+  return Number(formatUnits(stakedAaveBalance, 18)) * Number(ghoDiscountedPerToken);
+};
+
+// Not gho specific, but we should look at doing this logic in math-helpers
+export const normalizeBaseVariableBorrowRate = (baseVariableBorrowRate: string | number) => {
+  return Number(baseVariableBorrowRate) / 10 ** 27;
 };

@@ -23,7 +23,7 @@ import { GhoAssetItem } from './Gho/GhoAssetItem';
 import { GhoAssetMobileItem } from './Gho/GhoAssetMobileItem';
 
 const shouldDisplayGho = (marketTitle: string, searchTerm: string): boolean => {
-  if (!ghoMintingMarkets.includes(marketTitle)) {
+  if (!GHO_SUPPORTED_MARKETS.includes(marketTitle)) {
     return false;
   }
 

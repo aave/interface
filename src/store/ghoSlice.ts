@@ -2,15 +2,45 @@ import {
   GhoDiscountRateStrategyService,
   GhoTokenService,
   GhoVariableDebtTokenService,
+  Pool,
 } from '@aave/contract-helpers';
 import { BigNumber, BigNumberish } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
+import { GHO_SUPPORTED_MARKETS, normalizeBaseVariableBorrowRate } from 'src/utils/ghoUtilities';
+import {
+  CustomMarket,
+  ENABLE_TESTNET,
+  getProvider,
+  MarketDataType,
+  marketsData,
+  STAGING_ENV,
+} from 'src/utils/marketsAndNetworksConfig';
 import { StateCreator } from 'zustand';
 
 import { RootStore } from './root';
 
-const ghoTokenAddress = '0xA48DdCca78A09c37b4070B3E210D6e0234911549';
-const facilitatorAddress = '0x12cA83Bd0d5887865b7a43B73bbF586D7C087943';
+interface GhoMarketConfig {
+  market: MarketDataType;
+  ghoTokenAddress: string;
+  ghoVariableDebtTokenAddress: string;
+  facilitatorAddress: string;
+}
+
+const goerliGhoConfig: GhoMarketConfig = {
+  market: marketsData[CustomMarket.proto_goerli_gho_v3],
+  ghoTokenAddress: '0xa48ddcca78a09c37b4070b3e210d6e0234911549',
+  facilitatorAddress: '0x12cA83Bd0d5887865b7a43B73bbF586D7C087943',
+  ghoVariableDebtTokenAddress: '0x2A379e5d2871123F301b2c73463cE011EcB217e6',
+};
+
+const getGhoMarketConfig = () => {
+  if (STAGING_ENV || ENABLE_TESTNET) {
+    return goerliGhoConfig;
+  } else {
+    // TODO: once v3 is on mainnet update this.
+    // return marketsData[CustomMarket.proto_mainnet];
+  }
+};
 
 export interface GhoSlice {
   ghoVariableDebtTokenAddress: string;
@@ -23,12 +53,17 @@ export interface GhoSlice {
   ghoFacilitatorBucketCapacity: string;
   ghoMinDebtTokenBalanceForEligibleDiscount: BigNumber;
   ghoMinDiscountTokenBalanceForEligibleDiscount: BigNumber;
+  ghoBorrowAPR: number;
+  ghoComputed: {
+    borrowAPRWithMaxDiscount: () => number;
+  };
   ghoUpdateDiscountRate: () => Promise<void>;
   ghoCalculateDiscountRate: (
     ghoDebtTokenBalance: BigNumberish,
     stakedAaveBalance: BigNumberish
   ) => Promise<BigNumber>;
   refreshGhoData: () => Promise<void>;
+  fetchGhoMarketData: () => Promise<void>;
 }
 
 export const createGhoSlice: StateCreator<
@@ -38,6 +73,13 @@ export const createGhoSlice: StateCreator<
   GhoSlice
 > = (set, get) => {
   return {
+    ghoComputed: {
+      borrowAPRWithMaxDiscount: () => {
+        const borrowAPR = get().ghoBorrowAPR;
+        const discountRate = get().ghoDiscountRatePercent;
+        return borrowAPR * (1 - discountRate);
+      },
+    },
     ghoFacilitators: [],
     ghoDiscountedPerToken: '0',
     ghoVariableDebtTokenAddress: '0x2A379e5d2871123F301b2c73463cE011EcB217e6',
@@ -48,6 +90,7 @@ export const createGhoSlice: StateCreator<
     ghoFacilitatorBucketCapacity: '0',
     ghoMinDebtTokenBalanceForEligibleDiscount: BigNumber.from(1),
     ghoMinDiscountTokenBalanceForEligibleDiscount: BigNumber.from(1),
+    ghoBorrowAPR: 0,
     ghoCalculateDiscountRate: async (
       ghoDebtTokenBalance: BigNumberish,
       stakedAaveBalance: BigNumberish
@@ -68,15 +111,20 @@ export const createGhoSlice: StateCreator<
       set({ ghoUserDiscountRate: rate });
     },
     refreshGhoData: async () => {
+      get().fetchGhoMarketData();
+
+      const ghoConfig = getGhoMarketConfig();
+      if (!ghoConfig) return;
+
       const account = get().account;
-      const currentMarketData = get().currentMarketData;
-      if (!account || !currentMarketData) return;
+      const currentMarket = get().currentMarket;
+      if (!account || !currentMarket || !GHO_SUPPORTED_MARKETS.includes(currentMarket)) return;
 
       const provider = get().jsonRpcProvider();
       const address = get().ghoVariableDebtTokenAddress;
       const ghoDiscountRateService = new GhoDiscountRateStrategyService(provider, address);
-      const ghoTokenService = new GhoTokenService(provider, ghoTokenAddress);
       const ghoVariableDebtTokenService = new GhoVariableDebtTokenService(provider, address);
+      const ghoTokenService = new GhoTokenService(provider, ghoConfig.ghoTokenAddress);
 
       const [
         ghoDiscountedPerToken,
@@ -89,7 +137,7 @@ export const createGhoSlice: StateCreator<
         ghoDiscountRateService.getGhoDiscountedPerDiscountToken(),
         ghoDiscountRateService.getGhoDiscountRate(),
         ghoVariableDebtTokenService.getDiscountLockPeriod(),
-        ghoTokenService.getFacilitatorBucket(facilitatorAddress),
+        ghoTokenService.getFacilitatorBucket(ghoConfig.facilitatorAddress),
         ghoDiscountRateService.getGhoMinDebtTokenBalance(),
         ghoDiscountRateService.getGhoMinDiscountTokenBalance(),
         get().ghoUpdateDiscountRate(),
@@ -106,6 +154,21 @@ export const createGhoSlice: StateCreator<
         ghoDiscountLockPeriod,
         ghoMinDebtTokenBalanceForEligibleDiscount,
         ghoMinDiscountTokenBalanceForEligibleDiscount,
+      });
+    },
+    fetchGhoMarketData: async () => {
+      // Fetch gho data regardless of which market the user has selected so it can be displayed on the staking page
+      // We assume there is only one testnet market with gho, and one mainnet market for gho.
+      const config = getGhoMarketConfig();
+      if (!config) return;
+
+      const poolContract = new Pool(getProvider(config.market.chainId), {
+        POOL: config.market.addresses.LENDING_POOL,
+      });
+
+      const reserve = await poolContract.getReserveData(config.ghoTokenAddress);
+      set({
+        ghoBorrowAPR: normalizeBaseVariableBorrowRate(reserve.currentVariableBorrowRate.toString()),
       });
     },
   };
