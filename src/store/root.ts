@@ -44,8 +44,13 @@ if (typeof document !== 'undefined') {
       const selectedMarket =
         getQueryParameter('marketName') || localStorage.getItem('selectedMarket');
 
-      const setCurrentMarket = useRootStore.getState().setCurrentMarket;
-      if (selectedMarket) setCurrentMarket(selectedMarket as CustomMarket);
+      if (selectedMarket) {
+        const currentMarket = useRootStore.getState().currentMarket;
+        const setCurrentMarket = useRootStore.getState().setCurrentMarket;
+        if (selectedMarket !== currentMarket) {
+          setCurrentMarket(selectedMarket as CustomMarket, true);
+        }
+      }
     }
   };
 }
