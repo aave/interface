@@ -1695,6 +1695,21 @@
       "ipfsHash": "QmWsbbbG7c6Bxhjnm4cofqq5ctxV97XzsECqSBYgUAxKYU",
       "originalHash": "0x7ecafb3b0b7e418336cccb0c82b3e25944011bf11e41f8dc541841da073fe4f1",
       "id": 116
+    },
+    {
+      "aip": 117,
+      "title": "Risk Parameter Updates for Aave V2 ETH Market (2022-11-12)",
+      "status": "Proposed",
+      "author": "Paul Lei, Nick Del Zingaro, Jonathan Reem, Nick Cannon, Nathan Lord, Watson Fu, Tony Salvatore, Sarah Chen",
+      "shortDescription": "Risk Parameter Updates",
+      "discussions": "https://governance.aave.com/t/arc-market-downturn-gauntlet-analysis-november-2022/10625",
+      "created": "2022-11-12T00:00:00.000Z",
+      "preview": "## Simple Summary\n\n A proposal to make parameter changes on Aave V2 ETH …",
+      "basename": "AIP-117",
+      "description": "## Summary\n\nA proposal to make parameter changes on Aave V2 ETH.\n\n## Specification\n\nFreeze REN market on Aave V2 ETH. \n\n## Implementation\n\nWe freeze the REN market by calling the `freezeReserve` method on the `LendingPoolConfigurator`\n\n## Copyright\n\nCopyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).\n\n*By approving this proposal, you agree that any services provided by Gauntlet shall be governed by the terms of service available at gauntlet.network/tos. This message is for informational purposes only and does not constitute an offer to sell, a solicitation to buy, or a recommendation for any security, nor does it constitute an offer to provide investment advisory or other services by Gauntlet Networks Inc. No reference to any specific security constitutes a recommendation to buy, sell or hold that security or any other security. Nothing in this report shall be considered a solicitation or offer to buy or sell any security, future, option or other financial instrument or to offer or provide any investment advice or service to any person in any jurisdiction. Nothing contained in this report constitutes investment advice or offers any opinion with respect to the suitability of any security, and the views expressed in this report should not be taken as advice to buy, sell or hold any security. The information in this report should not be relied upon for the purpose of investing. In preparing the information contained in this report, we have not taken into account the investment needs, objectives and financial circumstances of any particular investor. This information has no regard to the specific investment objectives, financial situation and particular needs of any specific recipient of this information and investments discussed may not be suitable for all investors. Any views expressed in this report by us were prepared based upon the information available to us at the time such views were written. Changed or additional information could cause such views to change. All information is subject to possible correction. Information may quickly become unreliable for various reasons, including changes in market conditions or economic circumstances.*\n",
+      "ipfsHash": "QmQ6Y1KtQPxPFNtkPxERQpWCCKSkGRdhPDSiUdooNSYkED",
+      "originalHash": "0x1a19a9cdef0a9717596c08cec5ecf4786dbe044668d3d139cc8a32931bea8012",
+      "id": 117
     }
   ]
 }
