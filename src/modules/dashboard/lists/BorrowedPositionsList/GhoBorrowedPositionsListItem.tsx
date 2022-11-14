@@ -6,7 +6,7 @@ import { GhoBorrowRateTooltip } from 'src/components/infoTooltips/GhoBorrowRateT
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
-import { ghoDiscountableAmount, normalizeBaseVariableBorrowRate } from 'src/utils/ghoUtilities';
+import { normalizeBaseVariableBorrowRate } from 'src/utils/ghoUtilities';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
 import { ComputedUserReserveData } from '../../../../hooks/app-data-provider/useAppDataProvider';
@@ -37,15 +37,10 @@ export const GhoBorrowedPositionsListItem = ({
     variableBorrowAPY,
     baseVariableBorrowRate,
   } = reserve;
-  const [stakeUserResult, ghoDiscountedPerToken, ghoDiscountRatePercent] = useRootStore((state) => [
-    state.stakeUserResult,
-    state.ghoDiscountedPerToken,
+  const [ghoDiscountRatePercent, discountableAmount] = useRootStore((state) => [
     state.ghoDiscountRatePercent,
+    state.ghoComputed.discountableAmount,
   ]);
-
-  const stkAaveBalance = stakeUserResult ? stakeUserResult.aave.stakeTokenUserBalance : '0';
-
-  const discountableAmount = ghoDiscountableAmount(stkAaveBalance, ghoDiscountedPerToken);
 
   const normalizedBaseVariableBorrowRate = normalizeBaseVariableBorrowRate(baseVariableBorrowRate);
   let borrowRateAfterDiscount =
