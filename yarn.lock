@@ -3812,7 +3812,7 @@
   resolved "https://registry.npmjs.org/@walletconnect/environment/-/environment-1.0.0.tgz"
   integrity sha512-4BwqyWy6KpSvkocSaV7WR3BlZfrxLbJSLkg+j7Gl6pTDE+U55lLhJvQaMuDVazXYxcjBsG09k7UlH7cGiUI5vQ==
 
-"@walletconnect/ethereum-provider@^1.7.9":
+"@walletconnect/ethereum-provider@^1.7.8":
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/@walletconnect/ethereum-provider/-/ethereum-provider-1.8.0.tgz#ed1dbf9cecc3b818758a060d2f9017c50bde1d32"
   integrity sha512-Nq9m+oo5P0F+njsROHw9KMWdoc/8iGHYzQdkjJN/1C7DtsqFRg5k5a3hd9rzCLpbPsOC1q8Z5lRs6JQgDvPm6Q==
@@ -3919,7 +3919,7 @@
     "@walletconnect/utils" "^1.8.0"
     ws "7.5.3"
 
-"@walletconnect/types@^1.7.9", "@walletconnect/types@^1.8.0":
+"@walletconnect/types@^1.7.8", "@walletconnect/types@^1.8.0":
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/@walletconnect/types/-/types-1.8.0.tgz#3f5e85b2d6b149337f727ab8a71b8471d8d9a195"
   integrity sha512-Cn+3I0V0vT9ghMuzh1KzZvCkiAxTq+1TR2eSqw5E5AVWfmCtECFkVZBP6uUJZ8YjwLqXheI+rnjqPy7sVM4Fyg==
@@ -5779,13 +5779,13 @@ drbg.js@^1.0.1:
     create-hash "^1.1.2"
     create-hmac "^1.1.4"
 
-ds-web3-react-walletconnect@^6.2.14:
-  version "6.2.14"
-  resolved "https://registry.yarnpkg.com/ds-web3-react-walletconnect/-/ds-web3-react-walletconnect-6.2.14.tgz#7c5eae6fd864ce618eae8e42fb9a115616790887"
-  integrity sha512-23RsynlHnST45puLu6zFrhA3cModU45xB7MC0nrEdeD2vR4pQrhUCxO5oFj5paH7TaVZzFjQH8U6nkvuyYIshw==
+ds-web3-react-walletconnect@^6.2.15:
+  version "6.2.15"
+  resolved "https://registry.yarnpkg.com/ds-web3-react-walletconnect/-/ds-web3-react-walletconnect-6.2.15.tgz#ea458d81cf304c28fffbad15be14acb148f6bad0"
+  integrity sha512-3Jd2EmhpubsVrOTwZQEaplrKlKFOlCpDTQnU8awnPLrww1rODlXezqn+KTx34TEgn971NJs8Byt1oHcNnOwvnQ==
   dependencies:
-    "@walletconnect/ethereum-provider" "^1.7.9"
-    "@walletconnect/types" "^1.7.9"
+    "@walletconnect/ethereum-provider" "^1.7.8"
+    "@walletconnect/types" "^1.7.8"
     "@web3-react/abstract-connector" "^6.0.7"
     "@web3-react/types" "^6.0.7"
     tiny-invariant "^1.0.6"
