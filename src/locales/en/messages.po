@@ -340,7 +340,6 @@ msgid "Borrowing is currently unavailable for {0}."
 msgstr "Borrowing is currently unavailable for {0}."
 
 #: src/components/Warnings/BorrowDisabledWarning.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Borrowing is disabled due to an Aave community decision. <0>More details</0>"
 msgstr "Borrowing is disabled due to an Aave community decision. <0>More details</0>"
 

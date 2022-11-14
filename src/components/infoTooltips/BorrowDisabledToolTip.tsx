@@ -4,12 +4,16 @@ import { Box, SvgIcon } from '@mui/material';
 import { ContentWithTooltip } from '../ContentWithTooltip';
 import { BorrowDisabledWarning } from '../Warnings/BorrowDisabledWarning';
 
-export const BorrowDisabledToolTip = () => {
+interface BorrowDisabledToolTipProps {
+  symbol: string;
+  currentMarket: string;
+}
+export const BorrowDisabledToolTip = ({ symbol, currentMarket }: BorrowDisabledToolTipProps) => {
   return (
     <ContentWithTooltip
       tooltipContent={
         <Box>
-          <BorrowDisabledWarning />
+          <BorrowDisabledWarning symbol={symbol} currentMarket={currentMarket} />
         </Box>
       }
     >

@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, Divider } from '@mui/material';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
+import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 
@@ -63,8 +64,14 @@ export const AssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
             textAlign: 'center',
           }}
         >
-          <FormattedNumber compact value={reserve.totalDebt} variant="secondary14" />
-          <ReserveSubheader value={reserve.totalDebtUSD} rightAlign={true} />
+          {reserve.borrowingEnabled || Number(reserve.totalDebt) > 0 ? (
+            <>
+              <FormattedNumber compact value={reserve.totalDebt} variant="secondary14" />
+              <ReserveSubheader value={reserve.totalDebtUSD} rightAlign={true} />
+            </>
+          ) : (
+            <NoData variant={'secondary14'} color="text.secondary" />
+          )}
         </Box>
       </Row>
       <Row
