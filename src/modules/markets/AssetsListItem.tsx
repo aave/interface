@@ -74,31 +74,28 @@ export const AssetsListItem = ({ ...reserve }: ComputedReserveData) => {
 
       <ListColumn>
         <IncentivesCard
-          value={
-            reserve.borrowingEnabled && Number(reserve.totalVariableDebtUSD) > 0
-              ? reserve.variableBorrowAPY
-              : '-1'
-          }
+          value={Number(reserve.totalVariableDebtUSD) > 0 ? reserve.variableBorrowAPY : '-1'}
           incentives={reserve.vIncentivesData || []}
           symbol={reserve.symbol}
           variant="main16"
           symbolsVariant="secondary16"
         />
+        {!reserve.borrowingEnabled && Number(reserve.totalVariableDebt) > 0 && (
+          <ReserveSubheader value={'Disabled'} />
+        )}
       </ListColumn>
 
       <ListColumn>
         <IncentivesCard
-          value={
-            (reserve.borrowingEnabled && reserve.stableBorrowRateEnabled) ||
-            Number(reserve.totalStableDebtUSD) > 0
-              ? reserve.stableBorrowAPY
-              : '-1'
-          }
+          value={Number(reserve.totalStableDebtUSD) > 0 ? reserve.stableBorrowAPY : '-1'}
           incentives={reserve.sIncentivesData || []}
           symbol={reserve.symbol}
           variant="main16"
           symbolsVariant="secondary16"
         />
+        {!reserve.borrowingEnabled && Number(reserve.totalStableDebt) > 0 && (
+          <ReserveSubheader value={'Disabled'} />
+        )}
       </ListColumn>
 
       <ListColumn maxWidth={95} minWidth={95} align="right">

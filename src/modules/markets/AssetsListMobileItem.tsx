@@ -64,7 +64,7 @@ export const AssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
             textAlign: 'center',
           }}
         >
-          {reserve.borrowingEnabled || Number(reserve.totalDebt) > 0 ? (
+          {Number(reserve.totalDebt) > 0 ? (
             <>
               <FormattedNumber compact value={reserve.totalDebt} variant="secondary14" />
               <ReserveSubheader value={reserve.totalDebtUSD} rightAlign={true} />
@@ -113,6 +113,8 @@ export const AssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
           symbol={reserve.symbol}
           variant="secondary14"
         />
+        {/* todo need to add the disabled view here */}
+        {/* <ReserveSubheader value={'Disabled'} rightAlign={true} /> */}
       </Row>
 
       <Button
