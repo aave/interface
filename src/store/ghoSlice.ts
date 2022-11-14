@@ -56,6 +56,7 @@ export interface GhoSlice {
   ghoBorrowAPR: number;
   ghoComputed: {
     borrowAPRWithMaxDiscount: number;
+    discountableAmount: number;
   };
   ghoUpdateDiscountRate: () => Promise<void>;
   ghoCalculateDiscountRate: (
@@ -74,13 +75,20 @@ export const createGhoSlice: StateCreator<
 > = (set, get) => {
   return {
     ghoComputed: {
+      // TODO: store could be undefined at this point, so the getters need to handle that.
+      // But we should consider not letting the app load until the store exists.
       get borrowAPRWithMaxDiscount() {
-        // TODO: store could be undefined at this point, so we need to handle that.
-        // But we should consider not letting the app load until the store exists.
         const { ghoBorrowAPR, ghoDiscountRatePercent } = { ...get() };
         if (!ghoBorrowAPR || !ghoDiscountRatePercent) return 0;
 
         return ghoBorrowAPR * (1 - ghoDiscountRatePercent);
+      },
+      get discountableAmount() {
+        if (!get()) return 0;
+        const stakedAaveBalance = get().stakeUserResult?.aave.stakeTokenUserBalance ?? '0';
+        const stakedAaveBalanceNormalized = formatUnits(stakedAaveBalance, 18);
+        const discountPerToken = get().ghoDiscountedPerToken;
+        return Number(stakedAaveBalanceNormalized) * Number(discountPerToken);
       },
     },
     ghoFacilitators: [],
