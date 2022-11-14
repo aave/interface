@@ -48,10 +48,10 @@ export const GhoBorrowModalContent = ({
   const { mainTxState: borrowTxState, gasLimit, txError } = useModalContext();
   const { user, marketReferencePriceInUsd } = useAppDataContext();
   const {
+    ghoComputed: { borrowAPRWithMaxDiscount, discountableAmount },
     stakeUserResult,
     ghoDiscountRatePercent,
     ghoDiscountLockPeriod,
-    ghoDiscountedPerToken,
     ghoMinDebtTokenBalanceForEligibleDiscount,
     ghoMinDiscountTokenBalanceForEligibleDiscount,
   } = useRootStore();
@@ -112,21 +112,16 @@ export const GhoBorrowModalContent = ({
     ghoMinDebtTokenBalanceForEligibleDiscount.toString(),
     18
   ).toNumber();
-  const discountedPerToken = Number(ghoDiscountedPerToken);
 
   // Calculate new borrow APY based on borrow amounts
   const [calculatedBorrowAPY, setCalculatedBorrowAPY] = useState<number>(0);
   const [calculatedFutureBorrowAPY, setCalculatedFutureBorrowAPY] = useState<number>(0);
   const [apyDiffers, setApyDiffers] = useState(false);
-  const [discountableGhoAmount, setDiscountableGhoAmount] = useState<number>(0);
   const [totalBorrowedGho, setTotalBorrowedGho] = useState<number>(0);
-  // TODO: const [borrowAmountDiffers, setBorrowAmountDiffers] = useState(false)
+
   /**
-   * This function recreates the logic that happens in GhoDiscountRateStrategy.sol to determine a user's discount rate for borrowing GHO based off of the amount of stkAAVE a user holds.
-   * This is repeated here so that we don't bombard the RPC with HTTP requests to do this calculation and read from on-chain logic.
-   * NOTE: if the discount rate strategy changes on-chain, then this creates a maintenance issue and we'll have to update this.
-   * @param stakedAave - The hypothectical amount of stkAAVE
-   * @param borrowedGho - The hypothetical amount of GHO
+   * Calculates the discount rate based off amount of GHO being borrowed, taking into consideration how much has been borrowed previously as well as discountable and non-discountable amounts.
+   * @param borrowingAmountGho - The amount of GHO requested to be borrowed
    */
   const calculateDiscountRate = async (borrowingAmount: string) => {
     let newRate: number;
@@ -138,14 +133,11 @@ export const GhoBorrowModalContent = ({
       if (stakedAave < minStkAave || borrowableAmount < minGhoBorrowed) {
         newRate = 0;
       } else {
-        const discountableAmount = stakedAave * discountedPerToken;
         if (discountableAmount >= borrowableAmount) {
           newRate = ghoDiscountRatePercent;
         } else {
           newRate = (discountableAmount * ghoDiscountRatePercent) / borrowableAmount;
         }
-        const normalizedDiscountable = normalizeBN(discountableAmount.toString(), 18).toNumber();
-        setDiscountableGhoAmount(normalizedDiscountable);
       }
 
       // Calculate the new borrow APY - Takes the total discount as a fraction of the existing borrow rate
@@ -159,13 +151,12 @@ export const GhoBorrowModalContent = ({
       setCalculatedBorrowAPY(newRate);
       setCalculatedFutureBorrowAPY(0);
       setApyDiffers(false);
-      // TODO: setBorrowAmountDiffers(false)
     } else {
       // Calculate new rates and check if they differ
       borrowedGho = Number(userReserve.totalBorrows) + Number(borrowingAmount);
       const newRate = calculationHelper(borrowedGho);
-      // TODO: setBorrowAmountDiffers(true)
       const oldRate = calculationHelper(Number(userReserve.totalBorrows));
+      // For showing arrow changes in the UI
       if (oldRate !== newRate) {
         setApyDiffers(true);
       }
@@ -176,37 +167,12 @@ export const GhoBorrowModalContent = ({
     setTotalBorrowedGho(borrowedGho);
   };
 
-  const handleApplyMaxDiscount = () => {
-    console.log(discountableGhoAmount);
-    setAmount(discountableGhoAmount.toString());
-  };
-
-  const calculateAPYBasedOffOfMaxDiscountableEntered = (amt: number) => {
-    // Ugh, this is basically calling similar stuff just with a different amount
-    console.log({ amt });
-    calculateDiscountRate(amt.toString());
-  };
-
   // Calculate the APYs and other information based off of each input change
   useEffect(() => {
     if (prevAmount !== _amount) {
       calculateDiscountRate(_amount);
     }
   }, [_amount]);
-
-  useEffect(() => {
-    console.log({ discountableGhoAmount });
-    // Calculate discountable amount up-front on mount
-    const discountableAmount = Number(userStakedAaveBalance) * discountedPerToken;
-    const normalizedDiscountable: number = normalizeBN(
-      discountableAmount.toString(),
-      18
-    ).toNumber();
-    setDiscountableGhoAmount(normalizedDiscountable);
-    // Calculate the discount rate for the maximum discount on mount as well
-    // Because state isn't updated yet... pass in the amount
-    calculateAPYBasedOffOfMaxDiscountableEntered(discountableAmount);
-  }, []);
 
   if (borrowTxState.success)
     return (
@@ -217,9 +183,7 @@ export const GhoBorrowModalContent = ({
         addToken={addToken}
       />
     );
-
-  console.log({ calculatedBorrowAPY, calculatedFutureBorrowAPY, discountableGhoAmount });
-
+  console.log({ discountAvailable, hasGhoBorrowPositions });
   return (
     <>
       {!discountAvailable && !hasGhoBorrowPositions && (
@@ -260,25 +224,29 @@ export const GhoBorrowModalContent = ({
 
       {discountAvailable && !hasGhoBorrowPositions && (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Typography sx={{ mr: 1 }}>Discount</Typography>
+          <Typography sx={{ mr: 1 }}>
+            <Trans>Discount</Trans>
+          </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
             <TokenIcon symbol="GHO" fontSize="small" sx={{ mr: 1 }} />
             <FormattedNumber
-              value={discountableGhoAmount}
+              value={discountableAmount}
               visibleDecimals={0}
               compact
               variant="secondary12"
             />
             <Typography variant="secondary12" sx={{ ml: 1 }} component="div">
-              @ <FormattedNumber value={calculatedBorrowAPY} percent variant="secondary12" /> APY
+              <Trans>{`@ ${(
+                <FormattedNumber value={borrowAPRWithMaxDiscount} percent variant="secondary12" />
+              )} APY`}</Trans>
             </Typography>
             <Button
               variant="outlined"
               size="small"
-              onClick={handleApplyMaxDiscount}
+              onClick={() => setAmount(discountableAmount.toString())}
               sx={{ ml: 1, minWidth: 0 }}
             >
-              Apply
+              <Trans>Apply</Trans>
             </Button>
           </Box>
         </Box>
@@ -291,52 +259,66 @@ export const GhoBorrowModalContent = ({
           futureHealthFactor={newHealthFactor.toString(10)}
         />
         {discountAvailable && (
-          <DetailsGhoApyLine
-            hasGhoBorrowPositions={hasGhoBorrowPositions}
-            inputAmount={amount}
-            borrowApy={calculatedBorrowAPY}
-            futureBorrowApy={calculatedFutureBorrowAPY}
-            showApyDifference={apyDiffers}
-          />
-        )}
-
-        {discountAvailable && (hasGhoBorrowPositions || (!hasGhoBorrowPositions && amount !== '')) && (
           <>
-            <Divider sx={{ mb: 7 }}>Discount details</Divider>
-            <DiscountDetailsGhoLine
-              title={<Trans>Total borrow balance</Trans>}
-              subtitle={<Trans>After transaction</Trans>}
-              ghoAmount={totalBorrowedGho}
-              ghoAmountUsd={totalBorrowedGho}
+            <DetailsGhoApyLine
+              hasGhoBorrowPositions={hasGhoBorrowPositions}
+              inputAmount={amount}
+              borrowApy={calculatedBorrowAPY}
+              futureBorrowApy={calculatedFutureBorrowAPY}
+              showApyDifference={apyDiffers}
             />
-            <DiscountDetailsGhoLine
-              title={<Trans>Discountable amount</Trans>}
-              subtitle={<Trans>Borrow @ 1.60% APY</Trans>}
-              ghoAmount={
-                discountableGhoAmount >= totalBorrowedGho ? totalBorrowedGho : discountableGhoAmount
-              }
-              // ghoAmountDiffers={borrowAmountDiffers}
-              tooltipText={<Trans>This is tooltip text</Trans>}
-            />
-            <DiscountDetailsGhoLine
-              title={<Trans>Non-discountable amount</Trans>}
-              subtitle={<Trans>Borrow @ 2.00% APY</Trans>}
-              ghoAmount={
-                discountableGhoAmount >= totalBorrowedGho
-                  ? 0
-                  : totalBorrowedGho - discountableGhoAmount
-              }
-              // ghoAmountDiffers={borrowAmountDiffers}
-              tooltipText={<Trans>This is tooltip text</Trans>}
-            />
-            <DiscountDetailsGhoLine
-              title={<Trans>Discount lock period</Trans>}
-              tooltipText={<Trans>This is tooltip text</Trans>}
-              discountLockPeriod={formatGhoDiscountLockPeriodExpiryDate(
-                new Date(),
-                ghoDiscountLockPeriod
-              )}
-            />
+            {(hasGhoBorrowPositions || (!hasGhoBorrowPositions && amount !== '')) && (
+              <>
+                <Divider sx={{ mb: 7 }}>
+                  <Trans>Discount details</Trans>
+                </Divider>
+                <DiscountDetailsGhoLine
+                  title={<Trans>Total borrow balance</Trans>}
+                  subtitle={<Trans>After transaction</Trans>}
+                  ghoAmount={totalBorrowedGho}
+                  ghoAmountUsd={totalBorrowedGho}
+                />
+                <DiscountDetailsGhoLine
+                  title={<Trans>Discountable amount</Trans>}
+                  subtitle={
+                    <Trans>{`Borrow @ ${(
+                      <FormattedNumber
+                        value={borrowAPRWithMaxDiscount.toString()}
+                        percent
+                        variant="helperText"
+                      />
+                    )} APY`}</Trans>
+                  }
+                  ghoAmount={
+                    discountableAmount >= totalBorrowedGho ? totalBorrowedGho : discountableAmount
+                  }
+                />
+                <DiscountDetailsGhoLine
+                  title={<Trans>Non-discountable amount</Trans>}
+                  subtitle={
+                    <Trans>{`Borrow @ ${(
+                      <FormattedNumber
+                        value={baseBorrowRate.toString()}
+                        percent
+                        variant="helperText"
+                      />
+                    )} APY`}</Trans>
+                  }
+                  ghoAmount={
+                    discountableAmount >= totalBorrowedGho
+                      ? 0
+                      : totalBorrowedGho - discountableAmount
+                  }
+                />
+                <DiscountDetailsGhoLine
+                  title={<Trans>Discount lock period</Trans>}
+                  discountLockPeriod={formatGhoDiscountLockPeriodExpiryDate(
+                    new Date(),
+                    ghoDiscountLockPeriod
+                  )}
+                />
+              </>
+            )}
           </>
         )}
       </TxModalDetails>

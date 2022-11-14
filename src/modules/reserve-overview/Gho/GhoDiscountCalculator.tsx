@@ -11,11 +11,10 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import React, { JSXElementConstructor, ReactElement, ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { useRootStore } from 'src/store/root';
 
 type GhoDiscountCalculatorProps = {
@@ -23,13 +22,11 @@ type GhoDiscountCalculatorProps = {
 };
 
 type GhoMetaHeaderProps = {
-  title: string;
+  title: ReactNode;
   value: ReactNode | string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  tooltipText: ReactElement<any, string | JSXElementConstructor<any>>;
 };
 
-const GhoMetaHeader: React.FC<GhoMetaHeaderProps> = ({ title, value, tooltipText }) => {
+const GhoMetaHeader: React.FC<GhoMetaHeaderProps> = ({ title, value }) => {
   const theme = useTheme();
   const mdUp = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -55,9 +52,9 @@ const GhoMetaHeader: React.FC<GhoMetaHeaderProps> = ({ title, value, tooltipText
           : {}),
       }}
     >
-      <TextWithTooltip text={title} variant="subheader2" color="text.secondary">
-        {tooltipText}
-      </TextWithTooltip>
+      <Typography variant="subheader2" color="text.secondary">
+        {title}
+      </Typography>
       {value}
     </Box>
   );
@@ -144,7 +141,7 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
         }}
       >
         <GhoMetaHeader
-          title="Discount on borrow APY"
+          title={<Trans>Discount on borrow APY</Trans>}
           value={
             <>
               <FormattedNumber
@@ -154,19 +151,17 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
                 sx={{ mr: 1 }}
               />
               <Typography component="span" variant="secondary16" color="text.secondary">
-                off
+                <Trans>off</Trans>
               </Typography>
             </>
           }
-          tooltipText={<Trans>This tooltip text will be updated</Trans>}
         />
         <GhoMetaHeader
-          title="APY with max discount"
+          title={<Trans>APY with max discount</Trans>}
           value={<FormattedNumber value={0.016} percent variant="main16" />}
-          tooltipText={<Trans>This tooltip text will be updated</Trans>}
         />
         <GhoMetaHeader
-          title="Discountable amount"
+          title={<Trans>Discountable amount</Trans>}
           value={
             <Typography variant="main16" display="flex" alignItems="center">
               <TokenIcon symbol="GHO" sx={{ fontSize: '16px', mr: 1 }} />
@@ -180,7 +175,6 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
               <TokenIcon symbol="AAVE" sx={{ fontSize: '16px', mr: 1 }} />1
             </Typography>
           }
-          tooltipText={<Trans>This tooltip text will be updated</Trans>}
         />
       </Box>
       <Paper>
@@ -240,7 +234,7 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
                 step={1000}
                 max={100000}
               />
-              <Typography variant="helperText" color="text.seconeary" sx={{ mt: 16 }} component="p">
+              <Typography variant="helperText" color="text.secondary" sx={{ mt: 16 }} component="p">
                 <Trans>
                   Discount and discountable amount are determined by AaveDao and may be changed over
                   time. Participate in Governance to vote.
@@ -279,11 +273,11 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
                     }}
                   />
                   <Box flexGrow={1}>
-                    <TextWithTooltip text="Discountable amount">
-                      <Trans>Tooltip text will go here</Trans>
-                    </TextWithTooltip>
+                    <Typography>
+                      <Trans>Discountable amount</Trans>
+                    </Typography>
                     <Typography variant="secondary12" color="text.secondary">
-                      APY <Trans>with discount</Trans>
+                      <Trans>APY with discount</Trans>
                     </Typography>
                   </Box>
                   <Box textAlign="right">
@@ -312,11 +306,11 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
                     }}
                   />
                   <Box flexGrow={1}>
-                    <TextWithTooltip text="Non-discountable amount">
-                      <Trans>Tooltip text will go here</Trans>
-                    </TextWithTooltip>
+                    <Typography>
+                      <Trans>Non-discountable amount</Trans>
+                    </Typography>
                     <Typography variant="secondary12" color="text.secondary">
-                      APY <Trans>without discount</Trans>
+                      <Trans>APY without discount</Trans>
                     </Typography>
                   </Box>
                   <Box textAlign="right">

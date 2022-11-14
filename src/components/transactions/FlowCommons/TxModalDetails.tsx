@@ -5,9 +5,8 @@ import { Trans } from '@lingui/macro';
 import { Box, FormControlLabel, SvgIcon, Switch, Typography } from '@mui/material';
 import { timeFormat } from 'd3-time-format';
 import { parseUnits } from 'ethers/lib/utils';
-import React, { JSXElementConstructor, ReactElement, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { NoData } from 'src/components/primitives/NoData';
-import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { CollateralType } from 'src/helpers/types';
 
 import { HealthFactorNumber } from '../../HealthFactorNumber';
@@ -318,29 +317,29 @@ export const DetailsGhoApyLine: React.FC<DetailsGhoApyLineProps> = ({
   borrowApy,
   futureBorrowApy,
   showApyDifference,
-}) => (
-  <Row
-    caption={
-      <Box>
-        <TextWithTooltip text={<Trans>Borrow APY</Trans>}>
-          <Trans>Tooltip test TBD</Trans>
-        </TextWithTooltip>
-        <Typography variant="helperText" color="text.secondary">
-          <Trans>Includes discount</Trans>
-        </Typography>
-      </Box>
-    }
-    captionVariant="description"
-    mb={4}
-    align="flex-start"
-  >
-    <Box sx={{ textAlign: 'right' }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-        {!hasGhoBorrowPositions && inputAmount === '' && (
-          <NoData variant="secondary14" color="text.muted" />
-        )}
-        {hasGhoBorrowPositions ||
-          (!hasGhoBorrowPositions && inputAmount !== '' && (
+}) => {
+  const showNoData = !hasGhoBorrowPositions && inputAmount === '';
+  const showAPY = hasGhoBorrowPositions || (!hasGhoBorrowPositions && inputAmount !== '');
+  return (
+    <Row
+      caption={
+        <Box>
+          <Typography>
+            <Trans>Borrow APY</Trans>
+          </Typography>
+          <Typography variant="helperText" color="text.secondary">
+            <Trans>Includes discount</Trans>
+          </Typography>
+        </Box>
+      }
+      captionVariant="description"
+      mb={4}
+      align="flex-start"
+    >
+      <Box sx={{ textAlign: 'right' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+          {showNoData && <NoData variant="secondary14" color="text.muted" />}
+          {showAPY && (
             <>
               <FormattedNumber value={borrowApy} percent />
               {showApyDifference && (
@@ -352,19 +351,18 @@ export const DetailsGhoApyLine: React.FC<DetailsGhoApyLineProps> = ({
                 </>
               )}
             </>
-          ))}
+          )}
+        </Box>
       </Box>
-    </Box>
-  </Row>
-);
+    </Row>
+  );
+};
 
 type DiscountDetailsGhoLineProps = {
   title: ReactNode;
   subtitle?: ReactNode;
   ghoAmount?: number;
   ghoAmountUsd?: number;
-  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-  tooltipText?: ReactElement<any, string | JSXElementConstructor<any>> | undefined;
   discountLockPeriod?: string;
 };
 
@@ -373,7 +371,6 @@ export const DiscountDetailsGhoLine: React.FC<DiscountDetailsGhoLineProps> = ({
   subtitle,
   ghoAmount,
   ghoAmountUsd,
-  tooltipText,
   discountLockPeriod,
 }) => {
   const formatLockPeriodDate = timeFormat('%b %d, %Y');
@@ -381,11 +378,7 @@ export const DiscountDetailsGhoLine: React.FC<DiscountDetailsGhoLineProps> = ({
     <Row
       caption={
         <Box>
-          {tooltipText ? (
-            <TextWithTooltip text={title}>{tooltipText}</TextWithTooltip>
-          ) : (
-            <Typography>{title}</Typography>
-          )}
+          <Typography>{title}</Typography>
           {subtitle && (
             <Typography variant="helperText" color="text.secondary">
               {subtitle}
