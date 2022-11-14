@@ -1,5 +1,6 @@
 import { Tooltip, Typography } from '@mui/material';
 import { ReactNode } from 'react';
+import { BorrowDisabledToolTip } from 'src/components/infoTooltips/BorrowDisabledToolTip';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
@@ -18,6 +19,7 @@ interface ListItemWrapperProps {
   children: ReactNode;
   currentMarket: CustomMarket;
   frozen?: boolean;
+  borrowEnabled?: boolean;
   showSupplyCapTooltips?: boolean;
   showBorrowCapTooltips?: boolean;
   showDebtCeilingTooltips?: boolean;
@@ -31,6 +33,7 @@ export const ListItemWrapper = ({
   detailsAddress,
   currentMarket,
   frozen,
+  borrowEnabled = true,
   showSupplyCapTooltips = false,
   showBorrowCapTooltips = false,
   showDebtCeilingTooltips = false,
@@ -55,6 +58,7 @@ export const ListItemWrapper = ({
         </Link>
         {frozen && <FrozenTooltip symbol={symbol} currentMarket={currentMarket} />}
         {!frozen && symbol === 'AMPL' && <AMPLToolTip />}
+        {!borrowEnabled && <BorrowDisabledToolTip />}
         {showSupplyCapTooltips && supplyCap.displayMaxedTooltip({ supplyCap })}
         {showBorrowCapTooltips && borrowCap.displayMaxedTooltip({ borrowCap })}
         {showDebtCeilingTooltips && debtCeiling.displayMaxedTooltip({ debtCeiling })}
