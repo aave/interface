@@ -75,9 +75,12 @@ export const createGhoSlice: StateCreator<
   return {
     ghoComputed: {
       get borrowAPRWithMaxDiscount() {
-        const borrowAPR = get().ghoBorrowAPR;
-        const discountRate = get().ghoDiscountRatePercent;
-        return borrowAPR * (1 - discountRate);
+        // TODO: store could be undefined at this point, so we need to handle that.
+        // But we should consider not letting the app load until the store exists.
+        const { ghoBorrowAPR, ghoDiscountRatePercent } = { ...get() };
+        if (!ghoBorrowAPR || !ghoDiscountRatePercent) return 0;
+
+        return ghoBorrowAPR * (1 - ghoDiscountRatePercent);
       },
     },
     ghoFacilitators: [],
