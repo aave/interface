@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRootStore } from 'src/store/root';
-import { ghoDiscountableAmount, normalizeBaseVariableBorrowRate } from 'src/utils/ghoUtilities';
+import { normalizeBaseVariableBorrowRate } from 'src/utils/ghoUtilities';
 
 import { FormattedNumber } from './primitives/FormattedNumber';
 import { Link } from './primitives/Link';
@@ -20,11 +20,10 @@ import { TokenIcon } from './primitives/TokenIcon';
 
 export const GhoDiscountButton = ({ baseRate }: { baseRate: string | number }) => {
   const theme = useTheme();
-  const [stakeUserResult, ghoDiscountedPerToken, ghoDiscountRatePercent] = useRootStore((state) => [
-    state.stakeUserResult,
-    state.ghoDiscountedPerToken,
-    state.ghoDiscountRatePercent,
-  ]);
+  const {
+    ghoDiscountRatePercent,
+    ghoComputed: { discountableAmount },
+  } = useRootStore();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const discountPaper = {
@@ -42,10 +41,6 @@ export const GhoDiscountButton = ({ baseRate }: { baseRate: string | number }) =
   const normalizedBaseRate = normalizeBaseVariableBorrowRate(baseRate);
 
   const discountRate = normalizedBaseRate - normalizedBaseRate * ghoDiscountRatePercent;
-
-  const stkAaveBalance = stakeUserResult ? stakeUserResult.aave.stakeTokenUserBalance : '0';
-
-  const discountableAmount = ghoDiscountableAmount(stkAaveBalance, ghoDiscountedPerToken);
 
   // TO-DO: fetch timestamp from GHO store
   const lockPeriod = dayjs.unix(1683292439).format('D MMM YYYY');

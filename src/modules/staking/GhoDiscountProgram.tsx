@@ -7,7 +7,6 @@ import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
 import { useRootStore } from 'src/store/root';
-import { ghoDiscountableAmount } from 'src/utils/ghoUtilities';
 
 const FieldSet = styled('fieldset')(({ theme }) => ({
   border: `1px solid ${theme.palette.divider}`,
@@ -28,16 +27,10 @@ const Legend = styled('legend')(({ theme }) => ({
 export const GhoDiscountProgram = () => {
   const { breakpoints } = useTheme();
   const downToXsm = useMediaQuery(breakpoints.down('xsm'));
-  const [ghoDiscountRatePercent, ghoDiscountedPerToken, stakedAave, getBorrowAPR] = useRootStore(
-    (state) => [
-      state.ghoDiscountRatePercent,
-      state.ghoDiscountedPerToken,
-      state.stakeUserResult?.aave.stakeTokenUserBalance || '0',
-      state.ghoComputed.borrowAPRWithMaxDiscount,
-    ]
-  );
-
-  const discountableAmount = ghoDiscountableAmount(stakedAave, ghoDiscountedPerToken);
+  const {
+    ghoDiscountRatePercent,
+    ghoComputed: { borrowAPRWithMaxDiscount, discountableAmount },
+  } = useRootStore();
 
   return (
     <Box sx={{ mt: 5 }}>
@@ -55,13 +48,13 @@ export const GhoDiscountProgram = () => {
         {downToXsm ? (
           <GhoDiscountProgramMobile
             discountableAmount={discountableAmount}
-            aprWithDiscount={getBorrowAPR}
+            aprWithDiscount={borrowAPRWithMaxDiscount}
             ghoDiscountRatePercent={ghoDiscountRatePercent}
           />
         ) : (
           <GhoDiscountProgramDesktop
             discountableAmount={discountableAmount}
-            aprWithDiscount={getBorrowAPR}
+            aprWithDiscount={borrowAPRWithMaxDiscount}
             ghoDiscountRatePercent={ghoDiscountRatePercent}
           />
         )}

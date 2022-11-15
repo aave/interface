@@ -5,7 +5,7 @@ import { GhoDiscountButton } from 'src/components/GhoDiscountButton';
 import { GhoBorrowRateTooltip } from 'src/components/infoTooltips/GhoBorrowRateTooltip';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
-import { ghoDiscountableAmount, normalizeBaseVariableBorrowRate } from 'src/utils/ghoUtilities';
+import { normalizeBaseVariableBorrowRate } from 'src/utils/ghoUtilities';
 
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
 import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
@@ -40,15 +40,10 @@ export const GhoBorrowedPositionsListMobileItem = ({
     underlyingAsset,
     baseVariableBorrowRate,
   } = reserve;
-  const [stakeUserResult, ghoDiscountedPerToken, ghoDiscountRatePercent] = useRootStore((state) => [
-    state.stakeUserResult,
-    state.ghoDiscountedPerToken,
-    state.ghoDiscountRatePercent,
-  ]);
-
-  const stkAaveBalance = stakeUserResult ? stakeUserResult.aave.stakeTokenUserBalance : '0';
-
-  const discountableAmount = ghoDiscountableAmount(stkAaveBalance, ghoDiscountedPerToken);
+  const {
+    ghoDiscountRatePercent,
+    ghoComputed: { discountableAmount },
+  } = useRootStore();
 
   const normalizedBaseVariableBorrowRate = normalizeBaseVariableBorrowRate(baseVariableBorrowRate);
   let borrowRateAfterDiscount =
