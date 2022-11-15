@@ -30,7 +30,7 @@ export const GhoBorrowAssetsListItem = ({
     ghoDiscountRatePercent,
     ghoFacilitatorBucketLevel,
     ghoFacilitatorBucketCapacity,
-    ghoComputed: { discountableAmount, borrowAPRWithMaxDiscount },
+    ghoComputed: { discountableAmount },
   } = useRootStore();
 
   // Available borrows is min of user avaiable borrows and remaining facilitator capacity
