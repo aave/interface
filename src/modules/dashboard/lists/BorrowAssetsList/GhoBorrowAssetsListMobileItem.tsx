@@ -28,17 +28,13 @@ export const GhoBorrowAssetsListMobileItem = ({
 }: GhoBorrowAssetsItem) => {
   const { openBorrow } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
-  const [
+  const {
     ghoDiscountRatePercent,
     ghoFacilitatorBucketLevel,
     ghoFacilitatorBucketCapacity,
-    discountableAmount,
-  ] = useRootStore((state) => [
-    state.ghoDiscountRatePercent,
-    state.ghoFacilitatorBucketLevel,
-    state.ghoFacilitatorBucketCapacity,
-    state.ghoComputed.discountableAmount,
-  ]);
+    ghoComputed: { discountableAmount },
+  } = useRootStore();
+
   // Available borrows is min of user avaiable borrows and remaining facilitator capacity
   const availableBorrows = getAvailableBorrows(
     Number(userAvailableBorrows),

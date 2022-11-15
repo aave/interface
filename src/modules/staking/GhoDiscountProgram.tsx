@@ -27,11 +27,10 @@ const Legend = styled('legend')(({ theme }) => ({
 export const GhoDiscountProgram = () => {
   const { breakpoints } = useTheme();
   const downToXsm = useMediaQuery(breakpoints.down('xsm'));
-  const [ghoDiscountRatePercent, getBorrowAPR, discountableAmount] = useRootStore((state) => [
-    state.ghoDiscountRatePercent,
-    state.ghoComputed.borrowAPRWithMaxDiscount,
-    state.ghoComputed.discountableAmount,
-  ]);
+  const {
+    ghoDiscountRatePercent,
+    ghoComputed: { borrowAPRWithMaxDiscount, discountableAmount },
+  } = useRootStore();
 
   return (
     <Box sx={{ mt: 5 }}>
@@ -49,13 +48,13 @@ export const GhoDiscountProgram = () => {
         {downToXsm ? (
           <GhoDiscountProgramMobile
             discountableAmount={discountableAmount}
-            aprWithDiscount={getBorrowAPR}
+            aprWithDiscount={borrowAPRWithMaxDiscount}
             ghoDiscountRatePercent={ghoDiscountRatePercent}
           />
         ) : (
           <GhoDiscountProgramDesktop
             discountableAmount={discountableAmount}
-            aprWithDiscount={getBorrowAPR}
+            aprWithDiscount={borrowAPRWithMaxDiscount}
             ghoDiscountRatePercent={ghoDiscountRatePercent}
           />
         )}

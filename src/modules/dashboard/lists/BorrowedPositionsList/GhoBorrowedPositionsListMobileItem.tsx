@@ -40,10 +40,10 @@ export const GhoBorrowedPositionsListMobileItem = ({
     underlyingAsset,
     baseVariableBorrowRate,
   } = reserve;
-  const [ghoDiscountRatePercent, discountableAmount] = useRootStore((state) => [
-    state.ghoDiscountRatePercent,
-    state.ghoComputed.discountableAmount,
-  ]);
+  const {
+    ghoDiscountRatePercent,
+    ghoComputed: { discountableAmount },
+  } = useRootStore();
 
   const normalizedBaseVariableBorrowRate = normalizeBaseVariableBorrowRate(baseVariableBorrowRate);
   let borrowRateAfterDiscount =

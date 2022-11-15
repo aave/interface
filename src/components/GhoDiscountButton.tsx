@@ -20,10 +20,10 @@ import { TokenIcon } from './primitives/TokenIcon';
 
 export const GhoDiscountButton = ({ baseRate }: { baseRate: string | number }) => {
   const theme = useTheme();
-  const [ghoDiscountRatePercent, discountableAmount] = useRootStore((state) => [
-    state.ghoDiscountRatePercent,
-    state.ghoComputed.discountableAmount,
-  ]);
+  const {
+    ghoDiscountRatePercent,
+    ghoComputed: { discountableAmount },
+  } = useRootStore();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const discountPaper = {
