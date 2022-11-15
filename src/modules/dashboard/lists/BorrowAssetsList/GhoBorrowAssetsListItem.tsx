@@ -30,7 +30,7 @@ export const GhoBorrowAssetsListItem = ({
     ghoDiscountRatePercent,
     ghoFacilitatorBucketLevel,
     ghoFacilitatorBucketCapacity,
-    ghoComputed: { discountableAmount },
+    ghoComputed: { discountableAmount, borrowAPRWithMaxDiscount },
   } = useRootStore();
 
   // Available borrows is min of user avaiable borrows and remaining facilitator capacity
@@ -60,7 +60,9 @@ export const GhoBorrowAssetsListItem = ({
       detailsAddress={underlyingAsset}
       data-cy={`dashboardBorrowListItem_${symbol.toUpperCase()}`}
       currentMarket={currentMarket}
-      footerButton={<GhoDiscountButton baseRate={baseVariableBorrowRate} />}
+      footerButton={
+        <GhoDiscountButton rate={borrowAPRWithMaxDiscount} amount={discountableAmount} />
+      }
     >
       <ListValueColumn
         symbol={symbol}

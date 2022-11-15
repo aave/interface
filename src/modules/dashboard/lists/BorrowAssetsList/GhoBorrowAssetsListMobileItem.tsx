@@ -29,10 +29,9 @@ export const GhoBorrowAssetsListMobileItem = ({
   const { openBorrow } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
   const {
-    ghoDiscountRatePercent,
     ghoFacilitatorBucketLevel,
     ghoFacilitatorBucketCapacity,
-    ghoComputed: { discountableAmount },
+    ghoComputed: { borrowAPRWithMaxDiscount, discountableAmount },
   } = useRootStore();
 
   // Available borrows is min of user avaiable borrows and remaining facilitator capacity
@@ -44,8 +43,7 @@ export const GhoBorrowAssetsListMobileItem = ({
   const borrowButtonDisable = isFreezed || availableBorrows <= 0;
 
   const normalizedBaseVariableBorrowRate = normalizeBaseVariableBorrowRate(baseVariableBorrowRate);
-  let borrowRateAfterDiscount =
-    normalizedBaseVariableBorrowRate - normalizedBaseVariableBorrowRate * ghoDiscountRatePercent;
+  let borrowRateAfterDiscount = borrowAPRWithMaxDiscount;
   if (discountableAmount < availableBorrows) {
     // Calculate weighted discount rate aftr max borrow
     borrowRateAfterDiscount =
@@ -104,7 +102,7 @@ export const GhoBorrowAssetsListMobileItem = ({
         <IncentivesCard value={0} incentives={[]} symbol={symbol} variant="secondary14" />
       </Row>
 
-      <GhoDiscountButton baseRate={baseVariableBorrowRate} />
+      <GhoDiscountButton amount={discountableAmount} rate={borrowAPRWithMaxDiscount} />
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
         <Button
