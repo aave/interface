@@ -167,6 +167,19 @@ export const GhoBorrowModalContent = ({
     setTotalBorrowedGho(borrowedGho);
   };
 
+  /**
+   * Handler for applying the maximum discountable amount to the input.
+   * There are some cases when the amount discountable (based off of stkAAVE balance) is larger than the amount able to be borrowed (based off of collateral supplied).
+   * In the latter case, we only want to borrow the maximum amount to be borrowed. In the former case, we want to borrow the maximum discountable amount.
+   */
+  const handleApplyBorrowMaxDiscountable = () => {
+    const minimumMaxBorrowableAtADiscount = Math.min(
+      discountableAmount,
+      Number(maxAmountToBorrow.toString(10))
+    );
+    setAmount(minimumMaxBorrowableAtADiscount.toString());
+  };
+
   // Calculate the APYs and other information based off of each input change
   useEffect(() => {
     if (prevAmount !== _amount) {
@@ -183,7 +196,7 @@ export const GhoBorrowModalContent = ({
         addToken={addToken}
       />
     );
-  console.log({ discountAvailable, hasGhoBorrowPositions });
+
   return (
     <>
       {!discountAvailable && !hasGhoBorrowPositions && (
@@ -193,8 +206,14 @@ export const GhoBorrowModalContent = ({
           </Typography>
           <Typography variant="caption">
             <Trans>
-              Safety Module participants (i.e., stkAAVE holders) receive 20% discount on the GHO
-              borrow interest rate.{' '}
+              Safety Module participants (i.e., stkAAVE holders) receive{' '}
+              <FormattedNumber
+                value={ghoDiscountRatePercent}
+                percent
+                visibleDecimals={0}
+                variant="caption"
+              />{' '}
+              discount on the GHO borrow interest rate.{' '}
               <Link
                 href={`/reserve-overview/?underlyingAsset=${underlyingAsset}&marketName=${currentMarket}`}
                 underline="always"
@@ -243,7 +262,7 @@ export const GhoBorrowModalContent = ({
             <Button
               variant="outlined"
               size="small"
-              onClick={() => setAmount(discountableAmount.toString())}
+              onClick={handleApplyBorrowMaxDiscountable}
               sx={{ ml: 1, minWidth: 0 }}
             >
               <Trans>Apply</Trans>

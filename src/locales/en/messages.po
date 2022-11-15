@@ -1583,8 +1583,8 @@ msgid "SEE CHARTS"
 msgstr "SEE CHARTS"
 
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
-msgid "Safety Module participants (i.e., stkAAVE holders) receive 20% discount on the GHO borrow interest rate. <0>Learn details</0>"
-msgstr "Safety Module participants (i.e., stkAAVE holders) receive 20% discount on the GHO borrow interest rate. <0>Learn details</0>"
+msgid "Safety Module participants (i.e., stkAAVE holders) receive <0/> discount on the GHO borrow interest rate. <1>Learn details</1>"
+msgstr "Safety Module participants (i.e., stkAAVE holders) receive <0/> discount on the GHO borrow interest rate. <1>Learn details</1>"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
