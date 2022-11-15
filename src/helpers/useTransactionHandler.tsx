@@ -75,21 +75,15 @@ export const useTransactionHandler = ({
     action: TxAction;
   }) => {
     try {
-      console.log('awaiting result');
       const txnResult = await tx();
-      console.log('recieved result');
-      console.log(txnResult);
       try {
         await txnResult.wait(1);
-        await Promise.all([
-          refetchWalletBalances(),
-          refetchPoolData && refetchPoolData(),
-          refetchIncentiveData && refetchIncentiveData(),
-        ]);
+
         mounted.current && successCallback && successCallback(txnResult);
+        refetchWalletBalances();
+        refetchPoolData && refetchPoolData();
+        refetchIncentiveData && refetchIncentiveData();
       } catch (e) {
-        // In case tx succeeded but error occurs in refetch Promise
-        mounted.current && successCallback && successCallback(txnResult);
         try {
           const error = await getTxError(txnResult.hash);
           mounted.current && errorCallback && errorCallback(new Error(error), txnResult.hash);
