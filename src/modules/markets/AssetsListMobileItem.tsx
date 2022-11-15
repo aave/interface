@@ -86,13 +86,16 @@ export const AssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
         mb={3}
         align="flex-start"
       >
-        <IncentivesCard
-          align="flex-end"
-          value={reserve.borrowingEnabled ? reserve.variableBorrowAPY : '-1'}
-          incentives={reserve.vIncentivesData || []}
-          symbol={reserve.symbol}
-          variant="secondary14"
-        />
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <IncentivesCard
+            align="flex-end"
+            value={reserve.borrowingEnabled ? reserve.variableBorrowAPY : '-1'}
+            incentives={reserve.vIncentivesData || []}
+            symbol={reserve.symbol}
+            variant="secondary14"
+          />
+          <ReserveSubheader value={'Disabled'} rightAlign={true} />
+        </Box>
       </Row>
       <Row
         caption={
@@ -106,15 +109,16 @@ export const AssetsListMobileItem = ({ ...reserve }: ComputedReserveData) => {
         mb={4}
         align="flex-start"
       >
-        <IncentivesCard
-          align="flex-end"
-          value={reserve.stableBorrowRateEnabled ? reserve.stableBorrowAPY : -1}
-          incentives={reserve.sIncentivesData || []}
-          symbol={reserve.symbol}
-          variant="secondary14"
-        />
-        {/* todo need to add the disabled view here */}
-        {/* <ReserveSubheader value={'Disabled'} rightAlign={true} /> */}
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <IncentivesCard
+            align="flex-end"
+            value={reserve.stableBorrowRateEnabled ? reserve.stableBorrowAPY : -1}
+            incentives={reserve.sIncentivesData || []}
+            symbol={reserve.symbol}
+            variant="secondary14"
+          />
+          <ReserveSubheader value={'Disabled'} rightAlign={true} />
+        </Box>
       </Row>
 
       <Button
