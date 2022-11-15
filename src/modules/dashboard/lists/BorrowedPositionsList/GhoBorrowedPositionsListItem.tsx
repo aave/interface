@@ -1,7 +1,7 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
-import { GhoDiscountButton } from 'src/components/GhoDiscountButton';
+//import { GhoDiscountButton } from 'src/components/GhoDiscountButton';
 import { GhoBorrowRateTooltip } from 'src/components/infoTooltips/GhoBorrowRateTooltip';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -63,7 +63,7 @@ export const GhoBorrowedPositionsListItem = ({
       frozen={reserve.isFrozen}
       data-cy={`dashboardBorrowedListItem_${reserve.symbol.toUpperCase()}_${borrowRateMode}`}
       showBorrowCapTooltips
-      footerButton={<GhoDiscountButton baseRate={baseVariableBorrowRate} />}
+      // footerButton={<GhoDiscountButton baseRate={baseVariableBorrowRate} />}
     >
       <ListValueColumn
         symbol={reserve.symbol}

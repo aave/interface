@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
-import { GhoDiscountButton } from 'src/components/GhoDiscountButton';
+//import { GhoDiscountButton } from 'src/components/GhoDiscountButton';
 import { GhoBorrowRateTooltip } from 'src/components/infoTooltips/GhoBorrowRateTooltip';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
@@ -102,7 +102,7 @@ export const GhoBorrowAssetsListMobileItem = ({
         <IncentivesCard value={0} incentives={[]} symbol={symbol} variant="secondary14" />
       </Row>
 
-      <GhoDiscountButton amount={discountableAmount} rate={borrowAPRWithMaxDiscount} />
+      {/* <GhoDiscountButton amount={discountableAmount} rate={borrowAPRWithMaxDiscount} /> */}
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
         <Button
