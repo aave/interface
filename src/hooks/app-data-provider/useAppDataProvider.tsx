@@ -12,6 +12,7 @@ import { EmodeCategory } from 'src/helpers/types';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { ghoMintingAvailable, normalizeBaseVariableBorrowRate } from 'src/utils/ghoUtilities';
 
 import {
   reserveSortFn,
@@ -74,7 +75,7 @@ const AppDataContext = React.createContext<AppDataContextType>({} as AppDataCont
 export const AppDataProvider: React.FC = ({ children }) => {
   const currentTimestamp = useCurrentTimestamp(5);
   const { currentAccount } = useWeb3Context();
-  const { currentNetworkConfig } = useProtocolDataContext();
+  const { currentNetworkConfig, currentMarket } = useProtocolDataContext();
   const [
     reserves,
     baseCurrencyData,
@@ -83,6 +84,8 @@ export const AppDataProvider: React.FC = ({ children }) => {
     reserveIncentiveData,
     userIncentiveData,
     eModes,
+    ghoDiscountRatePercent,
+    ghoComputed,
   ] = useRootStore((state) => [
     selectCurrentReserves(state),
     selectCurrentBaseCurrencyData(state),
@@ -91,6 +94,8 @@ export const AppDataProvider: React.FC = ({ children }) => {
     state.reserveIncentiveData,
     state.userIncentiveData,
     selectEmodes(state),
+    state.ghoDiscountRatePercent,
+    state.ghoComputed,
   ]);
 
   const formattedPoolReserves = formatReservesAndIncentives({
@@ -140,9 +145,31 @@ export const AppDataProvider: React.FC = ({ children }) => {
           }
         }
         if (value.variableBorrowsUSD !== '0') {
-          acc.negativeProportion = acc.negativeProportion.plus(
-            new BigNumber(reserve.variableBorrowAPY).multipliedBy(value.variableBorrowsUSD)
-          );
+          // TODO: Export to unified helper function
+          if (ghoMintingAvailable({ symbol: reserve.symbol, currentMarket: currentMarket })) {
+            const discountableAmount = ghoComputed.discountableAmount;
+            const normalizedBaseVariableBorrowRate = normalizeBaseVariableBorrowRate(
+              reserve.baseVariableBorrowRate
+            );
+            let borrowRateAfterDiscount =
+              normalizedBaseVariableBorrowRate -
+              normalizedBaseVariableBorrowRate * ghoDiscountRatePercent;
+            if (discountableAmount < Number(value.variableBorrows)) {
+              // Calculate weighted discount rate aftr max borrow
+              borrowRateAfterDiscount =
+                (normalizedBaseVariableBorrowRate *
+                  (Number(value.variableBorrows) - discountableAmount) +
+                  borrowRateAfterDiscount * discountableAmount) /
+                Number(value.variableBorrows);
+            }
+            acc.negativeProportion = acc.negativeProportion.plus(
+              new BigNumber(borrowRateAfterDiscount).multipliedBy(value.variableBorrowsUSD)
+            );
+          } else {
+            acc.negativeProportion = acc.negativeProportion.plus(
+              new BigNumber(reserve.variableBorrowAPY).multipliedBy(value.variableBorrowsUSD)
+            );
+          }
           if (reserve.vIncentivesData) {
             reserve.vIncentivesData.forEach((incentive) => {
               acc.positiveProportion = acc.positiveProportion.plus(
@@ -183,9 +210,9 @@ export const AppDataProvider: React.FC = ({ children }) => {
   const debtAPY = proportions.negativeProportion.dividedBy(user.totalBorrowsUSD).toNumber();
   const netAPY =
     (earnedAPY || 0) *
-      (Number(user.totalLiquidityUSD) / Number(user.netWorthUSD !== '0' ? user.netWorthUSD : '1')) -
+    (Number(user.totalLiquidityUSD) / Number(user.netWorthUSD !== '0' ? user.netWorthUSD : '1')) -
     (debtAPY || 0) *
-      (Number(user.totalBorrowsUSD) / Number(user.netWorthUSD !== '0' ? user.netWorthUSD : '1'));
+    (Number(user.totalBorrowsUSD) / Number(user.netWorthUSD !== '0' ? user.netWorthUSD : '1'));
 
   return (
     <AppDataContext.Provider

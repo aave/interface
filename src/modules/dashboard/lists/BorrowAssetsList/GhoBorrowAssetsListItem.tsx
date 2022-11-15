@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
-import { GhoDiscountButton } from 'src/components/GhoDiscountButton';
+// import { GhoDiscountButton } from 'src/components/GhoDiscountButton';
 import { GhoBorrowRateTooltip } from 'src/components/infoTooltips/GhoBorrowRateTooltip';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -60,7 +60,7 @@ export const GhoBorrowAssetsListItem = ({
       detailsAddress={underlyingAsset}
       data-cy={`dashboardBorrowListItem_${symbol.toUpperCase()}`}
       currentMarket={currentMarket}
-      footerButton={<GhoDiscountButton baseRate={baseVariableBorrowRate} />}
+      //footerButton={<GhoDiscountButton baseRate={baseVariableBorrowRate} />}
     >
       <ListValueColumn
         symbol={symbol}
