@@ -5,7 +5,7 @@ import { Box, Button } from '@mui/material';
 import { GhoBorrowRateTooltip } from 'src/components/infoTooltips/GhoBorrowRateTooltip';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
-import { normalizeBaseVariableBorrowRate } from 'src/utils/ghoUtilities';
+import { normalizeBaseVariableBorrowRate, weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
 import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
@@ -41,20 +41,16 @@ export const GhoBorrowedPositionsListMobileItem = ({
     baseVariableBorrowRate,
   } = reserve;
   const {
-    ghoDiscountRatePercent,
-    ghoComputed: { discountableAmount },
+    ghoComputed: { borrowAPRWithMaxDiscount, discountableAmount },
   } = useRootStore();
 
   const normalizedBaseVariableBorrowRate = normalizeBaseVariableBorrowRate(baseVariableBorrowRate);
-  let borrowRateAfterDiscount =
-    normalizedBaseVariableBorrowRate - normalizedBaseVariableBorrowRate * ghoDiscountRatePercent;
-  if (discountableAmount < Number(variableBorrows)) {
-    // Calculate weighted discount rate aftr max borrow
-    borrowRateAfterDiscount =
-      (normalizedBaseVariableBorrowRate * (Number(variableBorrows) - discountableAmount) +
-        borrowRateAfterDiscount * discountableAmount) /
-      Number(variableBorrows);
-  }
+  const borrowRateAfterDiscount = weightedAverageAPY(
+    normalizedBaseVariableBorrowRate,
+    Number(variableBorrows),
+    discountableAmount,
+    borrowAPRWithMaxDiscount
+  );
 
   return (
     <ListMobileItemWrapper

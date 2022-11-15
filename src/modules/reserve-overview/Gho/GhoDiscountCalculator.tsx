@@ -16,6 +16,7 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useRootStore } from 'src/store/root';
+import { normalizeBaseVariableBorrowRate } from 'src/utils/ghoUtilities';
 
 type GhoDiscountCalculatorProps = {
   baseVariableBorrowRate: string;
@@ -75,7 +76,7 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
 
   // TODO: we need a better way to normalize these values. Maybe we just do it in the store? I'm not sure
   // if we'd need these values NOT normalized. If not, it would just make sense to do the conversion when we fetch it from utils.
-  const baseBorrowRate = normalizeBN(baseVariableBorrowRate, 27).toNumber(); // 0.02 or 2%
+  const baseBorrowRate = normalizeBaseVariableBorrowRate(baseVariableBorrowRate); // 0.02 or 2%
   const minStkAave = normalizeBN(
     ghoMinDiscountTokenBalanceForEligibleDiscount.toString(),
     18

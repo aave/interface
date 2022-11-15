@@ -6,7 +6,7 @@ import { GhoBorrowRateTooltip } from 'src/components/infoTooltips/GhoBorrowRateT
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
-import { normalizeBaseVariableBorrowRate } from 'src/utils/ghoUtilities';
+import { normalizeBaseVariableBorrowRate, weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import { ListColumn } from '../../../../components/lists/ListColumn';
 import { ComputedUserReserveData } from '../../../../hooks/app-data-provider/useAppDataProvider';
@@ -38,20 +38,16 @@ export const GhoBorrowedPositionsListItem = ({
     baseVariableBorrowRate,
   } = reserve;
   const {
-    ghoDiscountRatePercent,
-    ghoComputed: { discountableAmount },
+    ghoComputed: { borrowAPRWithMaxDiscount, discountableAmount },
   } = useRootStore();
 
   const normalizedBaseVariableBorrowRate = normalizeBaseVariableBorrowRate(baseVariableBorrowRate);
-  let borrowRateAfterDiscount =
-    normalizedBaseVariableBorrowRate - normalizedBaseVariableBorrowRate * ghoDiscountRatePercent;
-  if (discountableAmount < Number(variableBorrows)) {
-    // Calculate weighted discount rate aftr max borrow
-    borrowRateAfterDiscount =
-      (normalizedBaseVariableBorrowRate * (Number(variableBorrows) - discountableAmount) +
-        borrowRateAfterDiscount * discountableAmount) /
-      Number(variableBorrows);
-  }
+  const borrowRateAfterDiscount = weightedAverageAPY(
+    normalizedBaseVariableBorrowRate,
+    Number(variableBorrows),
+    discountableAmount,
+    borrowAPRWithMaxDiscount
+  );
 
   return (
     <ListItemWrapper

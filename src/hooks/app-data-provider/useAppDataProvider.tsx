@@ -12,7 +12,11 @@ import { EmodeCategory } from 'src/helpers/types';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-import { ghoMintingAvailable, normalizeBaseVariableBorrowRate } from 'src/utils/ghoUtilities';
+import {
+  ghoMintingAvailable,
+  normalizeBaseVariableBorrowRate,
+  weightedAverageAPY,
+} from 'src/utils/ghoUtilities';
 
 import {
   reserveSortFn,
@@ -84,7 +88,6 @@ export const AppDataProvider: React.FC = ({ children }) => {
     reserveIncentiveData,
     userIncentiveData,
     eModes,
-    ghoDiscountRatePercent,
     ghoComputed,
   ] = useRootStore((state) => [
     selectCurrentReserves(state),
@@ -94,7 +97,6 @@ export const AppDataProvider: React.FC = ({ children }) => {
     state.reserveIncentiveData,
     state.userIncentiveData,
     selectEmodes(state),
-    state.ghoDiscountRatePercent,
     state.ghoComputed,
   ]);
 
@@ -151,17 +153,12 @@ export const AppDataProvider: React.FC = ({ children }) => {
             const normalizedBaseVariableBorrowRate = normalizeBaseVariableBorrowRate(
               reserve.baseVariableBorrowRate
             );
-            let borrowRateAfterDiscount =
-              normalizedBaseVariableBorrowRate -
-              normalizedBaseVariableBorrowRate * ghoDiscountRatePercent;
-            if (discountableAmount < Number(value.variableBorrows)) {
-              // Calculate weighted discount rate aftr max borrow
-              borrowRateAfterDiscount =
-                (normalizedBaseVariableBorrowRate *
-                  (Number(value.variableBorrows) - discountableAmount) +
-                  borrowRateAfterDiscount * discountableAmount) /
-                Number(value.variableBorrows);
-            }
+            const borrowRateAfterDiscount = weightedAverageAPY(
+              normalizedBaseVariableBorrowRate,
+              Number(value.variableBorrows),
+              discountableAmount,
+              ghoComputed.borrowAPRWithMaxDiscount
+            );
             acc.negativeProportion = acc.negativeProportion.plus(
               new BigNumber(borrowRateAfterDiscount).multipliedBy(value.variableBorrowsUSD)
             );

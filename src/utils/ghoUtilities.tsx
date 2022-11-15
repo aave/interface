@@ -70,3 +70,29 @@ export const formatGhoDiscountLockPeriodExpiryDate = (
 export const normalizeBaseVariableBorrowRate = (baseVariableBorrowRate: string | number) => {
   return Number(baseVariableBorrowRate) / 10 ** 27;
 };
+
+/**
+ * Calculates the weighted average APY
+ * @param baseVariableBorrowRate - The base variable borrow rate, normalized
+ * @param totalBorrowAmount - The total amount of the asset that is borrowed
+ * @param discountableAmount - The amount that can be discounted for the user
+ * @param borrowRateAfterDiscount - The borrow rate after the discount is applied
+ * @returns
+ */
+export const weightedAverageAPY = (
+  baseVariableBorrowRate: number,
+  totalBorrowAmount: number,
+  discountableAmount: number,
+  borrowRateAfterDiscount: number
+) => {
+  if (totalBorrowAmount <= discountableAmount) {
+    return borrowRateAfterDiscount;
+  }
+
+  const nonDiscountableAmount = totalBorrowAmount - discountableAmount;
+  return (
+    (nonDiscountableAmount * baseVariableBorrowRate +
+      discountableAmount * borrowRateAfterDiscount) /
+    totalBorrowAmount
+  );
+};
