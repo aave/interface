@@ -39,6 +39,7 @@ msgstr "ACTIVATE COOLDOWN"
 msgid "APR"
 msgstr "APR"
 
+#: src/components/GhoDiscountButton.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListMobileItem.tsx
@@ -749,6 +750,10 @@ msgstr "Discount and discountable amount are determined by AaveDao and may be ch
 #: src/components/transactions/Borrow/GhoBorrowModalContent.tsx
 msgid "Discount details"
 msgstr "Discount details"
+
+#: src/components/GhoDiscountButton.tsx
+msgid "Discount info"
+msgstr "Discount info"
 
 #: src/components/GhoDiscountButton.tsx
 msgid "Discount is available. Learn more"
@@ -2532,6 +2537,7 @@ msgstr "staking view"
 msgid "starts"
 msgstr "starts"
 
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
 #: src/modules/staking/GhoDiscountProgram.tsx
 msgid "to"

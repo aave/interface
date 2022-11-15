@@ -168,9 +168,11 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
               100
               <Typography
                 component="span"
-                sx={{ fontSize: '1rem', color: 'text.secondary', mx: 1 }}
+                variant="secondary16"
+                color="text.secondary"
+                sx={{ mx: 1 }}
               >
-                to
+                <Trans>to</Trans>
               </Typography>{' '}
               <TokenIcon symbol="AAVE" sx={{ fontSize: '16px', mr: 1 }} />1
             </Typography>
@@ -197,18 +199,14 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
                 fullWidth
                 value={stkAave}
                 endAdornment={<TokenIcon symbol="AAVE" />}
-                // eslint-disable-next-line
-                // @ts-ignore
-                onChange={(e) => setStkAave(e.target.value)}
+                onChange={(e) => setStkAave(Number(e.target.value))}
                 inputProps={{ sx: { py: 2, px: 3, fontSize: '21px' } }}
               />
               <Slider
                 size="small"
                 value={stkAave}
                 sx={{ mt: 1, mb: 4, color: '#CE64B6' }}
-                // eslint-disable-next-line
-                // @ts-ignore
-                onChange={(e) => setStkAave(e.target.value)}
+                onChange={(_, val) => setStkAave(Number(val))}
                 step={5}
                 max={1000}
               />
@@ -220,17 +218,13 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
                 value={ghoBorrow}
                 endAdornment={<TokenIcon symbol="GHO" />}
                 inputProps={{ sx: { py: 2, px: 3, fontSize: '21px' } }}
-                // eslint-disable-next-line
-                // @ts-ignore
-                onChange={(e) => setGhoBorrow(e.target.value)}
+                onChange={(e) => setGhoBorrow(Number(e.target.value))}
               />
               <Slider
                 size="small"
                 value={ghoBorrow}
                 sx={{ mt: 1, mb: 4, color: '#2EBAC6' }}
-                // eslint-disable-next-line
-                // @ts-ignore
-                onChange={(e) => setGhoBorrow(e.target.value)}
+                onChange={(_, val) => setGhoBorrow(Number(val))}
                 step={1000}
                 max={100000}
               />

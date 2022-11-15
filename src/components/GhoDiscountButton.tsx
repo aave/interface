@@ -63,14 +63,14 @@ export const GhoDiscountButton = ({ baseRate }: { baseRate: string | number }) =
     >
       <Paper sx={discountPaper}>
         <Typography variant="caption" color="text.primary" sx={{ mx: 1 }}>
-          Discount info
+          <Trans>Discount info</Trans>
         </Typography>
         <TokenIcon symbol={'GHO'} sx={{ fontSize: `14px`, mr: 1 }} />
         <FormattedNumber value={discountableAmount} variant="main12" color="text.primary" />
         <Divider orientation="vertical" color="text.primary" sx={{ mx: 2 }} />
         <FormattedNumber value={discountRate} variant="main12" color="text.primary" percent />
         <Typography variant="caption" color="text.primary" sx={{ mx: 1 }}>
-          APY
+          <Trans>APY</Trans>
         </Typography>
       </Paper>
 
@@ -93,7 +93,7 @@ export const GhoDiscountButton = ({ baseRate }: { baseRate: string | number }) =
       component={Link}
       size="small"
       variant="outlined"
-      href="https://docs.aave.com" // TO-DO: Link to GHO docs
+      href="https://docs.aave.com" // TODO: Link to GHO docs
       sx={{ width: downToXSM ? '100%' : '275px', mt: downToXSM ? 4 : 0, ml: downToXSM ? 0 : 4 }}
     >
       <Typography variant="buttonS">
