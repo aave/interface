@@ -3,8 +3,10 @@ import { CheckIcon, ExclamationIcon } from '@heroicons/react/outline';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, FormControlLabel, SvgIcon, Switch, Typography } from '@mui/material';
+import { timeFormat } from 'd3-time-format';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { ReactNode } from 'react';
+import { NoData } from 'src/components/primitives/NoData';
 import { CollateralType } from 'src/helpers/types';
 
 import { HealthFactorNumber } from '../../HealthFactorNumber';
@@ -297,6 +299,120 @@ export const DetailsUnwrapSwitch = ({
         label={''}
       />
       <Typography>{`Unwrap ${symbol} (to withdraw ${unwrappedSymbol})`}</Typography>
+    </Row>
+  );
+};
+
+export interface DetailsGhoApyLineProps {
+  hasGhoBorrowPositions: boolean;
+  inputAmount: string;
+  borrowApy: number;
+  futureBorrowApy?: number;
+  showApyDifference: boolean;
+}
+
+export const DetailsGhoApyLine: React.FC<DetailsGhoApyLineProps> = ({
+  hasGhoBorrowPositions,
+  inputAmount,
+  borrowApy,
+  futureBorrowApy,
+  showApyDifference,
+}) => {
+  const showNoData = !hasGhoBorrowPositions && inputAmount === '';
+  const showAPY = hasGhoBorrowPositions || (!hasGhoBorrowPositions && inputAmount !== '');
+  return (
+    <Row
+      caption={
+        <Box>
+          <Typography>
+            <Trans>Borrow APY</Trans>
+          </Typography>
+          <Typography variant="helperText" color="text.secondary">
+            <Trans>Includes discount</Trans>
+          </Typography>
+        </Box>
+      }
+      captionVariant="description"
+      mb={4}
+      align="flex-start"
+    >
+      <Box sx={{ textAlign: 'right' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+          {showNoData && <NoData variant="secondary14" color="text.muted" />}
+          {showAPY && (
+            <>
+              <FormattedNumber value={borrowApy} percent />
+              {showApyDifference && (
+                <>
+                  <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+                    <ArrowNarrowRightIcon />
+                  </SvgIcon>
+                  <FormattedNumber value={Number(futureBorrowApy)} percent />
+                </>
+              )}
+            </>
+          )}
+        </Box>
+      </Box>
+    </Row>
+  );
+};
+
+type DiscountDetailsGhoLineProps = {
+  title: ReactNode;
+  subtitle?: ReactNode;
+  ghoAmount?: number;
+  ghoAmountUsd?: number;
+  discountLockPeriod?: string;
+};
+
+export const DiscountDetailsGhoLine: React.FC<DiscountDetailsGhoLineProps> = ({
+  title,
+  subtitle,
+  ghoAmount,
+  ghoAmountUsd,
+  discountLockPeriod,
+}) => {
+  const formatLockPeriodDate = timeFormat('%b %d, %Y');
+  return (
+    <Row
+      caption={
+        <Box>
+          <Typography>{title}</Typography>
+          {subtitle && (
+            <Typography variant="helperText" color="text.secondary">
+              {subtitle}
+            </Typography>
+          )}
+        </Box>
+      }
+      captionVariant="description"
+      mb={4}
+      align="flex-start"
+    >
+      <Box sx={{ textAlign: 'right' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+          {ghoAmount && (
+            <>
+              <TokenIcon symbol="GHO" fontSize="small" sx={{ mr: 1 }} />{' '}
+              <FormattedNumber value={ghoAmount} visibleDecimals={2} />
+            </>
+          )}
+          {discountLockPeriod && (
+            <Typography>{formatLockPeriodDate(new Date(discountLockPeriod))}</Typography>
+          )}
+        </Box>
+        {ghoAmountUsd && (
+          <FormattedNumber
+            value={ghoAmountUsd}
+            symbol="USD"
+            visibleDecimals={2}
+            variant="helperText"
+            color="text.secondary"
+            compact
+          />
+        )}
+      </Box>
     </Row>
   );
 };

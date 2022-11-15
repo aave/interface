@@ -6,11 +6,7 @@ import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
-import {
-  getAvailableBorrows,
-  ghoDiscountableAmount,
-  normalizeBaseVariableBorrowRate,
-} from 'src/utils/ghoUtilities';
+import { getAvailableBorrows, normalizeBaseVariableBorrowRate } from 'src/utils/ghoUtilities';
 
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
@@ -32,19 +28,13 @@ export const GhoBorrowAssetsListMobileItem = ({
 }: GhoBorrowAssetsItem) => {
   const { openBorrow } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
-  const [
-    stakeUserResult,
-    ghoDiscountedPerToken,
+  const {
     ghoDiscountRatePercent,
     ghoFacilitatorBucketLevel,
     ghoFacilitatorBucketCapacity,
-  ] = useRootStore((state) => [
-    state.stakeUserResult,
-    state.ghoDiscountedPerToken,
-    state.ghoDiscountRatePercent,
-    state.ghoFacilitatorBucketLevel,
-    state.ghoFacilitatorBucketCapacity,
-  ]);
+    ghoComputed: { discountableAmount },
+  } = useRootStore();
+
   // Available borrows is min of user avaiable borrows and remaining facilitator capacity
   const availableBorrows = getAvailableBorrows(
     Number(userAvailableBorrows),
@@ -52,10 +42,6 @@ export const GhoBorrowAssetsListMobileItem = ({
     Number(ghoFacilitatorBucketLevel)
   );
   const borrowButtonDisable = isFreezed || availableBorrows <= 0;
-
-  const stkAaveBalance = stakeUserResult ? stakeUserResult.aave.stakeTokenUserBalance : '0';
-
-  const discountableAmount = ghoDiscountableAmount(stkAaveBalance, ghoDiscountedPerToken);
 
   const normalizedBaseVariableBorrowRate = normalizeBaseVariableBorrowRate(baseVariableBorrowRate);
   let borrowRateAfterDiscount =

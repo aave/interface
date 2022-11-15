@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRootStore } from 'src/store/root';
-import { ghoDiscountableAmount, normalizeBaseVariableBorrowRate } from 'src/utils/ghoUtilities';
+import { normalizeBaseVariableBorrowRate } from 'src/utils/ghoUtilities';
 
 import { FormattedNumber } from './primitives/FormattedNumber';
 import { Link } from './primitives/Link';
@@ -20,11 +20,10 @@ import { TokenIcon } from './primitives/TokenIcon';
 
 export const GhoDiscountButton = ({ baseRate }: { baseRate: string | number }) => {
   const theme = useTheme();
-  const [stakeUserResult, ghoDiscountedPerToken, ghoDiscountRatePercent] = useRootStore((state) => [
-    state.stakeUserResult,
-    state.ghoDiscountedPerToken,
-    state.ghoDiscountRatePercent,
-  ]);
+  const {
+    ghoDiscountRatePercent,
+    ghoComputed: { discountableAmount },
+  } = useRootStore();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const discountPaper = {
@@ -43,10 +42,6 @@ export const GhoDiscountButton = ({ baseRate }: { baseRate: string | number }) =
 
   const discountRate = normalizedBaseRate - normalizedBaseRate * ghoDiscountRatePercent;
 
-  const stkAaveBalance = stakeUserResult ? stakeUserResult.aave.stakeTokenUserBalance : '0';
-
-  const discountableAmount = ghoDiscountableAmount(stkAaveBalance, ghoDiscountedPerToken);
-
   // TO-DO: fetch timestamp from GHO store
   const lockPeriod = dayjs.unix(1683292439).format('D MMM YYYY');
 
@@ -63,14 +58,14 @@ export const GhoDiscountButton = ({ baseRate }: { baseRate: string | number }) =
     >
       <Paper sx={discountPaper}>
         <Typography variant="caption" color="text.primary" sx={{ mx: 1 }}>
-          Discount info
+          <Trans>Discount info</Trans>
         </Typography>
         <TokenIcon symbol={'GHO'} sx={{ fontSize: `14px`, mr: 1 }} />
         <FormattedNumber value={discountableAmount} variant="main12" color="text.primary" />
         <Divider orientation="vertical" color="text.primary" sx={{ mx: 2 }} />
         <FormattedNumber value={discountRate} variant="main12" color="text.primary" percent />
         <Typography variant="caption" color="text.primary" sx={{ mx: 1 }}>
-          APY
+          <Trans>APY</Trans>
         </Typography>
       </Paper>
 
@@ -93,7 +88,7 @@ export const GhoDiscountButton = ({ baseRate }: { baseRate: string | number }) =
       component={Link}
       size="small"
       variant="outlined"
-      href="https://docs.aave.com" // TO-DO: Link to GHO docs
+      href="https://docs.aave.com" // TODO: Link to GHO docs
       sx={{ width: downToXSM ? '100%' : '275px', mt: downToXSM ? 4 : 0, ml: downToXSM ? 0 : 4 }}
     >
       <Typography variant="buttonS">

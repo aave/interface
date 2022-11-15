@@ -50,6 +50,7 @@ if (typeof document !== 'undefined') {
   };
 }
 
+// TODO: in all of the refetch methods across all slices, ensure that the store does not get updated if the data does not changes. IOW, turn a global update into a very atomic approach to reduce the amount of rerenders that occur based off of the AppDataProvider context provider's data.
 export const useStakeDataSubscription = createSingletonSubscriber(() => {
   return useRootStore.getState().refetchStakeData();
 }, 60000);
