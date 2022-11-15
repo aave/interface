@@ -17,11 +17,11 @@ export const GhoAssetMobileItem = ({ reserve }: GhoAssetMobileItemProps) => {
   const { currentMarket } = useProtocolDataContext();
   const theme = useTheme();
 
-  const [totalBorrowed, ghoDiscountRate, getBorrowAPR] = useRootStore((state) => [
-    state.ghoFacilitatorBucketLevel,
-    state.ghoDiscountRatePercent,
-    state.ghoComputed.borrowAPRWithMaxDiscount,
-  ]);
+  const {
+    ghoDiscountRatePercent,
+    ghoFacilitatorBucketLevel,
+    ghoComputed: { borrowAPRWithMaxDiscount },
+  } = useRootStore();
 
   return (
     <Box>
@@ -64,11 +64,11 @@ export const GhoAssetMobileItem = ({ reserve }: GhoAssetMobileItemProps) => {
           >
             <FormattedNumber
               compact
-              value={totalBorrowed.toString()}
+              value={ghoFacilitatorBucketLevel}
               visibleDecimals={2}
               variant="secondary14"
             />
-            <ReserveSubheader value={totalBorrowed.toString()} rightAlign={true} />
+            <ReserveSubheader value={ghoFacilitatorBucketLevel} rightAlign={true} />
           </Box>
         </Row>
         <Row sx={{ mb: 3 }} caption={<Trans>Borrow APY</Trans>} captionVariant="description">
@@ -85,7 +85,12 @@ export const GhoAssetMobileItem = ({ reserve }: GhoAssetMobileItemProps) => {
           captionVariant="description"
         >
           <Box>
-            <FormattedNumber compact percent value={getBorrowAPR} variant="secondary14" />
+            <FormattedNumber
+              compact
+              percent
+              value={borrowAPRWithMaxDiscount}
+              variant="secondary14"
+            />
             <Box
               sx={{
                 color: '#fff',
@@ -100,7 +105,7 @@ export const GhoAssetMobileItem = ({ reserve }: GhoAssetMobileItemProps) => {
               <FormattedNumber
                 compact
                 percent
-                value={ghoDiscountRate * -1}
+                value={ghoDiscountRatePercent * -1}
                 visibleDecimals={0}
                 variant="main12"
                 symbolsColor="white"
