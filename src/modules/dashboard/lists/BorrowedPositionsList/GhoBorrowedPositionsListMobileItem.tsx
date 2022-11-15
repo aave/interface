@@ -1,7 +1,7 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
-import { GhoDiscountButton } from 'src/components/GhoDiscountButton';
+//import { GhoDiscountButton } from 'src/components/GhoDiscountButton';
 import { GhoBorrowRateTooltip } from 'src/components/infoTooltips/GhoBorrowRateTooltip';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
@@ -108,7 +108,7 @@ export const GhoBorrowedPositionsListMobileItem = ({
           currentMarket={currentMarket}
         />
 
-        <GhoDiscountButton baseRate={baseVariableBorrowRate} />
+        {/* <GhoDiscountButton baseRate={baseVariableBorrowRate} /> */}
       </Row>
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
