@@ -123,6 +123,7 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
   ) as ComputedReserveData;
 
   const balance = walletBalances[underlyingAsset];
+  const canSupply = balance?.amount !== '0' && poolReserve.symbol !== 'GHO';
   const canBorrow = assetCanBeBorrowedByUser(poolReserve, user);
   const maxAmountToBorrow = getMaxAmountAvailableToBorrow(
     poolReserve,
@@ -328,7 +329,7 @@ export const ReserveActions = ({ underlyingAsset }: ReserveActionsProps) => {
       <Stack direction="row" spacing={2} sx={{ mb: 4 }}>
         <Button
           variant="contained"
-          disabled={balance?.amount === '0'}
+          disabled={!canSupply}
           onClick={() => openSupply(underlyingAsset)}
           fullWidth={downToXSM}
           data-cy={'supplyButton'}

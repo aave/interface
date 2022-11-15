@@ -30,7 +30,7 @@ export const BorrowModal = () => {
             symbol: params.symbol,
             currentMarket,
           }) ? (
-            <GhoBorrowModalContent {...params} />
+            <GhoBorrowModalContent {...params} currentMarket={currentMarket} />
           ) : (
             <BorrowModalContent
               {...params}

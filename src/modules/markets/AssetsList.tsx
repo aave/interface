@@ -7,7 +7,7 @@ import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYToolt
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-import { getGhoReserve, ghoMintingMarkets } from 'src/utils/ghoUtilities';
+import { getGhoReserve, GHO_SUPPORTED_MARKETS } from 'src/utils/ghoUtilities';
 
 import { ListColumn } from '../../components/lists/ListColumn';
 import { ListHeaderTitle } from '../../components/lists/ListHeaderTitle';
@@ -23,7 +23,7 @@ import { GhoAssetItem } from './Gho/GhoAssetItem';
 import { GhoAssetMobileItem } from './Gho/GhoAssetMobileItem';
 
 const shouldDisplayGho = (marketTitle: string, searchTerm: string): boolean => {
-  if (!ghoMintingMarkets.includes(marketTitle)) {
+  if (!GHO_SUPPORTED_MARKETS.includes(marketTitle)) {
     return false;
   }
 

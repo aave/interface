@@ -6,7 +6,7 @@ import {
 } from '@aave/contract-helpers';
 import { BigNumber, BigNumberish } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import { ghoMintingMarkets, normalizeBaseVariableBorrowRate } from 'src/utils/ghoUtilities';
+import { GHO_SUPPORTED_MARKETS, normalizeBaseVariableBorrowRate } from 'src/utils/ghoUtilities';
 import {
   CustomMarket,
   ENABLE_TESTNET,
@@ -47,6 +47,7 @@ export interface GhoSlice {
   ghoUserDiscountRate: BigNumber;
   ghoDiscountedPerToken: string;
   ghoDiscountRatePercent: number;
+  ghoDiscountLockPeriod: BigNumber;
   ghoFacilitators: string[];
   ghoFacilitatorBucketLevel: string;
   ghoFacilitatorBucketCapacity: string;
@@ -54,7 +55,8 @@ export interface GhoSlice {
   ghoMinDiscountTokenBalanceForEligibleDiscount: BigNumber;
   ghoBorrowAPR: number;
   ghoComputed: {
-    borrowAPRWithMaxDiscount: () => number;
+    borrowAPRWithMaxDiscount: number;
+    discountableAmount: number;
   };
   ghoUpdateDiscountRate: () => Promise<void>;
   ghoCalculateDiscountRate: (
@@ -73,10 +75,20 @@ export const createGhoSlice: StateCreator<
 > = (set, get) => {
   return {
     ghoComputed: {
-      borrowAPRWithMaxDiscount: () => {
-        const borrowAPR = get().ghoBorrowAPR;
-        const discountRate = get().ghoDiscountRatePercent;
-        return borrowAPR * (1 - discountRate);
+      // TODO: store could be undefined at this point, so the getters need to handle that.
+      // But we should consider not letting the app load until the store exists.
+      get borrowAPRWithMaxDiscount() {
+        const { ghoBorrowAPR, ghoDiscountRatePercent } = { ...get() };
+        if (!ghoBorrowAPR || !ghoDiscountRatePercent) return 0;
+
+        return ghoBorrowAPR * (1 - ghoDiscountRatePercent);
+      },
+      get discountableAmount() {
+        if (!get()) return 0;
+        const stakedAaveBalance = get().stakeUserResult?.aave.stakeTokenUserBalance ?? '0';
+        const stakedAaveBalanceNormalized = formatUnits(stakedAaveBalance, 18);
+        const discountPerToken = get().ghoDiscountedPerToken;
+        return Number(stakedAaveBalanceNormalized) * Number(discountPerToken);
       },
     },
     ghoFacilitators: [],
@@ -84,6 +96,7 @@ export const createGhoSlice: StateCreator<
     ghoVariableDebtTokenAddress: '0x2A379e5d2871123F301b2c73463cE011EcB217e6',
     ghoUserDiscountRate: BigNumber.from(0),
     ghoDiscountRatePercent: 0,
+    ghoDiscountLockPeriod: BigNumber.from(0),
     ghoFacilitatorBucketLevel: '0',
     ghoFacilitatorBucketCapacity: '0',
     ghoMinDebtTokenBalanceForEligibleDiscount: BigNumber.from(1),
@@ -116,22 +129,25 @@ export const createGhoSlice: StateCreator<
 
       const account = get().account;
       const currentMarket = get().currentMarket;
-      if (!account || !currentMarket || !ghoMintingMarkets.includes(currentMarket)) return;
+      if (!account || !currentMarket || !GHO_SUPPORTED_MARKETS.includes(currentMarket)) return;
 
       const provider = get().jsonRpcProvider();
       const address = get().ghoVariableDebtTokenAddress;
       const ghoDiscountRateService = new GhoDiscountRateStrategyService(provider, address);
+      const ghoVariableDebtTokenService = new GhoVariableDebtTokenService(provider, address);
       const ghoTokenService = new GhoTokenService(provider, ghoConfig.ghoTokenAddress);
 
       const [
         ghoDiscountedPerToken,
         ghoDiscountRate,
+        ghoDiscountLockPeriod,
         facilitatorInfo,
         ghoMinDebtTokenBalanceForEligibleDiscount,
         ghoMinDiscountTokenBalanceForEligibleDiscount,
       ] = await Promise.all([
         ghoDiscountRateService.getGhoDiscountedPerDiscountToken(),
         ghoDiscountRateService.getGhoDiscountRate(),
+        ghoVariableDebtTokenService.getDiscountLockPeriod(),
         ghoTokenService.getFacilitatorBucket(ghoConfig.facilitatorAddress),
         ghoDiscountRateService.getGhoMinDebtTokenBalance(),
         ghoDiscountRateService.getGhoMinDiscountTokenBalance(),
@@ -146,6 +162,7 @@ export const createGhoSlice: StateCreator<
         ghoFacilitatorBucketCapacity: formatUnits(maxCapacity, 18),
         ghoDiscountedPerToken: formatUnits(ghoDiscountedPerToken, 18),
         ghoDiscountRatePercent: ghoDiscountRate.toNumber() * 0.0001, // discount rate is in bps, convert to percentage
+        ghoDiscountLockPeriod,
         ghoMinDebtTokenBalanceForEligibleDiscount,
         ghoMinDiscountTokenBalanceForEligibleDiscount,
       });

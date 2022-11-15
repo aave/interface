@@ -54,7 +54,7 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
               component={Link}
               variant="outlined"
               size="small"
-              href=""
+              href="https://governance.aave.com/uploads/short-url/6B2t8gC8Sf4WOafAcgOrdCg0Nka.pdf"
               sx={{ p: '2px 4px', mt: 2, mr: 2, minWidth: 0 }}
             >
               <Typography sx={{ mr: 1, fontSize: '10px' }}>
@@ -64,38 +64,34 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
                 <ExternalLinkIcon />
               </SvgIcon>
             </Button>
-            <Link href="#">
-              <Button
-                component={Link}
-                variant="outlined"
-                size="small"
-                href=""
-                sx={{ p: '2px 4px', mt: 2, mr: 2, minWidth: 0 }}
-              >
-                <Typography sx={{ mr: 1, fontSize: '10px' }}>
-                  <Trans>Website</Trans>
-                </Typography>
-                <SvgIcon sx={{ fontSize: 14 }}>
-                  <ExternalLinkIcon />
-                </SvgIcon>
-              </Button>
-            </Link>
-            <Link href="#">
-              <Button
-                component={Link}
-                variant="outlined"
-                size="small"
-                href=""
-                sx={{ p: '2px 4px', mt: 2, mr: 2, minWidth: 0 }}
-              >
-                <Typography sx={{ mr: 1, fontSize: '10px' }}>
-                  <Trans>FAQ</Trans>
-                </Typography>
-                <SvgIcon sx={{ fontSize: 14 }}>
-                  <ExternalLinkIcon />
-                </SvgIcon>
-              </Button>
-            </Link>
+            <Button
+              component={Link}
+              variant="outlined"
+              size="small"
+              href="https://gho.money"
+              sx={{ p: '2px 4px', mt: 2, mr: 2, minWidth: 0 }}
+            >
+              <Typography sx={{ mr: 1, fontSize: '10px' }}>
+                <Trans>Website</Trans>
+              </Typography>
+              <SvgIcon sx={{ fontSize: 14 }}>
+                <ExternalLinkIcon />
+              </SvgIcon>
+            </Button>
+            <Button
+              component={Link}
+              variant="outlined"
+              size="small"
+              href="https://governance.aave.com/t/introducing-gho/8730"
+              sx={{ p: '2px 4px', mt: 2, mr: 2, minWidth: 0 }}
+            >
+              <Typography sx={{ mr: 1, fontSize: '10px' }}>
+                <Trans>FAQ</Trans>
+              </Typography>
+              <SvgIcon sx={{ fontSize: 14 }}>
+                <ExternalLinkIcon />
+              </SvgIcon>
+            </Button>
           </Box>
         </Box>
       </PanelRow>
