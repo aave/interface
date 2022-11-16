@@ -128,8 +128,6 @@ export const GhoBorrowModalContent = ({
       setTotalBorrowedGho(Number(userReserve.totalBorrows));
     } else {
       // Calculate new rates and check if they differ
-      console.log(Number(userReserve.totalBorrows));
-      console.log(Number(borrowingAmount));
       const totalBorrowAmount = valueToWei(
         (Number(userReserve.totalBorrows) + Number(borrowingAmount)).toString(),
         poolReserve.decimals
