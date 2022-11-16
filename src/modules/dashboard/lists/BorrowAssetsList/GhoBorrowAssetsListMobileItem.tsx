@@ -6,7 +6,11 @@ import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
-import { getAvailableBorrows, normalizeBaseVariableBorrowRate } from 'src/utils/ghoUtilities';
+import {
+  getAvailableBorrows,
+  normalizeBaseVariableBorrowRate,
+  weightedAverageAPY,
+} from 'src/utils/ghoUtilities';
 
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
@@ -43,14 +47,13 @@ export const GhoBorrowAssetsListMobileItem = ({
   const borrowButtonDisable = isFreezed || availableBorrows <= 0;
 
   const normalizedBaseVariableBorrowRate = normalizeBaseVariableBorrowRate(baseVariableBorrowRate);
-  let borrowRateAfterDiscount = borrowAPRWithMaxDiscount;
-  if (discountableAmount < availableBorrows) {
-    // Calculate weighted discount rate aftr max borrow
-    borrowRateAfterDiscount =
-      (normalizedBaseVariableBorrowRate * (availableBorrows - discountableAmount) +
-        borrowRateAfterDiscount * discountableAmount) /
-      availableBorrows;
-  }
+  const borrowRateAfterDiscount = weightedAverageAPY(
+    normalizedBaseVariableBorrowRate,
+    availableBorrows,
+    discountableAmount,
+    borrowAPRWithMaxDiscount
+  );
+
   return (
     <ListMobileItemWrapper
       symbol={symbol}
