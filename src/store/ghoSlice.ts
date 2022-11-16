@@ -79,11 +79,11 @@ export const createGhoSlice: StateCreator<
 > = (set, get) => {
   return {
     ghoComputed: {
-      // TODO: store could be undefined at this point, so the getters need to handle that.
-      // But we should consider not letting the app load until the store exists.
+      // These 'computed' getters are helpers for components to access commonly used values derived from the state.
+      // Because they are getters, they will run when the store is initialzed, so they need to guard against the store being undefined.
       get borrowAPRWithMaxDiscount() {
+        if (!get()) return 0;
         const { ghoBorrowAPR, ghoDiscountRatePercent } = { ...get() };
-        if (!ghoBorrowAPR || !ghoDiscountRatePercent) return 0;
 
         return ghoBorrowAPR * (1 - ghoDiscountRatePercent);
       },
