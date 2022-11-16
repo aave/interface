@@ -44,7 +44,7 @@ export const TxActionsWrapper = ({
   tryPermit,
   ...rest
 }: TxActionsWrapperProps) => {
-  const { txError, retryWithApproval } = useModalContext();
+  const { txError, retryWithApproval, setRetryWithApproval, setTxError } = useModalContext();
   const { watchModeOnlyAddress } = useWeb3Context();
 
   const hasApprovalError =
@@ -96,6 +96,18 @@ export const TxActionsWrapper = ({
       {requiresApproval && !watchModeOnlyAddress && (
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
           <LeftHelperText amount={amount} approvalHash={approvalTxState?.txHash} />
+          {tryPermit && retryWithApproval && (
+            <Typography
+              variant="helperText"
+              onClick={() => {
+                setRetryWithApproval(false);
+                setTxError(undefined);
+              }}
+              sx={{ cursor: 'pointer' }}
+            >
+              <Trans>Back to permit</Trans>
+            </Typography>
+          )}
           <RightHelperText approvalHash={approvalTxState?.txHash} />
         </Box>
       )}
