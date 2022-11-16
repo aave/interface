@@ -23,6 +23,7 @@ export const GHO_SUPPORTED_MARKETS = [
 /**
  * Determines if the provided asset is GHO and is available to borrow on a given market. It takes in symbol as a param due that this can be run within a loop over all assets to determine whether to display GHO-related components in the UI.
  * @param {string} symbol - The asset symbol, ie GHO, AAVE, etc.
+ * @param {string} currentMarket - The market name to check against
  * @returns {boolean} - If the provided asset is GHO and also if the market passed in supports GHO.
  */
 export const isGhoAndSupported = ({
