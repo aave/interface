@@ -21,19 +21,15 @@ export const GHO_SUPPORTED_MARKETS = [
 ];
 
 /**
- * Determines if GHO is available for minting on a given network. It takes in symbol as a param due that this can be run within a loop over all assets.
- * @param symbol - The asset symbol, ie GHO
- * @returns {boolean} - If minting GHO is available on the current network
+ * Determines if the provided asset is GHO and is available to borrow on a given market. It takes in symbol as a param due that this can be run within a loop over all assets to determine whether to display GHO-related components in the UI.
+ * @param {string} symbol - The asset symbol, ie GHO, AAVE, etc.
+ * @returns {boolean} - If the provided asset is GHO and also if the market passed in supports GHO.
  */
-export const ghoMintingAvailable = ({
+export const isGhoAndSupported = ({
   symbol,
   currentMarket,
 }: GhoUtilMintingAvailableParams): boolean => {
-  if (symbol === 'GHO' && GHO_SUPPORTED_MARKETS.includes(currentMarket)) {
-    return true;
-  } else {
-    return false;
-  }
+  return symbol === 'GHO' && GHO_SUPPORTED_MARKETS.includes(currentMarket);
 };
 
 export const getGhoReserve = (reserves: ComputedReserveData[]) => {

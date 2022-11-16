@@ -6,7 +6,7 @@ import { Fragment } from 'react';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-import { ghoMintingAvailable } from 'src/utils/ghoUtilities';
+import { isGhoAndSupported } from 'src/utils/ghoUtilities';
 
 import { APYTypeTooltip } from '../../../../components/infoTooltips/APYTypeTooltip';
 import { BorrowPowerTooltip } from '../../../../components/infoTooltips/BorrowPowerTooltip';
@@ -125,7 +125,7 @@ export const BorrowedPositionsList = () => {
             <Fragment key={item.underlyingAsset + item.borrowRateMode}>
               <AssetCapsProvider asset={item.reserve}>
                 {downToXSM ? (
-                  ghoMintingAvailable({ symbol: item.reserve.symbol, currentMarket }) ? (
+                  isGhoAndSupported({ symbol: item.reserve.symbol, currentMarket }) ? (
                     <GhoBorrowedPositionsListMobileItem
                       {...item}
                       key={item.underlyingAsset + item.borrowRateMode}
@@ -136,7 +136,7 @@ export const BorrowedPositionsList = () => {
                       key={item.underlyingAsset + item.borrowRateMode}
                     />
                   )
-                ) : ghoMintingAvailable({ symbol: item.reserve.symbol, currentMarket }) ? (
+                ) : isGhoAndSupported({ symbol: item.reserve.symbol, currentMarket }) ? (
                   <GhoBorrowedPositionsListItem
                     {...item}
                     key={item.underlyingAsset + item.borrowRateMode}

@@ -9,7 +9,7 @@ import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-import { ghoMintingAvailable } from 'src/utils/ghoUtilities';
+import { isGhoAndSupported } from 'src/utils/ghoUtilities';
 
 import { CapType } from '../../../../components/caps/helper';
 import { AvailableTooltip } from '../../../../components/infoTooltips/AvailableTooltip';
@@ -87,7 +87,7 @@ export const BorrowAssetsList = () => {
       : tokensToBorrow.filter(
           ({ availableBorrowsInUSD, totalLiquidityUSD, symbol }) =>
             (availableBorrowsInUSD !== '0.00' && totalLiquidityUSD !== '0') ||
-            ghoMintingAvailable({
+            isGhoAndSupported({
               symbol,
               currentMarket,
             })
@@ -186,7 +186,7 @@ export const BorrowAssetsList = () => {
           <Fragment key={item.underlyingAsset}>
             <AssetCapsProvider asset={item.reserve}>
               {downToXSM ? (
-                ghoMintingAvailable({
+                isGhoAndSupported({
                   symbol: item.symbol,
                   currentMarket,
                 }) ? (
@@ -197,7 +197,7 @@ export const BorrowAssetsList = () => {
                 ) : (
                   <BorrowAssetsListMobileItem {...item} />
                 )
-              ) : ghoMintingAvailable({
+              ) : isGhoAndSupported({
                   symbol: item.symbol,
                   currentMarket,
                 }) ? (

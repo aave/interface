@@ -13,7 +13,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import {
-  ghoMintingAvailable,
+  isGhoAndSupported,
   normalizeBaseVariableBorrowRate,
   weightedAverageAPY,
 } from 'src/utils/ghoUtilities';
@@ -148,7 +148,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
         }
         if (value.variableBorrowsUSD !== '0') {
           // TODO: Export to unified helper function
-          if (ghoMintingAvailable({ symbol: reserve.symbol, currentMarket: currentMarket })) {
+          if (isGhoAndSupported({ symbol: reserve.symbol, currentMarket: currentMarket })) {
             const discountableAmount = ghoComputed.discountableAmount;
             const normalizedBaseVariableBorrowRate = normalizeBaseVariableBorrowRate(
               reserve.baseVariableBorrowRate

@@ -3,7 +3,7 @@ import { Trans } from '@lingui/macro';
 import React, { useState } from 'react';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { ghoMintingAvailable } from 'src/utils/ghoUtilities';
+import { isGhoAndSupported } from 'src/utils/ghoUtilities';
 
 import { BasicModal } from '../../primitives/BasicModal';
 import { ModalWrapper } from '../FlowCommons/ModalWrapper';
@@ -26,7 +26,7 @@ export const BorrowModal = () => {
         requiredPermission={PERMISSION.BORROWER}
       >
         {(params) =>
-          ghoMintingAvailable({
+          isGhoAndSupported({
             symbol: params.symbol,
             currentMarket,
           }) ? (
