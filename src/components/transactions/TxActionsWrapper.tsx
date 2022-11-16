@@ -73,7 +73,7 @@ export const TxActionsWrapper = ({
       isWrongNetwork ||
       isAmountMissing ||
       preparingTransactions ||
-      hasApprovalError
+      (hasApprovalError && !retryWithApproval)
     )
       return null;
     if (approvalTxState?.loading)

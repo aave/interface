@@ -51,7 +51,7 @@ export const SupplyModalContent = ({
 }: ModalWrapperProps) => {
   const { marketReferencePriceInUsd, user } = useAppDataContext();
   const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
-  const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
+  const { mainTxState: supplyTxState, gasLimit, txError, retryWithApproval } = useModalContext();
   const { supplyCap, debtCeiling } = useAssetCaps();
 
   // states
@@ -263,7 +263,7 @@ export const SupplyModalContent = ({
         />
       </TxModalDetails>
 
-      {txError && <GasEstimationError txError={txError} />}
+      {txError && !retryWithApproval && <GasEstimationError txError={txError} />}
 
       <SupplyActions
         poolReserve={poolReserve}
