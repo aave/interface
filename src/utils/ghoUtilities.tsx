@@ -19,6 +19,11 @@ export const GHO_SUPPORTED_MARKETS = [
   'fork_proto_mainnet_v3',
 ];
 
+/**
+ * Determines if GHO is available for minting on a given network. It takes in symbol as a param due that this can be run within a loop over all assets.
+ * @param symbol - The asset symbol, ie GHO
+ * @returns {boolean} - If minting GHO is available on the current network
+ */
 export const ghoMintingAvailable = ({
   symbol,
   currentMarket,
