@@ -79,7 +79,7 @@ export const normalizeBaseVariableBorrowRate = (baseVariableBorrowRate: string |
 /**
  * Calculates the weighted average APY
  * @param baseVariableBorrowRate - The base variable borrow rate, normalized
- * @param totalBorrowAmount - The total amount of the asset that is borrowed
+ * @param totalBorrowAmount - The total amount of the asset that is being borrowed
  * @param discountableAmount - The amount that can be discounted for the user
  * @param borrowRateAfterDiscount - The borrow rate after the discount is applied
  * @returns
@@ -90,6 +90,8 @@ export const weightedAverageAPY = (
   discountableAmount: number,
   borrowRateAfterDiscount: number
 ) => {
+  if (totalBorrowAmount === 0) return baseVariableBorrowRate;
+
   if (totalBorrowAmount <= discountableAmount) {
     return borrowRateAfterDiscount;
   }

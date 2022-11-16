@@ -19,6 +19,7 @@ import {
   displayDiscountableAmount,
   displayNonDiscountableAmount,
   normalizeBaseVariableBorrowRate,
+  weightedAverageAPY,
 } from 'src/utils/ghoUtilities';
 
 type GhoDiscountCalculatorProps = {
@@ -89,27 +90,32 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
    */
   const calculateDiscountRate = async (stakedAave: number, borrowedGho: number) => {
     let newRate: number;
+    const discountableAmount = stakedAave * discountedPerToken;
 
-    // Calculate
+    // Calculate what the new rate will be
     if (
       stakedAave < ghoMinDiscountTokenBalanceForEligibleDiscount ||
       borrowedGho < ghoMinDebtTokenBalanceForEligibleDiscount
     ) {
       newRate = 0;
     } else {
-      const discountableAmount = stakedAave * discountedPerToken;
       if (discountableAmount >= borrowedGho) {
         newRate = ghoDiscountRatePercent;
       } else {
         newRate = (discountableAmount * ghoDiscountRatePercent) / borrowedGho;
       }
-      setDiscountableGhoAmount(discountableAmount);
     }
 
-    // Calculate the new borrow APY - Takes the total discount as a fraction of the existing borrow rate
-    const newBorrowAPY = baseBorrowRate - baseBorrowRate * newRate;
+    // Calculate the new borrow APY
+    const newBorrowAPY = weightedAverageAPY(
+      baseBorrowRate,
+      borrowedGho,
+      discountableAmount,
+      borrowAPRWithMaxDiscount
+    );
 
     // Update local state
+    setDiscountableGhoAmount(discountableAmount);
     setCalculatedDiscountRate(newRate);
     setCalculatedBorrowAPY(newBorrowAPY);
   };
