@@ -34,13 +34,13 @@ export const GhoBorrowedPositionsListMobileItem = ({
     isFrozen,
     borrowingEnabled,
     stableBorrowRateEnabled,
-    sIncentivesData,
-    vIncentivesData,
     variableBorrowAPY,
     underlyingAsset,
     baseVariableBorrowRate,
   } = reserve;
   const {
+    ghoLoadingData,
+    ghoLoadingMarketData,
     ghoComputed: { borrowAPRWithMaxDiscount, discountableAmount },
   } = useRootStore();
 
@@ -51,6 +51,8 @@ export const GhoBorrowedPositionsListMobileItem = ({
     discountableAmount,
     borrowAPRWithMaxDiscount
   );
+
+  const loading = ghoLoadingData || ghoLoadingMarketData;
 
   return (
     <ListMobileItemWrapper
@@ -71,13 +73,10 @@ export const GhoBorrowedPositionsListMobileItem = ({
 
       <Row caption={<Trans>APY</Trans>} align="flex-start" captionVariant="description" mb={2}>
         <IncentivesCard
-          value={Number(
-            borrowRateMode === InterestRate.Variable ? borrowRateAfterDiscount : stableBorrowAPY
-          )}
-          incentives={borrowRateMode === InterestRate.Variable ? vIncentivesData : sIncentivesData}
+          value={loading ? -1 : borrowRateAfterDiscount}
           symbol={symbol}
           variant="secondary14"
-          tooltip={<GhoBorrowRateTooltip />}
+          tooltip={loading ? null : <GhoBorrowRateTooltip />}
         />
       </Row>
 

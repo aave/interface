@@ -20,8 +20,6 @@ export const GhoBorrowedPositionsListItem = ({
   reserve,
   variableBorrows,
   variableBorrowsUSD,
-  stableBorrows,
-  stableBorrowsUSD,
   borrowRateMode,
   stableBorrowAPY,
 }: ComputedUserReserveData & { borrowRateMode: InterestRate }) => {
@@ -32,12 +30,12 @@ export const GhoBorrowedPositionsListItem = ({
     isFrozen,
     borrowingEnabled,
     stableBorrowRateEnabled,
-    sIncentivesData,
-    vIncentivesData,
     variableBorrowAPY,
     baseVariableBorrowRate,
   } = reserve;
   const {
+    ghoLoadingData,
+    ghoLoadingMarketData,
     ghoComputed: { borrowAPRWithMaxDiscount, discountableAmount },
   } = useRootStore();
 
@@ -48,6 +46,8 @@ export const GhoBorrowedPositionsListItem = ({
     discountableAmount,
     borrowAPRWithMaxDiscount
   );
+
+  const loading = ghoLoadingData || ghoLoadingMarketData;
 
   return (
     <ListItemWrapper
@@ -63,19 +63,14 @@ export const GhoBorrowedPositionsListItem = ({
     >
       <ListValueColumn
         symbol={reserve.symbol}
-        value={Number(borrowRateMode === InterestRate.Variable ? variableBorrows : stableBorrows)}
-        subValue={Number(
-          borrowRateMode === InterestRate.Variable ? variableBorrowsUSD : stableBorrowsUSD
-        )}
+        value={variableBorrows}
+        subValue={Number(variableBorrowsUSD)}
       />
 
       <ListAPRColumn
-        value={Number(
-          borrowRateMode === InterestRate.Variable ? borrowRateAfterDiscount : stableBorrowAPY
-        )}
-        incentives={borrowRateMode === InterestRate.Variable ? vIncentivesData : sIncentivesData}
         symbol={reserve.symbol}
-        tooltip={<GhoBorrowRateTooltip />}
+        value={loading ? -1 : borrowRateAfterDiscount}
+        tooltip={loading ? null : <GhoBorrowRateTooltip />}
       />
 
       <ListColumn>
