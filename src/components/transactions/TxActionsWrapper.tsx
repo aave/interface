@@ -23,6 +23,7 @@ interface TxActionsWrapperProps extends BoxProps {
   requiresApproval: boolean;
   symbol?: string;
   blocked?: boolean;
+  tryPermit?: boolean;
 }
 
 export const TxActionsWrapper = ({
@@ -40,6 +41,7 @@ export const TxActionsWrapper = ({
   sx,
   symbol,
   blocked,
+  tryPermit,
   ...rest
 }: TxActionsWrapperProps) => {
   const { txError, retryWithApproval } = useModalContext();
@@ -81,6 +83,8 @@ export const TxActionsWrapper = ({
     if (approvalTxState?.success) return { disabled: true, content: <Trans>Approved</Trans> };
     if (retryWithApproval)
       return { content: <Trans>Retry with approval</Trans>, handleClick: handleApproval };
+    if (tryPermit && !retryWithApproval)
+      return { content: <Trans>Sign to continue</Trans>, handleClick: handleApproval };
     return { content: <Trans>Approve to continue</Trans>, handleClick: handleApproval };
   }
 
