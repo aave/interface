@@ -35,6 +35,8 @@ export const GhoBorrowAssetsListMobileItem = ({
   const {
     ghoFacilitatorBucketLevel,
     ghoFacilitatorBucketCapacity,
+    ghoLoadingData,
+    ghoLoadingMarketData,
     ghoComputed: { borrowAPRWithMaxDiscount, discountableAmount },
   } = useRootStore();
 
@@ -82,7 +84,7 @@ export const GhoBorrowAssetsListMobileItem = ({
         mb={2}
       >
         <IncentivesCard
-          value={borrowRateAfterDiscount}
+          value={ghoLoadingData || ghoLoadingMarketData ? -1 : borrowRateAfterDiscount}
           incentives={vIncentivesData}
           symbol={symbol}
           variant="secondary14"
@@ -102,7 +104,7 @@ export const GhoBorrowAssetsListMobileItem = ({
         captionVariant="description"
         mb={2}
       >
-        <IncentivesCard value={0} incentives={[]} symbol={symbol} variant="secondary14" />
+        <IncentivesCard value={-1} incentives={[]} symbol={symbol} variant="secondary14" />
       </Row>
 
       {/* <GhoDiscountButton amount={discountableAmount} rate={borrowAPRWithMaxDiscount} /> */}

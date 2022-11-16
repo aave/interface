@@ -58,6 +58,8 @@ export interface GhoSlice {
   ghoMinDebtTokenBalanceForEligibleDiscount: number;
   ghoMinDiscountTokenBalanceForEligibleDiscount: number;
   ghoBorrowAPR: number;
+  ghoLoadingMarketData: boolean;
+  ghoLoadingData: boolean;
   ghoComputed: {
     borrowAPRWithMaxDiscount: number;
     discountableAmount: number;
@@ -106,6 +108,8 @@ export const createGhoSlice: StateCreator<
     ghoMinDebtTokenBalanceForEligibleDiscount: 1,
     ghoMinDiscountTokenBalanceForEligibleDiscount: 1,
     ghoBorrowAPR: 0,
+    ghoLoadingMarketData: true,
+    ghoLoadingData: true,
     ghoCalculateDiscountRate: async (
       ghoDebtTokenBalance: BigNumberish,
       stakedAaveBalance: BigNumberish
@@ -175,6 +179,8 @@ export const createGhoSlice: StateCreator<
           formatUnits(ghoMinDiscountTokenBalanceForEligibleDiscount, 18)
         ),
       });
+
+      set({ ghoLoadingData: false });
     },
     fetchGhoMarketData: async () => {
       // Fetch gho data regardless of which market the user has selected so it can be displayed on the staking page
@@ -189,6 +195,7 @@ export const createGhoSlice: StateCreator<
       const reserve = await poolContract.getReserveData(config.ghoTokenAddress);
       set({
         ghoBorrowAPR: normalizeBaseVariableBorrowRate(reserve.currentVariableBorrowRate.toString()),
+        ghoLoadingMarketData: false,
       });
     },
   };

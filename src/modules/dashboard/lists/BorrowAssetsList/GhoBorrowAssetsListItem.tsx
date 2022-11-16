@@ -33,6 +33,8 @@ export const GhoBorrowAssetsListItem = ({
   const {
     ghoFacilitatorBucketLevel,
     ghoFacilitatorBucketCapacity,
+    ghoLoadingData,
+    ghoLoadingMarketData,
     ghoComputed: { borrowAPRWithMaxDiscount, discountableAmount },
   } = useRootStore();
 
@@ -51,6 +53,8 @@ export const GhoBorrowAssetsListItem = ({
     discountableAmount,
     borrowAPRWithMaxDiscount
   );
+
+  const loading = ghoLoadingData || ghoLoadingMarketData;
 
   return (
     <ListItemWrapper
@@ -71,14 +75,13 @@ export const GhoBorrowAssetsListItem = ({
         disabled={availableBorrows === 0}
         withTooltip
       />
-
       <ListAPRColumn
-        value={borrowRateAfterDiscount}
+        value={loading ? -1 : borrowRateAfterDiscount}
         incentives={vIncentivesData}
         symbol={symbol}
-        tooltip={<GhoBorrowRateTooltip />}
+        tooltip={loading ? null : <GhoBorrowRateTooltip />}
       />
-      <ListAPRColumn value={0} incentives={[]} symbol={symbol} />
+      <ListAPRColumn value={-1} incentives={[]} symbol={symbol} />
 
       <ListButtonsColumn>
         <Button
