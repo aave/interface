@@ -51,8 +51,8 @@ export interface GhoSlice {
   ghoFacilitators: string[];
   ghoFacilitatorBucketLevel: string;
   ghoFacilitatorBucketCapacity: string;
-  ghoMinDebtTokenBalanceForEligibleDiscount: BigNumber;
-  ghoMinDiscountTokenBalanceForEligibleDiscount: BigNumber;
+  ghoMinDebtTokenBalanceForEligibleDiscount: number;
+  ghoMinDiscountTokenBalanceForEligibleDiscount: number;
   ghoBorrowAPR: number;
   ghoComputed: {
     borrowAPRWithMaxDiscount: number;
@@ -99,8 +99,8 @@ export const createGhoSlice: StateCreator<
     ghoDiscountLockPeriod: BigNumber.from(0),
     ghoFacilitatorBucketLevel: '0',
     ghoFacilitatorBucketCapacity: '0',
-    ghoMinDebtTokenBalanceForEligibleDiscount: BigNumber.from(1),
-    ghoMinDiscountTokenBalanceForEligibleDiscount: BigNumber.from(1),
+    ghoMinDebtTokenBalanceForEligibleDiscount: 1,
+    ghoMinDiscountTokenBalanceForEligibleDiscount: 1,
     ghoBorrowAPR: 0,
     ghoCalculateDiscountRate: async (
       ghoDebtTokenBalance: BigNumberish,
@@ -164,8 +164,12 @@ export const createGhoSlice: StateCreator<
         ghoDiscountedPerToken: formatUnits(ghoDiscountedPerToken, 18),
         ghoDiscountRatePercent: ghoDiscountRate.toNumber() * 0.0001, // discount rate is in bps, convert to percentage
         ghoDiscountLockPeriod,
-        ghoMinDebtTokenBalanceForEligibleDiscount,
-        ghoMinDiscountTokenBalanceForEligibleDiscount,
+        ghoMinDebtTokenBalanceForEligibleDiscount: Number(
+          formatUnits(ghoMinDebtTokenBalanceForEligibleDiscount, 18)
+        ),
+        ghoMinDiscountTokenBalanceForEligibleDiscount: Number(
+          formatUnits(ghoMinDiscountTokenBalanceForEligibleDiscount, 18)
+        ),
       });
     },
     fetchGhoMarketData: async () => {

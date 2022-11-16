@@ -16,7 +16,11 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useRootStore } from 'src/store/root';
-import { normalizeBaseVariableBorrowRate } from 'src/utils/ghoUtilities';
+import {
+  displayDiscountableAmount,
+  displayNonDiscountableAmount,
+  normalizeBaseVariableBorrowRate,
+} from 'src/utils/ghoUtilities';
 
 type GhoDiscountCalculatorProps = {
   baseVariableBorrowRate: string;
@@ -72,19 +76,9 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
     ghoDiscountedPerToken,
     ghoMinDebtTokenBalanceForEligibleDiscount,
     ghoMinDiscountTokenBalanceForEligibleDiscount,
+    ghoComputed: { borrowAPRWithMaxDiscount },
   } = useRootStore();
-
-  // TODO: we need a better way to normalize these values. Maybe we just do it in the store? I'm not sure
-  // if we'd need these values NOT normalized. If not, it would just make sense to do the conversion when we fetch it from utils.
-  const baseBorrowRate = normalizeBaseVariableBorrowRate(baseVariableBorrowRate); // 0.02 or 2%
-  const minStkAave = normalizeBN(
-    ghoMinDiscountTokenBalanceForEligibleDiscount.toString(),
-    18
-  ).toNumber();
-  const minGhoBorrowed = normalizeBN(
-    ghoMinDebtTokenBalanceForEligibleDiscount.toString(),
-    18
-  ).toNumber();
+  const baseBorrowRate = normalizeBaseVariableBorrowRate(baseVariableBorrowRate);
   const discountedPerToken = Number(ghoDiscountedPerToken);
 
   /**
@@ -98,7 +92,10 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
     let newRate: number;
 
     // Calculate
-    if (stakedAave < minStkAave || borrowedGho < minGhoBorrowed) {
+    if (
+      stakedAave < ghoMinDiscountTokenBalanceForEligibleDiscount ||
+      borrowedGho < ghoMinDebtTokenBalanceForEligibleDiscount
+    ) {
       newRate = 0;
     } else {
       const discountableAmount = stakedAave * discountedPerToken;
@@ -159,14 +156,14 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
         />
         <GhoMetaHeader
           title={<Trans>APY with max discount</Trans>}
-          value={<FormattedNumber value={0.016} percent variant="main16" />}
+          value={<FormattedNumber value={borrowAPRWithMaxDiscount} percent variant="main16" />}
         />
         <GhoMetaHeader
           title={<Trans>Discountable amount</Trans>}
           value={
             <Typography variant="main16" display="flex" alignItems="center">
               <TokenIcon symbol="GHO" sx={{ fontSize: '16px', mr: 1 }} />
-              100
+              {discountedPerToken}
               <Typography
                 component="span"
                 variant="secondary16"
@@ -180,7 +177,7 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
           }
         />
       </Box>
-      <Paper>
+      <Paper sx={{ border: (theme) => `1px solid ${theme.palette.divider}` }}>
         <Typography
           variant="subheader2"
           color="info.dark"
@@ -194,7 +191,7 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
           <Grid item xs={6} sx={{ backgroundColor: 'background.surface' }}>
             <Box px={6} pt={8} pb={6}>
               <Typography color="text.secondary" gutterBottom>
-                <Trans>You stake</Trans> (stkAAVE)
+                <Trans>You stake (stkAAVE)</Trans>
               </Typography>
               <FilledInput
                 fullWidth
@@ -212,7 +209,7 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
                 max={1000}
               />
               <Typography color="text.secondary" gutterBottom>
-                <Trans>You borrow</Trans> (GHO)
+                <Trans>You borrow (GHO)</Trans>
               </Typography>
               <FilledInput
                 fullWidth
@@ -250,14 +247,11 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
               <Box mt={12} textAlign="center">
                 <FormattedNumber value={calculatedBorrowAPY} percent variant="display1" />
                 <Typography variant="caption" color="text.secondary">
-                  GHO <Trans>borrow APY</Trans>
+                  <Trans>GHO borrow APY</Trans>
                 </Typography>
               </Box>
               <Box>
-                <Box
-                  mb={3}
-                  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
-                >
+                <Box display="flex" alignItems="center" justifyContent="space-between" mb={3}>
                   <Box
                     sx={{
                       width: 10,
@@ -276,21 +270,17 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
                     </Typography>
                   </Box>
                   <Box textAlign="right">
-                    <Box display="flex" alignItems="center">
+                    <Box display="flex" alignItems="center" justifyContent="space-between">
                       <TokenIcon symbol="GHO" fontSize="small" sx={{ mr: 1 }} />
                       <FormattedNumber
-                        value={
-                          discountableGhoAmount >= ghoBorrow ? ghoBorrow : discountableGhoAmount
-                        }
+                        value={displayDiscountableAmount(discountableGhoAmount, ghoBorrow)}
                         visibleDecimals={0}
                       />
                     </Box>
                     <FormattedNumber value={calculatedBorrowAPY} percent />
                   </Box>
                 </Box>
-                <Box
-                  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
-                >
+                <Box display="flex" alignItems="center" justifyContent="space-between">
                   <Box
                     sx={{
                       width: 10,
@@ -309,12 +299,10 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
                     </Typography>
                   </Box>
                   <Box textAlign="right">
-                    <Box display="flex" alignItems="center">
+                    <Box display="flex" alignItems="center" justifyContent="space-between">
                       <TokenIcon symbol="GHO" fontSize="small" sx={{ mr: 1 }} />
                       <FormattedNumber
-                        value={
-                          discountableGhoAmount >= ghoBorrow ? 0 : ghoBorrow - discountableGhoAmount
-                        }
+                        value={displayNonDiscountableAmount(discountableGhoAmount, ghoBorrow)}
                         visibleDecimals={0}
                       />
                     </Box>

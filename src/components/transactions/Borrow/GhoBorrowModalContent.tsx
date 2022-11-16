@@ -17,7 +17,13 @@ import usePreviousState from 'src/hooks/usePreviousState';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
 import { getMaxGhoMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
-import { formatGhoDiscountLockPeriodExpiryDate, weightedAverageAPY } from 'src/utils/ghoUtilities';
+import {
+  displayDiscountableAmount,
+  displayNonDiscountableAmount,
+  formatGhoDiscountLockPeriodExpiryDate,
+  normalizeBaseVariableBorrowRate,
+  weightedAverageAPY,
+} from 'src/utils/ghoUtilities';
 
 import { AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -101,8 +107,7 @@ export const GhoBorrowModalContent = ({
   const hasGhoBorrowPositions = userReserve.totalBorrows !== '0';
   const userStakedAaveBalance: string = stakeUserResult?.aave.stakeTokenUserBalance ?? '0';
   const discountAvailable = userStakedAaveBalance !== '0';
-  // Get contract values
-  const baseBorrowRate = normalizeBN(poolReserve.baseVariableBorrowRate, 27).toNumber(); // 0.02 or 2%
+  const baseBorrowRate = normalizeBaseVariableBorrowRate(poolReserve.baseVariableBorrowRate);
 
   // Calculate new borrow APY based on borrow amounts
   const [calculatedFutureBorrowAPY, setCalculatedFutureBorrowAPY] = useState<number>(0);
@@ -138,7 +143,6 @@ export const GhoBorrowModalContent = ({
 
       setApyDiffers(currentBorrowAPY !== newRate);
       setCalculatedFutureBorrowAPY(newRate);
-      console.log(Number(totalBorrowAmount));
       setTotalBorrowedGho(normalizeBN(totalBorrowAmount, poolReserve.decimals).toNumber());
     }
   };
@@ -278,32 +282,22 @@ export const GhoBorrowModalContent = ({
                   subtitle={
                     <Trans>{`Borrow @ ${(
                       <FormattedNumber
-                        value={borrowAPRWithMaxDiscount.toString()}
+                        value={borrowAPRWithMaxDiscount}
                         percent
                         variant="helperText"
                       />
                     )} APY`}</Trans>
                   }
-                  ghoAmount={
-                    discountableAmount >= totalBorrowedGho ? totalBorrowedGho : discountableAmount
-                  }
+                  ghoAmount={displayDiscountableAmount(discountableAmount, totalBorrowedGho)}
                 />
                 <DiscountDetailsGhoLine
                   title={<Trans>Non-discountable amount</Trans>}
                   subtitle={
                     <Trans>{`Borrow @ ${(
-                      <FormattedNumber
-                        value={baseBorrowRate.toString()}
-                        percent
-                        variant="helperText"
-                      />
+                      <FormattedNumber value={baseBorrowRate} percent variant="helperText" />
                     )} APY`}</Trans>
                   }
-                  ghoAmount={
-                    discountableAmount >= totalBorrowedGho
-                      ? 0
-                      : totalBorrowedGho - discountableAmount
-                  }
+                  ghoAmount={displayNonDiscountableAmount(discountableAmount, totalBorrowedGho)}
                 />
                 <DiscountDetailsGhoLine
                   title={<Trans>Discount lock period</Trans>}

@@ -937,6 +937,10 @@ msgstr "Funds in the Safety Module"
 msgid "GHO"
 msgstr "GHO"
 
+#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
+msgid "GHO borrow APY"
+msgstr "GHO borrow APY"
+
 #: src/components/infoTooltips/GhoBorrowRateTooltip.tsx
 msgid "GHO borrow rate can be discounted by holding stkAave."
 msgstr "GHO borrow rate can be discounted by holding stkAave."
@@ -2331,8 +2335,8 @@ msgid "You are entering Isolation mode"
 msgstr "You are entering Isolation mode"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "You borrow"
-msgstr "You borrow"
+msgid "You borrow (GHO)"
+msgstr "You borrow (GHO)"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "You can borrow this asset with a stable rate only if you borrow more than the amount you are supplying as collateral."
@@ -2387,8 +2391,8 @@ msgid "You have not borrow yet using this currency"
 msgstr "You have not borrow yet using this currency"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "You stake"
-msgstr "You stake"
+msgid "You stake (stkAAVE)"
+msgstr "You stake (stkAAVE)"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You switched to {0} rate"
@@ -2471,10 +2475,6 @@ msgstr "assets"
 #: src/components/AddressBlockedModal.tsx
 msgid "blocked activities"
 msgstr "blocked activities"
-
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "borrow APY"
-msgstr "borrow APY"
 
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "copy the error"
