@@ -42,7 +42,8 @@ export const RepayActions = ({
     useTransactionHandler({
       // move tryPermit to store
       tryPermit:
-        currentMarketData.v3 && permitByChainAndToken[chainId]?.[utils.getAddress(poolAddress)],
+        currentMarketData.v3 &&
+        permitByChainAndToken[chainId]?.[utils.getAddress(poolAddress).toLowerCase()],
       handleGetTxns: async () => {
         return repay({
           amountToRepay,
