@@ -62,7 +62,7 @@ export interface GhoSlice {
   ghoCalculateDiscountRate: (
     ghoDebtTokenBalance: BigNumberish,
     stakedAaveBalance: BigNumberish
-  ) => Promise<BigNumber>;
+  ) => Promise<number>;
   refreshGhoData: () => Promise<void>;
   fetchGhoMarketData: () => Promise<void>;
 }
@@ -109,10 +109,11 @@ export const createGhoSlice: StateCreator<
       const provider = get().jsonRpcProvider();
       const address = get().ghoVariableDebtTokenAddress;
       const ghoDiscountRateService = new GhoDiscountRateStrategyService(provider, address);
-      return await ghoDiscountRateService.calculateDiscountRate(
+      const rateBps = await ghoDiscountRateService.calculateDiscountRate(
         ghoDebtTokenBalance,
         stakedAaveBalance
       );
+      return rateBps.toNumber() * 0.0001;
     },
     ghoUpdateDiscountRate: async () => {
       const provider = get().jsonRpcProvider();

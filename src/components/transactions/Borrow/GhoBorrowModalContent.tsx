@@ -1,4 +1,4 @@
-import { InterestRate } from '@aave/contract-helpers';
+import { InterestRate, valueToWei } from '@aave/contract-helpers';
 import {
   calculateHealthFactorFromBalancesBigUnits,
   normalizeBN,
@@ -17,7 +17,7 @@ import usePreviousState from 'src/hooks/usePreviousState';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
 import { getMaxGhoMintAmount } from 'src/utils/getMaxAmountAvailableToBorrow';
-import { formatGhoDiscountLockPeriodExpiryDate } from 'src/utils/ghoUtilities';
+import { formatGhoDiscountLockPeriodExpiryDate, weightedAverageAPY } from 'src/utils/ghoUtilities';
 
 import { AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -52,8 +52,7 @@ export const GhoBorrowModalContent = ({
     stakeUserResult,
     ghoDiscountRatePercent,
     ghoDiscountLockPeriod,
-    ghoMinDebtTokenBalanceForEligibleDiscount,
-    ghoMinDiscountTokenBalanceForEligibleDiscount,
+    ghoCalculateDiscountRate,
   } = useRootStore();
 
   // Amount calculations on input changes
@@ -104,67 +103,46 @@ export const GhoBorrowModalContent = ({
   const discountAvailable = userStakedAaveBalance !== '0';
   // Get contract values
   const baseBorrowRate = normalizeBN(poolReserve.baseVariableBorrowRate, 27).toNumber(); // 0.02 or 2%
-  const minStkAave = normalizeBN(
-    ghoMinDiscountTokenBalanceForEligibleDiscount.toString(),
-    18
-  ).toNumber();
-  const minGhoBorrowed = normalizeBN(
-    ghoMinDebtTokenBalanceForEligibleDiscount.toString(),
-    18
-  ).toNumber();
 
   // Calculate new borrow APY based on borrow amounts
-  const [calculatedBorrowAPY, setCalculatedBorrowAPY] = useState<number>(0);
   const [calculatedFutureBorrowAPY, setCalculatedFutureBorrowAPY] = useState<number>(0);
   const [apyDiffers, setApyDiffers] = useState(false);
   const [totalBorrowedGho, setTotalBorrowedGho] = useState<number>(0);
+
+  const currentBorrowAPY = weightedAverageAPY(
+    baseBorrowRate,
+    Number(userReserve.totalBorrows),
+    discountableAmount,
+    borrowAPRWithMaxDiscount
+  );
 
   /**
    * Calculates the discount rate based off amount of GHO being borrowed, taking into consideration how much has been borrowed previously as well as discountable and non-discountable amounts.
    * @param borrowingAmountGho - The amount of GHO requested to be borrowed
    */
   const calculateDiscountRate = async (borrowingAmount: string) => {
-    let newRate: number;
-    let borrowedGho: number;
-    const stakedAave = Number(userStakedAaveBalance);
-
-    // Calculate helper
-    const calculationHelper = (borrowableAmount: number): number => {
-      if (stakedAave < minStkAave || borrowableAmount < minGhoBorrowed) {
-        newRate = 0;
-      } else {
-        if (discountableAmount >= borrowableAmount) {
-          newRate = ghoDiscountRatePercent;
-        } else {
-          newRate = (discountableAmount * ghoDiscountRatePercent) / borrowableAmount;
-        }
-      }
-
-      // Calculate the new borrow APY - Takes the total discount as a fraction of the existing borrow rate
-      return baseBorrowRate - baseBorrowRate * newRate;
-    };
-
-    // Input is cleared, use initial values
     if (borrowingAmount === '') {
-      borrowedGho = Number(userReserve.totalBorrows);
-      const newRate = calculationHelper(borrowedGho);
-      setCalculatedBorrowAPY(newRate);
+      // Input is cleared, use initial values
       setCalculatedFutureBorrowAPY(0);
       setApyDiffers(false);
+      setTotalBorrowedGho(Number(userReserve.totalBorrows));
     } else {
       // Calculate new rates and check if they differ
-      borrowedGho = Number(userReserve.totalBorrows) + Number(borrowingAmount);
-      const newRate = calculationHelper(borrowedGho);
-      const oldRate = calculationHelper(Number(userReserve.totalBorrows));
-      // For showing arrow changes in the UI
-      if (oldRate !== newRate) {
-        setApyDiffers(true);
-      }
-      setCalculatedBorrowAPY(oldRate);
-      setCalculatedFutureBorrowAPY(newRate);
-    }
+      console.log(Number(userReserve.totalBorrows));
+      console.log(Number(borrowingAmount));
+      const totalBorrowAmount = valueToWei(
+        (Number(userReserve.totalBorrows) + Number(borrowingAmount)).toString(),
+        poolReserve.decimals
+      );
 
-    setTotalBorrowedGho(borrowedGho);
+      const discountRate = await ghoCalculateDiscountRate(totalBorrowAmount, userStakedAaveBalance);
+      const newRate = baseBorrowRate * (1 - discountRate);
+
+      setApyDiffers(currentBorrowAPY !== newRate);
+      setCalculatedFutureBorrowAPY(newRate);
+      console.log(Number(totalBorrowAmount));
+      setTotalBorrowedGho(normalizeBN(totalBorrowAmount, poolReserve.decimals).toNumber());
+    }
   };
 
   /**
@@ -282,7 +260,7 @@ export const GhoBorrowModalContent = ({
             <DetailsGhoApyLine
               hasGhoBorrowPositions={hasGhoBorrowPositions}
               inputAmount={amount}
-              borrowApy={calculatedBorrowAPY}
+              borrowApy={currentBorrowAPY}
               futureBorrowApy={calculatedFutureBorrowAPY}
               showApyDifference={apyDiffers}
             />
