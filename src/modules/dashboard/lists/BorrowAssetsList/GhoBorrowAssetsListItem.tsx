@@ -33,7 +33,7 @@ export const GhoBorrowAssetsListItem = ({
     ghoComputed: { discountableAmount },
   } = useRootStore();
 
-  // Available borrows is min of user avaiable borrows and remaining facilitator capacity
+  // Available borrows is min of user available borrows and remaining facilitator capacity
   const availableBorrows = getAvailableBorrows(
     Number(userAvailableBorrows),
     Number(ghoFacilitatorBucketCapacity),
@@ -45,7 +45,7 @@ export const GhoBorrowAssetsListItem = ({
   let borrowRateAfterDiscount =
     normalizedBaseVariableBorrowRate - normalizedBaseVariableBorrowRate * ghoDiscountRatePercent;
   if (discountableAmount < availableBorrows) {
-    // Calculate weighted discount rate aftr max borrow
+    // Calculate weighted discount rate after max borrow
     borrowRateAfterDiscount =
       (normalizedBaseVariableBorrowRate * (availableBorrows - discountableAmount) +
         borrowRateAfterDiscount * discountableAmount) /
