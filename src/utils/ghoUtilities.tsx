@@ -101,3 +101,12 @@ export const weightedAverageAPY = (
     totalBorrowAmount
   );
 };
+
+/**
+  Converts a BPS value into a percentage. BPS values are returned from the smart contract for discount rates and fee values. This is represented as percentages across the UI.
+  @param bpsValue {BigNumber} - The BigNumber representing the uint256 returned from the smart contracts to be converted
+  @returns {number} - A percentage of basis points. i.e. 2% would be 0.02
+*/
+export const convertBpsToPercentage = (bpsValue: BigNumber): number => {
+  return bpsValue.toNumber() * 0.0001;
+};
