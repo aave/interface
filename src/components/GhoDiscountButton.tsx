@@ -10,7 +10,8 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import dayjs from 'dayjs';
+import { useRootStore } from 'src/store/root';
+import { formatGhoDiscountLockPeriodExpiryDate } from 'src/utils/ghoUtilities';
 
 import { FormattedNumber } from './primitives/FormattedNumber';
 import { Link } from './primitives/Link';
@@ -24,6 +25,7 @@ interface GhoDiscountButtonProps {
 export const GhoDiscountButton = ({ amount, rate }: GhoDiscountButtonProps) => {
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
+  const { ghoDiscountLockPeriod } = useRootStore();
 
   const discountPaper = {
     mr: 2,
@@ -37,8 +39,7 @@ export const GhoDiscountButton = ({ amount, rate }: GhoDiscountButtonProps) => {
     width: downToXSM ? '100%' : 'auto',
   };
 
-  // TO-DO: fetch timestamp from GHO store
-  const lockPeriod = dayjs.unix(1683292439).format('D MMM YYYY');
+  const lockPeriod = formatGhoDiscountLockPeriodExpiryDate(new Date(), ghoDiscountLockPeriod);
 
   return amount > 0 ? (
     <Box
