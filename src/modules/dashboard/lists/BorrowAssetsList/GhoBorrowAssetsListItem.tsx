@@ -5,7 +5,11 @@ import { GhoBorrowRateTooltip } from 'src/components/infoTooltips/GhoBorrowRateT
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
-import { getAvailableBorrows, normalizeBaseVariableBorrowRate } from 'src/utils/ghoUtilities';
+import {
+  getAvailableBorrows,
+  normalizeBaseVariableBorrowRate,
+  weightedAverageAPY,
+} from 'src/utils/ghoUtilities';
 
 import { Link, ROUTES } from '../../../../components/primitives/Link';
 import { ListAPRColumn } from '../ListAPRColumn';
@@ -27,10 +31,9 @@ export const GhoBorrowAssetsListItem = ({
   const { openBorrow } = useModalContext();
   const { currentMarket } = useProtocolDataContext();
   const {
-    ghoDiscountRatePercent,
     ghoFacilitatorBucketLevel,
     ghoFacilitatorBucketCapacity,
-    ghoComputed: { discountableAmount },
+    ghoComputed: { borrowAPRWithMaxDiscount, discountableAmount },
   } = useRootStore();
 
   // Available borrows is min of user available borrows and remaining facilitator capacity
@@ -42,15 +45,12 @@ export const GhoBorrowAssetsListItem = ({
   const borrowButtonDisable = isFreezed || availableBorrows <= 0;
 
   const normalizedBaseVariableBorrowRate = normalizeBaseVariableBorrowRate(baseVariableBorrowRate);
-  let borrowRateAfterDiscount =
-    normalizedBaseVariableBorrowRate - normalizedBaseVariableBorrowRate * ghoDiscountRatePercent;
-  if (discountableAmount < availableBorrows) {
-    // Calculate weighted discount rate after max borrow
-    borrowRateAfterDiscount =
-      (normalizedBaseVariableBorrowRate * (availableBorrows - discountableAmount) +
-        borrowRateAfterDiscount * discountableAmount) /
-      availableBorrows;
-  }
+  const borrowRateAfterDiscount = weightedAverageAPY(
+    normalizedBaseVariableBorrowRate,
+    availableBorrows,
+    discountableAmount,
+    borrowAPRWithMaxDiscount
+  );
 
   return (
     <ListItemWrapper

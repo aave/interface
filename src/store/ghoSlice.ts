@@ -6,7 +6,11 @@ import {
 } from '@aave/contract-helpers';
 import { BigNumber, BigNumberish } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import { GHO_SUPPORTED_MARKETS, normalizeBaseVariableBorrowRate } from 'src/utils/ghoUtilities';
+import {
+  convertBpsToPercentage,
+  GHO_SUPPORTED_MARKETS,
+  normalizeBaseVariableBorrowRate,
+} from 'src/utils/ghoUtilities';
 import {
   CustomMarket,
   ENABLE_TESTNET,
@@ -113,7 +117,7 @@ export const createGhoSlice: StateCreator<
         ghoDebtTokenBalance,
         stakedAaveBalance
       );
-      return rateBps.toNumber() * 0.0001;
+      return convertBpsToPercentage(rateBps);
     },
     ghoUpdateDiscountRate: async () => {
       const provider = get().jsonRpcProvider();
@@ -162,7 +166,7 @@ export const createGhoSlice: StateCreator<
         ghoFacilitatorBucketLevel: formatUnits(bucketLevel, 18),
         ghoFacilitatorBucketCapacity: formatUnits(maxCapacity, 18),
         ghoDiscountedPerToken: formatUnits(ghoDiscountedPerToken, 18),
-        ghoDiscountRatePercent: ghoDiscountRate.toNumber() * 0.0001, // discount rate is in bps, convert to percentage
+        ghoDiscountRatePercent: convertBpsToPercentage(ghoDiscountRate), // discount rate is in bps, convert to percentage
         ghoDiscountLockPeriod,
         ghoMinDebtTokenBalanceForEligibleDiscount: Number(
           formatUnits(ghoMinDebtTokenBalanceForEligibleDiscount, 18)

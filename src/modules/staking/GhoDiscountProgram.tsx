@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, styled, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { GhoDiscountedBorrowAPYTag } from 'src/components/GhoDiscountedBorrowAPYTag';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -122,25 +123,7 @@ const GhoDiscountProgramDesktop = ({
               visibleDecimals={1}
               variant="main14"
             />
-            <Box
-              sx={{
-                color: '#fff',
-                borderRadius: '4px',
-                height: '20px',
-                display: 'flex',
-                p: 1,
-                background: (theme) => theme.palette.gradients.aaveGradient,
-              }}
-            >
-              <FormattedNumber
-                compact
-                percent
-                value={ghoDiscountRatePercent * -1}
-                visibleDecimals={0}
-                variant="main12"
-                symbolsColor="white"
-              />
-            </Box>
+            <GhoDiscountedBorrowAPYTag rate={ghoDiscountRatePercent} />
           </Box>
         </Box>
       </ListColumn>
@@ -218,25 +201,7 @@ const GhoDiscountProgramMobile = ({
             visibleDecimals={1}
             variant="main14"
           />
-          <Box
-            sx={{
-              color: '#fff',
-              borderRadius: '4px',
-              height: '20px',
-              display: 'flex',
-              p: 1,
-              background: (theme) => theme.palette.gradients.aaveGradient,
-            }}
-          >
-            <FormattedNumber
-              compact
-              percent
-              value={ghoDiscountRatePercent * -1}
-              visibleDecimals={0}
-              variant="main12"
-              symbolsColor="white"
-            />
-          </Box>
+          <GhoDiscountedBorrowAPYTag rate={ghoDiscountRatePercent} />
         </Box>
       </Row>
       <Button variant="outlined" fullWidth disabled>
