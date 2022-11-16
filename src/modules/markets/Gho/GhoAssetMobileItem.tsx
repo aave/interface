@@ -10,8 +10,10 @@ import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvi
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 
+import { AssetsListMobileItemLoader } from '../AssetsListMobileItemLoader';
+
 interface GhoAssetMobileItemProps {
-  reserve: ComputedReserveData;
+  reserve?: ComputedReserveData;
 }
 
 export const GhoAssetMobileItem = ({ reserve }: GhoAssetMobileItemProps) => {
@@ -21,8 +23,14 @@ export const GhoAssetMobileItem = ({ reserve }: GhoAssetMobileItemProps) => {
   const {
     ghoDiscountRatePercent,
     ghoFacilitatorBucketLevel,
+    ghoLoadingData,
+    ghoLoadingMarketData,
     ghoComputed: { borrowAPRWithMaxDiscount },
   } = useRootStore();
+
+  if (!reserve || ghoLoadingData || ghoLoadingMarketData) {
+    return <AssetsListMobileItemLoader />;
+  }
 
   return (
     <Box>

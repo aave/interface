@@ -154,7 +154,7 @@ export default function AssetsList() {
         </Box>
       )}
 
-      {ghoReserve && displayGho && (
+      {displayGho && (
         <Box sx={{ mb: hideTableHeader ? 62 : 0 }}>
           {isTableChangedToCards ? (
             <GhoAssetMobileItem reserve={ghoReserve} />
