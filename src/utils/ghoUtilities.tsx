@@ -1,5 +1,6 @@
 import { timeFormat } from 'd3-time-format';
 import { BigNumber } from 'ethers';
+import { formatUnits } from 'ethers/lib/utils';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 /**
@@ -46,9 +47,7 @@ export const getAvailableBorrows = (
 ): number => {
   // Available borrows is min of user available borrows and remaining facilitator capacity
   const remainingBucketCapacity = ghoFacilitatorCapacity - ghoFacilitatorLevel;
-
   const availableBorrows = Math.min(userAvailableBorrows, remainingBucketCapacity);
-
   return availableBorrows;
 };
 
@@ -73,7 +72,7 @@ export const formatGhoDiscountLockPeriodExpiryDate = (
 
 // Not gho specific, but we should look at doing this logic in math-helpers
 export const normalizeBaseVariableBorrowRate = (baseVariableBorrowRate: string | number) => {
-  return Number(baseVariableBorrowRate) / 10 ** 27;
+  return Number(formatUnits(baseVariableBorrowRate, 27));
 };
 
 /**
@@ -91,12 +90,10 @@ export const weightedAverageAPY = (
   borrowRateAfterDiscount: number
 ) => {
   if (totalBorrowAmount === 0) return baseVariableBorrowRate;
-
-  if (totalBorrowAmount <= discountableAmount) {
-    return borrowRateAfterDiscount;
-  }
+  if (totalBorrowAmount <= discountableAmount) return borrowRateAfterDiscount;
 
   const nonDiscountableAmount = totalBorrowAmount - discountableAmount;
+
   return (
     (nonDiscountableAmount * baseVariableBorrowRate +
       discountableAmount * borrowRateAfterDiscount) /

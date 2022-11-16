@@ -1,12 +1,12 @@
 import { InterestRate, valueToWei } from '@aave/contract-helpers';
 import {
   calculateHealthFactorFromBalancesBigUnits,
-  normalizeBN,
   USD_DECIMALS,
   valueToBigNumber,
 } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Checkbox, Divider, Link, Typography } from '@mui/material';
+import { formatUnits } from 'ethers/lib/utils';
 import { useEffect, useRef, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -143,7 +143,7 @@ export const GhoBorrowModalContent = ({
 
       setApyDiffers(currentBorrowAPY !== newRate);
       setCalculatedFutureBorrowAPY(newRate);
-      setTotalBorrowedGho(normalizeBN(totalBorrowAmount, poolReserve.decimals).toNumber());
+      setTotalBorrowedGho(Number(formatUnits(totalBorrowAmount, poolReserve.decimals)));
     }
   };
 
