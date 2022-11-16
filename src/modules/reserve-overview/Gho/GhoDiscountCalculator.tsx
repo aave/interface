@@ -1,4 +1,3 @@
-import { normalizeBN } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import {
   Alert,
