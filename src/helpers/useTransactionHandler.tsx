@@ -38,11 +38,11 @@ export const useTransactionHandler = ({
     setLoadingTxns,
     setTxError,
     setRetryWithApproval,
+    retryWithApproval,
   } = useModalContext();
   const { signTxData, sendTx, getTxError } = useWeb3Context();
   const { refetchWalletBalances, refetchPoolData, refetchIncentiveData } =
     useBackgroundDataProvider();
-  const [usePermit, setUsePermit] = useState<boolean>(tryPermit);
   const [signature, setSignature] = useState<SignatureLike>();
   const [signatureDeadline, setSignatureDeadline] = useState<string>();
   const signERC20Approval = useRootStore((state) => state.signERC20Approval);
@@ -50,6 +50,7 @@ export const useTransactionHandler = ({
   const [approvalTx, setApprovalTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
   const mounted = useRef(false);
+  const usingPermit = tryPermit && !retryWithApproval;
 
   useEffect(() => {
     mounted.current = true; // Will set it to true on mount ...
@@ -104,7 +105,7 @@ export const useTransactionHandler = ({
 
   const approval = async (amount?: string, underlyingAsset?: string) => {
     if (approvalTx) {
-      if (usePermit && amount && underlyingAsset) {
+      if (usingPermit && amount && underlyingAsset) {
         setApprovalTxState({ ...approvalTxState, loading: true });
         try {
           // deadline is an hour after signature
@@ -136,14 +137,12 @@ export const useTransactionHandler = ({
             });
 
             // set use permit to false to retry with normal approval
-            setUsePermit(false);
             setRetryWithApproval(true);
           }
         } catch (error) {
           if (!mounted.current) return;
 
           // set use permit to false to retry with normal approval
-          setUsePermit(false);
           setRetryWithApproval(true);
 
           const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
@@ -192,7 +191,7 @@ export const useTransactionHandler = ({
   };
 
   const action = async () => {
-    if (approvalTx && usePermit && handleGetPermitTxns) {
+    if (approvalTx && usingPermit && handleGetPermitTxns) {
       if (!signature || !signatureDeadline) throw new Error('signature needed');
       try {
         setMainTxState({ ...mainTxState, loading: true });
@@ -228,7 +227,7 @@ export const useTransactionHandler = ({
         });
       }
     }
-    if ((!usePermit || !approvalTx) && actionTx) {
+    if ((!usingPermit || !approvalTx) && actionTx) {
       try {
         setMainTxState({ ...mainTxState, loading: true });
         const params = await actionTx.tx();
@@ -322,11 +321,9 @@ export const useTransactionHandler = ({
     approval,
     action,
     loadingTxns,
-    setUsePermit,
     requiresApproval: !!approvalTx,
     approvalTxState,
     mainTxState,
-    usePermit,
     actionTx,
     approvalTx,
   };
