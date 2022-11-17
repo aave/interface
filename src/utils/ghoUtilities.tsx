@@ -39,15 +39,20 @@ export const getGhoReserve = (reserves: ComputedReserveData[]) => {
   return reserves.find((reserve) => reserve.symbol === GHO_SYMBOL);
 };
 
+/**
+ * Returns the minimum of user available borrows and remaining facilitator capacity
+ * @param userAvailableBorrows The max amount a user can borrow with their current collateral
+ * @param ghoFacilitatorCapacity The max amount the GHO facilitator can mint
+ * @param ghoFacilitatorLevel The current amount minted by the GHO facilitator
+ * @returns
+ */
 export const getAvailableBorrows = (
   userAvailableBorrows: number,
   ghoFacilitatorCapacity: number,
   ghoFacilitatorLevel: number
 ): number => {
-  // Available borrows is min of user available borrows and remaining facilitator capacity
   const remainingBucketCapacity = ghoFacilitatorCapacity - ghoFacilitatorLevel;
-  const availableBorrows = Math.min(userAvailableBorrows, remainingBucketCapacity);
-  return availableBorrows;
+  return Math.min(userAvailableBorrows, remainingBucketCapacity);
 };
 
 /**
