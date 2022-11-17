@@ -37,6 +37,15 @@ const goerliGhoConfig: GhoMarketConfig = {
   facilitatorAddress: '0x12cA83Bd0d5887865b7a43B73bbF586D7C087943',
 };
 
+// TODO: update when we launch GHO on mainnet
+// NOTE: these addresses are Goerli addresses, and should be updated on launch
+const mainnetGhoConfig: GhoMarketConfig = {
+  market: marketsData[CustomMarket.proto_mainnet],
+  ghoTokenAddress: '0xa48ddcca78a09c37b4070b3e210d6e0234911549',
+  ghoVariableDebtTokenAddress: '0x2A379e5d2871123F301b2c73463cE011EcB217e6',
+  facilitatorAddress: '0x12cA83Bd0d5887865b7a43B73bbF586D7C087943',
+};
+
 export interface GhoSlice {
   ghoUserDiscountRate: BigNumber;
   ghoDiscountedPerToken: string;
@@ -100,12 +109,7 @@ export const createGhoSlice: StateCreator<
     ghoLoadingMarketData: true,
     ghoLoadingData: true,
     ghoMarketConfig: () => {
-      if (STAGING_ENV || ENABLE_TESTNET) {
-        return goerliGhoConfig;
-      } else {
-        //TODO: once v3 is on mainnet update this.
-        return goerliGhoConfig;
-      }
+      return STAGING_ENV || ENABLE_TESTNET ? goerliGhoConfig : mainnetGhoConfig;
     },
     ghoCalculateDiscountRate: async (
       ghoDebtTokenBalance: BigNumberish,
