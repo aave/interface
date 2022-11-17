@@ -11,6 +11,7 @@ interface DrawerWrapperProps {
 export const DrawerWrapper = ({ open, setOpen, children, headerHeight }: DrawerWrapperProps) => {
   return (
     <Drawer
+      data-cy={`mobile-menu`}
       anchor="top"
       open={open}
       onClose={() => setOpen(false)}

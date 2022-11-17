@@ -56,6 +56,7 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
         <MobileCloseButton setOpen={setOpen} />
       ) : (
         <Button
+          id="settings-button-mobile"
           variant="surface"
           sx={{ p: '7px 8px', minWidth: 'unset', ml: 2 }}
           onClick={() => setOpen(true)}

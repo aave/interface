@@ -166,7 +166,7 @@ export default function ProposalPage({
       <ContentContainer>
         <Grid container spacing={4}>
           <Grid item xs={12} md={8}>
-            <Paper sx={{ px: 6, pt: 4, pb: 12 }}>
+            <Paper sx={{ px: 6, pt: 4, pb: 12 }} data-cy="vote-info-body">
               <Typography variant="h3">
                 <Trans>Proposal overview</Trans>
               </Typography>
