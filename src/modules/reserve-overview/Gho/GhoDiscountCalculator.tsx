@@ -76,7 +76,7 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
     ghoDiscountedPerToken,
     ghoMinDebtTokenBalanceForEligibleDiscount,
     ghoMinDiscountTokenBalanceForEligibleDiscount,
-    ghoComputed: { borrowAPRWithMaxDiscount },
+    ghoComputed: { borrowAPYWithMaxDiscount },
   } = useRootStore();
   const baseBorrowRate = normalizeBaseVariableBorrowRate(baseVariableBorrowRate);
   const discountedPerToken = Number(ghoDiscountedPerToken);
@@ -111,7 +111,7 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
       baseBorrowRate,
       borrowedGho,
       discountableAmount,
-      borrowAPRWithMaxDiscount
+      borrowAPYWithMaxDiscount
     );
 
     // Update local state
@@ -161,7 +161,7 @@ export const GhoDiscountCalculator = ({ baseVariableBorrowRate }: GhoDiscountCal
         />
         <GhoMetaHeader
           title={<Trans>APY with max discount</Trans>}
-          value={<FormattedNumber value={borrowAPRWithMaxDiscount} percent variant="main16" />}
+          value={<FormattedNumber value={borrowAPYWithMaxDiscount} percent variant="main16" />}
         />
         <GhoMetaHeader
           title={<Trans>Discountable amount</Trans>}

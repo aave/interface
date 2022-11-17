@@ -157,7 +157,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
               normalizedBaseVariableBorrowRate,
               Number(value.variableBorrows),
               discountableAmount,
-              ghoComputed.borrowAPRWithMaxDiscount
+              ghoComputed.borrowAPYWithMaxDiscount
             );
             acc.negativeProportion = acc.negativeProportion.plus(
               new BigNumber(borrowRateAfterDiscount).multipliedBy(value.variableBorrowsUSD)

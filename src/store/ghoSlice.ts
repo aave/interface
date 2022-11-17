@@ -47,11 +47,11 @@ export interface GhoSlice {
   ghoFacilitatorBucketCapacity: string;
   ghoMinDebtTokenBalanceForEligibleDiscount: number;
   ghoMinDiscountTokenBalanceForEligibleDiscount: number;
-  ghoBorrowAPR: number;
+  ghoBorrowAPY: number;
   ghoLoadingMarketData: boolean;
   ghoLoadingData: boolean;
   ghoComputed: {
-    borrowAPRWithMaxDiscount: number;
+    borrowAPYWithMaxDiscount: number;
     discountableAmount: number;
   };
   ghoMarketConfig: () => GhoMarketConfig;
@@ -73,11 +73,11 @@ export const createGhoSlice: StateCreator<
     ghoComputed: {
       // These 'computed' getters are helpers for components to access commonly used values derived from the state.
       // Because they are getters, they will run when the store is initialzed, so they need to guard against the store being undefined.
-      get borrowAPRWithMaxDiscount() {
+      get borrowAPYWithMaxDiscount() {
         if (!get()) return 0;
-        const { ghoBorrowAPR, ghoDiscountRatePercent } = { ...get() };
+        const { ghoBorrowAPY, ghoDiscountRatePercent } = { ...get() };
 
-        return ghoBorrowAPR * (1 - ghoDiscountRatePercent);
+        return ghoBorrowAPY * (1 - ghoDiscountRatePercent);
       },
       get discountableAmount() {
         if (!get()) return 0;
@@ -96,7 +96,7 @@ export const createGhoSlice: StateCreator<
     ghoFacilitatorBucketCapacity: '0',
     ghoMinDebtTokenBalanceForEligibleDiscount: 1,
     ghoMinDiscountTokenBalanceForEligibleDiscount: 1,
-    ghoBorrowAPR: 0,
+    ghoBorrowAPY: 0,
     ghoLoadingMarketData: true,
     ghoLoadingData: true,
     ghoMarketConfig: () => {
@@ -187,7 +187,7 @@ export const createGhoSlice: StateCreator<
 
       const reserve = await poolContract.getReserveData(config.ghoTokenAddress);
       set({
-        ghoBorrowAPR: normalizeBaseVariableBorrowRate(reserve.currentVariableBorrowRate.toString()),
+        ghoBorrowAPY: normalizeBaseVariableBorrowRate(reserve.currentVariableBorrowRate.toString()),
         ghoLoadingMarketData: false,
       });
     },

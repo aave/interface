@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
-//import { GhoDiscountButton } from 'src/components/GhoDiscountButton';
 import { GhoBorrowRateTooltip } from 'src/components/infoTooltips/GhoBorrowRateTooltip';
 import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
@@ -37,7 +36,7 @@ export const GhoBorrowAssetsListMobileItem = ({
     ghoFacilitatorBucketCapacity,
     ghoLoadingData,
     ghoLoadingMarketData,
-    ghoComputed: { borrowAPRWithMaxDiscount, discountableAmount },
+    ghoComputed: { borrowAPYWithMaxDiscount, discountableAmount },
   } = useRootStore();
 
   // Available borrows is min of user avaiable borrows and remaining facilitator capacity
@@ -53,7 +52,7 @@ export const GhoBorrowAssetsListMobileItem = ({
     normalizedBaseVariableBorrowRate,
     availableBorrows,
     discountableAmount,
-    borrowAPRWithMaxDiscount
+    borrowAPYWithMaxDiscount
   );
 
   return (
@@ -106,8 +105,6 @@ export const GhoBorrowAssetsListMobileItem = ({
       >
         <IncentivesCard value={-1} incentives={[]} symbol={symbol} variant="secondary14" />
       </Row>
-
-      {/* <GhoDiscountButton amount={discountableAmount} rate={borrowAPRWithMaxDiscount} /> */}
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
         <Button

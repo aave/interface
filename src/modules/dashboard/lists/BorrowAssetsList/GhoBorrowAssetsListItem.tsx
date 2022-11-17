@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
-// import { GhoDiscountButton } from 'src/components/GhoDiscountButton';
 import { GhoBorrowRateTooltip } from 'src/components/infoTooltips/GhoBorrowRateTooltip';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -35,7 +34,7 @@ export const GhoBorrowAssetsListItem = ({
     ghoFacilitatorBucketCapacity,
     ghoLoadingData,
     ghoLoadingMarketData,
-    ghoComputed: { borrowAPRWithMaxDiscount, discountableAmount },
+    ghoComputed: { borrowAPYWithMaxDiscount, discountableAmount },
   } = useRootStore();
 
   // Available borrows is min of user available borrows and remaining facilitator capacity
@@ -51,7 +50,7 @@ export const GhoBorrowAssetsListItem = ({
     normalizedBaseVariableBorrowRate,
     availableBorrows,
     discountableAmount,
-    borrowAPRWithMaxDiscount
+    borrowAPYWithMaxDiscount
   );
 
   const loading = ghoLoadingData || ghoLoadingMarketData;
@@ -64,9 +63,6 @@ export const GhoBorrowAssetsListItem = ({
       detailsAddress={underlyingAsset}
       data-cy={`dashboardBorrowListItem_${symbol.toUpperCase()}`}
       currentMarket={currentMarket}
-      // footerButton={
-      //   <GhoDiscountButton rate={borrowAPRWithMaxDiscount} amount={discountableAmount} />
-      // }
     >
       <ListValueColumn
         symbol={symbol}
