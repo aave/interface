@@ -4841,16 +4841,16 @@
       ],
       "startBlock": 15965387,
       "endBlock": 15984587,
-      "executionTime": 0,
+      "executionTime": 1668730247,
       "forVotes": "449638095762084948823050",
       "againstVotes": "33222261431642084993",
       "executed": false,
       "canceled": false,
       "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
-      "state": "Succeeded",
+      "state": "Queued",
       "minimumQuorum": "200",
       "minimumDiff": "50",
-      "executionTimeWithGracePeriod": 0,
+      "executionTimeWithGracePeriod": 1669162247,
       "proposalCreated": 15958187,
       "totalVotingSupply": "16000000000000000000000000",
       "ipfsHash": "0x1a19a9cdef0a9717596c08cec5ecf4786dbe044668d3d139cc8a32931bea8012",
@@ -4877,7 +4877,7 @@
       "startBlock": 15971570,
       "endBlock": 15990770,
       "executionTime": 0,
-      "forVotes": "369427702098660516839201",
+      "forVotes": "379427766050609696175788",
       "againstVotes": "2018968907567981424",
       "executed": false,
       "canceled": false,
@@ -4891,7 +4891,7 @@
       "ipfsHash": "0xfd4ed52d0e0728752f11ab23c3b3404009e46562a691520620f46e64ffdf05b4",
       "startTimestamp": 1668468599,
       "creationTimestamp": 1668381815,
-      "expirationTimestamp": 1668700187
+      "expirationTimestamp": 1668700223
     },
     {
       "id": 119,
@@ -4912,8 +4912,8 @@
       "startBlock": 15971584,
       "endBlock": 15990784,
       "executionTime": 0,
-      "forVotes": "369348915553333448738731",
-      "againstVotes": "2073807501286188223",
+      "forVotes": "379348985005595449331901",
+      "againstVotes": "2080967353925504218",
       "executed": false,
       "canceled": false,
       "strategy": "0xb7e383ef9B1E9189Fc0F71fb30af8aa14377429e",
@@ -4926,7 +4926,7 @@
       "ipfsHash": "0x61f6e82640afe4b7de943c55426f30eae97d53124e43bb7e28ea39f20ce52359",
       "startTimestamp": 1668468767,
       "creationTimestamp": 1668381983,
-      "expirationTimestamp": 1668700355
+      "expirationTimestamp": 1668700391
     }
   ]
 }
