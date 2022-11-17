@@ -124,7 +124,7 @@ const GhoSkeleton = () => {
   return (
     <ListItem sx={{ marginTop: -2, p: 0 }}>
       <ListColumn isRow maxWidth={190}>
-        <Skeleton variant="circular" width={40} height={40} />
+        <Skeleton variant="circular" sx={{ minWidth: 40, maxWidth: 40 }} height={40} />
         <Box sx={{ px: 3 }}>
           <Skeleton width={75} height={24} />
         </Box>
