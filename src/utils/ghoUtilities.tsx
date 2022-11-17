@@ -3,6 +3,8 @@ import { BigNumber } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 
+export const GHO_SYMBOL = 'GHO';
+
 /**
  * Determines if GHO is available for borrowing (minting) on the provided network, also based off the token symbol being borrowed
  * @param {GhoUtilMintingAvailableParams} - The reserve symbol and current market name
@@ -30,11 +32,11 @@ export const isGhoAndSupported = ({
   symbol,
   currentMarket,
 }: GhoUtilMintingAvailableParams): boolean => {
-  return symbol === 'GHO' && GHO_SUPPORTED_MARKETS.includes(currentMarket);
+  return symbol === GHO_SYMBOL && GHO_SUPPORTED_MARKETS.includes(currentMarket);
 };
 
 export const getGhoReserve = (reserves: ComputedReserveData[]) => {
-  return reserves.find((reserve) => reserve.symbol === 'GHO');
+  return reserves.find((reserve) => reserve.symbol === GHO_SYMBOL);
 };
 
 export const getAvailableBorrows = (

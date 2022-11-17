@@ -5,6 +5,7 @@ import { ContentContainer } from 'src/components/ContentContainer';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { getGhoReserve } from 'src/utils/ghoUtilities';
 
 import { ReserveActions } from '../ReserveActions';
 import { GhoReserveConfiguration } from './GhoReserveConfiguration';
@@ -22,8 +23,7 @@ export const GhoReserveOverview = () => {
   }, [lg]);
 
   const { reserves } = useAppDataContext();
-  // TODO: get this from a helper functin or the global store once added
-  const reserve = reserves.find((r) => r.symbol === 'GHO');
+  const reserve = getGhoReserve(reserves);
   if (!reserve) return null;
 
   const isOverview = mode === 'overview';

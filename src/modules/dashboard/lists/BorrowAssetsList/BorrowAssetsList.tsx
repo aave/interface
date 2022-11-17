@@ -9,7 +9,7 @@ import { Warning } from 'src/components/primitives/Warning';
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-import { isGhoAndSupported } from 'src/utils/ghoUtilities';
+import { GHO_SYMBOL, isGhoAndSupported } from 'src/utils/ghoUtilities';
 
 import { CapType } from '../../../../components/caps/helper';
 import { AvailableTooltip } from '../../../../components/infoTooltips/AvailableTooltip';
@@ -94,10 +94,10 @@ export const BorrowAssetsList = () => {
         );
 
   // Move GHO to top of assets to borrow list
-  const GHO = borrowReserves.filter((reserve) => reserve.symbol === 'GHO');
-  if (GHO.length > 0) {
-    borrowReserves = borrowReserves.filter((reserve) => reserve.symbol !== 'GHO');
-    borrowReserves.unshift(GHO[0]);
+  const ghoReserve = borrowReserves.filter((reserve) => reserve.symbol === GHO_SYMBOL);
+  if (ghoReserve.length > 0) {
+    borrowReserves = borrowReserves.filter((reserve) => reserve.symbol !== GHO_SYMBOL);
+    borrowReserves.unshift(ghoReserve[0]);
   }
 
   const head = [

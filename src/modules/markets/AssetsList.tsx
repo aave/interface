@@ -7,7 +7,7 @@ import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYToolt
 import { MarketWarning } from 'src/components/transactions/Warnings/MarketWarning';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
-import { getGhoReserve, GHO_SUPPORTED_MARKETS } from 'src/utils/ghoUtilities';
+import { getGhoReserve, GHO_SUPPORTED_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
 
 import { ListColumn } from '../../components/lists/ListColumn';
 import { ListHeaderTitle } from '../../components/lists/ListHeaderTitle';
@@ -32,7 +32,9 @@ const shouldDisplayGho = (marketTitle: string, searchTerm: string): boolean => {
   }
 
   const normalizedSearchTerm = searchTerm.toLowerCase().trim();
-  return normalizedSearchTerm.length <= 3 && 'gho'.includes(searchTerm);
+  return (
+    normalizedSearchTerm.length <= 3 && GHO_SYMBOL.toLowerCase().includes(normalizedSearchTerm)
+  );
 };
 
 export default function AssetsList() {

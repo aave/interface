@@ -11,7 +11,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { useRootStore } from 'src/store/root';
-import { formatGhoDiscountLockPeriodExpiryDate } from 'src/utils/ghoUtilities';
+import { formatGhoDiscountLockPeriodExpiryDate, GHO_SYMBOL } from 'src/utils/ghoUtilities';
 
 import { FormattedNumber } from './primitives/FormattedNumber';
 import { Link } from './primitives/Link';
@@ -56,7 +56,7 @@ export const GhoDiscountButton = ({ amount, rate }: GhoDiscountButtonProps) => {
         <Typography variant="caption" color="text.primary" sx={{ mx: 1 }}>
           <Trans>Discount info</Trans>
         </Typography>
-        <TokenIcon symbol={'GHO'} sx={{ fontSize: `14px`, mr: 1 }} />
+        <TokenIcon symbol={GHO_SYMBOL} sx={{ fontSize: `14px`, mr: 1 }} />
         <FormattedNumber value={amount} variant="main12" color="text.primary" />
         <Divider orientation="vertical" color="text.primary" sx={{ mx: 2 }} />
         <FormattedNumber value={rate} variant="main12" color="text.primary" percent />
