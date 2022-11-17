@@ -25,7 +25,7 @@ export const GhoAssetMobileItem = ({ reserve }: GhoAssetMobileItemProps) => {
     ghoFacilitatorBucketLevel,
     ghoLoadingData,
     ghoLoadingMarketData,
-    ghoComputed: { borrowAPRWithMaxDiscount },
+    ghoComputed: { borrowAPYWithMaxDiscount },
   } = useRootStore();
 
   if (!reserve || ghoLoadingData || ghoLoadingMarketData) {
@@ -97,7 +97,7 @@ export const GhoAssetMobileItem = ({ reserve }: GhoAssetMobileItemProps) => {
             <FormattedNumber
               compact
               percent
-              value={borrowAPRWithMaxDiscount}
+              value={borrowAPYWithMaxDiscount}
               variant="secondary14"
             />
             <GhoDiscountedBorrowAPYTag rate={ghoDiscountRatePercent} />

@@ -54,7 +54,7 @@ export const GhoBorrowModalContent = ({
   const { mainTxState: borrowTxState, gasLimit, txError } = useModalContext();
   const { user, marketReferencePriceInUsd } = useAppDataContext();
   const {
-    ghoComputed: { borrowAPRWithMaxDiscount, discountableAmount },
+    ghoComputed: { borrowAPYWithMaxDiscount, discountableAmount },
     stakeUserResult,
     ghoDiscountRatePercent,
     ghoDiscountLockPeriod,
@@ -118,7 +118,7 @@ export const GhoBorrowModalContent = ({
     baseBorrowRate,
     Number(userReserve.totalBorrows),
     discountableAmount,
-    borrowAPRWithMaxDiscount
+    borrowAPYWithMaxDiscount
   );
 
   /**
@@ -236,7 +236,7 @@ export const GhoBorrowModalContent = ({
             />
             <Typography variant="secondary12" sx={{ ml: 1 }} component="div">
               <Trans>{`@ ${(
-                <FormattedNumber value={borrowAPRWithMaxDiscount} percent variant="secondary12" />
+                <FormattedNumber value={borrowAPYWithMaxDiscount} percent variant="secondary12" />
               )} APY`}</Trans>
             </Typography>
             <Button
@@ -282,7 +282,7 @@ export const GhoBorrowModalContent = ({
                   subtitle={
                     <Trans>{`Borrow @ ${(
                       <FormattedNumber
-                        value={borrowAPRWithMaxDiscount}
+                        value={borrowAPYWithMaxDiscount}
                         percent
                         variant="helperText"
                       />

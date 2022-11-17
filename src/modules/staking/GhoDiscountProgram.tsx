@@ -31,7 +31,7 @@ export const GhoDiscountProgram = () => {
   const downToXsm = useMediaQuery(breakpoints.down('xsm'));
   const {
     ghoDiscountRatePercent,
-    ghoComputed: { borrowAPRWithMaxDiscount, discountableAmount },
+    ghoComputed: { borrowAPYWithMaxDiscount, discountableAmount },
   } = useRootStore();
 
   return (
@@ -50,13 +50,13 @@ export const GhoDiscountProgram = () => {
         {downToXsm ? (
           <GhoDiscountProgramMobile
             discountableAmount={discountableAmount}
-            aprWithDiscount={borrowAPRWithMaxDiscount}
+            aprWithDiscount={borrowAPYWithMaxDiscount}
             ghoDiscountRatePercent={ghoDiscountRatePercent}
           />
         ) : (
           <GhoDiscountProgramDesktop
             discountableAmount={discountableAmount}
-            aprWithDiscount={borrowAPRWithMaxDiscount}
+            aprWithDiscount={borrowAPYWithMaxDiscount}
             ghoDiscountRatePercent={ghoDiscountRatePercent}
           />
         )}

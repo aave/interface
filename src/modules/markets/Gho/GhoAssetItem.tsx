@@ -39,7 +39,7 @@ export const GhoAssetItem = ({ reserve }: GhoAssetItemProps) => {
     ghoFacilitatorBucketLevel,
     ghoLoadingData,
     ghoLoadingMarketData,
-    ghoComputed: { borrowAPRWithMaxDiscount },
+    ghoComputed: { borrowAPYWithMaxDiscount },
   } = useRootStore();
 
   return (
@@ -93,7 +93,7 @@ export const GhoAssetItem = ({ reserve }: GhoAssetItemProps) => {
                 <FormattedNumber
                   compact
                   percent
-                  value={borrowAPRWithMaxDiscount}
+                  value={borrowAPYWithMaxDiscount}
                   visibleDecimals={1}
                   variant="h3"
                 />
