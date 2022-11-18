@@ -3,7 +3,6 @@ import { Trans } from '@lingui/macro';
 import { Box, Typography, useTheme } from '@mui/material';
 import { ApprovalTooltip } from 'src/components/infoTooltips/ApprovalTooltip';
 
-import { ApprovalInfoContent } from '../../infoModalContents/ApprovalInfoContent';
 import { RetryWithApprovalInfoContent } from '../../infoModalContents/RetryWithApprovalInfoContent';
 import { TextWithModal } from '../../TextWithModal';
 
