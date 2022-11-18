@@ -81,7 +81,7 @@ export const TxActionsWrapper = ({
     if (approvalTxState?.success) return { disabled: true, content: <Trans>Approved</Trans> };
     if (retryWithApproval)
       return { content: <Trans>Retry with approval</Trans>, handleClick: handleApproval };
-    return { content: <Trans>Approve to continue</Trans>, handleClick: handleApproval };
+    return { content: <Trans>Approve {symbol} to continue</Trans>, handleClick: handleApproval };
   }
 
   const { content, disabled, loading, handleClick } = getMainParams();

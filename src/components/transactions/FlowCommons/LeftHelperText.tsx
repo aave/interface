@@ -1,6 +1,7 @@
 import { CheckIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Typography, useTheme } from '@mui/material';
+import { ApprovalTooltip } from 'src/components/infoTooltips/ApprovalTooltip';
 
 import { ApprovalInfoContent } from '../../infoModalContents/ApprovalInfoContent';
 import { RetryWithApprovalInfoContent } from '../../infoModalContents/RetryWithApprovalInfoContent';
@@ -53,16 +54,12 @@ export const LeftHelperText = ({ error, approvalHash, amount }: LeftHelperTextPr
       )}
 
       {!approvalHash && !error && amount && (
-        <TextWithModal
+        <ApprovalTooltip
           text={<Trans>Why do I need to approve?</Trans>}
           iconSize={13}
-          iconColor={theme.palette.text.secondary}
-          withContentButton
-          variant="helperText"
+          variant="caption"
           color="text.secondary"
-        >
-          <ApprovalInfoContent />
-        </TextWithModal>
+        />
       )}
     </Box>
   );
