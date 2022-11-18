@@ -1,4 +1,5 @@
 import {
+  ERC20_2612Service,
   EthereumTransactionTypeExtended,
   FaucetParamsType,
   FaucetService,
@@ -10,13 +11,10 @@ import {
   Pool,
   PoolBaseCurrencyHumanized,
   ReserveDataHumanized,
+  SignERC20ApprovalType,
   UiPoolDataProvider,
   UserReserveDataHumanized,
 } from '@aave/contract-helpers';
-import {
-  ERC20_2612Service,
-  SignERC20ApprovalType,
-} from '@aave/contract-helpers/dist/esm/erc20-2612';
 import {
   LPBorrowParamsType,
   LPSetUsageAsCollateral,
