@@ -3,9 +3,6 @@ import { Trans } from '@lingui/macro';
 import { Box, Typography, useTheme } from '@mui/material';
 import { ApprovalTooltip } from 'src/components/infoTooltips/ApprovalTooltip';
 
-import { RetryWithApprovalInfoContent } from '../../infoModalContents/RetryWithApprovalInfoContent';
-import { TextWithModal } from '../../TextWithModal';
-
 export type LeftHelperTextProps = {
   error?: string;
   approvalHash?: string;
@@ -37,19 +34,6 @@ export const LeftHelperText = ({ error, approvalHash, amount }: LeftHelperTextPr
             <Trans>Approve confirmed</Trans>
           </Typography>
         </>
-      )}
-
-      {error && (
-        <TextWithModal
-          text={<Trans>Retry What?</Trans>}
-          iconSize={13}
-          iconColor={theme.palette.text.secondary}
-          withContentButton
-          variant="helperText"
-          color="text.secondary"
-        >
-          <RetryWithApprovalInfoContent />
-        </TextWithModal>
       )}
 
       {!approvalHash && !error && amount && (
